@@ -35,6 +35,10 @@ This section describes how to install the plugin and get it working.
 4. Create a new Page “Dashboard” and insert shorcode `[wpuf_dashboard]`
 5. Correct the permalink structure of your wordpress installation
 6. Insert the “Edit” Page url to the admin options page of the plugin
+7. Insert Subscribe2 page at frontend [wpuf_subscribe2]
+8. To show the subscription info, insert the shortcdoe `[wpuf_sub_info]`
+9. To show the subscription packs, insert the shortcode `[wpuf_sub_pack]`
+10. For subscription payment page, create a new page and insert the page ID in WP frontend CMS's "Paypal Payment Page" option.
 
 
 == Screenshots ==

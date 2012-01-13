@@ -23,7 +23,7 @@ add_shortcode( 'wpuf_editprofile', 'wpuf_user_edit_profile' );
  * @param type $user_id
  */
 function wpuf_user_edit_profile_form( $user_id = null ) {
-    global $userdata;
+    global $userdata, $wp_http_referer;
     get_currentuserinfo();
 
     if ( !(function_exists( 'get_user_to_edit' )) ) {
@@ -65,7 +65,7 @@ function wpuf_user_edit_profile_form( $user_id = null ) {
                 <input type="hidden" name="wp_http_referer" value="<?php echo esc_url( $wp_http_referer ); ?>" />
             <?php endif; ?>
             <input type="hidden" name="from" value="profile" />
-            <input type="hidden" name="checkuser_id" value="<?php echo $user_ID ?>" />
+            <input type="hidden" name="checkuser_id" value="<?php echo $user_id; ?>" />
             <table class="wpuf-table">
                 <?php do_action( 'personal_options', $profileuser ); ?>
             </table>

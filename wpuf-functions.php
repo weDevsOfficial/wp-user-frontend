@@ -64,7 +64,7 @@ function wpuf_show_post_status( $status ) {
 
 /**
  * Enqueues Styles and Scripts when the shortcodes are used only
- * 
+ *
  * @uses has_shortcode()
  * @since 0.2
  */
@@ -81,7 +81,6 @@ function wpuf_enqueue_scripts() {
 }
 
 add_action( 'wp_enqueue_scripts', 'wpuf_enqueue_scripts' );
-
 
 /**
  * Format error message
@@ -118,9 +117,9 @@ function wpuf_is_valid_int( $int ) {
 
 /**
  * Notify the admin for new post
- * 
+ *
  * @param object $userdata
- * @param int $post_id 
+ * @param int $post_id
  */
 function wpuf_notify_post_mail( $user, $post_id ) {
     $blogname = get_bloginfo( 'name' );
@@ -142,7 +141,7 @@ function wpuf_notify_post_mail( $user, $post_id ) {
  * @return array modified mime types
  */
 function wpuf_mime( $mime ) {
-    $unset = array( 'exe', 'swf', 'tsv', 'wp|wpd', 'onetoc|onetoc2|onetmp|onepkg', 'class', 'htm|html', 'mdb', 'mpp' );
+    $unset = array('exe', 'swf', 'tsv', 'wp|wpd', 'onetoc|onetoc2|onetmp|onepkg', 'class', 'htm|html', 'mdb', 'mpp');
 
     foreach ($unset as $val) {
         unset( $mime[$val] );
@@ -162,7 +161,7 @@ function wpuf_upload_attachment( $post_id ) {
     include_once (ABSPATH . 'wp-admin/includes/file.php');
     include_once (ABSPATH . 'wp-admin/includes/image.php');
 
-    $override = array( 'test_form' => false );
+    $override = array('test_form' => false);
 
     $fields = (int) get_option( 'wpuf_attachment_num' );
     for ($i = 0; $i < $fields; $i++) {
@@ -207,7 +206,7 @@ function wpuf_upload_attachment( $post_id ) {
  * @return array error list
  */
 function wpuf_check_upload() {
-    $errors = array( );
+    $errors = array();
     $mime = get_allowed_mime_types();
 
     $size_limit = (int) (get_option( 'wpuf_attachment_max_size' ) * 1024);
@@ -244,7 +243,7 @@ function wpuf_check_upload() {
  * @return array attachment list
  */
 function wpfu_get_attachments( $post_id ) {
-    $att_list = array( );
+    $att_list = array();
 
     $args = array(
         'post_type' => 'attachment',
@@ -334,7 +333,7 @@ function wpuf_attachment_fields() {
 
 /**
  * Let the subscribers to upload files from the admin
- * 
+ *
  * @package WP User Frontend
  * @author Tareq Hasan
  */
@@ -347,7 +346,7 @@ function wpuf_let_upload() {
 
 /**
  * Remove the mdedia upload tabs from subscribers
- * 
+ *
  * @package WP User Frontend
  * @author Tareq Hasan
  */
@@ -375,7 +374,7 @@ function wpuf_performance() {
 
 /**
  * Get the registered post types
- * 
+ *
  * @return array
  */
 function wpuf_get_post_types() {
@@ -403,7 +402,7 @@ function wpuf_get_post_types() {
 function wpuf_get_cats() {
     $cats = get_categories();
 
-    $list = array( );
+    $list = array();
 
     if ( $cats ) {
         foreach ($cats as $cat) {
@@ -416,7 +415,7 @@ function wpuf_get_cats() {
 
 /**
  * Get lists of users from database
- * 
+ *
  * @return array
  */
 function wpuf_list_users() {
@@ -427,7 +426,7 @@ function wpuf_list_users() {
         $users = get_users_of_blog();
     }
 
-    $list = array( );
+    $list = array();
 
     if ( $users ) {
         foreach ($users as $user) {
@@ -458,10 +457,10 @@ function wpuf_starts_with( $string, $starts ) {
 
 /**
  * check the current post for the existence of a short code
- * 
+ *
  * @link http://wp.tutsplus.com/articles/quick-tip-improving-shortcodes-with-the-has_shortcode-function/
  * @param string $shortcode
- * @return boolean 
+ * @return boolean
  */
 function has_shortcode( $shortcode = '', $post_id = false ) {
 
@@ -482,4 +481,25 @@ function has_shortcode( $shortcode = '', $post_id = false ) {
 
     // return our final results
     return $found;
+}
+
+/**
+ * Retrieve or display list of posts as a dropdown (select list).
+ *
+ * @param array|string $args Optional. Override default arguments.
+ * @return string HTML content, if not displaying.
+ */
+function wpuf_dropdown_page( $args = '' ) {
+    global $wpdb;
+
+    $array = array();
+    $pages = get_pages();
+    if ( $pages ) {
+        foreach ($pages as $page) {
+            //var_dump( $page );
+            $array[$page->ID] = $page->post_title;
+        }
+    }
+
+    return $array;
 }

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Handles the add post shortcode 
- * 
+ * Handles the add post shortcode
+ *
  * @author Tareq Hasan
  * @package WP User Frontend
- * @param $atts 
+ * @param $atts
  */
 function wpuf_add_post_shorcode( $atts ) {
 
@@ -21,16 +21,16 @@ add_shortcode( 'wpuf_addpost', 'wpuf_add_post_shorcode' );
 
 /**
  * Add posting main form
- * 
+ *
  * @author Tareq Hasan
  * @package WP User Frontend
- * 
- * @param $post_type 
+ *
+ * @param $post_type
  */
 function wpuf_add_post( $post_type ) {
     global $userdata;
-    //var_dump( $userdata );
-    
+    $userdata = get_userdata( $userdata->ID );
+
     $wpuf_postlock = ( $userdata->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
     if( $wpuf_postlock == 'no' ) {
     ?>
@@ -71,7 +71,9 @@ function wpuf_add_post( $post_type ) {
                     <label for="new-post-desc">
                         <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
                     </label>
-                    <textarea class="requiredField" name="wpuf_post_content" id="new-post-desc" cols="40" rows="8"></textarea>
+                    <div style="float:left;">
+                        <?php wp_editor('', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8)); ?>
+                    </div>
                     <div class="clear"></div>
                     <p class="description"><?php echo stripslashes( get_option( 'wpuf_desc_help' ) ); ?></p>
                 </li>
@@ -126,12 +128,12 @@ function wpuf_init_posting_check() {
 
 /**
  * Validate the post submit data
- * 
+ *
  * @author Tareq Hasan
  * @package WP User Frontend
- * 
+ *
  * @global type $userdata
- * @param type $post_type 
+ * @param type $post_type
  */
 function wpuf_validate_post_submit() {
     global $userdata;
@@ -192,7 +194,7 @@ function wpuf_validate_post_submit() {
             } //array_key_exists
         } //foreach
     } //is_array
-    
+
     $errors = apply_filters( 'wpuf_add_post_validation', $errors );
 
 
@@ -225,7 +227,7 @@ function wpuf_validate_post_submit() {
         $post_id = wp_insert_post( $my_post );
 
         if ( $post_id ) {
-            
+
             //upload attachment to the post
             wpuf_upload_attachment( $post_id );
 
@@ -248,12 +250,12 @@ function wpuf_validate_post_submit() {
             if( $post_id ) {
                 wp_redirect( get_permalink($post_id) );
             }
-            
+
             //redirect the user
 //            $redirect = '<script type="text/javascript">location.href = "' . get_permalink( $post_id ) . '";</script>';
 //            $redirect = apply_filters( 'wpuf_after_post_redirect', $redirect, $post_id );
 //            echo $redirect;
-            
+
         }
     } else {
         //echo wpuf_error_msg( $errors );

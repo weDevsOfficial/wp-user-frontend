@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Plugin Name: Wordpress User Frontend
+  Plugin Name: WordPress User Frontend
   Plugin URI: http://tareq.wedevs.com/2011/01/new-plugin-wordpress-user-frontend/
   Description: Post, Edit, Delete posts and edit profile without coming to backend
   Author: Tareq Hasan
@@ -34,7 +34,7 @@ function wpuf_install() {
 
     wpuf_register_mysettings();
 
-    $sql_custom = "CREATE TABLE `{$wpdb->prefix}wpuf_customfields` (
+    $sql_custom = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_customfields (
          `id` int(11) NOT NULL AUTO_INCREMENT,
          `field` varchar(30) NOT NULL,
          `type` varchar(20) NOT NULL,
@@ -46,8 +46,8 @@ function wpuf_install() {
          `order` int(1) NOT NULL,
          PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-    
-    $sql_subscription = "CREATE TABLE `{$wpdb->prefix}wpuf_subscription` (
+
+    $sql_subscription = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_subscription (
         `id` mediumint(9) NOT NULL AUTO_INCREMENT,
         `name` varchar(255) NOT NULL,
         `description` text NOT NULL,
@@ -57,8 +57,8 @@ function wpuf_install() {
         `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (`id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
-    
-    $sql_transaction = "CREATE TABLE `{$wpdb->prefix}wpuf_transaction` (
+
+    $sql_transaction = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_transaction (
         `id` mediumint(9) NOT NULL AUTO_INCREMENT,
         `user_id` bigint(20) DEFAULT NULL,
         `status` varchar(255) NOT NULL DEFAULT 'pending_payment',
@@ -73,7 +73,7 @@ function wpuf_install() {
         `transaction_id` longtext,
         `created` datetime NOT NULL,
         PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;";
+        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
     $wpdb->query( $sql_custom );
     $wpdb->query( $sql_subscription );
@@ -129,16 +129,16 @@ function wpuf_remove_my_settings() {
  */
 function wpuf_plugin_menu() {
     //add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
-    $plugin_page = add_menu_page( "WP Frontend CMS", "WP Frontend CMS", 'activate_plugins', "wpuf-admin-opt", 'wpuf_plugin_options', null );
+    $plugin_page = add_menu_page( 'WP User Frontend', 'WP User Frontend', 'activate_plugins', 'wpuf-admin-opt', 'wpuf_plugin_options', null );
 
     //add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function )
-    $plugin_page2 = add_submenu_page( "wpuf-admin-opt", "Custom Fields", "Custom Fields", 'activate_plugins', "wpuf_custom_fields", 'wpuf_custom_fields' );
+    $plugin_page2 = add_submenu_page( 'wpuf-admin-opt', 'Custom Fields', 'Custom Fields', 'activate_plugins', 'wpuf_custom_fields', 'wpuf_custom_fields' );
 
-    $plugin_page3 = add_submenu_page( "wpuf-admin-opt", "Custom Taxonomies", "Custom Taxonomies", 'activate_plugins', "wpuf_custom_tax", 'wpuf_taxonomy_fields' );
-    
-    $plugin_page4 = add_submenu_page( "wpuf-admin-opt", "Subscription", "Subscription", 'activate_plugins', "wpuf_subscription", 'wpuf_subscription_admin' );
-    
-    $plugin_page5 = add_submenu_page( "wpuf-admin-opt", "Transaction", "Transaction", 'activate_plugins', "wpuf_transaction", 'wpuf_transaction' );
+    $plugin_page3 = add_submenu_page( 'wpuf-admin-opt', 'Custom Taxonomies', 'Custom Taxonomies', 'activate_plugins', 'wpuf_custom_tax', 'wpuf_taxonomy_fields' );
+
+    $plugin_page4 = add_submenu_page( 'wpuf-admin-opt', 'Subscription', 'Subscription', 'activate_plugins', 'wpuf_subscription', 'wpuf_subscription_admin' );
+
+    $plugin_page5 = add_submenu_page( 'wpuf-admin-opt', 'Transaction', 'Transaction', 'activate_plugins', 'wpuf_transaction', 'wpuf_transaction' );
 
     add_action( 'admin_head-' . $plugin_page, 'wpuf_admin_header_style' );
     add_action( 'admin_head-' . $plugin_page2, 'wpuf_admin_header_style' );

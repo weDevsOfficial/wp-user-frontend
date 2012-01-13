@@ -7,7 +7,7 @@ function wpuf_plugin_options() {
     <div class="wrap wpuf-admin">
 
         <div id="icon-options-general" class="icon32"><br></div>
-        <h2>WP Frontend CMS: Management Options</h2>
+        <h2>WP User Frontend: Management Options</h2>
 
         <div id="option-saved">
             Options saved

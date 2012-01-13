@@ -2,9 +2,9 @@
 Contributors: tareq1988
 Donate link: http://tareq.wedevs.com
 Tags: frontend, post, edit, dashboard, restrict
-Requires at least: 2.8
-Tested up to: 3.1
-Stable tag: trunk
+Requires at least: 3.1
+Tested up to: 3.3
+Stable tag: 0.2
 
 Create, update, delete posts and edit profile from wordpress frontend.
 

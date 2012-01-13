@@ -109,7 +109,7 @@
 
 /*
 .error{
-	background: #EF7971;
+        background: #EF7971;
     border: 1px solid #E63125;
     box-shadow: 0 1px 0 #F4A49F inset;
     color: #FFFFFF;
@@ -165,9 +165,7 @@
     padding: 0;
     margin: 0;
 }
-table#new-post-desc_tbl{
-    margin-left: 140px;
-}
+
 #wpuf-post-area li{
     list-style: none;
 }

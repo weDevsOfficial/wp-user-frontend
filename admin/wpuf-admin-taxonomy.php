@@ -1,7 +1,7 @@
 <?php
 
 function wpuf_taxonomy_fields() {
-    $action = $_GET['action'];
+    $action = ( isset( $_GET['action'] ) ) ? $_GET['action'] : '';
 
     switch ($action) {
         case 'edit':
@@ -91,7 +91,7 @@ function wpuf_taxonomy_fields_main() {
 
         <?php
         //delete service
-        if ( $_REQUEST['action'] == "del" ) {
+        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == "del" ) {
             check_admin_referer( 'wpuf_del' );
             $wpdb->query( "DELETE FROM `{$wpdb->prefix}wpuf_customfields` WHERE `id`={$_REQUEST['id']};" );
             echo '<div class="updated fade" id="message"><p><strong>Field Deleted.</strong></p></div>';
@@ -177,7 +177,7 @@ function wpuf_taxonomy_fields_edit() {
                 if ( !wpuf_starts_with( $_POST['field'], 'ct_' ) ) {
                     $_POST['field'] = 'ct_' . $_POST['field'];
                 }
-                
+
                 $data = array(
                     'field' => $_POST['field'],
                     'label' => $_POST['label'],

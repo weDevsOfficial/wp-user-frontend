@@ -1,7 +1,7 @@
 <?php
 
 function wpuf_custom_fields() {
-    $action = $_GET['action'];
+    $action = ( isset( $_GET['action'] ) ) ? $_GET['action'] : '';
 
     switch ($action) {
         case 'edit':
@@ -49,7 +49,7 @@ function wpuf_custom_fields_main() {
                 );
                 //var_dump($data);
 
-                $result = $wpdb->insert( $wpdb->prefix . 'wpuf_customfields', $data, array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ) );
+                $result = $wpdb->insert( $wpdb->prefix . 'wpuf_customfields', $data, array('%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s') );
 
                 //if row inserted
                 if ( $result ) {
@@ -91,7 +91,7 @@ function wpuf_custom_fields_main() {
 
         <?php
         //delete service
-        if ( $_REQUEST['action'] == "del" ) {
+        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == "del" ) {
             check_admin_referer( 'wpuf_del' );
             $wpdb->query( "DELETE FROM `{$wpdb->prefix}wpuf_customfields` WHERE `id`={$_REQUEST['id']};" );
             echo '<div class="updated fade" id="message"><p><strong>Field Deleted.</strong></p></div>';
@@ -113,8 +113,8 @@ function wpuf_custom_fields_main() {
             $fields = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_customfields ORDER BY `region` DESC", OBJECT );
             if ( $wpdb->num_rows > 0 ):
 
-                $type = array( 'text' => 'Text Box', 'textarea' => 'Text Area', 'select' => 'Dropdown' );
-                $position = array( 'top' => 'Top', 'description' => 'Before Description', 'tag' => 'After Description', 'bottom' => 'Bottom' );
+                $type = array('text' => 'Text Box', 'textarea' => 'Text Area', 'select' => 'Dropdown');
+                $position = array('top' => 'Top', 'description' => 'Before Description', 'tag' => 'After Description', 'bottom' => 'Bottom');
 
                 $count = 0;
                 foreach ($fields as $row):
@@ -177,7 +177,7 @@ function wpuf_custom_fields_edit() {
                 if ( !wpuf_starts_with( $_POST['field'], 'cf_' ) ) {
                     $_POST['field'] = 'cf_' . $_POST['field'];
                 }
-                
+
                 $data = array(
                     'field' => $_POST['field'],
                     'label' => $_POST['label'],
@@ -190,7 +190,7 @@ function wpuf_custom_fields_edit() {
                 );
                 //var_dump($data);
 
-                $result = $wpdb->update( $wpdb->prefix . 'wpuf_customfields', $data, array( 'id' => $id ), array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ), array( '%d' ) );
+                $result = $wpdb->update( $wpdb->prefix . 'wpuf_customfields', $data, array('id' => $id), array('%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s'), array('%d') );
 
                 //if row inserted
                 if ( $result ) {

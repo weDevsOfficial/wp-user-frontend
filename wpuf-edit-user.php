@@ -1,5 +1,5 @@
 <?php
-require_once(ABSPATH.'/wp-admin/includes/user.php');
+require_once(ABSPATH . '/wp-admin/includes/user.php');
 
 function wpuf_edit_users() {
 
@@ -7,19 +7,19 @@ function wpuf_edit_users() {
     if ( is_user_logged_in() ) {
 
         //this user can edit the users
-        if ( current_user_can('edit_users') ) {
-            
+        if ( current_user_can( 'edit_users' ) ) {
+
             $action = isset( $_GET['action'] ) ? $_GET['action'] : 'show';
             $user_id = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : 0;
             $userdata = get_userdata( $user_id );
 
-            switch ( $action ) {
+            switch ($action) {
                 case 'edit':
                     //if user exists
-                    if( $user_id && $userdata ) {
+                    if ( $user_id && $userdata ) {
                         wpuf_user_edit_profile_form( $user_id );
                     } else {
-                        printf( __("User doesn't exists", 'wpuf') );                        
+                        printf( __( "User doesn't exists", 'wpuf' ) );
                     }
                     break;
 
@@ -29,26 +29,26 @@ function wpuf_edit_users() {
 
                 default: wpuf_show_users();
             }
-
-            
         } else { // user don't have any permission
-            printf( __("You don't have permission for this purpose", 'wpuf') );
+            printf( __( "You don't have permission for this purpose", 'wpuf' ) );
         }
-        
     } else { //user is not logged in
-        printf(__("This page is restricted. Please %s to view this page.", 'wpuf'), wp_loginout('', false) );
+        printf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( '', false ) );
     }
 }
 
-add_shortcode('wpuf-edit-users', 'wpuf_edit_users');
+add_shortcode( 'wpuf-edit-users', 'wpuf_edit_users' );
 
 function wpuf_show_users() {
     global $wpdb, $userdata;
 
     //delete user
-    if ( isset($_REQUEST['action']) && $_REQUEST['action'] == "del")
-    {
-        check_admin_referer('wpuf_del_user');
+    if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == "del" ) {
+
+        $nonce = $_REQUEST['_wpnonce'];
+        if ( !wp_verify_nonce( $nonce, 'wpuf_del_user' ) ) {
+            wp_die( 'Cheting?' );
+        }
 
         $delete_flag = false;
 
@@ -61,13 +61,12 @@ function wpuf_show_users() {
 
             //check that user exists
             $get_user = get_userdata( $to_be_deleted );
-            if( $get_user ) {
+            if ( $get_user ) {
                 $delete_flag = true;
             }
         }
 
         //var_dump($to_be_deleted);
-
         //delete the user
         if ( current_user_can( 'delete_users' ) && $delete_flag == true ) {
             //var_dump($userdata);
@@ -80,117 +79,111 @@ function wpuf_show_users() {
 
     $sql = "SELECT ID, display_name FROM $wpdb->users ORDER BY user_registered ASC";
     $users = $wpdb->get_results( $sql );
-?>
+    ?>
 
     <a class="wpuf-button" href="<?php the_permalink(); ?>?action=wpuf_add_user">Add New User</a>
 
     <?php if ( $users ) : ?>
-    <table class="wpuf-table" cellpadding="0" cellspacing="0">
-        <tr>
-            <th>Username</th>
-            <th>Action</th>
-        </tr>
-        <?php foreach( $users as $user ): ?>
-        <tr>
-            <td><a href="<?php echo get_author_posts_url( $user->ID ); ?>"><?php printf( esc_attr__( '%s', 'wpuf' ), $user->display_name ); ?></td>
-            <td>
-                <a href="<?php the_permalink(); ?>?action=edit&user_id=<?php echo $user->ID; ?>">Edit</a>
-                <a href="<?php echo wp_nonce_url( the_permalink('echo=false') . "?action=del&user_id=".$user->ID, 'wpuf_del_user') ?>" onclick="return confirm('Are you sure to delete this user?');"><span style="color: red;">Delete</span></a>
-            </td>
-        </tr>
+        <table class="wpuf-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <th>Username</th>
+                <th>Action</th>
+            </tr>
+            <?php foreach ($users as $user): ?>
+                <tr>
+                    <td><a href="<?php echo get_author_posts_url( $user->ID ); ?>"><?php printf( esc_attr__( '%s', 'wpuf' ), $user->display_name ); ?></td>
+                    <td>
+                        <a href="<?php echo wp_nonce_url(get_permalink() . '?action=edit&user_id='. $user->ID, 'wpuf_edit_user'); ?>">Edit</a>
+                        <a href="<?php echo wp_nonce_url( the_permalink( 'echo=false' ) . "?action=del&user_id=" . $user->ID, 'wpuf_del_user' ) ?>" onclick="return confirm('Are you sure to delete this user?');"><span style="color: red;">Delete</span></a>
+                    </td>
+                </tr>
 
-        <?php endforeach; ?>
-    </table>
+            <?php endforeach; ?>
+        </table>
 
-<?php endif; ?>
+    <?php endif; ?>
 
-<?php
+    <?php
 }
-
-
 
 function wpuf_add_user() {
     global $wp_error;
     //get admin template file. wp_dropdown_role is there :(
-    require_once(ABSPATH.'/wp-admin/includes/template.php');
-
-?>
+    require_once(ABSPATH . '/wp-admin/includes/template.php');
+    ?>
     <?php if ( current_user_can( 'create_users' ) ) : ?>
 
-    <h3>Add New User</h3>
+        <h3>Add New User</h3>
 
-    <?php
-    if( isset( $_POST['wpuf_new_user_submit'] ) ) {
-        $errors = array();
-        
-        $username = sanitize_user( $_POST['user_login'] );
-        $email = trim( $_POST['user_email'] );
-        $role = $_POST['role'];
+        <?php
+        if ( isset( $_POST['wpuf_new_user_submit'] ) ) {
+            $errors = array();
 
-        $error = null;
-        $error = wpuf_register_new_user($username, $email, $role);
-        if( !is_wp_error( $error ) ) {
-            echo '<div class="success">User Added</div>';
-        } else {
-            echo '<div class="error">' . $error->get_error_message() . '</div>';
-            
+            $username = sanitize_user( $_POST['user_login'] );
+            $email = trim( $_POST['user_email'] );
+            $role = $_POST['role'];
+
+            $error = null;
+            $error = wpuf_register_new_user( $username, $email, $role );
+            if ( !is_wp_error( $error ) ) {
+                echo '<div class="success">User Added</div>';
+            } else {
+                echo '<div class="error">' . $error->get_error_message() . '</div>';
+            }
         }
-    }
+        ?>
 
+        <form action="" method="post">
 
-    ?>
+            <ul class="wpuf-post-form">
+                <li>
+                    <label for="user_login">
+                        Username <span class="required">*</span>
+                    </label>
+                    <input type="text" name="user_login" id="user_login" minlength="2" value="<?php if ( isset( $_POST['user_login'] ) )
+            echo wpuf_clean_tags( $_POST['user_login'] ); ?>">
+                    <div class="clear"></div>
+                </li>
 
-    <form action="" method="post">
+                <li>
+                    <label for="user_email">
+                        Email <span class="required">*</span>
+                    </label>
+                    <input type="text" name="user_email" id="user_email" minlength="2" value="<?php if ( isset( $_POST['user_email'] ) )
+                       echo wpuf_clean_tags( $_POST['user_email'] ); ?>">
+                    <div class="clear"></div>
+                </li>
 
-        <ul class="wpuf-post-form">
-            <li>
-                <label for="user_login">
-                    Username <span class="required">*</span>
-                </label>
-                <input type="text" name="user_login" id="user_login" minlength="2" value="<?php if( isset( $_POST['user_login'] ) ) echo wpuf_clean_tags( $_POST['user_login'] ); ?>">
-                <div class="clear"></div>
-            </li>
+                <li>
+                    <label for="role">
+                        Role
+                    </label>
 
-            <li>
-                <label for="user_email">
-                    Email <span class="required">*</span>
-                </label>
-                <input type="text" name="user_email" id="user_email" minlength="2" value="<?php if( isset( $_POST['user_email'] ) ) echo wpuf_clean_tags( $_POST['user_email'] ); ?>">
-                <div class="clear"></div>
-            </li>
+                    <select name="role" id="role">
+                        <?php
+                        if ( !$new_user_role ) {
+                            $new_user_role = !empty( $current_role ) ? $current_role : get_option( 'default_role' );
+                        }
+                        wp_dropdown_roles( $new_user_role );
+                        ?>
+                    </select>
 
-            <li>
-                <label for="role">
-                    Role
-                </label>
+                    <div class="clear"></div>
+                </li>
 
-                <select name="role" id="role">
-                    <?php
-                    if ( !$new_user_role ) {
-                        $new_user_role = !empty($current_role) ? $current_role : get_option('default_role');
-                    }
-                    wp_dropdown_roles($new_user_role);
-                    ?>
-                </select>
-                
-                <div class="clear"></div>
-            </li>
+                <li>
+                    <label>&nbsp;</label>
+                    <input class="wpuf_submit" type="submit" name="wpuf_new_user_submit" value="Add New User">
+                </li>
 
-            <li>
-                <label>&nbsp;</label>
-                <input class="wpuf_submit" type="submit" name="wpuf_new_user_submit" value="Add New User">
-            </li>
-            
-        </ul>
+            </ul>
 
-</form>
-        
+        </form>
+
     <?php endif; ?>
 
-<?php
-
+    <?php
 }
-
 
 /**
  * Handles registering a new user.
@@ -208,7 +201,7 @@ function wpuf_register_new_user( $user_login, $user_email, $role ) {
     // Check the username
     if ( $sanitized_user_login == '' ) {
         $errors->add( 'empty_username', __( '<strong>ERROR</strong>: Please enter a username.' ) );
-    } elseif ( ! validate_username( $user_login ) ) {
+    } elseif ( !validate_username( $user_login ) ) {
         $errors->add( 'invalid_username', __( '<strong>ERROR</strong>: This username is invalid because it uses illegal characters. Please enter a valid username.' ) );
         $sanitized_user_login = '';
     } elseif ( username_exists( $sanitized_user_login ) ) {
@@ -218,7 +211,7 @@ function wpuf_register_new_user( $user_login, $user_email, $role ) {
     // Check the e-mail address
     if ( $user_email == '' ) {
         $errors->add( 'empty_email', __( '<strong>ERROR</strong>: Please type your e-mail address.' ) );
-    } elseif ( ! is_email( $user_email ) ) {
+    } elseif ( !is_email( $user_email ) ) {
         $errors->add( 'invalid_email', __( '<strong>ERROR</strong>: The email address isn&#8217;t correct.' ) );
         $user_email = '';
     } elseif ( email_exists( $user_email ) ) {
@@ -232,19 +225,19 @@ function wpuf_register_new_user( $user_login, $user_email, $role ) {
     if ( $errors->get_error_code() )
         return $errors;
 
-    $user_pass = wp_generate_password( 12, false);
+    $user_pass = wp_generate_password( 12, false );
     //$user_id = wp_create_user( $sanitized_user_login, $user_pass, $user_email );
 
     $userdata = array(
         'user_login' => $sanitized_user_login,
         'user_email' => $user_email,
-        'user_pas'   => $user_pass,
-        'role'       => $role
+        'user_pas' => $user_pass,
+        'role' => $role
     );
 
     $user_id = wp_insert_user( $userdata );
 
-    if ( ! $user_id ) {
+    if ( !$user_id ) {
         $errors->add( 'registerfail', sprintf( __( '<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !' ), get_option( 'admin_email' ) ) );
         return $errors;
     }

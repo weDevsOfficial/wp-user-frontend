@@ -2,10 +2,17 @@ function wpuf_show(o){
 
     var d=document.getElementById('wpuf_field_values_row');
     switch(o.value){
-        case 'select': d.style.display='table-row'; break;
-        case 'radio': d.style.display='table-row'; break;
-        case 'checkbox': d.style.display='table-row'; break;
-        default: d.style.display='none';
+        case 'select':
+            d.style.display='table-row';
+            break;
+        case 'radio':
+            d.style.display='table-row';
+            break;
+        case 'checkbox':
+            d.style.display='table-row';
+            break;
+        default:
+            d.style.display='none';
     }
 }
 
@@ -21,40 +28,43 @@ jQuery(document).ready(function() {
 //tooltip function
 jQuery(document).ready(function($) {
 
-	//Select all anchor tag with rel set to tooltip
-	$('.wpuf_help').mouseover(function(e) {
+    //Select all anchor tag with rel set to tooltip
+    $('.wpuf_help').mouseover(function(e) {
 
-		//Grab the title attribute's value and assign it to a variable
-		var tip = $(this).attr('title');
+        //Grab the title attribute's value and assign it to a variable
+        var tip = $(this).attr('title');
 
-		//Remove the title attribute's to avoid the native tooltip from the browser
-		$(this).attr('title','');
+        //Remove the title attribute's to avoid the native tooltip from the browser
+        $(this).attr('title','');
 
-		//Append the tooltip template and its value
-		$(this).append('<div class="tooltip"><div class="tipBody">' + tip + '</div></div>');
+        //Append the tooltip template and its value
+        $(this).append('<div class="tooltip"><div class="tipBody">' + tip + '</div></div>');
 
-		//Show the tooltip with faceIn effect
-		$('.tooltip').fadeIn('500');
-		$('.tooltip').fadeTo('10',0.8);
+        //Show the tooltip with faceIn effect
+        $('.tooltip').fadeIn('500');
+        $('.tooltip').fadeTo('10',0.8);
 
-	}).mousemove(function(e) {
+    }).mousemove(function(e) {
 
-		//Keep changing the X and Y axis for the tooltip, thus, the tooltip move along with the mouse
-		$('.tooltip').css( {'left': e.pageX - 50, 'top': e.pageY + 5} );
+        //Keep changing the X and Y axis for the tooltip, thus, the tooltip move along with the mouse
+        $('.tooltip').css( {
+            'left': e.pageX - 210,
+            'top': e.pageY - 20
+        } );
 
-	}).mouseout(function() {
+    }).mouseout(function() {
 
-		//Put back the title attribute's value
-		$(this).attr('title',$('.tipBody').html());
+        //Put back the title attribute's value
+        $(this).attr('title',$('.tipBody').html());
 
-		//Remove the appended tooltip template
-		$(this).children('div.tooltip').remove();
+        //Remove the appended tooltip template
+        $(this).children('div.tooltip').remove();
 
-	});
+    });
 
 
 
-        //handle the ajax request
+    //handle the ajax request
     $('.wpuf_admin').submit(function(){
         data = $(this).serialize();
         //alert(data);

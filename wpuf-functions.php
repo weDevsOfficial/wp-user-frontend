@@ -466,6 +466,10 @@ function has_shortcode( $shortcode = '', $post_id = false ) {
 
     $post_to_check = ( $post_id == false ) ? get_post( get_the_ID() ) : get_post( $post_id );
 
+    if ( !$post_to_check ) {
+        return;
+    }
+
     // false because we have to search through the post content first
     $found = false;
 

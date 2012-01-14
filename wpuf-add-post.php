@@ -9,7 +9,7 @@
  */
 function wpuf_add_post_shorcode( $atts ) {
 
-    extract( shortcode_atts( array( 'post_type' => 'post' ), $atts ) );
+    extract( shortcode_atts( array('post_type' => 'post'), $atts ) );
 
     if ( is_user_logged_in() ) {
         wpuf_add_post( $post_type );
@@ -17,6 +17,7 @@ function wpuf_add_post_shorcode( $atts ) {
         printf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( get_permalink(), false ) );
     }
 }
+
 add_shortcode( 'wpuf_addpost', 'wpuf_add_post_shorcode' );
 
 /**
@@ -32,84 +33,85 @@ function wpuf_add_post( $post_type ) {
     $userdata = get_userdata( $userdata->ID );
 
     $wpuf_postlock = ( $userdata->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
-    if( $wpuf_postlock == 'no' ) {
-    ?>
-    <div id="wpuf-post-area">
-        <form id="wpuf_new_post_form" name="wpuf_new_post_form" action="" enctype="multipart/form-data" method="POST">
-            <?php wp_nonce_field( 'wpuf-add-post' ) ?>
+    if ( $wpuf_postlock == 'no' ) {
+        ?>
+        <div id="wpuf-post-area">
+            <form id="wpuf_new_post_form" name="wpuf_new_post_form" action="" enctype="multipart/form-data" method="POST">
+                <?php wp_nonce_field( 'wpuf-add-post' ) ?>
 
-            <ul class="wpuf-post-form">
+                <ul class="wpuf-post-form">
 
-                <?php do_action( 'wpuf_add_post_form_top', $post_type ); //plugin hook  ?>
-                <?php wpuf_build_custom_field_form( 'top' ); ?>
+                    <?php do_action( 'wpuf_add_post_form_top', $post_type ); //plugin hook  ?>
+                    <?php wpuf_build_custom_field_form( 'top' ); ?>
 
-                <li>
-                    <label for="new-post-title">
-                        <?php echo get_option( 'wpuf_title_label' ); ?> <span class="required">*</span>
-                    </label>
-                    <input class="requiredField" type="text" name="wpuf_post_title" id="new-post-title" minlength="2">
-                    <div class="clear"></div>
-                    <p class="description"><?php echo stripslashes( get_option( 'wpuf_title_help' ) ); ?></p>
-                </li>
-
-                <?php if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) { ?>
                     <li>
-                        <label for="new-post-cat">
-                            <?php echo get_option( 'wpuf_cat_label' ); ?> <span class="required">*</span>
+                        <label for="new-post-title">
+                            <?php echo get_option( 'wpuf_title_label' ); ?> <span class="required">*</span>
                         </label>
-                        <?php $exclude = get_option( 'wpuf_exclude_cat' ); ?>
-                        <?php wp_dropdown_categories( 'show_option_none=-- Select --&hierarchical=1&hide_empty=0&orderby=id&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude ) ?>
+                        <input class="requiredField" type="text" name="wpuf_post_title" id="new-post-title" minlength="2">
                         <div class="clear"></div>
-                        <p class="description"><?php echo stripslashes( get_option( 'wpuf_cat_help' ) ); ?></p>
+                        <p class="description"><?php echo stripslashes( get_option( 'wpuf_title_help' ) ); ?></p>
                     </li>
-                <?php } ?>
 
-                <?php do_action( 'wpuf_add_post_form_description', $post_type ); ?>
-                <?php wpuf_build_custom_field_form( 'description' ); ?>
+                    <?php if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) { ?>
+                        <li>
+                            <label for="new-post-cat">
+                                <?php echo get_option( 'wpuf_cat_label' ); ?> <span class="required">*</span>
+                            </label>
+                            <?php $exclude = get_option( 'wpuf_exclude_cat' ); ?>
+                            <?php wp_dropdown_categories( 'show_option_none=-- Select --&hierarchical=1&hide_empty=0&orderby=id&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude ) ?>
+                            <div class="clear"></div>
+                            <p class="description"><?php echo stripslashes( get_option( 'wpuf_cat_help' ) ); ?></p>
+                        </li>
+                    <?php } ?>
 
-                <li>
-                    <label for="new-post-desc">
-                        <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
-                    </label>
-                    <div style="float:left;">
-                        <?php wp_editor('', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8)); ?>
-                    </div>
-                    <div class="clear"></div>
-                    <p class="description"><?php echo stripslashes( get_option( 'wpuf_desc_help' ) ); ?></p>
-                </li>
+                    <?php do_action( 'wpuf_add_post_form_description', $post_type ); ?>
+                    <?php wpuf_build_custom_field_form( 'description' ); ?>
 
-                <?php do_action( 'wpuf_add_post_form_after_description', $post_type ); ?>
-                <?php wpuf_build_custom_field_form( 'tag' ); ?>
-
-                <?php if ( get_option( 'wpuf_allow_tags' ) == 'yes' ) { ?>
                     <li>
-                        <label for="new-post-tags">
-                            <?php echo get_option( 'wpuf_tag_label' ); ?>
+                        <label for="new-post-desc">
+                            <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
                         </label>
-                        <input type="text" name="wpuf_post_tags" id="new-post-tags" class="new-post-tags">
-                        <p class="description"><?php echo stripslashes( get_option( 'wpuf_tag_help' ) ); ?></p>
+                        <div style="float:left;">
+                            <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
+                        </div>
                         <div class="clear"></div>
+                        <p class="description"><?php echo stripslashes( get_option( 'wpuf_desc_help' ) ); ?></p>
                     </li>
-                <?php } ?>
 
-                <?php do_action( 'wpuf_add_post_form_tags', $post_type ); ?>
+                    <?php do_action( 'wpuf_add_post_form_after_description', $post_type ); ?>
+                    <?php wpuf_build_custom_field_form( 'tag' ); ?>
 
-                <?php wpuf_attachment_fields(); ?>
+                    <?php if ( get_option( 'wpuf_allow_tags' ) == 'yes' ) { ?>
+                        <li>
+                            <label for="new-post-tags">
+                                <?php echo get_option( 'wpuf_tag_label' ); ?>
+                            </label>
+                            <input type="text" name="wpuf_post_tags" id="new-post-tags" class="new-post-tags">
+                            <p class="description"><?php echo stripslashes( get_option( 'wpuf_tag_help' ) ); ?></p>
+                            <div class="clear"></div>
+                        </li>
+                    <?php } ?>
 
-                <?php wpuf_build_custom_field_form( 'bottom' ); ?>
+                    <?php do_action( 'wpuf_add_post_form_tags', $post_type ); ?>
 
-                <li>
-                    <label>&nbsp;</label>
-                    <input class="wpuf_submit" type="submit" name="wpuf_new_post_submit" value="<?php echo stripslashes( get_option( 'wpuf_post_submit_label' ) ); ?>">
-                    <input type="hidden" name="post_type" value="<?php echo $post_type; ?>" />
-                </li>
+                    <?php wpuf_attachment_fields(); ?>
 
-                <?php do_action( 'wpuf_add_post_form_bottom', $post_type ); ?>
+                    <?php wpuf_build_custom_field_form( 'bottom' ); ?>
 
-            </ul>
-        </form>
-    </div>
-    <?php
+                    <li>
+                        <label>&nbsp;</label>
+                        <input class="wpuf_submit" type="submit" name="wpuf_new_post_submit" value="<?php echo stripslashes( get_option( 'wpuf_post_submit_label' ) ); ?>">
+                        <input type="hidden" name="wpuf_post_type" value="<?php echo $post_type; ?>" />
+                        <input type="hidden" name="wpuf_post_new_submit" value="yes" />
+                    </li>
+
+                    <?php do_action( 'wpuf_add_post_form_bottom', $post_type ); ?>
+
+                </ul>
+            </form>
+        </div>
+        <?php
     } else {
         echo '<div class="info">' . $userdata->wpuf_lock_cause . '</div>';
     }
@@ -117,14 +119,17 @@ function wpuf_add_post( $post_type ) {
 
 function wpuf_init_posting_check() {
     if ( has_shortcode( 'wpuf_addpost' ) ) {
-        //validate new post submission
-        if ( isset( $_POST['wpuf_post_title'] ) ) {
-            //check_admin_referer( 'wpuf-add-post' );
+        if ( isset( $_POST['wpuf_post_new_submit'] ) ) {
+            $nonce = $_REQUEST['_wpnonce'];
+            if ( !wp_verify_nonce( $nonce, 'wpuf-add-post' ) ) {
+                wp_die( __( 'Cheating?' ) );
+            }
 
-            wpuf_validate_post_submit( $post_type );
+            wpuf_validate_post_submit();
         }
     }
 }
+add_action('template_redirect', 'wpuf_init_posting_check');
 
 /**
  * Validate the post submit data
@@ -138,7 +143,7 @@ function wpuf_init_posting_check() {
 function wpuf_validate_post_submit() {
     global $userdata;
 
-    $errors = array( );
+    $errors = array();
 
     //if there is some attachement, validate them
     if ( !empty( $_FILES['wpuf_post_attachments'] ) ) {
@@ -152,7 +157,7 @@ function wpuf_validate_post_submit() {
 
     //validate title
     if ( empty( $title ) ) {
-        $errors[] = __('Empty post title', 'wpuf');
+        $errors[] = __( 'Empty post title', 'wpuf' );
     } else {
         $title = trim( strip_tags( $title ) );
     }
@@ -174,8 +179,11 @@ function wpuf_validate_post_submit() {
         $tags = explode( ',', $tags );
     }
 
+    //post type
+    $post_type = trim( strip_tags( $_POST['wpuf_post_type'] ) );
+
     //process the custom fields
-    $custom_fields = array( );
+    $custom_fields = array();
 
     $fields = wpuf_get_custom_fields();
     if ( is_array( $fields ) ) {
@@ -205,9 +213,9 @@ function wpuf_validate_post_submit() {
 
         //users are allowed to choose category
         if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) {
-            $post_category = array( $cat );
+            $post_category = array($cat);
         } else {
-            $post_category = array( get_option( 'wpuf_default_cat' ) );
+            $post_category = array(get_option( 'wpuf_default_cat' ));
         }
 
         $my_post = array(
@@ -247,15 +255,14 @@ function wpuf_validate_post_submit() {
             do_action( 'wpuf_add_post_after_insert', $post_id );
 
             //echo '<div class="success">' . __('Post published successfully', 'wpuf') . '</div>';
-            if( $post_id ) {
-                wp_redirect( get_permalink($post_id) );
+            if ( $post_id ) {
+                wp_redirect( get_permalink( $post_id ) );
             }
 
             //redirect the user
 //            $redirect = '<script type="text/javascript">location.href = "' . get_permalink( $post_id ) . '";</script>';
 //            $redirect = apply_filters( 'wpuf_after_post_redirect', $redirect, $post_id );
 //            echo $redirect;
-
         }
     } else {
         //echo wpuf_error_msg( $errors );

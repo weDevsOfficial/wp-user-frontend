@@ -15,7 +15,7 @@ wordpress backend and everything these user can control will be done from wordpr
 
 Features:
 
-So here is my plugin that solves your problem. This features of this plugin in it’s version 0.1 are follows:
+So here is my plugin that solves your problem. This features of this plugin in it’s version 0.2 are follows:
 
     * User can create a new post and edit from frontend
     * They can view their page in the custom dashboard
@@ -24,6 +24,10 @@ So here is my plugin that solves your problem. This features of this plugin in i
     * New posts status, submitted by users are configurable via admin panel. i.e. Published, Draft, Pending
     * Admin can configure to receive notification mail when the users creates a new post.
     * Configurable options if the user can edit or delete their posts.
+    * Users can upload attachments from the frontend
+    * Admins can manage their users from frontend
+    * Pay per post or subscription on posting is possible
+
 
 == Installation ==
 

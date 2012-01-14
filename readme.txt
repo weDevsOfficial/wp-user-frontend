@@ -37,7 +37,7 @@ This section describes how to install the plugin and get it working.
 6. Insert the “Edit” Page url to the admin options page of the plugin
 7. To show the subscription info, insert the shortcdoe `[wpuf_sub_info]`
 8. To show the subscription packs, insert the shortcode `[wpuf_sub_pack]`
-9. For subscription payment page, create a new page and insert the page ID in WP frontend CMS's "Paypal Payment Page" option.
+9. For subscription payment page, create a new page and insert the page ID in WP User frontend's "Paypal Payment Page" option.
 
 
 == Screenshots ==
@@ -61,12 +61,26 @@ Yes
 Yes
 
 = Can I upload photo/image/video =
-No
+Yes
 
 
 == Changelog ==
 
-Nothing to say
+version 0.2
+
+    * Admin settings page has been improved
+    * Header already sent warning messages has been fixed
+    * Now you can add custom post meta from the settings page
+    * A new pay per post and subscription based posting options has been introduced (Only paypal is supported now)
+    * You can upload attachment with post
+    * WYSIWYG editor has been added
+    * You can add and manage your users from frontend now (only having the capability to edit_users )
+    * Some action and filters has been added for developers to add their custom form elements and validation
+    * Pagination added in post dashboard
+    * You can use the form to accept "custom post type" posts. e.g: [wpuf_addpost post_type="event"]. It also applies for showing post on dashboard like "[wpuf_dashboard post_type="event"]"
+    * Changing the form labels of the add post form is now possible from admin panel.
+    * The edit post page setting is changed from URL to page select dropdown.
+    * You can lock certain users from posting from their edit profile page.
 
 == Upgrade Notice ==
 

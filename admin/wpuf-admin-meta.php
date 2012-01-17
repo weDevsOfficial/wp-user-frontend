@@ -124,9 +124,9 @@ function wpuf_custom_fields_main() {
                     }
                     ?>
                     <tr valign="top" <?php echo ( ($count % 2) == 0) ? 'class="alternate"' : ''; ?>>
-                        <td><?php echo $row->label; ?></td>
+                        <td><?php echo stripslashes( $row->label ); ?></td>
                         <td><?php echo $type[$row->type]; ?></td>
-                        <td><?php echo $row->desc; ?></td>
+                        <td><?php echo stripslashes( $row->desc ); ?></td>
                         <td><?php echo $position[$row->region]; ?></td>
                         <td><?php echo $row->order; ?></td>
                         <td>

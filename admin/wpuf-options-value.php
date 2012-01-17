@@ -268,7 +268,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                             ?>
                             <li>
                                 <label for="<?php echo $field->field; ?>">
-                                    <?php echo $field->label; ?>
+                                    <?php echo stripslashes( $field->label ); ?>
                                     <?php if ( $field->required == 'yes' ): ?>
                                         <span class="required">*</span>
                                     <?php endif; ?>
@@ -278,7 +278,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                                 <div class="clear"></div>
 
                                 <?php if ( $field->desc ): ?>
-                                    <p class="description"><?php echo $field->desc; ?></p>
+                                    <p class="description"><?php echo stripslashes( $field->desc ); ?></p>
                                     <div class="clear"></div>
                                 <?php endif; ?>
 
@@ -291,7 +291,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                             ?>
                             <li>
                                 <label for="<?php echo $field->field; ?>">
-                                    <?php echo $field->label; ?>
+                                    <?php echo stripslashes( $field->label ); ?>
                                     <?php if ( $field->required == 'yes' ): ?>
                                         <span class="required">*</span>
                                     <?php endif; ?>
@@ -301,7 +301,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                                 <div class="clear"></div>
 
                                 <?php if ( $field->desc ): ?>
-                                    <p class="description"><?php echo $field->desc; ?></p>
+                                    <p class="description"><?php echo stripslashes( $field->desc ); ?></p>
                                     <div class="clear"></div>
                                 <?php endif; ?>
 
@@ -314,7 +314,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                             ?>
                             <li>
                                 <label for="<?php echo $field->field; ?>">
-                                    <?php echo $field->label; ?>
+                                    <?php echo stripslashes( $field->label ); ?>
                                     <?php if ( $field->required == 'yes' ): ?>
                                         <span class="required">*</span>
                                     <?php endif; ?>
@@ -333,7 +333,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                                 <div class="clear"></div>
 
                                 <?php if ( $field->desc ): ?>
-                                    <p class="description"><?php echo $field->desc; ?></p>
+                                    <p class="description"><?php echo stripslashes( $field->desc ); ?></p>
                                     <div class="clear"></div>
                                 <?php endif; ?>
 
@@ -351,7 +351,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                             ?>
                             <li>
                                 <label for="<?php echo $field->field; ?>">
-                                    <?php echo $field->label; ?>
+                                    <?php echo stripslashes( $field->label ); ?>
                                     <?php if ( $field->required == 'yes' ): ?>
                                         <span class="required">*</span>
                                     <?php endif; ?>
@@ -361,7 +361,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                                 <div class="clear"></div>
 
                                 <?php if ( $field->desc ): ?>
-                                    <p class="description"><?php echo $field->desc; ?></p>
+                                    <p class="description"><?php echo stripslashes( $field->desc ); ?></p>
                                     <div class="clear"></div>
                                 <?php endif; ?>
 
@@ -382,7 +382,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                             ?>
                             <li>
                                 <label for="<?php echo $field->field; ?>">
-                                    <?php echo $field->label; ?>
+                                    <?php echo stripslashes( $field->label ); ?>
                                     <?php if ( $field->required == 'yes' ): ?>
                                         <span class="required">*</span>
                                     <?php endif; ?>
@@ -393,7 +393,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                                 <div class="clear"></div>
 
                                 <?php if ( $field->desc ): ?>
-                                    <p class="description"><?php echo $field->desc; ?></p>
+                                    <p class="description"><?php echo stripslashes( $field->desc ); ?></p>
                                     <div class="clear"></div>
                                 <?php endif; ?>
 

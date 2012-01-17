@@ -241,7 +241,7 @@ function wpuf_get_child_cats() {
         die( $result );
 
     if ( get_categories( 'taxonomy=category&child_of=' . $parentCat . '&hide_empty=0' ) ) {
-        $result .= cp_dropdown_categories_prices( 'show_option_none=' . __( 'Select one', 'wpuf' ) . '&class=dropdownlist&orderby=name&order=ASC&hide_empty=0&hierarchical=1&taxonomy=category&depth=1&echo=0&child_of=' . $parentCat );
+        $result .= wp_dropdown_categories( 'show_option_none=' . __( 'Select one', 'wpuf' ) . '&class=dropdownlist&orderby=name&order=ASC&hide_empty=0&hierarchical=1&taxonomy=category&depth=1&echo=0&child_of=' . $parentCat );
     } else {
         die( '' );
     }

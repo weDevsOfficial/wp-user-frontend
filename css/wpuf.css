@@ -32,6 +32,10 @@
     background: #F2F2F2;
 }
 
+.wpuf-post-form .childCategory {
+    padding-top: 5px;
+}
+
 .wpuf-post-form input[type=text]{
     width: 50%;
 }
@@ -345,4 +349,12 @@ ul.wpuf_packs p {
     position: absolute;
     right: 0;
     top: 0;
+}
+
+.wpuf_loading {
+    height: 16px;
+    width: 16px;
+    background: url('../images/wpspin_light.gif') no-repeat;
+    padding: 0;
+    margin: 5px 10px;
 }

@@ -58,8 +58,15 @@ function wpuf_add_post( $post_type ) {
                             <label for="new-post-cat">
                                 <?php echo get_option( 'wpuf_cat_label' ); ?> <span class="required">*</span>
                             </label>
-                            <?php $exclude = get_option( 'wpuf_exclude_cat' ); ?>
-                            <?php wp_dropdown_categories( 'show_option_none=-- Select --&hierarchical=1&hide_empty=0&orderby=id&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude ) ?>
+                            <div style="float:left;">
+                                <div id="catlvl0">
+                                    <?php $exclude = get_option( 'wpuf_exclude_cat' ); ?>
+                                    <?php wp_dropdown_categories( 'show_option_none=-- Select --&hierarchical=1&hide_empty=0&orderby=name&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude ) ?>
+                                </div>
+                            </div>
+                            <div id="categories-footer" style="float:left;">
+                                <div id="chosenCategory"><input id="cat" name="cat" type="hidden" value="-1" /></div>
+                            </div>
                             <div class="clear"></div>
                             <p class="description"><?php echo stripslashes( get_option( 'wpuf_cat_help' ) ); ?></p>
                         </li>
@@ -129,7 +136,8 @@ function wpuf_init_posting_check() {
         }
     }
 }
-add_action('template_redirect', 'wpuf_init_posting_check');
+
+add_action( 'template_redirect', 'wpuf_init_posting_check' );
 
 /**
  * Validate the post submit data

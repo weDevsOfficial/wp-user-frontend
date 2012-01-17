@@ -213,7 +213,7 @@ function wpuf_value_travarse( $param ) {
 function wpuf_get_custom_fields() {
     global $wpdb;
 
-    $data = array( );
+    $data = array();
 
     $fields = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_customfields", OBJECT );
     if ( $wpdb->num_rows > 0 ) {
@@ -230,3 +230,24 @@ function wpuf_get_custom_fields() {
 
     return false;
 }
+
+/**
+ * Returns child category dropdown on ajax request
+ */
+function wpuf_get_child_cats() {
+    $parentCat = $_POST['catID'];
+    $result = '';
+    if ( $parentCat < 1 )
+        die( $result );
+
+    if ( get_categories( 'taxonomy=category&child_of=' . $parentCat . '&hide_empty=0' ) ) {
+        $result .= cp_dropdown_categories_prices( 'show_option_none=' . __( 'Select one', 'wpuf' ) . '&class=dropdownlist&orderby=name&order=ASC&hide_empty=0&hierarchical=1&taxonomy=category&depth=1&echo=0&child_of=' . $parentCat );
+    } else {
+        die( '' );
+    }
+
+    die( $result );
+}
+
+add_action( 'wp_ajax_nopriv_wpuf_get_child_cats', 'wpuf_get_child_cats' );
+add_action( 'wp_ajax_wpuf_get_child_cats', 'wpuf_get_child_cats' );

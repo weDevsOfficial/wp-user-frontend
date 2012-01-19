@@ -108,7 +108,11 @@ function wpuf_edit_show_form( $post ) {
                     <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
                 </label>
                 <div style="float:left;">
-                    <?php wp_editor( esc_html( $post->post_content ), 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
+                    <?php if ( get_option( 'wpuf_editor_type' ) == 'rich' ) { ?>
+                        <?php wp_editor( esc_html( $post->post_content ), 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
+                    <?php } else { ?>
+                        <textarea name="wpuf_post_content" id="new-post-desc" cols="60" rows="8"></textarea>
+                    <?php } ?>
                 </div>
                 <div class="clear"></div>
             </li>

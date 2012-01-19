@@ -61,12 +61,10 @@ function wpuf_add_post( $post_type ) {
                             <div style="float:left;">
                                 <div id="catlvl0">
                                     <?php $exclude = get_option( 'wpuf_exclude_cat' ); ?>
-                                    <?php wp_dropdown_categories( 'show_option_none=-- Select --&hierarchical=1&hide_empty=0&orderby=name&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude ) ?>
+                                    <?php wp_dropdown_categories( 'show_option_none=-- Select --&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude ) ?>
                                 </div>
                             </div>
-                            <div id="categories-footer" style="float:left;">
-                                <div id="chosenCategory"><input id="cat" name="cat" type="hidden" value="-1" /></div>
-                            </div>
+                            <div id="categories-footer" style="float:left;"></div>
                             <div class="clear"></div>
                             <p class="description"><?php echo stripslashes( get_option( 'wpuf_cat_help' ) ); ?></p>
                         </li>
@@ -80,7 +78,11 @@ function wpuf_add_post( $post_type ) {
                             <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
                         </label>
                         <div style="float:left;">
-                            <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
+                            <?php if ( get_option( 'wpuf_editor_type' ) == 'rich' ) { ?>
+                                <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
+                            <?php } else { ?>
+                                <textarea name="wpuf_post_content" id="new-post-desc" cols="60" rows="8"></textarea>
+                            <?php } ?>
                         </div>
                         <div class="clear"></div>
                         <p class="description"><?php echo stripslashes( get_option( 'wpuf_desc_help' ) ); ?></p>
@@ -161,7 +163,7 @@ function wpuf_validate_post_submit() {
     $title = trim( $_POST['wpuf_post_title'] );
     $content = trim( $_POST['wpuf_post_content'] );
     $tags = wpuf_clean_tags( $_POST['wpuf_post_tags'] );
-    $cat = trim( $_POST['cat'] );
+    $cat = $_POST['category'];
 
     //validate title
     if ( empty( $title ) ) {
@@ -221,7 +223,7 @@ function wpuf_validate_post_submit() {
 
         //users are allowed to choose category
         if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) {
-            $post_category = array($cat);
+            $post_category = $cat;
         } else {
             $post_category = array(get_option( 'wpuf_default_cat' ));
         }

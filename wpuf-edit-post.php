@@ -111,7 +111,7 @@ function wpuf_edit_show_form( $post ) {
                     <?php if ( get_option( 'wpuf_editor_type' ) == 'rich' ) { ?>
                         <?php wp_editor( esc_html( $post->post_content ), 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
                     <?php } else { ?>
-                        <textarea name="wpuf_post_content" id="new-post-desc" cols="60" rows="8"></textarea>
+                        <textarea name="wpuf_post_content" id="new-post-desc" cols="60" rows="8"><?php echo esc_textarea( $post->post_content ); ?></textarea>
                     <?php } ?>
                 </div>
                 <div class="clear"></div>

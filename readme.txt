@@ -4,7 +4,7 @@ Donate link: http://tareq.wedevs.com
 Tags: frontend, post, edit, dashboard, restrict
 Requires at least: 3.1
 Tested up to: 3.3
-Stable tag: 0.3
+Stable tag: 0.4
 
 Create, update, delete posts and edit profile from wordpress frontend.
 
@@ -67,8 +67,22 @@ Yes
 = Can I upload photo/image/video =
 Yes
 
+= I am having problem with uploading files =
+Please check if you've specified the max upload size on setting
+
 
 == Changelog ==
+
+version 0.4
+    * missing custom meta field added on edit post form
+    * jQuery validation added on edit post form
+
+version 0.3
+    * rich/plain text on/off fixed
+    * ajax chained category added on add post form
+    * missing action added on edit post form
+    * stripslashes on admin/frontend meta field
+    * 404 error fix on add post
 
 version 0.2
 

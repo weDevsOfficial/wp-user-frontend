@@ -228,7 +228,7 @@ function wpuf_validate_post_edit_submit() {
                 }
             }
 
-            do_action( 'wpuf_edit_post_after_update' );
+            do_action( 'wpuf_edit_post_after_update', $post_id );
         }
     } else {
         echo wpuf_error_msg( $errors );

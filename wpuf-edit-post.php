@@ -70,7 +70,7 @@ function wpuf_edit_show_form( $post ) {
     $tagslist = implode( ', ', $tagsarray );
     $categories = get_the_category( $post->ID );
     ?>
-    <form name="wpuf_edit_post_form" action="" enctype="multipart/form-data" method="POST">
+    <form name="wpuf_edit_post_form" id="wpuf_edit_post_form" action="" enctype="multipart/form-data" method="POST">
         <?php wp_nonce_field( 'wpuf-edit-post' ) ?>
         <ul class="wpuf-post-form">
 
@@ -142,6 +142,7 @@ function wpuf_edit_show_form( $post ) {
             <li>
                 <label>&nbsp;</label>
                 <input class="wpuf_submit" type="submit" name="wpuf_edit_post_submit" value="<?php _e( 'Update', 'wpuf' ); ?>">
+                <input type="hidden" name="wpuf_edit_post_submit" value="yes" />
                 <input type="hidden" name="post_id" value="<?php echo $post->ID; ?>">
             </li>
         </ul>
@@ -180,6 +181,27 @@ function wpuf_validate_post_edit_submit() {
         $tags = explode( ',', $tags );
     }
 
+    //process the custom fields
+    $custom_fields = array();
+
+    $fields = wpuf_get_custom_fields();
+    if ( is_array( $fields ) ) {
+
+        foreach ($fields as $cf) {
+            if ( array_key_exists( $cf['field'], $_POST ) ) {
+
+                $temp = trim( strip_tags( $_POST[$cf['field']] ) );
+                //var_dump($temp, $cf);
+
+                if ( ( $cf['type'] == 'yes' ) && !$temp ) {
+                    $errors[] = __( "{$cf['label']} is missing", 'wpuf' );
+                } else {
+                    $custom_fields[$cf['field']] = $temp;
+                }
+            } //array_key_exists
+        } //foreach
+    } //is_array
+
     do_action( 'wpuf_edit_post_validation' );
 
     if ( !$errors ) {
@@ -199,7 +221,14 @@ function wpuf_validate_post_edit_submit() {
             //upload attachment to the post
             wpuf_upload_attachment( $post_id );
 
-            do_action( 'wpuf_eidt_post_after_update' );
+            //add the custom fields
+            if ( $custom_fields ) {
+                foreach ($custom_fields as $key => $val) {
+                    update_post_meta( $post_id, $key, $val, false );
+                }
+            }
+
+            do_action( 'wpuf_edit_post_after_update' );
         }
     } else {
         echo wpuf_error_msg( $errors );

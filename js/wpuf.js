@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
     //process the contact us form
-    $('#wpuf_new_post_form').submit(function() {
+    $('#wpuf_new_post_form, #wpuf_edit_post_form').submit(function() {
 
         var form = $(this);
 

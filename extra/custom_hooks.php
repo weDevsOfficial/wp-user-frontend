@@ -33,9 +33,9 @@ function wpuf_add_post_publish_date() {
                 }
                 ?>
             </select>
-            <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n('d'); ?>" name="jj">, 
-            <input type="text" autocomplete="off" tabindex="4" maxlength="4" size="4" value="<?php echo date_i18n('Y'); ?>" name="aa"> 
-            @ <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n('G'); ?>" name="hh"> 
+            <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n('d'); ?>" name="jj">,
+            <input type="text" autocomplete="off" tabindex="4" maxlength="4" size="4" value="<?php echo date_i18n('Y'); ?>" name="aa">
+            @ <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n('G'); ?>" name="hh">
             : <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n('i'); ?>" name="mn">
         </div>
         <div class="clear"></div>
@@ -76,22 +76,22 @@ function wpuf_hooks_validation( $errors ) {
     $year = $_POST['aa'];
     $hour = $_POST['hh'];
     $min = $_POST['mn'];
-    
+
     if( ! checkdate( $month, $day, $year ) ) {
         $errors[] = "Invalid date";
     }
     //var_dump( $_POST ); die();
-    
+
     return $errors;
 }
 
-if( $wpuf_enable_post_expiry == 'yes' ) {
+if( $wpuf_enable_post_date == 'yes' ) {
     add_filter('wpuf_add_post_validation', 'wpuf_hooks_validation', 10, 1);
 }
 
 function wpuf_hooks_add_post_args( $postdata ) {
     global $wpuf_enable_post_expiry;
-    
+
     //if post expirator is activated, set the date-time
     if( $wpuf_enable_post_expiry == 'yes' ) {
         $month = $_POST['mm'];
@@ -103,12 +103,12 @@ function wpuf_hooks_add_post_args( $postdata ) {
         $post_date = mktime($hour, $min, 59, $month, $day, $year);
         $postdata['post_date'] = date('Y-m-d H:i:s', $post_date);
     }
-        
+
     //var_dump( $postdata ); die();
     return $postdata;
 }
 
-add_filter('wpuf_add_post_args', 'wpuf_hooks_add_post_args', 10, 1);
+//add_filter('wpuf_add_post_args', 'wpuf_hooks_add_post_args', 9, 1);
 
 function wpuf_hooks_add_meta( $post_id ) {
     if( !empty( $_POST['expiration-date'] ) ) {
@@ -116,7 +116,7 @@ function wpuf_hooks_add_meta( $post_id ) {
         $post_date = strtotime( $post->post_date );
         $expiration = (int) $_POST['expiration-date'];
         $expiration = $post_date + ($expiration*60*60);
-        
+
         add_post_meta( $post_id, 'expiration-date', $expiration, true );
     }
 }
@@ -130,7 +130,7 @@ function wpuf_sub_payment_mail() {
     $headers = "From: " . get_bloginfo( 'name' ) . " <" . get_bloginfo( 'admin_email' ) . ">" . "\r\n\\";
     $subject = '[' . get_bloginfo( 'name' ) . '] Payment Received';
     $msg = 'New payment received at "' . get_bloginfo( 'name' );
-    
+
     $receiver = get_bloginfo( 'admin_email' );
     wp_mail( $receiver, $subject, $msg, $headers );
 }

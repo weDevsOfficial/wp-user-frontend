@@ -16,7 +16,7 @@ class WPUF_Subscription {
 
     /**
      * Binds all the actions with WP
-     * 
+     *
      * @package WPUF Subscriptoin
      */
     public function actions() {
@@ -30,7 +30,7 @@ class WPUF_Subscription {
 
     /**
      * Bind all the filters with WP
-     * 
+     *
      * @package WPUF Subscriptoin
      */
     public function filters() {
@@ -41,8 +41,8 @@ class WPUF_Subscription {
 
     /**
      * Debug helper method
-     * 
-     * @global type $userdata 
+     *
+     * @global type $userdata
      */
     public function debug() {
         global $userdata;
@@ -54,7 +54,7 @@ class WPUF_Subscription {
 
     /**
      * Get a subscription row from database
-     * 
+     *
      * @global type $wpdb
      * @param type $sub_id pack id
      * @return object|bool
@@ -74,9 +74,9 @@ class WPUF_Subscription {
 
     /**
      * Get all the subscription package
-     * 
+     *
      * @global type $wpdb
-     * @return object|bool 
+     * @return object|bool
      */
     public function get_subscription_packs() {
         global $wpdb;
@@ -93,9 +93,9 @@ class WPUF_Subscription {
 
     /**
      * Store new subscription info on user profile
-     * 
+     *
      * if data = 0, means 'unlimited'
-     * 
+     *
      * @param type $user_id
      * @param type $sub_id subscription pack id
      */
@@ -124,10 +124,10 @@ class WPUF_Subscription {
 
     /**
      * Checks against the user, if he is valid for posting new post
-     * 
+     *
      * @global type $userdata
      * @param type $post_id
-     * @return type 
+     * @return type
      */
     function has_post_error( $post_id = 0 ) {
         global $userdata;
@@ -170,10 +170,10 @@ class WPUF_Subscription {
 
     /**
      * Checks the posting validity after a new post
-     * 
+     *
      * @global type $userdata
      * @global type $wpdb
-     * @param type $post_id 
+     * @param type $post_id
      */
     function check_new_post( $post_id ) {
         global $userdata, $wpdb;
@@ -200,9 +200,9 @@ class WPUF_Subscription {
 
     /**
      * Set the new post status if charging is active
-     * 
+     *
      * @param string $postdata
-     * @return string 
+     * @return string
      */
     function check_new_post_date( $postdata ) {
         //if post chargin is enabled, make post as pending
@@ -216,12 +216,12 @@ class WPUF_Subscription {
 
     /**
      * Shows the paypal button after new post
-     * 
+     *
      * @param type $type
      * @param type $post_id
      * @param type $pack_id
      * @param type $display
-     * @return type 
+     * @return type
      */
     public function paypal_form( $type = 'post', $post_id = 0, $pack_id = 0, $display = false ) {
         // Include the paypal library
@@ -297,8 +297,8 @@ class WPUF_Subscription {
 
     /**
      * Handles the paypal return events
-     * 
-     * @global type $userdata 
+     *
+     * @global type $userdata
      */
     function paypal_success() {
         global $userdata;
@@ -320,9 +320,9 @@ class WPUF_Subscription {
 
     /**
      * Publish the post if payment is made
-     * 
+     *
      * @global type $wpdb
-     * @global type $userdata 
+     * @global type $userdata
      */
     function handle_post_publish() {
         global $wpdb, $userdata;
@@ -346,18 +346,18 @@ class WPUF_Subscription {
 
     /**
      * Insert the payment details in databse
-     * 
+     *
      * @global type $wpdb
      * @global type $userdata
      * @param type $post_id
-     * @param type $pack_id 
+     * @param type $pack_id
      */
     function insert_payment( $post_id = 0, $pack_id = 0 ) {
         global $wpdb, $userdata;
 
         // check and make sure this transaction hasn't already been added
         $sql = "SELECT transaction_id
-                FROM " . $wpdb->prefix . "wpuf_transaction 
+                FROM " . $wpdb->prefix . "wpuf_transaction
                 WHERE txn_id = '" . $wpdb->escape( wpuf_clean_tags( $_POST['txn_id'] ) ) . "' LIMIT 1";
 
         $results = $wpdb->get_row( $sql );
@@ -388,10 +388,10 @@ class WPUF_Subscription {
 
     /**
      * Redirect to payment page after new post
-     * 
+     *
      * @param string $str
      * @param type $post_id
-     * @return string 
+     * @return string
      */
     function post_redirect( $str, $post_id ) {
         if ( $this->has_post_error( $post_id ) ) {
@@ -403,10 +403,10 @@ class WPUF_Subscription {
 
     /**
      * Show the paypal form with hidden fields
-     * 
+     *
      * @global type $post
      * @param type $content
-     * @return type 
+     * @return type
      */
     function show_payment_form( $content ) {
         global $post;
@@ -425,8 +425,8 @@ class WPUF_Subscription {
 
     /**
      * Generate users subscription info with a shortcode
-     * 
-     * @global type $userdata 
+     *
+     * @global type $userdata
      */
     function subscription_info() {
         global $userdata;
@@ -463,7 +463,7 @@ class WPUF_Subscription {
             <div class="wpuf_sub_info">
                 <h3>Subscription Details</h3>
                 <div class="text">
-                    <strong>Validity:</strong> <?php echo $d_str; ?>, 
+                    <strong>Validity:</strong> <?php echo $d_str; ?>,
                     <strong>Post Left:</strong> <?php echo $c_str; ?>
                 </div>
             </div>

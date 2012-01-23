@@ -22,6 +22,8 @@
 
 function wpuf_build_form( $options, $values = '', $from_option = true ) {
 
+    $options = apply_filters( 'wpuf_build_form_args', $options );
+
     if ( is_array( $options ) ) {
 
         foreach ($options as $element) {

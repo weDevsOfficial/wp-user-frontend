@@ -395,7 +395,7 @@ class WPUF_Subscription {
      */
     function post_redirect( $str, $post_id ) {
         if ( $this->has_post_error( $post_id ) ) {
-            $str = '<script type="text/javascript">location.href = "' . get_permalink( get_option( 'wpuf_sub_pay_page' ) ) . '?action=wpuf_pay&type=post&post_id=' . $post_id . '";</script>';
+            $str = get_permalink( get_option( 'wpuf_sub_pay_page' ) ) . '?action=wpuf_pay&type=post&post_id=' . $post_id;
         }
 
         return $str;

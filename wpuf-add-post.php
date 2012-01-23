@@ -266,13 +266,10 @@ function wpuf_validate_post_submit() {
 
             //echo '<div class="success">' . __('Post published successfully', 'wpuf') . '</div>';
             if ( $post_id ) {
-                wp_redirect( get_permalink( $post_id ) );
+                $redirect = get_permalink( $post_id );
+                $redirect = apply_filters( 'wpuf_after_post_redirect', $redirect, $post_id );
+                wp_redirect( $redirect );
             }
-
-            //redirect the user
-//            $redirect = '<script type="text/javascript">location.href = "' . get_permalink( $post_id ) . '";</script>';
-//            $redirect = apply_filters( 'wpuf_after_post_redirect', $redirect, $post_id );
-//            echo $redirect;
         }
     } else {
         //echo wpuf_error_msg( $errors );

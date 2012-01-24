@@ -15,7 +15,7 @@ wordpress backend and everything these user can control will be done from wordpr
 
 Features:
 
-So here is my plugin that solves your problem. This features of this plugin in it’s version 0.2 are follows:
+So here is my plugin that solves your problem. This features of this plugin are follows:
 
     * User can create a new post and edit from frontend
     * They can view their page in the custom dashboard
@@ -73,7 +73,8 @@ Please check if you've specified the max upload size on setting
 
 == Changelog ==
 
-=== version 0.5 ===
+version 0.5
+---------------
 
     * filters on add posting page for blocking the post capa
     * subscription pack id added on user meta upon purchase
@@ -84,12 +85,14 @@ Please check if you've specified the max upload size on setting
     * filter added on form builder
 
 
-=== version 0.4 ===
+version 0.4
+---------------
 
     * missing custom meta field added on edit post form
     * jQuery validation added on edit post form
 
-=== version 0.3 ===
+version 0.3
+---------------
 
     * rich/plain text on/off fixed
     * ajax chained category added on add post form
@@ -97,7 +100,8 @@ Please check if you've specified the max upload size on setting
     * stripslashes on admin/frontend meta field
     * 404 error fix on add post
 
-=== version 0.2 ===
+version 0.2
+---------------
 
     * Admin settings page has been improved
     * Header already sent warning messages has been fixed

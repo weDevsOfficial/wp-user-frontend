@@ -251,3 +251,61 @@ function wpuf_get_child_cats() {
 
 add_action( 'wp_ajax_nopriv_wpuf_get_child_cats', 'wpuf_get_child_cats' );
 add_action( 'wp_ajax_wpuf_get_child_cats', 'wpuf_get_child_cats' );
+
+
+/**
+ * Adds notices on add post form if any
+ *
+ * @param string $text
+ * @return string
+ */
+function wpuf_addpost_notice( $text ) {
+    $user = wp_get_current_user();
+
+    if( is_user_logged_in() ) {
+        $lock = ( $user->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
+
+        if( $lock == 'yes' ) {
+            return $user->wpuf_lock_cause;
+        }
+
+        $force_pack = get_option( 'wpuf_sub_force_pack' );
+        $user_pack = (isset( $user->wpuf_sub_pack )) ? intval( $user->wpuf_sub_pack ) : 0;
+
+        if( $force_pack == 'yes' && $user_pack == 0 ) {
+            return __( 'You must purchase a pack before posting', 'wpuf' );
+        }
+    }
+
+    return $text;
+}
+add_filter( 'wpuf_addpost_notice', 'wpuf_addpost_notice' );
+
+
+/**
+ * Adds the filter to the add post form if the user can post or not
+ *
+ * @param string $perm permission type. "yes" or "no"
+ * @return string permission type. "yes" or "no"
+ */
+function wpuf_can_post( $perm ) {
+    $user = wp_get_current_user();
+
+    if( is_user_logged_in() ) {
+        $lock = ( $user->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
+
+        if( $lock == 'yes' ) {
+            return 'no';
+        }
+
+        $force_pack = get_option( 'wpuf_sub_force_pack' );
+        $user_pack = (isset( $user->wpuf_sub_pack )) ? intval( $user->wpuf_sub_pack ) : 0;
+
+        if( $force_pack == 'yes' && $user_pack == 0 ) {
+            return 'no';
+        }
+    }
+
+    return $perm;
+}
+add_filter( 'wpuf_can_post', 'wpuf_can_post' );

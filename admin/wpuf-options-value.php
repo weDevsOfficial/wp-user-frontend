@@ -745,6 +745,16 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             )
         ),
         array(
+            'name' => 'wpuf_sub_force_pack',
+            'label' => 'User must purchase packs for posting?',
+            'desc' => "When this option is active, users can't post without purchasing a subscription package",
+            'type' => 'select',
+            'options' => array(
+                'no' => 'Disable',
+                'yes' => 'Enable'
+            )
+        ),
+        array(
             'name' => 'wpuf_sub_currency',
             'label' => 'Currency',
             'desc' => 'Currency of the amount',
@@ -785,14 +795,16 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
         array(
             'name' => 'wpuf_sub_pay_page',
             'label' => 'Paypal Payment Page',
-            'desc' => 'Create a new page and insert the page ID. This page will be used to process the payment option.',
-            'type' => 'text'
+            'desc' => 'This page will be used to process the payment options.',
+            'type' => 'select',
+            'options' => wpuf_dropdown_page()
         ),
         array(
             'name' => 'wpuf_sub_pay_thank_page',
             'label' => 'Paypal Thank you page',
-            'desc' => 'Create a new page and insert the page ID. After payment, users will be redirected here.',
-            'type' => 'text'
+            'desc' => 'After payment, users will be redirected here.',
+            'type' => 'select',
+            'options' => wpuf_dropdown_page()
         ),
     );
 

@@ -214,6 +214,7 @@ function wpuf_user_edit_profile_form( $user_id = null ) {
  * @param object $profileuser
  */
 function wpuf_add_post_lock( $profileuser ) {
+    global $wpuf_subscription;
 
     if ( is_admin() && current_user_can( 'edit_users' ) ) {
         $select = ( $profileuser->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
@@ -241,6 +242,44 @@ function wpuf_add_post_lock( $profileuser ) {
         </table>
 
         <?php
+        if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' ) {
+            $validity = (isset( $profileuser->wpuf_sub_validity )) ? $profileuser->wpuf_sub_validity : date( 'Y-m-d G:i:s', time() );
+            $count = ( isset( $profileuser->wpuf_sub_pcount) ) ? $profileuser->wpuf_sub_pcount : 0;
+
+            if( isset( $profileuser->wpuf_sub_pack ) ) {
+                $pack = $wpuf_subscription->get_subscription( $profileuser->wpuf_sub_pack );
+                $pack = $pack->name;
+            } else {
+                $pack = 'Free';
+            }
+            ?>
+
+            <h3><?php _e( 'WPUF Subscription', 'wpuf' ); ?></h3>
+
+            <table class="form-table">
+                <tr>
+                    <th><label for="post-lock"><?php _e( 'Pack:', 'wpuf' ); ?> </label></th>
+                    <td>
+                        <input type="text" disabled="disabled" name="wpuf_sub_pack" id="wpuf_sub_pack" class="regular-text" value="<?php echo $pack; ?>" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="post-lock"><?php _e( 'Post Count:', 'wpuf' ); ?> </label></th>
+                    <td>
+                        <input type="text" name="wpuf_sub_pcount" id="wpuf_sub_pcount" class="regular-text" value="<?php echo $count; ?>" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="post-lock"><?php _e( 'Validity:', 'wpuf' ); ?> </label></th>
+                    <td>
+                        <input type="text" name="wpuf_sub_validity" id="wpuf_sub_validity" class="regular-text" value="<?php echo $validity; ?>" />
+                    </td>
+                </tr>
+            </table>
+
+        <?php } ?>
+
+        <?php
     }
 }
 
@@ -256,6 +295,8 @@ function wpuf_add_post_update( $user_id ) {
     if ( is_admin() && current_user_can( 'edit_users' ) ) {
         update_user_meta( $user_id, 'wpuf_postlock', $_POST['wpuf_postlock'] );
         update_user_meta( $user_id, 'wpuf_lock_cause', $_POST['wpuf_lock_cause'] );
+        update_user_meta( $user_id, 'wpuf_sub_validity', $_POST['wpuf_sub_validity'] );
+        update_user_meta( $user_id, 'wpuf_sub_pcount', $_POST['wpuf_sub_pcount'] );
     }
 }
 

@@ -4,7 +4,7 @@ Donate link: http://tareq.wedevs.com
 Tags: frontend, post, edit, dashboard, restrict
 Requires at least: 3.1
 Tested up to: 3.3
-Stable tag: 0.4
+Stable tag: 0.5
 
 Create, update, delete posts and edit profile from wordpress frontend.
 
@@ -73,18 +73,31 @@ Please check if you've specified the max upload size on setting
 
 == Changelog ==
 
-version 0.4
+=== version 0.5 ===
+
+    * filters on add posting page for blocking the post capa
+    * subscription pack id added on user meta upon purchase
+    * filters on add posting page for blocking the post capa
+    * option for force pack purchase on add post. dropdown p
+    * subscription info on profile edit page
+    * post direction fix after payment
+    * filter added on form builder
+
+
+=== version 0.4 ===
+
     * missing custom meta field added on edit post form
     * jQuery validation added on edit post form
 
-version 0.3
+=== version 0.3 ===
+
     * rich/plain text on/off fixed
     * ajax chained category added on add post form
     * missing action added on edit post form
     * stripslashes on admin/frontend meta field
     * 404 error fix on add post
 
-version 0.2
+=== version 0.2 ===
 
     * Admin settings page has been improved
     * Header already sent warning messages has been fixed

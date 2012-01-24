@@ -32,8 +32,13 @@ function wpuf_add_post( $post_type ) {
     global $userdata;
     $userdata = get_userdata( $userdata->ID );
 
-    $wpuf_postlock = ( $userdata->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
-    if ( $wpuf_postlock == 'no' ) {
+    $info = __( "Post It!", 'wpuf' );
+    $can_post = 'yes';
+
+    $info = apply_filters( 'wpuf_addpost_notice', $info );
+    $can_post = apply_filters( 'wpuf_can_post', $can_post );
+
+    if ( $can_post == 'yes' ) {
         ?>
         <div id="wpuf-post-area">
             <form id="wpuf_new_post_form" name="wpuf_new_post_form" action="" enctype="multipart/form-data" method="POST">
@@ -122,7 +127,7 @@ function wpuf_add_post( $post_type ) {
         </div>
         <?php
     } else {
-        echo '<div class="info">' . $userdata->wpuf_lock_cause . '</div>';
+        echo '<div class="info">' . $info . '</div>';
     }
 }
 

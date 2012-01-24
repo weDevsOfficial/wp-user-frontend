@@ -106,19 +106,22 @@ class WPUF_Subscription {
 
             //store the duration
             if ( $subscription->duration == 0 ) {
-                update_usermeta( $user_id, 'wpuf_sub_validity', 'unlimited' );
+                update_user_meta( $user_id, 'wpuf_sub_validity', 'unlimited' );
             } else {
                 //store that future date in usermeta
                 $duration = date( 'Y-m-d G:i:s', strtotime( date( 'Y-m-d G:i:s', time() ) . " +{$subscription->duration} day" ) );
-                update_usermeta( $user_id, 'wpuf_sub_validity', $duration );
+                update_user_meta( $user_id, 'wpuf_sub_validity', $duration );
             }
 
             //store post count
             if ( $subscription->count == 0 ) {
-                update_usermeta( $user_id, 'wpuf_sub_pcount', 'unlimited' );
+                update_user_meta( $user_id, 'wpuf_sub_pcount', 'unlimited' );
             } else {
-                update_usermeta( $user_id, 'wpuf_sub_pcount', $subscription->count );
+                update_user_meta( $user_id, 'wpuf_sub_pcount', $subscription->count );
             }
+
+            //store pack id
+            update_user_meta( $user_id, 'wpuf_sub_pack', $subscription->id );
         }
     }
 
@@ -514,5 +517,5 @@ class WPUF_Subscription {
     }
 
 }
-
+global $wpuf_subscription;
 $wpuf_subscription = new WPUF_Subscription();

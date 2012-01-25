@@ -270,9 +270,9 @@ function wpuf_addpost_notice( $text ) {
         }
 
         $force_pack = get_option( 'wpuf_sub_force_pack' );
-        $user_pack = (isset( $user->wpuf_sub_pack )) ? intval( $user->wpuf_sub_pack ) : 0;
+        $post_count = (isset( $user->wpuf_sub_pcount )) ? intval( $user->wpuf_sub_pcount ) : 0;
 
-        if( $force_pack == 'yes' && $user_pack == 0 ) {
+        if( $force_pack == 'yes' && $post_count == 0 ) {
             return __( 'You must purchase a pack before posting', 'wpuf' );
         }
     }
@@ -299,9 +299,9 @@ function wpuf_can_post( $perm ) {
         }
 
         $force_pack = get_option( 'wpuf_sub_force_pack' );
-        $user_pack = (isset( $user->wpuf_sub_pack )) ? intval( $user->wpuf_sub_pack ) : 0;
+        $post_count = (isset( $user->wpuf_sub_pcount )) ? intval( $user->wpuf_sub_pcount ) : 0;
 
-        if( $force_pack == 'yes' && $user_pack == 0 ) {
+        if( $force_pack == 'yes' && $post_count == 0 ) {
             return 'no';
         }
     }

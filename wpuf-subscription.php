@@ -181,6 +181,8 @@ class WPUF_Subscription {
     function check_new_post( $post_id ) {
         global $userdata, $wpdb;
 
+        $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix
+
         if ( $this->has_post_error( $post_id ) ) {
             //there is some error and it needs payment
             //add a uniqid to track the post easily
@@ -290,12 +292,7 @@ class WPUF_Subscription {
         // Let's start the train!
         $form = $myPaypal->submitPayment();
 
-        if ( $display ) {
-            echo $form;
-            exit;
-        } else {
-            return $form;
-        }
+        return $form;
     }
 
     /**
@@ -434,6 +431,8 @@ class WPUF_Subscription {
     function subscription_info() {
         global $userdata;
 
+        $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix
+        
         if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' && is_user_logged_in() ) {
             $duration = ( $userdata->wpuf_sub_validity ) ? $userdata->wpuf_sub_validity : 0;
             $count = ( $userdata->wpuf_sub_pcount ) ? $userdata->wpuf_sub_pcount : 0;

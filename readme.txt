@@ -70,6 +70,11 @@ Yes
 = I am having problem with uploading files =
 Please check if you've specified the max upload size on setting
 
+= Why "Edit Post" page shows "invalid post id"?=
+This page is for the purpose of editing posts. You shouldn't access this page directly.
+First you need to go to the dashboard, then when you click "edit", you'll be
+redirected to the edit page with that post id. Then you'll see the edit post form.
+
 
 == Changelog ==
 

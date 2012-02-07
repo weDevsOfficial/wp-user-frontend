@@ -211,6 +211,9 @@ function wpuf_validate_post_edit_submit() {
             'tags_input' => $tags
         );
 
+        //plugin API to extend the functionality
+        $my_post = apply_filters( 'wpuf_edit_post_args', $my_post );
+
         $post_id = wp_update_post( $post_update );
 
         if ( $post_id ) {

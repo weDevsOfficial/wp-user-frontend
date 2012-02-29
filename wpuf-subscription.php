@@ -432,7 +432,7 @@ class WPUF_Subscription {
         global $userdata;
 
         $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix
-        
+
         if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' && is_user_logged_in() ) {
             $duration = ( $userdata->wpuf_sub_validity ) ? $userdata->wpuf_sub_validity : 0;
             $count = ( $userdata->wpuf_sub_pcount ) ? $userdata->wpuf_sub_pcount : 0;

@@ -7,11 +7,18 @@
  */
 function wpuf_user_edit_profile() {
 
+    ob_start();
+    
     if ( is_user_logged_in() ) {
         wpuf_user_edit_profile_form();
     } else {
         printf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( '', false ) );
     }
+
+    $content =  ob_get_contents();
+    ob_end_clean();
+
+    return $content;
 }
 
 add_shortcode( 'wpuf_editprofile', 'wpuf_user_edit_profile' );

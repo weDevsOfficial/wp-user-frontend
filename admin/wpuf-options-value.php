@@ -327,7 +327,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                                     if ( is_array( $options ) ) {
                                         foreach ($options as $opt) {
                                             $opt = trim( strip_tags( $opt ) );
-                                            echo "<option value='$opt'>$opt</option>";
+                                            echo "<option value='$opt' " . selected( $value, $opt, false ) . ">$opt</option>";
                                         }
                                     }
                                     ?>

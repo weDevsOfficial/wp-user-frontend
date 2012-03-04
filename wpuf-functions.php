@@ -71,7 +71,7 @@ function wpuf_show_post_status( $status ) {
 function wpuf_enqueue_scripts() {
     $path = plugins_url( 'wp-user-frontend' );
 
-    if ( has_shortcode( 'wpuf_addpost' ) || has_shortcode( 'wpuf_edit' ) ) {
+    if ( has_shortcode( 'wpuf_addpost' ) || has_shortcode( 'wpuf_edit' ) || has_shortcode( 'wpuf_dashboard' ) ) {
         wp_enqueue_style( 'wpuf', $path . '/css/wpuf.css' );
         wp_enqueue_style( 'wpuf-pagination', $path . '/css/pagination.css' );
 

@@ -11,11 +11,18 @@ function wpuf_add_post_shorcode( $atts ) {
 
     extract( shortcode_atts( array('post_type' => 'post'), $atts ) );
 
+    ob_start();
+
     if ( is_user_logged_in() ) {
         wpuf_add_post( $post_type );
     } else {
         printf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( get_permalink(), false ) );
     }
+    
+    $content =  ob_get_contents();
+    ob_end_clean();
+
+    return $content;
 }
 
 add_shortcode( 'wpuf_addpost', 'wpuf_add_post_shorcode' );

@@ -302,19 +302,17 @@ function wpuf_edit_attachment( $post_id ) {
     if ( $attach ) {
         $count = 1;
         foreach ($attach as $a) {
-            
-            echo     'Attachment ' . $count . ': <a href="' . $a['url'] . '">' . $a['title'] . '</a>';
-			echo  	"<form name=\"wpuf_edit_attachment\" id=\"wpuf_edit_attachment_{$post_id}\" action=\"\" method=\"POST\">";
-			echo 	"<input type=\"hidden\" name=\"attach_id\" value=\"{$a['id']}\" />";
-			echo 	"<input type=\"hidden\" name=\"action\" value=\"del\" />";
-			wp_nonce_field( 'wpuf_attach_del');
-			echo  	'<input class="wpuf_attachment_delete" type="submit" name="wpuf_attachment_delete" value="delete" onclick="return confirm(\'Are you sure to delete this attachment?\');">';
-			echo 	"</form>";
-            echo    "<br>";
+
+            echo 'Attachment ' . $count . ': <a href="' . $a['url'] . '">' . $a['title'] . '</a>';
+            echo "<form name=\"wpuf_edit_attachment\" id=\"wpuf_edit_attachment_{$post_id}\" action=\"\" method=\"POST\">";
+            echo "<input type=\"hidden\" name=\"attach_id\" value=\"{$a['id']}\" />";
+            echo "<input type=\"hidden\" name=\"action\" value=\"del\" />";
+            wp_nonce_field( 'wpuf_attach_del' );
+            echo '<input class="wpuf_attachment_delete" type="submit" name="wpuf_attachment_delete" value="delete" onclick="return confirm(\'Are you sure to delete this attachment?\');">';
+            echo "</form>";
+            echo "<br>";
             $count++;
-            
         }
-    
     }
 }
 

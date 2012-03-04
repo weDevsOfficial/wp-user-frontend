@@ -302,12 +302,19 @@ function wpuf_edit_attachment( $post_id ) {
     if ( $attach ) {
         $count = 1;
         foreach ($attach as $a) {
-            $param = "?pid={$post_id}&attach_id={$a['id']}&action=del";
-            $text .= 'Attachment ' . $count . ': <a href="' . $a['url'] . '">' . $a['title'] . '</a>';
-            $text .= ' - <a href="' . wp_nonce_url( $param, 'wpuf_attach_del' ) . '" onclick="return confirm(\'Are you sure to delete this attachment?\');">Delete</a><br>';
+            
+            echo     'Attachment ' . $count . ': <a href="' . $a['url'] . '">' . $a['title'] . '</a>';
+			echo  	"<form name=\"wpuf_edit_attachment\" id=\"wpuf_edit_attachment_{$post_id}\" action=\"\" method=\"POST\">";
+			echo 	"<input type=\"hidden\" name=\"attach_id\" value=\"{$a['id']}\" />";
+			echo 	"<input type=\"hidden\" name=\"action\" value=\"del\" />";
+			wp_nonce_field( 'wpuf_attach_del');
+			echo  	'<input class="wpuf_attachment_delete" type="submit" name="wpuf_attachment_delete" value="delete" onclick="return confirm(\'Are you sure to delete this attachment?\');">';
+			echo 	"</form>";
+            echo    "<br>";
             $count++;
+            
         }
-        echo $text;
+    
     }
 }
 

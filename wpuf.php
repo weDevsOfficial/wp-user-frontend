@@ -156,22 +156,26 @@ add_action( 'admin_menu', 'wpuf_plugin_menu' );
 function wpuf_admin_header_style() {
     $path = plugins_url( 'wp-user-frontend' );
 
+    //FIXME: use enqueue
     echo "<link rel='stylesheet' href='$path/css/admin.css' type='text/css'/>";
 }
 
 function wpuf_admin_header_script() {
     $path = plugins_url( 'wp-user-frontend' );
 
+    //FIXME: use enqueue
     echo "<script src='$path/js/admin.js'></script>";
 }
 
 function wpuf_restrict_admin_access() {
+    global $pagenow;
 
     $wpuf_access_level = get_option( 'wpuf_admin_security' );
     if ( !isset( $wpuf_access_level ) || $wpuf_access_level == '' )
         $wpuf_access_level = 'read'; // if there's no value then give everyone access
 
-    if ( !current_user_can( $wpuf_access_level ) ) {
+    if ( !current_user_can( $wpuf_access_level ) && $pagenow != 'admin-ajax.php' &&
+            $pagenow != 'async-upload.php' && $pagenow != 'media-upload.php' ) {
         wp_die( "Access Denied. Your site administrator has blocked your access to the WordPress back-office." );
     }
 }

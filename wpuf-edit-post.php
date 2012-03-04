@@ -1,15 +1,34 @@
 <?php
 
+/**
+ * Handles the edit post shortcode
+ *
+ * @return string generated form by the plugin
+ */
 function wpuf_edit_post_shorcode() {
+
+    ob_start();
+
     if ( is_user_logged_in() ) {
         wpuf_edit_post();
     } else {
         printf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( '', false ) );
     }
+
+    $content =  ob_get_contents();
+    ob_end_clean();
+
+    return $content;
 }
 
 add_shortcode( 'wpuf_edit', 'wpuf_edit_post_shorcode' );
 
+/**
+ * Main edit post form
+ *
+ * @global type $wpdb
+ * @global type $userdata
+ */
 function wpuf_edit_post() {
     global $wpdb, $userdata;
 

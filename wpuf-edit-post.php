@@ -219,7 +219,7 @@ function wpuf_validate_post_edit_submit() {
         } //foreach
     } //is_array
 
-    do_action( 'wpuf_edit_post_validation' );
+    do_action( 'wpuf_edit_post_validation', intval( $_POST['post_id'] ) );
 
     if ( !$errors ) {
         $post_update = array(

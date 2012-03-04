@@ -140,31 +140,19 @@ function wpuf_plugin_menu() {
 
     $plugin_page5 = add_submenu_page( 'wpuf-admin-opt', 'Transaction', 'Transaction', 'activate_plugins', 'wpuf_transaction', 'wpuf_transaction' );
 
-    add_action( 'admin_head-' . $plugin_page, 'wpuf_admin_header_style' );
-    add_action( 'admin_head-' . $plugin_page2, 'wpuf_admin_header_style' );
-    add_action( 'admin_head-' . $plugin_page3, 'wpuf_admin_header_style' );
-    add_action( 'admin_head-' . $plugin_page4, 'wpuf_admin_header_style' );
-
-    add_action( 'admin_head-' . $plugin_page, 'wpuf_admin_header_script' );
-    add_action( 'admin_head-' . $plugin_page2, 'wpuf_admin_header_script' );
-    add_action( 'admin_head-' . $plugin_page3, 'wpuf_admin_header_script' );
-    add_action( 'admin_head-' . $plugin_page4, 'wpuf_admin_header_script' );
+    add_action( 'admin_head-' . $plugin_page, 'wpuf_admin_script' );
+    add_action( 'admin_head-' . $plugin_page2, 'wpuf_admin_script' );
+    add_action( 'admin_head-' . $plugin_page3, 'wpuf_admin_script' );
+    add_action( 'admin_head-' . $plugin_page4, 'wpuf_admin_script' );
 }
 
 add_action( 'admin_menu', 'wpuf_plugin_menu' );
 
-function wpuf_admin_header_style() {
+function wpuf_admin_script() {
     $path = plugins_url( 'wp-user-frontend' );
 
-    //FIXME: use enqueue
-    echo "<link rel='stylesheet' href='$path/css/admin.css' type='text/css'/>";
-}
-
-function wpuf_admin_header_script() {
-    $path = plugins_url( 'wp-user-frontend' );
-
-    //FIXME: use enqueue
-    echo "<script src='$path/js/admin.js'></script>";
+    wp_enqueue_script('wpuf_admin', $path . '/js/admin.js');
+    wp_enqueue_style('wpuf_admin', $path . '/css/admin.css');
 }
 
 function wpuf_restrict_admin_access() {

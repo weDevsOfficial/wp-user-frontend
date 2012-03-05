@@ -2,9 +2,9 @@
 Contributors: tareq1988
 Donate link: http://tareq.wedevs.com
 Tags: frontend, post, edit, dashboard, restrict
-Requires at least: 3.1
+Requires at least: 3.3
 Tested up to: 3.3
-Stable tag: 0.5
+Stable tag: 0.6
 
 Create, update, delete posts and edit profile from wordpress frontend.
 
@@ -77,6 +77,17 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+version 0.6
+---------------
+
+    * fixed error on attachment delete
+    * added styles on dashboard too
+    * fixed custom field default dropdown
+    * fixed output buffering for add_post/edit_post/dashboard/profile pages
+    * admin panel scripts are added wp_enqueue_script instead of echo
+    * fixed admin panel block logic
+    * filter hook added on edit post for post args
 
 version 0.5
 ---------------

@@ -91,7 +91,7 @@ function wpuf_edit_show_form( $post ) {
         <?php wp_nonce_field( 'wpuf-edit-post' ) ?>
         <ul class="wpuf-post-form">
 
-            <?php do_action( 'wpuf_add_post_form_top', $post_type ); //plugin hook  ?>
+            <?php do_action( 'wpuf_add_post_form_top', $post_type, $post ); //plugin hook  ?>
             <?php wpuf_build_custom_field_form( 'top', true, $post->ID ); ?>
 
             <li>
@@ -121,7 +121,7 @@ function wpuf_edit_show_form( $post ) {
                 </li>
             <?php } ?>
 
-            <?php do_action( 'wpuf_add_post_form_description', $post_type ); ?>
+            <?php do_action( 'wpuf_add_post_form_description', $post_type, $post ); ?>
             <?php wpuf_build_custom_field_form( 'description', true, $post->ID ); ?>
 
             <li>
@@ -138,7 +138,7 @@ function wpuf_edit_show_form( $post ) {
                 <div class="clear"></div>
             </li>
 
-            <?php do_action( 'wpuf_add_post_form_after_description', $post_type ); ?>
+            <?php do_action( 'wpuf_add_post_form_after_description', $post_type, $post ); ?>
             <?php wpuf_build_custom_field_form( 'tag', true, $post->ID ); ?>
 
             <?php if ( get_option( 'wpuf_allow_tags' ) == 'yes' ) { ?>
@@ -153,7 +153,7 @@ function wpuf_edit_show_form( $post ) {
 
             <?php wpuf_attachment_fields(); ?>
             
-            <?php do_action( 'wpuf_add_post_form_tags', $post_type ); ?>
+            <?php do_action( 'wpuf_add_post_form_tags', $post_type, $post ); ?>
             <?php wpuf_build_custom_field_form( 'bottom', true, $post->ID ); ?>
 
             <li>

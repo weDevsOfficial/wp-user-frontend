@@ -18,6 +18,22 @@ function wpuf_auth_redirect_login() {
 }
 
 /**
+ * Load the translation file for current language. 
+ * 
+ * @since version 0.7
+ * @author Tareq Hasan
+ */
+function wpuf_plugin_init() {
+    $locale = apply_filters( 'wpuf_locale', get_locale() );
+    $mofile = dirname( __FILE__ ) . "/languages/wpuf-$locale.mo";
+
+    if ( file_exists( $mofile ) ) {
+        load_textdomain( 'wpuf', $mofile );
+    }
+}
+add_action( 'init', 'wpuf_plugin_init' );
+
+/**
  * Utility function for debugging
  *
  * @since version 0.1

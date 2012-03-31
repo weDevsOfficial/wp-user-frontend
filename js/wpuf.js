@@ -89,7 +89,7 @@ jQuery(document).ready(function() {
         wpuf_getChildrenCategories(jQuery(this),'catlvl-', 1, 'yes');
     }
     //bind the ajax lookup event to #cat object
-    jQuery('#cat').live('change', function(){
+    jQuery('#wpuf_new_post_form #cat').live('change', function(){
         currentLevel = parseInt(jQuery(this).parent().attr('level'));
         wpuf_getChildrenCategories(jQuery(this), 'catlvl', currentLevel+1, 'yes');
 

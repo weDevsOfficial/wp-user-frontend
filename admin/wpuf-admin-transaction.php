@@ -14,7 +14,7 @@ function wpuf_transaction() {
     ?>
     <div class="wrap">
         <div id="icon-options-general" class="icon32"><br></div>
-        <h2>WP Frontend CMS: Payments Received</h2>
+        <h2>WP User Frontend: Payments Received</h2>
 
         Total Income: <?php echo get_option( 'wpuf_sub_currency_sym' ) . $total_income; ?><br />
         This Month: <?php echo get_option( 'wpuf_sub_currency_sym' ) . $month_income; ?>

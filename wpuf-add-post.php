@@ -73,7 +73,7 @@ function wpuf_add_post( $post_type ) {
                             <div style="float:left;">
                                 <div id="catlvl0">
                                     <?php $exclude = get_option( 'wpuf_exclude_cat' ); ?>
-                                    <?php wp_dropdown_categories( 'show_option_none=-- Select --&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude ) ?>
+                                    <?php wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude ) ?>
                                 </div>
                             </div>
                             <div id="categories-footer" style="float:left;"></div>
@@ -217,7 +217,7 @@ function wpuf_validate_post_submit() {
                 //var_dump($temp, $cf);
 
                 if ( ( $cf['type'] == 'yes' ) && !$temp ) {
-                    $errors[] = __( "{$cf['label']} is missing", 'wpuf' );
+                    $errors[] = sprintf( __( '%s is missing', 'wpuf' ), $cf['label'] );
                 } else {
                     $custom_fields[$cf['field']] = $temp;
                 }

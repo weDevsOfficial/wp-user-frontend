@@ -115,7 +115,7 @@ function wpuf_edit_show_form( $post ) {
                         $selected = $cats[0]->term_id;
                     }
                     ?>
-                    <?php wp_dropdown_categories( 'show_option_none=-- Select --&hierarchical=1&hide_empty=0&orderby=id&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude . '&selected=' . $selected ); ?>
+                    <?php wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=id&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude . '&selected=' . $selected ); ?>
                     <div class="clear"></div>
                     <p class="description"><?php echo stripslashes( get_option( 'wpuf_cat_help' ) ); ?></p>
                 </li>
@@ -187,13 +187,13 @@ function wpuf_validate_post_edit_submit() {
     }
 
     if ( empty( $title ) ) {
-        $errors[] = "Empty post title";
+        $errors[] = __( 'Empty post title', 'wpuf' );
     } else {
         $title = trim( strip_tags( $title ) );
     }
 
     if ( empty( $content ) ) {
-        $errors[] = "Empty post content";
+        $errors[] = __( 'Empty post content', 'wpuf' );
     } else {
         $content = trim( $content );
     }
@@ -215,7 +215,7 @@ function wpuf_validate_post_edit_submit() {
                 //var_dump($temp, $cf);
 
                 if ( ( $cf['type'] == 'yes' ) && !$temp ) {
-                    $errors[] = __( "{$cf['label']} is missing", 'wpuf' );
+                    $errors[] = sprintf( __( '%s is missing', 'wpuf' ), $cf['label'] );
                 } else {
                     $custom_fields[$cf['field']] = $temp;
                 }
@@ -240,7 +240,7 @@ function wpuf_validate_post_edit_submit() {
         $post_id = wp_update_post( $post_update );
 
         if ( $post_id ) {
-            echo '<div class="success">Post updated succesfully.</div>';
+            echo '<div class="success">' . __( 'Post updated succesfully.', 'wpuf' ) . '</div>';
 
             //upload attachment to the post
             wpuf_upload_attachment( $post_id );

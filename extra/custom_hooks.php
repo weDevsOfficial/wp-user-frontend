@@ -22,7 +22,7 @@ function wpuf_add_post_publish_date() {
     ?>
     <li>
         <label for="timestamp-wrap">
-            Publish Time: <span class="required">*</span>
+            <?php _e( 'Publish Time:', 'wpuf' ); ?> <span class="required">*</span>
         </label>
         <div class="timestamp-wrap">
             <select name="mm">
@@ -51,7 +51,7 @@ function wpuf_add_post_end_date() {
     ?>
     <li>
         <label for="timestamp-wrap">
-            Expiration Time: <span class="required">*</span>
+            <?php _e( 'Expiration Time:', 'wpuf' ); ?><span class="required">*</span>
         </label>
         <select name="expiration-date">
             <?php for( $i = 2; $i <= 72; $i++ ) {
@@ -61,7 +61,7 @@ function wpuf_add_post_end_date() {
             ?>
         </select>
         <div class="clear"></div>
-        <p class="description">Post expiration time in hour after publishing.</p>
+        <p class="description"><?php _e( 'Post expiration time in hour after publishing.', 'wpuf' ); ?></p>
     </li>
     <?php
 }
@@ -128,8 +128,8 @@ add_action( 'wpuf_add_post_after_insert', 'wpuf_hooks_add_meta', 10, 1 );
  */
 function wpuf_sub_payment_mail() {
     $headers = "From: " . get_bloginfo( 'name' ) . " <" . get_bloginfo( 'admin_email' ) . ">" . "\r\n\\";
-    $subject = '[' . get_bloginfo( 'name' ) . '] Payment Received';
-    $msg = 'New payment received at "' . get_bloginfo( 'name' );
+    $subject = sprintf( __( '[%s] Payment Received', 'wpuf' ), get_bloginfo( 'name' ) );
+    $msg = sprintf( __( 'New payment received at %s', 'wpuf' ), get_bloginfo( 'name' ) );
 
     $receiver = get_bloginfo( 'admin_email' );
     wp_mail( $receiver, $subject, $msg, $headers );

@@ -77,6 +77,10 @@ function wpuf_enqueue_scripts() {
 
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js' );
+        
+        wp_localize_script( 'wpuf', 'wpuf', array(
+            'ajaxurl' => admin_url( 'admin-ajax.php' )
+        ) );
     }
 }
 

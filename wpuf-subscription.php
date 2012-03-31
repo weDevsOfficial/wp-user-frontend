@@ -243,7 +243,7 @@ class WPUF_Subscription {
             $item_name = $post->post_title;
             $item_number = get_post_meta( $post_id, 'wpuf_order_id', true );
             $custom = 'post';
-            $cbt = 'Click here to publish the post on ' . get_bloginfo( 'name' );
+            $cbt = sprintf( __( 'Click here to complete the pack on %s', 'wpuf' ), get_bloginfo( 'name' ) );
         }
 
         if ( $type == 'pack' ) {
@@ -253,7 +253,7 @@ class WPUF_Subscription {
                 $item_name = $pack->name;
                 $item_number = $pack->id;
                 $custom = 'pack';
-                $cbt = 'Click here to complete the pack on ' . get_bloginfo( 'name' );
+                $cbt = sprintf( __( 'Click here to complete the pack on %s', 'wpuf' ), get_bloginfo( 'name' ) );
             }
         }
 
@@ -447,11 +447,11 @@ class WPUF_Subscription {
             if ( $duration == 0 ) {
                 $d_str = 0;
             } elseif ( $duration == 'unlimited' ) {
-                $d_str = 'Unlimited duration';
+                $d_str = __( 'Unlimited duration', 'wpuf' );
             } elseif ( $diff <= 0 ) {
-                $d_str = 'Expired';
+                $d_str = __( 'Expired', 'wpuf' );
             } elseif ( $diff > 0 ) {
-                $d_str = 'Till ' . date( 'd M, Y H:i', strtotime( $duration ) );
+                $d_str = 'Till ' . date_i18n( 'd M, Y H:i', strtotime( $duration ) );
             }
 
             if ( $count == 0 ) {
@@ -463,10 +463,10 @@ class WPUF_Subscription {
             }
             ?>
             <div class="wpuf_sub_info">
-                <h3>Subscription Details</h3>
+                <h3><?php _e( 'Subscription Details', 'wpuf' ); ?></h3>
                 <div class="text">
-                    <strong>Validity:</strong> <?php echo $d_str; ?>,
-                    <strong>Post Left:</strong> <?php echo $c_str; ?>
+                    <strong><?php _e( 'Validity:', 'wpuf' ); ?></strong> <?php echo $d_str; ?>,
+                    <strong><?php _e( 'Post Left:', 'wpuf' ); ?></strong> <?php echo $c_str; ?>
                 </div>
             </div>
 
@@ -492,7 +492,7 @@ class WPUF_Subscription {
                     <p><?php echo $count; ?> posts for <?php echo $duration; ?> days.
                         <span class="cost"><?php echo get_option( 'wpuf_sub_currency_sym' ) . $pack->cost; ?></span>
                     </p>
-                    <p><a href="<?php echo get_permalink( get_option( 'wpuf_sub_pay_page' ) ); ?>?action=wpuf_pay&type=pack&pack_id=<?php echo $pack->id; ?>">Buy Now</a></p>
+                    <p><a href="<?php echo get_permalink( get_option( 'wpuf_sub_pay_page' ) ); ?>?action=wpuf_pay&type=pack&pack_id=<?php echo $pack->id; ?>"><?php _e( 'Buy Now', 'wpuf' ); ?></a></p>
                 </li>
                 <?php
             }
@@ -509,7 +509,7 @@ class WPUF_Subscription {
         if ( $this->has_post_error() ) {
             ?>
                 <div class="info">
-                    This will cost you <strong><?php echo get_option('wpuf_sub_currency_sym') . get_option('wpuf_sub_amount'); ?></strong> to add a new post. You may buy some bulk package too.
+                    <?php printf( __( 'This will cost you <strong>%s</strong>. to add a new post. You may buy some bulk package too. ', 'wpuf' ), get_option('wpuf_sub_currency_sym') . get_option('wpuf_sub_amount') ); ?>
                 </div>
             <?php
         }

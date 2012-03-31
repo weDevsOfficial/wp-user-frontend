@@ -51,10 +51,10 @@ function wpuf_user_edit_profile_form( $user_id = null ) {
         $errors = edit_user( $user_id );
         if ( is_wp_error( $errors ) ) {
             $message = $errors->get_error_message();
-            $style = "error";
+            $style = 'error';
         } else {
-            $message = __( "<strong>Success</strong>: Profile updated", 'wpuf' );
-            $style = "success";
+            $message = __( '<strong>Success</strong>: Profile updated', 'wpuf' );
+            $style = 'success';
             do_action( 'personal_options_update', $user_id );
         }
     }

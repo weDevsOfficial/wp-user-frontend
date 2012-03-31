@@ -134,7 +134,7 @@ function wpuf_plugin_menu() {
     //add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function )
     $plugin_page2 = add_submenu_page( 'wpuf-admin-opt', 'Custom Fields', 'Custom Fields', 'activate_plugins', 'wpuf_custom_fields', 'wpuf_custom_fields' );
 
-    $plugin_page3 = add_submenu_page( 'wpuf-admin-opt', 'Custom Taxonomies', 'Custom Taxonomies', 'activate_plugins', 'wpuf_custom_tax', 'wpuf_taxonomy_fields' );
+    //$plugin_page3 = add_submenu_page( 'wpuf-admin-opt', 'Custom Taxonomies', 'Custom Taxonomies', 'activate_plugins', 'wpuf_custom_tax', 'wpuf_taxonomy_fields' );
 
     $plugin_page4 = add_submenu_page( 'wpuf-admin-opt', 'Subscription', 'Subscription', 'activate_plugins', 'wpuf_subscription', 'wpuf_subscription_admin' );
 
@@ -142,7 +142,7 @@ function wpuf_plugin_menu() {
 
     add_action( 'admin_head-' . $plugin_page, 'wpuf_admin_script' );
     add_action( 'admin_head-' . $plugin_page2, 'wpuf_admin_script' );
-    add_action( 'admin_head-' . $plugin_page3, 'wpuf_admin_script' );
+    //add_action( 'admin_head-' . $plugin_page3, 'wpuf_admin_script' );
     add_action( 'admin_head-' . $plugin_page4, 'wpuf_admin_script' );
 }
 
@@ -164,7 +164,7 @@ function wpuf_restrict_admin_access() {
 
     if ( !current_user_can( $wpuf_access_level ) && $pagenow != 'admin-ajax.php' &&
             $pagenow != 'async-upload.php' && $pagenow != 'media-upload.php' ) {
-        wp_die( "Access Denied. Your site administrator has blocked your access to the WordPress back-office." );
+        wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
     }
 }
 
@@ -176,7 +176,7 @@ if ( is_admin() ) {
 function wpuf_permalink_nag() {
 
     if ( current_user_can( 'manage_options' ) )
-        $msg = sprintf( __( 'You need to set your <a href="%1$s">permalink custom structure</a> to at least contain <b>/&#37;postname&#37;/</b> before WP User Frontend will work properly.', '' ), 'options-permalink.php' );
+        $msg = sprintf( __( 'You need to set your <a href="%1$s">permalink custom structure</a> to at least contain <b>/&#37;postname&#37;/</b> before WP User Frontend will work properly.', 'wpuf' ), 'options-permalink.php' );
 
     echo "<div class='error fade'><p>$msg</p></div>";
 }
@@ -233,7 +233,7 @@ function wpuf_get_child_cats() {
         die( $result );
 
     if ( get_categories( 'taxonomy=category&child_of=' . $parentCat . '&hide_empty=0' ) ) {
-        $result .= wp_dropdown_categories( 'show_option_none=' . __( 'Select one', 'wpuf' ) . '&class=dropdownlist&orderby=name&name=category[]&id=cat&order=ASC&hide_empty=0&hierarchical=1&taxonomy=category&depth=1&echo=0&child_of=' . $parentCat );
+        $result .= wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&class=dropdownlist&orderby=name&name=category[]&id=cat&order=ASC&hide_empty=0&hierarchical=1&taxonomy=category&depth=1&echo=0&child_of=' . $parentCat );
     } else {
         die( '' );
     }

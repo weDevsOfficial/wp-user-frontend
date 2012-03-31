@@ -9,9 +9,7 @@ function wpuf_plugin_options() {
         <div id="icon-options-general" class="icon32"><br></div>
         <h2>WP User Frontend: Management Options</h2>
 
-        <div id="option-saved">
-            Options saved
-        </div>
+        <div id="option-saved"><?php _e( 'Options saved', 'wpuf' ); ?></div>
 
         <?php
         if ( isset( $_POST['options_submit'] ) ) {
@@ -74,7 +72,7 @@ function wpuf_admin_ajax() {
         } //starts with
     } //foreach
 
-    echo "Settings Saved";
+    echo __( 'Settings Saved', 'wpuf' );
     //print_r($_POST);
 
     exit;

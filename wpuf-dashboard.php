@@ -98,7 +98,7 @@ function wpuf_user_dashboard_post_list( $post_type ) {
                     <th><?php _e( 'Title', 'wpuf' ); ?></th>
                     <th><?php _e( 'Status', 'wpuf' ); ?></th>
                     <?php if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' )
-                        echo '<th>Payment</th>'; ?>
+                        echo '<th>' . __( 'Payment', 'wpuf' ) . '</th>'; ?>
                     <th><?php _e( 'Options', 'wpuf' ); ?></th>
                 </tr>
             </thead>
@@ -138,13 +138,13 @@ function wpuf_user_dashboard_post_list( $post_type ) {
                                 $edit_page = (int) get_option( 'wpuf_edit_page_url' );
                                 $url = get_permalink( $edit_page );
                                 ?>
-                                <a href="<?php echo wp_nonce_url( $url . '?pid=' . $p->ID, 'wpuf_edit' ); ?>">Edit</a>
+                                <a href="<?php echo wp_nonce_url( $url . '?pid=' . $p->ID, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wpuf' ); ?></a>
                             <?php } else { ?>
                                 &nbsp;
                             <?php } ?>
 
                             <?php if ( get_option( 'wpuf_can_del_post' ) == 'yes' ) { ?>
-                                <a href="<?php echo wp_nonce_url( "?action=del&pid=" . $p->ID, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this post?');"><span style="color: red;">Delete</span></a>
+                                <a href="<?php echo wp_nonce_url( "?action=del&pid=" . $p->ID, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this post?');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
                             <?php } ?>
                         </td>
                     </tr>

@@ -71,7 +71,7 @@ function wpuf_show_users() {
         if ( current_user_can( 'delete_users' ) && $delete_flag == true ) {
             //var_dump($userdata);
             wp_delete_user( $to_be_deleted );
-            echo '<div class="success">User Deleted</div>';
+            echo '<div class="success">' . __( 'User Deleted', 'wpuf' ) . '</div>';
         } else {
             echo '<div class="error">Cheatin&#8217; uh?</div>';
         }
@@ -86,15 +86,15 @@ function wpuf_show_users() {
     <?php if ( $users ) : ?>
         <table class="wpuf-table" cellpadding="0" cellspacing="0">
             <tr>
-                <th>Username</th>
-                <th>Action</th>
+                <th><?php _e( 'Username', 'wpuf' ); ?></th>
+                <th><?php _e( 'Action', 'wpuf' ); ?></th>
             </tr>
             <?php foreach ($users as $user): ?>
                 <tr>
                     <td><a href="<?php echo get_author_posts_url( $user->ID ); ?>"><?php printf( esc_attr__( '%s', 'wpuf' ), $user->display_name ); ?></td>
                     <td>
-                        <a href="<?php echo wp_nonce_url(get_permalink() . '?action=edit&user_id='. $user->ID, 'wpuf_edit_user'); ?>">Edit</a>
-                        <a href="<?php echo wp_nonce_url( the_permalink( 'echo=false' ) . "?action=del&user_id=" . $user->ID, 'wpuf_del_user' ) ?>" onclick="return confirm('Are you sure to delete this user?');"><span style="color: red;">Delete</span></a>
+                        <a href="<?php echo wp_nonce_url(get_permalink() . '?action=edit&user_id='. $user->ID, 'wpuf_edit_user'); ?>"><?php _e( 'Edit', 'wpuf' ); ?></a>
+                        <a href="<?php echo wp_nonce_url( the_permalink( 'echo=false' ) . "?action=del&user_id=" . $user->ID, 'wpuf_del_user' ) ?>" onclick="return confirm('Are you sure to delete this user?');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
                     </td>
                 </tr>
 
@@ -113,8 +113,8 @@ function wpuf_add_user() {
     ?>
     <?php if ( current_user_can( 'create_users' ) ) : ?>
 
-        <h3>Add New User</h3>
-
+        <h3><?php _e( 'Add New User', 'wpuf' ); ?></h3>
+        
         <?php
         if ( isset( $_POST['wpuf_new_user_submit'] ) ) {
             $errors = array();
@@ -126,7 +126,7 @@ function wpuf_add_user() {
             $error = null;
             $error = wpuf_register_new_user( $username, $email, $role );
             if ( !is_wp_error( $error ) ) {
-                echo '<div class="success">User Added</div>';
+                echo '<div class="success">' . __( 'User Added', 'wpuf' ) . '</div>';
             } else {
                 echo '<div class="error">' . $error->get_error_message() . '</div>';
             }
@@ -138,25 +138,23 @@ function wpuf_add_user() {
             <ul class="wpuf-post-form">
                 <li>
                     <label for="user_login">
-                        Username <span class="required">*</span>
+                        <?php _e( 'Username', 'wpuf' ); ?> <span class="required">*</span>
                     </label>
-                    <input type="text" name="user_login" id="user_login" minlength="2" value="<?php if ( isset( $_POST['user_login'] ) )
-            echo wpuf_clean_tags( $_POST['user_login'] ); ?>">
+                    <input type="text" name="user_login" id="user_login" minlength="2" value="<?php if ( isset( $_POST['user_login'] ) ) echo wpuf_clean_tags( $_POST['user_login'] ); ?>">
                     <div class="clear"></div>
                 </li>
 
                 <li>
                     <label for="user_email">
-                        Email <span class="required">*</span>
+                        <?php _e( 'Email', 'wpuf' ); ?> <span class="required">*</span>
                     </label>
-                    <input type="text" name="user_email" id="user_email" minlength="2" value="<?php if ( isset( $_POST['user_email'] ) )
-                       echo wpuf_clean_tags( $_POST['user_email'] ); ?>">
+                    <input type="text" name="user_email" id="user_email" minlength="2" value="<?php if ( isset( $_POST['user_email'] ) ) echo wpuf_clean_tags( $_POST['user_email'] ); ?>">
                     <div class="clear"></div>
                 </li>
 
                 <li>
                     <label for="role">
-                        Role
+                        <?php _e( 'Role', 'wpuf' ); ?>
                     </label>
 
                     <select name="role" id="role">
@@ -173,7 +171,7 @@ function wpuf_add_user() {
 
                 <li>
                     <label>&nbsp;</label>
-                    <input class="wpuf_submit" type="submit" name="wpuf_new_user_submit" value="Add New User">
+                    <input class="wpuf_submit" type="submit" name="wpuf_new_user_submit" value="<?php echo esc_attr( __( 'Add New User', 'wpuf' ) ); ?>">
                 </li>
 
             </ul>

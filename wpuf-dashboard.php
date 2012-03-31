@@ -14,11 +14,18 @@ function wpuf_user_dashboard( $atts ) {
 
     extract( shortcode_atts( array('post_type' => 'post'), $atts ) );
 
+    ob_start();
+    
     if ( is_user_logged_in() ) {
         wpuf_user_dashboard_post_list( $post_type );
     } else {
         printf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( '', false ) );
     }
+    
+    $content =  ob_get_contents();
+    ob_end_clean();
+
+    return $content;
 }
 
 add_shortcode( 'wpuf_dashboard', 'wpuf_user_dashboard' );
@@ -91,6 +98,8 @@ function wpuf_user_dashboard_post_list( $post_type ) {
         <?php if ( get_option( 'wpuf_list_post_count' ) == 'yes' ) { ?>
             <div class="post_count"><?php _e( 'You have created', 'wpuf' ); ?> <?php echo "<span>$total</span> $post_type"; ?></div>
         <?php } ?>
+        
+        <?php do_action( 'wpuf_dashboard', $userdata->ID, $post_type ) ?>
 
         <table class="wpuf-table" cellpadding="0" cellspacing="0">
             <thead>

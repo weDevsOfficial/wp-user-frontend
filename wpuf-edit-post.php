@@ -151,7 +151,7 @@ function wpuf_edit_show_form( $post ) {
                 </li>
             <?php } ?>
 
-            <?php wpuf_attachment_fields(); ?>
+            <?php wpuf_attachment_fields( true, $post->ID ); ?>
             
             <?php do_action( 'wpuf_add_post_form_tags', $post_type, $post ); ?>
             <?php wpuf_build_custom_field_form( 'bottom', true, $post->ID ); ?>

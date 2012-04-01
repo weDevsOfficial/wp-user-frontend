@@ -336,10 +336,14 @@ function wpuf_edit_attachment( $post_id ) {
     }
 }
 
-function wpuf_attachment_fields() {
+function wpuf_attachment_fields( $edit = false, $post_id = false ) {
     if ( get_option( 'wpuf_allow_attachments' ) == 'yes' ) {
         $fields = (int) get_option( 'wpuf_attachment_num' );
 
+        if( $edit && $post_id ) {
+            $fields = abs( $fields - count( wpfu_get_attachments( $post_id ) ) );
+        }
+        
         for ($i = 0; $i < $fields; $i++) {
             ?>
 

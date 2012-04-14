@@ -36,7 +36,7 @@ jQuery(document).ready(function($) {
 
         if( ! hasError ) {
             $(this).find('input[type=submit]').attr({
-                'value': 'Please wait, I am posting...',
+                'value': wpuf.postingMsg,
                 'disabled': true
             });
 

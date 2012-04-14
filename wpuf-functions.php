@@ -10,7 +10,7 @@
 function wpuf_auth_redirect_login() {
     $user = wp_get_current_user();
 
-    if ( $user->id == 0 ) {
+    if ( $user->ID == 0 ) {
         nocache_headers();
         wp_redirect( get_option( 'siteurl' ) . '/wp-login.php?redirect_to=' . urlencode( $_SERVER['REQUEST_URI'] ) );
         exit();
@@ -95,7 +95,8 @@ function wpuf_enqueue_scripts() {
         wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js' );
         
         wp_localize_script( 'wpuf', 'wpuf', array(
-            'ajaxurl' => admin_url( 'admin-ajax.php' )
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'postingMsg' => __( 'Please wait...', 'wpuf' )
         ) );
     }
 }
@@ -493,6 +494,10 @@ function wpuf_starts_with( $string, $starts ) {
  */
 function has_shortcode( $shortcode = '', $post_id = false ) {
     global $post;
+    
+    if( is_404() && !$post && !$post_id ) {
+        return false;
+    }
 
     $post_to_check = ( $post_id == false ) ? get_post( get_the_ID() ) : get_post( $post_id );
 
@@ -537,3 +542,28 @@ function wpuf_dropdown_page( $args = '' ) {
 
     return $array;
 }
+
+/**
+ * Edit post link for frontend
+ * 
+ * @since 0.7
+ * @param string $url url of the original post edit link
+ * @param int $post_id 
+ * @return string url of the current edit post page
+ */
+function wpuf_edit_post_link( $url, $post_id ) {
+    if( is_admin() ) {
+        return $url;
+    }
+
+    $url = '';
+    if ( get_option( 'wpuf_can_edit_post' ) == 'yes' ) {
+        $edit_page = (int) get_option( 'wpuf_edit_page_url' );
+        $url = get_permalink( $edit_page );
+        
+        $url = wp_nonce_url( $url . '?pid=' . $post_id, 'wpuf_edit' );
+    }
+    
+    return $url;
+}
+add_filter( 'get_edit_post_link', 'wpuf_edit_post_link', 10, 2 );

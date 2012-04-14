@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-31 17:35+0600\n"
-"PO-Revision-Date: 2012-03-31 17:35+0600\n"
+"POT-Creation-Date: 2012-04-14 17:46+0600\n"
+"PO-Revision-Date: 2012-04-14 17:46+0600\n"
 "Last-Translator: Tareq Hasan <tareq@wedevs.com>\n"
 "Language-Team: Tareq Hasan <tareq@wedevs.com>\n"
 "Language: \n"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: ../wpuf.php:236
 #: ../wpuf-add-post.php:76
-#: ../wpuf-edit-post.php:118
+#: ../wpuf-edit-post.php:119
 msgid "-- Select --"
 msgstr ""
 
@@ -35,7 +35,7 @@ msgstr ""
 msgid "You must purchase a pack before posting"
 msgstr ""
 
-#: ../wpuf-dashboard.php:20
+#: ../wpuf-dashboard.php:22
 #: ../wpuf-add-post.php:19
 #: ../wpuf-editprofile.php:15
 #: ../wpuf-edit-user.php:36
@@ -44,62 +44,62 @@ msgstr ""
 msgid "This page is restricted. Please %s to view this page."
 msgstr ""
 
-#: ../wpuf-dashboard.php:50
+#: ../wpuf-dashboard.php:57
 msgid "Post Deleted"
 msgstr ""
 
-#: ../wpuf-dashboard.php:52
+#: ../wpuf-dashboard.php:59
 msgid "You are not the post author. Cheeting huh!"
 msgstr ""
 
-#: ../wpuf-dashboard.php:72
+#: ../wpuf-dashboard.php:79
 msgid "&laquo;"
 msgstr ""
 
-#: ../wpuf-dashboard.php:73
+#: ../wpuf-dashboard.php:80
 msgid "&raquo;"
 msgstr ""
 
-#: ../wpuf-dashboard.php:87
+#: ../wpuf-dashboard.php:94
 #, php-format
 msgid "%s's Dashboard"
 msgstr ""
 
-#: ../wpuf-dashboard.php:92
+#: ../wpuf-dashboard.php:99
 msgid "You have created"
 msgstr ""
 
-#: ../wpuf-dashboard.php:98
+#: ../wpuf-dashboard.php:107
 msgid "Title"
 msgstr ""
 
-#: ../wpuf-dashboard.php:99
+#: ../wpuf-dashboard.php:108
 msgid "Status"
 msgstr ""
 
-#: ../wpuf-dashboard.php:101
+#: ../wpuf-dashboard.php:110
 msgid "Payment"
 msgstr ""
 
-#: ../wpuf-dashboard.php:102
+#: ../wpuf-dashboard.php:111
 msgid "Options"
 msgstr ""
 
-#: ../wpuf-dashboard.php:141
+#: ../wpuf-dashboard.php:150
 #: ../wpuf-edit-user.php:96
 msgid "Edit"
 msgstr ""
 
-#: ../wpuf-dashboard.php:147
+#: ../wpuf-dashboard.php:156
 #: ../wpuf-edit-user.php:97
 msgid "Delete"
 msgstr ""
 
-#: ../wpuf-dashboard.php:162
+#: ../wpuf-dashboard.php:171
 msgid "Currently you have no post"
 msgstr ""
 
-#: ../wpuf-dashboard.php:169
+#: ../wpuf-dashboard.php:178
 msgid "Author Info"
 msgstr ""
 
@@ -148,7 +148,7 @@ msgid "Cheating?"
 msgstr ""
 
 #: ../wpuf-add-post.php:182
-#: ../wpuf-edit-post.php:190
+#: ../wpuf-edit-post.php:201
 msgid "Empty post title"
 msgstr ""
 
@@ -157,12 +157,12 @@ msgid "Please choose a category"
 msgstr ""
 
 #: ../wpuf-add-post.php:194
-#: ../wpuf-edit-post.php:196
+#: ../wpuf-edit-post.php:207
 msgid "Empty post content"
 msgstr ""
 
 #: ../wpuf-add-post.php:220
-#: ../wpuf-edit-post.php:218
+#: ../wpuf-edit-post.php:229
 #, php-format
 msgid "%s is missing"
 msgstr ""
@@ -360,31 +360,35 @@ msgstr ""
 msgid "Scheduled"
 msgstr ""
 
-#: ../wpuf-functions.php:246
+#: ../wpuf-functions.php:99
+msgid "Please wait..."
+msgstr ""
+
+#: ../wpuf-functions.php:247
 msgid "Attachment file is too big"
 msgstr ""
 
-#: ../wpuf-functions.php:251
+#: ../wpuf-functions.php:252
 msgid "Invalid attachment file type"
 msgstr ""
 
-#: ../wpuf-edit-post.php:67
+#: ../wpuf-edit-post.php:68
 msgid "Invalid post"
 msgstr ""
 
-#: ../wpuf-edit-post.php:70
+#: ../wpuf-edit-post.php:71
 msgid "Post Editing is disabled"
 msgstr ""
 
-#: ../wpuf-edit-post.php:73
+#: ../wpuf-edit-post.php:74
 msgid "Invalid post id"
 msgstr ""
 
-#: ../wpuf-edit-post.php:161
+#: ../wpuf-edit-post.php:162
 msgid "Update"
 msgstr ""
 
-#: ../wpuf-edit-post.php:243
+#: ../wpuf-edit-post.php:254
 msgid "Post updated succesfully."
 msgstr ""
 

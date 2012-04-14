@@ -412,7 +412,7 @@ class WPUF_Subscription {
         global $post;
 
         $pay_page = intval( get_option( 'wpuf_sub_pay_page' ) );
-        if ( $post->ID == $pay_page && $_REQUEST['action'] == 'wpuf_pay' ) {
+        if ( $post->ID == $pay_page && isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'wpuf_pay' ) {
             $type = ( $_REQUEST['type'] == 'post' ) ? 'post' : 'pack';
             $post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( $_REQUEST['pack_id'] ) : 0;

@@ -176,7 +176,7 @@ function wpuf_user_edit_profile_form( $user_id = null ) {
                         </td>
                     </tr>
                     <tr>
-                        <th><label><?php _e( 'Confirm Password', 'wpuf' ); ?>></label></th>
+                        <th><label><?php _e( 'Confirm Password', 'wpuf' ); ?></label></th>
                         <td>
                             <input type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off" />&nbsp;<em><span class="description"><?php _e( "Type your new password again." ); ?></span></em>
                         </td>

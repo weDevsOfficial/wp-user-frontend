@@ -57,7 +57,8 @@ function wpuf_edit_post() {
             $curpost = get_post( $post_id, 'OBJECT' );
 
             if ( $curpost ) {
-                if ( intval( $userdata->ID ) != intval( $curpost->post_author ) ) {
+                //if ( !current_user_can( 'delete_others_posts' ) || ( intval( $userdata->ID ) != intval( $curpost->post_author ) ) ) {
+                if ( !current_user_can( 'delete_others_posts' ) && ( $userdata->ID != $curpost->post_author ) ) {
                     wp_redirect( site_url() );
                     exit;
                 }
@@ -91,7 +92,7 @@ function wpuf_edit_show_form( $post ) {
         <?php wp_nonce_field( 'wpuf-edit-post' ) ?>
         <ul class="wpuf-post-form">
 
-            <?php do_action( 'wpuf_add_post_form_top', $post_type, $post ); //plugin hook  ?>
+            <?php do_action( 'wpuf_add_post_form_top', $post->post_type, $post ); //plugin hook  ?>
             <?php wpuf_build_custom_field_form( 'top', true, $post->ID ); ?>
 
             <li>
@@ -121,7 +122,7 @@ function wpuf_edit_show_form( $post ) {
                 </li>
             <?php } ?>
 
-            <?php do_action( 'wpuf_add_post_form_description', $post_type, $post ); ?>
+            <?php do_action( 'wpuf_add_post_form_description', $post->post_type, $post ); ?>
             <?php wpuf_build_custom_field_form( 'description', true, $post->ID ); ?>
 
             <li>
@@ -138,7 +139,7 @@ function wpuf_edit_show_form( $post ) {
                 <div class="clear"></div>
             </li>
 
-            <?php do_action( 'wpuf_add_post_form_after_description', $post_type, $post ); ?>
+            <?php do_action( 'wpuf_add_post_form_after_description', $post->post_type, $post ); ?>
             <?php wpuf_build_custom_field_form( 'tag', true, $post->ID ); ?>
 
             <?php if ( get_option( 'wpuf_allow_tags' ) == 'yes' ) { ?>
@@ -153,7 +154,7 @@ function wpuf_edit_show_form( $post ) {
 
             <?php wpuf_attachment_fields( true, $post->ID ); ?>
             
-            <?php do_action( 'wpuf_add_post_form_tags', $post_type, $post ); ?>
+            <?php do_action( 'wpuf_add_post_form_tags', $post->post_type, $post ); ?>
             <?php wpuf_build_custom_field_form( 'bottom', true, $post->ID ); ?>
 
             <li>
@@ -164,11 +165,13 @@ function wpuf_edit_show_form( $post ) {
             </li>
         </ul>
     </form>
-    <div class="wpuf-edit-attachment">
-        <?php wpuf_edit_attachment( $post->ID ); ?>
-    </div>
-        
+    
+    <?php if ( get_option( 'wpuf_allow_attachments' ) == 'yes' ) { ?>
+        <div class="wpuf-edit-attachment">
+            <?php wpuf_edit_attachment( $post->ID ); ?>
+        </div>
     <?php
+    }
 }
 
 function wpuf_validate_post_edit_submit() {
@@ -178,8 +181,16 @@ function wpuf_validate_post_edit_submit() {
 
     $title = trim( $_POST['wpuf_post_title'] );
     $content = trim( $_POST['wpuf_post_content'] );
-    $tags = wpuf_clean_tags( $_POST['wpuf_post_tags'] );
-    $cat = trim( $_POST['cat'] );
+    
+    $tags = '';
+    $cat = '';
+    if( isset( $_POST['wpuf_post_tags'] ) ) {
+        $tags = wpuf_clean_tags( $_POST['wpuf_post_tags'] );
+    }
+    
+    if( isset( $_POST['cat'] ) ) {
+        $cat = trim( $_POST['cat'] );
+    }
 
     //if there is some attachement, validate them
     if ( !empty( $_FILES['wpuf_post_attachments'] ) ) {
@@ -223,7 +234,7 @@ function wpuf_validate_post_edit_submit() {
         } //foreach
     } //is_array
 
-    do_action( 'wpuf_edit_post_validation', intval( $_POST['post_id'] ) );
+    $errors = apply_filters( 'wpuf_edit_post_validation', $errors );
 
     if ( !$errors ) {
         $post_update = array(
@@ -235,7 +246,7 @@ function wpuf_validate_post_edit_submit() {
         );
 
         //plugin API to extend the functionality
-        $my_post = apply_filters( 'wpuf_edit_post_args', $my_post );
+        $post_update = apply_filters( 'wpuf_edit_post_args', $post_update );
 
         $post_id = wp_update_post( $post_update );
 

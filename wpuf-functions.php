@@ -148,8 +148,14 @@ function wpuf_notify_post_mail( $user, $post_id ) {
     $permalink = get_permalink( $post_id );
 
     $headers = sprintf( "From: %s <%s>\r\n", $blogname, $to );
-    $subject = "[$blogname]New Post Submission";
-    $msg = "There is a new post ($permalink) submitted in $blogname by '{$user->display_name}'. Visit " . admin_url( 'edit.php' ) . " to take action";
+    $subject = sprintf( __( '[%s] New Post Submission' ), $blogname );
+    
+    $msg = sprintf( __( 'A new post has been submitted on %s' ), $blogname ) . "\r\n\r\n";
+    $msg .= sprintf( __( 'Author : %s' ), $user->display_name ) . "\r\n";
+    $msg .= sprintf( __( 'Author Email : %s' ), $user->user_email ) . "\r\n";
+    $msg .= sprintf( __( 'Title : %s' ), get_the_title( $post_id ) ) . "\r\n";
+    $msg .= sprintf( __( 'Permalink : %s' ), $permalink ) . "\r\n";
+    $msg .= sprintf( __( 'Edit Link : %s' ), admin_url( 'post.php?action=edit&post=' . $post_id ) ) . "\r\n";
 
     wp_mail( $to, $subject, $msg, $headers );
     //var_dump($headers, $subject, $msg, $receiver);
@@ -495,7 +501,7 @@ function wpuf_starts_with( $string, $starts ) {
 function has_shortcode( $shortcode = '', $post_id = false ) {
     global $post;
     
-    if( is_404() && !$post && !$post_id ) {
+    if( !$post ) {
         return false;
     }
 

@@ -18,8 +18,8 @@ function wpuf_auth_redirect_login() {
 }
 
 /**
- * Load the translation file for current language. 
- * 
+ * Load the translation file for current language.
+ *
  * @since version 0.7
  * @author Tareq Hasan
  */
@@ -31,6 +31,7 @@ function wpuf_plugin_init() {
         load_textdomain( 'wpuf', $mofile );
     }
 }
+
 add_action( 'init', 'wpuf_plugin_init' );
 
 /**
@@ -93,10 +94,11 @@ function wpuf_enqueue_scripts() {
 
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js' );
-        
+
+        $posting_msg = get_option( 'wpuf_post_submitting_label', 'Please wait...' );
         wp_localize_script( 'wpuf', 'wpuf', array(
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
-            'postingMsg' => __( 'Please wait...', 'wpuf' )
+            'postingMsg' => $posting_msg
         ) );
     }
 }
@@ -149,7 +151,7 @@ function wpuf_notify_post_mail( $user, $post_id ) {
 
     $headers = sprintf( "From: %s <%s>\r\n", $blogname, $to );
     $subject = sprintf( __( '[%s] New Post Submission' ), $blogname );
-    
+
     $msg = sprintf( __( 'A new post has been submitted on %s' ), $blogname ) . "\r\n\r\n";
     $msg .= sprintf( __( 'Author : %s' ), $user->display_name ) . "\r\n";
     $msg .= sprintf( __( 'Author Email : %s' ), $user->user_email ) . "\r\n";
@@ -347,10 +349,10 @@ function wpuf_attachment_fields( $edit = false, $post_id = false ) {
     if ( get_option( 'wpuf_allow_attachments' ) == 'yes' ) {
         $fields = (int) get_option( 'wpuf_attachment_num' );
 
-        if( $edit && $post_id ) {
+        if ( $edit && $post_id ) {
             $fields = abs( $fields - count( wpfu_get_attachments( $post_id ) ) );
         }
-        
+
         for ($i = 0; $i < $fields; $i++) {
             ?>
 
@@ -500,8 +502,8 @@ function wpuf_starts_with( $string, $starts ) {
  */
 function has_shortcode( $shortcode = '', $post_id = false ) {
     global $post;
-    
-    if( !$post ) {
+
+    if ( !$post ) {
         return false;
     }
 
@@ -551,14 +553,14 @@ function wpuf_dropdown_page( $args = '' ) {
 
 /**
  * Edit post link for frontend
- * 
+ *
  * @since 0.7
  * @param string $url url of the original post edit link
- * @param int $post_id 
+ * @param int $post_id
  * @return string url of the current edit post page
  */
 function wpuf_edit_post_link( $url, $post_id ) {
-    if( is_admin() ) {
+    if ( is_admin() ) {
         return $url;
     }
 
@@ -566,10 +568,98 @@ function wpuf_edit_post_link( $url, $post_id ) {
     if ( get_option( 'wpuf_can_edit_post' ) == 'yes' ) {
         $edit_page = (int) get_option( 'wpuf_edit_page_url' );
         $url = get_permalink( $edit_page );
-        
+
         $url = wp_nonce_url( $url . '?pid=' . $post_id, 'wpuf_edit' );
     }
-    
+
     return $url;
 }
+
 add_filter( 'get_edit_post_link', 'wpuf_edit_post_link', 10, 2 );
+
+/**
+ * Shows the custom field data and attachments to the post
+ *
+ * @since 0.7
+ *
+ * @global object $wpdb
+ * @global object $post
+ * @param string $content
+ * @return string
+ */
+function wpuf_show_meta_front( $content ) {
+    global $wpdb, $post;
+
+    //check, if custom field is enabled
+    $enabled = get_option( 'wpuf_enable_custom_field', 'no' );
+    $show_custom = get_option( 'wpuf_show_custom_front', 'no' );
+    $show_attachment = get_option( 'wpuf_show_attach_inpost', 'no' );
+
+    if ( $enabled == 'yes' && $show_custom == 'yes' ) {
+        $extra = '';
+        $fields = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_customfields ORDER BY `region` DESC", OBJECT );
+        if ( $wpdb->num_rows > 0 ) {
+            $extra .= '<ul class="wpuf_customs">';
+            foreach ($fields as $field) {
+                $meta = get_post_meta( $post->ID, $field->field, true );
+                if ( $meta ) {
+                    $extra .= sprintf( '<li><label>%s</label> : %s</li>', $field->label, make_clickable($meta ) );
+                }
+            }
+            $extra .= '<ul>';
+
+            $content .= $extra;
+        }
+    }
+
+    if ( $show_attachment == 'yes' ) {
+        $attach = '';
+        $attachments = wpfu_get_attachments( $post->ID );
+
+        if ( $attachments ) {
+            $attach = '<ul class="wpuf-attachments">';
+
+            foreach ($attachments as $file) {
+
+                //if the attachment is image, show the image. else show the link
+                if ( wpuf_is_file_image( $file['url'], $file['mime'] ) ) {
+                    $thumb = wp_get_attachment_image_src( $file['id'] );
+                    $attach .= sprintf( '<li><a href="%s"><img src="%s" alt="%s" /></a></li>', $file['url'], $thumb[0], esc_attr( $file['title'] ) );
+                } else {
+                    $attach .= sprintf( '<li><a href="%s" title="%s">%s</a></li>', $file['url'], esc_attr( $file['title'] ), $file['title'] );
+                }
+            }
+
+            $attach .= '</ul>';
+        }
+
+        if ( $attach ) {
+            $content .= $attach;
+        }
+    }
+
+    return $content;
+}
+
+add_filter( 'the_content', 'wpuf_show_meta_front' );
+
+/**
+ * Check if the file is a image
+ *
+ * @since 0.7
+ *
+ * @param string $file url of the file to check
+ * @param string $mime mime type of the file
+ * @return bool
+ */
+function wpuf_is_file_image( $file, $mime ) {
+    $ext = preg_match( '/\.([^.]+)$/', $file, $matches ) ? strtolower( $matches[1] ) : false;
+
+    $image_exts = array('jpg', 'jpeg', 'gif', 'png');
+
+    if ( 'image/' == substr( $mime, 0, 6 ) || $ext && 'import' == $mime && in_array( $ext, $image_exts ) ) {
+        return true;
+    }
+
+    return false;
+}

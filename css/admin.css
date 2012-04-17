@@ -5,9 +5,9 @@
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     background: #fff;
-   -moz-box-shadow:inset 0 0 5px #ccc;
-   -webkit-box-shadow:inset 0 0 5px #ccc;
-   box-shadow:inset 0 0 5px #ccc;
+    -moz-box-shadow:inset 0 0 5px #ccc;
+    -webkit-box-shadow:inset 0 0 5px #ccc;
+    box-shadow:inset 0 0 5px #ccc;
 }
 
 .wpuf-admin legend{
@@ -22,8 +22,8 @@
     padding: 5px 10px;
     text-transform: capitalize;
     -moz-box-shadow:inset 0 0 5px #ccc;
-   -webkit-box-shadow:inset 0 0 5px #ccc;
-   box-shadow:inset 0 0 5px #ccc;
+    -webkit-box-shadow:inset 0 0 5px #ccc;
+    box-shadow:inset 0 0 5px #ccc;
 }
 
 .wpuf-admin .widefat td{
@@ -48,6 +48,26 @@
     font-size: 11px;
 }
 
+.wpuf_admin ul {
+    margin: 10px;
+}
+
+.wpuf_admin li {
+    padding: 0 0 10px;
+    margin: 0 0 10px;
+    border-bottom: 1px solid #E7E7E7;
+}
+.wpuf_admin span.label {
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    width: 200px;
+}
+
+.wpuf-admin .nav-tab {
+    font-size: 15px;
+    margin: 0 0px -1px 0;
+}
 
 .tooltip {
     position:absolute;
@@ -101,6 +121,7 @@ span.wpuf_help{
     background: url('../images/help.png') no-repeat;
     cursor: pointer;
     float: right;
+    display: none;
 }
 
 #option-saved{

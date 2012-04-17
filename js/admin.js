@@ -16,15 +16,6 @@ function wpuf_show(o){
     }
 }
 
-//show/hide immediately on document load
-jQuery(document).ready(function() {
-    var n = document.getElementById('wpuf_field_values_row');
-    console.log(n);
-    if( n ) {
-        wpuf_show(n);
-    }
-});
-
 //tooltip function
 jQuery(document).ready(function($) {
 
@@ -77,12 +68,59 @@ jQuery(document).ready(function($) {
             cache: false,
             success: function(response){
                 $('.wpuf_loading').remove();
-                var top = ( $(window).height() - 300 ) / 2 + $(window).scrollTop() + "px";
-                $('#option-saved').html(response).css('top', top).slideDown('fast').delay(1000).fadeOut('slow');
+                var top = ( $(window).height() - 300 ) / 2 + $(window).scrollTop() + "px",
+                    left = ( $(window).width() - 550 ) / 2;
+                $('#option-saved').html(response).css({'top': top, 'left': left}).slideDown('fast').delay(1000).fadeOut('slow');
             }
         });
 
         return false;
     });
+
+    // Switches option sections
+    $('.group').hide();
+    var activetab = '';
+    if (typeof(localStorage) != 'undefined' ) {
+        activetab = localStorage.getItem("activetab");
+    }
+    if (activetab != '' && $(activetab).length ) {
+        $(activetab).fadeIn();
+    } else {
+        $('.group:first').fadeIn();
+    }
+    $('.group .collapsed').each(function(){
+        $(this).find('input:checked').parent().parent().parent().nextAll().each(
+            function(){
+                if ($(this).hasClass('last')) {
+                    $(this).removeClass('hidden');
+                    return false;
+                }
+                $(this).filter('.hidden').removeClass('hidden');
+            });
+    });
+
+    if (activetab != '' && $(activetab + '-tab').length ) {
+        $(activetab + '-tab').addClass('nav-tab-active');
+    }
+    else {
+        $('.nav-tab-wrapper a:first').addClass('nav-tab-active');
+    }
+    $('.nav-tab-wrapper a').click(function(evt) {
+        $('.nav-tab-wrapper a').removeClass('nav-tab-active');
+        $(this).addClass('nav-tab-active').blur();
+        var clicked_group = $(this).attr('href');
+        if (typeof(localStorage) != 'undefined' ) {
+            localStorage.setItem("activetab", $(this).attr('href'));
+        }
+        $('.group').hide();
+        $(clicked_group).fadeIn();
+        evt.preventDefault();
+    });
+
+    var n = document.getElementById('wpuf_field_values_row');
+    console.log(n);
+    if( n ) {
+        wpuf_show(n);
+    }
 
 });

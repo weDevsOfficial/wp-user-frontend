@@ -153,19 +153,19 @@ function wpuf_edit_show_form( $post ) {
             <?php } ?>
 
             <?php wpuf_attachment_fields( true, $post->ID ); ?>
-            
+
             <?php do_action( 'wpuf_add_post_form_tags', $post->post_type, $post ); ?>
             <?php wpuf_build_custom_field_form( 'bottom', true, $post->ID ); ?>
 
             <li>
                 <label>&nbsp;</label>
-                <input class="wpuf_submit" type="submit" name="wpuf_edit_post_submit" value="<?php _e( 'Update', 'wpuf' ); ?>">
+                <input class="wpuf_submit" type="submit" name="wpuf_edit_post_submit" value="<?php echo esc_attr( get_option('wpuf_post_update_label', 'Update Post!') ); ?>">
                 <input type="hidden" name="wpuf_edit_post_submit" value="yes" />
                 <input type="hidden" name="post_id" value="<?php echo $post->ID; ?>">
             </li>
         </ul>
     </form>
-    
+
     <?php if ( get_option( 'wpuf_allow_attachments' ) == 'yes' ) { ?>
         <div class="wpuf-edit-attachment">
             <?php wpuf_edit_attachment( $post->ID ); ?>
@@ -181,13 +181,13 @@ function wpuf_validate_post_edit_submit() {
 
     $title = trim( $_POST['wpuf_post_title'] );
     $content = trim( $_POST['wpuf_post_content'] );
-    
+
     $tags = '';
     $cat = '';
     if( isset( $_POST['wpuf_post_tags'] ) ) {
         $tags = wpuf_clean_tags( $_POST['wpuf_post_tags'] );
     }
-    
+
     if( isset( $_POST['cat'] ) ) {
         $cat = trim( $_POST['cat'] );
     }

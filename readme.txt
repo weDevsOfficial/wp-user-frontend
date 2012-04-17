@@ -83,60 +83,67 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
-version 0.6
+= version 0.7 =
+
+* admin ui improved
+* updated new post notification mail template
+* custom fields and attachment show/hide in posts
+* post edit link override option
+* ajax "posting..." changed
+* attachment fields restriction in edit page
+* localized ajaxurl and posting message
+* improved action hooks and filter hooks
+
+= version 0.6 =
 ---------------
 
-    * fixed error on attachment delete
-    * added styles on dashboard too
-    * fixed custom field default dropdown
-    * fixed output buffering for add_post/edit_post/dashboard/profile pages
-    * admin panel scripts are added wp_enqueue_script instead of echo
-    * fixed admin panel block logic
-    * filter hook added on edit post for post args
+* fixed error on attachment delete
+* added styles on dashboard too
+* fixed custom field default dropdown
+* fixed output buffering for add_post/edit_post/dashboard/profile pages
+* admin panel scripts are added wp_enqueue_script instead of echo
+* fixed admin panel block logic
+* filter hook added on edit post for post args
 
-version 0.5
----------------
+= version 0.5 =
 
-    * filters on add posting page for blocking the post capa
-    * subscription pack id added on user meta upon purchase
-    * filters on add posting page for blocking the post capa
-    * option for force pack purchase on add post. dropdown p
-    * subscription info on profile edit page
-    * post direction fix after payment
-    * filter added on form builder
+* filters on add posting page for blocking the post capa
+* subscription pack id added on user meta upon purchase
+* filters on add posting page for blocking the post capa
+* option for force pack purchase on add post. dropdown p
+* subscription info on profile edit page
+* post direction fix after payment
+* filter added on form builder
 
 
-version 0.4
----------------
+= version 0.4 =
 
-    * missing custom meta field added on edit post form
-    * jQuery validation added on edit post form
+* missing custom meta field added on edit post form
+* jQuery validation added on edit post form
 
-version 0.3
----------------
+= version 0.3 =
 
-    * rich/plain text on/off fixed
-    * ajax chained category added on add post form
-    * missing action added on edit post form
-    * stripslashes on admin/frontend meta field
-    * 404 error fix on add post
+* rich/plain text on/off fixed
+* ajax chained category added on add post form
+* missing action added on edit post form
+* stripslashes on admin/frontend meta field
+* 404 error fix on add post
 
-version 0.2
----------------
+= version 0.2 =
 
-    * Admin settings page has been improved
-    * Header already sent warning messages has been fixed
-    * Now you can add custom post meta from the settings page
-    * A new pay per post and subscription based posting options has been introduced (Only paypal is supported now)
-    * You can upload attachment with post
-    * WYSIWYG editor has been added
-    * You can add and manage your users from frontend now (only having the capability to edit_users )
-    * Some action and filters has been added for developers to add their custom form elements and validation
-    * Pagination added in post dashboard
-    * You can use the form to accept "custom post type" posts. e.g: [wpuf_addpost post_type="event"]. It also applies for showing post on dashboard like "[wpuf_dashboard post_type="event"]"
-    * Changing the form labels of the add post form is now possible from admin panel.
-    * The edit post page setting is changed from URL to page select dropdown.
-    * You can lock certain users from posting from their edit profile page.
+* Admin settings page has been improved
+* Header already sent warning messages has been fixed
+* Now you can add custom post meta from the settings page
+* A new pay per post and subscription based posting options has been introduced (Only paypal is supported now)
+* You can upload attachment with post
+* WYSIWYG editor has been added
+* You can add and manage your users from frontend now (only having the capability to edit_users )
+* Some action and filters has been added for developers to add their custom form elements and validation
+* Pagination added in post dashboard
+* You can use the form to accept "custom post type" posts. e.g: [wpuf_addpost post_type="event"]. It also applies for showing post on dashboard like "[wpuf_dashboard post_type="event"]"
+* Changing the form labels of the add post form is now possible from admin panel.
+* The edit post page setting is changed from URL to page select dropdown.
+* You can lock certain users from posting from their edit profile page.
 
 == Upgrade Notice ==
 

@@ -56,7 +56,7 @@ jQuery(document).ready(function($) {
 
 
     //handle the ajax request
-    $('.wpuf_admin').submit(function(){
+    $('form.wpuf_admin').submit(function(){
         data = $(this).serialize();
         //alert(data);
         $(this).append('<div class="wpuf_loading">Saving...</div>');
@@ -118,8 +118,7 @@ jQuery(document).ready(function($) {
     });
 
     var n = document.getElementById('wpuf_field_values_row');
-    console.log(n);
-    if( n ) {
+    if( n !== 'undefined') {
         wpuf_show(n);
     }
 

@@ -564,12 +564,15 @@ function wpuf_edit_post_link( $url, $post_id ) {
         return $url;
     }
 
-    $url = '';
-    if ( get_option( 'wpuf_can_edit_post' ) == 'yes' ) {
-        $edit_page = (int) get_option( 'wpuf_edit_page_url' );
-        $url = get_permalink( $edit_page );
+    $override = get_option( 'wpuf_override_editlink', 'yes' );
+    if ( $override == 'yes' ) {
+        $url = '';
+        if ( get_option( 'wpuf_can_edit_post' ) == 'yes' ) {
+            $edit_page = (int) get_option( 'wpuf_edit_page_url' );
+            $url = get_permalink( $edit_page );
 
-        $url = wp_nonce_url( $url . '?pid=' . $post_id, 'wpuf_edit' );
+            $url = wp_nonce_url( $url . '?pid=' . $post_id, 'wpuf_edit' );
+        }
     }
 
     return $url;

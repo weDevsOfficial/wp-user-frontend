@@ -56,7 +56,13 @@
     padding: 0 0 10px;
     margin: 0 0 10px;
     border-bottom: 1px solid #E7E7E7;
+    line-height: 20px;
 }
+
+.wpuf_admin li:last-child {
+    border-bottom: none;
+}
+
 .wpuf_admin span.label {
     float: left;
     height: 20px;

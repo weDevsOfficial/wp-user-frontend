@@ -3,8 +3,8 @@ Contributors: tareq1988
 Donate link: http://tareq.wedevs.com
 Tags: frontend, post, edit, dashboard, restrict
 Requires at least: 3.3
-Tested up to: 3.3
-Stable tag: 0.6
+Tested up to: 3.3.1
+Stable tag: 0.7
 
 Create, update, delete posts and edit profile from wordpress frontend.
 
@@ -13,20 +13,20 @@ Create, update, delete posts and edit profile from wordpress frontend.
 Some of us want something like that the subscriber/contributor will not be able to go in the
 wordpress backend and everything these user can control will be done from wordpress frontend.
 
-Features:
+= Features:  =
 
 So here is my plugin that solves your problem. This features of this plugin are follows:
 
-    * User can create a new post and edit from frontend
-    * They can view their page in the custom dashboard
-    * Users can edit their profile
-    * Administrator can restrict any user level to access the wordpress backend (/wp-admin)
-    * New posts status, submitted by users are configurable via admin panel. i.e. Published, Draft, Pending
-    * Admin can configure to receive notification mail when the users creates a new post.
-    * Configurable options if the user can edit or delete their posts.
-    * Users can upload attachments from the frontend
-    * Admins can manage their users from frontend
-    * Pay per post or subscription on posting is possible
+* User can create a new post and edit from frontend
+* They can view their page in the custom dashboard
+* Users can edit their profile
+* Administrator can restrict any user level to access the wordpress backend (/wp-admin)
+* New posts status, submitted by users are configurable via admin panel. i.e. Published, Draft, Pending
+* Admin can configure to receive notification mail when the users creates a new post.
+* Configurable options if the user can edit or delete their posts.
+* Users can upload attachments from the frontend
+* Admins can manage their users from frontend
+* Pay per post or subscription on posting is possible
 
 
 == Installation ==
@@ -46,9 +46,14 @@ This section describes how to install the plugin and get it working.
 
 == Screenshots ==
 1. Admin panel
-2. dashboard
-3. Edit Posts
-4. Edit Profile
+2. User Dashboard
+3. Add Post
+4. Edit Posts
+5. Edit Profile
+6. Custom Field Manager
+7. Subscription Pack Manager
+8. Subscription packs
+9. Edit Users
 
 == Frequently Asked Questions ==
 

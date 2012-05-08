@@ -301,3 +301,11 @@ function wpuf_can_post( $perm ) {
     return $perm;
 }
 add_filter( 'wpuf_can_post', 'wpuf_can_post' );
+
+
+function wpuf_footer_css() {
+    $css = get_option( 'wpuf_custom_css' );
+    echo '<style type="text/css">' . $css . '</style>';
+}
+
+add_action( 'wp_footer', 'wpuf_footer_css' );

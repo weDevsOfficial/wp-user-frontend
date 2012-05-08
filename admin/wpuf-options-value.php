@@ -218,8 +218,43 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                         echo '<h4>' . $element['label'] . '</h4>';
                         break;
 
-                    case 'html':
-                        echo '<li>' . $element['label'] . '</li>';
+                    case 'page':
+                        ?>
+                        <li>
+                            <span class="label">
+                                <label for="<?php echo $element['name']; ?>"><?php echo $element['label']; ?></label>
+
+                                <?php if ( $element['desc'] ): ?>
+                                    <span class="wpuf_help" title="<?php echo $element['desc']; ?>"></span>
+                                <?php endif; ?>
+
+                            </span>
+                            <span class="input-field">
+
+                                <?php
+                                //onchange event
+                                $onchange = $element['onchange'];
+                                if ( $onchange ) {
+                                    $onchange = ' onchange="' . $onchange . '" ';
+                                } else {
+                                    $onchange = ' ';
+                                }
+
+                                $pages = wpuf_dropdown_page()
+                                ?>
+
+                                <select name="<?php echo $element['name']; ?>" id="<?php echo $element['name']; ?>"<?php echo $onchange; ?>>
+                                    <?php foreach ($pages as $key => $val) : ?>
+                                        <option value="<?php echo $key; ?>"<?php if ( $value == $key )
+                            echo ' selected="selected"'; ?>><?php echo $val; ?></option>
+                                            <?php endforeach; ?>
+                                </select>
+
+                                <span class="description"><?php echo $element['desc']; ?></span>
+                            </span>
+                        </li>
+
+                        <?php
                         break;
 
                     default:
@@ -744,8 +779,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             'name' => 'wpuf_edit_page_url',
             'label' => 'Edit page',
             'desc' => 'Select the page where [wpuf_edit] shortcode is located.',
-            'type' => 'select',
-            'options' => wpuf_dropdown_page()
+            'type' => 'page'
         ),
         array(
             'name' => 'wpuf_admin_security',
@@ -867,15 +901,13 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             'name' => 'wpuf_sub_pay_page',
             'label' => 'Paypal Payment Page',
             'desc' => 'This page will be used to process the payment options.',
-            'type' => 'select',
-            'options' => wpuf_dropdown_page()
+            'type' => 'page'
         ),
         array(
             'name' => 'wpuf_sub_pay_thank_page',
             'label' => 'Paypal Thank you page',
             'desc' => 'After payment, users will be redirected here.',
-            'type' => 'select',
-            'options' => wpuf_dropdown_page()
+            'type' => 'page'
         ),
         array(
             'type' => 'title_end'

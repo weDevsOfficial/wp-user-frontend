@@ -74,8 +74,6 @@ function wpuf_custom_fields_main() {
                     </tr>
                 </thead>
 
-                <?php //wpuf_build_form( $custom_fields ); ?>
-                <?php _e( '', 'wpuf' ); ?>
                 <tbody>
                     <tr valign="top">
                         <td scope="row" class="label"><label for="field"><?php _e( 'Field Name', 'wpuf' ) ?></label></td>
@@ -283,7 +281,6 @@ function wpuf_custom_fields_edit() {
                         </tr>
                     </thead>
 
-                    <?php //wpuf_build_form( $custom_fields, $values, false ); ?>
                     <tbody>
                         <tr valign="top">
                             <td scope="row" class="label"><label for="field"><?php _e( 'Field Name', 'wpuf' ) ?></label></td>
@@ -360,7 +357,7 @@ function wpuf_custom_fields_edit() {
 
             </form>
         <?php } else { ?>
-            <h2>Nothing found</h2>
+            <h2><?php _e( 'Nothing found', 'wpuf' ); ?></h2>
         <?php } ?>
 
     </div>

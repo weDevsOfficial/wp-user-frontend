@@ -596,6 +596,16 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             'options' => wpuf_get_cats()
         ),
         array(
+            'name' => 'wpuf_cat_ajax',
+            'label' => 'Ajaxified category dropdown',
+            'desc' => 'If enabled, the children elements will bring on demand via ajax',
+            'type' => 'select',
+            'options' => array(
+                'yes' => 'Enable',
+                'no' => 'Disable'
+            )
+        ),
+        array(
             'name' => 'wpuf_allow_attachments',
             'label' => 'Allow Attachments',
             'desc' => 'Will the users be able to add attachemtns? If they attach image, they will be added as post thumbnail. ',
@@ -952,125 +962,3 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             'type' => 'title_end'
         ),
     );
-
-    $custom_fields = array(
-        array(
-            'name' => 'field',
-            'label' => 'Field Name',
-            'desc' => 'Name without space. Will be used to store the value in this custom field',
-            'type' => 'text'
-        ),
-        array(
-            'name' => 'label',
-            'label' => 'Label',
-            'desc' => 'This will be used as your input fields title',
-            'type' => 'text'
-        ),
-        array(
-            'name' => 'help',
-            'label' => 'Help Text',
-            'desc' => 'Text will be shown to user as help text',
-            'type' => 'text'
-        ),
-        array(
-            'name' => 'required',
-            'label' => 'Required',
-            'desc' => 'A validation criteria. User must provide input in that field',
-            'type' => 'select',
-            'options' => array(
-                'no' => 'No',
-                'yes' => 'Yes'
-            )
-        ),
-        array(
-            'name' => 'region',
-            'label' => 'Region',
-            'desc' => 'Where do you want to show this input field?',
-            'type' => 'select',
-            'options' => array(
-                'top' => 'Top',
-                'description' => 'Before Description',
-                'tag' => 'After Description',
-                'bottom' => 'Bottom'
-            )
-        ),
-        array(
-            'name' => 'order',
-            'label' => 'Order',
-            'desc' => 'Which order this input field will show in a region',
-            'type' => 'text',
-            'size' => 2
-        ),
-        array(
-            'name' => 'type',
-            'label' => 'Type',
-            'type' => 'select',
-            'options' => array(
-                'text' => 'Text Box',
-                'textarea' => 'Text Area',
-                'select' => 'Dropdown'
-            ),
-            'onchange' => 'wpuf_show(this)'
-        )
-    );
-
-    $taxonomy_fields = array(
-        array(
-            'name' => 'field',
-            'label' => 'Taxonomy Name',
-            'desc' => 'The name of your custom taxonomy.',
-            'type' => 'text'
-        ),
-        array(
-            'name' => 'label',
-            'label' => 'Label',
-            'desc' => 'This will be used as your input fields title',
-            'type' => 'text'
-        ),
-        array(
-            'name' => 'help',
-            'label' => 'Help Text',
-            'desc' => 'Text will be shown to user as help text',
-            'type' => 'text'
-        ),
-        array(
-            'name' => 'required',
-            'label' => 'Required',
-            'desc' => 'A validation criteria. User must provide input in that field',
-            'type' => 'select',
-            'options' => array(
-                'no' => 'No',
-                'yes' => 'Yes'
-            )
-        ),
-        array(
-            'name' => 'region',
-            'label' => 'Region',
-            'desc' => 'Where do you want to show this input field?',
-            'type' => 'select',
-            'options' => array(
-                'top' => 'Top',
-                'description' => 'Before Description',
-                'tag' => 'After Description',
-                'bottom' => 'Bottom'
-            )
-        ),
-        array(
-            'name' => 'order',
-            'label' => 'Order',
-            'desc' => 'Which order this input field will show in a region',
-            'type' => 'text',
-            'size' => 2
-        ),
-        array(
-            'name' => 'type',
-            'label' => 'Type',
-            'type' => 'select',
-            'options' => array(
-                'text' => 'Text Box',
-                'select' => 'Dropdown'
-            )
-        )
-    );
-
-//wpuf_build_custom_field_form('top');

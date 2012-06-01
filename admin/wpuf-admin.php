@@ -25,7 +25,7 @@ function wpuf_plugin_options() {
     <div class="wrap wpuf-admin">
 
         <div id="icon-options-general" class="icon32"><br></div>
-        <h2>WP User Frontend: Management Options</h2>
+        <h2><?php _e( 'WP User Frontend: Management Options', 'wpuf' ); ?></h2>
 
         <?php
         if ( isset( $_POST['options_submit'] ) ) {

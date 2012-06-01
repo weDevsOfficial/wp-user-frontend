@@ -1,59 +1,15 @@
-function wpuf_show(o){
+function wpuf_show(el){
 
-    var d=document.getElementById('wpuf_field_values_row');
-    switch(o.value){
-        case 'select':
-            d.style.display='table-row';
-            break;
-        case 'radio':
-            d.style.display='table-row';
-            break;
-        case 'checkbox':
-            d.style.display='table-row';
-            break;
-        default:
-            d.style.display='none';
+    var d = jQuery('#wpuf_field_values_row');
+    if(jQuery(el).val() == 'select') {
+        d.show();
+    } else {
+        d.hide();
     }
 }
 
 //tooltip function
 jQuery(document).ready(function($) {
-
-    //Select all anchor tag with rel set to tooltip
-    $('.wpuf_help').mouseover(function(e) {
-
-        //Grab the title attribute's value and assign it to a variable
-        var tip = $(this).attr('title');
-
-        //Remove the title attribute's to avoid the native tooltip from the browser
-        $(this).attr('title','');
-
-        //Append the tooltip template and its value
-        $(this).append('<div class="tooltip"><div class="tipBody">' + tip + '</div></div>');
-
-        //Show the tooltip with faceIn effect
-        $('.tooltip').fadeIn('500');
-        $('.tooltip').fadeTo('10',0.8);
-
-    }).mousemove(function(e) {
-
-        //Keep changing the X and Y axis for the tooltip, thus, the tooltip move along with the mouse
-        $('.tooltip').css( {
-            'left': e.pageX - 210,
-            'top': e.pageY - 20
-        } );
-
-    }).mouseout(function() {
-
-        //Put back the title attribute's value
-        $(this).attr('title',$('.tipBody').html());
-
-        //Remove the appended tooltip template
-        $(this).children('div.tooltip').remove();
-
-    });
-
-
 
     //handle the ajax request
     $('form.wpuf_admin').submit(function(){
@@ -117,9 +73,6 @@ jQuery(document).ready(function($) {
         evt.preventDefault();
     });
 
-    var n = document.getElementById('wpuf_field_values_row');
-    if( n !== 'undefined') {
-        wpuf_show(n);
-    }
+    $('.wpuf-admin #type').change();
 
 });

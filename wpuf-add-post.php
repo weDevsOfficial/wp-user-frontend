@@ -72,8 +72,16 @@ function wpuf_add_post( $post_type ) {
                             </label>
                             <div style="float:left;">
                                 <div id="catlvl0">
-                                    <?php $exclude = get_option( 'wpuf_exclude_cat' ); ?>
-                                    <?php wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude ) ?>
+                                    <?php
+                                    $exclude = get_option( 'wpuf_exclude_cat' );
+                                    $cat_ajax = get_option( 'wpuf_cat_ajax', 'yes' );
+
+                                    if ( $cat_ajax == 'yes' ) {
+                                        wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude );
+                                    } else {
+                                        wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat-no_ajax&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude );
+                                    }
+                                    ?>
                                 </div>
                             </div>
                             <div id="categories-footer" style="float:left;"></div>
@@ -89,18 +97,23 @@ function wpuf_add_post( $post_type ) {
                         <label for="new-post-desc">
                             <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
                         </label>
-                        <div style="float:left;">
-                            <?php
-                            $editor = get_option( 'wpuf_editor_type' );
-                            if ( $editor == 'full' ) {
-                                ?>
+
+                        <?php
+                        $editor = get_option( 'wpuf_editor_type' );
+                        if ( $editor == 'full' ) {
+                            ?>
+                            <div style="float:left;">
                                 <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => false, 'textarea_rows' => 8) ); ?>
-                            <?php } else if ( $editor == 'rich' ) { ?>
+                            </div>
+                        <?php } else if ( $editor == 'rich' ) { ?>
+                            <div style="float:left;">
                                 <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
-                            <?php } else { ?>
-                                <textarea name="wpuf_post_content" id="new-post-desc" cols="60" rows="8"></textarea>
-                            <?php } ?>
-                        </div>
+                            </div>
+
+                        <?php } else { ?>
+                            <textarea name="wpuf_post_content" id="new-post-desc" cols="60" rows="8"></textarea>
+                        <?php } ?>
+
                         <div class="clear"></div>
                         <p class="description"><?php echo stripslashes( get_option( 'wpuf_desc_help' ) ); ?></p>
                     </li>
@@ -292,3 +305,4 @@ function wpuf_validate_post_submit() {
         //echo wpuf_error_msg( $errors );
     }
 }
+

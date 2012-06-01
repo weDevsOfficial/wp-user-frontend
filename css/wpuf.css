@@ -74,6 +74,10 @@
     font-size: 12px;
 }
 
+.wpuf-post-form #wp-new-post-desc-wrap tr td {
+    padding: 0;
+}
+
 .clear{
     clear:both;
     height:0;

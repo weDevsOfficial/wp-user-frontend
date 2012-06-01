@@ -15,7 +15,7 @@ function wpuf_edit_post_shorcode() {
         printf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( '', false ) );
     }
 
-    $content =  ob_get_contents();
+    $content = ob_get_contents();
     ob_end_clean();
 
     return $content;
@@ -130,7 +130,12 @@ function wpuf_edit_show_form( $post ) {
                     <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
                 </label>
                 <div style="float:left;">
-                    <?php if ( get_option( 'wpuf_editor_type' ) == 'rich' ) { ?>
+                    <?php
+                    $editor = get_option( 'wpuf_editor_type' );
+                    if ( $editor == 'full' ) {
+                        ?>
+                        <?php wp_editor( $post->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => false, 'textarea_rows' => 8) ); ?>
+                    <?php } else if ( $editor == 'rich' ) { ?>
                         <?php wp_editor( $post->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
                     <?php } else { ?>
                         <textarea name="wpuf_post_content" id="new-post-desc" cols="60" rows="8"><?php echo esc_textarea( $post->post_content ); ?></textarea>
@@ -159,7 +164,7 @@ function wpuf_edit_show_form( $post ) {
 
             <li>
                 <label>&nbsp;</label>
-                <input class="wpuf_submit" type="submit" name="wpuf_edit_post_submit" value="<?php echo esc_attr( get_option('wpuf_post_update_label', 'Update Post!') ); ?>">
+                <input class="wpuf_submit" type="submit" name="wpuf_edit_post_submit" value="<?php echo esc_attr( get_option( 'wpuf_post_update_label', 'Update Post!' ) ); ?>">
                 <input type="hidden" name="wpuf_edit_post_submit" value="yes" />
                 <input type="hidden" name="post_id" value="<?php echo $post->ID; ?>">
             </li>
@@ -170,7 +175,7 @@ function wpuf_edit_show_form( $post ) {
         <div class="wpuf-edit-attachment">
             <?php wpuf_edit_attachment( $post->ID ); ?>
         </div>
-    <?php
+        <?php
     }
 }
 
@@ -184,11 +189,11 @@ function wpuf_validate_post_edit_submit() {
 
     $tags = '';
     $cat = '';
-    if( isset( $_POST['wpuf_post_tags'] ) ) {
+    if ( isset( $_POST['wpuf_post_tags'] ) ) {
         $tags = wpuf_clean_tags( $_POST['wpuf_post_tags'] );
     }
 
-    if( isset( $_POST['cat'] ) ) {
+    if ( isset( $_POST['cat'] ) ) {
         $cat = trim( $_POST['cat'] );
     }
 

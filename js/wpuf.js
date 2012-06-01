@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
 
         var form = $(this);
 
-        $(this).find('.requiredField').each(function() {
+        form.find('.requiredField').each(function() {
             if( $(this).hasClass('invalid') ) {
                 $(this).removeClass('invalid');
             }
@@ -13,22 +13,21 @@ jQuery(document).ready(function($) {
         var hasError = false;
 
         $(this).find('.requiredField').each(function() {
-            var labelText = $(this).prev('label').text();
+            var el = $(this),
+                labelText = el.prev('label').text();
 
-            if(jQuery.trim($(this).val()) == '') {
-                $(this).addClass('invalid');
+            if(jQuery.trim(el.val()) == '') {
+                el.addClass('invalid');
                 hasError = true;
-            } else if($(this).hasClass('email')) {
+            } else if(el.hasClass('email')) {
                 var emailReg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-                if(!emailReg.test(jQuery.trim($(this).val()))) {
-                    $(this).addClass('invalid');
+                if(!emailReg.test($.trim(el.val()))) {
+                    el.addClass('invalid');
                     hasError = true;
                 }
-            } else if($(this).hasClass('cat')) {
-                var cat = document.getElementById('cat');
-                console.log( cat.options[cat.selectedIndex].value );
-                if( cat.options[cat.selectedIndex].value == '-1' ) {
-                    $(this).addClass('invalid');
+            } else if(el.hasClass('cat')) {
+                if( el.val() == '-1' ) {
+                    el.addClass('invalid');
                     hasError = true;
                 }
             }

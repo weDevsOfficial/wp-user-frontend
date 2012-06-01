@@ -18,8 +18,8 @@ function wpuf_add_post_shorcode( $atts ) {
     } else {
         printf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( get_permalink(), false ) );
     }
-    
-    $content =  ob_get_contents();
+
+    $content = ob_get_contents();
     ob_end_clean();
 
     return $content;
@@ -90,7 +90,12 @@ function wpuf_add_post( $post_type ) {
                             <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
                         </label>
                         <div style="float:left;">
-                            <?php if ( get_option( 'wpuf_editor_type' ) == 'rich' ) { ?>
+                            <?php
+                            $editor = get_option( 'wpuf_editor_type' );
+                            if ( $editor == 'full' ) {
+                                ?>
+                                <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => false, 'textarea_rows' => 8) ); ?>
+                            <?php } else if ( $editor == 'rich' ) { ?>
                                 <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
                             <?php } else { ?>
                                 <textarea name="wpuf_post_content" id="new-post-desc" cols="60" rows="8"></textarea>

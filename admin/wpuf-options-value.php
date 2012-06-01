@@ -462,7 +462,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
     $wpuf_options = array(
         array(
             'type' => 'title',
-            'label' => 'Label Options'
+            'label' => 'Labels'
         ),
         array(
             'name' => 'wpuf_title_label',
@@ -542,7 +542,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
         ),
         array(
             'type' => 'title',
-            'label' => 'Frontend Posting Options'
+            'label' => 'Frontend Posting'
         ),
         array(
             'name' => 'wpuf_post_status',
@@ -625,7 +625,8 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             'desc' => 'On a RICH TEXT selection, users will be given a WYSIWYG editor. Otherwise a simple textarea.',
             'type' => 'select',
             'options' => array(
-                'rich' => 'Rich Text',
+                'rich' => 'Rich Text (tiny)',
+                'full' => 'Rich Text (full)',
                 'plain' => 'Plain Text'
             )
         ),
@@ -674,7 +675,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
         ),
         array(
             'type' => 'title',
-            'label' => 'Dashboard Options'
+            'label' => 'Dashboard'
         ),
         array(
             'name' => 'wpuf_list_post_type',
@@ -733,7 +734,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
         ),
         array(
             'type' => 'title',
-            'label' => 'Other Options'
+            'label' => 'Others'
         ),
         array(
             'name' => 'wpuf_notify',
@@ -827,7 +828,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
         array(
             'name' => 'wpuf_custom_css',
             'label' => 'Custom CSS codes',
-            'desc' => 'Add your custom CSS codes if you want to. This code will be placed on page header area wrapped with style tag',
+            'desc' => '<br>Add your custom CSS codes if you want to. This code will be placed on page header area wrapped with style tag',
             'type' => 'textarea',
             'rows' => 8,
             'cols' => 40
@@ -837,7 +838,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
         ),
         array(
             'type' => 'title',
-            'label' => 'Payment Options'
+            'label' => 'Payment'
         ),
         array(
             'name' => 'wpuf_sub_charge_posting',
@@ -866,7 +867,8 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             'type' => 'select',
             'options' => array(
                 'USD' => 'USD',
-                'AUD' => 'AUD'
+                'AUD' => 'AUD',
+                'EUR' => 'EUR',
             )
         ),
         array(

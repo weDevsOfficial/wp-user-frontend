@@ -50,14 +50,22 @@ function wpuf_user_dashboard_post_list( $post_type ) {
             die( "Security check" );
 
         //check, if the requested user is the post author
-        $post = get_post( $_REQUEST['pid'] );
+        $maybe_delete = get_post( $_REQUEST['pid'] );
 
-        if ( $post->post_author == $userdata->ID ) {
+        if ( $maybe_delete->post_author == $userdata->ID ) {
             wp_delete_post( $_REQUEST['pid'] );
-            echo '<div class="success">' . __( 'Post Deleted', 'wpuf' ) . '</div>';
+
+            //redirect
+            $redirect = add_query_arg( array('msg' => 'deleted'), get_permalink() );
+            wp_redirect( $redirect );
         } else {
             echo '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wpuf' ) . '</div>';
         }
+    }
+
+    //show delete success message
+    if ( isset( $_GET['msg'] ) && $_GET['msg'] == 'deleted' ) {
+        echo '<div class="success">' . __( 'Post Deleted', 'wpuf' ) . '</div>';
     }
 
     $pagenum = isset( $_GET['pagenum'] ) ? intval( $_GET['pagenum'] ) : 1;
@@ -154,7 +162,7 @@ function wpuf_user_dashboard_post_list( $post_type ) {
             'next_text' => __( '&raquo;', 'aag' ),
             'total' => $dashboard_query->max_num_pages,
             'current' => $pagenum
-        ) );
+                ) );
 
         if ( $pagination ) {
             echo $pagination;

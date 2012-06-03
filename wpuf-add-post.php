@@ -39,6 +39,15 @@ function wpuf_add_post( $post_type ) {
     global $userdata;
     $userdata = get_userdata( $userdata->ID );
 
+    if ( isset( $_POST['wpuf_post_new_submit'] ) ) {
+        $nonce = $_REQUEST['_wpnonce'];
+        if ( !wp_verify_nonce( $nonce, 'wpuf-add-post' ) ) {
+            wp_die( __( 'Cheating?' ) );
+        }
+
+        wpuf_validate_post_submit();
+    }
+
     $info = __( "Post It!", 'wpuf' );
     $can_post = 'yes';
 
@@ -171,21 +180,6 @@ function wpuf_add_post( $post_type ) {
         echo '<div class="info">' . $info . '</div>';
     }
 }
-
-function wpuf_init_posting_check() {
-    if ( has_shortcode( 'wpuf_addpost' ) ) {
-        if ( isset( $_POST['wpuf_post_new_submit'] ) ) {
-            $nonce = $_REQUEST['_wpnonce'];
-            if ( !wp_verify_nonce( $nonce, 'wpuf-add-post' ) ) {
-                wp_die( __( 'Cheating?' ) );
-            }
-
-            wpuf_validate_post_submit();
-        }
-    }
-}
-
-add_action( 'template_redirect', 'wpuf_init_posting_check' );
 
 /**
  * Validate the post submit data
@@ -332,7 +326,7 @@ function wpuf_validate_post_submit() {
             }
         }
     } else {
-        //echo wpuf_error_msg( $errors );
+        echo wpuf_error_msg( $errors );
     }
 }
 

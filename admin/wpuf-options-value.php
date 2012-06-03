@@ -606,6 +606,16 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             )
         ),
         array(
+            'name' => 'wpuf_featured_image',
+            'label' => 'Featured Image Upload',
+            'desc' => 'Gives ability to upload an image as featured post image',
+            'type' => 'select',
+            'options' => array(
+                'yes' => 'Enable',
+                'no' => 'Disable'
+            )
+        ),
+        array(
             'name' => 'wpuf_allow_attachments',
             'label' => 'Allow Attachments',
             'desc' => 'Will the users be able to add attachemtns? If they attach image, they will be added as post thumbnail. ',

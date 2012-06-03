@@ -87,6 +87,7 @@ function wpuf_edit_show_form( $post ) {
     }
     $tagslist = implode( ', ', $tagsarray );
     $categories = get_the_category( $post->ID );
+    $featured_image = get_option( 'wpuf_featured_image', 'yes' );
     ?>
     <form name="wpuf_edit_post_form" id="wpuf_edit_post_form" action="" enctype="multipart/form-data" method="POST">
         <?php wp_nonce_field( 'wpuf-edit-post' ) ?>
@@ -94,6 +95,31 @@ function wpuf_edit_show_form( $post ) {
 
             <?php do_action( 'wpuf_add_post_form_top', $post->post_type, $post ); //plugin hook  ?>
             <?php wpuf_build_custom_field_form( 'top', true, $post->ID ); ?>
+
+            <?php if ( $featured_image == 'yes' ) { ?>
+                <?php if ( current_theme_supports( 'post-thumbnails' ) ) { ?>
+                    <li>
+                        <label for="post-thumbnail"><?php echo get_option( 'wpuf_ft_image_label', __( 'Featured Image', 'wpuf' ) ); ?></label>
+                        <div id="wpuf-ft-upload-container">
+                            <div id="wpuf-ft-upload-filelist">
+                                <?php
+                                $style = '';
+                                if ( has_post_thumbnail( $post->ID ) ) {
+                                    $style = ' style="display:none"';
+
+                                    $post_thumbnail_id = get_post_thumbnail_id( $post->ID );
+                                    echo wpuf_feat_img_html( $post_thumbnail_id );
+                                }
+                                ?>
+                            </div>
+                            <a id="wpuf-ft-upload-pickfiles" class="button"<?php echo $style; ?> href="#">Upload Image</a>
+                        </div>
+                        <div class="clear"></div>
+                    </li>
+                <?php } else { ?>
+                    <div class="info"><?php _e( 'Your theme doesn\'t support featured image', 'wpuf' ) ?></div>
+                <?php } ?>
+            <?php } ?>
 
             <li>
                 <label for="new-post-title">
@@ -129,19 +155,25 @@ function wpuf_edit_show_form( $post ) {
                 <label for="new-post-desc">
                     <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
                 </label>
-                <div style="float:left;">
-                    <?php
-                    $editor = get_option( 'wpuf_editor_type' );
-                    if ( $editor == 'full' ) {
-                        ?>
-                        <?php wp_editor( $post->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => false, 'textarea_rows' => 8) ); ?>
-                    <?php } else if ( $editor == 'rich' ) { ?>
-                        <?php wp_editor( $post->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
-                    <?php } else { ?>
-                        <textarea name="wpuf_post_content" id="new-post-desc" cols="60" rows="8"><?php echo esc_textarea( $post->post_content ); ?></textarea>
-                    <?php } ?>
-                </div>
+
+                <?php
+                $editor = get_option( 'wpuf_editor_type' );
+                if ( $editor == 'full' ) {
+                    ?>
+                    <div style="float:left;">
+                        <?php wp_editor( $post->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => false, 'textarea_rows' => 8) ); ?>
+                    </div>
+                <?php } else if ( $editor == 'rich' ) { ?>
+                    <div style="float:left;">
+                        <?php wp_editor( $post->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => true, 'textarea_rows' => 8) ); ?>
+                    </div>
+
+                <?php } else { ?>
+                    <textarea name="wpuf_post_content" class="requiredField" id="new-post-desc" cols="60" rows="8"><?php echo esc_textarea( $post->post_content ); ?></textarea>
+                <?php } ?>
+
                 <div class="clear"></div>
+                <p class="description"><?php echo stripslashes( get_option( 'wpuf_desc_help' ) ); ?></p>
             </li>
 
             <?php do_action( 'wpuf_add_post_form_after_description', $post->post_type, $post ); ?>
@@ -239,6 +271,9 @@ function wpuf_validate_post_edit_submit() {
         } //foreach
     } //is_array
 
+    //post attachment
+    $attach_id = isset( $_POST['wpuf_featured_img'] ) ? intval( $_POST['wpuf_featured_img'] ) : 0;
+
     $errors = apply_filters( 'wpuf_edit_post_validation', $errors );
 
     if ( !$errors ) {
@@ -260,6 +295,11 @@ function wpuf_validate_post_edit_submit() {
 
             //upload attachment to the post
             wpuf_upload_attachment( $post_id );
+
+            //set post thumbnail if has any
+            if ( $attach_id ) {
+                set_post_thumbnail( $post_id, $attach_id );
+            }
 
             //add the custom fields
             if ( $custom_fields ) {

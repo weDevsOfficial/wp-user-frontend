@@ -85,6 +85,10 @@ jQuery(document).ready(function($) {
             }
         },
         featImgUploader: function() {
+            if(typeof plupload === 'undefined') {
+                return;
+            }
+            
             var uploader = new plupload.Uploader(wpuf.plupload);
 
             uploader.bind('Init', function(up, params) {

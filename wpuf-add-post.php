@@ -325,9 +325,10 @@ function wpuf_validate_post_submit() {
 
             //echo '<div class="success">' . __('Post published successfully', 'wpuf') . '</div>';
             if ( $post_id ) {
-                $redirect = get_permalink( $post_id );
-                $redirect = apply_filters( 'wpuf_after_post_redirect', $redirect, $post_id );
+                $redirect = apply_filters( 'wpuf_after_post_redirect', get_permalink( $post_id ), $post_id );
+
                 wp_redirect( $redirect );
+                exit;
             }
         }
     } else {

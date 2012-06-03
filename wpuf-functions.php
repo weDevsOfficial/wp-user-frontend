@@ -93,7 +93,10 @@ function wpuf_enqueue_scripts() {
 
         wp_enqueue_style( 'wpuf', $path . '/css/wpuf.css' );
 
-        wp_enqueue_script( 'plupload-handlers' );
+        if ( has_shortcode( 'wpuf_addpost' ) || has_shortcode( 'wpuf_edit' ) ) {
+            wp_enqueue_script( 'plupload-handlers' );
+        }
+
         wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js', array('jquery', 'thickbox') );
 
         $posting_msg = get_option( 'wpuf_post_submitting_label', 'Please wait...' );
@@ -729,14 +732,7 @@ function wpuf_featured_img_upload() {
         wp_update_attachment_metadata( $attach_id, $attach_data );
 
         if ( $attach_id ) {
-            $image = wp_get_attachment_image_src( $attach_id, 'thumbnail' );
-            //print_r($image);
-
-            $html = sprintf( '<div class="wpuf-item" id="attachment-%d">', $attach_id );
-            $html .= sprintf( '<img src="%s" alt="%s" />', $image[0], esc_attr( $file_name ) );
-            $html .= sprintf( '<a class="wpuf-del-ft-image button" href="#" data-id="%d">%s</a> ', $attach_id, __( 'Remove Image', 'wpuf' ) );
-            $html .= sprintf( '<input type="hidden" name="wpuf_featured_img" value="%d" />', $attach_id );
-            $html .= '</div>';
+            $html = wpuf_feat_img_html( $attach_id );
 
             $response = array(
                 'success' => true,
@@ -775,3 +771,17 @@ function wpuf_feat_img_del() {
 }
 
 add_action( 'wp_ajax_wpuf_feat_img_del', 'wpuf_feat_img_del' );
+
+function wpuf_feat_img_html( $attach_id ) {
+    $image = wp_get_attachment_image_src( $attach_id, 'thumbnail' );
+    $post = get_post( $attach_id );
+    //print_r($image);
+
+    $html = sprintf( '<div class="wpuf-item" id="attachment-%d">', $attach_id );
+    $html .= sprintf( '<img src="%s" alt="%s" />', $image[0], esc_attr( $post->post_title ) );
+    $html .= sprintf( '<a class="wpuf-del-ft-image button" href="#" data-id="%d">%s</a> ', $attach_id, __( 'Remove Image', 'wpuf' ) );
+    $html .= sprintf( '<input type="hidden" name="wpuf_featured_img" value="%d" />', $attach_id );
+    $html .= '</div>';
+
+    return $html;
+}

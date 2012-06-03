@@ -89,16 +89,32 @@ function wpuf_enqueue_scripts() {
     $path = plugins_url( 'wp-user-frontend' );
 
     if ( has_shortcode( 'wpuf_addpost' ) || has_shortcode( 'wpuf_edit' ) || has_shortcode( 'wpuf_dashboard' ) ) {
-        wp_enqueue_style( 'wpuf', $path . '/css/wpuf.css' );
-        wp_enqueue_style( 'wpuf-pagination', $path . '/css/pagination.css' );
+        require_once ABSPATH . '/wp-admin/includes/template.php';
 
-        wp_enqueue_script( 'jquery' );
-        wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js' );
+        wp_enqueue_style( 'wpuf', $path . '/css/wpuf.css' );
+
+        wp_enqueue_script( 'plupload-handlers' );
+        wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js', array('jquery', 'thickbox') );
 
         $posting_msg = get_option( 'wpuf_post_submitting_label', 'Please wait...' );
         wp_localize_script( 'wpuf', 'wpuf', array(
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
-            'postingMsg' => $posting_msg
+            'postingMsg' => $posting_msg,
+            'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
+            'nonce' => wp_create_nonce( 'wpuf_nonce' ),
+            'plupload' => array(
+                'runtimes' => 'html5,silverlight,flash,html4',
+                'browse_button' => 'wpuf-ft-upload-pickfiles',
+                'container' => 'wpuf-ft-upload-container',
+                'file_data_name' => 'wpuf_featured_img',
+                'max_file_size' => wp_max_upload_size() . 'b',
+                'url' => admin_url( 'admin-ajax.php' ) . '?action=wpuf_featured_img&nonce=' . wp_create_nonce( 'wpuf_featured_img' ),
+                'flash_swf_url' => includes_url( 'js/plupload/plupload.flash.swf' ),
+                'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
+                'filters' => array(array('title' => __( 'Allowed Files' ), 'extensions' => '*')),
+                'multipart' => true,
+                'urlstream_upload' => true,
+            )
         ) );
     }
 }
@@ -159,6 +175,11 @@ function wpuf_notify_post_mail( $user, $post_id ) {
     $msg .= sprintf( __( 'Permalink : %s' ), $permalink ) . "\r\n";
     $msg .= sprintf( __( 'Edit Link : %s' ), admin_url( 'post.php?action=edit&post=' . $post_id ) ) . "\r\n";
 
+    //plugin api
+    $to = apply_filters( 'wpuf_notify_to', $to );
+    $subject = apply_filters( 'wpuf_notify_subject', $subject );
+    $msg = apply_filters( 'wpuf_notify_message', $msg );
+
     wp_mail( $to, $subject, $msg, $headers );
     //var_dump($headers, $subject, $msg, $receiver);
 }
@@ -187,6 +208,11 @@ add_filter( 'upload_mimes', 'wpuf_mime' );
  * @param <type> $post_id
  */
 function wpuf_upload_attachment( $post_id ) {
+    if ( !isset( $_FILES['wpuf_post_attachments'] ) ) {
+        return false;
+        find_posts_div();
+    }
+
     include_once (ABSPATH . 'wp-admin/includes/file.php');
     include_once (ABSPATH . 'wp-admin/includes/image.php');
 
@@ -606,7 +632,7 @@ function wpuf_show_meta_front( $content ) {
             foreach ($fields as $field) {
                 $meta = get_post_meta( $post->ID, $field->field, true );
                 if ( $meta ) {
-                    $extra .= sprintf( '<li><label>%s</label> : %s</li>', $field->label, make_clickable($meta ) );
+                    $extra .= sprintf( '<li><label>%s</label> : %s</li>', $field->label, make_clickable( $meta ) );
                 }
             }
             $extra .= '<ul>';
@@ -666,3 +692,86 @@ function wpuf_is_file_image( $file, $mime ) {
 
     return false;
 }
+
+/**
+ * Upload Featured image via ajax
+ *
+ * @since 0.8
+ */
+function wpuf_featured_img_upload() {
+    check_ajax_referer( 'wpuf_featured_img', 'nonce' );
+
+    $upload = array(
+        'name' => $_FILES['wpuf_featured_img']['name'],
+        'type' => $_FILES['wpuf_featured_img']['type'],
+        'tmp_name' => $_FILES['wpuf_featured_img']['tmp_name'],
+        'error' => $_FILES['wpuf_featured_img']['error'],
+        'size' => $_FILES['wpuf_featured_img']['size']
+    );
+
+    $uploaded_file = wp_handle_upload( $upload, array('test_form' => false) );
+
+    // If the wp_handle_upload call returned a local path for the image
+    if ( isset( $uploaded_file['file'] ) ) {
+        $file_loc = $uploaded_file['file'];
+        $file_name = basename( $_FILES['wpuf_featured_img']['name'] );
+        $file_type = wp_check_filetype( $file_name );
+
+        $attachment = array(
+            'post_mime_type' => $file_type['type'],
+            'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
+            'post_content' => '',
+            'post_status' => 'inherit'
+        );
+
+        $attach_id = wp_insert_attachment( $attachment, $file_loc );
+        $attach_data = wp_generate_attachment_metadata( $attach_id, $file_loc );
+        wp_update_attachment_metadata( $attach_id, $attach_data );
+
+        if ( $attach_id ) {
+            $image = wp_get_attachment_image_src( $attach_id, 'thumbnail' );
+            //print_r($image);
+
+            $html = sprintf( '<div class="wpuf-item" id="attachment-%d">', $attach_id );
+            $html .= sprintf( '<img src="%s" alt="%s" />', $image[0], esc_attr( $file_name ) );
+            $html .= sprintf( '<a class="wpuf-del-ft-image button" href="#" data-id="%d">%s</a> ', $attach_id, __( 'Remove Image', 'wpuf' ) );
+            $html .= sprintf( '<input type="hidden" name="wpuf_featured_img" value="%d" />', $attach_id );
+            $html .= '</div>';
+
+            $response = array(
+                'success' => true,
+                'html' => $html,
+            );
+
+            echo json_encode( $response );
+            exit;
+        }
+    }
+
+    $response = array('success' => false);
+    echo json_encode( $response );
+    exit;
+}
+
+add_action( 'wp_ajax_wpuf_featured_img', 'wpuf_featured_img_upload' );
+
+/**
+ * Delete a featured image via ajax
+ *
+ * @since 0.8
+ */
+function wpuf_feat_img_del() {
+    check_ajax_referer( 'wpuf_nonce', 'nonce' );
+
+    $attach_id = isset( $_POST['attach_id'] ) ? intval( $_POST['attach_id'] ) : 0;
+    $attachment = get_post( $attach_id );
+
+    //post author or editor role
+    if ( get_current_user_id() == $attachment->post_author || current_user_can( 'delete_private_pages' ) ) {
+        wp_delete_attachment( $attach_id, true );
+    }
+
+    exit;
+}
+
+add_action( 'wp_ajax_wpuf_feat_img_del', 'wpuf_feat_img_del' );

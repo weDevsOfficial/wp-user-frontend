@@ -1,4 +1,14 @@
 <?php
+/**
+ * Start output buffering
+ *
+ * This is needed for redirecting to post when a new post has made
+ */
+function wpuf_buffer_start() {
+    ob_start();
+}
+
+add_action( 'init', 'wpuf_buffer_start' );
 
 /**
  * If the user isn't logged in, redirect
@@ -772,6 +782,13 @@ function wpuf_feat_img_del() {
 
 add_action( 'wp_ajax_wpuf_feat_img_del', 'wpuf_feat_img_del' );
 
+/**
+ * Displays attachment information upon upload as featured image
+ *
+ * @since 0.8
+ * @param int $attach_id attachment id
+ * @return string
+ */
 function wpuf_feat_img_html( $attach_id ) {
     $image = wp_get_attachment_image_src( $attach_id, 'thumbnail' );
     $post = get_post( $attach_id );

@@ -3,6 +3,8 @@
  * Start output buffering
  *
  * This is needed for redirecting to post when a new post has made
+ *
+ * @since 0.8
  */
 function wpuf_buffer_start() {
     ob_start();

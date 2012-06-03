@@ -44,6 +44,7 @@ function wpuf_add_post( $post_type ) {
 
     $info = apply_filters( 'wpuf_addpost_notice', $info );
     $can_post = apply_filters( 'wpuf_can_post', $can_post );
+    $featured_image = get_option( 'wpuf_featured_image', 'yes' );
 
     if ( $can_post == 'yes' ) {
         ?>
@@ -55,6 +56,21 @@ function wpuf_add_post( $post_type ) {
 
                     <?php do_action( 'wpuf_add_post_form_top', $post_type ); //plugin hook  ?>
                     <?php wpuf_build_custom_field_form( 'top' ); ?>
+
+                    <?php if ( $featured_image == 'yes' ) { ?>
+                        <?php if ( current_theme_supports( 'post-thumbnails' ) ) { ?>
+                            <li>
+                                <label for="post-thumbnail"><?php echo get_option( 'wpuf_ft_image_label', __( 'Featured Image', 'wpuf' ) ); ?></label>
+                                <div id="wpuf-ft-upload-container">
+                                    <div id="wpuf-ft-upload-filelist"></div>
+                                    <a id="wpuf-ft-upload-pickfiles" class="button" href="#">Upload Image</a>
+                                </div>
+                                <div class="clear"></div>
+                            </li>
+                        <?php } else { ?>
+                            <div class="info"><?php _e( 'Your theme doesn\'t support featured image', 'wpuf' ) ?></div>
+                        <?php } ?>
+                    <?php } ?>
 
                     <li>
                         <label for="new-post-title">
@@ -103,15 +119,15 @@ function wpuf_add_post( $post_type ) {
                         if ( $editor == 'full' ) {
                             ?>
                             <div style="float:left;">
-                                <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => false, 'textarea_rows' => 8) ); ?>
+                                <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => false, 'textarea_rows' => 8) ); ?>
                             </div>
                         <?php } else if ( $editor == 'rich' ) { ?>
                             <div style="float:left;">
-                                <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'teeny' => true, 'textarea_rows' => 8) ); ?>
+                                <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => true, 'textarea_rows' => 8) ); ?>
                             </div>
 
                         <?php } else { ?>
-                            <textarea name="wpuf_post_content" id="new-post-desc" cols="60" rows="8"></textarea>
+                            <textarea name="wpuf_post_content" class="requiredField" id="new-post-desc" cols="60" rows="8"></textarea>
                         <?php } ?>
 
                         <div class="clear"></div>
@@ -192,7 +208,12 @@ function wpuf_validate_post_submit() {
 
     $title = trim( $_POST['wpuf_post_title'] );
     $content = trim( $_POST['wpuf_post_content'] );
-    $tags = wpuf_clean_tags( $_POST['wpuf_post_tags'] );
+
+    $tags = '';
+    if ( isset( $_POST['wpuf_post_tags'] ) ) {
+        $tags = wpuf_clean_tags( $_POST['wpuf_post_tags'] );
+    }
+
     $cat = $_POST['category'];
 
     //validate title
@@ -218,6 +239,9 @@ function wpuf_validate_post_submit() {
     if ( !empty( $tags ) ) {
         $tags = explode( ',', $tags );
     }
+
+    //post attachment
+    $attach_id = isset( $_POST['wpuf_featured_img'] ) ? intval( $_POST['wpuf_featured_img'] ) : 0;
 
     //post type
     $post_type = trim( strip_tags( $_POST['wpuf_post_type'] ) );
@@ -289,6 +313,11 @@ function wpuf_validate_post_submit() {
                 foreach ($custom_fields as $key => $val) {
                     add_post_meta( $post_id, $key, $val, true );
                 }
+            }
+
+            //set post thumbnail if has any
+            if ( $attach_id ) {
+                set_post_thumbnail( $post_id, $attach_id );
             }
 
             //plugin API to extend the functionality

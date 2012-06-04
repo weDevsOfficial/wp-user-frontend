@@ -115,20 +115,6 @@
     font-size: 13px;
 }
 
-/*
-.error{
-        background: #EF7971;
-    border: 1px solid #E63125;
-    box-shadow: 0 1px 0 #F4A49F inset;
-    color: #FFFFFF;
-    text-shadow: 0 -1px 0 #E63125;
-    padding: 5px 10px;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
-*/
-
 .info {
     background-color: #fef5be;
     border: 2px solid #fdd425;
@@ -430,4 +416,47 @@ ul.wpuf-category-checklist {
 .wpuf-post-form .category-wrap select {
     display: block;
     margin: 0 0 5px 0;
+}
+
+#wpuf-attachment-upload-filelist .wpuf-attachment {
+    display: block;
+    margin: 0 0 10px 0;
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+#wpuf-attachment-upload-filelist .wpuf-attachment .attachment-name {
+    font-size: 12px;
+    margin: 0 0 0 15px;
+}
+
+#wpuf-attachment-upload-filelist .wpuf-attachment .button {
+    padding: 3px 8px;
+    border: 1px solid #ccc;
+    background: #f2f2f2;
+    color: #333;
+    font-size: 12px;
+    margin: 0 0 0 15px;
+    border-radius: 5px;
+}
+
+#wpuf-attachment-upload-pickfiles {
+    font-weight: bold;
+    color: #333;
+    padding: 3px 8px;
+    border: 1px solid #ccc;
+    background: #f2f2f2;
+    margin: 5px 0 15px 0;
+    border-radius: 5px;
+}
+
+#wpuf-attachment-upload-filelist .handle {
+    background: url('../images/arrow-move.png') no-repeat;
+    cursor: move;
+    display: inline-block;
+    height: 16px;
+    margin: 0 10px 0 0;
+    padding: 0;
+    text-indent: -9999px;
+    width: 16px;
 }

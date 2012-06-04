@@ -163,12 +163,44 @@ jQuery(document).ready(function($) {
 
             $(el).parent().attr('level', 0);
             if ($( wrap + ' ' + el ).val() > 0) {
-                getChildCats( $(el), 'lvl', 1, wrap, 'category');
+                WPUF_Obj.getChildCats( $(el), 'lvl', 1, wrap, 'category');
             }
 
-            $(el).live('change', function(){
+            $(wrap).on('change', el, function(){
                 currentLevel = parseInt( $(this).parent().attr('level') );
-                getChildCats( $(this), 'lvl', currentLevel+1, wrap, 'category');
+                WPUF_Obj.getChildCats( $(this), 'lvl', currentLevel+1, wrap, 'category');
+            });
+        },
+        getChildCats: function (dropdown, result_div, level, wrap_div, taxonomy) {
+            cat = $(dropdown).val();
+            results_div = result_div + level;
+            taxonomy = typeof taxonomy !== 'undefined' ? taxonomy : 'category';
+
+            $.ajax({
+                type: 'post',
+                url: ajaxurl,
+                data: {
+                    action: 'wpuf_get_child_cats',
+                    catID: cat,
+                    nonce: wpuf.nonce
+                },
+                beforeSend: function() {
+                    $(dropdown).parent().parent().next('.loading').addClass('wpuf-loading');
+                },
+                complete: function() {
+                    $(dropdown).parent().parent().next('.loading').removeClass('wpuf-loading');
+                },
+                success: function(html) {
+
+                    $(dropdown).parent().nextAll().each(function(){
+                        $(this).remove();
+                    });
+
+                    if(html != "") {
+                        $(dropdown).parent().addClass('hasChild').parent().append('<div id="'+result_div+level+'" level="'+level+'"></div>');
+                        dropdown.parent().parent().find('#'+results_div).html(html).slideDown('fast');
+                    }
+                }
             });
         }
     };
@@ -177,38 +209,3 @@ jQuery(document).ready(function($) {
     WPUF_Obj.init();
 
 });
-
-function getChildCats(dropdown, result_div, level, wrap_div, taxonomy) {
-    var $ = jQuery;
-
-    cat = $(dropdown).val();
-    results_div = result_div + level;
-    taxonomy = typeof taxonomy !== 'undefined' ? taxonomy : 'category';
-
-    $.ajax({
-        type: 'post',
-        url: ajaxurl,
-        data: {
-            action: 'wpuf_get_child_cats',
-            catID: cat,
-            nonce: wpuf.nonce
-        },
-        beforeSend: function() {
-            $(dropdown).parent().parent().next('.loading').addClass('wpuf-loading');
-        },
-        complete: function() {
-            $(dropdown).parent().parent().next('.loading').removeClass('wpuf-loading');
-        },
-        success: function(html) {
-
-            $(dropdown).parent().nextAll().each(function(){
-                $(this).remove();
-            });
-
-            if(html != "") {
-                $(dropdown).parent().addClass('hasChild').parent().append('<div id="'+result_div+level+'" level="'+level+'"></div>');
-                dropdown.parent().parent().find('#'+results_div).html(html).slideDown('fast');
-            }
-        }
-    });
-}

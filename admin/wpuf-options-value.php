@@ -566,6 +566,27 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             'default' => 'Please wait...'
         ),
         array(
+            'name' => 'wpuf_ft_img_label',
+            'label' => 'Featured Image label',
+            'desc' => 'The text will be used to display the featured image upload button',
+            'type' => 'text',
+            'default' => 'Upload Image'
+        ),
+        array(
+            'name' => 'wpuf_attachment_text_label',
+            'label' => 'Attachment Label',
+            'desc' => '',
+            'type' => 'text',
+            'default' => 'Attachments'
+        ),
+        array(
+            'name' => 'wpuf_attachment_btn_label',
+            'label' => 'Attachment upload button',
+            'desc' => '',
+            'type' => 'text',
+            'default' => 'Add another'
+        ),
+        array(
             'type' => 'title_end'
         ),
         array(
@@ -656,15 +677,16 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
         array(
             'name' => 'wpuf_attachment_num',
             'label' => 'Number of Attachments',
-            'desc' => 'How many attachments can be attached on a post?',
+            'desc' => 'How many attachments can be attached on a post? Put <strong>0</strong> for unlimited',
             'type' => 'text',
-            'size' => 2
+            'size' => 0
         ),
         array(
             'name' => 'wpuf_attachment_max_size',
             'label' => 'Attachemnt max size',
             'desc' => 'Enter the maximum file size in <b>KILOBYTE</b> that is allowed to attach.',
             'type' => 'text',
+            'default' => '2048',
             'size' => 5
         ),
         array(

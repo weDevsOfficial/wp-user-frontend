@@ -191,13 +191,12 @@ function wpuf_notify_post_mail( $user, $post_id ) {
     $msg .= sprintf( __( 'Permalink : %s' ), $permalink ) . "\r\n";
     $msg .= sprintf( __( 'Edit Link : %s' ), admin_url( 'post.php?action=edit&post=' . $post_id ) ) . "\r\n";
 
-//plugin api
+    //plugin api
     $to = apply_filters( 'wpuf_notify_to', $to );
     $subject = apply_filters( 'wpuf_notify_subject', $subject );
     $msg = apply_filters( 'wpuf_notify_message', $msg );
 
     wp_mail( $to, $subject, $msg, $headers );
-//var_dump($headers, $subject, $msg, $receiver);
 }
 
 /**
@@ -226,49 +225,61 @@ add_filter( 'upload_mimes', 'wpuf_mime' );
 function wpuf_upload_attachment( $post_id ) {
     if ( !isset( $_FILES['wpuf_post_attachments'] ) ) {
         return false;
-        find_posts_div();
     }
 
-    include_once (ABSPATH . 'wp-admin/includes/file.php');
-    include_once (ABSPATH . 'wp-admin/includes/image.php');
-
-    $override = array('test_form' => false);
-
     $fields = (int) get_option( 'wpuf_attachment_num' );
+
     for ($i = 0; $i < $fields; $i++) {
         $file_name = basename( $_FILES['wpuf_post_attachments']['name'][$i] );
-        $file_type = wp_check_filetype( $file_name );
 
         if ( $file_name ) {
-            $upload = array(
-                'name' => $_FILES['wpuf_post_attachments']['name'][$i],
-                'type' => $_FILES['wpuf_post_attachments']['type'][$i],
-                'tmp_name' => $_FILES['wpuf_post_attachments']['tmp_name'][$i],
-                'error' => $_FILES['wpuf_post_attachments']['error'][$i],
-                'size' => $_FILES['wpuf_post_attachments']['size'][$i]
-            );
-
-            $uploaded_file = wp_handle_upload( $upload, $override );
-
-// If the wp_handle_upload call returned a local path for the image
-            if ( isset( $uploaded_file['file'] ) ) {
-                $file_loc = $uploaded_file['file'];
-
-                $attachment = array(
-                    'post_mime_type' => $file_type['type'],
-                    'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
-                    'post_content' => '',
-                    'post_status' => 'inherit'
+            if ( $file_name ) {
+                $upload = array(
+                    'name' => $_FILES['wpuf_post_attachments']['name'][$i],
+                    'type' => $_FILES['wpuf_post_attachments']['type'][$i],
+                    'tmp_name' => $_FILES['wpuf_post_attachments']['tmp_name'][$i],
+                    'error' => $_FILES['wpuf_post_attachments']['error'][$i],
+                    'size' => $_FILES['wpuf_post_attachments']['size'][$i]
                 );
 
-                $attach_id = wp_insert_attachment( $attachment, $file_loc, $post_id );
+                wpuf_upload_file( $upload );
+            }//file exists
+        }// end for
+    }
+}
 
-                $attach_data = wp_generate_attachment_metadata( $attach_id, $file_loc );
-                wp_update_attachment_metadata( $attach_id, $attach_data );
-                set_post_thumbnail( $post_id, $attach_id );
-            }//end file upload
-        }//file exists
-    }// end for
+/**
+ * Generic function to upload a file
+ *
+ * @since 0.8
+ * @param string $field_name file input field name
+ * @return bool|int attachment id on success, bool false instead
+ */
+function wpuf_upload_file( $upload_data ) {
+
+    $uploaded_file = wp_handle_upload( $upload_data, array('test_form' => false) );
+
+    // If the wp_handle_upload call returned a local path for the image
+    if ( isset( $uploaded_file['file'] ) ) {
+        $file_loc = $uploaded_file['file'];
+        $file_name = basename( $upload_data['name'] );
+        $file_type = wp_check_filetype( $file_name );
+
+        $attachment = array(
+            'post_mime_type' => $file_type['type'],
+            'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
+            'post_content' => '',
+            'post_status' => 'inherit'
+        );
+
+        $attach_id = wp_insert_attachment( $attachment, $file_loc );
+        $attach_data = wp_generate_attachment_metadata( $attach_id, $file_loc );
+        wp_update_attachment_metadata( $attach_id, $attach_data );
+
+        return $attach_id;
+    }
+
+    return false;
 }
 
 /**
@@ -287,17 +298,17 @@ function wpuf_check_upload() {
         $tmp_name = basename( $_FILES['wpuf_post_attachments']['tmp_name'][$i] );
         $file_name = basename( $_FILES['wpuf_post_attachments']['name'][$i] );
 
-//if file is uploaded
+        //if file is uploaded
         if ( $file_name ) {
             $attach_type = wp_check_filetype( $file_name );
             $attach_size = $_FILES['wpuf_post_attachments']['size'][$i];
 
-//check file size
+            //check file size
             if ( $attach_size > $size_limit ) {
                 $errors[] = __( "Attachment file is too big" );
             }
 
-//check file type
+            //check file type
             if ( !in_array( $attach_type['type'], $mime ) ) {
                 $errors[] = __( "Invalid attachment file type" );
             }
@@ -322,7 +333,7 @@ function wpfu_get_attachments( $post_id ) {
         'post_status' => null,
         'post_parent' => $post_id,
         'order' => 'ASC',
-        'orderby' => 'ID'
+        'orderby' => 'menu_order'
     );
 
     $attachments = get_posts( $args );

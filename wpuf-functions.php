@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Start output buffering
  *
@@ -109,7 +110,7 @@ function wpuf_enqueue_scripts() {
             wp_enqueue_script( 'plupload-handlers' );
         }
 
-        wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js', array('jquery', 'thickbox') );
+        wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js', array('jquery') );
 
         $posting_msg = get_option( 'wpuf_post_submitting_label', 'Please wait...' );
         wp_localize_script( 'wpuf', 'wpuf', array(
@@ -190,13 +191,13 @@ function wpuf_notify_post_mail( $user, $post_id ) {
     $msg .= sprintf( __( 'Permalink : %s' ), $permalink ) . "\r\n";
     $msg .= sprintf( __( 'Edit Link : %s' ), admin_url( 'post.php?action=edit&post=' . $post_id ) ) . "\r\n";
 
-    //plugin api
+//plugin api
     $to = apply_filters( 'wpuf_notify_to', $to );
     $subject = apply_filters( 'wpuf_notify_subject', $subject );
     $msg = apply_filters( 'wpuf_notify_message', $msg );
 
     wp_mail( $to, $subject, $msg, $headers );
-    //var_dump($headers, $subject, $msg, $receiver);
+//var_dump($headers, $subject, $msg, $receiver);
 }
 
 /**
@@ -249,7 +250,7 @@ function wpuf_upload_attachment( $post_id ) {
 
             $uploaded_file = wp_handle_upload( $upload, $override );
 
-            // If the wp_handle_upload call returned a local path for the image
+// If the wp_handle_upload call returned a local path for the image
             if ( isset( $uploaded_file['file'] ) ) {
                 $file_loc = $uploaded_file['file'];
 
@@ -286,17 +287,17 @@ function wpuf_check_upload() {
         $tmp_name = basename( $_FILES['wpuf_post_attachments']['tmp_name'][$i] );
         $file_name = basename( $_FILES['wpuf_post_attachments']['name'][$i] );
 
-        //if file is uploaded
+//if file is uploaded
         if ( $file_name ) {
             $attach_type = wp_check_filetype( $file_name );
             $attach_size = $_FILES['wpuf_post_attachments']['size'][$i];
 
-            //check file size
+//check file size
             if ( $attach_size > $size_limit ) {
                 $errors[] = __( "Attachment file is too big" );
             }
 
-            //check file type
+//check file type
             if ( !in_array( $attach_type['type'], $mime ) ) {
                 $errors[] = __( "Invalid attachment file type" );
             }
@@ -349,7 +350,7 @@ function wpuf_add_attachment_to_post( $content ) {
     global $post;
 
     $attach = wpfu_get_attachments( $post->ID );
-    //var_dump( $attach );
+//var_dump( $attach );
 
     if ( $attach ) {
         $count = 1;
@@ -419,7 +420,7 @@ function wpuf_attachment_fields( $edit = false, $post_id = false ) {
 function wpuf_let_upload() {
     if ( !current_user_can( 'edit_posts' ) ) {
         $subs = get_role( 'subscriber' );
-        //$subs->add_cap( 'upload_files' );
+//$subs->add_cap( 'upload_files' );
     }
 }
 
@@ -561,13 +562,14 @@ function has_shortcode( $shortcode = '', $post_id = false ) {
     if ( !$shortcode ) {
         return $found;
     }
+
     // check the post content for the short code
     if ( stripos( $post_to_check->post_content, '[' . $shortcode ) !== false ) {
         // we have found the short code
         $found = true;
     }
 
-    // return our final results
+// return our final results
     return $found;
 }
 
@@ -794,7 +796,6 @@ add_action( 'wp_ajax_wpuf_feat_img_del', 'wpuf_feat_img_del' );
 function wpuf_feat_img_html( $attach_id ) {
     $image = wp_get_attachment_image_src( $attach_id, 'thumbnail' );
     $post = get_post( $attach_id );
-    //print_r($image);
 
     $html = sprintf( '<div class="wpuf-item" id="attachment-%d">', $attach_id );
     $html .= sprintf( '<img src="%s" alt="%s" />', $image[0], esc_attr( $post->post_title ) );
@@ -803,4 +804,68 @@ function wpuf_feat_img_html( $attach_id ) {
     $html .= '</div>';
 
     return $html;
+}
+
+/**
+ * Category checklist walker
+ *
+ * @since 0.8
+ */
+class WPUF_Walker_Category_Checklist extends Walker {
+
+    var $tree_type = 'category';
+    var $db_fields = array('parent' => 'parent', 'id' => 'term_id'); //TODO: decouple this
+
+    function start_lvl( &$output, $depth, $args ) {
+        $indent = str_repeat( "\t", $depth );
+        $output .= "$indent<ul class='children'>\n";
+    }
+
+    function end_lvl( &$output, $depth, $args ) {
+        $indent = str_repeat( "\t", $depth );
+        $output .= "$indent</ul>\n";
+    }
+
+    function start_el( &$output, $category, $depth, $args ) {
+        extract( $args );
+        if ( empty( $taxonomy ) )
+            $taxonomy = 'category';
+
+        if ( $taxonomy == 'category' )
+            $name = 'category';
+        else
+            $name = 'tax_input[' . $taxonomy . ']';
+
+        $class = in_array( $category->term_id, $popular_cats ) ? ' class="popular-category"' : '';
+        $output .= "\n<li id='{$taxonomy}-{$category->term_id}'$class>" . '<label class="selectit"><input value="' . $category->term_id . '" type="checkbox" name="' . $name . '[]" id="in-' . $taxonomy . '-' . $category->term_id . '"' . checked( in_array( $category->term_id, $selected_cats ), true, false ) . disabled( empty( $args['disabled'] ), false, false ) . ' /> ' . esc_html( apply_filters( 'the_category', $category->name ) ) . '</label>';
+    }
+
+    function end_el( &$output, $category, $depth, $args ) {
+        $output .= "</li>\n";
+    }
+
+}
+
+/**
+ * Displays checklist of a taxonomy
+ *
+ * @since 0.8
+ * @param int $post_id
+ * @param array $selected_cats
+ */
+function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $tax = 'category' ) {
+    require_once ABSPATH . '/wp-admin/includes/template.php';
+
+    $walker = new WPUF_Walker_Category_Checklist();
+
+    echo '<ul class="wpuf-category-checklist">';
+    wp_terms_checklist( $post_id, array(
+        'taxonomy' => $tax,
+        'descendants_and_self' => 0,
+        'selected_cats' => $selected_cats,
+        'popular_cats' => false,
+        'walker' => $walker,
+        'checked_ontop' => false
+    ) );
+    echo '</ul>';
 }

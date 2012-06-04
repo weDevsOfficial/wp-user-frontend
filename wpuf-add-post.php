@@ -55,6 +55,9 @@ function wpuf_add_post( $post_type ) {
     $can_post = apply_filters( 'wpuf_can_post', $can_post );
     $featured_image = get_option( 'wpuf_featured_image', 'yes' );
 
+    $title = isset( $_POST['wpuf_post_title'] ) ? esc_attr( $_POST['wpuf_post_title'] ) : '';
+    $description = isset( $_POST['wpuf_post_content'] ) ? $_POST['wpuf_post_content'] : '';
+
     if ( $can_post == 'yes' ) {
         ?>
         <div id="wpuf-post-area">
@@ -85,7 +88,7 @@ function wpuf_add_post( $post_type ) {
                         <label for="new-post-title">
                             <?php echo get_option( 'wpuf_title_label' ); ?> <span class="required">*</span>
                         </label>
-                        <input class="requiredField" type="text" name="wpuf_post_title" id="new-post-title" minlength="2">
+                        <input class="requiredField" type="text" value="<?php echo $title; ?>" name="wpuf_post_title" id="new-post-title" minlength="2">
                         <div class="clear"></div>
                         <p class="description"><?php echo stripslashes( get_option( 'wpuf_title_help' ) ); ?></p>
                     </li>
@@ -95,21 +98,24 @@ function wpuf_add_post( $post_type ) {
                             <label for="new-post-cat">
                                 <?php echo get_option( 'wpuf_cat_label' ); ?> <span class="required">*</span>
                             </label>
-                            <div style="float:left;">
-                                <div id="catlvl0">
+
+                            <div class="category-wrap" style="float:left;">
+                                <div id="lvl0">
                                     <?php
                                     $exclude = get_option( 'wpuf_exclude_cat' );
-                                    $cat_ajax = get_option( 'wpuf_cat_ajax', 'yes' );
+                                    $cat_type = get_option( 'wpuf_cat_type', 'normal' );
 
-                                    if ( $cat_ajax == 'yes' ) {
-                                        wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude );
+                                    if ( $cat_type == 'normal' ) {
+                                        wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude );
+                                    } else if ( $cat_type == 'ajax' ) {
+                                        wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat-ajax&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude );
                                     } else {
-                                        wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat-no_ajax&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude );
+                                        wpuf_category_checklist();
                                     }
                                     ?>
                                 </div>
                             </div>
-                            <div id="categories-footer" style="float:left;"></div>
+                            <div class="loading"></div>
                             <div class="clear"></div>
                             <p class="description"><?php echo stripslashes( get_option( 'wpuf_cat_help' ) ); ?></p>
                         </li>
@@ -128,15 +134,15 @@ function wpuf_add_post( $post_type ) {
                         if ( $editor == 'full' ) {
                             ?>
                             <div style="float:left;">
-                                <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => false, 'textarea_rows' => 8) ); ?>
+                                <?php wp_editor( $description, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => false, 'textarea_rows' => 8) ); ?>
                             </div>
                         <?php } else if ( $editor == 'rich' ) { ?>
                             <div style="float:left;">
-                                <?php wp_editor( '', 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => true, 'textarea_rows' => 8) ); ?>
+                                <?php wp_editor( $description, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => true, 'textarea_rows' => 8) ); ?>
                             </div>
 
                         <?php } else { ?>
-                            <textarea name="wpuf_post_content" class="requiredField" id="new-post-desc" cols="60" rows="8"></textarea>
+                            <textarea name="wpuf_post_content" class="requiredField" id="new-post-desc" cols="60" rows="8"><?php echo esc_textarea( $description ); ?></textarea>
                         <?php } ?>
 
                         <div class="clear"></div>
@@ -208,8 +214,6 @@ function wpuf_validate_post_submit() {
         $tags = wpuf_clean_tags( $_POST['wpuf_post_tags'] );
     }
 
-    $cat = $_POST['category'];
-
     //validate title
     if ( empty( $title ) ) {
         $errors[] = __( 'Empty post title', 'wpuf' );
@@ -218,8 +222,17 @@ function wpuf_validate_post_submit() {
     }
 
     //validate cat
-    if ( $cat == '-1' ) {
+    $cat_type = get_option( 'wpuf_cat_type', 'normal' );
+    if ( !isset( $_POST['category'] ) ) {
         $errors[] = __( 'Please choose a category', 'wpuf' );
+
+    } else if ( $cat_type == 'normal' && $_POST['category'][0] == '-1' ) {
+        $errors[] = __( 'Please choose a category', 'wpuf' );
+
+    } else {
+        if ( count( $_POST['category'] ) < 1 ) {
+            $errors[] = __( 'Please choose a category', 'wpuf' );
+        }
     }
 
     //validate post content
@@ -271,7 +284,7 @@ function wpuf_validate_post_submit() {
 
         //users are allowed to choose category
         if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) {
-            $post_category = $cat;
+            $post_category = $_POST['category'];
         } else {
             $post_category = array(get_option( 'wpuf_default_cat' ));
         }
@@ -288,6 +301,8 @@ function wpuf_validate_post_submit() {
 
         //plugin API to extend the functionality
         $my_post = apply_filters( 'wpuf_add_post_args', $my_post );
+
+        //var_dump( $_POST, $my_post );die();
 
         //insert the post
         $post_id = wp_insert_post( $my_post );
@@ -329,4 +344,3 @@ function wpuf_validate_post_submit() {
         echo wpuf_error_msg( $errors );
     }
 }
-

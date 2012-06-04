@@ -186,7 +186,7 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                             </span>
                             <span class="input-field">
                                 <?php foreach ($element['options'] as $key => $value) { ?>
-                                    <input type="radio" name="<?php echo $element['name'] ?>" id="<?php echo $element['name'] ?>" value="<?php echo $key; ?>" <?php checked( get_option($element['name']), $key); ?> /> <?php echo $value; ?>
+                                    <input type="radio" name="<?php echo $element['name'] ?>" id="<?php echo $element['name'] ?>" value="<?php echo $key; ?>" <?php checked( get_option( $element['name'] ), $key ); ?> /> <?php echo $value; ?>
                                 <?php } ?>
                                 <span class="description"><?php echo $element['desc']; ?></span>
                             </span>
@@ -270,9 +270,8 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
 
                                 <select name="<?php echo $element['name']; ?>" id="<?php echo $element['name']; ?>"<?php echo $onchange; ?>>
                                     <?php foreach ($pages as $key => $val) : ?>
-                                        <option value="<?php echo $key; ?>"<?php if ( $value == $key )
-                            echo ' selected="selected"'; ?>><?php echo $val; ?></option>
-                                            <?php endforeach; ?>
+                                        <option value="<?php echo $key; ?>"<?php selected( $value, $key ); ?>><?php echo $val; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
 
                                 <span class="description"><?php echo $element['desc']; ?></span>
@@ -280,6 +279,10 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
                         </li>
 
                         <?php
+                        break;
+
+                    case 'html':
+                        echo $element['label'];
                         break;
 
                     default:
@@ -911,9 +914,30 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             'desc' => 'Currency of the amount',
             'type' => 'select',
             'options' => array(
-                'USD' => 'USD',
-                'AUD' => 'AUD',
-                'EUR' => 'EUR',
+                'AUD' => 'Australian Dollar',
+                'CAD' => 'Canadian Dollar',
+                'EUR' => 'Euro',
+                'GBP' => 'British Pound',
+                'JPY' => 'Japanese Yen',
+                'USD' => 'U.S. Dollar',
+                'NZD' => 'New Zealand Dollar',
+                'CHF' => 'Swiss Franc',
+                'HKD' => 'Hong Kong Dollar',
+                'SGD' => 'Singapore Dollar',
+                'SEK' => 'Swedish Krona',
+                'DKK' => 'Danish Krone',
+                'PLN' => 'Polish Zloty',
+                'NOK' => 'Norwegian Krone',
+                'HUF' => 'Hungarian Forint',
+                'CZK' => 'Czech Koruna',
+                'ILS' => 'Israeli New Shekel',
+                'MXN' => 'Mexican Peso',
+                'BRL' => 'Brazilian Real',
+                'MYR' => 'Malaysian Ringgit',
+                'PHP' => 'Philippine Peso',
+                'TWD' => 'New Taiwan Dollar',
+                'THB' => 'Thai Baht',
+                'TRY' => 'Turkish Lira'
             )
         ),
         array(

@@ -11,9 +11,13 @@
 
 require_once 'wpuf-functions.php';
 require_once 'admin/wpuf-options-value.php';
-require_once 'admin/wpuf-admin.php';
-require_once 'admin/wpuf-admin-meta.php';
-require_once 'admin/wpuf-admin-taxonomy.php';
+
+if ( is_admin() ) {
+    require_once 'admin/wpuf-admin.php';
+    require_once 'admin/wpuf-admin-meta.php';
+    require_once 'admin/wpuf-admin-taxonomy.php';
+}
+
 require_once 'admin/wpuf-admin-subscription.php';
 require_once 'admin/wpuf-admin-transaction.php';
 require_once 'wpuf-dashboard.php';
@@ -29,6 +33,11 @@ require_once 'wpuf-subscription.php';
 register_activation_hook( __FILE__, 'wpuf_install' );
 register_deactivation_hook( __FILE__, 'wpuf_uninstall' );
 
+/**
+ * Create tables on plugin activation
+ *
+ * @global object $wpdb
+ */
 function wpuf_install() {
     global $wpdb;
 
@@ -148,6 +157,9 @@ function wpuf_plugin_menu() {
 
 add_action( 'admin_menu', 'wpuf_plugin_menu' );
 
+/**
+ * Enqueue scripts and styles for admin panel
+ */
 function wpuf_admin_script() {
     $path = plugins_url( 'wp-user-frontend' );
 
@@ -155,6 +167,11 @@ function wpuf_admin_script() {
     wp_enqueue_style('wpuf_admin', $path . '/css/admin.css');
 }
 
+/**
+ * Block user access to admin panel for specific roles
+ *
+ * @global string $pagenow
+ */
 function wpuf_restrict_admin_access() {
     global $pagenow;
 
@@ -233,7 +250,7 @@ function wpuf_get_child_cats() {
         die( $result );
 
     if ( get_categories( 'taxonomy=category&child_of=' . $parentCat . '&hide_empty=0' ) ) {
-        $result .= wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&class=dropdownlist&orderby=name&name=category[]&id=cat&order=ASC&hide_empty=0&hierarchical=1&taxonomy=category&depth=1&echo=0&child_of=' . $parentCat );
+        $result .= wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&class=dropdownlist&orderby=name&name=category[]&id=cat-ajax&order=ASC&hide_empty=0&hierarchical=1&taxonomy=category&depth=1&echo=0&child_of=' . $parentCat );
     } else {
         die( '' );
     }

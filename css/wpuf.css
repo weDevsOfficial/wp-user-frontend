@@ -355,12 +355,15 @@ ul.wpuf_packs p {
     top: 0;
 }
 
-.wpuf_loading {
+.wpuf-loading {
     height: 16px;
     width: 16px;
     background: url('../images/wpspin_light.gif') no-repeat;
     padding: 0;
     margin: 5px 10px;
+    right: -40px;
+    top: 0;
+    float: left;
 }
 
 .wpuf-pagination div.pagination{
@@ -423,4 +426,17 @@ ul.wpuf_packs p {
     border-radius: 5px;
     font-size: 12px;
     color: #5F5F5F;
+}
+
+ul.wpuf-category-checklist {
+    margin: 0;
+    list-style: none;
+}
+.wpuf-post-form .category-wrap {
+    position: relative;
+}
+
+.wpuf-post-form .category-wrap select {
+    display: block;
+    margin: 0 0 5px 0;
 }

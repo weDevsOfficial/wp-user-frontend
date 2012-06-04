@@ -75,7 +75,7 @@ function wpuf_add_post( $post_type ) {
                                 <label for="post-thumbnail"><?php echo get_option( 'wpuf_ft_image_label', __( 'Featured Image', 'wpuf' ) ); ?></label>
                                 <div id="wpuf-ft-upload-container">
                                     <div id="wpuf-ft-upload-filelist"></div>
-                                    <a id="wpuf-ft-upload-pickfiles" class="button" href="#">Upload Image</a>
+                                    <a id="wpuf-ft-upload-pickfiles" class="button" href="#"><?php echo get_option( 'wpuf_ft_img_label', __( 'Upload Image', 'wpuf' ) ); ?></a>
                                 </div>
                                 <div class="clear"></div>
                             </li>
@@ -165,7 +165,7 @@ function wpuf_add_post( $post_type ) {
 
                     <?php do_action( 'wpuf_add_post_form_tags', $post_type ); ?>
 
-                    <?php wpuf_attachment_fields(); ?>
+                    <?php //wpuf_attachment_fields(); ?>
 
                     <?php wpuf_build_custom_field_form( 'bottom' ); ?>
 
@@ -225,10 +225,8 @@ function wpuf_validate_post_submit() {
     $cat_type = get_option( 'wpuf_cat_type', 'normal' );
     if ( !isset( $_POST['category'] ) ) {
         $errors[] = __( 'Please choose a category', 'wpuf' );
-
     } else if ( $cat_type == 'normal' && $_POST['category'][0] == '-1' ) {
         $errors[] = __( 'Please choose a category', 'wpuf' );
-
     } else {
         if ( count( $_POST['category'] ) < 1 ) {
             $errors[] = __( 'Please choose a category', 'wpuf' );
@@ -303,7 +301,6 @@ function wpuf_validate_post_submit() {
         $my_post = apply_filters( 'wpuf_add_post_args', $my_post );
 
         //var_dump( $_POST, $my_post );die();
-
         //insert the post
         $post_id = wp_insert_post( $my_post );
 

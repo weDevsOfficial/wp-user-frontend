@@ -152,20 +152,45 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
 
                     case 'checkbox':
                         ?>
-                        <tr valign="top">
-                            <td scope="row" class="label">
+
+                        <li>
+                            <span class="label">
                                 <label for="<?php echo $element['name']; ?>"><?php echo $element['label']; ?></label>
 
                                 <?php if ( $element['desc'] ): ?>
                                     <span class="wpuf_help" title="<?php echo $element['desc']; ?>"></span>
                                 <?php endif; ?>
 
-                            </td>
-                            <td>
+                            </span>
+                            <span class="input-field">
                                 <input type="checkbox" name="<?php echo $element['name'] ?>" id="<?php echo $element['name'] ?>" value="true" style="<?php echo $element['css'] ?>" <?php if ( get_option( $element['name'] ) ) { ?>checked="checked"<?php } ?> />
                                 <span class="description"><?php echo $element['desc']; ?></span>
-                            </td>
-                        </tr>
+                            </span>
+                        </li>
+
+                        <?php
+                        break;
+
+                    case 'radio':
+                        //var_dump( $element );
+                        ?>
+
+                        <li>
+                            <span class="label">
+                                <label for="<?php echo $element['name']; ?>"><?php echo $element['label']; ?></label>
+
+                                <?php if ( $element['desc'] ): ?>
+                                    <span class="wpuf_help" title="<?php echo $element['desc']; ?>"></span>
+                                <?php endif; ?>
+
+                            </span>
+                            <span class="input-field">
+                                <?php foreach ($element['options'] as $key => $value) { ?>
+                                    <input type="radio" name="<?php echo $element['name'] ?>" id="<?php echo $element['name'] ?>" value="<?php echo $key; ?>" <?php checked( get_option($element['name']), $key); ?> /> <?php echo $value; ?>
+                                <?php } ?>
+                                <span class="description"><?php echo $element['desc']; ?></span>
+                            </span>
+                        </li>
 
                         <?php
                         break;
@@ -596,13 +621,13 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             'options' => wpuf_get_cats()
         ),
         array(
-            'name' => 'wpuf_cat_ajax',
-            'label' => 'Ajaxified category dropdown',
-            'desc' => 'If enabled, the children elements will bring on demand via ajax',
-            'type' => 'select',
+            'name' => 'wpuf_cat_type',
+            'label' => 'Category dropdown type',
+            'type' => 'radio',
             'options' => array(
-                'yes' => 'Enable',
-                'no' => 'Disable'
+                'normal' => 'Normal',
+                'ajax' => 'Ajaxified',
+                'checkbox' => 'Checkbox'
             )
         ),
         array(

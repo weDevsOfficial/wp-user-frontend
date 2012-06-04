@@ -2,9 +2,20 @@
 $wpuf_enable_post_date = get_option( 'wpuf_enable_post_date' );
 $wpuf_enable_post_expiry = get_option( 'wpuf_enable_post_expiry' );
 
+/**
+ * Prints the post publish date on form
+ *
+ * @return bool|string
+ */
 function wpuf_add_post_publish_date() {
-    $timezone_format = _x('Y-m-d G:i:s', 'timezone date format');
-    $month = date_i18n('m');
+    $wpuf_enable_post_date = get_option( 'wpuf_enable_post_date', 'no' );
+
+    if ( $wpuf_enable_post_date == 'no' ) {
+        return;
+    }
+
+    $timezone_format = _x( 'Y-m-d G:i:s', 'timezone date format' );
+    $month = date_i18n( 'm' );
     $month_array = array(
         '01' => 'Jan',
         '02' => 'Feb',
@@ -27,101 +38,125 @@ function wpuf_add_post_publish_date() {
         <div class="timestamp-wrap">
             <select name="mm">
                 <?php
-                foreach( $month_array as $key => $val ) {
+                foreach ($month_array as $key => $val) {
                     $selected = ( $key == $month ) ? ' selected="selected"' : '';
                     echo '<option value="' . $key . '"' . $selected . '>' . $val . '</option>';
                 }
                 ?>
             </select>
-            <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n('d'); ?>" name="jj">,
-            <input type="text" autocomplete="off" tabindex="4" maxlength="4" size="4" value="<?php echo date_i18n('Y'); ?>" name="aa">
-            @ <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n('G'); ?>" name="hh">
-            : <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n('i'); ?>" name="mn">
+            <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n( 'd' ); ?>" name="jj">,
+            <input type="text" autocomplete="off" tabindex="4" maxlength="4" size="4" value="<?php echo date_i18n( 'Y' ); ?>" name="aa">
+            @ <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n( 'G' ); ?>" name="hh">
+            : <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n( 'i' ); ?>" name="mn">
         </div>
         <div class="clear"></div>
         <p class="description"></p>
     </li>
     <?php
 }
-if( $wpuf_enable_post_date == 'yes' ) {
-    add_action( 'wpuf_add_post_form_after_description', 'wpuf_add_post_publish_date', 9 );
-}
 
+add_action( 'wpuf_add_post_form_after_description', 'wpuf_add_post_publish_date', 9 );
+
+/**
+ * Prints post expiration date on the form
+ *
+ * @return bool|string
+ */
 function wpuf_add_post_end_date() {
+    $enable_post_expiry = get_option( 'wpuf_enable_post_expiry', 'no' );
+
+    if ( $enable_post_expiry == 'no' ) {
+        return;
+    }
     ?>
     <li>
         <label for="timestamp-wrap">
             <?php _e( 'Expiration Time:', 'wpuf' ); ?><span class="required">*</span>
         </label>
         <select name="expiration-date">
-            <?php for( $i = 2; $i <= 72; $i++ ) {
-                if( $i%2 != 0 ) continue;
-                echo '<option value="' . $i . '">' . $i . '</option>';
+            <?php
+            for ($i = 1; $i <= 90; $i++) {
+                if ( $i % 2 != 0 )
+                    continue;
+                printf( '<option value="%1$d">%1$d %2$s</option>', $i, __( 'days', 'wpuf' ) );
             }
             ?>
         </select>
         <div class="clear"></div>
-        <p class="description"><?php _e( 'Post expiration time in hour after publishing.', 'wpuf' ); ?></p>
+        <p class="description"><?php _e( 'Post expiration time in day after publishing.', 'wpuf' ); ?></p>
     </li>
     <?php
 }
 
-if( $wpuf_enable_post_expiry == 'yes' ) {
-    add_action( 'wpuf_add_post_form_after_description', 'wpuf_add_post_end_date', 10 );
-}
+add_action( 'wpuf_add_post_form_after_description', 'wpuf_add_post_end_date', 10 );
 
 function wpuf_hooks_validation( $errors ) {
+    $wpuf_enable_post_date = get_option( 'wpuf_enable_post_date', 'no' );
+
+    if ( $wpuf_enable_post_date == 'no' ) {
+        return $errors;
+    }
+
     $month = $_POST['mm'];
     $day = $_POST['jj'];
     $year = $_POST['aa'];
     $hour = $_POST['hh'];
     $min = $_POST['mn'];
 
-    if( ! checkdate( $month, $day, $year ) ) {
-        $errors[] = "Invalid date";
+    if ( !checkdate( $month, $day, $year ) ) {
+        $errors[] = __( 'Invalid date', 'wpuf' );
     }
     //var_dump( $_POST ); die();
 
     return $errors;
 }
 
-if( $wpuf_enable_post_date == 'yes' ) {
-    add_filter('wpuf_add_post_validation', 'wpuf_hooks_validation', 10, 1);
-}
+add_filter( 'wpuf_add_post_validation', 'wpuf_hooks_validation' );
 
 function wpuf_hooks_add_post_args( $postdata ) {
-    global $wpuf_enable_post_expiry;
+    $enable_post_date = get_option( 'wpuf_enable_post_date', 'no' );
 
-    //if post expirator is activated, set the date-time
-    if( $wpuf_enable_post_expiry == 'yes' ) {
+    //if post date is activated, set the date-time
+    if ( $enable_post_date == 'yes' ) {
         $month = $_POST['mm'];
         $day = $_POST['jj'];
         $year = $_POST['aa'];
         $hour = $_POST['hh'];
         $min = $_POST['mn'];
 
-        $post_date = mktime($hour, $min, 59, $month, $day, $year);
-        $postdata['post_date'] = date('Y-m-d H:i:s', $post_date);
+        $post_date = mktime( $hour, $min, 59, $month, $day, $year );
+        $postdata['post_date'] = date( 'Y-m-d H:i:s', $post_date );
     }
 
     //var_dump( $postdata ); die();
     return $postdata;
 }
 
-//add_filter('wpuf_add_post_args', 'wpuf_hooks_add_post_args', 9, 1);
+add_filter( 'wpuf_add_post_args', 'wpuf_hooks_add_post_args' );
 
+/**
+ * Set Post expiration date if has any
+ *
+ * @param int $post_id
+ */
 function wpuf_hooks_add_meta( $post_id ) {
-    if( !empty( $_POST['expiration-date'] ) ) {
+    $post_expiry = get_option( 'wpuf_enable_post_expiry', 'no' );
+
+    if ( $post_expiry == 'no' ) {
+        return;
+    }
+
+    if ( !empty( $_POST['expiration-date'] ) ) {
         $post = get_post( $post_id );
         $post_date = strtotime( $post->post_date );
         $expiration = (int) $_POST['expiration-date'];
-        $expiration = $post_date + ($expiration*60*60);
+        $expiration = $post_date + ($expiration * 60 * 60 * 24);
 
         add_post_meta( $post_id, 'expiration-date', $expiration, true );
     }
 }
-add_action( 'wpuf_add_post_after_insert', 'wpuf_hooks_add_meta', 10, 1 );
 
+add_action( 'wpuf_add_post_after_insert', 'wpuf_hooks_add_meta', 10, 1 );
 
 /**
  * Send payment received mail
@@ -134,4 +169,5 @@ function wpuf_sub_payment_mail() {
     $receiver = get_bloginfo( 'admin_email' );
     wp_mail( $receiver, $subject, $msg, $headers );
 }
+
 add_action( 'wpuf_payment_received', 'wpuf_sub_payment_mail' );

@@ -209,8 +209,6 @@ function wpuf_edit_show_form( $post ) {
                     </li>
                 <?php } ?>
 
-                <?php wpuf_attachment_fields( true, $post->ID ); ?>
-
                 <?php do_action( 'wpuf_add_post_form_tags', $post->post_type, $post ); ?>
                 <?php wpuf_build_custom_field_form( 'bottom', true, $post->ID ); ?>
 
@@ -224,12 +222,7 @@ function wpuf_edit_show_form( $post ) {
         </form>
     </div>
 
-    <?php if ( get_option( 'wpuf_allow_attachments' ) == 'yes' ) { ?>
-        <div class="wpuf-edit-attachment">
-            <?php wpuf_edit_attachment( $post->ID ); ?>
-        </div>
-        <?php
-    }
+    <?php
 }
 
 function wpuf_validate_post_edit_submit() {
@@ -261,10 +254,8 @@ function wpuf_validate_post_edit_submit() {
     $cat_type = get_option( 'wpuf_cat_type', 'normal' );
     if ( !isset( $_POST['category'] ) ) {
         $errors[] = __( 'Please choose a category', 'wpuf' );
-
     } else if ( $cat_type == 'normal' && $_POST['category'][0] == '-1' ) {
         $errors[] = __( 'Please choose a category', 'wpuf' );
-
     } else {
         if ( count( $_POST['category'] ) < 1 ) {
             $errors[] = __( 'Please choose a category', 'wpuf' );

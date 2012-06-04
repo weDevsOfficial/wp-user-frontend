@@ -12,6 +12,7 @@ jQuery(document).ready(function($) {
 
             //initialize the featured image uploader
             this.featImgUploader();
+            this.ajaxCategory();
         },
         checkSubmit: function () {
             var form = $(this);
@@ -88,7 +89,7 @@ jQuery(document).ready(function($) {
             if(typeof plupload === 'undefined') {
                 return;
             }
-            
+
             var uploader = new plupload.Uploader(wpuf.plupload);
 
             uploader.bind('Init', function(up, params) {
@@ -155,6 +156,20 @@ jQuery(document).ready(function($) {
                     el.parent().remove();
                 });
             }
+        },
+        ajaxCategory: function () {
+            var el = '#cat-ajax',
+                wrap = '.category-wrap';
+
+            $(el).parent().attr('level', 0);
+            if ($( wrap + ' ' + el ).val() > 0) {
+                getChildCats( $(el), 'lvl', 1, wrap, 'category');
+            }
+
+            $(el).live('change', function(){
+                currentLevel = parseInt( $(this).parent().attr('level') );
+                getChildCats( $(this), 'lvl', currentLevel+1, wrap, 'category');
+            });
         }
     };
 
@@ -163,86 +178,37 @@ jQuery(document).ready(function($) {
 
 });
 
+function getChildCats(dropdown, result_div, level, wrap_div, taxonomy) {
+    var $ = jQuery;
 
-jQuery(document).ready(function() {
-    //if on page load the parent category is already selected, load up the child categories
-    jQuery('#catlvl0').attr('level', 0);
-    if (jQuery('#catlvl0 #cat').val() > 0) {
-        wpuf_getChildrenCategories(jQuery(this),'catlvl-', 1, 'yes');
-    }
-    //bind the ajax lookup event to #cat object
-    jQuery('#wpuf_new_post_form #cat').live('change', function(){
-        currentLevel = parseInt(jQuery(this).parent().attr('level'));
-        wpuf_getChildrenCategories(jQuery(this), 'catlvl', currentLevel+1, 'yes');
+    cat = $(dropdown).val();
+    results_div = result_div + level;
+    taxonomy = typeof taxonomy !== 'undefined' ? taxonomy : 'category';
 
-        //rebuild the entire set of dropdowns based on which dropdown was changed
-        jQuery.each(jQuery(this).parent().parent().children(), function(childLevel, childElement) {
-            if(currentLevel+1 < childLevel) jQuery(childElement).remove();
-            if(currentLevel+1 == childLevel) jQuery(childElement).removeClass('hasChild');
-        //console.log(childElement);
-        });
-
-        //find the deepest selected category and assign the value to the "chosenCateory" field
-        if(jQuery(this).val() > 0) jQuery('#chosenCategory input:first').val(jQuery(this).val());
-        else if(jQuery('#catlvl'+(currentLevel-1)+' select').val() > 0) jQuery('#chosenCategory input:first').val(jQuery('#catlvl'+(currentLevel-1)+' select').val());
-        else jQuery('#chosenCategory input:first').val('-1');
-    });
-});
-
-function wpuf_getChildrenCategories(dropdown, results_div_id, level, allow_parent_posting) {
-    parent_dropdown = jQuery(dropdown).parent();
-    category_ID = jQuery(dropdown).val();
-    results_div = results_div_id+level;
-    if(!jQuery(parent_dropdown).hasClass('hasChild'))
-        jQuery(parent_dropdown).addClass('hasChild').parent().append('<div id="'+results_div+'" level="'+level+'" class="childCategory"></div>')
-
-    jQuery.ajax({
-        type: "post",
-        url: wpuf.ajaxurl,
+    $.ajax({
+        type: 'post',
+        url: ajaxurl,
         data: {
             action: 'wpuf_get_child_cats',
-            //_ajax_nonce: '<?php //echo $nonce; ?>',
-            catID : category_ID
+            catID: cat,
+            nonce: wpuf.nonce
         },
         beforeSend: function() {
-            jQuery('#getcat').hide();
-            jQuery('#categories-footer').addClass('wpuf_loading').slideDown("fast");
-        }, //show loading just when dropdown changed
+            $(dropdown).parent().parent().next('.loading').addClass('wpuf-loading');
+        },
         complete: function() {
-            jQuery('#categories-footer').removeClass('wpuf_loading');
-        }, //stop showing loading when the process is complete
-        success: function(html){ //so, if data is retrieved, store it in html
-            //if no categories are found
-            if(html == "") {
-                jQuery('#'+results_div).slideUp("fast");
-                whenEmpty = true;
-            }
-            //child categories found so build and display them
-            else {
-                jQuery('#'+results_div).html(html).slideDown("fast"); //build html from ajax post
-                /* FANCY SELECT BOX ACTIVATOR - UNCOMMENT ONCE ITS READY
-                jQuery('#'+results_div+" #cat").selectBox({ menuTransition: 'fade', menuSpeed: 'fast' });
-                */
-                jQuery('#'+results_div+" a").fadeIn(); //fade in the new dropdown (selectBox converts to <a>
-                whenEmpty = false;
-            }
+            $(dropdown).parent().parent().next('.loading').removeClass('wpuf-loading');
+        },
+        success: function(html) {
 
-            //always check if go button should be on or off, jQuery parent is used for traveling backup the category heirarchy
-            if( (allow_parent_posting == 'yes' &&  jQuery('#chosenCategory input:first').val() > 0) ){
-                jQuery('#getcat').fadeIn();
-            }
-            //check for empty category option
-            else if(whenEmpty && allow_parent_posting == 'whenEmpty' && jQuery('#chosenCategory input:first').val() > 0) {
-                jQuery('#getcat').fadeIn();
-            }
-            //if child category exists, is set, and allow_parent_posting not set to "when empty"
-            else if(jQuery('#'+results_div_id+(level-1)).hasClass('childCategory') && jQuery(dropdown).val() > -1 && allow_parent_posting == 'no') {
-                jQuery('#getcat').fadeIn();
-            }
-            else {
-                jQuery('#getcat').fadeOut();
-            }
+            $(dropdown).parent().nextAll().each(function(){
+                $(this).remove();
+            });
 
+            if(html != "") {
+                $(dropdown).parent().addClass('hasChild').parent().append('<div id="'+result_div+level+'" level="'+level+'"></div>');
+                dropdown.parent().parent().find('#'+results_div).html(html).slideDown('fast');
+            }
         }
-    }); //close jQuery.ajax(
-} // end of JavaScript function js_cp_getChildrenCategories
+    });
+}

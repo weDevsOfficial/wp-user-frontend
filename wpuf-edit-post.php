@@ -11,7 +11,7 @@ class WPUF_Edit_Post {
      *
      * @return string generated form by the plugin
      */
-    function shorcode() {
+    function shortcode() {
 
         ob_start();
 

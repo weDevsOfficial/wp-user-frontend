@@ -1,5 +1,4 @@
 <?php
-
 /*
   Plugin Name: WP User Frontend
   Plugin URI: http://tareq.wedevs.com/2011/01/new-plugin-wordpress-user-frontend/
@@ -25,26 +24,37 @@ require_once 'wpuf-add-post.php';
 require_once 'wpuf-edit-post.php';
 require_once 'wpuf-editprofile.php';
 require_once 'wpuf-edit-user.php';
+require_once 'wpuf-ajax.php';
 
 //custom hooks
 require_once 'extra/custom_hooks.php';
 require_once 'wpuf-subscription.php';
 require_once 'lib/attachment.php';
 
-register_activation_hook( __FILE__, 'wpuf_install' );
-register_deactivation_hook( __FILE__, 'wpuf_uninstall' );
+class WPUF_Main {
 
-/**
- * Create tables on plugin activation
- *
- * @global object $wpdb
- */
-function wpuf_install() {
-    global $wpdb;
+    function __construct() {
+        register_activation_hook( __FILE__, array($this, 'install') );
+        register_deactivation_hook( __FILE__, array($this, 'uninstall') );
 
-    wpuf_register_mysettings();
+        add_action( 'admin_menu', array($this, 'admin_menu') );
+        add_action( 'admin_init', array($this, 'block_admin_access') );
 
-    $sql_custom = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_customfields (
+        add_action( 'init', array($this, 'load_textdomain') );
+        add_action( 'wp_enqueue_scripts', array($this, 'enqueue_scripts') );
+    }
+
+    /**
+     * Create tables on plugin activation
+     *
+     * @global object $wpdb
+     */
+    function install() {
+        global $wpdb;
+
+        flush_rewrite_rules( false );
+
+        $sql_custom = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_customfields (
          `id` int(11) NOT NULL AUTO_INCREMENT,
          `field` varchar(30) NOT NULL,
          `type` varchar(20) NOT NULL,
@@ -57,7 +67,7 @@ function wpuf_install() {
          PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-    $sql_subscription = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_subscription (
+        $sql_subscription = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_subscription (
         `id` mediumint(9) NOT NULL AUTO_INCREMENT,
         `name` varchar(255) NOT NULL,
         `description` text NOT NULL,
@@ -68,7 +78,7 @@ function wpuf_install() {
         PRIMARY KEY (`id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
-    $sql_transaction = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_transaction (
+        $sql_transaction = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_transaction (
         `id` mediumint(9) NOT NULL AUTO_INCREMENT,
         `user_id` bigint(20) DEFAULT NULL,
         `status` varchar(255) NOT NULL DEFAULT 'pending_payment',
@@ -85,251 +95,114 @@ function wpuf_install() {
         PRIMARY KEY (`id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
-    $wpdb->query( $sql_custom );
-    $wpdb->query( $sql_subscription );
-    $wpdb->query( $sql_transaction );
-}
-
-function wpuf_uninstall() {
-    wpuf_remove_my_settings();
-}
-
-/**
- * Registers some default option when installing
- */
-function wpuf_register_mysettings() {
-    $settings = array(
-        'wpuf_post_status' => 'publish',
-        'wpuf_notify' => 'yes',
-        'wpuf_can_edit_post' => 'yes',
-        'wpuf_can_del_post' => 'yes',
-        'wpuf_admin_security' => 'read',
-        'wpuf_title_label' => 'Title',
-        'wpuf_cat_label' => 'Category',
-        'wpuf_desc_label' => 'Description',
-        'wpuf_tag_label' => 'Tags',
-        'wpuf_post_submit_label' => 'Submit Post!'
-    );
-
-    foreach ($settings as $key => $value) {
-        update_option( $key, $value );
+        $wpdb->query( $sql_custom );
+        $wpdb->query( $sql_subscription );
+        $wpdb->query( $sql_transaction );
     }
-}
 
-/**
- * Removes all the settings upon plugin uninstall
- */
-function wpuf_remove_my_settings() {
-    $settings = array(
-        'wpuf_post_status',
-        'wpuf_notify',
-        'wpuf_can_edit_post',
-        'wpuf_can_del_post',
-        'wpuf_edit_page_url',
-        'wpuf_admin_security'
-    );
+    function uninstall() {
 
-    foreach ($settings as $value) {
-        delete_option( $value );
     }
-}
 
-/**
- * Add's a option page in the admin panel
- */
-function wpuf_plugin_menu() {
-    //add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
-    $plugin_page = add_menu_page( 'WP User Frontend', 'WP User Frontend', 'activate_plugins', 'wpuf-admin-opt', 'wpuf_plugin_options', null );
+    /**
+     * Add's a option page in the admin panel
+     */
+    function admin_menu() {
+        $plugin_page = add_menu_page( 'WP User Frontend', 'WP User Frontend', 'activate_plugins', 'wpuf-admin-opt', 'wpuf_plugin_options', null );
+        $plugin_page2 = add_submenu_page( 'wpuf-admin-opt', 'Custom Fields', 'Custom Fields', 'activate_plugins', 'wpuf_custom_fields', 'wpuf_custom_fields' );
+        //$plugin_page3 = add_submenu_page( 'wpuf-admin-opt', 'Custom Taxonomies', 'Custom Taxonomies', 'activate_plugins', 'wpuf_custom_tax', 'wpuf_taxonomy_fields' );
+        $plugin_page4 = add_submenu_page( 'wpuf-admin-opt', 'Subscription', 'Subscription', 'activate_plugins', 'wpuf_subscription', 'wpuf_subscription_admin' );
+        $plugin_page5 = add_submenu_page( 'wpuf-admin-opt', 'Transaction', 'Transaction', 'activate_plugins', 'wpuf_transaction', 'wpuf_transaction' );
 
-    //add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function )
-    $plugin_page2 = add_submenu_page( 'wpuf-admin-opt', 'Custom Fields', 'Custom Fields', 'activate_plugins', 'wpuf_custom_fields', 'wpuf_custom_fields' );
-
-    //$plugin_page3 = add_submenu_page( 'wpuf-admin-opt', 'Custom Taxonomies', 'Custom Taxonomies', 'activate_plugins', 'wpuf_custom_tax', 'wpuf_taxonomy_fields' );
-
-    $plugin_page4 = add_submenu_page( 'wpuf-admin-opt', 'Subscription', 'Subscription', 'activate_plugins', 'wpuf_subscription', 'wpuf_subscription_admin' );
-
-    $plugin_page5 = add_submenu_page( 'wpuf-admin-opt', 'Transaction', 'Transaction', 'activate_plugins', 'wpuf_transaction', 'wpuf_transaction' );
-
-    add_action( 'admin_head-' . $plugin_page, 'wpuf_admin_script' );
-    add_action( 'admin_head-' . $plugin_page2, 'wpuf_admin_script' );
-    //add_action( 'admin_head-' . $plugin_page3, 'wpuf_admin_script' );
-    add_action( 'admin_head-' . $plugin_page4, 'wpuf_admin_script' );
-}
-
-add_action( 'admin_menu', 'wpuf_plugin_menu' );
-
-/**
- * Enqueue scripts and styles for admin panel
- */
-function wpuf_admin_script() {
-    $path = plugins_url( 'wp-user-frontend' );
-
-    wp_enqueue_script('wpuf_admin', $path . '/js/admin.js');
-    wp_enqueue_style('wpuf_admin', $path . '/css/admin.css');
-}
-
-/**
- * Block user access to admin panel for specific roles
- *
- * @global string $pagenow
- */
-function wpuf_restrict_admin_access() {
-    global $pagenow;
-
-    $wpuf_access_level = get_option( 'wpuf_admin_security' );
-    if ( !isset( $wpuf_access_level ) || $wpuf_access_level == '' )
-        $wpuf_access_level = 'read'; // if there's no value then give everyone access
-
-    if ( !current_user_can( $wpuf_access_level ) && $pagenow != 'admin-ajax.php' &&
-            $pagenow != 'async-upload.php' && $pagenow != 'media-upload.php' ) {
-        wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
+        add_action( 'admin_head-' . $plugin_page, array($this, 'admin_scripts') );
+        add_action( 'admin_head-' . $plugin_page2, array($this, 'admin_scripts') );
+        //add_action( 'admin_head-' . $plugin_page3, 'wpuf_admin_script' );
+        add_action( 'admin_head-' . $plugin_page4, array($this, 'admin_scripts') );
     }
-}
 
-if ( is_admin() ) {
-    add_action( 'admin_init', 'wpuf_restrict_admin_access' );
-}
+    /**
+     * Enqueue scripts and styles for admin panel
+     */
+    function admin_scripts() {
+        $path = plugins_url( 'wp-user-frontend' );
 
-// display msg if permalinks aren't setup correctly
-function wpuf_permalink_nag() {
-
-    if ( current_user_can( 'manage_options' ) )
-        $msg = sprintf( __( 'You need to set your <a href="%1$s">permalink custom structure</a> to at least contain <b>/&#37;postname&#37;/</b> before WP User Frontend will work properly.', 'wpuf' ), 'options-permalink.php' );
-
-    echo "<div class='error fade'><p>$msg</p></div>";
-}
-
-//if not found %postname%, shows a error msg at admin panel
-if ( !stristr( get_option( 'permalink_structure' ), '%postname%' ) ) {
-    add_action( 'admin_notices', 'wpuf_permalink_nag', 3 );
-}
-
-function wpuf_option_values() {
-    global $custom_fields;
-
-    wpuf_value_travarse( $custom_fields );
-}
-
-function wpuf_value_travarse( $param ) {
-    foreach ($param as $key => $value) {
-        if ( $value['name'] ) {
-            echo '"' . $value['name'] . '" => "' . get_option( $value['name'] ) . '"<br>';
-        }
+        wp_enqueue_script( 'wpuf_admin', $path . '/js/admin.js' );
+        wp_enqueue_style( 'wpuf_admin', $path . '/css/admin.css' );
     }
-}
 
-//wpuf_option_values();
+    /**
+     * Enqueues Styles and Scripts when the shortcodes are used only
+     *
+     * @uses has_shortcode()
+     * @since 0.2
+     */
+    function enqueue_scripts() {
+        $path = plugins_url( 'wp-user-frontend' );
 
-function wpuf_get_custom_fields() {
-    global $wpdb;
 
-    $data = array();
+        require_once ABSPATH . '/wp-admin/includes/template.php';
 
-    $fields = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_customfields", OBJECT );
-    if ( $wpdb->num_rows > 0 ) {
-        foreach ($fields as $f) {
-            $data[] = array(
-                'label' => $f->label,
-                'field' => $f->field,
-                'type' => $f->required
-            );
+        wp_enqueue_style( 'wpuf', $path . '/css/wpuf.css' );
+
+        if ( has_shortcode( 'wpuf_addpost' ) || has_shortcode( 'wpuf_edit' ) ) {
+            wp_enqueue_script( 'plupload-handlers' );
         }
 
-        return $data;
+        wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js', array('jquery') );
+
+        $posting_msg = get_option( 'wpuf_post_submitting_label', 'Please wait...' );
+        wp_localize_script( 'wpuf', 'wpuf', array(
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'postingMsg' => $posting_msg,
+            'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
+            'nonce' => wp_create_nonce( 'wpuf_nonce' ),
+            'plupload' => array(
+                'runtimes' => 'html5,silverlight,flash,html4',
+                'browse_button' => 'wpuf-ft-upload-pickfiles',
+                'container' => 'wpuf-ft-upload-container',
+                'file_data_name' => 'wpuf_featured_img',
+                'max_file_size' => wp_max_upload_size() . 'b',
+                'url' => admin_url( 'admin-ajax.php' ) . '?action=wpuf_featured_img&nonce=' . wp_create_nonce( 'wpuf_featured_img' ),
+                'flash_swf_url' => includes_url( 'js/plupload/plupload.flash.swf' ),
+                'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
+                'filters' => array(array('title' => __( 'Allowed Files' ), 'extensions' => '*')),
+                'multipart' => true,
+                'urlstream_upload' => true,
+            )
+        ) );
     }
 
-    return false;
-}
+    /**
+     * Block user access to admin panel for specific roles
+     *
+     * @global string $pagenow
+     */
+    function block_admin_access() {
+        global $pagenow;
 
-/**
- * Returns child category dropdown on ajax request
- */
-function wpuf_get_child_cats() {
-    $parentCat = $_POST['catID'];
-    $result = '';
-    if ( $parentCat < 1 )
-        die( $result );
+        $access_level = get_option( 'wpuf_admin_security', 'read' );
+        $valid_pages = array('admin-ajax.php', 'async-upload.php', 'media-upload.php');
 
-    if ( get_categories( 'taxonomy=category&child_of=' . $parentCat . '&hide_empty=0' ) ) {
-        $result .= wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&class=dropdownlist&orderby=name&name=category[]&id=cat-ajax&order=ASC&hide_empty=0&hierarchical=1&taxonomy=category&depth=1&echo=0&child_of=' . $parentCat );
-    } else {
-        die( '' );
-    }
-
-    die( $result );
-}
-
-add_action( 'wp_ajax_nopriv_wpuf_get_child_cats', 'wpuf_get_child_cats' );
-add_action( 'wp_ajax_wpuf_get_child_cats', 'wpuf_get_child_cats' );
-
-
-/**
- * Adds notices on add post form if any
- *
- * @param string $text
- * @return string
- */
-function wpuf_addpost_notice( $text ) {
-    $user = wp_get_current_user();
-
-    if( is_user_logged_in() ) {
-        $lock = ( $user->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
-
-        if( $lock == 'yes' ) {
-            return $user->wpuf_lock_cause;
-        }
-
-        $force_pack = get_option( 'wpuf_sub_force_pack' );
-        $post_count = (isset( $user->wpuf_sub_pcount )) ? intval( $user->wpuf_sub_pcount ) : 0;
-
-        if( $force_pack == 'yes' && $post_count == 0 ) {
-            return __( 'You must purchase a pack before posting', 'wpuf' );
+        if ( !current_user_can( $access_level ) && !in_array( $pagenow, $valid_pages ) ) {
+            wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
         }
     }
 
-    return $text;
-}
-add_filter( 'wpuf_addpost_notice', 'wpuf_addpost_notice' );
+    /**
+     * Load the translation file for current language.
+     *
+     * @since version 0.7
+     * @author Tareq Hasan
+     */
+    function load_textdomain() {
+        $locale = apply_filters( 'wpuf_locale', get_locale() );
+        $mofile = dirname( __FILE__ ) . "/languages/wpuf-$locale.mo";
 
-
-/**
- * Adds the filter to the add post form if the user can post or not
- *
- * @param string $perm permission type. "yes" or "no"
- * @return string permission type. "yes" or "no"
- */
-function wpuf_can_post( $perm ) {
-    $user = wp_get_current_user();
-
-    if( is_user_logged_in() ) {
-        $lock = ( $user->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
-
-        if( $lock == 'yes' ) {
-            return 'no';
-        }
-
-        $force_pack = get_option( 'wpuf_sub_force_pack' );
-        $post_count = (isset( $user->wpuf_sub_pcount )) ? intval( $user->wpuf_sub_pcount ) : 0;
-
-        if( $force_pack == 'yes' && $post_count == 0 ) {
-            return 'no';
+        if ( file_exists( $mofile ) ) {
+            load_textdomain( 'wpuf', $mofile );
         }
     }
 
-    return $perm;
-}
-add_filter( 'wpuf_can_post', 'wpuf_can_post' );
-
-
-function wpuf_header_css() {
-    $css = get_option( 'wpuf_custom_css' );
-    ?>
-    <style type="text/css">
-    ul.wpuf-attachments{ list-style: none; overflow: hidden;}
-    ul.wpuf-attachments li {float: left; margin: 0 10px 10px 0;}
-    <?php echo $css; ?>
-    </style>
-    <?php
 }
 
-add_action( 'wp_head', 'wpuf_header_css' );
+$wpuf = new WPUF_Main();

@@ -17,7 +17,7 @@ class WPUF_Add_Post {
      *
      * @param $atts
      */
-    function shorcode( $atts ) {
+    function shortcode( $atts ) {
 
         extract( shortcode_atts( array('post_type' => 'post'), $atts ) );
 
@@ -42,7 +42,8 @@ class WPUF_Add_Post {
      */
     function post_form( $post_type ) {
         global $userdata;
-        $userdata = get_userdata( $userdata->ID );
+
+        $userdata = get_user_by( 'id', $userdata->ID );
 
         if ( isset( $_POST['wpuf_post_new_submit'] ) ) {
             $nonce = $_REQUEST['_wpnonce'];
@@ -154,10 +155,16 @@ class WPUF_Add_Post {
                             <p class="description"><?php echo stripslashes( get_option( 'wpuf_desc_help' ) ); ?></p>
                         </li>
 
-                        <?php do_action( 'wpuf_add_post_form_after_description', $post_type ); ?>
-                        <?php wpuf_build_custom_field_form( 'tag' ); ?>
+                        <?php
+                        do_action( 'wpuf_add_post_form_after_description', $post_type );
 
-                        <?php if ( get_option( 'wpuf_allow_tags' ) == 'yes' ) { ?>
+                        $this->publish_date_form();
+                        $this->expiry_date_form();
+
+                        wpuf_build_custom_field_form( 'tag' );
+
+                        if ( get_option( 'wpuf_allow_tags' ) == 'yes' ) {
+                            ?>
                             <li>
                                 <label for="new-post-tags">
                                     <?php echo get_option( 'wpuf_tag_label' ); ?>
@@ -166,13 +173,12 @@ class WPUF_Add_Post {
                                 <p class="description"><?php echo stripslashes( get_option( 'wpuf_tag_help' ) ); ?></p>
                                 <div class="clear"></div>
                             </li>
-                        <?php } ?>
+                            <?php
+                        }
 
-                        <?php do_action( 'wpuf_add_post_form_tags', $post_type ); ?>
-
-                        <?php //wpuf_attachment_fields(); ?>
-
-                        <?php wpuf_build_custom_field_form( 'bottom' ); ?>
+                        do_action( 'wpuf_add_post_form_tags', $post_type );
+                        wpuf_build_custom_field_form( 'bottom' );
+                        ?>
 
                         <li>
                             <label>&nbsp;</label>
@@ -193,10 +199,93 @@ class WPUF_Add_Post {
     }
 
     /**
-     * Validate the post submit data
+     * Prints the post publish date on form
      *
-     * @author Tareq Hasan
-     * @package WP User Frontend
+     * @return bool|string
+     */
+    function publish_date_form() {
+        $wpuf_enable_post_date = get_option( 'wpuf_enable_post_date', 'no' );
+
+        if ( $wpuf_enable_post_date == 'no' ) {
+            return;
+        }
+
+        $timezone_format = _x( 'Y-m-d G:i:s', 'timezone date format' );
+        $month = date_i18n( 'm' );
+        $month_array = array(
+            '01' => 'Jan',
+            '02' => 'Feb',
+            '03' => 'Mar',
+            '04' => 'Apr',
+            '05' => 'May',
+            '06' => 'Jun',
+            '07' => 'Jul',
+            '08' => 'Aug',
+            '09' => 'Sep',
+            '10' => 'Oct',
+            '11' => 'Nov',
+            '12' => 'Dec'
+        );
+        ?>
+        <li>
+            <label for="timestamp-wrap">
+                <?php _e( 'Publish Time:', 'wpuf' ); ?> <span class="required">*</span>
+            </label>
+            <div class="timestamp-wrap">
+                <select name="mm">
+                    <?php
+                    foreach ($month_array as $key => $val) {
+                        $selected = ( $key == $month ) ? ' selected="selected"' : '';
+                        echo '<option value="' . $key . '"' . $selected . '>' . $val . '</option>';
+                    }
+                    ?>
+                </select>
+                <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n( 'd' ); ?>" name="jj">,
+                <input type="text" autocomplete="off" tabindex="4" maxlength="4" size="4" value="<?php echo date_i18n( 'Y' ); ?>" name="aa">
+                @ <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n( 'G' ); ?>" name="hh">
+                : <input type="text" autocomplete="off" tabindex="4" maxlength="2" size="2" value="<?php echo date_i18n( 'i' ); ?>" name="mn">
+            </div>
+            <div class="clear"></div>
+            <p class="description"></p>
+        </li>
+        <?php
+    }
+
+    /**
+     * Prints post expiration date on the form
+     *
+     * @return bool|string
+     */
+    function expiry_date_form() {
+        $enable_post_expiry = get_option( 'wpuf_enable_post_expiry', 'no' );
+
+        if ( $enable_post_expiry == 'no' ) {
+            return;
+        }
+        ?>
+        <li>
+            <label for="timestamp-wrap">
+                <?php _e( 'Expiration Time:', 'wpuf' ); ?><span class="required">*</span>
+            </label>
+            <select name="expiration-date">
+                <?php
+                for ($i = 1; $i <= 90; $i++) {
+                    if ( $i % 2 != 0 ) {
+                        continue;
+                    }
+
+                    printf( '<option value="%1$d">%1$d %2$s</option>', $i, __( 'days', 'wpuf' ) );
+                }
+                ?>
+            </select>
+            <div class="clear"></div>
+            <p class="description"><?php _e( 'Post expiration time in day after publishing.', 'wpuf' ); ?></p>
+        </li>
+        <?php
+    }
+
+    /**
+     * Validate the post submit data
      *
      * @global type $userdata
      * @param type $post_type
@@ -277,73 +366,111 @@ class WPUF_Add_Post {
             } //foreach
         } //is_array
 
+        $wpuf_enable_post_date = get_option( 'wpuf_enable_post_date', 'no' );
+        $enable_post_date = get_option( 'wpuf_enable_post_date', 'no' );
+
+        //check post date
+        if ( $wpuf_enable_post_date == 'yes' ) {
+            $month = $_POST['mm'];
+            $day = $_POST['jj'];
+            $year = $_POST['aa'];
+            $hour = $_POST['hh'];
+            $min = $_POST['mn'];
+
+            if ( !checkdate( $month, $day, $year ) ) {
+                $errors[] = __( 'Invalid date', 'wpuf' );
+            }
+        }
+
         $errors = apply_filters( 'wpuf_add_post_validation', $errors );
 
 
         //if not any errors, proceed
-        if ( !$errors ) {
-            $post_stat = ( get_option( 'wpuf_post_status' ) ) ? get_option( 'wpuf_post_status' ) : 'publish';
-            $post_author = ( get_option( 'wpuf_post_author' ) == 'original' ) ? $userdata->ID : get_option( 'wpuf_map_author' );
+        if ( $errors ) {
+            echo wpuf_error_msg( $errors );
+            return;
+        }
 
-            //users are allowed to choose category
-            if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) {
-                $post_category = $_POST['category'];
-            } else {
-                $post_category = array(get_option( 'wpuf_default_cat' ));
+        $post_stat = ( get_option( 'wpuf_post_status' ) ) ? get_option( 'wpuf_post_status' ) : 'publish';
+        $post_author = ( get_option( 'wpuf_post_author' ) == 'original' ) ? $userdata->ID : get_option( 'wpuf_map_author' );
+
+        //users are allowed to choose category
+        if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) {
+            $post_category = $_POST['category'];
+        } else {
+            $post_category = array(get_option( 'wpuf_default_cat' ));
+        }
+
+        $my_post = array(
+            'post_title' => $title,
+            'post_content' => $content,
+            'post_status' => $post_stat,
+            'post_author' => $post_author,
+            'post_category' => $post_category,
+            'post_type' => $post_type,
+            'tags_input' => $tags
+        );
+
+        if ( $enable_post_date == 'yes' ) {
+            $month = $_POST['mm'];
+            $day = $_POST['jj'];
+            $year = $_POST['aa'];
+            $hour = $_POST['hh'];
+            $min = $_POST['mn'];
+
+            $post_date = mktime( $hour, $min, 59, $month, $day, $year );
+            $my_post['post_date'] = date( 'Y-m-d H:i:s', $post_date );
+        }
+
+        //plugin API to extend the functionality
+        $my_post = apply_filters( 'wpuf_add_post_args', $my_post );
+
+        //var_dump( $_POST, $my_post );die();
+        //insert the post
+        $post_id = wp_insert_post( $my_post );
+
+        if ( $post_id ) {
+
+            //upload attachment to the post
+            wpuf_upload_attachment( $post_id );
+
+            //send mail notification
+            if ( get_option( 'wpuf_notify' ) == 'yes' ) {
+                wpuf_notify_post_mail( $userdata, $post_id );
             }
 
-            $my_post = array(
-                'post_title' => $title,
-                'post_content' => $content,
-                'post_status' => $post_stat,
-                'post_author' => $post_author,
-                'post_category' => $post_category,
-                'post_type' => $post_type,
-                'tags_input' => $tags
-            );
+            //add the custom fields
+            if ( $custom_fields ) {
+                foreach ($custom_fields as $key => $val) {
+                    add_post_meta( $post_id, $key, $val, true );
+                }
+            }
+
+            //set post thumbnail if has any
+            if ( $attach_id ) {
+                set_post_thumbnail( $post_id, $attach_id );
+            }
+
+            //Set Post expiration date if has any
+            if ( !empty( $_POST['expiration-date'] ) ) {
+                $post = get_post( $post_id );
+                $post_date = strtotime( $post->post_date );
+                $expiration = (int) $_POST['expiration-date'];
+                $expiration = $post_date + ($expiration * 60 * 60 * 24);
+
+                add_post_meta( $post_id, 'expiration-date', $expiration, true );
+            }
 
             //plugin API to extend the functionality
-            $my_post = apply_filters( 'wpuf_add_post_args', $my_post );
+            do_action( 'wpuf_add_post_after_insert', $post_id );
 
-            //var_dump( $_POST, $my_post );die();
-            //insert the post
-            $post_id = wp_insert_post( $my_post );
-
+            //echo '<div class="success">' . __('Post published successfully', 'wpuf') . '</div>';
             if ( $post_id ) {
+                $redirect = apply_filters( 'wpuf_after_post_redirect', get_permalink( $post_id ), $post_id );
 
-                //upload attachment to the post
-                wpuf_upload_attachment( $post_id );
-
-                //send mail notification
-                if ( get_option( 'wpuf_notify' ) == 'yes' ) {
-                    wpuf_notify_post_mail( $userdata, $post_id );
-                }
-
-                //add the custom fields
-                if ( $custom_fields ) {
-                    foreach ($custom_fields as $key => $val) {
-                        add_post_meta( $post_id, $key, $val, true );
-                    }
-                }
-
-                //set post thumbnail if has any
-                if ( $attach_id ) {
-                    set_post_thumbnail( $post_id, $attach_id );
-                }
-
-                //plugin API to extend the functionality
-                do_action( 'wpuf_add_post_after_insert', $post_id );
-
-                //echo '<div class="success">' . __('Post published successfully', 'wpuf') . '</div>';
-                if ( $post_id ) {
-                    $redirect = apply_filters( 'wpuf_after_post_redirect', get_permalink( $post_id ), $post_id );
-
-                    wp_redirect( $redirect );
-                    exit;
-                }
+                wp_redirect( $redirect );
+                exit;
             }
-        } else {
-            echo wpuf_error_msg( $errors );
         }
     }
 

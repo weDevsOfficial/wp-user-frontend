@@ -3,22 +3,7 @@
 class WPUF_Edit_Post {
 
     function __construct() {
-        add_action( 'init', array($this, 'rewrite_endpoint') );
-        add_action( 'template_redirect', array($this, 'invoke_form') );
-    }
-
-    function rewrite_endpoint() {
-        add_rewrite_endpoint( 'edit', EP_PERMALINK | EP_PAGES );
-    }
-
-    function invoke_form() {
-        global $wp_query, $post;
-
-        if ( !isset( $wp_query->query_vars['edit'] ) || !is_singular() ) {
-            return;
-        }
-
-        add_filter( 'the_content', array($this, 'prepare_form') );
+        add_shortcode( 'wpuf_edit', array($this, 'shortcode') );
     }
 
     /**
@@ -26,12 +11,12 @@ class WPUF_Edit_Post {
      *
      * @return string generated form by the plugin
      */
-    function shortcode() {
+    function shorcode() {
 
         ob_start();
 
         if ( is_user_logged_in() ) {
-            $this->check_permission();
+            $this->prepare_form();
         } else {
             printf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( '', false ) );
         }
@@ -49,20 +34,28 @@ class WPUF_Edit_Post {
      * @global type $userdata
      */
     function prepare_form() {
-        global $post, $userdata;
+        global $wpdb, $userdata;
 
-        if ( get_option( 'wpuf_can_edit_post', 'yes' ) == 'no' ) {
+        $post_id = isset( $_GET['pid'] ) ? intval( $_GET['pid'] ) : 0;
+
+        //is editing enabled?
+        if ( get_option( 'wpuf_can_edit_post', 'yes' ) != 'yes' ) {
             return __( 'Post Editing is disabled', 'wpuf' );
         }
 
-        //check permission
-        if ( !current_user_can( 'delete_others_posts' ) && ( $userdata->ID != $post->post_author ) ) {
-            return __( 'You are not allowed to edit the content', 'wpuf' );
+        $curpost = get_post( $post_id );
+
+        if ( !$curpost ) {
+            return __( 'Invalid post', 'wpuf' );
         }
 
+        //has permission?
+        if ( !current_user_can( 'delete_others_posts' ) && ( $userdata->ID != $curpost->post_author ) ) {
+            return __( 'You are not allowed to edit', 'wpuf' );
+        }
 
-        //delete post attachment
-        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'del' ) {
+        //perform delete attachment action
+        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == "del" ) {
             check_admin_referer( 'wpuf_attach_del' );
             $attach_id = intval( $_REQUEST['attach_id'] );
 
@@ -71,13 +64,13 @@ class WPUF_Edit_Post {
             }
         }
 
-        //validate new post submission
-        $nonce = $_REQUEST['_wpnonce'];
-        if ( isset( $_POST['wpuf_edit_post_submit'] ) && wp_verify_nonce( $nonce, 'wpuf-edit-post' ) ) {
-            $this->submit_form();
+        //process post
+        if ( isset( $_POST['wpuf_edit_post_submit'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-edit-post' ) ) {
+            $this->submit_post();
         }
 
-        $this->edit_form( $post );
+        //show post form
+        $this->edit_form( $curpost );
     }
 
     function edit_form( $post ) {
@@ -226,7 +219,7 @@ class WPUF_Edit_Post {
         <?php
     }
 
-    function submit_form() {
+    function submit_post() {
         global $userdata;
 
         $errors = array();

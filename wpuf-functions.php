@@ -31,39 +31,6 @@ function wpuf_auth_redirect_login() {
 }
 
 /**
- * Load the translation file for current language.
- *
- * @since version 0.7
- * @author Tareq Hasan
- */
-function wpuf_plugin_init() {
-    $locale = apply_filters( 'wpuf_locale', get_locale() );
-    $mofile = dirname( __FILE__ ) . "/languages/wpuf-$locale.mo";
-
-    if ( file_exists( $mofile ) ) {
-        load_textdomain( 'wpuf', $mofile );
-    }
-}
-
-add_action( 'init', 'wpuf_plugin_init' );
-
-/**
- * Utility function for debugging
- *
- * @since version 0.1
- * @author Tareq Hasan
- */
-if ( !function_exists( 'd' ) ) {
-
-    function d( $param ) {
-        echo "<pre>";
-        print_r( $param );
-        echo "</pre>";
-    }
-
-}
-
-/**
  * Format the post status for user dashboard
  *
  * @param string $status
@@ -91,51 +58,6 @@ function wpuf_show_post_status( $status ) {
 
     echo '<span style="color:' . $fontcolor . ';">' . $title . '</span>';
 }
-
-/**
- * Enqueues Styles and Scripts when the shortcodes are used only
- *
- * @uses has_shortcode()
- * @since 0.2
- */
-function wpuf_enqueue_scripts() {
-    $path = plugins_url( 'wp-user-frontend' );
-
-    if ( has_shortcode( 'wpuf_addpost' ) || has_shortcode( 'wpuf_edit' ) || has_shortcode( 'wpuf_dashboard' ) ) {
-        require_once ABSPATH . '/wp-admin/includes/template.php';
-
-        wp_enqueue_style( 'wpuf', $path . '/css/wpuf.css' );
-
-        if ( has_shortcode( 'wpuf_addpost' ) || has_shortcode( 'wpuf_edit' ) ) {
-            wp_enqueue_script( 'plupload-handlers' );
-        }
-
-        wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js', array('jquery') );
-
-        $posting_msg = get_option( 'wpuf_post_submitting_label', 'Please wait...' );
-        wp_localize_script( 'wpuf', 'wpuf', array(
-            'ajaxurl' => admin_url( 'admin-ajax.php' ),
-            'postingMsg' => $posting_msg,
-            'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
-            'nonce' => wp_create_nonce( 'wpuf_nonce' ),
-            'plupload' => array(
-                'runtimes' => 'html5,silverlight,flash,html4',
-                'browse_button' => 'wpuf-ft-upload-pickfiles',
-                'container' => 'wpuf-ft-upload-container',
-                'file_data_name' => 'wpuf_featured_img',
-                'max_file_size' => wp_max_upload_size() . 'b',
-                'url' => admin_url( 'admin-ajax.php' ) . '?action=wpuf_featured_img&nonce=' . wp_create_nonce( 'wpuf_featured_img' ),
-                'flash_swf_url' => includes_url( 'js/plupload/plupload.flash.swf' ),
-                'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
-                'filters' => array(array('title' => __( 'Allowed Files' ), 'extensions' => '*')),
-                'multipart' => true,
-                'urlstream_upload' => true,
-            )
-        ) );
-    }
-}
-
-add_action( 'wp_enqueue_scripts', 'wpuf_enqueue_scripts' );
 
 /**
  * Format error message
@@ -351,33 +273,10 @@ function wpfu_get_attachments( $post_id ) {
 }
 
 /**
- * Prints the attachment files to the post content
+ * Attachments preview on edit page
  *
- * @global <type> $post
- * @param string $content original post content
- * @return string modified post content
+ * @param int $post_id
  */
-function wpuf_add_attachment_to_post( $content ) {
-    global $post;
-
-    $attach = wpfu_get_attachments( $post->ID );
-//var_dump( $attach );
-
-    if ( $attach ) {
-        $count = 1;
-        foreach ($attach as $a) {
-            $text .= 'Attachment ' . $count . ': <a href="' . $a['url'] . '">' . $a['title'] . '</a><br>';
-            $count++;
-        }
-        return $content . $text;
-    }
-
-    return $content;
-}
-
-//add_filter('the_content', 'wpuf_add_attachment_to_post');
-
-
 function wpuf_edit_attachment( $post_id ) {
     $attach = wpfu_get_attachments( $post_id );
 
@@ -423,19 +322,6 @@ function wpuf_attachment_fields( $edit = false, $post_id = false ) {
 }
 
 /**
- * Let the subscribers to upload files from the admin
- *
- * @package WP User Frontend
- * @author Tareq Hasan
- */
-function wpuf_let_upload() {
-    if ( !current_user_can( 'edit_posts' ) ) {
-        $subs = get_role( 'subscriber' );
-//$subs->add_cap( 'upload_files' );
-    }
-}
-
-/**
  * Remove the mdedia upload tabs from subscribers
  *
  * @package WP User Frontend
@@ -451,17 +337,6 @@ function wpuf_unset_media_tab( $list ) {
 }
 
 add_filter( 'media_upload_tabs', 'wpuf_unset_media_tab' );
-
-//add_action( 'init', 'wpuf_let_upload' );
-
-function wpuf_performance() {
-
-    $stat = sprintf( '%d queries in %.3f seconds, using %.2fMB memory', get_num_queries(), timer_stop( 0, 3 ), memory_get_peak_usage() / 1024 / 1024 );
-
-    echo $stat;
-}
-
-//add_action( 'wp_footer', 'wpuf_performance');
 
 /**
  * Get the registered post types
@@ -580,7 +455,6 @@ function has_shortcode( $shortcode = '', $post_id = false ) {
         $found = true;
     }
 
-// return our final results
     return $found;
 }
 
@@ -722,82 +596,6 @@ function wpuf_is_file_image( $file, $mime ) {
 }
 
 /**
- * Upload Featured image via ajax
- *
- * @since 0.8
- */
-function wpuf_featured_img_upload() {
-    check_ajax_referer( 'wpuf_featured_img', 'nonce' );
-
-    $upload = array(
-        'name' => $_FILES['wpuf_featured_img']['name'],
-        'type' => $_FILES['wpuf_featured_img']['type'],
-        'tmp_name' => $_FILES['wpuf_featured_img']['tmp_name'],
-        'error' => $_FILES['wpuf_featured_img']['error'],
-        'size' => $_FILES['wpuf_featured_img']['size']
-    );
-
-    $uploaded_file = wp_handle_upload( $upload, array('test_form' => false) );
-
-    // If the wp_handle_upload call returned a local path for the image
-    if ( isset( $uploaded_file['file'] ) ) {
-        $file_loc = $uploaded_file['file'];
-        $file_name = basename( $_FILES['wpuf_featured_img']['name'] );
-        $file_type = wp_check_filetype( $file_name );
-
-        $attachment = array(
-            'post_mime_type' => $file_type['type'],
-            'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
-            'post_content' => '',
-            'post_status' => 'inherit'
-        );
-
-        $attach_id = wp_insert_attachment( $attachment, $file_loc );
-        $attach_data = wp_generate_attachment_metadata( $attach_id, $file_loc );
-        wp_update_attachment_metadata( $attach_id, $attach_data );
-
-        if ( $attach_id ) {
-            $html = wpuf_feat_img_html( $attach_id );
-
-            $response = array(
-                'success' => true,
-                'html' => $html,
-            );
-
-            echo json_encode( $response );
-            exit;
-        }
-    }
-
-    $response = array('success' => false);
-    echo json_encode( $response );
-    exit;
-}
-
-add_action( 'wp_ajax_wpuf_featured_img', 'wpuf_featured_img_upload' );
-
-/**
- * Delete a featured image via ajax
- *
- * @since 0.8
- */
-function wpuf_feat_img_del() {
-    check_ajax_referer( 'wpuf_nonce', 'nonce' );
-
-    $attach_id = isset( $_POST['attach_id'] ) ? intval( $_POST['attach_id'] ) : 0;
-    $attachment = get_post( $attach_id );
-
-    //post author or editor role
-    if ( get_current_user_id() == $attachment->post_author || current_user_can( 'delete_private_pages' ) ) {
-        wp_delete_attachment( $attach_id, true );
-    }
-
-    exit;
-}
-
-add_action( 'wp_ajax_wpuf_feat_img_del', 'wpuf_feat_img_del' );
-
-/**
  * Displays attachment information upon upload as featured image
  *
  * @since 0.8
@@ -880,3 +678,125 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $tax = '
     ) );
     echo '</ul>';
 }
+
+// display msg if permalinks aren't setup correctly
+function wpuf_permalink_nag() {
+
+    if ( current_user_can( 'manage_options' ) )
+        $msg = sprintf( __( 'You need to set your <a href="%1$s">permalink custom structure</a> to at least contain <b>/&#37;postname&#37;/</b> before WP User Frontend will work properly.', 'wpuf' ), 'options-permalink.php' );
+
+    echo "<div class='error fade'><p>$msg</p></div>";
+}
+
+//if not found %postname%, shows a error msg at admin panel
+if ( !stristr( get_option( 'permalink_structure' ), '%postname%' ) ) {
+    add_action( 'admin_notices', 'wpuf_permalink_nag', 3 );
+}
+
+function wpuf_option_values() {
+    global $custom_fields;
+
+    wpuf_value_travarse( $custom_fields );
+}
+
+function wpuf_value_travarse( $param ) {
+    foreach ($param as $key => $value) {
+        if ( $value['name'] ) {
+            echo '"' . $value['name'] . '" => "' . get_option( $value['name'] ) . '"<br>';
+        }
+    }
+}
+
+//wpuf_option_values();
+
+function wpuf_get_custom_fields() {
+    global $wpdb;
+
+    $data = array();
+
+    $fields = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_customfields", OBJECT );
+    if ( $wpdb->num_rows > 0 ) {
+        foreach ($fields as $f) {
+            $data[] = array(
+                'label' => $f->label,
+                'field' => $f->field,
+                'type' => $f->required
+            );
+        }
+
+        return $data;
+    }
+
+    return false;
+}
+
+/**
+ * Adds notices on add post form if any
+ *
+ * @param string $text
+ * @return string
+ */
+function wpuf_addpost_notice( $text ) {
+    $user = wp_get_current_user();
+
+    if ( is_user_logged_in() ) {
+        $lock = ( $user->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
+
+        if ( $lock == 'yes' ) {
+            return $user->wpuf_lock_cause;
+        }
+
+        $force_pack = get_option( 'wpuf_sub_force_pack' );
+        $post_count = (isset( $user->wpuf_sub_pcount )) ? intval( $user->wpuf_sub_pcount ) : 0;
+
+        if ( $force_pack == 'yes' && $post_count == 0 ) {
+            return __( 'You must purchase a pack before posting', 'wpuf' );
+        }
+    }
+
+    return $text;
+}
+
+add_filter( 'wpuf_addpost_notice', 'wpuf_addpost_notice' );
+
+/**
+ * Adds the filter to the add post form if the user can post or not
+ *
+ * @param string $perm permission type. "yes" or "no"
+ * @return string permission type. "yes" or "no"
+ */
+function wpuf_can_post( $perm ) {
+    $user = wp_get_current_user();
+
+    if ( is_user_logged_in() ) {
+        $lock = ( $user->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
+
+        if ( $lock == 'yes' ) {
+            return 'no';
+        }
+
+        $force_pack = get_option( 'wpuf_sub_force_pack' );
+        $post_count = (isset( $user->wpuf_sub_pcount )) ? intval( $user->wpuf_sub_pcount ) : 0;
+
+        if ( $force_pack == 'yes' && $post_count == 0 ) {
+            return 'no';
+        }
+    }
+
+    return $perm;
+}
+
+add_filter( 'wpuf_can_post', 'wpuf_can_post' );
+
+function wpuf_header_css() {
+    $css = get_option( 'wpuf_custom_css' );
+    ?>
+    <style type="text/css">
+        ul.wpuf-attachments{ list-style: none; overflow: hidden;}
+        ul.wpuf-attachments li {float: left; margin: 0 10px 10px 0;}
+    <?php echo $css; ?>
+    </style>
+    <?php
+}
+
+add_action( 'wp_head', 'wpuf_header_css' );

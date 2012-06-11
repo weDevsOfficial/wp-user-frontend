@@ -21,11 +21,13 @@ class WPUF_Subscription {
      */
     public function actions() {
         //add_action( 'init', array( $this, 'debug' ) );
-        add_action( 'wpuf_add_post_after_insert', array( $this, 'check_new_post' ), 10, 1 );
-        add_action( 'init', array( $this, 'paypal_success' ) );
-        add_action( 'wpuf_add_post_form_top', array( $this, 'add_post_info' ) );
-        add_shortcode( 'wpuf_sub_info', array( $this, 'subscription_info' ) );
-        add_shortcode( 'wpuf_sub_pack', array( $this, 'subscription_packs' ) );
+        add_action( 'wpuf_add_post_after_insert', array($this, 'check_new_post'), 10, 1 );
+        add_action( 'init', array($this, 'paypal_success') );
+        add_action( 'wpuf_add_post_form_top', array($this, 'add_post_info') );
+        add_action( 'wpuf_payment_received', array($this, 'payment_notify_mail') );
+
+        add_shortcode( 'wpuf_sub_info', array($this, 'subscription_info') );
+        add_shortcode( 'wpuf_sub_pack', array($this, 'subscription_packs') );
     }
 
     /**
@@ -34,9 +36,9 @@ class WPUF_Subscription {
      * @package WPUF Subscriptoin
      */
     public function filters() {
-        add_filter( 'wpuf_add_post_args', array( $this, 'check_new_post_date' ), 10, 1 );
-        add_filter( 'the_content', array( $this, 'show_payment_form' ), 10, 1 );
-        add_filter( 'wpuf_after_post_redirect', array( $this, 'post_redirect' ), 10, 2 );
+        add_filter( 'wpuf_add_post_args', array($this, 'check_new_post_date'), 10, 1 );
+        add_filter( 'the_content', array($this, 'show_payment_form'), 10, 1 );
+        add_filter( 'wpuf_after_post_redirect', array($this, 'post_redirect'), 10, 2 );
     }
 
     /**
@@ -198,7 +200,7 @@ class WPUF_Subscription {
                 update_usermeta( $userdata->ID, 'wpuf_sub_pcount', $count - 1 );
 
                 //set the post status to publish
-                wp_update_post( array( 'ID' => $post_id, 'post_status' => 'publish' ) );
+                wp_update_post( array('ID' => $post_id, 'post_status' => 'publish') );
             }
         }
     }
@@ -335,7 +337,7 @@ class WPUF_Subscription {
         $post = $wpdb->get_row( $sql );
 
         if ( $post && $post->post_status != 'publish' ) {
-            $update_post = array( );
+            $update_post = array();
             $update_post['ID'] = $post->ID;
             $update_post['post_status'] = 'publish';
             wp_update_post( $update_post );
@@ -508,13 +510,26 @@ class WPUF_Subscription {
     function add_post_info() {
         if ( $this->has_post_error() ) {
             ?>
-                <div class="info">
-                    <?php printf( __( 'This will cost you <strong>%s</strong>. to add a new post. You may buy some bulk package too. ', 'wpuf' ), get_option('wpuf_sub_currency_sym') . get_option('wpuf_sub_amount') ); ?>
-                </div>
+            <div class="info">
+                <?php printf( __( 'This will cost you <strong>%s</strong>. to add a new post. You may buy some bulk package too. ', 'wpuf' ), get_option( 'wpuf_sub_currency_sym' ) . get_option( 'wpuf_sub_amount' ) ); ?>
+            </div>
             <?php
         }
     }
 
+    /**
+     * Send payment received mail
+     */
+    function payment_notify_mail() {
+        $headers = "From: " . get_bloginfo( 'name' ) . " <" . get_bloginfo( 'admin_email' ) . ">" . "\r\n\\";
+        $subject = sprintf( __( '[%s] Payment Received', 'wpuf' ), get_bloginfo( 'name' ) );
+        $msg = sprintf( __( 'New payment received at %s', 'wpuf' ), get_bloginfo( 'name' ) );
+
+        $receiver = get_bloginfo( 'admin_email' );
+        wp_mail( $receiver, $subject, $msg, $headers );
+    }
+
 }
+
 global $wpuf_subscription;
 $wpuf_subscription = new WPUF_Subscription();

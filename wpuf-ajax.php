@@ -42,6 +42,7 @@ class WPUF_Ajax {
         //post author or editor role
         if ( get_current_user_id() == $attachment->post_author || current_user_can( 'delete_private_pages' ) ) {
             wp_delete_attachment( $attach_id, true );
+            echo 'success';
         }
 
         exit;

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * WPUF subscription manager
+ *
+ * @since 0.2
+ * @author Tareq Hasan
+ * @package WP User Frontend
+ */
 class WPUF_Subscription {
 
     function __construct() {
@@ -8,6 +15,9 @@ class WPUF_Subscription {
 
         add_action( 'wpuf_add_post_after_insert', array($this, 'monitor_new_post'), 10, 1 );
         add_action( 'wpuf_payment_received', array($this, 'payment_received') );
+
+        add_shortcode( 'wpuf_sub_info', array($this, 'subscription_info') );
+        add_shortcode( 'wpuf_sub_pack', array($this, 'subscription_packs') );
     }
 
     /**
@@ -90,8 +100,8 @@ class WPUF_Subscription {
      * @return string
      */
     function set_pending( $postdata ) {
-        //if post chargin is enabled, make post as pending
-        if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' ) {
+
+        if ( get_option( 'wpuf_sub_charge_posting', 'no' ) == 'yes' ) {
             $postdata['post_status'] = 'pending';
         }
 
@@ -222,6 +232,8 @@ class WPUF_Subscription {
     function subscription_info() {
         global $userdata;
 
+        ob_start();
+
         $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix
 
         if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' && is_user_logged_in() ) {
@@ -263,6 +275,8 @@ class WPUF_Subscription {
 
             <?php
         }
+
+        return ob_get_clean();
     }
 
     /**
@@ -271,6 +285,8 @@ class WPUF_Subscription {
      */
     function subscription_packs() {
         $packs = $this->get_subscription_packs();
+
+        ob_start();
 
         if ( $packs ) {
             echo '<ul class="wpuf_packs">';
@@ -288,9 +304,9 @@ class WPUF_Subscription {
                 <?php
             }
             echo '</ul>';
-        } else {
-            //no pack found
         }
+
+        return ob_get_clean();
     }
 
     /**
@@ -307,4 +323,5 @@ class WPUF_Subscription {
     }
 
 }
+
 $wpuf_subscription = new WPUF_Subscription();

@@ -39,6 +39,7 @@ function wpuf_transaction() {
             </thead>
             <?php
             if ( $wpdb->num_rows > 0 ) {
+                $count = 0;
                 foreach ($fields as $row) {
                     //var_dump( $row );
                     ?>

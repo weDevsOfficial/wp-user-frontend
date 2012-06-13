@@ -73,14 +73,14 @@ class WPUF_Edit_Post {
         $this->edit_form( $curpost );
     }
 
-    function edit_form( $post ) {
-        $post_tags = wp_get_post_tags( $post->ID );
+    function edit_form( $curpost ) {
+        $post_tags = wp_get_post_tags( $curpost->ID );
         $tagsarray = array();
         foreach ($post_tags as $tag) {
             $tagsarray[] = $tag->name;
         }
         $tagslist = implode( ', ', $tagsarray );
-        $categories = get_the_category( $post->ID );
+        $categories = get_the_category( $curpost->ID );
         $featured_image = get_option( 'wpuf_featured_image', 'yes' );
         ?>
         <div id="wpuf-post-area">
@@ -88,8 +88,8 @@ class WPUF_Edit_Post {
                 <?php wp_nonce_field( 'wpuf-edit-post' ) ?>
                 <ul class="wpuf-post-form">
 
-                    <?php do_action( 'wpuf_add_post_form_top', $post->post_type, $post ); //plugin hook      ?>
-                    <?php wpuf_build_custom_field_form( 'top', true, $post->ID ); ?>
+                    <?php do_action( 'wpuf_add_post_form_top', $curpost->post_type, $curpost ); //plugin hook      ?>
+                    <?php wpuf_build_custom_field_form( 'top', true, $curpost->ID ); ?>
 
                     <?php if ( $featured_image == 'yes' ) { ?>
                         <?php if ( current_theme_supports( 'post-thumbnails' ) ) { ?>
@@ -99,10 +99,10 @@ class WPUF_Edit_Post {
                                     <div id="wpuf-ft-upload-filelist">
                                         <?php
                                         $style = '';
-                                        if ( has_post_thumbnail( $post->ID ) ) {
+                                        if ( has_post_thumbnail( $curpost->ID ) ) {
                                             $style = ' style="display:none"';
 
-                                            $post_thumbnail_id = get_post_thumbnail_id( $post->ID );
+                                            $post_thumbnail_id = get_post_thumbnail_id( $curpost->ID );
                                             echo wpuf_feat_img_html( $post_thumbnail_id );
                                         }
                                         ?>
@@ -120,7 +120,7 @@ class WPUF_Edit_Post {
                         <label for="new-post-title">
                             <?php echo get_option( 'wpuf_title_label' ); ?> <span class="required">*</span>
                         </label>
-                        <input type="text" name="wpuf_post_title" id="new-post-title" minlength="2" value="<?php echo esc_html( $post->post_title ); ?>">
+                        <input type="text" name="wpuf_post_title" id="new-post-title" minlength="2" value="<?php echo esc_html( $curpost->post_title ); ?>">
                         <div class="clear"></div>
                     </li>
 
@@ -132,7 +132,7 @@ class WPUF_Edit_Post {
 
                             <?php
                             $exclude = get_option( 'wpuf_exclude_cat' );
-                            $cats = get_the_category( $post->ID );
+                            $cats = get_the_category( $curpost->ID );
                             $selected = 0;
                             if ( $cats ) {
                                 $selected = $cats[0]->term_id;
@@ -151,7 +151,7 @@ class WPUF_Edit_Post {
                                     } else if ( $cat_type == 'ajax' ) {
                                         wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat-ajax&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude . '&selected=' . $selected );
                                     } else {
-                                        wpuf_category_checklist( $post->ID );
+                                        wpuf_category_checklist( $curpost->ID );
                                     }
                                     ?>
                                 </div>
@@ -162,8 +162,8 @@ class WPUF_Edit_Post {
                         </li>
                     <?php } ?>
 
-                    <?php do_action( 'wpuf_add_post_form_description', $post->post_type, $post ); ?>
-                    <?php wpuf_build_custom_field_form( 'description', true, $post->ID ); ?>
+                    <?php do_action( 'wpuf_add_post_form_description', $curpost->post_type, $curpost ); ?>
+                    <?php wpuf_build_custom_field_form( 'description', true, $curpost->ID ); ?>
 
                     <li>
                         <label for="new-post-desc">
@@ -175,23 +175,23 @@ class WPUF_Edit_Post {
                         if ( $editor == 'full' ) {
                             ?>
                             <div style="float:left;">
-                                <?php wp_editor( $post->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => false, 'textarea_rows' => 8) ); ?>
+                                <?php wp_editor( $curpost->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => false, 'textarea_rows' => 8) ); ?>
                             </div>
                         <?php } else if ( $editor == 'rich' ) { ?>
                             <div style="float:left;">
-                                <?php wp_editor( $post->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => true, 'textarea_rows' => 8) ); ?>
+                                <?php wp_editor( $curpost->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => true, 'textarea_rows' => 8) ); ?>
                             </div>
 
                         <?php } else { ?>
-                            <textarea name="wpuf_post_content" class="requiredField" id="new-post-desc" cols="60" rows="8"><?php echo esc_textarea( $post->post_content ); ?></textarea>
+                            <textarea name="wpuf_post_content" class="requiredField" id="new-post-desc" cols="60" rows="8"><?php echo esc_textarea( $curpost->post_content ); ?></textarea>
                         <?php } ?>
 
                         <div class="clear"></div>
                         <p class="description"><?php echo stripslashes( get_option( 'wpuf_desc_help' ) ); ?></p>
                     </li>
 
-                    <?php do_action( 'wpuf_add_post_form_after_description', $post->post_type, $post ); ?>
-                    <?php wpuf_build_custom_field_form( 'tag', true, $post->ID ); ?>
+                    <?php do_action( 'wpuf_add_post_form_after_description', $curpost->post_type, $curpost ); ?>
+                    <?php wpuf_build_custom_field_form( 'tag', true, $curpost->ID ); ?>
 
                     <?php if ( get_option( 'wpuf_allow_tags' ) == 'yes' ) { ?>
                         <li>
@@ -203,14 +203,14 @@ class WPUF_Edit_Post {
                         </li>
                     <?php } ?>
 
-                    <?php do_action( 'wpuf_add_post_form_tags', $post->post_type, $post ); ?>
-                    <?php wpuf_build_custom_field_form( 'bottom', true, $post->ID ); ?>
+                    <?php do_action( 'wpuf_add_post_form_tags', $curpost->post_type, $curpost ); ?>
+                    <?php wpuf_build_custom_field_form( 'bottom', true, $curpost->ID ); ?>
 
                     <li>
                         <label>&nbsp;</label>
                         <input class="wpuf_submit" type="submit" name="wpuf_edit_post_submit" value="<?php echo esc_attr( get_option( 'wpuf_post_update_label', 'Update Post!' ) ); ?>">
                         <input type="hidden" name="wpuf_edit_post_submit" value="yes" />
-                        <input type="hidden" name="post_id" value="<?php echo $post->ID; ?>">
+                        <input type="hidden" name="post_id" value="<?php echo $curpost->ID; ?>">
                     </li>
                 </ul>
             </form>

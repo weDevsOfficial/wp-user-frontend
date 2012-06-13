@@ -148,13 +148,25 @@ class WPUF_Payment {
      *
      * @global object $wpdb
      * @param array $data payment data to insert
+     * @param int $transaction_id the transaction id in case of update
      */
-    function insert_payment( $data ) {
+    function insert_payment( $data, $transaction_id = 0 ) {
         global $wpdb;
 
-        $wpdb->insert( $wpdb->prefix . 'wpuf_transaction', $data );
+        //check if it's already there
+        $sql = "SELECT transaction_id
+                FROM " . $wpdb->prefix . "wpuf_transaction
+                WHERE transaction_id = '" . $wpdb->escape( wpuf_clean_tags( $transaction_id ) ) . "' LIMIT 1";
 
-        do_action( 'wpuf_payment_received', $data );
+        $result = $wpdb->get_row( $sql );
+
+        if ( !$result ) {
+            $wpdb->insert( $wpdb->prefix . 'wpuf_transaction', $data );
+            do_action( 'wpuf_payment_received', $data );
+        } else {
+            $wpdb->update( $wpdb->prefix . 'wpuf_transaction', $data, array('transaction_id' => $transaction_id) );
+            WPUF_Main::log( 'info', 'updating existing transaction: ' . $transaction_id );
+        }
     }
 
     /**

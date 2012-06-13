@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * WP User Frontend payment gateway handler
+ *
+ * @since 0.8
+ * @package WP User Frontend
+ */
 class WPUF_Payment {
 
     function __construct() {
@@ -150,7 +155,7 @@ class WPUF_Payment {
      * @param array $data payment data to insert
      * @param int $transaction_id the transaction id in case of update
      */
-    function insert_payment( $data, $transaction_id = 0 ) {
+    public static function insert_payment( $data, $transaction_id = 0 ) {
         global $wpdb;
 
         //check if it's already there

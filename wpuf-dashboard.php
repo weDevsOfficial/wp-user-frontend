@@ -48,6 +48,8 @@ class WPUF_Dashboard {
         global $wpdb, $userdata, $post;
 
         $userdata = get_userdata( $userdata->ID );
+        $pagenum = isset( $_GET['pagenum'] ) ? intval( $_GET['pagenum'] ) : 1;
+
         //delete post
         if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == "del" ) {
             $this->delete_post();
@@ -58,7 +60,6 @@ class WPUF_Dashboard {
             echo '<div class="success">' . __( 'Post Deleted', 'wpuf' ) . '</div>';
         }
 
-        $pagenum = isset( $_GET['pagenum'] ) ? intval( $_GET['pagenum'] ) : 1;
         $args = array(
             'author' => get_current_user_id(),
             'post_status' => array('draft', 'future', 'pending', 'publish'),
@@ -68,7 +69,7 @@ class WPUF_Dashboard {
         );
 
         $dashboard_query = new WP_Query( $args );
-        //var_dump( $dashboard_query );
+        $post_type_obj = get_post_type_object( $post_type );
         ?>
 
         <h2 class="page-head">
@@ -76,7 +77,7 @@ class WPUF_Dashboard {
         </h2>
 
         <?php if ( get_option( 'wpuf_list_post_count' ) == 'yes' ) { ?>
-            <div class="post_count"><?php printf( __( 'You have created <span>%s</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type ); ?></div>
+            <div class="post_count"><?php printf( __( 'You have created <span>%d</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
         <?php } ?>
 
         <?php do_action( 'wpuf_dashboard', $userdata->ID, $post_type ) ?>
@@ -144,7 +145,20 @@ class WPUF_Dashboard {
         </table>
 
         <div class="wpuf-pagination">
-            <?php $this->pagination(); ?>
+            <?php
+            $pagination = paginate_links( array(
+                'base' => add_query_arg( 'pagenum', '%#%' ),
+                'format' => '',
+                'prev_text' => __( '&laquo;', 'wpuf' ),
+                'next_text' => __( '&raquo;', 'wpuf' ),
+                'total' => $dashboard_query->max_num_pages,
+                'current' => $pagenum
+                    ) );
+
+            if ( $pagination ) {
+                echo $pagination;
+            }
+            ?>
         </div>
 
         <?php
@@ -155,6 +169,8 @@ class WPUF_Dashboard {
      * Show user info on dashboard
      */
     function user_info() {
+        global $userdata;
+
         if ( get_option( 'wpuf_list_user_info' ) == 'yes' ) {
             ?>
             <div class="wpuf-author">
@@ -168,24 +184,6 @@ class WPUF_Dashboard {
                 </div>
             </div><!-- .author -->
             <?php
-        }
-    }
-
-    /**
-     * Show pagination on dashboard
-     */
-    function pagination() {
-        $pagination = paginate_links( array(
-            'base' => add_query_arg( 'pagenum', '%#%' ),
-            'format' => '',
-            'prev_text' => __( '&laquo;', 'aag' ),
-            'next_text' => __( '&raquo;', 'aag' ),
-            'total' => $dashboard_query->max_num_pages,
-            'current' => $pagenum
-                ) );
-
-        if ( $pagination ) {
-            echo $pagination;
         }
     }
 

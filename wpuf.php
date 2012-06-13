@@ -1,4 +1,5 @@
 <?php
+
 /*
   Plugin Name: WP User Frontend
   Plugin URI: http://tareq.wedevs.com/2011/01/new-plugin-wordpress-user-frontend/
@@ -26,10 +27,10 @@ require_once 'wpuf-editprofile.php';
 require_once 'wpuf-edit-user.php';
 require_once 'wpuf-ajax.php';
 
-//custom hooks
-require_once 'extra/custom_hooks.php';
 require_once 'wpuf-subscription.php';
+require_once 'wpuf-payment.php';
 require_once 'lib/attachment.php';
+require_once 'lib/gateway/paypal.php';
 
 class WPUF_Main {
 
@@ -200,6 +201,20 @@ class WPUF_Main {
 
         if ( file_exists( $mofile ) ) {
             load_textdomain( 'wpuf', $mofile );
+        }
+    }
+
+    /**
+     * The main logging function
+     *
+     * @uses error_log
+     * @param string $type type of the error. e.g: debug, error, info
+     * @param string $msg
+     */
+    public static function log( $type = '', $msg = '' ) {
+        if ( WP_DEBUG == true ) {
+            $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, $msg );
+            error_log( $msg, 3, dirname( __FILE__ ) . '/log.txt' );
         }
     }
 

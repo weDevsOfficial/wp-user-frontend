@@ -116,8 +116,7 @@ class WPUF_Paypal {
                     'created' => current_time( 'mysql' )
                 );
 
-                $payment = new WPUF_Payment();
-                $payment->insert_payment( $data, $postdata['txn_id'] );
+                WPUF_Payment::insert_payment( $data, $postdata['txn_id'] );
             }
         }
     }

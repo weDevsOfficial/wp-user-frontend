@@ -29,8 +29,12 @@ class WPUF_Attachment {
             $max_file_size = intval( get_option( 'wpuf_attachment_max_size', '2048' ) ) * 1024;
             $max_upload = intval( get_option( 'wpuf_attachment_num', 0 ) );
 
+            wp_enqueue_script( 'jquery' );
+            if ( has_shortcode( 'wpuf_addpost' ) || has_shortcode( 'wpuf_edit' ) ) {
+                wp_enqueue_script( 'plupload-handlers' );
+            }
             wp_enqueue_script( 'jquery-ui-sortable' );
-            wp_enqueue_script( 'wpuf_attachment', plugins_url( 'js/attachment.js', dirname( __FILE__ ) ), array('jquery', 'plupload-handlers') );
+            wp_enqueue_script( 'wpuf_attachment', plugins_url( 'js/attachment.js', dirname( __FILE__ ) ), array('jquery') );
 
             wp_localize_script( 'wpuf_attachment', 'wpuf_attachment', array(
                 'nonce' => wp_create_nonce( 'wpuf_attachment' ),

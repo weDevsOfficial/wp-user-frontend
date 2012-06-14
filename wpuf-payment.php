@@ -15,7 +15,7 @@ class WPUF_Payment {
         add_filter( 'the_content', array($this, 'payment_page') );
     }
 
-    function get_payment_gateways() {
+    public static function get_payment_gateways() {
 
         // default, built-in gateways
         $gateways = array(

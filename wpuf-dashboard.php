@@ -119,7 +119,7 @@ class WPUF_Dashboard {
                             ?>
                             <td>
                                 <?php if ( $post->post_status == 'pending' && $order_id ) { ?>
-                                    <a href="<?php echo get_permalink( get_option( 'wpuf_sub_pay_page' ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $p->ID; ?>">Pay Now</a>
+                                    <a href="<?php echo trailingslashit( get_permalink( get_option( 'wpuf_sub_pay_page' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>">Pay Now</a>
                                 <?php } ?>
                             </td>
                         <?php } ?>

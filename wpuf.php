@@ -9,17 +9,21 @@
   Author URI: http://tareq.weDevs.com
  */
 
+if ( !class_exists( 'WeDevs_Settings_API' ) ) {
+    require_once dirname( __FILE__ ) . '/lib/class.settings-api.php';
+}
+
 require_once 'wpuf-functions.php';
 require_once 'admin/wpuf-options-value.php';
 
 if ( is_admin() ) {
-    require_once 'admin/wpuf-admin.php';
-    require_once 'admin/wpuf-admin-meta.php';
-    require_once 'admin/wpuf-admin-taxonomy.php';
+    require_once 'admin/settings.php';
+    require_once 'admin/custom-fields.php';
+    require_once 'admin/taxonomy.php';
+    require_once 'admin/subscription.php';
+    require_once 'admin/transaction.php';
 }
 
-require_once 'admin/wpuf-admin-subscription.php';
-require_once 'admin/wpuf-admin-transaction.php';
 require_once 'wpuf-dashboard.php';
 require_once 'wpuf-add-post.php';
 require_once 'wpuf-edit-post.php';
@@ -38,7 +42,6 @@ class WPUF_Main {
         register_activation_hook( __FILE__, array($this, 'install') );
         register_deactivation_hook( __FILE__, array($this, 'uninstall') );
 
-        add_action( 'admin_menu', array($this, 'admin_menu') );
         add_action( 'admin_init', array($this, 'block_admin_access') );
 
         add_action( 'init', array($this, 'load_textdomain') );
@@ -103,32 +106,6 @@ class WPUF_Main {
 
     function uninstall() {
 
-    }
-
-    /**
-     * Add's a option page in the admin panel
-     */
-    function admin_menu() {
-        $plugin_page = add_menu_page( 'WP User Frontend', 'WP User Frontend', 'activate_plugins', 'wpuf-admin-opt', 'wpuf_plugin_options', null );
-        $plugin_page2 = add_submenu_page( 'wpuf-admin-opt', 'Custom Fields', 'Custom Fields', 'activate_plugins', 'wpuf_custom_fields', 'wpuf_custom_fields' );
-        //$plugin_page3 = add_submenu_page( 'wpuf-admin-opt', 'Custom Taxonomies', 'Custom Taxonomies', 'activate_plugins', 'wpuf_custom_tax', 'wpuf_taxonomy_fields' );
-        $plugin_page4 = add_submenu_page( 'wpuf-admin-opt', 'Subscription', 'Subscription', 'activate_plugins', 'wpuf_subscription', 'wpuf_subscription_admin' );
-        $plugin_page5 = add_submenu_page( 'wpuf-admin-opt', 'Transaction', 'Transaction', 'activate_plugins', 'wpuf_transaction', 'wpuf_transaction' );
-
-        add_action( 'admin_head-' . $plugin_page, array($this, 'admin_scripts') );
-        add_action( 'admin_head-' . $plugin_page2, array($this, 'admin_scripts') );
-        //add_action( 'admin_head-' . $plugin_page3, 'wpuf_admin_script' );
-        add_action( 'admin_head-' . $plugin_page4, array($this, 'admin_scripts') );
-    }
-
-    /**
-     * Enqueue scripts and styles for admin panel
-     */
-    function admin_scripts() {
-        $path = plugins_url( 'wp-user-frontend' );
-
-        wp_enqueue_script( 'wpuf_admin', $path . '/js/admin.js' );
-        wp_enqueue_style( 'wpuf_admin', $path . '/css/admin.css' );
     }
 
     /**

@@ -527,7 +527,7 @@ class WPUF_Settings {
                     'label' => __( 'Payment Gateways', 'wpuf' ),
                     'desc' => __( 'Active payment gateways', 'wpuf' ),
                     'type' => 'multicheck',
-                    'options' => $this->get_pages()
+                    'options' => $this->get_gateways()
                 ),
             ) ),
             'wpuf_profile' => apply_filters( 'wpuf_options_profile', array(
@@ -690,6 +690,17 @@ class WPUF_Settings {
         }
 
         return $pages_options;
+    }
+
+    function get_gateways() {
+        $gateways = WPUF_Payment::get_payment_gateways();
+        $return = array();
+
+        foreach ($gateways as $id => $gate) {
+            $return[$id] = $gate['admin_label'];
+        }
+
+        return $return;
     }
 
 }

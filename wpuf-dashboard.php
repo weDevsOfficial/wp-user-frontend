@@ -80,86 +80,100 @@ class WPUF_Dashboard {
             <div class="post_count"><?php printf( __( 'You have created <span>%d</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
         <?php } ?>
 
-        <?php do_action( 'wpuf_dashboard', $userdata->ID, $post_type ) ?>
+        <?php do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj ) ?>
 
-        <table class="wpuf-table" cellpadding="0" cellspacing="0">
-            <thead>
-                <tr>
-                    <th><?php _e( 'Title', 'wpuf' ); ?></th>
-                    <th><?php _e( 'Status', 'wpuf' ); ?></th>
-                    <?php if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' )
-                        echo '<th>' . __( 'Payment', 'wpuf' ) . '</th>'; ?>
-                    <th><?php _e( 'Options', 'wpuf' ); ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                while ($dashboard_query->have_posts()) {
-                    $dashboard_query->the_post();
-                    ?>
+        <?php if ( $dashboard_query->have_posts() ) { ?>
+
+            <table class="wpuf-table" cellpadding="0" cellspacing="0">
+                <thead>
                     <tr>
-                        <td>
-                            <?php if ( in_array( $post->post_status, array('draft', 'future', 'pending') ) ) { ?>
-
-                                <?php the_title(); ?>
-
-                            <?php } else { ?>
-
-                                <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpuf' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
-
-                            <?php } ?>
-                        </td>
-                        <td>
-                            <?php wpuf_show_post_status( $post->post_status ) ?>
-                        </td>
-
+                        <th><?php _e( 'Title', 'wpuf' ); ?></th>
+                        <th><?php _e( 'Status', 'wpuf' ); ?></th>
                         <?php
                         if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' ) {
-                            $order_id = get_post_meta( $post->ID, 'wpuf_order_id', true );
-                            ?>
+                            echo '<th>' . __( 'Payment', 'wpuf' ) . '</th>';
+                        }
+                        ?>
+                        <th><?php _e( 'Options', 'wpuf' ); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    while ($dashboard_query->have_posts()) {
+                        $dashboard_query->the_post();
+                        ?>
+                        <tr>
                             <td>
-                                <?php if ( $post->post_status == 'pending' && $order_id ) { ?>
-                                    <a href="<?php echo trailingslashit( get_permalink( get_option( 'wpuf_sub_pay_page' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>">Pay Now</a>
+                                <?php if ( in_array( $post->post_status, array('draft', 'future', 'pending') ) ) { ?>
+
+                                    <?php the_title(); ?>
+
+                                <?php } else { ?>
+
+                                    <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpuf' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
+
                                 <?php } ?>
                             </td>
-                        <?php } ?>
+                            <td>
+                                <?php wpuf_show_post_status( $post->post_status ) ?>
+                            </td>
 
-                        <td>
-                            <?php if ( get_option( 'wpuf_can_edit_post' ) == 'yes' ) { ?>
-                                <?php
-                                $edit_page = (int) get_option( 'wpuf_edit_page_url' );
-                                $url = get_permalink( $edit_page );
+                            <?php
+                            if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' ) {
+                                $order_id = get_post_meta( $post->ID, 'wpuf_order_id', true );
                                 ?>
-                                <a href="<?php echo wp_nonce_url( $url . '?pid=' . $post->ID, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wpuf' ); ?></a>
-                            <?php } else { ?>
-                                &nbsp;
+                                <td>
+                                    <?php if ( $post->post_status == 'pending' && $order_id ) { ?>
+                                        <a href="<?php echo trailingslashit( get_permalink( get_option( 'wpuf_sub_pay_page' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>">Pay Now</a>
+                                    <?php } ?>
+                                </td>
                             <?php } ?>
 
-                            <?php if ( get_option( 'wpuf_can_del_post' ) == 'yes' ) { ?>
-                                <a href="<?php echo wp_nonce_url( "?action=del&pid=" . $post->ID, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this post?');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
-                            <?php } ?>
-                        </td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+                            <td>
+                                <?php if ( get_option( 'wpuf_can_edit_post' ) == 'yes' ) { ?>
+                                    <?php
+                                    $edit_page = (int) get_option( 'wpuf_edit_page_url' );
+                                    $url = get_permalink( $edit_page );
+                                    ?>
+                                    <a href="<?php echo wp_nonce_url( $url . '?pid=' . $post->ID, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wpuf' ); ?></a>
+                                <?php } else { ?>
+                                    &nbsp;
+                                <?php } ?>
 
-        <div class="wpuf-pagination">
+                                <?php if ( get_option( 'wpuf_can_del_post' ) == 'yes' ) { ?>
+                                    <a href="<?php echo wp_nonce_url( "?action=del&pid=" . $post->ID, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this post?');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+
+            <div class="wpuf-pagination">
+                <?php
+                $pagination = paginate_links( array(
+                    'base' => add_query_arg( 'pagenum', '%#%' ),
+                    'format' => '',
+                    'prev_text' => __( '&laquo;', 'wpuf' ),
+                    'next_text' => __( '&raquo;', 'wpuf' ),
+                    'total' => $dashboard_query->max_num_pages,
+                    'current' => $pagenum
+                        ) );
+
+                if ( $pagination ) {
+                    echo $pagination;
+                }
+                ?>
+            </div>
+
             <?php
-            $pagination = paginate_links( array(
-                'base' => add_query_arg( 'pagenum', '%#%' ),
-                'format' => '',
-                'prev_text' => __( '&laquo;', 'wpuf' ),
-                'next_text' => __( '&raquo;', 'wpuf' ),
-                'total' => $dashboard_query->max_num_pages,
-                'current' => $pagenum
-                    ) );
+        } else {
+            printf( __( 'No %s found', 'wpuf' ), $post_type_obj->label );
+            do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
+        }
 
-            if ( $pagination ) {
-                echo $pagination;
-            }
-            ?>
-        </div>
+        do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj );
+        ?>
 
         <?php
         $this->user_info();

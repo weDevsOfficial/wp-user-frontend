@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WP User Frontend payment gateway handler
  *
@@ -40,20 +41,21 @@ class WPUF_Payment {
     function payment_page( $content ) {
         global $post;
 
-        if ( !is_user_logged_in() ) {
-            return __( 'You are not logged in', 'wpuf' );
-        }
-
-        ob_start();
-
         $pay_page = intval( get_option( 'wpuf_sub_pay_page' ) );
+
         if ( $post->ID == $pay_page && isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'wpuf_pay' ) {
+
+            if ( !is_user_logged_in() ) {
+                return __( 'You are not logged in', 'wpuf' );
+            }
 
             $type = ( $_REQUEST['type'] == 'post' ) ? 'post' : 'pack';
             $post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( $_REQUEST['pack_id'] ) : 0;
 
             $gateways = $this->get_payment_gateways();
+
+            ob_start();
             ?>
             <form id="wpuf-payment-gateway" action="<?php echo $_SERVER["REQUEST_URI"]; ?>" method="POST">
                 <?php wp_nonce_field( 'wpuf_payment_gateway' ) ?>
@@ -84,9 +86,10 @@ class WPUF_Payment {
             </form>
 
             <?php
+            return ob_get_clean();
         }
 
-        return ob_get_clean();
+        return $content;
     }
 
     /**

@@ -792,12 +792,21 @@ function wpuf_build_form( $options, $values = '', $from_option = true ) {
             )
         ),
         array(
-            'name' => 'wpuf_list_user_cs',
-            'label' => 'Show users custom fields',
-            'desc' => 'If you want to show users other custom fields, list the custom fields names by separating with comma',
-            'type' => 'textarea',
-            'rows' => 3,
-            'cols' => 40
+            'name' => 'wpuf_db_ft_img',
+            'label' => 'Show featured image',
+            'desc' => 'Show the featured image of the post',
+            'type' => 'select',
+            'options' => array(
+                'no' => 'No',
+                'yes' => 'Yes'
+            )
+        ),
+        array(
+            'name' => 'wpuf_db_ft_img_size',
+            'label' => 'Featured image size',
+            'desc' => '',
+            'type' => 'select',
+            'options' => wpuf_get_image_sizes()
         ),
         array(
             'type' => 'title_end'

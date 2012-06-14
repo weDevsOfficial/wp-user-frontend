@@ -794,9 +794,26 @@ function wpuf_header_css() {
     <style type="text/css">
         ul.wpuf-attachments{ list-style: none; overflow: hidden;}
         ul.wpuf-attachments li {float: left; margin: 0 10px 10px 0;}
-    <?php echo $css; ?>
+        <?php echo $css; ?>
     </style>
     <?php
 }
 
 add_action( 'wp_head', 'wpuf_header_css' );
+
+/**
+ * Get all the image sizes
+ * 
+ * @return array image sizes
+ */
+function wpuf_get_image_sizes() {
+    $image_sizes_orig = get_intermediate_image_sizes();
+    $image_sizes_orig[] = 'full';
+    $image_sizes = array();
+
+    foreach ($image_sizes_orig as $size) {
+        $image_sizes[$size] = $size;
+    }
+
+    return $image_sizes;
+}

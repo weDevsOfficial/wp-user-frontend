@@ -132,10 +132,10 @@ class WPUF_Subscription {
             if ( $count != 'unlimited' ) {
                 $count = intval( $count );
                 update_usermeta( $userdata->ID, 'wpuf_sub_pcount', $count - 1 );
-            }
 
-            //set the post status to publish
-            wp_update_post( array('ID' => $post_id, 'post_status' => 'publish') );
+                //set the post status to publish
+                wp_update_post( array('ID' => $post_id, 'post_status' => 'publish') );
+            }
         }
     }
 

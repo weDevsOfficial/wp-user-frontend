@@ -84,13 +84,23 @@ class WPUF_Dashboard {
 
         <?php if ( $dashboard_query->have_posts() ) { ?>
 
+            <?php
+            $featured_img = get_option( 'wpuf_db_ft_img', 'no' );
+            $featured_img_size = get_option( 'wpuf_db_ft_img_size', 'thumbnail' );
+            $charging_enabled = get_option( 'wpuf_sub_charge_posting', 'no' );
+            ?>
             <table class="wpuf-table" cellpadding="0" cellspacing="0">
                 <thead>
                     <tr>
+                        <?php
+                        if ( 'yes' == $featured_img ) {
+                            echo '<th>' . __( 'Featured Image', 'wpuf' ) . '</th>';
+                        }
+                        ?>
                         <th><?php _e( 'Title', 'wpuf' ); ?></th>
                         <th><?php _e( 'Status', 'wpuf' ); ?></th>
                         <?php
-                        if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' ) {
+                        if ( 'yes' == $charging_enabled ) {
                             echo '<th>' . __( 'Payment', 'wpuf' ) . '</th>';
                         }
                         ?>
@@ -103,6 +113,17 @@ class WPUF_Dashboard {
                         $dashboard_query->the_post();
                         ?>
                         <tr>
+                            <?php if ( 'yes' == $featured_img ) { ?>
+                                <td>
+                                    <?php
+                                    if ( has_post_thumbnail() ) {
+                                        the_post_thumbnail( $featured_img_size );
+                                    } else {
+                                        printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', apply_filters( 'wpuf_no_image', plugins_url( '/images/no-image.png', __FILE__ ) ), __( 'No Image', 'wpuf' ) );
+                                    }
+                                    ?>
+                                </td>
+                            <?php } ?>
                             <td>
                                 <?php if ( in_array( $post->post_status, array('draft', 'future', 'pending') ) ) { ?>
 

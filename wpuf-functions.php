@@ -496,11 +496,11 @@ function wpuf_edit_post_link( $url, $post_id ) {
         return $url;
     }
 
-    $override = get_option( 'wpuf_override_editlink', 'yes' );
+    $override = wpuf_get_option( 'override_editlink', 'yes' );
     if ( $override == 'yes' ) {
         $url = '';
-        if ( get_option( 'wpuf_can_edit_post' ) == 'yes' ) {
-            $edit_page = (int) get_option( 'wpuf_edit_page_url' );
+        if ( wpuf_get_option( 'enable_post_edit' ) == 'yes' ) {
+            $edit_page = (int) wpuf_get_option( 'edit_page_id' );
             $url = get_permalink( $edit_page );
 
             $url = wp_nonce_url( $url . '?pid=' . $post_id, 'wpuf_edit' );
@@ -526,11 +526,11 @@ function wpuf_show_meta_front( $content ) {
     global $wpdb, $post;
 
     //check, if custom field is enabled
-    $enabled = get_option( 'wpuf_enable_custom_field', 'no' );
-    $show_custom = get_option( 'wpuf_show_custom_front', 'no' );
-    $show_attachment = get_option( 'wpuf_show_attach_inpost', 'no' );
+    $enabled = wpuf_get_option( 'enable_custom_field' );
+    $show_custom = wpuf_get_option( 'cf_show_front' );
+    $show_attachment = wpuf_get_option( 'att_show_front' );
 
-    if ( $enabled == 'yes' && $show_custom == 'yes' ) {
+    if ( $enabled == 'on' && $show_custom == 'on' ) {
         $extra = '';
         $fields = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_customfields ORDER BY `region` DESC", OBJECT );
         if ( $wpdb->num_rows > 0 ) {
@@ -547,7 +547,7 @@ function wpuf_show_meta_front( $content ) {
         }
     }
 
-    if ( $show_attachment == 'yes' ) {
+    if ( $show_attachment == 'on' ) {
         $attach = '';
         $attachments = wpfu_get_attachments( $post->ID );
 
@@ -750,7 +750,7 @@ function wpuf_addpost_notice( $text ) {
             return $user->wpuf_lock_cause;
         }
 
-        $force_pack = get_option( 'wpuf_sub_force_pack' );
+        $force_pack = wpuf_get_option( 'force_pack' );
         $post_count = (isset( $user->wpuf_sub_pcount )) ? intval( $user->wpuf_sub_pcount ) : 0;
 
         if ( $force_pack == 'yes' && $post_count == 0 ) {
@@ -779,7 +779,7 @@ function wpuf_can_post( $perm ) {
             return 'no';
         }
 
-        $force_pack = get_option( 'wpuf_sub_force_pack' );
+        $force_pack = wpuf_get_option( 'force_pack' );
         $post_count = (isset( $user->wpuf_sub_pcount )) ? intval( $user->wpuf_sub_pcount ) : 0;
 
         if ( $force_pack == 'yes' && $post_count == 0 ) {
@@ -793,7 +793,7 @@ function wpuf_can_post( $perm ) {
 add_filter( 'wpuf_can_post', 'wpuf_can_post' );
 
 function wpuf_header_css() {
-    $css = get_option( 'wpuf_custom_css' );
+    $css = wpuf_get_option( 'custom_css' );
     ?>
     <style type="text/css">
         ul.wpuf-attachments{ list-style: none; overflow: hidden;}

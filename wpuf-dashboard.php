@@ -113,7 +113,7 @@ class WPUF_Dashboard {
                         $dashboard_query->the_post();
                         ?>
                         <tr>
-                            <?php if ( 'yes' == $featured_img ) { ?>
+                            <?php if ( 'on' == $featured_img ) { ?>
                                 <td>
                                     <?php
                                     if ( has_post_thumbnail() ) {

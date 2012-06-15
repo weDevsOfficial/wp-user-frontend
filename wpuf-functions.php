@@ -461,22 +461,36 @@ function has_shortcode( $shortcode = '', $post_id = false ) {
 /**
  * Retrieve or display list of posts as a dropdown (select list).
  *
- * @param array|string $args Optional. Override default arguments.
  * @return string HTML content, if not displaying.
  */
-function wpuf_dropdown_page( $args = '' ) {
+function wpuf_get_pages() {
     global $wpdb;
 
     $array = array();
     $pages = get_pages();
     if ( $pages ) {
         foreach ($pages as $page) {
-            //var_dump( $page );
             $array[$page->ID] = $page->post_title;
         }
     }
 
     return $array;
+}
+
+/**
+ * Get all the payment gateways
+ *
+ * @return array
+ */
+function wpuf_get_gateways() {
+    $gateways = WPUF_Payment::get_payment_gateways();
+    $return = array();
+
+    foreach ($gateways as $id => $gate) {
+        $return[$id] = $gate['admin_label'];
+    }
+
+    return $return;
 }
 
 /**
@@ -816,23 +830,4 @@ function wpuf_get_image_sizes() {
     }
 
     return $image_sizes;
-}
-
-/**
- * Get the value of a settings field
- *
- * @param string $option settings field name
- * @param string $section the section name this field belongs to
- * @param string $default default text if it's not found
- * @return string
- */
-function wpuf_get_option( $option, $section, $default = '' ) {
-
-    $options = get_option( $section );
-
-    if ( isset( $options[$option] ) ) {
-        return $options[$option];
-    }
-
-    return $default;
 }

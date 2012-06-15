@@ -9,7 +9,7 @@
 class WPUF_Attachment {
 
     function __construct() {
-        $allow_upload = get_option( 'wpuf_allow_attachments', 'no' );
+        $allow_upload = wpuf_get_option( 'allow_attachment' );
 
         if ( $allow_upload == 'yes' ) {
             add_action( 'wpuf_add_post_form_tags', array($this, 'add_post_fields'), 10, 2 );
@@ -26,8 +26,9 @@ class WPUF_Attachment {
     function scripts() {
         if ( has_shortcode( 'wpuf_addpost' ) || has_shortcode( 'wpuf_edit' ) || has_shortcode( 'wpuf_dashboard' ) ) {
 
-            $max_file_size = intval( get_option( 'wpuf_attachment_max_size', '2048' ) ) * 1024;
-            $max_upload = intval( get_option( 'wpuf_attachment_num', 0 ) );
+            $max_file_size = intval( wpuf_get_option( 'attachment_max_size' ) ) * 1024;
+            $max_upload = intval( wpuf_get_option( 'attachment_num' ) );
+            $attachment_enabled = wpuf_get_option( 'allow_attachment' );
 
             wp_enqueue_script( 'jquery' );
             if ( has_shortcode( 'wpuf_addpost' ) || has_shortcode( 'wpuf_edit' ) ) {
@@ -39,6 +40,7 @@ class WPUF_Attachment {
             wp_localize_script( 'wpuf_attachment', 'wpuf_attachment', array(
                 'nonce' => wp_create_nonce( 'wpuf_attachment' ),
                 'number' => $max_upload,
+                'attachment_enabled' => ($attachment_enabled == 'yes') ? true : false,
                 'plupload' => array(
                     'runtimes' => 'html5,silverlight,flash,html4',
                     'browse_button' => 'wpuf-attachment-upload-pickfiles',
@@ -64,7 +66,7 @@ class WPUF_Attachment {
         }
         ?>
         <li>
-            <label><?php echo get_option( 'wpuf_attachment_text_label', __( 'Attachments', 'wpuf' ) ) ?></label>
+            <label><?php echo wpuf_get_option( 'attachment_label' ) ?></label>
             <div class="clear"></div>
         </li>
         <li>
@@ -82,7 +84,7 @@ class WPUF_Attachment {
                         ?>
                     </ul>
                 </div>
-                <a id="wpuf-attachment-upload-pickfiles" class="button" href="#"><?php echo get_option( 'wpuf_attachment_btn_label', __( 'Add Another', 'wpuf' ) ) ?></a>
+                <a id="wpuf-attachment-upload-pickfiles" class="button" href="#"><?php echo wpuf_get_option( 'attachment_btn_label' ); ?></a>
             </div>
             <div class="clear"></div>
         </li>

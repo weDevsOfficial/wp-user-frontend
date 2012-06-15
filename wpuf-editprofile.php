@@ -259,7 +259,7 @@ class WPUF_Edit_Profile {
             </table>
 
             <?php
-            if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' ) {
+            if ( wpuf_get_option( 'charge_posting' ) == 'yes' ) {
                 $validity = (isset( $profileuser->wpuf_sub_validity )) ? $profileuser->wpuf_sub_validity : date( 'Y-m-d G:i:s', time() );
                 $count = ( isset( $profileuser->wpuf_sub_pcount ) ) ? $profileuser->wpuf_sub_pcount : 0;
 

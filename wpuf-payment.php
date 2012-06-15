@@ -41,7 +41,7 @@ class WPUF_Payment {
     function payment_page( $content ) {
         global $post;
 
-        $pay_page = intval( get_option( 'wpuf_sub_pay_page' ) );
+        $pay_page = intval( wpuf_get_option( 'payment_page' ) );
 
         if ( $post->ID == $pay_page && isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'wpuf_pay' ) {
 
@@ -115,7 +115,7 @@ class WPUF_Payment {
             switch ($type) {
                 case 'post':
                     $post = get_post( $post_id );
-                    $amount = get_option( 'wpuf_sub_amount' );
+                    $amount = wpuf_get_option( 'cost_per_post' );
                     $item_number = get_post_meta( $post_id, 'wpuf_order_id', true );
                     $item_name = $post->post_title;
                     break;
@@ -131,8 +131,8 @@ class WPUF_Payment {
             }
 
             $payment_vars = array(
-                'email' => get_option( 'wpuf_sub_paypal_mail' ),
-                'currency' => get_option( 'wpuf_sub_currency' ),
+                'email' => wpuf_get_option( 'paypal_mail' ),
+                'currency' => wpuf_get_option( 'currency' ),
                 'price' => $amount,
                 'item_number' => $item_number,
                 'item_name' => $item_name,

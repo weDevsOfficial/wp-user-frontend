@@ -16,7 +16,23 @@ class WPUF_Paypal {
         $this->test_mode = false;
 
         add_action( 'wpuf_gateway_paypal', array($this, 'prepare_to_send') );
+        add_action( 'wpuf_options_payment', array($this, 'payment_options') );
         add_action( 'init', array($this, 'paypal_success') );
+    }
+
+    /**
+     * Adds paypal specific options to the admin panel
+     *
+     * @param type $options
+     * @return string
+     */
+    function payment_options( $options ) {
+        $options[] = array(
+            'name' => 'paypal_email',
+            'label' => __( 'Paypal Email', 'wpuf' )
+        );
+
+        return $options;
     }
 
     /**
@@ -28,12 +44,12 @@ class WPUF_Paypal {
     function prepare_to_send( $data ) {
 
         $listener_url = add_query_arg( 'action', 'wpuf_paypal_success', home_url( '/' ) );
-        $return_url = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( get_option( 'wpuf_sub_pay_thank_page' ) ) );
+        $return_url = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( wpuf_get_option( 'payment_success' ) ) );
 
         $paypal_args = array(
             'cmd' => '_xclick',
             'amount' => $data['price'],
-            'business' => $data['email'],
+            'business' => wpuf_get_option( 'paypal_email' ),
             'item_name' => $data['item_name'],
             'item_number' => $data['item_number'],
             'email' => $data['user_info']['email'],
@@ -62,7 +78,7 @@ class WPUF_Paypal {
      * @since 0.8
      */
     function set_mode() {
-        if ( get_option( 'wpuf_sub_paypal_sandbox', 'yes' ) == 'yes' ) {
+        if ( wpuf_get_option( 'sandbox_mode' ) == 'on' ) {
             $this->gateway_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr/?';
             $this->test_mode = true;
         }

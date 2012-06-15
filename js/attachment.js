@@ -29,16 +29,16 @@ jQuery(document).ready(function($) {
                 return
             }
 
-            var audio_uploader = new plupload.Uploader(wpuf_attachment.plupload);
+            var attachUploader = new plupload.Uploader(wpuf_attachment.plupload);
 
             $('#wpuf-attachment-upload-pickfiles').click(function(e) {
-                audio_uploader.start();
+                attachUploader.start();
                 e.preventDefault();
             });
 
-            audio_uploader.init();
+            attachUploader.init();
 
-            audio_uploader.bind('FilesAdded', function(up, files) {
+            attachUploader.bind('FilesAdded', function(up, files) {
                 $.each(files, function(i, file) {
                     $('#wpuf-attachment-upload-filelist').append(
                         '<div id="' + file.id + '">' +
@@ -47,14 +47,14 @@ jQuery(document).ready(function($) {
                 });
 
                 up.refresh(); // Reposition Flash/Silverlight
-                audio_uploader.start();
+                attachUploader.start();
             });
 
-            audio_uploader.bind('UploadProgress', function(up, file) {
+            attachUploader.bind('UploadProgress', function(up, file) {
                 $('#' + file.id + " b").html(file.percent + "%");
             });
 
-            audio_uploader.bind('Error', function(up, err) {
+            attachUploader.bind('Error', function(up, err) {
                 $('#wpuf-attachment-upload-filelist').append("<div>Error: " + err.code +
                     ", Message: " + err.message +
                     (err.file ? ", File: " + err.file.name : "") +
@@ -64,7 +64,7 @@ jQuery(document).ready(function($) {
                 up.refresh(); // Reposition Flash/Silverlight
             });
 
-            audio_uploader.bind('FileUploaded', function(up, file, response) {
+            attachUploader.bind('FileUploaded', function(up, file, response) {
                 var resp = $.parseJSON(response.response);
                 $('#' + file.id).remove();
                 //console.log(resp);

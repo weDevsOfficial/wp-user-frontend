@@ -64,7 +64,7 @@ class WPUF_Dashboard {
             'author' => get_current_user_id(),
             'post_status' => array('draft', 'future', 'pending', 'publish'),
             'post_type' => $post_type,
-            'posts_per_page' => get_option( 'wpuf_list_post_range', 10 ),
+            'posts_per_page' => wpuf_get_option( 'per_page', 10 ),
             'paged' => $pagenum
         );
 
@@ -76,7 +76,7 @@ class WPUF_Dashboard {
             <span class="colour"><?php printf( __( "%s's Dashboard", 'wpuf' ), $userdata->user_login ); ?></span>
         </h2>
 
-        <?php if ( get_option( 'wpuf_list_post_count' ) == 'yes' ) { ?>
+        <?php if ( wpuf_get_option( 'show_post_count' ) == 'on' ) { ?>
             <div class="post_count"><?php printf( __( 'You have created <span>%d</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
         <?php } ?>
 
@@ -85,15 +85,15 @@ class WPUF_Dashboard {
         <?php if ( $dashboard_query->have_posts() ) { ?>
 
             <?php
-            $featured_img = get_option( 'wpuf_db_ft_img', 'no' );
-            $featured_img_size = get_option( 'wpuf_db_ft_img_size', 'thumbnail' );
-            $charging_enabled = get_option( 'wpuf_sub_charge_posting', 'no' );
+            $featured_img = wpuf_get_option( 'show_ft_image' );
+            $featured_img_size = wpuf_get_option( 'ft_img_size' );
+            $charging_enabled = wpuf_get_option( 'charge_posting' );
             ?>
             <table class="wpuf-table" cellpadding="0" cellspacing="0">
                 <thead>
                     <tr>
                         <?php
-                        if ( 'yes' == $featured_img ) {
+                        if ( 'on' == $featured_img ) {
                             echo '<th>' . __( 'Featured Image', 'wpuf' ) . '</th>';
                         }
                         ?>
@@ -140,20 +140,20 @@ class WPUF_Dashboard {
                             </td>
 
                             <?php
-                            if ( get_option( 'wpuf_sub_charge_posting' ) == 'yes' ) {
+                            if ( $charging_enabled == 'yes' ) {
                                 $order_id = get_post_meta( $post->ID, 'wpuf_order_id', true );
                                 ?>
                                 <td>
                                     <?php if ( $post->post_status == 'pending' && $order_id ) { ?>
-                                        <a href="<?php echo trailingslashit( get_permalink( get_option( 'wpuf_sub_pay_page' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>">Pay Now</a>
+                                        <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>">Pay Now</a>
                                     <?php } ?>
                                 </td>
                             <?php } ?>
 
                             <td>
-                                <?php if ( get_option( 'wpuf_can_edit_post' ) == 'yes' ) { ?>
+                                <?php if ( wpuf_get_option( 'enable_post_edit' ) == 'yes' ) { ?>
                                     <?php
-                                    $edit_page = (int) get_option( 'wpuf_edit_page_url' );
+                                    $edit_page = (int) wpuf_get_option( 'edit_page_id' );
                                     $url = get_permalink( $edit_page );
                                     ?>
                                     <a href="<?php echo wp_nonce_url( $url . '?pid=' . $post->ID, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wpuf' ); ?></a>
@@ -161,7 +161,7 @@ class WPUF_Dashboard {
                                     &nbsp;
                                 <?php } ?>
 
-                                <?php if ( get_option( 'wpuf_can_del_post' ) == 'yes' ) { ?>
+                                <?php if ( wpuf_get_option( 'enable_post_del' ) == 'yes' ) { ?>
                                     <a href="<?php echo wp_nonce_url( "?action=del&pid=" . $post->ID, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this post?');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
                                 <?php } ?>
                             </td>
@@ -206,7 +206,7 @@ class WPUF_Dashboard {
     function user_info() {
         global $userdata;
 
-        if ( get_option( 'wpuf_list_user_info' ) == 'yes' ) {
+        if ( wpuf_get_option( 'show_user_bio' ) == 'on' ) {
             ?>
             <div class="wpuf-author">
                 <h3><?php _e( 'Author Info', 'wpuf' ); ?></h3>

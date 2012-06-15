@@ -129,12 +129,14 @@ class WPUF_Main {
 
         wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js', array('jquery') );
 
-        $posting_msg = get_option( 'wpuf_post_submitting_label', 'Please wait...' );
+        $posting_msg = wpuf_get_option( 'updating_label' );
+        $feat_img_enabled = wpuf_get_option( 'enable_featured_image' );
         wp_localize_script( 'wpuf', 'wpuf', array(
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
             'postingMsg' => $posting_msg,
             'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
             'nonce' => wp_create_nonce( 'wpuf_nonce' ),
+            'featImgEnabled' => ($feat_img_enabled == 'yes') ? true : false,
             'plupload' => array(
                 'runtimes' => 'html5,silverlight,flash,html4',
                 'browse_button' => 'wpuf-ft-upload-pickfiles',
@@ -159,7 +161,7 @@ class WPUF_Main {
     function block_admin_access() {
         global $pagenow;
 
-        $access_level = get_option( 'wpuf_admin_security', 'read' );
+        $access_level = wpuf_get_option( 'admin_access' );
         $valid_pages = array('admin-ajax.php', 'async-upload.php', 'media-upload.php');
 
         if ( !current_user_can( $access_level ) && !in_array( $pagenow, $valid_pages ) ) {

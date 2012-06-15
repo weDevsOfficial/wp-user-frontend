@@ -39,7 +39,7 @@ class WPUF_Edit_Post {
         $post_id = isset( $_GET['pid'] ) ? intval( $_GET['pid'] ) : 0;
 
         //is editing enabled?
-        if ( get_option( 'wpuf_can_edit_post', 'yes' ) != 'yes' ) {
+        if ( wpuf_get_option( 'enable_post_edit', 'yes' ) != 'yes' ) {
             return __( 'Post Editing is disabled', 'wpuf' );
         }
 
@@ -81,7 +81,7 @@ class WPUF_Edit_Post {
         }
         $tagslist = implode( ', ', $tagsarray );
         $categories = get_the_category( $curpost->ID );
-        $featured_image = get_option( 'wpuf_featured_image', 'yes' );
+        $featured_image = wpuf_get_option( 'enable_featured_image' );
         ?>
         <div id="wpuf-post-area">
             <form name="wpuf_edit_post_form" id="wpuf_edit_post_form" action="" enctype="multipart/form-data" method="POST">
@@ -94,7 +94,7 @@ class WPUF_Edit_Post {
                     <?php if ( $featured_image == 'yes' ) { ?>
                         <?php if ( current_theme_supports( 'post-thumbnails' ) ) { ?>
                             <li>
-                                <label for="post-thumbnail"><?php echo get_option( 'wpuf_ft_image_label', __( 'Featured Image', 'wpuf' ) ); ?></label>
+                                <label for="post-thumbnail"><?php echo wpuf_get_option( 'ft_image_label' ); ?></label>
                                 <div id="wpuf-ft-upload-container">
                                     <div id="wpuf-ft-upload-filelist">
                                         <?php
@@ -107,7 +107,7 @@ class WPUF_Edit_Post {
                                         }
                                         ?>
                                     </div>
-                                    <a id="wpuf-ft-upload-pickfiles" class="button"<?php echo $style; ?> href="#">Upload Image</a>
+                                    <a id="wpuf-ft-upload-pickfiles" class="button" href="#"><?php echo wpuf_get_option( 'ft_image_btn_label' ); ?></a>
                                 </div>
                                 <div class="clear"></div>
                             </li>
@@ -118,20 +118,23 @@ class WPUF_Edit_Post {
 
                     <li>
                         <label for="new-post-title">
-                            <?php echo get_option( 'wpuf_title_label' ); ?> <span class="required">*</span>
+                            <?php echo wpuf_get_option( 'title_label' ); ?> <span class="required">*</span>
                         </label>
                         <input type="text" name="wpuf_post_title" id="new-post-title" minlength="2" value="<?php echo esc_html( $curpost->post_title ); ?>">
                         <div class="clear"></div>
+                        <p class="description"><?php echo stripslashes( wpuf_get_option( 'title_help' ) ); ?></p>
                     </li>
 
-                    <?php if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) { ?>
+                    <?php if ( wpuf_get_option( 'allow_cats' ) == 'on' ) { ?>
                         <li>
                             <label for="new-post-cat">
-                                <?php echo get_option( 'wpuf_cat_label' ); ?> <span class="required">*</span>
+                                <?php echo wpuf_get_option( 'cat_label' ); ?> <span class="required">*</span>
                             </label>
 
                             <?php
-                            $exclude = get_option( 'wpuf_exclude_cat' );
+                            $exclude = wpuf_get_option( 'exclude_cats' );
+                            $cat_type = wpuf_get_option( 'cat_type' );
+
                             $cats = get_the_category( $curpost->ID );
                             $selected = 0;
                             if ( $cats ) {
@@ -143,8 +146,6 @@ class WPUF_Edit_Post {
                             <div class="category-wrap" style="float:left;">
                                 <div id="lvl0">
                                     <?php
-                                    $exclude = get_option( 'wpuf_exclude_cat' );
-                                    $cat_type = get_option( 'wpuf_cat_type', 'normal' );
 
                                     if ( $cat_type == 'normal' ) {
                                         wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude . '&selected=' . $selected );
@@ -158,7 +159,7 @@ class WPUF_Edit_Post {
                             </div>
                             <div class="loading"></div>
                             <div class="clear"></div>
-                            <p class="description"><?php echo stripslashes( get_option( 'wpuf_cat_help' ) ); ?></p>
+                            <p class="description"><?php echo stripslashes( wpuf_get_option( 'cat_help' ) ); ?></p>
                         </li>
                     <?php } ?>
 
@@ -167,11 +168,11 @@ class WPUF_Edit_Post {
 
                     <li>
                         <label for="new-post-desc">
-                            <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
+                            <?php echo wpuf_get_option( 'desc_label' ); ?> <span class="required">*</span>
                         </label>
 
                         <?php
-                        $editor = get_option( 'wpuf_editor_type' );
+                        $editor = wpuf_get_option( 'editor_type' );
                         if ( $editor == 'full' ) {
                             ?>
                             <div style="float:left;">
@@ -187,18 +188,19 @@ class WPUF_Edit_Post {
                         <?php } ?>
 
                         <div class="clear"></div>
-                        <p class="description"><?php echo stripslashes( get_option( 'wpuf_desc_help' ) ); ?></p>
+                        <p class="description"><?php echo stripslashes( wpuf_get_option( 'desc_help' ) ); ?></p>
                     </li>
 
                     <?php do_action( 'wpuf_add_post_form_after_description', $curpost->post_type, $curpost ); ?>
                     <?php wpuf_build_custom_field_form( 'tag', true, $curpost->ID ); ?>
 
-                    <?php if ( get_option( 'wpuf_allow_tags' ) == 'yes' ) { ?>
+                    <?php if ( wpuf_get_option( 'allow_tags' ) == 'on' ) { ?>
                         <li>
                             <label for="new-post-tags">
-                                <?php echo get_option( 'wpuf_tag_label' ); ?>
+                                <?php echo wpuf_get_option( 'tag_label' ); ?>
                             </label>
                             <input type="text" name="wpuf_post_tags" id="new-post-tags" value="<?php echo $tagslist; ?>">
+                            <p class="description"><?php echo stripslashes( wpuf_get_option( 'tag_help' ) ); ?></p>
                             <div class="clear"></div>
                         </li>
                     <?php } ?>
@@ -208,7 +210,7 @@ class WPUF_Edit_Post {
 
                     <li>
                         <label>&nbsp;</label>
-                        <input class="wpuf_submit" type="submit" name="wpuf_edit_post_submit" value="<?php echo esc_attr( get_option( 'wpuf_post_update_label', 'Update Post!' ) ); ?>">
+                        <input class="wpuf_submit" type="submit" name="wpuf_edit_post_submit" value="<?php echo esc_attr( wpuf_get_option( 'update_label' ) ); ?>">
                         <input type="hidden" name="wpuf_edit_post_submit" value="yes" />
                         <input type="hidden" name="post_id" value="<?php echo $curpost->ID; ?>">
                     </li>
@@ -245,7 +247,7 @@ class WPUF_Edit_Post {
         }
 
         //validate cat
-        $cat_type = get_option( 'wpuf_cat_type', 'normal' );
+        $cat_type = wpuf_get_option( 'cat_type' );
         if ( !isset( $_POST['category'] ) ) {
             $errors[] = __( 'Please choose a category', 'wpuf' );
         } else if ( $cat_type == 'normal' && $_POST['category'][0] == '-1' ) {
@@ -294,7 +296,7 @@ class WPUF_Edit_Post {
         if ( !$errors ) {
 
             //users are allowed to choose category
-            if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) {
+            if ( wpuf_get_option( 'allow_cats' ) == 'on' ) {
                 $post_category = $_POST['category'];
             } else {
                 $post_category = array(get_option( 'wpuf_default_cat' ));

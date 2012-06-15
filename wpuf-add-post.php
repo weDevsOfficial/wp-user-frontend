@@ -59,7 +59,7 @@ class WPUF_Add_Post {
 
         $info = apply_filters( 'wpuf_addpost_notice', $info );
         $can_post = apply_filters( 'wpuf_can_post', $can_post );
-        $featured_image = get_option( 'wpuf_featured_image', 'yes' );
+        $featured_image = wpuf_get_option( 'enable_featured_image' );
 
         $title = isset( $_POST['wpuf_post_title'] ) ? esc_attr( $_POST['wpuf_post_title'] ) : '';
         $description = isset( $_POST['wpuf_post_content'] ) ? $_POST['wpuf_post_content'] : '';
@@ -78,10 +78,10 @@ class WPUF_Add_Post {
                         <?php if ( $featured_image == 'yes' ) { ?>
                             <?php if ( current_theme_supports( 'post-thumbnails' ) ) { ?>
                                 <li>
-                                    <label for="post-thumbnail"><?php echo get_option( 'wpuf_ft_image_label', __( 'Featured Image', 'wpuf' ) ); ?></label>
+                                    <label for="post-thumbnail"><?php echo wpuf_get_option( 'ft_image_label' ); ?></label>
                                     <div id="wpuf-ft-upload-container">
                                         <div id="wpuf-ft-upload-filelist"></div>
-                                        <a id="wpuf-ft-upload-pickfiles" class="button" href="#"><?php echo get_option( 'wpuf_ft_img_label', __( 'Upload Image', 'wpuf' ) ); ?></a>
+                                        <a id="wpuf-ft-upload-pickfiles" class="button" href="#"><?php echo wpuf_get_option( 'ft_image_btn_label' ); ?></a>
                                     </div>
                                     <div class="clear"></div>
                                 </li>
@@ -92,24 +92,24 @@ class WPUF_Add_Post {
 
                         <li>
                             <label for="new-post-title">
-                                <?php echo get_option( 'wpuf_title_label' ); ?> <span class="required">*</span>
+                                <?php echo wpuf_get_option( 'title_label' ); ?> <span class="required">*</span>
                             </label>
                             <input class="requiredField" type="text" value="<?php echo $title; ?>" name="wpuf_post_title" id="new-post-title" minlength="2">
                             <div class="clear"></div>
-                            <p class="description"><?php echo stripslashes( get_option( 'wpuf_title_help' ) ); ?></p>
+                            <p class="description"><?php echo stripslashes( wpuf_get_option( 'title_help' ) ); ?></p>
                         </li>
 
-                        <?php if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) { ?>
+                        <?php if ( wpuf_get_option( 'allow_cats' ) == 'on' ) { ?>
                             <li>
                                 <label for="new-post-cat">
-                                    <?php echo get_option( 'wpuf_cat_label' ); ?> <span class="required">*</span>
+                                    <?php echo wpuf_get_option( 'cat_label' ); ?> <span class="required">*</span>
                                 </label>
 
                                 <div class="category-wrap" style="float:left;">
                                     <div id="lvl0">
                                         <?php
-                                        $exclude = get_option( 'wpuf_exclude_cat' );
-                                        $cat_type = get_option( 'wpuf_cat_type', 'normal' );
+                                        $exclude = wpuf_get_option( 'exclude_cats' );
+                                        $cat_type = wpuf_get_option( 'cat_type' );
 
                                         if ( $cat_type == 'normal' ) {
                                             wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude );
@@ -123,7 +123,7 @@ class WPUF_Add_Post {
                                 </div>
                                 <div class="loading"></div>
                                 <div class="clear"></div>
-                                <p class="description"><?php echo stripslashes( get_option( 'wpuf_cat_help' ) ); ?></p>
+                                <p class="description"><?php echo stripslashes( wpuf_get_option( 'cat_help' ) ); ?></p>
                             </li>
                         <?php } ?>
 
@@ -132,11 +132,11 @@ class WPUF_Add_Post {
 
                         <li>
                             <label for="new-post-desc">
-                                <?php echo get_option( 'wpuf_desc_label' ); ?> <span class="required">*</span>
+                                <?php echo wpuf_get_option( 'desc_label' ); ?> <span class="required">*</span>
                             </label>
 
                             <?php
-                            $editor = get_option( 'wpuf_editor_type' );
+                            $editor = wpuf_get_option( 'editor_type' );
                             if ( $editor == 'full' ) {
                                 ?>
                                 <div style="float:left;">
@@ -152,7 +152,7 @@ class WPUF_Add_Post {
                             <?php } ?>
 
                             <div class="clear"></div>
-                            <p class="description"><?php echo stripslashes( get_option( 'wpuf_desc_help' ) ); ?></p>
+                            <p class="description"><?php echo stripslashes( wpuf_get_option( 'desc_help' ) ); ?></p>
                         </li>
 
                         <?php
@@ -163,14 +163,14 @@ class WPUF_Add_Post {
 
                         wpuf_build_custom_field_form( 'tag' );
 
-                        if ( get_option( 'wpuf_allow_tags' ) == 'yes' ) {
+                        if ( wpuf_get_option( 'allow_tags' ) == 'on' ) {
                             ?>
                             <li>
                                 <label for="new-post-tags">
-                                    <?php echo get_option( 'wpuf_tag_label' ); ?>
+                                    <?php echo wpuf_get_option( 'tag_label' ); ?>
                                 </label>
                                 <input type="text" name="wpuf_post_tags" id="new-post-tags" class="new-post-tags">
-                                <p class="description"><?php echo stripslashes( get_option( 'wpuf_tag_help' ) ); ?></p>
+                                <p class="description"><?php echo stripslashes( wpuf_get_option( 'tag_help' ) ); ?></p>
                                 <div class="clear"></div>
                             </li>
                             <?php
@@ -182,7 +182,7 @@ class WPUF_Add_Post {
 
                         <li>
                             <label>&nbsp;</label>
-                            <input class="wpuf_submit" type="submit" name="wpuf_new_post_submit" value="<?php echo stripslashes( get_option( 'wpuf_post_submit_label' ) ); ?>">
+                            <input class="wpuf_submit" type="submit" name="wpuf_new_post_submit" value="<?php echo esc_attr( wpuf_get_option( 'submit_label' ) ); ?>">
                             <input type="hidden" name="wpuf_post_type" value="<?php echo $post_type; ?>" />
                             <input type="hidden" name="wpuf_post_new_submit" value="yes" />
                         </li>
@@ -204,9 +204,9 @@ class WPUF_Add_Post {
      * @return bool|string
      */
     function publish_date_form() {
-        $wpuf_enable_post_date = get_option( 'wpuf_enable_post_date', 'no' );
+        $enable_date = wpuf_get_option( 'enable_post_date' );
 
-        if ( $wpuf_enable_post_date == 'no' ) {
+        if ( $enable_date != 'on' ) {
             return;
         }
 
@@ -257,9 +257,9 @@ class WPUF_Add_Post {
      * @return bool|string
      */
     function expiry_date_form() {
-        $enable_post_expiry = get_option( 'wpuf_enable_post_expiry', 'no' );
+        $post_expiry = wpuf_get_option( 'enable_post_expiry' );
 
-        if ( $enable_post_expiry == 'no' ) {
+        if ( $post_expiry != 'on' ) {
             return;
         }
         ?>
@@ -316,7 +316,7 @@ class WPUF_Add_Post {
         }
 
         //validate cat
-        $cat_type = get_option( 'wpuf_cat_type', 'normal' );
+        $cat_type = wpuf_get_option( 'cat_type' );
         if ( !isset( $_POST['category'] ) ) {
             $errors[] = __( 'Please choose a category', 'wpuf' );
         } else if ( $cat_type == 'normal' && $_POST['category'][0] == '-1' ) {
@@ -366,11 +366,11 @@ class WPUF_Add_Post {
             } //foreach
         } //is_array
 
-        $wpuf_enable_post_date = get_option( 'wpuf_enable_post_date', 'no' );
-        $enable_post_date = get_option( 'wpuf_enable_post_date', 'no' );
+        $post_date_enable = wpuf_get_option( 'enable_post_date' );
+        $post_expiry = wpuf_get_option( 'enable_post_expiry' );
 
         //check post date
-        if ( $wpuf_enable_post_date == 'yes' ) {
+        if ( $post_date_enable == 'on' ) {
             $month = $_POST['mm'];
             $day = $_POST['jj'];
             $year = $_POST['aa'];
@@ -391,14 +391,14 @@ class WPUF_Add_Post {
             return;
         }
 
-        $post_stat = ( get_option( 'wpuf_post_status' ) ) ? get_option( 'wpuf_post_status' ) : 'publish';
-        $post_author = ( get_option( 'wpuf_post_author' ) == 'original' ) ? $userdata->ID : get_option( 'wpuf_map_author' );
+        $post_stat = wpuf_get_option( 'post_status' );
+        $post_author = (wpuf_get_option( 'post_author' ) == 'original' ) ? $userdata->ID : wpuf_get_option( 'map_author' );
 
         //users are allowed to choose category
-        if ( get_option( 'wpuf_allow_choose_cat' ) == 'yes' ) {
+        if ( wpuf_get_option( 'allow_cats' ) == 'on' ) {
             $post_category = $_POST['category'];
         } else {
-            $post_category = array(get_option( 'wpuf_default_cat' ));
+            $post_category = array(wpuf_get_option( 'default_cat' ));
         }
 
         $my_post = array(
@@ -411,7 +411,7 @@ class WPUF_Add_Post {
             'tags_input' => $tags
         );
 
-        if ( $enable_post_date == 'yes' ) {
+        if ( $post_expiry == 'yes' ) {
             $month = $_POST['mm'];
             $day = $_POST['jj'];
             $year = $_POST['aa'];
@@ -435,7 +435,7 @@ class WPUF_Add_Post {
             wpuf_upload_attachment( $post_id );
 
             //send mail notification
-            if ( get_option( 'wpuf_notify' ) == 'yes' ) {
+            if ( wpuf_get_option( 'post_notification' ) == 'yes' ) {
                 wpuf_notify_post_mail( $userdata, $post_id );
             }
 

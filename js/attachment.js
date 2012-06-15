@@ -25,6 +25,10 @@ jQuery(document).ready(function($) {
                 return;
             }
 
+            if(wpuf_attachment.attachment_enabled !== '1') {
+                return
+            }
+
             var audio_uploader = new plupload.Uploader(wpuf_attachment.plupload);
 
             $('#wpuf-attachment-upload-pickfiles').click(function(e) {

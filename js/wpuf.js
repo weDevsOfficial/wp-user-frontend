@@ -90,6 +90,10 @@ jQuery(document).ready(function($) {
                 return;
             }
 
+            if(wpuf.featEnabled !== '1') {
+                return;
+            }
+
             var uploader = new plupload.Uploader(wpuf.plupload);
 
             uploader.bind('Init', function(up, params) {

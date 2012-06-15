@@ -12,7 +12,7 @@ class WPUF_Paypal {
     private $test_mode;
 
     function __construct() {
-        $this->gateway_url = 'https://www.paypal.com/cgi-bin/webscr/?';
+        $this->gateway_url = 'https://www.paypal.com/webscr/';
         $this->test_mode = false;
 
         add_action( 'wpuf_gateway_paypal', array($this, 'prepare_to_send') );
@@ -66,7 +66,7 @@ class WPUF_Paypal {
 
         $this->set_mode();
 
-        $paypal_url = $this->gateway_url . http_build_query( $paypal_args );
+        $paypal_url = $this->gateway_url . '?' . http_build_query( $paypal_args );
 
         wp_redirect( $paypal_url );
         exit;
@@ -79,7 +79,7 @@ class WPUF_Paypal {
      */
     function set_mode() {
         if ( wpuf_get_option( 'sandbox_mode' ) == 'on' ) {
-            $this->gateway_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr/?';
+            $this->gateway_url = 'https://www.sandbox.paypal.com/webscr/';
             $this->test_mode = true;
         }
     }
@@ -147,45 +147,21 @@ class WPUF_Paypal {
 
         $this->set_mode();
 
-        // parse the paypal URL
-        $urlParsed = parse_url( $this->gateway_url );
+        // Get recieved values from post data
+        $ipn_data = (array) stripslashes_deep( $_POST );
+        $ipn_data['cmd'] = '_notify-validate';
 
-        // generate the post string from the _POST vars
-        $postString = '';
-        $ipn_data = array();
-        $ipn_response = '';
+        // Send back post vars to paypal
+        $params = array(
+            'body' => $ipn_data,
+            'sslverify' => false,
+            'timeout' => 30,
+            'user-agent' => 'WordPress/' . $wp_version . '; ' . home_url( '/' ),
+        );
 
-        foreach ($_POST as $field => $value) {
-            $ipn_data[$field] = $value;
-            $postString .= $field . '=' . urlencode( stripslashes( $value ) ) . '&';
-        }
+        $response = wp_remote_post( $this->gateway_url, $params );
 
-        $postString .="cmd=_notify-validate"; // append ipn command
-        // open the connection to paypal
-        $fp = fsockopen( $urlParsed['host'], "80", $errNum, $errStr, 30 );
-
-        if ( !$fp ) {
-            // Could not open the connection, log error if enabled
-            return false;
-        } else {
-            // Post the data back to paypal
-
-            fputs( $fp, "POST {$urlParsed['path']} HTTP/1.1\r\n" );
-            fputs( $fp, "Host: {$urlParsed['host']}\r\n" );
-            fputs( $fp, "Content-type: application/x-www-form-urlencoded\r\n" );
-            fputs( $fp, "Content-length: " . strlen( $postString ) . "\r\n" );
-            fputs( $fp, "Connection: close\r\n\r\n" );
-            fputs( $fp, $postString . "\r\n\r\n" );
-
-            // loop through the response from the server and append to variable
-            while (!feof( $fp )) {
-                $ipn_response .= fgets( $fp, 1024 );
-            }
-
-            fclose( $fp ); // close connection
-        }
-
-        if ( strpos( $ipn_response, "VERIFIED" ) !== false ) {
+        if ( !is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && (strcmp( $response['body'], "VERIFIED" ) == 0) ) {
             return true;
         } else {
             WPUF_Main::log( 'error', "IPN Failed\n" . $ipn_response );

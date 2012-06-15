@@ -62,10 +62,6 @@ function wpuf_settings_sections() {
             'title' => __( 'Payments', 'wpuf' )
         ),
         array(
-            'id' => 'wpuf_profile',
-            'title' => __( 'Profile', 'wpuf' )
-        ),
-        array(
             'id' => 'wpuf_support',
             'title' => __( 'Support', 'wpuf' )
         ),
@@ -510,98 +506,6 @@ function wpuf_settings_fields() {
                 'type' => 'multicheck',
                 'options' => wpuf_get_gateways()
             ),
-        ) ),
-        'wpuf_profile' => apply_filters( 'wpuf_options_profile', array(
-            array(
-                'name' => 'name',
-                'label' => __( 'Name', 'wpuf' ),
-                'desc' => __( 'Enable name section', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'username',
-                'label' => __( 'Username', 'wpuf' ),
-                'desc' => __( 'Enable username', 'wpuf' ),
-                'type' => 'checkbox'
-            ),
-            array(
-                'name' => 'first_name',
-                'label' => __( 'First Name', 'wpuf' ),
-                'desc' => __( 'Enable First Name', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'last_name',
-                'label' => __( 'Last Name', 'wpuf' ),
-                'desc' => __( 'Enable Last Name', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'nick_name',
-                'label' => __( 'Name', 'wpuf' ),
-                'desc' => __( 'Enable name section', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'display_as',
-                'label' => __( 'Display As', 'wpuf' ),
-                'desc' => __( 'Enable <b>Display name publicly as</b>', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'contact_info',
-                'label' => __( 'Contact Info section', 'wpuf' ),
-                'desc' => __( 'Enable contact info section', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'email',
-                'label' => __( 'E-Mail', 'wpuf' ),
-                'desc' => __( 'Enable email', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'show_website',
-                'label' => __( 'Website', 'wpuf' ),
-                'desc' => __( 'Enable website', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'other_contacts',
-                'label' => __( 'Other Contacts', 'wpuf' ),
-                'desc' => __( 'Enable other contacts', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'profile_biography',
-                'label' => __( 'Enable Biography', 'wpuf' ),
-                'desc' => __( 'Biography', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'enable_password',
-                'label' => __( 'Enable Password', 'wpuf' ),
-                'desc' => __( 'Password', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'enable_profile_hook',
-                'label' => __( 'Enable Hook', 'wpuf' ),
-                'desc' => __( 'Enable action hook. Others plugin will be able to add addtional sections.', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            )
         ) ),
         'wpuf_support' => apply_filters( 'wpuf_options_support', array(
             array(

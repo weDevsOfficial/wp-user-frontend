@@ -3,6 +3,7 @@ require_once(ABSPATH . '/wp-admin/includes/user.php');
 
 function wpuf_edit_users() {
 
+    ob_start();
     //if user is logged in
     if ( is_user_logged_in() ) {
 
@@ -35,6 +36,8 @@ function wpuf_edit_users() {
     } else { //user is not logged in
         printf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( '', false ) );
     }
+
+    return ob_get_clean();
 }
 
 add_shortcode( 'wpuf-edit-users', 'wpuf_edit_users' );
@@ -114,7 +117,7 @@ function wpuf_add_user() {
     <?php if ( current_user_can( 'create_users' ) ) : ?>
 
         <h3><?php _e( 'Add New User', 'wpuf' ); ?></h3>
-        
+
         <?php
         if ( isset( $_POST['wpuf_new_user_submit'] ) ) {
             $errors = array();

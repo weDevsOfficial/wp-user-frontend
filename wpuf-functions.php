@@ -149,7 +149,7 @@ function wpuf_upload_attachment( $post_id ) {
         return false;
     }
 
-    $fields = (int) get_option( 'wpuf_attachment_num' );
+    $fields = (int) wpuf_get_option( 'attachment_num' );
 
     for ($i = 0; $i < $fields; $i++) {
         $file_name = basename( $_FILES['wpuf_post_attachments']['name'][$i] );
@@ -213,8 +213,8 @@ function wpuf_check_upload() {
     $errors = array();
     $mime = get_allowed_mime_types();
 
-    $size_limit = (int) (get_option( 'wpuf_attachment_max_size' ) * 1024);
-    $fields = (int) get_option( 'wpuf_attachment_num' );
+    $size_limit = (int) (wpuf_get_option( 'attachment_max_size' ) * 1024);
+    $fields = (int) wpuf_get_option( 'attachment_num' );
 
     for ($i = 0; $i < $fields; $i++) {
         $tmp_name = basename( $_FILES['wpuf_post_attachments']['tmp_name'][$i] );
@@ -298,8 +298,8 @@ function wpuf_edit_attachment( $post_id ) {
 }
 
 function wpuf_attachment_fields( $edit = false, $post_id = false ) {
-    if ( get_option( 'wpuf_allow_attachments' ) == 'yes' ) {
-        $fields = (int) get_option( 'wpuf_attachment_num' );
+    if ( wpuf_get_option( 'allow_attachment' ) == 'yes' ) {
+        $fields = (int) wpuf_get_option( 'attachment_num' );
 
         if ( $edit && $post_id ) {
             $fields = abs( $fields - count( wpfu_get_attachments( $post_id ) ) );
@@ -349,16 +349,6 @@ function wpuf_get_post_types() {
     foreach ($post_types as $key => $val) {
         if ( $val == 'attachment' || $val == 'revision' || $val == 'nav_menu_item' ) {
             unset( $post_types[$key] );
-        }
-    }
-
-    //insert the custom post types
-    $cus_post_type = get_option( 'wpuf_post_types' );
-    if ( $cus_post_type ) {
-        $cus_post_type = explode( ',', $cus_post_type );
-
-        foreach ($cus_post_type as $cus_type) {
-            $post_types[$cus_type] = $cus_type;
         }
     }
 

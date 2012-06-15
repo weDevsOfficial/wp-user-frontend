@@ -235,7 +235,7 @@ function wpuf_settings_fields() {
                 )
             ),
             array(
-                'name' => 'attachmentu_num',
+                'name' => 'attachment_num',
                 'label' => __( 'Number of attachments', 'wpuf' ),
                 'desc' => __( 'How many attachments can be attached on a post. Put <b>0</b> for unlimited attachment', 'wpuf' ),
                 'type' => 'text',
@@ -386,13 +386,15 @@ function wpuf_settings_fields() {
                 'name' => 'cf_show_front',
                 'label' => __( 'Show custom fields in the post', 'wpuf' ),
                 'desc' => __( 'If you want to show the custom field data in the post added by the plugin.', 'wpuf' ),
-                'type' => 'checkbox'
+                'type' => 'checkbox',
+                'default' => 'on'
             ),
             array(
                 'name' => 'att_show_front',
                 'label' => __( 'Show attachments in the post', 'wpuf' ),
                 'desc' => __( 'If you want to show the uploaded attachments in the post', 'wpuf' ),
-                'type' => 'checkbox'
+                'type' => 'checkbox',
+                'default' => 'on'
             ),
             array(
                 'name' => 'override_editlink',

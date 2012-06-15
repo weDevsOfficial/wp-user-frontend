@@ -15,7 +15,7 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ) {
 
 require_once 'wpuf-functions.php';
 require_once 'admin/settings-options.php';
-require_once 'admin/wpuf-options-value.php';
+require_once 'admin/form-builder.php';
 
 if ( is_admin() ) {
     require_once 'admin/settings.php';

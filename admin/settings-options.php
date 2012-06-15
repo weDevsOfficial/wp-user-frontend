@@ -25,7 +25,7 @@ function wpuf_get_option( $option ) {
     $opt = is_array( $opt ) ? $opt : array();
 
     //return the value if found, otherwise default
-    if ( in_array( $option, $opt ) ) {
+    if ( array_key_exists( $option, $opt ) ) {
         return $opt[$option];
     } else {
         $val = isset( $prepared_fields[$option]['default'] ) ? $prepared_fields[$option]['default'] : '';
@@ -132,6 +132,11 @@ function wpuf_settings_fields() {
             array(
                 'name' => 'ft_image_label',
                 'label' => __( 'Featured image label', 'wpuf' ),
+                'default' => 'Featured Image'
+            ),
+            array(
+                'name' => 'ft_image_btn_label',
+                'label' => __( 'Featured Button image label', 'wpuf' ),
                 'default' => 'Upload Image'
             ),
             array(
@@ -208,7 +213,7 @@ function wpuf_settings_fields() {
                 )
             ),
             array(
-                'name' => 'featured_image',
+                'name' => 'enable_featured_image',
                 'label' => __( 'Featured Image upload', 'wpuf' ),
                 'desc' => __( 'Gives ability to upload an image as featured image', 'wpuf' ),
                 'type' => 'radio',

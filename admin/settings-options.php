@@ -308,13 +308,6 @@ function wpuf_settings_fields() {
                 'default' => 'on'
             ),
             array(
-                'name' => 'show_contact_info',
-                'label' => __( 'Show user contact info', 'wpuf' ),
-                'desc' => __( 'Contact infomations from user profile will be shown in <b>User Bio</b>.', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
                 'name' => 'show_post_count',
                 'label' => __( 'Show post count', 'wpuf' ),
                 'desc' => __( 'Show how many posts are created by the user', 'wpuf' ),
@@ -369,7 +362,7 @@ function wpuf_settings_fields() {
                 )
             ),
             array(
-                'name' => 'edit_page',
+                'name' => 'edit_page_id',
                 'label' => __( 'Edit Page', 'wpuf' ),
                 'desc' => __( 'Select the page where [wpuf_editpost] is located', 'wpuf' ),
                 'type' => 'select',

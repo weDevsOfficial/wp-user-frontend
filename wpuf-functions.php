@@ -472,12 +472,16 @@ function wpuf_get_pages() {
  *
  * @return array
  */
-function wpuf_get_gateways() {
+function wpuf_get_gateways( $context = 'admin' ) {
     $gateways = WPUF_Payment::get_payment_gateways();
     $return = array();
 
     foreach ($gateways as $id => $gate) {
-        $return[$id] = $gate['admin_label'];
+        if($context == 'admin') {
+            $return[$id] = $gate['admin_label'];
+        } else {
+            $return[$id] = $gate['checkout_label'];
+        }
     }
 
     return $return;

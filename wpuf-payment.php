@@ -33,7 +33,16 @@ class WPUF_Payment {
      * @return array
      */
     function get_active_gateways() {
-        $gateways = $this->get_payment_gateways();
+        $all_gateways = wpuf_get_gateways( 'checkout' );
+        $active_gateways = wpuf_get_option( 'active_gateways' );
+        $active_gateways = is_array( $active_gateways ) ? $active_gateways : array();
+        $gateways = array();
+
+        foreach ($all_gateways as $id => $label) {
+            if ( array_key_exists( $id, $active_gateways ) ) {
+                $gateways[$id] = $label;
+            }
+        }
 
         return $gateways;
     }
@@ -53,37 +62,43 @@ class WPUF_Payment {
             $post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( $_REQUEST['pack_id'] ) : 0;
 
-            $gateways = $this->get_payment_gateways();
+            $gateways = $this->get_active_gateways();
 
             ob_start();
             ?>
-            <form id="wpuf-payment-gateway" action="<?php echo $_SERVER["REQUEST_URI"]; ?>" method="POST">
-                <?php wp_nonce_field( 'wpuf_payment_gateway' ) ?>
-                <?php do_action( 'wpuf_before_payment_gateway' ); ?>
-                <p>
-                    <label for="wpuf-payment-method"><?php _e( 'Choose Your Payment Method', 'wpuf' ); ?></label>
-                    <select name="wpuf_payment_method" id="wpuf-payment-method">
-                        <?php
-                        foreach ($gateways as $gateway_id => $gateway) {
-                            echo '<option value="' . $gateway_id . '">' . $gateway['checkout_label'] . '</option>';
-                        }
-                        ?>
-                    </select>
-                </p>
-                <?php do_action( 'wpuf_after_payment_gateway' ); ?>
-                <p>
-                    <input type="hidden" name="type" value="<?php echo $type; ?>" />
-                    <input type="hidden" name="action" value="wpuf_pay" />
-                    <?php if ( $post_id ) { ?>
-                        <input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
-                    <?php } ?>
+            <?php if ( count( $gateways ) ) { ?>
+                <form id="wpuf-payment-gateway" action="<?php echo $_SERVER["REQUEST_URI"]; ?>" method="POST">
+                    <?php wp_nonce_field( 'wpuf_payment_gateway' ) ?>
+                    <?php do_action( 'wpuf_before_payment_gateway' ); ?>
+                    <p>
+                        <label for="wpuf-payment-method"><?php _e( 'Choose Your Payment Method', 'wpuf' ); ?></label><br />
 
-                    <?php if ( $pack_id ) { ?>
-                        <input type="hidden" name="pack_id" value="<?php echo $pack_id; ?>" />
-                    <?php } ?>
-                    <input type="submit" name="wpuf_payment_submit" value="<?php _e( 'Proceed', 'wpuf' ); ?>"/>
-                </p>
-            </form>
+                        <select name="wpuf_payment_method" id="wpuf-payment-method">
+                            <?php
+                            foreach ($gateways as $gateway_id => $gateway) {
+                                echo '<option value="' . $gateway_id . '">' . $gateway . '</option>';
+                            }
+                            ?>
+                        </select>
+
+                    </p>
+                    <?php do_action( 'wpuf_after_payment_gateway' ); ?>
+                    <p>
+                        <input type="hidden" name="type" value="<?php echo $type; ?>" />
+                        <input type="hidden" name="action" value="wpuf_pay" />
+                        <?php if ( $post_id ) { ?>
+                            <input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
+                        <?php } ?>
+
+                        <?php if ( $pack_id ) { ?>
+                            <input type="hidden" name="pack_id" value="<?php echo $pack_id; ?>" />
+                        <?php } ?>
+                        <input type="submit" name="wpuf_payment_submit" value="<?php _e( 'Proceed', 'wpuf' ); ?>"/>
+                    </p>
+                </form>
+            <?php } else { ?>
+                <?php _e( 'No Payment gateway found', 'wpuf' ); ?>
+            <?php } ?>
 
             <?php
             return ob_get_clean();
@@ -131,7 +146,6 @@ class WPUF_Payment {
             }
 
             $payment_vars = array(
-                'email' => wpuf_get_option( 'paypal_mail' ),
                 'currency' => wpuf_get_option( 'currency' ),
                 'price' => $amount,
                 'item_number' => $item_number,

@@ -277,7 +277,7 @@ function wpuf_settings_fields() {
             array(
                 'name' => 'enable_post_expiry',
                 'label' => __( 'Enable Post expiration', 'wpuf' ),
-                'desc' => __( 'Users will be able to select a duration, after that time from post publish date, post will be set to draft', 'wpuf' ),
+                'desc' => __( 'Users will be able to select a duration, after that time from post publish date, post will be set to draft. This feature depends on <strong>Post Expirator</strong> plugin. ', 'wpuf' ),
                 'type' => 'checkbox'
             ),
         ) ),

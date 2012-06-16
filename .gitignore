@@ -1,3 +1,4 @@
 nbproject
 deploy.sh
-/log.txt
+log.txt
+.gitignore

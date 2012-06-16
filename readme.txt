@@ -1,17 +1,18 @@
 === WP User Frontend ===
 Contributors: tareq1988
-Donate link: http://tareq.wedevs.com
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=tareq%40wedevs%2ecom&lc=US&item_name=WP%20User%20Frontend&item_number=Tareq%27s%20Planet&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: frontend, post, edit, dashboard, restrict
 Requires at least: 3.3
 Tested up to: 3.3.1
-Stable tag: 0.7
+Stable tag: 1.0
 
 Create, update, delete posts and edit profile from wordpress frontend.
 
 == Description ==
 
-Some of us want something like that the subscriber/contributor will not be able to go in the
-wordpress backend and everything these user can control will be done from wordpress frontend.
+Gives ability to the user to create new post, edit post, edit profile from site frontend.
+So users doesn't need to enter the admin panel. Everything they need to do can be done from
+the frontend.
 
 = Features:  =
 
@@ -25,6 +26,7 @@ So here is my plugin that solves your problem. This features of this plugin are 
 * Admin can configure to receive notification mail when the users creates a new post.
 * Configurable options if the user can edit or delete their posts.
 * Users can upload attachments from the frontend
+* Post featured image can be set
 * Admins can manage their users from frontend
 * Pay per post or subscription on posting is possible
 
@@ -33,15 +35,16 @@ So here is my plugin that solves your problem. This features of this plugin are 
 
 This section describes how to install the plugin and get it working.
 
-1. Create a new Page “New Post” and insert shorcode `[wpuf_addpost]`
-2. Create a new Page “Edit” for editing posts and insert shorcode `[wpuf_edit]`
-3. Create a new Page “Profile” for editing profile and insert shorcode `[wpuf_editprofile]`
-4. Create a new Page “Dashboard” and insert shorcode `[wpuf_dashboard]`
-5. Correct the permalink structure of your wordpress installation
-6. Insert the “Edit” Page url to the admin options page of the plugin
-7. To show the subscription info, insert the shortcdoe `[wpuf_sub_info]`
-8. To show the subscription packs, insert the shortcode `[wpuf_sub_pack]`
-9. For subscription payment page, create a new page and insert the page ID in WP User frontend's "Paypal Payment Page" option.
+1. Create a new Page “New Post” and insert shorcode `[wpuf_addpost]`.
+    For a custom post type **event**, use it like `[wpuf_addpost post_type="event"]`
+1. Create a new Page “Edit” for editing posts and insert shorcode `[wpuf_edit]`
+1. Create a new Page “Profile” for editing profile and insert shorcode `[wpuf_editprofile]`
+1. Create a new Page “Dashboard” and insert shorcode `[wpuf_dashboard]`
+    To list custom post type **event**, use it like `[wpuf_dashboard post_type="event"]`
+1. Set the *Edit Page* option from *Others* tab on settings page.
+1. To show the subscription info, insert the shortcdoe `[wpuf_sub_info]`
+1. To show the subscription packs, insert the shortcode `[wpuf_sub_pack]`
+1. For subscription payment page, set the *Payment Page* from *Payments* tab on settings page.
 
 
 == Screenshots ==
@@ -82,6 +85,22 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= version 1.0 =
+
+* Admin panel converted to settings API
+* Ajax featured Image uploader added (using plupload)
+* Ajax attachment uploader added (using plupload)
+* Rich/full/normal text editor mode
+* Editor button fix on twentyelven theme
+* Massive Code rewrite and cleanup
+* Dashboard replaced with WordPress loop
+* Output buffering added for header already sent warning
+* Redirect user on deleting a post
+* Category checklist added
+* Post publish date fix and post expirator changed from hours to day
+* Subscription and payment rewrite. Extra payment gateways can be added as plugin
+* Other payment currency added
 
 = version 0.7 =
 

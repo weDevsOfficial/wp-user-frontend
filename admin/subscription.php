@@ -1,47 +1,11 @@
 <?php
-$subscription_options = array(
-    array(
-        'type' => 'title',
-        'label' => 'Subscription Pack Details'
-    ),
-    array(
-        'name' => 'name',
-        'label' => 'Pack Name',
-        'desc' => '',
-        'type' => 'text'
-    ),
-    array(
-        'name' => 'description',
-        'label' => 'Pack Description',
-        'desc' => '',
-        'type' => 'text'
-    ),
-    array(
-        'name' => 'cost',
-        'label' => 'Pack Cost',
-        'desc' => 'Cost of this pack',
-        'type' => 'text'
-    ),
-    array(
-        'name' => 'duration',
-        'label' => 'Pack Validity',
-        'desc' => 'How many days this pack will remain valid? Enter <strong>0</strong> for unlimited.',
-        'type' => 'text'
-    ),
-    array(
-        'name' => 'count',
-        'label' => 'Number of Posts',
-        'desc' => 'How many posts the user can list with this pack? Enter <strong>0</strong> for unlimited.',
-        'type' => 'text'
-    ),
-);
 
 function wpuf_subscription_admin() {
     $action = isset( $_GET['action'] ) ? $_GET['action'] : '';
     ?>
     <div class="wrap">
         <div id="icon-options-general" class="icon32"><br></div>
-        <h2>WP Frontend CMS: Subscription Manager</h2>
+        <h2><?php _e( 'WP User Frontend', 'wpuf' ) ?>: <?php _e( 'Subscription Manager', 'wpuf' ) ?></h2>
         <?php
         switch ($action) {
             case 'edit':
@@ -105,16 +69,57 @@ function wpuf_subscription_admin_index() {
     }
     ?>
 
-    <form method="post" action="admin.php?page=wpuf_subscription">
+    <form action="" method="post" style="margin-top: 20px;">
+
         <?php wp_nonce_field( 'wpuf_sub_settings', 'wpuf_sub_settings' ); ?>
 
-        <table class="widefat options" style="width: 450px">
-            <?php wpuf_build_form( $subscription_options ); ?>
+        <table class="widefat meta" style="width: 850px">
+            <thead>
+                <tr>
+                    <th scope="col" colspan="2" style="font-size: 14px;"><?php _e( 'Subscription Pack Details', 'wpuf' ) ?></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr valign="top">
+                    <td scope="row" class="label"><label for="field"><?php _e( 'Pack Name', 'wpuf' ) ?></label></td>
+                    <td>
+                        <input type="text" size="25" style="" id="name" value="" name="name" />
+                        <span class="description"><?php _e( 'subscription pack name', 'wpuf' ); ?></span>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td scope="row" class="label"><label for="label"><?php _e( 'Pack Description', 'wpuf' ); ?></label></td>
+                    <td>
+                        <input type="text" size="25" style="" id="label" value="" name="description" />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td scope="row" class="label"><label for="help"><?php _e( 'Pack Cost', 'wpuf' ); ?></label></td>
+                    <td>
+                        <input type="text" size="25" style="" id="help" value="" name="cost" />
+                        <span class="description"><?php _e( 'price/cost of the pack', 'wpuf' ); ?></span>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td scope="row" class="label"><label for="required"><?php _e( 'Pack validity', 'wpuf' ); ?></label></td>
+                    <td>
+                        <input type="text" size="25" style="" id="help" value="" name="duration" />
+                        <span class="description"><?php _e( 'How many days this pack will remain valid? Enter <strong>0</strong> for unlimited.', 'wpuf' ); ?></span>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td scope="row" class="label"><label for="region"><?php _e( 'Number of Posts', 'wpuf' ); ?></label></td>
+                    <td>
+                        <input type="text" size="25" style="" id="help" value="" name="count" />
+                        <span class="description"><?php _e( 'How many posts the user can list with this pack? Enter <strong>0</strong> for unlimited.', 'wpuf' ); ?></span>
+                    </td>
+                </tr>
+            </tbody>
         </table>
 
-        <p class="submit">
-            <input type="submit" name="wpuf_sub_opts_submit" class="button-primary" value="<?php _e( 'Add Package' ) ?>" />
-        </p>
+        <input name="wpuf_sub_opts_submit" type="submit" class="button-primary" value="<?php _e( 'Add Package', 'wpuf' ) ?>" style="margin-top: 10px;" />
+
     </form>
 
     <h2>Subscription Packs</h2>
@@ -172,7 +177,7 @@ function wpuf_subscription_admin_index() {
 }
 
 function wpuf_subscription_admin_edit() {
-    global $wpdb, $subscription_options;
+    global $wpdb;
 
     $id = intval( $_GET['id'] );
 
@@ -219,26 +224,59 @@ function wpuf_subscription_admin_edit() {
     }
 
     $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}wpuf_subscription WHERE `id`=$id", OBJECT );
-
-    $values = array(
-        "name" => "$row->name",
-        "description" => "$row->description",
-        "count" => "$row->count",
-        "duration" => "$row->duration",
-        "cost" => "$row->cost"
-    );
     ?>
 
-    <form method="post" action="">
+    <form action="" method="post" style="margin-top: 20px;">
+
         <?php wp_nonce_field( 'wpuf_sub_settings', 'wpuf_sub_settings' ); ?>
 
-        <table class="widefat options" style="width: 450px">
-            <?php wpuf_build_form( $subscription_options, $values, false ); ?>
+        <table class="widefat meta" style="width: 850px">
+            <thead>
+                <tr>
+                    <th scope="col" colspan="2" style="font-size: 14px;"><?php _e( 'Subscription Pack Details', 'wpuf' ) ?></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr valign="top">
+                    <td scope="row" class="label"><label for="field"><?php _e( 'Pack Name', 'wpuf' ) ?></label></td>
+                    <td>
+                        <input type="text" size="25" style="" id="name" value="<?php echo esc_attr( $row->name ); ?>" name="name" />
+                        <span class="description"><?php _e( 'subscription pack name', 'wpuf' ); ?></span>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td scope="row" class="label"><label for="label"><?php _e( 'Pack Description', 'wpuf' ); ?></label></td>
+                    <td>
+                        <input type="text" size="25" style="" id="label" value="<?php echo esc_attr( $row->description ); ?>" name="description" />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td scope="row" class="label"><label for="help"><?php _e( 'Pack Cost', 'wpuf' ); ?></label></td>
+                    <td>
+                        <input type="text" size="25" style="" id="help" value="<?php echo esc_attr( $row->cost ); ?>" name="cost" />
+                        <span class="description"><?php _e( 'price/cost of the pack', 'wpuf' ); ?></span>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td scope="row" class="label"><label for="required"><?php _e( 'Pack validity', 'wpuf' ); ?></label></td>
+                    <td>
+                        <input type="text" size="25" style="" id="help" value="<?php echo esc_attr( $row->duration ); ?>" name="duration" />
+                        <span class="description"><?php _e( 'How many days this pack will remain valid? Enter <strong>0</strong> for unlimited.', 'wpuf' ); ?></span>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td scope="row" class="label"><label for="region"><?php _e( 'Number of Posts', 'wpuf' ); ?></label></td>
+                    <td>
+                        <input type="text" size="25" style="" id="help" value="<?php echo esc_attr( $row->count ); ?>" name="count" />
+                        <span class="description"><?php _e( 'How many posts the user can list with this pack? Enter <strong>0</strong> for unlimited.', 'wpuf' ); ?></span>
+                    </td>
+                </tr>
+            </tbody>
         </table>
 
-        <p class="submit">
-            <input type="submit" name="wpuf_sub_opts_submit" class="button-primary" value="<?php _e( 'Update Package' ) ?>" />
-        </p>
+        <input name="wpuf_sub_opts_submit" type="submit" class="button-primary" value="<?php _e( 'Add Package', 'wpuf' ) ?>" style="margin-top: 10px;" />
+
     </form>
 
     <?php

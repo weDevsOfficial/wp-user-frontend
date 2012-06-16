@@ -20,7 +20,7 @@ function wpuf_custom_fields_main() {
 
     <div class="wrap wpuf-admin custom-fields">
         <div class="icon32" id="icon-options-general"><br></div>
-        <h2>Custom Field Options</h2>
+        <h2><?php _e( 'WP User Frontend', 'wpuf' ) ?>: <?php _e( 'Custom Fields', 'wpuf' ) ?></h2>
 
         <?php
         if ( isset( $_POST['wpuf_add_custom'] ) ) {

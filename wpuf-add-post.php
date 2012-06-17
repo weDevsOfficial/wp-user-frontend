@@ -316,14 +316,16 @@ class WPUF_Add_Post {
         }
 
         //validate cat
-        $cat_type = wpuf_get_option( 'cat_type' );
-        if ( !isset( $_POST['category'] ) ) {
-            $errors[] = __( 'Please choose a category', 'wpuf' );
-        } else if ( $cat_type == 'normal' && $_POST['category'][0] == '-1' ) {
-            $errors[] = __( 'Please choose a category', 'wpuf' );
-        } else {
-            if ( count( $_POST['category'] ) < 1 ) {
+        if ( wpuf_get_option( 'allow_cats' ) == 'on' ) {
+            $cat_type = wpuf_get_option( 'cat_type' );
+            if ( !isset( $_POST['category'] ) ) {
                 $errors[] = __( 'Please choose a category', 'wpuf' );
+            } else if ( $cat_type == 'normal' && $_POST['category'][0] == '-1' ) {
+                $errors[] = __( 'Please choose a category', 'wpuf' );
+            } else {
+                if ( count( $_POST['category'] ) < 1 ) {
+                    $errors[] = __( 'Please choose a category', 'wpuf' );
+                }
             }
         }
 

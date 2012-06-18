@@ -182,7 +182,7 @@ jQuery(document).ready(function($) {
 
             $.ajax({
                 type: 'post',
-                url: ajaxurl,
+                url: wpuf.ajaxurl,
                 data: {
                     action: 'wpuf_get_child_cats',
                     catID: cat,

@@ -146,7 +146,6 @@ class WPUF_Edit_Post {
                             <div class="category-wrap" style="float:left;">
                                 <div id="lvl0">
                                     <?php
-
                                     if ( $cat_type == 'normal' ) {
                                         wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&exclude=' . $exclude . '&selected=' . $selected );
                                     } else if ( $cat_type == 'ajax' ) {
@@ -247,14 +246,16 @@ class WPUF_Edit_Post {
         }
 
         //validate cat
-        $cat_type = wpuf_get_option( 'cat_type' );
-        if ( !isset( $_POST['category'] ) ) {
-            $errors[] = __( 'Please choose a category', 'wpuf' );
-        } else if ( $cat_type == 'normal' && $_POST['category'][0] == '-1' ) {
-            $errors[] = __( 'Please choose a category', 'wpuf' );
-        } else {
-            if ( count( $_POST['category'] ) < 1 ) {
+        if ( wpuf_get_option( 'allow_cats' ) == 'on' ) {
+            $cat_type = wpuf_get_option( 'cat_type' );
+            if ( !isset( $_POST['category'] ) ) {
                 $errors[] = __( 'Please choose a category', 'wpuf' );
+            } else if ( $cat_type == 'normal' && $_POST['category'][0] == '-1' ) {
+                $errors[] = __( 'Please choose a category', 'wpuf' );
+            } else {
+                if ( count( $_POST['category'] ) < 1 ) {
+                    $errors[] = __( 'Please choose a category', 'wpuf' );
+                }
             }
         }
 

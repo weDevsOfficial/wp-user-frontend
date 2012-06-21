@@ -413,7 +413,7 @@ class WPUF_Add_Post {
             'tags_input' => $tags
         );
 
-        if ( $post_expiry == 'yes' ) {
+        if ( $post_date_enable == 'on' ) {
             $month = $_POST['mm'];
             $day = $_POST['jj'];
             $year = $_POST['aa'];
@@ -454,7 +454,7 @@ class WPUF_Add_Post {
             }
 
             //Set Post expiration date if has any
-            if ( !empty( $_POST['expiration-date'] ) ) {
+            if ( !empty( $_POST['expiration-date'] ) && $post_expiry == 'on' ) {
                 $post = get_post( $post_id );
                 $post_date = strtotime( $post->post_date );
                 $expiration = (int) $_POST['expiration-date'];

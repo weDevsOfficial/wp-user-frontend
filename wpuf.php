@@ -1,13 +1,13 @@
 <?php
 
 /*
-  Plugin Name: WP User Frontend
-  Plugin URI: http://tareq.wedevs.com/2011/01/new-plugin-wordpress-user-frontend/
-  Description: Post, Edit, Delete posts and edit profile without coming to backend
-  Author: Tareq Hasan
-  Version: 1.1
-  Author URI: http://tareq.weDevs.com
- */
+Plugin Name: WP User Frontend
+Plugin URI: http://tareq.wedevs.com/2011/01/new-plugin-wordpress-user-frontend/
+Description: Post, Edit, Delete posts and edit profile without coming to backend
+Author: Tareq Hasan
+Version: 1.1
+Author URI: http://tareq.weDevs.com
+*/
 
 if ( !class_exists( 'WeDevs_Settings_API' ) ) {
     require_once dirname( __FILE__ ) . '/lib/class.settings-api.php';

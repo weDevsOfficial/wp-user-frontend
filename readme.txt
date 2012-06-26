@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=tareq
 Tags: frontend, post, edit, dashboard, restrict
 Requires at least: 3.3
 Tested up to: 3.4
-Stable tag: 1.0
+Stable tag: 1.1
 
 Create, update, delete posts and edit profile from wordpress frontend.
 
@@ -85,6 +85,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= version 1.1 =
+
+* warning for multisite fix
+* allow category bug fix
+* fix ajaxurl in ajaxified category
+* custom post type dropdown fix in admin
+* post date bug fix
+* category dropdown fix
 
 = version 1.0 =
 

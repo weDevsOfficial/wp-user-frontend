@@ -210,13 +210,19 @@ class WPUF_Subscription {
      *
      * @param int $post_id
      */
-    function handle_post_publish( $post_id ) {
+    function handle_post_publish( $order_id ) {
+        global $wpdb;
 
-        $post = get_post( $post_id );
+        //$post = get_post( $post_id );
+        $sql = $wpdb->prepare( "SELECT p.ID, p.post_status
+            FROM $wpdb->posts p, $wpdb->postmeta m
+            WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = 'wpuf_order_id' AND m.meta_value = '$order_id'" );
+
+        $post = $wpdb->get_row( $sql );
 
         if ( $post && $post->post_status != 'publish' ) {
             $update_post = array(
-                'ID' => $post_id,
+                'ID' => $post->ID,
                 'post_status' => 'publish'
             );
 

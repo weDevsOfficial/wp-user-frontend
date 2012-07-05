@@ -45,6 +45,7 @@ This section describes how to install the plugin and get it working.
 1. To show the subscription info, insert the shortcdoe `[wpuf_sub_info]`
 1. To show the subscription packs, insert the shortcode `[wpuf_sub_pack]`
 1. For subscription payment page, set the *Payment Page* from *Payments* tab on settings page.
+1. To edit users, insert the shortcode `[wpuf-edit-users]`
 
 
 == Screenshots ==

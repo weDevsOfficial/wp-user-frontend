@@ -228,6 +228,8 @@ class WPUF_Dashboard {
      * Only post author and editors has the capability to delete a post
      */
     function delete_post() {
+        global $userdata;
+        
         $nonce = $_REQUEST['_wpnonce'];
         if ( !wp_verify_nonce( $nonce, 'wpuf_del' ) ) {
             die( "Security check" );

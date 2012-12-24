@@ -670,10 +670,15 @@ class WPUF_Walker_Category_Checklist extends Walker {
  * @param int $post_id
  * @param array $selected_cats
  */
-function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $tax = 'category' ) {
+function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $tax = 'category', $exclude = false ) {
     require_once ABSPATH . '/wp-admin/includes/template.php';
 
     $walker = new WPUF_Walker_Category_Checklist();
+
+    //exclude categories from checklist
+    if ( $exclude ) {
+        add_filter( 'list_terms_exclusions', 'wpuf_category_checklist_exclusions' );
+    }
 
     echo '<ul class="wpuf-category-checklist">';
     wp_terms_checklist( $post_id, array(
@@ -685,6 +690,24 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $tax = '
         'checked_ontop' => false
     ) );
     echo '</ul>';
+}
+
+/**
+ * Exclude categories from checklist
+ *
+ * @param string $exclusions
+ * @return string
+ */
+function wpuf_category_checklist_exclusions( $exclusions ) {
+
+    //calling wpuf_get_option generates a recursion fatal error
+    //thats why exclue category values picked up manually
+    $opt = get_option( 'wpuf_frontend_posting' );
+    if ( isset( $opt['exclude_cats'] ) && !empty( $opt['exclude_cats'] ) ) {
+        $exclusions = " AND t.term_id NOT IN({$opt['exclude_cats']})";
+    }
+
+    return $exclusions;
 }
 
 // display msg if permalinks aren't setup correctly

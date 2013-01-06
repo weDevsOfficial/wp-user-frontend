@@ -151,7 +151,7 @@ class WPUF_Edit_Post {
                                     } else if ( $cat_type == 'ajax' ) {
                                         wp_dropdown_categories( 'show_option_none=' . __( '-- Select --', 'wpuf' ) . '&hierarchical=1&hide_empty=0&orderby=name&name=category[]&id=cat-ajax&show_count=0&title_li=&use_desc_for_title=1&class=cat requiredField&depth=1&exclude=' . $exclude . '&selected=' . $selected );
                                     } else {
-                                        wpuf_category_checklist($curpost->ID, false, 'category', $exclude);
+                                        wpuf_category_checklist(0, false, 'category', $exclude);
                                     }
                                     ?>
                                 </div>

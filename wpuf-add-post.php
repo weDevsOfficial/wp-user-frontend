@@ -294,7 +294,7 @@ class WPUF_Add_Post {
         global $userdata;
 
         $errors = array();
-
+        
         //if there is some attachement, validate them
         if ( !empty( $_FILES['wpuf_post_attachments'] ) ) {
             $errors = wpuf_check_upload();

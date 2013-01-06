@@ -44,6 +44,11 @@
     width: 70%;
 }
 
+.wpuf-post-form .wpuf-check-container {
+    float: left;
+    width: 70%;
+}
+
 .wpuf-post-form input[type=submit], .wpuf-submit, .wpuf-button{
     -moz-border-radius: 5px;
     border-radius: 5px;

@@ -130,6 +130,44 @@ function wpuf_build_custom_field_form( $position = 'top', $edit = false, $post_i
                         <?php
                         break;
 
+                    case 'checkbox':
+                        ?>
+                        <li>
+                            <label for="<?php echo $field->field; ?>">
+                                <?php echo stripslashes( $field->label ); ?>
+                                <?php if ( $field->required == 'yes' ): ?>
+                                    <span class="required">*</span>
+                                <?php endif; ?>
+                            </label>
+                            <div class="wpuf-check-container">
+                                <input type="hidden" name="<?php echo esc_attr( $field->field ); ?>" value="" />
+                                <?php
+                                $options = explode( ',', $field->values );
+                                $values = explode(',', $value );
+                                if ( is_array( $options ) ) {
+                                    foreach ($options as $opt) {
+                                        $opt = trim( strip_tags( $opt ) );
+                                        ?>
+                                        <label>
+                                            <input type="checkbox" <?php echo in_array( $opt, $values ) ? 'checked="checked"': '' ?> name="<?php echo esc_attr( $field->field ); ?>[]" value="<?php echo esc_attr( $opt ); ?>" /> <?php echo $opt; ?>
+                                        </label>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            </div>
+                            <div class="clear"></div>
+
+                            <?php if ( $field->desc ): ?>
+                                <p class="description"><?php echo stripslashes( $field->desc ); ?></p>
+                                <div class="clear"></div>
+                            <?php endif; ?>
+
+                        </li>
+
+                        <?php
+                        break;
+
 
                     default:
                 } //switch

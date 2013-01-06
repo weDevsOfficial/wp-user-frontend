@@ -67,6 +67,8 @@ class WPUF_Edit_Post {
         //process post
         if ( isset( $_POST['wpuf_edit_post_submit'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-edit-post' ) ) {
             $this->submit_post();
+            
+            $curpost = get_post( $post_id );
         }
 
         //show post form
@@ -278,11 +280,15 @@ class WPUF_Edit_Post {
             foreach ($fields as $cf) {
                 if ( array_key_exists( $cf['field'], $_POST ) ) {
 
-                    $temp = trim( strip_tags( $_POST[$cf['field']] ) );
+                    if ( is_array( $_POST[$cf['field']] ) ) {
+                        $temp = implode(',', $_POST[$cf['field']]);
+                    } else {
+                        $temp = trim( strip_tags( $_POST[$cf['field']] ) );
+                    }
                     //var_dump($temp, $cf);
 
                     if ( ( $cf['type'] == 'yes' ) && !$temp ) {
-                        $errors[] = sprintf( __( '%s is missing', 'wpuf' ), $cf['label'] );
+                        $errors[] = sprintf( __( '"%s" is missing', 'wpuf' ), $cf['label'] );
                     } else {
                         $custom_fields[$cf['field']] = $temp;
                     }

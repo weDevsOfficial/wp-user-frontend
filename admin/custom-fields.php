@@ -362,6 +362,7 @@ function wpuf_custom_fields_edit() {
                                     <option value="text"<?php selected( $row->type, 'text' ); ?>><?php _e( 'Text Box', 'wpuf' ); ?></option>
                                     <option value="textarea"<?php selected( $row->type, 'textarea' ); ?>><?php _e( 'Text Area', 'wpuf' ); ?></option>
                                     <option value="select"<?php selected( $row->type, 'select' ); ?>><?php _e( 'Dropdown', 'wpuf' ); ?></option>
+                                    <option value="checkbox"<?php selected( $row->type, 'checkbox' ); ?>><?php _e( 'Checkbox', 'wpuf' ); ?></option>
                                 </select>
                                 <span class="description"></span>
                             </td>

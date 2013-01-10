@@ -300,7 +300,7 @@ class WPUF_Edit_Post {
             if ( wpuf_get_option( 'allow_cats' ) == 'on' ) {
                 $post_category = $_POST['category'];
             } else {
-                $post_category = array(get_option( 'wpuf_default_cat' ));
+                $post_category = array(wpuf_get_option( 'default_cat' ));
             }
 
             $post_update = array(
@@ -317,7 +317,7 @@ class WPUF_Edit_Post {
             $post_id = wp_update_post( $post_update );
 
             if ( $post_id ) {
-                echo '<div class="success">' . __( 'Post updated succesfully.', 'wpuf' ) . '</div>';
+                echo '<div class="success">' . __( 'Post updated successfully.', 'wpuf' ) . '</div>';
 
                 //upload attachment to the post
                 wpuf_upload_attachment( $post_id );

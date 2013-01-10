@@ -300,7 +300,7 @@ class WPUF_Edit_Post {
             if ( wpuf_get_option( 'allow_cats' ) == 'on' ) {
                 $post_category = $_POST['category'];
             } else {
-                $post_category = array(get_option( 'wpuf_default_cat' ));
+                $post_category = array(wpuf_get_option( 'default_cat' ));
             }
 
             $post_update = array(

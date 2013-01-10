@@ -68,6 +68,7 @@ class WPUF_Attachment {
         <li>
             <label><?php echo wpuf_get_option( 'attachment_label' ) ?></label>
             <div class="clear"></div>
+            <p class="description"><?php echo wpuf_get_option( 'attachment_help' ) ?></p>
         </li>
         <li>
             <div id="wpuf-attachment-upload-container">

@@ -115,6 +115,14 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= version 1.2 =
+
+* [fix] Subscription post publish
+* [fix] Post delete fix in dashboard
+* [fix] Silverlight in IE upload error
+* [fix] Category checklist bug fix
+* [new] Checkbox field in custom field
+
 = version 1.1 =
 
 * warning for multisite fix

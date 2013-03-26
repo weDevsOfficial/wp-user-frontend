@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=tareq
 Tags: frontend, post, edit, dashboard, restrict
 Requires at least: 3.3
 Tested up to: 3.4
-Stable tag: 1.1
+Stable tag: trunk
 
 Create, update, delete posts and edit profile from wordpress frontend.
 

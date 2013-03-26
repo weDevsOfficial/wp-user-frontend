@@ -62,12 +62,14 @@ class WPUF_Settings {
         ?>
         <div class="wrap">
 
-            <?php screen_icon( 'options-general' ); ?>
-            <h2><?php _e( 'WP User Frontend: Settings', 'wpuf' ); ?></h2>
-
+            <a href="http://wedevs.com/plugin/wp-user-frontend-pro/" target="_blank">
+                <img src="<?php echo plugins_url( '', dirname( __FILE__ ) ); ?>/images/banner.png" alt="Get PRO version" title="Get the PRO version - The best Frontend plugin">
+            </a>
+            <div class="clear"></div>
             <?php
             settings_errors();
 
+            screen_icon( 'options-general' );
             $this->settings_api->show_navigation();
             $this->settings_api->show_forms();
             ?>
@@ -75,6 +77,7 @@ class WPUF_Settings {
         </div>
         <?php
     }
+
 }
 
 $wpuf_settings = new WPUF_Settings();

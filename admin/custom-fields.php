@@ -216,8 +216,8 @@ function wpuf_custom_fields_main() {
                         <td><?php echo $position[$row->region]; ?></td>
                         <td><?php echo $row->order; ?></td>
                         <td>
-                            <a href="admin.php?page=wpuf_custom_fields&action=edit&id=<?php echo $row->id; ?>"><img src="<?php echo plugins_url( 'wp-user-frontend/images/edit.png' ); ?>"</a>
-                            <a href="<?php echo wp_nonce_url( "admin.php?page=wpuf_custom_fields&action=del&id=" . $row->id, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this field?');"><img src="<?php echo plugins_url( 'wp-user-frontend/images/del.png' ); ?>"</a>
+                            <a href="admin.php?page=wpuf_custom_fields&action=edit&id=<?php echo $row->id; ?>"><img src="<?php echo plugins_url( '', dirname( __FILE__ ) ); ?>/images/edit.png"></a>
+                            <a href="<?php echo wp_nonce_url( "admin.php?page=wpuf_custom_fields&action=del&id=" . $row->id, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this field?');"><img src="<?php echo plugins_url( '', dirname( __FILE__ ) ); ?>/images/del.png"></a>
                         </td>
 
                     </tr>

@@ -158,18 +158,20 @@ function wpuf_subscription_admin_index() {
                     <td><?php echo ( $row->duration == 0 ) ? 'Unlimited' : $row->duration . ' days'; ?></td>
                     <td><?php echo ( $row->count == 0 ) ? 'Unlimited' : $row->count; ?></td>
                     <td>
-                        <a href="admin.php?page=wpuf_subscription&action=edit&id=<?php echo $row->id; ?>"><img src="<?php echo plugins_url( 'wp-user-frontend/images/edit.png' ); ?>"</a>
-                        <a href="<?php echo wp_nonce_url( "admin.php?page=wpuf_subscription&action=del&id=" . $row->id, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this pack?');"><img src="<?php echo plugins_url( 'wp-user-frontend/images/del.png' ); ?>"</a>
+                        <a href="admin.php?page=wpuf_subscription&action=edit&id=<?php echo $row->id; ?>"><img src="<?php echo plugins_url( '', dirname( __FILE__ ) ); ?>/images/edit.png"</a>
+                        <a href="<?php echo wp_nonce_url( "admin.php?page=wpuf_subscription&action=del&id=" . $row->id, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this pack?');"><img src="<?php echo plugins_url( '', dirname( __FILE__ ) ); ?>/images/del.png"</a>
                     </td>
 
                 </tr>
-                <?php $count++;
-            } ?>
-        <?php } else { ?>
+                <?php
+                $count++;
+            }
+            ?>
+    <?php } else { ?>
             <tr>
                 <td colspan="5">Nothing Found</td>
             </tr>
-        <?php } ?>
+    <?php } ?>
 
     </table>
 
@@ -228,7 +230,7 @@ function wpuf_subscription_admin_edit() {
 
     <form action="" method="post" style="margin-top: 20px;">
 
-        <?php wp_nonce_field( 'wpuf_sub_settings', 'wpuf_sub_settings' ); ?>
+    <?php wp_nonce_field( 'wpuf_sub_settings', 'wpuf_sub_settings' ); ?>
 
         <table class="widefat meta" style="width: 850px">
             <thead>

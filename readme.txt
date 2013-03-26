@@ -30,6 +30,34 @@ So here is my plugin that solves your problem. This features of this plugin are 
 * Admins can manage their users from frontend
 * Pay per post or subscription on posting is possible
 
+= WP User Frontend PRO =
+
+The <a href="http://wedevs.com/plugin/wp-user-frontend-pro">premium version</a> of WP User Frontend comes with tons of features:
+
+* Unlimited post type form creation
+* Drag-n-drop form builder
+* Custom taxonomy support
+* 13 variations of custom fields
+* Guest post support
+* Custom Redirection
+* Image upload on post content area
+* Post status selection on new post and edited post separately
+* New or edit post notification
+* Custom fields are generated also in admin area
+* <strong>Profile form builder</strong>
+* Different profile edit forms for different user roles
+* Drag-n-Drop profile form builder
+* Profile fields are generated on backend too
+* Avatar Upload
+* Frontend profile edit
+* <strong>Registration form</strong> builder
+* Captcha Support
+* Theme My Login compatible
+* Much more...
+
+<a href="http://wedevs.com/plugin/wp-user-frontend-pro">Try out the awesome Pro version</a> of bunch of features
+
+
 
 == Installation ==
 

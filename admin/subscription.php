@@ -158,8 +158,8 @@ function wpuf_subscription_admin_index() {
                     <td><?php echo ( $row->duration == 0 ) ? 'Unlimited' : $row->duration . ' days'; ?></td>
                     <td><?php echo ( $row->count == 0 ) ? 'Unlimited' : $row->count; ?></td>
                     <td>
-                        <a href="admin.php?page=wpuf_subscription&action=edit&id=<?php echo $row->id; ?>"><img src="<?php echo plugins_url( '', dirname( __FILE__ ) ); ?>/images/edit.png"</a>
-                        <a href="<?php echo wp_nonce_url( "admin.php?page=wpuf_subscription&action=del&id=" . $row->id, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this pack?');"><img src="<?php echo plugins_url( '', dirname( __FILE__ ) ); ?>/images/del.png"</a>
+                        <a href="admin.php?page=wpuf_subscription&action=edit&id=<?php echo $row->id; ?>"><img src="<?php echo plugins_url( '', dirname( __FILE__ ) ); ?>/images/edit.png"></a>
+                        <a href="<?php echo wp_nonce_url( "admin.php?page=wpuf_subscription&action=del&id=" . $row->id, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete this pack?');"><img src="<?php echo plugins_url( '', dirname( __FILE__ ) ); ?>/images/del.png"></a>
                     </td>
 
                 </tr>

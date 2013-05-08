@@ -57,6 +57,9 @@ The <a href="http://wedevs.com/plugin/wp-user-frontend-pro">premium version</a> 
 
 <a href="http://wedevs.com/plugin/wp-user-frontend-pro">Try out the awesome Pro version</a> of bunch of features
 
+= Translation = 
+
+* Italian translation by Gabriele Lamberti
 
 
 == Installation ==

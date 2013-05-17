@@ -34,6 +34,8 @@ So here is my plugin that solves your problem. This features of this plugin are 
 
 The <a href="http://wedevs.com/plugin/wp-user-frontend-pro">premium version</a> of WP User Frontend comes with tons of features:
 
+[youtube http://www.youtube.com/watch?v=C0sInxx49Vg]
+
 * Unlimited post type form creation
 * Drag-n-drop form builder
 * Custom taxonomy support

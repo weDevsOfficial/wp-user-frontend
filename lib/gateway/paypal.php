@@ -44,12 +44,12 @@ class WPUF_Paypal {
     function prepare_to_send( $data ) {
 
         $listener_url = add_query_arg( 'action', 'wpuf_paypal_success', home_url( '/' ) );
-        $return_url = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( wpuf_get_option( 'payment_success' ) ) );
+        $return_url = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( wpuf_get_option( 'payment_success', 'wpuf_payment' ) ) );
 
         $paypal_args = array(
             'cmd' => '_xclick',
             'amount' => $data['price'],
-            'business' => wpuf_get_option( 'paypal_email' ),
+            'business' => wpuf_get_option( 'paypal_email', 'wpuf_payment' ),
             'item_name' => $data['item_name'],
             'item_number' => $data['item_number'],
             'email' => $data['user_info']['email'],
@@ -78,7 +78,7 @@ class WPUF_Paypal {
      * @since 0.8
      */
     function set_mode() {
-        if ( wpuf_get_option( 'sandbox_mode' ) == 'on' ) {
+        if ( wpuf_get_option( 'sandbox_mode', 'wpuf_payment' ) == 'on' ) {
             $this->gateway_url = 'https://www.sandbox.paypal.com/webscr/';
             $this->test_mode = true;
         }

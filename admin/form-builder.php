@@ -30,7 +30,7 @@ function wpuf_build_custom_field_form( $position = 'top', $edit = false, $post_i
     global $wpdb;
 
     //check, if custom field is enabled
-    $enabled = wpuf_get_option( 'enable_custom_field' );
+    $enabled = wpuf_get_option( 'enable_custom_field', 'wpuf_frontend_posting', 'off' );
     //var_dump( $enabled );
     if ( $enabled != 'on' ) {
         return false;

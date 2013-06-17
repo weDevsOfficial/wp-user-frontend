@@ -1,38 +1,4 @@
 <?php
-
-/**
- * Get the value of a settings field
- *
- * @param string $option option field name
- * @return mixed
- */
-function wpuf_get_option( $option ) {
-
-    $fields = wpuf_settings_fields();
-    $prepared_fields = array();
-
-    //prepare the array with the field as key
-    //and set the section name on each field
-    foreach ($fields as $section => $field) {
-        foreach ($field as $fld) {
-            $prepared_fields[$fld['name']] = $fld;
-            $prepared_fields[$fld['name']]['section'] = $section;
-        }
-    }
-
-    //get the value of the section where the option exists
-    $opt = get_option( $prepared_fields[$option]['section'] );
-    $opt = is_array( $opt ) ? $opt : array();
-
-    //return the value if found, otherwise default
-    if ( array_key_exists( $option, $opt ) ) {
-        return $opt[$option];
-    } else {
-        $val = isset( $prepared_fields[$option]['default'] ) ? $prepared_fields[$option]['default'] : '';
-        return $val;
-    }
-}
-
 /**
  * Settings Sections
  *
@@ -71,6 +37,9 @@ function wpuf_settings_sections() {
 }
 
 function wpuf_settings_fields() {
+    $users = wpuf_list_users();
+    $pages = wpuf_get_pages();
+    
     $settings_fields = array(
         'wpuf_labels' => apply_filters( 'wpuf_options_label', array(
             array(
@@ -175,7 +144,7 @@ function wpuf_settings_fields() {
                 'label' => __( 'Map posts to poster', 'wpuf' ),
                 'desc' => __( 'If <b>Map to other user</b> selected, new post\'s post author will be this user by default', 'wpuf' ),
                 'type' => 'select',
-                'options' => wpuf_list_users()
+                'options' => $users
             ),
             array(
                 'name' => 'allow_cats',
@@ -362,7 +331,7 @@ function wpuf_settings_fields() {
                 'label' => __( 'Edit Page', 'wpuf' ),
                 'desc' => __( 'Select the page where [wpuf_editpost] is located', 'wpuf' ),
                 'type' => 'select',
-                'options' => wpuf_get_pages()
+                'options' => $pages
             ),
             array(
                 'name' => 'admin_access',
@@ -490,14 +459,14 @@ function wpuf_settings_fields() {
                 'label' => __( 'Payment Page', 'wpuf' ),
                 'desc' => __( 'This page will be used to process payment options', 'wpuf' ),
                 'type' => 'select',
-                'options' => wpuf_get_pages()
+                'options' => $pages
             ),
             array(
                 'name' => 'payment_success',
                 'label' => __( 'Payment Success Page', 'wpuf' ),
                 'desc' => __( 'After payment users will be redirected here', 'wpuf' ),
                 'type' => 'select',
-                'options' => wpuf_get_pages()
+                'options' => $pages
             ),
             array(
                 'name' => 'active_gateways',

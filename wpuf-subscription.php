@@ -61,7 +61,7 @@ class WPUF_Subscription {
     function has_post_error( $post_id = 0 ) {
         global $userdata;
 
-        if ( wpuf_get_option( 'charge_posting' ) == 'no' ) {
+        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) == 'no' ) {
             return false;
         }
 
@@ -101,7 +101,7 @@ class WPUF_Subscription {
      */
     function set_pending( $postdata ) {
 
-        if ( wpuf_get_option( 'charge_posting' ) == 'yes' ) {
+        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) == 'yes' ) {
             $postdata['post_status'] = 'pending';
         }
 
@@ -149,7 +149,7 @@ class WPUF_Subscription {
     function post_redirect( $post_url, $post_id ) {
 
         if ( $this->has_post_error( $post_id ) ) {
-            $redirect = get_permalink( wpuf_get_option( 'payment_page' ) ) . '?action=wpuf_pay&type=post&post_id=' . $post_id;
+            $redirect = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) . '?action=wpuf_pay&type=post&post_id=' . $post_id;
 
             return $redirect;
         }
@@ -242,7 +242,7 @@ class WPUF_Subscription {
 
         $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix
 
-        if ( wpuf_get_option( 'charge_posting' ) == 'yes' && is_user_logged_in() ) {
+        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) == 'yes' && is_user_logged_in() ) {
             $duration = ( $userdata->wpuf_sub_validity ) ? $userdata->wpuf_sub_validity : 0;
             $count = ( $userdata->wpuf_sub_pcount ) ? $userdata->wpuf_sub_pcount : 0;
 
@@ -303,9 +303,9 @@ class WPUF_Subscription {
                 <li>
                     <h3><?php echo $pack->name; ?> - <?php echo $pack->description; ?></h3>
                     <p><?php echo $count; ?> posts for <?php echo $duration; ?> days.
-                        <span class="cost"><?php echo wpuf_get_option( 'currency_symbol' ) . $pack->cost; ?></span>
+                        <span class="cost"><?php echo wpuf_get_option( 'currency_symbol', 'wpuf_payment' ) . $pack->cost; ?></span>
                     </p>
-                    <p><a href="<?php echo get_permalink( wpuf_get_option( 'payment_page' ) ); ?>?action=wpuf_pay&type=pack&pack_id=<?php echo $pack->id; ?>"><?php _e( 'Buy Now', 'wpuf' ); ?></a></p>
+                    <p><a href="<?php echo get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ); ?>?action=wpuf_pay&type=pack&pack_id=<?php echo $pack->id; ?>"><?php _e( 'Buy Now', 'wpuf' ); ?></a></p>
                 </li>
                 <?php
             }
@@ -322,7 +322,7 @@ class WPUF_Subscription {
         if ( $this->has_post_error() ) {
             ?>
             <div class="info">
-                <?php printf( __( 'This will cost you <strong>%s</strong>. to add a new post. You may buy some bulk package too. ', 'wpuf' ), wpuf_get_option( 'currency_symbol' ) . wpuf_get_option( 'cost_per_post' ) ); ?>
+                <?php printf( __( 'This will cost you <strong>%s</strong>. to add a new post. You may buy some bulk package too. ', 'wpuf' ), wpuf_get_option( 'currency_symbol', 'wpuf_payment' ) . wpuf_get_option( 'cost_per_post', 'wpuf_payment' ) ); ?>
             </div>
             <?php
         }

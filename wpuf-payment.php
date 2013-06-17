@@ -34,7 +34,7 @@ class WPUF_Payment {
      */
     function get_active_gateways() {
         $all_gateways = wpuf_get_gateways( 'checkout' );
-        $active_gateways = wpuf_get_option( 'active_gateways' );
+        $active_gateways = wpuf_get_option( 'active_gateways', 'wpuf_payment' );
         $active_gateways = is_array( $active_gateways ) ? $active_gateways : array();
         $gateways = array();
 
@@ -50,7 +50,7 @@ class WPUF_Payment {
     function payment_page( $content ) {
         global $post;
 
-        $pay_page = intval( wpuf_get_option( 'payment_page' ) );
+        $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
 
         if ( $post->ID == $pay_page && isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'wpuf_pay' ) {
 
@@ -130,7 +130,7 @@ class WPUF_Payment {
             switch ($type) {
                 case 'post':
                     $post = get_post( $post_id );
-                    $amount = wpuf_get_option( 'cost_per_post' );
+                    $amount = wpuf_get_option( 'cost_per_post', 'wpuf_payment' );
                     $item_number = get_post_meta( $post_id, 'wpuf_order_id', true );
                     $item_name = $post->post_title;
                     break;
@@ -146,7 +146,7 @@ class WPUF_Payment {
             }
 
             $payment_vars = array(
-                'currency' => wpuf_get_option( 'currency' ),
+                'currency' => wpuf_get_option( 'currency', 'wpuf_payment' ),
                 'price' => $amount,
                 'item_number' => $item_number,
                 'item_name' => $item_name,

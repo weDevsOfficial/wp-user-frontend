@@ -149,7 +149,7 @@ function wpuf_upload_attachment( $post_id ) {
         return false;
     }
 
-    $fields = (int) wpuf_get_option( 'attachment_num' );
+    $fields = (int) wpuf_get_option( 'attachment_num', 'wpuf_frontend_posting' );
 
     for ($i = 0; $i < $fields; $i++) {
         $file_name = basename( $_FILES['wpuf_post_attachments']['name'][$i] );
@@ -213,8 +213,8 @@ function wpuf_check_upload() {
     $errors = array();
     $mime = get_allowed_mime_types();
 
-    $size_limit = (int) (wpuf_get_option( 'attachment_max_size' ) * 1024);
-    $fields = (int) wpuf_get_option( 'attachment_num' );
+    $size_limit = (int) (wpuf_get_option( 'attachment_max_size', 'wpuf_frontend_posting' ) * 1024);
+    $fields = (int) wpuf_get_option( 'attachment_num', 'wpuf_frontend_posting' );
 
     for ($i = 0; $i < $fields; $i++) {
         $tmp_name = basename( $_FILES['wpuf_post_attachments']['tmp_name'][$i] );
@@ -298,8 +298,8 @@ function wpuf_edit_attachment( $post_id ) {
 }
 
 function wpuf_attachment_fields( $edit = false, $post_id = false ) {
-    if ( wpuf_get_option( 'allow_attachment' ) == 'yes' ) {
-        $fields = (int) wpuf_get_option( 'attachment_num' );
+    if ( wpuf_get_option( 'allow_attachment', 'wpuf_frontend_posting', 'no' ) == 'yes' ) {
+        $fields = (int) wpuf_get_option( 'attachment_num', 'wpuf_frontend_posting', 0 );
 
         if ( $edit && $post_id ) {
             $fields = abs( $fields - count( wpfu_get_attachments( $post_id ) ) );
@@ -375,12 +375,9 @@ function wpuf_get_cats() {
  * @return array
  */
 function wpuf_list_users() {
-    if ( function_exists( 'get_users' ) ) {
-        $users = get_users();
-    } else {
-        ////wp 3.1 fallback
-        $users = get_users_of_blog();
-    }
+    global $wpdb;
+
+    $users = $wpdb->get_results( "SELECT ID, user_login from $wpdb->users" );
 
     $list = array();
 
@@ -411,42 +408,6 @@ function wpuf_starts_with( $string, $starts ) {
     }
 }
 
-/**
- * check the current post for the existence of a short code
- *
- * @link http://wp.tutsplus.com/articles/quick-tip-improving-shortcodes-with-the-has_shortcode-function/
- * @param string $shortcode
- * @return boolean
- */
-function has_shortcode( $shortcode = '', $post_id = false ) {
-    global $post;
-
-    if ( !$post ) {
-        return false;
-    }
-
-    $post_to_check = ( $post_id == false ) ? get_post( get_the_ID() ) : get_post( $post_id );
-
-    if ( !$post_to_check ) {
-        return false;
-    }
-
-    // false because we have to search through the post content first
-    $found = false;
-
-    // if no short code was provided, return false
-    if ( !$shortcode ) {
-        return $found;
-    }
-
-    // check the post content for the short code
-    if ( stripos( $post_to_check->post_content, '[' . $shortcode ) !== false ) {
-        // we have found the short code
-        $found = true;
-    }
-
-    return $found;
-}
 
 /**
  * Retrieve or display list of posts as a dropdown (select list).
@@ -500,11 +461,11 @@ function wpuf_edit_post_link( $url, $post_id ) {
         return $url;
     }
 
-    $override = wpuf_get_option( 'override_editlink', 'yes' );
+    $override = wpuf_get_option( 'override_editlink', 'wpuf_others', 'no' );
     if ( $override == 'yes' ) {
         $url = '';
-        if ( wpuf_get_option( 'enable_post_edit' ) == 'yes' ) {
-            $edit_page = (int) wpuf_get_option( 'edit_page_id' );
+        if ( wpuf_get_option( 'enable_post_edit', 'wpuf_others', 'yes' ) == 'yes' ) {
+            $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_others' );
             $url = get_permalink( $edit_page );
 
             $url = wp_nonce_url( $url . '?pid=' . $post_id, 'wpuf_edit' );
@@ -530,9 +491,9 @@ function wpuf_show_meta_front( $content ) {
     global $wpdb, $post;
 
     //check, if custom field is enabled
-    $enabled = wpuf_get_option( 'enable_custom_field' );
-    $show_custom = wpuf_get_option( 'cf_show_front' );
-    $show_attachment = wpuf_get_option( 'att_show_front' );
+    $enabled = wpuf_get_option( 'enable_custom_field', 'wpuf_frontend_posting' );
+    $show_custom = wpuf_get_option( 'cf_show_front', 'wpuf_others' );
+    $show_attachment = wpuf_get_option( 'att_show_front', 'wpuf_others' );
 
     if ( $enabled == 'on' && $show_custom == 'on' ) {
         $extra = '';
@@ -777,7 +738,7 @@ function wpuf_addpost_notice( $text ) {
             return $user->wpuf_lock_cause;
         }
 
-        $force_pack = wpuf_get_option( 'force_pack' );
+        $force_pack = wpuf_get_option( 'force_pack', 'wpuf_payment' );
         $post_count = (isset( $user->wpuf_sub_pcount )) ? intval( $user->wpuf_sub_pcount ) : 0;
 
         if ( $force_pack == 'yes' && $post_count == 0 ) {
@@ -806,7 +767,7 @@ function wpuf_can_post( $perm ) {
             return 'no';
         }
 
-        $force_pack = wpuf_get_option( 'force_pack' );
+        $force_pack = wpuf_get_option( 'force_pack', 'wpuf_payment' );
         $post_count = (isset( $user->wpuf_sub_pcount )) ? intval( $user->wpuf_sub_pcount ) : 0;
 
         if ( $force_pack == 'yes' && $post_count == 0 ) {
@@ -820,7 +781,7 @@ function wpuf_can_post( $perm ) {
 add_filter( 'wpuf_can_post', 'wpuf_can_post' );
 
 function wpuf_header_css() {
-    $css = wpuf_get_option( 'custom_css' );
+    $css = wpuf_get_option( 'custom_css', 'wpuf_others' );
     ?>
     <style type="text/css">
         ul.wpuf-attachments{ list-style: none; overflow: hidden;}
@@ -847,4 +808,24 @@ function wpuf_get_image_sizes() {
     }
 
     return $image_sizes;
+}
+
+
+/**
+ * Get the value of a settings field
+ *
+ * @param string $option settings field name
+ * @param string $section the section name this field belongs to
+ * @param string $default default text if it's not found
+ * @return mixed
+ */
+function wpuf_get_option( $option, $section, $default = '' ) {
+
+    $options = get_option( $section );
+
+    if ( isset( $options[$option] ) ) {
+        return $options[$option];
+    }
+
+    return $default;
 }

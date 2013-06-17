@@ -120,6 +120,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= version 1.2.1 =
+
+[fix] Performance problem with wp_list_users()
+
 = version 1.2 =
 
 * [fix] Subscription post publish

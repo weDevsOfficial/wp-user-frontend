@@ -18,7 +18,7 @@ function wpuf_edit_users() {
                 case 'edit':
                     //if user exists
                     if ( $user_id && $userdata ) {
-                        wpuf_user_edit_profile_form( $user_id );
+                        WPUF_Edit_Profile::show_form( $user_id );
                     } else {
                         printf( __( "User doesn't exists", 'wpuf' ) );
                     }

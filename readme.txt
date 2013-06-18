@@ -120,6 +120,12 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= version 1.2.2 =
+
+[fix] shortcode error fix for edit users
+[fix] plugin css/js url
+[fix] removed has_shortcode() call
+
 = version 1.2.1 =
 
 [fix] Performance problem with wp_list_users()

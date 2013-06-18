@@ -166,7 +166,7 @@ class WPUF_Main {
             return;
         }
 
-        $access_level = wpuf_get_option( 'admin_access', 'wpuf_others' );
+        $access_level = wpuf_get_option( 'admin_access', 'wpuf_others', 'read' );
         $valid_pages = array('admin-ajax.php', 'async-upload.php', 'media-upload.php');
 
         if ( !current_user_can( $access_level ) && !in_array( $pagenow, $valid_pages ) ) {

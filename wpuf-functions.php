@@ -383,7 +383,7 @@ function wpuf_list_users() {
 
     if ( $users ) {
         foreach ($users as $user) {
-            $list[$user->ID] = $user->display_name;
+            $list[$user->ID] = $user->user_login;
         }
     }
 

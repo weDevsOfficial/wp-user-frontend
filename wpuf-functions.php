@@ -829,3 +829,40 @@ function wpuf_get_option( $option, $section, $default = '' ) {
 
     return $default;
 }
+
+/**
+ * check the current post for the existence of a short code
+ *
+ * @link http://wp.tutsplus.com/articles/quick-tip-improving-shortcodes-with-the-has_shortcode-function/
+ * @param string $shortcode
+ * @return boolean
+ */
+function wpuf_has_shortcode( $shortcode = '', $post_id = false ) {
+    global $post;
+ 
+    if ( !$post ) {
+        return false;
+    }
+ 
+    $post_to_check = ( $post_id == false ) ? get_post( get_the_ID() ) : get_post( $post_id );
+ 
+    if ( !$post_to_check ) {
+        return false;
+    }
+ 
+    // false because we have to search through the post content first
+    $found = false;
+ 
+    // if no short code was provided, return false
+    if ( !$shortcode ) {
+        return $found;
+    }
+ 
+    // check the post content for the short code
+    if ( stripos( $post_to_check->post_content, '[' . $shortcode ) !== false ) {
+        // we have found the short code
+        $found = true;
+    }
+ 
+    return $found;
+}

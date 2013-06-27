@@ -3,7 +3,7 @@ Contributors: tareq1988
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=tareq%40wedevs%2ecom&lc=US&item_name=WP%20User%20Frontend&item_number=Tareq%27s%20Planet&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
 Requires at least: 3.3
-Tested up to: 3.5.1
+Tested up to: 3.5.2
 Stable tag: trunk
 
 Create, update, delete posts and edit profile from wordpress frontend.
@@ -119,6 +119,11 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= version 1.2.3 =
+
+[fix] `has_shortcode()` brought back again by renaming as `wpuf_has_shortcode()`
+[fix] all the labels now have a default text
 
 = version 1.2.2 =
 

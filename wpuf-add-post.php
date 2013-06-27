@@ -78,10 +78,10 @@ class WPUF_Add_Post {
                         <?php if ( $featured_image == 'yes' ) { ?>
                             <?php if ( current_theme_supports( 'post-thumbnails' ) ) { ?>
                                 <li>
-                                    <label for="post-thumbnail"><?php echo wpuf_get_option( 'ft_image_label', 'wpuf_frontend_posting' ); ?></label>
+                                    <label for="post-thumbnail"><?php echo wpuf_get_option( 'ft_image_label', 'wpuf_frontend_posting', 'Featured Image' ); ?></label>
                                     <div id="wpuf-ft-upload-container">
                                         <div id="wpuf-ft-upload-filelist"></div>
-                                        <a id="wpuf-ft-upload-pickfiles" class="button" href="#"><?php echo wpuf_get_option( 'ft_image_btn_label', 'wpuf_frontend_posting' ); ?></a>
+                                        <a id="wpuf-ft-upload-pickfiles" class="button" href="#"><?php echo wpuf_get_option( 'ft_image_btn_label', 'wpuf_frontend_posting', 'Upload Image' ); ?></a>
                                     </div>
                                     <div class="clear"></div>
                                 </li>
@@ -92,7 +92,7 @@ class WPUF_Add_Post {
 
                         <li>
                             <label for="new-post-title">
-                                <?php echo wpuf_get_option( 'title_label', 'wpuf_labels'  ); ?> <span class="required">*</span>
+                                <?php echo wpuf_get_option( 'title_label', 'wpuf_labels', 'Post Title'  ); ?> <span class="required">*</span>
                             </label>
                             <input class="requiredField" type="text" value="<?php echo $title; ?>" name="wpuf_post_title" id="new-post-title" minlength="2">
                             <div class="clear"></div>
@@ -102,7 +102,7 @@ class WPUF_Add_Post {
                         <?php if ( wpuf_get_option( 'allow_cats', 'wpuf_frontend_posting', 'on' ) == 'on' ) { ?>
                             <li>
                                 <label for="new-post-cat">
-                                    <?php echo wpuf_get_option( 'cat_label', 'wpuf_labels' ); ?> <span class="required">*</span>
+                                    <?php echo wpuf_get_option( 'cat_label', 'wpuf_labels', 'Category' ); ?> <span class="required">*</span>
                                 </label>
 
                                 <div class="category-wrap" style="float:left;">
@@ -132,7 +132,7 @@ class WPUF_Add_Post {
 
                         <li>
                             <label for="new-post-desc">
-                                <?php echo wpuf_get_option( 'desc_label', 'wpuf_labels' ); ?> <span class="required">*</span>
+                                <?php echo wpuf_get_option( 'desc_label', 'wpuf_labels', 'Post Content' ); ?> <span class="required">*</span>
                             </label>
 
                             <?php
@@ -167,7 +167,7 @@ class WPUF_Add_Post {
                             ?>
                             <li>
                                 <label for="new-post-tags">
-                                    <?php echo wpuf_get_option( 'tag_label', 'wpuf_labels' ); ?>
+                                    <?php echo wpuf_get_option( 'tag_label', 'wpuf_labels', 'Tags' ); ?>
                                 </label>
                                 <input type="text" name="wpuf_post_tags" id="new-post-tags" class="new-post-tags">
                                 <p class="description"><?php echo stripslashes( wpuf_get_option( 'tag_help', 'wpuf_labels' ) ); ?></p>
@@ -182,7 +182,7 @@ class WPUF_Add_Post {
 
                         <li>
                             <label>&nbsp;</label>
-                            <input class="wpuf_submit" type="submit" name="wpuf_new_post_submit" value="<?php echo esc_attr( wpuf_get_option( 'submit_label', 'wpuf_labels' ) ); ?>">
+                            <input class="wpuf_submit" type="submit" name="wpuf_new_post_submit" value="<?php echo esc_attr( wpuf_get_option( 'submit_label', 'wpuf_labels', 'Submit' ) ); ?>">
                             <input type="hidden" name="wpuf_post_type" value="<?php echo $post_type; ?>" />
                             <input type="hidden" name="wpuf_post_new_submit" value="yes" />
                         </li>

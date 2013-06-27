@@ -30,7 +30,11 @@ class WPUF_Attachment {
         $attachment_enabled = wpuf_get_option( 'allow_attachment', 'wpuf_frontend_posting' );
 
         wp_enqueue_script( 'jquery' );
-        wp_enqueue_script( 'plupload-handlers' );
+        
+        if ( wpuf_has_shortcode( 'wpuf_addpost' ) || wpuf_has_shortcode( 'wpuf_edit' ) ) {
+            wp_enqueue_script( 'plupload-handlers' );
+        }
+        
         wp_enqueue_script( 'jquery-ui-sortable' );
         wp_enqueue_script( 'wpuf_attachment', plugins_url( 'js/attachment.js', dirname( __FILE__ ) ), array('jquery') );
 
@@ -61,7 +65,7 @@ class WPUF_Attachment {
         }
         ?>
         <li>
-            <label><?php echo wpuf_get_option( 'attachment_label', 'wpuf_labels' ) ?></label>
+            <label><?php echo wpuf_get_option( 'attachment_label', 'wpuf_labels', 'Attachments' ) ?></label>
             <div class="clear"></div>
         </li>
         <li>
@@ -79,7 +83,7 @@ class WPUF_Attachment {
                         ?>
                     </ul>
                 </div>
-                <a id="wpuf-attachment-upload-pickfiles" class="button" href="#"><?php echo wpuf_get_option( 'attachment_btn_label', 'wpuf_labels' ); ?></a>
+                <a id="wpuf-attachment-upload-pickfiles" class="button" href="#"><?php echo wpuf_get_option( 'attachment_btn_label', 'wpuf_labels', 'Add another' ); ?></a>
             </div>
             <div class="clear"></div>
         </li>

@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: http://tareq.wedevs.com/2011/01/new-plugin-wordpress-user-frontend/
 Description: Post, Edit, Delete posts and edit profile without coming to backend
 Author: Tareq Hasan
-Version: 1.2.2
+Version: 1.2.3
 Author URI: http://tareq.weDevs.com
 */
 
@@ -126,7 +126,10 @@ class WPUF_Main {
 
         wp_enqueue_style( 'wpuf', $path . '/css/wpuf.css' );
 
-        wp_enqueue_script( 'plupload-handlers' );
+        if ( wpuf_has_shortcode( 'wpuf_addpost' ) || wpuf_has_shortcode( 'wpuf_edit' ) ) {
+            wp_enqueue_script( 'plupload-handlers' );
+        }
+        
         wp_enqueue_script( 'wpuf', $path . '/js/wpuf.js', array('jquery') );
 
         $posting_msg = wpuf_get_option( 'updating_label', 'wpuf_labels' );

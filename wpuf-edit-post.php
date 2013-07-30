@@ -323,7 +323,7 @@ class WPUF_Edit_Post {
             $post_id = wp_update_post( $post_update );
 
             if ( $post_id ) {
-                echo '<div class="success">' . __( 'Post updated succesfully.', 'wpuf' ) . '</div>';
+                echo '<div class="success">' . __( 'Post updated successfully.', 'wpuf' ) . '</div>';
 
                 //upload attachment to the post
                 wpuf_upload_attachment( $post_id );

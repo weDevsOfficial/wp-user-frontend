@@ -110,6 +110,11 @@ function wpuf_settings_fields() {
                 'default' => 'Attachments'
             ),
             array(
+				'name' => 'attachment_help',
+				'label' => __( 'Attachment Help', 'wpuf' ),
+				'default' => '',
+			),
+            array(
                 'name' => 'attachment_btn_label',
                 'label' => __( 'Attachment upload button', 'wpuf' ),
                 'default' => 'Add another'

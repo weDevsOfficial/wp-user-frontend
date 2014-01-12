@@ -122,25 +122,25 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 = version 1.3 =
 
- *[fix] PayPal payment user_id issue fixed
- *[fix] Plupload `o is null` error fix
- *[fix] PHP 5.4 strict warnings fix
- *[update] new version of settings api class
+ * [fix] PayPal payment user_id issue fixed
+ * [fix] Plupload `o is null` error fix
+ * [fix] PHP 5.4 strict warnings fix
+ * [update] new version of settings api class
 
 = version 1.2.3 =
 
-*[fix] `has_shortcode()` brought back again by renaming as `wpuf_has_shortcode()`
-*[fix] all the labels now have a default text
+* [fix] `has_shortcode()` brought back again by renaming as `wpuf_has_shortcode()`
+* [fix] all the labels now have a default text
 
 = version 1.2.2 =
 
-*[fix] shortcode error fix for edit users
-*[fix] plugin css/js url
-*[fix] removed has_shortcode() call
+* [fix] shortcode error fix for edit users
+* [fix] plugin css/js url
+* [fix] removed has_shortcode() call
 
 = version 1.2.1 =
 
-*[fix] Performance problem with wp_list_users()
+* [fix] Performance problem with wp_list_users()
 
 = version 1.2 =
 

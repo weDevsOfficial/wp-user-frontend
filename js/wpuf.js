@@ -14,6 +14,7 @@ jQuery(document).ready(function($) {
             this.featImgUploader();
             this.ajaxCategory();
         },
+        
         checkSubmit: function () {
             var form = $(this);
 
@@ -57,6 +58,7 @@ jQuery(document).ready(function($) {
 
             return false;
         },
+        
         passStrength: function () {
             var pass1 = $('#pass1').val(), user = $('#user_login1').val(), pass2 = $('#pass2').val(), strength;
 
@@ -85,12 +87,17 @@ jQuery(document).ready(function($) {
                     $('#pass-strength-result').addClass('short').html( pwsL10n['short'] );
             }
         },
+        
         featImgUploader: function() {
             if(typeof plupload === 'undefined') {
                 return;
             }
 
             if(wpuf.featEnabled !== '1') {
+                return;
+            }
+            
+            if( $('#wpuf-ft-upload-pickfiles').length < 1 ) {
                 return;
             }
 
@@ -144,6 +151,7 @@ jQuery(document).ready(function($) {
                 }
             });
         },
+        
         removeFeatImg: function(e) {
             e.preventDefault();
 
@@ -161,6 +169,7 @@ jQuery(document).ready(function($) {
                 });
             }
         },
+        
         ajaxCategory: function () {
             var el = '#cat-ajax',
                 wrap = '.category-wrap';
@@ -175,6 +184,7 @@ jQuery(document).ready(function($) {
                 WPUF_Obj.getChildCats( $(this), 'lvl', currentLevel+1, wrap, 'category');
             });
         },
+        
         getChildCats: function (dropdown, result_div, level, wrap_div, taxonomy) {
             cat = $(dropdown).val();
             results_div = result_div + level;

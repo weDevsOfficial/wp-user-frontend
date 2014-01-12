@@ -24,11 +24,15 @@ jQuery(document).ready(function($) {
             if(typeof plupload === 'undefined') {
                 return;
             }
+            
+            if( $('#wpuf-attachment-upload-pickfiles').length < 1 ) {
+                return;
+            }
 
             if(wpuf_attachment.attachment_enabled !== '1') {
                 return
             }
-
+            
             var attachUploader = new plupload.Uploader(wpuf_attachment.plupload);
 
             $('#wpuf-attachment-upload-pickfiles').click(function(e) {

@@ -120,6 +120,13 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= version 1.3 =
+
+ [fix] PayPal payment user_id issue fixed
+ [fix] Plupload `o is null` error fix
+ [fix] PHP 5.4 strict warnings fix
+ [update] new version of settings api class
+
 = version 1.2.3 =
 
 [fix] `has_shortcode()` brought back again by renaming as `wpuf_has_shortcode()`

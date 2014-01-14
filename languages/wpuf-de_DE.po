@@ -1,0 +1,1207 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP User Frontend\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-12 14:55+0600\n"
+"PO-Revision-Date: 2014-01-15 01:10+0800\n"
+"Last-Translator: Tareq Hasan <tareq@wedevs.com>\n"
+"Language-Team: Martin Rusteberg <martin@rusteberg.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.6.3\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../wpuf-add-post.php:29 ../wpuf-dashboard.php:32 ../wpuf-edit-post.php:21
+#: ../wpuf-edit-user.php:37 ../wpuf-editprofile.php:27
+#, php-format
+msgid "This page is restricted. Please %s to view this page."
+msgstr ""
+"Der Zugriff auf diese Seite ist beschränkt. Bitte %s um die Seite zu sehen."
+
+#: ../wpuf-add-post.php:51
+msgid "Cheating?"
+msgstr "Schummelst Du?"
+
+#: ../wpuf-add-post.php:57
+msgid "Post It!"
+msgstr "Absenden!"
+
+#: ../wpuf-add-post.php:89 ../wpuf-edit-post.php:117
+msgid "Your theme doesn't support featured image"
+msgstr "Dein "
+
+#: ../wpuf-add-post.php:115 ../wpuf-add-post.php:117 ../wpuf-ajax.php:23
+#: ../wpuf-edit-post.php:152 ../wpuf-edit-post.php:154
+msgid "-- Select --"
+msgstr "-- Auswahl --"
+
+#: ../wpuf-add-post.php:232
+msgid "Publish Time:"
+msgstr "Zeit der Ver&ouml;ffentlichung:"
+
+#: ../wpuf-add-post.php:268
+msgid "Expiration Time:"
+msgstr "Verfallsdatum:"
+
+#: ../wpuf-add-post.php:277
+msgid "days"
+msgstr "Tage"
+
+#: ../wpuf-add-post.php:282
+msgid "Post expiration time in day after publishing."
+msgstr "Verfallsdatum in Tagen nach Verf&ouml;ffentlichung"
+
+#: ../wpuf-add-post.php:315 ../wpuf-edit-post.php:245
+msgid "Empty post title"
+msgstr "Leerer Post Titel"
+
+#: ../wpuf-add-post.php:324 ../wpuf-add-post.php:326 ../wpuf-add-post.php:329
+#: ../wpuf-edit-post.php:254 ../wpuf-edit-post.php:256
+#: ../wpuf-edit-post.php:259
+msgid "Please choose a category"
+msgstr "Bitte w&auml;hle eine Kategorie"
+
+#: ../wpuf-add-post.php:336 ../wpuf-edit-post.php:265
+msgid "Empty post content"
+msgstr "Leerer Post Inhalt"
+
+#: ../wpuf-add-post.php:370 ../wpuf-edit-post.php:291
+#, php-format
+msgid "\"%s\" is missing"
+msgstr "\"%s\" fehlt"
+
+#: ../wpuf-add-post.php:390
+msgid "Invalid date"
+msgstr "Ungültiges Datum"
+
+#: ../wpuf-dashboard.php:60
+msgid "Post Deleted"
+msgstr "Beitrag gelöscht"
+
+#: ../wpuf-dashboard.php:76
+#, php-format
+msgid "%s's Dashboard"
+msgstr "%s's Dashboard"
+
+#: ../wpuf-dashboard.php:80
+#, php-format
+msgid "You have created <span>%d</span> %s"
+msgstr "Du hast <span>%d</span> %s erstellt"
+
+#: ../wpuf-dashboard.php:97
+msgid "Featured Image"
+msgstr "Hauptbild"
+
+#: ../wpuf-dashboard.php:100
+msgid "Title"
+msgstr "Titel"
+
+#: ../wpuf-dashboard.php:101
+msgid "Status"
+msgstr "Status"
+
+#: ../wpuf-dashboard.php:104
+msgid "Payment"
+msgstr "Zahlung"
+
+#: ../wpuf-dashboard.php:107
+msgid "Options"
+msgstr "Optionen"
+
+#: ../wpuf-dashboard.php:122
+msgid "No Image"
+msgstr "Kein Bild"
+
+#: ../wpuf-dashboard.php:159 ../wpuf-edit-user.php:99
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: ../wpuf-dashboard.php:165 ../wpuf-edit-user.php:100
+#: ../lib/attachment.php:136
+msgid "Delete"
+msgstr "Löschen"
+
+#: ../wpuf-dashboard.php:178
+msgid "&laquo;"
+msgstr "&laquo;"
+
+#: ../wpuf-dashboard.php:179
+msgid "&raquo;"
+msgstr "&raquo;"
+
+#: ../wpuf-dashboard.php:192
+#, php-format
+msgid "No %s found"
+msgstr "Kein %s gefunden"
+
+#: ../wpuf-dashboard.php:212
+msgid "Author Info"
+msgstr "Info zum Autor"
+
+#: ../wpuf-dashboard.php:248
+msgid "You are not the post author. Cheeting huh!"
+msgstr "Du bist nicht der Ersteller dieses Beitrags ;)"
+
+#: ../wpuf-edit-post.php:43
+msgid "Post Editing is disabled"
+msgstr "Bearbeiten des Beitrags ist nicht möglich"
+
+#: ../wpuf-edit-post.php:49
+msgid "Invalid post"
+msgstr "Ungültiger Beitrag"
+
+#: ../wpuf-edit-post.php:54
+msgid "You are not allowed to edit"
+msgstr "Du hast keine Befugnis zum Editieren"
+
+#: ../wpuf-edit-post.php:326
+msgid "Post updated successfully."
+msgstr "Beitrag erfolgreich aktualisiert."
+
+#: ../wpuf-edit-user.php:23
+msgid "User doesn't exists"
+msgstr "Benutzer existiert nicht."
+
+#: ../wpuf-edit-user.php:34
+msgid "You don't have permission for this purpose"
+msgstr "Du hast keine Berichtigung f&uuml;r diese Aktion."
+
+#: ../wpuf-edit-user.php:77
+msgid "User Deleted"
+msgstr "Nutzer gel&ouml;scht"
+
+#: ../wpuf-edit-user.php:92 ../wpuf-edit-user.php:144
+#: ../wpuf-editprofile.php:96
+msgid "Username"
+msgstr "Benuterzname"
+
+#: ../wpuf-edit-user.php:93
+msgid "Action"
+msgstr "Aktion"
+
+#: ../wpuf-edit-user.php:119 ../wpuf-edit-user.php:177
+msgid "Add New User"
+msgstr "Benutzer hinzuf&uuml;gen"
+
+#: ../wpuf-edit-user.php:132
+msgid "User Added"
+msgstr "Benutzer  hinzuf&uuml;gt"
+
+#: ../wpuf-edit-user.php:152
+msgid "Email"
+msgstr "E-Mail"
+
+#: ../wpuf-edit-user.php:160
+msgid "Role"
+msgstr "Funktion"
+
+#: ../wpuf-edit-user.php:204
+msgid "<strong>ERROR</strong>: Please enter a username."
+msgstr "<strong>FEHLER</strong>: Bitte Benutzernamen angeben."
+
+#: ../wpuf-edit-user.php:206
+msgid ""
+"<strong>ERROR</strong>: This username is invalid because it uses illegal "
+"characters. Please enter a valid username."
+msgstr ""
+"<strong>FEHLER</strong>: Dieser Benutzername ist aufgrund der genutzten "
+"Zeichen nicht erlaubt. Bitte verwende einen anderen Benutzernamen."
+
+#: ../wpuf-edit-user.php:209
+msgid ""
+"<strong>ERROR</strong>: This username is already registered, please choose "
+"another one."
+msgstr "<strong>FEHLER</strong>: Bitte gib einen Benutzernamen an."
+
+#: ../wpuf-edit-user.php:214
+msgid "<strong>ERROR</strong>: Please type your e-mail address."
+msgstr "<strong>FEHLER</strong>: Bitte gib eine E-Mail-Adresse an."
+
+#: ../wpuf-edit-user.php:216
+msgid "<strong>ERROR</strong>: The email address isn&#8217;t correct."
+msgstr "<strong>FEHLER</strong>: Bitte gib eine g&uuml;tige E-Mail-Adresse an."
+
+#: ../wpuf-edit-user.php:219
+msgid ""
+"<strong>ERROR</strong>: This email is already registered, please choose "
+"another one."
+msgstr ""
+"<strong>FEHLER</strong>: Diese E-Mail-Adresse ist schon registriert, bitte "
+"verwende eine andere."
+
+#: ../wpuf-edit-user.php:242
+#, php-format
+msgid ""
+"<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a "
+"href=\"mailto:%s\">webmaster</a> !"
+msgstr ""
+"<strong>FEHLER</strong>: Registrierung fehlgeschlagen - bitte tritt per <a "
+"href=\"mailto:%s\">E-Mail</a> in Kontakt!"
+
+#: ../wpuf-editprofile.php:66
+msgid "<strong>Success</strong>: Profile updated"
+msgstr "<strong>ERFOLG</strong>: Profil aktualisiert"
+
+#: ../wpuf-editprofile.php:92
+msgid "Name"
+msgstr "Name"
+
+#: ../wpuf-editprofile.php:97
+msgid "Usernames cannot be changed."
+msgstr "Benutzernamen k&ouml;nnen nicht ge&auml;ndert werden."
+
+#: ../wpuf-editprofile.php:100
+msgid "First Name"
+msgstr "Vorname"
+
+#: ../wpuf-editprofile.php:105
+msgid "Last Name"
+msgstr "Nachname"
+
+#: ../wpuf-editprofile.php:110
+msgid "Nickname"
+msgstr "Spitzname"
+
+#: ../wpuf-editprofile.php:110 ../wpuf-editprofile.php:151
+msgid "(required)"
+msgstr "(obligatorisch)"
+
+#: ../wpuf-editprofile.php:115
+msgid "Display to Public as"
+msgstr "&Ouml;ffentlich dargestellt als"
+
+#: ../wpuf-editprofile.php:147
+msgid "Contact Info"
+msgstr "Kontaktinformation"
+
+#: ../wpuf-editprofile.php:151
+msgid "E-mail"
+msgstr "E-Mail"
+
+#: ../wpuf-editprofile.php:156
+msgid "Website"
+msgstr "Website"
+
+#: ../wpuf-editprofile.php:174
+msgid "About Yourself"
+msgstr "&Uuml;ber Dich"
+
+#: ../wpuf-editprofile.php:178
+msgid "Biographical Info"
+msgstr "Kurz-Bio"
+
+#: ../wpuf-editprofile.php:180
+msgid ""
+"Share a little biographical information to fill out your profile. This may "
+"be shown publicly."
+msgstr ""
+"Bitte gib hier ein paar Informationen &uuml;ber Dich an. Diese Info kann "
+"&ouml;ffentlich angezeigt werden."
+
+#: ../wpuf-editprofile.php:183
+msgid "New Password"
+msgstr "Neues Passwort"
+
+#: ../wpuf-editprofile.php:189
+msgid "Confirm Password"
+msgstr "Password best&auml;tigen"
+
+#: ../wpuf-editprofile.php:191
+msgid "Type your new password again."
+msgstr "Gib Dein neues Passwort erneut ein."
+
+#: ../wpuf-editprofile.php:196
+msgid "Password Strength"
+msgstr "Passwort-Sicherheit"
+
+#: ../wpuf-editprofile.php:198
+msgid "Strength indicator"
+msgstr "Sicherheitsindikator"
+
+#: ../wpuf-editprofile.php:221
+msgid "Update Profile"
+msgstr "Profil Aktualisieren"
+
+#: ../wpuf-editprofile.php:240
+msgid "WPUF Post Lock"
+msgstr "WPUF Post Sperre"
+
+#: ../wpuf-editprofile.php:243
+msgid "Lock Post:"
+msgstr "Post Sperre:"
+
+#: ../wpuf-editprofile.php:249
+msgid "Lock user from creating new post."
+msgstr "Sperre Nutzer vom Erstellen neuer Beitr&auml;ge."
+
+#: ../wpuf-editprofile.php:254
+msgid "Lock Reason:"
+msgstr "Grund der Sperre:"
+
+#: ../wpuf-editprofile.php:274
+msgid "WPUF Subscription"
+msgstr "WPUF Abonnement"
+
+#: ../wpuf-editprofile.php:278
+msgid "Pack:"
+msgstr "Paket:"
+
+#: ../wpuf-editprofile.php:284
+msgid "Post Count:"
+msgstr "Beitragsanzahl:"
+
+#: ../wpuf-editprofile.php:290 ../wpuf-subscription.php:277
+msgid "Validity:"
+msgstr "G&uuml;ltigkeit:"
+
+#: ../wpuf-functions.php:44
+msgid "Live"
+msgstr "Live"
+
+#: ../wpuf-functions.php:48
+msgid "Offline"
+msgstr "Offline"
+
+#: ../wpuf-functions.php:52
+msgid "Awaiting Approval"
+msgstr "Auf Genehmigung wartend"
+
+#: ../wpuf-functions.php:55
+msgid "Scheduled"
+msgstr "Geplant"
+
+#: ../wpuf-functions.php:107
+#, php-format
+msgid "[%s] New Post Submission"
+msgstr "[%s] Neue Beitr&auml;ge einreichen"
+
+#: ../wpuf-functions.php:109
+#, php-format
+msgid "A new post has been submitted on %s"
+msgstr "Ein neuer Beitrag wurde eingereicht am %s"
+
+#: ../wpuf-functions.php:110
+#, php-format
+msgid "Author : %s"
+msgstr "Autor : %s"
+
+#: ../wpuf-functions.php:111
+#, php-format
+msgid "Author Email : %s"
+msgstr "E-Mail des Autors : %s"
+
+#: ../wpuf-functions.php:112
+#, php-format
+msgid "Title : %s"
+msgstr "Titel : %s"
+
+#: ../wpuf-functions.php:113
+#, php-format
+msgid "Permalink : %s"
+msgstr "Permalink : %s"
+
+#: ../wpuf-functions.php:114
+#, php-format
+msgid "Edit Link : %s"
+msgstr "Link Bearbeiten : %s"
+
+#: ../wpuf-functions.php:230
+msgid "Attachment file is too big"
+msgstr "Die Datei im Anhang ist zu gross"
+
+#: ../wpuf-functions.php:235
+msgid "Invalid attachment file type"
+msgstr "Ung&uuml;ltiger Dateityp"
+
+#: ../wpuf-functions.php:580
+msgid "Remove Image"
+msgstr "Bild Entfernen"
+
+#: ../wpuf-functions.php:678
+#, php-format
+msgid ""
+"You need to set your <a href=\"%1$s\">permalink custom structure</a> to at "
+"least contain <b>/&#37;postname&#37;/</b> before WP User Frontend will work "
+"properly."
+msgstr ""
+"Die <a href=\"%1$s\">Permalink Struktur</a> muss mindestens <b>/&#37;"
+"postname&#37;/</b> beinhalten, bevor WP User Frontend richtig funktioniert."
+
+#: ../wpuf-functions.php:745
+msgid "You must purchase a pack before posting"
+msgstr "Du musst ein Paket kaufen bevor Du Deinen Beitrag einstellen kannst."
+
+#: ../wpuf-payment.php:58
+msgid "You are not logged in"
+msgstr "Du bist nicht eingelogt."
+
+#: ../wpuf-payment.php:74
+msgid "Choose Your Payment Method"
+msgstr "Bitte Zahlunsweise w&auml;hlen"
+
+#: ../wpuf-payment.php:96
+msgid "Proceed"
+msgstr "Weiter"
+
+#: ../wpuf-payment.php:100
+msgid "No Payment gateway found"
+msgstr "Kein Zahlungsgateway gefunden"
+
+#: ../wpuf-payment.php:201
+#, php-format
+msgid "[%s] Payment Received"
+msgstr "[%s] Zahlung erhalten"
+
+#: ../wpuf-payment.php:202
+#, php-format
+msgid "New payment received at %s"
+msgstr "Neue Zahlung empfangen bei %s"
+
+#: ../wpuf-subscription.php:259
+msgid "Unlimited duration"
+msgstr "Unbegrenzte Laufzeit"
+
+#: ../wpuf-subscription.php:261
+msgid "Expired"
+msgstr "Abgelaufen"
+
+#: ../wpuf-subscription.php:275
+msgid "Subscription Details"
+msgstr "Abonnement Details"
+
+#: ../wpuf-subscription.php:278
+msgid "Post Left:"
+msgstr "Beitr&auml;ge verf&uuml;gbar:"
+
+#: ../wpuf-subscription.php:308
+msgid "Buy Now"
+msgstr "Jetzt Kaufen"
+
+#: ../wpuf-subscription.php:325
+#, php-format
+msgid ""
+"This will cost you <strong>%s</strong>. to add a new post. You may buy some "
+"bulk package too. "
+msgstr ""
+"Es kostet <strong>%s</strong> um einen Beitrag einzustellen. Du kannst auch "
+"ein Paket an Beitr&auml;gen kaufen. "
+
+#: ../wpuf.php:140
+msgid "Are you sure?"
+msgstr "Bist Du Dir sicher?"
+
+#: ../wpuf.php:152 ../lib/attachment.php:53
+msgid "Allowed Files"
+msgstr "Erlaubte Dateien"
+
+#: ../wpuf.php:176
+msgid ""
+"Access Denied. Your site administrator has blocked your access to the "
+"WordPress back-office."
+msgstr ""
+"Zugriff verweigert. Dein Site-Administrator hat den Zugriff auf das "
+"Wordpress Dashboard blockiert."
+
+#: ../admin/custom-fields.php:45 ../admin/settings.php:35
+#: ../admin/subscription.php:8
+msgid "WP User Frontend"
+msgstr "WP User Frontend"
+
+#: ../admin/custom-fields.php:45 ../admin/settings.php:36
+msgid "Custom Fields"
+msgstr "Custom Fields"
+
+#: ../admin/custom-fields.php:101 ../admin/custom-fields.php:309
+msgid "Field Name"
+msgstr "Feld Name"
+
+#: ../admin/custom-fields.php:104 ../admin/custom-fields.php:312
+msgid ""
+"Name without space. Will be used to store the value in this custom field"
+msgstr "Name ohne Freizeichen. Dies wird zum speichern des Namen verwendet."
+
+#: ../admin/custom-fields.php:108 ../admin/custom-fields.php:316
+msgid "Label"
+msgstr "Beschreibung"
+
+#: ../admin/custom-fields.php:111 ../admin/custom-fields.php:319
+msgid "This will be used as your input fields title"
+msgstr "Dies wird als Titel des Eingabefelds genutzt"
+
+#: ../admin/custom-fields.php:115 ../admin/custom-fields.php:323
+msgid "Help Text"
+msgstr "Hilfe Text"
+
+#: ../admin/custom-fields.php:118 ../admin/custom-fields.php:326
+msgid "Text will be shown to user as help text"
+msgstr "Dieser Text wird dem Nutzer als Hilfe angezeigt"
+
+#: ../admin/custom-fields.php:122 ../admin/custom-fields.php:330
+msgid "Required"
+msgstr "erforderlich"
+
+#: ../admin/custom-fields.php:125 ../admin/custom-fields.php:333
+#: ../admin/settings-options.php:309 ../admin/settings-options.php:320
+#: ../admin/settings-options.php:331 ../admin/settings-options.php:377
+#: ../admin/settings-options.php:396
+msgid "No"
+msgstr "Nein"
+
+#: ../admin/custom-fields.php:126 ../admin/custom-fields.php:334
+#: ../admin/settings-options.php:308 ../admin/settings-options.php:319
+#: ../admin/settings-options.php:330 ../admin/settings-options.php:376
+#: ../admin/settings-options.php:395
+msgid "Yes"
+msgstr "Ja"
+
+#: ../admin/custom-fields.php:128 ../admin/custom-fields.php:336
+msgid "A validation criteria. User must provide input in that field"
+msgstr ""
+"Ein Validierungskriterium. Der Benutzer muss bei diesem Eingabefeld einen "
+"Wert angeben"
+
+#: ../admin/custom-fields.php:132 ../admin/custom-fields.php:340
+msgid "Region"
+msgstr "Region"
+
+#: ../admin/custom-fields.php:135 ../admin/custom-fields.php:343
+msgid "Top"
+msgstr "Oben"
+
+#: ../admin/custom-fields.php:136 ../admin/custom-fields.php:344
+msgid "Before Description"
+msgstr "Vor der Beschreibung"
+
+#: ../admin/custom-fields.php:137 ../admin/custom-fields.php:345
+msgid "After Description"
+msgstr "Nach der Beschreibung"
+
+#: ../admin/custom-fields.php:138 ../admin/custom-fields.php:346
+msgid "Bottom"
+msgstr "Unten"
+
+#: ../admin/custom-fields.php:140 ../admin/custom-fields.php:348
+msgid "Where do you want to show this input field?"
+msgstr "Wo soll dieses Eingabefeld erscheinen?"
+
+#: ../admin/custom-fields.php:144 ../admin/custom-fields.php:352
+msgid "Order"
+msgstr "Reihenfolge"
+
+#: ../admin/custom-fields.php:147 ../admin/custom-fields.php:355
+msgid "Which order this input field will show in a region"
+msgstr "In welcher Abfolge dieses Eingabefeld angezeigt werden soll"
+
+#: ../admin/custom-fields.php:151 ../admin/custom-fields.php:359
+msgid "Type"
+msgstr "Typ"
+
+#: ../admin/custom-fields.php:154 ../admin/custom-fields.php:362
+msgid "Text Box"
+msgstr "Text Box"
+
+#: ../admin/custom-fields.php:155 ../admin/custom-fields.php:363
+msgid "Text Area"
+msgstr "Text Feld"
+
+#: ../admin/custom-fields.php:156 ../admin/custom-fields.php:364
+msgid "Dropdown"
+msgstr "Dropdown"
+
+#: ../admin/custom-fields.php:157 ../admin/custom-fields.php:365
+#: ../admin/settings-options.php:182
+msgid "Checkbox"
+msgstr "Kontrollk&auml;stchen"
+
+#: ../admin/custom-fields.php:163 ../admin/custom-fields.php:371
+msgid "Values"
+msgstr "Werte"
+
+#: ../admin/custom-fields.php:166 ../admin/custom-fields.php:374
+msgid "This will be used as option fields. Please separate values with comma"
+msgstr ""
+"Dies wird als Optionsfeld verwendet werden. Bitte trenne die Options-Werte "
+"jeweils mit einem Komma"
+
+#: ../admin/custom-fields.php:172 ../admin/taxonomy.php:86
+msgid "Add Field"
+msgstr "Feld hinzuf&uuml;gen"
+
+#: ../admin/custom-fields.php:380 ../admin/taxonomy.php:241
+msgid "Update Field"
+msgstr "Feld aktualisieren"
+
+#: ../admin/custom-fields.php:384
+msgid "Nothing found"
+msgstr "Nichts gefunden"
+
+#: ../admin/settings-options.php:12
+msgid "Labels"
+msgstr "Beschreibung"
+
+#: ../admin/settings-options.php:16
+msgid "Frontend Posting"
+msgstr "Frontend Posting"
+
+#: ../admin/settings-options.php:20
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: ../admin/settings-options.php:24
+msgid "Others"
+msgstr "Andere"
+
+#: ../admin/settings-options.php:28
+msgid "Payments"
+msgstr "Zahlungen"
+
+#: ../admin/settings-options.php:32
+msgid "Support"
+msgstr "Support"
+
+#: ../admin/settings-options.php:47
+msgid "Post title label"
+msgstr "Titel Beschreibung"
+
+#: ../admin/settings-options.php:52
+msgid "Post title help text"
+msgstr "Hilfetext zur Titel Beschreibung"
+
+#: ../admin/settings-options.php:56
+msgid "Post category label"
+msgstr "Kategorie Beschreibung"
+
+#: ../admin/settings-options.php:61
+msgid "Post category help text"
+msgstr "Hilfetext zur Kategorie Beschreibung"
+
+#: ../admin/settings-options.php:65
+msgid "Post description label"
+msgstr "Beschriftung"
+
+#: ../admin/settings-options.php:70
+msgid "Post description help text"
+msgstr "Hilfetext"
+
+#: ../admin/settings-options.php:74
+msgid "Post tag label"
+msgstr "Tag Beschriftung"
+
+#: ../admin/settings-options.php:79
+msgid "Post tag help text"
+msgstr "Hilfetext Tag Beschriftung"
+
+#: ../admin/settings-options.php:83
+msgid "Post submit button label"
+msgstr "Bescrhriftung des Absenden Buttons"
+
+#: ../admin/settings-options.php:88
+msgid "Post update button label"
+msgstr "Beschriftung des Update Buttons"
+
+#: ../admin/settings-options.php:93
+msgid "Post updating button label"
+msgstr "Beschriftung des Updating Buttons"
+
+#: ../admin/settings-options.php:94
+msgid "the text will be used when the submit button is pressed"
+msgstr "dieser Text wird angezeigt wenn der Absenden Button geklickt wird."
+
+#: ../admin/settings-options.php:99
+msgid "Featured image label"
+msgstr "Beschriftung Featured Image"
+
+#: ../admin/settings-options.php:104
+msgid "Featured Button image label"
+msgstr "Beschriftung Button Featured Image"
+
+#: ../admin/settings-options.php:109
+msgid "Attachment Label"
+msgstr "Anhang Beschreibung"
+
+#: ../admin/settings-options.php:114
+msgid "Attachment Help"
+msgstr "Anhang Hilfe"
+
+#: ../admin/settings-options.php:119
+msgid "Attachment upload button"
+msgstr "Button zum Anhangupload"
+
+#: ../admin/settings-options.php:126
+msgid "Post Status"
+msgstr "Beitragsstatus"
+
+#: ../admin/settings-options.php:127
+msgid "Default post status after user submits a post"
+msgstr "Standardstatus eines neu eingereichten Beitrags"
+
+#: ../admin/settings-options.php:138
+msgid "Post Author"
+msgstr "Beitragsersteller"
+
+#: ../admin/settings-options.php:139
+msgid "Set the new post's post author by default"
+msgstr "Setze einen Standard-Autor f&uuml;r neue Beitr&auml;ge"
+
+#: ../admin/settings-options.php:143
+msgid "Original Author"
+msgstr "Urspr&uuml;nglicher Autor"
+
+#: ../admin/settings-options.php:144
+msgid "Map to other user"
+msgstr "Einem anderen Nutzer zuordnen"
+
+#: ../admin/settings-options.php:149
+msgid "Map posts to poster"
+msgstr "Beitr&auml;ge einem anderen Nutzer zuordnen"
+
+#: ../admin/settings-options.php:150
+msgid ""
+"If <b>Map to other user</b> selected, new post's post author will be this "
+"user by default"
+msgstr ""
+"Falls die Option <b>Einem anderen Nutzer zuordnen</b> genutzt wird, so "
+"werden neue Beitr&auml;ge als Standard durch diesen Nutzer erzeugt angezeigt"
+
+#: ../admin/settings-options.php:156
+msgid "Allow to choose category?"
+msgstr "Kategoriewahl erlauben?"
+
+#: ../admin/settings-options.php:157
+msgid "Allow users to choose category while posting?"
+msgstr "Sollen Nutzer eine Kategorie ausw&auml;hlen d&uuml;rfen?"
+
+#: ../admin/settings-options.php:163
+msgid "Exclude category ID's"
+msgstr "Kategorie ID's ausschliessen"
+
+#: ../admin/settings-options.php:164
+msgid "Exclude categories fro the dropdown"
+msgstr "Kategorien in der Dropdown-Liste ausschliessen."
+
+#: ../admin/settings-options.php:169
+msgid "Default post category"
+msgstr "Standard-Kategorie"
+
+#: ../admin/settings-options.php:170
+msgid ""
+"If users are not allowed to choose any category, this category will be used "
+"instead"
+msgstr ""
+"Falls Nutzer keine Kategorie ausw&auml;hlen d&uuml;rfen wird diese Kategorie "
+"verwendet."
+
+#: ../admin/settings-options.php:176
+msgid "Category Selection type"
+msgstr "Kategories-Auswahl"
+
+#: ../admin/settings-options.php:180
+msgid "Normal"
+msgstr "Normal"
+
+#: ../admin/settings-options.php:181
+msgid "Ajaxified"
+msgstr "per AJAX"
+
+#: ../admin/settings-options.php:187
+msgid "Featured Image upload"
+msgstr "Hochladen Featured Image"
+
+#: ../admin/settings-options.php:188
+msgid "Gives ability to upload an image as featured image"
+msgstr "Erm&ouml;glicht"
+
+#: ../admin/settings-options.php:192 ../admin/settings-options.php:203
+#: ../admin/settings-options.php:407
+msgid "Enable"
+msgstr "Aktivieren"
+
+#: ../admin/settings-options.php:193 ../admin/settings-options.php:204
+#: ../admin/settings-options.php:406
+msgid "Disable"
+msgstr "Deaktivieren"
+
+#: ../admin/settings-options.php:198
+msgid "Allow attachments"
+msgstr "Anhang erlauben"
+
+#: ../admin/settings-options.php:199
+msgid "Will the users be able to add attachments on posts?"
+msgstr "Sollen Nutzer Anh&auml;nge zu Beitr&auml;gen anf&uuml;gen d&uuml;rfen?"
+
+#: ../admin/settings-options.php:209
+msgid "Number of attachments"
+msgstr "Anzahl der Anh&auml;nge"
+
+#: ../admin/settings-options.php:210
+msgid ""
+"How many attachments can be attached on a post. Put <b>0</b> for unlimited "
+"attachment"
+msgstr ""
+"Wie viele Anh&auml;nge ein Beitrag haben darf. F&uuml;ge <b>0</b>f&uuml;r "
+"unbegrenzte Anh&auml;nge ein."
+
+#: ../admin/settings-options.php:216
+msgid "Attachment max size"
+msgstr "max. Datei-Größe des Anhangs"
+
+#: ../admin/settings-options.php:217
+msgid ""
+"Enter the maximum file size in <b>KILOBYTE</b> that is allowed to attach"
+msgstr "Gib die maximale Datei-Größe des Anhangs in <b>Kilobyte> an."
+
+#: ../admin/settings-options.php:223
+msgid "Content editor type"
+msgstr "Art des Editors"
+
+#: ../admin/settings-options.php:227
+msgid "Rich Text (tiny)"
+msgstr "Rich"
+
+#: ../admin/settings-options.php:228
+msgid "Rich Text (full)"
+msgstr "Rich Text"
+
+#: ../admin/settings-options.php:229
+msgid "Plain Text"
+msgstr "Nur Text"
+
+#: ../admin/settings-options.php:234
+msgid "Allow post tags"
+msgstr "Tags erlauben"
+
+#: ../admin/settings-options.php:235
+msgid "Users will be able to add post tags"
+msgstr "Nutzer darf Beitr&auml;ge taggen"
+
+#: ../admin/settings-options.php:241
+msgid "Enable custom fields"
+msgstr "Erlaube Custom Fields"
+
+#: ../admin/settings-options.php:242
+msgid ""
+"You can use additional fields on your post submission form. Add new fields "
+"by going <b>Custom Fields</b> option page."
+msgstr ""
+"Du kannst zus&auml;tzliche Felder f&uuml;r das Beitragsformular erstellen. "
+"F&uuml;ge neue Felder per <b>Custom Fields</b> innerhalb der Optionen hinzu."
+
+#: ../admin/settings-options.php:247
+msgid "Enable post date input"
+msgstr "Erlaube Ver&uuml;ffentlichungsdatum"
+
+#: ../admin/settings-options.php:248
+msgid "This will enable users to input the post published date"
+msgstr "Dies erlaubt dem Nutzer ein Ver&uuml;ffentlichungsdatum anzugeben"
+
+#: ../admin/settings-options.php:253
+msgid "Enable Post expiration"
+msgstr "Erlaube "
+
+#: ../admin/settings-options.php:254
+msgid ""
+"Users will be able to select a duration, after that time from post publish "
+"date, post will be set to draft. This feature depends on <strong>Post "
+"Expirator</strong> plugin. "
+msgstr ""
+"Der Nutzer kann eine Laufzeit nach der Ver&ouml;ffentlichung setzen, danach "
+"erh&auml;t der Beitrag den Status \"Entwurf\". F7uuml;r dieses Feature muss "
+"das <strong>Post Expirator</strong> plugin aktiviert sein."
+
+#: ../admin/settings-options.php:261
+msgid "Show post type"
+msgstr "Zeige Beitragstyp an"
+
+#: ../admin/settings-options.php:262
+msgid "Select the post type that the user will see"
+msgstr "W&auml;hle den Beitragstyp den der Nutzer sehen wird"
+
+#: ../admin/settings-options.php:268
+msgid "Posts per page"
+msgstr "Beitr&auml;ge pro Seite"
+
+#: ../admin/settings-options.php:269
+msgid "How many posts will be listed in a page"
+msgstr "Wieviele Beitr&auml;ge pro Seite gelisted werden"
+
+#: ../admin/settings-options.php:275
+msgid "Show user bio"
+msgstr "Nutzerinfo anzeigen"
+
+#: ../admin/settings-options.php:276
+msgid "Users biographical info will be shown"
+msgstr "Nutzerinfo wird angezeigt"
+
+#: ../admin/settings-options.php:282
+msgid "Show post count"
+msgstr "Beitragsz&auml;hler"
+
+#: ../admin/settings-options.php:283
+msgid "Show how many posts are created by the user"
+msgstr "Beitragsz&auml;hler wird angezeigt"
+
+#: ../admin/settings-options.php:289
+msgid "Show Featured Image"
+msgstr "Featured Image anzeigen"
+
+#: ../admin/settings-options.php:290
+msgid "Show featured image of the post"
+msgstr "Feautured Image wird angezeigt"
+
+#: ../admin/settings-options.php:295
+msgid "Featured Image size"
+msgstr "Featured Image Dimensionen"
+
+#: ../admin/settings-options.php:303
+msgid "New post notification"
+msgstr "Benachrichtigung &uuml;ber neue Beitr&auml;ge"
+
+#: ../admin/settings-options.php:304
+msgid "A mail will be sent to admin when a new post is created"
+msgstr ""
+"Eine E-Mail wird an den Admin gesandt wenn ein neuer Post erstellt wird."
+
+#: ../admin/settings-options.php:314
+msgid "Users can edit post?"
+msgstr "Darf ein Nutzer seine Beitr&auml;ge editieren?"
+
+#: ../admin/settings-options.php:315
+msgid "Users will be able to edit their own posts"
+msgstr "Nutzer darf seine eigenen Beitr&auml;ge editieren"
+
+#: ../admin/settings-options.php:325
+msgid "User can delete post?"
+msgstr "Darf ein Nutzer seine Beitr&auml;ge l&ouml;schen?"
+
+#: ../admin/settings-options.php:326
+msgid "Users will be able to delete their own posts"
+msgstr "Nutzer darf seine Beitr&auml;ge l&ouml;schen"
+
+#: ../admin/settings-options.php:336
+msgid "Edit Page"
+msgstr "Seite bearbeiten"
+
+#: ../admin/settings-options.php:337
+msgid "Select the page where [wpuf_editpost] is located"
+msgstr "F&uuml;ge den shortcode [wpuf_edit] auf einer Seite ein"
+
+#: ../admin/settings-options.php:343
+msgid "Admin area access"
+msgstr "Administrationszugang"
+
+#: ../admin/settings-options.php:344
+msgid "Allow you to block specific user role to WordPress admin area."
+msgstr ""
+"Erlaubt Dir den Zugriff auf das Dashboard f&uuml;r bestimmte Nutzerrechte zu "
+"blockieren."
+
+#: ../admin/settings-options.php:348
+msgid "Admin Only"
+msgstr "Nur Admin"
+
+#: ../admin/settings-options.php:349
+msgid "Admins, Editors"
+msgstr "Admin, Editoren"
+
+#: ../admin/settings-options.php:350
+msgid "Admins, Editors, Authors"
+msgstr "Admin, Editoren, Autoren"
+
+#: ../admin/settings-options.php:351
+msgid "Admins, Editors, Authors, Contributors"
+msgstr "Admin, Editoren, Autoren, Mitwirkende"
+
+#: ../admin/settings-options.php:352
+msgid "Default"
+msgstr "Voreinstellung"
+
+#: ../admin/settings-options.php:357
+msgid "Show custom fields in the post"
+msgstr "Zeige Custom Fields in den Beitr&auml;gen"
+
+#: ../admin/settings-options.php:358
+msgid ""
+"If you want to show the custom field data in the post added by the plugin."
+msgstr ""
+"Falls Du Custom Fields mit dem Plugin hinzugef&uuml;gt hast werden diese im "
+"Beitrag angezeigt."
+
+#: ../admin/settings-options.php:364
+msgid "Show attachments in the post"
+msgstr "Zeige Anh&auml;nge im Post"
+
+#: ../admin/settings-options.php:365
+msgid "If you want to show the uploaded attachments in the post"
+msgstr "Hochgeledene Datei-Anh&auml;nge werden im Beitrag angezeigt."
+
+#: ../admin/settings-options.php:371
+msgid "Override the post edit link"
+msgstr "Deaktiviere Beitragsbearbeitung"
+
+#: ../admin/settings-options.php:372
+msgid ""
+"Users see the edit link in post if s/he is capable to edit the post/page. "
+"Selecting <strong>Yes</strong> will override the default WordPress link"
+msgstr ""
+"Nutzer sehen in ihren eigenen Beitr&auml;gen einen Editierlink. Die Auswahl "
+"von <strong>Ja</strong> deaktiviert diesen Link."
+
+#: ../admin/settings-options.php:382
+msgid "Custom CSS codes"
+msgstr "eigener CSS Code"
+
+#: ../admin/settings-options.php:383
+msgid ""
+"If you want to add your custom CSS code, it will be added on page header "
+"wrapped with style tag"
+msgstr ""
+"Falls Du eigenen CSS Code hinzuf&uuml;gen willst wird dieser im Header "
+"eingef&uuml;gt"
+
+#: ../admin/settings-options.php:390
+msgid "Charge for posting"
+msgstr "F&uuml;r Beitr&auml;ge berechnen"
+
+#: ../admin/settings-options.php:391
+msgid "Charge user for submitting a post"
+msgstr "Nutzer m&uuml;ssen f&uuml;r das Einstellen von Beitr&auml;gen zahlen"
+
+#: ../admin/settings-options.php:401
+msgid "Force pack purchase"
+msgstr "Kauf von Beitrags-Paketen Pflicht"
+
+#: ../admin/settings-options.php:402
+msgid "When active, users must have to buy a pack for posting"
+msgstr "Nutzer mussen ein Paket an Beitr&auml;gen kaufen"
+
+#: ../admin/settings-options.php:412
+msgid "Currency"
+msgstr "W&auml;hrung"
+
+#: ../admin/settings-options.php:444
+msgid "Currency Symbol"
+msgstr "W&auml;hrungssymbol"
+
+#: ../admin/settings-options.php:450
+msgid "Cost"
+msgstr "Kosten"
+
+#: ../admin/settings-options.php:451
+msgid "Cost per post"
+msgstr "Kosten pro Beitrag"
+
+#: ../admin/settings-options.php:457
+msgid "Enable demo/sandbox mode"
+msgstr "Demo-Modus aktivieren"
+
+#: ../admin/settings-options.php:458
+msgid ""
+"When sandbox mode is active, all payment gateway will be used in demo mode"
+msgstr "Im Demo-Modus werden die Zahlungs-Interfaces im Demo-Modus verwendet"
+
+#: ../admin/settings-options.php:464
+msgid "Payment Page"
+msgstr "Zahlungs-Seite"
+
+#: ../admin/settings-options.php:465
+msgid "This page will be used to process payment options"
+msgstr "Diese Seite wird genutzt um Zahlungen zu verarbeiten"
+
+#: ../admin/settings-options.php:471
+msgid "Payment Success Page"
+msgstr "Zahlungsbest&auml;tigung-Seite"
+
+#: ../admin/settings-options.php:472
+msgid "After payment users will be redirected here"
+msgstr "Nach der Zahlung werden Nutzer auf diese Seite umgeleitet"
+
+#: ../admin/settings-options.php:478
+msgid "Payment Gateways"
+msgstr "Zahlungs-Interface"
+
+#: ../admin/settings-options.php:479
+msgid "Active payment gateways"
+msgstr "Aktive Zahlungs-Interfaces"
+
+#: ../admin/settings-options.php:487
+msgid "Need Help?"
+msgstr "Brauchst Du Hilfe?"
+
+#: ../admin/settings.php:38
+msgid "Subscription"
+msgstr "Abonnement"
+
+#: ../admin/settings.php:39
+msgid "Transaction"
+msgstr "Transaktionen"
+
+#: ../admin/subscription.php:8
+msgid "Subscription Manager"
+msgstr "Abo-Manager"
+
+#: ../admin/subscription.php:79 ../admin/subscription.php:238
+msgid "Subscription Pack Details"
+msgstr "Details der Abonnements"
+
+#: ../admin/subscription.php:85 ../admin/subscription.php:244
+msgid "Pack Name"
+msgstr "Paketname"
+
+#: ../admin/subscription.php:88 ../admin/subscription.php:247
+msgid "subscription pack name"
+msgstr "Abo-Name"
+
+#: ../admin/subscription.php:92 ../admin/subscription.php:251
+msgid "Pack Description"
+msgstr "Abo-Beschreibung"
+
+#: ../admin/subscription.php:98 ../admin/subscription.php:257
+msgid "Pack Cost"
+msgstr "Abo-Kosten"
+
+#: ../admin/subscription.php:101 ../admin/subscription.php:260
+msgid "price/cost of the pack"
+msgstr "Kosten des Abonnements"
+
+#: ../admin/subscription.php:105 ../admin/subscription.php:264
+msgid "Pack validity"
+msgstr "Laufzeit"
+
+#: ../admin/subscription.php:108 ../admin/subscription.php:267
+msgid ""
+"How many days this pack will remain valid? Enter <strong>0</strong> for "
+"unlimited."
+msgstr ""
+"Wieviele Tage ist dieses Paket g&uuml;ltig? Gib <strong>0</strong> f&uuml;r "
+"eine unbegrenzte Laufzeit an."
+
+#: ../admin/subscription.php:112 ../admin/subscription.php:271
+msgid "Number of Posts"
+msgstr "Anzahl an Beitr&auml;gen"
+
+#: ../admin/subscription.php:115 ../admin/subscription.php:274
+msgid ""
+"How many posts the user can list with this pack? Enter <strong>0</strong> "
+"for unlimited."
+msgstr ""
+"Wieviele Beitr&auml;ge darf ein Nutzer verfassen? Gib <strong>0</strong> "
+"f&uuml;r unbegrenzte Beitr&auml;ge an."
+
+#: ../admin/subscription.php:121 ../admin/subscription.php:280
+msgid "Add Package"
+msgstr "Paket hinzuf&uuml;gen"
+
+#: ../lib/gateway/paypal.php:32
+msgid "Paypal Email"
+msgstr "Paypal E-Mail"
+
+#: ../lib/gateway/paypal.php:64
+#, php-format
+msgid "Click here to complete the purchase on %s"
+msgstr "Klicke hier um den Kauf von %s zu beenden"

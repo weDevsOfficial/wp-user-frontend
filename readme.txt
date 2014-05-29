@@ -3,77 +3,77 @@ Contributors: tareq1988
 Donate link: http://tareq.wedevs.com/donate/
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
 Requires at least: 3.3
-Tested up to: 3.8
+Tested up to: 3.9.1
 Stable tag: trunk
 
-Create, update, delete posts and edit profile from wordpress frontend.
+Create, update, delete posts and edit profile directly from the WordPress frontend.
 
 == Description ==
 
-Gives ability to the user to create new post, edit post, edit profile from site frontend.
-So users doesn't need to enter the admin panel. Everything they need to do can be done from
-the frontend.
+The plugin gives the user the ability to create new posts, edit their profile all from the site frontend, 
+so the user does not need to enter the backend admin panel to do these things.
+
+Gives the user the ability to create a new post, edit post, edit profile from the site frontend.
+So the users do not need to enter the admin panel to do these things.
 
 = Features:  =
 
-So here is my plugin that solves your problem. This features of this plugin are follows:
-
-* User can create a new post and edit from frontend
-* They can view their page in the custom dashboard
+* The user can create a new post and edit it from the frontend
+* They can view their page in the frontend custom dashboard
 * Users can edit their profile
-* Administrator can restrict any user level to access the wordpress backend (/wp-admin)
+* Administrator can restrict any user level on accessing the WordPress backend
 * New posts status, submitted by users are configurable via admin panel. i.e. Published, Draft, Pending
-* Admin can configure to receive notification mail when the users creates a new post.
-* Configurable options if the user can edit or delete their posts.
-* Users can upload attachments from the frontend
-* Post featured image can be set
-* Admins can manage their users from frontend
-* Pay per post or subscription on posting is possible
+* Get email notification on new posts
+* Configurable options giving access to the user edit or delete their posts
+* Upload attachments from the frontend
+* Upload post featured image
+* Admins can manage users from frontend
+* Pay-per-post or subscription package for posting
 
-= WP User Frontend PRO =
+= WP User Frontend PRO - Premium Features =
 
-The <a href="http://wedevs.com/plugin/wp-user-frontend-pro">premium version</a> of WP User Frontend comes with tons of features:
+The <a href="http://wedevs.com/plugin/wp-user-frontend-pro">premium version</a> of WP User Frontend is completely different from the free version as there are a lot more features included.
 
 [youtube http://www.youtube.com/watch?v=C0sInxx49Vg]
 
-* Unlimited post type form creation
-* Drag-n-drop form builder
-* Custom taxonomy support
-* 13 variations of custom fields
-* Guest post support
-* Custom Redirection
-* Image upload on post content area
+
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#unlimited-forms">Unlimited post type form creation</a>
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#post-forms">Drag-n-drop form builder</a>
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#custom-taxonomy">Custom taxonomy support</a>
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#custom-fields">13 variations of custom fields</a>
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#guest-posting">Guest post support</a>
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#custom-redirection">Custom Redirection</a>
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#image-upload-post">Image upload on post content area</a>
 * Post status selection on new post and edited post separately
-* New or edit post notification
-* Custom fields are generated also in admin area
-* <strong>Profile form builder</strong>
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#post-notification">New or edit post notification</a>
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#custom-field-admin">Custom fields are also generated in admin area</a>
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#profile-builder">Profile form builder</a>
 * Different profile edit forms for different user roles
 * Drag-n-Drop profile form builder
-* Profile fields are generated on backend too
+* Profile fields are also generated on the backend
 * Avatar Upload
 * Frontend profile edit
 * <strong>Registration form</strong> builder
-* Captcha Support
-* Theme My Login compatible
-* Much more...
+* <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#captcha">Captcha Support</a>
 
-<a href="http://wedevs.com/plugin/wp-user-frontend-pro">Try out the awesome Pro version</a> of bunch of features
+Try an <a href="http://demo.wedevs.com/wpuf/wp-admin/">online demo</a> of the Pro version.
 
 = Translation = 
 
 * Italian translation by Gabriele Lamberti
 
+[Github Repository](https://github.com/tareq1988/WP-User-Frontend).
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+After having installed the plugin:
 
-1. Create a new Page “New Post” and insert shorcode `[wpuf_addpost]`.
-    For a custom post type **event**, use it like `[wpuf_addpost post_type="event"]`
-1. Create a new Page “Edit” for editing posts and insert shorcode `[wpuf_edit]`
-1. Create a new Page “Profile” for editing profile and insert shorcode `[wpuf_editprofile]`
-1. Create a new Page “Dashboard” and insert shorcode `[wpuf_dashboard]`
-    To list custom post type **event**, use it like `[wpuf_dashboard post_type="event"]`
+1. Create a new Page “New Post” and insert shortcode `[wpuf_addpost]`.
+    For a custom post type **event**, use `[wpuf_addpost post_type="event"]`
+1. Create a new Page “Edit” for editing posts and insert shortcode `[wpuf_edit]`
+1. Create a new Page “Profile” for editing profile and insert shortcode `[wpuf_editprofile]`
+1. Create a new Page “Dashboard” and insert shortcode `[wpuf_dashboard]`
+    To list custom post type **event**, use `[wpuf_dashboard post_type="event"]`
 1. Set the *Edit Page* option from *Others* tab on settings page.
 1. To show the subscription info, insert the shortcdoe `[wpuf_sub_info]`
 1. To show the subscription packs, insert the shortcode `[wpuf_sub_pack]`
@@ -82,6 +82,7 @@ This section describes how to install the plugin and get it working.
 
 
 == Screenshots ==
+
 1. Admin panel
 2. User Dashboard
 3. Add Post
@@ -112,13 +113,18 @@ Yes
 = I am having problem with uploading files =
 Please check if you've specified the max upload size on setting
 
-= Why "Edit Post" page shows "invalid post id"?=
+= Why "Edit Post" page shows "invalid post id"? =
 This page is for the purpose of editing posts. You shouldn't access this page directly.
 First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 
 == Changelog ==
+
+= version 1.3.1 =
+
+ * [fix] `[wpuf_editpost]` typo fix
+ * [fix] clean $dashboard_query from corrupting beyond use
 
 = version 1.3 =
 

@@ -334,7 +334,7 @@ function wpuf_settings_fields() {
             array(
                 'name' => 'edit_page_id',
                 'label' => __( 'Edit Page', 'wpuf' ),
-                'desc' => __( 'Select the page where [wpuf_editpost] is located', 'wpuf' ),
+                'desc' => __( 'Select the page where [wpuf_edit] is located', 'wpuf' ),
                 'type' => 'select',
                 'options' => $pages
             ),

@@ -13,9 +13,6 @@ Create, update, delete posts and edit profile directly from the WordPress fronte
 The plugin gives the user the ability to create new posts, edit their profile all from the site frontend, 
 so the user does not need to enter the backend admin panel to do these things.
 
-Gives the user the ability to create a new post, edit post, edit profile from the site frontend.
-So the users do not need to enter the admin panel to do these things.
-
 = Features:  =
 
 * The user can create a new post and edit it from the frontend

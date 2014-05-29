@@ -198,6 +198,9 @@ class WPUF_Dashboard {
 
         <?php
         $this->user_info();
+
+        // clean $dashboard_query from corrupting beyond use
+        wp_reset_query();
     }
 
     /**

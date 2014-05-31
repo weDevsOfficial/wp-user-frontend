@@ -28,9 +28,13 @@ jQuery(document).ready(function($) {
 
             $(this).find('.requiredField').each(function() {
                 var el = $(this),
-                labelText = el.prev('label').text();
+                    val = el.val();
+                
+                if ( el.hasClass('richtext') ) {
+                    val = $.trim( tinyMCE.get( el.attr('id') ).getContent() );
+                }
 
-                if(jQuery.trim(el.val()) == '') {
+                if ($.trim(val) === '') {
                     el.addClass('invalid');
                     hasError = true;
                 } else if(el.hasClass('email')) {

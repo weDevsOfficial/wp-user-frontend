@@ -78,10 +78,10 @@ class WPUF_Add_Post {
                         <?php if ( $featured_image == 'yes' ) { ?>
                             <?php if ( current_theme_supports( 'post-thumbnails' ) ) { ?>
                                 <li>
-                                    <label for="post-thumbnail"><?php echo wpuf_get_option( 'ft_image_label', 'wpuf_frontend_posting', 'Featured Image' ); ?></label>
+                                    <label for="post-thumbnail"><?php echo wpuf_get_option( 'ft_image_label', 'wpuf_labels', __( 'Featured Image', 'wpuf' ) ); ?></label>
                                     <div id="wpuf-ft-upload-container">
                                         <div id="wpuf-ft-upload-filelist"></div>
-                                        <a id="wpuf-ft-upload-pickfiles" class="button" href="#"><?php echo wpuf_get_option( 'ft_image_btn_label', 'wpuf_frontend_posting', 'Upload Image' ); ?></a>
+                                        <a id="wpuf-ft-upload-pickfiles" class="wpuf-button" href="#"><?php echo wpuf_get_option( 'ft_image_btn_label', 'wpuf_labels', __( 'Upload Image', 'wpuf' ) ); ?></a>
                                     </div>
                                     <div class="clear"></div>
                                 </li>
@@ -139,11 +139,11 @@ class WPUF_Add_Post {
                             $editor = wpuf_get_option( 'editor_type', 'wpuf_frontend_posting' );
                             if ( $editor == 'full' ) {
                                 ?>
-                                <div style="float:left;">
+                                <div class="wpuf-richtext">
                                     <?php wp_editor( $description, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField richtext', 'teeny' => false, 'textarea_rows' => 8) ); ?>
                                 </div>
                             <?php } else if ( $editor == 'rich' ) { ?>
-                                <div style="float:left;">
+                                <div class="wpuf-richtext">
                                     <?php wp_editor( $description, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField richtext', 'teeny' => true, 'media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 8) ); ?>
                                 </div>
 

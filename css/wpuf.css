@@ -22,10 +22,10 @@
 .wpuf-post-form input, .wpuf-post-form textarea, .wpuf-post-form select{
     margin: 0;
     padding: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #eee;
     font-size: 12px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
 
 .wpuf-post-form input:focus, .wpuf-post-form textarea:focus, .wpuf-post-form select:focus{
@@ -47,6 +47,19 @@
 .wpuf-post-form .wpuf-check-container {
     float: left;
     width: 70%;
+}
+
+.wpuf-post-form .wp-editor-wrap {
+    border: 1px solid #eee;
+}
+
+.wpuf-post-form .wpuf-richtext {
+    float: left;
+    width: 75%;
+}
+
+a.wpuf-button {
+    text-decoration: none;
 }
 
 .wpuf-post-form input[type=submit], .wpuf-submit, .wpuf-button{
@@ -167,6 +180,7 @@
 
 #wpuf-post-area li{
     list-style: none;
+    margin: 0 0 10px 0;
 }
 
 span.required {

@@ -45,12 +45,16 @@
     padding-top: 5px;
 }
 
-.wpuf-post-form input[type=text]{
+.wpuf-post-form input[type=text] {
     width: 50%;
 }
 
 .wpuf-post-form textarea{
     width: 70%;
+}
+
+.wpuf-post-form #wpuf-attachment-upload-container input[type=text] {
+    width: 120px;
 }
 
 .wpuf-post-form .wpuf-check-container {

@@ -1,22 +1,18 @@
 # WP User Frontend #
+
 **Contributors:** tareq1988
-  
 **Donate link:** http://tareq.wedevs.com/donate/
-  
 **Tags:** frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
-  
 **Requires at least:** 3.3
-  
 **Tested up to:** 3.9.1
-  
 **Stable tag:** trunk
-  
+
 
 Create, update, delete posts and edit profile directly from the WordPress frontend.
 
 ## Description ##
 
-The plugin gives the user the ability to create new posts, edit their profile all from the site frontend, 
+The plugin gives the user the ability to create new posts, edit their profile all from the site frontend,
 so the user does not need to enter the backend admin panel to do these things.
 
 ### Features:  ###
@@ -112,6 +108,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
+### version 1.3.2 ###
+
+ * [improve] post thumbnail image association added
+ * [improve] various form styles updated
+ * [fix] teeny textarea buttons fix
+ * [fix] Dashboard show post type settings won't effect
+ * [fix] zxcvbn is not defined in edit profile
+ * [fix] Two click needed to submit a post
+ * [fix] dashboard author bio height fix
+
 ### version 1.3.1 ###
 
  * [fix] `[wpuf_editpost]` typo fix
@@ -126,26 +132,26 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ### version 1.2.3 ###
 
-* [fix] `has_shortcode()` brought back again by renaming as `wpuf_has_shortcode()`
-* [fix] all the labels now have a default text
+ * [fix] `has_shortcode()` brought back again by renaming as `wpuf_has_shortcode()`
+ * [fix] all the labels now have a default text
 
 ### version 1.2.2 ###
 
-* [fix] shortcode error fix for edit users
-* [fix] plugin css/js url
-* [fix] removed has_shortcode() call
+ * [fix] shortcode error fix for edit users
+ * [fix] plugin css/js url
+ * [fix] removed has_shortcode() call
 
 ### version 1.2.1 ###
 
-* [fix] Performance problem with wp_list_users()
+ * [fix] Performance problem with wp_list_users()
 
 ### version 1.2 ###
 
-* [fix] Subscription post publish
-* [fix] Post delete fix in dashboard
-* [fix] Silverlight in IE upload error
-* [fix] Category checklist bug fix
-* [new] Checkbox field in custom field
+ * [fix] Subscription post publish
+ * [fix] Post delete fix in dashboard
+ * [fix] Silverlight in IE upload error
+ * [fix] Category checklist bug fix
+ * [new] Checkbox field in custom field
 
 ### version 1.1 ###
 
@@ -184,7 +190,6 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * improved action hooks and filter hooks
 
 ### version 0.6 ###
----------------
 
 * fixed error on attachment delete
 * added styles on dashboard too

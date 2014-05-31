@@ -10,8 +10,7 @@ Create, update, delete posts and edit profile directly from the WordPress fronte
 
 == Description ==
 
-The plugin gives the user the ability to create new posts, edit their profile all from the site frontend, 
-so the user does not need to enter the backend admin panel to do these things.
+This plugin gives the user the ability to create new posts, edit their profile all from the site frontend, so the user does not need to enter the backend admin panel to do these things.
 
 = Features:  =
 
@@ -55,7 +54,7 @@ The <a href="http://wedevs.com/plugin/wp-user-frontend-pro">premium version</a> 
 
 Try an <a href="http://demo.wedevs.com/wpuf/wp-admin/">online demo</a> of the Pro version.
 
-= Translation = 
+= Translation =
 
 * Italian translation by Gabriele Lamberti
 
@@ -117,6 +116,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= version 1.3.2 =
+
+ * [improve] post thumbnail image association added
+ * [improve] various form styles updated
+ * [fix] teeny textarea buttons fix
+ * [fix] Dashboard show post type settings won't effect
+ * [fix] zxcvbn is not defined in edit profile
+ * [fix] Two click needed to submit a post
+ * [fix] dashboard author bio height fix
 
 = version 1.3.1 =
 
@@ -190,7 +199,6 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * improved action hooks and filter hooks
 
 = version 0.6 =
----------------
 
 * fixed error on attachment delete
 * added styles on dashboard too

@@ -259,8 +259,14 @@ function wpfu_get_attachments( $post_id ) {
     );
 
     $attachments = get_posts( $args );
+    $featured_image = get_post_thumbnail_id( $post_id );
 
     foreach ($attachments as $attachment) {
+        // remove featured image
+        if ( $attachment->ID == $featured_image ) {
+            continue;
+        }
+        
         $att_list[] = array(
             'id'    => $attachment->ID,
             'title' => $attachment->post_title,

@@ -181,7 +181,7 @@ class WPUF_Edit_Post {
                             </div>
                         <?php } else if ( $editor == 'rich' ) { ?>
                             <div style="float:left;">
-                                <?php wp_editor( $curpost->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField', 'teeny' => true, 'textarea_rows' => 8) ); ?>
+                                <?php wp_editor( $curpost->post_content, 'new-post-desc', array('textarea_name' => 'wpuf_post_content', 'editor_class' => 'requiredField richtext', 'teeny' => true, 'media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 8) ); ?>
                             </div>
 
                         <?php } else { ?>

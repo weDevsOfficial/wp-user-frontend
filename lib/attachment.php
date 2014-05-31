@@ -30,11 +30,11 @@ class WPUF_Attachment {
         $attachment_enabled = wpuf_get_option( 'allow_attachment', 'wpuf_frontend_posting' );
 
         wp_enqueue_script( 'jquery' );
-        
+
         if ( wpuf_has_shortcode( 'wpuf_addpost' ) || wpuf_has_shortcode( 'wpuf_edit' ) ) {
             wp_enqueue_script( 'plupload-handlers' );
         }
-        
+
         wp_enqueue_script( 'jquery-ui-sortable' );
         wp_enqueue_script( 'wpuf_attachment', plugins_url( 'js/attachment.js', dirname( __FILE__ ) ), array('jquery') );
 
@@ -66,10 +66,7 @@ class WPUF_Attachment {
         ?>
         <li>
             <label><?php echo wpuf_get_option( 'attachment_label', 'wpuf_labels', 'Attachments' ) ?></label>
-            <div class="clear"></div>
-            <p class="description"><?php echo wpuf_get_option( 'attachment_help', 'wpuf_labels', '' ) ?></p>
-        </li>
-        <li>
+
             <div id="wpuf-attachment-upload-container">
                 <div id="wpuf-attachment-upload-filelist">
                     <ul class="wpuf-attachment-list">
@@ -84,9 +81,10 @@ class WPUF_Attachment {
                         ?>
                     </ul>
                 </div>
-                <a id="wpuf-attachment-upload-pickfiles" class="button" href="#"><?php echo wpuf_get_option( 'attachment_btn_label', 'wpuf_labels', 'Add another' ); ?></a>
+                <a id="wpuf-attachment-upload-pickfiles" class="wpuf-button" href="#"><?php echo wpuf_get_option( 'attachment_btn_label', 'wpuf_labels', __( 'Add another', 'wpuf' ) ); ?></a>
             </div>
             <div class="clear"></div>
+            <p class="description"><?php echo wpuf_get_option( 'attachment_help', 'wpuf_labels', '' ) ?></p>
         </li>
         <?php
     }
@@ -133,7 +131,7 @@ class WPUF_Attachment {
         $html .= sprintf( '<input type="text" name="wpuf_attach_title[]" value="%s" placeholder="%s" />', esc_attr( $attachment->post_title ), esc_attr__( 'Insert Song Title', 'wpuf' ) );
         $html .= '</span>';
         $html .= sprintf( '<span class="attachment-name">%s</span>', esc_attr( $attachment->post_title ) );
-        $html .= sprintf( '<span class="attachment-actions"><a href="#" class="track-delete button" data-attach_id="%d">%s</a></span>', $attach_id, __( 'Delete', 'wpuf' ) );
+        $html .= sprintf( '<span class="attachment-actions"><a href="#" class="track-delete wpuf-button" data-attach_id="%d">%s</a></span>', $attach_id, __( 'Delete', 'wpuf' ) );
         $html .= sprintf( '<input type="hidden" name="wpuf_attach_id[]" value="%d" />', $attach_id );
         $html .= '</li>';
 

@@ -19,6 +19,15 @@
     cursor: pointer;
 }
 
+.wpuf-post-form #wpuf-attachment-upload-container {
+    position: relative;
+    margin-left: 140px;
+}
+
+.wpuf-post-form #wpuf-attachment-upload-container .attachment-actions {
+    margin-left: 10px;
+}
+
 .wpuf-post-form input, .wpuf-post-form textarea, .wpuf-post-form select{
     margin: 0;
     padding: 5px;

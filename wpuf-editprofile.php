@@ -196,6 +196,7 @@ class WPUF_Edit_Profile {
                             <th><label><?php _e( 'Password Strength', 'wpuf' ); ?></label></th>
                             <td>
                                 <div id="pass-strength-result"><?php _e( 'Strength indicator' ); ?></div>
+                                <script src="<?php echo site_url(); ?>/wp-includes/js/zxcvbn.min.js"></script>
                                 <script src="<?php echo admin_url(); ?>/js/password-strength-meter.js"></script>
                                 <script type="text/javascript">
                                     var pwsL10n = {

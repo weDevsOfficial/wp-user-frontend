@@ -2,20 +2,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-12 14:55+0600\n"
-"PO-Revision-Date: 2014-01-12 14:55+0600\n"
+"POT-Creation-Date: 2014-05-31 16:55+0600\n"
+"PO-Revision-Date: 2014-05-31 16:55+0600\n"
 "Last-Translator: Tareq Hasan <tareq@wedevs.com>\n"
 "Language-Team: Tareq Hasan <tareq@wedevs.com>\n"
 "Language: en_BD\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-Basepath: .\n"
 "X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../wpuf-add-post.php:29 ../wpuf-dashboard.php:32 ../wpuf-edit-post.php:21
+#: ../wpuf-add-post.php:29 ../wpuf-dashboard.php:35 ../wpuf-edit-post.php:21
 #: ../wpuf-edit-user.php:37 ../wpuf-editprofile.php:27
 #, php-format
 msgid "This page is restricted. Please %s to view this page."
@@ -29,13 +31,26 @@ msgstr ""
 msgid "Post It!"
 msgstr ""
 
-#: ../wpuf-add-post.php:89 ../wpuf-edit-post.php:117
+#: ../wpuf-add-post.php:81 ../wpuf-dashboard.php:100 ../wpuf-edit-post.php:99
+msgid "Featured Image"
+msgstr ""
+
+#: ../wpuf-add-post.php:84 ../wpuf-edit-post.php:114
+msgid "Upload Image"
+msgstr ""
+
+#: ../wpuf-add-post.php:89 ../wpuf-edit-post.php:120
 msgid "Your theme doesn't support featured image"
 msgstr ""
 
 #: ../wpuf-add-post.php:115 ../wpuf-add-post.php:117 ../wpuf-ajax.php:23
-#: ../wpuf-edit-post.php:152 ../wpuf-edit-post.php:154
+#: ../wpuf-edit-post.php:155 ../wpuf-edit-post.php:157
 msgid "-- Select --"
+msgstr ""
+
+#: ../wpuf-add-post.php:213
+msgctxt "timezone date format"
+msgid "Y-m-d G:i:s"
 msgstr ""
 
 #: ../wpuf-add-post.php:232
@@ -54,94 +69,100 @@ msgstr ""
 msgid "Post expiration time in day after publishing."
 msgstr ""
 
-#: ../wpuf-add-post.php:315 ../wpuf-edit-post.php:245
+#: ../wpuf-add-post.php:313 ../wpuf-edit-post.php:248
 msgid "Empty post title"
 msgstr ""
 
-#: ../wpuf-add-post.php:324 ../wpuf-add-post.php:326 ../wpuf-add-post.php:329
-#: ../wpuf-edit-post.php:254 ../wpuf-edit-post.php:256
-#: ../wpuf-edit-post.php:259
+#: ../wpuf-add-post.php:322 ../wpuf-add-post.php:324 ../wpuf-add-post.php:327
+#: ../wpuf-edit-post.php:257 ../wpuf-edit-post.php:259
+#: ../wpuf-edit-post.php:262
 msgid "Please choose a category"
 msgstr ""
 
-#: ../wpuf-add-post.php:336 ../wpuf-edit-post.php:265
+#: ../wpuf-add-post.php:334 ../wpuf-edit-post.php:268
 msgid "Empty post content"
 msgstr ""
 
-#: ../wpuf-add-post.php:370 ../wpuf-edit-post.php:291
+#: ../wpuf-add-post.php:368 ../wpuf-edit-post.php:294
 #, php-format
 msgid "\"%s\" is missing"
 msgstr ""
 
-#: ../wpuf-add-post.php:390
+#: ../wpuf-add-post.php:388
 msgid "Invalid date"
 msgstr ""
 
-#: ../wpuf-dashboard.php:60
+#: ../wpuf-dashboard.php:63
 msgid "Post Deleted"
 msgstr ""
 
-#: ../wpuf-dashboard.php:76
+#: ../wpuf-dashboard.php:79
 #, php-format
 msgid "%s's Dashboard"
 msgstr ""
 
-#: ../wpuf-dashboard.php:80
+#: ../wpuf-dashboard.php:83
 #, php-format
 msgid "You have created <span>%d</span> %s"
 msgstr ""
 
-#: ../wpuf-dashboard.php:97
-msgid "Featured Image"
-msgstr ""
-
-#: ../wpuf-dashboard.php:100
+#: ../wpuf-dashboard.php:103
 msgid "Title"
 msgstr ""
 
-#: ../wpuf-dashboard.php:101
+#: ../wpuf-dashboard.php:104
 msgid "Status"
 msgstr ""
 
-#: ../wpuf-dashboard.php:104
+#: ../wpuf-dashboard.php:107
 msgid "Payment"
 msgstr ""
 
-#: ../wpuf-dashboard.php:107
+#: ../wpuf-dashboard.php:110
 msgid "Options"
 msgstr ""
 
-#: ../wpuf-dashboard.php:122
+#: ../wpuf-dashboard.php:125
 msgid "No Image"
 msgstr ""
 
-#: ../wpuf-dashboard.php:159 ../wpuf-edit-user.php:99
+#: ../wpuf-dashboard.php:137
+#, php-format
+msgid "Permalink to %s"
+msgstr ""
+
+#: ../wpuf-dashboard.php:162 ../wpuf-edit-user.php:99
 msgid "Edit"
 msgstr ""
 
-#: ../wpuf-dashboard.php:165 ../wpuf-edit-user.php:100
-#: ../lib/attachment.php:136
+#: ../wpuf-dashboard.php:168 ../wpuf-edit-user.php:100
+#: ../lib/attachment.php:134
 msgid "Delete"
 msgstr ""
 
-#: ../wpuf-dashboard.php:178
+#: ../wpuf-dashboard.php:181
 msgid "&laquo;"
 msgstr ""
 
-#: ../wpuf-dashboard.php:179
+#: ../wpuf-dashboard.php:182
 msgid "&raquo;"
 msgstr ""
 
-#: ../wpuf-dashboard.php:192
+#: ../wpuf-dashboard.php:195
 #, php-format
 msgid "No %s found"
 msgstr ""
 
-#: ../wpuf-dashboard.php:212
+#: ../wpuf-dashboard.php:218
 msgid "Author Info"
 msgstr ""
 
-#: ../wpuf-dashboard.php:248
+#: ../wpuf-dashboard.php:222 ../wpuf-edit-user.php:97
+#, php-format
+msgid "%s"
+msgstr ""
+
+#: ../wpuf-dashboard.php:254
 msgid "You are not the post author. Cheeting huh!"
 msgstr ""
 
@@ -157,7 +178,7 @@ msgstr ""
 msgid "You are not allowed to edit"
 msgstr ""
 
-#: ../wpuf-edit-post.php:326
+#: ../wpuf-edit-post.php:329
 msgid "Post updated successfully."
 msgstr ""
 
@@ -313,39 +334,39 @@ msgstr ""
 msgid "Strength indicator"
 msgstr ""
 
-#: ../wpuf-editprofile.php:221
+#: ../wpuf-editprofile.php:222
 msgid "Update Profile"
 msgstr ""
 
-#: ../wpuf-editprofile.php:240
+#: ../wpuf-editprofile.php:241
 msgid "WPUF Post Lock"
 msgstr ""
 
-#: ../wpuf-editprofile.php:243
+#: ../wpuf-editprofile.php:244
 msgid "Lock Post:"
 msgstr ""
 
-#: ../wpuf-editprofile.php:249
+#: ../wpuf-editprofile.php:250
 msgid "Lock user from creating new post."
 msgstr ""
 
-#: ../wpuf-editprofile.php:254
+#: ../wpuf-editprofile.php:255
 msgid "Lock Reason:"
 msgstr ""
 
-#: ../wpuf-editprofile.php:274
+#: ../wpuf-editprofile.php:275
 msgid "WPUF Subscription"
 msgstr ""
 
-#: ../wpuf-editprofile.php:278
+#: ../wpuf-editprofile.php:279
 msgid "Pack:"
 msgstr ""
 
-#: ../wpuf-editprofile.php:284
+#: ../wpuf-editprofile.php:285
 msgid "Post Count:"
 msgstr ""
 
-#: ../wpuf-editprofile.php:290 ../wpuf-subscription.php:277
+#: ../wpuf-editprofile.php:291 ../wpuf-subscription.php:277
 msgid "Validity:"
 msgstr ""
 
@@ -408,11 +429,11 @@ msgstr ""
 msgid "Invalid attachment file type"
 msgstr ""
 
-#: ../wpuf-functions.php:580
+#: ../wpuf-functions.php:586
 msgid "Remove Image"
 msgstr ""
 
-#: ../wpuf-functions.php:678
+#: ../wpuf-functions.php:684
 #, php-format
 msgid ""
 "You need to set your <a href=\"%1$s\">permalink custom structure</a> to at "
@@ -420,7 +441,7 @@ msgid ""
 "properly."
 msgstr ""
 
-#: ../wpuf-functions.php:745
+#: ../wpuf-functions.php:751
 msgid "You must purchase a pack before posting"
 msgstr ""
 
@@ -955,7 +976,7 @@ msgid "Edit Page"
 msgstr ""
 
 #: ../admin/settings-options.php:337
-msgid "Select the page where [wpuf_editpost] is located"
+msgid "Select the page where [wpuf_edit] is located"
 msgstr ""
 
 #: ../admin/settings-options.php:343
@@ -1150,6 +1171,14 @@ msgstr ""
 
 #: ../admin/subscription.php:121 ../admin/subscription.php:280
 msgid "Add Package"
+msgstr ""
+
+#: ../lib/attachment.php:84
+msgid "Add another"
+msgstr ""
+
+#: ../lib/attachment.php:131
+msgid "Insert Song Title"
 msgstr ""
 
 #: ../lib/gateway/paypal.php:32

@@ -22,7 +22,10 @@ class WPUF_Dashboard {
      */
     function shortcode( $atts ) {
 
-        extract( shortcode_atts( array('post_type' => 'post'), $atts ) );
+        $post_type = wpuf_get_option( 'post_type', 'wpuf_dashboard', 'post' );
+        $default   = array('post_type' => $post_type);
+
+        extract( shortcode_atts( $default, $atts ) );
 
         ob_start();
 

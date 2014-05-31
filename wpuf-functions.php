@@ -41,18 +41,18 @@ function wpuf_show_post_status( $status ) {
 
     if ( $status == 'publish' ) {
 
-        $title = __( 'Live', 'wpuf' );
+        $title     = __( 'Live', 'wpuf' );
         $fontcolor = '#33CC33';
     } else if ( $status == 'draft' ) {
 
-        $title = __( 'Offline', 'wpuf' );
+        $title     = __( 'Offline', 'wpuf' );
         $fontcolor = '#bbbbbb';
     } else if ( $status == 'pending' ) {
 
-        $title = __( 'Awaiting Approval', 'wpuf' );
+        $title     = __( 'Awaiting Approval', 'wpuf' );
         $fontcolor = '#C00202';
     } else if ( $status == 'future' ) {
-        $title = __( 'Scheduled', 'wpuf' );
+        $title     = __( 'Scheduled', 'wpuf' );
         $fontcolor = '#bbbbbb';
     }
 
@@ -114,9 +114,9 @@ function wpuf_notify_post_mail( $user, $post_id ) {
     $msg .= sprintf( __( 'Edit Link : %s' ), admin_url( 'post.php?action=edit&post=' . $post_id ) ) . "\r\n";
 
     //plugin api
-    $to = apply_filters( 'wpuf_notify_to', $to );
+    $to      = apply_filters( 'wpuf_notify_to', $to );
     $subject = apply_filters( 'wpuf_notify_subject', $subject );
-    $msg = apply_filters( 'wpuf_notify_message', $msg );
+    $msg     = apply_filters( 'wpuf_notify_message', $msg );
 
     wp_mail( $to, $subject, $msg, $headers );
 }
@@ -157,11 +157,11 @@ function wpuf_upload_attachment( $post_id ) {
         if ( $file_name ) {
             if ( $file_name ) {
                 $upload = array(
-                    'name' => $_FILES['wpuf_post_attachments']['name'][$i],
-                    'type' => $_FILES['wpuf_post_attachments']['type'][$i],
+                    'name'     => $_FILES['wpuf_post_attachments']['name'][$i],
+                    'type'     => $_FILES['wpuf_post_attachments']['type'][$i],
                     'tmp_name' => $_FILES['wpuf_post_attachments']['tmp_name'][$i],
-                    'error' => $_FILES['wpuf_post_attachments']['error'][$i],
-                    'size' => $_FILES['wpuf_post_attachments']['size'][$i]
+                    'error'    => $_FILES['wpuf_post_attachments']['error'][$i],
+                    'size'     => $_FILES['wpuf_post_attachments']['size'][$i]
                 );
 
                 wpuf_upload_file( $upload );
@@ -189,12 +189,12 @@ function wpuf_upload_file( $upload_data ) {
 
         $attachment = array(
             'post_mime_type' => $file_type['type'],
-            'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
-            'post_content' => '',
-            'post_status' => 'inherit'
+            'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
+            'post_content'   => '',
+            'post_status'    => 'inherit'
         );
 
-        $attach_id = wp_insert_attachment( $attachment, $file_loc );
+        $attach_id   = wp_insert_attachment( $attachment, $file_loc );
         $attach_data = wp_generate_attachment_metadata( $attach_id, $file_loc );
         wp_update_attachment_metadata( $attach_id, $attach_data );
 
@@ -210,14 +210,14 @@ function wpuf_upload_file( $upload_data ) {
  * @return array error list
  */
 function wpuf_check_upload() {
-    $errors = array();
-    $mime = get_allowed_mime_types();
+    $errors     = array();
+    $mime       = get_allowed_mime_types();
 
     $size_limit = (int) (wpuf_get_option( 'attachment_max_size', 'wpuf_frontend_posting' ) * 1024);
-    $fields = (int) wpuf_get_option( 'attachment_num', 'wpuf_frontend_posting' );
+    $fields     = (int) wpuf_get_option( 'attachment_num', 'wpuf_frontend_posting' );
 
     for ($i = 0; $i < $fields; $i++) {
-        $tmp_name = basename( $_FILES['wpuf_post_attachments']['tmp_name'][$i] );
+        $tmp_name  = basename( $_FILES['wpuf_post_attachments']['tmp_name'][$i] );
         $file_name = basename( $_FILES['wpuf_post_attachments']['name'][$i] );
 
         //if file is uploaded
@@ -227,12 +227,12 @@ function wpuf_check_upload() {
 
             //check file size
             if ( $attach_size > $size_limit ) {
-                $errors[] = __( "Attachment file is too big" );
+                $errors[] = __( "Attachment file is too big", 'wpuf' );
             }
 
             //check file type
             if ( !in_array( $attach_type['type'], $mime ) ) {
-                $errors[] = __( "Invalid attachment file type" );
+                $errors[] = __( "Invalid attachment file type", 'wpuf' );
             }
         } // if $filename
     }// endfor
@@ -250,22 +250,22 @@ function wpfu_get_attachments( $post_id ) {
     $att_list = array();
 
     $args = array(
-        'post_type' => 'attachment',
+        'post_type'   => 'attachment',
         'numberposts' => -1,
         'post_status' => null,
         'post_parent' => $post_id,
-        'order' => 'ASC',
-        'orderby' => 'menu_order'
+        'order'       => 'ASC',
+        'orderby'     => 'menu_order'
     );
 
     $attachments = get_posts( $args );
 
     foreach ($attachments as $attachment) {
         $att_list[] = array(
-            'id' => $attachment->ID,
+            'id'    => $attachment->ID,
             'title' => $attachment->post_title,
-            'url' => wp_get_attachment_url( $attachment->ID ),
-            'mime' => $attachment->post_mime_type
+            'url'   => wp_get_attachment_url( $attachment->ID ),
+            'mime'  => $attachment->post_mime_type
         );
     }
 
@@ -577,7 +577,7 @@ function wpuf_feat_img_html( $attach_id ) {
 
     $html = sprintf( '<div class="wpuf-item" id="attachment-%d">', $attach_id );
     $html .= sprintf( '<img src="%s" alt="%s" />', $image[0], esc_attr( $post->post_title ) );
-    $html .= sprintf( '<a class="wpuf-del-ft-image button" href="#" data-id="%d">%s</a> ', $attach_id, __( 'Remove Image', 'wpuf' ) );
+    $html .= sprintf( '<a class="wpuf-del-ft-image wpuf-button" href="#" data-id="%d">%s</a> ', $attach_id, __( 'Remove Image', 'wpuf' ) );
     $html .= sprintf( '<input type="hidden" name="wpuf_featured_img" value="%d" />', $attach_id );
     $html .= '</div>';
 
@@ -643,12 +643,12 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $tax = '
 
     echo '<ul class="wpuf-category-checklist">';
     wp_terms_checklist( $post_id, array(
-        'taxonomy' => $tax,
+        'taxonomy'             => $tax,
         'descendants_and_self' => 0,
-        'selected_cats' => $selected_cats,
-        'popular_cats' => false,
-        'walker' => $walker,
-        'checked_ontop' => false
+        'selected_cats'        => $selected_cats,
+        'popular_cats'         => false,
+        'walker'               => $walker,
+        'checked_ontop'        => false
     ) );
     echo '</ul>';
 }
@@ -712,7 +712,7 @@ function wpuf_get_custom_fields() {
             $data[] = array(
                 'label' => $f->label,
                 'field' => $f->field,
-                'type' => $f->required
+                'type'  => $f->required
             );
         }
 
@@ -839,30 +839,30 @@ function wpuf_get_option( $option, $section, $default = '' ) {
  */
 function wpuf_has_shortcode( $shortcode = '', $post_id = false ) {
     global $post;
- 
+
     if ( !$post ) {
         return false;
     }
- 
+
     $post_to_check = ( $post_id == false ) ? get_post( get_the_ID() ) : get_post( $post_id );
- 
+
     if ( !$post_to_check ) {
         return false;
     }
- 
+
     // false because we have to search through the post content first
     $found = false;
- 
+
     // if no short code was provided, return false
     if ( !$shortcode ) {
         return $found;
     }
- 
+
     // check the post content for the short code
     if ( stripos( $post_to_check->post_content, '[' . $shortcode ) !== false ) {
         // we have found the short code
         $found = true;
     }
- 
+
     return $found;
 }

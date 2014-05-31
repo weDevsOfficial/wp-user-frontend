@@ -250,7 +250,7 @@ table.wpuf-table td {
 .wpuf-author-inside {
     background: none repeat scroll 0 0 #F0F0F0;
     border-bottom: 2px solid #DDDDDD;
-    height: 90px;
+    height: auto;
     padding-left: 10px;
     padding-top: 15px;
     margin-bottom: 15px;

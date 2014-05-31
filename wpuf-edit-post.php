@@ -109,7 +109,10 @@ class WPUF_Edit_Post {
                                         }
                                         ?>
                                     </div>
-                                    <a id="wpuf-ft-upload-pickfiles" class="wpuf-button" href="#"><?php echo wpuf_get_option( 'ft_image_btn_label', 'wpuf_labels', __( 'Upload Image', 'wpuf' ) ); ?></a>
+                                    
+                                    <?php if ( ! has_post_thumbnail( $curpost->ID ) ) { ?>
+                                        <a id="wpuf-ft-upload-pickfiles" class="wpuf-button" href="#"><?php echo wpuf_get_option( 'ft_image_btn_label', 'wpuf_labels', __( 'Upload Image', 'wpuf' ) ); ?></a>
+                                    <?php } ?>
                                 </div>
                                 <div class="clear"></div>
                             </li>
@@ -331,6 +334,12 @@ class WPUF_Edit_Post {
                 //set post thumbnail if has any
                 if ( $attach_id ) {
                     set_post_thumbnail( $post_id, $attach_id );
+                    
+                    // update associatement
+                    wp_update_post(array(
+                        'ID' => $attach_id,
+                        'post_parent' => $post_id
+                    ));
                 }
 
                 //add the custom fields

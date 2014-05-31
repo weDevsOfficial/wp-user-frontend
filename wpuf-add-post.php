@@ -456,6 +456,12 @@ class WPUF_Add_Post {
             //set post thumbnail if has any
             if ( $attach_id ) {
                 set_post_thumbnail( $post_id, $attach_id );
+                
+                // update associatement
+                wp_update_post(array(
+                    'ID' => $attach_id,
+                    'post_parent' => $post_id
+                ));
             }
 
             //Set Post expiration date if has any

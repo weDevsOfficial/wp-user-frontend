@@ -472,6 +472,7 @@ class WPUF_Add_Post {
                 $expiration = $post_date + ($expiration * 60 * 60 * 24);
 
                 add_post_meta( $post_id, 'expiration-date', $expiration, true );
+                _scheduleExpiratorEvent($post_id,$expiration,$opts);
             }
 
             //plugin API to extend the functionality

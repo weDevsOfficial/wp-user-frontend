@@ -88,6 +88,7 @@ class WPUF_Edit_Profile {
 				"showContactAboutYourself" => true,
 				"description" => true,
 				"password" => true,
+				"passworStrength" => true,
 				"showSectionUserProfile" => true	
 		);
 		$args = apply_filters( 'wp_user_frontend_activated_fields',$args);		
@@ -241,8 +242,10 @@ class WPUF_Edit_Profile {
                                 <input type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off" />&nbsp;<em><span class="description"><?php _e( "Type your new password again." ); ?></span></em>
                             </td>
                         </tr>
+                        <?php } ?>
+                        
+                        <?php if($args["passwordStrenght"]){ ?>
                         <tr>
-
                             <th><label><?php _e( 'Password Strength', 'wpuf' ); ?></label></th>
                             <td>
                                 <div id="pass-strength-result"><?php _e( 'Strength indicator' ); ?></div>

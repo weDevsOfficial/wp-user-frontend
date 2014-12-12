@@ -171,7 +171,8 @@ class WPUF_Main {
 
         $access_level = wpuf_get_option( 'admin_access', 'wpuf_others', 'read' );
         $valid_pages = array('admin-ajax.php', 'async-upload.php', 'media-upload.php');
-
+		
+		// loads core language 
         if ( !current_user_can( $access_level ) && !in_array( $pagenow, $valid_pages ) ) {
             wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
         }
@@ -189,6 +190,10 @@ class WPUF_Main {
 
         if ( file_exists( $mofile ) ) {
             load_textdomain( 'wpuf', $mofile );
+        }
+        
+        if(	file_exists(WP_LANG_DIR . '/admin-' . get_locale() . '.mo')){
+	        load_textdomain( 'default', WP_LANG_DIR . '/admin-' . get_locale() . '.mo' );
         }
     }
 

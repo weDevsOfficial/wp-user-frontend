@@ -70,12 +70,31 @@ class WPUF_Edit_Profile {
         }
 
         $profileuser = get_user_to_edit( $user_id );
-
         if ( isset( $message ) ) {
             echo '<div class="' . $style . '">' . $message . '</div>';
         }
-        ?>
-        <div class="wpuf-profile">
+        
+        $args = array(
+				"showSectionName" => true,
+				"user_login" => true,
+				"first_name" => true,
+				"last_name" => true,
+				"nickname" => true,
+				"display_name" => true,
+				"showContactInfo" => true,
+				"email" => true,
+				"url" => true,
+				"contactMethods" => true,
+				"showContactAboutYourself" => true,
+				"description" => true,
+				"password" => true,
+				"passworStrength" => true,
+				"showSectionUserProfile" => true	
+		);
+		$args = apply_filters( 'wp_user_frontend_activated_fields',$args);		
+	
+		?>
+		<div class="wpuf-profile">
             <form name="profile" id="your-profile" action="" method="post">
                 <?php wp_nonce_field( 'update-profile_' . $user_id ) ?>
                 <?php if ( $wp_http_referer ) : ?>
@@ -87,7 +106,8 @@ class WPUF_Edit_Profile {
                     <?php do_action( 'personal_options', $profileuser ); ?>
                 </table>
                 <?php do_action( 'profile_personal_options', $profileuser ); ?>
-
+				
+				<?php if($args["showSectionName"]){ ?>
                 <fieldset>
                     <legend><?php _e( 'Name' ) ?></legend>
 
@@ -96,21 +116,32 @@ class WPUF_Edit_Profile {
                             <th><label for="user_login1"><?php _e( 'Username' ); ?></label></th>
                             <td><input type="text" name="user_login" id="user_login1" value="<?php echo esc_attr( $profileuser->user_login ); ?>" disabled="disabled" class="regular-text" /><br /><em><span class="description"><?php _e( 'Usernames cannot be changed.' ); ?></span></em></td>
                         </tr>
+                        
+                        <?php if($args["first_name"]){ ?>
                         <tr>
                             <th><label for="first_name"><?php _e( 'First Name' ) ?></label></th>
                             <td><input type="text" name="first_name" id="first_name" value="<?php echo esc_attr( $profileuser->first_name ) ?>" class="regular-text" /></td>
                         </tr>
-
+						<?php } ?>
+						
+						<?php if($args["last_name"]){ ?>
                         <tr>
                             <th><label for="last_name"><?php _e( 'Last Name' ) ?></label></th>
                             <td><input type="text" name="last_name" id="last_name" value="<?php echo esc_attr( $profileuser->last_name ) ?>" class="regular-text" /></td>
                         </tr>
-
+						<?php } ?>
+						
                         <tr>
+                        	<?php if($args["nickname"]){ ?>
                             <th><label for="nickname"><?php _e( 'Nickname' ); ?> <span class="description"><?php _e( '(required)' ); ?></span></label></th>
                             <td><input type="text" name="nickname" id="nickname" value="<?php echo esc_attr( $profileuser->nickname ) ?>" class="regular-text" /></td>
+                            <?php } else { ?>
+                            <th></th>
+                            <td><input type="hidden" name="nickname" id="nickname" value="<?php echo esc_attr( $profileuser->nickname ) ?>" class="regular-text"/></td>
+                            <?php } ?>
                         </tr>
-
+                        
+						<?php if($args["last_name"]){ ?>
                         <tr>
                             <th><label for="display_name"><?php _e( 'Display to Public as' ) ?></label></th>
                             <td>
@@ -140,45 +171,65 @@ class WPUF_Edit_Profile {
                                 </select>
                             </td>
                         </tr>
+                        <?php } ?>
                     </table>
                 </fieldset>
-
+				<? } else { ?>
+					<input type="hidden" name="user_login" id="user_login1" value="<?php echo esc_attr( $profileuser->user_login ); ?>" disabled="disabled" class="regular-text" />
+					<input type="hidden" name="nickname" id="nickname" value="<?php echo esc_attr( $profileuser->nickname ) ?>" class="regular-text" />
+				<?php } ?>
+				
+				<?php if($args["showContactInfo"]){ ?>
+				<br>
                 <fieldset>
-                    <legend><?php _e( 'Contact Info' ) ?></legend>
+                    <legend><?php _e('Contact Info') ?></legend>
 
                     <table class="wpuf-table">
                         <tr>
                             <th><label for="email"><?php _e( 'E-mail' ); ?> <span class="description"><?php _e( '(required)' ); ?></span></label></th>
                             <td><input type="text" name="email" id="email" value="<?php echo esc_attr( $profileuser->user_email ) ?>" class="regular-text" /> </td>
                         </tr>
-
+						
+						<?php if($args["url"]){ ?>
                         <tr>
-                            <th><label for="url"><?php _e( 'Website' ) ?></label></th>
+                            <th><label for="url"><?php _e( 'Website' ); ?></label></th>
                             <td><input type="text" name="url" id="url" value="<?php echo esc_attr( $profileuser->user_url ) ?>" class="regular-text code" /></td>
                         </tr>
-
-                        <?php
-                        foreach (_wp_get_user_contactmethods() as $name => $desc) {
-                            ?>
-                            <tr>
-                                <th><label for="<?php echo $name; ?>"><?php echo apply_filters( 'user_' . $name . '_label', $desc ); ?></label></th>
-                                <td><input type="text" name="<?php echo $name; ?>" id="<?php echo $name; ?>" value="<?php echo esc_attr( $profileuser->$name ) ?>" class="regular-text" /></td>
-                            </tr>
-                            <?php
-                        }
+						<?php }?>
+						
+                        <?php if($args["contactMethods"]){
+	                        foreach (_wp_get_user_contactmethods() as $name => $desc) {
+	                            ?>
+	                            <tr>
+	                                <th><label for="<?php echo $name; ?>"><?php echo apply_filters( 'user_' . $name . '_label', $desc ); ?></label></th>
+	                                <td><input type="text" name="<?php echo $name; ?>" id="<?php echo $name; ?>" value="<?php echo esc_attr( $profileuser->$name ) ?>" class="regular-text" /></td>
+	                            </tr>
+	                            <?php
+	                        }
+	                    }
                         ?>
                     </table>
                 </fieldset>
-
+				<?php } else { ?>
+					<input type="hidden" name="email" id="email" value="<?php echo esc_attr( $profileuser->user_email ) ?>" class="regular-text" />
+				<?php } ?>
+				
+				<?php if($args["showContactAboutYourself"]){ ?>
+				<br>
                 <fieldset>
                     <legend><?php _e( 'About Yourself' ); ?></legend>
 
                     <table class="wpuf-table">
+                    
+                    	<?php if($args["description"]){ ?>
                         <tr>
                             <th><label for="description"><?php _e( 'Biographical Info', 'wpuf' ); ?></label></th>
                             <td><textarea name="description" id="description" rows="5" cols="30"><?php echo esc_html( $profileuser->description ); ?></textarea><br />
                                 <span class="description"><?php _e( 'Share a little biographical information to fill out your profile. This may be shown publicly.' ); ?></span></td>
                         </tr>
+                        <?php } ?>
+                        
+                        <?php if($args["password"]){ ?>
                         <tr id="password">
                             <th><label for="pass1"><?php _e( 'New Password', 'wpuf' ); ?></label></th>
                             <td>
@@ -191,8 +242,10 @@ class WPUF_Edit_Profile {
                                 <input type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off" />&nbsp;<em><span class="description"><?php _e( "Type your new password again." ); ?></span></em>
                             </td>
                         </tr>
+                        <?php } ?>
+                        
+                        <?php if($args["passwordStrenght"]){ ?>
                         <tr>
-
                             <th><label><?php _e( 'Password Strength', 'wpuf' ); ?></label></th>
                             <td>
                                 <div id="pass-strength-result"><?php _e( 'Strength indicator' ); ?></div>
@@ -211,10 +264,16 @@ class WPUF_Edit_Profile {
                                 </script>
                             </td>
                         </tr>
+                        <?php } ?>
                     </table>
                 </fieldset>
-
-                <?php do_action( 'show_user_profile', $profileuser ); ?>
+				<?php } ?>
+				
+				<?php if($args["showSectionUserProfile"]){ 
+					echo "<br>";
+					do_action( 'show_user_profile', $profileuser ); 
+					}
+				?>
 
                 <p class="submit">
                     <input type="hidden" name="action" value="update" />
@@ -222,8 +281,7 @@ class WPUF_Edit_Profile {
                     <input type="submit" class="wpuf-submit" value="<?php _e( 'Update Profile', 'wpuf' ); ?>" name="submit" />
                 </p>
             </form>
-        </div>
-        <?php
+        </div> <?php
     }
 
     /**
@@ -314,7 +372,6 @@ class WPUF_Edit_Profile {
             update_user_meta( $user_id, 'wpuf_sub_pcount', $_POST['wpuf_sub_pcount'] );
         }
     }
-
 }
 
 $edit_profile = new WPUF_Edit_Profile();

@@ -124,6 +124,11 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= version 2.3.2 =
+
+ * [fix] Featured image upload fix
+ * [new] Image upload field brought back to free
+
 = version 2.3.1 =
 
  * [fix] Compatibility problem with PHP < 5.2. Accidental PHP array shorthand used.

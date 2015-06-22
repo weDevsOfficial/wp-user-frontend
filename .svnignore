@@ -1,0 +1,6 @@
+includes/pro
+nbproject
+Gruntfile.js
+package.json
+docs.md
+changelog.txt

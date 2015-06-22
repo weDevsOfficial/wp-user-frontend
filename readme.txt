@@ -1,9 +1,9 @@
 === WP User Frontend ===
-Contributors: tareq1988
+Contributors: tareq1988, wedevs
 Donate link: http://tareq.wedevs.com/donate/
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
 Requires at least: 3.3
-Tested up to: 3.9.1
+Tested up to: 4.2.2
 Stable tag: trunk
 
 Create, update, delete posts and edit profile directly from the WordPress frontend.
@@ -80,14 +80,21 @@ After having installed the plugin:
 == Screenshots ==
 
 1. Admin panel
-2. User Dashboard
-3. Add Post
-4. Edit Posts
-5. Edit Profile
-6. Custom Field Manager
-7. Subscription Pack Manager
-8. Subscription packs
-9. Edit Users
+2. Admin panel &rarr; Dashboard Tab
+3. Admin panel &rarr; Login Tab
+4. Admin panel &rarr; Payments Tab
+5. Post Forms
+6. Form Builder
+7. Form Builder &rarr; Post Settings
+8. Form Builder &rarr; Edit Settings
+9. Form Elements
+10. Subscription Packs
+11. Subscription Pack Settings
+12. Subscription Packs in a Page
+13. Subscription Payment Screen
+14. A single Form Element on Form Editor
+15. A Form in a Page
+16. Frontend User Dashboard
 
 == Frequently Asked Questions ==
 
@@ -116,6 +123,14 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= version 2.3.1 =
+
+ * [fix] Compatibility problem with PHP < 5.2. Accidental PHP array shorthand used.
+
+= version 2.3 =
+
+ * Pro plugin released as free with less features
 
 = version 1.3.2 =
 
@@ -250,4 +265,5 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Upgrade Notice ==
 
-Nothing to say
+= 2.3 =
+ * It's a **massive update and change** from the previous version 1.3.2. Please do test in your site and main compatibility.

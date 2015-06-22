@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Settings Sections
  *
@@ -8,27 +9,23 @@
 function wpuf_settings_sections() {
     $sections = array(
         array(
-            'id' => 'wpuf_labels',
-            'title' => __( 'Labels', 'wpuf' )
+            'id'    => 'wpuf_general',
+            'title' => __( 'General Options', 'wpuf' )
         ),
         array(
-            'id' => 'wpuf_frontend_posting',
-            'title' => __( 'Frontend Posting', 'wpuf' )
-        ),
-        array(
-            'id' => 'wpuf_dashboard',
+            'id'    => 'wpuf_dashboard',
             'title' => __( 'Dashboard', 'wpuf' )
         ),
         array(
-            'id' => 'wpuf_others',
-            'title' => __( 'Others', 'wpuf' )
+            'id'    => 'wpuf_profile',
+            'title' => __( 'Login / Registration', 'wpuf' )
         ),
         array(
-            'id' => 'wpuf_payment',
+            'id'    => 'wpuf_payment',
             'title' => __( 'Payments', 'wpuf' )
         ),
         array(
-            'id' => 'wpuf_support',
+            'id'    => 'wpuf_support',
             'title' => __( 'Support', 'wpuf' )
         ),
     );
@@ -37,380 +34,253 @@ function wpuf_settings_sections() {
 }
 
 function wpuf_settings_fields() {
-    $users = wpuf_list_users();
     $pages = wpuf_get_pages();
-    
+    $users = wpuf_list_users();
+
     $settings_fields = array(
-        'wpuf_labels' => apply_filters( 'wpuf_options_label', array(
+        'wpuf_general' => apply_filters( 'wpuf_options_others', array(
             array(
-                'name' => 'title_label',
-                'label' => __( 'Post title label', 'wpuf' ),
-                'default' => 'Title'
-            ),
-            array(
-                'name' => 'title_help',
-                'label' => __( 'Post title help text', 'wpuf' )
-            ),
-            array(
-                'name' => 'cat_label',
-                'label' => __( 'Post category label', 'wpuf' ),
-                'default' => 'Category'
-            ),
-            array(
-                'name' => 'cat_help',
-                'label' => __( 'Post category help text', 'wpuf' ),
-            ),
-            array(
-                'name' => 'desc_label',
-                'label' => __( 'Post description label', 'wpuf' ),
-                'default' => 'Description'
-            ),
-            array(
-                'name' => 'desc_help',
-                'label' => __( 'Post description help text', 'wpuf' ),
-            ),
-            array(
-                'name' => 'tag_label',
-                'label' => __( 'Post tag label', 'wpuf' ),
-                'default' => 'Tags'
-            ),
-            array(
-                'name' => 'tag_help',
-                'label' => __( 'Post tag help text', 'wpuf' ),
-            ),
-            array(
-                'name' => 'submit_label',
-                'label' => __( 'Post submit button label', 'wpuf' ),
-                'default' => 'Submit Post!'
-            ),
-            array(
-                'name' => 'update_label',
-                'label' => __( 'Post update button label', 'wpuf' ),
-                'default' => 'Update Post!'
-            ),
-            array(
-                'name' => 'updating_label',
-                'label' => __( 'Post updating button label', 'wpuf' ),
-                'desc' => __( 'the text will be used when the submit button is pressed', 'wpuf' ),
-                'default' => 'Please wait...'
-            ),
-            array(
-                'name' => 'ft_image_label',
-                'label' => __( 'Featured image label', 'wpuf' ),
-                'default' => 'Featured Image'
-            ),
-            array(
-                'name' => 'ft_image_btn_label',
-                'label' => __( 'Featured Button image label', 'wpuf' ),
-                'default' => 'Upload Image'
-            ),
-            array(
-                'name' => 'attachment_label',
-                'label' => __( 'Attachment Label', 'wpuf' ),
-                'default' => 'Attachments'
-            ),
-            array(
-				'name' => 'attachment_help',
-				'label' => __( 'Attachment Help', 'wpuf' ),
-				'default' => '',
-			),
-            array(
-                'name' => 'attachment_btn_label',
-                'label' => __( 'Attachment upload button', 'wpuf' ),
-                'default' => 'Add another'
-            ),
-        ) ),
-        'wpuf_frontend_posting' => apply_filters( 'wpuf_options_frontend', array(
-            array(
-                'name' => 'post_status',
-                'label' => __( 'Post Status', 'wpuf' ),
-                'desc' => __( 'Default post status after user submits a post', 'wpuf' ),
-                'type' => 'select',
-                'default' => 'publish',
-                'options' => array(
-                    'publish' => 'Publish',
-                    'draft' => 'Draft',
-                    'pending' => 'Pending'
-                )
-            ),
-            array(
-                'name' => 'post_author',
-                'label' => __( 'Post Author', 'wpuf' ),
-                'desc' => __( 'Set the new post\'s post author by default', 'wpuf' ),
-                'type' => 'select',
-                'default' => 'original',
-                'options' => array(
-                    'original' => __( 'Original Author', 'wpuf' ),
-                    'to_other' => __( 'Map to other user', 'wpuf' )
-                )
-            ),
-            array(
-                'name' => 'map_author',
-                'label' => __( 'Map posts to poster', 'wpuf' ),
-                'desc' => __( 'If <b>Map to other user</b> selected, new post\'s post author will be this user by default', 'wpuf' ),
-                'type' => 'select',
-                'options' => $users
-            ),
-            array(
-                'name' => 'allow_cats',
-                'label' => __( 'Allow to choose category?', 'wpuf' ),
-                'desc' => __( 'Allow users to choose category while posting?', 'wpuf' ),
-                'type' => 'checkbox',
+                'name'    => 'fixed_form_element',
+                'label'   => __( 'Fixed Form Elements ', 'wpuf' ),
+                'desc'    => __( 'Show fixed form elements sidebar in form editor', 'wpuf' ),
+                'type'    => 'checkbox',
                 'default' => 'on'
             ),
             array(
-                'name' => 'exclude_cats',
-                'label' => __( 'Exclude category ID\'s', 'wpuf' ),
-                'desc' => __( 'Exclude categories fro the dropdown', 'wpuf' ),
-                'type' => 'text'
+                'name'    => 'edit_page_id',
+                'label'   => __( 'Edit Page', 'wpuf' ),
+                'desc'    => __( 'Select the page where [wpuf_edit] is located', 'wpuf' ),
+                'type'    => 'select',
+                'options' => $pages
             ),
             array(
-                'name' => 'default_cat',
-                'label' => __( 'Default post category', 'wpuf' ),
-                'desc' => __( 'If users are not allowed to choose any category, this category will be used instead', 'wpuf' ),
-                'type' => 'select',
-                'options' => wpuf_get_cats()
+                'name'    => 'default_post_owner',
+                'label'   => __( 'Default Post Owner', 'wpuf' ),
+                'desc'    => __( 'If guest post is enabled and user details are OFF, the posts are assigned to this user', 'wpuf' ),
+                'type'    => 'select',
+                'options' => $users,
+                'default' => '1'
             ),
             array(
-                'name' => 'cat_type',
-                'label' => __( 'Category Selection type', 'wpuf' ),
-                'type' => 'radio',
-                'default' => 'normal',
+                'name'    => 'admin_access',
+                'label'   => __( 'Admin area access', 'wpuf' ),
+                'desc'    => __( 'Allow you to block specific user role to WordPress admin area.', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'read',
                 'options' => array(
-                    'normal' => __( 'Normal', 'wpuf' ),
-                    'ajax' => __( 'Ajaxified', 'wpuf' ),
-                    'checkbox' => __( 'Checkbox', 'wpuf' )
+                    'manage_options'    => __( 'Admin Only', 'wpuf' ),
+                    'edit_others_posts' => __( 'Admins, Editors', 'wpuf' ),
+                    'publish_posts'     => __( 'Admins, Editors, Authors', 'wpuf' ),
+                    'edit_posts'        => __( 'Admins, Editors, Authors, Contributors', 'wpuf' ),
+                    'read'              => __( 'Default', 'wpuf' )
                 )
             ),
             array(
-                'name' => 'enable_featured_image',
-                'label' => __( 'Featured Image upload', 'wpuf' ),
-                'desc' => __( 'Gives ability to upload an image as featured image', 'wpuf' ),
-                'type' => 'radio',
-                'default' => 'no',
+                'name'    => 'override_editlink',
+                'label'   => __( 'Override the post edit link', 'wpuf' ),
+                'desc'    => __( 'Users see the edit link in post if s/he is capable to edit the post/page. Selecting <strong>Yes</strong> will override the default WordPress edit post link in frontend', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'yes',
                 'options' => array(
-                    'yes' => __( 'Enable', 'wpuf' ),
-                    'no' => __( 'Disable', 'wpuf' )
+                    'yes' => __( 'Yes', 'wpuf' ),
+                    'no'  => __( 'No', 'wpuf' )
                 )
             ),
             array(
-                'name' => 'allow_attachment',
-                'label' => __( 'Allow attachments', 'wpuf' ),
-                'desc' => __( 'Will the users be able to add attachments on posts?', 'wpuf' ),
-                'type' => 'radio',
-                'default' => 'no',
-                'options' => array(
-                    'yes' => __( 'Enable', 'wpuf' ),
-                    'no' => __( 'Disable', 'wpuf' )
-                )
+                'name'    => 'cf_show_front',
+                'label'   => __( 'Custom Fields in post', 'wpuf' ),
+                'desc'    => __( 'Show custom fields on post content area', 'wpuf' ),
+                'type'    => 'checkbox',
+                'default' => 'off'
             ),
             array(
-                'name' => 'attachment_num',
-                'label' => __( 'Number of attachments', 'wpuf' ),
-                'desc' => __( 'How many attachments can be attached on a post. Put <b>0</b> for unlimited attachment', 'wpuf' ),
-                'type' => 'text',
-                'default' => '0'
-            ),
-            array(
-                'name' => 'attachment_max_size',
-                'label' => __( 'Attachment max size', 'wpuf' ),
-                'desc' => __( 'Enter the maximum file size in <b>KILOBYTE</b> that is allowed to attach', 'wpuf' ),
-                'type' => 'text',
-                'default' => '2048'
-            ),
-            array(
-                'name' => 'editor_type',
-                'label' => __( 'Content editor type', 'wpuf' ),
-                'type' => 'select',
-                'default' => 'plain',
-                'options' => array(
-                    'rich' => __( 'Rich Text (tiny)', 'wpuf' ),
-                    'full' => __( 'Rich Text (full)', 'wpuf' ),
-                    'plain' => __( 'Plain Text', 'wpuf' )
-                )
-            ),
-            array(
-                'name' => 'allow_tags',
-                'label' => __( 'Allow post tags', 'wpuf' ),
-                'desc' => __( 'Users will be able to add post tags', 'wpuf' ),
-                'type' => 'checkbox',
+                'name'    => 'load_script',
+                'label'   => __( 'Load Scripts', 'wpuf' ),
+                'desc'    => __( 'Load scripts/styles in all pages', 'wpuf' ),
+                'type'    => 'checkbox',
                 'default' => 'on'
             ),
             array(
-                'name' => 'enable_custom_field',
-                'label' => __( 'Enable custom fields', 'wpuf' ),
-                'desc' => __( 'You can use additional fields on your post submission form. Add new fields by going <b>Custom Fields</b> option page.', 'wpuf' ),
-                'type' => 'checkbox'
+                'name'    => 'insert_photo_size',
+                'label'   => __( 'Insert Photo image size', 'wpuf' ),
+                'desc'    => __( 'Default image size of "<strong>Insert Photo</strong>" button in post content area', 'wpuf' ),
+                'type'    => 'select',
+                'options' => wpuf_get_image_sizes(),
+                'default' => 'thumbnail'
             ),
             array(
-                'name' => 'enable_post_date',
-                'label' => __( 'Enable post date input', 'wpuf' ),
-                'desc' => __( 'This will enable users to input the post published date', 'wpuf' ),
-                'type' => 'checkbox'
+                'name'  => 'insert_photo_type',
+                'label' => __( 'Insert Photo image type', 'wpuf' ),
+                'desc'  => __( 'Default image type of "<strong>Insert Photo</strong>" button in post content area', 'wpuf' ),
+                'type'  => 'select',
+                'options' => array(
+                    'image' => __( 'Image only', 'wpuf' ),
+                    'link'  => __( 'Image with link', 'wpuf' )
+                ),
+                'default' => 'link'
             ),
             array(
-                'name' => 'enable_post_expiry',
-                'label' => __( 'Enable Post expiration', 'wpuf' ),
-                'desc' => __( 'Users will be able to select a duration, after that time from post publish date, post will be set to draft. This feature depends on <strong>Post Expirator</strong> plugin. ', 'wpuf' ),
-                'type' => 'checkbox'
+                'name'    => 'image_caption',
+                'label'   => __( 'Enable Image Caption', 'wpuf' ),
+                'desc'    => __( 'Allow users to update image/video title, caption and description', 'wpuf' ),
+                'type'    => 'checkbox',
+                'default' => 'off'
+            ),
+            array(
+                'name'    => 'default_post_form',
+                'label'   => __( 'Default Post Form', 'wpuf' ),
+                'desc'    => __( 'Fallback form for post editing if no associated form found', 'wpuf' ),
+                'type'    => 'select',
+                'options' => wpuf_get_pages( 'wpuf_forms' )
+            ),
+            array(
+                'name'  => 'recaptcha_public',
+                'label' => __( 'reCAPTCHA Public Key', 'wpuf' ),
+            ),
+            array(
+                'name'  => 'recaptcha_private',
+                'label' => __( 'reCAPTCHA Private Key', 'wpuf' ),
+            ),
+            array(
+                'name'  => 'custom_css',
+                'label' => __( 'Custom CSS codes', 'wpuf' ),
+                'desc'  => __( 'If you want to add your custom CSS code, it will be added on page header wrapped with style tag', 'wpuf' ),
+                'type'  => 'textarea'
             ),
         ) ),
         'wpuf_dashboard' => apply_filters( 'wpuf_options_dashboard', array(
             array(
-                'name' => 'post_type',
-                'label' => __( 'Show post type', 'wpuf' ),
-                'desc' => __( 'Select the post type that the user will see', 'wpuf' ),
-                'type' => 'select',
-                'options' => wpuf_get_post_types()
+                'name'    => 'enable_post_edit',
+                'label'   => __( 'Users can edit post?', 'wpuf' ),
+                'desc'    => __( 'Users will be able to edit their own posts', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'yes',
+                'options' => array(
+                    'yes' => __( 'Yes', 'wpuf' ),
+                    'no'  => __( 'No', 'wpuf' )
+                )
             ),
             array(
-                'name' => 'per_page',
-                'label' => __( 'Posts per page', 'wpuf' ),
-                'desc' => __( 'How many posts will be listed in a page', 'wpuf' ),
-                'type' => 'text',
+                'name'    => 'enable_post_del',
+                'label'   => __( 'User can delete post?', 'wpuf' ),
+                'desc'    => __( 'Users will be able to delete their own posts', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'yes',
+                'options' => array(
+                    'yes' => __( 'Yes', 'wpuf' ),
+                    'no'  => __( 'No', 'wpuf' )
+                )
+            ),
+            array(
+                'name'    => 'disable_pending_edit',
+                'label'   => __( 'Pending Post Edit', 'wpuf' ),
+                'desc'    => __( 'Disable post editing while post in "pending" status', 'wpuf' ),
+                'type'    => 'checkbox',
+                'default' => 'on'
+            ),
+            array(
+                'name'    => 'per_page',
+                'label'   => __( 'Posts per page', 'wpuf' ),
+                'desc'    => __( 'How many posts will be listed in a page', 'wpuf' ),
+                'type'    => 'text',
                 'default' => '10'
             ),
             array(
-                'name' => 'show_user_bio',
-                'label' => __( 'Show user bio', 'wpuf' ),
-                'desc' => __( 'Users biographical info will be shown', 'wpuf' ),
-                'type' => 'checkbox',
+                'name'    => 'show_user_bio',
+                'label'   => __( 'Show user bio', 'wpuf' ),
+                'desc'    => __( 'Users biographical info will be shown', 'wpuf' ),
+                'type'    => 'checkbox',
                 'default' => 'on'
             ),
             array(
-                'name' => 'show_post_count',
-                'label' => __( 'Show post count', 'wpuf' ),
-                'desc' => __( 'Show how many posts are created by the user', 'wpuf' ),
-                'type' => 'checkbox',
+                'name'    => 'show_post_count',
+                'label'   => __( 'Show post count', 'wpuf' ),
+                'desc'    => __( 'Show how many posts are created by the user', 'wpuf' ),
+                'type'    => 'checkbox',
                 'default' => 'on'
             ),
             array(
-                'name' => 'show_ft_image',
+                'name'  => 'show_ft_image',
                 'label' => __( 'Show Featured Image', 'wpuf' ),
-                'desc' => __( 'Show featured image of the post', 'wpuf' ),
-                'type' => 'checkbox'
+                'desc'  => __( 'Show featured image of the post', 'wpuf' ),
+                'type'  => 'checkbox'
             ),
             array(
-                'name' => 'ft_img_size',
-                'label' => __( 'Featured Image size', 'wpuf' ),
-                'type' => 'select',
+                'name'    => 'ft_img_size',
+                'label'   => __( 'Featured Image size', 'wpuf' ),
+                'type'    => 'select',
                 'options' => wpuf_get_image_sizes()
             ),
+             array(
+                'name'  => 'un_auth_msg',
+                'label' => __( 'Unauthorized Message', 'wpuf' ),
+                'desc'  => __( 'Not logged in users will see this message', 'wpuf' ),
+                'type'  => 'textarea'
+            ),
         ) ),
-        'wpuf_others' => apply_filters( 'wpuf_options_others', array(
+        'wpuf_profile' => array(
             array(
-                'name' => 'post_notification',
-                'label' => __( 'New post notification', 'wpuf' ),
-                'desc' => __( 'A mail will be sent to admin when a new post is created', 'wpuf' ),
-                'type' => 'select',
-                'default' => 'yes',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no' => __( 'No', 'wpuf' )
-                )
+                'name'    => 'register_link_override',
+                'label'   => __( 'Login/Registration override', 'wpuf' ),
+                'desc'    => __( 'If enabled, default login and registration forms will be overridden by WPUF with pages below', 'wpuf' ),
+                'type'    => 'checkbox',
+                'default' => 'off'
             ),
             array(
-                'name' => 'enable_post_edit',
-                'label' => __( 'Users can edit post?', 'wpuf' ),
-                'desc' => __( 'Users will be able to edit their own posts', 'wpuf' ),
-                'type' => 'select',
-                'default' => 'yes',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no' => __( 'No', 'wpuf' )
-                )
-            ),
-            array(
-                'name' => 'enable_post_del',
-                'label' => __( 'User can delete post?', 'wpuf' ),
-                'desc' => __( 'Users will be able to delete their own posts', 'wpuf' ),
-                'type' => 'select',
-                'default' => 'yes',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no' => __( 'No', 'wpuf' )
-                )
-            ),
-            array(
-                'name' => 'edit_page_id',
-                'label' => __( 'Edit Page', 'wpuf' ),
-                'desc' => __( 'Select the page where [wpuf_edit] is located', 'wpuf' ),
-                'type' => 'select',
+                'name'    => 'reg_override_page',
+                'label'   => __( 'Registration Page', 'wpuf' ),
+                'desc'    => __( 'Select the page you want to use as registration page override <em>(should have shortcode)</em>', 'wpuf' ),
+                'type'    => 'select',
                 'options' => $pages
             ),
             array(
-                'name' => 'admin_access',
-                'label' => __( 'Admin area access', 'wpuf' ),
-                'desc' => __( 'Allow you to block specific user role to WordPress admin area.', 'wpuf' ),
-                'type' => 'select',
-                'default' => 'read',
-                'options' => array(
-                    'install_themes' => __( 'Admin Only', 'wpuf' ),
-                    'edit_others_posts' => __( 'Admins, Editors', 'wpuf' ),
-                    'publish_posts' => __( 'Admins, Editors, Authors', 'wpuf' ),
-                    'edit_posts' => __( 'Admins, Editors, Authors, Contributors', 'wpuf' ),
-                    'read' => __( 'Default', 'wpuf' )
-                )
+                'name'    => 'login_page',
+                'label'   => __( 'Login Page', 'wpuf' ),
+                'desc'    => __( 'Select the page which contains <code>[wpuf-login]</code> shortcode', 'wpuf' ),
+                'type'    => 'select',
+                'options' => $pages
             ),
-            array(
-                'name' => 'cf_show_front',
-                'label' => __( 'Show custom fields in the post', 'wpuf' ),
-                'desc' => __( 'If you want to show the custom field data in the post added by the plugin.', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'att_show_front',
-                'label' => __( 'Show attachments in the post', 'wpuf' ),
-                'desc' => __( 'If you want to show the uploaded attachments in the post', 'wpuf' ),
-                'type' => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
-                'name' => 'override_editlink',
-                'label' => __( 'Override the post edit link', 'wpuf' ),
-                'desc' => __( 'Users see the edit link in post if s/he is capable to edit the post/page. Selecting <strong>Yes</strong> will override the default WordPress link', 'wpuf' ),
-                'type' => 'select',
-                'default' => 'no',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no' => __( 'No', 'wpuf' )
-                )
-            ),
-            array(
-                'name' => 'custom_css',
-                'label' => __( 'Custom CSS codes', 'wpuf' ),
-                'desc' => __( 'If you want to add your custom CSS code, it will be added on page header wrapped with style tag', 'wpuf' ),
-                'type' => 'textarea'
-            ),
-        ) ),
+        ),
         'wpuf_payment' => apply_filters( 'wpuf_options_payment', array(
             array(
-                'name' => 'charge_posting',
-                'label' => __( 'Charge for posting', 'wpuf' ),
-                'desc' => __( 'Charge user for submitting a post', 'wpuf' ),
-                'type' => 'select',
+                'name'    => 'charge_posting',
+                'label'   => __( 'Charge for posting', 'wpuf' ),
+                'desc'    => __( 'Charge user for submitting a post', 'wpuf' ),
+                'type'    => 'select',
                 'default' => 'no',
                 'options' => array(
                     'yes' => __( 'Yes', 'wpuf' ),
-                    'no' => __( 'No', 'wpuf' )
+                    'no'  => __( 'No', 'wpuf' )
                 )
             ),
             array(
-                'name' => 'force_pack',
-                'label' => __( 'Force pack purchase', 'wpuf' ),
-                'desc' => __( 'When active, users must have to buy a pack for posting', 'wpuf' ),
-                'type' => 'select',
+                'name'    => 'force_pack',
+                'label'   => __( 'Force pack purchase', 'wpuf' ),
+                'desc'    => __( 'When active, users must have to buy a pack for posting', 'wpuf' ),
+                'type'    => 'select',
                 'default' => 'no',
                 'options' => array(
-                    'no' => __( 'Disable', 'wpuf' ),
+                    'no'  => __( 'Disable', 'wpuf' ),
                     'yes' => __( 'Enable', 'wpuf' )
                 )
             ),
             array(
-                'name' => 'currency',
-                'label' => __( 'Currency', 'wpuf' ),
-                'type' => 'select',
+                'name'    => 'subscription_page',
+                'label'   => __( 'Subscription Pack Page', 'wpuf' ),
+                'desc'    => __( 'Select the page where <code>[wpuf_sub_pack]</code> located.', 'wpuf' ),
+                'type'    => 'select',
+                'options' => $pages
+            ),
+            array(
+                'name'  => 'register_subscription',
+                'label' => __( 'Subscription at registration', 'wpuf' ),
+                'desc'  => __( 'Registration time redirect to subscription page', 'wpuf' ),
+                'type'  => 'checkbox',
+            ),
+            array(
+                'name'    => 'currency',
+                'label'   => __( 'Currency', 'wpuf' ),
+                'type'    => 'select',
                 'default' => 'USD',
                 'options' => array(
                     'AUD' => 'Australian Dollar',
@@ -440,73 +310,61 @@ function wpuf_settings_fields() {
                 )
             ),
             array(
-                'name' => 'currency_symbol',
-                'label' => __( 'Currency Symbol', 'wpuf' ),
-                'type' => 'text',
+                'name'    => 'currency_symbol',
+                'label'   => __( 'Currency Symbol', 'wpuf' ),
+                'type'    => 'text',
                 'default' => '$'
             ),
             array(
-                'name' => 'cost_per_post',
-                'label' => __( 'Cost', 'wpuf' ),
-                'desc' => __( 'Cost per post', 'wpuf' ),
-                'type' => 'text',
+                'name'    => 'cost_per_post',
+                'label'   => __( 'Cost', 'wpuf' ),
+                'desc'    => __( 'Cost per post', 'wpuf' ),
+                'type'    => 'text',
                 'default' => '2'
             ),
             array(
-                'name' => 'sandbox_mode',
-                'label' => __( 'Enable demo/sandbox mode', 'wpuf' ),
-                'desc' => __( 'When sandbox mode is active, all payment gateway will be used in demo mode', 'wpuf' ),
-                'type' => 'checkbox',
+                'name'    => 'sandbox_mode',
+                'label'   => __( 'Enable demo/sandbox mode', 'wpuf' ),
+                'desc'    => __( 'When sandbox mode is active, all payment gateway will be used in demo mode', 'wpuf' ),
+                'type'    => 'checkbox',
                 'default' => 'on'
             ),
             array(
-                'name' => 'payment_page',
-                'label' => __( 'Payment Page', 'wpuf' ),
-                'desc' => __( 'This page will be used to process payment options', 'wpuf' ),
-                'type' => 'select',
+                'name'    => 'payment_page',
+                'label'   => __( 'Payment Page', 'wpuf' ),
+                'desc'    => __( 'This page will be used to process payment options', 'wpuf' ),
+                'type'    => 'select',
                 'options' => $pages
             ),
             array(
-                'name' => 'payment_success',
-                'label' => __( 'Payment Success Page', 'wpuf' ),
-                'desc' => __( 'After payment users will be redirected here', 'wpuf' ),
-                'type' => 'select',
+                'name'    => 'payment_success',
+                'label'   => __( 'Payment Success Page', 'wpuf' ),
+                'desc'    => __( 'After payment users will be redirected here', 'wpuf' ),
+                'type'    => 'select',
                 'options' => $pages
             ),
             array(
-                'name' => 'active_gateways',
-                'label' => __( 'Payment Gateways', 'wpuf' ),
-                'desc' => __( 'Active payment gateways', 'wpuf' ),
-                'type' => 'multicheck',
+                'name'    => 'active_gateways',
+                'label'   => __( 'Payment Gateways', 'wpuf' ),
+                'desc'    => __( 'Active payment gateways', 'wpuf' ),
+                'type'    => 'multicheck',
                 'options' => wpuf_get_gateways()
-            ),
+            )
         ) ),
         'wpuf_support' => apply_filters( 'wpuf_options_support', array(
             array(
-                'name' => 'support',
+                'name'  => 'support',
                 'label' => __( 'Need Help?', 'wpuf' ),
-                'type' => 'html',
-                'desc' => '
+                'type'  => 'html',
+                'desc'  => '
                         <ol>
                             <li>
                                 <strong>Check the FAQ and the documentation</strong>
-                                <p>First of all, check the <strong><a href="http://wordpress.org/extend/plugins/wp-user-frontend/faq/">FAQ</a></strong> before contacting! Most of the questions you might need answers to have already been asked and the answers are in the FAQ. Checking the FAQ is the easiest and quickest way to solve your problem.</p>
+                                <p>First of all, check the <strong><a target="_blank" href="http://docs.wedevs.com/wp-user-frontend-pro/">Documentation</a></strong> before contacting! Most of the questions you might need answers to have already been asked and the answers are in the FAQ. Checking the FAQ is the easiest and quickest way to solve your problem.</p>
                             </li>
                             <li>
                                 <strong>Use the Support Forum</strong>
-                                <p>If you were unable to find the answer to your question on the FAQ page, you should check the <strong><a href="http://wordpress.org/tags/wp-user-frontend?forum_id=10">support forum on WordPress.org</a></strong>. If you can’t locate any topics that pertain to your particular issue, post a new topic for it.</p>
-                                <p>But, remember that this is a free support forum and no one is obligated to help you. Every person who offers information to help you is a volunteer, so be polite. And, I would suggest that you read the <a href="http://wordpress.org/support/topic/68664">“Forum Rules”</a> before posting anything on this page.</p>
-                            </li>
-                            <li>
-                                <strong>Got an idea?</strong>
-                                <p>I would love to hear about your ideas and suggestions about the plugin. Please post them on the <strong><a href="http://wordpress.org/tags/wp-user-frontend?forum_id=10">support forum on WordPress.org</a></strong> and I will look into it</p>
-                            </li>
-                            <li>
-                                <strong>Gettings no response?</strong>
-                                <p>I try to answer all the question in the forum. I created the plugin without any charge and I am usually very busy with my other works. As this is a free plugin, I am not bound answer all of your questions.</p>
-                            </li>
-                            <li>
-                                I spent countless hours to build this plugin, <strong><a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=tareq%40wedevs%2ecom&lc=US&item_name=WP%20User%20Frontend&item_number=Tareq%27s%20Planet&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">support</a></strong> me if you like this plugin and <a href="http://wordpress.org/extend/plugins/wp-user-frontend/">rate</a> the plugin.
+                                <p>If you were unable to find the answer to your question on the documentation page, you should check the <strong><a href="http://wedevs.com/support/forum/plugin-support/wp-user-frontend/wp-user-frontend-pro/">support forum on wedevs.com</a></strong>. If you can’t locate any topics that pertain to your particular issue, post a new topic for it.</p>
                             </li>
                         </ol>'
             )
@@ -515,3 +373,39 @@ function wpuf_settings_fields() {
 
     return apply_filters( 'wpuf_settings_fields', $settings_fields );
 }
+
+function wpuf_settings_field_profile( $form ) {
+    $user_roles = wpuf_get_user_roles();
+    $forms = get_posts( array(
+        'numberposts' => -1,
+        'post_type'   => 'wpuf_profile'
+    ) );
+
+    $val = get_option( 'wpuf_profile', array() );
+    ?>
+
+    <p style="padding-left: 10px; font-style: italic; font-size: 13px;">
+        <strong><?php _e( 'Select profile/registration forms for user roles. These forms will be used to populate extra edit profile fields in backend.', 'wpuf' ); ?></strong>
+    </p>
+    <table class="form-table">
+        <?php
+        foreach ($user_roles as $role => $name) {
+            $current = isset( $val['roles'][$role] ) ? $val['roles'][$role] : '';
+            ?>
+            <tr valign="top">
+                <th scrope="row"><?php echo $name; ?></th>
+                <td>
+                    <select name="wpuf_profile[roles][<?php echo $role; ?>]">
+                        <option value=""><?php _e( ' - select - ', 'wpuf' ); ?></option>
+                        <?php foreach ($forms as $form) { ?>
+                            <option value="<?php echo $form->ID; ?>"<?php selected( $current, $form->ID ); ?>><?php echo $form->post_title; ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>
+    <?php
+}
+
+add_action( 'wsa_form_bottom_wpuf_profile', 'wpuf_settings_field_profile' );

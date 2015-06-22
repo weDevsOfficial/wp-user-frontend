@@ -2,10 +2,10 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend Pro 2.3\n"
+"Project-Id-Version: WP User Frontend Pro 2.3.2\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/\n"
-"POT-Creation-Date: 2015-06-21 06:30:41+00:00\n"
+"POT-Creation-Date: 2015-06-22 10:23:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -73,7 +73,7 @@ msgstr ""
 msgid "Registraton Forms"
 msgstr ""
 
-#: admin/form.php:215 includes/free/loader.php:57 includes/pro/loader.php:109
+#: admin/form.php:215 includes/free/loader.php:57 includes/pro/loader.php:107
 msgid "Registration Forms"
 msgstr ""
 
@@ -138,14 +138,14 @@ msgstr ""
 #: admin/form.php:339 admin/settings-options.php:86
 #: admin/settings-options.php:160 admin/settings-options.php:171
 #: admin/settings-options.php:253 admin/subscription.php:148
-#: admin/template.php:74 includes/free/form.php:477 includes/pro/form.php:491
+#: admin/template.php:74 includes/free/form.php:477 includes/pro/form.php:492
 msgid "No"
 msgstr ""
 
 #: admin/form.php:339 admin/settings-options.php:85
 #: admin/settings-options.php:159 admin/settings-options.php:170
 #: admin/settings-options.php:252 admin/subscription.php:146
-#: admin/template.php:73 includes/free/form.php:476 includes/pro/form.php:490
+#: admin/template.php:73 includes/free/form.php:476 includes/pro/form.php:491
 msgid "Yes"
 msgstr ""
 
@@ -207,7 +207,7 @@ msgid "This page is restricted. Please Log in / Register to view this page."
 msgstr ""
 
 #: admin/form.php:641 admin/subscription.php:206 admin/template-post.php:177
-#: class/edit-profile.php:96 includes/free/edit-profile.php:92
+#: includes/free/edit-profile.php:92
 msgid "Name"
 msgstr ""
 
@@ -228,7 +228,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: admin/form.php:653 class/render-form.php:566
+#: admin/form.php:653 class/render-form.php:548
 msgid "Save Draft"
 msgstr ""
 
@@ -517,47 +517,41 @@ msgstr ""
 msgid "Profile Fields"
 msgstr ""
 
-#: admin/form.php:1183 admin/form.php:1591 class/edit-profile.php:100
-#: includes/free/edit-profile.php:96 includes/free/edit-user.php:92
-#: includes/free/edit-user.php:144 templates/login-form.php:21
+#: admin/form.php:1183 admin/form.php:1595 includes/free/edit-profile.php:96
+#: includes/free/edit-user.php:92 includes/free/edit-user.php:144
+#: templates/login-form.php:21
 msgid "Username"
 msgstr ""
 
-#: admin/form.php:1184 admin/form.php:1595 class/edit-profile.php:104
-#: includes/free/edit-profile.php:100
+#: admin/form.php:1184 admin/form.php:1599 includes/free/edit-profile.php:100
 msgid "First Name"
 msgstr ""
 
-#: admin/form.php:1185 admin/form.php:1599 class/edit-profile.php:109
-#: includes/free/edit-profile.php:105
+#: admin/form.php:1185 admin/form.php:1603 includes/free/edit-profile.php:105
 msgid "Last Name"
 msgstr ""
 
-#: admin/form.php:1186 admin/form.php:1603 class/edit-profile.php:114
-#: includes/free/edit-profile.php:110
+#: admin/form.php:1186 admin/form.php:1607 includes/free/edit-profile.php:110
 msgid "Nickname"
 msgstr ""
 
-#: admin/form.php:1187 admin/form.php:1607 class/edit-profile.php:155
-#: includes/free/edit-profile.php:151
+#: admin/form.php:1187 admin/form.php:1611 includes/free/edit-profile.php:151
 msgid "E-mail"
 msgstr ""
 
-#: admin/form.php:1188 admin/form.php:1611 class/edit-profile.php:160
-#: includes/free/edit-profile.php:156
+#: admin/form.php:1188 admin/form.php:1615 includes/free/edit-profile.php:156
 msgid "Website"
 msgstr ""
 
-#: admin/form.php:1189 admin/form.php:1615 class/edit-profile.php:182
-#: includes/free/edit-profile.php:178
+#: admin/form.php:1189 admin/form.php:1619 includes/free/edit-profile.php:178
 msgid "Biographical Info"
 msgstr ""
 
-#: admin/form.php:1190 admin/form.php:1619 templates/login-form.php:25
+#: admin/form.php:1190 admin/form.php:1623 templates/login-form.php:25
 msgid "Password"
 msgstr ""
 
-#: admin/form.php:1191 admin/form.php:1623
+#: admin/form.php:1191 admin/form.php:1627
 msgid "Avatar"
 msgstr ""
 
@@ -647,11 +641,11 @@ msgstr ""
 msgid "Sample Form"
 msgstr ""
 
-#: admin/posting.php:38 includes/pro/render-form.php:203 wpuf.php:279
+#: admin/posting.php:38 class/render-form.php:1404 wpuf.php:286
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:44 includes/pro/form.php:802 wpuf.php:285
+#: admin/posting.php:44 includes/pro/form.php:761 wpuf.php:292
 msgid "Allowed Files"
 msgstr ""
 
@@ -1107,9 +1101,8 @@ msgstr ""
 msgid "Are you sure to delete this pack?"
 msgstr ""
 
-#: admin/subscription.php:232 class/upload.php:128
-#: includes/free/edit-user.php:100 includes/pro/render-form.php:203
-#: templates/dashboard.php:112
+#: admin/subscription.php:232 class/render-form.php:1404 class/upload.php:128
+#: includes/free/edit-user.php:100 templates/dashboard.php:112
 msgid "Delete"
 msgstr ""
 
@@ -1164,8 +1157,7 @@ msgstr ""
 msgid "Year(s)"
 msgstr ""
 
-#: admin/subscription.php:451 class/edit-profile.php:278
-#: includes/free/edit-profile.php:275
+#: admin/subscription.php:451 includes/free/edit-profile.php:275
 msgid "WPUF Subscription"
 msgstr ""
 
@@ -1205,8 +1197,7 @@ msgstr ""
 msgid "Show Package"
 msgstr ""
 
-#: admin/subscription.php:570 class/edit-profile.php:282
-#: includes/free/edit-profile.php:279
+#: admin/subscription.php:570 includes/free/edit-profile.php:279
 msgid "Pack:"
 msgstr ""
 
@@ -1236,13 +1227,13 @@ msgstr ""
 msgid "Numebr of words the author to be restricted in"
 msgstr ""
 
-#: admin/template-post.php:103 includes/pro/admin/template-profile.php:199
-#: includes/pro/form.php:732 includes/pro/form.php:780
+#: admin/template-post.php:103 admin/template.php:624
+#: includes/pro/admin/template-profile.php:199 includes/pro/form.php:739
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
-#: admin/template-post.php:115 includes/pro/admin/template-profile.php:211
-#: includes/pro/form.php:744 includes/pro/form.php:792
+#: admin/template-post.php:115 admin/template.php:636
+#: includes/pro/admin/template-profile.php:211 includes/pro/form.php:751
 msgid "Max. file size"
 msgstr ""
 
@@ -1333,35 +1324,35 @@ msgstr ""
 msgid "Visible on product page"
 msgstr ""
 
-#: admin/template-post.php:686
+#: admin/template-post.php:687
 msgid "all"
 msgstr ""
 
-#: admin/template-post.php:686
+#: admin/template-post.php:687
 msgid "Show All"
 msgstr ""
 
-#: admin/template-post.php:689
+#: admin/template-post.php:690
 msgid "hide"
 msgstr ""
 
-#: admin/template-post.php:689
+#: admin/template-post.php:690
 msgid "Hide These Countries"
 msgstr ""
 
-#: admin/template-post.php:690
+#: admin/template-post.php:691
 msgid "Chose Country to hide from List"
 msgstr ""
 
-#: admin/template-post.php:694
+#: admin/template-post.php:695
 msgid "show"
 msgstr ""
 
-#: admin/template-post.php:694
+#: admin/template-post.php:695
 msgid "Show These Countries"
 msgstr ""
 
-#: admin/template-post.php:695
+#: admin/template-post.php:696
 msgid "Add Country to List"
 msgstr ""
 
@@ -1413,7 +1404,7 @@ msgstr ""
 msgid "Add a CSS class name for this field"
 msgstr ""
 
-#: admin/template.php:127 admin/template.php:175 includes/pro/form.php:622
+#: admin/template.php:127 admin/template.php:175 includes/pro/form.php:623
 msgid "Placeholder text"
 msgstr ""
 
@@ -1421,7 +1412,7 @@ msgstr ""
 msgid "Text for HTML5 placeholder attribute"
 msgstr ""
 
-#: admin/template.php:132 admin/template.php:180 includes/pro/form.php:627
+#: admin/template.php:132 admin/template.php:180 includes/pro/form.php:628
 msgid "Default value"
 msgstr ""
 
@@ -1429,7 +1420,7 @@ msgstr ""
 msgid "The default value this field will have"
 msgstr ""
 
-#: admin/template.php:137 includes/pro/form.php:632
+#: admin/template.php:137 includes/pro/form.php:633
 msgid "Size"
 msgstr ""
 
@@ -1441,7 +1432,7 @@ msgstr ""
 msgid "Rows"
 msgstr ""
 
-#: admin/template.php:170 includes/pro/form.php:637
+#: admin/template.php:170 includes/pro/form.php:638
 msgid "Columns"
 msgstr ""
 
@@ -1461,8 +1452,8 @@ msgstr ""
 msgid "Show values"
 msgstr ""
 
-#: admin/template.php:226 admin/template.php:284 includes/pro/form.php:1147
-#: includes/pro/form.php:1457
+#: admin/template.php:226 admin/template.php:284 includes/pro/form.php:1106
+#: includes/pro/form.php:1416
 msgid "Label"
 msgstr ""
 
@@ -1479,19 +1470,19 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: admin/template.php:428 admin/template.php:460 includes/pro/form.php:907
+#: admin/template.php:428 admin/template.php:460 includes/pro/form.php:866
 msgid ""
 "First element of the select dropdown. Leave this empty if you don't want to "
 "show this field"
 msgstr ""
 
-#: admin/template.php:439 admin/template.php:471 includes/pro/form.php:924
+#: admin/template.php:439 admin/template.php:471 includes/pro/form.php:883
 msgid "Select Text"
 msgstr ""
 
 #: admin/template.php:534 admin/template.php:594 class/upload.php:121
-#: includes/pro/form.php:1293 includes/pro/form.php:1335
-#: includes/pro/form.php:1374 templates/dashboard.php:26 wpuf-functions.php:649
+#: includes/pro/form.php:1252 includes/pro/form.php:1294
+#: includes/pro/form.php:1333 templates/dashboard.php:26 wpuf-functions.php:649
 msgid "Title"
 msgstr ""
 
@@ -1505,6 +1496,14 @@ msgstr ""
 
 #: admin/template.php:573
 msgid "Enter the meta value"
+msgstr ""
+
+#: admin/template.php:625 includes/pro/form.php:740
+msgid "Number of images can be uploaded"
+msgstr ""
+
+#: admin/template.php:641 includes/pro/form.php:756
+msgid "Max. files"
 msgstr ""
 
 #: admin/tools.php:32
@@ -1701,7 +1700,7 @@ msgstr ""
 msgid "Item Details"
 msgstr ""
 
-#: admin/transaction.php:183 includes/free/form.php:11 includes/pro/form.php:12
+#: admin/transaction.php:183 includes/free/form.php:12 includes/pro/form.php:12
 msgid "Date"
 msgstr ""
 
@@ -1717,96 +1716,9 @@ msgstr ""
 msgid "No pending orders found"
 msgstr ""
 
-#: class/edit-profile.php:31 class/frontend-dashboard.php:35
-#: includes/free/edit-profile.php:27 includes/free/edit-user.php:37
+#: class/frontend-dashboard.php:35 includes/free/edit-profile.php:27
+#: includes/free/edit-user.php:37
 msgid "This page is restricted. Please %s to view this page."
-msgstr ""
-
-#: class/edit-profile.php:70 includes/free/edit-profile.php:66
-msgid "<strong>Success</strong>: Profile updated"
-msgstr ""
-
-#: class/edit-profile.php:101 includes/free/edit-profile.php:97
-msgid "Usernames cannot be changed."
-msgstr ""
-
-#: class/edit-profile.php:114 class/edit-profile.php:155
-#: includes/free/edit-profile.php:110 includes/free/edit-profile.php:151
-msgid "(required)"
-msgstr ""
-
-#: class/edit-profile.php:119 includes/free/edit-profile.php:115
-msgid "Display to Public as"
-msgstr ""
-
-#: class/edit-profile.php:151 includes/free/edit-profile.php:147
-msgid "Contact Info"
-msgstr ""
-
-#: class/edit-profile.php:178 includes/free/edit-profile.php:174
-msgid "About Yourself"
-msgstr ""
-
-#: class/edit-profile.php:184 includes/free/edit-profile.php:180
-msgid ""
-"Share a little biographical information to fill out your profile. This may "
-"be shown publicly."
-msgstr ""
-
-#: class/edit-profile.php:187 includes/free/edit-profile.php:183
-msgid "New Password"
-msgstr ""
-
-#: class/edit-profile.php:193 includes/free/edit-profile.php:189
-#: includes/pro/admin/template-profile.php:144
-msgid "Confirm Password"
-msgstr ""
-
-#: class/edit-profile.php:195 includes/free/edit-profile.php:191
-msgid "Type your new password again."
-msgstr ""
-
-#: class/edit-profile.php:200 includes/free/edit-profile.php:196
-msgid "Password Strength"
-msgstr ""
-
-#: class/edit-profile.php:202 class/render-form.php:1147
-#: class/render-form.php:1153 includes/free/edit-profile.php:198
-msgid "Strength indicator"
-msgstr ""
-
-#: class/edit-profile.php:225 includes/free/edit-profile.php:222
-#: includes/free/form.php:343 includes/pro/form.php:333
-msgid "Update Profile"
-msgstr ""
-
-#: class/edit-profile.php:244 includes/free/edit-profile.php:241
-#: includes/pro/admin/posting-profile.php:130
-msgid "WPUF Post Lock"
-msgstr ""
-
-#: class/edit-profile.php:247 includes/free/edit-profile.php:244
-#: includes/pro/admin/posting-profile.php:133
-msgid "Lock Post:"
-msgstr ""
-
-#: class/edit-profile.php:253 includes/free/edit-profile.php:250
-#: includes/pro/admin/posting-profile.php:139
-msgid "Lock user from creating new post."
-msgstr ""
-
-#: class/edit-profile.php:258 includes/free/edit-profile.php:255
-#: includes/pro/admin/posting-profile.php:144
-msgid "Lock Reason:"
-msgstr ""
-
-#: class/edit-profile.php:288 includes/free/edit-profile.php:285
-msgid "Post Count:"
-msgstr ""
-
-#: class/edit-profile.php:294 includes/free/edit-profile.php:291
-#: includes/pro/updates.php:415
-msgid "Validity:"
 msgstr ""
 
 #: class/frontend-dashboard.php:67
@@ -1895,35 +1807,43 @@ msgstr ""
 msgid "Change Pack"
 msgstr ""
 
-#: class/payment.php:159
+#: class/payment.php:156 includes/pro/coupons.php:117
+msgid "Selected Pack "
+msgstr ""
+
+#: class/payment.php:157 includes/pro/coupons.php:118
+msgid "Pack Price "
+msgstr ""
+
+#: class/payment.php:169
 msgid "Apply Coupon"
 msgstr ""
 
-#: class/payment.php:160
+#: class/payment.php:170
 msgid "Cancel"
 msgstr ""
 
-#: class/payment.php:163
+#: class/payment.php:173
 msgid "Have a discount code?"
 msgstr ""
 
-#: class/payment.php:171
+#: class/payment.php:184
 msgid "Choose Your Payment Method"
 msgstr ""
 
-#: class/payment.php:208
+#: class/payment.php:221
 msgid "Proceed"
 msgstr ""
 
-#: class/payment.php:212
+#: class/payment.php:225
 msgid "No Payment gateway found"
 msgstr ""
 
-#: class/payment.php:386 lib/gateway/bank.php:99
+#: class/payment.php:399 lib/gateway/bank.php:99
 msgid "[%s] Payment Received"
 msgstr ""
 
-#: class/payment.php:387
+#: class/payment.php:400
 msgid "New payment received at %s"
 msgstr ""
 
@@ -1935,36 +1855,45 @@ msgstr ""
 msgid "reCAPTCHA validation failed"
 msgstr ""
 
-#: class/render-form.php:799
+#: class/render-form.php:781
 msgid "Word Limit Reached !"
 msgstr ""
 
-#: class/render-form.php:896
+#: class/render-form.php:878
 msgid "Insert Photo"
 msgstr ""
 
-#: class/render-form.php:1154
+#: class/render-form.php:1128 class/render-form.php:1134
+#: includes/free/edit-profile.php:198
+msgid "Strength indicator"
+msgstr ""
+
+#: class/render-form.php:1135
 msgid "Very weak"
 msgstr ""
 
-#: class/render-form.php:1155
+#: class/render-form.php:1136
 msgid "Weak"
 msgstr ""
 
-#: class/render-form.php:1156
+#: class/render-form.php:1137
 msgid "Medium"
 msgstr ""
 
-#: class/render-form.php:1157
+#: class/render-form.php:1138
 msgid "Strong"
 msgstr ""
 
-#: class/render-form.php:1158
+#: class/render-form.php:1139
 msgid "Mismatch"
 msgstr ""
 
-#: class/render-form.php:1180 class/render-form.php:1288
+#: class/render-form.php:1161 class/render-form.php:1269
 msgid "-- Select --"
+msgstr ""
+
+#: class/render-form.php:1392
+msgid "Select Image"
 msgstr ""
 
 #: class/subscription.php:322
@@ -2051,6 +1980,86 @@ msgstr ""
 msgid "Caption"
 msgstr ""
 
+#: includes/free/edit-profile.php:66
+msgid "<strong>Success</strong>: Profile updated"
+msgstr ""
+
+#: includes/free/edit-profile.php:97
+msgid "Usernames cannot be changed."
+msgstr ""
+
+#: includes/free/edit-profile.php:110 includes/free/edit-profile.php:151
+msgid "(required)"
+msgstr ""
+
+#: includes/free/edit-profile.php:115
+msgid "Display to Public as"
+msgstr ""
+
+#: includes/free/edit-profile.php:147
+msgid "Contact Info"
+msgstr ""
+
+#: includes/free/edit-profile.php:174
+msgid "About Yourself"
+msgstr ""
+
+#: includes/free/edit-profile.php:180
+msgid ""
+"Share a little biographical information to fill out your profile. This may "
+"be shown publicly."
+msgstr ""
+
+#: includes/free/edit-profile.php:183
+msgid "New Password"
+msgstr ""
+
+#: includes/free/edit-profile.php:189
+#: includes/pro/admin/template-profile.php:144
+msgid "Confirm Password"
+msgstr ""
+
+#: includes/free/edit-profile.php:191
+msgid "Type your new password again."
+msgstr ""
+
+#: includes/free/edit-profile.php:196
+msgid "Password Strength"
+msgstr ""
+
+#: includes/free/edit-profile.php:222 includes/free/form.php:343
+#: includes/pro/form.php:333
+msgid "Update Profile"
+msgstr ""
+
+#: includes/free/edit-profile.php:241
+#: includes/pro/admin/posting-profile.php:130
+msgid "WPUF Post Lock"
+msgstr ""
+
+#: includes/free/edit-profile.php:244
+#: includes/pro/admin/posting-profile.php:133
+msgid "Lock Post:"
+msgstr ""
+
+#: includes/free/edit-profile.php:250
+#: includes/pro/admin/posting-profile.php:139
+msgid "Lock user from creating new post."
+msgstr ""
+
+#: includes/free/edit-profile.php:255
+#: includes/pro/admin/posting-profile.php:144
+msgid "Lock Reason:"
+msgstr ""
+
+#: includes/free/edit-profile.php:285
+msgid "Post Count:"
+msgstr ""
+
+#: includes/free/edit-profile.php:291 includes/pro/updates.php:415
+msgid "Validity:"
+msgstr ""
+
 #: includes/free/edit-user.php:23
 msgid "User doesn't exists"
 msgstr ""
@@ -2111,12 +2120,12 @@ msgid ""
 "<a href=\"mailto:%s\">webmaster</a> !"
 msgstr ""
 
-#: includes/free/form.php:10 includes/pro/form.php:11
-msgid "Repeat Field"
+#: includes/free/form.php:8 includes/pro/form.php:13
+msgid "Image Upload"
 msgstr ""
 
-#: includes/free/form.php:12 includes/pro/form.php:13
-msgid "Image Upload"
+#: includes/free/form.php:11 includes/pro/form.php:11
+msgid "Repeat Field"
 msgstr ""
 
 #: includes/free/form.php:13 includes/pro/form.php:14
@@ -2257,12 +2266,12 @@ msgstr ""
 msgid "Update Button text"
 msgstr ""
 
-#: includes/free/form.php:473 includes/pro/form.php:487
+#: includes/free/form.php:473 includes/pro/form.php:488
 msgid "Conditional Logic"
 msgstr ""
 
 #: includes/free/loader.php:63 includes/free/loader.php:92
-#: includes/pro/loader.php:115
+#: includes/pro/loader.php:113
 msgid "Coupons"
 msgstr ""
 
@@ -2479,31 +2488,23 @@ msgstr ""
 msgid "Sorry invalid coupon code!"
 msgstr ""
 
-#: includes/pro/coupons.php:117
-msgid "Selected Pack "
-msgstr ""
-
-#: includes/pro/coupons.php:118
-msgid "Pack Price "
-msgstr ""
-
-#: includes/pro/coupons.php:151
+#: includes/pro/coupons.php:149
 msgid "Coupon is not availiable for this package!"
 msgstr ""
 
-#: includes/pro/coupons.php:155
+#: includes/pro/coupons.php:153
 msgid "Coupon usage limit exceeded!"
 msgstr ""
 
-#: includes/pro/coupons.php:160
+#: includes/pro/coupons.php:158
 msgid "Sorry, this coupon is not start!"
 msgstr ""
 
-#: includes/pro/coupons.php:167
+#: includes/pro/coupons.php:165
 msgid "Sorry, this coupon has been expired!"
 msgstr ""
 
-#: includes/pro/coupons.php:172
+#: includes/pro/coupons.php:170
 msgid "You are not allowed to use this coupon!"
 msgstr ""
 
@@ -2511,190 +2512,182 @@ msgstr ""
 msgid "No custom taxonomies found"
 msgstr ""
 
-#: includes/pro/form.php:614
+#: includes/pro/form.php:615
 msgid "Multiple Column"
 msgstr ""
 
-#: includes/pro/form.php:684
+#: includes/pro/form.php:685
 msgid "The date format"
 msgstr ""
 
-#: includes/pro/form.php:695
+#: includes/pro/form.php:696
 msgid "Date Format"
 msgstr ""
 
-#: includes/pro/form.php:700
+#: includes/pro/form.php:701
 msgid "Time"
 msgstr ""
 
-#: includes/pro/form.php:706
+#: includes/pro/form.php:707
 msgid "Enable time input"
 msgstr ""
 
-#: includes/pro/form.php:733 includes/pro/form.php:781
-msgid "Number of images can be uploaded"
-msgstr ""
-
-#: includes/pro/form.php:749 includes/pro/form.php:797
-msgid "Max. files"
-msgstr ""
-
-#: includes/pro/form.php:839
+#: includes/pro/form.php:798
 msgid "Set the map zoom level"
 msgstr ""
 
-#: includes/pro/form.php:840
+#: includes/pro/form.php:799
 msgid "Enter default latitude and longitude to center the map"
 msgstr ""
 
-#: includes/pro/form.php:851
+#: includes/pro/form.php:810
 msgid "Zoom Level"
 msgstr ""
 
-#: includes/pro/form.php:856
+#: includes/pro/form.php:815
 msgid "Default Co-ordinate"
 msgstr ""
 
-#: includes/pro/form.php:861
+#: includes/pro/form.php:820
 msgid "Address Button"
 msgstr ""
 
-#: includes/pro/form.php:867
+#: includes/pro/form.php:826
 msgid "Show address find button"
 msgstr ""
 
-#: includes/pro/form.php:873
+#: includes/pro/form.php:832
 msgid "Show Latitude/Longitude"
 msgstr ""
 
-#: includes/pro/form.php:879
+#: includes/pro/form.php:838
 msgid "Show latitude and longitude input box value"
 msgstr ""
 
-#: includes/pro/form.php:978
+#: includes/pro/form.php:937
 msgid "Step"
 msgstr ""
 
-#: includes/pro/form.php:987
+#: includes/pro/form.php:946
 msgid "Min Value"
 msgstr ""
 
-#: includes/pro/form.php:996
+#: includes/pro/form.php:955
 msgid "Max Value"
 msgstr ""
 
-#: includes/pro/form.php:1029 includes/pro/form.php:1158
+#: includes/pro/form.php:988 includes/pro/form.php:1117
 msgid "Address Line 1"
 msgstr ""
 
-#: includes/pro/form.php:1045 includes/pro/form.php:1171
+#: includes/pro/form.php:1004 includes/pro/form.php:1130
 msgid "Address Line 2"
 msgstr ""
 
-#: includes/pro/form.php:1061
+#: includes/pro/form.php:1020
 msgid "City"
 msgstr ""
 
-#: includes/pro/form.php:1077
+#: includes/pro/form.php:1036
 msgid "State"
 msgstr ""
 
-#: includes/pro/form.php:1093
+#: includes/pro/form.php:1052
 msgid "Zip Code"
 msgstr ""
 
-#: includes/pro/form.php:1109 includes/pro/form.php:1230
+#: includes/pro/form.php:1068 includes/pro/form.php:1189
 msgid "Country"
 msgstr ""
 
-#: includes/pro/form.php:1135
+#: includes/pro/form.php:1094
 msgid "Address Description"
 msgstr ""
 
-#: includes/pro/form.php:1140
+#: includes/pro/form.php:1099
 msgid "Address Field(s)"
 msgstr ""
 
-#: includes/pro/form.php:1145
+#: includes/pro/form.php:1104
 msgid "Fields"
 msgstr ""
 
-#: includes/pro/form.php:1146
+#: includes/pro/form.php:1105
 msgid "Required?"
 msgstr ""
 
-#: includes/pro/form.php:1148
+#: includes/pro/form.php:1107
 msgid "Default Value"
 msgstr ""
 
-#: includes/pro/form.php:1149
+#: includes/pro/form.php:1108
 msgid "Placeholder"
 msgstr ""
 
-#: includes/pro/form.php:1186
+#: includes/pro/form.php:1145
 msgid "City Name"
 msgstr ""
 
-#: includes/pro/form.php:1201
+#: includes/pro/form.php:1160
 msgid "State/Region"
 msgstr ""
 
-#: includes/pro/form.php:1216
+#: includes/pro/form.php:1175
 msgid "Zip/Postal Code"
 msgstr ""
 
-#: includes/pro/form.php:1290
+#: includes/pro/form.php:1249
 msgid "Section Name"
 msgstr ""
 
-#: includes/pro/form.php:1297 includes/pro/form.php:1299
+#: includes/pro/form.php:1256 includes/pro/form.php:1258
 msgid "Previous Button Text"
 msgstr ""
 
-#: includes/pro/form.php:1303 includes/pro/form.php:1305
+#: includes/pro/form.php:1262 includes/pro/form.php:1264
 msgid "Next Button Text"
 msgstr ""
 
-#: includes/pro/form.php:1341
+#: includes/pro/form.php:1300
 msgid ""
 "Insert your public key and private key in <a href='%s'>plugin settings</a>. "
 "<a href='https://www.google.com/recaptcha/' target='_blank'>Register</a> "
 "first if you don't have any keys."
 msgstr ""
 
-#: includes/pro/form.php:1380
+#: includes/pro/form.php:1339
 msgid ""
 "Depends on <a "
 "href='http://wordpress.org/extend/plugins/really-simple-captcha/' "
 "target='_blank'>Really Simple Captcha</a> Plugin. Install it first."
 msgstr ""
 
-#: includes/pro/form.php:1410
+#: includes/pro/form.php:1369
 msgid "Hook Name"
 msgstr ""
 
-#: includes/pro/form.php:1413
+#: includes/pro/form.php:1372
 msgid "Name of the hook"
 msgstr ""
 
-#: includes/pro/form.php:1416
+#: includes/pro/form.php:1375
 msgid ""
 "An option for developers to add dynamic elements they want. It provides the "
 "chance to add whatever input type you want to add in this form."
 msgstr ""
 
-#: includes/pro/form.php:1417
+#: includes/pro/form.php:1376
 msgid ""
 "This way, you can bind your own functions to render the form to this action "
 "hook. You'll be given 3 parameters to play with: $form_id, $post_id, "
 "$form_settings."
 msgstr ""
 
-#: includes/pro/form.php:1463
+#: includes/pro/form.php:1422
 msgid "Terms & Conditions"
 msgstr ""
 
-#: includes/pro/form.php:1464
+#: includes/pro/form.php:1423
 msgid "Insert terms and condtions here."
 msgstr ""
 
@@ -2883,27 +2876,23 @@ msgstr ""
 msgid "Remove this choice"
 msgstr ""
 
-#: includes/pro/render-form.php:191
-msgid "Select Image"
-msgstr ""
-
-#: includes/pro/render-form.php:254
+#: includes/pro/render-form.php:176
 msgid "Select File(s)"
 msgstr ""
 
-#: includes/pro/render-form.php:263
+#: includes/pro/render-form.php:185
 msgid "Download File"
 msgstr ""
 
-#: includes/pro/render-form.php:306
+#: includes/pro/render-form.php:228
 msgid "Type an address to find"
 msgstr ""
 
-#: includes/pro/render-form.php:307
+#: includes/pro/render-form.php:229
 msgid "Find Address"
 msgstr ""
 
-#: includes/pro/render-form.php:748
+#: includes/pro/render-form.php:670
 msgid "Error: Really Simple Captcha plugin not found!"
 msgstr ""
 
@@ -3201,11 +3190,11 @@ msgstr ""
 msgid "CSV"
 msgstr ""
 
-#: wpuf.php:104
+#: wpuf.php:109
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:274
+#: wpuf.php:281
 msgid "Please fix the errors to proceed"
 msgstr ""
 

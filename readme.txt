@@ -64,8 +64,8 @@ Try an <a href="http://demo.wedevs.com/wpuf/wp-admin/">online demo</a> of the Pr
 
 After having installed the plugin:
 
-1. Create a new Page “New Post” and insert shortcode `[wpuf_addpost]`.
-    For a custom post type **event**, use `[wpuf_addpost post_type="event"]`
+1. Click "Install WPUF Pages" after installation for automatic settings installation.
+1. Create a form from the form builder. Get the shortcode for a form. Copy and paste that shortcode to a page.
 1. Create a new Page “Edit” for editing posts and insert shortcode `[wpuf_edit]`
 1. Create a new Page “Profile” for editing profile and insert shortcode `[wpuf_editprofile]`
 1. Create a new Page “Dashboard” and insert shortcode `[wpuf_dashboard]`
@@ -74,7 +74,6 @@ After having installed the plugin:
 1. To show the subscription info, insert the shortcdoe `[wpuf_sub_info]`
 1. To show the subscription packs, insert the shortcode `[wpuf_sub_pack]`
 1. For subscription payment page, set the *Payment Page* from *Payments* tab on settings page.
-1. To edit users, insert the shortcode `[wpuf-edit-users]`
 
 
 == Screenshots ==

@@ -877,6 +877,69 @@ table.wpuf-table {
     text-decoration: underline;
 }
 
+.wpuf_multistep_fieldset{
+  position: relative;
+  padding-bottom: 50px;
+}
+.wpuf_multistep_progressbar{
+  overflow: hidden;
+}
+.wpuf_multistep_prev_btn,.wpuf_multistep_next_btn {
+  position: absolute;
+  bottom: 5px;
+}
+.wpuf_multistep_prev_btn{
+  left: 10px;
+}
+.wpuf_multistep_next_btn{
+  right: 10px;
+}
+.wpuf_ms_pb{
+  float: left;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 1px;
+  position: relative;
+  height: 50px;
+  line-height: 50px;
+}
+.wpuf_ps_bar{
+  background: #FF001D;
+  position: absolute;
+  top: 5px;
+  height: 5px;
+  width: 100%;
+  left: -50%;
+}
+.wpuf_ms_pb:first-child .wpuf_ps_bar{
+  width: 15px;
+  left: 50%;
+}
+.wpuf_ps_bar_node{
+  width: 15px;
+  height: 15px;
+  border-radius: 20px;
+  background: inherit;
+  color: #ffffff;
+  right: -8px;
+  position: absolute;
+  top: -100%;
+}
+.wpuf_ms_pb:first-child .wpuf_ps_bar .wpuf_ps_bar_node{
+  float: left;
+  right: 0;
+}
+
+
+.wpuf_ms_pb:last-child .wpuf_ps_bar .wpuf_ps_bar_node{
+  float: right;
+}
+
+.passed_wpuf_ms_bar{
+  background: #8dff1c;
+  color: #fff;
+}
+
 // landscape phones and smaller
 @media (max-width: 480px) {
     ul.wpuf-form {

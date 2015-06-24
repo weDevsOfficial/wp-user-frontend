@@ -1,18 +1,24 @@
-=== WP User Frontend ===
-Contributors: tareq1988, wedevs
-Donate link: http://tareq.wedevs.com/donate/
-Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
-Requires at least: 3.3
-Tested up to: 4.2.2
-Stable tag: trunk
+# WP User Frontend #
+**Contributors:** tareq1988, wedevs
+
+**Donate link:** http://tareq.wedevs.com/donate/
+
+**Tags:** frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
+
+**Requires at least:** 3.3
+
+**Tested up to:** 4.2.2
+
+**Stable tag:** trunk
+
 
 Create, update, delete posts and edit profile directly from the WordPress frontend.
 
-== Description ==
+## Description ##
 
 This plugin gives the user the ability to create new posts, edit their profile all from the site frontend, so the user does not need to enter the backend admin panel to do these things.
 
-= Features:  =
+### Features:  ###
 
 * The user can create a new post and edit it from the frontend
 * They can view their page in the frontend custom dashboard
@@ -26,7 +32,7 @@ This plugin gives the user the ability to create new posts, edit their profile a
 * Admins can manage users from frontend
 * Pay-per-post or subscription package for posting
 
-= WP User Frontend PRO - Premium Features =
+### WP User Frontend PRO - Premium Features ###
 
 The <a href="http://wedevs.com/plugin/wp-user-frontend-pro">premium version</a> of WP User Frontend is completely different from the free version as there are a lot more features included.
 
@@ -54,13 +60,13 @@ The <a href="http://wedevs.com/plugin/wp-user-frontend-pro">premium version</a> 
 
 Try an <a href="http://demo.wedevs.com/wpuf/wp-admin/">online demo</a> of the Pro version.
 
-= Translation =
+### Translation ###
 
 * Italian translation by Gabriele Lamberti
 
 [Github Repository](https://github.com/tareq1988/WP-User-Frontend).
 
-== Installation ==
+## Installation ##
 
 After having installed the plugin:
 
@@ -76,71 +82,131 @@ After having installed the plugin:
 1. For subscription payment page, set the *Payment Page* from *Payments* tab on settings page.
 
 
-== Screenshots ==
+## Screenshots ##
 
-1. Admin panel
-2. Admin panel &rarr; Dashboard Tab
-3. Admin panel &rarr; Login Tab
-4. Admin panel &rarr; Payments Tab
-5. Post Forms
-6. Form Builder
-7. Form Builder &rarr; Post Settings
-8. Form Builder &rarr; Edit Settings
-9. Form Elements
-10. Subscription Packs
-11. Subscription Pack Settings
-12. Subscription Packs in a Page
-13. Subscription Payment Screen
-14. A single Form Element on Form Editor
-15. A Form in a Page
-16. Frontend User Dashboard
+###1. Admin panel
+###
+![Admin panel
+](https://ps.w.org/wp-user-frontend/assets/screenshot-1.png)
 
-== Frequently Asked Questions ==
+###2. Admin panel &rarr; Dashboard Tab
+###
+![Admin panel &rarr; Dashboard Tab
+](https://ps.w.org/wp-user-frontend/assets/screenshot-2.png)
 
-= Can I create new posts from frontend =
+###3. Admin panel &rarr; Login Tab
+###
+![Admin panel &rarr; Login Tab
+](https://ps.w.org/wp-user-frontend/assets/screenshot-3.png)
+
+###4. Admin panel &rarr; Payments Tab
+###
+![Admin panel &rarr; Payments Tab
+](https://ps.w.org/wp-user-frontend/assets/screenshot-4.png)
+
+###5. Post Forms
+###
+![Post Forms
+](https://ps.w.org/wp-user-frontend/assets/screenshot-5.png)
+
+###6. Form Builder
+###
+![Form Builder
+](https://ps.w.org/wp-user-frontend/assets/screenshot-6.png)
+
+###7. Form Builder &rarr; Post Settings
+###
+![Form Builder &rarr; Post Settings
+](https://ps.w.org/wp-user-frontend/assets/screenshot-7.png)
+
+###8. Form Builder &rarr; Edit Settings
+###
+![Form Builder &rarr; Edit Settings
+](https://ps.w.org/wp-user-frontend/assets/screenshot-8.png)
+
+###9. Form Elements
+###
+![Form Elements
+](https://ps.w.org/wp-user-frontend/assets/screenshot-9.png)
+
+###10. Subscription Packs
+###
+![Subscription Packs
+](https://ps.w.org/wp-user-frontend/assets/screenshot-10.png)
+
+###11. Subscription Pack Settings
+###
+![Subscription Pack Settings
+](https://ps.w.org/wp-user-frontend/assets/screenshot-11.png)
+
+###12. Subscription Packs in a Page
+###
+![Subscription Packs in a Page
+](https://ps.w.org/wp-user-frontend/assets/screenshot-12.png)
+
+###13. Subscription Payment Screen
+###
+![Subscription Payment Screen
+](https://ps.w.org/wp-user-frontend/assets/screenshot-13.png)
+
+###14. A single Form Element on Form Editor
+###
+![A single Form Element on Form Editor
+](https://ps.w.org/wp-user-frontend/assets/screenshot-14.png)
+
+###15. A Form in a Page
+###
+![A Form in a Page
+](https://ps.w.org/wp-user-frontend/assets/screenshot-15.png)
+
+###16. Frontend User Dashboard
+###
+![Frontend User Dashboard
+](https://ps.w.org/wp-user-frontend/assets/screenshot-16.png)
+
+
+## Frequently Asked Questions ##
+
+### Can I create new posts from frontend ###
 
 Yes
 
-= Can I Edit my posts from frontend =
+### Can I Edit my posts from frontend ###
 
 Yes
 
-= Can I delete my posts from frontend =
+### Can I delete my posts from frontend ###
 
 Yes
 
-= Can I upload photo/image/video =
+### Can I upload photo/image/video ###
 Yes
 
-= I am having problem with uploading files =
+### I am having problem with uploading files ###
 Please check if you've specified the max upload size on setting
 
-= Why "Edit Post" page shows "invalid post id"? =
+### Why "Edit Post" page shows "invalid post id"? ###
 This page is for the purpose of editing posts. You shouldn't access this page directly.
 First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 
-== Changelog ==
+## Changelog ##
 
-= v2.3.3 (June 24, 2015) =
-
- * [fix] Post status settings in form, wasn't being updated.
-
-= v2.3.2 (June 22, 2015) =
+### version 2.3.2 ###
 
  * [fix] Featured image upload fix
  * [new] Image upload field brought back to free
 
-= v2.3.1 (June 21, 2015) =
+### version 2.3.1 ###
 
  * [fix] Compatibility problem with PHP < 5.2. Accidental PHP array shorthand used.
 
-= version 2.3 (June 20, 2015) =
+### version 2.3 ###
 
  * Pro plugin released as free with less features
 
-= version 1.3.2 =
+### version 1.3.2 ###
 
  * [improve] post thumbnail image association added
  * [improve] various form styles updated
@@ -150,34 +216,34 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [fix] Two click needed to submit a post
  * [fix] dashboard author bio height fix
 
-= version 1.3.1 =
+### version 1.3.1 ###
 
  * [fix] `[wpuf_editpost]` typo fix
  * [fix] clean $dashboard_query from corrupting beyond use
 
-= version 1.3 =
+### version 1.3 ###
 
  * [fix] PayPal payment user_id issue fixed
  * [fix] Plupload `o is null` error fix
  * [fix] PHP 5.4 strict warnings fix
  * [update] new version of settings api class
 
-= version 1.2.3 =
+### version 1.2.3 ###
 
 * [fix] `has_shortcode()` brought back again by renaming as `wpuf_has_shortcode()`
 * [fix] all the labels now have a default text
 
-= version 1.2.2 =
+### version 1.2.2 ###
 
 * [fix] shortcode error fix for edit users
 * [fix] plugin css/js url
 * [fix] removed has_shortcode() call
 
-= version 1.2.1 =
+### version 1.2.1 ###
 
 * [fix] Performance problem with wp_list_users()
 
-= version 1.2 =
+### version 1.2 ###
 
 * [fix] Subscription post publish
 * [fix] Post delete fix in dashboard
@@ -185,7 +251,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * [fix] Category checklist bug fix
 * [new] Checkbox field in custom field
 
-= version 1.1 =
+### version 1.1 ###
 
 * warning for multisite fix
 * allow category bug fix
@@ -194,7 +260,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * post date bug fix
 * category dropdown fix
 
-= version 1.0 =
+### version 1.0 ###
 
 * Admin panel converted to settings API
 * Ajax featured Image uploader added (using plupload)
@@ -210,7 +276,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * Subscription and payment rewrite. Extra payment gateways can be added as plugin
 * Other payment currency added
 
-= version 0.7 =
+### version 0.7 ###
 
 * admin ui improved
 * updated new post notification mail template
@@ -221,7 +287,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * localized ajaxurl and posting message
 * improved action hooks and filter hooks
 
-= version 0.6 =
+### version 0.6 ###
 
 * fixed error on attachment delete
 * added styles on dashboard too
@@ -231,7 +297,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * fixed admin panel block logic
 * filter hook added on edit post for post args
 
-= version 0.5 =
+### version 0.5 ###
 
 * filters on add posting page for blocking the post capa
 * subscription pack id added on user meta upon purchase
@@ -242,12 +308,12 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * filter added on form builder
 
 
-= version 0.4 =
+### version 0.4 ###
 
 * missing custom meta field added on edit post form
 * jQuery validation added on edit post form
 
-= version 0.3 =
+### version 0.3 ###
 
 * rich/plain text on/off fixed
 * ajax chained category added on add post form
@@ -255,7 +321,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * stripslashes on admin/frontend meta field
 * 404 error fix on add post
 
-= version 0.2 =
+### version 0.2 ###
 
 * Admin settings page has been improved
 * Header already sent warning messages has been fixed
@@ -271,7 +337,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * The edit post page setting is changed from URL to page select dropdown.
 * You can lock certain users from posting from their edit profile page.
 
-== Upgrade Notice ==
+## Upgrade Notice ##
 
-= 2.3 =
+### 2.3 ###
  * It's a **massive update and change** from the previous version 1.3.2. Please do test in your site and main compatibility.

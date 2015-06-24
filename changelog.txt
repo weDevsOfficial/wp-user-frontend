@@ -1,7 +1,10 @@
-= version 2.3 =
+= version 2.3.2 =
 
-date: 2 April, 2015
+date: 22 June, 2015
 
+* [free][fix] Featured image upload fix
+* [free][new] Image upload field brought back to free
+* [free][fix] Compatibility problem with PHP < 5.2. Accidental PHP array shorthand used.
 * [new] Add new custom field "Country"
 * [new] Add new custom field "Address"
 * [new] Add new custom field "Number"

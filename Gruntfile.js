@@ -52,6 +52,74 @@ module.exports = function(grunt) {
             }
         },
 
+        // Clean up build directory
+        clean: {
+            main: ['build/']
+        },
+
+        // Copy the plugin into the build directory
+        copy: {
+            main: {
+                src: [
+                    '**',
+                    '!node_modules/**',
+                    '!build/**',
+                    '!bin/**',
+                    '!.git/**',
+                    '!includes/pro/.git/**',
+                    '!Gruntfile.js',
+                    '!package.json',
+                    '!debug.log',
+                    '!phpunit.xml',
+                    '!.gitignore',
+                    '!.gitmodules',
+                    '!npm-debug.log',
+                    '!plugin-deploy.sh',
+                    '!export.sh',
+                    '!config.codekit',
+                    '!nbproject/*',
+                    '!assets/less/**',
+                    '!tests/**',
+                    '!**/Gruntfile.js',
+                    '!**/package.json',
+                    '!**/README.md',
+                    '!**/*~'
+                ],
+                dest: 'build/'
+            }
+        },
+
+        replace: {
+            example: {
+                src: ['build/wpuf.php'],
+                dest: 'build/wpuf.php',
+                replacements: [
+                    {
+                        from: 'WP User Frontend',
+                        to: 'WP User Frontend Pro'
+                    },
+                    {
+                        from: 'https://wordpress.org/plugins/wp-user-frontend/',
+                        to: 'https://wedevs.com/products/plugins/wp-user-frontend-pro/'
+                    }
+                ]
+            }
+        },
+
+        //Compress build directory into <name>.zip and <name>-<version>.zip
+        compress: {
+            main: {
+                options: {
+                    mode: 'zip',
+                    archive: './build/wp-user-frontend-pro.zip'
+                },
+                expand: true,
+                cwd: 'build/',
+                src: ['**/*'],
+                dest: 'wp-user-frontend-pro'
+            }
+        },
+
     });
 
     // Load NPM tasks to be used here
@@ -64,8 +132,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks( 'grunt-contrib-copy' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
+    grunt.loadNpmTasks( 'grunt-text-replace' );
 
     grunt.registerTask( 'default', [
         'makepot',
+    ]);
+
+    grunt.registerTask( 'zip', [
+        'clean', 'copy', 'replace', 'compress'
     ]);
 };

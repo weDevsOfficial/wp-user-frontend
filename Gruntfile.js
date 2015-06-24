@@ -89,6 +89,23 @@ module.exports = function(grunt) {
             }
         },
 
+        replace: {
+            example: {
+                src: ['build/wpuf.php'],
+                dest: 'build/wpuf.php',
+                replacements: [
+                    {
+                        from: 'WP User Frontend',
+                        to: 'WP User Frontend Pro'
+                    },
+                    {
+                        from: 'https://wordpress.org/plugins/wp-user-frontend/',
+                        to: 'https://wedevs.com/products/plugins/wp-user-frontend-pro/'
+                    }
+                ]
+            }
+        },
+
         //Compress build directory into <name>.zip and <name>-<version>.zip
         compress: {
             main: {
@@ -115,12 +132,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks( 'grunt-contrib-copy' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
+    grunt.loadNpmTasks( 'grunt-text-replace' );
 
     grunt.registerTask( 'default', [
         'makepot',
     ]);
 
     grunt.registerTask( 'zip', [
-        'clean', 'copy', 'compress'
+        'clean', 'copy', 'replace', 'compress'
     ]);
 };

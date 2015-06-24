@@ -142,7 +142,11 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         <tr>
             <td colspan="2"><?php self::get_pro_prompt(); ?></td>
         </tr>
-
+        <tr>
+            <td colspan="2">
+                <h3>Multistep Form Settings</h3>
+            </td>
+        </tr>
         <tr class="wpuf_enable_multistep_section">
             <th><?php _e( 'Enable Multistep', 'wpuf' ); ?></th>
             <td>
@@ -452,7 +456,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
             wp_redirect($_SERVER["HTTP_REFERER"]);
             die();
-        } 
+        }
     }
 
     /**

@@ -10,7 +10,7 @@ License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.3.2' );
+define( 'WPUF_VERSION', '2.3.3' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );

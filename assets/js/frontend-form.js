@@ -82,11 +82,12 @@
             $('.wpuf_ms_pb').each(function(){
                 if( $(this).index() <= step_number ){
                     progressbar_type == 'step_by_step'?$(this).addClass('passed_wpuf_ms_bar'):$('.wpuf_ps_bar',this).addClass('passed_wpuf_ms_bar');
-
                 }else{
                     progressbar_type == 'step_by_step'?$(this).removeClass('passed_wpuf_ms_bar'):$('.wpuf_ps_bar',this).removeClass('passed_wpuf_ms_bar');
                 }
             });
+            $('.wpuf_ms_pb,.wpuf_ps_bar').removeClass('wpuf_ms_bar_active');
+            $('.passed_wpuf_ms_bar:last').addClass('wpuf_ms_bar_active');
         },
         ajaxCategory: function () {
 

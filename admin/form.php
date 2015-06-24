@@ -626,12 +626,14 @@ class WPUF_Admin_Form {
     function form_settings_posts() {
         global $post;
 
+
+
         $form_settings = wpuf_get_form_settings( $post->ID );
 
+        $post_status_selected  = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
         $restrict_message      = __( "This page is restricted. Please Log in / Register to view this page.", 'wpuf' );
 
         $post_type_selected    = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
-        $post_status_selected  = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
 
         $post_format_selected  = isset( $form_settings['post_format'] ) ? $form_settings['post_format'] : 0;
         $default_cat           = isset( $form_settings['default_cat'] ) ? $form_settings['default_cat'] : -1;
@@ -658,6 +660,19 @@ class WPUF_Admin_Form {
         ?>
         <table class="form-table">
 
+        <tr class="wpuf-post-status">
+            <th><?php _e( 'Post Status', 'wpuf' ); ?></th>
+            <td>
+                <select name="wpuf_settings[post_status]">
+                    <?php
+                    $statuses = get_post_statuses();
+                    foreach ($statuses as $status => $label) {
+                        printf('<option value="%s"%s>%s</option>', $status, selected( $post_status_selected, $status, false ), $label );
+                    }
+                    ?>
+                </select>
+            </td>
+        </tr>
         <tr class="">
             <th><?php _e( 'Disable Subscription', 'wpuf' ); ?></th>
             <td>
@@ -684,20 +699,6 @@ class WPUF_Admin_Form {
 
                     foreach ($post_types as $post_type) {
                         printf('<option value="%s"%s>%s</option>', $post_type, selected( $post_type_selected, $post_type, false ), $post_type );
-                    }
-                    ?>
-                </select>
-            </td>
-        </tr>
-
-        <tr class="wpuf-post-status">
-            <th><?php _e( 'Post Status', 'wpuf' ); ?></th>
-            <td>
-                <select name="wpuf_settings[post_status]">
-                    <?php
-                    $statuses = get_post_statuses();
-                    foreach ($statuses as $status => $label) {
-                        printf('<option value="%s"%s>%s</option>', $status, selected( $post_status_selected, $status, false ), $label );
                     }
                     ?>
                 </select>

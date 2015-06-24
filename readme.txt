@@ -123,16 +123,20 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
-= version 2.3.2 =
+= v2.3.3 (June 24, 2015) =
+
+ * [fix] Post status settings in form, wasn't being updated.
+
+= v2.3.2 (June 22, 2015) =
 
  * [fix] Featured image upload fix
  * [new] Image upload field brought back to free
 
-= version 2.3.1 =
+= v2.3.1 (June 21, 2015) =
 
  * [fix] Compatibility problem with PHP < 5.2. Accidental PHP array shorthand used.
 
-= version 2.3 =
+= version 2.3 (June 20, 2015) =
 
  * Pro plugin released as free with less features
 

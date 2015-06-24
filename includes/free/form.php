@@ -143,6 +143,19 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         <tr>
             <td colspan="2"><?php self::get_pro_prompt(); ?></td>
         </tr>
+        <tr class="wpuf-post-status">
+            <th><?php _e( 'Post Status', 'wpuf' ); ?></th>
+            <td>
+                <select disabled name="wpuf_settings[post_status]">
+                    <?php
+                    $statuses = get_post_statuses();
+                    foreach ($statuses as $status => $label) {
+                        printf('<option value="%s"%s>%s</option>', $status, selected( $post_status_selected, $status, false ), $label );
+                    }
+                    ?>
+                </select>
+            </td>
+        </tr>
         <tr class="wpuf_enable_multistep_section">
             <th><?php _e( 'Enable Multistep', 'wpuf' ); ?></th>
             <td>

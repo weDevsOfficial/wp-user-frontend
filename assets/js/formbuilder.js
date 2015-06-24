@@ -8,6 +8,10 @@
     var Editor = {
         init: function() {
 
+            $(function() {
+                $('.wpuf-ms-color').wpColorPicker();
+            });
+
             // make it sortable
             this.makeSortable();
 

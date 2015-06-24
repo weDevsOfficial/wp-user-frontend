@@ -19,6 +19,7 @@
             this.tabber();
             this.showHideHelp();
 
+            var this_obj = this;
             // Form Settings
             $('#wpuf-metabox-settings').on('change', 'select[name="wpuf_settings[redirect_to]"]', this.settingsRedirect);
             $('#wpuf-metabox-settings-update').on('change', 'select[name="wpuf_settings[edit_redirect_to]"]', this.settingsRedirect);
@@ -113,6 +114,19 @@
             $('.wpuf-metabox-post_expiration').on('change',':checkbox#wpuf-enable_post_expiration',this.changeExpirationFieldVisibility);
             //on change expiration type drop down
             //$('.wpuf-metabox-post_expiration').on('change','select#wpuf-expiration_time_type',this.setTimeExpiration);
+
+            this_obj.changeMultistepVisibility( $('.wpuf_enable_multistep_section :input[type="checkbox"]') );
+            $('.wpuf_enable_multistep_section :input[type="checkbox"]').click(function(){
+                this_obj.changeMultistepVisibility( $(this) );
+            });
+        },
+
+        changeMultistepVisibility : function( target ){
+            if(target.is(':checked')){
+                $('.wpuf_multistep_content').show();
+            }else{
+                $('.wpuf_multistep_content').hide();
+            }
         },
 
         showValueField: function() {

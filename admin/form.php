@@ -626,8 +626,11 @@ class WPUF_Admin_Form {
     function form_settings_posts() {
         global $post;
 
+
+
         $form_settings = wpuf_get_form_settings( $post->ID );
 
+        $post_status_selected  = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
         $restrict_message      = __( "This page is restricted. Please Log in / Register to view this page.", 'wpuf' );
 
         $post_type_selected    = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
@@ -657,6 +660,19 @@ class WPUF_Admin_Form {
         ?>
         <table class="form-table">
 
+        <tr class="wpuf-post-status">
+            <th><?php _e( 'Post Status', 'wpuf' ); ?></th>
+            <td>
+                <select name="wpuf_settings[post_status]">
+                    <?php
+                    $statuses = get_post_statuses();
+                    foreach ($statuses as $status => $label) {
+                        printf('<option value="%s"%s>%s</option>', $status, selected( $post_status_selected, $status, false ), $label );
+                    }
+                    ?>
+                </select>
+            </td>
+        </tr>
         <tr class="">
             <th><?php _e( 'Disable Subscription', 'wpuf' ); ?></th>
             <td>

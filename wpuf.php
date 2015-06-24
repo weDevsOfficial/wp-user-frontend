@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WP User Frontend Pro
+Plugin Name: WP User Frontend (Free)
 Plugin URI: https://wedevs.com/products/plugins/wp-user-frontend-pro/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan

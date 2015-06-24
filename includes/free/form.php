@@ -138,24 +138,11 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
      * Add form settings content
      */
     public static function add_form_settings_content( $form_settings, $post ) {
-        $post_status_selected  = 'publish';
         ?>
         <tr>
             <td colspan="2"><?php self::get_pro_prompt(); ?></td>
         </tr>
-        <tr class="wpuf-post-status">
-            <th><?php _e( 'Post Status', 'wpuf' ); ?></th>
-            <td>
-                <select disabled name="wpuf_settings[post_status]">
-                    <?php
-                    $statuses = get_post_statuses();
-                    foreach ($statuses as $status => $label) {
-                        printf('<option value="%s"%s>%s</option>', $status, selected( $post_status_selected, $status, false ), $label );
-                    }
-                    ?>
-                </select>
-            </td>
-        </tr>
+
         <tr class="wpuf_enable_multistep_section">
             <th><?php _e( 'Enable Multistep', 'wpuf' ); ?></th>
             <td>
@@ -465,9 +452,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
             wp_redirect($_SERVER["HTTP_REFERER"]);
             die();
-        } elseif( get_post_type( $post->ID ) == 'wpuf_forms') {
-            isset( $_POST['wpuf_settings']['post_status'] )?( $_POST['wpuf_settings']['post_status'] = 'publish' ):'';
-        }
+        } 
     }
 
     /**

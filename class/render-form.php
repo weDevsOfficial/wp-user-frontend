@@ -1375,7 +1375,7 @@ class WPUF_Render_Form {
 
                     if ( $thumb_id ) {
                         $has_featured_image = true;
-                        $featured_image = WPUF_Upload::attach_html( $thumb_id );
+                        $featured_image = WPUF_Upload::attach_html( $thumb_id, 'featured_image' );
                     }
                 } else {
                     // it must be a user avatar

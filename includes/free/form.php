@@ -289,11 +289,13 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
      * Render registration form
      */
     public static function render_registration_form() {
+
         global $post, $pagenow, $form_inputs;
 
         $form_inputs = wpuf_get_form_fields( $post->ID );
 
         self::get_pro_prompt();
+
         ?>
         <div style="margin-bottom: 10px">
             <button class="button wpuf-collapse"><?php _e( 'Toggle All', 'wpuf' ); ?></button>

@@ -36,53 +36,32 @@
             //at first first fieldset will be shown, and others will be hidden
             $('fieldset').hide().first().show();
 
-            var multistep_div = //'<div class="wizard-steps">' +
-                                        '<div class="completed-step">' +
-                                            '<a href="#step-one">' +
-                                                '<span>1</span> Account Info' +
-                                            '</a>' +
-                                        '</div>' +
-                                        '<div class="active-step">' +
-                                            '<a href="#step-two">' +
-                                                '<span>2</span> Contact Info' +
-                                            '</a>' +
-                                        '</div>' +
-                                        '<div>' +
-                                            '<a href="#">' +
-                                                '<span>3</span> Security Question' +
-                                            '</a>' +
-                                        '</div>' +
-                                        '<div>' +
-                                            '<a href="#">' +
-                                                '<span>4</span> Confirmation' +
-                                            '</a>' +
-                                        '</div>' +
-                                    //'</div>';
 
-            $('.wpuf-form').each(function(){
-                var this_obj = $(this);
-                $('.wpuf_multistep_fieldset',this).each(function(){
-                    if( progressbar_type == 'step_by_step' ) {
-                        $('.wpuf_multistep_progressbar',this_obj).addClass('wizard-steps');
+
+            if( progressbar_type == 'progressive' && $('.wpuf-form .wpuf_multistep_fieldset').length != 0 ){
+
+                $('.wpuf_multistep_progressbar').html('<div class="wpuf-progress-label"></div>').height(20).css({ 'margin-bottom':'10px'});
+
+                var progressbar = $( ".wpuf_multistep_progressbar" ),
+                    progressLabel = $( ".wpuf-progress-label" );
+
+                $( ".wpuf_multistep_progressbar" ).progressbar({
+                    change: function() {
+                        progressLabel.text( progressbar.progressbar( "value" ) + "%" );
                     }
-                    $('.wpuf_multistep_progressbar',this_obj).append('<div class="wpuf_ms_pb" data-target="'+ $('legend',this).text() +'"><a href="javascript:">'+ $('legend',this).text() +'</a></div> ');
-                    $('legend',this).hide();
                 });
-                $('.wpuf_ms_pb',this).width($('.wpuf_multistep_progressbar',this).width()/$('.wpuf_ms_pb',this).length - ( $('.wpuf_ms_pb',this).length - 1) );
+            }else{
+                $('.wpuf-form').each(function(){
+                    var this_obj = $(this);
+                    $('.wpuf_multistep_fieldset',this).each(function(){
 
-                if( progressbar_type == 'progressive' ){
-                    var bar_z_index = 999;
-                    $('.wpuf_ms_pb',this).each(function() {
-                       $(this).append('<div class="wpuf_ps_bar" style="z-index: '+ --bar_z_index +'"><div class="wpuf_ps_bar_node"></div></div>');
+                            $('.wpuf_multistep_progressbar',this_obj).addClass('wizard-steps');
+                            $('.wpuf_multistep_progressbar',this_obj).append('<div class="wpuf_ms_pb" data-target="'+ $('legend',this).text() +'"><a href="javascript:">'+ $('legend',this).text() +'</a></div> ');
+                            $('legend',this).hide();
                     });
-                }
-                //enable fieldset tab clickable so that the relevent fieldset will be visible
-                $('.wpuf_ms_pb',this).click(function(){
-                    //step_number = $(this).index();
-                    //js_obj.change_fieldset( $(this).index(), progressbar_type );
+                    $('.wpuf_ms_pb',this).width($('.wpuf_multistep_progressbar',this).width()/$('.wpuf_ms_pb',this).length - ( $('.wpuf_ms_pb',this).length - 1) );
                 });
-            });
-
+            }
 
             this.change_fieldset(step_number,progressbar_type);
 
@@ -116,6 +95,12 @@
             $('.wpuf_ms_pb,.wpuf_ps_bar').removeClass('wpuf_ms_bar_active active-step completed-step');
             $('.passed_wpuf_ms_bar').addClass('completed-step').last().addClass('wpuf_ms_bar_active');
             $('.wpuf_ms_bar_active').addClass('active-step');
+
+            if( progressbar_type == 'progressive' && $('.wpuf-form .wpuf_multistep_fieldset').length != 0 ) {
+                var progress_percent = ( step_number + 1 ) * 100 / $('fieldset.wpuf_multistep_fieldset').length ;
+                var progress_percent = Number( progress_percent.toFixed(2) );
+                $( ".wpuf_multistep_progressbar" ).progressbar({value: progress_percent });
+            }
         },
         ajaxCategory: function () {
 

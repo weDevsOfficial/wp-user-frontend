@@ -1,16 +1,16 @@
 <?php
 /*
-Plugin Name: WP User Frontend Pro
-Plugin URI: https://wedevs.com/products/plugins/wp-user-frontend-pro/
+Plugin Name: WP User Frontend
+Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.3.2
+Version: 2.3.3
 Author URI: http://tareq.weDevs.com
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.3.2' );
+define( 'WPUF_VERSION', '2.3.3' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -77,6 +77,7 @@ class WP_User_Frontend {
 
         // do plugin upgrades
         add_action( 'plugins_loaded', array($this, 'plugin_upgrades') );
+        add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'plugin_action_links' ) );
 
         if ( $this->is_pro() ) {
             add_filter( 'http_request_args', array( $this, 'skip_plugin_update' ), 5, 2 );
@@ -398,6 +399,27 @@ class WP_User_Frontend {
         }
 
         return $r;
+    }
+
+    /**
+     * Plugin action links
+     *
+     * @param  array  $links
+     *
+     * @since  2.3.3
+     *
+     * @return array
+     */
+    function plugin_action_links( $links ) {
+
+        if ( ! $this->is_pro() ) {
+            $links[] = '<a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/" target="_blank">Get PRO</a>';
+        }
+
+        $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">Settings</a>';
+        $links[] = '<a href="http://docs.wedevs.com/category/plugins/wp-user-frontend-pro/" target="_blank">Documentation</a>';
+
+        return $links;
     }
 }
 

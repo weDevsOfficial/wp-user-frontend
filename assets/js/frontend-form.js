@@ -38,7 +38,7 @@
 
 
 
-            if( progressbar_type == 'progressive' ){
+            if( progressbar_type == 'progressive' && $('.wpuf-form .wpuf_multistep_fieldset').length != 0 ){
 
                 $('.wpuf_multistep_progressbar').html('<div class="wpuf-progress-label"></div>').height(20).css({ 'margin-bottom':'10px'});
 
@@ -96,7 +96,7 @@
             $('.passed_wpuf_ms_bar').addClass('completed-step').last().addClass('wpuf_ms_bar_active');
             $('.wpuf_ms_bar_active').addClass('active-step');
 
-            if( progressbar_type == 'progressive') {
+            if( progressbar_type == 'progressive' && $('.wpuf-form .wpuf_multistep_fieldset').length != 0 ) {
                 var progress_percent = ( step_number + 1 ) * 100 / $('fieldset.wpuf_multistep_fieldset').length ;
                 var progress_percent = Number( progress_percent.toFixed(2) );
                 $( ".wpuf_multistep_progressbar" ).progressbar({value: progress_percent });

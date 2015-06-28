@@ -397,14 +397,14 @@ class WPUF_Render_Form {
             <?php
             if ( $form_settings['multistep_progressbar_type'] == 'step_by_step' ){
                 ?>
-                <!--wpuf_multistep_progressbar-> wpuf_ms_pb-->
-                <div class="wpuf_multistep_progressbar">
+                <!--wpuf-multistep-progressbar-> wpuf_ms_pb-->
+                <div class="wpuf-multistep-progressbar">
 
                 </div>
             <?php
             } else {
                 ?>
-                <div class="wpuf_multistep_progressbar">
+                <div class="wpuf-multistep-progressbar">
 
                 </div>
             <?php

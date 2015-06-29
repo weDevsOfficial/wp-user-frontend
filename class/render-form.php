@@ -1171,7 +1171,7 @@ class WPUF_Render_Form {
             $exclude_type      => $exclude,
             'selected'         => $selected,
             'depth'            => 1,
-            // 'child_of'         => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : ''
+            'child_of'         => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : ''
         ) );
 
         echo str_replace( '<select', '<select ' . $required, $select );

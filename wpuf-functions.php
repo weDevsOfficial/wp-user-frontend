@@ -1081,9 +1081,14 @@ function wpuf_get_child_cats() {
     if ( $parentCat < 1 )
         die( $result );
 
-    if ( get_categories( 'taxonomy='.$taxonomy.'&child_of=' . $parentCat . '&hide_empty=0' ) ) {
+    if ( $terms = get_categories( 'taxonomy='.$taxonomy.'&child_of=' . $parentCat . '&hide_empty=0' ) ) {
         $field_attr['parent_cat'] = $parentCat;
-        $result .= WPUF_Render_Form::init()->taxnomy_select( $terms, $field_attr );
+        if( is_array($terms) ){
+            foreach( $terms as $key => $term ){
+                $terms[$key] = (array)$term;
+            }
+        }
+        $result .= WPUF_Render_Form::init()->taxnomy_select( '', $field_attr );
     } else {
         die( '' );
     }

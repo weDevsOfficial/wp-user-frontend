@@ -876,177 +876,119 @@ table.wpuf-table {
 .ac_match {
     text-decoration: underline;
 }
-.wpuf_multistep_fieldset {
-  position: relative;
-  padding-bottom: 50px;
-}
-.wpuf_multistep_progressbar {
-  overflow: hidden;
-}
-.wpuf_multistep_prev_btn,
-.wpuf_multistep_next_btn {
-  position: absolute;
-  bottom: 5px;
-}
-.wpuf_multistep_prev_btn {
-  left: 10px;
-}
-.wpuf_multistep_next_btn {
-  right: 10px;
-}
-.wpuf_ms_pb {
-  float: left;
-  text-align: center;
-  cursor: pointer;
-  margin-right: 1px;
-  position: relative;
-  /*height: 50px;*/
-  line-height: 50px;
-}
-.wpuf_ps_bar {
-  background: #FF001D;
-  position: absolute;
-  top: 5px;
-  height: 5px;
-  width: 100%;
-  left: -50%;
-}
-.wpuf_ms_pb:first-child .wpuf_ps_bar {
-  width: 15px;
-  left: 50%;
-}
-.wpuf_ps_bar_node {
-  width: 15px;
-  height: 15px;
-  border-radius: 20px;
-  background: inherit;
-  color: #ffffff;
-  right: -8px;
-  position: absolute;
-  top: -100%;
-}
-.wpuf_ms_pb:first-child .wpuf_ps_bar .wpuf_ps_bar_node {
-  float: left;
-  right: 0;
-}
-.wpuf_ms_pb:last-child .wpuf_ps_bar .wpuf_ps_bar_node {
-  float: right;
-}
-/*.passed_wpuf_ms_bar {
-  background: #8dff1c;
-  color: #fff;
-}*/
-/* multistep new style */
-.wizard-steps {
-  margin:20px 10px 0px 10px;
-  padding:0px;
-  position: relative;
-  clear:both;
-  font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: bold;
-}
-.wizard-steps div {
-  position:relative;
-}
-/* = STEP NUMBERS
-----------------------------*/
-.wizard-steps span {
-  display: block;
-  float: left;
-  font-size: 10px;
-  text-align:center;
-  width:15px;
-  margin: 2px 5px 0px 0px;
-  line-height:15px;
-  color: #ccc;
-  background: #FFF;
-  border: 2px solid #CCC;
-  -webkit-border-radius:10px;
-  -moz-border-radius:10px;
-  border-radius:10px;
-}
-/* = DEFAULT STEPS
-----------------------------*/
-.wizard-steps a {
-  position:relative;
-  display:block;
-  width:92%;
-  height:24px;
-  margin-right: 18px;
-  padding:0px 10px 0px 3px;
-  float: left;
-  font-size:11px;
-  line-height:24px;
-  color:#666;
-  background: #F0EEE3;
-  text-decoration:none;
-  text-shadow:1px 1px 1px rgba(255,255,255, 0.8);
-  border-bottom: 0 none !important;
-}
-.wizard-steps a:before {
-  width:0px;
-  height:0px;
-  border-top: 12px solid #F0EEE3;
-  border-bottom: 12px solid #F0EEE3;
-  border-left:12px solid transparent;
-  position: absolute;
-  content: "";
-  top: 0px;
-  left: -12px;
-}
-.wizard-steps a:after {
-  width: 0;
-  height: 0;
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
-  border-left:12px solid #F0EEE3;
-  position: absolute;
-  content: "";
-  top: 0px;
-  right: -12px;
+
+/*------------------------------------
+ * Multistep form
+ *-----------------------------------*/
+fieldset.wpuf-multistep-fieldset {
+    position: relative;
+    padding-bottom: 50px;
+    border: none;
+
+    .wpuf-multistep-prev-btn,
+    .wpuf-multistep-next-btn {
+        position: absolute;
+        bottom: 5px;
+    }
+    .wpuf-multistep-prev-btn {
+        left: 10px;
+    }
+    .wpuf-multistep-next-btn {
+        right: 10px;
+    }
 }
 
-/* = COMPLETED STEPS
-----------------------------*/
+.wpuf-multistep-progressbar {
+    overflow: hidden;
+}
 
-.wizard-steps .completed-step a {
-  color:#163038;
-  background: #A3C1C9;
+.wpuf-form .wpuf-multistep-progressbar {
+
+    @stepBackground: #00a0d2;
+
+    ul.wpuf-step-wizard {
+        margin: 20px 0 40px 0;
+        padding: 0;
+        list-style: none;
+
+        * {
+            box-sizing: border-box;
+        }
+
+        li {
+            background-color: #E4E4E4;
+            border-radius: 5px;
+            display: inline-block;
+            padding: 10px 30px 10px 40px;
+            margin-right: -7px;
+            width: auto;
+            margin: 0;
+            position: relative;
+            text-align: center;
+
+            &::before,
+            &::after {
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                border-color: transparent;
+                border-left-color: #fff;
+                border-radius: 10px;
+            }
+
+            &::before {
+                border-width: 26px;
+                margin-top: -14px;
+                right: -50px;
+                z-index: 98;
+            }
+
+            &::after {
+                border-left-color: #E4E4E4;
+                border-width: 25px;
+                margin-top: -37px;
+                right: -44px;
+                z-index: 99;
+            }
+
+            &.active-step {
+                background-color: @stepBackground;
+                color: #fff;
+
+                &::after {
+                    border-left-color: @stepBackground;
+                }
+            }
+
+            &:last-child::after {
+                border-left-color: transparent;
+            }
+        }
+    }
+
+    .ui-widget-header {
+        background: @stepBackground;
+    }
+
+    &.ui-progressbar {
+        margin-bottom: 30px;
+        height: 25px;
+        border: 1px solid @borderColor;
+        position: relative;
+
+        .wpuf-progress-percentage {
+            position: absolute;
+            left: 50%;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 #fff;
+            top: 20%;
+        }
+    }
 }
-.wizard-steps .completed-step a:before {
-  border-top: 12px solid #A3C1C9;
-  border-bottom: 12px solid #A3C1C9;
-}
-.wizard-steps .completed-step a:after {
-  border-left: 12px solid #A3C1C9;
-}
-.wizard-steps .completed-step span {
-  border: 2px solid #163038;
-  color: #163038;
-  text-shadow:none;
-}
-/* = ACTIVE STEPS
-----------------------------*/
-.wizard-steps .active-step a {
-  color:#A3C1C9;
-  background: #163038;
-  text-shadow:1px 1px 1px rgba(0,0,0, 0.8);
-}
-.wizard-steps .active-step a:before {
-  border-top: 12px solid #163038;
-  border-bottom: 12px solid #163038;
-}
-.wizard-steps .active-step a:after {
-  border-left: 12px solid #163038;
-}
-.wizard-steps .active-step span {
-  color: #163038;
-  -webkit-box-shadow:0px 0px 2px rgba(0,0,0, 0.8);
-  -moz-box-shadow:0px 0px 2px rgba(0,0,0, 0.8);
-  box-shadow:0px 0px 2px rgba(0,0,0, 0.8);
-  text-shadow:none;
-  border: 2px solid #A3C1C9;
-}
+
 
 // landscape phones and smaller
 @media (max-width: 480px) {

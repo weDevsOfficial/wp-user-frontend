@@ -1,3 +1,13 @@
+= version 2.3.3 =
+
+date: 29 June, 2015
+
+ * [pro][new] Multistep form functionality
+ * [fix] Fatal error on profile builder form
+ * [fix] Post status settings in form, wasn't being updated.
+ * [fix] Featured image caption was not being updated
+
+
 = version 2.3.2 =
 
 date: 22 June, 2015

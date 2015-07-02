@@ -123,6 +123,14 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.3.5 (2 July, 2015) =
+
+ * [fix] Ajax taxonomy field bug fixed.
+
+= v2.3.4 (June 29, 2015) =
+
+ * [fix] Featured image caption was not being updated
+
 = v2.3.3 (June 24, 2015) =
 
  * [fix] Post status settings in form, wasn't being updated.

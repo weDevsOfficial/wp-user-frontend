@@ -25,7 +25,7 @@ class WPUF_Upgrades {
         $this->update_subscription();
         $this->update_registration();
 
-        update_option( 'wpuf_version', '2.2' );
+        update_option( 'wpuf_version', $this->version );
     }
 
     function update_registration() {

@@ -397,14 +397,14 @@ class WPUF_Render_Form {
             <?php
             if ( $form_settings['multistep_progressbar_type'] == 'step_by_step' ){
                 ?>
-                <!--wpuf_multistep_progressbar-> wpuf_ms_pb-->
-                <div class="wpuf_multistep_progressbar">
+                <!--wpuf-multistep-progressbar-> wpuf_ms_pb-->
+                <div class="wpuf-multistep-progressbar">
 
                 </div>
             <?php
             } else {
                 ?>
-                <div class="wpuf_multistep_progressbar">
+                <div class="wpuf-multistep-progressbar">
 
                 </div>
             <?php
@@ -1171,7 +1171,7 @@ class WPUF_Render_Form {
             $exclude_type      => $exclude,
             'selected'         => $selected,
             'depth'            => 1,
-            // 'child_of'         => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : ''
+            'child_of'         => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : ''
         ) );
 
         echo str_replace( '<select', '<select ' . $required, $select );
@@ -1375,7 +1375,7 @@ class WPUF_Render_Form {
 
                     if ( $thumb_id ) {
                         $has_featured_image = true;
-                        $featured_image = WPUF_Upload::attach_html( $thumb_id );
+                        $featured_image = WPUF_Upload::attach_html( $thumb_id, 'featured_image' );
                     }
                 } else {
                     // it must be a user avatar

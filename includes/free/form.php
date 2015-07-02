@@ -142,8 +142,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         <tr>
             <td colspan="2"><?php self::get_pro_prompt(); ?></td>
         </tr>
-
-        <tr class="wpuf_enable_multistep_section">
+        <tr class="wpuf_enable_multistep_section wpuf-pro-content">
             <th><?php _e( 'Enable Multistep', 'wpuf' ); ?></th>
             <td>
                 <label>
@@ -154,7 +153,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                 <p class="description"><?php echo __( 'If checked, form will be displayed in frontend in multiple steps', 'wpuf' ); ?></p>
             </td>
         </tr>
-        <tr class="wpuf_multistep_progress_type">
+        <tr class="wpuf_multistep_progress_type wpuf-pro-content">
             <th><?php _e( 'Multistep Progressbar Type', 'wpuf' ); ?></th>
             <td>
                 <label>
@@ -290,11 +289,13 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
      * Render registration form
      */
     public static function render_registration_form() {
+
         global $post, $pagenow, $form_inputs;
 
         $form_inputs = wpuf_get_form_fields( $post->ID );
 
         self::get_pro_prompt();
+
         ?>
         <div style="margin-bottom: 10px">
             <button class="button wpuf-collapse"><?php _e( 'Toggle All', 'wpuf' ); ?></button>
@@ -452,7 +453,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
             wp_redirect($_SERVER["HTTP_REFERER"]);
             die();
-        } 
+        }
     }
 
     /**

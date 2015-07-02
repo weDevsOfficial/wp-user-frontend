@@ -1,9 +1,21 @@
 ;(function($) {
+
+    $.fn.listautowidth = function() {
+        return this.each(function() {
+            var w = $(this).width();
+            var liw = w / $(this).children('li').length;
+            $(this).children('li').each(function(){
+                var s = $(this).outerWidth(true)-$(this).width();
+                $(this).width(liw-s);
+            });
+        });
+    };
+
     var WP_User_Frontend = {
         init: function() {
 
             //enable multistep
-            this.enablemultistep(this);
+            this.enableMultistep(this);
 
             // clone and remove repeated field
             $('.wpuf-form').on('click', 'img.wpuf-clone-field', this.cloneField);
@@ -18,77 +30,109 @@
             // image insert
             // this.insertImage();
         },
-        enablemultistep: function(o) {
+
+        enableMultistep: function(o) {
 
             var js_obj = this;
             var step_number = 0;
-
             var progressbar_type = $(':hidden[name="wpuf_multistep_type"]').val();
-            if(progressbar_type == null){
+
+            if ( progressbar_type == null ) {
                 return;
-            };
+            }
 
-            //first fieldset doesn't have prev button,
-            //last fieldset doesn't have next button
-            $('fieldset:first .wpuf_multistep_prev_btn').remove();
-            $('fieldset:last .wpuf_multistep_next_btn').remove();
+            // first fieldset doesn't have prev button,
+            // last fieldset doesn't have next button
+            $('fieldset:first .wpuf-multistep-prev-btn').remove();
+            $('fieldset:last .wpuf-multistep-next-btn').remove();
 
-            //at first first fieldset will be shown, and others will be hidden
-            $('fieldset').hide().first().show();
+            // at first first fieldset will be shown, and others will be hidden
+            $('.wpuf-form fieldset').hide().first().show();
 
-            $('.wpuf-form').each(function(){
-                var this_obj = $(this);
-                $('.wpuf_multistep_fieldset',this).each(function(){
-                    $('.wpuf_multistep_progressbar',this_obj).append('<div class="wpuf_ms_pb" data-target="'+ $('legend',this).text() +'">'+ $('legend',this).text() +'</div> ');
-                });
-                $('.wpuf_ms_pb',this).width($('.wpuf_multistep_progressbar',this).width()/$('.wpuf_ms_pb',this).length - ( $('.wpuf_ms_pb',this).length - 1) );
+            if ( progressbar_type == 'progressive' && $('.wpuf-form .wpuf-multistep-fieldset').length != 0 ) {
 
-                if( progressbar_type == 'progressive' ){
-                    var bar_z_index = 999;
-                    $('.wpuf_ms_pb',this).each(function() {
-                       $(this).append('<div class="wpuf_ps_bar" style="z-index: '+ --bar_z_index +'"><div class="wpuf_ps_bar_node"></div></div>');
-                    });
-                }
-                //enable fieldset tab clickable so that the relevent fieldset will be visible
-                $('.wpuf_ms_pb',this).click(function(){
-                    //step_number = $(this).index();
-                    //js_obj.change_fieldset( $(this).index(), progressbar_type );
-                });
-            });
+                var firstLegend = $('fieldset.wpuf-multistep-fieldset legend').first();
+                $('.wpuf-multistep-progressbar').html('<div class="wpuf-progress-percentage"></div>' );
 
+                var progressbar = $( ".wpuf-multistep-progressbar" ),
+                    progressLabel = $( ".wpuf-progress-percentage" );
 
-            this.change_fieldset(step_number,progressbar_type);
-
-            $('fieldset .wpuf_multistep_prev_btn,fieldset .wpuf_multistep_next_btn').click(function(e) {
-
-                //js_obj.formSubmit();
-                    if( $(this).hasClass('wpuf_multistep_next_btn') ) {
-
-                        var result = js_obj.formStepCheck( '', $(this).parent() );
-                        if( result != false ) {
-                            o.change_fieldset(++step_number,progressbar_type);
-                        }
-
-                    }else if ( $(this).hasClass('wpuf_multistep_prev_btn') ) {
-                        o.change_fieldset(--step_number,progressbar_type);
+                $( ".wpuf-multistep-progressbar" ).progressbar({
+                    change: function() {
+                        progressLabel.text( progressbar.progressbar( "value" ) + "%" );
                     }
+                });
+
+                $('.wpuf-multistep-fieldset legend').hide();
+
+            } else {
+                $('.wpuf-form').each(function() {
+                    var this_obj = $(this);
+                    var progressbar = $('.wpuf-multistep-progressbar', this_obj);
+                    var nav = '';
+
+                    progressbar.addClass('wizard-steps');
+                    nav += '<ul class="wpuf-step-wizard">';
+
+                    $('.wpuf-multistep-fieldset', this).each(function(){
+                        nav += '<li>' + $.trim( $('legend', this).text() ) + '</li>';
+                        $('legend', this).hide();
+                    });
+
+                    nav += '</ul>';
+                    progressbar.append( nav );
+
+                    $('.wpuf-step-wizard li', progressbar).first().addClass('active-step');
+                    $('.wpuf-step-wizard', progressbar).listautowidth();
+                });
+            }
+
+            this.change_fieldset(step_number, progressbar_type);
+
+            $('fieldset .wpuf-multistep-prev-btn, fieldset .wpuf-multistep-next-btn').click(function(e) {
+
+                // js_obj.formSubmit();
+                if ( $(this).hasClass('wpuf-multistep-next-btn') ) {
+                    var result = js_obj.formStepCheck( '', $(this).parent() );
+
+                    if ( result != false ) {
+                        o.change_fieldset(++step_number,progressbar_type);
+                    }
+
+                } else if ( $(this).hasClass('wpuf-multistep-prev-btn') ) {
+                    o.change_fieldset( --step_number,progressbar_type );
+                }
 
                 return false;
             });
         },
 
-        change_fieldset: function(step_number,progressbar_type) {
+        change_fieldset: function(step_number, progressbar_type) {
             $('fieldset').hide().eq(step_number).show();
-            $('.wpuf_ms_pb').each(function(){
-                if( $(this).index() <= step_number ){
-                    progressbar_type == 'step_by_step'?$(this).addClass('passed_wpuf_ms_bar'):$('.wpuf_ps_bar',this).addClass('passed_wpuf_ms_bar');
-                }else{
-                    progressbar_type == 'step_by_step'?$(this).removeClass('passed_wpuf_ms_bar'):$('.wpuf_ps_bar',this).removeClass('passed_wpuf_ms_bar');
+
+            $('.wpuf-step-wizard li').each(function(){
+                if ( $(this).index() <= step_number ){
+                    progressbar_type == 'step_by_step'? $(this).addClass('passed-wpuf-ms-bar') : $('.wpuf-ps-bar',this).addClass('passed-wpuf-ms-bar');
+                } else {
+                    progressbar_type == 'step_by_step'? $(this).removeClass('passed-wpuf-ms-bar') : $('.wpuf-ps-bar',this).removeClass('passed-wpuf-ms-bar');
                 }
             });
-            $('.wpuf_ms_pb,.wpuf_ps_bar').removeClass('wpuf_ms_bar_active');
-            $('.passed_wpuf_ms_bar:last').addClass('wpuf_ms_bar_active');
+
+            $('.wpuf-step-wizard li').removeClass('wpuf-ms-bar-active active-step completed-step');
+            $('.passed-wpuf-ms-bar').addClass('completed-step').last().addClass('wpuf-ms-bar-active');
+            $('.wpuf-ms-bar-active').addClass('active-step');
+
+            var legend = $('fieldset.wpuf-multistep-fieldset').eq(step_number).find('legend').text();
+                legend = $.trim( legend );
+
+            if ( progressbar_type == 'progressive' && $('.wpuf-form .wpuf-multistep-fieldset').length != 0 ) {
+                var progress_percent = ( step_number + 1 ) * 100 / $('fieldset.wpuf-multistep-fieldset').length ;
+                var progress_percent = Number( progress_percent.toFixed(2) );
+                $( ".wpuf-multistep-progressbar" ).progressbar({value: progress_percent });
+                $( '.wpuf-progress-percentage' ).text( legend + ' (' + progress_percent + '%)');
+            }
         },
+
         ajaxCategory: function () {
 
             var el = '.cat-ajax',
@@ -450,7 +494,7 @@
          */
         addErrorNotice: function( form, position ) {
             if( position == 'bottom' ) {
-                $('.wpuf_multistep_fieldset:visible').append('<div class="wpuf-errors">' + wpuf_frontend.error_message + '</div>');
+                $('.wpuf-multistep-fieldset:visible').append('<div class="wpuf-errors">' + wpuf_frontend.error_message + '</div>');
             } else {
                 $(form).find('li.wpuf-submit').append('<div class="wpuf-errors">' + wpuf_frontend.error_message + '</div>');
             }

@@ -1,3 +1,25 @@
+= version 2.3.5 =
+
+date: 2 July, 2015
+
+ * [fix] Ajax taxonomy field bug fixed.
+ * [fix] Conditional logic bug fixed. Was left due to free/pro separation.
+
+= version 2.3.4 (skiped version) =
+
+ * skipped this version on pro due to free version change
+
+
+= version 2.3.3 =
+
+date: 29 June, 2015
+
+ * [pro][new] Multistep form functionality
+ * [fix] Fatal error on profile builder form
+ * [fix] Post status settings in form, wasn't being updated.
+ * [fix] Featured image caption was not being updated
+
+
 = version 2.3.2 =
 
 date: 22 June, 2015

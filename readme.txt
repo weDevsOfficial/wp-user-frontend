@@ -75,6 +75,9 @@ After having installed the plugin:
 1. To show the subscription packs, insert the shortcode `[wpuf_sub_pack]`
 1. For subscription payment page, set the *Payment Page* from *Payments* tab on settings page.
 
+= Video =
+[youtube https://www.youtube.com/watch?v=pK3nLeR2fzc]
+
 
 == Screenshots ==
 

@@ -80,7 +80,7 @@ class WP_User_Frontend {
         add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'plugin_action_links' ) );
 
         if ( $this->is_pro() ) {
-            add_filter( 'http_request_args', array( $this, 'skip_plugin_update' ), 5, 2 );
+            //add_filter( 'http_request_args', array( $this, 'skip_plugin_update' ), 5, 2 );
         }
     }
 

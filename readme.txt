@@ -75,6 +75,9 @@ After having installed the plugin:
 1. To show the subscription packs, insert the shortcode `[wpuf_sub_pack]`
 1. For subscription payment page, set the *Payment Page* from *Payments* tab on settings page.
 
+= Video =
+[youtube https://www.youtube.com/watch?v=pK3nLeR2fzc]
+
 
 == Screenshots ==
 
@@ -122,6 +125,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.3.6 (13 July, 2015) =
+
+ * [fix] Login page bug fixed.
+ * [fix] Wordpress native registration page made working.
+ * [fix] Email validation bug fixed.
+ * [fix] Issue in country field fixed.
+ * [fix] Issue with saving taxonomy fixed.
+ * [fix] Problem with captcha and really simple captcha fixed.
+ * [fix] Problem with action hook fixed.
 
 = v2.3.5 (2 July, 2015) =
 

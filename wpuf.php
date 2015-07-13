@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.3.5
+Version: 2.3.6
 Author URI: http://tareq.weDevs.com
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.3.5' );
+define( 'WPUF_VERSION', '2.3.6' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -78,10 +78,6 @@ class WP_User_Frontend {
         // do plugin upgrades
         add_action( 'plugins_loaded', array($this, 'plugin_upgrades') );
         add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'plugin_action_links' ) );
-
-        if ( $this->is_pro() ) {
-            add_filter( 'http_request_args', array( $this, 'skip_plugin_update' ), 5, 2 );
-        }
     }
 
     /**
@@ -365,40 +361,6 @@ class WP_User_Frontend {
      */
     public function is_pro() {
         return $this->is_pro;
-    }
-
-    /**
-     * Skip the plugin update from WordPress.org if it's PRO version
-     *
-     * @since 2.3.2
-     *
-     * @param  array  $r
-     * @param  string  $url
-     *
-     * @return array
-     */
-    function skip_plugin_update( $r, $url ) {
-        $url_to_check = 'http://api.wordpress.org/plugins/update-check';
-
-        if ( wp_http_supports( array( 'ssl' ) ) ) {
-            $url_to_check = 'https://api.wordpress.org/plugins/update-check';
-        }
-
-        if ( 0 !== strpos( $url, $url_to_check ) ) {
-            return $r;
-        }
-
-        $plugins  = json_decode( $r['body']['plugins'] );
-        $basename = plugin_basename( __FILE__ );
-
-        if ( isset( $plugins->plugins->{$basename} ) ) {
-            unset( $plugins->plugins->{$basename} );
-            unset( $plugins->active[ array_search( $basename, $plugins->active ) ] );
-
-            $r['body']['plugins'] = wp_json_encode( $plugins );
-        }
-
-        return $r;
     }
 
     /**

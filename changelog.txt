@@ -2,13 +2,13 @@
 
 date: 13 July, 2015
 
-* [fix] Login page bug fixed.
-* [fix] Wordpress native registration page made working.
-* [fix] Email validation bug fixed.
-* [fix] Issue in country field fixed.
-* [fix] Issue with saving taxonomy fixed.
-* [fix] Problem with captcha and really simple captcha fixed.
-* [fix] Problem with action hook fixed.
+ * [fix] Login page bug fixed.
+ * [fix] Wordpress native registration page made working.
+ * [fix] Email validation bug fixed.
+ * [fix] Issue in country field fixed.
+ * [fix] Issue with saving taxonomy fixed.
+ * [fix] Problem with captcha and really simple captcha fixed.
+ * [fix] Problem with action hook fixed.
 
 = version 2.3.5 =
 

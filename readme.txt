@@ -126,6 +126,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.3.6 (13 July, 2015) =
+
+ * [fix] Login page bug fixed.
+ * [fix] Wordpress native registration page made working.
+ * [fix] Email validation bug fixed.
+ * [fix] Issue in country field fixed.
+ * [fix] Issue with saving taxonomy fixed.
+ * [fix] Problem with captcha and really simple captcha fixed.
+ * [fix] Problem with action hook fixed.
+
 = v2.3.5 (2 July, 2015) =
 
  * [fix] Ajax taxonomy field bug fixed.

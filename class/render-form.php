@@ -498,7 +498,6 @@ class WPUF_Render_Form {
 
                 case 'image_upload':
                     $this->image_upload( $form_field, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
                     break;
 
                 default:

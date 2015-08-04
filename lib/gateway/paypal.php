@@ -351,7 +351,7 @@ class WPUF_Paypal {
                     'payer_address'    => $postdata['residence_country'],
                     'transaction_id'   => $postdata['txn_id'],
                     'created'          => current_time( 'mysql' ),
-                    'profile_id'       => isset( $postdata['subscr_id'] ) ? $postdata['subscr_id'] : null,
+                    'profile_id'       => isset( $postdata['subscr_id'] ) ? $postdata['subscr_id'] : '',
                 );
 
                 $transaction_id = wp_strip_all_tags( $postdata['txn_id'] );

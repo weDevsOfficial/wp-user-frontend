@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WP User Frontend PRO
+Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan

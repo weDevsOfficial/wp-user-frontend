@@ -442,6 +442,8 @@
 
                                 WP_User_Frontend.markError(item);
                             }
+                        }else if( val === '' ){
+                            WP_User_Frontend.markError(item);
                         }
                         break;
 

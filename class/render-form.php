@@ -218,11 +218,13 @@ class WPUF_Render_Form {
 
                 // process other fields
             } elseif ( $value['input_type'] == 'address' ) {
+
                 if( isset( $_POST[ $value['name'] ] ) && is_array( $_POST[ $value['name'] ] ) ) {
                     foreach ( $_POST[ $value['name'] ] as $address_field => $field_value ) {
                         $meta_key_value[ $value['name'] ][ $address_field ] = $field_value;
                     }
                 }
+
             }
             else {
                 // if it's an array, implode with this->separator

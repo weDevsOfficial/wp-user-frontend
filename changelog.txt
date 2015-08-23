@@ -1,3 +1,11 @@
+= version 2.3.7 =
+ * [fix] Problem with conditional logic in image upload field fixed.
+ * [fix] Transection log updating issue fixed.
+ * [fix] Email field in form with required flag is now working even if left empty.
+ * [fix] Data from address field in registration form is now saved and shows data in edit form .
+ * [new] Persian language translation added
+ * [fix] Problem with 'pay per post' feature fixed
+
 = version 2.3.6 =
 
 date: 13 July, 2015

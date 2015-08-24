@@ -376,7 +376,7 @@ class WPUF_Payment {
 
         $result = $wpdb->get_row( $sql );
 
-        if ( isset( $data['profile_id'] ) ) {
+        if ( isset( $data['profile_id'] ) || empty( $data['profile_id'] ) ) {
             unset( $data['profile_id'] );
         }
 

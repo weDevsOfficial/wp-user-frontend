@@ -217,8 +217,16 @@ class WPUF_Render_Form {
                 }
 
                 // process other fields
-            } else {
+            } elseif ( $value['input_type'] == 'address' ) {
 
+                if( isset( $_POST[ $value['name'] ] ) && is_array( $_POST[ $value['name'] ] ) ) {
+                    foreach ( $_POST[ $value['name'] ] as $address_field => $field_value ) {
+                        $meta_key_value[ $value['name'] ][ $address_field ] = $field_value;
+                    }
+                }
+
+            }
+            else {
                 // if it's an array, implode with this->separator
                 if ( is_array( $_POST[$value['name']] ) ) {
 
@@ -498,6 +506,7 @@ class WPUF_Render_Form {
 
                 case 'image_upload':
                     $this->image_upload( $form_field, $post_id, $type, $form_id );
+                    $this->conditional_logic( $form_field, $form_id );
                     break;
 
                 default:

@@ -1,3266 +1,2593 @@
-# Copyright (C) 2015 Tareq Hasan
-# This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.3.7\n"
-"Report-Msgid-Bugs-To: "
-"https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/\n"
-"POT-Creation-Date: 2015-08-24 09:38:19+00:00\n"
+"Project-Id-Version: WP User Frontend\n"
+"POT-Creation-Date: 2015-08-14 14:56+0430\n"
+"PO-Revision-Date: 2015-08-17 17:41+0430\n"
+"Last-Translator: \n"
+"Language-Team: Code98 Web Design Team <info@code98.ir>\n"
+"Language: fa_IR\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
-"X-Generator: grunt-wp-i18n 0.4.9\n"
+"X-Generator: Poedit 1.8.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: wpuf.php\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
 
 #: admin/add-ons.php:2
 msgid "WP User Frontend - Add-Ons"
-msgstr ""
+msgstr "افزونه های ناحیه کاربری پیشرفته"
 
 #: admin/form.php:155 admin/form.php:175 admin/form.php:177 admin/form.php:213
 msgid "Forms"
-msgstr ""
+msgstr "فرم ها"
 
 #: admin/form.php:176 admin/form.php:214
 msgid "Form"
-msgstr ""
+msgstr "فرم"
 
 #: admin/form.php:178 admin/form.php:216
 msgid "Add Form"
-msgstr ""
+msgstr "اضافه کردن فرم"
 
 #: admin/form.php:179 admin/form.php:217
 msgid "Add New Form"
-msgstr ""
+msgstr "ساخت فرم جدید"
 
 #: admin/form.php:180 admin/form.php:218 admin/installer.php:74
 #: admin/subscription.php:228 class/subscription.php:324
-#: includes/free/edit-user.php:99 includes/pro/admin/coupon.php:183
-#: templates/dashboard.php:102
+#: includes/free/edit-user.php:99 templates/dashboard.php:102
 msgid "Edit"
-msgstr ""
+msgstr "ویرایش"
 
 #: admin/form.php:181 admin/form.php:219
 msgid "Edit Form"
-msgstr ""
+msgstr "ویرایش فرم"
 
 #: admin/form.php:182 admin/form.php:220
 msgid "New Form"
-msgstr ""
+msgstr "فرم جدید"
 
 #: admin/form.php:183 admin/form.php:184 admin/form.php:221 admin/form.php:222
 msgid "View Form"
-msgstr ""
+msgstr "مشاهده فرم"
 
 #: admin/form.php:185 admin/form.php:223
 msgid "Search Form"
-msgstr ""
+msgstr "جستجوی فرم"
 
 #: admin/form.php:186 admin/form.php:224
 msgid "No Form Found"
-msgstr ""
+msgstr "هیچ فرمی پیدا نشد"
 
 #: admin/form.php:187 admin/form.php:225
 msgid "No Form Found in Trash"
-msgstr ""
+msgstr "هیچ فرمی در زباله دان پیدا نشد"
 
 #: admin/form.php:188 admin/form.php:226
 msgid "Parent Form"
-msgstr ""
+msgstr "فرم اصلی"
 
 #: admin/form.php:193
 msgid "Registraton Forms"
-msgstr ""
+msgstr "فرم های ثبت نام"
 
-#: admin/form.php:215 includes/free/loader.php:57 includes/pro/loader.php:112
+#: admin/form.php:215 includes/free/loader.php:57
 msgid "Registration Forms"
-msgstr ""
+msgstr "فرم های ثبت نام"
 
 #: admin/form.php:246 admin/form.php:249
 msgid "Form updated."
-msgstr ""
+msgstr "فرم بروزرسانی شد"
 
 #: admin/form.php:247 admin/subscription.php:53
-#: includes/pro/admin/coupon.php:117
 msgid "Custom field updated."
-msgstr ""
+msgstr "فیلد دلخواه به روز شد."
 
 #: admin/form.php:248 admin/subscription.php:54
-#: includes/pro/admin/coupon.php:118
 msgid "Custom field deleted."
-msgstr ""
+msgstr "فیلد دلخواه حذف شد."
 
 #: admin/form.php:250
+#, php-format
 msgid "Form restored to revision from %s"
-msgstr ""
+msgstr "فرم از %s به نسخه اصلاح شده بازگردانی شد"
 
 #: admin/form.php:251
 msgid "Form published."
-msgstr ""
+msgstr "فرم منتشر شد"
 
 #: admin/form.php:252
 msgid "Form saved."
-msgstr ""
+msgstr "فرم ذخیره شد."
 
 #: admin/form.php:253
 msgid "Form submitted."
-msgstr ""
+msgstr "فرم ارسال شد"
 
 #: admin/form.php:255
 msgid "Form draft updated."
-msgstr ""
+msgstr "پیش نویس فرم به روز شد"
 
 #: admin/form.php:284 admin/form.php:303
 msgid "Form Name"
-msgstr ""
+msgstr "نام فرم"
 
 #: admin/form.php:285 admin/form.php:676
 msgid "Post Type"
-msgstr ""
+msgstr "نوع نوشته"
 
 #: admin/form.php:286 admin/form.php:696
 msgid "Post Status"
-msgstr ""
+msgstr "وضعیت نوشته"
 
 #: admin/form.php:287 admin/form.php:745
 msgid "Guest Post"
-msgstr ""
+msgstr "پست مهمان"
 
 #: admin/form.php:288 admin/form.php:305 admin/form.php:461 admin/form.php:472
 msgid "Shortcode"
-msgstr ""
+msgstr "کد کوتاه"
 
 #: admin/form.php:304
 msgid "User Role"
-msgstr ""
+msgstr "نقش کاربر"
 
 #: admin/form.php:339 admin/settings-options.php:86
 #: admin/settings-options.php:160 admin/settings-options.php:171
 #: admin/settings-options.php:253 admin/subscription.php:148
-#: admin/template.php:74 includes/free/form.php:476 includes/pro/form.php:537
+#: admin/template.php:74 includes/free/form.php:476
 msgid "No"
-msgstr ""
+msgstr "خیر"
 
 #: admin/form.php:339 admin/settings-options.php:85
 #: admin/settings-options.php:159 admin/settings-options.php:170
 #: admin/settings-options.php:252 admin/subscription.php:146
-#: admin/template.php:73 includes/free/form.php:475 includes/pro/form.php:536
+#: admin/template.php:73 includes/free/form.php:475
 msgid "Yes"
-msgstr ""
+msgstr "بلی"
 
 #: admin/form.php:386
 msgid "Duplicate form"
-msgstr ""
+msgstr "فرم تکراری"
 
 #: admin/form.php:386
 msgid "Duplicate"
-msgstr ""
+msgstr "تکثیر کردن"
 
 #: admin/form.php:449
 msgid "WPUF Form"
-msgstr ""
+msgstr "فرم WPUF"
 
 #: admin/form.php:459 admin/form.php:470 admin/form.php:1046
 #: admin/form.php:1086
 msgid "Form Editor"
-msgstr ""
+msgstr "ویرایشگر فرم"
 
 #: admin/form.php:460 admin/form.php:471
 msgid "Form Elements"
-msgstr ""
+msgstr "عناصر فرم"
 
 #: admin/form.php:486 admin/form.php:503
 msgid "Copy and insert this shortcode to a page:"
-msgstr ""
+msgstr "کپی و درج این کد کوتاه به صفحه:"
 
 #: admin/form.php:507
 msgid "Profile Shortcode:"
-msgstr ""
+msgstr "کد کوتاه پروفایل:"
 
 #: admin/form.php:515
 msgid "Registration Shortcode:"
-msgstr ""
+msgstr "کد کوتاه ثبت نام:"
 
 #: admin/form.php:538
 msgid "Preview Form"
-msgstr ""
+msgstr "پیش نمایش فرم"
 
 #: admin/form.php:547 admin/form.php:548
 msgid "Schedule"
-msgstr ""
+msgstr "زمان بندی"
 
 #: admin/form.php:550 admin/form.php:551
 msgid "Publish"
-msgstr ""
+msgstr "انتشار"
 
 #: admin/form.php:555 admin/form.php:556
 msgid "Submit for Review"
-msgstr ""
+msgstr "ثبت نظر"
 
 #: admin/form.php:561 admin/form.php:562 admin/form.php:898
 msgid "Update"
-msgstr ""
+msgstr "به روز رسانی"
 
 #: admin/form.php:634
 msgid "This page is restricted. Please Log in / Register to view this page."
 msgstr ""
+"این صفحه محدود شده است. لطفا برای دیدن این صفحه وارد شوید / ثبت نام شوید ."
 
 #: admin/form.php:643 admin/subscription.php:206 admin/template-post.php:177
 #: includes/free/edit-profile.php:92
 msgid "Name"
-msgstr ""
+msgstr "نام"
 
 #: admin/form.php:644 admin/form.php:1118 admin/transaction.php:107
 #: includes/free/edit-user.php:152
 msgid "Email"
-msgstr ""
+msgstr "ایمیل"
 
 #: admin/form.php:648
 msgid "Post saved"
-msgstr ""
+msgstr "مطلب ذخیره شد"
 
 #: admin/form.php:649 admin/form.php:895
 msgid "Post updated successfully"
-msgstr ""
+msgstr "مطلب با موفقیت بروز رسانی شد"
 
 #: admin/form.php:654
 msgid "Submit"
-msgstr ""
+msgstr "ارسال"
 
-#: admin/form.php:655 class/render-form.php:557
+#: admin/form.php:655 class/render-form.php:548
 msgid "Save Draft"
-msgstr ""
+msgstr "ذخیره به عنوان پیش نویس"
 
 #: admin/form.php:656
 msgid "Preview"
-msgstr ""
+msgstr "پیش نمایش"
 
 #: admin/form.php:664 admin/form.php:668
 msgid "Disable Subscription"
-msgstr ""
+msgstr "غیر فعال کردن اشتراک"
 
 #: admin/form.php:671
 msgid ""
 "If checked, any subscription and pay-per-post will be disabled on the form "
 "and will take no effect."
 msgstr ""
+"اگر این گزینه فعال شود، اشتراک و پرداخت به ازای ارسال مطلب برای این فرم "
+"غیرفعال خواهد شد."
 
 #: admin/form.php:710
 msgid "Post Format"
-msgstr ""
+msgstr "قالب نوشته"
 
 #: admin/form.php:713 admin/form.php:737
 msgid "- None -"
-msgstr ""
+msgstr "-هیچ کدام-"
 
 #: admin/form.php:729
 msgid "Default Post Category"
-msgstr ""
+msgstr "دسته بندی پیشفرض نوشته"
 
 #: admin/form.php:740
 msgid ""
 "If users are not allowed to choose any category, this category will be used "
 "instead (if post type supports)"
 msgstr ""
+"اگر کاربران مجاز به انتخاب دسته بندی نباشند، به صورت پیشفرض این دسته انتخاب "
+"خواهد شد. (در صورت پشتیبانی از نوع نوشته)"
 
 #: admin/form.php:750
 msgid "Enable Guest Post"
-msgstr ""
+msgstr "فعال کردن پست مهمان"
 
 #: admin/form.php:752
 msgid "Unregistered users will be able to submit posts"
-msgstr ""
+msgstr "کاربر مهمان قادر به ارسال نوشته خواهد بود."
 
 #: admin/form.php:757
 msgid "User Details"
-msgstr ""
+msgstr "جزئیات کاربر"
 
 #: admin/form.php:762
 msgid "Require Name and Email address"
-msgstr ""
+msgstr "نیاز به نام و آدرس ایمیل"
 
 #: admin/form.php:764
 msgid ""
 "If requires, users will be automatically registered to the site using the "
 "name and email address"
 msgstr ""
+"اگر لازم بود، کاربران به طور خودکار با استفاده از نام و آدرس ایمیل در سایت "
+"عضو خواهند شد"
 
 #: admin/form.php:769
 msgid "Name Label"
-msgstr ""
+msgstr "برچسب نام"
 
 #: admin/form.php:774
 msgid "Label text for name field"
-msgstr ""
+msgstr "متن برچسب برای فیلد نام"
 
 #: admin/form.php:779
 msgid "E-Mail Label"
-msgstr ""
+msgstr "برچسب ایمیل"
 
 #: admin/form.php:784
 msgid "Label text for email field"
-msgstr ""
+msgstr "متن برچسب برای فیلد ایمیل"
 
 #: admin/form.php:789 admin/settings-options.php:216
 msgid "Unauthorized Message"
-msgstr ""
+msgstr "پیام های غیر مجاز"
 
 #: admin/form.php:792 admin/settings-options.php:217
 msgid "Not logged in users will see this message"
-msgstr ""
+msgstr "کابرانی که وارد حساب خود نشده اند این پیغام را مشاهده خواهند کرد."
 
 #: admin/form.php:797 admin/form.php:921 includes/free/form.php:374
-#: includes/pro/form.php:403
 msgid "Redirect To"
-msgstr ""
+msgstr "هدایت به"
 
 #: admin/form.php:802 admin/form.php:926
 msgid "Newly created post"
-msgstr ""
+msgstr "نوشته های اخیرا ایجاد شده"
 
 #: admin/form.php:803 admin/form.php:927 includes/free/form.php:379
-#: includes/pro/form.php:408
 msgid "Same Page"
-msgstr ""
+msgstr "همان برگه"
 
 #: admin/form.php:804 admin/form.php:928 includes/free/form.php:380
-#: includes/pro/form.php:409
 msgid "To a page"
-msgstr ""
+msgstr "به یک برگه"
 
 #: admin/form.php:805 admin/form.php:929 includes/free/form.php:381
-#: includes/pro/form.php:410
 msgid "To a custom URL"
-msgstr ""
+msgstr "به یک لینک دلخواه"
 
 #: admin/form.php:814 admin/form.php:938 includes/free/form.php:390
-#: includes/pro/form.php:419
 msgid "After successfull submit, where the page will redirect to"
-msgstr ""
+msgstr "پس از ارسال موفق، صفحه هدایت می شود به:"
 
 #: admin/form.php:820
 msgid "Message to show"
-msgstr ""
+msgstr "پیغام برای نمایش"
 
 #: admin/form.php:828 admin/form.php:951 includes/free/form.php:410
-#: includes/pro/form.php:439
 msgid "Page"
-msgstr ""
+msgstr "برگه"
 
 #: admin/form.php:843 admin/form.php:966 includes/free/form.php:425
-#: includes/pro/form.php:454
 msgid "Custom URL"
-msgstr ""
+msgstr "لینک دلخواه"
 
 #: admin/form.php:850
 msgid "Comment Status"
-msgstr ""
+msgstr "وضعیت دیدگاه"
 
 #: admin/form.php:853
 msgid "Open"
-msgstr ""
+msgstr "باز"
 
 #: admin/form.php:854
 msgid "Closed"
-msgstr ""
+msgstr "بسته"
 
 #: admin/form.php:860
 msgid "Submit Post Button text"
-msgstr ""
+msgstr "متن دکمه ی ارسال"
 
 #: admin/form.php:867
 msgid "Post Draft"
-msgstr ""
+msgstr "ارسال پیش نویس"
 
 #: admin/form.php:872
 msgid "Enable Saving as draft"
-msgstr ""
+msgstr "فعال کردن ذخیره به عنوان پیش نویس"
 
 #: admin/form.php:874
 msgid "It will show a button to save as draft"
-msgstr ""
+msgstr "این یک دکمه برای ذخیره به عنوان پیش نویس نشان خواهد داد."
 
 #: admin/form.php:904
 msgid "Set Post Status to"
-msgstr ""
+msgstr "تنظیم وضعیت نوشته به"
 
 #: admin/form.php:914
 msgid "No Change"
-msgstr ""
+msgstr "بدون تغییر"
 
 #: admin/form.php:944
 msgid "Post Update Message"
-msgstr ""
+msgstr "پیام به روز رسانی نوشته"
 
 #: admin/form.php:973
 msgid "Subscription Title"
-msgstr ""
+msgstr "عنوان اشتراک"
 
 #: admin/form.php:982
 msgid "Update Post Button text"
-msgstr ""
+msgstr "متن دکمه بروزرسانی نوشته"
 
 #: admin/form.php:995 admin/form.php:999
 msgid "- Select -"
-msgstr ""
+msgstr "- انتخاب -"
 
 #: admin/form.php:1047
 msgid "Post Settings"
-msgstr ""
+msgstr "تنظیمات نوشته"
 
 #: admin/form.php:1048
 msgid "Edit Settings"
-msgstr ""
+msgstr "تنظیمات ویرایش"
 
 #: admin/form.php:1049 includes/free/form.php:211 includes/free/form.php:248
-#: includes/pro/form.php:250 includes/pro/form.php:284
 msgid "Notification"
-msgstr ""
+msgstr "اعلان"
 
-#: admin/form.php:1050 includes/free/form.php:55 includes/pro/form.php:52
+#: admin/form.php:1050 includes/free/form.php:55
 msgid "Post Expiration"
-msgstr ""
+msgstr "انقضاء نوشته"
 
 #: admin/form.php:1087 admin/settings.php:69
 msgid "Settings"
-msgstr ""
+msgstr "تنظیمات"
 
 #: admin/form.php:1107 admin/form.php:1148 admin/form.php:1149
 #: admin/form.php:1150 admin/form.php:1151 admin/form.php:1152
 #: admin/form.php:1153 includes/free/form.php:6 includes/free/form.php:26
-#: includes/pro/form.php:9 includes/pro/form.php:27 includes/pro/form.php:496
 msgid "Click to add to the editor"
-msgstr ""
+msgstr "برای اضافه شدن به ویرایشگر کلیک کنید."
 
 #: admin/form.php:1109
 msgid "Custom Fields"
-msgstr ""
+msgstr "زمینه های دلخواه"
 
 #: admin/form.php:1111
 msgid "Text"
-msgstr ""
+msgstr "متن"
 
 #: admin/form.php:1112 admin/template.php:185
 msgid "Textarea"
-msgstr ""
+msgstr "ناحیه متنی"
 
 #: admin/form.php:1113 admin/template-post.php:166
 msgid "Dropdown"
-msgstr ""
+msgstr "کرکره ای"
 
 #: admin/form.php:1114 admin/template-post.php:167
 msgid "Multi Select"
-msgstr ""
+msgstr "چند انتخابی"
 
 #: admin/form.php:1115
 msgid "Radio"
-msgstr ""
+msgstr "دکمه رادیویی"
 
 #: admin/form.php:1116 admin/template-post.php:168
 msgid "Checkbox"
-msgstr ""
+msgstr "چک باکس"
 
 #: admin/form.php:1117
 msgid "URL"
-msgstr ""
+msgstr "آدرس اینترنتی"
 
 #: admin/form.php:1119
 msgid "Hidden Field"
-msgstr ""
+msgstr "فیلد مخفی"
 
 #: admin/form.php:1126
 msgid "Others"
-msgstr ""
+msgstr "سایر"
 
 #: admin/form.php:1128
 msgid "Section Break"
-msgstr ""
+msgstr "Section Break"
 
 #: admin/form.php:1129
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: admin/form.php:1146
 msgid "Post Fields"
-msgstr ""
+msgstr "زمینه های نوشته"
 
 #: admin/form.php:1148
 msgid "Post Title"
-msgstr ""
+msgstr "عنوان نوشته"
 
 #: admin/form.php:1149
 msgid "Post Body"
-msgstr ""
+msgstr "متن نوشته"
 
 #: admin/form.php:1150
 msgid "Excerpt"
-msgstr ""
+msgstr "خلاصه مطلب"
 
 #: admin/form.php:1151
 msgid "Tags"
-msgstr ""
+msgstr "برچسب ها"
 
 #: admin/form.php:1152
 msgid "Category"
-msgstr ""
+msgstr "دسته بندی"
 
 #: admin/form.php:1153 templates/dashboard.php:23
 msgid "Featured Image"
-msgstr ""
+msgstr "تصویر شاخص"
 
 #: admin/form.php:1159
 msgid "Custom Taxonomies"
-msgstr ""
+msgstr "طبقه بندی سفارشی"
 
 #: admin/form.php:1183
 msgid "Profile Fields"
-msgstr ""
+msgstr "فیلد های پروفایل"
 
 #: admin/form.php:1185 admin/form.php:1599 includes/free/edit-profile.php:96
 #: includes/free/edit-user.php:92 includes/free/edit-user.php:144
 #: templates/login-form.php:21
 msgid "Username"
-msgstr ""
+msgstr "نام کاربری"
 
 #: admin/form.php:1186 admin/form.php:1603 includes/free/edit-profile.php:100
 msgid "First Name"
-msgstr ""
+msgstr "نام"
 
 #: admin/form.php:1187 admin/form.php:1607 includes/free/edit-profile.php:105
 msgid "Last Name"
-msgstr ""
+msgstr "نام خانوادگی"
 
 #: admin/form.php:1188 admin/form.php:1611 includes/free/edit-profile.php:110
 msgid "Nickname"
-msgstr ""
+msgstr "نام مستعار"
 
 #: admin/form.php:1189 admin/form.php:1615 includes/free/edit-profile.php:151
 msgid "E-mail"
-msgstr ""
+msgstr "ایمیل"
 
 #: admin/form.php:1190 admin/form.php:1619 includes/free/edit-profile.php:156
 msgid "Website"
-msgstr ""
+msgstr "وبسایت"
 
 #: admin/form.php:1191 admin/form.php:1623 includes/free/edit-profile.php:178
 msgid "Biographical Info"
-msgstr ""
+msgstr "اطلاعت بیوگرافی"
 
 #: admin/form.php:1192 admin/form.php:1627 templates/login-form.php:25
 msgid "Password"
-msgstr ""
+msgstr "کلمه عبور"
 
 #: admin/form.php:1193 admin/form.php:1631
 msgid "Avatar"
-msgstr ""
+msgstr "آواتار"
 
-#: admin/form.php:1353 includes/free/form.php:301 includes/pro/form.php:331
+#: admin/form.php:1353 includes/free/form.php:301
 msgid "Toggle All"
-msgstr ""
+msgstr "باز/بستن همه"
 
-#: admin/form.php:1357 includes/free/form.php:305 includes/pro/form.php:335
+#: admin/form.php:1357 includes/free/form.php:305
 msgid "Click on a form element to add to the editor"
-msgstr ""
+msgstr "برای اضافه شدن به ویرایش گر روی عنصری از فرم کلیک کنید"
 
 #: admin/installer.php:27
 msgid ""
-"If you have not created <strong>WP User Frontend Pro</strong> pages yet, "
-"you can do this by one click."
+"If you have not created <strong>WP User Frontend Pro</strong> pages yet, you "
+"can do this by one click."
 msgstr ""
+"اگر شما برگه های افزونه <strong>ناحیه کاربری پیشرفته</strong> را هنوز نساخته "
+"اید، با یک کلیک اینکار را انجام دهید."
 
 #: admin/installer.php:30 admin/tools.php:348
 msgid "Install WPUF Pages"
-msgstr ""
+msgstr "نصب برگه های WPUF"
 
 #: admin/installer.php:32
 msgid "Skip Setup"
-msgstr ""
+msgstr "رد کردن نصب"
 
 #: admin/installer.php:42
 msgid "Congratulations!"
-msgstr ""
+msgstr "تبریک می گویم!"
 
 #: admin/installer.php:42
 msgid ""
 "Pages for <strong>WP User Frontend Pro</strong> has been successfully "
 "installed and saved!"
 msgstr ""
+"برگه های <strong>ناحیه کاربری پیشرفته</strong> با موفقیت ساخته و ذخیره شد!"
 
 #: admin/installer.php:73 admin/settings-options.php:17
 msgid "Dashboard"
-msgstr ""
+msgstr "پیشخوان"
 
 #: admin/installer.php:77
 msgid "Login"
-msgstr ""
+msgstr "ورود"
 
 #: admin/installer.php:82 admin/settings.php:62 class/subscription.php:299
 #: class/subscription.php:319 class/subscription.php:320
 #: class/subscription.php:321
 msgid "Subscription"
-msgstr ""
+msgstr "مشترک شدن"
 
 #: admin/installer.php:82
 msgid "[wpuf_sub_pack]"
-msgstr ""
+msgstr "[wpuf_sub_pack]"
 
 #: admin/installer.php:83 templates/dashboard.php:33
 msgid "Payment"
-msgstr ""
+msgstr "پرداخت"
 
 #: admin/installer.php:83
 msgid "Please select a gateway for payment"
-msgstr ""
+msgstr "لطفا یک دروازه پرداخت انتخاب کنید"
 
 #: admin/installer.php:84
 msgid "Thank You"
-msgstr ""
+msgstr "متشکرم"
 
 #: admin/installer.php:84
 msgid ""
 "<h1>Payment is complete</h1><p>Congratulations, your payment has been "
 "completed!</p>"
 msgstr ""
+"<h1>پرداخت تکمیل شد</h1><p>تبریک می گویم، پرداخت شما تکمیل شده است!</p>"
 
 #: admin/installer.php:85
 msgid "Order Received"
-msgstr ""
+msgstr "سفارش دریافت شد"
 
 #: admin/installer.php:85
 msgid ""
 "Hi, we have received your order. We will validate the order and will take "
 "necessary steps to move forward."
 msgstr ""
+"سلام، ما سفارش شما را دریافت کرده ایم. تایید سفارش و اقدامات لازم را انجام "
+"خواهیم داد."
 
 #: admin/installer.php:104 admin/installer.php:160
 msgid "Registration"
-msgstr ""
+msgstr "ثبت نام"
 
 #: admin/installer.php:225
 msgid "Sample Form"
-msgstr ""
+msgstr "فرم نمونه"
 
-#: admin/posting.php:38 class/render-form.php:1413 wpuf.php:283
+#: admin/posting.php:38 class/render-form.php:1404 wpuf.php:283
 msgid "Are you sure?"
-msgstr ""
+msgstr "آیا مطمئن هستید؟"
 
-#: admin/posting.php:44 includes/pro/form.php:806 wpuf.php:289
+#: admin/posting.php:44 wpuf.php:289
 msgid "Allowed Files"
-msgstr ""
+msgstr "فایل های مجاز"
 
 #: admin/posting.php:55
 msgid "WPUF Custom Fields"
-msgstr ""
+msgstr "زمینه های دلخواه افزونه ناحیه کاربری پیشرفته"
 
 #: admin/posting.php:83
 msgid "No custom fields found."
-msgstr ""
+msgstr "هیچ زمینه دلخواهی یافت نشد."
 
 #: admin/settings-options.php:13
 msgid "General Options"
-msgstr ""
+msgstr "تنظیمات عمومی"
 
 #: admin/settings-options.php:21
 msgid "Login / Registration"
-msgstr ""
+msgstr "ورود / ثبت نام"
 
 #: admin/settings-options.php:25
 msgid "Payments"
-msgstr ""
+msgstr "پرداخت ها"
 
 #: admin/settings-options.php:29
 msgid "Support"
-msgstr ""
+msgstr "پشتیبانی"
 
 #: admin/settings-options.php:44
 msgid "Fixed Form Elements "
-msgstr ""
+msgstr "عناصر ثابت فرم"
 
 #: admin/settings-options.php:45
 msgid "Show fixed form elements sidebar in form editor"
-msgstr ""
+msgstr "نمایش ستون کناری عناصر ثابت فرم در ویرایشگر فرم"
 
 #: admin/settings-options.php:51
 msgid "Edit Page"
-msgstr ""
+msgstr "برگه ویرایش"
 
 #: admin/settings-options.php:52
 msgid "Select the page where [wpuf_edit] is located"
-msgstr ""
+msgstr "انتخاب برگه ای که [wpuf_edit] در آن واقع شده است"
 
 #: admin/settings-options.php:58
 msgid "Default Post Owner"
-msgstr ""
+msgstr "مالک پیشفرض نوشته"
 
 #: admin/settings-options.php:59
 msgid ""
-"If guest post is enabled and user details are OFF, the posts are assigned "
-"to this user"
+"If guest post is enabled and user details are OFF, the posts are assigned to "
+"this user"
 msgstr ""
+"اگر پست مهمان فعال و جزئیات کاربر خاموش باشد، نوشته ها به این کاربر اختصاص "
+"داده می شود"
 
 #: admin/settings-options.php:66
 msgid "Admin area access"
-msgstr ""
+msgstr "دسترسی بخش مدیریت"
 
 #: admin/settings-options.php:67
 msgid "Allow you to block specific user role to WordPress admin area."
 msgstr ""
+"به شما اجازه داده می شود تا دسترسی یک نقش کاربری خاص را به صفحه مدیریت "
+"وردپرس مسدود نمایید."
 
 #: admin/settings-options.php:71
 msgid "Admin Only"
-msgstr ""
+msgstr "فقط مدیر"
 
 #: admin/settings-options.php:72
 msgid "Admins, Editors"
-msgstr ""
+msgstr "مدیران، ویرایشگران"
 
 #: admin/settings-options.php:73
 msgid "Admins, Editors, Authors"
-msgstr ""
+msgstr "مدیران، ویرایشگران، نویسندگان"
 
 #: admin/settings-options.php:74
 msgid "Admins, Editors, Authors, Contributors"
-msgstr ""
+msgstr "مدیران، ویرایشگران، نویسندگان، مشترکان"
 
 #: admin/settings-options.php:75
 msgid "Default"
-msgstr ""
+msgstr "پیش‌فرض"
 
 #: admin/settings-options.php:80
 msgid "Override the post edit link"
-msgstr ""
+msgstr "نادیده گرفتن لینک ویرایش نوشته"
 
 #: admin/settings-options.php:81
 msgid ""
 "Users see the edit link in post if s/he is capable to edit the post/page. "
-"Selecting <strong>Yes</strong> will override the default WordPress edit "
-"post link in frontend"
+"Selecting <strong>Yes</strong> will override the default WordPress edit post "
+"link in frontend"
 msgstr ""
+"اگر کابران مجاز به ویرایش نوشته/برگه باشند، لینک ویرایش را در نوشته مشاهده "
+"می کنند. با انتخاب گزینه <strong>بله</strong> ، لینک پیشفرض ویرایش نوشته "
+"وردپرس نادیده گرفته خواهد شد."
 
 #: admin/settings-options.php:91
 msgid "Custom Fields in post"
-msgstr ""
+msgstr "زمینه های دلخواه در نوشته"
 
 #: admin/settings-options.php:92
 msgid "Show custom fields on post content area"
-msgstr ""
+msgstr "نمایش زمینه های دلخواه در ناحیه محتوای نوشته"
 
 #: admin/settings-options.php:98
 msgid "Load Scripts"
-msgstr ""
+msgstr "بارگذاری اسکریپت ها"
 
 #: admin/settings-options.php:99
 msgid "Load scripts/styles in all pages"
-msgstr ""
+msgstr "بارگذاری تمام اسکریپت ها و استایل ها در تمام برگه ها"
 
 #: admin/settings-options.php:105
 msgid "Insert Photo image size"
-msgstr ""
+msgstr "اندازه تصویر را درج کنید"
 
 #: admin/settings-options.php:106
 msgid ""
 "Default image size of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
+"اندازه پیشفرض تصویری که با دکمه \"<strong>افزودن تصویر</strong>\" در متن "
+"نوشته بارگذاری می شود"
 
 #: admin/settings-options.php:113
 msgid "Insert Photo image type"
-msgstr ""
+msgstr "نوع تصویر را درج کنید"
 
 #: admin/settings-options.php:114
 msgid ""
 "Default image type of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
+"نوع  پیشفرض تصویری که با دکمه \"<strong>افزودن تصویر</strong>\" در متن نوشته "
+"بارگذاری می شود"
 
 #: admin/settings-options.php:117
 msgid "Image only"
-msgstr ""
+msgstr "فقط تصویر"
 
 #: admin/settings-options.php:118
 msgid "Image with link"
-msgstr ""
+msgstr "تصویر با لینک"
 
 #: admin/settings-options.php:124
 msgid "Enable Image Caption"
-msgstr ""
+msgstr "فعال کردن برچسب تصویر"
 
 #: admin/settings-options.php:125
 msgid "Allow users to update image/video title, caption and description"
-msgstr ""
+msgstr "کاربران اجازه بروزرسانی عنوان، برچسب و توضیحات تصویر/ویدئو را دارند."
 
 #: admin/settings-options.php:131
 msgid "Default Post Form"
-msgstr ""
+msgstr "فرم ارسال پیش فرض"
 
 #: admin/settings-options.php:132
 msgid "Fallback form for post editing if no associated form found"
-msgstr ""
+msgstr "اگر هیچ فرم خاصی معین نشود، فرم ویرایش نوشته در نظر گرفته خواهد شد."
 
 #: admin/settings-options.php:138
 msgid "reCAPTCHA Public Key"
-msgstr ""
+msgstr "کلید عمومی reCAPTCHA"
 
 #: admin/settings-options.php:142
 msgid "reCAPTCHA Private Key"
-msgstr ""
+msgstr "کلید خصوصی reCAPTCHA"
 
 #: admin/settings-options.php:146
 msgid "Custom CSS codes"
-msgstr ""
+msgstr "کدهای CSS سفارشی"
 
 #: admin/settings-options.php:147
 msgid ""
 "If you want to add your custom CSS code, it will be added on page header "
 "wrapped with style tag"
 msgstr ""
+"اگر شما قصد اضافه کردن کدهای سفارشی CSS را دارید، آنها در بخش head و در بین "
+"تگ style قرار خواهند گرفت."
 
 #: admin/settings-options.php:154
 msgid "Users can edit post?"
-msgstr ""
+msgstr "کاربران می توانند نوشته را ویرایش کنند؟"
 
 #: admin/settings-options.php:155
 msgid "Users will be able to edit their own posts"
-msgstr ""
+msgstr "کاربران قادر خواهند بود نوشته های خود را ویرایش کنند"
 
 #: admin/settings-options.php:165
 msgid "User can delete post?"
-msgstr ""
+msgstr "کاربر می تواند نوشته را حذف کند؟"
 
 #: admin/settings-options.php:166
 msgid "Users will be able to delete their own posts"
-msgstr ""
+msgstr "کاربران قادر خواهند بود نوشته های خود را حذف کنند"
 
 #: admin/settings-options.php:176
 msgid "Pending Post Edit"
-msgstr ""
+msgstr "ویرایش نوشته در حال انتظار"
 
 #: admin/settings-options.php:177
 msgid "Disable post editing while post in \"pending\" status"
 msgstr ""
+"غیرفعال کردن ویرایش نوشته وقتی نوشته در وضعیت انتظار برای تایید قرار دارد"
 
 #: admin/settings-options.php:183
 msgid "Posts per page"
-msgstr ""
+msgstr "تعداد نوشته در هر صفحه"
 
 #: admin/settings-options.php:184
 msgid "How many posts will be listed in a page"
-msgstr ""
+msgstr "تعداد نوشته هایی که در یک صفحه  لیست خواهند شد"
 
 #: admin/settings-options.php:190
 msgid "Show user bio"
-msgstr ""
+msgstr "نمایش بیوگرافی کاربر"
 
 #: admin/settings-options.php:191
 msgid "Users biographical info will be shown"
-msgstr ""
+msgstr "اطلاعات بیوگرافی کاربران نشان داده خواهد شد"
 
 #: admin/settings-options.php:197
 msgid "Show post count"
-msgstr ""
+msgstr "نمایش تعداد ارسال ها"
 
 #: admin/settings-options.php:198
 msgid "Show how many posts are created by the user"
-msgstr ""
+msgstr "نمایش تعداد نوشته هایی که کاربر ایجاد کرده است"
 
 #: admin/settings-options.php:204
 msgid "Show Featured Image"
-msgstr ""
+msgstr "نمایش تصویر شاخص"
 
 #: admin/settings-options.php:205
 msgid "Show featured image of the post"
-msgstr ""
+msgstr "نمایش تصویر شاخص نوشته"
 
 #: admin/settings-options.php:210
 msgid "Featured Image size"
-msgstr ""
+msgstr "اندازه تصویر شاخص"
 
 #: admin/settings-options.php:224
 msgid "Login/Registration override"
-msgstr ""
+msgstr "نادیده گرفتن ورود / عضویت"
 
 #: admin/settings-options.php:225
 msgid ""
 "If enabled, default login and registration forms will be overridden by WPUF "
 "with pages below"
 msgstr ""
+"اگر فعال باشد، فرم های پیشفرض عضویت و ورود نادیده خواهند گرفته شد و برگه های "
+"زیر استفاده می شوند"
 
 #: admin/settings-options.php:231
 msgid "Registration Page"
-msgstr ""
+msgstr "برگه ثبت نام"
 
 #: admin/settings-options.php:232
 msgid ""
 "Select the page you want to use as registration page override <em>(should "
 "have shortcode)</em>"
 msgstr ""
+"برگه فرم عضویت را انتخاب نمایید <em>(برگه باید حاوی کد کوتاه باشد)</em>"
 
 #: admin/settings-options.php:238
 msgid "Login Page"
-msgstr ""
+msgstr "برگه ورود"
 
 #: admin/settings-options.php:239
 msgid "Select the page which contains <code>[wpuf-login]</code> shortcode"
 msgstr ""
+"برگه ای که حاوی کد کوتاه <code>[wpuf-login]</code> است را انتخاب نمایید"
 
 #: admin/settings-options.php:247
 msgid "Charge for posting"
-msgstr ""
+msgstr "شارژ برای ارسال"
 
 #: admin/settings-options.php:248
 msgid "Charge user for submitting a post"
-msgstr ""
+msgstr "شارژ کاربر برای ارسال یک نوشته"
 
 #: admin/settings-options.php:258
 msgid "Force pack purchase"
-msgstr ""
+msgstr "اجبار به خرید بسته"
 
 #: admin/settings-options.php:259
 msgid "When active, users must have to buy a pack for posting"
-msgstr ""
+msgstr "در صورت فعال کردن، کابران برای انتشار نوشته باید یک بسته بخرند."
 
 #: admin/settings-options.php:263
 msgid "Disable"
-msgstr ""
+msgstr "غیر فعال کردن"
 
 #: admin/settings-options.php:264
 msgid "Enable"
-msgstr ""
+msgstr "فعال کردن"
 
 #: admin/settings-options.php:269
 msgid "Subscription Pack Page"
-msgstr ""
+msgstr "برگه بسته اشتراک"
 
 #: admin/settings-options.php:270
 msgid "Select the page where <code>[wpuf_sub_pack]</code> located."
-msgstr ""
+msgstr "انتخاب برگه ای که در آن <code>[wpuf_sub_pack]</code> واقع شده است."
 
 #: admin/settings-options.php:276
 msgid "Subscription at registration"
-msgstr ""
+msgstr "اشتراک در هنگام ثبت نام"
 
 #: admin/settings-options.php:277
 msgid "Registration time redirect to subscription page"
-msgstr ""
+msgstr "در زمان ثبت نام، انتقال به برگه اشتراک صورت بگیرد"
 
 #: admin/settings-options.php:282
 msgid "Currency"
-msgstr ""
+msgstr "واحد پول"
 
 #: admin/settings-options.php:314
 msgid "Currency Symbol"
-msgstr ""
+msgstr "نماد ارز"
 
 #: admin/settings-options.php:320 admin/subscription.php:208
 #: admin/transaction.php:103 admin/transaction.php:181
 msgid "Cost"
-msgstr ""
+msgstr "هزینه"
 
 #: admin/settings-options.php:321
 msgid "Cost per post"
-msgstr ""
+msgstr "هزینه هر نوشته"
 
 #: admin/settings-options.php:327
 msgid "Enable demo/sandbox mode"
-msgstr ""
+msgstr "فعال کردن نسخه ی نمایشی / حالت سند باکس"
 
 #: admin/settings-options.php:328
-msgid "When sandbox mode is active, all payment gateway will be used in demo mode"
+msgid ""
+"When sandbox mode is active, all payment gateway will be used in demo mode"
 msgstr ""
+"هنگامی که حالت سند باکس فعال است، تمام دروازه های پرداخت در حالت آزمایشی "
+"قرار دارند."
 
 #: admin/settings-options.php:334
 msgid "Payment Page"
-msgstr ""
+msgstr "برگه پرداخت"
 
 #: admin/settings-options.php:335
 msgid "This page will be used to process payment options"
-msgstr ""
+msgstr "این صفحه برای پردازش گزینه های پرداخت استفاده می شود"
 
 #: admin/settings-options.php:341
 msgid "Payment Success Page"
-msgstr ""
+msgstr "برگه پرداخت موفق"
 
 #: admin/settings-options.php:342 lib/gateway/bank.php:37
 msgid "After payment users will be redirected here"
-msgstr ""
+msgstr "پس از پرداخت کاربران به اینجا هدایت می شوند"
 
 #: admin/settings-options.php:348
 msgid "Payment Gateways"
-msgstr ""
+msgstr "دروازه‌های پرداخت"
 
 #: admin/settings-options.php:349
 msgid "Active payment gateways"
-msgstr ""
+msgstr "دروازه های پرداخت فعال"
 
 #: admin/settings-options.php:357
 msgid "Need Help?"
-msgstr ""
+msgstr "به کمک نیاز دارید؟"
 
 #: admin/settings-options.php:388
 msgid ""
 "Select profile/registration forms for user roles. These forms will be used "
 "to populate extra edit profile fields in backend."
 msgstr ""
+"انتخاب فرم های ثبت نام/پروفایل برای نقش های کاربری. این فرم ها برای افزایش "
+"تعداد فیلدهای ویرایش پروفایل استفاده خواهند شد."
 
 #: admin/settings-options.php:399
 msgid " - select - "
-msgstr ""
+msgstr "- انتخاب -"
 
 #. Plugin Name of the plugin/theme
+#: admin/settings.php:55
 msgid "WP User Frontend"
-msgstr ""
+msgstr "افزونه ناحیه کابری پیشرفته"
 
 #: admin/settings.php:55
 msgid "User Frontend"
-msgstr ""
+msgstr "ناحیه کاربری پیشرفته"
 
 #: admin/settings.php:66
 msgid "Transaction"
-msgstr ""
+msgstr "تراکنش"
 
 #: admin/settings.php:67
 msgid "Add-ons"
-msgstr ""
+msgstr "افزونه ها"
 
 #: admin/settings.php:68 admin/tools.php:398
 msgid "Tools"
-msgstr ""
+msgstr "ابزارها"
 
 #: admin/subscription.php:52 admin/subscription.php:55
 msgid "Subscription pack updated."
-msgstr ""
+msgstr "بسته اشتراک بروز رسانی شد."
 
 #: admin/subscription.php:56
+#, php-format
 msgid "Subscription pack restored to revision from %s"
-msgstr ""
+msgstr "بسته اشتراک از %s به نسخه اصلاح شده بازگردانی شد"
 
 #: admin/subscription.php:57
 msgid "Subscription pack published."
-msgstr ""
+msgstr "بسته اشتراک منتشر شد."
 
 #: admin/subscription.php:58
 msgid "Subscription pack saved."
-msgstr ""
+msgstr "بسته اشتراک ذخیره شد."
 
 #: admin/subscription.php:59
 msgid "Subscription pack submitted."
-msgstr ""
+msgstr "بسته اشتراک ارسال شد."
 
 #: admin/subscription.php:61
 msgid "Subscription pack draft updated."
-msgstr ""
+msgstr "پیش نویس بسته اشتراک به روز شد."
 
 #: admin/subscription.php:134 admin/subscription.php:460
 #: class/subscription.php:624 class/subscription.php:767
 #: class/subscription.php:778 class/subscription.php:791
 msgid "Free"
-msgstr ""
+msgstr "رایگان"
 
 #: admin/subscription.php:171 class/subscription.php:241
 msgid "Pack Name"
-msgstr ""
+msgstr "نام بسته"
 
-#: admin/subscription.php:172 includes/pro/admin/coupon-element.php:40
-#: includes/pro/admin/coupon.php:99
+#: admin/subscription.php:172
 msgid "Amount"
-msgstr ""
+msgstr "مبلغ"
 
 #: admin/subscription.php:173 includes/free/subscription.php:8
-#: includes/pro/subscription.php:9
 msgid "Recurring"
-msgstr ""
+msgstr "در محدوده زمانی معین"
 
 #: admin/subscription.php:174
 msgid "Duration"
-msgstr ""
+msgstr "مدت"
 
 #: admin/subscription.php:197
 msgid "Pack Deleted"
-msgstr ""
+msgstr "بسته حذف شد"
 
 #: admin/subscription.php:207 admin/template.php:599 class/upload.php:123
-#: includes/pro/admin/coupon-element.php:49 wpuf-functions.php:655
+#: wpuf-functions.php:655
 msgid "Description"
-msgstr ""
+msgstr "توضیحات"
 
-#: admin/subscription.php:209 includes/pro/admin/coupon-element.php:75
+#: admin/subscription.php:209
 msgid "Validity"
-msgstr ""
+msgstr "اعتبار"
 
 #: admin/subscription.php:210
 msgid "Post Count"
-msgstr ""
+msgstr "تعداد نوشته"
 
 #: admin/subscription.php:211 admin/transaction.php:184
 #: includes/free/edit-user.php:93
 msgid "Action"
-msgstr ""
+msgstr "اقدام"
 
 #: admin/subscription.php:231
 msgid "Are you sure to delete this pack?"
-msgstr ""
+msgstr "آیا مطمئن هستید می‌خواهید این بسته را حذف کنید؟"
 
-#: admin/subscription.php:232 class/render-form.php:1413 class/upload.php:128
+#: admin/subscription.php:232 class/render-form.php:1404 class/upload.php:128
 #: includes/free/edit-user.php:100 templates/dashboard.php:112
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: admin/subscription.php:243
 msgid "No subscription pack found"
-msgstr ""
+msgstr "هیچ بسته اشتراکی یافت نشد"
 
 #: admin/subscription.php:290
 msgid "Pack Description"
-msgstr ""
+msgstr "توضیحات بسته"
 
 #: admin/subscription.php:297
 msgid "Billing amount:"
-msgstr ""
+msgstr "مبلغ صورت حساب"
 
 #: admin/subscription.php:298
 msgid "Billing amount each cycle:"
-msgstr ""
+msgstr "مبلغ صورت حساب هر دوره:"
 
 #: admin/subscription.php:306
 msgid "Expires In:"
-msgstr ""
+msgstr "انقضا در:"
 
 #: admin/subscription.php:328 includes/free/form.php:59
-#: includes/pro/form.php:56
 msgid "Enable Post Expiration"
-msgstr ""
+msgstr "فعال سازی تاریخ انقضا نوشته"
 
 #: admin/subscription.php:341 admin/subscription.php:539
-#: includes/free/form.php:64 includes/pro/form.php:61
+#: includes/free/form.php:64
 msgid "Post Expiration Time"
-msgstr ""
+msgstr "تاریخ انقضا نوشته"
 
 #: admin/subscription.php:380 includes/free/form.php:110
-#: includes/pro/form.php:107
 msgid "Status of post after post expiration time is over "
-msgstr ""
+msgstr "وضعیت نوشته بعد از گذشت تاریخ انقضا"
 
 #: admin/subscription.php:411
 msgid "Day(s)"
-msgstr ""
+msgstr "روز(ها)"
 
 #: admin/subscription.php:412
 msgid "Week(s)"
-msgstr ""
+msgstr "هفته(ها)"
 
 #: admin/subscription.php:413
 msgid "Month(s)"
-msgstr ""
+msgstr "ماه(ها)"
 
 #: admin/subscription.php:414
 msgid "Year(s)"
-msgstr ""
+msgstr "سال(ها)"
 
 #: admin/subscription.php:451 includes/free/edit-profile.php:275
 msgid "WPUF Subscription"
-msgstr ""
+msgstr "اشتراک WPUF"
 
 #: admin/subscription.php:471 class/subscription.php:635
 msgid "Subscription Details"
-msgstr ""
+msgstr "جزییات اشتراک"
 
 #: admin/subscription.php:475
 msgid "This user is using recurring subscription pack"
-msgstr ""
+msgstr "این کاربر از بسته اشتراک در محدوده زمانی معینی استفاده می کند"
 
 #: admin/subscription.php:480 class/subscription.php:637
 msgid "Subcription Name: "
-msgstr ""
+msgstr "نام اشتراک:"
 
 #: admin/subscription.php:482
 msgid "Package billing details: "
-msgstr ""
+msgstr "جزئیات صورتحساب بسته:"
 
 #: admin/subscription.php:492 class/subscription.php:650
 msgid "Remaining post: "
-msgstr ""
+msgstr "نوشته باقی مانده:"
 
 #: admin/subscription.php:514 class/subscription.php:677
 msgid "Expire date:"
-msgstr ""
+msgstr "تاریخ انقضاء:"
 
 #: admin/subscription.php:528
 msgid "Post Expiration Enabled"
-msgstr ""
+msgstr "انقضاء نوشته فعال شد"
 
 #: admin/subscription.php:566
 msgid "Assign Package"
-msgstr ""
+msgstr "بسته اختصاصی"
 
 #: admin/subscription.php:567
 msgid "Show Package"
-msgstr ""
+msgstr "نمایش بسته"
 
 #: admin/subscription.php:570 includes/free/edit-profile.php:279
 msgid "Pack:"
-msgstr ""
+msgstr "بسته:"
 
 #: admin/subscription.php:573
 msgid "--Select--"
-msgstr ""
+msgstr "--  انتخاب  --"
 
 #: admin/subscription.php:581
 msgid "Delete Package"
-msgstr ""
+msgstr "حذف بسته"
 
 #: admin/template-post.php:43
 msgid "Enable Image Insertion"
-msgstr ""
+msgstr "فعال کردن درج تصویر"
 
 #: admin/template-post.php:49
 msgid "Enable image upload in post area"
-msgstr ""
+msgstr "فعال کردن آپلود تصویر در ناحیه نوشته"
 
 #: admin/template-post.php:53 admin/template.php:363
-#: includes/pro/admin/template-profile.php:120
 msgid "Word Restriction"
-msgstr ""
+msgstr "محدودیت کلمات"
 
 #: admin/template-post.php:57 admin/template.php:367
-#: includes/pro/admin/template-profile.php:124
 msgid "Numebr of words the author to be restricted in"
-msgstr ""
+msgstr "تعداد کلماتی که نویسنده مجاز به استفاده است"
 
 #: admin/template-post.php:103 admin/template.php:624
-#: includes/pro/admin/template-profile.php:199 includes/pro/form.php:784
 msgid "Enter maximum upload size limit in KB"
-msgstr ""
+msgstr "حداکثر اندازه مجاز آپلود به واحد KB را وارد کنید"
 
 #: admin/template-post.php:115 admin/template.php:636
-#: includes/pro/admin/template-profile.php:211 includes/pro/form.php:796
 msgid "Max. file size"
-msgstr ""
+msgstr "حداکثر حجم فایل"
 
 #: admin/template-post.php:164 admin/transaction.php:108
-#: admin/transaction.php:180 includes/pro/admin/coupon-element.php:29
+#: admin/transaction.php:180
 msgid "Type"
-msgstr ""
+msgstr "نوع"
 
 #: admin/template-post.php:169
 msgid "Text Input"
-msgstr ""
+msgstr "ورودی متن"
 
 #: admin/template-post.php:170
 msgid "Ajax"
-msgstr ""
+msgstr "ایجکس"
 
 #: admin/template-post.php:175
 msgid "Order By"
-msgstr ""
+msgstr "مرتب سازی بر اساس"
 
 #: admin/template-post.php:178
 msgid "Term ID"
-msgstr ""
+msgstr "Term ID"
 
 #: admin/template-post.php:179
 msgid "Slug"
-msgstr ""
+msgstr "نامک"
 
 #: admin/template-post.php:180
 msgid "Count"
-msgstr ""
+msgstr "تعداد"
 
 #: admin/template-post.php:181
 msgid "Term Group"
-msgstr ""
+msgstr "گروه Term"
 
 #: admin/template-post.php:186
 msgid "Order"
-msgstr ""
+msgstr "مرتب سازی"
 
 #: admin/template-post.php:188
 msgid "ASC"
-msgstr ""
+msgstr "صعودی"
 
 #: admin/template-post.php:189
 msgid "DESC"
-msgstr ""
+msgstr "نزولی"
 
 #: admin/template-post.php:194
 msgid "Selection Type"
-msgstr ""
+msgstr "نوع انتخاب"
 
 #: admin/template-post.php:196
 msgid "Exclude"
-msgstr ""
+msgstr "استثناء"
 
 #: admin/template-post.php:197
 msgid "Include"
-msgstr ""
+msgstr "شامل"
 
 #: admin/template-post.php:198
 msgid "Child of"
-msgstr ""
+msgstr "فرزند"
 
 #: admin/template-post.php:203
 msgid "Selection terms"
-msgstr ""
+msgstr "Term های انتخابی"
 
 #: admin/template-post.php:204
 msgid ""
 "Enter the term IDs as comma separated (without space) to exclude/include in "
 "the form."
 msgstr ""
+"term ID ها را بدون فاصله وارد کرده و با کاما از هم جدا کیند تا شامل/مستثنی "
+"از فرم شوند."
 
 #: admin/template-post.php:208
 msgid "WooCommerce Attribute"
-msgstr ""
+msgstr "صفات ووکامرس"
 
 #: admin/template-post.php:214
 msgid "This taxonomy is a WooCommerce attribute"
-msgstr ""
+msgstr "این طبقه بندی یک صفت ووکامرس است"
 
 #: admin/template-post.php:220
 msgid "Visibility"
-msgstr ""
+msgstr "وضعیت قابل رویت بودن"
 
 #: admin/template-post.php:226
 msgid "Visible on product page"
-msgstr ""
+msgstr "قابل مشاهده در برگه محصول"
 
-#: admin/template-post.php:267
+#: admin/template-post.php:687
 msgid "all"
-msgstr ""
+msgstr "همه"
 
-#: admin/template-post.php:267
+#: admin/template-post.php:687
 msgid "Show All"
-msgstr ""
+msgstr "نمایش همه"
 
-#: admin/template-post.php:270
+#: admin/template-post.php:690
 msgid "hide"
-msgstr ""
+msgstr "مخفی کردن"
 
-#: admin/template-post.php:270
+#: admin/template-post.php:690
 msgid "Hide These Countries"
-msgstr ""
+msgstr "مخفی کردن این کشورها"
 
-#: admin/template-post.php:271
+#: admin/template-post.php:691
 msgid "Chose Country to hide from List"
-msgstr ""
+msgstr "انتخاب کشور برای پنهان کردن از فهرست"
 
-#: admin/template-post.php:275
+#: admin/template-post.php:695
 msgid "show"
-msgstr ""
+msgstr "نمایش"
 
-#: admin/template-post.php:275
+#: admin/template-post.php:695
 msgid "Show These Countries"
-msgstr ""
+msgstr "نمایش این کشورها"
 
-#: admin/template-post.php:276
+#: admin/template-post.php:696
 msgid "Add Country to List"
-msgstr ""
+msgstr "اضافه کردن کشور به لیست"
 
 #: admin/template.php:25
 msgid "Click and Drag to rearrange"
-msgstr ""
+msgstr "کلیک کنید و بکشید تا دوباره تنظیم شود"
 
 #: admin/template.php:29
 msgid "Remove"
-msgstr ""
+msgstr "حذف"
 
 #: admin/template.php:30
 msgid "Toggle"
-msgstr ""
+msgstr "باز/بستن"
 
 #: admin/template.php:70
 msgid "Required"
-msgstr ""
+msgstr "الزامی"
 
 #: admin/template.php:79
 msgid "Field Label"
-msgstr ""
+msgstr "برچسب زمینه"
 
 #: admin/template.php:80
 msgid "Enter a title of this field"
-msgstr ""
+msgstr "عنوان این زمینه وارد کنید"
 
 #: admin/template.php:85 admin/template.php:565
 msgid "Meta Key"
-msgstr ""
+msgstr "کلید متا"
 
 #: admin/template.php:86 admin/template.php:566
 msgid "Name of the meta key this field will save to"
-msgstr ""
+msgstr "نام کلید متایی که این زمینه در آن ذخیره می شود"
 
 #: admin/template.php:97
 msgid "Help text"
-msgstr ""
+msgstr "متن راهنما"
 
 #: admin/template.php:98
 msgid "Give the user some information about this field"
-msgstr ""
+msgstr "به کاربران درباره این زمینه اطلاعاتی بدهید"
 
 #: admin/template.php:102
 msgid "CSS Class Name"
-msgstr ""
+msgstr "نام کلاس CSS"
 
 #: admin/template.php:103
 msgid "Add a CSS class name for this field"
-msgstr ""
+msgstr "افزودن نام کلاس CSS برای این زمینه"
 
-#: admin/template.php:127 admin/template.php:175 includes/pro/form.php:668
+#: admin/template.php:127 admin/template.php:175
 msgid "Placeholder text"
-msgstr ""
+msgstr "متن نگهدارنده مکان"
 
 #: admin/template.php:128
 msgid "Text for HTML5 placeholder attribute"
-msgstr ""
+msgstr "متن برای مقدار صفت Placeholder در HTML5"
 
-#: admin/template.php:132 admin/template.php:180 includes/pro/form.php:673
+#: admin/template.php:132 admin/template.php:180
 msgid "Default value"
-msgstr ""
+msgstr "مقدار پیش فرض"
 
 #: admin/template.php:133
 msgid "The default value this field will have"
-msgstr ""
+msgstr "مقدار پیش فرض این زمینه خواهد شد:"
 
-#: admin/template.php:137 includes/pro/form.php:678
+#: admin/template.php:137
 msgid "Size"
-msgstr ""
+msgstr "اندازه"
 
 #: admin/template.php:138
 msgid "Size of this input field"
-msgstr ""
+msgstr "اندازه این زمینه"
 
 #: admin/template.php:165
 msgid "Rows"
-msgstr ""
+msgstr "ردیف ها"
 
-#: admin/template.php:170 includes/pro/form.php:683
+#: admin/template.php:170
 msgid "Columns"
-msgstr ""
+msgstr "ستون ها"
 
 #: admin/template.php:188
 msgid "Normal"
-msgstr ""
+msgstr "معمولی"
 
 #: admin/template.php:189
 msgid "Rich textarea"
-msgstr ""
+msgstr "ناحیه ی متن با ویرایشگر"
 
 #: admin/template.php:190
 msgid "Teeny Rich textarea"
-msgstr ""
+msgstr "ناحیه ی متن کوچک با ویرایشگر"
 
 #: admin/template.php:223
 msgid "Show values"
-msgstr ""
+msgstr "نمایش مقادیر"
 
-#: admin/template.php:226 admin/template.php:284 includes/pro/form.php:1167
-#: includes/pro/form.php:1511
+#: admin/template.php:226 admin/template.php:284
 msgid "Label"
-msgstr ""
+msgstr "برچسب"
 
 #: admin/template.php:226 admin/template.php:284
 msgid "Value"
-msgstr ""
+msgstr "مقدار"
 
 #: admin/template.php:283
 msgid "show values"
-msgstr ""
+msgstr "نمایش مقادیر"
 
 #: admin/template.php:388 admin/template.php:412 admin/template.php:444
 #: admin/template.php:476 templates/dashboard.php:36
 msgid "Options"
-msgstr ""
+msgstr "تنظیمات"
 
 #: admin/template.php:428 admin/template.php:460
 msgid ""
 "First element of the select dropdown. Leave this empty if you don't want to "
 "show this field"
 msgstr ""
+"اولين عنصر Select Dropdown را انتخاب کنید. خالی گذاشتن این گزینه به معنای "
+"این است که شما نمی خواهید از آن استفاده کنید."
 
 #: admin/template.php:439 admin/template.php:471
 msgid "Select Text"
-msgstr ""
+msgstr "متن انتخاب"
 
 #: admin/template.php:534 admin/template.php:594 class/upload.php:121
-#: includes/pro/form.php:1347 includes/pro/form.php:1389
-#: includes/pro/form.php:1428 templates/dashboard.php:26 wpuf-functions.php:649
+#: templates/dashboard.php:26 wpuf-functions.php:649
 msgid "Title"
-msgstr ""
+msgstr "عنوان"
 
 #: admin/template.php:539
 msgid "HTML Codes"
-msgstr ""
+msgstr "کدهای HTML"
 
 #: admin/template.php:572
 msgid "Meta Value"
-msgstr ""
+msgstr "مقدار متا"
 
 #: admin/template.php:573
 msgid "Enter the meta value"
-msgstr ""
+msgstr "مقدار متا را وارد کنید"
 
-#: admin/template.php:625 includes/pro/form.php:785
+#: admin/template.php:625
 msgid "Number of images can be uploaded"
-msgstr ""
+msgstr "تعداد تصاویر قابل آپلود"
 
-#: admin/template.php:641 includes/pro/form.php:801
+#: admin/template.php:641
 msgid "Max. files"
-msgstr ""
+msgstr "حداکثر فایل ها"
 
 #: admin/tools.php:32
 msgid "Form Export"
-msgstr ""
+msgstr "گرفتن خروجی از فرم"
 
 #: admin/tools.php:38 admin/tools.php:94
 msgid "All"
-msgstr ""
+msgstr "همه"
 
 #: admin/tools.php:43 admin/tools.php:99
 msgid "Select individual"
-msgstr ""
+msgstr "انتخاب فردی"
 
 #: admin/tools.php:53 admin/tools.php:112 admin/tools.php:397
 msgid "Export"
-msgstr ""
+msgstr "برون بری"
 
 #: admin/tools.php:61 admin/tools.php:119
 msgid "Sorry you have no form to export"
-msgstr ""
+msgstr "متاسفانه شما فرمی برای برون بری ندارید"
 
 #: admin/tools.php:86
 msgid "Registration Form Export"
-msgstr ""
+msgstr "برون بری فرم ثبت نام"
 
 #: admin/tools.php:132
 msgid "Somthing went wrong. Please choose a file again"
-msgstr ""
+msgstr "مشکلی پیش آمد. لطفا فایل را دوباره انتخاب کنید"
 
 #: admin/tools.php:144
 msgid "Import successful. Have fun!"
-msgstr ""
+msgstr "درون ریزی با موفقیت انجام شد. موفق باشید!"
 
 #: admin/tools.php:147
 msgid "Invalid file or file size too big."
-msgstr ""
+msgstr "فایل نامعتبر است و یا حجم فایل بیش از حد بزرگ است."
 
 #: admin/tools.php:153
 msgid "Import forms"
-msgstr ""
+msgstr "فرم های درون ریزی"
 
 #: admin/tools.php:155
 msgid "Click Browse button and choose a json file that you backup before."
 msgstr ""
+"روی دکمه Browse کلیک کنید و فایل json ای را که قبلا پشتیبان گرفته اید انتخاب "
+"نمایید."
 
 #: admin/tools.php:156
 msgid "Press Restore button, WordPress does the rest for you."
 msgstr ""
+"دکمه درون ریزی را بفشارید، بقیه کارها را وردپرس برایتان انجام خواهد داد!"
 
 #: admin/tools.php:161 admin/tools.php:396
 msgid "Import"
-msgstr ""
+msgstr "درون‌ریزی"
 
 #: admin/tools.php:215 admin/tools.php:235
 msgid "Please select some form for exporting"
-msgstr ""
+msgstr "لطفا فرم را برای برون بری انتخاب کنید"
 
 #: admin/tools.php:319
 msgid "All forms has been deleted"
-msgstr ""
+msgstr "همه فرم ها پاک شدند"
 
 #: admin/tools.php:323
 msgid "Settings has been cleared!"
-msgstr ""
+msgstr "تنظیمات پاکسازی شده است!"
 
 #: admin/tools.php:327
 msgid "All transactions has been deleted!"
-msgstr ""
+msgstr "همه معاملات حذف شده است!"
 
 #: admin/tools.php:344
 msgid "Page Installation"
-msgstr ""
+msgstr "نصب برگه"
 
 #: admin/tools.php:347
 msgid ""
 "Clicking this button will create required pages for the plugin. Note: It'll "
 "not delete/replace existing pages."
 msgstr ""
+"با کلیک بر روی این دکمه، برگه های مورد نیاز برای این افزونه ساخته خواهد شد. "
+"توجه: این کار موجب پاک شدن/جایگزینی برگه های موجود نخواهد شد."
 
 #: admin/tools.php:353 admin/tools.php:357
 msgid "Reset Settings"
-msgstr ""
+msgstr "بازنشاندن تنظیمات"
 
 #: admin/tools.php:356
 msgid ""
 "<strong>Caution:</strong> This tool will delete all the plugin settings of "
 "WP User Frontend Pro"
 msgstr ""
+"<strong>توجه:</strong>  این ابزار همه تنظیمات افزونه ناحیه کاربری پیشرفته را "
+"حذف می کند."
 
 #: admin/tools.php:362
 msgid "Delete Forms"
-msgstr ""
+msgstr "حذف فرم ها"
 
 #: admin/tools.php:365
 msgid ""
 "<strong>Caution:</strong> This tool will delete all the post and "
 "registration/profile forms."
 msgstr ""
+"<strong>توجه:</strong>  این ابزار تمام نوشته ها، فرم های ثبت نام و پروفایل "
+"را حذف می کند."
 
 #: admin/tools.php:367
 msgid "Delete Post Forms"
-msgstr ""
+msgstr "حذف فرم های ارسال"
 
 #: admin/tools.php:368
 msgid "Delete Registration Forms"
-msgstr ""
+msgstr "حذف فرم های ثبت نام"
 
 #: admin/tools.php:369
 msgid "Delete Subscriptions"
-msgstr ""
+msgstr "حذف اشتراک ها"
 
 #: admin/tools.php:370
 msgid "Delete Coupons"
-msgstr ""
+msgstr "حذف کوپن ها"
 
 #: admin/tools.php:375
 msgid "Transactions"
-msgstr ""
+msgstr "تراکنش‌ها"
 
 #: admin/tools.php:378
 msgid "This tool will delete all the transactions from the transaction table."
-msgstr ""
+msgstr "این ابزار تمام تراکنس ها را از جدول تراکنش حذف میکند."
 
 #: admin/tools.php:380
 msgid "Delete Transactions"
-msgstr ""
+msgstr "حذف تراکنش ها"
 
 #: admin/transaction.php:77
 msgid "WP User Frontend: Payments Received"
-msgstr ""
+msgstr "ناحیه کاربری پیشرفته: پرداخت های دریافت شده"
 
 #: admin/transaction.php:81
 msgid "Total Income:"
-msgstr ""
+msgstr "کل درآمد:"
 
 #: admin/transaction.php:84
 msgid "This Month:"
-msgstr ""
+msgstr "این ماه:"
 
 #: admin/transaction.php:90
 msgid "Transaction(s) deleted"
-msgstr ""
+msgstr "تراکنش(ها) حذف شد"
 
 #: admin/transaction.php:101
 msgid "User ID"
-msgstr ""
+msgstr "شناسه کاربر"
 
 #: admin/transaction.php:102 templates/dashboard.php:27
 msgid "Status"
-msgstr ""
+msgstr "وضعیت"
 
 #: admin/transaction.php:104
 msgid "Post"
-msgstr ""
+msgstr "نوشته"
 
 #: admin/transaction.php:105
 msgid "Pack ID"
-msgstr ""
+msgstr "شناسه بسته"
 
 #: admin/transaction.php:106
 msgid "Payer"
-msgstr ""
+msgstr "پرداخت کننده"
 
 #: admin/transaction.php:109
 msgid "Transaction ID"
-msgstr ""
+msgstr "شناسه تراکنش"
 
 #: admin/transaction.php:110
 msgid "Created"
-msgstr ""
+msgstr "ایجاد شد"
 
 #: admin/transaction.php:151 admin/transaction.php:213
 msgid "Nothing Found"
-msgstr ""
+msgstr "پیدا نشد"
 
 #: admin/transaction.php:158
 msgid "Delete Selected"
-msgstr ""
+msgstr "پاک کردن مورد انتخاب شده"
 
 #: admin/transaction.php:162
 msgid "Pending Orders"
-msgstr ""
+msgstr "سفارشات در حال انتظار"
 
 #: admin/transaction.php:178
 msgid "ID"
-msgstr ""
+msgstr "شناسه"
 
 #: admin/transaction.php:179
 msgid "User"
-msgstr ""
+msgstr "کاربر"
 
 #: admin/transaction.php:182
 msgid "Item Details"
-msgstr ""
+msgstr "جزئیات آیتم"
 
-#: admin/transaction.php:183 includes/free/form.php:12 includes/pro/form.php:12
+#: admin/transaction.php:183 includes/free/form.php:12
 msgid "Date"
-msgstr ""
+msgstr "تاریخ"
 
 #: admin/transaction.php:202
 msgid "Accept"
-msgstr ""
+msgstr "قبول"
 
 #: admin/transaction.php:203
 msgid "Reject"
-msgstr ""
+msgstr "رد کردن"
 
 #: admin/transaction.php:220
 msgid "No pending orders found"
-msgstr ""
+msgstr "هیچ سفارش در حال انتظاری یافت نشد"
 
 #: class/frontend-dashboard.php:35 includes/free/edit-profile.php:27
 #: includes/free/edit-user.php:37
+#, php-format
 msgid "This page is restricted. Please %s to view this page."
-msgstr ""
+msgstr "این برگه محدود شده است. لطفا %s تا این صفحه را مشاهده کنید."
 
 #: class/frontend-dashboard.php:67
 msgid "Post Deleted"
-msgstr ""
+msgstr "نوشته حذف شد"
 
 #: class/frontend-dashboard.php:105
 msgid "Author Info"
-msgstr ""
+msgstr "اطلاعات نویسنده"
 
 #: class/frontend-dashboard.php:109 includes/free/edit-user.php:97
-#: includes/pro/frontend-form-profile.php:305
+#, php-format
 msgid "%s"
-msgstr ""
+msgstr "%s"
 
 #: class/frontend-dashboard.php:141
 msgid "You are not the post author. Cheeting huh!"
-msgstr ""
+msgstr "شما نویسنده نوشته نیستید. تعجب کردید!"
 
 #: class/frontend-form-post.php:74
 msgid "You are not logged in"
-msgstr ""
+msgstr "شما وارد نشده اید"
 
 #: class/frontend-form-post.php:83
 msgid "Post Editing is disabled"
-msgstr ""
+msgstr "ویرایش نوشته غیرفعال است"
 
 #: class/frontend-form-post.php:89
 msgid "Invalid post"
-msgstr ""
+msgstr "نوشته نامعتبر است"
 
 #: class/frontend-form-post.php:94
 msgid "You are not allowed to edit"
-msgstr ""
+msgstr "مجاز به ویرایش نیستید"
 
 #: class/frontend-form-post.php:106
 msgid "I don't know how to edit this post, I don't have the form ID"
-msgstr ""
+msgstr "به دلیل عدم وجود شناسه فرم، امکان ویرایش نوشته وجود ندارد."
 
 #: class/frontend-form-post.php:112
 msgid "You can't edit a post while in pending mode."
-msgstr ""
+msgstr "زمانی که یک نوشته در حالت انتظار است شما نمی توانید آن را ویرایش کنید."
 
 #: class/frontend-form-post.php:173
 msgid "Invalid email address."
-msgstr ""
+msgstr "آدرس ایمیل نامعتبر."
 
 #: class/frontend-form-post.php:182
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
-"Clicking 'OK' will redirect you to the login page and you will lost the "
-"form data.\n"
+"Clicking 'OK' will redirect you to the login page and you will lost the form "
+"data.\n"
 "Click 'Cancel' to stay at this page."
 msgstr ""
+"شما در حال حاضر یک حساب کابری در وبسایت ما دارید. لطفا وارد شویذ.\n"
+"\n"
+"با کلیک بر روی 'بله' به صفحه ورود منتقل شده و اطلاعات فرم را از دست خواهید "
+"داد.\n"
+"برای ماندن در این صفحه بر روی دکمه 'انصراف' کلیک کنید."
 
-#: class/frontend-form-post.php:526 includes/pro/frontend-form-profile.php:285
+#: class/frontend-form-post.php:526
 msgid "Something went wrong"
-msgstr ""
+msgstr "مشکلی پیش آمد."
 
 #: class/payment.php:22 class/payment.php:23
 msgid "PayPal"
-msgstr ""
+msgstr "PayPal"
 
 #: class/payment.php:27 class/payment.php:28
 msgid "Bank Payment"
-msgstr ""
+msgstr "پرداخت بانکی"
 
 #: class/payment.php:69
 msgid "Please select your payment page from admin panel"
-msgstr ""
+msgstr "لطفا برگه پرداخت خود را از ناحیه مدیریت انتخاب کنید"
 
 #: class/payment.php:117
 msgid "Your free package has been activated. Enjoy!"
-msgstr ""
+msgstr "بسته رایگان شما فعال شده است. لذت ببرید!"
 
 #: class/payment.php:119
 msgid "You already have activated a free package previously."
-msgstr ""
+msgstr "شما در حال حاضر یک بسته رایگان از قبل فعال کرده اید."
 
 #: class/payment.php:143
 msgid "Pricing & Plans"
-msgstr ""
+msgstr "قیمت گذاری و پلن ها"
 
 #: class/payment.php:145
 msgid "Change Pack"
-msgstr ""
+msgstr "تغییر بسته"
 
-#: class/payment.php:156 includes/pro/coupons.php:117
+#: class/payment.php:156
 msgid "Selected Pack "
-msgstr ""
+msgstr "بسته های انتخاب شده"
 
-#: class/payment.php:157 includes/pro/coupons.php:118
+#: class/payment.php:157
 msgid "Pack Price "
-msgstr ""
+msgstr "قیمت بسته"
 
 #: class/payment.php:169
 msgid "Apply Coupon"
-msgstr ""
+msgstr "اعمال کوپن"
 
 #: class/payment.php:170
 msgid "Cancel"
-msgstr ""
+msgstr "انصراف"
 
 #: class/payment.php:173
 msgid "Have a discount code?"
-msgstr ""
+msgstr "کد تخفیف دارید؟"
 
 #: class/payment.php:184
 msgid "Choose Your Payment Method"
-msgstr ""
+msgstr "روش پرداخت خود را انتخاب کنید"
 
 #: class/payment.php:221
 msgid "Proceed"
-msgstr ""
+msgstr "ادامه"
 
 #: class/payment.php:225
 msgid "No Payment gateway found"
-msgstr ""
+msgstr "هبچ درگاه پرداختی یافت نشد"
 
 #: class/payment.php:399 lib/gateway/bank.php:99
+#, php-format
 msgid "[%s] Payment Received"
-msgstr ""
+msgstr "[%s] پرداخت دریافت شد"
 
 #: class/payment.php:400
+#, php-format
 msgid "New payment received at %s"
-msgstr ""
+msgstr "پرداخت جدید در %s دریافت شد"
 
 #: class/render-form.php:76
 msgid "Really Simple Captcha validation failed"
-msgstr ""
+msgstr "Really Simple Captcha  تأیید نشد"
 
 #: class/render-form.php:97
 msgid "reCAPTCHA validation failed"
-msgstr ""
+msgstr "reCAPTCHA تایید نشد"
 
-#: class/render-form.php:790
+#: class/render-form.php:781
 msgid "Word Limit Reached !"
-msgstr ""
+msgstr "محدودیت کلمه رسیده است!"
 
-#: class/render-form.php:887
+#: class/render-form.php:878
 msgid "Insert Photo"
-msgstr ""
+msgstr "درج تصویر"
 
-#: class/render-form.php:1137 class/render-form.php:1143
+#: class/render-form.php:1128 class/render-form.php:1134
 #: includes/free/edit-profile.php:198
 msgid "Strength indicator"
-msgstr ""
+msgstr "شاخص قدرت"
 
-#: class/render-form.php:1144
+#: class/render-form.php:1135
 msgid "Very weak"
-msgstr ""
+msgstr "خیلی ضعیف"
 
-#: class/render-form.php:1145
+#: class/render-form.php:1136
 msgid "Weak"
-msgstr ""
+msgstr "ضعیف"
 
-#: class/render-form.php:1146
+#: class/render-form.php:1137
 msgid "Medium"
-msgstr ""
+msgstr "متوسط"
 
-#: class/render-form.php:1147
+#: class/render-form.php:1138
 msgid "Strong"
-msgstr ""
+msgstr "قوی"
 
-#: class/render-form.php:1148
+#: class/render-form.php:1139
 msgid "Mismatch"
-msgstr ""
+msgstr "عدم مطابقت"
 
-#: class/render-form.php:1170 class/render-form.php:1278
+#: class/render-form.php:1161 class/render-form.php:1269
 msgid "-- Select --"
-msgstr ""
+msgstr "--  انتخاب  --"
 
-#: class/render-form.php:1401
+#: class/render-form.php:1392
 msgid "Select Image"
-msgstr ""
+msgstr "گزینش تصویر"
 
 #: class/subscription.php:322
 msgid "Add Subscription"
-msgstr ""
+msgstr "افزودن اشتراک"
 
 #: class/subscription.php:323
 msgid "Add New Subscription"
-msgstr ""
+msgstr "افزودن یک اشتراک جدید"
 
 #: class/subscription.php:325
 msgid "Edit Subscription"
-msgstr ""
+msgstr "ویرایش اشتراک"
 
 #: class/subscription.php:326
 msgid "New Subscription"
-msgstr ""
+msgstr "اشتراک جدید"
 
 #: class/subscription.php:327 class/subscription.php:328
 msgid "View Subscription"
-msgstr ""
+msgstr "مشاهده اشتراک"
 
 #: class/subscription.php:329
 msgid "Search Subscription"
-msgstr ""
+msgstr "جست و جوی اشتراک"
 
 #: class/subscription.php:330
 msgid "No Subscription Found"
-msgstr ""
+msgstr "هیچ اشتراکی پیدا نشد"
 
 #: class/subscription.php:331
 msgid "No Subscription Found in Trash"
-msgstr ""
+msgstr "هیچ اشتراکی در زباله دان پیدا نشد"
 
 #: class/subscription.php:332
 msgid "Parent Subscription"
-msgstr ""
+msgstr "اشتراک  اصلی"
 
 #: class/subscription.php:361
 msgid "Billing Details"
-msgstr ""
+msgstr "جزئیات صورتحساب"
 
 #: class/subscription.php:639
 msgid "Package & billing details: "
-msgstr ""
+msgstr "جزئیات بسته و صورت حساب:"
 
 #: class/subscription.php:696
 msgid "Change"
-msgstr ""
+msgstr "تغییر"
 
 #: class/subscription.php:715
 msgid "Please enable force pack and charge posting from admin panel"
 msgstr ""
+"لطفا اجبار خرید بسته و شارژ برای ارسال نوشته را از ناحیه مدیریت فعال نمایید."
 
 #: class/subscription.php:723
 msgid "Payment is complete"
-msgstr ""
+msgstr "پرداخت تکمیل شد"
 
 #: class/subscription.php:723
 msgid "Congratulations, your payment has been completed!"
-msgstr ""
+msgstr "تبریک می گویم، پرداخت شما تکمیل شد!"
 
 #: class/subscription.php:762
 msgid "One time payment"
-msgstr ""
+msgstr "پرداخت فوری"
 
 #: class/subscription.php:775
 msgid "Sign Up"
-msgstr ""
+msgstr "ثبت نام"
 
 #: class/subscription.php:780
 msgid "Buy Now"
-msgstr ""
+msgstr "اکنون بخرید!"
 
 #: class/subscription.php:836
+#, php-format
 msgid "This will cost you <strong>%s</strong> to add a new post. "
-msgstr ""
+msgstr "هزینه ارسال یک نوشته جدید <strong>%s</strong> می باشد."
 
 #: class/subscription.php:855
+#, php-format
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
-msgstr ""
+msgstr "شما قبل از ارسال نوشته باید <a href=\\\"%s\\\">یک بسته بخرید</a>"
 
 #: class/upload.php:122 wpuf-functions.php:652
 msgid "Caption"
-msgstr ""
+msgstr "عنوان"
 
 #: includes/free/edit-profile.php:66
 msgid "<strong>Success</strong>: Profile updated"
-msgstr ""
+msgstr "<strong>موفقیت آمیز بود</strong>: پروفایل آپدیت شد"
 
 #: includes/free/edit-profile.php:97
 msgid "Usernames cannot be changed."
-msgstr ""
+msgstr "نام کاربری قابل تغییر نیست"
 
 #: includes/free/edit-profile.php:110 includes/free/edit-profile.php:151
 msgid "(required)"
-msgstr ""
+msgstr "(الزامی)"
 
 #: includes/free/edit-profile.php:115
 msgid "Display to Public as"
-msgstr ""
+msgstr "نمایش به صورت عمومی"
 
 #: includes/free/edit-profile.php:147
 msgid "Contact Info"
-msgstr ""
+msgstr "اطلاعات تماس"
 
 #: includes/free/edit-profile.php:174
 msgid "About Yourself"
-msgstr ""
+msgstr "درباره خودتان"
 
 #: includes/free/edit-profile.php:180
 msgid ""
 "Share a little biographical information to fill out your profile. This may "
 "be shown publicly."
 msgstr ""
+"برای تکمیل کردن پروفایل خود اطلاعات کمی از بیوگرافی خود به اشتراک بگذراید. "
+"این اطلاعات ممکن است به صورت عمومی نمایش داده شود."
 
 #: includes/free/edit-profile.php:183
 msgid "New Password"
-msgstr ""
+msgstr "کلمه عبور جدید"
 
 #: includes/free/edit-profile.php:189
-#: includes/pro/admin/template-profile.php:144
 msgid "Confirm Password"
-msgstr ""
+msgstr "تکرار کلمه عبور"
 
 #: includes/free/edit-profile.php:191
 msgid "Type your new password again."
-msgstr ""
+msgstr "کلمه عبور جدید خود را مجدداً وارد کنید."
 
 #: includes/free/edit-profile.php:196
 msgid "Password Strength"
-msgstr ""
+msgstr "استحکام گذرواژه"
 
 #: includes/free/edit-profile.php:222 includes/free/form.php:344
-#: includes/pro/form.php:378
 msgid "Update Profile"
-msgstr ""
+msgstr "به روز رسانی پروفایل"
 
 #: includes/free/edit-profile.php:241
-#: includes/pro/admin/posting-profile.php:130
 msgid "WPUF Post Lock"
-msgstr ""
+msgstr "قفل نوشته WPUF"
 
 #: includes/free/edit-profile.php:244
-#: includes/pro/admin/posting-profile.php:133
 msgid "Lock Post:"
-msgstr ""
+msgstr "قفل نوشته:"
 
 #: includes/free/edit-profile.php:250
-#: includes/pro/admin/posting-profile.php:139
 msgid "Lock user from creating new post."
-msgstr ""
+msgstr "قفل کاربر از ایجاد نوشته جدید."
 
 #: includes/free/edit-profile.php:255
-#: includes/pro/admin/posting-profile.php:144
 msgid "Lock Reason:"
-msgstr ""
+msgstr "دلیل قفل شدن:"
 
 #: includes/free/edit-profile.php:285
 msgid "Post Count:"
-msgstr ""
+msgstr "تعداد نوشته:"
 
-#: includes/free/edit-profile.php:291 includes/pro/updates.php:417
+#: includes/free/edit-profile.php:291
 msgid "Validity:"
-msgstr ""
+msgstr "اعتبار:"
 
 #: includes/free/edit-user.php:23
 msgid "User doesn't exists"
-msgstr ""
+msgstr "کاربر وجود ندارد"
 
 #: includes/free/edit-user.php:34
 msgid "You don't have permission for this purpose"
-msgstr ""
+msgstr "شما اجازه دسترسی برای اینکار را ندارید"
 
 #: includes/free/edit-user.php:77
 msgid "User Deleted"
-msgstr ""
+msgstr "کاربر حذف شد"
 
 #: includes/free/edit-user.php:119 includes/free/edit-user.php:177
 msgid "Add New User"
-msgstr ""
+msgstr "اضافه کردن کاربر جدید"
 
 #: includes/free/edit-user.php:132
 msgid "User Added"
-msgstr ""
+msgstr "کاربر اضافه شد"
 
 #: includes/free/edit-user.php:160
 msgid "Role"
-msgstr ""
+msgstr "نقش"
 
 #: includes/free/edit-user.php:204
 msgid "<strong>ERROR</strong>: Please enter a username."
-msgstr ""
+msgstr "<strong>خطا:</strong> لطفا یک نام کاربری وارد کنید."
 
 #: includes/free/edit-user.php:206
 msgid ""
 "<strong>ERROR</strong>: This username is invalid because it uses illegal "
 "characters. Please enter a valid username."
 msgstr ""
+"<strong>خطا</strong>: نام کاربری وارد شده نامعتبر است، زیرا در آن از "
+"کاراکترهای غیر مجاز استفاده شده است. لطفا یک نام کاربری مجاز وارد کنید."
 
 #: includes/free/edit-user.php:209
 msgid ""
 "<strong>ERROR</strong>: This username is already registered, please choose "
 "another one."
 msgstr ""
+"<strong>خطا</strong>: نام کاربری وارد شده، قبلا در سایت ثبت شده است. لطفا "
+"نام کاربری دیگری انتخاب و وارد نمایید."
 
 #: includes/free/edit-user.php:214
 msgid "<strong>ERROR</strong>: Please type your e-mail address."
-msgstr ""
+msgstr "<strong>خطا</strong>: لطفا آدرس ایمیل خود را وارد کنید."
 
 #: includes/free/edit-user.php:216
 msgid "<strong>ERROR</strong>: The email address isn&#8217;t correct."
-msgstr ""
+msgstr "<strong>خطا:</strong> آدرس ایمیل صحیح نمی باشد."
 
 #: includes/free/edit-user.php:219
 msgid ""
 "<strong>ERROR</strong>: This email is already registered, please choose "
 "another one."
 msgstr ""
+"<strong>خطا</strong>: آدرس ایمیل وارد شده قبلا در سایت ثبت شده است. لطفا "
+"آدرس ایمیل دیگری انتخاب و وارد نمایید."
 
 #: includes/free/edit-user.php:242
+#, php-format
 msgid ""
-"<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the "
-"<a href=\"mailto:%s\">webmaster</a> !"
+"<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a "
+"href=\"mailto:%s\">webmaster</a> !"
 msgstr ""
+"<strong>خطــا</strong>: امکان ثبت نام شما وجود ندارد. لطفا با <a href="
+"\"mailto:%s\"> مدیر</a> تماس بگیرید."
 
-#: includes/free/form.php:8 includes/pro/form.php:13
+#: includes/free/form.php:8
 msgid "Image Upload"
-msgstr ""
+msgstr "آپلود تصویر"
 
-#: includes/free/form.php:11 includes/pro/form.php:11
+#: includes/free/form.php:11
 msgid "Repeat Field"
-msgstr ""
+msgstr "فیلد تکرار شونده"
 
-#: includes/free/form.php:13 includes/pro/form.php:14
+#: includes/free/form.php:13
 msgid "File Upload"
-msgstr ""
+msgstr "بارگذاری فایل"
 
-#: includes/free/form.php:14 includes/pro/form.php:15
+#: includes/free/form.php:14
 msgid "Google Maps"
-msgstr ""
+msgstr "نقشه گوگل"
 
-#: includes/free/form.php:15 includes/pro/form.php:16
+#: includes/free/form.php:15
 msgid "Country List"
-msgstr ""
+msgstr "فهرست کشور"
 
-#: includes/free/form.php:16 includes/pro/form.php:17
+#: includes/free/form.php:16
 msgid "Numeric Field"
-msgstr ""
+msgstr "فیلد عددی"
 
-#: includes/free/form.php:17 includes/pro/form.php:18
+#: includes/free/form.php:17
 msgid "Address Field"
-msgstr ""
+msgstr "فیلد آدرس"
 
-#: includes/free/form.php:18 includes/pro/form.php:19
+#: includes/free/form.php:18
 msgid "Step Start"
-msgstr ""
+msgstr "مرحله شروع"
 
-#: includes/free/form.php:30 includes/pro/form.php:29
+#: includes/free/form.php:30
 msgid "reCaptcha"
-msgstr ""
+msgstr "reCaptcha"
 
-#: includes/free/form.php:31 includes/pro/form.php:30
+#: includes/free/form.php:31
 msgid "Really Simple Captcha"
-msgstr ""
+msgstr "Really Simple Captcha"
 
-#: includes/free/form.php:32 includes/pro/form.php:31
+#: includes/free/form.php:32
 msgid "Action Hook"
-msgstr ""
+msgstr "Action Hook"
 
-#: includes/free/form.php:33 includes/pro/form.php:32
+#: includes/free/form.php:33
 msgid "Term &amp; Conditions"
-msgstr ""
+msgstr "شرایط و مقررات"
 
-#: includes/free/form.php:121 includes/pro/form.php:118
+#: includes/free/form.php:121
 msgid "Send Email to Author After Exceeding Post Expiration Time"
-msgstr ""
+msgstr "ارسال ایمیل به نویسنده بعد از گذشتن تاریخ انقضای نوشته"
 
 #: includes/free/form.php:146 includes/free/form.php:150
-#: includes/pro/form.php:148 includes/pro/form.php:152
 msgid "Enable Multistep"
-msgstr ""
+msgstr "فعال کردن چند مرحله ای"
 
-#: includes/free/form.php:153 includes/pro/form.php:155
+#: includes/free/form.php:153
 msgid "If checked, form will be displayed in frontend in multiple steps"
-msgstr ""
+msgstr "در صورت انتخاب، فرم در چند مرحله نمایش داده خوهد شد"
 
-#: includes/free/form.php:157 includes/pro/form.php:164
+#: includes/free/form.php:157
 msgid "Multistep Progressbar Type"
-msgstr ""
+msgstr "نوار پیشرفت چند مرحله ای"
 
-#: includes/free/form.php:167 includes/pro/form.php:174
+#: includes/free/form.php:167
 msgid "Choose how you want the progressbar"
-msgstr ""
+msgstr "انتخاب کنید چه نوار پیشرفتی می خواهید"
 
-#: includes/free/form.php:197 includes/pro/form.php:237
+#: includes/free/form.php:197
 msgid "New post created"
-msgstr ""
+msgstr "نوشته جدید ایجاد شده است"
 
-#: includes/free/form.php:202 includes/pro/form.php:242
+#: includes/free/form.php:202
 msgid "A post has been edited"
-msgstr ""
+msgstr "یک نوشته ویرایش شده است"
 
-#: includes/free/form.php:208 includes/pro/form.php:246
+#: includes/free/form.php:208
 msgid "New Post Notificatoin"
-msgstr ""
+msgstr "اطلاعیه نوشته جدید"
 
 #: includes/free/form.php:216 includes/free/form.php:253
-#: includes/pro/form.php:255 includes/pro/form.php:289
 msgid "Enable post notification"
-msgstr ""
+msgstr "فعال کردن اطلاعیه نوشته"
 
 #: includes/free/form.php:222 includes/free/form.php:259
-#: includes/pro/form.php:261 includes/pro/form.php:295
 msgid "To"
-msgstr ""
+msgstr "به"
 
 #: includes/free/form.php:230 includes/free/form.php:264
-#: includes/pro/form.php:268 includes/pro/form.php:300
 msgid "Subject"
-msgstr ""
+msgstr "موضوع"
 
 #: includes/free/form.php:236 includes/free/form.php:269
-#: includes/pro/form.php:273 includes/pro/form.php:305
 msgid "Message"
-msgstr ""
+msgstr "پیغام"
 
-#: includes/free/form.php:244 includes/pro/form.php:280
+#: includes/free/form.php:244
 msgid "Update Post Notificatoin"
-msgstr ""
+msgstr "اطلاعیه بروزرسانی نوشته"
 
-#: includes/free/form.php:276 includes/pro/form.php:312
+#: includes/free/form.php:276
 msgid "You may use in message:"
-msgstr ""
+msgstr "شما ممکن است در پیام استفاده کنید:"
 
-#: includes/free/form.php:339 includes/pro/form.php:373
+#: includes/free/form.php:339
 msgid "Registration successful"
-msgstr ""
+msgstr "ثبت نام موفیت آمیز بود"
 
-#: includes/free/form.php:340 includes/pro/form.php:374
+#: includes/free/form.php:340
 msgid "Profile updated successfully"
-msgstr ""
+msgstr "بروز رسانی پروفایل با موفقیت انجام شد"
 
-#: includes/free/form.php:343 includes/pro/form.php:377
-#: includes/pro/login.php:212
+#: includes/free/form.php:343
 msgid "Register"
-msgstr ""
+msgstr "ثبت نام"
 
-#: includes/free/form.php:352 includes/pro/form.php:381
+#: includes/free/form.php:352
 msgid "Enable Email Verfication"
-msgstr ""
+msgstr "فعال کردن تایید از طریق ایمیل"
 
-#: includes/free/form.php:360 includes/pro/form.php:389
+#: includes/free/form.php:360
 msgid "New User Role"
-msgstr ""
+msgstr "نقش کاربری جدید"
 
-#: includes/free/form.php:396 includes/pro/form.php:425
+#: includes/free/form.php:396
 msgid "Registration success message"
-msgstr ""
+msgstr "پیغام ثبت نام موفقیت آمیز"
 
-#: includes/free/form.php:403 includes/pro/form.php:432
+#: includes/free/form.php:403
 msgid "Update profile message"
-msgstr ""
+msgstr "پیغام بروزرسانی پروفایل"
 
-#: includes/free/form.php:432 includes/pro/form.php:461
+#: includes/free/form.php:432
 msgid "Submit Button text"
-msgstr ""
+msgstr "متن دکمه ی ارسال"
 
-#: includes/free/form.php:439 includes/pro/form.php:468
+#: includes/free/form.php:439
 msgid "Update Button text"
-msgstr ""
+msgstr "متن دکمه بروزرسانی"
 
-#: includes/free/form.php:472 includes/pro/form.php:533
+#: includes/free/form.php:472
 msgid "Conditional Logic"
-msgstr ""
+msgstr "منطق شرطی"
 
 #: includes/free/loader.php:63 includes/free/loader.php:92
-#: includes/pro/loader.php:118
 msgid "Coupons"
-msgstr ""
+msgstr "کوپن ها"
 
 #: includes/free/loader.php:68
 msgid "Registration Form"
-msgstr ""
+msgstr "فرم ثبت نام"
 
 #: includes/free/loader.php:72
 msgid ""
 "Registration form builder is a two way form which can be used both for "
 "<strong>user registration</strong> and <strong>profile editing</strong>."
 msgstr ""
+"سازنده فرم ثبت نام یک فرم دو طرفه است که می تواند برای هم <strong>ثبت نام "
+"کاربر</strong> و هم <strong>ویرایش مشخصات</strong> استفاده شود."
 
 #: includes/free/loader.php:76
 msgid "Users can also register themselves by using a subscription pack."
 msgstr ""
+"کاربران همچنین می توانند خود را با استفاده از یک بسته اشتراک ثبت نام نمایند."
 
 #: includes/free/loader.php:80 includes/free/loader.php:100
 msgid "This feature is only available in the Pro Version."
-msgstr ""
+msgstr "این قابلیت تنها در نسخه حرفه ای در دسترس است."
 
 #: includes/free/loader.php:84 includes/free/loader.php:104
 msgid "Upgrade to Pro Version"
-msgstr ""
+msgstr "ارتقا به نسخه حرفه ای"
 
 #: includes/free/loader.php:96
 msgid "Use Coupon codes for subscription for discounts."
-msgstr ""
+msgstr "استفاده از کدهای کوپن برای اشتراک تخفیف."
 
 #: includes/free/loader.php:131
 msgid "Pro Feature"
-msgstr ""
+msgstr "ویژگی های نسخه حرفه ای"
 
 #: includes/free/loader.php:149
 msgid "Upgrade to Pro"
-msgstr ""
+msgstr "ارتقاع به نسخه حرفه ای"
 
-#: includes/free/subscription.php:12 includes/pro/subscription.php:13
+#: includes/free/subscription.php:12
 msgid "Enable Recurring Payment"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:33 includes/pro/admin/coupon.php:49
-msgid "Fixed Price"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:34 includes/pro/admin/coupon.php:51
-msgid "Percentage"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:44
-msgid "Amount without <code>%</code> or currency symbol"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:53
-msgid "Give a description of this coupon"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:58
-msgid "Package"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:61
-msgid "Select one or more packages to apply coupon"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:66
-msgid "Usage Limit"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:70
-msgid "How many times the coupon can be used? Give a numeric value."
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:77
-msgid "Start date"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:78
-msgid "End date"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:84
-msgid "Email Restriction"
-msgstr ""
-
-#: includes/pro/admin/coupon-element.php:88
-msgid ""
-"Only users with these email addresses will be able to use this coupon. "
-"Enter Email addresses. One per each line."
-msgstr ""
-
-#: includes/pro/admin/coupon.php:68
-msgid "&infin;"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:97
-msgid "Coupon Code"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:98
-msgid "Coupon Type"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:100
-msgid "Usage / Limit"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:101
-msgid "Expire date"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:116 includes/pro/admin/coupon.php:119
-msgid "Coupon updated."
-msgstr ""
-
-#: includes/pro/admin/coupon.php:120
-msgid "Coupon restored to revision from %s"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:121
-msgid "Coupon published."
-msgstr ""
-
-#: includes/pro/admin/coupon.php:122
-msgid "Coupon saved."
-msgstr ""
-
-#: includes/pro/admin/coupon.php:123
-msgid "Coupon submitted."
-msgstr ""
-
-#: includes/pro/admin/coupon.php:125
-msgid "Coupon draft updated."
-msgstr ""
-
-#: includes/pro/admin/coupon.php:143
-msgid "Enter coupon code"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:158 includes/pro/admin/coupon.php:178
-#: includes/pro/admin/coupon.php:179 includes/pro/admin/coupon.php:180
-msgid "Coupon"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:181
-msgid "Add Coupon"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:182
-msgid "Add New Coupon"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:184
-msgid "Edit Coupon"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:185
-msgid "New Coupon"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:186 includes/pro/admin/coupon.php:187
-msgid "View Coupon"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:188
-msgid "Search Coupon"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:189
-msgid "No Coupon Found"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:190
-msgid "No Coupon Found in Trash"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:191
-msgid "Parent Coupon"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:202
-msgid "Coupon Details"
-msgstr ""
-
-#: includes/pro/admin/coupon.php:307
-msgid "All package"
-msgstr ""
-
-#: includes/pro/admin/template-profile.php:156
-msgid "Minimum password length"
-msgstr ""
-
-#: includes/pro/admin/template-profile.php:162
-msgid "Password Re-type"
-msgstr ""
-
-#: includes/pro/admin/template-profile.php:168
-msgid "Require Password repeat"
-msgstr ""
-
-#: includes/pro/admin/template-profile.php:174
-msgid "Re-type password label"
-msgstr ""
-
-#: includes/pro/admin/template-profile.php:180
-msgid "Password Strength Meter"
-msgstr ""
-
-#: includes/pro/admin/template-profile.php:186
-msgid "Show password strength meter"
-msgstr ""
-
-#: includes/pro/coupons.php:91
-msgid "Sorry invalid coupon code!"
-msgstr ""
-
-#: includes/pro/coupons.php:149
-msgid "Coupon is not availiable for this package!"
-msgstr ""
-
-#: includes/pro/coupons.php:153
-msgid "Coupon usage limit exceeded!"
-msgstr ""
-
-#: includes/pro/coupons.php:158
-msgid "Sorry, this coupon is not start!"
-msgstr ""
-
-#: includes/pro/coupons.php:165
-msgid "Sorry, this coupon has been expired!"
-msgstr ""
-
-#: includes/pro/coupons.php:170
-msgid "You are not allowed to use this coupon!"
-msgstr ""
-
-#: includes/pro/form.php:160
-msgid "Multistep Form Settings"
-msgstr ""
-
-#: includes/pro/form.php:168
-msgid "Progressbar"
-msgstr ""
-
-#: includes/pro/form.php:169
-msgid "Step by Step"
-msgstr ""
-
-#: includes/pro/form.php:179
-msgid "Active Text Color"
-msgstr ""
-
-#: includes/pro/form.php:186
-msgid "Text color for active step."
-msgstr ""
-
-#: includes/pro/form.php:190
-msgid "Active Background Color"
-msgstr ""
-
-#: includes/pro/form.php:197
-msgid "Background color for progressbar or active step."
-msgstr ""
-
-#: includes/pro/form.php:201
-msgid "Background Color"
-msgstr ""
-
-#: includes/pro/form.php:208
-msgid "Background color for normal steps."
-msgstr ""
-
-#: includes/pro/form.php:500
-msgid "No custom taxonomies found"
-msgstr ""
-
-#: includes/pro/form.php:660
-msgid "Multiple Column"
-msgstr ""
-
-#: includes/pro/form.php:730
-msgid "The date format"
-msgstr ""
-
-#: includes/pro/form.php:741
-msgid "Date Format"
-msgstr ""
-
-#: includes/pro/form.php:746
-msgid "Time"
-msgstr ""
-
-#: includes/pro/form.php:752
-msgid "Enable time input"
-msgstr ""
-
-#: includes/pro/form.php:843
-msgid "Set the map zoom level"
-msgstr ""
-
-#: includes/pro/form.php:844
-msgid "Enter default latitude and longitude to center the map"
-msgstr ""
-
-#: includes/pro/form.php:855
-msgid "Zoom Level"
-msgstr ""
-
-#: includes/pro/form.php:860
-msgid "Default Co-ordinate"
-msgstr ""
-
-#: includes/pro/form.php:865
-msgid "Address Button"
-msgstr ""
-
-#: includes/pro/form.php:871
-msgid "Show address find button"
-msgstr ""
-
-#: includes/pro/form.php:877
-msgid "Show Latitude/Longitude"
-msgstr ""
-
-#: includes/pro/form.php:883
-msgid "Show latitude and longitude input box value"
-msgstr ""
-
-#: includes/pro/form.php:911
-msgid "The country to be selected by default."
-msgstr ""
-
-#: includes/pro/form.php:928
-msgid "Default Country"
-msgstr ""
-
-#: includes/pro/form.php:998
-msgid "Step"
-msgstr ""
-
-#: includes/pro/form.php:1007
-msgid "Min Value"
-msgstr ""
-
-#: includes/pro/form.php:1016
-msgid "Max Value"
-msgstr ""
-
-#: includes/pro/form.php:1049 includes/pro/form.php:1179
-msgid "Address Line 1"
-msgstr ""
-
-#: includes/pro/form.php:1065 includes/pro/form.php:1196
-msgid "Address Line 2"
-msgstr ""
-
-#: includes/pro/form.php:1081
-msgid "City"
-msgstr ""
-
-#: includes/pro/form.php:1097
-msgid "State"
-msgstr ""
-
-#: includes/pro/form.php:1113
-msgid "Zip Code"
-msgstr ""
-
-#: includes/pro/form.php:1129 includes/pro/form.php:1267
-msgid "Country"
-msgstr ""
-
-#: includes/pro/form.php:1155
-msgid "Address Description"
-msgstr ""
-
-#: includes/pro/form.php:1160
-msgid "Address Field(s)"
-msgstr ""
-
-#: includes/pro/form.php:1165
-msgid "Fields"
-msgstr ""
-
-#: includes/pro/form.php:1166
-msgid "Required?"
-msgstr ""
-
-#: includes/pro/form.php:1168
-msgid "Default Value"
-msgstr ""
-
-#: includes/pro/form.php:1169
-msgid "Placeholder"
-msgstr ""
-
-#: includes/pro/form.php:1214
-msgid "City Name"
-msgstr ""
-
-#: includes/pro/form.php:1232
-msgid "State/Region"
-msgstr ""
-
-#: includes/pro/form.php:1250
-msgid "Zip/Postal Code"
-msgstr ""
-
-#: includes/pro/form.php:1344
-msgid "Section Name"
-msgstr ""
-
-#: includes/pro/form.php:1351 includes/pro/form.php:1353
-msgid "Previous Button Text"
-msgstr ""
-
-#: includes/pro/form.php:1357 includes/pro/form.php:1359
-msgid "Next Button Text"
-msgstr ""
-
-#: includes/pro/form.php:1395
-msgid ""
-"Insert your public key and private key in <a href='%s'>plugin settings</a>. "
-"<a href='https://www.google.com/recaptcha/' target='_blank'>Register</a> "
-"first if you don't have any keys."
-msgstr ""
-
-#: includes/pro/form.php:1434
-msgid ""
-"Depends on <a "
-"href='http://wordpress.org/extend/plugins/really-simple-captcha/' "
-"target='_blank'>Really Simple Captcha</a> Plugin. Install it first."
-msgstr ""
-
-#: includes/pro/form.php:1464
-msgid "Hook Name"
-msgstr ""
-
-#: includes/pro/form.php:1467
-msgid "Name of the hook"
-msgstr ""
-
-#: includes/pro/form.php:1470
-msgid ""
-"An option for developers to add dynamic elements they want. It provides the "
-"chance to add whatever input type you want to add in this form."
-msgstr ""
-
-#: includes/pro/form.php:1471
-msgid ""
-"This way, you can bind your own functions to render the form to this action "
-"hook. You'll be given 3 parameters to play with: $form_id, $post_id, "
-"$form_settings."
-msgstr ""
-
-#: includes/pro/form.php:1517
-msgid "Terms & Conditions"
-msgstr ""
-
-#: includes/pro/form.php:1518
-msgid "Insert terms and condtions here."
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:31
-msgid "Please select subscription page"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:60
-msgid "Please login to update your profile!"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:65
-msgid "You are already logged in!"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:70
-msgid "User registration is currently not allowed."
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:154
-msgid "An Email address is required"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:163
-msgid "Username already exists."
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:172
-msgid "E-mail address already exists."
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:182
-msgid "Username is not valid"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:193
-#: includes/pro/frontend-form-profile.php:418
-msgid "Password must be %s character long"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:198
-#: includes/pro/frontend-form-profile.php:423
-msgid "Password didn't match"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:268
-msgid "Please check your email for activation link"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:303
-msgid "Congrats! You are Successfully registered to %s:"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:304
-msgid "To activate your account, please click the link below"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:311
-msgid "[%s] Account Activation"
-msgstr ""
-
-#: includes/pro/frontend-form-profile.php:402
-msgid "That E-mail is already exists"
-msgstr ""
-
-#: includes/pro/login.php:208 includes/pro/login.php:263
-#: templates/login-form.php:37
-msgid "Log In"
-msgstr ""
-
-#: includes/pro/login.php:216
-msgid "Lost Password"
-msgstr ""
-
-#: includes/pro/login.php:253
-msgid ""
-"Please enter your username or email address. You will receive a link to "
-"create a new password via email."
-msgstr ""
-
-#: includes/pro/login.php:263
-msgid "Your password has been reset. %s"
-msgstr ""
-
-#: includes/pro/login.php:267
-msgid "Enter your new password below.."
-msgstr ""
-
-#: includes/pro/login.php:277
-msgid "Check your e-mail for the confirmation link."
-msgstr ""
-
-#: includes/pro/login.php:281
-msgid "You are now logged out."
-msgstr ""
-
-#: includes/pro/login.php:309 includes/pro/login.php:314
-#: includes/pro/login.php:319 includes/pro/login.php:329
-msgid "Error"
-msgstr ""
-
-#: includes/pro/login.php:314
-msgid "Username is required."
-msgstr ""
-
-#: includes/pro/login.php:319
-msgid "Password is required."
-msgstr ""
-
-#: includes/pro/login.php:329
-msgid "A user could not be found with this email address."
-msgstr ""
-
-#: includes/pro/login.php:414
-msgid "Please enter your password."
-msgstr ""
-
-#: includes/pro/login.php:419
-msgid "Passwords do not match."
-msgstr ""
-
-#: includes/pro/login.php:462
-msgid "Enter a username or e-mail address."
-msgstr ""
-
-#: includes/pro/login.php:470
-msgid "There is no user registered with that email address."
-msgstr ""
-
-#: includes/pro/login.php:488
-msgid "Invalid username or e-mail."
-msgstr ""
-
-#: includes/pro/login.php:502
-msgid "Password reset is not allowed for this user"
-msgstr ""
-
-#: includes/pro/login.php:546 includes/pro/login.php:551
-#: includes/pro/login.php:558
-msgid "Invalid key"
-msgstr ""
-
-#: includes/pro/login.php:581
-msgid ""
-"<strong>Your account is not active.</strong><br>Please check your email for "
-"activation link."
-msgstr ""
-
-#: includes/pro/login.php:629
-msgid "Your account has been activated"
-msgstr ""
-
-#: includes/pro/login.php:673
-msgid "Someone requested that the password be reset for the following account:"
-msgstr ""
-
-#: includes/pro/login.php:675
-msgid "Username: %s"
-msgstr ""
-
-#: includes/pro/login.php:676
-msgid "If this was a mistake, just ignore this email and nothing will happen."
-msgstr ""
-
-#: includes/pro/login.php:677
-msgid "To reset your password, visit the following address:"
-msgstr ""
-
-#: includes/pro/login.php:686
-msgid "[%s] Password Reset"
-msgstr ""
-
-#: includes/pro/login.php:692
-msgid "The e-mail could not be sent."
-msgstr ""
-
-#: includes/pro/login.php:692
-msgid "Possible reason: your host may have disabled the mail() function."
-msgstr ""
-
-#: includes/pro/render-form.php:56 includes/pro/render-form.php:72
-msgid "Add another"
-msgstr ""
-
-#: includes/pro/render-form.php:57 includes/pro/render-form.php:73
-msgid "Remove this choice"
-msgstr ""
-
-#: includes/pro/render-form.php:176
-msgid "Select File(s)"
-msgstr ""
-
-#: includes/pro/render-form.php:185
-msgid "Download File"
-msgstr ""
-
-#: includes/pro/render-form.php:228
-msgid "Type an address to find"
-msgstr ""
-
-#: includes/pro/render-form.php:229
-msgid "Find Address"
-msgstr ""
-
-#: includes/pro/render-form.php:682
-msgid "Error: Really Simple Captcha plugin not found!"
-msgstr ""
-
-#: includes/pro/subscription.php:19
-msgid "Billing cycle:"
-msgstr ""
-
-#: includes/pro/subscription.php:33
-msgid "Billing cycle stop"
-msgstr ""
-
-#: includes/pro/subscription.php:36
-msgid "Never"
-msgstr ""
-
-#: includes/pro/subscription.php:39
-msgid "After how many cycles should billing stop?"
-msgstr ""
-
-#: includes/pro/subscription.php:44
-msgid "Trial"
-msgstr ""
-
-#: includes/pro/subscription.php:48
-msgid "Enable trial period"
-msgstr ""
-
-#: includes/pro/subscription.php:54
-msgid "Trial amount"
-msgstr ""
-
-#: includes/pro/subscription.php:57
-msgid "Amount to bill for the trial period"
-msgstr ""
-
-#: includes/pro/subscription.php:62
-msgid "Trial period"
-msgstr ""
-
-#: includes/pro/subscription.php:70
-msgid "Define the trial period"
-msgstr ""
-
-#: includes/pro/updates.php:55
-msgid "Updates"
-msgstr ""
-
-#: includes/pro/updates.php:78
-msgid ""
-"Please <a href=\"%s\">enter</a> your <strong>WP User Frontend</strong> "
-"plugin license key to get regular update and support."
-msgstr ""
-
-#: includes/pro/updates.php:93
-msgid "Please activate your copy"
-msgstr ""
-
-#: includes/pro/updates.php:132
-msgid "WP User Frontend Error:"
-msgstr ""
-
-#: includes/pro/updates.php:323
-msgid "Empty email address"
-msgstr ""
-
-#: includes/pro/updates.php:327
-msgid "Empty license key"
-msgstr ""
-
-#: includes/pro/updates.php:345
-msgid "Settings Saved"
-msgstr ""
-
-#: includes/pro/updates.php:361
-msgid "Plugin Activation"
-msgstr ""
-
-#: includes/pro/updates.php:384
-msgid "E-mail Address"
-msgstr ""
-
-#: includes/pro/updates.php:387
-msgid "Enter your purchase Email address"
-msgstr ""
-
-#: includes/pro/updates.php:391
-msgid "License Key"
-msgstr ""
-
-#: includes/pro/updates.php:394
-msgid "Enter your license key"
-msgstr ""
-
-#: includes/pro/updates.php:408
-msgid "has been expired %s ago"
-msgstr ""
-
-#: includes/pro/updates.php:411
-msgid "will expire in %s"
-msgstr ""
-
-#: includes/pro/updates.php:422
-msgid "Renew License"
-msgstr ""
-
-#: includes/pro/updates.php:430
-msgid "Plugin is activated"
-msgstr ""
-
-#: includes/pro/updates.php:434
-msgid "Delete License"
-msgstr ""
+msgstr "فعال کرن پرداخت دوره ای"
 
 #: lib/gateway/bank.php:29
 msgid "Bank Instruction"
-msgstr ""
+msgstr "ساختار بانک"
 
 #: lib/gateway/bank.php:36
 msgid "Bank Payment Success Page"
-msgstr ""
+msgstr "برگه پرداخت بانکی موفقیت آمیز"
 
 #: lib/gateway/bank.php:77
+#, php-format
 msgid "[%s] New Bank Order Received"
-msgstr ""
+msgstr "[%s] سفارش جدید دریافت شده"
 
 #: lib/gateway/bank.php:78
+#, php-format
 msgid "New bank order received at %s, please check it out: %s"
-msgstr ""
+msgstr "سفارش جدید بانکی در %s دریافت شده، لطفا بررسی نمایید: %s"
 
 #: lib/gateway/bank.php:100
+#, php-format
 msgid "Hello %s,"
-msgstr ""
+msgstr "سلام %s"
 
 #: lib/gateway/bank.php:101
 msgid "We have received your bank payment."
-msgstr ""
+msgstr "ما پرداخت بانکی شما را دریافت کردیم."
 
 #: lib/gateway/bank.php:102
 msgid "Thanks for being with us."
-msgstr ""
+msgstr "برای اینکه با ما بودید متشکریم."
 
 #: lib/gateway/paypal.php:75
+#, php-format
 msgid "Subscription %s at %s"
-msgstr ""
+msgstr "اشتراک %s در %s"
 
 #: lib/gateway/paypal.php:106
 msgid "PayPal Email"
-msgstr ""
+msgstr "ایمیل PayPal"
 
 #: lib/gateway/paypal.php:111
 msgid "PayPal Instruction"
-msgstr ""
+msgstr "ساختار PayPal"
 
 #: lib/gateway/paypal.php:118
 msgid "PayPal API username"
-msgstr ""
+msgstr "نام کاربری PayPal API"
 
 #: lib/gateway/paypal.php:122
 msgid "PayPal API password"
-msgstr ""
+msgstr "کلمه عبور PayPal API"
 
 #: lib/gateway/paypal.php:126
 msgid "PayPal API signature"
-msgstr ""
+msgstr "امضای PayPal API"
 
 #: templates/dashboard.php:2
+#, php-format
 msgid "%s's Dashboard"
-msgstr ""
+msgstr "پیشخوان %s"
 
 #: templates/dashboard.php:6
+#, php-format
 msgid "You have created <span>%d</span> %s"
-msgstr ""
+msgstr "شما <span>%d</span> %s ساختید."
 
 #: templates/dashboard.php:56
 msgid "No Image"
-msgstr ""
+msgstr "بدون تصویر"
 
 #: templates/dashboard.php:70
+#, php-format
 msgid "Permalink to %s"
-msgstr ""
+msgstr "پیوند یکتا به %s"
 
 #: templates/dashboard.php:86
 msgid "Pay Now"
-msgstr ""
+msgstr "هم‌اکنون پرداخت کنید"
 
 #: templates/dashboard.php:130
 msgid "&laquo;"
-msgstr ""
+msgstr "&laquo;"
 
 #: templates/dashboard.php:131
 msgid "&raquo;"
-msgstr ""
+msgstr "&raquo;"
 
 #: templates/dashboard.php:145
+#, php-format
 msgid "No %s found"
-msgstr ""
+msgstr "هیچ %s ای پیدا نشد"
 
 #: templates/logged-in.php:8
+#, php-format
 msgid "Hello %s"
-msgstr ""
+msgstr "سلام  %s"
 
 #: templates/logged-in.php:11
+#, php-format
 msgid "You are currently logged in! %s?"
-msgstr ""
+msgstr "شما در حال حاضر به سیستم وارد شده اید! %s?"
 
 #: templates/login-form.php:33
 msgid "Remember Me"
-msgstr ""
+msgstr "مرا خاطر داشته باش"
+
+#: templates/login-form.php:37
+msgid "Log In"
+msgstr "ورود"
 
 #: templates/lost-pass-form.php:14
 msgid "Username or E-mail:"
-msgstr ""
+msgstr "نام کاربری یا ایمیل:"
 
 #: templates/lost-pass-form.php:21
 msgid "Get New Password"
-msgstr ""
+msgstr "دریافت کلمه عبور جدید"
 
 #: templates/reset-pass-form.php:14
 msgid "New password"
-msgstr ""
+msgstr "کلمه عبور جدید"
 
 #: templates/reset-pass-form.php:19
 msgid "Confirm new password"
-msgstr ""
+msgstr "تکرار کلمه عبور جدید"
 
 #: templates/reset-pass-form.php:26
 msgid "Reset Password"
-msgstr ""
+msgstr "تنظیم دوباره کلمه عبور"
 
 #: wpuf-functions.php:26
 msgid "Live"
-msgstr ""
+msgstr "منتشر شده"
 
 #: wpuf-functions.php:30
 msgid "Offline"
-msgstr ""
+msgstr "آفلاین"
 
 #: wpuf-functions.php:34
 msgid "Awaiting Approval"
-msgstr ""
+msgstr "در انتظار تائید"
 
 #: wpuf-functions.php:37 wpuf-functions.php:71
 msgid "Scheduled"
-msgstr ""
+msgstr "زمان بندی شده"
 
 #: wpuf-functions.php:41
 msgid "Private"
-msgstr ""
+msgstr "خصوصی"
 
 #: wpuf-functions.php:60
 msgid "Published"
-msgstr ""
+msgstr "منتشر شده"
 
 #: wpuf-functions.php:64
 msgid "Draft"
-msgstr ""
+msgstr "پیش نویس"
 
 #: wpuf-functions.php:68
 msgid "Pending"
-msgstr ""
+msgstr "در حال انتظار"
 
 #: wpuf-functions.php:204
 msgid "-- select --"
-msgstr ""
+msgstr "- انتخاب -"
 
 #: wpuf-functions.php:395
 msgid "Images"
-msgstr ""
+msgstr "تصاویر"
 
 #: wpuf-functions.php:396
 msgid "Audio"
-msgstr ""
+msgstr "صوتی"
 
 #: wpuf-functions.php:397
 msgid "Videos"
-msgstr ""
+msgstr "ویدئوها"
 
 #: wpuf-functions.php:398
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: wpuf-functions.php:399
 msgid "Office Documents"
-msgstr ""
+msgstr "اسناد آفیس"
 
 #: wpuf-functions.php:400
 msgid "Zip Archives"
-msgstr ""
+msgstr "فایل های فشرده شده"
 
 #: wpuf-functions.php:401
 msgid "Executable Files"
-msgstr ""
+msgstr "فایل های اجرایی"
 
 #: wpuf-functions.php:402
 msgid "CSV"
-msgstr ""
+msgstr "CSV"
+
+#: wpuf-functions.php:925
+msgctxt "tag delimiter"
+msgid ","
+msgstr ","
 
 #: wpuf.php:106
 msgid "Your Post Has Been Expired"
-msgstr ""
+msgstr "نوشته شما منقضی شده است"
 
 #: wpuf.php:278
 msgid "Please fix the errors to proceed"
-msgstr ""
+msgstr "برای انجام عملیات لطفا این خطا ها را رفع کنید"
 
 #. Plugin URI of the plugin/theme
 msgid "https://wordpress.org/plugins/wp-user-frontend/"
-msgstr ""
+msgstr "https://wordpress.org/plugins/wp-user-frontend/"
 
 #. Description of the plugin/theme
 msgid ""
 "Create, edit, delete, manages your post, pages or custom post types from "
 "frontend. Create registration forms, frontend profile and more..."
 msgstr ""
+"ایجاد، ویرایش، حذف، مدیریت مطالب، برگه ها و یا نوع نوشته سفارشی در ظاهر خود "
+"پوسته وبسایت. ساخت فرم های ثبت نام، ورود، پروفایل و موارد بیشتر ..."
 
 #. Author of the plugin/theme
 msgid "Tareq Hasan"
-msgstr ""
+msgstr "Tareq Hasan"
 
 #. Author URI of the plugin/theme
 msgid "http://tareq.weDevs.com"
-msgstr ""
-
-#: wpuf-functions.php:925
-msgctxt "tag delimiter"
-msgid ","
-msgstr ""
+msgstr "http://tareq.weDevs.com"

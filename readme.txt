@@ -126,6 +126,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.3.7 (24 August, 2015) =
+
+ * [fix] Problem with conditional logic in image upload field fixed.
+ * [fix] Transaction log updating issue fixed.
+ * [fix] Email field in form with required flag is now working even if left empty.
+ * [fix] Data from address field in registration form is now saved and shows data in edit form .
+ * [new] Persian language translation added
+ * [fix] Problem with 'pay per post' feature fixed
+
 = v2.3.6 (13 July, 2015) =
 
  * [fix] Login page bug fixed.

@@ -2,10 +2,10 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.3.6\n"
+"Project-Id-Version: WP User Frontend 2.3.7\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/\n"
-"POT-Creation-Date: 2015-07-13 09:21:11+00:00\n"
+"POT-Creation-Date: 2015-08-24 09:38:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -228,7 +228,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: admin/form.php:655 class/render-form.php:548
+#: admin/form.php:655 class/render-form.php:557
 msgid "Save Draft"
 msgstr ""
 
@@ -641,7 +641,7 @@ msgstr ""
 msgid "Sample Form"
 msgstr ""
 
-#: admin/posting.php:38 class/render-form.php:1404 wpuf.php:283
+#: admin/posting.php:38 class/render-form.php:1413 wpuf.php:283
 msgid "Are you sure?"
 msgstr ""
 
@@ -1101,7 +1101,7 @@ msgstr ""
 msgid "Are you sure to delete this pack?"
 msgstr ""
 
-#: admin/subscription.php:232 class/render-form.php:1404 class/upload.php:128
+#: admin/subscription.php:232 class/render-form.php:1413 class/upload.php:128
 #: includes/free/edit-user.php:100 templates/dashboard.php:112
 msgid "Delete"
 msgstr ""
@@ -1324,35 +1324,35 @@ msgstr ""
 msgid "Visible on product page"
 msgstr ""
 
-#: admin/template-post.php:687
+#: admin/template-post.php:267
 msgid "all"
 msgstr ""
 
-#: admin/template-post.php:687
+#: admin/template-post.php:267
 msgid "Show All"
 msgstr ""
 
-#: admin/template-post.php:690
+#: admin/template-post.php:270
 msgid "hide"
 msgstr ""
 
-#: admin/template-post.php:690
+#: admin/template-post.php:270
 msgid "Hide These Countries"
 msgstr ""
 
-#: admin/template-post.php:691
+#: admin/template-post.php:271
 msgid "Chose Country to hide from List"
 msgstr ""
 
-#: admin/template-post.php:695
+#: admin/template-post.php:275
 msgid "show"
 msgstr ""
 
-#: admin/template-post.php:695
+#: admin/template-post.php:275
 msgid "Show These Countries"
 msgstr ""
 
-#: admin/template-post.php:696
+#: admin/template-post.php:276
 msgid "Add Country to List"
 msgstr ""
 
@@ -1855,44 +1855,44 @@ msgstr ""
 msgid "reCAPTCHA validation failed"
 msgstr ""
 
-#: class/render-form.php:781
+#: class/render-form.php:790
 msgid "Word Limit Reached !"
 msgstr ""
 
-#: class/render-form.php:878
+#: class/render-form.php:887
 msgid "Insert Photo"
 msgstr ""
 
-#: class/render-form.php:1128 class/render-form.php:1134
+#: class/render-form.php:1137 class/render-form.php:1143
 #: includes/free/edit-profile.php:198
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1135
+#: class/render-form.php:1144
 msgid "Very weak"
 msgstr ""
 
-#: class/render-form.php:1136
+#: class/render-form.php:1145
 msgid "Weak"
 msgstr ""
 
-#: class/render-form.php:1137
+#: class/render-form.php:1146
 msgid "Medium"
 msgstr ""
 
-#: class/render-form.php:1138
+#: class/render-form.php:1147
 msgid "Strong"
 msgstr ""
 
-#: class/render-form.php:1139
+#: class/render-form.php:1148
 msgid "Mismatch"
 msgstr ""
 
-#: class/render-form.php:1161 class/render-form.php:1269
+#: class/render-form.php:1170 class/render-form.php:1278
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1392
+#: class/render-form.php:1401
 msgid "Select Image"
 msgstr ""
 
@@ -2936,7 +2936,7 @@ msgstr ""
 msgid "Find Address"
 msgstr ""
 
-#: includes/pro/render-form.php:680
+#: includes/pro/render-form.php:682
 msgid "Error: Really Simple Captcha plugin not found!"
 msgstr ""
 

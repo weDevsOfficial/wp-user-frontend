@@ -919,6 +919,10 @@ fieldset.wpuf-multistep-fieldset .wpuf-multistep-next-btn {
   text-shadow: 1px 1px 0 #fff;
   top: 20%;
 }
+/*rtl*/
+body.rtl ul.wpuf-form li .wpuf-label {
+  float: right;
+}
 @media (max-width: 480px) {
   ul.wpuf-form li .wpuf-label,
   ul.wpuf-form li .wpuf-fields {

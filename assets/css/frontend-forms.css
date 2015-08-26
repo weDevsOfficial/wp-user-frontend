@@ -691,6 +691,9 @@ ul.wpuf_packs .cost {
   background-color: #c3ff88;
   border-color: #8dff1c !important;
 }
+.password[type="text"] {
+  display: none;
+}
 table.wpuf-table {
   border: 1px solid #E7E7E7;
   margin: 0 0px 10px 0;

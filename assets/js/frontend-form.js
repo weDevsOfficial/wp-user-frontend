@@ -25,10 +25,41 @@
 
             $('.wpuf-form-add').on('submit', this.formSubmit);
             $('form#post').on('submit', this.adminPostSubmit);
+            $( '.wpuf-form').on('keyup', '#pass1', this.check_pass_strength );
 
             this.ajaxCategory();
             // image insert
             // this.insertImage();
+        },
+
+        check_pass_strength : function() {
+            var pass1 = $('#pass1').val(), strength;
+
+            $('#pass-strength-result').removeClass('short bad good strong');
+            if ( ! pass1 ) {
+                $('#pass-strength-result').html( '&nbsp;' );
+                return;
+            }
+
+            strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputBlacklist(), pass1 );
+
+            switch ( strength ) {
+                case 2:
+                    $('#pass-strength-result').addClass('bad').html( pwsL10n.bad );
+                    break;
+                case 3:
+                    $('#pass-strength-result').addClass('good').html( pwsL10n.good );
+                    break;
+                case 4:
+                    $('#pass-strength-result').addClass('strong').html( pwsL10n.strong );
+                    break;
+                case 5:
+                    $('#pass-strength-result').addClass('short').html( pwsL10n.mismatch );
+                    break;
+                default:
+                    $('#pass-strength-result').addClass('short').html( pwsL10n['short'] );
+            }
+
         },
 
         enableMultistep: function(o) {

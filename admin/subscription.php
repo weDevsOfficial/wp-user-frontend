@@ -600,6 +600,8 @@ class WPUF_Admin_Subscription {
      * @since 2.2.7
      */
     function delete_user_package(){
+        $wpuf_paypal = new WPUF_Paypal();
+        $wpuf_paypal->recurring_change_status( $_POST['userid'], 'Cancel' );
         echo delete_user_meta($_POST['userid'],'_wpuf_subscription_pack');
         exit;
     }

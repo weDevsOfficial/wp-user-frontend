@@ -18,6 +18,8 @@
 
             $('.wpuf-delete-pack-btn').on( 'click', this.deletePack );
 
+            $('.wpuf-disabled-link').click( this.packAlert );
+
             //on change enable expiration check status
             this.changeExpirationFieldVisibility(':checkbox#wpuf-enable_post_expiration');
 
@@ -27,6 +29,10 @@
             $('.wpuf-metabox-post_expiration').on('change','select#wpuf-expiration_time_type',this.setTimeExpiration);
 
 		},
+
+        packAlert : function () {
+            alert( 'Please Cancel Your Currently Active Pack first ! ' );
+        },
 
         showPackDropdown: function(e) {
             e.preventDefault();

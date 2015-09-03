@@ -75,7 +75,7 @@ class WPUF_Admin_Installer {
 
         // login page
         $login_page     = $this->create_page( __( 'Login', 'wpuf' ), '[wpuf-login]' );
-        $reg_form       = $this->create_reg_form();
+
         $post_form      = $this->create_form();
 
         // payment page
@@ -100,11 +100,15 @@ class WPUF_Admin_Installer {
             $profile_options['login_page'] = $login_page;
         }
 
-        if ( $reg_form ) {
-            $reg_page = $this->create_page( __( 'Registration', 'wpuf' ), '[wpuf_profile type="registration" id="' . $reg_form . '"]' );
+        $data = apply_filters( 'wpuf_pro_page_install', $profile_options );
 
-            if ( $reg_page ) {
-                $profile_options['reg_override_page'] = $reg_page;
+        if ( is_array( $data ) ) {
+
+            if ( isset ( $data['profile_options'] ) ) {
+                $profile_options = $data['profile_options'];
+            }
+            if ( isset ( $data['reg_page'] ) ) {
+                $reg_page = $data['reg_page'];
             }
         }
 

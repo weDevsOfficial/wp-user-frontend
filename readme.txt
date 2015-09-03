@@ -3,7 +3,7 @@ Contributors: tareq1988, wedevs
 Donate link: http://tareq.wedevs.com/donate/
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
 Requires at least: 3.3
-Tested up to: 4.2.2
+Tested up to: 4.3
 Stable tag: trunk
 
 Create, update, delete posts and edit profile directly from the WordPress frontend.
@@ -125,6 +125,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.3.8 (3rd Sepetember, 2015) =
+
+ * [fix] Problem with wpuf lock post fixed.
+ * [fix] Problem with retyping password disability in the frontend fixed.
+ * [fix] Problem with password visibilty fixed.
+ * [fix] Redirection to subscription page from user profile fixed.
+ * [fix] Scripts and styles of wpuf are now loading when needed.
+ * [add] RTL support improvement
 
 = v2.3.7 (24 August, 2015) =
 

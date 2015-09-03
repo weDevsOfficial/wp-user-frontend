@@ -1134,10 +1134,9 @@ class WPUF_Render_Form {
             </div>
 
             <div class="wpuf-fields">
-                <div id="pass-strength-result"><?php _e( 'Strength indicator' ); ?></div>
+                <div id="pass-strength-result" style="display: block"><?php _e( 'Strength indicator' ); ?></div>
                 <script src="<?php echo includes_url( 'js/zxcvbn.min.js' ); ?>"></script>
                 <script src="<?php echo admin_url( 'js/password-strength-meter.js' ); ?>"></script>
-                <script src="<?php echo admin_url( 'js/user-profile.js' ); ?>"></script>
                 <script type="text/javascript">
                     var pwsL10n = {
                         empty: "<?php _e( 'Strength indicator', 'wpuf' ); ?>",

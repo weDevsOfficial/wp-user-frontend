@@ -376,6 +376,10 @@ class WPUF_Payment {
 
         $result = $wpdb->get_row( $sql );
 
+        if ( $recurring != false ) {
+            $profile_id = $data['profile_id'];
+        }
+
         if ( isset( $data['profile_id'] ) || empty( $data['profile_id'] ) ) {
             unset( $data['profile_id'] );
         }
@@ -384,6 +388,10 @@ class WPUF_Payment {
             $wpdb->insert( $wpdb->prefix . 'wpuf_transaction', $data );
         } else {
             $wpdb->update( $wpdb->prefix . 'wpuf_transaction', $data, array('transaction_id' => $transaction_id) );
+        }
+
+        if( isset( $profile_id ) ) {
+            $data['profile_id'] = $profile_id;
         }
 
         do_action( 'wpuf_payment_received', $data, $recurring );

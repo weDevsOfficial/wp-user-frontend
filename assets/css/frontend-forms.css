@@ -691,6 +691,9 @@ ul.wpuf_packs .cost {
   background-color: #c3ff88;
   border-color: #8dff1c !important;
 }
+.password[type="text"] {
+  display: none;
+}
 table.wpuf-table {
   border: 1px solid #E7E7E7;
   margin: 0 0px 10px 0;
@@ -918,6 +921,10 @@ fieldset.wpuf-multistep-fieldset .wpuf-multistep-next-btn {
   font-weight: bold;
   text-shadow: 1px 1px 0 #fff;
   top: 20%;
+}
+/*rtl*/
+body.rtl ul.wpuf-form li .wpuf-label {
+  float: right;
 }
 @media (max-width: 480px) {
   ul.wpuf-form li .wpuf-label,

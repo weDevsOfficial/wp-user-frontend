@@ -905,10 +905,22 @@ class WPUF_Subscription {
     }
 
     function force_pack_permission( $perm, $id, $form_settings ) {
+
         $force_pack = wpuf_get_option( 'force_pack', 'wpuf_payment' );
 
-        if ( $force_pack == 'yes' && WPUF_Subscription::has_user_error( $form_settings ) ) {
-            return 'no';
+        if ( is_user_logged_in() ) {
+
+            if ( get_user_meta( get_current_user_id(), 'wpuf_postlock', true ) == 'no' ) {
+
+                if ( $force_pack == 'yes' && WPUF_Subscription::has_user_error( $form_settings ) ) {
+                    return 'no';
+                } else {
+                    return 'yes';
+                }
+
+            } else {
+                return 'no';
+            }
         }
 
         return $perm;

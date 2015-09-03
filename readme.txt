@@ -126,6 +126,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.3.8 (3rd Sepetember, 2015) =
+
+ * [fix] Problem with wpuf lock post fixed.
+ * [fix] Problem with retyping password disability in the frontend fixed.
+ * [fix] Problem with password visibilty fixed.
+ * [fix] Redirection to subscription page from user profile fixed.
+ * [fix] Scripts and styles of wpuf are now loading when needed.
+ * [add] RTL support improvement
+
 = v2.3.7 (24 August, 2015) =
 
  * [fix] Problem with conditional logic in image upload field fixed.

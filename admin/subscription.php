@@ -82,7 +82,7 @@ class WPUF_Admin_Subscription {
 
         $pack_id = $_POST['pack_id'];
         $user_pack = WPUF_Subscription::get_user_pack( $_POST['user_id'] );
-        if ( $pack_id == $user_pack['pack_id'] ) {
+        if ( isset ( $user_pack['pack_id'] ) && $pack_id == $user_pack['pack_id'] ) {
             //updating number of posts
 
             if( isset( $user_pack['posts'] ) ) {

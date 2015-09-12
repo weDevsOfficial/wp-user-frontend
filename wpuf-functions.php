@@ -612,7 +612,24 @@ function wpuf_show_custom_fields( $content ) {
         }
 
         foreach ($meta as $attr) {
+
             $field_value = get_post_meta( $post->ID, $attr['name'] );
+
+            $return_for_no_cond = 0;
+
+            if ( isset ( $attr['wpuf_cond']['condition_status'] ) && $attr['wpuf_cond']['condition_status'] == 'yes' ) {
+
+                foreach ( $attr['wpuf_cond']['cond_field'] as $field_key => $cond_field_name ) {
+                    $cond_field_value = get_post_meta( $post->ID, $cond_field_name, 'true' );
+                    if ( isset( $attr['wpuf_cond']['cond_option'][$field_key] ) && $attr['wpuf_cond']['cond_option'][$field_key] != $cond_field_value ) {
+                        $return_for_no_cond = 1;
+                    }
+                }
+            }
+
+            if ( $return_for_no_cond == 1 ) {
+                continue;
+            }
 
             if( !count( $field_value ) ) {
                 continue;

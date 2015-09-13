@@ -1,6 +1,8 @@
 'use strict';
 module.exports = function(grunt) {
 
+    var pkg = grunt.file.readJSON('package.json');
+
     grunt.initConfig({
         // setting folder templates
         dirs: {
@@ -120,6 +122,38 @@ module.exports = function(grunt) {
             }
         },
 
+        secret: grunt.file.readJSON('secret.json'),
+        sshconfig: {
+            "myhost": grunt.file.readJSON('secret.json')
+        },
+        sftp: {
+            upload: {
+                files: {
+                    "./": "build/wp-user-frontend-pro.zip"
+                },
+                options: {
+                    path: '<%= secret.path %>',
+                    config: 'myhost',
+                    showProgress: true,
+                    srcBasePath: "build/"
+                }
+            }
+        },
+        sshexec: {
+            uptime: {
+                command: 'uptime',
+                options: {
+                    config: 'myhost'
+                }
+            },
+            updateVersion: {
+                command: '<%= secret.sql %> version=\'' + pkg.version + '\' WHERE id=<%= secret.id %>"',
+                options: {
+                    config: 'myhost'
+                }
+            }
+        }
+
     });
 
     // Load NPM tasks to be used here
@@ -133,6 +167,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-copy' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
     grunt.loadNpmTasks( 'grunt-text-replace' );
+    grunt.loadNpmTasks( 'grunt-ssh' );
 
     grunt.registerTask( 'default', [
         'makepot',
@@ -140,5 +175,9 @@ module.exports = function(grunt) {
 
     grunt.registerTask( 'zip', [
         'clean', 'copy', 'replace', 'compress'
+    ]);
+
+    grunt.registerTask( 'deploy', [
+        'sftp:upload', 'sshexec:updateVersion'
     ]);
 };

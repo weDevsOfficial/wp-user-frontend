@@ -7,7 +7,7 @@
 
 **Requires at least:** 3.3
 
-**Tested up to:** 4.2.2
+**Tested up to:** 4.3
 
 **Stable tag:** trunk
 
@@ -63,6 +63,7 @@ Try an <a href="http://demo.wedevs.com/wpuf/wp-admin/">online demo</a> of the Pr
 ### Translation ###
 
 * Italian translation by Gabriele Lamberti
+* Persian translation by Abolfazl Esmailinejad
 
 [Github Repository](https://github.com/tareq1988/WP-User-Frontend).
 
@@ -80,6 +81,9 @@ After having installed the plugin:
 1. To show the subscription info, insert the shortcdoe `[wpuf_sub_info]`
 1. To show the subscription packs, insert the shortcode `[wpuf_sub_pack]`
 1. For subscription payment page, set the *Payment Page* from *Payments* tab on settings page.
+
+### Video ###
+[youtube https://www.youtube.com/watch?v=pK3nLeR2fzc]
 
 
 ## Screenshots ##
@@ -193,16 +197,67 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
-### version 2.3.2 ###
+### v2.3.9 (13 Sepetember, 2015) ###
+
+ * [fix] Newly registered users were having no meta named "wpuf_postlock"
+ * [fix] Newly registered users (having no meta named "wpuf_postlock") are now having form in the frontend
+ * [fix] Text input field for category is now working
+ * [fix] Pack id warning in admin area profile
+ * [fix] Error in rendering map in edit mode, when having no value
+ * [fix] Progress bar style are set in condition
+ * [fix] Error undefined object post when updating user profile
+ * [improve] Button style in payment form
+
+### v2.3.8 (3rd Sepetember, 2015) ###
+
+ * [fix] Problem with wpuf lock post fixed.
+ * [fix] Problem with retyping password disability in the frontend fixed.
+ * [fix] Problem with password visibilty fixed.
+ * [fix] Redirection to subscription page from user profile fixed.
+ * [fix] Scripts and styles of wpuf are now loading when needed.
+ * [add] RTL support improvement
+
+### v2.3.7 (24 August, 2015) ###
+
+ * [fix] Problem with conditional logic in image upload field fixed.
+ * [fix] Transaction log updating issue fixed.
+ * [fix] Email field in form with required flag is now working even if left empty.
+ * [fix] Data from address field in registration form is now saved and shows data in edit form .
+ * [new] Persian language translation added
+ * [fix] Problem with 'pay per post' feature fixed
+
+### v2.3.6 (13 July, 2015) ###
+
+ * [fix] Login page bug fixed.
+ * [fix] Wordpress native registration page made working.
+ * [fix] Email validation bug fixed.
+ * [fix] Issue in country field fixed.
+ * [fix] Issue with saving taxonomy fixed.
+ * [fix] Problem with captcha and really simple captcha fixed.
+ * [fix] Problem with action hook fixed.
+
+### v2.3.5 (2 July, 2015) ###
+
+ * [fix] Ajax taxonomy field bug fixed.
+
+### v2.3.4 (June 29, 2015) ###
+
+ * [fix] Featured image caption was not being updated
+
+### v2.3.3 (June 24, 2015) ###
+
+ * [fix] Post status settings in form, wasn't being updated.
+
+### v2.3.2 (June 22, 2015) ###
 
  * [fix] Featured image upload fix
  * [new] Image upload field brought back to free
 
-### version 2.3.1 ###
+### v2.3.1 (June 21, 2015) ###
 
  * [fix] Compatibility problem with PHP < 5.2. Accidental PHP array shorthand used.
 
-### version 2.3 ###
+### version 2.3 (June 20, 2015) ###
 
  * Pro plugin released as free with less features
 

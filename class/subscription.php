@@ -910,7 +910,11 @@ class WPUF_Subscription {
 
         if ( is_user_logged_in() ) {
 
-            if ( get_user_meta( get_current_user_id(), 'wpuf_postlock', true ) == 'no' ) {
+            $is_user_postlock =  get_user_meta( get_current_user_id(), 'wpuf_postlock', true );
+
+            if ( $is_user_postlock == 'yes' )  {
+                return 'no';
+            } else {
 
                 if ( $force_pack == 'yes' && WPUF_Subscription::has_user_error( $form_settings ) ) {
                     return 'no';
@@ -918,8 +922,6 @@ class WPUF_Subscription {
                     return 'yes';
                 }
 
-            } else {
-                return 'no';
             }
         }
 

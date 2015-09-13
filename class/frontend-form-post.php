@@ -239,6 +239,17 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         if ( isset( $_POST['category'] ) ) {
             $category = $_POST['category'];
             $postarr['post_category'] = is_array( $category ) ? $category : array($category);
+
+            if ( !is_array( $category ) && is_string( $category ) ) {
+                $category_strings = explode( ',', $category);
+
+                $cat_ids = array();
+
+                foreach ( $category_strings as $key => $each_cat_string ) {
+                    $cat_ids[] = get_cat_ID( trim( $each_cat_string ) );
+                    $postarr['post_category'] = $cat_ids;
+                }
+            }
         }
 
         if ( isset( $_POST['tags'] ) ) {

@@ -2,10 +2,10 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.3.8\n"
+"Project-Id-Version: WP User Frontend 2.3.9\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/\n"
-"POT-Creation-Date: 2015-09-03 15:23:05+00:00\n"
+"POT-Creation-Date: 2015-09-13 12:47:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1080,7 +1080,7 @@ msgid "Pack Deleted"
 msgstr ""
 
 #: admin/subscription.php:207 admin/template.php:599 class/upload.php:123
-#: includes/pro/admin/coupon-element.php:49 wpuf-functions.php:655
+#: includes/pro/admin/coupon-element.php:49 wpuf-functions.php:672
 msgid "Description"
 msgstr ""
 
@@ -1482,7 +1482,7 @@ msgstr ""
 
 #: admin/template.php:534 admin/template.php:594 class/upload.php:121
 #: includes/pro/form.php:1347 includes/pro/form.php:1389
-#: includes/pro/form.php:1428 templates/dashboard.php:26 wpuf-functions.php:649
+#: includes/pro/form.php:1428 templates/dashboard.php:26 wpuf-functions.php:666
 msgid "Title"
 msgstr ""
 
@@ -1775,7 +1775,7 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: class/frontend-form-post.php:526 includes/pro/frontend-form-profile.php:292
+#: class/frontend-form-post.php:537 includes/pro/frontend-form-profile.php:292
 msgid "Something went wrong"
 msgstr ""
 
@@ -1988,7 +1988,7 @@ msgstr ""
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
-#: class/upload.php:122 wpuf-functions.php:652
+#: class/upload.php:122 wpuf-functions.php:669
 msgid "Caption"
 msgstr ""
 
@@ -2045,22 +2045,22 @@ msgid "Update Profile"
 msgstr ""
 
 #: includes/free/edit-profile.php:241
-#: includes/pro/admin/posting-profile.php:130
+#: includes/pro/admin/posting-profile.php:135
 msgid "WPUF Post Lock"
 msgstr ""
 
 #: includes/free/edit-profile.php:244
-#: includes/pro/admin/posting-profile.php:133
+#: includes/pro/admin/posting-profile.php:138
 msgid "Lock Post:"
 msgstr ""
 
 #: includes/free/edit-profile.php:250
-#: includes/pro/admin/posting-profile.php:139
+#: includes/pro/admin/posting-profile.php:144
 msgid "Lock user from creating new post."
 msgstr ""
 
 #: includes/free/edit-profile.php:255
-#: includes/pro/admin/posting-profile.php:144
+#: includes/pro/admin/posting-profile.php:149
 msgid "Lock Reason:"
 msgstr ""
 
@@ -2940,15 +2940,15 @@ msgstr ""
 msgid "Download File"
 msgstr ""
 
-#: includes/pro/render-form.php:228
+#: includes/pro/render-form.php:231
 msgid "Type an address to find"
 msgstr ""
 
-#: includes/pro/render-form.php:229
+#: includes/pro/render-form.php:232
 msgid "Find Address"
 msgstr ""
 
-#: includes/pro/render-form.php:682
+#: includes/pro/render-form.php:685
 msgid "Error: Really Simple Captcha plugin not found!"
 msgstr ""
 
@@ -2968,27 +2968,27 @@ msgstr ""
 msgid "After how many cycles should billing stop?"
 msgstr ""
 
-#: includes/pro/subscription.php:44
+#: includes/pro/subscription.php:45
 msgid "Trial"
 msgstr ""
 
-#: includes/pro/subscription.php:48
+#: includes/pro/subscription.php:49
 msgid "Enable trial period"
 msgstr ""
 
-#: includes/pro/subscription.php:54
+#: includes/pro/subscription.php:55
 msgid "Trial amount"
 msgstr ""
 
-#: includes/pro/subscription.php:57
+#: includes/pro/subscription.php:58
 msgid "Amount to bill for the trial period"
 msgstr ""
 
-#: includes/pro/subscription.php:62
+#: includes/pro/subscription.php:63
 msgid "Trial period"
 msgstr ""
 
-#: includes/pro/subscription.php:70
+#: includes/pro/subscription.php:71
 msgid "Define the trial period"
 msgstr ""
 
@@ -3272,7 +3272,7 @@ msgstr ""
 msgid "http://tareq.weDevs.com"
 msgstr ""
 
-#: wpuf-functions.php:925
+#: wpuf-functions.php:942
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

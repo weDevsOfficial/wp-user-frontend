@@ -57,6 +57,7 @@ Try an <a href="http://demo.wedevs.com/wpuf/wp-admin/">online demo</a> of the Pr
 = Translation =
 
 * Italian translation by Gabriele Lamberti
+* Persian translation by Abolfazl Esmailinejad
 
 [Github Repository](https://github.com/tareq1988/WP-User-Frontend).
 
@@ -125,6 +126,17 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.3.9 (13 Sepetember, 2015) =
+
+ * [fix] Newly registered users were having no meta named "wpuf_postlock"
+ * [fix] Newly registered users (having no meta named "wpuf_postlock") are now having form in the frontend
+ * [fix] Text input field for category is now working
+ * [fix] Pack id warning in admin area profile
+ * [fix] Error in rendering map in edit mode, when having no value
+ * [fix] Progress bar style are set in condition
+ * [fix] Error undefined object post when updating user profile
+ * [improve] Button style in payment form
 
 = v2.3.8 (3rd Sepetember, 2015) =
 

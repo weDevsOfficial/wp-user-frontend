@@ -57,6 +57,7 @@ Try an <a href="http://demo.wedevs.com/wpuf/wp-admin/">online demo</a> of the Pr
 = Translation =
 
 * Italian translation by Gabriele Lamberti
+* Persian translation by Abolfazl Esmailinejad
 
 [Github Repository](https://github.com/tareq1988/WP-User-Frontend).
 

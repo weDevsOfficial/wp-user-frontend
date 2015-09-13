@@ -218,7 +218,7 @@ class WPUF_Payment {
                             <?php if ( $pack_id ) { ?>
                                 <input type="hidden" name="pack_id" value="<?php echo $pack_id; ?>" />
                             <?php } ?>
-                            <input type="submit" name="wpuf_payment_submit" value="<?php _e( 'Proceed', 'wpuf' ); ?>"/>
+                            <input type="submit" name="wpuf_payment_submit" class="wpuf-btn" value="<?php _e( 'Proceed', 'wpuf' ); ?>"/>
                         </p>
                     </form>
                 <?php } else { ?>

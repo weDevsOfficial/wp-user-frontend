@@ -141,12 +141,6 @@ module.exports = function(grunt) {
         },
         sshexec: {
             updateVersion: {
-                command: '<%= secret.sql %> version=\'' + pkg.version + '\' WHERE id=<%= secret.id %>"',
-                options: {
-                    config: 'myhost'
-                }
-            },
-            updateVersionNames: {
                 command: '<%= secret.updateFiles %> ' + pkg.version,
                 options: {
                     config: 'myhost'
@@ -178,6 +172,6 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask( 'deploy', [
-        'sftp:upload', 'sshexec:updateVersion', 'sshexec:updateVersionNames'
+        'sftp:upload', 'sshexec:updateVersion'
     ]);
 };

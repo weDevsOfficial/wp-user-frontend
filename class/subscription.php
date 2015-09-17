@@ -66,6 +66,7 @@ class WPUF_Subscription {
                 WPUF_Subscription::init()->update_user_subscription_meta( $user_id, 'Cancel' );
             }
 
+            wp_redirect( $_SERVER['REQUEST_URI'] );
 
         }
     }

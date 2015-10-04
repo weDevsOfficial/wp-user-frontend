@@ -78,6 +78,9 @@ class WP_User_Frontend {
         // do plugin upgrades
         add_action( 'plugins_loaded', array($this, 'plugin_upgrades') );
         add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'plugin_action_links' ) );
+
+        //add custom css
+        add_action( 'wp_head', array( $this, 'add_custom_css' ) );
     }
 
     /**
@@ -274,6 +277,29 @@ class WP_User_Frontend {
             $this->plugin_scripts();
         }
     }
+
+    /**
+     * add custom css to head
+     */
+    function add_custom_css() {
+        if (   wpuf_has_shortcode( 'wpuf_form', $post->ID )
+            || wpuf_has_shortcode( 'wpuf_edit', $post->ID )
+            || wpuf_has_shortcode( 'wpuf_profile', $post->ID )
+            || wpuf_has_shortcode( 'wpuf_dashboard', $post->ID )
+            || wpuf_has_shortcode( 'wpuf_sub_pack', $post->ID )
+            || wpuf_has_shortcode( 'wpuf-login', $post->ID )
+            || wpuf_has_shortcode( 'wpuf_form', $post->ID )
+            || wpuf_has_shortcode( 'wpuf_profile', $post->ID )
+        ) {
+            ?>
+            <style>
+                <?php echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
+            </style>
+            <?php
+
+        }
+    }
+
 
     function plugin_scripts() {
 

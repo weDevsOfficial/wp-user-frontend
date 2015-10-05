@@ -153,7 +153,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             // check recaptcha
             if ( $this->search( $post_vars, 'input_type', 'recaptcha' ) ) {
-                $this->validate_re_captcha();
+
+                $no_captcha = '';
+                if ( isset ( $_POST["g-recaptcha-response"] ) ) {
+                    $no_captcha = 1;
+                } else {
+                    $no_captcha = 0;
+                }
+                $this->validate_re_captcha( $no_captcha );
             }
         }
 

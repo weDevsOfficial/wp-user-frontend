@@ -153,6 +153,7 @@ class WP_User_Frontend {
         // add reCaptcha library if not found
         if ( !function_exists( 'recaptcha_get_html' ) ) {
             require_once dirname( __FILE__ ) . '/lib/recaptchalib.php';
+            require_once dirname( __FILE__ ) . '/lib/recaptchalib_noCaptcha.php';
         }
     }
 
@@ -254,8 +255,8 @@ class WP_User_Frontend {
 
 
         if ( isset ( $post->ID ) ) {
-                wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form.js', array('jquery') );
-                wp_enqueue_script( 'wpuf-conditional-logic', WPUF_ASSET_URI . '/js/conditional-logic.js', array('jquery'), false, true );
+            wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form.js', array('jquery') );
+            wp_enqueue_script( 'wpuf-conditional-logic', WPUF_ASSET_URI . '/js/conditional-logic.js', array('jquery'), false, true );
         }
         wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
         wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array('jquery'), false, true );

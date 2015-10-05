@@ -103,7 +103,7 @@ function _recaptcha_http_post($host, $path, $data, $port = 80) {
 
  * @return string - The HTML to be embedded in the user's form.
  */
-function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
+function recaptcha_get_html ($pubkey, $enable_no_captcha = false, $error = null, $use_ssl = false)
 {
 	if ($pubkey == null || $pubkey == '') {
 		die ("To use reCAPTCHA you must get an API key from <a href='https://www.google.com/recaptcha/admin/create'>https://www.google.com/recaptcha/admin/create</a>");
@@ -119,7 +119,15 @@ function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
         if ($error) {
            $errorpart = "&amp;error=" . $error;
         }
-        return '<script type="text/javascript" src="'. $server . '/challenge?k=' . $pubkey . $errorpart . '"></script>
+
+
+    if ( $enable_no_captcha == true ) {
+        $return_var =  '<div class="g-recaptcha" data-sitekey="'.$pubkey.'"></div><script src="https://www.google.com/recaptcha/api.js"></script>';
+    } else {
+        $return_var = '<script type="text/javascript" src="'. $server . '/challenge?k=' . $pubkey . $errorpart . '"></script>';
+    }
+
+        return $return_var.'
 
 	<noscript>
   		<iframe src="'. $server . '/noscript?k=' . $pubkey . $errorpart . '" height="300" width="500" frameborder="0"></iframe><br/>
@@ -134,10 +142,13 @@ function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
 /**
  * A ReCaptchaResponse is returned from recaptcha_check_answer()
  */
-class ReCaptchaResponse {
+if ( !class_exists( 'ReCaptchaResponse' ) ) {
+    class ReCaptchaResponse {
         var $is_valid;
         var $error;
+    }
 }
+
 
 
 /**

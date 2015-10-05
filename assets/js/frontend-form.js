@@ -30,6 +30,14 @@
             this.ajaxCategory();
             // image insert
             // this.insertImage();
+
+            //comfirmation alert for canceling subscription
+            $( ':submit[name="wpuf_cancel_subscription"]').click(function(){
+                if ( !confirm( 'Are you sure you want to cancel your current subscription ?' ) ) {
+                    return false;
+                }
+
+            });
         },
 
         check_pass_strength : function() {

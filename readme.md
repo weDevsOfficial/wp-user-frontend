@@ -197,6 +197,18 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
+
+### v2.3.10 (5 Ocotber, 2015) ###
+
+ * [fix] Custom css is now working
+ * [fix] Textdomain added to some text
+ * [fix] Visibility of address field data in the frontend is now fixed
+ * [tweak] A new filter has been added to get subscription meta data
+ * [new] A new option has been added to date field to treat it future publish date if user wants
+ * [new] Autologin after registration - feature added
+ * [new] Confirmation alert added when user wants to delete subscription in frontend
+ * [fix] Publish post after paypal payment completion
+
 ### v2.3.9 (13 Sepetember, 2015) ###
 
  * [fix] Newly registered users were having no meta named "wpuf_postlock"

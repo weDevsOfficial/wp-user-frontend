@@ -220,6 +220,13 @@ function wpuf_settings_fields() {
         ) ),
         'wpuf_profile' => array(
             array(
+                'name'    => 'autologin_after_registration',
+                'label'   => __( 'Auto Login After Registration', 'wpuf' ),
+                'desc'    => __( 'If enabled, users after registration will be logged in to the system', 'wpuf' ),
+                'type'    => 'checkbox',
+                'default' => 'off'
+            ),
+            array(
                 'name'    => 'register_link_override',
                 'label'   => __( 'Login/Registration override', 'wpuf' ),
                 'desc'    => __( 'If enabled, default login and registration forms will be overridden by WPUF with pages below', 'wpuf' ),

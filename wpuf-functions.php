@@ -679,9 +679,34 @@ function wpuf_show_custom_fields( $content ) {
                 $html .= $image_html . '</li>';
 
             } elseif ( $attr['input_type'] == 'map' ) {
+
                 ob_start();
                 wpuf_shortcode_map_post($attr['name'], $post->ID);
                 $html .= ob_get_clean();
+
+            } elseif ( $attr['input_type'] == 'address') {
+
+                include_once 'countries.php';
+
+                $address_html = '';
+
+                if ( isset ( $field_value[0] ) ) {
+
+                    foreach ( $field_value[0] as $field_key => $value ) {
+
+                        if ( $field_key == 'country_select' ) {
+                            if ( isset ( $countries[$value] ) ) {
+                                $value = $countries[$value];
+                            }
+                        }
+                        $address_html .= '<li><label>' . $attr['address'][$field_key]['label'] . ': </label> ';
+                        $address_html .= ' '.$value.'</li>';
+                    }
+                    
+                }
+
+                $html = $address_html;
+
             } else {
 
                 $value = get_post_meta( $post->ID, $attr['name'] );

@@ -335,6 +335,38 @@ class WPUF_Paypal {
                     $insert_payment = true;
                 }
 
+            } else if (
+                isset ( $postdata['verify_sign'] )
+                && !empty( $postdata['verify_sign'] )
+                && isset ( $postdata['payment_status'] )
+                && $postdata['payment_status'] == 'Pending'
+                && isset ( $postdata['pending_reason'] )
+                && $postdata['pending_reason'] == 'multi_currency'
+                && isset ( $postdata['txn_type'] )
+                && $postdata['txn_type'] == 'web_accept'
+            ) {
+
+
+
+                //verify payment
+                $verified = $this->validateIpn();
+                $status  = 'web_accept';
+                switch ($custom->type ) {
+                    case 'post':
+                        $post_id = $item_number;
+                        $pack_id = 0;
+                        break;
+
+                    case 'pack':
+                        $post_id = 0;
+                        $pack_id = $item_number;
+                        break;
+                }
+
+                if ( $verified || $this->test_mode ) {
+                    $insert_payment = true;
+                }
+
             } // payment type
 
             if ( $insert_payment ) {

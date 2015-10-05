@@ -18,11 +18,11 @@
 
     <form name="loginform" class="wpuf-login-form" id="loginform" action="<?php echo $action_url; ?>" method="post">
         <p>
-            <label for="wpuf-user_login"><?php _e( 'Username' ); ?></label>
+            <label for="wpuf-user_login"><?php _e( 'Username', 'wpuf' ); ?></label>
             <input type="text" name="log" id="wpuf-user_login" class="input" value="" size="20" />
         </p>
         <p>
-            <label for="wpuf-user_pass"><?php _e( 'Password' ); ?></label>
+            <label for="wpuf-user_pass"><?php _e( 'Password', 'wpuf' ); ?></label>
             <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" />
         </p>
 

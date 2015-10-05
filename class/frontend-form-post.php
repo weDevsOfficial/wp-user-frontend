@@ -236,6 +236,15 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? trim( $_POST['post_excerpt'] ) : '',
         );
 
+        //if date is set and assigned as publish date
+        if ( isset ( $_POST['wpuf_is_publish_time'] ) ) {
+
+            if ( isset ( $_POST[$_POST['wpuf_is_publish_time']] ) && !empty ( $_POST[$_POST['wpuf_is_publish_time']] ) ) {
+                $postarr['post_date'] = date( 'Y-m-d H:i:s', strtotime( str_replace( array(':','/'), '-', $_POST[$_POST['wpuf_is_publish_time']]) ) );
+            }
+
+        }
+
         if ( isset( $_POST['category'] ) ) {
             $category = $_POST['category'];
             $postarr['post_category'] = is_array( $category ) ? $category : array($category);

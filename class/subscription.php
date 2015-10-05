@@ -66,6 +66,7 @@ class WPUF_Subscription {
                 WPUF_Subscription::init()->update_user_subscription_meta( $user_id, 'Cancel' );
             }
 
+            wp_redirect( $_SERVER['REQUEST_URI'] );
 
         }
     }
@@ -232,6 +233,9 @@ class WPUF_Subscription {
         $meta['_expired_post_status']       =  get_post_meta( $subscription_id, '_expired_post_status', true );
         $meta['_enable_mail_after_expired']       =  get_post_meta( $subscription_id, '_enable_mail_after_expired', true );
         $meta['_post_expiration_message']       =  get_post_meta( $subscription_id, '_post_expiration_message', true );
+
+        $meta = apply_filters( 'wpuf_get_subscription_meta', $meta, $subscription_id  );
+
         return $meta;
     }
 

@@ -272,6 +272,8 @@ class WP_User_Frontend {
      * add custom css to head
      */
     function add_custom_css() {
+        global $post;
+
         if (   wpuf_has_shortcode( 'wpuf_form', $post->ID )
             || wpuf_has_shortcode( 'wpuf_edit', $post->ID )
             || wpuf_has_shortcode( 'wpuf_profile', $post->ID )

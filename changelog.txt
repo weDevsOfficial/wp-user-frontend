@@ -1,6 +1,6 @@
 = version 2.3.10 =
 
-date: 4 Ocotber, 2015
+date: 5 Ocotber, 2015
 
  * [fix] Custom css is now working
  * [fix] Textdomain added to some text

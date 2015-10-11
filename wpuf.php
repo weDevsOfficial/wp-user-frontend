@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.3.9
+Version: 2.3.10
 Author URI: http://tareq.weDevs.com
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.3.9' );
+define( 'WPUF_VERSION', '2.3.10' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -248,8 +248,8 @@ class WP_User_Frontend {
      * @since 0.2
      */
     function enqueue_scripts() {
-
         global $post;
+
         $scheme = is_ssl() ? 'https' : 'http';
         wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?sensor=true' );
 
@@ -258,6 +258,7 @@ class WP_User_Frontend {
             wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form.js', array('jquery') );
             wp_enqueue_script( 'wpuf-conditional-logic', WPUF_ASSET_URI . '/js/conditional-logic.js', array('jquery'), false, true );
         }
+
         wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
         wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array('jquery'), false, true );
 
@@ -272,6 +273,8 @@ class WP_User_Frontend {
      * add custom css to head
      */
     function add_custom_css() {
+        global $post;
+
         if (   wpuf_has_shortcode( 'wpuf_form', $post->ID )
             || wpuf_has_shortcode( 'wpuf_edit', $post->ID )
             || wpuf_has_shortcode( 'wpuf_profile', $post->ID )

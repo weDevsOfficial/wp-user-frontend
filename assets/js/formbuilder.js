@@ -255,7 +255,7 @@
 
             val = val.replace(/[^a-z0-9]|\s+|\r?\n|\r/gmi, "_");
 
-            if ($metaKey.length) {
+            if ($metaKey.length && !$metaKey.val()) {
                 $metaKey.val(val);
             }
         },

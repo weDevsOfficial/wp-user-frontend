@@ -482,6 +482,7 @@
                                 WP_User_Frontend.markError(item);
                             }
                         } else if( val === '' ) {
+                            error = true;
                             WP_User_Frontend.markError(item);
                         }
                         break;

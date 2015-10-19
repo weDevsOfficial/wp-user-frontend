@@ -12,6 +12,10 @@
     };
 
     var WP_User_Frontend = {
+
+        pass_val : '',
+        retype_pass_val : '',
+
         init: function() {
 
             //enable multistep
@@ -375,6 +379,7 @@
                 temp_val = '',
                 error = false,
                 error_items = [];
+                error_type = '';
 
             // remove all initial errors if any
             WP_User_Frontend.removeErrors(self);
@@ -405,13 +410,30 @@
 
                     case 'textarea':
                     case 'text':
+
+                        if ( $(item).hasClass('password') ) {
+                            if ( WP_User_Frontend.pass_val == '' ) {
+                                WP_User_Frontend.pass_val = $(item).val();
+                            } else {
+                                WP_User_Frontend.retype_pass_val = $(item).val();
+                            }
+                            if ( WP_User_Frontend.pass_val != '' && WP_User_Frontend.retype_pass_val != '' && WP_User_Frontend.pass_val !=  WP_User_Frontend.retype_pass_val ) {
+                                error = true;
+                                error_type = 'mismatch';
+
+                                WP_User_Frontend.markError( item, error_type );
+                                break;
+                            }
+
+                        }
                         val = $.trim( $(item).val() );
 
                         if ( val === '') {
                             error = true;
+                            error_type = 'required';
 
                             // make it warn collor
-                            WP_User_Frontend.markError(item);
+                            WP_User_Frontend.markError( item, error_type );
                         }
                         break;
 
@@ -421,9 +443,10 @@
                         // console.log(val);
                         if ( !val || val === '-1' ) {
                             error = true;
+                            error_type = 'required';
 
                             // make it warn collor
-                            WP_User_Frontend.markError(item);
+                            WP_User_Frontend.markError( item, error_type );
                         }
                         break;
 
@@ -432,9 +455,10 @@
 
                         if ( val === null || val.length === 0 ) {
                             error = true;
+                            error_type = 'required';
 
                             // make it warn collor
-                            WP_User_Frontend.markError(item);
+                            WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
 
@@ -443,9 +467,10 @@
 
                         if ( !length ) {
                             error = true;
+                            error_type = 'required';
 
                             // make it warn collor
-                            WP_User_Frontend.markError(item);
+                            WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
 
@@ -454,9 +479,10 @@
 
                         if ( !length ) {
                             error = true;
+                            error_type = 'required';
 
                             // make it warn collor
-                            WP_User_Frontend.markError(item);
+                            WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
 
@@ -465,9 +491,10 @@
 
                         if ( !length ) {
                             error = true;
+                            error_type = 'required';
 
                             // make it warn collor
-                            WP_User_Frontend.markError(item);
+                            WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
 
@@ -478,12 +505,15 @@
                             //run the validation
                             if( !WP_User_Frontend.isValidEmail( val ) ) {
                                 error = true;
+                                error_type = 'validation';
 
-                                WP_User_Frontend.markError(item);
+                                WP_User_Frontend.markError( item,  error_type );
                             }
                         } else if( val === '' ) {
                             error = true;
-                            WP_User_Frontend.markError(item);
+                            error_type = 'required';
+
+                            WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
 
@@ -495,8 +525,9 @@
                             //run the validation
                             if( !WP_User_Frontend.isValidURL( val ) ) {
                                 error = true;
+                                error_type = 'validation';
 
-                                WP_User_Frontend.markError(item);
+                                WP_User_Frontend.markError( item,  error_type );
                             }
                         }
                         break;
@@ -547,13 +578,34 @@
             $(form).find('.wpuf-errors').remove();
         },
 
-        markError: function(item) {
+        markError: function(item, error_type) {
+
+            var error_string = '';
             $(item).closest('li').addClass('has-error');
+
+            if ( error_type ) {
+                error_string = $(item).closest('li').data('label');
+                switch ( error_type ) {
+                    case 'required' :
+                        error_string = error_string + ' required !';
+                        break;
+                    case 'mismatch' :
+                        error_string = error_string + ' is not matching !';
+                        break;
+                    case 'validation' :
+                        error_string = error_string + ' is not valid !';
+                        break
+                }
+                $(item).siblings('.wpuf-error-msg').remove();
+                $(item).after('<div class="wpuf-error-msg">'+ error_string +'</div>')
+            }
+
             $(item).focus();
         },
 
         removeErrors: function(item) {
             $(item).find('.has-error').removeClass('has-error');
+            $('.wpuf-error-msg').remove();
         },
 
         isValidEmail: function( email ) {

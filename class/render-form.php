@@ -348,7 +348,7 @@ class WPUF_Render_Form {
         $el_name       = !empty( $form_field['name'] ) ? $form_field['name'] : '';
         $class_name    = !empty( $form_field['css'] ) ? ' ' . $form_field['css'] : '';
 
-        printf( '<li class="wpuf-el %s%s">', $el_name, $class_name );
+        printf( '<li class="wpuf-el %s%s" data-label="%s">', $el_name, $class_name, $form_field['label'] );
 
         if ( isset( $form_field['input_type'] ) && !in_array( $form_field['input_type'], $label_exclude ) ) {
             $this->label( $form_field, $post_id );

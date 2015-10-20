@@ -587,13 +587,13 @@
                 error_string = $(item).closest('li').data('label');
                 switch ( error_type ) {
                     case 'required' :
-                        error_string = error_string + ' required !';
+                        error_string = error_string + ' ' + error_str_obj[error_type];
                         break;
                     case 'mismatch' :
-                        error_string = error_string + ' is not matching !';
+                        error_string = error_string + ' ' +error_str_obj[error_type];
                         break;
                     case 'validation' :
-                        error_string = error_string + ' is not valid !';
+                        error_string = error_string + ' ' + error_str_obj[error_type];
                         break
                 }
                 $(item).siblings('.wpuf-error-msg').remove();

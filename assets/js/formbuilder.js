@@ -119,6 +119,11 @@
             $('.wpuf_enable_multistep_section :input[type="checkbox"]').click(function(){
                 this_obj.changeMultistepVisibility( $(this) );
             });
+
+            //when changing the post type from the drop down
+            $(document).on( 'change', ':input[name="wpuf_settings[post_type]"]', function() {
+                $('.wpuf-custom-taxonomies .wpuf-custom-tax-btn' ).hide().siblings('.' + $(this).val()).show();
+            } );
         },
 
         changeMultistepVisibility : function( target ){

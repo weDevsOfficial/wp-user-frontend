@@ -1157,7 +1157,7 @@ class WPUF_Admin_Form {
 
 
         <h2><?php _e( 'Custom Taxonomies', 'wpuf' ); ?></h2>
-        <div class="wpuf-form-buttons">
+        <div class="wpuf-form-buttons wpuf-custom-taxonomies">
 
             <?php do_action( 'wpuf_form_custom_taxonomies' ); ?>
 

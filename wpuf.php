@@ -153,6 +153,7 @@ class WP_User_Frontend {
         // add reCaptcha library if not found
         if ( !function_exists( 'recaptcha_get_html' ) ) {
             require_once dirname( __FILE__ ) . '/lib/recaptchalib.php';
+            require_once dirname( __FILE__ ) . '/lib/recaptchalib_noCaptcha.php';
         }
     }
 
@@ -254,6 +255,15 @@ class WP_User_Frontend {
 
 
         if ( isset ( $post->ID ) ) {
+            ?>
+            <script type="text/javascript" id="wpuf-language-script">
+                var error_str_obj = {
+                    'required' : '<?php _e( 'is required', 'wpuf' ); ?>',
+                    'mismatch' : '<?php _e( 'does not match', 'wpuf' ); ?>',
+                    'validation' : '<?php _e( 'is not valid', 'wpuf' ); ?>'
+                }
+            </script>
+            <?php
             wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form.js', array('jquery') );
             wp_enqueue_script( 'wpuf-conditional-logic', WPUF_ASSET_URI . '/js/conditional-logic.js', array('jquery'), false, true );
         }

@@ -122,7 +122,8 @@
 
             //when changing the post type from the drop down
             $(document).on( 'change', ':input[name="wpuf_settings[post_type]"]', function() {
-                $('.wpuf-custom-taxonomies .wpuf-custom-tax-btn' ).hide().siblings('.' + $(this).val()).show();
+                $('.attributes_holder, .wpuf-custom-tax-btn', '.wpuf-taxonomies-holder ' ).hide();
+                $( '.attributes_holder.' + $(this).val() + ', .wpuf-custom-tax-btn.' + $(this).val(),'.wpuf-taxonomies-holder ').show();
             } );
         },
 

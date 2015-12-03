@@ -1,3 +1,21 @@
+= version 2.3.11 =
+
+date: 3 December, 2015
+
+ * [new] WooCommerce Product Category and Attributes are now sectioned
+ * [new] Custom taxonomies are now loaded depending on the selected post type in form builder
+ * [fix] Disabling subscription in form settings in now working
+ * [new] Error notice can now be translated.
+ * [new] Errors on filling up the form will now be visible as warning/notice below the relevant field in front end.
+ * [fix] Email error validation is now working in multistep.
+ * [new] Meta key name in form field in form builder  will now be auto populated only if the meta key field is empty
+ * [fix] Progress bar issue in post edit mode is fixed
+ * [new] Multistep registration form added
+ * [new] Hook added before registration form
+ * [fix] SSL issue fixed
+ * [new] nocaptcha option added to recaptcha field.
+
+ 
 = version 2.3.10 =
 
 date: 5 Ocotber, 2015

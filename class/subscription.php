@@ -286,7 +286,7 @@ class WPUF_Subscription {
      * @return void
      */
     function save_form_meta( $subscription_id, $post ) {
-        $post = $_POST;
+        $post = $_POST; die(pri($post));
         if ( !isset( $post['wpuf_subscription'] ) ) {
             return;
         }

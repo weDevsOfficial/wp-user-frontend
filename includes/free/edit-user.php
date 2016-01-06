@@ -245,7 +245,7 @@ function wpuf_register_new_user( $user_login, $user_email, $role ) {
 
     update_user_option( $user_id, 'default_password_nag', true, true ); //Set up the Password change nag.
 
-    wp_new_user_notification( $user_id, $user_pass );
+    wp_send_new_user_notifications( $user_id, $user_pass );
 
     return $user_id;
 }

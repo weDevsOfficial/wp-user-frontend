@@ -322,20 +322,12 @@ class WPUF_Admin_Subscription {
 
                 $expired_post_status = isset($sub_meta['_expired_post_status'])?$sub_meta['_expired_post_status']:'';
                 $is_enable_mail_after_expired = isset($sub_meta['_enable_mail_after_expired']) && $sub_meta['_enable_mail_after_expired'] == 'on'?'checked':'';
-                $post_expiration_message = isset($sub_meta['_post_expiration_message'])?$sub_meta['_post_expiration_message']:'';
-
-                $is_writing_post_subscription = isset($sub_meta['_writing_post_subscription']) && $sub_meta['_writing_post_subscription'] == 'on'?'checked':'';
+                $post_expiration_message = isset($sub_meta['_post_expiration_message'])?$sub_meta['_post_expiration_message']:'';;
                 ?>
                 <tr class="wpuf-metabox-post_expiration">
                     <th><?php _e( 'Enable Post Expiration', 'wpuf' ); ?></th>
                     <td>
                         <input type="checkbox" id="wpuf-enable_post_expiration" name="post_expiration_settings[enable_post_expiration]" value="on" <?php echo $is_post_exp_selected;?> />
-                    </td>
-                </tr>
-                <tr class="wpuf-metabox-post_expiration">
-                    <th><?php _e( 'Subscripton for writing posts', 'wpuf' ); ?></th>
-                    <td>
-                        <input type="checkbox" id="wpuf-writing-post-sub" name="writing_post_subscription" value="on" <?php echo $is_writing_post_subscription;?> />
                     </td>
                 </tr>
                 <tr class="wpuf-metabox-post_expiration wpuf_expiration_field">

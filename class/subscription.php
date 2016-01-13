@@ -41,6 +41,8 @@ class WPUF_Subscription {
 
         add_filter( 'template_redirect', array( $this, 'user_subscription_cancel' ) );
 
+        add_action( 'wpuf_draft_post_after_insert', array( $this, 'reset_user_subscription_data' ), 10, 4 );
+
     }
 
     /**
@@ -1040,6 +1042,36 @@ class WPUF_Subscription {
             <option value="<?php echo $pack->ID; ?>" <?php selected( $selected, $pack->ID ); ?>><?php echo $pack->post_title; ?></option>
             <?php
         }
+    }
+
+
+    /**
+     * Reset the post count of a subscription of a user
+     *
+     * @since 2.3.11
+     *
+     * @param $post_id
+     * @param $form_id
+     * @param $form_settings
+     * @param $form_vars
+     */
+    public function reset_user_subscription_data( $post_id, $form_id, $form_settings, $form_vars ) {
+
+        global $userdata;
+
+        //update_user_meta( 1, 'test_data', $user_wpuf_subscription_pack );
+
+        $sub_info    = self::get_user_pack( $userdata->ID );
+        $post_type   = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
+        $count       = isset( $sub_info['posts'][$post_type] ) ? intval( $sub_info['posts'][$post_type] ) : 0;
+
+
+        // decrease the post count, if not umlimited
+        if ( $count > 0 ) {
+            $sub_info['posts'][$post_type] = $count - 1;
+            $this->update_user_subscription_meta( $userdata->ID, $sub_info );
+        }
+
     }
 
 }

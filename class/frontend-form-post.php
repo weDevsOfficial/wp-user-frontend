@@ -641,6 +641,10 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
         }
 
+        //used to add code to run when the post is going to draft
+        do_action( 'wpuf_draft_post_after_insert', $post_id, $form_id, $form_settings, $form_vars );
+
+
         wpuf_clear_buffer();
 
         echo json_encode( array(

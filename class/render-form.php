@@ -299,7 +299,7 @@ class WPUF_Render_Form {
 
         if ( ! is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {
             echo '<div class="wpuf-message">' . $form_settings['message_restrict'] . '</div>';
-            wp_login_form();
+            //wp_login_form();
             return;
         }
 

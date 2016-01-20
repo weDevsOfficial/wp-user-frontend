@@ -34,7 +34,7 @@ class WPUF_Frontend_Dashboard {
             if ( empty( $message ) ) {
                 $msg = '<div class="wpuf-message">' . sprintf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( get_permalink(), false ) ) . '</div>';
                 echo apply_filters( 'wpuf_dashboard_unauth', $msg, $post_type );
-                wp_login_form();
+                //wp_login_form();
             } else {
                 echo $message;
             }

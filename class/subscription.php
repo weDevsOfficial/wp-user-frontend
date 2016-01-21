@@ -482,10 +482,18 @@ class WPUF_Subscription {
             wp_update_post( array( 'ID' => $post_id , 'post_status' => $post_status) );
 
             // decrease the post count, if not umlimited
-            if ( $count > 0 ) {
-                $sub_info['posts'][$post_type] = $count - 1;
-                $this->update_user_subscription_meta( $userdata->ID, $sub_info );
+            $wpuf_post_status = get_post_meta( $post_id, 'wpuf_post_status', true );
+
+            if ( $wpuf_post_status != 'new_draft' ) {
+                if ( $count > 0 ) {
+                    $sub_info['posts'][$post_type] = $count - 1;
+                    $this->update_user_subscription_meta( $userdata->ID, $sub_info );
+                }
             }
+
+            //meta added to make post have flag if post is published
+            update_post_meta( $post_id, 'wpuf_post_status', 'published' );
+
         }
 
     }
@@ -1067,9 +1075,16 @@ class WPUF_Subscription {
 
 
         // decrease the post count, if not umlimited
-        if ( $count > 0 ) {
-            $sub_info['posts'][$post_type] = $count - 1;
-            $this->update_user_subscription_meta( $userdata->ID, $sub_info );
+        $wpuf_post_status = get_post_meta( $post_id , 'wpuf_post_status' , true );
+
+        if ( $wpuf_post_status != 'published' && $wpuf_post_status != 'new_draft' ) {
+
+            if ( $count > 0 ) {
+                $sub_info['posts'][$post_type] = $count - 1;
+                $this->update_user_subscription_meta( $userdata->ID, $sub_info );
+            }
+
+            update_post_meta( $post_id , 'wpuf_post_status' , 'new_draft' );
         }
 
     }

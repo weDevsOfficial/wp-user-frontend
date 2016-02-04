@@ -251,7 +251,7 @@ class WP_User_Frontend {
         global $post;
 
         $scheme = is_ssl() ? 'https' : 'http';
-        wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?sensor=true' );
+        wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js' );//?sensor=true
 
 
         if ( isset ( $post->ID ) ) {

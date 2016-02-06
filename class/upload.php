@@ -29,12 +29,34 @@ class WPUF_Upload {
         $nonce = isset( $_GET['nonce'] ) ? $_GET['nonce'] : '';
 
         if ( ! wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
-            die('error');
+            die( 'error' );
         }
     }
 
     function upload_file( $image_only = false ) {
         $this->validate_nonce();
+
+        // a valid request will have a form ID
+        $form_id = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : false;
+
+        if ( ! $form_id ) {
+            die( 'error' );
+        }
+
+        // check if guest post enabled for guests
+        if ( ! is_user_logged_in() ) {
+
+            $guest_post    = false;
+            $form_settings = wpuf_get_form_settings( $form_id );
+
+            if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' ) {
+                $guest_post = true;
+            }
+
+            if ( ! $guest_post ) {
+                die( 'error' );
+            }
+        }
 
         $upload = array(
             'name'     => $_FILES['wpuf_file']['name'],

@@ -70,6 +70,7 @@ module.exports = function(grunt) {
                     '!.git/**',
                     '!includes/pro/.git/**',
                     '!Gruntfile.js',
+                    '!secret.json',
                     '!package.json',
                     '!debug.log',
                     '!phpunit.xml',

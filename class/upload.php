@@ -20,13 +20,28 @@ class WPUF_Upload {
         add_action( 'wp_ajax_nopriv_wpuf_insert_image', array( $this, 'insert_image' ) );
     }
 
+    /**
+     * Validate if it's coming from WordPress with a valid nonce
+     *
+     * @return void
+     */
+    function validate_nonce() {
+        $nonce = isset( $_GET['nonce'] ) ? $_GET['nonce'] : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
+            die('error');
+        }
+    }
+
     function upload_file( $image_only = false ) {
+        $this->validate_nonce();
+
         $upload = array(
-            'name' => $_FILES['wpuf_file']['name'],
-            'type' => $_FILES['wpuf_file']['type'],
+            'name'     => $_FILES['wpuf_file']['name'],
+            'type'     => $_FILES['wpuf_file']['type'],
             'tmp_name' => $_FILES['wpuf_file']['tmp_name'],
-            'error' => $_FILES['wpuf_file']['error'],
-            'size' => $_FILES['wpuf_file']['size']
+            'error'    => $_FILES['wpuf_file']['error'],
+            'size'     => $_FILES['wpuf_file']['size']
         );
 
         header('Content-Type: text/html; charset=' . get_option('blog_charset'));

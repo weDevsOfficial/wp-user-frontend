@@ -211,7 +211,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                         if ( class_exists( 'Theme_My_Login_Custom_Email') ) {
                             do_action( 'tml_new_user_registered', $user_id, $user_pass );
                         } else {
-                            wp_new_user_notification( $user_id, $user_pass );
+                            wp_send_new_user_notifications( $user_id );
                         }
 
                         // update display name to full name

@@ -1,6 +1,6 @@
 = version 2.3.12 =
 
-date: 3 December, 2015
+date: 8 February, 2016
 
  * [new] WooCommerce Product Category and Attributes are now sectionized
  * [new] Error notice can now be translated.

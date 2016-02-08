@@ -632,7 +632,8 @@
                 container: container,
                 multipart: true,
                 multipart_params: {
-                    action: 'wpuf_insert_image'
+                    action: 'wpuf_insert_image',
+                    form_id: $( '#' + button ).data('form_id')
                 },
                 multiple_queues: false,
                 multi_selection: false,

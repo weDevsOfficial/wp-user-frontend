@@ -26,7 +26,8 @@
             container: container,
             multipart: true,
             multipart_params: {
-                action: 'wpuf_file_upload'
+                action: 'wpuf_file_upload',
+                form_id: $( '#' + browse_button ).data('form_id')
             },
             multiple_queues: false,
             multi_selection: false,
@@ -101,22 +102,22 @@
 
         error: function (up, error) {
             $('#' + this.container).find('#' + error.file.id).remove();
-            
+
             var msg = '';
             switch(error.code) {
                 case -600:
                     msg = 'The file you have uploaded exceeds the file size limit. Please try again.';
                     break;
-                    
+
                 case -601:
                     msg = 'You have uploaded an incorrect file type. Please try again.';
                     break;
-                    
+
                 default:
                     msg = 'Error #' + error.code + ': ' + error.message;
                     break;
             }
-            
+
             alert(msg);
 
             this.count -= 1;
@@ -140,7 +141,7 @@
                 this.showHide();
             }
         },
-        
+
         removeAttachment: function(e) {
             e.preventDefault();
 

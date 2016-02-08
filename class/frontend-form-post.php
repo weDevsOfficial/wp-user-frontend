@@ -153,7 +153,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             // check recaptcha
             if ( $this->search( $post_vars, 'input_type', 'recaptcha' ) ) {
-                $this->validate_re_captcha();
+
+                $no_captcha = '';
+                if ( isset ( $_POST["g-recaptcha-response"] ) ) {
+                    $no_captcha = 1;
+                } else {
+                    $no_captcha = 0;
+                }
+                $this->validate_re_captcha( $no_captcha );
             }
         }
 
@@ -204,7 +211,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                         if ( class_exists( 'Theme_My_Login_Custom_Email') ) {
                             do_action( 'tml_new_user_registered', $user_id, $user_pass );
                         } else {
-                            wp_new_user_notification( $user_id, $user_pass );
+                            wp_send_new_user_notifications( $user_id );
                         }
 
                         // update display name to full name

@@ -86,16 +86,35 @@ class WPUF_Render_Form {
      *
      * @return void
      */
-    function validate_re_captcha() {
-        $recap_challenge = isset( $_POST['recaptcha_challenge_field'] ) ? $_POST['recaptcha_challenge_field'] : '';
-        $recap_response  = isset( $_POST['recaptcha_response_field'] ) ? $_POST['recaptcha_response_field'] : '';
+    function validate_re_captcha( $no_captcha = '' ) {
+
         $private_key     = wpuf_get_option( 'recaptcha_private', 'wpuf_general' );
+        if ( $no_captcha == 1 ) {
 
-        $resp            = recaptcha_check_answer( $private_key, $_SERVER["REMOTE_ADDR"], $recap_challenge, $recap_response );
+            $response = null;
+            $reCaptcha = new ReCaptcha($private_key);
 
-        if ( !$resp->is_valid ) {
-            $this->send_error( __( 'reCAPTCHA validation failed', 'wpuf' ) );
+            $resp = $reCaptcha->verifyResponse(
+                $_SERVER["REMOTE_ADDR"],
+                $_POST["g-recaptcha-response"]
+            );
+
+            if ( !$resp->success ) {
+                $this->send_error( __( 'reCAPTCHA validation failed', 'wpuf' ) );
+            }
+
+        } elseif ( $no_captcha == 0 ) {
+
+            $recap_challenge = isset( $_POST['recaptcha_challenge_field'] ) ? $_POST['recaptcha_challenge_field'] : '';
+            $recap_response  = isset( $_POST['recaptcha_response_field'] ) ? $_POST['recaptcha_response_field'] : '';
+
+            $resp            = recaptcha_check_answer( $private_key, $_SERVER["REMOTE_ADDR"], $recap_challenge, $recap_response );
+
+            if ( !$resp->is_valid ) {
+                $this->send_error( __( 'reCAPTCHA validation failed', 'wpuf' ) );
+            }
         }
+
     }
 
     /**
@@ -329,7 +348,7 @@ class WPUF_Render_Form {
         $el_name       = !empty( $form_field['name'] ) ? $form_field['name'] : '';
         $class_name    = !empty( $form_field['css'] ) ? ' ' . $form_field['css'] : '';
 
-        printf( '<li class="wpuf-el %s%s">', $el_name, $class_name );
+        printf( '<li class="wpuf-el %s%s" data-label="%s">', $el_name, $class_name, $form_field['label'] );
 
         if ( isset( $form_field['input_type'] ) && !in_array( $form_field['input_type'], $label_exclude ) ) {
             $this->label( $form_field, $post_id );
@@ -882,7 +901,7 @@ class WPUF_Render_Form {
 
             <?php if ( isset( $attr['insert_image'] ) && $attr['insert_image'] == 'yes' ) { ?>
                 <div id="wpuf-insert-image-container">
-                    <a class="wpuf-button" id="wpuf-insert-image" href="#">
+                    <a class="wpuf-button" id="wpuf-insert-image" href="#" data-form_id="<?php echo $form_id; ?>">
                         <span class="wpuf-media-icon"></span>
                         <?php _e( 'Insert Photo', 'wpuf' ); ?>
                     </a>
@@ -1397,7 +1416,7 @@ class WPUF_Render_Form {
         <div class="wpuf-fields">
             <div id="wpuf-<?php echo $attr['name']; ?>-upload-container">
                 <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo $attr['required']; ?>">
-                    <a id="wpuf-<?php echo $attr['name']; ?>-pickfiles" class="button file-selector <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" href="#"><?php _e( 'Select Image', 'wpuf' ); ?></a>
+                    <a id="wpuf-<?php echo $attr['name']; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" href="#"><?php _e( 'Select Image', 'wpuf' ); ?></a>
 
                     <ul class="wpuf-attachment-list thumbnails">
                         <?php

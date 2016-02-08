@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.3.10
+Version: 2.3.11
 Author URI: http://tareq.weDevs.com
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.3.10' );
+define( 'WPUF_VERSION', '2.3.11' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -153,6 +153,7 @@ class WP_User_Frontend {
         // add reCaptcha library if not found
         if ( !function_exists( 'recaptcha_get_html' ) ) {
             require_once dirname( __FILE__ ) . '/lib/recaptchalib.php';
+            require_once dirname( __FILE__ ) . '/lib/recaptchalib_noCaptcha.php';
         }
     }
 
@@ -254,6 +255,15 @@ class WP_User_Frontend {
 
 
         if ( isset ( $post->ID ) ) {
+            ?>
+            <script type="text/javascript" id="wpuf-language-script">
+                var error_str_obj = {
+                    'required' : '<?php _e( 'is required', 'wpuf' ); ?>',
+                    'mismatch' : '<?php _e( 'does not match', 'wpuf' ); ?>',
+                    'validation' : '<?php _e( 'is not valid', 'wpuf' ); ?>'
+                }
+            </script>
+            <?php
             wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form.js', array('jquery') );
             wp_enqueue_script( 'wpuf-conditional-logic', WPUF_ASSET_URI . '/js/conditional-logic.js', array('jquery'), false, true );
         }
@@ -272,6 +282,8 @@ class WP_User_Frontend {
      * add custom css to head
      */
     function add_custom_css() {
+        global $post;
+
         if (   wpuf_has_shortcode( 'wpuf_form', $post->ID )
             || wpuf_has_shortcode( 'wpuf_edit', $post->ID )
             || wpuf_has_shortcode( 'wpuf_profile', $post->ID )
@@ -315,7 +327,7 @@ class WP_User_Frontend {
             'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
             'ajaxurl'    => admin_url( 'admin-ajax.php' ),
             'plupload'   => array(
-                'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf_featured_img' ),
+                'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
                 'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
                 'filters'          => array(array('title' => __( 'Allowed Files' ), 'extensions' => '*')),
                 'multipart'        => true,
@@ -377,10 +389,8 @@ class WP_User_Frontend {
      * @param string $msg
      */
     public static function log( $type = '', $msg = '' ) {
-        if ( WP_DEBUG == true ) {
-            $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, $msg );
-            error_log( $msg, 3, dirname( __FILE__ ) . '/log.txt' );
-        }
+        $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, $msg );
+        error_log( $msg, 3, dirname( __FILE__ ) . '/log.txt' );
     }
 
     /**

@@ -119,6 +119,12 @@
             $('.wpuf_enable_multistep_section :input[type="checkbox"]').click(function(){
                 this_obj.changeMultistepVisibility( $(this) );
             });
+
+            //when changing the post type from the drop down
+            $(document).on( 'change', ':input[name="wpuf_settings[post_type]"]', function() {
+                $('.attributes_holder, .wpuf-custom-tax-btn', '.wpuf-taxonomies-holder ' ).hide();
+                $( '.attributes_holder.' + $(this).val() + ', .wpuf-custom-tax-btn.' + $(this).val(),'.wpuf-taxonomies-holder ').show();
+            } );
         },
 
         changeMultistepVisibility : function( target ){
@@ -255,7 +261,7 @@
 
             val = val.replace(/[^a-z0-9]|\s+|\r?\n|\r/gmi, "_");
 
-            if ($metaKey.length) {
+            if ($metaKey.length && !$metaKey.val()) {
                 $metaKey.val(val);
             }
         },

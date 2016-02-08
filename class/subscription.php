@@ -14,7 +14,7 @@ class WPUF_Subscription {
     function __construct() {
 
         add_action( 'init', array($this, 'register_post_type') );
-        add_filter( 'wpuf_add_post_args', array($this, 'set_pending'), 10, 1 );
+        add_filter( 'wpuf_add_post_args', array($this, 'set_pending'), 10, 3 );
         add_filter( 'wpuf_add_post_redirect', array($this, 'post_redirect'), 10, 4 );
 
         add_filter( 'wpuf_addpost_notice', array($this, 'force_pack_notice'), 20, 3 );
@@ -431,9 +431,12 @@ class WPUF_Subscription {
      * @param string $postdata
      * @return string
      */
-    function set_pending( $postdata ) {
+    function set_pending( $postdata, $form_id, $form_settings ) {
 
         if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) == 'yes' ) {
+            if ( isset ( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes'  ) {
+                return $postdata;
+            }
             $postdata['post_status'] = 'pending';
         }
 

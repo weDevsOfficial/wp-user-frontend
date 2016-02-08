@@ -299,7 +299,7 @@ class WPUF_Render_Form {
 
         if ( ! is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {
             echo '<div class="wpuf-message">' . $form_settings['message_restrict'] . '</div>';
-            wp_login_form();
+            //wp_login_form();
             return;
         }
 
@@ -517,7 +517,7 @@ class WPUF_Render_Form {
                     break;
 
                 case 'html':
-                    $form_field['name'] = 'custom_html';
+                    $form_field['name'] = 'custom_html_'.str_replace( ' ','_', $form_field['label'] );
 
                     $this->html( $form_field, $form_id );
                     $this->conditional_logic( $form_field, $form_id );

@@ -436,7 +436,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                             wp_set_object_terms( $post_id, $hierarchical, $taxonomy['name'] );
 
                             // woocommerce check
-                            if ( isset( $taxonomy['woo_attr']) && $taxonomy['woo_attr'] == 'yes' ) {
+                            if ( isset( $taxonomy['woo_attr']) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
                                 $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
                             }
 
@@ -446,7 +446,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                                 wp_set_post_terms( $post_id, $_POST[$taxonomy['name']], $taxonomy['name'] );
 
                                 // woocommerce check
-                                if ( isset( $taxonomy['woo_attr']) && $taxonomy['woo_attr'] == 'yes' ) {
+                                if ( isset( $taxonomy['woo_attr']) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
                                     $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
                                 }
                             } else {
@@ -640,6 +640,10 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 }
             }
         }
+
+        //used to add code to run when the post is going to draft
+        do_action( 'wpuf_draft_post_after_insert', $post_id, $form_id, $form_settings, $form_vars );
+
 
         wpuf_clear_buffer();
 

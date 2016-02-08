@@ -127,6 +127,17 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.3.12 (8 February, 2016) =
+
+ * [new] WooCommerce Product Category and Attributes are now sectionized
+ * [new] Error notice can now be translated.
+ * [new] Errors on filling up the form will now be visible as warning/notice below the relevant field in front end.
+ * [new] Meta key name in form field in form builder  will now be auto populated only if the meta key field is empty
+ * [fix] Progress bar issue in post edit mode is fixed
+ * [new] Multistep registration form added
+ * [new] Hook added before registration form
+ * [fix] SSL issue fixed
+
 = v2.3.11 (8 February, 2016) =
 
  * [fix] File upload vulnerability fix. Props to: Panagiotis Vagenas

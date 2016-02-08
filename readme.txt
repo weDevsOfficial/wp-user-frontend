@@ -127,6 +127,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.3.11 (8 February, 2016) =
+
+ * [fix] File upload vulnerability fix. Props to: Panagiotis Vagenas
+ * [fix] Replaced deprecated user notification function
+ * [fix] Email error validation in multistep
+ * [fix] Disabling subscription in form settings
+ * [fix] Product taxonomy fixes
+ * [new] No-captcha support added
+
 = v2.3.10 (5 Ocotber, 2015) =
 
  * [fix] Custom css is now working

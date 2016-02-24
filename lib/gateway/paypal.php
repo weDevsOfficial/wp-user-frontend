@@ -13,31 +13,14 @@ class WPUF_Paypal {
     private $test_mode;
 
     function __construct() {
-        $this->gateway_url = 'https://www.paypal.com/webscr/?';
+        $this->gateway_url        = 'https://www.paypal.com/webscr/?';
         $this->gateway_cancel_url = 'https://api-3t.paypal.com/nvp';
-        $this->test_mode = false;
+        $this->test_mode          = false;
 
         add_action( 'wpuf_gateway_paypal', array($this, 'prepare_to_send') );
         add_action( 'wpuf_options_payment', array($this, 'payment_options') );
         add_action( 'init', array($this, 'paypal_success') );
-        /*add_action( 'wpuf_payment_cancel_paypal', array($this, 'subscription_cancel') );
-        add_action( 'wpuf_payment_suspend_paypal', array($this, 'subscription_suspend') );
-        add_action( 'wpuf_payment_suspend_paypal', array($this, 'subscription_suspend_reactive') );*/
     }
-
-    /*function subscription_suspend_reactive( $user_id = null ) {
-        if ( isset( $_POST['wpuf_payment_suspend_submit'] ) && $_POST['action'] == 'wpuf_suspend_reactive' && wp_verify_nonce( $_POST['wpuf_payment_cancel'], '_wpnonce' ) ) {
-            $user_id = isset( $_POST['user_id'] ) ? $_POST['user_id'] : '';
-            $this->recurring_change_status( $user_id, 'Reactivate' );
-        }
-    }
-
-    function subscription_suspend( $user_id = null ) {
-        if ( isset( $_POST['wpuf_payment_suspend_submit'] ) && $_POST['action'] == 'wpuf_suspend_pay' && wp_verify_nonce( $_POST['wpuf_payment_cancel'], '_wpnonce' ) ) {
-            $user_id = isset( $_POST['user_id'] ) ? $_POST['user_id'] : '';
-            $this->recurring_change_status( $user_id, 'Suspend' );
-        }
-    }*/
 
     function subscription_cancel( $user_id ) {
         $sub_meta = 'cancel';
@@ -80,7 +63,7 @@ class WPUF_Paypal {
             'body'       => $args,
             'sslverify'  => false,
             'timeout'    => 30,
-            'user-agent' => 'WordPress/' . $wp_version . '; ' . home_url( '/' ),
+            'user-agent' => 'WP User Frontend Pro/' . WPUF_VERSION,
         );
 
         $response = wp_remote_post( $this->gateway_cancel_url, $params );

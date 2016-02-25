@@ -420,7 +420,7 @@ class WPUF_Paypal {
             'httpversion' => '1.1',
             'compress'    => false,
             'decompress'  => false,
-            'user-agent'  => 'WordPress/' . $wp_version . '; ' . home_url( '/' ),
+            'user-agent'  => 'WP User Frontend Pro/' . WPUF_VERSION
         );
 
         $response = wp_safe_remote_post( $this->gateway_url, $params );

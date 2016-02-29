@@ -135,7 +135,7 @@
                 var $container = $('#' + this.container).find('.wpuf-attachment-list');
                 $container.append(response.response);
             } else {
-                alert(res.error);
+                alert(response.error);
 
                 this.count -= 1;
                 this.showHide();

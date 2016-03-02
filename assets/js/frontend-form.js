@@ -73,7 +73,7 @@
                     default:
                         $('#pass-strength-result').addClass('short').html( pwsL10n['short'] );
                 }
-                
+
             }
 
 

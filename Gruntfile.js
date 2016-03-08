@@ -80,7 +80,7 @@ module.exports = function(grunt) {
                     '!plugin-deploy.sh',
                     '!export.sh',
                     '!config.codekit',
-                    '!nbproject/*',
+                    '!**/nbproject/**',
                     '!assets/less/**',
                     '!tests/**',
                     '!**/Gruntfile.js',

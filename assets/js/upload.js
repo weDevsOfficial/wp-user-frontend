@@ -9,6 +9,7 @@
      * @param string {type}
      */
     window.WPUF_Uploader = function (browse_button, container, max, type, allowed_type, max_file_size) {
+        this.removed_files = [],
         this.container = container;
         this.browse_button = browse_button;
         this.max = max || 1;
@@ -30,7 +31,7 @@
                 form_id: $( '#' + browse_button ).data('form_id')
             },
             multiple_queues: false,
-            multi_selection: false,
+            multi_selection: true,
             urlstream_upload: true,
             file_data_name: 'wpuf_file',
             max_file_size: max_file_size + 'kb',
@@ -59,23 +60,32 @@
 
         init: function (up, params) {
             this.showHide();
+            $('#' + this.container).prepend('<div class="wpuf-file-warning"></div>');
         },
 
         showHide: function () {
 
             if ( this.count >= this.max) {
+
+                var warning = 'Maximum number of files reached ! ';
+
+                if ( this.count > this.max ) {
+                    $('#' + this.container + ' .wpuf-file-warning').html( warning + ' Remove extra files. ');
+                } else {
+                    $('#' + this.container + ' .wpuf-file-warning').html( warning );
+                }
+
                 $('#' + this.container).find('.file-selector').hide();
 
                 return;
             };
-
+            $('#' + this.container + ' .wpuf-file-warning').html( '' );
             $('#' + this.container).find('.file-selector').show();
         },
 
         added: function (up, files) {
             var $container = $('#' + this.container).find('.wpuf-attachment-upload-filelist');
 
-            this.count += 1;
             this.showHide();
 
             $.each(files, function(i, file) {
@@ -90,7 +100,12 @@
         },
 
         upload: function (uploader) {
-            this.uploader.start();
+
+
+            this.count = uploader.files.length - this.removed_files.length ;
+            this.showHide();
+
+
         },
 
         progress: function (up, file) {
@@ -154,7 +169,7 @@
                     'nonce' : wpuf_frontend_upload.nonce,
                     'action' : 'wpuf_file_del'
                 };
-
+                this.removed_files.push(data);
                 jQuery.post(wpuf_frontend_upload.ajaxurl, data, function() {
                     el.parent().parent().remove();
 

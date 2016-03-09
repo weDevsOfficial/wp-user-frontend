@@ -705,7 +705,18 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             // delete any previous value
             delete_post_meta( $post_id, $file_input['name'] );
 
+            //to track how many files are being uploaded
+            $file_numbers = 0;
+
             foreach ($file_input['value'] as $attachment_id) {
+
+                //if file numbers are greated than allowed number, prevent it from being uploaded
+                if( $file_numbers >= $file_input['count'] ){
+                    wp_delete_attachment( $attachment_id );
+                    continue;
+                }
+
+
                 wpuf_associate_attachment( $attachment_id, $post_id );
                 add_post_meta( $post_id, $file_input['name'], $attachment_id );
 
@@ -721,6 +732,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
                     update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
                 }
+                $file_numbers++;
             }
         }
     }

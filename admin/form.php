@@ -1500,7 +1500,7 @@ class WPUF_Admin_Form {
      * @global string $pagenow
      */
     function edit_form_area_profile() {
-
+        
         ?>
         <input type="hidden" name="wpuf_form_editor" id="wpuf_form_editor" value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" />
         <?php

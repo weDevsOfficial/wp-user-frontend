@@ -14,6 +14,7 @@
         this.browse_button = browse_button;
         this.max = max || 1;
         this.count = $('#' + container).find('.wpuf-attachment-list > li').length; //count how many items are there
+        this.perFileCount = 0; //file count on each upload
 
         //if no element found on the page, bail out
         if( !$('#'+browse_button).length ) {
@@ -30,8 +31,9 @@
                 action: 'wpuf_file_upload',
                 form_id: $( '#' + browse_button ).data('form_id')
             },
+            max_file_count : 2,
             multiple_queues: false,
-            multi_selection: true,
+            multi_selection: ( ( browse_button == 'wpuf-avatar-pickfiles' || browse_button == 'wpuf-featured_image-pickfiles' ) ? false : true ),
             urlstream_upload: true,
             file_data_name: 'wpuf_file',
             max_file_size: max_file_size + 'kb',
@@ -70,7 +72,7 @@
                 var warning = 'Maximum number of files reached ! ';
 
                 if ( this.count > this.max ) {
-                    $('#' + this.container + ' .wpuf-file-warning').html( warning + ' Remove extra files. ');
+                    $('#' + this.container + ' .wpuf-file-warning').html( warning );
                 } else {
                     $('#' + this.container + ' .wpuf-file-warning').html( warning );
                 }
@@ -142,13 +144,24 @@
 
         uploaded: function (up, file, response) {
             // var res = $.parseJSON(response.response);
+            var self = this;
 
             $('#' + file.id + " b").html("100%");
             $('#' + file.id).remove();
 
             if(response.response !== 'error') {
+
+                this.perFileCount++;
                 var $container = $('#' + this.container).find('.wpuf-attachment-list');
                 $container.append(response.response);
+
+                if ( this.perFileCount > this.max ) {
+                    var attach_id = $('.wpuf-image-wrap:last a.attachment-delete',$container).data('attach_id');
+                    self.removeExtraAttachment(attach_id);
+                    $('.wpuf-image-wrap',$container).last().remove();
+                    this.perFileCount--;
+                }
+
             } else {
                 alert(response.error);
 
@@ -171,6 +184,7 @@
                 };
                 this.removed_files.push(data);
                 jQuery.post(wpuf_frontend_upload.ajaxurl, data, function() {
+                    self.perFileCount--;
                     el.parent().parent().remove();
 
                     self.count -= 1;
@@ -178,6 +192,25 @@
                     self.uploader.refresh();
                 });
             }
+        },
+
+        removeExtraAttachment : function( attach_id ) {
+
+
+            var self = this;
+
+            var data = {
+                'attach_id' : attach_id,
+                'nonce' : wpuf_frontend_upload.nonce,
+                'action' : 'wpuf_file_del'
+            };
+            this.removed_files.push(data);
+            jQuery.post(wpuf_frontend_upload.ajaxurl, data, function() {
+                self.count -= 1;
+                self.showHide();
+                self.uploader.refresh();
+            });
         }
+
     };
 })(jQuery);

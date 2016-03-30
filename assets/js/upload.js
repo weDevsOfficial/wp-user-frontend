@@ -69,7 +69,7 @@
 
             if ( this.count >= this.max) {
 
-                var warning = 'Maximum number of files reached ! ';
+                var warning = 'Maximum number of files reached! ';
 
                 if ( this.count > this.max ) {
                     $('#' + this.container + ' .wpuf-file-warning').html( warning );

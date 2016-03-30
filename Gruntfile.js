@@ -85,7 +85,8 @@ module.exports = function(grunt) {
                     '!tests/**',
                     '!**/Gruntfile.js',
                     '!**/package.json',
-                    '!**/README.md',
+                    '!**/readme.md',
+                    '!**/docs.md',
                     '!**/*~'
                 ],
                 dest: 'build/'

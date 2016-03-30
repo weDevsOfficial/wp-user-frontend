@@ -137,7 +137,19 @@ class WP_User_Frontend {
         require_once dirname( __FILE__ ) . '/lib/gateway/paypal.php';
         require_once dirname( __FILE__ ) . '/lib/gateway/bank.php';
 
-        if ( file_exists( dirname( __FILE__ ) . '/includes/pro/loader.php' ) ) {
+        $is_expired = wpuf_is_license_expired();
+        $has_pro    = file_exists( dirname( __FILE__ ) . '/includes/pro/loader.php' );
+
+        // if expired and the pro version, downgrade to the free one and show renew prompt
+        if ( $is_expired && $has_pro ) {
+            require_once dirname( __FILE__ ) . '/includes/pro/updates.php';
+
+            new WPUF_Updates();
+
+            add_action( 'admin_notices', array( $this, 'license_expired' ) );
+        }
+
+        if ( ! $is_expired && $has_pro ) {
             include dirname( __FILE__ ) . '/includes/pro/loader.php';
 
             $this->is_pro = true;
@@ -423,6 +435,19 @@ class WP_User_Frontend {
         $links[] = '<a href="http://docs.wedevs.com/category/plugins/wp-user-frontend-pro/" target="_blank">Documentation</a>';
 
         return $links;
+    }
+
+    /**
+     * Show renew prompt once the license key is expired
+     *
+     * @since 2.3.13
+     *
+     * @return void
+     */
+    function license_expired() {
+        echo '<div class="error">';
+        echo '<p>Your <strong>WP User Frontend Pro</strong> License has been expired and you are now <strong>downgraded</strong> to free version. Please <a href="https://wedevs.com/account/" target="_blank">renew your license</a>.</p>';
+        echo '</div>';
     }
 }
 

@@ -1197,3 +1197,35 @@ function wpuf_get_subscription_page_url() {
 function wpuf_clear_buffer() {
     ob_clean();
 }
+
+/**
+ * Check if the license has been expired
+ *
+ * @since 2.3.13
+ *
+ * @return boolean
+ */
+function wpuf_is_license_expired() {
+    if ( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) {
+        return false;
+    }
+
+    $license_status = get_option( 'wpuf_license_status' );
+
+    // seems like this wasn't activated at all
+    if ( ! isset( $license_status->update ) ) {
+        return false;
+    }
+
+    // if license has expired more than 15 days ago
+    $update    = strtotime( $license_status->update );
+    $threshold = strtotime( '+15 days', $update );
+
+    // printf( 'Validity: %s, Threshold: %s', date( 'd-m-Y', $update), date( 'd-m-Y', $threshold ) );
+
+    if ( time() >= $threshold ) {
+        return true;
+    }
+
+    return false;
+}

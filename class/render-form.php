@@ -195,7 +195,8 @@ class WPUF_Render_Form {
             if ( ($value['input_type'] == 'file_upload') || ($value['input_type'] == 'image_upload') ) {
                 $files[] = array(
                     'name' => $value['name'],
-                    'value' => isset( $_POST['wpuf_files'][$value['name']] ) ? $_POST['wpuf_files'][$value['name']] : array()
+                    'value' => isset( $_POST['wpuf_files'][$value['name']] ) ? $_POST['wpuf_files'][$value['name']] : array(),
+                    'count' => $value['count']
                 );
 
                 // process repeatable fiels

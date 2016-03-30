@@ -53,6 +53,12 @@ class WPUF_Upload {
                 $guest_post = true;
             }
 
+            //if it is registration form, let the user upload the file
+            if ( get_post_type( $form_id ) == 'wpuf_profile' ) {
+                $guest_post = true;
+            }
+
+
             if ( ! $guest_post ) {
                 die( 'error' );
             }

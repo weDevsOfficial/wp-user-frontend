@@ -714,7 +714,7 @@ function wpuf_show_custom_fields( $content ) {
 
             } elseif ( $attr['input_type'] == 'address') {
 
-                include_once 'countries.php';
+                include_once dirname( __FILE__ ) . '/includes/countries.php';
 
                 $address_html = '';
 
@@ -730,7 +730,7 @@ function wpuf_show_custom_fields( $content ) {
                         $address_html .= '<li><label>' . $attr['address'][$field_key]['label'] . ': </label> ';
                         $address_html .= ' '.$value.'</li>';
                     }
-                    
+
                 }
 
                 $html = $address_html;

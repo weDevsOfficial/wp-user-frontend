@@ -1,6 +1,6 @@
 = version 2.3.13 =
 
-date: 30 February, 2016
+date: 30 March, 2016
 
  * [fix] Paypal user agent changed and issue with paypal transection fixed
  * [new] Multiple images/files can now be uploaded at a time in image and file fields

@@ -1370,18 +1370,18 @@ class WPUF_Admin_Form {
             foreach ( $form_inputs as $order => $input_field ) {
 
                 $input_field['template'] = isset( $input_field['template'] ) ? $input_field['template'] : '';
+                $method = $input_field['template'];
+
                 $name = ucwords( str_replace( '_', ' ', $input_field['template'] ) );
                 if ( isset( $cond_inputs[$order] ) ) {
                     $input_field = array_merge( $input_field, $cond_inputs[$order] );
                 }
 
-                if ( $input_field['template'] == 'taxonomy') {
+                if ( $method == 'taxonomy') {
+                    WPUF_Admin_Template_Post::$method( $count, $name, $input_field['name'], $input_field );
 
-                    WPUF_Admin_Template_Post::$input_field['template']( $count, $name, $input_field['name'], $input_field );
-
-                } else if ( method_exists( 'WPUF_Admin_Template_Post', $input_field['template'] ) ) {
-
-                    WPUF_Admin_Template_Post::$input_field['template']( $count, $name, $input_field );
+                } else if ( method_exists( 'WPUF_Admin_Template_Post', $method ) ) {
+                    WPUF_Admin_Template_Post::$method( $count, $name, $input_field );
 
                 } else {
                     do_action( 'wpuf_admin_template_post_' . $input_field['template'], $name, $count, $input_field, 'WPUF_Admin_Template_Post', $this );

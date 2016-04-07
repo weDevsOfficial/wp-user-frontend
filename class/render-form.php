@@ -1428,8 +1428,9 @@ class WPUF_Render_Form {
                         if ( $has_avatar ) {
                             $avatar = get_user_meta( $post_id, 'user_avatar', true );
                             if ( $avatar ) {
-                                echo $featured_image;
-                                printf( '<br><a href="#" data-confirm="%s" class="wpuf-button button wpuf-delete-avatar">%s</a>', __( 'Are you sure?', 'wpuf' ), __( 'Delete', 'wpuf' ) );
+                                echo '<li>'.$featured_image;
+                                printf( '<br><a href="#" data-confirm="%s" class="btn btn-danger btn-small wpuf-button button wpuf-delete-avatar">%s</a>', __( 'Are you sure?', 'wpuf' ), __( 'Delete', 'wpuf' ) );
+                                echo '</li>';
                             }
                         }
 

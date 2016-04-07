@@ -235,7 +235,8 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li .wpuf-file-input-wrap te
 ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li .attachment-name {
   text-align: center;
 }
-ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete {
+ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete,
+ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.wpuf-delete-avatar {
   text-decoration: none;
   padding: 3px 12px;
   border: 1px solid #C47272;
@@ -258,7 +259,9 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete:hover,
-ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete:active {
+ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.wpuf-delete-avatar:hover,
+ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete:active,
+ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.wpuf-delete-avatar:active {
   color: #ffffff;
   background-color: #bd362f;
   *background-color: #a9302a;

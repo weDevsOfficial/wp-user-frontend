@@ -720,7 +720,7 @@
 
             if ( confirm( $(this).data('confirm') ) ) {
                 $.post(wpuf_frontend.ajaxurl, {action: 'wpuf_delete_avatar', _wpnonce: wpuf_frontend.nonce}, function() {
-                    window.location.reload();
+                    $(e.target).parent().remove();
                 });
             }
         }

@@ -818,8 +818,8 @@ class WPUF_Subscription {
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : '0.00';
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' ) {
-            $recurring_des = sprintf( 'Every %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
-            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
+            $recurring_des = __( sprintf( 'Every %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] ), 'wpuf' );
+            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? __( sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ), 'wpuf' ) : '';
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">'.$recurring_des.'</div>';
         } else {
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . __( 'One time payment', 'wpuf' ) . '</div>';
@@ -828,7 +828,7 @@ class WPUF_Subscription {
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' && $pack->meta_value['trial_status'] == 'yes' ) {
 
             $trial_cost = ( empty( $pack->meta_value['trial_cost'] ) || $pack->meta_value['trial_cost'] == 0 ) ? __( 'Free', 'wpuf' ) : $details_meta['symbol'].$pack->meta_value['trial_cost'];
-            $trial_des = sprintf( '%s for the first %s %s', $trial_cost, $pack->meta_value['trial_duration'], $pack->meta_value['trial_duration_type']  );
+            $trial_des = __( sprintf( '%s for the first %s %s', $trial_cost, $pack->meta_value['trial_duration'], $pack->meta_value['trial_duration_type']  ), 'wpuf' );
 
         } else {
             $trial_des = '';

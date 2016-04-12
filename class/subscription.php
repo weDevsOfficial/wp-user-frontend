@@ -818,8 +818,8 @@ class WPUF_Subscription {
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : '0.00';
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' ) {
-            $recurring_des = __( sprintf( 'Every %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] ), 'wpuf' );
-            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? __( sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ), 'wpuf' ) : '';
+            $recurring_des = sprintf( __('Every', 'wpuf').' %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? __( sprintf( ', '.__('for', 'wpuf').' %s '.__( 'installments', 'wpuf' ), $pack->meta_value['billing_limit'] ), 'wpuf' ) : '';
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">'.$recurring_des.'</div>';
         } else {
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . __( 'One time payment', 'wpuf' ) . '</div>';
@@ -854,7 +854,7 @@ class WPUF_Subscription {
                     <span class="wpuf-sub-cost"><?php _e( 'Free', 'wpuf' ); ?></span>
                 <?php } ?>
 
-                <?php echo $recurring_des; ?>
+                <?php _e( $recurring_des , 'wpuf' ); ?>
 
             </div>
             <?php

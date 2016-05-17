@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.3.12\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/\n"
-"POT-Creation-Date: 2016-04-12 10:54:25+00:00\n"
+"POT-Creation-Date: 2016-03-30 12:57:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -642,11 +642,11 @@ msgstr ""
 msgid "Sample Form"
 msgstr ""
 
-#: admin/posting.php:38 class/render-form.php:1432 wpuf.php:326
+#: admin/posting.php:38 class/render-form.php:1432 wpuf.php:338
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:44 includes/pro/form.php:857 wpuf.php:332
+#: admin/posting.php:44 includes/pro/form.php:857 wpuf.php:344
 msgid "Allowed Files"
 msgstr ""
 
@@ -1089,7 +1089,7 @@ msgid "Pack Deleted"
 msgstr ""
 
 #: admin/subscription.php:207 admin/template.php:599 class/upload.php:166
-#: includes/pro/admin/coupon-element.php:49 wpuf-functions.php:701
+#: includes/pro/admin/coupon-element.php:49 wpuf-functions.php:700
 msgid "Description"
 msgstr ""
 
@@ -1491,7 +1491,7 @@ msgstr ""
 
 #: admin/template.php:534 admin/template.php:594 class/upload.php:164
 #: includes/pro/form.php:1398 includes/pro/form.php:1442
-#: includes/pro/form.php:1490 templates/dashboard.php:26 wpuf-functions.php:695
+#: includes/pro/form.php:1490 templates/dashboard.php:26 wpuf-functions.php:694
 msgid "Title"
 msgstr ""
 
@@ -1977,10 +1977,6 @@ msgstr ""
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
-#: class/subscription.php:821
-msgid "Every"
-msgstr ""
-
 #: class/subscription.php:825
 msgid "One time payment"
 msgstr ""
@@ -2001,7 +1997,7 @@ msgstr ""
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
-#: class/upload.php:165 wpuf-functions.php:698
+#: class/upload.php:165 wpuf-functions.php:697
 msgid "Caption"
 msgstr ""
 
@@ -3283,19 +3279,19 @@ msgstr ""
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:261
+#: wpuf.php:273
 msgid "is required"
 msgstr ""
 
-#: wpuf.php:262
+#: wpuf.php:274
 msgid "does not match"
 msgstr ""
 
-#: wpuf.php:263
+#: wpuf.php:275
 msgid "is not valid"
 msgstr ""
 
-#: wpuf.php:321
+#: wpuf.php:333
 msgid "Please fix the errors to proceed"
 msgstr ""
 
@@ -3317,7 +3313,7 @@ msgstr ""
 msgid "http://tareq.weDevs.com"
 msgstr ""
 
-#: wpuf-functions.php:1003
+#: wpuf-functions.php:995
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

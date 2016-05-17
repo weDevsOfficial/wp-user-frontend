@@ -1,7 +1,6 @@
 <?php
 
-$countries = array
-(
+$countries = array (
 	'AF' => 'Afghanistan',
 	'AX' => 'Aland Islands',
 	'AL' => 'Albania',
@@ -248,5 +247,3 @@ $countries = array
 	'ZM' => 'Zambia',
 	'ZW' => 'Zimbabwe',
 );
-
-?>

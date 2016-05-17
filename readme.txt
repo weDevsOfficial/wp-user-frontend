@@ -1,12 +1,12 @@
 === WP User Frontend ===
 Contributors: tareq1988, wedevs
 Donate link: http://tareq.wedevs.com/donate/
-Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
+Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
 Requires at least: 3.3
-Tested up to: 4.3.1
+Tested up to: 4.4.2
 Stable tag: trunk
 
-Create, update, delete posts and edit profile directly from the WordPress frontend.
+The ultimate front-end plugin for WordPress. Create, update, delete posts and edit profile directly from the WordPress frontend.
 
 == Description ==
 
@@ -126,6 +126,13 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.3.13 (30 February, 2016) =
+
+ * [fix] Paypal user agent changed and issue with paypal transection fixed
+ * [new] Multiple images/files can now be uploaded at a time in image and file fields
+ * [fix] Upload.js has been modified
+ * [fix] Problem with saving form element in php 7.0.0 is fixed
 
 = v2.3.12 (8 February, 2016) =
 

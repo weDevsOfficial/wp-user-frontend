@@ -590,6 +590,7 @@ function wpuf_show_custom_fields( $content ) {
     }
 
     $form_id = get_post_meta( $post->ID, '_wpuf_form_id', true );
+    $form_settings = wpuf_get_form_settings( $form_id );
 
     if ( !$form_id ) {
         return $content;
@@ -738,12 +739,19 @@ function wpuf_show_custom_fields( $content ) {
             } else {
 
                 $value = get_post_meta( $post->ID, $attr['name'] );
+                $filter_html = apply_filters( 'wpuf_add_html', '', $value, $attr, $form_settings );
 
-                $new = implode( ', ', $value );
+                if ( !empty( $filter_html ) ) {
+                    $html .= $filter_html;
+                } else {
 
-                if( $new ) {
-                    $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                    $new = implode( ', ', $value );
+
+                    if( $new ) {
+                        $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                    }
                 }
+
             }
         }
     }

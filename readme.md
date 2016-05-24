@@ -197,6 +197,25 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
+### v2.3.14 (24 May, 2016) ###
+
+date: 24 May, 2016
+
+ * [fix] Text domain and translated strings updated
+ * [fix] Reloading the profile/registration page after deleting the avatar fixed.
+ * [fix] Styling of delete button of form fixed.
+ * [fix] Visibility of deleting avatar button fixed.
+ * [new] New filters added to show meta functions
+ * [fix] Issue with saving form in php 7 fixed.
+ * [new] Form file uploader is now allowing uploading multiple files and removing extras with warnings.
+
+ * [fix] Restoring remaining number of posts allowed to post in subscription is now working for non-admin member (Pro).
+ * [fix] noCaptcha in registration is now working (Pro).
+ * [new] Registration field added (Pro).
+ * [new] Post taxonomies visibility in form builder are now dependent on the post type selected (Pro).
+ * [fix] Registration form is now saving in php 7 (Pro).
+
+
 ### v2.3.13 (30 February, 2016) ###
 
  * [fix] Paypal user agent changed and issue with paypal transection fixed

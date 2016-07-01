@@ -797,75 +797,80 @@ class WPUF_Render_Form {
      *
      * @param $word_nums number of words allowed
      */
-    function check_word_restriction_func($word_nums, $field_type, $field_name){
+    function check_word_restriction_func($word_nums, $rich_text, $field_name){
         ?>
         <script type="text/javascript">
-            var editor_limit = '<?php echo $word_nums; ?>',
-                field_type = '<?php echo $field_type; ?>',
-                field_name = '<?php echo $field_name; ?>';
+            (function() {
 
-            // jQuery ready fires too early, use window.onload instead
-            window.onload = function () {
+                var editor_limit = <?php echo $word_nums; ?>,
+                    rich_text = '<?php echo $field_type; ?>',
+                    field_name = '<?php echo $field_name; ?>';
 
-                var word_limit_message = "<?php _e( 'Word Limit Reached !', 'wpuf' ); ?>"
-                if ( field_type !== 'no' ) {
+                // jQuery ready fires too early, use window.onload instead
+                window.onload = function () {
 
-                    tinyMCE.activeEditor.onKeyDown.add( function(ed,event) {
-                        editor_content = this.getContent().split(' ');
-                        editor_limit ? jQuery('.mce-path-item.mce-last').html('Word Limit : '+ editor_content.length +'/'+editor_limit):'';
+                    console.log( 'word limit: ' + editor_limit);
 
-                        if ( editor_limit && editor_content.length > editor_limit ) {
-                            block_typing(event);
-                        }
-                    });
+                    var word_limit_message = "<?php _e( 'Word Limit Reached !', 'wpuf' ); ?>"
+                    if ( rich_text !== 'no' ) {
 
-                    tinyMCE.activeEditor.onPaste.add(function(ed, e) {
-                        //console.log(e.clipboardData.getData('text/plain'));
-                        //getting cursor current position
-                        make_media_embed_code(e.clipboardData.getData('text/plain'),ed);
+                        tinyMCE.activeEditor.onKeyDown.add( function(ed,event) {
+                            editor_content = this.getContent().split(' ');
+                            console.log(editor_content);
+                            editor_limit ? jQuery('.mce-path-item.mce-last').html('Word Limit : '+ editor_content.length +'/'+editor_limit):'';
 
-                    });
-                } else {
+                            if ( editor_limit && editor_content.length > editor_limit ) {
+                                block_typing(event);
+                            }
+                        });
 
-                    jQuery('textarea[name="'+ field_name +'"]').keydown(function(e){
-                        editor_content = jQuery(this).val().split(' ');
-                        if ( editor_limit && editor_content.length > editor_limit ) {
-                            jQuery(this).closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( word_limit_message );
-                            block_typing(e);
-                        } else {
-                            jQuery(this).closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
-                        }
-                    });
-                }
+                        tinyMCE.activeEditor.onPaste.add(function(ed, e) {
+                            //console.log(e.clipboardData.getData('text/plain'));
+                            //getting cursor current position
+                            make_media_embed_code(e.clipboardData.getData('text/plain'),ed);
 
-                var block_typing = function (event){
-                    // Allow: backspace, delete, tab, escape, minus enter and . backspace = 8,delete=46,tab=9,enter=13,.=190,escape=27, minus = 189
-                    if (jQuery.inArray(event.keyCode, [46, 8, 9, 27, 13, 110, 190, 189]) !== -1 ||
-                        // Allow: Ctrl+A
-                        (event.keyCode == 65 && event.ctrlKey === true) ||
-                        // Allow: home, end, left, right, down, up
-                        (event.keyCode >= 35 && event.keyCode <= 40)) {
-                        // let it happen, don't do anything
-                        return;
+                        });
+                    } else {
+
+                        jQuery('textarea[name="'+ field_name +'"]').keydown(function(e){
+                            editor_content = jQuery(this).val().split(' ');
+                            if ( editor_limit && editor_content.length > editor_limit ) {
+                                jQuery(this).closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( word_limit_message );
+                                block_typing(e);
+                            } else {
+                                jQuery(this).closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
+                            }
+                        });
                     }
-                    event.preventDefault();
-                    event.stopPropagation();
-                    jQuery('.mce-path-item.mce-last').html( word_limit_message );
-                }
 
-                var make_media_embed_code = function(content,editor){
-                    jQuery.post( ajaxurl, {
-                            action:'make_media_embed_code',
-                            content: content
-                        },
-                        function(data){
-                            console.log(data);
-                            editor.setContent(editor.getContent() + editor.setContent(data));
+                    var block_typing = function (event){
+                        // Allow: backspace, delete, tab, escape, minus enter and . backspace = 8,delete=46,tab=9,enter=13,.=190,escape=27, minus = 189
+                        if (jQuery.inArray(event.keyCode, [46, 8, 9, 27, 13, 110, 190, 189]) !== -1 ||
+                            // Allow: Ctrl+A
+                            (event.keyCode == 65 && event.ctrlKey === true) ||
+                            // Allow: home, end, left, right, down, up
+                            (event.keyCode >= 35 && event.keyCode <= 40)) {
+                            // let it happen, don't do anything
+                            return;
                         }
-                    )
+                        event.preventDefault();
+                        event.stopPropagation();
+                        jQuery('.mce-path-item.mce-last').html( word_limit_message );
+                    }
+
+                    var make_media_embed_code = function(content,editor){
+                        jQuery.post( ajaxurl, {
+                                action:'make_media_embed_code',
+                                content: content
+                            },
+                            function(data){
+                                console.log(data);
+                                editor.setContent(editor.getContent() + editor.setContent(data));
+                            }
+                        )
+                    }
                 }
-                jQuery()
-            }
+            })();
         </script>
         <?php
 
@@ -895,40 +900,64 @@ class WPUF_Render_Form {
         ?>
 
         <?php if ( in_array( $attr['rich'], array( 'yes', 'teeny' ) ) ) { ?>
-            <div class="wpuf-fields wpuf-rich-validation <?php printf( 'wpuf_%s_%s', $attr['name'], $form_id ); ?>" data-type="rich" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-id="<?php echo esc_attr( $attr['name'] ); ?>">
+            <div class="wpuf-fields wpuf-rich-validation <?php printf( 'wpuf_%s_%s', $attr['name'], $form_id ); ?>" data-type="rich" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-id="<?php echo esc_attr( $attr['name'] ) . '_' . $form_id; ?>" data-name="<?php echo esc_attr( $attr['name'] ); ?>">
         <?php } else { ?>
             <div class="wpuf-fields">
         <?php } ?>
 
             <?php if ( isset( $attr['insert_image'] ) && $attr['insert_image'] == 'yes' ) { ?>
                 <div id="wpuf-insert-image-container">
-                    <a class="wpuf-button" id="wpuf-insert-image" href="#" data-form_id="<?php echo $form_id; ?>">
+                    <a class="wpuf-button wpuf-insert-image" id="wpuf-insert-image_<?php echo $form_id; ?>" href="#" data-form_id="<?php echo $form_id; ?>">
                         <span class="wpuf-media-icon"></span>
                         <?php _e( 'Insert Photo', 'wpuf' ); ?>
                     </a>
                 </div>
+
+                <script type="text/javascript">
+                    jQuery(function() {
+                        WP_User_Frontend.insertImage('wpuf-insert-image_<?php echo $form_id; ?>', '<?php echo $form_id; ?>');
+                    });
+                </script>
             <?php } ?>
 
             <?php
-            $textarea_id = $attr['name']?$attr['name']:'textarea_'.$this->field_count;
-            if ( $attr['rich'] == 'yes' ) {
+            $textarea_id = $attr['name'] ? $attr['name'] . '_' . $form_id : 'textarea_' . $this->field_count;
 
-                wp_editor( $value, $textarea_id, array('textarea_rows' => $attr['rows'], 'quicktags' => false, 'media_buttons' => false, 'editor_class' => $req_class) );
+            if ( $attr['rich'] == 'yes' ) {
+                $editor_settings = array(
+                    'textarea_rows' => $attr['rows'],
+                    'quicktags'     => false,
+                    'media_buttons' => false,
+                    'editor_class'  => $req_class,
+                    'textarea_name' => $attr['name']
+                );
+
+                wp_editor( $value, $textarea_id, $editor_settings );
 
             } elseif( $attr['rich'] == 'teeny' ) {
 
-                wp_editor( $value, $textarea_id, array('textarea_rows' => $attr['rows'], 'quicktags' => false, 'media_buttons' => false, 'teeny' => true, 'editor_class' => $req_class) );
+                $editor_settings = array(
+                    'textarea_rows' => $attr['rows'],
+                    'quicktags'     => false,
+                    'media_buttons' => false,
+                    'teeny'         => true,
+                    'editor_class'  => $req_class,
+                    'textarea_name' => $attr['name']
+                );
+
+                wp_editor( $value, $textarea_id, $editor_settings );
+
             } else {
                 ?>
-                <textarea class="textareafield<?php echo $this->required_class( $attr ); ?> <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" id="<?php echo $attr['name']; ?>" name="<?php echo $attr['name']; ?>" data-required="<?php echo $attr['required'] ?>" data-type="textarea"<?php $this->required_html5( $attr ); ?> placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" rows="<?php echo $attr['rows']; ?>" cols="<?php echo $attr['cols']; ?>"><?php echo esc_textarea( $value ) ?></textarea>
+                <textarea class="textareafield<?php echo $this->required_class( $attr ); ?> <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" id="<?php echo $attr['name'] . '_' . $form_id; ?>" name="<?php echo $attr['name']; ?>" data-required="<?php echo $attr['required'] ?>" data-type="textarea"<?php $this->required_html5( $attr ); ?> placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" rows="<?php echo $attr['rows']; ?>" cols="<?php echo $attr['cols']; ?>"><?php echo esc_textarea( $value ) ?></textarea>
                 <span class="wpuf-wordlimit-message wpuf-help"></span>
             <?php } ?>
             <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
         </div>
         <?php
 
-        if ( isset( $attr['word_restriction'] ) ) {
-            $this->check_word_restriction_func( $attr['word_restriction'], $attr['rich'], $attr['name'] );
+        if ( isset( $attr['word_restriction'] ) && $attr['word_restriction'] ) {
+            $this->check_word_restriction_func( $attr['word_restriction'], $attr['rich'], $attr['name'] . '_' . $form_id );
         }
     }
 
@@ -1388,8 +1417,9 @@ class WPUF_Render_Form {
     function image_upload( $attr, $post_id, $type, $form_id ) {
 
         $has_featured_image = false;
-        $has_images = false;
-        $has_avatar = false;
+        $has_images         = false;
+        $has_avatar         = false;
+        $unique_id          = sprintf( '%s-%d', $attr['name'], $form_id );
 
         if ( $post_id ) {
             if ( $this->is_meta( $attr ) ) {
@@ -1415,9 +1445,9 @@ class WPUF_Render_Form {
         ?>
 
         <div class="wpuf-fields">
-            <div id="wpuf-<?php echo $attr['name']; ?>-upload-container">
+            <div id="wpuf-<?php echo $unique_id; ?>-upload-container">
                 <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo $attr['required']; ?>">
-                    <a id="wpuf-<?php echo $attr['name']; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" href="#"><?php _e( 'Select Image', 'wpuf' ); ?></a>
+                    <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" href="#"><?php _e( 'Select Image', 'wpuf' ); ?></a>
 
                     <ul class="wpuf-attachment-list thumbnails">
                         <?php
@@ -1450,7 +1480,7 @@ class WPUF_Render_Form {
 
         <script type="text/javascript">
             jQuery(function($) {
-                new WPUF_Uploader('wpuf-<?php echo $attr['name']; ?>-pickfiles', 'wpuf-<?php echo $attr['name']; ?>-upload-container', <?php echo $attr['count']; ?>, '<?php echo $attr['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $attr['max_size'] ?>);
+                new WPUF_Uploader('wpuf-<?php echo $unique_id; ?>-pickfiles', 'wpuf-<?php echo $unique_id; ?>-upload-container', <?php echo $attr['count']; ?>, '<?php echo $attr['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $attr['max_size'] ?>);
             });
         </script>
     <?php

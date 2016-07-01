@@ -317,7 +317,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container:after {
   content: "";
   display: table;
 }
-ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a#wpuf-insert-image {
+ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
   text-decoration: none;
   border: 1px solid #DFDFDF;
   font-size: 11px;
@@ -327,7 +327,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a#wpuf-insert-image {
   padding: 4px 6px;
   margin-right: 10px;
 }
-ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a#wpuf-insert-image .wpuf-media-icon {
+ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image .wpuf-media-icon {
   height: 12px;
   width: 12px;
 }

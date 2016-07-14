@@ -41,7 +41,7 @@ class WPUF_Edit_Profile {
      */
     function show_form( $user_id = null ) {
         global $userdata, $wp_http_referer;
-        get_currentuserinfo();
+        wp_get_current_user();
 
         if ( !(function_exists( 'get_user_to_edit' )) ) {
             require_once(ABSPATH . '/wp-admin/includes/user.php');

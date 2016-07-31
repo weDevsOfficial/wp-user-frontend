@@ -263,8 +263,9 @@ class WP_User_Frontend {
         global $post;
 
         $scheme = is_ssl() ? 'https' : 'http';
-        wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js' );//?sensor=true
+        $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
+        wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?key='.$api_key, array(), null );
 
         if ( isset ( $post->ID ) ) {
             ?>

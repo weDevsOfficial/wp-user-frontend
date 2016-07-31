@@ -142,6 +142,11 @@ function wpuf_settings_fields() {
                 'label' => __( 'reCAPTCHA Private Key', 'wpuf' ),
             ),
             array(
+                'name'  => 'gmap_api_key',
+                'label' => __( 'Google Map API', 'wpuf' ),
+                'desc'  => __( '<a target="_blank" href="https://developers.google.com/maps/documentation/javascript">API</a> key is needed to render Google Maps', 'wpuf' ),
+            ),
+            array(
                 'name'  => 'custom_css',
                 'label' => __( 'Custom CSS codes', 'wpuf' ),
                 'desc'  => __( 'If you want to add your custom CSS code, it will be added on page header wrapped with style tag', 'wpuf' ),

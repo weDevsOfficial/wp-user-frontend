@@ -3,10 +3,10 @@ Contributors: tareq1988, wedevs
 Donate link: http://tareq.wedevs.com/donate/
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
 Requires at least: 3.3
-Tested up to: 4.4.2
+Tested up to: 4.6
 Stable tag: trunk
 
-The ultimate front-end plugin for WordPress. Create, update, delete posts and edit profile directly from the WordPress frontend.
+The ultimate front-end plugin for WordPress. Create, update, delete posts and edit profile, subscription, coupons, directly from the WordPress frontend.
 
 == Description ==
 
@@ -127,7 +127,24 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
-= v2.3.13 (30 February, 2016) =
+= v2.3.14 (10 August, 2016) =
+
+ * [fix] Text domain and translated strings updated
+ * [fix] Reloading the profile/registration page after deleting the avatar fixed.
+ * [fix] Styling of delete button of form fixed.
+ * [fix] Visibility of deleting avatar button fixed.
+ * [fix] Issue with saving form in php 7 fixed.
+ * [fix] Restoring remaining number of posts allowed to post in subscription is now working for non-admin member (Pro).
+ * [fix] noCaptcha in registration is now working (Pro).
+ * [fix] Registration form is now saving in php 7 (Pro).
+ * [new] Form file uploader is now allowing uploading multiple files and removing extras with warnings.
+ * [new] New filters added to show meta functions
+ * [new] gMap API settings Added
+ * [new] Registration field added (Pro).
+ * [new] Post taxonomies visibility in form builder are now dependent on the post type selected (Pro).
+ * [new] Multiple forms in the same page
+
+= v2.3.13 (30 March, 2016) =
 
  * [fix] Paypal user agent changed and issue with paypal transection fixed
  * [new] Multiple images/files can now be uploaded at a time in image and file fields

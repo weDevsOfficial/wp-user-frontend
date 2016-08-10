@@ -235,7 +235,8 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li .wpuf-file-input-wrap te
 ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li .attachment-name {
   text-align: center;
 }
-ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete {
+ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete,
+ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.wpuf-delete-avatar {
   text-decoration: none;
   padding: 3px 12px;
   border: 1px solid #C47272;
@@ -258,7 +259,9 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete:hover,
-ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete:active {
+ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.wpuf-delete-avatar:hover,
+ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete:active,
+ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.wpuf-delete-avatar:active {
   color: #ffffff;
   background-color: #bd362f;
   *background-color: #a9302a;
@@ -314,7 +317,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container:after {
   content: "";
   display: table;
 }
-ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a#wpuf-insert-image {
+ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
   text-decoration: none;
   border: 1px solid #DFDFDF;
   font-size: 11px;
@@ -324,7 +327,7 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a#wpuf-insert-image {
   padding: 4px 6px;
   margin-right: 10px;
 }
-ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a#wpuf-insert-image .wpuf-media-icon {
+ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image .wpuf-media-icon {
   height: 12px;
   width: 12px;
 }

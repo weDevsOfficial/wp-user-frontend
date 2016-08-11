@@ -197,9 +197,11 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
-### v2.3.14 (24 May, 2016) ###
+### v2.3.15 (11 August, 2016) ###
 
-date: 24 May, 2016
+ * [fix] License renewal prompt fix
+
+### v2.3.14 (10 August, 2016) ###
 
  * [fix] Text domain and translated strings updated
  * [fix] Reloading the profile/registration page after deleting the avatar fixed.

@@ -127,6 +127,11 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+
+= v2.3.15 (11 August, 2016) =
+
+ * [fix] License renewal prompt fix
+
 = v2.3.14 (10 August, 2016) =
 
  * [fix] Text domain and translated strings updated

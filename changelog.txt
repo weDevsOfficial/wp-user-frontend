@@ -1,3 +1,7 @@
+= v2.3.15 (11 August, 2016) =
+
+ * [fix] License renewal prompt fix
+
 = version 2.3.14 =
 
 date: 10 August, 2016

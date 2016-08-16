@@ -1,4 +1,4 @@
-;(function($) {
+;(function($, window) {
 
     $.fn.listautowidth = function() {
         return this.each(function() {
@@ -11,7 +11,7 @@
         });
     };
 
-    var WP_User_Frontend = {
+    window.WP_User_Frontend = {
 
         pass_val : '',
         retype_pass_val : '',
@@ -53,25 +53,28 @@
                 return;
             }
 
-            strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputBlacklist(), pass1 );
+            if ( typeof wp.passwordStrength != 'undefined' ) {
 
-            switch ( strength ) {
-                case 2:
-                    $('#pass-strength-result').addClass('bad').html( pwsL10n.bad );
-                    break;
-                case 3:
-                    $('#pass-strength-result').addClass('good').html( pwsL10n.good );
-                    break;
-                case 4:
-                    $('#pass-strength-result').addClass('strong').html( pwsL10n.strong );
-                    break;
-                case 5:
-                    $('#pass-strength-result').addClass('short').html( pwsL10n.mismatch );
-                    break;
-                default:
-                    $('#pass-strength-result').addClass('short').html( pwsL10n['short'] );
+                strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputBlacklist(), pass1 );
+
+                switch ( strength ) {
+                    case 2:
+                        $('#pass-strength-result').addClass('bad').html( pwsL10n.bad );
+                        break;
+                    case 3:
+                        $('#pass-strength-result').addClass('good').html( pwsL10n.good );
+                        break;
+                    case 4:
+                        $('#pass-strength-result').addClass('strong').html( pwsL10n.strong );
+                        break;
+                    case 5:
+                        $('#pass-strength-result').addClass('short').html( pwsL10n.mismatch );
+                        break;
+                    default:
+                        $('#pass-strength-result').addClass('short').html( pwsL10n['short'] );
+                }
+
             }
-
         },
 
         enableMultistep: function(o) {
@@ -548,11 +551,13 @@
                 rich_texts = [];
 
             // grab rich texts from tinyMCE
-            $('.wpuf-rich-validation').each(function (index, item) {
-                temp = $(item).data('id');
-                val = $.trim( tinyMCE.get(temp).getContent() );
+            $('.wpuf-rich-validation', self).each(function (index, item) {
+                var item      = $(item);
+                var editor_id = item.data('id');
+                var item_name = item.data('name');
+                var val       = $.trim( tinyMCE.get(editor_id).getContent() );
 
-                rich_texts.push(temp + '=' + encodeURIComponent( val ) );
+                rich_texts.push(item_name + '=' + encodeURIComponent( val ) );
             });
 
             // append them to the form var
@@ -618,11 +623,11 @@
             return urlregex.test(url);
         },
 
-        insertImage: function() {
+        insertImage: function(button, form_id) {
 
-            var button = 'wpuf-insert-image',
-                container = 'wpuf-insert-image-container';
-            if ( !$('#' + button).length) {
+            var container = 'wpuf-insert-image-container';
+
+            if ( ! $( '#' + button ).length ) {
                 return;
             };
 
@@ -632,7 +637,8 @@
                 container: container,
                 multipart: true,
                 multipart_params: {
-                    action: 'wpuf_insert_image'
+                    action: 'wpuf_insert_image',
+                    form_id: $( '#' + button ).data('form_id')
                 },
                 multiple_queues: false,
                 multi_selection: false,
@@ -682,22 +688,26 @@
 
                 $('#' + file.id).remove();
 
-                if(response.response !== 'error' ) {
+                if ( response.response !== 'error' ) {
                     var success = false;
 
                     if ( typeof tinyMCE !== 'undefined' ) {
 
                         if ( typeof tinyMCE.execInstanceCommand !== 'function' ) {
                             // tinyMCE 4.x
-                            tinyMCE.get('post_content').insertContent(response.response);
+                            var mce = tinyMCE.get( 'post_content_' + form_id );
+
+                            if ( mce !== null ) {
+                                mce.insertContent(response.response);
+                            }
                         } else {
                             // tinyMCE 3.x
-                            tinyMCE.execInstanceCommand('post_content', 'mceInsertContent', false, response.response);
+                            tinyMCE.execInstanceCommand( 'post_content_' + form_id, 'mceInsertContent', false, response.response);
                         }
                     }
 
                     // insert failed to the edit, perhaps insert into textarea
-                    var post_content = $('#post_content');
+                    var post_content = $('#post_content_' + form_id);
                     post_content.val( post_content.val() + response.response );
 
                 } else {
@@ -713,7 +723,7 @@
 
             if ( confirm( $(this).data('confirm') ) ) {
                 $.post(wpuf_frontend.ajaxurl, {action: 'wpuf_delete_avatar', _wpnonce: wpuf_frontend.nonce}, function() {
-                    window.location.reload();
+                    $(e.target).parent().remove();
                 });
             }
         }
@@ -721,7 +731,6 @@
 
     $(function() {
         WP_User_Frontend.init();
-        WP_User_Frontend.insertImage();
 
         // payment gateway selection
         $('ul.wpuf-payment-gateways').on('click', 'input[type=radio]', function(e) {
@@ -738,4 +747,4 @@
         }
     });
 
-})(jQuery);
+})(jQuery, window);

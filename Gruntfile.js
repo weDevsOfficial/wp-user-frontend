@@ -70,6 +70,7 @@ module.exports = function(grunt) {
                     '!.git/**',
                     '!includes/pro/.git/**',
                     '!Gruntfile.js',
+                    '!secret.json',
                     '!package.json',
                     '!debug.log',
                     '!phpunit.xml',
@@ -79,12 +80,13 @@ module.exports = function(grunt) {
                     '!plugin-deploy.sh',
                     '!export.sh',
                     '!config.codekit',
-                    '!nbproject/*',
+                    '!**/nbproject/**',
                     '!assets/less/**',
                     '!tests/**',
                     '!**/Gruntfile.js',
                     '!**/package.json',
-                    '!**/README.md',
+                    '!**/readme.md',
+                    '!**/docs.md',
                     '!**/*~'
                 ],
                 dest: 'build/'

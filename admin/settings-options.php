@@ -142,6 +142,11 @@ function wpuf_settings_fields() {
                 'label' => __( 'reCAPTCHA Private Key', 'wpuf' ),
             ),
             array(
+                'name'  => 'gmap_api_key',
+                'label' => __( 'Google Map API', 'wpuf' ),
+                'desc'  => __( '<a target="_blank" href="https://developers.google.com/maps/documentation/javascript">API</a> key is needed to render Google Maps', 'wpuf' ),
+            ),
+            array(
                 'name'  => 'custom_css',
                 'label' => __( 'Custom CSS codes', 'wpuf' ),
                 'desc'  => __( 'If you want to add your custom CSS code, it will be added on page header wrapped with style tag', 'wpuf' ),
@@ -364,16 +369,19 @@ function wpuf_settings_fields() {
                 'label' => __( 'Need Help?', 'wpuf' ),
                 'type'  => 'html',
                 'desc'  => '
-                        <ol>
+                        <ul>
                             <li>
-                                <strong>Check the FAQ and the documentation</strong>
-                                <p>First of all, check the <strong><a target="_blank" href="http://docs.wedevs.com/wp-user-frontend-pro/">Documentation</a></strong> before contacting! Most of the questions you might need answers to have already been asked and the answers are in the FAQ. Checking the FAQ is the easiest and quickest way to solve your problem.</p>
+                                <strong>Step 1: <a target="_blank" href="http://docs.wedevs.com/">Read Documentation and FAQ</a></strong>
+                                <p>We have created detailed step by step documentation for all the features (including docs for developers). We have also answered all possible FAQ queries based on user request. We hope you will find what you are looking for. If not, please continue to Step 2.</p>
                             </li>
+                            <br/>
                             <li>
-                                <strong>Use the Support Forum</strong>
-                                <p>If you were unable to find the answer to your question on the documentation page, you should check the <strong><a href="http://wedevs.com/support/forum/plugin-support/wp-user-frontend/wp-user-frontend-pro/">support forum on wedevs.com</a></strong>. If you can’t locate any topics that pertain to your particular issue, post a new topic for it.</p>
+                                <strong>Step 2: <a href="https://wedevs.com/account/ticket" target="_blank">Create a Support Ticket</a></strong>
+                                <p>We reply from <code>10am to 6pm (GMT+6)</code> except <code><strong>Friday</strong></code>. Our responses are usually under 12 hours to as quick as 1 hour depending on channel pressure.</p>
+                                <p>When you are creating a ticket, please care to include a screenshot of the issue if possible and write the problem as specificly as you can. This will help us track and solve your trouble quickly.
+                                </p>
                             </li>
-                        </ol>'
+                        </ul>'
             )
         ) ),
     );

@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.3.10
-Author URI: http://tareq.weDevs.com
+Version: 2.3.15
+Author URI: https://tareq.co
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.3.10' );
+define( 'WPUF_VERSION', '2.3.15' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -137,7 +137,14 @@ class WP_User_Frontend {
         require_once dirname( __FILE__ ) . '/lib/gateway/paypal.php';
         require_once dirname( __FILE__ ) . '/lib/gateway/bank.php';
 
-        if ( file_exists( dirname( __FILE__ ) . '/includes/pro/loader.php' ) ) {
+        $is_expired = wpuf_is_license_expired();
+        $has_pro    = file_exists( dirname( __FILE__ ) . '/includes/pro/loader.php' );
+
+        if ( $has_pro && $is_expired ) {
+            add_action( 'admin_notices', array( $this, 'license_expired' ) );
+        }
+
+        if ( $has_pro ) {
             include dirname( __FILE__ ) . '/includes/pro/loader.php';
 
             $this->is_pro = true;
@@ -251,8 +258,9 @@ class WP_User_Frontend {
         global $post;
 
         $scheme = is_ssl() ? 'https' : 'http';
-        wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?sensor=true' );
+        $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
+        wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?key='.$api_key, array(), null );
 
         if ( isset ( $post->ID ) ) {
             ?>
@@ -327,7 +335,7 @@ class WP_User_Frontend {
             'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
             'ajaxurl'    => admin_url( 'admin-ajax.php' ),
             'plupload'   => array(
-                'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf_featured_img' ),
+                'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
                 'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
                 'filters'          => array(array('title' => __( 'Allowed Files' ), 'extensions' => '*')),
                 'multipart'        => true,
@@ -389,10 +397,8 @@ class WP_User_Frontend {
      * @param string $msg
      */
     public static function log( $type = '', $msg = '' ) {
-        if ( WP_DEBUG == true ) {
-            $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, $msg );
-            error_log( $msg, 3, dirname( __FILE__ ) . '/log.txt' );
-        }
+        $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, $msg );
+        error_log( $msg, 3, dirname( __FILE__ ) . '/log.txt' );
     }
 
     /**
@@ -425,6 +431,19 @@ class WP_User_Frontend {
         $links[] = '<a href="http://docs.wedevs.com/category/plugins/wp-user-frontend-pro/" target="_blank">Documentation</a>';
 
         return $links;
+    }
+
+    /**
+     * Show renew prompt once the license key is expired
+     *
+     * @since 2.3.13
+     *
+     * @return void
+     */
+    function license_expired() {
+        echo '<div class="error">';
+        echo '<p>Your <strong>WP User Frontend Pro</strong> License has been expired. Please <a href="https://wedevs.com/account/" target="_blank">renew your license</a>.</p>';
+        echo '</div>';
     }
 }
 

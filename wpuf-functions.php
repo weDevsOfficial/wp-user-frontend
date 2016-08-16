@@ -590,6 +590,7 @@ function wpuf_show_custom_fields( $content ) {
     }
 
     $form_id = get_post_meta( $post->ID, '_wpuf_form_id', true );
+    $form_settings = wpuf_get_form_settings( $form_id );
 
     if ( !$form_id ) {
         return $content;
@@ -620,9 +621,37 @@ function wpuf_show_custom_fields( $content ) {
             if ( isset ( $attr['wpuf_cond']['condition_status'] ) && $attr['wpuf_cond']['condition_status'] == 'yes' ) {
 
                 foreach ( $attr['wpuf_cond']['cond_field'] as $field_key => $cond_field_name ) {
-                    $cond_field_value = get_post_meta( $post->ID, $cond_field_name, 'true' );
-                    if ( isset( $attr['wpuf_cond']['cond_option'][$field_key] ) && $attr['wpuf_cond']['cond_option'][$field_key] != $cond_field_value ) {
-                        $return_for_no_cond = 1;
+
+                    //check if the condintal field is a taxonomuy
+                    if ( taxonomy_exists( $cond_field_name ) ) {
+                        $post_terms = wp_get_post_terms( $post->ID , $cond_field_name, true );
+                        $cond_field_value = array();
+
+                        if ( is_array( $post_terms ) ) {
+                            foreach( $post_terms as $term_key => $term_array ) {
+                                $cond_field_value[] = $term_array->term_id;
+                            }
+                        }
+                        //$cond_field_value = isset($post_terms[0]) ? $post_terms[0]->term_id : '';
+                    } else {
+                        $cond_field_value = get_post_meta( $post->ID, $cond_field_name, 'true' );
+                    }
+
+                    if ( isset( $attr['wpuf_cond']['cond_option'][$field_key] ) ) {
+
+                        if ( is_array( $cond_field_value ) ) {
+
+                            if ( !in_array( $attr['wpuf_cond']['cond_option'][$field_key], $cond_field_value ) ) {
+                                $return_for_no_cond = 1;
+                            }
+
+                        } else {
+
+                            if ( $attr['wpuf_cond']['cond_option'][$field_key] != $cond_field_value ) {
+                                $return_for_no_cond = 1;
+                            }
+                        }
+
                     }
                 }
             }
@@ -686,7 +715,7 @@ function wpuf_show_custom_fields( $content ) {
 
             } elseif ( $attr['input_type'] == 'address') {
 
-                include_once 'countries.php';
+                include_once dirname( __FILE__ ) . '/includes/countries.php';
 
                 $address_html = '';
 
@@ -702,7 +731,7 @@ function wpuf_show_custom_fields( $content ) {
                         $address_html .= '<li><label>' . $attr['address'][$field_key]['label'] . ': </label> ';
                         $address_html .= ' '.$value.'</li>';
                     }
-                    
+
                 }
 
                 $html = $address_html;
@@ -710,12 +739,19 @@ function wpuf_show_custom_fields( $content ) {
             } else {
 
                 $value = get_post_meta( $post->ID, $attr['name'] );
+                $filter_html = apply_filters( 'wpuf_add_html', '', $value, $attr, $form_settings );
 
-                $new = implode( ', ', $value );
+                if ( !empty( $filter_html ) ) {
+                    $html .= $filter_html;
+                } else {
 
-                if( $new ) {
-                    $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                    $new = implode( ', ', $value );
+
+                    if( $new ) {
+                        $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                    }
                 }
+
             }
         }
     }
@@ -1168,4 +1204,36 @@ function wpuf_get_subscription_page_url() {
  */
 function wpuf_clear_buffer() {
     ob_clean();
+}
+
+/**
+ * Check if the license has been expired
+ *
+ * @since 2.3.13
+ *
+ * @return boolean
+ */
+function wpuf_is_license_expired() {
+    if ( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) {
+        return false;
+    }
+
+    $license_status = get_option( 'wpuf_license_status' );
+
+    // seems like this wasn't activated at all
+    if ( ! isset( $license_status->update ) ) {
+        return false;
+    }
+
+    // if license has expired more than 15 days ago
+    $update    = strtotime( $license_status->update );
+    $threshold = strtotime( '+15 days', $update );
+
+    // printf( 'Validity: %s, Threshold: %s', date( 'd-m-Y', $update), date( 'd-m-Y', $threshold ) );
+
+    if ( time() >= $threshold ) {
+        return true;
+    }
+
+    return false;
 }

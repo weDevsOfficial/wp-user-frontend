@@ -436,7 +436,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                             wp_set_object_terms( $post_id, $hierarchical, $taxonomy['name'] );
 
                             // woocommerce check
-                            if ( isset( $taxonomy['woo_attr']) && $taxonomy['woo_attr'] == 'yes' ) {
+                            if ( isset( $taxonomy['woo_attr']) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
                                 $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
                             }
 
@@ -446,7 +446,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                                 wp_set_post_terms( $post_id, $_POST[$taxonomy['name']], $taxonomy['name'] );
 
                                 // woocommerce check
-                                if ( isset( $taxonomy['woo_attr']) && $taxonomy['woo_attr'] == 'yes' ) {
+                                if ( isset( $taxonomy['woo_attr']) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
                                     $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
                                 }
                             } else {
@@ -641,6 +641,10 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
         }
 
+        //used to add code to run when the post is going to draft
+        do_action( 'wpuf_draft_post_after_insert', $post_id, $form_id, $form_settings, $form_vars );
+
+
         wpuf_clear_buffer();
 
         echo json_encode( array(
@@ -701,7 +705,18 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             // delete any previous value
             delete_post_meta( $post_id, $file_input['name'] );
 
+            //to track how many files are being uploaded
+            $file_numbers = 0;
+
             foreach ($file_input['value'] as $attachment_id) {
+
+                //if file numbers are greated than allowed number, prevent it from being uploaded
+                if( $file_numbers >= $file_input['count'] ){
+                    wp_delete_attachment( $attachment_id );
+                    continue;
+                }
+
+
                 wpuf_associate_attachment( $attachment_id, $post_id );
                 add_post_meta( $post_id, $file_input['name'], $attachment_id );
 
@@ -717,6 +732,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
                     update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
                 }
+                $file_numbers++;
             }
         }
     }

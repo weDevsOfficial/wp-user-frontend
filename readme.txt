@@ -1,12 +1,12 @@
 === WP User Frontend ===
 Contributors: tareq1988, wedevs
 Donate link: http://tareq.wedevs.com/donate/
-Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
+Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
 Requires at least: 3.3
-Tested up to: 4.3.1
+Tested up to: 4.6
 Stable tag: trunk
 
-Create, update, delete posts and edit profile directly from the WordPress frontend.
+The ultimate front-end plugin for WordPress. Create, update, delete posts and edit profile, subscription, coupons, directly from the WordPress frontend.
 
 == Description ==
 
@@ -126,6 +126,55 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+
+= v2.3.15 (11 August, 2016) =
+
+ * [fix] License renewal prompt fix
+
+= v2.3.14 (10 August, 2016) =
+
+ * [fix] Text domain and translated strings updated
+ * [fix] Reloading the profile/registration page after deleting the avatar fixed.
+ * [fix] Styling of delete button of form fixed.
+ * [fix] Visibility of deleting avatar button fixed.
+ * [fix] Issue with saving form in php 7 fixed.
+ * [fix] Restoring remaining number of posts allowed to post in subscription is now working for non-admin member (Pro).
+ * [fix] noCaptcha in registration is now working (Pro).
+ * [fix] Registration form is now saving in php 7 (Pro).
+ * [new] Form file uploader is now allowing uploading multiple files and removing extras with warnings.
+ * [new] New filters added to show meta functions
+ * [new] gMap API settings Added
+ * [new] Registration field added (Pro).
+ * [new] Post taxonomies visibility in form builder are now dependent on the post type selected (Pro).
+ * [new] Multiple forms in the same page
+
+= v2.3.13 (30 March, 2016) =
+
+ * [fix] Paypal user agent changed and issue with paypal transection fixed
+ * [new] Multiple images/files can now be uploaded at a time in image and file fields
+ * [fix] Upload.js has been modified
+ * [fix] Problem with saving form element in php 7.0.0 is fixed
+
+= v2.3.12 (8 February, 2016) =
+
+ * [new] WooCommerce Product Category and Attributes are now sectionized
+ * [new] Error notice can now be translated.
+ * [new] Errors on filling up the form will now be visible as warning/notice below the relevant field in front end.
+ * [new] Meta key name in form field in form builder  will now be auto populated only if the meta key field is empty
+ * [fix] Progress bar issue in post edit mode is fixed
+ * [new] Multistep registration form added
+ * [new] Hook added before registration form
+ * [fix] SSL issue fixed
+
+= v2.3.11 (8 February, 2016) =
+
+ * [fix] File upload vulnerability fix. Props to: Panagiotis Vagenas
+ * [fix] Replaced deprecated user notification function
+ * [fix] Email error validation in multistep
+ * [fix] Disabling subscription in form settings
+ * [fix] Product taxonomy fixes
+ * [new] No-captcha support added
 
 = v2.3.10 (5 Ocotber, 2015) =
 

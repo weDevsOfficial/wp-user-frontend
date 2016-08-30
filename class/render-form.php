@@ -803,7 +803,7 @@ class WPUF_Render_Form {
             (function() {
 
                 var editor_limit = <?php echo $word_nums; ?>,
-                    rich_text = '<?php echo $field_type; ?>',
+                    rich_text = '<?php echo $rich_text; ?>',
                     field_name = '<?php echo $field_name; ?>';
 
                 // jQuery ready fires too early, use window.onload instead

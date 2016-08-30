@@ -100,7 +100,8 @@ class WP_User_Frontend {
     public function action_to_remove_exipred_post(){
         $args = array(
             'meta_key'       => 'wpuf-post_expiration_date',
-            'meta_value'     => date('Y-m-d'),
+            'meta_value'     => date( 'Y-m-d' ),
+            'meta_compare'   => '<',
             'post_type'      => get_post_types(),
             'post_status'    => 'publish',
             'posts_per_page' => -1
@@ -121,6 +122,8 @@ class WP_User_Frontend {
                 wp_mail( $each_post->post_author, $mail_subject, $message );
             }
         }
+        //save an option for debugging purpose
+        update_option( 'wpuf_expiry_posts_last_cleaned', date( 'F j, Y g:i a'  ) );
     }
 
     public static function init() {

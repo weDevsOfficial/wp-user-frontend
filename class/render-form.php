@@ -803,20 +803,20 @@ class WPUF_Render_Form {
             (function() {
 
                 var editor_limit = <?php echo $word_nums; ?>,
-                    rich_text = '<?php echo $field_type; ?>',
+                    rich_text = '<?php echo $rich_text; ?>',
                     field_name = '<?php echo $field_name; ?>';
 
                 // jQuery ready fires too early, use window.onload instead
                 window.onload = function () {
 
-                    console.log( 'word limit: ' + editor_limit);
+//                    console.log( 'word limit: ' + editor_limit);
 
                     var word_limit_message = "<?php _e( 'Word Limit Reached !', 'wpuf' ); ?>"
                     if ( rich_text !== 'no' ) {
 
                         tinyMCE.activeEditor.onKeyDown.add( function(ed,event) {
                             editor_content = this.getContent().split(' ');
-                            console.log(editor_content);
+//                            console.log(editor_content);
                             editor_limit ? jQuery('.mce-path-item.mce-last').html('Word Limit : '+ editor_content.length +'/'+editor_limit):'';
 
                             if ( editor_limit && editor_content.length > editor_limit ) {
@@ -864,7 +864,7 @@ class WPUF_Render_Form {
                                 content: content
                             },
                             function(data){
-                                console.log(data);
+//                                console.log(data);
                                 editor.setContent(editor.getContent() + editor.setContent(data));
                             }
                         )

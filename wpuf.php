@@ -97,10 +97,11 @@ class WP_User_Frontend {
      *
      * @since 2.2.7
      */
-    public function action_to_remove_exipred_post(){
+    public function action_to_remove_exipred_post() {
         $args = array(
             'meta_key'       => 'wpuf-post_expiration_date',
-            'meta_value'     => date('Y-m-d'),
+            'meta_value'     => date( 'Y-m-d' ),
+            'meta_compare'   => '<',
             'post_type'      => get_post_types(),
             'post_status'    => 'publish',
             'posts_per_page' => -1
@@ -109,18 +110,22 @@ class WP_User_Frontend {
         $mail_subject = apply_filters( 'wpuf_post_expiry_mail_subject', sprintf( '[%s] %s', get_bloginfo( 'name' ), __( 'Your Post Has Been Expired', 'wpuf' ) ) );
         $posts        = get_posts( $args );
 
-        foreach ($posts as $each_post) {
+        foreach ( $posts as $each_post ) {
             $post_to_update = array(
-                'ID'           => $each_post->ID,
-                'post_status'  => get_post_meta( $each_post->ID, 'wpuf-expired_post_status', true ) ? get_post_meta( $each_post->ID, 'wpuf-expired_post_status', true ) : 'draft'
+                'ID'          => $each_post->ID,
+                'post_status' => get_post_meta( $each_post->ID, 'wpuf-expired_post_status', true ) ? get_post_meta( $each_post->ID, 'wpuf-expired_post_status', true ) : 'draft'
             );
 
             wp_update_post( $post_to_update );
 
-            if ( $message = get_post_meta( $each_post->ID, 'wpuf-post_expiration_message', true ) ) {
+            $message = get_post_meta( $each_post->ID, 'wpuf-post_expiration_message', true );
+
+            if ( !empty( $message ) ) {
                 wp_mail( $each_post->post_author, $mail_subject, $message );
             }
         }
+        //save an option for debugging purpose
+        update_option( 'wpuf_expiry_posts_last_cleaned', date( 'F j, Y g:i a' ) );
     }
 
     public static function init() {

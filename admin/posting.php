@@ -32,7 +32,20 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         wp_enqueue_script( 'jquery-ui-datepicker' );
         wp_enqueue_script( 'jquery-ui-slider' );
         wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array('jquery-ui-datepicker') );
-        wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?key='.$api_key, array(), null );
+        
+        if ( !empty( $api_key ) ) {
+            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?key='.$api_key, array(), null );
+        }else{
+            add_action('admin_head', 'wpuf_hide_google_map_button');
+
+            function wpuf_hide_google_map_button() {
+              echo "<style>
+                button.button[data-name='custom_map'] {
+                    display: none;
+                }
+              </style>";
+            }
+        }
 
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array('jquery', 'plupload-handlers') );
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(

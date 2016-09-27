@@ -931,7 +931,8 @@ class WPUF_Render_Form {
                     'editor_class'  => $req_class,
                     'textarea_name' => $attr['name']
                 );
-
+                
+                $editor_settings = apply_filters( 'wpuf_textarea_editor_args' , $editor_settings );
                 wp_editor( $value, $textarea_id, $editor_settings );
 
             } elseif( $attr['rich'] == 'teeny' ) {
@@ -945,6 +946,7 @@ class WPUF_Render_Form {
                     'textarea_name' => $attr['name']
                 );
 
+                $editor_settings = apply_filters( 'wpuf_textarea_editor_args' , $editor_settings );
                 wp_editor( $value, $textarea_id, $editor_settings );
 
             } else {

@@ -36,6 +36,9 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         // plugin settings
         add_action( 'admin_footer', array($this, 'remove_login_from_settings') );
         add_filter( 'wpuf_settings_fields', array($this, 'settings_login_prompt') );
+
+        // post form templates
+        add_action( 'wpuf_get_post_form_templates', array($this, 'post_form_templates') );
     }
 
     public function includes() {
@@ -206,6 +209,23 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
     public function wpuf_check_save_permission_runner( $post, $update ) {
         WPUF_Coupon_Elements::check_saving_capability( $post, $update );
+    }
+
+    /**
+     * Post form templates
+     *
+     * @since 2.4
+     *
+     * @param  array $integrations
+     *
+     * @return array
+     */
+    public function post_form_templates( $integrations ) {
+        require_once dirname( __FILE__ ) . '/post-form-templates/woocommerce.php';
+
+        $integrations['WPUF_Post_Form_Template_WooCommerce'] = new WPUF_Post_Form_Template_WooCommerce();
+
+        return $integrations;
     }
 }
 

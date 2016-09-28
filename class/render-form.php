@@ -676,7 +676,7 @@ class WPUF_Render_Form {
     /**
      * Prints form input label
      *
-     * @param string $attr
+     * @param array $attr
      */
     function label( $attr, $post_id = 0 ) {
         if ( $post_id && $attr['input_type'] == 'password') {
@@ -686,6 +686,20 @@ class WPUF_Render_Form {
         <div class="wpuf-label">
             <label for="wpuf-<?php echo isset( $attr['name'] ) ? $attr['name'] : 'cls'; ?>"><?php echo $attr['label'] . $this->required_mark( $attr ); ?></label>
         </div>
+        <?php
+    }
+
+    /**
+     * Prints help text for a field
+     *
+     * @param array $attr
+     */
+    function help_text( $attr ) {
+        if ( empty( $attr['help'] ) ) {
+            return;
+        }
+        ?>
+        <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
         <?php
     }
 
@@ -777,7 +791,7 @@ class WPUF_Render_Form {
 
         <div class="wpuf-fields">
             <input class="textfield<?php echo $this->required_class( $attr );  echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" id="<?php echo $attr['name']; ?>" type="text" data-required="<?php echo $attr['required'] ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="<?php echo esc_attr( $value ) ?>" size="<?php echo esc_attr( $attr['size'] ) ?>" <?php echo $username ? 'disabled' : ''; ?> />
-            <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
+            <?php $this->help_text( $attr ); ?>
 
             <?php if ( $taxonomy ) { ?>
             <script type="text/javascript">
@@ -952,7 +966,7 @@ class WPUF_Render_Form {
                 <textarea class="textareafield<?php echo $this->required_class( $attr ); ?> <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" id="<?php echo $attr['name'] . '_' . $form_id; ?>" name="<?php echo $attr['name']; ?>" data-required="<?php echo $attr['required'] ?>" data-type="textarea"<?php $this->required_html5( $attr ); ?> placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" rows="<?php echo $attr['rows']; ?>" cols="<?php echo $attr['cols']; ?>"><?php echo esc_textarea( $value ) ?></textarea>
                 <span class="wpuf-wordlimit-message wpuf-help"></span>
             <?php } ?>
-            <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
+            <?php $this->help_text( $attr ); ?>
         </div>
         <?php
 
@@ -978,16 +992,14 @@ class WPUF_Render_Form {
             $selected = $multiselect ? ( is_array( $selected ) ? $selected : array() ) : $selected;
         }
 
-        $multi = $multiselect ? ' multiple="multiple"' : '';
+        $name      = $multiselect ? $attr['name'] . '[]' : $attr['name'];
+        $multi     = $multiselect ? ' multiple="multiple"' : '';
         $data_type = $multiselect ? 'multiselect' : 'select';
-        $css = $multiselect ? ' class="multiselect  wpuf_'. $attr['name'] .'_'. $form_id.'"' : '';
-
+        $css       = $multiselect ? ' class="multiselect  wpuf_'. $attr['name'] .'_'. $form_id.'"' : '';
         ?>
 
-
-
         <div class="wpuf-fields">
-            <select  <?php echo $css; ?> class="<?php echo 'wpuf_'. $attr['name'] .'_'. $form_id; ?>" name="<?php echo $attr['name']; ?>[]"<?php echo $multi; ?> data-required="<?php echo $attr['required'] ?>" data-type="<?php echo $data_type; ?>"<?php $this->required_html5( $attr ); ?>>
+            <select <?php echo $css; ?> class="<?php echo 'wpuf_'. $attr['name'] .'_'. $form_id; ?>" name="<?php echo $name; ?>"<?php echo $multi; ?> data-required="<?php echo $attr['required'] ?>" data-type="<?php echo $data_type; ?>"<?php $this->required_html5( $attr ); ?>>
 
                 <?php if ( !empty( $attr['first'] ) ) { ?>
                     <option value=""><?php echo $attr['first']; ?></option>
@@ -1004,7 +1016,7 @@ class WPUF_Render_Form {
                 }
                 ?>
             </select>
-            <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
+            <?php $this->help_text( $attr ); ?>
         </div>
         <?php
     }
@@ -1039,7 +1051,7 @@ class WPUF_Render_Form {
             }
             ?>
 
-            <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
+            <?php $this->help_text( $attr ); ?>
         </div>
 
         <?php
@@ -1079,9 +1091,7 @@ class WPUF_Render_Form {
             }
             ?>
 
-            <div class="wpuf-fields">
-                <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
-            </div>
+            <?php $this->help_text( $attr ); ?>
 
         </div>
 
@@ -1110,7 +1120,7 @@ class WPUF_Render_Form {
 
         <div class="wpuf-fields">
             <input id="wpuf-<?php echo $attr['name']; ?>" type="url" class="url <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="<?php echo esc_attr( $value ) ?>" size="<?php echo esc_attr( $attr['size'] ) ?>" />
-            <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
+            <?php $this->help_text( $attr ); ?>
         </div>
 
         <?php
@@ -1137,7 +1147,7 @@ class WPUF_Render_Form {
 
         <div class="wpuf-fields">
             <input id="wpuf-<?php echo $attr['name']; ?>" type="email" class="email <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="email" <?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="<?php echo esc_attr( $value ) ?>" size="<?php echo esc_attr( $attr['size'] ) ?>" />
-            <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
+            <?php $this->help_text( $attr ); ?>
         </div>
 
         <?php
@@ -1156,7 +1166,7 @@ class WPUF_Render_Form {
 
         <div class="wpuf-fields">
             <input id="pass1" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="pass1" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="" size="<?php echo esc_attr( $attr['size'] ) ?>" />
-            <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
+            <?php $this->help_text( $attr ); ?>
         </div>
 
         <?php
@@ -1388,7 +1398,7 @@ class WPUF_Render_Form {
                         break;
                 }
                 ?>
-            <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
+            <?php $this->help_text( $attr ); ?>
         </div>
 
 
@@ -1474,7 +1484,7 @@ class WPUF_Render_Form {
                 </div>
             </div><!-- .container -->
 
-            <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
+            <?php $this->help_text( $attr ); ?>
 
         </div> <!-- .wpuf-fields -->
 

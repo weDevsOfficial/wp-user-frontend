@@ -193,6 +193,7 @@ ul.wpuf-form li .wpuf-fields .wpuf-help {
   font-size: 12px;
   font-style: italic;
   font-family: sans-serif;
+  display: block;
 }
 ul.wpuf-form li .wpuf-fields table,
 ul.wpuf-form li .wpuf-fields td {

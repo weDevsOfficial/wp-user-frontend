@@ -178,6 +178,7 @@ class WP_User_Frontend {
 
         new WPUF_Upload();
         new WPUF_Payment();
+        new WPUF_Admin_Form_Template();
 
         WPUF_Frontend_Form_Post::init(); // requires for form preview
         WPUF_Subscription::init();
@@ -298,6 +299,10 @@ class WP_User_Frontend {
      */
     function add_custom_css() {
         global $post;
+
+        if ( ! is_a( $post, 'WP_Post' ) ) {
+            return;
+        }
 
         if (   wpuf_has_shortcode( 'wpuf_form', $post->ID )
             || wpuf_has_shortcode( 'wpuf_edit', $post->ID )

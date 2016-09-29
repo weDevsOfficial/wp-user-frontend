@@ -758,8 +758,8 @@ class WPUF_Render_Form {
                 } elseif ( $type == 'post' ) {
                     $value = get_post_field( $attr['name'], $post_id );
                 } elseif ( $type == 'user' ) {
-                    $value = get_user_by( 'id', $post_id )->$attr['name'];
-
+                    $name = $attr['name'];
+                    $value = get_user_by( 'id', $post_id )->$name;
                     if ( $attr['name'] == 'user_login' ) {
                         $username = true;
                     }

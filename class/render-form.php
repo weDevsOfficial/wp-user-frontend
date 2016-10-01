@@ -809,26 +809,39 @@ class WPUF_Render_Form {
                 // jQuery ready fires too early, use window.onload instead
                 window.onload = function () {
 
-//                    console.log( 'word limit: ' + editor_limit);
+                   // console.log( 'word limit: ' + editor_limit);
 
                     var word_limit_message = "<?php _e( 'Word Limit Reached !', 'wpuf' ); ?>"
                     if ( rich_text !== 'no' ) {
 
-                        tinyMCE.activeEditor.onKeyDown.add( function(ed,event) {
-                            editor_content = this.getContent().split(' ');
-//                            console.log(editor_content);
-                            editor_limit ? jQuery('.mce-path-item.mce-last').html('Word Limit : '+ editor_content.length +'/'+editor_limit):'';
+                        tinyMCE.get(field_name).onKeyDown.add( function(ed,event) {
 
-                            if ( editor_limit && editor_content.length > editor_limit ) {
+                            var numWords = tinyGetStats(ed).words - 1;
+
+                            editor_limit ? jQuery('.mce-path-item.mce-last', ed.container).html('Word Limit : '+ numWords +'/'+editor_limit):'';
+
+                            if ( editor_limit && numWords > editor_limit ) {
                                 block_typing(event);
                             }
                         });
 
-                        tinyMCE.activeEditor.onPaste.add(function(ed, e) {
-                            //console.log(e.clipboardData.getData('text/plain'));
-                            //getting cursor current position
-                            make_media_embed_code(e.clipboardData.getData('text/plain'),ed);
+                        tinyMCE.get(field_name).onPaste.add(function(ed, e) {
+                            e.preventDefault();
 
+                            var content = '',
+                                clipboard = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('text/plain'),
+                                numWords = tinyGetStats(ed).words - 1;
+
+                            // how many words should we allow to paste?
+                            var extraWords = ( editor_limit > numWords ) ? ( editor_limit - numWords ) : 0;
+
+                            // if any extra words allowed, only take that much words. or not
+                            content = extraWords ? clipboard.split(' ').slice(0, extraWords + 1).join( ' ' ) : '';
+
+                            // Let TinyMCE do the heavy lifting for inserting that content into the editor.
+                            ed.insertContent(content); //ed.execCommand('mceInsertContent', false, content);
+
+                            make_media_embed_code(content, ed);
                         });
                     } else {
 
@@ -858,13 +871,22 @@ class WPUF_Render_Form {
                         jQuery('.mce-path-item.mce-last').html( word_limit_message );
                     }
 
-                    var make_media_embed_code = function(content,editor){
+                    function tinyGetStats(ed) {
+                        var body = ed.getBody(), text = tinymce.trim(body.innerText || body.textContent);
+
+                        return {
+                            chars: text.length,
+                            words: text.split(/[\w\u2019\'-]+/).length
+                        };
+                    }
+
+                    var make_media_embed_code = function(content, editor){
                         jQuery.post( ajaxurl, {
                                 action:'make_media_embed_code',
                                 content: content
                             },
                             function(data){
-//                                console.log(data);
+                                // console.log(data);
                                 editor.setContent(editor.getContent() + editor.setContent(data));
                             }
                         )

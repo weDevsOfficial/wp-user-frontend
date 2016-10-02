@@ -119,7 +119,9 @@ $transactions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transacti
                         <th scope="row" class="check-column">
                             <input id="cb-select-8231" type="checkbox" name="tr_id[]" value="<?php echo $row->id; ?>">
                         </th>
-                        <td><?php echo stripslashes( htmlspecialchars( $row->user_id ) ); ?></td>
+                        <td>
+                            <?php printf( '<a href="%s">%d</a>', admin_url( 'user-edit.php?user_id=' . $row->user_id ), $row->user_id ); ?>
+                        </td>
                         <td><?php echo stripslashes( htmlspecialchars( $row->status ) ); ?></td>
                         <td><?php echo stripslashes( htmlspecialchars( $row->cost ) ); ?></td>
                         <td>
@@ -130,11 +132,13 @@ $transactions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transacti
                                     printf( '<a href="%s">%s</a>', get_permalink( $post->ID ), $post->post_title );
                                 }
                             } else {
-                                echo $row->post_id;
+                                echo '&mdash;';
                             }
                             ?>
                         </td>
-                        <td><?php echo stripslashes( htmlspecialchars( $row->pack_id ) ); ?></td>
+                        <td>
+                            <?php printf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $row->pack_id ), get_post_field( 'post_title', $row->pack_id ) ); ?>
+                        </td>
                         <td><?php echo $row->payer_first_name . ' ' . $row->payer_last_name; ?></td>
                         <td><?php echo stripslashes( htmlspecialchars( $row->payer_email ) ); ?></td>
                         <td><?php echo stripslashes( htmlspecialchars( $row->payment_type ) ); ?></td>
@@ -217,7 +221,7 @@ $transactions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transacti
         </table>
     <?php } else { ?>
 
-        <h3><?php _e( 'No pending orders found', 'wpuf' ); ?></h3>
+        <?php _e( 'No pending orders found', 'wpuf' ); ?>
 
     <?php } ?>
 </div>

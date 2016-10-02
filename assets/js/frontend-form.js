@@ -754,7 +754,9 @@
                         } );
 
                         tinyMCE.get(field).onPaste.add(function(ed, event) {
-                            WP_User_Frontend.editorLimit.tinymce.onPaste(ed, event, limit);
+                            setTimeout(function() {
+                                WP_User_Frontend.editorLimit.tinymce.onPaste(ed, event, limit);
+                            }, 100);
                         });
 
                     }, 1000);
@@ -784,22 +786,13 @@
                 },
 
                 onPaste: function(ed, event, limit) {
-                    event.preventDefault();
-
-                    var content = '',
-                        clipboard = ((event.originalEvent || event).clipboardData || window.clipboardData).getData('text/plain'),
-                        numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words - 1;
-
-                    // how many words should we allow to paste?
-                    var extraWords = ( limit > numWords ) ? ( limit - numWords ) : 0;
-
-                    // if any extra words allowed, only take that much words. or not
-                    content = extraWords ? clipboard.split(' ').slice(0, extraWords + 1).join( ' ' ) : '';
+                    var editorContent = ed.getContent().split(' ').slice(0, limit).join(' ');
 
                     // Let TinyMCE do the heavy lifting for inserting that content into the editor.
-                    ed.insertContent(content); //ed.execCommand('mceInsertContent', false, content);
+                    // ed.insertContent(content); //ed.execCommand('mceInsertContent', false, content);
+                    ed.setContent(editorContent);
 
-                    WP_User_Frontend.editorLimit.make_media_embed_code(content, ed);
+                    WP_User_Frontend.editorLimit.make_media_embed_code(editorContent, ed);
                 }
             },
 

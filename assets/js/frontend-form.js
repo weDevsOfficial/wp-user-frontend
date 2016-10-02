@@ -726,6 +726,126 @@
                     $(e.target).parent().remove();
                 });
             }
+        },
+
+        editorLimit: {
+
+            bind: function(limit, field, type) {
+                if ( type === 'no' ) {
+                    // it's a textarea
+
+                    $('textarea#' +  field).keydown( function(event) {
+                        WP_User_Frontend.editorLimit.textareaLimit.call(this, event, limit);
+                    });
+
+                    $('textarea#' +  field).on('paste', function(event) {
+                        var self = $(this);
+
+                        setTimeout(function() {
+                            WP_User_Frontend.editorLimit.textareaLimit.call(self, event, limit);
+                        }, 100);
+                    });
+
+                } else {
+                    // it's a rich textarea
+                    setTimeout(function () {
+                        tinyMCE.get(field).onKeyDown.add( function(ed, event) {
+                            WP_User_Frontend.editorLimit.tinymce.onKeyDown(ed, event, limit);
+                        } );
+
+                        tinyMCE.get(field).onPaste.add(function(ed, event) {
+                            WP_User_Frontend.editorLimit.tinymce.onPaste(ed, event, limit);
+                        });
+
+                    }, 1000);
+                }
+            },
+
+            tinymce: {
+
+                getStats: function(ed) {
+                    var body = ed.getBody(), text = tinymce.trim(body.innerText || body.textContent);
+
+                    return {
+                        chars: text.length,
+                        words: text.split(/[\w\u2019\'-]+/).length
+                    };
+                },
+
+                onKeyDown: function(ed, event, limit) {
+                    var numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words - 1;
+
+                    limit ? $('.mce-path-item.mce-last', ed.container).html('Word Limit : '+ numWords +'/'+limit):'';
+
+                    if ( limit && numWords > limit ) {
+                        WP_User_Frontend.editorLimit.blockTyping(event);
+                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend.word_limit );
+                    }
+                },
+
+                onPaste: function(ed, event, limit) {
+                    event.preventDefault();
+
+                    var content = '',
+                        clipboard = ((event.originalEvent || event).clipboardData || window.clipboardData).getData('text/plain'),
+                        numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words - 1;
+
+                    // how many words should we allow to paste?
+                    var extraWords = ( limit > numWords ) ? ( limit - numWords ) : 0;
+
+                    // if any extra words allowed, only take that much words. or not
+                    content = extraWords ? clipboard.split(' ').slice(0, extraWords + 1).join( ' ' ) : '';
+
+                    // Let TinyMCE do the heavy lifting for inserting that content into the editor.
+                    ed.insertContent(content); //ed.execCommand('mceInsertContent', false, content);
+
+                    WP_User_Frontend.editorLimit.make_media_embed_code(content, ed);
+                }
+            },
+
+            textareaLimit: function(event, limit) {
+                var self = $(this),
+                    content = self.val().split(' ');
+
+                if ( limit && content.length > limit ) {
+                    self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( wpuf_frontend.word_limit );
+                    WP_User_Frontend.editorLimit.blockTyping(event);
+                } else {
+                    self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
+                }
+
+                // handle the paste event
+                if ( event.type === 'paste' ) {
+                    self.val( content.slice(0, limit).join( ' ' ) );
+                }
+            },
+
+            blockTyping: function(event) {
+                // Allow: backspace, delete, tab, escape, minus enter and . backspace = 8,delete=46,tab=9,enter=13,.=190,escape=27, minus = 189
+                if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 110, 190, 189]) !== -1 ||
+                    // Allow: Ctrl+A
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    // Allow: home, end, left, right, down, up
+                    (event.keyCode >= 35 && event.keyCode <= 40)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+
+                event.preventDefault();
+                event.stopPropagation();
+            },
+
+            make_media_embed_code: function(content, editor){
+                $.post( ajaxurl, {
+                        action:'make_media_embed_code',
+                        content: content
+                    },
+                    function(data){
+                        // console.log(data);
+                        editor.setContent(editor.getContent() + editor.setContent(data));
+                    }
+                )
+            }
         }
     };
 

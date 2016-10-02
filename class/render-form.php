@@ -800,99 +800,11 @@ class WPUF_Render_Form {
     function check_word_restriction_func($word_nums, $rich_text, $field_name){
         ?>
         <script type="text/javascript">
-            (function() {
-
-                var editor_limit = <?php echo $word_nums; ?>,
-                    rich_text = '<?php echo $rich_text; ?>',
-                    field_name = '<?php echo $field_name; ?>';
-
-                // jQuery ready fires too early, use window.onload instead
-                window.onload = function () {
-
-                   // console.log( 'word limit: ' + editor_limit);
-
-                    var word_limit_message = "<?php _e( 'Word Limit Reached !', 'wpuf' ); ?>"
-                    if ( rich_text !== 'no' ) {
-
-                        tinyMCE.get(field_name).onKeyDown.add( function(ed,event) {
-
-                            var numWords = tinyGetStats(ed).words - 1;
-
-                            editor_limit ? jQuery('.mce-path-item.mce-last', ed.container).html('Word Limit : '+ numWords +'/'+editor_limit):'';
-
-                            if ( editor_limit && numWords > editor_limit ) {
-                                block_typing(event);
-                            }
-                        });
-
-                        tinyMCE.get(field_name).onPaste.add(function(ed, e) {
-                            e.preventDefault();
-
-                            var content = '',
-                                clipboard = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('text/plain'),
-                                numWords = tinyGetStats(ed).words - 1;
-
-                            // how many words should we allow to paste?
-                            var extraWords = ( editor_limit > numWords ) ? ( editor_limit - numWords ) : 0;
-
-                            // if any extra words allowed, only take that much words. or not
-                            content = extraWords ? clipboard.split(' ').slice(0, extraWords + 1).join( ' ' ) : '';
-
-                            // Let TinyMCE do the heavy lifting for inserting that content into the editor.
-                            ed.insertContent(content); //ed.execCommand('mceInsertContent', false, content);
-
-                            make_media_embed_code(content, ed);
-                        });
-                    } else {
-
-                        jQuery('textarea[name="'+ field_name +'"]').keydown(function(e){
-                            editor_content = jQuery(this).val().split(' ');
-                            if ( editor_limit && editor_content.length > editor_limit ) {
-                                jQuery(this).closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( word_limit_message );
-                                block_typing(e);
-                            } else {
-                                jQuery(this).closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
-                            }
-                        });
-                    }
-
-                    var block_typing = function (event){
-                        // Allow: backspace, delete, tab, escape, minus enter and . backspace = 8,delete=46,tab=9,enter=13,.=190,escape=27, minus = 189
-                        if (jQuery.inArray(event.keyCode, [46, 8, 9, 27, 13, 110, 190, 189]) !== -1 ||
-                            // Allow: Ctrl+A
-                            (event.keyCode == 65 && event.ctrlKey === true) ||
-                            // Allow: home, end, left, right, down, up
-                            (event.keyCode >= 35 && event.keyCode <= 40)) {
-                            // let it happen, don't do anything
-                            return;
-                        }
-                        event.preventDefault();
-                        event.stopPropagation();
-                        jQuery('.mce-path-item.mce-last').html( word_limit_message );
-                    }
-
-                    function tinyGetStats(ed) {
-                        var body = ed.getBody(), text = tinymce.trim(body.innerText || body.textContent);
-
-                        return {
-                            chars: text.length,
-                            words: text.split(/[\w\u2019\'-]+/).length
-                        };
-                    }
-
-                    var make_media_embed_code = function(content, editor){
-                        jQuery.post( ajaxurl, {
-                                action:'make_media_embed_code',
-                                content: content
-                            },
-                            function(data){
-                                // console.log(data);
-                                editor.setContent(editor.getContent() + editor.setContent(data));
-                            }
-                        )
-                    }
-                }
-            })();
+            (function($) {
+                $(function() {
+                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s"', $word_nums, $field_name, $rich_text ); ?>);
+                });
+            })(jQuery);
         </script>
         <?php
 

@@ -334,7 +334,8 @@ class WP_User_Frontend {
         wp_localize_script( 'wpuf-form', 'wpuf_frontend', array(
             'ajaxurl'       => admin_url( 'admin-ajax.php' ),
             'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
-            'nonce'         => wp_create_nonce( 'wpuf_nonce' )
+            'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
+            'word_limit'    => __( 'Word limit reached', 'wpuf' )
         ) );
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(

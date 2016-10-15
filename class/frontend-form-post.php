@@ -114,7 +114,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         if ( isset( $_GET['msg'] ) && $_GET['msg'] == 'post_updated' ) {
             echo '<div class="wpuf-success">';
-            echo $form_settings['update_message'];
+            echo str_replace( '%link%', get_permalink( $post_id ), $form_settings['update_message'] );
             echo '</div>';
         }
 

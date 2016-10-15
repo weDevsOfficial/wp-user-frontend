@@ -116,22 +116,22 @@ function wpfu_get_attachments( $post_id ) {
     $att_list = array();
 
     $args = array(
-        'post_type' => 'attachment',
+        'post_type'   => 'attachment',
         'numberposts' => -1,
         'post_status' => null,
         'post_parent' => $post_id,
-        'order' => 'ASC',
-        'orderby' => 'menu_order'
+        'order'       => 'ASC',
+        'orderby'     => 'menu_order'
     );
 
     $attachments = get_posts( $args );
 
     foreach ($attachments as $attachment) {
         $att_list[] = array(
-            'id' => $attachment->ID,
+            'id'    => $attachment->ID,
             'title' => $attachment->post_title,
-            'url' => wp_get_attachment_url( $attachment->ID ),
-            'mime' => $attachment->post_mime_type
+            'url'   => wp_get_attachment_url( $attachment->ID ),
+            'mime'  => $attachment->post_mime_type
         );
     }
 
@@ -1236,4 +1236,20 @@ function wpuf_is_license_expired() {
     }
 
     return false;
+}
+
+/**
+ * Get post form templates
+ *
+ * @since 2.4
+ *
+ * @return array
+ */
+function wpuf_get_post_form_templates() {
+    require_once WPUF_ROOT . '/class/post-form-templates/post.php';
+
+    $integrations = array();
+    $integrations['WPUF_Post_Form_Template_Post'] = new WPUF_Post_Form_Template_Post();
+
+    return apply_filters( 'wpuf_get_post_form_templates', $integrations );
 }

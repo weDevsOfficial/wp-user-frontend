@@ -243,16 +243,17 @@ class WPUF_Admin_Form {
     function form_updated_message( $messages ) {
         $message = array(
              0 => '',
-             1 => __('Form updated.'),
-             2 => __('Custom field updated.'),
-             3 => __('Custom field deleted.'),
-             4 => __('Form updated.'),
-             5 => isset($_GET['revision']) ? sprintf( __('Form restored to revision from %s'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-             6 => __('Form published.'),
-             7 => __('Form saved.'),
-             8 => __('Form submitted.' ),
+             1 => __( 'Form updated.', 'wpuf' ),
+             2 => __( 'Custom field updated.', 'wpuf' ),
+             3 => __( 'Custom field deleted.', 'wpuf' ),
+             4 => __( 'Form updated.', 'wpuf' ),
+             5 => isset($_GET['revision']) ? sprintf( __('Form restored to revision from %s', 'wpuf'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+             6 => __( 'Form published.', 'wpuf'),
+             7 => __( 'Form saved.', 'wpuf' ),
+             8 => __( 'Form submitted.', 'wpuf' ),
              9 => '',
-            10 => __('Form draft updated.'),
+            10 => __( 'Form draft updated.', 'wpuf' ),
+            11 => __( 'Successfully created from the form template.', 'wpuf' ),
         );
 
         $messages['wpuf_forms'] = $message;
@@ -400,7 +401,7 @@ class WPUF_Admin_Form {
         }
 
         $post_id = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
-        $post = get_post( $post_id );
+        $post    = get_post( $post_id );
 
         if ( !$post ) {
             return;
@@ -1500,7 +1501,7 @@ class WPUF_Admin_Form {
      * @global string $pagenow
      */
     function edit_form_area_profile() {
-        
+
         ?>
         <input type="hidden" name="wpuf_form_editor" id="wpuf_form_editor" value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" />
         <?php

@@ -796,7 +796,7 @@ class WPUF_Render_Form {
             <?php if ( $taxonomy ) { ?>
             <script type="text/javascript">
                 jQuery(function($) {
-                    $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '?action=ajax-tag-search&tax=post_tag', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                    $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=post_tag', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                 });
             </script>
             <?php } ?>
@@ -1322,7 +1322,7 @@ class WPUF_Render_Form {
 
                         <script type="text/javascript">
                             jQuery(function($) {
-                                $('#<?php echo $attr['name']; ?>').suggest( wpuf_frontend.ajaxurl + '?action=ajax-tag-search&tax=<?php echo $attr['name']; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                                $('#<?php echo $attr['name']; ?>').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=<?php echo $attr['name']; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                             });
                         </script>
 

@@ -953,6 +953,7 @@ class WPUF_Subscription {
      */
     public static function has_user_error( $form_settings = null ) {
         global $userdata;
+
         $user_id = isset( $userdata->ID ) ? $userdata->ID : '';
         // bail out if charging is not enabled
         if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' ) {
@@ -996,7 +997,7 @@ class WPUF_Subscription {
                 $post_count_status = true;
             }
 
-            if( $expire_status || $post_count_status ) {
+            if ( $expire_status || $post_count_status ) {
                 return true;
             }
         }

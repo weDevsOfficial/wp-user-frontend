@@ -32,7 +32,7 @@ class WPUF_Admin_Form_Template {
     public function should_display() {
         $current_screen = get_current_screen();
 
-        if ( $current_screen->id == 'edit-wpuf_forms' ) {
+        if ( in_array( $current_screen->id, array( 'edit-wpuf_forms', 'wpuf_forms' ) ) ) {
             return true;
         }
 

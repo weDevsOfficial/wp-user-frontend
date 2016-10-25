@@ -707,8 +707,9 @@ class WPUF_Subscription {
                         if ( ! $post_type_obj ) {
                             continue;
                         }
+                        $value = ( $value == '-1' ) ? __( 'Unlimited', 'wpuf' ) : $value;
                         ?>
-                         <div><?php echo $post_type_obj->labels->name . ': ' . $value; ?></div>
+                        <div><?php echo $post_type_obj->labels->name . ': ' . $value; ?></div>
                         <?php
                     }
                     ?>

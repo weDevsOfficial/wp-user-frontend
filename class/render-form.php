@@ -411,7 +411,9 @@ class WPUF_Render_Form {
         $hidden_fields = array();
         ?>
         <script type="text/javascript">
-            wpuf_conditional_items = [];
+            if ( typeof wpuf_conditional_items === 'undefined' ) {
+                wpuf_conditional_items = [];
+            }
         </script>
         <?php
 
@@ -772,8 +774,8 @@ class WPUF_Render_Form {
                 } elseif ( $type == 'post' ) {
                     $value = get_post_field( $attr['name'], $post_id );
                 } elseif ( $type == 'user' ) {
-                    $value = get_user_by( 'id', $post_id )->$attr['name'];
-
+                    $name = $attr['name'];
+                    $value = get_user_by( 'id', $post_id )->$name;
                     if ( $attr['name'] == 'user_login' ) {
                         $username = true;
                     }
@@ -796,7 +798,7 @@ class WPUF_Render_Form {
             <?php if ( $taxonomy ) { ?>
             <script type="text/javascript">
                 jQuery(function($) {
-                    $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '?action=ajax-tag-search&tax=post_tag', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                    $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=post_tag', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                 });
             </script>
             <?php } ?>
@@ -879,7 +881,8 @@ class WPUF_Render_Form {
                     'editor_class'  => $req_class,
                     'textarea_name' => $attr['name']
                 );
-
+                
+                $editor_settings = apply_filters( 'wpuf_textarea_editor_args' , $editor_settings );
                 wp_editor( $value, $textarea_id, $editor_settings );
 
             } elseif( $attr['rich'] == 'teeny' ) {
@@ -893,6 +896,7 @@ class WPUF_Render_Form {
                     'textarea_name' => $attr['name']
                 );
 
+                $editor_settings = apply_filters( 'wpuf_textarea_editor_args' , $editor_settings );
                 wp_editor( $value, $textarea_id, $editor_settings );
 
             } else {
@@ -1320,7 +1324,7 @@ class WPUF_Render_Form {
 
                         <script type="text/javascript">
                             jQuery(function($) {
-                                $('#<?php echo $attr['name']; ?>').suggest( wpuf_frontend.ajaxurl + '?action=ajax-tag-search&tax=<?php echo $attr['name']; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                                $('#<?php echo $attr['name']; ?>').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=<?php echo $attr['name']; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                             });
                         </script>
 

@@ -411,7 +411,9 @@ class WPUF_Render_Form {
         $hidden_fields = array();
         ?>
         <script type="text/javascript">
-            wpuf_conditional_items = [];
+            if ( typeof wpuf_conditional_items === 'undefined' ) {
+                wpuf_conditional_items = [];
+            }
         </script>
         <?php
 

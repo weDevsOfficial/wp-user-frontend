@@ -1,13 +1,13 @@
 # WP User Frontend #
 **Contributors:** tareq1988, wedevs
 
-**Donate link:** http://tareq.wedevs.com/donate/
+**Donate link:** https://tareq.co/
 
 **Tags:** frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
 
 **Requires at least:** 3.3
 
-**Tested up to:** 4.3
+**Tested up to:** 4.6.1
 
 **Stable tag:** trunk
 
@@ -196,6 +196,24 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v2.4 (26 October, 2016) ###
+
+ * [fix] Plupload string translations
+ * [fix] Post expiration logic updated
+ * [fix] Ignore google map error when the API key is not inserted
+ * [fix] Upload error from admin panel, nonce issue
+ * [fix] reCaptcha lib constructor for strict standard
+ * [fix] tinyMCE and textarea word limit fixed
+ * [fix] User profile edit warning issue fixed for PHP 7
+ * [fix] Tag suggestion showing -1
+ * [fix] Showing -1 in case of unlimited remaining post count
+ * [fix] Google map on a multi-step section
+ * [improved] Settings API v1.3 updated
+ * [improved] Added links to transaction packs in admin area
+ * [new] Post template feature added with simple post and WooCommerce form template
+ * [new] Added filter on text area editor args
+ * [new] Content restriction added on *pro* version
 
 ### v2.3.15 (11 August, 2016) ###
 

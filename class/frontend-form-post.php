@@ -9,20 +9,20 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
     function __construct() {
 
-        add_shortcode( 'wpuf_form', array($this, 'add_post_shortcode') );
-        add_shortcode( 'wpuf_edit', array($this, 'edit_post_shortcode') );
+        add_shortcode( 'wpuf_form', array( $this, 'add_post_shortcode' ) );
+        add_shortcode( 'wpuf_edit', array( $this, 'edit_post_shortcode' ) );
 
         // ajax requests
-        add_action( 'wp_ajax_wpuf_submit_post', array($this, 'submit_post') );
-        add_action( 'wp_ajax_nopriv_wpuf_submit_post', array($this, 'submit_post') );
-        add_action( 'wp_ajax_make_media_embed_code', array($this,'make_media_embed_code') );
-        add_action( 'wp_ajax_nopriv_make_media_embed_code', array($this, 'make_media_embed_code') );
+        add_action( 'wp_ajax_wpuf_submit_post', array( $this, 'submit_post' ) );
+        add_action( 'wp_ajax_nopriv_wpuf_submit_post', array( $this, 'submit_post' ) );
+        add_action( 'wp_ajax_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
+        add_action( 'wp_ajax_nopriv_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
 
         // draft
-        add_action( 'wp_ajax_wpuf_draft_post', array($this, 'draft_post') );
+        add_action( 'wp_ajax_wpuf_draft_post', array( $this, 'draft_post' ) );
 
         // form preview
-        add_action( 'wp_ajax_wpuf_form_preview', array($this, 'preview_form') );
+        add_action( 'wp_ajax_wpuf_form_preview', array( $this, 'preview_form' ) );
     }
 
     public static function init() {
@@ -40,7 +40,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
      * @return string
      */
     function add_post_shortcode( $atts ) {
-        extract( shortcode_atts( array('id' => 0), $atts ) );
+        extract( shortcode_atts( array( 'id' => 0 ), $atts ) );
         ob_start();
 
         $form_settings = wpuf_get_form_settings( $id );
@@ -85,12 +85,12 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         $curpost = get_post( $post_id );
 
-        if ( ! $curpost ) {
+        if ( !$curpost ) {
             return '<div class="wpuf-info">' . __( 'Invalid post', 'wpuf' );
         }
 
         // has permission?
-        if ( ! current_user_can( 'delete_others_posts' ) && ( $userdata->ID != $curpost->post_author ) ) {
+        if ( !current_user_can( 'delete_others_posts' ) && ( $userdata->ID != $curpost->post_author ) ) {
             return '<div class="wpuf-info">' . __( 'You are not allowed to edit', 'wpuf' ) . '</div>';
         }
 
@@ -98,11 +98,11 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $form_settings = wpuf_get_form_settings( $form_id );
 
         // fallback to default form
-        if ( ! $form_id ) {
+        if ( !$form_id ) {
             $form_id = wpuf_get_option( 'default_post_form', 'wpuf_general' );
         }
 
-        if ( ! $form_id ) {
+        if ( !$form_id ) {
             return '<div class="wpuf-info">' . __( "I don't know how to edit this post, I don't have the form ID", 'wpuf' ) . '</div>';
         }
 
@@ -114,7 +114,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         if ( isset( $_GET['msg'] ) && $_GET['msg'] == 'post_updated' ) {
             echo '<div class="wpuf-success">';
-            echo $form_settings['update_message'];
+            echo str_replace( '%link%', get_permalink( $post_id ), $form_settings['update_message'] );
             echo '</div>';
         }
 
@@ -137,8 +137,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
-        $form_id = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
-        $form_vars = $this->get_input_fields( $form_id );
+        $form_id       = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
+        $form_vars     = $this->get_input_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
 
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
@@ -155,7 +155,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             if ( $this->search( $post_vars, 'input_type', 'recaptcha' ) ) {
 
                 $no_captcha = '';
-                if ( isset ( $_POST["g-recaptcha-response"] ) ) {
+                if ( isset( $_POST["g-recaptcha-response"] ) ) {
                     $no_captcha = 1;
                 } else {
                     $no_captcha = 0;
@@ -169,14 +169,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_general', 1 );
 
         // Guest Stuffs: check for guest post
-        if ( ! is_user_logged_in() ) {
+        if ( !is_user_logged_in() ) {
 
             if ( $form_settings['guest_post'] == 'true' && $form_settings['guest_details'] == 'true' ) {
                 $guest_name  = trim( $_POST['guest_name'] );
                 $guest_email = trim( $_POST['guest_email'] );
 
                 // is valid email?
-                if ( ! is_email( $guest_email ) ) {
+                if ( !is_email( $guest_email ) ) {
                     $this->send_error( __( 'Invalid email address.', 'wpuf' ) );
                 }
 
@@ -186,12 +186,11 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     // $post_author = $user->ID;
                     echo json_encode( array(
                         'success'     => false,
-                        'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lost the form data.\nClick 'Cancel' to stay at this page.", 'wpuf'),
+                        'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lost the form data.\nClick 'Cancel' to stay at this page.", 'wpuf' ),
                         'type'        => 'login',
-                        'redirect_to' => wp_login_url(  get_permalink( $_POST['page_id'] ) )
+                        'redirect_to' => wp_login_url( get_permalink( $_POST['page_id'] ) )
                     ) );
                     exit;
-
                 } else {
 
                     // user not found, lets register him
@@ -208,14 +207,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     if ( $user_id && !is_wp_error( $user_id ) ) {
                         update_user_option( $user_id, 'default_password_nag', true, true ); //Set up the Password change nag.
 
-                        if ( class_exists( 'Theme_My_Login_Custom_Email') ) {
+                        if ( class_exists( 'Theme_My_Login_Custom_Email' ) ) {
                             do_action( 'tml_new_user_registered', $user_id, $user_pass );
                         } else {
                             wp_send_new_user_notifications( $user_id );
                         }
 
                         // update display name to full name
-                        wp_update_user( array('ID' => $user_id, 'display_name' => $guest_name) );
+                        wp_update_user( array( 'ID' => $user_id, 'display_name' => $guest_name ) );
 
                         $post_author = $user_id;
                     } else {
@@ -244,25 +243,24 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         );
 
         //if date is set and assigned as publish date
-        if ( isset ( $_POST['wpuf_is_publish_time'] ) ) {
+        if ( isset( $_POST['wpuf_is_publish_time'] ) ) {
 
-            if ( isset ( $_POST[$_POST['wpuf_is_publish_time']] ) && !empty ( $_POST[$_POST['wpuf_is_publish_time']] ) ) {
-                $postarr['post_date'] = date( 'Y-m-d H:i:s', strtotime( str_replace( array(':','/'), '-', $_POST[$_POST['wpuf_is_publish_time']]) ) );
+            if ( isset( $_POST[$_POST['wpuf_is_publish_time']] ) && !empty( $_POST[$_POST['wpuf_is_publish_time']] ) ) {
+                $postarr['post_date'] = date( 'Y-m-d H:i:s', strtotime( str_replace( array( ':', '/' ), '-', $_POST[$_POST['wpuf_is_publish_time']] ) ) );
             }
-
         }
 
         if ( isset( $_POST['category'] ) ) {
-            $category = $_POST['category'];
-            $postarr['post_category'] = is_array( $category ) ? $category : array($category);
+            $category                 = $_POST['category'];
+            $postarr['post_category'] = is_array( $category ) ? $category : array( $category );
 
             if ( !is_array( $category ) && is_string( $category ) ) {
-                $category_strings = explode( ',', $category);
+                $category_strings = explode( ',', $category );
 
                 $cat_ids = array();
 
                 foreach ( $category_strings as $key => $each_cat_string ) {
-                    $cat_ids[] = get_cat_ID( trim( $each_cat_string ) );
+                    $cat_ids[]                = get_cat_ID( trim( $each_cat_string ) );
                     $postarr['post_category'] = $cat_ids;
                 }
             }
@@ -282,12 +280,11 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $postarr['post_author']    = $_POST['post_author'];
             $postarr['post_parent']    = get_post_field( 'post_parent', $_POST['post_id'] );
 
-            if ( $form_settings['edit_post_status'] == '_nochange') {
+            if ( $form_settings['edit_post_status'] == '_nochange' ) {
                 $postarr['post_status'] = get_post_field( 'post_status', $_POST['post_id'] );
             } else {
                 $postarr['post_status'] = $form_settings['edit_post_status'];
             }
-
         } else {
             if ( isset( $form_settings['comment_status'] ) ) {
                 $postarr['comment_status'] = $form_settings['comment_status'];
@@ -313,7 +310,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $error = apply_filters( 'wpuf_add_post_validate', '' );
         }
 
-        if ( ! empty( $error ) ) {
+        if ( !empty( $error ) ) {
             $this->send_error( $error );
         }
 
@@ -328,15 +325,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         if ( $post_id ) {
 
-            self::update_post_meta($meta_vars, $post_id);
+            self::update_post_meta( $meta_vars, $post_id );
 
             // if user has a subscription pack
-            $user_wpuf_subscription_pack = get_user_meta(get_current_user_id(),'_wpuf_subscription_pack',true);
+            $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
 
-            if ( !empty($user_wpuf_subscription_pack) &&  isset($user_wpuf_subscription_pack['_enable_post_expiration'])
-                && isset($user_wpuf_subscription_pack['expire']) && strtotime($user_wpuf_subscription_pack['expire']) >= time()
+            if ( !empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['_enable_post_expiration'] ) && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) >= time()
             ) {
-                $expire_date = date( 'Y-m-d', strtotime("+".$user_wpuf_subscription_pack['_post_expiration_time'] ));
+                $expire_date = date( 'Y-m-d', strtotime( "+" . $user_wpuf_subscription_pack['_post_expiration_time'] ) );
                 update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
 
                 // save post status after expiration
@@ -344,17 +340,15 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
 
                 // if mail active
-                if ( isset( $user_wpuf_subscription_pack['_enable_mail_after_expired']) && $user_wpuf_subscription_pack['_enable_mail_after_expired'] == 'on' ) {
+                if ( isset( $user_wpuf_subscription_pack['_enable_mail_after_expired'] ) && $user_wpuf_subscription_pack['_enable_mail_after_expired'] == 'on' ) {
                     $post_expiration_message = $user_wpuf_subscription_pack['_post_expiration_message'];
                     update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
                 }
+            } elseif ( !empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) <= time() ) {
 
-            } elseif ( ! empty( $user_wpuf_subscription_pack )
-                && isset($user_wpuf_subscription_pack['expire']) && strtotime($user_wpuf_subscription_pack['expire']) <= time() ) {
+                if ( isset( $form_settings['expiration_settings']['enable_post_expiration'] ) ) {
 
-                if ( isset($form_settings['expiration_settings']['enable_post_expiration']) ) {
-
-                    $expire_date = date('Y-m-d', strtotime("+".$form_settings['expiration_settings']['expiration_time_value'].' '.$form_settings['expiration_settings']['expiration_time_type'].""));
+                    $expire_date = date( 'Y-m-d', strtotime( "+" . $form_settings['expiration_settings']['expiration_time_value'] . ' ' . $form_settings['expiration_settings']['expiration_time_type'] . "" ) );
                     update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
 
                     // save post status after expiration
@@ -362,15 +356,15 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
 
                     // if mail active
-                    if ( isset($form_settings['expiration_settings']['enable_mail_after_expired']) && $form_settings['expiration_settings']['enable_mail_after_expired'] == 'on' ) {
+                    if ( isset( $form_settings['expiration_settings']['enable_mail_after_expired'] ) && $form_settings['expiration_settings']['enable_mail_after_expired'] == 'on' ) {
                         $post_expiration_message = $form_settings['expiration_settings']['post_expiration_message'];
                         update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
                     }
                 }
             } elseif ( empty( $user_wpuf_subscription_pack ) ) {
 
-                if ( isset($form_settings['expiration_settings']['enable_post_expiration']) ) {
-                    $expire_date = date('Y-m-d', strtotime("+".$form_settings['expiration_settings']['expiration_time_value'].' '.$form_settings['expiration_settings']['expiration_time_type']."") );
+                if ( isset( $form_settings['expiration_settings']['enable_post_expiration'] ) ) {
+                    $expire_date = date( 'Y-m-d', strtotime( "+" . $form_settings['expiration_settings']['expiration_time_value'] . ' ' . $form_settings['expiration_settings']['expiration_time_type'] . "" ) );
                     update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
 
                     // save post status after expiration
@@ -378,7 +372,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
 
                     // if mail active
-                    if ( isset($form_settings['expiration_settings']['enable_mail_after_expired']) && $form_settings['expiration_settings']['enable_mail_after_expired'] == 'on') {
+                    if ( isset( $form_settings['expiration_settings']['enable_mail_after_expired'] ) && $form_settings['expiration_settings']['enable_mail_after_expired'] == 'on' ) {
                         $post_expiration_message = $form_settings['expiration_settings']['post_expiration_message'];
                         update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
                     }
@@ -398,14 +392,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             // find our if any images in post content and associate them
             if ( !empty( $postarr['post_content'] ) ) {
-                $dom = new DOMDocument();
+                $dom    = new DOMDocument();
                 @$dom->loadHTML( $postarr['post_content'] );
                 $images = $dom->getElementsByTagName( 'img' );
 
                 if ( $images->length ) {
-                    foreach ($images as $img) {
+                    foreach ( $images as $img ) {
                         $url           = $img->getAttribute( 'src' );
-                        $url           = str_replace(array('"', "'", "\\"), '', $url);
+                        $url           = str_replace( array( '"', "'", "\\" ), '', $url );
                         $attachment_id = wpuf_get_attachment_id_from_url( $url );
 
                         if ( $attachment_id ) {
@@ -418,7 +412,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             // save any custom taxonomies
             $woo_attr = array();
 
-            foreach ($taxonomy_vars as $taxonomy) {
+            foreach ( $taxonomy_vars as $taxonomy ) {
                 if ( isset( $_POST[$taxonomy['name']] ) ) {
 
                     if ( is_object_in_taxonomy( $form_settings['post_type'], $taxonomy['name'] ) ) {
@@ -426,7 +420,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
                         // if it's not an array, make it one
                         if ( !is_array( $tax ) ) {
-                            $tax = array($tax);
+                            $tax = array( $tax );
                         }
 
                         if ( $taxonomy['type'] == 'text' ) {
@@ -436,24 +430,23 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                             wp_set_object_terms( $post_id, $hierarchical, $taxonomy['name'] );
 
                             // woocommerce check
-                            if ( isset( $taxonomy['woo_attr']) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
+                            if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
                                 $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
                             }
-
                         } else {
 
                             if ( is_taxonomy_hierarchical( $taxonomy['name'] ) ) {
                                 wp_set_post_terms( $post_id, $_POST[$taxonomy['name']], $taxonomy['name'] );
 
                                 // woocommerce check
-                                if ( isset( $taxonomy['woo_attr']) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
+                                if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
                                     $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
                                 }
                             } else {
                                 if ( $tax ) {
                                     $non_hierarchical = array();
 
-                                    foreach ($tax as $value) {
+                                    foreach ( $tax as $value ) {
                                         $term = get_term_by( 'id', $value, $taxonomy['name'] );
                                         if ( $term && !is_wp_error( $term ) ) {
                                             $non_hierarchical[] = $term->name;
@@ -464,14 +457,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                                 }
                             } // hierarchical
                         } // is text
-
                     } // is object tax
                 } // isset tax
             }
 
             // if a woocommerce attribute
             if ( $woo_attr ) {
-                update_post_meta($post_id, '_product_attributes', $woo_attr);
+                update_post_meta( $post_id, '_product_attributes', $woo_attr );
             }
 
             if ( $is_update ) {
@@ -498,26 +490,23 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             //redirect URL
             $show_message = false;
-            $redirect_to = false;
+            $redirect_to  = false;
 
             if ( $is_update ) {
                 if ( $form_settings['edit_redirect_to'] == 'page' ) {
                     $redirect_to = get_permalink( $form_settings['edit_page_id'] );
-
                 } elseif ( $form_settings['edit_redirect_to'] == 'url' ) {
                     $redirect_to = $form_settings['edit_url'];
-
                 } elseif ( $form_settings['edit_redirect_to'] == 'same' ) {
                     $redirect_to = add_query_arg( array(
-                            'pid'      => $post_id,
-                            '_wpnonce' => wp_create_nonce('wpuf_edit'),
-                            'msg'      => 'post_updated'
-                        ), get_permalink( $_POST['page_id'] )
+                        'pid'      => $post_id,
+                        '_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
+                        'msg'      => 'post_updated'
+                    ), get_permalink( $_POST['page_id'] )
                     );
                 } else {
                     $redirect_to = get_permalink( $post_id );
                 }
-
             } else {
                 if ( $form_settings['redirect_to'] == 'page' ) {
                     $redirect_to = get_permalink( $form_settings['page_id'] );
@@ -553,11 +542,10 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $this->send_error( __( 'Something went wrong', 'wpuf' ) );
     }
 
-
     /**
      * this will embed media to the editor
      */
-    function make_media_embed_code(){
+    function make_media_embed_code() {
         if ( $embed_code = wp_oembed_get( $_POST['content'] ) ) {
             echo $embed_code;
         } else {
@@ -572,8 +560,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
-        $form_id = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
-        $form_vars = $this->get_input_fields( $form_id );
+        $form_id       = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
+        $form_vars     = $this->get_input_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
 
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
@@ -593,8 +581,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         );
 
         if ( isset( $_POST['category'] ) ) {
-            $category = $_POST['category'];
-            $postarr['post_category'] = is_array( $category ) ? $category : array($category);
+            $category                 = $_POST['category'];
+            $postarr['post_category'] = is_array( $category ) ? $category : array( $category );
         }
 
         if ( isset( $_POST['tags'] ) ) {
@@ -603,15 +591,15 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         // if post_id is passed, we update the post
         if ( isset( $_POST['post_id'] ) ) {
-            $is_update = true;
-            $postarr['ID'] = $_POST['post_id'];
+            $is_update                 = true;
+            $postarr['ID']             = $_POST['post_id'];
             $postarr['comment_status'] = 'open';
         }
 
         $post_id = wp_insert_post( $postarr );
 
         if ( $post_id ) {
-            self::update_post_meta($meta_vars, $post_id);
+            self::update_post_meta( $meta_vars, $post_id );
 
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
@@ -624,7 +612,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
 
             // save any custom taxonomies
-            foreach ($taxonomy_vars as $taxonomy) {
+            foreach ( $taxonomy_vars as $taxonomy ) {
                 if ( isset( $_POST[$taxonomy['name']] ) ) {
 
                     if ( is_object_in_taxonomy( $form_settings['post_type'], $taxonomy['name'] ) ) {
@@ -632,7 +620,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
                         // if it's not an array, make it one
                         if ( !is_array( $tax ) ) {
-                            $tax = array($tax);
+                            $tax = array( $tax );
                         }
 
                         wp_set_post_terms( $post_id, $_POST[$taxonomy['name']], $taxonomy['name'] );
@@ -652,8 +640,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             'action'         => $_POST['action'],
             'date'           => current_time( 'mysql' ),
             'post_author'    => get_current_user_id(),
-            'comment_status' => get_option('default_comment_status'),
-            'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id)  )
+            'comment_status' => get_option( 'default_comment_status' ),
+            'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) )
         ) );
 
         exit;
@@ -685,33 +673,33 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         }
 
         // save all custom fields
-        foreach ($meta_key_value as $meta_key => $meta_value) {
+        foreach ( $meta_key_value as $meta_key => $meta_value ) {
             update_post_meta( $post_id, $meta_key, $meta_value );
         }
 
         // save any multicolumn repeatable fields
-        foreach ($multi_repeated as $repeat_key => $repeat_value) {
+        foreach ( $multi_repeated as $repeat_key => $repeat_value ) {
             // first, delete any previous repeatable fields
             delete_post_meta( $post_id, $repeat_key );
 
             // now add them
-            foreach ($repeat_value as $repeat_field) {
+            foreach ( $repeat_value as $repeat_field ) {
                 add_post_meta( $post_id, $repeat_key, $repeat_field );
             }
         }
 
         // save any files attached
-        foreach ($files as $file_input) {
+        foreach ( $files as $file_input ) {
             // delete any previous value
             delete_post_meta( $post_id, $file_input['name'] );
 
             //to track how many files are being uploaded
             $file_numbers = 0;
 
-            foreach ($file_input['value'] as $attachment_id) {
+            foreach ( $file_input['value'] as $attachment_id ) {
 
                 //if file numbers are greated than allowed number, prevent it from being uploaded
-                if( $file_numbers >= $file_input['count'] ){
+                if ( $file_numbers >= $file_input['count'] ) {
                     wp_delete_attachment( $attachment_id );
                     continue;
                 }
@@ -750,8 +738,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $post->post_title,
             $post->post_content,
             $post->post_excerpt,
-            get_the_term_list( $post_id, 'post_tag', '', ', '),
-            get_the_term_list( $post_id, 'category', '', ', '),
+            get_the_term_list( $post_id, 'post_tag', '', ', ' ),
+            get_the_term_list( $post_id, 'category', '', ', ' ),
             $user->display_name,
             $user->user_email,
             ($user->description) ? $user->description : 'not available',
@@ -764,15 +752,15 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $content = str_replace( $post_field_search, $post_field_replace, $content );
 
         // custom fields
-        preg_match_all( '/%custom_([\w-]*)\b%/', $content, $matches);
+        preg_match_all( '/%custom_([\w-]*)\b%/', $content, $matches );
         list( $search, $replace ) = $matches;
 
         if ( $replace ) {
-            foreach ($replace as $index => $meta_key ) {
-                $value = get_post_meta( $post_id, $meta_key );
+            foreach ( $replace as $index => $meta_key ) {
+                $value     = get_post_meta( $post_id, $meta_key );
                 $new_value = implode( '; ', $value );
 
-                if( get_post_mime_type( (int)$new_value ) ) {
+                if ( get_post_mime_type( (int) $new_value ) ) {
                     $original_value = wp_get_attachment_url( $new_value );
                 } else {
                     $original_value = $new_value;
@@ -794,4 +782,5 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             'is_taxonomy'  => 1
         );
     }
+
 }

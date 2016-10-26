@@ -69,12 +69,10 @@
 
             if ( this.count >= this.max) {
 
-                var warning = 'Maximum number of files reached! ';
-
                 if ( this.count > this.max ) {
-                    $('#' + this.container + ' .wpuf-file-warning').html( warning );
+                    $('#' + this.container + ' .wpuf-file-warning').html( wpuf_frontend_upload.warning );
                 } else {
-                    $('#' + this.container + ' .wpuf-file-warning').html( warning );
+                    $('#' + this.container + ' .wpuf-file-warning').html( wpuf_frontend_upload.warning );
                 }
 
                 $('#' + this.container).find('.file-selector').hide();
@@ -123,11 +121,11 @@
             var msg = '';
             switch(error.code) {
                 case -600:
-                    msg = 'The file you have uploaded exceeds the file size limit. Please try again.';
+                    msg = wpuf_frontend_upload.size_error;
                     break;
 
                 case -601:
-                    msg = 'You have uploaded an incorrect file type. Please try again.';
+                    msg = wpuf_frontend_upload.type_error;
                     break;
 
                 default:

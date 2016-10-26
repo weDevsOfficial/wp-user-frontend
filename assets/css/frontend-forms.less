@@ -226,6 +226,7 @@ ul.wpuf-form {
                 font-size: 12px;
                 font-style: italic;
                 font-family: sans-serif;
+                display: block;
             }
 
             table, td {
@@ -888,6 +889,11 @@ fieldset.wpuf-multistep-fieldset {
     position: relative;
     padding-bottom: 50px;
     border: none;
+    display: none;
+
+    &.field-active {
+        display: block;
+    }
 
     .wpuf-multistep-prev-btn,
     .wpuf-multistep-next-btn {

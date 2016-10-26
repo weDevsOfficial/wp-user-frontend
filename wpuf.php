@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.3.15
+Version: 2.4
 Author URI: https://tareq.co
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.3.15' );
+define( 'WPUF_VERSION', '2.4' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -97,10 +97,11 @@ class WP_User_Frontend {
      *
      * @since 2.2.7
      */
-    public function action_to_remove_exipred_post(){
+    public function action_to_remove_exipred_post() {
         $args = array(
             'meta_key'       => 'wpuf-post_expiration_date',
-            'meta_value'     => date('Y-m-d'),
+            'meta_value'     => date( 'Y-m-d' ),
+            'meta_compare'   => '<',
             'post_type'      => get_post_types(),
             'post_status'    => 'publish',
             'posts_per_page' => -1
@@ -109,18 +110,22 @@ class WP_User_Frontend {
         $mail_subject = apply_filters( 'wpuf_post_expiry_mail_subject', sprintf( '[%s] %s', get_bloginfo( 'name' ), __( 'Your Post Has Been Expired', 'wpuf' ) ) );
         $posts        = get_posts( $args );
 
-        foreach ($posts as $each_post) {
+        foreach ( $posts as $each_post ) {
             $post_to_update = array(
-                'ID'           => $each_post->ID,
-                'post_status'  => get_post_meta( $each_post->ID, 'wpuf-expired_post_status', true ) ? get_post_meta( $each_post->ID, 'wpuf-expired_post_status', true ) : 'draft'
+                'ID'          => $each_post->ID,
+                'post_status' => get_post_meta( $each_post->ID, 'wpuf-expired_post_status', true ) ? get_post_meta( $each_post->ID, 'wpuf-expired_post_status', true ) : 'draft'
             );
 
             wp_update_post( $post_to_update );
 
-            if ( $message = get_post_meta( $each_post->ID, 'wpuf-post_expiration_message', true ) ) {
+            $message = get_post_meta( $each_post->ID, 'wpuf-post_expiration_message', true );
+
+            if ( !empty( $message ) ) {
                 wp_mail( $each_post->post_author, $mail_subject, $message );
             }
         }
+        //save an option for debugging purpose
+        update_option( 'wpuf_expiry_posts_last_cleaned', date( 'F j, Y g:i a' ) );
     }
 
     public static function init() {
@@ -173,6 +178,7 @@ class WP_User_Frontend {
 
         new WPUF_Upload();
         new WPUF_Payment();
+        new WPUF_Admin_Form_Template();
 
         WPUF_Frontend_Form_Post::init(); // requires for form preview
         WPUF_Subscription::init();
@@ -260,7 +266,9 @@ class WP_User_Frontend {
         $scheme = is_ssl() ? 'https' : 'http';
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
-        wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?key='.$api_key, array(), null );
+        if ( !empty( $api_key ) ) {
+            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?key='.$api_key, array(), null );
+        }
 
         if ( isset ( $post->ID ) ) {
             ?>
@@ -291,6 +299,10 @@ class WP_User_Frontend {
      */
     function add_custom_css() {
         global $post;
+
+        if ( ! is_a( $post, 'WP_Post' ) ) {
+            return;
+        }
 
         if (   wpuf_has_shortcode( 'wpuf_form', $post->ID )
             || wpuf_has_shortcode( 'wpuf_edit', $post->ID )
@@ -327,7 +339,8 @@ class WP_User_Frontend {
         wp_localize_script( 'wpuf-form', 'wpuf_frontend', array(
             'ajaxurl'       => admin_url( 'admin-ajax.php' ),
             'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
-            'nonce'         => wp_create_nonce( 'wpuf_nonce' )
+            'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
+            'word_limit'    => __( 'Word limit reached', 'wpuf' )
         ) );
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(

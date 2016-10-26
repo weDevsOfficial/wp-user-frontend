@@ -841,6 +841,10 @@ fieldset.wpuf-multistep-fieldset {
   position: relative;
   padding-bottom: 50px;
   border: none;
+  display: none;
+}
+fieldset.wpuf-multistep-fieldset.field-active {
+  display: block;
 }
 fieldset.wpuf-multistep-fieldset .wpuf-multistep-prev-btn,
 fieldset.wpuf-multistep-fieldset .wpuf-multistep-next-btn {

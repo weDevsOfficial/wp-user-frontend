@@ -93,7 +93,7 @@
             $('fieldset:last .wpuf-multistep-next-btn').remove();
 
             // at first first fieldset will be shown, and others will be hidden
-            $('.wpuf-form fieldset').hide().first().show();
+            $('.wpuf-form fieldset').removeClass('field-active').first().addClass('field-active');
 
             if ( progressbar_type == 'progressive' && $('.wpuf-form .wpuf-multistep-fieldset').length != 0 ) {
 
@@ -154,7 +154,7 @@
         },
 
         change_fieldset: function(step_number, progressbar_type) {
-            $('fieldset').hide().eq(step_number).show();
+            $('fieldset.wpuf-multistep-fieldset').removeClass('field-active').eq(step_number).addClass('field-active');
 
             $('.wpuf-step-wizard li').each(function(){
                 if ( $(this).index() <= step_number ){
@@ -177,6 +177,9 @@
                 $( ".wpuf-multistep-progressbar" ).progressbar({value: progress_percent });
                 $( '.wpuf-progress-percentage' ).text( legend + ' (' + progress_percent + '%)');
             }
+
+            // trigger a change event
+            $('.wpuf-form').trigger('step-change-fieldset');
         },
 
         ajaxCategory: function () {

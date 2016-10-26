@@ -2,10 +2,10 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.3.15\n"
+"Project-Id-Version: WP User Frontend 2.4\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/\n"
-"POT-Creation-Date: 2016-08-11 05:48:58+00:00\n"
+"POT-Creation-Date: 2016-10-26 10:07:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,6 +16,20 @@ msgstr ""
 
 #: admin/add-ons.php:2
 msgid "WP User Frontend - Add-Ons"
+msgstr ""
+
+#: admin/form-template.php:166
+msgid "Form Template"
+msgstr ""
+
+#: admin/form-template.php:169
+msgid "&mdash; No Template &mdash;"
+msgstr ""
+
+#: admin/form-template.php:178
+msgid ""
+"If selected a form template, it will try to execute that integration "
+"options when new post created and updated."
 msgstr ""
 
 #: admin/form.php:155 admin/form.php:175 admin/form.php:177 admin/form.php:213
@@ -73,7 +87,7 @@ msgstr ""
 msgid "Registraton Forms"
 msgstr ""
 
-#: admin/form.php:215 includes/free/loader.php:57 includes/pro/loader.php:134
+#: admin/form.php:215 includes/free/loader.php:60 includes/pro/loader.php:139
 msgid "Registration Forms"
 msgstr ""
 
@@ -111,457 +125,495 @@ msgstr ""
 msgid "Form draft updated."
 msgstr ""
 
-#: admin/form.php:284 admin/form.php:303
+#: admin/form.php:256
+msgid "Successfully created from the form template."
+msgstr ""
+
+#: admin/form.php:285 admin/form.php:304
 msgid "Form Name"
 msgstr ""
 
-#: admin/form.php:285 admin/form.php:676
+#: admin/form.php:286 admin/form.php:677
 msgid "Post Type"
 msgstr ""
 
-#: admin/form.php:286 admin/form.php:696
+#: admin/form.php:287 admin/form.php:697
 msgid "Post Status"
 msgstr ""
 
-#: admin/form.php:287 admin/form.php:745
+#: admin/form.php:288 admin/form.php:746
 msgid "Guest Post"
 msgstr ""
 
-#: admin/form.php:288 admin/form.php:305 admin/form.php:461 admin/form.php:472
+#: admin/form.php:289 admin/form.php:306 admin/form.php:462 admin/form.php:473
 msgid "Shortcode"
 msgstr ""
 
-#: admin/form.php:304
+#: admin/form.php:305
 msgid "User Role"
 msgstr ""
 
-#: admin/form.php:339 admin/settings-options.php:86
+#: admin/form.php:340 admin/settings-options.php:86
 #: admin/settings-options.php:165 admin/settings-options.php:176
 #: admin/settings-options.php:265 admin/subscription.php:148
 #: admin/template.php:74 includes/free/form.php:476 includes/pro/form.php:573
 msgid "No"
 msgstr ""
 
-#: admin/form.php:339 admin/settings-options.php:85
+#: admin/form.php:340 admin/settings-options.php:85
 #: admin/settings-options.php:164 admin/settings-options.php:175
 #: admin/settings-options.php:264 admin/subscription.php:146
 #: admin/template.php:73 includes/free/form.php:475 includes/pro/form.php:572
 msgid "Yes"
 msgstr ""
 
-#: admin/form.php:386
+#: admin/form.php:387
 msgid "Duplicate form"
 msgstr ""
 
-#: admin/form.php:386
+#: admin/form.php:387
 msgid "Duplicate"
 msgstr ""
 
-#: admin/form.php:449
+#: admin/form.php:450
 msgid "WPUF Form"
 msgstr ""
 
-#: admin/form.php:459 admin/form.php:470 admin/form.php:1046
-#: admin/form.php:1086
+#: admin/form.php:460 admin/form.php:471 admin/form.php:1047
+#: admin/form.php:1087
 msgid "Form Editor"
 msgstr ""
 
-#: admin/form.php:460 admin/form.php:471
+#: admin/form.php:461 admin/form.php:472
 msgid "Form Elements"
 msgstr ""
 
-#: admin/form.php:486 admin/form.php:503
+#: admin/form.php:487 admin/form.php:504
 msgid "Copy and insert this shortcode to a page:"
 msgstr ""
 
-#: admin/form.php:507
+#: admin/form.php:508
 msgid "Profile Shortcode:"
 msgstr ""
 
-#: admin/form.php:515
+#: admin/form.php:516
 msgid "Registration Shortcode:"
 msgstr ""
 
-#: admin/form.php:538
+#: admin/form.php:539
 msgid "Preview Form"
 msgstr ""
 
-#: admin/form.php:547 admin/form.php:548
+#: admin/form.php:548 admin/form.php:549
 msgid "Schedule"
 msgstr ""
 
-#: admin/form.php:550 admin/form.php:551
+#: admin/form.php:551 admin/form.php:552
 msgid "Publish"
 msgstr ""
 
-#: admin/form.php:555 admin/form.php:556
+#: admin/form.php:556 admin/form.php:557
 msgid "Submit for Review"
 msgstr ""
 
-#: admin/form.php:561 admin/form.php:562 admin/form.php:898
+#: admin/form.php:562 admin/form.php:563 admin/form.php:899
 msgid "Update"
 msgstr ""
 
-#: admin/form.php:634
+#: admin/form.php:635
 msgid "This page is restricted. Please Log in / Register to view this page."
 msgstr ""
 
-#: admin/form.php:643 admin/subscription.php:206 admin/template-post.php:177
+#: admin/form.php:644 admin/subscription.php:206 admin/template-post.php:177
 #: includes/free/edit-profile.php:92
 msgid "Name"
 msgstr ""
 
-#: admin/form.php:644 admin/form.php:1118 admin/transaction.php:107
+#: admin/form.php:645 admin/form.php:1119 admin/transaction.php:107
 #: includes/free/edit-user.php:152
 msgid "Email"
 msgstr ""
 
-#: admin/form.php:648
+#: admin/form.php:649
 msgid "Post saved"
 msgstr ""
 
-#: admin/form.php:649 admin/form.php:895
+#: admin/form.php:650 admin/form.php:896
 msgid "Post updated successfully"
 msgstr ""
 
-#: admin/form.php:654
+#: admin/form.php:655
 msgid "Submit"
 msgstr ""
 
-#: admin/form.php:655 class/render-form.php:577
+#: admin/form.php:656 class/render-form.php:579
 msgid "Save Draft"
 msgstr ""
 
-#: admin/form.php:656
+#: admin/form.php:657
 msgid "Preview"
 msgstr ""
 
-#: admin/form.php:664 admin/form.php:668
+#: admin/form.php:665 admin/form.php:669
 msgid "Disable Subscription"
 msgstr ""
 
-#: admin/form.php:671
+#: admin/form.php:672
 msgid ""
 "If checked, any subscription and pay-per-post will be disabled on the form "
 "and will take no effect."
 msgstr ""
 
-#: admin/form.php:710
+#: admin/form.php:711
 msgid "Post Format"
 msgstr ""
 
-#: admin/form.php:713 admin/form.php:737
+#: admin/form.php:714 admin/form.php:738
 msgid "- None -"
 msgstr ""
 
-#: admin/form.php:729
+#: admin/form.php:730
 msgid "Default Post Category"
 msgstr ""
 
-#: admin/form.php:740
+#: admin/form.php:741
 msgid ""
 "If users are not allowed to choose any category, this category will be used "
 "instead (if post type supports)"
 msgstr ""
 
-#: admin/form.php:750
+#: admin/form.php:751
 msgid "Enable Guest Post"
 msgstr ""
 
-#: admin/form.php:752
+#: admin/form.php:753
 msgid "Unregistered users will be able to submit posts"
 msgstr ""
 
-#: admin/form.php:757
+#: admin/form.php:758
 msgid "User Details"
 msgstr ""
 
-#: admin/form.php:762
+#: admin/form.php:763
 msgid "Require Name and Email address"
 msgstr ""
 
-#: admin/form.php:764
+#: admin/form.php:765
 msgid ""
 "If requires, users will be automatically registered to the site using the "
 "name and email address"
 msgstr ""
 
-#: admin/form.php:769
+#: admin/form.php:770
 msgid "Name Label"
 msgstr ""
 
-#: admin/form.php:774
+#: admin/form.php:775
 msgid "Label text for name field"
 msgstr ""
 
-#: admin/form.php:779
+#: admin/form.php:780
 msgid "E-Mail Label"
 msgstr ""
 
-#: admin/form.php:784
+#: admin/form.php:785
 msgid "Label text for email field"
 msgstr ""
 
-#: admin/form.php:789 admin/settings-options.php:221
+#: admin/form.php:790 admin/settings-options.php:221
 msgid "Unauthorized Message"
 msgstr ""
 
-#: admin/form.php:792 admin/settings-options.php:222
+#: admin/form.php:793 admin/settings-options.php:222
 msgid "Not logged in users will see this message"
 msgstr ""
 
-#: admin/form.php:797 admin/form.php:921 includes/free/form.php:374
+#: admin/form.php:798 admin/form.php:922 includes/free/form.php:374
 #: includes/pro/form.php:405
 msgid "Redirect To"
 msgstr ""
 
-#: admin/form.php:802 admin/form.php:926
+#: admin/form.php:803 admin/form.php:927
 msgid "Newly created post"
 msgstr ""
 
-#: admin/form.php:803 admin/form.php:927 includes/free/form.php:379
+#: admin/form.php:804 admin/form.php:928 includes/free/form.php:379
 #: includes/pro/form.php:410
 msgid "Same Page"
 msgstr ""
 
-#: admin/form.php:804 admin/form.php:928 includes/free/form.php:380
+#: admin/form.php:805 admin/form.php:929 includes/free/form.php:380
 #: includes/pro/form.php:411
 msgid "To a page"
 msgstr ""
 
-#: admin/form.php:805 admin/form.php:929 includes/free/form.php:381
+#: admin/form.php:806 admin/form.php:930 includes/free/form.php:381
 #: includes/pro/form.php:412
 msgid "To a custom URL"
 msgstr ""
 
-#: admin/form.php:814 admin/form.php:938 includes/free/form.php:390
+#: admin/form.php:815 admin/form.php:939 includes/free/form.php:390
 #: includes/pro/form.php:421
 msgid "After successfull submit, where the page will redirect to"
 msgstr ""
 
-#: admin/form.php:820
+#: admin/form.php:821
 msgid "Message to show"
 msgstr ""
 
-#: admin/form.php:828 admin/form.php:951 includes/free/form.php:410
+#: admin/form.php:829 admin/form.php:952 includes/free/form.php:410
 #: includes/pro/form.php:441
 msgid "Page"
 msgstr ""
 
-#: admin/form.php:843 admin/form.php:966 includes/free/form.php:425
+#: admin/form.php:844 admin/form.php:967 includes/free/form.php:425
 #: includes/pro/form.php:456
 msgid "Custom URL"
 msgstr ""
 
-#: admin/form.php:850
+#: admin/form.php:851
 msgid "Comment Status"
 msgstr ""
 
-#: admin/form.php:853
+#: admin/form.php:854
 msgid "Open"
 msgstr ""
 
-#: admin/form.php:854
+#: admin/form.php:855
 msgid "Closed"
 msgstr ""
 
-#: admin/form.php:860
+#: admin/form.php:861
 msgid "Submit Post Button text"
 msgstr ""
 
-#: admin/form.php:867
+#: admin/form.php:868
 msgid "Post Draft"
 msgstr ""
 
-#: admin/form.php:872
+#: admin/form.php:873
 msgid "Enable Saving as draft"
 msgstr ""
 
-#: admin/form.php:874
+#: admin/form.php:875
 msgid "It will show a button to save as draft"
 msgstr ""
 
-#: admin/form.php:904
+#: admin/form.php:905
 msgid "Set Post Status to"
 msgstr ""
 
-#: admin/form.php:914
+#: admin/form.php:915
 msgid "No Change"
 msgstr ""
 
-#: admin/form.php:944
+#: admin/form.php:945
 msgid "Post Update Message"
 msgstr ""
 
-#: admin/form.php:973
+#: admin/form.php:974
 msgid "Subscription Title"
 msgstr ""
 
-#: admin/form.php:982
+#: admin/form.php:983
 msgid "Update Post Button text"
 msgstr ""
 
-#: admin/form.php:995 admin/form.php:999
+#: admin/form.php:996 admin/form.php:1000
 msgid "- Select -"
 msgstr ""
 
-#: admin/form.php:1047
+#: admin/form.php:1048
 msgid "Post Settings"
 msgstr ""
 
-#: admin/form.php:1048
+#: admin/form.php:1049
 msgid "Edit Settings"
 msgstr ""
 
-#: admin/form.php:1049 includes/free/form.php:211 includes/free/form.php:248
+#: admin/form.php:1050 includes/free/form.php:211 includes/free/form.php:248
 #: includes/pro/form.php:251 includes/pro/form.php:285
 msgid "Notification"
 msgstr ""
 
-#: admin/form.php:1050 includes/free/form.php:55 includes/pro/form.php:53
+#: admin/form.php:1051 includes/free/form.php:55 includes/pro/form.php:53
 msgid "Post Expiration"
 msgstr ""
 
-#: admin/form.php:1087 admin/settings.php:69
+#: admin/form.php:1088 admin/settings.php:69
 msgid "Settings"
 msgstr ""
 
-#: admin/form.php:1107 admin/form.php:1148 admin/form.php:1149
-#: admin/form.php:1150 admin/form.php:1151 admin/form.php:1152
-#: admin/form.php:1153 includes/free/form.php:6 includes/free/form.php:26
+#: admin/form.php:1108 admin/form.php:1149 admin/form.php:1150
+#: admin/form.php:1151 admin/form.php:1152 admin/form.php:1153
+#: admin/form.php:1154 includes/free/form.php:6 includes/free/form.php:26
 #: includes/pro/form.php:9 includes/pro/form.php:27 includes/pro/form.php:520
 #: includes/pro/form.php:523
 msgid "Click to add to the editor"
 msgstr ""
 
-#: admin/form.php:1109
+#: admin/form.php:1110
 msgid "Custom Fields"
 msgstr ""
 
-#: admin/form.php:1111
+#: admin/form.php:1112
 msgid "Text"
 msgstr ""
 
-#: admin/form.php:1112 admin/template.php:185
+#: admin/form.php:1113 admin/template.php:185
 msgid "Textarea"
 msgstr ""
 
-#: admin/form.php:1113 admin/template-post.php:166
+#: admin/form.php:1114 admin/template-post.php:166
 msgid "Dropdown"
 msgstr ""
 
-#: admin/form.php:1114 admin/template-post.php:167
+#: admin/form.php:1115 admin/template-post.php:167
 msgid "Multi Select"
 msgstr ""
 
-#: admin/form.php:1115
+#: admin/form.php:1116
 msgid "Radio"
 msgstr ""
 
-#: admin/form.php:1116 admin/template-post.php:168
+#: admin/form.php:1117 admin/template-post.php:168
 msgid "Checkbox"
 msgstr ""
 
-#: admin/form.php:1117
+#: admin/form.php:1118
 msgid "URL"
 msgstr ""
 
-#: admin/form.php:1119
+#: admin/form.php:1120
 msgid "Hidden Field"
 msgstr ""
 
-#: admin/form.php:1126
+#: admin/form.php:1127
 msgid "Others"
 msgstr ""
 
-#: admin/form.php:1128
+#: admin/form.php:1129
 msgid "Section Break"
 msgstr ""
 
-#: admin/form.php:1129
+#: admin/form.php:1130
 msgid "HTML"
 msgstr ""
 
-#: admin/form.php:1146
+#: admin/form.php:1147
 msgid "Post Fields"
 msgstr ""
 
-#: admin/form.php:1148
+#: admin/form.php:1149
 msgid "Post Title"
 msgstr ""
 
-#: admin/form.php:1149
+#: admin/form.php:1150
 msgid "Post Body"
 msgstr ""
 
-#: admin/form.php:1150
+#: admin/form.php:1151
 msgid "Excerpt"
 msgstr ""
 
-#: admin/form.php:1151
+#: admin/form.php:1152
 msgid "Tags"
 msgstr ""
 
-#: admin/form.php:1152
+#: admin/form.php:1153
 msgid "Category"
 msgstr ""
 
-#: admin/form.php:1153 templates/dashboard.php:23
+#: admin/form.php:1154 templates/dashboard.php:23
 msgid "Featured Image"
 msgstr ""
 
-#: admin/form.php:1159
+#: admin/form.php:1160
 msgid "Custom Taxonomies"
 msgstr ""
 
-#: admin/form.php:1183
+#: admin/form.php:1184
 msgid "Profile Fields"
 msgstr ""
 
-#: admin/form.php:1185 admin/form.php:1599 includes/free/edit-profile.php:96
+#: admin/form.php:1186 admin/form.php:1600 includes/free/edit-profile.php:96
 #: includes/free/edit-user.php:92 includes/free/edit-user.php:144
 #: templates/login-form.php:21
 msgid "Username"
 msgstr ""
 
-#: admin/form.php:1186 admin/form.php:1603 includes/free/edit-profile.php:100
+#: admin/form.php:1187 admin/form.php:1604 includes/free/edit-profile.php:100
 msgid "First Name"
 msgstr ""
 
-#: admin/form.php:1187 admin/form.php:1607 includes/free/edit-profile.php:105
+#: admin/form.php:1188 admin/form.php:1608 includes/free/edit-profile.php:105
 msgid "Last Name"
 msgstr ""
 
-#: admin/form.php:1188 admin/form.php:1611 includes/free/edit-profile.php:110
+#: admin/form.php:1189 admin/form.php:1612 includes/free/edit-profile.php:110
 msgid "Nickname"
 msgstr ""
 
-#: admin/form.php:1189 admin/form.php:1615 includes/free/edit-profile.php:151
+#: admin/form.php:1190 admin/form.php:1616 includes/free/edit-profile.php:151
 msgid "E-mail"
 msgstr ""
 
-#: admin/form.php:1190 admin/form.php:1619 includes/free/edit-profile.php:156
+#: admin/form.php:1191 admin/form.php:1620 includes/free/edit-profile.php:156
 msgid "Website"
 msgstr ""
 
-#: admin/form.php:1191 admin/form.php:1623 includes/free/edit-profile.php:178
+#: admin/form.php:1192 admin/form.php:1624 includes/free/edit-profile.php:178
 msgid "Biographical Info"
 msgstr ""
 
-#: admin/form.php:1192 admin/form.php:1627 templates/login-form.php:25
+#: admin/form.php:1193 admin/form.php:1628 templates/login-form.php:25
 msgid "Password"
 msgstr ""
 
-#: admin/form.php:1193 admin/form.php:1631
+#: admin/form.php:1194 admin/form.php:1632
 msgid "Avatar"
 msgstr ""
 
-#: admin/form.php:1353 includes/free/form.php:301 includes/pro/form.php:332
+#: admin/form.php:1354 includes/free/form.php:301 includes/pro/form.php:332
 msgid "Toggle All"
 msgstr ""
 
-#: admin/form.php:1357 includes/free/form.php:305 includes/pro/form.php:336
+#: admin/form.php:1358 includes/free/form.php:305 includes/pro/form.php:336
 msgid "Click on a form element to add to the editor"
+msgstr ""
+
+#: admin/html/modal.php:4
+msgid "Modal window. Press escape to close."
+msgstr ""
+
+#: admin/html/modal.php:5
+msgid "Close modal window"
+msgstr ""
+
+#: admin/html/modal.php:9
+msgid "Select a Template"
+msgstr ""
+
+#: admin/html/modal.php:12
+msgid "Select from a pre-defined template or from a <a href=\"%s\">blank form</a>"
+msgstr ""
+
+#: admin/html/modal.php:25
+msgid "Blank Form"
+msgstr ""
+
+#: admin/html/modal.php:42
+msgid "This integration is not installed."
+msgstr ""
+
+#: admin/html/modal.php:59
+msgid ""
+"List of available templates can be found <a href=\"%s\" "
+"target=\"_blank\">here</a>."
+msgstr ""
+
+#: admin/html/modal.php:60
+msgid "Want a new integration? <a href=\"%s\" target=\"_blank\">Let us know</a>."
 msgstr ""
 
 #: admin/installer.php:27
@@ -642,19 +694,31 @@ msgstr ""
 msgid "Sample Form"
 msgstr ""
 
-#: admin/posting.php:39 class/render-form.php:1462 wpuf.php:334
+#: admin/posting.php:52 class/render-form.php:1410 wpuf.php:347
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:45 includes/pro/form.php:858 wpuf.php:340
+#: admin/posting.php:58 includes/pro/form.php:858 wpuf.php:353
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:56
+#: admin/posting.php:61
+msgid "Maximum number of files reached!"
+msgstr ""
+
+#: admin/posting.php:62
+msgid "The file you have uploaded exceeds the file size limit. Please try again."
+msgstr ""
+
+#: admin/posting.php:63
+msgid "You have uploaded an incorrect file type. Please try again."
+msgstr ""
+
+#: admin/posting.php:72
 msgid "WPUF Custom Fields"
 msgstr ""
 
-#: admin/posting.php:84
+#: admin/posting.php:100
 msgid "No custom fields found."
 msgstr ""
 
@@ -973,7 +1037,7 @@ msgid "Currency Symbol"
 msgstr ""
 
 #: admin/settings-options.php:332 admin/subscription.php:208
-#: admin/transaction.php:103 admin/transaction.php:181
+#: admin/transaction.php:103 admin/transaction.php:185
 msgid "Cost"
 msgstr ""
 
@@ -1072,8 +1136,8 @@ msgid "Subscription pack draft updated."
 msgstr ""
 
 #: admin/subscription.php:134 admin/subscription.php:460
-#: class/subscription.php:671 class/subscription.php:830
-#: class/subscription.php:841 class/subscription.php:854
+#: class/subscription.php:671 class/subscription.php:831
+#: class/subscription.php:842 class/subscription.php:855
 msgid "Free"
 msgstr ""
 
@@ -1112,7 +1176,7 @@ msgstr ""
 msgid "Post Count"
 msgstr ""
 
-#: admin/subscription.php:211 admin/transaction.php:184
+#: admin/subscription.php:211 admin/transaction.php:188
 #: includes/free/edit-user.php:93
 msgid "Action"
 msgstr ""
@@ -1121,7 +1185,7 @@ msgstr ""
 msgid "Are you sure to delete this pack?"
 msgstr ""
 
-#: admin/subscription.php:232 class/render-form.php:1462 class/upload.php:171
+#: admin/subscription.php:232 class/render-form.php:1410 class/upload.php:171
 #: includes/free/edit-user.php:100 templates/dashboard.php:112
 msgid "Delete"
 msgstr ""
@@ -1201,7 +1265,7 @@ msgstr ""
 msgid "Remaining post: "
 msgstr ""
 
-#: admin/subscription.php:514 class/subscription.php:724
+#: admin/subscription.php:514 class/subscription.php:725
 msgid "Expire date:"
 msgstr ""
 
@@ -1258,7 +1322,7 @@ msgid "Max. file size"
 msgstr ""
 
 #: admin/template-post.php:164 admin/transaction.php:108
-#: admin/transaction.php:180 includes/pro/admin/coupon-element.php:29
+#: admin/transaction.php:184 includes/pro/admin/coupon-element.php:29
 msgid "Type"
 msgstr ""
 
@@ -1696,43 +1760,43 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
-#: admin/transaction.php:151 admin/transaction.php:213
+#: admin/transaction.php:155 admin/transaction.php:217
 msgid "Nothing Found"
 msgstr ""
 
-#: admin/transaction.php:158
+#: admin/transaction.php:162
 msgid "Delete Selected"
 msgstr ""
 
-#: admin/transaction.php:162
+#: admin/transaction.php:166
 msgid "Pending Orders"
 msgstr ""
 
-#: admin/transaction.php:178
+#: admin/transaction.php:182
 msgid "ID"
 msgstr ""
 
-#: admin/transaction.php:179
+#: admin/transaction.php:183
 msgid "User"
 msgstr ""
 
-#: admin/transaction.php:182
+#: admin/transaction.php:186
 msgid "Item Details"
 msgstr ""
 
-#: admin/transaction.php:183 includes/free/form.php:12 includes/pro/form.php:12
+#: admin/transaction.php:187 includes/free/form.php:12 includes/pro/form.php:12
 msgid "Date"
 msgstr ""
 
-#: admin/transaction.php:202
+#: admin/transaction.php:206
 msgid "Accept"
 msgstr ""
 
-#: admin/transaction.php:203
+#: admin/transaction.php:207
 msgid "Reject"
 msgstr ""
 
-#: admin/transaction.php:220
+#: admin/transaction.php:224
 msgid "No pending orders found"
 msgstr ""
 
@@ -1795,7 +1859,7 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: class/frontend-form-post.php:553 includes/pro/frontend-form-profile.php:310
+#: class/frontend-form-post.php:542 includes/pro/frontend-form-profile.php:310
 msgid "Something went wrong"
 msgstr ""
 
@@ -1839,7 +1903,7 @@ msgstr ""
 msgid "Apply Coupon"
 msgstr ""
 
-#: class/payment.php:170 class/subscription.php:785
+#: class/payment.php:170 class/subscription.php:786
 msgid "Cancel"
 msgstr ""
 
@@ -1867,6 +1931,14 @@ msgstr ""
 msgid "New payment received at %s"
 msgstr ""
 
+#: class/post-form-templates/post.php:12
+msgid "Post Form"
+msgstr ""
+
+#: class/post-form-templates/post.php:13
+msgid "Form for creating a blog post."
+msgstr ""
+
 #: class/render-form.php:76
 msgid "Really Simple Captcha validation failed"
 msgstr ""
@@ -1875,44 +1947,40 @@ msgstr ""
 msgid "reCAPTCHA validation failed"
 msgstr ""
 
-#: class/render-form.php:814
-msgid "Word Limit Reached !"
-msgstr ""
-
-#: class/render-form.php:912
+#: class/render-form.php:862
 msgid "Insert Photo"
 msgstr ""
 
-#: class/render-form.php:1186 class/render-form.php:1191
+#: class/render-form.php:1134 class/render-form.php:1139
 #: includes/free/edit-profile.php:198
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1192
+#: class/render-form.php:1140
 msgid "Very weak"
 msgstr ""
 
-#: class/render-form.php:1193
+#: class/render-form.php:1141
 msgid "Weak"
 msgstr ""
 
-#: class/render-form.php:1194
+#: class/render-form.php:1142
 msgid "Medium"
 msgstr ""
 
-#: class/render-form.php:1195
+#: class/render-form.php:1143
 msgid "Strong"
 msgstr ""
 
-#: class/render-form.php:1196
+#: class/render-form.php:1144
 msgid "Mismatch"
 msgstr ""
 
-#: class/render-form.php:1218 class/render-form.php:1326
+#: class/render-form.php:1166 class/render-form.php:1274
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1450
+#: class/render-form.php:1398
 msgid "Select Image"
 msgstr ""
 
@@ -1964,47 +2032,51 @@ msgstr ""
 msgid "Package & billing details: "
 msgstr ""
 
-#: class/subscription.php:762
+#: class/subscription.php:710
+msgid "Unlimited"
+msgstr ""
+
+#: class/subscription.php:763
 msgid "Please enable force pack and charge posting from admin panel"
 msgstr ""
 
-#: class/subscription.php:772
+#: class/subscription.php:773
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:772
+#: class/subscription.php:773
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:779
+#: class/subscription.php:780
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:781
+#: class/subscription.php:782
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
-#: class/subscription.php:821
+#: class/subscription.php:822
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:825
+#: class/subscription.php:826
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:838
+#: class/subscription.php:839
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:843
+#: class/subscription.php:844
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:899
+#: class/subscription.php:900
 msgid "This will cost you <strong>%s</strong> to add a new post. "
 msgstr ""
 
-#: class/subscription.php:918
+#: class/subscription.php:919
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
@@ -2302,43 +2374,52 @@ msgstr ""
 msgid "Conditional Logic"
 msgstr ""
 
-#: includes/free/loader.php:63 includes/free/loader.php:92
-#: includes/pro/loader.php:140
+#: includes/free/loader.php:66 includes/free/loader.php:95
+#: includes/pro/loader.php:145
 msgid "Coupons"
 msgstr ""
 
-#: includes/free/loader.php:68
+#: includes/free/loader.php:71
 msgid "Registration Form"
 msgstr ""
 
-#: includes/free/loader.php:72
+#: includes/free/loader.php:75
 msgid ""
 "Registration form builder is a two way form which can be used both for "
 "<strong>user registration</strong> and <strong>profile editing</strong>."
 msgstr ""
 
-#: includes/free/loader.php:76
+#: includes/free/loader.php:79
 msgid "Users can also register themselves by using a subscription pack."
 msgstr ""
 
-#: includes/free/loader.php:80 includes/free/loader.php:100
+#: includes/free/loader.php:83 includes/free/loader.php:103
 msgid "This feature is only available in the Pro Version."
 msgstr ""
 
-#: includes/free/loader.php:84 includes/free/loader.php:104
+#: includes/free/loader.php:87 includes/free/loader.php:107
 msgid "Upgrade to Pro Version"
 msgstr ""
 
-#: includes/free/loader.php:96
+#: includes/free/loader.php:99
 msgid "Use Coupon codes for subscription for discounts."
 msgstr ""
 
-#: includes/free/loader.php:131
+#: includes/free/loader.php:134
 msgid "Pro Feature"
 msgstr ""
 
-#: includes/free/loader.php:149
+#: includes/free/loader.php:152
 msgid "Upgrade to Pro"
+msgstr ""
+
+#: includes/free/post-form-templates/woocommerce.php:12
+#: includes/pro/post-form-templates/woocommerce.php:10
+msgid "WooCommerce Product"
+msgstr ""
+
+#: includes/free/post-form-templates/woocommerce.php:13
+msgid "Create a simple product form for WooCommerce."
 msgstr ""
 
 #: includes/free/subscription.php:12 includes/pro/subscription.php:12
@@ -2514,6 +2595,68 @@ msgstr ""
 
 #: includes/pro/admin/template-profile.php:186
 msgid "Show password strength meter"
+msgstr ""
+
+#: includes/pro/content-restriction.php:32
+msgid "WPUF Content Restriction"
+msgstr ""
+
+#: includes/pro/content-restriction.php:53
+msgid "Display to"
+msgstr ""
+
+#: includes/pro/content-restriction.php:55
+msgid "Everyone"
+msgstr ""
+
+#: includes/pro/content-restriction.php:56
+msgid "Logged in users only"
+msgstr ""
+
+#: includes/pro/content-restriction.php:57
+msgid "Subscription users only"
+msgstr ""
+
+#: includes/pro/content-restriction.php:62
+msgid "Subscription Plans"
+msgstr ""
+
+#: includes/pro/content-restriction.php:74
+msgid ""
+"Members subscribed to these subscription plans will be able to view this "
+"page."
+msgstr ""
+
+#: includes/pro/content-restriction.php:76
+msgid "No subscription plan found."
+msgstr ""
+
+#: includes/pro/content-restriction.php:146
+msgid "You must be %s to view the content."
+msgstr ""
+
+#: includes/pro/content-restriction.php:146
+msgid "logged in"
+msgstr ""
+
+#: includes/pro/content-restriction.php:147
+msgid "This content is restricted for your subscription package."
+msgstr ""
+
+#: includes/pro/content-restriction.php:148
+msgid "You don't have a valid subscription package"
+msgstr ""
+
+#: includes/pro/content-restriction.php:149
+msgid "Your subscription pack is invalid or expired."
+msgstr ""
+
+#: includes/pro/content-restriction.php:150
+msgid "Your subscription pack is not allowed to view this content"
+msgstr ""
+
+#: includes/pro/content-restriction.php:151
+msgid "This content is restricted for your user role"
 msgstr ""
 
 #: includes/pro/coupons.php:91
@@ -2960,6 +3103,10 @@ msgstr ""
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
+#: includes/pro/post-form-templates/woocommerce.php:11
+msgid "Create a simple or downloadable product form for WooCommerce."
+msgstr ""
+
 #: includes/pro/render-form.php:56 includes/pro/render-form.php:72
 msgid "Add another"
 msgstr ""
@@ -2984,7 +3131,7 @@ msgstr ""
 msgid "Find Address"
 msgstr ""
 
-#: includes/pro/render-form.php:700
+#: includes/pro/render-form.php:705
 msgid "Error: Really Simple Captcha plugin not found!"
 msgstr ""
 
@@ -3104,6 +3251,10 @@ msgstr ""
 
 #: includes/pro/updates.php:434
 msgid "Delete License"
+msgstr ""
+
+#: lib/class.settings-api.php:364
+msgid "Choose File"
 msgstr ""
 
 #: lib/gateway/bank.php:29
@@ -3290,24 +3441,28 @@ msgstr ""
 msgid "CSV"
 msgstr ""
 
-#: wpuf.php:109
+#: wpuf.php:110
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:269
+#: wpuf.php:277
 msgid "is required"
 msgstr ""
 
-#: wpuf.php:270
+#: wpuf.php:278
 msgid "does not match"
 msgstr ""
 
-#: wpuf.php:271
+#: wpuf.php:279
 msgid "is not valid"
 msgstr ""
 
-#: wpuf.php:329
+#: wpuf.php:341
 msgid "Please fix the errors to proceed"
+msgstr ""
+
+#: wpuf.php:343
+msgid "Word limit reached"
 msgstr ""
 
 #. Plugin URI of the plugin/theme

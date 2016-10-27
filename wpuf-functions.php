@@ -1019,6 +1019,9 @@ function wpufe_ajax_tag_search() {
 }
 
 add_action( 'wp_ajax_nopriv_wpuf-ajax-tag-search', 'wpufe_ajax_tag_search' );
+// Proposed Code
+// Above end point doesnt works for authenticated users.
+add_action( 'wp_ajax_wpuf-ajax-tag-search', 'wpufe_ajax_tag_search' );
 
 /**
  * Option dropdown helper

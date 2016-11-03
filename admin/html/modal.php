@@ -1,8 +1,8 @@
 <div id="wpuf-form-template-modal">
     <div class="wpuf-form-template-modal">
 
-        <span id="modal-label" class="screen-reader-text"><?php _e( 'Modal window. Press escape to close.', 'erp' ); ?></span>
-        <a href="#" class="close">× <span class="screen-reader-text"><?php _e( 'Close modal window', 'erp' ); ?></span></a>
+        <span id="modal-label" class="screen-reader-text"><?php _e( 'Modal window. Press escape to close.',  'wpuf'  ); ?></span>
+        <a href="#" class="close">× <span class="screen-reader-text"><?php _e( 'Close modal window',  'wpuf'  ); ?></span></a>
 
         <header class="modal-header">
             <h2>
@@ -57,7 +57,7 @@
 
         <footer>
             <?php printf( __( 'List of available templates can be found <a href="%s" target="_blank">here</a>.', 'wpuf' ), 'http://docs.wedevs.com/?p=3718' ); ?>
-            <?php printf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.'), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' ); ?>
+            <?php printf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wpuf'), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' ); ?>
         </footer>
     </div>
     <div class="wpuf-form-template-modal-backdrop"></div>

@@ -11,19 +11,19 @@ WPUF will always look in your theme's directory first, before using this default
 
 	<form name="resetpasswordform" id="resetpasswordform" action="" method="post">
 		<p>
-			<label for="wpuf-pass1"><?php _e( 'New password' ); ?></label>
+			<label for="wpuf-pass1"><?php _e( 'New password', 'wpuf' ); ?></label>
 			<input autocomplete="off" name="pass1" id="wpuf-pass1" class="input" size="20" value="" type="password" autocomplete="off" />
 		</p>
 
 		<p>
-			<label for="wpuf-pass2"><?php _e( 'Confirm new password' ); ?></label>
+			<label for="wpuf-pass2"><?php _e( 'Confirm new password', 'wpuf' ); ?></label>
 			<input autocomplete="off" name="pass2" id="wpuf-pass2" class="input" size="20" value="" type="password" autocomplete="off" />
 		</p>
 
 		<?php do_action( 'resetpassword_form' ); ?>
 
 		<p class="submit">
-			<input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Reset Password' ); ?>" />
+			<input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Reset Password', 'wpuf' ); ?>" />
 			<input type="hidden" name="key" value="<?php echo WPUF_Login::get_posted_value( 'key' ); ?>" />
 			<input type="hidden" name="login" id="user_login" value="<?php echo WPUF_Login::get_posted_value( 'login' ); ?>" />
 			<input type="hidden" name="wpuf_reset_password" value="true" />

@@ -55,7 +55,7 @@ class WPUF_Paypal {
             'METHOD'    => 'ManageRecurringPaymentsProfileStatus',
             'PROFILEID' => $profile_id,
             'ACTION'    => ucfirst( $new_status ),
-            'NOTE'      => sprintf( __( 'Subscription %s at %s', 'dps' ), $new_status_string, get_bloginfo( 'name' ) ),
+            'NOTE'      => sprintf( __( 'Subscription %s at %s', 'wpuf' ), $new_status_string, get_bloginfo( 'name' ) ),
         );
 
         // Send back post vars to paypal

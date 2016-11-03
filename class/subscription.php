@@ -55,7 +55,7 @@ class WPUF_Subscription {
         if ( isset( $_POST['wpuf_cancel_subscription'] ) ) {
 
             if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-sub-cancel' ) ) {
-                wp_die( __( 'Nonce failure', 'dps' ) );
+                wp_die( __( 'Nonce failure', 'wpuf' ) );
             }
 
             $user_id = get_current_user_id();
@@ -683,7 +683,7 @@ class WPUF_Subscription {
             <div class="wpuf-text">
                 <div><strong><?php _e( 'Subcription Name: ','wpuf' ); ?></strong><?php echo $pack->post_title; ?></div>
                 <div>
-                    <strong><?php _e( 'Package & billing details: '); ?></strong>
+                    <strong><?php _e( 'Package & billing details: ', 'wpuf'); ?></strong>
 
                     <div class="wpuf-pricing-wrap">
                         <div class="wpuf-sub-amount">
@@ -722,7 +722,7 @@ class WPUF_Subscription {
 
                         ?>
                         <div class="wpuf-expire">
-                            <strong><?php echo _e('Expire date:'); ?></strong> <?php echo wpuf_get_date( $expire ); ?>
+                            <strong><?php echo _e( 'Expire date:', 'wpuf' ); ?></strong> <?php echo wpuf_get_date( $expire ); ?>
                         </div>
                         <?php
                     }
@@ -777,7 +777,7 @@ class WPUF_Subscription {
         if( isset( $current_pack['pack_id'] ) ) {
             ?>
 
-            <?php  _e( '<p><i>You have a subscription pack activated. </i></p>', 'dps' ); ?>
+            <?php  _e( '<p><i>You have a subscription pack activated. </i></p>', 'wpuf' ); ?>
             <?php  _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' ); ?>
             <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wpuf' ); ?>
 

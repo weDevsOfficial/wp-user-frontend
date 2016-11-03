@@ -55,7 +55,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
             'plupload'   => array(
                 'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
                 'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
-                'filters'          => array(array('title' => __( 'Allowed Files' ), 'extensions' => '*')),
+                'filters'          => array(array('title' => __( 'Allowed Files', 'wpuf' ), 'extensions' => '*')),
                 'multipart'        => true,
                 'urlstream_upload' => true,
                 'warning'          => __( 'Maximum number of files reached!', 'wpuf' ),

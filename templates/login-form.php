@@ -30,11 +30,11 @@
 
         <p class="forgetmenot">
             <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
-            <label for="wpuf-rememberme"><?php esc_attr_e( 'Remember Me' ); ?></label>
+            <label for="wpuf-rememberme"><?php esc_attr_e( 'Remember Me', 'wpuf' ); ?></label>
         </p>
 
         <p class="submit">
-            <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Log In' ); ?>" />
+            <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Log In', 'wpuf' ); ?>" />
             <input type="hidden" name="redirect_to" value="<?php echo WPUF_Login::get_posted_value( 'redirect_to' ); ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />

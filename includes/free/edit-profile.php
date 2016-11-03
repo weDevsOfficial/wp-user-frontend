@@ -89,30 +89,30 @@ class WPUF_Edit_Profile {
                 <?php do_action( 'profile_personal_options', $profileuser ); ?>
 
                 <fieldset>
-                    <legend><?php _e( 'Name' ) ?></legend>
+                    <legend><?php _e( 'Name', 'wpuf' ) ?></legend>
 
                     <table class="wpuf-table">
                         <tr>
-                            <th><label for="user_login1"><?php _e( 'Username' ); ?></label></th>
-                            <td><input type="text" name="user_login" id="user_login1" value="<?php echo esc_attr( $profileuser->user_login ); ?>" disabled="disabled" class="regular-text" /><br /><em><span class="description"><?php _e( 'Usernames cannot be changed.' ); ?></span></em></td>
+                            <th><label for="user_login1"><?php _e( 'Username', 'wpuf' ); ?></label></th>
+                            <td><input type="text" name="user_login" id="user_login1" value="<?php echo esc_attr( $profileuser->user_login ); ?>" disabled="disabled" class="regular-text" /><br /><em><span class="description"><?php _e( 'Usernames cannot be changed.', 'wpuf' ); ?></span></em></td>
                         </tr>
                         <tr>
-                            <th><label for="first_name"><?php _e( 'First Name' ) ?></label></th>
+                            <th><label for="first_name"><?php _e( 'First Name', 'wpuf' ) ?></label></th>
                             <td><input type="text" name="first_name" id="first_name" value="<?php echo esc_attr( $profileuser->first_name ) ?>" class="regular-text" /></td>
                         </tr>
 
                         <tr>
-                            <th><label for="last_name"><?php _e( 'Last Name' ) ?></label></th>
+                            <th><label for="last_name"><?php _e( 'Last Name', 'wpuf' ) ?></label></th>
                             <td><input type="text" name="last_name" id="last_name" value="<?php echo esc_attr( $profileuser->last_name ) ?>" class="regular-text" /></td>
                         </tr>
 
                         <tr>
-                            <th><label for="nickname"><?php _e( 'Nickname' ); ?> <span class="description"><?php _e( '(required)' ); ?></span></label></th>
+                            <th><label for="nickname"><?php _e( 'Nickname', 'wpuf' ); ?> <span class="description"><?php _e( '(required)', 'wpuf' ); ?></span></label></th>
                             <td><input type="text" name="nickname" id="nickname" value="<?php echo esc_attr( $profileuser->nickname ) ?>" class="regular-text" /></td>
                         </tr>
 
                         <tr>
-                            <th><label for="display_name"><?php _e( 'Display to Public as' ) ?></label></th>
+                            <th><label for="display_name"><?php _e( 'Display to Public as', 'wpuf' ) ?></label></th>
                             <td>
                                 <select name="display_name" id="display_name">
                                     <?php
@@ -144,16 +144,16 @@ class WPUF_Edit_Profile {
                 </fieldset>
 
                 <fieldset>
-                    <legend><?php _e( 'Contact Info' ) ?></legend>
+                    <legend><?php _e( 'Contact Info', 'wpuf' ) ?></legend>
 
                     <table class="wpuf-table">
                         <tr>
-                            <th><label for="email"><?php _e( 'E-mail' ); ?> <span class="description"><?php _e( '(required)' ); ?></span></label></th>
+                            <th><label for="email"><?php _e( 'E-mail', 'wpuf' ); ?> <span class="description"><?php _e( '(required)', 'wpuf' ); ?></span></label></th>
                             <td><input type="text" name="email" id="email" value="<?php echo esc_attr( $profileuser->user_email ) ?>" class="regular-text" /> </td>
                         </tr>
 
                         <tr>
-                            <th><label for="url"><?php _e( 'Website' ) ?></label></th>
+                            <th><label for="url"><?php _e( 'Website', 'wpuf' ) ?></label></th>
                             <td><input type="text" name="url" id="url" value="<?php echo esc_attr( $profileuser->user_url ) ?>" class="regular-text code" /></td>
                         </tr>
 
@@ -171,13 +171,13 @@ class WPUF_Edit_Profile {
                 </fieldset>
 
                 <fieldset>
-                    <legend><?php _e( 'About Yourself' ); ?></legend>
+                    <legend><?php _e( 'About Yourself', 'wpuf' ); ?></legend>
 
                     <table class="wpuf-table">
                         <tr>
                             <th><label for="description"><?php _e( 'Biographical Info', 'wpuf' ); ?></label></th>
                             <td><textarea name="description" id="description" rows="5" cols="30"><?php echo esc_html( $profileuser->description ); ?></textarea><br />
-                                <span class="description"><?php _e( 'Share a little biographical information to fill out your profile. This may be shown publicly.' ); ?></span></td>
+                                <span class="description"><?php _e( 'Share a little biographical information to fill out your profile. This may be shown publicly.', 'wpuf' ); ?></span></td>
                         </tr>
                         <tr id="password">
                             <th><label for="pass1"><?php _e( 'New Password', 'wpuf' ); ?></label></th>
@@ -195,7 +195,7 @@ class WPUF_Edit_Profile {
 
                             <th><label><?php _e( 'Password Strength', 'wpuf' ); ?></label></th>
                             <td>
-                                <div id="pass-strength-result"><?php _e( 'Strength indicator' ); ?></div>
+                                <div id="pass-strength-result"><?php _e( 'Strength indicator', 'wpuf' ); ?></div>
                                 <script src="<?php echo site_url(); ?>/wp-includes/js/zxcvbn.min.js"></script>
                                 <script src="<?php echo admin_url(); ?>/js/password-strength-meter.js"></script>
                                 <script type="text/javascript">

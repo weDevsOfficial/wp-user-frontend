@@ -350,7 +350,7 @@ class WP_User_Frontend {
             'plupload'   => array(
                 'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
                 'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
-                'filters'          => array(array('title' => __( 'Allowed Files' ), 'extensions' => '*')),
+                'filters'          => array(array('title' => __( 'Allowed Files', 'wpuf' ), 'extensions' => '*')),
                 'multipart'        => true,
                 'urlstream_upload' => true,
             )

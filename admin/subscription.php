@@ -48,17 +48,17 @@ class WPUF_Admin_Subscription {
      */
     function form_updated_message( $messages ) {
         $message = array(
-             0 => '',
-             1 => __('Subscription pack updated.'),
-             2 => __('Custom field updated.'),
-             3 => __('Custom field deleted.'),
-             4 => __('Subscription pack updated.'),
-             5 => isset($_GET['revision']) ? sprintf( __('Subscription pack restored to revision from %s'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-             6 => __('Subscription pack published.'),
-             7 => __('Subscription pack saved.'),
-             8 => __('Subscription pack submitted.' ),
-             9 => '',
-            10 => __('Subscription pack draft updated.'),
+            0  => '',
+            1  => __( 'Subscription pack updated.', 'wpuf' ),
+            2  => __( 'Custom field updated.', 'wpuf' ),
+            3  => __( 'Custom field deleted.', 'wpuf' ),
+            4  => __( 'Subscription pack updated.', 'wpuf' ),
+            5  => isset( $_GET['revision'] ) ? sprintf( __( 'Subscription pack restored to revision from %s', 'wpuf' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+            6  => __( 'Subscription pack published.', 'wpuf' ),
+            7  => __( 'Subscription pack saved.', 'wpuf' ),
+            8  => __( 'Subscription pack submitted.', 'wpuf' ),
+            9  => '',
+            10 => __( 'Subscription pack draft updated.', 'wpuf' ),
         );
 
         $messages['wpuf_subscription'] = $message;
@@ -479,7 +479,7 @@ class WPUF_Admin_Subscription {
                     <div class="wpuf-text">
                         <div><strong><?php _e( 'Subcription Name: ','wpuf' ); ?></strong><?php echo $pack->post_title; ?></div>
                         <div>
-                            <strong><?php _e( 'Package billing details: '); ?></strong>
+                            <strong><?php _e( 'Package billing details: ', 'wpuf'); ?></strong>
                             <div class="wpuf-pricing-wrap">
                                 <div class="wpuf-sub-amount">
                                     <?php echo $billing_amount; ?>
@@ -489,7 +489,7 @@ class WPUF_Admin_Subscription {
                             </div>
                         </div>
 
-                        <strong><?php _e( 'Remaining post: ', 'wpuf'); ?></strong>
+                        <strong><?php _e( 'Remaining post: ','wpuf'); ?></strong>
                         <table class="form-table">
 
                             <?php
@@ -511,7 +511,7 @@ class WPUF_Admin_Subscription {
 
                                 ?>
                                 <tr>
-                                    <th><label><?php echo _e('Expire date:'); ?></label></th>
+                                    <th><label><?php echo _e('Expire date:' , 'wpuf'); ?></label></th>
                                     <td><input type="text" class="wpuf-date-picker" name="expire" value="<?php echo wpuf_get_date( $expire ); ?>"></td>
                                 </tr>
                                 <?php
@@ -525,7 +525,7 @@ class WPUF_Admin_Subscription {
                             $time_type = isset($_post_expiration_time[1]) && !empty($_post_expiration_time[1])?$_post_expiration_time[1]:'day';
                             ?>
                             <tr>
-                                <th><label><?php echo _e('Post Expiration Enabled'); ?></label></th>
+                                <th><label><?php echo _e('Post Expiration Enabled', 'wpuf'); ?></label></th>
                                 <td><input type="checkbox" name="is_post_expiration_enabled" value="on" <?php echo $is_post_exp_selected;?>></td>
                             </tr>
                             <tr>

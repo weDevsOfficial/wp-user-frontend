@@ -447,7 +447,7 @@ class WPUF_Admin_Form {
 
         $post_types = get_post_types( array('public' => true) );
         foreach ($post_types as $post_type) {
-            add_meta_box( 'wpuf-select-form', __('WPUF Form'), array($this, 'form_selection_metabox'), $post_type, 'side', 'high' );
+            add_meta_box( 'wpuf-select-form', __('WPUF Form', 'wpuf'), array($this, 'form_selection_metabox'), $post_type, 'side', 'high' );
         }
     }
 
@@ -545,22 +545,22 @@ class WPUF_Admin_Form {
                             if ( $can_publish ) :
                                 if ( !empty( $post->post_date_gmt ) && time() < strtotime( $post->post_date_gmt . ' +0000' ) ) :
                                     ?>
-                                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Schedule' ) ?>" />
-                            <?php submit_button( __( 'Schedule' ), 'primary button-large', 'publish', false, array('accesskey' => 'p') ); ?>
+                                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Schedule', 'wpuf' ) ?>" />
+                            <?php submit_button( __( 'Schedule', 'wpuf' ), 'primary button-large', 'publish', false, array('accesskey' => 'p') ); ?>
                         <?php else : ?>
-                                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Publish' ) ?>" />
-                            <?php submit_button( __( 'Publish' ), 'primary button-large', 'publish', false, array('accesskey' => 'p') ); ?>
+                                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Publish', 'wpuf' ) ?>" />
+                            <?php submit_button( __( 'Publish', 'wpuf' ), 'primary button-large', 'publish', false, array('accesskey' => 'p') ); ?>
                         <?php endif;
                     else :
                         ?>
-                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Submit for Review' ) ?>" />
-                        <?php submit_button( __( 'Submit for Review' ), 'primary button-large', 'publish', false, array('accesskey' => 'p') ); ?>
+                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Submit for Review', 'wpuf' ) ?>" />
+                        <?php submit_button( __( 'Submit for Review', 'wpuf' ), 'primary button-large', 'publish', false, array('accesskey' => 'p') ); ?>
                     <?php
                     endif;
                     } else {
                         ?>
-                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Update' ) ?>" />
-                        <input name="save" type="submit" class="button button-primary button-large" id="publish" accesskey="p" value="<?php esc_attr_e( 'Update' ) ?>" />
+                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Update', 'wpuf' ) ?>" />
+                        <input name="save" type="submit" class="button button-primary button-large" id="publish" accesskey="p" value="<?php esc_attr_e( 'Update', 'wpuf' ) ?>" />
                     <?php }
                 ?>
                 </div>
@@ -641,8 +641,8 @@ class WPUF_Admin_Form {
 
         $guest_post            = isset( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
         $guest_details         = isset( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
-        $name_label            = isset( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name' );
-        $email_label           = isset( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email' );
+        $name_label            = isset( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wpuf' );
+        $email_label           = isset( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email', 'wpuf' );
         $message_restrict      = isset( $form_settings['message_restrict'] ) ? $form_settings['message_restrict'] : $restrict_message;
 
         $redirect_to           = isset( $form_settings['redirect_to'] ) ? $form_settings['redirect_to'] : 'post';
@@ -812,7 +812,7 @@ class WPUF_Admin_Form {
                         ?>
                     </select>
                     <p class="description">
-                        <?php _e( 'After successfull submit, where the page will redirect to', $domain = 'default' ) ?>
+                        <?php _e( 'After successfull submit, where the page will redirect to', 'wpuf' ) ?>
                     </p>
                 </td>
             </tr>
@@ -851,8 +851,8 @@ class WPUF_Admin_Form {
                 <th><?php _e( 'Comment Status', 'wpuf' ); ?></th>
                 <td>
                     <select name="wpuf_settings[comment_status]">
-                        <option value="open" <?php selected( $comment_status, 'open'); ?>><?php _e('Open'); ?></option>
-                        <option value="closed" <?php selected( $comment_status, 'closed'); ?>><?php _e('Closed'); ?></option>
+                        <option value="open" <?php selected( $comment_status, 'open'); ?>><?php _e( 'Open', 'wpuf' ); ?></option>
+                        <option value="closed" <?php selected( $comment_status, 'closed'); ?>><?php _e( 'Closed', 'wpuf' ); ?></option>
                     </select>
                 </td>
             </tr>
@@ -971,7 +971,7 @@ class WPUF_Admin_Form {
             </tr>
 
             <tr class="wpuf-subscription-pack" style="display: none;">
-                <th><?php _e( 'Subscription Title'); ?></th>
+                <th><?php _e( 'Subscription Title', 'wpuf'); ?></th>
                 <td>
                     <select id="wpuf-subscription-list" name="wpuf_settings[subscription]">
                         <?php $this->subscription_dropdown( $subscription ); ?>

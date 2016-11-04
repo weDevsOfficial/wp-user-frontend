@@ -201,22 +201,22 @@ function wpuf_register_new_user( $user_login, $user_email, $role ) {
 
     // Check the username
     if ( $sanitized_user_login == '' ) {
-        $errors->add( 'empty_username', __( '<strong>ERROR</strong>: Please enter a username.' ) );
+        $errors->add( 'empty_username', __( '<strong>ERROR</strong>: Please enter a username', 'wpuf' ) );
     } elseif ( !validate_username( $user_login ) ) {
-        $errors->add( 'invalid_username', __( '<strong>ERROR</strong>: This username is invalid because it uses illegal characters. Please enter a valid username.' ) );
+        $errors->add( 'invalid_username', __( '<strong>ERROR</strong>: This username is invalid because it uses illegal characters. Please enter a valid username', 'wpuf' ) );
         $sanitized_user_login = '';
     } elseif ( username_exists( $sanitized_user_login ) ) {
-        $errors->add( 'username_exists', __( '<strong>ERROR</strong>: This username is already registered, please choose another one.' ) );
+        $errors->add( 'username_exists', __( '<strong>ERROR</strong>: This username is already registered, please choose another one', 'wpuf' ) );
     }
 
     // Check the e-mail address
     if ( $user_email == '' ) {
-        $errors->add( 'empty_email', __( '<strong>ERROR</strong>: Please type your e-mail address.' ) );
+        $errors->add( 'empty_email', __( '<strong>ERROR</strong>: Please type your e-mail address', 'wpuf' ) );
     } elseif ( !is_email( $user_email ) ) {
-        $errors->add( 'invalid_email', __( '<strong>ERROR</strong>: The email address isn&#8217;t correct.' ) );
+        $errors->add( 'invalid_email', __( '<strong>ERROR</strong>: The email address isn&#8217;t correct', 'wpuf' ) );
         $user_email = '';
     } elseif ( email_exists( $user_email ) ) {
-        $errors->add( 'email_exists', __( '<strong>ERROR</strong>: This email is already registered, please choose another one.' ) );
+        $errors->add( 'email_exists', __( '<strong>ERROR</strong>: This email is already registered, please choose another one', 'wpuf' ) );
     }
 
     do_action( 'register_post', $sanitized_user_login, $user_email, $errors );
@@ -239,7 +239,7 @@ function wpuf_register_new_user( $user_login, $user_email, $role ) {
     $user_id = wp_insert_user( $userdata );
 
     if ( !$user_id ) {
-        $errors->add( 'registerfail', sprintf( __( '<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !' ), get_option( 'admin_email' ) ) );
+        $errors->add( 'registerfail', sprintf( __( '<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !', 'wpuf' ), get_option( 'admin_email' ) ) );
         return $errors;
     }
 

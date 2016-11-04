@@ -1018,6 +1018,7 @@ function wpufe_ajax_tag_search() {
     wp_die();
 }
 
+add_action( 'wp_ajax_wpuf-ajax-tag-search', 'wpufe_ajax_tag_search' );
 add_action( 'wp_ajax_nopriv_wpuf-ajax-tag-search', 'wpufe_ajax_tag_search' );
 
 /**

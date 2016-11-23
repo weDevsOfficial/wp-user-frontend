@@ -686,7 +686,7 @@ class WPUF_Render_Form {
         }
         ?>
         <div class="wpuf-label">
-            <label for="wpuf-<?php echo isset( $attr['name'] ) ? $attr['name'] : 'cls'; ?>"><?php echo $attr['label'] . $this->required_mark( $attr ); ?></label>
+            <label for="<?php echo isset( $attr['name'] ) ? $attr['name'] : 'cls'; ?>"><?php echo $attr['label'] . $this->required_mark( $attr ); ?></label>
         </div>
         <?php
     }

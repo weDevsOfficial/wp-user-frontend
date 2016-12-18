@@ -80,8 +80,9 @@ function wpuf_show_users() {
         }
     }
 
-    $sql = "SELECT ID, display_name FROM $wpdb->users ORDER BY user_registered ASC";
-    $users = $wpdb->get_results( $sql );
+    //$sql = "SELECT ID, display_name FROM $wpdb->users ORDER BY user_registered ASC";
+    //$users = $wpdb->get_results( $sql );
+    $users = get_users(apply_filters('wpuf_show_users', array()));
     ?>
 
     <a class="wpuf-button" href="<?php the_permalink(); ?>?action=wpuf_add_user">Add New User</a>

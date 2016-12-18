@@ -387,15 +387,11 @@ class WPUF_Render_Form {
             $condition           = json_encode( $cond_inputs );
         }
 
-
         ?>
         <script type="text/javascript">
-
             wpuf_conditional_items.push(<?php echo $condition; ?>);
-
         </script>
         <?php
-
     }
 
     /**
@@ -621,6 +617,8 @@ class WPUF_Render_Form {
                             box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
                         }
                     </style>
+
+                    <script type="text/javascript" src="<?php echo includes_url( 'js/jquery/jquery.js' ); ?>"></script>
                 </head>
                 <body>
                     <div class="container">
@@ -881,7 +879,7 @@ class WPUF_Render_Form {
                     'editor_class'  => $req_class,
                     'textarea_name' => $attr['name']
                 );
-                
+
                 $editor_settings = apply_filters( 'wpuf_textarea_editor_args' , $editor_settings );
                 wp_editor( $value, $textarea_id, $editor_settings );
 

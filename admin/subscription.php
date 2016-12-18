@@ -443,22 +443,22 @@ class WPUF_Admin_Subscription {
         }
         $userdata = get_userdata( $profileuser->ID ); //wp 3.3 fix
 
-        $packs = WPUF_Subscription::init()->get_subscriptions();
+        $packs    = WPUF_Subscription::init()->get_subscriptions();
         $user_sub = WPUF_Subscription::get_user_pack( $userdata->ID );
-        $pack_id = isset( $user_sub['pack_id'] ) ? $user_sub['pack_id'] : '';
+        $pack_id  = isset( $user_sub['pack_id'] ) ? $user_sub['pack_id'] : '';
         ?>
         <div class="wpuf-user-subscription">
             <h3><?php _e( 'WPUF Subscription', 'wpuf' ); ?></h3>
             <?php
 
-
             if ( isset( $user_sub['pack_id'] ) ) :
 
-            $pack = WPUF_Subscription::get_subscription( $user_sub['pack_id'] );
+            $pack         = WPUF_Subscription::get_subscription( $user_sub['pack_id'] );
             $details_meta = WPUF_Subscription::init()->get_details_meta_value();
 
-            $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wpuf' );
-            if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' ) {
+            $billing_amount = ( isset( $pack->meta_value['billing_amount'] ) && intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wpuf' );
+            $recurring_pay  = ( isset( $pack->meta_value['recurring_pay'] ) && $pack->meta_value['recurring_pay'] == 'yes' ) ? true : false;
+            if ( $billing_amount && $recurring_pay ) {
                 $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
                 $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
                 $recurring_des = $recurring_des;
@@ -477,15 +477,14 @@ class WPUF_Admin_Subscription {
                     <?php
                     } ?>
                     <div class="wpuf-text">
-                        <div><strong><?php _e( 'Subcription Name: ','wpuf' ); ?></strong><?php echo $pack->post_title; ?></div>
+                        <div><strong><?php _e( 'Subcription Name: ','wpuf' ); ?></strong><?php echo isset( $pack->post_title ) ? $pack->post_title : ''; ?></div>
                         <div>
                             <strong><?php _e( 'Package billing details: ', 'wpuf'); ?></strong>
                             <div class="wpuf-pricing-wrap">
                                 <div class="wpuf-sub-amount">
                                     <?php echo $billing_amount; ?>
                                     <?php echo $recurring_des; ?>
-
-                                </div>
+                                </div
                             </div>
                         </div>
 

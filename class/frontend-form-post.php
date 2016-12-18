@@ -557,26 +557,27 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
     function draft_post() {
         check_ajax_referer( 'wpuf_form_add' );
-
+        
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
         $form_id       = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
         $form_vars     = $this->get_input_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
-
+        
+        $content_slug = 'post_content_'.$form_id;
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
 
         // echo json_encode( $_POST );
         // print_r( $post_vars );
         // print_r( $taxonomy_vars );
         // print_r( $meta_vars );
-
+       
         $postarr = array(
             'post_type'    => $form_settings['post_type'],
             'post_status'  => 'draft',
             'post_author'  => get_current_user_id(),
             'post_title'   => isset( $_POST['post_title'] ) ? trim( $_POST['post_title'] ) : '',
-            'post_content' => isset( $_POST['post_content'] ) ? trim( $_POST['post_content'] ) : '',
+            'post_content' => isset( $_POST[$content_slug] ) ? trim( $_POST[$content_slug] ) : '',
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? trim( $_POST['post_excerpt'] ) : '',
         );
 

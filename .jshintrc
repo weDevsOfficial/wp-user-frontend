@@ -1,0 +1,27 @@
+{
+  "boss": true,
+  "curly": true,
+  "eqeqeq": true,
+  "eqnull": true,
+  "expr": true,
+  "noarg": true,
+  "onevar": true,
+  "trailing": true,
+  "undef": true,
+  "unused": true,
+  "browser": true,
+  "passfail": false,  // Stop on first error.
+  "devel": true,
+  "esnext": true,
+
+  "globals": {
+    "jQuery": false,
+    "$": false,
+    "JSON": false,
+    "wp": false,
+    "Vue": false,
+    "swal": false,
+    "NProgress": false,
+    "wpufFormBuilder": false
+  }
+}

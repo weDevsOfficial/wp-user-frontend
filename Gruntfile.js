@@ -25,6 +25,12 @@ module.exports = function(grunt) {
                 files: {
                     '<%= dirs.css %>/formbuilder.css': ['<%= dirs.css %>/formbuilder.less']
                 }
+            },
+
+            formBuilder: {
+                files: {
+                    '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/less/form-builder.less']
+                }
             }
         },
 
@@ -51,6 +57,11 @@ module.exports = function(grunt) {
                 options: {
                     livereload: true
                 }
+            },
+
+            formBuilder: {
+                files: ['admin/form-builder/less/*', 'admin/form-builder/js/**/*'],
+                tasks: ['jshint:formBuilder', 'less:formBuilder', 'concat:formBuilder']
             }
         },
 
@@ -160,8 +171,36 @@ module.exports = function(grunt) {
                     config: 'myhost'
                 }
             },
-        }
+        },
 
+        // jshint
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc',
+                reporter: require('jshint-stylish')
+            },
+
+            formBuilder: [
+                'admin/form-builder/js/**/*.js',
+                '!admin/form-builder/js/jquery-siaf-start.js',
+                '!admin/form-builder/js/jquery-siaf-end.js',
+            ]
+        },
+
+        // concat/join files
+        concat: {
+            formBuilder: {
+                files: {
+                    '<%= dirs.js %>/wpuf-form-builder.js': [
+                        'admin/form-builder/js/jquery-siaf-start.js',
+                        'admin/form-builder/js/components/form-fields/form-fields.js',
+                        'admin/form-builder/js/components/field-options/field-options.js',
+                        'admin/form-builder/js/form-builder.js',
+                        'admin/form-builder/js/jquery-siaf-end.js',
+                    ],
+                }
+            },
+        },
     });
 
     // Load NPM tasks to be used here
@@ -176,6 +215,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
     grunt.loadNpmTasks( 'grunt-text-replace' );
     grunt.loadNpmTasks( 'grunt-ssh' );
+    grunt.loadNpmTasks( 'grunt-notify' );
 
     grunt.registerTask( 'default', [
         'makepot',

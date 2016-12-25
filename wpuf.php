@@ -185,6 +185,7 @@ class WP_User_Frontend {
 
         if ( is_admin() ) {
             WPUF_Admin_Settings::init();
+            new WPUF_Admin_Form_Handler();
             new WPUF_Admin_Form();
             new WPUF_Admin_Posting();
             new WPUF_Admin_Subscription();

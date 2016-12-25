@@ -1142,6 +1142,96 @@ function wpuf_get_form_fields( $form_id ) {
     return $form_fields;
 }
 
+/**
+ * API to duplicate a form
+ *
+ * @since 2.5
+ *
+ * @param int $post_id
+ *
+ * @return int New duplicated form id
+ */
+function wpuf_duplicate_form( $post_id ) {
+    $post = get_post( $post_id );
+
+    if ( !$post ) {
+        return;
+    }
+
+    $contents = wpuf_get_form_fields( $post_id );
+
+    $new_form = array(
+        'post_title'  => $post->post_title,
+        'post_type'   => $post->post_type,
+        'post_status' => 'draft'
+    );
+
+    $form_id = wp_insert_post( $new_form );
+
+    foreach ( $contents as $content ) {
+        wpuf_insert_form_field( $form_id, $content );
+    }
+
+    if ( $form_id ) {
+        $form_settings = wpuf_get_form_settings( $post_id );
+        update_post_meta( $form_id, 'wpuf_form_settings', $form_settings );
+
+        return $form_id;
+    }
+
+    return 0;
+}
+
+/**
+ * Save form fields
+ *
+ * @since 2.5
+ *
+ * @param int $form_id
+ * @param array $fields
+ * @param int $field_id
+ * @param int $order
+ *
+ * @return int ID of updated or inserted post
+ */
+function wpuf_insert_form_field( $form_id, $fields = array(), $field_id = null, $order = 0 ) {
+
+    $args = array(
+        'post_type'    => 'wpuf_input',
+        'post_parent'  => $form_id,
+        'post_status'  => 'publish',
+        'post_content' => maybe_serialize( wp_unslash( $fields ) ),
+        'menu_order'   => $order
+    );
+
+    if ( $field_id ) {
+        $args['ID'] = $field_id;
+    }
+
+    if ( $field_id ) {
+        wp_update_post( $args );
+    } else {
+        wp_insert_post( $args );
+    }
+}
+
+/**
+ * Get admin form builder object
+ *
+ * @since 2.5
+ *
+ * @param string $form_type
+ * @param string $post_type
+ * @param int    $post_id
+ *
+ * @return object
+ */
+function wpuf_admin_form_builder( $settings ) {
+    require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
+
+    return new WPUF_Admin_Form_Builder( $settings );
+}
+
 add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );
 add_action( 'wp_ajax_nopriv_wpuf_get_child_cat', 'wpuf_get_child_cats' );
 

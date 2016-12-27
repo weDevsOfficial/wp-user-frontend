@@ -89,8 +89,8 @@
 
             // first fieldset doesn't have prev button,
             // last fieldset doesn't have next button
-            $('fieldset:first .wpuf-multistep-prev-btn').remove();
-            $('fieldset:last .wpuf-multistep-next-btn').remove();
+            $('fieldset.wpuf-multistep-fieldset').find('.wpuf-multistep-prev-btn').first().remove();
+            $('fieldset.wpuf-multistep-fieldset').find('.wpuf-multistep-next-btn').last().remove();
 
             // at first first fieldset will be shown, and others will be hidden
             $('.wpuf-form fieldset').removeClass('field-active').first().addClass('field-active');

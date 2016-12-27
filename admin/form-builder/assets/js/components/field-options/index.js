@@ -2,14 +2,14 @@
  * Sidebar field options panel
  */
 Vue.component('field-options', {
-    template: '#wpuf-tmpl-field-options',
+    template: '#tmpl-wpuf-field-options',
 
     props: {
     },
 
     data: function () {
         return {
-
+            hello: 'world'
         };
     },
 

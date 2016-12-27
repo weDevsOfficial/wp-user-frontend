@@ -2,17 +2,17 @@
 'use strict';
 
 /**
- * Sidebar form fields panel
+ * Sidebar field options panel
  */
-Vue.component('form-fields', {
-    template: '#wpuf-tmpl-form-fields',
+Vue.component('field-options', {
+    template: '#tmpl-wpuf-field-options',
 
     props: {
     },
 
     data: function () {
         return {
-
+            hello: 'world'
         };
     },
 
@@ -26,17 +26,17 @@ Vue.component('form-fields', {
 });
 
 /**
- * Sidebar field options panel
+ * Sidebar form fields panel
  */
-Vue.component('field-options', {
-    template: '#wpuf-tmpl-field-options',
+Vue.component('form-fields', {
+    template: '#tmpl-wpuf-form-fields',
 
     props: {
     },
 
     data: function () {
         return {
-
+            edi : 'amin'
         };
     },
 
@@ -61,42 +61,42 @@ new Vue({
     el: '#wpuf-form-builder',
 
     data: {
-        post: wpufFormBuilder.post,
+        post: wpuf_form_builder.post,
         currentPanel: 'form-fields'
     },
 
     mounted: function () {
         // primary nav tabs and their contents
-        this.bindTabOnClick($('#wpuf-form-builder > .nav-tab-wrapper > a'), '#wpuf-form-builder');
+        this.bind_tab_on_click($('#wpuf-form-builder > .nav-tab-wrapper > a'), '#wpuf-form-builder');
 
         // secondary settings tabs and their contents
-        var settingsTabs = $('#wpuf-form-builder-settings .nav-tab'),
-            settingsTabContents = $('#wpuf-form-builder-settings .tab-contents .group');
+        var settings_tabs = $('#wpuf-form-builder-settings .nav-tab'),
+            settings_tab_contents = $('#wpuf-form-builder-settings .tab-contents .group');
 
-        settingsTabs.first().addClass('nav-tab-active');
-        settingsTabContents.first().addClass('active');
+        settings_tabs.first().addClass('nav-tab-active');
+        settings_tab_contents.first().addClass('active');
 
-        this.bindTabOnClick(settingsTabs, '#wpuf-form-builder-settings');
+        this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
     },
 
     methods: {
         // tabs and their contents
-        bindTabOnClick: function (tabs, scope) {
+        bind_tab_on_click: function (tabs, scope) {
             tabs.on('click', function (e) {
                 e.preventDefault();
 
                 var button = $(this),
-                    tabContents = $(scope + ' > .tab-contents'),
+                    tab_contents = $(scope + ' > .tab-contents'),
                     groupId = button.attr('href');
 
                 button.addClass('nav-tab-active').siblings('.nav-tab-active').removeClass('nav-tab-active');
 
-                tabContents.children().removeClass('active');
+                tab_contents.children().removeClass('active');
                 $(groupId).addClass('active');
             });
         },
 
-        saveFormBuilder: function () {
+        save_form_builder: function () {
             console.log('form submitted!!!');
         }
     }

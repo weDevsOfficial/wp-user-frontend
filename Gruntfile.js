@@ -1,5 +1,6 @@
 'use strict';
 module.exports = function(grunt) {
+    var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
 
     var pkg = grunt.file.readJSON('package.json');
 
@@ -29,7 +30,7 @@ module.exports = function(grunt) {
 
             formBuilder: {
                 files: {
-                    '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/less/form-builder.less']
+                    '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less']
                 }
             }
         },
@@ -60,7 +61,7 @@ module.exports = function(grunt) {
             },
 
             formBuilder: {
-                files: ['admin/form-builder/less/*', 'admin/form-builder/js/**/*'],
+                files: ['admin/form-builder/assets/less/*', 'admin/form-builder/assets/js/**/*'],
                 tasks: ['jshint:formBuilder', 'less:formBuilder', 'concat:formBuilder']
             }
         },
@@ -181,9 +182,9 @@ module.exports = function(grunt) {
             },
 
             formBuilder: [
-                'admin/form-builder/js/**/*.js',
-                '!admin/form-builder/js/jquery-siaf-start.js',
-                '!admin/form-builder/js/jquery-siaf-end.js',
+                'admin/form-builder/assets/js/**/*.js',
+                '!admin/form-builder/assets/js/jquery-siaf-start.js',
+                '!admin/form-builder/assets/js/jquery-siaf-end.js',
             ]
         },
 
@@ -191,13 +192,7 @@ module.exports = function(grunt) {
         concat: {
             formBuilder: {
                 files: {
-                    '<%= dirs.js %>/wpuf-form-builder.js': [
-                        'admin/form-builder/js/jquery-siaf-start.js',
-                        'admin/form-builder/js/components/form-fields/form-fields.js',
-                        'admin/form-builder/js/components/field-options/field-options.js',
-                        'admin/form-builder/js/form-builder.js',
-                        'admin/form-builder/js/jquery-siaf-end.js',
-                    ],
+                    '<%= dirs.js %>/wpuf-form-builder.js': formBuilderAssets,
                 }
             },
         },

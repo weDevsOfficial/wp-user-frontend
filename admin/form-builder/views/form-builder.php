@@ -1,4 +1,4 @@
-<form id="wpuf-form-builder" method="post" action="" @submit.prevent="saveFormBuilder" v-cloak>
+<form id="wpuf-form-builder" method="post" action="" @submit.prevent="save_form_builder" v-cloak>
 
     <h2 class="nav-tab-wrapper">
         <a href="#wpuf-form-builder-container" class="nav-tab nav-tab-active">
@@ -12,7 +12,7 @@
         <?php do_action( "wpuf-form-builder-tabs-{$form_type}" ); ?>
 
         <span class="pull-right">
-            <button type="button" class="button button-primary" @click="saveFormBuilder">
+            <button type="button" class="button button-primary" @click="save_form_builder">
                 <?php _e( 'Save Form', 'wpuf' ); ?>
             </button>
 

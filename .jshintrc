@@ -22,6 +22,6 @@
     "Vue": false,
     "swal": false,
     "NProgress": false,
-    "wpufFormBuilder": false
+    "wpuf_form_builder": false
   }
 }

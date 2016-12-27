@@ -38,10 +38,27 @@ class WPUF_Admin_Form_Builder {
 
         // if we have an existing post, then let's start
         if ( ! empty( $post->ID ) ) {
+            add_action( 'in_admin_header', array( $this, 'remove_admin_notices' ) );
             add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
             add_action( 'admin_footer', array( $this, 'admin_footer' ) );
             add_action( 'wpuf-admin-form-builder', array( $this, 'include_form_builder' ) );
         }
+    }
+
+    /**
+     * Remove all kinds of admin notices
+     *
+     * Since we don't have much space left on top of the page,
+     * we have to remove all kinds of admin notices
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function remove_admin_notices() {
+        remove_all_actions( 'network_admin_notices' );
+        remove_all_actions( 'user_admin_notices' );
+        remove_all_actions( 'admin_notices' );
     }
 
     /**
@@ -72,11 +89,19 @@ class WPUF_Admin_Form_Builder {
 
         wp_enqueue_script( 'wpuf-form-builder', WPUF_ASSET_URI . '/js/wpuf-form-builder.js', $form_builder_js_deps, WPUF_VERSION, true );
 
-        $wpufFormBuilder = array(
-            'post' => $post
+        /*
+         * localized data required for the building
+         */
+
+        require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-fields.php';
+
+        $wpuf_form_builder = array(
+            'post'              => $post,
+            'form_fields'       => wpuf_get_form_fields( $post->ID ),
+            // 'builder_fields'    =>
         );
 
-        wp_localize_script( 'wpuf-form-builder', 'wpufFormBuilder', $wpufFormBuilder );
+        wp_localize_script( 'wpuf-form-builder', 'wpuf_form_builder', $wpuf_form_builder );
     }
 
     /**
@@ -87,10 +112,24 @@ class WPUF_Admin_Form_Builder {
      * @return void
      */
     public function admin_footer() {
+        // get all vue component names
+        $path = WPUF_ROOT . '/admin/form-builder/assets/js/components';
+
+        $components = array();
+
+        // directory handle
+        $dir = dir( $path );
+
+        while ( $entry = $dir->read() ) {
+            if ( $entry !== '.' && $entry !== '..' ) {
+               if ( is_dir( $path . '/' . $entry ) ) {
+                    $components[] = $entry;
+               }
+            }
+        }
+
         // html templates of vue components
-        $templates = apply_filters( 'wpuf-form-builder-js-templates', array(
-            'form-fields', 'field-options'
-        ) );
+        $templates = apply_filters( 'wpuf-form-builder-js-templates', $components );
 
         foreach ( $templates as $template ) {
             $this->include_js_template( $template );
@@ -108,11 +147,11 @@ class WPUF_Admin_Form_Builder {
      * @return void
      */
     public function include_js_template( $template, $file_path = '' ) {
-        $file_path = $file_path ? untrailingslashit( $file_path ) : WPUF_ROOT . '/admin/form-builder/js/components/' . $template;
-        $file = $file_path . '/' . $template . '.php';
+        $file_path = $file_path ? untrailingslashit( $file_path ) : WPUF_ROOT . '/admin/form-builder/assets/js/components/' . $template;
+        $file = $file_path . '/template.php';
 
         if ( file_exists( $file ) ) {
-            echo '<script type="text/x-template" id="wpuf-tmpl-' . $template . '">' . "\n";
+            echo '<script type="text/html" id="tmpl-wpuf-' . $template . '">' . "\n";
             include $file;
             echo "\n" . '</script>' . "\n";
         }

@@ -12,17 +12,15 @@ function assets() {
 
     // mixins
     const mixinsPath  = './admin/form-builder/assets/js/mixins/';
-    let mixins       = fs.readdirSync(mixinsPath);
+    let mixins        = fs.readdirSync(mixinsPath);
 
     mixins.forEach((mixin) => {
         const path = `${mixinsPath}${mixin}`;
-        console.log(path);
 
         if (grunt.file.isFile(path)) {
             paths.push(path);
         }
     });
-
 
     // components
     const componentPath  = './admin/form-builder/assets/js/components/';

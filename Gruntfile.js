@@ -61,7 +61,11 @@ module.exports = function(grunt) {
             },
 
             formBuilder: {
-                files: ['admin/form-builder/assets/less/*', 'admin/form-builder/assets/js/**/*'],
+                files: [
+                    'admin/form-builder/assets/less/*',
+                    'admin/form-builder/assets/js/**/*',
+                    'assets/js/wpuf-form-builder-wpuf-forms.js'
+                ],
                 tasks: ['jshint:formBuilder', 'less:formBuilder', 'concat:formBuilder']
             }
         },
@@ -185,6 +189,7 @@ module.exports = function(grunt) {
                 'admin/form-builder/assets/js/**/*.js',
                 '!admin/form-builder/assets/js/jquery-siaf-start.js',
                 '!admin/form-builder/assets/js/jquery-siaf-end.js',
+                'assets/js/wpuf-form-builder-wpuf-forms.js',
             ]
         },
 

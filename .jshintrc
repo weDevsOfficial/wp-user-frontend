@@ -19,9 +19,12 @@
     "$": false,
     "JSON": false,
     "wp": false,
+    "_": false,
     "Vue": false,
+    "Vuex": false,
     "swal": false,
-    "NProgress": false,
-    "wpuf_form_builder": false
+    "wpuf_form_builder": false,
+    "wpuf_form_builder_mixins": false,
+    "wpuf_mixins": false
   }
 }

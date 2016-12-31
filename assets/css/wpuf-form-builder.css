@@ -35,6 +35,32 @@
 .margin-0 {
   margin: 0;
 }
+.list-inline {
+  padding-left: 0;
+  list-style: none;
+  margin-left: -5px;
+}
+.list-inline > li {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.slide-fade-enter-active {
+  -webkit-transition: all 0.6s;
+  -o-transition: all 0.6s;
+  transition: all 0.6s;
+}
+.slide-fade-leave-active {
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+.slide-fade-enter,
+.slide-fade-leave-active {
+  opacity: .3 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+}
 #wpuf-form-builder {
   width: calc(100% - 200px);
   padding-top: 10px;
@@ -214,4 +240,112 @@
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   padding: 25px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+#form-preview-stage .field-items {
+  position: relative;
+}
+#form-preview-stage .field-items .control-buttons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  text-align: center;
+  background: rgba(0, 115, 170, 0.23);
+  border: 1px dashed #0073aa;
+}
+#form-preview-stage .field-items .control-buttons p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -14px 0 0 -61px;
+  line-height: 1;
+  color: #eee;
+  background-color: #23282d;
+}
+#form-preview-stage .field-items .control-buttons i {
+  cursor: pointer;
+  padding: 8px;
+}
+#form-preview-stage .field-items .control-buttons i.move {
+  cursor: move;
+}
+#form-preview-stage .field-items .control-buttons i:hover {
+  background-color: #0073aa;
+}
+#form-preview-stage .field-items:hover .control-buttons {
+  display: block;
+}
+.panel-form-field-group {
+  margin-bottom: 15px;
+}
+.panel-form-field-group h3 {
+  margin: 0;
+  font-size: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+.panel-form-field-group h3 i {
+  float: right;
+}
+.panel-form-field-group .panel-form-field-buttons {
+  opacity: 1;
+  max-height: 100vh;
+  overflow: hidden;
+  margin-top: 15px;
+}
+.panel-form-field-group .button {
+  display: block;
+  width: 48%;
+  margin: 0 0 10px 0;
+  float: left;
+  text-align: left;
+}
+.panel-form-field-group .button:nth-child(odd) {
+  margin-right: 2%;
+}
+.wpuf-form-builder-field-options .option-fields-section {
+  margin-bottom: 15px;
+}
+.wpuf-form-builder-field-options .section-title {
+  margin: 0;
+  font-size: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+.wpuf-form-builder-field-options .section-title i {
+  float: right;
+}
+.wpuf-form-builder-field-options .option-field-section-fields {
+  margin-top: 15px;
+  max-height: 150vh;
+  opacity: 1;
+  overflow: hidden;
+}
+.wpuf-form-builder-field-options .panel-field-opt {
+  margin-bottom: 15px;
+}
+.wpuf-form-builder-field-options .panel-field-opt .field-helper-text {
+  color: rgba(35, 40, 45, 0.5);
+  margin-left: 6px;
+}
+.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input {
+  display: block;
+  width: 100%;
+  margin: 5px 0 0;
+  line-height: 1.75;
+}
+.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-radio > label {
+  display: block;
+  margin-bottom: 5px;
+}
+.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-radio > ul {
+  margin-top: 0;
+  margin-bottom: 0;
 }

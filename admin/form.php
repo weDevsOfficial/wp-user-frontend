@@ -116,11 +116,23 @@ class WPUF_Admin_Form {
         ) );
     }
 
+    /**
+     * Initiate form builder for wpuf_forms post type
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
     public function post_forms_builder_init() {
         add_action( 'wpuf-form-builder-tabs-post', array( $this, 'add_primary_tabs' ) );
         add_action( 'wpuf-form-builder-tab-contents-post', array( $this, 'add_primary_tab_contents' ) );
         add_action( 'wpuf-form-builder-settings-tabs-post', array( $this, 'add_settings_tabs' ) );
         add_action( 'wpuf-form-builder-settings-tab-contents-post', array( $this, 'add_settings_tab_contents' ) );
+        add_action( 'wpuf-form-builder-fields-section-before', array( $this, 'add_post_field_section' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+        add_action( 'wpuf-form-builder-js-deps', array( $this, 'js_dependencies' ) );
+        add_action( 'wpuf-form-builder-js-builder-stage-mixins', array( $this, 'js_builder_stage_mixins' ) );
+        add_action( 'wpuf-form-builder-template-builder-stage-submit-area', array( $this, 'form_submit_area' ) );
 
 
         if ( isset( $_GET['action'] ) && ( 'edit' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
@@ -140,6 +152,13 @@ class WPUF_Admin_Form {
         }
     }
 
+    /**
+     * Additional primary tabs
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
     public function add_primary_tabs() {
         ?>
 
@@ -150,6 +169,13 @@ class WPUF_Admin_Form {
         <?php
     }
 
+    /**
+     * Add primary tab contents
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
     public function add_primary_tab_contents() {
         ?>
 
@@ -160,6 +186,14 @@ class WPUF_Admin_Form {
         <?php
     }
 
+
+    /**
+     * Add settings tabs
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
     public function add_settings_tabs() {
         ?>
 
@@ -170,6 +204,13 @@ class WPUF_Admin_Form {
         <?php
     }
 
+    /**
+     * Add settings tabs
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
     public function add_settings_tab_contents() {
         ?>
 
@@ -197,10 +238,8 @@ class WPUF_Admin_Form {
      *
      * @return void
      */
-    function form_settings_posts() {
+    public function form_settings_posts() {
         global $post;
-
-
 
         $form_settings = wpuf_get_form_settings( $post->ID );
 
@@ -459,7 +498,7 @@ class WPUF_Admin_Form {
      *
      * @global object $post
      */
-    function form_settings_posts_edit() {
+    public function form_settings_posts_edit() {
         global $post;
 
         $form_settings        = wpuf_get_form_settings( $post->ID );
@@ -562,7 +601,16 @@ class WPUF_Admin_Form {
         <?php
     }
 
-    function subscription_dropdown( $selected = null ) {
+    /**
+     * Subscription dropdown
+     *
+     * @since 2.5
+     *
+     * @param string $selected
+     *
+     * @return void
+     */
+    public function subscription_dropdown( $selected = null ) {
         $subscriptions = WPUF_Subscription::init()->get_subscriptions();
 
         if ( ! $subscriptions ) {
@@ -586,7 +634,97 @@ class WPUF_Admin_Form {
      *
      * @global $post
      */
-    function form_post_expiration(){
+    public function form_post_expiration(){
         do_action('wpuf_form_post_expiration');
+    }
+
+    /**
+     * Add post fields in form builder
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public function add_post_field_section() {
+        $fields = apply_filters( 'wpuf-form-builder-fields-post-fields', array(
+            'text_field', 'textarea_field'
+        ) );
+
+        return array(
+            array(
+                'title'     => __( 'Post Fields', 'wpuf' ),
+                'fields'    => $fields
+            )
+        );
+    }
+
+    /**
+     * Admin script form wpuf_forms form builder
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function admin_enqueue_scripts() {
+        wp_register_script(
+            'wpuf-form-builder-wpuf-forms',
+            WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',
+            array( 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ),
+            WPUF_VERSION,
+            true
+        );
+    }
+
+    /**
+     * Add dependencies to form builder script
+     *
+     * @since 2.5
+     *
+     * @param array $deps
+     *
+     * @return array
+     */
+    public function js_dependencies( $deps ) {
+        array_push( $deps, 'wpuf-form-builder-wpuf-forms' );
+
+        return $deps;
+    }
+
+    /**
+     * Add mixins to form builder builder stage component
+     *
+     * @since 2.5
+     *
+     * @param array $mixins
+     *
+     * @return array
+     */
+    public function js_builder_stage_mixins( $mixins ) {
+        array_push( $mixins , 'mixin_builder_stage' );
+
+        return $mixins;
+    }
+
+    /**
+     * Add buttons in form submit area
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function form_submit_area() {
+        ?>
+            <input @click.prevent="" type="submit" name="submit" :value="post_form_settings.submit_text">
+
+            <a
+                v-if="post_form_settings.draft_post"
+                @click.prevent=""
+                href="#"
+                class="btn"
+                id="wpuf-post-draft"
+            >
+                <?php _e( 'Save Draft', 'wpuf' ); ?>
+            </a>
+        <?php
     }
 }

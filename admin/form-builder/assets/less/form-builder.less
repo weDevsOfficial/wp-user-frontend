@@ -63,6 +63,34 @@
     margin: 0;
 }
 
+.list-inline {
+    padding-left: 0;
+    list-style: none;
+    margin-left: -5px;
+
+    & > li {
+        display: inline-block;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+// Vue Transition effects
+// --------------------------------------------------
+.slide-fade-enter-active {
+    .transition(all .6s);
+}
+.slide-fade-leave-active {
+    .transition(all .4s);
+}
+
+.slide-fade-enter,
+.slide-fade-leave-active {
+    opacity: .3 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+}
+
 // Form Builder
 // --------------------------------------------------
 #wpuf-form-builder {
@@ -277,7 +305,155 @@
                 background-color: #fff;
                 .box-shadow(0 0 10px rgba(0, 0, 0, 0.3));
                 padding: 25px;
+                max-width: 800px;
+                margin: 0 auto;
             }
         }
     }
 }
+
+// Builder Stage
+// --------------------------------------------------
+#form-preview-stage {
+
+    .field-items {
+        position: relative;
+
+        .control-buttons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            text-align: center;
+            background: fade(@wpBlue, 23%);
+            border: 1px dashed @wpBlue;
+
+            p {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin: -14px 0 0 -61px;
+                line-height: 1;
+                color: #eee;
+                background-color: @wpBlack;
+            }
+
+            i {
+                cursor: pointer;
+                padding: 8px;
+
+                &.move {
+                    cursor: move;
+                }
+            }
+
+            i:hover {
+                background-color: @wpBlue;
+            }
+        }
+
+        &:hover .control-buttons {
+            display: block;
+        }
+    }
+}
+
+// Panel: Form Fields
+// --------------------------------------------------
+.panel-form-field-group {
+    margin-bottom: 15px;
+
+    h3 {
+        margin: 0;
+        font-size: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        cursor: pointer;
+
+        i {
+            float: right;
+        }
+    }
+
+    .panel-form-field-buttons {
+        opacity: 1;
+        max-height: 100vh;
+        overflow: hidden;
+        margin-top: 15px;
+    }
+
+    .button {
+        display: block;
+        width: 48%;
+        margin: 0 0 10px 0;
+        float: left;
+        text-align: left;
+
+        &:nth-child(odd) {
+            margin-right: 2%;
+        }
+    }
+}
+
+// Panel: Field Options
+// --------------------------------------------------
+.wpuf-form-builder-field-options {
+
+    .option-fields-section {
+        margin-bottom: 15px;
+    }
+
+    .section-title {
+        margin: 0;
+        font-size: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        cursor: pointer;
+
+        i {
+            float: right;
+        }
+    }
+
+    .option-field-section-fields {
+        margin-top: 15px;
+        max-height: 150vh;
+        opacity: 1;
+        overflow: hidden;
+    }
+
+    .panel-field-opt {
+        margin-bottom: 15px;
+
+        .field-helper-text {
+            color: fadeout(@wpBlack, 50%);
+            margin-left: 6px;
+        }
+
+        &.panel-field-opt-text {
+
+            input {
+                display: block;
+                width: 100%;
+                margin: 5px 0 0;
+                line-height: 1.75;
+            }
+        }
+
+        &.panel-field-opt-radio {
+            & > label {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            & > ul {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+

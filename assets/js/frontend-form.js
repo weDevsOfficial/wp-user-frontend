@@ -139,7 +139,7 @@
 
                 // js_obj.formSubmit();
                 if ( $(this).hasClass('wpuf-multistep-next-btn') ) {
-                    var result = js_obj.formStepCheck( '', $(this).parent() );
+                    var result = js_obj.formStepCheck( '', $(this).closest('fieldset') );
 
                     if ( result != false ) {
                         o.change_fieldset(++step_number,progressbar_type);
@@ -311,7 +311,8 @@
             var form = fieldset,
                 submitButton = form.find('input[type=submit]');
                 form_data = WP_User_Frontend.validateForm(form);
-                if( form_data == false ) {
+
+                if ( form_data == false ) {
                     WP_User_Frontend.addErrorNotice( self, 'bottom' );
                 }
                 return form_data;

@@ -45,6 +45,11 @@
   padding-left: 5px;
   padding-right: 5px;
 }
+.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
 .slide-fade-enter-active {
   -webkit-transition: all 0.6s;
   -o-transition: all 0.6s;
@@ -60,6 +65,18 @@
   opacity: .3 !important;
   max-height: 0 !important;
   margin: 0 !important;
+}
+.sweet-alert {
+  border-radius: 0;
+}
+.sweet-alert p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #656565;
+}
+.sweet-alert button {
+  border-radius: 3px;
+  padding: 10px 20px;
 }
 #wpuf-form-builder {
   width: calc(100% - 200px);
@@ -245,6 +262,7 @@
 }
 #form-preview-stage .field-items {
   position: relative;
+  background-color: #fff;
 }
 #form-preview-stage .field-items .control-buttons {
   position: absolute;
@@ -255,8 +273,8 @@
   height: 100%;
   margin: 0;
   text-align: center;
-  background: rgba(0, 115, 170, 0.23);
-  border: 1px dashed #0073aa;
+  background: rgba(255, 185, 0, 0.08);
+  border: 1px dashed #ffb900;
 }
 #form-preview-stage .field-items .control-buttons p {
   position: absolute;
@@ -280,6 +298,23 @@
 #form-preview-stage .field-items:hover .control-buttons {
   display: block;
 }
+#form-preview-stage .form-preview-stage-dropzone {
+  background-color: rgba(255, 185, 0, 0.3) !important;
+  border: 1px solid #ffb900;
+  height: 50px;
+}
+#form-preview-stage .wpuf-submit + .button + .form-preview-stage-dropzone,
+#form-preview-stage .field-items.empty-list-item + .form-preview-stage-dropzone {
+  display: none;
+}
+#form-preview-stage .field-items.empty-list-item {
+  padding: 24px;
+  margin: 0;
+  border: 1px dashed rgba(35, 40, 45, 0.5);
+}
+#form-preview-stage .form-preview-stage-dropzone + .field-items.empty-list-item {
+  display: none;
+}
 .panel-form-field-group {
   margin-bottom: 15px;
 }
@@ -297,7 +332,7 @@
   opacity: 1;
   max-height: 100vh;
   overflow: hidden;
-  margin-top: 15px;
+  margin: 15px 0 0;
 }
 .panel-form-field-group .button {
   display: block;
@@ -308,6 +343,10 @@
 }
 .panel-form-field-group .button:nth-child(odd) {
   margin-right: 2%;
+}
+.button.ui-draggable-dragging {
+  margin: 0;
+  text-align: left;
 }
 .wpuf-form-builder-field-options .option-fields-section {
   margin-bottom: 15px;

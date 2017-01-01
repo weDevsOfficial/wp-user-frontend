@@ -77,9 +77,10 @@ class WPUF_Admin_Form_Builder {
          */
         wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
         wp_enqueue_style( 'wpuf-font-awesome', WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css', array(), WPUF_VERSION );
+        wp_enqueue_style( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert.css', array(), WPUF_VERSION );
 
         $form_builder_css_deps = apply_filters( 'wpuf-form-builder-css-deps', array(
-            'wpuf-css', 'wpuf-font-awesome'
+            'wpuf-css', 'wpuf-font-awesome', 'wpuf-sweetalert'
         ) );
 
         wp_enqueue_style( 'wpuf-form-builder', WPUF_ASSET_URI . '/css/wpuf-form-builder.css', $form_builder_css_deps, WPUF_VERSION );
@@ -90,15 +91,20 @@ class WPUF_Admin_Form_Builder {
         if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
             wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue.js', array(), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-vuex', WPUF_ASSET_URI . '/vendor/vuex/vuex.js', array( 'wpuf-vue' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert-dev.js', array(), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo.js', array( 'jquery' ), WPUF_VERSION, true );
 
         } else {
             wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue.min.js', array(), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-vuex', WPUF_ASSET_URI . '/vendor/vuex/vuex.min.js', array( 'wpuf-vue' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert.min.js', array(), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo.min.js', array( 'jquery' ), WPUF_VERSION, true );
         }
 
 
         $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', array(
-            'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex'
+            'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'underscore',
+            'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert', 'wpuf-jquery-scrollTo'
         ) );
 
         wp_enqueue_script( 'wpuf-form-builder', WPUF_ASSET_URI . '/js/wpuf-form-builder.js', $form_builder_js_deps, WPUF_VERSION, true );
@@ -284,7 +290,10 @@ class WPUF_Admin_Form_Builder {
      */
     private function i18n() {
         return apply_filters( 'wpuf-form-builder-i18n', array(
-            'advanced_options' => __( 'Advanced Options', 'wpud' ),
+            'advanced_options'      => __( 'Advanced Options', 'wpuf' ),
+            'delete_field_warn_msg' => __( 'Are you sure you want to delete this field?', 'wpuf' ),
+            'yes_delete_it'         => __( 'Yes, delete it', 'wpuf' ),
+            'no_cancel_it'          => __( 'No, cancel it', 'wpuf' )
         ) );
     }
 }

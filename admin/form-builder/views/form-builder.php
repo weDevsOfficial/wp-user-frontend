@@ -46,7 +46,7 @@
                             </a>
                         </li>
 
-                        <li :class="['field-options' === current_panel ? 'active' : '']">
+                        <li :class="['field-options' === current_panel ? 'active' : '', !form_fields_count ? 'disabled' : '']">
                             <a href="#field-options" @click.prevent="set_current_panel('field-options')">
                                 <?php _e( 'Field Options', 'wpuf' ); ?>
                             </a>

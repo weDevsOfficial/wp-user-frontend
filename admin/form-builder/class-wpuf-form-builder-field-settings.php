@@ -130,11 +130,31 @@ class WPUF_Form_Builder_Field_Settings {
         $settings = array_merge( $settings, self::get_common_text_properties() );
 
         return array(
-            'input_type' => 'text',
-            'template'   => 'text_field',
-            'title'      => __( 'Text', 'wpuf' ),
-            'icon'       => 'text-width',
-            'settings'   => $settings
+            'template'      => 'text_field',
+            'title'         => __( 'Text', 'wpuf' ),
+            'icon'          => 'text-width',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'text',
+                'template'      => 'text_field',
+                'required'      => 'no',
+                'label'         => __( 'Text', 'wpuf' ),
+                'name'          => '',
+                'is_meta'       => 'yes',
+                'help'          => '',
+                'css'           => '',
+                'placeholder'   => '',
+                'default'       => '',
+                'size'          => 40,
+                'id'            => 0,
+                'wpuf_cond'     => array(
+                    'condition_status'  => 'no',
+                    'cond_field'        => array(),
+                    'cond_operator'     => array( '=' ),
+                    'cond_option'       => array( '- select -' ),
+                    'cond_logic'        => 'all'
+                )
+            )
         );
     }
 
@@ -221,11 +241,34 @@ class WPUF_Form_Builder_Field_Settings {
         $settings = array_merge( $settings, $textarea_settings );
 
         return array(
-            'input_type' => 'textarea',
-            'template'   => 'textarea_field',
-            'title'      => __( 'Textarea', 'wpuf' ),
-            'icon'       => 'paragraph',
-            'settings'   => $settings
+            'template'      => 'textarea_field',
+            'title'         => __( 'Textarea', 'wpuf' ),
+            'icon'          => 'paragraph',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'       => 'textarea',
+                'template'         => 'textarea_field',
+                'required'         => 'no',
+                'label'            => __( 'Textarea', 'wpuf' ),
+                'name'             => '',
+                'is_meta'          => 'yes',
+                'help'             => '',
+                'css'              => '',
+                'rows'             => 5,
+                'cols'             => 25,
+                'placeholder'      => '',
+                'default'          => '',
+                'rich'             => 'no',
+                'word_restriction' => '',
+                'id'                => 0,
+                'wpuf_cond'        => array(
+                    'condition_status'  => 'no',
+                    'cond_field'        => array(),
+                    'cond_operator'     => array( '=' ),
+                    'cond_option'       => array( '- select -' ),
+                    'cond_logic'        => 'all'
+                ),
+            )
         );
     }
 }

@@ -75,6 +75,12 @@
     }
 }
 
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 // Vue Transition effects
 // --------------------------------------------------
 .slide-fade-enter-active {
@@ -89,6 +95,23 @@
     opacity: .3 !important;
     max-height: 0 !important;
     margin: 0 !important;
+}
+
+// Sweet Alert
+// --------------------------------------------------
+.sweet-alert {
+    border-radius: 0;
+
+    p {
+        font-size: 16px;
+        font-weight: 400;
+        color: #656565;
+    }
+
+    button {
+        border-radius: 3px;
+        padding: 10px 20px;
+    }
 }
 
 // Form Builder
@@ -318,6 +341,7 @@
 
     .field-items {
         position: relative;
+        background-color: #fff;
 
         .control-buttons {
             position: absolute;
@@ -328,8 +352,8 @@
             height: 100%;
             margin: 0;
             text-align: center;
-            background: fade(@wpBlue, 23%);
-            border: 1px dashed @wpBlue;
+            background: fade(@wpYellow, 8%);
+            border: 1px dashed @wpYellow;
 
             p {
                 position: absolute;
@@ -359,6 +383,27 @@
             display: block;
         }
     }
+
+    .form-preview-stage-dropzone {
+        background-color: fade(@wpYellow, 30%) !important;
+        border: 1px solid @wpYellow;
+        height: 50px;
+    }
+
+    .wpuf-submit + .button + .form-preview-stage-dropzone,
+    .field-items.empty-list-item + .form-preview-stage-dropzone {
+        display: none;
+    }
+
+    .field-items.empty-list-item {
+        padding: 24px;
+        margin: 0;
+        border: 1px dashed fade(@wpBlack, 50%);
+    }
+
+    .form-preview-stage-dropzone + .field-items.empty-list-item {
+        display: none;
+    }
 }
 
 // Panel: Form Fields
@@ -382,7 +427,7 @@
         opacity: 1;
         max-height: 100vh;
         overflow: hidden;
-        margin-top: 15px;
+        margin: 15px 0 0;
     }
 
     .button {
@@ -396,6 +441,12 @@
             margin-right: 2%;
         }
     }
+}
+
+// the dragging field button
+.button.ui-draggable-dragging {
+    margin: 0;
+    text-align: left;
 }
 
 // Panel: Field Options

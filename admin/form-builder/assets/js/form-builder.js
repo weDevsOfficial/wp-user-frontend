@@ -5,6 +5,23 @@ if (!$('#wpuf-form-builder').length) {
     return;
 }
 
+function is_element_in_viewport (el) {
+
+    //special bonus for those using jQuery
+    if (typeof jQuery === "function" && el instanceof jQuery) {
+        el = el[0];
+    }
+
+    var rect = el.getBoundingClientRect();
+
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+    );
+}
+
 /**
  * Vuex Store data
  */
@@ -65,6 +82,46 @@ var wpuf_form_builder_store = new Vuex.Store({
             });
 
             editing_field[payload.field_name] = payload.value;
+        },
+
+        // add new form field element
+        add_form_field_element: function (state, payload) {
+            state.form_fields.splice(payload.toIndex, 0, payload.field);
+
+            // bring newly added element into viewport
+            Vue.nextTick(function () {
+                var el = $('#form-preview-stage .wpuf-form .field-items').eq(payload.toIndex);
+
+                if (el && !is_element_in_viewport(el.get(0))) {
+                    $('#builder-stage section').scrollTo(el, 800, {offset: -50});
+                }
+            });
+        },
+
+        // sorting inside stage
+        swap_form_field_elements: function (state, payload) {
+            var field = state.form_fields.splice(payload.fromIndex, 1)[0];
+
+            state.form_fields.splice(payload.toIndex, 0, field);
+        },
+
+        // clone form field
+        clone_form_field_element: function (state, payload) {
+            var field = _.find(state.form_fields, function (item) {
+                return parseInt(item.id) === parseInt(payload.field_id);
+            });
+
+            var clone = $.extend(true, {}, field),
+                index = parseInt(payload.index) + 1;
+
+            clone.id = payload.new_id;
+            state.form_fields.splice(index, 0, clone);
+        },
+
+        // delete a field
+        delete_form_field_element: function (state, index) {
+            state.current_panel = 'form-fields';
+            state.form_fields.splice(index, 1);
         }
     }
 });
@@ -87,6 +144,10 @@ new Vue({
         post: function () {
             return this.$store.state.post;
         },
+
+        form_fields_count: function () {
+            return this.$store.state.form_fields.length;
+        }
     },
 
     created: function () {

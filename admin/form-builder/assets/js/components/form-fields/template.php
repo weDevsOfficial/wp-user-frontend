@@ -5,11 +5,18 @@
         </h3>
 
         <transition name="slide-fade">
-            <div v-if="section.show" class="panel-form-field-buttons clearfix">
-                <button v-for="field in section.fields" type="button" class="button">
+            <ul v-if="section.show" class="panel-form-field-buttons clearfix">
+                <li
+                    v-for="field in section.fields"
+                    type="button"
+                    class="button"
+                    :data-form-field="field"
+                    data-source="panel"
+                    @click="add_form_field(field)"
+                >
                     <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
-                </button>
-            </div>
+                </li>
+            </ul>
         </transition>
     </div>
 </div>

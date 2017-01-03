@@ -246,7 +246,7 @@ class WPUF_Payment {
      */
     function send_to_gateway() {
 
-        if ( isset( $_POST['wpuf_payment_submit'] ) && $_POST['action'] == 'wpuf_pay' && wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_payment_gateway' ) ) {
+        if ( isset( $_POST['action'] ) && $_POST['action'] == 'wpuf_pay' && wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_payment_gateway' ) ) {
 
             $post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( $_REQUEST['pack_id'] ) : 0;
@@ -268,7 +268,6 @@ class WPUF_Payment {
                     $userdata->last_name  = '';
                 }
             }
-
 
             switch ($type) {
                 case 'post':

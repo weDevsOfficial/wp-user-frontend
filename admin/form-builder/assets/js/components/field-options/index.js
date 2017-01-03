@@ -13,6 +13,9 @@ Vue.component('field-options', {
 
     computed: {
         editing_field_id: function () {
+            this.show_basic_settings = true;
+            this.show_advanced_settings = false;
+
             return parseInt(this.$store.state.editing_field_id);
         },
 

@@ -12,11 +12,7 @@ Vue.component('field-text-meta', {
             },
 
             set: function (value) {
-                this.$store.commit('update_editing_form_field', {
-                    editing_field_id: this.editing_form_field.id,
-                    field_name: this.option_field.name,
-                    value: value
-                });
+                this.update_value(this.option_field.name, value);
             }
         }
     },
@@ -33,7 +29,11 @@ Vue.component('field-text-meta', {
         },
 
         meta_key_autocomplete: function (e, label_vm) {
-            if ('label' === label_vm.option_field.name && !this.value.trim()) {
+            if (
+                'label' === label_vm.option_field.name &&
+                !this.value.trim() &&
+                parseInt(this.editing_form_field.id) === parseInt(label_vm.editing_form_field.id)
+            ) {
                 this.value = label_vm.value.replace(/\W/g, '_').toLowerCase();
             }
         }

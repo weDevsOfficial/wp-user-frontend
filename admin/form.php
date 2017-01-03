@@ -137,13 +137,13 @@ class WPUF_Admin_Form {
 
         if ( isset( $_GET['action'] ) && ( 'edit' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
             $settings = array(
-                'form_type' => 'post',
-                'post_type' => 'wpuf_forms',
-                'post_id'   => $_GET['id'],
-                'shortcode_attrs' => array(
+                'form_type'         => 'post',
+                'post_type'         => 'wpuf_forms',
+                'post_id'           => $_GET['id'],
+                'shortcode_attrs'   => array(
                     'type' => array(
-                        'profile' => __( 'Profile', 'wpuf' ),
-                        'registration' => __( 'Registration', 'wpuf' )
+                        'profile'       => __( 'Profile', 'wpuf' ),
+                        'registration'  => __( 'Registration', 'wpuf' )
                     )
                 )
             );

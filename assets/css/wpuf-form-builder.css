@@ -77,6 +77,47 @@
 .sweet-alert button {
   border-radius: 3px;
   padding: 10px 20px;
+  min-width: 100px;
+}
+.loader,
+.loader:after {
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+}
+.loader {
+  display: inline-block;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 3px solid rgba(0, 115, 170, 0.2);
+  border-right: 3px solid rgba(0, 115, 170, 0.2);
+  border-bottom: 3px solid rgba(0, 115, 170, 0.2);
+  border-left: 3px solid #0073aa;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: wpuf_form_builder_loader 1.1s infinite linear;
+  animation: wpuf_form_builder_loader 1.1s infinite linear;
+}
+@-webkit-keyframes wpuf_form_builder_loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes wpuf_form_builder_loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 #wpuf-form-builder {
   width: calc(100% - 200px);
@@ -374,7 +415,7 @@
   color: rgba(35, 40, 45, 0.5);
   margin-left: 6px;
 }
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input {
+.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="text"] {
   display: block;
   width: 100%;
   margin: 5px 0 0;
@@ -387,4 +428,52 @@
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-radio > ul {
   margin-top: 0;
   margin-bottom: 0;
+}
+.option-field-option-chooser {
+  margin: 12px 0 0;
+}
+.option-field-option-chooser.margin-0 {
+  margin: 0;
+}
+.option-field-option-chooser .selector,
+.option-field-option-chooser .sort-handler,
+.option-field-option-chooser .label,
+.option-field-option-chooser .value,
+.option-field-option-chooser .action-buttons {
+  float: left;
+}
+.option-field-option-chooser .selector {
+  width: 25px;
+}
+.option-field-option-chooser .selector input {
+  margin-top: 14px;
+}
+.option-field-option-chooser .sort-handler {
+  width: 22px;
+  cursor: ns-resize;
+}
+.option-field-option-chooser .sort-handler i {
+  margin-top: 14px;
+  font-size: 15px;
+}
+.option-field-option-chooser .label {
+  width: 208px;
+  margin-right: 8px;
+}
+.option-field-option-chooser.show-value .label,
+.option-field-option-chooser.show-value .value {
+  width: 100px;
+  margin-right: 8px;
+}
+.option-field-option-chooser .header .label,
+.option-field-option-chooser .header .value {
+  color: #909090;
+}
+.option-field-option-chooser .action-buttons {
+  width: 36px;
+}
+.option-field-option-chooser .action-buttons i {
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 13px;
 }

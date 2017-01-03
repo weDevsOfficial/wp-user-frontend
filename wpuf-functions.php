@@ -1136,6 +1136,14 @@ function wpuf_get_form_fields( $form_id ) {
 
         $field['id'] = $content->ID;
 
+        // Add inline property for radio and checkbox fields. From v2.5
+        $inline_supported_fields = array( 'radio', 'checkbox' );
+        if ( in_array( $field['input_type'] , $inline_supported_fields ) ) {
+            if ( ! array_key_exists( 'inline', $field ) ) {
+                $field['inline'] = 'no';
+            }
+        }
+
         $form_fields[] = $field;
     }
 

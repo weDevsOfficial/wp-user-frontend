@@ -6,6 +6,27 @@
  * field-text_field, field_textarea etc
  */
 wpuf_mixins.form_field_mixin = {
+    props: {
+        field: {
+            type: Object,
+            default: {}
+        }
+    },
+
+    computed: {
+        form_id: function () {
+            return this.$store.state.post.ID;
+        },
+
+        has_options: function () {
+            if (!this.field.hasOwnProperty('options')) {
+                return false;
+            }
+
+            return !!Object.keys(this.field.options).length;
+        }
+    },
+
     methods: {
         class_names: function(type_class) {
             return [
@@ -18,6 +39,19 @@ wpuf_mixins.form_field_mixin = {
         required_class: function () {
             return ('yes' === this.required) ? 'required' : '';
         },
+
+        is_selected: function (label) {
+            if (_.isArray(this.field.selected)) {
+                if (_.indexOf(this.field.selected, label) >= 0) {
+                    return true;
+                }
+
+            } else if (label === this.field.selected) {
+                return true;
+            }
+
+            return false;
+        }
     }
 };
 
@@ -46,8 +80,8 @@ Vue.mixin({
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d54e21',
-                confirmButtonText: '',
-                cancelButtonText: '',
+                confirmButtonText: this.i18n.ok,
+                cancelButtonText: this.i18n.cancel,
             }, settings);
 
             swal(settings, callback);
@@ -70,6 +104,16 @@ wpuf_mixins.option_field_mixin = {
             type: Object,
             default: {}
         }
+    },
+
+    methods: {
+        update_value: function(property, value) {
+            this.$store.commit('update_editing_form_field', {
+                editing_field_id: this.editing_form_field.id,
+                field_name: property,
+                value: value
+            });
+        },
     }
 };
 
@@ -97,7 +141,7 @@ Vue.component('builder-stage', {
             items: '.field-items',
             handle: '.control-buttons .move',
             scroll: true,
-            update: function (event, ui) {
+            update: function (e, ui) {
                 var item    = ui.item[0],
                     data    = item.dataset,
                     source  = data.source,
@@ -164,6 +208,128 @@ Vue.component('builder-stage', {
 });
 
 /**
+ * Common settings component for option based fields
+ * like select, multiselect, checkbox, radio
+ */
+Vue.component('field-option-data', {
+    template: '#tmpl-wpuf-field-option-data',
+
+    mixins: [
+        wpuf_mixins.option_field_mixin
+    ],
+
+    data: function () {
+        return {
+            show_value: false,
+            options: [],
+            selected: [],
+
+        };
+    },
+
+    computed: {
+        field_options: function () {
+            return this.editing_form_field.options;
+        },
+
+        field_selected: function () {
+            return this.editing_form_field.selected;
+        }
+    },
+
+    mounted: function () {
+        var self = this;
+
+        this.set_options();
+
+        $(this.$el).find('.option-field-option-chooser').sortable({
+            items: '.option-field-option',
+            handle: '.sort-handler',
+            update: function (e, ui) {
+                var item        = ui.item[0],
+                    data        = item.dataset,
+                    toIndex     = parseInt($(ui.item).index()),
+                    fromIndex   = parseInt(data.index);
+
+                self.options.swap(fromIndex, toIndex);
+            }
+        }).disableSelection();
+    },
+
+    methods: {
+        set_options: function () {
+            var self = this;
+            var field_options = $.extend(true, {}, this.editing_form_field.options);
+
+            _.each(field_options, function (label, value) {
+                self.options.push({label: label, value: value, id: self.get_random_id()});
+            });
+
+            if (this.option_field.is_multiple && !_.isArray(this.field_selected)) {
+                this.selected = [this.field_selected];
+            } else {
+                this.selected = this.field_selected;
+            }
+        },
+
+        // in case of select or radio buttons, user should deselect default value
+        clear_selection: function (e, label) {
+            if (label === this.selected) {
+                this.selected = '';
+                $(e.target).prop('checked', false);
+            }
+        },
+
+        add_option: function () {
+            var count   = this.options.length,
+                new_opt = this.i18n.option + ' - ' + (count + 1);
+
+            this.options.push({
+                label: new_opt , value: new_opt, id: this.get_random_id()
+            });
+        },
+
+        delete_option: function (index) {
+            if (this.options.length === 1) {
+                this.warn({
+                    text: this.i18n.last_choice_warn_msg,
+                    showCancelButton: false,
+                    confirmButtonColor: "#46b450",
+                });
+
+                return;
+            }
+
+            this.options.splice(index, 1);
+        }
+    },
+
+    watch: {
+        options: {
+            deep: true,
+            handler: function (new_opts) {
+                var options = {},
+                    i = 0;
+
+                for (i = 0; i < new_opts.length; i++) {
+                    // if (!new_opts[i].value.trim()) {
+                    //     new_opts[i].value = 'val_' + this.get_random_id();
+                    // }
+
+                    options[new_opts[i].value] = new_opts[i].label;
+                }
+
+                this.update_value('options', options);
+            }
+        },
+
+        selected: function (new_val) {
+            this.update_value('selected', new_val);
+        }
+    }
+});
+
+/**
  * Sidebar field options panel
  */
 Vue.component('field-options', {
@@ -178,6 +344,9 @@ Vue.component('field-options', {
 
     computed: {
         editing_field_id: function () {
+            this.show_basic_settings = true;
+            this.show_advanced_settings = false;
+
             return parseInt(this.$store.state.editing_field_id);
         },
 
@@ -235,24 +404,6 @@ Vue.component('field-radio', {
                 });
             }
         }
-    },
-
-    created: function () {
-        if ('yes' === this.editing_form_field.is_meta) {
-            wpuf_form_builder.event_hub.$on('field-text-focusout', this.met_key_autocomplete);
-        }
-    },
-
-    methods: {
-        on_focusout: function (e) {
-            wpuf_form_builder.event_hub.$emit('field-text-focusout', e, this);
-        },
-
-        met_key_autocomplete: function (e, label_vm) {
-            if ('label' === label_vm.option_field.name && !this.value.trim()) {
-                this.value = label_vm.value.replace(/\W/g, '_').toLowerCase();
-            }
-        }
     }
 });
 
@@ -270,11 +421,7 @@ Vue.component('field-text', {
             },
 
             set: function (value) {
-                this.$store.commit('update_editing_form_field', {
-                    editing_field_id: this.editing_form_field.id,
-                    field_name: this.option_field.name,
-                    value: value
-                });
+                this.update_value(this.option_field.name, value);
             }
         }
     },
@@ -300,11 +447,7 @@ Vue.component('field-text-meta', {
             },
 
             set: function (value) {
-                this.$store.commit('update_editing_form_field', {
-                    editing_field_id: this.editing_form_field.id,
-                    field_name: this.option_field.name,
-                    value: value
-                });
+                this.update_value(this.option_field.name, value);
             }
         }
     },
@@ -321,11 +464,37 @@ Vue.component('field-text-meta', {
         },
 
         meta_key_autocomplete: function (e, label_vm) {
-            if ('label' === label_vm.option_field.name && !this.value.trim()) {
+            if (
+                'label' === label_vm.option_field.name &&
+                !this.value.trim() &&
+                parseInt(this.editing_form_field.id) === parseInt(label_vm.editing_form_field.id)
+            ) {
                 this.value = label_vm.value.replace(/\W/g, '_').toLowerCase();
             }
         }
     }
+});
+
+/**
+ * Field template: Checkbox
+ */
+Vue.component('form-checkbox_field', {
+    template: '#tmpl-wpuf-form-checkbox_field',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field template: Dropdown/Select
+ */
+Vue.component('form-dropdown_field', {
+    template: '#tmpl-wpuf-form-dropdown_field',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
 });
 
 /**
@@ -377,6 +546,28 @@ Vue.component('form-fields', {
 });
 
 /**
+ * Field template: Multi-Select
+ */
+Vue.component('form-multiple_select', {
+    template: '#tmpl-wpuf-form-multiple_select',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field template: Radio
+ */
+Vue.component('form-radio_field', {
+    template: '#tmpl-wpuf-form-radio_field',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
  * Field template: Text
  */
 Vue.component('form-text_field', {
@@ -384,20 +575,7 @@ Vue.component('form-text_field', {
 
     mixins: [
         wpuf_mixins.form_field_mixin
-    ],
-
-    props: {
-        field: {
-            type: Object,
-            default: {}
-        }
-    },
-
-    computed: {
-        form_id: function () {
-            return this.$store.state.post.ID;
-        },
-    },
+    ]
 });
 
 Vue.component('form-textarea_field', {
@@ -405,14 +583,7 @@ Vue.component('form-textarea_field', {
 
     mixins: [
         wpuf_mixins.form_field_mixin
-    ],
-
-    props: {
-        field: {
-            type: Object,
-            default: {}
-        }
-    }
+    ]
 });
 
 Vue.component('help-text', {
@@ -437,8 +608,14 @@ if (!$('#wpuf-form-builder').length) {
     return;
 }
 
-function is_element_in_viewport (el) {
+if (!Array.prototype.hasOwnProperty('swap')) {
+    Array.prototype.swap = function (from, to) {
+        this.splice(to, 0, this.splice(from, 1)[0]);
+    };
+}
 
+// check if an element is visible in browser viewport
+function is_element_in_viewport (el) {
     //special bonus for those using jQuery
     if (typeof jQuery === "function" && el instanceof jQuery) {
         el = el[0];
@@ -501,9 +678,17 @@ var wpuf_form_builder_store = new Vuex.Store({
                 return parseInt(field_id) === parseInt(item.id);
             });
 
+            if ('field-options' === state.current_panel && field[0].id === state.editing_field_id) {
+                return;
+            }
+
             if (field.length) {
-                state.editing_field_id = field[0].id;
+                state.editing_field_id = 0;
                 state.current_panel = 'field-options';
+
+                setTimeout(function () {
+                    state.editing_field_id = field[0].id;
+                }, 400);
             }
         },
 
@@ -532,9 +717,7 @@ var wpuf_form_builder_store = new Vuex.Store({
 
         // sorting inside stage
         swap_form_field_elements: function (state, payload) {
-            var field = state.form_fields.splice(payload.fromIndex, 1)[0];
-
-            state.form_fields.splice(payload.toIndex, 0, field);
+            state.form_fields.swap(payload.fromIndex, payload.toIndex);
         },
 
         // clone form field

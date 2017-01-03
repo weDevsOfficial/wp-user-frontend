@@ -250,7 +250,8 @@ class WPUF_Admin_Form_Builder {
      */
     private function get_custom_fields() {
         $fields = apply_filters( 'wpuf-form-builder-fields-custom-fields', array(
-            'text_field', 'textarea_field'
+            'text_field', 'textarea_field', 'dropdown_field', 'multiple_select',
+            'radio_field', 'checkbox_field'
         ) );
 
         return array(
@@ -293,7 +294,11 @@ class WPUF_Admin_Form_Builder {
             'advanced_options'      => __( 'Advanced Options', 'wpuf' ),
             'delete_field_warn_msg' => __( 'Are you sure you want to delete this field?', 'wpuf' ),
             'yes_delete_it'         => __( 'Yes, delete it', 'wpuf' ),
-            'no_cancel_it'          => __( 'No, cancel it', 'wpuf' )
+            'no_cancel_it'          => __( 'No, cancel it', 'wpuf' ),
+            'ok'                    => __( 'OK', 'wpuf' ),
+            'cancel'                => __( 'Cancel', 'wpuf' ),
+            'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wpuf' ),
+            'option'                => __( 'Option', 'wpuf' ),
         ) );
     }
 }

@@ -22,7 +22,7 @@ Vue.component('builder-stage', {
             items: '.field-items',
             handle: '.control-buttons .move',
             scroll: true,
-            update: function (event, ui) {
+            update: function (e, ui) {
                 var item    = ui.item[0],
                     data    = item.dataset,
                     source  = data.source,

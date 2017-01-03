@@ -111,7 +111,53 @@
     button {
         border-radius: 3px;
         padding: 10px 20px;
+        min-width: 100px;
     }
+}
+
+// CSS3 loader animation
+// --------------------------------------------------
+.loader,
+.loader:after {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+}
+
+.loader {
+    display: inline-block;
+    position: relative;
+    text-indent: -9999em;
+    border-top: 3px solid fade(@wpBlue, 20%);
+    border-right: 3px solid fade(@wpBlue, 20%);
+    border-bottom: 3px solid fade(@wpBlue, 20%);
+    border-left: 3px solid @wpBlue;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: wpuf_form_builder_loader 1.1s infinite linear;
+    animation: wpuf_form_builder_loader 1.1s infinite linear;
+}
+
+@-webkit-keyframes wpuf_form_builder_loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes wpuf_form_builder_loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 // Form Builder
@@ -486,7 +532,7 @@
 
         &.panel-field-opt-text {
 
-            input {
+            input[type="text"] {
                 display: block;
                 width: 100%;
                 margin: 5px 0 0;
@@ -508,3 +554,65 @@
     }
 }
 
+.option-field-option-chooser {
+    margin: 12px 0 0;
+
+    &.margin-0 {
+        margin: 0;
+    }
+
+    .selector,
+    .sort-handler,
+    .label,
+    .value,
+    .action-buttons {
+        float: left;
+    }
+
+    .selector {
+        width: 25px;
+
+        input {
+            margin-top: 14px;
+        }
+    }
+
+    .sort-handler {
+        width: 22px;
+        cursor: ns-resize;
+
+        i {
+            margin-top: 14px;
+            font-size: 15px;
+        }
+    }
+
+    .label {
+        width: 208px;
+        margin-right: 8px;
+    }
+
+    &.show-value {
+        .label,
+        .value {
+            width: 100px;
+            margin-right: 8px;
+        }
+    }
+
+    .header {
+        .label, .value {
+            color: #909090;
+        }
+    }
+
+    .action-buttons {
+        width: 36px;
+
+        i {
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 13px;
+        }
+    }
+}

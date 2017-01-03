@@ -13,5 +13,15 @@ wpuf_mixins.option_field_mixin = {
             type: Object,
             default: {}
         }
+    },
+
+    methods: {
+        update_value: function(property, value) {
+            this.$store.commit('update_editing_form_field', {
+                editing_field_id: this.editing_form_field.id,
+                field_name: property,
+                value: value
+            });
+        },
     }
 };

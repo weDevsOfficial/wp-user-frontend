@@ -19,23 +19,5 @@ Vue.component('field-radio', {
                 });
             }
         }
-    },
-
-    created: function () {
-        if ('yes' === this.editing_form_field.is_meta) {
-            wpuf_form_builder.event_hub.$on('field-text-focusout', this.met_key_autocomplete);
-        }
-    },
-
-    methods: {
-        on_focusout: function (e) {
-            wpuf_form_builder.event_hub.$emit('field-text-focusout', e, this);
-        },
-
-        met_key_autocomplete: function (e, label_vm) {
-            if ('label' === label_vm.option_field.name && !this.value.trim()) {
-                this.value = label_vm.value.replace(/\W/g, '_').toLowerCase();
-            }
-        }
     }
 });

@@ -13,8 +13,12 @@ class WPUF_Form_Builder_Field_Settings {
      */
     public static function get_field_settings() {
         return apply_filters( 'wpuf-form-builder-field-settings', array(
-            'text_field' => self::text_field(),
-            'textarea_field'   => self::textarea_field(),
+            'text_field'        => self::text_field(),
+            'textarea_field'    => self::textarea_field(),
+            'dropdown_field'    => self::dropdown_field(),
+            'multiple_select'   => self::multiple_select(),
+            'radio_field'       => self::radio_field(),
+            'checkbox_field'    => self::checkbox_field(),
         ) );
     }
 
@@ -119,6 +123,23 @@ class WPUF_Form_Builder_Field_Settings {
     }
 
     /**
+     * wpuf_cond property for all fields
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function get_wpuf_cond_prop() {
+        return array(
+            'condition_status'  => 'no',
+            'cond_field'        => array(),
+            'cond_operator'     => array( '=' ),
+            'cond_option'       => array( '- select -' ),
+            'cond_logic'        => 'all'
+        );
+    }
+
+    /**
      * Text field settings
      *
      * @since 2.5
@@ -147,13 +168,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'default'       => '',
                 'size'          => 40,
                 'id'            => 0,
-                'wpuf_cond'     => array(
-                    'condition_status'  => 'no',
-                    'cond_field'        => array(),
-                    'cond_operator'     => array( '=' ),
-                    'cond_option'       => array( '- select -' ),
-                    'cond_logic'        => 'all'
-                )
+                'wpuf_cond'     => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -197,20 +212,11 @@ class WPUF_Form_Builder_Field_Settings {
             ),
 
             array(
-                'name'      => 'placeholder',
-                'title'     => __( 'Placeholder text', 'wpuf' ),
-                'type'      => 'text',
-                'section'   => 'advanced',
-                'priority'  => 13,
-                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wpuf' ),
-            ),
-
-            array(
                 'name'      => 'default',
                 'title'     => __( 'Default value', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
-                'priority'  => 14,
+                'priority'  => 13,
                 'help_text' => __( 'The default value this field will have', 'wpuf' ),
             ),
 
@@ -219,13 +225,13 @@ class WPUF_Form_Builder_Field_Settings {
                 'title'     => __( 'Textarea', 'wpuf' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'yes'   => __( 'Yes', 'wpuf' ),
-                    'no'    => __( 'No', 'wpuf' ),
+                    'no'    => __( 'Normal', 'wpuf' ),
+                    'yes'   => __( 'Rich textarea', 'wpuf' ),
+                    'teeny' => __( 'Teeny Rich textarea', 'wpuf' ),
                 ),
                 'section'   => 'advanced',
-                'priority'  => 15,
+                'priority'  => 14,
                 'default'   => 'no',
-                'inline'    => true,
             ),
 
             array(
@@ -233,7 +239,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'title'     => __( 'Word Restriction', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
-                'priority'  => 16,
+                'priority'  => 15,
                 'help_text' => __( 'Numebr of words the author to be restricted in', 'wpuf' ),
             ),
         );
@@ -260,14 +266,222 @@ class WPUF_Form_Builder_Field_Settings {
                 'default'          => '',
                 'rich'             => 'no',
                 'word_restriction' => '',
-                'id'                => 0,
-                'wpuf_cond'        => array(
-                    'condition_status'  => 'no',
-                    'cond_field'        => array(),
-                    'cond_operator'     => array( '=' ),
-                    'cond_option'       => array( '- select -' ),
-                    'cond_logic'        => 'all'
+                'id'               => 0,
+                'wpuf_cond'        => self::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Option data for option based fields
+     *
+     * @since 2.5
+     *
+     * @param boolean $is_multiple
+     *
+     * @return array
+     */
+    public static function get_option_data_setting( $is_multiple = false ) {
+        return array(
+            'name'          => 'options',
+            'title'         => __( 'Options', 'wpuf' ),
+            'type'          => 'option-data',
+            'is_multiple'   => $is_multiple,
+            'section'       => 'basic',
+            'priority'      => 12,
+            'help_text'     => __( 'Add options for the form field', 'wpuf' ),
+        );
+    }
+
+    /**
+     * Dropdown/Select field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function dropdown_field() {
+        $settings = self::get_common_properties();
+
+        $dropdown_settings = array(
+            self::get_option_data_setting(),
+
+            array(
+                'name'          => 'first',
+                'title'         => __( 'Select Text', 'wpuf' ),
+                'type'          => 'text',
+                'section'       => 'basic',
+                'priority'      => 13,
+                'help_text'     => __( "First element of the select dropdown. Leave this empty if you don't want to show this field", 'wpuf' ),
+            ),
+        );
+
+        $settings = array_merge( $settings, $dropdown_settings );
+
+        return array(
+            'template'      => 'dropdown_field',
+            'title'         => __( 'Dropdown', 'wpuf' ),
+            'icon'          => 'caret-square-o-down',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'       => 'dropdown',
+                'template'         => 'dropdown_field',
+                'required'         => 'no',
+                'label'            => __( 'Dropdown', 'wpuf' ),
+                'name'             => '',
+                'is_meta'          => 'yes',
+                'help'             => '',
+                'css'              => '',
+                'selected'         => '',
+                'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
+                'first'            => __( '- select -', 'wpuf' ),
+                'id'               => 0,
+                'wpuf_cond'        => self::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Multiselect field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function multiple_select() {
+        $settings = self::get_common_properties();
+
+        $dropdown_settings = array(
+            self::get_option_data_setting( true )
+        );
+
+        $settings = array_merge( $settings, $dropdown_settings );
+
+        return array(
+            'template'      => 'multiple_select',
+            'title'         => __( 'Multi Select', 'wpuf' ),
+            'icon'          => 'list-ul',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'       => 'multiselect',
+                'template'         => 'multiple_select',
+                'required'         => 'no',
+                'label'            => __( 'Multi Select', 'wpuf' ),
+                'name'             => '',
+                'is_meta'          => 'yes',
+                'help'             => '',
+                'css'              => '',
+                'selected'         => '',
+                'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
+                'first'            => __( '- select -', 'wpuf' ),
+                'id'               => 0,
+                'wpuf_cond'        => self::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Radio field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function radio_field() {
+        $settings = self::get_common_properties();
+
+        $dropdown_settings = array(
+            self::get_option_data_setting(),
+
+            array(
+                'name'          => 'inline',
+                'title'         => __( 'Show in inline list', 'wpuf' ),
+                'type'          => 'radio',
+                'options'       => array(
+                    'yes'   => __( 'Yes', 'wpuf' ),
+                    'no'    => __( 'No', 'wpuf' ),
                 ),
+                'default'       => 'no',
+                'inline'        => true,
+                'section'       => 'advanced',
+                'priority'      => 23,
+                'help_text'     => __( 'Show this option in an inline list', 'wpuf' ),
+            )
+        );
+
+        $settings = array_merge( $settings, $dropdown_settings );
+
+        return array(
+            'template'      => 'radio_field',
+            'title'         => __( 'Radio', 'wpuf' ),
+            'icon'          => 'dot-circle-o',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'       => 'radio',
+                'template'         => 'radio_field',
+                'required'         => 'no',
+                'label'            => __( 'Radio Field', 'wpuf' ),
+                'name'             => '',
+                'is_meta'          => 'yes',
+                'help'             => '',
+                'css'              => '',
+                'selected'         => '',
+                'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
+                'id'               => 0,
+                'wpuf_cond'        => self::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Checkbox field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function checkbox_field() {
+        $settings = self::get_common_properties();
+
+        $dropdown_settings = array(
+            self::get_option_data_setting( true ),
+
+            array(
+                'name'          => 'inline',
+                'title'         => __( 'Show in inline list', 'wpuf' ),
+                'type'          => 'radio',
+                'options'       => array(
+                    'yes'   => __( 'Yes', 'wpuf' ),
+                    'no'    => __( 'No', 'wpuf' ),
+                ),
+                'default'       => 'no',
+                'inline'        => true,
+                'section'       => 'advanced',
+                'priority'      => 23,
+                'help_text'     => __( 'Show this option in an inline list', 'wpuf' ),
+            )
+        );
+
+        $settings = array_merge( $settings, $dropdown_settings );
+
+        return array(
+            'template'      => 'checkbox_field',
+            'title'         => __( 'Checkbox', 'wpuf' ),
+            'icon'          => 'check-square-o',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'       => 'checkbox',
+                'template'         => 'checkbox_field',
+                'required'         => 'no',
+                'label'            => __( 'Checkbox Field', 'wpuf' ),
+                'name'             => '',
+                'is_meta'          => 'yes',
+                'help'             => '',
+                'css'              => '',
+                'selected'         => '',
+                'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
+                'id'               => 0,
+                'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
     }

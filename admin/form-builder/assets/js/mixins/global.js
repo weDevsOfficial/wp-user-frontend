@@ -23,8 +23,8 @@ Vue.mixin({
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d54e21',
-                confirmButtonText: '',
-                cancelButtonText: '',
+                confirmButtonText: this.i18n.ok,
+                cancelButtonText: this.i18n.cancel,
             }, settings);
 
             swal(settings, callback);

@@ -64,9 +64,13 @@ module.exports = function(grunt) {
                 files: [
                     'admin/form-builder/assets/less/*',
                     'admin/form-builder/assets/js/**/*',
-                    'assets/js/wpuf-form-builder-wpuf-forms.js'
+                    'assets/js/wpuf-form-builder-wpuf-forms.js',
+                    '<%= dirs.css %>/frontend-forms.less',
                 ],
-                tasks: ['jshint:formBuilder', 'less:formBuilder', 'concat:formBuilder']
+                tasks: [
+                    'jshint:formBuilder', 'less:formBuilder',
+                    'concat:formBuilder', 'less:front'
+                ]
             }
         },
 

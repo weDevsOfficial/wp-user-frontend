@@ -5,8 +5,14 @@ if (!$('#wpuf-form-builder').length) {
     return;
 }
 
-function is_element_in_viewport (el) {
+if (!Array.prototype.hasOwnProperty('swap')) {
+    Array.prototype.swap = function (from, to) {
+        this.splice(to, 0, this.splice(from, 1)[0]);
+    };
+}
 
+// check if an element is visible in browser viewport
+function is_element_in_viewport (el) {
     //special bonus for those using jQuery
     if (typeof jQuery === "function" && el instanceof jQuery) {
         el = el[0];
@@ -69,9 +75,17 @@ var wpuf_form_builder_store = new Vuex.Store({
                 return parseInt(field_id) === parseInt(item.id);
             });
 
+            if ('field-options' === state.current_panel && field[0].id === state.editing_field_id) {
+                return;
+            }
+
             if (field.length) {
-                state.editing_field_id = field[0].id;
+                state.editing_field_id = 0;
                 state.current_panel = 'field-options';
+
+                setTimeout(function () {
+                    state.editing_field_id = field[0].id;
+                }, 400);
             }
         },
 
@@ -100,9 +114,7 @@ var wpuf_form_builder_store = new Vuex.Store({
 
         // sorting inside stage
         swap_form_field_elements: function (state, payload) {
-            var field = state.form_fields.splice(payload.fromIndex, 1)[0];
-
-            state.form_fields.splice(payload.toIndex, 0, field);
+            state.form_fields.swap(payload.fromIndex, payload.toIndex);
         },
 
         // clone form field

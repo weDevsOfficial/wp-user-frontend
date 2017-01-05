@@ -5,7 +5,7 @@
         </h3>
 
         <transition name="slide-fade">
-            <ul v-if="section.show" class="panel-form-field-buttons clearfix">
+            <ul v-show="section.show" class="panel-form-field-buttons clearfix">
                 <li
                     v-for="field in section.fields"
                     type="button"

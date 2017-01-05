@@ -10,6 +10,16 @@ Vue.component('builder-stage', {
 
         field_settings: function () {
             return this.$store.state.field_settings;
+        },
+
+        hidden_fields: function () {
+            return this.$store.state.form_fields.filter(function (item) {
+                return 'hidden' === item.input_type;
+            });
+        },
+
+        editing_form_id: function () {
+            return this.$store.state.editing_field_id;
         }
     },
 
@@ -17,7 +27,7 @@ Vue.component('builder-stage', {
         var self = this;
 
         // bind jquery ui sortable
-        $('#form-preview-stage .wpuf-form').sortable({
+        $('#form-preview-stage .wpuf-form.sortable-list').sortable({
             placeholder: 'form-preview-stage-dropzone',
             items: '.field-items',
             handle: '.control-buttons .move',
@@ -85,5 +95,23 @@ Vue.component('builder-stage', {
                 }
             });
         },
+
+        delete_hidden_field: function (field_id) {
+            var i = 0;
+
+            for (i = 0; i < this.form_fields.length; i++) {
+                if (parseInt(field_id) === parseInt(this.form_fields[i].id)) {
+                    this.delete_field(i);
+                }
+            }
+        },
+
+        is_template_available: function (template) {
+            if (this.field_settings[template]) {
+                return true;
+            }
+
+            return false;
+        }
     }
 });

@@ -3,7 +3,7 @@
 
 /**
  * Mixin for form fields like
- * field-text_field, field_textarea etc
+ * form-text_field, form-field_textarea etc
  */
 wpuf_mixins.form_field_mixin = {
     props: {
@@ -106,6 +106,36 @@ wpuf_mixins.option_field_mixin = {
         }
     },
 
+    computed: {
+        // show/hide on basis of depenedent settings
+        met_dependencies: function () {
+            // no 'dependencies' key
+            if (!this.option_field.hasOwnProperty('dependencies')) {
+                return true;
+            }
+
+            var i = 0,
+                deps = Object.keys(this.option_field.dependencies);
+
+            // has 'dependencies' key, but no property is set
+            if (!deps.length) {
+                return true;
+            }
+
+            // check if dependencies met
+            for (i = 0; i < deps.length; i++) {
+                var required_dep_value = this.option_field.dependencies[ deps[i] ],
+                    editing_field_value = this.editing_form_field[ deps[i] ];
+
+                if (required_dep_value !== editing_field_value) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    },
+
     methods: {
         update_value: function(property, value) {
             this.$store.commit('update_editing_form_field', {
@@ -129,6 +159,16 @@ Vue.component('builder-stage', {
 
         field_settings: function () {
             return this.$store.state.field_settings;
+        },
+
+        hidden_fields: function () {
+            return this.$store.state.form_fields.filter(function (item) {
+                return 'hidden' === item.input_type;
+            });
+        },
+
+        editing_form_id: function () {
+            return this.$store.state.editing_field_id;
         }
     },
 
@@ -136,7 +176,7 @@ Vue.component('builder-stage', {
         var self = this;
 
         // bind jquery ui sortable
-        $('#form-preview-stage .wpuf-form').sortable({
+        $('#form-preview-stage .wpuf-form.sortable-list').sortable({
             placeholder: 'form-preview-stage-dropzone',
             items: '.field-items',
             handle: '.control-buttons .move',
@@ -204,6 +244,66 @@ Vue.component('builder-stage', {
                 }
             });
         },
+
+        delete_hidden_field: function (field_id) {
+            var i = 0;
+
+            for (i = 0; i < this.form_fields.length; i++) {
+                if (parseInt(field_id) === parseInt(this.form_fields[i].id)) {
+                    this.delete_field(i);
+                }
+            }
+        },
+
+        is_template_available: function (template) {
+            if (this.field_settings[template]) {
+                return true;
+            }
+
+            return false;
+        }
+    }
+});
+
+Vue.component('field-checkbox', {
+    template: '#tmpl-wpuf-field-checkbox',
+
+    mixins: [
+        wpuf_mixins.option_field_mixin
+    ],
+
+    computed: {
+        value: {
+            get: function () {
+                var value = this.editing_form_field[this.option_field.name];
+
+                if (this.option_field.is_single_opt) {
+                    var option = Object.keys(this.option_field.options)[0];
+
+                    if (value === option) {
+                        return true;
+
+                    } else {
+                        return false;
+                    }
+                }
+
+                return this.editing_form_field[this.option_field.name];
+            },
+
+            set: function (value) {
+                if (this.option_field.is_single_opt) {
+                    value = value ? Object.keys(this.option_field.options)[0] : '';
+                }
+
+
+                this.$store.commit('update_editing_form_field', {
+                    editing_field_id: this.editing_form_field.id,
+                    field_name: this.option_field.name,
+                    value: value
+                });
+            }
+        }
     }
 });
 
@@ -487,10 +587,54 @@ Vue.component('form-checkbox_field', {
 });
 
 /**
+ * Field template: Country list
+ */
+Vue.component('form-country_list_field', {
+    template: '#tmpl-wpuf-form-country_list_field',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field template: Hidden
+ */
+Vue.component('form-custom_hidden_field', {
+    template: '#tmpl-wpuf-form-custom_hidden_field',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field template: Date
+ */
+Vue.component('form-date_field', {
+    template: '#tmpl-wpuf-form-date_field',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
  * Field template: Dropdown/Select
  */
 Vue.component('form-dropdown_field', {
     template: '#tmpl-wpuf-form-dropdown_field',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field template: Email
+ */
+Vue.component('form-email_address', {
+    template: '#tmpl-wpuf-form-email_address',
 
     mixins: [
         wpuf_mixins.form_field_mixin
@@ -546,6 +690,28 @@ Vue.component('form-fields', {
 });
 
 /**
+ * Field template: File upload
+ */
+Vue.component('form-file_upload', {
+    template: '#tmpl-wpuf-form-file_upload',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field template: Image Upload
+ */
+Vue.component('form-image_upload', {
+    template: '#tmpl-wpuf-form-image_upload',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
  * Field template: Multi-Select
  */
 Vue.component('form-multiple_select', {
@@ -580,6 +746,17 @@ Vue.component('form-text_field', {
 
 Vue.component('form-textarea_field', {
     template: '#tmpl-wpuf-form-textarea_field',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field template: Website URL
+ */
+Vue.component('form-website_url', {
+    template: '#tmpl-wpuf-form-website_url',
 
     mixins: [
         wpuf_mixins.form_field_mixin
@@ -656,6 +833,11 @@ var wpuf_form_builder_store = new Vuex.Store({
             }
 
             state.current_panel = panel;
+
+            // reset editing field id
+            if ('form-fields' === panel) {
+                state.editing_field_id = 0;
+            }
         },
 
         // add show property to every panel section

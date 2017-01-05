@@ -120,6 +120,7 @@ class WPUF_Admin_Form_Builder {
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
             'panel_sections'    => $this->get_panel_sections(),
             'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
+            'countries'         => json_decode( file_get_contents( WPUF_ASSET_URI . '/js/countries.json') ),
         ) );
 
         wp_localize_script( 'wpuf-form-builder', 'wpuf_form_builder', $wpuf_form_builder );
@@ -134,7 +135,7 @@ class WPUF_Admin_Form_Builder {
     }
 
     /**
-     * Print scripts in admin head
+     * Print js scripts in admin head
      *
      * @since 2.5
      *
@@ -251,7 +252,8 @@ class WPUF_Admin_Form_Builder {
     private function get_custom_fields() {
         $fields = apply_filters( 'wpuf-form-builder-fields-custom-fields', array(
             'text_field', 'textarea_field', 'dropdown_field', 'multiple_select',
-            'radio_field', 'checkbox_field'
+            'radio_field', 'checkbox_field', 'website_url', 'email_address',
+            'custom_hidden_field', 'image_upload',
         ) );
 
         return array(
@@ -299,6 +301,8 @@ class WPUF_Admin_Form_Builder {
             'cancel'                => __( 'Cancel', 'wpuf' ),
             'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wpuf' ),
             'option'                => __( 'Option', 'wpuf' ),
+            'column'                => __( 'Column', 'wpuf' ),
+            'last_column_warn_msg'  => __( 'This field must contain at least one column', 'wpuf' ),
         ) );
     }
 }

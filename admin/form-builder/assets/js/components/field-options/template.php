@@ -12,7 +12,7 @@
             </h3>
 
             <transition name="slide-fade">
-                <div v-if="show_basic_settings" class="option-field-section-fields">
+                <div v-show="show_basic_settings" class="option-field-section-fields">
                     <component
                         v-for="option_field in basic_settings"
                         :is="'field-' + option_field.type"
@@ -24,13 +24,13 @@
         </div>
 
 
-        <div class="option-fields-section">
+        <div v-if="advanced_settings.length" class="option-fields-section">
             <h3 class="section-title" @click="show_advanced_settings = !show_advanced_settings">
                 {{ i18n.advanced_options }}  <i :class="[show_advanced_settings ? 'fa fa-angle-down' : 'fa fa-angle-right']"></i>
             </h3>
 
             <transition name="slide-fade">
-                <div v-if="show_advanced_settings" class="option-field-section-fields">
+                <div v-show="show_advanced_settings" class="option-field-section-fields">
                     <component
                         v-for="option_field in advanced_settings"
                         :is="'field-' + option_field.type"

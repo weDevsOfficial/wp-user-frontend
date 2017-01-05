@@ -339,6 +339,9 @@
 #form-preview-stage .field-items:hover .control-buttons {
   display: block;
 }
+#form-preview-stage .field-items.current-editing {
+  background-color: rgba(255, 185, 0, 0.15);
+}
 #form-preview-stage .form-preview-stage-dropzone {
   background-color: rgba(255, 185, 0, 0.3) !important;
   border: 1px solid #ffb900;
@@ -355,6 +358,17 @@
 }
 #form-preview-stage .form-preview-stage-dropzone + .field-items.empty-list-item {
   display: none;
+}
+#form-preview-stage .hidden-field-list {
+  border-top: 1px dashed #cccccc;
+}
+#form-preview-stage .hidden-field-list h4 {
+  font-weight: 400;
+  font-size: 16px;
+  margin: 12px 0;
+}
+#form-preview-stage .hidden-field-list ul li {
+  background-color: #f1f1f1;
 }
 .panel-form-field-group {
   margin-bottom: 15px;
@@ -415,7 +429,8 @@
   color: rgba(35, 40, 45, 0.5);
   margin-left: 6px;
 }
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="text"] {
+.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="text"],
+.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="number"] {
   display: block;
   width: 100%;
   margin: 5px 0 0;
@@ -428,6 +443,11 @@
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-radio > ul {
   margin-top: 0;
   margin-bottom: 0;
+}
+.wpuf-form-builder-field-options .panel-field-opt .label-hr {
+  border-bottom: 1px solid #ccc;
+  display: block;
+  padding-bottom: 8px;
 }
 .option-field-option-chooser {
   margin: 12px 0 0;
@@ -476,4 +496,31 @@
   cursor: pointer;
   font-size: 16px;
   margin-top: 13px;
+}
+.panel-field-opt-repeater-columns .repeater-columns li > div {
+  float: left;
+}
+.panel-field-opt-repeater-columns .repeater-columns .sorter {
+  width: 30px;
+}
+.panel-field-opt-repeater-columns .repeater-columns .sorter i {
+  cursor: ns-resize;
+  font-size: 16px;
+  margin-top: 5px;
+}
+.panel-field-opt-repeater-columns .repeater-columns .input-container {
+  width: 195px;
+  margin-right: 10px;
+}
+.panel-field-opt-repeater-columns .repeater-columns .input-container input {
+  width: 100%;
+}
+.panel-field-opt-repeater-columns .repeater-columns .action-buttons {
+  width: 50px;
+}
+.panel-field-opt-repeater-columns .repeater-columns .action-buttons i {
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 3px;
+  margin-top: 4px;
 }

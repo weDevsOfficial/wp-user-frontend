@@ -13,12 +13,16 @@ class WPUF_Form_Builder_Field_Settings {
      */
     public static function get_field_settings() {
         return apply_filters( 'wpuf-form-builder-field-settings', array(
-            'text_field'        => self::text_field(),
-            'textarea_field'    => self::textarea_field(),
-            'dropdown_field'    => self::dropdown_field(),
-            'multiple_select'   => self::multiple_select(),
-            'radio_field'       => self::radio_field(),
-            'checkbox_field'    => self::checkbox_field(),
+            'text_field'            => self::text_field(),
+            'textarea_field'        => self::textarea_field(),
+            'dropdown_field'        => self::dropdown_field(),
+            'multiple_select'       => self::multiple_select(),
+            'radio_field'           => self::radio_field(),
+            'checkbox_field'        => self::checkbox_field(),
+            'website_url'           => self::website_url(),
+            'email_address'         => self::email_address(),
+            'custom_hidden_field'   => self::custom_hidden_field(),
+            'image_upload'          => self::image_upload(),
         ) );
     }
 
@@ -168,6 +172,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'default'       => '',
                 'size'          => 40,
                 'id'            => 0,
+                'is_new'        => true,
                 'wpuf_cond'     => self::get_wpuf_cond_prop()
             )
         );
@@ -267,6 +272,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'rich'             => 'no',
                 'word_restriction' => '',
                 'id'               => 0,
+                'is_new'           => true,
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -336,6 +342,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
                 'first'            => __( '- select -', 'wpuf' ),
                 'id'               => 0,
+                'is_new'           => true,
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -375,6 +382,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
                 'first'            => __( '- select -', 'wpuf' ),
                 'id'               => 0,
+                'is_new'           => true,
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -428,6 +436,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'selected'         => '',
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
                 'id'               => 0,
+                'is_new'           => true,
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -481,7 +490,178 @@ class WPUF_Form_Builder_Field_Settings {
                 'selected'         => '',
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
                 'id'               => 0,
+                'is_new'           => true,
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Website URL field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function website_url() {
+        $settings = self::get_common_properties();
+        $settings = array_merge( $settings, self::get_common_text_properties() );
+
+        return array(
+            'template'      => 'website_url',
+            'title'         => __( 'URL', 'wpuf' ),
+            'icon'          => 'link',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'text',
+                'template'      => 'website_url',
+                'required'      => 'no',
+                'label'         => __( 'URL', 'wpuf' ),
+                'name'          => '',
+                'is_meta'       => 'yes',
+                'help'          => '',
+                'css'           => '',
+                'placeholder'   => '',
+                'default'       => '',
+                'size'          => 40,
+                'id'            => 0,
+                'is_new'        => true,
+                'wpuf_cond'     => self::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Email field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function email_address() {
+        $settings = self::get_common_properties();
+        $settings = array_merge( $settings, self::get_common_text_properties() );
+
+        return array(
+            'template'      => 'email_address',
+            'title'         => __( 'Email Address', 'wpuf' ),
+            'icon'          => 'envelope-o',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'text',
+                'template'      => 'email_address',
+                'required'      => 'no',
+                'label'         => __( 'Email', 'wpuf' ),
+                'name'          => '',
+                'is_meta'       => 'yes',
+                'help'          => '',
+                'css'           => '',
+                'placeholder'   => '',
+                'default'       => '',
+                'size'          => 40,
+                'id'            => 0,
+                'is_new'        => true,
+                'wpuf_cond'     => self::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Hidden field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function custom_hidden_field() {
+        $settings = array(
+            array(
+                'name'      => 'name',
+                'title'     => __( 'Meta Key', 'wpuf' ),
+                'type'      => 'text',
+                'section'   => 'basic',
+                'priority'  => 10,
+                'help_text' => __( 'Name of the meta key this field will save to', 'wpuf' ),
+            ),
+
+            array(
+                'name'      => 'meta_value',
+                'title'     => __( 'Meta Value', 'wpuf' ),
+                'type'      => 'text',
+                'section'   => 'basic',
+                'priority'  => 11,
+                'help_text' => __( 'Enter the meta value', 'wpuf' ),
+            ),
+        );
+
+        return array(
+            'template'      => 'custom_hidden_field',
+            'title'         => __( 'Hidden Field', 'wpuf' ),
+            'icon'          => 'eye-slash',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'hidden',
+                'template'      => 'custom_hidden_field',
+                'label'         => '',
+                'name'          => '',
+                'meta_value'    => '',
+                'is_meta'       => 'yes',
+                'id'            => 0,
+                'is_new'        => true,
+                'wpuf_cond'     => null
+            )
+        );
+    }
+
+    /**
+     * Image field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function image_upload() {
+        $settings = self::get_common_properties();
+
+        $settings = array_merge( $settings, array(
+            array(
+                'name'          => 'max_size',
+                'title'         => __( 'Max. file size', 'wpuf' ),
+                'type'          => 'text',
+                'section'       => 'advanced',
+                'priority'      => 20,
+                'help_text'     => __( 'Enter maximum upload size limit in KB', 'wpuf' ),
+            ),
+
+            array(
+                'name'          => 'count',
+                'title'         => __( 'Max. files', 'wpuf' ),
+                'type'          => 'text',
+                'section'       => 'advanced',
+                'priority'      => 21,
+                'help_text'     => __( 'Number of images can be uploaded', 'wpuf' ),
+            ),
+        ) );
+
+        return array(
+            'template'      => 'image_upload',
+            'title'         => __( 'Image Upload', 'wpuf' ),
+            'icon'          => 'file-image-o',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'image_upload',
+                'template'      => 'image_upload',
+                'required'      => 'no',
+                'label'         => __( 'Image Upload', 'wpuf' ),
+                'name'          => '',
+                'is_meta'       => 'yes',
+                'help'          => '',
+                'css'           => '',
+                'max_size'      => '1024',
+                'count'         => '1',
+                'id'            => 0,
+                'is_new'        => true,
+                'wpuf_cond'     => self::get_wpuf_cond_prop()
             )
         );
     }

@@ -1,6 +1,6 @@
 /**
  * Mixin for form fields like
- * field-text_field, field_textarea etc
+ * form-text_field, form-field_textarea etc
  */
 wpuf_mixins.form_field_mixin = {
     props: {

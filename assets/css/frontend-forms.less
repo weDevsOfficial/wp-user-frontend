@@ -200,6 +200,7 @@ ul.wpuf-form {
             }
 
             a.file-selector {
+                display: inline;
                 text-decoration: none;
                 padding: 5px 12px;
                 height: 30px;
@@ -395,6 +396,34 @@ ul.wpuf-form {
                 }
             }
 
+            table.wpuf-repeatable-field {
+                border-collapse: collapse;
+
+                & * {
+                    box-sizing: border-box;
+                }
+
+                input {
+                    width: 100%;
+                }
+
+                .wpuf-repeater-buttons {
+                    width: 75px;
+                    padding-left: 12px;
+
+                    img {
+                        width: 100%;
+                        height: auto;
+                    }
+
+                    i {
+                        display: inline-block;
+                        width: 15px;
+                        height: 15px;
+                        margin: 2px 4px 0 0;
+                    }
+                }
+            }
         }
 
         .wpuf-address-field {

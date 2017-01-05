@@ -53,6 +53,11 @@ var wpuf_form_builder_store = new Vuex.Store({
             }
 
             state.current_panel = panel;
+
+            // reset editing field id
+            if ('form-fields' === panel) {
+                state.editing_field_id = 0;
+            }
         },
 
         // add show property to every panel section

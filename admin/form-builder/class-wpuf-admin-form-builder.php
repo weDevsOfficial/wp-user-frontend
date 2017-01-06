@@ -113,6 +113,7 @@ class WPUF_Admin_Form_Builder {
          * Data required for building the form
          */
         require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
+        require_once WPUF_ROOT . '/includes/countries.php';
 
         $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', array(
             'i18n'              => $this->i18n(),
@@ -120,7 +121,7 @@ class WPUF_Admin_Form_Builder {
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
             'panel_sections'    => $this->get_panel_sections(),
             'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
-            'countries'         => json_decode( file_get_contents( WPUF_ASSET_URI . '/js/countries.json') ),
+            'countries'         => $countries
         ) );
 
         wp_localize_script( 'wpuf-form-builder', 'wpuf_form_builder', $wpuf_form_builder );
@@ -144,13 +145,17 @@ class WPUF_Admin_Form_Builder {
     public function admin_print_scripts() {
         ?>
             <script>
-                var wpuf_form_builder_mixins = function(mixins) {
+                var wpuf_form_builder_mixins = function(mixins, mixin_parent) {
                     if (!mixins || !mixins.length) {
                         return [];
                     }
 
+                    if (!mixin_parent) {
+                        mixin_parent = window;
+                    }
+
                     return mixins.map(function (mixin) {
-                        return window[mixin];
+                        return mixin_parent[mixin];
                     });
                 };
             </script>

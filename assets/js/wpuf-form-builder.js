@@ -793,7 +793,6 @@ if (!Array.prototype.hasOwnProperty('swap')) {
 
 // check if an element is visible in browser viewport
 function is_element_in_viewport (el) {
-    //special bonus for those using jQuery
     if (typeof jQuery === "function" && el instanceof jQuery) {
         el = el[0];
     }

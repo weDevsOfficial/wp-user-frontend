@@ -201,7 +201,9 @@ module.exports = function(grunt) {
         concat: {
             formBuilder: {
                 files: {
-                    '<%= dirs.js %>/wpuf-form-builder.js': formBuilderAssets,
+                    '<%= dirs.js %>/wpuf-form-builder.js': 'admin/form-builder/assets/js/form-builder.js',
+                    '<%= dirs.js %>/wpuf-form-builder-mixins.js': formBuilderAssets.mixins,
+                    '<%= dirs.js %>/wpuf-form-builder-components.js': formBuilderAssets.components,
                 }
             },
         },

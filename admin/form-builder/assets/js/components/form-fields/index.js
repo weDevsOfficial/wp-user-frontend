@@ -20,8 +20,8 @@ Vue.component('form-fields', {
             connectToSortable: '#form-preview-stage .wpuf-form',
             helper: 'clone',
             revert: 'invalid',
-            cancel: '',
-        });
+            cancel: '.button-pro-feature',
+        }).disableSelection();
     },
 
     methods: {
@@ -42,6 +42,29 @@ Vue.component('form-fields', {
 
             // add new form element
             this.$store.commit('add_form_field_element', payload);
+        },
+
+        is_pro_feature: function (field) {
+            return this.field_settings[field].pro_feature;
+        },
+
+        alert_pro_feature: function (field) {
+            var title = this.field_settings[field].title;
+
+            swal({
+                title: '<i class="fa fa-lock"></i> ' + title + ' <br>' + this.i18n.is_a_pro_feature,
+                text: this.i18n.pro_feature_msg,
+                type: '',
+                html: true,
+                showCancelButton: true,
+                cancelButtonText: this.i18n.cancel,
+                confirmButtonColor: '#46b450',
+                confirmButtonText: this.i18n.upgrade_to_pro
+            }, function (is_confirm) {
+                if (is_confirm) {
+                    window.open(wpuf_form_builder.pro_link, '_blank');
+                }
+            });
         }
     }
 });

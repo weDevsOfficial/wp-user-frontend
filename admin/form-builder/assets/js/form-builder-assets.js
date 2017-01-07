@@ -8,7 +8,10 @@ function assets() {
 
     const grunt     = require('grunt');
     const fs        = require('fs');
-    let paths       = ['admin/form-builder/assets/js/jquery-siaf-start.js'];
+    let paths       = {
+        mixins:     ['admin/form-builder/assets/js/jquery-siaf-start.js'],
+        components: ['admin/form-builder/assets/js/jquery-siaf-start.js']
+    };
 
     // mixins
     const mixinsPath  = './admin/form-builder/assets/js/mixins/';
@@ -18,7 +21,7 @@ function assets() {
         const path = `${mixinsPath}${mixin}`;
 
         if (grunt.file.isFile(path)) {
-            paths.push(path);
+            paths.mixins.push(path);
         }
     });
 
@@ -30,12 +33,12 @@ function assets() {
         const path = `${componentPath}${component}`;
 
         if (grunt.file.isDir(path)) {
-            paths.push(path + '/index.js');
+            paths.components.push(path + '/index.js');
         }
     });
 
-    paths.push('admin/form-builder/assets/js/form-builder.js');
-    paths.push('admin/form-builder/assets/js/jquery-siaf-end.js');
+    paths.mixins.push('admin/form-builder/assets/js/jquery-siaf-end.js');
+    paths.components.push('admin/form-builder/assets/js/jquery-siaf-end.js');
 
     return paths;
 }

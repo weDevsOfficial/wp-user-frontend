@@ -134,8 +134,9 @@ class WPUF_Admin_Form {
         add_action( 'wpuf-form-builder-js-builder-stage-mixins', array( $this, 'js_builder_stage_mixins' ) );
         add_action( 'wpuf-form-builder-template-builder-stage-submit-area', array( $this, 'form_submit_area' ) );
 
-
         if ( isset( $_GET['action'] ) && ( 'edit' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
+            do_action( 'wpuf-form-builder-init-type-wpuf_forms' );
+
             $settings = array(
                 'form_type'         => 'post',
                 'post_type'         => 'wpuf_forms',

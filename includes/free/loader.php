@@ -45,6 +45,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         //class files to include pro elements
         require_once dirname( __FILE__ ) . '/form.php';
+        require_once dirname( __FILE__ ) . '/form-element.php';
         require_once dirname( __FILE__ ) . '/subscription.php';
         require_once dirname( __FILE__ ) . '/edit-profile.php';
         require_once dirname( __FILE__ ) . '/edit-user.php';
@@ -52,6 +53,10 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
     public function instantiate(){
         new WPUF_Edit_Profile();
+
+        if ( is_admin() ) {
+            new WPUF_Admin_Form_Free();
+        }
     }
 
     function admin_menu_top() {

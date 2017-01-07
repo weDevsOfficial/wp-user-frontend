@@ -20,6 +20,10 @@ Vue.component('builder-stage', {
 
         editing_form_id: function () {
             return this.$store.state.editing_field_id;
+        },
+
+        pro_link: function () {
+            return wpuf_form_builder.pro_link;
         }
     },
 
@@ -106,8 +110,16 @@ Vue.component('builder-stage', {
             }
         },
 
+        is_pro_feature: function (template) {
+            return (this.field_settings[template] && this.field_settings[template].pro_feature) ? true : false;
+        },
+
         is_template_available: function (template) {
             if (this.field_settings[template]) {
+                if (this.is_pro_feature(template)) {
+                    return false;
+                }
+
                 return true;
             }
 

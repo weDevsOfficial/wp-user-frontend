@@ -6,16 +6,27 @@
 
         <transition name="slide-fade">
             <ul v-show="section.show" class="panel-form-field-buttons clearfix">
-                <li
-                    v-for="field in section.fields"
-                    type="button"
-                    class="button"
-                    :data-form-field="field"
-                    data-source="panel"
-                    @click="add_form_field(field)"
-                >
-                    <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
-                </li>
+                <template v-for="field in section.fields">
+                    <li
+                        v-if="is_pro_feature(field)"
+                        class="button button-pro-feature"
+                        :data-form-field="field"
+                        data-source="panel"
+                        @click="alert_pro_feature(field)"
+                    >
+                        <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
+                    </li>
+
+                    <li
+                        v-else
+                        class="button"
+                        :data-form-field="field"
+                        data-source="panel"
+                        @click="add_form_field(field)"
+                    >
+                        <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
+                    </li>
+                </template>
             </ul>
         </transition>
     </div>

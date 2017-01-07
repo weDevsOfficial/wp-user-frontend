@@ -107,13 +107,24 @@ class WPUF_Admin_Form_Builder {
             'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert', 'wpuf-jquery-scrollTo'
         ) );
 
-        wp_enqueue_script( 'wpuf-form-builder', WPUF_ASSET_URI . '/js/wpuf-form-builder.js', $form_builder_js_deps, WPUF_VERSION, true );
+        wp_enqueue_script( 'wpuf-form-builder-mixins', WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js', $form_builder_js_deps, WPUF_VERSION, true );
+
+        do_action( 'wpuf-form-builder-enqueue-after-mixins' );
+
+        wp_enqueue_script( 'wpuf-form-builder-components', WPUF_ASSET_URI . '/js/wpuf-form-builder-components.js', array( 'wpuf-form-builder-mixins' ), WPUF_VERSION, true );
+
+        do_action( 'wpuf-form-builder-enqueue-after-components' );
+
+        wp_enqueue_script( 'wpuf-form-builder', WPUF_ASSET_URI . '/js/wpuf-form-builder.js', array( 'wpuf-form-builder-components' ), WPUF_VERSION, true );
+
+        do_action( 'wpuf-form-builder-enqueue-after-main-instance' );
 
         /*
          * Data required for building the form
          */
         require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
         require_once WPUF_ROOT . '/includes/countries.php';
+        require_once WPUF_ROOT . '/includes/free/prompt.php';
 
         $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', array(
             'i18n'              => $this->i18n(),
@@ -121,10 +132,11 @@ class WPUF_Admin_Form_Builder {
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
             'panel_sections'    => $this->get_panel_sections(),
             'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
-            'countries'         => $countries
+            'countries'         => $countries,
+            'pro_link'          => WPUF_Pro_Prompt::get_pro_url()
         ) );
 
-        wp_localize_script( 'wpuf-form-builder', 'wpuf_form_builder', $wpuf_form_builder );
+        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
 
         // mixins
         $wpuf_mixins = array(
@@ -132,7 +144,7 @@ class WPUF_Admin_Form_Builder {
             'builder_stage'  => apply_filters( 'wpuf-form-builder-js-builder-stage-mixins', array() ),
         );
 
-        wp_localize_script( 'wpuf-form-builder', 'wpuf_mixins', $wpuf_mixins );
+        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
     }
 
     /**
@@ -187,11 +199,11 @@ class WPUF_Admin_Form_Builder {
         }
 
         // html templates of vue components
-        $templates = apply_filters( 'wpuf-form-builder-js-templates', $components );
-
-        foreach ( $templates as $template ) {
-            $this->include_js_template( $template );
+        foreach ( $components as $component ) {
+            self::include_js_template( $component );
         }
+
+        do_action( 'wpuf-form-builder-add-js-templates' );
     }
 
     /**
@@ -204,13 +216,14 @@ class WPUF_Admin_Form_Builder {
      *
      * @return void
      */
-    public function include_js_template( $template, $file_path = '' ) {
-        $file_path = $file_path ? untrailingslashit( $file_path ) : WPUF_ROOT . '/admin/form-builder/assets/js/components/' . $template;
-        $file = $file_path . '/template.php';
+    public static function include_js_template( $template, $file_path = '' ) {
+        $file_path = $file_path ? untrailingslashit( $file_path ) : WPUF_ROOT . '/admin/form-builder/assets/js/components';
 
-        if ( file_exists( $file ) ) {
-            echo '<script type="text/html" id="tmpl-wpuf-' . $template . '">' . "\n";
-            include $file;
+        $file_path = $file_path . '/' . $template . '/template.php';
+
+        if ( file_exists( $file_path ) ) {
+            echo '<script type="text/x-template" id="tmpl-wpuf-' . $template . '">' . "\n";
+            include apply_filters( 'wpuf-form-builder-js-template-path', $file_path, $template );
             echo "\n" . '</script>' . "\n";
         }
     }
@@ -258,7 +271,7 @@ class WPUF_Admin_Form_Builder {
         $fields = apply_filters( 'wpuf-form-builder-fields-custom-fields', array(
             'text_field', 'textarea_field', 'dropdown_field', 'multiple_select',
             'radio_field', 'checkbox_field', 'website_url', 'email_address',
-            'custom_hidden_field', 'image_upload',
+            'custom_hidden_field', 'image_upload'
         ) );
 
         return array(
@@ -308,6 +321,10 @@ class WPUF_Admin_Form_Builder {
             'option'                => __( 'Option', 'wpuf' ),
             'column'                => __( 'Column', 'wpuf' ),
             'last_column_warn_msg'  => __( 'This field must contain at least one column', 'wpuf' ),
+            'is_a_pro_feature'      => __( 'is available in Pro version', 'wpuf' ),
+            'pro_feature_msg'       => __( 'Please upgrade to the Pro version to unlock all these awesome features', 'wpuf' ),
+            'upgrade_to_pro'        => __( 'Get the Pro version', 'wpuf' ),
+
         ) );
     }
 }

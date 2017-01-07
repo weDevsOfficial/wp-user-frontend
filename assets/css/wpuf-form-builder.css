@@ -69,6 +69,10 @@
 .sweet-alert {
   border-radius: 0;
 }
+.sweet-alert h2 {
+  font-size: 26px;
+  line-height: 1.6;
+}
 .sweet-alert p {
   font-size: 16px;
   font-weight: 400;
@@ -342,6 +346,9 @@
 #form-preview-stage .field-items.current-editing {
   background-color: rgba(255, 185, 0, 0.15);
 }
+#form-preview-stage .field-items.current-editing.ui-sortable-helper {
+  background-color: #fff;
+}
 #form-preview-stage .form-preview-stage-dropzone {
   background-color: rgba(255, 185, 0, 0.3) !important;
   border: 1px solid #ffb900;
@@ -398,6 +405,9 @@
 }
 .panel-form-field-group .button:nth-child(odd) {
   margin-right: 2%;
+}
+.panel-form-field-group .button.button-pro-feature {
+  opacity: .5;
 }
 .button.ui-draggable-dragging {
   margin: 0;

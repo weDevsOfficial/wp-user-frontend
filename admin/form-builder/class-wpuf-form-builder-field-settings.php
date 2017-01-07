@@ -22,7 +22,7 @@ class WPUF_Form_Builder_Field_Settings {
             'website_url'           => self::website_url(),
             'email_address'         => self::email_address(),
             'custom_hidden_field'   => self::custom_hidden_field(),
-            'image_upload'          => self::image_upload(),
+            'image_upload'          => self::image_upload()
         ) );
     }
 
@@ -434,6 +434,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'help'             => '',
                 'css'              => '',
                 'selected'         => '',
+                'inline'           => 'no',
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
                 'id'               => 0,
                 'is_new'           => true,
@@ -488,6 +489,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'help'             => '',
                 'css'              => '',
                 'selected'         => '',
+                'inline'           => 'no',
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
                 'id'               => 0,
                 'is_new'           => true,

@@ -102,6 +102,11 @@
 .sweet-alert {
     border-radius: 0;
 
+    h2 {
+        font-size: 26px;
+        line-height: 1.6;
+    }
+
     p {
         font-size: 16px;
         font-weight: 400;
@@ -431,6 +436,10 @@
 
         &.current-editing {
             background-color: fade(@wpYellow, 15%);
+
+            &.ui-sortable-helper {
+                background-color: #fff;
+            }
         }
     }
 
@@ -506,6 +515,10 @@
 
         &:nth-child(odd) {
             margin-right: 2%;
+        }
+
+        &.button-pro-feature {
+            opacity: .5;
         }
     }
 }

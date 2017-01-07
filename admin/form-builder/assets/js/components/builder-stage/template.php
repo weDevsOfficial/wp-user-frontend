@@ -23,6 +23,12 @@
 
             <component v-if="is_template_available(field.template)" :is="'form-' + field.template" :field="field"></component>
 
+            <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
+                <label class="wpuf-pro-text-alert">
+                    <a :href="pro_link" target="_blank"><?php _e( 'Available in Pro Version', 'wpuf' ); ?></a>
+                </label>
+            </div>
+
             <div class="control-buttons" v-if="is_template_available(field.template)">
                 <p>
                     <i class="fa fa-arrows move"></i>

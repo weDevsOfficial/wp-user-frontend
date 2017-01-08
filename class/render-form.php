@@ -295,6 +295,10 @@ class WPUF_Render_Form {
      */
     function render_form( $form_id, $post_id = NULL, $preview = false ) {
 
+        if ( ! get_post_status( $form_id ) ) {
+            return;
+        }
+
         $form_vars = wpuf_get_form_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
 
@@ -622,7 +626,6 @@ class WPUF_Render_Form {
                 </head>
                 <body>
                     <div class="container">
-
                         <?php $this->render_form( $form_id, null, true ); ?>
                     </div>
                 </body>

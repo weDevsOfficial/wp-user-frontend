@@ -50,7 +50,7 @@ class WPUF_Subscription {
      *
      * @return WPUF_Subscription
      */
-    public function user_subscription_cancel () {
+    public function user_subscription_cancel() {
 
         if ( isset( $_POST['wpuf_cancel_subscription'] ) ) {
 
@@ -62,8 +62,10 @@ class WPUF_Subscription {
             $current_pack = self::get_user_pack( $user_id );
 
             if ( $current_pack['recurring'] == 'yes' ) {
-                $wpuf_paypal  = new WPUF_Paypal();
-                $wpuf_paypal->recurring_change_status( $user_id, 'Cancel' );
+
+                $gateway = sanitize_text_field( $_POST['gateway'] );
+
+                do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );
             } else {
                 WPUF_Subscription::init()->update_user_subscription_meta( $user_id, 'Cancel' );
             }
@@ -564,7 +566,7 @@ class WPUF_Subscription {
             );
 
             if ( $recurring ) {
-                $totla_date =  date( 'd-m-Y', strtotime('+' . $cycle_number . $cycle_period . 's') );
+                $totla_date =  date( 'd-m-Y', strtotime('+' . $subscription->meta_value['billing_cycle_number'] . $subscription->meta_value['cycle_period'] . 's') );
                 $user_meta['expire']     = '';
                 $user_meta['profile_id'] = $profile_id;
                 $user_meta['recurring']  = 'yes';
@@ -773,16 +775,25 @@ class WPUF_Subscription {
             printf( '<h1>%1$s</h1><p>%2$s</p>', __( 'Payment is complete', 'wpuf' ), __( 'Congratulations, your payment has been completed!', 'wpuf' ) );
         }
 
-        $current_pack = self::get_user_pack( get_current_user_id());
-        if( isset( $current_pack['pack_id'] ) ) {
+        $current_pack = self::get_user_pack( get_current_user_id() );
+
+        if ( isset( $current_pack['pack_id'] ) ) {
+
+            global $wpdb;
+
+            $user_id = get_current_user_id();
+            $payment_gateway = $wpdb->get_var( "SELECT payment_type FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = {$user_id}" );
+
+            $payment_gateway = strtolower( $payment_gateway );
             ?>
 
-            <?php  _e( '<p><i>You have a subscription pack activated. </i></p>', 'wpuf' ); ?>
-            <?php  _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' ); ?>
+            <?php _e( '<p><i>You have a subscription pack activated. </i></p>', 'wpuf' ); ?>
+            <?php _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' ); ?>
             <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wpuf' ); ?>
 
             <form action="" method="post">
                 <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
+                <input type="hidden" name="gateway" value="<?php echo $payment_gateway; ?>">
                 <input type="submit" name="wpuf_cancel_subscription" class="btn btn-sm btn-danger" value="<?php _e( 'Cancel', 'wpuf' ); ?>">
             </form>
             <?php

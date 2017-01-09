@@ -372,7 +372,7 @@ class WPUF_Payment {
         //check if it's already there
         $sql = $wpdb->prepare( "SELECT transaction_id
                 FROM " . $wpdb->prefix . "wpuf_transaction
-                WHERE transaction_id = %d LIMIT 1", $transaction_id );
+                WHERE transaction_id = %s LIMIT 1", $transaction_id );
 
         $result = $wpdb->get_row( $sql );
 

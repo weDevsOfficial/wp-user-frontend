@@ -150,8 +150,6 @@ class WPUF_Paypal {
 
         if ( $data['type'] == 'pack' && $data['custom']['recurring_pay'] == 'yes' ) {
 
-            $trial_cost = !empty( $data['custom']['trial_cost'] ) ? number_format( $data['custom']['trial_cost'] ) : '0';
-
             if( $data['custom']['cycle_period'] == "day")
                 $period = "D";
             elseif( $data['custom']['cycle_period'] == "week")
@@ -178,7 +176,7 @@ class WPUF_Paypal {
                 'p3'            =>  !empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number']: '0',
                 't3'            =>  $period,
                 'item_name'     =>  $data['custom']['post_title'],
-                'custom'        =>  json_encode( array( 'billing_amount' => $billing_amount, 'trial_cost' => $trial_cost, 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id )),
+                'custom'        =>  json_encode( array( 'billing_amount' => $billing_amount, 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id )),
                 'no_shipping'   =>  '1',
                 'shipping'      =>  '0',
                 'no_note'       =>  '1',
@@ -194,7 +192,6 @@ class WPUF_Paypal {
             );
 
             if ( $data['custom']['trial_status'] == 'yes' ) {
-                $paypal_args['a1'] = $trial_cost;
                 $paypal_args['p1'] = $data['custom']['trial_duration'];
                 $paypal_args['t1'] = $trial_period;
             }
@@ -279,7 +276,7 @@ class WPUF_Paypal {
             // check if recurring payment
             if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_payment' ) && ( strtolower( $postdata['payment_status'] ) == 'completed' ) ) {
 
-                if ( $postdata['mc_gross'] == $custom->billing_amount || ( $postdata['mc_gross'] == $custom->trial_cost && $custom->trial_cost > 0 ) ) {
+                if ( $postdata['mc_gross'] == $custom->billing_amount ) {
 
                     $insert_payment     = true;
                     $post_id            = 0;

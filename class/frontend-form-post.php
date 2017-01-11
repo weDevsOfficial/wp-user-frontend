@@ -557,24 +557,21 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
     function draft_post() {
         check_ajax_referer( 'wpuf_form_add' );
-        
+
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
         $form_id       = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
         $form_vars     = $this->get_input_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
-        
+
         $content_slug = 'post_content_'.$form_id;
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
 
-        // echo json_encode( $_POST );
-        // print_r( $post_vars );
-        // print_r( $taxonomy_vars );
-        // print_r( $meta_vars );
-       
+        $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+
         $postarr = array(
             'post_type'    => $form_settings['post_type'],
-            'post_status'  => 'draft',
+            'post_status'  => ( $charging_enabled == 'yes' ) ? 'pending' : 'draft',
             'post_author'  => get_current_user_id(),
             'post_title'   => isset( $_POST['post_title'] ) ? trim( $_POST['post_title'] ) : '',
             'post_content' => isset( $_POST[$content_slug] ) ? trim( $_POST[$content_slug] ) : '',
@@ -600,6 +597,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $post_id = wp_insert_post( $postarr );
 
         if ( $post_id ) {
+
+            // Add order id if the charging is enabled
+            if ( $charging_enabled == 'yes' ) {
+                $order_id = uniqid( rand( 10, 1000 ), false );
+                update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
+            }
+
             self::update_post_meta( $meta_vars, $post_id );
 
             // set the post form_id for later usage
@@ -729,8 +733,6 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
     function prepare_mail_body( $content, $user_id, $post_id ) {
         $user = get_user_by( 'id', $user_id );
         $post = get_post( $post_id );
-
-        // var_dump($post);
 
         $post_field_search = array( '%post_title%', '%post_content%', '%post_excerpt%', '%tags%', '%category%',
             '%author%', '%author_email%', '%author_bio%', '%sitename%', '%siteurl%', '%permalink%', '%editlink%' );

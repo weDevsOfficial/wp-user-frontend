@@ -14,7 +14,7 @@
                         data-source="panel"
                         @click="alert_pro_feature(field)"
                     >
-                        <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
+                        <i v-if="field_settings[field].icon" :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
                     </li>
 
                     <li
@@ -24,7 +24,7 @@
                         data-source="panel"
                         @click="alert_invalidate_msg(field)"
                     >
-                        <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
+                        <i v-if="field_settings[field].icon" :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
                     </li>
 
                     <li
@@ -34,7 +34,7 @@
                         data-source="panel"
                         @click="add_form_field(field)"
                     >
-                        <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
+                        <i v-if="field_settings[field].icon" :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
                     </li>
                 </template>
             </ul>

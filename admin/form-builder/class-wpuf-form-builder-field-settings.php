@@ -22,7 +22,9 @@ class WPUF_Form_Builder_Field_Settings {
             'website_url'           => self::website_url(),
             'email_address'         => self::email_address(),
             'custom_hidden_field'   => self::custom_hidden_field(),
-            'image_upload'          => self::image_upload()
+            'image_upload'          => self::image_upload(),
+            'section_break'         => self::section_break(),
+            'custom_html'           => self::custom_html()
         ) );
     }
 
@@ -662,6 +664,87 @@ class WPUF_Form_Builder_Field_Settings {
                 'css'           => '',
                 'max_size'      => '1024',
                 'count'         => '1',
+                'id'            => 0,
+                'is_new'        => true,
+                'wpuf_cond'     => self::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Section break field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function section_break() {
+        $settings = array(
+            array(
+                'name'      => 'label',
+                'title'     => __( 'Title', 'wpuf' ),
+                'type'      => 'text',
+                'section'   => 'basic',
+                'priority'  => 10,
+                'help_text' => __( 'Title of the section', 'wpuf' ),
+            ),
+
+            array(
+                'name'      => 'description',
+                'title'     => __( 'Description', 'wpuf' ),
+                'type'      => 'textarea',
+                'section'   => 'basic',
+                'priority'  => 11,
+                'help_text' => __( 'Some details text about the section', 'wpuf' ),
+            ),
+        );
+
+        return array(
+            'template'      => 'section_break',
+            'title'         => __( 'Section Break', 'wpuf' ),
+            'is_full_width' => true,
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'section_break',
+                'template'      => 'section_break',
+                'label'         => __( 'Section Break', 'wpuf' ),
+                'description'   => __( 'Some description about this section', 'wpuf' ),
+                'id'            => 0,
+                'is_new'        => true,
+                'wpuf_cond'     => self::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * HTML field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function custom_html() {
+        $settings = array(
+            array(
+                'name'      => 'html',
+                'title'     => __( 'HTML Codes', 'wpuf' ),
+                'type'      => 'textarea',
+                'section'   => 'basic',
+                'priority'  => 11,
+                'help_text' => __( 'Paste your HTML codes, WordPress shortcodes will also work here', 'wpuf' ),
+            ),
+        );
+
+        return array(
+            'template'      => 'custom_html',
+            'title'         => __( 'Custom HTML', 'wpuf' ),
+            'is_full_width' => true,
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'html',
+                'template'      => 'custom_html',
+                'label'         => __( 'Custom HTML', 'wpuf' ),
+                'html'          => sprintf( '<p>%s</p>', __( 'Some description about this section', 'wpuf' ) ),
                 'id'            => 0,
                 'is_new'        => true,
                 'wpuf_cond'     => self::get_wpuf_cond_prop()

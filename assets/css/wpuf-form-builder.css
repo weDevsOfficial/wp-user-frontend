@@ -656,3 +656,9 @@
   padding: 0 3px;
   margin-top: 4px;
 }
+.panel-field-opt-textarea textarea {
+  display: block;
+  width: 100%;
+  margin: 5px 0 0;
+  line-height: 1.75;
+}

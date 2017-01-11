@@ -301,7 +301,7 @@ class WPUF_Admin_Form_Builder {
      */
     private function get_others_fields() {
         $fields = apply_filters( 'wpuf-form-builder-fields-others-fields', array(
-            'text_field', 'textarea_field'
+            'section_break', 'custom_html'
         ) );
 
         return array(

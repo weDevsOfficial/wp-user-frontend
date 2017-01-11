@@ -449,6 +449,26 @@ Vue.component('field-text-meta', {
     }
 });
 
+Vue.component('field-textarea', {
+    template: '#tmpl-wpuf-field-textarea',
+
+    mixins: [
+        wpuf_mixins.option_field_mixin
+    ],
+
+    computed: {
+        value: {
+            get: function () {
+                return this.editing_form_field[this.option_field.name];
+            },
+
+            set: function (value) {
+                this.update_value(this.option_field.name, value);
+            }
+        }
+    },
+});
+
 /**
  * Field template: Checkbox
  */
@@ -469,6 +489,23 @@ Vue.component('form-custom_hidden_field', {
     mixins: [
         wpuf_mixins.form_field_mixin
     ]
+});
+
+/**
+ * Field template: Custom HTML
+ */
+Vue.component('form-custom_html', {
+    template: '#tmpl-wpuf-form-custom_html',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ],
+
+    data: function () {
+        return {
+            raw_html: '<p>from data</p>'
+        };
+    }
 });
 
 /**
@@ -619,6 +656,17 @@ Vue.component('form-multiple_select', {
  */
 Vue.component('form-radio_field', {
     template: '#tmpl-wpuf-form-radio_field',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field template: Section Break
+ */
+Vue.component('form-section_break', {
+    template: '#tmpl-wpuf-form-section_break',
 
     mixins: [
         wpuf_mixins.form_field_mixin

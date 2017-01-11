@@ -4,6 +4,8 @@
 Vue.component('form-fields', {
     template: '#tmpl-wpuf-form-fields',
 
+    mixins: wpuf_form_builder_mixins(wpuf_mixins.form_fields),
+
     computed: {
         panel_sections: function () {
             return this.$store.state.panel_sections;
@@ -57,7 +59,7 @@ Vue.component('form-fields', {
                 type: '',
                 html: true,
                 showCancelButton: true,
-                cancelButtonText: this.i18n.cancel,
+                cancelButtonText: this.i18n.close,
                 confirmButtonColor: '#46b450',
                 confirmButtonText: this.i18n.upgrade_to_pro
             }, function (is_confirm) {
@@ -65,6 +67,32 @@ Vue.component('form-fields', {
                     window.open(wpuf_form_builder.pro_link, '_blank');
                 }
             });
+        },
+
+        is_failed_to_validate: function (field) {
+            var validator = this.field_settings[field].validator;
+
+            if (validator && validator.callback && !this[validator.callback]()) {
+                return true;
+            }
+
+            return false;
+        },
+
+        alert_invalidate_msg: function (field) {
+            var validator = this.field_settings[field].validator;
+
+            if (validator && validator.msg) {
+                this.warn({
+                    title: validator.msg_title || '',
+                    text: validator.msg,
+                    html: true,
+                    type: 'warning',
+                    showCancelButton: false,
+                    confirmButtonColor: '#46b450',
+                    confirmButtonText: this.i18n.ok
+                });
+            }
         }
     }
 });

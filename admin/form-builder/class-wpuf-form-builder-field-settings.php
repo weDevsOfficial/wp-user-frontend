@@ -119,6 +119,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'      => 'size',
                 'title'     => __( 'Size', 'wpuf' ),
                 'type'      => 'text',
+                'variation' => 'number',
                 'section'   => 'advanced',
                 'priority'  => 20,
                 'help_text' => __( 'Size of this input field', 'wpuf' ),

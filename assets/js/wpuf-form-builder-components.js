@@ -127,6 +127,14 @@ Vue.component('builder-stage', {
             }
 
             return false;
+        },
+
+        is_full_width: function (template) {
+            if (this.field_settings[template] && this.field_settings[template].is_full_width) {
+                return true;
+            }
+
+            return false;
         }
     }
 });
@@ -453,17 +461,6 @@ Vue.component('form-checkbox_field', {
 });
 
 /**
- * Field template: Country list
- */
-Vue.component('form-country_list_field', {
-    template: '#tmpl-wpuf-form-country_list_field',
-
-    mixins: [
-        wpuf_mixins.form_field_mixin
-    ]
-});
-
-/**
  * Field template: Hidden
  */
 Vue.component('form-custom_hidden_field', {
@@ -501,6 +498,8 @@ Vue.component('form-email_address', {
  */
 Vue.component('form-fields', {
     template: '#tmpl-wpuf-form-fields',
+
+    mixins: wpuf_form_builder_mixins(wpuf_mixins.form_fields),
 
     computed: {
         panel_sections: function () {
@@ -555,7 +554,7 @@ Vue.component('form-fields', {
                 type: '',
                 html: true,
                 showCancelButton: true,
-                cancelButtonText: this.i18n.cancel,
+                cancelButtonText: this.i18n.close,
                 confirmButtonColor: '#46b450',
                 confirmButtonText: this.i18n.upgrade_to_pro
             }, function (is_confirm) {
@@ -563,6 +562,32 @@ Vue.component('form-fields', {
                     window.open(wpuf_form_builder.pro_link, '_blank');
                 }
             });
+        },
+
+        is_failed_to_validate: function (field) {
+            var validator = this.field_settings[field].validator;
+
+            if (validator && validator.callback && !this[validator.callback]()) {
+                return true;
+            }
+
+            return false;
+        },
+
+        alert_invalidate_msg: function (field) {
+            var validator = this.field_settings[field].validator;
+
+            if (validator && validator.msg) {
+                this.warn({
+                    title: validator.msg_title || '',
+                    text: validator.msg,
+                    html: true,
+                    type: 'warning',
+                    showCancelButton: false,
+                    confirmButtonColor: '#46b450',
+                    confirmButtonText: this.i18n.ok
+                });
+            }
         }
     }
 });

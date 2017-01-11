@@ -78,12 +78,16 @@ class WPUF_Admin_Form_Builder {
         wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
         wp_enqueue_style( 'wpuf-font-awesome', WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css', array(), WPUF_VERSION );
         wp_enqueue_style( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert.css', array(), WPUF_VERSION );
+        wp_enqueue_style( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css', array(), WPUF_VERSION );
+
 
         $form_builder_css_deps = apply_filters( 'wpuf-form-builder-css-deps', array(
-            'wpuf-css', 'wpuf-font-awesome', 'wpuf-sweetalert'
+            'wpuf-css', 'wpuf-font-awesome', 'wpuf-sweetalert', 'wpuf-selectize',
         ) );
 
         wp_enqueue_style( 'wpuf-form-builder', WPUF_ASSET_URI . '/css/wpuf-form-builder.css', $form_builder_css_deps, WPUF_VERSION );
+
+        do_action( 'wpuf-form-builder-enqueue-style' );
 
         /**
          * JavaScript
@@ -93,18 +97,22 @@ class WPUF_Admin_Form_Builder {
             wp_enqueue_script( 'wpuf-vuex', WPUF_ASSET_URI . '/vendor/vuex/vuex.js', array( 'wpuf-vue' ), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert-dev.js', array(), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo.js', array( 'jquery' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize.js', array( 'jquery' ), WPUF_VERSION, true );
 
         } else {
             wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue.min.js', array(), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-vuex', WPUF_ASSET_URI . '/vendor/vuex/vuex.min.js', array( 'wpuf-vue' ), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert.min.js', array(), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo.min.js', array( 'jquery' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize.min.js', array( 'jquery' ), WPUF_VERSION, true );
         }
+
 
 
         $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', array(
             'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'underscore',
-            'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert', 'wpuf-jquery-scrollTo'
+            'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert', 'wpuf-jquery-scrollTo',
+            'wpuf-selectize'
         ) );
 
         wp_enqueue_script( 'wpuf-form-builder-mixins', WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js', $form_builder_js_deps, WPUF_VERSION, true );
@@ -123,8 +131,9 @@ class WPUF_Admin_Form_Builder {
          * Data required for building the form
          */
         require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
-        require_once WPUF_ROOT . '/includes/countries.php';
         require_once WPUF_ROOT . '/includes/free/prompt.php';
+
+        $countries = file_get_contents( WPUF_ASSET_URI . '/js/countries.json' );
 
         $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', array(
             'i18n'              => $this->i18n(),
@@ -132,7 +141,7 @@ class WPUF_Admin_Form_Builder {
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
             'panel_sections'    => $this->get_panel_sections(),
             'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
-            'countries'         => $countries,
+            'countries'         => json_decode( $countries ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url()
         ) );
 
@@ -142,6 +151,7 @@ class WPUF_Admin_Form_Builder {
         $wpuf_mixins = array(
             'root'           => apply_filters( 'wpuf-form-builder-js-root-mixins', array() ),
             'builder_stage'  => apply_filters( 'wpuf-form-builder-js-builder-stage-mixins', array() ),
+            'form_fields'    => apply_filters( 'wpuf-form-builder-js-form-fields-mixins', array() ),
         );
 
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
@@ -317,6 +327,7 @@ class WPUF_Admin_Form_Builder {
             'no_cancel_it'          => __( 'No, cancel it', 'wpuf' ),
             'ok'                    => __( 'OK', 'wpuf' ),
             'cancel'                => __( 'Cancel', 'wpuf' ),
+            'close'                 => __( 'Close', 'wpuf' ),
             'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wpuf' ),
             'option'                => __( 'Option', 'wpuf' ),
             'column'                => __( 'Column', 'wpuf' ),
@@ -324,7 +335,10 @@ class WPUF_Admin_Form_Builder {
             'is_a_pro_feature'      => __( 'is available in Pro version', 'wpuf' ),
             'pro_feature_msg'       => __( 'Please upgrade to the Pro version to unlock all these awesome features', 'wpuf' ),
             'upgrade_to_pro'        => __( 'Get the Pro version', 'wpuf' ),
-
+            'show_all'              => __( 'Show all', 'wpuf' ),
+            'hide_these'            => __( 'Hide these', 'wpuf' ),
+            'only_show_these'       => __( 'Only show these', 'wpuf' ),
+            'select_countries'      => __( 'Select Countries', 'wpuf' ),
         ) );
     }
 }

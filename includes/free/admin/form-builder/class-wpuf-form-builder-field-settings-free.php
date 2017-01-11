@@ -20,6 +20,9 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
             'file_upload'           => self::file_upload(),
             'country_list_field'    => self::country_list_field(),
             'numeric_text_field'    => self::numeric_text_field(),
+            'address_field'         => self::address_field(),
+            'step_start'            => self::step_start(),
+            'google_map'            => self::google_map(),
         );
     }
 
@@ -100,6 +103,56 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
             'title'         => __( 'Numeric Field', 'wpuf' ),
             'icon'          => 'hashtag',
             'pro_feature'   => true
+        );
+    }
+
+    /**
+     * Address field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function address_field() {
+        return array(
+            'template'      => 'address_field',
+            'title'         => __( 'Address Field', 'wpuf' ),
+            'icon'          => 'address-card-o',
+            'pro_feature'   => true,
+        );
+    }
+
+    /**
+     * Step Start field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function step_start() {
+        return array(
+            'template'      => 'step_start',
+            'title'         => __( 'Step Start', 'wpuf' ),
+            'icon'          => 'step-forward',
+            'pro_feature'   => true,
+            'is_full_width' => true,
+        );
+    }
+
+
+    /**
+     * Google Map
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function google_map() {
+        return array(
+            'template'      => 'google_map',
+            'title'         => __( 'Google Map', 'wpuf' ),
+            'icon'          => 'map-marker',
+            'pro_feature'   => true,
         );
     }
 

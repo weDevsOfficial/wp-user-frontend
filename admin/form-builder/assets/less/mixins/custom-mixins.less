@@ -56,3 +56,15 @@
         cursor: default;
     }
 }
+
+// copied from selectize
+.vertical-gradient (@color-top, @color-bottom) {
+    background-color: mix(@color-top, @color-bottom, 60%);
+    background-image: -moz-linear-gradient(top, @color-top, @color-bottom); // FF 3.6+
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@color-top), to(@color-bottom)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(top, @color-top, @color-bottom); // Safari 5.1+, Chrome 10+
+    background-image: -o-linear-gradient(top, @color-top, @color-bottom); // Opera 11.10
+    background-image: linear-gradient(to bottom, @color-top, @color-bottom); // Standard, IE10
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@color-top),argb(@color-bottom))); // IE9 and down
+}

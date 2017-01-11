@@ -114,8 +114,8 @@ wpuf_mixins.option_field_mixin = {
                 return true;
             }
 
-            var i = 0,
-                deps = Object.keys(this.option_field.dependencies);
+            var deps = Object.keys(this.option_field.dependencies),
+                i    = 0;
 
             // has 'dependencies' key, but no property is set
             if (!deps.length) {
@@ -124,7 +124,7 @@ wpuf_mixins.option_field_mixin = {
 
             // check if dependencies met
             for (i = 0; i < deps.length; i++) {
-                var required_dep_value = this.option_field.dependencies[ deps[i] ],
+                var required_dep_value  = this.option_field.dependencies[ deps[i] ],
                     editing_field_value = this.editing_form_field[ deps[i] ];
 
                 if (required_dep_value !== editing_field_value) {

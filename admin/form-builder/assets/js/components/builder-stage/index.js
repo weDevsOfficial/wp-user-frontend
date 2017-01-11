@@ -124,6 +124,14 @@ Vue.component('builder-stage', {
             }
 
             return false;
+        },
+
+        is_full_width: function (template) {
+            if (this.field_settings[template] && this.field_settings[template].is_full_width) {
+                return true;
+            }
+
+            return false;
         }
     }
 });

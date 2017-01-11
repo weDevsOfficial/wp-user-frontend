@@ -18,7 +18,17 @@
                     </li>
 
                     <li
-                        v-else
+                        v-if="is_failed_to_validate(field)"
+                        class="button button-warning"
+                        :data-form-field="field"
+                        data-source="panel"
+                        @click="alert_invalidate_msg(field)"
+                    >
+                        <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
+                    </li>
+
+                    <li
+                        v-if="!is_pro_feature(field) && !is_failed_to_validate(field)"
                         class="button"
                         :data-form-field="field"
                         data-source="panel"

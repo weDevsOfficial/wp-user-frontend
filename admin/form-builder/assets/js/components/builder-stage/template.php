@@ -8,14 +8,14 @@
             v-for="(field, index) in form_fields"
             :key="field.id"
             :class="[
-                'field-items', 'wpuf-el', field.name, field.css,
+                'field-items', 'wpuf-el', field.name, field.css, 'form-field-' + field.template,
                 ('hidden' === field.input_type) ? 'hidden-field' : '',
                 parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : ''
             ]"
             :data-index="index"
             data-source="stage"
         >
-            <div class="wpuf-label">
+            <div v-if="!is_full_width(field.template)" class="wpuf-label">
                 <label :for="'wpuf-' + field.name ? field.name : 'cls'">
                     {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
                 </label>

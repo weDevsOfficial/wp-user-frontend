@@ -63,6 +63,10 @@
     margin: 0;
 }
 
+.margin-bottom-10 {
+    margin-bottom: 10px;
+}
+
 .list-inline {
     padding-left: 0;
     list-style: none;
@@ -81,13 +85,26 @@
     opacity: 0.7;
 }
 
+.label-hr {
+    border-bottom: 1px solid #ccc;
+    display: block;
+    padding-bottom: 8px;
+}
+
+.button.button-warning {
+    .button-colorized(@wpYellow);
+}
+
 // Vue Transition effects
 // --------------------------------------------------
 .slide-fade-enter-active {
     .transition(all .6s);
+    overflow: hidden;
 }
+
 .slide-fade-leave-active {
     .transition(all .4s);
+    overflow: hidden;
 }
 
 .slide-fade-enter,
@@ -108,9 +125,10 @@
     }
 
     p {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 400;
         color: #656565;
+        line-height: 1.7;
     }
 
     button {
@@ -154,6 +172,7 @@
     transform: rotate(360deg);
   }
 }
+
 @keyframes wpuf_form_builder_loader {
   0% {
     -webkit-transform: rotate(0deg);
@@ -164,6 +183,74 @@
     transform: rotate(360deg);
   }
 }
+
+// Flex button group
+// --------------------------------------------------
+.wp-core-ui .button-group.wpuf-flex-button-group {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+
+    .button {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0;
+        align-self: auto;
+        text-align: center;
+    }
+}
+
+// Selectize
+// --------------------------------------------------
+.selectize-input {
+    padding: 6px 5px;
+    border: 1px solid #ddd;
+}
+
+.selectize-dropdown .active {
+    background-color: @wpBlue;
+    color: #fff;
+}
+
+.selectize-element-group {
+    display: none;
+
+    & + .selectize-control {
+        display: none;
+    }
+
+    &.active + .selectize-control {
+        display: block;
+        margin-top: 10px;
+    }
+}
+
+.selectize-control {
+
+    &.multi {
+
+        .selectize-input {
+
+            [data-value] {
+                text-shadow: 0 1px 0 rgba(0,51,83,0.3);
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+                .vertical-gradient(fade(@wpBlue, 40%), @wpBlue);
+                .box-shadow(~"0 1px 0 rgba(0,0,0,0.2),inset 0 1px rgba(255,255,255,0.03)");
+
+                &.active {
+                    .vertical-gradient(fade(@wpBlue, 40%), @wpBlue);
+                }
+            }
+        }
+    }
+}
+
 
 // Form Builder
 // --------------------------------------------------
@@ -398,6 +485,7 @@
             position: absolute;
             top: 0;
             left: 0;
+            z-index: 10;
             display: none;
             width: 100%;
             height: 100%;
@@ -553,7 +641,6 @@
         margin-top: 15px;
         max-height: 150vh;
         opacity: 1;
-        overflow: hidden;
     }
 
     .panel-field-opt {
@@ -576,6 +663,7 @@
         }
 
         &.panel-field-opt-radio {
+
             & > label {
                 display: block;
                 margin-bottom: 5px;
@@ -587,10 +675,23 @@
             }
         }
 
-        .label-hr {
-            border-bottom: 1px solid #ccc;
+        &.panel-field-opt-select {
+
+            select {
+                max-width: 100%;
+                height: 32px;
+                margin: 4px 0 0;
+            }
+
+        }
+
+        .chosen-select + .chosen-container {
+            margin-top: 10px;
+        }
+
+        .label-title-block {
             display: block;
-            padding-bottom: 8px;
+            margin-bottom: 3px;
         }
     }
 }

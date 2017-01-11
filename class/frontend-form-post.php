@@ -78,6 +78,10 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         $post_id = isset( $_GET['pid'] ) ? intval( $_GET['pid'] ) : 0;
 
+        if ( !$post_id ) {
+            return '<div class="wpuf-info">' . __( 'Invalid post', 'wpuf' );
+        }
+
         //is editing enabled?
         if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) != 'yes' ) {
             return '<div class="wpuf-info">' . __( 'Post Editing is disabled', 'wpuf' ) . '</div>';

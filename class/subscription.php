@@ -22,6 +22,7 @@ class WPUF_Subscription {
         add_action( 'wpuf_add_post_form_top', array($this, 'add_post_info'), 10, 2 );
 
         add_action( 'wpuf_add_post_after_insert', array($this, 'monitor_new_post'), 10, 3 );
+        add_action( 'wpuf_draft_post_after_insert', array($this, 'monitor_new_draft_post'), 10, 3 );
         add_action( 'wpuf_payment_received', array($this, 'payment_received'), 10, 2 );
 
         add_shortcode( 'wpuf_sub_info', array($this, 'subscription_info') );
@@ -427,8 +428,6 @@ class WPUF_Subscription {
         return $pack;
     }
 
-
-
     /**
      * Set the new post status if charging is active
      *
@@ -496,6 +495,38 @@ class WPUF_Subscription {
             //meta added to make post have flag if post is published
             update_post_meta( $post_id, 'wpuf_post_status', 'published' );
 
+        }
+
+    }
+
+    /**
+     * Checks the posting validity after a new draft post
+     *
+     * @global object $userdata
+     * @global object $wpdb
+     * @param int $post_id
+     */
+    function monitor_new_draft_post( $post_id, $form_id, $form_settings ) {
+        // check form if subscription is disabled
+        if ( isset( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes' ) {
+            return;
+        }
+        global $wpdb, $userdata;
+
+        // bail out if charging is not enabled
+        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment', 'no' ) != 'yes' ) {
+            return;
+        }
+
+        $userdata = get_userdata( get_current_user_id() );
+
+        if ( self::has_user_error( $form_settings ) ) {
+            //there is some error and it needs payment
+            //add a uniqid to track the post easily
+            $order_id = uniqid( rand( 10, 1000 ), false );
+            update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
+
+            wp_update_post( array( 'ID' => $post_id, 'status' => 'pending' ) );
         }
 
     }

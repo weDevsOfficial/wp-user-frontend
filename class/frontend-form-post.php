@@ -573,9 +573,11 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
 
+        $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
+
         $postarr = array(
             'post_type'    => $form_settings['post_type'],
-            'post_status'  => ( $charging_enabled == 'yes' ) ? 'pending' : 'draft',
+            'post_status'  => 'draft',
             'post_author'  => get_current_user_id(),
             'post_title'   => isset( $_POST['post_title'] ) ? trim( $_POST['post_title'] ) : '',
             'post_content' => isset( $_POST[$content_slug] ) ? trim( $_POST[$content_slug] ) : '',
@@ -601,12 +603,6 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $post_id = wp_insert_post( $postarr );
 
         if ( $post_id ) {
-
-            // Add order id if the charging is enabled
-            if ( $charging_enabled == 'yes' ) {
-                $order_id = uniqid( rand( 10, 1000 ), false );
-                update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
-            }
 
             self::update_post_meta( $meta_vars, $post_id );
 

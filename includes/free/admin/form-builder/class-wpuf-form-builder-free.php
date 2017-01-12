@@ -14,6 +14,7 @@ class WPUF_Admin_Form_Builder_Free {
     public function __construct() {
         add_filter( 'wpuf-form-builder-field-settings', array( $this, 'add_field_settings' ) );
         add_filter( 'wpuf-form-builder-fields-custom-fields', array( $this, 'add_custom_fields' ) );
+        add_filter( 'wpuf-form-builder-fields-others-fields', array( $this, 'add_others_fields' ) );
     }
 
     /**
@@ -44,6 +45,21 @@ class WPUF_Admin_Form_Builder_Free {
         return array_merge( $fields, array(
             'repeat_field', 'date_field', 'file_upload', 'country_list_field',
             'numeric_text_field', 'address_field', 'step_start', 'google_map'
+        ) );
+    }
+
+    /**
+     * Add fields in Others Fields
+     *
+     * @since 2.5
+     *
+     * @param array $fields
+     *
+     * @return void
+     */
+    public function add_others_fields( $fields ) {
+        return array_merge( $fields, array(
+            'recaptcha', 'really_simple_captcha', 'action_hook', 'toc', 'ratings'
         ) );
     }
 

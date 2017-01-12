@@ -23,6 +23,11 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
             'address_field'         => self::address_field(),
             'step_start'            => self::step_start(),
             'google_map'            => self::google_map(),
+            'recaptcha'             => self::recaptcha(),
+            'really_simple_captcha' => self::really_simple_captcha(),
+            'action_hook'           => self::action_hook(),
+            'toc'                   => self::toc(),
+            'ratings'               => self::ratings(),
         );
     }
 
@@ -152,6 +157,81 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
             'template'      => 'google_map',
             'title'         => __( 'Google Map', 'wpuf' ),
             'icon'          => 'map-marker',
+            'pro_feature'   => true,
+        );
+    }
+
+    /**
+     * Recaptcha
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function recaptcha() {
+        return array(
+            'template'      => 'recaptcha',
+            'title'         => __( 'Recaptcha', 'wpuf' ),
+            'pro_feature'   => true,
+        );
+    }
+
+    /**
+     * Really Simple Captcha
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function really_simple_captcha() {
+        return array(
+            'template'      => 'really_simple_captcha',
+            'title'         => __( 'Really Simple Captcha', 'wpuf' ),
+            'pro_feature'   => true,
+        );
+    }
+
+    /**
+     * Action Hook
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function action_hook() {
+        return array(
+            'template'      => 'action_hook',
+            'title'         => __( 'Action Hook', 'wpuf' ),
+            'pro_feature'   => true,
+        );
+    }
+
+    /**
+     * Term & Conditions
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function toc() {
+        return array(
+            'template'      => 'toc',
+            'title'         => __( 'Term & Conditions', 'wpuf' ),
+            'pro_feature'   => true,
+        );
+    }
+
+    /**
+     * Ratings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function ratings() {
+        return array(
+            'template'      => 'ratings',
+            'title'         => __( 'Ratings', 'wpuf' ),
             'pro_feature'   => true,
         );
     }

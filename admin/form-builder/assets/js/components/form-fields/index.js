@@ -22,7 +22,7 @@ Vue.component('form-fields', {
             connectToSortable: '#form-preview-stage .wpuf-form',
             helper: 'clone',
             revert: 'invalid',
-            cancel: '.button-pro-feature',
+            cancel: '.button-faded',
         }).disableSelection();
     },
 
@@ -69,16 +69,6 @@ Vue.component('form-fields', {
             });
         },
 
-        is_failed_to_validate: function (field) {
-            var validator = this.field_settings[field].validator;
-
-            if (validator && validator.callback && !this[validator.callback]()) {
-                return true;
-            }
-
-            return false;
-        },
-
         alert_invalidate_msg: function (field) {
             var validator = this.field_settings[field].validator;
 
@@ -93,6 +83,10 @@ Vue.component('form-fields', {
                     confirmButtonText: this.i18n.ok
                 });
             }
+        },
+
+        get_invalidate_btn_class: function (field) {
+            return this.field_settings[field].validator.button_class;
         }
     }
 });

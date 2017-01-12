@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Form UI Builder
+ * Post Forms or wp_forms form builder class
  *
  * @package WP User Frontend
  */
@@ -647,14 +647,25 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function add_post_field_section() {
-        $fields = apply_filters( 'wpuf-form-builder-fields-post-fields', array(
+        $post_fields = apply_filters( 'wpuf-form-builder-wp_forms-fields-section-post-fields', array(
+            'text_field', 'textarea_field'
+        ) );
+
+        $taxonomies = apply_filters( 'wpuf-form-builder-wp_forms-fields-taxonomies', array(
             'text_field', 'textarea_field'
         ) );
 
         return array(
             array(
                 'title'     => __( 'Post Fields', 'wpuf' ),
-                'fields'    => $fields
+                'id'        => 'post-fields',
+                'fields'    => $post_fields
+            ),
+
+            array(
+                'title'     => __( 'Taxonomies', 'wpuf' ),
+                'id'        => 'taxonomies',
+                'fields'    => $taxonomies
             )
         );
     }

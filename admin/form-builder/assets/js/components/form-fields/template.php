@@ -9,7 +9,7 @@
                 <template v-for="field in section.fields">
                     <li
                         v-if="is_pro_feature(field)"
-                        class="button button-pro-feature"
+                        class="button button-faded"
                         :data-form-field="field"
                         data-source="panel"
                         @click="alert_pro_feature(field)"
@@ -19,7 +19,7 @@
 
                     <li
                         v-if="is_failed_to_validate(field)"
-                        class="button button-warning"
+                        :class="['button', get_invalidate_btn_class(field)]"
                         :data-form-field="field"
                         data-source="panel"
                         @click="alert_invalidate_msg(field)"

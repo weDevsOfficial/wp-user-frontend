@@ -287,6 +287,7 @@ class WPUF_Admin_Form_Builder {
         return array(
             array(
                 'title'     => __( 'Custom Fields', 'wpuf' ),
+                'id'        => 'custom-fields',
                 'fields'    => $fields
             )
         );
@@ -307,6 +308,7 @@ class WPUF_Admin_Form_Builder {
         return array(
             array(
                 'title'     => __( 'Others', 'wpuf' ),
+                'id'        => 'others',
                 'fields'    => $fields
             )
         );

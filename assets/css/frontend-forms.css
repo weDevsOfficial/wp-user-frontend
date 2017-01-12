@@ -94,6 +94,7 @@ ul.wpuf-form li .wp-editor-wrap {
 ul.wpuf-form li .wpuf-label {
   float: left;
   width: 25%;
+  min-height: 1px;
 }
 ul.wpuf-form li .wpuf-label .required {
   color: red;
@@ -996,4 +997,15 @@ body.rtl ul.wpuf-form li .wpuf-label {
     float: none;
     width: 100%;
   }
+}
+.wpuf-toc-container .wpuf-fields {
+  position: relative;
+}
+.wpuf-toc-container .wpuf-fields .wpuf-toc-checkbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.wpuf-toc-container .wpuf-fields.has-toc-checkbox .wpuf-toc-description {
+  margin-left: 25px;
 }

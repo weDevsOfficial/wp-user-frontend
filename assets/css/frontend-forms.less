@@ -144,6 +144,7 @@ ul.wpuf-form {
         .wpuf-label {
             float: left;
             width: 25%;
+            min-height: 1px;
 
             .required {
                 color: red;
@@ -1078,6 +1079,26 @@ body.rtl{
             .wpuf-label, .wpuf-fields {
                 float: none;
                 width: 100%;
+            }
+        }
+    }
+}
+
+.wpuf-toc-container {
+
+    .wpuf-fields {
+        position: relative;
+
+        .wpuf-toc-checkbox {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        &.has-toc-checkbox {
+
+            .wpuf-toc-description {
+                margin-left: 25px;
             }
         }
     }

@@ -85,7 +85,17 @@ Vue.mixin({
             }, settings);
 
             swal(settings, callback);
-        }
+        },
+
+        is_failed_to_validate: function (field) {
+            var validator = this.field_settings[field].validator;
+
+            if (validator && validator.callback && !this[validator.callback]()) {
+                return true;
+            }
+
+            return false;
+        },
     }
 });
 

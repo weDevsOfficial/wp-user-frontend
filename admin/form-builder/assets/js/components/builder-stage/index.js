@@ -132,6 +132,10 @@ Vue.component('builder-stage', {
             }
 
             return false;
+        },
+
+        get_field_name: function (template) {
+            return this.field_settings[template].title;
         }
     }
 });

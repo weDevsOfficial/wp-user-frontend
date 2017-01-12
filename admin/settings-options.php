@@ -135,11 +135,12 @@ function wpuf_settings_fields() {
             ),
             array(
                 'name'  => 'recaptcha_public',
-                'label' => __( 'reCAPTCHA Public Key', 'wpuf' ),
+                'label' => __( 'reCAPTCHA Site Key', 'wpuf' ),
             ),
             array(
                 'name'  => 'recaptcha_private',
-                'label' => __( 'reCAPTCHA Private Key', 'wpuf' ),
+                'label' => __( 'reCAPTCHA Secret Key', 'wpuf' ),
+                'desc'  => __( '<a target="_blank" href="https://www.google.com/recaptcha/">Register here</a> to get reCaptcha Site and Secret keys.', 'wpuf' ),
             ),
             array(
                 'name'  => 'gmap_api_key',

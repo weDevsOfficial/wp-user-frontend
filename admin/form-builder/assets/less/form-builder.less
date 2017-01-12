@@ -91,10 +91,6 @@
     padding-bottom: 8px;
 }
 
-.button.button-warning {
-    .button-colorized(@wpYellow);
-}
-
 // Vue Transition effects
 // --------------------------------------------------
 .slide-fade-enter-active {
@@ -400,7 +396,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        width: 320px;
+        width: 360px;
 
         header {
             ul {
@@ -456,7 +452,7 @@
     }
 
     #builder-stage {
-        margin-right: 320px;
+        margin-right: 360px;
 
         section {
             background-color: #6b6b6b;
@@ -605,7 +601,7 @@
             margin-right: 2%;
         }
 
-        &.button-pro-feature {
+        &.button-faded {
             opacity: .5;
         }
     }
@@ -806,5 +802,13 @@
         width: 100%;
         margin: 5px 0 0;
         line-height: 1.75;
+    }
+}
+
+.panel-field-html-help-text {
+
+    pre {
+        max-width: 100%;
+        overflow-x: auto;
     }
 }

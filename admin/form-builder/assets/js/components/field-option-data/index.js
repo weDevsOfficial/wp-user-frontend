@@ -103,10 +103,6 @@ Vue.component('field-option-data', {
                     i = 0;
 
                 for (i = 0; i < new_opts.length; i++) {
-                    // if (!new_opts[i].value.trim()) {
-                    //     new_opts[i].value = 'val_' + this.get_random_id();
-                    // }
-
                     options[new_opts[i].value] = new_opts[i].label;
                 }
 

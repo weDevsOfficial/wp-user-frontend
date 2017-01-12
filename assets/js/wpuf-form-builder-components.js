@@ -135,6 +135,10 @@ Vue.component('builder-stage', {
             }
 
             return false;
+        },
+
+        get_field_name: function (template) {
+            return this.field_settings[template].title;
         }
     }
 });
@@ -179,6 +183,14 @@ Vue.component('field-checkbox', {
             }
         }
     }
+});
+
+Vue.component('field-html_help_text', {
+    template: '#tmpl-wpuf-field-html_help_text',
+
+    mixins: [
+        wpuf_mixins.option_field_mixin
+    ],
 });
 
 /**
@@ -286,10 +298,6 @@ Vue.component('field-option-data', {
                     i = 0;
 
                 for (i = 0; i < new_opts.length; i++) {
-                    // if (!new_opts[i].value.trim()) {
-                    //     new_opts[i].value = 'val_' + this.get_random_id();
-                    // }
-
                     options[new_opts[i].value] = new_opts[i].label;
                 }
 
@@ -554,7 +562,7 @@ Vue.component('form-fields', {
             connectToSortable: '#form-preview-stage .wpuf-form',
             helper: 'clone',
             revert: 'invalid',
-            cancel: '.button-pro-feature',
+            cancel: '.button-faded',
         }).disableSelection();
     },
 
@@ -601,16 +609,6 @@ Vue.component('form-fields', {
             });
         },
 
-        is_failed_to_validate: function (field) {
-            var validator = this.field_settings[field].validator;
-
-            if (validator && validator.callback && !this[validator.callback]()) {
-                return true;
-            }
-
-            return false;
-        },
-
         alert_invalidate_msg: function (field) {
             var validator = this.field_settings[field].validator;
 
@@ -625,6 +623,10 @@ Vue.component('form-fields', {
                     confirmButtonText: this.i18n.ok
                 });
             }
+        },
+
+        get_invalidate_btn_class: function (field) {
+            return this.field_settings[field].validator.button_class;
         }
     }
 });

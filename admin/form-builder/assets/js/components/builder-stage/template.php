@@ -25,11 +25,11 @@
 
             <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
                 <label class="wpuf-pro-text-alert">
-                    <a :href="pro_link" target="_blank"><?php _e( 'Available in Pro Version', 'wpuf' ); ?></a>
+                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wpuf' ); ?></a>
                 </label>
             </div>
 
-            <div class="control-buttons" v-if="is_template_available(field.template)">
+            <div v-if="is_template_available(field.template) && !is_failed_to_validate(field.template)" class="control-buttons">
                 <p>
                     <i class="fa fa-arrows move"></i>
                     <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
@@ -57,7 +57,7 @@
                 v-for="(field, index) in hidden_fields"
                 :class="['field-items', parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '']"
             >
-                <strong>key</strong>: {{ field.name }} | <strong>value</strong>: {{ field.meta_value }}
+                <strong><?php _e('key', 'wpuf'); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wpuf' ); ?></strong>: {{ field.meta_value }}
 
                 <div class="control-buttons">
                     <p>
@@ -69,6 +69,9 @@
             </li>
         </ul>
     </div>
+
+    <?php do_action( 'wpuf-form-builder-template-builder-stage-bottom-area' ); ?>
+
     <!-- <pre>{{ $data }}</pre> -->
     <pre>{{ form_fields }}</pre>
 </div><!-- #form-preview-stage -->

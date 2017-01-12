@@ -1139,8 +1139,22 @@ function wpuf_get_form_fields( $form_id ) {
         // Add inline property for radio and checkbox fields
         $inline_supported_fields = array( 'radio', 'checkbox' );
         if ( in_array( $field['input_type'] , $inline_supported_fields ) ) {
-            if ( ! array_key_exists( 'inline', $field ) ) {
+            if ( ! isset( $field['inline'] ) ) {
                 $field['inline'] = 'no';
+            }
+        }
+
+        // Add 'selected' property
+        $option_based_fields = array( 'select', 'multiselect', 'radio', 'checkbox' );
+        if ( in_array( $field['input_type'] , $option_based_fields ) ) {
+            if ( ! isset( $field['selected'] ) ) {
+
+                if ( 'select' === $field['input_type'] || 'radio' === $field['input_type'] ) {
+                    $field['selected'] = '';
+                } else {
+                    $field['selected'] = array();
+                }
+
             }
         }
 

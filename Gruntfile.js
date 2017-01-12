@@ -44,6 +44,14 @@ module.exports = function(grunt) {
             }
         },
 
+        uglify: {
+            minify: {
+                files: {
+                    '<%= dirs.js %>/frontend-form.min.js': ['<%= dirs.js %>/frontend-form.js'],
+                }
+            }
+        },
+
         watch: {
             less: {
                 files: ['<%= dirs.css %>/*.less'],
@@ -178,7 +186,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-ssh' );
 
     grunt.registerTask( 'default', [
-        'makepot',
+        'makepot', 'uglify'
     ]);
 
     grunt.registerTask( 'zip', [

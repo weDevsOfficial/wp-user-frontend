@@ -5,9 +5,9 @@
 
 **Tags:** frontend, post, edit, dashboard, restrict, content submission, guest post, guest, dashboard, registration, profile, anonymous post, gravity, gravity forms, formidable
 
-**Requires at least:** 3.3
+**Requires at least:** 4.0
 
-**Tested up to:** 4.6.1
+**Tested up to:** 4.7
 
 **Stable tag:** trunk
 
@@ -16,7 +16,36 @@ Create, update, delete posts and edit profile directly from the WordPress fronte
 
 ## Description ##
 
-This plugin gives the user the ability to create new posts, edit their profile all from the site frontend, so the user does not need to enter the backend admin panel to do these things.
+The forms gives users the ability to create new posts, edit their profile all from the site frontend, so that the user does not need to enter the backend admin panel to do action.
+
+#### The best free plugin with most features ####
+
+WP User Frontend offers you the most features for free
+than the other frontend post submission plugins out there.
+
+#### Use anywhere easily with shortcodes ####
+
+All of the forms get an unique shortcode which you can paste on any page and the form will generate without breaking the style of your theme.
+
+#### Submit and update anything from Frontend ####
+
+Users can upload files, fill out forms, even entry data with multiple choice menus. Also, since all the forms are created as a custom post, so our post management can allow users to update their posts from the frontend.
+
+#### Build customized forms with custom post types ####
+
+Taking the advantage of custom post types will allow you to work on any platform. WP User Frontend is WooCommerce supported, so you can also create products using our forms.
+
+#### Earn with subscription based posting ####
+
+Create subscription packs to take “Pay Per Post” payments. Submissions posted via these subscriptions have duration and posting limits.
+
+#### Get reminded with emails ####
+
+Trigger emails on multiple events like new submission, publish notification, subscription join/leave to stay notified about your forms performance.
+
+#### Build forms with one click (PRO feature) ####
+
+Quickly create registration forms, woocommerce product forms, guest posting forms, frontend posting forms etc with one click using our templates and assorted fields.
 
 ### Features:  ###
 
@@ -196,6 +225,25 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v2.4.1 (12 January, 2017) ###
+
+ * [new] Added a function `wpuf_get_countries()`
+ * [fix] Enable paynow url on dashboard if a new post is submitted as draft
+ * [fix] Invalid post id for editing
+ * [fix] Removed subscription trial cost
+ * [new] Showing messages when there is no form associated with an id or deleted or not published yet
+ * [new] Added dynamic action hooks `wpuf_cancel_payment_{gateway}`, `wpuf_cancel_subscription_{gateway}`
+ * [fix] User profile url on transaction's list
+ * [fix] Multistep form button & validations
+ * [fix] Replaced some raw query to builder
+ * [new] jQuery added on preview form
+ * [fix] Some undefined variables issue
+ * [fix] Replaced `$wpdb->escape()` to `$wpdb->prepare()` for depreciation
+ * [fix] Missing data when saving draft post
+ * [fix] Updated some textdomains
+ * [fix] `wpuf-ajax-tag-search` priv/nopriv ajax request
+
 
 ### v2.4 (26 October, 2016) ###
 

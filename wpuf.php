@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.4
+Version: 2.4.1
 Author URI: https://tareq.co
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.4' );
+define( 'WPUF_VERSION', '2.4.1' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -261,6 +261,8 @@ class WP_User_Frontend {
      * @since 0.2
      */
     function enqueue_scripts() {
+        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
         global $post;
 
         $scheme = is_ssl() ? 'https' : 'http';
@@ -280,7 +282,7 @@ class WP_User_Frontend {
                 }
             </script>
             <?php
-            wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form.js', array('jquery') );
+            wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form' . $suffix . '.js', array('jquery') );
             wp_enqueue_script( 'wpuf-conditional-logic', WPUF_ASSET_URI . '/js/conditional-logic.js', array('jquery'), false, true );
         }
 

@@ -1,3 +1,41 @@
+= v2.4.1 (12 January, 2017) =
+
+ * [new] Added a function `wpuf_get_countries()`
+ * [fix] Enable paynow url on dashboard if a new post is submitted as draft
+ * [fix] Invalid post id for editing
+ * [fix] Removed subscription trial cost
+ * [new] Showing messages when there is no form associated with an id or deleted or not published yet
+ * [new] Added dynamic action hooks `wpuf_cancel_payment_{gateway}`, `wpuf_cancel_subscription_{gateway}`
+ * [fix] User profile url on transaction's list
+ * [fix] Multistep form button & validations
+ * [fix] Replaced some raw query to builder
+ * [new] jQuery added on preview form
+ * [fix] Some undefined variables issue
+ * [fix] Replaced `$wpdb->escape()` to `$wpdb->prepare()` for depreciation
+ * [fix] Missing data when saving draft post
+ * [fix] Updated some textdomains
+ * [fix] `wpuf-ajax-tag-search` priv/nopriv ajax request
+
+
+= v2.4 (26 October, 2016) =
+
+ * [fix] Plupload string translations
+ * [fix] Post expiration logic updated
+ * [fix] Ignore google map error when the API key is not inserted
+ * [fix] Upload error from admin panel, nonce issue
+ * [fix] reCaptcha lib constructor for strict standard
+ * [fix] tinyMCE and textarea word limit fixed
+ * [fix] User profile edit warning issue fixed for PHP 7
+ * [fix] Tag suggestion showing -1
+ * [fix] Showing -1 in case of unlimited remaining post count
+ * [fix] Google map on a multi-step section
+ * [improved] Settings API v1.3 updated
+ * [improved] Added links to transaction packs in admin area
+ * [new] Post template feature added with simple post and WooCommerce form template
+ * [new] Added filter on text area editor args
+ * [new] Content restriction added on *pro* version
+
+
 = v2.3.15 (11 August, 2016) =
 
  * [fix] License renewal prompt fix

@@ -1,5 +1,5 @@
 # WP User Frontend #
-**Contributors:** tareq1988, wedevs
+**Contributors:** tareq1988, wedevs, sohelamin
 
 **Donate link:** https://tareq.co/
 
@@ -93,6 +93,11 @@ Try an <a href="http://demo.wedevs.com/wpuf/wp-admin/">online demo</a> of the Pr
 
 * Italian translation by Gabriele Lamberti
 * Persian translation by Abolfazl Esmailinejad
+
+= Checkout Our Other Products =
+* [WP ERP](https://wperp.com/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+ERP)
+* [Dokan - Multivendor Plugin](https://wedevs.com/products/plugins/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
+* [WP Project Manager](https://wedevs.com/products/plugins/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
 
 [Github Repository](https://github.com/tareq1988/WP-User-Frontend).
 

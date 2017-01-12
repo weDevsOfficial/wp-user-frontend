@@ -1,12 +1,13 @@
 === WP User Frontend ===
-Contributors: tareq1988, wedevs
+Contributors: tareq1988, wedevs, sohelamin
 Donate link: http://tareq.wedevs.com/donate/
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
 Requires at least: 4.0
 Tested up to: 4.7
 Stable tag: trunk
+License: GPLv2
 
-The best and the first frontend custom post type plugin for WordPress. Users can create, edit, delete, build profiles, post on subscription, use coupons etc. directly from the WordPress frontend.
+The best frontend plugin for WordPress. Users can create, edit, delete, build profiles, post on subscription, use coupons etc.
 
 == Description ==
 
@@ -88,6 +89,11 @@ Try an <a href="http://demo.wedevs.com/wpuf/wp-admin/">online demo</a> of the Pr
 * Italian translation by Gabriele Lamberti
 * Persian translation by Abolfazl Esmailinejad
 
+= Checkout Our Other Products =
+* [WP ERP](https://wperp.com/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+ERP)
+* [Dokan - Multivendor Plugin](https://wedevs.com/products/plugins/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
+* [WP Project Manager](https://wedevs.com/products/plugins/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
+
 [Github Repository](https://github.com/tareq1988/WP-User-Frontend).
 
 == Installation ==
@@ -107,7 +113,6 @@ After having installed the plugin:
 
 = Video =
 [youtube https://www.youtube.com/watch?v=pK3nLeR2fzc]
-
 
 == Screenshots ==
 

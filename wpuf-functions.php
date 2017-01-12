@@ -1371,3 +1371,22 @@ function wpuf_get_post_form_templates() {
 
     return apply_filters( 'wpuf_get_post_form_templates', $integrations );
 }
+
+/**
+ * Get countries
+ *
+ * @since 2.4.1
+ *
+ * @param  string $type (optional)
+ *
+ * @return array|string
+ */
+function wpuf_get_countries( $type = 'array' ) {
+    $countries = include_once dirname( __FILE__ ) . '/includes/countries-formated.php';
+
+    if ( $type == 'json' ) {
+        $countries = json_encode( $countries );
+    }
+
+    return $countries;
+}

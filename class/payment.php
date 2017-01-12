@@ -9,9 +9,10 @@
 class WPUF_Payment {
 
     function __construct() {
-        add_action( 'init', array($this, 'send_to_gateway') );
-        add_action( 'wpuf_payment_received', array($this, 'payment_notify_admin') );
-        add_filter( 'the_content', array($this, 'payment_page') );
+        add_action( 'init', array( $this, 'send_to_gateway' ) );
+        add_action( 'wpuf_payment_received', array( $this, 'payment_notify_admin' ) );
+        add_filter( 'the_content', array( $this, 'payment_page' ) );
+        add_action( 'init', array( $this, 'handle_cancel_payment' ) );
     }
 
     public static function get_payment_gateways() {
@@ -246,7 +247,7 @@ class WPUF_Payment {
      */
     function send_to_gateway() {
 
-        if ( isset( $_POST['wpuf_payment_submit'] ) && $_POST['action'] == 'wpuf_pay' && wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_payment_gateway' ) ) {
+        if ( isset( $_POST['action'] ) && $_POST['action'] == 'wpuf_pay' && wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_payment_gateway' ) ) {
 
             $post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( $_REQUEST['pack_id'] ) : 0;
@@ -268,7 +269,6 @@ class WPUF_Payment {
                     $userdata->last_name  = '';
                 }
             }
-
 
             switch ($type) {
                 case 'post':
@@ -372,7 +372,7 @@ class WPUF_Payment {
         //check if it's already there
         $sql = $wpdb->prepare( "SELECT transaction_id
                 FROM " . $wpdb->prefix . "wpuf_transaction
-                WHERE transaction_id = %d LIMIT 1", $transaction_id );
+                WHERE transaction_id = %s LIMIT 1", $transaction_id );
 
         $result = $wpdb->get_row( $sql );
 
@@ -409,6 +409,23 @@ class WPUF_Payment {
 
         $receiver = get_bloginfo( 'admin_email' );
         wp_mail( $receiver, $subject, $msg, $headers );
+    }
+
+    /**
+     * Handle the cancel payment
+     *
+     * @return void
+     *
+     * @since  2.4.1
+     */
+    public function handle_cancel_payment() {
+        if ( ! isset( $_POST['wpuf_payment_cancel_submit'] ) || $_POST['action'] != 'wpuf_cancel_pay' || ! wp_verify_nonce( $_POST['wpuf_payment_cancel'], '_wpnonce' ) ) {
+            return;
+        }
+
+        $gateway = sanitize_text_field( $_POST['gateway'] );
+
+        do_action( "wpuf_cancel_payment_{$gateway}", $_POST );
     }
 
 }

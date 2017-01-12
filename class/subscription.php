@@ -22,6 +22,7 @@ class WPUF_Subscription {
         add_action( 'wpuf_add_post_form_top', array($this, 'add_post_info'), 10, 2 );
 
         add_action( 'wpuf_add_post_after_insert', array($this, 'monitor_new_post'), 10, 3 );
+        add_action( 'wpuf_draft_post_after_insert', array($this, 'monitor_new_draft_post'), 10, 3 );
         add_action( 'wpuf_payment_received', array($this, 'payment_received'), 10, 2 );
 
         add_shortcode( 'wpuf_sub_info', array($this, 'subscription_info') );
@@ -29,7 +30,7 @@ class WPUF_Subscription {
 
         add_action( 'add_meta_boxes_wpuf_subscription', array($this, 'add_meta_box_subscription_post') );
 
-        add_action( 'save_post', array( $this, 'save_form_meta' ), 1, 3 );
+        add_action( 'save_post', array( $this, 'save_form_meta' ), 10, 2 );
         add_filter( 'enter_title_here', array( $this, 'change_default_title' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'subscription_script' ) );
 
@@ -50,7 +51,7 @@ class WPUF_Subscription {
      *
      * @return WPUF_Subscription
      */
-    public function user_subscription_cancel () {
+    public function user_subscription_cancel() {
 
         if ( isset( $_POST['wpuf_cancel_subscription'] ) ) {
 
@@ -62,8 +63,10 @@ class WPUF_Subscription {
             $current_pack = self::get_user_pack( $user_id );
 
             if ( $current_pack['recurring'] == 'yes' ) {
-                $wpuf_paypal  = new WPUF_Paypal();
-                $wpuf_paypal->recurring_change_status( $user_id, 'Cancel' );
+
+                $gateway = sanitize_text_field( $_POST['gateway'] );
+
+                do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );
             } else {
                 WPUF_Subscription::init()->update_user_subscription_meta( $user_id, 'Cancel' );
             }
@@ -225,7 +228,6 @@ class WPUF_Subscription {
         $meta['cycle_period']         =  get_post_meta( $subscription_id, '_cycle_period', true );
         $meta['billing_limit']        =  get_post_meta( $subscription_id, '_billing_limit', true );
         $meta['trial_status']         =  get_post_meta( $subscription_id, '_trial_status', true );
-        $meta['trial_cost']           =  get_post_meta( $subscription_id, '_trial_cost', true );
         $meta['trial_duration']       =  get_post_meta( $subscription_id, '_trial_duration', true );
         $meta['trial_duration_type']  =  get_post_meta( $subscription_id, '_trial_duration_type', true );
         $meta['post_type_name']       =  get_post_meta( $subscription_id, '_post_type_name', true );
@@ -288,12 +290,14 @@ class WPUF_Subscription {
      * @return void
      */
     function save_form_meta( $subscription_id, $post ) {
-        $post = $_POST;
-        if ( !isset( $post['wpuf_subscription'] ) ) {
+
+        $post_data = $_POST;
+
+        if ( !isset( $post_data['wpuf_subscription'] ) ) {
             return;
         }
 
-        if ( !wp_verify_nonce( $post['wpuf_subscription'], 'wpuf_subscription_editor' ) ) {
+        if ( !wp_verify_nonce( $post_data['wpuf_subscription'], 'wpuf_subscription_editor' ) ) {
             return;
         }
 
@@ -302,24 +306,23 @@ class WPUF_Subscription {
             return;
         }
 
-        update_post_meta( $subscription_id, '_billing_amount', $post['billing_amount'] );
-        update_post_meta( $subscription_id, '_expiration_number', $post['expiration_number'] );
-        update_post_meta( $subscription_id, '_expiration_period', $post['expiration_period'] );
-        update_post_meta( $subscription_id, '_recurring_pay', $post['recurring_pay'] );
-        update_post_meta( $subscription_id, '_billing_cycle_number', $post['billing_cycle_number'] );
-        update_post_meta( $subscription_id, '_cycle_period', $post['cycle_period'] );
-        update_post_meta( $subscription_id, '_billing_limit', $post['billing_limit'] );
-        update_post_meta( $subscription_id, '_trial_status', $post['trial_status'] );
-        update_post_meta( $subscription_id, '_trial_cost', $post['trial_cost'] );
-        update_post_meta( $subscription_id, '_trial_duration', $post['trial_duration'] );
-        update_post_meta( $subscription_id, '_trial_duration_type', $post['trial_duration_type'] );
-        update_post_meta( $subscription_id, '_post_type_name', $post['post_type_name'] );
-        update_post_meta( $subscription_id, '_enable_post_expiration', ( isset($post['post_expiration_settings']['enable_post_expiration'])?$post['post_expiration_settings']['enable_post_expiration']:'' ) );
-        update_post_meta( $subscription_id, '_post_expiration_time', $post['post_expiration_settings']['expiration_time_value'].' '.$post['post_expiration_settings']['expiration_time_type'] );
-        update_post_meta( $subscription_id, '_expired_post_status', ( isset($post['post_expiration_settings']['expired_post_status'])?$post['post_expiration_settings']['expired_post_status']:'' ) );
-        update_post_meta( $subscription_id, '_enable_mail_after_expired', ( isset($post['post_expiration_settings']['enable_mail_after_expired'])?$post['post_expiration_settings']['enable_mail_after_expired']:'' ) );
-        update_post_meta( $subscription_id, '_post_expiration_message', ( isset($post['post_expiration_settings']['post_expiration_message'])?$post['post_expiration_settings']['post_expiration_message']:'' ) );
-        do_action( 'wpuf_update_subscription_pack', $subscription_id, $post );
+        update_post_meta( $subscription_id, '_billing_amount', $post_data['billing_amount'] );
+        update_post_meta( $subscription_id, '_expiration_number', $post_data['expiration_number'] );
+        update_post_meta( $subscription_id, '_expiration_period', $post_data['expiration_period'] );
+        update_post_meta( $subscription_id, '_recurring_pay', $post_data['recurring_pay'] );
+        update_post_meta( $subscription_id, '_billing_cycle_number', $post_data['billing_cycle_number'] );
+        update_post_meta( $subscription_id, '_cycle_period', $post_data['cycle_period'] );
+        update_post_meta( $subscription_id, '_billing_limit', $post_data['billing_limit'] );
+        update_post_meta( $subscription_id, '_trial_status', $post_data['trial_status'] );
+        update_post_meta( $subscription_id, '_trial_duration', $post_data['trial_duration'] );
+        update_post_meta( $subscription_id, '_trial_duration_type', $post_data['trial_duration_type'] );
+        update_post_meta( $subscription_id, '_post_type_name', $post_data['post_type_name'] );
+        update_post_meta( $subscription_id, '_enable_post_expiration', ( isset($post_data['post_expiration_settings']['enable_post_expiration']) ? $post_data['post_expiration_settings']['enable_post_expiration']:'' ) );
+        update_post_meta( $subscription_id, '_post_expiration_time', $post_data['post_expiration_settings']['expiration_time_value'] . ' ' . $post_data['post_expiration_settings']['expiration_time_type'] );
+        update_post_meta( $subscription_id, '_expired_post_status', ( isset($post_data['post_expiration_settings']['expired_post_status']) ? $post_data['post_expiration_settings']['expired_post_status']:'' ) );
+        update_post_meta( $subscription_id, '_enable_mail_after_expired', ( isset($post_data['post_expiration_settings']['enable_mail_after_expired']) ? $post_data['post_expiration_settings']['enable_mail_after_expired']:'' ) );
+        update_post_meta( $subscription_id, '_post_expiration_message', ( isset($post_data['post_expiration_settings']['post_expiration_message']) ? $post_data['post_expiration_settings']['post_expiration_message']:'' ) );
+        do_action( 'wpuf_update_subscription_pack', $subscription_id, $post_data );
     }
 
     /**
@@ -425,8 +428,6 @@ class WPUF_Subscription {
         return $pack;
     }
 
-
-
     /**
      * Set the new post status if charging is active
      *
@@ -499,6 +500,38 @@ class WPUF_Subscription {
     }
 
     /**
+     * Checks the posting validity after a new draft post
+     *
+     * @global object $userdata
+     * @global object $wpdb
+     * @param int $post_id
+     */
+    function monitor_new_draft_post( $post_id, $form_id, $form_settings ) {
+        // check form if subscription is disabled
+        if ( isset( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes' ) {
+            return;
+        }
+        global $wpdb, $userdata;
+
+        // bail out if charging is not enabled
+        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment', 'no' ) != 'yes' ) {
+            return;
+        }
+
+        $userdata = get_userdata( get_current_user_id() );
+
+        if ( self::has_user_error( $form_settings ) ) {
+            //there is some error and it needs payment
+            //add a uniqid to track the post easily
+            $order_id = uniqid( rand( 10, 1000 ), false );
+            update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
+
+            wp_update_post( array( 'ID' => $post_id, 'status' => 'pending' ) );
+        }
+
+    }
+
+    /**
      * Redirect to payment page after new post
      *
      * @param string $str
@@ -564,7 +597,7 @@ class WPUF_Subscription {
             );
 
             if ( $recurring ) {
-                $totla_date =  date( 'd-m-Y', strtotime('+' . $cycle_number . $cycle_period . 's') );
+                $totla_date =  date( 'd-m-Y', strtotime('+' . $subscription->meta_value['billing_cycle_number'] . $subscription->meta_value['cycle_period'] . 's') );
                 $user_meta['expire']     = '';
                 $user_meta['profile_id'] = $profile_id;
                 $user_meta['recurring']  = 'yes';
@@ -773,16 +806,25 @@ class WPUF_Subscription {
             printf( '<h1>%1$s</h1><p>%2$s</p>', __( 'Payment is complete', 'wpuf' ), __( 'Congratulations, your payment has been completed!', 'wpuf' ) );
         }
 
-        $current_pack = self::get_user_pack( get_current_user_id());
-        if( isset( $current_pack['pack_id'] ) ) {
+        $current_pack = self::get_user_pack( get_current_user_id() );
+
+        if ( isset( $current_pack['pack_id'] ) ) {
+
+            global $wpdb;
+
+            $user_id = get_current_user_id();
+            $payment_gateway = $wpdb->get_var( "SELECT payment_type FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = {$user_id} AND status = 'completed' ORDER BY created DESC" );
+
+            $payment_gateway = strtolower( $payment_gateway );
             ?>
 
-            <?php  _e( '<p><i>You have a subscription pack activated. </i></p>', 'wpuf' ); ?>
-            <?php  _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' ); ?>
+            <?php _e( '<p><i>You have a subscription pack activated. </i></p>', 'wpuf' ); ?>
+            <?php _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' ); ?>
             <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wpuf' ); ?>
 
             <form action="" method="post">
                 <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
+                <input type="hidden" name="gateway" value="<?php echo $payment_gateway; ?>">
                 <input type="submit" name="wpuf_cancel_subscription" class="btn btn-sm btn-danger" value="<?php _e( 'Cancel', 'wpuf' ); ?>">
             </form>
             <?php
@@ -828,8 +870,7 @@ class WPUF_Subscription {
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' && $pack->meta_value['trial_status'] == 'yes' ) {
 
-            $trial_cost = ( empty( $pack->meta_value['trial_cost'] ) || $pack->meta_value['trial_cost'] == 0 ) ? __( 'Free', 'wpuf' ) : $details_meta['symbol'].$pack->meta_value['trial_cost'];
-            $trial_des = __( sprintf( '%s for the first %s %s', $trial_cost, $pack->meta_value['trial_duration'], $pack->meta_value['trial_duration_type']  ), 'wpuf' );
+            $trial_des = __( sprintf( 'The first %s %s', $pack->meta_value['trial_duration'], $pack->meta_value['trial_duration_type']  ), 'wpuf' );
 
         } else {
             $trial_des = '';

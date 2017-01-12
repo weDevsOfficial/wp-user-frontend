@@ -1,18 +1,18 @@
-# Copyright (C) 2016 Tareq Hasan
+# Copyright (C) 2017 Tareq Hasan
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.4\n"
+"Project-Id-Version: WP User Frontend 2.4.1\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/\n"
-"POT-Creation-Date: 2016-10-26 10:07:19+00:00\n"
+"POT-Creation-Date: 2017-01-12 04:34:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
-"X-Generator: grunt-wp-i18n 0.4.9\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
 
 #: admin/add-ons.php:2
 msgid "WP User Frontend - Add-Ons"
@@ -49,8 +49,8 @@ msgid "Add New Form"
 msgstr ""
 
 #: admin/form.php:180 admin/form.php:218 admin/installer.php:74
-#: admin/subscription.php:228 class/subscription.php:360
-#: includes/free/edit-user.php:99 includes/pro/admin/coupon.php:183
+#: admin/subscription.php:228 class/subscription.php:363
+#: includes/free/edit-user.php:100 includes/pro/admin/coupon.php:183
 #: templates/dashboard.php:102
 msgid "Edit"
 msgstr ""
@@ -230,7 +230,7 @@ msgid "Name"
 msgstr ""
 
 #: admin/form.php:645 admin/form.php:1119 admin/transaction.php:107
-#: includes/free/edit-user.php:152
+#: includes/free/edit-user.php:153
 msgid "Email"
 msgstr ""
 
@@ -246,7 +246,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: admin/form.php:656 class/render-form.php:579
+#: admin/form.php:656 class/render-form.php:587
 msgid "Save Draft"
 msgstr ""
 
@@ -537,7 +537,7 @@ msgid "Profile Fields"
 msgstr ""
 
 #: admin/form.php:1186 admin/form.php:1600 includes/free/edit-profile.php:96
-#: includes/free/edit-user.php:92 includes/free/edit-user.php:144
+#: includes/free/edit-user.php:93 includes/free/edit-user.php:145
 #: templates/login-form.php:21
 msgid "Username"
 msgstr ""
@@ -648,9 +648,9 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: admin/installer.php:82 admin/settings.php:62 class/subscription.php:335
-#: class/subscription.php:355 class/subscription.php:356
-#: class/subscription.php:357
+#: admin/installer.php:82 admin/settings.php:62 class/subscription.php:338
+#: class/subscription.php:358 class/subscription.php:359
+#: class/subscription.php:360
 msgid "Subscription"
 msgstr ""
 
@@ -694,11 +694,11 @@ msgstr ""
 msgid "Sample Form"
 msgstr ""
 
-#: admin/posting.php:52 class/render-form.php:1410 wpuf.php:347
+#: admin/posting.php:52 class/render-form.php:1419 wpuf.php:349
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:58 includes/pro/form.php:858 wpuf.php:353
+#: admin/posting.php:58 includes/pro/form.php:858 wpuf.php:355
 msgid "Allowed Files"
 msgstr ""
 
@@ -1135,13 +1135,13 @@ msgstr ""
 msgid "Subscription pack draft updated."
 msgstr ""
 
-#: admin/subscription.php:134 admin/subscription.php:460
-#: class/subscription.php:671 class/subscription.php:831
-#: class/subscription.php:842 class/subscription.php:855
+#: admin/subscription.php:134 admin/subscription.php:459
+#: class/subscription.php:704 class/subscription.php:883
+#: class/subscription.php:896
 msgid "Free"
 msgstr ""
 
-#: admin/subscription.php:171 class/subscription.php:277
+#: admin/subscription.php:171 class/subscription.php:279
 msgid "Pack Name"
 msgstr ""
 
@@ -1177,7 +1177,7 @@ msgid "Post Count"
 msgstr ""
 
 #: admin/subscription.php:211 admin/transaction.php:188
-#: includes/free/edit-user.php:93
+#: includes/free/edit-user.php:94
 msgid "Action"
 msgstr ""
 
@@ -1185,8 +1185,8 @@ msgstr ""
 msgid "Are you sure to delete this pack?"
 msgstr ""
 
-#: admin/subscription.php:232 class/render-form.php:1410 class/upload.php:171
-#: includes/free/edit-user.php:100 templates/dashboard.php:112
+#: admin/subscription.php:232 class/render-form.php:1419 class/upload.php:171
+#: includes/free/edit-user.php:101 templates/dashboard.php:112
 msgid "Delete"
 msgstr ""
 
@@ -1215,7 +1215,7 @@ msgstr ""
 msgid "Enable Post Expiration"
 msgstr ""
 
-#: admin/subscription.php:341 admin/subscription.php:539
+#: admin/subscription.php:341 admin/subscription.php:538
 #: includes/free/form.php:64 includes/pro/form.php:62
 msgid "Post Expiration Time"
 msgstr ""
@@ -1245,7 +1245,7 @@ msgstr ""
 msgid "WPUF Subscription"
 msgstr ""
 
-#: admin/subscription.php:471 class/subscription.php:682
+#: admin/subscription.php:471 class/subscription.php:715
 msgid "Subscription Details"
 msgstr ""
 
@@ -1253,7 +1253,7 @@ msgstr ""
 msgid "This user is using recurring subscription pack"
 msgstr ""
 
-#: admin/subscription.php:480 class/subscription.php:684
+#: admin/subscription.php:480 class/subscription.php:717
 msgid "Subcription Name: "
 msgstr ""
 
@@ -1261,35 +1261,35 @@ msgstr ""
 msgid "Package billing details: "
 msgstr ""
 
-#: admin/subscription.php:492 class/subscription.php:697
+#: admin/subscription.php:491 class/subscription.php:730
 msgid "Remaining post: "
 msgstr ""
 
-#: admin/subscription.php:514 class/subscription.php:725
+#: admin/subscription.php:513 class/subscription.php:758
 msgid "Expire date:"
 msgstr ""
 
-#: admin/subscription.php:528
+#: admin/subscription.php:527
 msgid "Post Expiration Enabled"
 msgstr ""
 
-#: admin/subscription.php:566
+#: admin/subscription.php:565
 msgid "Assign Package"
 msgstr ""
 
-#: admin/subscription.php:567
+#: admin/subscription.php:566
 msgid "Show Package"
 msgstr ""
 
-#: admin/subscription.php:570 includes/free/edit-profile.php:279
+#: admin/subscription.php:569 includes/free/edit-profile.php:279
 msgid "Pack:"
 msgstr ""
 
-#: admin/subscription.php:573
+#: admin/subscription.php:572
 msgid "--Select--"
 msgstr ""
 
-#: admin/subscription.php:581
+#: admin/subscription.php:580
 msgid "Delete Package"
 msgstr ""
 
@@ -1813,7 +1813,7 @@ msgstr ""
 msgid "Author Info"
 msgstr ""
 
-#: class/frontend-dashboard.php:109 includes/free/edit-user.php:97
+#: class/frontend-dashboard.php:109 includes/free/edit-user.php:98
 #: includes/pro/frontend-form-profile.php:330
 msgid "%s"
 msgstr ""
@@ -1826,31 +1826,31 @@ msgstr ""
 msgid "You are not logged in"
 msgstr ""
 
-#: class/frontend-form-post.php:83
-msgid "Post Editing is disabled"
-msgstr ""
-
-#: class/frontend-form-post.php:89
+#: class/frontend-form-post.php:82 class/frontend-form-post.php:93
 msgid "Invalid post"
 msgstr ""
 
-#: class/frontend-form-post.php:94
+#: class/frontend-form-post.php:87
+msgid "Post Editing is disabled"
+msgstr ""
+
+#: class/frontend-form-post.php:98
 msgid "You are not allowed to edit"
 msgstr ""
 
-#: class/frontend-form-post.php:106
+#: class/frontend-form-post.php:110
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: class/frontend-form-post.php:112
+#: class/frontend-form-post.php:116
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: class/frontend-form-post.php:180
+#: class/frontend-form-post.php:184
 msgid "Invalid email address."
 msgstr ""
 
-#: class/frontend-form-post.php:189
+#: class/frontend-form-post.php:193
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -1859,67 +1859,67 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: class/frontend-form-post.php:542 includes/pro/frontend-form-profile.php:310
+#: class/frontend-form-post.php:546 includes/pro/frontend-form-profile.php:310
 msgid "Something went wrong"
 msgstr ""
 
-#: class/payment.php:22 class/payment.php:23
+#: class/payment.php:23 class/payment.php:24
 msgid "PayPal"
 msgstr ""
 
-#: class/payment.php:27 class/payment.php:28
+#: class/payment.php:28 class/payment.php:29
 msgid "Bank Payment"
 msgstr ""
 
-#: class/payment.php:69
+#: class/payment.php:70
 msgid "Please select your payment page from admin panel"
 msgstr ""
 
-#: class/payment.php:117
+#: class/payment.php:118
 msgid "Your free package has been activated. Enjoy!"
 msgstr ""
 
-#: class/payment.php:119
+#: class/payment.php:120
 msgid "You already have activated a free package previously."
 msgstr ""
 
-#: class/payment.php:143
+#: class/payment.php:144
 msgid "Pricing & Plans"
 msgstr ""
 
-#: class/payment.php:145
+#: class/payment.php:146
 msgid "Change Pack"
 msgstr ""
 
-#: class/payment.php:156 includes/pro/coupons.php:117
+#: class/payment.php:157 includes/pro/coupons.php:117
 msgid "Selected Pack "
 msgstr ""
 
-#: class/payment.php:157 includes/pro/coupons.php:118
+#: class/payment.php:158 includes/pro/coupons.php:118
 msgid "Pack Price "
 msgstr ""
 
-#: class/payment.php:169
+#: class/payment.php:170
 msgid "Apply Coupon"
 msgstr ""
 
-#: class/payment.php:170 class/subscription.php:786
+#: class/payment.php:171 class/subscription.php:828
 msgid "Cancel"
 msgstr ""
 
-#: class/payment.php:173
+#: class/payment.php:174
 msgid "Have a discount code?"
 msgstr ""
 
-#: class/payment.php:184
+#: class/payment.php:185
 msgid "Choose Your Payment Method"
 msgstr ""
 
-#: class/payment.php:221
+#: class/payment.php:222
 msgid "Proceed"
 msgstr ""
 
-#: class/payment.php:225
+#: class/payment.php:226
 msgid "No Payment gateway found"
 msgstr ""
 
@@ -1947,136 +1947,144 @@ msgstr ""
 msgid "reCAPTCHA validation failed"
 msgstr ""
 
-#: class/render-form.php:862
+#: class/render-form.php:301
+msgid "Your selected form is no longer available."
+msgstr ""
+
+#: class/render-form.php:306
+msgid "Please make sure you've published your form."
+msgstr ""
+
+#: class/render-form.php:871
 msgid "Insert Photo"
 msgstr ""
 
-#: class/render-form.php:1134 class/render-form.php:1139
+#: class/render-form.php:1143 class/render-form.php:1148
 #: includes/free/edit-profile.php:198
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1140
+#: class/render-form.php:1149
 msgid "Very weak"
 msgstr ""
 
-#: class/render-form.php:1141
+#: class/render-form.php:1150
 msgid "Weak"
 msgstr ""
 
-#: class/render-form.php:1142
+#: class/render-form.php:1151
 msgid "Medium"
 msgstr ""
 
-#: class/render-form.php:1143
+#: class/render-form.php:1152
 msgid "Strong"
 msgstr ""
 
-#: class/render-form.php:1144
+#: class/render-form.php:1153
 msgid "Mismatch"
 msgstr ""
 
-#: class/render-form.php:1166 class/render-form.php:1274
+#: class/render-form.php:1175 class/render-form.php:1283
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1398
+#: class/render-form.php:1407
 msgid "Select Image"
 msgstr ""
 
-#: class/subscription.php:58
+#: class/subscription.php:59
 msgid "Nonce failure"
 msgstr ""
 
-#: class/subscription.php:358
+#: class/subscription.php:361
 msgid "Add Subscription"
 msgstr ""
 
-#: class/subscription.php:359
+#: class/subscription.php:362
 msgid "Add New Subscription"
 msgstr ""
 
-#: class/subscription.php:361
+#: class/subscription.php:364
 msgid "Edit Subscription"
 msgstr ""
 
-#: class/subscription.php:362
+#: class/subscription.php:365
 msgid "New Subscription"
 msgstr ""
 
-#: class/subscription.php:363 class/subscription.php:364
+#: class/subscription.php:366 class/subscription.php:367
 msgid "View Subscription"
 msgstr ""
 
-#: class/subscription.php:365
+#: class/subscription.php:368
 msgid "Search Subscription"
 msgstr ""
 
-#: class/subscription.php:366
+#: class/subscription.php:369
 msgid "No Subscription Found"
 msgstr ""
 
-#: class/subscription.php:367
+#: class/subscription.php:370
 msgid "No Subscription Found in Trash"
 msgstr ""
 
-#: class/subscription.php:368
+#: class/subscription.php:371
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:397
+#: class/subscription.php:400
 msgid "Billing Details"
 msgstr ""
 
-#: class/subscription.php:686
+#: class/subscription.php:719
 msgid "Package & billing details: "
 msgstr ""
 
-#: class/subscription.php:710
+#: class/subscription.php:743
 msgid "Unlimited"
 msgstr ""
 
-#: class/subscription.php:763
+#: class/subscription.php:796
 msgid "Please enable force pack and charge posting from admin panel"
 msgstr ""
 
-#: class/subscription.php:773
+#: class/subscription.php:806
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:773
+#: class/subscription.php:806
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:780
+#: class/subscription.php:821
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:782
+#: class/subscription.php:823
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
-#: class/subscription.php:822
+#: class/subscription.php:864
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:826
+#: class/subscription.php:868
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:839
+#: class/subscription.php:880
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:844
+#: class/subscription.php:885
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:900
+#: class/subscription.php:941
 msgid "This will cost you <strong>%s</strong> to add a new post. "
 msgstr ""
 
-#: class/subscription.php:919
+#: class/subscription.php:960
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
@@ -2176,49 +2184,49 @@ msgstr ""
 msgid "User Deleted"
 msgstr ""
 
-#: includes/free/edit-user.php:119 includes/free/edit-user.php:177
+#: includes/free/edit-user.php:120 includes/free/edit-user.php:178
 msgid "Add New User"
 msgstr ""
 
-#: includes/free/edit-user.php:132
+#: includes/free/edit-user.php:133
 msgid "User Added"
 msgstr ""
 
-#: includes/free/edit-user.php:160
+#: includes/free/edit-user.php:161
 msgid "Role"
 msgstr ""
 
-#: includes/free/edit-user.php:204
-msgid "<strong>ERROR</strong>: Please enter a username."
+#: includes/free/edit-user.php:205
+msgid "<strong>ERROR</strong>: Please enter a username"
 msgstr ""
 
-#: includes/free/edit-user.php:206
+#: includes/free/edit-user.php:207
 msgid ""
 "<strong>ERROR</strong>: This username is invalid because it uses illegal "
-"characters. Please enter a valid username."
+"characters. Please enter a valid username"
 msgstr ""
 
-#: includes/free/edit-user.php:209
+#: includes/free/edit-user.php:210
 msgid ""
 "<strong>ERROR</strong>: This username is already registered, please choose "
-"another one."
+"another one"
 msgstr ""
 
-#: includes/free/edit-user.php:214
-msgid "<strong>ERROR</strong>: Please type your e-mail address."
+#: includes/free/edit-user.php:215
+msgid "<strong>ERROR</strong>: Please type your e-mail address"
 msgstr ""
 
-#: includes/free/edit-user.php:216
-msgid "<strong>ERROR</strong>: The email address isn&#8217;t correct."
+#: includes/free/edit-user.php:217
+msgid "<strong>ERROR</strong>: The email address isn&#8217;t correct"
 msgstr ""
 
-#: includes/free/edit-user.php:219
+#: includes/free/edit-user.php:220
 msgid ""
 "<strong>ERROR</strong>: This email is already registered, please choose "
-"another one."
+"another one"
 msgstr ""
 
-#: includes/free/edit-user.php:242
+#: includes/free/edit-user.php:243
 msgid ""
 "<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the "
 "<a href=\"mailto:%s\">webmaster</a> !"
@@ -3131,7 +3139,7 @@ msgstr ""
 msgid "Find Address"
 msgstr ""
 
-#: includes/pro/render-form.php:705
+#: includes/pro/render-form.php:700
 msgid "Error: Really Simple Captcha plugin not found!"
 msgstr ""
 
@@ -3160,26 +3168,18 @@ msgid "Enable trial period"
 msgstr ""
 
 #: includes/pro/subscription.php:54
-msgid "Trial amount"
-msgstr ""
-
-#: includes/pro/subscription.php:57
-msgid "Amount to bill for the trial period"
-msgstr ""
-
-#: includes/pro/subscription.php:62
 msgid "Trial period"
 msgstr ""
 
-#: includes/pro/subscription.php:70
+#: includes/pro/subscription.php:62
 msgid "Define the trial period"
 msgstr ""
 
-#: includes/pro/subscription.php:75
+#: includes/pro/subscription.php:67
 msgid "Enable Post Number Rollback"
 msgstr ""
 
-#: includes/pro/subscription.php:79
+#: includes/pro/subscription.php:71
 msgid "If enabled, number of posts will be restored if the post is deleted."
 msgstr ""
 
@@ -3285,27 +3285,27 @@ msgstr ""
 msgid "Thanks for being with us."
 msgstr ""
 
-#: lib/gateway/paypal.php:58
+#: lib/gateway/paypal.php:60
 msgid "Subscription %s at %s"
 msgstr ""
 
-#: lib/gateway/paypal.php:89
+#: lib/gateway/paypal.php:91
 msgid "PayPal Email"
 msgstr ""
 
-#: lib/gateway/paypal.php:94
+#: lib/gateway/paypal.php:96
 msgid "PayPal Instruction"
 msgstr ""
 
-#: lib/gateway/paypal.php:101
+#: lib/gateway/paypal.php:103
 msgid "PayPal API username"
 msgstr ""
 
-#: lib/gateway/paypal.php:105
+#: lib/gateway/paypal.php:107
 msgid "PayPal API password"
 msgstr ""
 
-#: lib/gateway/paypal.php:109
+#: lib/gateway/paypal.php:111
 msgid "PayPal API signature"
 msgstr ""
 
@@ -3445,23 +3445,23 @@ msgstr ""
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:277
+#: wpuf.php:279
 msgid "is required"
 msgstr ""
 
-#: wpuf.php:278
+#: wpuf.php:280
 msgid "does not match"
 msgstr ""
 
-#: wpuf.php:279
+#: wpuf.php:281
 msgid "is not valid"
 msgstr ""
 
-#: wpuf.php:341
+#: wpuf.php:343
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: wpuf.php:343
+#: wpuf.php:345
 msgid "Word limit reached"
 msgstr ""
 

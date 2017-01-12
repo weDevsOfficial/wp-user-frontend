@@ -17,9 +17,11 @@ class WPUF_Paypal {
         $this->gateway_cancel_url = 'https://api-3t.paypal.com/nvp';
         $this->test_mode          = false;
 
-        add_action( 'wpuf_gateway_paypal', array($this, 'prepare_to_send') );
-        add_action( 'wpuf_options_payment', array($this, 'payment_options') );
-        add_action( 'init', array($this, 'paypal_success') );
+        add_action( 'wpuf_gateway_paypal', array( $this, 'prepare_to_send' ) );
+        add_action( 'wpuf_options_payment', array( $this, 'payment_options' ) );
+        add_action( 'init', array( $this, 'paypal_success' ) );
+        add_action( 'wpuf_cancel_payment_paypal', array( $this, 'handle_cancel_subscription' ) );
+        add_action( 'wpuf_cancel_subscription_paypal', array( $this, 'handle_cancel_subscription' ) );
     }
 
     function subscription_cancel( $user_id ) {
@@ -148,8 +150,6 @@ class WPUF_Paypal {
 
         if ( $data['type'] == 'pack' && $data['custom']['recurring_pay'] == 'yes' ) {
 
-            $trial_cost = !empty( $data['custom']['trial_cost'] ) ? number_format( $data['custom']['trial_cost'] ) : '0';
-
             if( $data['custom']['cycle_period'] == "day")
                 $period = "D";
             elseif( $data['custom']['cycle_period'] == "week")
@@ -176,7 +176,7 @@ class WPUF_Paypal {
                 'p3'            =>  !empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number']: '0',
                 't3'            =>  $period,
                 'item_name'     =>  $data['custom']['post_title'],
-                'custom'        =>  json_encode( array( 'billing_amount' => $billing_amount, 'trial_cost' => $trial_cost, 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id )),
+                'custom'        =>  json_encode( array( 'billing_amount' => $billing_amount, 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id )),
                 'no_shipping'   =>  '1',
                 'shipping'      =>  '0',
                 'no_note'       =>  '1',
@@ -192,7 +192,6 @@ class WPUF_Paypal {
             );
 
             if ( $data['custom']['trial_status'] == 'yes' ) {
-                $paypal_args['a1'] = $trial_cost;
                 $paypal_args['p1'] = $data['custom']['trial_duration'];
                 $paypal_args['t1'] = $trial_period;
             }
@@ -245,21 +244,14 @@ class WPUF_Paypal {
     function paypal_success() {
         $postdata = $_POST;
 
-        //cancel subscription form admin panel
-        if ( isset( $_POST['wpuf_payment_cancel_submit'] ) && $_POST['action'] == 'wpuf_cancel_pay' && wp_verify_nonce( $_POST['wpuf_payment_cancel'], '_wpnonce' ) ) {
-            $user_id = isset( $_POST['user_id'] ) ? $_POST['user_id'] : '';
-            $this->recurring_change_status( $user_id, 'Cancel' );
-            return;
-        }
-
-        //when subscription expire
+        // when subscription expire
         if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_eot' ) ) {
             $custom = json_decode( stripcslashes( $postdata['custom'] ) );
             $this->subscription_cancel( $custom->user_id );
             return;
         }
 
-        //when subscription cancel
+        // when subscription cancel
         if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_cancel' ) ) {
             $custom = json_decode( stripcslashes( $postdata['custom'] ) );
             $this->subscription_cancel( $custom->user_id );
@@ -284,7 +276,7 @@ class WPUF_Paypal {
             // check if recurring payment
             if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_payment' ) && ( strtolower( $postdata['payment_status'] ) == 'completed' ) ) {
 
-                if ( $postdata['mc_gross'] == $custom->billing_amount || ( $postdata['mc_gross'] == $custom->trial_cost && $custom->trial_cost > 0 ) ) {
+                if ( $postdata['mc_gross'] == $custom->billing_amount ) {
 
                     $insert_payment     = true;
                     $post_id            = 0;
@@ -394,6 +386,18 @@ class WPUF_Paypal {
                 WP_User_Frontend::log( 'payment', 'inserting payment failed.' );
             }
         }
+    }
+
+    /**
+     * Handle the cancel payment / subscription
+     *
+     * @return void
+     *
+     * @since  2.4.1
+     */
+    public function handle_cancel_subscription( $data ) {
+        $user_id = isset( $data['user_id'] ) ? $data['user_id'] : '';
+        $this->recurring_change_status( $user_id, 'Cancel' );
     }
 
     /**

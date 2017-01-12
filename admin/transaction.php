@@ -197,7 +197,7 @@ $transactions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transacti
                     ?>
                     <tr valign="top" <?php echo ( ($count % 2) == 0) ? 'class="alternate"' : ''; ?>>
                         <td>#<?php echo $order->ID; ?></td>
-                        <td><?php printf('<a href="%s">[%d] %s %s</a>', admin_url( 'edit-user.php?id=' . $data['user_info']['id'] ), $data['user_info']['id'], $data['user_info']['first_name'], $data['user_info']['last_name'] ); ?></td>
+                        <td><?php printf('<a href="%s">[%d] %s %s</a>', admin_url( 'user-edit.php?user_id=' . $data['user_info']['id'] ), $data['user_info']['id'], $data['user_info']['first_name'], $data['user_info']['last_name'] ); ?></td>
                         <td><?php echo ucfirst( $data['type'] ); ?></td>
                         <td><?php echo $data['price'] . ' ' . $data['currency']; ?></td>
                         <td><?php echo $data['item_name']; ?></td>

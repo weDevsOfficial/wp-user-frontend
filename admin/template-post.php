@@ -283,7 +283,7 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
                     var hide_field_value = JSON.parse('<?php echo json_encode($param['names_to_hide']['value']);?>');
                     var show_field_name = '<?php echo $param['names_to_show']['name'];?>';
                     var show_field_value = JSON.parse('<?php echo json_encode($param['names_to_show']['value']);?>');
-                    var countries = <?php echo file_get_contents(WPUF_ASSET_URI . '/js/countries.json');?>;
+                    var countries = <?php echo wpuf_get_countries( 'json' ); ?>;
                     var hide_field_option_string = '';
                     var show_field_option_string = '';
 

@@ -295,6 +295,18 @@ class WPUF_Render_Form {
      */
     function render_form( $form_id, $post_id = NULL, $preview = false ) {
 
+        $form_status = get_post_status( $form_id );
+
+        if ( ! $form_status ) {
+            echo '<div class="wpuf-message">' . __( 'Your selected form is no longer available.', 'wpuf' ) . '</div>';
+            return;
+        }
+
+        if ( $form_status != 'publish' ) {
+            echo '<div class="wpuf-message">' . __( "Please make sure you've published your form.", 'wpuf' ) . '</div>';
+            return;
+        }
+
         $form_vars = wpuf_get_form_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
 
@@ -622,7 +634,6 @@ class WPUF_Render_Form {
                 </head>
                 <body>
                     <div class="container">
-
                         <?php $this->render_form( $form_id, null, true ); ?>
                     </div>
                 </body>

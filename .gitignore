@@ -10,3 +10,4 @@ includes/pro
 build
 secret.json
 log.txt
+npm-debug.log

@@ -21,12 +21,12 @@
 .wpuf-button:hover,
 .wpuf-button:focus {
   background: #f3f3f3;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f3f3f3));
-  background-image: -webkit-linear-gradient(top, #ffffff, #f3f3f3);
-  background-image: -moz-linear-gradient(top, #ffffff, #f3f3f3);
-  background-image: -ms-linear-gradient(top, #ffffff, #f3f3f3);
-  background-image: -o-linear-gradient(top, #ffffff, #f3f3f3);
-  background-image: linear-gradient(to bottom, #ffffff, #f3f3f3);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f3f3f3));
+  background-image: -webkit-linear-gradient(top, #fff, #f3f3f3);
+  background-image: -moz-linear-gradient(top, #fff, #f3f3f3);
+  background-image: -ms-linear-gradient(top, #fff, #f3f3f3);
+  background-image: -o-linear-gradient(top, #fff, #f3f3f3);
+  background-image: linear-gradient(to bottom, #fff, #f3f3f3);
   border-color: #999;
   color: #222;
 }
@@ -89,7 +89,7 @@ ul.wpuf-form li.has-error {
   background: #FFE4E4;
 }
 ul.wpuf-form li .wp-editor-wrap {
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
 }
 ul.wpuf-form li .wpuf-label {
   float: left;
@@ -136,7 +136,7 @@ ul.wpuf-form li .wpuf-fields input[type=number] {
   padding: 5px;
 }
 ul.wpuf-form li .wpuf-fields select {
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
   padding: 2px;
   height: 2em;
   -webkit-border-radius: 3px;
@@ -219,7 +219,7 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list {
 }
 ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li {
   display: inline-block;
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
   padding: 5px;
   width: 150px;
   margin-right: 5px;
@@ -232,7 +232,7 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li .wpuf-file-input-wrap {
 }
 ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li .wpuf-file-input-wrap input,
 ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li .wpuf-file-input-wrap textarea {
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
   width: 93%;
 }
 ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li .attachment-name {
@@ -270,7 +270,7 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.wpuf-delete-avatar:act
   *background-color: #a9302a;
 }
 ul.wpuf-form li .wpuf-fields .progress {
-  background: -moz-linear-gradient(center bottom, #ffffff 0%, #f7f7f7 100%) repeat scroll 0 0 #ffffff;
+  background: -moz-linear-gradient(center bottom, #FFFFFF 0%, #F7F7F7 100%) repeat scroll 0 0 #FFFFFF;
   border: 1px solid #D1D1D1;
   border-radius: 3px 3px 3px 3px;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1) inset;
@@ -284,7 +284,7 @@ ul.wpuf-form li .wpuf-fields .progress {
 }
 ul.wpuf-form li .wpuf-fields .bar {
   background-color: #83B4D8;
-  background-image: -moz-linear-gradient(center bottom, #72a7cf 0%, #90c5ee 100%);
+  background-image: -moz-linear-gradient(center bottom, #72A7CF 0%, #90C5EE 100%);
   border-radius: 3px 3px 3px 3px;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
   height: 100%;
@@ -445,7 +445,7 @@ ul.wpuf-form .wpuf-submit .wpuf-errors {
 .wpuf_sub_info {
   padding: 0;
   margin: 10px 5px;
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
   border-radius: 3px;
 }
 .wpuf_sub_info h3 {
@@ -459,12 +459,12 @@ ul.wpuf-form .wpuf-submit .wpuf-errors {
   padding: 5px 10px;
 }
 .wpuf_sub_info .wpuf-expire {
-  border-top: 1px solid #eeeeee;
+  border-top: 1px solid #eee;
   padding-top: 5px;
   margin-top: 5px;
 }
 .wpuf-coupon-info-wrap {
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
   padding: 15px;
   margin-bottom: 20px;
 }
@@ -494,12 +494,12 @@ ul.wpuf-form .wpuf-submit .wpuf-errors {
 .wpuf-coupon-info-wrap .wpuf-pack-info h3 {
   margin: 0 0 10px 0;
   padding: 0 0 10px 0;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #eee;
 }
 .wpuf-coupon-info-wrap .wpuf-pack-info h3 a {
   float: right;
   text-decoration: none;
-  background: #64c3de;
+  background: #64C3DE;
   color: #fff;
   padding: 3px 8px;
   font-size: 14px;
@@ -561,7 +561,7 @@ ul.wpuf_packs h3 {
 }
 .entry-content ul.wpuf_packs .wpuf-pricing-wrap,
 ul.wpuf_packs .wpuf-pricing-wrap {
-  background: #64c3de;
+  background: #64C3DE;
 }
 .entry-content ul.wpuf_packs .wpuf-pricing-wrap .wpuf-sub-amount,
 ul.wpuf_packs .wpuf-pricing-wrap .wpuf-sub-amount {
@@ -606,7 +606,7 @@ ul.wpuf_packs .wpuf-sub-button {
 }
 .entry-content ul.wpuf_packs .wpuf-sub-button a,
 ul.wpuf_packs .wpuf-sub-button a {
-  background: #64c3de;
+  background: #64C3DE;
   color: #fff;
   text-decoration: none;
   padding: 5px 10px;
@@ -962,7 +962,7 @@ fieldset.wpuf-multistep-fieldset .wpuf-multistep-next-btn {
 .wpuf-form .wpuf-multistep-progressbar.ui-progressbar {
   margin-bottom: 30px;
   height: 25px;
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
   position: relative;
 }
 .wpuf-form .wpuf-multistep-progressbar.ui-progressbar .wpuf-progress-percentage {

@@ -4,3 +4,4 @@ Gruntfile.js
 package.json
 docs.md
 changelog.txt
+npm-debug.log

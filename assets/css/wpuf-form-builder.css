@@ -349,7 +349,7 @@
 #wpuf-form-builder-container #builder-form-fields header ul li.active a {
   background-color: #fff;
   color: #444;
-  border-bottom: 1px solid #ffffff;
+  border-bottom: 1px solid #fff;
 }
 #wpuf-form-builder-container #builder-form-fields header ul li:first-child {
   border-right: 1px solid #cccccc;

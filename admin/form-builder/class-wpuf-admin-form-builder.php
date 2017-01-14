@@ -133,15 +133,12 @@ class WPUF_Admin_Form_Builder {
         require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
         require_once WPUF_ROOT . '/includes/free/prompt.php';
 
-        $countries = file_get_contents( WPUF_ASSET_URI . '/js/countries.json' );
-
         $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', array(
             'i18n'              => $this->i18n(),
             'post'              => $post,
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
             'panel_sections'    => $this->get_panel_sections(),
             'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
-            'countries'         => json_decode( $countries ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url()
         ) );
 
@@ -337,10 +334,6 @@ class WPUF_Admin_Form_Builder {
             'is_a_pro_feature'      => __( 'is available in Pro version', 'wpuf' ),
             'pro_feature_msg'       => __( 'Please upgrade to the Pro version to unlock all these awesome features', 'wpuf' ),
             'upgrade_to_pro'        => __( 'Get the Pro version', 'wpuf' ),
-            'show_all'              => __( 'Show all', 'wpuf' ),
-            'hide_these'            => __( 'Hide these', 'wpuf' ),
-            'only_show_these'       => __( 'Only show these', 'wpuf' ),
-            'select_countries'      => __( 'Select Countries', 'wpuf' ),
         ) );
     }
 }

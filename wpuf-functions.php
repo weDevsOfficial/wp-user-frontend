@@ -1265,7 +1265,7 @@ function wpuf_get_post_form_templates() {
  * @return array|string
  */
 function wpuf_get_countries( $type = 'array' ) {
-    $countries = include_once dirname( __FILE__ ) . '/includes/countries-formated.php';
+    $countries = include dirname( __FILE__ ) . '/includes/countries-formated.php';
 
     if ( $type == 'json' ) {
         $countries = json_encode( $countries );

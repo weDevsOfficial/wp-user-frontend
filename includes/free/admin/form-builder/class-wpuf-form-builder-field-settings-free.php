@@ -32,6 +32,27 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     }
 
     /**
+     * wpuf_cond option field settings
+     *
+     * This is for sidebar panel, not in builder stage
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function get_field_wpuf_cond() {
+        return array(
+            'name'           => 'wpuf_cond',
+            'title'          => __( 'Conditional Logic', 'wpuf' ),
+            'type'           => 'option-pro-feature-alert',
+            'section'        => 'advanced',
+            'priority'       => 30,
+            'help_text'      => '',
+            'is_pro_feature' => true
+        );
+    }
+
+    /**
      * Repeatable field settings
      *
      * @since 2.5

@@ -36,7 +36,7 @@ class WPUF_Form_Builder_Field_Settings {
      * @return array
      */
     public static function get_common_properties() {
-        return array(
+        $common_properties = array(
             array(
                 'name'      => 'label',
                 'title'     => __( 'Field Label', 'wpuf' ),
@@ -88,6 +88,8 @@ class WPUF_Form_Builder_Field_Settings {
                 'help_text' => __( 'Give the user some information about this field', 'wpuf' ),
             ),
         );
+
+        return apply_filters( 'wpuf-form-builder-fields-common-properties', $common_properties );
     }
 
     /**
@@ -141,7 +143,7 @@ class WPUF_Form_Builder_Field_Settings {
             'condition_status'  => 'no',
             'cond_field'        => array(),
             'cond_operator'     => array( '=' ),
-            'cond_option'       => array( '- select -' ),
+            'cond_option'       => array( __( '- select -', 'wpuf' ) ),
             'cond_logic'        => 'all'
         );
     }

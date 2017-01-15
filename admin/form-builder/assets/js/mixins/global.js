@@ -4,7 +4,7 @@
 Vue.mixin({
     computed: {
         i18n: function () {
-            return this.$store.state.i18n;
+            return wpuf_form_builder.i18n;
         }
     },
 

@@ -13,6 +13,7 @@ class WPUF_Admin_Form_Builder_Free {
      */
     public function __construct() {
         add_filter( 'wpuf-form-builder-field-settings', array( $this, 'add_field_settings' ) );
+        add_filter( 'wpuf-form-builder-fields-common-properties', array( $this, 'add_fields_common_properties' ) );
         add_filter( 'wpuf-form-builder-fields-custom-fields', array( $this, 'add_custom_fields' ) );
         add_filter( 'wpuf-form-builder-fields-others-fields', array( $this, 'add_others_fields' ) );
     }
@@ -30,6 +31,20 @@ class WPUF_Admin_Form_Builder_Free {
         require_once WPUF_ROOT . '/includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php';
 
         return array_merge( $settings, WPUF_Form_Builder_Field_Settings_Free::get_field_settings() );
+    }
+
+    /**
+     * Add common properties
+     *
+     * @since 2.5
+     *
+     * @param array $common_properties
+     */
+    public function add_fields_common_properties( $common_properties ) {
+        require_once WPUF_ROOT . '/includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php';
+
+        array_push( $common_properties, WPUF_Form_Builder_Field_Settings_Free::get_field_wpuf_cond() );
+        return $common_properties;
     }
 
     /**

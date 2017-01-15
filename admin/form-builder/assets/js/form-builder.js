@@ -35,7 +35,6 @@
      */
     var wpuf_form_builder_store = new Vuex.Store({
         state: {
-            i18n: wpuf_form_builder.i18n,
             post: wpuf_form_builder.post,
             form_fields: wpuf_form_builder.form_fields,
             panel_sections: wpuf_form_builder.panel_sections,

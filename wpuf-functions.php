@@ -163,13 +163,17 @@ add_filter( 'media_upload_tabs', 'wpuf_unset_media_tab' );
 function wpuf_get_post_types() {
     $post_types = get_post_types();
 
-    foreach ($post_types as $key => $val) {
-        if ( $val == 'attachment' || $val == 'revision' || $val == 'nav_menu_item' ) {
+    $ignore_post_types = apply_filters( 'wpuf-ignore-post-types', array(
+        'attachment', 'revision', 'nav_menu_item', 'wpuf_forms', 'wpuf_profile', 'wpuf_input'
+    ) );
+
+    foreach ( $post_types as $key => $val ) {
+        if ( in_array( $val, $ignore_post_types ) ) {
             unset( $post_types[$key] );
         }
     }
 
-    return $post_types;
+    return apply_filters( 'wpuf-get-post-types', $post_types );
 }
 
 /**

@@ -577,7 +577,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         $postarr = array(
             'post_type'    => $form_settings['post_type'],
-            'post_status'  => ( $charging_enabled == 'yes' ) ? 'pending' : 'draft',
+            'post_status'  => ( $charging_enabled == 'yes' && ! isset( $_POST['post_id'] ) ) ? 'pending' : 'draft',
             'post_author'  => get_current_user_id(),
             'post_title'   => isset( $_POST['post_title'] ) ? trim( $_POST['post_title'] ) : '',
             'post_content' => isset( $_POST[$content_slug] ) ? trim( $_POST[$content_slug] ) : '',

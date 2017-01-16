@@ -500,17 +500,14 @@ class WPUF_Subscription {
     }
 
     /**
-     * Checks the posting validity after a new draft post
+     * Check if the post is draft and charging is enabled
      *
      * @global object $userdata
      * @global object $wpdb
      * @param int $post_id
      */
     function monitor_new_draft_post( $post_id, $form_id, $form_settings ) {
-        // check form if subscription is disabled
-        if ( isset( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes' ) {
-            return;
-        }
+
         global $wpdb, $userdata;
 
         // bail out if charging is not enabled
@@ -525,8 +522,6 @@ class WPUF_Subscription {
             //add a uniqid to track the post easily
             $order_id = uniqid( rand( 10, 1000 ), false );
             update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
-
-            wp_update_post( array( 'ID' => $post_id, 'status' => 'pending' ) );
         }
 
     }

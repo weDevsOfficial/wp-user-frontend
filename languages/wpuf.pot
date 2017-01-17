@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.4.1\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/\n"
-"POT-Creation-Date: 2017-01-12 09:05:17+00:00\n"
+"POT-Creation-Date: 2017-01-17 09:39:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1136,8 +1136,8 @@ msgid "Subscription pack draft updated."
 msgstr ""
 
 #: admin/subscription.php:134 admin/subscription.php:459
-#: class/subscription.php:704 class/subscription.php:883
-#: class/subscription.php:896
+#: class/subscription.php:699 class/subscription.php:878
+#: class/subscription.php:891
 msgid "Free"
 msgstr ""
 
@@ -1245,7 +1245,7 @@ msgstr ""
 msgid "WPUF Subscription"
 msgstr ""
 
-#: admin/subscription.php:471 class/subscription.php:715
+#: admin/subscription.php:471 class/subscription.php:710
 msgid "Subscription Details"
 msgstr ""
 
@@ -1253,7 +1253,7 @@ msgstr ""
 msgid "This user is using recurring subscription pack"
 msgstr ""
 
-#: admin/subscription.php:480 class/subscription.php:717
+#: admin/subscription.php:480 class/subscription.php:712
 msgid "Subcription Name: "
 msgstr ""
 
@@ -1261,11 +1261,11 @@ msgstr ""
 msgid "Package billing details: "
 msgstr ""
 
-#: admin/subscription.php:491 class/subscription.php:730
+#: admin/subscription.php:491 class/subscription.php:725
 msgid "Remaining post: "
 msgstr ""
 
-#: admin/subscription.php:513 class/subscription.php:758
+#: admin/subscription.php:513 class/subscription.php:753
 msgid "Expire date:"
 msgstr ""
 
@@ -1903,7 +1903,7 @@ msgstr ""
 msgid "Apply Coupon"
 msgstr ""
 
-#: class/payment.php:171 class/subscription.php:828
+#: class/payment.php:171 class/subscription.php:823
 msgid "Cancel"
 msgstr ""
 
@@ -2036,55 +2036,55 @@ msgstr ""
 msgid "Billing Details"
 msgstr ""
 
-#: class/subscription.php:719
+#: class/subscription.php:714
 msgid "Package & billing details: "
 msgstr ""
 
-#: class/subscription.php:743
+#: class/subscription.php:738
 msgid "Unlimited"
 msgstr ""
 
-#: class/subscription.php:796
+#: class/subscription.php:791
 msgid "Please enable force pack and charge posting from admin panel"
 msgstr ""
 
-#: class/subscription.php:806
+#: class/subscription.php:801
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:806
+#: class/subscription.php:801
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:821
+#: class/subscription.php:816
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:823
+#: class/subscription.php:818
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
-#: class/subscription.php:864
+#: class/subscription.php:859
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:868
+#: class/subscription.php:863
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:880
+#: class/subscription.php:875
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:885
+#: class/subscription.php:880
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:941
+#: class/subscription.php:936
 msgid "This will cost you <strong>%s</strong> to add a new post. "
 msgstr ""
 
-#: class/subscription.php:960
+#: class/subscription.php:955
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 

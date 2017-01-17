@@ -1273,3 +1273,22 @@ function wpuf_get_countries( $type = 'array' ) {
 
     return $countries;
 }
+
+/**
+ * Get dashboard's sections
+ *
+ * @since 2.4.2
+ *
+ * @return array
+ */
+function wpuf_get_dashboard_sections() {
+    $dashboard_sections = array(
+        'dashboard'       => array( 'template' => 'dashboard.php', 'data' => array() ),
+        'posts'           => array( 'template' => 'posts.php', 'data' => array() ),
+        'subscription'    => array( 'template' => 'subscription.php', 'data' => array() ),
+        'purchases'       => array( 'template' => 'purchases.php', 'data' => array() ),
+        'account-details' => array( 'template' => 'account-details.php', 'data' => array() ),
+    );
+
+    return apply_filters( 'wpuf_dashboard_sections', $dashboard_sections );
+}

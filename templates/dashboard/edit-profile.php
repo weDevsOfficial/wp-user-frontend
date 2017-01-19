@@ -38,7 +38,8 @@
     <div class="clear"></div>
 
     <p>
-        <?php wp_nonce_field( 'wpuf-dashboard-update-profile' ); ?>
+        <?php wp_nonce_field( 'wpuf-account-update-profile' ); ?>
+        <input type="hidden" name="action" value="wpuf_account_update_profile">
         <input type="submit" class="button" name="update_profile" value="Update Profile">
     </p>
 

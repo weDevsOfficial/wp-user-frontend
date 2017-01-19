@@ -54,7 +54,7 @@ $post_type_obj = get_post_type_object( $post_type );
     <div class="post_count"><?php printf( __( 'You have created <span>%d</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
 <?php } ?>
 
-<?php do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj ) ?>
+<?php do_action( 'wpuf_account_posts_top', $userdata->ID, $post_type_obj ) ?>
 
 <?php if ( $dashboard_query->have_posts() ) { ?>
 
@@ -74,7 +74,7 @@ $post_type_obj = get_post_type_object( $post_type );
                 <th><?php _e( 'Title', 'wpuf' ); ?></th>
                 <th><?php _e( 'Status', 'wpuf' ); ?></th>
 
-                <?php do_action( 'wpuf_dashboard_head_col', $args ) ?>
+                <?php do_action( 'wpuf_account_posts_head_col', $args ) ?>
 
                 <?php
                 if ( 'yes' == $charging_enabled ) {
@@ -123,7 +123,7 @@ $post_type_obj = get_post_type_object( $post_type );
                         <?php wpuf_show_post_status( $post->post_status ) ?>
                     </td>
 
-                    <?php do_action( 'wpuf_dashboard_row_col', $args, $post ) ?>
+                    <?php do_action( 'wpuf_account_posts_row_col', $args, $post ) ?>
 
                     <?php
                     if ( $charging_enabled == 'yes' ) {
@@ -191,9 +191,7 @@ $post_type_obj = get_post_type_object( $post_type );
     <?php
 } else {
     printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', $post_type_obj->label );
-    do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
+    do_action( 'wpuf_account_posts_nopost', $userdata->ID, $post_type_obj );
 }
-
-do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj );
 
 wp_reset_postdata();

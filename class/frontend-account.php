@@ -17,6 +17,7 @@ class WPUF_Frontend_Account {
         add_action( 'wpuf_account_content_posts', array( $this, 'posts_section' ), 10, 2 );
         add_action( 'wpuf_account_content_subscription', array( $this, 'subscription_section' ), 10, 2 );
         add_action( 'wpuf_account_content_edit-profile', array( $this, 'edit_profile_section' ), 10, 2 );
+        add_action( 'template_redirect', array( $this, 'update_profile' ) );
     }
 
     /**
@@ -109,9 +110,46 @@ class WPUF_Frontend_Account {
      * @return void
      */
     public function subscription_section( $sections, $current_section ) {
+
+        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' || !is_user_logged_in() ) {
+            return;
+        }
+
+        global $userdata;
+
+        $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix
+
+        $user_sub = WPUF_Subscription::get_user_pack( $userdata->ID );
+        if ( !isset( $user_sub['pack_id'] ) ) {
+            return;
+        }
+
+        $pack = WPUF_Subscription::get_subscription( $user_sub['pack_id'] );
+
+        $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+        $details_meta['onclick'] = '';
+        $details_meta['symbol'] = wpuf_get_option( 'currency_symbol', 'wpuf_payment' );
+
+        $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wpuf' );
+        if ( $pack->meta_value['recurring_pay'] == 'yes' ) {
+            $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
+            $recurring_des = $recurring_des;
+        } else {
+            $recurring_des = '';
+        }
+
         wpuf_load_template(
             "dashboard/subscription.php",
-            array( 'sections' => $sections, 'current_section' => $current_section )
+            array(
+                'sections'        => $sections,
+                'current_section' => $current_section,
+                'userdata'        => $userdata,
+                'user_sub'        => $user_sub,
+                'pack'            => $pack,
+                'billing_amount'  => $billing_amount,
+                'recurring_des'   => $recurring_des,
+            )
         );
     }
 
@@ -130,6 +168,16 @@ class WPUF_Frontend_Account {
             "dashboard/edit-profile.php",
             array( 'sections' => $sections, 'current_section' => $current_section )
         );
+    }
+
+    public function update_profile() {
+        if ( isset( $_POST['action'] ) && $_POST['action'] == 'wpuf_account_update_profile' ) {
+            if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-account-update-profile' ) ) {
+                wp_die( __( 'Nonce failure', 'wpuf' ) );
+            }
+
+            var_dump( $_POST ); exit;
+        }
     }
 
 }

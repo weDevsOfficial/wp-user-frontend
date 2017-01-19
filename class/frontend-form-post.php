@@ -568,7 +568,9 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $form_vars     = $this->get_input_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
 
-        $content_slug = 'post_content_'.$form_id;
+        $content_slug = 'post_content_' . $form_id;
+        $post_content = isset( $_POST[ $content_slug ] ) ? trim( $_POST[ $content_slug ] ) : $_POST[ 'post_content' ];
+
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
 
         $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
@@ -580,7 +582,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             'post_status'  => ( $charging_enabled == 'yes' && ! isset( $_POST['post_id'] ) ) ? 'pending' : 'draft',
             'post_author'  => get_current_user_id(),
             'post_title'   => isset( $_POST['post_title'] ) ? trim( $_POST['post_title'] ) : '',
-            'post_content' => isset( $_POST[$content_slug] ) ? trim( $_POST[$content_slug] ) : '',
+            'post_content' => $post_content,
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? trim( $_POST['post_excerpt'] ) : '',
         );
 

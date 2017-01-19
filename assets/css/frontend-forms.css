@@ -959,6 +959,9 @@ body.rtl ul.wpuf-form li .wpuf-label {
   width: 30%;
   float: left;
 }
+.wpuf-dashboard-container .wpuf-dashboard-navigation ul {
+  list-style: none;
+}
 .wpuf-dashboard-container .wpuf-dashboard-content {
   width: 68%;
   float: right;
@@ -966,12 +969,13 @@ body.rtl ul.wpuf-form li .wpuf-label {
 .wpuf-dashboard-container table.items-table {
   border: 0;
 }
-.wpuf-dashboard-container table.items-table th {
-  padding: 10px;
-}
 .wpuf-dashboard-container table.items-table th,
 .wpuf-dashboard-container table.items-table td {
   border: 0;
+  padding: 10px;
+}
+.wpuf-dashboard-container table.items-table tr {
+  outline: 1px solid #f1f1f1;
 }
 .wpuf-dashboard-container table.items-table .items-list-header {
   background-color: #f1f1f1;

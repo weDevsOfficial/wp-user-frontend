@@ -1275,20 +1275,19 @@ function wpuf_get_countries( $type = 'array' ) {
 }
 
 /**
- * Get dashboard's sections
+ * Get account dashboard's sections
  *
- * @since 2.4.2
+ * @since 2.5
  *
  * @return array
  */
-function wpuf_get_dashboard_sections() {
-    $dashboard_sections = array(
-        'dashboard'       => array( 'template' => 'dashboard.php', 'data' => array() ),
-        'posts'           => array( 'template' => 'posts.php', 'data' => array() ),
-        'subscription'    => array( 'template' => 'subscription.php', 'data' => array() ),
-        'purchases'       => array( 'template' => 'purchases.php', 'data' => array() ),
-        'account-details' => array( 'template' => 'account-details.php', 'data' => array() ),
+function wpuf_get_account_sections() {
+    $account_sections = array(
+        array( 'slug' => 'dashboard', 'label' => __( 'Dashboard', 'wpuf' ) ),
+        array( 'slug' => 'posts', 'label' => __( 'Posts', 'wpuf' ) ),
+        array( 'slug' => 'subscription', 'label' => __( 'Subscription', 'wpuf' ) ),
+        array( 'slug' => 'edit-profile', 'label' => __( 'Edit Profile', 'wpuf' ) ),
     );
 
-    return apply_filters( 'wpuf_dashboard_sections', $dashboard_sections );
+    return apply_filters( 'wpuf_account_sections', $account_sections );
 }

@@ -191,6 +191,7 @@ class WP_User_Frontend {
             new WPUF_Admin_Installer();
         } else {
             new WPUF_Frontend_Dashboard();
+            new WPUF_Frontend_Account();
         }
     }
 

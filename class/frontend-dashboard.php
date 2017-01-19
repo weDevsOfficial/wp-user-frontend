@@ -27,22 +27,14 @@ class WPUF_Frontend_Dashboard {
         ob_start();
 
         if ( is_user_logged_in() ) {
-            // $this->post_listing( $post_type );
-
-            $section = isset( $_REQUEST['section'] ) ? $_REQUEST['section'] : 'dashboard';
-
-            $dashboard_sections = wpuf_get_dashboard_sections();
-
-            if ( in_array( $section, array_keys( $dashboard_sections ) ) ) {
-                $content = wpuf_load_template( 'new-dashboard.php', $dashboard_sections[ $section ] );
-            }
-
+            $this->post_listing( $post_type );
         } else {
             $message = wpuf_get_option( 'un_auth_msg', 'wpuf_dashboard' );
 
             if ( empty( $message ) ) {
                 $msg = '<div class="wpuf-message">' . sprintf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( get_permalink(), false ) ) . '</div>';
                 echo apply_filters( 'wpuf_dashboard_unauth', $msg, $post_type );
+                //wp_login_form();
             } else {
                 echo $message;
             }
@@ -87,7 +79,7 @@ class WPUF_Frontend_Dashboard {
         $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args ) );
         $post_type_obj = get_post_type_object( $post_type );
 
-        wpuf_load_template( 'new-dashboard.php', array(
+        wpuf_load_template( 'dashboard.php', array(
             'post_type' => $post_type,
             'userdata' => wp_get_current_user(),
             'dashboard_query' => $dashboard_query,
@@ -98,7 +90,7 @@ class WPUF_Frontend_Dashboard {
 
         wp_reset_postdata();
 
-        // $this->user_info();
+        $this->user_info();
     }
 
     /**

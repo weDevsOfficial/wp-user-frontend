@@ -1035,6 +1035,10 @@ body.rtl{
     .wpuf-dashboard-navigation {
         width: 30%;
         float: left;
+
+        ul {
+            list-style: none;
+        }
     }
 
     .wpuf-dashboard-content {
@@ -1044,12 +1048,14 @@ body.rtl{
 
     table.items-table {
         border: 0;
-        th {
-            padding: 10px;
-        }
 
         th, td {
             border: 0;
+            padding: 10px;
+        }
+
+        tr {
+            outline: 1px solid #f1f1f1;
         }
 
         .items-list-header {

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.4.1\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/\n"
-"POT-Creation-Date: 2017-01-17 09:39:48+00:00\n"
+"POT-Creation-Date: 2017-01-18 04:59:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1800,25 +1800,25 @@ msgstr ""
 msgid "No pending orders found"
 msgstr ""
 
-#: class/frontend-dashboard.php:35 includes/free/edit-profile.php:27
+#: class/frontend-dashboard.php:44 includes/free/edit-profile.php:27
 #: includes/free/edit-user.php:37
 msgid "This page is restricted. Please %s to view this page."
 msgstr ""
 
-#: class/frontend-dashboard.php:67
+#: class/frontend-dashboard.php:75
 msgid "Post Deleted"
 msgstr ""
 
-#: class/frontend-dashboard.php:105
+#: class/frontend-dashboard.php:113
 msgid "Author Info"
 msgstr ""
 
-#: class/frontend-dashboard.php:109 includes/free/edit-user.php:98
+#: class/frontend-dashboard.php:117 includes/free/edit-user.php:98
 #: includes/pro/frontend-form-profile.php:330
 msgid "%s"
 msgstr ""
 
-#: class/frontend-dashboard.php:141
+#: class/frontend-dashboard.php:149
 msgid "You are not the post author. Cheeting huh!"
 msgstr ""
 

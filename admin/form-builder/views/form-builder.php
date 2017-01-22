@@ -14,10 +14,6 @@
             <button type="button" class="button button-primary" @click="save_form_builder">
                 <?php _e( 'Save Form', 'wpuf' ); ?>
             </button>
-
-            <button type="button" class="button">
-                <?php _e( 'Preview Form', 'wpuf' ); ?>
-            </button>
         </span>
     </h2>
 

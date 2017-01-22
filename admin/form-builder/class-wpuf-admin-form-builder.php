@@ -149,6 +149,7 @@ class WPUF_Admin_Form_Builder {
             'root'           => apply_filters( 'wpuf-form-builder-js-root-mixins', array() ),
             'builder_stage'  => apply_filters( 'wpuf-form-builder-js-builder-stage-mixins', array() ),
             'form_fields'    => apply_filters( 'wpuf-form-builder-js-form-fields-mixins', array() ),
+            'field_options'  => apply_filters( 'wpuf-form-builder-js-field-options-mixins', array() ),
         );
 
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
@@ -334,6 +335,7 @@ class WPUF_Admin_Form_Builder {
             'is_a_pro_feature'      => __( 'is available in Pro version', 'wpuf' ),
             'pro_feature_msg'       => __( 'Please upgrade to the Pro version to unlock all these awesome features', 'wpuf' ),
             'upgrade_to_pro'        => __( 'Get the Pro version', 'wpuf' ),
+            'select'                => __( 'Select', 'wpuf' ),
         ) );
     }
 }

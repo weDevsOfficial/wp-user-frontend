@@ -13,6 +13,8 @@ class WPUF_Admin_Form {
      */
     private $form_type = 'post';
 
+    private $wp_post_types = array();
+
     /**
      * Add neccessary actions and filters
      *
@@ -124,18 +126,23 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function post_forms_builder_init() {
-        add_action( 'wpuf-form-builder-tabs-post', array( $this, 'add_primary_tabs' ) );
-        add_action( 'wpuf-form-builder-tab-contents-post', array( $this, 'add_primary_tab_contents' ) );
-        add_action( 'wpuf-form-builder-settings-tabs-post', array( $this, 'add_settings_tabs' ) );
-        add_action( 'wpuf-form-builder-settings-tab-contents-post', array( $this, 'add_settings_tab_contents' ) );
-        add_action( 'wpuf-form-builder-fields-section-before', array( $this, 'add_post_field_section' ) );
-        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-        add_action( 'wpuf-form-builder-js-deps', array( $this, 'js_dependencies' ) );
-        add_action( 'wpuf-form-builder-js-builder-stage-mixins', array( $this, 'js_builder_stage_mixins' ) );
-        add_action( 'wpuf-form-builder-template-builder-stage-submit-area', array( $this, 'form_submit_area' ) );
-
         if ( isset( $_GET['action'] ) && ( 'edit' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
+            add_action( 'wpuf-form-builder-tabs-post', array( $this, 'add_primary_tabs' ) );
+            add_action( 'wpuf-form-builder-tab-contents-post', array( $this, 'add_primary_tab_contents' ) );
+            add_action( 'wpuf-form-builder-settings-tabs-post', array( $this, 'add_settings_tabs' ) );
+            add_action( 'wpuf-form-builder-settings-tab-contents-post', array( $this, 'add_settings_tab_contents' ) );
+            add_action( 'wpuf-form-builder-fields-section-before', array( $this, 'add_post_field_section' ) );
+            add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+            add_action( 'wpuf-form-builder-js-deps', array( $this, 'js_dependencies' ) );
+            add_action( 'wpuf-form-builder-js-builder-stage-mixins', array( $this, 'js_builder_stage_mixins' ) );
+            add_action( 'wpuf-form-builder-js-field-options-mixins', array( $this, 'js_field_options_mixins' ) );
+            add_action( 'wpuf-form-builder-template-builder-stage-submit-area', array( $this, 'add_form_submit_area' ) );
+            add_action( 'wpuf-form-builder-localize-script', array( $this, 'add_to_localize_script' ) );
+            add_action( 'wpuf-form-builder-field-settings', array( $this, 'add_field_settings' ) );
+
             do_action( 'wpuf-form-builder-init-type-wpuf_forms' );
+
+            $this->set_wp_post_types();
 
             $settings = array(
                 'form_type'         => 'post',
@@ -186,7 +193,6 @@ class WPUF_Admin_Form {
 
         <?php
     }
-
 
     /**
      * Add settings tabs
@@ -648,11 +654,7 @@ class WPUF_Admin_Form {
      */
     public function add_post_field_section() {
         $post_fields = apply_filters( 'wpuf-form-builder-wp_forms-fields-section-post-fields', array(
-            'text_field', 'textarea_field'
-        ) );
-
-        $taxonomies = apply_filters( 'wpuf-form-builder-wp_forms-fields-taxonomies', array(
-            'text_field', 'textarea_field'
+            'post_title', 'post_content', 'post_excerpt', 'featured_image'
         ) );
 
         return array(
@@ -665,7 +667,7 @@ class WPUF_Admin_Form {
             array(
                 'title'     => __( 'Taxonomies', 'wpuf' ),
                 'id'        => 'taxonomies',
-                'fields'    => $taxonomies
+                'fields'    => array()
             )
         );
     }
@@ -718,13 +720,28 @@ class WPUF_Admin_Form {
     }
 
     /**
+     * Add mixins to form builder field options component
+     *
+     * @since 2.5
+     *
+     * @param array $mixins
+     *
+     * @return array
+     */
+    public function js_field_options_mixins( $mixins ) {
+        array_push( $mixins , 'mixin_field_options' );
+
+        return $mixins;
+    }
+
+    /**
      * Add buttons in form submit area
      *
      * @since 2.5
      *
      * @return void
      */
-    public function form_submit_area() {
+    public function add_form_submit_area() {
         ?>
             <input @click.prevent="" type="submit" name="submit" :value="post_form_settings.submit_text">
 
@@ -738,5 +755,428 @@ class WPUF_Admin_Form {
                 <?php _e( 'Save Draft', 'wpuf' ); ?>
             </a>
         <?php
+    }
+
+    /**
+     * Populate available wp post types
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function set_wp_post_types() {
+        $args = array( '_builtin' => true );
+
+        $wpuf_post_types = wpuf_get_post_types( $args );
+
+        $ignore_taxonomies = apply_filters( 'wpuf-ignore-taxonomies', array(
+            'post_format'
+        ) );
+
+        foreach ( $wpuf_post_types as $post_type ) {
+            $this->wp_post_types[ $post_type ] = array();
+
+            $taxonomies = get_object_taxonomies( $post_type, 'object' );
+
+            foreach ( $taxonomies as $tax_name => $taxonomy ) {
+                if ( ! in_array( $tax_name, $ignore_taxonomies ) ) {
+                    $this->wp_post_types[ $post_type ][ $tax_name ] = array(
+                        'title'         => $taxonomy->label,
+                        'hierarchical'  => $taxonomy->hierarchical
+                    );
+
+                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = get_terms( array(
+                        'taxonomy' => $tax_name,
+                        'hide_empty' => false
+                    ) );
+                }
+            }
+        }
+    }
+
+    /**
+     * Add data to localize_script
+     *
+     * @since 2.5
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public function add_to_localize_script( $data ) {
+        return array_merge( $data, array(
+            'wp_post_types' => $this->wp_post_types
+        ) );
+    }
+
+    /**
+     * Add field settings
+     *
+     * @since 2.5
+     *
+     * @param array $field_settings
+     *
+     * @return array
+     */
+    public function add_field_settings( $field_settings ) {
+        $field_settings = array_merge( $field_settings, array(
+            'post_title'     => self::post_title(),
+            'post_content'   => self::post_content(),
+            'post_excerpt'   => self::post_excerpt(),
+            'featured_image' => self::featured_image()
+        ) );
+
+        $taxonomy_templates = array();
+
+        foreach ( $this->wp_post_types as $post_type => $taxonomies ) {
+
+            if ( ! empty( $taxonomies ) ) {
+
+                foreach ( $taxonomies as $tax_name => $taxonomy ) {
+                    if ( 'post_tag' === $tax_name ) {
+                        $taxonomy_templates['post_tag'] = self::post_tags();
+                    } else {
+                        $taxonomy_templates[ $tax_name ] = self::taxonomy_template( $tax_name, $taxonomy );
+                    }
+                }
+
+            }
+
+        }
+
+        $field_settings = array_merge( $field_settings, $taxonomy_templates );
+
+        return $field_settings;
+    }
+
+    /**
+     * Post Title field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function post_title() {
+        $settings = WPUF_Form_Builder_Field_Settings::get_common_properties( false );
+        $settings = array_merge( $settings, WPUF_Form_Builder_Field_Settings::get_common_text_properties() );
+
+        return array(
+            'template'      => 'post_title',
+            'title'         => __( 'Post Title', 'wpuf' ),
+            'icon'          => 'header',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'text',
+                'template'      => 'post_title',
+                'required'      => 'no',
+                'label'         => __( 'Post Title', 'wpuf' ),
+                'name'          => 'post_title',
+                'is_meta'       => 'no',
+                'help'          => '',
+                'css'           => '',
+                'placeholder'   => '',
+                'default'       => '',
+                'size'          => 40,
+                'id'            => 0,
+                'is_new'        => true,
+                'wpuf_cond'     => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Post Content field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function post_content() {
+        $settings = WPUF_Form_Builder_Field_Settings::get_common_properties( false );
+        $settings = array_merge( $settings, WPUF_Form_Builder_Field_Settings::get_common_textarea_properties() );
+
+        return array(
+            'template'      => 'post_content',
+            'title'         => __( 'Post Body', 'wpuf' ),
+            'icon'          => 'file-text',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'       => 'textarea',
+                'template'         => 'post_content',
+                'required'         => 'no',
+                'label'            => __( 'Post Body', 'wpuf' ),
+                'name'             => 'post_content',
+                'is_meta'          => 'no',
+                'help'             => '',
+                'css'              => '',
+                'rows'             => 5,
+                'cols'             => 25,
+                'placeholder'      => '',
+                'default'          => '',
+                'rich'             => 'no',
+                'word_restriction' => '',
+                'id'               => 0,
+                'is_new'           => true,
+                'wpuf_cond'        => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Post Excerpt field settings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function post_excerpt() {
+        $settings = WPUF_Form_Builder_Field_Settings::get_common_properties( false );
+        $settings = array_merge( $settings, WPUF_Form_Builder_Field_Settings::get_common_textarea_properties() );
+
+        return array(
+            'template'      => 'post_excerpt',
+            'title'         => __( 'Excerpt', 'wpuf' ),
+            'icon'          => 'compress',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'       => 'textarea',
+                'template'         => 'post_excerpt',
+                'required'         => 'no',
+                'label'            => __( 'Excerpt', 'wpuf' ),
+                'name'             => 'post_excerpt',
+                'is_meta'          => 'no',
+                'help'             => '',
+                'css'              => '',
+                'rows'             => 5,
+                'cols'             => 25,
+                'placeholder'      => '',
+                'default'          => '',
+                'rich'             => 'no',
+                'word_restriction' => '',
+                'id'               => 0,
+                'is_new'           => true,
+                'wpuf_cond'        => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Featured Image
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function featured_image() {
+        $settings = WPUF_Form_Builder_Field_Settings::get_common_properties( false );
+
+        $settings = array_merge( $settings, array(
+            array(
+                'name'          => 'max_size',
+                'title'         => __( 'Max. file size', 'wpuf' ),
+                'type'          => 'text',
+                'section'       => 'advanced',
+                'priority'      => 20,
+                'help_text'     => __( 'Enter maximum upload size limit in KB', 'wpuf' ),
+            ),
+
+            array(
+                'name'          => 'count',
+                'title'         => __( 'Max. files', 'wpuf' ),
+                'type'          => 'text',
+                'section'       => 'advanced',
+                'priority'      => 21,
+                'help_text'     => __( 'Number of images can be uploaded', 'wpuf' ),
+            ),
+        ) );
+
+        return array(
+            'template'      => 'featured_image',
+            'title'         => __( 'Featured Image', 'wpuf' ),
+            'icon'          => 'picture-o',
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'image_upload',
+                'template'      => 'featured_image',
+                'required'      => 'no',
+                'label'         => __( 'Featured Image', 'wpuf' ),
+                'name'          => 'featured_image',
+                'is_meta'       => 'no',
+                'help'          => '',
+                'css'           => '',
+                'max_size'      => '1024',
+                'count'         => '1',
+                'id'            => 0,
+                'is_new'        => true,
+                'wpuf_cond'     => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Post Tag
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function post_tags() {
+        $settings = WPUF_Form_Builder_Field_Settings::get_common_properties( false );
+        $settings = array_merge( $settings, WPUF_Form_Builder_Field_Settings::get_common_text_properties() );
+
+        return array(
+            'template'      => 'post_tags',
+            'title'         => __( 'Tags', 'wpuf' ),
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'text',
+                'template'      => 'post_tags',
+                'required'      => 'no',
+                'label'         => __( 'Tags', 'wpuf' ),
+                'name'          => 'tags',
+                'is_meta'       => 'no',
+                'help'          => '',
+                'css'           => '',
+                'placeholder'   => '',
+                'default'       => '',
+                'size'          => 40,
+                'id'            => 0,
+                'is_new'        => true,
+                'wpuf_cond'     => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Common settings for taxonomy fields
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function taxonomy_template( $tax_name, $taxonomy ) {
+        $settings = WPUF_Form_Builder_Field_Settings::get_common_properties( false );
+
+        $settings = array_merge( $settings, array(
+            array(
+                'name'      => 'type',
+                'title'     => __( 'Type', 'wpuf' ),
+                'type'      => 'select',
+                'options'   => array(
+                    'select'        => __( 'Select', 'wpuf' ),
+                    'multiselect'   => __( 'Multi Select', 'wpuf' ),
+                    'checkbox'      => __( 'Checkbox', 'wpuf' ),
+                    'text'          => __( 'Text Input', 'wpuf' ),
+                    'ajax'          => __( 'Ajax', 'wpuf' ),
+                ),
+                'section'   => 'advanced',
+                'priority'  => 23,
+                'default'   => 'select',
+            ),
+
+            array(
+                'name'      => 'orderby',
+                'title'     => __( 'Order By', 'wpuf' ),
+                'type'      => 'select',
+                'options'   => array(
+                    'name'          => __( 'Name', 'wpuf' ),
+                    'term_id'       => __( 'Term ID', 'wpuf' ), // NOTE: before 2.5 the key was 'id' not 'term_id'
+                    'slug'          => __( 'Slug', 'wpuf' ),
+                    'count'         => __( 'Count', 'wpuf' ),
+                    'term_group'    => __( 'Term Group', 'wpuf' ),
+                ),
+                'section'   => 'advanced',
+                'priority'  => 24,
+                'default'   => 'name',
+            ),
+
+            array(
+                'name'      => 'order',
+                'title'     => __( 'Order', 'wpuf' ),
+                'type'      => 'radio',
+                'inline'    => true,
+                'options'   => array(
+                    'ASC'           => __( 'ASC', 'wpuf' ),
+                    'DESC'          => __( 'DESC', 'wpuf' ),
+                ),
+                'section'   => 'advanced',
+                'priority'  => 25,
+                'default'   => 'ASC',
+            ),
+
+            array(
+                'name'      => 'exclude_type',
+                'title'     => __( 'Selection Type', 'wpuf' ),
+                'type'      => 'select',
+                'options'   => array(
+                    'exclude'       => __( 'Exclude', 'wpuf' ),
+                    'include'       => __( 'Include', 'wpuf' ),
+                    'child_of'      => __( 'Child of', 'wpuf' ),
+                ),
+                'section'   => 'advanced',
+                'priority'  => 26,
+                'default'   => '',
+            ),
+
+            array(
+                'name'      => 'exclude',
+                'title'     => __( 'Selection Terms', 'wpuf' ),
+                'type'      => 'text',
+                'section'   => 'advanced',
+                'priority'  => 27,
+                'help_text' => __( 'Enter the term IDs as comma separated (without space) to exclude/include in the form.', 'wpuf' ),
+            ),
+
+            array(
+                'name'          => 'woo_attr',
+                'type'          => 'checkbox',
+                'is_single_opt' => true,
+                'options'       => array(
+                    'yes'   => __( 'This taxonomy is a WooCommerce attribute', 'wpuf' )
+                ),
+                'section'       => 'advanced',
+                'priority'      => 28,
+            ),
+
+            array(
+                'name'          => 'woo_attr_vis',
+                'type'          => 'checkbox',
+                'is_single_opt' => true,
+                'options'       => array(
+                    'yes'   => __( 'Visible on product page', 'wpuf' )
+                ),
+                'section'       => 'advanced',
+                'priority'      => 29,
+                'dependencies' => array(
+                    'woo_attr' => 'yes'
+                )
+            ),
+        ) );
+
+        return array(
+            'template'      => 'taxonomy',
+            'title'         => $taxonomy['title'],
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'    => 'taxonomy',
+                'template'      => 'taxonomy',
+                'required'      => 'no',
+                'label'         => $taxonomy['title'],
+                'name'          => $tax_name,
+                'is_meta'       => 'no',
+                'help'          => '',
+                'css'           => '',
+                'type'          => 'select',
+                'orderby'       => 'name',
+                'order'         => 'ASC',
+                'exclude_type'  => '',
+                'exclude'       => '',
+                'woo_attr'      => '',
+                'woo_attr_vis'  => '',
+                'id'            => 0,
+                'is_new'        => true,
+                'wpuf_cond'     => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
+            )
+        );
     }
 }

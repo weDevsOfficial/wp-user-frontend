@@ -30,8 +30,8 @@ Vue.mixin({
             swal(settings, callback);
         },
 
-        is_failed_to_validate: function (field) {
-            var validator = this.field_settings[field].validator;
+        is_failed_to_validate: function (template) {
+            var validator = this.field_settings[template] ? this.field_settings[template].validator : false;
 
             if (validator && validator.callback && !this[validator.callback]()) {
                 return true;

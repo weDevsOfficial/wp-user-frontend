@@ -21,7 +21,7 @@
                 </label>
             </div>
 
-            <component v-if="is_template_available(field.template)" :is="'form-' + field.template" :field="field"></component>
+            <component v-if="is_template_available(field)" :is="'form-' + field.template" :field="field"></component>
 
             <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
                 <label class="wpuf-pro-text-alert">
@@ -29,7 +29,7 @@
                 </label>
             </div>
 
-            <div v-if="is_template_available(field.template) && !is_failed_to_validate(field.template)" class="control-buttons">
+            <div v-if="is_template_available(field) && !is_failed_to_validate(field.template)" class="control-buttons">
                 <p>
                     <i class="fa fa-arrows move"></i>
                     <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
@@ -43,7 +43,6 @@
 
         <li class="wpuf-submit">
             <div class="wpuf-label">&nbsp;</div>
-
 
             <?php do_action( 'wpuf-form-builder-template-builder-stage-submit-area' ); ?>
         </li>
@@ -72,6 +71,4 @@
 
     <?php do_action( 'wpuf-form-builder-template-builder-stage-bottom-area' ); ?>
 
-    <!-- <pre>{{ $data }}</pre> -->
-    <pre>{{ form_fields }}</pre>
 </div><!-- #form-preview-stage -->

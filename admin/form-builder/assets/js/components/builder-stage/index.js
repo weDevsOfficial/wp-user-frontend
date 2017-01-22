@@ -53,6 +53,11 @@ Vue.component('builder-stage', {
                     // add a random integer id
                     field.id = self.get_random_id();
 
+                    // add meta key
+                    if ('yes' === field.is_meta && !field.name) {
+                        field.name = field.label.replace(/\W/g, '_').toLowerCase() + '_' + field.id;
+                    }
+
                     payload.field = field;
 
                     // add new form element
@@ -114,13 +119,20 @@ Vue.component('builder-stage', {
             return (this.field_settings[template] && this.field_settings[template].pro_feature) ? true : false;
         },
 
-        is_template_available: function (template) {
+        is_template_available: function (field) {
+            var template = field.template;
+
             if (this.field_settings[template]) {
                 if (this.is_pro_feature(template)) {
                     return false;
                 }
 
                 return true;
+            }
+
+            // for example see 'mixin_builder_stage' mixin's 'is_taxonomy_template_available' method
+            if (_.isFunction(this['is_' + template + '_template_available'])) {
+                return this['is_' + template + '_template_available'].call(this, field);
             }
 
             return false;

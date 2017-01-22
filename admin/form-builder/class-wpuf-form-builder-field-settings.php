@@ -33,9 +33,11 @@ class WPUF_Form_Builder_Field_Settings {
      *
      * @since 2.5
      *
+     * @param boolean $is_meta
+     *
      * @return array
      */
-    public static function get_common_properties() {
+    public static function get_common_properties( $is_meta = true ) {
         $common_properties = array(
             array(
                 'name'      => 'label',
@@ -44,15 +46,6 @@ class WPUF_Form_Builder_Field_Settings {
                 'section'   => 'basic',
                 'priority'  => 10,
                 'help_text' => __( 'Enter a title of this field', 'wpuf' ),
-            ),
-
-            array(
-                'name'      => 'name',
-                'title'     => __( 'Meta Key', 'wpuf' ),
-                'type'      => 'text-meta',
-                'section'   => 'basic',
-                'priority'  => 11,
-                'help_text' => __( 'Name of the meta key this field will save to', 'wpuf' ),
             ),
 
             array(
@@ -88,6 +81,17 @@ class WPUF_Form_Builder_Field_Settings {
                 'help_text' => __( 'Give the user some information about this field', 'wpuf' ),
             ),
         );
+
+        if ( $is_meta ) {
+            $common_properties[] = array(
+                'name'      => 'name',
+                'title'     => __( 'Meta Key', 'wpuf' ),
+                'type'      => 'text-meta',
+                'section'   => 'basic',
+                'priority'  => 11,
+                'help_text' => __( 'Name of the meta key this field will save to', 'wpuf' ),
+            );
+        }
 
         return apply_filters( 'wpuf-form-builder-fields-common-properties', $common_properties );
     }
@@ -127,6 +131,76 @@ class WPUF_Form_Builder_Field_Settings {
                 'section'   => 'advanced',
                 'priority'  => 20,
                 'help_text' => __( 'Size of this input field', 'wpuf' ),
+            ),
+        );
+    }
+
+    /**
+     * Common properties of a textarea field
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function get_common_textarea_properties() {
+        return array(
+            array(
+                'name'      => 'rows',
+                'title'     => __( 'Rows', 'wpuf' ),
+                'type'      => 'text',
+                'section'   => 'advanced',
+                'priority'  => 10,
+                'help_text' => __( 'Number of rows in textarea', 'wpuf' ),
+            ),
+
+            array(
+                'name'      => 'cols',
+                'title'     => __( 'Columns', 'wpuf' ),
+                'type'      => 'text',
+                'section'   => 'advanced',
+                'priority'  => 11,
+                'help_text' => __( 'Number of columns in textarea', 'wpuf' ),
+            ),
+
+            array(
+                'name'      => 'placeholder',
+                'title'     => __( 'Placeholder text', 'wpuf' ),
+                'type'      => 'text',
+                'section'   => 'advanced',
+                'priority'  => 12,
+                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wpuf' ),
+            ),
+
+            array(
+                'name'      => 'default',
+                'title'     => __( 'Default value', 'wpuf' ),
+                'type'      => 'text',
+                'section'   => 'advanced',
+                'priority'  => 13,
+                'help_text' => __( 'The default value this field will have', 'wpuf' ),
+            ),
+
+            array(
+                'name'      => 'rich',
+                'title'     => __( 'Textarea', 'wpuf' ),
+                'type'      => 'radio',
+                'options'   => array(
+                    'no'    => __( 'Normal', 'wpuf' ),
+                    'yes'   => __( 'Rich textarea', 'wpuf' ),
+                    'teeny' => __( 'Teeny Rich textarea', 'wpuf' ),
+                ),
+                'section'   => 'advanced',
+                'priority'  => 14,
+                'default'   => 'no',
+            ),
+
+            array(
+                'name'      => 'word_restriction',
+                'title'     => __( 'Word Restriction', 'wpuf' ),
+                'type'      => 'text',
+                'section'   => 'advanced',
+                'priority'  => 15,
+                'help_text' => __( 'Numebr of words the author to be restricted in', 'wpuf' ),
             ),
         );
     }
@@ -192,69 +266,7 @@ class WPUF_Form_Builder_Field_Settings {
      */
     public static function textarea_field() {
         $settings = self::get_common_properties();
-
-        $textarea_settings = array(
-            array(
-                'name'      => 'rows',
-                'title'     => __( 'Rows', 'wpuf' ),
-                'type'      => 'text',
-                'section'   => 'advanced',
-                'priority'  => 10,
-                'help_text' => __( 'Number of rows in textarea', 'wpuf' ),
-            ),
-
-            array(
-                'name'      => 'cols',
-                'title'     => __( 'Columns', 'wpuf' ),
-                'type'      => 'text',
-                'section'   => 'advanced',
-                'priority'  => 11,
-                'help_text' => __( 'Number of columns in textarea', 'wpuf' ),
-            ),
-
-            array(
-                'name'      => 'placeholder',
-                'title'     => __( 'Placeholder text', 'wpuf' ),
-                'type'      => 'text',
-                'section'   => 'advanced',
-                'priority'  => 12,
-                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wpuf' ),
-            ),
-
-            array(
-                'name'      => 'default',
-                'title'     => __( 'Default value', 'wpuf' ),
-                'type'      => 'text',
-                'section'   => 'advanced',
-                'priority'  => 13,
-                'help_text' => __( 'The default value this field will have', 'wpuf' ),
-            ),
-
-            array(
-                'name'      => 'rich',
-                'title'     => __( 'Textarea', 'wpuf' ),
-                'type'      => 'radio',
-                'options'   => array(
-                    'no'    => __( 'Normal', 'wpuf' ),
-                    'yes'   => __( 'Rich textarea', 'wpuf' ),
-                    'teeny' => __( 'Teeny Rich textarea', 'wpuf' ),
-                ),
-                'section'   => 'advanced',
-                'priority'  => 14,
-                'default'   => 'no',
-            ),
-
-            array(
-                'name'      => 'word_restriction',
-                'title'     => __( 'Word Restriction', 'wpuf' ),
-                'type'      => 'text',
-                'section'   => 'advanced',
-                'priority'  => 15,
-                'help_text' => __( 'Numebr of words the author to be restricted in', 'wpuf' ),
-            ),
-        );
-
-        $settings = array_merge( $settings, $textarea_settings );
+        $settings = array_merge( $settings, self::get_common_textarea_properties() );
 
         return array(
             'template'      => 'textarea_field',

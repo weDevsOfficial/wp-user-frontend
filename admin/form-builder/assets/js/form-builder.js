@@ -140,6 +140,15 @@
             delete_form_field_element: function (state, index) {
                 state.current_panel = 'form-fields';
                 state.form_fields.splice(index, 1);
+            },
+
+            // set fields for a panel section
+            set_panel_section_fields: function (state, payload) {
+                var section = _.find(state.panel_sections, function (item) {
+                    return item.id === payload.id;
+                });
+
+                section.fields = payload.fields;
             }
         }
     });

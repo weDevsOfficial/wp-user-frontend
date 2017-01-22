@@ -160,12 +160,16 @@ add_filter( 'media_upload_tabs', 'wpuf_unset_media_tab' );
  *
  * @return array
  */
-function wpuf_get_post_types() {
-    $post_types = get_post_types();
+function wpuf_get_post_types( $args = array() ) {
+    $defaults = array();
 
-    $ignore_post_types = apply_filters( 'wpuf-ignore-post-types', array(
-        'attachment', 'revision', 'nav_menu_item', 'wpuf_forms', 'wpuf_profile', 'wpuf_input'
-    ) );
+    $args = wp_parse_args( $args, $defaults );
+
+    $post_types = get_post_types( $args );
+
+    $ignore_post_types = array(
+        'attachment', 'revision', 'nav_menu_item'
+    );
 
     foreach ( $post_types as $key => $val ) {
         if ( in_array( $val, $ignore_post_types ) ) {

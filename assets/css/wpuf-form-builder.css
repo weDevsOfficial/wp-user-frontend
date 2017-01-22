@@ -89,6 +89,9 @@
   color: #656565;
   line-height: 1.7;
 }
+.sweet-alert p a {
+  text-decoration: none;
+}
 .sweet-alert button {
   border-radius: 3px;
   padding: 10px 20px;
@@ -421,6 +424,10 @@
 #form-preview-stage .field-items.current-editing.ui-sortable-helper {
   background-color: #fff;
 }
+#form-preview-stage .field-items.ui-sortable-helper {
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
 #form-preview-stage .form-preview-stage-dropzone {
   background-color: rgba(255, 185, 0, 0.3) !important;
   border: 1px solid #ffb900;
@@ -526,7 +533,7 @@
   margin-bottom: 0;
 }
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-select select {
-  max-width: 100%;
+  width: 100%;
   height: 32px;
   margin: 4px 0 0;
 }
@@ -621,4 +628,8 @@
 .panel-field-html-help-text pre {
   max-width: 100%;
   overflow-x: auto;
+}
+.panel-field-opt-select .opt-select-element {
+  display: block;
+  max-width: 100%;
 }

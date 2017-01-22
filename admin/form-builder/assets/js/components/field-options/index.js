@@ -4,6 +4,8 @@
 Vue.component('field-options', {
     template: '#tmpl-wpuf-field-options',
 
+    mixins: wpuf_form_builder_mixins(wpuf_mixins.field_options),
+
     data: function() {
         return {
             show_basic_settings: true,
@@ -27,7 +29,14 @@ Vue.component('field-options', {
         },
 
         settings: function() {
-            var settings = this.$store.state.field_settings[this.editing_form_field.template].settings;
+            var settings = [],
+                template = this.editing_form_field.template;
+
+            if (_.isFunction(this['settings_' + template])) {
+                settings = this['settings_' + template].call(this, this.editing_form_field);
+            } else {
+                settings = this.$store.state.field_settings[template].settings;
+            }
 
             return _.sortBy(settings, function (item) {
                 return parseInt(item.priority);
@@ -47,7 +56,13 @@ Vue.component('field-options', {
         },
 
         form_field_type_title: function() {
-            return this.$store.state.field_settings[this.editing_form_field.template].title;
+            var template = this.editing_form_field.template;
+
+            if (_.isFunction(this['form_field_' + template + '_title'])) {
+                return this['form_field_' + template + '_title'].call(this, this.editing_form_field);
+            }
+
+            return this.$store.state.field_settings[template].title;
         }
     }
 });

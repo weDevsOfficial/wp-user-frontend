@@ -125,6 +125,10 @@
         font-weight: 400;
         color: #656565;
         line-height: 1.7;
+
+        a {
+            text-decoration: none;
+        }
     }
 
     button {
@@ -525,6 +529,10 @@
                 background-color: #fff;
             }
         }
+
+        &.ui-sortable-helper {
+            .box-shadow(0 0 10px rgba(0, 0, 0, 0.3));
+        }
     }
 
     .form-preview-stage-dropzone {
@@ -674,7 +682,7 @@
         &.panel-field-opt-select {
 
             select {
-                max-width: 100%;
+                width: 100%;
                 height: 32px;
                 margin: 4px 0 0;
             }
@@ -810,5 +818,13 @@
     pre {
         max-width: 100%;
         overflow-x: auto;
+    }
+}
+
+.panel-field-opt-select {
+
+    .opt-select-element {
+        display: block;
+        max-width: 100%;
     }
 }

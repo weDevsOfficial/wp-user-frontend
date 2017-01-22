@@ -56,6 +56,11 @@ Vue.component('builder-stage', {
                     // add a random integer id
                     field.id = self.get_random_id();
 
+                    // add meta key
+                    if ('yes' === field.is_meta && !field.name) {
+                        field.name = field.label.replace(/\W/g, '_').toLowerCase() + '_' + field.id;
+                    }
+
                     payload.field = field;
 
                     // add new form element
@@ -117,13 +122,20 @@ Vue.component('builder-stage', {
             return (this.field_settings[template] && this.field_settings[template].pro_feature) ? true : false;
         },
 
-        is_template_available: function (template) {
+        is_template_available: function (field) {
+            var template = field.template;
+
             if (this.field_settings[template]) {
                 if (this.is_pro_feature(template)) {
                     return false;
                 }
 
                 return true;
+            }
+
+            // for example see 'mixin_builder_stage' mixin's 'is_taxonomy_template_available' method
+            if (_.isFunction(this['is_' + template + '_template_available'])) {
+                return this['is_' + template + '_template_available'].call(this, field);
             }
 
             return false;
@@ -331,6 +343,8 @@ Vue.component('field-option-pro-feature-alert', {
 Vue.component('field-options', {
     template: '#tmpl-wpuf-field-options',
 
+    mixins: wpuf_form_builder_mixins(wpuf_mixins.field_options),
+
     data: function() {
         return {
             show_basic_settings: true,
@@ -354,7 +368,14 @@ Vue.component('field-options', {
         },
 
         settings: function() {
-            var settings = this.$store.state.field_settings[this.editing_form_field.template].settings;
+            var settings = [],
+                template = this.editing_form_field.template;
+
+            if (_.isFunction(this['settings_' + template])) {
+                settings = this['settings_' + template].call(this, this.editing_form_field);
+            } else {
+                settings = this.$store.state.field_settings[template].settings;
+            }
 
             return _.sortBy(settings, function (item) {
                 return parseInt(item.priority);
@@ -374,13 +395,43 @@ Vue.component('field-options', {
         },
 
         form_field_type_title: function() {
-            return this.$store.state.field_settings[this.editing_form_field.template].title;
+            var template = this.editing_form_field.template;
+
+            if (_.isFunction(this['form_field_' + template + '_title'])) {
+                return this['form_field_' + template + '_title'].call(this, this.editing_form_field);
+            }
+
+            return this.$store.state.field_settings[template].title;
         }
     }
 });
 
 Vue.component('field-radio', {
     template: '#tmpl-wpuf-field-radio',
+
+    mixins: [
+        wpuf_mixins.option_field_mixin
+    ],
+
+    computed: {
+        value: {
+            get: function () {
+                return this.editing_form_field[this.option_field.name];
+            },
+
+            set: function (value) {
+                this.$store.commit('update_editing_form_field', {
+                    editing_field_id: this.editing_form_field.id,
+                    field_name: this.option_field.name,
+                    value: value
+                });
+            }
+        }
+    }
+});
+
+Vue.component('field-select', {
+    template: '#tmpl-wpuf-field-select',
 
     mixins: [
         wpuf_mixins.option_field_mixin
@@ -553,6 +604,17 @@ Vue.component('form-email_address', {
 });
 
 /**
+ * Field template: Featured Image
+ */
+Vue.component('form-featured_image', {
+    template: '#tmpl-wpuf-form-featured_image',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
  * Sidebar form fields panel
  */
 Vue.component('form-fields', {
@@ -668,6 +730,50 @@ Vue.component('form-multiple_select', {
 });
 
 /**
+ * Field Template: Post Content
+ */
+Vue.component('form-post_content', {
+    template: '#tmpl-wpuf-form-post_content',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field Template: Post Excerpt
+ */
+Vue.component('form-post_excerpt', {
+    template: '#tmpl-wpuf-form-post_excerpt',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field template: post_tags
+ */
+Vue.component('form-post_tags', {
+    template: '#tmpl-wpuf-form-post_tags',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
+ * Field template: Post Title
+ */
+Vue.component('form-post_title', {
+    template: '#tmpl-wpuf-form-post_title',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
+});
+
+/**
  * Field template: Radio
  */
 Vue.component('form-radio_field', {
@@ -687,6 +793,170 @@ Vue.component('form-section_break', {
     mixins: [
         wpuf_mixins.form_field_mixin
     ]
+});
+
+/**
+ * Field template: taxonomy
+ */
+Vue.component('form-taxonomy', {
+    template: '#tmpl-wpuf-form-taxonomy',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ],
+
+    computed: {
+        terms: function () {
+            var i;
+
+            for (i in wpuf_form_builder.wp_post_types) {
+                var taxonomies = wpuf_form_builder.wp_post_types[i];
+
+                if (taxonomies.hasOwnProperty(this.field.name)) {
+                    var tax_field = taxonomies[this.field.name];
+
+                    if (tax_field.terms) {
+                        return tax_field.terms;
+                    }
+                }
+            }
+
+            return [];
+        },
+
+        sorted_terms: function () {
+            var self  = this;
+            var terms = $.extend(true, [], this.terms);
+
+            // selection type and terms
+            if (this.field.exclude_type && this.field.exclude) {
+                var filter_ids = this.field.exclude.split(',').map(function (id) {
+                    id = id.trim();
+                    id = parseInt(id);
+                    return id;
+                }).filter(function (id) {
+                    return isFinite(id);
+                });
+
+                terms = terms.filter(function (term) {
+
+                    switch(self.field.exclude_type) {
+                        case 'exclude':
+                            return _.indexOf(filter_ids, term.term_id) < 0;
+
+                        case 'include':
+                            return _.indexOf(filter_ids, term.term_id) >= 0;
+
+                        case 'child_of':
+                            return _.indexOf(filter_ids, parseInt(term.parent)) >= 0;
+                    }
+                });
+            }
+
+            // order
+            terms = _.sortBy(terms, function (term) {
+                return term[self.field.orderby];
+            });
+
+            if ('DESC' === this.field.order) {
+                terms = terms.reverse();
+            }
+
+            var parent_terms = terms.filter(function (term) {
+                return !term.parent;
+            });
+
+            parent_terms.map(function (parent) {
+                parent.children = self.get_child_terms(parent.term_id, terms);
+            });
+
+            return parent_terms.length ? parent_terms : terms;
+        }
+    },
+
+    methods: {
+        get_child_terms: function (parent_id, terms) {
+            var self = this;
+
+            var child_terms = terms.filter(function (term) {
+                return parseInt(term.parent) === parseInt(parent_id);
+            });
+
+            child_terms.map(function (child) {
+                child.children = self.get_child_terms(child.term_id, terms);
+            });
+
+            return child_terms;
+        },
+
+        get_term_dropdown_options: function () {
+            var self    = this,
+                options = '';
+
+            _.each(self.sorted_terms, function (term) {
+                options += self.get_term_dropdown_options_children(term, 0);
+            });
+
+            return options;
+        },
+
+        get_term_dropdown_options_children: function (term, level) {
+            var self   = this,
+                option = '';
+
+            var indent = '',
+                i = 0;
+
+            for (i = 0; i < level; i++) {
+                indent += '&nbsp;&nbsp;';
+            }
+
+            option += '<option value="' + term.id + '">' + indent + term.name + '</option>';
+
+            if (term.children.length) {
+                _.each(term.children, function (child_term) {
+                    option += self.get_term_dropdown_options_children(child_term, (level + 1));
+                });
+            }
+
+            return option;
+        },
+
+        get_term_checklist: function () {
+            var self      = this,
+                checklist = '';
+
+
+            checklist += '<ul class="wpuf-category-checklist">';
+
+            _.each(this.sorted_terms, function (term) {
+                checklist += self.get_term_checklist_li(term);
+            });
+
+            checklist += '</ul>';
+
+            return checklist;
+        },
+
+        get_term_checklist_li: function (term) {
+            var self = this,
+                li   = '';
+
+            li += '<li><label class="selectit"><input type="checkbox"> ' + term.name + '</label></li>';
+
+            if (term.children.length) {
+                li += '<ul class="children">';
+
+                _.each(term.children, function (child_term) {
+                    li += self.get_term_checklist_li(child_term);
+                });
+
+                li += '</ul>';
+            }
+
+            return li;
+        }
+    }
 });
 
 /**

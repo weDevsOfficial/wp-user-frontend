@@ -9,7 +9,7 @@
 ?></p>
 
 <?php
-    echo get_avatar( $current_user->user_email, $size = '64', $default = '<path_to_url>' ) . '<br />';
+    echo get_avatar( $current_user->user_email, 80 ) . '<br />';
 ?>
 
 <ul class="wpuf-form">

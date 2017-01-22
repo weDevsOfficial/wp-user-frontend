@@ -955,6 +955,11 @@ body.rtl ul.wpuf-form li .wpuf-label {
     width: 100%;
   }
 }
+.wpuf-form .required {
+  color: red;
+  font-weight: 700;
+  border: 0;
+}
 .wpuf-dashboard-container .wpuf-dashboard-navigation {
   width: 30%;
   float: left;

@@ -26,6 +26,7 @@
             $('.wpuf-form').on('click', 'img.wpuf-remove-field', this.removeField);
             $('.wpuf-form').on('click', 'a.wpuf-delete-avatar', this.deleteAvatar);
             $('.wpuf-form').on('click', 'a#wpuf-post-draft', this.draftPost);
+            $('.wpuf-form').on('click', 'button#wpuf-account-update-profile', this.account_update_profile);
 
             $('.wpuf-form-add').on('submit', this.formSubmit);
             $('form#post').on('submit', this.adminPostSubmit);
@@ -47,9 +48,12 @@
         check_pass_strength : function() {
             var pass1 = $('#pass1').val(), strength;
 
+            $('#pass-strength-result').show();
+
             $('#pass-strength-result').removeClass('short bad good strong');
             if ( ! pass1 ) {
                 $('#pass-strength-result').html( '&nbsp;' );
+                $('#pass-strength-result').hide();
                 return;
             }
 
@@ -305,6 +309,23 @@
                     $(this).remove();
                 });
             })
+        },
+
+        // Frontend account dashboard update profile
+        account_update_profile: function (e) {
+            e.preventDefault();
+            var form = $(this).closest('form');
+
+            $.post(wpuf_frontend.ajaxurl, form.serialize(), function (res) {
+                if (res.success) {
+                    form.find('.wpuf-error').hide();
+                    form.find('.wpuf-success').show();
+                } else {
+                    form.find('.wpuf-success').hide();
+                    form.find('.wpuf-error').show();
+                    form.find('.wpuf-error').text(res.data);
+                }
+            });
         },
 
         formStepCheck : function(e,fieldset) {

@@ -17,7 +17,7 @@ class WPUF_Frontend_Account {
         add_action( 'wpuf_account_content_posts', array( $this, 'posts_section' ), 10, 2 );
         add_action( 'wpuf_account_content_subscription', array( $this, 'subscription_section' ), 10, 2 );
         add_action( 'wpuf_account_content_edit-profile', array( $this, 'edit_profile_section' ), 10, 2 );
-        add_action( 'template_redirect', array( $this, 'update_profile' ) );
+        add_action( 'wp_ajax_wpuf_account_update_profile', array( $this, 'update_profile' ) );
     }
 
     /**
@@ -170,14 +170,83 @@ class WPUF_Frontend_Account {
         );
     }
 
+    /**
+     * Update profile via Ajax
+     *
+     * @since  2.5
+     *
+     * @return json
+     */
     public function update_profile() {
-        if ( isset( $_POST['action'] ) && $_POST['action'] == 'wpuf_account_update_profile' ) {
-            if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-account-update-profile' ) ) {
-                wp_die( __( 'Nonce failure', 'wpuf' ) );
-            }
-
-            var_dump( $_POST ); exit;
+        if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-account-update-profile' ) ) {
+            wp_send_json_error( __( 'Nonce failure', 'wpuf' ) );
         }
+
+        global $current_user;
+
+        $first_name       = ! empty( $_POST['first_name'] ) ? sanitize_text_field( $_POST['first_name'] ) : '';
+        $last_name        = ! empty( $_POST['last_name'] ) ? sanitize_text_field( $_POST['last_name'] ) : '';
+        $email            = ! empty( $_POST['email'] ) ? sanitize_text_field( $_POST['email'] ) : '';
+        $current_password = ! empty( $_POST['current_password'] ) ? $_POST['current_password'] : '';
+        $pass1            = ! empty( $_POST['pass1'] ) ? $_POST['pass1'] : '';
+        $pass2            = ! empty( $_POST['pass2'] ) ? $_POST['pass2'] : '';
+        $save_pass        = true;
+
+        if ( empty( $first_name ) ) {
+            wp_send_json_error( __( 'First Name is a required field.', 'wpuf' ) );
+        }
+
+        if ( empty( $last_name ) ) {
+            wp_send_json_error( __( 'Last Name is a required field.', 'wpuf' ) );
+        }
+
+        if ( empty( $email ) ) {
+            wp_send_json_error( __( 'Email is a required field.', 'wpuf' ) );
+        }
+
+        $user             = new stdClass();
+        $user->ID         = $current_user->ID;
+        $user->first_name = $first_name;
+        $user->last_name  = $last_name;
+
+        if ( $email ) {
+            $email = sanitize_email( $email );
+            if ( ! is_email( $email ) ) {
+                wp_send_json_error( __( 'Please provide a valid email address.', 'wpuf' ) );
+            } elseif ( email_exists( $email ) && $email !== $current_user->user_email ) {
+                wp_send_json_error( __( 'This email address is already registered.', 'wpuf' ) );
+            }
+            $user->user_email = $email;
+        }
+
+        if ( ! empty( $current_password ) && empty( $pass1 ) && empty( $pass2 ) ) {
+            wp_send_json_error( __( 'Please fill out all password fields.', 'wpuf' ) );
+            $save_pass = false;
+        } elseif ( ! empty( $pass1 ) && empty( $current_password ) ) {
+            wp_send_json_error( __( 'Please enter your current password.', 'wpuf' ) );
+            $save_pass = false;
+        } elseif ( ! empty( $pass1 ) && empty( $pass2 ) ) {
+            wp_send_json_error( __( 'Please re-enter your password.', 'wpuf' ) );
+            $save_pass = false;
+        } elseif ( ( ! empty( $pass1 ) || ! empty( $pass2 ) ) && $pass1 !== $pass2 ) {
+            wp_send_json_error( __( 'New passwords do not match.', 'wpuf' ) );
+            $save_pass = false;
+        } elseif ( ! empty( $pass1 ) && ! wp_check_password( $current_password, $current_user->user_pass, $current_user->ID ) ) {
+            wp_send_json_error( __( 'Your current password is incorrect.', 'wpuf' ) );
+            $save_pass = false;
+        }
+
+        if ( $pass1 && $save_pass ) {
+            $user->user_pass = $pass1;
+        }
+
+        $result = wp_update_user( $user );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( __( 'Your current password is incorrect.', 'wpuf' ) );
+        }
+
+        wp_send_json_success();
     }
 
 }

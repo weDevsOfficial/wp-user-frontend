@@ -2,19 +2,22 @@
 
 <form class="wpuf-form" action="" method="post">
 
+    <div style="display: none;" class="wpuf-success"><?php _e( 'Profile updated successfully!', 'wpuf' ); ?></div>
+    <div style="display: none;" class="wpuf-error"><?php _e( 'Something went wrong!', 'wpuf' ); ?></div>
+
     <p class="form-row form-row-first">
         <label for="first_name"><?php _e( 'First Name ', 'wpuf' ); ?><span class="required">*</span></label>
-        <input type="text" class="input-text" name="first_name" id="first_name" value="<?php echo $current_user->first_name; ?>">
+        <input type="text" class="input-text" name="first_name" id="first_name" value="<?php echo $current_user->first_name; ?>" required>
     </p>
     <p class="form-row form-row-last">
         <label for="last_name"><?php _e('Last Name ', 'wpuf' ); ?><span class="required">*</span></label>
-        <input type="text" class="input-text" name="last_name" id="last_name" value="<?php echo $current_user->last_name; ?>">
+        <input type="text" class="input-text" name="last_name" id="last_name" value="<?php echo $current_user->last_name; ?>" required>
     </p>
     <div class="clear"></div>
 
     <p class="form-row form-row-wide">
         <label for="email"><?php _e( 'Email Address ', 'wpuf' ); ?><span class="required">*</span></label>
-        <input type="email" class="input-text" name="email" id="email" value="<?php echo $current_user->user_email; ?>">
+        <input type="email" class="input-text" name="email" id="email" value="<?php echo $current_user->user_email; ?>" required>
     </p>
 
     <fieldset>
@@ -27,12 +30,29 @@
             <input type="password" class="input-text" name="current_password" id="current_password">
         </p>
         <p class="form-row form-row-wide">
-            <label for="password_1"><?php _e( 'New Password', 'wpuf' ); ?></label>
-            <input type="password" class="input-text" name="password_1" id="password_1">
+            <label for="pass_1"><?php _e( 'New Password', 'wpuf' ); ?></label>
+            <input type="password" class="input-text" name="pass1" id="pass1" size="16" value="" autocomplete="off" />
+
+            <span style="width: 100%;" id="pass-strength-result"><?php _e( 'Strength indicator', 'wpuf' ); ?></span>
+            <script src="<?php echo site_url(); ?>/wp-includes/js/zxcvbn.min.js"></script>
+            <script src="<?php echo admin_url(); ?>/js/password-strength-meter.js"></script>
+            <script type="text/javascript">
+                var pwsL10n = {
+                    empty: "Strength indicator",
+                    short: "Very weak",
+                    bad: "Weak",
+                    good: "Medium",
+                    strong: "Strong",
+                    mismatch: "Mismatch"
+                };
+                try {
+                    convertEntities(pwsL10n);
+                } catch (e) {};
+            </script>
         </p>
         <p class="orm-row form-row-wide">
-            <label for="password_2"><?php _e( 'Confirm New Password', 'wpuf' ); ?></label>
-            <input type="password" class="input-text" name="password_2" id="password_2">
+            <label for="pass_2"><?php _e( 'Confirm New Password', 'wpuf' ); ?></label>
+            <input type="password" class="input-text" name="pass2" id="pass2" size="16" value="" autocomplete="off" />
         </p>
     </fieldset>
     <div class="clear"></div>
@@ -40,7 +60,7 @@
     <p>
         <?php wp_nonce_field( 'wpuf-account-update-profile' ); ?>
         <input type="hidden" name="action" value="wpuf_account_update_profile">
-        <input type="submit" class="button" name="update_profile" value="Update Profile">
+        <button class="button" name="update_profile" id="wpuf-account-update-profile"><?php _e( 'Update Profile', 'wpuf' ); ?></button>
     </p>
 
 </form>

@@ -183,6 +183,8 @@ class WP_User_Frontend {
         WPUF_Frontend_Form_Post::init(); // requires for form preview
         WPUF_Subscription::init();
 
+        new WPUF_Frontend_Account();
+
         if ( is_admin() ) {
             WPUF_Admin_Settings::init();
             new WPUF_Admin_Form();
@@ -191,7 +193,6 @@ class WP_User_Frontend {
             new WPUF_Admin_Installer();
         } else {
             new WPUF_Frontend_Dashboard();
-            new WPUF_Frontend_Account();
         }
     }
 

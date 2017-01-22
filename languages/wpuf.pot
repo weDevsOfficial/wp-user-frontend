@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.4.1\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/\n"
-"POT-Creation-Date: 2017-01-18 04:59:53+00:00\n"
+"POT-Creation-Date: 2017-01-22 10:47:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -51,7 +51,7 @@ msgstr ""
 #: admin/form.php:180 admin/form.php:218 admin/installer.php:74
 #: admin/subscription.php:228 class/subscription.php:363
 #: includes/free/edit-user.php:100 includes/pro/admin/coupon.php:183
-#: templates/dashboard.php:102
+#: templates/dashboard/posts.php:150 templates/dashboard.php:104
 msgid "Edit"
 msgstr ""
 
@@ -524,7 +524,8 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: admin/form.php:1154 templates/dashboard.php:23
+#: admin/form.php:1154 templates/dashboard/posts.php:71
+#: templates/dashboard.php:25
 msgid "Featured Image"
 msgstr ""
 
@@ -640,7 +641,7 @@ msgid ""
 "installed and saved!"
 msgstr ""
 
-#: admin/installer.php:73 admin/settings-options.php:17
+#: admin/installer.php:73 admin/settings-options.php:17 wpuf-functions.php:1286
 msgid "Dashboard"
 msgstr ""
 
@@ -650,7 +651,7 @@ msgstr ""
 
 #: admin/installer.php:82 admin/settings.php:62 class/subscription.php:338
 #: class/subscription.php:358 class/subscription.php:359
-#: class/subscription.php:360
+#: class/subscription.php:360 wpuf-functions.php:1288
 msgid "Subscription"
 msgstr ""
 
@@ -658,7 +659,8 @@ msgstr ""
 msgid "[wpuf_sub_pack]"
 msgstr ""
 
-#: admin/installer.php:83 templates/dashboard.php:33
+#: admin/installer.php:83 templates/dashboard/posts.php:81
+#: templates/dashboard.php:35
 msgid "Payment"
 msgstr ""
 
@@ -694,11 +696,11 @@ msgstr ""
 msgid "Sample Form"
 msgstr ""
 
-#: admin/posting.php:52 class/render-form.php:1419 wpuf.php:349
+#: admin/posting.php:52 class/render-form.php:1419 wpuf.php:351
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:58 includes/pro/form.php:858 wpuf.php:355
+#: admin/posting.php:58 includes/pro/form.php:858 wpuf.php:357
 msgid "Allowed Files"
 msgstr ""
 
@@ -1136,8 +1138,8 @@ msgid "Subscription pack draft updated."
 msgstr ""
 
 #: admin/subscription.php:134 admin/subscription.php:459
-#: class/subscription.php:699 class/subscription.php:878
-#: class/subscription.php:891
+#: class/frontend-account.php:133 class/subscription.php:699
+#: class/subscription.php:878 class/subscription.php:891
 msgid "Free"
 msgstr ""
 
@@ -1186,7 +1188,8 @@ msgid "Are you sure to delete this pack?"
 msgstr ""
 
 #: admin/subscription.php:232 class/render-form.php:1419 class/upload.php:171
-#: includes/free/edit-user.php:101 templates/dashboard.php:112
+#: includes/free/edit-user.php:101 templates/dashboard/posts.php:160
+#: templates/dashboard.php:114
 msgid "Delete"
 msgstr ""
 
@@ -1246,6 +1249,7 @@ msgid "WPUF Subscription"
 msgstr ""
 
 #: admin/subscription.php:471 class/subscription.php:710
+#: templates/dashboard/subscription.php:2
 msgid "Subscription Details"
 msgstr ""
 
@@ -1254,6 +1258,7 @@ msgid "This user is using recurring subscription pack"
 msgstr ""
 
 #: admin/subscription.php:480 class/subscription.php:712
+#: templates/dashboard/subscription.php:4
 msgid "Subcription Name: "
 msgstr ""
 
@@ -1262,10 +1267,12 @@ msgid "Package billing details: "
 msgstr ""
 
 #: admin/subscription.php:491 class/subscription.php:725
+#: templates/dashboard/subscription.php:17
 msgid "Remaining post: "
 msgstr ""
 
 #: admin/subscription.php:513 class/subscription.php:753
+#: templates/dashboard/subscription.php:45
 msgid "Expire date:"
 msgstr ""
 
@@ -1550,7 +1557,8 @@ msgid "show values"
 msgstr ""
 
 #: admin/template.php:388 admin/template.php:412 admin/template.php:444
-#: admin/template.php:476 includes/pro/form.php:1607 templates/dashboard.php:36
+#: admin/template.php:476 includes/pro/form.php:1607
+#: templates/dashboard/posts.php:84 templates/dashboard.php:38
 msgid "Options"
 msgstr ""
 
@@ -1566,7 +1574,8 @@ msgstr ""
 
 #: admin/template.php:534 admin/template.php:594 class/upload.php:164
 #: includes/pro/form.php:1399 includes/pro/form.php:1443
-#: includes/pro/form.php:1491 templates/dashboard.php:26 wpuf-functions.php:695
+#: includes/pro/form.php:1491 templates/dashboard/posts.php:74
+#: templates/dashboard.php:28 wpuf-functions.php:695
 msgid "Title"
 msgstr ""
 
@@ -1736,7 +1745,8 @@ msgstr ""
 msgid "User ID"
 msgstr ""
 
-#: admin/transaction.php:102 templates/dashboard.php:27
+#: admin/transaction.php:102 templates/dashboard/posts.php:75
+#: templates/dashboard.php:29
 msgid "Status"
 msgstr ""
 
@@ -1800,25 +1810,69 @@ msgstr ""
 msgid "No pending orders found"
 msgstr ""
 
-#: class/frontend-dashboard.php:44 includes/free/edit-profile.php:27
-#: includes/free/edit-user.php:37
+#: class/frontend-account.php:55 class/frontend-dashboard.php:35
+#: includes/free/edit-profile.php:27 includes/free/edit-user.php:37
 msgid "This page is restricted. Please %s to view this page."
 msgstr ""
 
-#: class/frontend-dashboard.php:75
+#: class/frontend-account.php:182 class/subscription.php:59
+msgid "Nonce failure"
+msgstr ""
+
+#: class/frontend-account.php:196
+msgid "First Name is a required field."
+msgstr ""
+
+#: class/frontend-account.php:200
+msgid "Last Name is a required field."
+msgstr ""
+
+#: class/frontend-account.php:204
+msgid "Email is a required field."
+msgstr ""
+
+#: class/frontend-account.php:215
+msgid "Please provide a valid email address."
+msgstr ""
+
+#: class/frontend-account.php:217
+msgid "This email address is already registered."
+msgstr ""
+
+#: class/frontend-account.php:223
+msgid "Please fill out all password fields."
+msgstr ""
+
+#: class/frontend-account.php:226
+msgid "Please enter your current password."
+msgstr ""
+
+#: class/frontend-account.php:229
+msgid "Please re-enter your password."
+msgstr ""
+
+#: class/frontend-account.php:232
+msgid "New passwords do not match."
+msgstr ""
+
+#: class/frontend-account.php:235 class/frontend-account.php:246
+msgid "Your current password is incorrect."
+msgstr ""
+
+#: class/frontend-dashboard.php:67 templates/dashboard/posts.php:36
 msgid "Post Deleted"
 msgstr ""
 
-#: class/frontend-dashboard.php:113
+#: class/frontend-dashboard.php:105
 msgid "Author Info"
 msgstr ""
 
-#: class/frontend-dashboard.php:117 includes/free/edit-user.php:98
+#: class/frontend-dashboard.php:109 includes/free/edit-user.php:98
 #: includes/pro/frontend-form-profile.php:330
 msgid "%s"
 msgstr ""
 
-#: class/frontend-dashboard.php:149
+#: class/frontend-dashboard.php:141 templates/dashboard/posts.php:30
 msgid "You are not the post author. Cheeting huh!"
 msgstr ""
 
@@ -1904,6 +1958,7 @@ msgid "Apply Coupon"
 msgstr ""
 
 #: class/payment.php:171 class/subscription.php:823
+#: templates/dashboard/subscription.php:66
 msgid "Cancel"
 msgstr ""
 
@@ -1960,7 +2015,7 @@ msgid "Insert Photo"
 msgstr ""
 
 #: class/render-form.php:1143 class/render-form.php:1148
-#: includes/free/edit-profile.php:198
+#: includes/free/edit-profile.php:198 templates/dashboard/edit-profile.php:36
 msgid "Strength indicator"
 msgstr ""
 
@@ -1990,10 +2045,6 @@ msgstr ""
 
 #: class/render-form.php:1407
 msgid "Select Image"
-msgstr ""
-
-#: class/subscription.php:59
-msgid "Nonce failure"
 msgstr ""
 
 #: class/subscription.php:361
@@ -2036,11 +2087,11 @@ msgstr ""
 msgid "Billing Details"
 msgstr ""
 
-#: class/subscription.php:714
+#: class/subscription.php:714 templates/dashboard/subscription.php:6
 msgid "Package & billing details: "
 msgstr ""
 
-#: class/subscription.php:738
+#: class/subscription.php:738 templates/dashboard/subscription.php:30
 msgid "Unlimited"
 msgstr ""
 
@@ -2060,7 +2111,7 @@ msgstr ""
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:818
+#: class/subscription.php:818 templates/dashboard/subscription.php:61
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
@@ -2122,7 +2173,7 @@ msgid ""
 "be shown publicly."
 msgstr ""
 
-#: includes/free/edit-profile.php:183
+#: includes/free/edit-profile.php:183 templates/dashboard/edit-profile.php:33
 msgid "New Password"
 msgstr ""
 
@@ -2140,7 +2191,7 @@ msgid "Password Strength"
 msgstr ""
 
 #: includes/free/edit-profile.php:222 includes/free/form.php:344
-#: includes/pro/form.php:380
+#: includes/pro/form.php:380 templates/dashboard/edit-profile.php:63
 msgid "Update Profile"
 msgstr ""
 
@@ -3309,36 +3360,92 @@ msgstr ""
 msgid "PayPal API signature"
 msgstr ""
 
-#: templates/dashboard.php:2
-msgid "%s's Dashboard"
+#: templates/dashboard/dashboard.php:5
+msgid "Hello %1$s (not %1$s? <a href=\"%2$s\">Sign out</a>)"
 msgstr ""
 
-#: templates/dashboard.php:6
+#: templates/dashboard/dashboard.php:18
+msgid "Name: "
+msgstr ""
+
+#: templates/dashboard/dashboard.php:26
+msgid "Nickname: "
+msgstr ""
+
+#: templates/dashboard/dashboard.php:34
+msgid "Email: "
+msgstr ""
+
+#: templates/dashboard/dashboard.php:42
+msgid "Website: "
+msgstr ""
+
+#: templates/dashboard/edit-profile.php:5
+msgid "Profile updated successfully!"
+msgstr ""
+
+#: templates/dashboard/edit-profile.php:6
+msgid "Something went wrong!"
+msgstr ""
+
+#: templates/dashboard/edit-profile.php:9
+msgid "First Name "
+msgstr ""
+
+#: templates/dashboard/edit-profile.php:13
+msgid "Last Name "
+msgstr ""
+
+#: templates/dashboard/edit-profile.php:19
+msgid "Email Address "
+msgstr ""
+
+#: templates/dashboard/edit-profile.php:24
+msgid "Password Change"
+msgstr ""
+
+#: templates/dashboard/edit-profile.php:26
+msgid "If you  want to unchanged the password then just leave this section."
+msgstr ""
+
+#: templates/dashboard/edit-profile.php:29
+msgid "Current Password"
+msgstr ""
+
+#: templates/dashboard/edit-profile.php:54
+msgid "Confirm New Password"
+msgstr ""
+
+#: templates/dashboard/posts.php:54 templates/dashboard.php:8
 msgid "You have created <span>%d</span> %s"
 msgstr ""
 
-#: templates/dashboard.php:56
+#: templates/dashboard/posts.php:104 templates/dashboard.php:58
 msgid "No Image"
 msgstr ""
 
-#: templates/dashboard.php:70
+#: templates/dashboard/posts.php:118 templates/dashboard.php:72
 msgid "Permalink to %s"
 msgstr ""
 
-#: templates/dashboard.php:86
+#: templates/dashboard/posts.php:134 templates/dashboard.php:88
 msgid "Pay Now"
 msgstr ""
 
-#: templates/dashboard.php:130
+#: templates/dashboard/posts.php:178 templates/dashboard.php:132
 msgid "&laquo;"
 msgstr ""
 
-#: templates/dashboard.php:131
+#: templates/dashboard/posts.php:179 templates/dashboard.php:133
 msgid "&raquo;"
 msgstr ""
 
-#: templates/dashboard.php:145
+#: templates/dashboard/posts.php:193 templates/dashboard.php:148
 msgid "No %s found"
+msgstr ""
+
+#: templates/dashboard.php:4
+msgid "%s's Dashboard"
 msgstr ""
 
 #: templates/logged-in.php:8
@@ -3441,27 +3548,35 @@ msgstr ""
 msgid "CSV"
 msgstr ""
 
+#: wpuf-functions.php:1287
+msgid "Posts"
+msgstr ""
+
+#: wpuf-functions.php:1289
+msgid "Edit Profile"
+msgstr ""
+
 #: wpuf.php:110
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:279
+#: wpuf.php:281
 msgid "is required"
 msgstr ""
 
-#: wpuf.php:280
+#: wpuf.php:282
 msgid "does not match"
 msgstr ""
 
-#: wpuf.php:281
+#: wpuf.php:283
 msgid "is not valid"
 msgstr ""
 
-#: wpuf.php:343
+#: wpuf.php:345
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: wpuf.php:345
+#: wpuf.php:347
 msgid "Word limit reached"
 msgstr ""
 

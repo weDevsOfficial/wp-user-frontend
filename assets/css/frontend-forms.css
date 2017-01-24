@@ -406,11 +406,10 @@ ul.wpuf-form .wpuf-submit .wpuf-errors {
   border-radius: 3px;
 }
 .wpuf_sub_info h3 {
+  background-color: #f1f1f1;
+  padding: 10px;
   margin: 0 0 5px 0 !important;
-  background: green;
-  color: #fff !important;
-  padding: 3px 10px !important;
-  font-weight: bold;
+  font-weight: 300 !important;
 }
 .wpuf_sub_info .wpuf-text {
   padding: 5px 10px;
@@ -964,8 +963,15 @@ body.rtl ul.wpuf-form li .wpuf-label {
   width: 30%;
   float: left;
 }
+.wpuf-dashboard-container .wpuf-dashboard-navigation a {
+  text-decoration: none;
+  box-shadow: none;
+}
 .wpuf-dashboard-container .wpuf-dashboard-navigation ul {
   list-style: none;
+}
+.wpuf-dashboard-container .wpuf-dashboard-navigation ul li {
+  padding-bottom: 2px;
 }
 .wpuf-dashboard-container .wpuf-dashboard-content {
   width: 68%;
@@ -973,6 +979,10 @@ body.rtl ul.wpuf-form li .wpuf-label {
 }
 .wpuf-dashboard-container table.items-table {
   border: 0;
+}
+.wpuf-dashboard-container table.items-table a {
+  text-decoration: none;
+  box-shadow: none;
 }
 .wpuf-dashboard-container table.items-table th,
 .wpuf-dashboard-container table.items-table td {
@@ -984,4 +994,14 @@ body.rtl ul.wpuf-form li .wpuf-label {
 }
 .wpuf-dashboard-container table.items-table .items-list-header {
   background-color: #f1f1f1;
+}
+.wpuf-dashboard-container .wpuf-update-profile-form .form-row-first {
+  float: left;
+  width: 47%;
+  overflow: visible;
+}
+.wpuf-dashboard-container .wpuf-update-profile-form .form-row-last {
+  float: right;
+  width: 47%;
+  overflow: visible;
 }

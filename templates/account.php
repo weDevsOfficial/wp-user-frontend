@@ -13,7 +13,7 @@
         </ul>
     </nav>
 
-    <div class="wpuf-dashboard-content">
+    <div class="wpuf-dashboard-content <?php echo ( ! empty( $current_section ) ) ? $current_section['slug'] : ''; ?>">
         <?php
             if ( ! empty( $current_section ) ) {
                 do_action( "wpuf_account_content_{$current_section['slug']}", $sections, $current_section );

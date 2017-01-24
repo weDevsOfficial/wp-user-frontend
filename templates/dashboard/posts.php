@@ -147,7 +147,7 @@ $post_type_obj = get_post_type_object( $post_type );
                                 // don't show the edit link
                             } else {
                                 ?>
-                                <a href="<?php echo wp_nonce_url( $url, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wpuf' ); ?></a>
+                                <a href="<?php echo wp_nonce_url( $url, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wpuf' ); ?></a> /
                                 <?php
                             }
                         }

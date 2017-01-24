@@ -30,14 +30,7 @@ class WPUF_Frontend_Dashboard {
             $this->post_listing( $post_type );
         } else {
             $message = wpuf_get_option( 'un_auth_msg', 'wpuf_dashboard' );
-
-            if ( empty( $message ) ) {
-                $msg = '<div class="wpuf-message">' . sprintf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( get_permalink(), false ) ) . '</div>';
-                echo apply_filters( 'wpuf_dashboard_unauth', $msg, $post_type );
-                //wp_login_form();
-            } else {
-                echo $message;
-            }
+            wpuf_load_template( 'unauthorized.php', array( 'message' => $message ) );
         }
 
         $content = ob_get_contents();

@@ -47,16 +47,10 @@ class WPUF_Frontend_Account {
                 }
             }
 
-            $content = wpuf_load_template( 'account.php', array( 'sections' => $sections, 'current_section' => $current_section ) );
+            wpuf_load_template( 'account.php', array( 'sections' => $sections, 'current_section' => $current_section ) );
         } else {
             $message = wpuf_get_option( 'un_auth_msg', 'wpuf_dashboard' );
-
-            if ( empty( $message ) ) {
-                $msg = '<div class="wpuf-message">' . sprintf( __( "This page is restricted. Please %s to view this page.", 'wpuf' ), wp_loginout( get_permalink(), false ) ) . '</div>';
-                echo apply_filters( 'wpuf_dashboard_unauth', $msg, $post_type );
-            } else {
-                echo $message;
-            }
+            wpuf_load_template( 'unauthorized.php', array( 'message' => $message ) );
         }
 
         $content = ob_get_contents();
@@ -111,7 +105,7 @@ class WPUF_Frontend_Account {
      */
     public function subscription_section( $sections, $current_section ) {
 
-        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' || !is_user_logged_in() ) {
+        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' || ! is_user_logged_in() ) {
             return;
         }
 
@@ -120,8 +114,8 @@ class WPUF_Frontend_Account {
         $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix
 
         $user_sub = WPUF_Subscription::get_user_pack( $userdata->ID );
-        if ( !isset( $user_sub['pack_id'] ) ) {
-            return;
+        if ( ! isset( $user_sub['pack_id'] ) ) {
+            die( __( "<p>You've not subscribed any package yet.</p>", 'wpuf' ) );
         }
 
         $pack = WPUF_Subscription::get_subscription( $user_sub['pack_id'] );

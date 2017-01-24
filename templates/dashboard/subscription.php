@@ -4,14 +4,7 @@
         <div><strong><?php _e( 'Subcription Name: ','wpuf' ); ?></strong><?php echo $pack->post_title; ?></div>
         <div>
             <strong><?php _e( 'Package & billing details: ', 'wpuf'); ?></strong>
-
-            <div class="wpuf-pricing-wrap">
-                <div class="wpuf-sub-amount">
-                    <?php echo $billing_amount; ?>
-                    <?php echo $recurring_des; ?>
-                </div>
-            </div>
-
+            <?php echo $billing_amount . ' ' . $recurring_des; ?>
         </div>
         <div>
             <strong><?php _e( 'Remaining post: ', 'wpuf'); ?></strong>
@@ -58,7 +51,7 @@
             $payment_gateway = strtolower( $payment_gateway );
 
             echo '<br />';
-            _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wpuf' );
+            _e( '<p><i>To cancel the pack, press the following cancel button.</i></p>', 'wpuf' );
         ?>
             <form action="" method="post" style="text-align: center;">
                 <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>

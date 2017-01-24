@@ -442,11 +442,10 @@ ul.wpuf-form {
     border-radius: 3px;
 
     h3 {
+        background-color: #f1f1f1;
+        padding: 10px;
         margin: 0 0 5px 0 !important;
-        background: green;
-        color: #fff !important;
-        padding: 3px 10px !important;
-        font-weight: bold;
+        font-weight: 300 !important;
     }
 
     .wpuf-text{
@@ -1043,8 +1042,16 @@ body.rtl{
         width: 30%;
         float: left;
 
+        a {
+            text-decoration: none;
+            box-shadow: none;
+        }
+
         ul {
             list-style: none;
+            li {
+                padding-bottom: 2px;
+            }
         }
     }
 
@@ -1054,6 +1061,11 @@ body.rtl{
     }
 
     table.items-table {
+        a {
+            text-decoration: none;
+            box-shadow: none;
+        }
+
         border: 0;
 
         th, td {
@@ -1067,6 +1079,20 @@ body.rtl{
 
         .items-list-header {
             background-color: #f1f1f1;
+        }
+    }
+
+    .wpuf-update-profile-form {
+        .form-row-first {
+            float: left;
+            width: 47%;
+            overflow: visible;
+        }
+
+        .form-row-last {
+            float: right;
+            width: 47%;
+            overflow: visible;
         }
     }
 }

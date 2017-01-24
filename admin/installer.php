@@ -71,6 +71,7 @@ class WPUF_Admin_Installer {
 
         // create a dashboard page
         $dashboard_page = $this->create_page( __( 'Dashboard', 'wpuf' ), '[wpuf_dashboard]' );
+        $account_page   = $this->create_page( __( 'Account', 'wpuf' ), '[wpuf_account]' );
         $edit_page      = $this->create_page( __( 'Edit', 'wpuf' ), '[wpuf_edit]' );
 
         // login page

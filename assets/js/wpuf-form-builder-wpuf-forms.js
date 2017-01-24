@@ -8,7 +8,32 @@
         return;
     }
 
-    window.mixin_builder_stage = {
+    window.wpuf_forms_mixin_root = {
+        data: function () {
+            return {
+                validation_error_msg: wpuf_form_builder.i18n.any_of_three_needed
+            };
+        },
+
+        methods: {
+            // wpuf_forms must have either 'post_title', 'post_content' or 'post_excerpt'
+            // field template
+            validate_form_before_submit: function () {
+                var is_valid = false;
+
+                _.each(this.form_fields, function (form_field) {
+                    if (_.indexOf(['post_title', 'post_content', 'post_excerpt'], form_field.template) >= 0) {
+                        is_valid = true;
+                        return;
+                    }
+                });
+
+                return is_valid;
+            }
+        }
+    };
+
+    window.wpuf_forms_mixin_builder_stage = {
         data: function () {
             return {
                 post_form_settings: {
@@ -87,7 +112,7 @@
         }
     };
 
-    window.mixin_field_options = {
+    window.wpuf_forms_mixin_field_options = {
         methods: {
             form_field_post_tags_title: function () {
                 return this.$store.state.field_settings.post_tag.title;

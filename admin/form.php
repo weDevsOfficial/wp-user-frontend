@@ -13,6 +13,18 @@ class WPUF_Admin_Form {
      */
     private $form_type = 'post';
 
+    /**
+     * Form settings key
+     *
+     * @var string
+     */
+    private $form_settings_key = 'wpuf_form_settings';
+
+    /**
+     * WP post types
+     *
+     * @var string
+     */
     private $wp_post_types = array();
 
     /**
@@ -134,11 +146,13 @@ class WPUF_Admin_Form {
             add_action( 'wpuf-form-builder-fields-section-before', array( $this, 'add_post_field_section' ) );
             add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
             add_action( 'wpuf-form-builder-js-deps', array( $this, 'js_dependencies' ) );
-            add_action( 'wpuf-form-builder-js-builder-stage-mixins', array( $this, 'js_builder_stage_mixins' ) );
-            add_action( 'wpuf-form-builder-js-field-options-mixins', array( $this, 'js_field_options_mixins' ) );
+            add_filter( 'wpuf-form-builder-js-root-mixins', array( $this, 'js_root_mixins' ) );
+            add_filter( 'wpuf-form-builder-js-builder-stage-mixins', array( $this, 'js_builder_stage_mixins' ) );
+            add_filter( 'wpuf-form-builder-js-field-options-mixins', array( $this, 'js_field_options_mixins' ) );
             add_action( 'wpuf-form-builder-template-builder-stage-submit-area', array( $this, 'add_form_submit_area' ) );
             add_action( 'wpuf-form-builder-localize-script', array( $this, 'add_to_localize_script' ) );
             add_action( 'wpuf-form-builder-field-settings', array( $this, 'add_field_settings' ) );
+            add_filter( 'wpuf-form-builder-i18n', array( $this, 'i18n' ) );
 
             do_action( 'wpuf-form-builder-init-type-wpuf_forms' );
 
@@ -148,6 +162,7 @@ class WPUF_Admin_Form {
                 'form_type'         => 'post',
                 'post_type'         => 'wpuf_forms',
                 'post_id'           => $_GET['id'],
+                'form_settings_key' => $this->form_settings_key,
                 'shortcode_attrs'   => array(
                     'type' => array(
                         'profile'       => __( 'Profile', 'wpuf' ),
@@ -156,7 +171,7 @@ class WPUF_Admin_Form {
                 )
             );
 
-            wpuf_admin_form_builder( $settings );
+            new WPUF_Admin_Form_Builder( $settings );
         }
     }
 
@@ -705,6 +720,21 @@ class WPUF_Admin_Form {
     }
 
     /**
+     * Add mixins to root instance
+     *
+     * @since 2.5
+     *
+     * @param array $mixins
+     *
+     * @return array
+     */
+    public function js_root_mixins( $mixins ) {
+        array_push( $mixins , 'wpuf_forms_mixin_root' );
+
+        return $mixins;
+    }
+
+    /**
      * Add mixins to form builder builder stage component
      *
      * @since 2.5
@@ -714,7 +744,7 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function js_builder_stage_mixins( $mixins ) {
-        array_push( $mixins , 'mixin_builder_stage' );
+        array_push( $mixins , 'wpuf_forms_mixin_builder_stage' );
 
         return $mixins;
     }
@@ -729,7 +759,7 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function js_field_options_mixins( $mixins ) {
-        array_push( $mixins , 'mixin_field_options' );
+        array_push( $mixins , 'wpuf_forms_mixin_field_options' );
 
         return $mixins;
     }
@@ -1178,5 +1208,20 @@ class WPUF_Admin_Form {
                 'wpuf_cond'     => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
             )
         );
+    }
+
+    /**
+     * i18n strings specially for Post Forms
+     *
+     * @since 2.5
+     *
+     * @param array $i18n
+     *
+     * @return array
+     */
+    public function i18n( $i18n ) {
+        return array_merge( $i18n, array(
+            'any_of_three_needed' => __( 'Post Forms must have either Post Title, Post Body or Excerpt field', 'wpuf' )
+        ) );
     }
 }

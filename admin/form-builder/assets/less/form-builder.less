@@ -162,6 +162,21 @@
     animation: wpuf_form_builder_loader 1.1s infinite linear;
 }
 
+.button.button-ajax-working {
+
+    .loader {
+        display: inline-block;
+        width: 17px;
+        height: 17px;
+        top: 4px;
+        margin-right: 3px;
+        border-top: 1px solid rgb(102, 198, 228);
+        border-right: 1px solid rgb(102, 198, 228);
+        border-bottom: 1px solid rgb(102, 198, 228);
+        border-left: 1px solid rgba(102, 198, 228, 0);
+    }
+}
+
 @-webkit-keyframes wpuf_form_builder_loader {
   0% {
     -webkit-transform: rotate(0deg);
@@ -182,6 +197,24 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+// toastr - notification
+// --------------------------------------------------
+#toast-container {
+
+    &.toast-top-right {
+        top: 40px;
+        right: 18px;
+    }
+
+    & > div {
+        opacity: 1;
+    }
+
+    & > :hover {
+        opacity: .9;
+    }
 }
 
 // Flex button group
@@ -264,35 +297,38 @@
         box-sizing: border-box;
     }
 
-    & > .nav-tab-wrapper {
+    & > fieldset {
+        & > .nav-tab-wrapper {
 
-        .nav-tab:focus {
-            outline: 0;
-            .box-shadow(none);
+            .nav-tab:focus {
+                outline: 0;
+                .box-shadow(none);
+            }
+
+            .button {
+                font-weight: 400;
+            }
         }
 
-        .button {
-            font-weight: 400;
+        & > .tab-contents {
+            .border(bottom);
+
+            & > .group {
+                display: none;
+
+                &.active {
+                    display: block;
+                }
+
+                &:not(#wpuf-form-builder-container):not(#wpuf-form-builder-settings) {
+                    height: ~"calc(100vh - 125px)";
+                    overflow-y: auto;
+                    padding-top: 15px;
+                }
+            }
         }
     }
 
-    & > .tab-contents {
-        .border(bottom);
-
-        & > .group {
-            display: none;
-
-            &.active {
-                display: block;
-            }
-
-            &:not(#wpuf-form-builder-container):not(#wpuf-form-builder-settings) {
-                height: ~"calc(100vh - 125px)";
-                overflow-y: auto;
-                padding-top: 15px;
-            }
-        }
-    }
 
     .wpuf-settings-nav-tab-wrapper {
         width: 200px;

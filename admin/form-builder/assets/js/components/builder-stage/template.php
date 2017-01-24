@@ -70,5 +70,4 @@
     </div>
 
     <?php do_action( 'wpuf-form-builder-template-builder-stage-bottom-area' ); ?>
-
 </div><!-- #form-preview-stage -->

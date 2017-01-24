@@ -25,10 +25,11 @@ class WPUF_Admin_Form_Builder {
         global $post;
 
         $defaults = array(
-            'form_type'       => '', // e.g 'post', 'profile' etc
-            'post_type'       => '', // e.g 'wpuf_forms', 'wpuf_profile' etc
-            'post_id'         => 0,
-            'shortcode_attrs' => array() // [ 'type' => [ 'profile' => 'Profile', 'registration' => 'Registration' ] ]
+            'form_type'         => '', // e.g 'post', 'profile' etc
+            'post_type'         => '', // e.g 'wpuf_forms', 'wpuf_profile' etc,
+            'form_settings_key' => '',
+            'post_id'           => 0,
+            'shortcode_attrs'   => array() // [ 'type' => [ 'profile' => 'Profile', 'registration' => 'Registration' ] ]
         );
 
         $this->settings = wp_parse_args( $settings, $defaults );
@@ -79,10 +80,10 @@ class WPUF_Admin_Form_Builder {
         wp_enqueue_style( 'wpuf-font-awesome', WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css', array(), WPUF_VERSION );
         wp_enqueue_style( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert.css', array(), WPUF_VERSION );
         wp_enqueue_style( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css', array(), WPUF_VERSION );
-
+        wp_enqueue_style( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.min.css', array(), WPUF_VERSION );
 
         $form_builder_css_deps = apply_filters( 'wpuf-form-builder-css-deps', array(
-            'wpuf-css', 'wpuf-font-awesome', 'wpuf-sweetalert', 'wpuf-selectize',
+            'wpuf-css', 'wpuf-font-awesome', 'wpuf-sweetalert', 'wpuf-selectize', 'wpuf-toastr'
         ) );
 
         wp_enqueue_style( 'wpuf-form-builder', WPUF_ASSET_URI . '/css/wpuf-form-builder.css', $form_builder_css_deps, WPUF_VERSION );
@@ -98,6 +99,7 @@ class WPUF_Admin_Form_Builder {
             wp_enqueue_script( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert-dev.js', array(), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo.js', array( 'jquery' ), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize.js', array( 'jquery' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.js', array(), WPUF_VERSION, true );
 
         } else {
             wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue.min.js', array(), WPUF_VERSION, true );
@@ -105,6 +107,7 @@ class WPUF_Admin_Form_Builder {
             wp_enqueue_script( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert.min.js', array(), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo.min.js', array( 'jquery' ), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize.min.js', array( 'jquery' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.min.js', array(), WPUF_VERSION, true );
         }
 
 
@@ -112,7 +115,7 @@ class WPUF_Admin_Form_Builder {
         $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', array(
             'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'underscore',
             'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert', 'wpuf-jquery-scrollTo',
-            'wpuf-selectize'
+            'wpuf-selectize', 'wpuf-toastr'
         ) );
 
         wp_enqueue_script( 'wpuf-form-builder-mixins', WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js', $form_builder_js_deps, WPUF_VERSION, true );
@@ -244,7 +247,10 @@ class WPUF_Admin_Form_Builder {
      * @return void
      */
     public function include_form_builder() {
-        $form_type = $this->settings['form_type'];
+        $form_id            = $this->settings['post_id'];
+        $form_type          = $this->settings['form_type'];
+        $form_settings_key  = $this->settings['form_settings_key'];
+
         include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
     }
 
@@ -336,6 +342,68 @@ class WPUF_Admin_Form_Builder {
             'pro_feature_msg'       => __( 'Please upgrade to the Pro version to unlock all these awesome features', 'wpuf' ),
             'upgrade_to_pro'        => __( 'Get the Pro version', 'wpuf' ),
             'select'                => __( 'Select', 'wpuf' ),
+            'saved_form_data'       => __( 'Saved form data', 'wpuf' ),
         ) );
+    }
+
+    /**
+     * Save form data
+     *
+     * @since 2.5
+     *
+     * @param array $data Contains form_fields, form_settings, form_settings_key data
+     *
+     * @return boolean
+     */
+    public static function save_form( $data ) {
+        $saved_wpuf_inputs = array();
+
+        $existing_wpuf_input_ids = get_children( array(
+            'post_parent' => $data['form_id'],
+            'post_status' => 'publish',
+            'post_type'   => 'wpuf_input',
+            'numberposts' => '-1',
+            'orderby'     => 'menu_order',
+            'order'       => 'ASC',
+            'fields'      => 'ids'
+        ) );
+
+        $new_wpuf_input_ids = array();
+
+        if ( ! empty( $data['form_fields'] ) ) {
+
+            foreach ( $data['form_fields'] as $order => $field ) {
+                if ( ! empty( $field['is_new'] ) ) {
+                    unset( $field['is_new'] );
+                    unset( $field['id'] );
+
+                    $field_id = 0;
+
+                } else {
+                    $field_id = $field['id'];
+                }
+
+                $field_id = wpuf_insert_form_field( $data['form_id'], $field, $field_id, $order );
+
+                $new_wpuf_input_ids[] = $field_id;
+
+                $field['id'] = $field_id;
+
+                $saved_wpuf_inputs[] = $field;
+            }
+
+        }
+
+        $inputs_to_delete = array_diff( $existing_wpuf_input_ids, $new_wpuf_input_ids );
+
+        if ( ! empty( $inputs_to_delete ) ) {
+            foreach ( $inputs_to_delete as $delete_id ) {
+                wp_delete_post( $delete_id , true );
+            }
+        }
+
+        update_post_meta( $data['form_id'], $data['form_settings_key'], $data['form_settings'] );
+
+        return $saved_wpuf_inputs;
     }
 }

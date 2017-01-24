@@ -1223,19 +1223,19 @@ function wpuf_duplicate_form( $post_id ) {
  * @since 2.5
  *
  * @param int $form_id
- * @param array $fields
+ * @param array $field
  * @param int $field_id
  * @param int $order
  *
  * @return int ID of updated or inserted post
  */
-function wpuf_insert_form_field( $form_id, $fields = array(), $field_id = null, $order = 0 ) {
+function wpuf_insert_form_field( $form_id, $field = array(), $field_id = null, $order = 0 ) {
 
     $args = array(
         'post_type'    => 'wpuf_input',
         'post_parent'  => $form_id,
         'post_status'  => 'publish',
-        'post_content' => maybe_serialize( wp_unslash( $fields ) ),
+        'post_content' => maybe_serialize( wp_unslash( $field ) ),
         'menu_order'   => $order
     );
 
@@ -1244,27 +1244,10 @@ function wpuf_insert_form_field( $form_id, $fields = array(), $field_id = null, 
     }
 
     if ( $field_id ) {
-        wp_update_post( $args );
+        return wp_update_post( $args );
     } else {
-        wp_insert_post( $args );
+        return wp_insert_post( $args );
     }
-}
-
-/**
- * Get admin form builder object
- *
- * @since 2.5
- *
- * @param string $form_type
- * @param string $post_type
- * @param int    $post_id
- *
- * @return object
- */
-function wpuf_admin_form_builder( $settings ) {
-    require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
-
-    return new WPUF_Admin_Form_Builder( $settings );
 }
 
 add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );

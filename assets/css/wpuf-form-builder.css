@@ -654,3 +654,6 @@
   display: block;
   max-width: 100%;
 }
+ul.wpuf-form li .wpuf-text-editor .wp-editor-wrap {
+  border: 0;
+}

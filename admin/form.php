@@ -943,7 +943,7 @@ class WPUF_Admin_Form {
                 'cols'             => 25,
                 'placeholder'      => '',
                 'default'          => '',
-                'rich'             => 'no',
+                'rich'             => 'yes',
                 'word_restriction' => '',
                 'id'               => 0,
                 'is_new'           => true,

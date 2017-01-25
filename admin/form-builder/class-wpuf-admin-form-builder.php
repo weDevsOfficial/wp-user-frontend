@@ -142,7 +142,8 @@ class WPUF_Admin_Form_Builder {
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
             'panel_sections'    => $this->get_panel_sections(),
             'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
-            'pro_link'          => WPUF_Pro_Prompt::get_pro_url()
+            'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
+            'site_url'          => site_url('/')
         ) );
 
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );

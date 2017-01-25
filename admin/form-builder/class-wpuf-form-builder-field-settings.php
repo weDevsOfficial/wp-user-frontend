@@ -347,7 +347,7 @@ class WPUF_Form_Builder_Field_Settings {
             'icon'          => 'caret-square-o-down',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'       => 'dropdown',
+                'input_type'       => 'select',
                 'template'         => 'dropdown_field',
                 'required'         => 'no',
                 'label'            => __( 'Dropdown', 'wpuf' ),

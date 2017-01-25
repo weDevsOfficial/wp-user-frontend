@@ -36,9 +36,8 @@ class WPUF_Admin_Form_Builder_Ajax {
         }
 
         $form_fields = isset( $_POST['form_fields'] ) ? $_POST['form_fields'] : '';
-        $form_fields = str_replace( '\"', '"', $form_fields );
+        $form_fields = wp_unslash( $form_fields );
         $form_fields = json_decode( $form_fields, true );
-
 
         $data = array(
             'form_id'           => absint( $form_data['wpuf_form_id'] ),

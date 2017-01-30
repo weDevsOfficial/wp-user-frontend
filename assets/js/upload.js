@@ -119,13 +119,13 @@
             $('#' + this.container).find('#' + error.file.id).remove();
 
             var msg = '';
-            switch(error.code) {
+            switch (error.code) {
                 case -600:
-                    msg = wpuf_frontend_upload.size_error;
+                    msg = wpuf_frontend_upload.plupload.size_error;
                     break;
 
                 case -601:
-                    msg = wpuf_frontend_upload.type_error;
+                    msg = wpuf_frontend_upload.plupload.type_error;
                     break;
 
                 default:

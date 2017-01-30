@@ -48,6 +48,7 @@ module.exports = function(grunt) {
             minify: {
                 files: {
                     '<%= dirs.js %>/frontend-form.min.js': ['<%= dirs.js %>/frontend-form.js'],
+                    '<%= dirs.js %>/upload.min.js': ['<%= dirs.js %>/upload.js'],
                 }
             }
         },

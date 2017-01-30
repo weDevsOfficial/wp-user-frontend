@@ -353,6 +353,9 @@ class WP_User_Frontend {
                 'filters'          => array(array('title' => __( 'Allowed Files', 'wpuf' ), 'extensions' => '*')),
                 'multipart'        => true,
                 'urlstream_upload' => true,
+                'warning'          => __( 'Maximum number of files reached!', 'wpuf' ),
+                'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wpuf' ),
+                'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wpuf' )
             )
         ));
     }

@@ -1356,5 +1356,27 @@ function wpuf_get_pending_transactions( $args = array() ) {
         return $wpuf_order_query->post_count;
     }
 
-    return $wpuf_order_query->get_posts();
+    $transactions = $wpuf_order_query->get_posts();
+
+    $items = array();
+    foreach ( $transactions as $transaction ) {
+        $info = get_post_meta( $transaction->ID, '_data', true );
+
+        $items[] = (object) array(
+            'id'               => $transaction->ID,
+            'user_id'          => $info['user_info']['id'],
+            'status'           => 'pending',
+            'cost'             => $info['price'],
+            'post_id'          => ( $info['type'] == 'post' ) ? $info['item_number'] : 0,
+            'pack_id'          => ( $info['type'] == 'pack' ) ? $info['item_number'] : 0,
+            'payer_first_name' => $info['user_info']['first_name'],
+            'payer_last_name'  => $info['user_info']['last_name'],
+            'payer_email'      => $info['user_info']['email'],
+            'payment_type'     => ( $info['post_data']['wpuf_payment_method'] == 'bank' ) ? 'Bank/Manual' : ucwords( $info['post_data']['wpuf_payment_method'] ),
+            'transaction_id'   => 0,
+            'created'          => $info['date'],
+        );
+    }
+
+    return $items;
 }

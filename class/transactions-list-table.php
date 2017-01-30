@@ -96,7 +96,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_id( $item ) {
-        $id = ( isset( $_REQUEST['status'] ) && $_REQUEST['status'] == 'pending' ) ? $item->ID : $item->id;
+        $id = $item->id;
 
         $delete_nonce = wp_create_nonce( 'wpuf-delete-transaction' );
         $title        = '<strong>#' . $id . '</strong>';
@@ -127,27 +127,6 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
      * @return mixed
      */
     public function column_default( $item, $column_name ) {
-
-        // If the transaction is pending and coming from posts table
-        if ( isset( $_REQUEST['status'] ) && $_REQUEST['status'] == 'pending' ) {
-            $info = get_post_meta( $item->ID, '_data', true );
-
-            $transaction = array(
-                'user_id'          => $info['user_info']['id'],
-                'status'           => 'pending',
-                'cost'             => $info['price'],
-                'post_id'          => ( $info['type'] == 'post' ) ? $info['item_number'] : 0,
-                'pack_id'          => ( $info['type'] == 'pack' ) ? $info['item_number'] : 0,
-                'payer_first_name' => $info['user_info']['first_name'],
-                'payer_last_name'  => $info['user_info']['last_name'],
-                'payer_email'      => $info['user_info']['email'],
-                'payment_type'     => ( $info['post_data']['wpuf_payment_method'] == 'bank' ) ? 'Bank/Manual' : ucwords( $info['post_data']['wpuf_payment_method'] ),
-                'transaction_id'   => 0,
-                'created'          => $info['date'],
-            );
-
-            $item = (object) $transaction;
-        }
 
         switch( $column_name ) {
             case 'status':
@@ -183,9 +162,16 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
      * @return array
      */
     public function get_bulk_actions() {
-        $actions = array(
-            'bulk-delete' => __( 'Delete', 'wpuf' ),
-        );
+
+        if ( isset( $_REQUEST['status'] ) && $_REQUEST['status'] == 'pending' ) {
+            $actions = array(
+                'bulk-reject' => __( 'Reject', 'wpuf' ),
+            );
+        } else {
+            $actions = array(
+                'bulk-delete' => __( 'Delete', 'wpuf' ),
+            );
+        }
 
         return $actions;
     }
@@ -257,8 +243,26 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
             $wpdb->delete( $wpdb->prefix . 'wpuf_transaction', array( 'id' => $id ), array( '%d' ) );
 
-            // do_action( 'wpuf_gateway_bank_order_reject', $id );
-            // wp_delete_post( $id, true );
+            // Redirect
+            wp_redirect( $page_url );
+            exit;
+        }
+
+        // Delete Transactions
+        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-delete' )
+             || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-delete' )
+        ) {
+            if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-transactions' ) ) {
+                return false;
+            }
+
+            $ids = esc_sql( $_REQUEST['bulk-items'] );
+
+            foreach ( $ids as $id ) {
+                $id = absint( $id );
+
+                $wpdb->delete( $wpdb->prefix . 'wpuf_transaction', array( 'id' => $id ), array( '%d' ) );
+            }
 
             // Redirect
             wp_redirect( $page_url );
@@ -285,9 +289,9 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
             exit;
         }
 
-        // Delete Transactions
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-delete' )
-             || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-delete' )
+        // Reject Transactions
+        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-reject' )
+             || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-reject' )
         ) {
             if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-transactions' ) ) {
                 return false;
@@ -296,9 +300,13 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
             $ids = esc_sql( $_REQUEST['bulk-items'] );
 
             foreach ( $ids as $id ) {
-                $id = absint( $id );
+                $id      = absint( $id );
+                $info    = get_post_meta( $id, '_data', true );
+                $gateway = $info['post_data']['wpuf_payment_method'];
 
-                $wpdb->delete( $wpdb->prefix . 'wpuf_transaction', array( 'id' => $id ), array( '%d' ) );
+                do_action( "wpuf_{$gateway}_bank_order_reject", $id );
+
+                wp_delete_post( $id, true );
             }
 
             // Redirect

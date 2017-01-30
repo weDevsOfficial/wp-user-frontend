@@ -62,12 +62,11 @@ class WPUF_Subscription {
             $user_id = get_current_user_id();
             $current_pack = self::get_user_pack( $user_id );
 
-            if ( $current_pack['recurring'] == 'yes' ) {
+            $gateway = ( $_POST['gateway'] == 'bank/manual' ) ? 'bank' : sanitize_text_field( $_POST['gateway'] );
 
-                $gateway = sanitize_text_field( $_POST['gateway'] );
+            do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );
 
-                do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );
-            } else {
+            if ( $_POST['gateway'] == 'bank/manual' ) {
                 WPUF_Subscription::init()->update_user_subscription_meta( $user_id, 'Cancel' );
             }
 

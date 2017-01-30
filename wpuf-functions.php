@@ -1277,7 +1277,7 @@ function wpuf_get_countries( $type = 'array' ) {
 /**
  * Get account dashboard's sections
  *
- * @since 2.5
+ * @since 2.4.2
  *
  * @return array
  */
@@ -1290,4 +1290,71 @@ function wpuf_get_account_sections() {
     );
 
     return apply_filters( 'wpuf_account_sections', $account_sections );
+}
+
+/**
+ * Get all transactions
+ *
+ * @since 2.4.2
+ *
+ * @return array
+ */
+function wpuf_get_transactions( $args = array() ) {
+    global $wpdb;
+
+    $defaults = array(
+        'number'  => 20,
+        'offset'  => 0,
+        'orderby' => 'id',
+        'order'   => 'DESC',
+        'count'   => false,
+    );
+
+    $args = wp_parse_args( $args, $defaults );
+
+    if ( $args['count'] ) {
+        return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpuf_transaction" );
+    }
+
+    $result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transaction ORDER BY `{$args['orderby']}` {$args['order']} LIMIT {$args['offset']}, {$args['number']}", OBJECT );
+
+    return $result;
+}
+
+/**
+ * Get all pending transactions
+ *
+ * @since 2.4.2
+ *
+ * @return array
+ */
+function wpuf_get_pending_transactions( $args = array() ) {
+    global $wpdb;
+
+    $defaults = array(
+        'number'  => 20,
+        'offset'  => 0,
+        'orderby' => 'id',
+        'order'   => 'DESC',
+        'count'   => false,
+    );
+
+    $args = wp_parse_args( $args, $defaults );
+
+    $pending_args = array(
+        'post_type'      => 'wpuf_order',
+        'post_status'    => array( 'publish', 'pending' ),
+        'posts_per_page' => $args['number'],
+        'offset'         => $args['offset'],
+        'orderby'        => $args['orderby'],
+        'order'          => $args['order'],
+    );
+
+    $wpuf_order_query = new WP_Query( $pending_args );
+
+    if ( $args['count'] ) {
+        return $wpuf_order_query->post_count;
+    }
+
+    return $wpuf_order_query->get_posts();
 }

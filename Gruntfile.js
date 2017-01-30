@@ -37,7 +37,7 @@ module.exports = function(grunt) {
                     potFilename: 'wpuf.pot', // Name of the POT file.
                     type: 'wp-plugin', // Type of project (wp-plugin or wp-theme).
                     potHeaders: {
-                        'report-msgid-bugs-to': 'https://wedevs.com/support/forum/plugin-support/wp-user-frontend-pro/',
+                        'report-msgid-bugs-to': 'https://wedevs.com/support/forum/plugin-support/wp-user-frontend/',
                         'language-team': 'LANGUAGE <EMAIL@ADDRESS>'
                     }
                 }
@@ -101,34 +101,17 @@ module.exports = function(grunt) {
             }
         },
 
-        replace: {
-            example: {
-                src: ['build/wpuf.php'],
-                dest: 'build/wpuf.php',
-                replacements: [
-                    {
-                        from: 'WP User Frontend',
-                        to: 'WP User Frontend Pro'
-                    },
-                    {
-                        from: 'https://wordpress.org/plugins/wp-user-frontend/',
-                        to: 'https://wedevs.com/products/plugins/wp-user-frontend-pro/'
-                    }
-                ]
-            }
-        },
-
         //Compress build directory into <name>.zip and <name>-<version>.zip
         compress: {
             main: {
                 options: {
                     mode: 'zip',
-                    archive: './build/wp-user-frontend-pro.zip'
+                    archive: './build/wp-user-frontend.zip'
                 },
                 expand: true,
                 cwd: 'build/',
                 src: ['**/*'],
-                dest: 'wp-user-frontend-pro'
+                dest: 'wp-user-frontend'
             }
         },
 
@@ -144,7 +127,7 @@ module.exports = function(grunt) {
         sftp: {
             upload: {
                 files: {
-                    "./": "build/wp-user-frontend-pro.zip"
+                    "./": "build/wp-user-frontend.zip"
                 },
                 options: {
                     path: '<%= secret.path %>',
@@ -182,7 +165,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks( 'grunt-contrib-copy' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
-    grunt.loadNpmTasks( 'grunt-text-replace' );
     grunt.loadNpmTasks( 'grunt-ssh' );
 
     grunt.registerTask( 'default', [
@@ -190,7 +172,7 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask( 'zip', [
-        'clean', 'copy', 'replace', 'compress'
+        'clean', 'copy', 'compress'
     ]);
 
     grunt.registerTask( 'deploy', [

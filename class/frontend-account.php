@@ -26,7 +26,7 @@ class WPUF_Frontend_Account {
      * Insert shortcode [wpuf_account] in a page to
      * show the user account
      *
-     * @since 2.5
+     * @since 2.4.2
      */
     function shortcode( $atts ) {
 
@@ -65,7 +65,7 @@ class WPUF_Frontend_Account {
      * @param  array  $sections
      * @param  string $current_section
      *
-     * @since  2.5
+     * @since  2.4.2
      *
      * @return void
      */
@@ -82,7 +82,7 @@ class WPUF_Frontend_Account {
      * @param  array  $sections
      * @param  string $current_section
      *
-     * @since  2.5
+     * @since  2.4.2
      *
      * @return void
      */
@@ -99,7 +99,7 @@ class WPUF_Frontend_Account {
      * @param  array  $sections
      * @param  string $current_section
      *
-     * @since  2.5
+     * @since  2.4.2
      *
      * @return void
      */
@@ -153,7 +153,7 @@ class WPUF_Frontend_Account {
      * @param  array  $sections
      * @param  string $current_section
      *
-     * @since  2.5
+     * @since  2.4.2
      *
      * @return void
      */
@@ -167,7 +167,7 @@ class WPUF_Frontend_Account {
     /**
      * Update profile via Ajax
      *
-     * @since  2.5
+     * @since  2.4.2
      *
      * @return json
      */

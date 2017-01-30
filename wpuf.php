@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.4.1
+Version: 2.4.2
 Author URI: https://tareq.co
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.4.1' );
+define( 'WPUF_VERSION', '2.4.2' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -37,7 +37,6 @@ function wpuf_autoload( $class ) {
             $class_name = str_replace( array('WPUF_', '_'), array('', '-'), $class );
             $filename = dirname( __FILE__ ) . '/class/' . strtolower( $class_name ) . '.php';
         }
-
 
         if ( file_exists( $filename ) ) {
             require_once $filename;
@@ -88,7 +87,7 @@ class WP_User_Frontend {
      *
      * @since 2.2.7
      */
-    public function set_schedule_events(){
+    public function set_schedule_events() {
         wp_schedule_event( time(), 'daily', 'wpuf_remove_expired_post_hook' );
     }
 
@@ -143,17 +142,14 @@ class WP_User_Frontend {
         require_once dirname( __FILE__ ) . '/lib/gateway/bank.php';
 
         $is_expired = wpuf_is_license_expired();
-        $has_pro    = file_exists( dirname( __FILE__ ) . '/includes/pro/loader.php' );
+        $has_pro    = class_exists( 'WP_User_Frontend_Pro' );
 
         if ( $has_pro && $is_expired ) {
             add_action( 'admin_notices', array( $this, 'license_expired' ) );
         }
 
         if ( $has_pro ) {
-            include dirname( __FILE__ ) . '/includes/pro/loader.php';
-
             $this->is_pro = true;
-
         } else {
             include dirname( __FILE__ ) . '/includes/free/loader.php';
         }

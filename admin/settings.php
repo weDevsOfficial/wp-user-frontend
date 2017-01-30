@@ -12,7 +12,7 @@ class WPUF_Admin_Settings {
 
     function __construct() {
 
-        if ( !class_exists( 'WeDevs_Settings_API' ) ) {
+        if ( ! class_exists( 'WeDevs_Settings_API' ) ) {
             require_once dirname( dirname( __FILE__ ) ) . '/lib/class.settings-api.php';
         }
 
@@ -63,10 +63,12 @@ class WPUF_Admin_Settings {
 
         do_action( 'wpuf_admin_menu' );
 
-        add_submenu_page( 'wpuf-admin-opt', __( 'Transaction', 'wpuf' ), __( 'Transaction', 'wpuf' ), $capability, 'wpuf_transaction', array($this, 'transaction_page') );
+        $transactions_page = add_submenu_page( 'wpuf-admin-opt', __( 'Transactions', 'wpuf' ), __( 'Transactions', 'wpuf' ), $capability, 'wpuf_transaction', array($this, 'transactions_page') );
         add_submenu_page( 'wpuf-admin-opt', __( 'Add-ons', 'wpuf' ), __( 'Add-ons', 'wpuf' ), $capability, 'wpuf_addons', array($this, 'addons_page') );
         add_submenu_page( 'wpuf-admin-opt', __( 'Tools', 'wpuf' ), __( 'Tools', 'wpuf' ), $capability, 'wpuf_tools', array($this, 'tools_page') );
         add_submenu_page( 'wpuf-admin-opt', __( 'Settings', 'wpuf' ), __( 'Settings', 'wpuf' ), $capability, 'wpuf-settings', array($this, 'plugin_page') );
+
+        add_action( "load-$transactions_page", array( $this, 'transactions_screen_option' ) );
     }
 
     /**
@@ -105,8 +107,8 @@ class WPUF_Admin_Settings {
         <?php
     }
 
-    function transaction_page() {
-        require_once dirname( dirname( __FILE__ ) ) . '/admin/transaction.php';
+    function transactions_page() {
+        require_once dirname( dirname( __FILE__ ) ) . '/admin/transactions.php';
     }
 
     function subscription_page() {
@@ -224,5 +226,23 @@ class WPUF_Admin_Settings {
                 wp_delete_post( $item->ID, true );
             }
         }
+    }
+
+    /**
+     * Screen options.
+     *
+     * @return void
+     */
+    public function transactions_screen_option() {
+        $option = 'per_page';
+        $args   = [
+            'label'   => __( 'Number of items per page:', 'wpuf' ),
+            'default' => 20,
+            'option'  => 'transactions_per_page'
+        ];
+
+        add_screen_option( $option, $args );
+
+        $this->transactions_list_table_obj = new WPUF_Transactions_List_Table();
     }
 }

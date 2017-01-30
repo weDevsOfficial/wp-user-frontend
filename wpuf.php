@@ -472,5 +472,4 @@ function wpuf() {
     return WP_User_Frontend::init();
 }
 
-// kickoff the plugin
-wpuf();
+add_action( 'plugins_loaded', 'wpuf' );

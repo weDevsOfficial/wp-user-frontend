@@ -59,7 +59,7 @@ class WPUF_Admin_Settings {
          */
         do_action( 'wpuf_admin_menu_top' );
 
-        add_submenu_page( 'wpuf-admin-opt', __( 'Subscription', 'wpuf' ), __( 'Subscription', 'wpuf' ), $capability, 'edit.php?post_type=wpuf_subscription' );
+        add_submenu_page( 'wpuf-admin-opt', __( 'Subscriptions', 'wpuf' ), __( 'Subscriptions', 'wpuf' ), $capability, 'edit.php?post_type=wpuf_subscription' );
 
         do_action( 'wpuf_admin_menu' );
 

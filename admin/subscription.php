@@ -133,8 +133,7 @@ class WPUF_Admin_Subscription {
                 if ( intval($amount) == 0 ) {
                     $amount = __( 'Free', 'wpuf' );
                 } else {
-                    $currency = wpuf_get_option( 'currency_symbol', 'wpuf_payment' );
-                    $amount = $currency . $amount;
+                    $amount = wpuf_format_price( $amount, true );
                 }
                 echo $amount;
                 break;
@@ -220,7 +219,7 @@ class WPUF_Admin_Subscription {
                     <tr valign="top" <?php echo ( ($count % 2) == 0) ? 'class="alternate"' : ''; ?>>
                         <td><?php echo stripslashes( htmlspecialchars( $row->name ) ); ?></td>
                         <td><?php echo stripslashes( htmlspecialchars( $row->description ) ); ?></td>
-                        <td><?php echo $row->cost; ?> <?php echo get_option( 'wpuf_sub_currency' ); ?></td>
+                        <td><?php echo wpuf_format_price( $row->cost ); ?></td>
                         <td><?php echo ( $row->pack_length == 0 ) ? 'Unlimited' : $row->pack_length . ' days'; ?></td>
                         <td><?php echo ( $row->count == 0 ) ? 'Unlimited' : $row->count; ?></td>
                         <td>
@@ -297,7 +296,8 @@ class WPUF_Admin_Subscription {
                         <span class="wpuf-biling-amount wpuf-subcription-expire" style="display: <?php echo $hidden_expire; ?>;"><?php _e( 'Billing amount:', 'wpuf' ); ?></span>
                         <span class="wpuf-billing-cycle wpuf-recurring-child" style="display: <?php echo $hidden_recurring_class; ?>;"><?php _e( 'Billing amount each cycle:', 'wpuf' ); ?></span></label></th>
                     <td>
-                        <?php echo wpuf_get_option( 'currency_symbol', 'wpuf_payment', '$' ); ?><input type="text" size="20" style="" id="wpuf-billing-amount" value="<?php echo esc_attr( $sub_meta['billing_amount'] ); ?>" name="billing_amount" />
+                        <?php echo wpuf_get_currency( 'symbol' ); ?>
+                        <input type="text" size="20" style="" id="wpuf-billing-amount" value="<?php echo esc_attr( $sub_meta['billing_amount'] ); ?>" name="billing_amount" />
                         <div><span class="description"></span></div>
                     </td>
                 </tr>

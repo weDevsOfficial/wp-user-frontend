@@ -37,6 +37,15 @@ function wpuf_settings_fields() {
     $pages = wpuf_get_pages();
     $users = wpuf_list_users();
 
+    $all_currencies = wpuf_get_currencies();
+
+    $currencies = array();
+    foreach ( $all_currencies as $currency ) {
+        $currencies[ $currency['currency'] ] = $currency['label'] . ' (' . $currency['symbol'] . ')';
+    }
+
+    $default_currency_symbol = wpuf_get_currency( 'symbol' );
+
     $settings_fields = array(
         'wpuf_general' => apply_filters( 'wpuf_options_others', array(
             array(
@@ -294,38 +303,19 @@ function wpuf_settings_fields() {
                 'label'   => __( 'Currency', 'wpuf' ),
                 'type'    => 'select',
                 'default' => 'USD',
-                'options' => array(
-                    'AUD' => 'Australian Dollar',
-                    'CAD' => 'Canadian Dollar',
-                    'EUR' => 'Euro',
-                    'GBP' => 'British Pound',
-                    'JPY' => 'Japanese Yen',
-                    'USD' => 'U.S. Dollar',
-                    'NZD' => 'New Zealand Dollar',
-                    'CHF' => 'Swiss Franc',
-                    'HKD' => 'Hong Kong Dollar',
-                    'SGD' => 'Singapore Dollar',
-                    'SEK' => 'Swedish Krona',
-                    'DKK' => 'Danish Krone',
-                    'PLN' => 'Polish Zloty',
-                    'NOK' => 'Norwegian Krone',
-                    'HUF' => 'Hungarian Forint',
-                    'CZK' => 'Czech Koruna',
-                    'ILS' => 'Israeli New Shekel',
-                    'MXN' => 'Mexican Peso',
-                    'BRL' => 'Brazilian Real',
-                    'MYR' => 'Malaysian Ringgit',
-                    'PHP' => 'Philippine Peso',
-                    'TWD' => 'New Taiwan Dollar',
-                    'THB' => 'Thai Baht',
-                    'TRY' => 'Turkish Lira'
-                )
+                'options' => $currencies
             ),
             array(
-                'name'    => 'currency_symbol',
-                'label'   => __( 'Currency Symbol', 'wpuf' ),
-                'type'    => 'text',
-                'default' => '$'
+                'name'    => 'currency_position',
+                'label'   => __( 'Currency Position', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'left',
+                'options' => array(
+                    'left'        => sprintf( '%1$s (%2$s99.99)', __( 'Left', 'wpuf' ), $default_currency_symbol ),
+                    'right'       => sprintf( '%1$s (99.99%2$s)', __( 'Right', 'wpuf' ), $default_currency_symbol ),
+                    'left_space'  => sprintf( '%1$s (%2$s 99.99)', __( 'Left with space', 'wpuf' ), $default_currency_symbol ),
+                    'right_space' => sprintf( '%1$s (99.99 %2$s)', __( 'Right with space', 'wpuf' ), $default_currency_symbol ),
+                )
             ),
             array(
                 'name'    => 'cost_per_post',

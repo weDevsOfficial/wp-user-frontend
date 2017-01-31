@@ -1380,3 +1380,126 @@ function wpuf_get_pending_transactions( $args = array() ) {
 
     return $items;
 }
+
+/**
+ * Get full list of currency codes.
+ *
+ * @since 2.4.2
+ *
+ * @return array
+ */
+function wpuf_get_currencies() {
+    $currencies = array(
+        array( 'currency' => 'AED', 'label' => __( 'United Arab Emirates Dirham', 'wpuf' ), 'symbol' => 'د.إ' ),
+        array( 'currency' => 'AUD', 'label' => __( 'Australian Dollars', 'wpuf' ), 'symbol' => '&#36;' ),
+        array( 'currency' => 'AZD', 'label' => __( 'Argentine Peso', 'wpuf' ), 'symbol' => '&#36;' ),
+        array( 'currency' => 'BDT', 'label' => __( 'Bangladeshi Taka', 'wpuf' ), 'symbol' => '&#2547;' ),
+        array( 'currency' => 'BRL', 'label' => __( 'Brazilian Real', 'wpuf' ), 'symbol' => '&#82;&#36;' ),
+        array( 'currency' => 'BGN', 'label' => __( 'Bulgarian Lev', 'wpuf' ), 'symbol' => '&#1083;&#1074;.' ),
+        array( 'currency' => 'CAD', 'label' => __( 'Canadian Dollars', 'wpuf' ), 'symbol' => '&#36;' ),
+        array( 'currency' => 'CLP', 'label' => __( 'Chilean Peso', 'wpuf' ), 'symbol' => '&#36;' ),
+        array( 'currency' => 'CNY', 'label' => __( 'Chinese Yuan', 'wpuf' ), 'symbol' => '&yen;' ),
+        array( 'currency' => 'COP', 'label' => __( 'Colombian Peso', 'wpuf' ), 'symbol' => '&#36;' ),
+        array( 'currency' => 'CZK', 'label' => __( 'Czech Koruna', 'wpuf' ), 'symbol' => '&#75;&#269;' ),
+        array( 'currency' => 'DKK', 'label' => __( 'Danish Krone', 'wpuf' ), 'symbol' => 'kr.' ),
+        array( 'currency' => 'DOP', 'label' => __( 'Dominican Peso', 'wpuf' ), 'symbol' => 'RD&#36;' ),
+        array( 'currency' => 'DZD', 'label' => __( 'Algerian Dinar', 'wpuf' ), 'symbol' => 'DA;' ),
+        array( 'currency' => 'EUR', 'label' => __( 'Euros', 'wpuf' ), 'symbol' => '&euro;' ),
+        array( 'currency' => 'HKD', 'label' => __( 'Hong Kong Dollar', 'wpuf' ), 'symbol' => '&#36;' ),
+        array( 'currency' => 'HRK', 'label' => __( 'Croatia kuna', 'wpuf' ), 'symbol' => 'Kn' ),
+        array( 'currency' => 'HUF', 'label' => __( 'Hungarian Forint', 'wpuf' ), 'symbol' => '&#70;&#116;' ),
+        array( 'currency' => 'ISK', 'label' => __( 'Icelandic krona', 'wpuf' ), 'symbol' => 'Kr.' ),
+        array( 'currency' => 'IDR', 'label' => __( 'Indonesia Rupiah', 'wpuf' ), 'symbol' => 'Rp' ),
+        array( 'currency' => 'INR', 'label' => __( 'Indian Rupee', 'wpuf' ), 'symbol' => '&#8377;' ),
+        array( 'currency' => 'NPR', 'label' => __( 'Nepali Rupee', 'wpuf' ), 'symbol' => 'Rs.' ),
+        array( 'currency' => 'ILS', 'label' => __( 'Israeli Shekel', 'wpuf' ), 'symbol' => '&#8362;' ),
+        array( 'currency' => 'JPY', 'label' => __( 'Japanese Yen', 'wpuf' ), 'symbol' => '&yen;' ),
+        array( 'currency' => 'KIP', 'label' => __( 'Lao Kip', 'wpuf' ), 'symbol' => '&#8365;' ),
+        array( 'currency' => 'KRW', 'label' => __( 'South Korean Won', 'wpuf' ), 'symbol' => '&#8361;' ),
+        array( 'currency' => 'MYR', 'label' => __( 'Malaysian Ringgits', 'wpuf' ), 'symbol' => '&#82;&#77;' ),
+        array( 'currency' => 'MXN', 'label' => __( 'Mexican Peso', 'wpuf' ), 'symbol' => '&#36;' ),
+        array( 'currency' => 'NGN', 'label' => __( 'Nigerian Naira', 'wpuf' ), 'symbol' => '&#8358;' ),
+        array( 'currency' => 'NOK', 'label' => __( 'Norwegian Krone', 'wpuf' ), 'symbol' => '&#107;&#114;' ),
+        array( 'currency' => 'NZD', 'label' => __( 'New Zealand Dollar', 'wpuf' ), 'symbol' => '&#36;' ),
+        array( 'currency' => 'OMR', 'label' => __( 'Omani Rial', 'wpuf' ), 'symbol' => 'ر.ع.' ),
+        array( 'currency' => 'IRR', 'label' => __( 'Iranian Rial', 'wpuf' ), 'symbol' => '﷼' ),
+        array( 'currency' => 'PKR', 'label' => __( 'Pakistani Rupee', 'wpuf' ), 'symbol' => 'Rs' ),
+        array( 'currency' => 'PYG', 'label' => __( 'Paraguayan Guaraní', 'wpuf' ), 'symbol' => '&#8370;' ),
+        array( 'currency' => 'PHP', 'label' => __( 'Philippine Pesos', 'wpuf' ), 'symbol' => '&#8369;' ),
+        array( 'currency' => 'PLN', 'label' => __( 'Polish Zloty', 'wpuf' ), 'symbol' => '&#122;&#322;' ),
+        array( 'currency' => 'GBP', 'label' => __( 'Pounds Sterling', 'wpuf' ), 'symbol' => '&pound;' ),
+        array( 'currency' => 'RON', 'label' => __( 'Romanian Leu', 'wpuf' ), 'symbol' => 'lei' ),
+        array( 'currency' => 'RUB', 'label' => __( 'Russian Ruble', 'wpuf' ), 'symbol' => '&#1088;&#1091;&#1073;.' ),
+        array( 'currency' => 'SR', 'label'  => __( 'Saudi Riyal', 'wpuf'), 'symbol' => 'SR' ),
+        array( 'currency' => 'SGD', 'label' => __( 'Singapore Dollar', 'wpuf' ), 'symbol' => '&#36;' ),
+        array( 'currency' => 'ZAR', 'label' => __( 'South African rand', 'wpuf' ), 'symbol' => '&#82;' ),
+        array( 'currency' => 'SEK', 'label' => __( 'Swedish Krona', 'wpuf' ), 'symbol' => '&#107;&#114;' ),
+        array( 'currency' => 'CHF', 'label' => __( 'Swiss Franc', 'wpuf' ), 'symbol' => '&#67;&#72;&#70;' ),
+        array( 'currency' => 'TWD', 'label' => __( 'Taiwan New Dollars', 'wpuf' ), 'symbol' => '&#78;&#84;&#36;' ),
+        array( 'currency' => 'THB', 'label' => __( 'Thai Baht', 'wpuf' ), 'symbol' => '&#3647;' ),
+        array( 'currency' => 'TRY', 'label' => __( 'Turkish Lira', 'wpuf' ), 'symbol' => '&#8378;' ),
+        array( 'currency' => 'USD', 'label' => __( 'US Dollar', 'wpuf' ), 'symbol' => '&#36;' ),
+        array( 'currency' => 'VND', 'label' => __( 'Vietnamese Dong', 'wpuf' ), 'symbol' => '&#8363;' ),
+        array( 'currency' => 'EGP', 'label' => __( 'Egyptian Pound', 'wpuf' ), 'symbol' => 'EGP' ),
+    );
+
+    return apply_filters( 'wpuf_currencies', $currencies );
+}
+
+/**
+ * Get global currency
+ *
+ * @since 2.4.2
+ *
+ * @param  string $type
+ *
+ * @return mixed
+ */
+function wpuf_get_currency( $type = '' ) {
+    $currency_code = wpuf_get_option( 'currency', 'wpuf_payment', 'USD' );
+
+    if ( $type == 'code' ) {
+        return $currency_code;
+    }
+
+    $currencies = wpuf_get_currencies();
+    $index      = array_search( $currency_code, array_column( $currencies, 'currency' ) );
+    $currency   = $currencies[ $index ];
+
+    if ( $type == 'symbol' ) {
+        return $currency['symbol'];
+    }
+
+    return $currency;
+}
+
+/**
+ * Format the pricing number
+ *
+ * @since 2.4.2
+ *
+ * @param  number $number
+ * @param  boolean $with_currency (optional)
+ *
+ * @return mixed
+ */
+function wpuf_format_price( $number, $with_currency = false ) {
+    $number = number_format( (float) $number, 2, '.', '' );
+
+    if ( $with_currency ) {
+        $symbol   = wpuf_get_currency( 'symbol' );
+        $position = wpuf_get_option( 'currency_position', 'wpuf_payment', 'left' );
+
+        switch ( $position ) {
+            case 'left': return $symbol . $number; break;
+
+            case 'left_space': return $symbol . ' ' . $number; break;
+
+            case 'right': return $number . $symbol; break;
+
+            case 'right_space': return $number . ' ' . $symbol; break;
+        }
+    }
+
+    return $number;
+}

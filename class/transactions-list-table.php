@@ -135,8 +135,11 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 $user = get_user_by( 'id', $item->user_id );
                 return sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->display_name );
             case 'cost':
-                $currency_symbol = wpuf_get_option( 'currency_symbol', 'wpuf_payment' );
-                return $currency_symbol . floatval( $item->cost );
+                return wpuf_format_price( $item->cost, true );
+            case 'post_id':
+                return ! empty( $item->post_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->post_id . '&action=edit' ), $item->post_id ) : '-';
+            case 'pack_id':
+                return ! empty( $item->pack_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->pack_id . '&action=edit' ), $item->pack_id ) : '-';
             case 'payer':
                 return ! empty( $item->payer_first_name ) ? $item->payer_first_name . ' ' . $item->payer_last_name : '-';
             case 'created':

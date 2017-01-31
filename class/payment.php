@@ -131,7 +131,7 @@ class WPUF_Payment {
                         <?php if ( $pack_id ) {
                         $pack         = WPUF_Subscription::init()->get_subscription( $pack_id );
                         $details_meta = WPUF_Subscription::init()->get_details_meta_value();
-                        $currency = wpuf_get_option( 'currency_symbol', 'wpuf_payment' );
+                        $currency     = wpuf_get_currency( 'symbol' );
                         if ( is_user_logged_in() ) {
                             ?>
                             <input type="hidden" name="user_id" value="<?php echo $current_user->ID; ?>">
@@ -150,12 +150,9 @@ class WPUF_Payment {
                                         <div class="wpuf-pack-inner">
                                             <?php if ( class_exists( 'WPUF_Coupons' ) ) { ?>
                                                 <?php echo WPUF_Coupons::init()->after_apply_coupon( $pack ); ?>
-                                            <?php } else {
-
-                                                $currency = wpuf_get_option( 'currency_symbol', 'wpuf_payment' );
-                                                ?>
+                                            <?php } else { ?>
                                                 <div><?php _e( 'Selected Pack ', 'wpuf' ); ?>: <strong><?php echo $pack->post_title; ?></strong></div>
-                                                <?php _e( 'Pack Price ', 'wpuf' ); ?>: <strong><?php echo $currency . $pack->meta_value['billing_amount']; ?></strong>
+                                                <?php _e( 'Pack Price ', 'wpuf' ); ?>: <strong><?php echo wpuf_format_price( $pack->meta_value['billing_amount'], true ); ?></strong>
                                             <?php } ?>
                                         </div>
                                     </div>
@@ -273,19 +270,18 @@ class WPUF_Payment {
             switch ($type) {
                 case 'post':
                     $post        = get_post( $post_id );
-                    $amount      = wpuf_get_option( 'cost_per_post', 'wpuf_payment' );
-                    $item_number = get_post_meta( $post_id, '_wpuf_order_id', true );
+                    $amount      = wpuf_format_price( wpuf_get_option( 'cost_per_post', 'wpuf_payment' ) );
+                    $item_number = $post->ID;
                     $item_name   = $post->post_title;
                     break;
 
                 case 'pack':
-
-                    $pack        = WPUF_Subscription::init()->get_subscription( $pack_id );
-
-                    $custom      = $pack->meta_value;
-                    $amount      = $this->coupon_discount( $_POST['coupon_code'], $pack->meta_value['billing_amount'], $pack_id );
-                    $item_name   = $pack->post_title;
-                    $item_number = $pack->ID;
+                    $pack           = WPUF_Subscription::init()->get_subscription( $pack_id );
+                    $custom         = $pack->meta_value;
+                    $billing_amount = wpuf_format_price( $pack->meta_value['billing_amount'] );
+                    $amount         = $this->coupon_discount( $_POST['coupon_code'], $billing_amount, $pack_id );
+                    $item_name      = $pack->post_title;
+                    $item_number    = $pack->ID;
                     break;
             }
 
@@ -345,7 +341,6 @@ class WPUF_Payment {
         }
 
         if ( $coupon_meta['type'] == 'amount' ) {
-
             $new_amount = $amount -  $coupon_meta['amount'];
         } else {
             $new_amount = ( $amount * $coupon_meta['amount'] ) / 100;

@@ -560,11 +560,10 @@ class WPUF_Subscription {
      * @param array $info payment info
      */
     function payment_received( $info, $recurring ) {
-
         if ( $info['post_id'] ) {
+            $order_id = get_post_meta( $info['post_id'], '_wpuf_order_id', true );
 
-            $this->handle_post_publish( $info['post_id'] );
-
+            $this->handle_post_publish( $order_id );
         } else if ( $info['pack_id'] ) {
             $profile_id = isset( $info['profile_id'] ) ? $info['profile_id'] : null;
             $this->new_subscription( $info['user_id'], $info['pack_id'], $profile_id, $recurring, $info['status'] );
@@ -845,7 +844,7 @@ class WPUF_Subscription {
 
         $meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
         $meta['onclick'] = '';
-        $meta['symbol'] = wpuf_get_option( 'currency_symbol', 'wpuf_payment' );
+        $meta['symbol']  = wpuf_get_currency( 'symbol' );
 
         return $meta;
     }
@@ -932,7 +931,7 @@ class WPUF_Subscription {
             ?>
             <div class="wpuf-info">
                 <?php
-                $text = sprintf( __( 'This will cost you <strong>%s</strong> to add a new post. ', 'wpuf' ), wpuf_get_option( 'currency_symbol', 'wpuf_payment' ) . wpuf_get_option( 'cost_per_post', 'wpuf_payment' ) );
+                $text = sprintf( __( 'This will cost you <strong>%s</strong> to add a new post. ', 'wpuf' ), wpuf_format_price( wpuf_get_option( 'cost_per_post', 'wpuf_payment' ) ) );
 
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
                 ?>

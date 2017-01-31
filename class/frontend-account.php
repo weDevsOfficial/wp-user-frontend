@@ -121,8 +121,8 @@ class WPUF_Frontend_Account {
         $pack = WPUF_Subscription::get_subscription( $user_sub['pack_id'] );
 
         $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
-        $details_meta['onclick'] = '';
-        $details_meta['symbol'] = wpuf_get_option( 'currency_symbol', 'wpuf_payment' );
+        $details_meta['onclick']      = '';
+        $details_meta['symbol']       = wpuf_get_currency( 'symbol' );
 
         $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wpuf' );
         if ( $pack->meta_value['recurring_pay'] == 'yes' ) {

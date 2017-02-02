@@ -91,11 +91,19 @@
 
                     if ( check != '-1') {
 
-                        $( '.' + prefix + item.name + '_' + item.form_id).closest('li').show();
+                        if ( item.type == 'address' ) {
+                            $( 'li.wpuf-el.' + item.name ).show();
+                        } else {
+                            $( '.' + prefix + item.name + '_' + item.form_id).closest('li').show();
+                        }
 
                     } else {
 
-                        $( '.' + prefix + item.name + '_' + item.form_id).closest('li').hide();
+                        if ( item.type == 'address' ) {
+                            $( 'li.wpuf-el.' + item.name ).hide();
+                        } else {
+                            $( '.' + prefix + item.name + '_' + item.form_id).closest('li').hide();
+                        }
 
                     }
 
@@ -105,11 +113,19 @@
 
                     if ( check == '-1') {
 
-                        $( '.' + prefix + item.name + '_' + item.form_id).closest('li').show();
+                        if ( item.type == 'address' ) {
+                            $( 'li.wpuf-el.' + item.name ).show();
+                        } else {
+                            $( '.' + prefix + item.name + '_' + item.form_id).closest('li').show();
+                        }
 
                     } else {
 
-                        $( '.' + prefix+item.name + '_' + item.form_id).closest('li').hide();
+                        if ( item.type == 'address' ) {
+                            $( 'li.wpuf-el.' + item.name ).hide();
+                        } else {
+                            $( '.' + prefix+item.name + '_' + item.form_id).closest('li').hide();
+                        }
                     }
 
                 }

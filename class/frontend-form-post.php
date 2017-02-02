@@ -478,7 +478,10 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 //send mail notification
                 if ( isset( $form_settings['notification'] ) && $form_settings['notification']['edit'] == 'on' ) {
                     $mail_body = $this->prepare_mail_body( $form_settings['notification']['edit_body'], $post_author, $post_id );
-                    wp_mail( $form_settings['notification']['edit_to'], $form_settings['notification']['edit_subject'], $mail_body );
+                    $to        = $this->prepare_mail_body( $form_settings['notification']['edit_to'], $post_author, $post_id );
+                    $subject   = $this->prepare_mail_body( $form_settings['notification']['edit_subject'], $post_author, $post_id );
+
+                    wp_mail( $to, $subject, $mail_body );
                 }
             } else {
 
@@ -488,7 +491,10 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 // send mail notification
                 if ( isset( $form_settings['notification'] ) && $form_settings['notification']['new'] == 'on' ) {
                     $mail_body = $this->prepare_mail_body( $form_settings['notification']['new_body'], $post_author, $post_id );
-                    wp_mail( $form_settings['notification']['new_to'], $form_settings['notification']['new_subject'], $mail_body );
+                    $to        = $this->prepare_mail_body( $form_settings['notification']['new_to'], $post_author, $post_id );
+                    $subject   = $this->prepare_mail_body( $form_settings['notification']['new_subject'], $post_author, $post_id );
+
+                    wp_mail( $to, $subject, $mail_body );
                 }
             }
 

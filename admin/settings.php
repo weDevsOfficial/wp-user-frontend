@@ -69,6 +69,7 @@ class WPUF_Admin_Settings {
         add_submenu_page( 'wpuf-admin-opt', __( 'Settings', 'wpuf' ), __( 'Settings', 'wpuf' ), $capability, 'wpuf-settings', array($this, 'plugin_page') );
 
         add_action( "load-$transactions_page", array( $this, 'transactions_screen_option' ) );
+        add_action( "load-$transactions_page", array( $this, 'enqueue_styles' ) );
     }
 
     /**
@@ -244,5 +245,14 @@ class WPUF_Admin_Settings {
         add_screen_option( $option, $args );
 
         $this->transactions_list_table_obj = new WPUF_Transactions_List_Table();
+    }
+
+    /**
+     * Enqueue styles
+     *
+     * @return void
+     */
+    public function enqueue_styles() {
+        wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css' );
     }
 }

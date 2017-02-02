@@ -132,10 +132,11 @@ class WPUF_Paypal {
             $return_url  = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) );
         }
 
-        $billing_amount = empty( $data['price'] ) ? 0 : number_format( $data['price'], 2 );
+        $billing_amount = empty( $data['price'] ) ? 0 : wpuf_format_price( $data['price'] );
 
         if ( isset( $_POST['coupon_id'] ) && !empty( $_POST['coupon_id'] ) ) {
             $billing_amount = WPUF_Coupons::init()->discount( $billing_amount, $_POST['coupon_id'], $data['item_number'] );
+
             $coupon_id = $_POST['coupon_id'];
         } else {
             $coupon_id = '';

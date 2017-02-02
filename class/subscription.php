@@ -217,25 +217,24 @@ class WPUF_Subscription {
      */
     public static function get_subscription_meta( $subscription_id,  $pack_post = null ) {
 
-        $meta['post_content']         =  isset( $pack_post->post_content ) ? $pack_post->post_content : '';
-        $meta['post_title']           =  isset( $pack_post->post_title ) ? $pack_post->post_title : '';
-        $meta['billing_amount']       =  get_post_meta( $subscription_id, '_billing_amount', true );
-        $meta['expiration_number']    =  get_post_meta( $subscription_id, '_expiration_number', true );
-        $meta['expiration_period']    =  get_post_meta( $subscription_id, '_expiration_period', true );
-        $meta['recurring_pay']        =  get_post_meta( $subscription_id, '_recurring_pay', true );
-        $meta['billing_cycle_number'] =  get_post_meta( $subscription_id, '_billing_cycle_number', true );
-        $meta['cycle_period']         =  get_post_meta( $subscription_id, '_cycle_period', true );
-        $meta['billing_limit']        =  get_post_meta( $subscription_id, '_billing_limit', true );
-        $meta['trial_status']         =  get_post_meta( $subscription_id, '_trial_status', true );
-        $meta['trial_duration']       =  get_post_meta( $subscription_id, '_trial_duration', true );
-        $meta['trial_duration_type']  =  get_post_meta( $subscription_id, '_trial_duration_type', true );
-        $meta['post_type_name']       =  get_post_meta( $subscription_id, '_post_type_name', true );
-        $meta['_enable_post_expiration']       =  get_post_meta( $subscription_id, '_enable_post_expiration', true );
-        $meta['_post_expiration_time']       =  get_post_meta( $subscription_id, '_post_expiration_time', true );
-        //
-        $meta['_expired_post_status']       =  get_post_meta( $subscription_id, '_expired_post_status', true );
-        $meta['_enable_mail_after_expired']       =  get_post_meta( $subscription_id, '_enable_mail_after_expired', true );
-        $meta['_post_expiration_message']       =  get_post_meta( $subscription_id, '_post_expiration_message', true );
+        $meta['post_content']               = isset( $pack_post->post_content ) ? $pack_post->post_content : '';
+        $meta['post_title']                 = isset( $pack_post->post_title ) ? $pack_post->post_title : '';
+        $meta['billing_amount']             = get_post_meta( $subscription_id, '_billing_amount', true );
+        $meta['expiration_number']          = get_post_meta( $subscription_id, '_expiration_number', true );
+        $meta['expiration_period']          = get_post_meta( $subscription_id, '_expiration_period', true );
+        $meta['recurring_pay']              = get_post_meta( $subscription_id, '_recurring_pay', true );
+        $meta['billing_cycle_number']       = get_post_meta( $subscription_id, '_billing_cycle_number', true );
+        $meta['cycle_period']               = get_post_meta( $subscription_id, '_cycle_period', true );
+        $meta['billing_limit']              = get_post_meta( $subscription_id, '_billing_limit', true );
+        $meta['trial_status']               = get_post_meta( $subscription_id, '_trial_status', true );
+        $meta['trial_duration']             = get_post_meta( $subscription_id, '_trial_duration', true );
+        $meta['trial_duration_type']        = get_post_meta( $subscription_id, '_trial_duration_type', true );
+        $meta['post_type_name']             = get_post_meta( $subscription_id, '_post_type_name', true );
+        $meta['_enable_post_expiration']    = get_post_meta( $subscription_id, '_enable_post_expiration', true );
+        $meta['_post_expiration_time']      = get_post_meta( $subscription_id, '_post_expiration_time', true );
+        $meta['_expired_post_status']       = get_post_meta( $subscription_id, '_expired_post_status', true );
+        $meta['_enable_mail_after_expired'] = get_post_meta( $subscription_id, '_enable_mail_after_expired', true );
+        $meta['_post_expiration_message']   = get_post_meta( $subscription_id, '_post_expiration_message', true );
 
         $meta = apply_filters( 'wpuf_get_subscription_meta', $meta, $subscription_id  );
 
@@ -1105,9 +1104,9 @@ class WPUF_Subscription {
 
         //update_user_meta( 1, 'test_data', $user_wpuf_subscription_pack );
 
-        $sub_info    = self::get_user_pack( $userdata->ID );
-        $post_type   = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
-        $count       = isset( $sub_info['posts'][$post_type] ) ? intval( $sub_info['posts'][$post_type] ) : 0;
+        $sub_info  = self::get_user_pack( $userdata->ID );
+        $post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
+        $count     = isset( $sub_info['posts'][$post_type] ) ? intval( $sub_info['posts'][$post_type] ) : 0;
 
 
         // decrease the post count, if not umlimited

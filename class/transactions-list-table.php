@@ -130,7 +130,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         switch( $column_name ) {
             case 'status':
-                return ucwords( $item->status );
+                return ( $item->status == 'completed' ) ? '<span class="wpuf-status-completed" title="Completed"></span>' : '<span class="wpuf-status-processing" title="Processing"></span>';
             case 'user':
                 $user = get_user_by( 'id', $item->user_id );
                 return sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->display_name );

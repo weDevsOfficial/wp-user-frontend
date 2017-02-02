@@ -152,3 +152,17 @@ span.wpuf_help{
     padding: 0 0 0 20px;
     margin-bottom: 10px;
 }
+.wpuf-status-completed {
+    background: url(../images/completed.png);
+    background-size: cover;
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+.wpuf-status-processing {
+    background: url(../images/processing.png);
+    background-size: cover;
+    width: 18px;
+    height: 18px;
+    display: block;
+}

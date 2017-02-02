@@ -273,7 +273,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                 </tr>
             </table>
 
-            <h3><?php _e( 'You may use in message:', 'wpuf' ); ?></h3>
+            <h3><?php _e( 'You may use in to, subject & message:', 'wpuf' ); ?></h3>
             <p>
                 <code>%post_title%</code>, <code>%post_content%</code>, <code>%post_excerpt%</code>, <code>%tags%</code>, <code>%category%</code>,
                 <code>%author%</code>, <code>%author_email%</code>, <code>%author_bio%</code>, <code>%sitename%</code>, <code>%siteurl%</code>, <code>%permalink%</code>, <code>%editlink%</code>

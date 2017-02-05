@@ -1,3 +1,16 @@
+= v2.4.2 (05 February, 2017) =
+
+ * [new] Shortcodes supported on post notification's every field
+ * [fix] Conditional logic on address field
+ * [fix] Pricing format improvements
+ * [new] Currency position settings
+ * [fix] File upload warning
+ * [new] Re-design Transactions List Table
+ * [new] Separated Free & Pro plugin
+ * [fix] Draft post empty content issue
+ * [new] My Account Dashboard `[wpuf_account]`
+
+
 = v2.4.1 (12 January, 2017) =
 
  * [new] Added a function `wpuf_get_countries()`

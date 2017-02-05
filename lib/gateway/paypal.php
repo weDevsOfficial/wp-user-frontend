@@ -243,6 +243,7 @@ class WPUF_Paypal {
      * @since 0.8
      */
     function paypal_success() {
+
         $postdata = $_POST;
 
         // when subscription expire

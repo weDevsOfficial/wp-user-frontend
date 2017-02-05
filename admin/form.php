@@ -735,7 +735,8 @@ class WPUF_Admin_Form {
                         'hierarchical'     => true,
                         'selected'         => $default_cat,
                         'name'             => 'wpuf_settings[default_cat]',
-                        'show_option_none' => __( '- None -', 'wpuf' )
+                        'show_option_none' => __( '- None -', 'wpuf' ),
+                        'taxonomy'         => ( $post_type_selected == 'product' ) ? 'product_cat' : 'category'
                     ) );
                     ?>
                     <p class="description"><?php echo __( 'If users are not allowed to choose any category, this category will be used instead (if post type supports)', 'wpuf' ); ?></p>

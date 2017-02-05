@@ -440,7 +440,7 @@ class WP_User_Frontend {
     function plugin_action_links( $links ) {
 
         if ( ! $this->is_pro() ) {
-            $links[] = '<a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/" target="_blank">Get PRO</a>';
+            $links[] = '<a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/" target="_blank" style="color: red;">Get PRO</a>';
         }
 
         $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">Settings</a>';

@@ -161,6 +161,11 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.4.3 (07 February, 2017) =
+
+ * [fix] PHP backward compatibility issue
+
+
 = v2.4.2 (05 February, 2017) =
 
  * [new] Shortcodes supported on post notification's every field

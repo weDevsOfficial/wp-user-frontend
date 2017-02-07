@@ -1540,6 +1540,23 @@ function wpuf_format_price( $number, $with_currency = false ) {
 }
 
 /**
+ * Polyfill of array_column function
+ *
+ * @since 2.4.3
+ */
+if ( ! function_exists( 'array_column' ) ) {
+    function array_column( $input, $column_key, $index_key = null ) {
+        $result = array();
+
+        foreach ( $input as $k => $v ) {
+            $result[ $index_key ? $v[ $index_key ] : $k ] = $v[ $column_key ];
+        }
+
+        return $result;
+    }
+}
+
+/**
  * API to duplicate a form
  *
  * @since 2.5

@@ -236,11 +236,11 @@ class WPUF_Admin_Settings {
      */
     public function transactions_screen_option() {
         $option = 'per_page';
-        $args   = [
+        $args   = array(
             'label'   => __( 'Number of items per page:', 'wpuf' ),
             'default' => 20,
             'option'  => 'transactions_per_page'
-        ];
+        );
 
         add_screen_option( $option, $args );
 

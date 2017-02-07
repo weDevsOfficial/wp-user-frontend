@@ -1,0 +1,410 @@
+<?php
+/**
+ * Form Builder framework
+ */
+
+class WPUF_Admin_Form_Builder {
+
+    /**
+     * Form Settings
+     *
+     * @since 2.5
+     *
+     * @var string
+     */
+    private $settings = array();
+
+    /**
+     * Class contructor
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function __construct( $settings ) {
+        global $post;
+
+        $defaults = array(
+            'form_type'         => '', // e.g 'post', 'profile' etc
+            'post_type'         => '', // e.g 'wpuf_forms', 'wpuf_profile' etc,
+            'form_settings_key' => '',
+            'post_id'           => 0,
+            'shortcode_attrs'   => array() // [ 'type' => [ 'profile' => 'Profile', 'registration' => 'Registration' ] ]
+        );
+
+        $this->settings = wp_parse_args( $settings, $defaults );
+
+        // set post data to global $post
+        $post = get_post( $this->settings['post_id'] );
+
+        // if we have an existing post, then let's start
+        if ( ! empty( $post->ID ) ) {
+            add_action( 'in_admin_header', array( $this, 'remove_admin_notices' ) );
+            add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+            add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
+            add_action( 'admin_footer', array( $this, 'admin_footer' ) );
+            add_action( 'wpuf-admin-form-builder', array( $this, 'include_form_builder' ) );
+        }
+    }
+
+    /**
+     * Remove all kinds of admin notices
+     *
+     * Since we don't have much space left on top of the page,
+     * we have to remove all kinds of admin notices
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function remove_admin_notices() {
+        remove_all_actions( 'network_admin_notices' );
+        remove_all_actions( 'user_admin_notices' );
+        remove_all_actions( 'admin_notices' );
+    }
+
+    /**
+     * Enqueue admin scripts
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function admin_enqueue_scripts() {
+        global $post;
+
+        /**
+         * CSS
+         */
+        wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
+        wp_enqueue_style( 'wpuf-font-awesome', WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css', array(), WPUF_VERSION );
+        wp_enqueue_style( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert.css', array(), WPUF_VERSION );
+        wp_enqueue_style( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css', array(), WPUF_VERSION );
+        wp_enqueue_style( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.min.css', array(), WPUF_VERSION );
+
+        $form_builder_css_deps = apply_filters( 'wpuf-form-builder-css-deps', array(
+            'wpuf-css', 'wpuf-font-awesome', 'wpuf-sweetalert', 'wpuf-selectize', 'wpuf-toastr'
+        ) );
+
+        wp_enqueue_style( 'wpuf-form-builder', WPUF_ASSET_URI . '/css/wpuf-form-builder.css', $form_builder_css_deps, WPUF_VERSION );
+
+        do_action( 'wpuf-form-builder-enqueue-style' );
+
+        /**
+         * JavaScript
+         */
+        if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+            wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue.js', array(), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-vuex', WPUF_ASSET_URI . '/vendor/vuex/vuex.js', array( 'wpuf-vue' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert-dev.js', array(), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo.js', array( 'jquery' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize.js', array( 'jquery' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.js', array(), WPUF_VERSION, true );
+
+        } else {
+            wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue.min.js', array(), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-vuex', WPUF_ASSET_URI . '/vendor/vuex/vuex.min.js', array( 'wpuf-vue' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert.min.js', array(), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo.min.js', array( 'jquery' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize.min.js', array( 'jquery' ), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.min.js', array(), WPUF_VERSION, true );
+        }
+
+
+
+        $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', array(
+            'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'underscore',
+            'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert', 'wpuf-jquery-scrollTo',
+            'wpuf-selectize', 'wpuf-toastr'
+        ) );
+
+        wp_enqueue_script( 'wpuf-form-builder-mixins', WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js', $form_builder_js_deps, WPUF_VERSION, true );
+
+        do_action( 'wpuf-form-builder-enqueue-after-mixins' );
+
+        wp_enqueue_script( 'wpuf-form-builder-components', WPUF_ASSET_URI . '/js/wpuf-form-builder-components.js', array( 'wpuf-form-builder-mixins' ), WPUF_VERSION, true );
+
+        do_action( 'wpuf-form-builder-enqueue-after-components' );
+
+        wp_enqueue_script( 'wpuf-form-builder', WPUF_ASSET_URI . '/js/wpuf-form-builder.js', array( 'wpuf-form-builder-components' ), WPUF_VERSION, true );
+
+        do_action( 'wpuf-form-builder-enqueue-after-main-instance' );
+
+        /*
+         * Data required for building the form
+         */
+        require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
+        require_once WPUF_ROOT . '/includes/free/prompt.php';
+
+        $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', array(
+            'i18n'              => $this->i18n(),
+            'post'              => $post,
+            'form_fields'       => wpuf_get_form_fields( $post->ID ),
+            'panel_sections'    => $this->get_panel_sections(),
+            'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
+            'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
+            'site_url'          => site_url('/')
+        ) );
+
+        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
+
+        // mixins
+        $wpuf_mixins = array(
+            'root'           => apply_filters( 'wpuf-form-builder-js-root-mixins', array() ),
+            'builder_stage'  => apply_filters( 'wpuf-form-builder-js-builder-stage-mixins', array() ),
+            'form_fields'    => apply_filters( 'wpuf-form-builder-js-form-fields-mixins', array() ),
+            'field_options'  => apply_filters( 'wpuf-form-builder-js-field-options-mixins', array() ),
+        );
+
+        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
+    }
+
+    /**
+     * Print js scripts in admin head
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function admin_print_scripts() {
+        ?>
+            <script>
+                var wpuf_form_builder_mixins = function(mixins, mixin_parent) {
+                    if (!mixins || !mixins.length) {
+                        return [];
+                    }
+
+                    if (!mixin_parent) {
+                        mixin_parent = window;
+                    }
+
+                    return mixins.map(function (mixin) {
+                        return mixin_parent[mixin];
+                    });
+                };
+            </script>
+        <?php
+    }
+
+    /**
+     * Include vue component templates
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function admin_footer() {
+        // get all vue component names
+        $path = WPUF_ROOT . '/admin/form-builder/assets/js/components';
+
+        $components = array();
+
+        // directory handle
+        $dir = dir( $path );
+
+        while ( $entry = $dir->read() ) {
+            if ( $entry !== '.' && $entry !== '..' ) {
+               if ( is_dir( $path . '/' . $entry ) ) {
+                    $components[] = $entry;
+               }
+            }
+        }
+
+        // html templates of vue components
+        foreach ( $components as $component ) {
+            self::include_js_template( $component );
+        }
+
+        do_action( 'wpuf-form-builder-add-js-templates' );
+    }
+
+    /**
+     * Embed a Vue.js component template
+     *
+     * @since 2.5
+     *
+     * @param string $template
+     * @param string $file_path
+     *
+     * @return void
+     */
+    public static function include_js_template( $template, $file_path = '' ) {
+        $file_path = $file_path ? untrailingslashit( $file_path ) : WPUF_ROOT . '/admin/form-builder/assets/js/components';
+
+        $file_path = $file_path . '/' . $template . '/template.php';
+
+        if ( file_exists( $file_path ) ) {
+            echo '<script type="text/x-template" id="tmpl-wpuf-' . $template . '">' . "\n";
+            include apply_filters( 'wpuf-form-builder-js-template-path', $file_path, $template );
+            echo "\n" . '</script>' . "\n";
+        }
+    }
+
+    /**
+     * Include form builder view template
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function include_form_builder() {
+        $form_id            = $this->settings['post_id'];
+        $form_type          = $this->settings['form_type'];
+        $form_settings_key  = $this->settings['form_settings_key'];
+
+        include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
+    }
+
+    /**
+     * Add Fields panel sections
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    private function get_panel_sections() {
+        $before_custom_fields = apply_filters( 'wpuf-form-builder-fields-section-before', array() );
+
+        $sections = array_merge( $before_custom_fields, $this->get_custom_fields() );
+        $sections = array_merge( $sections, $this->get_others_fields() );
+
+        $after_custom_fields = apply_filters( 'wpuf-form-builder-fields-section-after', array() );
+
+        $sections = array_merge( $sections, $after_custom_fields );
+
+        return $sections;
+    }
+
+    /**
+     * Custom field section
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    private function get_custom_fields() {
+        $fields = apply_filters( 'wpuf-form-builder-fields-custom-fields', array(
+            'text_field', 'textarea_field', 'dropdown_field', 'multiple_select',
+            'radio_field', 'checkbox_field', 'website_url', 'email_address',
+            'custom_hidden_field', 'image_upload'
+        ) );
+
+        return array(
+            array(
+                'title'     => __( 'Custom Fields', 'wpuf' ),
+                'id'        => 'custom-fields',
+                'fields'    => $fields
+            )
+        );
+    }
+
+    /**
+     * Others field section
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    private function get_others_fields() {
+        $fields = apply_filters( 'wpuf-form-builder-fields-others-fields', array(
+            'section_break', 'custom_html'
+        ) );
+
+        return array(
+            array(
+                'title'     => __( 'Others', 'wpuf' ),
+                'id'        => 'others',
+                'fields'    => $fields
+            )
+        );
+    }
+
+    /**
+     * i18n translatable strings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    private function i18n() {
+        return apply_filters( 'wpuf-form-builder-i18n', array(
+            'advanced_options'      => __( 'Advanced Options', 'wpuf' ),
+            'delete_field_warn_msg' => __( 'Are you sure you want to delete this field?', 'wpuf' ),
+            'yes_delete_it'         => __( 'Yes, delete it', 'wpuf' ),
+            'no_cancel_it'          => __( 'No, cancel it', 'wpuf' ),
+            'ok'                    => __( 'OK', 'wpuf' ),
+            'cancel'                => __( 'Cancel', 'wpuf' ),
+            'close'                 => __( 'Close', 'wpuf' ),
+            'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wpuf' ),
+            'option'                => __( 'Option', 'wpuf' ),
+            'column'                => __( 'Column', 'wpuf' ),
+            'last_column_warn_msg'  => __( 'This field must contain at least one column', 'wpuf' ),
+            'is_a_pro_feature'      => __( 'is available in Pro version', 'wpuf' ),
+            'pro_feature_msg'       => __( 'Please upgrade to the Pro version to unlock all these awesome features', 'wpuf' ),
+            'upgrade_to_pro'        => __( 'Get the Pro version', 'wpuf' ),
+            'select'                => __( 'Select', 'wpuf' ),
+            'saved_form_data'       => __( 'Saved form data', 'wpuf' ),
+        ) );
+    }
+
+    /**
+     * Save form data
+     *
+     * @since 2.5
+     *
+     * @param array $data Contains form_fields, form_settings, form_settings_key data
+     *
+     * @return boolean
+     */
+    public static function save_form( $data ) {
+        $saved_wpuf_inputs = array();
+
+        $existing_wpuf_input_ids = get_children( array(
+            'post_parent' => $data['form_id'],
+            'post_status' => 'publish',
+            'post_type'   => 'wpuf_input',
+            'numberposts' => '-1',
+            'orderby'     => 'menu_order',
+            'order'       => 'ASC',
+            'fields'      => 'ids'
+        ) );
+
+        $new_wpuf_input_ids = array();
+
+        if ( ! empty( $data['form_fields'] ) ) {
+
+            foreach ( $data['form_fields'] as $order => $field ) {
+                if ( ! empty( $field['is_new'] ) ) {
+                    unset( $field['is_new'] );
+                    unset( $field['id'] );
+
+                    $field_id = 0;
+
+                } else {
+                    $field_id = $field['id'];
+                }
+
+                $field_id = wpuf_insert_form_field( $data['form_id'], $field, $field_id, $order );
+
+                $new_wpuf_input_ids[] = $field_id;
+
+                $field['id'] = $field_id;
+
+                $saved_wpuf_inputs[] = $field;
+            }
+
+        }
+
+        $inputs_to_delete = array_diff( $existing_wpuf_input_ids, $new_wpuf_input_ids );
+
+        if ( ! empty( $inputs_to_delete ) ) {
+            foreach ( $inputs_to_delete as $delete_id ) {
+                wp_delete_post( $delete_id , true );
+            }
+        }
+
+        update_post_meta( $data['form_id'], $data['form_settings_key'], $data['form_settings'] );
+
+        return $saved_wpuf_inputs;
+    }
+}

@@ -201,7 +201,7 @@ class WPUF_Admin_Installer {
             );
 
             foreach ($form_fields as $order => $field) {
-                WPUF_Admin_Form::insert_form_field( $form_id, $field, false, $order );
+                wpuf_insert_form_field( $form_id, $field, false, $order );
             }
 
             update_post_meta( $form_id, 'wpuf_form_settings', array(
@@ -265,7 +265,7 @@ class WPUF_Admin_Installer {
             );
 
             foreach ($form_fields as $order => $field) {
-                WPUF_Admin_Form::insert_form_field( $form_id, $field, false, $order );
+                wpuf_insert_form_field( $form_id, $field, false, $order );
             }
 
             $settings = array(

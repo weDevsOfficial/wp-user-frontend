@@ -160,16 +160,24 @@ add_filter( 'media_upload_tabs', 'wpuf_unset_media_tab' );
  *
  * @return array
  */
-function wpuf_get_post_types() {
-    $post_types = get_post_types();
+function wpuf_get_post_types( $args = array() ) {
+    $defaults = array();
 
-    foreach ($post_types as $key => $val) {
-        if ( $val == 'attachment' || $val == 'revision' || $val == 'nav_menu_item' ) {
+    $args = wp_parse_args( $args, $defaults );
+
+    $post_types = get_post_types( $args );
+
+    $ignore_post_types = array(
+        'attachment', 'revision', 'nav_menu_item'
+    );
+
+    foreach ( $post_types as $key => $val ) {
+        if ( in_array( $val, $ignore_post_types ) ) {
             unset( $post_types[$key] );
         }
     }
 
-    return $post_types;
+    return apply_filters( 'wpuf-get-post-types', $post_types );
 }
 
 /**
@@ -1136,7 +1144,34 @@ function wpuf_get_form_fields( $form_id ) {
 
         $field['id'] = $content->ID;
 
-        $form_fields[] = $field;
+        // Add inline property for radio and checkbox fields
+        $inline_supported_fields = array( 'radio', 'checkbox' );
+        if ( in_array( $field['input_type'] , $inline_supported_fields ) ) {
+            if ( ! isset( $field['inline'] ) ) {
+                $field['inline'] = 'no';
+            }
+        }
+
+        // Add 'selected' property
+        $option_based_fields = array( 'select', 'multiselect', 'radio', 'checkbox' );
+        if ( in_array( $field['input_type'] , $option_based_fields ) ) {
+            if ( ! isset( $field['selected'] ) ) {
+
+                if ( 'select' === $field['input_type'] || 'radio' === $field['input_type'] ) {
+                    $field['selected'] = '';
+                } else {
+                    $field['selected'] = array();
+                }
+
+            }
+        }
+
+        // Add 'multiple' key for input_type:repeat
+        if ( 'repeat' === $field['input_type'] && ! isset( $field['multiple'] ) ) {
+            $field['multiple'] = '';
+        }
+
+        $form_fields[] = apply_filters( 'wpuf-get-form-fields', $field );
     }
 
     return $form_fields;
@@ -1502,4 +1537,77 @@ function wpuf_format_price( $number, $with_currency = false ) {
     }
 
     return $number;
+}
+
+/**
+ * API to duplicate a form
+ *
+ * @since 2.5
+ *
+ * @param int $post_id
+ *
+ * @return int New duplicated form id
+ */
+function wpuf_duplicate_form( $post_id ) {
+    $post = get_post( $post_id );
+
+    if ( !$post ) {
+        return;
+    }
+
+    $contents = wpuf_get_form_fields( $post_id );
+
+    $new_form = array(
+        'post_title'  => $post->post_title,
+        'post_type'   => $post->post_type,
+        'post_status' => 'draft'
+    );
+
+    $form_id = wp_insert_post( $new_form );
+
+    foreach ( $contents as $content ) {
+        wpuf_insert_form_field( $form_id, $content );
+    }
+
+    if ( $form_id ) {
+        $form_settings = wpuf_get_form_settings( $post_id );
+        update_post_meta( $form_id, 'wpuf_form_settings', $form_settings );
+
+        return $form_id;
+    }
+
+    return 0;
+}
+
+/**
+ * Save form fields
+ *
+ * @since 2.5
+ *
+ * @param int $form_id
+ * @param array $field
+ * @param int $field_id
+ * @param int $order
+ *
+ * @return int ID of updated or inserted post
+ */
+function wpuf_insert_form_field( $form_id, $field = array(), $field_id = null, $order = 0 ) {
+
+    $args = array(
+        'post_type'    => 'wpuf_input',
+        'post_parent'  => $form_id,
+        'post_status'  => 'publish',
+        'post_content' => maybe_serialize( wp_unslash( $field ) ),
+        'menu_order'   => $order
+    );
+
+    if ( $field_id ) {
+        $args['ID'] = $field_id;
+    }
+
+    if ( $field_id ) {
+        return wp_update_post( $args );
+    } else {
+        return wp_insert_post( $args );
+    }
 }

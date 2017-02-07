@@ -188,7 +188,7 @@ class WPUF_Admin_Tools {
             if ( $post_id && !is_wp_error( $post_id ) ) {
 
                 foreach ( $value['meta_data']['fields'] as $order => $field ) {
-                    WPUF_Admin_Form::insert_form_field( $post_id, $field, false, $order );
+                    wpuf_insert_form_field( $post_id, $field, false, $order );
                 }
 
                 update_post_meta( $post_id, 'wpuf_form_settings', $value['meta_data']['settings'] );

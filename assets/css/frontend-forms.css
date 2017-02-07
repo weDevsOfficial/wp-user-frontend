@@ -94,6 +94,7 @@ ul.wpuf-form li .wp-editor-wrap {
 ul.wpuf-form li .wpuf-label {
   float: left;
   width: 25%;
+  min-height: 1px;
 }
 ul.wpuf-form li .wpuf-label .required {
   color: red;
@@ -147,6 +148,7 @@ ul.wpuf-form li .wpuf-fields select[multiple] {
   height: auto;
 }
 ul.wpuf-form li .wpuf-fields a.file-selector {
+  display: inline;
   padding: 5px 12px;
   height: 30px;
   line-height: 28px;
@@ -331,6 +333,47 @@ ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
 ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image .wpuf-media-icon {
   height: 12px;
   width: 12px;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-fields-list {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-fields-list li {
+  padding: 0;
+  margin: 0 0 6px;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-fields-list.wpuf-list-inline {
+  margin-left: -5px;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-fields-list.wpuf-list-inline li {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field {
+  border-collapse: collapse;
+}
+ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field * {
+  box-sizing: border-box;
+}
+ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field input {
+  width: 100%;
+}
+ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons {
+  width: 75px;
+  padding-left: 12px;
+}
+ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons img {
+  width: 100%;
+  height: auto;
+}
+ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons i {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin: 2px 4px 0 0;
 }
 ul.wpuf-form li .wpuf-address-field {
   width: 100%;
@@ -954,6 +997,7 @@ body.rtl ul.wpuf-form li .wpuf-label {
     width: 100%;
   }
 }
+<<<<<<< HEAD
 .wpuf-form .required {
   color: red;
   font-weight: 700;
@@ -1004,4 +1048,16 @@ body.rtl ul.wpuf-form li .wpuf-label {
   float: right;
   width: 47%;
   overflow: visible;
+=======
+.wpuf-toc-container .wpuf-fields {
+  position: relative;
+}
+.wpuf-toc-container .wpuf-fields .wpuf-toc-checkbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.wpuf-toc-container .wpuf-fields.has-toc-checkbox .wpuf-toc-description {
+  margin-left: 25px;
+>>>>>>> origin/wpuf-next
 }

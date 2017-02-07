@@ -1,5 +1,6 @@
 'use strict';
 module.exports = function(grunt) {
+    var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
 
     var pkg = grunt.file.readJSON('package.json');
 
@@ -24,6 +25,12 @@ module.exports = function(grunt) {
             admin: {
                 files: {
                     '<%= dirs.css %>/formbuilder.css': ['<%= dirs.css %>/formbuilder.less']
+                }
+            },
+
+            formBuilder: {
+                files: {
+                    '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less']
                 }
             }
         },
@@ -60,6 +67,19 @@ module.exports = function(grunt) {
                 options: {
                     livereload: true
                 }
+            },
+
+            formBuilder: {
+                files: [
+                    'admin/form-builder/assets/less/*',
+                    'admin/form-builder/assets/js/**/*',
+                    'assets/js/wpuf-form-builder-wpuf-forms.js',
+                    '<%= dirs.css %>/frontend-forms.less',
+                ],
+                tasks: [
+                    'jshint:formBuilder', 'less:formBuilder',
+                    'concat:formBuilder', 'less:front'
+                ]
             }
         },
 
@@ -152,8 +172,33 @@ module.exports = function(grunt) {
                     config: 'myhost'
                 }
             },
-        }
+        },
 
+        // jshint
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc',
+                reporter: require('jshint-stylish')
+            },
+
+            formBuilder: [
+                'admin/form-builder/assets/js/**/*.js',
+                '!admin/form-builder/assets/js/jquery-siaf-start.js',
+                '!admin/form-builder/assets/js/jquery-siaf-end.js',
+                'assets/js/wpuf-form-builder-wpuf-forms.js',
+            ]
+        },
+
+        // concat/join files
+        concat: {
+            formBuilder: {
+                files: {
+                    '<%= dirs.js %>/wpuf-form-builder.js': 'admin/form-builder/assets/js/form-builder.js',
+                    '<%= dirs.js %>/wpuf-form-builder-mixins.js': formBuilderAssets.mixins,
+                    '<%= dirs.js %>/wpuf-form-builder-components.js': formBuilderAssets.components,
+                }
+            },
+        },
     });
 
     // Load NPM tasks to be used here
@@ -167,6 +212,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-copy' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
     grunt.loadNpmTasks( 'grunt-ssh' );
+    grunt.loadNpmTasks( 'grunt-notify' );
 
     grunt.registerTask( 'default', [
         'makepot', 'uglify'

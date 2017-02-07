@@ -53,7 +53,7 @@ class WPUF_Upgrades {
                         }
                     }
 
-                    WPUF_Admin_Form::insert_form_field( $post->ID, $post_meta, null, $key );
+                    wpuf_insert_form_field( $post->ID, $post_meta, null, $key );
                     delete_post_meta( $post->ID, 'wpuf_form' );
                 }
             }

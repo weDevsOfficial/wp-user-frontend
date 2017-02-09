@@ -270,7 +270,7 @@ class WP_User_Frontend {
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
         if ( !empty( $api_key ) ) {
-            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?key='.$api_key, array(), null );
+            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key='.$api_key, array(), null );
         }
 
         if ( isset ( $post->ID ) ) {

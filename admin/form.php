@@ -163,12 +163,7 @@ class WPUF_Admin_Form {
                 'post_type'         => 'wpuf_forms',
                 'post_id'           => $_GET['id'],
                 'form_settings_key' => $this->form_settings_key,
-                'shortcode_attrs'   => array(
-                    'type' => array(
-                        'profile'       => __( 'Profile', 'wpuf' ),
-                        'registration'  => __( 'Registration', 'wpuf' )
-                    )
-                )
+                'shortcodes'        => array( array( 'name' => 'wpuf_form' ) )
             );
 
             new WPUF_Admin_Form_Builder( $settings );

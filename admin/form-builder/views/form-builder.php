@@ -28,8 +28,27 @@
                     <header class="clearfix">
                         <span class="form-title">{{ post.post_title }}</span>
 
-                        <i class="fa fa-angle-down form-switcher-arrow"></i>
+                        <i :class="(is_form_switcher ? 'fa fa-angle-up' : 'fa fa-angle-down') + ' form-switcher-arrow'" @click.prevent="switch_form"></i>
+                        <?php
+                            if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
+                                foreach ( $shortcodes as $shortcode ) {
+                                    printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text=\"%s\"><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i><%s #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), '[' . $shortcode['name'] . ' type="'. $shortcode['type'] . ' id="'. $_GET['id'] . '"]', ucwords( $shortcode['type'] ) );
+                                }
+                            } else {
+                                printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text=\"%s\"><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), '[' . $shortcodes[0]['name'] . ' id=' . $_GET['id'] . ']' );
+                            }
+                        ?>
                     </header>
+
+                    <ul v-if="is_form_switcher" class="dropdown-content" style="position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); padding: 10px 15px; z-index: 9999; margin: 0;">
+                        <?php
+                            foreach ( $forms as $form ) {
+                        ?>
+                                <li><a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $form->ID ); ?>"><?php echo $form->post_title; ?></a></li>
+                        <?php
+                            }
+                        ?>
+                    </ul>
 
                     <section>
                         <div id="form-preview">

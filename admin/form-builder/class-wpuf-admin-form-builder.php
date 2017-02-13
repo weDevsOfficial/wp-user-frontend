@@ -29,7 +29,7 @@ class WPUF_Admin_Form_Builder {
             'post_type'         => '', // e.g 'wpuf_forms', 'wpuf_profile' etc,
             'form_settings_key' => '',
             'post_id'           => 0,
-            'shortcode_attrs'   => array() // [ 'type' => [ 'profile' => 'Profile', 'registration' => 'Registration' ] ]
+            'shortcodes'        => array() // [ [ 'name' => 'wpuf_form', 'type' => 'profile' ], [ 'name' => 'wpuf_form', 'type' => 'registration' ] ]
         );
 
         $this->settings = wp_parse_args( $settings, $defaults );
@@ -100,7 +100,7 @@ class WPUF_Admin_Form_Builder {
             wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo.js', array( 'jquery' ), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize.js', array( 'jquery' ), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.js', array(), WPUF_VERSION, true );
-
+            wp_enqueue_script( 'wpuf-clipboard', WPUF_ASSET_URI . '/vendor/clipboard/clipboard.js', array(), WPUF_VERSION, true );
         } else {
             wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue.min.js', array(), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-vuex', WPUF_ASSET_URI . '/vendor/vuex/vuex.min.js', array( 'wpuf-vue' ), WPUF_VERSION, true );
@@ -108,14 +108,13 @@ class WPUF_Admin_Form_Builder {
             wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo.min.js', array( 'jquery' ), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize.min.js', array( 'jquery' ), WPUF_VERSION, true );
             wp_enqueue_script( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.min.js', array(), WPUF_VERSION, true );
+            wp_enqueue_script( 'wpuf-clipboard', WPUF_ASSET_URI . '/vendor/clipboard/clipboard.min.js', array(), WPUF_VERSION, true );
         }
-
-
 
         $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', array(
             'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'underscore',
             'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert', 'wpuf-jquery-scrollTo',
-            'wpuf-selectize', 'wpuf-toastr'
+            'wpuf-selectize', 'wpuf-toastr', 'wpuf-clipboard'
         ) );
 
         wp_enqueue_script( 'wpuf-form-builder-mixins', WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js', $form_builder_js_deps, WPUF_VERSION, true );
@@ -250,7 +249,11 @@ class WPUF_Admin_Form_Builder {
     public function include_form_builder() {
         $form_id            = $this->settings['post_id'];
         $form_type          = $this->settings['form_type'];
+        $post_type          = $this->settings['post_type'];
         $form_settings_key  = $this->settings['form_settings_key'];
+        $shortcodes         = $this->settings['shortcodes'];
+
+        $forms = get_posts( array( 'post_type' => $post_type, 'post_status' => 'any' ) );
 
         include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
     }

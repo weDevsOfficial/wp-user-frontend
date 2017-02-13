@@ -166,7 +166,8 @@
         store: wpuf_form_builder_store,
 
         data: {
-            is_form_saving: false
+            is_form_saving: false,
+            is_form_switcher: false
         },
 
         computed: {
@@ -209,6 +210,8 @@
             settings_tab_contents.first().addClass('active');
 
             this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
+
+            new window.Clipboard('.form-id');
         },
 
         methods: {
@@ -226,6 +229,11 @@
                     tab_contents.children().removeClass('active');
                     $(group_id).addClass('active');
                 });
+            },
+
+            // switch form
+            switch_form: function () {
+                this.is_form_switcher = (this.is_form_switcher) ? false : true;
             },
 
             // set current sidebar panel

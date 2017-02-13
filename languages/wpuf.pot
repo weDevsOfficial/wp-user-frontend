@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.4.3\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-02-09 11:19:09+00:00\n"
+"POT-Creation-Date: 2017-02-13 12:27:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -84,49 +84,49 @@ msgstr ""
 msgid "Invalid form id"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:294
+#: admin/form-builder/class-wpuf-admin-form-builder.php:297
 msgid "Custom Fields"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:315
+#: admin/form-builder/class-wpuf-admin-form-builder.php:318
 msgid "Others"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:331
+#: admin/form-builder/class-wpuf-admin-form-builder.php:334
 msgid "Advanced Options"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:332
+#: admin/form-builder/class-wpuf-admin-form-builder.php:335
 msgid "Are you sure you want to delete this field?"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:333
+#: admin/form-builder/class-wpuf-admin-form-builder.php:336
 msgid "Yes, delete it"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:334
+#: admin/form-builder/class-wpuf-admin-form-builder.php:337
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:335
+#: admin/form-builder/class-wpuf-admin-form-builder.php:338
 msgid "OK"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:336
+#: admin/form-builder/class-wpuf-admin-form-builder.php:339
 #: class/payment.php:168 class/subscription.php:820
 #: templates/dashboard/subscription.php:59
 msgid "Cancel"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:337
+#: admin/form-builder/class-wpuf-admin-form-builder.php:340
 msgid "Close"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:338
+#: admin/form-builder/class-wpuf-admin-form-builder.php:341
 msgid "This field must contain at least one choice"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:339
+#: admin/form-builder/class-wpuf-admin-form-builder.php:342
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:359
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:399
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:455
@@ -134,31 +134,31 @@ msgstr ""
 msgid "Option"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:340
+#: admin/form-builder/class-wpuf-admin-form-builder.php:343
 msgid "Column"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:341
+#: admin/form-builder/class-wpuf-admin-form-builder.php:344
 msgid "This field must contain at least one column"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:342
+#: admin/form-builder/class-wpuf-admin-form-builder.php:345
 msgid "is available in Pro version"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:343
+#: admin/form-builder/class-wpuf-admin-form-builder.php:346
 msgid "Please upgrade to the Pro version to unlock all these awesome features"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:344
+#: admin/form-builder/class-wpuf-admin-form-builder.php:347
 msgid "Get the Pro version"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:345 admin/form.php:1095
+#: admin/form-builder/class-wpuf-admin-form-builder.php:348 admin/form.php:1090
 msgid "Select"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:346
+#: admin/form-builder/class-wpuf-admin-form-builder.php:349
 msgid "Saved form data"
 msgstr ""
 
@@ -357,7 +357,7 @@ msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:386
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:393
-#: admin/form.php:1096 admin/template-post.php:167
+#: admin/form.php:1091 admin/template-post.php:167
 msgid "Multi Select"
 msgstr ""
 
@@ -380,7 +380,7 @@ msgid "Radio Field"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:496
-#: admin/form.php:1097 admin/template-post.php:168
+#: admin/form.php:1092 admin/template-post.php:168
 msgid "Checkbox"
 msgstr ""
 
@@ -398,7 +398,7 @@ msgid "Email Address"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:573
-#: admin/form.php:279 class/transactions-list-table.php:48
+#: admin/form.php:274 class/transactions-list-table.php:48
 #: includes/free/edit-user.php:153
 msgid "Email"
 msgstr ""
@@ -418,22 +418,22 @@ msgid "Hidden Field"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:648
-#: admin/form.php:1005 admin/template-post.php:115 admin/template.php:636
+#: admin/form.php:1000 admin/template-post.php:115 admin/template.php:636
 msgid "Max. file size"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:652
-#: admin/form.php:1009 admin/template-post.php:103 admin/template.php:624
+#: admin/form.php:1004 admin/template-post.php:103 admin/template.php:624
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:657
-#: admin/form.php:1014 admin/template.php:641
+#: admin/form.php:1009 admin/template.php:641
 msgid "Max. files"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:661
-#: admin/form.php:1018 admin/template.php:625
+#: admin/form.php:1013 admin/template.php:625
 msgid "Number of images can be uploaded"
 msgstr ""
 
@@ -504,11 +504,16 @@ msgstr ""
 msgid "Saving Form Data"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:46
+#: admin/form-builder/views/form-builder.php:35
+#: admin/form-builder/views/form-builder.php:38
+msgid "Click to copy shortcode"
+msgstr ""
+
+#: admin/form-builder/views/form-builder.php:65
 msgid "Add Fields"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:52
+#: admin/form-builder/views/form-builder.php:71
 msgid "Field Options"
 msgstr ""
 
@@ -615,346 +620,338 @@ msgstr ""
 msgid "Registration Forms"
 msgstr ""
 
-#: admin/form.php:168
-msgid "Profile"
-msgstr ""
-
-#: admin/form.php:169 admin/installer.php:165
-msgid "Registration"
-msgstr ""
-
-#: admin/form.php:189 includes/free/form-element.php:211
+#: admin/form.php:184 includes/free/form-element.php:211
 #: includes/free/form-element.php:248
 msgid "Notification"
 msgstr ""
 
-#: admin/form.php:222
+#: admin/form.php:217
 msgid "Post Settings"
 msgstr ""
 
-#: admin/form.php:223
+#: admin/form.php:218
 msgid "Edit Settings"
 msgstr ""
 
-#: admin/form.php:224 includes/free/form-element.php:55
+#: admin/form.php:219 includes/free/form-element.php:55
 msgid "Post Expiration"
 msgstr ""
 
-#: admin/form.php:269
+#: admin/form.php:264
 msgid "This page is restricted. Please Log in / Register to view this page."
 msgstr ""
 
-#: admin/form.php:278 admin/form.php:1111 admin/subscription.php:205
+#: admin/form.php:273 admin/form.php:1106 admin/subscription.php:205
 #: admin/template-post.php:177 includes/free/edit-profile.php:92
 msgid "Name"
 msgstr ""
 
-#: admin/form.php:283
+#: admin/form.php:278
 msgid "Post saved"
 msgstr ""
 
-#: admin/form.php:284 admin/form.php:529
+#: admin/form.php:279 admin/form.php:524
 msgid "Post updated successfully"
 msgstr ""
 
-#: admin/form.php:289
+#: admin/form.php:284
 msgid "Submit"
 msgstr ""
 
-#: admin/form.php:290 admin/form.php:784 class/render-form.php:587
+#: admin/form.php:285 admin/form.php:779 class/render-form.php:587
 msgid "Save Draft"
 msgstr ""
 
-#: admin/form.php:291
+#: admin/form.php:286
 msgid "Preview"
 msgstr ""
 
-#: admin/form.php:299 admin/form.php:303
+#: admin/form.php:294 admin/form.php:298
 msgid "Disable Subscription"
 msgstr ""
 
-#: admin/form.php:306
+#: admin/form.php:301
 msgid ""
 "If checked, any subscription and pay-per-post will be disabled on the form "
 "and will take no effect."
 msgstr ""
 
-#: admin/form.php:311 admin/post-forms-list-table.php:292
+#: admin/form.php:306 admin/post-forms-list-table.php:292
 msgid "Post Type"
 msgstr ""
 
-#: admin/form.php:331 admin/post-forms-list-table.php:293
+#: admin/form.php:326 admin/post-forms-list-table.php:293
 msgid "Post Status"
 msgstr ""
 
-#: admin/form.php:345
+#: admin/form.php:340
 msgid "Post Format"
 msgstr ""
 
-#: admin/form.php:348 admin/form.php:371
+#: admin/form.php:343 admin/form.php:366
 msgid "- None -"
 msgstr ""
 
-#: admin/form.php:363
+#: admin/form.php:358
 msgid "Default Post Category"
 msgstr ""
 
-#: admin/form.php:375
+#: admin/form.php:370
 msgid ""
 "If users are not allowed to choose any category, this category will be used "
 "instead (if post type supports)"
 msgstr ""
 
-#: admin/form.php:380 admin/post-forms-list-table.php:294
+#: admin/form.php:375 admin/post-forms-list-table.php:294
 msgid "Guest Post"
 msgstr ""
 
-#: admin/form.php:385
+#: admin/form.php:380
 msgid "Enable Guest Post"
 msgstr ""
 
-#: admin/form.php:387
+#: admin/form.php:382
 msgid "Unregistered users will be able to submit posts"
 msgstr ""
 
-#: admin/form.php:392
+#: admin/form.php:387
 msgid "User Details"
 msgstr ""
 
-#: admin/form.php:397
+#: admin/form.php:392
 msgid "Require Name and Email address"
 msgstr ""
 
-#: admin/form.php:399
+#: admin/form.php:394
 msgid ""
 "If requires, users will be automatically registered to the site using the "
 "name and email address"
 msgstr ""
 
-#: admin/form.php:404
+#: admin/form.php:399
 msgid "Name Label"
 msgstr ""
 
-#: admin/form.php:409
+#: admin/form.php:404
 msgid "Label text for name field"
 msgstr ""
 
-#: admin/form.php:414
+#: admin/form.php:409
 msgid "E-Mail Label"
 msgstr ""
 
-#: admin/form.php:419
+#: admin/form.php:414
 msgid "Label text for email field"
 msgstr ""
 
-#: admin/form.php:424 admin/settings-options.php:231
+#: admin/form.php:419 admin/settings-options.php:231
 msgid "Unauthorized Message"
 msgstr ""
 
-#: admin/form.php:427 admin/settings-options.php:232
+#: admin/form.php:422 admin/settings-options.php:232
 msgid "Not logged in users will see this message"
 msgstr ""
 
-#: admin/form.php:432 admin/form.php:555 includes/free/form-element.php:374
+#: admin/form.php:427 admin/form.php:550 includes/free/form-element.php:374
 msgid "Redirect To"
 msgstr ""
 
-#: admin/form.php:437 admin/form.php:560
+#: admin/form.php:432 admin/form.php:555
 msgid "Newly created post"
 msgstr ""
 
-#: admin/form.php:438 admin/form.php:561 includes/free/form-element.php:379
+#: admin/form.php:433 admin/form.php:556 includes/free/form-element.php:379
 msgid "Same Page"
 msgstr ""
 
-#: admin/form.php:439 admin/form.php:562 includes/free/form-element.php:380
+#: admin/form.php:434 admin/form.php:557 includes/free/form-element.php:380
 msgid "To a page"
 msgstr ""
 
-#: admin/form.php:440 admin/form.php:563 includes/free/form-element.php:381
+#: admin/form.php:435 admin/form.php:558 includes/free/form-element.php:381
 msgid "To a custom URL"
 msgstr ""
 
-#: admin/form.php:449 admin/form.php:572 includes/free/form-element.php:390
+#: admin/form.php:444 admin/form.php:567 includes/free/form-element.php:390
 msgid "After successfull submit, where the page will redirect to"
 msgstr ""
 
-#: admin/form.php:455
+#: admin/form.php:450
 msgid "Message to show"
 msgstr ""
 
-#: admin/form.php:462 admin/form.php:585 includes/free/form-element.php:410
+#: admin/form.php:457 admin/form.php:580 includes/free/form-element.php:410
 msgid "Page"
 msgstr ""
 
-#: admin/form.php:477 admin/form.php:600 includes/free/form-element.php:425
+#: admin/form.php:472 admin/form.php:595 includes/free/form-element.php:425
 msgid "Custom URL"
 msgstr ""
 
-#: admin/form.php:484
+#: admin/form.php:479
 msgid "Comment Status"
 msgstr ""
 
-#: admin/form.php:487
+#: admin/form.php:482
 msgid "Open"
 msgstr ""
 
-#: admin/form.php:488
+#: admin/form.php:483
 msgid "Closed"
 msgstr ""
 
-#: admin/form.php:494
+#: admin/form.php:489
 msgid "Submit Post Button text"
 msgstr ""
 
-#: admin/form.php:501
+#: admin/form.php:496
 msgid "Post Draft"
 msgstr ""
 
-#: admin/form.php:506
+#: admin/form.php:501
 msgid "Enable Saving as draft"
 msgstr ""
 
-#: admin/form.php:508
+#: admin/form.php:503
 msgid "It will show a button to save as draft"
 msgstr ""
 
-#: admin/form.php:532
+#: admin/form.php:527
 msgid "Update"
 msgstr ""
 
-#: admin/form.php:538
+#: admin/form.php:533
 msgid "Set Post Status to"
 msgstr ""
 
-#: admin/form.php:548
+#: admin/form.php:543
 msgid "No Change"
 msgstr ""
 
-#: admin/form.php:578
+#: admin/form.php:573
 msgid "Post Update Message"
 msgstr ""
 
-#: admin/form.php:607
+#: admin/form.php:602
 msgid "Subscription Title"
 msgstr ""
 
-#: admin/form.php:616
+#: admin/form.php:611
 msgid "Update Post Button text"
 msgstr ""
 
-#: admin/form.php:638 admin/form.php:642
+#: admin/form.php:633 admin/form.php:637
 msgid "- Select -"
 msgstr ""
 
-#: admin/form.php:676
+#: admin/form.php:671
 msgid "Post Fields"
 msgstr ""
 
-#: admin/form.php:682
+#: admin/form.php:677
 msgid "Taxonomies"
 msgstr ""
 
-#: admin/form.php:894 admin/form.php:901
+#: admin/form.php:889 admin/form.php:896
 msgid "Post Title"
 msgstr ""
 
-#: admin/form.php:929 admin/form.php:936
+#: admin/form.php:924 admin/form.php:931
 msgid "Post Body"
 msgstr ""
 
-#: admin/form.php:967 admin/form.php:974
+#: admin/form.php:962 admin/form.php:969
 msgid "Excerpt"
 msgstr ""
 
-#: admin/form.php:1024 admin/form.php:1031 templates/dashboard/posts.php:71
+#: admin/form.php:1019 admin/form.php:1026 templates/dashboard/posts.php:71
 #: templates/dashboard.php:25
 msgid "Featured Image"
 msgstr ""
 
-#: admin/form.php:1058 admin/form.php:1064
+#: admin/form.php:1053 admin/form.php:1059
 msgid "Tags"
 msgstr ""
 
-#: admin/form.php:1092 admin/template-post.php:164
+#: admin/form.php:1087 admin/template-post.php:164
 msgid "Type"
 msgstr ""
 
-#: admin/form.php:1098 admin/template-post.php:169
+#: admin/form.php:1093 admin/template-post.php:169
 msgid "Text Input"
 msgstr ""
 
-#: admin/form.php:1099 admin/template-post.php:170
+#: admin/form.php:1094 admin/template-post.php:170
 msgid "Ajax"
 msgstr ""
 
-#: admin/form.php:1108 admin/template-post.php:175
+#: admin/form.php:1103 admin/template-post.php:175
 msgid "Order By"
 msgstr ""
 
-#: admin/form.php:1112 admin/template-post.php:178
+#: admin/form.php:1107 admin/template-post.php:178
 msgid "Term ID"
 msgstr ""
 
-#: admin/form.php:1113 admin/template-post.php:179
+#: admin/form.php:1108 admin/template-post.php:179
 msgid "Slug"
 msgstr ""
 
-#: admin/form.php:1114 admin/template-post.php:180
+#: admin/form.php:1109 admin/template-post.php:180
 msgid "Count"
 msgstr ""
 
-#: admin/form.php:1115 admin/template-post.php:181
+#: admin/form.php:1110 admin/template-post.php:181
 msgid "Term Group"
 msgstr ""
 
-#: admin/form.php:1124 admin/template-post.php:186
+#: admin/form.php:1119 admin/template-post.php:186
 msgid "Order"
 msgstr ""
 
-#: admin/form.php:1128 admin/template-post.php:188
+#: admin/form.php:1123 admin/template-post.php:188
 msgid "ASC"
 msgstr ""
 
-#: admin/form.php:1129 admin/template-post.php:189
+#: admin/form.php:1124 admin/template-post.php:189
 msgid "DESC"
 msgstr ""
 
-#: admin/form.php:1138 admin/template-post.php:194
+#: admin/form.php:1133 admin/template-post.php:194
 msgid "Selection Type"
 msgstr ""
 
-#: admin/form.php:1141 admin/template-post.php:196
+#: admin/form.php:1136 admin/template-post.php:196
 msgid "Exclude"
 msgstr ""
 
-#: admin/form.php:1142 admin/template-post.php:197
+#: admin/form.php:1137 admin/template-post.php:197
 msgid "Include"
 msgstr ""
 
-#: admin/form.php:1143 admin/template-post.php:198
+#: admin/form.php:1138 admin/template-post.php:198
 msgid "Child of"
 msgstr ""
 
-#: admin/form.php:1152
+#: admin/form.php:1147
 msgid "Selection Terms"
 msgstr ""
 
-#: admin/form.php:1156 admin/template-post.php:204
+#: admin/form.php:1151 admin/template-post.php:204
 msgid ""
 "Enter the term IDs as comma separated (without space) to exclude/include in "
 "the form."
 msgstr ""
 
-#: admin/form.php:1164 admin/template-post.php:214
+#: admin/form.php:1159 admin/template-post.php:214
 msgid "This taxonomy is a WooCommerce attribute"
 msgstr ""
 
-#: admin/form.php:1175 admin/template-post.php:226
+#: admin/form.php:1170 admin/template-post.php:226
 msgid "Visible on product page"
 msgstr ""
 
-#: admin/form.php:1223
+#: admin/form.php:1218
 msgid "Post Forms must have either Post Title, Post Body or Excerpt field"
 msgstr ""
 
@@ -1065,6 +1062,10 @@ msgstr ""
 msgid ""
 "Hi, we have received your order. We will validate the order and will take "
 "necessary steps to move forward."
+msgstr ""
+
+#: admin/installer.php:165
+msgid "Registration"
 msgstr ""
 
 #: admin/installer.php:230

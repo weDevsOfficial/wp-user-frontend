@@ -389,6 +389,11 @@
 
                             return;
                         } else {
+
+                            if ( typeof form.find('.g-recaptcha') != "undefined" ) {
+                                grecaptcha.reset();
+                            }
+
                             alert( res.error );
                         }
 

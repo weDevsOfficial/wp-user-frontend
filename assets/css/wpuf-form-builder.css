@@ -668,3 +668,30 @@
 ul.wpuf-form li .wpuf-text-editor .wp-editor-wrap {
   border: 0;
 }
+.form-switcher-content {
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  margin: 0;
+}
+.form-switcher-content li {
+  margin: 0;
+}
+.form-switcher-content a {
+  color: black;
+  padding: 12px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+.form-switcher-content a:hover {
+  color: #fff;
+  background-color: #008ec2;
+}
+.form-switcher-content a.active {
+  font-weight: bold;
+  color: #fff;
+  background-color: #008ec2;
+}

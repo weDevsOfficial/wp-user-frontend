@@ -131,6 +131,10 @@ class WPUF_Admin_Settings {
                 require_once WPUF_ROOT . '/views/post-form.php';
                 break;
 
+            case 'add-new':
+                require_once WPUF_ROOT . '/views/post-form.php';
+                break;
+
             default:
                 require_once WPUF_ROOT . '/admin/post-forms-list-table-view.php';
                 break;

@@ -40,11 +40,11 @@
                         ?>
                     </header>
 
-                    <ul v-if="is_form_switcher" class="dropdown-content" style="position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); padding: 10px 15px; z-index: 9999; margin: 0;">
+                    <ul v-if="is_form_switcher" class="form-switcher-content">
                         <?php
                             foreach ( $forms as $form ) {
                         ?>
-                                <li><a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $form->ID ); ?>"><?php echo $form->post_title; ?></a></li>
+                                <li><a class="<?php echo ( $form->ID == $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $form->ID ); ?>"><?php echo $form->post_title; ?></a></li>
                         <?php
                             }
                         ?>

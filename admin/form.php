@@ -144,7 +144,7 @@ class WPUF_Admin_Form {
         }
 
         if ( 'add-new' === $_GET['action'] && empty( $_GET['id'] ) ) {
-            $form_id = $this->create_dummy_form();
+            $form_id = wpuf_create_sample_form( 'Sample Form ', 'wpuf_forms' );
             $add_new_page_url = add_query_arg( array( 'id' => $form_id ), admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' ) );
             wp_redirect( $add_new_page_url );
         }
@@ -1231,94 +1231,4 @@ class WPUF_Admin_Form {
         ) );
     }
 
-    private function create_dummy_form() {
-
-        $form_id = wp_insert_post( array(
-            'post_title'     => 'Sample Form',
-            'post_type'      => 'wpuf_forms',
-            'post_status'    => 'publish',
-            'comment_status' => 'closed',
-            'post_content'   => ''
-        ) );
-
-        if ( $form_id ) {
-            $form_fields = array(
-                array(
-                    'input_type'  => 'text',
-                    'template'    => 'post_title',
-                    'required'    => 'yes',
-                    'label'       => 'Post Title',
-                    'name'        => 'post_title',
-                    'is_meta'     => 'no',
-                    'help'        => '',
-                    'css'         => '',
-                    'placeholder' => '',
-                    'default'     => '',
-                    'size'        => '40',
-                    'wpuf_cond'   => array( )
-                ),
-                array(
-                    'input_type'   => 'textarea',
-                    'template'     => 'post_content',
-                    'required'     => 'yes',
-                    'label'        => 'Post Content',
-                    'name'         => 'post_content',
-                    'is_meta'      => 'no',
-                    'help'         => '',
-                    'css'          => '',
-                    'rows'         => '5',
-                    'cols'         => '25',
-                    'placeholder'  => '',
-                    'default'      => '',
-                    'rich'         => 'teeny',
-                    'insert_image' => 'yes',
-                    'wpuf_cond'    => array( )
-                )
-            );
-
-            foreach ($form_fields as $order => $field) {
-                wpuf_insert_form_field( $form_id, $field, false, $order );
-            }
-
-            $settings = array(
-                'post_type'        => 'post',
-                'post_status'      => 'publish',
-                'post_format'      => '0',
-                'default_cat'      => '-1',
-                'guest_post'       => 'false',
-                'guest_details'    => 'true',
-                'name_label'       => 'Name',
-                'email_label'      => 'Email',
-                'message_restrict' => 'This page is restricted. Please Log in / Register to view this page.',
-                'redirect_to'      => 'post',
-                'message'          => 'Post saved',
-                'page_id'          => '',
-                'url'              => '',
-                'comment_status'   => 'open',
-                'submit_text'      => 'Submit',
-                'draft_post'       => 'false',
-                'edit_post_status' => 'publish',
-                'edit_redirect_to' => 'same',
-                'update_message'   => 'Post updated successfully',
-                'edit_page_id'     => '',
-                'edit_url'         => '',
-                'subscription'     => '- Select -',
-                'update_text'      => 'Update',
-                'notification'     => array(
-                    'new'          => 'on',
-                    'new_to'       => get_option( 'admin_email' ),
-                    'new_subject'  => 'New post created',
-                    'new_body'     => "Hi Admin, \r\n\r\nA new post has been created in your site %sitename% (%siteurl%). \r\n\r\nHere is the details: \r\nPost Title: %post_title% \r\nContent: %post_content% \r\nAuthor: %author% \r\nPost URL: %permalink% \r\nEdit URL: %editlink%",
-                    'edit'         => 'off',
-                    'edit_to'      => get_option( 'admin_email' ),
-                    'edit_subject' => 'A post has been edited',
-                    'edit_body'    => "Hi Admin, \r\n\r\nThe post \"%post_title%\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: %post_title% \r\nContent: %post_content% \r\nAuthor: %author% \r\nPost URL: %permalink% \r\nEdit URL: %editlink%",
-                ),
-            );
-
-            update_post_meta( $form_id, 'wpuf_form_settings', $settings );
-        }
-
-        return $form_id;
-    }
 }

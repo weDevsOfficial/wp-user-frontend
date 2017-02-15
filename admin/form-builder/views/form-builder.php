@@ -26,7 +26,12 @@
             <div id="wpuf-form-builder-container" class="group active">
                 <div id="builder-stage">
                     <header class="clearfix">
-                        <span class="form-title">{{ post.post_title }}</span>
+                        <span v-if="!post_title_editing" class="form-title" @click.prevent="post_title_editing = true">{{ post.post_title }}</span>
+
+                        <span v-show="post_title_editing">
+                            <input type="text" v-model="post.post_title" name="post_title" />
+                            <button type="button" class="button button-small" style="margin-top: 13px;" @click.prevent="post_title_editing = false"><i class="fa fa-check"></i></button>
+                        </span>
 
                         <i :class="(is_form_switcher ? 'fa fa-angle-up' : 'fa fa-angle-down') + ' form-switcher-arrow'" @click.prevent="switch_form"></i>
                         <?php

@@ -167,7 +167,8 @@
 
         data: {
             is_form_saving: false,
-            is_form_switcher: false
+            is_form_switcher: false,
+            post_title_editing: false,
         },
 
         computed: {

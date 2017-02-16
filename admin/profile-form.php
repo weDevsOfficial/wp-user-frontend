@@ -1,17 +1,17 @@
 <?php
 /**
- * Post Forms or wpuf_forms form builder class
+ * Profile Forms or wpuf_profile form builder class
  *
  * @package WP User Frontend
  */
 
-class WPUF_Admin_Form {
+class WPUF_Admin_Profile_Form {
     /**
      * Form type of which we're working on
      *
      * @var string
      */
-    private $form_type = 'post';
+    private $form_type = 'profile';
 
     /**
      * Form settings key
@@ -36,7 +36,7 @@ class WPUF_Admin_Form {
         add_action( 'init', array($this, 'register_post_type') );
 
         $user_frontend = sanitize_title( __( 'User Frontend', 'wpuf' ) );
-        add_action( "load-{$user_frontend}_page_wpuf-post-forms", array( $this, 'post_forms_builder_init' ) );
+        add_action( "load-{$user_frontend}_page_wpuf-profile-forms", array( $this, 'profile_forms_builder_init' ) );
     }
 
     /**
@@ -46,44 +46,6 @@ class WPUF_Admin_Form {
      */
     public function register_post_type() {
         $capability = wpuf_admin_role();
-
-        register_post_type( 'wpuf_forms', array(
-            'label'           => __( 'Forms', 'wpuf' ),
-            'public'          => false,
-            'show_ui'         => false,
-            'show_in_menu'    => false, //false,
-            'capability_type' => 'post',
-            'hierarchical'    => false,
-            'query_var'       => false,
-            'supports'        => array('title'),
-            'capabilities' => array(
-                'publish_posts'       => $capability,
-                'edit_posts'          => $capability,
-                'edit_others_posts'   => $capability,
-                'delete_posts'        => $capability,
-                'delete_others_posts' => $capability,
-                'read_private_posts'  => $capability,
-                'edit_post'           => $capability,
-                'delete_post'         => $capability,
-                'read_post'           => $capability,
-            ),
-            'labels' => array(
-                'name'               => __( 'Forms', 'wpuf' ),
-                'singular_name'      => __( 'Form', 'wpuf' ),
-                'menu_name'          => __( 'Forms', 'wpuf' ),
-                'add_new'            => __( 'Add Form', 'wpuf' ),
-                'add_new_item'       => __( 'Add New Form', 'wpuf' ),
-                'edit'               => __( 'Edit', 'wpuf' ),
-                'edit_item'          => __( 'Edit Form', 'wpuf' ),
-                'new_item'           => __( 'New Form', 'wpuf' ),
-                'view'               => __( 'View Form', 'wpuf' ),
-                'view_item'          => __( 'View Form', 'wpuf' ),
-                'search_items'       => __( 'Search Form', 'wpuf' ),
-                'not_found'          => __( 'No Form Found', 'wpuf' ),
-                'not_found_in_trash' => __( 'No Form Found in Trash', 'wpuf' ),
-                'parent'             => __( 'Parent Form', 'wpuf' ),
-            ),
-        ) );
 
         register_post_type( 'wpuf_profile', array(
             'label'           => __( 'Registraton Forms', 'wpuf' ),
@@ -122,39 +84,33 @@ class WPUF_Admin_Form {
                 'parent'             => __( 'Parent Form', 'wpuf' ),
             ),
         ) );
-
-        register_post_type( 'wpuf_input', array(
-            'public'          => false,
-            'show_ui'         => false,
-            'show_in_menu'    => false,
-        ) );
     }
 
     /**
-     * Initiate form builder for wpuf_forms post type
+     * Initiate form builder for wpuf_profile post type
      *
      * @since 2.5
      *
      * @return void
      */
-    public function post_forms_builder_init() {
+    public function profile_forms_builder_init() {
 
         if ( ! isset( $_GET['action'] ) ) {
             return;
         }
 
         if ( 'add-new' === $_GET['action'] && empty( $_GET['id'] ) ) {
-            $form_id = wpuf_create_sample_form( 'Sample Form ', 'wpuf_forms' );
-            $add_new_page_url = add_query_arg( array( 'id' => $form_id ), admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' ) );
+            $form_id = wpuf_create_sample_form( 'Sample Registration Form', 'wpuf_profile' );
+            $add_new_page_url = add_query_arg( array( 'id' => $form_id ), admin_url( 'admin.php?page=wpuf-profile-forms&action=add-new' ) );
             wp_redirect( $add_new_page_url );
         }
 
         if ( ( 'edit' === $_GET['action'] || 'add-new' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
 
-            add_action( 'wpuf-form-builder-tabs-post', array( $this, 'add_primary_tabs' ) );
-            add_action( 'wpuf-form-builder-tab-contents-post', array( $this, 'add_primary_tab_contents' ) );
-            add_action( 'wpuf-form-builder-settings-tabs-post', array( $this, 'add_settings_tabs' ) );
-            add_action( 'wpuf-form-builder-settings-tab-contents-post', array( $this, 'add_settings_tab_contents' ) );
+            add_action( 'wpuf-form-builder-tabs-profile', array( $this, 'add_primary_tabs' ) );
+            add_action( 'wpuf-form-builder-tab-contents-profile', array( $this, 'add_primary_tab_contents' ) );
+            add_action( 'wpuf-form-builder-settings-tabs-profile', array( $this, 'add_settings_tabs' ) );
+            add_action( 'wpuf-form-builder-settings-tab-contents-profile', array( $this, 'add_settings_tab_contents' ) );
             add_action( 'wpuf-form-builder-fields-section-before', array( $this, 'add_post_field_section' ) );
             add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
             add_action( 'wpuf-form-builder-js-deps', array( $this, 'js_dependencies' ) );
@@ -171,11 +127,14 @@ class WPUF_Admin_Form {
             $this->set_wp_post_types();
 
             $settings = array(
-                'form_type'         => 'post',
-                'post_type'         => 'wpuf_forms',
+                'form_type'         => 'profile',
+                'post_type'         => 'wpuf_profile',
                 'post_id'           => $_GET['id'],
                 'form_settings_key' => $this->form_settings_key,
-                'shortcodes'        => array( array( 'name' => 'wpuf_form' ) )
+                'shortcodes'        => array(
+                    array( 'name' => 'wpuf_profile', 'type' => 'registration' ),
+                    array( 'name' => 'wpuf_profile', 'type' => 'profile' )
+                )
             );
 
             new WPUF_Admin_Form_Builder( $settings );

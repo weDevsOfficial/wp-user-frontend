@@ -1,10 +1,10 @@
 <?php
 /**
- * Post Forms list table class
+ * Profile Forms list table class
  *
  * @since 2.5
  */
-class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
+class WPUF_Admin_Profile_Forms_List_Table extends WP_List_Table {
 
     /**
      * Class constructor
@@ -17,8 +17,8 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
         global $status, $page, $page_status;
 
         parent::__construct( array(
-            'singular' => 'post-form',
-            'plural'   => 'post-forms',
+            'singular' => 'profile-form',
+            'plural'   => 'profile-forms',
             'ajax'     => false
         ) );
     }
@@ -32,9 +32,9 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      */
     public function get_views() {
         $status_links   = array();
-        $base_link      = admin_url( 'admin.php?page=wpuf-post-forms' );
+        $base_link      = admin_url( 'admin.php?page=wpuf-profile-forms' );
 
-        $post_statuses  = apply_filters( 'wpuf_post_forms_list_table_post_statuses', array(
+        $post_statuses  = apply_filters( 'wpuf_profile_forms_list_table_post_statuses', array(
             'all'       => __( 'All', 'wpuf' ),
             'publish'   => __( 'Published', 'wpuf' ),
             'trash'     => __( 'Trash', 'wpuf' )
@@ -42,14 +42,14 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
         $current_status = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'all';
 
-        $post_counts = (array) wp_count_posts( 'wpuf_forms' );
+        $post_counts = (array) wp_count_posts( 'wpuf_profile' );
 
         if ( isset( $post_counts['auto-draft'] ) ) {
             unset( $post_counts['auto-draft'] );
         }
 
         foreach ( $post_statuses as $status => $status_title ) {
-            $link = ( 'all' === $status ) ? $base_link : admin_url( 'admin.php?page=wpuf-post-forms&post_status=' . $status );
+            $link = ( 'all' === $status ) ? $base_link : admin_url( 'admin.php?page=wpuf-profile-forms&post_status=' . $status );
 
             if ( $status === $current_status ) {
                 $class = 'current';
@@ -76,7 +76,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
             );
         }
 
-        return apply_filters( 'wpuf_post_forms_list_table_get_views', $status_links, $post_statuses, $current_status );
+        return apply_filters( 'wpuf_profile_forms_list_table_get_views', $status_links, $post_statuses, $current_status );
     }
 
     /**
@@ -109,7 +109,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
             $actions['delete']  = __( 'Delete Permanently', 'wpuf' );
         }
 
-        return apply_filters( 'wpuf_post_forms_list_table_get_bulk_actions', $actions );
+        return apply_filters( 'wpuf_profile_forms_list_table_get_bulk_actions', $actions );
     }
 
     /**
@@ -139,7 +139,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
             echo '<input type="hidden" name="post_status" value="' . esc_attr( $_GET['post_status'] ) . '" />';
         }
 
-        do_action( 'wpuf_post_forms_list_table_search_box', $text, $input_id );
+        do_action( 'wpuf_profile_forms_list_table_search_box', $text, $input_id );
 
         $input_id = $input_id . '-search-input';
 
@@ -147,7 +147,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
         <p class="search-box">
             <label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
             <input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
-            <?php submit_button( $text, 'button', 'post_form_search', false, array( 'id' => 'search-submit' ) ); ?>
+            <?php submit_button( $text, 'button', 'profile_form_search', false, array( 'id' => 'search-submit' ) ); ?>
         </p>
         <?php
     }
@@ -161,8 +161,8 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      */
     public function current_action() {
 
-        if ( isset( $_GET['post_form_search'] ) ) {
-            return 'post_form_search';
+        if ( isset( $_GET['profile_form_search'] ) ) {
+            return 'profile_form_search';
         }
 
         return parent::current_action();
@@ -206,7 +206,6 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
             $args['order'] = $_GET['order'];
         }
 
-
         $items  = $this->item_query( $args );
 
         $this->counts = count( $items['count'] );
@@ -219,7 +218,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
     }
 
     /**
-     * WP_Query for post forms
+     * WP_Query for profile forms
      *
      * @since 2.5
      *
@@ -236,7 +235,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
         $args = wp_parse_args( $args, $defauls );
 
-        $args['post_type'] = 'wpuf_forms';
+        $args['post_type'] = 'wpuf_profile';
 
         $query = new WP_Query( $args );
 
@@ -254,20 +253,17 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
                 $settings = get_post_meta( get_the_ID(), 'wpuf_form_settings', true );
 
                 $forms[ $i ] = [
-                    'ID'                    => $form->ID,
-                    'post_title'            => $form->post_title,
-                    'post_status'           => $form->post_status,
-                    'settings_post_type'    => $settings['post_type'],
-                    'settings_post_status'  => $settings['post_status'],
-                    'settings_guest_post'   => $settings['guest_post']
+                    'ID'                 => $form->ID,
+                    'post_title'         => $form->post_title,
+                    'post_status'        => $form->post_status,
+                    'settings_user_role' => $settings['role']
                 ];
-
 
                 $i++;
             }
         }
 
-        $forms = apply_filters( 'wpuf_post_forms_list_table_query_results', $forms, $query, $args );
+        $forms = apply_filters( 'wpuf_profile_forms_list_table_query_results', $forms, $query, $args );
         $count = $query->found_posts;
 
         wp_reset_postdata();
@@ -287,15 +283,13 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      */
     public function get_columns() {
         $columns = array(
-            'cb'            => '<input type="checkbox" />',
-            'form_name'     => __( 'Form Name', 'wpuf' ),
-            'post_type'     => __( 'Post Type', 'wpuf' ),
-            'post_status'   => __( 'Post Status', 'wpuf' ),
-            'guest_post'    => __( 'Guest Post', 'wpuf' ),
-            'shortcode'     => __( 'Shortcode', 'wpuf' ),
+            'cb'        => '<input type="checkbox" />',
+            'form_name' => __( 'Form Name', 'wpuf' ),
+            'user_role' => __( 'User Role', 'wpuf' ),
+            'shortcode' => __( 'Shortcode', 'wpuf' ),
         );
 
-        return apply_filters( 'wpuf_post_forms_list_table_cols', $columns );
+        return apply_filters( 'wpuf_profile_forms_list_table_cols', $columns );
     }
 
     /**
@@ -310,7 +304,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
             'form_name' => array( 'form_name', false ),
         );
 
-        return apply_filters( 'wpuf_post_forms_list_table_sortable_columns', $sortable_columns );
+        return apply_filters( 'wpuf_profile_forms_list_table_sortable_columns', $sortable_columns );
     }
 
     /**
@@ -328,23 +322,14 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
             case 'post_type':
                 return $item['settings_post_type'];
 
-            case 'post_status':
-                return wpuf_admin_post_status( $item['settings_post_status'] );
-
-            case 'guest_post':
-                $is_guest_post  = $item['settings_guest_post'];
-                $url            = WPUF_ASSET_URI . '/images/';
-                $image          = '<img src="%s" alt="%s">';
-
-                return filter_var( $is_guest_post, FILTER_VALIDATE_BOOLEAN ) ?
-                            sprintf( $image, $url . 'tick.png', __( 'Yes', 'wpuf' ) ) :
-                            sprintf( $image, $url . 'cross.png', __( 'No', 'wpuf' ) );
+            case 'user_role':
+                return ucwords( $item['settings_user_role'] );
 
             case 'shortcode':
-                return '<code>[wpuf_form id="' . $item['ID'] . '"]</code>';
+                return '<code>[wpuf_profile type="registration" id="' . $item['ID'] . '"]</code><br />' . '<code>[wpuf_profile type="profile" id="' . $item['ID'] . '"]</code>';
 
             default:
-                return apply_filter( 'wpuf_post_forms_list_table_column_default', $item, $column_name );
+                return apply_filter( 'wpuf_profile_forms_list_table_column_default', $item, $column_name );
         }
     }
 
@@ -373,10 +358,10 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
     public function column_form_name( $item ) {
         $actions = array();
 
-        $edit_url       = admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $item['ID'] );
+        $edit_url       = admin_url( 'admin.php?page=wpuf-profile-forms&action=edit&id=' . $item['ID'] );
 
-        $wpnonce        = wp_create_nonce( 'bulk-post-forms' );
-        $admin_url      = admin_url( 'admin.php?page=wpuf-post-forms&id=' . $item['ID'] . '&_wpnonce=' . $wpnonce );
+        $wpnonce        = wp_create_nonce( 'bulk-profile-forms' );
+        $admin_url      = admin_url( 'admin.php?page=wpuf-profile-forms&id=' . $item['ID'] . '&_wpnonce=' . $wpnonce );
 
         $duplicate_url  = $admin_url . '&action=duplicate';
         $trash_url      = $admin_url . '&action=trash';
@@ -384,9 +369,9 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
         $delete_url     = $admin_url . '&action=delete';
 
         if ( ( !isset( $_GET['post_status'] ) || 'trash' !== $_GET['post_status'] ) && current_user_can( wpuf_admin_role() ) ) {
-            $actions['edit']        = sprintf( '<a href="%s">%s</a>', $edit_url, __( 'Edit', 'wpuf' ) );
-            $actions['trash']       = sprintf( '<a href="%s" class="submitdelete">%s</a>', $trash_url, __( 'Trash', 'wpuf' ) );
-            $actions['duplicate']   = sprintf( '<a href="%s">%s</a>', $duplicate_url, __( 'Duplicate', 'wpuf' ) );
+            $actions['edit']      = sprintf( '<a href="%s">%s</a>', $edit_url, __( 'Edit', 'wpuf' ) );
+            $actions['trash']     = sprintf( '<a href="%s" class="submitdelete">%s</a>', $trash_url, __( 'Trash', 'wpuf' ) );
+            $actions['duplicate'] = sprintf( '<a href="%s">%s</a>', $duplicate_url, __( 'Duplicate', 'wpuf' ) );
 
             $title = sprintf(
                 '<a class="row-title" href="%1s" aria-label="%2s">%3s</a>',
@@ -412,7 +397,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
         $form_name = sprintf( '%1s %2s %3s', $title, $draft_marker, $this->row_actions( $actions ) );
 
-        return apply_filters( 'wpuf_post_forms_list_table_column_form_name', $form_name, $item );
+        return apply_filters( 'wpuf_profile_forms_list_table_column_form_name', $form_name, $item );
     }
 
 }

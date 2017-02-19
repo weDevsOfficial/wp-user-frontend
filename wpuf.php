@@ -62,9 +62,6 @@ class WP_User_Frontend {
 
         $this->instantiate();
 
-        register_activation_hook( __FILE__, array($this, 'install') );
-        register_deactivation_hook( __FILE__, array($this, 'uninstall') );
-
         // set schedule event
         add_action( 'wpuf_remove_expired_post_hook', array( $this, 'action_to_remove_exipred_post' ) );
 
@@ -87,7 +84,7 @@ class WP_User_Frontend {
      *
      * @since 2.2.7
      */
-    public function set_schedule_events() {
+    public static function set_schedule_events() {
         wp_schedule_event( time(), 'daily', 'wpuf_remove_expired_post_hook' );
     }
 
@@ -197,10 +194,10 @@ class WP_User_Frontend {
      *
      * @global object $wpdb
      */
-    function install() {
+    public static function install() {
         global $wpdb;
 
-        $this->set_schedule_events();
+        self::set_schedule_events();
 
         flush_rewrite_rules( false );
 
@@ -248,7 +245,7 @@ class WP_User_Frontend {
      *
      * @return void
      */
-    function uninstall() {
+    public static function uninstall() {
         wp_clear_scheduled_hook( 'wpuf_remove_expired_post_hook' );
     }
 
@@ -473,3 +470,5 @@ function wpuf() {
 }
 
 add_action( 'plugins_loaded', 'wpuf' );
+register_activation_hook( __FILE__, array( 'WP_User_Frontend', 'install' ) );
+register_deactivation_hook( __FILE__, array( 'WP_User_Frontend', 'uninstall' ) );

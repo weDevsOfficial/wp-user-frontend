@@ -37,7 +37,7 @@
                         <?php
                             if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
                                 foreach ( $shortcodes as $shortcode ) {
-                                    printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text=\"%s\"><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i><%s #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), '[' . $shortcode['name'] . ' type="'. $shortcode['type'] . ' id="'. $_GET['id'] . '"]', ucwords( $shortcode['type'] ) );
+                                    printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text=\"%s\"><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), '[' . $shortcode['name'] . ' type="' . $shortcode['type'] . '" id=' . $_GET['id'] . ']', ucwords( $shortcode['type'] ) );
                                 }
                             } else {
                                 printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text=\"%s\"><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), '[' . $shortcodes[0]['name'] . ' id=' . $_GET['id'] . ']' );

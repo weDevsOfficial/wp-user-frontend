@@ -55,7 +55,6 @@ class WPUF_Admin_Settings {
         add_menu_page( __( 'WP User Frontend', 'wpuf' ), __( 'User Frontend', 'wpuf' ), $capability, 'wp-user-frontend', array($this, 'wpuf_post_forms_page'), 'dashicons-exerpt-view', 55 );
 
         add_submenu_page( 'wp-user-frontend', __( 'Post Forms', 'wpuf' ), __( 'Post Forms' ), $capability, 'wpuf-post-forms', array( $this, 'wpuf_post_forms_page' ) );
-        add_submenu_page( 'wp-user-frontend', __( 'Profile Forms', 'wpuf' ), __( 'Profile Forms' ), $capability, 'wpuf-profile-forms', array( $this, 'wpuf_profile_forms_page' ) );
         remove_submenu_page( 'wp-user-frontend', 'wp-user-frontend' );
 
         /**
@@ -138,32 +137,6 @@ class WPUF_Admin_Settings {
 
             default:
                 require_once WPUF_ROOT . '/admin/post-forms-list-table-view.php';
-                break;
-        }
-    }
-
-    /**
-     * Callback method for Profile Forms submenu
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    function wpuf_profile_forms_page() {
-        $action = isset( $_GET['action'] ) ? $_GET['action'] : null;
-        $add_new_page_url = admin_url( 'admin.php?page=wpuf-profile-forms&action=add-new' );
-
-        switch ( $action ) {
-            case 'edit':
-                require_once WPUF_ROOT . '/views/profile-form.php';
-                break;
-
-            case 'add-new':
-                require_once WPUF_ROOT . '/views/profile-form.php';
-                break;
-
-            default:
-                require_once WPUF_ROOT . '/admin/profile-forms-list-table-view.php';
                 break;
         }
     }

@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.4.3
+Version: 2.5
 Author URI: https://tareq.co
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.4.3' );
+define( 'WPUF_VERSION', '2.5' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -187,7 +187,6 @@ class WP_User_Frontend {
             WPUF_Admin_Settings::init();
             new WPUF_Admin_Form_Handler();
             new WPUF_Admin_Form();
-            new WPUF_Admin_Profile_Form();
             new WPUF_Admin_Posting();
             new WPUF_Admin_Subscription();
             new WPUF_Admin_Installer();

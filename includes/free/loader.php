@@ -62,13 +62,13 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     function admin_menu_top() {
         $capability = wpuf_admin_role();
 
-        add_submenu_page( 'wpuf-admin-opt', __( 'Registration Forms', 'wpuf' ), __( 'Registration Forms', 'wpuf' ), $capability, 'wpuf_profile', array($this, 'admin_reg_forms_page') );
+        add_submenu_page( 'wp-user-frontend', __( 'Registration Forms', 'wpuf' ), __( 'Registration Forms', 'wpuf' ), $capability, 'wpuf-profile-forms', array($this, 'admin_reg_forms_page') );
     }
 
     function admin_menu() {
         $capability = wpuf_admin_role();
 
-        add_submenu_page( 'wpuf-admin-opt', __( 'Coupons', 'wpuf' ), __( 'Coupons', 'wpuf' ), $capability, 'wpuf_coupon', array($this, 'admin_coupon_page' ) );
+        add_submenu_page( 'wp-user-frontend', __( 'Coupons', 'wpuf' ), __( 'Coupons', 'wpuf' ), $capability, 'wpuf_coupon', array($this, 'admin_coupon_page' ) );
     }
 
     function admin_reg_forms_page() {

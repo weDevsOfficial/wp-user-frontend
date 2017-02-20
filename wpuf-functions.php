@@ -1289,6 +1289,12 @@ function wpuf_get_account_sections() {
         array( 'slug' => 'edit-profile', 'label' => __( 'Edit Profile', 'wpuf' ) ),
     );
 
+    $subscription = wpuf_get_option( 'force_pack', 'wpuf_payment', 'no' );
+
+    if ( 'no' === $subscription ) {
+        unset( $account_sections[2] ); // unset the subscription section
+    }
+
     return apply_filters( 'wpuf_account_sections', $account_sections );
 }
 

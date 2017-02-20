@@ -734,7 +734,7 @@ function wpuf_show_custom_fields( $content ) {
 
                 }
 
-                $html = $address_html;
+                $html .= $address_html;
 
             } else {
 
@@ -747,7 +747,7 @@ function wpuf_show_custom_fields( $content ) {
 
                     $new = implode( ', ', $value );
 
-                    if( $new ) {
+                    if ( $new ) {
                         $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
                     }
                 }
@@ -756,7 +756,6 @@ function wpuf_show_custom_fields( $content ) {
         }
     }
 
-    // var_dump( $attr );
     $html .= '</ul>';
 
     return $content . $html;

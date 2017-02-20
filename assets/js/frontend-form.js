@@ -360,7 +360,7 @@
                         // enable external plugins to use events
                         $('body').trigger('wpuf:postform:success', res);
 
-                        if( res.show_message == true) {
+                        if ( res.show_message == true) {
                             form.before( '<div class="wpuf-success">' + res.message + '</div>');
                             form.slideUp( 'fast', function() {
                                 form.remove();
@@ -389,8 +389,7 @@
 
                             return;
                         } else {
-
-                            if ( typeof form.find('.g-recaptcha') != "undefined" ) {
+                            if ( form.find('.g-recaptcha').length > 0 ) {
                                 grecaptcha.reset();
                             }
 

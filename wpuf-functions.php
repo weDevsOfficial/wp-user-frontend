@@ -1633,12 +1633,13 @@ function wpuf_insert_form_field( $form_id, $field = array(), $field_id = null, $
  * Create a sample / base form
  *
  * @since  2.5
- * @param  string $post_title (optional)
- * @param  string $post_type  (optional)
+ * @param  string  $post_title (optional)
+ * @param  string  $post_type  (optional)
+ * @param  boolean $blank  (optional)
  *
  * @return int
  */
-function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpuf_forms' ) {
+function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpuf_forms', $blank = false ) {
 
     $form_id = wp_insert_post( array(
         'post_title'     => $post_title,
@@ -1777,7 +1778,7 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
         );
     }
 
-    if ( ! empty( $form_fields ) ) {
+    if ( ! empty( $form_fields ) && ! $blank ) {
         foreach ( $form_fields as $order => $field ) {
             wpuf_insert_form_field( $form_id, $field, false, $order );
         }

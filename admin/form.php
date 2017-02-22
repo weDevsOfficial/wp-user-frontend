@@ -144,12 +144,12 @@ class WPUF_Admin_Form {
         }
 
         if ( 'add-new' === $_GET['action'] && empty( $_GET['id'] ) ) {
-            $form_id = wpuf_create_sample_form( 'Sample Form ', 'wpuf_forms' );
-            $add_new_page_url = add_query_arg( array( 'id' => $form_id ), admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' ) );
+            $form_id = wpuf_create_sample_form( 'Sample Form', 'wpuf_forms', true );
+            $add_new_page_url = add_query_arg( array( 'id' => $form_id ), admin_url( 'admin.php?page=wpuf-post-forms&action=edit' ) );
             wp_redirect( $add_new_page_url );
         }
 
-        if ( ( 'edit' === $_GET['action'] || 'add-new' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
+        if ( ( 'edit' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
 
             add_action( 'wpuf-form-builder-tabs-post', array( $this, 'add_primary_tabs' ) );
             add_action( 'wpuf-form-builder-tab-contents-post', array( $this, 'add_primary_tab_contents' ) );

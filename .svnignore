@@ -5,3 +5,5 @@ package.json
 docs.md
 changelog.txt
 plugin-deploy.sh
+secret.json
+log.txt

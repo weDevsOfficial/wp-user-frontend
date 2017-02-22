@@ -822,7 +822,11 @@ class WPUF_Render_Form {
      *
      * @param $word_nums number of words allowed
      */
-    function check_word_restriction_func($word_nums, $rich_text, $field_name){
+    function check_word_restriction_func($word_nums, $rich_text, $field_name) {
+        // bail out if it is dashboard
+        if ( is_admin() ) {
+            return;
+        }
         ?>
         <script type="text/javascript">
             (function($) {

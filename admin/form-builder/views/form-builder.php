@@ -37,7 +37,7 @@
                         <?php
                             if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
                                 foreach ( $shortcodes as $shortcode ) {
-                                    printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text=\"%s\"><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> %s: #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), "[{$shortcode['name']} type='" . $shortcodes[0]['type'] . "' id={$_GET['id']}]", ucwords( $shortcode['type'] ), $shortcode['type'] );
+                                    printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text=\"%s\"><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> %s: #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), "[{$shortcode['name']} type='" . $shortcode['type'] . "' id={$_GET['id']}]", ucwords( $shortcode['type'] ), $shortcode['type'] );
                                 }
                             } else {
                                 printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text=\"%s\"><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), '[' . $shortcodes[0]['name'] . ' id=' . $_GET['id'] . ']' );
@@ -49,7 +49,7 @@
                         <?php
                             foreach ( $forms as $form ) {
                         ?>
-                                <li><a class="<?php echo ( $form->ID == $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $form->ID ); ?>"><?php echo $form->post_title; ?></a></li>
+                                <li><a class="<?php echo ( $form->ID == $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ); ?>"><?php echo $form->post_title; ?></a></li>
                         <?php
                             }
                         ?>

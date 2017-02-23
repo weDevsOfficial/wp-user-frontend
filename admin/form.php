@@ -155,7 +155,7 @@ class WPUF_Admin_Form {
             add_action( 'wpuf-form-builder-tab-contents-post', array( $this, 'add_primary_tab_contents' ) );
             add_action( 'wpuf-form-builder-settings-tabs-post', array( $this, 'add_settings_tabs' ) );
             add_action( 'wpuf-form-builder-settings-tab-contents-post', array( $this, 'add_settings_tab_contents' ) );
-            add_action( 'wpuf-form-builder-fields-section-before', array( $this, 'add_post_field_section' ) );
+            add_filter( 'wpuf-form-builder-fields-section-before', array( $this, 'add_post_field_section' ) );
             add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
             add_action( 'wpuf-form-builder-js-deps', array( $this, 'js_dependencies' ) );
             add_filter( 'wpuf-form-builder-js-root-mixins', array( $this, 'js_root_mixins' ) );
@@ -163,7 +163,7 @@ class WPUF_Admin_Form {
             add_filter( 'wpuf-form-builder-js-field-options-mixins', array( $this, 'js_field_options_mixins' ) );
             add_action( 'wpuf-form-builder-template-builder-stage-submit-area', array( $this, 'add_form_submit_area' ) );
             add_action( 'wpuf-form-builder-localize-script', array( $this, 'add_to_localize_script' ) );
-            add_action( 'wpuf-form-builder-field-settings', array( $this, 'add_field_settings' ) );
+            add_filter( 'wpuf-form-builder-field-settings', array( $this, 'add_field_settings' ) );
             add_filter( 'wpuf-form-builder-i18n', array( $this, 'i18n' ) );
 
             do_action( 'wpuf-form-builder-init-type-wpuf_forms' );

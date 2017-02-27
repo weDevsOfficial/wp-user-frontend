@@ -252,6 +252,9 @@
 #wpuf-form-builder .wpuf-settings-nav-tab-wrapper {
   width: 200px;
 }
+#wpuf-form-builder .wp-picker-holder * {
+  box-sizing: content-box;
+}
 #wpuf-form-builder-settings {
   position: relative;
   margin-top: 15px;

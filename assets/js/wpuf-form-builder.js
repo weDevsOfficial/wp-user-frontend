@@ -282,4 +282,104 @@
         }
     });
 
+    var SettingsTab = {
+        init: function() {
+            $(function() {
+                $('.wpuf-ms-color').wpColorPicker();
+            });
+
+            $('#wpuf-metabox-settings').on('change', 'select[name="wpuf_settings[redirect_to]"]', this.settingsRedirect);
+            $('#wpuf-metabox-settings-update').on('change', 'select[name="wpuf_settings[edit_redirect_to]"]', this.settingsRedirect);
+            $('select[name="wpuf_settings[redirect_to]"]').change();
+            $('select[name="wpuf_settings[edit_redirect_to]"]').change();
+
+            // Form settings: Guest post
+            $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[guest_post]"]', this.settingsGuest);
+            $('input[type=checkbox][name="wpuf_settings[guest_post]"]').trigger('change');
+
+            // From settings: User details
+            $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[guest_details]"]', this.settingsGuestDetails);
+
+            this.changeMultistepVisibility($('.wpuf_enable_multistep_section :input[type="checkbox"]'));
+            var self = this;
+            $('.wpuf_enable_multistep_section :input[type="checkbox"]').click(function() {
+                self.changeMultistepVisibility($(this));
+            });
+        },
+
+        settingsGuest: function (e) {
+            e.preventDefault();
+
+            var table = $(this).closest('table');
+
+            if ( $(this).is(':checked') ) {
+                table.find('tr.show-if-guest').show();
+                table.find('tr.show-if-not-guest').hide();
+
+                $('input[type=checkbox][name="wpuf_settings[guest_details]"]').trigger('change');
+
+            } else {
+                table.find('tr.show-if-guest').hide();
+                table.find('tr.show-if-not-guest').show();
+            }
+        },
+
+        settingsGuestDetails: function (e) {
+            e.preventDefault();
+
+            var table = $(this).closest('table');
+
+            if ( $(this).is(':checked') ) {
+                table.find('tr.show-if-details').show();
+            } else {
+                table.find('tr.show-if-details').hide();
+            }
+        },
+
+        settingsRedirect: function(e) {
+            e.preventDefault();
+
+            var $self = $(this),
+                $table = $self.closest('table'),
+                value = $self.val();
+
+            switch( value ) {
+                case 'post':
+                    $table.find('tr.wpuf-page-id, tr.wpuf-url, tr.wpuf-same-page').hide();
+                    break;
+
+                case 'page':
+                    $table.find('tr.wpuf-page-id').show();
+                    $table.find('tr.wpuf-same-page').hide();
+                    $table.find('tr.wpuf-url').hide();
+                    break;
+
+                case 'url':
+                    $table.find('tr.wpuf-page-id').hide();
+                    $table.find('tr.wpuf-same-page').hide();
+                    $table.find('tr.wpuf-url').show();
+                    break;
+
+                case 'same':
+                    $table.find('tr.wpuf-page-id').hide();
+                    $table.find('tr.wpuf-url').hide();
+                    $table.find('tr.wpuf-same-page').show();
+                    break;
+            }
+        },
+
+        changeMultistepVisibility: function(target) {
+            if (target.is(':checked')) {
+                $('.wpuf_multistep_content').show();
+            } else {
+                $('.wpuf_multistep_content').hide();
+            }
+        }
+    };
+
+    // on DOM ready
+    $(function() {
+        SettingsTab.init();
+    });
+
 })(jQuery);

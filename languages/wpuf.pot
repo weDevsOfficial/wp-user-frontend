@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.5\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-02-23 10:41:14+00:00\n"
+"POT-Creation-Date: 2017-02-27 08:14:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -570,7 +570,6 @@ msgid "Form"
 msgstr ""
 
 #: admin/form.php:74 admin/form.php:112 admin/post-forms-list-table-view.php:8
-#: admin/profile-forms-list-table-view.php:8
 msgid "Add Form"
 msgstr ""
 
@@ -579,10 +578,9 @@ msgid "Add New Form"
 msgstr ""
 
 #: admin/form.php:76 admin/form.php:114 admin/installer.php:75
-#: admin/post-forms-list-table.php:387 admin/profile-forms-list-table.php:372
-#: admin/subscription.php:227 class/subscription.php:361
-#: includes/free/edit-user.php:100 templates/dashboard/posts.php:150
-#: templates/dashboard.php:104
+#: admin/post-forms-list-table.php:387 admin/subscription.php:227
+#: class/subscription.php:361 includes/free/edit-user.php:100
+#: templates/dashboard/posts.php:150 templates/dashboard.php:104
 msgid "Edit"
 msgstr ""
 
@@ -1079,59 +1077,51 @@ msgid "Post Forms"
 msgstr ""
 
 #: admin/post-forms-list-table-view.php:23
-#: admin/profile-forms-list-table-view.php:23
 msgid "Search Forms"
 msgstr ""
 
-#: admin/post-forms-list-table.php:38 admin/profile-forms-list-table.php:38
-#: admin/tools.php:38 admin/tools.php:94 class/transactions-list-table.php:85
+#: admin/post-forms-list-table.php:38 admin/tools.php:38 admin/tools.php:94
+#: class/transactions-list-table.php:85
 msgid "All"
 msgstr ""
 
-#: admin/post-forms-list-table.php:39 admin/profile-forms-list-table.php:39
-#: wpuf-functions.php:60
+#: admin/post-forms-list-table.php:39 wpuf-functions.php:60
 msgid "Published"
 msgstr ""
 
 #: admin/post-forms-list-table.php:40 admin/post-forms-list-table.php:388
-#: admin/profile-forms-list-table.php:40 admin/profile-forms-list-table.php:373
 msgid "Trash"
 msgstr ""
 
-#: admin/post-forms-list-table.php:90 admin/profile-forms-list-table.php:90
+#: admin/post-forms-list-table.php:90
 msgid "No form found."
 msgstr ""
 
-#: admin/post-forms-list-table.php:104 admin/profile-forms-list-table.php:104
+#: admin/post-forms-list-table.php:104
 msgid "Move to Trash"
 msgstr ""
 
 #: admin/post-forms-list-table.php:108 admin/post-forms-list-table.php:400
-#: admin/profile-forms-list-table.php:108
-#: admin/profile-forms-list-table.php:385
 msgid "Restore"
 msgstr ""
 
 #: admin/post-forms-list-table.php:109 admin/post-forms-list-table.php:401
-#: admin/profile-forms-list-table.php:109
-#: admin/profile-forms-list-table.php:386
 msgid "Delete Permanently"
 msgstr ""
 
-#: admin/post-forms-list-table.php:291 admin/profile-forms-list-table.php:287
+#: admin/post-forms-list-table.php:291
 msgid "Form Name"
 msgstr ""
 
-#: admin/post-forms-list-table.php:295 admin/profile-forms-list-table.php:289
+#: admin/post-forms-list-table.php:295
 msgid "Shortcode"
 msgstr ""
 
-#: admin/post-forms-list-table.php:389 admin/profile-forms-list-table.php:374
+#: admin/post-forms-list-table.php:389
 msgid "Duplicate"
 msgstr ""
 
-#: admin/post-forms-list-table.php:410 admin/profile-forms-list-table.php:395
-#: wpuf-functions.php:64
+#: admin/post-forms-list-table.php:410 wpuf-functions.php:64
 msgid "Draft"
 msgstr ""
 
@@ -1161,14 +1151,6 @@ msgstr ""
 
 #: admin/posting.php:100
 msgid "No custom fields found."
-msgstr ""
-
-#: admin/profile-forms-list-table-view.php:4
-msgid "Profile Forms"
-msgstr ""
-
-#: admin/profile-forms-list-table.php:288
-msgid "User Role"
 msgstr ""
 
 #: admin/settings-options.php:13

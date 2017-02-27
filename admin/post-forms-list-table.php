@@ -98,7 +98,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return array
      */
     public function get_bulk_actions() {
-        $actions = [];
+        $actions = array();
 
         if ( ! isset( $_GET['post_status'] ) || 'trash' !== $_GET['post_status'] ) {
             $actions['trash'] = __( 'Move to Trash', 'wpuf' );
@@ -240,7 +240,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
         $query = new WP_Query( $args );
 
-        $forms = [];
+        $forms = array();
 
         if ( $query->have_posts() ) {
 
@@ -272,10 +272,10 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
         wp_reset_postdata();
 
-        return [
+        return array(
             'forms' => $forms,
             'count' => $count
-        ];
+        );
     }
 
     /**

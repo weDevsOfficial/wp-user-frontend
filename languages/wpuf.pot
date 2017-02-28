@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.5\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-02-27 09:21:50+00:00\n"
+"POT-Creation-Date: 2017-02-28 05:09:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -63,7 +63,7 @@ msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:5
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:5
-#: class/render-form.php:1407
+#: class/render-form.php:1409
 msgid "Select Image"
 msgstr ""
 
@@ -72,7 +72,7 @@ msgid "— Select —"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/text-editor/template.php:5
-#: class/render-form.php:871
+#: class/render-form.php:873
 msgid "Insert Photo"
 msgstr ""
 
@@ -446,7 +446,7 @@ msgstr ""
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:699
 #: admin/template.php:534 admin/template.php:594 class/upload.php:164
 #: templates/dashboard/posts.php:74 templates/dashboard.php:28
-#: wpuf-functions.php:703
+#: wpuf-functions.php:704
 msgid "Title"
 msgstr ""
 
@@ -456,7 +456,7 @@ msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:708
 #: admin/subscription.php:206 admin/template.php:599 class/upload.php:166
-#: wpuf-functions.php:709
+#: wpuf-functions.php:710
 msgid "Description"
 msgstr ""
 
@@ -1085,7 +1085,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: admin/post-forms-list-table.php:39 wpuf-functions.php:60
+#: admin/post-forms-list-table.php:39 wpuf-functions.php:61
 msgid "Published"
 msgstr ""
 
@@ -1121,27 +1121,27 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
-#: admin/post-forms-list-table.php:410 wpuf-functions.php:64
+#: admin/post-forms-list-table.php:410 wpuf-functions.php:65
 msgid "Draft"
 msgstr ""
 
-#: admin/posting.php:52 class/render-form.php:1419 wpuf.php:350
+#: admin/posting.php:52 class/render-form.php:1421 wpuf.php:347
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:58 wpuf.php:356
+#: admin/posting.php:58 wpuf.php:353
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:61 wpuf.php:359
+#: admin/posting.php:61 wpuf.php:356
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:62 wpuf.php:360
+#: admin/posting.php:62 wpuf.php:357
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:63 wpuf.php:361
+#: admin/posting.php:63 wpuf.php:358
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -1642,7 +1642,7 @@ msgstr ""
 msgid "Are you sure to delete this pack?"
 msgstr ""
 
-#: admin/subscription.php:231 class/render-form.php:1419
+#: admin/subscription.php:231 class/render-form.php:1421
 #: class/transactions-list-table.php:114 class/transactions-list-table.php:175
 #: class/upload.php:171 includes/free/edit-user.php:101
 #: templates/dashboard/posts.php:160 templates/dashboard.php:114
@@ -2145,32 +2145,32 @@ msgstr ""
 msgid "Please make sure you've published your form."
 msgstr ""
 
-#: class/render-form.php:1143 class/render-form.php:1148
+#: class/render-form.php:1145 class/render-form.php:1150
 #: includes/free/edit-profile.php:198 templates/dashboard/edit-profile.php:36
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1149
+#: class/render-form.php:1151
 msgid "Very weak"
 msgstr ""
 
-#: class/render-form.php:1150
+#: class/render-form.php:1152
 msgid "Weak"
 msgstr ""
 
-#: class/render-form.php:1151
+#: class/render-form.php:1153
 msgid "Medium"
 msgstr ""
 
-#: class/render-form.php:1152
+#: class/render-form.php:1154
 msgid "Strong"
 msgstr ""
 
-#: class/render-form.php:1153
+#: class/render-form.php:1155
 msgid "Mismatch"
 msgstr ""
 
-#: class/render-form.php:1175 class/render-form.php:1283
+#: class/render-form.php:1177 class/render-form.php:1285
 msgid "-- Select --"
 msgstr ""
 
@@ -2311,7 +2311,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: class/transactions-list-table.php:86 wpuf-functions.php:68
+#: class/transactions-list-table.php:86 wpuf-functions.php:69
 msgid "Pending"
 msgstr ""
 
@@ -2327,7 +2327,7 @@ msgstr ""
 msgid "No transactions found."
 msgstr ""
 
-#: class/upload.php:165 wpuf-functions.php:706
+#: class/upload.php:165 wpuf-functions.php:707
 msgid "Caption"
 msgstr ""
 
@@ -2910,59 +2910,59 @@ msgstr ""
 msgid "Reset Password"
 msgstr ""
 
-#: wpuf-functions.php:26
+#: wpuf-functions.php:27
 msgid "Live"
 msgstr ""
 
-#: wpuf-functions.php:30
+#: wpuf-functions.php:31
 msgid "Offline"
 msgstr ""
 
-#: wpuf-functions.php:34
+#: wpuf-functions.php:35
 msgid "Awaiting Approval"
 msgstr ""
 
-#: wpuf-functions.php:37 wpuf-functions.php:71
+#: wpuf-functions.php:38 wpuf-functions.php:72
 msgid "Scheduled"
 msgstr ""
 
-#: wpuf-functions.php:41
+#: wpuf-functions.php:42
 msgid "Private"
 msgstr ""
 
-#: wpuf-functions.php:212
+#: wpuf-functions.php:213
 msgid "-- select --"
 msgstr ""
 
-#: wpuf-functions.php:403
+#: wpuf-functions.php:404
 msgid "Images"
 msgstr ""
 
-#: wpuf-functions.php:404
+#: wpuf-functions.php:405
 msgid "Audio"
 msgstr ""
 
-#: wpuf-functions.php:405
+#: wpuf-functions.php:406
 msgid "Videos"
 msgstr ""
 
-#: wpuf-functions.php:406
+#: wpuf-functions.php:407
 msgid "PDF"
 msgstr ""
 
-#: wpuf-functions.php:407
+#: wpuf-functions.php:408
 msgid "Office Documents"
 msgstr ""
 
-#: wpuf-functions.php:408
+#: wpuf-functions.php:409
 msgid "Zip Archives"
 msgstr ""
 
-#: wpuf-functions.php:409
+#: wpuf-functions.php:410
 msgid "Executable Files"
 msgstr ""
 
-#: wpuf-functions.php:410
+#: wpuf-functions.php:411
 msgid "CSV"
 msgstr ""
 
@@ -3178,27 +3178,27 @@ msgstr ""
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf.php:109
+#: wpuf.php:106
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:280
+#: wpuf.php:277
 msgid "is required"
 msgstr ""
 
-#: wpuf.php:281
+#: wpuf.php:278
 msgid "does not match"
 msgstr ""
 
-#: wpuf.php:282
+#: wpuf.php:279
 msgid "is not valid"
 msgstr ""
 
-#: wpuf.php:344
+#: wpuf.php:341
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: wpuf.php:346
+#: wpuf.php:343
 msgid "Word limit reached"
 msgstr ""
 
@@ -3220,7 +3220,7 @@ msgstr ""
 msgid "https://tareq.co"
 msgstr ""
 
-#: wpuf-functions.php:1011
+#: wpuf-functions.php:1012
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

@@ -161,6 +161,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.4.4 (22 February, 2017) =
+
+ * [fix] Undefined JavaScript error when post is editing in admin
+ * [fix] User IP if the script is running in cli
+ * [fix] Date field on frontend post
+ * [fix] Hide subscription tab from my account page when subscription is turned off
+ * [fix] Plugin activation hooks
+ * [fix] Recaptcha refresh when validation failed
+
+
 = v2.4.3 (07 February, 2017) =
 
  * [fix] PHP backward compatibility issue

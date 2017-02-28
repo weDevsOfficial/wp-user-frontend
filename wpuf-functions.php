@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Start output buffering
  *
@@ -1045,7 +1046,6 @@ function wpuf_dropdown_helper( $options, $selected = '' ) {
 
     return $string;
 }
-
 
 /**
  * Include a template file

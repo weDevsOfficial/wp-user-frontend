@@ -697,3 +697,29 @@ ul.wpuf-form li .wpuf-text-editor .wp-editor-wrap {
   color: #fff;
   background-color: #008ec2;
 }
+.insert-photo-icon {
+  vertical-align: text-top;
+  color: #82878c;
+  font-size: 18px;
+}
+.password-strength-meter {
+  border-style: solid;
+  border-width: 1px;
+  float: left;
+  margin: 0;
+  padding: 3px 5px;
+  text-align: center;
+  width: 200px;
+  display: block;
+  background-color: #eee;
+  border-color: #ddd;
+}
+ul.wpuf-form li .wpuf-password-field {
+  width: 100%;
+  margin-bottom: 10px;
+}
+ul.wpuf-form li .wpuf-password-field:after {
+  clear: both;
+  content: "";
+  display: table;
+}

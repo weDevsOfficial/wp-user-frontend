@@ -6,7 +6,8 @@
         :rows="field.rows"
         :cols="field.cols"
     >{{ field.default }}</textarea>
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 
     <text-editor v-if="'no' !== field.rich" :rich="field.rich"></text-editor>
+
+    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 </div>

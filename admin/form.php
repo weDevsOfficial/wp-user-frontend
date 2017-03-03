@@ -931,6 +931,18 @@ class WPUF_Admin_Form {
         $settings = WPUF_Form_Builder_Field_Settings::get_common_properties( false );
         $settings = array_merge( $settings, WPUF_Form_Builder_Field_Settings::get_common_textarea_properties() );
 
+        $settings = array_merge( $settings, array(
+            array(
+                'name'          => 'insert_image',
+                'title'         => __( 'Enable Image Insertion', 'wpuf-pro' ),
+                'type'          => 'checkbox',
+                'options'       => array( 'yes' => __( 'Enable image upload in post area', 'wpuf-pro' ) ),
+                'is_single_opt' => true,
+                'section'       => 'advanced',
+                'priority'      => 14,
+            ),
+        ) );
+
         return array(
             'template'      => 'post_content',
             'title'         => __( 'Post Body', 'wpuf' ),
@@ -968,6 +980,12 @@ class WPUF_Admin_Form {
     public static function post_excerpt() {
         $settings = WPUF_Form_Builder_Field_Settings::get_common_properties( false );
         $settings = array_merge( $settings, WPUF_Form_Builder_Field_Settings::get_common_textarea_properties() );
+
+        $index    = array_search( 'rich', array_column( $settings, 'name' ) );
+        if ( ! empty( $index ) ) {
+            unset( $settings[ $index ] );
+        }
+
 
         return array(
             'template'      => 'post_excerpt',
@@ -1014,16 +1032,7 @@ class WPUF_Admin_Form {
                 'section'       => 'advanced',
                 'priority'      => 20,
                 'help_text'     => __( 'Enter maximum upload size limit in KB', 'wpuf' ),
-            ),
-
-            array(
-                'name'          => 'count',
-                'title'         => __( 'Max. files', 'wpuf' ),
-                'type'          => 'text',
-                'section'       => 'advanced',
-                'priority'      => 21,
-                'help_text'     => __( 'Number of images can be uploaded', 'wpuf' ),
-            ),
+            )
         ) );
 
         return array(

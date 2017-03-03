@@ -1,1 +1,1 @@
-<i class="fa fa-question-circle field-helper-text" :title="text"></i>
+<i class="fa fa-question-circle field-helper-text wpuf-tooltip" :title="text"></i>

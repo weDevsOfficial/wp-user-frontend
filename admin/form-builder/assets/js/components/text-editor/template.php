@@ -1,11 +1,5 @@
 <div class="wpuf-text-editor">
 
-    <div v-if="is_full" class="wp-media-buttons">
-        <button type="button" class="button insert-media add_media" data-editor="content">
-            <span class="wp-media-buttons-icon"></span> <?php _e( 'Insert Photo', 'wpuf' ); ?>
-        </button>
-    </div>
-
     <div class="wp-core-ui wp-editor-wrap tmce-active">
         <link rel="stylesheet" :href="site_url + 'wp-includes/css/editor.css'" type="text/css" media="all">
         <link rel="stylesheet" :href="site_url + 'wp-includes/js/tinymce/skins/lightgray/skin.min.css'" type="text/css" media="all">

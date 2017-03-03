@@ -6,4 +6,6 @@
             </a>
         </div>
     </div>
+
+    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 </div>

@@ -212,7 +212,15 @@
 
             this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
 
-            new window.Clipboard('.form-id');
+            var clipboard = new window.Clipboard('.form-id');
+
+            clipboard.on('success', function(e) {
+                if (e.action === 'copy') {
+                    $(".form-id").tipTip({content: "Copied!", defaultPosition: 'right'});
+                }
+
+                e.clearSelection();
+            });
         },
 
         methods: {
@@ -379,6 +387,20 @@
 
     // on DOM ready
     $(function() {
+        resizeBuilderContainer();
+
+        $("#collapse-menu").click(function () {
+            resizeBuilderContainer();
+        });
+
+        function resizeBuilderContainer() {
+            if ($(document.body).hasClass('folded')) {
+                $("#wpuf-form-builder").css("width", "calc(100% - 80px)");
+            } else {
+                $("#wpuf-form-builder").css("width", "calc(100% - 200px)");
+            }
+        }
+
         SettingsTab.init();
     });
 

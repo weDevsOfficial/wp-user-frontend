@@ -213,11 +213,19 @@
             this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
 
             var clipboard = new window.Clipboard('.form-id');
+            $(".form-id").tooltip();
 
             clipboard.on('success', function(e) {
-                if (e.action === 'copy') {
-                    $(".form-id").tipTip({content: "Copied!", defaultPosition: 'right'});
-                }
+                // Show copied tooltip
+                $(e.trigger)
+                    .attr('data-original-title', 'Copied!')
+                    .tooltip('show');
+
+                // Reset the copied tooltip
+                setTimeout(function() {
+                    $(e.trigger).tooltip('hide')
+                    .attr('data-original-title', "Click to copy shortcode");
+                }, 1000);
 
                 e.clearSelection();
             });

@@ -9,6 +9,6 @@ Vue.component('help-text', {
     },
 
     mounted: function () {
-        $(".wpuf-tooltip").tipTip({defaultPosition: 'top'});
+        $(".wpuf-tooltip").tooltip();
     }
 });

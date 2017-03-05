@@ -7,6 +7,7 @@
             type="number"
             v-model="value"
             @focusout="on_focusout"
+            @keyup="on_keyup"
         >
 
         <input
@@ -14,6 +15,7 @@
             type="text"
             v-model="value"
             @focusout="on_focusout"
+            @keyup="on_keyup"
         >
     </label>
 </div>

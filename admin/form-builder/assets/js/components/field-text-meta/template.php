@@ -4,7 +4,6 @@
         <input
             type="text"
             v-model="value"
-            @focusout="on_focusout"
         >
     </label>
 </div>

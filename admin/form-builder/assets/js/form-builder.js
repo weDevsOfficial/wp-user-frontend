@@ -167,6 +167,7 @@
 
         data: {
             is_form_saving: false,
+            is_form_saved: false,
             is_form_switcher: false,
             post_title_editing: false,
         },
@@ -215,6 +216,8 @@
             var clipboard = new window.Clipboard('.form-id');
             $(".form-id").tooltip();
 
+            var self = this;
+
             clipboard.on('success', function(e) {
                 // Show copied tooltip
                 $(e.trigger)
@@ -224,11 +227,17 @@
                 // Reset the copied tooltip
                 setTimeout(function() {
                     $(e.trigger).tooltip('hide')
-                    .attr('data-original-title', "Click to copy shortcode");
+                    .attr('data-original-title', self.i18n.copy_shortcode);
                 }, 1000);
 
                 e.clearSelection();
             });
+
+            window.onbeforeunload = function () {
+                if (!self.is_form_saved) {
+                    return self.i18n.unsaved_changes;
+                }
+            };
         },
 
         methods: {
@@ -286,6 +295,7 @@
                         }
 
                         self.is_form_saving = false;
+                        self.is_form_saved = true;
 
                         toastr.success(self.i18n.saved_form_data);
                     },

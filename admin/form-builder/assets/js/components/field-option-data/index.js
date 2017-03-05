@@ -44,7 +44,7 @@ Vue.component('field-option-data', {
 
                 self.options.swap(fromIndex, toIndex);
             }
-        }).disableSelection();
+        });
     },
 
     methods: {

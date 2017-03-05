@@ -20,6 +20,9 @@ Vue.component('field-text', {
     methods: {
         on_focusout: function (e) {
             wpuf_form_builder.event_hub.$emit('field-text-focusout', e, this);
+        },
+        on_keyup: function (e) {
+            wpuf_form_builder.event_hub.$emit('field-text-keyup', e, this);
         }
     }
 });

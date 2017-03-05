@@ -350,6 +350,8 @@ class WPUF_Admin_Form_Builder {
             'upgrade_to_pro'        => __( 'Get the Pro version', 'wpuf' ),
             'select'                => __( 'Select', 'wpuf' ),
             'saved_form_data'       => __( 'Saved form data', 'wpuf' ),
+            'unsaved_changes'       => __( 'You have unsaved changes.', 'wpuf' ),
+            'copy_shortcode'        => __( 'Click to copy shortcode', 'wpuf' ),
         ) );
     }
 

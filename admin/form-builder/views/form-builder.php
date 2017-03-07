@@ -35,12 +35,14 @@
 
                         <i :class="(is_form_switcher ? 'fa fa-angle-up' : 'fa fa-angle-down') + ' form-switcher-arrow'" @click.prevent="switch_form"></i>
                         <?php
+                            $form_id = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+
                             if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
                                 foreach ( $shortcodes as $shortcode ) {
-                                    printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text=\"%s\"><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> %s: #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), "[{$shortcode['name']} type='" . $shortcode['type'] . "' id={$_GET['id']}]", ucwords( $shortcode['type'] ), $shortcode['type'] );
+                                    printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> %s: #{{ post.ID }}</span>", sprintf( __( 'Click to copy %s shortcode', 'wpuf' ), $shortcode['type'] ), sprintf( '[%s type="%s" id="%s"]', $shortcode['name'], $shortcode['type'], $form_id ), ucwords( $shortcode['type'] ), $shortcode['type'] );
                                 }
                             } else {
-                                printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text=\"%s\"><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), '[' . $shortcodes[0]['name'] . ' id=' . $_GET['id'] . ']' );
+                                printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), '[' . $shortcodes[0]['name'] . ' id="' . $form_id . '"]' );
                             }
                         ?>
                     </header>

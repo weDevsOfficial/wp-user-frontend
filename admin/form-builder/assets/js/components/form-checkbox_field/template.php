@@ -8,6 +8,7 @@
                     :checked="is_selected(label)"
                     :class="class_names('checkbox_btns')"
                 > {{ label }}
+                <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
             </label>
         </li>
     </ul>

@@ -48,7 +48,7 @@
             </div>
 
             <div class="label">
-                <input type="text" v-model="option.label">
+                <input type="text" v-model="option.label" @input="set_option_label(index, option.label)">
             </div>
 
             <div v-if="show_value" class="value">

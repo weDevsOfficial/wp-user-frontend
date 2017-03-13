@@ -169,6 +169,9 @@ class WPUF_Form_Builder_Field_Settings {
                 'section'   => 'advanced',
                 'priority'  => 12,
                 'help_text' => __( 'Text for HTML5 placeholder attribute', 'wpuf' ),
+                'dependencies' => array(
+                    'rich' => 'no'
+                )
             ),
 
             array(

@@ -299,6 +299,10 @@ Vue.component('field-option-data', {
             }
 
             this.options.splice(index, 1);
+        },
+
+        set_option_label: function (index, label) {
+            this.options[index].value = label.toLocaleLowerCase().replace(' ', '_');
         }
     },
 

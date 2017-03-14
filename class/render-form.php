@@ -307,7 +307,7 @@ class WPUF_Render_Form {
             return;
         }
 
-        $form_vars = wpuf_get_form_fields( $form_id );
+        $form_vars     = wpuf_get_form_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
 
         if ( ! is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {

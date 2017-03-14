@@ -136,44 +136,6 @@ module.exports = function(grunt) {
             }
         },
 
-        secret: grunt.file.readJSON('secret.json'),
-        sshconfig: {
-            "myhost": {
-                host: '<%= secret.host %>',
-                username: '<%= secret.username %>',
-                agent: process.env.SSH_AUTH_SOCK,
-                agentForward: true
-            }
-        },
-        sftp: {
-            upload: {
-                files: {
-                    "./": "build/wp-user-frontend.zip"
-                },
-                options: {
-                    path: '<%= secret.path %>',
-                    config: 'myhost',
-                    showProgress: true,
-                    srcBasePath: "build/"
-                }
-            }
-        },
-        sshexec: {
-            updateVersion: {
-                command: '<%= secret.updateFiles %> ' + pkg.version + ' --allow-root',
-                options: {
-                    config: 'myhost'
-                }
-            },
-
-            uptime: {
-                command: 'uptime',
-                options: {
-                    config: 'myhost'
-                }
-            },
-        },
-
         // jshint
         jshint: {
             options: {
@@ -211,7 +173,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks( 'grunt-contrib-copy' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
-    grunt.loadNpmTasks( 'grunt-ssh' );
     grunt.loadNpmTasks( 'grunt-notify' );
 
     grunt.registerTask( 'default', [
@@ -220,9 +181,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask( 'zip', [
         'clean', 'copy', 'compress'
-    ]);
-
-    grunt.registerTask( 'deploy', [
-        'sftp:upload', 'sshexec:updateVersion'
     ]);
 };

@@ -636,6 +636,10 @@ Vue.component('form-fields', {
         field_settings: function () {
             return this.$store.state.field_settings;
         },
+
+        form_fields: function () {
+            return this.$store.state.form_fields;
+        }
     },
 
     mounted: function () {
@@ -661,6 +665,18 @@ Vue.component('form-fields', {
             var field = $.extend(true, {}, this.$store.state.field_settings[field_template].field_props);
 
             field.id = this.get_random_id();
+
+            if (!field.name && field.label) {
+                field.name = field.label.replace(/\W/g, '_').toLowerCase();
+
+                var same_template_fields = this.form_fields.filter(function (form_field) {
+                   return (form_field.template === field.template);
+                });
+
+                if (same_template_fields.length) {
+                    field.name += '_' + same_template_fields.length;
+                }
+            }
 
             payload.field = field;
 

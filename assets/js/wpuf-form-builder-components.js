@@ -662,6 +662,19 @@ Vue.component('form-fields', {
                 toIndex: this.$store.state.form_fields.length,
             };
 
+            // check if these are already inserted
+            var oneInstance = ['post_title', 'post_content', 'post_excerpt', 'featured_image',
+                'user_login', 'first_name', 'last_name', 'nickname', 'user_email', 'user_url',
+                'user_bio', 'password', 'user_avatar'];
+
+            if ( $.inArray(field_template, oneInstance) >= 0 && this.containsField( field_template ) ) {
+                swal({
+                    title: "Oops...",
+                    text: "You already have this field in the form"
+                });
+                return;
+            }
+
             var field = $.extend(true, {}, this.$store.state.field_settings[field_template].field_props);
 
             field.id = this.get_random_id();
@@ -679,6 +692,8 @@ Vue.component('form-fields', {
             }
 
             payload.field = field;
+
+            console.log(payload);
 
             // add new form element
             this.$store.commit('add_form_field_element', payload);
@@ -725,6 +740,18 @@ Vue.component('form-fields', {
 
         get_invalidate_btn_class: function (field) {
             return this.field_settings[field].validator.button_class;
+        },
+
+        containsField: function(field_name) {
+            var i;
+
+            for (i = 0; i < this.$store.state.form_fields.length; i++) {
+                if (this.$store.state.form_fields[i].name === field_name) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 });

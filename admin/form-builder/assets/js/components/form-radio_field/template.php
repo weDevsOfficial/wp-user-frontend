@@ -8,8 +8,9 @@
                     :checked="is_selected(label)"
                     :class="class_names('radio_btns')"
                 > {{ label }}
-                <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
             </label>
         </li>
     </ul>
+
+    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 </div>

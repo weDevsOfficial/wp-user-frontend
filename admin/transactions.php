@@ -9,10 +9,10 @@
 
     <ul>
         <li>
-            <strong><?php _e( 'Total Income:', 'wpuf' ); ?></strong> <?php echo wpuf_format_price( $total_income, true ); ?><br />
+            <strong><?php _e( 'Total Income:', 'wpuf' ); ?></strong> <?php echo wpuf_format_price( $total_income ); ?><br />
         </li>
         <li>
-            <strong><?php _e( 'This Month:', 'wpuf' ); ?></strong> <?php echo wpuf_format_price( $month_income, true ); ?>
+            <strong><?php _e( 'This Month:', 'wpuf' ); ?></strong> <?php echo wpuf_format_price( $month_income ); ?>
         </li>
     </ul>
 

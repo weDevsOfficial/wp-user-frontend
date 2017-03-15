@@ -1518,22 +1518,20 @@ function wpuf_get_currency( $type = '' ) {
  *
  * @return mixed
  */
-function wpuf_format_price( $number, $with_currency = false ) {
-    $number = number_format( (float) $number, 2, '.', '' );
+function wpuf_format_price( $number ) {
 
-    if ( $with_currency ) {
-        $symbol   = wpuf_get_currency( 'symbol' );
-        $position = wpuf_get_option( 'currency_position', 'wpuf_payment', 'left' );
+    $number   = number_format( (float) $number, 2, '.', '' );
+    $symbol   = wpuf_get_currency( 'symbol' );
+    $position = wpuf_get_option( 'currency_position', 'wpuf_payment', 'left' );
 
-        switch ( $position ) {
-            case 'left': return $symbol . $number; break;
+    switch ( $position ) {
+        case 'left': return $symbol . $number; break;
 
-            case 'left_space': return $symbol . ' ' . $number; break;
+        case 'left_space': return $symbol . ' ' . $number; break;
 
-            case 'right': return $number . $symbol; break;
+        case 'right': return $number . $symbol; break;
 
-            case 'right_space': return $number . ' ' . $symbol; break;
-        }
+        case 'right_space': return $number . ' ' . $symbol; break;
     }
 
     return $number;

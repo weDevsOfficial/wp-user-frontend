@@ -133,7 +133,7 @@ class WPUF_Admin_Subscription {
                 if ( intval($amount) == 0 ) {
                     $amount = __( 'Free', 'wpuf' );
                 } else {
-                    $amount = wpuf_format_price( $amount, true );
+                    $amount = wpuf_format_price( $amount );
                 }
                 echo $amount;
                 break;

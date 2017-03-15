@@ -144,6 +144,7 @@ ul.wpuf-form {
         .wpuf-label {
             float: left;
             width: 25%;
+            min-height: 1px;
 
             .required {
                 color: red;
@@ -200,6 +201,7 @@ ul.wpuf-form {
             }
 
             a.file-selector {
+                display: inline;
                 text-decoration: none;
                 padding: 5px 12px;
                 height: 30px;
@@ -369,6 +371,57 @@ ul.wpuf-form {
                         height: 12px;
                         width: 12px;
                         // display: inline-block;
+                    }
+                }
+            }
+
+            .wpuf-fields-list {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+
+                li {
+                    padding: 0;
+                    margin: 0 0 6px;
+                }
+
+                &.wpuf-list-inline {
+                    margin-left: -5px;
+
+                    li {
+                        display: inline-block;
+                        padding-left: 5px;
+                        padding-right: 5px;
+                    }
+                }
+            }
+
+            table.wpuf-repeatable-field {
+                border-collapse: collapse;
+
+                & * {
+                    box-sizing: border-box;
+                }
+
+                input {
+                    width: 100%;
+                }
+
+                .wpuf-repeater-buttons {
+                    width: 75px;
+                    padding-left: 12px;
+
+                    img {
+                        width: 100%;
+                        height: auto;
+                    }
+
+                    i {
+                        display: inline-block;
+                        width: 15px;
+                        height: 15px;
+                        margin: 2px 4px 0 0;
                     }
                 }
             }
@@ -1093,6 +1146,74 @@ body.rtl{
             float: right;
             width: 47%;
             overflow: visible;
+        }
+    }
+}
+
+.wpuf-toc-container {
+    .wpuf-fields {
+        position: relative;
+
+        .wpuf-toc-checkbox {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        &.has-toc-checkbox {
+
+            .wpuf-toc-description {
+                margin-left: 25px;
+            }
+        }
+    }
+}
+
+// Google Map
+// --------------------------------------------------
+.wpuf-field-google-map {
+    height: 300px;
+    width: 100%;
+}
+
+.wpuf-form-google-map {
+    height: 300px;
+    width: 100%;
+}
+
+input[type="text"].wpuf-google-map-search {
+    margin-top: 10px !important;
+    border: 1px solid transparent !important;
+    border-radius: 2px 0 0 2px !important;
+    box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    height: 32px !important;
+    outline: none !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+    background-color: #fff !important;
+    text-overflow: ellipsis !important;
+    width: 170px !important;
+    font-family: Roboto !important;
+    font-size: 15px !important;
+    font-weight: 300 !important;
+    padding: 0 11px 0 13px !important;
+    display: none;
+
+    .gm-style & {
+        display: block;
+    }
+}
+
+.wpuf-form-google-map-container {
+
+    input[type="text"].wpuf-google-map-search {
+        width: 230px !important;
+    }
+
+    &.hide-search-box {
+
+        .gm-style input[type="text"].wpuf-google-map-search {
+            display: none;
         }
     }
 }

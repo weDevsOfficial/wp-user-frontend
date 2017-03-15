@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.4.4
+Version: 2.5
 Author URI: https://tareq.co
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.4.4' );
+define( 'WPUF_VERSION', '2.5' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -153,6 +153,8 @@ class WP_User_Frontend {
 
         if ( is_admin() ) {
             require_once dirname( __FILE__ ) . '/admin/settings-options.php';
+            require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
+            require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder-ajax.php';
         }
 
         // add reCaptcha library if not found
@@ -180,6 +182,7 @@ class WP_User_Frontend {
 
         if ( is_admin() ) {
             WPUF_Admin_Settings::init();
+            new WPUF_Admin_Form_Handler();
             new WPUF_Admin_Form();
             new WPUF_Admin_Posting();
             new WPUF_Admin_Subscription();
@@ -264,16 +267,16 @@ class WP_User_Frontend {
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
         if ( !empty( $api_key ) ) {
-            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?key='.$api_key, array(), null );
+            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key='.$api_key, array(), null );
         }
 
         if ( isset ( $post->ID ) ) {
             ?>
             <script type="text/javascript" id="wpuf-language-script">
                 var error_str_obj = {
-                    'required' : '<?php _e( 'is required', 'wpuf' ); ?>',
-                    'mismatch' : '<?php _e( 'does not match', 'wpuf' ); ?>',
-                    'validation' : '<?php _e( 'is not valid', 'wpuf' ); ?>'
+                    'required' : '<?php esc_attr_e( 'is required', 'wpuf' ); ?>',
+                    'mismatch' : '<?php esc_attr_e( 'does not match', 'wpuf' ); ?>',
+                    'validation' : '<?php esc_attr_e( 'is not valid', 'wpuf' ); ?>'
                 }
             </script>
             <?php

@@ -10,7 +10,7 @@
                 <small><?php
                 printf(
                     __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wpuf' ),
-                    admin_url( 'post-new.php?post_type=wpuf_forms' )
+                    admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' )
                 ); ?></small>
             </h2>
         </header>
@@ -20,7 +20,7 @@
 
                 <ul>
                     <li class="blank-form">
-                        <a href="<?php echo admin_url( 'post-new.php?post_type=wpuf_forms' ); ?>">
+                        <a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' ); ?>">
                             <span class="dashicons dashicons-plus"></span>
                             <div class="title"><?php _e( 'Blank Form', 'wpuf' ); ?></div>
                         </a>

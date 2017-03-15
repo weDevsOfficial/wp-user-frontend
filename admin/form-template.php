@@ -32,7 +32,7 @@ class WPUF_Admin_Form_Template {
     public function should_display() {
         $current_screen = get_current_screen();
 
-        if ( in_array( $current_screen->id, array( 'edit-wpuf_forms', 'wpuf_forms' ) ) ) {
+        if ( in_array( $current_screen->id, array( 'user-frontend_page_wpuf-post-forms' ) ) ) {
             return true;
         }
 
@@ -146,7 +146,7 @@ class WPUF_Admin_Form_Template {
             ) );
         }
 
-        wp_redirect( admin_url( 'post.php?post=' . $form_id . '&action=edit&message=11') );
+        wp_redirect( admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $form_id ) );
         exit;
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Start output buffering
  *
@@ -160,16 +161,24 @@ add_filter( 'media_upload_tabs', 'wpuf_unset_media_tab' );
  *
  * @return array
  */
-function wpuf_get_post_types() {
-    $post_types = get_post_types();
+function wpuf_get_post_types( $args = array() ) {
+    $defaults = array();
 
-    foreach ($post_types as $key => $val) {
-        if ( $val == 'attachment' || $val == 'revision' || $val == 'nav_menu_item' ) {
+    $args = wp_parse_args( $args, $defaults );
+
+    $post_types = get_post_types( $args );
+
+    $ignore_post_types = array(
+        'attachment', 'revision', 'nav_menu_item'
+    );
+
+    foreach ( $post_types as $key => $val ) {
+        if ( in_array( $val, $ignore_post_types ) ) {
             unset( $post_types[$key] );
         }
     }
 
-    return $post_types;
+    return apply_filters( 'wpuf-get-post-types', $post_types );
 }
 
 /**
@@ -734,7 +743,7 @@ function wpuf_show_custom_fields( $content ) {
 
                 }
 
-                $html .= $address_html;
+                $html = $address_html;
 
             } else {
 
@@ -747,7 +756,7 @@ function wpuf_show_custom_fields( $content ) {
 
                     $new = implode( ', ', $value );
 
-                    if ( $new ) {
+                    if( $new ) {
                         $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
                     }
                 }
@@ -756,6 +765,7 @@ function wpuf_show_custom_fields( $content ) {
         }
     }
 
+    // var_dump( $attr );
     $html .= '</ul>';
 
     return $content . $html;
@@ -1037,7 +1047,6 @@ function wpuf_dropdown_helper( $options, $selected = '' ) {
     return $string;
 }
 
-
 /**
  * Include a template file
  *
@@ -1135,7 +1144,34 @@ function wpuf_get_form_fields( $form_id ) {
 
         $field['id'] = $content->ID;
 
-        $form_fields[] = $field;
+        // Add inline property for radio and checkbox fields
+        $inline_supported_fields = array( 'radio', 'checkbox' );
+        if ( in_array( $field['input_type'] , $inline_supported_fields ) ) {
+            if ( ! isset( $field['inline'] ) ) {
+                $field['inline'] = 'no';
+            }
+        }
+
+        // Add 'selected' property
+        $option_based_fields = array( 'select', 'multiselect', 'radio', 'checkbox' );
+        if ( in_array( $field['input_type'] , $option_based_fields ) ) {
+            if ( ! isset( $field['selected'] ) ) {
+
+                if ( 'select' === $field['input_type'] || 'radio' === $field['input_type'] ) {
+                    $field['selected'] = '';
+                } else {
+                    $field['selected'] = array();
+                }
+
+            }
+        }
+
+        // Add 'multiple' key for input_type:repeat
+        if ( 'repeat' === $field['input_type'] && ! isset( $field['multiple'] ) ) {
+            $field['multiple'] = '';
+        }
+
+        $form_fields[] = apply_filters( 'wpuf-get-form-fields', $field );
     }
 
     return $form_fields;
@@ -1214,11 +1250,6 @@ function wpuf_clear_buffer() {
  * @return boolean
  */
 function wpuf_is_license_expired() {
-    // set the localhost ip if the script is running in cli
-    if ( ! isset( $_SERVER['REMOTE_ADDR'] ) ) {
-        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-    }
-
     if ( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) {
         return false;
     }
@@ -1292,12 +1323,6 @@ function wpuf_get_account_sections() {
         array( 'slug' => 'subscription', 'label' => __( 'Subscription', 'wpuf' ) ),
         array( 'slug' => 'edit-profile', 'label' => __( 'Edit Profile', 'wpuf' ) ),
     );
-
-    $subscription = wpuf_get_option( 'force_pack', 'wpuf_payment', 'no' );
-
-    if ( 'no' === $subscription ) {
-        unset( $account_sections[2] ); // unset the subscription section
-    }
 
     return apply_filters( 'wpuf_account_sections', $account_sections );
 }
@@ -1493,22 +1518,20 @@ function wpuf_get_currency( $type = '' ) {
  *
  * @return mixed
  */
-function wpuf_format_price( $number, $with_currency = false ) {
-    $number = number_format( (float) $number, 2, '.', '' );
+function wpuf_format_price( $number ) {
 
-    if ( $with_currency ) {
-        $symbol   = wpuf_get_currency( 'symbol' );
-        $position = wpuf_get_option( 'currency_position', 'wpuf_payment', 'left' );
+    $number   = number_format( (float) $number, 2, '.', '' );
+    $symbol   = wpuf_get_currency( 'symbol' );
+    $position = wpuf_get_option( 'currency_position', 'wpuf_payment', 'left' );
 
-        switch ( $position ) {
-            case 'left': return $symbol . $number; break;
+    switch ( $position ) {
+        case 'left': return $symbol . $number; break;
 
-            case 'left_space': return $symbol . ' ' . $number; break;
+        case 'left_space': return $symbol . ' ' . $number; break;
 
-            case 'right': return $number . $symbol; break;
+        case 'right': return $number . $symbol; break;
 
-            case 'right_space': return $number . ' ' . $symbol; break;
-        }
+        case 'right_space': return $number . ' ' . $symbol; break;
     }
 
     return $number;
@@ -1529,4 +1552,239 @@ if ( ! function_exists( 'array_column' ) ) {
 
         return $result;
     }
+}
+
+/**
+ * API to duplicate a form
+ *
+ * @since 2.5
+ *
+ * @param int $post_id
+ *
+ * @return int New duplicated form id
+ */
+function wpuf_duplicate_form( $post_id ) {
+    $post = get_post( $post_id );
+
+    if ( !$post ) {
+        return;
+    }
+
+    $contents = wpuf_get_form_fields( $post_id );
+
+    $new_form = array(
+        'post_title'  => $post->post_title,
+        'post_type'   => $post->post_type,
+        'post_status' => 'draft'
+    );
+
+    $form_id = wp_insert_post( $new_form );
+
+    foreach ( $contents as $content ) {
+        wpuf_insert_form_field( $form_id, $content );
+    }
+
+    if ( $form_id ) {
+        $form_settings = wpuf_get_form_settings( $post_id );
+        update_post_meta( $form_id, 'wpuf_form_settings', $form_settings );
+
+        return $form_id;
+    }
+
+    return 0;
+}
+
+/**
+ * Save form fields
+ *
+ * @since 2.5
+ *
+ * @param int $form_id
+ * @param array $field
+ * @param int $field_id
+ * @param int $order
+ *
+ * @return int ID of updated or inserted post
+ */
+function wpuf_insert_form_field( $form_id, $field = array(), $field_id = null, $order = 0 ) {
+
+    $args = array(
+        'post_type'    => 'wpuf_input',
+        'post_parent'  => $form_id,
+        'post_status'  => 'publish',
+        'post_content' => maybe_serialize( wp_unslash( $field ) ),
+        'menu_order'   => $order
+    );
+
+    if ( $field_id ) {
+        $args['ID'] = $field_id;
+    }
+
+    if ( $field_id ) {
+        return wp_update_post( $args );
+    } else {
+        return wp_insert_post( $args );
+    }
+}
+
+/**
+ * Create a sample / base form
+ *
+ * @since  2.5
+ * @param  string  $post_title (optional)
+ * @param  string  $post_type  (optional)
+ * @param  boolean $blank  (optional)
+ *
+ * @return int
+ */
+function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpuf_forms', $blank = false ) {
+
+    $form_id = wp_insert_post( array(
+        'post_title'     => $post_title,
+        'post_type'      => $post_type,
+        'post_status'    => 'publish',
+        'comment_status' => 'closed',
+        'post_content'   => ''
+    ) );
+
+    if ( ! $form_id ) {
+        return false;
+    }
+
+    $form_fields = array();
+    $settings    = array();
+
+    // Post form
+    if ( 'wpuf_forms' === $post_type ) {
+        $form_fields = array(
+            array(
+                'input_type'  => 'text',
+                'template'    => 'post_title',
+                'required'    => 'yes',
+                'label'       => 'Post Title',
+                'name'        => 'post_title',
+                'is_meta'     => 'no',
+                'help'        => '',
+                'css'         => '',
+                'placeholder' => '',
+                'default'     => '',
+                'size'        => '40',
+                'wpuf_cond'   => array( )
+            ),
+            array(
+                'input_type'   => 'textarea',
+                'template'     => 'post_content',
+                'required'     => 'yes',
+                'label'        => 'Post Content',
+                'name'         => 'post_content',
+                'is_meta'      => 'no',
+                'help'         => '',
+                'css'          => '',
+                'rows'         => '5',
+                'cols'         => '25',
+                'placeholder'  => '',
+                'default'      => '',
+                'rich'         => 'teeny',
+                'insert_image' => 'yes',
+                'wpuf_cond'    => array( )
+            )
+        );
+
+        $settings = array(
+            'post_type'        => 'post',
+            'post_status'      => 'publish',
+            'post_format'      => '0',
+            'default_cat'      => '-1',
+            'guest_post'       => 'false',
+            'guest_details'    => 'true',
+            'name_label'       => 'Name',
+            'email_label'      => 'Email',
+            'message_restrict' => 'This page is restricted. Please Log in / Register to view this page.',
+            'redirect_to'      => 'post',
+            'message'          => 'Post saved',
+            'page_id'          => '',
+            'url'              => '',
+            'comment_status'   => 'open',
+            'submit_text'      => 'Submit',
+            'draft_post'       => 'false',
+            'edit_post_status' => 'publish',
+            'edit_redirect_to' => 'same',
+            'update_message'   => 'Post updated successfully',
+            'edit_page_id'     => '',
+            'edit_url'         => '',
+            'subscription'     => '- Select -',
+            'update_text'      => 'Update',
+            'notification'     => array(
+                'new'          => 'on',
+                'new_to'       => get_option( 'admin_email' ),
+                'new_subject'  => 'New post created',
+                'new_body'     => "Hi Admin, \r\n\r\nA new post has been created in your site %sitename% (%siteurl%). \r\n\r\nHere is the details: \r\nPost Title: %post_title% \r\nContent: %post_content% \r\nAuthor: %author% \r\nPost URL: %permalink% \r\nEdit URL: %editlink%",
+                'edit'         => 'off',
+                'edit_to'      => get_option( 'admin_email' ),
+                'edit_subject' => 'A post has been edited',
+                'edit_body'    => "Hi Admin, \r\n\r\nThe post \"%post_title%\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: %post_title% \r\nContent: %post_content% \r\nAuthor: %author% \r\nPost URL: %permalink% \r\nEdit URL: %editlink%",
+            ),
+        );
+    }
+
+    // Profile form
+    if ( 'wpuf_profile' === $post_type ) {
+        $form_fields = array(
+            array(
+                'input_type'  => 'email',
+                'template'    => 'user_email',
+                'required'    => 'yes',
+                'label'       => 'Email',
+                'name'        => 'user_email',
+                'is_meta'     => 'no',
+                'help'        => '',
+                'css'         => '',
+                'placeholder' => '',
+                'default'     => '',
+                'size'        => '40',
+                'wpuf_cond'   => NULL,
+            ),
+            array(
+                'input_type'    => 'password',
+                'template'      => 'password',
+                'required'      => 'yes',
+                'label'         => 'Password',
+                'name'          => 'password',
+                'is_meta'       => 'no',
+                'help'          => '',
+                'css'           => '',
+                'placeholder'   => '',
+                'default'       => '',
+                'size'          => '40',
+                'min_length'    => '5',
+                'repeat_pass'   => 'yes',
+                're_pass_label' => 'Confirm Password',
+                'pass_strength' => 'yes',
+                'wpuf_cond'     => NULL
+            )
+        );
+
+        $settings = array(
+            'role'           => 'subscriber',
+            'redirect_to'    => 'same',
+            'message'        => 'Registration successful',
+            'update_message' => 'Profile updated successfully',
+            'page_id'        => '0',
+            'url'            => '',
+            'submit_text'    => 'Register',
+            'update_text'    => 'Update Profile'
+        );
+    }
+
+    if ( ! empty( $form_fields ) && ! $blank ) {
+        foreach ( $form_fields as $order => $field ) {
+            wpuf_insert_form_field( $form_id, $field, false, $order );
+        }
+    }
+
+    if ( ! empty( $settings ) ) {
+        update_post_meta( $form_id, 'wpuf_form_settings', $settings );
+    }
+
+    return $form_id;
 }

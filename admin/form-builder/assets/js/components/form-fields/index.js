@@ -71,8 +71,6 @@ Vue.component('form-fields', {
 
             payload.field = field;
 
-            console.log(payload);
-
             // add new form element
             this.$store.commit('add_form_field_element', payload);
         },

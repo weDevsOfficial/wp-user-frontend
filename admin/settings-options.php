@@ -319,6 +319,38 @@ function wpuf_settings_fields() {
                 )
             ),
             array(
+                'label'    => __( 'Thousand Separator', 'wpuf' ),
+                'desc'     => __( 'This sets the thousand separator of displayed prices.', 'wpuf' ),
+                'name'       => 'wpuf_price_thousand_sep',
+                'css'      => 'width:50px;',
+                'default'  => ',',
+                'type'     => 'text',
+                'desc_tip' =>  true,
+            ),
+            array(
+                'label'    => __( 'Decimal Separator', 'wpuf' ),
+                'desc'     => __( 'This sets the decimal separator of displayed prices.', 'wpuf' ),
+                'name'       => 'wpuf_price_decimal_sep',
+                'css'      => 'width:50px;',
+                'default'  => '.',
+                'type'     => 'text',
+                'desc_tip' =>  true,
+            ),
+
+            array(
+                'label'    => __( 'Number of Decimals', 'wpuf' ),
+                'desc'     => __( 'This sets the number of decimal points shown in displayed prices.', 'wpuf' ),
+                'name'       => 'wpuf_price_num_decimals',
+                'css'      => 'width:50px;',
+                'default'  => '2',
+                'desc_tip' =>  true,
+                'type'     => 'number',
+                'custom_attributes' => array(
+                    'min'  => 0,
+                    'step' => 1
+                )
+            ),
+            array(
                 'name'    => 'cost_per_post',
                 'label'   => __( 'Cost', 'wpuf' ),
                 'desc'    => __( 'Cost per post', 'wpuf' ),

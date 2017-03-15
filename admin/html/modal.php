@@ -56,7 +56,7 @@
         </div>
 
         <footer>
-            <?php printf( __( 'List of available templates can be found <a href="%s" target="_blank">here</a>.', 'wpuf' ), 'http://docs.wedevs.com/?p=3718' ); ?>
+            <?php printf( __( 'List of available templates can be found <a href="%s" target="_blank">here</a>.', 'wpuf' ), 'http://docs.wedevs.com/?p=4390' ); ?>
             <?php printf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wpuf'), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' ); ?>
         </footer>
     </div>

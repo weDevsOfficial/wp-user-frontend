@@ -1553,7 +1553,7 @@ function wpuf_get_price_thousand_separator() {
  */
 function wpuf_get_price_decimal_separator() {
     $separator = stripslashes( wpuf_get_option( 'wpuf_price_decimal_sep', 'wpuf_payment', '.' ) );
-    return $separator ? $separator : '.';
+    return $separator;
 }
 
 /**

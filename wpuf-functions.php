@@ -591,14 +591,14 @@ function wpuf_get_gateways( $context = 'admin' ) {
 function wpuf_show_custom_fields( $content ) {
     global $post;
 
-    $show_custom = wpuf_get_option( 'cf_show_front', 'wpuf_general' );
-    $show_caption = wpuf_get_option( 'image_caption', 'wpuf_general' );
+    $show_custom  = wpuf_get_option( 'cf_show_front', 'wpuf_general' );
 
     if ( $show_custom != 'on' ) {
         return $content;
     }
 
-    $form_id = get_post_meta( $post->ID, '_wpuf_form_id', true );
+    $show_caption  = wpuf_get_option( 'image_caption', 'wpuf_general' );
+    $form_id       = get_post_meta( $post->ID, '_wpuf_form_id', true );
     $form_settings = wpuf_get_form_settings( $form_id );
 
     if ( !$form_id ) {
@@ -608,7 +608,7 @@ function wpuf_show_custom_fields( $content ) {
     $html = '<ul class="wpuf_customs">';
 
     $form_vars = wpuf_get_form_fields( $form_id );
-    $meta = array();
+    $meta      = array();
 
     if ( $form_vars ) {
         foreach ($form_vars as $attr) {
@@ -677,95 +677,94 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            //var_dump( $attr );
+            switch ( $attr['input_type'] ) {
+                case 'image_upload':
+                case 'file_upload':
 
-            if ( $attr['input_type'] == 'image_upload' || $attr['input_type'] == 'file_upload' ) {
+                    $image_html = '<li><label>' . $attr['label'] . ':</label> ';
 
-                $image_html = '<li><label>' . $attr['label'] . ':</label> ';
+                    if ( $field_value ) {
 
+                        foreach ($field_value as $attachment_id) {
+                            if ( $attr['input_type'] == 'image_upload' ) {
+                                $thumb = wp_get_attachment_image( $attachment_id, 'thumbnail' );
+                            } else {
+                                $thumb = get_post_field( 'post_title', $attachment_id );
+                            }
 
-                if ( $field_value ) {
+                            $full_size = wp_get_attachment_url( $attachment_id );
 
-                    foreach ($field_value as $attachment_id) {
-                        if ( $attr['input_type'] == 'image_upload' ) {
-                            $thumb = wp_get_attachment_image( $attachment_id, 'thumbnail' );
-                        } else {
-                            $thumb = get_post_field( 'post_title', $attachment_id );
-                        }
+                            if( $thumb ) {
+                                $image_html .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
 
-                        $full_size = wp_get_attachment_url( $attachment_id );
-
-                        if( $thumb ) {
-                            $image_html .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
-
-                            if ( $show_caption == 'on' ) {
-                                $post_detail = get_post( $attachment_id );
-                                if( !empty( $post_detail->post_title ) ) {
-                                    $image_html .= '<br /><label>' . __( 'Title', 'wpuf' ) . ':</label> <span class="image_title">' . esc_html( $post_detail->post_title ) . '</span>';
-                                }
-                                if( !empty( $post_detail->post_excerpt ) ) {
-                                    $image_html .= '<br /><label>' . __( 'Caption', 'wpuf' ) . ':</label> <span class="image_caption">' . esc_html( $post_detail->post_excerpt ) . '</span>';
-                                }
-                                if( !empty( $post_detail->post_content ) ) {
-                                    $image_html .= '<br /><label>' . __( 'Description', 'wpuf' ) . ':</label> <span class="image_description">' . esc_html( $post_detail->post_content ) . '</span>';
+                                if ( $show_caption == 'on' ) {
+                                    $post_detail = get_post( $attachment_id );
+                                    if( !empty( $post_detail->post_title ) ) {
+                                        $image_html .= '<br /><label>' . __( 'Title', 'wpuf' ) . ':</label> <span class="image_title">' . esc_html( $post_detail->post_title ) . '</span>';
+                                    }
+                                    if( !empty( $post_detail->post_excerpt ) ) {
+                                        $image_html .= '<br /><label>' . __( 'Caption', 'wpuf' ) . ':</label> <span class="image_caption">' . esc_html( $post_detail->post_excerpt ) . '</span>';
+                                    }
+                                    if( !empty( $post_detail->post_content ) ) {
+                                        $image_html .= '<br /><label>' . __( 'Description', 'wpuf' ) . ':</label> <span class="image_description">' . esc_html( $post_detail->post_content ) . '</span>';
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                $html .= $image_html . '</li>';
+                    $html .= $image_html . '</li>';
+                    break;
 
-            } elseif ( $attr['input_type'] == 'map' ) {
+                case 'map':
+                    ob_start();
+                    wpuf_shortcode_map_post($attr['name'], $post->ID);
+                    $html .= ob_get_clean();
+                    break;
 
-                ob_start();
-                wpuf_shortcode_map_post($attr['name'], $post->ID);
-                $html .= ob_get_clean();
+                case 'address':
+                    include_once dirname( __FILE__ ) . '/includes/countries.php';
 
-            } elseif ( $attr['input_type'] == 'address') {
+                    $address_html = '';
 
-                include_once dirname( __FILE__ ) . '/includes/countries.php';
+                    if ( isset( $field_value[0] ) && is_array( $field_value[0] ) ) {
 
-                $address_html = '';
+                        foreach ( $field_value[0] as $field_key => $value ) {
 
-                if ( isset( $field_value[0] ) && is_array( $field_value[0] ) ) {
-
-                    foreach ( $field_value[0] as $field_key => $value ) {
-
-                        if ( $field_key == 'country_select' ) {
-                            if ( isset ( $countries[$value] ) ) {
-                                $value = $countries[$value];
+                            if ( $field_key == 'country_select' ) {
+                                if ( isset ( $countries[$value] ) ) {
+                                    $value = $countries[$value];
+                                }
                             }
+                            $address_html .= '<li><label>' . $attr['address'][$field_key]['label'] . ': </label> ';
+                            $address_html .= ' '.$value.'</li>';
                         }
-                        $address_html .= '<li><label>' . $attr['address'][$field_key]['label'] . ': </label> ';
-                        $address_html .= ' '.$value.'</li>';
+
                     }
 
-                }
+                    $html .= $address_html;
+                    break;
 
-                $html = $address_html;
+                default:
+                    $value       = get_post_meta( $post->ID, $attr['name'] );
+                    $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );
 
-            } else {
+                    if ( !empty( $filter_html ) ) {
+                        $html .= $filter_html;
+                    } else {
 
-                $value = get_post_meta( $post->ID, $attr['name'] );
-                $filter_html = apply_filters( 'wpuf_add_html', '', $value, $attr, $form_settings );
+                        $new = implode( ', ', $value );
 
-                if ( !empty( $filter_html ) ) {
-                    $html .= $filter_html;
-                } else {
-
-                    $new = implode( ', ', $value );
-
-                    if( $new ) {
-                        $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                        if ( $new ) {
+                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                        }
                     }
-                }
 
+                    break;
             }
         }
     }
 
-    // var_dump( $attr );
     $html .= '</ul>';
 
     return $content . $html;

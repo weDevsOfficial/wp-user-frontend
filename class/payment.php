@@ -270,7 +270,7 @@ class WPUF_Payment {
             switch ($type) {
                 case 'post':
                     $post        = get_post( $post_id );
-                    $amount      = wpuf_format_price( wpuf_get_option( 'cost_per_post', 'wpuf_payment' ) );
+                    $amount      = wpuf_get_option( 'cost_per_post', 'wpuf_payment' );
                     $item_number = $post->ID;
                     $item_name   = $post->post_title;
                     break;
@@ -278,7 +278,7 @@ class WPUF_Payment {
                 case 'pack':
                     $pack           = WPUF_Subscription::init()->get_subscription( $pack_id );
                     $custom         = $pack->meta_value;
-                    $billing_amount = wpuf_format_price( $pack->meta_value['billing_amount'] );
+                    $billing_amount = $pack->meta_value['billing_amount'];
                     $amount         = $this->coupon_discount( $_POST['coupon_code'], $billing_amount, $pack_id );
                     $item_name      = $pack->post_title;
                     $item_number    = $pack->ID;

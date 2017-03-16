@@ -173,6 +173,7 @@ class WP_User_Frontend {
 
         new WPUF_Upload();
         new WPUF_Payment();
+        new WPUF_Paypal();
         new WPUF_Admin_Form_Template();
 
         WPUF_Frontend_Form_Post::init(); // requires for form preview
@@ -440,7 +441,7 @@ class WP_User_Frontend {
     function plugin_action_links( $links ) {
 
         if ( ! $this->is_pro() ) {
-            $links[] = '<a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/" target="_blank" style="color: red;">Get PRO</a>';
+            $links[] = '<a href="' . WPUF_Pro_Prompt::get_pro_url() . '" target="_blank" style="color: red;">Get PRO</a>';
         }
 
         $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">Settings</a>';

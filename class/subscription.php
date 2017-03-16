@@ -470,6 +470,7 @@ class WPUF_Subscription {
             //add a uniqid to track the post easily
             $order_id = uniqid( rand( 10, 1000 ), false );
             update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
+            update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
 
         } else {
 
@@ -563,9 +564,12 @@ class WPUF_Subscription {
             $order_id = get_post_meta( $info['post_id'], '_wpuf_order_id', true );
 
             $this->handle_post_publish( $order_id );
+
         } else if ( $info['pack_id'] ) {
+
             $profile_id = isset( $info['profile_id'] ) ? $info['profile_id'] : null;
             $this->new_subscription( $info['user_id'], $info['pack_id'], $profile_id, $recurring, $info['status'] );
+
         }
     }
 
@@ -639,8 +643,13 @@ class WPUF_Subscription {
     function handle_post_publish( $order_id ) {
         $post = self::post_by_orderid( $order_id );
 
-        if ( $post && $post->post_status != 'publish' ) {
-            $this->set_post_status( $post->ID );
+        if ( $post ) {
+            // set the payment status
+            update_post_meta( $post->ID, '_wpuf_payment_status', 'completed' );
+
+            if ( $post->post_status != 'publish' ) {
+                $this->set_post_status( $post->ID );
+            }
         }
     }
 

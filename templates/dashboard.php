@@ -81,10 +81,11 @@
 
                         <?php
                         if ( $charging_enabled == 'yes' ) {
-                            $order_id = get_post_meta( $post->ID, '_wpuf_order_id', true );
+                            $order_id       = get_post_meta( $post->ID, '_wpuf_order_id', true );
+                            $payment_status = get_post_meta( $post->ID, '_wpuf_payment_status', true );
                             ?>
                             <td>
-                                <?php if ( $post->post_status == 'pending' && $order_id ) { ?>
+                                <?php if ( $post->post_status == 'pending' && $order_id && $payment_status != 'completed' ) { ?>
                                     <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wpuf' ); ?></a>
                                 <?php } ?>
                             </td>

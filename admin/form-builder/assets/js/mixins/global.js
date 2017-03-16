@@ -39,5 +39,29 @@ Vue.mixin({
 
             return false;
         },
+
+        containsField: function(field_name) {
+            var i = 0;
+
+            for (i = 0; i < this.$store.state.form_fields.length; i++) {
+                if (this.$store.state.form_fields[i].name === field_name) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
+
+        isSingleInstance: function(field_name) {
+            var singleInstance = ['post_title', 'post_content', 'post_excerpt', 'featured_image',
+                'user_login', 'first_name', 'last_name', 'nickname', 'user_email', 'user_url',
+                'user_bio', 'password', 'user_avatar'];
+
+            if ( $.inArray(field_name, singleInstance) >= 0 ) {
+                return true;
+            }
+
+            return false;
+        }
     }
 });

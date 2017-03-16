@@ -41,11 +41,7 @@ Vue.component('form-fields', {
             };
 
             // check if these are already inserted
-            var oneInstance = ['post_title', 'post_content', 'post_excerpt', 'featured_image',
-                'user_login', 'first_name', 'last_name', 'nickname', 'user_email', 'user_url',
-                'user_bio', 'password', 'user_avatar'];
-
-            if ( $.inArray(field_template, oneInstance) >= 0 && this.containsField( field_template ) ) {
+            if ( this.isSingleInstance( field_template ) && this.containsField( field_template ) ) {
                 swal({
                     title: "Oops...",
                     text: "You already have this field in the form"
@@ -116,18 +112,6 @@ Vue.component('form-fields', {
 
         get_invalidate_btn_class: function (field) {
             return this.field_settings[field].validator.button_class;
-        },
-
-        containsField: function(field_name) {
-            var i;
-
-            for (i = 0; i < this.$store.state.form_fields.length; i++) {
-                if (this.$store.state.form_fields[i].name === field_name) {
-                    return true;
-                }
-            }
-
-            return false;
         }
     }
 });

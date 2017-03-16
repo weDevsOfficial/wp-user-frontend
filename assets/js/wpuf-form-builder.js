@@ -134,7 +134,9 @@
                 var clone = $.extend(true, {}, field),
                     index = parseInt(payload.index) + 1;
 
-                clone.id = payload.new_id;
+                clone.id   = payload.new_id;
+                clone.name = clone.name + '_copy';
+
                 state.form_fields.splice(index, 0, clone);
             },
 

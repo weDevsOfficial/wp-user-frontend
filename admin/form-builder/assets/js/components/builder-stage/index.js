@@ -88,6 +88,20 @@ Vue.component('builder-stage', {
                 new_id: this.get_random_id()
             };
 
+            // single instance checking
+            var field = _.find(this.$store.state.form_fields, function (item) {
+                return parseInt(item.id) === parseInt(payload.field_id);
+            });
+
+            // check if these are already inserted
+            if ( this.isSingleInstance( field.template ) && this.containsField( field.template ) ) {
+                swal({
+                    title: "Oops...",
+                    text: "You already have this field in the form"
+                });
+                return;
+            }
+
             this.$store.commit('clone_form_field_element', payload);
         },
 

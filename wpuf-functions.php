@@ -1581,13 +1581,13 @@ function wpuf_trim_zeros( $price ) {
  * @since 2.4.2
  *
  * @param  number $number
- * @param  boolean $with_currency (optional)
+ * @param  array
  *
  * @return mixed
  */
 function wpuf_format_price( $price, $args = array() ) {
 
-    extract( apply_filters( 'wc_price_args', wp_parse_args( $args, array(
+    extract( apply_filters( 'wpuf_price_args', wp_parse_args( $args, array(
         'currency'           => wpuf_get_currency( 'symbol' ),
         'decimal_separator'  => wpuf_get_price_decimal_separator(),
         'thousand_separator' => wpuf_get_price_thousand_separator(),
@@ -1596,17 +1596,16 @@ function wpuf_format_price( $price, $args = array() ) {
     ) ) ) );
 
     $negative        = $price < 0;
-    $price           = apply_filters( 'raw_wpuf_price', floatval( $negative ? $price * -1 : $price ) );
-    $price           = apply_filters( 'formatted_wpuf_price', number_format( $price, $decimals, $decimal_separator, $thousand_separator ), $price, $decimals, $decimal_separator, $thousand_separator );
+    $price           = apply_filters( 'wpuf_raw_price', floatval( $negative ? $price * -1 : $price ) );
+    $price           = apply_filters( 'wpuf_formatted_price', number_format( $price, $decimals, $decimal_separator, $thousand_separator ), $price, $decimals, $decimal_separator, $thousand_separator );
 
     if ( apply_filters( 'wpuf_price_trim_zeros', false ) && $decimals > 0 ) {
         $price = wpuf_trim_zeros( $price );
     }
 
-    $formatted_price = ( $negative ? '-' : '' ) . sprintf( $price_format, '<span class="wpuf-Price-currencySymbol">' . $currency . '</span>', $price );
-    $return          = '<span class="wpuf-Price-amount amount">' . $formatted_price . '</span>';
+    $formatted_price = ( $negative ? '-' : '' ) . sprintf( $price_format, $currency, $price );
 
-    return apply_filters( 'wpuf_format_price', $return, $price, $args );
+    return apply_filters( 'wpuf_format_price', $formatted_price, $price, $args );
 
 }
 

@@ -152,7 +152,7 @@ class WPUF_Payment {
                                                 <?php echo WPUF_Coupons::init()->after_apply_coupon( $pack ); ?>
                                             <?php } else { ?>
                                                 <div><?php _e( 'Selected Pack ', 'wpuf' ); ?>: <strong><?php echo $pack->post_title; ?></strong></div>
-                                                <?php _e( 'Pack Price ', 'wpuf' ); ?>: <strong><?php echo wpuf_format_price( $pack->meta_value['billing_amount'], true ); ?></strong>
+                                                <?php _e( 'Pack Price ', 'wpuf' ); ?>: <strong><?php echo wpuf_format_price( $pack->meta_value['billing_amount'] ); ?></strong>
                                             <?php } ?>
                                         </div>
                                     </div>

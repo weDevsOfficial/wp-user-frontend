@@ -1508,35 +1508,105 @@ function wpuf_get_currency( $type = '' ) {
     return $currency;
 }
 
+
+/**
+ * Get the price format depending on the currency position.
+ *
+ * @return string
+ */
+function get_wpuf_price_format() {
+    $currency_pos = wpuf_get_option( 'currency_position', 'wpuf_payment', 'left' );
+    $format = '%1$s%2$s';
+
+    switch ( $currency_pos ) {
+        case 'left' :
+            $format = '%1$s%2$s';
+        break;
+        case 'right' :
+            $format = '%2$s%1$s';
+        break;
+        case 'left_space' :
+            $format = '%1$s&nbsp;%2$s';
+        break;
+        case 'right_space' :
+            $format = '%2$s&nbsp;%1$s';
+        break;
+    }
+
+    return apply_filters( 'wpuf_price_format', $format, $currency_pos );
+}
+
+/**
+ * Return the thousand separator for prices.
+ * @since  2.4.4
+ * @return string
+ */
+function wpuf_get_price_thousand_separator() {
+    $separator = stripslashes( wpuf_get_option( 'wpuf_price_thousand_sep', 'wpuf_payment', ',' ) );
+    return $separator;
+}
+
+/**
+ * Return the decimal separator for prices.
+ * @since  2.4.4
+ * @return string
+ */
+function wpuf_get_price_decimal_separator() {
+    $separator = stripslashes( wpuf_get_option( 'wpuf_price_decimal_sep', 'wpuf_payment', '.' ) );
+    return $separator;
+}
+
+/**
+ * Return the number of decimals after the decimal point.
+ * @since  2.4.4
+ * @return int
+ */
+function wpuf_get_price_decimals() {
+    return absint( wpuf_get_option( 'wpuf_price_num_decimals', 'wpuf_payment', 2 ) );
+}
+
+/**
+ * Trim trailing zeros off prices.
+ *
+ * @param mixed $price
+ * @return string
+ */
+function wpuf_trim_zeros( $price ) {
+    return preg_replace( '/' . preg_quote( wc_get_price_decimal_separator(), '/' ) . '0++$/', '', $price );
+}
+
 /**
  * Format the pricing number
  *
  * @since 2.4.2
  *
  * @param  number $number
- * @param  boolean $with_currency (optional)
+ * @param  array
  *
  * @return mixed
  */
-function wpuf_format_price( $number, $with_currency = false ) {
-    $number = number_format( (float) $number, 2, '.', '' );
+function wpuf_format_price( $price, $args = array() ) {
 
-    if ( $with_currency ) {
-        $symbol   = wpuf_get_currency( 'symbol' );
-        $position = wpuf_get_option( 'currency_position', 'wpuf_payment', 'left' );
+    extract( apply_filters( 'wpuf_price_args', wp_parse_args( $args, array(
+        'currency'           => wpuf_get_currency( 'symbol' ),
+        'decimal_separator'  => wpuf_get_price_decimal_separator(),
+        'thousand_separator' => wpuf_get_price_thousand_separator(),
+        'decimals'           => wpuf_get_price_decimals(),
+        'price_format'       => get_wpuf_price_format()
+    ) ) ) );
 
-        switch ( $position ) {
-            case 'left': return $symbol . $number; break;
+    $negative        = $price < 0;
+    $price           = apply_filters( 'wpuf_raw_price', floatval( $negative ? $price * -1 : $price ) );
+    $price           = apply_filters( 'wpuf_formatted_price', number_format( $price, $decimals, $decimal_separator, $thousand_separator ), $price, $decimals, $decimal_separator, $thousand_separator );
 
-            case 'left_space': return $symbol . ' ' . $number; break;
-
-            case 'right': return $number . $symbol; break;
-
-            case 'right_space': return $number . ' ' . $symbol; break;
-        }
+    if ( apply_filters( 'wpuf_price_trim_zeros', false ) && $decimals > 0 ) {
+        $price = wpuf_trim_zeros( $price );
     }
 
-    return $number;
+    $formatted_price = ( $negative ? '-' : '' ) . sprintf( $price_format, $currency, $price );
+
+    return apply_filters( 'wpuf_format_price', $formatted_price, $price, $args );
+
 }
 
 /**

@@ -173,6 +173,7 @@ class WP_User_Frontend {
 
         new WPUF_Upload();
         new WPUF_Payment();
+        new WPUF_Paypal();
         new WPUF_Admin_Form_Template();
 
         WPUF_Frontend_Form_Post::init(); // requires for form preview

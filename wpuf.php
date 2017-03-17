@@ -152,7 +152,8 @@ class WP_User_Frontend {
         }
 
         if ( is_admin() ) {
-            require_once dirname( __FILE__ ) . '/admin/settings-options.php';
+            require_once WPUF_ROOT . '/admin/settings-options.php';
+            require_once WPUF_ROOT . '/admin/promotion.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder-ajax.php';
         }
@@ -188,6 +189,7 @@ class WP_User_Frontend {
             new WPUF_Admin_Posting();
             new WPUF_Admin_Subscription();
             new WPUF_Admin_Installer();
+            new WPUF_Admin_Promotion();
         } else {
             new WPUF_Frontend_Dashboard();
         }

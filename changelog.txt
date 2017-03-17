@@ -1,3 +1,10 @@
+= v2.5 (18 March, 2017) =
+
+ * [new] Brand new form builder added for post form and profile form
+ * [new] added payment status for pay per post
+ * [improve] `wpuf_add_html` filter name changed to `wpuf_custom_field_render`
+ * [improve] add and update price formating function
+
 = v2.4.4 (22 February, 2017) =
 
  * [fix] Undefined JavaScript error when post is editing in admin

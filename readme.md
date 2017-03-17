@@ -87,7 +87,7 @@ The <a href="http://wedevs.com/plugin/wp-user-frontend-pro">premium version</a> 
 * <strong>Registration form</strong> builder
 * <a href="http://wedevs.com/plugin/wp-user-frontend-pro/#captcha">Captcha Support</a>
 
-Try an <a href="http://demo.wedevs.com/wpuf/wp-admin/">online demo</a> of the Pro version.
+Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
 
 ### Translation ###
 

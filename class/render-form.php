@@ -203,7 +203,7 @@ class WPUF_Render_Form {
             } elseif ( $value['input_type'] == 'repeat' ) {
 
                 // if it is a multi column repeat field
-                if ( isset( $value['multiple'] ) ) {
+                if ( isset( $value['multiple'] ) && $value['multiple'] == 'true' ) {
 
                     // if there's any items in the array, process it
                     if ( $_POST[$value['name']] ) {
@@ -239,7 +239,7 @@ class WPUF_Render_Form {
                 // process other fields
             } elseif ( $value['input_type'] == 'address' ) {
 
-                if( isset( $_POST[ $value['name'] ] ) && is_array( $_POST[ $value['name'] ] ) ) {
+                if ( isset( $_POST[ $value['name'] ] ) && is_array( $_POST[ $value['name'] ] ) ) {
                     foreach ( $_POST[ $value['name'] ] as $address_field => $field_value ) {
                         $meta_key_value[ $value['name'] ][ $address_field ] = $field_value;
                     }
@@ -307,7 +307,7 @@ class WPUF_Render_Form {
             return;
         }
 
-        $form_vars = wpuf_get_form_fields( $form_id );
+        $form_vars     = wpuf_get_form_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
 
         if ( ! is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {
@@ -589,8 +589,6 @@ class WPUF_Render_Form {
         </li>
     <?php
     }
-
-
 
     /**
      * Form preview handler

@@ -3,7 +3,7 @@ Contributors: tareq1988, wedevs, sohelamin
 Donate link: http://tareq.wedevs.com/donate/
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
 Requires at least: 4.0
-Tested up to: 4.7
+Tested up to: 4.7.3
 Stable tag: trunk
 License: GPLv2
 
@@ -160,6 +160,13 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.5 (18 March, 2017) =
+
+ * [new] Brand new form builder added for post form and profile form
+ * [new] added payment status for pay per post
+ * [improve] `wpuf_add_html` filter name changed to `wpuf_custom_field_render`
+ * [improve] add and update price formating function
 
 = v2.4.4 (22 February, 2017) =
 

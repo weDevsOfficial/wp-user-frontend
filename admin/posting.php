@@ -34,8 +34,8 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array('jquery-ui-datepicker') );
 
         if ( !empty( $api_key ) ) {
-            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?key='.$api_key, array(), null );
-        }else{
+            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key='.$api_key, array(), null );
+        } else {
             add_action('admin_head', 'wpuf_hide_google_map_button');
 
             function wpuf_hide_google_map_button() {
@@ -240,6 +240,42 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
             .wpuf-cf-table .required { color: red;}
             .wpuf-cf-table textarea { width: 400px; }
+
+            .wpuf-field-google-map {
+                height: 300px;
+                width: 100%;
+            }
+            .wpuf-form-google-map {
+                height: 300px;
+                width: 100%;
+            }
+            input[type="text"].wpuf-google-map-search {
+                margin-top: 10px !important;
+                border: 1px solid transparent !important;
+                border-radius: 2px 0 0 2px !important;
+                box-sizing: border-box !important;
+                -moz-box-sizing: border-box !important;
+                height: 32px !important;
+                outline: none !important;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+                background-color: #fff !important;
+                text-overflow: ellipsis !important;
+                width: 170px !important;
+                font-family: Roboto !important;
+                font-size: 15px !important;
+                font-weight: 300 !important;
+                padding: 0 11px 0 13px !important;
+                display: none;
+            }
+            .gm-style input[type="text"].wpuf-google-map-search {
+                display: block;
+            }
+            .wpuf-form-google-map-container input[type="text"].wpuf-google-map-search {
+                width: 230px !important;
+            }
+            .wpuf-form-google-map-container.hide-search-box .gm-style input[type="text"].wpuf-google-map-search {
+                display: none;
+            }
 
         </style>
         <?php

@@ -52,21 +52,24 @@ class WPUF_Admin_Settings {
     function admin_menu() {
         $capability = wpuf_admin_role();
 
-        add_menu_page( __( 'WP User Frontend', 'wpuf' ), __( 'User Frontend', 'wpuf' ), $capability, 'wpuf-admin-opt', array($this, 'plugin_page'), 'dashicons-exerpt-view', 55 );
+        add_menu_page( __( 'WP User Frontend', 'wpuf' ), __( 'User Frontend', 'wpuf' ), $capability, 'wp-user-frontend', array($this, 'wpuf_post_forms_page'), 'dashicons-exerpt-view', 55 );
+
+        add_submenu_page( 'wp-user-frontend', __( 'Post Forms', 'wpuf' ), __( 'Post Forms' ), $capability, 'wpuf-post-forms', array( $this, 'wpuf_post_forms_page' ) );
+        remove_submenu_page( 'wp-user-frontend', 'wp-user-frontend' );
 
         /**
          * @since 2.3
          */
         do_action( 'wpuf_admin_menu_top' );
 
-        add_submenu_page( 'wpuf-admin-opt', __( 'Subscriptions', 'wpuf' ), __( 'Subscriptions', 'wpuf' ), $capability, 'edit.php?post_type=wpuf_subscription' );
+        add_submenu_page( 'wp-user-frontend', __( 'Subscriptions', 'wpuf' ), __( 'Subscriptions', 'wpuf' ), $capability, 'edit.php?post_type=wpuf_subscription' );
 
         do_action( 'wpuf_admin_menu' );
 
-        $transactions_page = add_submenu_page( 'wpuf-admin-opt', __( 'Transactions', 'wpuf' ), __( 'Transactions', 'wpuf' ), $capability, 'wpuf_transaction', array($this, 'transactions_page') );
-        add_submenu_page( 'wpuf-admin-opt', __( 'Add-ons', 'wpuf' ), __( 'Add-ons', 'wpuf' ), $capability, 'wpuf_addons', array($this, 'addons_page') );
-        add_submenu_page( 'wpuf-admin-opt', __( 'Tools', 'wpuf' ), __( 'Tools', 'wpuf' ), $capability, 'wpuf_tools', array($this, 'tools_page') );
-        add_submenu_page( 'wpuf-admin-opt', __( 'Settings', 'wpuf' ), __( 'Settings', 'wpuf' ), $capability, 'wpuf-settings', array($this, 'plugin_page') );
+        $transactions_page = add_submenu_page( 'wp-user-frontend', __( 'Transactions', 'wpuf' ), __( 'Transactions', 'wpuf' ), $capability, 'wpuf_transaction', array($this, 'transactions_page') );
+        add_submenu_page( 'wp-user-frontend', __( 'Add-ons', 'wpuf' ), __( 'Add-ons', 'wpuf' ), $capability, 'wpuf_addons', array($this, 'addons_page') );
+        add_submenu_page( 'wp-user-frontend', __( 'Tools', 'wpuf' ), __( 'Tools', 'wpuf' ), $capability, 'wpuf_tools', array($this, 'tools_page') );
+        add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wpuf' ), __( 'Settings', 'wpuf' ), $capability, 'wpuf-settings', array($this, 'plugin_page') );
 
         add_action( "load-$transactions_page", array( $this, 'transactions_screen_option' ) );
         add_action( "load-$transactions_page", array( $this, 'enqueue_styles' ) );
@@ -112,6 +115,32 @@ class WPUF_Admin_Settings {
         require_once dirname( dirname( __FILE__ ) ) . '/admin/transactions.php';
     }
 
+    /**
+     * Callback method for Post Forms submenu
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    function wpuf_post_forms_page() {
+        $action = isset( $_GET['action'] ) ? $_GET['action'] : null;
+        $add_new_page_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
+
+        switch ( $action ) {
+            case 'edit':
+                require_once WPUF_ROOT . '/views/post-form.php';
+                break;
+
+            case 'add-new':
+                require_once WPUF_ROOT . '/views/post-form.php';
+                break;
+
+            default:
+                require_once WPUF_ROOT . '/admin/post-forms-list-table-view.php';
+                break;
+        }
+    }
+
     function subscription_page() {
         require_once dirname( dirname( __FILE__ ) ) . '/admin/subscription.php';
     }
@@ -138,7 +167,7 @@ class WPUF_Admin_Settings {
         $post_types = array( 'wpuf_forms', 'wpuf_profile', 'wpuf_subscription', 'wpuf_coupon');
 
         if ( in_array( $current_screen->post_type, $post_types ) ) {
-            $parent_file = 'wpuf-admin-opt';
+            $parent_file = 'wp-user-frontend';
         }
 
         return $parent_file;

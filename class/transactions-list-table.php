@@ -135,7 +135,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 $user = get_user_by( 'id', $item->user_id );
                 return sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->display_name );
             case 'cost':
-                return wpuf_format_price( $item->cost, true );
+                return wpuf_format_price( $item->cost );
             case 'post_id':
                 return ! empty( $item->post_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->post_id . '&action=edit' ), $item->post_id ) : '-';
             case 'pack_id':

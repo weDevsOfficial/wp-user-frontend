@@ -122,8 +122,8 @@ class WPUF_Paypal {
      */
     function prepare_to_send( $data ) {
 
-        $user_id = $data['user_info']['id'];
-        $listener_url = add_query_arg   ( 'action', 'wpuf_paypal_success', home_url( '/' ) );
+        $user_id          = $data['user_info']['id'];
+        $listener_url     = add_query_arg   ( 'action', 'wpuf_paypal_success', home_url( '/' ) );
         $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
 
         if ( $redirect_page_id ) {
@@ -132,7 +132,7 @@ class WPUF_Paypal {
             $return_url  = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) );
         }
 
-        $billing_amount = empty( $data['price'] ) ? 0 : wpuf_format_price( $data['price'] );
+        $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
 
         if ( isset( $_POST['coupon_id'] ) && !empty( $_POST['coupon_id'] ) ) {
             $billing_amount = WPUF_Coupons::init()->discount( $billing_amount, $_POST['coupon_id'], $data['item_number'] );
@@ -449,5 +449,3 @@ class WPUF_Paypal {
         return false;
     }
 }
-
-$wpuf_paypal = new WPUF_Paypal();

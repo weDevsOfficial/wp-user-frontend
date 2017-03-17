@@ -669,7 +669,7 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            if( !count( $field_value ) ) {
+            if ( !count( $field_value ) ) {
                 continue;
             }
 

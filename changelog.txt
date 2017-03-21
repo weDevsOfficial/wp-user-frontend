@@ -1,9 +1,17 @@
-= v2.5 (18 March, 2017) =
+= v2.5.1 (21 March, 2017) =
+
+ * [improve] Update vue.js and vuex.js version
+ * [improve] Update parent_slug parameter of add_submenu_page function to 'wp-user-frontend'
+ * [fix] Admin fields in form edit section reset on clicking 'Save form' button
+
+
+ = v2.5 (18 March, 2017) =
 
  * [new] Brand new form builder added for post form and profile form
- * [new] added payment status for pay per post
+ * [new] Added payment status for pay per post
  * [improve] `wpuf_add_html` filter name changed to `wpuf_custom_field_render`
- * [improve] add and update price formating function
+ * [improve] Add and update price formating function
+
 
 = v2.4.4 (22 February, 2017) =
 

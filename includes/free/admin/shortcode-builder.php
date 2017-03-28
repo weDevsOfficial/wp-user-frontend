@@ -22,6 +22,7 @@
                     'post_status'      => 'publish',
                     );
                 $posts_array = get_posts( $args );
+
                 foreach ($posts_array as $post) {
                     ?>
                     <option value="<?php echo $post->ID; ?>"><?php echo $post->post_title; ?></option>
@@ -41,6 +42,7 @@
                     'post_status'      => 'publish',
                     );
                 $posts_array = get_posts( $args );
+
                 foreach ($posts_array as $post) {
                     ?>
                     <option value="<?php echo $post->ID; ?>"><?php echo $post->post_title; ?></option>
@@ -70,5 +72,4 @@
         float: left;
         width: 25%;
     }
-
 </style>

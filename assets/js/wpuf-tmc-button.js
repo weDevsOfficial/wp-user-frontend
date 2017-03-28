@@ -20,7 +20,7 @@ jQuery(document).ready(function($) {
                     classes : 'wpuf-ss',
                     type  : 'menubutton',
                     menu  : menuItem,
-                    style : ' background-size : 18px; background-repeat : no-repeat; background-image: url( '+ ds_img +' );'
+                    style : ' background-size : 22px; background-repeat : no-repeat; background-image: url( '+ ds_img +' );'
                 });
         },   
     });

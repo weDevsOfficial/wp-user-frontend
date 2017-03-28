@@ -1,0 +1,163 @@
+#wegal-submitdiv.postbox .inside {
+  padding: 0;
+  margin: 0;
+}
+#wegal-submitdiv.postbox .inside .wegal-buttons {
+  padding: 20px;
+}
+#wegal-submitdiv.postbox .inside .wegal-buttons .dashicons {
+  margin-top: 5px;
+}
+#wegal-image-wrap {
+  padding: 25px 10px;
+}
+#wegal-image-wrap:before,
+#wegal-image-wrap:after {
+  content: " ";
+  display: table;
+}
+#wegal-image-wrap:after {
+  clear: both;
+}
+#wegal-image-wrap .thumb {
+  float: left;
+  position: relative;
+}
+#wegal-image-wrap .thumb img {
+  border-radius: 2px;
+  box-shadow: 0 1px 4px 0 #A5A5A5;
+  cursor: pointer;
+  height: 150px;
+  margin: 0 20px 20px 0;
+  padding: 0;
+  width: 150px;
+}
+#wegal-image-wrap .thumb img:hover {
+  cursor: move;
+}
+#wegal-image-wrap .thumb a.image-edit {
+  background: #FFFFFF;
+  border-radius: 4px;
+  bottom: 30px;
+  padding: 3px 5px;
+  position: absolute;
+  right: 30px;
+  display: none;
+}
+#wegal-image-wrap .thumb a.image-delete {
+  background: #AA0000;
+  border-radius: 500px;
+  color: #FFFFFF;
+  padding: 0 5px;
+  position: absolute;
+  right: 10px;
+  top: -5px;
+  display: none;
+  text-decoration: none;
+}
+#wegal-image-wrap .thumb a.image-delete:hover {
+  cursor: pointer;
+}
+#wegal-image-wrap .thumb:hover .image-delete,
+#wegal-image-wrap .thumb:hover .image-edit {
+  display: block;
+}
+.wegal-poup-container {
+  background-color: #fff;
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  width: 600px;
+  overflow: hidden;
+  margin-left: -300px;
+  position: fixed;
+  top: 20%;
+  bottom: 20%;
+  left: 50%;
+  z-index: 100105;
+}
+.wegal-poup-container .wegal-box-head {
+  background: #fcfcfc;
+  border-bottom: 1px solid #dfdfdf;
+  height: 36px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 36px;
+  padding: 0 36px 0 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.wegal-poup-container .wegal-box-inside {
+  overflow: auto;
+  padding: 16px;
+  background-color: #fff;
+  position: absolute;
+  top: 37px;
+  bottom: 45px;
+  overflow-y: scroll;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.wegal-poup-container .wegal-box-inside .spinner {
+  display: block;
+  float: none;
+  position: absolute;
+  left: 45%;
+  top: 50%;
+}
+.wegal-poup-container .wegal-input-box {
+  display: block;
+  margin-bottom: 10px;
+}
+.wegal-poup-container .wegal-input-box label {
+  float: left;
+  width: 25%;
+}
+.wegal-poup-container .wegal-input-box input,
+.wegal-poup-container .wegal-input-box textarea {
+  width: 70%;
+}
+.wegal-poup-container .wegal-popup-close {
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  text-align: center;
+  color: #666;
+}
+.wegal-poup-container .wegal-popup-close:hover {
+  color: #2ea2cc;
+}
+.wegal-poup-container .wegal-popup-close:before {
+  font: normal 20px/36px 'dashicons';
+  vertical-align: top;
+  speak: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: '\f158';
+}
+.wegal-poup-container .wegal-popup-buttons {
+  padding: 8px 16px;
+  background: #fcfcfc;
+  border-top: 1px solid #dfdfdf;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+#wegal-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+  z-index: 100100;
+}

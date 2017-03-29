@@ -395,7 +395,7 @@ function wpuf_settings_fields() {
                             </li>
                             <br/>
                             <li>
-                                <strong>Step 2: <a href="https://wedevs.com/account/ticket" target="_blank">Create a Support Ticket</a></strong>
+                                <strong>Step 2: <a href="https://wedevs.com/account/tickets" target="_blank">Create a Support Ticket</a></strong>
                                 <p>We reply from <code>10am to 6pm (GMT+6)</code> except <code><strong>Friday</strong></code>. Our responses are usually under 12 hours to as quick as 1 hour depending on channel pressure.</p>
                                 <p>When you are creating a ticket, please care to include a screenshot of the issue if possible and write the problem as specificly as you can. This will help us track and solve your trouble quickly.
                                 </p>

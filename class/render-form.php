@@ -985,13 +985,12 @@ class WPUF_Render_Form {
         ?>
 
         <div class="wpuf-fields" data-required="<?php echo $attr['required'] ?>" data-type="radio">
-
             <?php
             if ( $attr['options'] && count( $attr['options'] ) > 0 ) {
                 foreach ($attr['options'] as $value => $option) {
                     ?>
 
-                    <label>
+                    <label <?php echo $attr['inline'] == 'yes' ? 'class="wpuf-radio-inline"' : null; ?>>
                         <input name="<?php echo $attr['name']; ?>" class="<?php echo 'wpuf_'.$attr['name']. '_'. $form_id; ?>" type="radio" value="<?php echo esc_attr( $value ); ?>"<?php checked( $selected, $value ); ?> />
                         <?php echo $option; ?>
                     </label>
@@ -1031,7 +1030,7 @@ class WPUF_Render_Form {
 
                     ?>
 
-                    <label>
+                    <label <?php echo $attr['inline'] == 'yes' ? 'class="wpuf-checkbox-inline"' : null; ?>>
                         <input type="checkbox" class="<?php echo 'wpuf_'.$attr['name']. '_'. $form_id; ?>" name="<?php echo $attr['name']; ?>[]" value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?> />
                         <?php echo $option; ?>
                     </label>

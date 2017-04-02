@@ -503,6 +503,9 @@ ul.wpuf-form .wpuf-submit .wpuf-errors {
   padding: 3px 8px;
   font-size: 14px;
 }
+.wpuf-coupon-info-wrap .wpuf-pack-info wpuf-subscription-error {
+  color: #D8000C;
+}
 .wpuf-coupon-info-wrap .wpuf-copon-show:hover {
   background: none repeat scroll 0 0 #1E8CBE;
   border-color: #0074A2;

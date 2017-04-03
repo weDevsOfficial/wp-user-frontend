@@ -939,7 +939,7 @@ class WPUF_Subscription {
             ?>
             <div class="wpuf-info">
                 <?php
-                $text = sprintf( __( 'This will cost you <strong>%s</strong> to add a new post. ', 'wpuf' ), wpuf_format_price( wpuf_get_option( 'cost_per_post', 'wpuf_payment' ) ) );
+                 $text = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( wpuf_get_option( 'cost_per_post', 'wpuf_payment' ) ) );
 
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
                 ?>

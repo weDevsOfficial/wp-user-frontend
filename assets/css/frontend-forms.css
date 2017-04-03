@@ -147,6 +147,11 @@ ul.wpuf-form li .wpuf-fields select {
 ul.wpuf-form li .wpuf-fields select[multiple] {
   height: auto;
 }
+ul.wpuf-form li .wpuf-fields .wpuf-radio-inline,
+ul.wpuf-form li .wpuf-fields .wpuf-checkbox-inline {
+  display: inline-block;
+  margin-right: 10px;
+}
 ul.wpuf-form li .wpuf-fields a.file-selector {
   display: inline;
   padding: 5px 12px;

@@ -61,5 +61,5 @@
         </li>
     </ul>
 
-    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _( 'Clear Selection', 'wpuf' ); ?></a>
+    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _e( 'Clear Selection', 'wpuf' ); ?></a>
 </div>

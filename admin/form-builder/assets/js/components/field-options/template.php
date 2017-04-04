@@ -15,6 +15,7 @@
                 <div v-show="show_basic_settings" class="option-field-section-fields">
                     <component
                         v-for="option_field in basic_settings"
+                        :key="option_field.name"
                         :is="'field-' + option_field.type"
                         :option_field="option_field"
                         :editing_form_field="editing_form_field"
@@ -33,6 +34,7 @@
                 <div v-show="show_advanced_settings" class="option-field-section-fields">
                     <component
                         v-for="option_field in advanced_settings"
+                        :key="option_field.name"
                         :is="'field-' + option_field.type"
                         :option_field="option_field"
                         :editing_form_field="editing_form_field"

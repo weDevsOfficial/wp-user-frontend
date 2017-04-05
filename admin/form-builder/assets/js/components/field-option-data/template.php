@@ -39,7 +39,6 @@
                     :value="option.label"
                     v-model="selected"
                     class="option-chooser-radio"
-                    @click="clear_selection($event, option.label)"
                 >
             </div>
 
@@ -61,4 +60,6 @@
             </div>
         </li>
     </ul>
+
+    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _e( 'Clear Selection', 'wpuf' ); ?></a>
 </div>

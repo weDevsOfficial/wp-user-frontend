@@ -264,7 +264,7 @@ class WPUF_Paypal {
 
         if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
 
-            WP_User_Frontend::log( $postdata, print_r( $_POST, true ) );
+            WP_User_Frontend::log( 'paypal-payment-info', print_r( $_POST, true ) );
 
             $postdata     = $_POST;
             $type         = $postdata['custom'];
@@ -355,7 +355,7 @@ class WPUF_Paypal {
             if ( $insert_payment ) {
                 $data = array(
                     'user_id'          => (int) $custom->user_id,
-                    'status'           => $status,
+                    'status'           => strtolower( $postdata['payment_status'] ),
                     'cost'             => $postdata['mc_gross'],
                     'post_id'          => $post_id,
                     'pack_id'          => $pack_id,

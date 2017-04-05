@@ -65,14 +65,14 @@ class WP_User_Frontend {
         // set schedule event
         add_action( 'wpuf_remove_expired_post_hook', array( $this, 'action_to_remove_exipred_post' ) );
 
-        add_action( 'admin_init', array($this, 'block_admin_access') );
-        add_action( 'show_admin_bar', array($this, 'show_admin_bar') );
+        add_action( 'admin_init', array( $this, 'block_admin_access') );
+        add_action( 'show_admin_bar', array( $this, 'show_admin_bar') );
 
-        add_action( 'init', array($this, 'load_textdomain') );
-        add_action( 'wp_enqueue_scripts', array($this, 'enqueue_scripts') );
+        add_action( 'init', array( $this, 'load_textdomain') );
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
 
         // do plugin upgrades
-        add_action( 'plugins_loaded', array($this, 'plugin_upgrades') );
+        add_action( 'plugins_loaded', array( $this, 'plugin_upgrades') );
         add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'plugin_action_links' ) );
 
         //add custom css

@@ -77,7 +77,7 @@ class WPUF_Shortcodes_Button {
      */
     function localize_shortcodes() {
 
-        $shortcodes = array(
+        $shortcodes = apply_filters( 'wpuf_page_shortcodes', array(
             'wpuf-dashboard'=> array(
                 'title'   => __( 'Dashboard', 'wpuf' ),
                 'content' => '[wpuf_dashboard]'
@@ -98,7 +98,7 @@ class WPUF_Shortcodes_Button {
                 'title'   => __( 'Subscription', 'wpuf' ),
                 'content' => '[wpuf_sub_pack]'
             )
-        );
+        ) );
 
         $assets_url = WPUF_ASSET_URI;
 

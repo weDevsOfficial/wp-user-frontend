@@ -81,7 +81,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         <?php
     }
 
-    function render_form( $form_id, $post_id = null, $preview = false) {
+    function render_form( $form_id, $post_id = null ) {
         global $post;
 
         $form_id = get_post_meta( $post->ID, '_wpuf_form_id', true );

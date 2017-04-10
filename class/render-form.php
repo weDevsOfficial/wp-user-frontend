@@ -291,9 +291,10 @@ class WPUF_Render_Form {
     /**
      * Handles the add post shortcode
      *
-     * @param $atts
+     * @param int $form_id
+     * @param int $post_id
      */
-    function render_form( $form_id, $post_id = NULL, $preview = false ) {
+    function render_form( $form_id, $post_id = NULL ) {
 
         $form_status = get_post_status( $form_id );
 
@@ -312,16 +313,13 @@ class WPUF_Render_Form {
 
         if ( ! is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {
             echo '<div class="wpuf-message">' . $form_settings['message_restrict'] . '</div>';
-            //wp_login_form();
             return;
         }
 
         if ( $form_vars ) {
             ?>
 
-            <?php if ( !$preview ) { ?>
-                <form class="wpuf-form-add" action="" method="post">
-                <?php } ?>
+            <form class="wpuf-form-add" action="" method="post">
 
                 <ul class="wpuf-form">
 
@@ -348,9 +346,7 @@ class WPUF_Render_Form {
 
                 </ul>
 
-                <?php if ( !$preview ) { ?>
-                </form>
-            <?php } ?>
+            </form>
 
             <?php
         } //endif
@@ -632,7 +628,7 @@ class WPUF_Render_Form {
                 </head>
                 <body>
                     <div class="container">
-                        <?php $this->render_form( $form_id, null, true ); ?>
+                        <?php $this->render_form( $form_id, null ); ?>
                     </div>
                 </body>
             </html>

@@ -188,13 +188,12 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 $user = get_user_by( 'email', $guest_email );
                 if ( $user ) {
                     // $post_author = $user->ID;
-                    echo json_encode( array(
+                    wp_send_json( array(
                         'success'     => false,
                         'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lost the form data.\nClick 'Cancel' to stay at this page.", 'wpuf' ),
                         'type'        => 'login',
                         'redirect_to' => wp_login_url( get_permalink( $_POST['page_id'] ) )
                     ) );
-                    exit;
                 } else {
 
                     // user not found, lets register him
@@ -545,8 +544,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             wpuf_clear_buffer();
 
-            echo json_encode( $response );
-            exit;
+            wp_send_json( $response );
         }
 
         $this->send_error( __( 'Something went wrong', 'wpuf' ) );

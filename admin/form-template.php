@@ -57,7 +57,9 @@ class WPUF_Admin_Form_Template {
             return;
         }
 
-        $registry = wpuf_get_post_form_templates();
+        $registry       = wpuf_get_post_form_templates();
+        $blank_form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
+        $action_name    = 'wpuf_post_form_template';
 
         if ( ! $registry ) {
             return;

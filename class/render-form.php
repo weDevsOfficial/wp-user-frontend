@@ -191,74 +191,98 @@ class WPUF_Render_Form {
 
         foreach ($meta_vars as $key => $value) {
 
-            // put files in a separate array, we'll process it later
-            if ( ($value['input_type'] == 'file_upload') || ($value['input_type'] == 'image_upload') ) {
-                $files[] = array(
-                    'name' => $value['name'],
-                    'value' => isset( $_POST['wpuf_files'][$value['name']] ) ? $_POST['wpuf_files'][$value['name']] : array(),
-                    'count' => $value['count']
-                );
+            switch ( $value['input_type'] ) {
 
-                // process repeatable fiels
-            } elseif ( $value['input_type'] == 'repeat' ) {
+                // put files in a separate array, we'll process it later
+                case 'file_upload':
+                case 'image_upload':
 
-                // if it is a multi column repeat field
-                if ( isset( $value['multiple'] ) && $value['multiple'] == 'true' ) {
+                    $files[] = array(
+                        'name'  => $value['name'],
+                        'value' => isset( $_POST['wpuf_files'][$value['name']] ) ? $_POST['wpuf_files'][$value['name']] : array(),
+                        'count' => $value['count']
+                    );
+                    break;
 
-                    // if there's any items in the array, process it
-                    if ( $_POST[$value['name']] ) {
+                case 'repeat':
 
-                        $ref_arr = array();
-                        $cols    = count( $value['columns'] );
-                        $first   = array_shift( array_values( $_POST[$value['name']] ) ); //first element
-                        $rows    = count( $first );
+                    // if it is a multi column repeat field
+                    if ( isset( $value['multiple'] ) && $value['multiple'] == 'true' ) {
 
-                        // loop through columns
-                        for ($i = 0; $i < $rows; $i++) {
+                        // if there's any items in the array, process it
+                        if ( $_POST[$value['name']] ) {
 
-                            // loop through the rows and store in a temp array
-                            $temp = array();
-                            for ($j = 0; $j < $cols; $j++) {
+                            $ref_arr = array();
+                            $cols    = count( $value['columns'] );
+                            $first   = array_shift( array_values( $_POST[$value['name']] ) ); //first element
+                            $rows    = count( $first );
 
-                                $temp[] = $_POST[$value['name']][$j][$i];
+                            // loop through columns
+                            for ($i = 0; $i < $rows; $i++) {
+
+                                // loop through the rows and store in a temp array
+                                $temp = array();
+                                for ($j = 0; $j < $cols; $j++) {
+
+                                    $temp[] = $_POST[$value['name']][$j][$i];
+                                }
+
+                                // store all fields in a row with self::$separator separated
+                                $ref_arr[] = implode( self::$separator, $temp );
                             }
 
-                            // store all fields in a row with self::$separator separated
-                            $ref_arr[] = implode( self::$separator, $temp );
+                            // now, if we found anything in $ref_arr, store to $multi_repeated
+                            if ( $ref_arr ) {
+                                $multi_repeated[$value['name']] = array_slice( $ref_arr, 0, $rows );
+                            }
                         }
-
-                        // now, if we found anything in $ref_arr, store to $multi_repeated
-                        if ( $ref_arr ) {
-                            $multi_repeated[$value['name']] = array_slice( $ref_arr, 0, $rows );
-                        }
-                    }
-                } else {
-                    $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
-                }
-
-                // process other fields
-            } elseif ( $value['input_type'] == 'address' ) {
-
-                if ( isset( $_POST[ $value['name'] ] ) && is_array( $_POST[ $value['name'] ] ) ) {
-                    foreach ( $_POST[ $value['name'] ] as $address_field => $field_value ) {
-                        $meta_key_value[ $value['name'] ][ $address_field ] = $field_value;
-                    }
-                }
-
-            }
-            else {
-                // if it's an array, implode with this->separator
-                if ( is_array( $_POST[$value['name']] ) ) {
-
-                    if ( $value['input_type'] == 'address' ) {
-                        $meta_key_value[$value['name']] = $_POST[$value['name']];
                     } else {
                         $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
                     }
-                } else {
-                    $meta_key_value[$value['name']] = trim( $_POST[$value['name']] );
-                }
+
+                    break;
+
+                case 'address':
+
+                    if ( isset( $_POST[ $value['name'] ] ) && is_array( $_POST[ $value['name'] ] ) ) {
+                        foreach ( $_POST[ $value['name'] ] as $address_field => $field_value ) {
+                            $meta_key_value[ $value['name'] ][ $address_field ] = sanitize_text_field( $field_value );
+                        }
+                    }
+
+                    break;
+
+                case 'text':
+                case 'email':
+                case 'number':
+                case 'date':
+
+                    $meta_key_value[$value['name']] = sanitize_text_field( trim( $_POST[$value['name']] ) );
+
+                    break;
+
+                case 'textarea':
+
+                    $meta_key_value[$value['name']] = wp_kses_post( $_POST[$value['name']] );
+
+                    break;
+
+                default:
+                    // if it's an array, implode with this->separator
+                    if ( is_array( $_POST[$value['name']] ) ) {
+
+                        if ( $value['input_type'] == 'address' ) {
+                            $meta_key_value[$value['name']] = $_POST[$value['name']];
+                        } else {
+                            $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
+                        }
+                    } else {
+                        $meta_key_value[$value['name']] = trim( $_POST[$value['name']] );
+                    }
+
+                    break;
             }
+
         } //end foreach
 
         return array($meta_key_value, $multi_repeated, $files);

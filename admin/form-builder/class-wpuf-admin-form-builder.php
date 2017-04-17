@@ -135,6 +135,7 @@ class WPUF_Admin_Form_Builder {
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
             'panel_sections'    => $this->get_panel_sections(),
             'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
+            'notifications'     => wpuf_get_form_notifications( $post->ID ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
             'site_url'          => site_url('/')
         ) );
@@ -415,6 +416,7 @@ class WPUF_Admin_Form_Builder {
         }
 
         update_post_meta( $data['form_id'], $data['form_settings_key'], $data['form_settings'] );
+        update_post_meta( $data['form_id'], 'notifications', $data['notifications'] );
 
         return $saved_wpuf_inputs;
     }

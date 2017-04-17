@@ -39,6 +39,7 @@
             form_fields: wpuf_form_builder.form_fields,
             panel_sections: wpuf_form_builder.panel_sections,
             field_settings: wpuf_form_builder.field_settings,
+            notifications: wpuf_form_builder.notifications,
             current_panel: 'form-fields',
             editing_field_id: 0, // editing form field id
         },
@@ -153,6 +154,31 @@
                 });
 
                 section.fields = payload.fields;
+            },
+
+            // notifications
+            addNotification: function(state, payload) {
+                state.notifications.push(payload);
+            },
+
+            deleteNotification: function(state, index) {
+                state.notifications.splice(index, 1);
+            },
+
+            cloneNotification: function(state, index) {
+                var clone = $.extend(true, {}, state.notifications[index]);
+
+                index = parseInt(index) + 1;
+                state.notifications.splice(index, 0, clone);
+            },
+
+            // update by it's property
+            updateNotificationProperty: function(state, payload) {
+                state.notifications[payload.index][payload.property] = payload.value;
+            },
+
+            updateNotification: function(state, payload) {
+                state.notifications[payload.index] = payload.value;
             }
         }
     });
@@ -189,6 +215,10 @@
 
             form_fields: function () {
                 return this.$store.state.form_fields;
+            },
+
+            notifications: function() {
+                return this.$store.state.notifications;
             }
         },
 
@@ -288,7 +318,8 @@
                 wp.ajax.send('wpuf_form_builder_save_form', {
                     data: {
                         form_data: $('#wpuf-form-builder').serialize(),
-                        form_fields: JSON.stringify(self.form_fields)
+                        form_fields: JSON.stringify(self.form_fields),
+                        notifications: JSON.stringify(self.notifications)
                     },
 
                     success: function (response) {

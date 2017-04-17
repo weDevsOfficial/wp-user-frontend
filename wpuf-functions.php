@@ -1211,12 +1211,33 @@ function wpuf_get_child_cats() {
 
 /**
  * Returns form setting value
+ *
  * @param  init $form_id
  * @param  boolen $status
+ *
  * @return array
  */
 function wpuf_get_form_settings( $form_id, $status = true ) {
     return get_post_meta( $form_id, 'wpuf_form_settings', $status );
+}
+
+/**
+ * Get form notifications
+ *
+ * @since 2.5.2
+ *
+ * @param  int $form_id
+ *
+ * @return array
+ */
+function wpuf_get_form_notifications( $form_id ) {
+    $notifications =  get_post_meta( $form_id, 'notifications', true );
+
+    if ( !$notifications ) {
+        return array();
+    }
+
+    return $notifications;
 }
 
 /**

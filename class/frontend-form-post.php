@@ -457,6 +457,12 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                                     }
 
                                     wp_set_post_terms( $post_id, $non_hierarchical, $taxonomy['name'] );
+
+                                    // woocommerce check
+                                    if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
+                                        $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
+                                    }
+                                
                                 }
                             } // hierarchical
                         } // is text

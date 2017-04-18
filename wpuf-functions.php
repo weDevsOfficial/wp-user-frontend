@@ -1678,7 +1678,10 @@ function wpuf_duplicate_form( $post_id ) {
 
     if ( $form_id ) {
         $form_settings = wpuf_get_form_settings( $post_id );
+        $notifications = wpuf_get_form_notifications( $post_id );
+
         update_post_meta( $form_id, 'wpuf_form_settings', $form_settings );
+        update_post_meta( $form_id, 'notifications', $notifications );
 
         return $form_id;
     }
@@ -1908,4 +1911,78 @@ function wpuf_get_client_ip() {
     }
 
     return $ipaddress;
+}
+
+/**
+ * Check if the form submission is open
+ *
+ * @since 2.5.2
+ *
+ * @param  int $form_id
+ *
+ * @return boolean|WP_Error
+ */
+function wpuf_is_form_submission_open( $form_id ) {
+    $settings     = wpuf_get_form_settings( $form_id );
+    $form_type    = get_post_type( $form_id );;
+
+    $needs_login  = ( isset( $settings['require_login'] ) && $settings['require_login'] == 'true' ) ? true : false;
+    $has_limit    = ( isset( $settings['limit_entries'] ) && $settings['limit_entries'] == 'true' ) ? true : false;
+    $is_scheduled = ( isset( $settings['schedule_form'] ) && $settings['schedule_form'] == 'true' ) ? true : false;
+
+    if ( $needs_login && !is_user_logged_in() ) {
+        return new WP_Error( 'needs-login', $settings['req_login_message'] );
+    }
+
+    if ( $has_limit ) {
+
+        // handle the contact form
+        if ( 'wpuf_contact_form' == $form_type ) {
+            $limit        = (int) $settings['limit_number'];
+            $form_entries = wpuf_cf_count_form_entries( $form_id );
+
+            if ( $limit < $form_entries ) {
+                return new WP_Error( 'entry-limit', $settings['limit_message'] );
+            }
+        }
+    }
+
+    if ( $is_scheduled ) {
+        $start_time   = strtotime( $settings['schedule_start'] );
+        $end_time     = strtotime( $settings['schedule_end'] );
+        $current_time = current_time( 'timestamp' );
+
+        // too early?
+        if ( $current_time < $start_time ) {
+            return new WP_Error( 'form-pending', $settings['sc_pending_message'] );
+        } elseif ( $current_time > $end_time ) {
+            return new WP_Error( 'form-expired', $settings['sc_expired_message'] );
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Delete a form with it's field and meta
+ *
+ * @since 2.5.2
+ *
+ * @param  int  $form_id
+ * @param  boolean $force
+ *
+ * @return void
+ */
+function wpuf_delete_form( $form_id, $force = true ) {
+    global $wpdb;
+
+    wp_delete_post( $form_id, $force );
+
+    // delete form inputs as WP doesn't know the relationship
+    $wpdb->delete( $wpdb->posts,
+        array(
+            'post_parent' => $form_id,
+            'post_type'   => 'wpuf_input'
+        )
+    );
 }

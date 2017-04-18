@@ -11,10 +11,14 @@
 class WPUF_Admin_Posting extends WPUF_Render_Form {
 
     function __construct() {
+        // meta boxes
         add_action( 'add_meta_boxes', array($this, 'add_meta_boxes') );
+        add_action( 'add_meta_boxes', array($this, 'add_meta_box_form_select') );
+
         add_action( 'admin_enqueue_scripts', array($this, 'enqueue_script') );
 
         add_action( 'save_post', array($this, 'save_meta'), 1, 2 ); // save the custom fields
+        add_action( 'save_post', array( $this, 'form_selection_metabox_save' ), 1, 2 ); // save edit form id
     }
 
     function enqueue_script() {
@@ -65,6 +69,87 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         ) );
     }
 
+    /**
+     * Meta box for all Post form selection
+     *
+     * Registers a meta box in public post types to select the desired WPUF
+     * form select box to assign a form id.
+     *
+     * @since 2.5.2
+     * 
+     * @return void
+     */
+    function add_meta_box_form_select() {
+
+        $post_types = get_post_types( array('public' => true) );
+        foreach ($post_types as $post_type) {
+            add_meta_box( 'wpuf-select-form', __('WPUF Form', 'wpuf'), array($this, 'form_selection_metabox'), $post_type, 'side', 'high' );
+        }
+    }
+
+
+    /**
+     * Form selection meta box in post types
+     *
+     * Registered via $this->add_meta_box_form_select()
+     *
+     * @since 2.5.2
+     *
+     * @global object $post
+     */
+    function form_selection_metabox() {
+        global $post;
+
+        $forms = get_posts( array('post_type' => 'wpuf_forms', 'numberposts' => '-1') );
+        $selected = get_post_meta( $post->ID, '_wpuf_form_id', true );
+        ?>
+
+        <input type="hidden" name="wpuf_form_select_nonce" value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" />
+
+        <select name="wpuf_form_select">
+            <option value="">--</option>
+            <?php foreach ($forms as $form) { ?>
+            <option value="<?php echo $form->ID; ?>"<?php selected($selected, $form->ID); ?>><?php echo $form->post_title; ?></option>
+            <?php } ?>
+        </select>
+        <?php
+    }
+
+    /**
+     * Saves the form ID from form selection meta box
+     *
+     * @since 2.5.2
+     *
+     * @param int $post_id
+     * @param object $post
+     * @return int|void
+     */
+    function form_selection_metabox_save( $post_id, $post ) {
+        if ( !isset($_POST['wpuf_form_select'])) {
+            return $post->ID;
+        }
+
+        if ( !wp_verify_nonce( $_POST['wpuf_form_select_nonce'], plugin_basename( __FILE__ ) ) ) {
+            return $post->ID;
+        }
+
+        // Is the user allowed to edit the post or page?
+        if ( !current_user_can( 'edit_post', $post->ID ) ) {
+            return $post->ID;
+        }
+
+        update_post_meta( $post->ID, '_wpuf_form_id', $_POST['wpuf_form_select'] );
+    }
+    
+    /**
+     * Meta box to show WPUF Custom Fields
+     *
+     * Registers a meta box in public post types to show WPUF Custom Fields
+     *
+     * @since 2.5
+     * 
+     * @return void
+     */
     function add_meta_boxes() {
         $post_types = get_post_types( array('public' => true) );
 
@@ -73,6 +158,13 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         }
     }
 
+    /**
+     * function to hide form custom field
+     *
+     * @since 2.5
+     * 
+     * @return void
+     */
     function hide_form() {
         ?>
         <style type="text/css">
@@ -81,6 +173,16 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         <?php
     }
 
+    /**
+     * generate frontend form field
+     *
+     * @since 2.5
+     * 
+     * @param int $form_id
+     * @param int $post_id
+     * 
+     * @return void
+     */
     function render_form( $form_id, $post_id = null ) {
         global $post;
 
@@ -127,6 +229,16 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         <?php
     }
 
+    /**
+     * generate table header of frontend form field
+     *
+     * @since 2.5
+     * 
+     * @param array $form_field
+     * @param int $post_id
+     * 
+     * @return void
+     */
     function render_item_before( $form_field, $post_id = 0 ) {
         echo '<tr>';
         echo '<th><strong>';
@@ -135,6 +247,15 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         echo '<td>';
     }
 
+    /**
+     * generate table bottom of frontend form field
+     *
+     * @since 2.5
+     * 
+     * @param array $form_field
+     * 
+     * @return void
+     */
     function render_item_after( $form_field ) {
         echo '</td>';
         echo '</tr>';
@@ -281,6 +402,16 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         <?php
     }
 
+    /**
+     * save post meta
+     *
+     * @since 2.5
+     * 
+     * @param int $post_id
+     * @param object $post
+     * 
+     * @return void
+     */
     // Save the Metabox Data
     function save_meta( $post_id, $post ) {
         if ( !isset( $_POST['wpuf_cf_update'] ) ) {

@@ -369,7 +369,7 @@ class WPUF_Admin_Form_Builder {
     public static function save_form( $data ) {
         $saved_wpuf_inputs = array();
 
-        wp_update_post( array( 'ID' => $data['form_id'], 'post_title' => $data['post_title'] ) );
+        wp_update_post( array( 'ID' => $data['form_id'], 'post_status' => 'publish', 'post_title' => $data['post_title'] ) );
 
         $existing_wpuf_input_ids = get_children( array(
             'post_parent' => $data['form_id'],

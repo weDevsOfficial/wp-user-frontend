@@ -894,7 +894,7 @@ class WPUF_Admin_Form {
      */
     public static function post_title() {
         $settings = WPUF_Form_Builder_Field_Settings::get_common_properties( false );
-        $settings = array_merge( $settings, WPUF_Form_Builder_Field_Settings::get_common_text_properties() );
+        $settings = array_merge( $settings, WPUF_Form_Builder_Field_Settings::get_common_text_properties( true ) );
 
         return array(
             'template'      => 'post_title',
@@ -902,20 +902,21 @@ class WPUF_Admin_Form {
             'icon'          => 'header',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'text',
-                'template'      => 'post_title',
-                'required'      => 'no',
-                'label'         => __( 'Post Title', 'wpuf' ),
-                'name'          => 'post_title',
-                'is_meta'       => 'no',
-                'help'          => '',
-                'css'           => '',
-                'placeholder'   => '',
-                'default'       => '',
-                'size'          => 40,
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
+                'input_type'        => 'text',
+                'template'          => 'post_title',
+                'required'          => 'no',
+                'label'             => __( 'Post Title', 'wpuf' ),
+                'name'              => 'post_title',
+                'is_meta'           => 'no',
+                'help'              => '',
+                'css'               => '',
+                'placeholder'       => '',
+                'default'           => '',
+                'size'              => 40,
+                'word_restriction'  => '',
+                'id'                => 0,
+                'is_new'            => true,
+                'wpuf_cond'         => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
             )
         );
     }

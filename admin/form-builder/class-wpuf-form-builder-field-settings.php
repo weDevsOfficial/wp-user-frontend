@@ -103,8 +103,8 @@ class WPUF_Form_Builder_Field_Settings {
      *
      * @return array
      */
-    public static function get_common_text_properties() {
-        return array(
+    public static function get_common_text_properties( $word_restriction = false ) {
+        $properties = array(
             array(
                 'name'      => 'placeholder',
                 'title'     => __( 'Placeholder text', 'wpuf' ),
@@ -133,6 +133,19 @@ class WPUF_Form_Builder_Field_Settings {
                 'help_text' => __( 'Size of this input field', 'wpuf' ),
             ),
         );
+
+        if ( $word_restriction ) {
+            $properties[] = array(
+                'name'      => 'word_restriction',
+                'title'     => __( 'Word Restriction', 'wpuf' ),
+                'type'      => 'text',
+                'section'   => 'advanced',
+                'priority'  => 15,
+                'help_text' => __( 'Numebr of words the author to be restricted in', 'wpuf' ),
+            );
+        }
+
+        return apply_filters( 'wpuf-form-builder-common-text-fields-properties', $properties );
     }
 
     /**
@@ -234,7 +247,7 @@ class WPUF_Form_Builder_Field_Settings {
      */
     public static function text_field() {
         $settings = self::get_common_properties();
-        $settings = array_merge( $settings, self::get_common_text_properties() );
+        $settings = array_merge( $settings, self::get_common_text_properties( true ) );
 
         return array(
             'template'      => 'text_field',
@@ -242,20 +255,21 @@ class WPUF_Form_Builder_Field_Settings {
             'icon'          => 'text-width',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'text',
-                'template'      => 'text_field',
-                'required'      => 'no',
-                'label'         => __( 'Text', 'wpuf' ),
-                'name'          => '',
-                'is_meta'       => 'yes',
-                'help'          => '',
-                'css'           => '',
-                'placeholder'   => '',
-                'default'       => '',
-                'size'          => 40,
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'text',
+                'template'          => 'text_field',
+                'required'          => 'no',
+                'label'             => __( 'Text', 'wpuf' ),
+                'name'              => '',
+                'is_meta'           => 'yes',
+                'help'              => '',
+                'css'               => '',
+                'placeholder'       => '',
+                'default'           => '',
+                'size'              => 40,
+                'word_restriction'  => '',
+                'id'                => 0,
+                'is_new'            => true,
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }

@@ -308,7 +308,7 @@ class WPUF_Payment {
 
     function coupon_discount( $coupon_code, $amount, $pack_id ) {
         if ( empty( $coupon_code ) ) {
-            return $amount;
+            return wpuf_format_price( $amount, false );
         }
 
         $coupon       = get_page_by_title( $coupon_code, 'OBJECT', 'wpuf_coupon' );
@@ -321,36 +321,36 @@ class WPUF_Payment {
         $current_use_email = wp_get_current_user()->user_email;
 
         if ( empty( $coupon_meta['amount'] ) || $coupon_meta['amount'] == 0 ) {
-            return $amount;
+            return wpuf_format_price( $amount, false );
         }
 
-        if ( $coupon_meta['package'] != 'all' && $coupon_meta['package'] != $pack_id ) {
-            return $amount;
+        if ( !in_array( 'all', $coupon_meta['package'] ) && !in_array( $pack_id, $coupon_meta['package'] ) ) {
+            return wpuf_format_price( $amount, false );
         }
 
-        if ( $coupon_meta['usage_limit'] < $coupon_usage ) {
-            return $amount;
+        if ( !empty( $coupon_meta['usage_limit'] ) && $coupon_meta['usage_limit'] < $coupon_usage ) {
+            return wpuf_format_price( $amount, false );
         }
 
         if ( $start_date > $today && $today > $end_date ) {
-            return $amount;
+            return wpuf_format_price( $amount, false );
         }
 
         if ( count( $coupon_meta['access'] ) && !in_array( $current_use_email, $coupon_meta['access'] ) ) {
-            return $amount;
+            return wpuf_format_price( $amount, false );
         }
 
         if ( $coupon_meta['type'] == 'amount' ) {
             $new_amount = $amount -  $coupon_meta['amount'];
         } else {
-            $new_amount = ( $amount * $coupon_meta['amount'] ) / 100;
+            $new_amount = $amount - ( $amount * $coupon_meta['amount'] ) / 100;
         }
 
         if ( $new_amount >= 0 ) {
-            return $new_amount;
+            return wpuf_format_price( $new_amount, false );
         }
 
-        return $amount;
+        return wpuf_format_price( $amount, false );
 
     }
 

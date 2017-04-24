@@ -579,7 +579,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $form_settings = wpuf_get_form_settings( $form_id );
 
         $content_slug = 'post_content_' . $form_id;
-        $post_content = isset( $_POST[ $content_slug ] ) ? trim( $_POST[ $content_slug ] ) : $_POST[ 'post_content' ];
+        $post_content = isset( $_POST[ $content_slug ] ) ? trim( $_POST[ $content_slug ] ) : isset( $_POST[ 'post_content' ] ) ? $_POST[ 'post_content' ] : '';
 
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
 

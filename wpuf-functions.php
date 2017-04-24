@@ -378,7 +378,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     echo '</ul>';
 }
 
-function pri($data) {
+function pre($data) {
     echo '<pre>'; print_r( $data ); echo '</pre>';
 }
 

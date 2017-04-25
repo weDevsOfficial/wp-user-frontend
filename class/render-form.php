@@ -825,9 +825,11 @@ class WPUF_Render_Form {
 
             <?php if ( $taxonomy ) { ?>
             <script type="text/javascript">
-                jQuery(function($) {
-                    $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=post_tag', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
-                });
+                ;(function($) {
+                    $(document).ready( function(){
+                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=post_tag', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                    });
+                })(jQuery);
             </script>
             <?php } ?>
         </div>
@@ -852,8 +854,8 @@ class WPUF_Render_Form {
         }
         ?>
         <script type="text/javascript">
-            (function($) {
-                $(function() {
+            ;(function($) {
+                $(document).ready( function(){
                     WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s"', $word_nums, $field_name, $rich_text ); ?>);
                 });
             })(jQuery);
@@ -900,9 +902,11 @@ class WPUF_Render_Form {
                 </div>
 
                 <script type="text/javascript">
-                    jQuery(function() {
-                        WP_User_Frontend.insertImage('wpuf-insert-image_<?php echo $form_id; ?>', '<?php echo $form_id; ?>');
-                    });
+                    ;(function($) {
+                        $(document).ready( function(){
+                            WP_User_Frontend.insertImage('wpuf-insert-image_<?php echo $form_id; ?>', '<?php echo $form_id; ?>');
+                        });
+                    })(jQuery);
                 </script>
             <?php } ?>
 
@@ -1359,9 +1363,11 @@ class WPUF_Render_Form {
                         <input class="textfield<?php echo $this->required_class( $attr ); ?>" id="<?php echo $attr['name']; ?>" type="text" data-required="<?php echo $attr['required'] ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $terms ) ); ?>" size="40" />
 
                         <script type="text/javascript">
-                            jQuery(function($) {
-                                $('#<?php echo $attr['name']; ?>').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=<?php echo $attr['name']; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
-                            });
+                            ;(function($) {
+                                $(document).ready( function(){
+                                        $('#<?php echo $attr['name']; ?>').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=<?php echo $attr['name']; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                                });
+                            })(jQuery);
                         </script>
 
                         <?php
@@ -1463,9 +1469,11 @@ class WPUF_Render_Form {
         </div> <!-- .wpuf-fields -->
 
         <script type="text/javascript">
-            jQuery(function($) {
+            ;(function($) {
+                $(document).ready( function(){
                 new WPUF_Uploader('wpuf-<?php echo $unique_id; ?>-pickfiles', 'wpuf-<?php echo $unique_id; ?>-upload-container', <?php echo $attr['count']; ?>, '<?php echo $attr['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $attr['max_size'] ?>);
-            });
+                });
+            })(jQuery);
         </script>
     <?php
 

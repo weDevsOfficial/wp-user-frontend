@@ -560,6 +560,14 @@ class WPUF_Render_Form {
                     break;
 
                 default:
+
+                    // fallback for a dynamic method of this class if exists
+                    $dynamic_method = 'field_' . $form_field['input_type'];
+
+                    if ( method_exists( $this, $dynamic_method ) ) {
+                        $this->{$dynamic_method}( $form_field, $post_id, $type, $form_id );
+                    }
+
                     do_action( 'wpuf_render_form_' . $form_field['input_type'], $form_field, $form_id, $post_id, $form_settings );
                     do_action( 'wpuf_render_pro_' . $form_field['input_type'], $form_field, $post_id, $type, $form_id, $form_settings, 'WPUF_Render_Form', $this, $this->multiform_start, isset( $form_settings['enable_multistep'] )?$form_settings['enable_multistep']:'' );
                     break;

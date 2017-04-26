@@ -78,7 +78,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 22,
-                'help_text' => __( 'Give the user some information about this field', 'wpuf' ),
+                'help_text' => __( 'Provide a container class name for this field.', 'wpuf' ),
             ),
         );
 

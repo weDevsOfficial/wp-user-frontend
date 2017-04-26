@@ -47,7 +47,7 @@ class WPUF_Shortcodes_Button {
      */
     function add_media_button( $editor_id ) {
         ?>
-            <a href="#TB_inline?width=480&amp;inlineId=wpuf-select-form" class="button thickbox insert-form" data-editor="<?php echo esc_attr( $editor_id ); ?>" title="<?php _e( 'Add a Form', 'wpuf' ); ?>">
+            <a href="#TB_inline?width=480&amp;inlineId=wpuf-media-dialog" class="button thickbox insert-form" data-editor="<?php echo esc_attr( $editor_id ); ?>" title="<?php _e( 'Add a Form', 'wpuf' ); ?>">
                 <?php echo '<span class="wp-media-buttons-icon dashicons dashicons-welcome-widgets-menus"></span>' . __( ' Add Form', 'wpuf' ); ?>
             </a>
         <?php

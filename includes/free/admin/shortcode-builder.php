@@ -1,4 +1,4 @@
-<div id="wpuf-select-form" style="display: none;">
+<div id="wpuf-media-dialog" style="display: none;">
 
     <div class="wpuf-popup-container">
 

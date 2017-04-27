@@ -4,11 +4,10 @@
 
         <h3><?php _e( 'Select a form to insert', 'wpuf' ); ?></h3>
 
-        <?php $form_types = apply_filters( 'wpuf_dialog_form_type', array(
-                'post' => __( 'Post Form', 'wpuf' ),
-                'registration' => __( 'Registration Form', 'wpuf' ),
-            ) 
-        ); ?>
+        <?php $form_types = apply_filters( 'wpuf_shortcode_dialog_form_type', array(
+            'post'         => __( 'Post Form', 'wpuf' ),
+            'registration' => __( 'Registration Form', 'wpuf' ),
+        ) ); ?>
 
         <div class="wpuf-div">
             <label for="wpuf-form-type" class="label"><?php _e( 'Form Type', 'wpuf' ); ?></label>
@@ -27,12 +26,13 @@
                 case 'post':
                     $form_post_type = 'wpuf_forms';
                     break;
+
                 case 'registration':
                     $form_post_type = 'wpuf_profile';
                     break;
 
                 default:
-                    $form_post_type = 'wpuf_forms';
+                    $form_post_type = apply_filters( 'wpuf_shortcode_dialog_form_type_post', $key, $form_types );
                     break;
 
             } ?>
@@ -43,11 +43,11 @@
 
                 <select id="wpuf-form-<?php echo $key; ?>">
 
-                    <?php 
+                    <?php
                     $args = array(
-                        'post_type'        => apply_filters( 'wpuf_dialog_post_type', $form_post_type ),
-                        'post_status'      => 'publish',
-                        );
+                        'post_type'   => $form_post_type,
+                        'post_status' => 'publish',
+                    );
                     $form_posts = get_posts( $args );
 
                     foreach ($form_posts as $form) { ?>
@@ -60,7 +60,7 @@
 
             </div>
 
-        <?php } 
+        <?php }
 
         do_action( 'wpuf_shortcode_dialog_content', $form_types ); ?>
 

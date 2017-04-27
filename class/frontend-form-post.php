@@ -583,26 +583,9 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
 
-        $post_status = 'draft';
-        $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
-        $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
-
-        if ( $charging_enabled == 'yes' && ! isset( $_POST['post_id'] ) ) {
-            if ( !empty( $user_wpuf_subscription_pack ) ) {
-                if ( isset ( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes'  ) {
-                    $post_status = 'pending';
-                } elseif ( isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) <= time() ) {
-                    $post_status = 'pending';
-                }
-            }
-            else {
-                $post_status = 'pending';
-            }
-        }
-
         $postarr = array(
             'post_type'    => $form_settings['post_type'],
-            'post_status'  => $post_status,
+            'post_status'  => wpuf_get_draft_post_status( $form_settings ),
             'post_author'  => get_current_user_id(),
             'post_title'   => isset( $_POST['post_title'] ) ? trim( $_POST['post_title'] ) : '',
             'post_content' => $post_content,

@@ -1986,3 +1986,32 @@ function wpuf_delete_form( $form_id, $force = true ) {
         )
     );
 }
+
+/**
+ * Check save draft post status based on subscription
+ *
+ * @since 2.5.2
+ *
+ * @param  array  $form_settings
+ *
+ * @return string $post_status
+ */
+function wpuf_get_draft_post_status( $form_settings ) {
+    $post_status = 'draft';
+    $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+    $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
+
+    if ( $charging_enabled == 'yes' && ! isset( $_POST['post_id'] ) ) {
+        if ( !empty( $user_wpuf_subscription_pack ) ) {
+            if ( isset ( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes'  ) {
+                $post_status = 'pending';
+            } elseif ( isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) <= time() ) {
+                $post_status = 'pending';
+            }
+        }
+        else {
+            $post_status = 'pending';
+        }
+    }
+    return $post_status;
+}

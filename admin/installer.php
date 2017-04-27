@@ -24,7 +24,7 @@ class WPUF_Admin_Installer {
             ?>
             <div class="updated error">
                 <p>
-                    <?php _e( 'If you have not created <strong>WP User Frontend Pro</strong> pages yet, you can do this by one click.', 'wpuf' ); ?>
+                    <?php _e( 'If you have not created <strong>WP User Frontend</strong> pages yet, you can do this by one click.', 'wpuf' ); ?>
                 </p>
                 <p class="submit">
                     <a class="button button-primary" href="<?php echo add_query_arg( array( 'install_wpuf_pages' => true ), admin_url( 'admin.php?page=wpuf-settings' ) ); ?>"><?php _e( 'Install WPUF Pages', 'wpuf' ); ?></a>
@@ -39,7 +39,7 @@ class WPUF_Admin_Installer {
             ?>
             <div class="updated">
                 <p>
-                    <strong><?php _e( 'Congratulations!', 'wpuf' ); ?></strong> <?php _e( 'Pages for <strong>WP User Frontend Pro</strong> has been successfully installed and saved!', 'wpuf' ); ?>
+                    <strong><?php _e( 'Congratulations!', 'wpuf' ); ?></strong> <?php _e( 'Pages for <strong>WP User Frontend</strong> has been successfully installed and saved!', 'wpuf' ); ?>
                 </p>
             </div>
             <?php

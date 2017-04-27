@@ -454,6 +454,9 @@ ul.wpuf-form.form-label-hidden li .wpuf-fields {
   float: none;
   width: 100%;
 }
+ul.wpuf-form .wpuf-submit .wpuf-label {
+  display: none !important;
+}
 ul.wpuf-form .wpuf-submit input[type=submit] {
   font-size: 16px;
   padding: 5px 15px;

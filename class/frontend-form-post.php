@@ -79,7 +79,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $post_id = isset( $_GET['pid'] ) ? intval( $_GET['pid'] ) : 0;
 
         if ( !$post_id ) {
-            return '<div class="wpuf-info">' . __( 'Invalid post', 'wpuf' );
+            return '<div class="wpuf-info">' . __( 'Invalid post', 'wpuf' ) . '</div>';
         }
 
         //is editing enabled?
@@ -462,7 +462,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                                     if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
                                         $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
                                     }
-                                
+
                                 }
                             } // hierarchical
                         } // is text

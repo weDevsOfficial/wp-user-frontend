@@ -4,53 +4,65 @@
 
         <h3><?php _e( 'Select a form to insert', 'wpuf' ); ?></h3>
 
+        <?php $form_types = apply_filters( 'wpuf_dialog_form_type', array(
+                'post' => __( 'Post Form', 'wpuf' ),
+                'registration' => __( 'Registration Form', 'wpuf' ),
+            ) 
+        ); ?>
+
         <div class="wpuf-div">
             <label for="wpuf-form-type" class="label"><?php _e( 'Form Type', 'wpuf' ); ?></label>
-
             <select id="wpuf-form-type">
-                <option value="post"><?php _e( 'Post Form', 'wpuf' ); ?></option>
-                <option value="registration"><?php _e( 'Registration Form', 'wpuf' ); ?></option>
+
+                <?php foreach ( $form_types as $key => $form_type ) { ?>
+                    <option value="<?php echo $key; ?>"><?php echo $form_type; ?></option>
+                <?php } ?>
+
             </select>
         </div>
 
-        <div class="wpuf-div show-if-post">
-            <label for="wpuf-form-post" class="label"><?php _e( 'Post Form', 'wpuf' ); ?></label>
-            <select id="wpuf-form-post">
-                <?php 
-                $args = array(
-                    'post_type'        => 'wpuf_forms',
-                    'post_status'      => 'publish',
-                    );
-                $posts_array = get_posts( $args );
+        <?php foreach ( $form_types as $key => $form_type ) {
 
-                foreach ($posts_array as $post) {
-                    ?>
-                    <option value="<?php echo $post->ID; ?>"><?php echo $post->post_title; ?></option>
-                    <?php
-                }
-                ?>
-            </select>
-        </div>
+            switch ( $key ) {
+                case 'post':
+                    $form_post_type = 'wpuf_forms';
+                    break;
+                case 'registration':
+                    $form_post_type = 'wpuf_profile';
+                    break;
 
-        <div class="wpuf-div show-if-registration">
-            <label for="wpuf-form-registration" class="label"><?php _e( 'Registration Form', 'wpuf' ); ?></label>
+                default:
+                    $form_post_type = 'wpuf_forms';
+                    break;
 
-            <select id="wpuf-form-registration">
-                <?php 
-                $args = array(
-                    'post_type'        => 'wpuf_profile',
-                    'post_status'      => 'publish',
-                    );
-                $posts_array = get_posts( $args );
+            } ?>
 
-                foreach ($posts_array as $post) {
-                    ?>
-                    <option value="<?php echo $post->ID; ?>"><?php echo $post->post_title; ?></option>
-                    <?php
-                }
-                ?>
-            </select>
-        </div>
+            <div class="wpuf-div show-if-<?php echo $key; ?>">
+
+                <label for="wpuf-form-<?php echo $key; ?>" class="label"><?php echo $form_type; ?></label>
+
+                <select id="wpuf-form-<?php echo $key; ?>">
+
+                    <?php 
+                    $args = array(
+                        'post_type'        => apply_filters( 'wpuf_dialog_post_type', $form_post_type ),
+                        'post_status'      => 'publish',
+                        );
+                    $form_posts = get_posts( $args );
+
+                    foreach ($form_posts as $form) { ?>
+
+                        <option value="<?php echo $form->ID; ?>"><?php echo $form->post_title; ?></option>
+
+                    <?php } ?>
+
+                </select>
+
+            </div>
+
+        <?php } 
+
+        do_action( 'wpuf_shortcode_dialog_content', $form_types ); ?>
 
         <div class="submit-button wpuf-div">
             <button id="wpuf-form-insert" class="button-primary"><?php _e( 'Insert Form', 'wpuf' ); ?></button>

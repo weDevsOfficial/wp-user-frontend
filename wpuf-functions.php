@@ -378,7 +378,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     echo '</ul>';
 }
 
-function pri($data) {
+function pre($data) {
     echo '<pre>'; print_r( $data ); echo '</pre>';
 }
 
@@ -1211,12 +1211,33 @@ function wpuf_get_child_cats() {
 
 /**
  * Returns form setting value
+ *
  * @param  init $form_id
  * @param  boolen $status
+ *
  * @return array
  */
 function wpuf_get_form_settings( $form_id, $status = true ) {
     return get_post_meta( $form_id, 'wpuf_form_settings', $status );
+}
+
+/**
+ * Get form notifications
+ *
+ * @since 2.5.2
+ *
+ * @param  int $form_id
+ *
+ * @return array
+ */
+function wpuf_get_form_notifications( $form_id ) {
+    $notifications =  get_post_meta( $form_id, 'notifications', true );
+
+    if ( !$notifications ) {
+        return array();
+    }
+
+    return $notifications;
 }
 
 /**
@@ -1584,10 +1605,10 @@ function wpuf_trim_zeros( $price ) {
  *
  * @return mixed
  */
-function wpuf_format_price( $price, $args = array() ) {
+function wpuf_format_price( $price, $formated = true, $args = array() ) {
 
     extract( apply_filters( 'wpuf_price_args', wp_parse_args( $args, array(
-        'currency'           => wpuf_get_currency( 'symbol' ),
+        'currency'           => ( $formated ? wpuf_get_currency( 'symbol' ) : '' ),
         'decimal_separator'  => wpuf_get_price_decimal_separator(),
         'thousand_separator' => wpuf_get_price_thousand_separator(),
         'decimals'           => wpuf_get_price_decimals(),
@@ -1657,7 +1678,10 @@ function wpuf_duplicate_form( $post_id ) {
 
     if ( $form_id ) {
         $form_settings = wpuf_get_form_settings( $post_id );
+        $notifications = wpuf_get_form_notifications( $post_id );
+
         update_post_meta( $form_id, 'wpuf_form_settings', $form_settings );
+        update_post_meta( $form_id, 'notifications', $notifications );
 
         return $form_id;
     }
@@ -1858,4 +1882,136 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
     }
 
     return $form_id;
+}
+
+/**
+ * Get the client IP address
+ *
+ * @since 2.5.2
+ *
+ * @return string
+ */
+function wpuf_get_client_ip() {
+    $ipaddress = '';
+
+    if ( isset($_SERVER['HTTP_CLIENT_IP'] ) ) {
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    } else if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else if ( isset( $_SERVER['HTTP_X_FORWARDED'] ) ) {
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    } else if ( isset( $_SERVER['HTTP_FORWARDED_FOR'] ) ) {
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    } else if ( isset( $_SERVER['HTTP_FORWARDED'] ) ) {
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    } else if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    } else {
+        $ipaddress = 'UNKNOWN';
+    }
+
+    return $ipaddress;
+}
+
+/**
+ * Check if the form submission is open
+ *
+ * @since 2.5.2
+ *
+ * @param  int $form_id
+ *
+ * @return boolean|WP_Error
+ */
+function wpuf_is_form_submission_open( $form_id ) {
+    $settings     = wpuf_get_form_settings( $form_id );
+    $form_type    = get_post_type( $form_id );;
+
+    $needs_login  = ( isset( $settings['require_login'] ) && $settings['require_login'] == 'true' ) ? true : false;
+    $has_limit    = ( isset( $settings['limit_entries'] ) && $settings['limit_entries'] == 'true' ) ? true : false;
+    $is_scheduled = ( isset( $settings['schedule_form'] ) && $settings['schedule_form'] == 'true' ) ? true : false;
+
+    if ( $needs_login && !is_user_logged_in() ) {
+        return new WP_Error( 'needs-login', $settings['req_login_message'] );
+    }
+
+    if ( $has_limit ) {
+
+        // handle the contact form
+        if ( 'wpuf_contact_form' == $form_type ) {
+            $limit        = (int) $settings['limit_number'];
+            $form_entries = wpuf_cf_count_form_entries( $form_id );
+
+            if ( $limit < $form_entries ) {
+                return new WP_Error( 'entry-limit', $settings['limit_message'] );
+            }
+        }
+    }
+
+    if ( $is_scheduled ) {
+        $start_time   = strtotime( $settings['schedule_start'] );
+        $end_time     = strtotime( $settings['schedule_end'] );
+        $current_time = current_time( 'timestamp' );
+
+        // too early?
+        if ( $current_time < $start_time ) {
+            return new WP_Error( 'form-pending', $settings['sc_pending_message'] );
+        } elseif ( $current_time > $end_time ) {
+            return new WP_Error( 'form-expired', $settings['sc_expired_message'] );
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Delete a form with it's field and meta
+ *
+ * @since 2.5.2
+ *
+ * @param  int  $form_id
+ * @param  boolean $force
+ *
+ * @return void
+ */
+function wpuf_delete_form( $form_id, $force = true ) {
+    global $wpdb;
+
+    wp_delete_post( $form_id, $force );
+
+    // delete form inputs as WP doesn't know the relationship
+    $wpdb->delete( $wpdb->posts,
+        array(
+            'post_parent' => $form_id,
+            'post_type'   => 'wpuf_input'
+        )
+    );
+}
+
+/**
+ * Check save draft post status based on subscription
+ *
+ * @since 2.5.2
+ *
+ * @param  array  $form_settings
+ *
+ * @return string $post_status
+ */
+function wpuf_get_draft_post_status( $form_settings ) {
+    $post_status = 'draft';
+    $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+    $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
+
+    if ( $charging_enabled == 'yes' && ! isset( $_POST['post_id'] ) ) {
+        if ( !empty( $user_wpuf_subscription_pack ) ) {
+            if ( isset ( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes'  ) {
+                $post_status = 'pending';
+            } elseif ( isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) <= time() ) {
+                $post_status = 'pending';
+            }
+        }
+        else {
+            $post_status = 'pending';
+        }
+    }
+    return $post_status;
 }

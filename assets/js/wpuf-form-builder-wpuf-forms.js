@@ -36,6 +36,7 @@
     window.wpuf_forms_mixin_builder_stage = {
         data: function () {
             return {
+                label_type: 'left',
                 post_form_settings: {
                     submit_text: '',
                     draft_post: false,

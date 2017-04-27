@@ -56,6 +56,12 @@ class WPUF_Gateway_Bank {
             'post_title'  => 'WPUF Bank Order'
         ) );
 
+        $data['price'] = isset( $data['price'] ) ? empty( $data['price'] ) ? 0 : $data['price'] : 0;
+
+        if ( isset( $_POST['coupon_id'] ) && !empty( $_POST['coupon_id'] ) ) {
+            $data['price'] = WPUF_Coupons::init()->discount( $data['price'], $_POST['coupon_id'], $data['item_number'] );
+        }
+
         if ( $order_id ) {
             update_post_meta( $order_id, '_data', $data );
         }

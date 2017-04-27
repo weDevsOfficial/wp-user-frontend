@@ -135,6 +135,7 @@ class WPUF_Admin_Form_Builder {
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
             'panel_sections'    => $this->get_panel_sections(),
             'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
+            'notifications'     => wpuf_get_form_notifications( $post->ID ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
             'site_url'          => site_url('/')
         ) );
@@ -161,6 +162,14 @@ class WPUF_Admin_Form_Builder {
      */
     public function admin_print_scripts() {
         ?>
+            <script>
+                if (!window.Promise) {
+                    var promise_polyfill = document.createElement('script');
+                    promise_polyfill.setAttribute('src','https://cdn.polyfill.io/v2/polyfill.min.js');
+                    document.head.appendChild(promise_polyfill);
+                }
+            </script>
+
             <script>
                 var wpuf_form_builder_mixins = function(mixins, mixin_parent) {
                     if (!mixins || !mixins.length) {
@@ -286,6 +295,8 @@ class WPUF_Admin_Form_Builder {
             'custom_hidden_field', 'image_upload'
         ) );
 
+        // var_dump( $fields ); exit;
+
         return array(
             array(
                 'title'     => __( 'Custom Fields', 'wpuf' ),
@@ -358,7 +369,7 @@ class WPUF_Admin_Form_Builder {
     public static function save_form( $data ) {
         $saved_wpuf_inputs = array();
 
-        wp_update_post( array( 'ID' => $data['form_id'], 'post_title' => $data['post_title'] ) );
+        wp_update_post( array( 'ID' => $data['form_id'], 'post_status' => 'publish', 'post_title' => $data['post_title'] ) );
 
         $existing_wpuf_input_ids = get_children( array(
             'post_parent' => $data['form_id'],
@@ -405,6 +416,7 @@ class WPUF_Admin_Form_Builder {
         }
 
         update_post_meta( $data['form_id'], $data['form_settings_key'], $data['form_settings'] );
+        update_post_meta( $data['form_id'], 'notifications', $data['notifications'] );
 
         return $saved_wpuf_inputs;
     }

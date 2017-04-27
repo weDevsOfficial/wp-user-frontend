@@ -10,7 +10,7 @@
                 <small><?php
                 printf(
                     __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wpuf' ),
-                    admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' )
+                    $blank_form_url
                 ); ?></small>
             </h2>
         </header>
@@ -20,7 +20,7 @@
 
                 <ul>
                     <li class="blank-form">
-                        <a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' ); ?>">
+                        <a href="<?php echo $blank_form_url; ?>">
                             <span class="dashicons dashicons-plus"></span>
                             <div class="title"><?php _e( 'Blank Form', 'wpuf' ); ?></div>
                         </a>
@@ -31,7 +31,7 @@
                         $class = 'template-active';
                         $title = '';
                         $url   = esc_url( add_query_arg( array(
-                            'action'   => 'wpuf_post_form_template',
+                            'action'   => $action_name,
                             'template' => $key,
                             '_wpnonce' => wp_create_nonce( 'wpuf_create_from_template' )
                         ), admin_url( 'admin.php' ) ) );
@@ -55,10 +55,11 @@
             </div>
         </div>
 
-        <footer>
-            <?php printf( __( 'List of available templates can be found <a href="%s" target="_blank">here</a>.', 'wpuf' ), 'http://docs.wedevs.com/?p=4390' ); ?>
-            <?php printf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wpuf'), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' ); ?>
-        </footer>
+        <?php if ( $footer_help ) : ?>
+            <footer>
+                <?php echo $footer_help; ?>
+            </footer>
+        <?php endif; ?>
     </div>
     <div class="wpuf-form-template-modal-backdrop"></div>
 </div>
@@ -68,7 +69,7 @@
 (function($) {
     var popup = {
         init: function() {
-            $('a.page-title-action').on('click', this.openModal);
+            $('.wrap').on('click', 'a.page-title-action.add-form', this.openModal);
             $('.wpuf-form-template-modal-backdrop, .wpuf-form-template-modal .close').on('click', $.proxy(this.closeModal, this) );
 
             $('body').on( 'keydown', $.proxy(this.onEscapeKey, this) );

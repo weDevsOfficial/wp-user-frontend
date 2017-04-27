@@ -278,6 +278,7 @@
   color: #555;
   padding: 20px;
   display: block;
+  min-height: 118px;
 }
 .wpuf-form-template-modal .content ul li .title {
   font-size: 17px;

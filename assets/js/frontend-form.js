@@ -762,16 +762,27 @@
             bind: function(limit, field, type) {
                 if ( type === 'no' ) {
                     // it's a textarea
-
                     $('textarea#' +  field).keydown( function(event) {
-                        WP_User_Frontend.editorLimit.textareaLimit.call(this, event, limit);
+                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit);
+                    });
+
+                    $('input#' +  field).keydown( function(event) {
+                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit);
                     });
 
                     $('textarea#' +  field).on('paste', function(event) {
                         var self = $(this);
 
                         setTimeout(function() {
-                            WP_User_Frontend.editorLimit.textareaLimit.call(self, event, limit);
+                            WP_User_Frontend.editorLimit.textLimit.call(self, event, limit);
+                        }, 100);
+                    });
+
+                    $('input#' +  field).on('paste', function(event) {
+                        var self = $(this);
+
+                        setTimeout(function() {
+                            WP_User_Frontend.editorLimit.textLimit.call(self, event, limit);
                         }, 100);
                     });
 
@@ -825,7 +836,7 @@
                 }
             },
 
-            textareaLimit: function(event, limit) {
+            textLimit: function(event, limit) {
                 var self = $(this),
                     content = self.val().split(' ');
 

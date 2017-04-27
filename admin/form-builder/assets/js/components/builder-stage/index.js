@@ -77,6 +77,7 @@ Vue.component('builder-stage', {
     },
 
     methods: {
+
         open_field_settings: function(field_id) {
             this.$store.commit('open_field_settings', field_id);
         },

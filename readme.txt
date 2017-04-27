@@ -161,6 +161,35 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.5.2 (27 April, 2017) =
+
+ * [improve] Added word limit feature for text field
+ * [improve] Added page shortcode insert button in TinyMCE
+ * [improve] Added media button to insert form shortcode in post/page edit
+ * [improve] Added parameter in wpuf_format_price function to allow return both (with symbol and without symbol) price format
+ * [improve] Replace shorthand array syntax due to php version compatibility
+ * [improve] Added coupon code error message in payment page
+ * [improve] Added apply_filters to manage page shortcode
+ * [improve] Modal links and link tags updated for extending
+ * [improve] Added function to get client IP
+ * [improve] Saving custom fields sanitized and switched
+ * [improve] Added notification settings in core
+ * [improve] Added meta box to public post to select post edit form for frontend
+ * [improve] Added delete form and form submission open checking function
+ * [improve] Added label type core support on form builder with CSS
+ * [improve] Notification added on post form template class
+ * [fix] Dashboard template html closing tag issue
+ * [fix] Radio buttons & checkbox display issue
+ * [fix] Paypal payment status issue
+ * [fix] Form edit screen not showing in Internet Explorer
+ * [fix] WooCommerce attribute not showing issue
+ * [fix] Change the form status to publish once saved on duplicating a form
+ * [fix] The cancel subscription button doesn't work with non-recurring subscription
+ * [fix] Post is not creating by Save Draft button with no post content field
+ * [fix] Discount amount not deducting when payment is processed with bank option
+ * [fix] Image/File upload field not working when JavaScript is optimized by Async JavaScript plugin
+ * [fix] "save draft" button not working post saving as pending, conflict with subscription
+
 = v2.5.1 (22 March, 2017) =
 
  * [improve] Update vue.js and vuex.js version

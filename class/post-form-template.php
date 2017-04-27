@@ -49,6 +49,15 @@ abstract class WPUF_Post_Form_Template {
      */
     protected $form_settings;
 
+    /**
+     * Form notifications
+     *
+     * @since 2.5.2
+     *
+     * @var array
+     */
+    protected $form_notifications;
+
     public function __construct() {
         $this->conditionals = array(
             'condition_status' => 'no',
@@ -93,6 +102,17 @@ abstract class WPUF_Post_Form_Template {
      */
     public function get_form_settings() {
         return apply_filters( 'wpuf_post_form_template_form_settings', $this->form_settings, $this );
+    }
+
+    /**
+     * Get form notifications
+     *
+     * @since 2.5.2
+     *
+     * @return array
+     */
+    public function get_form_notifications() {
+        return apply_filters( 'wpuf_post_form_template_form_notifications', $this->form_notifications, $this );
     }
 
     /**

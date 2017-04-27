@@ -113,14 +113,16 @@ class WPUF_Admin_Template {
      * @param array $values
      */
     public static function common_text( $id, $values = array() ) {
-        $tpl               = '%s[%d][%s]';
-        $placeholder_name  = sprintf( $tpl, self::$input_name, $id, 'placeholder' );
-        $default_name      = sprintf( $tpl, self::$input_name, $id, 'default' );
-        $size_name         = sprintf( $tpl, self::$input_name, $id, 'size' );
+        $tpl                    = '%s[%d][%s]';
+        $placeholder_name       = sprintf( $tpl, self::$input_name, $id, 'placeholder' );
+        $default_name           = sprintf( $tpl, self::$input_name, $id, 'default' );
+        $size_name              = sprintf( $tpl, self::$input_name, $id, 'size' );
+        $word_restriction_name  = sprintf( $tpl, self::$input_name, $id, 'word_restriction' );
 
-        $placeholder_value = $values ? esc_attr( $values['placeholder'] ) : '';
-        $default_value     = $values ? esc_attr( $values['default'] ) : '';
-        $size_value        = $values ? esc_attr( $values['size'] ) : '40';
+        $placeholder_value      = $values ? esc_attr( $values['placeholder'] ) : '';
+        $default_value          = $values ? esc_attr( $values['default'] ) : '';
+        $size_value             = $values ? esc_attr( $values['size'] ) : '40';
+        $word_restriction_value = $values ? esc_attr( $values['word_restriction'] ) : '';
 
         ?>
         <div class="wpuf-form-rows">
@@ -137,6 +139,16 @@ class WPUF_Admin_Template {
             <label><?php _e( 'Size', 'wpuf' ); ?></label>
             <input type="text" class="smallipopInput" name="<?php echo $size_name; ?>" title="<?php esc_attr_e( 'Size of this input field', 'wpuf' ); ?>" value="<?php echo $size_value; ?>" />
         </div> <!-- .wpuf-form-rows -->
+
+        <div class="wpuf-form-rows">
+            <label><?php _e( 'Word Restriction', 'wpuf' ); ?></label>
+
+            <div class="wpuf-form-sub-fields">
+                <label>
+                    <input type="text" class="smallipopInput" name="<?php echo $word_restriction_name ?>" value="<?php echo $word_restriction_value; ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wpuf' ); ?>" />
+                </label>
+            </div>
+        </div> <!-- .wpuf-form-rows -->
         <?php
     }
 
@@ -148,17 +160,19 @@ class WPUF_Admin_Template {
      */
     public static function common_textarea( $id, $values = array() ) {
         $tpl = '%s[%d][%s]';
-        $rows_name         = sprintf( $tpl, self::$input_name, $id, 'rows' );
-        $cols_name         = sprintf( $tpl, self::$input_name, $id, 'cols' );
-        $rich_name         = sprintf( $tpl, self::$input_name, $id, 'rich' );
-        $placeholder_name  = sprintf( $tpl, self::$input_name, $id, 'placeholder' );
-        $default_name      = sprintf( $tpl, self::$input_name, $id, 'default' );
+        $rows_name              = sprintf( $tpl, self::$input_name, $id, 'rows' );
+        $cols_name              = sprintf( $tpl, self::$input_name, $id, 'cols' );
+        $rich_name              = sprintf( $tpl, self::$input_name, $id, 'rich' );
+        $placeholder_name       = sprintf( $tpl, self::$input_name, $id, 'placeholder' );
+        $default_name           = sprintf( $tpl, self::$input_name, $id, 'default' );
+        $word_restriction_name  = sprintf( $tpl, self::$input_name, $id, 'word_restriction' );
 
-        $rows_value        = $values ? esc_attr( $values['rows'] ) : '5';
-        $cols_value        = $values ? esc_attr( $values['cols'] ) : '25';
-        $rich_value        = $values ? esc_attr( $values['rich'] ) : 'no';
-        $placeholder_value = $values ? esc_attr( $values['placeholder'] ) : '';
-        $default_value     = $values ? esc_attr( $values['default'] ) : '';
+        $rows_value             = $values ? esc_attr( $values['rows'] ) : '5';
+        $cols_value             = $values ? esc_attr( $values['cols'] ) : '25';
+        $rich_value             = $values ? esc_attr( $values['rich'] ) : 'no';
+        $placeholder_value      = $values ? esc_attr( $values['placeholder'] ) : '';
+        $default_value          = $values ? esc_attr( $values['default'] ) : '';
+        $word_restriction_value = $values ? esc_attr( $values['word_restriction'] ) : '';
 
         ?>
         <div class="wpuf-form-rows">
@@ -188,6 +202,16 @@ class WPUF_Admin_Template {
                 <label><input type="radio" name="<?php echo $rich_name; ?>" value="no"<?php checked( $rich_value, 'no' ); ?>> <?php _e( 'Normal', 'wpuf' ); ?></label>
                 <label><input type="radio" name="<?php echo $rich_name; ?>" value="yes"<?php checked( $rich_value, 'yes' ); ?>> <?php _e( 'Rich textarea', 'wpuf' ); ?></label>
                 <label><input type="radio" name="<?php echo $rich_name; ?>" value="teeny"<?php checked( $rich_value, 'teeny' ); ?>> <?php _e( 'Teeny Rich textarea', 'wpuf' ); ?></label>
+            </div>
+        </div> <!-- .wpuf-form-rows -->
+
+        <div class="wpuf-form-rows">
+            <label><?php _e( 'Word Restriction', 'wpuf' ); ?></label>
+
+            <div class="wpuf-form-sub-fields">
+                <label>
+                    <input type="text" class="smallipopInput" name="<?php echo $word_restriction_name ?>" value="<?php echo $word_restriction_value; ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wpuf' ); ?>" />
+                </label>
             </div>
         </div> <!-- .wpuf-form-rows -->
         <?php
@@ -348,8 +372,6 @@ class WPUF_Admin_Template {
     }
 
     public static function textarea_field( $field_id, $label, $values = array() ) {
-        $word_restriction_name = sprintf( '%s[%d][word_restriction]', self::$input_name, $field_id );
-        $word_restriction_value = isset( $values['word_restriction'] ) && is_numeric( $values['word_restriction'] ) ? $values['word_restriction'] : '';
         ?>
         <li class="custom-field textarea_field">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -359,15 +381,6 @@ class WPUF_Admin_Template {
             <div class="wpuf-form-holder">
                 <?php self::common( $field_id, '', true, $values ); ?>
                 <?php self::common_textarea( $field_id, $values ); ?>
-                <div class="wpuf-form-rows">
-                    <label><?php _e( 'Word Restriction', 'wpuf' ); ?></label>
-
-                    <div class="wpuf-form-sub-fields">
-                        <label>
-                            <input type="text" class="smallipopInput" name="<?php echo $word_restriction_name ?>" value="<?php echo $word_restriction_value; ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wpuf' ); ?>" />
-                        </label>
-                    </div>
-                </div>
                 <?php self::conditional_field( $field_id, $values ); ?>
             </div> <!-- .wpuf-form-holder -->
         </li>

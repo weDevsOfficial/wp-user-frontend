@@ -253,14 +253,14 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
                 $settings = get_post_meta( get_the_ID(), 'wpuf_form_settings', true );
 
-                $forms[ $i ] = [
+                $forms[ $i ] = array(
                     'ID'                    => $form->ID,
                     'post_title'            => $form->post_title,
                     'post_status'           => $form->post_status,
                     'settings_post_type'    => $settings['post_type'],
                     'settings_post_status'  => $settings['post_status'],
                     'settings_guest_post'   => $settings['guest_post']
-                ];
+                );
 
 
                 $i++;

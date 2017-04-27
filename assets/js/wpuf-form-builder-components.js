@@ -80,6 +80,7 @@ Vue.component('builder-stage', {
     },
 
     methods: {
+
         open_field_settings: function(field_id) {
             this.$store.commit('open_field_settings', field_id);
         },
@@ -234,8 +235,7 @@ Vue.component('field-option-data', {
         return {
             show_value: false,
             options: [],
-            selected: [],
-
+            selected: []
         };
     },
 
@@ -285,11 +285,8 @@ Vue.component('field-option-data', {
         },
 
         // in case of select or radio buttons, user should deselect default value
-        clear_selection: function (e, label) {
-            if (label === this.selected) {
-                this.selected = '';
-                $(e.target).prop('checked', false);
-            }
+        clear_selection: function () {
+            this.selected = null;
         },
 
         add_option: function () {

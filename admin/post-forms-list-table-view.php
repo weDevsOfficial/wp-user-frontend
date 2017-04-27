@@ -5,7 +5,7 @@
 
             if ( current_user_can( wpuf_admin_role() ) ):
             ?>
-                <a href="<?php echo $add_new_page_url; ?>" id="new-wpuf-post-form" class="page-title-action"><?php _e( 'Add Form', 'wpuf' ); ?></a>
+                <a href="<?php echo $add_new_page_url; ?>" id="new-wpuf-post-form" class="page-title-action add-form"><?php _e( 'Add Form', 'wpuf' ); ?></a>
             <?php
             endif;
         ?>

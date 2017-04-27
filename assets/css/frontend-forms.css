@@ -93,15 +93,16 @@ ul.wpuf-form li .wp-editor-wrap {
 }
 ul.wpuf-form li .wpuf-label {
   float: left;
-  width: 25%;
+  width: 30%;
   min-height: 1px;
+  font-weight: bold;
 }
 ul.wpuf-form li .wpuf-label .required {
   color: red;
 }
 ul.wpuf-form li .wpuf-fields {
   float: left;
-  width: 75%;
+  width: 70%;
 }
 ul.wpuf-form li .wpuf-fields input[type=text],
 ul.wpuf-form li .wpuf-fields input[type=password],
@@ -115,6 +116,7 @@ ul.wpuf-form li .wpuf-fields textarea {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   color: #888;
+  width: 95%;
 }
 ul.wpuf-form li .wpuf-fields input[type=text]:focus,
 ul.wpuf-form li .wpuf-fields input[type=password]:focus,
@@ -126,7 +128,7 @@ ul.wpuf-form li .wpuf-fields textarea:focus {
 }
 ul.wpuf-form li .wpuf-fields textarea {
   padding-left: 3px;
-  width: 98%;
+  width: 95%;
 }
 ul.wpuf-form li .wpuf-fields input[type=text],
 ul.wpuf-form li .wpuf-fields input[type=password],
@@ -146,6 +148,11 @@ ul.wpuf-form li .wpuf-fields select {
 }
 ul.wpuf-form li .wpuf-fields select[multiple] {
   height: auto;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-radio-inline,
+ul.wpuf-form li .wpuf-fields .wpuf-checkbox-inline {
+  display: inline-block;
+  margin-right: 10px;
 }
 ul.wpuf-form li .wpuf-fields a.file-selector {
   display: inline;
@@ -188,6 +195,38 @@ ul.wpuf-form li .wpuf-fields a.file-selector:focus {
 }
 ul.wpuf-form li .wpuf-fields .google-map img {
   max-width: none !important;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap {
+  margin-bottom: 8px;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap.format-first-last .wpuf-name-field-first-name {
+  float: left;
+  width: 48%;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap.format-first-last .wpuf-name-field-middle-name {
+  display: none;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap.format-first-last .wpuf-name-field-last-name {
+  float: right;
+  width: 48%;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap.format-first-middle-last .wpuf-name-field-first-name {
+  float: left;
+  width: 37%;
+  margin-right: 3%;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap.format-first-middle-last .wpuf-name-field-middle-name {
+  float: left;
+  width: 20%;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap.format-first-middle-last .wpuf-name-field-last-name {
+  float: right;
+  width: 37%;
 }
 ul.wpuf-form li .wpuf-fields .wpuf-help {
   color: #666;
@@ -395,6 +434,29 @@ ul.wpuf-form li .wpuf-section-wrap .wpuf-section-details {
   padding: 4px 0 8px;
   font-size: 12px;
 }
+ul.wpuf-form.form-label-above li .wpuf-label,
+ul.wpuf-form.form-label-above li .wpuf-fields {
+  display: block;
+  float: none;
+  width: 100%;
+}
+ul.wpuf-form.form-label-above li .wpuf-label {
+  margin-bottom: 10px;
+}
+ul.wpuf-form.form-label-right li .wpuf-label {
+  float: right;
+}
+ul.wpuf-form.form-label-hidden li .wpuf-label {
+  display: none;
+}
+ul.wpuf-form.form-label-hidden li .wpuf-fields {
+  display: block;
+  float: none;
+  width: 100%;
+}
+ul.wpuf-form .wpuf-submit .wpuf-label {
+  display: none !important;
+}
 ul.wpuf-form .wpuf-submit input[type=submit] {
   font-size: 16px;
   padding: 5px 15px;
@@ -502,6 +564,9 @@ ul.wpuf-form .wpuf-submit .wpuf-errors {
   color: #fff;
   padding: 3px 8px;
   font-size: 14px;
+}
+.wpuf-coupon-info-wrap .wpuf-pack-info wpuf-subscription-error {
+  color: #D8000C;
 }
 .wpuf-coupon-info-wrap .wpuf-copon-show:hover {
   background: none repeat scroll 0 0 #1E8CBE;

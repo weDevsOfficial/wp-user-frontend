@@ -10,9 +10,8 @@
 
     <?php do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj ) ?>
 
-    <?php if ( $dashboard_query->have_posts() ) { ?>
+    <?php if ( $dashboard_query->have_posts() ) { 
 
-        <?php
         $featured_img = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
         $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
         $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
@@ -142,12 +141,12 @@
             }
             ?>
         </div>
-    </div>
-
     <?php
-} else {
-    printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', $post_type_obj->label );
-    do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
-}
+    } else {
+        printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', $post_type_obj->label );
+        do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
+    }
 
-do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj );
+    do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj ); ?>
+
+</div>

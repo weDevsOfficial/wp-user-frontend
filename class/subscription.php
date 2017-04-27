@@ -59,15 +59,14 @@ class WPUF_Subscription {
                 wp_die( __( 'Nonce failure', 'wpuf' ) );
             }
 
-            $user_id = get_current_user_id();
-            $current_pack = self::get_user_pack( $user_id );
+            $current_pack = self::get_user_pack( $_POST['user_id'] );
 
             $gateway = ( $_POST['gateway'] == 'bank/manual' ) ? 'bank' : sanitize_text_field( $_POST['gateway'] );
-
-            do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );
-
-            if ( $_POST['gateway'] == 'bank/manual' ) {
-                WPUF_Subscription::init()->update_user_subscription_meta( $user_id, 'Cancel' );
+            
+            if ( 'bank' == $gateway || 'no' == $current_pack['recurring'] ) {
+                WPUF_Subscription::init()->update_user_subscription_meta( $_POST['user_id'], 'Cancel' );
+            } else {
+                do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );
             }
 
             wp_redirect( $_SERVER['REQUEST_URI'] );
@@ -825,6 +824,7 @@ class WPUF_Subscription {
 
             <form action="" method="post">
                 <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
+                <input type="hidden" name="user_id" value="<?php echo get_current_user_id(); ?>">
                 <input type="hidden" name="gateway" value="<?php echo $payment_gateway; ?>">
                 <input type="submit" name="wpuf_cancel_subscription" class="btn btn-sm btn-danger" value="<?php _e( 'Cancel', 'wpuf' ); ?>">
             </form>
@@ -939,7 +939,7 @@ class WPUF_Subscription {
             ?>
             <div class="wpuf-info">
                 <?php
-                $text = sprintf( __( 'This will cost you <strong>%s</strong> to add a new post. ', 'wpuf' ), wpuf_format_price( wpuf_get_option( 'cost_per_post', 'wpuf_payment' ) ) );
+                 $text = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( wpuf_get_option( 'cost_per_post', 'wpuf_payment' ) ) );
 
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
                 ?>

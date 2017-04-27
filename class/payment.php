@@ -279,7 +279,7 @@ class WPUF_Payment {
                     $pack           = WPUF_Subscription::init()->get_subscription( $pack_id );
                     $custom         = $pack->meta_value;
                     $billing_amount = $pack->meta_value['billing_amount'];
-                    $amount         = $this->coupon_discount( $_POST['coupon_code'], $billing_amount, $pack_id );
+                    $amount         = $billing_amount;
                     $item_name      = $pack->post_title;
                     $item_number    = $pack->ID;
                     break;
@@ -304,54 +304,6 @@ class WPUF_Payment {
 
             do_action( 'wpuf_gateway_' . $gateway, $payment_vars );
         }
-    }
-
-    function coupon_discount( $coupon_code, $amount, $pack_id ) {
-        if ( empty( $coupon_code ) ) {
-            return $amount;
-        }
-
-        $coupon       = get_page_by_title( $coupon_code, 'OBJECT', 'wpuf_coupon' );
-        $coupon_meta  = WPUF_Coupons::init()->get_coupon_meta( $coupon->ID );
-        $coupon_usage = get_post_meta( $coupon->ID, 'coupon_usage',  true );
-        $coupon_usage = count( $coupon_usage );
-        $start_date   = date( 'Y-d-m', strtotime( $coupon_meta['start_date'] ) );
-        $end_date     = date( 'Y-d-m', strtotime( $coupon_meta['end_date'] ) );
-        $today        = date( 'Y-d-m', time() );
-        $current_use_email = wp_get_current_user()->user_email;
-
-        if ( empty( $coupon_meta['amount'] ) || $coupon_meta['amount'] == 0 ) {
-            return $amount;
-        }
-
-        if ( $coupon_meta['package'] != 'all' && $coupon_meta['package'] != $pack_id ) {
-            return $amount;
-        }
-
-        if ( $coupon_meta['usage_limit'] < $coupon_usage ) {
-            return $amount;
-        }
-
-        if ( $start_date > $today && $today > $end_date ) {
-            return $amount;
-        }
-
-        if ( count( $coupon_meta['access'] ) && !in_array( $current_use_email, $coupon_meta['access'] ) ) {
-            return $amount;
-        }
-
-        if ( $coupon_meta['type'] == 'amount' ) {
-            $new_amount = $amount -  $coupon_meta['amount'];
-        } else {
-            $new_amount = ( $amount * $coupon_meta['amount'] ) / 100;
-        }
-
-        if ( $new_amount >= 0 ) {
-            return $new_amount;
-        }
-
-        return $amount;
-
     }
 
     /**

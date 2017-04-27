@@ -27,8 +27,6 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
 
         $image_insert_name  = sprintf( '%s[%d][insert_image]', self::$input_name, $field_id );
         $image_insert_value = isset( $values['insert_image'] ) ? $values['insert_image'] : 'yes';
-        $word_restriction_name = sprintf( '%s[%d][word_restriction]', self::$input_name, $field_id );
-        $word_restriction_value = isset( $values['word_restriction'] ) && is_numeric( $values['word_restriction'] ) ? $values['word_restriction'] : '';
         ?>
         <li class="post_content">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -47,14 +45,6 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
                             <?php self::hidden_field( "[$field_id][insert_image]", 'no' ); ?>
                             <input type="checkbox" name="<?php echo $image_insert_name ?>" value="yes"<?php checked( $image_insert_value, 'yes' ); ?> />
                             <?php _e( 'Enable image upload in post area', 'wpuf' ); ?>
-                        </label>
-                    </div>
-
-                    <label><?php _e( 'Word Restriction', 'wpuf' ); ?></label>
-
-                    <div class="wpuf-form-sub-fields">
-                        <label>
-                            <input type="text" class="smallipopInput" name="<?php echo $word_restriction_name ?>" value="<?php echo $word_restriction_value; ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wpuf' ); ?>" />
                         </label>
                     </div>
                 </div> <!-- .wpuf-form-rows -->

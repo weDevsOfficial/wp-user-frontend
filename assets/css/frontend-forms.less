@@ -143,8 +143,9 @@ ul.wpuf-form {
 
         .wpuf-label {
             float: left;
-            width: 25%;
+            width: 30%;
             min-height: 1px;
+            font-weight: bold;
 
             .required {
                 color: red;
@@ -153,7 +154,7 @@ ul.wpuf-form {
 
         .wpuf-fields {
             float: left;
-            width: 75%;
+            width: 70%;
 
             input[type=text],
             input[type=password],
@@ -167,7 +168,9 @@ ul.wpuf-form {
                 box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
                 border: 1px solid #ddd;
                 color: #888;
+                width: 95%;
             }
+
             input[type=text]:focus,
             input[type=password]:focus,
             input[type=email]:focus,
@@ -178,7 +181,7 @@ ul.wpuf-form {
             }
             textarea {
                 padding-left: 3px;
-                width: 98%;
+                width: 95%;
             }
             input[type=text],
             input[type=password],
@@ -200,6 +203,12 @@ ul.wpuf-form {
                 height: auto;
             }
 
+            .wpuf-radio-inline,
+            .wpuf-checkbox-inline{
+                display: inline-block;
+                margin-right: 10px;
+            }
+
             a.file-selector {
                 display: inline;
                 text-decoration: none;
@@ -219,6 +228,45 @@ ul.wpuf-form {
             .google-map {
                 img {
                     max-width: none !important;
+                }
+            }
+
+            .wpuf-name-field-wrap {
+                .clearfix();
+                margin-bottom: 8px;
+
+                &.format-first-last {
+                    .wpuf-name-field-first-name {
+                        float: left;
+                        width: 48%;
+                    }
+
+                    .wpuf-name-field-middle-name {
+                        display: none;
+                    }
+
+                    .wpuf-name-field-last-name {
+                        float: right;
+                        width: 48%;
+                    }
+                }
+
+                &.format-first-middle-last {
+                    .wpuf-name-field-first-name {
+                        float: left;
+                        width: 37%;
+                        margin-right: 3%;
+                    }
+
+                    .wpuf-name-field-middle-name {
+                        float: left;
+                        width: 20%;
+                    }
+
+                    .wpuf-name-field-last-name {
+                        float: right;
+                        width: 37%;
+                    }
                 }
             }
 
@@ -448,7 +496,42 @@ ul.wpuf-form {
         }
     }
 
+    &.form-label-above li {
+        .wpuf-label,
+        .wpuf-fields {
+            display: block;
+            float: none;
+            width: 100%;
+        }
+
+        .wpuf-label {
+            margin-bottom: 10px;
+        }
+    }
+
+    &.form-label-right li {
+        .wpuf-label {
+            float: right;
+        }
+    }
+
+    &.form-label-hidden li {
+        .wpuf-label {
+            display: none;
+        }
+
+        .wpuf-fields {
+            display: block;
+            float: none;
+            width: 100%;
+        }
+    }
+
     .wpuf-submit {
+        .wpuf-label {
+            display: none !important;
+        }
+
         input[type=submit] {
             font-size: 16px;
             padding: 5px 15px;
@@ -555,6 +638,10 @@ ul.wpuf-form {
                 padding: 3px 8px;
                 font-size: 14px;
             }
+        }
+
+        wpuf-subscription-error {
+            color: #D8000C;
         }
     }
 

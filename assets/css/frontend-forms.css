@@ -145,6 +145,7 @@ ul.wpuf-form li .wpuf-fields select {
   -moz-border-radius: 3px;
   border-radius: 3px;
   min-width: 150px;
+  max-width: 100%;
 }
 ul.wpuf-form li .wpuf-fields select[multiple] {
   height: auto;
@@ -153,6 +154,11 @@ ul.wpuf-form li .wpuf-fields .wpuf-radio-inline,
 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-inline {
   display: inline-block;
   margin-right: 10px;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
+ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
+  display: block;
+  margin-bottom: 6px;
 }
 ul.wpuf-form li .wpuf-fields a.file-selector {
   display: inline;
@@ -414,6 +420,11 @@ ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons 
   height: 15px;
   margin: 2px 4px 0 0;
 }
+ul.wpuf-form li label.wpuf-form-sub-label {
+  font-size: 12px;
+  display: inline-block;
+  padding-top: 5px;
+}
 ul.wpuf-form li .wpuf-address-field {
   width: 100%;
   margin-bottom: 10px;
@@ -422,6 +433,20 @@ ul.wpuf-form li .wpuf-address-field:after {
   clear: both;
   content: "";
   display: table;
+}
+ul.wpuf-form li .wpuf-address-field.city_name,
+ul.wpuf-form li .wpuf-address-field.state,
+ul.wpuf-form li .wpuf-address-field.zip,
+ul.wpuf-form li .wpuf-address-field.country_select {
+  float: left;
+  width: 47%;
+}
+ul.wpuf-form li .wpuf-address-field.city_name,
+ul.wpuf-form li .wpuf-address-field.zip {
+  margin-right: 4%;
+}
+ul.wpuf-form li .wpuf-address-field.zip {
+  clear: both;
 }
 ul.wpuf-form li .wpuf-section-wrap {
   border-bottom: 1px solid #ccc;
@@ -453,9 +478,6 @@ ul.wpuf-form.form-label-hidden li .wpuf-fields {
   display: block;
   float: none;
   width: 100%;
-}
-ul.wpuf-form .wpuf-submit .wpuf-label {
-  display: none !important;
 }
 ul.wpuf-form .wpuf-submit input[type=submit] {
   font-size: 16px;
@@ -497,6 +519,9 @@ ul.wpuf-form .wpuf-submit .wpuf-errors {
   -moz-border-radius: 3px;
   border-radius: 3px;
   font-size: 13px;
+}
+ul.wpuf-form:not(.form-label-left) .wpuf-submit .wpuf-label {
+  display: none !important;
 }
 #wpuf-login-form label {
   display: block;

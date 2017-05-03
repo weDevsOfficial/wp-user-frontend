@@ -197,6 +197,7 @@ ul.wpuf-form {
                 height: 2em;
                 .border-radius(3px);
                 min-width: 150px;
+                max-width: 100%;
             }
 
             select[multiple] {
@@ -207,6 +208,12 @@ ul.wpuf-form {
             .wpuf-checkbox-inline{
                 display: inline-block;
                 margin-right: 10px;
+            }
+
+            .wpuf-radio-block,
+            .wpuf-checkbox-block{
+                display: block;
+                margin-bottom: 6px;
             }
 
             a.file-selector {
@@ -475,10 +482,33 @@ ul.wpuf-form {
             }
         }
 
+        label.wpuf-form-sub-label {
+            font-size: 12px;
+            display: inline-block;
+            padding-top: 5px;
+        }
+
         .wpuf-address-field {
             .clearfix();
             width: 100%;
             margin-bottom: 10px;
+
+            &.city_name,
+            &.state,
+            &.zip,
+            &.country_select {
+                float: left;
+                width: 47%;
+            }
+
+            &.city_name,
+            &.zip {
+                margin-right: 4%;
+            }
+
+            &.zip {
+                clear: both;
+            }
         }
 
         .wpuf-section-wrap {
@@ -528,9 +558,6 @@ ul.wpuf-form {
     }
 
     .wpuf-submit {
-        .wpuf-label {
-            display: none !important;
-        }
 
         input[type=submit] {
             font-size: 16px;
@@ -558,6 +585,10 @@ ul.wpuf-form {
             .border-radius(3px);
             font-size: 13px;
         }
+    }
+
+    &:not(.form-label-left) .wpuf-submit .wpuf-label {
+        display: none !important;
     }
 }
 

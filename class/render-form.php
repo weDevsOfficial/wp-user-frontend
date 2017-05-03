@@ -994,7 +994,7 @@ class WPUF_Render_Form {
                 <?php
                 if ( $attr['options'] && count( $attr['options'] ) > 0 ) {
                     foreach ($attr['options'] as $value => $option) {
-                        $current_select = $multiselect ? selected( in_array( $value, $selected ), true, false ) : selected( $selected, $value, false );
+                        $current_select = $multiselect ? selected( in_array( $option, $selected ), true, false ) : selected( $selected, $option, false );
                         ?>
                         <option value="<?php echo esc_attr( $value ); ?>"<?php echo $current_select; ?>><?php echo $option; ?></option>
                         <?php
@@ -1029,7 +1029,7 @@ class WPUF_Render_Form {
                     ?>
 
                     <label <?php echo $attr['inline'] == 'yes' ? 'class="wpuf-radio-inline"' : 'class="wpuf-radio-block"'; ?>>
-                        <input name="<?php echo $attr['name']; ?>" class="<?php echo 'wpuf_'.$attr['name']. '_'. $form_id; ?>" type="radio" value="<?php echo esc_attr( $value ); ?>"<?php checked( $selected, $value ); ?> />
+                        <input name="<?php echo $attr['name']; ?>" class="<?php echo 'wpuf_'.$attr['name']. '_'. $form_id; ?>" type="radio" value="<?php echo esc_attr( $value ); ?>"<?php checked( $selected, $option ); ?> />
                         <?php echo $option; ?>
                     </label>
                     <?php
@@ -1069,7 +1069,7 @@ class WPUF_Render_Form {
                     ?>
 
                     <label <?php echo $attr['inline'] == 'yes' ? 'class="wpuf-checkbox-inline"' : 'class="wpuf-checkbox-block"'; ?>>
-                        <input type="checkbox" class="<?php echo 'wpuf_'.$attr['name']. '_'. $form_id; ?>" name="<?php echo $attr['name']; ?>[]" value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?> />
+                        <input type="checkbox" class="<?php echo 'wpuf_'.$attr['name']. '_'. $form_id; ?>" name="<?php echo $attr['name']; ?>[]" value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $option, $selected ) ? ' checked="checked"' : ''; ?> />
                         <?php echo $option; ?>
                     </label>
                     <?php

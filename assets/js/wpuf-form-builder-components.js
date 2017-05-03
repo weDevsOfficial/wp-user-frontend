@@ -313,7 +313,7 @@ Vue.component('field-option-data', {
         },
 
         set_option_label: function (index, label) {
-            this.options[index].value = label.toLocaleLowerCase().replace(' ', '_');
+            this.options[index].value = label.toLocaleLowerCase().replace( /\s/g, '_' );
         }
     },
 

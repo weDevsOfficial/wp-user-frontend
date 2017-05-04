@@ -442,6 +442,10 @@ class WPUF_Render_Form {
             if ( typeof wpuf_conditional_items === 'undefined' ) {
                 wpuf_conditional_items = [];
             }
+
+            if ( typeof wpuf_plupload_items === 'undefined' ) {
+                wpuf_plupload_items = [];
+            }
         </script>
         <?php
 
@@ -1490,7 +1494,8 @@ class WPUF_Render_Form {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                new WPUF_Uploader('wpuf-<?php echo $unique_id; ?>-pickfiles', 'wpuf-<?php echo $unique_id; ?>-upload-container', <?php echo $attr['count']; ?>, '<?php echo $attr['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $attr['max_size'] ?>);
+                    var uploader = new WPUF_Uploader('wpuf-<?php echo $unique_id; ?>-pickfiles', 'wpuf-<?php echo $unique_id; ?>-upload-container', <?php echo $attr['count']; ?>, '<?php echo $attr['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $attr['max_size'] ?>);
+                    wpuf_plupload_items.push(uploader);
                 });
             })(jQuery);
         </script>

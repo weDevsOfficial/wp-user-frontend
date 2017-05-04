@@ -32,6 +32,15 @@
             $('form#post').on('submit', this.adminPostSubmit);
             $( '.wpuf-form').on('keyup', '#pass1', this.check_pass_strength );
 
+            // refresh pluploads on each step change (multistep form)
+            $('.wpuf-form').on('step-change-fieldset', function(event, number, step) {
+                if ( wpuf_plupload_items.length ) {
+                    for (var i = wpuf_plupload_items.length - 1; i >= 0; i--) {
+                        wpuf_plupload_items[i].refresh();
+                    }
+                }
+            });
+
             this.ajaxCategory();
             // image insert
             // this.insertImage();
@@ -158,6 +167,8 @@
         },
 
         change_fieldset: function(step_number, progressbar_type) {
+            var current_step = $('fieldset.wpuf-multistep-fieldset').eq(step_number);
+
             $('fieldset.wpuf-multistep-fieldset').removeClass('field-active').eq(step_number).addClass('field-active');
 
             $('.wpuf-step-wizard li').each(function(){
@@ -183,7 +194,7 @@
             }
 
             // trigger a change event
-            $('.wpuf-form').trigger('step-change-fieldset');
+            $('.wpuf-form').trigger('step-change-fieldset', [ step_number, current_step ]);
         },
 
         ajaxCategory: function () {

@@ -295,8 +295,6 @@ class WPUF_Admin_Form_Builder {
             'custom_hidden_field', 'image_upload'
         ) );
 
-        // var_dump( $fields ); exit;
-
         return array(
             array(
                 'title'     => __( 'Custom Fields', 'wpuf' ),

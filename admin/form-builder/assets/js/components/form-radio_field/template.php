@@ -4,8 +4,8 @@
             <label>
                 <input
                     type="radio"
-                    :value="label"
-                    :checked="is_selected(label)"
+                    :value="val"
+                    :checked="is_selected(val)"
                     :class="class_names('radio_btns')"
                 > {{ label }}
             </label>

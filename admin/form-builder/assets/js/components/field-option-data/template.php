@@ -30,13 +30,13 @@
                 <input
                     v-if="option_field.is_multiple"
                     type="checkbox"
-                    :value="option.label"
+                    :value="option.value"
                     v-model="selected"
                 >
                 <input
                     v-else
                     type="radio"
-                    :value="option.label"
+                    :value="option.value"
                     v-model="selected"
                     class="option-chooser-radio"
                 >

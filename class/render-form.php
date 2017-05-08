@@ -847,7 +847,6 @@ class WPUF_Render_Form {
         </div>
 
         <?php
-        // var_dump($attr);
         if ( isset( $attr['word_restriction'] ) && $attr['word_restriction'] ) {
             $this->check_word_restriction_func( $attr['word_restriction'], 'no', $attr['name'] . '_' . $form_id );
         }
@@ -980,12 +979,6 @@ class WPUF_Render_Form {
         } else {
             $selected = isset( $attr['selected'] ) ? $attr['selected'] : '';
             $selected = $multiselect ? ( is_array( $selected ) ? $selected : array() ) : $selected;
-            if ( $multiselect && count( $selected ) ) {
-                foreach ( $selected as $option ) {
-                    $selected_value[] = str_replace( " ", "_", strtolower ( $option ) );
-                }
-                $selected = $selected_value;
-            }
         }
 
         $name      = $multiselect ? $attr['name'] . '[]' : $attr['name'];
@@ -1004,7 +997,7 @@ class WPUF_Render_Form {
                 <?php
                 if ( $attr['options'] && count( $attr['options'] ) > 0 ) {
                     foreach ($attr['options'] as $value => $option) {
-                        $current_select = $multiselect ? selected( in_array( $value, $selected ), true, false ) : selected( str_replace( " ", "_", strtolower ( $selected ) ), $value, false );
+                        $current_select = $multiselect ? selected( in_array( $value, $selected ), true, false ) : selected( $selected, $value, false );
                         ?>
                         <option value="<?php echo esc_attr( $value ); ?>"<?php echo $current_select; ?>><?php echo $option; ?></option>
                         <?php
@@ -1024,7 +1017,7 @@ class WPUF_Render_Form {
      * @param int|null $post_id
      */
     function radio( $attr, $post_id, $type, $form_id ) {
-        $selected = isset( $attr['selected'] ) ? str_replace( " ", "_", strtolower ( $attr['selected'] ) ) : '';
+        $selected = isset( $attr['selected'] ) ? $attr['selected'] : '';
         if ( $post_id ) {
             $selected = $this->get_meta( $post_id, $attr['name'], $type, true );
         }
@@ -1038,7 +1031,7 @@ class WPUF_Render_Form {
                     ?>
 
                     <label <?php echo $attr['inline'] == 'yes' ? 'class="wpuf-radio-inline"' : 'class="wpuf-radio-block"'; ?>>
-                        <input name="<?php echo $attr['name']; ?>" class="<?php echo 'wpuf_'.$attr['name']. '_'. $form_id; ?>" type="radio" value="<?php echo esc_attr( $value ); ?>"<?php checked( str_replace( " ", "_", strtolower ( $selected ) ), $value ); ?> />
+                        <input name="<?php echo $attr['name']; ?>" class="<?php echo 'wpuf_'.$attr['name']. '_'. $form_id; ?>" type="radio" value="<?php echo esc_attr( $value ); ?>"<?php checked( $selected, $value ); ?> />
                         <?php echo $option; ?>
                     </label>
                     <?php
@@ -1059,14 +1052,7 @@ class WPUF_Render_Form {
      * @param int|null $post_id
      */
     function checkbox( $attr, $post_id, $type, $form_id ) {
-        $selected_options = isset( $attr['selected'] ) ? $attr['selected'] : array();
-        if ( count( $selected_options ) ) {
-            foreach ( $selected_options as $option ) {
-                $selected[] = str_replace( " ", "_", strtolower ( $option ) );
-            }
-        } else {
-            $selected = $selected_options;
-        }
+        $selected = isset( $attr['selected'] ) ? $attr['selected'] : array();
 
         if ( $post_id ) {
             if ( $value = $this->get_meta( $post_id, $attr['name'], $type, true ) ) {

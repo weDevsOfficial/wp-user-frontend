@@ -69,10 +69,9 @@ function wpuf_show_users() {
             }
         }
 
-        //var_dump($to_be_deleted);
         //delete the user
         if ( current_user_can( 'delete_users' ) && $delete_flag == true ) {
-            //var_dump($userdata);
+
             wp_delete_user( $to_be_deleted );
             echo '<div class="success">' . __( 'User Deleted', 'wpuf' ) . '</div>';
         } else {

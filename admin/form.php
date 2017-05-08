@@ -230,6 +230,8 @@ class WPUF_Admin_Form {
             <a href="#wpuf-metabox-settings-update" class="nav-tab"><?php _e( 'Edit Settings', 'wpuf' ); ?></a>
             <a href="#wpuf-metabox-post_expiration" class="nav-tab"><?php _e( 'Post Expiration', 'wpuf' ); ?></a>
 
+            <?php do_action( 'wpuf_post_form_tab' ); ?>
+
         <?php
     }
 

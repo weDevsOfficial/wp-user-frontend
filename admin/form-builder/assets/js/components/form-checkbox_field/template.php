@@ -4,8 +4,8 @@
             <label>
                 <input
                     type="checkbox"
-                    :value="label"
-                    :checked="is_selected(label)"
+                    :value="val"
+                    :checked="is_selected(val)"
                     :class="class_names('checkbox_btns')"
                 > {{ label }}
             </label>

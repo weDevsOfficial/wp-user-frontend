@@ -447,7 +447,7 @@ class WP_User_Frontend {
         }
 
         $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">Settings</a>';
-        $links[] = '<a href="http://docs.wedevs.com/category/plugins/wp-user-frontend-pro/" target="_blank">Documentation</a>';
+        $links[] = '<a href="https://docs.wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/" target="_blank">Documentation</a>';
 
         return $links;
     }

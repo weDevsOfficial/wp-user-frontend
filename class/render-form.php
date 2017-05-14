@@ -1266,6 +1266,11 @@ class WPUF_Render_Form {
             $terms = wp_get_post_terms( $post_id, $taxonomy, array('fields' => 'ids') );
         }
 
+        if ( ! taxonomy_exists( $taxonomy ) ) {
+            echo '<br><div class="wpuf-message">' . __( 'This field is no longer available.', 'wpuf' ) . '</div>';
+            return;
+        }
+
         $div_class = 'wpuf_' . $attr['name'] . '_' . $attr['type'] . '_' . $attr['id'] . '_' . $form_id;
         ?>
 

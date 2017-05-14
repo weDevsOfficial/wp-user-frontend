@@ -55,7 +55,7 @@ Vue.mixin({
         isSingleInstance: function(field_name) {
             var singleInstance = ['post_title', 'post_content', 'post_excerpt', 'featured_image',
                 'user_login', 'first_name', 'last_name', 'nickname', 'user_email', 'user_url',
-                'user_bio', 'password', 'user_avatar'];
+                'user_bio', 'password', 'user_avatar', 'taxonomy'];
 
             if ( $.inArray(field_name, singleInstance) >= 0 ) {
                 return true;

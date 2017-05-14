@@ -31,7 +31,7 @@
                 </label>
             </div>
 
-            <div v-if="is_template_available(field) && !is_failed_to_validate(field.template)" class="control-buttons">
+            <div v-if="!is_failed_to_validate(field.template)" class="control-buttons">
                 <p>
                     <i class="fa fa-arrows move"></i>
                     <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>

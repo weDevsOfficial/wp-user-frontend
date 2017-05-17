@@ -290,9 +290,9 @@
             var checkbox_obj = e.target? $(e.target) : $(e);
 
             if ( checkbox_obj.is(':checked') ) {
-                $('.wpuf_expiration_field').show();
+                $('.wpuf_subscription_expiration_field').show();
             } else {
-                $('.wpuf_expiration_field').hide();
+                $('.wpuf_subscription_expiration_field').hide();
             }
         }
 

@@ -110,10 +110,10 @@
             $('#wpuf-form-editor').on('click', '.wpuf-value-handelar', this.showValueField);
 
             //on change enable expiration check status
-            this.changeExpirationFieldVisibility(':checkbox#wpuf-enable_post_expiration')
-            $('.wpuf-metabox-post_expiration').on('change',':checkbox#wpuf-enable_post_expiration',this.changeExpirationFieldVisibility);
+            // this.changeExpirationFieldVisibility(':checkbox#wpuf-enable_post_expiration')
+            // $('.wpuf-metabox-post_expiration').on('change',':checkbox#wpuf-enable_post_expiration',this.changeExpirationFieldVisibility);
             //on change expiration type drop down
-            $('.wpuf-metabox-post_expiration').on('change','select#wpuf-expiration_time_type',this.setTimeExpiration);
+            // $('.wpuf-metabox-post_expiration').on('change','select#wpuf-expiration_time_type',this.setTimeExpiration);
 
             this_obj.changeMultistepVisibility( $('.wpuf_enable_multistep_section :input[type="checkbox"]') );
             $('.wpuf_enable_multistep_section :input[type="checkbox"]').click(function(){

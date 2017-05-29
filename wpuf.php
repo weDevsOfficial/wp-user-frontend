@@ -117,7 +117,7 @@ class WP_User_Frontend {
             $message = get_post_meta( $each_post->ID, 'wpuf-post_expiration_message', true );
 
             if ( !empty( $message ) ) {
-                wp_mail( $each_post->post_author, $mail_subject, $message );
+                wp_mail( get_the_author_meta( 'user_email', $each_post->post_author ), $mail_subject, $message );
             }
         }
         //save an option for debugging purpose

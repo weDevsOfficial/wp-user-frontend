@@ -353,9 +353,9 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function js_dependencies( $deps ) {
-        array_push( $deps, 'wpuf-form-builder-wpuf-forms' );
+        $deps[] = 'wpuf-form-builder-wpuf-forms';
 
-        return $deps;
+        return apply_filters( 'wpuf-form-builder-wpuf-forms-js-deps', $deps );
     }
 
     /**

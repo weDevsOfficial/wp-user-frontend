@@ -284,14 +284,16 @@
                 post_id = form.find('input[type="hidden"][name="post_id"]').val();
 
             var rich_texts = [],
-                temp, val;
+                    val;
 
             // grab rich texts from tinyMCE
             $('.wpuf-rich-validation').each(function (index, item) {
-                temp = $(item).data('id');
-                val = $.trim( tinyMCE.get(temp).getContent() );
+                var item      = $(item);
+                var editor_id = item.data('id');
+                var item_name = item.data('name');
+                var val       = $.trim( tinyMCE.get(editor_id).getContent() );
 
-                rich_texts.push(temp + '=' + encodeURIComponent( val ) );
+                rich_texts.push(item_name + '=' + encodeURIComponent( val ) );
             });
 
             // append them to the form var

@@ -13,9 +13,6 @@
 
     window.WP_User_Frontend = {
 
-        pass_val : '',
-        retype_pass_val : '',
-
         init: function() {
 
             //enable multistep
@@ -30,7 +27,7 @@
 
             $('.wpuf-form-add').on('submit', this.formSubmit);
             $('form#post').on('submit', this.adminPostSubmit);
-            $( '.wpuf-form').on('keyup', '#pass1', this.check_pass_strength );
+            // $( '.wpuf-form').on('keyup', '#pass1', this.check_pass_strength );
 
             // refresh pluploads on each step change (multistep form)
             $('.wpuf-form').on('step-change-fieldset', function(event, number, step) {
@@ -419,10 +416,10 @@
         validateForm: function( self ) {
 
             var temp,
-                temp_val = '',
-                error = false,
+                temp_val    = '',
+                error       = false,
                 error_items = [];
-                error_type = '';
+                error_type  = '';
 
             // remove all initial errors if any
             WP_User_Frontend.removeErrors(self);
@@ -454,21 +451,6 @@
                     case 'textarea':
                     case 'text':
 
-                        if ( $(item).hasClass('password') ) {
-                            if ( WP_User_Frontend.pass_val == '' ) {
-                                WP_User_Frontend.pass_val = $(item).val();
-                            } else {
-                                WP_User_Frontend.retype_pass_val = $(item).val();
-                            }
-                            if ( WP_User_Frontend.pass_val != '' && WP_User_Frontend.retype_pass_val != '' && WP_User_Frontend.pass_val !=  WP_User_Frontend.retype_pass_val ) {
-                                error = true;
-                                error_type = 'mismatch';
-
-                                WP_User_Frontend.markError( item, error_type );
-                                break;
-                            }
-
-                        }
                         val = $.trim( $(item).val() );
 
                         if ( val === '') {
@@ -478,6 +460,33 @@
                             // make it warn collor
                             WP_User_Frontend.markError( item, error_type );
                         }
+                        break;
+
+                    case 'password':
+                    case 'confirm_password':
+                        var hasRepeat = $(item).data('repeat');
+
+                        val = $.trim( $(item).val() );
+
+                        if ( val === '') {
+                            error = true;
+                            error_type = 'required';
+
+                            // make it warn collor
+                            WP_User_Frontend.markError( item, error_type );
+                        }
+
+                        if ( hasRepeat ) {
+                            var repeatItem = $('[data-type="confirm_password"]').eq(0);;
+
+                            if ( repeatItem.val() != val ) {
+                                error = true;
+                                error_type = 'mismatch';
+
+                                WP_User_Frontend.markError( repeatItem, error_type );
+                            }
+                        }
+
                         break;
 
                     case 'select':

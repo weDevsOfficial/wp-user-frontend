@@ -1149,31 +1149,37 @@ class WPUF_Render_Form {
         if ( $post_id ) {
             $attr['required'] = 'no';
         }
+
+        $repeat_pass   = ( $attr['repeat_pass'] == 'yes' ) ? true : false;
+        $pass_strength = ( $attr['pass_strength'] == 'yes' ) ? true : false;
         ?>
 
         <div class="wpuf-fields">
-            <input id="pass1" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="pass1" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="" size="<?php echo esc_attr( $attr['size'] ) ?>" />
+            <input id="pass1" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="password"<?php $this->required_html5( $attr ); ?> data-repeat="<?php echo $repeat_pass ? 'true' : 'false'; ?>" name="pass1" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="" size="<?php echo esc_attr( $attr['size'] ) ?>" />
             <?php $this->help_text( $attr ); ?>
         </div>
 
         <?php
-        if ( $attr['repeat_pass'] == 'yes' ) {
+        if ( $repeat_pass ) {
             echo '</li>';
-            echo '<li>';
+            echo '<li class="wpuf-el password-repeat" data-label="' . esc_attr( 'Confirm Password', 'wpuf' ) . '">';
 
             $this->label( array('name' => 'pass2', 'label' => $attr['re_pass_label'], 'required' => $post_id ? 'no' : 'yes') );
             ?>
 
             <div class="wpuf-fields">
-                <input id="pass2" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="pass2" value="" size="<?php echo esc_attr( $attr['size'] ) ?>" />
+                <input id="pass2" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="confirm_password"<?php $this->required_html5( $attr ); ?> name="pass2" value="" size="<?php echo esc_attr( $attr['size'] ) ?>" />
             </div>
 
             <?php
         }
 
-        if ( $attr['repeat_pass'] == 'yes' && $attr['pass_strength'] == 'yes' ) {
+        if ( $pass_strength ) {
             echo '</li>';
             echo '<li>';
+
+            wp_enqueue_script( 'zxcvbn' );
+            wp_enqueue_script( 'password-strength-meter' );
             ?>
             <div class="wpuf-label">
                 &nbsp;
@@ -1181,20 +1187,50 @@ class WPUF_Render_Form {
 
             <div class="wpuf-fields">
                 <div id="pass-strength-result" style="display: block"><?php _e( 'Strength indicator' ); ?></div>
-                <script src="<?php echo includes_url( 'js/zxcvbn.min.js' ); ?>"></script>
-                <script src="<?php echo admin_url( 'js/password-strength-meter.js' ); ?>"></script>
-                <script type="text/javascript">
-                    var pwsL10n = {
-                        empty: "<?php _e( 'Strength indicator', 'wpuf' ); ?>",
-                        short: "<?php _e( 'Very weak', 'wpuf' ); ?>",
-                        bad: "<?php _e( 'Weak', 'wpuf' ); ?>",
-                        good: "<?php _e( 'Medium', 'wpuf' ); ?>",
-                        strong: "<?php _e( 'Strong', 'wpuf' ); ?>",
-                        mismatch: "<?php _e( 'Mismatch', 'wpuf' ); ?>"
-                    };
-                    try{convertEntities(pwsL10n);}catch(e){};
-                </script>
             </div>
+
+            <script type="text/javascript">
+                jQuery(function($) {
+                    function check_pass_strength() {
+                        var pass1 = $('#pass1').val(),
+                            pass2 = $('#pass2').val(),
+                            strength;
+
+                        if ( typeof pass2 === undefined ) {
+                            pass2 = pass1;
+                        }
+
+                        $('#pass-strength-result').removeClass('short bad good strong');
+                        if (!pass1) {
+                            $('#pass-strength-result').html(pwsL10n.empty);
+                            return;
+                        }
+
+                        strength = wp.passwordStrength.meter(pass1, wp.passwordStrength.userInputBlacklist(), pass2);
+
+                        switch (strength) {
+                            case 2:
+                                $('#pass-strength-result').addClass('bad').html(pwsL10n.bad);
+                                break;
+                            case 3:
+                                $('#pass-strength-result').addClass('good').html(pwsL10n.good);
+                                break;
+                            case 4:
+                                $('#pass-strength-result').addClass('strong').html(pwsL10n.strong);
+                                break;
+                            case 5:
+                                $('#pass-strength-result').addClass('short').html(pwsL10n.mismatch);
+                                break;
+                            default:
+                                $('#pass-strength-result').addClass('short').html(pwsL10n['short']);
+                        }
+                    }
+
+                    $('#pass1').val('').keyup(check_pass_strength);
+                    $('#pass2').val('').keyup(check_pass_strength);
+                    $('#pass-strength-result').show();
+                });
+            </script>
             <?php
         }
 

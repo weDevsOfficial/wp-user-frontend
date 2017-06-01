@@ -723,3 +723,36 @@ ul.wpuf-form li .wpuf-password-field:after {
   content: "";
   display: table;
 }
+.wpuf-merge-tag-wrap .merge-tag-link {
+  position: absolute;
+  right: 5px;
+  top: 30px;
+  color: #999;
+  text-decoration: none;
+}
+.wpuf-merge-tag-wrap .merge-tag-link:hover {
+  color: #555;
+}
+.wpuf-merge-tag-wrap .wpuf-merge-tags {
+  max-height: 110px;
+  overflow: hidden;
+  overflow-y: scroll;
+  border: 1px solid #e5e5e5;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.04);
+  display: none;
+  position: absolute;
+  right: 0px;
+  top: 60px;
+  background: #fff;
+  z-index: 1000;
+  min-height: 150px;
+}
+.wpuf-merge-tag-wrap .wpuf-merge-tags .merge-tag-head {
+  font-weight: bold;
+  background: #f0f0f0;
+  padding: 3px 10px;
+}
+.wpuf-merge-tag-wrap .wpuf-merge-tags .merge-tag-section ul {
+  margin: 0;
+  padding: 5px 10px;
+}

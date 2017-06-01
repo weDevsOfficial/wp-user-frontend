@@ -42,6 +42,7 @@ class WPUF_Admin_Form_Builder {
             add_action( 'in_admin_header', array( $this, 'remove_admin_notices' ) );
             add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
             add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
+            add_action( 'admin_footer', array( $this, 'custom_dequeue' ) );
             add_action( 'admin_footer', array( $this, 'admin_footer' ) );
             add_action( 'wpuf-admin-form-builder', array( $this, 'include_form_builder' ) );
         }
@@ -61,6 +62,7 @@ class WPUF_Admin_Form_Builder {
         remove_all_actions( 'network_admin_notices' );
         remove_all_actions( 'user_admin_notices' );
         remove_all_actions( 'admin_notices' );
+        remove_all_actions( 'all_admin_notices' );
     }
 
     /**
@@ -78,13 +80,13 @@ class WPUF_Admin_Form_Builder {
          */
         wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
         wp_enqueue_style( 'wpuf-font-awesome', WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css', array(), WPUF_VERSION );
-        wp_enqueue_style( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert.css', array(), WPUF_VERSION );
+        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css', array(), WPUF_VERSION );
         wp_enqueue_style( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css', array(), WPUF_VERSION );
         wp_enqueue_style( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.min.css', array(), WPUF_VERSION );
         wp_enqueue_style( 'wpuf-tooltip', WPUF_ASSET_URI . '/vendor/tooltip/tooltip.css', array(), WPUF_VERSION );
 
         $form_builder_css_deps = apply_filters( 'wpuf-form-builder-css-deps', array(
-            'wpuf-css', 'wpuf-font-awesome', 'wpuf-sweetalert', 'wpuf-selectize', 'wpuf-toastr', 'wpuf-tooltip'
+            'wpuf-css', 'wpuf-font-awesome', 'wpuf-sweetalert2', 'wpuf-selectize', 'wpuf-toastr', 'wpuf-tooltip'
         ) );
 
         wp_enqueue_style( 'wpuf-form-builder', WPUF_ASSET_URI . '/css/wpuf-form-builder.css', $form_builder_css_deps, WPUF_VERSION );
@@ -98,7 +100,7 @@ class WPUF_Admin_Form_Builder {
 
         wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue' . $prefix . '.js', array(), WPUF_VERSION, true );
         wp_enqueue_script( 'wpuf-vuex', WPUF_ASSET_URI . '/vendor/vuex/vuex' . $prefix . '.js', array( 'wpuf-vue' ), WPUF_VERSION, true );
-        wp_enqueue_script( 'wpuf-sweetalert', WPUF_ASSET_URI . '/vendor/sweetalert/sweetalert-dev.js', array(), WPUF_VERSION, true );
+        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', array(), WPUF_VERSION, true );
         wp_enqueue_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo' . $prefix . '.js', array( 'jquery' ), WPUF_VERSION, true );
         wp_enqueue_script( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize' . $prefix . '.js', array( 'jquery' ), WPUF_VERSION, true );
         wp_enqueue_script( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr' . $prefix . '.js', array(), WPUF_VERSION, true );
@@ -107,7 +109,7 @@ class WPUF_Admin_Form_Builder {
 
         $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', array(
             'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'underscore',
-            'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert', 'wpuf-jquery-scrollTo',
+            'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert2', 'wpuf-jquery-scrollTo',
             'wpuf-selectize', 'wpuf-toastr', 'wpuf-clipboard', 'wpuf-tooltip'
         ) );
 
@@ -218,6 +220,24 @@ class WPUF_Admin_Form_Builder {
         }
 
         do_action( 'wpuf-form-builder-add-js-templates' );
+    }
+
+
+    /**
+     * Dequeue style and script to avoid conflict with Imagify Image Optimizer plugin
+     *
+     * @since 2.5
+     *
+     * @param string $template
+     * @param string $file_path
+     *
+     * @return void
+     */
+    public static function custom_dequeue() {
+        wp_dequeue_style( 'imagify-css-sweetalert' );
+        wp_deregister_style( 'imagify-css-sweetalert' );
+        wp_dequeue_script( 'imagify-js-sweetalert' );
+        wp_deregister_script( 'imagify-js-sweetalert' );
     }
 
     /**

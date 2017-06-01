@@ -111,16 +111,47 @@ Vue.component('builder-stage', {
 
         delete_field: function(index) {
             var self = this;
-
-            self.warn({
-                text: self.i18n.delete_field_warn_msg,
+            
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
                 confirmButtonText: self.i18n.yes_delete_it,
                 cancelButtonText: self.i18n.no_cancel_it,
-            }, function (is_confirm) {
-                if (is_confirm) {
-                    self.$store.commit('delete_form_field_element', index);
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false
+            }).then(function () {
+                self.$store.commit('delete_form_field_element', index);
+                swal(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                );
+            }, function (dismiss) {
+                // dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+                if (dismiss === 'cancel') {
+                    swal(
+                        'Cancelled',
+                        'Your field is safe :)',
+                        'error'
+                    );
                 }
             });
+
+            // self.warn({
+            //     text: self.i18n.delete_field_warn_msg,
+            //     confirmButtonText: self.i18n.yes_delete_it,
+            //     cancelButtonText: self.i18n.no_cancel_it,
+            // }, function (is_confirm) {
+            //     if (is_confirm) {
+            //         self.$store.commit('delete_form_field_element', index);
+            //     }
+            // });
         },
 
         delete_hidden_field: function (field_id) {

@@ -34,9 +34,7 @@ class WPUF_Admin_Form {
      */
     public function __construct() {
         add_action( 'init', array($this, 'register_post_type') );
-
-        $user_frontend = sanitize_title( __( 'User Frontend', 'wpuf' ) );
-        add_action( "load-{$user_frontend}_page_wpuf-post-forms", array( $this, 'post_forms_builder_init' ) );
+        add_action( "load-user-frontend_page_wpuf-post-forms", array( $this, 'post_forms_builder_init' ) );
     }
 
     /**

@@ -1443,7 +1443,7 @@ class WPUF_Render_Form {
     function html( $attr, $form_id ) {
         ?>
         <div class="wpuf-fields <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>">
-            <?php echo do_shortcode( $attr['html'] ); ?>
+            <?php echo $attr['html']; ?>
         </div>
         <?php
     }

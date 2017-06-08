@@ -3,7 +3,7 @@ Contributors: tareq1988, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
 Requires at least: 4.0
-Tested up to: 4.7.3
+Tested up to: 4.8
 Stable tag: trunk
 License: GPLv2
 
@@ -161,7 +161,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
-= v2.5.3 (08 June, 2017) =
+= v2.5.3 (8 June, 2017) =
 
  * [improve] Update action name by removing language changing option
  * [improve] Update SweetAlert version

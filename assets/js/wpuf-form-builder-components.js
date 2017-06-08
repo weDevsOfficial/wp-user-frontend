@@ -111,16 +111,47 @@ Vue.component('builder-stage', {
 
         delete_field: function(index) {
             var self = this;
-
-            self.warn({
-                text: self.i18n.delete_field_warn_msg,
+            
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
                 confirmButtonText: self.i18n.yes_delete_it,
                 cancelButtonText: self.i18n.no_cancel_it,
-            }, function (is_confirm) {
-                if (is_confirm) {
-                    self.$store.commit('delete_form_field_element', index);
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false
+            }).then(function () {
+                self.$store.commit('delete_form_field_element', index);
+                swal(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                );
+            }, function (dismiss) {
+                // dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+                if (dismiss === 'cancel') {
+                    swal(
+                        'Cancelled',
+                        'Your field is safe :)',
+                        'error'
+                    );
                 }
             });
+
+            // self.warn({
+            //     text: self.i18n.delete_field_warn_msg,
+            //     confirmButtonText: self.i18n.yes_delete_it,
+            //     cancelButtonText: self.i18n.no_cancel_it,
+            // }, function (is_confirm) {
+            //     if (is_confirm) {
+            //         self.$store.commit('delete_form_field_element', index);
+            //     }
+            // });
         },
 
         delete_hidden_field: function (field_id) {
@@ -313,7 +344,7 @@ Vue.component('field-option-data', {
         },
 
         set_option_label: function (index, label) {
-            this.options[index].value = label.toLocaleLowerCase().replace(' ', '_');
+            this.options[index].value = label.toLocaleLowerCase().replace( /\s/g, '_' );
         }
     },
 
@@ -1046,6 +1077,61 @@ Vue.component('help-text', {
     }
 });
 
+Vue.component('wpuf-merge-tags', {
+    template: '#tmpl-wpuf-merge-tags',
+    props: {
+        field: String,
+        filter: {
+            type: String,
+            default: null
+        }
+    },
+
+    data: function() {
+        return {
+            showing: false,
+            type: null,
+        };
+    },
+
+    mounted: function() {
+
+        // hide if clicked outside
+        $('body').on('click', function(event) {
+            if ( !$(event.target).closest('.wpuf-merge-tag-wrap').length) {
+                $(".wpuf-merge-tags").hide();
+            }
+        });
+    },
+
+    computed: {
+        form_fields: function () {
+            var template = this.filter,
+                fields = this.$store.state.form_fields;
+
+            if (template !== null) {
+                return fields.filter(function(item) {
+                    return item.template === template;
+                });
+            }
+
+            // remove the action/hidden fields
+            return fields.filter(function(item) {
+                return !_.contains( [ 'action_hook', 'custom_hidden_field'], item.template );
+            });
+        },
+    },
+
+    methods: {
+        toggleFields: function(event) {
+            $(event.target).parent().siblings('.wpuf-merge-tags').toggle('fast');
+        },
+
+        insertField: function(type, field) {
+            this.$emit('insert', type, field, this.field);
+        }
+    }
+});
 Vue.component('text-editor', {
     template: '#tmpl-wpuf-text-editor',
 

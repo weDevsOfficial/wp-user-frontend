@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.5.2
+Version: 2.5.3
 Author URI: https://tareq.co
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.5.2' );
+define( 'WPUF_VERSION', '2.5.3' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -117,7 +117,7 @@ class WP_User_Frontend {
             $message = get_post_meta( $each_post->ID, 'wpuf-post_expiration_message', true );
 
             if ( !empty( $message ) ) {
-                wp_mail( $each_post->post_author, $mail_subject, $message );
+                wp_mail( get_the_author_meta( 'user_email', $each_post->post_author ), $mail_subject, $message );
             }
         }
         //save an option for debugging purpose
@@ -285,7 +285,6 @@ class WP_User_Frontend {
             </script>
             <?php
             wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form' . $suffix . '.js', array('jquery') );
-            wp_enqueue_script( 'wpuf-conditional-logic', WPUF_ASSET_URI . '/js/conditional-logic.js', array('jquery'), false, true );
         }
 
         wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
@@ -448,7 +447,7 @@ class WP_User_Frontend {
         }
 
         $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">Settings</a>';
-        $links[] = '<a href="http://docs.wedevs.com/category/plugins/wp-user-frontend-pro/" target="_blank">Documentation</a>';
+        $links[] = '<a href="https://docs.wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/" target="_blank">Documentation</a>';
 
         return $links;
     }

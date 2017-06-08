@@ -8,27 +8,18 @@
   display: none;
 }
 .wpuf-button {
-  background: #f3f3f3;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#f4f4f4));
-  background-image: -webkit-linear-gradient(top, #fefefe, #f4f4f4);
-  background-image: -moz-linear-gradient(top, #fefefe, #f4f4f4);
-  background-image: -o-linear-gradient(top, #fefefe, #f4f4f4);
-  background-image: linear-gradient(to bottom, #fefefe, #f4f4f4);
-  border-color: #bbb;
-  color: #333;
-  text-shadow: 0 1px 0 #fff;
+  color: #555;
+  border-color: #cccccc;
+  background: #f7f7f7;
+  -webkit-box-shadow: 0 1px 0 #cccccc;
+  box-shadow: 0 1px 0 #cccccc;
+  vertical-align: top;
 }
 .wpuf-button:hover,
 .wpuf-button:focus {
-  background: #f3f3f3;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f3f3f3));
-  background-image: -webkit-linear-gradient(top, #fff, #f3f3f3);
-  background-image: -moz-linear-gradient(top, #fff, #f3f3f3);
-  background-image: -ms-linear-gradient(top, #fff, #f3f3f3);
-  background-image: -o-linear-gradient(top, #fff, #f3f3f3);
-  background-image: linear-gradient(to bottom, #fff, #f3f3f3);
+  background: #fafafa;
   border-color: #999;
-  color: #222;
+  color: #23282d;
 }
 .wpuf-success {
   background-color: #dff0d8;
@@ -145,6 +136,7 @@ ul.wpuf-form li .wpuf-fields select {
   -moz-border-radius: 3px;
   border-radius: 3px;
   min-width: 150px;
+  max-width: 100%;
 }
 ul.wpuf-form li .wpuf-fields select[multiple] {
   height: auto;
@@ -153,6 +145,11 @@ ul.wpuf-form li .wpuf-fields .wpuf-radio-inline,
 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-inline {
   display: inline-block;
   margin-right: 10px;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-radio-block,
+ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
+  display: block;
+  margin-bottom: 6px;
 }
 ul.wpuf-form li .wpuf-fields a.file-selector {
   display: inline;
@@ -163,35 +160,19 @@ ul.wpuf-form li .wpuf-fields a.file-selector {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  background-color: #21759b;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#2a95c5), to(#21759b));
-  background-image: -webkit-linear-gradient(top, #2a95c5, #21759b);
-  background-image: -moz-linear-gradient(top, #2a95c5, #21759b);
-  background-image: -ms-linear-gradient(top, #2a95c5, #21759b);
-  background-image: -o-linear-gradient(top, #2a95c5, #21759b);
-  background-image: linear-gradient(to bottom, #2a95c5, #21759b);
-  border-color: #21759b;
-  border-bottom-color: #1e6a8d;
-  -webkit-box-shadow: inset 0 1px 0 rgba(120, 200, 230, 0.5);
-  box-shadow: inset 0 1px 0 rgba(120, 200, 230, 0.5);
+  background: #0085ba;
+  border-color: #0073aa #006799 #006799;
+  -webkit-box-shadow: 0 1px 0 #006799;
+  box-shadow: 0 1px 0 #006799;
   color: #fff;
   text-decoration: none;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
 }
 ul.wpuf-form li .wpuf-fields a.file-selector:hover,
 ul.wpuf-form li .wpuf-fields a.file-selector:focus {
-  background-color: #278ab7;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#2e9fd2), to(#21759b));
-  background-image: -webkit-linear-gradient(top, #2e9fd2, #21759b);
-  background-image: -moz-linear-gradient(top, #2e9fd2, #21759b);
-  background-image: -ms-linear-gradient(top, #2e9fd2, #21759b);
-  background-image: -o-linear-gradient(top, #2e9fd2, #21759b);
-  background-image: linear-gradient(to bottom, #2e9fd2, #21759b);
-  border-color: #1b607f;
-  -webkit-box-shadow: inset 0 1px 0 rgba(120, 200, 230, 0.6);
-  box-shadow: inset 0 1px 0 rgba(120, 200, 230, 0.6);
+  background: #008ec2;
+  border-color: #006799;
   color: #fff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 ul.wpuf-form li .wpuf-fields .google-map img {
   max-width: none !important;
@@ -414,6 +395,11 @@ ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons 
   height: 15px;
   margin: 2px 4px 0 0;
 }
+ul.wpuf-form li label.wpuf-form-sub-label {
+  font-size: 12px;
+  display: inline-block;
+  padding-top: 5px;
+}
 ul.wpuf-form li .wpuf-address-field {
   width: 100%;
   margin-bottom: 10px;
@@ -422,6 +408,20 @@ ul.wpuf-form li .wpuf-address-field:after {
   clear: both;
   content: "";
   display: table;
+}
+ul.wpuf-form li .wpuf-address-field.city_name,
+ul.wpuf-form li .wpuf-address-field.state,
+ul.wpuf-form li .wpuf-address-field.zip,
+ul.wpuf-form li .wpuf-address-field.country_select {
+  float: left;
+  width: 47%;
+}
+ul.wpuf-form li .wpuf-address-field.city_name,
+ul.wpuf-form li .wpuf-address-field.zip {
+  margin-right: 4%;
+}
+ul.wpuf-form li .wpuf-address-field.zip {
+  clear: both;
 }
 ul.wpuf-form li .wpuf-section-wrap {
   border-bottom: 1px solid #ccc;
@@ -454,9 +454,6 @@ ul.wpuf-form.form-label-hidden li .wpuf-fields {
   float: none;
   width: 100%;
 }
-ul.wpuf-form .wpuf-submit .wpuf-label {
-  display: none !important;
-}
 ul.wpuf-form .wpuf-submit input[type=submit] {
   font-size: 16px;
   padding: 5px 15px;
@@ -464,20 +461,13 @@ ul.wpuf-form .wpuf-submit input[type=submit] {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  background-color: #21759b;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#2a95c5), to(#21759b));
-  background-image: -webkit-linear-gradient(top, #2a95c5, #21759b);
-  background-image: -moz-linear-gradient(top, #2a95c5, #21759b);
-  background-image: -ms-linear-gradient(top, #2a95c5, #21759b);
-  background-image: -o-linear-gradient(top, #2a95c5, #21759b);
-  background-image: linear-gradient(to bottom, #2a95c5, #21759b);
-  border-color: #21759b;
-  border-bottom-color: #1e6a8d;
-  -webkit-box-shadow: inset 0 1px 0 rgba(120, 200, 230, 0.5);
-  box-shadow: inset 0 1px 0 rgba(120, 200, 230, 0.5);
+  background: #0085ba;
+  border-color: #0073aa #006799 #006799;
+  -webkit-box-shadow: 0 1px 0 #006799;
+  box-shadow: 0 1px 0 #006799;
   color: #fff;
   text-decoration: none;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
 }
 ul.wpuf-form .wpuf-submit .button-primary-disabled {
   color: #94cde7 !important;
@@ -497,6 +487,9 @@ ul.wpuf-form .wpuf-submit .wpuf-errors {
   -moz-border-radius: 3px;
   border-radius: 3px;
   font-size: 13px;
+}
+ul.wpuf-form:not(.form-label-left) .wpuf-submit .wpuf-label {
+  display: none !important;
 }
 #wpuf-login-form label {
   display: block;

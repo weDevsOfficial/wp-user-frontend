@@ -3,7 +3,7 @@ Contributors: tareq1988, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
 Requires at least: 4.0
-Tested up to: 4.7.3
+Tested up to: 4.8
 Stable tag: trunk
 License: GPLv2
 
@@ -161,6 +161,29 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.5.3 (8 June, 2017) =
+
+ * [improve] Update action name by removing language changing option
+ * [improve] Update SweetAlert version
+ * [improve] Added merge tags component
+ * [improve] Correctly use password strength meter and show mismatch
+ * [improve] Add post forms js dependency filter
+ * [improve] Radio/checkbox inline-block CSS added
+ * [fix] Default option not set in radio field
+ * [fix] Selected option gets level rather than value
+ * [fix] Multi select and checkbox default value issue
+ * [fix] Refresh upload buttons on multistep forms on each step change
+ * [fix] Radio buttons pre-select default option not working while editing the button value
+ * [fix] Corrected the plugin documentation link
+ * [fix] Mail not going on post expiration
+ * [fix] Cannot delete attribute field from product form after delete attribute
+ * [fix] Overload Js in subscription and form setting
+ * [fix] Post empty content issue on save draft
+ * [fix] Form render error when using shortcodes in custom html field
+ * [fix] Conflict with Imagify Image Optimizer plugin
+ * [fix] When site language changed, Add Form/ Edit Form page display nothing
+
+
 = v2.5.2 (27 April, 2017) =
 
  * [improve] Added word limit feature for text field
@@ -190,11 +213,13 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [fix] Image/File upload field not working when JavaScript is optimized by Async JavaScript plugin
  * [fix] "save draft" button not working post saving as pending, conflict with subscription
 
+
 = v2.5.1 (22 March, 2017) =
 
  * [improve] Update vue.js and vuex.js version
  * [improve] Update parent_slug parameter of add_submenu_page function to 'wp-user-frontend'
  * [fix] Admin fields in form edit section reset on clicking 'Save form' button
+
 
 = v2.5 (18 March, 2017) =
 
@@ -202,6 +227,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [new] Added payment status for pay per post
  * [improve] `wpuf_add_html` filter name changed to `wpuf_custom_field_render`
  * [improve] add and update price formating function
+
 
 = v2.4.4 (22 February, 2017) =
 
@@ -273,6 +299,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
  * [fix] License renewal prompt fix
 
+
 = v2.3.14 (10 August, 2016) =
 
  * [fix] Text domain and translated strings updated
@@ -290,12 +317,14 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [new] Post taxonomies visibility in form builder are now dependent on the post type selected (Pro).
  * [new] Multiple forms in the same page
 
+
 = v2.3.13 (30 March, 2016) =
 
  * [fix] Paypal user agent changed and issue with paypal transection fixed
  * [new] Multiple images/files can now be uploaded at a time in image and file fields
  * [fix] Upload.js has been modified
  * [fix] Problem with saving form element in php 7.0.0 is fixed
+
 
 = v2.3.12 (8 February, 2016) =
 
@@ -308,6 +337,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [new] Hook added before registration form
  * [fix] SSL issue fixed
 
+
 = v2.3.11 (8 February, 2016) =
 
  * [fix] File upload vulnerability fix. Props to: Panagiotis Vagenas
@@ -316,6 +346,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [fix] Disabling subscription in form settings
  * [fix] Product taxonomy fixes
  * [new] No-captcha support added
+
 
 = v2.3.10 (5 Ocotber, 2015) =
 
@@ -328,6 +359,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [new] Confirmation alert added when user wants to delete subscription in frontend
  * [fix] Publish post after paypal payment completion
 
+
 = v2.3.9 (13 Sepetember, 2015) =
 
  * [fix] Newly registered users were having no meta named "wpuf_postlock"
@@ -339,6 +371,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [fix] Error undefined object post when updating user profile
  * [improve] Button style in payment form
 
+
 = v2.3.8 (3rd Sepetember, 2015) =
 
  * [fix] Problem with wpuf lock post fixed.
@@ -348,6 +381,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [fix] Scripts and styles of wpuf are now loading when needed.
  * [add] RTL support improvement
 
+
 = v2.3.7 (24 August, 2015) =
 
  * [fix] Problem with conditional logic in image upload field fixed.
@@ -356,6 +390,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [fix] Data from address field in registration form is now saved and shows data in edit form .
  * [new] Persian language translation added
  * [fix] Problem with 'pay per post' feature fixed
+
 
 = v2.3.6 (13 July, 2015) =
 
@@ -367,30 +402,37 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [fix] Problem with captcha and really simple captcha fixed.
  * [fix] Problem with action hook fixed.
 
+
 = v2.3.5 (2 July, 2015) =
 
  * [fix] Ajax taxonomy field bug fixed.
+
 
 = v2.3.4 (June 29, 2015) =
 
  * [fix] Featured image caption was not being updated
 
+
 = v2.3.3 (June 24, 2015) =
 
  * [fix] Post status settings in form, wasn't being updated.
+
 
 = v2.3.2 (June 22, 2015) =
 
  * [fix] Featured image upload fix
  * [new] Image upload field brought back to free
 
+
 = v2.3.1 (June 21, 2015) =
 
  * [fix] Compatibility problem with PHP < 5.2. Accidental PHP array shorthand used.
 
+
 = version 2.3 (June 20, 2015) =
 
  * Pro plugin released as free with less features
+
 
 = version 1.3.2 =
 
@@ -402,10 +444,12 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [fix] Two click needed to submit a post
  * [fix] dashboard author bio height fix
 
+
 = version 1.3.1 =
 
  * [fix] `[wpuf_editpost]` typo fix
  * [fix] clean $dashboard_query from corrupting beyond use
+
 
 = version 1.3 =
 
@@ -414,10 +458,12 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * [fix] PHP 5.4 strict warnings fix
  * [update] new version of settings api class
 
+
 = version 1.2.3 =
 
 * [fix] `has_shortcode()` brought back again by renaming as `wpuf_has_shortcode()`
 * [fix] all the labels now have a default text
+
 
 = version 1.2.2 =
 
@@ -425,9 +471,11 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * [fix] plugin css/js url
 * [fix] removed has_shortcode() call
 
+
 = version 1.2.1 =
 
 * [fix] Performance problem with wp_list_users()
+
 
 = version 1.2 =
 
@@ -437,6 +485,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * [fix] Category checklist bug fix
 * [new] Checkbox field in custom field
 
+
 = version 1.1 =
 
 * warning for multisite fix
@@ -445,6 +494,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * custom post type dropdown fix in admin
 * post date bug fix
 * category dropdown fix
+
 
 = version 1.0 =
 
@@ -462,6 +512,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * Subscription and payment rewrite. Extra payment gateways can be added as plugin
 * Other payment currency added
 
+
 = version 0.7 =
 
 * admin ui improved
@@ -473,6 +524,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * localized ajaxurl and posting message
 * improved action hooks and filter hooks
 
+
 = version 0.6 =
 
 * fixed error on attachment delete
@@ -482,6 +534,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * admin panel scripts are added wp_enqueue_script instead of echo
 * fixed admin panel block logic
 * filter hook added on edit post for post args
+
 
 = version 0.5 =
 
@@ -499,6 +552,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * missing custom meta field added on edit post form
 * jQuery validation added on edit post form
 
+
 = version 0.3 =
 
 * rich/plain text on/off fixed
@@ -506,6 +560,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * missing action added on edit post form
 * stripslashes on admin/frontend meta field
 * 404 error fix on add post
+
 
 = version 0.2 =
 

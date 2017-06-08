@@ -34,9 +34,7 @@ class WPUF_Admin_Form {
      */
     public function __construct() {
         add_action( 'init', array($this, 'register_post_type') );
-
-        $user_frontend = sanitize_title( __( 'User Frontend', 'wpuf' ) );
-        add_action( "load-{$user_frontend}_page_wpuf-post-forms", array( $this, 'post_forms_builder_init' ) );
+        add_action( "load-user-frontend_page_wpuf-post-forms", array( $this, 'post_forms_builder_init' ) );
     }
 
     /**
@@ -230,6 +228,8 @@ class WPUF_Admin_Form {
             <a href="#wpuf-metabox-settings-update" class="nav-tab"><?php _e( 'Edit Settings', 'wpuf' ); ?></a>
             <a href="#wpuf-metabox-post_expiration" class="nav-tab"><?php _e( 'Post Expiration', 'wpuf' ); ?></a>
 
+            <?php do_action( 'wpuf_post_form_tab' ); ?>
+
         <?php
     }
 
@@ -351,9 +351,9 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function js_dependencies( $deps ) {
-        array_push( $deps, 'wpuf-form-builder-wpuf-forms' );
+        $deps[] = 'wpuf-form-builder-wpuf-forms';
 
-        return $deps;
+        return apply_filters( 'wpuf-form-builder-wpuf-forms-js-deps', $deps );
     }
 
     /**

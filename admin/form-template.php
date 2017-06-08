@@ -115,7 +115,6 @@ class WPUF_Admin_Form_Template {
             return;
         }
 
-        // var_dump( $template_object ); die();
         $current_user = get_current_user_id();
 
         $form_post_data = array(

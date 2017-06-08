@@ -330,7 +330,7 @@ class WPUF_Admin_Subscription {
                         <input type="checkbox" id="wpuf-enable_post_expiration" name="post_expiration_settings[enable_post_expiration]" value="on" <?php echo $is_post_exp_selected;?> />
                     </td>
                 </tr>
-                <tr class="wpuf-metabox-post_expiration wpuf_expiration_field">
+                <tr class="wpuf-metabox-post_expiration wpuf_subscription_expiration_field">
                     <?php
                     $timeType_array = array(
                         'year' => 100,
@@ -361,7 +361,7 @@ class WPUF_Admin_Subscription {
                     </td>
 
                 </tr>
-                <tr class="wpuf_expiration_field">
+                <tr class="wpuf_subscription_expiration_field">
                     <th>
                         Post Status :
                     </th>
@@ -380,7 +380,7 @@ class WPUF_Admin_Subscription {
                         <p class="description"><?php echo _('Status of post after post expiration time is over ');?></p>
                     </td>
                 </tr>
-                <tr class="wpuf_expiration_field">
+                <tr class="wpuf_subscription_expiration_field">
                     <th>
                         Send Mail :
                     </th>
@@ -389,7 +389,7 @@ class WPUF_Admin_Subscription {
                         Send Mail to Author After Exceeding Post Expiration Time
                     </td>
                 </tr>
-                <tr class="wpuf_expiration_field">
+                <tr class="wpuf_subscription_expiration_field">
                     <th>Post Expiration Message</th>
                     <td>
                         <textarea name="post_expiration_settings[post_expiration_message]" id="wpuf-post_expiration_message" cols="50" rows="5"><?php echo $post_expiration_message;?></textarea>

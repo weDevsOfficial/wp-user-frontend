@@ -132,8 +132,6 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
     function settings_login_prompt( $fields ) {
 
-        // var_dump( $fields ); die();
-
         $new_field = array(
             'name'    => 'something',
             'label'   => __( 'Pro Feature', 'wpuf' ),
@@ -142,8 +140,6 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         );
 
         array_unshift( $fields['wpuf_profile'], $new_field );
-
-        // var_dump( $fields ); die();
 
         return $fields;
     }

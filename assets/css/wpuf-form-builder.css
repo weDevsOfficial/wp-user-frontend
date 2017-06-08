@@ -97,6 +97,37 @@
   padding: 10px 20px;
   min-width: 100px;
 }
+.swal2-modal .swal2-buttonswrapper button {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.swal2-modal .swal2-buttonswrapper .swal2-confirm {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.swal2-modal .swal2-buttonswrapper .swal2-cancel {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
 .loader,
 .loader:after {
   border-radius: 50%;
@@ -722,4 +753,37 @@ ul.wpuf-form li .wpuf-password-field:after {
   clear: both;
   content: "";
   display: table;
+}
+.wpuf-merge-tag-wrap .merge-tag-link {
+  position: absolute;
+  right: 5px;
+  top: 30px;
+  color: #999;
+  text-decoration: none;
+}
+.wpuf-merge-tag-wrap .merge-tag-link:hover {
+  color: #555;
+}
+.wpuf-merge-tag-wrap .wpuf-merge-tags {
+  max-height: 110px;
+  overflow: hidden;
+  overflow-y: scroll;
+  border: 1px solid #e5e5e5;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.04);
+  display: none;
+  position: absolute;
+  right: 0px;
+  top: 60px;
+  background: #fff;
+  z-index: 1000;
+  min-height: 150px;
+}
+.wpuf-merge-tag-wrap .wpuf-merge-tags .merge-tag-head {
+  font-weight: bold;
+  background: #f0f0f0;
+  padding: 3px 10px;
+}
+.wpuf-merge-tag-wrap .wpuf-merge-tags .merge-tag-section ul {
+  margin: 0;
+  padding: 5px 10px;
 }

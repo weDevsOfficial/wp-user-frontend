@@ -2,11 +2,9 @@
 class WPUF_Admin_Form_Handler {
 
     public function __construct() {
-        $user_frontend = sanitize_title( __( 'User Frontend', 'wpuf' ) );
-
         // post forms list table
-        add_action( "load-{$user_frontend}_page_wpuf-post-forms", array( $this, 'post_forms_actions' ) );
-        add_action( "load-{$user_frontend}_page_wpuf-profile-forms", array( $this, 'profile_forms_actions' ) );
+        add_action( "load-user-frontend_page_wpuf-post-forms", array( $this, 'post_forms_actions' ) );
+        add_action( "load-user-frontend_page_wpuf-profile-forms", array( $this, 'profile_forms_actions' ) );
         add_action( 'admin_notices', array( $this, 'admin_notices' ) );
         add_action( 'removable_query_args', array( $this, 'removable_query_args' ) );
     }

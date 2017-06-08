@@ -56,6 +56,8 @@
         this.uploader.init();
 
         $('#' + container).on('click', 'a.attachment-delete', $.proxy(this.removeAttachment, this));
+
+        return this.uploader;
     };
 
     WPUF_Uploader.prototype = {

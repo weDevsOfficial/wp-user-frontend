@@ -62,9 +62,6 @@ class WPUF_Admin_Template {
         if ( $custom_field && $values ) {
             $field_name_value = $values['name'];
         }
-
-        // var_dump($values);
-        // var_dump($required, $label_value, $help_value);
         ?>
         <div class="wpuf-form-rows required-field">
             <label><?php _e( 'Required', 'wpuf' ); ?></label>

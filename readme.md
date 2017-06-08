@@ -7,7 +7,7 @@
 
 **Requires at least:** 4.0
 
-**Tested up to:** 4.7
+**Tested up to:** 4.8
 
 **Stable tag:** trunk
 
@@ -230,6 +230,28 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v2.5.3 (8 June, 2017) ###
+
+ * [improve] Update action name by removing language changing option
+ * [improve] Update SweetAlert version
+ * [improve] Added merge tags component
+ * [improve] Correctly use password strength meter and show mismatch
+ * [improve] Add post forms js dependency filter
+ * [improve] Radio/checkbox inline-block CSS added
+ * [fix] Default option not set in radio field
+ * [fix] Selected option gets level rather than value
+ * [fix] Multi select and checkbox default value issue
+ * [fix] Refresh upload buttons on multistep forms on each step change
+ * [fix] Radio buttons pre-select default option not working while editing the button value
+ * [fix] Corrected the plugin documentation link
+ * [fix] Mail not going on post expiration
+ * [fix] Cannot delete attribute field from product form after delete attribute
+ * [fix] Overload Js in subscription and form setting
+ * [fix] Post empty content issue on save draft
+ * [fix] Form render error when using shortcodes in custom html field
+ * [fix] Conflict with Imagify Image Optimizer plugin
+ * [fix] When site language changed, Add Form/ Edit Form page display nothing
 
 
 ### v2.5.2 (27 April, 2017) ###

@@ -116,22 +116,24 @@ After having installed the plugin:
 
 == Screenshots ==
 
-1. Admin panel
-2. Admin panel &rarr; Dashboard Tab
-3. Admin panel &rarr; Login Tab
-4. Admin panel &rarr; Payments Tab
-5. Post Forms
-6. Form Builder
-7. Form Builder &rarr; Post Settings
-8. Form Builder &rarr; Edit Settings
-9. Form Elements
-10. Subscription Packs
-11. Subscription Pack Settings
-12. Subscription Packs in a Page
-13. Subscription Payment Screen
-14. A single Form Element on Form Editor
-15. A Form in a Page
-16. Frontend User Dashboard
+1. Create Forms with Powerful Builders
+2. 25+ Customizable Form Elements
+3. Fully Customizable Form Elements
+4. Frontend View of Your Forms
+5. Get Detailed List of your Forms
+6. Let Your Users View Details of Their Posts
+7. Let Your users Edit Their Profiles from Frontend
+8. Allow Users to Buy Subscription Packs
+9. Create Subscription Packs Easily
+10. Configure Your Subscription Packs
+11. Set Up Pricings for Subscription Packs
+12. Show Subscribed Subscriptions Packs
+13. Customizable Form with Individual Post Settings
+14. Customize Your Post on the Fly
+15. Control and configure everything from
+16. Dashboard Settings to Configure Posts
+17. Login, Restriction, Frontend Security
+18. Set Payment Related Options
 
 == Frequently Asked Questions ==
 

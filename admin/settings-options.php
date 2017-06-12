@@ -143,20 +143,6 @@ function wpuf_settings_fields() {
                 'options' => wpuf_get_pages( 'wpuf_forms' )
             ),
             array(
-                'name'  => 'recaptcha_public',
-                'label' => __( 'reCAPTCHA Site Key', 'wpuf' ),
-            ),
-            array(
-                'name'  => 'recaptcha_private',
-                'label' => __( 'reCAPTCHA Secret Key', 'wpuf' ),
-                'desc'  => __( '<a target="_blank" href="https://www.google.com/recaptcha/">Register here</a> to get reCaptcha Site and Secret keys.', 'wpuf' ),
-            ),
-            array(
-                'name'  => 'gmap_api_key',
-                'label' => __( 'Google Map API', 'wpuf' ),
-                'desc'  => __( '<a target="_blank" href="https://developers.google.com/maps/documentation/javascript">API</a> key is needed to render Google Maps', 'wpuf' ),
-            ),
-            array(
                 'name'  => 'custom_css',
                 'label' => __( 'Custom CSS codes', 'wpuf' ),
                 'desc'  => __( 'If you want to add your custom CSS code, it will be added on page header wrapped with style tag', 'wpuf' ),

@@ -49,13 +49,6 @@ function wpuf_settings_fields() {
     $settings_fields = array(
         'wpuf_general' => apply_filters( 'wpuf_options_others', array(
             array(
-                'name'    => 'fixed_form_element',
-                'label'   => __( 'Fixed Form Elements ', 'wpuf' ),
-                'desc'    => __( 'Show fixed form elements sidebar in form editor', 'wpuf' ),
-                'type'    => 'checkbox',
-                'default' => 'on'
-            ),
-            array(
                 'name'    => 'edit_page_id',
                 'label'   => __( 'Edit Page', 'wpuf' ),
                 'desc'    => __( 'Select the page where [wpuf_edit] is located', 'wpuf' ),

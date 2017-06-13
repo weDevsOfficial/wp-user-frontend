@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.5.3\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-06-13 06:16:12+00:00\n"
+"POT-Creation-Date: 2017-06-13 07:46:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1661,7 +1661,7 @@ msgid "Subscription pack draft updated."
 msgstr ""
 
 #: admin/subscription.php:134 admin/subscription.php:459
-#: class/frontend-account.php:127 class/subscription.php:704
+#: class/frontend-account.php:129 class/subscription.php:704
 #: class/subscription.php:884 class/subscription.php:897
 msgid "Free"
 msgstr ""
@@ -2008,47 +2008,51 @@ msgstr ""
 msgid "<p>You've not subscribed any package yet.</p>"
 msgstr ""
 
-#: class/frontend-account.php:176 class/subscription.php:59
+#: class/frontend-account.php:120
+msgid "<p>You've subscribed to the following package.</p>"
+msgstr ""
+
+#: class/frontend-account.php:178 class/subscription.php:59
 msgid "Nonce failure"
 msgstr ""
 
-#: class/frontend-account.php:190
+#: class/frontend-account.php:192
 msgid "First Name is a required field."
 msgstr ""
 
-#: class/frontend-account.php:194
+#: class/frontend-account.php:196
 msgid "Last Name is a required field."
 msgstr ""
 
-#: class/frontend-account.php:198
+#: class/frontend-account.php:200
 msgid "Email is a required field."
 msgstr ""
 
-#: class/frontend-account.php:209
+#: class/frontend-account.php:211
 msgid "Please provide a valid email address."
 msgstr ""
 
-#: class/frontend-account.php:211
+#: class/frontend-account.php:213
 msgid "This email address is already registered."
 msgstr ""
 
-#: class/frontend-account.php:217
+#: class/frontend-account.php:219
 msgid "Please fill out all password fields."
 msgstr ""
 
-#: class/frontend-account.php:220
+#: class/frontend-account.php:222
 msgid "Please enter your current password."
 msgstr ""
 
-#: class/frontend-account.php:223
+#: class/frontend-account.php:225
 msgid "Please re-enter your password."
 msgstr ""
 
-#: class/frontend-account.php:226
+#: class/frontend-account.php:228
 msgid "New passwords do not match."
 msgstr ""
 
-#: class/frontend-account.php:229 class/frontend-account.php:240
+#: class/frontend-account.php:231 class/frontend-account.php:242
 msgid "Your current password is incorrect."
 msgstr ""
 

@@ -116,6 +116,8 @@ class WPUF_Frontend_Account {
         $user_sub = WPUF_Subscription::get_user_pack( $userdata->ID );
         if ( ! isset( $user_sub['pack_id'] ) ) {
             die( __( "<p>You've not subscribed any package yet.</p>", 'wpuf' ) );
+        } else {
+            _e( "<p>You've subscribed to the following package.</p>", 'wpuf' );
         }
 
         $pack = WPUF_Subscription::get_subscription( $user_sub['pack_id'] );

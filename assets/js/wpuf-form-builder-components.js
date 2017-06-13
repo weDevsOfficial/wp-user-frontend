@@ -123,7 +123,6 @@ Vue.component('builder-stage', {
                 cancelButtonText: self.i18n.no_cancel_it,
                 confirmButtonClass: 'btn btn-success',
                 cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false
             }).then(function () {
                 self.$store.commit('delete_form_field_element', index);
                 swal(
@@ -753,7 +752,7 @@ Vue.component('form-fields', {
             if (validator && validator.msg) {
                 this.warn({
                     title: validator.msg_title || '',
-                    text: validator.msg,
+                    html: validator.msg,
                     type: 'warning',
                     showCancelButton: false,
                     confirmButtonColor: '#46b450',

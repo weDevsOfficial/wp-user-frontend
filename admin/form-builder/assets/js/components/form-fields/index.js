@@ -99,7 +99,7 @@ Vue.component('form-fields', {
             if (validator && validator.msg) {
                 this.warn({
                     title: validator.msg_title || '',
-                    text: validator.msg,
+                    html: validator.msg,
                     type: 'warning',
                     showCancelButton: false,
                     confirmButtonColor: '#46b450',

@@ -120,7 +120,6 @@ Vue.component('builder-stage', {
                 cancelButtonText: self.i18n.no_cancel_it,
                 confirmButtonClass: 'btn btn-success',
                 cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false
             }).then(function () {
                 self.$store.commit('delete_form_field_element', index);
                 swal(

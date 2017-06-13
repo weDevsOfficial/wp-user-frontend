@@ -82,7 +82,6 @@ Vue.component('form-fields', {
                 title: '<i class="fa fa-lock"></i> ' + title + ' <br>' + this.i18n.is_a_pro_feature,
                 text: this.i18n.pro_feature_msg,
                 type: '',
-                html: true,
                 showCancelButton: true,
                 cancelButtonText: this.i18n.close,
                 confirmButtonColor: '#46b450',
@@ -101,7 +100,6 @@ Vue.component('form-fields', {
                 this.warn({
                     title: validator.msg_title || '',
                     text: validator.msg,
-                    html: true,
                     type: 'warning',
                     showCancelButton: false,
                     confirmButtonColor: '#46b450',

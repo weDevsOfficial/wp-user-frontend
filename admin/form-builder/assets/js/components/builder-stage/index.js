@@ -139,16 +139,6 @@ Vue.component('builder-stage', {
                     );
                 }
             });
-
-            // self.warn({
-            //     text: self.i18n.delete_field_warn_msg,
-            //     confirmButtonText: self.i18n.yes_delete_it,
-            //     cancelButtonText: self.i18n.no_cancel_it,
-            // }, function (is_confirm) {
-            //     if (is_confirm) {
-            //         self.$store.commit('delete_form_field_element', index);
-            //     }
-            // });
         },
 
         delete_hidden_field: function (field_id) {

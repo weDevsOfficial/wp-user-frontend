@@ -24,10 +24,6 @@ function wpuf_settings_sections() {
             'id'    => 'wpuf_payment',
             'title' => __( 'Payments', 'wpuf' )
         ),
-        array(
-            'id'    => 'wpuf_support',
-            'title' => __( 'Support', 'wpuf' )
-        ),
     );
 
     return apply_filters( 'wpuf_settings_sections', $sections );
@@ -359,27 +355,6 @@ function wpuf_settings_fields() {
                 'desc'    => __( 'Active payment gateways', 'wpuf' ),
                 'type'    => 'multicheck',
                 'options' => wpuf_get_gateways()
-            )
-        ) ),
-        'wpuf_support' => apply_filters( 'wpuf_options_support', array(
-            array(
-                'name'  => 'support',
-                'label' => __( 'Need Help?', 'wpuf' ),
-                'type'  => 'html',
-                'desc'  => '
-                        <ul>
-                            <li>
-                                <strong>Step 1: <a target="_blank" href="http://docs.wedevs.com/">Read Documentation and FAQ</a></strong>
-                                <p>We have created detailed step by step documentation for all the features (including docs for developers). We have also answered all possible FAQ queries based on user request. We hope you will find what you are looking for. If not, please continue to Step 2.</p>
-                            </li>
-                            <br/>
-                            <li>
-                                <strong>Step 2: <a href="https://wedevs.com/account/tickets" target="_blank">Create a Support Ticket</a></strong>
-                                <p>We reply from <code>10am to 6pm (GMT+6)</code> except <code><strong>Friday</strong></code>. Our responses are usually under 12 hours to as quick as 1 hour depending on channel pressure.</p>
-                                <p>When you are creating a ticket, please care to include a screenshot of the issue if possible and write the problem as specificly as you can. This will help us track and solve your trouble quickly.
-                                </p>
-                            </li>
-                        </ul>'
             )
         ) ),
     );

@@ -626,6 +626,15 @@
   font-size: 16px;
   margin-top: 13px;
 }
+.option-field-option-chooser .plus-buttons {
+  padding: 5px;
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  width: 61%;
+  margin-left: 14%;
+}
 .panel-field-opt-repeater-columns .repeater-columns li > div {
   float: left;
 }

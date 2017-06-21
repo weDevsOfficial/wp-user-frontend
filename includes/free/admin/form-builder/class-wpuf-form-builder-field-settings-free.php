@@ -23,6 +23,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
             'address_field'         => self::address_field(),
             'step_start'            => self::step_start(),
             'google_map'            => self::google_map(),
+            'shortcode'             => self::shortcode(),
             'recaptcha'             => self::recaptcha(),
             'really_simple_captcha' => self::really_simple_captcha(),
             'action_hook'           => self::action_hook(),
@@ -178,6 +179,21 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
             'template'      => 'google_map',
             'title'         => __( 'Google Map', 'wpuf' ),
             'icon'          => 'map-marker',
+            'pro_feature'   => true,
+        );
+    }
+
+    /**
+     * Shortcode
+     *
+     * @since 2.5.4
+     *
+     * @return array
+     */
+    public static function shortcode() {
+        return array(
+            'template'      => 'shortcode',
+            'title'         => __( 'Shortcode', 'wpuf' ),
             'pro_feature'   => true,
         );
     }

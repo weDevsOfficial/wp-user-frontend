@@ -623,6 +623,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
 
             // save any custom taxonomies
+            $woo_attr = array();
+
             foreach ( $taxonomy_vars as $taxonomy ) {
                 if ( isset( $_POST[$taxonomy['name']] ) ) {
 
@@ -634,10 +636,55 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                             $tax = array( $tax );
                         }
 
-                        wp_set_post_terms( $post_id, $_POST[$taxonomy['name']], $taxonomy['name'] );
-                    }
-                }
+                        if ( $taxonomy['type'] == 'text' ) {
+
+                            $hierarchical = array_map( 'trim', array_map( 'strip_tags', explode( ',', $_POST[$taxonomy['name']] ) ) );
+
+                            wp_set_object_terms( $post_id, $hierarchical, $taxonomy['name'] );
+
+                            // woocommerce check
+                            if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
+                                $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
+                            }
+                        } else {
+
+                            if ( is_taxonomy_hierarchical( $taxonomy['name'] ) ) {
+                                wp_set_post_terms( $post_id, $_POST[$taxonomy['name']], $taxonomy['name'] );
+
+                                // woocommerce check
+                                if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
+                                    $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
+                                }
+                            } else {
+                                if ( $tax ) {
+                                    $non_hierarchical = array();
+
+                                    foreach ( $tax as $value ) {
+                                        $term = get_term_by( 'id', $value, $taxonomy['name'] );
+                                        if ( $term && !is_wp_error( $term ) ) {
+                                            $non_hierarchical[] = $term->name;
+                                        }
+                                    }
+
+                                    wp_set_post_terms( $post_id, $non_hierarchical, $taxonomy['name'] );
+
+                                    // woocommerce check
+                                    if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
+                                        $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
+                                    }
+
+                                }
+                            } // hierarchical
+                        } // is text
+                    } // is object tax
+                } // isset tax
             }
+
+            // if a woocommerce attribute
+            if ( $woo_attr ) {
+                update_post_meta( $post_id, '_product_attributes', $woo_attr );
+            }
+
         }
 
         //used to add code to run when the post is going to draft

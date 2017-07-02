@@ -54,7 +54,7 @@ class WPUF_Admin_Settings {
 
         add_menu_page( __( 'WP User Frontend', 'wpuf' ), __( 'User Frontend', 'wpuf' ), $capability, 'wp-user-frontend', array($this, 'wpuf_post_forms_page'), 'dashicons-exerpt-view', 55 );
 
-        add_submenu_page( 'wp-user-frontend', __( 'Post Forms', 'wpuf' ), __( 'Post Forms' ), $capability, 'wpuf-post-forms', array( $this, 'wpuf_post_forms_page' ) );
+        add_submenu_page( 'wp-user-frontend', __( 'Post Forms', 'wpuf' ), __( 'Post Forms', 'wpuf' ), $capability, 'wpuf-post-forms', array( $this, 'wpuf_post_forms_page' ) );
         remove_submenu_page( 'wp-user-frontend', 'wp-user-frontend' );
 
         /**

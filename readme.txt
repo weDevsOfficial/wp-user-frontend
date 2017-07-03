@@ -1,5 +1,5 @@
 === WP User Frontend ===
-Contributors: tareq1988, wedevs
+Contributors: tareq1988, sk.shaikat, themegurututorials, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
 Requires at least: 4.0

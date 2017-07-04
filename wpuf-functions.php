@@ -894,7 +894,7 @@ function wpuf_meta_shortcode( $atts ) {
     } elseif ( $type == 'repeat' ) {
         return implode( '; ', get_post_meta( $post->ID, $name ) );
     } else {
-        return implode( ', ', get_post_meta( $post->ID, $name ) );
+        return make_clickable( implode( ', ', get_post_meta( $post->ID, $name ) ) );
     }
 }
 

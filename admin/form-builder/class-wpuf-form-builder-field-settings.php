@@ -549,7 +549,7 @@ class WPUF_Form_Builder_Field_Settings {
             'icon'          => 'link',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'text',
+                'input_type'    => 'url',
                 'template'      => 'website_url',
                 'required'      => 'no',
                 'label'         => __( 'URL', 'wpuf' ),
@@ -584,7 +584,7 @@ class WPUF_Form_Builder_Field_Settings {
             'icon'          => 'envelope-o',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'text',
+                'input_type'    => 'email',
                 'template'      => 'email_address',
                 'required'      => 'no',
                 'label'         => __( 'Email', 'wpuf' ),

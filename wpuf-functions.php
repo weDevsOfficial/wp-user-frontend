@@ -1676,6 +1676,12 @@ function wpuf_duplicate_form( $post_id ) {
         wpuf_insert_form_field( $form_id, $content );
     }
 
+    // update the post title to remove confusion
+    wp_update_post( array(
+        'ID'         => $form_id,
+        'post_title' => $post->post_title . ' (#' . $form_id . ')'
+    ) );
+
     if ( $form_id ) {
         $form_settings = wpuf_get_form_settings( $post_id );
         $notifications = wpuf_get_form_notifications( $post_id );

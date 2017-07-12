@@ -719,12 +719,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? $_POST['wpuf_files_data'][$attachment_id] : false;
             if ( $file_data ) {
-                wp_update_post( array(
+                $args = array(
                     'ID'           => $attachment_id,
                     'post_title'   => $file_data['title'],
                     'post_content' => $file_data['desc'],
                     'post_excerpt' => $file_data['caption'],
-                ) );
+                );
+                wpuf_update_post( $args );
 
                 update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
             }
@@ -762,19 +763,19 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     continue;
                 }
 
-
                 wpuf_associate_attachment( $attachment_id, $post_id );
                 add_post_meta( $post_id, $file_input['name'], $attachment_id );
 
                 // file title, caption, desc update
                 $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? $_POST['wpuf_files_data'][$attachment_id] : false;
                 if ( $file_data ) {
-                    wp_update_post( array(
+                    $args = array(
                         'ID'           => $attachment_id,
                         'post_title'   => $file_data['title'],
                         'post_content' => $file_data['desc'],
                         'post_excerpt' => $file_data['caption'],
-                    ) );
+                    );
+                    wpuf_update_post( $args );
 
                     update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
                 }

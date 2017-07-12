@@ -446,10 +446,31 @@ add_filter( 'wpuf_addpost_notice', 'wpuf_addpost_notice' );
  * @param type $post_id
  */
 function wpuf_associate_attachment( $attachment_id, $post_id ) {
-    wp_update_post( array(
+    $args = array(
         'ID' => $attachment_id,
         'post_parent' => $post_id
-    ) );
+    );
+    wpuf_update_post( $args );
+}
+
+/**
+ * Update post when hooked to save_post
+ *
+ * @since 2.5.4
+ *
+ * @param array args
+ */
+function wpuf_update_post( $args ) {
+    if ( ! wp_is_post_revision( $args['ID'] ) ){
+        // unhook this function so it doesn't loop infinitely
+        remove_action( 'save_post', array( WPUF_Admin_Posting::init(), 'save_meta' ), 1 );
+    
+        // update the post, which calls save_post again
+        wp_update_post( $args );
+
+        // re-hook this function
+        add_action( 'save_post', array( WPUF_Admin_Posting::init(), 'save_meta' ), 1 );
+    }
 }
 
 /**

@@ -199,25 +199,8 @@ class WPUF_Admin_Form_Builder {
      */
     public function admin_footer() {
         // get all vue component names
-        $path = WPUF_ROOT . '/admin/form-builder/assets/js/components';
 
-        $components = array();
-
-        // directory handle
-        $dir = dir( $path );
-
-        while ( $entry = $dir->read() ) {
-            if ( $entry !== '.' && $entry !== '..' ) {
-               if ( is_dir( $path . '/' . $entry ) ) {
-                    $components[] = $entry;
-               }
-            }
-        }
-
-        // html templates of vue components
-        foreach ( $components as $component ) {
-            self::include_js_template( $component );
-        }
+        include WPUF_ROOT . '/assets/js-templates/form-components.php';
 
         do_action( 'wpuf-form-builder-add-js-templates' );
     }
@@ -238,28 +221,6 @@ class WPUF_Admin_Form_Builder {
         wp_deregister_style( 'imagify-css-sweetalert' );
         wp_dequeue_script( 'imagify-js-sweetalert' );
         wp_deregister_script( 'imagify-js-sweetalert' );
-    }
-
-    /**
-     * Embed a Vue.js component template
-     *
-     * @since 2.5
-     *
-     * @param string $template
-     * @param string $file_path
-     *
-     * @return void
-     */
-    public static function include_js_template( $template, $file_path = '' ) {
-        $file_path = $file_path ? untrailingslashit( $file_path ) : WPUF_ROOT . '/admin/form-builder/assets/js/components';
-
-        $file_path = $file_path . '/' . $template . '/template.php';
-
-        if ( file_exists( $file_path ) ) {
-            echo '<script type="text/x-template" id="tmpl-wpuf-' . $template . '">' . "\n";
-            include apply_filters( 'wpuf-form-builder-js-template-path', $file_path, $template );
-            echo "\n" . '</script>' . "\n";
-        }
     }
 
     /**

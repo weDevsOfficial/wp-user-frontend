@@ -32,10 +32,10 @@ function wpuf_autoload( $class ) {
 
         if ( $admin ) {
             $class_name = str_replace( array('WPUF_Admin_', '_'), array('', '-'), $class );
-            $filename = dirname( __FILE__ ) . '/admin/' . strtolower( $class_name ) . '.php';
+            $filename   = dirname( __FILE__ ) . '/admin/' . strtolower( $class_name ) . '.php';
         } else {
             $class_name = str_replace( array('WPUF_', '_'), array('', '-'), $class );
-            $filename = dirname( __FILE__ ) . '/class/' . strtolower( $class_name ) . '.php';
+            $filename   = dirname( __FILE__ ) . '/class/' . strtolower( $class_name ) . '.php';
         }
 
         if ( file_exists( $filename ) ) {
@@ -44,7 +44,7 @@ function wpuf_autoload( $class ) {
     }
 }
 
-spl_autoload_register( 'wpuf_autoload' );
+// spl_autoload_register( 'wpuf_autoload' );
 
 /**
  * Main bootstrap class for WP User Frontend
@@ -151,12 +151,33 @@ class WP_User_Frontend {
             include dirname( __FILE__ ) . '/includes/free/loader.php';
         }
 
+        // global classes/functions
+        require_once WPUF_ROOT . '/class/upload.php';
+        require_once WPUF_ROOT . '/admin/form-template.php';
+        require_once WPUF_ROOT . '/class/post-form-template.php';
+        require_once WPUF_ROOT . '/class/subscription.php';
+        require_once WPUF_ROOT . '/class/render-form.php';
+        require_once WPUF_ROOT . '/class/payment.php';
+        require_once WPUF_ROOT . '/class/frontend-form-post.php';
+
         if ( is_admin() ) {
             require_once WPUF_ROOT . '/admin/settings-options.php';
+            require_once WPUF_ROOT . '/admin/settings.php';
+            require_once WPUF_ROOT . '/admin/form-handler.php';
+            require_once WPUF_ROOT . '/admin/form.php';
+            require_once WPUF_ROOT . '/admin/posting.php';
+            require_once WPUF_ROOT . '/admin/subscription.php';
+            require_once WPUF_ROOT . '/admin/installer.php';
             require_once WPUF_ROOT . '/admin/promotion.php';
+            require_once WPUF_ROOT . '/admin/post-forms-list-table.php';
             require_once WPUF_ROOT . '/includes/free/admin/shortcode-button.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder-ajax.php';
+
+        } else {
+
+            require_once WPUF_ROOT . '/class/frontend-dashboard.php';
+            require_once WPUF_ROOT . '/class/frontend-account.php';
         }
 
         // add reCaptcha library if not found
@@ -174,16 +195,14 @@ class WP_User_Frontend {
     function instantiate() {
 
         new WPUF_Upload();
-        new WPUF_Payment();
         new WPUF_Paypal();
         new WPUF_Admin_Form_Template();
 
-        WPUF_Frontend_Form_Post::init(); // requires for form preview
         WPUF_Subscription::init();
-
-        new WPUF_Frontend_Account();
+        WPUF_Frontend_Form_Post::init();
 
         if ( is_admin() ) {
+
             WPUF_Admin_Settings::init();
             new WPUF_Admin_Form_Handler();
             new WPUF_Admin_Form();
@@ -191,8 +210,12 @@ class WP_User_Frontend {
             new WPUF_Admin_Subscription();
             new WPUF_Admin_Installer();
             new WPUF_Admin_Promotion();
+
         } else {
+
             new WPUF_Frontend_Dashboard();
+            new WPUF_Payment();
+            new WPUF_Frontend_Account();
         }
     }
 

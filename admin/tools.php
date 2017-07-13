@@ -1,23 +1,23 @@
 <?php
 
-require_once dirname( __FILE__ ) . '/class-tools.php';
+if ( ! class_exists( 'WPUF_Admin_Tools' ) ) {
+    require_once WPUF_ROOT . '/admin/class-tools.php';
+}
 
 $tools = new WPUF_Admin_Tools();
 ?>
 
 <div class="wrap">
-    <div id="icon-options-general" class="icon32"><br></div>
-
     <h2 class="nav-tab-wrapper">
-        <a class="nav-tab <?php echo (!isset( $_GET['action'] ) ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page' => 'wpuf_tools' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Import', 'wpuf' ); ?></a>
-        <a class="nav-tab <?php echo ( isset( $_GET['action'] ) && $_GET['action'] == 'export' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page'   => 'wpuf_tools', 'action' => 'export' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Export', 'wpuf' ); ?></a>
-        <a class="nav-tab <?php echo ( isset( $_GET['action'] ) && $_GET['action'] == 'tools' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page'   => 'wpuf_tools', 'action' => 'tools' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Tools', 'wpuf' ); ?></a>
+        <a class="nav-tab <?php echo (!isset( $_GET['tab'] ) ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page' => 'wpuf_tools' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Import', 'wpuf' ); ?></a>
+        <a class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] == 'export' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page'   => 'wpuf_tools', 'tab' => 'export' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Export', 'wpuf' ); ?></a>
+        <a class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] == 'tools' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page'   => 'wpuf_tools', 'tab' => 'tools' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Tools', 'wpuf' ); ?></a>
     </h2>
 
     <?php
-    $action  = isset( $_GET['action'] ) ? $_GET['action'] : '';
+    $tab  = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
 
-    switch ( $action ) {
+    switch ( $tab ) {
         case 'export':
             $tools->list_forms();
             $tools->list_regis_forms();

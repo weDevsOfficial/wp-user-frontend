@@ -10,7 +10,8 @@ function assets() {
     const fs        = require('fs');
     let paths       = {
         mixins:     ['admin/form-builder/assets/js/jquery-siaf-start.js'],
-        components: ['admin/form-builder/assets/js/jquery-siaf-start.js']
+        components: ['admin/form-builder/assets/js/jquery-siaf-start.js'],
+        componentTemplates: []
     };
 
     // mixins
@@ -34,6 +35,7 @@ function assets() {
 
         if (grunt.file.isDir(path)) {
             paths.components.push(path + '/index.js');
+            paths.componentTemplates.push(path + '/template.php');
         }
     });
 

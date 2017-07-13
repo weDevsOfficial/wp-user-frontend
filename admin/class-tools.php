@@ -139,7 +139,7 @@ class WPUF_Admin_Tools {
 
                 if ( ($file_ext == "json") && ($file_size < 500000) ) {
 
-                    $data = $this->import_json_file( $_FILES['import']['tmp_name'] );
+                    $data = static::import_json_file( $_FILES['import']['tmp_name'] );
 
                     if ( $data ) {
                         printf( '<div class="updated"><p>%s</p></div>', __( 'Import successful. Have fun!', 'wpuf' ) );
@@ -154,7 +154,7 @@ class WPUF_Admin_Tools {
         <h3><?php _e( 'Import forms', 'wpuf' ); ?></h3>
 
         <p><?php _e( 'Click Browse button and choose a json file that you backup before.', 'wpuf' ); ?></p>
-        <p><?php _e( 'Press Restore button, WordPress does the rest for you.', 'wpuf' ); ?></p>
+        <p><?php _e( 'Press <strong>Import</strong> button, we will do the rest for you.', 'wpuf' ); ?></p>
 
         <form action="" method="post" enctype='multipart/form-data' style="margin-top: 20px;">
             <?php wp_nonce_field( 'wpuf-import' ); ?>
@@ -169,7 +169,7 @@ class WPUF_Admin_Tools {
      * @param  array $file
      * @return boolean
      */
-    function import_json_file( $file ) {
+    public static function import_json_file( $file ) {
 
         $encode_data = file_get_contents( $file );
         $options     = json_decode( $encode_data, true );
@@ -193,6 +193,7 @@ class WPUF_Admin_Tools {
                 }
 
                 update_post_meta( $post_id, 'wpuf_form_settings', $value['meta_data']['settings'] );
+                update_post_meta( $post_id, 'notifications', $value['meta_data']['notifications'] );
             }
         }
 

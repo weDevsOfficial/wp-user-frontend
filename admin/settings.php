@@ -124,7 +124,7 @@ class WPUF_Admin_Settings {
      * @return void
      */
     function wpuf_post_forms_page() {
-        $action = isset( $_GET['action'] ) ? $_GET['action'] : null;
+        $action           = isset( $_GET['action'] ) ? $_GET['action'] : null;
         $add_new_page_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
 
         switch ( $action ) {
@@ -151,7 +151,7 @@ class WPUF_Admin_Settings {
     }
 
     function tools_page() {
-        require_once dirname( dirname( __FILE__ ) ) . '/admin/tools.php';
+        include dirname( dirname( __FILE__ ) ) . '/admin/tools.php';
     }
 
     function support_page() {
@@ -162,8 +162,11 @@ class WPUF_Admin_Settings {
      * highlight the proper top level menu
      *
      * @link http://wordpress.org/support/topic/moving-taxonomy-ui-to-another-main-menu?replies=5#post-2432769
+     *
      * @global obj $current_screen
+     *
      * @param string $parent_file
+     *
      * @return string
      */
     function fix_parent_menu( $parent_file ) {
@@ -277,6 +280,10 @@ class WPUF_Admin_Settings {
         );
 
         add_screen_option( $option, $args );
+
+        if ( ! class_exists( 'WPUF_Transactions_List_Table' ) ) {
+            require_once WPUF_ROOT . '/class/transactions-list-table.php';
+        }
 
         $this->transactions_list_table_obj = new WPUF_Transactions_List_Table();
     }

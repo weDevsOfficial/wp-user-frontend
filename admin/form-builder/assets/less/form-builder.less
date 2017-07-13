@@ -998,3 +998,210 @@ ul.wpuf-form li .wpuf-password-field:after {
         }
     }
 }
+
+.wpuf-form-template-modal {
+    background: #fff;
+    position: fixed;
+    top: 5%;
+    bottom: 5%;
+    right: 10%;
+    left: 10%;
+    // display: block;
+    display: none;
+    box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
+    z-index: 160000;
+
+    * { box-sizing: border-box; }
+
+
+    a.close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font: 300 1.71429em "dashicons" !important;
+        color: #777;
+        content: '\f335';
+        display: inline-block;
+        padding: 10px 20px;
+        z-index: 5;
+        text-decoration: none;
+        height: 50px;
+        cursor: pointer;
+        border-left: 1px solid #ddd;
+
+        &:hover {
+            background: #eee;
+            opacity: 0.8;
+            text-decoration: none;
+        }
+
+        &:active {
+            background: #eee;
+            opacity: 0.4;
+        }
+    }
+
+    .modal-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
+        z-index: 4;
+        border-bottom: 1px solid #ddd;
+        padding-left: 15px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+
+        h2 {
+            line-height: 50px;
+            text-align: left;
+            margin-top: 0;
+            color: #5d6d74;
+            font-size: 20px;
+            text-shadow: 0 1px 1px #fff;
+
+            small {
+                font-weight: normal;
+                font-size: 13px;
+                margin-left: 15px;
+            }
+        }
+    }
+
+    .content-container {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        bottom: 50px;
+        left: 0;
+        overflow: auto;
+        padding: 2em 2em;
+
+        &.no-footer {
+            bottom: 0;
+        }
+    }
+
+    .content {
+        margin: 0 auto;
+        max-width: 900px;
+        text-align: left;
+
+        ul {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+
+            li {
+                float: left;
+                width: 31.292517006803%;
+                border: 1px solid #e4e4e4;
+                padding: 0;
+                margin-left: 3.0612244897959%;
+                margin-bottom: 30px;
+                position: relative;
+                min-height: 120px;
+
+                &:hover {
+                    background: #F5F5F5;
+                }
+
+                a {
+                    text-decoration: none;
+                    color: #555;
+                    padding: 20px;
+                    display: block;
+                    min-height: 118px;
+                }
+
+                .title {
+                    font-size: 17px;
+                    margin: 0 0 10px 0;
+                    line-height: 23px;
+                }
+
+                .description {
+                    color: #888;
+                }
+
+                &:nth-child(3n+1) {
+                    margin-left: 0;
+                    clear: both;
+                }
+
+                &.template-inactive {
+                    .title,
+                    .description {
+                        color: #ddd;
+                    }
+                }
+
+                &.blank-form {
+                    text-align: center;
+
+                    span {
+                        display: block;
+                    }
+
+                    span.dashicons {
+                        font-size: 45px;
+                        color: #ddd;
+                        margin: 0 auto;
+                        width: auto;
+                        height: auto;
+                    }
+
+                    span.label {
+
+                    }
+                }
+            }
+        }
+    }
+
+    footer {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        padding: 12px 20px;
+        border-top: 1px solid #ddd;
+        background: #fff;
+        text-align: left;
+    }
+}
+
+.wpuf-form-template-modal-backdrop {
+    position: fixed;
+    z-index: 159999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 360px;
+    background: #000;
+    opacity: .7;
+    display: none;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+    .wpuf-form-template-modal {
+        .modal-header h2 small {
+            display: none;
+        }
+
+        .content {
+
+            ul {
+                li {
+                    float: none;
+                    width: 100%;
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}

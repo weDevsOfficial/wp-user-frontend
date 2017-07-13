@@ -1629,9 +1629,9 @@ function wpuf_trim_zeros( $price ) {
 function wpuf_format_price( $price, $formated = true, $args = array() ) {
 
     extract( apply_filters( 'wpuf_price_args', wp_parse_args( $args, array(
-        'currency'           => ( $formated ? wpuf_get_currency( 'symbol' ) : '' ),
+        'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
         'decimal_separator'  => wpuf_get_price_decimal_separator(),
-        'thousand_separator' => wpuf_get_price_thousand_separator(),
+        'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
         'decimals'           => wpuf_get_price_decimals(),
         'price_format'       => get_wpuf_price_format()
     ) ) ) );

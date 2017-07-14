@@ -23,12 +23,6 @@ module.exports = function(grunt) {
                 }
             },
 
-            admin: {
-                files: {
-                    '<%= dirs.css %>/formbuilder.css': ['<%= dirs.css %>/formbuilder.less']
-                }
-            },
-
             formBuilder: {
                 files: {
                     '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less']
@@ -64,7 +58,7 @@ module.exports = function(grunt) {
         watch: {
             less: {
                 files: ['<%= dirs.css %>/*.less'],
-                tasks: ['less:front', 'less:admin'],
+                tasks: ['less:front'],
                 options: {
                     livereload: true
                 }

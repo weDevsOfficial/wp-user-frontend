@@ -198,15 +198,24 @@ ul.wpuf-form {
                 display: inline;
                 text-decoration: none;
                 padding: 5px 12px;
+                margin: 0;
                 height: 30px;
                 line-height: 28px;
                 border: 1px solid #ccc;
                 .border-radius(3px);
-                .core-button();
+                background: #fafafa;
+                color: #23282d;
+                box-shadow: 0 1px 0 #cccccc;
+                vertical-align: top;
+                cursor: pointer;
+                -webkit-appearance: none;
+                white-space: nowrap;
 
                 &:hover,
                 &:focus {
-                    .core-button-hover();
+                    background: #fafafa;
+                    border-color: #999;
+                    color: #23282d;
                 }
             }
 

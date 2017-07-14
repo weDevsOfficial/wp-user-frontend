@@ -125,7 +125,7 @@ Vue.component('builder-stage', {
                     'The field has been deleted.',
                     'success'
                 );
-            }, function (dismiss) {
+            }, function() {
 
             });
         },

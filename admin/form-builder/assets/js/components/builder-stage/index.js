@@ -108,14 +108,12 @@ Vue.component('builder-stage', {
 
         delete_field: function(index) {
             var self = this;
-            
+
             swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                text: self.i18n.delete_field_warn_msg,
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#d54e21',
                 confirmButtonText: self.i18n.yes_delete_it,
                 cancelButtonText: self.i18n.no_cancel_it,
                 confirmButtonClass: 'btn btn-success',
@@ -124,19 +122,11 @@ Vue.component('builder-stage', {
                 self.$store.commit('delete_form_field_element', index);
                 swal(
                     'Deleted!',
-                    'Your file has been deleted.',
+                    'The field has been deleted.',
                     'success'
                 );
             }, function (dismiss) {
-                // dismiss can be 'cancel', 'overlay',
-                // 'close', and 'timer'
-                if (dismiss === 'cancel') {
-                    swal(
-                        'Cancelled',
-                        'Your field is safe :)',
-                        'error'
-                    );
-                }
+
             });
         },
 

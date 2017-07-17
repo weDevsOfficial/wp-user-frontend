@@ -729,11 +729,12 @@ Vue.component('form-fields', {
                 cancelButtonText: this.i18n.close,
                 confirmButtonColor: '#46b450',
                 confirmButtonText: this.i18n.upgrade_to_pro
-            }, function (is_confirm) {
+            }).then(function (is_confirm) {
                 if (is_confirm) {
                     window.open(wpuf_form_builder.pro_link, '_blank');
                 }
-            });
+
+            }, function() {});
         },
 
         alert_invalidate_msg: function (field) {

@@ -255,9 +255,15 @@
 #wpuf-form-builder .wp-picker-holder * {
   box-sizing: content-box;
 }
+#wpuf-form-builder .tab-content {
+  height: calc(100vh - 140px);
+  overflow-y: auto;
+  margin-top: 15px;
+}
 #wpuf-form-builder-settings {
   position: relative;
   margin-top: 15px;
+  min-height: 380px;
 }
 #wpuf-form-builder-settings .nav-tab-wrapper {
   position: absolute;
@@ -776,6 +782,9 @@ ul.wpuf-form li .wpuf-password-field:after {
   box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
   z-index: 160000;
 }
+.wpuf-form-template-modal.show {
+  display: block;
+}
 .wpuf-form-template-modal * {
   box-sizing: border-box;
 }
@@ -859,6 +868,21 @@ ul.wpuf-form li .wpuf-password-field:after {
   position: relative;
   min-height: 120px;
 }
+.wpuf-form-template-modal .content ul li.on-progress:before {
+  content: "\f463";
+  display: inline-block;
+  font: normal 20px/1 'dashicons';
+  color: #f56e28;
+  -webkit-animation: rotation 2s infinite linear;
+  animation: rotation 2s infinite linear;
+  position: absolute;
+  top: 40%;
+  left: 45%;
+}
+.wpuf-form-template-modal .content ul li.on-progress a {
+  pointer-events: none;
+  opacity: 0.2;
+}
 .wpuf-form-template-modal .content ul li:hover {
   background: #F5F5F5;
 }
@@ -919,6 +943,9 @@ ul.wpuf-form li .wpuf-password-field:after {
   background: #000;
   opacity: .7;
   display: none;
+}
+.wpuf-form-template-modal-backdrop.show {
+  display: block;
 }
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {

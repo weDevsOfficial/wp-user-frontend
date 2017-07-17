@@ -58,10 +58,7 @@ module.exports = function(grunt) {
         watch: {
             less: {
                 files: ['<%= dirs.css %>/*.less'],
-                tasks: ['less:front'],
-                options: {
-                    livereload: true
-                }
+                tasks: ['less:front']
             },
 
             formBuilder: {

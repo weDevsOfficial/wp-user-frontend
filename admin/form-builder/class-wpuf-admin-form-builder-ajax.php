@@ -40,7 +40,7 @@ class WPUF_Admin_Form_Builder_Ajax {
         $settings      = array();
 
         if ( isset( $_POST['settings'] ) ) {
-            $settings = json_decode( wp_unslash( $_POST['settings'] ) );
+            $settings = (array) json_decode( wp_unslash( $_POST['settings'] ) );
         } else {
             $settings = isset( $form_data['wpuf_settings'] ) ? $form_data['wpuf_settings'] : array();
         }

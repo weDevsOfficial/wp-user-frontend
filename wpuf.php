@@ -124,6 +124,11 @@ class WP_User_Frontend {
         update_option( 'wpuf_expiry_posts_last_cleaned', date( 'F j, Y g:i a' ) );
     }
 
+    /**
+     * Singleton Instance
+     *
+     * @return \self
+     */
     public static function init() {
 
         if ( !self::$_instance ) {
@@ -133,6 +138,11 @@ class WP_User_Frontend {
         return self::$_instance;
     }
 
+    /**
+     * Include the required files
+     *
+     * @return void
+     */
     public function includes() {
         require_once dirname( __FILE__ ) . '/wpuf-functions.php';
         require_once dirname( __FILE__ ) . '/lib/gateway/paypal.php';
@@ -259,6 +269,7 @@ class WP_User_Frontend {
      * Do plugin upgrades
      *
      * @since 2.2
+     *
      * @return void
      */
     function plugin_upgrades() {
@@ -283,6 +294,7 @@ class WP_User_Frontend {
      * Enqueues Styles and Scripts when the shortcodes are used only
      *
      * @uses has_shortcode()
+     *
      * @since 0.2
      */
     function enqueue_scripts() {
@@ -290,7 +302,7 @@ class WP_User_Frontend {
 
         global $post;
 
-        $scheme = is_ssl() ? 'https' : 'http';
+        $scheme  = is_ssl() ? 'https' : 'http';
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
         if ( !empty( $api_key ) ) {

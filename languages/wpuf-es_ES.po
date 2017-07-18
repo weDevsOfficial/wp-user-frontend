@@ -1718,7 +1718,7 @@ msgstr "WP User Frontend"
 
 #: admin/settings.php:55
 msgid "User Frontend"
-msgstr "Frontend del Usuario"
+msgstr "User Frontend"
 
 #: admin/settings.php:65
 msgid "Subscriptions"

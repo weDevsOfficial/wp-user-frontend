@@ -9,6 +9,7 @@
         <div>
             <strong><?php _e( 'Remaining post: ', 'wpuf'); ?></strong>
             <?php
+            $i = 0;
             foreach ( $user_sub['posts'] as $key => $value ) {
                 $value = intval( $value );
 
@@ -24,7 +25,9 @@
                 ?>
                 <div><?php echo $post_type_obj->labels->name . ': ' . $value; ?></div>
                 <?php
+                $i++;
             }
+            echo $i ? '' : $i;
             ?>
         </div>
         <?php

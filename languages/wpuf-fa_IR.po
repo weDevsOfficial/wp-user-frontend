@@ -1045,7 +1045,7 @@ msgstr "افزونه ناحیه کابری پیشرفته"
 
 #: admin/settings.php:55
 msgid "User Frontend"
-msgstr "ناحیه کاربری پیشرفته"
+msgstr "User Frontend"
 
 #: admin/settings.php:66
 msgid "Transaction"

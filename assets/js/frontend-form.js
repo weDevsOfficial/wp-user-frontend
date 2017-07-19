@@ -36,6 +36,12 @@
                         wpuf_plupload_items[i].refresh();
                     }
                 }
+                if ( wpuf_map_items.length ) {
+                    for (var i = wpuf_map_items.length - 1; i >= 0; i--) {
+                        var html_text = '<div id="'+wpuf_map_items[i].div_id+'" class="wpuf-fields '+wpuf_map_items[i].div_id+'" >'+$('#'+wpuf_map_items[i].div_id)[0].innerHTML+'</div>';
+                        $('#'+wpuf_map_items[i].div_id).replaceWith( html_text);
+                    }
+                }
             });
 
             this.ajaxCategory();

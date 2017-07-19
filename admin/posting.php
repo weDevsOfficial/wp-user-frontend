@@ -422,6 +422,11 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      */
     // Save the Metabox Data
     function save_meta( $post ) {
+
+        if ( !isset( $post->ID ) ) {
+            return;
+        }
+
         if ( !isset( $_POST['wpuf_cf_update'] ) ) {
             return $post->ID;
         }

@@ -71,7 +71,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
                     break;
 
                 default:
-                    $count = $post_counts[ $status ];
+                    $count = isset( $post_counts[ $status ] ) ? $post_counts[ $status ] : 0;
                     break;
             }
 

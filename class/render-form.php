@@ -446,6 +446,10 @@ class WPUF_Render_Form {
             if ( typeof wpuf_plupload_items === 'undefined' ) {
                 wpuf_plupload_items = [];
             }
+
+            if ( typeof wpuf_map_items === 'undefined' ) {
+                wpuf_map_items = [];
+            }
         </script>
         <?php
 

@@ -801,6 +801,9 @@ add_filter( 'the_content', 'wpuf_show_custom_fields' );
  * @param array $args
  */
 function wpuf_shortcode_map( $location, $post_id = null, $args = array(), $meta_key = '' ) {
+    if ( !wpuf()->is_pro() || !$location ) {
+        return;
+    }
     global $post;
 
     // compatibility

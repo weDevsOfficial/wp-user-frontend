@@ -17,66 +17,77 @@ define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
 define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
 
 /**
- * Autoload class files on demand
- *
- * `WPUF_Form_Posting` becomes => form-posting.php
- * `WPUF_Dashboard` becomes => dashboard.php
- *
- * @param string $class requested class name
- */
-function wpuf_autoload( $class ) {
-
-    if ( stripos( $class, 'WPUF_' ) !== false ) {
-
-        $admin = ( stripos( $class, '_Admin_' ) !== false ) ? true : false;
-
-        if ( $admin ) {
-            $class_name = str_replace( array('WPUF_Admin_', '_'), array('', '-'), $class );
-            $filename   = dirname( __FILE__ ) . '/admin/' . strtolower( $class_name ) . '.php';
-        } else {
-            $class_name = str_replace( array('WPUF_', '_'), array('', '-'), $class );
-            $filename   = dirname( __FILE__ ) . '/class/' . strtolower( $class_name ) . '.php';
-        }
-
-        if ( file_exists( $filename ) ) {
-            require_once $filename;
-        }
-    }
-}
-
-// spl_autoload_register( 'wpuf_autoload' );
-
-/**
  * Main bootstrap class for WP User Frontend
  *
  * @package WP User Frontend
  */
-class WP_User_Frontend {
+final class WP_User_Frontend {
 
+    /**
+     * Integrations instance.
+     *
+     * @since 2.5.4
+     *
+     * @var WPUF_Integrations
+     */
+    public $integrations = null;
+
+    /**
+     * The singleton instance
+     *
+     * @var WP_User_Frontend
+     */
     private static $_instance;
+
+    /**
+     * Pro plugin checkup
+     *
+     * @var boolean
+     */
     private $is_pro = false;
 
-    function __construct() {
+    /**
+     * Fire up the plugin
+     */
+    public function __construct() {
+
+        register_activation_hook( __FILE__, array( $this, 'install' ) );
+        register_deactivation_hook( __FILE__, array( $this, 'uninstall' ) );
 
         $this->includes();
+        $this->init_hooks();
 
-        $this->instantiate();
+        do_action( 'wpuf_loaded' );
+    }
 
-        // set schedule event
-        add_action( 'wpuf_remove_expired_post_hook', array( $this, 'action_to_remove_exipred_post' ) );
+    /**
+     * Initialize the hooks
+     *
+     * @since 2.5.4
+     *
+     * @return void
+     */
+    public function init_hooks() {
+
+        add_action( 'plugins_loaded', array( $this, 'plugin_upgrades') );
+
+        add_action( 'init', array( $this, 'instantiate' ) );
+        add_action( 'init', array( $this, 'load_textdomain') );
 
         add_action( 'admin_init', array( $this, 'block_admin_access') );
         add_action( 'show_admin_bar', array( $this, 'show_admin_bar') );
 
-        add_action( 'init', array( $this, 'load_textdomain') );
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
 
         // do plugin upgrades
-        add_action( 'plugins_loaded', array( $this, 'plugin_upgrades') );
+
         add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'plugin_action_links' ) );
 
         //add custom css
         add_action( 'wp_head', array( $this, 'add_custom_css' ) );
+
+        // set schedule event
+        add_action( 'wpuf_remove_expired_post_hook', array( $this, 'action_to_remove_exipred_post' ) );
     }
 
     /**
@@ -169,6 +180,8 @@ class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/render-form.php';
         require_once WPUF_ROOT . '/class/payment.php';
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
+        require_once WPUF_ROOT . '/includes/class-abstract-integration.php';
+        require_once WPUF_ROOT . '/includes/class-integrations.php';
 
         if ( is_admin() ) {
             require_once WPUF_ROOT . '/admin/settings-options.php';
@@ -203,6 +216,8 @@ class WP_User_Frontend {
      * @return void
      */
     function instantiate() {
+
+        $this->integrations = new WPUF_Integrations();
 
         new WPUF_Upload();
         new WPUF_Paypal();
@@ -277,6 +292,8 @@ class WP_User_Frontend {
         if ( ! is_admin() && ! current_user_can( 'manage_options' ) ) {
             return;
         }
+
+        require_once WPUF_ROOT . '/class/upgrades.php';
 
         new WPUF_Upgrades( WPUF_VERSION );
     }
@@ -510,6 +527,5 @@ function wpuf() {
     return WP_User_Frontend::init();
 }
 
-add_action( 'plugins_loaded', 'wpuf' );
-register_activation_hook( __FILE__, array( 'WP_User_Frontend', 'install' ) );
-register_deactivation_hook( __FILE__, array( 'WP_User_Frontend', 'uninstall' ) );
+// kickoff
+wpuf();

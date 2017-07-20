@@ -464,7 +464,7 @@ function wpuf_update_post( $args ) {
     if ( ! wp_is_post_revision( $args['ID'] ) ){
         // unhook this function so it doesn't loop infinitely
         remove_action( 'save_post', array( WPUF_Admin_Posting::init(), 'save_meta' ), 1 );
-    
+
         // update the post, which calls save_post again
         wp_update_post( $args );
 
@@ -1259,6 +1259,23 @@ function wpuf_get_form_notifications( $form_id ) {
     }
 
     return $notifications;
+}
+
+/**
+ * Get form integration settings
+ *
+ * @param  int $form_id
+ *
+ * @return array
+ */
+function wpuf_get_form_integrations( $form_id ) {
+    $integrations =  get_post_meta( $form_id, 'integrations', true );
+
+    if ( !$integrations ) {
+        return array();
+    }
+
+    return $integrations;
 }
 
 /**

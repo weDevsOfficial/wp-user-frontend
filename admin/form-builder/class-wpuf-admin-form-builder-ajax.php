@@ -36,11 +36,16 @@ class WPUF_Admin_Form_Builder_Ajax {
         $form_fields   = isset( $_POST['form_fields'] ) ? $_POST['form_fields'] : '';
         $notifications = isset( $_POST['notifications'] ) ? $_POST['notifications'] : '';
         $settings      = array();
+        $integrations  = array();
 
         if ( isset( $_POST['settings'] ) ) {
             $settings = (array) json_decode( wp_unslash( $_POST['settings'] ) );
         } else {
             $settings = isset( $form_data['wpuf_settings'] ) ? $form_data['wpuf_settings'] : array();
+        }
+
+        if ( isset( $_POST['integrations'] ) ) {
+            $integrations = (array) json_decode( wp_unslash( $_POST['integrations'] ) );
         }
 
         $form_fields   = wp_unslash( $form_fields );
@@ -55,7 +60,8 @@ class WPUF_Admin_Form_Builder_Ajax {
             'form_fields'       => $form_fields,
             'form_settings'     => $settings,
             'form_settings_key' => isset( $form_data['form_settings_key'] ) ? $form_data['form_settings_key'] : '',
-            'notifications'     => $notifications
+            'notifications'     => $notifications,
+            'integrations'      => $integrations
         );
 
         $form_fields = WPUF_Admin_Form_Builder::save_form( $data );

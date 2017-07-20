@@ -396,6 +396,7 @@ class WPUF_Admin_Form_Builder {
 
         update_post_meta( $data['form_id'], $data['form_settings_key'], $data['form_settings'] );
         update_post_meta( $data['form_id'], 'notifications', $data['notifications'] );
+        update_post_meta( $data['form_id'], 'integrations', $data['integrations'] );
 
         return $saved_wpuf_inputs;
     }

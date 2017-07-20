@@ -10,7 +10,6 @@ Vue.component('wpuf-merge-tags', {
 
     data: function() {
         return {
-            showing: false,
             type: null,
         };
     },

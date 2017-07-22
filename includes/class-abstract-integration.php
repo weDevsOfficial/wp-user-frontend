@@ -98,4 +98,17 @@ abstract class WPUF_Abstract_Integration {
             'settings' => $this->get_settings_fields()
         );
     }
+
+    /**
+     * Register the integration in the builder settings
+     *
+     * @param  array $integrations
+     *
+     * @return array
+     */
+    public function register_integration_settings( $integrations ) {
+        $integrations[ $this->id ] = $this->get_js_settings();
+
+        return $integrations;
+    }
 }

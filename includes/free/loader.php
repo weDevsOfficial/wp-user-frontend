@@ -45,8 +45,12 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         //class files to include pro elements
         require_once dirname( __FILE__ ) . '/form.php';
-        require_once dirname( __FILE__ ) . '/form-element.php';
-        require_once dirname( __FILE__ ) . '/subscription.php';
+        if ( class_exists('WPUF_form_element') ) {
+            require_once dirname( __FILE__ ) . '/form-element.php';
+        }
+        if ( class_exists('WPUF_subscription_element') ) {
+            require_once dirname( __FILE__ ) . '/subscription.php';
+        }
         require_once dirname( __FILE__ ) . '/edit-profile.php';
         require_once dirname( __FILE__ ) . '/edit-user.php';
     }

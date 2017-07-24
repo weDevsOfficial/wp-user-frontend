@@ -528,4 +528,5 @@ function wpuf() {
 }
 
 // kickoff
-wpuf();
+// wpuf();
+add_action( 'plugins_loaded', 'wpuf' );

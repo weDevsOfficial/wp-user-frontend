@@ -1257,7 +1257,7 @@ function wpuf_get_form_settings( $form_id, $status = true ) {
 function wpuf_get_form_notifications( $form_id ) {
     $notifications =  get_post_meta( $form_id, 'notifications', true );
 
-    if ( !$notifications ) {
+    if ( ! $notifications ) {
         return array();
     }
 
@@ -1267,6 +1267,8 @@ function wpuf_get_form_notifications( $form_id ) {
 /**
  * Get form integration settings
  *
+ * @since 2.5.4
+ *
  * @param  int $form_id
  *
  * @return array
@@ -1274,11 +1276,37 @@ function wpuf_get_form_notifications( $form_id ) {
 function wpuf_get_form_integrations( $form_id ) {
     $integrations =  get_post_meta( $form_id, 'integrations', true );
 
-    if ( !$integrations ) {
+    if ( ! $integrations ) {
         return array();
     }
 
     return $integrations;
+}
+
+/**
+ * Check if an integration is active
+ *
+ * @since 2.5.4
+ *
+ * @param  int $form_id
+ * @param  string $integration_id
+ *
+ * @return boolean
+ */
+function wpuf_is_integration_active( $form_id, $integration_id ) {
+    $integrations = wpuf_get_form_integrations( $form_id );
+
+    if ( ! $integrations ) {
+        return false;
+    }
+
+    foreach ($integrations as $id => $integration) {
+        if ( $integration_id == $id && $integration->enabled == true ) {
+            return $integration;
+        }
+    }
+
+    return false;
 }
 
 /**

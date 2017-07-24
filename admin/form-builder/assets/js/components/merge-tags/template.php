@@ -10,7 +10,18 @@
             <ul>
                 <template v-if="form_fields.length">
                     <li v-for="field in form_fields">
-                        <a href="#" v-on:click.prevent="insertField('field', field.name);">{{ field.label }}</a>
+
+                        <template v-if="field.input_type === 'name'">
+                            <a href="#" v-on:click.prevent="insertField('name-full', field.name);">{{ field.label }}</a>
+                            (
+                            <a href="#" v-on:click.prevent="insertField('name-first', field.name);"><?php _e( 'first', 'wpuf' ); ?></a> |
+                            <a href="#" v-on:click.prevent="insertField('name-middle', field.name);"><?php _e( 'middle', 'wpuf' ); ?></a> |
+                            <a href="#" v-on:click.prevent="insertField('name-last', field.name);"><?php _e( 'last', 'wpuf' ); ?></a>
+                            )
+                        </template>
+
+                        <a v-else href="#" v-on:click.prevent="insertField('field', field.name);">{{ field.label }}</a>
+
                     </li>
                 </template>
                 <li v-else><?php _e( 'No fields available', 'wpuf' ); ?></li>
@@ -18,9 +29,9 @@
         </div><!-- .merge-tag-section -->
 
         <?php
-        if ( function_exists( 'wpuf_cf_get_merge_tags' ) ) {
+        if ( function_exists( 'weforms_get_merge_tags' ) ) {
 
-            $merge_tags = wpuf_cf_get_merge_tags();
+            $merge_tags = weforms_get_merge_tags();
 
             foreach ($merge_tags as $section_key => $section) {
                 ?>

@@ -64,7 +64,7 @@ class WPUF_Subscription {
             $gateway = ( $_POST['gateway'] == 'bank/manual' ) ? 'bank' : sanitize_text_field( $_POST['gateway'] );
             
             if ( 'bank' == $gateway || 'no' == $current_pack['recurring'] ) {
-                WPUF_Subscription::init()->update_user_subscription_meta( $_POST['user_id'], 'Cancel' );
+                $this->update_user_subscription_meta( $_POST['user_id'], 'Cancel' );
             } else {
                 do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );
             }
@@ -166,7 +166,7 @@ class WPUF_Subscription {
 
         if ( $billing_amount === false ) {
             $this->new_subscription( $user_id, $pack_id, null, false, 'free' );
-            WPUF_Subscription::add_used_free_pack( $user_id, $pack_id );
+            self::add_used_free_pack( $user_id, $pack_id );
         } else {
             $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
             $redirect = add_query_arg( array( 'action' => 'wpuf_pay', 'type' => 'pack', 'pack_id' => (int) $pack_id ), get_permalink( $pay_page ) );
@@ -955,7 +955,7 @@ class WPUF_Subscription {
     function force_pack_notice( $text, $id, $form_settings ) {
         $force_pack = wpuf_get_option( 'force_pack', 'wpuf_payment' );
 
-        if ( $force_pack == 'yes' && WPUF_Subscription::has_user_error($form_settings) ) {
+        if ( $force_pack == 'yes' && self::has_user_error($form_settings) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
 
             $text = sprintf( __( 'You must <a href="%s">purchase a pack</a> before posting', 'wpuf' ), $pack_page );
@@ -976,7 +976,7 @@ class WPUF_Subscription {
                 return 'no';
             } else {
 
-                if ( $force_pack == 'yes' && WPUF_Subscription::has_user_error( $form_settings ) ) {
+                if ( $force_pack == 'yes' && self::has_user_error( $form_settings ) ) {
                     return 'no';
                 } else {
                     return 'yes';

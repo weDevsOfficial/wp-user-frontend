@@ -69,9 +69,10 @@ final class WP_User_Frontend {
      */
     public function init_hooks() {
 
+        add_action( 'plugins_loaded', array( $this, 'wpuf_loader') );
         add_action( 'plugins_loaded', array( $this, 'plugin_upgrades') );
 
-        add_action( 'init', array( $this, 'instantiate' ) );
+        add_action( 'plugins_loaded', array( $this, 'instantiate' ) );
         add_action( 'init', array( $this, 'load_textdomain') );
 
         add_action( 'admin_init', array( $this, 'block_admin_access') );
@@ -158,19 +159,6 @@ final class WP_User_Frontend {
         require_once dirname( __FILE__ ) . '/wpuf-functions.php';
         require_once dirname( __FILE__ ) . '/lib/gateway/paypal.php';
         require_once dirname( __FILE__ ) . '/lib/gateway/bank.php';
-
-        $is_expired = wpuf_is_license_expired();
-        $has_pro    = class_exists( 'WP_User_Frontend_Pro' );
-
-        if ( $has_pro && $is_expired ) {
-            add_action( 'admin_notices', array( $this, 'license_expired' ) );
-        }
-
-        if ( $has_pro ) {
-            $this->is_pro = true;
-        } else {
-            include dirname( __FILE__ ) . '/includes/free/loader.php';
-        }
 
         // global classes/functions
         require_once WPUF_ROOT . '/class/upload.php';
@@ -296,6 +284,26 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/upgrades.php';
 
         new WPUF_Upgrades( WPUF_VERSION );
+    }
+
+    /**
+     * Load wpuf free class if not pro
+     *
+     * @since 2.5.4
+     */
+    function wpuf_loader() {
+        $is_expired = wpuf_is_license_expired();
+        $has_pro    = class_exists( 'WP_User_Frontend_Pro' );
+
+        if ( $has_pro && $is_expired ) {
+            add_action( 'admin_notices', array( $this, 'license_expired' ) );
+        }
+
+        if ( $has_pro ) {
+            $this->is_pro = true;
+        } else {
+            include dirname( __FILE__ ) . '/includes/free/loader.php';
+        }
     }
 
     /**
@@ -528,5 +536,4 @@ function wpuf() {
 }
 
 // kickoff
-// wpuf();
-add_action( 'plugins_loaded', 'wpuf' );
+wpuf();

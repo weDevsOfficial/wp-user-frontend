@@ -163,6 +163,41 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.5.4 (27 July, 2017) =
+
+ * [new] Added WPUF admin menu icon
+ + [new] Added Recaptcha field
+ * [improve] Add Spanish Translation
+ * [improve] Re-design addons page according to WP plugins page listing
+ * [improve] When duplicating a form, add a form ID in the form name
+ * [improve] Remove Google map and reCaptcha settings
+ * [improve] Remove “Fixed form elements” from settings → general
+ * [improve] Remove additional + - buttons on radio buttons
+ * [improve] Removed Autoloader, Single JS Templates
+ * [improve] Form settings saving: compatible with JSON payload
+ * [improve] Editor: show warning only when some form field have changed
+ * [improve] Added integrations class
+ * [improve] Form notification, modal, integration components added
+ * [improve] Added first/middle/last name support on merge tag
+ * [fix] Sweetalert returning text "true" instead of original message
+ * [fix] Hide subscription menu from "my account" page when user has no subscription pack
+ * [fix] On saving as draft post custom taxonomy not saved
+ * [fix] Page content not loading after successful submission of Ajax
+ * [fix] URL is not clickable on the frontend
+ * [fix] Mail & URL Field not have validation
+ * [fix] Fix infinite post and make compatible with ACF plugin
+ * [fix] Cannot delete attribute field from product form after delete attribute
+ * [fix] Apply coupon returned unexpected value for separator
+ * [fix] swal: fix text and button color
+ * [fix] Form render error when using shortcodes in custom html field
+ * [fix] Conflict with Imagify Image Optimizer plugin
+ * [fix] When site language changed, Add Form/ Edit Form page display nothing
+ * [fix] Fix sweetalert promise
+ * [fix] Subscription don't display any value if there has no remaining post
+ * [fix] Google map not loading on multistep form
+ * [fix] Fix undefined index in count
+ * [fix] Invalid post type due to class loading hook
+
 = v2.5.3 (8 June, 2017) =
 
  * [improve] Update action name by removing language changing option

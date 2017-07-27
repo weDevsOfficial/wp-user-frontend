@@ -472,7 +472,7 @@ class WPUF_Admin_Form {
      */
     public function add_to_localize_script( $data ) {
         return array_merge( $data, array(
-            'wp_post_types' => $this->wp_post_types
+            'wp_post_types'     => $this->wp_post_types
         ) );
     }
 

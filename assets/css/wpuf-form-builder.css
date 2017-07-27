@@ -738,6 +738,9 @@ ul.wpuf-form li .wpuf-password-field:after {
   content: "";
   display: table;
 }
+.wpuf-recaptcha-placeholder {
+  width: 304px;
+}
 .wpuf-merge-tag-wrap .merge-tag-link {
   position: absolute;
   right: 5px;

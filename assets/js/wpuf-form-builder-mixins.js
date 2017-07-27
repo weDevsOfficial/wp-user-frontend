@@ -97,6 +97,10 @@ Vue.mixin({
             return false;
         },
 
+        has_recaptcha_api_keys: function () {
+            return (wpuf_form_builder.recaptcha_site && wpuf_form_builder.recaptcha_secret) ? true : false;
+        },
+
         containsField: function(field_name) {
             var i = 0;
 

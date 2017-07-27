@@ -24,7 +24,8 @@ class WPUF_Form_Builder_Field_Settings {
             'custom_hidden_field'   => self::custom_hidden_field(),
             'image_upload'          => self::image_upload(),
             'section_break'         => self::section_break(),
-            'custom_html'           => self::custom_html()
+            'custom_html'           => self::custom_html(),
+            'recaptcha'             => self::recaptcha(),
         ) );
     }
 
@@ -779,6 +780,64 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'            => 0,
                 'is_new'        => true,
                 'wpuf_cond'     => self::get_wpuf_cond_prop()
+            )
+        );
+    }
+
+    /**
+     * Recaptcha
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function recaptcha() {
+        $settings = array(
+            array(
+                'name'          => 'label',
+                'title'         => __( 'Title', 'wpuf' ),
+                'type'          => 'text',
+                'section'       => 'basic',
+                'priority'      => 10,
+                'help_text'     => __( 'Title of the section', 'wpuf' ),
+            ),
+
+            array(
+                'name'          => 'enable_no_captcha',
+                'title'         => '',
+                'type'          => 'checkbox',
+                'is_single_opt' => true,
+                'options'       => array(
+                    'enabled'   => __( 'Enable noCaptcha', 'wpuf' )
+                ),
+                'section'       => 'basic',
+                'priority'      => 11,
+                'help_text'     => __( 'Enter default latitude and longitude to center the map', 'wpuf' ),
+            )
+        );
+
+        return array(
+            'template'      => 'recaptcha',
+            'title'         => __( 'Recaptcha', 'wpuf' ),
+            'validator'     => array(
+                'callback'      => 'has_recaptcha_api_keys',
+                'button_class'  => 'button-faded',
+                'msg_title'     => __( 'Site key and Secret key', 'wpuf' ),
+                'msg'           => sprintf(
+                    __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">WPUF Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wpuf' ),
+                    admin_url( 'admin.php?page=wpuf-settings' ),
+                    'https://www.google.com/recaptcha/'
+                ),
+            ),
+            'settings'      => $settings,
+            'field_props'   => array(
+                'input_type'        => 'recaptcha',
+                'template'          => 'recaptcha',
+                'label'             => '',
+                'enable_no_captcha' => 'enabled',
+                'id'                => 0,
+                'is_new'            => true,
+                'wpuf_cond'         => self::get_wpuf_cond_prop(),
             )
         );
     }

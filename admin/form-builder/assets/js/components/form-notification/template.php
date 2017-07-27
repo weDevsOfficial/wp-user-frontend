@@ -19,8 +19,8 @@
                     <tr v-for="(notification, index) in notifications">
                         <td class="col-toggle">
                             <a href="#" v-on:click.prevent="toggelNotification(index)">
-                                <img v-if="notification.active" src="<?php echo WEFORMS_ASSET_URI; ?>/images/active.png" width="24" alt="status">
-                                <img v-else src="<?php echo WEFORMS_ASSET_URI; ?>/images/inactive.png" width="24" alt="status">
+                                <img v-if="notification.active" src="<?php echo WPUF_ASSET_URI; ?>/images/active.png" width="24" alt="status">
+                                <img v-else src="<?php echo WPUF_ASSET_URI; ?>/images/inactive.png" width="24" alt="status">
                             </a>
                         </td>
                         <td class="col-name"><a href="#" v-on:click.prevent="editItem(index)">{{ notification.name }}</a></td>

@@ -74,7 +74,7 @@ class WPUF_Admin_Form_Builder_Free {
      */
     public function add_others_fields( $fields ) {
         return array_merge( $fields, array(
-            'shortcode','recaptcha', 'really_simple_captcha', 'action_hook', 'toc', 'ratings'
+            'shortcode', 'really_simple_captcha', 'action_hook', 'toc', 'ratings'
         ) );
     }
 

@@ -24,7 +24,6 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
             'step_start'            => self::step_start(),
             'google_map'            => self::google_map(),
             'shortcode'             => self::shortcode(),
-            'recaptcha'             => self::recaptcha(),
             'really_simple_captcha' => self::really_simple_captcha(),
             'action_hook'           => self::action_hook(),
             'toc'                   => self::toc(),
@@ -194,21 +193,6 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
         return array(
             'template'      => 'shortcode',
             'title'         => __( 'Shortcode', 'wpuf' ),
-            'pro_feature'   => true,
-        );
-    }
-
-    /**
-     * Recaptcha
-     *
-     * @since 2.5
-     *
-     * @return array
-     */
-    public static function recaptcha() {
-        return array(
-            'template'      => 'recaptcha',
-            'title'         => __( 'Recaptcha', 'wpuf' ),
             'pro_feature'   => true,
         );
     }

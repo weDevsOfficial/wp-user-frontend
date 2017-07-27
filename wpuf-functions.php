@@ -1193,6 +1193,12 @@ function wpuf_get_form_fields( $form_id ) {
         if ( 'repeat' === $field['input_type'] && ! isset( $field['multiple'] ) ) {
             $field['multiple'] = '';
         }
+        
+        if ( 'recaptcha' === $field['input_type'] ) {
+            $field['name'] = 'recaptcha';
+            $field['enable_no_captcha'] = isset( $field['enable_no_captcha'] ) ? $field['enable_no_captcha'] : '';
+
+        }
 
         $form_fields[] = apply_filters( 'wpuf-get-form-fields', $field );
     }

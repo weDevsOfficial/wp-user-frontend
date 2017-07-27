@@ -139,7 +139,9 @@ class WPUF_Admin_Form_Builder {
             'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
             'notifications'     => wpuf_get_form_notifications( $post->ID ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
-            'site_url'          => site_url('/')
+            'site_url'          => site_url('/'),
+            'recaptcha_site'    => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
+            'recaptcha_secret'  => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
         ) );
 
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
@@ -294,7 +296,7 @@ class WPUF_Admin_Form_Builder {
      */
     private function get_others_fields() {
         $fields = apply_filters( 'wpuf-form-builder-fields-others-fields', array(
-            'section_break', 'custom_html'
+            'section_break', 'custom_html', 'recaptcha'
         ) );
 
         return array(

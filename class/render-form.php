@@ -435,7 +435,7 @@ class WPUF_Render_Form {
      */
     function render_items( $form_vars, $post_id, $type = 'post', $form_id, $form_settings, $cond_inputs = array() ) {
 
-        $edit_ignore = array('recaptcha', 'really_simple_captcha');
+        $edit_ignore = array( 'really_simple_captcha' );
         $hidden_fields = array();
         ?>
         <script type="text/javascript">
@@ -564,6 +564,11 @@ class WPUF_Render_Form {
 
                 case 'image_upload':
                     $this->image_upload( $form_field, $post_id, $type, $form_id );
+                    $this->conditional_logic( $form_field, $form_id );
+                    break;
+
+                case 'recaptcha':
+                    $this->recaptcha( $form_field, $post_id, $form_id );
                     $this->conditional_logic( $form_field, $form_id );
                     break;
 
@@ -1547,6 +1552,29 @@ class WPUF_Render_Form {
             <div class="wpuf-section-details"><?php echo $attr['description']; ?></div>
         </div>
         <?php
+    }
+
+    /**
+     * Prints recaptcha field
+     *
+     * @param array $attr
+     */
+    public static function recaptcha( $attr, $post_id, $form_id ) {
+
+        if ( $post_id ) {
+            return;
+        }
+        if ( isset ( $attr['enable_no_captcha'] ) && $attr['enable_no_captcha'] == 'enabled' ) {
+            $enable_no_captcha = true;
+        } else {
+            $enable_no_captcha = false;
+        }
+        ?>
+
+        <div class="wpuf-fields <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>">
+            <?php echo recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), $enable_no_captcha, null, is_ssl() ); ?>
+        </div>
+    <?php
     }
 
 }

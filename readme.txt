@@ -163,10 +163,11 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
-= v2.5.4 (27 July, 2017) =
+= v2.5.4 (30 July, 2017) =
 
  * [new] Added WPUF admin menu icon
  + [new] Added Recaptcha field
+ + [new] Added tracker (weDevs Insights)
  * [improve] Add Spanish Translation
  * [improve] Re-design addons page according to WP plugins page listing
  * [improve] When duplicating a form, add a form ID in the form name

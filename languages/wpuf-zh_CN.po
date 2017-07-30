@@ -1029,7 +1029,7 @@ msgstr "前端用户中心"
 
 #: ../admin/settings.php:55
 msgid "User Frontend"
-msgstr "前端用户中心"
+msgstr "User Frontend"
 
 #: ../admin/settings.php:66
 msgid "Transaction"

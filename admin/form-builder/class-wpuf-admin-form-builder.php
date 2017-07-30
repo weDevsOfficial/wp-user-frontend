@@ -139,7 +139,9 @@ class WPUF_Admin_Form_Builder {
             'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
             'notifications'     => wpuf_get_form_notifications( $post->ID ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
-            'site_url'          => site_url('/')
+            'site_url'          => site_url('/'),
+            'recaptcha_site'    => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
+            'recaptcha_secret'  => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
         ) );
 
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
@@ -199,25 +201,8 @@ class WPUF_Admin_Form_Builder {
      */
     public function admin_footer() {
         // get all vue component names
-        $path = WPUF_ROOT . '/admin/form-builder/assets/js/components';
 
-        $components = array();
-
-        // directory handle
-        $dir = dir( $path );
-
-        while ( $entry = $dir->read() ) {
-            if ( $entry !== '.' && $entry !== '..' ) {
-               if ( is_dir( $path . '/' . $entry ) ) {
-                    $components[] = $entry;
-               }
-            }
-        }
-
-        // html templates of vue components
-        foreach ( $components as $component ) {
-            self::include_js_template( $component );
-        }
+        include WPUF_ROOT . '/assets/js-templates/form-components.php';
 
         do_action( 'wpuf-form-builder-add-js-templates' );
     }
@@ -238,28 +223,6 @@ class WPUF_Admin_Form_Builder {
         wp_deregister_style( 'imagify-css-sweetalert' );
         wp_dequeue_script( 'imagify-js-sweetalert' );
         wp_deregister_script( 'imagify-js-sweetalert' );
-    }
-
-    /**
-     * Embed a Vue.js component template
-     *
-     * @since 2.5
-     *
-     * @param string $template
-     * @param string $file_path
-     *
-     * @return void
-     */
-    public static function include_js_template( $template, $file_path = '' ) {
-        $file_path = $file_path ? untrailingslashit( $file_path ) : WPUF_ROOT . '/admin/form-builder/assets/js/components';
-
-        $file_path = $file_path . '/' . $template . '/template.php';
-
-        if ( file_exists( $file_path ) ) {
-            echo '<script type="text/x-template" id="tmpl-wpuf-' . $template . '">' . "\n";
-            include apply_filters( 'wpuf-form-builder-js-template-path', $file_path, $template );
-            echo "\n" . '</script>' . "\n";
-        }
     }
 
     /**
@@ -333,7 +296,7 @@ class WPUF_Admin_Form_Builder {
      */
     private function get_others_fields() {
         $fields = apply_filters( 'wpuf-form-builder-fields-others-fields', array(
-            'section_break', 'custom_html'
+            'section_break', 'custom_html', 'recaptcha'
         ) );
 
         return array(
@@ -435,6 +398,7 @@ class WPUF_Admin_Form_Builder {
 
         update_post_meta( $data['form_id'], $data['form_settings_key'], $data['form_settings'] );
         update_post_meta( $data['form_id'], 'notifications', $data['notifications'] );
+        update_post_meta( $data['form_id'], 'integrations', $data['integrations'] );
 
         return $saved_wpuf_inputs;
     }

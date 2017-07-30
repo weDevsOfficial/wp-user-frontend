@@ -446,10 +446,31 @@ add_filter( 'wpuf_addpost_notice', 'wpuf_addpost_notice' );
  * @param type $post_id
  */
 function wpuf_associate_attachment( $attachment_id, $post_id ) {
-    wp_update_post( array(
+    $args = array(
         'ID' => $attachment_id,
         'post_parent' => $post_id
-    ) );
+    );
+    wpuf_update_post( $args );
+}
+
+/**
+ * Update post when hooked to save_post
+ *
+ * @since 2.5.4
+ *
+ * @param array args
+ */
+function wpuf_update_post( $args ) {
+    if ( ! wp_is_post_revision( $args['ID'] ) ){
+        // unhook this function so it doesn't loop infinitely
+        remove_action( 'save_post', array( WPUF_Admin_Posting::init(), 'save_meta' ), 1 );
+
+        // update the post, which calls save_post again
+        wp_update_post( $args );
+
+        // re-hook this function
+        add_action( 'save_post', array( WPUF_Admin_Posting::init(), 'save_meta' ), 1 );
+    }
 }
 
 /**
@@ -780,6 +801,9 @@ add_filter( 'the_content', 'wpuf_show_custom_fields' );
  * @param array $args
  */
 function wpuf_shortcode_map( $location, $post_id = null, $args = array(), $meta_key = '' ) {
+    if ( !wpuf()->is_pro() || !$location ) {
+        return;
+    }
     global $post;
 
     // compatibility
@@ -894,7 +918,7 @@ function wpuf_meta_shortcode( $atts ) {
     } elseif ( $type == 'repeat' ) {
         return implode( '; ', get_post_meta( $post->ID, $name ) );
     } else {
-        return implode( ', ', get_post_meta( $post->ID, $name ) );
+        return make_clickable( implode( ', ', get_post_meta( $post->ID, $name ) ) );
     }
 }
 
@@ -1116,7 +1140,7 @@ function wpuf_date2mysql( $date, $gmt = 0 ) {
     }
     $time = strtotime( $date );
 
-    return ( $gmt ) ? gmdate( 'Y-m-d H:i:s', $time ) : gmdate( 'Y-m-d H:i:s', ( $time + ( get_option( 'timezone_string' ) * 3600 ) ) );
+    return ( $gmt ) ? gmdate( 'Y-m-d H:i:s', $time ) : gmdate( 'Y-m-d H:i:s', ( $time + ( intval( get_option( 'timezone_string' ) ) * 3600 ) ) );
 }
 
 /**
@@ -1168,6 +1192,12 @@ function wpuf_get_form_fields( $form_id ) {
         // Add 'multiple' key for input_type:repeat
         if ( 'repeat' === $field['input_type'] && ! isset( $field['multiple'] ) ) {
             $field['multiple'] = '';
+        }
+        
+        if ( 'recaptcha' === $field['input_type'] ) {
+            $field['name'] = 'recaptcha';
+            $field['enable_no_captcha'] = isset( $field['enable_no_captcha'] ) ? $field['enable_no_captcha'] : '';
+
         }
 
         $form_fields[] = apply_filters( 'wpuf-get-form-fields', $field );
@@ -1233,11 +1263,56 @@ function wpuf_get_form_settings( $form_id, $status = true ) {
 function wpuf_get_form_notifications( $form_id ) {
     $notifications =  get_post_meta( $form_id, 'notifications', true );
 
-    if ( !$notifications ) {
+    if ( ! $notifications ) {
         return array();
     }
 
     return $notifications;
+}
+
+/**
+ * Get form integration settings
+ *
+ * @since 2.5.4
+ *
+ * @param  int $form_id
+ *
+ * @return array
+ */
+function wpuf_get_form_integrations( $form_id ) {
+    $integrations =  get_post_meta( $form_id, 'integrations', true );
+
+    if ( ! $integrations ) {
+        return array();
+    }
+
+    return $integrations;
+}
+
+/**
+ * Check if an integration is active
+ *
+ * @since 2.5.4
+ *
+ * @param  int $form_id
+ * @param  string $integration_id
+ *
+ * @return boolean
+ */
+function wpuf_is_integration_active( $form_id, $integration_id ) {
+    $integrations = wpuf_get_form_integrations( $form_id );
+
+    if ( ! $integrations ) {
+        return false;
+    }
+
+    foreach ($integrations as $id => $integration) {
+        if ( $integration_id == $id && $integration->enabled == true ) {
+            return $integration;
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -1608,9 +1683,9 @@ function wpuf_trim_zeros( $price ) {
 function wpuf_format_price( $price, $formated = true, $args = array() ) {
 
     extract( apply_filters( 'wpuf_price_args', wp_parse_args( $args, array(
-        'currency'           => ( $formated ? wpuf_get_currency( 'symbol' ) : '' ),
+        'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
         'decimal_separator'  => wpuf_get_price_decimal_separator(),
-        'thousand_separator' => wpuf_get_price_thousand_separator(),
+        'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
         'decimals'           => wpuf_get_price_decimals(),
         'price_format'       => get_wpuf_price_format()
     ) ) ) );
@@ -1675,6 +1750,12 @@ function wpuf_duplicate_form( $post_id ) {
     foreach ( $contents as $content ) {
         wpuf_insert_form_field( $form_id, $content );
     }
+
+    // update the post title to remove confusion
+    wp_update_post( array(
+        'ID'         => $form_id,
+        'post_title' => $post->post_title . ' (#' . $form_id . ')'
+    ) );
 
     if ( $form_id ) {
         $form_settings = wpuf_get_form_settings( $post_id );

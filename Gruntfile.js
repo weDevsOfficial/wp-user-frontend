@@ -9,7 +9,8 @@ module.exports = function(grunt) {
         dirs: {
             css: 'assets/css',
             images: 'assets/images',
-            js: 'assets/js'
+            js: 'assets/js',
+            template: 'assets/js-templates'
         },
 
         // Compile all .less files.
@@ -19,12 +20,6 @@ module.exports = function(grunt) {
             front: {
                 files: {
                     '<%= dirs.css %>/frontend-forms.css': '<%= dirs.css %>/frontend-forms.less'
-                }
-            },
-
-            admin: {
-                files: {
-                    '<%= dirs.css %>/formbuilder.css': ['<%= dirs.css %>/formbuilder.less']
                 }
             },
 
@@ -63,10 +58,7 @@ module.exports = function(grunt) {
         watch: {
             less: {
                 files: ['<%= dirs.css %>/*.less'],
-                tasks: ['less:front', 'less:admin'],
-                options: {
-                    livereload: true
-                }
+                tasks: ['less:front']
             },
 
             formBuilder: {
@@ -78,7 +70,7 @@ module.exports = function(grunt) {
                 ],
                 tasks: [
                     'jshint:formBuilder', 'less:formBuilder',
-                    'concat:formBuilder', 'less:front'
+                    'concat:formBuilder', 'concat:templates', 'less:front'
                 ]
             }
         },
@@ -95,6 +87,8 @@ module.exports = function(grunt) {
                     '**',
                     '!node_modules/**',
                     '!build/**',
+                    '!admin/form-builder/assets/**',
+                    '!assets/css/*.less',
                     '!bin/**',
                     '!.git/**',
                     '!includes/pro/.git/**',
@@ -158,8 +152,21 @@ module.exports = function(grunt) {
                     '<%= dirs.js %>/wpuf-form-builder.js': 'admin/form-builder/assets/js/form-builder.js',
                     '<%= dirs.js %>/wpuf-form-builder-mixins.js': formBuilderAssets.mixins,
                     '<%= dirs.js %>/wpuf-form-builder-components.js': formBuilderAssets.components,
-                }
+                },
             },
+
+            templates: {
+                options: {
+                    process: function(src, filepath) {
+                        var id = filepath.replace('/template.php', '').split('/').pop();
+
+                        return '<script type="text/x-template" id="tmpl-wpuf-' + id + '">\n' + src + '</script>\n';
+                    }
+                },
+                files: {
+                    '<%= dirs.template %>/form-components.php': formBuilderAssets.componentTemplates,
+                }
+            }
         },
     });
 

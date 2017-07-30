@@ -82,16 +82,16 @@ Vue.component('form-fields', {
                 title: '<i class="fa fa-lock"></i> ' + title + ' <br>' + this.i18n.is_a_pro_feature,
                 text: this.i18n.pro_feature_msg,
                 type: '',
-                html: true,
                 showCancelButton: true,
                 cancelButtonText: this.i18n.close,
                 confirmButtonColor: '#46b450',
                 confirmButtonText: this.i18n.upgrade_to_pro
-            }, function (is_confirm) {
+            }).then(function (is_confirm) {
                 if (is_confirm) {
                     window.open(wpuf_form_builder.pro_link, '_blank');
                 }
-            });
+
+            }, function() {});
         },
 
         alert_invalidate_msg: function (field) {
@@ -100,8 +100,7 @@ Vue.component('form-fields', {
             if (validator && validator.msg) {
                 this.warn({
                     title: validator.msg_title || '',
-                    text: validator.msg,
-                    html: true,
+                    html: validator.msg,
                     type: 'warning',
                     showCancelButton: false,
                     confirmButtonColor: '#46b450',

@@ -111,47 +111,26 @@ Vue.component('builder-stage', {
 
         delete_field: function(index) {
             var self = this;
-            
+
             swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                text: self.i18n.delete_field_warn_msg,
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#d54e21',
                 confirmButtonText: self.i18n.yes_delete_it,
                 cancelButtonText: self.i18n.no_cancel_it,
                 confirmButtonClass: 'btn btn-success',
                 cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false
             }).then(function () {
                 self.$store.commit('delete_form_field_element', index);
                 swal(
                     'Deleted!',
-                    'Your file has been deleted.',
+                    'The field has been deleted.',
                     'success'
                 );
-            }, function (dismiss) {
-                // dismiss can be 'cancel', 'overlay',
-                // 'close', and 'timer'
-                if (dismiss === 'cancel') {
-                    swal(
-                        'Cancelled',
-                        'Your field is safe :)',
-                        'error'
-                    );
-                }
-            });
+            }, function() {
 
-            // self.warn({
-            //     text: self.i18n.delete_field_warn_msg,
-            //     confirmButtonText: self.i18n.yes_delete_it,
-            //     cancelButtonText: self.i18n.no_cancel_it,
-            // }, function (is_confirm) {
-            //     if (is_confirm) {
-            //         self.$store.commit('delete_form_field_element', index);
-            //     }
-            // });
+            });
         },
 
         delete_hidden_field: function (field_id) {
@@ -322,7 +301,7 @@ Vue.component('field-option-data', {
 
         add_option: function () {
             var count   = this.options.length,
-                new_opt = this.i18n.option + ' - ' + (count + 1);
+                new_opt = this.i18n.option + '-' + (count + 1);
 
             this.options.push({
                 label: new_opt , value: new_opt, id: this.get_random_id()
@@ -746,16 +725,16 @@ Vue.component('form-fields', {
                 title: '<i class="fa fa-lock"></i> ' + title + ' <br>' + this.i18n.is_a_pro_feature,
                 text: this.i18n.pro_feature_msg,
                 type: '',
-                html: true,
                 showCancelButton: true,
                 cancelButtonText: this.i18n.close,
                 confirmButtonColor: '#46b450',
                 confirmButtonText: this.i18n.upgrade_to_pro
-            }, function (is_confirm) {
+            }).then(function (is_confirm) {
                 if (is_confirm) {
                     window.open(wpuf_form_builder.pro_link, '_blank');
                 }
-            });
+
+            }, function() {});
         },
 
         alert_invalidate_msg: function (field) {
@@ -764,8 +743,7 @@ Vue.component('form-fields', {
             if (validator && validator.msg) {
                 this.warn({
                     title: validator.msg_title || '',
-                    text: validator.msg,
-                    html: true,
+                    html: validator.msg,
                     type: 'warning',
                     showCancelButton: false,
                     confirmButtonColor: '#46b450',
@@ -800,6 +778,79 @@ Vue.component('form-multiple_select', {
     mixins: [
         wpuf_mixins.form_field_mixin
     ]
+});
+
+Vue.component('wpuf-cf-form-notification', {
+    template: '#tmpl-wpuf-form-notification',
+    data: function() {
+        return {
+            editing: false,
+            editingIndex: 0,
+        };
+    },
+
+    computed: {
+
+        notifications: function() {
+            return this.$store.state.notifications;
+        },
+
+        hasNotifications: function() {
+            return Object.keys( this.$store.state.notifications ).length;
+        }
+    },
+
+    methods: {
+        addNew: function() {
+            this.$store.commit('addNotification', wpuf_form_builder.defaultNotification);
+        },
+
+        editItem: function(index) {
+            this.editing = true;
+            this.editingIndex = index;
+        },
+
+        editDone: function() {
+            this.editing = false;
+
+            this.$store.commit('updateNotification', {
+                index: this.editingIndex,
+                value: this.notifications[this.editingIndex]
+            });
+
+            jQuery('.advanced-field-wrap').slideUp('fast');
+        },
+
+        deleteItem: function(index) {
+            if ( confirm( 'Are you sure' ) ) {
+                this.editing = false;
+                this.$store.commit( 'deleteNotification', index);
+            }
+        },
+
+        toggelNotification: function(index) {
+            this.$store.commit('updateNotificationProperty', {
+                index: index,
+                property: 'active',
+                value: !this.notifications[index].active
+            });
+        },
+
+        duplicate: function(index) {
+            this.$store.commit('cloneNotification', index);
+        },
+
+        toggleAdvanced: function() {
+            jQuery('.advanced-field-wrap').slideToggle('fast');
+        },
+
+        insertValue: function(type, field, property) {
+            var notification = this.notifications[this.editingIndex],
+                value = ( field !== undefined ) ? '{' + type + ':' + field + '}' : '{' + type + '}';
+
+            notification[property] = notification[property] + value;
+        }
+    }
 });
 
 /**
@@ -855,6 +906,27 @@ Vue.component('form-radio_field', {
     mixins: [
         wpuf_mixins.form_field_mixin
     ]
+});
+
+/**
+ * Field template: Recaptcha
+ */
+Vue.component('form-recaptcha', {
+    template: '#tmpl-wpuf-form-recaptcha',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ],
+
+    computed: {
+        has_recaptcha_api_keys: function () {
+            return (wpuf_form_builder.recaptcha_site && wpuf_form_builder.recaptcha_secret) ? true : false;
+        },
+
+        no_api_keys_msg: function () {
+            return wpuf_form_builder.field_settings.recaptcha.validator.msg;
+        }
+    }
 });
 
 /**
@@ -1077,6 +1149,95 @@ Vue.component('help-text', {
     }
 });
 
+Vue.component('wpuf-integration', {
+    template: '#tmpl-wpuf-integration',
+
+    computed: {
+
+        integrations: function() {
+            return wpuf_form_builder.integrations;
+        },
+
+        hasIntegrations: function() {
+            return Object.keys(this.integrations).length;
+        },
+
+        store: function() {
+            return this.$store.state.integrations;
+        },
+
+        pro_link: function() {
+            return wpuf_form_builder.pro_link;
+        }
+    },
+
+    methods: {
+
+        getIntegration: function(id) {
+            return this.integrations[id];
+        },
+
+        getIntegrationSettings: function(id) {
+            // find settings in store, otherwise take from default integration settings
+            return this.store[id] || this.getIntegration(id).settings;
+        },
+
+        isActive: function(id) {
+            if ( !this.isAvailable(id) ) {
+                return false;
+            }
+
+            return this.getIntegrationSettings(id).enabled === true;
+        },
+
+        isAvailable: function(id) {
+            return ( this.integrations[id] && this.integrations[id].pro ) ? false : true;
+        },
+
+        toggleState: function(id, target) {
+            if ( ! this.isAvailable(id) ) {
+                this.alert_pro_feature( id );
+                return;
+            }
+
+            // toggle the enabled state
+            var settings = this.getIntegrationSettings(id);
+
+            settings.enabled = !this.isActive(id);
+
+            this.$store.commit('updateIntegration', {
+                index: id,
+                value: settings
+            });
+
+            $(target).toggleClass('checked');
+        },
+
+        alert_pro_feature: function (id) {
+            var title = this.getIntegration(id).title;
+
+            swal({
+                title: '<i class="fa fa-lock"></i> ' + title + ' <br>' + this.i18n.is_a_pro_feature,
+                text: this.i18n.pro_feature_msg,
+                type: '',
+                showCancelButton: true,
+                cancelButtonText: this.i18n.close,
+                confirmButtonColor: '#46b450',
+                confirmButtonText: this.i18n.upgrade_to_pro
+            }).then(function (is_confirm) {
+                if (is_confirm) {
+                    window.open(wpuf_form_builder.pro_link, '_blank');
+                }
+
+            }, function() {});
+        },
+
+        showHide: function(target) {
+            $(target).closest('.wpuf-integration').toggleClass('collapsed');
+        },
+    }
+});
+
 Vue.component('wpuf-merge-tags', {
     template: '#tmpl-wpuf-merge-tags',
     props: {
@@ -1089,7 +1250,6 @@ Vue.component('wpuf-merge-tags', {
 
     data: function() {
         return {
-            showing: false,
             type: null,
         };
     },
@@ -1129,6 +1289,33 @@ Vue.component('wpuf-merge-tags', {
 
         insertField: function(type, field) {
             this.$emit('insert', type, field, this.field);
+        }
+    }
+});
+Vue.component('wpuf-modal', {
+    template: '#tmpl-wpuf-modal',
+    props: {
+        show: Boolean,
+        onClose: Function
+    },
+
+    mounted: function () {
+        var self = this;
+
+        $('body').on( 'keydown', function(e) {
+            if (self.show && e.keyCode === 27) {
+                self.closeModal();
+            }
+        });
+    },
+
+    methods: {
+        closeModal: function() {
+            if ( typeof this.onClose !== 'undefined' ) {
+                this.onClose();
+            } else {
+                this.$emit('hideModal');
+            }
         }
     }
 });

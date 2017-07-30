@@ -1,4 +1,9 @@
 <?php
+
+if ( ! class_exists( 'WP_List_Table' ) ) {
+    require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+}
+
 /**
  * Post Forms list table class
  *
@@ -66,7 +71,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
                     break;
 
                 default:
-                    $count = $post_counts[ $status ];
+                    $count = isset( $post_counts[ $status ] ) ? $post_counts[ $status ] : 0;
                     break;
             }
 

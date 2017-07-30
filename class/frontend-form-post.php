@@ -623,6 +623,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
 
             // save any custom taxonomies
+            $woo_attr = array();
+
             foreach ( $taxonomy_vars as $taxonomy ) {
                 if ( isset( $_POST[$taxonomy['name']] ) ) {
 
@@ -634,10 +636,55 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                             $tax = array( $tax );
                         }
 
-                        wp_set_post_terms( $post_id, $_POST[$taxonomy['name']], $taxonomy['name'] );
-                    }
-                }
+                        if ( $taxonomy['type'] == 'text' ) {
+
+                            $hierarchical = array_map( 'trim', array_map( 'strip_tags', explode( ',', $_POST[$taxonomy['name']] ) ) );
+
+                            wp_set_object_terms( $post_id, $hierarchical, $taxonomy['name'] );
+
+                            // woocommerce check
+                            if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
+                                $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
+                            }
+                        } else {
+
+                            if ( is_taxonomy_hierarchical( $taxonomy['name'] ) ) {
+                                wp_set_post_terms( $post_id, $_POST[$taxonomy['name']], $taxonomy['name'] );
+
+                                // woocommerce check
+                                if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
+                                    $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
+                                }
+                            } else {
+                                if ( $tax ) {
+                                    $non_hierarchical = array();
+
+                                    foreach ( $tax as $value ) {
+                                        $term = get_term_by( 'id', $value, $taxonomy['name'] );
+                                        if ( $term && !is_wp_error( $term ) ) {
+                                            $non_hierarchical[] = $term->name;
+                                        }
+                                    }
+
+                                    wp_set_post_terms( $post_id, $non_hierarchical, $taxonomy['name'] );
+
+                                    // woocommerce check
+                                    if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
+                                        $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
+                                    }
+
+                                }
+                            } // hierarchical
+                        } // is text
+                    } // is object tax
+                } // isset tax
             }
+
+            // if a woocommerce attribute
+            if ( $woo_attr ) {
+                update_post_meta( $post_id, '_product_attributes', $woo_attr );
+            }
+
         }
 
         //used to add code to run when the post is going to draft
@@ -672,12 +719,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? $_POST['wpuf_files_data'][$attachment_id] : false;
             if ( $file_data ) {
-                wp_update_post( array(
+                $args = array(
                     'ID'           => $attachment_id,
                     'post_title'   => $file_data['title'],
                     'post_content' => $file_data['desc'],
                     'post_excerpt' => $file_data['caption'],
-                ) );
+                );
+                wpuf_update_post( $args );
 
                 update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
             }
@@ -715,19 +763,19 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     continue;
                 }
 
-
                 wpuf_associate_attachment( $attachment_id, $post_id );
                 add_post_meta( $post_id, $file_input['name'], $attachment_id );
 
                 // file title, caption, desc update
                 $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? $_POST['wpuf_files_data'][$attachment_id] : false;
                 if ( $file_data ) {
-                    wp_update_post( array(
+                    $args = array(
                         'ID'           => $attachment_id,
                         'post_title'   => $file_data['title'],
                         'post_content' => $file_data['desc'],
                         'post_excerpt' => $file_data['caption'],
-                    ) );
+                    );
+                    wpuf_update_post( $args );
 
                     update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
                 }

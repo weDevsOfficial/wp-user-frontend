@@ -658,4 +658,52 @@ class WPUF_Admin_Template {
     <?php
     }
 
+    /**
+     * Render recaptcha
+     * @param $field_id
+     * @param $label
+     * @param array $values
+     */
+    public static function recaptcha( $field_id, $label, $values = array() ) {
+        $title_name  = sprintf( '%s[%d][label]', self::$input_name, $field_id );
+        $html_name   = sprintf( '%s[%d][html]', self::$input_name, $field_id );
+        $enable_no_captcha_name = sprintf( '%s[%d][enable_no_captcha]', self::$input_name, $field_id );
+
+        $title_value = $values ? esc_attr( $values['label'] ) : '';
+        $html_value  = isset( $values['html'] ) ? esc_attr( $values['html'] ) : '';
+        $enable_no_captcha_value = isset( $values['enable_no_captcha'] ) ? esc_attr( $values['enable_no_captcha'] ) : ( !empty( $values ) ? '' : 'enabled' );
+        ?>
+        <li class="custom-field custom_html">
+            <?php self::legend( $label, $values, $field_id ); ?>
+            <?php self::hidden_field( "[$field_id][input_type]", 'recaptcha' ); ?>
+            <?php self::hidden_field( "[$field_id][template]", 'recaptcha' ); ?>
+
+            <div class="wpuf-form-holder">
+                <div class="wpuf-form-rows">
+                    <label><?php _e( 'Title', 'wpuf-pro' ); ?></label>
+
+                    <div class="wpuf-form-sub-fields">
+                        <input type="text" class="smallipopInput" title="Title of the section" name="<?php echo $title_name; ?>" value="<?php echo esc_attr( $title_value ); ?>" />
+
+                        <div class="description" style="margin-top: 8px;">
+                            <?php printf( __( "Insert your public key and private key in <a href='%s'>plugin settings</a>. <a href='%s' target='_blank'>Register</a> first if you don't have any keys." ), admin_url( 'admin.php?page=wpuf-settings' ), 'https://www.google.com/recaptcha/' ); ?>
+                        </div>
+                    </div> <!-- .wpuf-form-rows -->
+                </div>
+
+                <div class="wpuf-form-rows">
+                    <label><?php _e( 'Enable noCaptcha', 'wpuf-pro' ); ?></label>
+
+                    <div class="wpuf-form-sub-fields">
+                        <input type="checkbox" class="smallipopInput" title="Enable noCaptcha" name="<?php echo $enable_no_captcha_name; ?>" value="enabled" <?php echo $enable_no_captcha_value == 'enabled' ?'checked':''; ?> />
+                        <?php _e( 'Enable noCaptcha', 'wpuf-pro' );?>
+                    </div> <!-- .wpuf-form-rows -->
+                </div>
+
+                <?php self::conditional_field( $field_id, $values ); ?>
+            </div> <!-- .wpuf-form-holder -->
+        </li>
+    <?php
+    }
+
 }

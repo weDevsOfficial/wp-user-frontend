@@ -55,8 +55,12 @@
             </div>
 
             <div class="action-buttons clearfix">
-                <i class="fa fa-plus-circle" @click="add_option"></i>
-                <i class="fa fa-minus-circle pull-right" @click="delete_option(index)"></i>
+                <i class="fa fa-minus-circle" @click="delete_option(index)"></i>
+            </div>
+        </li>
+        <li>
+            <div class="plus-buttons clearfix" @click="add_option">
+                <i class="fa fa-plus-circle"></i>
             </div>
         </li>
     </ul>

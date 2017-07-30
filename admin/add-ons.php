@@ -19,81 +19,72 @@
     $add_ons = json_decode( $add_ons );
 
     if ( count( $add_ons ) ) {
-        foreach ($add_ons as $addon) {
-            ?>
+        ?>
+        <div class="wp-list-table widefat plugin-install">
 
-            <div class="wpuf-addon">
-                <div class="wpuf-addon-thumb">
-                    <a href="<?php echo $addon->url; ?>" target="_blank">
-                        <img src="<?php echo $addon->thumbnail; ?>" alt="<?php echo esc_attr( $addon->title ); ?>" />
-                    </a>
+        <?php foreach ($add_ons as $addon) { ?>
+
+            <div class="plugin-card">
+                <div class="plugin-card-top">
+
+                    <div class="name column-name">
+                        <h3>
+                            <a href="<?php echo $addon->url; ?>" target="_blank">
+                                <?php echo $addon->title; ?>
+                                <img class="plugin-icon" src="<?php echo $addon->thumbnail; ?>" alt="<?php echo esc_attr( $addon->title ); ?>" />
+                            </a>
+                        </h3>
+                    </div>
+
+                    <div class="action-links">
+                        <ul class="plugin-action-buttons">
+                            <li>
+                                <?php if ( class_exists( $addon->class ) ) { ?>
+                                    <a class="button button-disabled" href="<?php echo $addon->url; ?>" target="_blank">Installed</a>
+                                <?php } else { ?>
+                                    <a class="button" href="<?php echo $addon->url; ?>" target="_blank">View Details</a>
+                                <?php } ?>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="desc column-description">
+                        <p>
+                            <?php echo $addon->desc; ?>
+                        </p>
+
+                        <p class="authors">
+                            <cite>By <a href="https://wedevs.com" target="_blank">weDevs</a></cite>
+                        </p>
+                    </div>
                 </div>
 
-                <div class="wpuf-detail">
-                    <h3 class="title">
-                        <a href="<?php echo $addon->url; ?>" target="_blank"><?php echo $addon->title; ?></a>
-                    </h3>
+                <div class="plugin-card-bottom">
+                    <div class="column-updated">
+                        <strong>Last Updated:</strong> 2 months ago
+                    </div>
 
-                    <div class="text"><?php echo $addon->desc; ?></div>
-                </div>
-
-                <div class="wpuf-links">
-                    <?php if ( class_exists( $addon->class ) ) { ?>
-                        <a class="button button-disabled" href="<?php echo $addon->url; ?>" target="_blank">Installed</a>
-                    <?php } else { ?>
-                        <a class="button" href="<?php echo $addon->url; ?>" target="_blank">View Details</a>
-                    <?php } ?>
+                    <div class="column-compatibility">
+                        <span class="compatibility-compatible">
+                            <strong>Compatible</strong> with your version of WordPress
+                        </span>
+                    </div>
                 </div>
             </div>
 
-            <?php
-        }
+        <?php } ?>
+
+        </div>
+
+        <?php
     } else {
         echo '<div class="error"><p>Error fetching add-ons. Please refresh the page again.</p></div>';
     }
     ?>
 
     <style type="text/css">
-        .wpuf-addon {
-            width: 22%;
-            float: left;
-            margin: 10px;
-            border: 1px solid #E6E6E6;
-        }
-
-        .wpuf-addon:nth-child(5n+1) {
-            clear: both;
-        }
-
-        .wpuf-addon-thumb img {
-            max-width: 100%;
-            /*max-height: 140px;*/
-        }
-
-        .wpuf-detail {
-            padding: 6px 10px 10px;
-            min-height: 110px;
-            background: #fff;
-        }
-
-        .wpuf-detail h3.title {
-            margin: 5px 0 10px;
-            padding: 0;
-        }
-
-        .wpuf-detail h3.title a {
-            text-decoration: none;
-            color: #111;
-        }
-
-        .wpuf-links {
-            padding: 10px;
-            background: #F5F5F5;
-            border-top: 1px solid #E6E6E6;
-        }
-
-        a.button.disabled {
-            background: #eee;
+        .wp-list-table {
+            margin-top: 25px;
         }
     </style>
 

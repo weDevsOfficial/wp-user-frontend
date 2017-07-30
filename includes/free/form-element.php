@@ -27,7 +27,8 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
         self::get_pro_prompt();
         ?>
-        <button class="button" disabled data-type="captcha" title="<?php echo $title; ?>"><?php _e( 'reCaptcha', 'wpuf' ); ?></button>
+        <button class="button" disabled data-type="shortcode" title="<?php echo $title; ?>"><?php _e( 'Shortcode', 'wpuf' ); ?></button>
+        <button class="button" data-name="recaptcha" data-type="captcha" title="<?php echo $title; ?>"><?php _e( 'reCaptcha', 'wpuf' ); ?></button>
         <button class="button" disabled data-type="rscaptcha" title="<?php echo $title; ?>"><?php _e( 'Really Simple Captcha', 'wpuf' ); ?></button>
         <button class="button" disabled data-type="action" title="<?php echo $title; ?>"><?php _e( 'Action Hook', 'wpuf' ); ?></button>
         <button class="button" disabled data-type="action" title="<?php echo $title; ?>"><?php _e( 'Term &amp; Conditions', 'wpuf' ); ?></button>

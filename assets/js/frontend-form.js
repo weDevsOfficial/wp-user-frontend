@@ -36,6 +36,12 @@
                         wpuf_plupload_items[i].refresh();
                     }
                 }
+                if ( wpuf_map_items.length ) {
+                    for (var i = wpuf_map_items.length - 1; i >= 0; i--) {
+                        google.maps.event.trigger(wpuf_map_items[i].map, 'resize');
+                        wpuf_map_items[i].map.setCenter(wpuf_map_items[i].center);
+                    }
+                }
             });
 
             this.ajaxCategory();

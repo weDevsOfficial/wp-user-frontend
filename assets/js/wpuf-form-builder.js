@@ -198,6 +198,7 @@
             is_form_saved: false,
             is_form_switcher: false,
             post_title_editing: false,
+            isDirty: false
         },
 
         computed: {
@@ -219,6 +220,15 @@
 
             notifications: function() {
                 return this.$store.state.notifications;
+            }
+        },
+
+        watch: {
+            form_fields: {
+                handler: function() {
+                    this.isDirty = true;
+                },
+                deep: true
             }
         },
 
@@ -266,7 +276,7 @@
             });
 
             window.onbeforeunload = function () {
-                if (!self.is_form_saved) {
+                if ( self.isDirty ) {
                     return self.i18n.unsaved_changes;
                 }
             };

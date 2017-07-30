@@ -10,21 +10,31 @@
  */
 class WPUF_Admin_Posting extends WPUF_Render_Form {
 
+    private static $_instance;
+
     function __construct() {
         // meta boxes
-        add_action( 'add_meta_boxes', array($this, 'add_meta_boxes') );
-        add_action( 'add_meta_boxes', array($this, 'add_meta_box_form_select') );
+        add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes') );
+        add_action( 'add_meta_boxes', array( $this, 'add_meta_box_form_select') );
 
-        add_action( 'admin_enqueue_scripts', array($this, 'enqueue_script') );
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_script') );
 
-        add_action( 'save_post', array($this, 'save_meta'), 1, 2 ); // save the custom fields
+        add_action( 'save_post', array( $this, 'save_meta'), 1 ); // save the custom fields
         add_action( 'save_post', array( $this, 'form_selection_metabox_save' ), 1, 2 ); // save edit form id
+    }
+
+    public static function init() {
+        if ( !self::$_instance ) {
+            self::$_instance = new self();
+        }
+
+        return self::$_instance;
     }
 
     function enqueue_script() {
         global $pagenow;
 
-        if ( !in_array( $pagenow, array('profile.php', 'post-new.php', 'post.php', 'user-edit.php') ) ) {
+        if ( !in_array( $pagenow, array( 'profile.php', 'post-new.php', 'post.php', 'user-edit.php' ) ) ) {
             return;
         }
 
@@ -189,9 +199,8 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         $form_id = get_post_meta( $post->ID, '_wpuf_form_id', true );
         $form_settings = wpuf_get_form_settings( $form_id );
 
-
         // hide the metabox itself if no form ID is set
-        if ( !$form_id ) {
+        if ( !$form_id || class_exists('acf') ) {
             $this->hide_form();
             return;
         }
@@ -407,13 +416,17 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      *
      * @since 2.5
      * 
-     * @param int $post_id
      * @param object $post
      * 
      * @return void
      */
     // Save the Metabox Data
-    function save_meta( $post_id, $post ) {
+    function save_meta( $post ) {
+
+        if ( !isset( $post->ID ) ) {
+            return;
+        }
+
         if ( !isset( $_POST['wpuf_cf_update'] ) ) {
             return $post->ID;
         }
@@ -423,8 +436,9 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         }
 
         // Is the user allowed to edit the post or page?
-        if ( !current_user_can( 'edit_post', $post->ID ) )
+        if ( !current_user_can( 'edit_post', $post->ID ) ) {
             return $post->ID;
+        }
 
         list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $_POST['wpuf_cf_form_id'] );
 

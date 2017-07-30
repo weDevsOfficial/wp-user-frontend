@@ -69,7 +69,7 @@ Vue.component('field-option-data', {
 
         add_option: function () {
             var count   = this.options.length,
-                new_opt = this.i18n.option + ' - ' + (count + 1);
+                new_opt = this.i18n.option + '-' + (count + 1);
 
             this.options.push({
                 label: new_opt , value: new_opt, id: this.get_random_id()

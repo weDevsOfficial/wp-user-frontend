@@ -44,7 +44,7 @@ class WPUF_Admin_Form_Template {
             return;
         }
 
-        wp_enqueue_style( 'wpuf-formbuilder', WPUF_ASSET_URI . '/css/formbuilder.css' );
+        wp_enqueue_style( 'wpuf-formbuilder', WPUF_ASSET_URI . '/css/wpuf-form-builder.css' );
     }
 
     /**
@@ -60,8 +60,7 @@ class WPUF_Admin_Form_Template {
         $registry       = wpuf_get_post_form_templates();
         $blank_form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
         $action_name    = 'wpuf_post_form_template';
-        $footer_help    = sprintf( __( 'List of available templates can be found <a href="%s" target="_blank">here</a>.', 'wpuf' ), 'http://docs.wedevs.com/?p=4390' );
-        $footer_help   .= sprintf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wpuf'), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' );
+        $footer_help    = sprintf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wpuf'), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' );
 
         if ( ! $registry ) {
             return;

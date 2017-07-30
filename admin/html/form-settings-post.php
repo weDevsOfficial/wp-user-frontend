@@ -56,6 +56,11 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
                     unset($post_types['nav_menu_item']);
                     unset($post_types['wpuf_forms']);
                     unset($post_types['wpuf_profile']);
+                    unset($post_types['wpuf_input']);
+                    unset($post_types['wpuf_subscription']);
+                    unset($post_types['custom_css']);
+                    unset($post_types['customize_changeset']);
+                    unset($post_types['wpuf_coupon']);
 
                     foreach ($post_types as $post_type) {
                         printf('<option value="%s"%s>%s</option>', $post_type, selected( $post_type_selected, $post_type, false ), $post_type );

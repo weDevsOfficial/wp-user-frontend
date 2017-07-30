@@ -1,0 +1,12 @@
+# Items to ignore when downloading a zip
+
+.editorconfig export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.jshintrc export-ignore
+.svnignore export-ignore
+docs.md export-ignore
+Gruntfile.js export-ignore
+package.json export-ignore
+plugin-deploy.sh export-ignore
+readme.md export-ignore

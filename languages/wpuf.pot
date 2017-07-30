@@ -2,10 +2,10 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.5.3\n"
+"Project-Id-Version: WP User Frontend 2.5.4\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-07-27 07:10:39+00:00\n"
+"POT-Creation-Date: 2017-07-30 05:56:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1448,23 +1448,23 @@ msgid "Draft"
 msgstr ""
 
 #: admin/posting.php:66 class/asset-loader.php:35 class/render-form.php:1511
-#: wpuf.php:410
+#: wpuf.php:412
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:72 class/asset-loader.php:41 wpuf.php:416
+#: admin/posting.php:72 class/asset-loader.php:41 wpuf.php:418
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:75 class/asset-loader.php:44 wpuf.php:419
+#: admin/posting.php:75 class/asset-loader.php:44 wpuf.php:421
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:76 class/asset-loader.php:45 wpuf.php:420
+#: admin/posting.php:76 class/asset-loader.php:45 wpuf.php:422
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:77 class/asset-loader.php:46 wpuf.php:421
+#: admin/posting.php:77 class/asset-loader.php:46 wpuf.php:423
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -2217,11 +2217,11 @@ msgstr ""
 msgid "This Month:"
 msgstr ""
 
-#: class/asset-loader.php:29 wpuf.php:404
+#: class/asset-loader.php:29 wpuf.php:406
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: class/asset-loader.php:31 wpuf.php:406
+#: class/asset-loader.php:31 wpuf.php:408
 msgid "Word limit reached"
 msgstr ""
 
@@ -2482,10 +2482,6 @@ msgstr ""
 
 #: class/subscription.php:743 templates/dashboard/subscription.php:24
 msgid "Unlimited"
-msgstr ""
-
-#: class/subscription.php:777
-msgid "Change"
 msgstr ""
 
 #: class/subscription.php:796
@@ -3001,6 +2997,44 @@ msgstr ""
 msgid "Enable Recurring Payment"
 msgstr ""
 
+#: lib/class-wedevs-insights.php:282
+msgid ""
+"Want to help make <strong>%s</strong> even more awesome? Allow weDevs to "
+"collect non-sensitive diagnostic data and usage information."
+msgstr ""
+
+#: lib/class-wedevs-insights.php:287
+msgid "what we collect"
+msgstr ""
+
+#: lib/class-wedevs-insights.php:293
+msgid "Allow"
+msgstr ""
+
+#: lib/class-wedevs-insights.php:294
+msgid "No thanks"
+msgstr ""
+
+#: lib/class-wedevs-insights.php:471
+msgid "Once Weekly"
+msgstr ""
+
+#: lib/class-wedevs-insights.php:607
+msgid "If you have a moment, please let us know why you are deactivating:"
+msgstr ""
+
+#: lib/class-wedevs-insights.php:621
+msgid "I rather wouldn't say"
+msgstr ""
+
+#: lib/class-wedevs-insights.php:622
+msgid "Submit & Deactivate"
+msgstr ""
+
+#: lib/class-wedevs-insights.php:623
+msgid "Canel"
+msgstr ""
+
 #: lib/class.settings-api.php:364
 msgid "Choose File"
 msgstr ""
@@ -3452,15 +3486,15 @@ msgstr ""
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:341
+#: wpuf.php:343
 msgid "is required"
 msgstr ""
 
-#: wpuf.php:342
+#: wpuf.php:344
 msgid "does not match"
 msgstr ""
 
-#: wpuf.php:343
+#: wpuf.php:345
 msgid "is not valid"
 msgstr ""
 

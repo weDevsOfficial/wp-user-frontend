@@ -4,6 +4,8 @@
     </template>
 
     <template v-else>
-        <img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ?>" alt="">
+    	<div v-if="'invisible_recaptcha' != field.recaptcha_type">
+        	<img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ?>" alt="">
+        </div>
     </template>
 </div>

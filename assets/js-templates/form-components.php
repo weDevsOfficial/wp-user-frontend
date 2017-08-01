@@ -19,7 +19,7 @@
             data-source="stage"
         >
             <div v-if="!is_full_width(field.template)" class="wpuf-label">
-                <label :for="'wpuf-' + field.name ? field.name : 'cls'">
+                <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
                     {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
                 </label>
             </div>
@@ -674,7 +674,9 @@
     </template>
 
     <template v-else>
-        <img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ?>" alt="">
+    	<div v-if="'invisible_recaptcha' != field.recaptcha_type">
+        	<img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ?>" alt="">
+        </div>
     </template>
 </div>
 </script>

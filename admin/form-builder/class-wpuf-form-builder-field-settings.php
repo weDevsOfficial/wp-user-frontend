@@ -803,16 +803,17 @@ class WPUF_Form_Builder_Field_Settings {
             ),
 
             array(
-                'name'          => 'enable_no_captcha',
-                'title'         => '',
-                'type'          => 'checkbox',
-                'is_single_opt' => true,
+                'name'          => 'recaptcha_type',
+                'title'         => 'reCaptcha type',
+                'type'          => 'radio',
                 'options'       => array(
-                    'enabled'   => __( 'Enable noCaptcha', 'wpuf' )
+                    'enable_no_captcha'    => __( 'Enable noCaptcha', 'wpuf' ),
+                    'invisible_recaptcha'  => __( 'Enable Invisible reCaptcha', 'wpuf' ),
                 ),
+                'default'       => 'enable_no_captcha',
                 'section'       => 'basic',
                 'priority'      => 11,
-                'help_text'     => __( 'Enter default latitude and longitude to center the map', 'wpuf' ),
+                'help_text'     => __( 'Select reCaptcha type', 'wpuf' ),
             )
         );
 
@@ -834,7 +835,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'input_type'        => 'recaptcha',
                 'template'          => 'recaptcha',
                 'label'             => '',
-                'enable_no_captcha' => 'enabled',
+                'recaptcha_type'    => 'enable_no_captcha',
                 'id'                => 0,
                 'is_new'            => true,
                 'wpuf_cond'         => self::get_wpuf_cond_prop(),

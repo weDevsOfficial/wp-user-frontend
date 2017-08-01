@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.5.4\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-07-30 05:56:43+00:00\n"
+"POT-Creation-Date: 2017-08-01 04:41:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -209,7 +209,7 @@ msgstr ""
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:5
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:5
 #: assets/js-templates/form-components.php:377
-#: assets/js-templates/form-components.php:443 class/render-form.php:1499
+#: assets/js-templates/form-components.php:443 class/render-form.php:1503
 msgid "Select Image"
 msgstr ""
 
@@ -294,7 +294,7 @@ msgstr ""
 
 #: admin/form-builder/assets/js/components/form-notification/template.php:109
 #: admin/subscription.php:231 assets/js-templates/form-components.php:581
-#: class/render-form.php:1511 class/transactions-list-table.php:114
+#: class/render-form.php:1515 class/transactions-list-table.php:114
 #: class/transactions-list-table.php:175 class/upload.php:171
 #: includes/free/edit-user.php:100 templates/dashboard/posts.php:160
 #: templates/dashboard.php:114
@@ -307,72 +307,72 @@ msgid "Done"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:4
-#: assets/js-templates/form-components.php:593 class/render-form.php:920
+#: assets/js-templates/form-components.php:593 class/render-form.php:924
 msgid "Insert Photo"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:12
-#: assets/js-templates/form-components.php:701
+#: assets/js-templates/form-components.php:703
 msgid "— Select —"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/integration/template.php:11
-#: assets/js-templates/form-components.php:790
+#: assets/js-templates/form-components.php:792
 msgid "Premium Feature"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/integration/template.php:16
-#: assets/js-templates/form-components.php:795
+#: assets/js-templates/form-components.php:797
 msgid "Toggle panel"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/integration/template.php:28
-#: assets/js-templates/form-components.php:807
+#: assets/js-templates/form-components.php:809
 msgid "This feature is available on the premium version only."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/integration/template.php:29
-#: assets/js-templates/form-components.php:808 includes/free/loader.php:153
+#: assets/js-templates/form-components.php:810 includes/free/loader.php:153
 msgid "Upgrade to Pro"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/integration/template.php:37
-#: assets/js-templates/form-components.php:816
+#: assets/js-templates/form-components.php:818
 msgid "No integration found."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/merge-tags/template.php:8
-#: assets/js-templates/form-components.php:828
+#: assets/js-templates/form-components.php:830
 msgid "Form Fields"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/merge-tags/template.php:17
-#: assets/js-templates/form-components.php:837
+#: assets/js-templates/form-components.php:839
 msgid "first"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/merge-tags/template.php:18
-#: assets/js-templates/form-components.php:838
+#: assets/js-templates/form-components.php:840
 msgid "middle"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/merge-tags/template.php:19
-#: assets/js-templates/form-components.php:839
+#: assets/js-templates/form-components.php:841
 msgid "last"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/merge-tags/template.php:27
-#: assets/js-templates/form-components.php:847
+#: assets/js-templates/form-components.php:849
 msgid "No fields available"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/modal/template.php:4
-#: admin/html/modal.php:4 assets/js-templates/form-components.php:882
+#: admin/html/modal.php:4 assets/js-templates/form-components.php:884
 msgid "Modal window. Press escape to close."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/modal/template.php:5
-#: admin/html/modal.php:5 assets/js-templates/form-components.php:883
+#: admin/html/modal.php:5 assets/js-templates/form-components.php:885
 msgid "Close modal window"
 msgstr ""
 
@@ -805,24 +805,29 @@ msgstr ""
 msgid "Custom HTML"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:811
-#: admin/template.php:695 admin/template.php:699
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:810
+#: admin/template.php:703
 msgid "Enable noCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:815
-msgid "Enter default latitude and longitude to center the map"
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:811
+#: admin/template.php:699
+msgid "Enable Invisible reCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:821
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:816
+msgid "Select reCaptcha type"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:822
 msgid "Recaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:825
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:826
 msgid "Site key and Secret key"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:827
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:828
 msgid ""
 "You need to set Site key and Secret key in <a href=\"%s\" "
 "target=\"_blank\">WPUF Settings</a> in order to use \"Recaptcha\" field. <a "
@@ -1447,7 +1452,7 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: admin/posting.php:66 class/asset-loader.php:35 class/render-form.php:1511
+#: admin/posting.php:66 class/asset-loader.php:35 class/render-form.php:1515
 #: wpuf.php:412
 msgid "Are you sure?"
 msgstr ""
@@ -2209,6 +2214,10 @@ msgid ""
 "<a href='%s' target='_blank'>Register</a> first if you don't have any keys."
 msgstr ""
 
+#: admin/template.php:695
+msgid "reCaptcha type"
+msgstr ""
+
 #: admin/transactions.php:12
 msgid "Total Income:"
 msgstr ""
@@ -2423,16 +2432,16 @@ msgstr ""
 msgid "Please make sure you've published your form."
 msgstr ""
 
-#: class/render-form.php:1198 includes/free/edit-profile.php:198
+#: class/render-form.php:1202 includes/free/edit-profile.php:198
 #: templates/dashboard/edit-profile.php:36
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1260 class/render-form.php:1373
+#: class/render-form.php:1264 class/render-form.php:1377
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1315
+#: class/render-form.php:1319
 msgid "This field is no longer available."
 msgstr ""
 
@@ -2482,6 +2491,10 @@ msgstr ""
 
 #: class/subscription.php:743 templates/dashboard/subscription.php:24
 msgid "Unlimited"
+msgstr ""
+
+#: class/subscription.php:777
+msgid "Change"
 msgstr ""
 
 #: class/subscription.php:796

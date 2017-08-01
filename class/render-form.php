@@ -86,10 +86,11 @@ class WPUF_Render_Form {
      *
      * @return void
      */
-    function validate_re_captcha( $no_captcha = '' ) {
-
+    function validate_re_captcha( $no_captcha = '', $invisible = '' ) {
+        // need to check if invisible reCaptcha need library or we can do it here.
+        // ref: https://shareurcodes.com/blog/google%20invisible%20recaptcha%20integration%20with%20php
         $private_key     = wpuf_get_option( 'recaptcha_private', 'wpuf_general' );
-        if ( $no_captcha == 1 ) {
+        if ( $no_captcha == 1 && '' != $invisible ) {
 
             $response = null;
             $reCaptcha = new ReCaptcha($private_key);
@@ -103,7 +104,7 @@ class WPUF_Render_Form {
                 $this->send_error( __( 'reCAPTCHA validation failed', 'wpuf' ) );
             }
 
-        } elseif ( $no_captcha == 0 ) {
+        } elseif ( $no_captcha == 0 && '' != $invisible  ) {
 
             $recap_challenge = isset( $_POST['recaptcha_challenge_field'] ) ? $_POST['recaptcha_challenge_field'] : '';
             $recap_response  = isset( $_POST['recaptcha_response_field'] ) ? $_POST['recaptcha_response_field'] : '';
@@ -732,6 +733,10 @@ class WPUF_Render_Form {
         if ( $post_id && $attr['input_type'] == 'password') {
             $attr['required'] = 'no';
         }
+        if ( $attr['input_type'] == 'recaptcha' && $attr['recaptcha_type'] == 'invisible_recaptcha') {
+            return;
+        }
+
         ?>
         <div class="wpuf-label">
             <label for="<?php echo isset( $attr['name'] ) ? $attr['name'] : 'cls'; ?>"><?php echo $attr['label'] . $this->required_mark( $attr ); ?></label>
@@ -1564,17 +1569,20 @@ class WPUF_Render_Form {
         if ( $post_id ) {
             return;
         }
-        if ( isset ( $attr['enable_no_captcha'] ) && $attr['enable_no_captcha'] == 'enabled' ) {
-            $enable_no_captcha = true;
-        } else {
-            $enable_no_captcha = false;
+        $enable_no_captcha = $enable_invisible_recaptcha = '';
+        if ( isset ( $attr['recaptcha_type'] ) ) {
+            $enable_invisible_recaptcha = $attr['recaptcha_type'] == 'invisible_recaptcha' ? true : false;
+            $enable_no_captcha = $attr['recaptcha_type'] == 'enable_no_captcha' ? true : false;
         }
-        ?>
-
-        <div class="wpuf-fields <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>">
-            <?php echo recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), $enable_no_captcha, null, is_ssl() ); ?>
-        </div>
-    <?php
+        
+        if ( $enable_invisible_recaptcha ) { ?>
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+            <div id='recaptcha' class="g-recaptcha" data-sitekey=<?php echo wpuf_get_option( 'recaptcha_public', 'wpuf_general' ); ?> data-callback="onSubmit" data-size="invisible"></div>
+        <?php } else { ?>
+            <div class="wpuf-fields <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>">
+                <?php echo recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), $enable_no_captcha, null, is_ssl() ); ?>
+            </div>
+        <?php }
     }
 
 }

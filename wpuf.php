@@ -354,7 +354,7 @@ final class WP_User_Frontend {
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on') == 'on') {
             $this->plugin_scripts();
-        } else if ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) ) {
+        } else if ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) ) {
             $this->plugin_scripts();
         }
     }

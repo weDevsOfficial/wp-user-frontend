@@ -819,13 +819,13 @@ class WPUF_Form_Builder_Field_Settings {
 
         return array(
             'template'      => 'recaptcha',
-            'title'         => __( 'Recaptcha', 'wpuf' ),
+            'title'         => __( 'reCaptcha', 'wpuf' ),
             'validator'     => array(
                 'callback'      => 'has_recaptcha_api_keys',
                 'button_class'  => 'button-faded',
                 'msg_title'     => __( 'Site key and Secret key', 'wpuf' ),
                 'msg'           => sprintf(
-                    __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">WPUF Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wpuf' ),
+                    __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wpuf' ),
                     admin_url( 'admin.php?page=wpuf-settings' ),
                     'https://www.google.com/recaptcha/'
                 ),

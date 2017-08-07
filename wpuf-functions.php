@@ -388,9 +388,9 @@ function pre($data) {
  * @return array image sizes
  */
 function wpuf_get_image_sizes() {
-    $image_sizes_orig = get_intermediate_image_sizes();
+    $image_sizes_orig   = get_intermediate_image_sizes();
     $image_sizes_orig[] = 'full';
-    $image_sizes = array();
+    $image_sizes        = array();
 
     foreach ($image_sizes_orig as $size) {
         $image_sizes[$size] = $size;
@@ -402,13 +402,13 @@ function wpuf_get_image_sizes() {
 function wpuf_allowed_extensions() {
     $extesions = array(
         'images' => array('ext' => 'jpg,jpeg,gif,png,bmp', 'label' => __( 'Images', 'wpuf' )),
-        'audio' => array('ext' => 'mp3,wav,ogg,wma,mka,m4a,ra,mid,midi', 'label' => __( 'Audio', 'wpuf' )),
-        'video' => array('ext' => 'avi,divx,flv,mov,ogv,mkv,mp4,m4v,divx,mpg,mpeg,mpe', 'label' => __( 'Videos', 'wpuf' )),
-        'pdf' => array('ext' => 'pdf', 'label' => __( 'PDF', 'wpuf' )),
+        'audio'  => array('ext' => 'mp3,wav,ogg,wma,mka,m4a,ra,mid,midi', 'label' => __( 'Audio', 'wpuf' )),
+        'video'  => array('ext' => 'avi,divx,flv,mov,ogv,mkv,mp4,m4v,divx,mpg,mpeg,mpe', 'label' => __( 'Videos', 'wpuf' )),
+        'pdf'    => array('ext' => 'pdf', 'label' => __( 'PDF', 'wpuf' )),
         'office' => array('ext' => 'doc,ppt,pps,xls,mdb,docx,xlsx,pptx,odt,odp,ods,odg,odc,odb,odf,rtf,txt', 'label' => __( 'Office Documents', 'wpuf' )),
-        'zip' => array('ext' => 'zip,gz,gzip,rar,7z', 'label' => __( 'Zip Archives' )),
-        'exe' => array('ext' => 'exe', 'label' => __( 'Executable Files', 'wpuf' )),
-        'csv' => array('ext' => 'csv', 'label' => __( 'CSV', 'wpuf' ))
+        'zip'    => array('ext' => 'zip,gz,gzip,rar,7z', 'label' => __( 'Zip Archives' )),
+        'exe'    => array('ext' => 'exe', 'label' => __( 'Executable Files', 'wpuf' )),
+        'csv'    => array('ext' => 'csv', 'label' => __( 'CSV', 'wpuf' ))
     );
 
     return apply_filters( 'wpuf_allowed_extensions', $extesions );
@@ -1193,7 +1193,7 @@ function wpuf_get_form_fields( $form_id ) {
         if ( 'repeat' === $field['input_type'] && ! isset( $field['multiple'] ) ) {
             $field['multiple'] = '';
         }
-        
+
         if ( 'recaptcha' === $field['input_type'] ) {
             $field['name'] = 'recaptcha';
             $field['enable_no_captcha'] = isset( $field['enable_no_captcha'] ) ? $field['enable_no_captcha'] : '';

@@ -2020,7 +2020,10 @@ function wpuf_is_form_submission_open( $form_id ) {
         // handle the contact form
         if ( 'wpuf_contact_form' == $form_type ) {
             $limit        = (int) $settings['limit_number'];
-            $form_entries = wpuf_cf_count_form_entries( $form_id );
+            $form_entries = 0;
+            if ( function_exists( 'wpuf_cf_count_form_entries' ) ) {
+                $form_entries = wpuf_cf_count_form_entries( $form_id );
+            }
 
             if ( $limit < $form_entries ) {
                 return new WP_Error( 'entry-limit', $settings['limit_message'] );

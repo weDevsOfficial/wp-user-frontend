@@ -234,9 +234,11 @@ function wpuf_edit_post_link( $url, $post_id ) {
         return $url;
     }
 
-    $override = wpuf_get_option( 'override_editlink', 'wpuf_general', 'yes' );
+    $override = wpuf_get_option( 'override_editlink', 'wpuf_general', 'no' );
+
     if ( $override == 'yes' ) {
         $url = '';
+
         if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
             $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_general' );
             $url = get_permalink( $edit_page );

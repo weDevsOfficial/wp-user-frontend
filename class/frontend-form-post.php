@@ -40,6 +40,12 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
      * @return string
      */
     function add_post_shortcode( $atts ) {
+        // wpuf()->plugin_scripts();
+        ?>
+        <style>
+            <?php //echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
+        </style>
+        <?php
         extract( shortcode_atts( array( 'id' => 0 ), $atts ) );
         ob_start();
 
@@ -67,7 +73,12 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
      */
     function edit_post_shortcode( $atts ) {
         global $userdata;
-
+        // wpuf()->plugin_scripts();
+        ?>
+        <style>
+            <?php //echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
+        </style>
+        <?php
         ob_start();
 
         if ( !is_user_logged_in() ) {

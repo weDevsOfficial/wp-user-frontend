@@ -61,7 +61,9 @@ class WPUF_Admin_Settings {
          * @since 2.3
          */
         do_action( 'wpuf_admin_menu_top' );
-
+        if ( !class_exists( 'WeForms' ) ) {
+            add_submenu_page( 'wp-user-frontend', __( 'weForms', 'wpuf' ), __( 'weForms', 'wpuf' ), $capability, 'wpuf_weforms', array($this, 'weforms_page') );
+        }
         add_submenu_page( 'wp-user-frontend', __( 'Subscriptions', 'wpuf' ), __( 'Subscriptions', 'wpuf' ), $capability, 'edit.php?post_type=wpuf_subscription' );
 
         do_action( 'wpuf_admin_menu' );
@@ -144,6 +146,10 @@ class WPUF_Admin_Settings {
 
     function subscription_page() {
         require_once dirname( dirname( __FILE__ ) ) . '/admin/subscription.php';
+    }
+
+    function weforms_page() {
+        require_once dirname( dirname( __FILE__ ) ) . '/admin/weforms.php';
     }
 
     function addons_page() {

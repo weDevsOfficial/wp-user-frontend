@@ -186,6 +186,7 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/includes/free/admin/shortcode-button.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder-ajax.php';
+            include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
 
         } else {
 
@@ -226,6 +227,7 @@ final class WP_User_Frontend {
             new WPUF_Admin_Installer();
             new WPUF_Admin_Promotion();
             new WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
+            new WeForms_Upsell( 'wpuf' );
 
         } else {
 
@@ -527,7 +529,7 @@ final class WP_User_Frontend {
         echo '<p>Your <strong>WP User Frontend Pro</strong> License has been expired. Please <a href="https://wedevs.com/account/" target="_blank">renew your license</a>.</p>';
         echo '</div>';
     }
-    
+
     /**
      * If the core isn't installed
      *
@@ -554,6 +556,11 @@ final class WP_User_Frontend {
         include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
         include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
+        if ( file_exists( WP_PLUGIN_DIR . '/weforms/weforms.php' ) ) {
+            activate_plugin( 'weforms/weforms.php' );
+            wp_send_json_success();
+        }
+
         $plugin = 'weforms';
         $api    = plugins_api( 'plugin_information', array( 'slug' => $plugin, 'fields' => array( 'sections' => false ) ) );
 
@@ -569,6 +576,7 @@ final class WP_User_Frontend {
         if ( is_wp_error( $result ) ) {
             wp_send_json_error( $result );
         }
+
         wp_send_json_success();
     }
 }

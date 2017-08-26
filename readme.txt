@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: trunk
+Stable tag: 2.5.5
 License: GPLv2
 
 The best frontend plugin for WordPress. Users can create, edit, delete, build profiles, post on subscription, use coupons etc.
@@ -90,6 +90,7 @@ Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
 * Persian translation by Abolfazl Esmailinejad
 
 = Checkout Our Other Products =
+* [weForms](https://wordpress.org/plugins/weforms/)
 * [WP ERP](https://wperp.com/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+ERP)
 * [Dokan - Multivendor Plugin](https://wedevs.com/products/plugins/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
 * [WP Project Manager](https://wedevs.com/products/plugins/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
@@ -162,6 +163,17 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.5.5 (26 August, 2017) =
+
+ * [new] Added Invisible reCaptcha option
+ * [new] Added weForms shortcode on script loading check
+ * [improve] functions formatting
+ * [improve] reCaptcha field title and settings tweak
+ * [fix] Fixed translation issue by removing translation function of admin menu
+ * [fix] WPUF Custom Fields don’t save in admin/editor
+ * [fix] Fatal Error:undefined function wpuf_cf_count_form_entries()
+ * [fix] Fix form entries count function name
 
 = v2.5.4 (30 July, 2017) =
 

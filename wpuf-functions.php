@@ -234,9 +234,11 @@ function wpuf_edit_post_link( $url, $post_id ) {
         return $url;
     }
 
-    $override = wpuf_get_option( 'override_editlink', 'wpuf_general', 'yes' );
+    $override = wpuf_get_option( 'override_editlink', 'wpuf_general', 'no' );
+
     if ( $override == 'yes' ) {
         $url = '';
+
         if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
             $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_general' );
             $url = get_permalink( $edit_page );
@@ -388,9 +390,9 @@ function pre($data) {
  * @return array image sizes
  */
 function wpuf_get_image_sizes() {
-    $image_sizes_orig = get_intermediate_image_sizes();
+    $image_sizes_orig   = get_intermediate_image_sizes();
     $image_sizes_orig[] = 'full';
-    $image_sizes = array();
+    $image_sizes        = array();
 
     foreach ($image_sizes_orig as $size) {
         $image_sizes[$size] = $size;
@@ -402,13 +404,13 @@ function wpuf_get_image_sizes() {
 function wpuf_allowed_extensions() {
     $extesions = array(
         'images' => array('ext' => 'jpg,jpeg,gif,png,bmp', 'label' => __( 'Images', 'wpuf' )),
-        'audio' => array('ext' => 'mp3,wav,ogg,wma,mka,m4a,ra,mid,midi', 'label' => __( 'Audio', 'wpuf' )),
-        'video' => array('ext' => 'avi,divx,flv,mov,ogv,mkv,mp4,m4v,divx,mpg,mpeg,mpe', 'label' => __( 'Videos', 'wpuf' )),
-        'pdf' => array('ext' => 'pdf', 'label' => __( 'PDF', 'wpuf' )),
+        'audio'  => array('ext' => 'mp3,wav,ogg,wma,mka,m4a,ra,mid,midi', 'label' => __( 'Audio', 'wpuf' )),
+        'video'  => array('ext' => 'avi,divx,flv,mov,ogv,mkv,mp4,m4v,divx,mpg,mpeg,mpe', 'label' => __( 'Videos', 'wpuf' )),
+        'pdf'    => array('ext' => 'pdf', 'label' => __( 'PDF', 'wpuf' )),
         'office' => array('ext' => 'doc,ppt,pps,xls,mdb,docx,xlsx,pptx,odt,odp,ods,odg,odc,odb,odf,rtf,txt', 'label' => __( 'Office Documents', 'wpuf' )),
-        'zip' => array('ext' => 'zip,gz,gzip,rar,7z', 'label' => __( 'Zip Archives' )),
-        'exe' => array('ext' => 'exe', 'label' => __( 'Executable Files', 'wpuf' )),
-        'csv' => array('ext' => 'csv', 'label' => __( 'CSV', 'wpuf' ))
+        'zip'    => array('ext' => 'zip,gz,gzip,rar,7z', 'label' => __( 'Zip Archives' )),
+        'exe'    => array('ext' => 'exe', 'label' => __( 'Executable Files', 'wpuf' )),
+        'csv'    => array('ext' => 'csv', 'label' => __( 'CSV', 'wpuf' ))
     );
 
     return apply_filters( 'wpuf_allowed_extensions', $extesions );
@@ -1193,7 +1195,7 @@ function wpuf_get_form_fields( $form_id ) {
         if ( 'repeat' === $field['input_type'] && ! isset( $field['multiple'] ) ) {
             $field['multiple'] = '';
         }
-        
+
         if ( 'recaptcha' === $field['input_type'] ) {
             $field['name'] = 'recaptcha';
             $field['enable_no_captcha'] = isset( $field['enable_no_captcha'] ) ? $field['enable_no_captcha'] : '';
@@ -2020,7 +2022,11 @@ function wpuf_is_form_submission_open( $form_id ) {
         // handle the contact form
         if ( 'wpuf_contact_form' == $form_type ) {
             $limit        = (int) $settings['limit_number'];
-            $form_entries = wpuf_cf_count_form_entries( $form_id );
+            $form_entries = 0;
+
+            if ( function_exists( 'weforms_count_form_entries' ) ) {
+                $form_entries = weforms_count_form_entries( $form_id );
+            }
 
             if ( $limit < $form_entries ) {
                 return new WP_Error( 'entry-limit', $settings['limit_message'] );

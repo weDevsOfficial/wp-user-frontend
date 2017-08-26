@@ -18,7 +18,12 @@ class WPUF_Edit_Profile {
      * @author Tareq Hasan
      */
     function shortcode() {
-
+        // wpuf()->plugin_scripts();
+        ?>
+        <style>
+            <?php //echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
+        </style>
+        <?php
         ob_start();
 
         if ( is_user_logged_in() ) {

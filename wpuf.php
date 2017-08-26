@@ -4,13 +4,13 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.5.4
+Version: 2.5.5
 Author URI: https://tareq.co
 License: GPL2
 TextDomain: wpuf
 */
 
-define( 'WPUF_VERSION', '2.5.4' );
+define( 'WPUF_VERSION', '2.5.5' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -89,6 +89,7 @@ final class WP_User_Frontend {
 
         // set schedule event
         add_action( 'wpuf_remove_expired_post_hook', array( $this, 'action_to_remove_exipred_post' ) );
+        add_action( 'wp_ajax_wpuf_weforms_install', array( $this, 'install_weforms' ) );
     }
 
     /**
@@ -185,6 +186,7 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/includes/free/admin/shortcode-button.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder-ajax.php';
+            include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
 
         } else {
 
@@ -225,6 +227,7 @@ final class WP_User_Frontend {
             new WPUF_Admin_Installer();
             new WPUF_Admin_Promotion();
             new WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
+            new WeForms_Upsell( 'wpuf' );
 
         } else {
 
@@ -267,6 +270,7 @@ final class WP_User_Frontend {
 
         dbDelta( $sql_transaction );
 
+        update_option( 'wpuf_installed', time() );
         update_option( 'wpuf_version', WPUF_VERSION );
     }
 
@@ -354,7 +358,7 @@ final class WP_User_Frontend {
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on') == 'on') {
             $this->plugin_scripts();
-        } else if ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) ) {
+        } else if ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) ) {
             $this->plugin_scripts();
         }
     }
@@ -525,6 +529,56 @@ final class WP_User_Frontend {
         echo '<div class="error">';
         echo '<p>Your <strong>WP User Frontend Pro</strong> License has been expired. Please <a href="https://wedevs.com/account/" target="_blank">renew your license</a>.</p>';
         echo '</div>';
+    }
+
+    /**
+     * If the core isn't installed
+     *
+     * @return void
+     */
+    public function maybe_weforms_install() {
+        if ( class_exists('WeForms') ) {
+            return;
+        }
+        // install the core
+        add_action( 'wp_ajax_wpuf_weforms_install', array( $this, 'install_weforms' ) );
+    }
+    /**
+     * Install weforms plugin via ajax
+     *
+     * @return void
+     */
+    public function install_weforms() {
+
+        if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-weforms-installer-nonce' ) ) {
+            wp_send_json_error( __( 'Error: Nonce verification failed', 'weforms' ) );
+        }
+
+        include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+        include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+        if ( file_exists( WP_PLUGIN_DIR . '/weforms/weforms.php' ) ) {
+            activate_plugin( 'weforms/weforms.php' );
+            wp_send_json_success();
+        }
+
+        $plugin = 'weforms';
+        $api    = plugins_api( 'plugin_information', array( 'slug' => $plugin, 'fields' => array( 'sections' => false ) ) );
+
+        $upgrader = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
+        $result   = $upgrader->install( $api->download_link );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( $result );
+        }
+
+        $result = activate_plugin( 'weforms/weforms.php' );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( $result );
+        }
+
+        wp_send_json_success();
     }
 }
 

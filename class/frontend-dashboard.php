@@ -21,6 +21,12 @@ class WPUF_Frontend_Dashboard {
      * @since 0.1
      */
     function shortcode( $atts ) {
+        // wpuf()->plugin_scripts();
+        ?>
+        <style>
+            <?php //echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
+        </style>
+        <?php
 
         extract( shortcode_atts( array('post_type' => 'post'), $atts ) );
 

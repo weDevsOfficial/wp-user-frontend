@@ -8,3 +8,5 @@ plugin-deploy.sh
 npm-debug.log
 secret.json
 log.txt
+admin/form-builder/assets
+assets/css/*.less

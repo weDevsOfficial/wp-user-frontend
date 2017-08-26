@@ -803,28 +803,29 @@ class WPUF_Form_Builder_Field_Settings {
             ),
 
             array(
-                'name'          => 'enable_no_captcha',
-                'title'         => '',
-                'type'          => 'checkbox',
-                'is_single_opt' => true,
+                'name'          => 'recaptcha_type',
+                'title'         => 'reCaptcha type',
+                'type'          => 'radio',
                 'options'       => array(
-                    'enabled'   => __( 'Enable noCaptcha', 'wpuf' )
+                    'enable_no_captcha'    => __( 'Enable noCaptcha', 'wpuf' ),
+                    'invisible_recaptcha'  => __( 'Enable Invisible reCaptcha', 'wpuf' ),
                 ),
+                'default'       => 'enable_no_captcha',
                 'section'       => 'basic',
                 'priority'      => 11,
-                'help_text'     => __( 'Enter default latitude and longitude to center the map', 'wpuf' ),
+                'help_text'     => __( 'Select reCaptcha type', 'wpuf' ),
             )
         );
 
         return array(
             'template'      => 'recaptcha',
-            'title'         => __( 'Recaptcha', 'wpuf' ),
+            'title'         => __( 'reCaptcha', 'wpuf' ),
             'validator'     => array(
                 'callback'      => 'has_recaptcha_api_keys',
                 'button_class'  => 'button-faded',
                 'msg_title'     => __( 'Site key and Secret key', 'wpuf' ),
                 'msg'           => sprintf(
-                    __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">WPUF Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wpuf' ),
+                    __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wpuf' ),
                     admin_url( 'admin.php?page=wpuf-settings' ),
                     'https://www.google.com/recaptcha/'
                 ),
@@ -834,7 +835,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'input_type'        => 'recaptcha',
                 'template'          => 'recaptcha',
                 'label'             => '',
-                'enable_no_captcha' => 'enabled',
+                'recaptcha_type'    => 'enable_no_captcha',
                 'id'                => 0,
                 'is_new'            => true,
                 'wpuf_cond'         => self::get_wpuf_cond_prop(),

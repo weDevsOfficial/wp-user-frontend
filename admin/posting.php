@@ -19,7 +19,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_script') );
 
-        add_action( 'save_post', array( $this, 'save_meta'), 1 ); // save the custom fields
+        add_action( 'save_post', array( $this, 'save_meta'), 1, 2 ); // save the custom fields
         add_action( 'save_post', array( $this, 'form_selection_metabox_save' ), 1, 2 ); // save edit form id
     }
 
@@ -421,7 +421,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * @return void
      */
     // Save the Metabox Data
-    function save_meta( $post ) {
+    function save_meta( $post_id, $post ) {
 
         if ( !isset( $post->ID ) ) {
             return;

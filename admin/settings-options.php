@@ -78,7 +78,7 @@ function wpuf_settings_fields() {
                 'label'   => __( 'Override the post edit link', 'wpuf' ),
                 'desc'    => __( 'Users see the edit link in post if s/he is capable to edit the post/page. Selecting <strong>Yes</strong> will override the default WordPress edit post link in frontend', 'wpuf' ),
                 'type'    => 'select',
-                'default' => 'yes',
+                'default' => 'no',
                 'options' => array(
                     'yes' => __( 'Yes', 'wpuf' ),
                     'no'  => __( 'No', 'wpuf' )

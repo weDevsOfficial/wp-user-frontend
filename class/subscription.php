@@ -179,7 +179,7 @@ class WPUF_Subscription {
      * @since 2.2
      */
     function subscription_script() {
-        wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array('jquery'), false, true );
+        wp_enqueue_script( 'wpuf-subscriptions' );
     }
 
     /**
@@ -790,6 +790,11 @@ class WPUF_Subscription {
      * from admin Panel
      */
     function subscription_packs() {
+        ?>
+        <style>
+            <?php echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
+        </style>
+        <?php
         $cost_per_post = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
 
         if ( $cost_per_post != 'yes' ) {

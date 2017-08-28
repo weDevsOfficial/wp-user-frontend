@@ -179,7 +179,7 @@ class WPUF_Subscription {
      * @since 2.2
      */
     function subscription_script() {
-        wp_enqueue_script( 'wpuf-subscriptions' );
+        wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array('jquery'), false, true );
     }
 
     /**

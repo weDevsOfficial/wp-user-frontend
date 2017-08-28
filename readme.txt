@@ -58,29 +58,29 @@ Quickly create registration forms, woocommerce product forms, guest posting form
 
 = WP User Frontend PRO - Premium Features =
 
-The <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro">premium version</a> of WP User Frontend is completely different from the free version as there are a lot more features included.
+The <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro">premium version</a> of WP User Frontend is completely different from the free version as there are a lot more features included.
 
 [youtube http://www.youtube.com/watch?v=C0sInxx49Vg]
 
 
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Unlimited post type form creation</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#post-forms">Drag-n-drop form builder</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-taxonomy">Custom taxonomy support</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-fields">13 variations of custom fields</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#guest-posting">Guest post support</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-redirection">Custom Redirection</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#image-upload-post">Image upload on post content area</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Unlimited post type form creation</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#post-forms">Drag-n-drop form builder</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-taxonomy">Custom taxonomy support</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-fields">13 variations of custom fields</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#guest-posting">Guest post support</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-redirection">Custom Redirection</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#image-upload-post">Image upload on post content area</a>
 * Post status selection on new post and edited post separately
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#post-notification">New or edit post notification</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-field-admin">Custom fields are also generated in admin area</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#profile-builder">Profile form builder</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#post-notification">New or edit post notification</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-field-admin">Custom fields are also generated in admin area</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#profile-builder">Profile form builder</a>
 * Different profile edit forms for different user roles
 * Drag-n-Drop profile form builder
 * Profile fields are also generated on the backend
 * Avatar Upload
 * Frontend profile edit
 * <strong>Registration form</strong> builder
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#captcha">Captcha Support</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#captcha">Captcha Support</a>
 
 Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
 
@@ -92,8 +92,8 @@ Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
 = Checkout Our Other Products =
 * [weForms - Best Contact Form Plugin](https://wordpress.org/plugins/weforms/)
 * [WP ERP](https://wperp.com/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+ERP)
-* [Dokan - Multivendor Plugin](https://wedevs.com/products/plugins/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
-* [WP Project Manager](https://wedevs.com/products/plugins/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
+* [Dokan - Multivendor Plugin](https://wedevs.com/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
+* [WP Project Manager](https://wedevs.com/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
 
 [Github Repository](https://github.com/tareq1988/WP-User-Frontend).
 

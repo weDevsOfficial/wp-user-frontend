@@ -1,10 +1,10 @@
-=== WP User Frontend ===
+=== WP User Frontend - Frontend Posting, User Profile Builder, Membership Plugin  ===
 Contributors: tareq1988, sk.shaikat, rabbii, wedevs
 Donate link: https://tareq.co/donate/
-Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
+Tags: frontend, dashboard, registration, profile-builder, guest-post, membership, profiles, login
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 2.5.5
+Stable tag: 2.5.6
 License: GPLv2
 
 The best frontend plugin for WordPress. Users can create, edit, delete, build profiles, post on subscription, use coupons etc.
@@ -90,7 +90,7 @@ Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
 * Persian translation by Abolfazl Esmailinejad
 
 = Checkout Our Other Products =
-* [weForms](https://wordpress.org/plugins/weforms/)
+* [weForms - Best Contact Form Plugin](https://wordpress.org/plugins/weforms/)
 * [WP ERP](https://wperp.com/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+ERP)
 * [Dokan - Multivendor Plugin](https://wedevs.com/products/plugins/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
 * [WP Project Manager](https://wedevs.com/products/plugins/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
@@ -163,6 +163,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.5.6 (28 August, 2017) =
+
+ * [fix] Call subscriptions.js file directly from the js directory. Fix #174
 
 = v2.5.5 (26 August, 2017) =
 

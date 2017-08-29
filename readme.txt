@@ -7,7 +7,7 @@ Tested up to: 4.8
 Stable tag: 2.5.6
 License: GPLv2
 
-The best frontend plugin for WordPress. Users can create, edit, delete, build profiles, post on subscription, use coupons etc.
+Frontend post submission, guest post, membership, login, registration and profile builder. The best frontend plugin for WordPress.
 
 == Description ==
 

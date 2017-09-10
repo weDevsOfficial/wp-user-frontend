@@ -55,7 +55,19 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         new WPUF_Edit_Profile();
 
         if ( is_admin() ) {
-            new WPUF_Admin_Form_Free();
+
+            /**
+             * Conditionally load the free loader
+             *
+             * @since 2.5.7
+             *
+             * @var boolean
+             */
+            $load_free = apply_filters( 'wpuf_free_loader', true );
+
+            if ( $load_free ) {
+                new WPUF_Admin_Form_Free();
+            }
         }
     }
 
@@ -175,7 +187,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         WPUF_form_element::add_form_settings_content( $form_settings, $post );
     }
     public function post_notification_hook_runner() {
-        WPUF_form_element::add_post_notification_content(  );
+        WPUF_form_element::add_post_notification_content();
     }
 
     public function wpuf_edit_form_area_profile_runner() {

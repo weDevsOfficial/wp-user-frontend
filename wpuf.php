@@ -335,20 +335,9 @@ final class WP_User_Frontend {
             $this->is_pro = true;
         } else {
 
-            /**
-             * Conditionally load the free loader
-             *
-             * @since 2.5.7
-             *
-             * @var boolean
-             */
-            $load_free = apply_filters( 'wpuf_free_loader', true );
+            include dirname( __FILE__ ) . '/includes/free/loader.php';
 
-            if ( $load_free ) {
-                include dirname( __FILE__ ) . '/includes/free/loader.php';
-
-                $this->container['free_loader'] = new WPUF_Free_Loader();
-            }
+            $this->container['free_loader'] = new WPUF_Free_Loader();
         }
     }
 

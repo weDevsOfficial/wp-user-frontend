@@ -3,8 +3,6 @@
         <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wpuf' ) ?>
     </h4>
 
-    <!-- {{ field_settings.label_position }} -->
-
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
         <li
             v-for="(field, index) in form_fields"

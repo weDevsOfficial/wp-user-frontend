@@ -54,6 +54,12 @@
                 self.post_form_settings.submit_text = $(this).val();
             });
 
+            $('[name="wpuf_settings[label_position]"]').on('change', function () {
+                self.label_type = $(this).val();
+            });
+
+            $('[name="wpuf_settings[label_position]"]').trigger('change');
+
             // draft post text
             this.post_form_settings.draft_post = $('[type="checkbox"][name="wpuf_settings[draft_post]"]').is(':checked') ? true : false;
             $('[type="checkbox"][name="wpuf_settings[draft_post]"]').on('change', function () {

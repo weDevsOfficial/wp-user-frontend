@@ -3,9 +3,11 @@ Contributors: tareq1988, sk.shaikat, rabbii, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
-Tested up to: 4.8
-Stable tag: 2.5.6
+Tested up to: 4.8.1
+Requires PHP: 5.4
+Stable tag: 2.5.7
 License: GPLv2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Frontend post submission, guest post, membership, login, registration and profile builder. The best frontend plugin for WordPress.
 
@@ -165,6 +167,13 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.5.7 (11 September, 2017) =
+
+ * [improved] Added background in form builder div, so notices don’t overlap the form builder
+ * [improved] Added filter `wpuf_free_loader` for conditional loading pro elements. Added class instance container to access class instances via <code>wpuf()->dashboard</code> like magic methods.
+ * [new] Form label display settings added. Now you can place the form element labels at left/right/above/hide, brings more flexibility.
+ * [new] New post notification feature brought back in individual form notification settings. You could only change the new post notification email in the PRO version, now you can change it in the free version, as well as disable the email.
 
 = v2.5.6 (28 August, 2017) =
 

@@ -193,10 +193,10 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
         $form_settings    = wpuf_get_form_settings( $post->ID );
 
-        $new_notificaton  = 'on';
-        $new_to           = get_option( 'admin_email' );
-        $new_subject      = __( 'New post created', 'wpuf' );
-        $new_body         = $new_mail_body . $mail_body;
+        $new_notificaton  = isset( $form_settings['notification']['new'] ) ? $form_settings['notification']['new'] : 'on';
+        $new_to           = isset( $form_settings['notification']['new_to'] ) ? $form_settings['notification']['new_to'] : get_option( 'admin_email' );
+        $new_subject      = isset( $form_settings['notification']['new_subject'] ) ? $form_settings['notification']['new_subject'] : __( 'New post created', 'wpuf-pro' );
+        $new_body         = isset( $form_settings['notification']['new_body'] ) ? $form_settings['notification']['new_body'] : $new_mail_body . $mail_body;
 
         $edit_notificaton = 'off';
         $edit_to          = get_option( 'admin_email' );
@@ -204,45 +204,43 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         $edit_body        = $edit_mail_body . $mail_body;
         ?>
 
-        <?php self::get_pro_prompt(); ?>
+        <h3><?php _e( 'New Post Notificatoin', 'wpuf' ); ?></h3>
+        <table class="form-table">
+            <tr>
+                <th><?php _e( 'Notification', 'wpuf' ); ?></th>
+                <td>
+                    <label>
+                        <input type="hidden" name="wpuf_settings[notification][new]" value="on">
+                        <input type="checkbox" name="wpuf_settings[notification][new]" value="on"<?php checked( $new_notificaton, 'on' ); ?>>
+                        <?php _e( 'Enable post notification', 'wpuf' ); ?>
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <th><?php _e( 'To', 'wpuf' ); ?></th>
+                <td>
+                    <input type="text" name="wpuf_settings[notification][new_to]" class="regular-text" value="<?php echo esc_attr( $new_to ) ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <th><?php _e( 'Subject', 'wpuf' ); ?></th>
+                <td><input type="text" name="wpuf_settings[notification][new_subject]" class="regular-text" value="<?php echo esc_attr( $new_subject ) ?>"></td>
+            </tr>
+
+            <tr>
+                <th><?php _e( 'Message', 'wpuf' ); ?></th>
+                <td>
+                    <textarea rows="6" cols="60" name="wpuf_settings[notification][new_body]"><?php echo esc_textarea( $new_body ) ?></textarea>
+                </td>
+            </tr>
+        </table>
+
+        <h3><?php _e( 'Update Post Notificatoin', 'wpuf' ); ?></h3>
+
         <div id="wpuf-pro-content">
-            <h3><?php _e( 'New Post Notificatoin', 'wpuf' ); ?></h3>
-            <table class="form-table">
-                <tr>
-                    <th><?php _e( 'Notification', 'wpuf' ); ?></th>
-                    <td>
-                        <label>
-                            <input disabled type="checkbox" name="" value="on"<?php checked( $new_notificaton, 'on' ); ?>>
-                            <input type="hidden" name="wpuf_settings[notification][new]" value="on">
-                            <?php _e( 'Enable post notification', 'wpuf' ); ?>
-                        </label>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th><?php _e( 'To', 'wpuf' ); ?></th>
-                    <td>
-                        <input disabled type="text" name="" class="regular-text" value="<?php echo esc_attr( $new_to ) ?>">
-                        <input type="hidden" name="wpuf_settings[notification][new_to]" value="<?php echo esc_attr( $new_to ) ?>">
-                    </td>
-                </tr>
-
-                <tr>
-                    <th><?php _e( 'Subject', 'wpuf' ); ?></th>
-                    <td><input disabled type="text" name="" class="regular-text" value="<?php echo esc_attr( $new_subject ) ?>"></td>
-                    <input type="hidden" name="wpuf_settings[notification][new_subject]" value="<?php echo esc_attr( $new_subject ) ?>">
-                </tr>
-
-                <tr>
-                    <th><?php _e( 'Message', 'wpuf' ); ?></th>
-                    <td>
-                        <textarea disabled rows="6" cols="60" name=""><?php echo esc_textarea( $new_body ) ?></textarea>
-                        <input type="hidden" name="wpuf_settings[notification][new_body]" value="<?php echo esc_attr( $new_body ) ?>">
-                    </td>
-                </tr>
-            </table>
-
-            <h3><?php _e( 'Update Post Notificatoin', 'wpuf' ); ?></h3>
+            <?php self::get_pro_prompt(); ?>
 
             <table class="form-table">
                 <tr>
@@ -273,14 +271,14 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                     </td>
                 </tr>
             </table>
-
-            <h3><?php _e( 'You may use in to, subject & message:', 'wpuf' ); ?></h3>
-            <p>
-                <code>%post_title%</code>, <code>%post_content%</code>, <code>%post_excerpt%</code>, <code>%tags%</code>, <code>%category%</code>,
-                <code>%author%</code>, <code>%author_email%</code>, <code>%author_bio%</code>, <code>%sitename%</code>, <code>%siteurl%</code>, <code>%permalink%</code>, <code>%editlink%</code>
-                <br><code>%custom_{NAME_OF_CUSTOM_FIELD}%</code> e.g: <code>%custom_website_url%</code> for <code>website_url</code> meta field
-            </p>
         </div>
+
+        <h3><?php _e( 'You may use in to, subject & message:', 'wpuf' ); ?></h3>
+        <p>
+            <code>%post_title%</code>, <code>%post_content%</code>, <code>%post_excerpt%</code>, <code>%tags%</code>, <code>%category%</code>,
+            <code>%author%</code>, <code>%author_email%</code>, <code>%author_bio%</code>, <code>%sitename%</code>, <code>%siteurl%</code>, <code>%permalink%</code>, <code>%editlink%</code>
+            <br><code>%custom_{NAME_OF_CUSTOM_FIELD}%</code> e.g: <code>%custom_website_url%</code> for <code>website_url</code> meta field
+        </p>
 
     <?php
 

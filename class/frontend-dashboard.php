@@ -67,24 +67,24 @@ class WPUF_Frontend_Dashboard {
         }
 
         $args = array(
-            'author' => get_current_user_id(),
-            'post_status' => array('draft', 'future', 'pending', 'publish', 'private'),
-            'post_type' => $post_type,
+            'author'         => get_current_user_id(),
+            'post_status'    => array('draft', 'future', 'pending', 'publish', 'private'),
+            'post_type'      => $post_type,
             'posts_per_page' => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
-            'paged' => $pagenum
+            'paged'          => $pagenum
         );
 
-        $original_post = $post;
+        $original_post   = $post;
         $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args ) );
-        $post_type_obj = get_post_type_object( $post_type );
+        $post_type_obj   = get_post_type_object( $post_type );
 
         wpuf_load_template( 'dashboard.php', array(
-            'post_type' => $post_type,
-            'userdata' => wp_get_current_user(),
+            'post_type'       => $post_type,
+            'userdata'        => wp_get_current_user(),
             'dashboard_query' => $dashboard_query,
-            'post_type_obj' => $post_type_obj,
-            'post' => $post,
-            'pagenum' => $pagenum
+            'post_type_obj'   => $post_type_obj,
+            'post'            => $post,
+            'pagenum'         => $pagenum
         ) );
 
         wp_reset_postdata();

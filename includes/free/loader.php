@@ -229,5 +229,3 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         return $integrations;
     }
 }
-
-new WPUF_Free_Loader();

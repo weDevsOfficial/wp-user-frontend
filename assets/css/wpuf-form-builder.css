@@ -223,6 +223,7 @@
   padding-top: 10px;
   position: fixed;
   top: 25px;
+  background: #f1f1f1;
 }
 #wpuf-form-builder * {
   box-sizing: border-box;

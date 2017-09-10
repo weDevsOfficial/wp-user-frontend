@@ -10,3 +10,7 @@ secret.json
 log.txt
 admin/form-builder/assets
 assets/css/*.less
+.editorconfig
+.gitattributes
+.jshintrc
+.svnignore

@@ -4,13 +4,15 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.5.6
+Version: 2.5.7
 Author URI: https://tareq.co
-License: GPL2
-TextDomain: wpuf
+License: GPL2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: wpuf
+Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.5.6' );
+define( 'WPUF_VERSION', '2.5.7' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -31,6 +33,15 @@ final class WP_User_Frontend {
      * @var WPUF_Integrations
      */
     public $integrations = null;
+
+    /**
+     * Holds various class instances
+     *
+     * @since 2.5.7
+     *
+     * @var array
+     */
+    private $container = [];
 
     /**
      * The singleton instance
@@ -90,6 +101,23 @@ final class WP_User_Frontend {
         // set schedule event
         add_action( 'wpuf_remove_expired_post_hook', array( $this, 'action_to_remove_exipred_post' ) );
         add_action( 'wp_ajax_wpuf_weforms_install', array( $this, 'install_weforms' ) );
+    }
+
+    /**
+     * Magic getter to bypass referencing plugin.
+     *
+     * @since 2.5.7
+     *
+     * @param string $prop
+     *
+     * @return mixed
+     */
+    public function __get( $prop ) {
+        if ( array_key_exists( $prop, $this->container ) ) {
+            return $this->container[ $prop ];
+        }
+
+        return $this->{$prop};
     }
 
     /**
@@ -208,32 +236,32 @@ final class WP_User_Frontend {
      */
     function instantiate() {
 
-        $this->integrations = new WPUF_Integrations();
+        $this->integrations               = new WPUF_Integrations();
 
-        new WPUF_Upload();
-        new WPUF_Paypal();
-        new WPUF_Admin_Form_Template();
+        $this->container['upload']        = new WPUF_Upload();
+        $this->container['paypal']        = new WPUF_Paypal();
+        $this->container['form_template'] = new WPUF_Admin_Form_Template();
 
-        WPUF_Subscription::init();
-        WPUF_Frontend_Form_Post::init();
+        $this->container['subscription']  = WPUF_Subscription::init();
+        $this->container['frontend_post'] = WPUF_Frontend_Form_Post::init();
+        $this->container['insights']      = new WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
 
         if ( is_admin() ) {
 
-            WPUF_Admin_Settings::init();
-            new WPUF_Admin_Form_Handler();
-            new WPUF_Admin_Form();
-            WPUF_Admin_Posting::init();
-            new WPUF_Admin_Subscription();
-            new WPUF_Admin_Installer();
-            new WPUF_Admin_Promotion();
-            new WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
-            new WeForms_Upsell( 'wpuf' );
+            $this->container['settings']           = WPUF_Admin_Settings::init();
+            $this->container['form_handler']       = new WPUF_Admin_Form_Handler();
+            $this->container['admin_form']         = new WPUF_Admin_Form();
+            $this->container['admin_posting']      = WPUF_Admin_Posting::init();
+            $this->container['admin_subscription'] = new WPUF_Admin_Subscription();
+            $this->container['admin_installer']    = new WPUF_Admin_Installer();
+            $this->container['admin_promotion']    = new WPUF_Admin_Promotion();
+            $this->container['upsell']             = new WeForms_Upsell( 'wpuf' );
 
         } else {
 
-            new WPUF_Frontend_Dashboard();
-            new WPUF_Payment();
-            new WPUF_Frontend_Account();
+            $this->container['dashboard'] = new WPUF_Frontend_Dashboard();
+            $this->container['payment']   = new WPUF_Payment();
+            $this->container['account']   = new WPUF_Frontend_Account();
         }
     }
 
@@ -308,7 +336,10 @@ final class WP_User_Frontend {
         if ( $has_pro ) {
             $this->is_pro = true;
         } else {
+
             include dirname( __FILE__ ) . '/includes/free/loader.php';
+
+            $this->container['free_loader'] = new WPUF_Free_Loader();
         }
     }
 

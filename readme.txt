@@ -1,15 +1,19 @@
-=== WP User Frontend ===
+=== WP User Frontend - Membership, Profile, Registration & Post Submission Plugin for WordPress ===
 Contributors: tareq1988, sk.shaikat, rabbii, wedevs
 Donate link: https://tareq.co/donate/
-Tags: frontend, post, edit, dashboard, restrict, content submission, guest post, guest, registration, profile, anonymous post, gravity, gravity forms, formidable, author, author profile, authors, comments, conditional fields, conditional logic, custom fields, file uploads, form builder, front-end login, front-end registration, profile builder, profiles, member, member directory, members, Membership
+Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
-Tested up to: 4.8
-Stable tag: 2.5.5
+Tested up to: 4.8.1
+Requires PHP: 5.4
+Stable tag: 2.5.7
 License: GPLv2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-The best frontend plugin for WordPress. Users can create, edit, delete, build profiles, post on subscription, use coupons etc.
+Frontend post submission, guest post, membership, login, registration and profile builder. The best frontend plugin for WordPress.
 
 == Description ==
+
+<strong>#1 Frontend Post Submission, Membership and Profile Builder Plugin</strong>
 
 The forms gives users the ability to create new posts, edit their profile all from the site frontend, so that the user does not need to enter the backend admin panel to do action.
 
@@ -58,29 +62,29 @@ Quickly create registration forms, woocommerce product forms, guest posting form
 
 = WP User Frontend PRO - Premium Features =
 
-The <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro">premium version</a> of WP User Frontend is completely different from the free version as there are a lot more features included.
+The <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro">premium version</a> of WP User Frontend is completely different from the free version as there are a lot more features included.
 
 [youtube http://www.youtube.com/watch?v=C0sInxx49Vg]
 
 
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Unlimited post type form creation</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#post-forms">Drag-n-drop form builder</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-taxonomy">Custom taxonomy support</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-fields">13 variations of custom fields</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#guest-posting">Guest post support</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-redirection">Custom Redirection</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#image-upload-post">Image upload on post content area</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Unlimited post type form creation</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#post-forms">Drag-n-drop form builder</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-taxonomy">Custom taxonomy support</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-fields">13 variations of custom fields</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#guest-posting">Guest post support</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-redirection">Custom Redirection</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#image-upload-post">Image upload on post content area</a>
 * Post status selection on new post and edited post separately
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#post-notification">New or edit post notification</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-field-admin">Custom fields are also generated in admin area</a>
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#profile-builder">Profile form builder</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#post-notification">New or edit post notification</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-field-admin">Custom fields are also generated in admin area</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#profile-builder">Profile form builder</a>
 * Different profile edit forms for different user roles
 * Drag-n-Drop profile form builder
 * Profile fields are also generated on the backend
 * Avatar Upload
 * Frontend profile edit
 * <strong>Registration form</strong> builder
-* <a href="https://wedevs.com/products/plugins/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#captcha">Captcha Support</a>
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#captcha">Captcha Support</a>
 
 Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
 
@@ -92,8 +96,8 @@ Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
 = Checkout Our Other Products =
 * [weForms - Best Contact Form Plugin](https://wordpress.org/plugins/weforms/)
 * [WP ERP](https://wperp.com/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+ERP)
-* [Dokan - Multivendor Plugin](https://wedevs.com/products/plugins/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
-* [WP Project Manager](https://wedevs.com/products/plugins/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
+* [Dokan - Multivendor Plugin](https://wedevs.com/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
+* [WP Project Manager](https://wedevs.com/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
 
 [Github Repository](https://github.com/tareq1988/WP-User-Frontend).
 
@@ -163,6 +167,13 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.5.7 (11 September, 2017) =
+
+ * [improved] Added background in form builder div, so notices don’t overlap the form builder
+ * [improved] Added filter `wpuf_free_loader` for conditional loading pro elements. Added class instance container to access class instances via <code>wpuf()->dashboard</code> like magic methods.
+ * [new] Form label display settings added. Now you can place the form element labels at left/right/above/hide, brings more flexibility.
+ * [new] New post notification feature brought back in individual form notification settings. You could only change the new post notification email in the PRO version, now you can change it in the free version, as well as disable the email.
 
 = v2.5.6 (28 August, 2017) =
 

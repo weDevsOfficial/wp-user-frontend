@@ -333,8 +333,9 @@ class WPUF_Render_Form {
             return;
         }
 
-        $form_vars     = wpuf_get_form_fields( $form_id );
-        $form_settings = wpuf_get_form_settings( $form_id );
+        $form_vars      = wpuf_get_form_fields( $form_id );
+        $form_settings  = wpuf_get_form_settings( $form_id );
+        $label_position = isset( $form_settings['label_position'] ) ? $form_settings['label_position'] : 'left';
 
         if ( ! is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {
             echo '<div class="wpuf-message">' . $form_settings['message_restrict'] . '</div>';
@@ -346,7 +347,7 @@ class WPUF_Render_Form {
 
             <form class="wpuf-form-add" action="" method="post">
 
-                <ul class="wpuf-form">
+                <ul class="wpuf-form form-label-<?php echo $label_position; ?>">
 
                     <?php
                     if ( !$post_id ) {
@@ -1574,7 +1575,7 @@ class WPUF_Render_Form {
             $enable_invisible_recaptcha = $attr['recaptcha_type'] == 'invisible_recaptcha' ? true : false;
             $enable_no_captcha = $attr['recaptcha_type'] == 'enable_no_captcha' ? true : false;
         }
-        
+
         if ( $enable_invisible_recaptcha ) { ?>
             <script src="https://www.google.com/recaptcha/api.js" async defer></script>
             <div id='recaptcha' class="g-recaptcha" data-sitekey=<?php echo wpuf_get_option( 'recaptcha_public', 'wpuf_general' ); ?> data-callback="onSubmit" data-size="invisible"></div>

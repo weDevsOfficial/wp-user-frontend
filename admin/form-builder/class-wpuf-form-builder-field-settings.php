@@ -734,6 +734,7 @@ class WPUF_Form_Builder_Field_Settings {
         return array(
             'template'      => 'section_break',
             'title'         => __( 'Section Break', 'wpuf' ),
+            'icon'          => 'columns',
             'is_full_width' => true,
             'settings'      => $settings,
             'field_props'   => array(
@@ -770,6 +771,7 @@ class WPUF_Form_Builder_Field_Settings {
         return array(
             'template'      => 'custom_html',
             'title'         => __( 'Custom HTML', 'wpuf' ),
+            'icon'          => 'code',
             'is_full_width' => true,
             'settings'      => $settings,
             'field_props'   => array(
@@ -820,6 +822,7 @@ class WPUF_Form_Builder_Field_Settings {
         return array(
             'template'      => 'recaptcha',
             'title'         => __( 'reCaptcha', 'wpuf' ),
+            'icon'          => 'qrcode',
             'validator'     => array(
                 'callback'      => 'has_recaptcha_api_keys',
                 'button_class'  => 'button-faded',

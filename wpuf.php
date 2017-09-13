@@ -315,9 +315,13 @@ final class WP_User_Frontend {
             return;
         }
 
-        require_once WPUF_ROOT . '/class/upgrades.php';
+        require_once WPUF_ROOT . '/includes/class-upgrades.php';
 
-        new WPUF_Upgrades( WPUF_VERSION );
+        $upgrader = new WPUF_Upgrades();
+
+        if ( $upgrader->needs_update() ) {
+            $upgrader->perform_updates();
+        }
     }
 
     /**

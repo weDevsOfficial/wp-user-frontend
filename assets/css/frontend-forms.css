@@ -179,6 +179,10 @@ ul.wpuf-form li .wpuf-fields a.file-selector:focus {
 ul.wpuf-form li .wpuf-fields .google-map img {
   max-width: none !important;
 }
+ul.wpuf-form li .wpuf-fields .wpuf-product-qty {
+  float: left;
+  width: 10%;
+}
 ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap {
   margin-bottom: 8px;
 }

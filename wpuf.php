@@ -26,15 +26,6 @@ define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
 final class WP_User_Frontend {
 
     /**
-     * Integrations instance.
-     *
-     * @since 2.5.4
-     *
-     * @var WPUF_Integrations
-     */
-    public $integrations = null;
-
-    /**
      * Holds various class instances
      *
      * @since 2.5.7
@@ -198,8 +189,6 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/render-form.php';
         require_once WPUF_ROOT . '/class/payment.php';
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
-        require_once WPUF_ROOT . '/includes/class-abstract-integration.php';
-        require_once WPUF_ROOT . '/includes/class-integrations.php';
 
         if ( is_admin() ) {
             require_once WPUF_ROOT . '/admin/settings-options.php';
@@ -235,8 +224,6 @@ final class WP_User_Frontend {
      * @return void
      */
     function instantiate() {
-
-        $this->integrations               = new WPUF_Integrations();
 
         $this->container['upload']        = new WPUF_Upload();
         $this->container['paypal']        = new WPUF_Paypal();

@@ -189,6 +189,7 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/render-form.php';
         require_once WPUF_ROOT . '/class/payment.php';
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
+        require_once WPUF_ROOT . '/class/frontend-account.php';
 
         if ( is_admin() ) {
             require_once WPUF_ROOT . '/admin/settings-options.php';
@@ -206,9 +207,7 @@ final class WP_User_Frontend {
             include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
 
         } else {
-
             require_once WPUF_ROOT . '/class/frontend-dashboard.php';
-            require_once WPUF_ROOT . '/class/frontend-account.php';
         }
 
         // add reCaptcha library if not found
@@ -231,6 +230,7 @@ final class WP_User_Frontend {
 
         $this->container['subscription']  = WPUF_Subscription::init();
         $this->container['frontend_post'] = WPUF_Frontend_Form_Post::init();
+        $this->container['account']   = new WPUF_Frontend_Account();
         $this->container['insights']      = new WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
 
         if ( is_admin() ) {
@@ -248,7 +248,6 @@ final class WP_User_Frontend {
 
             $this->container['dashboard'] = new WPUF_Frontend_Dashboard();
             $this->container['payment']   = new WPUF_Payment();
-            $this->container['account']   = new WPUF_Frontend_Account();
         }
     }
 
@@ -380,7 +379,7 @@ final class WP_User_Frontend {
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on') == 'on') {
             $this->plugin_scripts();
-        } else if ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) ) {
+        } else if ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) ) {
             $this->plugin_scripts();
         }
     }
@@ -402,7 +401,7 @@ final class WP_User_Frontend {
             || wpuf_has_shortcode( 'wpuf_sub_pack', $post->ID )
             || wpuf_has_shortcode( 'wpuf-login', $post->ID )
             || wpuf_has_shortcode( 'wpuf_form', $post->ID )
-            || wpuf_has_shortcode( 'wpuf_profile', $post->ID )
+            || wpuf_has_shortcode( 'wpuf_account', $post->ID )
         ) {
             ?>
             <style>

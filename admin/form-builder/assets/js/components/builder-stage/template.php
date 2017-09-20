@@ -9,7 +9,7 @@
             :key="field.id"
             :class="[
                 'field-items', 'wpuf-el', field.name, field.css, 'form-field-' + field.template,
-                ('hidden' === field.input_type) ? 'hidden-field' : '',
+                ('custom_hidden_field' === field.template) ? 'hidden-field' : '',
                 parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : ''
             ]"
             :data-index="index"

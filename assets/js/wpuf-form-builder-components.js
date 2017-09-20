@@ -17,7 +17,7 @@ Vue.component('builder-stage', {
 
         hidden_fields: function () {
             return this.$store.state.form_fields.filter(function (item) {
-                return 'hidden' === item.input_type;
+                return 'custom_hidden_field' === item.template;
             });
         },
 

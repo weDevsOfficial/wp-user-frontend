@@ -745,6 +745,27 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         // save all custom fields
         foreach ( $meta_key_value as $meta_key => $meta_value ) {
             update_post_meta( $post_id, $meta_key, $meta_value );
+
+            /* Fix for front-end product meta. */
+
+            if ( $meta_key == '_visibility' ) {
+            	if ( $meta_value == 'catalog' ){
+            		wp_set_object_terms( $post_id, 'exclude-from-search', 'product_visibility' );
+            	}elseif ( $meta_value == 'search') {
+            		wp_set_object_terms( $post_id, 'exclude-from-catalog', 'product_visibility' );
+            	}elseif ( $meta_value == 'hidden' ) {
+            		$exclude_term = array();
+            		array_push( $exclude_term, 'exclude-from-search' );
+            		array_push( $exclude_term, 'exclude-from-catalog' );
+            		
+            		foreach ($exclude_term as $ex_term) {
+            			wp_set_post_terms( $post_id, $ex_term, 'product_visibility', true );
+            		}
+            	}
+            	else {
+            		wp_set_post_terms( $post_id, '', 'product_visibility', true );
+            	}
+            }
         }
 
         // save any multicolumn repeatable fields

@@ -312,25 +312,10 @@ Edit URL: %editlink%',
      */
     public function update_meta( $post_id ) {
     
-        $vis_meta = array();
-        $vis_meta = get_post_meta( $post_id, '_visibility' );
+        $visibility = get_post_meta( $post_id, '_visibility', true );
 
-        foreach ($vis_meta as $meta_value) {
-            if ( $meta_value == 'catalog' ){
-                wp_set_object_terms( $post_id, 'exclude-from-search', 'product_visibility' );
-            } elseif ( $meta_value == 'search') {
-                wp_set_object_terms( $post_id, 'exclude-from-catalog', 'product_visibility' );
-            } elseif ( $meta_value == 'hidden' ) {
-                $exclude_term = array();
-                array_push( $exclude_term, 'exclude-from-search' );
-                array_push( $exclude_term, 'exclude-from-catalog' );
-                
-                foreach ($exclude_term as $ex_term) {
-                    wp_set_post_terms( $post_id, $ex_term, 'product_visibility', true );
-                }
-            } else {
-                wp_set_post_terms( $post_id, '', 'product_visibility', true );
-            }
-        } 
+        $product = wc_get_product( $post_id );
+        $product->set_catalog_visibility( $visibility );
+        $product->save();
     }
 }

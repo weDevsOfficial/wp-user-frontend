@@ -257,6 +257,7 @@ Edit URL: %editlink%',
         $this->update_reviews( $post_id );
         $this->update_price( $post_id );
         $this->update_gallery_images( $post_id );
+        $this->update_meta( $post_id );
     }
 
     /**
@@ -301,5 +302,20 @@ Edit URL: %editlink%',
     public function update_gallery_images( $post_id ) {
         $images = get_post_meta( $post_id, '_product_image' );
         update_post_meta( $post_id, '_product_image_gallery', implode(',', $images) );
+    }
+
+    /**
+     *  Fix for visibily not updating from frontend post
+     *
+     * @param  int $post_id
+     * @return void
+     */
+    public function update_meta( $post_id ) {
+    
+        $visibility = get_post_meta( $post_id, '_visibility', true );
+
+        $product = wc_get_product( $post_id );
+        $product->set_catalog_visibility( $visibility );
+        $product->save();
     }
 }

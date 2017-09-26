@@ -244,7 +244,13 @@ class WPUF_Paypal {
      */
     function paypal_success() {
 
-        $postdata = $_POST;
+		$postdata = array();
+		
+		if ( ! empty( $_POST ) && $this->validate_ipn() ) {
+			$postdata = $_POST;
+		} else {
+			wp_die( 'PayPal IPN Request Failure', 'PayPal IPN', array( 'response' => 500 ) );
+		}
 
         // when subscription expire
         if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_eot' ) ) {
@@ -262,7 +268,7 @@ class WPUF_Paypal {
 
         $insert_payment = false;
 
-        if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
+        if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' && $this->validate_ipn()) {
 
             WP_User_Frontend::log( 'paypal-payment-info', print_r( $_POST, true ) );
 

@@ -193,11 +193,11 @@ final class WP_User_Frontend {
 
         if ( is_admin() ) {
             require_once WPUF_ROOT . '/admin/settings-options.php';
-            require_once WPUF_ROOT . '/admin/settings.php';
+            require_once WPUF_ROOT . '/admin/class-admin-settings.php';
             require_once WPUF_ROOT . '/admin/form-handler.php';
             require_once WPUF_ROOT . '/admin/form.php';
             require_once WPUF_ROOT . '/admin/posting.php';
-            require_once WPUF_ROOT . '/admin/subscription.php';
+            require_once WPUF_ROOT . '/admin/class-admin-subscription.php';
             require_once WPUF_ROOT . '/admin/installer.php';
             require_once WPUF_ROOT . '/admin/promotion.php';
             require_once WPUF_ROOT . '/admin/post-forms-list-table.php';
@@ -259,26 +259,42 @@ final class WP_User_Frontend {
     public static function install() {
         global $wpdb;
 
+        $collate = '';
+
+        if ( $wpdb->has_cap( 'collation' ) ) {
+            if ( ! empty($wpdb->charset ) ) {
+                $collate .= "DEFAULT CHARACTER SET $wpdb->charset";
+            }
+
+            if ( ! empty($wpdb->collate ) ) {
+                $collate .= " COLLATE $wpdb->collate";
+            }
+        }
+
         self::set_schedule_events();
 
         flush_rewrite_rules( false );
 
         $sql_transaction = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_transaction (
-            `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+            `id` int(11) NOT NULL AUTO_INCREMENT,
             `user_id` bigint(20) DEFAULT NULL,
-            `status` varchar(255) NOT NULL DEFAULT 'pending_payment',
+            `status` varchar(60) NOT NULL DEFAULT 'pending_payment',
             `cost` varchar(255) DEFAULT '',
             `post_id` varchar(20) DEFAULT NULL,
             `pack_id` bigint(20) DEFAULT NULL,
-            `payer_first_name` longtext,
-            `payer_last_name` longtext,
-            `payer_email` longtext,
-            `payment_type` longtext,
+            `payer_first_name` varchar(60),
+            `payer_last_name` varchar(60),
+            `payer_email` varchar(100),
+            `payment_type` varchar(20),
             `payer_address` longtext,
-            `transaction_id` longtext,
+            `transaction_id` varchar(60),
             `created` datetime NOT NULL,
-            PRIMARY KEY (`id`)
-            ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+            PRIMARY KEY (`id`),
+            key `user_id` (`user_id`),
+            key `post_id` (`post_id`),
+            key `pack_id` (`pack_id`),
+            key `payer_email` (`payer_email`)
+        ) $collate;";
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 

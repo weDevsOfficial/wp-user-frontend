@@ -166,3 +166,25 @@ span.wpuf_help{
     height: 18px;
     display: block;
 }
+
+.wpuf-footer-help {
+    box-sizing: border-box;
+    width: auto;
+    margin: 2rem 0.8rem;
+    text-align: center;
+}
+
+.wpuf-footer-help .wpuf-footer-help-content {
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    padding: 15px 25px;
+    font-size: 15px;
+}
+
+.wpuf-footer-help-content .dashicons {
+    color: #47c1bf;
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+    margin-top: -5px;
+}

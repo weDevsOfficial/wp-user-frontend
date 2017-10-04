@@ -73,7 +73,7 @@ class WPUF_Admin_Settings {
         $transactions_page = add_submenu_page( 'wp-user-frontend', __( 'Transactions', 'wpuf' ), __( 'Transactions', 'wpuf' ), $capability, 'wpuf_transaction', array($this, 'transactions_page') );
         add_submenu_page( 'wp-user-frontend', __( 'Add-ons', 'wpuf' ), __( 'Add-ons', 'wpuf' ), $capability, 'wpuf_addons', array($this, 'addons_page') );
         add_submenu_page( 'wp-user-frontend', __( 'Tools', 'wpuf' ), __( 'Tools', 'wpuf' ), $capability, 'wpuf_tools', array($this, 'tools_page') );
-        add_submenu_page( 'wp-user-frontend', __( 'Support', 'wpuf' ), __( 'Support', 'wpuf' ), $capability, 'wpuf-support', array($this, 'support_page') );
+        add_submenu_page( 'wp-user-frontend', __( 'Help', 'wpuf' ), __( '<span style="color:#f18500">Help</span>', 'wpuf' ), $capability, 'wpuf-support', array($this, 'support_page') );
         add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wpuf' ), __( 'Settings', 'wpuf' ), $capability, 'wpuf-settings', array($this, 'plugin_page') );
 
         add_action( "load-$transactions_page", array( $this, 'transactions_screen_option' ) );

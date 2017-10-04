@@ -102,6 +102,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
             <p>
                 <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wpuf' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php _e( 'Learn more about Registration', 'wpuf' ); ?></a>
             </p>
         </div>
         <?php
@@ -122,6 +123,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
             <p>
                 <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wpuf' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/coupons/" target="_blank" class="button"><?php _e( 'Learn more about Coupons', 'wpuf' ); ?></a>
             </p>
         </div>
 

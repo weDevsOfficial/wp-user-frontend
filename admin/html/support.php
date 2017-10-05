@@ -253,6 +253,75 @@ $right_column = array(
             ),
         )
     ),
+    array(
+        'heading'   => 'Videos',
+        'questions' => array(
+            array(
+                'title' => 'Installing Free Version',
+                'link'  => 'https://www.youtube.com/watch?v=nL7BSZ0Psh4&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc&index=1'
+            ),
+            array(
+                'title' => 'Installing Pro Version',
+                'link'  => 'https://www.youtube.com/watch?v=WvqQucwHSZs&index=2&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc'
+            ),
+            array(
+                'title' => 'Setting Up the Plugin',
+                'link'  => 'https://www.youtube.com/watch?v=pK3nLeR2fzc&list=PLJorZsV2RVv9G5J3kcqJQjUwgqZSwc_Hf&index=2'
+            ),
+            array(
+                'title' => 'Submit a custom post from frontend',
+                'link'  => 'https://www.youtube.com/watch?v=2y84hn5G7JQ&list=PLJorZsV2RVv9G5J3kcqJQjUwgqZSwc_Hf&index=3'
+            ),
+            array(
+                'title' => 'Endless loading issue',
+                'link'  => 'https://www.youtube.com/watch?v=UgnASaxuC-I&list=PLJorZsV2RVv9G5J3kcqJQjUwgqZSwc_Hf&index=4'
+            ),
+            array(
+                'title' => 'How to Add Ajax Method Category Field',
+                'link'  => 'https://www.youtube.com/watch?v=23xsccSkdy0&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc&index=3'
+            ),
+            array(
+                'title' => 'How to Translate User Frontend (Free & Pro) Using Loco Translate Plugin',
+                'link'  => 'https://www.youtube.com/watch?v=7f09J3H3Pp0&index=4&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc'
+            ),
+            array(
+                'title' => 'How to change form name',
+                'link'  => 'https://www.youtube.com/watch?v=qsWKwsj_oXs&index=5&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc'
+            ),
+            array(
+                'title' => 'How to change form name',
+                'link'  => 'https://www.youtube.com/watch?v=qsWKwsj_oXs&index=5&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc'
+            ),
+            array(
+                'title' => 'How to use conditional logic',
+                'link'  => 'https://www.youtube.com/watch?v=bHxUJ4lwODI&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc&index=7'
+            ),
+            array(
+                'title' => 'How to add custom attributes to product form',
+                'link'  => 'https://www.youtube.com/watch?v=l0fLGh_wzXQ&index=8&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc'
+            ),
+            array(
+                'title' => 'How to update user profile using custom registration/profile update form',
+                'link'  => 'https://www.youtube.com/watch?v=1IPpQmKqics&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc&index=9'
+            ),
+            array(
+                'title' => 'How to backup/export forms',
+                'link'  => 'https://www.youtube.com/watch?v=1ccqJ0nn3MI&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc&index=10'
+            ),
+            array(
+                'title' => 'How to configure google map with WP User Frontend',
+                'link'  => 'https://www.youtube.com/watch?v=FQYNFScgRGo&index=11&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc'
+            ),
+            array(
+                'title' => 'How to use hidden fields',
+                'link'  => 'https://www.youtube.com/watch?v=4Atcb_-M2hY&index=12&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc'
+            ),
+            array(
+                'title' => 'How to add custom CSS class to specific form fields',
+                'link'  => 'https://www.youtube.com/watch?v=6QspAge106E&index=13&list=PLz-4KMWdVrIzr8BcsPmdVO7tUDNPKfsoc'
+            ),
+        )
+    ),
 );
 ?>
 

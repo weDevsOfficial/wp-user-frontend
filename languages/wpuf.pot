@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.5.7\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-09-18 06:59:05+00:00\n"
+"POT-Creation-Date: 2017-10-03 06:37:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -213,99 +213,6 @@ msgstr ""
 msgid "Select Image"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/form-notification/template.php:3
-#: assets/js-templates/form-components.php:473
-msgid "Add Notification"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:13
-#: admin/form.php:767 admin/html/form-settings-post.php:16
-#: admin/subscription.php:205 admin/template-post.php:167
-#: assets/js-templates/form-components.php:483
-#: includes/free/edit-profile.php:97
-msgid "Name"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:14
-#: admin/form-builder/assets/js/components/form-notification/template.php:62
-#: assets/js-templates/form-components.php:484
-#: assets/js-templates/form-components.php:532
-#: includes/free/form-element.php:228 includes/free/form-element.php:263
-msgid "Subject"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:29
-#: admin/post-forms-list-table.php:394
-#: assets/js-templates/form-components.php:499
-msgid "Duplicate"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:30
-#: admin/form-builder/views/form-builder.php:9 admin/settings.php:77
-#: assets/js-templates/form-components.php:500
-msgid "Settings"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:34
-#: assets/js-templates/form-components.php:504
-msgid "No notifications found"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:49
-#: assets/js-templates/form-components.php:519
-#: includes/free/form-element.php:221 includes/free/form-element.php:258
-msgid "To"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:55
-#: assets/js-templates/form-components.php:525
-msgid "Reply To"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:68
-#: assets/js-templates/form-components.php:538
-msgid "Email Message"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:74
-#: assets/js-templates/form-components.php:544
-msgid " Advanced"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:79
-#: assets/js-templates/form-components.php:549
-msgid "From Name"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:85
-#: assets/js-templates/form-components.php:555
-msgid "From Address"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:93
-#: assets/js-templates/form-components.php:563
-msgid "CC"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:99
-#: assets/js-templates/form-components.php:569
-msgid "BCC"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:109
-#: admin/subscription.php:231 assets/js-templates/form-components.php:579
-#: class/render-form.php:1517 class/transactions-list-table.php:114
-#: class/transactions-list-table.php:175 class/upload.php:171
-#: includes/free/edit-user.php:100 templates/dashboard/posts.php:160
-#: templates/dashboard.php:114
-msgid "Delete"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:110
-#: assets/js-templates/form-components.php:580
-msgid "Done"
-msgstr ""
-
 #: admin/form-builder/assets/js/components/form-post_content/template.php:4
 #: assets/js-templates/form-components.php:591 class/render-form.php:926
 msgid "Insert Photo"
@@ -314,66 +221,6 @@ msgstr ""
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:12
 #: assets/js-templates/form-components.php:701
 msgid "— Select —"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/integration/template.php:11
-#: assets/js-templates/form-components.php:790
-msgid "Premium Feature"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/integration/template.php:16
-#: assets/js-templates/form-components.php:795
-msgid "Toggle panel"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/integration/template.php:28
-#: assets/js-templates/form-components.php:807
-msgid "This feature is available on the premium version only."
-msgstr ""
-
-#: admin/form-builder/assets/js/components/integration/template.php:29
-#: assets/js-templates/form-components.php:808 includes/free/loader.php:165
-msgid "Upgrade to Pro"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/integration/template.php:37
-#: assets/js-templates/form-components.php:816
-msgid "No integration found."
-msgstr ""
-
-#: admin/form-builder/assets/js/components/merge-tags/template.php:8
-#: assets/js-templates/form-components.php:828
-msgid "Form Fields"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/merge-tags/template.php:17
-#: assets/js-templates/form-components.php:837
-msgid "first"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/merge-tags/template.php:18
-#: assets/js-templates/form-components.php:838
-msgid "middle"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/merge-tags/template.php:19
-#: assets/js-templates/form-components.php:839
-msgid "last"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/merge-tags/template.php:27
-#: assets/js-templates/form-components.php:847
-msgid "No fields available"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/modal/template.php:4
-#: admin/html/modal.php:4 assets/js-templates/form-components.php:882
-msgid "Modal window. Press escape to close."
-msgstr ""
-
-#: admin/form-builder/assets/js/components/modal/template.php:5
-#: admin/html/modal.php:5 assets/js-templates/form-components.php:883
-msgid "Close modal window"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder-ajax.php:29
@@ -839,6 +686,11 @@ msgstr ""
 msgid "Form Editor"
 msgstr ""
 
+#: admin/form-builder/views/form-builder.php:9 admin/settings.php:77
+#: assets/js-templates/form-components.php:500
+msgid "Settings"
+msgstr ""
+
 #: admin/form-builder/views/form-builder.php:16
 msgid "Save Form"
 msgstr ""
@@ -1044,6 +896,13 @@ msgstr ""
 
 #: admin/form.php:764 admin/template-post.php:165
 msgid "Order By"
+msgstr ""
+
+#: admin/form.php:767 admin/html/form-settings-post.php:16
+#: admin/subscription.php:205 admin/template-post.php:167
+#: assets/js-templates/form-components.php:483
+#: includes/free/edit-profile.php:97
+msgid "Name"
 msgstr ""
 
 #: admin/form.php:768 admin/template-post.php:168
@@ -1339,6 +1198,14 @@ msgstr ""
 msgid "It will show a button to save as draft"
 msgstr ""
 
+#: admin/html/modal.php:4
+msgid "Modal window. Press escape to close."
+msgstr ""
+
+#: admin/html/modal.php:5
+msgid "Close modal window"
+msgstr ""
+
 #: admin/html/modal.php:9
 msgid "Select a Template"
 msgstr ""
@@ -1477,28 +1344,33 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
+#: admin/post-forms-list-table.php:394
+#: assets/js-templates/form-components.php:499
+msgid "Duplicate"
+msgstr ""
+
 #: admin/post-forms-list-table.php:415 wpuf-functions.php:65
 msgid "Draft"
 msgstr ""
 
 #: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1517
-#: wpuf.php:447
+#: wpuf.php:437
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:453
+#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:443
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:456
+#: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:446
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:457
+#: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:447
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:458
+#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:448
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -2030,6 +1902,14 @@ msgstr ""
 msgid "Are you sure to delete this pack?"
 msgstr ""
 
+#: admin/subscription.php:231 assets/js-templates/form-components.php:579
+#: class/render-form.php:1517 class/transactions-list-table.php:114
+#: class/transactions-list-table.php:175 class/upload.php:171
+#: includes/free/edit-user.php:100 templates/dashboard/posts.php:160
+#: templates/dashboard.php:114
+msgid "Delete"
+msgstr ""
+
 #: admin/subscription.php:242
 msgid "No subscription pack found"
 msgstr ""
@@ -2278,23 +2158,74 @@ msgstr ""
 msgid "Install Now"
 msgstr ""
 
-#: class/asset-loader.php:31 wpuf.php:378
+#: assets/js-templates/form-components.php:473
+msgid "Add Notification"
+msgstr ""
+
+#: assets/js-templates/form-components.php:484
+#: assets/js-templates/form-components.php:532
+#: includes/free/form-element.php:228 includes/free/form-element.php:263
+msgid "Subject"
+msgstr ""
+
+#: assets/js-templates/form-components.php:504
+msgid "No notifications found"
+msgstr ""
+
+#: assets/js-templates/form-components.php:519
+#: includes/free/form-element.php:221 includes/free/form-element.php:258
+msgid "To"
+msgstr ""
+
+#: assets/js-templates/form-components.php:525
+msgid "Reply To"
+msgstr ""
+
+#: assets/js-templates/form-components.php:538
+msgid "Email Message"
+msgstr ""
+
+#: assets/js-templates/form-components.php:544
+msgid " Advanced"
+msgstr ""
+
+#: assets/js-templates/form-components.php:549
+msgid "From Name"
+msgstr ""
+
+#: assets/js-templates/form-components.php:555
+msgid "From Address"
+msgstr ""
+
+#: assets/js-templates/form-components.php:563
+msgid "CC"
+msgstr ""
+
+#: assets/js-templates/form-components.php:569
+msgid "BCC"
+msgstr ""
+
+#: assets/js-templates/form-components.php:580
+msgid "Done"
+msgstr ""
+
+#: class/asset-loader.php:31 wpuf.php:368
 msgid "is required"
 msgstr ""
 
-#: class/asset-loader.php:32 wpuf.php:379
+#: class/asset-loader.php:32 wpuf.php:369
 msgid "does not match"
 msgstr ""
 
-#: class/asset-loader.php:33 wpuf.php:380
+#: class/asset-loader.php:33 wpuf.php:370
 msgid "is not valid"
 msgstr ""
 
-#: class/asset-loader.php:45 wpuf.php:441
+#: class/asset-loader.php:45 wpuf.php:431
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: class/asset-loader.php:47 wpuf.php:443
+#: class/asset-loader.php:47 wpuf.php:433
 msgid "Word limit reached"
 msgstr ""
 
@@ -2555,10 +2486,6 @@ msgstr ""
 
 #: class/subscription.php:743 templates/dashboard/subscription.php:24
 msgid "Unlimited"
-msgstr ""
-
-#: class/subscription.php:777
-msgid "Change"
 msgstr ""
 
 #: class/subscription.php:801
@@ -3058,6 +2985,10 @@ msgstr ""
 msgid "Pro Feature"
 msgstr ""
 
+#: includes/free/loader.php:165
+msgid "Upgrade to Pro"
+msgstr ""
+
 #: includes/free/post-form-templates/woocommerce.php:12
 msgid "WooCommerce Product"
 msgstr ""
@@ -3148,27 +3079,27 @@ msgstr ""
 msgid "Thanks for being with us."
 msgstr ""
 
-#: lib/gateway/paypal.php:60
+#: lib/gateway/paypal.php:61
 msgid "Subscription %s at %s"
 msgstr ""
 
-#: lib/gateway/paypal.php:91
+#: lib/gateway/paypal.php:92
 msgid "PayPal Email"
 msgstr ""
 
-#: lib/gateway/paypal.php:96
+#: lib/gateway/paypal.php:97
 msgid "PayPal Instruction"
 msgstr ""
 
-#: lib/gateway/paypal.php:103
+#: lib/gateway/paypal.php:104
 msgid "PayPal API username"
 msgstr ""
 
-#: lib/gateway/paypal.php:107
+#: lib/gateway/paypal.php:108
 msgid "PayPal API password"
 msgstr ""
 
-#: lib/gateway/paypal.php:111
+#: lib/gateway/paypal.php:112
 msgid "PayPal API signature"
 msgstr ""
 
@@ -3563,11 +3494,11 @@ msgstr ""
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf.php:147
+#: wpuf.php:138
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:585
+#: wpuf.php:575
 msgid "Error: Nonce verification failed"
 msgstr ""
 

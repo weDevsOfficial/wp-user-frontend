@@ -23,8 +23,8 @@ class WPUF_Admin_Subscription {
     function __construct() {
         global $wpdb;
 
-        $this->db = $wpdb;
-        $this->table = $this->db->prefix . 'wpuf_subscription';
+        $this->db      = $wpdb;
+        $this->table   = $this->db->prefix . 'wpuf_subscription';
         $this->baseurl = admin_url( 'admin.php?page=wpuf_subscription' );
 
         add_filter( 'post_updated_messages', array($this, 'form_updated_message') );
@@ -35,9 +35,11 @@ class WPUF_Admin_Subscription {
         add_action( 'edit_user_profile_update', array($this, 'profile_subscription_update') );
         add_action( 'wp_ajax_wpuf_delete_user_package', array($this, 'delete_user_package') );
 
-        add_filter('manage_wpuf_subscription_posts_columns', array( $this, 'subscription_columns_head') );
+        add_filter( 'manage_wpuf_subscription_posts_columns', array( $this, 'subscription_columns_head') );
+        add_action( 'manage_wpuf_subscription_posts_custom_column', array( $this, 'subscription_columns_content' ),10, 2 );
 
-        add_action('manage_wpuf_subscription_posts_custom_column', array( $this, 'subscription_columns_content' ),10, 2 );
+        // display help link to docs
+        add_action( 'admin_notices', array( $this, 'add_help_link' ) );
     }
 
     /**
@@ -603,6 +605,34 @@ class WPUF_Admin_Subscription {
         $wpuf_paypal = new WPUF_Paypal();
         $wpuf_paypal->recurring_change_status( $_POST['userid'], 'Cancel' );
         exit;
+    }
+
+    /**
+     * Add help link to the subscriptions listing page
+     *
+     * @return void
+     */
+    public function add_help_link() {
+        $screen = get_current_screen();
+
+        if ( 'edit-wpuf_subscription' != $screen->id ) {
+            return;
+        }
+
+        ?>
+        <div class="wpuf-footer-help">
+            <span class="wpuf-footer-help-content">
+                <span class="dashicons dashicons-editor-help"></span>
+                <?php printf( __( 'Learn more about <a href="%s" target="_blank">Subscription</a>', 'wpuf' ), 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-subscription' ); ?>
+            </span>
+        </div>
+
+        <script type="text/javascript">
+            jQuery(function($) {
+                $('.wpuf-footer-help').appendTo('.wrap');
+            });
+        </script>
+        <?php
     }
 }
 

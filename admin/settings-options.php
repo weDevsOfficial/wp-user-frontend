@@ -201,7 +201,7 @@ function wpuf_settings_fields() {
             array(
                 'name'  => 'show_ft_image',
                 'label' => __( 'Show Featured Image', 'wpuf' ),
-                'desc'  => __( 'Show featured image of the post', 'wpuf' ),
+                'desc'  => __( 'Show featured image of the post (Overridden by Shortcode)', 'wpuf' ),
                 'type'  => 'checkbox'
             ),
             array(
@@ -223,14 +223,14 @@ function wpuf_settings_fields() {
                 'label'   => __( 'Auto Login After Registration', 'wpuf' ),
                 'desc'    => __( 'If enabled, users after registration will be logged in to the system', 'wpuf' ),
                 'type'    => 'checkbox',
-                'default' => 'off'
+                'default' => 'on'
             ),
             array(
                 'name'    => 'register_link_override',
                 'label'   => __( 'Login/Registration override', 'wpuf' ),
                 'desc'    => __( 'If enabled, default login and registration forms will be overridden by WPUF with pages below', 'wpuf' ),
                 'type'    => 'checkbox',
-                'default' => 'off'
+                'default' => 'on'
             ),
             array(
                 'name'    => 'reg_override_page',
@@ -379,6 +379,8 @@ function wpuf_settings_field_profile( $form ) {
     ) );
 
     $val = get_option( 'wpuf_profile', array() );
+
+    if ( class_exists('WP_User_Frontend_Pro')  ) {
     ?>
 
     <p style="padding-left: 10px; font-style: italic; font-size: 13px;">
@@ -403,6 +405,7 @@ function wpuf_settings_field_profile( $form ) {
         <?php } ?>
     </table>
     <?php
+    }
 }
 
 add_action( 'wsa_form_bottom_wpuf_profile', 'wpuf_settings_field_profile' );

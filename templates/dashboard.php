@@ -9,22 +9,94 @@
     <?php } ?>
 
     <?php do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj ) ?>
+    <?php
+        $meta_label = array(); 
+        $meta_name  = array();
+        $meta_id    = array();
+        $meta_key   = array(); 
+        if( !empty( $meta )) {
+            $arr =  explode(',', $meta);
+            foreach($arr as $mkey) {
+                $meta_key[] = trim($mkey);
+            }
+        }
+    ?>
+    <?php if ( $dashboard_query->have_posts() ) {
 
-    <?php if ( $dashboard_query->have_posts() ) { 
+        $args = array(
+            'post_status' => 'publish',
+            'post_type'   => 'wpuf_forms'
+        );
 
-        $featured_img = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
-        $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
-        $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+        $query = new WP_Query( $args );
+
+        foreach ( $query->posts as $post ) {
+            $postdata = get_object_vars( $post );
+            unset( $postdata['ID'] );
+
+            $data = array(
+                'meta_data' => array(
+                    'fields'    => wpuf_get_form_fields( $post->ID )
+                )
+            );
+
+            foreach ($data['meta_data']['fields'] as $fields) {
+                foreach ($fields as $key => $field_value) {
+                    if( $key == 'is_meta' && $field_value == 'yes') {
+                        $meta_label[]= $fields['label'];
+                        $meta_name[] = $fields['name'];
+                        $meta_id[]   = $fields['id'];
+                    }
+                };
+            };
+        }
+
+        wp_reset_postdata();
+
+        $len = count( $meta_key );
+	    $len_label = count( $meta_label );
+        $len_id   = count( $meta_id );
+        $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
+        $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
+        $charging_enabled   = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
         ?>
         <table class="items-table <?php echo $post_type; ?>" cellpadding="0" cellspacing="0">
             <thead>
                 <tr class="items-list-header">
                     <?php
-                    if ( 'on' == $featured_img ) {
+                    if ((( 'on' == $featured_img || 'on' == $featured_image ) || ( 'off' == $featured_img && 'on' == $featured_image ) || ( 'on' == $featured_img && 'default' == $featured_image )) && !( 'on' == $featured_img && 'off' == $featured_image )) {
                         echo '<th>' . __( 'Featured Image', 'wpuf' ) . '</th>';
                     }
                     ?>
                     <th><?php _e( 'Title', 'wpuf' ); ?></th>
+
+                    <?php
+                    if ( 'on' == $category ) {
+                        echo '<th>' . __( 'Category', 'wpuf' ) . '</th>';
+                    }
+                    ?>
+
+	                <?php
+                
+                    if( $meta != 'off' ) {
+                        for ( $i = 0; $i < $len_label; $i++ ) {
+                            for ( $j = 0; $j < $len; $j++ ) {
+                                if( $meta_key[$j] == $meta_name[$i] ) {
+                                    echo '<th>';
+                                    echo __( $meta_label[$i] );
+                                    echo '</th>';
+                                }
+                            }
+                        }
+                    }
+                    ?>
+
+                    <?php
+                    if ( 'on' == $excerpt ) {
+                        echo '<th>' . __( 'Excerpt', 'wpuf' ) . '</th>';
+                    }
+                    ?>
+
                     <th><?php _e( 'Status', 'wpuf' ); ?></th>
 
                     <?php do_action( 'wpuf_dashboard_head_col', $args ) ?>
@@ -46,7 +118,7 @@
                     $show_link = !in_array( $post->post_status, array('draft', 'future', 'pending') );
                     ?>
                     <tr>
-                        <?php if ( 'on' == $featured_img ) { ?>
+                        <?php if ((( 'on' == $featured_img || 'on' == $featured_image ) || ( 'off' == $featured_img && 'on' == $featured_image ) || ( 'on' == $featured_img && 'default' == $featured_image )) && !( 'on' == $featured_img && 'off' == $featured_image )) { ?>
                             <td>
                                 <?php
                                 echo $show_link ? '<a href="' . get_permalink( $post->ID ) . '">' : '';
@@ -72,6 +144,32 @@
 
                             <?php } ?>
                         </td>
+
+                        <?php if ( 'on' == $category ) { ?>
+                        <td>
+                            <?php the_category( ', ' ); ?>
+                        </td>
+                        <?php } ?>
+
+
+	                    <?php if( $meta != 'off' ) {
+                            for ( $i = 0; $i < $len_label; $i++ ) {
+                                for ( $j = 0; $j < $len; $j++ ) {
+                                    if( $meta_key[$j] == $meta_name[$i] ) {
+                                        echo '<td>';
+                                        $m_val = get_post_meta( get_the_ID(), $meta_name[$i], true );
+                                        echo $m_val;
+                                        echo '</td>';
+                                    }
+                                }
+                            } 
+                        } ?>
+
+                        <?php if ( 'on' == $excerpt ) { ?>
+                        <td>
+                            <?php the_excerpt(); ?>
+                        </td>
+                        <?php } ?>
                         <td>
                             <?php wpuf_show_post_status( $post->post_status ) ?>
                         </td>

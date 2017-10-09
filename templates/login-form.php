@@ -13,8 +13,8 @@
     }
     ?>
 
-    <?php WPUF_Login::init()->show_errors(); ?>
-    <?php WPUF_Login::init()->show_messages(); ?>
+    <?php wpuf()->login->show_errors(); ?>
+    <?php wpuf()->login->show_messages(); ?>
 
     <form name="loginform" class="wpuf-login-form" id="loginform" action="<?php echo $action_url; ?>" method="post">
         <p>
@@ -35,12 +35,12 @@
 
         <p class="submit">
             <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Log In', 'wpuf' ); ?>" />
-            <input type="hidden" name="redirect_to" value="<?php echo WPUF_Login::get_posted_value( 'redirect_to' ); ?>" />
+            <input type="hidden" name="redirect_to" value="<?php echo wpuf()->login->get_posted_value( 'redirect_to' ); ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />
             <?php wp_nonce_field( 'wpuf_login_action' ); ?>
         </p>
     </form>
 
-    <?php echo WPUF_Login::init()->get_action_links( array( 'login' => false ) ); ?>
+    <?php echo wpuf()->login->get_action_links( array( 'login' => false ) ); ?>
 </div>

@@ -27,13 +27,11 @@ class WPUF_Frontend_Dashboard {
             <?php //echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
         </style>
         <?php
-
-        extract( shortcode_atts( array('post_type' => 'post'), $atts ) );
-
+        extract( shortcode_atts( array('post_type' => 'post', 'category' =>'off', 'featured_image' => 'default', 'meta' => 'off', 'excerpt' =>'off'), $atts ) );
         ob_start();
 
         if ( is_user_logged_in() ) {
-            $this->post_listing( $post_type );
+            $this->post_listing( $post_type, $category, $featured_image, $meta, $excerpt );
         } else {
             $message = wpuf_get_option( 'un_auth_msg', 'wpuf_dashboard' );
             wpuf_load_template( 'unauthorized.php', array( 'message' => $message ) );
@@ -51,7 +49,7 @@ class WPUF_Frontend_Dashboard {
      * @global object $wpdb
      * @global object $userdata
      */
-    function post_listing( $post_type ) {
+    function post_listing( $post_type, $category, $featured_image, $meta, $excerpt ) {
         global $post;
 
         $pagenum = isset( $_GET['pagenum'] ) ? intval( $_GET['pagenum'] ) : 1;
@@ -84,7 +82,11 @@ class WPUF_Frontend_Dashboard {
             'dashboard_query' => $dashboard_query,
             'post_type_obj'   => $post_type_obj,
             'post'            => $post,
-            'pagenum'         => $pagenum
+            'pagenum'         => $pagenum,
+            'category'        => $category,
+            'featured_image'  => $featured_image,
+            'meta'            => $meta,
+            'excerpt'         => $excerpt
         ) );
 
         wp_reset_postdata();

@@ -69,6 +69,7 @@ class WPUF_Registration {
         switch ($action) {
             case 'register':
                 return $this->get_registration_url();
+                break;
 
             default:
                 if ( empty( $redirect_to ) ) {
@@ -76,6 +77,7 @@ class WPUF_Registration {
                 }
 
                 return add_query_arg( array('redirect_to' => urlencode( $redirect_to )), $root_url );
+                break;
         }
     }
 
@@ -134,7 +136,7 @@ class WPUF_Registration {
     function registration_form( $atts ) {
         $atts = shortcode_atts(
         array(
-                'role' => 'editor',
+                'role' => '',
             ), $atts
         );
         $userrole = $atts['role'];
@@ -176,20 +178,6 @@ class WPUF_Registration {
         }
 
         return ob_get_clean();
-    }
-
-
-    public static function simple_encrypt( $string, $action ) {
-        $secret_key = AUTH_KEY;
-        $secret_iv  = AUTH_SALT;
-
-        $encrypt_method = "AES-256-CBC";
-        $key = hash( 'sha256', $secret_key );
-        $iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
-     
-        $output = base64_encode( openssl_encrypt( $string, $encrypt_method, $key, 0, $iv ) );
-
-        $output = openssl_decrypt( base64_decode( $string ), $encrypt_method, $key, 0, $iv );
     }
 
     /**
@@ -294,7 +282,7 @@ class WPUF_Registration {
                 } elseif ( wp_get_referer() ) {
                     $redirect = esc_url( wp_get_referer() );
                 } else {
-                    $redirect = home_url( '/' );
+                    $redirect = $this->get_registration_url() . '?success=yes';
                 }
 
                 wp_redirect( apply_filters( 'wpuf_registration_redirect', $redirect, $user ) );
@@ -317,6 +305,10 @@ class WPUF_Registration {
             $reg_page = get_permalink( wpuf_get_option( 'reg_override_page', 'wpuf_profile' ) );
             wp_redirect( $reg_page );
             exit;
+        }
+
+        if( "yes" == $_GET['success'] ) {
+            echo "<div class='wpuf-success' style='text-align:center'>Successfully Registered. Please Login.</div>";
         }
     }
 

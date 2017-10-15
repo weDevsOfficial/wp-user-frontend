@@ -410,6 +410,9 @@ $right_column = array(
 
 
 <style>
+#dashboard-widgets .postbox-container {
+    width: 50%;
+}
 h2.hndle{
     background: #f5f5f5;
 }

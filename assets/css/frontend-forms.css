@@ -91,6 +91,18 @@ ul.wpuf-form li .wpuf-label {
 ul.wpuf-form li .wpuf-label .required {
   color: red;
 }
+ul.wpuf-form li.field-size-large .wpuf-fields {
+  float: left;
+  width: 100%;
+}
+ul.wpuf-form li.field-size-medium .wpuf-fields {
+  float: left;
+  width: 65%;
+}
+ul.wpuf-form li.field-size-small .wpuf-fields {
+  float: left;
+  width: 30%;
+}
 ul.wpuf-form li .wpuf-fields {
   float: left;
   width: 70%;
@@ -446,6 +458,21 @@ ul.wpuf-form.form-label-above li .wpuf-fields {
   float: none;
   width: 100%;
 }
+ul.wpuf-form.form-label-above li.field-size-large .wpuf-fields {
+  display: block;
+  float: none;
+  width: 100%;
+}
+ul.wpuf-form.form-label-above li.field-size-medium .wpuf-fields {
+  display: block;
+  float: none;
+  width: 65%;
+}
+ul.wpuf-form.form-label-above li.field-size-small .wpuf-fields {
+  display: block;
+  float: none;
+  width: 30%;
+}
 ul.wpuf-form.form-label-above li .wpuf-label {
   margin-bottom: 10px;
 }
@@ -454,6 +481,21 @@ ul.wpuf-form.form-label-right li .wpuf-label {
 }
 ul.wpuf-form.form-label-hidden li .wpuf-label {
   display: none;
+}
+ul.wpuf-form.form-label-hidden li.field-size-large .wpuf-fields {
+  display: block;
+  float: none;
+  width: 100%;
+}
+ul.wpuf-form.form-label-hidden li.field-size-medium .wpuf-fields {
+  display: block;
+  float: none;
+  width: 65%;
+}
+ul.wpuf-form.form-label-hidden li.field-size-small .wpuf-fields {
+  display: block;
+  float: none;
+  width: 30%;
 }
 ul.wpuf-form.form-label-hidden li .wpuf-fields {
   display: block;
@@ -1059,6 +1101,18 @@ body.rtl ul.wpuf-form li .wpuf-label {
   ul.wpuf-form li .wpuf-fields {
     float: none;
     width: 100%;
+  }
+  ul.wpuf-form li.field-size-large .wpuf-fields {
+    float: none;
+    width: 100%;
+  }
+  ul.wpuf-form li.field-size-medium .wpuf-fields {
+    float: none;
+    width: 65%;
+  }
+  ul.wpuf-form li.field-size-small .wpuf-fields {
+    float: none;
+    width: 30%;
   }
 }
 .wpuf-form .required {

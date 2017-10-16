@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.5.7\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-10-03 06:37:25+00:00\n"
+"POT-Creation-Date: 2017-10-16 07:01:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,6 +16,298 @@ msgstr ""
 
 #: admin/add-ons.php:2
 msgid "WP User Frontend - Add-Ons"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WP User Frontend"
+msgstr ""
+
+#: admin/class-admin-settings.php:76
+msgid "User Frontend"
+msgstr ""
+
+#: admin/class-admin-settings.php:78 admin/post-forms-list-table-view.php:4
+msgid "Post Forms"
+msgstr ""
+
+#: admin/class-admin-settings.php:87 admin/weforms.php:2
+msgid "weForms"
+msgstr ""
+
+#: admin/class-admin-settings.php:87
+msgid "Contact Form"
+msgstr ""
+
+#: admin/class-admin-settings.php:90
+msgid "Subscriptions"
+msgstr ""
+
+#: admin/class-admin-settings.php:94 admin/class-tools.php:378
+#: admin/transactions.php:2
+msgid "Transactions"
+msgstr ""
+
+#: admin/class-admin-settings.php:95
+msgid "Add-ons"
+msgstr ""
+
+#: admin/class-admin-settings.php:96 admin/tools.php:14
+msgid "Tools"
+msgstr ""
+
+#: admin/class-admin-settings.php:97
+msgid "Help"
+msgstr ""
+
+#: admin/class-admin-settings.php:97
+msgid "<span style=\"color:#f18500\">Help</span>"
+msgstr ""
+
+#: admin/class-admin-settings.php:98
+#: admin/form-builder/views/form-builder.php:9
+msgid "Settings"
+msgstr ""
+
+#: admin/class-admin-settings.php:323
+msgid "Number of items per page:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:54 admin/class-admin-subscription.php:57
+msgid "Subscription pack updated."
+msgstr ""
+
+#: admin/class-admin-subscription.php:55
+msgid "Custom field updated."
+msgstr ""
+
+#: admin/class-admin-subscription.php:56
+msgid "Custom field deleted."
+msgstr ""
+
+#: admin/class-admin-subscription.php:58
+msgid "Subscription pack restored to revision from %s"
+msgstr ""
+
+#: admin/class-admin-subscription.php:59
+msgid "Subscription pack published."
+msgstr ""
+
+#: admin/class-admin-subscription.php:60
+msgid "Subscription pack saved."
+msgstr ""
+
+#: admin/class-admin-subscription.php:61
+msgid "Subscription pack submitted."
+msgstr ""
+
+#: admin/class-admin-subscription.php:63
+msgid "Subscription pack draft updated."
+msgstr ""
+
+#: admin/class-admin-subscription.php:136
+#: admin/class-admin-subscription.php:461 class/frontend-account.php:129
+#: class/subscription.php:704 class/subscription.php:889
+#: class/subscription.php:902
+msgid "Free"
+msgstr ""
+
+#: admin/class-admin-subscription.php:147
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:66
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:444
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:499
+#: admin/post-forms-list-table.php:345 admin/settings-options.php:83
+#: admin/settings-options.php:158 admin/settings-options.php:169
+#: admin/settings-options.php:258 admin/template.php:70
+#: includes/free/form-element.php:474
+msgid "Yes"
+msgstr ""
+
+#: admin/class-admin-subscription.php:149
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:67
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:445
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:500
+#: admin/post-forms-list-table.php:346 admin/settings-options.php:84
+#: admin/settings-options.php:159 admin/settings-options.php:170
+#: admin/settings-options.php:259 admin/template.php:71
+#: includes/free/form-element.php:475
+msgid "No"
+msgstr ""
+
+#: admin/class-admin-subscription.php:172 class/subscription.php:276
+msgid "Pack Name"
+msgstr ""
+
+#: admin/class-admin-subscription.php:173
+msgid "Amount"
+msgstr ""
+
+#: admin/class-admin-subscription.php:174 includes/free/subscription.php:8
+msgid "Recurring"
+msgstr ""
+
+#: admin/class-admin-subscription.php:175
+msgid "Duration"
+msgstr ""
+
+#: admin/class-admin-subscription.php:198
+msgid "Pack Deleted"
+msgstr ""
+
+#: admin/class-admin-subscription.php:207 admin/form.php:767
+#: admin/html/form-settings-post.php:16 admin/template-post.php:167
+#: includes/free/edit-profile.php:97
+msgid "Name"
+msgstr ""
+
+#: admin/class-admin-subscription.php:208
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:726
+#: admin/template.php:609 class/upload.php:166 wpuf-functions.php:732
+msgid "Description"
+msgstr ""
+
+#: admin/class-admin-subscription.php:209 admin/settings-options.php:335
+#: class/transactions-list-table.php:43
+msgid "Cost"
+msgstr ""
+
+#: admin/class-admin-subscription.php:210
+msgid "Validity"
+msgstr ""
+
+#: admin/class-admin-subscription.php:211
+msgid "Post Count"
+msgstr ""
+
+#: admin/class-admin-subscription.php:212 includes/free/edit-user.php:93
+msgid "Action"
+msgstr ""
+
+#: admin/class-admin-subscription.php:229 admin/form.php:74 admin/form.php:112
+#: admin/installer.php:75 admin/post-forms-list-table.php:392
+#: class/subscription.php:360 includes/free/admin/shortcode-button.php:90
+#: includes/free/edit-user.php:99 templates/dashboard/posts.php:150
+#: templates/dashboard.php:104
+msgid "Edit"
+msgstr ""
+
+#: admin/class-admin-subscription.php:232
+msgid "Are you sure to delete this pack?"
+msgstr ""
+
+#: admin/class-admin-subscription.php:233 class/render-form.php:1517
+#: class/transactions-list-table.php:114 class/transactions-list-table.php:175
+#: class/upload.php:171 includes/free/edit-user.php:100
+#: templates/dashboard/posts.php:160 templates/dashboard.php:114
+msgid "Delete"
+msgstr ""
+
+#: admin/class-admin-subscription.php:244
+msgid "No subscription pack found"
+msgstr ""
+
+#: admin/class-admin-subscription.php:291
+msgid "Pack Description"
+msgstr ""
+
+#: admin/class-admin-subscription.php:298
+msgid "Billing amount:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:299
+msgid "Billing amount each cycle:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:308
+msgid "Expires In:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:330 includes/free/form-element.php:60
+msgid "Enable Post Expiration"
+msgstr ""
+
+#: admin/class-admin-subscription.php:343
+#: admin/class-admin-subscription.php:540 includes/free/form-element.php:65
+msgid "Post Expiration Time"
+msgstr ""
+
+#: admin/class-admin-subscription.php:382 includes/free/form-element.php:111
+msgid "Status of post after post expiration time is over "
+msgstr ""
+
+#: admin/class-admin-subscription.php:413
+msgid "Day(s)"
+msgstr ""
+
+#: admin/class-admin-subscription.php:414
+msgid "Week(s)"
+msgstr ""
+
+#: admin/class-admin-subscription.php:415
+msgid "Month(s)"
+msgstr ""
+
+#: admin/class-admin-subscription.php:416
+msgid "Year(s)"
+msgstr ""
+
+#: admin/class-admin-subscription.php:453 includes/free/edit-profile.php:280
+msgid "WPUF Subscription"
+msgstr ""
+
+#: admin/class-admin-subscription.php:473 class/subscription.php:715
+#: templates/dashboard/subscription.php:2
+msgid "Subscription Details"
+msgstr ""
+
+#: admin/class-admin-subscription.php:477
+msgid "This user is using recurring subscription pack"
+msgstr ""
+
+#: admin/class-admin-subscription.php:482 class/subscription.php:717
+#: templates/dashboard/subscription.php:4
+msgid "Subcription Name: "
+msgstr ""
+
+#: admin/class-admin-subscription.php:484
+msgid "Package billing details: "
+msgstr ""
+
+#: admin/class-admin-subscription.php:493 class/subscription.php:730
+#: templates/dashboard/subscription.php:10
+msgid "Remaining post: "
+msgstr ""
+
+#: admin/class-admin-subscription.php:515 class/subscription.php:758
+#: templates/dashboard/subscription.php:41
+msgid "Expire date:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:529
+msgid "Post Expiration Enabled"
+msgstr ""
+
+#: admin/class-admin-subscription.php:567
+msgid "Assign Package"
+msgstr ""
+
+#: admin/class-admin-subscription.php:568
+msgid "Show Package"
+msgstr ""
+
+#: admin/class-admin-subscription.php:571 includes/free/edit-profile.php:284
+msgid "Pack:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:574
+msgid "--Select--"
+msgstr ""
+
+#: admin/class-admin-subscription.php:582
+msgid "Delete Package"
+msgstr ""
+
+#: admin/class-admin-subscription.php:626
+msgid "Learn more about <a href=\"%s\" target=\"_blank\">Subscription</a>"
 msgstr ""
 
 #: admin/class-tools.php:33
@@ -137,10 +429,6 @@ msgstr ""
 msgid "Delete Coupons"
 msgstr ""
 
-#: admin/class-tools.php:378 admin/settings.php:73 admin/transactions.php:2
-msgid "Transactions"
-msgstr ""
-
 #: admin/class-tools.php:381
 msgid "This tool will delete all the transactions from the transaction table."
 msgstr ""
@@ -214,12 +502,12 @@ msgid "Select Image"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:4
-#: assets/js-templates/form-components.php:591 class/render-form.php:926
+#: assets/js-templates/form-components.php:474 class/render-form.php:926
 msgid "Insert Photo"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:12
-#: assets/js-templates/form-components.php:701
+#: assets/js-templates/form-components.php:584
 msgid "— Select —"
 msgstr ""
 
@@ -342,26 +630,6 @@ msgstr ""
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:63
 #: admin/template.php:67
 msgid "Required"
-msgstr ""
-
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:66
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:444
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:499
-#: admin/post-forms-list-table.php:345 admin/settings-options.php:83
-#: admin/settings-options.php:158 admin/settings-options.php:169
-#: admin/settings-options.php:258 admin/subscription.php:145
-#: admin/template.php:70 includes/free/form-element.php:474
-msgid "Yes"
-msgstr ""
-
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:67
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:445
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:500
-#: admin/post-forms-list-table.php:346 admin/settings-options.php:84
-#: admin/settings-options.php:159 admin/settings-options.php:170
-#: admin/settings-options.php:259 admin/subscription.php:147
-#: admin/template.php:71 includes/free/form-element.php:475
-msgid "No"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:73
@@ -618,12 +886,6 @@ msgstr ""
 msgid "Title of the section"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:726
-#: admin/subscription.php:206 admin/template.php:609 class/upload.php:166
-#: wpuf-functions.php:732
-msgid "Description"
-msgstr ""
-
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:730
 msgid "Some details text about the section"
 msgstr ""
@@ -684,11 +946,6 @@ msgstr ""
 
 #: admin/form-builder/views/form-builder.php:5
 msgid "Form Editor"
-msgstr ""
-
-#: admin/form-builder/views/form-builder.php:9 admin/settings.php:77
-#: assets/js-templates/form-components.php:500
-msgid "Settings"
 msgstr ""
 
 #: admin/form-builder/views/form-builder.php:16
@@ -769,14 +1026,6 @@ msgstr ""
 
 #: admin/form.php:73 admin/form.php:111
 msgid "Add New Form"
-msgstr ""
-
-#: admin/form.php:74 admin/form.php:112 admin/installer.php:75
-#: admin/post-forms-list-table.php:392 admin/subscription.php:227
-#: class/subscription.php:360 includes/free/admin/shortcode-button.php:90
-#: includes/free/edit-user.php:99 templates/dashboard/posts.php:150
-#: templates/dashboard.php:104
-msgid "Edit"
 msgstr ""
 
 #: admin/form.php:75 admin/form.php:113
@@ -896,13 +1145,6 @@ msgstr ""
 
 #: admin/form.php:764 admin/template-post.php:165
 msgid "Order By"
-msgstr ""
-
-#: admin/form.php:767 admin/html/form-settings-post.php:16
-#: admin/subscription.php:205 admin/template-post.php:167
-#: assets/js-templates/form-components.php:483
-#: includes/free/edit-profile.php:97
-msgid "Name"
 msgstr ""
 
 #: admin/form.php:768 admin/template-post.php:168
@@ -1128,6 +1370,10 @@ msgstr ""
 msgid "Unregistered users will be able to submit posts"
 msgstr ""
 
+#: admin/html/form-settings-post.php:130
+msgid "Learn more about guest posting."
+msgstr ""
+
 #: admin/html/form-settings-post.php:135
 msgid "User Details"
 msgstr ""
@@ -1222,6 +1468,50 @@ msgstr ""
 msgid "This integration is not installed."
 msgstr ""
 
+#: admin/html/support.php:329
+msgid "General Help Questions"
+msgstr ""
+
+#: admin/html/support.php:329
+msgid "View all Documentations"
+msgstr ""
+
+#: admin/html/support.php:379 admin/html/support.php:381
+msgid "Like The Plugin?"
+msgstr ""
+
+#: admin/html/support.php:383
+msgid "Your Review is very important to us as it helps us to grow more."
+msgstr ""
+
+#: admin/html/support.php:385
+msgid "Review Us on WP.org"
+msgstr ""
+
+#: admin/html/support.php:389 admin/html/support.php:391
+msgid "Found Any Bugs?"
+msgstr ""
+
+#: admin/html/support.php:393
+msgid "Report any Bug that you Discovered, Get Instant Solutions."
+msgstr ""
+
+#: admin/html/support.php:395
+msgid "Report to GitHub"
+msgstr ""
+
+#: admin/html/support.php:399 admin/html/support.php:401
+msgid "Need Any Assistance?"
+msgstr ""
+
+#: admin/html/support.php:403
+msgid "Our EXPERT Support Team is always ready to Help you out."
+msgstr ""
+
+#: admin/html/support.php:405
+msgid "Contact Support"
+msgstr ""
+
 #: admin/installer.php:27
 msgid ""
 "If you have not created <strong>WP User Frontend</strong> pages yet, you "
@@ -1302,12 +1592,12 @@ msgstr ""
 msgid "Sample Form"
 msgstr ""
 
-#: admin/post-forms-list-table-view.php:4 admin/settings.php:57
-msgid "Post Forms"
-msgstr ""
-
 #: admin/post-forms-list-table-view.php:23
 msgid "Search Forms"
+msgstr ""
+
+#: admin/post-forms-list-table-view.php:39
+msgid "Learn more about <a href=\"%s\" target=\"_blank\">Frontend Posting</a>"
 msgstr ""
 
 #: admin/post-forms-list-table.php:44 wpuf-functions.php:61
@@ -1345,7 +1635,6 @@ msgid "Shortcode"
 msgstr ""
 
 #: admin/post-forms-list-table.php:394
-#: assets/js-templates/form-components.php:499
 msgid "Duplicate"
 msgstr ""
 
@@ -1354,23 +1643,23 @@ msgid "Draft"
 msgstr ""
 
 #: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1517
-#: wpuf.php:437
+#: wpuf.php:453
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:443
+#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:459
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:446
+#: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:462
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:447
+#: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:463
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:448
+#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:464
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -1745,11 +2034,6 @@ msgstr ""
 msgid "This sets the number of decimal points shown in displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:335 admin/subscription.php:207
-#: class/transactions-list-table.php:43
-msgid "Cost"
-msgstr ""
-
 #: admin/settings-options.php:342
 msgid "Enable demo/sandbox mode"
 msgstr ""
@@ -1790,275 +2074,6 @@ msgstr ""
 
 #: admin/settings-options.php:396
 msgid " - select - "
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-msgid "WP User Frontend"
-msgstr ""
-
-#: admin/settings.php:55
-msgid "User Frontend"
-msgstr ""
-
-#: admin/settings.php:66 admin/weforms.php:2
-msgid "weForms"
-msgstr ""
-
-#: admin/settings.php:66
-msgid "Contact Form"
-msgstr ""
-
-#: admin/settings.php:69
-msgid "Subscriptions"
-msgstr ""
-
-#: admin/settings.php:74
-msgid "Add-ons"
-msgstr ""
-
-#: admin/settings.php:75 admin/tools.php:14
-msgid "Tools"
-msgstr ""
-
-#: admin/settings.php:76
-msgid "Support"
-msgstr ""
-
-#: admin/settings.php:285
-msgid "Number of items per page:"
-msgstr ""
-
-#: admin/subscription.php:52 admin/subscription.php:55
-msgid "Subscription pack updated."
-msgstr ""
-
-#: admin/subscription.php:53
-msgid "Custom field updated."
-msgstr ""
-
-#: admin/subscription.php:54
-msgid "Custom field deleted."
-msgstr ""
-
-#: admin/subscription.php:56
-msgid "Subscription pack restored to revision from %s"
-msgstr ""
-
-#: admin/subscription.php:57
-msgid "Subscription pack published."
-msgstr ""
-
-#: admin/subscription.php:58
-msgid "Subscription pack saved."
-msgstr ""
-
-#: admin/subscription.php:59
-msgid "Subscription pack submitted."
-msgstr ""
-
-#: admin/subscription.php:61
-msgid "Subscription pack draft updated."
-msgstr ""
-
-#: admin/subscription.php:134 admin/subscription.php:459
-#: class/frontend-account.php:129 class/subscription.php:704
-#: class/subscription.php:889 class/subscription.php:902
-msgid "Free"
-msgstr ""
-
-#: admin/subscription.php:170 class/subscription.php:276
-msgid "Pack Name"
-msgstr ""
-
-#: admin/subscription.php:171
-msgid "Amount"
-msgstr ""
-
-#: admin/subscription.php:172 includes/free/subscription.php:8
-msgid "Recurring"
-msgstr ""
-
-#: admin/subscription.php:173
-msgid "Duration"
-msgstr ""
-
-#: admin/subscription.php:196
-msgid "Pack Deleted"
-msgstr ""
-
-#: admin/subscription.php:208
-msgid "Validity"
-msgstr ""
-
-#: admin/subscription.php:209
-msgid "Post Count"
-msgstr ""
-
-#: admin/subscription.php:210 includes/free/edit-user.php:93
-msgid "Action"
-msgstr ""
-
-#: admin/subscription.php:230
-msgid "Are you sure to delete this pack?"
-msgstr ""
-
-#: admin/subscription.php:231 assets/js-templates/form-components.php:579
-#: class/render-form.php:1517 class/transactions-list-table.php:114
-#: class/transactions-list-table.php:175 class/upload.php:171
-#: includes/free/edit-user.php:100 templates/dashboard/posts.php:160
-#: templates/dashboard.php:114
-msgid "Delete"
-msgstr ""
-
-#: admin/subscription.php:242
-msgid "No subscription pack found"
-msgstr ""
-
-#: admin/subscription.php:289
-msgid "Pack Description"
-msgstr ""
-
-#: admin/subscription.php:296
-msgid "Billing amount:"
-msgstr ""
-
-#: admin/subscription.php:297
-msgid "Billing amount each cycle:"
-msgstr ""
-
-#: admin/subscription.php:306
-msgid "Expires In:"
-msgstr ""
-
-#: admin/subscription.php:328 includes/free/form-element.php:60
-msgid "Enable Post Expiration"
-msgstr ""
-
-#: admin/subscription.php:341 admin/subscription.php:538
-#: includes/free/form-element.php:65
-msgid "Post Expiration Time"
-msgstr ""
-
-#: admin/subscription.php:380 includes/free/form-element.php:111
-msgid "Status of post after post expiration time is over "
-msgstr ""
-
-#: admin/subscription.php:411
-msgid "Day(s)"
-msgstr ""
-
-#: admin/subscription.php:412
-msgid "Week(s)"
-msgstr ""
-
-#: admin/subscription.php:413
-msgid "Month(s)"
-msgstr ""
-
-#: admin/subscription.php:414
-msgid "Year(s)"
-msgstr ""
-
-#: admin/subscription.php:451 includes/free/edit-profile.php:280
-msgid "WPUF Subscription"
-msgstr ""
-
-#: admin/subscription.php:471 class/subscription.php:715
-#: templates/dashboard/subscription.php:2
-msgid "Subscription Details"
-msgstr ""
-
-#: admin/subscription.php:475
-msgid "This user is using recurring subscription pack"
-msgstr ""
-
-#: admin/subscription.php:480 class/subscription.php:717
-#: templates/dashboard/subscription.php:4
-msgid "Subcription Name: "
-msgstr ""
-
-#: admin/subscription.php:482
-msgid "Package billing details: "
-msgstr ""
-
-#: admin/subscription.php:491 class/subscription.php:730
-#: templates/dashboard/subscription.php:10
-msgid "Remaining post: "
-msgstr ""
-
-#: admin/subscription.php:513 class/subscription.php:758
-#: templates/dashboard/subscription.php:41
-msgid "Expire date:"
-msgstr ""
-
-#: admin/subscription.php:527
-msgid "Post Expiration Enabled"
-msgstr ""
-
-#: admin/subscription.php:565
-msgid "Assign Package"
-msgstr ""
-
-#: admin/subscription.php:566
-msgid "Show Package"
-msgstr ""
-
-#: admin/subscription.php:569 includes/free/edit-profile.php:284
-msgid "Pack:"
-msgstr ""
-
-#: admin/subscription.php:572
-msgid "--Select--"
-msgstr ""
-
-#: admin/subscription.php:580
-msgid "Delete Package"
-msgstr ""
-
-#: admin/support.php:2
-msgid "WP User Frontend - Support"
-msgstr ""
-
-#: admin/support.php:6
-msgid "Need Help?"
-msgstr ""
-
-#: admin/support.php:11
-msgid "Step 1: "
-msgstr ""
-
-#: admin/support.php:11
-msgid "Read Documentation and FAQ"
-msgstr ""
-
-#: admin/support.php:12
-msgid ""
-"We have created detailed step by step documentation for all the features "
-"(including docs for developers). We have also answered all possible FAQ "
-"queries based on user request. We hope you will find what you are looking "
-"for. If not, please continue to Step 2."
-msgstr ""
-
-#: admin/support.php:16
-msgid "Step 2: "
-msgstr ""
-
-#: admin/support.php:16
-msgid "Create a Support Ticket"
-msgstr ""
-
-#: admin/support.php:17
-msgid ""
-"We reply from <code>7am to 3pm (GMT+6)</code> except "
-"<code><strong>Friday</strong></code>. Our responses are usually under 12 "
-"hours to as quick as 1 hour depending on channel pressure."
-msgstr ""
-
-#: admin/support.php:19
-msgid ""
-"When you are creating a ticket, please care to include a screenshot of the "
-"issue if possible and write the problem as specificly as you can. This will "
-"help us track and solve your trouble quickly."
 msgstr ""
 
 #: admin/template-post.php:193
@@ -2158,74 +2173,23 @@ msgstr ""
 msgid "Install Now"
 msgstr ""
 
-#: assets/js-templates/form-components.php:473
-msgid "Add Notification"
-msgstr ""
-
-#: assets/js-templates/form-components.php:484
-#: assets/js-templates/form-components.php:532
-#: includes/free/form-element.php:228 includes/free/form-element.php:263
-msgid "Subject"
-msgstr ""
-
-#: assets/js-templates/form-components.php:504
-msgid "No notifications found"
-msgstr ""
-
-#: assets/js-templates/form-components.php:519
-#: includes/free/form-element.php:221 includes/free/form-element.php:258
-msgid "To"
-msgstr ""
-
-#: assets/js-templates/form-components.php:525
-msgid "Reply To"
-msgstr ""
-
-#: assets/js-templates/form-components.php:538
-msgid "Email Message"
-msgstr ""
-
-#: assets/js-templates/form-components.php:544
-msgid " Advanced"
-msgstr ""
-
-#: assets/js-templates/form-components.php:549
-msgid "From Name"
-msgstr ""
-
-#: assets/js-templates/form-components.php:555
-msgid "From Address"
-msgstr ""
-
-#: assets/js-templates/form-components.php:563
-msgid "CC"
-msgstr ""
-
-#: assets/js-templates/form-components.php:569
-msgid "BCC"
-msgstr ""
-
-#: assets/js-templates/form-components.php:580
-msgid "Done"
-msgstr ""
-
-#: class/asset-loader.php:31 wpuf.php:368
+#: class/asset-loader.php:31 wpuf.php:384
 msgid "is required"
 msgstr ""
 
-#: class/asset-loader.php:32 wpuf.php:369
+#: class/asset-loader.php:32 wpuf.php:385
 msgid "does not match"
 msgstr ""
 
-#: class/asset-loader.php:33 wpuf.php:370
+#: class/asset-loader.php:33 wpuf.php:386
 msgid "is not valid"
 msgstr ""
 
-#: class/asset-loader.php:45 wpuf.php:431
+#: class/asset-loader.php:45 wpuf.php:447
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: class/asset-loader.php:47 wpuf.php:433
+#: class/asset-loader.php:47 wpuf.php:449
 msgid "Word limit reached"
 msgstr ""
 
@@ -2486,6 +2450,10 @@ msgstr ""
 
 #: class/subscription.php:743 templates/dashboard/subscription.php:24
 msgid "Unlimited"
+msgstr ""
+
+#: class/subscription.php:777
+msgid "Change"
 msgstr ""
 
 #: class/subscription.php:801
@@ -2899,6 +2867,14 @@ msgstr ""
 msgid "Enable post notification"
 msgstr ""
 
+#: includes/free/form-element.php:221 includes/free/form-element.php:258
+msgid "To"
+msgstr ""
+
+#: includes/free/form-element.php:228 includes/free/form-element.php:263
+msgid "Subject"
+msgstr ""
+
 #: includes/free/form-element.php:233 includes/free/form-element.php:268
 msgid "Message"
 msgstr ""
@@ -2955,7 +2931,7 @@ msgstr ""
 msgid "Update Button text"
 msgstr ""
 
-#: includes/free/loader.php:83 includes/free/loader.php:112
+#: includes/free/loader.php:83 includes/free/loader.php:113
 msgid "Coupons"
 msgstr ""
 
@@ -2969,23 +2945,31 @@ msgstr ""
 msgid "Users can also register themselves by using a subscription pack."
 msgstr ""
 
-#: includes/free/loader.php:100 includes/free/loader.php:120
+#: includes/free/loader.php:100 includes/free/loader.php:121
 msgid "This feature is only available in the Pro Version."
 msgstr ""
 
-#: includes/free/loader.php:104 includes/free/loader.php:124
+#: includes/free/loader.php:104 includes/free/loader.php:125
 msgid "Upgrade to Pro Version"
 msgstr ""
 
-#: includes/free/loader.php:116
+#: includes/free/loader.php:105
+msgid "Learn more about Registration"
+msgstr ""
+
+#: includes/free/loader.php:117
 msgid "Use Coupon codes for subscription for discounts."
 msgstr ""
 
-#: includes/free/loader.php:149
+#: includes/free/loader.php:126
+msgid "Learn more about Coupons"
+msgstr ""
+
+#: includes/free/loader.php:151
 msgid "Pro Feature"
 msgstr ""
 
-#: includes/free/loader.php:165
+#: includes/free/loader.php:167
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -3498,7 +3482,7 @@ msgstr ""
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:575
+#: wpuf.php:591
 msgid "Error: Nonce verification failed"
 msgstr ""
 

@@ -556,7 +556,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     'success'      => true,
                     'redirect_to'  => $redirect_to,
                     'show_message' => $show_message,
-                    'message'      => 'Your post has been saved as draft. Please verify your email to publish.'
+                    'message'      => 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!'
                 );
             } elseif ( $guest_mode == 'true' && $guest_verify == 'false' && !is_user_logged_in() ) {
                     $form_settings['redirect_to'] == 'same';
@@ -601,8 +601,10 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&post_msg=verified';
 
             $to = trim( $_POST['guest_email'] );
-            $subject = 'Verify Email to publish Post';
-            $body = 'Your post has been saved as draft. Please <a href="'.$encoded_guest_url.'">click</a> this link to publish it.';
+            $guest_email_sub = wpuf_get_option( 'guest_email_subject', 'wpuf_guest_mails', 'Please Confirm Your Email to Get the Post Published!' );
+            $subject = $guest_email_sub;
+            $body = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.
+Please <a href="'.$encoded_guest_url.'">click</a> this link and help us to go with the workflow.' . '<br>' . '<br>' . 'Regards';
             $headers = array('Content-Type: text/html; charset=UTF-8');
 
             wp_mail( $to, $subject, $body, $headers );

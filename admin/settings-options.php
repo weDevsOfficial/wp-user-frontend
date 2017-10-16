@@ -24,6 +24,10 @@ function wpuf_settings_sections() {
             'id'    => 'wpuf_payment',
             'title' => __( 'Payments', 'wpuf' )
         ),
+        array(
+            'id'    => 'wpuf_guest_mails',
+            'title' => __( 'E-Mails', 'wpuf' )
+        ),
     );
 
     return apply_filters( 'wpuf_settings_sections', $sections );
@@ -366,6 +370,15 @@ function wpuf_settings_fields() {
                 'options' => wpuf_get_gateways()
             )
         ) ),
+        'wpuf_guest_mails' => array(
+            array(
+                'name'       => 'guest_email_subject',
+                'label'    => __( 'Guest Email Subject', 'wpuf' ),
+                'desc'     => __( 'This sets the subject of the emails sent to guest users', 'wpuf' ),
+                'default'  => 'Please Confirm Your Email to Get the Post Published!',
+                'type'     => 'text',
+            ),
+        )
     );
 
     return apply_filters( 'wpuf_settings_fields', $settings_fields );

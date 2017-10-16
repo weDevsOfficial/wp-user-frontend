@@ -20,6 +20,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         // draft
         add_action( 'wp_ajax_wpuf_draft_post', array( $this, 'draft_post' ) );
+        add_action( 'init', array( $this, 'publish_guest_post' ) );
 
         // form preview
         add_action( 'wp_ajax_wpuf_form_preview', array( $this, 'preview_form' ) );
@@ -182,6 +183,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $is_update           = false;
         $post_author         = null;
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_general', 1 );
+        $guest_verify = $form_settings['guest_email_verify'];
+        $guest_mode = $form_settings['guest_post'];
 
         // Guest Stuffs: check for guest post
         if ( !is_user_logged_in() ) {
@@ -247,9 +250,15 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $post_author = get_current_user_id();
         }
 
+        $p_status = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
+
+        if ( $guest_mode = 'true' &&$guest_verify == 'false') {
+            $p_status  = 'draft';
+        } 
+
         $postarr = array(
             'post_type'    => $form_settings['post_type'],
-            'post_status'  => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
+            'post_status'  => $p_status,
             'post_author'  => $post_author,
             'post_title'   => isset( $_POST['post_title'] ) ? trim( $_POST['post_title'] ) : '',
             'post_content' => isset( $_POST['post_content'] ) ? trim( $_POST['post_content'] ) : '',
@@ -296,7 +305,12 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             if ( $form_settings['edit_post_status'] == '_nochange' ) {
                 $postarr['post_status'] = get_post_field( 'post_status', $_POST['post_id'] );
-            } else {
+            } elseif ( $guest_mode == 'true' && $guest_verify == 'true' ) {
+                $postarr['post_status'] = 'draft';
+            } elseif ( $guest_mode == 'true' && $guest_verify == 'false' ) {
+                $postarr['post_status'] = 'publish';
+            } 
+            else {
                 $postarr['post_status'] = $form_settings['edit_post_status'];
             }
         } else {
@@ -517,6 +531,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             //redirect URL
             $show_message = false;
             $redirect_to  = false;
+            $res_flag     = false;
 
             if ( $is_update ) {
                 if ( $form_settings['edit_redirect_to'] == 'page' ) {
@@ -533,6 +548,25 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 } else {
                     $redirect_to = get_permalink( $post_id );
                 }
+            } elseif ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() ) {
+                    $form_settings['redirect_to'] == 'same';
+                    $show_message = true;
+                    $res_flag = true;
+                    $response = array(
+                    'success'      => true,
+                    'redirect_to'  => $redirect_to,
+                    'show_message' => $show_message,
+                    'message'      => 'Your post has been saved as draft. Please verify your email to publish.'
+                );
+            } elseif ( $guest_mode == 'true' && $guest_verify == 'false' && !is_user_logged_in() ) {
+                    $form_settings['redirect_to'] == 'same';
+                    $res_flag = true;
+                    $response = array(
+                    'success'      => true,
+                    'redirect_to'  => $redirect_to,
+                    'show_message' => $show_message,
+                    'message'      => $form_settings['message']
+                );
             } else {
                 if ( $form_settings['redirect_to'] == 'page' ) {
                     $redirect_to = get_permalink( $form_settings['page_id'] );
@@ -546,12 +580,35 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
 
             // send the response
-            $response = array(
-                'success'      => true,
-                'redirect_to'  => $redirect_to,
-                'show_message' => $show_message,
-                'message'      => $form_settings['message']
-            );
+            if ( $res_flag == false ) {
+                $response = array(
+                    'success'      => true,
+                    'redirect_to'  => $redirect_to,
+                    'show_message' => $show_message,
+                    'message'      => $form_settings['message']
+                );
+            }
+            
+            // send a unique post publish link to guest user
+            $secret_key = AUTH_KEY;
+            $secret_iv  = AUTH_SALT;
+
+            $encrypt_method = "AES-256-CBC";
+            $key = hash( 'sha256', $secret_key );
+            $iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
+
+            $post_id_encoded   = base64_encode( openssl_encrypt( $post_id, $encrypt_method, $key, 0, $iv ) );
+            $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&post_msg=verified';
+
+            $to = trim( $_POST['guest_email'] );
+            $subject = 'Verify Email to publish Post';
+            $body = 'Your post has been saved as draft. Please <a href="'.$encoded_guest_url.'">click</a> this link to publish it.';
+            $headers = array('Content-Type: text/html; charset=UTF-8');
+            add_filter( 'wp_mail_content_type', 'set_html_content_type' );
+
+            wp_mail( $to, $subject, $body, $headers );
+
+            remove_filter( 'wp_mail_content_type', 'set_html_content_type' );
 
             if ( $is_update ) {
                 $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $form_settings );
@@ -849,6 +906,27 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             'is_variation' => 0,
             'is_taxonomy'  => 1
         );
+    }
+
+    function publish_guest_post () {
+        if ( $_GET['post_msg'] == 'verified' ) {
+            $secret_key = AUTH_KEY;
+            $secret_iv  = AUTH_SALT;
+
+            $encrypt_method = "AES-256-CBC";
+            $key = hash( 'sha256', $secret_key );
+            $iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
+
+            $post_id = openssl_decrypt( base64_decode( $_GET['p_id'] ), $encrypt_method, $key, 0, $iv );
+
+            if ( get_post_status ( $post_id ) ) {
+                wp_publish_post( $post_id );
+            }
+        }
+    }
+
+    function set_html_content_type() {
+        return 'text/html';
     }
 
 }

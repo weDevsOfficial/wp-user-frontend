@@ -307,7 +307,7 @@ class WPUF_Registration {
             exit;
         }
 
-        if( "yes" == $_GET['success'] ) {
+        if( isset($_GET['success']) && "yes" == $_GET['success'] ) {
             echo "<div class='wpuf-success' style='text-align:center'>Successfully Registered. Please Login.</div>";
         }
     }

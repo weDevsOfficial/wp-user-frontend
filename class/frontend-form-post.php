@@ -909,7 +909,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
     }
 
     function publish_guest_post () {
-        if ( $_GET['post_msg'] == 'verified' ) {
+        if ( isset($_GET['post_msg']) && $_GET['post_msg'] == 'verified' ) {
             $secret_key = AUTH_KEY;
             $secret_iv  = AUTH_SALT;
 

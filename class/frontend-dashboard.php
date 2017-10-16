@@ -27,11 +27,11 @@ class WPUF_Frontend_Dashboard {
             <?php //echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
         </style>
         <?php
-        extract( shortcode_atts( array('post_type' => 'post', 'category' =>'off', 'featured_image' => 'default', 'meta' => 'off', 'excerpt' =>'off'), $atts ) );
+        extract( shortcode_atts( array( 'form_id'=>'off', 'post_type' => 'default', 'category' =>'off', 'featured_image' => 'default', 'meta' => 'off', 'excerpt' =>'off'), $atts ) );
         ob_start();
 
         if ( is_user_logged_in() ) {
-            $this->post_listing( $post_type, $category, $featured_image, $meta, $excerpt );
+            $this->post_listing( $form_id, $post_type, $category, $featured_image, $meta, $excerpt );
         } else {
             $message = wpuf_get_option( 'un_auth_msg', 'wpuf_dashboard' );
             wpuf_load_template( 'unauthorized.php', array( 'message' => $message ) );
@@ -49,7 +49,7 @@ class WPUF_Frontend_Dashboard {
      * @global object $wpdb
      * @global object $userdata
      */
-    function post_listing( $post_type, $category, $featured_image, $meta, $excerpt ) {
+    function post_listing( $form_id, $post_type, $category, $featured_image, $meta, $excerpt ) {
         global $post;
 
         $pagenum = isset( $_GET['pagenum'] ) ? intval( $_GET['pagenum'] ) : 1;
@@ -64,17 +64,101 @@ class WPUF_Frontend_Dashboard {
             echo '<div class="success">' . __( 'Post Deleted', 'wpuf' ) . '</div>';
         }
 
-        $args = array(
-            'author'         => get_current_user_id(),
-            'post_status'    => array('draft', 'future', 'pending', 'publish', 'private'),
-            'post_type'      => $post_type,
-            'posts_per_page' => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
-            'paged'          => $pagenum
-        );
+        $post_type_array = array();
+        $args = array();
+        $available_posttypes = get_post_types();
+        $cond = 0;
+
+        if ( $form_id !== 'off' && $post_type === 'default' ) {
+            $post_type_query = array(
+                'author'         => get_current_user_id(),
+                'post_type'      => $available_posttypes,
+                'meta_query'     => array(
+                    array(
+                        'key'   => '_wpuf_form_id',
+                        'value' => (int) $form_id,
+                        'type'  => 'numeric'
+                    )
+                ),
+            );
+
+            $posts_array = new WP_Query( $post_type_query);
+            $posts = $posts_array->posts;
+            foreach($posts as $post) {
+                $post_type_array[] = $post->post_type;
+            }
+
+            $args = array(
+                'author'         => get_current_user_id(),
+                'post_status'    => array('draft', 'future', 'pending', 'publish', 'private'),
+                'post_type'      => $post_type_array,
+                'posts_per_page' => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
+                'paged'          => $pagenum,
+                'meta_query'     => array(
+                    array(
+                        'key'   => '_wpuf_form_id',
+                        'value' => (int) $form_id,
+                        'type'  => 'numeric'
+                    )
+                )
+            ); 
+            $cond = 1;
+
+        } elseif ( $form_id === 'off' && $post_type !== 'default' ) {
+            $args = array(
+                'author'         => get_current_user_id(),
+                'post_status'    => array('draft', 'future', 'pending', 'publish', 'private'),
+                'post_type'      => $post_type,
+                'posts_per_page' => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
+                'paged'          => $pagenum,
+                'meta_query'     => array(
+                    array(
+                        'key'   => '_wpuf_form_id',
+                        'value' => (int) $form_id,
+                        'type'  => 'numeric'
+                    )
+                )
+            );
+            $cond = 2;
+
+        } elseif ( $form_id !== 'off' && $post_type !== 'default' ) {
+            $args = array(
+                'author'         => get_current_user_id(),
+                'post_status'    => array('draft', 'future', 'pending', 'publish', 'private'),
+                'post_type'      => $post_type,
+                'posts_per_page' => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
+                'paged'          => $pagenum,
+                'meta_query'     => array(
+                    array(
+                        'key'   => '_wpuf_form_id',
+                        'value' => (int) $form_id,
+                        'type'  => 'numeric'
+                    )
+                )
+            );
+            $cond = 3;
+
+        } else {
+            $post_type = 'post';
+            $args = array(
+                'author'         => get_current_user_id(),
+                'post_status'    => array('draft', 'future', 'pending', 'publish', 'private'),
+                'post_type'      => $post_type,
+                'posts_per_page' => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
+                'paged'          => $pagenum
+            );
+            $cond = 5;
+
+        } 
 
         $original_post   = $post;
         $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args ) );
-        $post_type_obj   = get_post_type_object( $post_type );
+
+        if ( $cond == 5 ) {
+            $post_type_obj   = get_post_type_object( $post_type );
+        } else {
+            $post_type_obj = '';
+        }
 
         wpuf_load_template( 'dashboard.php', array(
             'post_type'       => $post_type,
@@ -85,6 +169,7 @@ class WPUF_Frontend_Dashboard {
             'pagenum'         => $pagenum,
             'category'        => $category,
             'featured_image'  => $featured_image,
+            'form_id'         => $form_id,
             'meta'            => $meta,
             'excerpt'         => $excerpt
         ) );
@@ -133,7 +218,7 @@ class WPUF_Frontend_Dashboard {
         $maybe_delete = get_post( $_REQUEST['pid'] );
 
         if ( ($maybe_delete->post_author == $userdata->ID) || current_user_can( 'delete_others_pages' ) ) {
-            wp_delete_post( $_REQUEST['pid'] );
+            wp_trash_post( $_REQUEST['pid'] );
 
             //redirect
             $redirect = add_query_arg( array('msg' => 'deleted'), get_permalink() );

@@ -5,11 +5,12 @@
     </h2>
 
     <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
-        <div class="post_count"><?php printf( __( 'You have created <span>%d</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
+        <div class="post_count"><?php if ( !empty( $post_type_obj ) ) printf( __( 'You have created <span>%d</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
     <?php } ?>
 
-    <?php do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj ) ?>
+    <?php if ( !empty( $post_type_obj ) ) do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj ) ?>
     <?php
+
         $meta_label = array(); 
         $meta_name  = array();
         $meta_id    = array();
@@ -54,7 +55,7 @@
         wp_reset_postdata();
 
         $len = count( $meta_key );
-	    $len_label = count( $meta_label );
+        $len_label = count( $meta_label );
         $len_id   = count( $meta_id );
         $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
         $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
@@ -76,7 +77,7 @@
                     }
                     ?>
 
-	                <?php
+                    <?php
                 
                     if( $meta != 'off' ) {
                         for ( $i = 0; $i < $len_label; $i++ ) {
@@ -152,7 +153,7 @@
                         <?php } ?>
 
 
-	                    <?php if( $meta != 'off' ) {
+                        <?php if( $meta != 'off' ) {
                             for ( $i = 0; $i < $len_label; $i++ ) {
                                 for ( $j = 0; $j < $len; $j++ ) {
                                     if( $meta_key[$j] == $meta_name[$i] ) {
@@ -241,10 +242,11 @@
         </div>
     <?php
     } else {
-        printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', $post_type_obj->label );
-        do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
+        if ( !empty( $post_type_obj ) ) {
+            printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', $post_type_obj->label );
+            do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
+        }    
     }
-
-    do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj ); ?>
+    if ( !empty( $post_type_obj ) ) do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj ); ?>
 
 </div>

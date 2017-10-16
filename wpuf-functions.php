@@ -2102,3 +2102,33 @@ function wpuf_get_draft_post_status( $form_settings ) {
     }
     return $post_status;
 }
+
+function wpuf_pages_columns_form ( $columns ) {
+
+    $myCustomColumns = array(
+        'wpuf_forms' => __( 'WPUF Forms', 'wpuf' )
+    );
+    $columns = array_merge( $columns, $myCustomColumns );
+
+    return $columns;
+}
+add_filter( 'manage_pages_columns', 'wpuf_pages_columns_form' );
+
+function page_column_content_form ( $column_name, $post_id ) {
+    if ( $column_name == 'wpuf_forms' ) {
+        $content_page = get_post( $post_id );
+
+        $available_shortcodes = array();
+        $wpuf_shortcodes = array();
+
+        $pattern = '/\[(wpuf[\w\-\_]+).+\]/';
+
+        preg_match_all ( $pattern , $content_page->post_content, $matches);
+        $matches = array_unique( $matches[0] );
+        
+        if ( !empty( $matches ) ) {
+             echo $matches[0];
+        }
+    }
+}
+add_action( 'manage_pages_custom_column', 'page_column_content_form', 10, 2 );

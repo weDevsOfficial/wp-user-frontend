@@ -147,7 +147,7 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
                     <input type="checkbox" name="wpuf_settings[guest_email_verify]" value="true"<?php checked( $guest_email_verify, 'true' ); ?> />
                     <?php _e( 'Require Email Verification for Guests', 'wpuf' ) ?>
                 </label>
-                <p class="description"><?php _e( 'If requires, users will be automatically registered to the site using the name and email address', 'wpuf' ); ?></p>
+                <p class="description"><?php _e( 'If requires, users will be required to verify their email adress.', 'wpuf' ); ?></p>
             </td>
         </tr>
 

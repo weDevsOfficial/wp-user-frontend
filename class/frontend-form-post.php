@@ -252,7 +252,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         $p_status = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
 
-        if ( $guest_mode = 'true' &&$guest_verify == 'false') {
+        if ( $guest_mode = 'true' && $guest_verify == 'true') {
             $p_status  = 'draft';
         } 
 
@@ -604,11 +604,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $subject = 'Verify Email to publish Post';
             $body = 'Your post has been saved as draft. Please <a href="'.$encoded_guest_url.'">click</a> this link to publish it.';
             $headers = array('Content-Type: text/html; charset=UTF-8');
-            add_filter( 'wp_mail_content_type', 'set_html_content_type' );
 
             wp_mail( $to, $subject, $body, $headers );
-
-            remove_filter( 'wp_mail_content_type', 'set_html_content_type' );
 
             if ( $is_update ) {
                 $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $form_settings );
@@ -924,9 +921,4 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
         }
     }
-
-    function set_html_content_type() {
-        return 'text/html';
-    }
-
 }

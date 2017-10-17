@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP User Frontend 2.5.7\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-10-16 07:01:28+00:00\n"
+"POT-Creation-Date: 2017-10-17 04:26:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -113,8 +113,8 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:147
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:66
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:444
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:499
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:463
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:519
 #: admin/post-forms-list-table.php:345 admin/settings-options.php:83
 #: admin/settings-options.php:158 admin/settings-options.php:169
 #: admin/settings-options.php:258 admin/template.php:70
@@ -124,8 +124,8 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:149
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:67
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:445
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:500
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:464
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:520
 #: admin/post-forms-list-table.php:346 admin/settings-options.php:84
 #: admin/settings-options.php:159 admin/settings-options.php:170
 #: admin/settings-options.php:259 admin/template.php:71
@@ -153,14 +153,14 @@ msgstr ""
 msgid "Pack Deleted"
 msgstr ""
 
-#: admin/class-admin-subscription.php:207 admin/form.php:767
+#: admin/class-admin-subscription.php:207 admin/form.php:771
 #: admin/html/form-settings-post.php:16 admin/template-post.php:167
 #: includes/free/edit-profile.php:97
 msgid "Name"
 msgstr ""
 
 #: admin/class-admin-subscription.php:208
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:726
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:750
 #: admin/template.php:609 class/upload.php:166 wpuf-functions.php:732
 msgid "Description"
 msgstr ""
@@ -194,7 +194,7 @@ msgstr ""
 msgid "Are you sure to delete this pack?"
 msgstr ""
 
-#: admin/class-admin-subscription.php:233 class/render-form.php:1517
+#: admin/class-admin-subscription.php:233 class/render-form.php:1518
 #: class/transactions-list-table.php:114 class/transactions-list-table.php:175
 #: class/upload.php:171 includes/free/edit-user.php:100
 #: templates/dashboard/posts.php:160 templates/dashboard.php:114
@@ -442,72 +442,72 @@ msgstr ""
 msgid "Add fields by dragging the fields from the right sidebar to this area."
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:28
-#: assets/js-templates/form-components.php:29
+#: admin/form-builder/assets/js/components/builder-stage/template.php:29
+#: assets/js-templates/form-components.php:30
 msgid "is available in Pro Version"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:52
-#: assets/js-templates/form-components.php:53
+#: admin/form-builder/assets/js/components/builder-stage/template.php:53
+#: assets/js-templates/form-components.php:54
 msgid "Hidden Fields"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:59
-#: assets/js-templates/form-components.php:60
+#: admin/form-builder/assets/js/components/builder-stage/template.php:60
+#: assets/js-templates/form-components.php:61
 msgid "key"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:59
-#: assets/js-templates/form-components.php:60
+#: admin/form-builder/assets/js/components/builder-stage/template.php:60
+#: assets/js-templates/form-components.php:61
 msgid "value"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:5
-#: admin/template.php:244 assets/js-templates/form-components.php:101
+#: admin/template.php:244 assets/js-templates/form-components.php:102
 msgid "Show values"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:16
 #: admin/template.php:247 admin/template.php:305
-#: assets/js-templates/form-components.php:112
+#: assets/js-templates/form-components.php:113
 msgid "Label"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:20
 #: admin/template.php:247 admin/template.php:305
-#: assets/js-templates/form-components.php:116
+#: assets/js-templates/form-components.php:117
 msgid "Value"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:68
-#: assets/js-templates/form-components.php:164
+#: assets/js-templates/form-components.php:165
 msgid "Clear Selection"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-pro-feature-alert/template.php:4
-#: assets/js-templates/form-components.php:172
+#: assets/js-templates/form-components.php:173
 msgid "Available in Pro Version"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-select/template.php:7
-#: assets/js-templates/form-components.php:250
+#: assets/js-templates/form-components.php:251
 msgid "Select an option"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:5
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:5
-#: assets/js-templates/form-components.php:375
-#: assets/js-templates/form-components.php:441 class/render-form.php:1505
+#: assets/js-templates/form-components.php:376
+#: assets/js-templates/form-components.php:442 class/render-form.php:1506
 msgid "Select Image"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:4
-#: assets/js-templates/form-components.php:474 class/render-form.php:926
+#: assets/js-templates/form-components.php:475 class/render-form.php:927
 msgid "Insert Photo"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:12
-#: assets/js-templates/form-components.php:584
+#: assets/js-templates/form-components.php:585
 msgid "— Select —"
 msgstr ""
 
@@ -563,10 +563,10 @@ msgid "This field must contain at least one choice"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:328
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:377
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:417
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:473
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:528
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:395
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:436
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:493
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:549
 msgid "Option"
 msgstr ""
 
@@ -590,7 +590,7 @@ msgstr ""
 msgid "Get the Pro version"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:334 admin/form.php:751
+#: admin/form-builder/class-wpuf-admin-form-builder.php:334 admin/form.php:755
 msgid "Select"
 msgstr ""
 
@@ -639,305 +639,321 @@ msgid ""
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:78
+msgid "Field Size"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:81
+msgid "Small"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:82
+msgid "Medium"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:83
+msgid "Large"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:93
 #: admin/template.php:99
 msgid "CSS Class Name"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:82
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:97
 msgid "Provide a container class name for this field."
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:89
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:617
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:104
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:640
 #: admin/template.php:82 admin/template.php:575
 msgid "Meta Key"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:93
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:621
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:108
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:644
 #: admin/template.php:83 admin/template.php:576
 msgid "Name of the meta key this field will save to"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:111
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:181
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:126
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:196
 #: admin/template.php:126 admin/template.php:186
 msgid "Placeholder text"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:115
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:185
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:130
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:200
 #: admin/template.php:127
 msgid "Text for HTML5 placeholder attribute"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:120
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:193
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:135
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:208
 #: admin/template.php:131 admin/template.php:191
 msgid "Default value"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:124
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:197
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:139
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:212
 #: admin/template.php:132
 msgid "The default value this field will have"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:129
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:144
 #: admin/template.php:136
 msgid "Size"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:134
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:149
 #: admin/template.php:137
 msgid "Size of this input field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:141
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:216
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:156
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:231
 #: admin/template.php:141 admin/template.php:206
 msgid "Word Restriction"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:145
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:220
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:160
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:235
 #: admin/template.php:145 admin/template.php:210
 msgid "Numebr of words the author to be restricted in"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:163
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:178
 #: admin/template.php:176
 msgid "Rows"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:167
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:182
 msgid "Number of rows in textarea"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:172
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:187
 #: admin/template.php:181
 msgid "Columns"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:176
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:191
 msgid "Number of columns in textarea"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:202
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:291
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:298
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:217
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:307
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:314
 #: admin/template.php:196
 msgid "Textarea"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:205
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:220
 #: admin/template.php:199
 msgid "Normal"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:206
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:221
 #: admin/template.php:200
 msgid "Rich textarea"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:207
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:222
 #: admin/template.php:201
 msgid "Teeny Rich textarea"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:237
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:378
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:418
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:252
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:396
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:437
 msgid "- select -"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:255
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:262
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:270
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:277
 msgid "Text"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:328
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:345
 #: admin/template.php:398 admin/template.php:422 admin/template.php:454
 #: admin/template.php:486 templates/dashboard/posts.php:84
 #: templates/dashboard.php:37
 msgid "Options"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:333
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:350
 msgid "Add options for the form field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:352
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:369
 #: admin/template.php:449 admin/template.php:481
 msgid "Select Text"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:356
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:373
 #: admin/template.php:438 admin/template.php:470
 msgid ""
 "First element of the select dropdown. Leave this empty if you don't want to "
 "show this field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:364
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:371
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:381
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:388
 #: admin/template-post.php:156
 msgid "Dropdown"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:404
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:411
-#: admin/form.php:752 admin/template-post.php:157
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:422
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:429
+#: admin/form.php:756 admin/template-post.php:157
 msgid "Multi Select"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:441
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:496
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:460
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:516
 msgid "Show in inline list"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:451
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:506
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:470
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:526
 msgid "Show this option in an inline list"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:459
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:478
 msgid "Radio"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:466
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:485
 msgid "Radio Field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:514
-#: admin/form.php:753 admin/template-post.php:158
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:534
+#: admin/form.php:757 admin/template-post.php:158
 msgid "Checkbox"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:521
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:541
 msgid "Checkbox Field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:549
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:556
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:570
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:577
 msgid "URL"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:584
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:606
 msgid "Email Address"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:591
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:613
 #: admin/html/form-settings-post.php:17 class/transactions-list-table.php:48
 #: includes/free/edit-user.php:152
 msgid "Email"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:626
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:649
 #: admin/template.php:582
 msgid "Meta Value"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:630
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:653
 #: admin/template.php:583
 msgid "Enter the meta value"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:636
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:659
 msgid "Hidden Field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:666
-#: admin/form.php:670 admin/template-post.php:105 admin/template.php:646
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:689
+#: admin/form.php:673 admin/template-post.php:105 admin/template.php:646
 msgid "Max. file size"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:670
-#: admin/form.php:674 admin/template-post.php:93 admin/template.php:634
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:693
+#: admin/form.php:677 admin/template-post.php:93 admin/template.php:634
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:675
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:698
 #: admin/template.php:651
 msgid "Max. files"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:679
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:702
 #: admin/template.php:635
 msgid "Number of images can be uploaded"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:685
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:692
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:708
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:715
 #: includes/free/form-element.php:8
 msgid "Image Upload"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:717
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:800
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:741
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:824
 #: admin/template.php:544 admin/template.php:604 admin/template.php:683
 #: class/upload.php:164 templates/dashboard/posts.php:74
 #: templates/dashboard.php:27 wpuf-functions.php:726
 msgid "Title"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:721
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:804
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:745
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:828
 msgid "Title of the section"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:730
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:754
 msgid "Some details text about the section"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:736
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:743
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:760
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:767
 msgid "Section Break"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:744
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:781
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:768
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:805
 msgid "Some description about this section"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:763
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:787
 #: admin/template.php:549
 msgid "HTML Codes"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:767
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:791
 msgid "Paste your HTML codes, WordPress shortcodes will also work here"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:773
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:780
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:797
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:804
 msgid "Custom HTML"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:812
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:836
 #: admin/template.php:703
 msgid "Enable noCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:813
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:837
 #: admin/template.php:699
 msgid "Enable Invisible reCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:818
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:842
 msgid "Select reCaptcha type"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:824
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:848
 #: includes/free/form-element.php:31
 msgid "reCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:829
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:853
 msgid "Site key and Secret key"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:831
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:855
 msgid ""
 "You need to set Site key and Secret key in <a href=\"%s\" "
 "target=\"_blank\">Settings</a> in order to use \"Recaptcha\" field. <a "
@@ -1098,7 +1114,7 @@ msgid "Taxonomies"
 msgstr ""
 
 #: admin/form.php:430 admin/html/form-settings-post.php:28
-#: class/render-form.php:630
+#: class/render-form.php:631
 msgid "Save Draft"
 msgstr ""
 
@@ -1106,110 +1122,110 @@ msgstr ""
 msgid "Post Title"
 msgstr ""
 
-#: admin/form.php:577 admin/template-post.php:41
+#: admin/form.php:578 admin/template-post.php:41
 msgid "Enable Image Insertion"
 msgstr ""
 
-#: admin/form.php:579 admin/template-post.php:47
+#: admin/form.php:580 admin/template-post.php:47
 msgid "Enable image upload in post area"
 msgstr ""
 
-#: admin/form.php:588 admin/form.php:595
+#: admin/form.php:589 admin/form.php:596
 msgid "Post Body"
 msgstr ""
 
-#: admin/form.php:632 admin/form.php:639
+#: admin/form.php:634 admin/form.php:641
 msgid "Excerpt"
 msgstr ""
 
-#: admin/form.php:680 admin/form.php:687 templates/dashboard/posts.php:71
+#: admin/form.php:683 admin/form.php:690 templates/dashboard/posts.php:71
 #: templates/dashboard.php:24
 msgid "Featured Image"
 msgstr ""
 
-#: admin/form.php:714 admin/form.php:720
+#: admin/form.php:717 admin/form.php:723
 msgid "Tags"
 msgstr ""
 
-#: admin/form.php:748 admin/template-post.php:154
+#: admin/form.php:752 admin/template-post.php:154
 msgid "Type"
 msgstr ""
 
-#: admin/form.php:754 admin/template-post.php:159
+#: admin/form.php:758 admin/template-post.php:159
 msgid "Text Input"
 msgstr ""
 
-#: admin/form.php:755 admin/template-post.php:160
+#: admin/form.php:759 admin/template-post.php:160
 msgid "Ajax"
 msgstr ""
 
-#: admin/form.php:764 admin/template-post.php:165
+#: admin/form.php:768 admin/template-post.php:165
 msgid "Order By"
 msgstr ""
 
-#: admin/form.php:768 admin/template-post.php:168
+#: admin/form.php:772 admin/template-post.php:168
 msgid "Term ID"
 msgstr ""
 
-#: admin/form.php:769 admin/template-post.php:169
+#: admin/form.php:773 admin/template-post.php:169
 msgid "Slug"
 msgstr ""
 
-#: admin/form.php:770 admin/template-post.php:170
+#: admin/form.php:774 admin/template-post.php:170
 msgid "Count"
 msgstr ""
 
-#: admin/form.php:771 admin/template-post.php:171
+#: admin/form.php:775 admin/template-post.php:171
 msgid "Term Group"
 msgstr ""
 
-#: admin/form.php:780 admin/template-post.php:176
+#: admin/form.php:784 admin/template-post.php:176
 msgid "Order"
 msgstr ""
 
-#: admin/form.php:784 admin/template-post.php:178
+#: admin/form.php:788 admin/template-post.php:178
 msgid "ASC"
 msgstr ""
 
-#: admin/form.php:785 admin/template-post.php:179
+#: admin/form.php:789 admin/template-post.php:179
 msgid "DESC"
 msgstr ""
 
-#: admin/form.php:794 admin/template-post.php:184
+#: admin/form.php:798 admin/template-post.php:184
 msgid "Selection Type"
 msgstr ""
 
-#: admin/form.php:797 admin/template-post.php:186
+#: admin/form.php:801 admin/template-post.php:186
 msgid "Exclude"
 msgstr ""
 
-#: admin/form.php:798 admin/template-post.php:187
+#: admin/form.php:802 admin/template-post.php:187
 msgid "Include"
 msgstr ""
 
-#: admin/form.php:799 admin/template-post.php:188
+#: admin/form.php:803 admin/template-post.php:188
 msgid "Child of"
 msgstr ""
 
-#: admin/form.php:808
+#: admin/form.php:812
 msgid "Selection Terms"
 msgstr ""
 
-#: admin/form.php:812 admin/template-post.php:194
+#: admin/form.php:816 admin/template-post.php:194
 msgid ""
 "Enter the term IDs as comma separated (without space) to exclude/include in "
 "the form."
 msgstr ""
 
-#: admin/form.php:820 admin/template-post.php:204
+#: admin/form.php:824 admin/template-post.php:204
 msgid "This taxonomy is a WooCommerce attribute"
 msgstr ""
 
-#: admin/form.php:831 admin/template-post.php:216
+#: admin/form.php:835 admin/template-post.php:216
 msgid "Visible on product page"
 msgstr ""
 
-#: admin/form.php:879
+#: admin/form.php:884
 msgid "Post Forms must have either Post Title, Post Body or Excerpt field"
 msgstr ""
 
@@ -1642,7 +1658,7 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1517
+#: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1518
 #: wpuf.php:453
 msgid "Are you sure?"
 msgstr ""
@@ -2391,16 +2407,16 @@ msgstr ""
 msgid "Please make sure you've published your form."
 msgstr ""
 
-#: class/render-form.php:1204 includes/free/edit-profile.php:203
+#: class/render-form.php:1205 includes/free/edit-profile.php:203
 #: templates/dashboard/edit-profile.php:36
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1266 class/render-form.php:1379
+#: class/render-form.php:1267 class/render-form.php:1380
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1321
+#: class/render-form.php:1322
 msgid "This field is no longer available."
 msgstr ""
 

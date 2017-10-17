@@ -93,11 +93,11 @@ ul.wpuf-form li .wpuf-label .required {
 }
 ul.wpuf-form li.field-size-large .wpuf-fields {
   float: left;
-  width: 100%;
+  width: 70%;
 }
 ul.wpuf-form li.field-size-medium .wpuf-fields {
   float: left;
-  width: 65%;
+  width: 50%;
 }
 ul.wpuf-form li.field-size-small .wpuf-fields {
   float: left;

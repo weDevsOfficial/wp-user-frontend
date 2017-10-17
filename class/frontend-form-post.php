@@ -595,14 +595,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&post_msg=verified';
 
             $default_body = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.
-                    Please <a href="'.$encoded_guest_url.'">click</a> this link and help us to go with the workflow.' . '<br>' . '<br>' . 'Regards,' . '<br>' . '<br>' . $sitename;
-            $sitename         = get_bloginfo( 'name' );
+                    Please click the link below to verify and help us to go with the workflow.' . '<br>' . '<br>' . '<a href="'.$encoded_guest_url.'">Publish Post</a>' . '<br>' . '<br>' . 'Regards,' . '<br>' . '<br>' . bloginfo('name');
             $to               = trim( $_POST['guest_email'] );
             $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_guest_mails', 'Please Confirm Your Email to Get the Post Published!' );
             $subject          = $guest_email_sub;
             $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_guest_mails',  $default_body );
             if ( !empty( $guest_email_body ) )
-                $body = str_replace( '{click}', '<a href="'.$encoded_guest_url.'">click</a>', $guest_email_body );
+                $body = str_replace( '{activation_link}', '<a href="'.$encoded_guest_url.'">Publish Post</a>', $guest_email_body );
             else 
                 $body = $default_body;
             $headers  = array('Content-Type: text/html; charset=UTF-8');

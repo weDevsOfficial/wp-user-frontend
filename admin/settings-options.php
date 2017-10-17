@@ -382,8 +382,7 @@ function wpuf_settings_fields() {
                 'name'       => 'guest_email_body',
                 'label'    => __( 'Guest Email Body', 'wpuf' ),
                 'desc'     => __( "This sets the body of the emails sent to guest users. Please DON'T edit the '{activation_link}' part", 'wpuf' ),
-                'default'  => "Hey There, \r\n\r\nWe just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.
-Please click the link below to verify and help us to go with the workflow.\r\n\r\n{activation_link}\r\n\r\nRegards,\r\n%sitename%",
+                'default'  => "Hey There, \r\n\r\nWe just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.\r\n\r\nPlease click the link below to verify: \r\n\r\n{activation_link}\r\n\r\nRegards,\r\n%sitename%",
                 'type'     => 'textarea',
             )
         )

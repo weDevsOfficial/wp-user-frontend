@@ -2103,9 +2103,8 @@ function wpuf_get_draft_post_status( $form_settings ) {
     return $post_status;
 }
 
-
 /**
- * Hooks to add WPUF Forms Column in Pages menu 
+ * Hook to add WPUF Forms Column in Pages menu 
  *
  * @since 2.5.8
  *
@@ -2121,6 +2120,12 @@ function wpuf_pages_columns_form ( $columns ) {
 }
 add_filter( 'manage_pages_columns', 'wpuf_pages_columns_form' );
 
+/**
+ * Hook to add WPUF Forms column contents in Pages menu 
+ *
+ * @since 2.5.8
+ *
+ */
 function page_column_content_form ( $column_name, $post_id ) {
     if ( $column_name == 'wpuf_forms' ) {
         $content_page = get_post( $post_id );
@@ -2182,4 +2187,37 @@ function wpuf_decryption ( $id ) {
     $decoded_id     = openssl_decrypt( base64_decode( $id ), $encrypt_method, $key, 0, $iv );
     
     return $decoded_id;
+}
+
+/**
+ * Send guest verification mail
+ *
+ * @since 2.5.8
+ *
+ * @param  string  $post_id
+ *
+ * @return void
+ */
+function send_mail_to_guest ( $post_id_encoded ) {
+
+    $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&post_msg=verified';
+
+    $default_body     = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.' .  '<br>' . '<br>' . 'Please click the link below to verify:' . '<br>' . '<br>' . '<a href="'.$encoded_guest_url.'">Publish Post</a>' . '<br>' . '<br>' . 'Regards,' . '<br>' . '<br>' . bloginfo('name');
+    $to               = trim( $_POST['guest_email'] );
+    $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_guest_mails', 'Please Confirm Your Email to Get the Post Published!' );
+    $subject          = $guest_email_sub;
+    $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_guest_mails',  $default_body );
+    if ( !empty( $guest_email_body ) )
+        $body = str_replace( '{activation_link}', '<a href="'.$encoded_guest_url.'">Publish Post</a>', $guest_email_body );
+    else 
+        $body = $default_body;
+    $headers  = array('Content-Type: text/html; charset=UTF-8');
+
+    wp_mail( $to, $subject, $body, $headers );
+
+    if ( $is_update ) {
+        $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $form_settings );
+    } else {
+        $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $form_settings );
+    }
 }

@@ -183,8 +183,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $is_update           = false;
         $post_author         = null;
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_general', 1 );
-        $guest_verify = $form_settings['guest_email_verify'];
-        $guest_mode = $form_settings['guest_post'];
+        $guest_verify        = isset( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false' ;
+        $guest_mode          = $form_settings['guest_post'];
 
         // Guest Stuffs: check for guest post
         if ( !is_user_logged_in() ) {
@@ -553,20 +553,20 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     $show_message = true;
                     $res_flag = true;
                     $response = array(
-                    'success'      => true,
-                    'redirect_to'  => $redirect_to,
-                    'show_message' => $show_message,
-                    'message'      => 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!'
-                );
+                        'success'      => true,
+                        'redirect_to'  => $redirect_to,
+                        'show_message' => $show_message,
+                        'message'      => 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!'
+                    );
             } elseif ( $guest_mode == 'true' && $guest_verify == 'false' && !is_user_logged_in() ) {
                     $form_settings['redirect_to'] == 'same';
                     $res_flag = true;
                     $response = array(
-                    'success'      => true,
-                    'redirect_to'  => $redirect_to,
-                    'show_message' => $show_message,
-                    'message'      => $form_settings['message']
-                );
+                        'success'      => true,
+                        'redirect_to'  => $redirect_to,
+                        'show_message' => $show_message,
+                        'message'      => $form_settings['message']
+                    );
             } else {
                 if ( $form_settings['redirect_to'] == 'page' ) {
                     $redirect_to = get_permalink( $form_settings['page_id'] );
@@ -587,30 +587,9 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     'show_message' => $show_message,
                     'message'      => $form_settings['message']
                 );
-            }
-            
-            // send a unique post publish link to guest user
-
-            $post_id_encoded   = wpuf_encryption( $post_id ) ;
-            $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&post_msg=verified';
-
-            $default_body     = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.' .  '<br>' . '<br>' . 'Please click the link below to verify:' . '<br>' . '<br>' . '<a href="'.$encoded_guest_url.'">Publish Post</a>' . '<br>' . '<br>' . 'Regards,' . '<br>' . '<br>' . bloginfo('name');
-            $to               = trim( $_POST['guest_email'] );
-            $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_guest_mails', 'Please Confirm Your Email to Get the Post Published!' );
-            $subject          = $guest_email_sub;
-            $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_guest_mails',  $default_body );
-            if ( !empty( $guest_email_body ) )
-                $body = str_replace( '{activation_link}', '<a href="'.$encoded_guest_url.'">Publish Post</a>', $guest_email_body );
-            else 
-                $body = $default_body;
-            $headers  = array('Content-Type: text/html; charset=UTF-8');
-
-            wp_mail( $to, $subject, $body, $headers );
-
-            if ( $is_update ) {
-                $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $form_settings );
             } else {
-                $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $form_settings );
+                $post_id_encoded   = wpuf_encryption( $post_id ) ;
+                send_mail_to_guest ( $post_id_encoded );
             }
 
             wpuf_clear_buffer();
@@ -905,6 +884,11 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         );
     }
 
+    /**
+    * Hook to publish verified guest post
+    *
+    * @since 2.5.8
+    */
     function publish_guest_post () {
         if ( isset($_GET['post_msg']) && $_GET['post_msg'] == 'verified' ) {
             $secret_key = AUTH_KEY;

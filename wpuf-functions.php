@@ -2103,6 +2103,13 @@ function wpuf_get_draft_post_status( $form_settings ) {
     return $post_status;
 }
 
+
+/**
+ * Hooks to add WPUF Forms Column in Pages menu 
+ *
+ * @since 2.5.8
+ *
+ */
 function wpuf_pages_columns_form ( $columns ) {
 
     $myCustomColumns = array(
@@ -2132,3 +2139,47 @@ function page_column_content_form ( $column_name, $post_id ) {
     }
 }
 add_action( 'manage_pages_custom_column', 'page_column_content_form', 10, 2 );
+
+/**
+ * Encryption function for various usage
+ *
+ * @since 2.5.8
+ *
+ * @param  string  $id
+ *
+ * @return string $encoded_id
+ */
+function wpuf_encryption ( $id ) {
+
+    $secret_key     = AUTH_KEY;
+    $secret_iv      = AUTH_SALT;
+    
+    $encrypt_method = "AES-256-CBC";
+    $key            = hash( 'sha256', $secret_key );
+    $iv             = substr( hash( 'sha256', $secret_iv ), 0, 16 );
+    $encoded_id     = base64_encode( openssl_encrypt( $id, $encrypt_method, $key, 0, $iv ) );
+    
+    return $encoded_id;
+}
+
+/**
+ * Decryption function for various usage
+ *
+ * @since 2.5.8
+ *
+ * @param  string  $id
+ *
+ * @return string $encoded_id
+ */
+function wpuf_decryption ( $id ) {
+
+    $secret_key     = AUTH_KEY;
+    $secret_iv      = AUTH_SALT;
+    
+    $encrypt_method = "AES-256-CBC";
+    $key            = hash( 'sha256', $secret_key );
+    $iv             = substr( hash( 'sha256', $secret_iv ), 0, 16 );
+    $decoded_id     = openssl_decrypt( base64_decode( $id ), $encrypt_method, $key, 0, $iv );
+    
+    return $decoded_id;
+}

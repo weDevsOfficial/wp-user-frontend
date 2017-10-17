@@ -140,15 +140,8 @@ class WPUF_Registration {
             ), $atts
         );
         $userrole = $atts['role'];
-
-        $secret_key = AUTH_KEY;
-        $secret_iv  = AUTH_SALT;
-
-        $encrypt_method = "AES-256-CBC";
-        $key = hash( 'sha256', $secret_key );
-        $iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
      
-        $roleencoded = base64_encode( openssl_encrypt( $userrole, $encrypt_method, $key, 0, $iv ) );
+        $roleencoded = wpuf_encryption( $userrole );
 
         $reg_page = $this->get_registration_url();
 
@@ -245,28 +238,21 @@ class WPUF_Registration {
                 $user = get_user_by( 'email', $_POST['log'] );
 
                 if ( isset( $user->user_login ) ) {
-                    $userdata['user_login'] = $user->user_login;
+                    $userdata['user_login']  = $user->user_login;
                 } else {
                     $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wpuf-pro' );
                     return;
                 }
             } else {
-                $userdata['user_login'] = $_POST['log'];
+                $userdata['user_login']      = $_POST['log'];
             }
-
-            $secret_key = AUTH_KEY;
-            $secret_iv  = AUTH_SALT;
-
-            $encrypt_method = "AES-256-CBC";
-            $key = hash( 'sha256', $secret_key );
-            $iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
          
-            $dec_role = openssl_decrypt( base64_decode( $_POST['urhidden'] ), $encrypt_method, $key, 0, $iv );
+            $dec_role = wpuf_decryption( $_POST['urhidden'] );
 
             $userdata['first_name'] = $_POST['reg_fname'];
-            $userdata['last_name'] = $_POST['reg_lname'];
+            $userdata['last_name']  = $_POST['reg_lname'];
             $userdata['user_email'] = $_POST['reg_email'];
-            $userdata['user_pass'] = $_POST['pwd1'];
+            $userdata['user_pass']  = $_POST['pwd1'];
             if ( get_role( $dec_role ) )
                 $userdata['role'] = $dec_role;
 

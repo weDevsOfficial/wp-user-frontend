@@ -252,7 +252,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         $p_status = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
 
-        if ( $guest_mode = 'true' && $guest_verify == 'true') {
+        if ( !is_user_logged_in() && $guest_mode = 'true' && $guest_verify == 'true') {
             $p_status  = 'draft';
         } 
 
@@ -590,22 +590,22 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
             
             // send a unique post publish link to guest user
-            $secret_key = AUTH_KEY;
-            $secret_iv  = AUTH_SALT;
 
-            $encrypt_method = "AES-256-CBC";
-            $key = hash( 'sha256', $secret_key );
-            $iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
-
-            $post_id_encoded   = base64_encode( openssl_encrypt( $post_id, $encrypt_method, $key, 0, $iv ) );
+            $post_id_encoded   = wpuf_encryption( $post_id ) ;
             $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&post_msg=verified';
 
-            $to = trim( $_POST['guest_email'] );
-            $guest_email_sub = wpuf_get_option( 'guest_email_subject', 'wpuf_guest_mails', 'Please Confirm Your Email to Get the Post Published!' );
-            $subject = $guest_email_sub;
-            $body = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.
-Please <a href="'.$encoded_guest_url.'">click</a> this link and help us to go with the workflow.' . '<br>' . '<br>' . 'Regards';
-            $headers = array('Content-Type: text/html; charset=UTF-8');
+            $default_body = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.
+                    Please <a href="'.$encoded_guest_url.'">click</a> this link and help us to go with the workflow.' . '<br>' . '<br>' . 'Regards,' . '<br>' . '<br>' . $sitename;
+            $sitename         = get_bloginfo( 'name' );
+            $to               = trim( $_POST['guest_email'] );
+            $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_guest_mails', 'Please Confirm Your Email to Get the Post Published!' );
+            $subject          = $guest_email_sub;
+            $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_guest_mails',  $default_body );
+            if ( !empty( $guest_email_body ) )
+                $body = str_replace( '{click}', '<a href="'.$encoded_guest_url.'">click</a>', $guest_email_body );
+            else 
+                $body = $default_body;
+            $headers  = array('Content-Type: text/html; charset=UTF-8');
 
             wp_mail( $to, $subject, $body, $headers );
 
@@ -644,7 +644,7 @@ Please <a href="'.$encoded_guest_url.'">click</a> this link and help us to go wi
         $form_id       = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
         $form_vars     = $this->get_input_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
-        $post_content = isset( $_POST[ 'post_content' ] ) ? $_POST[ 'post_content' ] : '';
+        $post_content  = isset( $_POST[ 'post_content' ] ) ? $_POST[ 'post_content' ] : '';
 
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
 

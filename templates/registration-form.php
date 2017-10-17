@@ -17,35 +17,32 @@
     <?php wpuf()->registration->show_messages(); ?>
 
     <form name="registrationform" class="wpuf-registration-form" id="registrationform" action="<?php echo $action_url; ?>" method="post">
-        <p>
-            <label for="wpuf-user_reg_fname"><?php _e( 'First Name', 'wpuf' ); ?></label>
+        <p size="40">
+            <label style="display: inline-block; width: 172px;" size="20" for="wpuf-user_reg_fname"><?php _e( 'First Name', 'wpuf' ); ?></label>
+            <label style="display: inline-block; width: 172px;" size="20" for="wpuf-user_reg_lname"><?php _e( 'Last Name', 'wpuf' ); ?></label>
             <br>
-            <input type="text" name="reg_fname" id="wpuf-user_fname" class="input" value="" size="30" />
-        </p>
-        <p>
-            <label for="wpuf-user_reg_lname"><?php _e( 'Last Name', 'wpuf' ); ?></label>
-            <br>
-            <input type="text" name="reg_lname" id="wpuf-user_lname" class="input" value="" size="30" />
+            <input type="text" name="reg_fname" id="wpuf-user_fname" class="input" value="" size="16" />
+            <input type="text" name="reg_lname" id="wpuf-user_lname" class="input" value="" size="16" />
         </p>
         <p>
             <label for="wpuf-user_reg_email">Email <strong>*</strong></label>
             <br>
-            <input type="text" name="reg_email" id="wpuf-user_email" class="input" value="" size="30">
+            <input type="text" name="reg_email" id="wpuf-user_email" class="input" value="" size="40">
         </p>
         <p>
             <label for="wpuf-user_login"><?php _e( 'Username', 'wpuf' ); ?></label>
             <br>
-            <input type="text" name="log" id="wpuf-user_login" class="input" value="" size="30" />
+            <input type="text" name="log" id="wpuf-user_login" class="input" value="" size="40" />
         </p>
         <p>
             <label for="wpuf-user_pass"><?php _e( 'Password', 'wpuf' ); ?></label>
             <br>
-            <input type="password" name="pwd1" id="wpuf-user_pass1" class="input" value="" size="30" />
+            <input type="password" name="pwd1" id="wpuf-user_pass1" class="input" value="" size="40" />
         </p>
         <p>
             <label for="wpuf-user_pass"><?php _e( 'Confirm Password', 'wpuf' ); ?></label>
             <br>
-            <input type="password" name="pwd2" id="wpuf-user_pass2" class="input" value="" size="30" />
+            <input type="password" name="pwd2" id="wpuf-user_pass2" class="input" value="" size="40" />
         </p>
 
         <?php do_action( 'registration_form' ); ?>

@@ -378,6 +378,14 @@ function wpuf_settings_fields() {
                 'default'  => 'Please Confirm Your Email to Get the Post Published!',
                 'type'     => 'text',
             ),
+            array(
+                'name'       => 'guest_email_body',
+                'label'    => __( 'Guest Email Body', 'wpuf' ),
+                'desc'     => __( "This sets the body of the emails sent to guest users. Please DON'T edit the '{click}' part", 'wpuf' ),
+                'default'  => "Hey There, \r\n\r\nWe just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.
+Please {click} this link and help us to go with the workflow.\r\n\r\nRegards,\r\n%sitename%",
+                'type'     => 'textarea',
+            )
         )
     );
 

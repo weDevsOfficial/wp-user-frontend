@@ -15,9 +15,9 @@
         $meta_name  = array();
         $meta_id    = array();
         $meta_key   = array(); 
-        if( !empty( $meta )) {
+        if ( !empty( $meta ) ) {
             $arr =  explode(',', $meta);
-            foreach($arr as $mkey) {
+            foreach ($arr as $mkey) {
                 $meta_key[] = trim($mkey);
             }
         }
@@ -43,7 +43,7 @@
 
             foreach ($data['meta_data']['fields'] as $fields) {
                 foreach ($fields as $key => $field_value) {
-                    if( $key == 'is_meta' && $field_value == 'yes') {
+                    if ( $key == 'is_meta' && $field_value == 'yes' ) {
                         $meta_label[]= $fields['label'];
                         $meta_name[] = $fields['name'];
                         $meta_id[]   = $fields['id'];
@@ -78,11 +78,12 @@
                     ?>
 
                     <?php
-                
-                    if( $meta != 'off' ) {
+                    // populate meta column headers
+                    
+                    if ( $meta != 'off' ) {
                         for ( $i = 0; $i < $len_label; $i++ ) {
                             for ( $j = 0; $j < $len; $j++ ) {
-                                if( $meta_key[$j] == $meta_name[$i] ) {
+                                if ( $meta_key[$j] == $meta_name[$i] ) {
                                     echo '<th>';
                                     echo __( $meta_label[$i] );
                                     echo '</th>';
@@ -150,15 +151,16 @@
                         <td>
                             <?php the_category( ', ' ); ?>
                         </td>
-                        <?php } ?>
+                        <?php } 
 
-
-                        <?php if( $meta != 'off' ) {
+                        //populate meta column fields
+                        ?>
+                        <?php if ( $meta != 'off' ) { 
                             for ( $i = 0; $i < $len_label; $i++ ) {
                                 for ( $j = 0; $j < $len; $j++ ) {
-                                    if( $meta_key[$j] == $meta_name[$i] ) {
+                                    if ( $meta_key[$j] == $meta_name[$i] ) {
                                         echo '<td>';
-                                        $m_val = get_post_meta( get_the_ID(), $meta_name[$i], true );
+                                        $m_val = get_post_meta( $post->ID, $meta_name[$i], true );
                                         echo $m_val;
                                         echo '</td>';
                                     }

@@ -5,26 +5,100 @@
     </h2>
 
     <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
-        <div class="post_count"><?php printf( __( 'You have created <span>%d</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
+        <div class="post_count"><?php if ( !empty( $post_type_obj ) ) printf( __( 'You have created <span>%d</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
     <?php } ?>
 
-    <?php do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj ) ?>
+    <?php if ( !empty( $post_type_obj ) ) do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj ) ?>
+    <?php
 
-    <?php if ( $dashboard_query->have_posts() ) { 
+        $meta_label = array(); 
+        $meta_name  = array();
+        $meta_id    = array();
+        $meta_key   = array(); 
+        if ( !empty( $meta ) ) {
+            $arr =  explode(',', $meta);
+            foreach ($arr as $mkey) {
+                $meta_key[] = trim($mkey);
+            }
+        }
+    ?>
+    <?php if ( $dashboard_query->have_posts() ) {
 
-        $featured_img = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
-        $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
-        $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+        $args = array(
+            'post_status' => 'publish',
+            'post_type'   => 'wpuf_forms'
+        );
+
+        $query = new WP_Query( $args );
+
+        foreach ( $query->posts as $post ) {
+            $postdata = get_object_vars( $post );
+            unset( $postdata['ID'] );
+
+            $data = array(
+                'meta_data' => array(
+                    'fields'    => wpuf_get_form_fields( $post->ID )
+                )
+            );
+
+            foreach ($data['meta_data']['fields'] as $fields) {
+                foreach ($fields as $key => $field_value) {
+                    if ( $key == 'is_meta' && $field_value == 'yes' ) {
+                        $meta_label[]= $fields['label'];
+                        $meta_name[] = $fields['name'];
+                        $meta_id[]   = $fields['id'];
+                    }
+                };
+            };
+        }
+
+        wp_reset_postdata();
+
+        $len = count( $meta_key );
+        $len_label = count( $meta_label );
+        $len_id   = count( $meta_id );
+        $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
+        $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
+        $charging_enabled   = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
         ?>
         <table class="items-table <?php echo $post_type; ?>" cellpadding="0" cellspacing="0">
             <thead>
                 <tr class="items-list-header">
                     <?php
-                    if ( 'on' == $featured_img ) {
+                    if ((( 'on' == $featured_img || 'on' == $featured_image ) || ( 'off' == $featured_img && 'on' == $featured_image ) || ( 'on' == $featured_img && 'default' == $featured_image )) && !( 'on' == $featured_img && 'off' == $featured_image )) {
                         echo '<th>' . __( 'Featured Image', 'wpuf' ) . '</th>';
                     }
                     ?>
                     <th><?php _e( 'Title', 'wpuf' ); ?></th>
+
+                    <?php
+                    if ( 'on' == $category ) {
+                        echo '<th>' . __( 'Category', 'wpuf' ) . '</th>';
+                    }
+                    ?>
+
+                    <?php
+                    // populate meta column headers
+                    
+                    if ( $meta != 'off' ) {
+                        for ( $i = 0; $i < $len_label; $i++ ) {
+                            for ( $j = 0; $j < $len; $j++ ) {
+                                if ( $meta_key[$j] == $meta_name[$i] ) {
+                                    echo '<th>';
+                                    echo __( $meta_label[$i] );
+                                    echo '</th>';
+                                }
+                            }
+                        }
+                    }
+                    ?>
+
+                    <?php
+                    if ( 'on' == $excerpt ) {
+                        echo '<th>' . __( 'Excerpt', 'wpuf' ) . '</th>';
+                    }
+                    ?>
+
                     <th><?php _e( 'Status', 'wpuf' ); ?></th>
 
                     <?php do_action( 'wpuf_dashboard_head_col', $args ) ?>
@@ -46,7 +120,7 @@
                     $show_link = !in_array( $post->post_status, array('draft', 'future', 'pending') );
                     ?>
                     <tr>
-                        <?php if ( 'on' == $featured_img ) { ?>
+                        <?php if ((( 'on' == $featured_img || 'on' == $featured_image ) || ( 'off' == $featured_img && 'on' == $featured_image ) || ( 'on' == $featured_img && 'default' == $featured_image )) && !( 'on' == $featured_img && 'off' == $featured_image )) { ?>
                             <td>
                                 <?php
                                 echo $show_link ? '<a href="' . get_permalink( $post->ID ) . '">' : '';
@@ -72,6 +146,33 @@
 
                             <?php } ?>
                         </td>
+
+                        <?php if ( 'on' == $category ) { ?>
+                        <td>
+                            <?php the_category( ', ' ); ?>
+                        </td>
+                        <?php } 
+
+                        //populate meta column fields
+                        ?>
+                        <?php if ( $meta != 'off' ) { 
+                            for ( $i = 0; $i < $len_label; $i++ ) {
+                                for ( $j = 0; $j < $len; $j++ ) {
+                                    if ( $meta_key[$j] == $meta_name[$i] ) {
+                                        echo '<td>';
+                                        $m_val = get_post_meta( $post->ID, $meta_name[$i], true );
+                                        echo $m_val;
+                                        echo '</td>';
+                                    }
+                                }
+                            } 
+                        } ?>
+
+                        <?php if ( 'on' == $excerpt ) { ?>
+                        <td>
+                            <?php the_excerpt(); ?>
+                        </td>
+                        <?php } ?>
                         <td>
                             <?php wpuf_show_post_status( $post->post_status ) ?>
                         </td>
@@ -143,10 +244,11 @@
         </div>
     <?php
     } else {
-        printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', $post_type_obj->label );
-        do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
+        if ( !empty( $post_type_obj ) ) {
+            printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', $post_type_obj->label );
+            do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
+        }    
     }
-
-    do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj ); ?>
+    if ( !empty( $post_type_obj ) ) do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj ); ?>
 
 </div>

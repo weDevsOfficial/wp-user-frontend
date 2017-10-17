@@ -207,7 +207,12 @@ final class WP_User_Frontend {
             include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
 
         } else {
+            
             require_once WPUF_ROOT . '/class/frontend-dashboard.php';
+            require_once WPUF_ROOT . '/includes/free/class-registration.php';
+            if ( !(class_exists('WPUF_Login') && class_exists('WP_User_Frontend_Pro') ) ) {
+                require_once WPUF_ROOT . '/includes/free/class-login.php';
+            }
         }
 
         // add reCaptcha library if not found
@@ -230,7 +235,7 @@ final class WP_User_Frontend {
 
         $this->container['subscription']  = WPUF_Subscription::init();
         $this->container['frontend_post'] = WPUF_Frontend_Form_Post::init();
-        $this->container['account']   = new WPUF_Frontend_Account();
+        $this->container['account']       = new WPUF_Frontend_Account();
         $this->container['insights']      = new WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
 
         if ( is_admin() ) {
@@ -248,6 +253,8 @@ final class WP_User_Frontend {
 
             $this->container['dashboard'] = new WPUF_Frontend_Dashboard();
             $this->container['payment']   = new WPUF_Payment();
+            $this->container['login']     = WPUF_Login::init();
+            $this->container['registration']  = WPUF_Registration::init();
         }
     }
 

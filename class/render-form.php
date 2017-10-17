@@ -735,7 +735,7 @@ class WPUF_Render_Form {
         if ( $post_id && $attr['input_type'] == 'password') {
             $attr['required'] = 'no';
         }
-        if ( $attr['input_type'] == 'recaptcha' && $attr['recaptcha_type'] == 'invisible_recaptcha') {
+        if ( isset( $attr['input_type'] ) && $attr['input_type'] == 'recaptcha' && $attr['recaptcha_type'] == 'invisible_recaptcha') {
             return;
         }
 

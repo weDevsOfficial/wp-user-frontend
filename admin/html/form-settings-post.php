@@ -13,6 +13,7 @@ $default_cat           = isset( $form_settings['default_cat'] ) ? $form_settings
 
 $guest_post            = isset( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
 $guest_details         = isset( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
+$guest_email_verify    = isset( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false';
 $name_label            = isset( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name' );
 $email_label           = isset( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email' );
 $message_restrict      = isset( $form_settings['message_restrict'] ) ? $form_settings['message_restrict'] : $restrict_message;
@@ -140,6 +141,17 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
                     <?php _e( 'Require Name and Email address', 'wpuf' ) ?>
                 </label>
                 <p class="description"><?php _e( 'If requires, users will be automatically registered to the site using the name and email address', 'wpuf' ); ?></p>
+            </td>
+        </tr>
+
+        <tr class="show-if-guest">
+            <th><?php _e( 'Email Verification', 'wpuf' ); ?></th>
+            <td>
+                <label>
+                    <input type="checkbox" name="wpuf_settings[guest_email_verify]" value="true"<?php checked( $guest_email_verify, 'true' ); ?> />
+                    <?php _e( 'Require Email Verification for Guests', 'wpuf' ) ?>
+                </label>
+                <p class="description"><?php _e( 'If requires, users will be required to verify their email adress.', 'wpuf' ); ?></p>
             </td>
         </tr>
 

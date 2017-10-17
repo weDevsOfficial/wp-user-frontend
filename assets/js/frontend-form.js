@@ -928,4 +928,15 @@
         }
     });
 
+    $(function() {
+        $('input[name="first_name"], input[name="last_name"]').on('change keyup', function() {
+            var myVal, newVal = $.makeArray($('input[name="first_name"], input[name="last_name"]').map(function(){
+                if (myVal = $(this).val()) {
+                    return(myVal);
+                }
+            })).join(' ');
+            $('input[name="display_name"]').val(newVal);                                    
+        });
+    });
+
 })(jQuery, window);

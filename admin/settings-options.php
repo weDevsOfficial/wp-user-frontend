@@ -24,6 +24,10 @@ function wpuf_settings_sections() {
             'id'    => 'wpuf_payment',
             'title' => __( 'Payments', 'wpuf' )
         ),
+        array(
+            'id'    => 'wpuf_guest_mails',
+            'title' => __( 'E-Mails', 'wpuf' )
+        ),
     );
 
     return apply_filters( 'wpuf_settings_sections', $sections );
@@ -201,7 +205,7 @@ function wpuf_settings_fields() {
             array(
                 'name'  => 'show_ft_image',
                 'label' => __( 'Show Featured Image', 'wpuf' ),
-                'desc'  => __( 'Show featured image of the post', 'wpuf' ),
+                'desc'  => __( 'Show featured image of the post (Overridden by Shortcode)', 'wpuf' ),
                 'type'  => 'checkbox'
             ),
             array(
@@ -223,14 +227,14 @@ function wpuf_settings_fields() {
                 'label'   => __( 'Auto Login After Registration', 'wpuf' ),
                 'desc'    => __( 'If enabled, users after registration will be logged in to the system', 'wpuf' ),
                 'type'    => 'checkbox',
-                'default' => 'off'
+                'default' => 'on'
             ),
             array(
                 'name'    => 'register_link_override',
                 'label'   => __( 'Login/Registration override', 'wpuf' ),
                 'desc'    => __( 'If enabled, default login and registration forms will be overridden by WPUF with pages below', 'wpuf' ),
                 'type'    => 'checkbox',
-                'default' => 'off'
+                'default' => 'on'
             ),
             array(
                 'name'    => 'reg_override_page',
@@ -366,6 +370,22 @@ function wpuf_settings_fields() {
                 'options' => wpuf_get_gateways()
             )
         ) ),
+        'wpuf_guest_mails' => array(
+            array(
+                'name'       => 'guest_email_subject',
+                'label'    => __( 'Guest Email Subject', 'wpuf' ),
+                'desc'     => __( 'This sets the subject of the emails sent to guest users', 'wpuf' ),
+                'default'  => 'Please Confirm Your Email to Get the Post Published!',
+                'type'     => 'text',
+            ),
+            array(
+                'name'       => 'guest_email_body',
+                'label'    => __( 'Guest Email Body', 'wpuf' ),
+                'desc'     => __( "This sets the body of the emails sent to guest users. Please DON'T edit the '{activation_link}' part", 'wpuf' ),
+                'default'  => "Hey There, \r\n\r\nWe just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.\r\n\r\nPlease click the link below to verify: \r\n\r\n{activation_link}\r\n\r\nRegards,\r\n%sitename%",
+                'type'     => 'textarea',
+            )
+        )
     );
 
     return apply_filters( 'wpuf_settings_fields', $settings_fields );
@@ -379,6 +399,8 @@ function wpuf_settings_field_profile( $form ) {
     ) );
 
     $val = get_option( 'wpuf_profile', array() );
+
+    if ( class_exists('WP_User_Frontend_Pro')  ) {
     ?>
 
     <p style="padding-left: 10px; font-style: italic; font-size: 13px;">
@@ -403,6 +425,7 @@ function wpuf_settings_field_profile( $form ) {
         <?php } ?>
     </table>
     <?php
+    }
 }
 
 add_action( 'wsa_form_bottom_wpuf_profile', 'wpuf_settings_field_profile' );

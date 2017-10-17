@@ -94,6 +94,10 @@ class WPUF_Shortcodes_Button {
                 'title'   => __( 'Login', 'wpuf' ),
                 'content' => '[wpuf-login]'
             ),
+            'wpuf-registration'    => array(
+                'title'   => __( 'Registration', 'wpuf' ),
+                'content' => '[wpuf-registration]'
+            ),
             'wpuf-sub-pack' => array(
                 'title'   => __( 'Subscription', 'wpuf' ),
                 'content' => '[wpuf_sub_pack]'

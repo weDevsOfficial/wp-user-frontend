@@ -6,23 +6,22 @@
 .wpufTableRow {
   display: table-row;
 }
-.wpufTableHeading {
-  background-color: #EEE;
-  display: table-header-group;
-}
-.wpufTableCell,
-.wpufTableHead {
-  border: 1px solid #eee;
-  display: table-cell;
-  padding: 3px 10px;
+.wpufTableRow:nth-child(even) {
+  background-color: #f5f5f5;
 }
 .wpufTableHeading {
-  background-color: #EEE;
+  background-color: #eee;
   display: table-header-group;
   font-weight: bold;
 }
+.wpufTableCell,
+.wpufTableHead {
+  border: none;
+  display: table-cell;
+  padding: 3px 10px;
+}
 .wpufTableFoot {
-  background-color: #EEE;
+  background-color: #eee;
   display: table-footer-group;
   font-weight: bold;
 }

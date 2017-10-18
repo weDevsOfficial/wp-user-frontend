@@ -1,3 +1,34 @@
+/* DivTable.com */
+.wpufTable {
+  display: table;
+  width: 100%;
+}
+.wpufTableRow {
+  display: table-row;
+}
+.wpufTableHeading {
+  background-color: #EEE;
+  display: table-header-group;
+}
+.wpufTableCell,
+.wpufTableHead {
+  border: 1px solid #eee;
+  display: table-cell;
+  padding: 3px 10px;
+}
+.wpufTableHeading {
+  background-color: #EEE;
+  display: table-header-group;
+  font-weight: bold;
+}
+.wpufTableFoot {
+  background-color: #EEE;
+  display: table-footer-group;
+  font-weight: bold;
+}
+.wpufTableBody {
+  display: table-row-group;
+}
 .wpuf-loading {
   width: 16px;
   height: 16px;

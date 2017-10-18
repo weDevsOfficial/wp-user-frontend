@@ -207,10 +207,10 @@ final class WP_User_Frontend {
             include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
 
         } else {
-            
+
             require_once WPUF_ROOT . '/class/frontend-dashboard.php';
             require_once WPUF_ROOT . '/includes/free/class-registration.php';
-            if ( !(class_exists('WPUF_Login') && class_exists('WP_User_Frontend_Pro') ) ) {
+            if ( !(class_exists('WPUF_Simple_Login') && class_exists('WP_User_Frontend_Pro') ) ) {
                 require_once WPUF_ROOT . '/includes/free/class-login.php';
             }
         }
@@ -251,10 +251,10 @@ final class WP_User_Frontend {
 
         } else {
 
-            $this->container['dashboard'] = new WPUF_Frontend_Dashboard();
-            $this->container['payment']   = new WPUF_Payment();
-            $this->container['login']     = WPUF_Login::init();
-            $this->container['registration']  = WPUF_Registration::init();
+            $this->container['dashboard']       = new WPUF_Frontend_Dashboard();
+            $this->container['payment']         = new WPUF_Payment();
+            $this->container['login']           = WPUF_Simple_Login::init();
+            $this->container['registration']    = WPUF_Registration::init();
         }
     }
 

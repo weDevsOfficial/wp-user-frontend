@@ -6,7 +6,7 @@
  * @since 2.2
  * @author Tareq Hasan <tareq@wedevs.com>
  */
-class WPUF_Login {
+class WPUF_Simple_Login {
 
     private $login_errors = array();
     private $messages = array();

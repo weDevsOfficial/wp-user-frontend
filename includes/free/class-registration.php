@@ -4,7 +4,6 @@
  * Registration handler class
  *
  * @since 2.5.8
- * @author Tareq Hasan <tareq@wedevs.com>
  */
 class WPUF_Registration {
 
@@ -122,7 +121,7 @@ class WPUF_Registration {
         $links = array();
 
         if ( $args['register'] ) {
-            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wpuf-pro' ) );
+            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wpuf' ) );
         }
 
         return implode( ' | ', $links );
@@ -140,7 +139,7 @@ class WPUF_Registration {
             ), $atts
         );
         $userrole = $atts['role'];
-     
+
         $roleencoded = wpuf_encryption( $userrole );
 
         $reg_page = $this->get_registration_url();
@@ -190,47 +189,47 @@ class WPUF_Registration {
             $validation_error = apply_filters( 'wpuf_process_registration_errors', $validation_error, $_POST['reg_fname'], $_POST['reg_lname'], $_POST['reg_email'],  $_POST['log'], $_POST['pwd1'], $_POST['pwd2'] );
 
             if ( $validation_error->get_error_code() ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . $validation_error->get_error_message();
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . $validation_error->get_error_message();
                 return;
             }
 
             if ( empty( $_POST['reg_fname'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . __( 'Username is required.', 'wpuf-pro' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'First name is required.', 'wpuf' );
                 return;
             }
 
             if ( empty( $_POST['reg_lname'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . __( 'Username is required.', 'wpuf-pro' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Last name is required.', 'wpuf' );
                 return;
             }
 
             if ( empty( $_POST['reg_email'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . __( 'Username is required.', 'wpuf-pro' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Email is required.', 'wpuf' );
                 return;
             }
 
             if ( empty( $_POST['log'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . __( 'Username is required.', 'wpuf-pro' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Username is required.', 'wpuf' );
                 return;
             }
 
             if ( empty( $_POST['pwd1'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . __( 'Password is required.', 'wpuf-pro' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Password is required.', 'wpuf' );
                 return;
             }
 
             if ( empty( $_POST['pwd2'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . __( 'Password is required.', 'wpuf-pro' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Confirm Password is required.', 'wpuf' );
                 return;
             }
 
             if ( $_POST['pwd1'] != $_POST['pwd2'] ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . __( 'Passwords are not same.', 'wpuf-pro' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Passwords are not same.', 'wpuf' );
                 return;
             }
 
             if ( get_user_by( 'login', $_POST['log'] ) === $_POST['log'] ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . __( 'A user with same username already exists.', 'wpuf-pro' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'A user with same username already exists.', 'wpuf' );
                 return;
             }
 
@@ -240,21 +239,23 @@ class WPUF_Registration {
                 if ( isset( $user->user_login ) ) {
                     $userdata['user_login']  = $user->user_login;
                 } else {
-                    $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf-pro' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wpuf-pro' );
+                    $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wpuf' );
                     return;
                 }
             } else {
                 $userdata['user_login']      = $_POST['log'];
             }
-         
+
             $dec_role = wpuf_decryption( $_POST['urhidden'] );
 
             $userdata['first_name'] = $_POST['reg_fname'];
             $userdata['last_name']  = $_POST['reg_lname'];
             $userdata['user_email'] = $_POST['reg_email'];
             $userdata['user_pass']  = $_POST['pwd1'];
-            if ( get_role( $dec_role ) )
+
+            if ( get_role( $dec_role ) ) {
                 $userdata['role'] = $dec_role;
+            }
 
             $user = wp_insert_user( $userdata );
 
@@ -277,8 +278,11 @@ class WPUF_Registration {
         }
     }
 
-
-
+    /**
+     * Redirect to registration page
+     *
+     * @return void
+     */
     function wp_registration_page_redirect() {
         global $pagenow;
 
@@ -292,10 +296,6 @@ class WPUF_Registration {
             wp_redirect( $reg_page );
             exit;
         }
-
-        if( isset($_GET['success']) && "yes" == $_GET['success'] ) {
-            echo "<div class='wpuf-success' style='text-align:center'>Successfully Registered. Please Login.</div>";
-        }
     }
 
     /**
@@ -307,7 +307,7 @@ class WPUF_Registration {
         if ( $this->registration_errors ) {
             foreach ($this->registration_errors as $error) {
                 echo '<div class="wpuf-error">';
-                _e( $error,'wpuf-pro' );
+                _e( $error,'wpuf' );
                 echo '</div>';
             }
         }

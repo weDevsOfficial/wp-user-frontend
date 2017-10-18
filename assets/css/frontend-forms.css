@@ -1,3 +1,33 @@
+/* DivTable.com */
+.wpufTable {
+  display: table;
+  width: 100%;
+}
+.wpufTableRow {
+  display: table-row;
+}
+.wpufTableRow:nth-child(even) {
+  background-color: #f5f5f5;
+}
+.wpufTableHeading {
+  background-color: #eee;
+  display: table-header-group;
+  font-weight: bold;
+}
+.wpufTableCell,
+.wpufTableHead {
+  border: none;
+  display: table-cell;
+  padding: 3px 10px;
+}
+.wpufTableFoot {
+  background-color: #eee;
+  display: table-footer-group;
+  font-weight: bold;
+}
+.wpufTableBody {
+  display: table-row-group;
+}
 .wpuf-loading {
   width: 16px;
   height: 16px;
@@ -91,6 +121,18 @@ ul.wpuf-form li .wpuf-label {
 ul.wpuf-form li .wpuf-label .required {
   color: red;
 }
+ul.wpuf-form li.field-size-large .wpuf-fields {
+  float: left;
+  width: 70%;
+}
+ul.wpuf-form li.field-size-medium .wpuf-fields {
+  float: left;
+  width: 50%;
+}
+ul.wpuf-form li.field-size-small .wpuf-fields {
+  float: left;
+  width: 30%;
+}
 ul.wpuf-form li .wpuf-fields {
   float: left;
   width: 70%;
@@ -178,6 +220,10 @@ ul.wpuf-form li .wpuf-fields a.file-selector:focus {
 }
 ul.wpuf-form li .wpuf-fields .google-map img {
   max-width: none !important;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-product-qty {
+  float: left;
+  width: 10%;
 }
 ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap {
   margin-bottom: 8px;
@@ -442,6 +488,21 @@ ul.wpuf-form.form-label-above li .wpuf-fields {
   float: none;
   width: 100%;
 }
+ul.wpuf-form.form-label-above li.field-size-large .wpuf-fields {
+  display: block;
+  float: none;
+  width: 100%;
+}
+ul.wpuf-form.form-label-above li.field-size-medium .wpuf-fields {
+  display: block;
+  float: none;
+  width: 65%;
+}
+ul.wpuf-form.form-label-above li.field-size-small .wpuf-fields {
+  display: block;
+  float: none;
+  width: 30%;
+}
 ul.wpuf-form.form-label-above li .wpuf-label {
   margin-bottom: 10px;
 }
@@ -450,6 +511,21 @@ ul.wpuf-form.form-label-right li .wpuf-label {
 }
 ul.wpuf-form.form-label-hidden li .wpuf-label {
   display: none;
+}
+ul.wpuf-form.form-label-hidden li.field-size-large .wpuf-fields {
+  display: block;
+  float: none;
+  width: 100%;
+}
+ul.wpuf-form.form-label-hidden li.field-size-medium .wpuf-fields {
+  display: block;
+  float: none;
+  width: 65%;
+}
+ul.wpuf-form.form-label-hidden li.field-size-small .wpuf-fields {
+  display: block;
+  float: none;
+  width: 30%;
 }
 ul.wpuf-form.form-label-hidden li .wpuf-fields {
   display: block;
@@ -1055,6 +1131,18 @@ body.rtl ul.wpuf-form li .wpuf-label {
   ul.wpuf-form li .wpuf-fields {
     float: none;
     width: 100%;
+  }
+  ul.wpuf-form li.field-size-large .wpuf-fields {
+    float: none;
+    width: 100%;
+  }
+  ul.wpuf-form li.field-size-medium .wpuf-fields {
+    float: none;
+    width: 65%;
+  }
+  ul.wpuf-form li.field-size-small .wpuf-fields {
+    float: none;
+    width: 30%;
   }
 }
 .wpuf-form .required {

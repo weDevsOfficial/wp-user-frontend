@@ -62,7 +62,7 @@ class WPUF_Subscription {
             $current_pack = self::get_user_pack( $_POST['user_id'] );
 
             $gateway = ( $_POST['gateway'] == 'bank/manual' ) ? 'bank' : sanitize_text_field( $_POST['gateway'] );
-            
+
             if ( 'bank' == $gateway || 'no' == $current_pack['recurring'] ) {
                 $this->update_user_subscription_meta( $_POST['user_id'], 'Cancel' );
             } else {
@@ -398,7 +398,7 @@ class WPUF_Subscription {
     }
 
     function subscription_form_elements_post() {
-        require_once dirname(__FILE__) . '/../admin/subscription.php';
+        require_once dirname(__FILE__) . '/../admin/class-admin-subscription.php';
         ?>
         <div class="wrap">
             <?php WPUF_Admin_Subscription::getInstance()->form(); ?>

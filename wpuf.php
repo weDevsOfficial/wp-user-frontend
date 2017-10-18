@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.5.7
+Version: 2.5.8
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wpuf
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.5.7' );
+define( 'WPUF_VERSION', '2.5.8' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -24,15 +24,6 @@ define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
  * @package WP User Frontend
  */
 final class WP_User_Frontend {
-
-    /**
-     * Integrations instance.
-     *
-     * @since 2.5.4
-     *
-     * @var WPUF_Integrations
-     */
-    public $integrations = null;
 
     /**
      * Holds various class instances
@@ -198,16 +189,15 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/render-form.php';
         require_once WPUF_ROOT . '/class/payment.php';
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
-        require_once WPUF_ROOT . '/includes/class-abstract-integration.php';
-        require_once WPUF_ROOT . '/includes/class-integrations.php';
+        require_once WPUF_ROOT . '/class/frontend-account.php';
 
         if ( is_admin() ) {
             require_once WPUF_ROOT . '/admin/settings-options.php';
-            require_once WPUF_ROOT . '/admin/settings.php';
+            require_once WPUF_ROOT . '/admin/class-admin-settings.php';
             require_once WPUF_ROOT . '/admin/form-handler.php';
             require_once WPUF_ROOT . '/admin/form.php';
             require_once WPUF_ROOT . '/admin/posting.php';
-            require_once WPUF_ROOT . '/admin/subscription.php';
+            require_once WPUF_ROOT . '/admin/class-admin-subscription.php';
             require_once WPUF_ROOT . '/admin/installer.php';
             require_once WPUF_ROOT . '/admin/promotion.php';
             require_once WPUF_ROOT . '/admin/post-forms-list-table.php';
@@ -219,7 +209,8 @@ final class WP_User_Frontend {
         } else {
 
             require_once WPUF_ROOT . '/class/frontend-dashboard.php';
-            require_once WPUF_ROOT . '/class/frontend-account.php';
+            require_once WPUF_ROOT . '/includes/free/class-registration.php';
+            require_once WPUF_ROOT . '/includes/free/class-login.php';
         }
 
         // add reCaptcha library if not found
@@ -236,14 +227,13 @@ final class WP_User_Frontend {
      */
     function instantiate() {
 
-        $this->integrations               = new WPUF_Integrations();
-
         $this->container['upload']        = new WPUF_Upload();
         $this->container['paypal']        = new WPUF_Paypal();
         $this->container['form_template'] = new WPUF_Admin_Form_Template();
 
         $this->container['subscription']  = WPUF_Subscription::init();
         $this->container['frontend_post'] = WPUF_Frontend_Form_Post::init();
+        $this->container['account']       = new WPUF_Frontend_Account();
         $this->container['insights']      = new WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
 
         if ( is_admin() ) {
@@ -259,9 +249,10 @@ final class WP_User_Frontend {
 
         } else {
 
-            $this->container['dashboard'] = new WPUF_Frontend_Dashboard();
-            $this->container['payment']   = new WPUF_Payment();
-            $this->container['account']   = new WPUF_Frontend_Account();
+            $this->container['dashboard']       = new WPUF_Frontend_Dashboard();
+            $this->container['payment']         = new WPUF_Payment();
+            $this->container['login']           = WPUF_Simple_Login::init();
+            $this->container['registration']    = WPUF_Registration::init();
         }
     }
 
@@ -273,26 +264,42 @@ final class WP_User_Frontend {
     public static function install() {
         global $wpdb;
 
+        $collate = '';
+
+        if ( $wpdb->has_cap( 'collation' ) ) {
+            if ( ! empty($wpdb->charset ) ) {
+                $collate .= "DEFAULT CHARACTER SET $wpdb->charset";
+            }
+
+            if ( ! empty($wpdb->collate ) ) {
+                $collate .= " COLLATE $wpdb->collate";
+            }
+        }
+
         self::set_schedule_events();
 
         flush_rewrite_rules( false );
 
         $sql_transaction = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_transaction (
-            `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+            `id` int(11) NOT NULL AUTO_INCREMENT,
             `user_id` bigint(20) DEFAULT NULL,
-            `status` varchar(255) NOT NULL DEFAULT 'pending_payment',
+            `status` varchar(60) NOT NULL DEFAULT 'pending_payment',
             `cost` varchar(255) DEFAULT '',
             `post_id` varchar(20) DEFAULT NULL,
             `pack_id` bigint(20) DEFAULT NULL,
-            `payer_first_name` longtext,
-            `payer_last_name` longtext,
-            `payer_email` longtext,
-            `payment_type` longtext,
+            `payer_first_name` varchar(60),
+            `payer_last_name` varchar(60),
+            `payer_email` varchar(100),
+            `payment_type` varchar(20),
             `payer_address` longtext,
-            `transaction_id` longtext,
+            `transaction_id` varchar(60),
             `created` datetime NOT NULL,
-            PRIMARY KEY (`id`)
-            ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+            PRIMARY KEY (`id`),
+            key `user_id` (`user_id`),
+            key `post_id` (`post_id`),
+            key `pack_id` (`pack_id`),
+            key `payer_email` (`payer_email`)
+        ) $collate;";
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
@@ -315,9 +322,13 @@ final class WP_User_Frontend {
             return;
         }
 
-        require_once WPUF_ROOT . '/class/upgrades.php';
+        require_once WPUF_ROOT . '/includes/class-upgrades.php';
 
-        new WPUF_Upgrades( WPUF_VERSION );
+        $upgrader = new WPUF_Upgrades();
+
+        if ( $upgrader->needs_update() ) {
+            $upgrader->perform_updates();
+        }
     }
 
     /**
@@ -389,7 +400,7 @@ final class WP_User_Frontend {
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on') == 'on') {
             $this->plugin_scripts();
-        } else if ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) ) {
+        } else if ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) ) {
             $this->plugin_scripts();
         }
     }
@@ -411,7 +422,7 @@ final class WP_User_Frontend {
             || wpuf_has_shortcode( 'wpuf_sub_pack', $post->ID )
             || wpuf_has_shortcode( 'wpuf-login', $post->ID )
             || wpuf_has_shortcode( 'wpuf_form', $post->ID )
-            || wpuf_has_shortcode( 'wpuf_profile', $post->ID )
+            || wpuf_has_shortcode( 'wpuf_account', $post->ID )
         ) {
             ?>
             <style>

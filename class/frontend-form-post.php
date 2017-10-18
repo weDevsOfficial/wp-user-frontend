@@ -20,6 +20,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         // draft
         add_action( 'wp_ajax_wpuf_draft_post', array( $this, 'draft_post' ) );
+        add_action( 'init', array( $this, 'publish_guest_post' ) );
 
         // form preview
         add_action( 'wp_ajax_wpuf_form_preview', array( $this, 'preview_form' ) );
@@ -182,6 +183,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $is_update           = false;
         $post_author         = null;
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_general', 1 );
+        $guest_verify        = isset( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false' ;
+        $guest_mode          = $form_settings['guest_post'];
 
         // Guest Stuffs: check for guest post
         if ( !is_user_logged_in() ) {
@@ -247,9 +250,15 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $post_author = get_current_user_id();
         }
 
+        $p_status = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
+
+        if ( !is_user_logged_in() && $guest_mode = 'true' && $guest_verify == 'true') {
+            $p_status  = 'draft';
+        } 
+
         $postarr = array(
             'post_type'    => $form_settings['post_type'],
-            'post_status'  => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
+            'post_status'  => $p_status,
             'post_author'  => $post_author,
             'post_title'   => isset( $_POST['post_title'] ) ? trim( $_POST['post_title'] ) : '',
             'post_content' => isset( $_POST['post_content'] ) ? trim( $_POST['post_content'] ) : '',
@@ -296,7 +305,12 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             if ( $form_settings['edit_post_status'] == '_nochange' ) {
                 $postarr['post_status'] = get_post_field( 'post_status', $_POST['post_id'] );
-            } else {
+            } elseif ( $guest_mode == 'true' && $guest_verify == 'true' ) {
+                $postarr['post_status'] = 'draft';
+            } elseif ( $guest_mode == 'true' && $guest_verify == 'false' ) {
+                $postarr['post_status'] = 'publish';
+            } 
+            else {
                 $postarr['post_status'] = $form_settings['edit_post_status'];
             }
         } else {
@@ -517,6 +531,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             //redirect URL
             $show_message = false;
             $redirect_to  = false;
+            $res_flag     = false;
 
             if ( $is_update ) {
                 if ( $form_settings['edit_redirect_to'] == 'page' ) {
@@ -533,6 +548,25 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 } else {
                     $redirect_to = get_permalink( $post_id );
                 }
+            } elseif ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() ) {
+                    $form_settings['redirect_to'] == 'same';
+                    $show_message = true;
+                    $res_flag = true;
+                    $response = array(
+                        'success'      => true,
+                        'redirect_to'  => $redirect_to,
+                        'show_message' => $show_message,
+                        'message'      => 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!'
+                    );
+            } elseif ( $guest_mode == 'true' && $guest_verify == 'false' && !is_user_logged_in() ) {
+                    $form_settings['redirect_to'] == 'same';
+                    $res_flag = true;
+                    $response = array(
+                        'success'      => true,
+                        'redirect_to'  => $redirect_to,
+                        'show_message' => $show_message,
+                        'message'      => $form_settings['message']
+                    );
             } else {
                 if ( $form_settings['redirect_to'] == 'page' ) {
                     $redirect_to = get_permalink( $form_settings['page_id'] );
@@ -546,17 +580,16 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
 
             // send the response
-            $response = array(
-                'success'      => true,
-                'redirect_to'  => $redirect_to,
-                'show_message' => $show_message,
-                'message'      => $form_settings['message']
-            );
-
-            if ( $is_update ) {
-                $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $form_settings );
+            if ( $res_flag == false ) {
+                $response = array(
+                    'success'      => true,
+                    'redirect_to'  => $redirect_to,
+                    'show_message' => $show_message,
+                    'message'      => $form_settings['message']
+                );
             } else {
-                $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $form_settings );
+                $post_id_encoded   = wpuf_encryption( $post_id ) ;
+                send_mail_to_guest ( $post_id_encoded );
             }
 
             wpuf_clear_buffer();
@@ -588,7 +621,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $form_id       = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
         $form_vars     = $this->get_input_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
-        $post_content = isset( $_POST[ 'post_content' ] ) ? $_POST[ 'post_content' ] : '';
+        $post_content  = isset( $_POST[ 'post_content' ] ) ? $_POST[ 'post_content' ] : '';
 
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
 
@@ -851,4 +884,25 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         );
     }
 
+    /**
+    * Hook to publish verified guest post
+    *
+    * @since 2.5.8
+    */
+    function publish_guest_post () {
+        if ( isset($_GET['post_msg']) && $_GET['post_msg'] == 'verified' ) {
+            $secret_key = AUTH_KEY;
+            $secret_iv  = AUTH_SALT;
+
+            $encrypt_method = "AES-256-CBC";
+            $key = hash( 'sha256', $secret_key );
+            $iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
+
+            $post_id = openssl_decrypt( base64_decode( $_GET['p_id'] ), $encrypt_method, $key, 0, $iv );
+
+            if ( get_post_status ( $post_id ) ) {
+                wp_publish_post( $post_id );
+            }
+        }
+    }
 }

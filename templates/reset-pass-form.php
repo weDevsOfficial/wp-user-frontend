@@ -6,8 +6,8 @@ WPUF will always look in your theme's directory first, before using this default
 ?>
 <div class="login" id="wpuf-login-form">
 
-    <?php WPUF_Login::init()->show_errors(); ?>
-    <?php WPUF_Login::init()->show_messages(); ?>
+    <?php WPUF_Simple_Login::init()->show_errors(); ?>
+    <?php WPUF_Simple_Login::init()->show_messages(); ?>
 
 	<form name="resetpasswordform" id="resetpasswordform" action="" method="post">
 		<p>
@@ -24,8 +24,8 @@ WPUF will always look in your theme's directory first, before using this default
 
 		<p class="submit">
 			<input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Reset Password', 'wpuf' ); ?>" />
-			<input type="hidden" name="key" value="<?php echo WPUF_Login::get_posted_value( 'key' ); ?>" />
-			<input type="hidden" name="login" id="user_login" value="<?php echo WPUF_Login::get_posted_value( 'login' ); ?>" />
+			<input type="hidden" name="key" value="<?php echo WPUF_Simple_Login::get_posted_value( 'key' ); ?>" />
+			<input type="hidden" name="login" id="user_login" value="<?php echo WPUF_Simple_Login::get_posted_value( 'login' ); ?>" />
 			<input type="hidden" name="wpuf_reset_password" value="true" />
 		</p>
 

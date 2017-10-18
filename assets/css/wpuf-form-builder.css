@@ -306,6 +306,51 @@
 #wpuf-form-builder-settings .tab-contents .form-table {
   margin-top: 0;
 }
+#wpuf-form-builder-payment {
+  position: relative;
+  margin-top: 15px;
+  min-height: 380px;
+}
+#wpuf-form-builder-payment .nav-tab-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 170px;
+  border-bottom: 0;
+}
+#wpuf-form-builder-payment .nav-tab-wrapper a {
+  width: calc(100% - -1px);
+  margin-left: 0;
+  margin-bottom: .5em;
+  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+  font-weight: 400;
+  font-size: 13px;
+}
+#wpuf-form-builder-payment .nav-tab-wrapper a.nav-tab-active {
+  border-right-color: #f1f1f1;
+}
+#wpuf-form-builder-payment .nav-tab-wrapper a:focus {
+  outline: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+#wpuf-form-builder-payment .tab-contents {
+  margin-left: 170px;
+  border-left: 1px solid #cccccc;
+  padding-left: 20px;
+}
+#wpuf-form-builder-payment .tab-contents > .group {
+  display: none;
+  height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+#wpuf-form-builder-payment .tab-contents > .group.active {
+  display: block;
+}
+#wpuf-form-builder-payment .tab-contents .form-table {
+  margin-top: 0;
+}
 #wpuf-form-builder-container {
   position: relative;
 }

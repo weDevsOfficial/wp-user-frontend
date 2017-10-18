@@ -399,6 +399,59 @@
     }
 }
 
+#wpuf-form-builder-payment {
+    position: relative;
+    margin-top: 15px;
+    min-height: 380px;
+
+    .nav-tab-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 170px;
+        border-bottom: 0;
+
+        a {
+            width: ~"calc(100% - -1px)";
+            margin-left: 0;
+            margin-bottom: .5em;
+            .border(right);
+            .border(bottom);
+            font-weight: 400;
+            font-size: 13px;
+
+            &.nav-tab-active {
+                border-right-color: @htmlBG;
+            }
+
+            &:focus {
+                outline: 0;
+                .box-shadow(none);
+            }
+        }
+    }
+
+    .tab-contents {
+        margin-left: 170px;
+        .border(left);
+        padding-left: 20px;
+
+        & > .group {
+            display: none;
+            height: ~"calc(100vh - 140px)";
+            overflow-y: auto;
+
+            &.active {
+                display: block;
+            }
+        }
+
+        .form-table {
+            margin-top: 0;
+        }
+    }
+}
+
 #wpuf-form-builder-container {
     position: relative;
 

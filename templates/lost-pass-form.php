@@ -6,8 +6,8 @@ WPUF will always look in your theme's directory first, before using this default
 ?>
 <div class="login" id="wpuf-login-form">
 
-	<?php WPUF_Login::init()->show_errors(); ?>
-	<?php WPUF_Login::init()->show_messages(); ?>
+	<?php WPUF_Simple_Login::init()->show_errors(); ?>
+	<?php WPUF_Simple_Login::init()->show_messages(); ?>
 
 	<form name="lostpasswordform" id="lostpasswordform" action="" method="post">
 		<p>
@@ -19,7 +19,7 @@ WPUF will always look in your theme's directory first, before using this default
 
 		<p class="submit">
 			<input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Get New Password', 'wpuf' ); ?>" />
-			<input type="hidden" name="redirect_to" value="<?php echo WPUF_Login::get_posted_value( 'redirect_to' ); ?>" />
+			<input type="hidden" name="redirect_to" value="<?php echo WPUF_Simple_Login::get_posted_value( 'redirect_to' ); ?>" />
 			<input type="hidden" name="wpuf_reset_password" value="true" />
 			<input type="hidden" name="action" value="lostpassword" />
 
@@ -27,5 +27,5 @@ WPUF will always look in your theme's directory first, before using this default
 		</p>
 	</form>
 
-	<?php echo WPUF_Login::init()->get_action_links( array( 'lostpassword' => false ) ); ?>
+	<?php echo WPUF_Simple_Login::init()->get_action_links( array( 'lostpassword' => false ) ); ?>
 </div>

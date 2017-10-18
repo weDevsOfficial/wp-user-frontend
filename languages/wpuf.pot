@@ -2,10 +2,10 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.5.7\n"
+"Project-Id-Version: WP User Frontend 2.5.8\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-09-10 18:57:48+00:00\n"
+"POT-Creation-Date: 2017-10-18 11:03:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,6 +16,298 @@ msgstr ""
 
 #: admin/add-ons.php:2
 msgid "WP User Frontend - Add-Ons"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WP User Frontend"
+msgstr ""
+
+#: admin/class-admin-settings.php:76
+msgid "User Frontend"
+msgstr ""
+
+#: admin/class-admin-settings.php:78 admin/post-forms-list-table-view.php:4
+msgid "Post Forms"
+msgstr ""
+
+#: admin/class-admin-settings.php:87 admin/weforms.php:2
+msgid "weForms"
+msgstr ""
+
+#: admin/class-admin-settings.php:87
+msgid "Contact Form"
+msgstr ""
+
+#: admin/class-admin-settings.php:90
+msgid "Subscriptions"
+msgstr ""
+
+#: admin/class-admin-settings.php:94 admin/class-tools.php:378
+#: admin/transactions.php:2
+msgid "Transactions"
+msgstr ""
+
+#: admin/class-admin-settings.php:95
+msgid "Add-ons"
+msgstr ""
+
+#: admin/class-admin-settings.php:96 admin/tools.php:14
+msgid "Tools"
+msgstr ""
+
+#: admin/class-admin-settings.php:97
+msgid "Help"
+msgstr ""
+
+#: admin/class-admin-settings.php:97
+msgid "<span style=\"color:#f18500\">Help</span>"
+msgstr ""
+
+#: admin/class-admin-settings.php:98
+#: admin/form-builder/views/form-builder.php:9
+msgid "Settings"
+msgstr ""
+
+#: admin/class-admin-settings.php:323
+msgid "Number of items per page:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:54 admin/class-admin-subscription.php:57
+msgid "Subscription pack updated."
+msgstr ""
+
+#: admin/class-admin-subscription.php:55
+msgid "Custom field updated."
+msgstr ""
+
+#: admin/class-admin-subscription.php:56
+msgid "Custom field deleted."
+msgstr ""
+
+#: admin/class-admin-subscription.php:58
+msgid "Subscription pack restored to revision from %s"
+msgstr ""
+
+#: admin/class-admin-subscription.php:59
+msgid "Subscription pack published."
+msgstr ""
+
+#: admin/class-admin-subscription.php:60
+msgid "Subscription pack saved."
+msgstr ""
+
+#: admin/class-admin-subscription.php:61
+msgid "Subscription pack submitted."
+msgstr ""
+
+#: admin/class-admin-subscription.php:63
+msgid "Subscription pack draft updated."
+msgstr ""
+
+#: admin/class-admin-subscription.php:136
+#: admin/class-admin-subscription.php:461 class/frontend-account.php:129
+#: class/subscription.php:704 class/subscription.php:889
+#: class/subscription.php:902
+msgid "Free"
+msgstr ""
+
+#: admin/class-admin-subscription.php:147
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:66
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:463
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:519
+#: admin/post-forms-list-table.php:345 admin/settings-options.php:87
+#: admin/settings-options.php:162 admin/settings-options.php:173
+#: admin/settings-options.php:262 admin/template.php:70
+#: includes/free/form-element.php:474
+msgid "Yes"
+msgstr ""
+
+#: admin/class-admin-subscription.php:149
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:67
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:464
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:520
+#: admin/post-forms-list-table.php:346 admin/settings-options.php:88
+#: admin/settings-options.php:163 admin/settings-options.php:174
+#: admin/settings-options.php:263 admin/template.php:71
+#: includes/free/form-element.php:475
+msgid "No"
+msgstr ""
+
+#: admin/class-admin-subscription.php:172 class/subscription.php:276
+msgid "Pack Name"
+msgstr ""
+
+#: admin/class-admin-subscription.php:173
+msgid "Amount"
+msgstr ""
+
+#: admin/class-admin-subscription.php:174 includes/free/subscription.php:8
+msgid "Recurring"
+msgstr ""
+
+#: admin/class-admin-subscription.php:175
+msgid "Duration"
+msgstr ""
+
+#: admin/class-admin-subscription.php:198
+msgid "Pack Deleted"
+msgstr ""
+
+#: admin/class-admin-subscription.php:207 admin/form.php:771
+#: admin/html/form-settings-post.php:17 admin/template-post.php:167
+#: includes/free/edit-profile.php:97 templates/registration-form.php:27
+msgid "Name"
+msgstr ""
+
+#: admin/class-admin-subscription.php:208
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:750
+#: admin/template.php:609 class/upload.php:166 wpuf-functions.php:732
+msgid "Description"
+msgstr ""
+
+#: admin/class-admin-subscription.php:209 admin/settings-options.php:339
+#: class/transactions-list-table.php:43
+msgid "Cost"
+msgstr ""
+
+#: admin/class-admin-subscription.php:210
+msgid "Validity"
+msgstr ""
+
+#: admin/class-admin-subscription.php:211
+msgid "Post Count"
+msgstr ""
+
+#: admin/class-admin-subscription.php:212 includes/free/edit-user.php:93
+msgid "Action"
+msgstr ""
+
+#: admin/class-admin-subscription.php:229 admin/form.php:74 admin/form.php:112
+#: admin/installer.php:75 admin/post-forms-list-table.php:392
+#: class/subscription.php:360 includes/free/admin/shortcode-button.php:90
+#: includes/free/edit-user.php:99 templates/dashboard/posts.php:150
+#: templates/dashboard.php:205
+msgid "Edit"
+msgstr ""
+
+#: admin/class-admin-subscription.php:232
+msgid "Are you sure to delete this pack?"
+msgstr ""
+
+#: admin/class-admin-subscription.php:233 class/render-form.php:1518
+#: class/transactions-list-table.php:114 class/transactions-list-table.php:175
+#: class/upload.php:171 includes/free/edit-user.php:100
+#: templates/dashboard/posts.php:160 templates/dashboard.php:215
+msgid "Delete"
+msgstr ""
+
+#: admin/class-admin-subscription.php:244
+msgid "No subscription pack found"
+msgstr ""
+
+#: admin/class-admin-subscription.php:291
+msgid "Pack Description"
+msgstr ""
+
+#: admin/class-admin-subscription.php:298
+msgid "Billing amount:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:299
+msgid "Billing amount each cycle:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:308
+msgid "Expires In:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:330 includes/free/form-element.php:60
+msgid "Enable Post Expiration"
+msgstr ""
+
+#: admin/class-admin-subscription.php:343
+#: admin/class-admin-subscription.php:540 includes/free/form-element.php:65
+msgid "Post Expiration Time"
+msgstr ""
+
+#: admin/class-admin-subscription.php:382 includes/free/form-element.php:111
+msgid "Status of post after post expiration time is over "
+msgstr ""
+
+#: admin/class-admin-subscription.php:413
+msgid "Day(s)"
+msgstr ""
+
+#: admin/class-admin-subscription.php:414
+msgid "Week(s)"
+msgstr ""
+
+#: admin/class-admin-subscription.php:415
+msgid "Month(s)"
+msgstr ""
+
+#: admin/class-admin-subscription.php:416
+msgid "Year(s)"
+msgstr ""
+
+#: admin/class-admin-subscription.php:453 includes/free/edit-profile.php:280
+msgid "WPUF Subscription"
+msgstr ""
+
+#: admin/class-admin-subscription.php:473 class/subscription.php:715
+#: templates/dashboard/subscription.php:2
+msgid "Subscription Details"
+msgstr ""
+
+#: admin/class-admin-subscription.php:477
+msgid "This user is using recurring subscription pack"
+msgstr ""
+
+#: admin/class-admin-subscription.php:482 class/subscription.php:717
+#: templates/dashboard/subscription.php:4
+msgid "Subcription Name: "
+msgstr ""
+
+#: admin/class-admin-subscription.php:484
+msgid "Package billing details: "
+msgstr ""
+
+#: admin/class-admin-subscription.php:493 class/subscription.php:730
+#: templates/dashboard/subscription.php:10
+msgid "Remaining post: "
+msgstr ""
+
+#: admin/class-admin-subscription.php:515 class/subscription.php:758
+#: templates/dashboard/subscription.php:41
+msgid "Expire date:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:529
+msgid "Post Expiration Enabled"
+msgstr ""
+
+#: admin/class-admin-subscription.php:567
+msgid "Assign Package"
+msgstr ""
+
+#: admin/class-admin-subscription.php:568
+msgid "Show Package"
+msgstr ""
+
+#: admin/class-admin-subscription.php:571 includes/free/edit-profile.php:284
+msgid "Pack:"
+msgstr ""
+
+#: admin/class-admin-subscription.php:574
+msgid "--Select--"
+msgstr ""
+
+#: admin/class-admin-subscription.php:582
+msgid "Delete Package"
+msgstr ""
+
+#: admin/class-admin-subscription.php:626
+msgid "Learn more about <a href=\"%s\" target=\"_blank\">Subscription</a>"
 msgstr ""
 
 #: admin/class-tools.php:33
@@ -137,10 +429,6 @@ msgstr ""
 msgid "Delete Coupons"
 msgstr ""
 
-#: admin/class-tools.php:378 admin/settings.php:73 admin/transactions.php:2
-msgid "Transactions"
-msgstr ""
-
 #: admin/class-tools.php:381
 msgid "This tool will delete all the transactions from the transaction table."
 msgstr ""
@@ -154,226 +442,73 @@ msgstr ""
 msgid "Add fields by dragging the fields from the right sidebar to this area."
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:28
-#: assets/js-templates/form-components.php:29
+#: admin/form-builder/assets/js/components/builder-stage/template.php:29
+#: assets/js-templates/form-components.php:30
 msgid "is available in Pro Version"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:52
-#: assets/js-templates/form-components.php:53
+#: admin/form-builder/assets/js/components/builder-stage/template.php:53
+#: assets/js-templates/form-components.php:54
 msgid "Hidden Fields"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:59
-#: assets/js-templates/form-components.php:60
+#: admin/form-builder/assets/js/components/builder-stage/template.php:60
+#: assets/js-templates/form-components.php:61
 msgid "key"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:59
-#: assets/js-templates/form-components.php:60
+#: admin/form-builder/assets/js/components/builder-stage/template.php:60
+#: assets/js-templates/form-components.php:61
 msgid "value"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:5
-#: admin/template.php:244 assets/js-templates/form-components.php:101
+#: admin/template.php:244 assets/js-templates/form-components.php:102
 msgid "Show values"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:16
 #: admin/template.php:247 admin/template.php:305
-#: assets/js-templates/form-components.php:112
+#: assets/js-templates/form-components.php:113
 msgid "Label"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:20
 #: admin/template.php:247 admin/template.php:305
-#: assets/js-templates/form-components.php:116
+#: assets/js-templates/form-components.php:117
 msgid "Value"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:68
-#: assets/js-templates/form-components.php:164
+#: assets/js-templates/form-components.php:165
 msgid "Clear Selection"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-pro-feature-alert/template.php:4
-#: assets/js-templates/form-components.php:172
+#: assets/js-templates/form-components.php:173
 msgid "Available in Pro Version"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-select/template.php:7
-#: assets/js-templates/form-components.php:250
+#: assets/js-templates/form-components.php:251
 msgid "Select an option"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:5
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:5
-#: assets/js-templates/form-components.php:375
-#: assets/js-templates/form-components.php:441 class/render-form.php:1505
+#: assets/js-templates/form-components.php:376
+#: assets/js-templates/form-components.php:442 class/render-form.php:1506
 msgid "Select Image"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/form-notification/template.php:3
-#: assets/js-templates/form-components.php:473
-msgid "Add Notification"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:13
-#: admin/form.php:767 admin/html/form-settings-post.php:16
-#: admin/subscription.php:205 admin/template-post.php:167
-#: assets/js-templates/form-components.php:483
-#: includes/free/edit-profile.php:97
-msgid "Name"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:14
-#: admin/form-builder/assets/js/components/form-notification/template.php:62
-#: assets/js-templates/form-components.php:484
-#: assets/js-templates/form-components.php:532
-#: includes/free/form-element.php:228 includes/free/form-element.php:263
-msgid "Subject"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:29
-#: admin/post-forms-list-table.php:394
-#: assets/js-templates/form-components.php:499
-msgid "Duplicate"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:30
-#: admin/form-builder/views/form-builder.php:9 admin/settings.php:77
-#: assets/js-templates/form-components.php:500
-msgid "Settings"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:34
-#: assets/js-templates/form-components.php:504
-msgid "No notifications found"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:49
-#: assets/js-templates/form-components.php:519
-#: includes/free/form-element.php:221 includes/free/form-element.php:258
-msgid "To"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:55
-#: assets/js-templates/form-components.php:525
-msgid "Reply To"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:68
-#: assets/js-templates/form-components.php:538
-msgid "Email Message"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:74
-#: assets/js-templates/form-components.php:544
-msgid " Advanced"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:79
-#: assets/js-templates/form-components.php:549
-msgid "From Name"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:85
-#: assets/js-templates/form-components.php:555
-msgid "From Address"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:93
-#: assets/js-templates/form-components.php:563
-msgid "CC"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:99
-#: assets/js-templates/form-components.php:569
-msgid "BCC"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:109
-#: admin/subscription.php:231 assets/js-templates/form-components.php:579
-#: class/render-form.php:1517 class/transactions-list-table.php:114
-#: class/transactions-list-table.php:175 class/upload.php:171
-#: includes/free/edit-user.php:100 templates/dashboard/posts.php:160
-#: templates/dashboard.php:114
-msgid "Delete"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/form-notification/template.php:110
-#: assets/js-templates/form-components.php:580
-msgid "Done"
-msgstr ""
-
 #: admin/form-builder/assets/js/components/form-post_content/template.php:4
-#: assets/js-templates/form-components.php:591 class/render-form.php:926
+#: assets/js-templates/form-components.php:475 class/render-form.php:927
 msgid "Insert Photo"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:12
-#: assets/js-templates/form-components.php:701
+#: assets/js-templates/form-components.php:585
 msgid "— Select —"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/integration/template.php:11
-#: assets/js-templates/form-components.php:790
-msgid "Premium Feature"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/integration/template.php:16
-#: assets/js-templates/form-components.php:795
-msgid "Toggle panel"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/integration/template.php:28
-#: assets/js-templates/form-components.php:807
-msgid "This feature is available on the premium version only."
-msgstr ""
-
-#: admin/form-builder/assets/js/components/integration/template.php:29
-#: assets/js-templates/form-components.php:808 includes/free/loader.php:165
-msgid "Upgrade to Pro"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/integration/template.php:37
-#: assets/js-templates/form-components.php:816
-msgid "No integration found."
-msgstr ""
-
-#: admin/form-builder/assets/js/components/merge-tags/template.php:8
-#: assets/js-templates/form-components.php:828
-msgid "Form Fields"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/merge-tags/template.php:17
-#: assets/js-templates/form-components.php:837
-msgid "first"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/merge-tags/template.php:18
-#: assets/js-templates/form-components.php:838
-msgid "middle"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/merge-tags/template.php:19
-#: assets/js-templates/form-components.php:839
-msgid "last"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/merge-tags/template.php:27
-#: assets/js-templates/form-components.php:847
-msgid "No fields available"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/modal/template.php:4
-#: admin/html/modal.php:4 assets/js-templates/form-components.php:882
-msgid "Modal window. Press escape to close."
-msgstr ""
-
-#: admin/form-builder/assets/js/components/modal/template.php:5
-#: admin/html/modal.php:5 assets/js-templates/form-components.php:883
-msgid "Close modal window"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder-ajax.php:29
@@ -428,10 +563,10 @@ msgid "This field must contain at least one choice"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:328
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:377
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:417
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:473
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:528
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:395
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:436
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:493
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:549
 msgid "Option"
 msgstr ""
 
@@ -455,7 +590,7 @@ msgstr ""
 msgid "Get the Pro version"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:334 admin/form.php:751
+#: admin/form-builder/class-wpuf-admin-form-builder.php:334 admin/form.php:755
 msgid "Select"
 msgstr ""
 
@@ -497,26 +632,6 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:66
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:444
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:499
-#: admin/post-forms-list-table.php:345 admin/settings-options.php:83
-#: admin/settings-options.php:158 admin/settings-options.php:169
-#: admin/settings-options.php:258 admin/subscription.php:145
-#: admin/template.php:70 includes/free/form-element.php:474
-msgid "Yes"
-msgstr ""
-
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:67
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:445
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:500
-#: admin/post-forms-list-table.php:346 admin/settings-options.php:84
-#: admin/settings-options.php:159 admin/settings-options.php:170
-#: admin/settings-options.php:259 admin/subscription.php:147
-#: admin/template.php:71 includes/free/form-element.php:475
-msgid "No"
-msgstr ""
-
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:73
 msgid ""
 "Check this option to mark the field required. A form will not submit unless "
@@ -524,311 +639,321 @@ msgid ""
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:78
+msgid "Field Size"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:81
+msgid "Small"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:82
+msgid "Medium"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:83
+msgid "Large"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:93
 #: admin/template.php:99
 msgid "CSS Class Name"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:82
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:97
 msgid "Provide a container class name for this field."
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:89
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:617
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:104
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:640
 #: admin/template.php:82 admin/template.php:575
 msgid "Meta Key"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:93
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:621
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:108
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:644
 #: admin/template.php:83 admin/template.php:576
 msgid "Name of the meta key this field will save to"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:111
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:181
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:126
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:196
 #: admin/template.php:126 admin/template.php:186
 msgid "Placeholder text"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:115
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:185
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:130
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:200
 #: admin/template.php:127
 msgid "Text for HTML5 placeholder attribute"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:120
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:193
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:135
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:208
 #: admin/template.php:131 admin/template.php:191
 msgid "Default value"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:124
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:197
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:139
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:212
 #: admin/template.php:132
 msgid "The default value this field will have"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:129
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:144
 #: admin/template.php:136
 msgid "Size"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:134
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:149
 #: admin/template.php:137
 msgid "Size of this input field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:141
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:216
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:156
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:231
 #: admin/template.php:141 admin/template.php:206
 msgid "Word Restriction"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:145
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:220
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:160
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:235
 #: admin/template.php:145 admin/template.php:210
 msgid "Numebr of words the author to be restricted in"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:163
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:178
 #: admin/template.php:176
 msgid "Rows"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:167
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:182
 msgid "Number of rows in textarea"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:172
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:187
 #: admin/template.php:181
 msgid "Columns"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:176
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:191
 msgid "Number of columns in textarea"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:202
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:291
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:298
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:217
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:307
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:314
 #: admin/template.php:196
 msgid "Textarea"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:205
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:220
 #: admin/template.php:199
 msgid "Normal"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:206
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:221
 #: admin/template.php:200
 msgid "Rich textarea"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:207
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:222
 #: admin/template.php:201
 msgid "Teeny Rich textarea"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:237
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:378
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:418
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:252
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:396
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:437
 msgid "- select -"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:255
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:262
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:270
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:277
 msgid "Text"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:328
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:345
 #: admin/template.php:398 admin/template.php:422 admin/template.php:454
 #: admin/template.php:486 templates/dashboard/posts.php:84
-#: templates/dashboard.php:37
+#: templates/dashboard.php:111
 msgid "Options"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:333
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:350
 msgid "Add options for the form field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:352
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:369
 #: admin/template.php:449 admin/template.php:481
 msgid "Select Text"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:356
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:373
 #: admin/template.php:438 admin/template.php:470
 msgid ""
 "First element of the select dropdown. Leave this empty if you don't want to "
 "show this field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:364
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:371
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:381
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:388
 #: admin/template-post.php:156
 msgid "Dropdown"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:404
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:411
-#: admin/form.php:752 admin/template-post.php:157
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:422
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:429
+#: admin/form.php:756 admin/template-post.php:157
 msgid "Multi Select"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:441
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:496
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:460
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:516
 msgid "Show in inline list"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:451
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:506
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:470
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:526
 msgid "Show this option in an inline list"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:459
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:478
 msgid "Radio"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:466
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:485
 msgid "Radio Field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:514
-#: admin/form.php:753 admin/template-post.php:158
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:534
+#: admin/form.php:757 admin/template-post.php:158
 msgid "Checkbox"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:521
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:541
 msgid "Checkbox Field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:549
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:556
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:570
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:577
 msgid "URL"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:584
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:606
 msgid "Email Address"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:591
-#: admin/html/form-settings-post.php:17 class/transactions-list-table.php:48
-#: includes/free/edit-user.php:152
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:613
+#: admin/html/form-settings-post.php:18 class/transactions-list-table.php:48
+#: includes/free/edit-user.php:152 templates/registration-form.php:44
 msgid "Email"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:626
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:649
 #: admin/template.php:582
 msgid "Meta Value"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:630
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:653
 #: admin/template.php:583
 msgid "Enter the meta value"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:636
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:659
 msgid "Hidden Field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:666
-#: admin/form.php:670 admin/template-post.php:105 admin/template.php:646
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:689
+#: admin/form.php:673 admin/template-post.php:105 admin/template.php:646
 msgid "Max. file size"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:670
-#: admin/form.php:674 admin/template-post.php:93 admin/template.php:634
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:693
+#: admin/form.php:677 admin/template-post.php:93 admin/template.php:634
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:675
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:698
 #: admin/template.php:651
 msgid "Max. files"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:679
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:702
 #: admin/template.php:635
 msgid "Number of images can be uploaded"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:685
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:692
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:708
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:715
 #: includes/free/form-element.php:8
 msgid "Image Upload"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:717
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:798
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:741
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:824
 #: admin/template.php:544 admin/template.php:604 admin/template.php:683
 #: class/upload.php:164 templates/dashboard/posts.php:74
-#: templates/dashboard.php:27 wpuf-functions.php:726
+#: templates/dashboard.php:72 wpuf-functions.php:726
 msgid "Title"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:721
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:802
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:745
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:828
 msgid "Title of the section"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:726
-#: admin/subscription.php:206 admin/template.php:609 class/upload.php:166
-#: wpuf-functions.php:732
-msgid "Description"
-msgstr ""
-
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:730
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:754
 msgid "Some details text about the section"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:736
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:742
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:760
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:767
 msgid "Section Break"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:743
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:779
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:768
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:805
 msgid "Some description about this section"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:762
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:787
 #: admin/template.php:549
 msgid "HTML Codes"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:766
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:791
 msgid "Paste your HTML codes, WordPress shortcodes will also work here"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:772
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:778
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:797
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:804
 msgid "Custom HTML"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:810
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:836
 #: admin/template.php:703
 msgid "Enable noCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:811
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:837
 #: admin/template.php:699
 msgid "Enable Invisible reCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:816
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:842
 msgid "Select reCaptcha type"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:822
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:848
 #: includes/free/form-element.php:31
 msgid "reCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:826
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:853
 msgid "Site key and Secret key"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:828
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:855
 msgid ""
 "You need to set Site key and Secret key in <a href=\"%s\" "
 "target=\"_blank\">Settings</a> in order to use \"Recaptcha\" field. <a "
@@ -919,14 +1044,6 @@ msgstr ""
 msgid "Add New Form"
 msgstr ""
 
-#: admin/form.php:74 admin/form.php:112 admin/installer.php:75
-#: admin/post-forms-list-table.php:392 admin/subscription.php:227
-#: class/subscription.php:360 includes/free/admin/shortcode-button.php:90
-#: includes/free/edit-user.php:99 templates/dashboard/posts.php:150
-#: templates/dashboard.php:104
-msgid "Edit"
-msgstr ""
-
 #: admin/form.php:75 admin/form.php:113
 msgid "Edit Form"
 msgstr ""
@@ -996,8 +1113,8 @@ msgstr ""
 msgid "Taxonomies"
 msgstr ""
 
-#: admin/form.php:430 admin/html/form-settings-post.php:28
-#: class/render-form.php:630
+#: admin/form.php:430 admin/html/form-settings-post.php:29
+#: class/render-form.php:631
 msgid "Save Draft"
 msgstr ""
 
@@ -1005,110 +1122,110 @@ msgstr ""
 msgid "Post Title"
 msgstr ""
 
-#: admin/form.php:577 admin/template-post.php:41
+#: admin/form.php:578 admin/template-post.php:41
 msgid "Enable Image Insertion"
 msgstr ""
 
-#: admin/form.php:579 admin/template-post.php:47
+#: admin/form.php:580 admin/template-post.php:47
 msgid "Enable image upload in post area"
 msgstr ""
 
-#: admin/form.php:588 admin/form.php:595
+#: admin/form.php:589 admin/form.php:596
 msgid "Post Body"
 msgstr ""
 
-#: admin/form.php:632 admin/form.php:639
+#: admin/form.php:634 admin/form.php:641 templates/dashboard.php:98
 msgid "Excerpt"
 msgstr ""
 
-#: admin/form.php:680 admin/form.php:687 templates/dashboard/posts.php:71
-#: templates/dashboard.php:24
+#: admin/form.php:683 admin/form.php:690 templates/dashboard/posts.php:71
+#: templates/dashboard.php:69
 msgid "Featured Image"
 msgstr ""
 
-#: admin/form.php:714 admin/form.php:720
+#: admin/form.php:717 admin/form.php:723
 msgid "Tags"
 msgstr ""
 
-#: admin/form.php:748 admin/template-post.php:154
+#: admin/form.php:752 admin/template-post.php:154
 msgid "Type"
 msgstr ""
 
-#: admin/form.php:754 admin/template-post.php:159
+#: admin/form.php:758 admin/template-post.php:159
 msgid "Text Input"
 msgstr ""
 
-#: admin/form.php:755 admin/template-post.php:160
+#: admin/form.php:759 admin/template-post.php:160
 msgid "Ajax"
 msgstr ""
 
-#: admin/form.php:764 admin/template-post.php:165
+#: admin/form.php:768 admin/template-post.php:165
 msgid "Order By"
 msgstr ""
 
-#: admin/form.php:768 admin/template-post.php:168
+#: admin/form.php:772 admin/template-post.php:168
 msgid "Term ID"
 msgstr ""
 
-#: admin/form.php:769 admin/template-post.php:169
+#: admin/form.php:773 admin/template-post.php:169
 msgid "Slug"
 msgstr ""
 
-#: admin/form.php:770 admin/template-post.php:170
+#: admin/form.php:774 admin/template-post.php:170
 msgid "Count"
 msgstr ""
 
-#: admin/form.php:771 admin/template-post.php:171
+#: admin/form.php:775 admin/template-post.php:171
 msgid "Term Group"
 msgstr ""
 
-#: admin/form.php:780 admin/template-post.php:176
+#: admin/form.php:784 admin/template-post.php:176
 msgid "Order"
 msgstr ""
 
-#: admin/form.php:784 admin/template-post.php:178
+#: admin/form.php:788 admin/template-post.php:178
 msgid "ASC"
 msgstr ""
 
-#: admin/form.php:785 admin/template-post.php:179
+#: admin/form.php:789 admin/template-post.php:179
 msgid "DESC"
 msgstr ""
 
-#: admin/form.php:794 admin/template-post.php:184
+#: admin/form.php:798 admin/template-post.php:184
 msgid "Selection Type"
 msgstr ""
 
-#: admin/form.php:797 admin/template-post.php:186
+#: admin/form.php:801 admin/template-post.php:186
 msgid "Exclude"
 msgstr ""
 
-#: admin/form.php:798 admin/template-post.php:187
+#: admin/form.php:802 admin/template-post.php:187
 msgid "Include"
 msgstr ""
 
-#: admin/form.php:799 admin/template-post.php:188
+#: admin/form.php:803 admin/template-post.php:188
 msgid "Child of"
 msgstr ""
 
-#: admin/form.php:808
+#: admin/form.php:812
 msgid "Selection Terms"
 msgstr ""
 
-#: admin/form.php:812 admin/template-post.php:194
+#: admin/form.php:816 admin/template-post.php:194
 msgid ""
 "Enter the term IDs as comma separated (without space) to exclude/include in "
 "the form."
 msgstr ""
 
-#: admin/form.php:820 admin/template-post.php:204
+#: admin/form.php:824 admin/template-post.php:204
 msgid "This taxonomy is a WooCommerce attribute"
 msgstr ""
 
-#: admin/form.php:831 admin/template-post.php:216
+#: admin/form.php:835 admin/template-post.php:216
 msgid "Visible on product page"
 msgstr ""
 
-#: admin/form.php:879
+#: admin/form.php:884
 msgid "Post Forms must have either Post Title, Post Body or Excerpt field"
 msgstr ""
 
@@ -1137,7 +1254,7 @@ msgid "Where the labels of the form should display"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:4
-#: admin/html/form-settings-post.php:22
+#: admin/html/form-settings-post.php:23
 msgid "Post updated successfully"
 msgstr ""
 
@@ -1154,32 +1271,32 @@ msgid "No Change"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:30
-#: admin/html/form-settings-post.php:175 includes/free/form-element.php:373
+#: admin/html/form-settings-post.php:187 includes/free/form-element.php:373
 msgid "Redirect To"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:35
-#: admin/html/form-settings-post.php:180
+#: admin/html/form-settings-post.php:192
 msgid "Newly created post"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:36
-#: admin/html/form-settings-post.php:181 includes/free/form-element.php:378
+#: admin/html/form-settings-post.php:193 includes/free/form-element.php:378
 msgid "Same Page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:37
-#: admin/html/form-settings-post.php:182 includes/free/form-element.php:379
+#: admin/html/form-settings-post.php:194 includes/free/form-element.php:379
 msgid "To a page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:38
-#: admin/html/form-settings-post.php:183 includes/free/form-element.php:380
+#: admin/html/form-settings-post.php:195 includes/free/form-element.php:380
 msgid "To a custom URL"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:47
-#: admin/html/form-settings-post.php:192 includes/free/form-element.php:389
+#: admin/html/form-settings-post.php:204 includes/free/form-element.php:389
 msgid "After successfull submit, where the page will redirect to"
 msgstr ""
 
@@ -1188,12 +1305,12 @@ msgid "Post Update Message"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:60
-#: admin/html/form-settings-post.php:205 includes/free/form-element.php:409
+#: admin/html/form-settings-post.php:217 includes/free/form-element.php:409
 msgid "Page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:75
-#: admin/html/form-settings-post.php:220 includes/free/form-element.php:424
+#: admin/html/form-settings-post.php:232 includes/free/form-element.php:424
 msgid "Custom URL"
 msgstr ""
 
@@ -1209,134 +1326,158 @@ msgstr ""
 msgid "This page is restricted. Please Log in / Register to view this page."
 msgstr ""
 
-#: admin/html/form-settings-post.php:21
+#: admin/html/form-settings-post.php:22
 msgid "Post saved"
 msgstr ""
 
-#: admin/html/form-settings-post.php:27
+#: admin/html/form-settings-post.php:28
 msgid "Submit"
 msgstr ""
 
-#: admin/html/form-settings-post.php:29
+#: admin/html/form-settings-post.php:30
 msgid "Preview"
 msgstr ""
 
-#: admin/html/form-settings-post.php:37 admin/html/form-settings-post.php:41
+#: admin/html/form-settings-post.php:38 admin/html/form-settings-post.php:42
 msgid "Disable Subscription"
 msgstr ""
 
-#: admin/html/form-settings-post.php:44
+#: admin/html/form-settings-post.php:45
 msgid ""
 "If checked, any subscription and pay-per-post will be disabled on the form "
 "and will take no effect."
 msgstr ""
 
-#: admin/html/form-settings-post.php:49 admin/post-forms-list-table.php:297
+#: admin/html/form-settings-post.php:50 admin/post-forms-list-table.php:297
 msgid "Post Type"
 msgstr ""
 
-#: admin/html/form-settings-post.php:74 admin/post-forms-list-table.php:298
+#: admin/html/form-settings-post.php:75 admin/post-forms-list-table.php:298
 msgid "Post Status"
 msgstr ""
 
-#: admin/html/form-settings-post.php:88
+#: admin/html/form-settings-post.php:89
 msgid "Post Format"
 msgstr ""
 
-#: admin/html/form-settings-post.php:91 admin/html/form-settings-post.php:114
+#: admin/html/form-settings-post.php:92 admin/html/form-settings-post.php:115
 msgid "- None -"
 msgstr ""
 
-#: admin/html/form-settings-post.php:106
+#: admin/html/form-settings-post.php:107
 msgid "Default Post Category"
 msgstr ""
 
-#: admin/html/form-settings-post.php:118
+#: admin/html/form-settings-post.php:119
 msgid ""
 "If users are not allowed to choose any category, this category will be used "
 "instead (if post type supports)"
 msgstr ""
 
-#: admin/html/form-settings-post.php:123 admin/post-forms-list-table.php:299
+#: admin/html/form-settings-post.php:124 admin/post-forms-list-table.php:299
 msgid "Guest Post"
 msgstr ""
 
-#: admin/html/form-settings-post.php:128
+#: admin/html/form-settings-post.php:129
 msgid "Enable Guest Post"
 msgstr ""
 
-#: admin/html/form-settings-post.php:130
+#: admin/html/form-settings-post.php:131
 msgid "Unregistered users will be able to submit posts"
 msgstr ""
 
-#: admin/html/form-settings-post.php:135
+#: admin/html/form-settings-post.php:131
+msgid "Learn more about guest posting."
+msgstr ""
+
+#: admin/html/form-settings-post.php:136
 msgid "User Details"
 msgstr ""
 
-#: admin/html/form-settings-post.php:140
+#: admin/html/form-settings-post.php:141
 msgid "Require Name and Email address"
 msgstr ""
 
-#: admin/html/form-settings-post.php:142
+#: admin/html/form-settings-post.php:143
 msgid ""
 "If requires, users will be automatically registered to the site using the "
 "name and email address"
 msgstr ""
 
-#: admin/html/form-settings-post.php:147
-msgid "Name Label"
+#: admin/html/form-settings-post.php:148
+msgid "Email Verification"
 msgstr ""
 
 #: admin/html/form-settings-post.php:152
+msgid "Require Email Verification for Guests"
+msgstr ""
+
+#: admin/html/form-settings-post.php:154
+msgid "If requires, users will be required to verify their email adress."
+msgstr ""
+
+#: admin/html/form-settings-post.php:159
+msgid "Name Label"
+msgstr ""
+
+#: admin/html/form-settings-post.php:164
 msgid "Label text for name field"
 msgstr ""
 
-#: admin/html/form-settings-post.php:157
+#: admin/html/form-settings-post.php:169
 msgid "E-Mail Label"
 msgstr ""
 
-#: admin/html/form-settings-post.php:162
+#: admin/html/form-settings-post.php:174
 msgid "Label text for email field"
 msgstr ""
 
-#: admin/html/form-settings-post.php:167 admin/settings-options.php:215
+#: admin/html/form-settings-post.php:179 admin/settings-options.php:219
 msgid "Unauthorized Message"
 msgstr ""
 
-#: admin/html/form-settings-post.php:170 admin/settings-options.php:216
+#: admin/html/form-settings-post.php:182 admin/settings-options.php:220
 msgid "Not logged in users will see this message"
 msgstr ""
 
-#: admin/html/form-settings-post.php:198
+#: admin/html/form-settings-post.php:210
 msgid "Message to show"
 msgstr ""
 
-#: admin/html/form-settings-post.php:227
+#: admin/html/form-settings-post.php:239
 msgid "Comment Status"
 msgstr ""
 
-#: admin/html/form-settings-post.php:230
+#: admin/html/form-settings-post.php:242
 msgid "Open"
 msgstr ""
 
-#: admin/html/form-settings-post.php:231
+#: admin/html/form-settings-post.php:243
 msgid "Closed"
 msgstr ""
 
-#: admin/html/form-settings-post.php:237
+#: admin/html/form-settings-post.php:249
 msgid "Submit Post Button text"
 msgstr ""
 
-#: admin/html/form-settings-post.php:244
+#: admin/html/form-settings-post.php:256
 msgid "Post Draft"
 msgstr ""
 
-#: admin/html/form-settings-post.php:249
+#: admin/html/form-settings-post.php:261
 msgid "Enable Saving as draft"
 msgstr ""
 
-#: admin/html/form-settings-post.php:251
+#: admin/html/form-settings-post.php:263
 msgid "It will show a button to save as draft"
+msgstr ""
+
+#: admin/html/modal.php:4
+msgid "Modal window. Press escape to close."
+msgstr ""
+
+#: admin/html/modal.php:5
+msgid "Close modal window"
 msgstr ""
 
 #: admin/html/modal.php:9
@@ -1353,6 +1494,50 @@ msgstr ""
 
 #: admin/html/modal.php:42
 msgid "This integration is not installed."
+msgstr ""
+
+#: admin/html/support.php:148
+msgid "General Help Questions"
+msgstr ""
+
+#: admin/html/support.php:148
+msgid "View all Documentations"
+msgstr ""
+
+#: admin/html/support.php:198 admin/html/support.php:200
+msgid "Like The Plugin?"
+msgstr ""
+
+#: admin/html/support.php:202
+msgid "Your Review is very important to us as it helps us to grow more."
+msgstr ""
+
+#: admin/html/support.php:204
+msgid "Review Us on WP.org"
+msgstr ""
+
+#: admin/html/support.php:208 admin/html/support.php:210
+msgid "Found Any Bugs?"
+msgstr ""
+
+#: admin/html/support.php:212
+msgid "Report any Bug that you Discovered, Get Instant Solutions."
+msgstr ""
+
+#: admin/html/support.php:214
+msgid "Report to GitHub"
+msgstr ""
+
+#: admin/html/support.php:218 admin/html/support.php:220
+msgid "Need Any Assistance?"
+msgstr ""
+
+#: admin/html/support.php:222
+msgid "Our EXPERT Support Team is always ready to Help you out."
+msgstr ""
+
+#: admin/html/support.php:224
+msgid "Contact Support"
 msgstr ""
 
 #: admin/installer.php:27
@@ -1390,7 +1575,7 @@ msgstr ""
 
 #: admin/installer.php:83 class/subscription.php:335 class/subscription.php:355
 #: class/subscription.php:356 class/subscription.php:357
-#: includes/free/admin/shortcode-button.php:98 wpuf-functions.php:1420
+#: includes/free/admin/shortcode-button.php:102 wpuf-functions.php:1420
 msgid "Subscription"
 msgstr ""
 
@@ -1399,7 +1584,7 @@ msgid "[wpuf_sub_pack]"
 msgstr ""
 
 #: admin/installer.php:84 templates/dashboard/posts.php:81
-#: templates/dashboard.php:34
+#: templates/dashboard.php:108
 msgid "Payment"
 msgstr ""
 
@@ -1427,7 +1612,7 @@ msgid ""
 "necessary steps to move forward."
 msgstr ""
 
-#: admin/installer.php:165
+#: admin/installer.php:165 includes/free/admin/shortcode-button.php:98
 msgid "Registration"
 msgstr ""
 
@@ -1435,12 +1620,12 @@ msgstr ""
 msgid "Sample Form"
 msgstr ""
 
-#: admin/post-forms-list-table-view.php:4 admin/settings.php:57
-msgid "Post Forms"
-msgstr ""
-
 #: admin/post-forms-list-table-view.php:23
 msgid "Search Forms"
+msgstr ""
+
+#: admin/post-forms-list-table-view.php:39
+msgid "Learn more about <a href=\"%s\" target=\"_blank\">Frontend Posting</a>"
 msgstr ""
 
 #: admin/post-forms-list-table.php:44 wpuf-functions.php:61
@@ -1477,28 +1662,32 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
+#: admin/post-forms-list-table.php:394
+msgid "Duplicate"
+msgstr ""
+
 #: admin/post-forms-list-table.php:415 wpuf-functions.php:65
 msgid "Draft"
 msgstr ""
 
-#: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1517
-#: wpuf.php:447
+#: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1518
+#: wpuf.php:460
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:453
+#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:466
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:456
+#: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:469
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:457
+#: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:470
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:458
+#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:471
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -1548,637 +1737,393 @@ msgstr ""
 msgid "Payments"
 msgstr ""
 
-#: admin/settings-options.php:49
+#: admin/settings-options.php:29
+msgid "E-Mails"
+msgstr ""
+
+#: admin/settings-options.php:53
 msgid "Edit Page"
 msgstr ""
 
-#: admin/settings-options.php:50
+#: admin/settings-options.php:54
 msgid "Select the page where [wpuf_edit] is located"
 msgstr ""
 
-#: admin/settings-options.php:56
+#: admin/settings-options.php:60
 msgid "Default Post Owner"
 msgstr ""
 
-#: admin/settings-options.php:57
+#: admin/settings-options.php:61
 msgid ""
 "If guest post is enabled and user details are OFF, the posts are assigned "
 "to this user"
 msgstr ""
 
-#: admin/settings-options.php:64
+#: admin/settings-options.php:68
 msgid "Admin area access"
 msgstr ""
 
-#: admin/settings-options.php:65
+#: admin/settings-options.php:69
 msgid "Allow you to block specific user role to WordPress admin area."
 msgstr ""
 
-#: admin/settings-options.php:69
+#: admin/settings-options.php:73
 msgid "Admin Only"
 msgstr ""
 
-#: admin/settings-options.php:70
+#: admin/settings-options.php:74
 msgid "Admins, Editors"
 msgstr ""
 
-#: admin/settings-options.php:71
+#: admin/settings-options.php:75
 msgid "Admins, Editors, Authors"
 msgstr ""
 
-#: admin/settings-options.php:72
+#: admin/settings-options.php:76
 msgid "Admins, Editors, Authors, Contributors"
 msgstr ""
 
-#: admin/settings-options.php:73
+#: admin/settings-options.php:77
 msgid "Default"
 msgstr ""
 
-#: admin/settings-options.php:78
+#: admin/settings-options.php:82
 msgid "Override the post edit link"
 msgstr ""
 
-#: admin/settings-options.php:79
+#: admin/settings-options.php:83
 msgid ""
 "Users see the edit link in post if s/he is capable to edit the post/page. "
 "Selecting <strong>Yes</strong> will override the default WordPress edit "
 "post link in frontend"
 msgstr ""
 
-#: admin/settings-options.php:89
+#: admin/settings-options.php:93
 msgid "Custom Fields in post"
 msgstr ""
 
-#: admin/settings-options.php:90
+#: admin/settings-options.php:94
 msgid "Show custom fields on post content area"
 msgstr ""
 
-#: admin/settings-options.php:96
+#: admin/settings-options.php:100
 msgid "Load Scripts"
 msgstr ""
 
-#: admin/settings-options.php:97
+#: admin/settings-options.php:101
 msgid "Load scripts/styles in all pages"
 msgstr ""
 
-#: admin/settings-options.php:103
+#: admin/settings-options.php:107
 msgid "Insert Photo image size"
 msgstr ""
 
-#: admin/settings-options.php:104
+#: admin/settings-options.php:108
 msgid ""
 "Default image size of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
 
-#: admin/settings-options.php:111
+#: admin/settings-options.php:115
 msgid "Insert Photo image type"
 msgstr ""
 
-#: admin/settings-options.php:112
+#: admin/settings-options.php:116
 msgid ""
 "Default image type of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
 
-#: admin/settings-options.php:115
+#: admin/settings-options.php:119
 msgid "Image only"
 msgstr ""
 
-#: admin/settings-options.php:116
+#: admin/settings-options.php:120
 msgid "Image with link"
 msgstr ""
 
-#: admin/settings-options.php:122
+#: admin/settings-options.php:126
 msgid "Enable Image Caption"
 msgstr ""
 
-#: admin/settings-options.php:123
+#: admin/settings-options.php:127
 msgid "Allow users to update image/video title, caption and description"
 msgstr ""
 
-#: admin/settings-options.php:129
+#: admin/settings-options.php:133
 msgid "Default Post Form"
 msgstr ""
 
-#: admin/settings-options.php:130
+#: admin/settings-options.php:134
 msgid "Fallback form for post editing if no associated form found"
 msgstr ""
 
-#: admin/settings-options.php:136
+#: admin/settings-options.php:140
 msgid "reCAPTCHA Site Key"
 msgstr ""
 
-#: admin/settings-options.php:140
+#: admin/settings-options.php:144
 msgid "reCAPTCHA Secret Key"
 msgstr ""
 
-#: admin/settings-options.php:141
+#: admin/settings-options.php:145
 msgid ""
 "<a target=\"_blank\" href=\"https://www.google.com/recaptcha/\">Register "
 "here</a> to get reCaptcha Site and Secret keys."
 msgstr ""
 
-#: admin/settings-options.php:145
+#: admin/settings-options.php:149
 msgid "Custom CSS codes"
 msgstr ""
 
-#: admin/settings-options.php:146
+#: admin/settings-options.php:150
 msgid ""
 "If you want to add your custom CSS code, it will be added on page header "
 "wrapped with style tag"
 msgstr ""
 
-#: admin/settings-options.php:153
+#: admin/settings-options.php:157
 msgid "Users can edit post?"
 msgstr ""
 
-#: admin/settings-options.php:154
+#: admin/settings-options.php:158
 msgid "Users will be able to edit their own posts"
 msgstr ""
 
-#: admin/settings-options.php:164
+#: admin/settings-options.php:168
 msgid "User can delete post?"
 msgstr ""
 
-#: admin/settings-options.php:165
+#: admin/settings-options.php:169
 msgid "Users will be able to delete their own posts"
 msgstr ""
 
-#: admin/settings-options.php:175
+#: admin/settings-options.php:179
 msgid "Pending Post Edit"
 msgstr ""
 
-#: admin/settings-options.php:176
+#: admin/settings-options.php:180
 msgid "Disable post editing while post in \"pending\" status"
 msgstr ""
 
-#: admin/settings-options.php:182
+#: admin/settings-options.php:186
 msgid "Posts per page"
 msgstr ""
 
-#: admin/settings-options.php:183
+#: admin/settings-options.php:187
 msgid "How many posts will be listed in a page"
 msgstr ""
 
-#: admin/settings-options.php:189
+#: admin/settings-options.php:193
 msgid "Show user bio"
 msgstr ""
 
-#: admin/settings-options.php:190
+#: admin/settings-options.php:194
 msgid "Users biographical info will be shown"
 msgstr ""
 
-#: admin/settings-options.php:196
+#: admin/settings-options.php:200
 msgid "Show post count"
 msgstr ""
 
-#: admin/settings-options.php:197
+#: admin/settings-options.php:201
 msgid "Show how many posts are created by the user"
 msgstr ""
 
-#: admin/settings-options.php:203
+#: admin/settings-options.php:207
 msgid "Show Featured Image"
 msgstr ""
 
-#: admin/settings-options.php:204
-msgid "Show featured image of the post"
+#: admin/settings-options.php:208
+msgid "Show featured image of the post (Overridden by Shortcode)"
 msgstr ""
 
-#: admin/settings-options.php:209
+#: admin/settings-options.php:213
 msgid "Featured Image size"
 msgstr ""
 
-#: admin/settings-options.php:223
+#: admin/settings-options.php:227
 msgid "Auto Login After Registration"
 msgstr ""
 
-#: admin/settings-options.php:224
+#: admin/settings-options.php:228
 msgid "If enabled, users after registration will be logged in to the system"
 msgstr ""
 
-#: admin/settings-options.php:230
+#: admin/settings-options.php:234
 msgid "Login/Registration override"
 msgstr ""
 
-#: admin/settings-options.php:231
+#: admin/settings-options.php:235
 msgid ""
 "If enabled, default login and registration forms will be overridden by WPUF "
 "with pages below"
 msgstr ""
 
-#: admin/settings-options.php:237
+#: admin/settings-options.php:241
 msgid "Registration Page"
 msgstr ""
 
-#: admin/settings-options.php:238
+#: admin/settings-options.php:242
 msgid ""
 "Select the page you want to use as registration page override <em>(should "
 "have shortcode)</em>"
 msgstr ""
 
-#: admin/settings-options.php:244
+#: admin/settings-options.php:248
 msgid "Login Page"
 msgstr ""
 
-#: admin/settings-options.php:245
+#: admin/settings-options.php:249
 msgid "Select the page which contains <code>[wpuf-login]</code> shortcode"
 msgstr ""
 
-#: admin/settings-options.php:253
+#: admin/settings-options.php:257
 msgid "Charge for posting"
 msgstr ""
 
-#: admin/settings-options.php:254
+#: admin/settings-options.php:258
 msgid "Charge user for submitting a post"
 msgstr ""
 
-#: admin/settings-options.php:264
+#: admin/settings-options.php:268
 msgid "Force pack purchase"
 msgstr ""
 
-#: admin/settings-options.php:265
+#: admin/settings-options.php:269
 msgid "When active, users must have to buy a pack for posting"
 msgstr ""
 
-#: admin/settings-options.php:269
+#: admin/settings-options.php:273
 msgid "Disable"
 msgstr ""
 
-#: admin/settings-options.php:270
+#: admin/settings-options.php:274
 msgid "Enable"
 msgstr ""
 
-#: admin/settings-options.php:275
+#: admin/settings-options.php:279
 msgid "Subscription Pack Page"
 msgstr ""
 
-#: admin/settings-options.php:276
+#: admin/settings-options.php:280
 msgid "Select the page where <code>[wpuf_sub_pack]</code> located."
 msgstr ""
 
-#: admin/settings-options.php:282
+#: admin/settings-options.php:286
 msgid "Subscription at registration"
 msgstr ""
 
-#: admin/settings-options.php:283
+#: admin/settings-options.php:287
 msgid "Registration time redirect to subscription page"
 msgstr ""
 
-#: admin/settings-options.php:288
+#: admin/settings-options.php:292
 msgid "Currency"
 msgstr ""
 
-#: admin/settings-options.php:295
+#: admin/settings-options.php:299
 msgid "Currency Position"
 msgstr ""
 
-#: admin/settings-options.php:299
+#: admin/settings-options.php:303
 msgid "Left"
 msgstr ""
 
-#: admin/settings-options.php:300
+#: admin/settings-options.php:304
 msgid "Right"
 msgstr ""
 
-#: admin/settings-options.php:301
+#: admin/settings-options.php:305
 msgid "Left with space"
 msgstr ""
 
-#: admin/settings-options.php:302
+#: admin/settings-options.php:306
 msgid "Right with space"
 msgstr ""
 
-#: admin/settings-options.php:307
+#: admin/settings-options.php:311
 msgid "Thousand Separator"
 msgstr ""
 
-#: admin/settings-options.php:308
+#: admin/settings-options.php:312
 msgid "This sets the thousand separator of displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:316
+#: admin/settings-options.php:320
 msgid "Decimal Separator"
 msgstr ""
 
-#: admin/settings-options.php:317
+#: admin/settings-options.php:321
 msgid "This sets the decimal separator of displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:324
+#: admin/settings-options.php:328
 msgid "Number of Decimals"
 msgstr ""
 
-#: admin/settings-options.php:325
+#: admin/settings-options.php:329
 msgid "This sets the number of decimal points shown in displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:335 admin/subscription.php:207
-#: class/transactions-list-table.php:43
-msgid "Cost"
-msgstr ""
-
-#: admin/settings-options.php:342
+#: admin/settings-options.php:346
 msgid "Enable demo/sandbox mode"
 msgstr ""
 
-#: admin/settings-options.php:343
+#: admin/settings-options.php:347
 msgid "When sandbox mode is active, all payment gateway will be used in demo mode"
 msgstr ""
 
-#: admin/settings-options.php:349
+#: admin/settings-options.php:353
 msgid "Payment Page"
 msgstr ""
 
-#: admin/settings-options.php:350
+#: admin/settings-options.php:354
 msgid "This page will be used to process payment options"
 msgstr ""
 
-#: admin/settings-options.php:356
+#: admin/settings-options.php:360
 msgid "Payment Success Page"
 msgstr ""
 
-#: admin/settings-options.php:357 lib/gateway/bank.php:37
+#: admin/settings-options.php:361 lib/gateway/bank.php:37
 msgid "After payment users will be redirected here"
 msgstr ""
 
-#: admin/settings-options.php:363
+#: admin/settings-options.php:367
 msgid "Payment Gateways"
 msgstr ""
 
-#: admin/settings-options.php:364
+#: admin/settings-options.php:368
 msgid "Active payment gateways"
 msgstr ""
 
-#: admin/settings-options.php:385
+#: admin/settings-options.php:376
+msgid "Guest Email Subject"
+msgstr ""
+
+#: admin/settings-options.php:377
+msgid "This sets the subject of the emails sent to guest users"
+msgstr ""
+
+#: admin/settings-options.php:383
+msgid "Guest Email Body"
+msgstr ""
+
+#: admin/settings-options.php:384
+msgid ""
+"This sets the body of the emails sent to guest users. Please DON'T edit the "
+"'{activation_link}' part"
+msgstr ""
+
+#: admin/settings-options.php:407
 msgid ""
 "Select profile/registration forms for user roles. These forms will be used "
 "to populate extra edit profile fields in backend."
 msgstr ""
 
-#: admin/settings-options.php:396
+#: admin/settings-options.php:418
 msgid " - select - "
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-msgid "WP User Frontend"
-msgstr ""
-
-#: admin/settings.php:55
-msgid "User Frontend"
-msgstr ""
-
-#: admin/settings.php:66 admin/weforms.php:2
-msgid "weForms"
-msgstr ""
-
-#: admin/settings.php:66
-msgid "Contact Form"
-msgstr ""
-
-#: admin/settings.php:69
-msgid "Subscriptions"
-msgstr ""
-
-#: admin/settings.php:74
-msgid "Add-ons"
-msgstr ""
-
-#: admin/settings.php:75 admin/tools.php:14
-msgid "Tools"
-msgstr ""
-
-#: admin/settings.php:76
-msgid "Support"
-msgstr ""
-
-#: admin/settings.php:285
-msgid "Number of items per page:"
-msgstr ""
-
-#: admin/subscription.php:52 admin/subscription.php:55
-msgid "Subscription pack updated."
-msgstr ""
-
-#: admin/subscription.php:53
-msgid "Custom field updated."
-msgstr ""
-
-#: admin/subscription.php:54
-msgid "Custom field deleted."
-msgstr ""
-
-#: admin/subscription.php:56
-msgid "Subscription pack restored to revision from %s"
-msgstr ""
-
-#: admin/subscription.php:57
-msgid "Subscription pack published."
-msgstr ""
-
-#: admin/subscription.php:58
-msgid "Subscription pack saved."
-msgstr ""
-
-#: admin/subscription.php:59
-msgid "Subscription pack submitted."
-msgstr ""
-
-#: admin/subscription.php:61
-msgid "Subscription pack draft updated."
-msgstr ""
-
-#: admin/subscription.php:134 admin/subscription.php:459
-#: class/frontend-account.php:129 class/subscription.php:704
-#: class/subscription.php:889 class/subscription.php:902
-msgid "Free"
-msgstr ""
-
-#: admin/subscription.php:170 class/subscription.php:276
-msgid "Pack Name"
-msgstr ""
-
-#: admin/subscription.php:171
-msgid "Amount"
-msgstr ""
-
-#: admin/subscription.php:172 includes/free/subscription.php:8
-msgid "Recurring"
-msgstr ""
-
-#: admin/subscription.php:173
-msgid "Duration"
-msgstr ""
-
-#: admin/subscription.php:196
-msgid "Pack Deleted"
-msgstr ""
-
-#: admin/subscription.php:208
-msgid "Validity"
-msgstr ""
-
-#: admin/subscription.php:209
-msgid "Post Count"
-msgstr ""
-
-#: admin/subscription.php:210 includes/free/edit-user.php:93
-msgid "Action"
-msgstr ""
-
-#: admin/subscription.php:230
-msgid "Are you sure to delete this pack?"
-msgstr ""
-
-#: admin/subscription.php:242
-msgid "No subscription pack found"
-msgstr ""
-
-#: admin/subscription.php:289
-msgid "Pack Description"
-msgstr ""
-
-#: admin/subscription.php:296
-msgid "Billing amount:"
-msgstr ""
-
-#: admin/subscription.php:297
-msgid "Billing amount each cycle:"
-msgstr ""
-
-#: admin/subscription.php:306
-msgid "Expires In:"
-msgstr ""
-
-#: admin/subscription.php:328 includes/free/form-element.php:60
-msgid "Enable Post Expiration"
-msgstr ""
-
-#: admin/subscription.php:341 admin/subscription.php:538
-#: includes/free/form-element.php:65
-msgid "Post Expiration Time"
-msgstr ""
-
-#: admin/subscription.php:380 includes/free/form-element.php:111
-msgid "Status of post after post expiration time is over "
-msgstr ""
-
-#: admin/subscription.php:411
-msgid "Day(s)"
-msgstr ""
-
-#: admin/subscription.php:412
-msgid "Week(s)"
-msgstr ""
-
-#: admin/subscription.php:413
-msgid "Month(s)"
-msgstr ""
-
-#: admin/subscription.php:414
-msgid "Year(s)"
-msgstr ""
-
-#: admin/subscription.php:451 includes/free/edit-profile.php:280
-msgid "WPUF Subscription"
-msgstr ""
-
-#: admin/subscription.php:471 class/subscription.php:715
-#: templates/dashboard/subscription.php:2
-msgid "Subscription Details"
-msgstr ""
-
-#: admin/subscription.php:475
-msgid "This user is using recurring subscription pack"
-msgstr ""
-
-#: admin/subscription.php:480 class/subscription.php:717
-#: templates/dashboard/subscription.php:4
-msgid "Subcription Name: "
-msgstr ""
-
-#: admin/subscription.php:482
-msgid "Package billing details: "
-msgstr ""
-
-#: admin/subscription.php:491 class/subscription.php:730
-#: templates/dashboard/subscription.php:10
-msgid "Remaining post: "
-msgstr ""
-
-#: admin/subscription.php:513 class/subscription.php:758
-#: templates/dashboard/subscription.php:41
-msgid "Expire date:"
-msgstr ""
-
-#: admin/subscription.php:527
-msgid "Post Expiration Enabled"
-msgstr ""
-
-#: admin/subscription.php:565
-msgid "Assign Package"
-msgstr ""
-
-#: admin/subscription.php:566
-msgid "Show Package"
-msgstr ""
-
-#: admin/subscription.php:569 includes/free/edit-profile.php:284
-msgid "Pack:"
-msgstr ""
-
-#: admin/subscription.php:572
-msgid "--Select--"
-msgstr ""
-
-#: admin/subscription.php:580
-msgid "Delete Package"
-msgstr ""
-
-#: admin/support.php:2
-msgid "WP User Frontend - Support"
-msgstr ""
-
-#: admin/support.php:6
-msgid "Need Help?"
-msgstr ""
-
-#: admin/support.php:11
-msgid "Step 1: "
-msgstr ""
-
-#: admin/support.php:11
-msgid "Read Documentation and FAQ"
-msgstr ""
-
-#: admin/support.php:12
-msgid ""
-"We have created detailed step by step documentation for all the features "
-"(including docs for developers). We have also answered all possible FAQ "
-"queries based on user request. We hope you will find what you are looking "
-"for. If not, please continue to Step 2."
-msgstr ""
-
-#: admin/support.php:16
-msgid "Step 2: "
-msgstr ""
-
-#: admin/support.php:16
-msgid "Create a Support Ticket"
-msgstr ""
-
-#: admin/support.php:17
-msgid ""
-"We reply from <code>7am to 3pm (GMT+6)</code> except "
-"<code><strong>Friday</strong></code>. Our responses are usually under 12 "
-"hours to as quick as 1 hour depending on channel pressure."
-msgstr ""
-
-#: admin/support.php:19
-msgid ""
-"When you are creating a ticket, please care to include a screenshot of the "
-"issue if possible and write the problem as specificly as you can. This will "
-"help us track and solve your trouble quickly."
 msgstr ""
 
 #: admin/template-post.php:193
@@ -2278,23 +2223,23 @@ msgstr ""
 msgid "Install Now"
 msgstr ""
 
-#: class/asset-loader.php:31 wpuf.php:378
+#: class/asset-loader.php:31 wpuf.php:391
 msgid "is required"
 msgstr ""
 
-#: class/asset-loader.php:32 wpuf.php:379
+#: class/asset-loader.php:32 wpuf.php:392
 msgid "does not match"
 msgstr ""
 
-#: class/asset-loader.php:33 wpuf.php:380
+#: class/asset-loader.php:33 wpuf.php:393
 msgid "is not valid"
 msgstr ""
 
-#: class/asset-loader.php:45 wpuf.php:441
+#: class/asset-loader.php:45 wpuf.php:454
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: class/asset-loader.php:47 wpuf.php:443
+#: class/asset-loader.php:47 wpuf.php:456
 msgid "Word limit reached"
 msgstr ""
 
@@ -2350,51 +2295,51 @@ msgstr ""
 msgid "Your current password is incorrect."
 msgstr ""
 
-#: class/frontend-dashboard.php:66 templates/dashboard/posts.php:36
+#: class/frontend-dashboard.php:65 templates/dashboard/posts.php:36
 msgid "Post Deleted"
 msgstr ""
 
-#: class/frontend-dashboard.php:104
+#: class/frontend-dashboard.php:108
 msgid "Author Info"
 msgstr ""
 
-#: class/frontend-dashboard.php:108 includes/free/edit-user.php:97
+#: class/frontend-dashboard.php:112 includes/free/edit-user.php:97
 msgid "%s"
 msgstr ""
 
-#: class/frontend-dashboard.php:140 templates/dashboard/posts.php:30
+#: class/frontend-dashboard.php:144 templates/dashboard/posts.php:30
 msgid "You are not the post author. Cheeting huh!"
 msgstr ""
 
-#: class/frontend-form-post.php:85
+#: class/frontend-form-post.php:86
 msgid "You are not logged in"
 msgstr ""
 
-#: class/frontend-form-post.php:93 class/frontend-form-post.php:104
+#: class/frontend-form-post.php:94 class/frontend-form-post.php:105
 msgid "Invalid post"
 msgstr ""
 
-#: class/frontend-form-post.php:98
+#: class/frontend-form-post.php:99
 msgid "Post Editing is disabled"
 msgstr ""
 
-#: class/frontend-form-post.php:109
+#: class/frontend-form-post.php:110
 msgid "You are not allowed to edit"
 msgstr ""
 
-#: class/frontend-form-post.php:121
+#: class/frontend-form-post.php:122
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: class/frontend-form-post.php:127
+#: class/frontend-form-post.php:128
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: class/frontend-form-post.php:195
+#: class/frontend-form-post.php:198
 msgid "Invalid email address."
 msgstr ""
 
-#: class/frontend-form-post.php:204
+#: class/frontend-form-post.php:207
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -2403,7 +2348,7 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: class/frontend-form-post.php:567
+#: class/frontend-form-post.php:600
 msgid "Something went wrong"
 msgstr ""
 
@@ -2496,16 +2441,16 @@ msgstr ""
 msgid "Please make sure you've published your form."
 msgstr ""
 
-#: class/render-form.php:1204 includes/free/edit-profile.php:203
+#: class/render-form.php:1205 includes/free/edit-profile.php:203
 #: templates/dashboard/edit-profile.php:36
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1266 class/render-form.php:1379
+#: class/render-form.php:1267 class/render-form.php:1380
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1321
+#: class/render-form.php:1322
 msgid "This field is no longer available."
 msgstr ""
 
@@ -2614,7 +2559,7 @@ msgid "ID"
 msgstr ""
 
 #: class/transactions-list-table.php:41 templates/dashboard/posts.php:75
-#: templates/dashboard.php:28
+#: templates/dashboard.php:102
 msgid "Status"
 msgstr ""
 
@@ -2751,6 +2696,160 @@ msgstr ""
 msgid " Add Form"
 msgstr ""
 
+#: includes/free/class-login.php:208 includes/free/class-login.php:264
+#: templates/login-form.php:37
+msgid "Log In"
+msgstr ""
+
+#: includes/free/class-login.php:212 includes/free/class-registration.php:124
+#: includes/free/form-element.php:342 templates/registration-form.php:74
+msgid "Register"
+msgstr ""
+
+#: includes/free/class-login.php:216
+msgid "Lost Password"
+msgstr ""
+
+#: includes/free/class-login.php:254
+msgid ""
+"Please enter your username or email address. You will receive a link to "
+"create a new password via email."
+msgstr ""
+
+#: includes/free/class-login.php:264
+msgid "Your password has been reset. %s"
+msgstr ""
+
+#: includes/free/class-login.php:268
+msgid "Enter your new password below.."
+msgstr ""
+
+#: includes/free/class-login.php:278
+msgid "Check your e-mail for the confirmation link."
+msgstr ""
+
+#: includes/free/class-login.php:282
+msgid "You are now logged out."
+msgstr ""
+
+#: includes/free/class-login.php:311 includes/free/class-login.php:316
+#: includes/free/class-login.php:321 includes/free/class-login.php:331
+#: includes/free/class-registration.php:192
+#: includes/free/class-registration.php:197
+#: includes/free/class-registration.php:202
+#: includes/free/class-registration.php:207
+#: includes/free/class-registration.php:212
+#: includes/free/class-registration.php:217
+#: includes/free/class-registration.php:222
+#: includes/free/class-registration.php:227
+#: includes/free/class-registration.php:232
+#: includes/free/class-registration.php:242
+msgid "Error"
+msgstr ""
+
+#: includes/free/class-login.php:316 includes/free/class-registration.php:212
+msgid "Username is required."
+msgstr ""
+
+#: includes/free/class-login.php:321 includes/free/class-registration.php:217
+msgid "Password is required."
+msgstr ""
+
+#: includes/free/class-login.php:331 includes/free/class-registration.php:242
+msgid "A user could not be found with this email address."
+msgstr ""
+
+#: includes/free/class-login.php:421
+msgid "Please enter your password."
+msgstr ""
+
+#: includes/free/class-login.php:426
+msgid "Passwords do not match."
+msgstr ""
+
+#: includes/free/class-login.php:469
+msgid "Enter a username or e-mail address."
+msgstr ""
+
+#: includes/free/class-login.php:477
+msgid "There is no user registered with that email address."
+msgstr ""
+
+#: includes/free/class-login.php:495
+msgid "Invalid username or e-mail."
+msgstr ""
+
+#: includes/free/class-login.php:509
+msgid "Password reset is not allowed for this user"
+msgstr ""
+
+#: includes/free/class-login.php:553 includes/free/class-login.php:558
+#: includes/free/class-login.php:565
+msgid "Invalid key"
+msgstr ""
+
+#: includes/free/class-login.php:588
+msgid ""
+"<strong>Your account is not active.</strong><br>Please check your email for "
+"activation link."
+msgstr ""
+
+#: includes/free/class-login.php:636
+msgid "Your account has been activated"
+msgstr ""
+
+#: includes/free/class-login.php:680
+msgid "Someone requested that the password be reset for the following account:"
+msgstr ""
+
+#: includes/free/class-login.php:682
+msgid "Username: %s"
+msgstr ""
+
+#: includes/free/class-login.php:683
+msgid "If this was a mistake, just ignore this email and nothing will happen."
+msgstr ""
+
+#: includes/free/class-login.php:684
+msgid "To reset your password, visit the following address:"
+msgstr ""
+
+#: includes/free/class-login.php:693
+msgid "[%s] Password Reset"
+msgstr ""
+
+#: includes/free/class-login.php:698
+msgid "The e-mail could not be sent."
+msgstr ""
+
+#: includes/free/class-login.php:698
+msgid "Possible reason: your host may have disabled the mail() function."
+msgstr ""
+
+#: includes/free/class-registration.php:197
+msgid "First name is required."
+msgstr ""
+
+#: includes/free/class-registration.php:202
+msgid "Last name is required."
+msgstr ""
+
+#: includes/free/class-registration.php:207
+msgid "Email is required."
+msgstr ""
+
+#: includes/free/class-registration.php:222
+msgid "Confirm Password is required."
+msgstr ""
+
+#: includes/free/class-registration.php:227
+msgid "Passwords are not same."
+msgstr ""
+
+#: includes/free/class-registration.php:232
+msgid "A user with same username already exists."
+msgstr ""
+
 #: includes/free/edit-profile.php:32 includes/free/edit-user.php:37
 #: templates/unauthorized.php:3
 msgid "This page is restricted. Please %s to view this page."
@@ -2762,6 +2861,7 @@ msgstr ""
 
 #: includes/free/edit-profile.php:101 includes/free/edit-user.php:92
 #: includes/free/edit-user.php:144 templates/login-form.php:21
+#: templates/registration-form.php:51
 msgid "Username"
 msgstr ""
 
@@ -2819,7 +2919,7 @@ msgstr ""
 msgid "New Password"
 msgstr ""
 
-#: includes/free/edit-profile.php:194
+#: includes/free/edit-profile.php:194 templates/registration-form.php:65
 msgid "Confirm Password"
 msgstr ""
 
@@ -2968,6 +3068,14 @@ msgstr ""
 msgid "Enable post notification"
 msgstr ""
 
+#: includes/free/form-element.php:221 includes/free/form-element.php:258
+msgid "To"
+msgstr ""
+
+#: includes/free/form-element.php:228 includes/free/form-element.php:263
+msgid "Subject"
+msgstr ""
+
 #: includes/free/form-element.php:233 includes/free/form-element.php:268
 msgid "Message"
 msgstr ""
@@ -2996,10 +3104,6 @@ msgstr ""
 msgid "Profile updated successfully"
 msgstr ""
 
-#: includes/free/form-element.php:342
-msgid "Register"
-msgstr ""
-
 #: includes/free/form-element.php:351
 msgid "Enable Email Verfication"
 msgstr ""
@@ -3024,7 +3128,7 @@ msgstr ""
 msgid "Update Button text"
 msgstr ""
 
-#: includes/free/loader.php:83 includes/free/loader.php:112
+#: includes/free/loader.php:83 includes/free/loader.php:113
 msgid "Coupons"
 msgstr ""
 
@@ -3038,20 +3142,28 @@ msgstr ""
 msgid "Users can also register themselves by using a subscription pack."
 msgstr ""
 
-#: includes/free/loader.php:100 includes/free/loader.php:120
+#: includes/free/loader.php:100 includes/free/loader.php:121
 msgid "This feature is only available in the Pro Version."
 msgstr ""
 
-#: includes/free/loader.php:104 includes/free/loader.php:124
+#: includes/free/loader.php:104 includes/free/loader.php:125
 msgid "Upgrade to Pro Version"
 msgstr ""
 
-#: includes/free/loader.php:116
+#: includes/free/loader.php:105
+msgid "Learn more about Registration"
+msgstr ""
+
+#: includes/free/loader.php:117
 msgid "Use Coupon codes for subscription for discounts."
 msgstr ""
 
-#: includes/free/loader.php:149
-msgid "Pro Feature"
+#: includes/free/loader.php:126
+msgid "Learn more about Coupons"
+msgstr ""
+
+#: includes/free/loader.php:167
+msgid "Upgrade to Pro"
 msgstr ""
 
 #: includes/free/post-form-templates/woocommerce.php:12
@@ -3144,27 +3256,27 @@ msgstr ""
 msgid "Thanks for being with us."
 msgstr ""
 
-#: lib/gateway/paypal.php:60
+#: lib/gateway/paypal.php:61
 msgid "Subscription %s at %s"
 msgstr ""
 
-#: lib/gateway/paypal.php:91
+#: lib/gateway/paypal.php:92
 msgid "PayPal Email"
 msgstr ""
 
-#: lib/gateway/paypal.php:96
+#: lib/gateway/paypal.php:97
 msgid "PayPal Instruction"
 msgstr ""
 
-#: lib/gateway/paypal.php:103
+#: lib/gateway/paypal.php:104
 msgid "PayPal API username"
 msgstr ""
 
-#: lib/gateway/paypal.php:107
+#: lib/gateway/paypal.php:108
 msgid "PayPal API password"
 msgstr ""
 
-#: lib/gateway/paypal.php:111
+#: lib/gateway/paypal.php:112
 msgid "PayPal API signature"
 msgstr ""
 
@@ -3219,27 +3331,27 @@ msgstr ""
 msgid "You have created <span>%d</span> %s"
 msgstr ""
 
-#: templates/dashboard/posts.php:104 templates/dashboard.php:57
+#: templates/dashboard/posts.php:104 templates/dashboard.php:131
 msgid "No Image"
 msgstr ""
 
-#: templates/dashboard/posts.php:118 templates/dashboard.php:71
+#: templates/dashboard/posts.php:118 templates/dashboard.php:145
 msgid "Permalink to %s"
 msgstr ""
 
-#: templates/dashboard/posts.php:134 templates/dashboard.php:88
+#: templates/dashboard/posts.php:134 templates/dashboard.php:189
 msgid "Pay Now"
 msgstr ""
 
-#: templates/dashboard/posts.php:178 templates/dashboard.php:132
+#: templates/dashboard/posts.php:178 templates/dashboard.php:233
 msgid "&laquo;"
 msgstr ""
 
-#: templates/dashboard/posts.php:179 templates/dashboard.php:133
+#: templates/dashboard/posts.php:179 templates/dashboard.php:234
 msgid "&raquo;"
 msgstr ""
 
-#: templates/dashboard/posts.php:193 templates/dashboard.php:146
+#: templates/dashboard/posts.php:193 templates/dashboard.php:248
 msgid "No %s found"
 msgstr ""
 
@@ -3251,6 +3363,10 @@ msgstr ""
 msgid "%s's Dashboard"
 msgstr ""
 
+#: templates/dashboard.php:76
+msgid "Category"
+msgstr ""
+
 #: templates/logged-in.php:8
 msgid "Hello %s"
 msgstr ""
@@ -3259,16 +3375,12 @@ msgstr ""
 msgid "You are currently logged in! %s?"
 msgstr ""
 
-#: templates/login-form.php:25
+#: templates/login-form.php:25 templates/registration-form.php:58
 msgid "Password"
 msgstr ""
 
 #: templates/login-form.php:33
 msgid "Remember Me"
-msgstr ""
-
-#: templates/login-form.php:37
-msgid "Log In"
 msgstr ""
 
 #: templates/lost-pass-form.php:14
@@ -3277,6 +3389,10 @@ msgstr ""
 
 #: templates/lost-pass-form.php:21
 msgid "Get New Password"
+msgstr ""
+
+#: templates/registration-form.php:16
+msgid "Registration has been successful!"
 msgstr ""
 
 #: templates/reset-pass-form.php:14
@@ -3559,11 +3675,15 @@ msgstr ""
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf.php:147
+#: wpuf-functions.php:2115
+msgid "WPUF Forms"
+msgstr ""
+
+#: wpuf.php:138
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:585
+#: wpuf.php:598
 msgid "Error: Nonce verification failed"
 msgstr ""
 

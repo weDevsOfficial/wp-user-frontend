@@ -12,19 +12,20 @@ class WPUF_Paypal {
     private $gateway_cancel_url;
     private $test_mode;
 
-    function __construct() {
+    public function __construct() {
         $this->gateway_url        = 'https://www.paypal.com/webscr/?';
         $this->gateway_cancel_url = 'https://api-3t.paypal.com/nvp';
         $this->test_mode          = false;
 
         add_action( 'wpuf_gateway_paypal', array( $this, 'prepare_to_send' ) );
         add_action( 'wpuf_options_payment', array( $this, 'payment_options' ) );
-        add_action( 'init', array( $this, 'paypal_success' ) );
+        add_action( 'init', array( $this, 'check_response' ) );
+        add_action( 'wpuf_paypal_ipn_success', array( $this, 'paypal_success' ) );
         add_action( 'wpuf_cancel_payment_paypal', array( $this, 'handle_cancel_subscription' ) );
         add_action( 'wpuf_cancel_subscription_paypal', array( $this, 'handle_cancel_subscription' ) );
     }
 
-    function subscription_cancel( $user_id ) {
+    public function subscription_cancel( $user_id ) {
         $sub_meta = 'cancel';
         WPUF_Subscription::init()->update_user_subscription_meta( $user_id, $sub_meta );
     }
@@ -36,7 +37,7 @@ class WPUF_Paypal {
      * @param  string $status
      * @return void
      */
-    function recurring_change_status( $user_id, $status ) {
+    public function recurring_change_status( $user_id, $status ) {
         global $wp_version;
 
         $sub_info          = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
@@ -84,7 +85,7 @@ class WPUF_Paypal {
      * @param type $options
      * @return string
      */
-    function payment_options( $options ) {
+    public function payment_options( $options ) {
 
         $options[] = array(
             'name' => 'paypal_email',
@@ -120,7 +121,7 @@ class WPUF_Paypal {
      * @since 0.8
      * @param array $data payment info
      */
-    function prepare_to_send( $data ) {
+    public function prepare_to_send( $data ) {
 
         $user_id          = $data['user_info']['id'];
         $listener_url     = add_query_arg   ( 'action', 'wpuf_paypal_success', home_url( '/' ) );
@@ -229,11 +230,20 @@ class WPUF_Paypal {
      *
      * @since 0.8
      */
-    function set_mode() {
+    public function set_mode() {
         if ( wpuf_get_option( 'sandbox_mode', 'wpuf_payment' ) == 'on' ) {
             $this->gateway_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr/?';
             $this->gateway_cancel_url = 'https://api-3t.sandbox.paypal.com/nvp';
             $this->test_mode   = true;
+        }
+    }
+
+        /**
+     * Check for PayPal IPN Response.
+     */
+    public function check_response() {
+        if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' && $this->validateIpn() ) {
+            do_action( 'wpuf_paypal_ipn_success');
         }
     }
 
@@ -242,7 +252,7 @@ class WPUF_Paypal {
      *
      * @since 0.8
      */
-    function paypal_success() {
+    public function paypal_success() {
 
         $postdata = $_POST;
 
@@ -299,7 +309,6 @@ class WPUF_Paypal {
                 WP_User_Frontend::log( 'paypal', 'got web_accept. type: ' . $custom->type . '. item_number: ' . $item_number );
 
                 //verify payment
-                $verified = $this->validateIpn();
                 $status   = 'web_accept';
 
                 switch ($custom->type ) {
@@ -314,10 +323,6 @@ class WPUF_Paypal {
                         break;
                 }
 
-                if ( $verified ) {
-                    $insert_payment = true;
-                }
-
             } else if (
                 isset ( $postdata['verify_sign'] )
                 && !empty( $postdata['verify_sign'] )
@@ -328,11 +333,7 @@ class WPUF_Paypal {
                 && isset ( $postdata['txn_type'] )
                 && $postdata['txn_type'] == 'web_accept'
             ) {
-
-
-
                 //verify payment
-                $verified = $this->validateIpn();
                 $status  = 'web_accept';
                 switch ($custom->type ) {
                     case 'post':
@@ -346,47 +347,39 @@ class WPUF_Paypal {
                         break;
                 }
 
-                if ( $verified ) {
-                    $insert_payment = true;
-                }
-
             } // payment type
 
-            if ( $insert_payment ) {
-                $data = array(
-                    'user_id'          => (int) $custom->user_id,
-                    'status'           => strtolower( $postdata['payment_status'] ),
-                    'cost'             => $postdata['mc_gross'],
-                    'post_id'          => $post_id,
-                    'pack_id'          => $pack_id,
-                    'payer_first_name' => $postdata['first_name'],
-                    'payer_last_name'  => $postdata['last_name'],
-                    'payer_email'      => $postdata['payer_email'],
-                    'payment_type'     => 'Paypal',
-                    'payer_address'    => $postdata['residence_country'],
-                    'transaction_id'   => $postdata['txn_id'],
-                    'created'          => current_time( 'mysql' ),
-                    'profile_id'       => isset( $postdata['subscr_id'] ) ? $postdata['subscr_id'] : null,
-                );
+            $data = array(
+                'user_id'          => (int) $custom->user_id,
+                'status'           => strtolower( $postdata['payment_status'] ),
+                'cost'             => $postdata['mc_gross'],
+                'post_id'          => $post_id,
+                'pack_id'          => $pack_id,
+                'payer_first_name' => $postdata['first_name'],
+                'payer_last_name'  => $postdata['last_name'],
+                'payer_email'      => $postdata['payer_email'],
+                'payment_type'     => 'Paypal',
+                'payer_address'    => isset( $postdata['residence_country'] ) ? $postdata['residence_country'] : null,
+                'transaction_id'   => $postdata['txn_id'],
+                'created'          => current_time( 'mysql' ),
+                'profile_id'       => isset( $postdata['subscr_id'] ) ? $postdata['subscr_id'] : null,
+            );
 
-                WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
+            WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
 
-                $transaction_id = wp_strip_all_tags( $postdata['txn_id'] );
-                WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
+            $transaction_id = wp_strip_all_tags( $postdata['txn_id'] );
+            WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
 
-                if ( $coupon_id ) {
-                    $pre_usage = get_post_meta( $post_id, '_coupon_used', true );
-                    $new_use   = $pre_usage + 1;
+            if ( $coupon_id ) {
+                $pre_usage = get_post_meta( $post_id, '_coupon_used', true );
+                $new_use   = $pre_usage + 1;
 
-                    update_post_meta( $post_id, '_coupon_used', $coupon_id );
-                }
-
-                delete_user_meta( $custom->user_id, '_wpuf_user_active' );
-                delete_user_meta( $custom->user_id, '_wpuf_activation_key' );
-
-            } else {
-                WP_User_Frontend::log( 'payment', 'inserting payment failed.' );
+                update_post_meta( $post_id, '_coupon_used', $coupon_id );
             }
+
+            delete_user_meta( $custom->user_id, '_wpuf_user_active' );
+            delete_user_meta( $custom->user_id, '_wpuf_activation_key' );
+
         }
     }
 

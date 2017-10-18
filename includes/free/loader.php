@@ -102,6 +102,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
             <p>
                 <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wpuf' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php _e( 'Learn more about Registration', 'wpuf' ); ?></a>
             </p>
         </div>
         <?php
@@ -122,6 +123,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
             <p>
                 <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wpuf' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank" class="button"><?php _e( 'Learn more about Coupons', 'wpuf' ); ?></a>
             </p>
         </div>
 
@@ -133,25 +135,25 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         if ( $current_screen->id == 'user-frontend_page_wpuf-settings' ) {
             ?>
-            <script type="text/javascript">
+            <!-- <script type="text/javascript">
             jQuery(function($){
                 $('#wpuf_profile').find('input, select').each(function(i, el){ $(el).attr('disabled','disabled'); });
             });
-            </script>
+            </script> -->
             <?php
         }
     }
 
     function settings_login_prompt( $fields ) {
 
-        $new_field = array(
-            'name'    => 'something',
-            'label'   => __( 'Pro Feature', 'wpuf' ),
-            'desc'    => 'These Features are ' . self::get_pro_prompt_text() . ' Only.',
-            'type'    => 'html',
-        );
+        // $new_field = array(
+        //     'name'    => 'something',
+        //     'label'   => __( 'Pro Feature', 'wpuf' ),
+        //     'desc'    => 'These Features are ' . self::get_pro_prompt_text() . ' Only.',
+        //     'type'    => 'html',
+        // );
 
-        array_unshift( $fields['wpuf_profile'], $new_field );
+        // array_unshift( $fields['wpuf_profile'], $new_field );
 
         return $fields;
     }

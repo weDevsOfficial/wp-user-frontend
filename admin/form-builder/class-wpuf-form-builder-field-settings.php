@@ -74,6 +74,21 @@ class WPUF_Form_Builder_Field_Settings {
             ),
 
             array(
+                'name'      => 'width',
+                'title'     => __( 'Field Size', 'weforms' ),
+                'type'      => 'radio',
+                'options'   => array(
+                    'small'     => __( 'Small', 'weforms' ),
+                    'medium'    => __( 'Medium', 'weforms' ),
+                    'large'     => __( 'Large', 'weforms' ),
+                ),
+                'section'   => 'advanced',
+                'priority'  => 23,
+                'default'   => 'large',
+                'inline'    => true,
+            ),
+
+            array(
                 'name'      => 'css',
                 'title'     => __( 'CSS Class Name', 'wpuf' ),
                 'type'      => 'text',
@@ -263,6 +278,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'              => '',
                 'is_meta'           => 'yes',
                 'help'              => '',
+                'width'             => 'large',
                 'css'               => '',
                 'placeholder'       => '',
                 'default'           => '',
@@ -299,6 +315,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
+                'width'            => 'medium',
                 'css'              => '',
                 'rows'             => 5,
                 'cols'             => 25,
@@ -372,6 +389,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
+                'width'            => 'medium',
                 'css'              => '',
                 'selected'         => '',
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
@@ -412,6 +430,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
+                'width'            => 'medium',
                 'css'              => '',
                 'selected'         => array(),
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
@@ -467,6 +486,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
+                'width'            => '',
                 'css'              => '',
                 'selected'         => '',
                 'inline'           => 'no',
@@ -522,6 +542,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
+                'width'            => '',
                 'css'              => '',
                 'selected'         => array(),
                 'inline'           => 'no',
@@ -557,6 +578,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'          => '',
                 'is_meta'       => 'yes',
                 'help'          => '',
+                'width'         => 'large',
                 'css'           => '',
                 'placeholder'   => '',
                 'default'       => '',
@@ -592,6 +614,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'          => '',
                 'is_meta'       => 'yes',
                 'help'          => '',
+                'width'         => 'large',
                 'css'           => '',
                 'placeholder'   => '',
                 'default'       => '',
@@ -693,6 +716,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'          => '',
                 'is_meta'       => 'yes',
                 'help'          => '',
+                'width'         => '',
                 'css'           => '',
                 'max_size'      => '1024',
                 'count'         => '1',
@@ -734,6 +758,7 @@ class WPUF_Form_Builder_Field_Settings {
         return array(
             'template'      => 'section_break',
             'title'         => __( 'Section Break', 'wpuf' ),
+            'icon'          => 'columns',
             'is_full_width' => true,
             'settings'      => $settings,
             'field_props'   => array(
@@ -770,6 +795,7 @@ class WPUF_Form_Builder_Field_Settings {
         return array(
             'template'      => 'custom_html',
             'title'         => __( 'Custom HTML', 'wpuf' ),
+            'icon'          => 'code',
             'is_full_width' => true,
             'settings'      => $settings,
             'field_props'   => array(
@@ -820,6 +846,7 @@ class WPUF_Form_Builder_Field_Settings {
         return array(
             'template'      => 'recaptcha',
             'title'         => __( 'reCaptcha', 'wpuf' ),
+            'icon'          => 'qrcode',
             'validator'     => array(
                 'callback'      => 'has_recaptcha_api_keys',
                 'button_class'  => 'button-faded',

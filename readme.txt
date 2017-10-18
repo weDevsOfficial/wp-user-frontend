@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 4.8.1
 Requires PHP: 5.4
-Stable tag: 2.5.7
+Stable tag: 2.5.8
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,6 +109,8 @@ After having installed the plugin:
 1. Create a form from the form builder. Get the shortcode for a form. Copy and paste that shortcode to a page.
 1. Create a new Page “Edit” for editing posts and insert shortcode `[wpuf_edit]`
 1. Create a new Page “Profile” for editing profile and insert shortcode `[wpuf_editprofile]`
+1. To add Login feature, use the shortcode: `[wpuf-login]`
+1. To enable a registration form in the frontend, use the shortcode: `[wpuf-registration]`
 1. Create a new Page “Dashboard” and insert shortcode `[wpuf_dashboard]`
     To list custom post type **event**, use `[wpuf_dashboard post_type="event"]`
 1. Set the *Edit Page* option from *Others* tab on settings page.
@@ -167,6 +169,18 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.5.7 (18 October, 2017) =
+
+ * **New:** Guest post email verification feature added. When turned on, users need to click the activation link on their email before publising the post.
+ * **New:** Added Login and Registration shortcode support in the plugin. Now free version users will get the themed login and a simple registration feature.
+ * **Improved:** Add missing icon on field button (form builder).
+ * **Improved:** Added related help documents/links in various pages.
+ * **Fix:** Fix the upgrade routine. Version number mismatch gives fatal error. Fixes #179
+ * **Fix:** Removed integration classes, vue modal component from WPUF as it was not necessary anymore.
+ * **Fix:** Users could not update profile from my account page.
+ * **Fix:** Product visibility for WooCommerce wasn't working as they migrated to a taxonomy system.
+ * **Fix:** PayPal gateway security enforced. When checking the IPN request, few things weren't being done before checking the valid IPN response.
 
 = v2.5.7 (11 September, 2017) =
 

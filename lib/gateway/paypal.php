@@ -64,7 +64,7 @@ class WPUF_Paypal {
         // Send back post vars to paypal
         $params = array(
             'body'       => $args,
-            'sslverify'  => false,
+            'sslverify'  => true,
             'timeout'    => 30,
             'user-agent' => 'WP User Frontend Pro/' . WPUF_VERSION,
         );

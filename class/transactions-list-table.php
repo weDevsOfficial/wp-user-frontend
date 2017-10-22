@@ -133,7 +133,9 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 return ( $item->status == 'completed' ) ? '<span class="wpuf-status-completed" title="Completed"></span>' : '<span class="wpuf-status-processing" title="Processing"></span>';
             case 'user':
                 $user = get_user_by( 'id', $item->user_id );
-                return sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->display_name );
+                $post_author_id =  get_post_field( 'post_author', $item->post_id ) ;
+                $post_author    =  get_the_author_meta( 'nickname', $post_author_id);
+                return ! empty( $user ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->display_name ) : $post_author ;
             case 'cost':
                 return wpuf_format_price( $item->cost );
             case 'post_id':

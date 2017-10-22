@@ -2194,13 +2194,17 @@ function wpuf_decryption ( $id ) {
  *
  * @since 2.5.8
  *
- * @param  string  $post_id
+ * @param  string  $post_id_encoded, $form_id_encoded, $charging_enabled, $flag
  *
  * @return void
  */
-function send_mail_to_guest ( $post_id_encoded ) {
+function send_mail_to_guest ( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag ) {
 
-    $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&post_msg=verified';
+    if ( $charging_enabled == 'yes' )  {
+        $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&f_id=' . $form_id_encoded . '&post_msg=verified' . '&f=2';
+    } else {
+        $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&f_id=' . $form_id_encoded . '&post_msg=verified' . '&f=1';
+    }
 
     $default_body     = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.' .  '<br>' . '<br>' . 'Please click the link below to verify:' . '<br>' . '<br>' . '<a href="'.$encoded_guest_url.'">Publish Post</a>' . '<br>' . '<br>' . 'Regards,' . '<br>' . '<br>' . bloginfo('name');
     $to               = trim( $_POST['guest_email'] );
@@ -2214,10 +2218,5 @@ function send_mail_to_guest ( $post_id_encoded ) {
     $headers  = array('Content-Type: text/html; charset=UTF-8');
 
     wp_mail( $to, $subject, $body, $headers );
-
-    if ( $is_update ) {
-        $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $form_settings );
-    } else {
-        $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $form_settings );
-    }
+    
 }

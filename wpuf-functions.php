@@ -1485,7 +1485,7 @@ function wpuf_get_pending_transactions( $args = array() ) {
     $wpuf_order_query = new WP_Query( $pending_args );
 
     if ( $args['count'] ) {
-        return $wpuf_order_query->post_count;
+        return $wpuf_order_query->found_posts;
     }
 
     $transactions = $wpuf_order_query->get_posts();

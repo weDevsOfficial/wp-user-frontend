@@ -908,14 +908,60 @@ ul.wpuf-form li .wpuf-password-field:after {
   padding: 0;
 }
 .wpuf-form-template-modal .content ul li {
-  float: left;
-  width: 31.292517006803%;
-  border: 1px solid #e4e4e4;
-  padding: 0;
-  margin-left: 3.0612244897959%;
-  margin-bottom: 30px;
+  text-align: center;
+  min-height: 280px;
+  width: 220px;
+  border: 0px;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
-  min-height: 120px;
+  border-radius: 3px;
+  margin-bottom: 30px;
+  float: left;
+  margin-left: 30px;
+}
+.wpuf-form-template-modal .content ul li h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  border: 0px;
+  background: #1E87B6;
+  padding: 13px;
+  font-weight: normal;
+  font-size: 13px;
+  color: #fff;
+  border-radius: 3px 3px 0px 0px;
+  text-align: left;
+}
+.wpuf-form-template-modal .content ul li .title {
+  font-size: 17px;
+  margin: 0 0 10px 0;
+  line-height: 23px;
+}
+.wpuf-form-template-modal .content ul li.template-active img,
+.wpuf-form-template-modal .content ul li.template-inactive img {
+  max-width: 100%;
+  max-height: 211px;
+}
+.wpuf-form-template-modal .content ul li .form-middle-text {
+  margin-top: 70px;
+  font-size: 15px;
+}
+.wpuf-form-template-modal .content ul li .form-middle-text span.dashicons {
+  font-size: 45px;
+  color: #ddd;
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  display: block;
+}
+.wpuf-form-template-modal .content ul li .form-create-overlay {
+  position: absolute;
+  display: none;
+}
+.wpuf-form-template-modal .content ul li .form-create-overlay a.button.button-primary {
+  width: 200px;
+  min-height: 30px;
+  padding: 0;
+  color: #fff;
 }
 .wpuf-form-template-modal .content ul li.on-progress:before {
   content: "\f463";
@@ -933,7 +979,22 @@ ul.wpuf-form li .wpuf-password-field:after {
   opacity: 0.2;
 }
 .wpuf-form-template-modal .content ul li:hover {
-  background: #F5F5F5;
+  background: #fff;
+}
+.wpuf-form-template-modal .content ul li:hover .form-create-overlay {
+  animation: weFormsFadeIn .25s;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  color: #fff;
+  border-radius: 3px;
 }
 .wpuf-form-template-modal .content ul li a {
   text-decoration: none;
@@ -948,7 +1009,7 @@ ul.wpuf-form li .wpuf-password-field:after {
   line-height: 23px;
 }
 .wpuf-form-template-modal .content ul li .description {
-  color: #888;
+  color: #fff;
 }
 .wpuf-form-template-modal .content ul li:nth-child(3n+1) {
   margin-left: 0;

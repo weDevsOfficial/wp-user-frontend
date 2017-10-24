@@ -20,16 +20,28 @@
 
                 <ul>
                     <li class="blank-form">
-                        <a href="<?php echo $blank_form_url; ?>">
+                        <h3><?php _e( 'Blank Form', 'wpuf' ); ?></h3>
+
+                        <div class="form-middle-text">
                             <span class="dashicons dashicons-plus"></span>
                             <div class="title"><?php _e( 'Blank Form', 'wpuf' ); ?></div>
-                        </a>
+                        </div>
+
+                        <div class="form-create-overlay">
+                            <div class="title"><?php _e( 'Blank Form', 'wpuf' ); ?></div>
+                            <br>
+                            <a href="<?php echo $blank_form_url; ?>" class="button button-primary" title="<?php echo esc_attr('Blank Form'); ?>">
+                                <?php _e('Create Form', 'wpuf' );  ?>
+                            </a>
+                        </div>
                     </li>
 
                     <?php
                     foreach ($registry as $key => $template ) {
                         $class = 'template-active';
-                        $title = '';
+                        $title = $template->title;
+                        $image = $template->image ? $template->image : '';
+
                         $url   = esc_url( add_query_arg( array(
                             'action'   => $action_name,
                             'template' => $key,
@@ -44,10 +56,17 @@
                         ?>
 
                         <li class="<?php echo $class; ?>">
-                            <a href="<?php echo $url; ?>" title="<?php echo esc_attr( $title ); ?>">
+                            <h3><?php echo $template->get_title(); ?></h3>
+                            <?php if ( $image ) { printf( '<img src="%s" alt="%s">', $image, $title );   }  ?>
+
+                            <div class="form-create-overlay">
                                 <div class="title"><?php echo $template->get_title(); ?></div>
                                 <div class="description"><?php echo $template->get_description(); ?></div>
-                            </a>
+                                <br>
+                                <a href="<?php echo $url; ?>" class="button button-primary" title="<?php echo $template->get_title(); ?>">
+                                    <?php _e('Create Form', 'wpuf' );  ?>
+                                </a>
+                            </div>
                         </li>
 
                     <?php } ?>

@@ -858,13 +858,41 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         if ( $replace ) {
             foreach ( $replace as $index => $meta_key ) {
-                $value     = get_post_meta( $post_id, $meta_key );
+                $value     = get_post_meta( $post_id, $meta_key, false );
                 $new_value = implode( '; ', $value );
 
-                if ( get_post_mime_type( (int) $new_value ) ) {
-                    $original_value = wp_get_attachment_url( $new_value );
+	            $original_value = '';
+	            $meta_val = '';
+                if ( count( $value ) > 1 ) {
+	                $isFirst = true;
+                    foreach ($value as $val) {
+                        if ( $isFirst ) {
+	                        if ( get_post_mime_type( (int) $val ) ) {
+		                        $meta_val = wp_get_attachment_url( $val );
+	                        } else {
+		                        $meta_val = $val;
+	                        }
+	                        $isFirst = false;
+                        } else {
+	                        if ( get_post_mime_type( (int) $val ) ) {
+		                        $meta_val = $meta_val . ', ' . wp_get_attachment_url( $val );
+	                        } else {
+		                        $meta_val = $meta_val . ', ' . $val;
+	                        }
+                        }
+                        if ( get_post_mime_type( (int) $val ) ) {
+	                        $meta_val = $meta_val . ',' . wp_get_attachment_url( $val );
+                        } else {
+	                        $meta_val = $meta_val . ',' . $val;
+                        }
+                    }
+                    $original_value = $original_value . $meta_val ;
                 } else {
-                    $original_value = $new_value;
+                    if ( get_post_mime_type( (int) $new_value ) ) {
+                        $original_value = wp_get_attachment_url( $new_value );
+                    } else {
+                        $original_value = $new_value;
+                    }
                 }
 
                 $content = str_replace( $search[$index], $original_value, $content );

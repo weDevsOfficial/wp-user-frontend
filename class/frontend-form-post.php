@@ -918,8 +918,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 wpuf_send_json ( $response );
 
             } else {
-                if ( get_post_status( $post_id ) ) {
-                    wp_publish_post( $post_id );
+                $p_status = get_post_status( $post_id );
+                if ( $p_status ) {
+                    wp_update_post(array(
+                        'ID'            =>  $post_id,
+                        'post_status'   =>  isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish'
+                    ));
+                    echo "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wpuf' ) ."</div>";
                 }
 
             }

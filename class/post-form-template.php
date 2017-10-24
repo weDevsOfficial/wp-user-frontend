@@ -29,6 +29,13 @@ abstract class WPUF_Post_Form_Template {
     public $description;
 
     /**
+     * Form Template Image
+     *
+     * @var string
+     */
+    public $image;
+
+    /**
      * Conditional logic
      *
      * @var array

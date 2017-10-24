@@ -11,6 +11,7 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
         $this->enabled     = true;
         $this->title       = __( 'Post Form', 'wpuf' );
         $this->description = __( 'Form for creating a blog post.', 'wpuf' );
+        $this->image       = WPUF_ASSET_URI . '/images/templates/post.png';
         $this->form_fields = array(
             array(
                 'input_type'  => 'text',

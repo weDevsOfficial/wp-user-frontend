@@ -1138,4 +1138,17 @@ class WPUF_Subscription {
 
     }
 
+    /**
+     * Returns the payment status of a post 
+     *
+     * @since 2.5.9
+     *
+     * @param $post_id
+     * @return string
+     */
+
+    public function get_payment_status( $post_id ) {
+        return get_post_meta( $post_id, '_wpuf_payment_status', true);
+    }
+
 }

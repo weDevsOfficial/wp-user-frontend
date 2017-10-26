@@ -957,6 +957,26 @@ class WPUF_Subscription {
         return get_user_meta( $user_id, '_wpuf_subscription_pack', $status );
     }
 
+    function get_this_pack_users( $pack_id, $status = '' ) {
+        $args = array(
+            'meta_query' => array(
+                'relation' => 'AND',
+                    array(
+                        'key'     => 'pack_id',
+                        'value'   => $pack_id,
+                        'compare' => '='
+                    ),
+                    array(
+                        'key'     => '_wpuf_subscription_pack',
+                        'value'   => $status,
+                        'compare' => '='
+                    )
+            )
+        );
+        $users = new WP_User_Query( $args );
+        return $users;
+    }
+
     function force_pack_notice( $text, $id, $form_settings ) {
         $force_pack = wpuf_get_option( 'force_pack', 'wpuf_payment' );
 

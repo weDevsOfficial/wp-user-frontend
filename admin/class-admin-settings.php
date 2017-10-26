@@ -22,6 +22,13 @@ class WPUF_Admin_Settings {
     private static $_instance;
 
     /**
+     * public instance of this class
+     *
+     * @var \self
+     */
+    public $subscribers_list_table_obj;
+
+    /**
      * The menu page hooks
      *
      * Used for checking if any page is under WPUF menu
@@ -97,10 +104,14 @@ class WPUF_Admin_Settings {
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wpuf' ), __( '<span style="color:#f18500">Help</span>', 'wpuf' ), $capability, 'wpuf-support', array($this, 'support_page') );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wpuf' ), __( 'Settings', 'wpuf' ), $capability, 'wpuf-settings', array($this, 'plugin_page') );
 
+        $this->menu_pages[] = add_submenu_page( '', __( '', 'wpuf' ), __( '', 'wpuf' ), $capability, 'wpuf_subscribers', array($this, 'subscribers_page'), 2 );
+
         // manually add subsription page
         $this->menu_pages[] = 'edit-wpuf_subscription';
+        // $this->menu_pages[] = 'wpuf_subscribers';
 
         add_action( "load-$transactions_page", array( $this, 'transactions_screen_option' ) );
+        // add_action( "load-wpuf_subscribers", array( $this, 'subscribers_screen_option' ) );
     }
 
     /**
@@ -171,6 +182,10 @@ class WPUF_Admin_Settings {
 
     function subscription_page() {
         require_once dirname( dirname( __FILE__ ) ) . '/admin/subscription.php';
+    }
+
+    function subscribers_page($post_ID) {
+        include dirname( dirname( __FILE__ ) ) . '/admin/subscribers.php';
     }
 
     function weforms_page() {
@@ -346,5 +361,9 @@ class WPUF_Admin_Settings {
         }
 
         wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css' );
+    }
+
+    public function wpuf_subscribers() {
+        echo 'wpuf_subscribers';
     }
 }

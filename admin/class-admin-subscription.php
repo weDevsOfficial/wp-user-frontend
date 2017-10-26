@@ -140,6 +140,13 @@ class WPUF_Admin_Subscription {
                 echo $amount;
                 break;
 
+            case 'subscribers':
+
+                $users = WPUF_Subscription::init()->get_this_pack_users($post_ID);
+
+                echo '<a href="'. admin_url( 'admin.php?post_type=wpuf_subscription&page=wpuf_subscribers&post_ID=' . $post_ID ) . '" />' . count( $users ) . '</a>';
+                break;
+
             case 'recurring':
 
                 $recurring = get_post_meta( $post_ID, '_recurring_pay', true );
@@ -169,10 +176,11 @@ class WPUF_Admin_Subscription {
 
     function subscription_columns_head( $head ) {
         unset($head['date']);
-        $head['title']     = __('Pack Name', 'wpuf' );
-        $head['amount']    = __( 'Amount', 'wpuf' );
-        $head['recurring'] = __( 'Recurring', 'wpuf' );
-        $head['duration']  = __( 'Duration', 'wpuf' );
+        $head['title']          = __( 'Pack Name', 'wpuf' );
+        $head['amount']         = __( 'Amount', 'wpuf' );
+        $head['subscribers']    = __( 'Subscribers', 'wpuf' );
+        $head['recurring']      = __( 'Recurring', 'wpuf' );
+        $head['duration']       = __( 'Duration', 'wpuf' );
 
         return $head;
     }

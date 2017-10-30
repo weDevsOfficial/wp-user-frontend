@@ -421,7 +421,11 @@ class WPUF_Paypal {
             'decompress'  => false,
             'user-agent'  => 'WP User Frontend Pro/' . WPUF_VERSION
         );
-
+        if ( wpuf_get_option( 'sandbox_mode', 'wpuf_payment' ) == 'on' ) {
+            $this->gateway_url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
+        } else {
+            $this->gateway_url = 'https://ipnpb.paypal.com/cgi-bin/webscr';
+        }
         $response = wp_safe_remote_post( $this->gateway_url, $params );
 
         WP_User_Frontend::log( 'paypal', 'IPN Request: ' . print_r( $params, true ) );

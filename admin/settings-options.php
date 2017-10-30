@@ -87,13 +87,13 @@ function wpuf_settings_fields() {
                     'yes' => __( 'Yes', 'wpuf' ),
                     'no'  => __( 'No', 'wpuf' )
                 )
-            ),
+            ),             
             array(
-                'name'    => 'cf_show_front',
-                'label'   => __( 'Custom Fields in post', 'wpuf' ),
-                'desc'    => __( 'Show custom fields on post content area', 'wpuf' ),
-                'type'    => 'checkbox',
-                'default' => 'off'
+                  'name'    => 'cf_show_front',
+                  'label'   => __( 'Custom Fields in post', 'wpuf' ),
+                  'desc'    => __( 'Show custom fields on post content area', 'wpuf' ),
+                  'type'    => 'checkbox',
+                  'default' => 'off'
             ),
             array(
                 'name'    => 'load_script',

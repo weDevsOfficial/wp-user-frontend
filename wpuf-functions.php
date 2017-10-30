@@ -614,6 +614,12 @@ function wpuf_get_gateways( $context = 'admin' ) {
 function wpuf_show_custom_fields( $content ) {
     global $post;
 
+    $show_custom  = wpuf_get_option( 'cf_show_front', 'wpuf_general' );
+
+    if ( $show_custom != 'on' ) {
+        return $content;
+    }
+    
     $show_caption  = wpuf_get_option( 'image_caption', 'wpuf_general' );
     $form_id       = get_post_meta( $post->ID, '_wpuf_form_id', true );
     $form_settings = wpuf_get_form_settings( $form_id );

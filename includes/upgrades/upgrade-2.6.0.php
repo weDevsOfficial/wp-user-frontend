@@ -31,15 +31,6 @@ function wpuf_upgrade_2_6_field_options() {
         ) );
     }
     
-    $option = get_option('wpuf_general');
-
-    if ( array_key_exists( 'cf_show_front', $option ) ) {
-
-        unset( $option['cf_show_front'] );
-        update_option( 'wpuf_general', $option );
-
-    }
-
 }
 
 wpuf_upgrade_2_6_field_options();

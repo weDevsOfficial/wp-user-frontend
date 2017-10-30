@@ -619,7 +619,7 @@ function wpuf_show_custom_fields( $content ) {
     if ( $show_custom != 'on' ) {
         return $content;
     }
-
+    
     $show_caption  = wpuf_get_option( 'image_caption', 'wpuf_general' );
     $form_id       = get_post_meta( $post->ID, '_wpuf_form_id', true );
     $form_settings = wpuf_get_form_settings( $form_id );
@@ -635,7 +635,7 @@ function wpuf_show_custom_fields( $content ) {
 
     if ( $form_vars ) {
         foreach ($form_vars as $attr) {
-            if ( isset( $attr['is_meta'] ) && $attr['is_meta'] == 'yes' ) {
+            if ( isset( $attr['show_in_post'] ) && $attr['show_in_post'] == 'yes' ) {
                 $meta[] = $attr;
             }
         }
@@ -2220,4 +2220,27 @@ function send_mail_to_guest ( $post_id_encoded ) {
     } else {
         $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $form_settings );
     }
+}
+
+
+/**
+ * Check if it's post form builder
+ *
+ * @since 2.6
+ *
+ * @return boolean
+ */
+function is_wpuf_post_form_builder() {
+    return isset( $_GET['page'] ) && $_GET['page'] == 'wpuf-post-forms' ? true : false;
+}
+
+/**
+ * Check if it's profile form builder
+ *
+ * @since 2.6
+ *
+ * @return boolean
+ */
+function is_wpuf_profile_form_builder() {
+    return isset( $_GET['page'] ) && $_GET['page'] == 'wpuf-profile-forms' ? true : false;
 }

@@ -75,12 +75,12 @@ class WPUF_Form_Builder_Field_Settings {
 
             array(
                 'name'      => 'width',
-                'title'     => __( 'Field Size', 'weforms' ),
+                'title'     => __( 'Field Size', 'wpuf' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'small'     => __( 'Small', 'weforms' ),
-                    'medium'    => __( 'Medium', 'weforms' ),
-                    'large'     => __( 'Large', 'weforms' ),
+                    'small'     => __( 'Small', 'wpuf' ),
+                    'medium'    => __( 'Medium', 'wpuf' ),
+                    'large'     => __( 'Large', 'wpuf' ),
                 ),
                 'section'   => 'advanced',
                 'priority'  => 23,
@@ -99,14 +99,35 @@ class WPUF_Form_Builder_Field_Settings {
         );
 
         if ( $is_meta ) {
-            $common_properties[] = array(
-                'name'      => 'name',
-                'title'     => __( 'Meta Key', 'wpuf' ),
-                'type'      => 'text-meta',
-                'section'   => 'basic',
-                'priority'  => 11,
-                'help_text' => __( 'Name of the meta key this field will save to', 'wpuf' ),
-            );
+            $common_properties = array_merge($common_properties, array(
+                array(
+                    'name'      => 'name',
+                    'title'     => __( 'Meta Key', 'wpuf' ),
+                    'type'      => 'text-meta',
+                    'section'   => 'basic',
+                    'priority'  => 11,
+                    'help_text' => __( 'Name of the meta key this field will save to', 'wpuf' ),
+                )
+            ));
+
+            if ( is_wpuf_post_form_builder() ) {
+                $common_properties = array_merge($common_properties, array(
+                    array(
+                        'name'      => 'show_in_post',
+                        'title'     => __( 'Show Data in Post', 'wpuf' ),
+                        'type'      => 'radio',
+                        'options'   => array(
+                            'yes'   => __( 'Yes', 'wpuf' ),
+                            'no'    => __( 'No', 'wpuf' ),
+                        ),
+                        'section'   => 'advanced',
+                        'priority'  => 24,
+                        'default'   => 'yes',
+                        'inline'    => true,
+                        'help_text' => __( 'Select Yes if you want to show the field data in single post.', 'wpuf' ),
+                    )
+                )); 
+            }
         }
 
         return apply_filters( 'wpuf-form-builder-fields-common-properties', $common_properties );
@@ -286,6 +307,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'word_restriction'  => '',
                 'id'                => 0,
                 'is_new'            => true,
+                'show_in_post'      => 'yes',
                 'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
@@ -325,6 +347,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'word_restriction' => '',
                 'id'               => 0,
                 'is_new'           => true,
+                'show_in_post'     => 'yes',
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -396,6 +419,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'first'            => __( '- select -', 'wpuf' ),
                 'id'               => 0,
                 'is_new'           => true,
+                'show_in_post'     => 'yes',
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -437,6 +461,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'first'            => __( '- select -', 'wpuf' ),
                 'id'               => 0,
                 'is_new'           => true,
+                'show_in_post'     => 'yes',
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -493,6 +518,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
                 'id'               => 0,
                 'is_new'           => true,
+                'show_in_post'     => 'yes',
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -549,6 +575,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
                 'id'               => 0,
                 'is_new'           => true,
+                'show_in_post'     => 'yes',
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -585,6 +612,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'size'          => 40,
                 'id'            => 0,
                 'is_new'        => true,
+                'show_in_post'  => 'yes',
                 'wpuf_cond'     => self::get_wpuf_cond_prop()
             )
         );
@@ -621,6 +649,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'size'          => 40,
                 'id'            => 0,
                 'is_new'        => true,
+                'show_in_post'  => 'yes',
                 'wpuf_cond'     => self::get_wpuf_cond_prop()
             )
         );
@@ -668,6 +697,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'is_meta'       => 'yes',
                 'id'            => 0,
                 'is_new'        => true,
+                'show_in_post'  => 'yes',
                 'wpuf_cond'     => null
             )
         );
@@ -722,6 +752,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'count'         => '1',
                 'id'            => 0,
                 'is_new'        => true,
+                'show_in_post'  => 'yes',
                 'wpuf_cond'     => self::get_wpuf_cond_prop()
             )
         );
@@ -768,6 +799,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'description'   => __( 'Some description about this section', 'wpuf' ),
                 'id'            => 0,
                 'is_new'        => true,
+                'show_in_post'  => 'yes',
                 'wpuf_cond'     => self::get_wpuf_cond_prop()
             )
         );

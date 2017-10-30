@@ -13,7 +13,8 @@ class WPUF_Upgrades {
      * @var array
      */
     private static $upgrades = array(
-        '2.1.9' => 'upgrades/upgrade-2.1.9.php'
+        '2.1.9' => 'upgrades/upgrade-2.1.9.php',
+        '2.6.0' => 'upgrades/upgrade-2.6.0.php'
     );
 
     /**

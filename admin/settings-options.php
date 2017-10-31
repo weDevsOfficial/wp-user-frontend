@@ -275,6 +275,17 @@ function wpuf_settings_fields() {
                 )
             ),
             array(
+                'name'    => 'edit_billing_address',
+                'label'   => __( 'Billing Address', 'wpuf-pro' ),
+                'desc'    => __( 'Show Billing Address option in dashboard', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'no',
+                'options' => array(
+                    'yes' => __( 'Yes', 'wpuf' ),
+                    'no'  => __( 'No', 'wpuf' )
+                )
+            ),
+            array(
                 'name'    => 'subscription_page',
                 'label'   => __( 'Subscription Pack Page', 'wpuf' ),
                 'desc'    => __( 'Select the page where <code>[wpuf_sub_pack]</code> located.', 'wpuf' ),

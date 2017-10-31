@@ -957,23 +957,15 @@ class WPUF_Subscription {
         return get_user_meta( $user_id, '_wpuf_subscription_pack', $status );
     }
 
-    function get_this_pack_users( $pack_id, $status = '' ) {
+    public function subscription_pack_users() {
         $args = array(
             'meta_query' => array(
-                'relation' => 'AND',
-                    array(
-                        'key'     => 'pack_id',
-                        'value'   => $pack_id,
-                        'compare' => '='
-                    ),
-                    array(
-                        'key'     => '_wpuf_subscription_pack',
-                        'value'   => $status,
-                        'compare' => '='
-                    )
+                array(
+                    'key' => '_wpuf_subscription_pack',
+                )
             )
         );
-        $users = new WP_User_Query( $args );
+        $users = get_users( $args );
         return $users;
     }
 

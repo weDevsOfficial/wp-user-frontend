@@ -31,6 +31,26 @@ class WPUF_Subscribers_List_Table extends \WP_List_Table {
     }
 
     /**
+     * Get the column names
+     *
+     * @return array
+     */
+    function get_columns() {
+        $columns = array(
+            'cb'                    => '<input type="checkbox" />',
+            'id'                    => __( 'User ID', 'wpuf' ),
+            'name'                  => __( 'User Name', 'wpuf' ),
+            'subscription_id'       => __( 'Subscription ID', 'wpuf' ),
+            'status'                => __( 'Status', 'wpuf' ),
+            'gateway'               => __( 'Gateway', 'wpuf' ),
+            'transaction_id'        => __( 'Transaction ID', 'wpuf' ),
+            'starts_from'           => __( 'Starts from', 'wpuf' ),
+            'expire'                => __( 'Expire date', 'wpuf' ),
+        );
+        return $columns;
+    }
+
+    /**
      * Default column values if no callback found
      *
      * @param  object  $item
@@ -39,46 +59,44 @@ class WPUF_Subscribers_List_Table extends \WP_List_Table {
      * @return string
      */
     function column_default( $item, $column_name ) {
-
         switch ( $column_name ) {
             case 'id':
-                return $item->id;
+                return $item->user_id;
+            case 'name':
+                return $item->name;
+            case 'subscription_id':
+                return $item->subscribtion_id;
+            case 'status':
+                return $item->subscribtion_status;
+            case 'gateway':
+                return $item->gateway;
+            case 'transaction_id':
+                return $item->transaction_id;
+            case 'starts_from':
+                return $item->starts_from;
+            case 'expire':
+                return $item->expire;
 
             default:
                 return isset( $item->$column_name ) ? $item->$column_name : '';
         }
     }
 
-    /**
-     * Get the column names
-     *
-     * @return array
-     */
-    function get_columns() {
-        $columns = array(
-            'cb'           => '<input type="checkbox" />',
-            'id'      => __( 'User ID', 'wpuf' ),
+//     /**
+//      * Render the designation name column
+//      *
+//      * @param  object  $item
+//      *
+//      * @return string
+//      */
+//     function column_id( $item ) {
+// // echo '<pre>';var_dump($item); echo "</pre>";
+//         $actions           = array();
+//         $actions['edit']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=pageslug&action=edit&id=' . $_REQUEST['post_ID'] ), $_REQUEST['post_ID'], __( 'Edit this item', 'wpuf' ), __( 'Edit', 'wpuf' ) );
+//         $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=pageslug&action=delete&id=' . $_REQUEST['post_ID'] ), $_REQUEST['post_ID'], __( 'Delete this item', 'wpuf' ), __( 'Delete', 'wpuf' ) );
 
-        );
-
-        return $columns;
-    }
-
-    /**
-     * Render the designation name column
-     *
-     * @param  object  $item
-     *
-     * @return string
-     */
-    function column_id( $item ) {
-
-        $actions           = array();
-        $actions['edit']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=pageslug&action=edit&id=' . $item->id ), $item->id, __( 'Edit this item', 'wpuf' ), __( 'Edit', 'wpuf' ) );
-        $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=pageslug&action=delete&id=' . $item->id ), $item->id, __( 'Delete this item', 'wpuf' ), __( 'Delete', 'wpuf' ) );
-
-        return sprintf( '<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url( 'admin.php?page=pageslug&action=view&id=' . $item->id ), $item->id, $this->row_actions( $actions ) );
-    }
+//         return sprintf( '<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url( 'admin.php?page=pageslug&action=view&id=' . $_REQUEST['post_ID'] ), $_REQUEST['post_ID'], $this->row_actions( $actions ) );
+//     }
 
     /**
      * Get sortable columns
@@ -87,7 +105,7 @@ class WPUF_Subscribers_List_Table extends \WP_List_Table {
      */
     function get_sortable_columns() {
         $sortable_columns = array(
-            'name' => array( 'name', true ),
+            'id'        => array( 'id', true ),
         );
 
         return $sortable_columns;
@@ -112,9 +130,9 @@ class WPUF_Subscribers_List_Table extends \WP_List_Table {
      *
      * @return string
      */
-    function column_cb( $item ) {
+    function column_cb($item) {
         return sprintf(
-            '<input type="checkbox" name="subscriber_id[]" value="%d" />', $item->id
+            '<input type="checkbox" name="subscriber_id[]" value="%d" />', $_REQUEST['post_ID']
         );
     }
 
@@ -123,13 +141,13 @@ class WPUF_Subscribers_List_Table extends \WP_List_Table {
      *
      * @return array
      */
-    public function get_views_() {
+    public function get_views() {
         $status_links = [];
-        $base_link    = admin_url( 'admin.php?page=wpuf_subscribers&pack='.$_REQUEST(['post_ID'] ) . '&status='.$_REQUEST(['status'] )  );
+        $base_link    = admin_url( 'admin.php?page=wpuf_subscribers&pack='.$_REQUEST['post_ID'] );
 
-        $subscribers_count         = count( $users = WPUF_Subscription::init()->get_this_pack_users( $_REQUEST(['post_ID'] ), '' ));
-        $subscriptions_active_count = count( $users = WPUF_Subscription::init()->get_this_pack_users( $_REQUEST(['post_ID'] ), 'Completed' ));
-        $subscriptions_cancle_count = count( $users = WPUF_Subscription::init()->get_this_pack_users( $_REQUEST(['post_ID'] ), 'Cancel' ));
+        $subscribers_count         = count( $users = WPUF_Subscription::init()->subscription_pack_users());
+        $subscriptions_active_count = count( $users = WPUF_Subscription::init()->subscription_pack_users());
+        $subscriptions_cancle_count = count( $users = WPUF_Subscription::init()->subscription_pack_users());
 
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( $_REQUEST['status'] ) : 'all';
 
@@ -146,6 +164,7 @@ class WPUF_Subscribers_List_Table extends \WP_List_Table {
      * @return void
      */
     function prepare_items() {
+        global $wpdb;
 
         $columns               = $this->get_columns();
         $hidden                = array( );
@@ -168,10 +187,10 @@ class WPUF_Subscribers_List_Table extends \WP_List_Table {
             $args['order']   = $_REQUEST['order'] ;
         }
 
-        $this->items  = WPUF_Subscription::init()->get_this_pack_users( $_REQUEST(['post_ID'] ), '' );
+        $this->items  = $wpdb->get_results( 'SELECT * FROM '.$wpdb->prefix.'wpuf_subscribers', OBJECT );
 
         $this->set_pagination_args( array(
-            'total_items' => wpuf_get_subscriber_count(),
+            'total_items' => count( $this->items ),
             'per_page'    => $per_page
         ) );
     }

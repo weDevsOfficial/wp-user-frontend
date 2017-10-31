@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.5.8
+Version: 2.6
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wpuf
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.5.8' );
+define( 'WPUF_VERSION', '2.6' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -78,6 +78,11 @@ final class WP_User_Frontend {
         add_action( 'init', array( $this, 'load_textdomain') );
 
         add_action( 'admin_init', array( $this, 'block_admin_access') );
+        add_action( 'admin_init', array( $this, 'wpuf_welcome_screen_activation_redirect' ) );
+        add_action( 'admin_menu', array( $this, 'wpuf_welcome_screen_pages') );
+        add_action( 'admin_head', array( $this, 'WPUF_welcome_screen_remove_menus' ) );
+
+
         add_action( 'show_admin_bar', array( $this, 'show_admin_bar') );
 
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
@@ -264,6 +269,8 @@ final class WP_User_Frontend {
     public static function install() {
         global $wpdb;
 
+        set_transient( '_wpuf_welcome_screen_activation_redirect', true, 30 );
+
         $collate = '';
 
         if ( $wpdb->has_cap( 'collation' ) ) {
@@ -307,6 +314,71 @@ final class WP_User_Frontend {
 
         update_option( 'wpuf_installed', time() );
         update_option( 'wpuf_version', WPUF_VERSION );
+    }
+
+    /**
+     * plugin activation redirect
+     *
+     * @since 2.6
+     *
+     * @return void
+     */
+    function wpuf_welcome_screen_activation_redirect() {
+      // Bail if no activation redirect
+        if ( ! get_transient( '_wpuf_welcome_screen_activation_redirect' ) ) {
+        return;
+      }
+
+      // Delete the redirect transient
+      delete_transient( '_wpuf_welcome_screen_activation_redirect' );
+
+      // Bail if activating from network, or bulk
+      if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
+        return;
+      }
+
+      // Redirect to wpuf about page
+      wp_safe_redirect( add_query_arg( array( 'page' => 'wpuf-welcome-screen-about' ), admin_url( 'index.php' ) ) );
+
+    }
+
+    /**
+     * welcome page load
+     *
+     * @since 2.6
+     *
+     * @return void
+     */
+    function wpuf_welcome_screen_pages() {
+      add_dashboard_page(
+        'Welcome To Welcome Screen',
+        'Welcome To Welcome Screen',
+        'read',
+        'wpuf-welcome-screen-about',
+        array( $this, 'wpuf_welcome_screen_content' )
+      );
+    }
+
+    /**
+     * welcome content
+     *
+     * @since 2.6
+     *
+     * @return void
+     */
+    function wpuf_welcome_screen_content() {
+        require_once WPUF_ROOT . '/views/welcome-page.php';
+    }
+
+    /**
+     * remove menu
+     *
+     * @since 2.6
+     *
+     * @return void
+     */
+    function wpuf_welcome_screen_remove_menus() {
+        remove_submenu_page( 'index.php', 'wpuf-welcome-screen-about' );
     }
 
     /**

@@ -619,7 +619,7 @@ function wpuf_show_custom_fields( $content ) {
     if ( $show_custom != 'on' ) {
         return $content;
     }
-
+    
     $show_caption  = wpuf_get_option( 'image_caption', 'wpuf_general' );
     $form_id       = get_post_meta( $post->ID, '_wpuf_form_id', true );
     $form_settings = wpuf_get_form_settings( $form_id );
@@ -635,7 +635,7 @@ function wpuf_show_custom_fields( $content ) {
 
     if ( $form_vars ) {
         foreach ($form_vars as $attr) {
-            if ( isset( $attr['is_meta'] ) && $attr['is_meta'] == 'yes' ) {
+            if ( isset( $attr['show_in_post'] ) && $attr['show_in_post'] == 'yes' ) {
                 $meta[] = $attr;
             }
         }
@@ -1485,7 +1485,7 @@ function wpuf_get_pending_transactions( $args = array() ) {
     $wpuf_order_query = new WP_Query( $pending_args );
 
     if ( $args['count'] ) {
-        return $wpuf_order_query->post_count;
+        return $wpuf_order_query->found_posts;
     }
 
     $transactions = $wpuf_order_query->get_posts();
@@ -2194,30 +2194,74 @@ function wpuf_decryption ( $id ) {
  *
  * @since 2.5.8
  *
- * @param  string  $post_id
+ * @param  string  $post_id_encoded, $form_id_encoded, $charging_enabled, $flag
  *
  * @return void
  */
-function send_mail_to_guest ( $post_id_encoded ) {
+function wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag ) {
 
-    $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&post_msg=verified';
+    if ( $charging_enabled == 'yes' )  {
+        $encoded_guest_url = add_query_arg( 
+            array( 
+                'p_id' => $post_id_encoded,
+                'f_id' => $form_id_encoded,
+                'post_msg' => 'verified',
+                'f' => 2,
+            ), get_home_url()
+        );
+    } else {
+        $encoded_guest_url = add_query_arg( 
+            array( 
+                'p_id' => $post_id_encoded,
+                'f_id' => $form_id_encoded,
+                'post_msg' => 'verified',
+                'f' => 1,
+            ), get_home_url()
+        );
+    }
 
     $default_body     = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.' .  '<br>' . '<br>' . 'Please click the link below to verify:' . '<br>' . '<br>' . '<a href="'.$encoded_guest_url.'">Publish Post</a>' . '<br>' . '<br>' . 'Regards,' . '<br>' . '<br>' . bloginfo('name');
     $to               = trim( $_POST['guest_email'] );
     $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_guest_mails', 'Please Confirm Your Email to Get the Post Published!' );
     $subject          = $guest_email_sub;
     $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_guest_mails',  $default_body );
-    if ( !empty( $guest_email_body ) )
+
+    if ( !empty( $guest_email_body ) ) {
         $body = str_replace( '{activation_link}', '<a href="'.$encoded_guest_url.'">Publish Post</a>', $guest_email_body );
-    else 
+    } else {
         $body = $default_body;
+    }
+  
     $headers  = array('Content-Type: text/html; charset=UTF-8');
 
     wp_mail( $to, $subject, $body, $headers );
-
+  
     if ( $is_update ) {
         $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $form_settings );
     } else {
         $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $form_settings );
     }
+}
+
+
+/**
+ * Check if it's post form builder
+ *
+ * @since 2.6
+ *
+ * @return boolean
+ */
+function is_wpuf_post_form_builder() {
+    return isset( $_GET['page'] ) && $_GET['page'] == 'wpuf-post-forms' ? true : false;
+}
+
+/**
+ * Check if it's profile form builder
+ *
+ * @since 2.6
+ *
+ * @return boolean
+ */
+function is_wpuf_profile_form_builder() {
+    return isset( $_GET['page'] ) && $_GET['page'] == 'wpuf-profile-forms' ? true : false;
 }

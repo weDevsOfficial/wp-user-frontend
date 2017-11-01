@@ -1417,9 +1417,17 @@ function wpuf_get_account_sections() {
     $account_sections = array(
         array( 'slug' => 'dashboard', 'label' => __( 'Dashboard', 'wpuf' ) ),
         array( 'slug' => 'posts', 'label' => __( 'Posts', 'wpuf' ) ),
-        array( 'slug' => 'subscription', 'label' => __( 'Subscription', 'wpuf' ) ),
         array( 'slug' => 'edit-profile', 'label' => __( 'Edit Profile', 'wpuf' ) ),
+        array( 'slug' => 'subscription', 'label' => __( 'Subscription', 'wpuf' ) ),
     );
+
+    if ( wpuf_get_option( 'edit_billing_address', 'wpuf_payment') == 'yes') {
+        $address_section = array(
+            array( 'slug' => 'billing_address', 'label' => __( 'Billing Address', 'wpuf-pro' ) ),
+        );
+
+        $account_sections = array_merge( $account_sections, $address_section );
+    }
 
     return apply_filters( 'wpuf_account_sections', $account_sections );
 }

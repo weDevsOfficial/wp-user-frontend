@@ -52,7 +52,7 @@ class WPUF_Subscription {
      * @return WPUF_Subscription
      */
     public function user_subscription_cancel() {
-
+        global $wpdb;
         if ( isset( $_POST['wpuf_cancel_subscription'] ) ) {
 
             if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-sub-cancel' ) ) {
@@ -68,6 +68,8 @@ class WPUF_Subscription {
             } else {
                 do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );
             }
+
+            $wpdb->delete( $wpdb->prefix.'wpuf_subscribers', array( 'user_id' => $_POST['user_id'], 'subscribtion_id' => $current_pack['pack_id'] ) );
 
             wp_redirect( $_SERVER['REQUEST_URI'] );
 

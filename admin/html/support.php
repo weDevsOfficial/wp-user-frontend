@@ -115,6 +115,14 @@ $right_column = array(
                 'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/wordpress-edit-user-profile-from-front-end/'
             ),
             array(
+                'title' => 'Creating a Multistep Registration Form',
+                'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/creating-a-multistep-registration-form/'
+            ),
+            array(
+                'title' => 'Setting Up Confirmation Message',
+                'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setup-confirmation-message/'
+            ),
+            array(
                 'title' => 'Paid Membership Registration',
                 'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/paid-membership-registration/'
             ),
@@ -134,6 +142,18 @@ $right_column = array(
             array(
                 'title' => 'Payment & Gateway Settings',
                 'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/configuring-payment-settings/'
+            ),
+            array(
+                'title' => 'Setting Up Recurring Payment',
+                'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/setting-up-recurring-payment/'
+            ),
+            array(
+                'title' => 'Forcing Subscription Pack For Post Submission',
+                'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/forcing-subscription-pack-for-post-submission/'
+            ),
+            array(
+                'title' => 'How to Charge for Each Post Submission?',
+                'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/'
             ),
             array(
                 'title' => 'Creating Coupons',

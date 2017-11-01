@@ -7,7 +7,7 @@ if ( ! class_exists ( 'WP_List_Table' ) ) {
 /**
  * List table class
  */
-class WPUF_Subscribers_List_Table extends \WP_List_Table {
+class WPUF_List_Table_Subscribers extends \WP_List_Table {
 
     function __construct() {
         parent::__construct( array(

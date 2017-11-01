@@ -192,6 +192,9 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
         require_once WPUF_ROOT . '/class/frontend-account.php';
 
+        require_once WPUF_ROOT . '/includes/class-user.php';
+        require_once WPUF_ROOT . '/includes/class-user-subscription.php';
+
         if ( is_admin() ) {
             require_once WPUF_ROOT . '/admin/settings-options.php';
             require_once WPUF_ROOT . '/admin/class-admin-settings.php';

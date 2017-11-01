@@ -581,7 +581,7 @@ class WPUF_Subscription {
      * @param int $pack_id subscription pack id
      */
     public function new_subscription( $user_id, $pack_id, $profile_id = null, $recurring, $status = null ) {
-
+        global $wpdb;
         $subscription = $this->get_subscription( $pack_id );
         if ( $user_id && $subscription ) {
 
@@ -607,14 +607,34 @@ class WPUF_Subscription {
             }
 
             $user_meta = apply_filters( 'wpuf_new_subscription', $user_meta, $user_id, $pack_id, $recurring );
-            if($subscription->_enable_post_expiration){
-                $user_meta['_enable_post_expiration'] = $subscription->_enable_post_expiration;
-                $user_meta['_post_expiration_time'] = $subscription->_post_expiration_time;
-                $user_meta['_expired_post_status'] = $subscription->_expired_post_status;
+
+            if ( $subscription->_enable_post_expiration ) {
+                $user_meta['_enable_post_expiration']    = $subscription->_enable_post_expiration;
+                $user_meta['_post_expiration_time']      = $subscription->_post_expiration_time;
+                $user_meta['_expired_post_status']       = $subscription->_expired_post_status;
                 $user_meta['_enable_mail_after_expired'] = $subscription->_enable_mail_after_expired;
-                $user_meta['_post_expiration_message'] = $subscription->_post_expiration_message;
+                $user_meta['_post_expiration_message']   = $subscription->_post_expiration_message;
             }
+
             $this->update_user_subscription_meta( $user_id, $user_meta );
+
+            $sql = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "wpuf_transaction
+            WHERE user_id = %d AND pack_id = %d LIMIT 1", $user_id, $pack_id );
+
+            $result = $wpdb->get_row( $sql );
+
+            $table_data = array(
+                'user_id'               => $user_id,
+                'name'                  => $user->data->display_name,
+                'subscribtion_id'       => $pack_id,
+                'subscribtion_status'   => $status,
+                'gateway'               => is_null( $result->payment_type ) ? 'bank' : $result->payment_type,
+                'transaction_id'        => is_null( $result->transaction_id ) ? 'NA' : $result->transaction_id,
+                'starts_from'           => date( 'd-m-Y' ),
+                'expire'                => $user_meta['expire'] == '' ? 'recurring' : $sub_data['expire'],
+            );
+
+            $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );
         }
     }
 
@@ -1151,7 +1171,7 @@ class WPUF_Subscription {
     }
 
     /**
-     * Returns the payment status of a post 
+     * Returns the payment status of a post
      *
      * @since 2.5.9
      *

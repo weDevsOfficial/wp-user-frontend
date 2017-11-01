@@ -104,7 +104,7 @@ class WPUF_Admin_Settings {
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wpuf' ), __( '<span style="color:#f18500">Help</span>', 'wpuf' ), $capability, 'wpuf-support', array($this, 'support_page') );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wpuf' ), __( 'Settings', 'wpuf' ), $capability, 'wpuf-settings', array($this, 'plugin_page') );
 
-        $this->menu_pages[] = add_submenu_page( '', __( '', 'wpuf' ), __( '', 'wpuf' ), $capability, 'wpuf_subscribers', array($this, 'subscribers_page'), 2 );
+        $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( '', 'wpuf' ), __( '', 'wpuf' ), $capability, 'wpuf_subscribers', array($this, 'subscribers_page'), 2 );
 
         // manually add subsription page
         $this->menu_pages[] = 'edit-wpuf_subscription';

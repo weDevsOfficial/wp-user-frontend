@@ -112,6 +112,9 @@ ul.wpuf-form li.has-error {
 ul.wpuf-form li .wp-editor-wrap {
   border: 1px solid #eee;
 }
+ul.wpuf-form li.wpuf_hidden_field {
+  display: none;
+}
 ul.wpuf-form li .wpuf-label {
   float: left;
   width: 30%;

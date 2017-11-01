@@ -556,6 +556,7 @@ class WPUF_Admin_Form {
                 'word_restriction'  => '',
                 'id'                => 0,
                 'is_new'            => true,
+                'wpuf_visibility'   => WPUF_Form_Builder_Field_Settings::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
             )
         );
@@ -607,6 +608,7 @@ class WPUF_Admin_Form {
                 'word_restriction' => '',
                 'id'               => 0,
                 'is_new'           => true,
+                'wpuf_visibility'  => WPUF_Form_Builder_Field_Settings::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
             )
         );
@@ -652,6 +654,7 @@ class WPUF_Admin_Form {
                 'word_restriction' => '',
                 'id'               => 0,
                 'is_new'           => true,
+                'wpuf_visibility'  => WPUF_Form_Builder_Field_Settings::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
             )
         );
@@ -684,19 +687,20 @@ class WPUF_Admin_Form {
             'icon'          => 'picture-o',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'image_upload',
-                'template'      => 'featured_image',
-                'required'      => 'no',
-                'label'         => __( 'Featured Image', 'wpuf' ),
-                'name'          => 'featured_image',
-                'is_meta'       => 'no',
-                'help'          => '',
-                'css'           => '',
-                'max_size'      => '1024',
-                'count'         => '1',
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
+                'input_type'        => 'image_upload',
+                'template'          => 'featured_image',
+                'required'          => 'no',
+                'label'             => __( 'Featured Image', 'wpuf' ),
+                'name'              => 'featured_image',
+                'is_meta'           => 'no',
+                'help'              => '',
+                'css'               => '',
+                'max_size'          => '1024',
+                'count'             => '1',
+                'id'                => 0,
+                'is_new'            => true,
+                'wpuf_visibility'   => WPUF_Form_Builder_Field_Settings::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
             )
         );
     }
@@ -717,21 +721,22 @@ class WPUF_Admin_Form {
             'title'         => __( 'Tags', 'wpuf' ),
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'text',
-                'template'      => 'post_tags',
-                'required'      => 'no',
-                'label'         => __( 'Tags', 'wpuf' ),
-                'name'          => 'tags',
-                'is_meta'       => 'no',
-                'help'          => '',
-                'width'         => 'large',
-                'css'           => '',
-                'placeholder'   => '',
-                'default'       => '',
-                'size'          => 40,
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
+                'input_type'        => 'text',
+                'template'          => 'post_tags',
+                'required'          => 'no',
+                'label'             => __( 'Tags', 'wpuf' ),
+                'name'              => 'tags',
+                'is_meta'           => 'no',
+                'help'              => '',
+                'width'             => 'large',
+                'css'               => '',
+                'placeholder'       => '',
+                'default'           => '',
+                'size'              => 40,
+                'id'                => 0,
+                'is_new'            => true,
+                'wpuf_visibility'   => WPUF_Form_Builder_Field_Settings::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
             )
         );
     }
@@ -847,25 +852,26 @@ class WPUF_Admin_Form {
             'title'         => $taxonomy['title'],
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'taxonomy',
-                'template'      => 'taxonomy',
-                'required'      => 'no',
-                'label'         => $taxonomy['title'],
-                'name'          => $tax_name,
-                'is_meta'       => 'no',
-                'help'          => '',
-                'width'         => 'small',
-                'css'           => '',
-                'type'          => 'select',
-                'orderby'       => 'name',
-                'order'         => 'ASC',
-                'exclude_type'  => '',
-                'exclude'       => '',
-                'woo_attr'      => '',
-                'woo_attr_vis'  => '',
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
+                'input_type'        => 'taxonomy',
+                'template'          => 'taxonomy',
+                'required'          => 'no',
+                'label'             => $taxonomy['title'],
+                'name'              => $tax_name,
+                'is_meta'           => 'no',
+                'help'              => '',
+                'width'             => 'small',
+                'css'               => '',
+                'type'              => 'select',
+                'orderby'           => 'name',
+                'order'             => 'ASC',
+                'exclude_type'      => '',
+                'exclude'           => '',
+                'woo_attr'          => '',
+                'woo_attr_vis'      => '',
+                'id'                => 0,
+                'is_new'            => true,
+                'wpuf_visibility'   => WPUF_Form_Builder_Field_Settings::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => WPUF_Form_Builder_Field_Settings::get_wpuf_cond_prop()
             )
         );
     }

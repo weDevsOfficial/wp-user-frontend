@@ -95,8 +95,28 @@ class WPUF_Form_Builder_Field_Settings {
                 'section'   => 'advanced',
                 'priority'  => 22,
                 'help_text' => __( 'Provide a container class name for this field.', 'wpuf' ),
-            ),
+            )
         );
+
+        if ( is_wpuf_post_form_builder() ) {
+            $common_properties = array_merge($common_properties, array(
+                array(
+                    'name'      => 'wpuf_visibility',
+                    'title'     => __( 'Visibility', 'wpuf' ),
+                    'type'      => 'visibility',
+                    'section'   => 'advanced',                
+                    'options'   => array(
+                        'everyone'          => __( 'Everyone', 'wpuf' ),
+                        'hidden'            => __( 'Hidden', 'wpuf' ),
+                        'logged_in'         => __( 'Logged in users only', 'wpuf' ),
+                        'subscribed_users'  => __( 'Subscription users only', 'wpuf' ),
+                    ),
+                    'priority'  => 30,
+                    'inline'    => true,
+                    'help_text' => __( 'Select option', 'wpuf' ),
+                )
+            ));
+        }
 
         if ( $is_meta ) {
             $common_properties = array_merge($common_properties, array(
@@ -168,7 +188,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'section'   => 'advanced',
                 'priority'  => 20,
                 'help_text' => __( 'Size of this input field', 'wpuf' ),
-            ),
+            )
         );
 
         if ( $word_restriction ) {
@@ -259,6 +279,20 @@ class WPUF_Form_Builder_Field_Settings {
     }
 
     /**
+     * wpuf_visibility property for all fields
+     *
+     * @since 2.6
+     *
+     * @return array
+     */
+    public static function get_wpuf_visibility_prop( $default = 'everyone' ) {
+        return array(
+            'selected'         => $default,
+            'choices'          => array()
+        );
+    }
+
+    /**
      * wpuf_cond property for all fields
      *
      * @since 2.5
@@ -308,6 +342,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'                => 0,
                 'is_new'            => true,
                 'show_in_post'      => 'yes',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
@@ -348,6 +383,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'               => 0,
                 'is_new'           => true,
                 'show_in_post'     => 'yes',
+                'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -420,6 +456,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'               => 0,
                 'is_new'           => true,
                 'show_in_post'     => 'yes',
+                'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -462,6 +499,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'               => 0,
                 'is_new'           => true,
                 'show_in_post'     => 'yes',
+                'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -519,6 +557,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'               => 0,
                 'is_new'           => true,
                 'show_in_post'     => 'yes',
+                'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -576,6 +615,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'               => 0,
                 'is_new'           => true,
                 'show_in_post'     => 'yes',
+                'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -598,22 +638,23 @@ class WPUF_Form_Builder_Field_Settings {
             'icon'          => 'link',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'url',
-                'template'      => 'website_url',
-                'required'      => 'no',
-                'label'         => __( 'URL', 'wpuf' ),
-                'name'          => '',
-                'is_meta'       => 'yes',
-                'help'          => '',
-                'width'         => 'large',
-                'css'           => '',
-                'placeholder'   => '',
-                'default'       => '',
-                'size'          => 40,
-                'id'            => 0,
-                'is_new'        => true,
-                'show_in_post'  => 'yes',
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'url',
+                'template'          => 'website_url',
+                'required'          => 'no',
+                'label'             => __( 'URL', 'wpuf' ),
+                'name'              => '',
+                'is_meta'           => 'yes',
+                'help'              => '',
+                'width'             => 'large',
+                'css'               => '',
+                'placeholder'       => '',
+                'default'           => '',
+                'size'              => 40,
+                'id'                => 0,
+                'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -635,22 +676,23 @@ class WPUF_Form_Builder_Field_Settings {
             'icon'          => 'envelope-o',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'email',
-                'template'      => 'email_address',
-                'required'      => 'no',
-                'label'         => __( 'Email', 'wpuf' ),
-                'name'          => '',
-                'is_meta'       => 'yes',
-                'help'          => '',
-                'width'         => 'large',
-                'css'           => '',
-                'placeholder'   => '',
-                'default'       => '',
-                'size'          => 40,
-                'id'            => 0,
-                'is_new'        => true,
-                'show_in_post'  => 'yes',
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'email',
+                'template'          => 'email_address',
+                'required'          => 'no',
+                'label'             => __( 'Email', 'wpuf' ),
+                'name'              => '',
+                'is_meta'           => 'yes',
+                'help'              => '',
+                'width'             => 'large',
+                'css'               => '',
+                'placeholder'       => '',
+                'default'           => '',
+                'size'              => 40,
+                'id'                => 0,
+                'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -689,16 +731,17 @@ class WPUF_Form_Builder_Field_Settings {
             'icon'          => 'eye-slash',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'hidden',
-                'template'      => 'custom_hidden_field',
-                'label'         => '',
-                'name'          => '',
-                'meta_value'    => '',
-                'is_meta'       => 'yes',
-                'id'            => 0,
-                'is_new'        => true,
-                'show_in_post'  => 'yes',
-                'wpuf_cond'     => null
+                'input_type'        => 'hidden',
+                'template'          => 'custom_hidden_field',
+                'label'             => '',
+                'name'              => '',
+                'meta_value'        => '',
+                'is_meta'           => 'yes',
+                'id'                => 0,
+                'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),                
+                'wpuf_cond'         => null
             )
         );
     }
@@ -739,21 +782,22 @@ class WPUF_Form_Builder_Field_Settings {
             'icon'          => 'file-image-o',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'image_upload',
-                'template'      => 'image_upload',
-                'required'      => 'no',
-                'label'         => __( 'Image Upload', 'wpuf' ),
-                'name'          => '',
-                'is_meta'       => 'yes',
-                'help'          => '',
-                'width'         => '',
-                'css'           => '',
-                'max_size'      => '1024',
-                'count'         => '1',
-                'id'            => 0,
-                'is_new'        => true,
-                'show_in_post'  => 'yes',
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'image_upload',
+                'template'          => 'image_upload',
+                'required'          => 'no',
+                'label'             => __( 'Image Upload', 'wpuf' ),
+                'name'              => '',
+                'is_meta'           => 'yes',
+                'help'              => '',
+                'width'             => '',
+                'css'               => '',
+                'max_size'          => '1024',
+                'count'             => '1',
+                'id'                => 0,
+                'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -793,14 +837,15 @@ class WPUF_Form_Builder_Field_Settings {
             'is_full_width' => true,
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'section_break',
-                'template'      => 'section_break',
-                'label'         => __( 'Section Break', 'wpuf' ),
-                'description'   => __( 'Some description about this section', 'wpuf' ),
-                'id'            => 0,
-                'is_new'        => true,
-                'show_in_post'  => 'yes',
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'section_break',
+                'template'          => 'section_break',
+                'label'             => __( 'Section Break', 'wpuf' ),
+                'description'       => __( 'Some description about this section', 'wpuf' ),
+                'id'                => 0,
+                'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -831,13 +876,14 @@ class WPUF_Form_Builder_Field_Settings {
             'is_full_width' => true,
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'html',
-                'template'      => 'custom_html',
-                'label'         => __( 'Custom HTML', 'wpuf' ),
-                'html'          => sprintf( '<p>%s</p>', __( 'Some description about this section', 'wpuf' ) ),
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'html',
+                'template'          => 'custom_html',
+                'label'             => __( 'Custom HTML', 'wpuf' ),
+                'html'              => sprintf( '<p>%s</p>', __( 'Some description about this section', 'wpuf' ) ),
+                'id'                => 0,
+                'is_new'            => true,
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -897,6 +943,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'recaptcha_type'    => 'enable_no_captcha',
                 'id'                => 0,
                 'is_new'            => true,
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => self::get_wpuf_cond_prop(),
             )
         );

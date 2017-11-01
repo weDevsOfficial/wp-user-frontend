@@ -149,4 +149,38 @@ class WPUF_User_Subscription {
 
         return false;
     }
+
+    /**
+     * Determine if the user has used a free pack before
+     *
+     * @param integer $pack_id
+     *
+     * @return boolean
+     */
+    public function used_free_pack( $pack_id ) {
+        $has_used = get_user_meta( $this->user->id, 'wpuf_fp_used', true );
+
+        if ( $has_used == '' ) {
+            return false;
+        }
+
+        if ( is_array( $has_used ) && isset( $has_used[ $pack_id ] ) ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Add a free used pack to the user account
+     *
+     * @param int $pack_id
+     */
+    public function add_free_pack( $user_id, $pack_id ) {
+        $has_used = get_user_meta( $this->user->id, 'wpuf_fp_used', true );
+        $has_used = is_array( $has_used ) ? $has_used : array();
+
+        $has_used[$pack_id] = $pack_id;
+        update_user_meta( $user_id, 'wpuf_fp_used', $has_used );
+    }
 }

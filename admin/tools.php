@@ -4,18 +4,18 @@ if ( ! class_exists( 'WPUF_Admin_Tools' ) ) {
     require_once WPUF_ROOT . '/admin/class-tools.php';
 }
 
+$tab   = isset( $_GET['tab'] ) ? $_GET['tab'] : 'tools';
 $tools = new WPUF_Admin_Tools();
 ?>
 
 <div class="wrap">
     <h2 class="nav-tab-wrapper">
-        <a class="nav-tab <?php echo (!isset( $_GET['tab'] ) ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page' => 'wpuf_tools' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Import', 'wpuf' ); ?></a>
-        <a class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] == 'export' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page'   => 'wpuf_tools', 'tab' => 'export' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Export', 'wpuf' ); ?></a>
-        <a class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] == 'tools' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page'   => 'wpuf_tools', 'tab' => 'tools' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Tools', 'wpuf' ); ?></a>
+        <a class="nav-tab <?php echo ( $tab == 'tools' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page'   => 'wpuf_tools', 'tab' => 'tools' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Tools', 'wpuf' ); ?></a>
+        <a class="nav-tab <?php echo ( $tab == 'import' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page'   => 'wpuf_tools', 'tab' => 'import' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Import', 'wpuf' ); ?></a>
+        <a class="nav-tab <?php echo ( $tab == 'export' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( array( 'page'   => 'wpuf_tools', 'tab' => 'export' ), admin_url( 'admin.php' ) ); ?>"><?php _e( 'Export', 'wpuf' ); ?></a>
     </h2>
 
     <?php
-    $tab  = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
 
     switch ( $tab ) {
         case 'export':
@@ -27,8 +27,12 @@ $tools = new WPUF_Admin_Tools();
             $tools->tool_page();
             break;
 
-        default:
+        case 'import':
             $tools->import_data();
+            break;
+
+        default:
+            $tools->tool_page();
             break;
     }
     ?>

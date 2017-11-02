@@ -51,8 +51,24 @@ class WPUF_Subscription {
      *
      * @return WPUF_Subscription
      */
-    public function user_subscription_cancel() {
+    public static function subscriber_cancel( $user_id, $pack_id ) {
         global $wpdb;
+
+        $sql = $wpdb->prepare( "SELECT transaction_id FROM " . $wpdb->prefix . "wpuf_transaction
+            WHERE user_id = %d AND pack_id = %d LIMIT 1", $user_id, $pack_id );
+        $result = $wpdb->get_row( $sql );
+
+        $transaction_id = $result ? $result->transaction_id : 0;
+
+        $wpdb->update( $wpdb->prefix.'wpuf_subscribers', array( 'subscribtion_status' => 'cancel' ), array( 'user_id' => $user_id, 'subscribtion_id' => $pack_id, 'transaction_id' => $transaction_id ) );
+    }
+
+    /**
+     * Handle subscription cancel request from the user
+     *
+     * @return WPUF_Subscription
+     */
+    public function user_subscription_cancel() {
         if ( isset( $_POST['wpuf_cancel_subscription'] ) ) {
 
             if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-sub-cancel' ) ) {
@@ -69,7 +85,7 @@ class WPUF_Subscription {
                 do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );
             }
 
-            $wpdb->delete( $wpdb->prefix.'wpuf_subscribers', array( 'user_id' => $_POST['user_id'], 'subscribtion_id' => $current_pack['pack_id'] ) );
+            $this::subscriber_cancel( $_POST['user_id'], $current_pack['pack_id'] );
 
             wp_redirect( $_SERVER['REQUEST_URI'] );
 
@@ -624,16 +640,16 @@ class WPUF_Subscription {
             WHERE user_id = %d AND pack_id = %d LIMIT 1", $user_id, $pack_id );
 
             $result = $wpdb->get_row( $sql );
-
+            $user_info = get_userdata( $user_id );
             $table_data = array(
                 'user_id'               => $user_id,
-                'name'                  => $user->data->display_name,
+                'name'                  => $user_info->display_name,
                 'subscribtion_id'       => $pack_id,
                 'subscribtion_status'   => $status,
                 'gateway'               => is_null( $result->payment_type ) ? 'bank' : $result->payment_type,
                 'transaction_id'        => is_null( $result->transaction_id ) ? 'NA' : $result->transaction_id,
                 'starts_from'           => date( 'd-m-Y' ),
-                'expire'                => $user_meta['expire'] == '' ? 'recurring' : $sub_data['expire'],
+                'expire'                => $user_meta['expire'] == '' ? 'recurring' : $user_meta['expire'],
             );
 
             $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );

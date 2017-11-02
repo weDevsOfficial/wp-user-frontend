@@ -2123,6 +2123,10 @@ function wpuf_get_draft_post_status( $form_settings ) {
  */
 function wpuf_admin_page_states( $state, $post) {
 
+    if ( 'page' != $post->post_type ) {
+        return $state;
+    }
+
     $pattern = '/\[(wpuf[\w\-\_]+).+\]/';
 
     preg_match_all ( $pattern , $post->post_content, $matches);
@@ -2161,7 +2165,7 @@ function wpuf_admin_page_states( $state, $post) {
     return $state;
 }
 
-add_filter( 'display_post_states', 'wpuf_admin_page_shortcode_helper', 10, 2 );
+add_filter( 'display_post_states', 'wpuf_admin_page_states', 10, 2 );
 
 /**
  * Encryption function for various usage

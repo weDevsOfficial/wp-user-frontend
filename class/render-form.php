@@ -483,6 +483,64 @@ class WPUF_Render_Form {
         }
 
         foreach ($form_vars as $key => $form_field) {
+
+            // check field visibility options
+            if ( array_key_exists( 'wpuf_visibility', $form_field ) ) {
+
+                $visibility_selected = $form_field['wpuf_visibility']['selected'];
+                $visibility_choices  = $form_field['wpuf_visibility']['choices'];
+                $show_field = false;
+
+                if ( $visibility_selected == 'everyone' ) {
+                    $show_field = true;
+                }
+                
+                if ( $visibility_selected == 'hidden' ) {
+                    $form_field['css'] .= ' wpuf_hidden_field';
+                    $show_field = true;
+                }
+                
+                if ( $visibility_selected == 'logged_in' && is_user_logged_in() ) {
+                        
+                    if ( empty($visibility_choices) ) {
+                        $show_field = true;
+                    }else{
+                        foreach ( $visibility_choices as $key => $choice ) {
+                            if( current_user_can( $choice ) ) {
+                                $show_field = true;
+                                break;
+                            }
+                            continue;
+                        } 
+                    }
+
+                }
+
+                if ( $visibility_selected == 'subscribed_users' && is_user_logged_in() ) {
+                    
+                    $user_pack  = WPUF_Subscription::init()->get_user_pack(get_current_user_id());
+
+                    if ( empty( $visibility_choices ) && !empty( $user_pack ) ) {
+                        $show_field = true;
+                    }elseif( !empty( $user_pack ) && !empty( $visibility_choices ) ) {
+
+                        foreach ( $visibility_choices as $pack => $id ) {
+                            if ( $user_pack['pack_id'] == $id ) {
+                                $show_field = true;
+                                break;
+                            }
+                            continue;
+                        } 
+
+                    }
+
+                }
+
+                if ( !$show_field ) {
+                    break;
+                }
+            }
+
             // don't show captcha in edit page
             if ( $post_id && in_array( $form_field['input_type'], $edit_ignore ) ) {
                 continue;

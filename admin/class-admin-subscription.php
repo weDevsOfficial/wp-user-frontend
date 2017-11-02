@@ -285,17 +285,15 @@ class WPUF_Admin_Subscription {
 
     function get_post_types( $post_types = null ) {
 
-        if ( ! $post_types ) {
-            $post_types = WPUF_Subscription::init()->get_all_post_type();
-        }
+        $post_types = WPUF_Subscription::init()->get_all_post_type();
 
         ob_start();
 
         foreach ( $post_types as $key => $name ) {
-            $name = ( $post_types !== null ) ? $name : '';
+            $post_type_object = get_post_type_object( $key );
             ?>
             <tr>
-                <th><label for="wpuf-<?php echo esc_attr( $key ); ?>"><?php printf( 'Number of %ss', $key ); ?></label></th>
+                <th><label for="wpuf-<?php echo esc_attr( $key ); ?>"><?php printf( 'Number of %s', $post_type_object->label ); ?></label></th>
                 <td>
                     <input type="text" size="20" style="" id="wpuf-<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( (int)$name ); ?>" name="post_type_name[<?php echo esc_attr( $key ); ?>]" />
                     <div><span class="description"><span><?php printf( 'How many %s the user can list with this pack? Enter <strong>-1</strong> for unlimited.', $key ); ?></span></span></div>
@@ -312,9 +310,17 @@ class WPUF_Admin_Subscription {
 
         $sub_meta = WPUF_Subscription::init()->get_subscription_meta( $post->ID, $post );
 
-        $hidden_recurring_class = ( $sub_meta['recurring_pay'] != 'yes' ) ? 'none' : '';
-        $hidden_trial_class     = ( $sub_meta['trial_status'] != 'yes' ) ? 'none' : '';
-        $hidden_expire          = ( $sub_meta['recurring_pay'] == 'yes' ) ? 'none' : '';
+        $hidden_recurring_class       = ( $sub_meta['recurring_pay'] != 'yes' ) ? 'none' : '';
+        $hidden_trial_class           = ( $sub_meta['trial_status'] != 'yes' ) ? 'none' : '';
+        $hidden_expire                = ( $sub_meta['recurring_pay'] == 'yes' ) ? 'none' : '';
+        $is_post_exp_selected         = isset($sub_meta['_enable_post_expiration']) && $sub_meta['_enable_post_expiration'] == 'on'?'checked':'';
+        $_post_expiration_time        = explode(' ',isset($sub_meta['_post_expiration_time'])?$sub_meta['_post_expiration_time']:' ');
+        $time_value                   = isset($_post_expiration_time[0])?$_post_expiration_time[0]:1;
+        $time_type                    = isset($_post_expiration_time[1])?$_post_expiration_time[1]:'day';
+
+        $expired_post_status          = isset($sub_meta['_expired_post_status'])?$sub_meta['_expired_post_status']:'';
+        $is_enable_mail_after_expired = isset($sub_meta['_enable_mail_after_expired']) && $sub_meta['_enable_mail_after_expired'] == 'on'?'checked':'';
+        $post_expiration_message      = isset($sub_meta['_post_expiration_message'])?$sub_meta['_post_expiration_message']:'';;
 
         ?>
 
@@ -350,16 +356,6 @@ class WPUF_Admin_Subscription {
                     </td>
                 </tr>
 
-                <?php
-                $is_post_exp_selected = isset($sub_meta['_enable_post_expiration']) && $sub_meta['_enable_post_expiration'] == 'on'?'checked':'';
-                $_post_expiration_time = explode(' ',isset($sub_meta['_post_expiration_time'])?$sub_meta['_post_expiration_time']:' ');
-                $time_value = isset($_post_expiration_time[0])?$_post_expiration_time[0]:1;
-                $time_type = isset($_post_expiration_time[1])?$_post_expiration_time[1]:'day';
-
-                $expired_post_status = isset($sub_meta['_expired_post_status'])?$sub_meta['_expired_post_status']:'';
-                $is_enable_mail_after_expired = isset($sub_meta['_enable_mail_after_expired']) && $sub_meta['_enable_mail_after_expired'] == 'on'?'checked':'';
-                $post_expiration_message = isset($sub_meta['_post_expiration_message'])?$sub_meta['_post_expiration_message']:'';;
-                ?>
                 <tr class="wpuf-metabox-post_expiration">
                     <th><?php _e( 'Enable Post Expiration', 'wpuf' ); ?></th>
                     <td>

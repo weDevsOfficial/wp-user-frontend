@@ -276,7 +276,9 @@ class WPUF_Subscription {
             $post_types['wpuf_profile'],
             $post_types['wpuf_subscription'],
             $post_types['wpuf_coupon'],
-            $post_types['wpuf_input']
+            $post_types['wpuf_input'],
+            $post_types['custom_css'],
+            $post_types['customize_changeset']
         );
 
         return apply_filters( 'wpuf_posts_type', $post_types );
@@ -858,15 +860,15 @@ class WPUF_Subscription {
 
 
         if ( 'any' != $args['include'] ) {
-             $parent_args['include'] = $args['include'];     
+             $parent_args['include'] = $args['include'];
         }
 
         if ( !empty( $args['exclude'] ) ) {
-            $parent_args['exclude'] = $args['exclude']; 
+            $parent_args['exclude'] = $args['exclude'];
         }
 
         $packs = $this->get_subscriptions($parent_args);
-        
+
         $details_meta = $this->get_details_meta_value();
 
         ob_start();
@@ -889,8 +891,8 @@ class WPUF_Subscription {
             ?>
 
             <?php _e( '<p><i>You have a subscription pack activated. </i></p>', 'wpuf' ); ?>
-            <?php _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' ); 
-           
+            <?php _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' );
+
             ?>
             <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wpuf' ); ?>
 
@@ -919,7 +921,7 @@ class WPUF_Subscription {
         $contents = ob_get_clean();
 
         return apply_filters( 'wpuf_subscription_packs', $contents, $packs );
-    
+
 
     }
 

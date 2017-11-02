@@ -995,15 +995,26 @@ class WPUF_Subscription {
         return get_user_meta( $user_id, '_wpuf_subscription_pack', $status );
     }
 
-    public function subscription_pack_users() {
-        $args = array(
-            'meta_query' => array(
-                array(
-                    'key' => '_wpuf_subscription_pack',
-                )
-            )
-        );
-        $users = get_users( $args );
+    public function subscription_pack_users( $pack_id = '', $status = '' ) {
+        global $wpdb;
+        $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
+        $sql .= $pack_id ? ' WHERE subscribtion_id = ' . $pack_id : '';
+        $sql .= $status ? ' AND subscribtion_status = ' . $status : '';
+
+        $rows = $wpdb->get_results( $sql );
+
+        if ( empty( $rows ) ) {
+            return $rows;
+        }
+
+        $results = array();
+        foreach ( $rows as $row) {
+            if ( !in_array( $row->user_id, $results ) ) {
+                $results[] = $row->user_id;
+            }
+        }
+
+        $users = get_users( array( 'include' => $results ) );
         return $users;
     }
 

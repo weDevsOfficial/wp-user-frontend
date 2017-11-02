@@ -111,17 +111,17 @@ class WPUF_List_Table_Subscribers extends \WP_List_Table {
         return $sortable_columns;
     }
 
-    /**
-     * Set the bulk actions
-     *
-     * @return array
-     */
-    function get_bulk_actions() {
-        $actions = array(
-            'trash'  => __( 'Move to Trash', 'wpuf' ),
-        );
-        return $actions;
-    }
+    // /**
+    //  * Set the bulk actions
+    //  *
+    //  * @return array
+    //  */
+    // function get_bulk_actions() {
+    //     $actions = array(
+    //         'trash'  => __( 'Move to Trash', 'wpuf' ),
+    //     );
+    //     return $actions;
+    // }
 
     /**
      * Render the checkbox column
@@ -145,9 +145,9 @@ class WPUF_List_Table_Subscribers extends \WP_List_Table {
         $status_links = [];
         $base_link    = admin_url( 'admin.php?page=wpuf_subscribers&pack='.$_REQUEST['post_ID'] );
 
-        $subscribers_count         = count( $users = WPUF_Subscription::init()->subscription_pack_users());
-        $subscriptions_active_count = count( $users = WPUF_Subscription::init()->subscription_pack_users());
-        $subscriptions_cancle_count = count( $users = WPUF_Subscription::init()->subscription_pack_users());
+        $subscribers_count         = count( $users = WPUF_Subscription::init()->subscription_pack_users( $_REQUEST['post_ID'] ) );
+        $subscriptions_active_count = count( $users = WPUF_Subscription::init()->subscription_pack_users( $_REQUEST['post_ID'] ) );
+        $subscriptions_cancle_count = count( $users = WPUF_Subscription::init()->subscription_pack_users( $_REQUEST['post_ID'] ) );
 
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( $_REQUEST['status'] ) : 'all';
 
@@ -187,7 +187,11 @@ class WPUF_List_Table_Subscribers extends \WP_List_Table {
             $args['order']   = $_REQUEST['order'] ;
         }
 
-        $this->items  = $wpdb->get_results( 'SELECT * FROM '.$wpdb->prefix.'wpuf_subscribers', OBJECT );
+        $sql = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
+        $sql .= isset( $_REQUEST['post_ID'] ) ? ' WHERE subscribtion_id = ' . $_REQUEST['post_ID'] : '';
+        $sql .= isset( $_REQUEST['status'] ) ? ' AND subscribtion_status = "' . sanitize_text_field( $_REQUEST['status'] ) . '"' : '';
+
+        $this->items  = $wpdb->get_results( $sql, OBJECT );
 
         $this->set_pagination_args( array(
             'total_items' => count( $this->items ),

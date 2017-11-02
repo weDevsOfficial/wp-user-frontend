@@ -167,7 +167,7 @@ class WPUF_Admin_Subscription {
 
             case 'subscribers':
 
-                $users = WPUF_Subscription::init()->subscription_pack_users();
+                $users = WPUF_Subscription::init()->subscription_pack_users( $post_ID );
 
                 echo '<a href="'. admin_url( 'admin.php?page=wpuf_subscribers&post_ID=' . $post_ID ) . '" />' . count( $users ) . '</a>';
                 break;

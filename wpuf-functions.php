@@ -2112,46 +2112,56 @@ function wpuf_get_draft_post_status( $form_settings ) {
 }
 
 /**
- * Hook to add WPUF Forms Column in Pages menu
+ * Show helper texts to understand the type of page in admin page listing
  *
- * @since 2.5.8
+ * @since 2.6.0
  *
+ * @param  array $state
+ * @param  \WP_Post $post
+ *
+ * @return array
  */
-function wpuf_pages_columns_form ( $columns ) {
+function wpuf_admin_page_states( $state, $post) {
 
-    $myCustomColumns = array(
-        'wpuf_forms' => __( 'WPUF Forms', 'wpuf' )
-    );
-    $columns = array_merge( $columns, $myCustomColumns );
+    $pattern = '/\[(wpuf[\w\-\_]+).+\]/';
 
-    return $columns;
-}
-add_filter( 'manage_pages_columns', 'wpuf_pages_columns_form' );
+    preg_match_all ( $pattern , $post->post_content, $matches);
+    $matches = array_unique( $matches[0] );
 
-/**
- * Hook to add WPUF Forms column contents in Pages menu
- *
- * @since 2.5.8
- *
- */
-function page_column_content_form ( $column_name, $post_id ) {
-    if ( $column_name == 'wpuf_forms' ) {
-        $content_page = get_post( $post_id );
+    if ( !empty( $matches ) ) {
 
-        $available_shortcodes = array();
-        $wpuf_shortcodes = array();
+        $page      = '';
+        $shortcode = $matches[0];
 
-        $pattern = '/\[(wpuf[\w\-\_]+).+\]/';
+        if ( '[wpuf_account]' == $shortcode ) {
+            $page = 'WPUF Account Page';
+        } elseif ( '[wpuf_edit]' == $shortcode ) {
+            $page = 'WPUF Post Edit Page';
+        } elseif ( '[wpuf-login]' == $shortcode ) {
+            $page = 'WPUF Login Page';
+        } elseif ( '[wpuf_sub_pack]' == $shortcode ) {
+            $page = 'WPUF Subscription Page';
+        } elseif ( '[wpuf_editprofile]' == $shortcode ) {
+            $page = 'WPUF Profile Edit Page';
+        } elseif ( stristr( $shortcode, '[wpuf_dashboard') ) {
+            $page = 'WPUF Dashboard Page';
+        } elseif ( stristr( $shortcode, '[wpuf_profile type="registration"') ) {
+            $page = 'WPUF Registration Page';
+        } elseif ( stristr( $shortcode, '[wpuf_profile type="profile"') ) {
+            $page = 'WPUF Profile Edit Page';
+        } elseif ( stristr( $shortcode, '[wpuf_form') ) {
+            $page = 'WPUF Form Page';
+        }
 
-        preg_match_all ( $pattern , $content_page->post_content, $matches);
-        $matches = array_unique( $matches[0] );
-
-        if ( !empty( $matches ) ) {
-             echo $matches[0];
+        if ( ! empty( $page )) {
+            $state['wpuf'] = $page;
         }
     }
+
+    return $state;
 }
-add_action( 'manage_pages_custom_column', 'page_column_content_form', 10, 2 );
+
+add_filter( 'display_post_states', 'wpuf_admin_page_shortcode_helper', 10, 2 );
 
 /**
  * Encryption function for various usage

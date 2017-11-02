@@ -169,7 +169,7 @@ class WPUF_Admin_Subscription {
 
                 $users = WPUF_Subscription::init()->subscription_pack_users( $post_ID );
 
-                echo '<a href="'. admin_url( 'admin.php?page=wpuf_subscribers&post_ID=' . $post_ID ) . '" />' . count( $users ) . '</a>';
+                echo '<a href="'. admin_url( 'edit.php?post_type=wpuf_subscription&page=wpuf_subscribers&post_ID=' . $post_ID ) . '" />' . count( $users ) . '</a>';
                 break;
 
             case 'recurring':
@@ -187,6 +187,7 @@ class WPUF_Admin_Subscription {
                 $recurring_pay        =  get_post_meta( $post_ID, '_recurring_pay', true );
                 $billing_cycle_number =  get_post_meta( $post_ID, '_billing_cycle_number', true );
                 $cycle_period         =  get_post_meta( $post_ID, '_cycle_period', true );
+
                 if ( $recurring_pay == 'yes' ) {
                     echo $billing_cycle_number .' '. $cycle_period . '\'s (cycle)';
                 } else {

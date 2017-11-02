@@ -202,7 +202,7 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/admin/form.php';
             require_once WPUF_ROOT . '/admin/posting.php';
             require_once WPUF_ROOT . '/admin/class-admin-subscription.php';
-            require_once WPUF_ROOT . '/admin/class-admin-installer.php';
+            require_once WPUF_ROOT . '/admin/installer.php';
             require_once WPUF_ROOT . '/admin/class-admin-welcome.php';
             require_once WPUF_ROOT . '/admin/promotion.php';
             require_once WPUF_ROOT . '/admin/post-forms-list-table.php';

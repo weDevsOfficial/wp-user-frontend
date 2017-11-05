@@ -78,7 +78,7 @@ function insert_subscribers() {
                 'gateway'               => is_null( $result->payment_type ) ? 'bank' : $result->payment_type,
                 'transaction_id'        => is_null( $result->transaction_id ) ? 'NA' : $result->transaction_id,
                 'starts_from'           => is_null( $result->created ) ? 'NA' : $result->created,
-                'expire'                => $sub_data['expire']
+                'expire'                => $sub_data['expire'] == '' ? 'recurring' : $sub_data['expire'],
             );
             $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );
         }

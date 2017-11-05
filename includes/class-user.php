@@ -53,6 +53,15 @@ class WPUF_User {
     }
 
     /**
+     * Get the post lock reason
+     *
+     * @return string
+     */
+    public function lock_reason() {
+        return get_user_meta( $this->id, 'wpuf_lock_cause', true );
+    }
+
+    /**
      * Handles user subscription
      *
      * @return \WPUF_User_Subscription

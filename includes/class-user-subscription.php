@@ -151,6 +151,31 @@ class WPUF_User_Subscription {
     }
 
     /**
+     * Assign a pack to the user
+     *
+     * @param integer $pack_id
+     */
+    public function add_pack( $pack_id ) {
+
+    }
+
+    /**
+     * Delete subscription pack from the user
+     *
+     * @return void
+     */
+    public function delete_pack() {
+
+        // cancel is it's a recurring payment
+        if ( $this->recurring() ) {
+            $wpuf_paypal = new WPUF_Paypal();
+            $wpuf_paypal->recurring_change_status( $this->user->id, 'Cancel' );
+        }
+
+        delete_user_meta( $this->user->id, '_wpuf_subscription_pack' );
+    }
+
+    /**
      * Determine if the user has used a free pack before
      *
      * @param integer $pack_id

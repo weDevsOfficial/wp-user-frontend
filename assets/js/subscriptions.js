@@ -59,11 +59,13 @@
 
         deletePack: function(e){
             var userid = $(e.target).attr('data-userid');
+            var packid = $(e.target).attr('data-packid');
             $.post(
                 ajaxurl,
                 {
                     'action' : 'wpuf_delete_user_package',
-                    'userid' : userid
+                    'userid' : userid,
+                    'packid' : packid
                 },
                 function(data){
                     if(data){

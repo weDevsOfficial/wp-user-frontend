@@ -69,11 +69,6 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
             $force_pack        = $form->is_enabled_force_pack();
 
-            if ( $form_settings['guest_post'] == 'false' && ! is_user_logged_in() ) {
-                $user_can_post = 'no';
-                $info = sprintf( __( 'Sorry. Guest Posting is not enabled', 'wpuf' ));
-            }
-
             if ( ! is_user_logged_in() && $form_settings['guest_post'] == 'true' ) {
                 if ( $form->is_charging_enabled() && $subscription_disabled != 'yes' ) {
                     if ( $force_pack ) {
@@ -1032,9 +1027,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             $post_id = wpuf_decryption ( $_GET['p_id'] );
             $form_id = wpuf_decryption ( $_GET['f_id'] );
-            $form_settings = wpuf_get_form_settings( $form_id );
+            $form_settings  = wpuf_get_form_settings( $form_id );
             $post_author_id = get_post_field( 'post_author', $post_id );
-
             $payment_status = new WPUF_Subscription();
 
             $form              = new WPUF_Form( $form_id );

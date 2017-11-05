@@ -26,3 +26,11 @@ $this->subscribers_list_table_obj = new WPUF_List_Table_Subscribers();
         ?>
     </form>
 </div>
+
+<script type="text/javascript">
+    jQuery(function($) {
+        $('.toplevel_page_wp-user-frontend').each(function(index, el) {
+            $(el).removeClass('wp-not-current-submenu').addClass('wp-has-current-submenu wp-menu-open');
+        });
+    });
+</script>

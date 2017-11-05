@@ -205,13 +205,14 @@ class WPUF_Subscription {
      *
      * @return array
      */
-    function get_subscriptions() {
-        $args = array(
+    function get_subscriptions( $args = null ) {
+        $defaults = array(
             'post_type'      => 'wpuf_subscription',
             'posts_per_page' => -1,
             'post_status'    => 'publish',
-        );
 
+        );
+        $args = wp_parse_args($args, $defaults);
         $posts = get_posts( $args );
 
         if ( $posts ) {
@@ -275,7 +276,9 @@ class WPUF_Subscription {
             $post_types['wpuf_profile'],
             $post_types['wpuf_subscription'],
             $post_types['wpuf_coupon'],
-            $post_types['wpuf_input']
+            $post_types['wpuf_input'],
+            $post_types['custom_css'],
+            $post_types['customize_changeset']
         );
 
         return apply_filters( 'wpuf_posts_type', $post_types );
@@ -854,8 +857,9 @@ class WPUF_Subscription {
      * Show the subscription packs that are built
      * from admin Panel
      */
-    function subscription_packs() {
+    function subscription_packs( $atts = null ) {
         ?>
+
         <style>
             <?php echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
         </style>
@@ -868,7 +872,31 @@ class WPUF_Subscription {
         //     return;
         // }
 
-        $packs = $this->get_subscriptions();
+        $defaults = array(
+            'col'     => '2',
+            'include' => 'any',
+            'exclude' => '',
+        );
+
+        $args     = wp_parse_args( $atts, $defaults );
+        $arranged = array();
+        $parent_args     = array(
+            'order'       => 'ASC',
+            'include'     => '',
+            'exclude'     => ''
+        );
+
+
+        if ( 'any' != $args['include'] ) {
+             $parent_args['include'] = $args['include'];
+        }
+
+        if ( !empty( $args['exclude'] ) ) {
+            $parent_args['exclude'] = $args['exclude'];
+        }
+
+        $packs = $this->get_subscriptions($parent_args);
+
         $details_meta = $this->get_details_meta_value();
 
         ob_start();
@@ -889,6 +917,7 @@ class WPUF_Subscription {
 
         if ( isset( $current_pack['pack_id'] ) ) {
 
+
             global $wpdb;
 
             $user_id = get_current_user_id();
@@ -898,7 +927,9 @@ class WPUF_Subscription {
             ?>
 
             <?php _e( '<p><i>You have a subscription pack activated. </i></p>', 'wpuf' ); ?>
-            <?php _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' ); ?>
+            <?php _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' );
+
+            ?>
             <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wpuf' ); ?>
 
             <form action="" method="post">
@@ -918,6 +949,7 @@ class WPUF_Subscription {
                 <?php $this->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
                 </li>
                 <?php
+
             }
             echo '</ul>';
         }
@@ -925,6 +957,8 @@ class WPUF_Subscription {
         $contents = ob_get_clean();
 
         return apply_filters( 'wpuf_subscription_packs', $contents, $packs );
+
+
     }
 
     function get_details_meta_value() {
@@ -1032,15 +1066,26 @@ class WPUF_Subscription {
         return get_user_meta( $user_id, '_wpuf_subscription_pack', $status );
     }
 
-    public function subscription_pack_users() {
-        $args = array(
-            'meta_query' => array(
-                array(
-                    'key' => '_wpuf_subscription_pack',
-                )
-            )
-        );
-        $users = get_users( $args );
+    public function subscription_pack_users( $pack_id = '', $status = '' ) {
+        global $wpdb;
+        $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
+        $sql .= $pack_id ? ' WHERE subscribtion_id = ' . $pack_id : '';
+        $sql .= $status ? ' AND subscribtion_status = ' . $status : '';
+
+        $rows = $wpdb->get_results( $sql );
+
+        if ( empty( $rows ) ) {
+            return $rows;
+        }
+
+        $results = array();
+        foreach ( $rows as $row) {
+            if ( !in_array( $row->user_id, $results ) ) {
+                $results[] = $row->user_id;
+            }
+        }
+
+        $users = get_users( array( 'include' => $results ) );
         return $users;
     }
 

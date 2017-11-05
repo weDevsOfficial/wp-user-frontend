@@ -367,15 +367,15 @@
             $('input[type=checkbox][name="wpuf_settings[guest_post]"]').trigger('change');
 
             // Form settings: Payment
-            $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[payment_options]"]', this.settingsPayment);
+            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[payment_options]"]', this.settingsPayment);
             $('input[type=checkbox][name="wpuf_settings[payment_options]"]').trigger('change');
 
             // pay per post
-            $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[enable_pay_per_post]"]', this.settingsPayPerPost);
+            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[enable_pay_per_post]"]', this.settingsPayPerPost);
             $('input[type=checkbox][name="wpuf_settings[enable_pay_per_post]"]').trigger('change');
 
             // force pack purchase
-            $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]', this.settingsForcePack);
+            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]', this.settingsForcePack);
             $('input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]').trigger('change');
 
             // From settings: User details

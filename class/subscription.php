@@ -1052,7 +1052,7 @@ class WPUF_Subscription {
             ?>
             <div class="wpuf-info">
                 <?php
-                $pay_per_post_cost = (int) $form_id->get_pay_per_post_cost();
+                $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
                 $text = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
 
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );

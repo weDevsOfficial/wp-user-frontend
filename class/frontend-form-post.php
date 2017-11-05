@@ -61,7 +61,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         if ( $form_settings['guest_post'] == 'false' && ! is_user_logged_in() ) {
             $user_can_post = 'no';
-            $info = sprintf( __( 'Sorry. Guest Posting is not enabled', 'wpuf' ));
+            $info = sprintf( __( 'Sorry. Guest Posting is not enabled for this form.', 'wpuf' ));
         }
 
         if ( $form->is_charging_enabled() ) {
@@ -80,7 +80,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                         echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
                     } else {
                         $user_can_post = 'no';
-                        $info = sprintf( __( 'Please select a payment type from the form settings.', 'wpuf' ));
+                        $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
                     }
                 } else {
                     $user_can_post = 'yes';
@@ -114,14 +114,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 } elseif ( !$pay_per_post && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
 
                     $user_can_post = 'no';
-                    $info = sprintf( __( 'Please select a payment type from the form settings.', 'wpuf' ));
+                    $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
 
                 } else {
                     $user_can_post = 'no';
                     if ( !is_user_logged_in() ) {
-                        $info = sprintf( __( 'Guest Post is not enabled for this form.', 'wpuf' ));
+                        $info = sprintf( __( 'Sorry. Guest Posting is not enabled for this form.', 'wpuf' ));
                     } else {
-                        $info = sprintf( __( 'Please select a payment type from the form settings.', 'wpuf' ));
+                        $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
                     }
                     
                 }

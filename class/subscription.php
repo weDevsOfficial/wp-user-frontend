@@ -205,14 +205,15 @@ class WPUF_Subscription {
      *
      * @return array
      */
-    function get_subscriptions( $args = null ) {
+    function get_subscriptions( $args = array() ) {
         $defaults = array(
             'post_type'      => 'wpuf_subscription',
             'posts_per_page' => -1,
             'post_status'    => 'publish',
 
         );
-        $args = wp_parse_args($args, $defaults);
+
+        $args  = wp_parse_args($args, $defaults);
         $posts = get_posts( $args );
 
         if ( $posts ) {
@@ -846,27 +847,45 @@ class WPUF_Subscription {
             'col'     => '2',
             'include' => 'any',
             'exclude' => '',
+            'order'       => '' ,
+            'orderby'     => ''
         );
 
         $args     = wp_parse_args( $atts, $defaults );
         $arranged = array();
         $parent_args     = array(
-            'order'       => 'ASC',
             'include'     => '',
-            'exclude'     => ''
+            'exclude'     => '',
+            'order'       => '' ,
+            'orderby'     => '',
         );
 
-
         if ( 'any' != $args['include'] ) {
-             $parent_args['include'] = $args['include'];     
+             
+            $parent_args    = array(
+                'include'     => '',
+                'exclude'     => '',
+                'orderby'     => 'post__in'
+            );
+
+            $parent_args['include'] = $args['include'];
+
         }
 
         if ( !empty( $args['exclude'] ) ) {
-            $parent_args['exclude'] = $args['exclude']; 
+
+            $parent_args    = array(
+                'include'     => '',
+                'exclude'     => '',
+                'order'       => 'ASC'
+            );
+        
+            $parent_args['exclude'] = $args['exclude'];
+
         }
 
         $packs = $this->get_subscriptions($parent_args);
-        
+       
         $details_meta = $this->get_details_meta_value();
 
         ob_start();
@@ -908,7 +927,8 @@ class WPUF_Subscription {
                 $class = 'wpuf-pack-' . $pack->ID;
                 ?>
                 <li class="<?php echo $class; ?>">
-                <?php $this->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
+                <?php 
+                $this->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
                 </li>
                 <?php
 

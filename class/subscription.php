@@ -205,7 +205,7 @@ class WPUF_Subscription {
      *
      * @return array
      */
-    function get_subscriptions($args) {
+    function get_subscriptions( $args = null ) {
         $defaults = array(
             'post_type'      => 'wpuf_subscription',
             'posts_per_page' => -1,
@@ -830,7 +830,7 @@ class WPUF_Subscription {
      * Show the subscription packs that are built
      * from admin Panel
      */
-    function subscription_packs($atts) {
+    function subscription_packs( $atts = null ) {
         ?>
 
         <style>

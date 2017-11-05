@@ -205,14 +205,15 @@ class WPUF_Subscription {
      *
      * @return array
      */
-    function get_subscriptions($args) {
+    function get_subscriptions( $args = array() ) {
         $defaults = array(
             'post_type'      => 'wpuf_subscription',
             'posts_per_page' => -1,
             'post_status'    => 'publish',
 
         );
-        $args = wp_parse_args($args, $defaults);
+
+        $args  = wp_parse_args($args, $defaults);
         $posts = get_posts( $args );
 
         if ( $posts ) {

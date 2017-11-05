@@ -7,19 +7,19 @@
 
 	#wpuf-welcome .container{
 		margin: 0 auto;
-		max-width: 850px;
+		max-width: 700px;
 		padding: 0;
 	}
 
 	#wpuf-welcome .intro{
-		margin-bottom: 100px;
+		margin-bottom: 60px;
 	}
 
-	#wpuf-welcome .header{
+	#wpuf-welcome .header {
 		display: flex;
 		flex-wrap: wrap;
 		align-content: center;
-		margin: 110px 0 55px;
+		margin: 50px 0 40px;
 	}
 	#wpuf-welcome .header > *{
 		width: 50%;
@@ -117,7 +117,7 @@
 		font-size: 33px;
 		line-height: 1.2em;
 		text-align: center;
-		margin-bottom: 50px;
+		margin-bottom: 40px;
 	}
 	#wpuf-welcome .features-section .section, .upgrade-section .section{
 		padding: 30px;
@@ -131,7 +131,8 @@
 	#wpuf-welcome .features-section .features-block{
 
 	}
-	#wpuf-welcome .features-section .features-block h2{
+
+	#wpuf-welcome .features-section .features-block h2 {
 		border: 2px solid #eff2f7;
 		border-radius: 3px;
 		background-color: rgb(246, 248, 251);
@@ -140,7 +141,9 @@
 		line-height: 1.2em;
 		font-weight: 400;
 		padding: 15px;
+		margin: 20px 0 10px 0;
 	}
+
 	#wpuf-welcome .features-section .features-block h2 img {
 		display: inline-block;
 		vertical-align: middle;
@@ -152,34 +155,31 @@
 		flex-wrap: wrap;
 	}
 	#wpuf-welcome .features-section .features-list > *{
-		width: 45%;
+		width: 48%;
 		margin-bottom: 25px;
 		margin-top: 25px;
 	}
 	#wpuf-welcome .features-section .features-list > .feature-block:nth-child(even) {
-		margin-left: 5%;
+		margin-left: 2%;
 	}
 	#wpuf-welcome .features-section .features-list > .feature-block:nth-child(odd) {
-		margin-right: 5%;
+		margin-right: 2%;
 	}
 
 	#wpuf-welcome .features-section .features-list img {
 		float: left;
-		max-width: 75px;
+		max-width: 60px;
 	}
 	#wpuf-welcome .features-section .features-list h5 {
-		margin: 0 0 10px 120px;
-		font-size: 14px;
+		margin: 0 0 8px 80px;
+		font-size: 16px;
 		line-height: 1.2em;
 		font-weight: 600;
 		color: #23282d;
 	}
 	#wpuf-welcome .features-section .features-list p {
-		margin: 0px 0px 0px 120px;
+		margin: 0px 0px 0px 80px;
 		font-size: 14px;
-		line-height: 1.3em;
-		font-weight: 300;
-		color: #919191;
 	}
 
 	#wpuf-welcome .upgrade-section{
@@ -442,8 +442,8 @@
 					<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/welcome-video.png" alt="Watch how to create your first form" class="video-thumbnail">
 				</a>
 				<div class="action-block">
-					<a href="" class="wpuf-btn primary">Create Your First Form</a>
-					<a href="" class="wpuf-btn default" target="_blank" rel="noopener noreferrer">Read the Full Guide</a>
+					<a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" class="wpuf-btn primary"><?php _e( 'Create Your First Form', 'wpuf' ); ?></a>
+					<a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/" class="wpuf-btn default" target="_blank"><?php _e( 'Read the Full Guide', 'wpuf' ); ?></a>
 				</div>
 			</div>
 			<div class="wpuf-welcome-modal" id="wpuf-welcome-modal">
@@ -460,7 +460,7 @@
 
 		<div class="features-section">
 
-			<h1>What’s Next</h1>
+			<h1>What’s Next...</h1>
 
 			<div class="section">
 				<div class="features-block">
@@ -470,50 +470,50 @@
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Form-Builder.svg">
 							<h5>Post Form Builder</h5>
-							<p>Design your forms with drag & Drop builder with live preview</p>
+							<p><a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/" target="_blank">Design your forms</a> with drag & Drop builder with live preview</p>
 						</div>
 
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Support.svg">
 							<h5>Custom Field Support</h5>
-							<p>Build exclusive submission forms with 30+ custom field types</p>
+							<p>Build exclusive submission forms with <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-elements/" target="_blank">30+ custom field types</a>.</p>
 						</div>
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Post-Taxonomies.svg">
 							<h5>Post Types & Taxonomies</h5>
-							<p>Unleash your creativity with custom post types & taxonomies</p>
+							<p>Unleash your creativity with <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/" target="_blank">custom post types</a> & taxonomies</p>
 						</div>
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Guest-Posting.svg">
 							<h5>Guest Posting</h5>
-							<p>Allow your guests to post from the frontend with full capabilities.</p>
+							<p>Allow your guests to post from the frontend with full capabilities. <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/" target="_blank">Learn more</a>.</p>
 						</div>
 					</div>
 				</div>
 				<div class="features-block">
-					<h2><img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Profile-Builder.png" alt="Frontend Posting"> Registration & Profile Builder</h2>
+					<h2><img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Profile-Builder.png" alt="Frontend Posting"> Registration &amp; Profile Builder</h2>
 
 					<div class="features-list">
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Registration-form.svg">
 							<h5>Registration form builder</h5>
-							<p>Create frontend registration forms with powerful builder using shortcodes.</p>
+							<p>Create <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/registration-forms/" target="_blank">frontend registration forms</a> with powerful builder using shortcodes.</p>
 						</div>
 
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Profile-Builder.svg">
 							<h5>User Profile Builder</h5>
-							<p>Use shortcodes to publish frontend profile page and profile edit page.</p>
+							<p>Use shortcodes to publish frontend profile page and <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/wordpress-edit-user-profile-from-front-end/" target="_blank">profile edit</a> page.</p>
 						</div>
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/My-Account.svg">
 							<h5>My Account on Frontend</h5>
-							<p>Use shortcodes to generate frontend my account pages</p>
+							<p>Use shortcodes to generate frontend <a href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/" target="_blank">my account</a> pages.</p>
 						</div>
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Create-Database.svg">
-							<h5>Create Database</h5>
-							<p>Register hundreds of users onto your site and use their profile fields to build a database of your requirement.</p>
+							<h5>Login Page</h5>
+							<p>Create themed login and registration page for a unified user experience for the user.</p>
 						</div>
 					</div>
 				</div>
@@ -524,23 +524,23 @@
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/User.svg">
 							<h5>Charge User for Posting</h5>
-							<p>Accept payments from multiple gateways for post submissions</p>
+							<p><a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/" target="_blank">Accept payments</a> from multiple gateways for post submissions</p>
 						</div>
 
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/pay-per-post.svg">
 							<h5>Pay-per-post on Forms</h5>
-							<p>Earn from each guest post with different subscription packs</p>
+							<p>Earn from <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/" target="_blank">each guest post</a> with different subscription packs</p>
 						</div>
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Content-Locking.svg">
 							<h5>Content Locking</h5>
-							<p>Lock high value & quality contents for your subscribed users</p>
+							<p><a href="https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/" target="_blank">Lock high value &amp; quality contents</a> for your subscribed users</p>
 						</div>
 						<div class="feature-block">
 							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Subscription-Signup.svg">
 							<h5>Subscription Signup</h5>
-							<p>Do you want to build a site where guests can write their own stories? Yes you can!</p>
+							<p>Build a membership site where users can <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/paid-membership-registration/" target="_blank">signup with a subscription plan</a>.</p>
 						</div>
 					</div>
 				</div>
@@ -558,23 +558,23 @@
 
 				<div class="left">
 					<ul>
-						<li><span class="dashicons dashicons-yes"></span> Frontend Post Submission</li>
-						<li><span class="dashicons dashicons-yes"></span> Registration/Login Forms</li>
-						<li><span class="dashicons dashicons-yes"></span> Subscription</li>
-						<li><span class="dashicons dashicons-yes"></span> Profile Builder</li>
-						<li><span class="dashicons dashicons-yes"></span> Guest Posting</li>
+						<li><span class="dashicons dashicons-yes"></span> Unlock More Fields</li>
+						<li><span class="dashicons dashicons-yes"></span> Registration Forms</li>
 						<li><span class="dashicons dashicons-yes"></span> Content Restriction</li>
+						<li><span class="dashicons dashicons-yes"></span> Menu Restriction</li>
+						<li><span class="dashicons dashicons-yes"></span> Email Notification</li>
+						<li><span class="dashicons dashicons-yes"></span> Discount Coupons</li>
 						<li><span class="dashicons dashicons-yes"></span> Custom Post Types</li>
-						<li><span class="dashicons dashicons-yes"></span> PayPal</li>
-						<li><span class="dashicons dashicons-yes"></span> Stripe</li>
-						<li><span class="dashicons dashicons-yes"></span> Priority Support</li>
+						<li><span class="dashicons dashicons-yes"></span> Multistep Form</li>
+						<li><span class="dashicons dashicons-yes"></span> Stripe Payment</li>
+						<li><span class="dashicons dashicons-yes"></span> Much More...</li>
 					</ul>
 				</div>
 
 				<div class="right">
 					<span class="price"><sup>$</sup>49</span>
 					<span class="term">Per Year</span>
-					<a href="" class="wpuf-btn primary" rel="noopener noreferrer" target="_blank">Upgrade Now</a>
+					<a href="https://wedevs.com/wp-user-frontend-pro/pricing/" class="wpuf-btn primary" target="_blank">Upgrade Now</a>
 				</div>
 
 			</div>
@@ -583,8 +583,8 @@
 
 		<div class="footer">
 			<div class="action-block">
-				<a href="" class="wpuf-btn primary">Create Your First Form</a>
-				<a href="" class="wpuf-btn default" target="_blank" rel="noopener noreferrer">Read the Full Guide</a>
+				<a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" class="wpuf-btn primary"><?php _e( 'Create Your First Form', 'wpuf' ); ?></a>
+				<a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/" class="wpuf-btn default" target="_blank"><?php _e( 'Read the Full Guide', 'wpuf' ); ?></a>
 			</div>
 		</div><!-- /.footer -->
 

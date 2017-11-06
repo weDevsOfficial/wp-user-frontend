@@ -877,6 +877,8 @@ class WPUF_Subscription {
             'col'     => '2',
             'include' => 'any',
             'exclude' => '',
+            'order'   => '',
+            'orderby' => ''
         );
 
         $args     = wp_parse_args( $atts, $defaults );
@@ -884,16 +886,40 @@ class WPUF_Subscription {
         $parent_args     = array(
             'order'       => 'ASC',
             'include'     => '',
-            'exclude'     => ''
+            'exclude'     => '',
+            'order'       => '',
+            'orderby'     => ''
         );
 
 
         if ( 'any' != $args['include'] ) {
+
+             $parent_args    = array(
+                'include'     => '',
+                'exclude'     => '',
+                'orderby'     => 'post__in'
+            );
+
              $parent_args['include'] = $args['include'];
         }
 
         if ( !empty( $args['exclude'] ) ) {
+
+             $parent_args    = array(
+                'include'     => '',
+                'exclude'     => '',
+                'orderby'     => '',
+                'order'       => ''
+            );
+
             $parent_args['exclude'] = $args['exclude'];
+
+             if(!empty($args['orderby'])){
+               $parent_args['orderby'] = $args['orderby'];
+             }
+             if(!empty($args['order'])){
+               $parent_args['order'] = $args['order'];
+             }
         }
 
         $packs = $this->get_subscriptions($parent_args);

@@ -594,8 +594,12 @@ class WPUF_Admin_Subscription {
                 </div>
             <?php endif;?>
             <?php if(!isset($user_sub['recurring']) || $user_sub['recurring'] != 'yes' ): ?>
-                <a class="btn button-primary wpuf-assing-pack-btn wpuf-add-pack" href="#"><?php _e( 'Assign Package', 'wpuf' ); ?></a>
-                <a class="btn button-primary wpuf-assing-pack-btn wpuf-cancel-pack" style="display:none;" href="#"><?php _e( 'Show Package', 'wpuf' ); ?></a>
+
+                <?php if ( empty( $user_sub ) ): ?>
+                    <a class="btn button-secondary wpuf-assing-pack-btn wpuf-add-pack" href="#"><?php _e( 'Assign Package', 'wpuf' ); ?></a>
+                <?php endif ?>
+
+                <a class="btn button-secondary wpuf-assing-pack-btn wpuf-cancel-pack" style="display:none;" href="#"><?php _e( 'Show Package', 'wpuf' ); ?></a>
                 <table class="form-table wpuf-pack-dropdown" disabled="disabled" style="display: none;">
                     <tr>
                         <th><label for="wpuf_sub_pack"><?php _e( 'Pack:', 'wpuf' ); ?> </label></th>
@@ -608,8 +612,9 @@ class WPUF_Admin_Subscription {
                     </tr>
                 </table>
             <?php endif;?>
+
             <?php if( !empty($user_sub) ):?>
-                <a class="btn button-primary wpuf-delete-pack-btn" href="javascript:" data-userid = "<?php echo $userdata->ID; ?>" data-packid = "<?php echo $user_sub['pack_id']; ?>"><?php _e( 'Delete Package', 'wpuf' ); ?></a>
+                <a class="btn button-secondary wpuf-delete-pack-btn" href="javascript:" data-userid = "<?php echo $userdata->ID; ?>" data-packid = "<?php echo $user_sub['pack_id']; ?>"><?php _e( 'Delete Package', 'wpuf' ); ?></a>
             <?php endif; ?>
         </div>
         <?php

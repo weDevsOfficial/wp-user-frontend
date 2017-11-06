@@ -1,190 +1,333 @@
-.wpuf-admin fieldset{
-    border: 1px solid #E3E3E3;
-    margin: 20px 0 0px 0;
-    padding-bottom: 20px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    background: #fff;
-    -moz-box-shadow:inset 0 0 5px #ccc;
-    -webkit-box-shadow:inset 0 0 5px #ccc;
-    box-shadow:inset 0 0 5px #ccc;
+.wpuf-admin fieldset {
+  border: 1px solid #E3E3E3;
+  margin: 20px 0 0px 0;
+  padding-bottom: 20px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  background: #fff;
+  -moz-box-shadow: inset 0 0 5px #ccc;
+  -webkit-box-shadow: inset 0 0 5px #ccc;
+  box-shadow: inset 0 0 5px #ccc;
 }
-
-.wpuf-admin legend{
-    -moz-border-radius: 5px 5px 5px 5px;
-    -webkit-border-radius: 5px;
-    background: #FFFFFF;
-    border: 1px solid #E3E3E3;
-    color: #2481C6;
-    font-size: 15px;
-    font-weight: bold;
-    margin-left: 20px;
-    padding: 5px 10px;
-    text-transform: capitalize;
-    -moz-box-shadow:inset 0 0 5px #ccc;
-    -webkit-box-shadow:inset 0 0 5px #ccc;
-    box-shadow:inset 0 0 5px #ccc;
+.wpuf-admin legend {
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px;
+  background: #FFFFFF;
+  border: 1px solid #E3E3E3;
+  color: #2481C6;
+  font-size: 15px;
+  font-weight: bold;
+  margin-left: 20px;
+  padding: 5px 10px;
+  text-transform: capitalize;
+  -moz-box-shadow: inset 0 0 5px #ccc;
+  -webkit-box-shadow: inset 0 0 5px #ccc;
+  box-shadow: inset 0 0 5px #ccc;
 }
-
-.wpuf-admin .widefat td{
-    padding: 7px 12px;
-    vertical-align: top;
+.wpuf-admin .widefat td {
+  padding: 7px 12px;
+  vertical-align: top;
 }
-
-.wpuf-admin .meta td.label{
-    width: 140px;
-    font-size: 12px;
+.wpuf-admin .meta td.label {
+  width: 140px;
+  font-size: 12px;
 }
-
-.wpuf-admin td.label{
-    font-size: 12px;
-}
-
-.wpuf-admin .options td:nth-child(odd){
-    background-color: F9F9F9;
-}
-
 .wpuf-admin .meta .description {
-    font-size: 11px;
+  font-size: 11px;
 }
-
-.wpuf_admin ul {
-    margin: 10px;
+.wpuf-admin td.label {
+  font-size: 12px;
 }
-
-.wpuf_admin li {
-    padding: 0 0 10px;
-    margin: 0 0 10px;
-    border-bottom: 1px solid #E7E7E7;
-    line-height: 20px;
+.wpuf-admin .options td:nth-child(odd) {
+  background-color: F9F9F9;
 }
-
-.wpuf_admin li:last-child {
-    border-bottom: none;
-}
-
-.wpuf_admin span.label {
-    float: left;
-    height: 20px;
-    line-height: 20px;
-    width: 200px;
-}
-
 .wpuf-admin .nav-tab {
-    font-size: 15px;
-    margin: 0 0px -1px 0;
+  font-size: 15px;
+  margin: 0 0px -1px 0;
 }
-
+.wpuf_admin ul {
+  margin: 10px;
+}
+.wpuf_admin li {
+  padding: 0 0 10px;
+  margin: 0 0 10px;
+  border-bottom: 1px solid #E7E7E7;
+  line-height: 20px;
+}
+.wpuf_admin li:last-child {
+  border-bottom: none;
+}
+.wpuf_admin span.label {
+  float: left;
+  height: 20px;
+  line-height: 20px;
+  width: 200px;
+}
 .tooltip {
-    position:absolute;
-    z-index:9999;
-    color: #fff;
-    font-size:11px;
-    width: 250px;
-    background: #333;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    margin: 20px;
-    opacity: .8;
+  position: absolute;
+  z-index: 9999;
+  color: #fff;
+  font-size: 11px;
+  width: 250px;
+  background: #333;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  margin: 20px;
+  opacity: .8;
 }
-
 .tooltip:after {
-    border-color: transparent transparent #333;
-    border-style: solid;
-    border-width: 8px;
-    content: "";
-    display: block;
-    height: 0;
-    left: 20px;
-    position: absolute;
-    top: -16px;
-    width: 0;
+  border-color: transparent transparent #333;
+  border-style: solid;
+  border-width: 8px;
+  content: "";
+  display: block;
+  height: 0;
+  left: 20px;
+  position: absolute;
+  top: -16px;
+  width: 0;
 }
-
-
 .tooltip .tipBody {
-    padding: 5px 10px;
-    text-indent: 0;
-    color: #fff;
-    text-shadow: 1px 1px 1px #333;
-    font-size: 12px;
+  padding: 5px 10px;
+  text-indent: 0;
+  color: #fff;
+  text-shadow: 1px 1px 1px #333;
+  font-size: 12px;
 }
-
 .tooltip .buble {
-    border-right: 60px solid white;
-    border-top: 50px solid #CCCCCC;
-    height: 0;
-    line-height: 0;
-    position: absolute;
-    right: -60px;
-    top: 30px;
-    width: 0;
+  border-right: 60px solid white;
+  border-top: 50px solid #CCCCCC;
+  height: 0;
+  line-height: 0;
+  position: absolute;
+  right: -60px;
+  top: 30px;
+  width: 0;
 }
-
-span.wpuf_help{
-    height: 16px;
-    width: 16px;
-    background: url('../images/help.png') no-repeat;
-    cursor: pointer;
-    float: right;
-    display: none;
+span.wpuf_help {
+  height: 16px;
+  width: 16px;
+  background: url('../images/help.png') no-repeat;
+  cursor: pointer;
+  float: right;
+  display: none;
 }
-
-#option-saved{
-    -moz-border-radius: 5px 5px 5px 5px;
-    background: none repeat scroll 0 0 orange;
-    border: 1px solid #CCCCCC;
-    color: #FFFFFF;
-    display: none;
-    font-size: 30px;
-    padding: 50px;
-    position: absolute;
-    left: 50%;
-    z-index: 99;
-    -moz-box-shadow:0 0 8px rgba(82,168,236,.5);
-    -webkit-box-shadow:0 0 8px rgba(82,168,236,.5);
+#option-saved {
+  -moz-border-radius: 5px 5px 5px 5px;
+  background: none repeat scroll 0 0 orange;
+  border: 1px solid #CCCCCC;
+  color: #FFFFFF;
+  display: none;
+  font-size: 30px;
+  padding: 50px;
+  position: absolute;
+  left: 50%;
+  z-index: 99;
+  -moz-box-shadow: 0 0 8px rgba(82, 168, 236, 0.5);
+  -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.5);
 }
-
 .wpuf_loading {
-    height: 16px;
-    width: 16px;
-    background: url('../images/wpspin_light.gif') no-repeat;
-    padding: 0 0 0 20px;
-    margin-bottom: 10px;
+  height: 16px;
+  width: 16px;
+  background: url('../images/wpspin_light.gif') no-repeat;
+  padding: 0 0 0 20px;
+  margin-bottom: 10px;
 }
 .wpuf-status-completed {
-    background: url(../images/completed.png);
-    background-size: cover;
-    width: 18px;
-    height: 18px;
-    display: block;
+  background: url(../images/completed.png);
+  background-size: cover;
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 .wpuf-status-processing {
-    background: url(../images/processing.png);
-    background-size: cover;
-    width: 18px;
-    height: 18px;
-    display: block;
+  background: url(../images/processing.png);
+  background-size: cover;
+  width: 18px;
+  height: 18px;
+  display: block;
 }
-
 .wpuf-footer-help {
-    box-sizing: border-box;
-    width: auto;
-    margin: 2rem 0.8rem;
-    text-align: center;
+  box-sizing: border-box;
+  width: auto;
+  margin: 2rem 0.8rem;
+  text-align: center;
 }
-
 .wpuf-footer-help .wpuf-footer-help-content {
-    border: 1px solid #ddd;
-    border-radius: 30px;
-    padding: 15px 25px;
-    font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  padding: 15px 25px;
+  font-size: 15px;
 }
-
 .wpuf-footer-help-content .dashicons {
-    color: #47c1bf;
-    font-size: 30px;
-    height: 30px;
-    width: 30px;
-    margin-top: -5px;
+  color: #47c1bf;
+  font-size: 30px;
+  height: 30px;
+  width: 30px;
+  margin-top: -5px;
+}
+.wpuf-help-tabbed {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  box-shadow: 0 0 0 1px #c8d7e1, 0 1px 2px #e9eff3;
+}
+.wpuf-help-tabbed nav {
+  order: 1;
+  background-color: #f1f1f1;
+  flex-basis: auto;
+  padding: 0;
+  min-height: 405px;
+  border-right: 1px solid #c8d7e1;
+  min-width: 250px;
+}
+.wpuf-help-tabbed nav ul,
+.wpuf-help-tabbed nav li {
+  margin: 0;
+}
+.wpuf-help-tabbed nav a {
+  display: block;
+  border: none;
+  padding: 0.5rem;
+  border-bottom: 1px solid #c8d7e1;
+  border-right: 1px solid #c8d7e1;
+  background-color: #f1f1f1;
+  color: #444;
+  text-decoration: none;
+  margin-right: -1px;
+  font-weight: 500;
+}
+.wpuf-help-tabbed nav a label {
+  padding: 0.5rem;
+  display: inline-block;
+}
+.wpuf-help-tabbed nav a:focus,
+.wpuf-help-tabbed nav a:active {
+  outline: 0;
+  box-shadow: none;
+}
+.wpuf-help-tabbed nav .dashicons {
+  padding: 8px 0 0 5px;
+}
+.wpuf-help-tabbed nav .dashicons.dashicons-admin-home {
+  color: #9b59b6;
+}
+.wpuf-help-tabbed nav .dashicons.dashicons-media-text {
+  color: #6c75ff;
+}
+.wpuf-help-tabbed nav .dashicons.dashicons-dashboard {
+  color: #00aeff;
+}
+.wpuf-help-tabbed nav .dashicons.dashicons-admin-users {
+  color: #e67e22;
+}
+.wpuf-help-tabbed nav .dashicons.dashicons-lock {
+  color: #3d566e;
+}
+.wpuf-help-tabbed nav .dashicons.dashicons-edit {
+  color: #1abc9d;
+}
+.wpuf-help-tabbed nav .dashicons.dashicons-cart {
+  color: #e74c3c;
+}
+.wpuf-help-tabbed nav .dashicons.dashicons-unlock {
+  color: #00aeff;
+}
+.wpuf-help-tabbed nav .tab-current a {
+  border-right: 1px solid #fff;
+  background: #fff;
+  color: #2e4453;
+}
+.wpuf-help-tabbed .nav-content {
+  order: 1;
+  background-color: #fff;
+  padding: 2rem;
+  width: 100%;
+}
+.wpuf-help-tabbed .nav-content h2 {
+  margin-top: 30px;
+  color: #23282d;
+  line-height: 1.6;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.wpuf-help-tabbed .nav-content h2:first-child {
+  margin-top: 0;
+}
+.wpuf-help-tabbed .nav-content section {
+  display: none;
+  color: #444;
+  font-size: 0.875rem;
+}
+.wpuf-help-tabbed .nav-content section p {
+  font-size: 0.875rem;
+}
+.wpuf-help-tabbed .nav-content section.content-current {
+  display: block;
+}
+.wpuf-help-tabbed .nav-content section ul {
+  list-style-type: disc;
+  padding-left: 40px;
+}
+.wpuf-help-tabbed .nav-content section ul.related-articles {
+  list-style: none;
+  padding-left: 10px;
+}
+.wpuf-help-tabbed .nav-content section .button-primary {
+  background: #00aadc;
+  border-color: #0087be;
+  text-shadow: none;
+  padding: 3px 20px;
+  height: auto;
+  margin: 0.3125rem 0;
+}
+.wpuf-help-tabbed .nav-content section .button-primary:hover {
+  border-color: #005082;
+}
+.wpuf-help-page .help-blocks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 30px;
+}
+.wpuf-help-page .help-blocks .help-block {
+  flex: 1;
+  align-self: flex-start;
+  min-width: 25%;
+  max-width: 30%;
+  border: 1px solid #ddd;
+  margin-right: 2%;
+  margin-bottom: 25px;
+  border-radius: 3px;
+  padding: 25px 15px;
+  text-align: center;
+  background: #fff;
+}
+.wpuf-help-page .help-blocks .help-block img {
+  max-height: 44px;
+}
+.wpuf-help-page .wpuf-help-questions ul {
+  margin: 5px 0;
+}
+.wpuf-help-page .wpuf-help-questions li {
+  padding: 10px 5px;
+  margin: 0;
+  display: block;
+  border-bottom: 1px solid #eee;
+}
+.wpuf-help-page .wpuf-help-questions li:hover {
+  background-color: #F5F5F5;
+}
+.wpuf-help-page .wpuf-help-questions li:last-child {
+  border-bottom: none;
+}
+.wpuf-help-page .wpuf-help-questions li .dashicons {
+  color: #ccc;
+  margin-top: -3px;
+}
+.wpuf-help-page .wpuf-help-questions li .dashicons-media-text {
+  padding-left: 8px;
+}
+.wpuf-help-page .wpuf-help-questions li .dashicons-arrow-right-alt2 {
+  float: right;
 }

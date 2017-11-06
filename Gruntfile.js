@@ -8,6 +8,7 @@ module.exports = function(grunt) {
         // setting folder templates
         dirs: {
             css: 'assets/css',
+            less: 'assets/less',
             images: 'assets/images',
             js: 'assets/js',
             template: 'assets/js-templates'
@@ -19,13 +20,14 @@ module.exports = function(grunt) {
             // one to one
             front: {
                 files: {
-                    '<%= dirs.css %>/frontend-forms.css': '<%= dirs.css %>/frontend-forms.less'
+                    '<%= dirs.css %>/frontend-forms.css': '<%= dirs.less %>/frontend-forms.less'
                 }
             },
 
-            formBuilder: {
+            admin: {
                 files: {
-                    '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less']
+                    '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less'],
+                    '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less']
                 }
             }
         },
@@ -57,8 +59,8 @@ module.exports = function(grunt) {
 
         watch: {
             less: {
-                files: ['<%= dirs.css %>/*.less'],
-                tasks: ['less:front']
+                files: ['<%= dirs.less %>/*.less'],
+                tasks: ['less:front', 'less:admin']
             },
 
             formBuilder: {
@@ -69,7 +71,7 @@ module.exports = function(grunt) {
                     '<%= dirs.css %>/frontend-forms.less',
                 ],
                 tasks: [
-                    'jshint:formBuilder', 'less:formBuilder',
+                    'jshint:formBuilder', 'less:admin',
                     'concat:formBuilder', 'concat:templates', 'less:front'
                 ]
             }

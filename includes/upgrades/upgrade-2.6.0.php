@@ -85,6 +85,49 @@ function insert_subscribers() {
     }
 }
 
+function payment_settings_migration() {
+    $args = array(
+        'post_type'     => 'wpuf_forms',
+        'post_status'   => 'publish',
+    );
+
+    $allforms = get_posts($args);
+
+    if ( $allforms ) {
+        foreach ($allforms as $form) {
+
+            $form_settings = wpuf_get_form_settings( $form->ID );
+            $charge_posting = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+            
+            if ( 'yes' == $charge_posting ) {
+                $form_settings['payment_options'] = 'true';
+            } else {
+                $form_settings['payment_options'] = 'false';
+            }
+
+            $force_pack = wpuf_get_option( 'force_pack', 'wpuf_payment' );
+
+            if ( 'yes' == $force_pack ) {
+                $form_settings['force_pack_purchase'] = 'true';
+            } else {
+                $form_settings['force_pack_purchase'] = 'false';
+            }
+
+            $pay_per_cost = wpuf_get_option( 'cost_per_post', 'wpuf_payment' );
+
+            if ( $pay_per_cost > 0 ) {
+                $form_settings['pay_per_post_cost'] = $pay_per_cost;
+            } else {
+                $form_settings['pay_per_post_cost'] = 0;
+            }
+
+            update_post_meta( $form->ID, 'wpuf_form_settings', $form_settings );
+        }
+    }
+
+}
+
 wpuf_upgrade_2_6_field_options();
 create_subscribers_table();
 insert_subscribers();
+payment_settings_migration();

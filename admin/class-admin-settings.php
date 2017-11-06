@@ -114,6 +114,7 @@ class WPUF_Admin_Settings {
         // manually add subsription page
         $this->menu_pages[] = 'edit-wpuf_subscription';
         $this->menu_pages[] = 'wpuf_subscribers';
+        $this->menu_pages[] = 'user-frontend_page_wpuf_transaction';
 
         add_action( "load-$transactions_page", array( $this, 'transactions_screen_option' ) );
         // add_action( "load-wpuf_subscribers", array( $this, 'subscribers_screen_option' ) );

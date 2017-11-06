@@ -257,12 +257,21 @@ span.wpuf_help {
 .wpuf-help-tabbed .nav-content section {
   display: none;
   color: #444;
+  font-size: 0.875rem;
 }
 .wpuf-help-tabbed .nav-content section p {
   font-size: 0.875rem;
 }
 .wpuf-help-tabbed .nav-content section.content-current {
   display: block;
+}
+.wpuf-help-tabbed .nav-content section ul {
+  list-style-type: disc;
+  padding-left: 40px;
+}
+.wpuf-help-tabbed .nav-content section ul.related-articles {
+  list-style: none;
+  padding-left: 10px;
 }
 .wpuf-help-tabbed .nav-content section .button-primary {
   background: #00aadc;

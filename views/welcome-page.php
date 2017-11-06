@@ -443,7 +443,7 @@
 				</a>
 				<div class="action-block">
 					<a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" class="wpuf-btn primary"><?php _e( 'Create Your First Form', 'wpuf' ); ?></a>
-					<a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/" class="wpuf-btn default" target="_blank"><?php _e( 'Read the Full Guide', 'wpuf' ); ?></a>
+					<a href="<?php echo admin_url( 'admin.php?page=wpuf-support' ); ?>" class="wpuf-btn default"><?php _e( 'Read the Full Guide', 'wpuf' ); ?></a>
 				</div>
 			</div>
 			<div class="wpuf-welcome-modal" id="wpuf-welcome-modal">
@@ -584,7 +584,7 @@
 		<div class="footer">
 			<div class="action-block">
 				<a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" class="wpuf-btn primary"><?php _e( 'Create Your First Form', 'wpuf' ); ?></a>
-				<a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/" class="wpuf-btn default" target="_blank"><?php _e( 'Read the Full Guide', 'wpuf' ); ?></a>
+				<a href="<?php echo admin_url( 'admin.php?page=wpuf-support' ); ?>" class="wpuf-btn default"><?php _e( 'Read the Full Guide', 'wpuf' ); ?></a>
 			</div>
 		</div><!-- /.footer -->
 
@@ -602,7 +602,7 @@
                 modal.addClass('show');
                 modalBackdrop.addClass('show');
 
-                iframe.attr( 'src', 'https://www.youtube.com/embed/C0sInxx49Vg?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1' );
+                iframe.attr( 'src', 'https://www.youtube.com/embed/rzxdIN8ZMYc?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1&amp;hd=1' );
             });
 
             $('body').on('click', '.wpuf-welcome-modal a.close', function(e) {

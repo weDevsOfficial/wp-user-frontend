@@ -506,12 +506,12 @@ class WPUF_Subscription {
             $post_type   = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
             $count       = isset( $sub_info['posts'][$post_type] ) ? intval( $sub_info['posts'][$post_type] ) : 0;
             $post_status = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
-            
+
             wp_update_post( array( 'ID' => $post_id , 'post_status' => $post_status) );
-            
+
             // decrease the post count, if not umlimited
             $wpuf_post_status = get_post_meta( $post_id, 'wpuf_post_status', true );
-            
+
             if ( $wpuf_post_status != 'new_draft' ) {
                 if ( $count > 0 ) {
                     $sub_info['posts'][$post_type] = $count - 1;
@@ -859,70 +859,23 @@ class WPUF_Subscription {
      * from admin Panel
      */
     function subscription_packs( $atts = null ) {
-        ?>
-
-        <style>
-            <?php echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
-        </style>
-        <?php
-
         $cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
 
-        // if ( $cost_per_post <= 0  ) {
-        //     _e('Please enable force pack and charge posting from admin panel', 'wpuf' );
-        //     return;
-        // }
-
         $defaults = array(
-            'col'     => '2',
             'include' => 'any',
             'exclude' => '',
-            'order'   => '',
+            'order'   => 'ASC',
             'orderby' => ''
         );
 
-        $args     = wp_parse_args( $atts, $defaults );
         $arranged = array();
-        $parent_args     = array(
-            'order'       => 'ASC',
-            'include'     => '',
-            'exclude'     => '',
-            'order'       => '',
-            'orderby'     => ''
-        );
-
+        $args     = wp_parse_args( $atts, $defaults );
 
         if ( 'any' != $args['include'] ) {
-
-             $parent_args    = array(
-                'include'     => '',
-                'exclude'     => '',
-                'orderby'     => 'post__in'
-            );
-
-             $parent_args['include'] = $args['include'];
+            $args['orderby'] = $args['post__in'];
         }
 
-        if ( !empty( $args['exclude'] ) ) {
-
-             $parent_args    = array(
-                'include'     => '',
-                'exclude'     => '',
-                'orderby'     => '',
-                'order'       => ''
-            );
-
-            $parent_args['exclude'] = $args['exclude'];
-
-             if(!empty($args['orderby'])){
-               $parent_args['orderby'] = $args['orderby'];
-             }
-             if(!empty($args['order'])){
-               $parent_args['order'] = $args['order'];
-             }
-        }
-
-        $packs = $this->get_subscriptions($parent_args);
+        $packs = $this->get_subscriptions( $args );
 
         $details_meta = $this->get_details_meta_value();
 
@@ -943,8 +896,6 @@ class WPUF_Subscription {
         $current_pack = self::get_user_pack( get_current_user_id() );
 
         if ( isset( $current_pack['pack_id'] ) ) {
-
-
             global $wpdb;
 
             $user_id = get_current_user_id();
@@ -967,6 +918,7 @@ class WPUF_Subscription {
             </form>
             <?php
         }
+
         if ( $packs ) {
             echo '<ul class="wpuf_packs">';
             foreach ($packs as $pack) {
@@ -1172,7 +1124,7 @@ class WPUF_Subscription {
                     if ( !$force_pack && $pay_per_post ) {
                         return 'yes';
                     }
-                }   
+                }
             }
 
         }
@@ -1180,7 +1132,7 @@ class WPUF_Subscription {
         if ( !is_user_logged_in() && $form_settings['guest_post'] == 'true' ) {
             if ( $form->is_charging_enabled() && $subscription_disabled != 'yes' ) {
                 if ( $force_pack ) {
-                    return 'no'; 
+                    return 'no';
                 }
                 if ( !$force_pack && $pay_per_post ) {
                     return 'yes';
@@ -1190,7 +1142,7 @@ class WPUF_Subscription {
             }
             else {
                 return 'yes';
-            } 
+            }
         }
 
         return $perm;

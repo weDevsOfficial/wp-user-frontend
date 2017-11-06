@@ -34,6 +34,18 @@
             $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[guest_details]"]', this.settingsGuestDetails);
             // $('input[type=checkbox][name="wpuf_settings[guest_details]"]').trigger('change');
 
+            // Form settings: Payment
+            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[payment_options]"]', this.settingsPayment);
+            $('input[type=checkbox][name="wpuf_settings[payment_options]"]').trigger('change');
+
+            // pay per post
+            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[enable_pay_per_post]"]', this.settingsPayPerPost);
+            $('input[type=checkbox][name="wpuf_settings[enable_pay_per_post]"]').trigger('change');
+
+            // force pack purchase
+            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]', this.settingsForcePack);
+            $('input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]').trigger('change');
+            
             // collapse all
             $('button.wpuf-collapse').on('click', this.collpaseEditFields);
 
@@ -307,6 +319,49 @@
                 table.find('tr.show-if-details').show();
             } else {
                 table.find('tr.show-if-details').hide();
+            }
+        },
+
+        settingsPayment: function (e) {
+            e.preventDefault();
+
+            var table = $(this).closest('table');
+
+            if ( $(this).is(':checked') ) {
+                table.find('tr.show-if-payment').show();
+                table.find('tr.show-if-force-pack').hide();
+
+            } else {
+                table.find('tr.show-if-payment').hide();
+
+            }
+        },
+
+        settingsPayPerPost: function (e) {
+            e.preventDefault();
+
+            var table = $(this).closest('table');
+
+            if ( $(this).is(':checked') ) {
+                table.find('tr.show-if-pay-per-post').show();
+
+            } else {
+                table.find('tr.show-if-pay-per-post').hide();
+
+            }
+        },
+
+        settingsForcePack: function (e) {
+            e.preventDefault();
+
+            var table = $(this).closest('table');
+
+            if ( $(this).is(':checked') ) {
+                table.find('tr.show-if-force-pack').hide();
+
+            } else {
+                table.find('tr.show-if-force-pack').hide();
+
             }
         },
 

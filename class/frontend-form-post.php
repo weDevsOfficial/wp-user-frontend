@@ -52,9 +52,98 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         extract( shortcode_atts( array( 'id' => 0 ), $atts ) );
         ob_start();
 
-        $form_settings = wpuf_get_form_settings( $id );
-        $info          = apply_filters( 'wpuf_addpost_notice', '', $id, $form_settings );
-        $user_can_post = apply_filters( 'wpuf_can_post', 'yes', $id, $form_settings );
+        $form          = new WPUF_Form( $id );
+        $form_settings = $form->get_settings( $id );
+        $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
+        $info          = '';
+        $user_can_post = 'yes';
+        $current_user  = wpuf_get_user();
+
+        if ( $form_settings['guest_post'] == 'false' && ! is_user_logged_in() ) {
+            $user_can_post = 'no';
+            $info = sprintf( __( 'Sorry. Guest Posting is not enabled for this form.', 'wpuf' ));
+        }
+
+        if ( $form->is_charging_enabled()  && $subscription_disabled != 'yes') {
+            $pay_per_post      = $form->is_enabled_pay_per_post();
+            $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
+            $force_pack        = $form->is_enabled_force_pack();
+
+
+            // guest post payment checking
+            if ( ! is_user_logged_in() && $form_settings['guest_post'] == 'true' ) {
+                if ( $form->is_charging_enabled() ) {
+                    if ( $force_pack ) {
+                        $user_can_post = 'no';
+                        $info = 'You need to buy a pack to post in this form.';
+                    } elseif ( $pay_per_post && !$force_pack ) {
+                        $user_can_post = 'yes';
+                        $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
+                        echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
+                    } else {
+                        $user_can_post = 'no';
+                        $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
+                    }
+                } else {
+                    $user_can_post = 'yes';
+                } 
+
+            } else {
+                // regular payment checking
+                if ( $force_pack ) {
+                    if ( is_user_logged_in() ) {
+                        $current_pack = $current_user->subscription()->current_pack();
+
+                        if ( ! is_wp_error( $current_pack ) ) {
+                        // user has valid post count
+                            if ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                                $user_can_post = 'yes';
+                            } else {
+                                $user_can_post = 'no';
+                                $info = 'Post Limit Exceeded for your purchased subscription pack.';
+                            }
+                        } else {
+                            $user_can_post = 'no';
+                            $info = $current_pack->get_error_message();
+                        }
+                    } 
+
+                } elseif ( $pay_per_post && is_user_logged_in() && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+
+                    $user_can_post = 'yes';
+                    $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
+                    echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
+
+                } elseif ( !$pay_per_post && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+
+                    $user_can_post = 'no';
+                    $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
+
+                } else {
+                    $user_can_post = 'no';
+                    if ( !is_user_logged_in() ) {
+                        $info = sprintf( __( 'Sorry. Guest Posting is not enabled for this form.', 'wpuf' ));
+                    } else {
+                        $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
+                    }
+                    
+                }
+            }
+        } else {
+            if ( $form_settings['guest_post'] == 'true' && ! is_user_logged_in() ) {
+                $user_can_post = 'yes';
+            }
+        }
+
+        if ( $subscription_disabled == 'yes' ) {
+            $user_can_post = 'yes';
+        }
+
+        $info          = apply_filters( 'wpuf_addpost_notice', $info, $id, $form_settings );
+        $user_can_post = apply_filters( 'wpuf_can_post', $user_can_post, $id, $form_settings );
+
+        // var_dump( $user_can_post );
+        // var_dump( $info );
 
         if ( $user_can_post == 'yes' ) {
             $this->render_form( $id );
@@ -261,7 +350,17 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? trim( $_POST['post_excerpt'] ) : '',
         );
 
-        $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+        // $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+        $charging_enabled = '';
+        $form             = new WPUF_Form( $form_id );
+        $payment_options  = $form->is_charging_enabled();
+        $current_user     = wpuf_get_user();
+
+        if ( !$payment_options || !is_user_logged_in() ) {
+            $charging_enabled = 'no';
+        } else {
+            $charging_enabled = 'yes';
+        }
         if ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() && $charging_enabled == 'yes' ) {
             $postarr['post_status'] = wpuf_get_draft_post_status( $form_settings );
         } elseif ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() ) {
@@ -929,22 +1028,28 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             $post_id = wpuf_decryption ( $_GET['p_id'] );
             $form_id = wpuf_decryption ( $_GET['f_id'] );
-            $form_settings = wpuf_get_form_settings( $form_id );
+            $form_settings  = wpuf_get_form_settings( $form_id );
             $post_author_id = get_post_field( 'post_author', $post_id );
+            $payment_status = new WPUF_Subscription();
 
-            if ( (WPUF_Subscription::get_payment_status( $post_id ) ) == 'pending') {
+            $form              = new WPUF_Form( $form_id );
+            $pay_per_post      = $form->is_enabled_pay_per_post();
+            $force_pack        = $form->is_enabled_force_pack();
 
-                $response['show_message'] = true;
-                $response['redirect_to'] = add_query_arg( array(
-                    'action'  => 'wpuf_pay',
-                    'type'    => 'post',
-                    'post_id' => $post_id
-                ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
+            if ( $form->is_charging_enabled() && $pay_per_post ) {
+                if ( ($payment_status->get_payment_status( $post_id ) ) == 'pending') {
 
-                wp_redirect( $response['redirect_to'] );
-                wpuf_clear_buffer();
-                wpuf_send_json ( $response );
+                    $response['show_message'] = true;
+                    $response['redirect_to'] = add_query_arg( array(
+                        'action'  => 'wpuf_pay',
+                        'type'    => 'post',
+                        'post_id' => $post_id
+                    ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
 
+                    wp_redirect( $response['redirect_to'] );
+                    wpuf_clear_buffer();
+                    wpuf_send_json ( $response );
+                }
             } else {
                 $p_status = get_post_status( $post_id );
                 if ( $p_status ) {

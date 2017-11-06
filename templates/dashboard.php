@@ -54,12 +54,13 @@
 
         wp_reset_postdata();
 
-        $len = count( $meta_key );
+        $len       = count( $meta_key );
         $len_label = count( $meta_label );
-        $len_id   = count( $meta_id );
+        $len_id    = count( $meta_id );
         $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
         $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
-        $charging_enabled   = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+        $current_user       = wpuf_get_user();
+        $charging_enabled   = $current_user->subscription()->current_pack_id();
         ?>
         <table class="items-table <?php echo $post_type; ?>" cellpadding="0" cellspacing="0">
             <thead>
@@ -104,7 +105,7 @@
                     <?php do_action( 'wpuf_dashboard_head_col', $args ) ?>
 
                     <?php
-                    if ( 'yes' == $charging_enabled ) {
+                    if ( $charging_enabled ) {
                         echo '<th>' . __( 'Payment', 'wpuf' ) . '</th>';
                     }
                     ?>
@@ -180,7 +181,7 @@
                         <?php do_action( 'wpuf_dashboard_row_col', $args, $post ) ?>
 
                         <?php
-                        if ( $charging_enabled == 'yes' ) {
+                        if ( $charging_enabled ) {
                             $order_id       = get_post_meta( $post->ID, '_wpuf_order_id', true );
                             $payment_status = get_post_meta( $post->ID, '_wpuf_payment_status', true );
                             ?>

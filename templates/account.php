@@ -4,7 +4,7 @@
             <?php
                 if ( is_user_logged_in() ) {
                     foreach ( $sections as $section ) {
-                        if ( 'subscription' === $section['slug'] && wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' ) {
+                        if ( 'subscription' === $section['slug'] && wpuf_get_option( 'show_subscription', 'wpuf_payment' ) != 'yes' ) {
                             continue;
                         }
                         echo sprintf(

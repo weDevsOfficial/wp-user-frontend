@@ -87,13 +87,13 @@ function wpuf_settings_fields() {
                     'yes' => __( 'Yes', 'wpuf' ),
                     'no'  => __( 'No', 'wpuf' )
                 )
-            ),             
+            ),
             array(
-                  'name'    => 'cf_show_front',
-                  'label'   => __( 'Custom Fields in post', 'wpuf' ),
-                  'desc'    => __( 'Show custom fields on post content area', 'wpuf' ),
-                  'type'    => 'checkbox',
-                  'default' => 'off'
+                'name'    => 'cf_show_front',
+                'label'   => __( 'Custom Fields in post', 'wpuf' ),
+                'desc'    => __( 'Show custom fields on post content area', 'wpuf' ),
+                'type'    => 'checkbox',
+                'default' => 'off'
             ),
             array(
                 'name'    => 'load_script',
@@ -253,31 +253,9 @@ function wpuf_settings_fields() {
         ),
         'wpuf_payment' => apply_filters( 'wpuf_options_payment', array(
             array(
-                'name'    => 'charge_posting',
-                'label'   => __( 'Charge for posting', 'wpuf' ),
-                'desc'    => __( 'Charge user for submitting a post', 'wpuf' ),
-                'type'    => 'select',
-                'default' => 'no',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no'  => __( 'No', 'wpuf' )
-                )
-            ),
-            array(
-                'name'    => 'force_pack',
-                'label'   => __( 'Force pack purchase', 'wpuf' ),
-                'desc'    => __( 'When active, users must have to buy a pack for posting', 'wpuf' ),
-                'type'    => 'select',
-                'default' => 'no',
-                'options' => array(
-                    'no'  => __( 'Disable', 'wpuf' ),
-                    'yes' => __( 'Enable', 'wpuf' )
-                )
-            ),
-            array(
-                'name'    => 'edit_billing_address',
-                'label'   => __( 'Billing Address', 'wpuf-pro' ),
-                'desc'    => __( 'Show Billing Address option in dashboard', 'wpuf' ),
+                'name'    => 'show_subscriptions',
+                'label'   => __( 'Show Subscriptions', 'wpuf' ),
+                'desc'    => __( 'Show Subscriptions option in dashboard', 'wpuf' ),
                 'type'    => 'select',
                 'default' => 'no',
                 'options' => array(
@@ -297,6 +275,17 @@ function wpuf_settings_fields() {
                 'label' => __( 'Subscription at registration', 'wpuf' ),
                 'desc'  => __( 'Registration time redirect to subscription page', 'wpuf' ),
                 'type'  => 'checkbox',
+            ),
+            array(
+                'name'    => 'edit_billing_address',
+                'label'   => __( 'Billing Address', 'wpuf-pro' ),
+                'desc'    => __( 'Show Billing Address option in dashboard', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'no',
+                'options' => array(
+                    'yes' => __( 'Yes', 'wpuf' ),
+                    'no'  => __( 'No', 'wpuf' )
+                )
             ),
             array(
                 'name'    => 'currency',
@@ -344,13 +333,6 @@ function wpuf_settings_fields() {
                     'min'  => 0,
                     'step' => 1
                 )
-            ),
-            array(
-                'name'    => 'cost_per_post',
-                'label'   => __( 'Cost', 'wpuf' ),
-                'desc'    => __( 'Cost per post in - <span>' . wpuf_get_currency( 'code' ) . ' ( ' . wpuf_get_currency( 'symbol' ) . '</span> )', 'wpuf' ),
-                'type'    => 'text',
-                'default' => '2'
             ),
             array(
                 'name'    => 'sandbox_mode',

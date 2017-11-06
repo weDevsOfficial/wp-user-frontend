@@ -226,6 +226,7 @@ class WPUF_Admin_Form {
 
             <a href="#wpuf-metabox-settings" class="nav-tab"><?php _e( 'Post Settings', 'wpuf' ); ?></a>
             <a href="#wpuf-metabox-settings-update" class="nav-tab"><?php _e( 'Edit Settings', 'wpuf' ); ?></a>
+            <a href="#wpuf-metabox-settings-payment" class="nav-tab"><?php _e( 'Payment Settings', 'wpuf' ); ?></a>
             <a href="#wpuf-metabox-settings-display" class="nav-tab"><?php _e( 'Display Settings', 'wpuf' ); ?></a>
             <a href="#wpuf-metabox-post_expiration" class="nav-tab"><?php _e( 'Post Expiration', 'wpuf' ); ?></a>
 
@@ -253,6 +254,10 @@ class WPUF_Admin_Form {
 
             <div id="wpuf-metabox-settings-update" class="group">
                 <?php include_once dirname( __FILE__ ) . '/html/form-settings-post-edit.php'; ?>
+            </div>
+
+            <div id="wpuf-metabox-settings-payment" class="group">
+                <?php include_once dirname( __FILE__ ) . '/html/form-settings-payment.php'; ?>
             </div>
 
             <div id="wpuf-metabox-settings-display" class="group">

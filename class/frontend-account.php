@@ -106,7 +106,12 @@ class WPUF_Frontend_Account {
      */
     public function subscription_section( $sections, $current_section ) {
 
-        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' || ! is_user_logged_in() ) {
+        // if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' || ! is_user_logged_in() ) {
+        //     return;
+        // }
+        $form             = new WPUF_Form( $form_id );
+        $payment_options  = $form->is_charging_enabled();
+        if ( !$payment_options ) {
             return;
         }
 

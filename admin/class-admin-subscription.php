@@ -325,6 +325,7 @@ class WPUF_Admin_Subscription {
         ?>
 
         <table class="form-table" style="width: 100%">
+        <p class="description"><?php echo __( 'Learn more about ', 'wpuf' ); ?>.<a href = "https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/"><?php _e( 'Automatic Post Expiration', 'wpuf' ); ?></a>.</p>
             <tbody>
                 <input type="hidden" name="wpuf_subscription" id="wpuf_subscription_editor" value="<?php echo wp_create_nonce( 'wpuf_subscription_editor' ); ?>" />
                 <tr>
@@ -432,8 +433,8 @@ class WPUF_Admin_Subscription {
                 do_action( 'wpuf_admin_subscription_detail', $sub_meta, $hidden_recurring_class, $hidden_trial_class, $this );
                 ?>
             </tbody>
+             
         </table>
-
         <?php
 
     }

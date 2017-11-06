@@ -23,6 +23,7 @@ $subscription         = isset( $form_settings['subscription'] ) ? $form_settings
                 printf( '<option value="_nochange"%s>%s</option>', selected( $post_status_selected, '_nochange', false ), __( 'No Change', 'wpuf' ) );
                 ?>
             </select>
+             <p class="description"><?php echo __( 'Sets "automatic" post status for posts after being edited by their owner i.e user', 'wpuf' ); ?><a href = "https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/"></a></p>
         </td>
     </tr>
 
@@ -44,7 +45,7 @@ $subscription         = isset( $form_settings['subscription'] ) ? $form_settings
                 ?>
             </select>
             <p class="description">
-                <?php _e( 'After successfull submit, where the page will redirect to', $domain = 'default' ) ?>
+                <?php _e( 'After successful submission, where the page will redirect to, e.g. if a "Thank You" page is set here, users will see that page upon successful submission', $domain = 'default' ) ?>
             </p>
         </td>
     </tr>
@@ -53,7 +54,9 @@ $subscription         = isset( $form_settings['subscription'] ) ? $form_settings
         <th><?php _e( 'Post Update Message', 'wpuf' ); ?></th>
         <td>
             <textarea rows="3" cols="40" name="wpuf_settings[update_message]"><?php echo esc_textarea( $update_message ); ?></textarea>
+             <p class="description"><?php echo __( 'What users will see after they submit updated post', 'wpuf' ); ?></p>
         </td>
+
     </tr>
 
     <tr class="wpuf-page-id">
@@ -92,5 +95,6 @@ $subscription         = isset( $form_settings['subscription'] ) ? $form_settings
         <td>
             <input type="text" name="wpuf_settings[update_text]" value="<?php echo esc_attr( $update_text ); ?>">
         </td>
+
     </tr>
 </table>

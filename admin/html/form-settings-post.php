@@ -68,6 +68,7 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
                     }
                     ?>
                 </select>
+                 <p class="description"><?php echo __( 'custom post type shows up here', 'wpuf' ); ?>.<a target="_blank" href = "https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2"/><?php _e( 'Learn about custom post type', 'wpuf' ); ?></a>.</p>
             </td>
         </tr>
 
@@ -82,6 +83,8 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
                     }
                     ?>
                 </select>
+                 <p class="description"><?php echo __( 'sets "automatic" post status when users submit posts, for e.g selecting "draft" needs admin 
+                 approval before posts become live on the site.', 'wpuf' ); ?></p>
             </td>
         </tr>
 
@@ -100,6 +103,7 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
                     }
                     ?>
                 </select>
+                 <p class="description"><?php echo __( 'WordPress post formats are supported here', 'wpuf' ); ?></p>
             </td>
         </tr>
 
@@ -128,7 +132,7 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
                     <input type="checkbox" name="wpuf_settings[guest_post]" value="true"<?php checked( $guest_post, 'true' ); ?> />
                     <?php _e( 'Enable Guest Post', 'wpuf' ) ?>
                 </label>
-                <p class="description"><?php _e( 'Unregistered users will be able to submit posts', 'wpuf' ); ?>. <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/"><?php _e( 'Learn more about guest posting.', 'wpuf' ); ?></a></p>
+                <p class="description"><?php _e( 'Unregistered users will be able to submit posts', 'wpuf' ); ?>. <a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/"><?php _e( 'Learn more about guest posting.', 'wpuf' ); ?></a></p>
             </td>
         </tr>
 

@@ -52,6 +52,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         ?>
         <div id="wpuf-pro-content">
             <table class="form-table">
+            <p class="description"><?php echo __( 'Learn more about ', 'wpuf' ); ?>.<a href = "https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/"><?php _e( 'Automatic Post Expiration', 'wpuf' ); ?></a>.</p>
                 <tr>
                     <th><?php _e( 'Post Expiration', 'wpuf' ); ?></th>
                     <td>
@@ -129,6 +130,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                         <textarea disabled name="" id="wpuf-post_expiration_message" cols="50" rows="5"><?php echo $post_expiration_message; ?></textarea>
                     </td>
                 </tr>
+
             </table>
         </div>
 
@@ -151,8 +153,9 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                     <?php _e( 'Enable Multistep', 'wpuf' ); ?>
                 </label>
 
-                <p class="description"><?php echo __( 'If checked, form will be displayed in frontend in multiple steps', 'wpuf' ); ?></p>
+                <p class="description"><?php echo __( 'If checked, form will be displayed in frontend in multiple steps', 'wpuf' ); ?>.<a target = "_blank" href = "https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/"> <?php _e( ' Learn more about Enable Multistep', 'wpuf' ); ?></a>.</p>
             </td>
+           
         </tr>
         <tr class="wpuf_multistep_progress_type wpuf-pro-content">
             <th><?php _e( 'Multistep Progressbar Type', 'wpuf' ); ?></th>
@@ -204,7 +207,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         $edit_body        = $edit_mail_body . $mail_body;
         ?>
 
-        <h3><?php _e( 'New Post Notificatoin', 'wpuf' ); ?></h3>
+        <h3><?php _e( 'New Post Notification', 'wpuf' ); ?></h3>
         <table class="form-table">
             <tr>
                 <th><?php _e( 'Notification', 'wpuf' ); ?></th>
@@ -235,9 +238,10 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                     <textarea rows="6" cols="60" name="wpuf_settings[notification][new_body]"><?php echo esc_textarea( $new_body ) ?></textarea>
                 </td>
             </tr>
+             <p class="description"><?php echo __( 'Admin can change the text of message. There will be no consequences for that.', 'wpuf' ); ?></p>
         </table>
 
-        <h3><?php _e( 'Update Post Notificatoin', 'wpuf' ); ?></h3>
+        <h3><?php _e( 'Update Post Notification', 'wpuf' ); ?></h3>
 
         <div id="wpuf-pro-content">
             <?php self::get_pro_prompt(); ?>
@@ -270,6 +274,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                         <textarea disabled rows="6" cols="60" name=""><?php echo esc_textarea( $edit_body ) ?></textarea>
                     </td>
                 </tr>
+                 <p class="description"><?php echo __( 'Admin can change the text of message. There will be no consequences for that.', 'wpuf' ); ?></p>
             </table>
         </div>
 

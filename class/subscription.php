@@ -1028,15 +1028,18 @@ class WPUF_Subscription {
      */
     function add_post_info( $form_id, $form_settings ) {
         $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
+
         if ( $subscription_disabled == 'yes' ) {
             $user_can_post = 'yes';
         }
+
         if ( self::has_user_error( $form_settings ) && !$subscription_disabled ) {
             ?>
             <div class="wpuf-info">
                 <?php
+                $form              = new WPUF_Form( $form_id );
                 $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
-                $text = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
+                $text              = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
 
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
                 ?>

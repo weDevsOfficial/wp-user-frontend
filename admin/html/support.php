@@ -274,7 +274,7 @@ function wpuf_help_related_articles( $articles ) {
                     <li><strong>Enable guest posting</strong> and earn from each posts without any difficulties. </li>
                 </ol>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=how-to-install" target="_blank"><?php _e( 'Learn More', 'wpuf' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=how-to-install" target="_blank"><?php _e( 'Learn More About Installation', 'wpuf' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['setup'] ); ?>
             </section>
@@ -285,7 +285,7 @@ function wpuf_help_related_articles( $articles ) {
                 <p>To create a posting form, go to <a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" target="_blank">Post Forms</a> → Add Form and start building your ultimate frontend posting forms. </p>
                 <p>After building your forms, <strong>use the shortcodes</strong> on any new page or post and publish them before sharing.</p>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/" target="_blank"><?php _e( 'Learn More About Frontend Posting', 'wpuf' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=frontend-posting" target="_blank"><?php _e( 'Learn More About Frontend Posting', 'wpuf' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['posting'] ); ?>
             </section>
@@ -295,7 +295,7 @@ function wpuf_help_related_articles( $articles ) {
                 <p>WP User Frontend generates <strong>Frontend Dashboard</strong> and <strong>My Account</strong> page for all your users. Using these pages, they can get a list of their posts and subscriptions directly at frontend. They can also customize the details of their profile. You don’t need to give them access to the backend at all!</p>
                 <p>To crate this page, <a href="<?php echo admin_url( 'post-new.php?post_type=page' ); ?>" target="_blank">create a new page</a>, put a title and simply copy-paste the following shortcode: <code>[wpuf_dashboard]</code>. Alternatively, there is an unified <a href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=unified-my-account-page" target="_blank">my account page</a> as well. Finally, hit the publish button and you are done.</p>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/configuring-dashboard-settings/" target="_blank"><?php _e( 'Learn More About Frontend Dashboard', 'wpuf' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/configuring-dashboard-settings/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=frontend-dashboard" target="_blank"><?php _e( 'Learn More About Frontend Dashboard', 'wpuf' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['dashboard'] ); ?>
             </section>
@@ -325,7 +325,7 @@ function wpuf_help_related_articles( $articles ) {
                 </ul>
 
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/" target="_blank"><?php _e( 'Learn More About Registration', 'wpuf' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=registration-profile-forms" target="_blank"><?php _e( 'Learn More About Registration', 'wpuf' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['registration'] ); ?>
             </section>
@@ -340,6 +340,8 @@ function wpuf_help_related_articles( $articles ) {
                 <p>You can also specify the login page. WPUF automatically adds the default login page that it has created. If you manually create one, use the following shortcode – <code>[wpuf-login]</code></p>
 
                 <p>Simply, create a new page and put the above shortcode. Finally, publish the page and add it to the Login Page option in the settings.</p>
+
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/user-login/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=learn-more-login" target="_blank"><?php _e( 'Learn More About Login', 'wpuf' ); ?></a>
             </section>
             <section id="profile-editing">
                 <h2>Creating a Profile Editing Form</h2>
@@ -356,7 +358,7 @@ function wpuf_help_related_articles( $articles ) {
                 <p>We assume that you already have created a registration form. If not you can use the default registration form, that was created automatically while installing the plugin.
                 So to get the shortcode, navigate to <strong>User Frontend</strong> → <strong>Registration Forms</strong> and you will be able to see the shortcodes on the right side of your screen.</p>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/" target="_blank"><?php _e( 'Learn More About Profile Editing', 'wpuf' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=registration-profile-forms" target="_blank"><?php _e( 'Learn More About Profile Editing', 'wpuf' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['profile'] ); ?>
             </section>
@@ -409,24 +411,24 @@ function wpuf_help_related_articles( $articles ) {
                 <p>Currently only PayPal basic gateway is supported. The plugin is extension aware, that means other gateways can be integrated.</p>
 
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/" target="_blank"><?php _e( 'Learn More About Payments', 'wpuf' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=subscription-payment" target="_blank"><?php _e( 'Learn More About Payments', 'wpuf' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['subscription'] ); ?>
             </section>
             <section id="content-restriction">
                 <h2>Content Restriction</h2>
 
-                <p>To set content restriction for a certain form, navigate to: <strong>WP Dashboard</strong> → <strong>Pages</strong></p>
+                <p>To set content restriction for a certain form, navigate to <a href="<?php echo admin_url( 'edit.php?post_type=page' ); ?>" target="_blank">Pages</a></strong></p>
 
                 <ol>
                     <li>Now, select the page that has the shortcode of the selected form.</li>
-                    <li>Scroll down and you will find the WPUF Content Restriction settings.</li>
-                    <li>You can set the form visible to three types of people- Everyone, Logged in users only or Subscription users only</li>
-                    <li>You can also set subscription plans for the form. For this, check the box of relevant subscription pack.</li>
+                    <li>Scroll down and you will find the <strong>WPUF Content Restriction</strong> settings.</li>
+                    <li>You can set the form visible to three types of people: <strong>Everyone</strong>, <strong>Logged in users only</strong> or <strong>Subscription users only</strong></li>
+                    <li>You can also set <strong>subscription plans</strong> for the form. For this, check the box of relevant subscription pack.</li>
                     <li>Finally, update the page.</li>
                 </ol>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/" target="_blank"><?php _e( 'Learn More About Content Restriction', 'wpuf' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=content-restriction" target="_blank"><?php _e( 'Learn More About Content Restriction', 'wpuf' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['restriction'] ); ?>
             </section>
@@ -451,7 +453,7 @@ function wpuf_help_related_articles( $articles ) {
 
             <p><?php _e( 'Report any Bug that you Discovered, Get Instant Solutions.', 'wpuf' ); ?></p>
 
-            <a target="_blank" class="button button-primary" href="https://github.com/weDevsOfficial/wp-user-frontend"><?php _e( 'Report to GitHub', 'wpuf' ); ?></a>
+            <a target="_blank" class="button button-primary" href="https://github.com/weDevsOfficial/wp-user-frontend/https://wedevs.com/account/tickets/?utm_source=wpuf-help-page&utm_medium=help-block&utm_campaign=found-bugs"><?php _e( 'Report to GitHub', 'wpuf' ); ?></a>
         </div>
 
         <div class="help-block">

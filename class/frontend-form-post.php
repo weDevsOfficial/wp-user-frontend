@@ -78,15 +78,15 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                         $info = 'You need to buy a pack to post in this form.';
                     } elseif ( $pay_per_post && !$force_pack ) {
                         $user_can_post = 'yes';
-                        $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
-                        echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
+                        // $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
+                        // echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
                     } else {
                         $user_can_post = 'no';
                         $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
                     }
                 } else {
                     $user_can_post = 'yes';
-                } 
+                }
 
             } else {
                 // regular payment checking
@@ -106,13 +106,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                             $user_can_post = 'no';
                             $info = $current_pack->get_error_message();
                         }
-                    } 
+                    }
 
                 } elseif ( $pay_per_post && is_user_logged_in() && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
 
                     $user_can_post = 'yes';
-                    $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
-                    echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
+                    // $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
+                    // echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
 
                 } elseif ( !$pay_per_post && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
 
@@ -126,7 +126,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     } else {
                         $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
                     }
-                    
+
                 }
             }
         } else {
@@ -657,7 +657,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     $redirect_to = get_permalink( $post_id );
                 }
             }
-            
+
             $response = array(
                 'success'      => true,
                 'redirect_to'  => $redirect_to,
@@ -675,7 +675,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 $response['show_message'] = true;
                 $response['redirect_to'] = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
                 $response['message'] = 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!';
-                      
+
             } elseif ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() && $charging_enabled == 'yes' ) {
                 $post_id_encoded   = wpuf_encryption( $post_id ) ;
                 $form_id_encoded   = wpuf_encryption( $form_id ) ;
@@ -687,7 +687,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
 
             //redirect the user
-            
+
             if ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() ) {
                 $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $form_settings );
             } elseif ( $is_update ) {
@@ -1061,7 +1061,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 }
 
             }
-        } 
+        }
     }
 
 }

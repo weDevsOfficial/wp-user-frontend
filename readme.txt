@@ -170,6 +170,23 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.6.0 (6 November, 2017) =
+
+ * **New:** When configuring payment settings from wp-admin → User Frontend → Settings → Payments, the payment options were applicable for all post forms with the same behavior. Admin could not configure payment option for each post form individually. In this version, the payment configuration option for individual form has been added. Now the admin can configure payment from wp-admin → User Frontend → Post Forms → Add/Edit a form → Navigate Payment Settings located under Settings tab.
+ * **New:** When rendering a form, each field can be shown/hidden based on the type of user roles, subscription pack. This visibility option is located under **Advanced Options** section of each form field and provides a more granular control over which value you want to show and to whom.
+ * **New:** **Menu Restriction** feature added. Like content restriction, now the admin can restrict the menu items based on roles of logged in users, logged out users, subscription pack or everyone. Available to **Pro** users.
+ * **New:** When use `[wpuf_sub_pack]` shortcode, all the subscriptions were visible on the frontend. Admin could not exclude any subscription pack from the available packs. Now, the admin has the opportunity to show specific subscription pack using include/exclude attributes inside `[wpuf_sub_pack]` shortcode. For example, if you have 3 subscription packs with 101, 102, 103 IDs and want to show only the last two packs then you can use `[wpuf_sub_pack include="102,103"]` or to exclude the middle one from the list then you can use `[wpuf_sub_pack exclude="102" order="DESC"]`.
+ * **New:** Admin could not understand which users currently have subscription validity & what is the subscription pack a user is assigned to. Now, a new column **Subscribers** has been added in the **User Frontend** → **Subscriptions** list. Admin can easily understand how many users have purchased a subscription pack & who are the users.
+ * **New:** **Payment Invoice** added. Users who purchase a subscription or process payment for pay per post could not receive an invoice. Now, it's available, a PDF invoice will  be sent to user's email with details. Available to **Pro** users.
+ * **New:** Registration/Login function is now available in the free version. User's don't need to login/registration using WordPress default form but the frontend opportunity of WPUF plugin.
+ * **New:** **"Custom Fields in post"** option was available in global settings (User Frontend > Settings > General Options) when admin enable it the data of all the custom fields of all post forms were showing on the frontend with the post. Now, the admin has more flexibility to choose which field's data will show on the frontend. This option can be found as **"Show data in the post"** when editing custom fields under **"Advanced Options"** section.
+ * **Fix:** When viewing pending transactions, the admin could not see more than 20 but there are a lot more available then this number. This issue has been fixed.
+ * **Fix:** Now, the site must have SSL (https) enabled to receive payment with PayPal. We had to update the payment process due to [PayPal security update notice](https://www.paypal-notice.com/en/IPN-Verification-Postback-to-HTTPS/)
+ * **New:** Added plugin welcome wizard. Users who are installing the plugin for the first time will be presented with a nice video and instructions to configure the plugin.
+ * **Improved:** Styling update for edit profile shortcode, now it looks more user friendly with newly applied styles.
+ * **Improved:** Add form preview image in template popup.
+ * **Improved:** Improved help texts in settings → general & form settings
+
 = v2.5.7 (18 October, 2017) =
 
  * **New:** Guest post email verification feature added. When turned on, users need to click the activation link on their email before publising the post.

@@ -276,17 +276,17 @@ function wpuf_settings_fields() {
                 'desc'  => __( 'Registration time redirect to subscription page', 'wpuf' ),
                 'type'  => 'checkbox',
             ),
-            array(
-                'name'    => 'edit_billing_address',
-                'label'   => __( 'Billing Address', 'wpuf-pro' ),
-                'desc'    => __( 'Show Billing Address option in dashboard', 'wpuf' ),
-                'type'    => 'select',
-                'default' => 'no',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no'  => __( 'No', 'wpuf' )
-                )
-            ),
+            // array(
+            //     'name'    => 'edit_billing_address',
+            //     'label'   => __( 'Billing Address', 'wpuf-pro' ),
+            //     'desc'    => __( 'Show Billing Address option in dashboard', 'wpuf' ),
+            //     'type'    => 'select',
+            //     'default' => 'no',
+            //     'options' => array(
+            //         'yes' => __( 'Yes', 'wpuf' ),
+            //         'no'  => __( 'No', 'wpuf' )
+            //     )
+            // ),
             array(
                 'name'    => 'currency',
                 'label'   => __( 'Currency', 'wpuf' ),

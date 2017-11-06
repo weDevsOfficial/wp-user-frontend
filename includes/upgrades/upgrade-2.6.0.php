@@ -27,6 +27,7 @@ function wpuf_upgrade_2_6_field_options() {
 
         wp_update_post( array(
             'ID' => $field->ID,
+            'post_status'  => 'publish',
             'post_content' => maybe_serialize( $settings )
         ) );
     }

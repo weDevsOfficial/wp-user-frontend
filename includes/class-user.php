@@ -30,7 +30,7 @@ class WPUF_User {
 
         if ( is_numeric( $user ) ) {
 
-            $the_user = get_user_by( 'id', $vendor );;
+            $the_user = get_user_by( 'id', $user );
 
             if ( $the_user ) {
                 $this->id   = $the_user->ID;

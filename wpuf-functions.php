@@ -380,7 +380,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     echo '</ul>';
 }
 
-function pre($data) {
+function wpuf_pre($data) {
     echo '<pre>'; print_r( $data ); echo '</pre>';
 }
 
@@ -2093,10 +2093,11 @@ function wpuf_delete_form( $form_id, $force = true ) {
  */
 function wpuf_get_draft_post_status( $form_settings ) {
     $post_status = 'draft';
-    $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+    $current_user       = wpuf_get_user();
+    $charging_enabled   = $current_user->subscription()->current_pack_id();
     $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
 
-    if ( $charging_enabled == 'yes' && ! isset( $_POST['post_id'] ) ) {
+    if ( $charging_enabled && ! isset( $_POST['post_id'] ) ) {
         if ( !empty( $user_wpuf_subscription_pack ) ) {
             if ( isset ( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes'  ) {
                 $post_status = 'pending';
@@ -2222,7 +2223,7 @@ function wpuf_decryption ( $id ) {
  */
 function wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag ) {
 
-    if ( $charging_enabled == 'yes' )  {
+    if ( $charging_enabled )  {
         $encoded_guest_url = add_query_arg(
             array(
                 'p_id' => $post_id_encoded,

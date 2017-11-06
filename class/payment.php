@@ -270,7 +270,9 @@ class WPUF_Payment {
             switch ($type) {
                 case 'post':
                     $post        = get_post( $post_id );
-                    $amount      = wpuf_get_option( 'cost_per_post', 'wpuf_payment' );
+                    $form_id     = get_post_meta( $post_id, '_wpuf_form_id', true );
+                    $form        = new WPUF_Form( $form_id );
+                    $amount      = $form->get_pay_per_post_cost();
                     $item_number = $post->ID;
                     $item_name   = $post->post_title;
                     break;

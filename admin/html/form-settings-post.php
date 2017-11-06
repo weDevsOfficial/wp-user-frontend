@@ -29,22 +29,9 @@ $submit_text           = isset( $form_settings['submit_text'] ) ? $form_settings
 $draft_text            = isset( $form_settings['draft_text'] ) ? $form_settings['draft_text'] : __( 'Save Draft', 'wpuf' );
 $preview_text          = isset( $form_settings['preview_text'] ) ? $form_settings['preview_text'] : __( 'Preview', 'wpuf' );
 $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings['draft_post'] : 'false';
-$subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
 
 ?>
     <table class="form-table">
-
-        <tr class="">
-            <th><?php _e( 'Disable Subscription', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="checkbox" name="wpuf_settings[subscription_disabled]" value="yes" <?php checked( $subscription_disabled, 'yes' ); ?> />
-                    <?php _e( 'Disable Subscription', 'wpuf' ); ?>
-                </label>
-
-                <p class="description"><?php echo __( 'If checked, any subscription and pay-per-post will be disabled on the form and will take no effect.', 'wpuf' ); ?></p>
-            </td>
-        </tr>
 
         <tr class="wpuf-post-type">
             <th><?php _e( 'Post Type', 'wpuf' ); ?></th>

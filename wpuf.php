@@ -191,6 +191,7 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/payment.php';
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
         require_once WPUF_ROOT . '/class/frontend-account.php';
+        require_once WPUF_ROOT . '/includes/class-form.php';
 
         require_once WPUF_ROOT . '/includes/class-user.php';
         require_once WPUF_ROOT . '/includes/class-user-subscription.php';

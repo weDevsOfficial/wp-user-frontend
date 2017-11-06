@@ -850,7 +850,7 @@ class WPUF_Subscription {
             'include' => 'any',
             'exclude' => '',
             'order'   => '',
-            'orderby' => '',
+            'orderby' => ''
         );
 
         $args     = wp_parse_args( $atts, $defaults );
@@ -880,10 +880,18 @@ class WPUF_Subscription {
              $parent_args    = array(
                 'include'     => '',
                 'exclude'     => '',
-                'order'       => 'ASC'
+                'orderby'     => '',
+                'order'       => ''
             );
 
             $parent_args['exclude'] = $args['exclude'];
+
+             if(!empty($args['orderby'])){
+               $parent_args['orderby'] = $args['orderby'];
+             }
+             if(!empty($args['order'])){
+               $parent_args['order'] = $args['order'];
+             }
         }
 
         $packs = $this->get_subscriptions($parent_args);

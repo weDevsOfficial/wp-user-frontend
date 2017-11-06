@@ -285,7 +285,9 @@ class WPUF_Admin_Subscription {
 
     function get_post_types( $post_types = null ) {
 
-        $post_types = WPUF_Subscription::init()->get_all_post_type();
+        if ( ! $post_types ) {
+            $post_types = WPUF_Subscription::init()->get_all_post_type();
+        }
 
         ob_start();
 
@@ -295,7 +297,7 @@ class WPUF_Admin_Subscription {
             <tr>
                 <th><label for="wpuf-<?php echo esc_attr( $key ); ?>"><?php printf( 'Number of %s', $post_type_object->label ); ?></label></th>
                 <td>
-                    <input type="text" size="20" style="" id="wpuf-<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( (int)$name ); ?>" name="post_type_name[<?php echo esc_attr( $key ); ?>]" />
+                    <input type="text" size="20" style="" id="wpuf-<?php echo esc_attr( $key ); ?>" value="<?php echo intval( $name ); ?>" name="post_type_name[<?php echo esc_attr( $key ); ?>]" />
                     <div><span class="description"><span><?php printf( 'How many %s the user can list with this pack? Enter <strong>-1</strong> for unlimited.', $key ); ?></span></span></div>
                 </td>
             </tr>

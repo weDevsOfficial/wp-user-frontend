@@ -1,0 +1,215 @@
+.wpuf-admin {
+
+    fieldset {
+        border: 1px solid #E3E3E3;
+        margin: 20px 0 0px 0;
+        padding-bottom: 20px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        background: #fff;
+        -moz-box-shadow: inset 0 0 5px #ccc;
+        -webkit-box-shadow: inset 0 0 5px #ccc;
+        box-shadow: inset 0 0 5px #ccc;
+    }
+
+    legend {
+        -moz-border-radius: 5px 5px 5px 5px;
+        -webkit-border-radius: 5px;
+        background: #FFFFFF;
+        border: 1px solid #E3E3E3;
+        color: #2481C6;
+        font-size: 15px;
+        font-weight: bold;
+        margin-left: 20px;
+        padding: 5px 10px;
+        text-transform: capitalize;
+        -moz-box-shadow: inset 0 0 5px #ccc;
+        -webkit-box-shadow: inset 0 0 5px #ccc;
+        box-shadow: inset 0 0 5px #ccc;
+    }
+
+    .widefat {
+        td {
+            padding: 7px 12px;
+            vertical-align: top;
+        }
+    }
+
+    .meta {
+        td {
+            &.label {
+                width: 140px;
+                font-size: 12px;
+            }
+        }
+        .description {
+            font-size: 11px;
+        }
+    }
+
+    td {
+        &.label {
+            font-size: 12px;
+        }
+    }
+
+    .options {
+        td {
+            &:nth-child(odd) {
+                background-color: F9F9F9;
+            }
+        }
+    }
+
+    .nav-tab {
+        font-size: 15px;
+        margin: 0 0px -1px 0;
+    }
+}
+
+.wpuf_admin {
+
+    ul {
+        margin: 10px;
+    }
+
+    li {
+        padding: 0 0 10px;
+        margin: 0 0 10px;
+        border-bottom: 1px solid #E7E7E7;
+        line-height: 20px;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    span {
+        &.label {
+            float: left;
+            height: 20px;
+            line-height: 20px;
+            width: 200px;
+        }
+    }
+}
+
+.tooltip {
+    position: absolute;
+    z-index: 9999;
+    color: #fff;
+    font-size: 11px;
+    width: 250px;
+    background: #333;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    margin: 20px;
+    opacity: .8;
+
+    &:after {
+        border-color: transparent transparent #333;
+        border-style: solid;
+        border-width: 8px;
+        content: "";
+        display: block;
+        height: 0;
+        left: 20px;
+        position: absolute;
+        top: -16px;
+        width: 0;
+    }
+
+    .tipBody {
+        padding: 5px 10px;
+        text-indent: 0;
+        color: #fff;
+        text-shadow: 1px 1px 1px #333;
+        font-size: 12px;
+    }
+
+    .buble {
+        border-right: 60px solid white;
+        border-top: 50px solid #CCCCCC;
+        height: 0;
+        line-height: 0;
+        position: absolute;
+        right: -60px;
+        top: 30px;
+        width: 0;
+    }
+}
+
+span {
+    &.wpuf_help {
+        height: 16px;
+        width: 16px;
+        background: url('../images/help.png') no-repeat;
+        cursor: pointer;
+        float: right;
+        display: none;
+    }
+}
+
+#option-saved {
+    -moz-border-radius: 5px 5px 5px 5px;
+    background: none repeat scroll 0 0 orange;
+    border: 1px solid #CCCCCC;
+    color: #FFFFFF;
+    display: none;
+    font-size: 30px;
+    padding: 50px;
+    position: absolute;
+    left: 50%;
+    z-index: 99;
+    -moz-box-shadow: 0 0 8px rgba(82,168,236,.5);
+    -webkit-box-shadow: 0 0 8px rgba(82,168,236,.5);
+}
+
+.wpuf_loading {
+    height: 16px;
+    width: 16px;
+    background: url('../images/wpspin_light.gif') no-repeat;
+    padding: 0 0 0 20px;
+    margin-bottom: 10px;
+}
+
+.wpuf-status-completed {
+    background: url(../images/completed.png);
+    background-size: cover;
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+.wpuf-status-processing {
+    background: url(../images/processing.png);
+    background-size: cover;
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+.wpuf-footer-help {
+    box-sizing: border-box;
+    width: auto;
+    margin: 2rem 0.8rem;
+    text-align: center;
+    .wpuf-footer-help-content {
+        border: 1px solid #ddd;
+        border-radius: 30px;
+        padding: 15px 25px;
+        font-size: 15px;
+    }
+}
+
+.wpuf-footer-help-content {
+    .dashicons {
+        color: #47c1bf;
+        font-size: 30px;
+        height: 30px;
+        width: 30px;
+        margin-top: -5px;
+    }
+}
+
+@import "help.less";

@@ -84,17 +84,5 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
                 <p class="description"><?php _e( 'Amount to be charged per post', 'wpuf' ); ?></p>
             </td>
         </tr>
-
-        <tr class="">
-            <th><?php _e( 'Disable Payment', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="checkbox" name="wpuf_settings[subscription_disabled]" value="yes" <?php checked( $subscription_disabled, 'yes' ); ?> />
-                    <?php _e( 'Disable Payment', 'wpuf' ); ?>
-                </label>
-
-                <p class="description"><?php echo __( 'If checked, any subscription and pay-per-post will be disabled on the form and will take no effect.', 'wpuf' ); ?></p>
-            </td>
-        </tr>
         <?php do_action( 'wpuf_form_setting_payment', $form_settings, $post ); ?>
     </table>

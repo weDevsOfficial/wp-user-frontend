@@ -27,6 +27,7 @@ function wpuf_upgrade_2_6_field_options() {
 
         wp_update_post( array(
             'ID' => $field->ID,
+            'post_status'  => 'publish',
             'post_content' => maybe_serialize( $settings )
         ) );
     }
@@ -37,7 +38,7 @@ function wpuf_upgrade_2_6_field_options() {
  * create table
  * @return void
  */
-function create_subscribers_table() {
+function wpuf_upgrade_2_6_create_subscribers_table() {
     global $wpdb;
     $sql = "CREATE TABLE {$wpdb->prefix}wpuf_subscribers (
       `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -61,7 +62,7 @@ function create_subscribers_table() {
  * insert table data
  * @return void
  */
-function insert_subscribers() {
+function wpuf_upgrade_2_6_insert_subscribers() {
     global $wpdb;
     $users = WPUF_Subscription::init()->subscription_pack_users();
     foreach ($users as $user) {
@@ -85,6 +86,49 @@ function insert_subscribers() {
     }
 }
 
+function wpuf_upgrade_2_6_payment_settings_migration() {
+    $args = array(
+        'post_type'     => 'wpuf_forms',
+        'post_status'   => 'publish',
+    );
+
+    $allforms = get_posts($args);
+
+    if ( $allforms ) {
+        foreach ($allforms as $form) {
+
+            $form_settings = wpuf_get_form_settings( $form->ID );
+            $charge_posting = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+            
+            if ( 'yes' == $charge_posting ) {
+                $form_settings['payment_options'] = 'true';
+            } else {
+                $form_settings['payment_options'] = 'false';
+            }
+
+            $force_pack = wpuf_get_option( 'force_pack', 'wpuf_payment' );
+
+            if ( 'yes' == $force_pack ) {
+                $form_settings['force_pack_purchase'] = 'true';
+            } else {
+                $form_settings['force_pack_purchase'] = 'false';
+            }
+
+            $pay_per_cost = wpuf_get_option( 'cost_per_post', 'wpuf_payment' );
+
+            if ( $pay_per_cost > 0 ) {
+                $form_settings['pay_per_post_cost'] = $pay_per_cost;
+            } else {
+                $form_settings['pay_per_post_cost'] = 0;
+            }
+
+            update_post_meta( $form->ID, 'wpuf_form_settings', $form_settings );
+        }
+    }
+
+}
+
 wpuf_upgrade_2_6_field_options();
-create_subscribers_table();
-insert_subscribers();
+wpuf_upgrade_2_6_create_subscribers_table();
+wpuf_upgrade_2_6_insert_subscribers();
+wpuf_upgrade_2_6_payment_settings_migration();

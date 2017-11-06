@@ -28,7 +28,7 @@
             container: container,
             multipart: true,
             multipart_params: {
-                action: 'wpuf_file_upload',
+                action: 'wpuf_upload_file',
                 form_id: $( '#' + browse_button ).data('form_id')
             },
             max_file_count : 2,

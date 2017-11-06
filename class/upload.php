@@ -10,8 +10,8 @@ class WPUF_Upload {
 
     function __construct() {
 
-        add_action( 'wp_ajax_wpuf_file_upload', array($this, 'upload_file') );
-        add_action( 'wp_ajax_nopriv_wpuf_file_upload', array($this, 'upload_file') );
+        add_action( 'wp_ajax_wpuf_upload_file', array($this, 'upload_file') );
+        add_action( 'wp_ajax_nopriv_wpuf_upload_file', array($this, 'upload_file') );
 
         add_action( 'wp_ajax_wpuf_file_del', array($this, 'delete_file') );
         add_action( 'wp_ajax_nopriv_wpuf_file_del', array($this, 'delete_file') );

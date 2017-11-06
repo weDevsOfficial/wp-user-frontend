@@ -37,7 +37,7 @@ function wpuf_upgrade_2_6_field_options() {
  * create table
  * @return void
  */
-function create_subscribers_table() {
+function wpuf_upgrade_2_6_create_subscribers_table() {
     global $wpdb;
     $sql = "CREATE TABLE {$wpdb->prefix}wpuf_subscribers (
       `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -61,7 +61,7 @@ function create_subscribers_table() {
  * insert table data
  * @return void
  */
-function insert_subscribers() {
+function wpuf_upgrade_2_6_insert_subscribers() {
     global $wpdb;
     $users = WPUF_Subscription::init()->subscription_pack_users();
     foreach ($users as $user) {
@@ -85,7 +85,7 @@ function insert_subscribers() {
     }
 }
 
-function payment_settings_migration() {
+function wpuf_upgrade_2_6_payment_settings_migration() {
     $args = array(
         'post_type'     => 'wpuf_forms',
         'post_status'   => 'publish',
@@ -128,6 +128,6 @@ function payment_settings_migration() {
 }
 
 wpuf_upgrade_2_6_field_options();
-create_subscribers_table();
-insert_subscribers();
-payment_settings_migration();
+wpuf_upgrade_2_6_create_subscribers_table();
+wpuf_upgrade_2_6_insert_subscribers();
+wpuf_upgrade_2_6_payment_settings_migration();

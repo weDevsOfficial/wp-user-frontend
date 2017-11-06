@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WP User Frontend
+Plugin Name: WPUF Work Done
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
@@ -191,6 +191,7 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/payment.php';
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
         require_once WPUF_ROOT . '/class/frontend-account.php';
+        require_once WPUF_ROOT . '/includes/class-form.php';
 
         require_once WPUF_ROOT . '/includes/class-user.php';
         require_once WPUF_ROOT . '/includes/class-user-subscription.php';

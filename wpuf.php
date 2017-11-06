@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.5.8
+Version: 2.6.0
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wpuf
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.5.8' );
+define( 'WPUF_VERSION', '2.6.0' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -32,7 +32,7 @@ final class WP_User_Frontend {
      *
      * @var array
      */
-    private $container = [];
+    private $container = array();
 
     /**
      * The singleton instance
@@ -78,6 +78,7 @@ final class WP_User_Frontend {
         add_action( 'init', array( $this, 'load_textdomain') );
 
         add_action( 'admin_init', array( $this, 'block_admin_access') );
+
         add_action( 'show_admin_bar', array( $this, 'show_admin_bar') );
 
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
@@ -190,6 +191,10 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/payment.php';
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
         require_once WPUF_ROOT . '/class/frontend-account.php';
+        require_once WPUF_ROOT . '/includes/class-form.php';
+
+        require_once WPUF_ROOT . '/includes/class-user.php';
+        require_once WPUF_ROOT . '/includes/class-user-subscription.php';
 
         if ( is_admin() ) {
             require_once WPUF_ROOT . '/admin/settings-options.php';
@@ -199,6 +204,7 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/admin/posting.php';
             require_once WPUF_ROOT . '/admin/class-admin-subscription.php';
             require_once WPUF_ROOT . '/admin/installer.php';
+            require_once WPUF_ROOT . '/admin/class-admin-welcome.php';
             require_once WPUF_ROOT . '/admin/promotion.php';
             require_once WPUF_ROOT . '/admin/post-forms-list-table.php';
             require_once WPUF_ROOT . '/includes/free/admin/shortcode-button.php';
@@ -246,6 +252,7 @@ final class WP_User_Frontend {
             $this->container['admin_installer']    = new WPUF_Admin_Installer();
             $this->container['admin_promotion']    = new WPUF_Admin_Promotion();
             $this->container['upsell']             = new WeForms_Upsell( 'wpuf' );
+            $this->container['welcome']            = new WPUF_Admin_Welcome();
 
         } else {
 
@@ -262,51 +269,10 @@ final class WP_User_Frontend {
      * @global object $wpdb
      */
     public static function install() {
-        global $wpdb;
+        require_once WPUF_ROOT . '/includes/class-installer.php';
 
-        $collate = '';
-
-        if ( $wpdb->has_cap( 'collation' ) ) {
-            if ( ! empty($wpdb->charset ) ) {
-                $collate .= "DEFAULT CHARACTER SET $wpdb->charset";
-            }
-
-            if ( ! empty($wpdb->collate ) ) {
-                $collate .= " COLLATE $wpdb->collate";
-            }
-        }
-
-        self::set_schedule_events();
-
-        flush_rewrite_rules( false );
-
-        $sql_transaction = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wpuf_transaction (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `user_id` bigint(20) DEFAULT NULL,
-            `status` varchar(60) NOT NULL DEFAULT 'pending_payment',
-            `cost` varchar(255) DEFAULT '',
-            `post_id` varchar(20) DEFAULT NULL,
-            `pack_id` bigint(20) DEFAULT NULL,
-            `payer_first_name` varchar(60),
-            `payer_last_name` varchar(60),
-            `payer_email` varchar(100),
-            `payment_type` varchar(20),
-            `payer_address` longtext,
-            `transaction_id` varchar(60),
-            `created` datetime NOT NULL,
-            PRIMARY KEY (`id`),
-            key `user_id` (`user_id`),
-            key `post_id` (`post_id`),
-            key `pack_id` (`pack_id`),
-            key `payer_email` (`payer_email`)
-        ) $collate;";
-
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
-        dbDelta( $sql_transaction );
-
-        update_option( 'wpuf_installed', time() );
-        update_option( 'wpuf_version', WPUF_VERSION );
+        $installer = new WPUF_Installer();
+        $installer->install();
     }
 
     /**

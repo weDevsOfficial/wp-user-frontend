@@ -380,7 +380,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     echo '</ul>';
 }
 
-function pre($data) {
+function wpuf_pre($data) {
     echo '<pre>'; print_r( $data ); echo '</pre>';
 }
 
@@ -635,7 +635,7 @@ function wpuf_show_custom_fields( $content ) {
 
     if ( $form_vars ) {
         foreach ($form_vars as $attr) {
-            if ( isset( $attr['is_meta'] ) && $attr['is_meta'] == 'yes' ) {
+            if ( isset( $attr['show_in_post'] ) && $attr['show_in_post'] == 'yes' ) {
                 $meta[] = $attr;
             }
         }
@@ -1417,9 +1417,17 @@ function wpuf_get_account_sections() {
     $account_sections = array(
         array( 'slug' => 'dashboard', 'label' => __( 'Dashboard', 'wpuf' ) ),
         array( 'slug' => 'posts', 'label' => __( 'Posts', 'wpuf' ) ),
-        array( 'slug' => 'subscription', 'label' => __( 'Subscription', 'wpuf' ) ),
         array( 'slug' => 'edit-profile', 'label' => __( 'Edit Profile', 'wpuf' ) ),
+        array( 'slug' => 'subscription', 'label' => __( 'Subscription', 'wpuf' ) ),
     );
+
+    // if ( wpuf_get_option( 'edit_billing_address', 'wpuf_payment') == 'yes') {
+    //     $address_section = array(
+    //         array( 'slug' => 'billing_address', 'label' => __( 'Billing Address', 'wpuf-pro' ) ),
+    //     );
+
+    //     $account_sections = array_merge( $account_sections, $address_section );
+    // }
 
     return apply_filters( 'wpuf_account_sections', $account_sections );
 }
@@ -1485,7 +1493,7 @@ function wpuf_get_pending_transactions( $args = array() ) {
     $wpuf_order_query = new WP_Query( $pending_args );
 
     if ( $args['count'] ) {
-        return $wpuf_order_query->post_count;
+        return $wpuf_order_query->found_posts;
     }
 
     $transactions = $wpuf_order_query->get_posts();
@@ -2085,10 +2093,11 @@ function wpuf_delete_form( $form_id, $force = true ) {
  */
 function wpuf_get_draft_post_status( $form_settings ) {
     $post_status = 'draft';
-    $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
+    $current_user       = wpuf_get_user();
+    $charging_enabled   = $current_user->subscription()->current_pack_id();
     $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
 
-    if ( $charging_enabled == 'yes' && ! isset( $_POST['post_id'] ) ) {
+    if ( $charging_enabled && ! isset( $_POST['post_id'] ) ) {
         if ( !empty( $user_wpuf_subscription_pack ) ) {
             if ( isset ( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes'  ) {
                 $post_status = 'pending';
@@ -2104,46 +2113,60 @@ function wpuf_get_draft_post_status( $form_settings ) {
 }
 
 /**
- * Hook to add WPUF Forms Column in Pages menu 
+ * Show helper texts to understand the type of page in admin page listing
  *
- * @since 2.5.8
+ * @since 2.6.0
  *
+ * @param  array $state
+ * @param  \WP_Post $post
+ *
+ * @return array
  */
-function wpuf_pages_columns_form ( $columns ) {
+function wpuf_admin_page_states( $state, $post) {
 
-    $myCustomColumns = array(
-        'wpuf_forms' => __( 'WPUF Forms', 'wpuf' )
-    );
-    $columns = array_merge( $columns, $myCustomColumns );
+    if ( 'page' != $post->post_type ) {
+        return $state;
+    }
 
-    return $columns;
-}
-add_filter( 'manage_pages_columns', 'wpuf_pages_columns_form' );
+    $pattern = '/\[(wpuf[\w\-\_]+).+\]/';
 
-/**
- * Hook to add WPUF Forms column contents in Pages menu 
- *
- * @since 2.5.8
- *
- */
-function page_column_content_form ( $column_name, $post_id ) {
-    if ( $column_name == 'wpuf_forms' ) {
-        $content_page = get_post( $post_id );
+    preg_match_all ( $pattern , $post->post_content, $matches);
+    $matches = array_unique( $matches[0] );
 
-        $available_shortcodes = array();
-        $wpuf_shortcodes = array();
+    if ( !empty( $matches ) ) {
 
-        $pattern = '/\[(wpuf[\w\-\_]+).+\]/';
+        $page      = '';
+        $shortcode = $matches[0];
 
-        preg_match_all ( $pattern , $content_page->post_content, $matches);
-        $matches = array_unique( $matches[0] );
-        
-        if ( !empty( $matches ) ) {
-             echo $matches[0];
+        if ( '[wpuf_account]' == $shortcode ) {
+            $page = 'WPUF Account Page';
+        } elseif ( '[wpuf_edit]' == $shortcode ) {
+            $page = 'WPUF Post Edit Page';
+        } elseif ( '[wpuf-login]' == $shortcode ) {
+            $page = 'WPUF Login Page';
+        } elseif ( '[wpuf_sub_pack]' == $shortcode ) {
+            $page = 'WPUF Subscription Page';
+        } elseif ( '[wpuf_editprofile]' == $shortcode ) {
+            $page = 'WPUF Profile Edit Page';
+        } elseif ( stristr( $shortcode, '[wpuf_dashboard') ) {
+            $page = 'WPUF Dashboard Page';
+        } elseif ( stristr( $shortcode, '[wpuf_profile type="registration"') ) {
+            $page = 'WPUF Registration Page';
+        } elseif ( stristr( $shortcode, '[wpuf_profile type="profile"') ) {
+            $page = 'WPUF Profile Edit Page';
+        } elseif ( stristr( $shortcode, '[wpuf_form') ) {
+            $page = 'WPUF Form Page';
+        }
+
+        if ( ! empty( $page )) {
+            $state['wpuf'] = $page;
         }
     }
+
+    return $state;
 }
-add_action( 'manage_pages_custom_column', 'page_column_content_form', 10, 2 );
+
+add_filter( 'display_post_states', 'wpuf_admin_page_states', 10, 2 );
 
 /**
  * Encryption function for various usage
@@ -2158,12 +2181,12 @@ function wpuf_encryption ( $id ) {
 
     $secret_key     = AUTH_KEY;
     $secret_iv      = AUTH_SALT;
-    
+
     $encrypt_method = "AES-256-CBC";
     $key            = hash( 'sha256', $secret_key );
     $iv             = substr( hash( 'sha256', $secret_iv ), 0, 16 );
     $encoded_id     = base64_encode( openssl_encrypt( $id, $encrypt_method, $key, 0, $iv ) );
-    
+
     return $encoded_id;
 }
 
@@ -2180,12 +2203,12 @@ function wpuf_decryption ( $id ) {
 
     $secret_key     = AUTH_KEY;
     $secret_iv      = AUTH_SALT;
-    
+
     $encrypt_method = "AES-256-CBC";
     $key            = hash( 'sha256', $secret_key );
     $iv             = substr( hash( 'sha256', $secret_iv ), 0, 16 );
     $decoded_id     = openssl_decrypt( base64_decode( $id ), $encrypt_method, $key, 0, $iv );
-    
+
     return $decoded_id;
 }
 
@@ -2194,23 +2217,44 @@ function wpuf_decryption ( $id ) {
  *
  * @since 2.5.8
  *
- * @param  string  $post_id
+ * @param  string  $post_id_encoded, $form_id_encoded, $charging_enabled, $flag
  *
  * @return void
  */
-function send_mail_to_guest ( $post_id_encoded ) {
+function wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag ) {
 
-    $encoded_guest_url = get_home_url() . '?p_id=' . $post_id_encoded . '&post_msg=verified';
+    if ( $charging_enabled )  {
+        $encoded_guest_url = add_query_arg(
+            array(
+                'p_id' => $post_id_encoded,
+                'f_id' => $form_id_encoded,
+                'post_msg' => 'verified',
+                'f' => 2,
+            ), get_home_url()
+        );
+    } else {
+        $encoded_guest_url = add_query_arg(
+            array(
+                'p_id' => $post_id_encoded,
+                'f_id' => $form_id_encoded,
+                'post_msg' => 'verified',
+                'f' => 1,
+            ), get_home_url()
+        );
+    }
 
     $default_body     = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.' .  '<br>' . '<br>' . 'Please click the link below to verify:' . '<br>' . '<br>' . '<a href="'.$encoded_guest_url.'">Publish Post</a>' . '<br>' . '<br>' . 'Regards,' . '<br>' . '<br>' . bloginfo('name');
     $to               = trim( $_POST['guest_email'] );
     $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_guest_mails', 'Please Confirm Your Email to Get the Post Published!' );
     $subject          = $guest_email_sub;
     $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_guest_mails',  $default_body );
-    if ( !empty( $guest_email_body ) )
+
+    if ( !empty( $guest_email_body ) ) {
         $body = str_replace( '{activation_link}', '<a href="'.$encoded_guest_url.'">Publish Post</a>', $guest_email_body );
-    else 
+    } else {
         $body = $default_body;
+    }
+
     $headers  = array('Content-Type: text/html; charset=UTF-8');
 
     wp_mail( $to, $subject, $body, $headers );
@@ -2220,4 +2264,45 @@ function send_mail_to_guest ( $post_id_encoded ) {
     } else {
         $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $form_settings );
     }
+}
+
+
+/**
+ * Check if it's post form builder
+ *
+ * @since 2.6
+ *
+ * @return boolean
+ */
+function is_wpuf_post_form_builder() {
+    return isset( $_GET['page'] ) && $_GET['page'] == 'wpuf-post-forms' ? true : false;
+}
+
+/**
+ * Check if it's profile form builder
+ *
+ * @since 2.6
+ *
+ * @return boolean
+ */
+function is_wpuf_profile_form_builder() {
+    return isset( $_GET['page'] ) && $_GET['page'] == 'wpuf-profile-forms' ? true : false;
+}
+
+/**
+ * Get a WP User
+ *
+ * @since 2.6.0
+ *
+ * @param  integer|WP_User $user_id
+ *
+ * @return \WPUF_User
+ */
+function wpuf_get_user( $user = null ) {
+
+    if ( ! $user ) {
+        $user = wp_get_current_user();
+    }
+
+    return new WPUF_User( $user );
 }

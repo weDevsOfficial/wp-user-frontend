@@ -123,7 +123,32 @@ class WPUF_Admin_Subscription {
             if ( $pack_id == '-1' ) {
                 return;
             }
-            WPUF_Subscription::init()->new_subscription( $user_id, $pack_id, null, false, $status = null );
+
+            $user_info = get_userdata( $user_id );
+
+            $data = array(
+                'user_id'          => $user_id,
+                'status'           => 'completed',
+                'cost'             => 0,
+                'post_id'          => 0,
+                'pack_id'          => $pack_id,
+                'payer_first_name' => $user_info->first_name,
+                'payer_last_name'  => $user_info->last_name,
+                'payer_email'      => $user_info->user_email,
+                'payment_type'     => 'bank',
+                'payer_address'    => null,
+                'transaction_id'   => 0,
+                'created'          => current_time( 'mysql' ),
+                'profile_id'       => null,
+            );
+
+            if ( isset( $user_pack['recurring'] ) && $user_pack['recurring'] == 'yes' ) {
+                $is_recurring = true;
+            } else {
+                $is_recurring = false;
+            }
+
+            WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
         }
     }
 
@@ -138,6 +163,13 @@ class WPUF_Admin_Subscription {
                     $amount = wpuf_format_price( $amount );
                 }
                 echo $amount;
+                break;
+
+            case 'subscribers':
+
+                $users = WPUF_Subscription::init()->subscription_pack_users( $post_ID );
+
+                echo '<a href="'. admin_url( 'edit.php?post_type=wpuf_subscription&page=wpuf_subscribers&post_ID=' . $post_ID ) . '" />' . count( $users ) . '</a>';
                 break;
 
             case 'recurring':
@@ -155,6 +187,7 @@ class WPUF_Admin_Subscription {
                 $recurring_pay        =  get_post_meta( $post_ID, '_recurring_pay', true );
                 $billing_cycle_number =  get_post_meta( $post_ID, '_billing_cycle_number', true );
                 $cycle_period         =  get_post_meta( $post_ID, '_cycle_period', true );
+
                 if ( $recurring_pay == 'yes' ) {
                     echo $billing_cycle_number .' '. $cycle_period . '\'s (cycle)';
                 } else {
@@ -169,10 +202,11 @@ class WPUF_Admin_Subscription {
 
     function subscription_columns_head( $head ) {
         unset($head['date']);
-        $head['title']     = __('Pack Name', 'wpuf' );
-        $head['amount']    = __( 'Amount', 'wpuf' );
-        $head['recurring'] = __( 'Recurring', 'wpuf' );
-        $head['duration']  = __( 'Duration', 'wpuf' );
+        $head['title']          = __( 'Pack Name', 'wpuf' );
+        $head['amount']         = __( 'Amount', 'wpuf' );
+        $head['subscribers']    = __( 'Subscribers', 'wpuf' );
+        $head['recurring']      = __( 'Recurring', 'wpuf' );
+        $head['duration']       = __( 'Duration', 'wpuf' );
 
         return $head;
     }
@@ -258,12 +292,12 @@ class WPUF_Admin_Subscription {
         ob_start();
 
         foreach ( $post_types as $key => $name ) {
-            $name = ( $post_types !== null ) ? $name : '';
+            $post_type_object = get_post_type_object( $key );
             ?>
             <tr>
-                <th><label for="wpuf-<?php echo esc_attr( $key ); ?>"><?php printf( 'Number of %ss', $key ); ?></label></th>
+                <th><label for="wpuf-<?php echo esc_attr( $key ); ?>"><?php printf( 'Number of %s', $post_type_object->label ); ?></label></th>
                 <td>
-                    <input type="text" size="20" style="" id="wpuf-<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( (int)$name ); ?>" name="post_type_name[<?php echo esc_attr( $key ); ?>]" />
+                    <input type="text" size="20" style="" id="wpuf-<?php echo esc_attr( $key ); ?>" value="<?php echo intval( $name ); ?>" name="post_type_name[<?php echo esc_attr( $key ); ?>]" />
                     <div><span class="description"><span><?php printf( 'How many %s the user can list with this pack? Enter <strong>-1</strong> for unlimited.', $key ); ?></span></span></div>
                 </td>
             </tr>
@@ -278,9 +312,17 @@ class WPUF_Admin_Subscription {
 
         $sub_meta = WPUF_Subscription::init()->get_subscription_meta( $post->ID, $post );
 
-        $hidden_recurring_class = ( $sub_meta['recurring_pay'] != 'yes' ) ? 'none' : '';
-        $hidden_trial_class     = ( $sub_meta['trial_status'] != 'yes' ) ? 'none' : '';
-        $hidden_expire          = ( $sub_meta['recurring_pay'] == 'yes' ) ? 'none' : '';
+        $hidden_recurring_class       = ( $sub_meta['recurring_pay'] != 'yes' ) ? 'none' : '';
+        $hidden_trial_class           = ( $sub_meta['trial_status'] != 'yes' ) ? 'none' : '';
+        $hidden_expire                = ( $sub_meta['recurring_pay'] == 'yes' ) ? 'none' : '';
+        $is_post_exp_selected         = isset($sub_meta['_enable_post_expiration']) && $sub_meta['_enable_post_expiration'] == 'on'?'checked':'';
+        $_post_expiration_time        = explode(' ',isset($sub_meta['_post_expiration_time'])?$sub_meta['_post_expiration_time']:' ');
+        $time_value                   = isset($_post_expiration_time[0])?$_post_expiration_time[0]:1;
+        $time_type                    = isset($_post_expiration_time[1])?$_post_expiration_time[1]:'day';
+
+        $expired_post_status          = isset($sub_meta['_expired_post_status'])?$sub_meta['_expired_post_status']:'';
+        $is_enable_mail_after_expired = isset($sub_meta['_enable_mail_after_expired']) && $sub_meta['_enable_mail_after_expired'] == 'on'?'checked':'';
+        $post_expiration_message      = isset($sub_meta['_post_expiration_message'])?$sub_meta['_post_expiration_message']:'';;
 
         ?>
 
@@ -316,16 +358,6 @@ class WPUF_Admin_Subscription {
                     </td>
                 </tr>
 
-                <?php
-                $is_post_exp_selected = isset($sub_meta['_enable_post_expiration']) && $sub_meta['_enable_post_expiration'] == 'on'?'checked':'';
-                $_post_expiration_time = explode(' ',isset($sub_meta['_post_expiration_time'])?$sub_meta['_post_expiration_time']:' ');
-                $time_value = isset($_post_expiration_time[0])?$_post_expiration_time[0]:1;
-                $time_type = isset($_post_expiration_time[1])?$_post_expiration_time[1]:'day';
-
-                $expired_post_status = isset($sub_meta['_expired_post_status'])?$sub_meta['_expired_post_status']:'';
-                $is_enable_mail_after_expired = isset($sub_meta['_enable_mail_after_expired']) && $sub_meta['_enable_mail_after_expired'] == 'on'?'checked':'';
-                $post_expiration_message = isset($sub_meta['_post_expiration_message'])?$sub_meta['_post_expiration_message']:'';;
-                ?>
                 <tr class="wpuf-metabox-post_expiration">
                     <th><?php _e( 'Enable Post Expiration', 'wpuf' ); ?></th>
                     <td>
@@ -455,20 +487,20 @@ class WPUF_Admin_Subscription {
 
             if ( isset( $user_sub['pack_id'] ) ) :
 
-            $pack         = WPUF_Subscription::get_subscription( $user_sub['pack_id'] );
-            $details_meta = WPUF_Subscription::init()->get_details_meta_value();
+                $pack         = WPUF_Subscription::get_subscription( $user_sub['pack_id'] );
+                $details_meta = WPUF_Subscription::init()->get_details_meta_value();
 
-            $billing_amount = ( isset( $pack->meta_value['billing_amount'] ) && intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wpuf' );
-            $recurring_pay  = ( isset( $pack->meta_value['recurring_pay'] ) && $pack->meta_value['recurring_pay'] == 'yes' ) ? true : false;
-            if ( $billing_amount && $recurring_pay ) {
-                $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
-                $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
-                $recurring_des = $recurring_des;
-            } else {
-                $recurring_des = '';
-            }
+                $billing_amount = ( isset( $pack->meta_value['billing_amount'] ) && intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wpuf' );
+                $recurring_pay  = ( isset( $pack->meta_value['recurring_pay'] ) && $pack->meta_value['recurring_pay'] == 'yes' ) ? true : false;
+                if ( $billing_amount && $recurring_pay ) {
+                    $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+                    $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
+                    $recurring_des = $recurring_des;
+                } else {
+                    $recurring_des = '';
+                }
 
-            ?>
+                ?>
                 <div class="wpuf-user-sub-info">
                     <h3><?php _e( 'Subscription Details', 'wpuf' ); ?></h3>
                     <?php if(isset($user_sub['recurring']) && $user_sub['recurring'] == 'yes' ){
@@ -564,22 +596,27 @@ class WPUF_Admin_Subscription {
                 </div>
             <?php endif;?>
             <?php if(!isset($user_sub['recurring']) || $user_sub['recurring'] != 'yes' ): ?>
-            <a class="btn button-primary wpuf-assing-pack-btn wpuf-add-pack" href="#"><?php _e( 'Assign Package', 'wpuf' ); ?></a>
-            <a class="btn button-primary wpuf-assing-pack-btn wpuf-cancel-pack" style="display:none;" href="#"><?php _e( 'Show Package', 'wpuf' ); ?></a>
-            <table class="form-table wpuf-pack-dropdown" disabled="disabled" style="display: none;">
-                <tr>
-                    <th><label for="wpuf_sub_pack"><?php _e( 'Pack:', 'wpuf' ); ?> </label></th>
-                    <td>
-                        <select name="pack_id" id="wpuf_sub_pack">
-                            <option value="-1"><?php _e( '--Select--', 'wpuf' ); ?></option>
-                            <?php $this->packdropdown_without_recurring( $packs, $pack_id );//WPUF_Subscription::init()->packdropdown( $packs, $selected = '' ); ?>
-                        </select>
-                    </td>
-                </tr>
-            </table>
+
+                <?php if ( empty( $user_sub ) ): ?>
+                    <a class="btn button-secondary wpuf-assing-pack-btn wpuf-add-pack" href="#"><?php _e( 'Assign Package', 'wpuf' ); ?></a>
+                <?php endif ?>
+
+                <a class="btn button-secondary wpuf-assing-pack-btn wpuf-cancel-pack" style="display:none;" href="#"><?php _e( 'Show Package', 'wpuf' ); ?></a>
+                <table class="form-table wpuf-pack-dropdown" disabled="disabled" style="display: none;">
+                    <tr>
+                        <th><label for="wpuf_sub_pack"><?php _e( 'Pack:', 'wpuf' ); ?> </label></th>
+                        <td>
+                            <select name="pack_id" id="wpuf_sub_pack">
+                                <option value="-1"><?php _e( '--Select--', 'wpuf' ); ?></option>
+                                <?php $this->packdropdown_without_recurring( $packs, $pack_id );//WPUF_Subscription::init()->packdropdown( $packs, $selected = '' ); ?>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
             <?php endif;?>
+
             <?php if( !empty($user_sub) ):?>
-                <a class="btn button-primary wpuf-delete-pack-btn" href="javascript:" data-userid = "<?php echo $userdata->ID; ?>"><?php _e( 'Delete Package', 'wpuf' ); ?></a>
+                <a class="btn button-secondary wpuf-delete-pack-btn" href="javascript:" data-userid = "<?php echo $userdata->ID; ?>" data-packid = "<?php echo $user_sub['pack_id']; ?>"><?php _e( 'Delete Package', 'wpuf' ); ?></a>
             <?php endif; ?>
         </div>
         <?php
@@ -604,6 +641,10 @@ class WPUF_Admin_Subscription {
         echo delete_user_meta($_POST['userid'],'_wpuf_subscription_pack');
         $wpuf_paypal = new WPUF_Paypal();
         $wpuf_paypal->recurring_change_status( $_POST['userid'], 'Cancel' );
+
+        if ( isset( $_POST['packid'] ) ) {
+            WPUF_Subscription::subscriber_cancel( $_POST['userid'], $_POST['packid'] );
+        }
         exit;
     }
 

@@ -208,6 +208,9 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         ?>
 
         <h3><?php _e( 'New Post Notification', 'wpuf' ); ?></h3>
+
+        <p class="description"><?php echo __( 'Learn more about ', 'wpuf' ); ?><a target = "_blank" href = "https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-set-up-submission-email-notification/"><?php _e( 'Submission Email Notification', 'wpuf' ); ?></a></p>
+
         <table class="form-table">
             <tr>
                 <th><?php _e( 'Notification', 'wpuf' ); ?></th>
@@ -236,9 +239,10 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                 <th><?php _e( 'Message', 'wpuf' ); ?></th>
                 <td>
                     <textarea rows="6" cols="60" name="wpuf_settings[notification][new_body]"><?php echo esc_textarea( $new_body ) ?></textarea>
+                    <p class="description"><?php echo __( 'Admin can change the text of message. There will be no consequences for that.', 'wpuf' ); ?></p>
+
                 </td>
             </tr>
-             <p class="description"><?php echo __( 'Admin can change the text of message. There will be no consequences for that.', 'wpuf' ); ?></p>
         </table>
 
         <h3><?php _e( 'Update Post Notification', 'wpuf' ); ?></h3>

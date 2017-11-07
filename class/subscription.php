@@ -465,9 +465,6 @@ class WPUF_Subscription {
         }
 
         if ( $charging_enabled == 'yes' ) {
-            if ( isset ( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes'  ) {
-                return $postdata;
-            }
             $postdata['post_status'] = 'pending';
         }
 
@@ -482,10 +479,7 @@ class WPUF_Subscription {
      * @param int $post_id
      */
     function monitor_new_post( $post_id, $form_id, $form_settings ) {
-        // // check form if subscription is disabled
-        // if ( isset( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes' ) {
-        //     return;
-        // }
+
         global $wpdb, $userdata;
 
         // bail out if charging is not enabled
@@ -1027,13 +1021,12 @@ class WPUF_Subscription {
      * Show a info message when posting if payment is enabled
      */
     function add_post_info( $form_id, $form_settings ) {
-        $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
+        $form              = new WPUF_Form( $form_id );
+        $pay_per_post      = $form->is_enabled_pay_per_post();
+        $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
+        $force_pack        = $form->is_enabled_force_pack();
 
-        if ( $subscription_disabled == 'yes' ) {
-            $user_can_post = 'yes';
-        }
-
-        if ( self::has_user_error( $form_settings ) && !$subscription_disabled ) {
+        if ( self::has_user_error( $form_settings ) || ( $pay_per_post && !$force_pack ) ) {
             ?>
             <div class="wpuf-info">
                 <?php
@@ -1077,11 +1070,6 @@ class WPUF_Subscription {
 
     function force_pack_notice( $text, $id, $form_settings ) {
 
-        $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
-        if ( $subscription_disabled ) {
-            $text = '';
-        }
-
         $form = new WPUF_Form( $id );
 
         $force_pack = $form->is_enabled_force_pack();
@@ -1101,11 +1089,6 @@ class WPUF_Subscription {
         $force_pack   = $form->is_enabled_force_pack();
         $pay_per_post = $form->is_enabled_pay_per_post();
         $current_user = wpuf_get_user();
-        $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
-
-        if ( $subscription_disabled == 'yes' ) {
-            return 'yes';
-        }
 
         if ( is_user_logged_in() ) {
 
@@ -1133,7 +1116,7 @@ class WPUF_Subscription {
         }
 
         if ( !is_user_logged_in() && $form_settings['guest_post'] == 'true' ) {
-            if ( $form->is_charging_enabled() && $subscription_disabled != 'yes' ) {
+            if ( $form->is_charging_enabled() ) {
                 if ( $force_pack ) {
                     return 'no';
                 }
@@ -1163,14 +1146,19 @@ class WPUF_Subscription {
 
         $user_id = isset( $userdata->ID ) ? $userdata->ID : '';
         // bail out if charging is not enabled
-        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' ) {
+        
+        $current_user  = wpuf_get_user();
+        if ( !$current_user->subscription()->current_pack_id() ) {
             return false;
         }
+        // if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' ) {
+        //     return false;
+        // }
 
-        // check form if subscription is disabled
-        if ( isset( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes' ) {
-            return false;
-        }
+        // // check form if subscription is disabled
+        // if ( isset( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes' ) {
+        //     return false;
+        // }
 
         $user_sub_meta  = self::get_user_pack( $user_id );
         $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';

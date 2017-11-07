@@ -472,7 +472,8 @@ class WPUF_Admin_Subscription {
         if ( ! current_user_can( 'edit_users' ) ) {
             return;
         }
-        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' ) {
+        $current_user  = wpuf_get_user();
+        if ( !$current_user->subscription()->current_pack_id() ) {
             return;
         }
         $userdata = get_userdata( $profileuser->ID ); //wp 3.3 fix

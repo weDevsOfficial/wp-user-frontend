@@ -2085,14 +2085,13 @@ function wpuf_delete_form( $form_id, $force = true ) {
  */
 function wpuf_get_draft_post_status( $form_settings ) {
     $post_status = 'draft';
-    $payment_options    = isset( $form_settings['payment_options'] ) ? $form_settings['payment_options'] : 'false';
     $current_user       = wpuf_get_user();
     $charging_enabled   = $current_user->subscription()->current_pack_id();
     $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
 
     if ( $charging_enabled && ! isset( $_POST['post_id'] ) ) {
         if ( !empty( $user_wpuf_subscription_pack ) ) {
-            if ( isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) <= time() ) {
+            if ( $current_user->subscription()->expired() ) {
                 $post_status = 'pending';
             }
         }

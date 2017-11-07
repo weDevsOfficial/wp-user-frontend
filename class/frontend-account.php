@@ -18,7 +18,6 @@ class WPUF_Frontend_Account {
         add_action( 'wpuf_account_content_subscription', array( $this, 'subscription_section' ), 10, 2 );
         add_action( 'wpuf_account_content_edit-profile', array( $this, 'edit_profile_section' ), 10, 2 );
         add_action( 'wp_ajax_wpuf_account_update_profile', array( $this, 'update_profile' ) );
-        add_action( 'wpuf_account_content_billing_address', array( $this, 'billing_address_section' ), 10, 2 );
     }
 
     /**
@@ -109,9 +108,9 @@ class WPUF_Frontend_Account {
         // if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' || ! is_user_logged_in() ) {
         //     return;
         // }
-        $form             = new WPUF_Form( $form_id );
-        $payment_options  = $form->is_charging_enabled();
-        if ( !$payment_options ) {
+        $current_user  = wpuf_get_user();
+
+        if ( !$current_user->subscription()->current_pack_id() ) {
             return;
         }
 
@@ -168,23 +167,6 @@ class WPUF_Frontend_Account {
     public function edit_profile_section( $sections, $current_section ) {
         wpuf_load_template(
             "dashboard/edit-profile.php",
-            array( 'sections' => $sections, 'current_section' => $current_section )
-        );
-    }
-
-     /**
-     * Display the billing address
-     *
-     * @param  array  $sections
-     * @param  string $current_section
-     *
-     * @since  2.6
-     *
-     * @return void
-     */
-    public function billing_address_section( $sections, $current_section ) {
-        wpuf_load_template(
-            "dashboard/billing-address.php",
             array( 'sections' => $sections, 'current_section' => $current_section )
         );
     }

@@ -672,8 +672,8 @@ class WPUF_Subscription {
                 'name'                  => $user_info->display_name,
                 'subscribtion_id'       => $pack_id,
                 'subscribtion_status'   => $status,
-                'gateway'               => is_null( $result->payment_type ) ? 'bank' : $result->payment_type,
-                'transaction_id'        => is_null( $result->transaction_id ) ? 'NA' : $result->transaction_id,
+                'gateway'               => isset( $result->payment_type ) ? 'bank' : $result->payment_type,
+                'transaction_id'        => isset( $result->transaction_id ) ? 'NA' : $result->transaction_id,
                 'starts_from'           => date( 'd-m-Y' ),
                 'expire'                => $user_meta['expire'] == '' ? 'recurring' : $user_meta['expire'],
             );
@@ -862,7 +862,7 @@ class WPUF_Subscription {
         $cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
 
         $defaults = array(
-            'include' => 'any',
+            'include' => '',
             'exclude' => '',
             'order'   => 'ASC',
             'orderby' => ''
@@ -871,8 +871,8 @@ class WPUF_Subscription {
         $arranged = array();
         $args     = wp_parse_args( $atts, $defaults );
 
-        if ( 'any' != $args['include'] ) {
-            $args['orderby'] = $args['post__in'];
+        if ( '' != $args['include'] ) {
+            $args['orderby'] = isset( $args['post_in'] ) ? $args['post_in'] : $args['orderby'];
         }
 
         $packs = $this->get_subscriptions( $args );

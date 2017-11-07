@@ -740,6 +740,121 @@ class WPUF_Subscription {
     }
 
     /**
+     * Generate users subscription info with a shortcode
+     *
+     * @global type $userdata
+     */
+    function subscription_info() {
+
+        // if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' || !is_user_logged_in() ) {
+        //     return;
+        // }
+        $form             = new WPUF_Form( $form_id );
+        $payment_options  = $form->is_charging_enabled();
+        if ( !$payment_options || !is_user_logged_in() ) {
+            return;
+        }
+
+        global $userdata;
+
+        ob_start();
+
+        $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix
+
+        $user_sub = self::get_user_pack( $userdata->ID );
+        if ( !isset( $user_sub['pack_id'] ) ) {
+            return;
+        }
+
+        $pack = $this->get_subscription( $user_sub['pack_id'] );
+
+        $details_meta = $this->get_details_meta_value();
+
+        $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wpuf' );
+        if ( $pack->meta_value['recurring_pay'] == 'yes' ) {
+            $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
+            $recurring_des = $recurring_des;
+        } else {
+            $recurring_des = '';
+        }
+
+        ?>
+        <div class="wpuf_sub_info">
+            <h3><?php _e( 'Subscription Details', 'wpuf' ); ?></h3>
+            <div class="wpuf-text">
+                <div><strong><?php _e( 'Subcription Name: ','wpuf' ); ?></strong><?php echo $pack->post_title; ?></div>
+                <div>
+                    <strong><?php _e( 'Package & billing details: ', 'wpuf'); ?></strong>
+
+                    <div class="wpuf-pricing-wrap">
+                        <div class="wpuf-sub-amount">
+                            <?php echo $billing_amount; ?>
+                            <?php echo $recurring_des; ?>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <strong><?php _e( 'Remaining post: ', 'wpuf'); ?></strong>
+                    <?php
+                    foreach ($user_sub['posts'] as $key => $value) {
+                        $value = intval( $value );
+
+                        if ( $value === 0 ) {
+                            continue;
+                        }
+
+                        $post_type_obj = get_post_type_object( $key );
+                        if ( ! $post_type_obj ) {
+                            continue;
+                        }
+                        $value = ( $value == '-1' ) ? __( 'Unlimited', 'wpuf' ) : $value;
+                        ?>
+                        <div><?php echo $post_type_obj->labels->name . ': ' . $value; ?></div>
+                        <?php
+                    }
+                    ?>
+                </div>
+                <?php
+                if ( $user_sub['recurring'] != 'yes' ) {
+                    if ( !empty( $user_sub['expire'] ) ) {
+
+                        $expire =  ( $user_sub['expire'] == 'unlimited' ) ? ucfirst( 'unlimited' ) : wpuf_date2mysql( $user_sub['expire'] );
+
+                        ?>
+                        <div class="wpuf-expire">
+                            <strong><?php echo _e( 'Expire date:', 'wpuf' ); ?></strong> <?php echo wpuf_get_date( $expire ); ?>
+                        </div>
+                        <?php
+                    }
+
+                } ?>
+            </div>
+            <?php
+            if ( $user_sub['recurring'] == 'yes' ) {
+                $payment_page = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+                ?>
+                <form action="" method="post">
+                    <?php wp_nonce_field( '_wpnonce', 'wpuf_payment_cancel' ); ?>
+                    <input type="hidden" name="user_id" value="<?php echo $userdata->ID; ?>">
+                    <input type="hidden" name="action" value="wpuf_cancel_pay">
+                    <input type="hidden" name="gateway" value="paypal">
+                    <input type="submit" name="wpuf_payment_cancel_submit" value="cancel">
+                </form>
+                <?php $subscription_page = wpuf_get_option( 'subscription_page','wpuf_payment' ); ?>
+                <a href="<?php echo get_permalink( $subscription_page ); ?>"><? _e( 'Change', 'wpuf'); ?></a>
+                <?php
+            }
+        echo '</div>';
+
+        $content = ob_get_clean();
+
+        return apply_filters( 'wpuf_sub_info', $content, $userdata, $user_sub, $pack );
+    }
+
+
+    /**
      * Show the subscription packs that are built
      * from admin Panel
      */
@@ -921,7 +1036,10 @@ class WPUF_Subscription {
             ?>
             <div class="wpuf-info">
                 <?php
+                $form              = new WPUF_Form( $form_id );
+                $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
                 $text              = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
+
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
                 ?>
             </div>
@@ -1033,12 +1151,10 @@ class WPUF_Subscription {
         global $userdata;
 
         $user_id = isset( $userdata->ID ) ? $userdata->ID : '';
-
         // bail out if charging is not enabled
         $current_user  = wpuf_get_user();
         if ( !$current_user->subscription()->current_pack_id() ) {
             return;
-        }
 
         $user_sub_meta  = self::get_user_pack( $user_id );
         $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';

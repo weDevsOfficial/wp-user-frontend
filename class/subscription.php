@@ -1152,9 +1152,14 @@ class WPUF_Subscription {
 
         $user_id = isset( $userdata->ID ) ? $userdata->ID : '';
         // bail out if charging is not enabled
-        $current_user  = wpuf_get_user();
-        if ( !$current_user->subscription()->current_pack_id() ) {
-            return;
+        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' ) {
+            return false;
+        }
+
+        // check form if subscription is disabled
+        if ( isset( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes' ) {
+            return false;
+        }
 
         $user_sub_meta  = self::get_user_pack( $user_id );
         $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';

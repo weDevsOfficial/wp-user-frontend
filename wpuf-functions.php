@@ -2091,9 +2091,7 @@ function wpuf_get_draft_post_status( $form_settings ) {
 
     if ( $charging_enabled && ! isset( $_POST['post_id'] ) ) {
         if ( !empty( $user_wpuf_subscription_pack ) ) {
-            if ( isset ( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes'  ) {
-                $post_status = 'pending';
-            } elseif ( isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) <= time() ) {
+            if ( isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) <= time() ) {
                 $post_status = 'pending';
             }
         }

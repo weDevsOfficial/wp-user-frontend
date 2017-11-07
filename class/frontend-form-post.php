@@ -54,7 +54,6 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         $form          = new WPUF_Form( $id );
         $form_settings = $form->get_settings( $id );
-        $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
         $info          = '';
         $user_can_post = 'yes';
         $current_user  = wpuf_get_user();
@@ -64,7 +63,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $info = sprintf( __( 'Sorry. Guest Posting is not enabled for this form.', 'wpuf' ));
         }
 
-        if ( $form->is_charging_enabled()  && $subscription_disabled != 'yes') {
+        if ( $form->is_charging_enabled() ) {
             $pay_per_post      = $form->is_enabled_pay_per_post();
             $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
             $force_pack        = $form->is_enabled_force_pack();
@@ -133,10 +132,6 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             if ( $form_settings['guest_post'] == 'true' && ! is_user_logged_in() ) {
                 $user_can_post = 'yes';
             }
-        }
-
-        if ( $subscription_disabled == 'yes' ) {
-            $user_can_post = 'yes';
         }
 
         $info          = apply_filters( 'wpuf_addpost_notice', $info, $id, $form_settings );

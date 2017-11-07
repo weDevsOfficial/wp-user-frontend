@@ -672,8 +672,8 @@ class WPUF_Subscription {
                 'name'                  => $user_info->display_name,
                 'subscribtion_id'       => $pack_id,
                 'subscribtion_status'   => $status,
-                'gateway'               => isset( $result->payment_type ) ? 'bank' : $result->payment_type,
-                'transaction_id'        => isset( $result->transaction_id ) ? 'NA' : $result->transaction_id,
+                'gateway'               => is_null( $result->payment_type ) ? 'bank' : $result->payment_type,
+                'transaction_id'        => is_null( $result->transaction_id ) ? 'NA' : $result->transaction_id,
                 'starts_from'           => date( 'd-m-Y' ),
                 'expire'                => $user_meta['expire'] == '' ? 'recurring' : $user_meta['expire'],
             );
@@ -862,7 +862,7 @@ class WPUF_Subscription {
         $cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
 
         $defaults = array(
-            'include' => '',
+            'include' => 'any',
             'exclude' => '',
             'order'   => 'ASC',
             'orderby' => ''
@@ -871,8 +871,8 @@ class WPUF_Subscription {
         $arranged = array();
         $args     = wp_parse_args( $atts, $defaults );
 
-        if ( '' != $args['include'] ) {
-            $args['orderby'] = isset( $args['post_in'] ) ? $args['post_in'] : $args['orderby'];
+        if ( 'any' != $args['include'] ) {
+            $args['orderby'] = $args['post__in'];
         }
 
         $packs = $this->get_subscriptions( $args );
@@ -1027,20 +1027,16 @@ class WPUF_Subscription {
      * Show a info message when posting if payment is enabled
      */
     function add_post_info( $form_id, $form_settings ) {
-        $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
+        $form              = new WPUF_Form( $form_id );
+        $pay_per_post      = $form->is_enabled_pay_per_post();
+        $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
+        $force_pack        = $form->is_enabled_force_pack();
 
-        if ( $subscription_disabled == 'yes' ) {
-            $user_can_post = 'yes';
-        }
-
-        if ( self::has_user_error( $form_settings ) && !$subscription_disabled ) {
+        if ( self::has_user_error( $form_settings ) || ( $pay_per_post && !$force_pack ) ) {
             ?>
             <div class="wpuf-info">
                 <?php
-                $form              = new WPUF_Form( $form_id );
-                $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
                 $text              = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
-
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
                 ?>
             </div>
@@ -1077,11 +1073,6 @@ class WPUF_Subscription {
 
     function force_pack_notice( $text, $id, $form_settings ) {
 
-        $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
-        if ( $subscription_disabled ) {
-            $text = '';
-        }
-
         $form = new WPUF_Form( $id );
 
         $force_pack = $form->is_enabled_force_pack();
@@ -1101,11 +1092,6 @@ class WPUF_Subscription {
         $force_pack   = $form->is_enabled_force_pack();
         $pay_per_post = $form->is_enabled_pay_per_post();
         $current_user = wpuf_get_user();
-        $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
-
-        if ( $subscription_disabled == 'yes' ) {
-            return 'yes';
-        }
 
         if ( is_user_logged_in() ) {
 
@@ -1133,7 +1119,7 @@ class WPUF_Subscription {
         }
 
         if ( !is_user_logged_in() && $form_settings['guest_post'] == 'true' ) {
-            if ( $form->is_charging_enabled() && $subscription_disabled != 'yes' ) {
+            if ( $form->is_charging_enabled() ) {
                 if ( $force_pack ) {
                     return 'no';
                 }
@@ -1162,14 +1148,11 @@ class WPUF_Subscription {
         global $userdata;
 
         $user_id = isset( $userdata->ID ) ? $userdata->ID : '';
-        // bail out if charging is not enabled
-        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' ) {
-            return false;
-        }
 
-        // check form if subscription is disabled
-        if ( isset( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes' ) {
-            return false;
+        // bail out if charging is not enabled
+        $current_user  = wpuf_get_user();
+        if ( !$current_user->subscription()->current_pack_id() ) {
+            return;
         }
 
         $user_sub_meta  = self::get_user_pack( $user_id );

@@ -860,53 +860,39 @@ class WPUF_Subscription {
      */
     function subscription_packs( $atts = null ) {
         $cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
-
         $defaults = array(
-            'include' => 'any',
+            'include' => '',
             'exclude' => '',
             'order'   => 'ASC',
             'orderby' => ''
         );
-
         $arranged = array();
         $args     = wp_parse_args( $atts, $defaults );
-
-        if ( 'any' != $args['include'] ) {
-            $args['orderby'] = $args['post__in'];
+        if ( '' != $args['include'] ) {
+            $args['orderby'] = isset( $args['post_in'] ) ? $args['post_in'] : $args['orderby'];
         }
-
         $packs = $this->get_subscriptions( $args );
-
         $details_meta = $this->get_details_meta_value();
-
         ob_start();
-
         if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
             printf( '<h1>%1$s</h1><p>%2$s</p>', __( 'Payment is complete', 'wpuf' ), __( 'Congratulations, your payment has been completed!', 'wpuf' ) );
         }
-
         if ( isset( $_GET['pack_msg'] ) && $_GET['pack_msg'] == 'buy_pack' ) {
             _e('Please buy a subscription pack to post', 'wpuf' );
         }
-
         if ( isset( $_GET['ppp_msg'] ) && $_GET['ppp_msg'] == 'pay_per_post' ) {
             _e('Please buy a subscription pack to post', 'wpuf' );
         }
-
         $current_pack = self::get_user_pack( get_current_user_id() );
-
         if ( isset( $current_pack['pack_id'] ) ) {
             global $wpdb;
-
             $user_id = get_current_user_id();
             $payment_gateway = $wpdb->get_var( "SELECT payment_type FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = {$user_id} AND status = 'completed' ORDER BY created DESC" );
-
             $payment_gateway = strtolower( $payment_gateway );
             ?>
 
             <?php _e( '<p><i>You have a subscription pack activated. </i></p>', 'wpuf' ); ?>
             <?php _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' );
-
             ?>
             <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wpuf' ); ?>
 
@@ -918,7 +904,6 @@ class WPUF_Subscription {
             </form>
             <?php
         }
-
         if ( $packs ) {
             echo '<ul class="wpuf_packs">';
             foreach ($packs as $pack) {
@@ -928,16 +913,11 @@ class WPUF_Subscription {
                 <?php $this->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
                 </li>
                 <?php
-
             }
             echo '</ul>';
         }
-
         $contents = ob_get_clean();
-
         return apply_filters( 'wpuf_subscription_packs', $contents, $packs );
-
-
     }
 
     function get_details_meta_value() {

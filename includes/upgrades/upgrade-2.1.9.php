@@ -76,7 +76,7 @@ function wpuf_upgrade_2_1_9_subscription() {
                 'post_type_name' =>  $post_type
             );
 
-            WPUF_Subscription::init()->update_user_subscription_meta( $post_ID, $post );
+            wpuf_get_user( $post_ID )->subscription()->update_meta( $post );
         }
     }
 

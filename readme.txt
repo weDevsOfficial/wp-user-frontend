@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 4.8.1
 Requires PHP: 5.4
-Stable tag: 2.6.0
+Stable tag: 2.6.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -169,6 +169,12 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.6.1 (8 November, 2017) =
+
+ * **Fix:** Fixed subscription pack frontend display issue. A small bug was introduced that was preventing displaying the subscription packs correctly.
+ * **Fix:** Fix for packs with unlimited post. We had a small mistake in pack post counting and unlimited subscription plan was discarded. This version fixes the issue.
+
 
 = v2.6.0 (6 November, 2017) =
 

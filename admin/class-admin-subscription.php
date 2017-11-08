@@ -118,7 +118,7 @@ class WPUF_Admin_Subscription {
                 }
                 $user_pack['expire'] = isset( $_POST['expire'] ) ? wpuf_date2mysql( $_POST['expire'] ) : $user_pack['expire'];
             }
-            WPUF_Subscription::update_user_subscription_meta( $user_id, $user_pack );
+            wpuf_get_user( $user_id )->subscription()->update_meta( $user_pack );
         } else {
             if ( $pack_id == '-1' ) {
                 return;
@@ -472,7 +472,8 @@ class WPUF_Admin_Subscription {
         if ( ! current_user_can( 'edit_users' ) ) {
             return;
         }
-        if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' ) {
+        $current_user  = wpuf_get_user();
+        if ( !$current_user->subscription()->current_pack_id() ) {
             return;
         }
         $userdata = get_userdata( $profileuser->ID ); //wp 3.3 fix

@@ -673,9 +673,10 @@ ul.wpuf_packs {
 .entry-content ul.wpuf_packs > li,
 ul.wpuf_packs > li {
   background: #fff;
+  display: inline-block;
+  vertical-align: top;
   border: 1px solid #DDD;
   border-radius: 5px 5px 5px 5px;
-  float: left;
   list-style: none outside none;
   margin: 5px 25px 25px 0;
   position: relative;

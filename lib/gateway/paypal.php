@@ -27,7 +27,7 @@ class WPUF_Paypal {
 
     public function subscription_cancel( $user_id ) {
         $sub_meta = 'cancel';
-        WPUF_Subscription::init()->update_user_subscription_meta( $user_id, $sub_meta );
+        wpuf_get_user( $user_id )->subscription()->update_meta( $sub_meta );
     }
 
     /**
@@ -75,7 +75,6 @@ class WPUF_Paypal {
 
         if ( strtolower( $parsed_response['ACK'] ) == 'success' ) {
             $this->subscription_cancel( $user_id );
-            //WPUF_Subscription::init()->update_user_subscription_meta( $user_id, $sub_info );
         }
     }
 
@@ -144,7 +143,7 @@ class WPUF_Paypal {
         }
 
         if ( $billing_amount == 0 ) {
-            WPUF_Subscription::init()->new_subscription( $user_id, $data['item_number'], $profile_id = null, false,'free' );
+            wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], $profile_id = null, false,'free' );
             wp_redirect( $return_url );
             exit();
         }

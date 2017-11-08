@@ -479,10 +479,7 @@ class WPUF_Subscription {
      * @param int $post_id
      */
     function monitor_new_post( $post_id, $form_id, $form_settings ) {
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         global $wpdb, $userdata;
 
         // bail out if charging is not enabled
@@ -884,10 +881,7 @@ class WPUF_Subscription {
         $pay_per_post      = $form->is_enabled_pay_per_post();
         $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
         $force_pack        = $form->is_enabled_force_pack();
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         if ( self::has_user_error( $form_settings ) || ( $pay_per_post && !$force_pack ) ) {
             ?>
             <div class="wpuf-info">
@@ -1002,51 +996,6 @@ class WPUF_Subscription {
      * @return bool
      */
     public static function has_user_error( $form_settings = null ) {
-<<<<<<< Updated upstream
-        global $userdata;
-
-        $user_id = isset( $userdata->ID ) ? $userdata->ID : '';
-        // bail out if charging is not enabled
-        
-        $current_user  = wpuf_get_user();
-        if ( !$current_user->subscription()->current_pack_id() ) {
-            return false;
-        }
-        // if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' ) {
-        //     return false;
-        // }
-
-        // // check form if subscription is disabled
-        // if ( isset( $form_settings['subscription_disabled'] ) && $form_settings['subscription_disabled'] == 'yes' ) {
-        //     return false;
-        // }
-
-        $user_sub_meta  = self::get_user_pack( $user_id );
-        $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
-        $post_count     = isset( $user_sub_meta['posts'][$form_post_type] ) ? $user_sub_meta['posts'][$form_post_type] : 0;
-
-        if ( isset( $user_sub_meta['recurring'] ) && $user_sub_meta['recurring'] == 'yes' ) {
-
-            // user has recurring subscription
-            if ( $post_count > 0 || $post_count == '-1' ) {
-                return false;
-            } else {
-                return true;
-            }
-
-        } else {
-            $expire = isset( $user_sub_meta['expire'] ) ? $user_sub_meta['expire'] : 0;
-
-            if ( strtolower( $expire ) == 'unlimited' || empty( $expire ) ) {
-                $expire_status = false;
-            } else if ( ( strtotime( date( 'Y-m-d', strtotime( $expire ) ) ) >= strtotime( date( 'Y-m-d', time() ) ) ) && ( $post_count > 0  || $post_count == '-1' ) ) {
-                $expire_status = false;
-            } else {
-                $expire_status = true;
-            }
-
-=======
->>>>>>> Stashed changes
 
         _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->has_error( $form_settings = null );' );
 

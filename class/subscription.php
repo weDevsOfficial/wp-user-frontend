@@ -619,7 +619,7 @@ class WPUF_Subscription {
      * @param int $pack_id subscription pack id
      */
     public function new_subscription( $user_id, $pack_id, $profile_id = null, $recurring, $status = null ) {
-        _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, $profile_id = null, $recurring, $status = null );' );
+        // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, $profile_id = null, $recurring, $status = null );' );
 
         wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, $profile_id = null, $recurring, $status = null );
     }
@@ -633,7 +633,7 @@ class WPUF_Subscription {
      * @param array $data
      */
     public static function update_user_subscription_meta( $user_id, $user_meta ) {
-        _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user( $user_id )->subscription()->update_meta( $user_meta );' );
+        // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user( $user_id )->subscription()->update_meta( $user_meta );' );
 
         wpuf_get_user( $user_id )->subscription()->update_meta( $user_meta );
     }
@@ -696,7 +696,7 @@ class WPUF_Subscription {
      * @global type $userdata
      */
     function subscription_info() {
-        _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->pack_info( $form_id );' );
+        // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->pack_info( $form_id );' );
 
         wpuf_get_user()->subscription()->pack_info( $form_id );
     }
@@ -783,7 +783,7 @@ class WPUF_Subscription {
                             <?php
                         }
                     }
-                }     
+                }
             } else {
                 foreach ($packs as $pack) {
                     $class = 'wpuf-pack-' . $pack->ID;
@@ -1011,7 +1011,7 @@ class WPUF_Subscription {
      */
     public static function has_user_error( $form_settings = null ) {
 
-        _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->has_error( $form_settings = null );' );
+        // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->has_error( $form_settings = null );' );
 
         wpuf_get_user()->subscription()->has_error( $form_settings = null );
     }
@@ -1026,7 +1026,7 @@ class WPUF_Subscription {
      * @return boolean
      */
     public static function has_used_free_pack( $user_id, $pack_id ) {
-        _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user( $user_id )->subscription()->used_free_pack( $pack_id );' );
+        // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user( $user_id )->subscription()->used_free_pack( $pack_id );' );
 
         wpuf_get_user( $user_id )->subscription()->used_free_pack( $pack_id );
     }
@@ -1040,7 +1040,7 @@ class WPUF_Subscription {
      * @param int $pack_id
      */
     public static function add_free_pack( $user_id, $pack_id ) {
-        _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user( $user_id )->subscription()->add_free_pack( $pack_id );' );
+        // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user( $user_id )->subscription()->add_free_pack( $pack_id );' );
 
         wpuf_get_user( $user_id )->subscription()->add_free_pack( $pack_id );
     }
@@ -1066,7 +1066,7 @@ class WPUF_Subscription {
      * @param $form_vars
      */
     public function reset_user_subscription_data( $post_id, $form_id, $form_settings, $form_vars ) {
-        _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->reset_subscription_data( $post_id, $form_id, $form_settings, $form_vars );' );
+        // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->reset_subscription_data( $post_id, $form_id, $form_settings, $form_vars );' );
 
         wpuf_get_user()->subscription()->reset_subscription_data( $post_id, $form_id, $form_settings, $form_vars );
 

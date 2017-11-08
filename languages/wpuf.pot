@@ -2,10 +2,10 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.6.0\n"
+"Project-Id-Version: WP User Frontend 2.6.1\n"
 "Report-Msgid-Bugs-To: "
 "https://wedevs.com/support/forum/plugin-support/wp-user-frontend/\n"
-"POT-Creation-Date: 2017-11-06 13:35:24+00:00\n"
+"POT-Creation-Date: 2017-11-08 12:34:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -110,9 +110,9 @@ msgid "Subscription pack draft updated."
 msgstr ""
 
 #: admin/class-admin-subscription.php:161
-#: admin/class-admin-subscription.php:493 class/frontend-account.php:135
-#: class/subscription.php:773 class/subscription.php:976
-#: class/subscription.php:989
+#: admin/class-admin-subscription.php:494 class/frontend-account.php:134
+#: class/subscription.php:840 class/subscription.php:853
+#: includes/class-user-subscription.php:294
 msgid "Free"
 msgstr ""
 
@@ -232,7 +232,7 @@ msgid "Enable Post Expiration"
 msgstr ""
 
 #: admin/class-admin-subscription.php:375
-#: admin/class-admin-subscription.php:572 includes/free/form-element.php:65
+#: admin/class-admin-subscription.php:573 includes/free/form-element.php:65
 msgid "Post Expiration Time"
 msgstr ""
 
@@ -256,63 +256,67 @@ msgstr ""
 msgid "Year(s)"
 msgstr ""
 
-#: admin/class-admin-subscription.php:485 includes/free/edit-profile.php:281
+#: admin/class-admin-subscription.php:486 includes/free/edit-profile.php:281
 msgid "WPUF Subscription"
 msgstr ""
 
-#: admin/class-admin-subscription.php:505 class/subscription.php:784
+#: admin/class-admin-subscription.php:506
+#: includes/class-user-subscription.php:305
 #: templates/dashboard/subscription.php:2
 msgid "Subscription Details"
 msgstr ""
 
-#: admin/class-admin-subscription.php:509
+#: admin/class-admin-subscription.php:510
 msgid "This user is using recurring subscription pack"
 msgstr ""
 
-#: admin/class-admin-subscription.php:514 class/subscription.php:786
+#: admin/class-admin-subscription.php:515
+#: includes/class-user-subscription.php:307
 #: templates/dashboard/subscription.php:4
 msgid "Subcription Name: "
 msgstr ""
 
-#: admin/class-admin-subscription.php:516
+#: admin/class-admin-subscription.php:517
 msgid "Package billing details: "
 msgstr ""
 
-#: admin/class-admin-subscription.php:525 class/subscription.php:799
+#: admin/class-admin-subscription.php:526
+#: includes/class-user-subscription.php:320
 #: templates/dashboard/subscription.php:10
 msgid "Remaining post: "
 msgstr ""
 
-#: admin/class-admin-subscription.php:547 class/subscription.php:827
+#: admin/class-admin-subscription.php:548
+#: includes/class-user-subscription.php:348
 #: templates/dashboard/subscription.php:41
 msgid "Expire date:"
 msgstr ""
 
-#: admin/class-admin-subscription.php:561
+#: admin/class-admin-subscription.php:562
 msgid "Post Expiration Enabled"
 msgstr ""
 
-#: admin/class-admin-subscription.php:601
+#: admin/class-admin-subscription.php:602
 msgid "Assign Package"
 msgstr ""
 
-#: admin/class-admin-subscription.php:604
+#: admin/class-admin-subscription.php:605
 msgid "Show Package"
 msgstr ""
 
-#: admin/class-admin-subscription.php:607 includes/free/edit-profile.php:285
+#: admin/class-admin-subscription.php:608 includes/free/edit-profile.php:285
 msgid "Pack:"
 msgstr ""
 
-#: admin/class-admin-subscription.php:610
+#: admin/class-admin-subscription.php:611
 msgid "--Select--"
 msgstr ""
 
-#: admin/class-admin-subscription.php:619
+#: admin/class-admin-subscription.php:620
 msgid "Delete Package"
 msgstr ""
 
-#: admin/class-admin-subscription.php:667
+#: admin/class-admin-subscription.php:668
 msgid "Learn more about <a href=\"%s\" target=\"_blank\">Subscription</a>"
 msgstr ""
 
@@ -564,7 +568,7 @@ msgid "OK"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:325
-#: class/payment.php:168 class/subscription.php:917
+#: class/payment.php:168 class/subscription.php:767
 #: includes/class-list-table-subscribers.php:156
 #: templates/dashboard/subscription.php:62
 msgid "Cancel"
@@ -1304,67 +1308,67 @@ msgstr ""
 msgid "Where the labels of the form should display"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:21
+#: admin/html/form-settings-payment.php:20
 msgid "Payment Options"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:26
+#: admin/html/form-settings-payment.php:25
 msgid "Enable Payments"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:28
+#: admin/html/form-settings-payment.php:27
 msgid "Check to enable Payments for this form."
 msgstr ""
 
-#: admin/html/form-settings-payment.php:33
+#: admin/html/form-settings-payment.php:32
 msgid "Force Pack"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:38
+#: admin/html/form-settings-payment.php:37
 msgid "Force subscription pack"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:40
+#: admin/html/form-settings-payment.php:39
 msgid "Force users to purchase and use subscription pack."
 msgstr ""
 
-#: admin/html/form-settings-payment.php:45
+#: admin/html/form-settings-payment.php:44
 msgid "Fallback to pay per post"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:50
+#: admin/html/form-settings-payment.php:49
 msgid "Fallback pay per post charging"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:52
+#: admin/html/form-settings-payment.php:51
 msgid "Fallback to pay per post charging if pack limit exceeds"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:57
+#: admin/html/form-settings-payment.php:56
 msgid "Fallback cost"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:62
+#: admin/html/form-settings-payment.php:61
 msgid "Cost of pay per post after a subscription pack limit is reached."
 msgstr ""
 
-#: admin/html/form-settings-payment.php:67
+#: admin/html/form-settings-payment.php:66
 msgid "Pay per Post"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:72
+#: admin/html/form-settings-payment.php:71
 msgid "Enable Pay per Post"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:74
+#: admin/html/form-settings-payment.php:73
 msgid "Charge users for posting"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:79
+#: admin/html/form-settings-payment.php:78
 msgid "Cost Settings"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:84
+#: admin/html/form-settings-payment.php:83
 msgid "Amount to be charged per post"
 msgstr ""
 
@@ -2179,111 +2183,111 @@ msgstr ""
 msgid "Registration time redirect to subscription page"
 msgstr ""
 
-#: admin/settings-options.php:292
+#: admin/settings-options.php:281
 msgid "Currency"
 msgstr ""
 
-#: admin/settings-options.php:299
+#: admin/settings-options.php:288
 msgid "Currency Position"
 msgstr ""
 
-#: admin/settings-options.php:303
+#: admin/settings-options.php:292
 msgid "Left"
 msgstr ""
 
-#: admin/settings-options.php:304
+#: admin/settings-options.php:293
 msgid "Right"
 msgstr ""
 
-#: admin/settings-options.php:305
+#: admin/settings-options.php:294
 msgid "Left with space"
 msgstr ""
 
-#: admin/settings-options.php:306
+#: admin/settings-options.php:295
 msgid "Right with space"
 msgstr ""
 
-#: admin/settings-options.php:311
+#: admin/settings-options.php:300
 msgid "Thousand Separator"
 msgstr ""
 
-#: admin/settings-options.php:312
+#: admin/settings-options.php:301
 msgid "This sets the thousand separator of displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:320
+#: admin/settings-options.php:309
 msgid "Decimal Separator"
 msgstr ""
 
-#: admin/settings-options.php:321
+#: admin/settings-options.php:310
 msgid "This sets the decimal separator of displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:328
+#: admin/settings-options.php:317
 msgid "Number of Decimals"
 msgstr ""
 
-#: admin/settings-options.php:329
+#: admin/settings-options.php:318
 msgid "This sets the number of decimal points shown in displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:339
+#: admin/settings-options.php:328
 msgid "Enable demo/sandbox mode"
 msgstr ""
 
-#: admin/settings-options.php:340
+#: admin/settings-options.php:329
 msgid "When sandbox mode is active, all payment gateway will be used in demo mode"
 msgstr ""
 
-#: admin/settings-options.php:346
+#: admin/settings-options.php:335
 msgid "Payment Page"
 msgstr ""
 
-#: admin/settings-options.php:347
+#: admin/settings-options.php:336
 msgid "This page will be used to process payment options"
 msgstr ""
 
-#: admin/settings-options.php:353
+#: admin/settings-options.php:342
 msgid "Payment Success Page"
 msgstr ""
 
-#: admin/settings-options.php:354 lib/gateway/bank.php:37
+#: admin/settings-options.php:343 lib/gateway/bank.php:37
 msgid "After payment users will be redirected here"
 msgstr ""
 
-#: admin/settings-options.php:360
+#: admin/settings-options.php:349
 msgid "Payment Gateways"
 msgstr ""
 
-#: admin/settings-options.php:361
+#: admin/settings-options.php:350
 msgid "Active payment gateways"
 msgstr ""
 
-#: admin/settings-options.php:369
+#: admin/settings-options.php:358
 msgid "Guest Email Subject"
 msgstr ""
 
-#: admin/settings-options.php:370
+#: admin/settings-options.php:359
 msgid "This sets the subject of the emails sent to guest users"
 msgstr ""
 
-#: admin/settings-options.php:376
+#: admin/settings-options.php:365
 msgid "Guest Email Body"
 msgstr ""
 
-#: admin/settings-options.php:377
+#: admin/settings-options.php:366
 msgid ""
 "This sets the body of the emails sent to guest users. Please DON'T edit the "
 "'{activation_link}' part"
 msgstr ""
 
-#: admin/settings-options.php:400
+#: admin/settings-options.php:389
 msgid ""
 "Select profile/registration forms for user roles. These forms will be used "
 "to populate extra edit profile fields in backend."
 msgstr ""
 
-#: admin/settings-options.php:411
+#: admin/settings-options.php:400
 msgid " - select - "
 msgstr ""
 
@@ -2404,55 +2408,55 @@ msgstr ""
 msgid "Word limit reached"
 msgstr ""
 
-#: class/frontend-account.php:124
+#: class/frontend-account.php:123
 msgid "<p>You've not subscribed any package yet.</p>"
 msgstr ""
 
-#: class/frontend-account.php:126
+#: class/frontend-account.php:125
 msgid "<p>You've subscribed to the following package.</p>"
 msgstr ""
 
-#: class/frontend-account.php:201 class/subscription.php:75
+#: class/frontend-account.php:183 class/subscription.php:75
 msgid "Nonce failure"
 msgstr ""
 
-#: class/frontend-account.php:215
+#: class/frontend-account.php:197
 msgid "First Name is a required field."
 msgstr ""
 
-#: class/frontend-account.php:219
+#: class/frontend-account.php:201
 msgid "Last Name is a required field."
 msgstr ""
 
-#: class/frontend-account.php:223
+#: class/frontend-account.php:205
 msgid "Email is a required field."
 msgstr ""
 
-#: class/frontend-account.php:234
+#: class/frontend-account.php:216
 msgid "Please provide a valid email address."
 msgstr ""
 
-#: class/frontend-account.php:236
+#: class/frontend-account.php:218
 msgid "This email address is already registered."
 msgstr ""
 
-#: class/frontend-account.php:242
+#: class/frontend-account.php:224
 msgid "Please fill out all password fields."
 msgstr ""
 
-#: class/frontend-account.php:245
+#: class/frontend-account.php:227
 msgid "Please enter your current password."
 msgstr ""
 
-#: class/frontend-account.php:248
+#: class/frontend-account.php:230
 msgid "Please re-enter your password."
 msgstr ""
 
-#: class/frontend-account.php:251
+#: class/frontend-account.php:233
 msgid "New passwords do not match."
 msgstr ""
 
-#: class/frontend-account.php:254 class/frontend-account.php:265
+#: class/frontend-account.php:236 class/frontend-account.php:247
 msgid "Your current password is incorrect."
 msgstr ""
 
@@ -2472,44 +2476,44 @@ msgstr ""
 msgid "You are not the post author. Cheeting huh!"
 msgstr ""
 
-#: class/frontend-form-post.php:64 class/frontend-form-post.php:125
+#: class/frontend-form-post.php:63 class/frontend-form-post.php:124
 msgid "Sorry. Guest Posting is not enabled for this form."
 msgstr ""
 
-#: class/frontend-form-post.php:85 class/frontend-form-post.php:120
-#: class/frontend-form-post.php:127
+#: class/frontend-form-post.php:84 class/frontend-form-post.php:119
+#: class/frontend-form-post.php:126
 msgid "Payment type not selected for this form. Please contact admin."
 msgstr ""
 
-#: class/frontend-form-post.php:177
+#: class/frontend-form-post.php:172
 msgid "You are not logged in"
 msgstr ""
 
-#: class/frontend-form-post.php:185 class/frontend-form-post.php:196
+#: class/frontend-form-post.php:180 class/frontend-form-post.php:191
 msgid "Invalid post"
 msgstr ""
 
-#: class/frontend-form-post.php:190
+#: class/frontend-form-post.php:185
 msgid "Post Editing is disabled"
 msgstr ""
 
-#: class/frontend-form-post.php:201
+#: class/frontend-form-post.php:196
 msgid "You are not allowed to edit"
 msgstr ""
 
-#: class/frontend-form-post.php:213
+#: class/frontend-form-post.php:208
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: class/frontend-form-post.php:219
+#: class/frontend-form-post.php:214
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: class/frontend-form-post.php:289
+#: class/frontend-form-post.php:284
 msgid "Invalid email address."
 msgstr ""
 
-#: class/frontend-form-post.php:298
+#: class/frontend-form-post.php:293
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -2518,11 +2522,11 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: class/frontend-form-post.php:703
+#: class/frontend-form-post.php:698
 msgid "Something went wrong"
 msgstr ""
 
-#: class/frontend-form-post.php:1060
+#: class/frontend-form-post.php:1055
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
@@ -2668,55 +2672,47 @@ msgstr ""
 msgid "Billing Details"
 msgstr ""
 
-#: class/subscription.php:788 templates/dashboard/subscription.php:6
-msgid "Package & billing details: "
-msgstr ""
-
-#: class/subscription.php:812 templates/dashboard/subscription.php:24
-msgid "Unlimited"
-msgstr ""
-
-#: class/subscription.php:885
+#: class/subscription.php:735
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:885
+#: class/subscription.php:735
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:889 class/subscription.php:893
+#: class/subscription.php:739 class/subscription.php:743
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:907
+#: class/subscription.php:757
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:911
+#: class/subscription.php:761
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
-#: class/subscription.php:957
+#: class/subscription.php:821
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:961
+#: class/subscription.php:825
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:973
+#: class/subscription.php:837
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:978
+#: class/subscription.php:842
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:1042
+#: class/subscription.php:905
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:1092
+#: class/subscription.php:950
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
@@ -2825,6 +2821,16 @@ msgstr ""
 
 #: includes/class-user-subscription.php:61
 msgid "The subscription has been expired."
+msgstr ""
+
+#: includes/class-user-subscription.php:309
+#: templates/dashboard/subscription.php:6
+msgid "Package & billing details: "
+msgstr ""
+
+#: includes/class-user-subscription.php:333
+#: templates/dashboard/subscription.php:24
+msgid "Unlimited"
 msgstr ""
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:46
@@ -3475,52 +3481,24 @@ msgstr ""
 msgid "Subscription %s at %s"
 msgstr ""
 
-#: lib/gateway/paypal.php:92
+#: lib/gateway/paypal.php:91
 msgid "PayPal Email"
 msgstr ""
 
-#: lib/gateway/paypal.php:97
+#: lib/gateway/paypal.php:96
 msgid "PayPal Instruction"
 msgstr ""
 
-#: lib/gateway/paypal.php:104
+#: lib/gateway/paypal.php:103
 msgid "PayPal API username"
 msgstr ""
 
-#: lib/gateway/paypal.php:108
+#: lib/gateway/paypal.php:107
 msgid "PayPal API password"
 msgstr ""
 
-#: lib/gateway/paypal.php:112
+#: lib/gateway/paypal.php:111
 msgid "PayPal API signature"
-msgstr ""
-
-#: templates/dashboard/billing-address.php:38
-msgid "Address Line 1 "
-msgstr ""
-
-#: templates/dashboard/billing-address.php:45
-msgid "Address Line 2 "
-msgstr ""
-
-#: templates/dashboard/billing-address.php:52
-msgid "City"
-msgstr ""
-
-#: templates/dashboard/billing-address.php:59
-msgid "State "
-msgstr ""
-
-#: templates/dashboard/billing-address.php:69
-msgid "Zip Code "
-msgstr ""
-
-#: templates/dashboard/billing-address.php:74
-msgid "Country "
-msgstr ""
-
-#: templates/dashboard/billing-address.php:98
-msgid "Update Billing Address"
 msgstr ""
 
 #: templates/dashboard/dashboard.php:5
@@ -3718,207 +3696,207 @@ msgstr ""
 msgid "Edit Profile"
 msgstr ""
 
-#: wpuf-functions.php:1533
+#: wpuf-functions.php:1525
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:1534
+#: wpuf-functions.php:1526
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1535
+#: wpuf-functions.php:1527
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:1536
+#: wpuf-functions.php:1528
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:1537
+#: wpuf-functions.php:1529
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:1538
+#: wpuf-functions.php:1530
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:1539
+#: wpuf-functions.php:1531
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1540
+#: wpuf-functions.php:1532
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:1541
+#: wpuf-functions.php:1533
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:1542
+#: wpuf-functions.php:1534
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:1543
+#: wpuf-functions.php:1535
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:1544
+#: wpuf-functions.php:1536
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:1545
+#: wpuf-functions.php:1537
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1546
+#: wpuf-functions.php:1538
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:1547
+#: wpuf-functions.php:1539
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:1548
+#: wpuf-functions.php:1540
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1549
+#: wpuf-functions.php:1541
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:1550
+#: wpuf-functions.php:1542
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:1551
+#: wpuf-functions.php:1543
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:1552
+#: wpuf-functions.php:1544
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:1553
+#: wpuf-functions.php:1545
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1554
+#: wpuf-functions.php:1546
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1555
+#: wpuf-functions.php:1547
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:1556
+#: wpuf-functions.php:1548
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:1557
+#: wpuf-functions.php:1549
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:1558
+#: wpuf-functions.php:1550
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:1559
+#: wpuf-functions.php:1551
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:1560
+#: wpuf-functions.php:1552
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1561
+#: wpuf-functions.php:1553
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:1562
+#: wpuf-functions.php:1554
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:1563
+#: wpuf-functions.php:1555
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1564
+#: wpuf-functions.php:1556
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:1565
+#: wpuf-functions.php:1557
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:1566
+#: wpuf-functions.php:1558
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1567
+#: wpuf-functions.php:1559
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:1568
+#: wpuf-functions.php:1560
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:1569
+#: wpuf-functions.php:1561
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:1570
+#: wpuf-functions.php:1562
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:1571
+#: wpuf-functions.php:1563
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:1572
+#: wpuf-functions.php:1564
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:1573
+#: wpuf-functions.php:1565
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:1574
+#: wpuf-functions.php:1566
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1575
+#: wpuf-functions.php:1567
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:1576
+#: wpuf-functions.php:1568
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:1577
+#: wpuf-functions.php:1569
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:1578
+#: wpuf-functions.php:1570
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1579
+#: wpuf-functions.php:1571
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:1580
+#: wpuf-functions.php:1572
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:1581
+#: wpuf-functions.php:1573
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1582
+#: wpuf-functions.php:1574
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:1583
+#: wpuf-functions.php:1575
 msgid "Egyptian Pound"
 msgstr ""
 

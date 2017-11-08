@@ -109,11 +109,11 @@ class WPUF_Payment {
             if ( $pack_id && $is_free ) {
 
                 $wpuf_subscription = WPUF_Subscription::init();
+                $wpuf_user = new WPUF_User( $current_user->ID );
 
-                if ( ! WPUF_Subscription::has_used_free_pack( $current_user->ID, $pack_id) ) {
-
-                    $wpuf_subscription->new_subscription( $current_user->ID, $pack_id, null, false, 'free' );
-                    WPUF_Subscription::add_used_free_pack( $current_user->ID, $pack_id );
+                if ( ! $wpuf_user->subscription()->used_free_pack( $pack_id ) ) {
+                    wpuf_get_user( $current_user->ID )->subscription()->add_pack( $pack_id, null, false, 'free' );
+                    $wpuf_user->subscription()->add_free_pack( $current_user->ID, $pack_id );
 
                     $message = apply_filters( 'wpuf_fp_activated_msg', __( 'Your free package has been activated. Enjoy!' ), 'wpuf' );
                 } else {

@@ -116,7 +116,7 @@ class WPUF_User_Subscription {
         if ( isset( $this->pack['posts'] ) && isset( $this->pack['posts'][ $post_type ] ) ) {
             $count = (int) $this->pack['posts'][ $post_type ];
 
-            if ( $count > 0 ) {
+            if ( $count > 0  || $count === -1 ) {
                 return true;
             }
         }

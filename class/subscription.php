@@ -697,8 +697,12 @@ class WPUF_Subscription {
      */
     function subscription_info() {
         // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->pack_info( $form_id );' );
+        //wpuf_get_user()->subscription()->pack_info( $form_id );
+        $sections        = wpuf_get_account_sections();
+        $current_section = 'subscription';
+        
+        do_action( "wpuf_account_content_subscription", $sections, $current_section );
 
-        wpuf_get_user()->subscription()->pack_info( $form_id );
     }
 
 

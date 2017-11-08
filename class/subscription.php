@@ -712,17 +712,17 @@ class WPUF_Subscription {
         $defaults = array(
             'include' => '',
             'exclude' => '',
-            'order'   => 'ASC',
+            'order'   => '',
             'orderby' => ''
         );
 
         $arranged = array();
         $args     = wp_parse_args( $atts, $defaults );
 
-        if ( '' != $args['include'] ) {
-            $args['order'] = isset( $args['post__in'] ) ? $args['post__in'] : $args['orderby'];
+        if ( $args['include'] != ""  ) {
+            $pack_order = explode(',', $args['include']);
         } else {
-            $args['order'] = $args['include'];
+            $args['order'] = isset( $args['order'] ) ? $args['order'] : 'ASC';
         }
 
         $packs = $this->get_subscriptions( $args );
@@ -771,14 +771,28 @@ class WPUF_Subscription {
 
         if ( $packs ) {
             echo '<ul class="wpuf_packs">';
-            foreach ($packs as $pack) {
-                $class = 'wpuf-pack-' . $pack->ID;
-                ?>
-                <li class="<?php echo $class; ?>">
-                <?php $this->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
-                </li>
-                <?php
-
+            if ( isset($args['include']) && $args['include'] != "" ) {
+                for ( $i = 0; $i < count( $pack_order ); $i++ ) {
+                    foreach ($packs as $pack) {
+                        if (  (int) $pack->ID == $pack_order[$i] ) {
+                            $class = 'wpuf-pack-' . $pack->ID;
+                            ?>
+                            <li class="<?php echo $class; ?>">
+                                <?php $this->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
+                            </li>
+                            <?php
+                        }
+                    }
+                }     
+            } else {
+                foreach ($packs as $pack) {
+                    $class = 'wpuf-pack-' . $pack->ID;
+                    ?>
+                    <li class="<?php echo $class; ?>">
+                        <?php $this->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
+                    </li>
+                    <?php
+                }
             }
             echo '</ul>';
         }

@@ -983,7 +983,7 @@ class WPUF_Subscription {
 
         }
 
-        if ( !is_user_logged_in() && $form_settings['guest_post'] == 'true' ) {
+        if ( !is_user_logged_in() && isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' ) {
             if ( $form->is_charging_enabled() ) {
                 if ( $force_pack ) {
                     return 'no';

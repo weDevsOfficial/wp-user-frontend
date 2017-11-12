@@ -268,6 +268,17 @@ ul.wpuf-form li .wpuf-fields .wpuf-help {
   font-family: sans-serif;
   display: block;
 }
+ul.wpuf-form li .wpuf-fields .wpuf-help .text-danger {
+  color: red;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-help .text-success {
+  color: green;
+}
+ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart,
+ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart-mgs {
+  font-style: normal;
+  font-size: 16px;
+}
 ul.wpuf-form li .wpuf-fields table,
 ul.wpuf-form li .wpuf-fields td {
   border: none;

@@ -1388,6 +1388,25 @@ function wpuf_get_post_form_templates() {
 }
 
 /**
+ * Get profile form templates
+ *
+ * @since 2.4
+ *
+ * @return array
+ */
+function wpuf_get_profile_form_templates() {
+    if ( !class_exists( 'WP_User_Frontend_Pro' ) ) {
+        return;
+    }
+    require_once WPUF_PRO_ROOT . '/includes/profile-form-templates/dokan-vendor-reg-template.php';
+
+    $integrations = array();
+    $integrations['Dokan_Vendor_Reg_Template'] = new Dokan_Vendor_Reg_Template();
+
+    return apply_filters( 'wpuf_get_profile_form_templates', $integrations );
+}
+
+/**
  * Get countries
  *
  * @since 2.4.1

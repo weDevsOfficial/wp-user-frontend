@@ -58,7 +58,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $user_can_post = 'yes';
         $current_user  = wpuf_get_user();
 
-        if ( $form_settings['guest_post'] == 'false' && ! is_user_logged_in() ) {
+        if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'false' && ! is_user_logged_in() ) {
             $user_can_post = 'no';
             $info = sprintf( __( 'Sorry. Guest Posting is not enabled for this form.', 'wpuf' ));
         }
@@ -70,7 +70,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
 
             // guest post payment checking
-            if ( ! is_user_logged_in() && $form_settings['guest_post'] == 'true' ) {
+            if ( ! is_user_logged_in() &&  isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' ) {
                 if ( $form->is_charging_enabled() ) {
                     if ( $force_pack ) {
                         $user_can_post = 'no';
@@ -129,7 +129,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 }
             }
         } else {
-            if ( $form_settings['guest_post'] == 'true' && ! is_user_logged_in() ) {
+            if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' && ! is_user_logged_in() ) {
                 $user_can_post = 'yes';
             }
         }
@@ -242,7 +242,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $form_id       = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
         $form_vars     = $this->get_input_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
-        $guest_mode    = $form_settings['guest_post'];
+        $guest_mode    = isset( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : '';
         $guest_verify  = isset( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false' ;
 
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
@@ -275,7 +275,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         // Guest Stuffs: check for guest post
         if ( !is_user_logged_in() ) {
 
-            if ( $form_settings['guest_post'] == 'true' && $form_settings['guest_details'] == 'true' ) {
+            if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' && $form_settings['guest_details'] == 'true' ) {
                 $guest_name  = trim( $_POST['guest_name'] );
                 $guest_email = trim( $_POST['guest_email'] );
 
@@ -327,7 +327,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 }
 
                 // guest post is enabled and details are off
-            } elseif ( $form_settings['guest_post'] == 'true' && $form_settings['guest_details'] == 'false' ) {
+            } elseif ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' && $form_settings['guest_details'] == 'false' ) {
                 $post_author = $default_post_author;
             }
 

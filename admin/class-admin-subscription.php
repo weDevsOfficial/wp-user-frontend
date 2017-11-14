@@ -42,7 +42,7 @@ class WPUF_Admin_Subscription {
         add_action( 'admin_notices', array( $this, 'add_help_link' ) );
 
         // new subscription metabox hooks
-        add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+        add_action( 'add_meta_boxes', array( $this, 'add_sub_meta_box' ) );
         add_action( 'admin_print_styles-post-new.php', array( $this, 'enqueue' ) );
         add_action( 'admin_print_styles-post.php', array( $this, 'enqueue' ) );
     }
@@ -333,7 +333,7 @@ class WPUF_Admin_Subscription {
         <?php
     }
 
-    public function add_meta_box() {
+    public function add_sub_meta_box() {
         add_meta_box( 'wpuf_subs_metabox', 'Subscription Options', array( $this, 'subs_meta_box' ), 'wpuf_subscription' );
     }
 
@@ -360,9 +360,9 @@ class WPUF_Admin_Subscription {
 
         <div class="metabox-tabs-div">
             <ul class="metabox-tabs" id="metabox-tabs">
-                <li class="active tab1"><a class="active" href="javascript:void();">Payment Settings</a></li>
-                <li class="tab2"><a href="javascript:void();">Post Restriction</a></li>
-                <li class="tab3"><a href="javascript:void();">Taxonomy Restriction</a></li>
+                <li class="active tab1"><a class="active" href="#">Payment Settings</a></li>
+                <li class="tab2"><a href="#">Post Restriction</a></li>
+                <?php do_action('subs_nav_tab'); ?>
             </ul>
 
             <div class="tab1">
@@ -461,17 +461,19 @@ class WPUF_Admin_Subscription {
                     </td>
                 </tr>
 
-                <tr valign="top">
-                <th><label><?php _e( 'Recurring', 'wpuf' ); ?></label></th>
-                <td>
-                    <label for="wpuf-recuring-pay">
-                        <input type="checkbox" disabled checked size="20" style="" id="wpuf-recuring-pay" value="yes" name="" />
-                        <?php _e( 'Enable Recurring Payment', 'wpuf' ); ?>
-                    </label>
+                <?php if ( class_exists('WP_User_Frontend_Pro') ) {?>
 
-                    <label class="wpuf-pro-text-alert"> (<?php echo WPUF_Pro_Prompt::get_pro_prompt_text(); ?>)</label>
-                </td>
+                <tr valign="top">
+                    <th><label><?php _e( 'Recurring', 'wpuf-pro' ); ?></label></th>
+                    <td>
+                        <label for="wpuf-recuring-pay">
+                            <input type="checkbox" <?php checked( $sub_meta['recurring_pay'], 'yes' ); ?> size="20" style="" id="wpuf-recuring-pay" value="yes" name="recurring_pay" />
+                            <?php _e( 'Enable Recurring Payment', 'wpuf-pro' ); ?>
+                        </label>
+                    </td>
                 </tr>
+                <?php } ?>
+
                 </table>
             </div>
             
@@ -484,15 +486,8 @@ class WPUF_Admin_Subscription {
                 </table>
             </div>
 
-
-            <div class="tab3">
-                <table class="form-table">
-                    <tr>
-                        <th scope="row"><label for="wpuf_input5">Taxonomy Restriction</label></th>
-                        <td><input type="text" id= "wpuf_input5" name="wpuf_input5"/></td>
-                    </tr>
-                </table>
-            </div>
+            <?php do_action( 'subs_nav_tab_content' ); ?>
+            
         </div>
         <?php
     }

@@ -1,15 +1,9 @@
 .metabox-tabs-div {
-	margin-bottom: 40px;
-}
-
-#metabox-tabs {
-	padding: 0px;
+	margin-bottom: 32px;
 }
 
 ul#metabox-tabs li.active {
 	background: #ffffff;
-	border-style: solid;
-	border-width: 1px;
 }
 
 ul#metabox-tabs li {
@@ -24,11 +18,13 @@ ul#metabox-tabs li {
     text-decoration: none;
     padding: 10px;
     display: block;
+    border-style: none;
+	border-width: 1px 1px 1px 0px;
 }
 
-ul.wpuf-sub-tab li {
+ul.metabox-tabs li {
 	margin: 0px;
-	padding: 5px;
+	padding: 2px;
 	display: block;
 	float: left;
 	position: relative;

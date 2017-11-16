@@ -67,6 +67,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $pay_per_post      = $form->is_enabled_pay_per_post();
             $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
             $force_pack        = $form->is_enabled_force_pack();
+            $fallback_enabled  = $form->is_enabled_fallback_cost();
+            $fallback_cost     = $form->get_subs_fallback_cost();
 
 
             // guest post payment checking
@@ -98,8 +100,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                             if ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
                                 $user_can_post = 'yes';
                             } else {
-                                $user_can_post = 'no';
-                                $info = 'Post Limit Exceeded for your purchased subscription pack.';
+                                if ( $fallback_enabled ) {
+                                    $user_can_post = 'yes';
+                                    // $info = sprintf( __( 'Fallback enabled in force pack.', 'wpuf' ));
+                                } else {
+                                    $user_can_post = 'no';
+                                    $info = 'Post Limit Exceeded for your purchased subscription pack.';
+                                }
                             }
                         } else {
                             $user_can_post = 'no';

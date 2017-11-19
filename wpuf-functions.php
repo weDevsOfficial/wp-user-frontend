@@ -347,11 +347,15 @@ class WPUF_Walker_Category_Checklist extends Walker {
 function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = array(), $class = null ) {
     require_once ABSPATH . '/wp-admin/includes/template.php';
 
-    $walker       = new WPUF_Walker_Category_Checklist();
-
-    $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-    $exclude      = explode( ',', $attr['exclude'] );
-    $tax          = $attr['name'];
+    $walker             = new WPUF_Walker_Category_Checklist();
+    
+    $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
+    $exclude            = explode( ',', $attr['exclude'] );
+    $tax                = $attr['name'];
+    $c_user             = get_current_user_id();
+    $pack               = get_user_meta( $c_user , '_wpuf_subscription_pack', true );
+    $allowed_tax_id_arr = get_post_meta( $pack['pack_id'] , '_sub_allowed_term_ids', true );
+    $allowed_tax_ids    = implode( ', ', $allowed_tax_id_arr );
 
     $args = array(
         'taxonomy' => $tax,
@@ -369,6 +373,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     $categories = (array) get_terms( $tax, array(
         'hide_empty'  => false,
+        'include'     => $allowed_tax_ids,
         $exclude_type => (array) $exclude,
         'orderby'     => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
         'order'       => isset( $attr['order'] ) ? $attr['order'] : 'ASC',

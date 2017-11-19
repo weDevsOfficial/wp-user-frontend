@@ -14,7 +14,7 @@ class WPUF_Subscription {
     function __construct() {
 
         add_action( 'init', array($this, 'register_post_type') );
-        add_filter( 'wpuf_add_post_args', array($this, 'set_pending'), 10, 3 );
+        add_filter( 'wpuf_add_post_args', array($this, 'set_pending'), 10, 4 );
         add_filter( 'wpuf_add_post_redirect', array($this, 'post_redirect'), 10, 4 );
 
         add_filter( 'wpuf_addpost_notice', array($this, 'force_pack_notice'), 20, 3 );
@@ -453,9 +453,8 @@ class WPUF_Subscription {
      * @param string $postdata
      * @return string
      */
-    function set_pending( $postdata, $form_id, $form_settings ) {
+    function set_pending( $postdata, $form_id, $form_settings, $form_vars ) {
 
-        $charging_enabled = '';
         $form             = new WPUF_Form( $form_id );
         $payment_options  = $form->is_charging_enabled();
         $pay_per_post     = $form->is_enabled_pay_per_post();
@@ -464,13 +463,11 @@ class WPUF_Subscription {
         $current_pack     = $current_user->subscription()->current_pack();
         $has_post         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-        if ( !$payment_options ) {
-            $charging_enabled = 'no';
-        } else {
-            $charging_enabled = 'yes';
+        if ( is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
+            $postdata['post_status'] = 'pending';
         }
 
-        if ( $pay_per_post || ( !is_wp_error( $current_pack ) && $fallback_cost && !$has_post )) {
+        if ( $payment_options && ( $pay_per_post || ( $fallback_cost && !$has_post )))  {
             $postdata['post_status'] = 'pending';
         }
 
@@ -495,14 +492,15 @@ class WPUF_Subscription {
             return;
         }
 
-        $force_pack      = $form->is_enabled_force_pack();
-        $pay_per_post    = $form->is_enabled_pay_per_post();
-        $current_user    = wpuf_get_user();
-        $current_pack    = $current_user->subscription()->current_pack();
+        $force_pack    = $form->is_enabled_force_pack();
+        $pay_per_post  = $form->is_enabled_pay_per_post();
+        $fallback_cost = $form->is_enabled_fallback_cost();
+        $current_user  = wpuf_get_user();
+        $current_pack  = $current_user->subscription()->current_pack();
+        $has_post      = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-         if ( $force_pack || $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+        if ( $force_pack && ! is_wp_error( $current_pack ) && $has_post ) {
 
-            update_post_meta( $post_id, '_test_key', 'test2' );
             $sub_info    = self::get_user_pack( $userdata->ID );
             $post_type   = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
             $count       = isset( $sub_info['posts'][$post_type] ) ? intval( $sub_info['posts'][$post_type] ) : 0;
@@ -522,14 +520,9 @@ class WPUF_Subscription {
             //meta added to make post have flag if post is published
             update_post_meta( $post_id, 'wpuf_post_status', 'published' );
 
-        } elseif ( $pay_per_post ) {
+        } elseif ( $pay_per_post || ($fallback_cost && !$has_post )) {
             //there is some error and it needs payment
             //add a uniqid to track the post easily
-            $order_id = uniqid( rand( 10, 1000 ), false );
-            update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
-            update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
-        } elseif ( $current_pack && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-            // checking for fallback cost
             $order_id = uniqid( rand( 10, 1000 ), false );
             update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
             update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
@@ -581,15 +574,20 @@ class WPUF_Subscription {
      */
     function post_redirect( $response, $post_id, $form_id, $form_settings ) {
 
-        $form = new WPUF_Form( $form_id );
-        $force_pack    = $form->is_enabled_force_pack();
-        $current_user  = wpuf_get_user();
-        $current_pack  = $current_user->subscription()->current_pack();
+        $form            = new WPUF_Form( $form_id );
+        $payment_options = $form->is_charging_enabled();
+        $force_pack      = $form->is_enabled_force_pack();
+        $fallback_cost   = $form->is_enabled_fallback_cost();
+        $current_user    = wpuf_get_user();
+        $current_pack    = $current_user->subscription()->current_pack();
+        $has_pack        = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+
+        var_dump( $response );
 
         if ( $form->is_charging_enabled() ) {
             $order_id = get_post_meta( $post_id, '_wpuf_order_id', true );
 
-            if ( $force_pack && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+            if ( $payment_options && $fallback_cost && !$has_pack ) {
                 $response['show_message'] = false;
                 $response['redirect_to']  = add_query_arg( array(
                     'action'  => 'wpuf_pay',
@@ -1002,6 +1000,8 @@ class WPUF_Subscription {
         $fallback_cost     = $form->get_subs_fallback_cost();
 
         $current_user = wpuf_get_user();
+        $current_pack = $current_user->subscription()->current_pack();
+        $has_post_count = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
         if ( is_user_logged_in() ) {
 
@@ -1014,24 +1014,27 @@ class WPUF_Subscription {
                     return 'yes';
                 } else {
                     //if charging is enabled
-                    if ( $force_pack ) {
-                        if ( ! $fallback_enabled ) {
-                            if ( !$current_user->subscription()->current_pack_id() ) {
-                                return 'no';
-                            } elseif ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-                                return 'yes';
+                    if ( $force_pack ) { 
+                        if ( ! is_wp_error( $current_pack ) ) {
+                            if ( ! $fallback_enabled ) {
+                                if ( !$current_user->subscription()->current_pack_id() ) {
+                                    return 'no';
+                                } elseif ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                                    return 'yes';
+                                }
+                            } else {
+                                if ( !$current_user->subscription()->current_pack_id() ) {
+                                    return 'no';
+                                } elseif ( $has_post_count ) {
+                                    return 'yes';
+                                } elseif ( $current_user->subscription()->current_pack_id() && !$has_post_count ) {
+                                    return 'yes';
+                                }
                             }
                         } else {
-                            if ( !$current_user->subscription()->current_pack_id() ) {
-                                return 'no';
-                            } elseif ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-                                return 'yes';
-                            } elseif ( $current_user->subscription()->current_pack_id() && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-                                return 'yes';
-                            }
-                        }
-                        
-                    }
+                            return 'no';
+                        }    
+                    } 
                     if ( !$force_pack && $pay_per_post ) {
                         return 'yes';
                     }

@@ -69,10 +69,10 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $force_pack        = $form->is_enabled_force_pack();
             $fallback_enabled  = $form->is_enabled_fallback_cost();
             $fallback_cost     = $form->get_subs_fallback_cost();
-
+            $has_post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
             // guest post payment checking
-            if ( ! is_user_logged_in() &&  isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' ) {
+            if ( ! is_user_logged_in() && isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' ) {
                 if ( $form->is_charging_enabled() ) {
                     if ( $force_pack ) {
                         $user_can_post = 'no';
@@ -96,13 +96,12 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                         $current_pack = $current_user->subscription()->current_pack();
 
                         if ( ! is_wp_error( $current_pack ) ) {
-                        // user has valid post count
-                            if ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                            // user has valid post count
+                            if ( $has_post_count ) {
                                 $user_can_post = 'yes';
                             } else {
-                                if ( $fallback_enabled ) {
+                                if ( $fallback_enabled && !$has_post_count ) {
                                     $user_can_post = 'yes';
-                                    // $info = sprintf( __( 'Fallback enabled in force pack.', 'wpuf' ));
                                 } else {
                                     $user_can_post = 'no';
                                     $info = 'Post Limit Exceeded for your purchased subscription pack.';
@@ -115,13 +114,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     }
 
                 } elseif ( $pay_per_post && is_user_logged_in() && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-
+                    // die('5');
                     $user_can_post = 'yes';
                     // $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
                     // echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
 
                 } elseif ( !$pay_per_post && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-
+                    // die('6');
                     $user_can_post = 'no';
                     $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
 
@@ -140,6 +139,9 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 $user_can_post = 'yes';
             }
         }
+
+        // var_dump( $user_can_post );
+        // var_dump( $info );
 
         $info          = apply_filters( 'wpuf_addpost_notice', $info, $id, $form_settings );
         $user_can_post = apply_filters( 'wpuf_can_post', $user_can_post, $id, $form_settings );
@@ -506,7 +508,6 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 }
             }
 
-
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
 
@@ -689,6 +690,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
 
             //redirect the user
+            // var_dump( $response, $postarr );
+            // die();
 
             if ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() ) {
                 $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $form_settings );
@@ -697,9 +700,15 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             } else {
                 $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $form_settings );
             }
+            // var_dump( $response, $postarr );
+            // die();
 
             wpuf_clear_buffer();
             wp_send_json( $response );
+
+            // var_dump( $response, $postarr );
+            // die();
+
         }
 
         $this->send_error( __( 'Something went wrong', 'wpuf' ) );

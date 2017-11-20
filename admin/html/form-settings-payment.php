@@ -70,7 +70,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
                     <input type="checkbox" name="wpuf_settings[enable_pay_per_post]" value="true"<?php checked( $enable_pay_per_post, 'true' ); ?> />
                     <?php _e( 'Enable Pay Per Post', 'wpuf' ) ?>
                 </label>
-                <p class="description"><?php _e( 'Charge users for posting,', 'wpuf' ); ?><a target = "_blank" href = "https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/"><?php _e( ' Learn More about Pay Per Post.', 'wpuf' ); ?></a></p>
+                <p class="description"><?php _e( 'Charge users for posting,', 'wpuf' ); ?><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/"><?php _e( ' Learn More about Pay Per Post.', 'wpuf' ); ?></a></p>
             </td>
         </tr>
 

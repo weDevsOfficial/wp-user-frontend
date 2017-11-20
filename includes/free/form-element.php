@@ -60,6 +60,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                             <?php _e( 'Enable Post Expiration', 'wpuf' ); ?>
                         </label>
                     </td>
+                     <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/"><?php _e('Learn more about Automatic Post Expiration', 'wpuf'); ?></a></p>
                 </tr>
                 <tr class="wpuf_expiration_field">
                     <th><?php _e( 'Post Expiration Time', 'wpuf' ); ?></th>
@@ -152,7 +153,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                 </label>
 
                 <p class="description"><?php echo __( 'If checked, form will be displayed in frontend in multiple steps', 'wpuf' ); ?>
-                <a target = "_blank" href = "https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/"><?php _e( ' Learn more about Multistep', 'wpuf' ); ?></a></p>
+                <a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/"><?php _e( ' Learn more about Multistep', 'wpuf' ); ?></a></p>
             </td>
         </tr>
         <tr class="wpuf_multistep_progress_type wpuf-pro-content">
@@ -216,7 +217,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                         <?php _e( 'Enable post notification', 'wpuf' ); ?>
                     </label>
                 </td>
-                 <p class = "description"><a target = "_blank" href = "https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-set-up-submission-email-notification/"><?php _e('Learn more about Email Notification', 'wpuf'); ?></a></p>
+                 <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-set-up-submission-email-notification/"><?php _e('Learn more about Email Notification', 'wpuf'); ?></a></p>
             </tr>
 
             <tr>

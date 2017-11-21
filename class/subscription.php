@@ -583,22 +583,11 @@ class WPUF_Subscription {
         $has_pack        = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
         if ( $form->is_charging_enabled() ) {
+            update_post_meta( $post_id, 'test', $response );
             $order_id = get_post_meta( $post_id, '_wpuf_order_id', true );
 
-            if ( $payment_options && $fallback_cost && !$has_pack ) {
-                $response['show_message'] = false;
-                $response['redirect_to']  = add_query_arg( array(
-                    'action'  => 'wpuf_pay',
-                    'type'    => 'post',
-                    'post_id' => $post_id
-                ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
-
-                return $response;
-            }
-
-
             // check if there is a order ID
-            if ( $order_id ) {
+            if ( $order_id || ( $payment_options && $fallback_cost && !$has_pack ) ) {
                 $response['show_message'] = false;
                 $response['redirect_to']  = add_query_arg( array(
                     'action'  => 'wpuf_pay',

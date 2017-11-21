@@ -358,6 +358,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $charging_enabled = '';
         $form             = new WPUF_Form( $form_id );
         $payment_options  = $form->is_charging_enabled();
+        $ppp_cost_enabled = $form->is_enabled_pay_per_post();
+        $forcePack        = $form->is_enabled_force_pack();
         $current_user     = wpuf_get_user();
 
         if ( !$payment_options || !is_user_logged_in() ) {
@@ -631,6 +633,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     $redirect_to = get_permalink( $post_id );
                 }
             }
+
+            if ( !$forcePack && $ppp_cost_enabled ) {
+                $redirect_to = add_query_arg( array(
+                    'action'  => 'wpuf_pay',
+                    'type'    => 'post',
+                    'post_id' => $post_id
+                ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
+            } 
 
             $response = array(
                 'success'      => true,

@@ -188,7 +188,10 @@
                             <td>
                                 <?php if ( $post->post_status == 'pending' && $order_id && $payment_status != 'completed' ) { ?>
                                     <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wpuf' ); ?></a>
-                                <?php } ?>
+                                <?php } 
+                                elseif ( $payment_status == 'completed' ) {
+                                    echo "Completed";
+                                }?>
                             </td>
                         <?php } ?>
 

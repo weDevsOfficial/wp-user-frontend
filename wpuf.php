@@ -71,23 +71,22 @@ final class WP_User_Frontend {
      */
     public function init_hooks() {
 
-        add_action( 'plugins_loaded', array( $this, 'wpuf_loader') );
-        add_action( 'plugins_loaded', array( $this, 'plugin_upgrades') );
+        add_action( 'plugins_loaded', array( $this, 'wpuf_loader' ) );
+        add_action( 'plugins_loaded', array( $this, 'plugin_upgrades' ) );
 
         add_action( 'plugins_loaded', array( $this, 'instantiate' ) );
-        add_action( 'init', array( $this, 'load_textdomain') );
+        add_action( 'init', array( $this, 'load_textdomain' ) );
 
-        add_action( 'admin_init', array( $this, 'block_admin_access') );
+        add_action( 'admin_init', array( $this, 'block_admin_access' ) );
 
-        add_action( 'show_admin_bar', array( $this, 'show_admin_bar') );
+        add_action( 'show_admin_bar', array( $this, 'show_admin_bar' ) );
 
-        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
         // do plugin upgrades
+        add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_action_links' ) );
 
-        add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'plugin_action_links' ) );
-
-        //add custom css
+        // add custom css
         add_action( 'wp_head', array( $this, 'add_custom_css' ) );
 
         // set schedule event
@@ -149,11 +148,11 @@ final class WP_User_Frontend {
 
             $message = get_post_meta( $each_post->ID, 'wpuf-post_expiration_message', true );
 
-            if ( !empty( $message ) ) {
+            if ( ! empty( $message ) ) {
                 wp_mail( get_the_author_meta( 'user_email', $each_post->post_author ), $mail_subject, $message );
             }
         }
-        //save an option for debugging purpose
+        // save an option for debugging purpose
         update_option( 'wpuf_expiry_posts_last_cleaned', date( 'F j, Y g:i a' ) );
     }
 
@@ -164,7 +163,7 @@ final class WP_User_Frontend {
      */
     public static function init() {
 
-        if ( !self::$_instance ) {
+        if ( ! self::$_instance ) {
             self::$_instance = new WP_User_Frontend();
         }
 
@@ -220,7 +219,7 @@ final class WP_User_Frontend {
         }
 
         // add reCaptcha library if not found
-        if ( !function_exists( 'recaptcha_get_html' ) ) {
+        if ( ! function_exists( 'recaptcha_get_html' ) ) {
             require_once dirname( __FILE__ ) . '/lib/recaptchalib.php';
             require_once dirname( __FILE__ ) . '/lib/recaptchalib_noCaptcha.php';
         }
@@ -344,11 +343,11 @@ final class WP_User_Frontend {
         $scheme  = is_ssl() ? 'https' : 'http';
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
-        if ( !empty( $api_key ) ) {
-            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key='.$api_key, array(), null );
+        if ( ! empty( $api_key ) ) {
+            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key, array(), null );
         }
 
-        if ( isset ( $post->ID ) ) {
+        if ( isset( $post->ID ) ) {
             ?>
             <script type="text/javascript" id="wpuf-language-script">
                 var error_str_obj = {
@@ -358,15 +357,15 @@ final class WP_User_Frontend {
                 }
             </script>
             <?php
-            wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form' . $suffix . '.js', array('jquery') );
+            wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form' . $suffix . '.js', array( 'jquery' ) );
         }
 
         wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
-        wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array('jquery'), false, true );
+        wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array( 'jquery' ), false, true );
 
-        if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on') == 'on') {
+        if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {
             $this->plugin_scripts();
-        } else if ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) ) {
+        } elseif ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) ) {
             $this->plugin_scripts();
         }
     }
@@ -381,7 +380,7 @@ final class WP_User_Frontend {
             return;
         }
 
-        if (   wpuf_has_shortcode( 'wpuf_form', $post->ID )
+        if ( wpuf_has_shortcode( 'wpuf_form', $post->ID )
             || wpuf_has_shortcode( 'wpuf_edit', $post->ID )
             || wpuf_has_shortcode( 'wpuf_profile', $post->ID )
             || wpuf_has_shortcode( 'wpuf_dashboard', $post->ID )
@@ -410,31 +409,36 @@ final class WP_User_Frontend {
         wp_enqueue_script( 'suggest' );
         wp_enqueue_script( 'jquery-ui-slider' );
         wp_enqueue_script( 'plupload-handlers' );
-        wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array('jquery-ui-datepicker') );
-        wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array('jquery', 'plupload-handlers') );
+        wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker' ) );
+        wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array( 'jquery', 'plupload-handlers' ) );
 
         wp_localize_script( 'wpuf-form', 'wpuf_frontend', array(
-            'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-            'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
-            'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
-            'word_limit'    => __( 'Word limit reached', 'wpuf' )
+			'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+			'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
+			'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
+			'word_limit'    => __( 'Word limit reached', 'wpuf' )
         ) );
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
-            'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
-            'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
-            'ajaxurl'    => admin_url( 'admin-ajax.php' ),
-            'plupload'   => array(
-                'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
-                'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
-                'filters'          => array(array('title' => __( 'Allowed Files', 'wpuf' ), 'extensions' => '*')),
-                'multipart'        => true,
-                'urlstream_upload' => true,
-                'warning'          => __( 'Maximum number of files reached!', 'wpuf' ),
-                'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wpuf' ),
-                'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wpuf' )
-            )
-        ));
+			'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
+			'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
+			'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+			'plupload'   => array(
+				'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
+				'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
+				'filters'          => array(
+					array(
+						'title' => __( 'Allowed Files', 'wpuf' ),
+						'extensions' => '*'
+					)
+				),
+				'multipart'        => true,
+				'urlstream_upload' => true,
+				'warning'          => __( 'Maximum number of files reached!', 'wpuf' ),
+				'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wpuf' ),
+				'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wpuf' )
+			)
+        ) );
     }
 
     /**
@@ -451,9 +455,9 @@ final class WP_User_Frontend {
         }
 
         $access_level = wpuf_get_option( 'admin_access', 'wpuf_general', 'read' );
-        $valid_pages  = array('admin-ajax.php', 'admin-post.php', 'async-upload.php', 'media-upload.php');
+        $valid_pages  = array( 'admin-ajax.php', 'admin-post.php', 'async-upload.php', 'media-upload.php' );
 
-        if ( ! current_user_can( $access_level ) && !in_array( $pagenow, $valid_pages ) ) {
+        if ( ! current_user_can( $access_level ) && ! in_array( $pagenow, $valid_pages ) ) {
             // wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
             wp_redirect( home_url() );
             exit;
@@ -508,7 +512,7 @@ final class WP_User_Frontend {
     /**
      * Plugin action links
      *
-     * @param  array  $links
+     * @param  array $links
      *
      * @since  2.3.3
      *
@@ -545,7 +549,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function maybe_weforms_install() {
-        if ( class_exists('WeForms') ) {
+        if ( class_exists( 'WeForms' ) ) {
             return;
         }
         // install the core
@@ -571,7 +575,12 @@ final class WP_User_Frontend {
         }
 
         $plugin = 'weforms';
-        $api    = plugins_api( 'plugin_information', array( 'slug' => $plugin, 'fields' => array( 'sections' => false ) ) );
+        $api    = plugins_api( 'plugin_information', array(
+            'slug'   => $plugin,
+            'fields' => array(
+				'sections' => false
+			)
+        ) );
 
         $upgrader = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
         $result   = $upgrader->install( $api->download_link );

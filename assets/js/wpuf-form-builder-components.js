@@ -1090,19 +1090,19 @@ Vue.component('form-taxonomy', {
     }
 });
 
-/**
- * Field template: Text
- */
-Vue.component('form-text_field', {
-    template: '#tmpl-wpuf-form-text_field',
+Vue.component('form-textarea_field', {
+    template: '#tmpl-wpuf-form-textarea_field',
 
     mixins: [
         wpuf_mixins.form_field_mixin
     ]
 });
 
-Vue.component('form-textarea_field', {
-    template: '#tmpl-wpuf-form-textarea_field',
+/**
+ * Field template: Text
+ */
+Vue.component('form-text_field', {
+    template: '#tmpl-wpuf-form-text_field',
 
     mixins: [
         wpuf_mixins.form_field_mixin

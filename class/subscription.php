@@ -279,8 +279,7 @@ class WPUF_Subscription {
             $post_types['wpuf_coupon'],
             $post_types['wpuf_input'],
             $post_types['custom_css'],
-            $post_types['customize_changeset'],
-            $post_types['oembed_cache']
+            $post_types['customize_changeset']
         );
 
         return apply_filters( 'wpuf_posts_type', $post_types );
@@ -584,31 +583,26 @@ class WPUF_Subscription {
         $has_pack        = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
         if ( $form->is_charging_enabled() ) {
+            update_post_meta( $post_id, 'test', $response );
             $order_id = get_post_meta( $post_id, '_wpuf_order_id', true );
 
-            if ( $payment_options && $fallback_cost && !$has_pack ) {
-                $response['show_message'] = false;
-                $response['redirect_to']  = add_query_arg( array(
-                    'action'  => 'wpuf_pay',
-                    'type'    => 'post',
-                    'post_id' => $post_id
-                ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
-
-                return $response;
-            }
-
-
             // check if there is a order ID
-            if ( $order_id ) {
+            if ( $order_id || ( $payment_options && $fallback_cost && !$has_pack ) ) {
                 $response['show_message'] = false;
                 $response['redirect_to']  = add_query_arg( array(
                     'action'  => 'wpuf_pay',
                     'type'    => 'post',
                     'post_id' => $post_id
                 ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
-
-                return $response;
             }
+
+            if ( !$forcePack && $ppp_cost_enabled ) {
+                $response['redirect_to'] = add_query_arg( array(
+                    'action'  => 'wpuf_pay',
+                    'type'    => 'post',
+                    'post_id' => $post_id
+                ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
+            } 
         }
 
         return $response;

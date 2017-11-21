@@ -36,7 +36,7 @@ class WPUF_Form {
 	public function is_charging_enabled() {
 		$settings = $this->get_settings();
 	
-		if ( isset( $settings['payment_options']) && $settings['payment_options'] == 'true' ) {
+		if ( isset( $settings['payment_options'] ) && $settings['payment_options'] == 'true' ) {
 			return true;
 		}
 
@@ -46,7 +46,7 @@ class WPUF_Form {
 	public function is_enabled_pay_per_post() {
 		$settings = $this->get_settings();
 
-		if ( isset( $settings['enable_pay_per_post']) && $settings['enable_pay_per_post'] == 'true' ) {
+		if ( isset( $settings['enable_pay_per_post'] ) && $settings['enable_pay_per_post'] == 'true' ) {
 			return true;
 		}
 
@@ -56,7 +56,7 @@ class WPUF_Form {
 	public function is_enabled_force_pack() {
 		$settings = $this->get_settings();
 
-		if ( isset( $settings['force_pack_purchase']) && $settings['force_pack_purchase'] == 'true' ) {
+		if ( isset( $settings['force_pack_purchase'] ) && $settings['force_pack_purchase'] == 'true' ) {
 			return true;
 		}
 
@@ -66,8 +66,28 @@ class WPUF_Form {
 	public function get_pay_per_post_cost() {
 		$settings = $this->get_settings();
 		
-		if ( isset( $settings['pay_per_post_cost']) && $settings['pay_per_post_cost'] > 0 ) {
+		if ( isset( $settings['pay_per_post_cost'] ) && $settings['pay_per_post_cost'] > 0 ) {
 			return $settings['pay_per_post_cost'];
+		}
+
+		return 0;
+	}
+
+	public function is_enabled_fallback_cost() {
+		$settings = $this->get_settings();
+
+		if ( isset( $settings['fallback_ppp_enable'] ) && $settings['fallback_ppp_enable'] == 'true' ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function get_subs_fallback_cost() {
+		$settings = $this->get_settings();
+		
+		if ( isset( $settings['fallback_ppp_cost'] ) && $settings['fallback_ppp_cost'] > 0 ) {
+			return $settings['fallback_ppp_cost'];
 		}
 
 		return 0;

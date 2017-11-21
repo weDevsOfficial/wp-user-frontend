@@ -357,7 +357,7 @@
             var table = $(this).closest('table');
 
             if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-force-pack').hide();
+                table.find('tr.show-if-force-pack').show();
 
             } else {
                 table.find('tr.show-if-force-pack').hide();

@@ -114,13 +114,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     }
 
                 } elseif ( $pay_per_post && is_user_logged_in() && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-                    // die('5');
+                  
                     $user_can_post = 'yes';
                     // $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
                     // echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
 
                 } elseif ( !$pay_per_post && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-                    // die('6');
+                    
                     $user_can_post = 'no';
                     $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
 

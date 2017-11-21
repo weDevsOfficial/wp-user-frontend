@@ -582,8 +582,6 @@ class WPUF_Subscription {
         $current_pack    = $current_user->subscription()->current_pack();
         $has_pack        = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-        var_dump( $response );
-
         if ( $form->is_charging_enabled() ) {
             $order_id = get_post_meta( $post_id, '_wpuf_order_id', true );
 

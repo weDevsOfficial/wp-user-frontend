@@ -211,39 +211,70 @@ span {
         margin-top: -5px;
     }
 }
-
 .wpuf-settings-wrap {
     display: flex;
     border: 1px solid #e5e5e5;
- }
-
- .dokan-settings-wrap .dashicons {
+    background: #fff;
+    box-shadow: 0 0 0 1px #c8d7e1, 0 1px 2px #e9eff3;
+}
+.dokan-settings-wrap .dashicons {
     padding-top: 2px;
     margin-right: 5px;
- }
-
- .wpuf-settings-wrap h2.nav-tab-wrapper {
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper {
     flex: 1;
     border-bottom: none;
     padding: 0;
     background: #e5e5e5;
- }
-
- .wpuf-settings-wrap h2.nav-tab-wrapper a {
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a {
     float: none;
     display: block;
     margin: 0;
     border: none;
-    padding: 10px 12px;
- }
-
- .wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab-active {
+    padding: 0.6rem;
+    border-bottom: 1px solid #c8d7e1;
+    font-weight: 500;
+    border-right: 1px solid #c8d7e1;
+    background-color: #f1f1f1;
+    color: #444;
+    text-decoration: none;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab-active {
     border-left: 3px solid #0073aa !important;
- }
-
- .wpuf-settings-wrap .metabox-holder {
+    background: #fff;
+    border-right: 1px solid #fff;
+    margin-left: -2px;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab .dashicons {
+   margin-right: 10px;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_general-tab .dashicons {
+  color: #9b59b6;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_dashboard-tab .dashicons {
+  color: #6c75ff;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_profile-tab .dashicons {
+  color: #00aeff;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_payment-tab .dashicons {
+  color: #e67e22;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_guest_mails-tab .dashicons {
+  color: #115da7;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_sms-tab .dashicons {
+  color: #00aeff;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_payment_invoices-tab .dashicons {
+  color: #1abc9d;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#user_directory-tab .dashicons {
+  color: #e74c3c;
+}
+.wpuf-settings-wrap .metabox-holder {
     flex: 3;
     margin-left: 3%;
- }
-
+}
 @import "help.less";

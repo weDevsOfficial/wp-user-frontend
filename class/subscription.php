@@ -279,7 +279,8 @@ class WPUF_Subscription {
             $post_types['wpuf_coupon'],
             $post_types['wpuf_input'],
             $post_types['custom_css'],
-            $post_types['customize_changeset']
+            $post_types['customize_changeset'],
+            $post_types['oembed_cache']
         );
 
         return apply_filters( 'wpuf_posts_type', $post_types );

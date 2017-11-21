@@ -1313,12 +1313,16 @@ class WPUF_Render_Form {
 
     function taxnomy_select( $terms, $attr ) {
 
-        $selected     = $terms ? $terms : '';
-        $required     = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
-        $taxonomy     = $attr['name'];
-        $class        = ' wpuf_'.$attr['name'].'_'.$selected;
-        $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-        $exclude      = $attr['exclude'];
+        $selected           = $terms ? $terms : '';
+        $required           = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
+        $taxonomy           = $attr['name'];
+        $class              = ' wpuf_'.$attr['name'].'_'.$selected;
+        $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
+        $exclude            = $attr['exclude'];
+        $c_user             = get_current_user_id();
+        $pack               = get_user_meta( $c_user , '_wpuf_subscription_pack', true );
+        $allowed_tax_id_arr = get_post_meta( $pack['pack_id'] , '_sub_allowed_term_ids', true );
+        $allowed_tax_ids    = implode( ', ', $allowed_tax_id_arr );
 
         $select = wp_dropdown_categories( array(
 
@@ -1329,6 +1333,7 @@ class WPUF_Render_Form {
             'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
             'name'             => $taxonomy . '[]',
             'taxonomy'         => $taxonomy,
+            'include'          => $allowed_tax_ids,
             'echo'             => 0,
             'title_li'         => '',
             'class'            => 'cat-ajax '. $taxonomy . $class,
@@ -1342,6 +1347,7 @@ class WPUF_Render_Form {
         $attr = array(
             'required'     => $attr['required'],
             'name'         => $attr['name'],
+            'include'      => $allowed_tax_ids,
             'exclude_type' => $attr['exclude_type'],
             'exclude'      => $attr['exclude'],
             'orderby'      => $attr['orderby'],
@@ -1363,11 +1369,14 @@ class WPUF_Render_Form {
      */
     function taxonomy( $attr, $post_id, $form_id ) {
 
-        $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-        $exclude      = $attr['exclude'];
-        $taxonomy     = $attr['name'];
-        $class        = ' wpuf_'.$attr['name'].'_'.$form_id;
-
+        $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
+        $exclude            = $attr['exclude'];
+        $taxonomy           = $attr['name'];
+        $class              = ' wpuf_'.$attr['name'].'_'.$form_id;
+        $c_user             = get_current_user_id();
+        $pack               = get_user_meta( $c_user , '_wpuf_subscription_pack', true );
+        $allowed_tax_id_arr = get_post_meta( $pack['pack_id'] , '_sub_allowed_term_ids', true );
+        $allowed_tax_ids    = implode( ', ', $allowed_tax_id_arr );
 
         $terms = array();
         if ( $post_id && $attr['type'] == 'text' ) {
@@ -1430,7 +1439,6 @@ class WPUF_Render_Form {
                         <?php
                         break;
                     case 'select':
-
                         $selected = $terms ? $terms[0] : '';
                         $required = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
 
@@ -1442,6 +1450,7 @@ class WPUF_Render_Form {
                             'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
                             'name'             => $taxonomy . '[]',
                             'taxonomy'         => $taxonomy,
+                            'include'          => $allowed_tax_ids,
                             'echo'             => 0,
                             'title_li'         => '',
                             'class'            => $taxonomy . $class,
@@ -1466,6 +1475,7 @@ class WPUF_Render_Form {
                             'name'             => $taxonomy . '[]',
                             'id'               => 'cat-ajax',
                             'taxonomy'         => $taxonomy,
+                            'include'          => $allowed_tax_ids,
                             'echo'             => 0,
                             'title_li'         => '',
                             'class'            => $taxonomy . ' multiselect' . $class,

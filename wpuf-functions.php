@@ -347,11 +347,15 @@ class WPUF_Walker_Category_Checklist extends Walker {
 function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = array(), $class = null ) {
     require_once ABSPATH . '/wp-admin/includes/template.php';
 
-    $walker       = new WPUF_Walker_Category_Checklist();
-
-    $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-    $exclude      = explode( ',', $attr['exclude'] );
-    $tax          = $attr['name'];
+    $walker             = new WPUF_Walker_Category_Checklist();
+    
+    $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
+    $exclude            = explode( ',', $attr['exclude'] );
+    $tax                = $attr['name'];
+    $c_user             = get_current_user_id();
+    $pack               = get_user_meta( $c_user , '_wpuf_subscription_pack', true );
+    $allowed_tax_id_arr = get_post_meta( $pack['pack_id'] , '_sub_allowed_term_ids', true );
+    $allowed_tax_ids    = implode( ', ', $allowed_tax_id_arr );
 
     $args = array(
         'taxonomy' => $tax,
@@ -369,6 +373,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     $categories = (array) get_terms( $tax, array(
         'hide_empty'  => false,
+        'include'     => $allowed_tax_ids,
         $exclude_type => (array) $exclude,
         'orderby'     => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
         'order'       => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
@@ -2292,4 +2297,52 @@ function wpuf_get_user( $user = null ) {
     }
 
     return new WPUF_User( $user );
+}
+
+/**
+ * Add all terms as allowed terms
+ * 
+ * @since 2.7.0
+ *
+ * @return void
+ */
+function set_all_terms_as_allowed() {
+
+    if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+        $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+        $allowed_term = array();
+
+        foreach ( $subscriptions as $pack ) {
+            if ( ! metadata_exists( 'post', $pack->ID , '_sub_allowed_term_ids' ) ) {
+                $cts = get_taxonomies(array('_builtin'=>true), 'objects'); ?>
+                <?php foreach ($cts as $ct) { 
+                    if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                        $tax_terms = get_terms ( array(
+                            'taxonomy' => $ct->name,
+                            'hide_empty' => false,
+                        ) );
+                        foreach ($tax_terms as $tax_term) {
+                            $allowed_term[] = $tax_term->term_id;
+                        }
+                    }
+                }
+
+                $cts = get_taxonomies(array('_builtin'=>false), 'objects'); ?>
+                <?php foreach ($cts as $ct) { 
+                    if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                        $tax_terms = get_terms ( array(
+                            'taxonomy' => $ct->name,
+                            'hide_empty' => false,
+                        ) );
+                        foreach ($tax_terms as $tax_term) {
+                            $allowed_term[] = $tax_term->term_id;
+                        }
+                    }
+                }
+
+                update_post_meta( $pack->ID, '_sub_allowed_term_ids', $allowed_term ); 
+            }
+        }       
+    }
+
 }

@@ -49,6 +49,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     unset($post_types['custom_css']);
                     unset($post_types['customize_changeset']);
                     unset($post_types['wpuf_coupon']);
+                    unset($post_types['oembed_cache']);
 
                     foreach ($post_types as $post_type) {
                         printf('<option value="%s"%s>%s</option>', $post_type, selected( $post_type_selected, $post_type, false ), $post_type );

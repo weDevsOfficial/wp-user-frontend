@@ -239,6 +239,10 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
         require_once WPUF_ROOT . '/class/frontend-account.php';
         require_once WPUF_ROOT . '/includes/class-form.php';
+        
+        if ( class_exists( 'WeDevs_Dokan' ) ) {
+            require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
+        }
 
         require_once WPUF_ROOT . '/includes/class-user.php';
         require_once WPUF_ROOT . '/includes/class-user-subscription.php';
@@ -280,14 +284,18 @@ final class WP_User_Frontend {
      */
     function instantiate() {
 
-        $this->container['upload']        = new WPUF_Upload();
-        $this->container['paypal']        = new WPUF_Paypal();
-        $this->container['form_template'] = new WPUF_Admin_Form_Template();
+        $this->container['upload']                  = new WPUF_Upload();
+        $this->container['paypal']                  = new WPUF_Paypal();
+        $this->container['form_template']           = new WPUF_Admin_Form_Template();
 
-        $this->container['subscription']  = WPUF_Subscription::init();
-        $this->container['frontend_post'] = WPUF_Frontend_Form_Post::init();
-        $this->container['account']       = new WPUF_Frontend_Account();
-        $this->container['insights']      = new WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
+        $this->container['subscription']            = WPUF_Subscription::init();
+        $this->container['frontend_post']           = WPUF_Frontend_Form_Post::init();
+        $this->container['account']                 = new WPUF_Frontend_Account();
+        $this->container['insights']                = new WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
+
+        if ( class_exists( 'WeDevs_Dokan' ) ) {
+            $this->container['dokan_integration']   = new WPUF_Dokan_Integration();
+        }
 
         if ( is_admin() ) {
 

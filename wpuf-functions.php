@@ -229,7 +229,7 @@ function wpuf_get_pages( $post_type = 'page' ) {
  * @param int $post_id
  * @return string url of the current edit post page
  */
-function wpuf_edit_post_link( $url, $post_id ) {
+function wpuf_override_admin_edit_link( $url, $post_id ) {
     if ( is_admin() ) {
         return $url;
     }
@@ -250,7 +250,7 @@ function wpuf_edit_post_link( $url, $post_id ) {
     return $url;
 }
 
-add_filter( 'get_edit_post_link', 'wpuf_edit_post_link', 10, 2 );
+add_filter( 'get_edit_post_link', 'wpuf_override_admin_edit_link', 10, 2 );
 
 /**
  * Create HTML dropdown list of Categories.

@@ -388,9 +388,9 @@ class WPUF_Admin_Subscription {
                         <div><span class="description"></span></div>
                     </td>
                 </tr>
-
-                <tr class="wpuf-metabox-post_expiration">
+                <tr class="wpuf-metabox-post_expiration"> 
                     <th><?php _e( 'Enable Post Expiration', 'wpuf' ); ?></th>
+
                     <td>
                         <input type="checkbox" id="wpuf-enable_post_expiration" name="post_expiration_settings[enable_post_expiration]" value="on" <?php echo $is_post_exp_selected;?> />
                     </td>
@@ -485,9 +485,7 @@ class WPUF_Admin_Subscription {
                 ?>
                 </table>
             </div>
-
-            <?php do_action( 'subs_nav_tab_content' ); ?>
-            
+            <?php do_action( 'subs_nav_tab_content' ); ?>   
         </div>
         <?php
     }
@@ -661,7 +659,7 @@ class WPUF_Admin_Subscription {
                                 if ( ! metadata_exists( 'post', $pack['pack_id'], '_sub_allowed_term_ids' ) ) {
                                     set_all_terms_as_allowed();
                                 }
-                                $allowed_tax_id_arr = get_post_meta( $pack['pack_id'], '_sub_allowed_term_ids', true );
+                                $allowed_tax_id_arr    = get_post_meta( $pack['pack_id'], '_sub_allowed_term_ids', true );
                                 foreach ( $allowed_tax_id_arr as $tax_term) {
                                     global $wpdb;
 

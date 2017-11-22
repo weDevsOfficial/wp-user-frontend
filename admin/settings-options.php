@@ -10,23 +10,31 @@ function wpuf_settings_sections() {
     $sections = array(
         array(
             'id'    => 'wpuf_general',
-            'title' => __( 'General Options', 'wpuf' )
+            'title' => __( 'General Options', 'wpuf' ),
+            'icon' => 'dashicons-admin-generic'
         ),
         array(
             'id'    => 'wpuf_dashboard',
-            'title' => __( 'Dashboard', 'wpuf' )
+            'title' => __( 'Dashboard', 'wpuf' ),
+            'icon' => 'dashicons-dashboard'
+
         ),
         array(
             'id'    => 'wpuf_profile',
-            'title' => __( 'Login / Registration', 'wpuf' )
+            'title' => __( 'Login / Registration', 'wpuf' ),
+            'icon' => 'dashicons-admin-users'
+
         ),
         array(
             'id'    => 'wpuf_payment',
-            'title' => __( 'Payments', 'wpuf' )
+            'title' => __( 'Payments', 'wpuf' ),
+            'icon' => 'dashicons-money'
         ),
         array(
             'id'    => 'wpuf_guest_mails',
-            'title' => __( 'E-Mails', 'wpuf' )
+            'title' => __( 'E-Mails', 'wpuf' ),
+            'icon' => 'dashicons-email-alt'
+
         ),
     );
 

@@ -84,21 +84,21 @@ class WPUF_Dokan_Integration{
 	 */
     public function dokan_wpuf_settings( $settings_fields ) {
 
-		$settings_fields['dokan_general']['allow_wpuf_post'] = array(
+    	$settings_fields['dokan_general']['allow_wpuf_post'] = array(
 			'name'    => 'allow_wpuf_post',
 			'label'   => __( 'Allow Post', 'Allow Post' ),
 			'desc'    => __( 'Allow Vendors to submit post from dashboard area', 'wpuf' ),
 			'type'    => 'checkbox',
 			'default' => 'off'
-		);
+	    );
 
 	    $settings_fields['dokan_general']['wpuf_post_forms'] = array(
-			'name'    => 'wpuf_post_forms',
-			'label'   => __( 'Select Post Form', 'wpuf' ),
-			'desc'    => __( 'Select a post form that will show on the vendor dashboard.', 'wpuf' ),
-			'type'    => 'select',
-			'options' => $this->get_post_forms(),
-			'default' => 'seller'
+            'name'    => 'wpuf_post_forms',
+            'label'   => __( 'Select Post Form', 'wpuf' ),
+            'desc'    => __( 'Select a post form that will show on the vendor dashboard.', 'wpuf' ),
+            'type'    => 'select',
+            'options' => $this->get_post_forms(),
+            'default' => 'seller'
         );
 
         return $settings_fields;

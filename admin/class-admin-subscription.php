@@ -661,7 +661,7 @@ class WPUF_Admin_Subscription {
                                 if ( ! metadata_exists( 'post', $pack['pack_id'], '_sub_allowed_term_ids' ) ) {
                                     set_all_terms_as_allowed();
                                 }
-                                $allowed_tax_ids    = implode( ', ', $allowed_tax_id_arr );
+                                $allowed_tax_id_arr = get_post_meta( $pack['pack_id'], '_sub_allowed_term_ids', true );
                                 foreach ( $allowed_tax_id_arr as $tax_term) {
                                     global $wpdb;
 

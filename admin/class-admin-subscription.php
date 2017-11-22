@@ -45,6 +45,7 @@ class WPUF_Admin_Subscription {
         add_action( 'add_meta_boxes', array( $this, 'add_sub_meta_box' ) );
         add_action( 'admin_print_styles-post-new.php', array( $this, 'enqueue' ) );
         add_action( 'admin_print_styles-post.php', array( $this, 'enqueue' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'u_profile' ) );
     }
 
     /**
@@ -389,7 +390,6 @@ class WPUF_Admin_Subscription {
                             <div><span class="description"></span></div>
                         </td>
                     </tr>
-                    <tr class="wpuf-metabox-post_expiration"> 
 
                     <tr class="wpuf-metabox-post_expiration">
                       
@@ -407,8 +407,8 @@ class WPUF_Admin_Subscription {
                             'day' => 30
                         );
                         ?>
-                        <th><?php _e( 'Post Expiration Time', 'wpuf' ); ?></th>
-                        <td>
+                        <th class="p-exp-time"> <?php _e( 'Post Expiration Time', 'wpuf' ); ?> </th>
+                        <td class="p-exp-time">
                             <select name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value">
                                 <?php
                                 for($i = 1;$i <= $timeType_array[$time_type];$i++){
@@ -503,6 +503,10 @@ class WPUF_Admin_Subscription {
         wp_enqueue_style(  'wpuf-metabox-tabs', WPUF_ASSET_URI . '/css/metabox-tabs.css'  );
         wp_enqueue_style(  "wpuf-$color",       WPUF_ASSET_URI . "/css/metabox-$color.css" );
         wp_enqueue_script( 'wpuf-metabox-tabs', WPUF_ASSET_URI . '/js/metabox-tabs.js' , array( 'jquery' ) );
+    }
+
+    public function u_profile() {
+        wp_enqueue_script( 'wpuf-admin-profile-subs', WPUF_ASSET_URI . '/js/admin-profile-subs.js' , array( 'jquery' ) );
     }
 
     function option_field( $selected ) {
@@ -622,9 +626,9 @@ class WPUF_Admin_Subscription {
                             ?>
                             <tr>
                                 <th><label><?php echo _e('Post Expiration Enabled', 'wpuf'); ?></label></th>
-                                <td><input type="checkbox" name="is_post_expiration_enabled" value="on" <?php echo $is_post_exp_selected;?>></td>
+                                <td><input type="checkbox" class="p_exp_enabled" name="is_post_expiration_enabled" value="on" <?php echo $is_post_exp_selected;?>></td>
                             </tr>
-                            <tr>
+                            <tr class="p-exp-time">
                                 <?php
                                 $timeType_array = array(
                                     'year' => 100,

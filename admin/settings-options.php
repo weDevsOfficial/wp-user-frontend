@@ -59,7 +59,7 @@ function wpuf_settings_fields() {
             array(
                 'name'    => 'edit_page_id',
                 'label'   => __( 'Edit Page', 'wpuf' ),
-                'desc'    => __( 'Select the page where [wpuf_edit] is located', 'wpuf' ),
+                'desc'    => __( 'Select the page where <code>[wpuf_edit]</code> is located', 'wpuf' ),
                 'type'    => 'select',
                 'options' => $pages
             ),
@@ -263,7 +263,7 @@ function wpuf_settings_fields() {
             array(
                 'name'    => 'show_subscriptions',
                 'label'   => __( 'Show Subscriptions', 'wpuf' ),
-                'desc'    => __( 'Show Subscriptions option in dashboard', 'wpuf' ),
+                'desc'    => __( 'Show Subscriptions option where <code>[wpuf_account]</code> is located', 'wpuf' ),
                 'type'    => 'select',
                 'default' => 'no',
                 'options' => array(

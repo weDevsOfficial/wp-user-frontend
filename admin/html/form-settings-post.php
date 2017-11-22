@@ -55,6 +55,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     }
                     ?>
                 </select>
+                <p class="description"><?php _e( 'Custom Post Type will appear here. ', 'wpuf' );?><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/"><?php _e('Learn More ', 'wpuf')?></a></p>
             </td>
         </tr>
 

@@ -40,6 +40,11 @@ class WPUF_Admin_Subscription {
 
         // display help link to docs
         add_action( 'admin_notices', array( $this, 'add_help_link' ) );
+
+        // new subscription metabox hooks
+        add_action( 'add_meta_boxes', array( $this, 'add_sub_meta_box' ) );
+        add_action( 'admin_print_styles-post-new.php', array( $this, 'enqueue' ) );
+        add_action( 'admin_print_styles-post.php', array( $this, 'enqueue' ) );
     }
 
     /**
@@ -311,6 +316,32 @@ class WPUF_Admin_Subscription {
         global $post;
 
         $sub_meta = WPUF_Subscription::init()->get_subscription_meta( $post->ID, $post );
+        ?>
+
+        <table class="form-table" style="width: 100%">
+            <tbody>
+                <input type="hidden" name="wpuf_subscription" id="wpuf_subscription_editor" value="<?php echo wp_create_nonce( 'wpuf_subscription_editor' ); ?>" />
+                <tr>
+                    <th><label><?php _e( 'Pack Description', 'wpuf' ); ?></label></th>
+                    <td>
+                        <?php wp_editor( $sub_meta['post_content'], 'post_content', array('editor_height' => 100, 'quicktags' => false, 'media_buttons' => false) ); ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <?php
+    }
+
+    public function add_sub_meta_box() {
+        add_meta_box( 'wpuf_subs_metabox', 'Subscription Options', array( $this, 'subs_meta_box' ), 'wpuf_subscription' );
+    }
+
+    public function subs_meta_box() {
+
+        global $post;
+
+        $sub_meta = WPUF_Subscription::init()->get_subscription_meta( $post->ID, $post );
 
         $hidden_recurring_class       = ( $sub_meta['recurring_pay'] != 'yes' ) ? 'none' : '';
         $hidden_trial_class           = ( $sub_meta['trial_status'] != 'yes' ) ? 'none' : '';
@@ -326,15 +357,16 @@ class WPUF_Admin_Subscription {
 
         ?>
 
-        <table class="form-table" style="width: 100%">
-            <tbody>
-                <input type="hidden" name="wpuf_subscription" id="wpuf_subscription_editor" value="<?php echo wp_create_nonce( 'wpuf_subscription_editor' ); ?>" />
-                <tr>
-                    <th><label><?php _e( 'Pack Description', 'wpuf' ); ?></label></th>
-                    <td>
-                        <?php wp_editor( $sub_meta['post_content'], 'post_content', array('editor_height' => 100, 'quicktags' => false, 'media_buttons' => false) ); ?>
-                    </td>
-                </tr>
+
+        <div class="metabox-tabs-div">
+            <ul class="metabox-tabs" id="metabox-tabs">
+                <li class="active tab1"><a class="active" href="#">Payment Settings</a></li>
+                <li class="tab2"><a href="#">Post Restriction</a></li>
+                <?php do_action('subs_nav_tab'); ?>
+            </ul>
+
+            <div class="tab1">
+                <table class="form-table">
                 <tr>
                     <th><label for="wpuf-billing-amount">
                         <span class="wpuf-biling-amount wpuf-subcription-expire" style="display: <?php echo $hidden_expire; ?>;"><?php _e( 'Billing amount:', 'wpuf' ); ?></span>
@@ -345,7 +377,6 @@ class WPUF_Admin_Subscription {
                         <div><span class="description"></span></div>
                     </td>
                 </tr>
-
                 <tr class="wpuf-subcription-expire" style="display: <?php echo $hidden_expire; ?>;">
                     <th><label for="wpuf-expiration-number"><?php _e( 'Expires In:', 'wpuf' ); ?></label></th>
                     <td>
@@ -429,22 +460,51 @@ class WPUF_Admin_Subscription {
                         <textarea name="post_expiration_settings[post_expiration_message]" id="wpuf-post_expiration_message" cols="50" rows="5"><?php echo $post_expiration_message;?></textarea>
                     </td>
                 </tr>
+
+                <?php if ( class_exists('WP_User_Frontend_Pro') ) {?>
+
+                <tr valign="top">
+                    <th><label><?php _e( 'Recurring', 'wpuf-pro' ); ?></label></th>
+                    <td>
+                        <label for="wpuf-recuring-pay">
+                            <input type="checkbox" <?php checked( $sub_meta['recurring_pay'], 'yes' ); ?> size="20" style="" id="wpuf-recuring-pay" value="yes" name="recurring_pay" />
+                            <?php _e( 'Enable Recurring Payment', 'wpuf-pro' ); ?>
+                        </label>
+                    </td>
+                </tr>
+                <?php } ?>
+
+                </table>
+            </div>
+            
+            <div class="tab2">
+                <table class="form-table">
                 <?php echo $this->get_post_types( $sub_meta['post_type_name'] ); ?>
                 <?php
                 do_action( 'wpuf_admin_subscription_detail', $sub_meta, $hidden_recurring_class, $hidden_trial_class, $this );
                 ?>
-            </tbody>
-        </table>
+                </table>
+            </div>
 
+            <?php do_action( 'subs_nav_tab_content' ); ?>
+            
+        </div>
         <?php
+    }
 
+    public function enqueue() {
+        $color = get_user_meta( get_current_user_id(), 'admin_color', true );
+
+        wp_enqueue_style(  'wpuf-metabox-tabs', WPUF_ASSET_URI . '/css/metabox-tabs.css'  );
+        wp_enqueue_style(  "wpuf-$color",       WPUF_ASSET_URI . "/css/metabox-$color.css" );
+        wp_enqueue_script( 'wpuf-metabox-tabs', WPUF_ASSET_URI . '/js/metabox-tabs.js' , array( 'jquery' ) );
     }
 
     function option_field( $selected ) {
         ?>
         <option value="day" <?php selected( $selected, 'day' ); ?> ><?php _e( 'Day(s)', 'wpuf' ); ?></option>
         <option value="week" <?php selected( $selected, 'week' ); ?> ><?php _e( 'Week(s)', 'wpuf' ); ?></option>
-        <option value="month" <?php selected( $selected, 'month' ); ?> ><?php _e( 'Month(s)', 'wpur'); ?></option>
+        <option value="month" <?php selected( $selected, 'month' ); ?> ><?php _e( 'Month(s)', 'wpuf'); ?></option>
         <option value="year" <?php selected( $selected, 'year' ); ?> ><?php _e( 'Year(s)', 'wpuf' ); ?></option>
         <?php
     }
@@ -482,7 +542,7 @@ class WPUF_Admin_Subscription {
         $user_sub = WPUF_Subscription::get_user_pack( $userdata->ID );
         $pack_id  = isset( $user_sub['pack_id'] ) ? $user_sub['pack_id'] : '';
         ?>
-        <div class="wpuf-user-subscription">
+        <div class="wpuf-user-subscription" style="width: 640px; border: 1px;">
             <h3><?php _e( 'WPUF Subscription', 'wpuf' ); ?></h3>
             <?php
 
@@ -503,7 +563,8 @@ class WPUF_Admin_Subscription {
 
                 ?>
                 <div class="wpuf-user-sub-info">
-                    <h3><?php _e( 'Subscription Details', 'wpuf' ); ?></h3>
+                    <?php $subs_url = site_url() . '/account/?section=subscription' ?>
+                    <a href="<?php echo $subs_url ?>"><h3><?php _e( 'Subscription Details', 'wpuf' ); ?></h3></a> 
                     <?php if(isset($user_sub['recurring']) && $user_sub['recurring'] == 'yes' ){
                         ?>
                         <div class="updated">
@@ -511,17 +572,9 @@ class WPUF_Admin_Subscription {
                         </div>
                     <?php
                     } ?>
+                    <hr>
                     <div class="wpuf-text">
-                        <div><strong><?php _e( 'Subcription Name: ','wpuf' ); ?></strong><?php echo isset( $pack->post_title ) ? $pack->post_title : ''; ?></div>
-                        <div>
-                            <strong><?php _e( 'Package billing details: ', 'wpuf'); ?></strong>
-                            <div class="wpuf-pricing-wrap">
-                                <div class="wpuf-sub-amount">
-                                    <?php echo $billing_amount; ?>
-                                    <?php echo $recurring_des; ?>
-                                </div
-                            </div>
-                        </div>
+                        <div><strong><?php _e( 'Subcription Name: ','wpuf' ); ?></strong><?php echo isset( $pack->post_title ) ? $pack->post_title : ''; ?> ( <?php echo $billing_amount; ?> <?php echo $recurring_des; ?> ) </div>
 
                         <strong><?php _e( 'Remaining post: ','wpuf'); ?></strong>
                         <table class="form-table">
@@ -537,6 +590,10 @@ class WPUF_Admin_Subscription {
                                 <?php
                             }
                             ?>
+                        </table>
+                        <hr>
+                        <table class="form-table">
+                        <th>Subscription Expiration Info</th>
                         <?php
                         if ( $user_sub['recurring'] != 'yes' ) {
                             if ( !empty( $user_sub['expire'] ) ) {
@@ -593,6 +650,32 @@ class WPUF_Admin_Subscription {
                                 </td>
                             </tr>
                         </table>
+                        <hr>
+                        <table class="form-table">
+                            <th> Allowed Taxonomy Terms </th>
+                            <tr>
+                                <?php
+                                $c_user             = get_current_user_id();
+                                $pack               = get_user_meta( $c_user , '_wpuf_subscription_pack', true );
+                                $allowed_tax_id_arr = array();
+                                if ( ! metadata_exists( 'post', $pack['pack_id'], '_sub_allowed_term_ids' ) ) {
+                                    set_all_terms_as_allowed();
+                                }
+                                $allowed_tax_id_arr = get_post_meta( $pack['pack_id'], '_sub_allowed_term_ids', true );
+                                foreach ( $allowed_tax_id_arr as $tax_term) {
+                                    global $wpdb;
+
+                                    $sql = "SELECT name FROM {$wpdb->prefix}terms WHERE term_id={$tax_term}";
+                                    $term = $wpdb->get_results($sql, OBJECT);
+                                    ?>
+                                    <ul>
+                                        <td> <li style="list-style: none"> <?php echo $term[0]->name;  ?> </li> </td>
+                                    </ul>
+                                <?php }
+                                ?> 
+                            </tr>
+                        </table>
+                        <hr>
                     </div>
                 </div>
             <?php endif;?>
@@ -614,10 +697,13 @@ class WPUF_Admin_Subscription {
                         </td>
                     </tr>
                 </table>
+                <table>
+                    
+                </table>
             <?php endif;?>
 
             <?php if( !empty($user_sub) ):?>
-                <a class="btn button-secondary wpuf-delete-pack-btn" href="javascript:" data-userid = "<?php echo $userdata->ID; ?>" data-packid = "<?php echo $user_sub['pack_id']; ?>"><?php _e( 'Delete Package', 'wpuf' ); ?></a>
+                <a class="btn button-secondary wpuf-delete-pack-btn" style="float: right; margin: auto;" href="javascript:" data-userid = "<?php echo $userdata->ID; ?>" data-packid = "<?php echo $user_sub['pack_id']; ?>"><?php _e( 'Delete Package', 'wpuf' ); ?></a>
             <?php endif; ?>
         </div>
         <?php

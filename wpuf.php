@@ -49,9 +49,21 @@ final class WP_User_Frontend {
     private $is_pro = false;
 
     /**
+     * Minimum PHP version required
+     *
+     * @var string
+     */
+    private $min_php = '5.4.0';
+
+    /**
      * Fire up the plugin
      */
     public function __construct() {
+
+        if ( ! $this->is_supported_php() ) {
+            add_action( 'admin_notices', array( $this, 'php_version_notice' ) );
+            return;
+        }
 
         register_activation_hook( __FILE__, array( $this, 'install' ) );
         register_deactivation_hook( __FILE__, array( $this, 'uninstall' ) );
@@ -60,6 +72,42 @@ final class WP_User_Frontend {
         $this->init_hooks();
 
         do_action( 'wpuf_loaded' );
+    }
+
+    /**
+     * Check if the PHP version is supported
+     *
+     * @return bool
+     */
+    public function is_supported_php( $min_php = null ) {
+
+        $min_php = $min_php ? $min_php : $this->min_php;
+
+        if ( version_compare( PHP_VERSION, $min_php , '<=' ) ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Show notice about PHP version
+     *
+     * @return void
+     */
+    function php_version_notice() {
+
+        if ( $this->is_supported_php() || ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
+        $error = __( 'Your installed PHP Version is: ', 'wpuf' ) . PHP_VERSION . '. ';
+        $error .= __( 'The <strong>WP User Frontend</strong> plugin requires PHP version <strong>', 'wpuf' ) . $this->min_php . __( '</strong> or greater.', 'wpuf' );
+        ?>
+        <div class="error">
+            <p><?php printf( $error ); ?></p>
+        </div>
+        <?php
     }
 
     /**

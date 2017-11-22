@@ -1257,3 +1257,12 @@ input[type="text"].wpuf-google-map-search {
 .wpuf-form-google-map-container.hide-search-box .gm-style input[type="text"].wpuf-google-map-search {
   display: none;
 }
+.dokan-dashboard-content.dokan-wpuf-dashboard h2.page-head {
+  display: none;
+}
+.dokan-dashboard-content.dokan-wpuf-dashboard .wpuf-author {
+  display: none;
+}
+.dokan-dashboard-content.dokan-wpuf-dashboard .wpuf-form-add .wpuf-form li.wpuf-el {
+  margin-bottom: 15px;
+}

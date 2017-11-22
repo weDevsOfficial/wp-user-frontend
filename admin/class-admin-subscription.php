@@ -662,7 +662,6 @@ class WPUF_Admin_Subscription {
                                     set_all_terms_as_allowed();
                                 }
                                 $allowed_tax_ids    = implode( ', ', $allowed_tax_id_arr );
-                                var_dump( $allowed_tax_id_arr );
                                 foreach ( $allowed_tax_id_arr as $tax_term) {
                                     global $wpdb;
 

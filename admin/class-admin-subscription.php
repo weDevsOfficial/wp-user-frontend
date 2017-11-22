@@ -390,7 +390,9 @@ class WPUF_Admin_Subscription {
                 </tr>
 
                 <tr class="wpuf-metabox-post_expiration">
+                  
                     <th><?php _e( 'Enable Post Expiration', 'wpuf' ); ?></th>
+
                     <td>
                         <input type="checkbox" id="wpuf-enable_post_expiration" name="post_expiration_settings[enable_post_expiration]" value="on" <?php echo $is_post_exp_selected;?> />
                     </td>
@@ -485,9 +487,9 @@ class WPUF_Admin_Subscription {
                 ?>
                 </table>
             </div>
-
-            <?php do_action( 'subs_nav_tab_content' ); ?>
-            
+            </tbody>
+        </table>
+            <?php do_action( 'subs_nav_tab_content' ); ?>   
         </div>
         <?php
     }

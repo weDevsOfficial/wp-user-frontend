@@ -143,15 +143,15 @@ class WPUF_Admin_Settings {
         ?>
         <div class="wrap">
 
-            <?php screen_icon( 'options-general' ); ?>
+            <h2 style="margin-bottom: 15px;"><?php _e( 'Settings', 'wpuf' ) ?></h2>
+            <div class="wpuf-settings-wrap">
+                <?php
+                settings_errors();
 
-            <?php
-            settings_errors();
-
-            $this->settings_api->show_navigation();
-            $this->settings_api->show_forms();
-            ?>
-
+                $this->settings_api->show_navigation();
+                $this->settings_api->show_forms();
+                ?>
+            </div>
         </div>
         <?php
     }

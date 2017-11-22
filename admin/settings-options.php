@@ -10,23 +10,31 @@ function wpuf_settings_sections() {
     $sections = array(
         array(
             'id'    => 'wpuf_general',
-            'title' => __( 'General Options', 'wpuf' )
+            'title' => __( 'General Options', 'wpuf' ),
+            'icon' => 'dashicons-admin-generic'
         ),
         array(
             'id'    => 'wpuf_dashboard',
-            'title' => __( 'Dashboard', 'wpuf' )
+            'title' => __( 'Dashboard', 'wpuf' ),
+            'icon' => 'dashicons-dashboard'
+
         ),
         array(
             'id'    => 'wpuf_profile',
-            'title' => __( 'Login / Registration', 'wpuf' )
+            'title' => __( 'Login / Registration', 'wpuf' ),
+            'icon' => 'dashicons-admin-users'
+
         ),
         array(
             'id'    => 'wpuf_payment',
-            'title' => __( 'Payments', 'wpuf' )
+            'title' => __( 'Payments', 'wpuf' ),
+            'icon' => 'dashicons-money'
         ),
         array(
             'id'    => 'wpuf_guest_mails',
-            'title' => __( 'E-Mails', 'wpuf' )
+            'title' => __( 'E-Mails', 'wpuf' ),
+            'icon' => 'dashicons-email-alt'
+
         ),
     );
 
@@ -51,7 +59,7 @@ function wpuf_settings_fields() {
             array(
                 'name'    => 'edit_page_id',
                 'label'   => __( 'Edit Page', 'wpuf' ),
-                'desc'    => __( 'Select the page where [wpuf_edit] is located', 'wpuf' ),
+                'desc'    => __( 'Select the page where <code>[wpuf_edit]</code> is located', 'wpuf' ),
                 'type'    => 'select',
                 'options' => $pages
             ),
@@ -255,7 +263,7 @@ function wpuf_settings_fields() {
             array(
                 'name'    => 'show_subscriptions',
                 'label'   => __( 'Show Subscriptions', 'wpuf' ),
-                'desc'    => __( 'Show Subscriptions option in dashboard', 'wpuf' ),
+                'desc'    => __( 'Show Subscriptions option where <code>[wpuf_account]</code> is located', 'wpuf' ),
                 'type'    => 'select',
                 'default' => 'no',
                 'options' => array(
@@ -363,7 +371,7 @@ function wpuf_settings_fields() {
             array(
                 'name'       => 'guest_email_body',
                 'label'    => __( 'Guest Email Body', 'wpuf' ),
-                'desc'     => __( "This sets the body of the emails sent to guest users. Please DON'T edit the '{activation_link}' part", 'wpuf' ),
+                'desc'     => __( "This sets the body of the emails sent to guest users. Please DON'T edit the <code>{activation_link}</code> part", 'wpuf' ),
                 'default'  => "Hey There, \r\n\r\nWe just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.\r\n\r\nPlease click the link below to verify: \r\n\r\n{activation_link}\r\n\r\nRegards,\r\n%sitename%",
                 'type'     => 'textarea',
             )

@@ -1319,10 +1319,7 @@ class WPUF_Render_Form {
         $class              = ' wpuf_'.$attr['name'].'_'.$selected;
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
         $exclude            = $attr['exclude'];
-        $current_user       = get_current_user_id();
-
-        $select = wp_dropdown_categories( array(
-
+        $tax_args           = array(
             'show_option_none' => __( '-- Select --', 'wpuf' ),
             'hierarchical'     => 1,
             'hide_empty'       => 0,
@@ -1330,7 +1327,6 @@ class WPUF_Render_Form {
             'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
             'name'             => $taxonomy . '[]',
             'taxonomy'         => $taxonomy,
-            'include'          => $allowed_tax_ids,
             'echo'             => 0,
             'title_li'         => '',
             'class'            => 'cat-ajax '. $taxonomy . $class,
@@ -1338,13 +1334,16 @@ class WPUF_Render_Form {
             'selected'         => $selected,
             'depth'            => 1,
             'child_of'         => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : ''
-        ) );
+        );
+
+        $tax_args = apply_filters( 'wpuf_allowed_term_metas', $tax_args );
+
+        $select = wp_dropdown_categories( $tax_args );
 
         echo str_replace( '<select', '<select ' . $required, $select );
         $attr = array(
             'required'     => $attr['required'],
             'name'         => $attr['name'],
-            'include'      => $allowed_tax_ids,
             'exclude_type' => $attr['exclude_type'],
             'exclude'      => $attr['exclude'],
             'orderby'      => $attr['orderby'],
@@ -1353,6 +1352,7 @@ class WPUF_Render_Form {
             //'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
             //'term_id'      => $selected
         );
+        $attr = apply_filters( 'wpuf_allowed_term_metas', $attr );
         ?>
         <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
         <?php
@@ -1450,7 +1450,7 @@ class WPUF_Render_Form {
                             'selected'         => $selected,
                         );
 
-                        $tax_args = apply_filters( 'wpuf_allowed_term_metas', 'get_allowed_term_metas' );
+                        $tax_args = apply_filters( 'wpuf_allowed_term_metas', $tax_args );
 
                         $select   = wp_dropdown_categories( $tax_args );
 
@@ -1478,7 +1478,7 @@ class WPUF_Render_Form {
                             'walker'           => $walker
                         );
 
-                        $tax_args = apply_filters( 'wpuf_allowed_term_metas', 'get_allowed_term_metas' );
+                        $tax_args = apply_filters( 'wpuf_allowed_term_metas', $tax_args );
 
                         $select   = wp_dropdown_categories( $tax_args );
 

@@ -342,7 +342,7 @@
 
                         setTimeout(function(){
                             self.isDirty = false;
-                        },500);
+                        }, 500);
 
                         toastr.success(self.i18n.saved_form_data);
                     },

@@ -1319,12 +1319,7 @@ class WPUF_Render_Form {
         $class              = ' wpuf_'.$attr['name'].'_'.$selected;
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
         $exclude            = $attr['exclude'];
-        $c_user             = get_current_user_id();
-        if ( class_exists('WP_User_Frontend_Pro') ) {
-            $allowed_tax_ids = apply_filters( 'wpuf_allowed_term_metas', $c_user );
-        } else {
-            $allowed_tax_ids = 'all';
-        }
+        $current_user       = get_current_user_id();
 
         $select = wp_dropdown_categories( array(
 
@@ -1375,12 +1370,7 @@ class WPUF_Render_Form {
         $exclude            = $attr['exclude'];
         $taxonomy           = $attr['name'];
         $class              = ' wpuf_'.$attr['name'].'_'.$form_id;
-        $c_user             = get_current_user_id();
-        if ( class_exists('WP_User_Frontend_Pro') ) {
-            $allowed_tax_ids = apply_filters( 'wpuf_allowed_term_metas', $c_user );
-        } else {
-            $allowed_tax_ids = 'all';
-        }
+        $current_user       = get_current_user_id();
 
         $terms = array();
         if ( $post_id && $attr['type'] == 'text' ) {
@@ -1445,8 +1435,7 @@ class WPUF_Render_Form {
                     case 'select':
                         $selected = $terms ? $terms[0] : '';
                         $required = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
-
-                        $select = wp_dropdown_categories( array(
+                        $tax_args = array(
                             'show_option_none' => __( '-- Select --', 'wpuf' ),
                             'hierarchical'     => 1,
                             'hide_empty'       => 0,
@@ -1454,13 +1443,16 @@ class WPUF_Render_Form {
                             'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
                             'name'             => $taxonomy . '[]',
                             'taxonomy'         => $taxonomy,
-                            'include'          => $allowed_tax_ids,
                             'echo'             => 0,
                             'title_li'         => '',
                             'class'            => $taxonomy . $class,
                             $exclude_type      => $exclude,
                             'selected'         => $selected,
-                        ) );
+                        );
+
+                        $tax_args = apply_filters( 'wpuf_allowed_term_metas', 'get_allowed_term_metas' );
+
+                        $select   = wp_dropdown_categories( $tax_args );
 
                         echo str_replace( '<select', '<select ' . $required, $select );
                         break;
@@ -1468,9 +1460,8 @@ class WPUF_Render_Form {
                     case 'multiselect':
                         $selected = $terms ? $terms : array();
                         $required = sprintf( 'data-required="%s" data-type="multiselect"', $attr['required'] );
-                        $walker = new WPUF_Walker_Category_Multi();
-
-                        $select = wp_dropdown_categories( array(
+                        $walker   = new WPUF_Walker_Category_Multi();
+                        $tax_args = array(
                             // 'show_option_none' => __( '-- Select --', 'wpuf' ),
                             'hierarchical'     => 1,
                             'hide_empty'       => 0,
@@ -1479,14 +1470,17 @@ class WPUF_Render_Form {
                             'name'             => $taxonomy . '[]',
                             'id'               => 'cat-ajax',
                             'taxonomy'         => $taxonomy,
-                            'include'          => $allowed_tax_ids,
                             'echo'             => 0,
                             'title_li'         => '',
                             'class'            => $taxonomy . ' multiselect' . $class,
                             $exclude_type      => $exclude,
                             'selected'         => $selected,
                             'walker'           => $walker
-                        ) );
+                        );
+
+                        $tax_args = apply_filters( 'wpuf_allowed_term_metas', 'get_allowed_term_metas' );
+
+                        $select   = wp_dropdown_categories( $tax_args );
 
                         echo str_replace( '<select', '<select multiple="multiple" ' . $required, $select );
                         break;

@@ -407,8 +407,8 @@ class WPUF_Admin_Subscription {
                             'day' => 30
                         );
                         ?>
-                        <th class="p-exp-time"> <?php _e( 'Post Expiration Time', 'wpuf' ); ?> </th>
-                        <td class="p-exp-time">
+                        <th class="wpuf-post-exp-time"> <?php _e( 'Post Expiration Time', 'wpuf' ); ?> </th>
+                        <td class="wpuf-post-exp-time">
                             <select name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value">
                                 <?php
                                 for($i = 1;$i <= $timeType_array[$time_type];$i++){
@@ -622,9 +622,9 @@ class WPUF_Admin_Subscription {
                             ?>
                             <tr>
                                 <th><label><?php echo _e('Post Expiration Enabled', 'wpuf'); ?></label></th>
-                                <td><input type="checkbox" class="p_exp_enabled" name="is_post_expiration_enabled" value="on" <?php echo $is_post_exp_selected;?>></td>
+                                <td><input type="checkbox" class="wpuf-post-exp-enabled" name="is_post_expiration_enabled" value="on" <?php echo $is_post_exp_selected;?>></td>
                             </tr>
-                            <tr class="p-exp-time">
+                            <tr class="wpuf-post-exp-time">
                                 <?php
                                 $timeType_array = array(
                                     'year' => 100,
@@ -660,24 +660,19 @@ class WPUF_Admin_Subscription {
                             <th> Allowed Taxonomy Terms </th>
                             <tr>
                                 <?php
-                                $c_user             = get_current_user_id();
-                                $pack               = get_user_meta( $c_user , '_wpuf_subscription_pack', true );
-                                $allowed_tax_id_arr = array();
-                                if ( ! metadata_exists( 'post', $pack['pack_id'], '_sub_allowed_term_ids' ) ) {
-                                    set_all_terms_as_allowed();
-                                }
-                                $allowed_tax_id_arr    = get_post_meta( $pack['pack_id'], '_sub_allowed_term_ids', true );
-                                foreach ( $allowed_tax_id_arr as $tax_term) {
-                                    global $wpdb;
-
-                                    $sql = "SELECT name FROM {$wpdb->prefix}terms WHERE term_id={$tax_term}";
-                                    $term = $wpdb->get_results($sql, OBJECT);
+                                $taxonomies = get_taxonomies(); ?>
+                                <ul>
+                                    <?php
+                                    foreach ( $taxonomies as $taxonomy ) {
+                                        if ( is_taxonomy_hierarchical( $taxonomy ) ) {
+                                            $tax_args = wp_list_categories( array(
+                                            'orderby' => 'name',
+                                            'taxonomy'=> $taxonomy,
+                                            ) );
+                                        }
+                                    }
                                     ?>
-                                    <ul>
-                                        <td> <li style="list-style: none"> <?php echo $term[0]->name;  ?> </li> </td>
-                                    </ul>
-                                <?php }
-                                ?> 
+                                </ul>
                             </tr>
                         </table>
                         <hr>

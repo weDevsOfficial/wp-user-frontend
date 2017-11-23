@@ -352,12 +352,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude      = explode( ',', $attr['exclude'] );
     $tax          = $attr['name'];
-    $c_user       = get_current_user_id();
-    if ( class_exists('WP_User_Frontend_Pro') ) {
-        $allowed_tax_ids = apply_filters( 'wpuf_allowed_term_metas', $c_user );
-    } else {
-        $allowed_tax_ids = 'all';
-    }
+    $current_user = get_current_user_id();
 
     $args = array(
         'taxonomy' => $tax,
@@ -373,13 +368,15 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     $args['class'] = $class;
 
-    $categories = (array) get_terms( $tax, array(
+    $tax_args = array(
         'hide_empty'  => false,
-        'include'     => $allowed_tax_ids,
         $exclude_type => (array) $exclude,
         'orderby'     => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
         'order'       => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
-    ) );
+    );
+    $tax_args = apply_filters( 'wpuf_allowed_term_metas', $tax_args );
+
+    $categories = (array) get_terms( $tax, $tax_args );
 
     echo '<ul class="wpuf-category-checklist">';
     printf( '<input type="hidden" name="%s" value="0" />', $tax );

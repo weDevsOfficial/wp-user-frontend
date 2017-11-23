@@ -347,15 +347,17 @@ class WPUF_Walker_Category_Checklist extends Walker {
 function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = array(), $class = null ) {
     require_once ABSPATH . '/wp-admin/includes/template.php';
 
-    $walker             = new WPUF_Walker_Category_Checklist();
+    $walker       = new WPUF_Walker_Category_Checklist();
     
-    $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-    $exclude            = explode( ',', $attr['exclude'] );
-    $tax                = $attr['name'];
-    $c_user             = get_current_user_id();
-    $pack               = get_user_meta( $c_user , '_wpuf_subscription_pack', true );
-    $allowed_tax_id_arr = get_post_meta( $pack['pack_id'] , '_sub_allowed_term_ids', true );
-    $allowed_tax_ids    = implode( ', ', $allowed_tax_id_arr );
+    $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
+    $exclude      = explode( ',', $attr['exclude'] );
+    $tax          = $attr['name'];
+    $c_user       = get_current_user_id();
+    if ( class_exists('WP_User_Frontend_Pro') ) {
+        $allowed_tax_ids = apply_filters( 'wpuf_allowed_term_metas', $c_user );
+    } else {
+        $allowed_tax_ids = 'all';
+    }
 
     $args = array(
         'taxonomy' => $tax,
@@ -2306,7 +2308,7 @@ function wpuf_get_user( $user = null ) {
  *
  * @return void
  */
-function set_all_terms_as_allowed() {
+function wpuf_set_all_terms_as_allowed() {
 
     if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
         $subscriptions  = WPUF_Subscription::init()->get_subscriptions();

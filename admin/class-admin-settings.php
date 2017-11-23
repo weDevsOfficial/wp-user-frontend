@@ -385,7 +385,7 @@ class WPUF_Admin_Settings {
      */
     public function enqueue_styles() {
 
-        if ( ! $this->is_admin_menu_page( get_current_screen() ) ) {
+        if ( ! $this->is_admin_menu_page( get_current_screen() ) && get_current_screen()->parent_base == 'edit'  ) {
             return;
         }
 

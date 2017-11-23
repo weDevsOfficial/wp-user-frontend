@@ -1,0 +1,76 @@
+.metabox-tabs-div {
+    margin-bottom: 32px;
+    div.tabs-panel {
+        overflow: auto;
+        padding: 0.5em 0.9em;
+        border-style: solid;
+        border-width: 1px;
+    }
+}
+ul {
+    &#metabox-tabs{
+        li.active {
+            background: #ffffff;
+        }
+        li {
+            background: #f1f1f1;
+            width: 20%;
+            display: block;
+            float: left;
+            clear: both;
+        }
+    }
+}
+.metabox-tabs {
+    a {
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+        border-style: none;
+        border-width: 1px 1px 1px 0px;
+        text-decoration: none;
+    }
+    .active {
+        a {
+            color: #333;
+        }
+    }
+}
+ul {
+    &.metabox-tabs{
+        li {
+            margin: 0px;
+            padding: 2px;
+            display: block;
+            float: left;
+            position: relative;
+            box-sizing: border-box;
+            vertical-align: middle;
+            -moz-border-radius: 3px 3px 0 0;
+            -webkit-border-top-left-radius: 3px;
+            -webkit-border-top-right-radius: 3px;
+            -khtml-border-top-left-radius: 3px;
+            -khtml-border-top-right-radius: 3px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+        li.active {
+            background-color: #F1F1F1;
+            border-color: #DFDFDF;
+        }
+    }
+}
+div {
+    &.tab-content {
+        border-color: #DFDFDF;
+    }
+}
+.heading {
+    padding-left: 10px;
+}
+.tab-content {
+    overflow: auto;
+    padding: 0.5em 0.9em;
+    border-style: solid;
+    border-width: 1px;
+}

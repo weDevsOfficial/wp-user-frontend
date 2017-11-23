@@ -498,10 +498,6 @@ class WPUF_Admin_Subscription {
     }
 
     public function enqueue() {
-        $color = get_user_meta( get_current_user_id(), 'admin_color', true );
-
-        wp_enqueue_style(  'wpuf-metabox-tabs', WPUF_ASSET_URI . '/css/metabox-tabs.css'  );
-        wp_enqueue_style(  "wpuf-$color",       WPUF_ASSET_URI . "/css/metabox-$color.css" );
         wp_enqueue_script( 'wpuf-metabox-tabs', WPUF_ASSET_URI . '/js/metabox-tabs.js' , array( 'jquery' ) );
     }
 

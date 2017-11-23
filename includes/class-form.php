@@ -23,16 +23,36 @@ class WPUF_Form {
 		}
 	}
 
+	/**
+     * Get the form settings
+     *
+     * @return boolean
+     */
 	public function get_settings() {
 		$form_settings = wpuf_get_form_settings( $this->id );
 		return $form_settings;
 
 	}
 
+	/**
+     * Get guest post settings 
+     *
+     * @return boolean
+     */
 	public function guest_post() {
-		return 'false';
+		$settings = $this->get_settings();
+		if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' ) {
+			return true;
+		}
+
+		return false;
 	}
 
+	/**
+     * Check if payment is enabled 
+     *
+     * @return boolean
+     */
 	public function is_charging_enabled() {
 		$settings = $this->get_settings();
 	
@@ -43,6 +63,11 @@ class WPUF_Form {
 		return false;
 	}
 
+	/**
+     * Check if pay per post is enabled 
+     *
+     * @return boolean
+     */
 	public function is_enabled_pay_per_post() {
 		$settings = $this->get_settings();
 
@@ -53,6 +78,11 @@ class WPUF_Form {
 		return false;
 	}
 
+	/**
+     * Check if subscription pack is forced 
+     *
+     * @return boolean
+     */
 	public function is_enabled_force_pack() {
 		$settings = $this->get_settings();
 
@@ -63,6 +93,11 @@ class WPUF_Form {
 		return false;
 	}
 
+	/**
+     * Get pay per cost amount 
+     *
+     * @return integer
+     */
 	public function get_pay_per_post_cost() {
 		$settings = $this->get_settings();
 		
@@ -73,6 +108,11 @@ class WPUF_Form {
 		return 0;
 	}
 
+	/**
+     * Check if fallback cost after subscription pack expiration is enabled 
+     *
+     * @return boolean
+     */
 	public function is_enabled_fallback_cost() {
 		$settings = $this->get_settings();
 
@@ -83,6 +123,11 @@ class WPUF_Form {
 		return false;
 	}
 
+	/**
+     * Get the fallback cost amount 
+     *
+     * @return integer
+     */
 	public function get_subs_fallback_cost() {
 		$settings = $this->get_settings();
 		

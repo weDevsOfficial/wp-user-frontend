@@ -1009,13 +1009,16 @@ class WPUF_Subscription {
                     //if charging is enabled
                     if ( $force_pack ) { 
                         if ( ! is_wp_error( $current_pack ) ) {
+                            // current pack has no error
                             if ( ! $fallback_enabled ) {
+                                //fallback cost enabled
                                 if ( !$current_user->subscription()->current_pack_id() ) {
                                     return 'no';
                                 } elseif ( $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
                                     return 'yes';
                                 }
                             } else {
+                                //fallback cost disabled
                                 if ( !$current_user->subscription()->current_pack_id() ) {
                                     return 'no';
                                 } elseif ( $has_post_count ) {

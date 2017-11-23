@@ -1320,9 +1320,11 @@ class WPUF_Render_Form {
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
         $exclude            = $attr['exclude'];
         $c_user             = get_current_user_id();
-        $pack               = get_user_meta( $c_user , '_wpuf_subscription_pack', true );
-        $allowed_tax_id_arr = get_post_meta( $pack['pack_id'] , '_sub_allowed_term_ids', true );
-        $allowed_tax_ids    = implode( ', ', $allowed_tax_id_arr );
+        if ( class_exists('WP_User_Frontend_Pro') ) {
+            $allowed_tax_ids = apply_filters( 'wpuf_allowed_term_metas', $c_user );
+        } else {
+            $allowed_tax_ids = 'all';
+        }
 
         $select = wp_dropdown_categories( array(
 
@@ -1374,9 +1376,11 @@ class WPUF_Render_Form {
         $taxonomy           = $attr['name'];
         $class              = ' wpuf_'.$attr['name'].'_'.$form_id;
         $c_user             = get_current_user_id();
-        $pack               = get_user_meta( $c_user , '_wpuf_subscription_pack', true );
-        $allowed_tax_id_arr = get_post_meta( $pack['pack_id'] , '_sub_allowed_term_ids', true );
-        $allowed_tax_ids    = implode( ', ', $allowed_tax_id_arr );
+        if ( class_exists('WP_User_Frontend_Pro') ) {
+            $allowed_tax_ids = apply_filters( 'wpuf_allowed_term_metas', $c_user );
+        } else {
+            $allowed_tax_ids = 'all';
+        }
 
         $terms = array();
         if ( $post_id && $attr['type'] == 'text' ) {

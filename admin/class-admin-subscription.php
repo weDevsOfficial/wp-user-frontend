@@ -361,8 +361,8 @@ class WPUF_Admin_Subscription {
 
         <div class="metabox-tabs-div">
             <ul class="metabox-tabs" id="metabox-tabs">
-                <li class="active tab1"><a class="active" href="#">Payment Settings</a></li>
-                <li class="tab2"><a href="#">Post Restriction</a></li>
+                <li class="active tab1"><a class="active" href="#/">Payment Settings</a></li>
+                <li class="tab2"><a href="#/">Post Restriction</a></li>
                 <?php do_action('subs_nav_tab'); ?>
             </ul>
 
@@ -432,7 +432,7 @@ class WPUF_Admin_Subscription {
                     </tr>
                     <tr class="wpuf_subscription_expiration_field">
                         <th>
-                            Post Status :
+                            <?php _e( 'Post Status :', 'wpuf' ); ?>
                         </th>
                         <td>
                             <?php $post_statuses = get_post_statuses();
@@ -451,7 +451,7 @@ class WPUF_Admin_Subscription {
                     </tr>
                     <tr class="wpuf_subscription_expiration_field">
                         <th>
-                            Send Mail :
+                            <?php _e( 'Send Mail :', 'wpuf' ); ?>
                         </th>
                         <td>
                             <input type="checkbox" name="post_expiration_settings[enable_mail_after_expired]" value="on" <?php echo $is_enable_mail_after_expired;?> />
@@ -464,19 +464,9 @@ class WPUF_Admin_Subscription {
                             <textarea name="post_expiration_settings[post_expiration_message]" id="wpuf-post_expiration_message" cols="50" rows="5"><?php echo $post_expiration_message;?></textarea>
                         </td>
                     </tr>
-
-                    <?php if ( class_exists('WP_User_Frontend_Pro') ) {?>
-
-                    <tr valign="top">
-                        <th><label><?php _e( 'Recurring', 'wpuf-pro' ); ?></label></th>
-                        <td>
-                            <label for="wpuf-recuring-pay">
-                                <input type="checkbox" <?php checked( $sub_meta['recurring_pay'], 'yes' ); ?> size="20" style="" id="wpuf-recuring-pay" value="yes" name="recurring_pay" />
-                                <?php _e( 'Enable Recurring Payment', 'wpuf-pro' ); ?>
-                            </label>
-                        </td>
-                    </tr>
-                    <?php } ?>
+                    <?php
+                    do_action( 'wpuf_admin_subscription_detail', $sub_meta, $hidden_recurring_class, $hidden_trial_class, $this );
+                    ?>
                     </tbody>
                 </table>
             </div>
@@ -486,7 +476,7 @@ class WPUF_Admin_Subscription {
                     <tbody>
                     <?php echo $this->get_post_types( $sub_meta['post_type_name'] ); ?>
                     <?php
-                    do_action( 'wpuf_admin_subscription_detail', $sub_meta, $hidden_recurring_class, $hidden_trial_class, $this );
+                   // do_action( 'wpuf_admin_subscription_detail', $sub_meta, $hidden_recurring_class, $hidden_trial_class, $this );
                     ?>
                     </tbody>
                 </table>

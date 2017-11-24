@@ -650,11 +650,11 @@ class WPUF_Admin_Subscription {
                             <th> Allowed Taxonomy Terms </th>
                             <tr>
                                 <?php 
-                                    $cts = get_taxonomies(array('_builtin'=>true), 'objects');
-                                    foreach ($cts as $ct) { 
-                                        if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                                    $builtin_taxs = get_taxonomies(array('_builtin'=>true), 'objects');
+                                    foreach ($builtin_taxs as $builtin_tax) { 
+                                        if ( is_taxonomy_hierarchical( $builtin_tax->name ) ) {
                                             $tax_terms = get_terms ( array(
-                                                'taxonomy' => $ct->name,
+                                                'taxonomy' => $builtin_tax->name,
                                                 'hide_empty' => false,
                                             ) );
                                             foreach ($tax_terms as $tax_term) {
@@ -662,11 +662,11 @@ class WPUF_Admin_Subscription {
                                             }
                                         }
                                     }
-                                    $cts = get_taxonomies(array('_builtin'=>false), 'objects');
-                                    foreach ($cts as $ct) { 
-                                        if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                                    $custom_taxs = get_taxonomies(array('_builtin'=>false), 'objects');
+                                    foreach ($custom_taxs as $custom_tax) { 
+                                        if ( is_taxonomy_hierarchical( $custom_tax->name ) ) {
                                             $tax_terms = get_terms ( array(
-                                                'taxonomy' => $ct->name,
+                                                'taxonomy' => $custom_tax->name,
                                                 'hide_empty' => false,
                                             ) );
                                             foreach ($tax_terms as $tax_term) {

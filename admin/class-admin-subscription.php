@@ -649,20 +649,32 @@ class WPUF_Admin_Subscription {
                         <table class="form-table">
                             <th> Allowed Taxonomy Terms </th>
                             <tr>
-                                <?php
-                                $taxonomies = get_taxonomies(); ?>
-                                <ul>
-                                    <?php
-                                    foreach ( $taxonomies as $taxonomy ) {
-                                        if ( is_taxonomy_hierarchical( $taxonomy ) ) {
-                                            $tax_args = wp_list_categories( array(
-                                            'orderby' => 'name',
-                                            'taxonomy'=> $taxonomy,
+                                <?php 
+                                    $cts = get_taxonomies(array('_builtin'=>true), 'objects');
+                                    foreach ($cts as $ct) { 
+                                        if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                                            $tax_terms = get_terms ( array(
+                                                'taxonomy' => $ct->name,
+                                                'hide_empty' => false,
                                             ) );
+                                            foreach ($tax_terms as $tax_term) {
+                                             ?> <td> <?php  echo $tax_term->name; ?> </td> <?php
+                                            }
                                         }
                                     }
-                                    ?>
-                                </ul>
+                                    $cts = get_taxonomies(array('_builtin'=>false), 'objects');
+                                    foreach ($cts as $ct) { 
+                                        if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                                            $tax_terms = get_terms ( array(
+                                                'taxonomy' => $ct->name,
+                                                'hide_empty' => false,
+                                            ) );
+                                            foreach ($tax_terms as $tax_term) {
+                                             ?> <td> <?php  echo $tax_term->name; ?> </td> <?php
+                                            }
+                                        }
+                                    }
+                                ?>
                             </tr>
                         </table>
                         <hr>

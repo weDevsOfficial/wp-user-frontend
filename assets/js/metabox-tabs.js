@@ -1,26 +1,27 @@
-jQuery(document).ready(function() {
-    // tab between them
-    jQuery('.metabox-tabs li a').each(function(i) {
-        var thisTab = jQuery(this).parent().attr('class').replace(/active /, '');
+jQuery(function($) {
 
-        if ( 'active' != jQuery(this).attr('class') )
-            jQuery('div.' + thisTab).hide();
-        
-        jQuery('div.' + thisTab).addClass('tab-content');
- 
-        jQuery(this).click(function(){
-            // hide all child content
-            jQuery(this).parent().parent().parent().children('div').hide();
- 
-            // remove all active tabs
-            jQuery(this).parent().parent('ul').find('li.active').removeClass('active');
- 
-            // show selected content
-            jQuery(this).parent().parent().parent().find('div.'+thisTab).show();
-            jQuery(this).parent().parent().parent().find('li.'+thisTab).addClass('active');
+    var tabs = $('#wpuf_subs_metabox nav li' ),
+        items = $('#wpuf_subs_metabox .subscription-nav-content > section');
+
+    tabs.first().addClass('tab-current');
+    items.first().addClass('content-current');
+
+    tabs.on('click', 'a', function(event) {
+        event.preventDefault();
+
+        var self = $(this);
+
+        tabs.removeClass('tab-current');
+        self.parent('li').addClass('tab-current');
+
+        $.each(items, function(index, val) {
+            var element = $(val);
+
+            if ( '#' + element.attr( 'id' ) === self.attr('href') ) {
+                element.addClass('content-current');
+            } else {
+                element.removeClass('content-current');
+            }
         });
     });
-
-    jQuery('.heading').hide();
-    jQuery('.metabox-tabs').show();
 });

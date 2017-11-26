@@ -28,8 +28,6 @@ class WPUF_Subscription {
         add_shortcode( 'wpuf_sub_info', array($this, 'subscription_info') );
         add_shortcode( 'wpuf_sub_pack', array($this, 'subscription_packs') );
 
-        add_action( 'add_meta_boxes_wpuf_subscription', array($this, 'add_meta_box_subscription_post') );
-
         add_action( 'save_post', array( $this, 'save_form_meta' ), 10, 2 );
         add_filter( 'enter_title_here', array( $this, 'change_default_title' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'subscription_script' ) );
@@ -361,7 +359,7 @@ class WPUF_Subscription {
             'show_in_menu'    => false,
             'hierarchical'    => false,
             'query_var'       => false,
-            'supports'        => array('title'),
+            'supports'        => array( 'title' ),
             'capability_type' => 'post',
             'capabilities'    => array(
                 'publish_posts'       => $capability,
@@ -414,19 +412,6 @@ class WPUF_Subscription {
         $payer = json_decode( stripcslashes( $_POST['custom'] ) );
 
         $this->update_user_subscription_meta( $payer->payer_id, $pack );
-    }
-
-    function add_meta_box_subscription_post() {
-        add_meta_box( 'wpuf-metabox-subscription', __( 'Billing Details', 'wpuf' ), array($this, 'subscription_form_elements_post'), 'wpuf_subscription', 'normal', 'high' );
-    }
-
-    function subscription_form_elements_post() {
-        require_once dirname(__FILE__) . '/../admin/class-admin-subscription.php';
-        ?>
-        <div class="wrap">
-            <?php WPUF_Admin_Subscription::getInstance()->form(); ?>
-        </div>
-        <?php
     }
 
     /**
@@ -603,7 +588,7 @@ class WPUF_Subscription {
                     'type'    => 'post',
                     'post_id' => $post_id
                 ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
-            } 
+            }
         }
 
         return $response;
@@ -1008,7 +993,7 @@ class WPUF_Subscription {
                     return 'yes';
                 } else {
                     //if charging is enabled
-                    if ( $force_pack ) { 
+                    if ( $force_pack ) {
                         if ( ! is_wp_error( $current_pack ) ) {
                             // current pack has no error
                             if ( ! $fallback_enabled ) {
@@ -1030,8 +1015,8 @@ class WPUF_Subscription {
                             }
                         } else {
                             return 'no';
-                        }    
-                    } 
+                        }
+                    }
                     if ( !$force_pack && $pay_per_post ) {
                         return 'yes';
                     }

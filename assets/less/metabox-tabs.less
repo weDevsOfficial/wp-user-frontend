@@ -1,76 +1,76 @@
-.metabox-tabs-div {
-    margin-bottom: 32px;
-    div.tabs-panel {
-        overflow: auto;
-        padding: 0.5em 0.9em;
-        border-style: solid;
-        border-width: 1px;
-    }
+#wpuf_subs_metabox .inside {
+    margin: 0;
+    padding: 0;
 }
-ul {
-    &#metabox-tabs{
-        li.active {
-            background: #ffffff;
-        }
+
+.wpuf-subscription-pack-settings {
+    display: flex;
+
+    nav {
+        background-color: #f1f1f1;
+        min-width: 200px;
+        border-right: 1px solid #e5e5e5;
+
+        ul,
         li {
-            background: #f1f1f1;
-            width: 20%;
-            display: block;
-            float: left;
-            clear: both;
+            margin: 0;
         }
-    }
-}
-.metabox-tabs {
-    a {
-        text-decoration: none;
-        padding: 10px;
-        display: block;
-        border-style: none;
-        border-width: 1px 1px 1px 0px;
-        text-decoration: none;
-    }
-    .active {
+
         a {
-            color: #333;
-        }
-    }
-}
-ul {
-    &.metabox-tabs{
-        li {
-            margin: 0px;
-            padding: 2px;
             display: block;
-            float: left;
-            position: relative;
-            box-sizing: border-box;
-            vertical-align: middle;
-            -moz-border-radius: 3px 3px 0 0;
-            -webkit-border-top-left-radius: 3px;
-            -webkit-border-top-right-radius: 3px;
-            -khtml-border-top-left-radius: 3px;
-            -khtml-border-top-right-radius: 3px;
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
+            border: none;
+            padding: 12px 5px 12px 15px;
+            border-bottom: 1px solid #e5e5e5;
+            border-right: 1px solid #e5e5e5;
+            background-color: #f1f1f1;
+            text-decoration: none;
+            margin-right: -1px;
+            font-weight: 500;
+
+            label {
+                padding: 0.5rem;
+                display: inline-block;
+            }
         }
-        li.active {
-            background-color: #F1F1F1;
-            border-color: #DFDFDF;
+
+        a:focus,
+        a:active {
+            outline: 0;
+            box-shadow: none;
+        }
+
+        .tab-current {
+            a {
+                // border-left: 3px solid #0073aa;
+                border-right: 1px solid #fff;
+                background: #fff;
+                color: #2e4453;
+            }
         }
     }
-}
-div {
-    &.tab-content {
-        border-color: #DFDFDF;
+
+    .subscription-nav-content {
+        padding: 15px 25px;
+        width: 100%;
+
+        section {
+            display: none;
+
+            &.content-current {
+                display: block;
+            }
+
+            .form-table {
+                th {
+                    width: 150px;
+                    min-width: 150px;
+                }
+
+                td {
+                    padding: 15px 0;
+                }
+            }
+        }
     }
-}
-.heading {
-    padding-left: 10px;
-}
-.tab-content {
-    overflow: auto;
-    padding: 0.5em 0.9em;
-    border-style: solid;
-    border-width: 1px;
+
 }

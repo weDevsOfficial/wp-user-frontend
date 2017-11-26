@@ -250,6 +250,8 @@ class WPUF_Payment {
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( $_REQUEST['pack_id'] ) : 0;
             $gateway = $_POST['wpuf_payment_method'];
             $type    = $_POST['type'];
+            $current_user  = wpuf_get_user();
+            $current_pack  = $current_user->subscription()->current_pack();
 
             if ( is_user_logged_in() ) {
                 $userdata = wp_get_current_user();
@@ -272,7 +274,11 @@ class WPUF_Payment {
                     $post        = get_post( $post_id );
                     $form_id     = get_post_meta( $post_id, '_wpuf_form_id', true );
                     $form        = new WPUF_Form( $form_id );
-                    $amount      = $form->get_pay_per_post_cost();
+                    if ( $current_pack && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                        $amount      = $form->get_subs_fallback_cost();
+                    } else {
+                        $amount      = $form->get_pay_per_post_cost();
+                    }
                     $item_number = $post->ID;
                     $item_name   = $post->post_title;
                     break;

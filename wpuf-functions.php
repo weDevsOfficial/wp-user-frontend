@@ -348,10 +348,11 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     require_once ABSPATH . '/wp-admin/includes/template.php';
 
     $walker       = new WPUF_Walker_Category_Checklist();
-
+    
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude      = explode( ',', $attr['exclude'] );
     $tax          = $attr['name'];
+    $current_user = get_current_user_id();
 
     $args = array(
         'taxonomy' => $tax,
@@ -367,12 +368,15 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     $args['class'] = $class;
 
-    $categories = (array) get_terms( $tax, array(
+    $tax_args = array(
         'hide_empty'  => false,
         $exclude_type => (array) $exclude,
         'orderby'     => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
         'order'       => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
-    ) );
+    );
+    $tax_args = apply_filters( 'wpuf_allowed_term_metas', $tax_args );
+
+    $categories = (array) get_terms( $tax, $tax_args );
 
     echo '<ul class="wpuf-category-checklist">';
     printf( '<input type="hidden" name="%s" value="0" />', $tax );
@@ -2292,4 +2296,52 @@ function wpuf_get_user( $user = null ) {
     }
 
     return new WPUF_User( $user );
+}
+
+/**
+ * Add all terms as allowed terms
+ * 
+ * @since 2.7.0
+ *
+ * @return void
+ */
+function wpuf_set_all_terms_as_allowed() {
+
+    if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+        $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+        $allowed_term = array();
+
+        foreach ( $subscriptions as $pack ) {
+            if ( ! metadata_exists( 'post', $pack->ID , '_sub_allowed_term_ids' ) ) {
+                $cts = get_taxonomies(array('_builtin'=>true), 'objects'); ?>
+                <?php foreach ($cts as $ct) { 
+                    if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                        $tax_terms = get_terms ( array(
+                            'taxonomy' => $ct->name,
+                            'hide_empty' => false,
+                        ) );
+                        foreach ($tax_terms as $tax_term) {
+                            $allowed_term[] = $tax_term->term_id;
+                        }
+                    }
+                }
+
+                $cts = get_taxonomies(array('_builtin'=>false), 'objects'); ?>
+                <?php foreach ($cts as $ct) { 
+                    if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                        $tax_terms = get_terms ( array(
+                            'taxonomy' => $ct->name,
+                            'hide_empty' => false,
+                        ) );
+                        foreach ($tax_terms as $tax_term) {
+                            $allowed_term[] = $tax_term->term_id;
+                        }
+                    }
+                }
+
+                update_post_meta( $pack->ID, '_sub_allowed_term_ids', $allowed_term ); 
+            }
+        }       
+    }
+
 }

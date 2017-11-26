@@ -58,7 +58,7 @@ class WPUF_User_Subscription {
 
         // seems like the user has a pack, now check expiration
         if ( $this->expired() ) {
-            return new WP_Error( 'expired', __( 'The subscription has been expired.' ) );
+            return new WP_Error( 'expired', __( 'The subscription pack has been expired. Please Buy a pack.' ) );
         }
 
         return $pack;
@@ -421,6 +421,7 @@ class WPUF_User_Subscription {
         }
 
         $user_sub_meta  = $this->pack;
+        $fallback_ppp_enable   = isset( $form_settings['fallback_ppp_enable'] ) ? $form_settings['fallback_ppp_enable'] : 'false';
         $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
         $post_count     = isset( $user_sub_meta['posts'][$form_post_type] ) ? $user_sub_meta['posts'][$form_post_type] : 0;
 
@@ -429,6 +430,8 @@ class WPUF_User_Subscription {
             // user has recurring subscription
             if ( $post_count > 0 || $post_count == '-1' ) {
                 return false;
+            } elseif ( $post_count <= 0 && $fallback_ppp_enable == 'true' ) {
+                return true;
             } else {
                 return true;
             }
@@ -444,9 +447,9 @@ class WPUF_User_Subscription {
                 $expire_status = true;
             }
 
-
-
             if ( $post_count > 0 || $post_count == '-1' ) {
+                $post_count_status = false;
+            } elseif ( $post_count <= 0 &&  $fallback_ppp_enable == 'true' ) {
                 $post_count_status = false;
             } else {
                 $post_count_status = true;

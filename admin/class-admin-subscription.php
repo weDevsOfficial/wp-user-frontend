@@ -346,10 +346,7 @@ class WPUF_Admin_Subscription {
                                 <input type="text" size="20" style="" id="wpuf-expiration-number" value="<?php echo esc_attr( $sub_meta['expiration_number'] ); ?>" name="expiration_number" />
 
                                 <select id="expiration-period" name="expiration_period">
-                                    <option value="day" <?php selected( $sub_meta['expiration_period'], 'day' ); ?> ><?php _e( 'Day(s)', 'wpuf' ); ?></option>
-                                    <option value="week" <?php selected( $sub_meta['expiration_period'], 'week' ); ?> ><?php _e( 'Week(s)', 'wpuf' ); ?></option>
-                                    <option value="month" <?php selected( $sub_meta['expiration_period'], 'month' ); ?> ><?php _e( 'Month(s)', 'wpuf'); ?></option>
-                                    <option value="year" <?php selected( $sub_meta['expiration_period'], 'year' ); ?> ><?php _e( 'Year(s)', 'wpuf' ); ?></option>
+                                    <?php echo $this->option_field( $sub_meta['expiration_period'] ); ?>
                                 </select>
                                 <div><span class="description"></span></div>
                             </td>
@@ -494,6 +491,22 @@ class WPUF_Admin_Subscription {
         }
 
         wp_enqueue_script( 'wpuf-admin-profile-subs', WPUF_ASSET_URI . '/js/admin-profile-subs.js' , array( 'jquery' ) );
+    }
+
+    /**
+     * Option fields for date type
+     *
+     * @param  string $selected
+     *
+     * @return void
+     */
+    function option_field( $selected ) {
+        ?>
+        <option value="day" <?php selected( $selected, 'day' ); ?> ><?php _e( 'Day(s)', 'wpuf' ); ?></option>
+        <option value="week" <?php selected( $selected, 'week' ); ?> ><?php _e( 'Week(s)', 'wpuf' ); ?></option>
+        <option value="month" <?php selected( $selected, 'month' ); ?> ><?php _e( 'Month(s)', 'wpuf'); ?></option>
+        <option value="year" <?php selected( $selected, 'year' ); ?> ><?php _e( 'Year(s)', 'wpuf' ); ?></option>
+        <?php
     }
 
     function packdropdown_without_recurring( $packs, $selected = '' ) {

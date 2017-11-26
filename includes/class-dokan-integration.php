@@ -30,15 +30,18 @@ class WPUF_Dokan_Integration{
 	 * @return array  
 	 */
 	public function add_wpuf_posts_page( $urls ) {
-	    
-	    $urls['posts'] = array(
-			'title' => __( 'Posts', 'wpuf'),
-			'icon'  => '<i class="fa fa-wordpress"></i>',
-			'url'   => dokan_get_navigation_url( 'posts' ),
-			'pos'   => 56
-	    );
+	    $access   	   = dokan_get_option( 'allow_wpuf_post', 'dokan_general' );
 
-	    return $urls;
+	    if ( $access == 'on' ) {
+		    $urls['posts'] = array(
+				'title' => __( 'Posts', 'wpuf'),
+				'icon'  => '<i class="fa fa-wordpress"></i>',
+				'url'   => dokan_get_navigation_url( 'posts' ),
+				'pos'   => 56
+		    );
+	    }
+
+		return $urls;
 	}
 
 	/**

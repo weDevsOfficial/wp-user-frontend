@@ -311,11 +311,11 @@ class WPUF_Subscription {
 
         $post_data = $_POST;
 
-        if ( !isset( $post_data['wpuf_subscription'] ) ) {
+        if ( !isset( $post_data ) ) {
             return;
         }
 
-        if ( !wp_verify_nonce( $post_data['wpuf_subscription'], 'wpuf_subscription_editor' ) ) {
+        if ( !isset( $_POST['meta_box_nonce'] ) || !wp_verify_nonce( $_POST['meta_box_nonce'], 'subs_meta_box_nonce' ) ) {
             return;
         }
 

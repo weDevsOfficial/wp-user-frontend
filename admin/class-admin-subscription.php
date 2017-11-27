@@ -458,6 +458,7 @@ class WPUF_Admin_Subscription {
 
                 <?php do_action( 'wpuf_admin_subs_nav_content', $post ); ?>
             </div>
+            <?php wp_nonce_field( 'subs_meta_box_nonce', 'meta_box_nonce' ); ?>
         </div>
 
         <?php

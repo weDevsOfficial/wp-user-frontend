@@ -1336,7 +1336,7 @@ class WPUF_Render_Form {
             'child_of'         => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : ''
         );
 
-        $tax_args = apply_filters( 'wpuf_allowed_term_metas', $tax_args );
+        $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
 
         $select = wp_dropdown_categories( $tax_args );
 
@@ -1352,7 +1352,7 @@ class WPUF_Render_Form {
             //'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
             //'term_id'      => $selected
         );
-        $attr = apply_filters( 'wpuf_allowed_term_metas', $attr );
+        $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
         ?>
         <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
         <?php
@@ -1450,7 +1450,7 @@ class WPUF_Render_Form {
                             'selected'         => $selected,
                         );
 
-                        $tax_args = apply_filters( 'wpuf_allowed_term_metas', $tax_args );
+                        $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
 
                         $select   = wp_dropdown_categories( $tax_args );
 
@@ -1478,7 +1478,7 @@ class WPUF_Render_Form {
                             'walker'           => $walker
                         );
 
-                        $tax_args = apply_filters( 'wpuf_allowed_term_metas', $tax_args );
+                        $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
 
                         $select   = wp_dropdown_categories( $tax_args );
 

@@ -311,7 +311,7 @@ class WPUF_Subscription {
 
         $post_data = $_POST;
 
-        if ( !isset( $post_data ) ) {
+        if ( !isset( $post_data['billing_amount'] ) ) {
             return;
         }
 
@@ -580,9 +580,8 @@ class WPUF_Subscription {
                     'type'    => 'post',
                     'post_id' => $post_id
                 ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
-            }
-
-            if ( !$forcePack && $ppp_cost_enabled ) {
+                
+            } elseif ( !$forcePack && $ppp_cost_enabled ) {
                 $response['redirect_to'] = add_query_arg( array(
                     'action'  => 'wpuf_pay',
                     'type'    => 'post',

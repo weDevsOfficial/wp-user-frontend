@@ -74,7 +74,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
      * @return array
      */
     public function get_views() {
-        $status_links = [];
+        $status_links = array();
         $base_link    = admin_url( 'admin.php?page=wpuf_transaction' );
 
         $transactions_count         = wpuf_get_transactions( array( 'count' => true ) );

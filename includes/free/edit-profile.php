@@ -237,11 +237,10 @@ class WPUF_Edit_Profile {
      * @param object $profileuser
      */
     function post_lock_form( $profileuser ) {
-        $wpuf_subscription = new WPUF_User_Subscription( $profileuser );
-
-        $current_user = new WPUF_User( $profileuser );
-        $post_locked  = $current_user->post_locked();
-        $lock_reason  = $current_user->lock_reason();
+        $current_user      = new WPUF_User( $profileuser );
+        $wpuf_subscription = $current_user->subscription();
+        $post_locked       = $current_user->post_locked();
+        $lock_reason       = $current_user->lock_reason();
 
         if ( is_admin() && current_user_can( 'edit_users' ) ) {
             $select = ( $post_locked == true ) ? 'yes' : 'no';

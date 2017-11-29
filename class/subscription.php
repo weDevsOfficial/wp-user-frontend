@@ -560,16 +560,16 @@ class WPUF_Subscription {
      */
     function post_redirect( $response, $post_id, $form_id, $form_settings ) {
 
-        $form            = new WPUF_Form( $form_id );
-        $payment_options = $form->is_charging_enabled();
-        $force_pack      = $form->is_enabled_force_pack();
-        $fallback_cost   = $form->is_enabled_fallback_cost();
-        $current_user    = wpuf_get_user();
-        $current_pack    = $current_user->subscription()->current_pack();
-        $has_pack        = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+        $form             = new WPUF_Form( $form_id );
+        $payment_options  = $form->is_charging_enabled();
+        $force_pack       = $form->is_enabled_force_pack();
+        $fallback_cost    = $form->is_enabled_fallback_cost();
+        $current_user     = wpuf_get_user();
+        $current_pack     = $current_user->subscription()->current_pack();
+        $has_pack         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+        $ppp_cost_enabled = $form->is_enabled_pay_per_post();
 
         if ( $payment_options ) {
-            update_post_meta( $post_id, 'test', $response );
             $order_id = get_post_meta( $post_id, '_wpuf_order_id', true );
 
             // check if there is a order ID

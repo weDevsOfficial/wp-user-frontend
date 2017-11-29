@@ -569,18 +569,17 @@ class WPUF_Subscription {
         $has_pack         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
         $ppp_cost_enabled = $form->is_enabled_pay_per_post();
 
-        if ( $payment_options ) {
+        if ( $payment_options && !$has_pack ) {
             $order_id = get_post_meta( $post_id, '_wpuf_order_id', true );
 
             // check if there is a order ID
-            if ( $order_id || ( $payment_options && $fallback_cost && !$has_pack ) ) {
+            if ( $order_id || ( $payment_options && $fallback_cost ) ) {
                 $response['show_message'] = false;
                 $response['redirect_to']  = add_query_arg( array(
                     'action'  => 'wpuf_pay',
                     'type'    => 'post',
                     'post_id' => $post_id
                 ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
-                return $response;
             } 
             if ( !$forcePack && $ppp_cost_enabled ) {
             	$response['show_message'] = false;
@@ -589,7 +588,6 @@ class WPUF_Subscription {
                     'type'    => 'post',
                     'post_id' => $post_id
                 ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
-                return $response;
             }
         }
         return $response;

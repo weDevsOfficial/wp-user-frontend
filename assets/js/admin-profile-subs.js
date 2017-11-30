@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+jQuery(function($) {
     $('.wpuf-post-exp-time').hide();
     $(".wpuf-post-exp-enabled").click(function(){
         if($(this).prop("checked")) {

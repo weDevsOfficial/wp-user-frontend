@@ -210,7 +210,7 @@ class WPUF_User_Subscription {
             $result = $wpdb->get_row( $sql );
             $table_data = array(
                 'user_id'               => $this->user->id,
-                'name'                  => $this->user->display_name,
+                'name'                  => $this->user->user->data->display_name,
                 'subscribtion_id'       => $pack_id,
                 'subscribtion_status'   => $status,
                 'gateway'               => isset( $result->payment_type ) ? 'bank' : $result->payment_type,

@@ -237,10 +237,13 @@ class WPUF_Edit_Profile {
      * @param object $profileuser
      */
     function post_lock_form( $profileuser ) {
-        global $wpuf_subscription;
+        $current_user      = new WPUF_User( $profileuser );
+        $wpuf_subscription = $current_user->subscription();
+        $post_locked       = $current_user->post_locked();
+        $lock_reason       = $current_user->lock_reason();
 
         if ( is_admin() && current_user_can( 'edit_users' ) ) {
-            $select = ( $profileuser->wpuf_postlock == 'yes' ) ? 'yes' : 'no';
+            $select = ( $post_locked == true ) ? 'yes' : 'no';
             ?>
 
             <h3><?php _e( 'WPUF Post Lock', 'wpuf' ); ?></h3>
@@ -259,50 +262,10 @@ class WPUF_Edit_Profile {
                 <tr>
                     <th><label for="post-lock"><?php _e( 'Lock Reason:', 'wpuf' ); ?> </label></th>
                     <td>
-                        <input type="text" name="wpuf_lock_cause" id="wpuf_lock_cause" class="regular-text" value="<?php echo esc_attr( $profileuser->wpuf_lock_cause ); ?>" />
+                        <input type="text" name="wpuf_lock_cause" id="wpuf_lock_cause" class="regular-text" value="<?php echo esc_attr( $lock_reason ); ?>" />
                     </td>
                 </tr>
             </table>
-
-            <?php
-            $current_user    = wpuf_get_user();
-            if ( $current_user->subscription()->current_pack_id() ) {
-                $validity = (isset( $profileuser->wpuf_sub_validity )) ? $profileuser->wpuf_sub_validity : date( 'Y-m-d G:i:s', time() );
-                $count = ( isset( $profileuser->wpuf_sub_pcount ) ) ? $profileuser->wpuf_sub_pcount : 0;
-
-                if ( isset( $profileuser->wpuf_sub_pack ) ) {
-                    $pack = $wpuf_subscription->get_subscription( $profileuser->wpuf_sub_pack );
-                    $pack = $pack->name;
-                } else {
-                    $pack = 'Free';
-                }
-                ?>
-
-                <h3><?php _e( 'WPUF Subscription', 'wpuf' ); ?></h3>
-
-                <table class="form-table">
-                    <tr>
-                        <th><label for="post-lock"><?php _e( 'Pack:', 'wpuf' ); ?> </label></th>
-                        <td>
-                            <input type="text" disabled="disabled" name="wpuf_sub_pack" id="wpuf_sub_pack" class="regular-text" value="<?php echo $pack; ?>" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label for="post-lock"><?php _e( 'Post Count:', 'wpuf' ); ?> </label></th>
-                        <td>
-                            <input type="text" name="wpuf_sub_pcount" id="wpuf_sub_pcount" class="regular-text" value="<?php echo $count; ?>" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label for="post-lock"><?php _e( 'Validity:', 'wpuf' ); ?> </label></th>
-                        <td>
-                            <input type="text" name="wpuf_sub_validity" id="wpuf_sub_validity" class="regular-text" value="<?php echo $validity; ?>" />
-                        </td>
-                    </tr>
-                </table>
-
-            <?php } ?>
-
             <?php
         }
     }
@@ -316,8 +279,6 @@ class WPUF_Edit_Profile {
         if ( is_admin() && current_user_can( 'edit_users' ) ) {
             update_user_meta( $user_id, 'wpuf_postlock', $_POST['wpuf_postlock'] );
             update_user_meta( $user_id, 'wpuf_lock_cause', $_POST['wpuf_lock_cause'] );
-            update_user_meta( $user_id, 'wpuf_sub_validity', $_POST['wpuf_sub_validity'] );
-            update_user_meta( $user_id, 'wpuf_sub_pcount', $_POST['wpuf_sub_pcount'] );
         }
     }
 

@@ -374,7 +374,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
         'orderby'     => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
         'order'       => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
     );
-    $tax_args = apply_filters( 'wpuf_allowed_term_metas', $tax_args );
+    $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
 
     $categories = (array) get_terms( $tax, $tax_args );
 

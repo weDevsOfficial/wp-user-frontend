@@ -26,8 +26,6 @@
             <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" />
         </p>
 
-        <?php do_action( 'login_form' ); ?>
-
         <p class="forgetmenot">
             <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
             <label for="wpuf-rememberme"><?php esc_attr_e( 'Remember Me', 'wpuf' ); ?></label>
@@ -39,6 +37,9 @@
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />
             <?php wp_nonce_field( 'wpuf_login_action' ); ?>
+        </p>
+        <p>
+            <?php do_action( 'wpuf_login_form_bottom' ); ?>
         </p>
     </form>
 

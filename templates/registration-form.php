@@ -68,8 +68,6 @@
                 </div>
             </li>
 
-            <?php do_action( 'registration_form' ); ?>
-
             <li class="wpuf-submit">
                 <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Register', 'wpuf' ); ?>" />
                 <input type="hidden" name="urhidden" value=" <?php echo $userrole; ?>" />
@@ -79,6 +77,8 @@
 
                 <?php wp_nonce_field( 'wpuf_registration_action' ); ?>
             </li>
+
+            <?php do_action( 'wpuf_reg_form_bottom' ); ?>
 
         </ul>
     </form>

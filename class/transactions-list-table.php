@@ -170,6 +170,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         if ( isset( $_REQUEST['status'] ) && $_REQUEST['status'] == 'pending' ) {
             $actions = array(
+                'bulk-accept' => __( 'Accept', 'wpuf' ),
                 'bulk-reject' => __( 'Reject', 'wpuf' ),
             );
         } else {
@@ -320,7 +321,9 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Accept Transaction
-        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'accept' ) {
+        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'accept' ) 
+            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'accept' ) 
+        ) {
             if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-accept-transaction' ) ) {
                 return false;
             }
@@ -365,6 +368,63 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 wp_delete_post( $id, true );
             }
 
+            wp_redirect( $page_url );
+            exit;
+        }
+
+        // Bulk Accept Transaction
+        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-accept' ) 
+            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-accept' ) 
+        ) {
+            if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-transactions' ) ) {
+                return false;
+            }
+
+            if ( ! current_user_can( 'manage_options' ) ) {
+                return;
+            }
+
+            $ids = esc_sql( $_REQUEST['bulk-items'] );
+
+            foreach ( $ids as $id ) {
+                $id = absint( $id );
+
+                $info = get_post_meta( $id, '_data', true );
+
+                if ( $info ) {
+                    switch ( $info['type'] ) {
+                        case 'post':
+                            $post_id = $info['item_number'];
+                            $pack_id = 0;
+                            break;
+
+                        case 'pack':
+                            $post_id = 0;
+                            $pack_id = $info['item_number'];
+                            break;
+                    }
+
+                    $transaction = array(
+                        'user_id'          => $info['user_info']['id'],
+                        'status'           => 'completed',
+                        'cost'             => $info['price'],
+                        'post_id'          => $post_id,
+                        'pack_id'          => $pack_id,
+                        'payer_first_name' => $info['user_info']['first_name'],
+                        'payer_last_name'  => $info['user_info']['last_name'],
+                        'payer_email'      => $info['user_info']['email'],
+                        'payment_type'     => 'Bank/Manual',
+                        'transaction_id'   => $id,
+                        'created'          => current_time( 'mysql' )
+                    );
+
+                    do_action( 'wpuf_gateway_bank_order_complete', $transaction, $id );
+
+                    WPUF_Payment::insert_payment( $transaction );
+                    wp_delete_post( $id, true );
+                }
+            }
+            
             wp_redirect( $page_url );
             exit;
         }

@@ -53,12 +53,12 @@ class WPUF_User_Subscription {
         $pack = $this->pack;
 
         if ( ! isset( $this->pack['pack_id'] ) ) {
-            return new WP_Error( 'no-pack', __( 'The user doesn\'t have an active subscription.') );
+            return new WP_Error( 'no-pack', __( 'You must purchase a pack before posting') );
         }
 
         // seems like the user has a pack, now check expiration
         if ( $this->expired() ) {
-            return new WP_Error( 'expired', __( 'The subscription pack has been expired. Please Buy a pack.' ) );
+            return new WP_Error( 'expired', __( 'The subscription pack has been expired. Please buy a pack.' ) );
         }
 
         return $pack;

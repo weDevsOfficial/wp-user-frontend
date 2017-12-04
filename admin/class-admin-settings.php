@@ -107,6 +107,9 @@ class WPUF_Admin_Settings {
 
         do_action( 'wpuf_admin_menu_bottom' );
 
+        if ( !class_exists( 'WP_User_Frontend_Pro' ) ) {
+            $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Premium', 'wpuf' ), __( 'Premium', 'wpuf' ), $capability, 'wpuf_premium', array($this, 'premium_page') );
+        }
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wpuf' ), __( '<span style="color:#f18500">Help</span>', 'wpuf' ), $capability, 'wpuf-support', array($this, 'support_page') );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wpuf' ), __( 'Settings', 'wpuf' ), $capability, 'wpuf-settings', array($this, 'plugin_page') );
 
@@ -198,6 +201,10 @@ class WPUF_Admin_Settings {
 
     function weforms_page() {
         require_once dirname( dirname( __FILE__ ) ) . '/admin/weforms.php';
+    }
+
+    function premium_page() {
+        require_once dirname( dirname( __FILE__ ) ) . '/admin/premium.php';
     }
 
     function tools_page() {

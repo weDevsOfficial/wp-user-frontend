@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 2.6.1\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2017-12-04 03:35:48+00:00\n"
+"POT-Creation-Date: 2017-12-04 07:02:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,10 +23,6 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
-
-#: admin/add-ons.php:2
-msgid "WP User Frontend - Add-Ons"
-msgstr ""
 
 #. Plugin Name of the plugin/theme
 msgid "WP User Frontend"
@@ -57,33 +53,33 @@ msgstr ""
 msgid "Transactions"
 msgstr ""
 
-#: admin/class-admin-settings.php:106
-msgid "Add-ons"
-msgstr ""
-
-#: admin/class-admin-settings.php:107 admin/tools.php:13
+#: admin/class-admin-settings.php:106 admin/tools.php:13
 msgid "Tools"
 msgstr ""
 
 #: admin/class-admin-settings.php:111
+msgid "Premium"
+msgstr ""
+
+#: admin/class-admin-settings.php:113
 msgid "Help"
 msgstr ""
 
-#: admin/class-admin-settings.php:111
+#: admin/class-admin-settings.php:113
 msgid "<span style=\"color:#f18500\">Help</span>"
 msgstr ""
 
-#: admin/class-admin-settings.php:112 admin/class-admin-settings.php:149
+#: admin/class-admin-settings.php:114 admin/class-admin-settings.php:151
 #: admin/form-builder/views/form-builder.php:9
 msgid "Settings"
 msgstr ""
 
-#: admin/class-admin-settings.php:114 admin/class-admin-subscription.php:185
+#: admin/class-admin-settings.php:116 admin/class-admin-subscription.php:185
 #: admin/subscribers.php:18
 msgid "Subscribers"
 msgstr ""
 
-#: admin/class-admin-settings.php:370
+#: admin/class-admin-settings.php:372
 msgid "Number of items per page:"
 msgstr ""
 
@@ -1872,6 +1868,28 @@ msgstr ""
 
 #: admin/posting.php:211
 msgid "No custom fields found."
+msgstr ""
+
+#: admin/premium.php:2
+msgid "weForms Pro"
+msgstr ""
+
+#: admin/premium.php:4
+msgid ""
+"Upgrade to the premium versions of weForms and unlock even more useful "
+"features."
+msgstr ""
+
+#: admin/premium.php:10
+msgid "More Features"
+msgstr ""
+
+#: admin/premium.php:49
+msgid "More Integrations"
+msgstr ""
+
+#: admin/premium.php:104
+msgid "Upgrade Now"
 msgstr ""
 
 #: admin/promotion.php:38

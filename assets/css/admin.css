@@ -254,6 +254,30 @@ span.wpuf_help {
   padding-top: 2px;
   margin-right: 5px;
 }
+.wpuf-premium .wp-badge {
+  background: #40ce65 url(../images/wpuf-pro.png) no-repeat;
+  background-size: 100px 90px;
+  background-position: 35px 5px;
+}
+.wpuf-premium .wpuf-upgrade-sticky-footer {
+  position: fixed;
+  bottom: 0;
+  background: #fff;
+  width: calc(100% - 195px);
+  z-index: 9;
+  margin-left: -25px;
+  text-align: center;
+  border: 1px solid #dfdfdf;
+  padding: 20px 0;
+  border-bottom: none;
+}
+.wpuf-premium .four-col .col {
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  min-width: 23%;
+  max-width: 23%;
+}
 .wpuf-help-tabbed {
   display: flex;
   width: 100%;

@@ -336,7 +336,7 @@
     </div>
 
     <div v-if="'subscribed_users' === selected" class="condiotional-logic-container">
-    	
+
     	<ul>
     		<?php
 
@@ -675,6 +675,19 @@
 </div>
 </script>
 
+<script type="text/x-template" id="tmpl-wpuf-form-text_field">
+<div class="wpuf-fields">
+    <input
+        type="text"
+        :class="class_names('textfield')"
+        :placeholder="field.placeholder"
+        :value="field.default"
+        :size="field.size"
+    >
+    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+</div>
+</script>
+
 <script type="text/x-template" id="tmpl-wpuf-form-textarea_field">
 <div class="wpuf-fields">
     <textarea
@@ -687,19 +700,6 @@
 
     <text-editor v-if="'no' !== field.rich" :rich="field.rich"></text-editor>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
-</div>
-</script>
-
-<script type="text/x-template" id="tmpl-wpuf-form-text_field">
-<div class="wpuf-fields">
-    <input
-        type="text"
-        :class="class_names('textfield')"
-        :placeholder="field.placeholder"
-        :value="field.default"
-        :size="field.size"
-    >
     <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 </div>
 </script>

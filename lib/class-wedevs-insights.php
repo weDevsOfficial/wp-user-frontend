@@ -1,6 +1,6 @@
 <?php
 
-if ( ! class_exists( 'WeDevs_Insights' ) ) :
+if ( ! class_exists( 'WPUF_WeDevs_Insights' ) ) :
 
 /**
  * weDevs Tracker
@@ -13,7 +13,7 @@ if ( ! class_exists( 'WeDevs_Insights' ) ) :
  *
  * @author Tareq Hasan <tareq@wedevs.com>
  */
-class WeDevs_Insights {
+class WPUF_WeDevs_Insights {
 
     /**
      * Slug of the plugin
@@ -233,7 +233,25 @@ class WeDevs_Insights {
      * @return boolean
      */
     private function is_local_server() {
-        return in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) );
+
+        if ( $_SERVER['HTTP_HOST'] == 'localhost'
+            || substr( $_SERVER['REMOTE_ADDR'], 0, 3 ) == '10.'
+            || substr( $_SERVER['REMOTE_ADDR'], 0, 7 ) == '192.168' ) {
+
+            return true;
+        }
+
+        if ( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) {
+            return true;
+        }
+
+        $fragments = explode( '.',  site_url() );
+
+        if ( in_array( end( $fragments ), array( 'dev', 'local', 'localhost', 'test' ) ) ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -255,6 +273,28 @@ class WeDevs_Insights {
     }
 
     /**
+     * If the admin notice should be shown
+     *
+     * Show the notice after X days
+     *
+     * @return boolean
+     */
+    public function should_display_notice( $days = 7 ) {
+        $installed = get_option( 'wpuf_installed' );
+
+        if ( $installed ) {
+            $diff = time() - $installed;
+
+            // if installed 7 days ago
+            if ( floor( $diff / DAY_IN_SECONDS ) > $days ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Display the admin notice to users that have not opted-in or out
      *
      * @return void
@@ -270,6 +310,10 @@ class WeDevs_Insights {
         }
 
         if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
+        if ( ! $this->should_display_notice() ) {
             return;
         }
 

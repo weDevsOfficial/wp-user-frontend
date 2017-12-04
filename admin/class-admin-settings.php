@@ -219,8 +219,8 @@ class WPUF_Admin_Settings {
         require_once dirname( dirname( __FILE__ ) ) . '/admin/weforms.php';
     }
 
-    function addons_page() {
-        require_once dirname( dirname( __FILE__ ) ) . '/admin/add-ons.php';
+    function premium_page() {
+        require_once dirname( dirname( __FILE__ ) ) . '/admin/premium.php';
     }
 
     function tools_page() {

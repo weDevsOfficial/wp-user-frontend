@@ -318,6 +318,36 @@ span {
     margin-right: 5px;
 }
 
+.wpuf-premium {
+
+    .wp-badge {
+        background: #40ce65 url(../images/wpuf-pro.png) no-repeat;
+        background-size: 100px 90px;
+        background-position: 35px 5px;
+    }
+
+    .wpuf-upgrade-sticky-footer {
+        position: fixed;
+        bottom: 0;
+        background: #fff;
+        width: ~"calc(100% - 195px)";
+        z-index: 9;
+        margin-left: -25px;
+        text-align: center;
+        border: 1px solid #dfdfdf;
+        padding: 20px 0;
+        border-bottom: none;
+    }
+
+    .four-col .col {
+        -webkit-align-self: flex-start;
+        -ms-flex-item-align: start;
+        align-self: flex-start;
+        min-width: 23%;
+        max-width: 23%;
+    }
+}
+
 @import "help.less";
 
 @import "metabox-tabs.less";

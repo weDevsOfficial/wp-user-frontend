@@ -979,7 +979,7 @@ class WPUF_Subscription {
 
         $current_user = wpuf_get_user();
         $current_pack = $current_user->subscription()->current_pack();
-        $has_post_count = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+        $has_post_count = isset( $form_settings['post_type'] ) ? $current_user->subscription()->has_post_count( $form_settings['post_type'] ) : false;
 
         if ( is_user_logged_in() ) {
 

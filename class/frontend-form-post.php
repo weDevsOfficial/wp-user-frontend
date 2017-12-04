@@ -57,10 +57,11 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $info          = '';
         $user_can_post = 'yes';
         $current_user  = wpuf_get_user();
+        $guest_post_enabled = $form->guest_post();
 
-        if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'false' && ! is_user_logged_in() ) {
+        if ( isset( $form_settings['message_restrict'] ) && !$guest_post_enabled && ! is_user_logged_in() ) {
             $user_can_post = 'no';
-            $info = sprintf( __( 'Sorry. Guest Posting is not enabled for this form.', 'wpuf' ));
+            $info = $form_settings['message_restrict'];
         }
 
         if ( $form->is_charging_enabled() ) {
@@ -127,7 +128,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 } else {
                     $user_can_post = 'no';
                     if ( !is_user_logged_in() ) {
-                        $info = sprintf( __( 'Sorry. Guest Posting is not enabled for this form.', 'wpuf' ));
+                        $info = $form_settings['message_restrict'];
                     } else {
                         $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
                     }

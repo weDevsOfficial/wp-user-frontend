@@ -487,7 +487,7 @@ class WPUF_Admin_Subscription {
     public function enqueue_profile_script() {
         $screen = get_current_screen();
 
-        if ( 'profile' == $screen->base ) {
+        if ( 'profile' != $screen->base ) {
             return;
         }
 
@@ -614,10 +614,10 @@ class WPUF_Admin_Subscription {
 
                         } ?>
                             <?php
-                            $is_post_exp_selected = isset($user_sub['_enable_post_expiration'])?'checked':'';
+                            $is_post_exp_selected  = isset($user_sub['_enable_post_expiration'])?'checked':'';
                             $_post_expiration_time = explode(' ',isset($user_sub['_post_expiration_time'])?$user_sub['_post_expiration_time']:' ');
                             $time_value = isset($_post_expiration_time[0]) && !empty($_post_expiration_time[0])?$_post_expiration_time[0]:'1';
-                            $time_type = isset($_post_expiration_time[1]) && !empty($_post_expiration_time[1])?$_post_expiration_time[1]:'day';
+                            $time_type  = isset($_post_expiration_time[1]) && !empty($_post_expiration_time[1])?$_post_expiration_time[1]:'day';
                             ?>
                             <tr>
                                 <th><label><?php echo _e('Post Expiration Enabled', 'wpuf'); ?></label></th>
@@ -659,6 +659,12 @@ class WPUF_Admin_Subscription {
                             <th> Allowed Taxonomy Terms </th>
                             <tr>
                                 <?php
+                                    $allowed_tax_id_arr = array();
+                                    $allowed_tax_id_arr = get_post_meta( $pack_id , '_sub_allowed_term_ids', true );
+                                    if ( ! $allowed_tax_id_arr ) {
+                                        $allowed_tax_id_arr = array();
+                                    }
+
                                     $builtin_taxs = get_taxonomies(array('_builtin'=>true), 'objects');
                                     foreach ($builtin_taxs as $builtin_tax) {
                                         if ( is_taxonomy_hierarchical( $builtin_tax->name ) ) {
@@ -667,7 +673,9 @@ class WPUF_Admin_Subscription {
                                                 'hide_empty' => false,
                                             ) );
                                             foreach ($tax_terms as $tax_term) {
-                                             ?> <td> <?php  echo $tax_term->name; ?> </td> <?php
+                                                if ( in_array( $tax_term->term_id, $allowed_tax_id_arr ) ) {
+                                                    ?> <td> <?php  echo $tax_term->name; ?> </td> <?php
+                                                }
                                             }
                                         }
                                     }
@@ -679,7 +687,9 @@ class WPUF_Admin_Subscription {
                                                 'hide_empty' => false,
                                             ) );
                                             foreach ($tax_terms as $tax_term) {
-                                             ?> <td> <?php  echo $tax_term->name; ?> </td> <?php
+                                                if ( in_array( $tax_term->term_id, $allowed_tax_id_arr ) ) {
+                                                    ?> <td> <?php  echo $tax_term->name; ?> </td> <?php
+                                                }
                                             }
                                         }
                                     }
@@ -707,9 +717,6 @@ class WPUF_Admin_Subscription {
                             </select>
                         </td>
                     </tr>
-                </table>
-                <table>
-
                 </table>
             <?php endif;?>
 

@@ -103,13 +103,16 @@ class WPUF_Admin_Settings {
         do_action( 'wpuf_admin_menu' );
 
         $transactions_page  = add_submenu_page( 'wp-user-frontend', __( 'Transactions', 'wpuf' ), __( 'Transactions', 'wpuf' ), $capability, 'wpuf_transaction', array($this, 'transactions_page') );
-        $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Add-ons', 'wpuf' ), __( 'Add-ons', 'wpuf' ), $capability, 'wpuf_addons', array($this, 'addons_page') );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Tools', 'wpuf' ), __( 'Tools', 'wpuf' ), $capability, 'wpuf_tools', array($this, 'tools_page') );
 
         do_action( 'wpuf_admin_menu_bottom' );
 
+        if ( !class_exists( 'WP_User_Frontend_Pro' ) ) {
+            $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Premium', 'wpuf' ), __( 'Premium', 'wpuf' ), $capability, 'wpuf_premium', array($this, 'premium_page') );
+        }
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wpuf' ), __( '<span style="color:#f18500">Help</span>', 'wpuf' ), $capability, 'wpuf-support', array($this, 'support_page') );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wpuf' ), __( 'Settings', 'wpuf' ), $capability, 'wpuf-settings', array($this, 'plugin_page') );
+        $this->menu_pages[] = add_submenu_page( null, __( 'Whats New', 'wpuf' ), __( 'Whats New', 'wpuf' ), $capability, 'whats-new-wpuf', array( $this, 'whats_new_page' ) );
 
         $this->menu_pages[] = add_submenu_page( 'edit.php?post_type=wpuf_subscription', __( 'Subscribers', 'wpuf' ), __( 'Subscribers', 'wpuf' ), $capability, 'wpuf_subscribers', array($this, 'subscribers_page') );
         $_registered_pages['user-frontend_page_wpuf_subscribers'] = true; // hack to work the nested subscribers page
@@ -159,6 +162,17 @@ class WPUF_Admin_Settings {
         <?php
     }
 
+    /**
+    * Whats new page for WPUF
+    *
+    * @return void
+    *
+    * @since  2.7
+    */
+    function whats_new_page() {
+        require_once dirname( dirname( __FILE__ ) ) . '/admin/html/whats-new.php';
+    }
+
     function transactions_page() {
         require_once dirname( dirname( __FILE__ ) ) . '/admin/transactions.php';
     }
@@ -201,8 +215,8 @@ class WPUF_Admin_Settings {
         require_once dirname( dirname( __FILE__ ) ) . '/admin/weforms.php';
     }
 
-    function addons_page() {
-        require_once dirname( dirname( __FILE__ ) ) . '/admin/add-ons.php';
+    function premium_page() {
+        require_once dirname( dirname( __FILE__ ) ) . '/admin/premium.php';
     }
 
     function tools_page() {

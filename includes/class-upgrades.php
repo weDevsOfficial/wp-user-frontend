@@ -59,6 +59,7 @@ class WPUF_Upgrades {
             if ( version_compare( $installed_version, $version, '<' ) ) {
                 include $path . $file;
                 update_option( 'wpuf_version', $version );
+                wp_safe_redirect( admin_url( 'index.php?page=whats-new-wpuf' ) );
             }
         }
 

@@ -284,6 +284,20 @@ span.wpuf_help {
   min-width: 23%;
   max-width: 23%;
 }
+.wpuf-whats-new-notice {
+  display: flex;
+  position: relative;
+}
+.wpuf-whats-new-notice .wpuf-whats-new-text {
+  width: 100%;
+}
+.wpuf-whats-new-notice .wpuf-whats-new-actions {
+  width: 200px;
+}
+.wpuf-whats-new-notice .wpuf-whats-new-actions a {
+  display: inline-block;
+  margin-top: 20px;
+}
 .wpuf-help-tabbed {
   display: flex;
   width: 100%;

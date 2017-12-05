@@ -14,16 +14,24 @@ function wpuf_settings_sections() {
             'icon' => 'dashicons-admin-generic'
         ),
         array(
+            'id'    => 'wpuf_frontend_posting',
+            'title' => __( 'Frontend Posting', 'wpuf' ),
+            'icon' => 'dashicons-welcome-write-blog'
+        ),
+        array(
             'id'    => 'wpuf_dashboard',
             'title' => __( 'Dashboard', 'wpuf' ),
             'icon' => 'dashicons-dashboard'
-
+        ),
+        array(
+            'id'    => 'wpuf_my_account',
+            'title' => __( 'My Account', 'wpuf' ),
+            'icon' => 'dashicons-id'
         ),
         array(
             'id'    => 'wpuf_profile',
             'title' => __( 'Login / Registration', 'wpuf' ),
             'icon' => 'dashicons-admin-users'
-
         ),
         array(
             'id'    => 'wpuf_payment',
@@ -57,21 +65,6 @@ function wpuf_settings_fields() {
     $settings_fields = array(
         'wpuf_general' => apply_filters( 'wpuf_options_others', array(
             array(
-                'name'    => 'edit_page_id',
-                'label'   => __( 'Edit Page', 'wpuf' ),
-                'desc'    => __( 'Select the page where <code>[wpuf_edit]</code> is located', 'wpuf' ),
-                'type'    => 'select',
-                'options' => $pages
-            ),
-            array(
-                'name'    => 'default_post_owner',
-                'label'   => __( 'Default Post Owner', 'wpuf' ),
-                'desc'    => __( 'If guest post is enabled and user details are OFF, the posts are assigned to this user', 'wpuf' ),
-                'type'    => 'select',
-                'options' => $users,
-                'default' => '1'
-            ),
-            array(
                 'name'    => 'admin_access',
                 'label'   => __( 'Admin area access', 'wpuf' ),
                 'desc'    => __( 'Allow you to block specific user role to WordPress admin area.', 'wpuf' ),
@@ -97,18 +90,50 @@ function wpuf_settings_fields() {
                 )
             ),
             array(
-                'name'    => 'cf_show_front',
-                'label'   => __( 'Custom Fields in post', 'wpuf' ),
-                'desc'    => __( 'Show custom fields on post content area', 'wpuf' ),
-                'type'    => 'checkbox',
-                'default' => 'off'
-            ),
-            array(
                 'name'    => 'load_script',
                 'label'   => __( 'Load Scripts', 'wpuf' ),
                 'desc'    => __( 'Load scripts/styles in all pages', 'wpuf' ),
                 'type'    => 'checkbox',
                 'default' => 'on'
+            ),
+            array(
+                'name'  => 'recaptcha_public',
+                'label' => __( 'reCAPTCHA Site Key', 'wpuf' ),
+            ),
+            array(
+                'name'  => 'recaptcha_private',
+                'label' => __( 'reCAPTCHA Secret Key', 'wpuf' ),
+                'desc'  => __( '<a target="_blank" href="https://www.google.com/recaptcha/">Register here</a> to get reCaptcha Site and Secret keys.', 'wpuf' ),
+            ),
+            array(
+                'name'  => 'custom_css',
+                'label' => __( 'Custom CSS codes', 'wpuf' ),
+                'desc'  => __( 'If you want to add your custom CSS code, it will be added on page header wrapped with style tag', 'wpuf' ),
+                'type'  => 'textarea'
+            ),
+        ) ),
+        'wpuf_frontend_posting' => apply_filters( 'wpuf_options_frontend_posting', array(
+            array(
+                'name'    => 'edit_page_id',
+                'label'   => __( 'Edit Page', 'wpuf' ),
+                'desc'    => __( 'Select the page where <code>[wpuf_edit]</code> is located', 'wpuf' ),
+                'type'    => 'select',
+                'options' => $pages
+            ),
+            array(
+                'name'    => 'default_post_owner',
+                'label'   => __( 'Default Post Owner', 'wpuf' ),
+                'desc'    => __( 'If guest post is enabled and user details are OFF, the posts are assigned to this user', 'wpuf' ),
+                'type'    => 'select',
+                'options' => $users,
+                'default' => '1'
+            ),
+            array(
+                'name'    => 'cf_show_front',
+                'label'   => __( 'Custom Fields in post', 'wpuf' ),
+                'desc'    => __( 'Show custom fields on post content area', 'wpuf' ),
+                'type'    => 'checkbox',
+                'default' => 'off'
             ),
             array(
                 'name'    => 'insert_photo_size',
@@ -142,21 +167,6 @@ function wpuf_settings_fields() {
                 'desc'    => __( 'Fallback form for post editing if no associated form found', 'wpuf' ),
                 'type'    => 'select',
                 'options' => wpuf_get_pages( 'wpuf_forms' )
-            ),
-            array(
-                'name'  => 'recaptcha_public',
-                'label' => __( 'reCAPTCHA Site Key', 'wpuf' ),
-            ),
-            array(
-                'name'  => 'recaptcha_private',
-                'label' => __( 'reCAPTCHA Secret Key', 'wpuf' ),
-                'desc'  => __( '<a target="_blank" href="https://www.google.com/recaptcha/">Register here</a> to get reCaptcha Site and Secret keys.', 'wpuf' ),
-            ),
-            array(
-                'name'  => 'custom_css',
-                'label' => __( 'Custom CSS codes', 'wpuf' ),
-                'desc'  => __( 'If you want to add your custom CSS code, it will be added on page header wrapped with style tag', 'wpuf' ),
-                'type'  => 'textarea'
             ),
         ) ),
         'wpuf_dashboard' => apply_filters( 'wpuf_options_dashboard', array(
@@ -229,7 +239,42 @@ function wpuf_settings_fields() {
                 'type'  => 'textarea'
             ),
         ) ),
-        'wpuf_profile' => array(
+        'wpuf_my_account' => apply_filters( 'wpuf_options_wpuf_my_account', array(
+            array(
+                'name'    => 'show_subscriptions',
+                'label'   => __( 'Show Subscriptions', 'wpuf' ),
+                'desc'    => __( 'Show Subscriptions tab in "my account" page where <code>[wpuf_account]</code> is located', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'yes',
+                'options' => array(
+                    'yes' => __( 'Yes', 'wpuf' ),
+                    'no'  => __( 'No', 'wpuf' )
+                )
+            ),
+            array(
+                'name'    => 'show_invoice',
+                'label'   => __( 'Show Invoice', 'wpuf' ),
+                'desc'    => __( 'Show Invoice tab in "my account" page where <code>[wpuf_account]</code> is located', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'yes',
+                'options' => array(
+                    'yes' => __( 'Yes', 'wpuf' ),
+                    'no'  => __( 'No', 'wpuf' )
+                )
+            ),
+            array(
+                'name'    => 'show_billing_address',
+                'label'   => __( 'Show Billing Address', 'wpuf' ),
+                'desc'    => __( 'Show Billing Address tab in "my account" page where <code>[wpuf_account]</code> is located', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'yes',
+                'options' => array(
+                    'yes' => __( 'Yes', 'wpuf' ),
+                    'no'  => __( 'No', 'wpuf' )
+                )
+            ),
+        ) ),
+        'wpuf_profile' => apply_filters( 'wpuf_options_profile', array(
             array(
                 'name'    => 'autologin_after_registration',
                 'label'   => __( 'Auto Login After Registration', 'wpuf' ),
@@ -258,19 +303,8 @@ function wpuf_settings_fields() {
                 'type'    => 'select',
                 'options' => $pages
             ),
-        ),
+        ) ),
         'wpuf_payment' => apply_filters( 'wpuf_options_payment', array(
-            array(
-                'name'    => 'show_subscriptions',
-                'label'   => __( 'Show Subscriptions', 'wpuf' ),
-                'desc'    => __( 'Show Subscriptions option where <code>[wpuf_account]</code> is located', 'wpuf' ),
-                'type'    => 'select',
-                'default' => 'no',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no'  => __( 'No', 'wpuf' )
-                )
-            ),
             array(
                 'name'    => 'subscription_page',
                 'label'   => __( 'Subscription Pack Page', 'wpuf' ),

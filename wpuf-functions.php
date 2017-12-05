@@ -240,7 +240,7 @@ function wpuf_override_admin_edit_link( $url, $post_id ) {
         $url = '';
 
         if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
-            $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_general' );
+            $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
             $url = get_permalink( $edit_page );
 
             $url = wp_nonce_url( $url . '?pid=' . $post_id, 'wpuf_edit' );
@@ -348,7 +348,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     require_once ABSPATH . '/wp-admin/includes/template.php';
 
     $walker       = new WPUF_Walker_Category_Checklist();
-    
+
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude      = explode( ',', $attr['exclude'] );
     $tax          = $attr['name'];
@@ -618,13 +618,13 @@ function wpuf_get_gateways( $context = 'admin' ) {
 function wpuf_show_custom_fields( $content ) {
     global $post;
 
-    $show_custom  = wpuf_get_option( 'cf_show_front', 'wpuf_general' );
+    $show_custom  = wpuf_get_option( 'cf_show_front', 'wpuf_frontend_posting' );
 
     if ( $show_custom != 'on' ) {
         return $content;
     }
 
-    $show_caption  = wpuf_get_option( 'image_caption', 'wpuf_general' );
+    $show_caption  = wpuf_get_option( 'image_caption', 'wpuf_frontend_posting' );
     $form_id       = get_post_meta( $post->ID, '_wpuf_form_id', true );
     $form_settings = wpuf_get_form_settings( $form_id );
 
@@ -2300,7 +2300,7 @@ function wpuf_get_user( $user = null ) {
 
 /**
  * Add all terms as allowed terms
- * 
+ *
  * @since 2.7.0
  *
  * @return void
@@ -2314,7 +2314,7 @@ function wpuf_set_all_terms_as_allowed() {
         foreach ( $subscriptions as $pack ) {
             if ( ! metadata_exists( 'post', $pack->ID , '_sub_allowed_term_ids' ) ) {
                 $cts = get_taxonomies(array('_builtin'=>true), 'objects'); ?>
-                <?php foreach ($cts as $ct) { 
+                <?php foreach ($cts as $ct) {
                     if ( is_taxonomy_hierarchical( $ct->name ) ) {
                         $tax_terms = get_terms ( array(
                             'taxonomy' => $ct->name,
@@ -2327,7 +2327,7 @@ function wpuf_set_all_terms_as_allowed() {
                 }
 
                 $cts = get_taxonomies(array('_builtin'=>false), 'objects'); ?>
-                <?php foreach ($cts as $ct) { 
+                <?php foreach ($cts as $ct) {
                     if ( is_taxonomy_hierarchical( $ct->name ) ) {
                         $tax_terms = get_terms ( array(
                             'taxonomy' => $ct->name,
@@ -2339,9 +2339,9 @@ function wpuf_set_all_terms_as_allowed() {
                     }
                 }
 
-                update_post_meta( $pack->ID, '_sub_allowed_term_ids', $allowed_term ); 
+                update_post_meta( $pack->ID, '_sub_allowed_term_ids', $allowed_term );
             }
-        }       
+        }
     }
 
 }

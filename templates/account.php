@@ -4,7 +4,13 @@
             <?php
                 if ( is_user_logged_in() ) {
                     foreach ( $sections as $section ) {
-                        if ( 'subscription' == $section['slug'] && wpuf_get_option( 'show_subscriptions', 'wpuf_payment' ) != 'yes' ) {
+                        if ( 'subscription' == $section['slug'] && wpuf_get_option( 'show_subscriptions', 'wpuf_my_account' ) == 'no' ) {
+                            continue;
+                        }
+                        if ( 'invoices' == $section['slug'] && wpuf_get_option( 'show_invoice', 'wpuf_my_account' ) == 'no' ) {
+                            continue;
+                        }
+                        if ( 'billing_address' == $section['slug'] && wpuf_get_option( 'show_billing_address', 'wpuf_my_account' ) == 'no' ) {
                             continue;
                         }
                         echo sprintf(

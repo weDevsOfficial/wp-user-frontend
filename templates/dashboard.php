@@ -11,10 +11,10 @@
     <?php if ( !empty( $post_type_obj ) ) do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj ) ?>
     <?php
 
-        $meta_label = array(); 
+        $meta_label = array();
         $meta_name  = array();
         $meta_id    = array();
-        $meta_key   = array(); 
+        $meta_key   = array();
         if ( !empty( $meta ) ) {
             $arr =  explode(',', $meta);
             foreach ($arr as $mkey) {
@@ -80,7 +80,7 @@
 
                     <?php
                     // populate meta column headers
-                    
+
                     if ( $meta != 'off' ) {
                         for ( $i = 0; $i < $len_label; $i++ ) {
                             for ( $j = 0; $j < $len; $j++ ) {
@@ -152,11 +152,11 @@
                         <td>
                             <?php the_category( ', ' ); ?>
                         </td>
-                        <?php } 
+                        <?php }
 
                         //populate meta column fields
                         ?>
-                        <?php if ( $meta != 'off' ) { 
+                        <?php if ( $meta != 'off' ) {
                             for ( $i = 0; $i < $len_label; $i++ ) {
                                 for ( $j = 0; $j < $len; $j++ ) {
                                     if ( $meta_key[$j] == $meta_name[$i] ) {
@@ -166,7 +166,7 @@
                                         echo '</td>';
                                     }
                                 }
-                            } 
+                            }
                         } ?>
 
                         <?php if ( 'on' == $excerpt ) { ?>
@@ -188,7 +188,7 @@
                             <td>
                                 <?php if ( $post->post_status == 'pending' && $order_id && $payment_status != 'completed' ) { ?>
                                     <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wpuf' ); ?></a>
-                                <?php } 
+                                <?php }
                                 elseif ( $payment_status == 'completed' ) {
                                     echo "Completed";
                                 }?>
@@ -197,7 +197,7 @@
 
                         <td>
                             <?php
-                            if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
+                            if ( wpuf_get_option( 'enable_post_edit', 'wpuf_frontend_posting', 'yes' ) == 'yes' ) {
                                 $disable_pending_edit   = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
                                 $edit_page              = (int) wpuf_get_option( 'edit_page_id', 'wpuf_general' );
                                 $post_id                = $post->ID;
@@ -254,7 +254,7 @@
         if ( !empty( $post_type_obj ) ) {
             printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', $post_type_obj->label );
             do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
-        }    
+        }
     }
     if ( !empty( $post_type_obj ) ) do_action( 'wpuf_dashboard_bottom', $userdata->ID, $post_type_obj ); ?>
 

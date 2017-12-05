@@ -42,6 +42,26 @@ function wpuf_upgrade_2_7_fallback_cost_migration() {
 
 }
 
+function wpuf_upgrade_2_7_update_new_options() {
+    $wpuf_general = get_option( 'wpuf_general' );
+    $wpuf_payment = get_option( 'wpuf_payment' );
+    $wpuf_frontend_posting = array(
+        'edit_page_id'          => $wpuf_general['edit_page_id'],
+        'default_post_owner'    => $wpuf_general['default_post_owner'],
+        'cf_show_front'         => $wpuf_general['cf_show_front'],
+        'insert_photo_size'     => $wpuf_general['insert_photo_size'],
+        'insert_photo_type'     => $wpuf_general['insert_photo_type'],
+        'image_caption'         => $wpuf_general['image_caption'],
+        'default_post_form'     => $wpuf_general['default_post_form'],
+    );
+    $wpuf_my_account = array(
+        'show_subscriptions'    => $wpuf_payment['show_subscriptions'],
+    );
+    update_option( 'wpuf_frontend_posting', $wpuf_frontend_posting );
+    update_option( 'wpuf_my_account', $wpuf_my_account );
+}
+
 wpuf_upgrade_2_7_taxonomy_restriction();
 wpuf_upgrade_2_7_unset_oembed_cache();
 wpuf_upgrade_2_7_fallback_cost_migration();
+wpuf_upgrade_2_7_update_new_options();

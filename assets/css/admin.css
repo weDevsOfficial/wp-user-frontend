@@ -209,6 +209,12 @@ span.wpuf_help {
 .wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_profile-tab .dashicons {
   color: #00aeff;
 }
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_frontend_posting-tab .dashicons {
+  color: #AD1457;
+}
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_my_account-tab .dashicons {
+  color: #64DD17;
+}
 .wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#wpuf_payment-tab .dashicons {
   color: #e67e22;
 }

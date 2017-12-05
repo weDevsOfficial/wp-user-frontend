@@ -115,13 +115,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     }
 
                 } elseif ( $pay_per_post && is_user_logged_in() && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-                  
+
                     $user_can_post = 'yes';
                     // $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
                     // echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
 
                 } elseif ( !$pay_per_post && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
-                    
+
                     $user_can_post = 'no';
                     $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
 
@@ -211,7 +211,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         // fallback to default form
         if ( !$form_id ) {
-            $form_id = wpuf_get_option( 'default_post_form', 'wpuf_general' );
+            $form_id = wpuf_get_option( 'default_post_form', 'wpuf_frontend_posting' );
         }
 
         if ( !$form_id ) {
@@ -280,7 +280,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         $is_update           = false;
         $post_author         = null;
-        $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_general', 1 );
+        $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
 
         // Guest Stuffs: check for guest post
         if ( !is_user_logged_in() ) {
@@ -703,7 +703,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 //now perform some post related actions
                 do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $form_settings, $form_vars ); // plugin API to extend the functionality
             }
-            
+
             wpuf_clear_buffer();
             wp_send_json( $response );
 

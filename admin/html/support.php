@@ -453,7 +453,7 @@ function wpuf_help_related_articles( $articles ) {
 
             <p><?php _e( 'Report any Bug that you Discovered, Get Instant Solutions.', 'wpuf' ); ?></p>
 
-            <a target="_blank" class="button button-primary" href="https://github.com/weDevsOfficial/wp-user-frontend/https://wedevs.com/account/tickets/?utm_source=wpuf-help-page&utm_medium=help-block&utm_campaign=found-bugs"><?php _e( 'Report to GitHub', 'wpuf' ); ?></a>
+            <a target="_blank" class="button button-primary" href="https://github.com/weDevsOfficial/wp-user-frontend/?utm_source=wpuf-help-page&utm_medium=help-block&utm_campaign=found-bugs"><?php _e( 'Report to GitHub', 'wpuf' ); ?></a>
         </div>
 
         <div class="help-block">

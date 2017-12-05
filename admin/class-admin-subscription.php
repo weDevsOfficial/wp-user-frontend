@@ -255,15 +255,16 @@ class WPUF_Admin_Subscription {
 
         foreach ( $post_types as $key => $name ) {
             $post_type_object = get_post_type_object( $key );
-            ?>
-            <tr>
-                <th><label for="wpuf-<?php echo esc_attr( $key ); ?>"><?php printf( 'Number of %s', $post_type_object->label ); ?></label></th>
-                <td>
-                    <input type="text" size="20" style="" id="wpuf-<?php echo esc_attr( $key ); ?>" value="<?php echo intval( $name ); ?>" name="post_type_name[<?php echo esc_attr( $key ); ?>]" />
-                    <div><span class="description"><span><?php printf( 'How many %s the user can list with this pack? Enter <strong>-1</strong> for unlimited.', $key ); ?></span></span></div>
-                </td>
-            </tr>
+            if ( $post_type_object ) { ?>
+                <tr>
+                    <th><label for="wpuf-<?php echo esc_attr( $key ); ?>"><?php printf( 'Number of %s', $post_type_object->label ); ?></label></th>
+                    <td>
+                        <input type="text" size="20" style="" id="wpuf-<?php echo esc_attr( $key ); ?>" value="<?php echo intval( $name ); ?>" name="post_type_name[<?php echo esc_attr( $key ); ?>]" />
+                        <div><span class="description"><span><?php printf( 'How many %s the user can list with this pack? Enter <strong>-1</strong> for unlimited.', $key ); ?></span></span></div>
+                    </td>
+                </tr>
             <?php
+            }
         }
 
         return ob_get_clean();

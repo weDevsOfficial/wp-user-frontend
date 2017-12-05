@@ -2182,9 +2182,9 @@ function wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, $charging
 
     $default_body     = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.' .  '<br>' . '<br>' . 'Please click the link below to verify:' . '<br>' . '<br>' . '<a href="'.$encoded_guest_url.'">Publish Post</a>' . '<br>' . '<br>' . 'Regards,' . '<br>' . '<br>' . bloginfo('name');
     $to               = trim( $_POST['guest_email'] );
-    $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_guest_mails', 'Please Confirm Your Email to Get the Post Published!' );
+    $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_mails', 'Please Confirm Your Email to Get the Post Published!' );
     $subject          = $guest_email_sub;
-    $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_guest_mails',  $default_body );
+    $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_mails',  $default_body );
 
     if ( !empty( $guest_email_body ) ) {
         $body = str_replace( '{activation_link}', '<a href="'.$encoded_guest_url.'">Publish Post</a>', $guest_email_body );

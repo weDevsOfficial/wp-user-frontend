@@ -90,7 +90,11 @@ class WPUF_Whats_New {
             return;
         }
         ?>
-        <div class="notice notice-success wpuf-whats-new-notice">
+        <div class="notice notice-success wpuf-whats-new-notice free">
+
+            <div class="wpuf-whats-new-icon">
+                <img src="<?php echo WPUF_ASSET_URI . '/images/icon-128x128.png'; ?>" alt="WPUF Icon">
+            </div>
 
             <div class="wpuf-whats-new-text">
                 <p><strong><?php printf( __( 'WP User Frontend - Version %s', 'wpuf' ), WPUF_VERSION ); ?></strong></p>
@@ -106,7 +110,7 @@ class WPUF_Whats_New {
         <script type="text/javascript">
             jQuery(function($) {
 
-                var wrap = $('.wpuf-whats-new-notice');
+                var wrap = $('.wpuf-whats-new-notice.free');
 
                 wrap.on('click', 'button.notice-dismiss', function(event) {
                     event.preventDefault();

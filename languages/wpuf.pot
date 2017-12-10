@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 2.6.1\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2017-12-05 05:23:45+00:00\n"
+"POT-Creation-Date: 2017-12-10 08:06:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -69,21 +69,17 @@ msgstr ""
 msgid "<span style=\"color:#f18500\">Help</span>"
 msgstr ""
 
-#: admin/class-admin-settings.php:114 admin/class-admin-settings.php:152
+#: admin/class-admin-settings.php:114 admin/class-admin-settings.php:151
 #: admin/form-builder/views/form-builder.php:9
 msgid "Settings"
 msgstr ""
 
-#: admin/class-admin-settings.php:115
-msgid "Whats New"
-msgstr ""
-
-#: admin/class-admin-settings.php:117 admin/class-admin-subscription.php:185
+#: admin/class-admin-settings.php:116 admin/class-admin-subscription.php:185
 #: admin/subscribers.php:18
 msgid "Subscribers"
 msgstr ""
 
-#: admin/class-admin-settings.php:384
+#: admin/class-admin-settings.php:372
 msgid "Number of items per page:"
 msgstr ""
 
@@ -140,7 +136,7 @@ msgid "Duration"
 msgstr ""
 
 #: admin/class-admin-subscription.php:206
-#: admin/class-admin-subscription.php:558 class/frontend-account.php:134
+#: admin/class-admin-subscription.php:559 class/frontend-account.php:134
 #: class/subscription.php:843 class/subscription.php:856
 #: includes/class-user-subscription.php:294
 msgid "Free"
@@ -172,138 +168,138 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: admin/class-admin-subscription.php:314 admin/form.php:229
+#: admin/class-admin-subscription.php:315 admin/form.php:229
 msgid "Payment Settings"
 msgstr ""
 
-#: admin/class-admin-subscription.php:321
+#: admin/class-admin-subscription.php:322
 msgid "Posting Restriction"
 msgstr ""
 
-#: admin/class-admin-subscription.php:335
+#: admin/class-admin-subscription.php:336
 msgid "Billing amount:"
 msgstr ""
 
-#: admin/class-admin-subscription.php:336
+#: admin/class-admin-subscription.php:337
 msgid "Billing amount each cycle:"
 msgstr ""
 
-#: admin/class-admin-subscription.php:344
+#: admin/class-admin-subscription.php:345
 msgid "Expires In:"
 msgstr ""
 
-#: admin/class-admin-subscription.php:368 admin/form.php:231
+#: admin/class-admin-subscription.php:369 admin/form.php:231
 #: includes/free/form-element.php:56
 msgid "Post Expiration"
 msgstr ""
 
-#: admin/class-admin-subscription.php:373 includes/free/form-element.php:60
+#: admin/class-admin-subscription.php:374 includes/free/form-element.php:60
 msgid "Enable Post Expiration"
 msgstr ""
 
-#: admin/class-admin-subscription.php:385
-#: admin/class-admin-subscription.php:634 includes/free/form-element.php:66
+#: admin/class-admin-subscription.php:386
+#: admin/class-admin-subscription.php:635 includes/free/form-element.php:66
 msgid "Post Expiration Time"
 msgstr ""
 
-#: admin/class-admin-subscription.php:410 admin/html/form-settings-post.php:64
+#: admin/class-admin-subscription.php:411 admin/html/form-settings-post.php:64
 #: admin/post-forms-list-table.php:298
 msgid "Post Status"
 msgstr ""
 
-#: admin/class-admin-subscription.php:424 includes/free/form-element.php:112
+#: admin/class-admin-subscription.php:425 includes/free/form-element.php:112
 msgid "Status of post after post expiration time is over "
 msgstr ""
 
-#: admin/class-admin-subscription.php:429
+#: admin/class-admin-subscription.php:430
 msgid "Expiration Mail"
 msgstr ""
 
-#: admin/class-admin-subscription.php:434
+#: admin/class-admin-subscription.php:435
 msgid "Send Expiration Email to Post Author"
 msgstr ""
 
-#: admin/class-admin-subscription.php:438
+#: admin/class-admin-subscription.php:439
 msgid "Send Mail to Author After Exceeding Post Expiration Time"
 msgstr ""
 
-#: admin/class-admin-subscription.php:443
+#: admin/class-admin-subscription.php:444
 msgid "Expiration Message"
 msgstr ""
 
-#: admin/class-admin-subscription.php:506
+#: admin/class-admin-subscription.php:507
 msgid "Day(s)"
 msgstr ""
 
-#: admin/class-admin-subscription.php:507
+#: admin/class-admin-subscription.php:508
 msgid "Week(s)"
 msgstr ""
 
-#: admin/class-admin-subscription.php:508
+#: admin/class-admin-subscription.php:509
 msgid "Month(s)"
 msgstr ""
 
-#: admin/class-admin-subscription.php:509
+#: admin/class-admin-subscription.php:510
 msgid "Year(s)"
 msgstr ""
 
-#: admin/class-admin-subscription.php:550
+#: admin/class-admin-subscription.php:551
 msgid "WPUF Subscription"
 msgstr ""
 
-#: admin/class-admin-subscription.php:571
+#: admin/class-admin-subscription.php:572
 #: includes/class-user-subscription.php:305
 #: templates/dashboard/subscription.php:2
 msgid "Subscription Details"
 msgstr ""
 
-#: admin/class-admin-subscription.php:575
+#: admin/class-admin-subscription.php:576
 msgid "This user is using recurring subscription pack"
 msgstr ""
 
-#: admin/class-admin-subscription.php:581
+#: admin/class-admin-subscription.php:582
 #: includes/class-user-subscription.php:307
 #: templates/dashboard/subscription.php:4
 msgid "Subcription Name: "
 msgstr ""
 
-#: admin/class-admin-subscription.php:583
+#: admin/class-admin-subscription.php:584
 #: includes/class-user-subscription.php:320
 #: templates/dashboard/subscription.php:10
 msgid "Remaining post: "
 msgstr ""
 
-#: admin/class-admin-subscription.php:609
+#: admin/class-admin-subscription.php:610
 #: includes/class-user-subscription.php:348
 #: templates/dashboard/subscription.php:41
 msgid "Expire date:"
 msgstr ""
 
-#: admin/class-admin-subscription.php:623
+#: admin/class-admin-subscription.php:624
 msgid "Post Expiration Enabled"
 msgstr ""
 
-#: admin/class-admin-subscription.php:706
+#: admin/class-admin-subscription.php:707
 msgid "Assign Package"
 msgstr ""
 
-#: admin/class-admin-subscription.php:709
+#: admin/class-admin-subscription.php:710
 msgid "Show Package"
 msgstr ""
 
-#: admin/class-admin-subscription.php:712
+#: admin/class-admin-subscription.php:713
 msgid "Pack:"
 msgstr ""
 
-#: admin/class-admin-subscription.php:715
+#: admin/class-admin-subscription.php:716
 msgid "--Select--"
 msgstr ""
 
-#: admin/class-admin-subscription.php:724
+#: admin/class-admin-subscription.php:725
 msgid "Delete Package"
 msgstr ""
 
-#: admin/class-admin-subscription.php:772
+#: admin/class-admin-subscription.php:773
 msgid "Learn more about <a href=\"%s\" target=\"_blank\">Subscription</a>"
 msgstr ""
 
@@ -1713,6 +1709,10 @@ msgstr ""
 msgid "Contact Support"
 msgstr ""
 
+#: admin/html/whats-new.php:31
+msgid "What's New in WPUF?"
+msgstr ""
+
 #: admin/installer.php:27
 msgid ""
 "If you have not created <strong>WP User Frontend</strong> pages yet, you "
@@ -1844,23 +1844,23 @@ msgid "Draft"
 msgstr ""
 
 #: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1584
-#: wpuf.php:479
+#: wpuf.php:480
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:487
+#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:488
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:493
+#: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:494
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:494
+#: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:495
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:495
+#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:496
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -1890,11 +1890,11 @@ msgstr ""
 msgid "More Features"
 msgstr ""
 
-#: admin/premium.php:49
+#: admin/premium.php:50
 msgid "More Integrations"
 msgstr ""
 
-#: admin/premium.php:104
+#: admin/premium.php:137
 msgid "Upgrade Now"
 msgstr ""
 
@@ -2428,23 +2428,23 @@ msgstr ""
 msgid "Install Now"
 msgstr ""
 
-#: class/asset-loader.php:31 wpuf.php:410
+#: class/asset-loader.php:31 wpuf.php:411
 msgid "is required"
 msgstr ""
 
-#: class/asset-loader.php:32 wpuf.php:411
+#: class/asset-loader.php:32 wpuf.php:412
 msgid "does not match"
 msgstr ""
 
-#: class/asset-loader.php:33 wpuf.php:412
+#: class/asset-loader.php:33 wpuf.php:413
 msgid "is not valid"
 msgstr ""
 
-#: class/asset-loader.php:45 wpuf.php:473
+#: class/asset-loader.php:45 wpuf.php:474
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: class/asset-loader.php:47 wpuf.php:475
+#: class/asset-loader.php:47 wpuf.php:476
 msgid "Word limit reached"
 msgstr ""
 
@@ -2904,6 +2904,29 @@ msgstr ""
 
 #: includes/class-user-subscription.php:367
 msgid "Change"
+msgstr ""
+
+#: includes/class-whats-new.php:67
+msgid "Whats New"
+msgstr ""
+
+#: includes/class-whats-new.php:100
+msgid "WP User Frontend - Version %s"
+msgstr ""
+
+#: includes/class-whats-new.php:101
+msgid ""
+"Welcome to the new version of WP User Frontend. See what's been changed in "
+"the <strong>%s</strong> version."
+msgstr ""
+
+#: includes/class-whats-new.php:105
+msgid "What's New?"
+msgstr ""
+
+#: includes/class-whats-new.php:106 lib/class-weforms-upsell.php:80
+#: lib/class-weforms-upsell.php:81
+msgid "Dismiss this notice."
 msgstr ""
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:46
@@ -3482,46 +3505,42 @@ msgstr ""
 msgid "Enable Recurring Payment"
 msgstr ""
 
-#: lib/class-wedevs-insights.php:282
+#: lib/class-wedevs-insights.php:326
 msgid ""
 "Want to help make <strong>%s</strong> even more awesome? Allow weDevs to "
 "collect non-sensitive diagnostic data and usage information."
 msgstr ""
 
-#: lib/class-wedevs-insights.php:287
+#: lib/class-wedevs-insights.php:331
 msgid "what we collect"
 msgstr ""
 
-#: lib/class-wedevs-insights.php:293
+#: lib/class-wedevs-insights.php:337
 msgid "Allow"
 msgstr ""
 
-#: lib/class-wedevs-insights.php:294
+#: lib/class-wedevs-insights.php:338
 msgid "No thanks"
 msgstr ""
 
-#: lib/class-wedevs-insights.php:471
+#: lib/class-wedevs-insights.php:515
 msgid "Once Weekly"
 msgstr ""
 
-#: lib/class-wedevs-insights.php:607
+#: lib/class-wedevs-insights.php:651
 msgid "If you have a moment, please let us know why you are deactivating:"
 msgstr ""
 
-#: lib/class-wedevs-insights.php:621
+#: lib/class-wedevs-insights.php:665
 msgid "I rather wouldn't say"
 msgstr ""
 
-#: lib/class-wedevs-insights.php:622
+#: lib/class-wedevs-insights.php:666
 msgid "Submit & Deactivate"
 msgstr ""
 
-#: lib/class-wedevs-insights.php:623
+#: lib/class-wedevs-insights.php:667
 msgid "Canel"
-msgstr ""
-
-#: lib/class-weforms-upsell.php:80 lib/class-weforms-upsell.php:81
-msgid "Dismiss this notice."
 msgstr ""
 
 #: lib/class-weforms-upsell.php:353
@@ -4003,7 +4022,7 @@ msgstr ""
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:622
+#: wpuf.php:623
 msgid "Error: Nonce verification failed"
 msgstr ""
 

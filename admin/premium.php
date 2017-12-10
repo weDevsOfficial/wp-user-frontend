@@ -13,88 +13,191 @@
     </div>
 
     <div class="feature-section two-col">
-        <div class="col">
-            <h3>Advanced Fields</h3>
-            <p>Build any kind of form flexibly with the advanced field option. Its user friendly interface makes sure you do not have to scratch your head over building forms.</p>
+        <div class="col feature-wrap">
+            <div class="feature-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/premium/registration.png" alt="Registration Form Builder">
+            </div>
+            <div class="feature-details">
+                <h3>Registration Form Builder</h3>
+                <p>Registration form builder is a two way form which can be used both for user registration and profile editing. You could also manage Register by Subscription Package Purchase.</p>
+            </div>
         </div>
 
-        <div class="col">
-            <h3>Conditional Logic</h3>
-            <p>Configure your form’s settings and user flow based on conditional selection. Your forms should appear just the way you want it.</p>
+
+        <div class="col feature-wrap">
+            <div class="feature-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/premium/coupon.png" alt="Manage Coupons">
+            </div>
+            <div class="feature-details">
+                <h3>Manage Coupons</h3>
+                <p>Simple but powerful coupon management. Use Coupon codes for selling subscription pack with discounts.</p>
+            </div>
         </div>
 
-        <div class="col">
-            <h3>Multi-step Form</h3>
-            <p>Break down the long forms into small and attractive multi step forms. Long and lengthy forms are uninviting, why build one?</p>
+        <div class="col feature-wrap">
+            <div class="feature-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/premium/advanced-fields.png" alt="Advanced Fields">
+            </div>
+            <div class="feature-details">
+                <h3>Advanced Fields</h3>
+                <p>Build any kind of form flexibly with the advanced field option. Its user friendly interface makes sure you do not have to scratch your head over building forms.</p>
+            </div>
         </div>
 
-        <div class="col">
-            <h3>File Uploaders</h3>
-            <p>Let the user upload any kind of file by filling up your contact form. The process is unbelievably smooth and supports a wide range of file formats.</p>
+        <div class="col feature-wrap">
+            <div class="feature-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/premium/conditional-logic.png" alt="Conditional Logic">
+            </div>
+            <div class="feature-details">
+                <h3>Conditional Logic</h3>
+                <p>Configure your form’s settings and user flow based on conditional selection. Your forms should appear just the way you want it.</p>
+            </div>
         </div>
 
-        <div class="col">
-            <h3>Form Submission Notification</h3>
-            <p>Receive email notification every time your form is submitted. You can now configure the notification settings just as you like it.</p>
+        <div class="col feature-wrap">
+            <div class="feature-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/premium/multi-step.png" alt="Multi-step Form">
+            </div>
+            <div class="feature-details">
+                <h3>Multi-step Form</h3>
+                <p>Break down the long forms into small and attractive multi step forms. Long and lengthy forms are uninviting, why build one?</p>
+            </div>
         </div>
 
-        <div class="col">
-            <h3>Manage Submission</h3>
-            <p>View, edit and manage all the submission data stored through your form. We believe that you should own it all- like literally!</p>
+        <div class="col feature-wrap">
+            <div class="feature-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/premium/content-restrictions.png" alt="Content Restrictions">
+            </div>
+            <div class="feature-details">
+                <h3>Content Restrictions</h3>
+                <p>You can restrict content for your premium users only with just a shortcode.</p>
+            </div>
         </div>
     </div>
 
     <hr>
 
-    <h2><?php _e( 'More Integrations', 'wpuf' ); ?></h2>
+    <h2 class="feature-section"><?php _e( 'Modules', 'wpuf' ); ?></h2>
 
-    <div class="headline-feature four-col">
-        <div class="col">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-buddypress.png" alt="BuddyPress Profile">
-            <h3>BuddyPress Profile</h3>
-            <p>Register and upgrade user profiles and sync data with BuddyPress</p>
+    <div class="headline-feature two-col">
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/Social-Media-Login.png" alt="BuddyPress Profile">
+            </div>
+            <div class="module-details">
+                <h3>Social Login</h3>
+                <p>Social Login and registration by Google, Facebook, Twitter and LinkedIn in WP User Frontend. </p>
+            </div>
         </div>
 
-        <div class="col">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-mailchimp.png" alt="MailChimp Integration">
-            <h3>MailChimp</h3>
-            <p>Integrate your desired form to your MailChimp email newsletter using latest API.</p>
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-ul.png" alt="User Directory">
+            </div>
+            <div class="module-details">
+                <h3>User Directory</h3>
+                <p>Handle user listing and user profile in frontend.</p>
+            </div>
         </div>
 
-        <div class="col">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-mailpoet.png" alt="Mailpoet">
-            <h3>Mailpoet</h3>
-            <p>Add subscribers to mailpoet mailing list when they registers via WP User Frontend Pro.</p>
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-buddypress.png" alt="BuddyPress Profile">
+            </div>
+            <div class="module-details">
+                <h3>BuddyPress Profile</h3>
+                <p>Register and upgrade user profiles and sync data with BuddyPress</p>
+            </div>
         </div>
 
-        <div class="col">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-pmpro.png" alt="Paid Membership Pro">
-            <h3>Paid Membership Pro</h3>
-            <p>Membership Integration of WP User Frontend PRO with Paid Membership Pro.</p>
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-ua.png" alt="MailChimp Integration">
+            </div>
+            <div class="module-details">
+                <h3>User Analytics</h3>
+                <p>Show user tracking info during post and registration from Frontend.</p>
+            </div>
         </div>
 
-        <div class="col">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-sms.png" alt="SMS Notification">
-            <h3>SMS Notification</h3>
-            <p>SMS notification for post.</p>
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-pmpro.png" alt="Paid Membership Pro">
+            </div>
+            <div class="module-details">
+                <h3>Paid Membership Pro</h3>
+                <p>Membership Integration of WP User Frontend PRO with Paid Membership Pro.</p>
+            </div>
         </div>
 
-        <div class="col">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-ul.png" alt="User Directory">
-            <h3>User Directory</h3>
-            <p>Handle user listing and user profile in frontend.</p>
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-stripe.png" alt="Stripe Payment">
+            </div>
+            <div class="module-details">
+                <h3>Stripe Payment</h3>
+                <p>Stripe payment gateway for WP User Frontend.</p>
+            </div>
         </div>
 
-        <div class="col">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-stripe.png" alt="Stripe Payment">
-            <h3>Stripe Payment</h3>
-            <p>Stripe payment gateway for WP User Frontend.</p>
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-mailpoet.png" alt="Mailpoet">
+            </div>
+            <div class="module-details">
+                <h3>Mailpoet</h3>
+                <p>Add subscribers to mailpoet mailing list when they registers via WP User Frontend Pro.</p>
+            </div>
         </div>
 
-        <div class="col">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/more.svg" alt="More...">
-            <h3>More...</h3>
-            <p>A bunch of more integrations are coming soon.</p>
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-mailchimp.png" alt="MailChimp Integration">
+            </div>
+            <div class="module-details">
+                <h3>MailChimp</h3>
+                <p>Integrate your desired form to your MailChimp email newsletter using latest API.</p>
+            </div>
+        </div>
+
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-sms.png" alt="SMS Notification">
+            </div>
+            <div class="module-details">
+                <h3>SMS Notification</h3>
+                <p>SMS notification for post.</p>
+            </div>
+        </div>
+
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-comment.png" alt="SMS Notification">
+            </div>
+            <div class="module-details">
+                <h3>Comment Manager</h3>
+                <p>Handle comments in frontend.</p>
+            </div>
+        </div>
+
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/wpuf-qr.png" alt="SMS Notification">
+            </div>
+            <div class="module-details">
+                <h3>QR Code Generator</h3>
+                <p>Post QR Code Generator.</p>
+            </div>
+        </div>
+
+        <div class="col module-wrap">
+            <div class="module-image">
+                <img src="<?php echo WPUF_ASSET_URI; ?>/images/modules/more.png" alt="More...">
+            </div>
+            <div class="module-details">
+                <h3>More...</h3>
+                <p>A bunch of more integrations are coming soon.</p>
+            </div>
         </div>
     </div>
 

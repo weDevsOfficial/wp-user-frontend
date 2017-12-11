@@ -434,6 +434,62 @@ span.wpuf_help {
 .wpuf-help-tabbed .nav-content section .button-primary:hover {
   border-color: #005082;
 }
+.wpuf-help-page .wpuf-subscribe-box {
+  display: flex;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  margin-top: 15px;
+}
+.wpuf-help-page .wpuf-subscribe-box .text-wrap {
+  width: calc(100% - 530px);
+  padding: 10px 15px;
+}
+.wpuf-help-page .wpuf-subscribe-box .text-wrap h3 {
+  color: #ff5722;
+  margin: 4px 0 0 0;
+}
+.wpuf-help-page .wpuf-subscribe-box .text-wrap p {
+  margin-bottom: 5px;
+}
+.wpuf-help-page .wpuf-subscribe-box .form-wrap {
+  width: 530px;
+  display: flex;
+  padding: 10px 0;
+  background: #f7f7f7;
+  padding-left: 20px;
+  border-left: 1px solid #eee;
+}
+.wpuf-help-page .wpuf-subscribe-box .form-wrap .thank-you {
+  font-size: 16px;
+  color: green;
+  padding-top: 20px;
+  text-align: center;
+  width: 100%;
+}
+.wpuf-help-page .wpuf-subscribe-box .form-wrap label {
+  color: #666;
+}
+.wpuf-help-page .wpuf-subscribe-box .form-wrap input {
+  max-width: 100%;
+  overflow: hidden;
+}
+.wpuf-help-page .wpuf-subscribe-box .form-wrap input[type="text"],
+.wpuf-help-page .wpuf-subscribe-box .form-wrap input[type="email"] {
+  padding: 5px 8px;
+}
+.wpuf-help-page .wpuf-subscribe-box .form-wrap .fname {
+  width: 35%;
+  margin-right: 10px;
+}
+.wpuf-help-page .wpuf-subscribe-box .form-wrap .email {
+  width: 40%;
+  margin-right: 10px;
+}
+.wpuf-help-page .wpuf-subscribe-box .form-wrap .submit-btn {
+  width: 20%;
+  padding-top: 22px;
+}
 .wpuf-help-page .help-blocks {
   display: flex;
   flex-wrap: wrap;

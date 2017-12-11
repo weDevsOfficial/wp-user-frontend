@@ -291,11 +291,30 @@ span.wpuf_help {
 .wpuf-premium .feature-section .feature-wrap .feature-details {
   padding: 0 20px;
 }
+.wpuf-premium .feature-section .feature-wrap .feature-details ul {
+  -moz-column-count: 4;
+  -moz-column-gap: 10px;
+  -webkit-column-count: 4;
+  -webkit-column-gap: 10px;
+  column-count: 4;
+  column-gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+.wpuf-premium .feature-section .feature-wrap .feature-details ul li {
+  padding-left: 1em;
+  text-indent: -0.7em;
+}
+.wpuf-premium .feature-section .feature-wrap .feature-details ul li::before {
+  content: "• ";
+  color: red;
+  /* or whatever color you prefer */
+}
 .wpuf-premium .feature-section .feature-wrap .feature-image img {
   width: 100%;
 }
 .wpuf-premium .module-wrap {
-  height: 123px;
+  height: 122px;
   display: flex;
   flex-wrap: wrap;
   background-color: #fafafa;

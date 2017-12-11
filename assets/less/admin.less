@@ -362,6 +362,27 @@ span {
 
             .feature-details {
                 padding: 0 20px;
+
+                ul {
+                    -moz-column-count: 4;
+                    -moz-column-gap: 10px;
+                    -webkit-column-count: 4;
+                    -webkit-column-gap: 10px;
+                    column-count: 4;
+                    column-gap: 10px;
+                    padding: 0;
+                    margin: 0;
+
+                    li {
+                      padding-left: 1em;
+                      text-indent: -.7em;
+                    }
+
+                    li::before {
+                      content: "• ";
+                      color: red; /* or whatever color you prefer */
+                    }
+                }
             }
             .feature-image{
                 img {
@@ -372,7 +393,7 @@ span {
     }
 
     .module-wrap {
-        height: 123px;
+        height: 122px;
         display: flex;
         flex-wrap: wrap;
         background-color: #fafafa;

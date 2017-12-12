@@ -256,9 +256,76 @@ span.wpuf_help {
   padding: 0px 20px;
   font-weight: normal;
 }
-.dokan-settings-wrap .dashicons {
-  padding-top: 2px;
-  margin-right: 5px;
+/**
+ * Profile Edit Page
+ */
+#profile-page .wpuf-user-subscription {
+  background-color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e5e5;
+  margin-top: 15px;
+}
+#profile-page .wpuf-user-subscription h3 {
+  border-bottom: 1px solid #eee;
+  padding: 12px 15px;
+  font-size: 16px;
+  margin: 0;
+}
+#profile-page .wpuf-user-subscription .wpuf-pack-dropdown th {
+  padding-left: 15px;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-actions {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: #f5f5f5;
+  overflow: hidden;
+  display: block;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-actions .wpuf-delete-pack-btn {
+  float: right;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-summary {
+  background: #f8f8f8;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-summary * {
+  box-sizing: border-box;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-summary .sub-name,
+#profile-page .wpuf-user-subscription .wpuf-sub-summary .sub-price {
+  width: 50%;
+  padding: 10px 15px;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-summary .sub-name span,
+#profile-page .wpuf-user-subscription .wpuf-sub-summary .sub-price span {
+  display: block;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-summary .sub-name span.label,
+#profile-page .wpuf-user-subscription .wpuf-sub-summary .sub-price span.label {
+  font-weight: bold;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-summary .sub-name {
+  border-right: 1px solid #eee;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-summary .info {
+  flex-basis: 100%;
+  padding: 0 15px;
+  background: #fef5be;
+  border-top: 1px solid #ffe98d;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-section {
+  padding: 0 15px;
+  border-bottom: 1px solid #eee;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-section h4 {
+  font-size: 15px;
+}
+#profile-page .wpuf-user-subscription .wpuf-sub-section:last-child {
+  border-bottom: none;
+  padding-bottom: 15px;
 }
 .wpuf-premium .wp-badge {
   background: #40ce65 url(../images/wpuf-pro.png) no-repeat;

@@ -66,7 +66,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         if ( $form->is_charging_enabled() ) {
             $pay_per_post      = $form->is_enabled_pay_per_post();
-            $pay_per_post_cost = (int) $form->get_pay_per_post_cost();
+            $pay_per_post_cost = (float) $form->get_pay_per_post_cost();
             $force_pack        = $form->is_enabled_force_pack();
             $fallback_enabled  = $form->is_enabled_fallback_cost();
             $fallback_cost     = $form->get_subs_fallback_cost();
@@ -300,7 +300,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     // $post_author = $user->ID;
                     wp_send_json( array(
                         'success'     => false,
-                        'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lost the form data.\nClick 'Cancel' to stay at this page.", 'wpuf' ),
+                        'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wpuf' ),
                         'type'        => 'login',
                         'redirect_to' => wp_login_url( get_permalink( $_POST['page_id'] ) )
                     ) );

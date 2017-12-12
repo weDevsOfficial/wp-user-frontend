@@ -8,7 +8,7 @@
     <div class="feature-section one-col">
         <div class="col">
             <h2><?php _e( 'Pro Features', 'wpuf' ); ?></h2>
-            <p style="text-align: center;">WPUF Pro is designed just for you, specially to fulfil your business needs. We have designed and curated every package keeping your requirements in mind.</p>
+            <p style="text-align: center;">WPUF Pro is designed just for you, specially to fulfil your business needs. We have designed and curated every feature keeping your requirements in mind.</p>
         </div>
     </div>
 
@@ -19,7 +19,7 @@
             </div>
             <div class="feature-details">
                 <h3>Registration Form Builder</h3>
-                <p>Registration form builder is a two way form which can be used both for user registration and profile editing. You could also manage Register by Subscription Package Purchase.</p>
+                <p>Registration form builder is a two way form which can be used both for user registration and profile editing. You could also manage Register for Subscription Package Purchase.</p>
             </div>
         </div>
 
@@ -52,7 +52,7 @@
             </div>
             <div class="feature-details">
                 <h3>Manage Coupons</h3>
-                <p>Simple but powerful coupon management. Use Coupon codes for selling subscription pack with discounts.</p>
+                <p>Simple yet powerful coupon management system. Use Coupon codes for selling subscription pack with discounts.</p>
             </div>
         </div>
 
@@ -62,7 +62,7 @@
             </div>
             <div class="feature-details">
                 <h3>Content Restrictions</h3>
-                <p>You can restrict content for your premium users by role or subscriptions only with just a shortcode.</p>
+                <p>You can restrict premium content for users by access role, registration or subscriptions only with just a shortcode.</p>
             </div>
         </div>
 
@@ -82,7 +82,7 @@
             </div>
             <div class="feature-details">
                 <h3>Multi-step Form</h3>
-                <p>Break down the long forms into small and attractive multi step forms. Long and lengthy forms are uninviting, why build one?</p>
+                <p>Break down the long forms into smaller and attractive multi step forms. Long and lengthy forms are uninviting, why build one?</p>
             </div>
         </div>
     </div>
@@ -98,7 +98,7 @@
             </div>
             <div class="module-details">
                 <h3>Social Login</h3>
-                <p>Social Login and registration by Google, Facebook, Twitter and LinkedIn in WP User Frontend. </p>
+                <p>Allow your users to Register or Login using Social networks like Google, Facebook, Twitter and LinkedIn. </p>
             </div>
         </div>
 
@@ -108,7 +108,7 @@
             </div>
             <div class="module-details">
                 <h3>User Directory</h3>
-                <p>Handle user listing and user profile in frontend. Create a directory site easily</p>
+                <p>Handle user listing and user profile in the frontend. Create a directory site easily.</p>
             </div>
         </div>
 
@@ -118,7 +118,7 @@
             </div>
             <div class="module-details">
                 <h3>BuddyPress Profile</h3>
-                <p>Register and upgrade user profiles and sync data with BuddyPress</p>
+                <p>Register and upgrade user profiles and sync data with BuddyPress.</p>
             </div>
         </div>
 
@@ -128,7 +128,7 @@
             </div>
             <div class="module-details">
                 <h3>User Analytics</h3>
-                <p>Show user tracking info during post and registration from Frontend.</p>
+                <p>Show user tracking info during post and registration directly on Frontend.</p>
             </div>
         </div>
 
@@ -138,7 +138,7 @@
             </div>
             <div class="module-details">
                 <h3>Paid Membership Pro</h3>
-                <p>Membership Integration of WP User Frontend PRO with Paid Membership Pro.</p>
+                <p>Membership Integration of WP User Frontend with Paid Membership Pro.</p>
             </div>
         </div>
 
@@ -148,7 +148,7 @@
             </div>
             <div class="module-details">
                 <h3>Stripe Payment</h3>
-                <p>Stripe payment gateway for WP User Frontend. Get your subscription payment by Stripe</p>
+                <p>Stripe payment gateway for WP User Frontend. Get your subscription payment with Stripe.</p>
             </div>
         </div>
 
@@ -198,7 +198,7 @@
             </div>
             <div class="module-details">
                 <h3>QR Code Generator</h3>
-                <p>Generat QR Code with your custom fields or custom post meta.</p>
+                <p>Generate QR Code with your custom fields or custom post meta.</p>
             </div>
         </div>
 
@@ -216,7 +216,16 @@
     <div style="display: block; height: 100px; overflow: hidden;"></div>
 
     <div class="wpuf-upgrade-sticky-footer">
-        <p><a class="button button-primary" href="<?php echo WPUF_Pro_Prompt::get_pro_url(); ?>" target="_blank"><?php _e( 'Upgrade Now', 'wpuf' ); ?></a></p>
+
+        <div class="text-left">
+            <h3><?php _e( 'Upgrade To The Most Powerful Frontend Plugin', 'wpuf' ); ?></h3>
+
+            <p><?php _e( 'WP User Frontend Pro is the most powerful solution for your frontend needs.', 'wpuf' ); ?></p>
+        </div>
+
+        <div class="text-right">
+            <a class="button button-primary" href="<?php echo WPUF_Pro_Prompt::get_pro_url(); ?>" target="_blank"><?php _e( 'Upgrade Now', 'wpuf' ); ?></a>
+        </div>
     </div>
 
 </div>

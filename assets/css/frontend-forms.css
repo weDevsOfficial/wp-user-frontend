@@ -1085,15 +1085,15 @@ fieldset.wpuf-multistep-fieldset .wpuf-multistep-next-btn {
 }
 .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li::before {
   border-width: 26px;
-  margin-top: -14px;
+  margin-top: -11px;
   right: -50px;
   z-index: 98;
 }
 .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li::after {
   border-left-color: #E4E4E4;
   border-width: 25px;
-  margin-top: -37px;
-  right: -44px;
+  margin-top: -41px;
+  right: -47px;
   z-index: 99;
 }
 .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step {

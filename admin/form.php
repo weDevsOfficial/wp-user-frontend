@@ -286,7 +286,7 @@ class WPUF_Admin_Form {
         $subscriptions = WPUF_Subscription::init()->get_subscriptions();
 
         if ( ! $subscriptions ) {
-            printf( '<option>%s</option>', __( '- Select -' ), 'wpuf' );
+            printf( '<option>%s</option>', __( '- Select -', 'wpuf' ), 'wpuf' );
             return;
         }
 
@@ -581,9 +581,9 @@ class WPUF_Admin_Form {
         $settings = array_merge( $settings, array(
             array(
                 'name'          => 'insert_image',
-                'title'         => __( 'Enable Image Insertion', 'wpuf-pro' ),
+                'title'         => __( 'Enable Image Insertion', 'wpuf' ),
                 'type'          => 'checkbox',
-                'options'       => array( 'yes' => __( 'Enable image upload in post area', 'wpuf-pro' ) ),
+                'options'       => array( 'yes' => __( 'Enable image upload in post area', 'wpuf' ) ),
                 'is_single_opt' => true,
                 'section'       => 'advanced',
                 'priority'      => 14,

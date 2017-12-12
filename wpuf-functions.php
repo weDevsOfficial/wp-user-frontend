@@ -412,7 +412,7 @@ function wpuf_allowed_extensions() {
         'video'  => array('ext' => 'avi,divx,flv,mov,ogv,mkv,mp4,m4v,divx,mpg,mpeg,mpe', 'label' => __( 'Videos', 'wpuf' )),
         'pdf'    => array('ext' => 'pdf', 'label' => __( 'PDF', 'wpuf' )),
         'office' => array('ext' => 'doc,ppt,pps,xls,mdb,docx,xlsx,pptx,odt,odp,ods,odg,odc,odb,odf,rtf,txt', 'label' => __( 'Office Documents', 'wpuf' )),
-        'zip'    => array('ext' => 'zip,gz,gzip,rar,7z', 'label' => __( 'Zip Archives' )),
+        'zip'    => array('ext' => 'zip,gz,gzip,rar,7z', 'label' => __( 'Zip Archives', 'wpuf' )),
         'exe'    => array('ext' => 'exe', 'label' => __( 'Executable Files', 'wpuf' )),
         'csv'    => array('ext' => 'csv', 'label' => __( 'CSV', 'wpuf' ))
     );
@@ -1038,7 +1038,7 @@ function wpufe_ajax_tag_search() {
 
     $s = wp_unslash( $_GET['q'] );
 
-    $comma = _x( ',', 'tag delimiter' );
+    $comma = _x( ',', 'tag delimiter', 'wpuf' );
     if ( ',' !== $comma )
         $s = str_replace( $comma, ',', $s );
     if ( false !== strpos( $s, ',' ) ) {

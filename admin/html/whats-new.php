@@ -1,12 +1,12 @@
 <?php
 $changelog = array(
     array(
-        'version'  => 'Version 2.7.0',
-        'released' => '2017-12-03',
+        'version'  => 'Version 2.7',
+        'released' => '2017-12-12',
         'changes' => array(
             array(
                 'title'       => 'Interactive Settings Page to Manage it All',
-                'type'        => 'New',
+                'type'        => 'Improvement',
                 'description' => 'WP User Frontend now has better and improved settings page where you can easily configure everything for your WP User Frontend.
                 <img src="'. WPUF_ASSET_URI .'/images/whats-new/settings.png" alt="WP User Frontend Settings">'
             ),
@@ -21,6 +21,17 @@ $changelog = array(
                 'type'        => 'New',
                 'description' => 'Admin can allow vendors to create and publish posts on the marketplace from the vendor dashboard. Admin can also select the form that vendor will use. Vendors will be able to make use of all the WPUF settings in this form.
                 <br><iframe width="100%" height="400" src="https://www.youtube.com/embed/6n6CtGjTCF4" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>'
+            ),
+            array(
+                'title'       => 'Bulk accept pending transactions',
+                'type'        => 'New',
+                'description' => 'When you have a lots of pending transactions, completing all those individual transactions take time. Now you can bulk complete the selected transactions with at once.'
+            ),
+            array(
+                'title'       => 'Subscribe to our newsletter',
+                'type'        => 'New',
+                'description' => 'Newsletter subscription form added on the help page to keep you staying updated with latest news from us.
+                <img src="http://d.pr/i/QstTQq+" alt="Newsletter subscription form" />'
             ),
         )
     )

@@ -830,7 +830,7 @@ class WPUF_Subscription {
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' && $pack->meta_value['trial_status'] == 'yes' ) {
 
-            $trial_des = __( sprintf( 'The first %s %s', $pack->meta_value['trial_duration'], $pack->meta_value['trial_duration_type']  ), 'wpuf' );
+            $trial_des = __( sprintf( 'The first %s %s', $pack->meta_value['wpuf'], $pack->meta_value['trial_duration_type']  ), 'wpuf' );
 
         } else {
             $trial_des = '';

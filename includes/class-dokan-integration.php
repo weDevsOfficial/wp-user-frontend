@@ -89,7 +89,7 @@ class WPUF_Dokan_Integration{
 
     	$settings_fields['dokan_general']['allow_wpuf_post'] = array(
 			'name'    => 'allow_wpuf_post',
-			'label'   => __( 'Allow Post', 'Allow Post' ),
+			'label'   => __( 'Allow Post', 'wpuf' ),
 			'desc'    => __( 'Allow Vendors to submit post from dashboard area', 'wpuf' ),
 			'type'    => 'checkbox',
 			'default' => 'off'

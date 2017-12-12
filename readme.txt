@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 4.8.1
 Requires PHP: 5.4
-Stable tag: 2.6.1
+Stable tag: 2.7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -169,6 +169,21 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.7.0 (12 December, 2017) =
+
+ * **New:** Posting integration with Dokan added. Now you can create and edit blog posts from your Dokan dashboard.
+ * **New:** Fallback cost for form subscription payment. When a subscribed user reaches post limit before the pack expires, this option will allow user to pay per post and continue making posts until the membership is valid.
+ * **New:** Added bulk accept feature to pending transactions.
+ * **New:** We have removed the add-on page and introduced a premium page with all the features available for you when you upgrade to pro version.
+ * **New:** A **What's New** page has been added to let users know about the most important new features and fixes has been introduced to the current version of the plugin.
+ * **New:** Newsletter subscription form added on the help page to keep you staying updated with latest news from us.
+ * **Improved:** A newly designed settings page has been introduced where you can easily configure everything more easily.
+ * **Improved:** If you are using a PHP version older than 5.4, you'll see notice to update your PHP version.
+ * **Improved:** Design improvements of subscription edit screen and user profile area in backend, it looks pretier now.
+ * **Improved:** Few settings options has been re-arranged in different tabs for better understanding.
+ * **Fix:** Fix Pay Per Post only shows round figure in frontend. #269
+
 
 = v2.6.1 (8 November, 2017) =
 

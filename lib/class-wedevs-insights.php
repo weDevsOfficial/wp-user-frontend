@@ -323,19 +323,19 @@ class WPUF_WeDevs_Insights {
             $optout_url = add_query_arg( $this->slug . '_tracker_optout', 'true' );
 
             if ( empty( $this->notice ) ) {
-                $notice = sprintf( __( 'Want to help make <strong>%s</strong> even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'textdomain' ), $this->name );
+                $notice = sprintf( __( 'Want to help make <strong>%s</strong> even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'wpuf' ), $this->name );
             } else {
                 $notice = $this->notice;
             }
 
-            $notice .= ' (<a class="insights-data-we-collect" href="#">' . __( 'what we collect', 'textdomain' ) . '</a>)';
+            $notice .= ' (<a class="insights-data-we-collect" href="#">' . __( 'what we collect', 'wpuf' ) . '</a>)';
             $notice .= '<p class="description" style="display:none;">' . implode( ', ', $this->data_we_collect() ) . '. No sensitive data is tracked.</p>';
 
             echo '<div class="updated"><p>';
                 echo $notice;
                 echo '</p><p class="submit">';
-                echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-primary button-large">' . __( 'Allow', 'textdomain' ) . '</a>';
-                echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary button-large">' . __( 'No thanks', 'textdomain' ) . '</a>';
+                echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-primary button-large">' . __( 'Allow', 'wpuf' ) . '</a>';
+                echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary button-large">' . __( 'No thanks', 'wpuf' ) . '</a>';
             echo '</p></div>';
 
             echo "<script type='text/javascript'>jQuery('.insights-data-we-collect').on('click', function(e) {
@@ -512,7 +512,7 @@ class WPUF_WeDevs_Insights {
 
         $schedules['weekly'] = array(
             'interval' => DAY_IN_SECONDS * 7,
-            'display'  => __( 'Once Weekly', 'textdomain' )
+            'display'  => __( 'Once Weekly', 'wpuf' )
         );
 
         return $schedules;
@@ -648,7 +648,7 @@ class WPUF_WeDevs_Insights {
         <div class="wd-dr-modal" id="<?php echo $this->slug; ?>-wd-dr-modal">
             <div class="wd-dr-modal-wrap">
                 <div class="wd-dr-modal-header">
-                    <h3><?php _e( 'If you have a moment, please let us know why you are deactivating:', 'domain' ); ?></h3>
+                    <h3><?php _e( 'If you have a moment, please let us know why you are deactivating:', 'wpuf' ); ?></h3>
                 </div>
 
                 <div class="wd-dr-modal-body">
@@ -662,9 +662,9 @@ class WPUF_WeDevs_Insights {
                 </div>
 
                 <div class="wd-dr-modal-footer">
-                    <a href="#" class="dont-bother-me"><?php _e( 'I rather wouldn\'t say', 'domain' ); ?></a>
-                    <button class="button-secondary"><?php _e( 'Submit & Deactivate', 'domain' ); ?></button>
-                    <button class="button-primary"><?php _e( 'Canel', 'domain' ); ?></button>
+                    <a href="#" class="dont-bother-me"><?php _e( 'I rather wouldn\'t say', 'wpuf' ); ?></a>
+                    <button class="button-secondary"><?php _e( 'Submit & Deactivate', 'wpuf' ); ?></button>
+                    <button class="button-primary"><?php _e( 'Canel', 'wpuf' ); ?></button>
                 </div>
             </div>
         </div>

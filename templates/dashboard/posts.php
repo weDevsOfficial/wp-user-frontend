@@ -141,7 +141,7 @@ $post_type_obj = get_post_type_object( $post_type );
                         <?php
                         if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
                             $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
-                            $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_general' );
+                            $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
                             $url = add_query_arg( array('pid' => $post->ID), get_permalink( $edit_page ) );
 
                             if ( $post->post_status == 'pending' && $disable_pending_edit == 'on' ) {

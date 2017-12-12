@@ -14,8 +14,8 @@ $default_cat           = isset( $form_settings['default_cat'] ) ? $form_settings
 $guest_post            = isset( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
 $guest_details         = isset( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
 $guest_email_verify    = isset( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false';
-$name_label            = isset( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name' );
-$email_label           = isset( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email' );
+$name_label            = isset( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wpuf' );
+$email_label           = isset( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email', 'wpuf' );
 $message_restrict      = isset( $form_settings['message_restrict'] ) ? $form_settings['message_restrict'] : $restrict_message;
 
 $redirect_to           = isset( $form_settings['redirect_to'] ) ? $form_settings['redirect_to'] : 'post';
@@ -49,12 +49,14 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     unset($post_types['custom_css']);
                     unset($post_types['customize_changeset']);
                     unset($post_types['wpuf_coupon']);
+                    unset($post_types['oembed_cache']);
 
                     foreach ($post_types as $post_type) {
                         printf('<option value="%s"%s>%s</option>', $post_type, selected( $post_type_selected, $post_type, false ), $post_type );
                     }
                     ?>
                 </select>
+                <p class="description"><?php _e( 'Custom Post Type will appear here. ', 'wpuf' );?><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/"><?php _e('Learn More ', 'wpuf')?></a></p>
             </td>
         </tr>
 
@@ -188,7 +190,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     ?>
                 </select>
                 <p class="description">
-                    <?php _e( 'After successfull submit, where the page will redirect to', $domain = 'default' ) ?>
+                    <?php _e( 'After successfull submit, where the page will redirect to', $domain = 'wpuf' ) ?>
                 </p>
             </td>
         </tr>
@@ -226,8 +228,8 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
             <th><?php _e( 'Comment Status', 'wpuf' ); ?></th>
             <td>
                 <select name="wpuf_settings[comment_status]">
-                    <option value="open" <?php selected( $comment_status, 'open'); ?>><?php _e('Open'); ?></option>
-                    <option value="closed" <?php selected( $comment_status, 'closed'); ?>><?php _e('Closed'); ?></option>
+                    <option value="open" <?php selected( $comment_status, 'open'); ?>><?php _e('Open', 'wpuf'); ?></option>
+                    <option value="closed" <?php selected( $comment_status, 'closed'); ?>><?php _e('Closed', 'wpuf'); ?></option>
                 </select>
             </td>
         </tr>

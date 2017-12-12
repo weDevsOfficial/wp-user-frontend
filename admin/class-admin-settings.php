@@ -102,9 +102,14 @@ class WPUF_Admin_Settings {
 
         do_action( 'wpuf_admin_menu' );
 
-        $transactions_page = add_submenu_page( 'wp-user-frontend', __( 'Transactions', 'wpuf' ), __( 'Transactions', 'wpuf' ), $capability, 'wpuf_transaction', array($this, 'transactions_page') );
-        $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Add-ons', 'wpuf' ), __( 'Add-ons', 'wpuf' ), $capability, 'wpuf_addons', array($this, 'addons_page') );
+        $transactions_page  = add_submenu_page( 'wp-user-frontend', __( 'Transactions', 'wpuf' ), __( 'Transactions', 'wpuf' ), $capability, 'wpuf_transaction', array($this, 'transactions_page') );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Tools', 'wpuf' ), __( 'Tools', 'wpuf' ), $capability, 'wpuf_tools', array($this, 'tools_page') );
+
+        do_action( 'wpuf_admin_menu_bottom' );
+
+        if ( !class_exists( 'WP_User_Frontend_Pro' ) ) {
+            $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Premium', 'wpuf' ), __( 'Premium', 'wpuf' ), $capability, 'wpuf_premium', array($this, 'premium_page') );
+        }
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wpuf' ), __( '<span style="color:#f18500">Help</span>', 'wpuf' ), $capability, 'wpuf-support', array($this, 'support_page') );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wpuf' ), __( 'Settings', 'wpuf' ), $capability, 'wpuf-settings', array($this, 'plugin_page') );
 
@@ -143,15 +148,15 @@ class WPUF_Admin_Settings {
         ?>
         <div class="wrap">
 
-            <?php screen_icon( 'options-general' ); ?>
+            <h2 style="margin-bottom: 15px;"><?php _e( 'Settings', 'wpuf' ) ?></h2>
+            <div class="wpuf-settings-wrap">
+                <?php
+                settings_errors();
 
-            <?php
-            settings_errors();
-
-            $this->settings_api->show_navigation();
-            $this->settings_api->show_forms();
-            ?>
-
+                $this->settings_api->show_navigation();
+                $this->settings_api->show_forms();
+                ?>
+            </div>
         </div>
         <?php
     }
@@ -198,8 +203,8 @@ class WPUF_Admin_Settings {
         require_once dirname( dirname( __FILE__ ) ) . '/admin/weforms.php';
     }
 
-    function addons_page() {
-        require_once dirname( dirname( __FILE__ ) ) . '/admin/add-ons.php';
+    function premium_page() {
+        require_once dirname( dirname( __FILE__ ) ) . '/admin/premium.php';
     }
 
     function tools_page() {
@@ -385,11 +390,11 @@ class WPUF_Admin_Settings {
      */
     public function enqueue_styles() {
 
-        if ( ! $this->is_admin_menu_page( get_current_screen() ) ) {
+        if ( ! $this->is_admin_menu_page( get_current_screen() ) && get_current_screen()->parent_base == 'edit'  ) {
             return;
         }
 
-        wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css' );
+        wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css', false, WPUF_VERSION );
     }
 
 }

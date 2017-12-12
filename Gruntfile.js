@@ -32,17 +32,41 @@ module.exports = function(grunt) {
             }
         },
 
+        wp_readme_to_markdown: {
+            your_target: {
+                files: {
+                    'readme.md': 'readme.txt'
+                }
+            },
+        },
+
+        addtextdomain: {
+            options: {
+                textdomain: 'wpuf',
+            },
+            update_all_domains: {
+                options: {
+                    updateDomains: true
+                },
+                src: [ '*.php', '**/*.php', '!node_modules/**', '!php-tests/**', '!bin/**', '!build/**', '!assets/**' ]
+            }
+        },
+
         // Generate POT files.
         makepot: {
             target: {
                 options: {
-                    exclude: ['build/.*'],
-                    domainPath: '/languages/', // Where to save the POT file.
-                    potFilename: 'wpuf.pot', // Name of the POT file.
-                    type: 'wp-plugin', // Type of project (wp-plugin or wp-theme).
+                    exclude: ['build/.*', 'node_modules/*', 'assets/*'],
+                    mainFile: 'wpuf.php',
+                    domainPath: '/languages/',
+                    potFilename: 'wpuf.pot',
+                    type: 'wp-plugin',
+                    updateTimestamp: true,
                     potHeaders: {
-                        'report-msgid-bugs-to': 'https://wedevs.com/support/forum/plugin-support/wp-user-frontend/',
-                        'language-team': 'LANGUAGE <EMAIL@ADDRESS>'
+                        'report-msgid-bugs-to': 'https://wedevs.com/contact/',
+                        'language-team': 'LANGUAGE <EMAIL@ADDRESS>',
+                        poedit: true,
+                        'x-poedit-keywordslist': true
                     }
                 }
             }
@@ -183,12 +207,15 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-copy' );
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
     grunt.loadNpmTasks( 'grunt-notify' );
+    grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
 
-    grunt.registerTask( 'default', [
-        'makepot', 'uglify'
-    ]);
+    grunt.registerTask( 'default', [ 'makepot', 'uglify' ] );
 
-    grunt.registerTask( 'zip', [
-        'clean', 'copy', 'compress'
-    ]);
+    // file auto generation
+    grunt.registerTask( 'i18n', [ 'addtextdomain', 'makepot' ] );
+    grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
+
+    // build stuff
+    grunt.registerTask( 'release', [ 'i18n', 'readme' ] );
+    grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
 };

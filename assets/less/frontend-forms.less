@@ -328,6 +328,20 @@ ul.wpuf-form {
                 font-style: italic;
                 font-family: sans-serif;
                 display: block;
+
+                .text-danger{
+                    color: red;
+                }
+
+                .text-success{
+                    color: green;
+                }
+
+                #url-alart,
+                #url-alart-mgs{
+                    font-style: normal;
+                    font-size: 16px;
+                }
             }
 
             table, td {
@@ -1208,7 +1222,7 @@ fieldset.wpuf-multistep-fieldset {
 
             &::before {
                 border-width: 26px;
-                margin-top: -14px;
+                margin-top: -11px;
                 right: -50px;
                 z-index: 98;
             }
@@ -1216,8 +1230,8 @@ fieldset.wpuf-multistep-fieldset {
             &::after {
                 border-left-color: #E4E4E4;
                 border-width: 25px;
-                margin-top: -37px;
-                right: -44px;
+                margin-top: -41px;
+                right: -47px;
                 z-index: 99;
             }
 
@@ -1438,6 +1452,28 @@ input[type="text"].wpuf-google-map-search {
 
         .gm-style input[type="text"].wpuf-google-map-search {
             display: none;
+        }
+    }
+}
+
+.dokan-dashboard-content{
+    &.dokan-wpuf-dashboard{
+        h2.page-head{
+            display: none;
+        }
+
+        .wpuf-author{
+            display: none;
+        }
+
+        .wpuf-form-add{
+            .wpuf-form{
+                li{
+                    &.wpuf-el{
+                        margin-bottom: 15px;
+                    }
+                }
+            }
         }
     }
 }

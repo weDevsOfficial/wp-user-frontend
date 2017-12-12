@@ -1,4 +1,6 @@
 <?php
+$current_user = wp_get_current_user();
+
 $articles = array(
     'setup' => array(
         array(
@@ -203,6 +205,32 @@ function wpuf_help_related_articles( $articles ) {
 <div class="wrap wpuf-help-page">
     <h1><?php _e( 'General Help Questions', 'wpuf' ); ?> <a href="https://wedevs.com/docs/wp-user-frontend-pro/?utm_source=wpuf-help-page&utm_medium=button-primary&utm_campaign=view-all-docs" target="_blank" class="page-title-action"><span class="dashicons dashicons-external" style="margin-top: 8px;"></span> <?php _e( 'View all Documentations', 'wpuf' ); ?></a></h1>
 
+    <form class="wpuf-subscribe-box" id="wpuf-form-subscribe" action="https://wedevs.us16.list-manage.com/subscribe/post-json?u=66e606cfe0af264974258f030&id=0d176bb256&c=?" method="get">
+
+        <div class="text-wrap">
+            <h3><?php _e( 'Subscribe to Our Newsletter', 'wpuf' ); ?></h3>
+            <p>
+                <?php _e( 'Subscribe to our newsletter for regular <strong>tips</strong>, <strong>offers</strong> and <strong>news updates</strong>.', 'wpuf' ); ?>
+            </p>
+        </div>
+
+        <div class="form-wrap">
+            <div class="fname">
+                <label for="fname"><?php _e( 'First Name', 'wpuf' ); ?></label>
+                <input type="text" name="FNAME" id="fname" class="regular-text" value="<?php echo esc_attr( $current_user->first_name ); ?>" required>
+            </div>
+
+            <div class="email">
+                <label for="email"><?php _e( 'Email', 'wpuf' ); ?></label>
+                <input type="email" name="EMAIL" id="email" class="regular-text" value="<?php echo esc_attr( $current_user->user_email ); ?>" required>
+            </div>
+
+            <div class="submit-btn">
+                <input type="hidden" name="group[3555][1]" value="1">
+                <input type="submit" class="button button-primary" value="<?php echo esc_attr( __( 'Subscribe', 'wpuf' ) ); ?>">
+            </div>
+        </div>
+    </form>
 
     <div class="wpuf-help-tabbed">
         <nav>
@@ -453,7 +481,7 @@ function wpuf_help_related_articles( $articles ) {
 
             <p><?php _e( 'Report any Bug that you Discovered, Get Instant Solutions.', 'wpuf' ); ?></p>
 
-            <a target="_blank" class="button button-primary" href="https://github.com/weDevsOfficial/wp-user-frontend/https://wedevs.com/account/tickets/?utm_source=wpuf-help-page&utm_medium=help-block&utm_campaign=found-bugs"><?php _e( 'Report to GitHub', 'wpuf' ); ?></a>
+            <a target="_blank" class="button button-primary" href="https://github.com/weDevsOfficial/wp-user-frontend/?utm_source=wpuf-help-page&utm_medium=help-block&utm_campaign=found-bugs"><?php _e( 'Report to GitHub', 'wpuf' ); ?></a>
         </div>
 
         <div class="help-block">
@@ -492,6 +520,36 @@ function wpuf_help_related_articles( $articles ) {
                 } else {
                     element.removeClass('content-current');
                 }
+            });
+        });
+
+        $('#wpuf-form-subscribe').submit(function(e) {
+            e.preventDefault();
+
+            var form = $(this);
+
+            form.find('input[type="submit"]').prop('disabled', true);
+
+            $.ajax({
+                url: form.attr('action'),
+                data: form.serialize(),
+                type: 'GET',
+                dataType: 'json',
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+            })
+            .done(function(data) {
+                // console.log(data);
+
+                if (data.result != "success") {
+                    // do something
+                }
+            })
+            .fail(function() {
+                // console.log("error");
+            })
+            .always(function(response) {
+                $('.form-wrap', form).html( '<div class="thank-you">' + response.msg + '</div>' );
             });
         });
     });

@@ -115,9 +115,9 @@ class WPUF_Payment {
                     wpuf_get_user( $current_user->ID )->subscription()->add_pack( $pack_id, null, false, 'free' );
                     $wpuf_user->subscription()->add_free_pack( $current_user->ID, $pack_id );
 
-                    $message = apply_filters( 'wpuf_fp_activated_msg', __( 'Your free package has been activated. Enjoy!' ), 'wpuf' );
+                    $message = apply_filters( 'wpuf_fp_activated_msg', __( 'Your free package has been activated. Enjoy!', 'wpuf' ), 'wpuf' );
                 } else {
-                    $message = apply_filters( 'wpuf_fp_activated_error', __( 'You already have activated a free package previously.' ), 'wpuf' );
+                    $message = apply_filters( 'wpuf_fp_activated_error', __( 'You already have activated a free package previously.', 'wpuf' ), 'wpuf' );
                 }
                 ?>
                     <div class="wpuf-info"><?php echo $message; ?></div>
@@ -250,6 +250,8 @@ class WPUF_Payment {
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( $_REQUEST['pack_id'] ) : 0;
             $gateway = $_POST['wpuf_payment_method'];
             $type    = $_POST['type'];
+            $current_user  = wpuf_get_user();
+            $current_pack  = $current_user->subscription()->current_pack();
 
             if ( is_user_logged_in() ) {
                 $userdata = wp_get_current_user();
@@ -272,7 +274,11 @@ class WPUF_Payment {
                     $post        = get_post( $post_id );
                     $form_id     = get_post_meta( $post_id, '_wpuf_form_id', true );
                     $form        = new WPUF_Form( $form_id );
-                    $amount      = $form->get_pay_per_post_cost();
+                    if ( $current_pack && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                        $amount      = $form->get_subs_fallback_cost();
+                    } else {
+                        $amount      = $form->get_pay_per_post_cost();
+                    }
                     $item_number = $post->ID;
                     $item_name   = $post->post_title;
                     break;

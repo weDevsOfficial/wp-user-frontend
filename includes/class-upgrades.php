@@ -14,7 +14,8 @@ class WPUF_Upgrades {
      */
     private static $upgrades = array(
         '2.1.9' => 'upgrades/upgrade-2.1.9.php',
-        '2.6.0' => 'upgrades/upgrade-2.6.0.php'
+        '2.6.0' => 'upgrades/upgrade-2.6.0.php',
+        '2.7.0' => 'upgrades/upgrade-2.7.0.php'
     );
 
     /**
@@ -38,7 +39,7 @@ class WPUF_Upgrades {
             return false;
         }
 
-        if ( version_compare( $this->get_version(), WPUF_VERSION, '<' ) ) {
+        if ( version_compare( $this->get_version(), WPUF_VERSION, '<' ) && in_array( WPUF_VERSION, self::$upgrades ) ) {
             return true;
         }
 

@@ -53,12 +53,12 @@ class WPUF_User_Subscription {
         $pack = $this->pack;
 
         if ( ! isset( $this->pack['pack_id'] ) ) {
-            return new WP_Error( 'no-pack', __( 'The user doesn\'t have an active subscription.') );
+            return new WP_Error( 'no-pack', __( 'You must purchase a pack before posting', 'wpuf') );
         }
 
         // seems like the user has a pack, now check expiration
         if ( $this->expired() ) {
-            return new WP_Error( 'expired', __( 'The subscription has been expired.' ) );
+            return new WP_Error( 'expired', __( 'The subscription pack has been expired. Please buy a pack.', 'wpuf' ) );
         }
 
         return $pack;
@@ -210,7 +210,7 @@ class WPUF_User_Subscription {
             $result = $wpdb->get_row( $sql );
             $table_data = array(
                 'user_id'               => $this->user->id,
-                'name'                  => $this->user->display_name,
+                'name'                  => $this->user->user->data->display_name,
                 'subscribtion_id'       => $pack_id,
                 'subscribtion_status'   => $status,
                 'gateway'               => isset( $result->payment_type ) ? 'bank' : $result->payment_type,
@@ -421,6 +421,7 @@ class WPUF_User_Subscription {
         }
 
         $user_sub_meta  = $this->pack;
+        $fallback_ppp_enable   = isset( $form_settings['fallback_ppp_enable'] ) ? $form_settings['fallback_ppp_enable'] : 'false';
         $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
         $post_count     = isset( $user_sub_meta['posts'][$form_post_type] ) ? $user_sub_meta['posts'][$form_post_type] : 0;
 
@@ -429,6 +430,8 @@ class WPUF_User_Subscription {
             // user has recurring subscription
             if ( $post_count > 0 || $post_count == '-1' ) {
                 return false;
+            } elseif ( $post_count <= 0 && $fallback_ppp_enable == 'true' ) {
+                return true;
             } else {
                 return true;
             }
@@ -444,9 +447,9 @@ class WPUF_User_Subscription {
                 $expire_status = true;
             }
 
-
-
             if ( $post_count > 0 || $post_count == '-1' ) {
+                $post_count_status = false;
+            } elseif ( $post_count <= 0 &&  $fallback_ppp_enable == 'true' ) {
                 $post_count_status = false;
             } else {
                 $post_count_status = true;

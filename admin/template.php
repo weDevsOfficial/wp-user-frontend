@@ -680,27 +680,27 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-holder">
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Title', 'wpuf-pro' ); ?></label>
+                    <label><?php _e( 'Title', 'wpuf' ); ?></label>
 
                     <div class="wpuf-form-sub-fields">
                         <input type="text" class="smallipopInput" title="Title of the section" name="<?php echo $title_name; ?>" value="<?php echo esc_attr( $title_value ); ?>" />
 
                         <div class="description" style="margin-top: 8px;">
-                            <?php printf( __( "Insert your public key and private key in <a href='%s'>plugin settings</a>. <a href='%s' target='_blank'>Register</a> first if you don't have any keys." ), admin_url( 'admin.php?page=wpuf-settings' ), 'https://www.google.com/recaptcha/' ); ?>
+                            <?php printf( __( "Insert your public key and private key in <a href='%s'>plugin settings</a>. <a href='%s' target='_blank'>Register</a> first if you don't have any keys.", 'wpuf' ), admin_url( 'admin.php?page=wpuf-settings' ), 'https://www.google.com/recaptcha/' ); ?>
                         </div>
                     </div> <!-- .wpuf-form-rows -->
                 </div>
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'reCaptcha type', 'wpuf-pro' ); ?></label>
+                    <label><?php _e( 'reCaptcha type', 'wpuf' ); ?></label>
 
                     <div class="wpuf-form-sub-fields">
                         <input type="radio" class="smallipopInput" title="reCaptcha type" name="<?php echo $recaptcha_type_name; ?>" value="invisible_recaptcha" <?php echo $recaptcha_type_value == 'invisible_recaptcha' ? 'checked':''; ?> />
-                        <?php _e( 'Enable Invisible reCaptcha', 'wpuf-pro' );?>
+                        <?php _e( 'Enable Invisible reCaptcha', 'wpuf' );?>
                     </div> <!-- .wpuf-form-rows -->
                     <div class="wpuf-form-sub-fields">
                         <input type="radio" class="smallipopInput" title="reCaptcha type" name="<?php echo $recaptcha_type_name; ?>" value="enable_no_captcha" <?php echo $recaptcha_type_value == 'enable_no_captcha' ? 'checked':''; ?> />
-                        <?php _e( 'Enable noCaptcha', 'wpuf-pro' );?>
+                        <?php _e( 'Enable noCaptcha', 'wpuf' );?>
                     </div> <!-- .wpuf-form-rows -->
                 </div>
 

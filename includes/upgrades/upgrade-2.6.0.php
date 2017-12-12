@@ -99,7 +99,7 @@ function wpuf_upgrade_2_6_payment_settings_migration() {
 
             $form_settings = wpuf_get_form_settings( $form->ID );
             $charge_posting = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
-            
+
             if ( 'yes' == $charge_posting ) {
                 $form_settings['payment_options'] = 'true';
             } else {

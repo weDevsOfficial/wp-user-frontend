@@ -1,6 +1,6 @@
 <?php
 
-if ( ! class_exists( 'WeDevs_Insights' ) ) :
+if ( ! class_exists( 'WPUF_WeDevs_Insights' ) ) :
 
 /**
  * weDevs Tracker
@@ -13,7 +13,7 @@ if ( ! class_exists( 'WeDevs_Insights' ) ) :
  *
  * @author Tareq Hasan <tareq@wedevs.com>
  */
-class WeDevs_Insights {
+class WPUF_WeDevs_Insights {
 
     /**
      * Slug of the plugin
@@ -233,7 +233,25 @@ class WeDevs_Insights {
      * @return boolean
      */
     private function is_local_server() {
-        return in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) );
+
+        if ( $_SERVER['HTTP_HOST'] == 'localhost'
+            || substr( $_SERVER['REMOTE_ADDR'], 0, 3 ) == '10.'
+            || substr( $_SERVER['REMOTE_ADDR'], 0, 7 ) == '192.168' ) {
+
+            return true;
+        }
+
+        if ( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) {
+            return true;
+        }
+
+        $fragments = explode( '.',  site_url() );
+
+        if ( in_array( end( $fragments ), array( 'dev', 'local', 'localhost', 'test' ) ) ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -255,6 +273,28 @@ class WeDevs_Insights {
     }
 
     /**
+     * If the admin notice should be shown
+     *
+     * Show the notice after X days
+     *
+     * @return boolean
+     */
+    public function should_display_notice( $days = 7 ) {
+        $installed = get_option( 'wpuf_installed' );
+
+        if ( $installed ) {
+            $diff = time() - $installed;
+
+            // if installed 7 days ago
+            if ( floor( $diff / DAY_IN_SECONDS ) > $days ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Display the admin notice to users that have not opted-in or out
      *
      * @return void
@@ -273,25 +313,29 @@ class WeDevs_Insights {
             return;
         }
 
+        if ( ! $this->should_display_notice() ) {
+            return;
+        }
+
         // don't show tracking if a local server
         if ( ! $this->is_local_server() ) {
             $optin_url  = add_query_arg( $this->slug . '_tracker_optin', 'true' );
             $optout_url = add_query_arg( $this->slug . '_tracker_optout', 'true' );
 
             if ( empty( $this->notice ) ) {
-                $notice = sprintf( __( 'Want to help make <strong>%s</strong> even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'textdomain' ), $this->name );
+                $notice = sprintf( __( 'Want to help make <strong>%s</strong> even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'wpuf' ), $this->name );
             } else {
                 $notice = $this->notice;
             }
 
-            $notice .= ' (<a class="insights-data-we-collect" href="#">' . __( 'what we collect', 'textdomain' ) . '</a>)';
+            $notice .= ' (<a class="insights-data-we-collect" href="#">' . __( 'what we collect', 'wpuf' ) . '</a>)';
             $notice .= '<p class="description" style="display:none;">' . implode( ', ', $this->data_we_collect() ) . '. No sensitive data is tracked.</p>';
 
             echo '<div class="updated"><p>';
                 echo $notice;
                 echo '</p><p class="submit">';
-                echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-primary button-large">' . __( 'Allow', 'textdomain' ) . '</a>';
-                echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary button-large">' . __( 'No thanks', 'textdomain' ) . '</a>';
+                echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-primary button-large">' . __( 'Allow', 'wpuf' ) . '</a>';
+                echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary button-large">' . __( 'No thanks', 'wpuf' ) . '</a>';
             echo '</p></div>';
 
             echo "<script type='text/javascript'>jQuery('.insights-data-we-collect').on('click', function(e) {
@@ -468,7 +512,7 @@ class WeDevs_Insights {
 
         $schedules['weekly'] = array(
             'interval' => DAY_IN_SECONDS * 7,
-            'display'  => __( 'Once Weekly', 'textdomain' )
+            'display'  => __( 'Once Weekly', 'wpuf' )
         );
 
         return $schedules;
@@ -604,7 +648,7 @@ class WeDevs_Insights {
         <div class="wd-dr-modal" id="<?php echo $this->slug; ?>-wd-dr-modal">
             <div class="wd-dr-modal-wrap">
                 <div class="wd-dr-modal-header">
-                    <h3><?php _e( 'If you have a moment, please let us know why you are deactivating:', 'domain' ); ?></h3>
+                    <h3><?php _e( 'If you have a moment, please let us know why you are deactivating:', 'wpuf' ); ?></h3>
                 </div>
 
                 <div class="wd-dr-modal-body">
@@ -618,9 +662,9 @@ class WeDevs_Insights {
                 </div>
 
                 <div class="wd-dr-modal-footer">
-                    <a href="#" class="dont-bother-me"><?php _e( 'I rather wouldn\'t say', 'domain' ); ?></a>
-                    <button class="button-secondary"><?php _e( 'Submit & Deactivate', 'domain' ); ?></button>
-                    <button class="button-primary"><?php _e( 'Canel', 'domain' ); ?></button>
+                    <a href="#" class="dont-bother-me"><?php _e( 'I rather wouldn\'t say', 'wpuf' ); ?></a>
+                    <button class="button-secondary"><?php _e( 'Submit & Deactivate', 'wpuf' ); ?></button>
+                    <button class="button-primary"><?php _e( 'Canel', 'wpuf' ); ?></button>
                 </div>
             </div>
         </div>

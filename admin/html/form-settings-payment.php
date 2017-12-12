@@ -9,7 +9,7 @@ $force_pack_purchase   = isset( $form_settings['force_pack_purchase'] ) ? $form_
 
 $pay_per_post_cost     = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 2;
 $fallback_ppp_enable   = isset( $form_settings['fallback_ppp_enable'] ) ? $form_settings['fallback_ppp_enable'] : 'false';
-$fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_settings['fallback_ppp_cost'] : 'false';
+$fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_settings['fallback_ppp_cost'] : 1;
 
 ?>
     <table class="form-table">
@@ -45,7 +45,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[fallback_ppp_enable]" value="false">
-                    <input type="hidden" name="wpuf_settings[fallback_ppp_enable]" value="false"<?php checked( $fallback_ppp_enable, 'true' ); ?> />
+                    <input type="checkbox" name="wpuf_settings[fallback_ppp_enable]" value="true"<?php checked( $fallback_ppp_enable, 'true' ); ?> />
                     <?php _e( 'Fallback pay per post charging', 'wpuf' ) ?>
                 </label>
                 <p class="description"><?php _e( 'Fallback to pay per post charging if pack limit exceeds', 'wpuf' ); ?></p>
@@ -56,21 +56,21 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
             <th><?php _e( 'Fallback cost', 'wpuf' ); ?></th>
             <td>
                 <label>
-                    <input type="hidden" name="wpuf_settings[fallback_ppp_cost]" value="<?php echo esc_attr( $fallback_ppp_cost ); ?>" />
+                    <input type="number" name="wpuf_settings[fallback_ppp_cost]" value="<?php echo esc_attr( $fallback_ppp_cost ); ?>" />
                 </label>
                 <p class="description"><?php _e( 'Cost of pay per post after a subscription pack limit is reached.', 'wpuf' ); ?></p>
             </td>
         </tr>
 
         <tr class="show-if-payment">
-            <th><?php _e( 'Pay per Post', 'wpuf' ); ?></th>
+            <th><?php _e( 'Pay Per Post', 'wpuf' ); ?></th>
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[enable_pay_per_post]" value="false">
                     <input type="checkbox" name="wpuf_settings[enable_pay_per_post]" value="true"<?php checked( $enable_pay_per_post, 'true' ); ?> />
-                    <?php _e( 'Enable Pay per Post', 'wpuf' ) ?>
+                    <?php _e( 'Enable Pay Per Post', 'wpuf' ) ?>
                 </label>
-                <p class="description"><?php _e( 'Charge users for posting', 'wpuf' ); ?></p>
+                <p class="description"><?php _e( 'Charge users for posting,', 'wpuf' ); ?><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/"><?php _e( ' Learn More about Pay Per Post.', 'wpuf' ); ?></a></p>
             </td>
         </tr>
 

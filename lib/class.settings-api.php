@@ -361,7 +361,7 @@ class WeDevs_Settings_API {
         $value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
         $size  = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
         $id    = $args['section']  . '[' . $args['id'] . ']';
-        $label = isset( $args['options']['button_label'] ) ? $args['options']['button_label'] : __( 'Choose File' );
+        $label = isset( $args['options']['button_label'] ) ? $args['options']['button_label'] : __( 'Choose File', 'wpuf' );
 
         $html  = sprintf( '<input type="text" class="%1$s-text wpsa-url" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $size, $args['section'], $args['id'], $value );
         $html  .= '<input type="button" class="button wpsa-browse" value="' . $label . '" />';
@@ -488,7 +488,7 @@ class WeDevs_Settings_API {
         }
 
         foreach ( $this->settings_sections as $tab ) {
-            $html .= sprintf( '<a href="#%1$s" class="nav-tab" id="%1$s-tab">%2$s</a>', $tab['id'], $tab['title'] );
+            $html .= sprintf( '<a href="#%1$s" class="nav-tab" id="%1$s-tab"><span class="dashicons %3$s"></span> %2$s</a>', $tab['id'], $tab['title'], ! empty( $tab['icon'] ) ? $tab['icon'] : '' );
         }
 
         $html .= '</h2>';

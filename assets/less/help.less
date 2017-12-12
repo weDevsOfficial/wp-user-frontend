@@ -149,6 +149,74 @@
 
 .wpuf-help-page {
 
+    .wpuf-subscribe-box {
+        display: flex;
+        border: 1px solid #e5e5e5;
+        background: #fff;
+        box-shadow: 0 1px 1px rgba(0,0,0,.04);
+        margin-top: 15px;
+
+        .text-wrap {
+            width: ~"calc(100% - 530px)";
+            padding: 10px 15px;
+
+            h3 {
+                color: #ff5722;
+                margin: 4px 0 0 0;
+            }
+
+            p {
+                margin-bottom: 5px;
+            }
+        }
+
+        .form-wrap {
+            width: 530px;
+            display: flex;
+            padding: 10px 0;
+            background: #f7f7f7;
+            padding-left: 20px;
+            border-left: 1px solid #eee;
+
+            .thank-you {
+                font-size: 16px;
+                color: green;
+                padding-top: 20px;
+                text-align: center;
+                width: 100%;
+            }
+
+            label {
+                color: #666;
+            }
+
+            input {
+                max-width: 100%;
+                overflow: hidden;
+            }
+
+            input[type="text"],
+            input[type="email"] {
+                padding: 5px 8px;
+            }
+
+            .fname {
+                width: 35%;
+                margin-right: 10px;
+            }
+
+            .email {
+                width: 40%;
+                margin-right: 10px;
+            }
+
+            .submit-btn {
+                width: 20%;
+                padding-top: 22px;
+            }
+        }
+    }
+
     .help-blocks {
         display: flex;
         flex-wrap: wrap;

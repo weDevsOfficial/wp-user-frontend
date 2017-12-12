@@ -87,24 +87,53 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         ?>
         <h2><?php _e( 'Registration Form', 'wpuf' ); ?></h2>
 
-        <div class="wpuf-notice" style="padding: 20px; background: #fff; border: 1px solid #ddd;">
+        <p>
+            <?php _e( 'Use the shortcode <code>[wpuf-registration]</code> for a simple and default WordPress registration form.', 'wpuf' ); ?>
+        </p>
+
+        <p>
+            <a target="_blank" class="button" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/how-to-setup-registrationlogin-page/">
+                <span class="dashicons dashicons-sos" style="margin-top: 3px;"></span>
+                Learn How to Setup
+            </a>
+        </p>
+
+        <div class="wpuf-notice" style="padding: 20px;background: #fff;border: 1px solid #ddd;max-width: 360px;margin: 100px auto 0 auto;">
+            <h3 style="margin: 0;">Pro Features</h3>
+
             <p>
                 <?php _e( 'Registration form builder is a two way form which can be used both for <strong>user registration</strong> and <strong>profile editing</strong>.', 'wpuf' ); ?>
             </p>
 
-            <p>
-                <?php _e( 'Users can also register themselves by using a subscription pack.', 'wpuf' ); ?>
-            </p>
+            <ul class="wpuf-pro-features">
+                <li>
+                    <span class="dashicons dashicons-yes"></span>
+                    <span class="feature">Registration Form Builder</span>
+                </li>
+                <li>
+                    <span class="dashicons dashicons-yes"></span>
+                    <span class="feature">Profile Form Builder</span>
+                </li>
+                <li>
+                    <span class="dashicons dashicons-yes"></span>
+                    <span class="feature">Register by Subscription Package Purchase</span>
+                </li>
+            </ul>
 
-            <p>
-                <?php _e( 'This feature is only available in the Pro Version.', 'wpuf' ); ?>
-            </p>
-
-            <p>
+            <p style="margin-top: 30px;">
                 <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wpuf' ); ?></a>
-                <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php _e( 'Learn more about Registration', 'wpuf' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php _e( 'Learn More', 'wpuf' ); ?></a>
             </p>
         </div>
+
+        <style type="text/css">
+            ul.wpuf-pro-features span.dashicons.dashicons-yes {
+                background: #4CAF50;
+                border-radius: 50%;
+                color: #fff;
+                margin-right: 7px;
+            }
+        </style>
         <?php
     }
 

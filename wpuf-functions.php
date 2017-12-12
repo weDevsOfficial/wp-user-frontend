@@ -229,7 +229,7 @@ function wpuf_get_pages( $post_type = 'page' ) {
  * @param int $post_id
  * @return string url of the current edit post page
  */
-function wpuf_edit_post_link( $url, $post_id ) {
+function wpuf_override_admin_edit_link( $url, $post_id ) {
     if ( is_admin() ) {
         return $url;
     }
@@ -240,7 +240,7 @@ function wpuf_edit_post_link( $url, $post_id ) {
         $url = '';
 
         if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
-            $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_general' );
+            $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
             $url = get_permalink( $edit_page );
 
             $url = wp_nonce_url( $url . '?pid=' . $post_id, 'wpuf_edit' );
@@ -250,7 +250,7 @@ function wpuf_edit_post_link( $url, $post_id ) {
     return $url;
 }
 
-add_filter( 'get_edit_post_link', 'wpuf_edit_post_link', 10, 2 );
+add_filter( 'get_edit_post_link', 'wpuf_override_admin_edit_link', 10, 2 );
 
 /**
  * Create HTML dropdown list of Categories.
@@ -352,6 +352,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude      = explode( ',', $attr['exclude'] );
     $tax          = $attr['name'];
+    $current_user = get_current_user_id();
 
     $args = array(
         'taxonomy' => $tax,
@@ -367,12 +368,15 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     $args['class'] = $class;
 
-    $categories = (array) get_terms( $tax, array(
+    $tax_args = array(
         'hide_empty'  => false,
         $exclude_type => (array) $exclude,
         'orderby'     => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
         'order'       => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
-    ) );
+    );
+    $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
+
+    $categories = (array) get_terms( $tax, $tax_args );
 
     echo '<ul class="wpuf-category-checklist">';
     printf( '<input type="hidden" name="%s" value="0" />', $tax );
@@ -408,7 +412,7 @@ function wpuf_allowed_extensions() {
         'video'  => array('ext' => 'avi,divx,flv,mov,ogv,mkv,mp4,m4v,divx,mpg,mpeg,mpe', 'label' => __( 'Videos', 'wpuf' )),
         'pdf'    => array('ext' => 'pdf', 'label' => __( 'PDF', 'wpuf' )),
         'office' => array('ext' => 'doc,ppt,pps,xls,mdb,docx,xlsx,pptx,odt,odp,ods,odg,odc,odb,odf,rtf,txt', 'label' => __( 'Office Documents', 'wpuf' )),
-        'zip'    => array('ext' => 'zip,gz,gzip,rar,7z', 'label' => __( 'Zip Archives' )),
+        'zip'    => array('ext' => 'zip,gz,gzip,rar,7z', 'label' => __( 'Zip Archives', 'wpuf' )),
         'exe'    => array('ext' => 'exe', 'label' => __( 'Executable Files', 'wpuf' )),
         'csv'    => array('ext' => 'csv', 'label' => __( 'CSV', 'wpuf' ))
     );
@@ -614,13 +618,13 @@ function wpuf_get_gateways( $context = 'admin' ) {
 function wpuf_show_custom_fields( $content ) {
     global $post;
 
-    $show_custom  = wpuf_get_option( 'cf_show_front', 'wpuf_general' );
+    $show_custom  = wpuf_get_option( 'cf_show_front', 'wpuf_frontend_posting' );
 
     if ( $show_custom != 'on' ) {
         return $content;
     }
 
-    $show_caption  = wpuf_get_option( 'image_caption', 'wpuf_general' );
+    $show_caption  = wpuf_get_option( 'image_caption', 'wpuf_frontend_posting' );
     $form_id       = get_post_meta( $post->ID, '_wpuf_form_id', true );
     $form_settings = wpuf_get_form_settings( $form_id );
 
@@ -1034,7 +1038,7 @@ function wpufe_ajax_tag_search() {
 
     $s = wp_unslash( $_GET['q'] );
 
-    $comma = _x( ',', 'tag delimiter' );
+    $comma = _x( ',', 'tag delimiter', 'wpuf' );
     if ( ',' !== $comma )
         $s = str_replace( $comma, ',', $s );
     if ( false !== strpos( $s, ',' ) ) {
@@ -2292,4 +2296,52 @@ function wpuf_get_user( $user = null ) {
     }
 
     return new WPUF_User( $user );
+}
+
+/**
+ * Add all terms as allowed terms
+ *
+ * @since 2.7.0
+ *
+ * @return void
+ */
+function wpuf_set_all_terms_as_allowed() {
+
+    if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+        $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+        $allowed_term = array();
+
+        foreach ( $subscriptions as $pack ) {
+            if ( ! metadata_exists( 'post', $pack->ID , '_sub_allowed_term_ids' ) ) {
+                $cts = get_taxonomies(array('_builtin'=>true), 'objects'); ?>
+                <?php foreach ($cts as $ct) {
+                    if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                        $tax_terms = get_terms ( array(
+                            'taxonomy' => $ct->name,
+                            'hide_empty' => false,
+                        ) );
+                        foreach ($tax_terms as $tax_term) {
+                            $allowed_term[] = $tax_term->term_id;
+                        }
+                    }
+                }
+
+                $cts = get_taxonomies(array('_builtin'=>false), 'objects'); ?>
+                <?php foreach ($cts as $ct) {
+                    if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                        $tax_terms = get_terms ( array(
+                            'taxonomy' => $ct->name,
+                            'hide_empty' => false,
+                        ) );
+                        foreach ($tax_terms as $tax_term) {
+                            $allowed_term[] = $tax_term->term_id;
+                        }
+                    }
+                }
+
+                update_post_meta( $pack->ID, '_sub_allowed_term_ids', $allowed_term );
+            }
+        }
+    }
+
 }

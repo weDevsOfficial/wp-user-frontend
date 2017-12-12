@@ -340,6 +340,10 @@
                         self.is_form_saving = false;
                         self.is_form_saved = true;
 
+                        setTimeout(function(){
+                            self.isDirty = false;
+                        }, 500);
+
                         toastr.success(self.i18n.saved_form_data);
                     },
 
@@ -366,6 +370,9 @@
             $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[guest_post]"]', this.settingsGuest);
             $('input[type=checkbox][name="wpuf_settings[guest_post]"]').trigger('change');
 
+            // From settings: User details
+            $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[guest_details]"]', this.settingsGuestDetails);
+
             // Form settings: Payment
             $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[payment_options]"]', this.settingsPayment);
             $('input[type=checkbox][name="wpuf_settings[payment_options]"]').trigger('change');
@@ -377,9 +384,6 @@
             // force pack purchase
             $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]', this.settingsForcePack);
             $('input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]').trigger('change');
-
-            // From settings: User details
-            $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[guest_details]"]', this.settingsGuestDetails);
 
             this.changeMultistepVisibility($('.wpuf_enable_multistep_section :input[type="checkbox"]'));
             var self = this;
@@ -452,7 +456,7 @@
             var table = $(this).closest('table');
 
             if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-force-pack').hide();
+                table.find('tr.show-if-force-pack').show();
 
             } else {
                 table.find('tr.show-if-force-pack').hide();

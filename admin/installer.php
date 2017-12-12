@@ -80,10 +80,10 @@ class WPUF_Admin_Installer {
         $post_form      = $this->create_form();
 
         // payment page
-        $subscr_page    = $this->create_page( __( 'Subscription', 'wpuf' ), __( '[wpuf_sub_pack]') );
-        $payment_page   = $this->create_page( __( 'Payment', 'wpuf' ), __( 'Please select a gateway for payment') );
-        $thank_page     = $this->create_page( __( 'Thank You', 'wpuf' ), __( '<h1>Payment is complete</h1><p>Congratulations, your payment has been completed!</p>') );
-        $bank_page      = $this->create_page( __( 'Order Received', 'wpuf' ), __( 'Hi, we have received your order. We will validate the order and will take necessary steps to move forward.') );
+        $subscr_page    = $this->create_page( __( 'Subscription', 'wpuf' ), __( '[wpuf_sub_pack]', 'wpuf') );
+        $payment_page   = $this->create_page( __( 'Payment', 'wpuf' ), __( 'Please select a gateway for payment', 'wpuf') );
+        $thank_page     = $this->create_page( __( 'Thank You', 'wpuf' ), __( '<h1>Payment is complete</h1><p>Congratulations, your payment has been completed!</p>', 'wpuf') );
+        $bank_page      = $this->create_page( __( 'Order Received', 'wpuf' ), __( 'Hi, we have received your order. We will validate the order and will take necessary steps to move forward.', 'wpuf') );
 
         // save the settings
         if ( $edit_page ) {

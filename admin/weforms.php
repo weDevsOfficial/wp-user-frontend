@@ -9,7 +9,7 @@
 
     <div class="install" id="wpuf-weforms-installer-notice" style="padding: 1em 0; position: relative;">
         <p>
-            <button id="wpuf-weforms-installer" class="button button-primary"><?php _e( 'Install Now', 'weforms' ); ?></button>
+            <button id="wpuf-weforms-installer" class="button button-primary"><?php _e( 'Install Now', 'wpuf' ); ?></button>
         </p>
     </div>
 

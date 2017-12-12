@@ -1260,7 +1260,7 @@ class WPUF_Render_Form {
             </div>
 
             <div class="wpuf-fields">
-                <div id="pass-strength-result" style="display: block"><?php _e( 'Strength indicator' ); ?></div>
+                <div id="pass-strength-result" style="display: block"><?php _e( 'Strength indicator', 'wpuf' ); ?></div>
             </div>
 
             <script type="text/javascript">

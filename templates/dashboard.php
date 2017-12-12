@@ -86,7 +86,7 @@
                             for ( $j = 0; $j < $len; $j++ ) {
                                 if ( $meta_key[$j] == $meta_name[$i] ) {
                                     echo '<th>';
-                                    echo __( $meta_label[$i] );
+                                    echo __( $meta_label[$i], 'wpuf' );
                                     echo '</th>';
                                 }
                             }

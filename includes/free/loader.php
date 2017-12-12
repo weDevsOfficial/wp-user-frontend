@@ -88,7 +88,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         <h2><?php _e( 'Registration Form', 'wpuf' ); ?></h2>
 
         <p>
-            <?php _e( 'Use the shortcode <code>[wpuf-registration]</code> for a simple and default WordPress registration form.', 'textdomain' ); ?>
+            <?php _e( 'Use the shortcode <code>[wpuf-registration]</code> for a simple and default WordPress registration form.', 'wpuf' ); ?>
         </p>
 
         <p>

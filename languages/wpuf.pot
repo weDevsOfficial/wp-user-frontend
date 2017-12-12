@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.6.1\n"
+"Project-Id-Version: WP User Frontend 2.7.0\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2017-12-10 08:06:23+00:00\n"
+"POT-Creation-Date: 2017-12-12 10:43:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -136,7 +136,7 @@ msgid "Duration"
 msgstr ""
 
 #: admin/class-admin-subscription.php:206
-#: admin/class-admin-subscription.php:559 class/frontend-account.php:134
+#: admin/class-admin-subscription.php:560 class/frontend-account.php:134
 #: class/subscription.php:843 class/subscription.php:856
 #: includes/class-user-subscription.php:294
 msgid "Free"
@@ -198,7 +198,7 @@ msgid "Enable Post Expiration"
 msgstr ""
 
 #: admin/class-admin-subscription.php:386
-#: admin/class-admin-subscription.php:635 includes/free/form-element.php:66
+#: admin/class-admin-subscription.php:664 includes/free/form-element.php:66
 msgid "Post Expiration Time"
 msgstr ""
 
@@ -244,62 +244,68 @@ msgid "Year(s)"
 msgstr ""
 
 #: admin/class-admin-subscription.php:551
-msgid "WPUF Subscription"
+msgid "WPUF Subscription Information"
 msgstr ""
 
-#: admin/class-admin-subscription.php:572
-#: includes/class-user-subscription.php:305
-#: templates/dashboard/subscription.php:2
-msgid "Subscription Details"
+#: admin/class-admin-subscription.php:577
+msgid "Subcription Name"
 msgstr ""
 
-#: admin/class-admin-subscription.php:576
+#: admin/class-admin-subscription.php:587
+msgid "Billing Info"
+msgstr ""
+
+#: admin/class-admin-subscription.php:601
 msgid "This user is using recurring subscription pack"
 msgstr ""
 
-#: admin/class-admin-subscription.php:582
-#: includes/class-user-subscription.php:307
-#: templates/dashboard/subscription.php:4
-msgid "Subcription Name: "
+#: admin/class-admin-subscription.php:607
+msgid "Remaining Posting Count"
 msgstr ""
 
-#: admin/class-admin-subscription.php:584
-#: includes/class-user-subscription.php:320
-#: templates/dashboard/subscription.php:10
-msgid "Remaining post: "
+#: admin/class-admin-subscription.php:628
+msgid "Subscription Expiration Info"
 msgstr ""
 
-#: admin/class-admin-subscription.php:610
+#: admin/class-admin-subscription.php:639
 #: includes/class-user-subscription.php:348
 #: templates/dashboard/subscription.php:41
 msgid "Expire date:"
 msgstr ""
 
-#: admin/class-admin-subscription.php:624
+#: admin/class-admin-subscription.php:653
 msgid "Post Expiration Enabled"
 msgstr ""
 
-#: admin/class-admin-subscription.php:707
+#: admin/class-admin-subscription.php:690
+msgid "Allowed Taxonomy Terms"
+msgstr ""
+
+#: admin/class-admin-subscription.php:745
 msgid "Assign Package"
 msgstr ""
 
-#: admin/class-admin-subscription.php:710
-msgid "Show Package"
+#: admin/class-admin-subscription.php:746
+#: admin/form-builder/class-wpuf-admin-form-builder.php:325
+#: class/payment.php:168 class/subscription.php:770
+#: includes/class-list-table-subscribers.php:156
+#: templates/dashboard/subscription.php:62
+msgid "Cancel"
 msgstr ""
 
-#: admin/class-admin-subscription.php:713
-msgid "Pack:"
+#: admin/class-admin-subscription.php:752
+msgid "Select Package:"
 msgstr ""
 
-#: admin/class-admin-subscription.php:716
-msgid "--Select--"
+#: admin/class-admin-subscription.php:755
+msgid "&mdash; Select &mdash;"
 msgstr ""
 
-#: admin/class-admin-subscription.php:725
+#: admin/class-admin-subscription.php:765
 msgid "Delete Package"
 msgstr ""
 
-#: admin/class-admin-subscription.php:773
+#: admin/class-admin-subscription.php:814
 msgid "Learn more about <a href=\"%s\" target=\"_blank\">Subscription</a>"
 msgstr ""
 
@@ -535,13 +541,6 @@ msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:324
 msgid "OK"
-msgstr ""
-
-#: admin/form-builder/class-wpuf-admin-form-builder.php:325
-#: class/payment.php:168 class/subscription.php:770
-#: includes/class-list-table-subscribers.php:156
-#: templates/dashboard/subscription.php:62
-msgid "Cancel"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:326
@@ -869,8 +868,9 @@ msgid "Email Address"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:682
-#: admin/html/form-settings-post.php:18 class/transactions-list-table.php:48
-#: includes/free/edit-user.php:152 templates/registration-form.php:44
+#: admin/html/form-settings-post.php:18 admin/html/support.php:224
+#: class/transactions-list-table.php:48 includes/free/edit-user.php:152
+#: templates/registration-form.php:44
 msgid "Email"
 msgstr ""
 
@@ -1597,119 +1597,137 @@ msgstr ""
 msgid "This integration is not installed."
 msgstr ""
 
-#: admin/html/support.php:185
+#: admin/html/support.php:187
 msgid "Related Articles:"
 msgstr ""
 
-#: admin/html/support.php:204
+#: admin/html/support.php:206
 msgid "General Help Questions"
 msgstr ""
 
-#: admin/html/support.php:204
+#: admin/html/support.php:206
 msgid "View all Documentations"
 msgstr ""
 
+#: admin/html/support.php:211
+msgid "Subscribe to Our Newsletter"
+msgstr ""
+
 #: admin/html/support.php:213
+msgid ""
+"Subscribe to our newsletter for regular <strong>tips</strong>, "
+"<strong>offers</strong> and <strong>news updates</strong>."
+msgstr ""
+
+#: admin/html/support.php:219 includes/free/edit-profile.php:105
+msgid "First Name"
+msgstr ""
+
+#: admin/html/support.php:230
+msgid "Subscribe"
+msgstr ""
+
+#: admin/html/support.php:241
 msgid "Plugin Setup"
 msgstr ""
 
-#: admin/html/support.php:219 admin/settings-options.php:18
+#: admin/html/support.php:247 admin/settings-options.php:18
 msgid "Frontend Posting"
 msgstr ""
 
-#: admin/html/support.php:225
+#: admin/html/support.php:253
 msgid "Frontend Dashboard"
 msgstr ""
 
-#: admin/html/support.php:231
+#: admin/html/support.php:259
 msgid "User Registration"
 msgstr ""
 
-#: admin/html/support.php:237
+#: admin/html/support.php:265
 msgid "User Login"
 msgstr ""
 
-#: admin/html/support.php:243
+#: admin/html/support.php:271
 msgid "Profile Editing"
 msgstr ""
 
-#: admin/html/support.php:249
+#: admin/html/support.php:277
 msgid "Subscription &amp; Payment"
 msgstr ""
 
-#: admin/html/support.php:255
+#: admin/html/support.php:283
 msgid "Content Restriction"
 msgstr ""
 
-#: admin/html/support.php:277
+#: admin/html/support.php:305
 msgid "Learn More About Installation"
 msgstr ""
 
-#: admin/html/support.php:288
+#: admin/html/support.php:316
 msgid "Learn More About Frontend Posting"
 msgstr ""
 
-#: admin/html/support.php:298
+#: admin/html/support.php:326
 msgid "Learn More About Frontend Dashboard"
 msgstr ""
 
-#: admin/html/support.php:328
+#: admin/html/support.php:356
 msgid "Learn More About Registration"
 msgstr ""
 
-#: admin/html/support.php:344
+#: admin/html/support.php:372
 msgid "Learn More About Login"
 msgstr ""
 
-#: admin/html/support.php:361
+#: admin/html/support.php:389
 msgid "Learn More About Profile Editing"
 msgstr ""
 
-#: admin/html/support.php:414
+#: admin/html/support.php:442
 msgid "Learn More About Payments"
 msgstr ""
 
-#: admin/html/support.php:431
+#: admin/html/support.php:459
 msgid "Learn More About Content Restriction"
 msgstr ""
 
-#: admin/html/support.php:440 admin/html/support.php:442
+#: admin/html/support.php:468 admin/html/support.php:470
 msgid "Like The Plugin?"
 msgstr ""
 
-#: admin/html/support.php:444
+#: admin/html/support.php:472
 msgid "Your Review is very important to us as it helps us to grow more."
 msgstr ""
 
-#: admin/html/support.php:446
+#: admin/html/support.php:474
 msgid "Review Us on WP.org"
 msgstr ""
 
-#: admin/html/support.php:450 admin/html/support.php:452
+#: admin/html/support.php:478 admin/html/support.php:480
 msgid "Found Any Bugs?"
 msgstr ""
 
-#: admin/html/support.php:454
+#: admin/html/support.php:482
 msgid "Report any Bug that you Discovered, Get Instant Solutions."
 msgstr ""
 
-#: admin/html/support.php:456
+#: admin/html/support.php:484
 msgid "Report to GitHub"
 msgstr ""
 
-#: admin/html/support.php:460 admin/html/support.php:462
+#: admin/html/support.php:488 admin/html/support.php:490
 msgid "Need Any Assistance?"
 msgstr ""
 
-#: admin/html/support.php:464
+#: admin/html/support.php:492
 msgid "Our EXPERT Support Team is always ready to Help you out."
 msgstr ""
 
-#: admin/html/support.php:466
+#: admin/html/support.php:494
 msgid "Contact Support"
 msgstr ""
 
-#: admin/html/whats-new.php:31
+#: admin/html/whats-new.php:48
 msgid "What's New in WPUF?"
 msgstr ""
 
@@ -1829,7 +1847,7 @@ msgstr ""
 msgid "Form Name"
 msgstr ""
 
-#: admin/post-forms-list-table.php:300
+#: admin/post-forms-list-table.php:300 admin/premium.php:39
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:195
 #: includes/free/form-element.php:30
 msgid "Shortcode"
@@ -1876,7 +1894,7 @@ msgstr ""
 msgid "No custom fields found."
 msgstr ""
 
-#: admin/premium.php:2
+#: admin/premium.php:2 admin/premium.php:5
 msgid "WPUF Pro"
 msgstr ""
 
@@ -1887,14 +1905,252 @@ msgid ""
 msgstr ""
 
 #: admin/premium.php:10
-msgid "More Features"
+msgid "Pro Features"
 msgstr ""
 
-#: admin/premium.php:50
-msgid "More Integrations"
+#: admin/premium.php:11
+msgid ""
+"WPUF Pro is designed just for you, specially to fulfil your business needs. "
+"We have designed and curated every feature keeping your requirements in "
+"mind."
 msgstr ""
 
-#: admin/premium.php:137
+#: admin/premium.php:18 admin/premium.php:21
+msgid "Registration Form Builder"
+msgstr ""
+
+#: admin/premium.php:22
+msgid ""
+"Registration form builder is a two way form which can be used both for user "
+"registration and profile editing. You could also manage Register for "
+"Subscription Package Purchase."
+msgstr ""
+
+#: admin/premium.php:28 admin/premium.php:31
+msgid "Advanced Fields"
+msgstr ""
+
+#: admin/premium.php:33
+#: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:113
+#: includes/free/form-element.php:15
+msgid "Country List"
+msgstr ""
+
+#: admin/premium.php:34
+msgid "Address"
+msgstr ""
+
+#: admin/premium.php:35
+msgid "Date Field"
+msgstr ""
+
+#: admin/premium.php:36
+#: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:179
+msgid "Google Map"
+msgstr ""
+
+#: admin/premium.php:37
+#: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:225
+#: includes/free/form-element.php:33
+msgid "Action Hook"
+msgstr ""
+
+#: admin/premium.php:38
+msgid "Rating"
+msgstr ""
+
+#: admin/premium.php:40
+msgid "Number"
+msgstr ""
+
+#: admin/premium.php:41
+msgid "Repeater"
+msgstr ""
+
+#: admin/premium.php:42
+#: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:97
+#: includes/free/form-element.php:13
+msgid "File Upload"
+msgstr ""
+
+#: admin/premium.php:43
+msgid "Captcha"
+msgstr ""
+
+#: admin/premium.php:44
+msgid "TOC"
+msgstr ""
+
+#: admin/premium.php:51 admin/premium.php:54
+msgid "Manage Coupons"
+msgstr ""
+
+#: admin/premium.php:55
+msgid ""
+"Simple yet powerful coupon management system. Use Coupon codes for selling "
+"subscription pack with discounts."
+msgstr ""
+
+#: admin/premium.php:61 admin/premium.php:64
+msgid "Content Restrictions"
+msgstr ""
+
+#: admin/premium.php:65
+msgid ""
+"You can restrict premium content for users by access role, registration or "
+"subscriptions only with just a shortcode."
+msgstr ""
+
+#: admin/premium.php:71 admin/premium.php:74
+#: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:46
+#: includes/free/form-element.php:474
+msgid "Conditional Logic"
+msgstr ""
+
+#: admin/premium.php:75
+msgid ""
+"Configure your form’s settings and user flow based on conditional "
+"selection. Your forms should appear just the way you want it."
+msgstr ""
+
+#: admin/premium.php:81 admin/premium.php:84
+msgid "Multi-step Form"
+msgstr ""
+
+#: admin/premium.php:85
+msgid ""
+"Break down the long forms into smaller and attractive multi step forms. "
+"Long and lengthy forms are uninviting, why build one?"
+msgstr ""
+
+#: admin/premium.php:93
+msgid "Modules"
+msgstr ""
+
+#: admin/premium.php:94
+msgid "A bunch of awesome modules to speed up your business growth."
+msgstr ""
+
+#: admin/premium.php:101 admin/premium.php:121 admin/premium.php:124
+msgid "BuddyPress Profile"
+msgstr ""
+
+#: admin/premium.php:104
+msgid "Social Login"
+msgstr ""
+
+#: admin/premium.php:105
+msgid ""
+"Allow your users to Register or Login using Social networks like Google, "
+"Facebook, Twitter and LinkedIn."
+msgstr ""
+
+#: admin/premium.php:111 admin/premium.php:114
+msgid "User Directory"
+msgstr ""
+
+#: admin/premium.php:115
+msgid ""
+"Handle user listing and user profile in the frontend. Create a directory "
+"site easily."
+msgstr ""
+
+#: admin/premium.php:125
+msgid "Register and upgrade user profiles and sync data with BuddyPress."
+msgstr ""
+
+#: admin/premium.php:131 admin/premium.php:171
+msgid "MailChimp Integration"
+msgstr ""
+
+#: admin/premium.php:134
+msgid "User Analytics"
+msgstr ""
+
+#: admin/premium.php:135
+msgid "Show user tracking info during post and registration directly on Frontend."
+msgstr ""
+
+#: admin/premium.php:141 admin/premium.php:144
+msgid "Paid Membership Pro"
+msgstr ""
+
+#: admin/premium.php:145
+msgid "Membership Integration of WP User Frontend with Paid Membership Pro."
+msgstr ""
+
+#: admin/premium.php:151 admin/premium.php:154
+msgid "Stripe Payment"
+msgstr ""
+
+#: admin/premium.php:155
+msgid ""
+"Stripe payment gateway for WP User Frontend. Get your subscription payment "
+"with Stripe."
+msgstr ""
+
+#: admin/premium.php:161 admin/premium.php:164
+msgid "Mailpoet"
+msgstr ""
+
+#: admin/premium.php:165
+msgid ""
+"Add subscribers to mailpoet mailing list when they registers via WP User "
+"Frontend Pro."
+msgstr ""
+
+#: admin/premium.php:174
+msgid "MailChimp"
+msgstr ""
+
+#: admin/premium.php:175
+msgid ""
+"Integrate your desired form to your MailChimp email newsletter using latest "
+"API."
+msgstr ""
+
+#: admin/premium.php:181 admin/premium.php:184 admin/premium.php:191
+#: admin/premium.php:201
+msgid "SMS Notification"
+msgstr ""
+
+#: admin/premium.php:185
+msgid "Get instant SMS notification on your mobile when post submits on your site."
+msgstr ""
+
+#: admin/premium.php:194
+msgid "Comment Manager"
+msgstr ""
+
+#: admin/premium.php:195
+msgid "Handle comments in frontend. View / reply comments on post."
+msgstr ""
+
+#: admin/premium.php:204
+msgid "QR Code Generator"
+msgstr ""
+
+#: admin/premium.php:205
+msgid "Generate QR Code with your custom fields or custom post meta."
+msgstr ""
+
+#: admin/premium.php:211 admin/premium.php:214
+msgid "More..."
+msgstr ""
+
+#: admin/premium.php:215
+msgid "A bunch of more modules are coming soon."
+msgstr ""
+
+#: admin/premium.php:225
+msgid "Upgrade To The Most Powerful Frontend Plugin"
+msgstr ""
+
+#: admin/premium.php:227
+msgid "WP User Frontend Pro is the most powerful solution for your frontend needs."
+msgstr ""
+
+#: admin/premium.php:231
 msgid "Upgrade Now"
 msgstr ""
 
@@ -2553,7 +2809,7 @@ msgstr ""
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
-"Clicking 'OK' will redirect you to the login page and you will lost the "
+"Clicking 'OK' will redirect you to the login page and you will lose the "
 "form data.\n"
 "Click 'Cancel' to stay at this page."
 msgstr ""
@@ -2892,18 +3148,29 @@ msgstr ""
 msgid "The subscription pack has been expired. Please buy a pack."
 msgstr ""
 
+#: includes/class-user-subscription.php:305
+#: templates/dashboard/subscription.php:2
+msgid "Subscription Details"
+msgstr ""
+
+#: includes/class-user-subscription.php:307
+#: templates/dashboard/subscription.php:4
+msgid "Subcription Name: "
+msgstr ""
+
 #: includes/class-user-subscription.php:309
 #: templates/dashboard/subscription.php:6
 msgid "Package & billing details: "
 msgstr ""
 
+#: includes/class-user-subscription.php:320
+#: templates/dashboard/subscription.php:10
+msgid "Remaining post: "
+msgstr ""
+
 #: includes/class-user-subscription.php:333
 #: templates/dashboard/subscription.php:24
 msgid "Unlimited"
-msgstr ""
-
-#: includes/class-user-subscription.php:367
-msgid "Change"
 msgstr ""
 
 #: includes/class-whats-new.php:67
@@ -2929,11 +3196,6 @@ msgstr ""
 msgid "Dismiss this notice."
 msgstr ""
 
-#: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:46
-#: includes/free/form-element.php:474
-msgid "Conditional Logic"
-msgstr ""
-
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:65
 #: includes/free/form-element.php:11
 msgid "Repeat Field"
@@ -2941,16 +3203,6 @@ msgstr ""
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:81
 msgid "Date / Time"
-msgstr ""
-
-#: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:97
-#: includes/free/form-element.php:13
-msgid "File Upload"
-msgstr ""
-
-#: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:113
-#: includes/free/form-element.php:15
-msgid "Country List"
 msgstr ""
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:129
@@ -2968,18 +3220,9 @@ msgstr ""
 msgid "Step Start"
 msgstr ""
 
-#: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:179
-msgid "Google Map"
-msgstr ""
-
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:210
 #: includes/free/form-element.php:32
 msgid "Really Simple Captcha"
-msgstr ""
-
-#: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:225
-#: includes/free/form-element.php:33
-msgid "Action Hook"
 msgstr ""
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:240
@@ -3185,10 +3428,6 @@ msgstr ""
 
 #: includes/free/edit-profile.php:102
 msgid "Usernames cannot be changed."
-msgstr ""
-
-#: includes/free/edit-profile.php:105
-msgid "First Name"
 msgstr ""
 
 #: includes/free/edit-profile.php:110

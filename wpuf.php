@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.6.1
+Version: 2.7.0
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wpuf
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.6.1' );
+define( 'WPUF_VERSION', '2.7.0' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -620,7 +620,7 @@ final class WP_User_Frontend {
     public function install_weforms() {
 
         if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-weforms-installer-nonce' ) ) {
-            wp_send_json_error( __( 'Error: Nonce verification failed', 'weforms' ) );
+            wp_send_json_error( __( 'Error: Nonce verification failed', 'wpuf' ) );
         }
 
         include_once ABSPATH . 'wp-admin/includes/plugin-install.php';

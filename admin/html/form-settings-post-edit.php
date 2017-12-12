@@ -44,7 +44,7 @@ $subscription         = isset( $form_settings['subscription'] ) ? $form_settings
                 ?>
             </select>
             <p class="description">
-                <?php _e( 'After successfull submit, where the page will redirect to', $domain = 'default' ) ?>
+                <?php _e( 'After successfull submit, where the page will redirect to', $domain = 'wpuf' ) ?>
             </p>
         </td>
     </tr>
@@ -79,7 +79,7 @@ $subscription         = isset( $form_settings['subscription'] ) ? $form_settings
     </tr>
 
     <tr class="wpuf-subscription-pack" style="display: none;">
-        <th><?php _e( 'Subscription Title'); ?></th>
+        <th><?php _e( 'Subscription Title', 'wpuf'); ?></th>
         <td>
             <select id="wpuf-subscription-list" name="wpuf_settings[subscription]">
                 <?php $this->subscription_dropdown( $subscription ); ?>

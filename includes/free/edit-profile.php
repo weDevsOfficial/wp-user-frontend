@@ -193,7 +193,7 @@ class WPUF_Edit_Profile {
                         <tr>
                             <th><label><?php _e( 'Confirm Password', 'wpuf' ); ?></label></th>
                             <td>
-                                <input type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off" />&nbsp;<em><span class="description"><?php _e( "Type your new password again." ); ?></span></em>
+                                <input type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off" />&nbsp;<em><span class="description"><?php _e( "Type your new password again.", 'wpuf' ); ?></span></em>
                             </td>
                         </tr>
                         <tr>

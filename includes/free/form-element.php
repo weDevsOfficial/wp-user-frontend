@@ -109,7 +109,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                             }
                             ?>
                         </select>
-                        <p class="description"><?php echo _( 'Status of post after post expiration time is over ' ); ?></p>
+                        <p class="description"><?php echo _( 'Status of post after post expiration time is over ', 'wp-user-frontend', 'wpuf' ); ?></p>
 
                     </td>
                 </tr>
@@ -120,7 +120,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                     <td>
                         <label>
                             <input disabled type="checkbox" name="" value="on" <?php echo $is_enable_mail_after_expired;?> />
-                            <?php echo _( 'Send Email to Author After Exceeding Post Expiration Time' );?>
+                            <?php echo _( 'Send Email to Author After Exceeding Post Expiration Time', 'wp-user-frontend', 'wpuf' );?>
                         </label>
                     </td>
                 </tr>
@@ -197,7 +197,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
         $new_notificaton  = isset( $form_settings['notification']['new'] ) ? $form_settings['notification']['new'] : 'on';
         $new_to           = isset( $form_settings['notification']['new_to'] ) ? $form_settings['notification']['new_to'] : get_option( 'admin_email' );
-        $new_subject      = isset( $form_settings['notification']['new_subject'] ) ? $form_settings['notification']['new_subject'] : __( 'New post created', 'wpuf-pro' );
+        $new_subject      = isset( $form_settings['notification']['new_subject'] ) ? $form_settings['notification']['new_subject'] : __( 'New post created', 'wpuf' );
         $new_body         = isset( $form_settings['notification']['new_body'] ) ? $form_settings['notification']['new_body'] : $new_mail_body . $mail_body;
 
         $edit_notificaton = 'off';

@@ -19,7 +19,7 @@
             </div>
             <div class="feature-details">
                 <h3>Registration Form Builder</h3>
-                <p>Registration form builder is a two way form which can be used both for user registration and profile editing. You could also manage Register for Subscription Package Purchase.</p>
+                <p>Registration form builder is a two way form which can be used both for user registration and profile editing. You could also manage Register for Subscription Package Purchase. <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/how-to-setup-registrationlogin-page/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -43,6 +43,7 @@
                     <li>Captcha</li>
                     <li>TOC</li>
                 </ul>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-elements/" target="_blank">Learn more</a>
             </div>
         </div>
 
@@ -52,7 +53,7 @@
             </div>
             <div class="feature-details">
                 <h3>Manage Coupons</h3>
-                <p>Simple yet powerful coupon management system. Use Coupon codes for selling subscription pack with discounts.</p>
+                <p>Simple yet powerful coupon management system. Use Coupon codes for selling subscription pack with discounts. <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -62,7 +63,7 @@
             </div>
             <div class="feature-details">
                 <h3>Content Restrictions</h3>
-                <p>You can restrict premium content for users by access role, registration or subscriptions only with just a shortcode.</p>
+                <p>You can restrict premium content for users by access role, registration or subscriptions only with just a shortcode. <a href="https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/content-restriction/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -72,7 +73,7 @@
             </div>
             <div class="feature-details">
                 <h3>Conditional Logic</h3>
-                <p>Configure your form’s settings and user flow based on conditional selection. Your forms should appear just the way you want it.</p>
+                <p>Configure your form’s settings and user flow based on conditional selection. Your forms should appear just the way you want it. <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-use-conditional-logic/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -82,7 +83,7 @@
             </div>
             <div class="feature-details">
                 <h3>Multi-step Form</h3>
-                <p>Break down the long forms into smaller and attractive multi step forms. Long and lengthy forms are uninviting, why build one?</p>
+                <p>Break down the long forms into smaller and attractive multi step forms. Long and lengthy forms are uninviting, why build one? <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/" target="_blank">Learn more</a></p>
             </div>
         </div>
     </div>
@@ -98,7 +99,7 @@
             </div>
             <div class="module-details">
                 <h3>Social Login</h3>
-                <p>Allow your users to Register or Login using Social networks like Google, Facebook, Twitter and LinkedIn. </p>
+                <p>Allow your users to Register or Login using Social networks like Google, Facebook, Twitter and LinkedIn. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/social-login-registration/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -108,7 +109,7 @@
             </div>
             <div class="module-details">
                 <h3>User Directory</h3>
-                <p>Handle user listing and user profile in the frontend. Create a directory site easily.</p>
+                <p>Handle user listing and user profile in the frontend. Create a directory site easily. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/user-listing-profile/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -118,7 +119,7 @@
             </div>
             <div class="module-details">
                 <h3>BuddyPress Profile</h3>
-                <p>Register and upgrade user profiles and sync data with BuddyPress.</p>
+                <p>Register and upgrade user profiles and sync data with BuddyPress. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/buddypress-profile-integration/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -128,7 +129,7 @@
             </div>
             <div class="module-details">
                 <h3>User Analytics</h3>
-                <p>Show user tracking info during post and registration directly on Frontend.</p>
+                <p>Show user tracking info during post and registration directly on Frontend. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/user-analytics/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -138,7 +139,7 @@
             </div>
             <div class="module-details">
                 <h3>Paid Membership Pro</h3>
-                <p>Membership Integration of WP User Frontend with Paid Membership Pro.</p>
+                <p>Membership Integration of WP User Frontend with Paid Membership Pro. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/install-and-configure-pmpro-add-on-for-wpuf/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -148,7 +149,7 @@
             </div>
             <div class="module-details">
                 <h3>Stripe Payment</h3>
-                <p>Stripe payment gateway for WP User Frontend. Get your subscription payment with Stripe.</p>
+                <p>Stripe payment gateway for WP User Frontend. Get your subscription payment with Stripe. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/stripe/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -158,7 +159,7 @@
             </div>
             <div class="module-details">
                 <h3>Mailpoet</h3>
-                <p>Add subscribers to mailpoet mailing list when they registers via WP User Frontend Pro.</p>
+                <p>Add subscribers to mailpoet mailing list when they registers via WP User Frontend Pro. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/mailpoet/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -168,7 +169,7 @@
             </div>
             <div class="module-details">
                 <h3>MailChimp</h3>
-                <p>Integrate your desired form to your MailChimp email newsletter using latest API.</p>
+                <p>Integrate your desired form to your MailChimp email newsletter using latest API. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/add-users-to-mailchimp-subscribers-list-upon-registration-from-frontend/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -178,7 +179,7 @@
             </div>
             <div class="module-details">
                 <h3>SMS Notification</h3>
-                <p>Get instant SMS notification on your mobile when post submits on your site.</p>
+                <p>Get instant SMS notification on your mobile when post submits on your site. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/sms-notification/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -188,7 +189,7 @@
             </div>
             <div class="module-details">
                 <h3>Comment Manager</h3>
-                <p>Handle login restriction for comments in frontend. Enable / disable comments on post.</p>
+                <p>Handle login restriction for comments in frontend. Enable / disable comments on post. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/frontend-comment-manager/" target="_blank">Learn more</a></p>
             </div>
         </div>
 
@@ -198,7 +199,7 @@
             </div>
             <div class="module-details">
                 <h3>QR Code Generator</h3>
-                <p>Generate QR Code with your custom fields or custom post meta.</p>
+                <p>Generate QR Code with your custom fields or custom post meta. <a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/qr-code/" target="_blank">Learn more</a></p>
             </div>
         </div>
 

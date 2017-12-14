@@ -568,8 +568,9 @@ class WPUF_Subscription {
         $current_pack     = $current_user->subscription()->current_pack();
         $has_pack         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
         $ppp_cost_enabled = $form->is_enabled_pay_per_post();
+        $sub_expired      = $current_user->subscription()->expired();
 
-        if ( $payment_options && !$has_pack ) {
+        if ( ( $payment_options && !$has_pack ) || ( $payment_options && $sub_expired ) ) {
             $order_id = get_post_meta( $post_id, '_wpuf_order_id', true );
 
             // check if there is a order ID

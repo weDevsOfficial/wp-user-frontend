@@ -1,0 +1,217 @@
+@color_1: #a94442;
+@color_2: #8a6d3b;
+@color_3: #3c763d;
+@color_4: #31708f;
+@color_5: #000;
+@background_color_1: #fff;
+@background_color_2: #000;
+@background_color_3: #f2dede;
+@background_color_4: #fcf8e3;
+@background_color_5: #dff0d8;
+@background_color_6: #d9edf7;
+@border_color_1: #ebccd1;
+@border_color_2: #faebcc;
+@border_color_3: #d6e9c6;
+@border_color_4: #bce8f1;
+
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    overflow: hidden;
+    position: absolute !important;
+    width: 1px;
+    word-wrap: normal !important;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+}
+.fade {
+    opacity: 0;
+    -webkit-transition: opacity .15s linear;
+    -o-transition: opacity .15s linear;
+    transition: opacity .15s linear;
+}
+.fade.in {
+    opacity: 1;
+}
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 30px 10px;
+}
+.modal.fade {
+    .modal-dialog {
+        -webkit-transition: -webkit-transform .3s ease-out;
+        -o-transition: -o-transform .3s ease-out;
+        transition: transform .3s ease-out;
+        -webkit-transform: translate(0,-25%);
+        -ms-transform: translate(0,-25%);
+        -o-transform: translate(0,-25%);
+        transform: translate(0,-25%);
+    }
+}
+.modal.in {
+    .modal-dialog {
+        -webkit-transform: translate(0,0);
+        -ms-transform: translate(0,0);
+        -o-transform: translate(0,0);
+        transform: translate(0,0);
+    }
+}
+.modal-content {
+    position: relative;
+    background-color: @background_color_1;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.2);
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+}
+.modal-body {
+    position: relative;
+    padding: 40px;
+}
+.modal-footer {
+    padding: 40px;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+}
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    background-color: @background_color_2;
+}
+.modal-backdrop.fade {
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+.modal-backdrop.in {
+    filter: alpha(opacity=50);
+    opacity: .5;
+}
+.wpuf-ajax-register {
+    display: none;
+}
+.wpuf-ajax-login {
+    display: none;
+}
+.wpuf-ajax-reset-password {
+    display: none;
+}
+.wpuf-ajax-register-footer {
+    display: none;
+}
+.wpuf-ajax-login-footer {
+    display: none;
+}
+div[data-active-tab="#wpuf-ajax-reset-password"] {
+    .wpuf-ajax-reset-password {
+        display: block;
+    }
+    .wpuf-ajax-login-footer {
+        display: block;
+    }
+}
+div[data-active-tab="#wpuf-ajax-login"] {
+    .wpuf-ajax-login {
+        display: block;
+    }
+    .wpuf-ajax-register-footer {
+        display: block;
+    }
+}
+div[data-active-tab="#wpuf-ajax-register"] {
+    .wpuf-ajax-register {
+        display: block;
+    }
+    .wpuf-ajax-login-footer {
+        display: block;
+    }
+}
+.wpuf-ajax-loading {
+    display: none;
+}
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    >p {
+        margin-bottom: 0;
+    }
+    >ul {
+        margin-bottom: 0;
+    }
+}
+.alert-danger {
+    color: @color_1;
+    background-color: @background_color_3;
+    border-color: @border_color_1;
+}
+.alert-warning {
+    color: @color_2;
+    background-color: @background_color_4;
+    border-color: @border_color_2;
+}
+.alert-success {
+    color: @color_3;
+    background-color: @background_color_5;
+    border-color: @border_color_3;
+}
+.alert-info {
+    color: @color_4;
+    background-color: @background_color_6;
+    border-color: @border_color_4;
+}
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: @color_5;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+}
+button.close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+}
+#wpuf-ajax-user-modal {
+    h3 {
+        clear: none;
+        margin-bottom: 20px;
+    }
+}
+.form-field {
+    margin: 20px 0;
+    position: relative;
+}
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: 600px;
+        margin: 70px auto;
+    }
+    .modal-content {
+        -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.5);
+        box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    }
+}

@@ -127,7 +127,7 @@ final class WP_User_Frontend {
 
         add_action( 'admin_init', array( $this, 'block_admin_access' ) );
 
-        add_action( 'show_admin_bar', array( $this, 'show_admin_bar' ) );
+        add_filter( 'show_admin_bar', array( $this, 'show_admin_bar' ) );
 
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
@@ -528,9 +528,19 @@ final class WP_User_Frontend {
      * @return void
      */
     function show_admin_bar() {
-        $access_level = wpuf_get_option( 'admin_access', 'wpuf_general', 'read' );
 
-        return current_user_can( $access_level );
+        if ( !is_user_logged_in() ) {
+            return false;
+        }
+
+        $roles = wpuf_get_option( 'show_admin_bar', 'wpuf_general', array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' ) );
+        $current_user = wp_get_current_user();
+
+        if ( !in_array( $current_user->roles[0], $roles ) ) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

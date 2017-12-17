@@ -2348,7 +2348,7 @@ function wpuf_is_form_submission_open( $form_id ) {
 
         $current_user = wp_get_current_user();
 
-        if ( !in_array($current_user->roles[0], $form_settings['roles'] ) ) {
+        if ( !in_array( $current_user->roles[0], $form_settings['roles'] ) ) {
             return '<div class="wpuf-message">' . __( "You do not have sufficient permissions to access this form.", 'wpuf' ) . '</div>';
         }
 

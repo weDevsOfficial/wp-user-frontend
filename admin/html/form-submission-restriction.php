@@ -98,11 +98,10 @@ $limit_message   = isset( $form_settings['limit_message'] ) ? $form_settings['li
                 <label>
                     <input type="hidden" name="wpuf_settings[roles][]" value="administrator">
                     <?php
-                    global $wp_roles;
-                    foreach ( $wp_roles->roles as $key => $role ) {
+                    foreach ( wpuf_get_user_roles() as $key => $role ) {
                         if( 'administrator' == $key ) { continue; } ?>
                         <input type="checkbox" name="wpuf_settings[roles][]" value="<?php echo $key; ?>"<?php echo in_array($key, $roles) ? 'checked="checked"' : ''; ?> />
-                        <?php echo $role['name'];
+                        <?php echo $role;
                     }
                     ?>
                 </label>

@@ -65,6 +65,14 @@ function wpuf_settings_fields() {
     $settings_fields = array(
         'wpuf_general' => apply_filters( 'wpuf_options_others', array(
             array(
+                'name'    => 'show_admin_bar',
+                'label'   => __( 'Show Admin Bar', 'wpuf' ),
+                'desc'    => __( 'Select user by roles, who can view admin bar in frontend.', 'wpuf' ),
+                'type'    => 'multicheck',
+                'options' => wpuf_get_user_roles(),
+                'default' => array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' ),
+            ),
+            array(
                 'name'    => 'admin_access',
                 'label'   => __( 'Admin area access', 'wpuf' ),
                 'desc'    => __( 'Allow you to block specific user role to WordPress admin area.', 'wpuf' ),

@@ -358,6 +358,7 @@
     var SettingsTab = {
         init: function() {
             $(function() {
+                $('.datepicker').datetimepicker();
                 $('.wpuf-ms-color').wpColorPicker();
             });
 
@@ -365,13 +366,6 @@
             $('#wpuf-metabox-settings-update').on('change', 'select[name="wpuf_settings[edit_redirect_to]"]', this.settingsRedirect);
             $('select[name="wpuf_settings[redirect_to]"]').change();
             $('select[name="wpuf_settings[edit_redirect_to]"]').change();
-
-            // Form settings: Guest post
-            $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[guest_post]"]', this.settingsGuest);
-            $('input[type=checkbox][name="wpuf_settings[guest_post]"]').trigger('change');
-
-            // From settings: User details
-            $('#wpuf-metabox-settings').on('change', 'input[type=checkbox][name="wpuf_settings[guest_details]"]', this.settingsGuestDetails);
 
             // Form settings: Payment
             $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[payment_options]"]', this.settingsPayment);
@@ -384,6 +378,25 @@
             // force pack purchase
             $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]', this.settingsForcePack);
             $('input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]').trigger('change');
+
+            // Form settings: Submission Restriction
+
+            // Form settings: Guest post
+            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[guest_post]"]', this.settingsGuest);
+            $('input[type=checkbox][name="wpuf_settings[guest_post]"]').trigger('change');
+            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[role_base]"]', this.settingsRoles);
+            $('input[type=checkbox][name="wpuf_settings[role_base]"]').trigger('change');
+
+            // From settings: User details
+            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[guest_details]"]', this.settingsGuestDetails);
+
+            // From settings: schedule form
+            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[schedule_form]"]', this.settingsRestriction);
+            $('input[type=checkbox][name="wpuf_settings[schedule_form]"]').trigger('change');
+
+            // From settings: limit entries
+            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[limit_entries]"]', this.settingsLimit);
+            $('input[type=checkbox][name="wpuf_settings[limit_entries]"]').trigger('change');
 
             this.changeMultistepVisibility($('.wpuf_enable_multistep_section :input[type="checkbox"]'));
             var self = this;
@@ -406,6 +419,18 @@
             } else {
                 table.find('tr.show-if-guest').hide();
                 table.find('tr.show-if-not-guest').show();
+            }
+        },
+
+        settingsRoles: function (e) {
+            e.preventDefault();
+
+            var table = $(this).closest('table');
+
+            if ( $(this).is(':checked') ) {
+                table.find('tr.show-if-roles').show();
+            } else {
+                table.find('tr.show-if-roles').hide();
             }
         },
 
@@ -460,6 +485,32 @@
 
             } else {
                 table.find('tr.show-if-force-pack').hide();
+
+            }
+        },
+
+        settingsRestriction: function (e) {
+            e.preventDefault();
+
+            var table = $(this).closest('table');
+
+            if ( $(this).is(':checked') ) {
+                table.find('tr.show-if-schedule').show();
+            } else {
+                table.find('tr.show-if-schedule').hide();
+
+            }
+        },
+
+        settingsLimit: function (e) {
+            e.preventDefault();
+
+            var table = $(this).closest('table');
+
+            if ( $(this).is(':checked') ) {
+                table.find('tr.show-if-limit-entries').show();
+            } else {
+                table.find('tr.show-if-limit-entries').hide();
 
             }
         },

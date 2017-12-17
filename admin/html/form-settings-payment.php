@@ -29,7 +29,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
         </tr>
 
         <tr class="show-if-payment">
-            <th><?php _e( 'Force Pack', 'wpuf' ); ?></th>
+            <th>&mdash; <?php _e( 'Force Pack', 'wpuf' ); ?></th>
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[force_pack_purchase]" value="false">
@@ -41,7 +41,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
         </tr>
 
         <tr class="show-if-payment show-if-force-pack">
-            <th><?php _e( 'Fallback to pay per post', 'wpuf' ); ?></th>
+            <th>&mdash; &mdash; <?php _e( 'Fallback to pay per post', 'wpuf' ); ?></th>
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[fallback_ppp_enable]" value="false">
@@ -53,7 +53,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
         </tr>
 
         <tr class="show-if-payment show-if-force-pack">
-            <th><?php _e( 'Fallback cost', 'wpuf' ); ?></th>
+            <th>&mdash; &mdash; <?php _e( 'Fallback cost', 'wpuf' ); ?></th>
             <td>
                 <label>
                     <input type="number" name="wpuf_settings[fallback_ppp_cost]" value="<?php echo esc_attr( $fallback_ppp_cost ); ?>" />
@@ -63,7 +63,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
         </tr>
 
         <tr class="show-if-payment">
-            <th><?php _e( 'Pay Per Post', 'wpuf' ); ?></th>
+            <th>&mdash; <?php _e( 'Pay Per Post', 'wpuf' ); ?></th>
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[enable_pay_per_post]" value="false">
@@ -75,7 +75,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
         </tr>
 
         <tr class="show-if-payment show-if-pay-per-post">
-            <th><?php _e( 'Cost Settings', 'wpuf' ); ?></th>
+            <th>&mdash; &mdash; <?php _e( 'Cost Settings', 'wpuf' ); ?></th>
             <td>
                 <label>
                     <input type="number" name="wpuf_settings[pay_per_post_cost]" value="<?php echo esc_attr( $pay_per_post_cost ); ?>" />

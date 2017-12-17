@@ -2001,60 +2001,6 @@ function wpuf_get_client_ip() {
 }
 
 /**
- * Check if the form submission is open
- *
- * @since 2.5.2
- *
- * @param  int $form_id
- *
- * @return boolean|WP_Error
- */
-function wpuf_is_form_submission_open( $form_id ) {
-    $settings     = wpuf_get_form_settings( $form_id );
-    $form_type    = get_post_type( $form_id );;
-
-    $needs_login  = ( isset( $settings['require_login'] ) && $settings['require_login'] == 'true' ) ? true : false;
-    $has_limit    = ( isset( $settings['limit_entries'] ) && $settings['limit_entries'] == 'true' ) ? true : false;
-    $is_scheduled = ( isset( $settings['schedule_form'] ) && $settings['schedule_form'] == 'true' ) ? true : false;
-
-    if ( $needs_login && !is_user_logged_in() ) {
-        return new WP_Error( 'needs-login', $settings['req_login_message'] );
-    }
-
-    if ( $has_limit ) {
-
-        // handle the contact form
-        if ( 'wpuf_contact_form' == $form_type ) {
-            $limit        = (int) $settings['limit_number'];
-            $form_entries = 0;
-
-            if ( function_exists( 'weforms_count_form_entries' ) ) {
-                $form_entries = weforms_count_form_entries( $form_id );
-            }
-
-            if ( $limit < $form_entries ) {
-                return new WP_Error( 'entry-limit', $settings['limit_message'] );
-            }
-        }
-    }
-
-    if ( $is_scheduled ) {
-        $start_time   = strtotime( $settings['schedule_start'] );
-        $end_time     = strtotime( $settings['schedule_end'] );
-        $current_time = current_time( 'timestamp' );
-
-        // too early?
-        if ( $current_time < $start_time ) {
-            return new WP_Error( 'form-pending', $settings['sc_pending_message'] );
-        } elseif ( $current_time > $end_time ) {
-            return new WP_Error( 'form-expired', $settings['sc_expired_message'] );
-        }
-    }
-
-    return true;
-}
-
-/**
  * Delete a form with it's field and meta
  *
  * @since 2.5.2
@@ -2343,5 +2289,93 @@ function wpuf_set_all_terms_as_allowed() {
             }
         }
     }
+}
 
+/**
+ * post submitted by form
+ *
+ * @since 2.8
+ *
+ * @param  int $form_id
+ *
+ * @return List of WP_Post objects.
+ */
+function wpuf_posts_submitted_by( $form_id ) {
+    $settings     = wpuf_get_form_settings( $form_id );
+    $settings['post_type'];
+    $args = array(
+        'meta_key'         => '_wpuf_form_id',
+        'meta_value'       => $form_id,
+        'post_type'        => $settings['post_type'],
+        'post_status'      => 'publish',
+    );
+    $posts_array = get_posts( $args );
+    return $posts_array;
+}
+
+/**
+ * count post submitted by form
+ *
+ * @since 2.8
+ *
+ * @param  int $form_id
+ *
+ * @return int
+ */
+function wpuf_form_posts_count( $form_id ) {
+    return count( wpuf_posts_submitted_by( $form_id ) );
+}
+
+/**
+ * Check if the form submission is open
+ *
+ * @since 2.8
+ *
+ * @param  int $form_id
+ *
+ * @return boolean|Error message
+ */
+function wpuf_is_form_submission_open( $form_id ) {
+    $form_settings     = wpuf_get_form_settings( $form_id );
+    $has_limit    = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
+    $is_scheduled = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] == 'true' ) ? true : false;
+
+    if ( ! is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {
+
+        return '<div class="wpuf-message">' . $form_settings['message_restrict'] . '</div>';
+
+    } else if ( $form_settings['role_base'] == 'true' ) {
+
+        $current_user = wp_get_current_user();
+
+        if ( !in_array($current_user->roles[0], $form_settings['roles'] ) ) {
+            return '<div class="wpuf-message">' . __( "You do not have sufficient permissions to access this form.", 'wpuf' ) . '</div>';
+        }
+
+    }
+
+    if ( $has_limit ) {
+
+        $limit        = (int) !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 0;
+        $form_entries = wpuf_form_posts_count( $form_id );
+
+        if ( $limit && $limit <= $form_entries ) {
+            return '<div class="wpuf-message">' . $form_settings['limit_message'] . '</div>';
+        }
+    }
+
+    if ( $is_scheduled ) {
+        $start_time   = strtotime( $form_settings['schedule_start'] );
+        $end_time     = strtotime( $form_settings['schedule_end'] );
+        $current_time = current_time( 'timestamp' );
+
+        // too early?
+        if ( $current_time < $start_time ) {
+            return '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>';
+        } elseif ( $current_time > $end_time ) {
+            return '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>';
+        }
+    }
+
+    return 'true';
 }

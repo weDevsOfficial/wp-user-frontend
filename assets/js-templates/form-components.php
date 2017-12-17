@@ -336,7 +336,7 @@
     </div>
 
     <div v-if="'subscribed_users' === selected" class="condiotional-logic-container">
-
+    	
     	<ul>
     		<?php
 

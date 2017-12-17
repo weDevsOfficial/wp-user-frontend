@@ -11,13 +11,6 @@ $post_type_selected    = isset( $form_settings['post_type'] ) ? $form_settings['
 $post_format_selected  = isset( $form_settings['post_format'] ) ? $form_settings['post_format'] : 0;
 $default_cat           = isset( $form_settings['default_cat'] ) ? $form_settings['default_cat'] : -1;
 
-$guest_post            = isset( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
-$guest_details         = isset( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
-$guest_email_verify    = isset( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false';
-$name_label            = isset( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wpuf' );
-$email_label           = isset( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email', 'wpuf' );
-$message_restrict      = isset( $form_settings['message_restrict'] ) ? $form_settings['message_restrict'] : $restrict_message;
-
 $redirect_to           = isset( $form_settings['redirect_to'] ) ? $form_settings['redirect_to'] : 'post';
 $message               = isset( $form_settings['message'] ) ? $form_settings['message'] : __( 'Post saved', 'wpuf' );
 $update_message        = isset( $form_settings['update_message'] ) ? $form_settings['update_message'] : __( 'Post updated successfully', 'wpuf' );
@@ -106,69 +99,6 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                 ) );
                 ?>
                 <p class="description"><?php echo __( 'If users are not allowed to choose any category, this category will be used instead (if post type supports)', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
-        <tr>
-            <th><?php _e( 'Guest Post', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="hidden" name="wpuf_settings[guest_post]" value="false">
-                    <input type="checkbox" name="wpuf_settings[guest_post]" value="true"<?php checked( $guest_post, 'true' ); ?> />
-                    <?php _e( 'Enable Guest Post', 'wpuf' ) ?>
-                </label>
-                <p class="description"><?php _e( 'Unregistered users will be able to submit posts', 'wpuf' ); ?>. <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/"><?php _e( 'Learn more about guest posting.', 'wpuf' ); ?></a></p>
-            </td>
-        </tr>
-
-        <tr class="show-if-guest">
-            <th><?php _e( 'User Details', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="hidden" name="wpuf_settings[guest_details]" value="false">
-                    <input type="checkbox" name="wpuf_settings[guest_details]" value="true"<?php checked( $guest_details, 'true' ); ?> />
-                    <?php _e( 'Require Name and Email address', 'wpuf' ) ?>
-                </label>
-                <p class="description"><?php _e( 'If requires, users will be automatically registered to the site using the name and email address', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
-        <tr class="show-if-guest">
-            <th><?php _e( 'Email Verification', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="checkbox" name="wpuf_settings[guest_email_verify]" value="true"<?php checked( $guest_email_verify, 'true' ); ?> />
-                    <?php _e( 'Require Email Verification for Guests', 'wpuf' ) ?>
-                </label>
-                <p class="description"><?php _e( 'If requires, users will be required to verify their email adress.', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
-        <tr class="show-if-guest show-if-details">
-            <th><?php _e( 'Name Label', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="text" name="wpuf_settings[name_label]" value="<?php echo esc_attr( $name_label ); ?>" />
-                </label>
-                <p class="description"><?php _e( 'Label text for name field', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
-        <tr class="show-if-guest show-if-details">
-            <th><?php _e( 'E-Mail Label', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="text" name="wpuf_settings[email_label]" value="<?php echo esc_attr( $email_label ); ?>" />
-                </label>
-                <p class="description"><?php _e( 'Label text for email field', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
-        <tr class="show-if-not-guest">
-            <th><?php _e( 'Unauthorized Message', 'wpuf' ); ?></th>
-            <td>
-                <textarea rows="3" cols="40" name="wpuf_settings[message_restrict]"><?php echo esc_textarea( $message_restrict ); ?></textarea>
-                <p class="description"><?php _e( 'Not logged in users will see this message', 'wpuf' ); ?></p>
             </td>
         </tr>
 

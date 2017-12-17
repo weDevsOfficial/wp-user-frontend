@@ -337,8 +337,10 @@ class WPUF_Render_Form {
         $form_settings  = wpuf_get_form_settings( $form_id );
         $label_position = isset( $form_settings['label_position'] ) ? $form_settings['label_position'] : 'left';
 
-        if ( ! is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {
-            echo '<div class="wpuf-message">' . $form_settings['message_restrict'] . '</div>';
+        $check_submission = wpuf_is_form_submission_open( $form_id );
+
+        if ( 'true' != $check_submission ) {
+            echo $check_submission;
             return;
         }
 
@@ -494,14 +496,14 @@ class WPUF_Render_Form {
                 if ( $visibility_selected == 'everyone' ) {
                     $show_field = true;
                 }
-                
+
                 if ( $visibility_selected == 'hidden' ) {
                     $form_field['css'] .= ' wpuf_hidden_field';
                     $show_field = true;
                 }
-                
+
                 if ( $visibility_selected == 'logged_in' && is_user_logged_in() ) {
-                        
+
                     if ( empty($visibility_choices) ) {
                         $show_field = true;
                     }else{
@@ -511,13 +513,13 @@ class WPUF_Render_Form {
                                 break;
                             }
                             continue;
-                        } 
+                        }
                     }
 
                 }
 
                 if ( $visibility_selected == 'subscribed_users' && is_user_logged_in() ) {
-                    
+
                     $user_pack  = WPUF_Subscription::init()->get_user_pack(get_current_user_id());
 
                     if ( empty( $visibility_choices ) && !empty( $user_pack ) ) {
@@ -530,7 +532,7 @@ class WPUF_Render_Form {
                                 break;
                             }
                             continue;
-                        } 
+                        }
 
                     }
 

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 2.7.0\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2017-12-12 10:43:39+00:00\n"
+"POT-Creation-Date: 2017-12-13 06:04:09+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -168,7 +168,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: admin/class-admin-subscription.php:315 admin/form.php:229
+#: admin/class-admin-subscription.php:315 admin/form.php:230
 msgid "Payment Settings"
 msgstr ""
 
@@ -188,7 +188,7 @@ msgstr ""
 msgid "Expires In:"
 msgstr ""
 
-#: admin/class-admin-subscription.php:369 admin/form.php:231
+#: admin/class-admin-subscription.php:369 admin/form.php:232
 #: includes/free/form-element.php:56
 msgid "Post Expiration"
 msgstr ""
@@ -580,7 +580,7 @@ msgstr ""
 msgid "Get the Pro version"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:334 admin/form.php:765
+#: admin/form-builder/class-wpuf-admin-form-builder.php:334 admin/form.php:770
 msgid "Select"
 msgstr ""
 
@@ -827,7 +827,7 @@ msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:483
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:490
-#: admin/form.php:766 admin/template-post.php:157
+#: admin/form.php:771 admin/template-post.php:157
 msgid "Multi Select"
 msgstr ""
 
@@ -850,7 +850,7 @@ msgid "Radio Field"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:599
-#: admin/form.php:767 admin/template-post.php:158
+#: admin/form.php:772 admin/template-post.php:158
 msgid "Checkbox"
 msgstr ""
 
@@ -889,12 +889,12 @@ msgid "Hidden Field"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:762
-#: admin/form.php:681 admin/template-post.php:105 admin/template.php:646
+#: admin/form.php:686 admin/template-post.php:105 admin/template.php:646
 msgid "Max. file size"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:766
-#: admin/form.php:685 admin/template-post.php:93 admin/template.php:634
+#: admin/form.php:690 admin/template-post.php:93 admin/template.php:634
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
@@ -1130,141 +1130,145 @@ msgstr ""
 msgid "Edit Settings"
 msgstr ""
 
-#: admin/form.php:230
+#: admin/form.php:229
+msgid "Submission Restriction"
+msgstr ""
+
+#: admin/form.php:231
 msgid "Display Settings"
 msgstr ""
 
-#: admin/form.php:289 admin/form.php:293
+#: admin/form.php:294 admin/form.php:298
 msgid "- Select -"
 msgstr ""
 
-#: admin/form.php:327
+#: admin/form.php:332
 msgid "Post Fields"
 msgstr ""
 
-#: admin/form.php:333
+#: admin/form.php:338
 msgid "Taxonomies"
 msgstr ""
 
-#: admin/form.php:435 admin/html/form-settings-post.php:29
+#: admin/form.php:440 admin/html/form-settings-post.php:29
 #: class/render-form.php:689
 msgid "Save Draft"
 msgstr ""
 
-#: admin/form.php:545 admin/form.php:552
+#: admin/form.php:550 admin/form.php:557
 msgid "Post Title"
 msgstr ""
 
-#: admin/form.php:584 admin/template-post.php:41
+#: admin/form.php:589 admin/template-post.php:41
 msgid "Enable Image Insertion"
 msgstr ""
 
-#: admin/form.php:586 admin/template-post.php:47
+#: admin/form.php:591 admin/template-post.php:47
 msgid "Enable image upload in post area"
 msgstr ""
 
-#: admin/form.php:595 admin/form.php:602
+#: admin/form.php:600 admin/form.php:607
 msgid "Post Body"
 msgstr ""
 
-#: admin/form.php:641 admin/form.php:648 templates/dashboard.php:99
+#: admin/form.php:646 admin/form.php:653 templates/dashboard.php:99
 msgid "Excerpt"
 msgstr ""
 
-#: admin/form.php:691 admin/form.php:698 templates/dashboard/posts.php:72
+#: admin/form.php:696 admin/form.php:703 templates/dashboard/posts.php:72
 #: templates/dashboard.php:70
 msgid "Featured Image"
 msgstr ""
 
-#: admin/form.php:726 admin/form.php:732
+#: admin/form.php:731 admin/form.php:737
 msgid "Tags"
 msgstr ""
 
-#: admin/form.php:762 admin/template-post.php:154
+#: admin/form.php:767 admin/template-post.php:154
 msgid "Type"
 msgstr ""
 
-#: admin/form.php:768 admin/template-post.php:159
+#: admin/form.php:773 admin/template-post.php:159
 msgid "Text Input"
 msgstr ""
 
-#: admin/form.php:769 admin/template-post.php:160
+#: admin/form.php:774 admin/template-post.php:160
 msgid "Ajax"
 msgstr ""
 
-#: admin/form.php:778 admin/template-post.php:165
+#: admin/form.php:783 admin/template-post.php:165
 msgid "Order By"
 msgstr ""
 
-#: admin/form.php:781 admin/html/form-settings-post.php:17
+#: admin/form.php:786 admin/html/form-settings-post.php:17
 #: admin/template-post.php:167 includes/free/edit-profile.php:97
 #: templates/registration-form.php:27
 msgid "Name"
 msgstr ""
 
-#: admin/form.php:782 admin/template-post.php:168
+#: admin/form.php:787 admin/template-post.php:168
 msgid "Term ID"
 msgstr ""
 
-#: admin/form.php:783 admin/template-post.php:169
+#: admin/form.php:788 admin/template-post.php:169
 msgid "Slug"
 msgstr ""
 
-#: admin/form.php:784 admin/template-post.php:170
+#: admin/form.php:789 admin/template-post.php:170
 msgid "Count"
 msgstr ""
 
-#: admin/form.php:785 admin/template-post.php:171
+#: admin/form.php:790 admin/template-post.php:171
 msgid "Term Group"
 msgstr ""
 
-#: admin/form.php:794 admin/template-post.php:176
+#: admin/form.php:799 admin/template-post.php:176
 msgid "Order"
 msgstr ""
 
-#: admin/form.php:798 admin/template-post.php:178
+#: admin/form.php:803 admin/template-post.php:178
 msgid "ASC"
 msgstr ""
 
-#: admin/form.php:799 admin/template-post.php:179
+#: admin/form.php:804 admin/template-post.php:179
 msgid "DESC"
 msgstr ""
 
-#: admin/form.php:808 admin/template-post.php:184
+#: admin/form.php:813 admin/template-post.php:184
 msgid "Selection Type"
 msgstr ""
 
-#: admin/form.php:811 admin/template-post.php:186
+#: admin/form.php:816 admin/template-post.php:186
 msgid "Exclude"
 msgstr ""
 
-#: admin/form.php:812 admin/template-post.php:187
+#: admin/form.php:817 admin/template-post.php:187
 msgid "Include"
 msgstr ""
 
-#: admin/form.php:813 admin/template-post.php:188
+#: admin/form.php:818 admin/template-post.php:188
 msgid "Child of"
 msgstr ""
 
-#: admin/form.php:822
+#: admin/form.php:827
 msgid "Selection Terms"
 msgstr ""
 
-#: admin/form.php:826 admin/template-post.php:194
+#: admin/form.php:831 admin/template-post.php:194
 msgid ""
 "Enter the term IDs as comma separated (without space) to exclude/include in "
 "the form."
 msgstr ""
 
-#: admin/form.php:834 admin/template-post.php:204
+#: admin/form.php:839 admin/template-post.php:204
 msgid "This taxonomy is a WooCommerce attribute"
 msgstr ""
 
-#: admin/form.php:845 admin/template-post.php:216
+#: admin/form.php:850 admin/template-post.php:216
 msgid "Visible on product page"
 msgstr ""
 
-#: admin/form.php:895
+#: admin/form.php:900
 msgid "Post Forms must have either Post Title, Post Body or Excerpt field"
 msgstr ""
 
@@ -1301,14 +1305,17 @@ msgid "Check to enable Payments for this form."
 msgstr ""
 
 #: admin/html/form-settings-payment.php:32
+#: admin/html/form-submission-restriction.php:26
 msgid "Force Pack"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:37
+#: admin/html/form-submission-restriction.php:31
 msgid "Force subscription pack"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:39
+#: admin/html/form-submission-restriction.php:33
 msgid "Force users to purchase and use subscription pack."
 msgstr ""
 
@@ -1567,6 +1574,18 @@ msgstr ""
 
 #: admin/html/form-settings-post.php:252
 msgid "It will show a button to save as draft"
+msgstr ""
+
+#: admin/html/form-submission-restriction.php:14
+msgid "Schedule form"
+msgstr ""
+
+#: admin/html/form-submission-restriction.php:19
+msgid "Schedule form for a period"
+msgstr ""
+
+#: admin/html/form-submission-restriction.php:21
+msgid "Schedule for a time period the form is active."
 msgstr ""
 
 #: admin/html/modal.php:4
@@ -3171,6 +3190,10 @@ msgstr ""
 #: includes/class-user-subscription.php:333
 #: templates/dashboard/subscription.php:24
 msgid "Unlimited"
+msgstr ""
+
+#: includes/class-user-subscription.php:367
+msgid "Change"
 msgstr ""
 
 #: includes/class-whats-new.php:67

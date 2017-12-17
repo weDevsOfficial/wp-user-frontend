@@ -91,6 +91,8 @@ class WPUF_Admin_Form_Builder {
 
         wp_enqueue_style( 'wpuf-form-builder', WPUF_ASSET_URI . '/css/wpuf-form-builder.css', $form_builder_css_deps, WPUF_VERSION );
 
+        wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
+
         do_action( 'wpuf-form-builder-enqueue-style' );
 
         /**
@@ -120,6 +122,8 @@ class WPUF_Admin_Form_Builder {
         wp_enqueue_script( 'wpuf-form-builder-components', WPUF_ASSET_URI . '/js/wpuf-form-builder-components.js', array( 'wpuf-form-builder-mixins' ), WPUF_VERSION, true );
 
         do_action( 'wpuf-form-builder-enqueue-after-components' );
+
+        wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker' ) );
 
         wp_enqueue_script( 'wpuf-form-builder', WPUF_ASSET_URI . '/js/wpuf-form-builder.js', array( 'wpuf-form-builder-components' ), WPUF_VERSION, true );
 

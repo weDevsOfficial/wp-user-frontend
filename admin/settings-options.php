@@ -69,13 +69,18 @@ function wpuf_settings_fields() {
                 'label'   => __( 'Show Admin Bar', 'wpuf' ),
                 'desc'    => __( 'Select user by roles, who can view admin bar in frontend.', 'wpuf' ),
                 'type'    => 'multicheck',
-                'options' => wpuf_get_user_roles(),
-                'default' => array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' ),
+                'options' => array(
+                    'administrator' => __( 'Administrator', 'wpuf' ),
+                    'editor'        => __( 'Editor', 'wpuf' ),
+                    'author'        => __( 'Author', 'wpuf' ),
+                    'contributor'   => __( 'Contributor', 'wpuf' )
+                ),
+                'default' => array( 'administrator', 'editor', 'author', 'contributor' ),
             ),
             array(
                 'name'    => 'admin_access',
                 'label'   => __( 'Admin area access', 'wpuf' ),
-                'desc'    => __( 'Allow you to block specific user role to WordPress admin area.', 'wpuf' ),
+                'desc'    => __( 'Allow you to block specific user role to Ajax request and Media upload.', 'wpuf' ),
                 'type'    => 'select',
                 'default' => 'read',
                 'options' => array(

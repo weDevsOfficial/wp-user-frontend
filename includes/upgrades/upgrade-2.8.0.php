@@ -16,15 +16,9 @@ function wpuf_upgrade_2_8_update_new_options() {
             break;
 
         case 'edit_posts':
-            $roles = array( 'administrator' => 'administrator', 'editor' => 'editor', 'author' => 'author', 'contributor' => 'contributor' );
-            break;
-
         case 'read':
-            $roles = array( 'administrator' => 'administrator', 'editor' => 'editor', 'author' => 'author', 'contributor' => 'contributor', 'subscriber' => 'subscriber' );
-            break;
-
         default:
-            $roles = array( 'administrator' => 'administrator', 'editor' => 'editor', 'author' => 'author', 'contributor' => 'contributor', 'subscriber' => 'subscriber' );
+            $roles = array( 'administrator' => 'administrator', 'editor' => 'editor', 'author' => 'author', 'contributor' => 'contributor' );
             break;
     }
 

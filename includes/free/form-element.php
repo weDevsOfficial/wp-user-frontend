@@ -109,7 +109,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                             }
                             ?>
                         </select>
-                        <p class="description"><?php echo __( 'Status of post after post expiration time is over ', 'wp-user-frontend', 'wpuf' ); ?></p>
+                        <p class="description"><?php echo __( 'Status of post after post expiration time is over ', 'wpuf' ); ?></p>
 
                     </td>
                 </tr>
@@ -120,7 +120,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                     <td>
                         <label>
                             <input disabled type="checkbox" name="" value="on" <?php echo $is_enable_mail_after_expired;?> />
-                            <?php echo __( 'Send Email to Author After Exceeding Post Expiration Time', 'wp-user-frontend', 'wpuf' );?>
+                            <?php echo __( 'Send Email to Author After Exceeding Post Expiration Time', 'wpuf' ); ?>
                         </label>
                     </td>
                 </tr>

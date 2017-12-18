@@ -422,7 +422,7 @@ class WPUF_Admin_Subscription {
                                         }
                                         ?>
                                     </select>
-                                    <p class="description"><?php echo _('Status of post after post expiration time is over ', 'wp-user-frontend', 'wpuf');?></p>
+                                    <p class="description"><?php _e('Status of post after post expiration time is over ', 'wpuf' );?></p>
                                 </td>
                             </tr>
                             <tr class="wpuf_subscription_expiration_field">

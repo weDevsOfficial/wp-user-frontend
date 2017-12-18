@@ -87,7 +87,7 @@ class WPUF_Admin_Installer {
 
         // save the settings
         if ( $edit_page ) {
-            update_option( 'wpuf_general', array(
+            update_option( 'wpuf_frontend_posting', array(
                 'edit_page_id'      => $edit_page,
                 'default_post_form' => $post_form
             ) );

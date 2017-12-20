@@ -264,17 +264,31 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             if ( $this->search( $post_vars, 'input_type', 'really_simple_captcha' ) ) {
                 $this->validate_rs_captcha();
             }
+            $no_captcha = $invisible_captcha = '';
+
+            $check_recaptcha = $this->search( $post_vars, 'input_type', 'recaptcha' );
+            $recaptcha_type  = $check_recaptcha[0]['recaptcha_type'];
 
             // check recaptcha
-            if ( $this->search( $post_vars, 'input_type', 'recaptcha' ) ) {
+            if ( $check_recaptcha ) {
 
-                $no_captcha = '';
-                if ( isset( $_POST["g-recaptcha-response"] ) ) {
-                    $no_captcha = 1;
-                } else {
-                    $no_captcha = 0;
+                if ( isset ( $_POST["g-recaptcha-response"] ) ) {
+                    if ( empty( $_POST['g-recaptcha-response'] ) && $check_recaptcha[0]['recaptcha_type'] !== 'invisible_recaptcha') {
+                        $this->send_error( __( 'Empty reCaptcha Field', 'wpuf-pro' ) );
+                    }
+
+                    if ( $recaptcha_type == 'enable_no_captcha' ) {
+                        $no_captcha = 1;
+                        $invisible_captcha = 0;
+                    } elseif ( $recaptcha_type == 'invisible_recaptcha' ) {
+                        $invisible_captcha = 1;
+                        $no_captcha = 0;
+                    } else {
+                        $invisible_captcha = 0;
+                        $no_captcha = 0;
+                    }
                 }
-                $this->validate_re_captcha( $no_captcha );
+                $this->validate_re_captcha( $no_captcha, $invisible_captcha );
             }
         }
 

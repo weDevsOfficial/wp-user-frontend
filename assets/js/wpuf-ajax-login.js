@@ -1,108 +1,72 @@
-function wpuf_ajax_open_login_dialog(href){
+jQuery( function($) {
 
-    jQuery('#wpuf-ajax-user-modal .modal-dialog').removeClass('registration-complete');
+    $('#wpuf-ajax-reset-password').hide();
 
-    var modal_dialog = jQuery('#wpuf-ajax-user-modal .modal-dialog');
-    modal_dialog.attr('data-active-tab', '');
-
-    switch(href){
-
-        case '#wpuf-ajax-register':
-            modal_dialog.attr('data-active-tab', '#wpuf-ajax-register');
-            break;
-
-        case '#wpuf-ajax-login':
-        default:
-            modal_dialog.attr('data-active-tab', '#wpuf-ajax-login');
-            break;
-    }
-
-    jQuery('#wpuf-ajax-user-modal').modal('show');
-}   
-
-function wpuf_ajax_close_login_dialog(){
-
-    jQuery('#wpuf-ajax-user-modal').modal('hide');
-}   
-
-jQuery(function($){
-
-    "use strict";
-    /***************************
-    **  LOGIN / REGISTER DIALOG
-    ***************************/
-
-    // Open login/register modal
-    $('[href="#wpuf-ajax-login"], [href="#wpuf-ajax-register"]').click(function(e){
-
+    $('a[href="#wpuf-ajax-login-url"]').click( function(e) {
         e.preventDefault();
 
-        wpuf_ajax_open_login_dialog( $(this).attr('href') );
-
+        $('#wpuf-ajax-login').show();
+        $('#wpuf-ajax-reset-password').hide();
     });
 
-    // Switch forms login/register
-    $('.modal-footer a, a[href="#wpuf-ajax-reset-password"]').click(function(e){
+    $('a[href="#wpuf-ajax-lost-pw-url"]').click( function(e) {
         e.preventDefault();
-        $('#wpuf-ajax-user-modal .modal-dialog').attr('data-active-tab', $(this).attr('href'));
-    });
 
+        $('#wpuf-ajax-reset-password').show();
+        $('#wpuf-ajax-login').hide();
+    });
 
     // Post login form
-    $('#wpuf-ajax-login-form').on('submit', function(e){
-
+    $('#wpuf_ajax_login_form').on('submit', function(e) {
         e.preventDefault();
 
-        var button = $(this).find('button');
-            button.button('loading');
+        var button = $(this).find('submit');
+        form_data = $('#wpuf_ajax_login_form').serialize() + '&action=ajax_login';
 
-        $.post(wpuf_ajax.ajaxurl, $('#wpuf-ajax-login-form').serialize(), function(data){
-
-            var obj = $.parseJSON(data);
-
-            $('.wpuf-ajax-login .wpuf-ajax-errors').html(obj.message);
-            
-            if(obj.error == false){
-                $('#wpuf-ajax-user-modal .modal-dialog').addClass('loading');
+        $.ajax({
+            url: wpuf_ajax.ajaxurl,
+            type: 'POST',
+            dataType: 'json',
+            data: form_data
+        })
+        .done( function( response, textStatus, jqXHR ) {
+            if ( response.success == false ) {
+                $('.wpuf-ajax-login-form .wpuf-ajax-errors').append(response.data.message);
+            } else {
                 window.location.reload(true);
                 button.hide();
             }
-
-            button.button('reset');
-        });
-
+        } )
+        .fail( function( jqXHR, textStatus, errorThrown ) {
+            console.log( 'AJAX failed', errorThrown );
+        } );
     });
 
-
-    // Post register form
-    $('#wpuf-ajax-reg-form').on('submit', function(e){
-
+    // Reset Password
+    $('#wpuf_ajax_reset_pass_form').on('submit', function(e) {
         e.preventDefault();
 
-        var button = $(this).find('button');
-            button.button('loading');
+        var button = $(this).find('submit');
 
-        $.post(wpuf_ajax.ajaxurl, $('#wpuf-ajax-reg-form').serialize(), function(data){
-            
-            var obj = $.parseJSON(data);
-
-            $('.wpuf-ajax-register .wpuf-ajax-errors').html(obj.message);
-            
-            if(obj.error == false){
-                $('#wpuf-ajax-user-modal .modal-dialog').addClass('registration-complete');
-                // window.location.reload(true);
-                button.hide();
+        $.ajax({
+            url: wpuf_ajax.ajaxurl,
+            type: 'POST',
+            dataType: 'json',
+            data: { 
+                'action': 'lost_password', 
+                'user_login': $('#wpuf-user_login').val(), 
             }
-
-            button.button('reset');
-            
-        });
-
+        })
+        .done( function( response, textStatus, jqXHR ) {
+            $('.wpuf-ajax-reset-password-form .wpuf-ajax-errors').append(response.data.message);
+        } )
+        .fail( function( jqXHR, textStatus, errorThrown ) {
+            console.log( 'AJAX failed', errorThrown );
+        } );
     });
 
     // Logout
-    $('[href="#logout"]').click(function(e){
-
+    $('[href="#logout"]').click( function(e) {
         e.preventDefault();
 
         $.ajax({
@@ -110,46 +74,13 @@ jQuery(function($){
             type: 'POST',
             dataType: 'json',
             data: {
-                action: 'wpuf_ajax_logout',
+                action: 'ajax_logout',
             },
             success: function(data) {
-
-                if(data.error == false){
-                    $('.wpuf-ajax-logout .wpuf-ajax-errors').html(data.message);
-                    window.location.reload(true);
-                }
+                $('.wpuf-ajax-logout .wpuf-ajax-errors').html(data.message);
+                window.location.reload(true);
             }
         });
-
-    });
-
-
-    // Reset Password
-    $('#wpuf_ajax_reset_pass_form').on('submit', function(e){
-
-        e.preventDefault();
-
-        var button = $(this).find('button');
-            button.button('loading');
-
-        $.post(wpuf_ajax.ajaxurl, $('#wpuf_ajax_reset_pass_form').serialize(), function(data){
-
-            var obj = $.parseJSON(data);
-
-            $('.wpuf-ajax-reset-password .wpuf-ajax-errors').html(obj.message);
-            
-            // if(obj.error == false){
-                // $('#wpuf-ajax-user-modal .modal-dialog').addClass('loading');
-                // $('#wpuf-ajax-user-modal').modal('hide');
-            // }
-
-            button.button('reset');
-        });
-
-    });
-
-    if(window.location.hash == '#login'){
-        wpuf_ajax_open_login_dialog('#wpuf-ajax-login');
-    }       
+    });  
 
 });

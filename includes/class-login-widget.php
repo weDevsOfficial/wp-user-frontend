@@ -205,7 +205,7 @@ class WPUF_Login_Widget extends WP_Widget {
             'label_log_in'      => $log_in_label
         );
         ?>
-        <div class='login-container'>
+        <div class='login-container' id="login-widget-container">
             <?php 
             if( ! is_user_logged_in() ) { // only show the registration/login form to non-logged-in members ?>
                

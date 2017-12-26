@@ -2,18 +2,20 @@ jQuery( function($) {
 
     $('#wpuf-ajax-reset-password').hide();
 
-    $('a[href="#wpuf-ajax-login-url"]').click( function(e) {
+    var form = $('#login-widget-container');
+
+    form.on('click', '#wpuf-ajax-login-url', function(e) {
         e.preventDefault();
 
         $('#wpuf-ajax-login').show();
-        $('#wpuf-ajax-reset-password').hide();
+        $('#wpuf-ajax-reset-password').hide();  
     });
 
-    $('a[href="#wpuf-ajax-lost-pw-url"]').click( function(e) {
+    form.on('click', '#wpuf-ajax-lost-pw-url', function(e) {
         e.preventDefault();
 
         $('#wpuf-ajax-reset-password').show();
-        $('#wpuf-ajax-login').hide();
+        $('#wpuf-ajax-login').hide(); 
     });
 
     // Post login form

@@ -39,7 +39,7 @@ function wpuf_settings_sections() {
             'icon' => 'dashicons-money'
         ),
         array(
-            'id'    => 'wpuf_guest_mails',
+            'id'    => 'wpuf_mails',
             'title' => __( 'E-Mails', 'wpuf' ),
             'icon' => 'dashicons-email-alt'
 
@@ -407,22 +407,22 @@ function wpuf_settings_fields() {
                 'options' => wpuf_get_gateways()
             )
         ) ),
-        'wpuf_guest_mails' => array(
+        'wpuf_mails' => apply_filters( 'wpuf_mail_options', array(
             array(
                 'name'       => 'guest_email_subject',
-                'label'    => __( 'Guest Email Subject', 'wpuf' ),
+                'label'    => __( 'Guest mail subject', 'wpuf' ),
                 'desc'     => __( 'This sets the subject of the emails sent to guest users', 'wpuf' ),
                 'default'  => 'Please Confirm Your Email to Get the Post Published!',
                 'type'     => 'text',
             ),
             array(
                 'name'       => 'guest_email_body',
-                'label'    => __( 'Guest Email Body', 'wpuf' ),
+                'label'    => __( 'Guest mail body', 'wpuf' ),
                 'desc'     => __( "This sets the body of the emails sent to guest users. Please DON'T edit the <code>{activation_link}</code> part", 'wpuf' ),
                 'default'  => "Hey There, \r\n\r\nWe just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.\r\n\r\nPlease click the link below to verify: \r\n\r\n{activation_link}\r\n\r\nRegards,\r\n%sitename%",
-                'type'     => 'textarea',
-            )
-        )
+                'type'     => 'wysiwyg',
+            ),
+        ) )
     );
 
     return apply_filters( 'wpuf_settings_fields', $settings_fields );

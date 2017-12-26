@@ -692,9 +692,9 @@ class WPUF_Render_Form {
                 <input type="hidden" name="post_date" value="<?php echo esc_attr( $cur_post->post_date ); ?>">
                 <input type="hidden" name="comment_status" value="<?php echo esc_attr( $cur_post->comment_status ); ?>">
                 <input type="hidden" name="post_author" value="<?php echo esc_attr( $cur_post->post_author ); ?>">
-                <input type="submit" name="submit" value="<?php echo $form_settings['update_text']; ?>" />
+                <input type="submit" class="wpuf-submit-button" name="submit" value="<?php echo $form_settings['update_text']; ?>" />
             <?php } else { ?>
-                <input type="submit" name="submit" value="<?php echo $form_settings['submit_text']; ?>" />
+                <input type="submit" class="wpuf-submit-button" name="submit" value="<?php echo $form_settings['submit_text']; ?>" />
                 <input type="hidden" name="wpuf_form_status" value="new">
             <?php } ?>
 
@@ -1657,9 +1657,32 @@ class WPUF_Render_Form {
         }
 
         if ( $enable_invisible_recaptcha ) { ?>
-            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-            <script src="<?php echo WPUF_ASSET_URI . '/js/recaptcha.js' ?>" async defer></script>
-            <button class="g-recaptcha" data-sitekey=<?php echo wpuf_get_option( 'recaptcha_public', 'wpuf_general' ); ?> data-callback="onSubmit">Submit</button>
+            <script src="https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en" async defer></script>
+            <script>
+                jQuery(document).ready(function($) {
+                    jQuery('[name="submit"]').removeClass('wpuf-submit-button').addClass('g-recaptcha').attr('data-sitekey', '<?php echo wpuf_get_option( 'recaptcha_public', 'wpuf_general' ); ?>');
+
+                    $(document).on('click','.g-recaptcha', function(e){
+                        e.preventDefault();
+                        e.stopPropagation();
+                        grecaptcha.execute();
+                    })
+                });
+
+                var wpufreCaptchaLoaded = function() {
+                    grecaptcha.render('recaptcha', {
+                        'size' : 'invisible',
+                        'callback' : wpufRecaptchaCallback
+                    });
+                    grecaptcha.execute();
+                };
+
+                function wpufRecaptchaCallback(token) {
+                    jQuery('[name="g-recaptcha-response"]').val(token);
+                    jQuery('[name="submit"]').removeClass('g-recaptcha').addClass('wpuf-submit-button');
+                }
+            </script>
+            <!-- <input type="submit" class="g-recaptcha" data-sitekey=<?php echo wpuf_get_option( 'recaptcha_public', 'wpuf_general' ); ?> data-callback="onSubmit"> -->
             <div type="submit" id='recaptcha' class="g-recaptcha" data-sitekey=<?php echo wpuf_get_option( 'recaptcha_public', 'wpuf_general' ); ?> data-callback="onSubmit" data-size="invisible"></div>
         <?php } else { ?>
             <div class="wpuf-fields <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>">

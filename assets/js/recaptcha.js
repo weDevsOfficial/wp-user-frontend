@@ -1,3 +1,0 @@
-function onSubmit() {
-	grecaptcha.execute();
-}

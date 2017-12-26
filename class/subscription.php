@@ -581,7 +581,7 @@ class WPUF_Subscription {
                     'type'    => 'post',
                     'post_id' => $post_id
                 ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
-            } 
+            }
             if ( !$forcePack && $ppp_cost_enabled ) {
             	$response['show_message'] = false;
                 $response['redirect_to'] = add_query_arg( array(

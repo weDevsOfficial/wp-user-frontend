@@ -123,6 +123,7 @@ class WeDevs_Settings_API {
 
                 $args = array(
                     'id'                => $option['name'],
+                    'class'             => isset( $option['class'] ) ? $option['class'] : '',
                     'label_for'         => $args['label_for'] = "{$section}[{$option['name']}]",
                     'desc'              => isset( $option['desc'] ) ? $option['desc'] : '',
                     'name'              => $option['label'],

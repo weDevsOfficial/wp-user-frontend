@@ -42,9 +42,6 @@ class WPUF_Subscription {
 
         add_action( 'wpuf_draft_post_after_insert', array( $this, 'reset_user_subscription_data' ), 10, 4 );
 
-        //subscription notification mail hooks
-        add_action( 'init', array( $this, 'subs_notification_event_init') );
-
     }
 
     /**
@@ -1128,71 +1125,6 @@ class WPUF_Subscription {
 
     public function get_payment_status( $post_id ) {
         return get_post_meta( $post_id, '_wpuf_payment_status', true);
-    }
-
-    /**
-     * Inits subscription notification event
-     */
-    function subs_notification_event_init() {
-        if ( ! wp_next_scheduled ( 'wpuf_subs_notification_event' ) ) {
-            wp_schedule_event( time(), 'daily', 'wpuf_subs_notification_event');
-        }
-
-        add_action( 'wpuf_subs_notification_event', array( $this, 'wpuf_send_subs_notification') );
-    }
-    
-    /**
-     * Send subscription notification
-     */     
-    function wpuf_send_subs_notification() {
-        $users = get_users( array(
-            'meta_key' => ' _wpuf_subscription_pack',
-        ));
-
-        foreach ( $users as $user ) {
-            $sub       = get_user_meta( $user->ID ,'_wpuf_subscription_pack', true );
-            $exp_time  = date_create( $sub['expire'] );
-            $curr_time = date_create( date('Y-m-d h:i:s', time()) );
-            $time_diff = date_diff( $curr_time, $exp_time );
-
-            if ( $time_diff->d >= 1 || $time_diff->d < 2 ) {
-                if ( $curr_time < $exp_time ) {
-                    $this->wpuf_pre_sub_exp_notification( $user->user_email );
-                } else {
-                    $this->wpuf_post_sub_exp_notification( $user->user_email );
-                } 
-            }
-
-        }
-
-    }
-
-    /**
-     * Pre-subscription expiration notification mail
-     */
-    function wpuf_pre_sub_exp_notification( $user_mail ) {
-        $to         = $user_mail;
-
-        $subj       = wpuf_get_option( 'pre_sub_exp_subject', 'wpuf_mails');
-        $text_body  = wpautop( wpuf_get_option( 'pre_sub_exp_body', 'wpuf_mails' ) );
-
-        $headers    = 'Content-Type: text/html; charset=UTF-8';
-
-        wp_mail( $to, $subj, $text_body, $headers );
-    }
-
-    /**
-     * Post-subscription expiration notification mail
-     */
-    function wpuf_post_sub_exp_notification( $user_mail ) {
-        $to         = $user_mail;
-
-        $subj       = wpuf_get_option( 'post_sub_exp_subject', 'wpuf_mails');
-        $text_body  = wpautop( wpuf_get_option( 'post_sub_exp_body', 'wpuf_mails' ) );
-
-        $headers    = 'Content-Type: text/html; charset=UTF-8';
-
-        wp_mail( $to, $subj, $text_body, $headers );
     }
 
 }

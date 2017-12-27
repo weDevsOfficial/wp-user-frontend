@@ -395,6 +395,7 @@ class WPUF_Admin_Settings {
         }
 
         wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css', false, WPUF_VERSION );
+        wp_enqueue_script( 'wpuf-admin-script', WPUF_ASSET_URI . '/js/wpuf-admin.js', array( 'jquery' ), false, WPUF_VERSION );
     }
 
 }

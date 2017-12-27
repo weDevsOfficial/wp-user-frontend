@@ -166,6 +166,7 @@ class WPUF_User_Subscription {
      */
     public function add_pack( $pack_id, $profile_id = null, $recurring, $status = null ) {
         global $wpdb;
+        $result = '';
         $subscription = WPUF_Subscription::init()->get_subscription( $pack_id );
         if ( $this->user->id && $subscription ) {
 
@@ -204,22 +205,28 @@ class WPUF_User_Subscription {
 
             $this->update_meta( $user_meta );
 
-            $sql = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "wpuf_transaction
-            WHERE user_id = %d AND pack_id = %d LIMIT 1", $this->user->id, $pack_id );
+            if ( ! $this->is_free_pack( $pack_id ) ) {
+                $sql = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "wpuf_transaction
+                WHERE user_id = %d AND pack_id = %d LIMIT 1", $this->user->id, $pack_id );
 
-            $result = $wpdb->get_row( $sql );
-            $table_data = array(
-                'user_id'               => $this->user->id,
-                'name'                  => $this->user->user->data->display_name,
-                'subscribtion_id'       => $pack_id,
-                'subscribtion_status'   => $status,
-                'gateway'               => isset( $result->payment_type ) ? 'bank' : $result->payment_type,
-                'transaction_id'        => isset( $result->transaction_id ) ? 'NA' : $result->transaction_id,
-                'starts_from'           => date( 'd-m-Y' ),
-                'expire'                => $user_meta['expire'] == '' ? 'recurring' : $user_meta['expire'],
-            );
+                $result = $wpdb->get_row( $sql );
+            }
 
-            $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );
+            if ( $result ) {
+                $table_data = array(
+                    'user_id'               => $this->user->id,
+                    'name'                  => $this->user->user->data->display_name,
+                    'subscribtion_id'       => $pack_id,
+                    'subscribtion_status'   => $status,
+                    'gateway'               => isset( $result->payment_type ) ? 'bank' : $result->payment_type,
+                    'transaction_id'        => isset( $result->transaction_id ) ? 'NA' : $result->transaction_id,
+                    'starts_from'           => date( 'd-m-Y' ),
+                    'expire'                => $user_meta['expire'] == '' ? 'recurring' : $user_meta['expire'],
+                );
+
+                $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );
+            }
+            
         }
     }
 
@@ -270,7 +277,7 @@ class WPUF_User_Subscription {
         $has_used = is_array( $has_used ) ? $has_used : array();
 
         $has_used[$pack_id] = $pack_id;
-        update_meta( $has_used, 'wpuf_fp_used' );
+        $this->update_meta( $has_used, 'wpuf_fp_used' );
     }
 
     public function pack_info( $form_id ) {
@@ -462,4 +469,24 @@ class WPUF_User_Subscription {
 
         return false;
     }
+
+    /**
+     * Checks if a pack is free
+     *
+     * @since 2.8.0
+     * @param $pack_id
+     * @return bool
+     */
+    public static function is_free_pack( $pack_id ) {
+        $subs = new WPUF_Subscription();
+        $pack           = $subs->get_subscription( $pack_id );
+        $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : false;
+
+        if ( $billing_amount === false ) {
+           return true;
+        }
+
+        return false;
+    }
+
 }

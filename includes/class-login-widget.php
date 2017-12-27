@@ -16,23 +16,9 @@ class WPUF_Login_Widget extends WP_Widget {
             array( 'description' => __( 'Ajax Login widget for WP User Frontend', 'wpuf' ), ) 
         );
 
-        add_action( 'widgets_init', array( $this, 'wpuf_ajax_login_widget' ) );
-        add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
-        add_action( 'wp_ajax_ajax_login', array( $this, 'ajax_login' ) );
-        add_action( 'wp_ajax_nopriv_ajax_login', array( $this, 'ajax_login' ) );
-        add_action( 'wp_ajax_lost_password', array( $this, 'ajax_reset_pass' ) );
-        add_action( 'wp_ajax_nopriv_lost_password', array( $this, 'ajax_reset_pass' ) );
-        add_action( 'wp_ajax_ajax_logout', array( $this, 'ajax_logout' ) );
-        add_filter( 'lostpassword_url', array( $this, 'lostpassword_url' ));
-    }
-
-    public function register_scripts() {
-
-        wp_register_script( 'wp_ajax_login', WPUF_ASSET_URI . '/js/wpuf-ajax-login.js', array( 'jquery' ), false, true );
-        
-        wp_localize_script( 'wp_ajax_login', 'wpuf_ajax', array( 
-            'ajaxurl' => admin_url( 'admin-ajax.php' ),
-        ));
+        add_action( 'wp_ajax_nopriv_wpuf_ajax_login', array( $this, 'ajax_login' ) );
+        add_action( 'wp_ajax_nopriv_wpuf_lost_password', array( $this, 'ajax_reset_pass' ) );
+        add_action( 'wp_ajax_wpuf_ajax_logout', array( $this, 'ajax_logout' ) );
     }
 
     /**
@@ -108,8 +94,7 @@ class WPUF_Login_Widget extends WP_Widget {
      *
      * @return mixed
      */
-    private function ajax_lostpassword_retrieve( $user_input ) {
-        
+    private function ajax_lostpassword_retrieve( $user_input ) { 
         global $wpdb, $wp_hasher;
 
         $errors = new WP_Error();
@@ -175,7 +160,7 @@ class WPUF_Login_Widget extends WP_Widget {
      */
     public function widget( $args, $instance ) {
 
-        wp_enqueue_script( 'wp_ajax_login' );
+        wp_enqueue_script( 'wpuf_ajax_login' );
 
         $title            = apply_filters( 'widget_title', $instance['title'] );
         $log_in_header    = apply_filters( 'widget_text_content', $instance['log_in_header'] );
@@ -187,6 +172,7 @@ class WPUF_Login_Widget extends WP_Widget {
         $pass_reset_label = apply_filters( 'widget_text', $instance['pass_reset_label'] );
  
         echo $args['before_widget'];
+        
         if ( ! empty( $title ) ) {
             echo $args['before_title'] . $title . $args['after_title'];
         }
@@ -197,7 +183,6 @@ class WPUF_Login_Widget extends WP_Widget {
         }
 
         $login_args = array(
-            'redirect'          => '',
             'form_id'           => 'wpuf_ajax_login_form',
             'label_username'    => $uname_label,
             'label_password'    => $pwd_label,
@@ -205,14 +190,13 @@ class WPUF_Login_Widget extends WP_Widget {
             'label_log_in'      => $log_in_label
         );
         ?>
-        <div class='login-container' id="login-widget-container">
+        <div class="login-widget-container">
             <?php 
-            if( ! is_user_logged_in() ) { // only show the registration/login form to non-logged-in members ?>
+            if( ! is_user_logged_in() ) { ?>
                
                 <!-- Login form -->
-                <div class="wpuf-ajax-login-form" id="wpuf-ajax-login">
+                <div class="wpuf-ajax-login-form">
                     <div class="wpuf-ajax-errors"></div>
-                    <?php echo get_option( 'WPUF_Login_Widget' ); ?>
 
                     <p><?php echo $log_in_header; ?></p>
             
@@ -220,14 +204,14 @@ class WPUF_Login_Widget extends WP_Widget {
                     wp_login_form( $login_args );
                     if ( get_option( 'users_can_register' ) ) {
                         $registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register', 'wpuf' ) );
-                        echo apply_filters( 'register', $registration_url );
+                        echo $registration_url;
                         echo apply_filters( 'login_link_separator', ' | ' );
                     }?>
                     <a href="#wpuf-ajax-lost-pw-url" id="wpuf-ajax-lost-pw-url"><?php _e( 'Lost your password?', 'wpuf' ); ?></a>
                 </div>
 
                 <!-- Lost Password form -->
-                <div class="wpuf-ajax-reset-password-form" id="wpuf-ajax-reset-password">
+                <div class="wpuf-ajax-reset-password-form">
                     <form id="wpuf_ajax_reset_pass_form" action="<?php echo home_url( '/' ); ?>" method="POST">
                         <div class="wpuf-ajax-errors"></div>
                         <p> <?php echo $pwd_reset_header; ?> </p>
@@ -250,17 +234,17 @@ class WPUF_Login_Widget extends WP_Widget {
                     <div id="ajax-lp-section">
                         <a href="#wpuf-ajax-login-url" id="wpuf-ajax-login-url"> <?php _e( 'Login', 'wpuf' ); ?> </a>
                         <?php
-                            if ( get_option( 'users_can_register' ) ) {
-                                echo apply_filters( 'login_link_separator', ' | ' );
-                                $registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register', 'wpuf' ) );
-                                echo apply_filters( 'register', $registration_url );
-                            }
+                        if ( get_option( 'users_can_register' ) ) {
+                            echo apply_filters( 'login_link_separator', ' | ' );
+                            $registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register', 'wpuf' ) );
+                            echo $registration_url;
+                        }
                         ?>
                     </div>
                 </div>
             <?php } else { ?>
                 <div class="wpuf-ajax-logout">                      
-                    <a href="#logout"><?php echo __('Log out', 'wpuf') ?></a>
+                    <a id="logout-url" href="#logout"><?php echo __('Log out', 'wpuf') ?></a>
                 </div>
             <?php } ?>      
         </div>
@@ -284,9 +268,8 @@ class WPUF_Login_Widget extends WP_Widget {
         $remember_label   = isset( $instance[ 'remember_label' ] ) ? $instance[ 'remember_label' ] : __( 'Remember Me', 'wpuf' );
         $log_in_label     = isset( $instance[ 'log_in_label' ] ) ? $instance[ 'log_in_label' ] : __( 'Log In', 'wpuf' );
         $pass_reset_label = isset( $instance[ 'pass_reset_label' ] ) ? $instance[ 'pass_reset_label' ] : __( 'Reset Password', 'wpuf' );
-
-        // Ajax Login Widget admin form
         ?>
+
         <p>
             <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'wpuf' ); ?></label> 
             <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
@@ -341,32 +324,32 @@ class WPUF_Login_Widget extends WP_Widget {
         return $instance;
     }
 
-    /**
-     * Register Ajax Login widget
-     *
-     */
-    public function wpuf_ajax_login_widget() {
-
-        register_widget( 'WPUF_Login_Widget' );
-    }
-
-    /**
-     * Hook to filter lost-password url
-     *
-     */
-    public function wpuf_lostpassword_url() {
-
-        $page_id = wpuf_get_option( 'login_page', 'wpuf_profile', false );
-
-        if ( !$page_id ) {
-            return false;
-        }
-
-        $url = get_permalink( $page_id );
-
-        $login_url = apply_filters( 'wpuf_login_url', $url, $page_id );
-
-        return $login_url . '?action=lostpassword';
-    }
-
 }
+
+
+/**
+ * Register WPUF_Login_Widget widget  
+ *
+ * @return void
+ */
+function wpuf_ajax_login_widget() {
+
+    register_widget( 'WPUF_Login_Widget' );
+}
+add_action( 'widgets_init', 'wpuf_ajax_login_widget' );
+
+
+/**
+ * Registers widget scripts  
+ *
+ * @return void
+ */
+function wpuf_register_scripts() {
+
+    wp_register_script( 'wpuf_ajax_login', WPUF_ASSET_URI . '/js/wpuf-login-widget.js', array( 'jquery' ), false, true );
+    
+    wp_localize_script( 'wpuf_ajax_login', 'wpuf_ajax', array( 
+        'ajaxurl' => admin_url( 'admin-ajax.php' ),
+    ));
+}
+add_action( 'wp_enqueue_scripts', 'wpuf_register_scripts' );

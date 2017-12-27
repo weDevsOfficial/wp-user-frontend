@@ -1,29 +1,29 @@
 jQuery( function($) {
 
-    $('#wpuf-ajax-reset-password').hide();
+    $('.wpuf-ajax-reset-password-form').hide();
 
-    var form = $('#login-widget-container');
+    var login_widget  = $('.login-widget-container');
 
-    form.on('click', '#wpuf-ajax-login-url', function(e) {
+    login_widget.on('click', '#wpuf-ajax-login-url', function(e) {
         e.preventDefault();
 
-        $('#wpuf-ajax-login').show();
-        $('#wpuf-ajax-reset-password').hide();  
+        $('.wpuf-ajax-login-form').show();
+        $('.wpuf-ajax-reset-password-form').hide();  
     });
 
-    form.on('click', '#wpuf-ajax-lost-pw-url', function(e) {
+    login_widget.on('click', '#wpuf-ajax-lost-pw-url', function(e) {
         e.preventDefault();
 
-        $('#wpuf-ajax-reset-password').show();
-        $('#wpuf-ajax-login').hide(); 
+        $('.wpuf-ajax-reset-password-form').show();
+        $('.wpuf-ajax-login-form').hide(); 
     });
 
-    // Post login form
-    $('#wpuf_ajax_login_form').on('submit', function(e) {
+    // Login
+    login_widget.on('submit', function(e) {
         e.preventDefault();
 
         var button = $(this).find('submit');
-        form_data = $('#wpuf_ajax_login_form').serialize() + '&action=ajax_login';
+        form_data = $('#wpuf_ajax_login_form').serialize() + '&action=wpuf_ajax_login';
 
         $.ajax({
             url: wpuf_ajax.ajaxurl,
@@ -45,7 +45,7 @@ jQuery( function($) {
     });
 
     // Reset Password
-    $('#wpuf_ajax_reset_pass_form').on('submit', function(e) {
+    login_widget.on('submit', function(e) {
         e.preventDefault();
 
         var button = $(this).find('submit');
@@ -55,7 +55,7 @@ jQuery( function($) {
             type: 'POST',
             dataType: 'json',
             data: { 
-                'action': 'lost_password', 
+                'action': 'wpuf_lost_password', 
                 'user_login': $('#wpuf-user_login').val(), 
             }
         })
@@ -68,7 +68,7 @@ jQuery( function($) {
     });
 
     // Logout
-    $('[href="#logout"]').click( function(e) {
+    login_widget.on('click', '#logout-url', function(e) {
         e.preventDefault();
 
         $.ajax({
@@ -76,7 +76,7 @@ jQuery( function($) {
             type: 'POST',
             dataType: 'json',
             data: {
-                action: 'ajax_logout',
+                action: 'wpuf_ajax_logout',
             },
             success: function(data) {
                 $('.wpuf-ajax-logout .wpuf-ajax-errors').html(data.message);

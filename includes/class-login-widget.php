@@ -332,11 +332,11 @@ class WPUF_Login_Widget extends WP_Widget {
  *
  * @return void
  */
-function wpuf_ajax_login_widget() {
+function wpuf_register_ajax_login_widget() {
 
     register_widget( 'WPUF_Login_Widget' );
 }
-add_action( 'widgets_init', 'wpuf_ajax_login_widget' );
+add_action( 'widgets_init', 'wpuf_register_ajax_login_widget' );
 
 
 /**
@@ -344,7 +344,7 @@ add_action( 'widgets_init', 'wpuf_ajax_login_widget' );
  *
  * @return void
  */
-function wpuf_register_scripts() {
+function wpuf_register_login_scripts() {
 
     wp_register_script( 'wpuf_ajax_login', WPUF_ASSET_URI . '/js/wpuf-login-widget.js', array( 'jquery' ), false, true );
     
@@ -352,4 +352,4 @@ function wpuf_register_scripts() {
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
     ));
 }
-add_action( 'wp_enqueue_scripts', 'wpuf_register_scripts' );
+add_action( 'wp_enqueue_scripts', 'wpuf_register_login_scripts' );

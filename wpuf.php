@@ -239,6 +239,7 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
         require_once WPUF_ROOT . '/class/frontend-account.php';
         require_once WPUF_ROOT . '/includes/class-form.php';
+        require_once WPUF_ROOT . '/includes/class-login-widget.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';

@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.7.0\n"
+"Project-Id-Version: WP User Frontend 2.8.0\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2017-12-18 04:19:01+00:00\n"
+"POT-Creation-Date: 2017-12-31 10:39:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -137,8 +137,8 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:206
 #: admin/class-admin-subscription.php:560 class/frontend-account.php:134
-#: class/subscription.php:843 class/subscription.php:856
-#: includes/class-user-subscription.php:294
+#: class/subscription.php:844 class/subscription.php:857
+#: includes/class-user-subscription.php:301
 msgid "Free"
 msgstr ""
 
@@ -268,7 +268,7 @@ msgid "Subscription Expiration Info"
 msgstr ""
 
 #: admin/class-admin-subscription.php:639
-#: includes/class-user-subscription.php:348
+#: includes/class-user-subscription.php:355
 #: templates/dashboard/subscription.php:41
 msgid "Expire date:"
 msgstr ""
@@ -287,7 +287,7 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:746
 #: admin/form-builder/class-wpuf-admin-form-builder.php:329
-#: class/payment.php:168 class/subscription.php:770
+#: class/payment.php:168 class/subscription.php:771
 #: includes/class-list-table-subscribers.php:156
 #: templates/dashboard/subscription.php:62
 msgid "Cancel"
@@ -494,12 +494,12 @@ msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:5
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:5
-#: class/render-form.php:1574
+#: class/render-form.php:1585
 msgid "Select Image"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:4
-#: class/render-form.php:987
+#: class/render-form.php:998
 msgid "Insert Photo"
 msgstr ""
 
@@ -1151,7 +1151,7 @@ msgid "Taxonomies"
 msgstr ""
 
 #: admin/form.php:440 admin/html/form-settings-post.php:22
-#: class/render-form.php:691
+#: class/render-form.php:702
 msgid "Save Draft"
 msgstr ""
 
@@ -1840,7 +1840,8 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: admin/installer.php:78 includes/free/admin/shortcode-button.php:94
+#: admin/installer.php:78 includes/class-login-widget.php:235
+#: includes/free/admin/shortcode-button.php:94
 msgid "Login"
 msgstr ""
 
@@ -1941,24 +1942,24 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1586
-#: wpuf.php:480
+#: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1597
+#: wpuf.php:481
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:488
+#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:489
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:494
+#: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:495
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:495
+#: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:496
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:496
+#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:497
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -2664,7 +2665,7 @@ msgid "Active payment gateways"
 msgstr ""
 
 #: admin/settings-options.php:413
-msgid "Guest Email Subject"
+msgid "Guest mail subject"
 msgstr ""
 
 #: admin/settings-options.php:414
@@ -2672,7 +2673,7 @@ msgid "This sets the subject of the emails sent to guest users"
 msgstr ""
 
 #: admin/settings-options.php:420
-msgid "Guest Email Body"
+msgid "Guest mail body"
 msgstr ""
 
 #: admin/settings-options.php:421
@@ -2788,23 +2789,23 @@ msgstr ""
 msgid "Install Now"
 msgstr ""
 
-#: class/asset-loader.php:31 wpuf.php:411
+#: class/asset-loader.php:31 wpuf.php:413
 msgid "is required"
 msgstr ""
 
-#: class/asset-loader.php:32 wpuf.php:412
+#: class/asset-loader.php:32 wpuf.php:414
 msgid "does not match"
 msgstr ""
 
-#: class/asset-loader.php:33 wpuf.php:413
+#: class/asset-loader.php:33 wpuf.php:415
 msgid "is not valid"
 msgstr ""
 
-#: class/asset-loader.php:45 wpuf.php:474
+#: class/asset-loader.php:45 wpuf.php:475
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: class/asset-loader.php:47 wpuf.php:476
+#: class/asset-loader.php:47 wpuf.php:477
 msgid "Word limit reached"
 msgstr ""
 
@@ -2905,11 +2906,15 @@ msgstr ""
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: class/frontend-form-post.php:294
+#: class/frontend-form-post.php:277
+msgid "Empty reCaptcha Field"
+msgstr ""
+
+#: class/frontend-form-post.php:308
 msgid "Invalid email address."
 msgstr ""
 
-#: class/frontend-form-post.php:303
+#: class/frontend-form-post.php:317
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -2918,11 +2923,11 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: class/frontend-form-post.php:712
+#: class/frontend-form-post.php:726
 msgid "Something went wrong"
 msgstr ""
 
-#: class/frontend-form-post.php:1069
+#: class/frontend-form-post.php:1083
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
@@ -3003,32 +3008,40 @@ msgstr ""
 msgid "Really Simple Captcha validation failed"
 msgstr ""
 
-#: class/render-form.php:104 class/render-form.php:115
+#: class/render-form.php:105
+msgid "noCaptcha reCAPTCHA validation failed"
+msgstr ""
+
+#: class/render-form.php:116
 msgid "reCAPTCHA validation failed"
 msgstr ""
 
-#: class/render-form.php:327
+#: class/render-form.php:128
+msgid "Invisible reCAPTCHA validation failed"
+msgstr ""
+
+#: class/render-form.php:340
 msgid "Your selected form is no longer available."
 msgstr ""
 
-#: class/render-form.php:332
+#: class/render-form.php:345
 msgid "Please make sure you've published your form."
 msgstr ""
 
-#: class/render-form.php:1265 includes/free/edit-profile.php:203
-#: templates/dashboard/edit-profile.php:45
+#: class/render-form.php:1276 includes/free/edit-profile.php:203
+#: templates/dashboard/edit-profile.php:54
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1325 class/render-form.php:1441
+#: class/render-form.php:1336 class/render-form.php:1452
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1385
+#: class/render-form.php:1396
 msgid "This field is no longer available."
 msgstr ""
 
-#: class/render-form.php:1586 class/transactions-list-table.php:114
+#: class/render-form.php:1597 class/transactions-list-table.php:114
 #: class/transactions-list-table.php:178 class/upload.php:171
 #: includes/free/edit-user.php:100 templates/dashboard/posts.php:161
 #: templates/dashboard.php:222
@@ -3071,53 +3084,53 @@ msgstr ""
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:738
+#: class/subscription.php:739
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:738
+#: class/subscription.php:739
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:742 class/subscription.php:746
+#: class/subscription.php:743 class/subscription.php:747
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:760
+#: class/subscription.php:761
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:764
+#: class/subscription.php:765
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
-#: class/subscription.php:824
+#: class/subscription.php:825
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:828
+#: class/subscription.php:829
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:840
+#: class/subscription.php:841
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:845
+#: class/subscription.php:846
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:910
+#: class/subscription.php:911
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:922
+#: class/subscription.php:923
 msgid ""
 "Your Subscription pack exhausted. There is a <strong>%s</strong> charge to "
 "add a new post."
 msgstr ""
 
-#: class/subscription.php:966
+#: class/subscription.php:967
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
@@ -3244,6 +3257,156 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
+#: includes/class-login-widget.php:15
+msgid "WPUF Ajax Login"
+msgstr ""
+
+#: includes/class-login-widget.php:16
+msgid "Ajax Login widget for WP User Frontend"
+msgstr ""
+
+#: includes/class-login-widget.php:36 includes/class-login-widget.php:71
+msgid "Please fill all form fields"
+msgstr ""
+
+#: includes/class-login-widget.php:43
+msgid "Login successful!"
+msgstr ""
+
+#: includes/class-login-widget.php:57
+msgid "Logout successful!"
+msgstr ""
+
+#: includes/class-login-widget.php:87
+msgid "Password has been reset. Please check your email."
+msgstr ""
+
+#: includes/class-login-widget.php:103
+msgid "<strong>ERROR</strong>: Enter a username or email address."
+msgstr ""
+
+#: includes/class-login-widget.php:107
+msgid "<strong>ERROR</strong>: There is no user registered with that email address."
+msgstr ""
+
+#: includes/class-login-widget.php:122
+msgid "<strong>ERROR</strong>: Invalid username or email."
+msgstr ""
+
+#: includes/class-login-widget.php:135
+msgid "Someone has requested a password reset for the following account:"
+msgstr ""
+
+#: includes/class-login-widget.php:137 includes/free/class-login.php:682
+msgid "Username: %s"
+msgstr ""
+
+#: includes/class-login-widget.php:138 includes/free/class-login.php:683
+msgid "If this was a mistake, just ignore this email and nothing will happen."
+msgstr ""
+
+#: includes/class-login-widget.php:139 includes/free/class-login.php:684
+msgid "To reset your password, visit the following address:"
+msgstr ""
+
+#: includes/class-login-widget.php:144 includes/free/class-login.php:693
+msgid "[%s] Password Reset"
+msgstr ""
+
+#: includes/class-login-widget.php:151
+msgid ""
+"<strong>ERROR</strong>: The email could not be sent.Possible reason: your "
+"host may have disabled the mail() function."
+msgstr ""
+
+#: includes/class-login-widget.php:206 includes/class-login-widget.php:239
+#: includes/free/class-login.php:212 includes/free/class-registration.php:124
+#: includes/free/form-element.php:345 templates/registration-form.php:72
+msgid "Register"
+msgstr ""
+
+#: includes/class-login-widget.php:210
+msgid "Lost your password?"
+msgstr ""
+
+#: includes/class-login-widget.php:219 templates/lost-pass-form.php:14
+msgid "Username or E-mail:"
+msgstr ""
+
+#: includes/class-login-widget.php:247
+msgid "Log out"
+msgstr ""
+
+#: includes/class-login-widget.php:263
+msgid "WPUF Login Widget"
+msgstr ""
+
+#: includes/class-login-widget.php:264
+msgid "Username or Email Address"
+msgstr ""
+
+#: includes/class-login-widget.php:265
+msgid ""
+"Please enter your username or email address. You will receive a link to "
+"create a new password via email"
+msgstr ""
+
+#: includes/class-login-widget.php:266 includes/free/edit-profile.php:101
+#: includes/free/edit-user.php:92 includes/free/edit-user.php:144
+#: templates/login-form.php:21 templates/registration-form.php:51
+msgid "Username"
+msgstr ""
+
+#: includes/class-login-widget.php:267 templates/login-form.php:25
+#: templates/registration-form.php:58
+msgid "Password"
+msgstr ""
+
+#: includes/class-login-widget.php:268 templates/login-form.php:31
+msgid "Remember Me"
+msgstr ""
+
+#: includes/class-login-widget.php:269 includes/free/class-login.php:208
+#: includes/free/class-login.php:264 templates/login-form.php:35
+msgid "Log In"
+msgstr ""
+
+#: includes/class-login-widget.php:270 templates/reset-pass-form.php:26
+msgid "Reset Password"
+msgstr ""
+
+#: includes/class-login-widget.php:274
+msgid "Title:"
+msgstr ""
+
+#: includes/class-login-widget.php:278
+msgid "Log-in Text:"
+msgstr ""
+
+#: includes/class-login-widget.php:282
+msgid "Username Label:"
+msgstr ""
+
+#: includes/class-login-widget.php:286
+msgid "Password Label:"
+msgstr ""
+
+#: includes/class-login-widget.php:290
+msgid "Remember Me Label:"
+msgstr ""
+
+#: includes/class-login-widget.php:293
+msgid "Log In Label:"
+msgstr ""
+
+#: includes/class-login-widget.php:297
+msgid "Password Reset Text:"
+msgstr ""
+
+#: includes/class-login-widget.php:301
+msgid "Password Reset Label:"
+msgstr ""
+
 #: includes/class-user-subscription.php:56
 msgid "You must purchase a pack before posting"
 msgstr ""
@@ -3252,32 +3415,32 @@ msgstr ""
 msgid "The subscription pack has been expired. Please buy a pack."
 msgstr ""
 
-#: includes/class-user-subscription.php:305
+#: includes/class-user-subscription.php:312
 #: templates/dashboard/subscription.php:2
 msgid "Subscription Details"
 msgstr ""
 
-#: includes/class-user-subscription.php:307
+#: includes/class-user-subscription.php:314
 #: templates/dashboard/subscription.php:4
 msgid "Subcription Name: "
 msgstr ""
 
-#: includes/class-user-subscription.php:309
+#: includes/class-user-subscription.php:316
 #: templates/dashboard/subscription.php:6
 msgid "Package & billing details: "
 msgstr ""
 
-#: includes/class-user-subscription.php:320
+#: includes/class-user-subscription.php:327
 #: templates/dashboard/subscription.php:10
 msgid "Remaining post: "
 msgstr ""
 
-#: includes/class-user-subscription.php:333
+#: includes/class-user-subscription.php:340
 #: templates/dashboard/subscription.php:24
 msgid "Unlimited"
 msgstr ""
 
-#: includes/class-user-subscription.php:367
+#: includes/class-user-subscription.php:374
 msgid "Change"
 msgstr ""
 
@@ -3363,16 +3526,6 @@ msgstr ""
 
 #: includes/free/admin/shortcode-button.php:51
 msgid " Add Form"
-msgstr ""
-
-#: includes/free/class-login.php:208 includes/free/class-login.php:264
-#: templates/login-form.php:35
-msgid "Log In"
-msgstr ""
-
-#: includes/free/class-login.php:212 includes/free/class-registration.php:124
-#: includes/free/form-element.php:345 templates/registration-form.php:72
-msgid "Register"
 msgstr ""
 
 #: includes/free/class-login.php:216
@@ -3471,22 +3624,6 @@ msgstr ""
 msgid "Someone requested that the password be reset for the following account:"
 msgstr ""
 
-#: includes/free/class-login.php:682
-msgid "Username: %s"
-msgstr ""
-
-#: includes/free/class-login.php:683
-msgid "If this was a mistake, just ignore this email and nothing will happen."
-msgstr ""
-
-#: includes/free/class-login.php:684
-msgid "To reset your password, visit the following address:"
-msgstr ""
-
-#: includes/free/class-login.php:693
-msgid "[%s] Password Reset"
-msgstr ""
-
 #: includes/free/class-login.php:698
 msgid "The e-mail could not be sent."
 msgstr ""
@@ -3526,12 +3663,6 @@ msgstr ""
 
 #: includes/free/edit-profile.php:71
 msgid "<strong>Success</strong>: Profile updated"
-msgstr ""
-
-#: includes/free/edit-profile.php:101 includes/free/edit-user.php:92
-#: includes/free/edit-user.php:144 templates/login-form.php:21
-#: templates/registration-form.php:51
-msgid "Username"
 msgstr ""
 
 #: includes/free/edit-profile.php:102
@@ -3580,7 +3711,7 @@ msgid ""
 "be shown publicly."
 msgstr ""
 
-#: includes/free/edit-profile.php:188
+#: includes/free/edit-profile.php:188 templates/dashboard/edit-profile.php:49
 msgid "New Password"
 msgstr ""
 
@@ -3597,6 +3728,7 @@ msgid "Password Strength"
 msgstr ""
 
 #: includes/free/edit-profile.php:227 includes/free/form-element.php:346
+#: templates/dashboard/edit-profile.php:86
 msgid "Update Profile"
 msgstr ""
 
@@ -3890,7 +4022,7 @@ msgstr ""
 msgid "You don't have permission to install the plugins"
 msgstr ""
 
-#: lib/class.settings-api.php:364
+#: lib/class.settings-api.php:365
 msgid "Choose File"
 msgstr ""
 
@@ -3977,15 +4109,15 @@ msgstr ""
 msgid "Email Address "
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:37
+#: templates/dashboard/edit-profile.php:38
 msgid "Current Password"
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:42
-msgid "If you  want to unchanged the password then just leave this section."
+#: templates/dashboard/edit-profile.php:43
+msgid "Leave this field empty to keep your password unchanged."
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:63
+#: templates/dashboard/edit-profile.php:75
 msgid "Confirm New Password"
 msgstr ""
 
@@ -4045,18 +4177,6 @@ msgstr ""
 msgid "You are currently logged in! %s?"
 msgstr ""
 
-#: templates/login-form.php:25 templates/registration-form.php:58
-msgid "Password"
-msgstr ""
-
-#: templates/login-form.php:31
-msgid "Remember Me"
-msgstr ""
-
-#: templates/lost-pass-form.php:14
-msgid "Username or E-mail:"
-msgstr ""
-
 #: templates/lost-pass-form.php:21
 msgid "Get New Password"
 msgstr ""
@@ -4071,10 +4191,6 @@ msgstr ""
 
 #: templates/reset-pass-form.php:19
 msgid "Confirm new password"
-msgstr ""
-
-#: templates/reset-pass-form.php:26
-msgid "Reset Password"
 msgstr ""
 
 #: views/welcome-page.php:445 views/welcome-page.php:586
@@ -4369,7 +4485,7 @@ msgstr ""
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:633
+#: wpuf.php:634
 msgid "Error: Nonce verification failed"
 msgstr ""
 

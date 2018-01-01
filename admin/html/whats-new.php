@@ -1,37 +1,44 @@
 <?php
 $changelog = array(
     array(
-        'version'  => 'Version 2.7',
-        'released' => '2017-12-12',
+        'version'  => 'Version 2.8',
+        'released' => '2018-01-01',
         'changes' => array(
             array(
-                'title'       => 'Interactive Settings Page to Manage it All',
-                'type'        => 'Improvement',
-                'description' => 'WP User Frontend now has better and improved settings page where you can easily configure everything for your WP User Frontend.
-                <img src="'. WPUF_ASSET_URI .'/images/whats-new/settings.png" alt="WP User Frontend Settings">'
+                'title'       => 'Limit how many entries a form will accept',
+                'type'        => 'New',
+                'description' => 'Limit how many entries a form will accept and display a custom message when that limit is reached.
+                <img src="'. WPUF_ASSET_URI .'/images/whats-new/settings.png" alt="Limit how many entries a form will accept">'
             ),
             array(
-                'title'       => 'Fallback cost for form subscription payment',
+                'title'       => 'Manage schedule for form submission',
                 'type'        => 'New',
-                'description' => 'When a subscribed user reaches post limit before the pack expires, this option will allow user to pay per post and continue making posts until the membership is valid.
+                'description' => 'Do not accept form submission if the current date is not between the date range of the schedule.
                 <br><iframe width="100%" height="400" src="https://www.youtube.com/embed/-Z_uNM8eB_Y" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>'
             ),
             array(
-                'title'       => 'Integrated WP User Frontend with Dokan',
+                'title'       => 'Restrict form submission based on the users role',
                 'type'        => 'New',
-                'description' => 'Admin can allow vendors to create and publish posts on the marketplace from the vendor dashboard. Admin can also select the form that vendor will use. Vendors will be able to make use of all the WPUF settings in this form.
+                'description' => 'Restrict form submission based on the users role.
                 <br><iframe width="100%" height="400" src="https://www.youtube.com/embed/6n6CtGjTCF4" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>'
             ),
             array(
-                'title'       => 'Bulk accept pending transactions',
+                'title'       => 'Show/hide Admin Bar',
                 'type'        => 'New',
-                'description' => 'When you have a lots of pending transactions, completing all those individual transactions take time. Now you can bulk complete the selected transactions with at once.'
+                'description' => 'Control the admin bar visibility based on user roles.
+                <img src="http://d.pr/i/QstTQq+" alt="Ajax Login widget" />'
             ),
             array(
-                'title'       => 'Subscribe to our newsletter',
+                'title'       => 'Ajax Login widget',
                 'type'        => 'New',
-                'description' => 'Newsletter subscription form added on the help page to keep you staying updated with latest news from us.
-                <img src="http://d.pr/i/QstTQq+" alt="Newsletter subscription form" />'
+                'description' => 'Login user is more simple now with Ajax Login Widget. The simple login form do not required page loding for login.
+                <img src="http://d.pr/i/QstTQq+" alt="Ajax Login widget" />'
+            ),
+            array(
+                'title'       => 'Form submission with Captcha',
+                'type'        => 'Improvement',
+                'description' => 'Form field validation process updated if form submits with captcha field.
+                <img src="http://d.pr/i/QstTQq+" alt="Form submission with Captcha" />'
             ),
         )
     )

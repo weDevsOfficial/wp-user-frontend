@@ -95,16 +95,17 @@ $limit_message   = isset( $form_settings['limit_message'] ) ? $form_settings['li
         <tr class="show-if-not-guest show-if-roles">
             <th>&mdash; &mdash; <?php _e( 'Roles', 'wpuf' ); ?></th>
             <td>
-                <label>
-                    <input type="hidden" name="wpuf_settings[roles][]" value="administrator">
-                    <?php
-                    foreach ( wpuf_get_user_roles() as $key => $role ) {
-                        if( 'administrator' == $key ) { continue; } ?>
-                        <input type="checkbox" name="wpuf_settings[roles][]" value="<?php echo $key; ?>"<?php echo in_array($key, $roles) ? 'checked="checked"' : ''; ?> />
-                        <?php echo $role;
-                    }
-                    ?>
-                </label>
+                <?php
+                foreach ( wpuf_get_user_roles() as $key => $role ) { ?>
+                    <label>
+                        <input type="checkbox" name="wpuf_settings[roles][]" value="<?php echo $key; ?>"
+                        <?php echo in_array($key, $roles) ? 'checked="checked"' : '';
+                        echo 'administrator' == $key ? 'disabled' : '';
+                        ?> />
+                        <?php echo $role; ?>
+                    </label><br />
+                <?php } ?>
+
                 <p class="description"><?php _e( 'Choose which roles can submit posts.', 'wpuf' ); ?></p>
             </td>
         </tr>

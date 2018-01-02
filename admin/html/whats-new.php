@@ -31,8 +31,8 @@ $changelog = array(
             array(
                 'title'       => 'Ajax Login widget',
                 'type'        => 'New',
-                'description' => 'Login user is more simple now with Ajax Login Widget. The simple login form do not required page loding for login.
-                <br><iframe width="100%" height="400" src="https://www.youtube.com/embed/6n6CtGjTCF4" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>'
+                'description' => 'Login user is more simple now with Ajax Login Widget. The simple ajax login form do not required page loading for login
+                <br><iframe width="100%" height="372" src="https://www.youtube.com/embed/eZYSuXsCw8E" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>'
             ),
             array(
                 'title'       => 'Form submission with Captcha field',

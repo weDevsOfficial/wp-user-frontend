@@ -165,7 +165,7 @@ $limit_message   = isset( $form_settings['limit_message'] ) ? $form_settings['li
                     <input type="checkbox" name="wpuf_settings[limit_entries]" value="true"<?php checked( $limit_entries, 'true' ); ?> />
                     <?php _e( 'Enable form entry limit', 'wpuf' ); ?>
                 </label>
-<?php var_dump(wpuf_form_posts_count($post->ID)); ?>
+
                 <p class="description">
                     <?php _e( 'Limit the number of entries allowed for this form', 'wpuf' ) ?>
                 </p>

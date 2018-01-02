@@ -82,22 +82,6 @@ class WPUF_List_Table_Subscribers extends \WP_List_Table {
         }
     }
 
-//     /**
-//      * Render the designation name column
-//      *
-//      * @param  object  $item
-//      *
-//      * @return string
-//      */
-//     function column_id( $item ) {
-// // echo '<pre>';var_dump($item); echo "</pre>";
-//         $actions           = array();
-//         $actions['edit']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=pageslug&action=edit&id=' . $_REQUEST['post_ID'] ), $_REQUEST['post_ID'], __( 'Edit this item', 'wpuf' ), __( 'Edit', 'wpuf' ) );
-//         $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=pageslug&action=delete&id=' . $_REQUEST['post_ID'] ), $_REQUEST['post_ID'], __( 'Delete this item', 'wpuf' ), __( 'Delete', 'wpuf' ) );
-
-//         return sprintf( '<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url( 'admin.php?page=pageslug&action=view&id=' . $_REQUEST['post_ID'] ), $_REQUEST['post_ID'], $this->row_actions( $actions ) );
-//     }
-
     /**
      * Get sortable columns
      *
@@ -110,18 +94,6 @@ class WPUF_List_Table_Subscribers extends \WP_List_Table {
 
         return $sortable_columns;
     }
-
-    // /**
-    //  * Set the bulk actions
-    //  *
-    //  * @return array
-    //  */
-    // function get_bulk_actions() {
-    //     $actions = array(
-    //         'trash'  => __( 'Move to Trash', 'wpuf' ),
-    //     );
-    //     return $actions;
-    // }
 
     /**
      * Render the checkbox column

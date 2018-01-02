@@ -141,14 +141,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
         }
 
-        // var_dump( $user_can_post );
-        // var_dump( $info );
-
         $info          = apply_filters( 'wpuf_addpost_notice', $info, $id, $form_settings );
         $user_can_post = apply_filters( 'wpuf_can_post', $user_can_post, $id, $form_settings );
-
-        // var_dump( $user_can_post );
-        // var_dump( $info );
 
         if ( $user_can_post == 'yes' ) {
             $this->render_form( $id );

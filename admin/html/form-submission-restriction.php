@@ -103,7 +103,7 @@ $limit_message   = isset( $form_settings['limit_message'] ) ? $form_settings['li
                         echo 'administrator' == $key ? 'disabled' : '';
                         ?> />
                         <?php echo $role; ?>
-                    </label><br />
+                    </label><br>
                 <?php } ?>
 
                 <p class="description"><?php _e( 'Choose which roles can submit posts.', 'wpuf' ); ?></p>

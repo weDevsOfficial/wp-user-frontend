@@ -170,7 +170,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
-= v2.8.0 (31 December, 2017) =
+= v2.8.0 (6 January, 2017) =
 
  * **New:** Limit Entries: limit how many entries a form will accept and display a custom message when that limit is reached.
  * **New:** Schedule form: Don't accept form submission if the current date is not between the date range of the schedule.

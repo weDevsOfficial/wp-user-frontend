@@ -1,14 +1,14 @@
-# Copyright (C) 2017 Tareq Hasan
+# Copyright (C) 2018 Tareq Hasan
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 2.8.0\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2017-12-31 10:39:32+00:00\n"
+"POT-Creation-Date: 2018-01-06 15:58:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
@@ -288,7 +288,7 @@ msgstr ""
 #: admin/class-admin-subscription.php:746
 #: admin/form-builder/class-wpuf-admin-form-builder.php:329
 #: class/payment.php:168 class/subscription.php:771
-#: includes/class-list-table-subscribers.php:156
+#: includes/class-list-table-subscribers.php:128
 #: templates/dashboard/subscription.php:62
 msgid "Cancel"
 msgstr ""
@@ -319,7 +319,7 @@ msgstr ""
 
 #: admin/class-tools.php:39 admin/class-tools.php:95
 #: admin/post-forms-list-table.php:43 class/transactions-list-table.php:85
-#: includes/class-list-table-subscribers.php:154
+#: includes/class-list-table-subscribers.php:126
 msgid "All"
 msgstr ""
 
@@ -1582,70 +1582,70 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:108
+#: admin/html/form-submission-restriction.php:109
 msgid "Choose which roles can submit posts."
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:113
+#: admin/html/form-submission-restriction.php:114
 #: admin/settings-options.php:250
 msgid "Unauthorized Message"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:116
+#: admin/html/form-submission-restriction.php:117
 #: admin/settings-options.php:251
 msgid "Not logged in users will see this message"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:121
+#: admin/html/form-submission-restriction.php:122
 msgid "Schedule form"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:126
+#: admin/html/form-submission-restriction.php:127
 msgid "Schedule form for a period"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:128
+#: admin/html/form-submission-restriction.php:129
 msgid "Schedule for a time period the form is active."
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:133
+#: admin/html/form-submission-restriction.php:134
 msgid "Schedule Period"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:136
+#: admin/html/form-submission-restriction.php:137
 msgid "From"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:140
+#: admin/html/form-submission-restriction.php:141
 #: includes/free/form-element.php:224 includes/free/form-element.php:261
 msgid "To"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:147
+#: admin/html/form-submission-restriction.php:148
 msgid "Form Pending Message"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:154
+#: admin/html/form-submission-restriction.php:155
 msgid "Form Expired Message"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:161
+#: admin/html/form-submission-restriction.php:162
 msgid "Limit Entries"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:166
+#: admin/html/form-submission-restriction.php:167
 msgid "Enable form entry limit"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:170
+#: admin/html/form-submission-restriction.php:171
 msgid "Limit the number of entries allowed for this form"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:176
+#: admin/html/form-submission-restriction.php:177
 msgid "Number of Entries"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:183
+#: admin/html/form-submission-restriction.php:184
 msgid "Limit Reached Message"
 msgstr ""
 
@@ -1807,7 +1807,63 @@ msgstr ""
 msgid "Contact Support"
 msgstr ""
 
-#: admin/html/whats-new.php:48
+#: admin/html/whats-new.php:8
+msgid "Manage schedule for form submission"
+msgstr ""
+
+#: admin/html/whats-new.php:10
+msgid ""
+"Do not accept form submission if the current date is not between the date "
+"range of the schedule."
+msgstr ""
+
+#: admin/html/whats-new.php:14
+msgid "Restrict form submission based on the user roles"
+msgstr ""
+
+#: admin/html/whats-new.php:16
+msgid ""
+"Restrict form submission based on the user roles. Now you can manage user "
+"role base permission on form submission."
+msgstr ""
+
+#: admin/html/whats-new.php:20
+msgid "Limit how many entries a form will accept"
+msgstr ""
+
+#: admin/html/whats-new.php:22
+msgid ""
+"Limit how many entries a form will accept and display a custom message when "
+"that limit is reached."
+msgstr ""
+
+#: admin/html/whats-new.php:26
+msgid "Show/hide Admin Bar"
+msgstr ""
+
+#: admin/html/whats-new.php:28
+msgid "Control the admin bar visibility based on user roles."
+msgstr ""
+
+#: admin/html/whats-new.php:32
+msgid "Ajax Login widget"
+msgstr ""
+
+#: admin/html/whats-new.php:34
+msgid ""
+"Login user is more simple now with Ajax Login Widget. The simple ajax login "
+"form do not required page loading for login."
+msgstr ""
+
+#: admin/html/whats-new.php:38
+msgid "Form submission with Captcha field"
+msgstr ""
+
+#: admin/html/whats-new.php:40
+msgid "Form field validation process updated if form submits with captcha field."
+msgstr ""
+
+#: admin/html/whats-new.php:54
 msgid "What's New in WPUF?"
 msgstr ""
 
@@ -2882,39 +2938,39 @@ msgstr ""
 msgid "Payment type not selected for this form. Please contact admin."
 msgstr ""
 
-#: class/frontend-form-post.php:182
+#: class/frontend-form-post.php:176
 msgid "You are not logged in"
 msgstr ""
 
-#: class/frontend-form-post.php:190 class/frontend-form-post.php:201
+#: class/frontend-form-post.php:184 class/frontend-form-post.php:195
 msgid "Invalid post"
 msgstr ""
 
-#: class/frontend-form-post.php:195
+#: class/frontend-form-post.php:189
 msgid "Post Editing is disabled"
 msgstr ""
 
-#: class/frontend-form-post.php:206
+#: class/frontend-form-post.php:200
 msgid "You are not allowed to edit"
 msgstr ""
 
-#: class/frontend-form-post.php:218
+#: class/frontend-form-post.php:212
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: class/frontend-form-post.php:224
+#: class/frontend-form-post.php:218
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: class/frontend-form-post.php:277
+#: class/frontend-form-post.php:298
 msgid "Empty reCaptcha Field"
 msgstr ""
 
-#: class/frontend-form-post.php:308
+#: class/frontend-form-post.php:329
 msgid "Invalid email address."
 msgstr ""
 
-#: class/frontend-form-post.php:317
+#: class/frontend-form-post.php:338
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -2923,11 +2979,15 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: class/frontend-form-post.php:726
+#: class/frontend-form-post.php:387
+msgid "You do not have sufficient permissions to access this form."
+msgstr ""
+
+#: class/frontend-form-post.php:757
 msgid "Something went wrong"
 msgstr ""
 
-#: class/frontend-form-post.php:1083
+#: class/frontend-form-post.php:1114
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
@@ -3253,7 +3313,7 @@ msgstr ""
 msgid "Expire date"
 msgstr ""
 
-#: includes/class-list-table-subscribers.php:155
+#: includes/class-list-table-subscribers.php:127
 msgid "Completed"
 msgstr ""
 
@@ -3438,10 +3498,6 @@ msgstr ""
 #: includes/class-user-subscription.php:340
 #: templates/dashboard/subscription.php:24
 msgid "Unlimited"
-msgstr ""
-
-#: includes/class-user-subscription.php:374
-msgid "Change"
 msgstr ""
 
 #: includes/class-whats-new.php:67
@@ -4463,10 +4519,6 @@ msgstr ""
 
 #: wpuf-functions.php:1579
 msgid "Egyptian Pound"
-msgstr ""
-
-#: wpuf-functions.php:2352
-msgid "You do not have sufficient permissions to access this form."
 msgstr ""
 
 #: wpuf.php:104

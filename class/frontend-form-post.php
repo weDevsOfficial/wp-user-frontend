@@ -295,7 +295,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
                 if ( isset ( $_POST["g-recaptcha-response"] ) ) {
                     if ( empty( $_POST['g-recaptcha-response'] ) && $check_recaptcha[0]['recaptcha_type'] !== 'invisible_recaptcha') {
-                        $this->send_error( __( 'Empty reCaptcha Field', 'wpuf-pro' ) );
+                        $this->send_error( __( 'Empty reCaptcha Field', 'wpuf' ) );
                     }
 
                     if ( $recaptcha_type == 'enable_no_captcha' ) {

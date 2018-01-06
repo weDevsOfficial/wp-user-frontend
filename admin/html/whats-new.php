@@ -2,7 +2,7 @@
 $changelog = array(
     array(
         'version'  => 'Version 2.8',
-        'released' => '2018-01-02',
+        'released' => '2018-01-06',
         'changes' => array(
             array(
                 'title'       => __( 'Manage schedule for form submission', 'wpuf' ),

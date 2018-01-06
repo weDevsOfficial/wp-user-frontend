@@ -1,37 +1,43 @@
 <?php
 $changelog = array(
     array(
-        'version'  => 'Version 2.7',
-        'released' => '2017-12-12',
+        'version'  => 'Version 2.8',
+        'released' => '2018-01-06',
         'changes' => array(
             array(
-                'title'       => 'Interactive Settings Page to Manage it All',
+                'title'       => __( 'Manage schedule for form submission', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Do not accept form submission if the current date is not between the date range of the schedule.', 'wpuf' ) .
+                '<img src="'. WPUF_ASSET_URI .'/images/whats-new/schedule.png" alt="Manage schedule for form submission">'
+            ),
+            array(
+                'title'       => __( 'Restrict form submission based on the user roles', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Restrict form submission based on the user roles. Now you can manage user role base permission on form submission.', 'wpuf' ) .
+                '<img src="'. WPUF_ASSET_URI .'/images/whats-new/role-base.png" alt="Restrict form submission based on the users role">'
+            ),
+            array(
+                'title'       => __( 'Limit how many entries a form will accept', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Limit how many entries a form will accept and display a custom message when that limit is reached.', 'wpuf' ) .
+                '<img src="'. WPUF_ASSET_URI .'/images/whats-new/limit.png" alt="Limit how many entries a form will accept">'
+            ),
+            array(
+                'title'       => __( 'Show/hide Admin Bar', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Control the admin bar visibility based on user roles.', 'wpuf' ) .
+                '<img src="'. WPUF_ASSET_URI .'/images/whats-new/admin-bar.png" alt="Show/hide Admin Bar">'
+            ),
+            array(
+                'title'       => __( 'Ajax Login widget', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Login user is more simple now with Ajax Login Widget. The simple ajax login form do not required page loading for login.', 'wpuf' ) .
+                '<br><br><iframe width="100%" height="372" src="https://www.youtube.com/embed/eZYSuXsCw8E" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>'
+            ),
+            array(
+                'title'       => __( 'Form submission with Captcha field', 'wpuf' ),
                 'type'        => 'Improvement',
-                'description' => 'WP User Frontend now has better and improved settings page where you can easily configure everything for your WP User Frontend.
-                <img src="'. WPUF_ASSET_URI .'/images/whats-new/settings.png" alt="WP User Frontend Settings">'
-            ),
-            array(
-                'title'       => 'Fallback cost for form subscription payment',
-                'type'        => 'New',
-                'description' => 'When a subscribed user reaches post limit before the pack expires, this option will allow user to pay per post and continue making posts until the membership is valid.
-                <br><iframe width="100%" height="400" src="https://www.youtube.com/embed/-Z_uNM8eB_Y" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>'
-            ),
-            array(
-                'title'       => 'Integrated WP User Frontend with Dokan',
-                'type'        => 'New',
-                'description' => 'Admin can allow vendors to create and publish posts on the marketplace from the vendor dashboard. Admin can also select the form that vendor will use. Vendors will be able to make use of all the WPUF settings in this form.
-                <br><iframe width="100%" height="400" src="https://www.youtube.com/embed/6n6CtGjTCF4" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>'
-            ),
-            array(
-                'title'       => 'Bulk accept pending transactions',
-                'type'        => 'New',
-                'description' => 'When you have a lots of pending transactions, completing all those individual transactions take time. Now you can bulk complete the selected transactions with at once.'
-            ),
-            array(
-                'title'       => 'Subscribe to our newsletter',
-                'type'        => 'New',
-                'description' => 'Newsletter subscription form added on the help page to keep you staying updated with latest news from us.
-                <img src="http://d.pr/i/QstTQq+" alt="Newsletter subscription form" />'
+                'description' => __( 'Form field validation process updated if form submits with captcha field.', 'wpuf' )
             ),
         )
     )

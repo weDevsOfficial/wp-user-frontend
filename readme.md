@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 4.8.1  
 **Requires PHP:** 5.4  
-**Stable tag:** 2.7.0  
+**Stable tag:** 2.8.0  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -169,6 +169,19 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v2.8.0 (6 January, 2017) ###
+
+ * **New:** Limit Entries: limit how many entries a form will accept and display a custom message when that limit is reached.
+ * **New:** Schedule form: Don't accept form submission if the current date is not between the date range of the schedule.
+ * **New:** Restrict Users: Restrict form submission based on the users role.
+ * **New:** Show/hide Admin Bar: Control the admin bar visibility based on user roles.
+ * **New:** Ajax Login widget: Login user is more simple now with Ajax Login Widget. The simple login form don't required page loding for login.
+ * **Improved:** Form submission with Captcha: Form field validation process updated if form submits with captcha field.
+ * **Fix:** Payment redirection: Pay per post payment redirection not working after subscription expired.
+ * **Fix:** Edit Profile: User cannot edit their profile by frontend profile edit form.
+ * **Fix:** Undefined error: Data processing error on purchasing free subscription pack.
+
 
 ### v2.7.0 (12 December, 2017) ###
 

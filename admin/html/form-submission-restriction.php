@@ -131,28 +131,28 @@ $limit_message   = isset( $form_settings['limit_message'] ) ? $form_settings['li
         </tr>
 
         <tr class="show-if-schedule">
-            <th>&mdash; <?php _e( 'Schedule Period', 'weforms' ); ?></th>
+            <th>&mdash; <?php _e( 'Schedule Period', 'wpuf' ); ?></th>
             <td>
 
-                <?php _e( 'From', 'weforms' ); ?>
+                <?php _e( 'From', 'wpuf' ); ?>
                 <input type="text" name="wpuf_settings[schedule_start]" id="schedule_start" value="" class="datepicker">
                 <!-- <datepicker name="wpuf_settings[schedule_start]"></datepicker> -->
 
-                <?php _e( 'To', 'weforms' ); ?>
+                <?php _e( 'To', 'wpuf' ); ?>
                 <input type="text" name="wpuf_settings[schedule_end]" id="schedule_end" value="" class="datepicker">
                 <!-- <datepicker name="wpuf_settings[schedule_end]"></datepicker> -->
             </td>
         </tr>
 
         <tr class="show-if-schedule">
-            <th>&mdash; <?php _e( 'Form Pending Message', 'weforms' ); ?></th>
+            <th>&mdash; <?php _e( 'Form Pending Message', 'wpuf' ); ?></th>
             <td>
                 <textarea rows="3" cols="40" name="wpuf_settings[form_pending_message]"><?php echo esc_textarea( $form_pending_message ); ?></textarea>
             </td>
         </tr>
 
         <tr class="show-if-schedule">
-            <th>&mdash; <?php _e( 'Form Expired Message', 'weforms' ); ?></th>
+            <th>&mdash; <?php _e( 'Form Expired Message', 'wpuf' ); ?></th>
             <td>
                 <textarea rows="3" cols="40" name="wpuf_settings[form_expired_message]"><?php echo esc_textarea( $form_expired_message ); ?></textarea>
             </td>

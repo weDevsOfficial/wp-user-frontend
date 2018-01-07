@@ -779,6 +779,21 @@ class WPUF_Admin_Form {
             ),
 
             array(
+                'name'          => 'show_inline',
+                'title'         => __( 'Show in inline list', 'wpuf' ),
+                'type'          => 'radio',
+                'options'       => array(
+                    'yes'   => __( 'Yes', 'wpuf' ),
+                    'no'    => __( 'No', 'wpuf' ),
+                ),
+                'default'       => 'no',
+                'inline'        => true,
+                'section'       => 'advanced',
+                'priority'      => 23,
+                'help_text'     => __( 'Show this option in an inline list', 'wpuf' ),
+            ),
+
+            array(
                 'name'      => 'orderby',
                 'title'     => __( 'Order By', 'wpuf' ),
                 'type'      => 'select',
@@ -872,6 +887,7 @@ class WPUF_Admin_Form {
                 'width'             => 'small',
                 'css'               => '',
                 'type'              => 'select',
+                'show_inline'       => 'inline',
                 'orderby'           => 'name',
                 'order'             => 'ASC',
                 'exclude_type'      => '',

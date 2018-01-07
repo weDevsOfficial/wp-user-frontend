@@ -10,7 +10,7 @@ class WPUF_Admin_Welcome {
     function __construct() {
         add_action( 'admin_menu', array( $this, 'register_menu'  ) );
         add_action( 'admin_head', array( $this, 'hide_menu' ) );
-        add_action( 'admin_init', array( $this, 'redirect_to_page' ), 9999 );
+        // add_action( 'admin_init', array( $this, 'redirect_to_page' ), 9999 );
     }
 
     /**

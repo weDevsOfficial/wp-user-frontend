@@ -97,12 +97,16 @@ class WPUF_Admin_Settings {
         if ( !class_exists( 'WeForms' ) ) {
             $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'weForms', 'wpuf' ), __( 'Contact Form', 'wpuf' ), $capability, 'wpuf_weforms', array($this, 'weforms_page') );
         }
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ) {
+            $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Subscriptions', 'wpuf' ), __( 'Subscriptions', 'wpuf' ), $capability, 'edit.php?post_type=wpuf_subscription' );
+        }
 
-        $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Subscriptions', 'wpuf' ), __( 'Subscriptions', 'wpuf' ), $capability, 'edit.php?post_type=wpuf_subscription' );
+            do_action( 'wpuf_admin_menu' );
 
-        do_action( 'wpuf_admin_menu' );
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ) {
+            $transactions_page  = add_submenu_page( 'wp-user-frontend', __( 'Transactions', 'wpuf' ), __( 'Transactions', 'wpuf' ), $capability, 'wpuf_transaction', array($this, 'transactions_page') );
+        }
 
-        $transactions_page  = add_submenu_page( 'wp-user-frontend', __( 'Transactions', 'wpuf' ), __( 'Transactions', 'wpuf' ), $capability, 'wpuf_transaction', array($this, 'transactions_page') );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Tools', 'wpuf' ), __( 'Tools', 'wpuf' ), $capability, 'wpuf_tools', array($this, 'tools_page') );
 
         do_action( 'wpuf_admin_menu_bottom' );
@@ -120,9 +124,10 @@ class WPUF_Admin_Settings {
         $this->menu_pages[] = 'edit-wpuf_subscription';
         $this->menu_pages[] = 'wpuf_subscribers';
         $this->menu_pages[] = 'user-frontend_page_wpuf_transaction';
-
-        add_action( "load-$transactions_page", array( $this, 'transactions_screen_option' ) );
-        // add_action( "load-wpuf_subscribers", array( $this, 'subscribers_screen_option' ) );
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ) {
+            add_action( "load-$transactions_page", array( $this, 'transactions_screen_option' ) );
+            // add_action( "load-wpuf_subscribers", array( $this, 'subscribers_screen_option' ) );
+        }
     }
 
     /**

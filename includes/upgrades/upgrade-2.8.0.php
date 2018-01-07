@@ -29,7 +29,7 @@ function wpuf_upgrade_2_8_update_new_options() {
 
 function wpuf_upgrade_2_8_update_mail_options() {
     $old_mail_options = get_option( 'wpuf_guest_mails' );
-    
+
     if ( !empty ( $old_mail_options ) ) {
         add_option( 'wpuf_mails', $old_mail_options );
     }

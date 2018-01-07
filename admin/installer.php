@@ -20,7 +20,7 @@ class WPUF_Admin_Installer {
     function admin_notice() {
         $page_created = get_option( '_wpuf_page_created' );
 
-        if ( $page_created != '1' ) {
+        if ( $page_created != '1' || empty( wpuf_get_option( 'install_wpuf_pages', 'wpuf_general') ) ) {
             ?>
             <div class="updated error">
                 <p>
@@ -79,11 +79,13 @@ class WPUF_Admin_Installer {
 
         $post_form      = $this->create_form();
 
-        // payment page
-        $subscr_page    = $this->create_page( __( 'Subscription', 'wpuf' ), __( '[wpuf_sub_pack]', 'wpuf') );
-        $payment_page   = $this->create_page( __( 'Payment', 'wpuf' ), __( 'Please select a gateway for payment', 'wpuf') );
-        $thank_page     = $this->create_page( __( 'Thank You', 'wpuf' ), __( '<h1>Payment is complete</h1><p>Congratulations, your payment has been completed!</p>', 'wpuf') );
-        $bank_page      = $this->create_page( __( 'Order Received', 'wpuf' ), __( 'Hi, we have received your order. We will validate the order and will take necessary steps to move forward.', 'wpuf') );
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ) {
+            // payment page
+            $subscr_page    = $this->create_page( __( 'Subscription', 'wpuf' ), __( '[wpuf_sub_pack]', 'wpuf') );
+            $payment_page   = $this->create_page( __( 'Payment', 'wpuf' ), __( 'Please select a gateway for payment', 'wpuf') );
+            $thank_page     = $this->create_page( __( 'Thank You', 'wpuf' ), __( '<h1>Payment is complete</h1><p>Congratulations, your payment has been completed!</p>', 'wpuf') );
+            $bank_page      = $this->create_page( __( 'Order Received', 'wpuf' ), __( 'Hi, we have received your order. We will validate the order and will take necessary steps to move forward.', 'wpuf') );
+        }
 
         // save the settings
         if ( $edit_page ) {
@@ -119,13 +121,15 @@ class WPUF_Admin_Installer {
 
         update_option( 'wpuf_profile', $profile_options );
 
-        // payment pages
-        update_option( 'wpuf_payment', array(
-            'subscription_page' => $subscr_page,
-            'payment_page'      => $payment_page,
-            'payment_success'   => $thank_page,
-            'bank_success'      => $bank_page
-        ) );
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ) {
+            // payment pages
+            update_option( 'wpuf_payment', array(
+                'subscription_page' => $subscr_page,
+                'payment_page'      => $payment_page,
+                'payment_success'   => $thank_page,
+                'bank_success'      => $bank_page
+            ) );
+        }
 
         update_option( '_wpuf_page_created', '1' );
 

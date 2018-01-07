@@ -78,9 +78,10 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     function admin_menu() {
-        $capability = wpuf_admin_role();
-
-        add_submenu_page( 'wp-user-frontend', __( 'Coupons', 'wpuf' ), __( 'Coupons', 'wpuf' ), $capability, 'wpuf_coupon', array($this, 'admin_coupon_page' ) );
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ) {
+            $capability = wpuf_admin_role();
+            add_submenu_page( 'wp-user-frontend', __( 'Coupons', 'wpuf' ), __( 'Coupons', 'wpuf' ), $capability, 'wpuf_coupon', array($this, 'admin_coupon_page' ) );
+        }
     }
 
     function admin_reg_forms_page() {

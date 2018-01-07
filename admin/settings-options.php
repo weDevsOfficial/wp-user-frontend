@@ -319,6 +319,13 @@ function wpuf_settings_fields() {
         ) ),
         'wpuf_payment' => apply_filters( 'wpuf_options_payment', array(
             array(
+                'name'  => 'enable_payment',
+                'label' => __( 'Enable Payments', 'wpuf' ),
+                'desc'  => __( 'Enable payments on your site.', 'wpuf' ),
+                'type'  => 'checkbox',
+                'default' => 'off',
+            ),
+            array(
                 'name'    => 'subscription_page',
                 'label'   => __( 'Subscription Pack Page', 'wpuf' ),
                 'desc'    => __( 'Select the page where <code>[wpuf_sub_pack]</code> located.', 'wpuf' ),

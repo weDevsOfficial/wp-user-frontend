@@ -25,8 +25,14 @@
     </div>
 
     <div v-if="'checkbox' === field.type" class="category-wrap">
-        <div v-html="get_term_checklist()"></div>
+        <div v-if="'yes' === field.show_inline" class="category-wrap">
+            <div v-html="get_term_checklist_inline()"></div>
+        </div>
+        <div v-else-if="'no' === field.show_inline" class="category-wrap">
+            <div v-html="get_term_checklist()"></div>
+        </div>
     </div>
+    
 
     <input
         v-if="'text' === field.type"

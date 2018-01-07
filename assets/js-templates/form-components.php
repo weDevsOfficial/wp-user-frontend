@@ -659,8 +659,14 @@
     </div>
 
     <div v-if="'checkbox' === field.type" class="category-wrap">
-        <div v-html="get_term_checklist()"></div>
+        <div v-if="'yes' === field.show_inline" class="category-wrap">
+            <div v-html="get_term_checklist_inline()"></div>
+        </div>
+        <div v-else-if="'no' === field.show_inline" class="category-wrap">
+            <div v-html="get_term_checklist()"></div>
+        </div>
     </div>
+    
 
     <input
         v-if="'text' === field.type"
@@ -671,19 +677,6 @@
         autocomplete="off"
     >
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
-</div>
-</script>
-
-<script type="text/x-template" id="tmpl-wpuf-form-text_field">
-<div class="wpuf-fields">
-    <input
-        type="text"
-        :class="class_names('textfield')"
-        :placeholder="field.placeholder"
-        :value="field.default"
-        :size="field.size"
-    >
     <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 </div>
 </script>
@@ -700,6 +693,19 @@
 
     <text-editor v-if="'no' !== field.rich" :rich="field.rich"></text-editor>
 
+    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+</div>
+</script>
+
+<script type="text/x-template" id="tmpl-wpuf-form-text_field">
+<div class="wpuf-fields">
+    <input
+        type="text"
+        :class="class_names('textfield')"
+        :placeholder="field.placeholder"
+        :value="field.default"
+        :size="field.size"
+    >
     <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 </div>
 </script>

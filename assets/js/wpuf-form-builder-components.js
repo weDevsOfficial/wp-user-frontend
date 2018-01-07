@@ -1086,8 +1086,42 @@ Vue.component('form-taxonomy', {
             }
 
             return li;
+        },
+
+        get_term_checklist_inline: function () {
+            var self      = this,
+                checklist = '';
+
+            _.each(this.sorted_terms, function (term) {
+                checklist += self.get_term_checklist_li_inline(term);
+            });
+
+            return checklist;
+        },
+
+        get_term_checklist_li_inline: function (term) {
+            var self = this,
+                li_inline   = '';
+
+            li_inline += '<label class="wpuf-checkbox-inline"><input type="checkbox"> ' + term.name + '</label>';
+
+            if (term.children.length) {
+                _.each(term.children, function (child_term) {
+                    li_inline += self.get_term_checklist_li_inline(child_term);
+                });
+            }
+
+            return li_inline;
         }
     }
+});
+
+Vue.component('form-textarea_field', {
+    template: '#tmpl-wpuf-form-textarea_field',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ]
 });
 
 /**
@@ -1095,14 +1129,6 @@ Vue.component('form-taxonomy', {
  */
 Vue.component('form-text_field', {
     template: '#tmpl-wpuf-form-text_field',
-
-    mixins: [
-        wpuf_mixins.form_field_mixin
-    ]
-});
-
-Vue.component('form-textarea_field', {
-    template: '#tmpl-wpuf-form-textarea_field',
 
     mixins: [
         wpuf_mixins.form_field_mixin

@@ -20,7 +20,7 @@ class WPUF_Admin_Installer {
     function admin_notice() {
         $page_created = get_option( '_wpuf_page_created' );
 
-        if ( $page_created != '1' || empty( wpuf_get_option( 'install_wpuf_pages', 'wpuf_general') ) ) {
+        if ( $page_created != '1' && empty( wpuf_get_option( 'install_wpuf_pages', 'wpuf_general') ) ) {
             ?>
             <div class="updated error">
                 <p>

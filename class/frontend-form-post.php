@@ -477,7 +477,11 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         // set default post category if it's not been set yet and if post type supports
         if ( !isset( $postarr['post_category'] ) && isset( $form_settings['default_cat'] ) && is_object_in_taxonomy( $form_settings['post_type'], 'category' ) ) {
-            $postarr['post_category'] = array( $form_settings['default_cat'] );
+            if ( is_array( $form_settings['default_cat'] ) ) {
+                $postarr['post_category'] = $form_settings['default_cat'];
+            } else {
+                $postarr['post_category'] = array( $form_settings['default_cat'] );
+            }  
         }
 
         // validation filter

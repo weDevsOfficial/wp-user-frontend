@@ -3,24 +3,24 @@ global $post;
 
 $form_settings = wpuf_get_form_settings( $post->ID );
 
-$guest_post             = isset( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
-$role_base              = isset( $form_settings['role_base'] ) ? $form_settings['role_base'] : 'false';
-$roles                  = isset( $form_settings['roles'] ) ? $form_settings['roles'] : array( 'administrator' );
-$guest_details          = isset( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
-$guest_email_verify     = isset( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false';
-$name_label             = isset( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wpuf' );
-$email_label            = isset( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email', 'wpuf' );
-$message_restrict       = isset( $form_settings['message_restrict'] ) ? $form_settings['message_restrict'] : $restrict_message;
+$guest_post             = !empty( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
+$role_base              = !empty( $form_settings['role_base'] ) ? $form_settings['role_base'] : 'false';
+$roles                  = !empty( $form_settings['roles'] ) ? $form_settings['roles'] : array( 'administrator' );
+$guest_details          = !empty( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
+$guest_email_verify     = !empty( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false';
+$name_label             = !empty( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wpuf' );
+$email_label            = !empty( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email', 'wpuf' );
+$message_restrict       = !empty( $form_settings['message_restrict'] ) ? $form_settings['message_restrict'] : $restrict_message;
 
-$schedule_form          = isset( $form_settings['schedule_form'] ) ? $form_settings['schedule_form'] : 'false';
-$schedule_start         = isset( $form_settings['schedule_start'] ) ? $form_settings['schedule_start'] : '';
-$schedule_end           = isset( $form_settings['schedule_end'] ) ? $form_settings['schedule_end'] : '';
-$form_pending_message   = isset( $form_settings['form_pending_message'] ) ? $form_settings['form_pending_message'] : 'Form submission not started.';
-$form_expired_message   = isset( $form_settings['form_expired_message'] ) ? $form_settings['form_expired_message'] : 'Submission date expired.';
+$schedule_form          = !empty( $form_settings['schedule_form'] ) ? $form_settings['schedule_form'] : 'false';
+$schedule_start         = !empty( $form_settings['schedule_start'] ) ? $form_settings['schedule_start'] : '';
+$schedule_end           = !empty( $form_settings['schedule_end'] ) ? $form_settings['schedule_end'] : '';
+$form_pending_message   = !empty( $form_settings['form_pending_message'] ) ? $form_settings['form_pending_message'] : 'Form submission not started.';
+$form_expired_message   = !empty( $form_settings['form_expired_message'] ) ? $form_settings['form_expired_message'] : 'Submission date expired.';
 
-$limit_entries   = isset( $form_settings['limit_entries'] ) ? $form_settings['limit_entries'] : 'false';
-$limit_number   = isset( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 100;
-$limit_message   = isset( $form_settings['limit_message'] ) ? $form_settings['limit_message'] : 'Form submission limit exceeded';
+$limit_entries   = !empty( $form_settings['limit_entries'] ) ? $form_settings['limit_entries'] : 'false';
+$limit_number   = !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 100;
+$limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['limit_message'] : 'Form submission limit exceeded';
 ?>
     <table class="form-table">
 
@@ -135,11 +135,11 @@ $limit_message   = isset( $form_settings['limit_message'] ) ? $form_settings['li
             <td>
 
                 <?php _e( 'From', 'wpuf' ); ?>
-                <input type="text" name="wpuf_settings[schedule_start]" id="schedule_start" value="" class="datepicker">
+                <input type="text" name="wpuf_settings[schedule_start]" id="schedule_start" value="<?php echo $schedule_start; ?>" class="datepicker">
                 <!-- <datepicker name="wpuf_settings[schedule_start]"></datepicker> -->
 
                 <?php _e( 'To', 'wpuf' ); ?>
-                <input type="text" name="wpuf_settings[schedule_end]" id="schedule_end" value="" class="datepicker">
+                <input type="text" name="wpuf_settings[schedule_end]" id="schedule_end" value="<?php echo $schedule_end; ?>" class="datepicker">
                 <!-- <datepicker name="wpuf_settings[schedule_end]"></datepicker> -->
             </td>
         </tr>

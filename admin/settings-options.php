@@ -323,7 +323,7 @@ function wpuf_settings_fields() {
                 'label' => __( 'Enable Payments', 'wpuf' ),
                 'desc'  => __( 'Enable payments on your site.', 'wpuf' ),
                 'type'  => 'checkbox',
-                'default' => 'off',
+                'default' => 'on',
             ),
             array(
                 'name'    => 'subscription_page',

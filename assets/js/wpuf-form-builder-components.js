@@ -1024,6 +1024,8 @@ Vue.component('form-taxonomy', {
             var self    = this,
                 options = '';
 
+            options = '<option value="">' + this.field.first + '</option>';
+
             _.each(self.sorted_terms, function (term) {
                 options += self.get_term_dropdown_options_children(term, 0);
             });

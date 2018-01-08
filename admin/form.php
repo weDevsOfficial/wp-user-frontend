@@ -779,6 +779,15 @@ class WPUF_Admin_Form {
             ),
 
             array(
+                'name'          => 'first',
+                'title'         => __( 'Select Text', 'wpuf' ),
+                'type'          => 'text',
+                'section'       => 'basic',
+                'priority'      => 13,
+                'help_text'     => __( "First element of the select dropdown. Leave this empty if you don't want to show this field", 'wpuf' ),
+            ),
+
+            array(
                 'name'          => 'show_inline',
                 'title'         => __( 'Show in inline list', 'wpuf' ),
                 'type'          => 'radio',
@@ -887,6 +896,7 @@ class WPUF_Admin_Form {
                 'width'             => 'small',
                 'css'               => '',
                 'type'              => 'select',
+                'first'             => __( '- select -', 'wpuf' ),
                 'show_inline'       => 'inline',
                 'orderby'           => 'name',
                 'order'             => 'ASC',

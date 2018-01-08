@@ -1,8 +1,7 @@
 <div class="wpuf-fields">
     <select
-        v-if="'select' === field.type"
         :class="field.name"
-        v-html="get_term_dropdown_options()"
+        v-html ="get_term_dropdown_options()"
     >
     </select>
 

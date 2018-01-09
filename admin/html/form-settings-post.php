@@ -9,7 +9,7 @@ $restrict_message      = __( "This page is restricted. Please Log in / Register 
 $post_type_selected    = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 
 $post_format_selected  = isset( $form_settings['post_format'] ) ? $form_settings['post_format'] : 0;
-$default_cat           = isset( $form_settings['default_cat'] ) ? $form_settings['default_cat'] : -1;
+$default_cat           = isset( $form_settings['default_cat'] ) ? $form_settings['default_cat'] : array();
 
 $redirect_to           = isset( $form_settings['redirect_to'] ) ? $form_settings['redirect_to'] : 'post';
 $message               = isset( $form_settings['message'] ) ? $form_settings['message'] : __( 'Post saved', 'wpuf' );

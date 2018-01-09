@@ -288,7 +288,10 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $no_captcha = $invisible_captcha = '';
 
             $check_recaptcha = $this->search( $post_vars, 'input_type', 'recaptcha' );
-            $recaptcha_type  = $check_recaptcha[0]['recaptcha_type'];
+
+            if ( !empty( $check_recaptcha ) ) {
+                $recaptcha_type  = $check_recaptcha[0]['recaptcha_type'];
+            }
 
             // check recaptcha
             if ( $check_recaptcha ) {

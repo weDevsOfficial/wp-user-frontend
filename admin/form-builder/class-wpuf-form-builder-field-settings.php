@@ -104,7 +104,7 @@ class WPUF_Form_Builder_Field_Settings {
                     'name'      => 'wpuf_visibility',
                     'title'     => __( 'Visibility', 'wpuf' ),
                     'type'      => 'visibility',
-                    'section'   => 'advanced',                
+                    'section'   => 'advanced',
                     'options'   => array(
                         'everyone'          => __( 'Everyone', 'wpuf' ),
                         'hidden'            => __( 'Hidden', 'wpuf' ),
@@ -146,7 +146,7 @@ class WPUF_Form_Builder_Field_Settings {
                         'inline'    => true,
                         'help_text' => __( 'Select Yes if you want to show the field data in single post.', 'wpuf' ),
                     )
-                )); 
+                ));
             }
         }
 
@@ -333,7 +333,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'              => '',
                 'is_meta'           => 'yes',
                 'help'              => '',
-                'width'             => 'large',
+                'width'             => '',
                 'css'               => '',
                 'placeholder'       => '',
                 'default'           => '',
@@ -372,7 +372,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
-                'width'            => 'medium',
+                'width'            => '',
                 'css'              => '',
                 'rows'             => 5,
                 'cols'             => 25,
@@ -448,7 +448,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
-                'width'            => 'medium',
+                'width'            => '',
                 'css'              => '',
                 'selected'         => '',
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
@@ -491,7 +491,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
-                'width'            => 'medium',
+                'width'            => '',
                 'css'              => '',
                 'selected'         => array(),
                 'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
@@ -740,7 +740,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'                => 0,
                 'is_new'            => true,
                 'show_in_post'      => 'yes',
-                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),                
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => null
             )
         );

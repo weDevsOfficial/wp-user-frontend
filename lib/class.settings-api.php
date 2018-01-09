@@ -238,6 +238,7 @@ class WeDevs_Settings_API {
     function callback_multicheck( $args ) {
 
         $value = $this->get_option( $args['id'], $args['section'], $args['std'] );
+        $value = $value ? $value : array();
         $html  = '<fieldset>';
         $html .= sprintf( '<input type="hidden" name="%1$s[%2$s]" value="" />', $args['section'], $args['id'] );
         foreach ( $args['options'] as $key => $label ) {

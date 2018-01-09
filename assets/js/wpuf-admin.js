@@ -31,4 +31,26 @@ jQuery(function($) {
             hide_sub_sections();
         }
     });
+
+    // Collapsable email settings field
+    group = [
+        '.email-setting',
+        '.guest-email-setting',
+        '.reset-email-setting',
+        '.confirmation-email-setting',
+        '.subscription-setting',
+        '.admin-new-user-email',
+        '.pending-user-email',
+        '.denied-user-email',
+        '.approved-user-email'
+    ]
+    group.forEach(function(header, index) {
+        $(header).addClass("heading");
+        $(header+"-option").addClass("hide");
+
+        $("#wpuf_mails "+header).click(function() {
+            $(header+"-option").toggleClass("hide");
+        });
+    })
+
 });

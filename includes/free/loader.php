@@ -78,7 +78,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     function admin_menu() {
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ) {
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             $capability = wpuf_admin_role();
             add_submenu_page( 'wp-user-frontend', __( 'Coupons', 'wpuf' ), __( 'Coupons', 'wpuf' ), $capability, 'wpuf_coupon', array($this, 'admin_coupon_page' ) );
         }

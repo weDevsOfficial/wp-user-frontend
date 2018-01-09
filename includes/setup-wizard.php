@@ -263,8 +263,8 @@ class WPUF_Setup_Wizard {
      * Selling step.
      */
     public function wpuf_setup_basic() {
-        $enable_payment = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' );
-        $install_wpuf_pages       = wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'off' );
+        $enable_payment = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
+        $install_wpuf_pages       = wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' );
         ?>
         <h1><?php _e( 'Basic Setting', 'wpuf' ); ?></h1>
         <form method="post">

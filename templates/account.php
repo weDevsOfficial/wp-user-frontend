@@ -5,17 +5,17 @@
                 if ( is_user_logged_in() ) {
                     foreach ( $sections as $section ) {
                         if ( 'subscription' == $section['slug']) {
-                            if ( 'on' == wpuf_get_option( 'show_subscriptions', 'wpuf_my_account' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ) {
+                            if ( 'on' == wpuf_get_option( 'show_subscriptions', 'wpuf_my_account' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
                                 continue;
                             }
                         }
                         if ( 'invoices' == $section['slug'] ) {
-                            if( 'on' == wpuf_get_option( 'show_invoice', 'wpuf_my_account' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ) {
+                            if( 'on' == wpuf_get_option( 'show_invoice', 'wpuf_my_account' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
                                 continue;
                             }
                         }
                         if ( 'billing_address' == $section['slug'] ) {
-                            if ( 'on' == wpuf_get_option( 'show_billing_address', 'wpuf_my_account' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'off' ) ) {
+                            if ( 'on' == wpuf_get_option( 'show_billing_address', 'wpuf_my_account' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
                                 continue;
                             }
                         }

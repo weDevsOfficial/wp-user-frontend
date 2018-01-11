@@ -1449,7 +1449,7 @@ class WPUF_Render_Form {
                         $selected = $terms ? $terms[0] : '';
                         $required = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
                         $tax_args = array(
-                            'show_option_none' => $attr['first'],
+                            'show_option_none' => isset ( $attr['first'] ) ? $attr['first'] : '--select--',
                             'hierarchical'     => 1,
                             'hide_empty'       => 0,
                             'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',

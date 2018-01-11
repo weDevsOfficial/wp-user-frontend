@@ -233,6 +233,7 @@ span.wpuf_help {
 .wpuf-settings-wrap .metabox-holder {
   flex: 3;
   margin-left: 30px;
+  margin-bottom: 30px;
 }
 .wpuf-settings-wrap .metabox-holder h2 {
   border-bottom: 1px solid #c8d7e1;
@@ -440,6 +441,56 @@ span.wpuf_help {
 }
 .wpuf-premium .module-wrap .module-details h3 a {
   text-decoration: none;
+}
+#wpuf_mails table tbody tr.hide {
+  display: none;
+}
+#wpuf_mails table tbody tr.heading {
+  cursor: pointer;
+  background-color: #f1f1f1;
+  border: 1px solid #c8d7e1;
+}
+#wpuf_mails table tbody tr.heading label {
+  font-size: 13px;
+  color: #444;
+  font-weight: 500;
+}
+#wpuf_mails table tbody tr.heading label span {
+  color: #0073aa;
+  padding-right: 6px;
+}
+#wpuf_mails table tbody tr.heading label span.dashicons-admin-generic {
+  color: #9b59b6;
+}
+#wpuf_mails table tbody tr.heading label span.dashicons-universal-access-alt {
+  color: #AD1457;
+}
+#wpuf_mails table tbody tr.heading label span.dashicons-unlock {
+  color: #9b59b6;
+}
+#wpuf_mails table tbody tr.heading label span.dashicons-email-alt {
+  color: #6c75ff;
+}
+#wpuf_mails table tbody tr.heading label span.dashicons-money {
+  color: #64DD17;
+}
+#wpuf_mails table tbody tr.heading label span.dashicons-admin-users {
+  color: #00aeff;
+}
+#wpuf_mails table tbody tr.heading label span.dashicons-groups {
+  color: #e67e22;
+}
+#wpuf_mails table tbody tr.heading label span.dashicons-dismiss {
+  color: #115da7;
+}
+#wpuf_mails table tbody tr.heading label span.dashicons-smiley {
+  color: #e74c3c;
+}
+#wpuf_mails table tbody tr.heading th {
+  padding: 16px 10px 16px 30px;
+}
+#wpuf_mails table tbody tr th {
+  padding-left: 30px;
 }
 .wpuf-help-tabbed {
   display: flex;

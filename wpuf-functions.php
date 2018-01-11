@@ -2333,3 +2333,58 @@ function wpuf_posts_submitted_by( $form_id ) {
 function wpuf_form_posts_count( $form_id ) {
     return count( wpuf_posts_submitted_by( $form_id ) );
 }
+
+/**
+ * Get formatted email body
+ *
+ * @since  2.9
+ *
+ * @param  string $message
+ *
+ * @return string
+ */
+function get_formatted_mail_body( $message, $subject ) {
+
+    if ( class_exists( 'WP_User_Frontend_Pro' ) && wpuf_pro_is_module_active( 'email-templates/email-templates.php' ) ) {
+        $css    = '';
+        $header = apply_filters( 'wpuf_email_header', '' );
+        $footer = apply_filters( 'wpuf_email_footer', '' );
+
+        if ( empty( $header ) ) {
+            ob_start();
+            include WPUF_PRO_INCLUDES . '/templates/email/header.php';
+            $header = ob_get_clean();
+        }
+
+        if ( empty( $footer ) ) {
+            ob_start();
+            include WPUF_PRO_INCLUDES . '/templates/email/footer.php';
+            $footer = ob_get_clean();
+        }
+
+        ob_start();
+        include WPUF_PRO_INCLUDES . '/templates/email/style.php';
+        $css = apply_filters( 'wpuf_email_style', ob_get_clean() );
+
+        $content = $header . $message . $footer;
+
+        if ( ! class_exists( 'Emogrifier' ) ) {
+            require_once WPUF_PRO_INCLUDES . '/libs/Emogrifier.php';
+        }
+
+        try {
+
+            // apply CSS styles inline for picky email clients
+            $emogrifier = new Emogrifier( $content, $css );
+            $content = $emogrifier->emogrify();
+
+        } catch ( Exception $e ) {
+
+            echo $e->getMessage();
+        }
+
+        return $content;
+    }
+
+    return $message;
+}

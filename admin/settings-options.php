@@ -416,18 +416,26 @@ function wpuf_settings_fields() {
         ) ),
         'wpuf_mails' => apply_filters( 'wpuf_mail_options', array(
             array(
-                'name'       => 'guest_email_subject',
-                'label'    => __( 'Guest mail subject', 'wpuf' ),
-                'desc'     => __( 'This sets the subject of the emails sent to guest users', 'wpuf' ),
-                'default'  => 'Please Confirm Your Email to Get the Post Published!',
-                'type'     => 'text',
+                'name'    => 'guest_email_setting',
+                'label'   => __( '<span class="dashicons dashicons-universal-access-alt"></span> Guest Email', 'wpuf' ),
+                'type'    => 'html',
+                'class'   => 'guest-email-setting',
             ),
             array(
-                'name'       => 'guest_email_body',
-                'label'    => __( 'Guest mail body', 'wpuf' ),
-                'desc'     => __( "This sets the body of the emails sent to guest users. Please DON'T edit the <code>{activation_link}</code> part", 'wpuf' ),
-                'default'  => "Hey There, \r\n\r\nWe just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.\r\n\r\nPlease click the link below to verify: \r\n\r\n{activation_link}\r\n\r\nRegards,\r\n%sitename%",
-                'type'     => 'wysiwyg',
+                'name'    => 'guest_email_subject',
+                'label'   => __( 'Guest mail subject', 'wpuf' ),
+                'desc'    => __( 'This sets the subject of the emails sent to guest users', 'wpuf' ),
+                'default' => 'Please Confirm Your Email to Get the Post Published!',
+                'type'    => 'text',
+                'class'   => 'guest-email-setting-option',
+            ),
+            array(
+                'name'    => 'guest_email_body',
+                'label'   => __( 'Guest mail body', 'wpuf' ),
+                'desc'    => __( "This sets the body of the emails sent to guest users. Please DON'T edit the <code>{activation_link}</code> part", 'wpuf' ),
+                'default' => "Hey There, \r\n\r\nWe just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.\r\n\r\nPlease click the link below to verify: \r\n\r\n{activation_link}\r\n\r\nRegards,\r\n%sitename%",
+                'type'    => 'wysiwyg',
+                'class'   => 'guest-email-setting-option',
             ),
         ) )
     );

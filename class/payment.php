@@ -271,10 +271,13 @@ class WPUF_Payment {
 
             switch ($type) {
                 case 'post':
-                    $post        = get_post( $post_id );
-                    $form_id     = get_post_meta( $post_id, '_wpuf_form_id', true );
-                    $form        = new WPUF_Form( $form_id );
-                    if ( $current_pack && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                    $post          = get_post( $post_id );
+                    $form_id       = get_post_meta( $post_id, '_wpuf_form_id', true );
+                    $form          = new WPUF_Form( $form_id );
+                    $form_settings = $form->get_settings();
+                    $post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+
+                    if ( !is_wp_error ( $current_pack ) && !$post_count ) {
                         $amount      = $form->get_subs_fallback_cost();
                     } else {
                         $amount      = $form->get_pay_per_post_cost();

@@ -272,7 +272,11 @@ Edit URL: %editlink%',
         $reviews = get_post_meta( $post_id, 'product_reviews', true );
         $status  = !empty( $reviews ) ? 'open' : 'close';
 
-        wp_update_post( array( 'ID' => $post_id, 'comment_status' => 'open' ) );
+        if ( 'open' === $status ) {
+            apply_filters( 'comments_open', true , $post_id );
+        } else {
+            apply_filters( 'comments_open', false , $post_id );
+        }
     }
 
     /**
@@ -302,7 +306,9 @@ Edit URL: %editlink%',
      */
     public function update_gallery_images( $post_id ) {
         $images = get_post_meta( $post_id, '_product_image' );
-        update_post_meta( $post_id, '_product_image_gallery', implode(',', $images) );
+        if ( !empty( $images ) ) {
+            update_post_meta( $post_id, '_product_image_gallery', implode(',', $images) );
+        }
     }
 
     /**
@@ -316,7 +322,9 @@ Edit URL: %editlink%',
         $visibility = get_post_meta( $post_id, '_visibility', true );
 
         $product = wc_get_product( $post_id );
-        $product->set_catalog_visibility( $visibility );
+        if ( !empty( $visibility ) ) {
+            $product->set_catalog_visibility( $visibility );
+        }
         $product->save();
     }
 }

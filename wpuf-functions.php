@@ -327,8 +327,14 @@ class WPUF_Walker_Category_Checklist extends Walker {
         else
             $name = $taxonomy;
 
+        if ( 'yes' === $show_inline ) {
+            $inline_class = 'wpuf-checkbox-inline';
+        } else {
+            $inline_class = '';
+        }
+
         $class = isset( $args['class'] ) ? $args['class'] : '';
-        $output .= "\n<li id='{$taxonomy}-{$category->term_id}'>" . '<label class="selectit"><input class="'. $class . '" value="' . $category->term_id . '" type="checkbox" name="' . $name . '[]" id="in-' . $taxonomy . '-' . $category->term_id . '"' . checked( in_array( $category->term_id, $selected_cats ), true, false ) . disabled( empty( $args['disabled'] ), false, false ) . ' /> ' . esc_html( apply_filters( 'the_category', $category->name ) ) . '</label>';
+        $output .= "\n<li class='" . $inline_class . "' id='{$taxonomy}-{$category->term_id}'>" . '<label class="selectit"><input class="'. $class . '" value="' . $category->term_id . '" type="checkbox" name="' . $name . '[]" id="in-' . $taxonomy . '-' . $category->term_id . '"' . checked( in_array( $category->term_id, $selected_cats ), true, false ) . disabled( empty( $args['disabled'] ), false, false ) . ' /> ' . esc_html( apply_filters( 'the_category', $category->name ) ) . '</label>';
     }
 
     function end_el( &$output, $category, $depth = 0, $args = array() ) {
@@ -365,6 +371,8 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     } else {
         $args['selected_cats'] = array();
     }
+
+    $args['show_inline'] = $attr['show_inline'];
 
     $args['class'] = $class;
 
@@ -2327,55 +2335,56 @@ function wpuf_form_posts_count( $form_id ) {
 }
 
 /**
- * Check if the form submission is open
+ * Get formatted email body
  *
- * @since 2.8
+ * @since  2.9
  *
- * @param  int $form_id
+ * @param  string $message
  *
- * @return boolean|Error message
+ * @return string
  */
-function wpuf_is_form_submission_open( $form_id ) {
-    $form_settings     = wpuf_get_form_settings( $form_id );
-    $has_limit    = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
-    $is_scheduled = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] == 'true' ) ? true : false;
+function get_formatted_mail_body( $message, $subject ) {
 
-    if ( ! is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {
+    if ( class_exists( 'WP_User_Frontend_Pro' ) && wpuf_pro_is_module_active( 'email-templates/email-templates.php' ) ) {
+        $css    = '';
+        $header = apply_filters( 'wpuf_email_header', '' );
+        $footer = apply_filters( 'wpuf_email_footer', '' );
 
-        return '<div class="wpuf-message">' . $form_settings['message_restrict'] . '</div>';
-
-    } else if ( isset( $form_settings['role_base'] ) && $form_settings['role_base'] == 'true' ) {
-
-        $current_user = wp_get_current_user();
-
-        if ( !in_array( $current_user->roles[0], $form_settings['roles'] ) ) {
-            return '<div class="wpuf-message">' . __( "You do not have sufficient permissions to access this form.", 'wpuf' ) . '</div>';
+        if ( empty( $header ) ) {
+            ob_start();
+            include WPUF_PRO_INCLUDES . '/templates/email/header.php';
+            $header = ob_get_clean();
         }
 
-    }
-
-    if ( $has_limit ) {
-
-        $limit        = (int)  isset( $form_settings['role_base'] ) && !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 0;
-        $form_entries = wpuf_form_posts_count( $form_id );
-
-        if ( $limit && $limit <= $form_entries ) {
-            return '<div class="wpuf-message">' . $form_settings['limit_message'] . '</div>';
+        if ( empty( $footer ) ) {
+            ob_start();
+            include WPUF_PRO_INCLUDES . '/templates/email/footer.php';
+            $footer = ob_get_clean();
         }
-    }
 
-    if ( $is_scheduled ) {
-        $start_time   = !empty( $form_settings['schedule_start'] ) ? strtotime( $form_settings['schedule_start'] ) : 0;
-        $end_time     = !empty( $form_settings['schedule_end'] ) ? strtotime( $form_settings['schedule_end'] ) : 0;
-        $current_time = current_time( 'timestamp' );
+        ob_start();
+        include WPUF_PRO_INCLUDES . '/templates/email/style.php';
+        $css = apply_filters( 'wpuf_email_style', ob_get_clean() );
 
-        // too early?
-        if ( $current_time < $start_time ) {
-            return '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>';
-        } elseif ( $current_time > $end_time ) {
-            return '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>';
+        $content = $header . $message . $footer;
+
+        if ( ! class_exists( 'Emogrifier' ) ) {
+            require_once WPUF_PRO_INCLUDES . '/libs/Emogrifier.php';
         }
+
+        try {
+
+            // apply CSS styles inline for picky email clients
+            $emogrifier = new Emogrifier( $content, $css );
+            $content = $emogrifier->emogrify();
+
+        } catch ( Exception $e ) {
+
+            echo $e->getMessage();
+        }
+
+        return $content;
     }
 
-    return 'true';
+    return $message;
 }

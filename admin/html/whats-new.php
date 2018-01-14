@@ -1,37 +1,30 @@
 <?php
 $changelog = array(
     array(
-        'version'  => 'Version 2.7',
-        'released' => '2017-12-12',
+        'version'  => 'Version 2.8.1',
+        'released' => '2018-01-14',
         'changes' => array(
             array(
-                'title'       => 'Interactive Settings Page to Manage it All',
+                'title'       => __( 'Setup Wizard', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Setup Wizard added to turn off payment options and install pages.', 'wpuf' ) .
+                '<img src="'. WPUF_ASSET_URI .'/images/whats-new/wizard.gif" alt="Setup Wizard">'
+            ),
+            array(
+                'title'       => __( 'Multi-select Category', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Add multi-select to default category in post form settings.', 'wpuf' ) .
+                '<img src="'. WPUF_ASSET_URI .'/images/whats-new/category.png" alt="Multi-select Category">'
+            ),
+            array(
+                'title'       => __( 'Select Text option for Taxonomy', 'wpuf' ),
                 'type'        => 'Improvement',
-                'description' => 'WP User Frontend now has better and improved settings page where you can easily configure everything for your WP User Frontend.
-                <img src="'. WPUF_ASSET_URI .'/images/whats-new/settings.png" alt="WP User Frontend Settings">'
+                'description' => __( 'Add Select Text option for taxonomy fields. Now you can add default text with empty value as first option for Taxonomy dropdown.', 'wpuf' )
             ),
             array(
-                'title'       => 'Fallback cost for form subscription payment',
-                'type'        => 'New',
-                'description' => 'When a subscribed user reaches post limit before the pack expires, this option will allow user to pay per post and continue making posts until the membership is valid.
-                <br><iframe width="100%" height="400" src="https://www.youtube.com/embed/-Z_uNM8eB_Y" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>'
-            ),
-            array(
-                'title'       => 'Integrated WP User Frontend with Dokan',
-                'type'        => 'New',
-                'description' => 'Admin can allow vendors to create and publish posts on the marketplace from the vendor dashboard. Admin can also select the form that vendor will use. Vendors will be able to make use of all the WPUF settings in this form.
-                <br><iframe width="100%" height="400" src="https://www.youtube.com/embed/6n6CtGjTCF4" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>'
-            ),
-            array(
-                'title'       => 'Bulk accept pending transactions',
-                'type'        => 'New',
-                'description' => 'When you have a lots of pending transactions, completing all those individual transactions take time. Now you can bulk complete the selected transactions with at once.'
-            ),
-            array(
-                'title'       => 'Subscribe to our newsletter',
-                'type'        => 'New',
-                'description' => 'Newsletter subscription form added on the help page to keep you staying updated with latest news from us.
-                <img src="http://d.pr/i/QstTQq+" alt="Newsletter subscription form" />'
+                'title'       => __( 'Taxonomy Checkbox Inline', 'wpuf' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Added checkbox inline option to taxonomy checkbox. You can now display Taxonomy checkbox fields inline.', 'wpuf' )
             ),
         )
     )

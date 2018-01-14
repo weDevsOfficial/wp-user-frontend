@@ -9,7 +9,7 @@ $restrict_message      = __( "This page is restricted. Please Log in / Register 
 $post_type_selected    = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 
 $post_format_selected  = isset( $form_settings['post_format'] ) ? $form_settings['post_format'] : 0;
-$default_cat           = isset( $form_settings['default_cat'] ) ? $form_settings['default_cat'] : -1;
+$default_cat           = isset( $form_settings['default_cat'] ) ? $form_settings['default_cat'] : array();
 
 $redirect_to           = isset( $form_settings['redirect_to'] ) ? $form_settings['redirect_to'] : 'post';
 $message               = isset( $form_settings['message'] ) ? $form_settings['message'] : __( 'Post saved', 'wpuf' );
@@ -89,14 +89,27 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
             <th><?php _e( 'Default Post Category', 'wpuf' ); ?></th>
             <td>
                 <?php
-                wp_dropdown_categories( array(
+                $args = array(
                     'hide_empty'       => false,
                     'hierarchical'     => true,
                     'selected'         => $default_cat,
-                    'name'             => 'wpuf_settings[default_cat]',
-                    'show_option_none' => __( '- None -', 'wpuf' ),
                     'taxonomy'         => ( $post_type_selected == 'product' ) ? 'product_cat' : 'category'
-                ) );
+                );
+
+                echo '<select multiple name="wpuf_settings[default_cat][]">';
+
+                $categories = get_categories( $args );
+
+                foreach ( $categories as $category ) {
+                    $selected = '';
+                    if ( in_array( $category->term_id, $default_cat ) ) {
+                        $selected = 'selected ';
+                    }
+                    echo '<option ' . $selected . 'value="' . $category->term_id . '">' . $category->name . '</option>';
+                }
+
+                echo '</select>';
+
                 ?>
                 <p class="description"><?php echo __( 'If users are not allowed to choose any category, this category will be used instead (if post type supports)', 'wpuf' ); ?></p>
             </td>

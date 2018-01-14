@@ -293,6 +293,7 @@ span {
     .metabox-holder {
         flex: 3;
         margin-left: 30px;
+        margin-bottom: 30px;
 
         h2 {
             border-bottom: 1px solid #c8d7e1;
@@ -555,6 +556,82 @@ span {
                 }
             }
         }
+    }
+}
+
+#wpuf_mails{
+    table{
+        tbody{
+            tr{
+
+                &.hide{
+                    display: none;
+                }
+
+                &.heading{
+                    cursor: pointer;
+                    background-color: #f1f1f1;
+                    border: 1px solid #c8d7e1;
+
+                    label{
+                        font-size: 13px;
+                        color: #444;
+                        font-weight: 500;
+
+                        span{
+                            color: #0073aa;
+                            padding-right: 6px;
+
+                            &.dashicons-admin-generic{
+                                color: #9b59b6;
+                            }
+
+                            &.dashicons-universal-access-alt{
+                                color: #AD1457;
+                            }
+
+                            &.dashicons-unlock{
+                                color: #9b59b6;
+                            }
+
+                            &.dashicons-email-alt{
+                                color: #6c75ff;
+                            }
+
+                            &.dashicons-money{
+                                color: #64DD17;
+                            }
+
+                            &.dashicons-admin-users{
+                                color: #00aeff;
+                            }
+
+                            &.dashicons-groups{
+                                color: #e67e22;
+                            }
+
+                            &.dashicons-dismiss{
+                                color: #115da7;
+                            }
+
+                            &.dashicons-smiley{
+                                color: #e74c3c;
+                            }
+                        }
+                    }
+
+                    th{
+                        padding: 16px 10px 16px 30px;
+                    }
+                }
+
+                th{
+                    padding-left: 30px;
+                }
+
+            }
+        }
+
     }
 }
 

@@ -608,7 +608,7 @@ class WPUF_Admin_Form {
                 'name'             => 'post_content',
                 'is_meta'          => 'no',
                 'help'             => '',
-                'width'            => 'medium',
+                'width'            => '',
                 'css'              => '',
                 'rows'             => 5,
                 'cols'             => 25,
@@ -654,7 +654,7 @@ class WPUF_Admin_Form {
                 'name'             => 'post_excerpt',
                 'is_meta'          => 'no',
                 'help'             => '',
-                'width'            => 'medium',
+                'width'            => '',
                 'css'              => '',
                 'rows'             => 5,
                 'cols'             => 25,
@@ -779,6 +779,30 @@ class WPUF_Admin_Form {
             ),
 
             array(
+                'name'          => 'first',
+                'title'         => __( 'Select Text', 'wpuf' ),
+                'type'          => 'text',
+                'section'       => 'basic',
+                'priority'      => 13,
+                'help_text'     => __( "First element of the select dropdown. Leave this empty if you don't want to show this field", 'wpuf' ),
+            ),
+
+            array(
+                'name'          => 'show_inline',
+                'title'         => __( 'Show in inline list', 'wpuf' ),
+                'type'          => 'radio',
+                'options'       => array(
+                    'yes'   => __( 'Yes', 'wpuf' ),
+                    'no'    => __( 'No', 'wpuf' ),
+                ),
+                'default'       => 'no',
+                'inline'        => true,
+                'section'       => 'advanced',
+                'priority'      => 23,
+                'help_text'     => __( 'Show this option in an inline list', 'wpuf' ),
+            ),
+
+            array(
                 'name'      => 'orderby',
                 'title'     => __( 'Order By', 'wpuf' ),
                 'type'      => 'select',
@@ -872,6 +896,8 @@ class WPUF_Admin_Form {
                 'width'             => 'small',
                 'css'               => '',
                 'type'              => 'select',
+                'first'             => __( '- select -', 'wpuf' ),
+                'show_inline'       => 'inline',
                 'orderby'           => 'name',
                 'order'             => 'ASC',
                 'exclude_type'      => '',

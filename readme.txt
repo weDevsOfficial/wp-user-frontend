@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 4.8.1
 Requires PHP: 5.4
-Stable tag: 2.8.0
+Stable tag: 2.8.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -170,14 +170,25 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
-= v2.8.0 (31 December, 2017) =
+= v2.8.1 (14 January, 2017) =
+
+ * **New:** Setup Wizard: Setup Wizard added to turn off payment options and install pages.
+ * **New:** Multi-select Category: Add multi-select to default category in post form settings.
+ * **Improved:** Select Text option for Taxonomy: Add Select Text option for taxonomy fields. Now you can add default text with empty value as first option for Taxonomy dropdown.
+ * **Improved:** Taxonomy Checkbox Inline: Added checkbox inline option to taxonomy checkbox. You can now display Taxonomy checkbox fields inline.
+ * **Fix:** WooComerce Template fix: WooCommerce product form submittion error fixed. Product adding with WooCommerce template works fine now.
+ * **Fix:** Date Display Issue: Date not save/display after save form settings in Schedule form section.
+ * **Fix:** Default Field Width: Default Field Width set empty. Previously set as medium.
+
+
+= v2.8.0 (6 January, 2017) =
 
  * **New:** Limit Entries: limit how many entries a form will accept and display a custom message when that limit is reached.
  * **New:** Schedule form: Don't accept form submission if the current date is not between the date range of the schedule.
- * **New:** Restrict Users: Restrict form submission based on the users' role.
+ * **New:** Restrict Users: Restrict form submission based on the users role.
  * **New:** Show/hide Admin Bar: Control the admin bar visibility based on user roles.
  * **New:** Ajax Login widget: Login user is more simple now with Ajax Login Widget. The simple login form don't required page loding for login.
- * **Improved:** Invisible captcha: Library updated for invisible captcha.
+ * **Improved:** Form submission with Captcha: Form field validation process updated if form submits with captcha field.
  * **Fix:** Payment redirection: Pay per post payment redirection not working after subscription expired.
  * **Fix:** Edit Profile: User cannot edit their profile by frontend profile edit form.
  * **Fix:** Undefined error: Data processing error on purchasing free subscription pack.

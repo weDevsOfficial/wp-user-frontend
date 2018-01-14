@@ -141,14 +141,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             }
         }
 
-        // var_dump( $user_can_post );
-        // var_dump( $info );
-
         $info          = apply_filters( 'wpuf_addpost_notice', $info, $id, $form_settings );
         $user_can_post = apply_filters( 'wpuf_can_post', $user_can_post, $id, $form_settings );
-
-        // var_dump( $user_can_post );
-        // var_dump( $info );
 
         if ( $user_can_post == 'yes' ) {
             $this->render_form( $id );
@@ -260,6 +254,33 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         // don't check captcha on post edit
         if ( !isset( $_POST['post_id'] ) ) {
 
+            $has_limit    = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
+            $is_scheduled = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] == 'true' ) ? true : false;
+
+            if ( $has_limit ) {
+
+                $limit        = (int) !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 0;
+                $form_entries = wpuf_form_posts_count( $form_id );
+
+                if ( $limit && $limit <= $form_entries ) {
+                    $this->send_error( $form_settings['limit_message'] );
+                }
+            }
+
+            if ( $is_scheduled ) {
+
+                $start_time   = !empty( $form_settings['schedule_start'] ) ? strtotime( $form_settings['schedule_start'] ) : 0;
+                $end_time     = !empty( $form_settings['schedule_end'] ) ? strtotime( $form_settings['schedule_end'] ) : 0;
+                $current_time = current_time( 'timestamp' );
+
+                // too early?
+                if ( $current_time < $start_time ) {
+                    $this->send_error( $form_settings['form_pending_message'] );
+                } elseif ( $current_time > $end_time ) {
+                    $this->send_error( $form_settings['form_expired_message'] );
+                }
+            }
+
             // search if rs captcha is there
             if ( $this->search( $post_vars, 'input_type', 'really_simple_captcha' ) ) {
                 $this->validate_rs_captcha();
@@ -267,14 +288,17 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $no_captcha = $invisible_captcha = '';
 
             $check_recaptcha = $this->search( $post_vars, 'input_type', 'recaptcha' );
-            $recaptcha_type  = $check_recaptcha[0]['recaptcha_type'];
+
+            if ( !empty( $check_recaptcha ) ) {
+                $recaptcha_type  = $check_recaptcha[0]['recaptcha_type'];
+            }
 
             // check recaptcha
             if ( $check_recaptcha ) {
 
                 if ( isset ( $_POST["g-recaptcha-response"] ) ) {
                     if ( empty( $_POST['g-recaptcha-response'] ) && $check_recaptcha[0]['recaptcha_type'] !== 'invisible_recaptcha') {
-                        $this->send_error( __( 'Empty reCaptcha Field', 'wpuf-pro' ) );
+                        $this->send_error( __( 'Empty reCaptcha Field', 'wpuf' ) );
                     }
 
                     if ( $recaptcha_type == 'enable_no_captcha' ) {
@@ -353,9 +377,19 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 // guest post is enabled and details are off
             } elseif ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' && $form_settings['guest_details'] == 'false' ) {
                 $post_author = $default_post_author;
+            } elseif ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] != 'true' ) {
+                $this->send_error( $form_settings['message_restrict'] );
             }
 
             // the user must be logged in already
+        } elseif ( isset( $form_settings['role_base'] ) && $form_settings['role_base'] == 'true' ) {
+
+            $current_user = wp_get_current_user();
+
+            if ( !in_array( $current_user->roles[0], $form_settings['roles'] ) ) {
+                $this->send_error( __( 'You do not have sufficient permissions to access this form.', 'wpuf' ) );
+            }
+
         } else {
             $post_author = get_current_user_id();
         }
@@ -446,7 +480,11 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         // set default post category if it's not been set yet and if post type supports
         if ( !isset( $postarr['post_category'] ) && isset( $form_settings['default_cat'] ) && is_object_in_taxonomy( $form_settings['post_type'], 'category' ) ) {
-            $postarr['post_category'] = array( $form_settings['default_cat'] );
+            if ( is_array( $form_settings['default_cat'] ) ) {
+                $postarr['post_category'] = $form_settings['default_cat'];
+            } else {
+                $postarr['post_category'] = array( $form_settings['default_cat'] );
+            }
         }
 
         // validation filter

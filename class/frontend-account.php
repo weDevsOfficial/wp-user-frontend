@@ -111,6 +111,7 @@ class WPUF_Frontend_Account {
         $current_user  = wpuf_get_user();
 
         if ( !$current_user->subscription()->current_pack_id() ) {
+            _e( "<p>You've not subscribed any package yet.</p>", 'wpuf' );
             return;
         }
 

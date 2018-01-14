@@ -214,7 +214,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
         $items  = $this->item_query( $args );
 
-        $this->counts = count( $items['count'] );
+        $this->counts = $items['count'];
         $this->items  = $items['forms'];
 
         $this->set_pagination_args( array(

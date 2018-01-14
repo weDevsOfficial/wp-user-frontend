@@ -9,16 +9,6 @@
                                 continue;
                             }
                         }
-                        if ( 'invoices' == $section['slug'] ) {
-                            if( 'on' == wpuf_get_option( 'show_invoice', 'wpuf_my_account' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
-                                continue;
-                            }
-                        }
-                        if ( 'billing_address' == $section['slug'] ) {
-                            if ( 'on' == wpuf_get_option( 'show_billing_address', 'wpuf_my_account' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
-                                continue;
-                            }
-                        }
                         echo sprintf(
                             '<li><a href="%s">%s</a></li>',
                             add_query_arg( array( 'section' => $section['slug'] ), get_permalink() ),

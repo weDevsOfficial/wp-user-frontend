@@ -264,28 +264,6 @@ function wpuf_settings_fields() {
                     'no'  => __( 'No', 'wpuf' )
                 )
             ),
-            array(
-                'name'    => 'show_invoice',
-                'label'   => __( 'Show Invoice', 'wpuf' ),
-                'desc'    => __( 'Show Invoice tab in "my account" page where <code>[wpuf_account]</code> is located', 'wpuf' ),
-                'type'    => 'select',
-                'default' => 'yes',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no'  => __( 'No', 'wpuf' )
-                )
-            ),
-            array(
-                'name'    => 'show_billing_address',
-                'label'   => __( 'Show Billing Address', 'wpuf' ),
-                'desc'    => __( 'Show Billing Address tab in "my account" page where <code>[wpuf_account]</code> is located', 'wpuf' ),
-                'type'    => 'select',
-                'default' => 'yes',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no'  => __( 'No', 'wpuf' )
-                )
-            ),
         ) ),
         'wpuf_profile' => apply_filters( 'wpuf_options_profile', array(
             array(

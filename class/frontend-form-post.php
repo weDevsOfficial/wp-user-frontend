@@ -259,7 +259,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             if ( $has_limit ) {
 
-                $limit        = (int)  isset( $form_settings['role_base'] ) && !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 0;
+                $limit        = (int) !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 0;
                 $form_entries = wpuf_form_posts_count( $form_id );
 
                 if ( $limit && $limit <= $form_entries ) {
@@ -484,7 +484,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 $postarr['post_category'] = $form_settings['default_cat'];
             } else {
                 $postarr['post_category'] = array( $form_settings['default_cat'] );
-            }  
+            }
         }
 
         // validation filter

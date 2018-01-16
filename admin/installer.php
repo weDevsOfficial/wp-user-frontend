@@ -20,7 +20,7 @@ class WPUF_Admin_Installer {
     function admin_notice() {
         $page_created = get_option( '_wpuf_page_created' );
 
-        if ( $page_created != '1' && empty( wpuf_get_option( 'install_wpuf_pages', 'wpuf_general') ) ) {
+        if ( $page_created != '1' && 'off' == wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' ) ) {
             ?>
             <div class="updated error">
                 <p>
@@ -28,7 +28,7 @@ class WPUF_Admin_Installer {
                 </p>
                 <p class="submit">
                     <a class="button button-primary" href="<?php echo add_query_arg( array( 'install_wpuf_pages' => true ), admin_url( 'admin.php?page=wpuf-settings' ) ); ?>"><?php _e( 'Install WPUF Pages', 'wpuf' ); ?></a>
-                    or
+                    <?php _e( 'or', 'wpuf' ); ?>
                     <a class="button" href="<?php echo add_query_arg( array( 'wpuf_hide_page_nag' => true ) ); ?>"><?php _e( 'Skip Setup', 'wpuf' ); ?></a>
                 </p>
             </div>

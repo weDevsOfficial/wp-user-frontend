@@ -607,7 +607,12 @@ class WPUF_Subscription {
 
         } else if ( $info['pack_id'] ) {
 
-            $profile_id = isset( $info['user_id'] ) ? $info['user_id'] : null;
+            if ( $recurring ) {
+                $profile_id = $info['profile_id'];
+            }else{
+                $profile_id = isset( $info['user_id'] ) ? $info['user_id'] : null;
+            }
+
             wpuf_get_user( $info['user_id'] )->subscription()->add_pack( $info['pack_id'], $profile_id, $recurring, $info['status'] );
 
         }

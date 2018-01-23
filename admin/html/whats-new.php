@@ -15,7 +15,7 @@ $changelog = array(
                 'description' => __( 'Fixed recurring subscription pack cannot be canceled from my account page in subscription details section.', 'wpuf' ),
             ),
             array(
-                'title'       => __( 'page installer admin notice logic problem', 'wpuf' ),
+                'title'       => __( 'page installer admin notice logic issue', 'wpuf' ),
                 'type'        => 'Fix',
                 'description' => __( 'Fixed page installer admin notice logic problem due to new payment settings default value not set.', 'wpuf' ),
             ),

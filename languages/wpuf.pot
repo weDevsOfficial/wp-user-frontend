@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.8.1\n"
+"Project-Id-Version: WP User Frontend 2.8.2\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2018-01-14 09:24:05+00:00\n"
+"POT-Creation-Date: 2018-01-23 08:11:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -137,7 +137,7 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:206
 #: admin/class-admin-subscription.php:560 class/frontend-account.php:135
-#: class/subscription.php:844 class/subscription.php:857
+#: class/subscription.php:849 class/subscription.php:862
 #: includes/class-user-subscription.php:301
 msgid "Free"
 msgstr ""
@@ -285,9 +285,9 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:746
 #: admin/form-builder/class-wpuf-admin-form-builder.php:329
-#: class/payment.php:168 class/subscription.php:771
+#: class/payment.php:168 class/subscription.php:776
 #: includes/class-list-table-subscribers.php:128
-#: templates/dashboard/subscription.php:62
+#: lib/class-wedevs-insights.php:667 templates/dashboard/subscription.php:62
 msgid "Cancel"
 msgstr ""
 
@@ -1811,42 +1811,126 @@ msgid "Contact Support"
 msgstr ""
 
 #: admin/html/whats-new.php:8
-msgid "Setup Wizard"
+msgid "Added upgrade function for default category"
 msgstr ""
 
 #: admin/html/whats-new.php:10
-msgid "Setup Wizard added to turn off payment options and install pages."
+msgid "Upgrader added to upgrade previously set default post category."
 msgstr ""
 
-#: admin/html/whats-new.php:14
-msgid "Multi-select Category"
+#: admin/html/whats-new.php:13
+msgid "Subscription pack cannot be canceled"
 msgstr ""
 
-#: admin/html/whats-new.php:16
-msgid "Add multi-select to default category in post form settings."
+#: admin/html/whats-new.php:15
+msgid ""
+"Fixed recurring subscription pack cannot be canceled from my account page "
+"in subscription details section."
+msgstr ""
+
+#: admin/html/whats-new.php:18
+msgid "page installer admin notice logic issue"
 msgstr ""
 
 #: admin/html/whats-new.php:20
+msgid ""
+"Fixed page installer admin notice logic problem due to new payment settings "
+"default value not set."
+msgstr ""
+
+#: admin/html/whats-new.php:30
+msgid "Setup Wizard"
+msgstr ""
+
+#: admin/html/whats-new.php:32
+msgid "Setup Wizard added to turn off payment options and install pages."
+msgstr ""
+
+#: admin/html/whats-new.php:36
+msgid "Multi-select Category"
+msgstr ""
+
+#: admin/html/whats-new.php:38
+msgid "Add multi-select to default category in post form settings."
+msgstr ""
+
+#: admin/html/whats-new.php:42
 msgid "Select Text option for Taxonomy"
 msgstr ""
 
-#: admin/html/whats-new.php:22
+#: admin/html/whats-new.php:44
 msgid ""
 "Add Select Text option for taxonomy fields. Now you can add default text "
 "with empty value as first option for Taxonomy dropdown."
 msgstr ""
 
-#: admin/html/whats-new.php:25
+#: admin/html/whats-new.php:47
 msgid "Taxonomy Checkbox Inline"
 msgstr ""
 
-#: admin/html/whats-new.php:27
+#: admin/html/whats-new.php:49
 msgid ""
 "Added checkbox inline option to taxonomy checkbox. You can now display "
 "Taxonomy checkbox fields inline."
 msgstr ""
 
-#: admin/html/whats-new.php:41
+#: admin/html/whats-new.php:59
+msgid "Manage schedule for form submission"
+msgstr ""
+
+#: admin/html/whats-new.php:61
+msgid ""
+"Do not accept form submission if the current date is not between the date "
+"range of the schedule."
+msgstr ""
+
+#: admin/html/whats-new.php:65
+msgid "Restrict form submission based on the user roles"
+msgstr ""
+
+#: admin/html/whats-new.php:67
+msgid ""
+"Restrict form submission based on the user roles. Now you can manage user "
+"role base permission on form submission."
+msgstr ""
+
+#: admin/html/whats-new.php:71
+msgid "Limit how many entries a form will accept"
+msgstr ""
+
+#: admin/html/whats-new.php:73
+msgid ""
+"Limit how many entries a form will accept and display a custom message when "
+"that limit is reached."
+msgstr ""
+
+#: admin/html/whats-new.php:77
+msgid "Show/hide Admin Bar"
+msgstr ""
+
+#: admin/html/whats-new.php:79
+msgid "Control the admin bar visibility based on user roles."
+msgstr ""
+
+#: admin/html/whats-new.php:83
+msgid "Ajax Login widget"
+msgstr ""
+
+#: admin/html/whats-new.php:85
+msgid ""
+"Login user is more simple now with Ajax Login Widget. The simple ajax login "
+"form do not required page loading for login."
+msgstr ""
+
+#: admin/html/whats-new.php:89
+msgid "Form submission with Captcha field"
+msgstr ""
+
+#: admin/html/whats-new.php:91
+msgid "Form field validation process updated if form submits with captcha field."
+msgstr ""
+
+#: admin/html/whats-new.php:105
 msgid "What's New in WPUF?"
 msgstr ""
 
@@ -1854,6 +1938,10 @@ msgstr ""
 msgid ""
 "If you have not created <strong>WP User Frontend</strong> pages yet, you "
 "can do this by one click."
+msgstr ""
+
+#: admin/installer.php:31
+msgid "or"
 msgstr ""
 
 #: admin/installer.php:32
@@ -3115,53 +3203,53 @@ msgstr ""
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:739
+#: class/subscription.php:744
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:739
+#: class/subscription.php:744
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:743 class/subscription.php:747
+#: class/subscription.php:748 class/subscription.php:752
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:761
+#: class/subscription.php:766
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:765
+#: class/subscription.php:770
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
-#: class/subscription.php:825
+#: class/subscription.php:830
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:829
+#: class/subscription.php:834
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:841
+#: class/subscription.php:846
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:846
+#: class/subscription.php:851
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:911
+#: class/subscription.php:917
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:923
+#: class/subscription.php:929
 msgid ""
 "Your Subscription pack exhausted. There is a <strong>%s</strong> charge to "
 "add a new post."
 msgstr ""
 
-#: class/subscription.php:967
+#: class/subscription.php:973
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
@@ -4117,10 +4205,6 @@ msgstr ""
 
 #: lib/class-wedevs-insights.php:666
 msgid "Submit & Deactivate"
-msgstr ""
-
-#: lib/class-wedevs-insights.php:667
-msgid "Canel"
 msgstr ""
 
 #: lib/class-weforms-upsell.php:353

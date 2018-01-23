@@ -582,7 +582,7 @@ class WPUF_Subscription {
                     'post_id' => $post_id
                 ), get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
             }
-            if ( !$forcePack && $ppp_cost_enabled ) {
+            if ( !$force_pack && $ppp_cost_enabled ) {
                 $response['show_message'] = false;
                 $response['redirect_to'] = add_query_arg( array(
                     'action'  => 'wpuf_pay',
@@ -607,7 +607,12 @@ class WPUF_Subscription {
 
         } else if ( $info['pack_id'] ) {
 
-            $profile_id = isset( $info['user_id'] ) ? $info['user_id'] : null;
+            if ( $recurring ) {
+                $profile_id = $info['profile_id'];
+            }else{
+                $profile_id = isset( $info['user_id'] ) ? $info['user_id'] : null;
+            }
+
             wpuf_get_user( $info['user_id'] )->subscription()->add_pack( $info['pack_id'], $profile_id, $recurring, $info['status'] );
 
         }
@@ -901,8 +906,9 @@ class WPUF_Subscription {
         $force_pack        = $form->is_enabled_force_pack();
         $current_user      = wpuf_get_user();
         $current_pack      = $current_user->subscription()->current_pack();
+        $payment_enabled   = $form->is_charging_enabled();
 
-        if ( self::has_user_error( $form_settings ) || ( $pay_per_post && !$force_pack ) ) {
+        if ( self::has_user_error( $form_settings ) || ( $payment_enabled && $pay_per_post && !$force_pack ) ) {
             ?>
             <div class="wpuf-info">
                 <?php
@@ -914,7 +920,7 @@ class WPUF_Subscription {
                 ?>
             </div>
             <?php
-        } elseif ( self::has_user_error( $form_settings ) || ( $force_pack &&  !is_wp_error( $current_pack ) && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) ) {
+        } elseif ( self::has_user_error( $form_settings ) || ( $payment_enabled && $force_pack &&  !is_wp_error( $current_pack ) && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) ) {
             ?>
             <div class="wpuf-info">
                 <?php

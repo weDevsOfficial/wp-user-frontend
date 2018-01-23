@@ -664,7 +664,7 @@ class WPUF_WeDevs_Insights {
                 <div class="wd-dr-modal-footer">
                     <a href="#" class="dont-bother-me"><?php _e( 'I rather wouldn\'t say', 'wpuf' ); ?></a>
                     <button class="button-secondary"><?php _e( 'Submit & Deactivate', 'wpuf' ); ?></button>
-                    <button class="button-primary"><?php _e( 'Canel', 'wpuf' ); ?></button>
+                    <button class="button-primary"><?php _e( 'Cancel', 'wpuf' ); ?></button>
                 </div>
             </div>
         </div>

@@ -1,6 +1,28 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.8.2',
+        'released' => '2018-01-23',
+        'changes' => array(
+            array(
+                'title'       => __( 'Added upgrade function for default category', 'wpuf' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Upgrader added to upgrade previously set default post category.', 'wpuf' )
+            ),
+            array(
+                'title'       => __( 'Subscription pack cannot be canceled', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Fixed recurring subscription pack cannot be canceled from my account page in subscription details section.', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'page installer admin notice logic problem', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Fixed page installer admin notice logic problem due to new payment settings default value not set.', 'wpuf' ),
+            ),
+        )
+    ),
+
+    array(
         'version'  => 'Version 2.8.1',
         'released' => '2018-01-14',
         'changes' => array(

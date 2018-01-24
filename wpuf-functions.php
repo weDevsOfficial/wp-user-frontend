@@ -780,6 +780,23 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= $address_html;
                     break;
 
+                case 'repeat':
+                    $value = get_post_meta( $post->ID, $attr['name'] );
+                    $newvalue = array();
+
+                    foreach ($value as $i => $str) {
+                        if (preg_match('/[^\|\s]/', $str)) {
+                            $newvalue[] = $str;
+                        }
+                    }
+
+                    $new = implode( ', ', $newvalue );
+
+                    if ( $new ) {
+                        $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                    }
+                    break;
+
                 default:
                     $value       = get_post_meta( $post->ID, $attr['name'] );
                     $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );

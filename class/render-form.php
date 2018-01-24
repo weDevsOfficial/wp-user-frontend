@@ -121,7 +121,7 @@ class WPUF_Render_Form {
             $response  = null;
             $recaptcha = $_POST['g-recaptcha-response'];
             $object    = new Invisible_Recaptcha( $site_key , $private_key );
-            
+
             $response  = $object->verifyResponse( $recaptcha );
 
             if ( isset( $response['success'] ) and $response['success'] != true) {
@@ -507,14 +507,14 @@ class WPUF_Render_Form {
                 if ( $visibility_selected == 'everyone' ) {
                     $show_field = true;
                 }
-                
+
                 if ( $visibility_selected == 'hidden' ) {
                     $form_field['css'] .= ' wpuf_hidden_field';
                     $show_field = true;
                 }
-                
+
                 if ( $visibility_selected == 'logged_in' && is_user_logged_in() ) {
-                        
+
                     if ( empty($visibility_choices) ) {
                         $show_field = true;
                     }else{
@@ -524,13 +524,13 @@ class WPUF_Render_Form {
                                 break;
                             }
                             continue;
-                        } 
+                        }
                     }
 
                 }
 
                 if ( $visibility_selected == 'subscribed_users' && is_user_logged_in() ) {
-                    
+
                     $user_pack  = WPUF_Subscription::init()->get_user_pack(get_current_user_id());
 
                     if ( empty( $visibility_choices ) && !empty( $user_pack ) ) {
@@ -543,7 +543,7 @@ class WPUF_Render_Form {
                                 break;
                             }
                             continue;
-                        } 
+                        }
 
                     }
 
@@ -1248,8 +1248,10 @@ class WPUF_Render_Form {
 
         <?php
         if ( $repeat_pass ) {
+            $field_size    = !empty( $attr['width'] ) ? ' field-size-' . $attr['width'] : '';
+
             echo '</li>';
-            echo '<li class="wpuf-el password-repeat" data-label="' . esc_attr( 'Confirm Password', 'wpuf' ) . '">';
+            echo '<li class="wpuf-el password-repeat ' . $field_size . '" data-label="' . esc_attr( 'Confirm Password', 'wpuf' ) . '">';
 
             $this->label( array('name' => 'pass2', 'label' => $attr['re_pass_label'], 'required' => $post_id ? 'no' : 'yes') );
             ?>

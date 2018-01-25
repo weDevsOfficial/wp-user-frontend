@@ -935,7 +935,7 @@
                     return(myVal);
                 }
             })).join(' ');
-            $('input[name="display_name"]').val(newVal);                                    
+            $('input[name="display_name"]').val(newVal);
         });
     });
 

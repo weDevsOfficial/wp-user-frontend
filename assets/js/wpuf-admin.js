@@ -53,4 +53,11 @@ jQuery(function($) {
         });
     })
 
+    // Checked layout radio input field after clicking image
+    $(".wpuf-form-layouts li").click(function() {
+        $(this.children[0]).attr("checked", "checked");
+        $(".wpuf-form-layouts li").removeClass('active');
+        $(this).toggleClass('active');
+    })
+
 });

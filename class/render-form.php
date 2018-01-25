@@ -121,7 +121,7 @@ class WPUF_Render_Form {
             $response  = null;
             $recaptcha = $_POST['g-recaptcha-response'];
             $object    = new Invisible_Recaptcha( $site_key , $private_key );
-            
+
             $response  = $object->verifyResponse( $recaptcha );
 
             if ( isset( $response['success'] ) and $response['success'] != true) {
@@ -349,6 +349,11 @@ class WPUF_Render_Form {
         $form_vars      = wpuf_get_form_fields( $form_id );
         $form_settings  = wpuf_get_form_settings( $form_id );
         $label_position = isset( $form_settings['label_position'] ) ? $form_settings['label_position'] : 'left';
+        $layout         = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
+
+        if ( !empty( $layout ) ) {
+            wp_enqueue_style( 'wpuf-' . $layout );
+        }
 
         if ( ! is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {
             echo '<div class="wpuf-message">' . $form_settings['message_restrict'] . '</div>';
@@ -357,8 +362,7 @@ class WPUF_Render_Form {
 
         if ( $form_vars ) {
             ?>
-
-            <form class="wpuf-form-add" action="" method="post">
+            <form class="wpuf-form-add wpuf-form-<?php echo $layout; ?>" action="" method="post">
 
                 <ul class="wpuf-form form-label-<?php echo $label_position; ?>">
 
@@ -507,14 +511,14 @@ class WPUF_Render_Form {
                 if ( $visibility_selected == 'everyone' ) {
                     $show_field = true;
                 }
-                
+
                 if ( $visibility_selected == 'hidden' ) {
                     $form_field['css'] .= ' wpuf_hidden_field';
                     $show_field = true;
                 }
-                
+
                 if ( $visibility_selected == 'logged_in' && is_user_logged_in() ) {
-                        
+
                     if ( empty($visibility_choices) ) {
                         $show_field = true;
                     }else{
@@ -524,13 +528,13 @@ class WPUF_Render_Form {
                                 break;
                             }
                             continue;
-                        } 
+                        }
                     }
 
                 }
 
                 if ( $visibility_selected == 'subscribed_users' && is_user_logged_in() ) {
-                    
+
                     $user_pack  = WPUF_Subscription::init()->get_user_pack(get_current_user_id());
 
                     if ( empty( $visibility_choices ) && !empty( $user_pack ) ) {
@@ -543,7 +547,7 @@ class WPUF_Render_Form {
                                 break;
                             }
                             continue;
-                        } 
+                        }
 
                     }
 
@@ -1009,7 +1013,9 @@ class WPUF_Render_Form {
             <?php } ?>
 
             <?php
-            $textarea_id = $attr['name'] ? $attr['name'] . '_' . $form_id : 'textarea_' . $this->field_count;
+            $form_settings = wpuf_get_form_settings( $form_id );
+            $layout        = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
+            $textarea_id   = $attr['name'] ? $attr['name'] . '_' . $form_id : 'textarea_' . $this->field_count;
 
             if ( $attr['rich'] == 'yes' ) {
                 $editor_settings = array(
@@ -1017,7 +1023,10 @@ class WPUF_Render_Form {
                     'quicktags'     => false,
                     'media_buttons' => false,
                     'editor_class'  => $req_class,
-                    'textarea_name' => $attr['name']
+                    'textarea_name' => $attr['name'],
+                    'tinymce'       => array(
+                        'content_css'   => WPUF_ASSET_URI . '/css/frontend-form/' . $layout . '.css'
+                    )
                 );
 
                 $editor_settings = apply_filters( 'wpuf_textarea_editor_args' , $editor_settings );
@@ -1031,7 +1040,10 @@ class WPUF_Render_Form {
                     'media_buttons' => false,
                     'teeny'         => true,
                     'editor_class'  => $req_class,
-                    'textarea_name' => $attr['name']
+                    'textarea_name' => $attr['name'],
+                    'tinymce'       => array(
+                        'content_css'   => WPUF_ASSET_URI . '/css/frontend-form/' . $layout . '.css'
+                    )
                 );
 
                 $editor_settings = apply_filters( 'wpuf_textarea_editor_args' , $editor_settings );

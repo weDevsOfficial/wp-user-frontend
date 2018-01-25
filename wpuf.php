@@ -421,6 +421,12 @@ final class WP_User_Frontend {
         }
 
         wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
+
+        // register css files for different layouts of frontend form
+        wp_register_style( 'wpuf-layout1', WPUF_ASSET_URI . '/css/frontend-form/layout1.css' );
+        wp_register_style( 'wpuf-layout2', WPUF_ASSET_URI . '/css/frontend-form/layout2.css' );
+        wp_register_style( 'wpuf-layout3', WPUF_ASSET_URI . '/css/frontend-form/layout3.css' );
+
         wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array( 'jquery' ), false, true );
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {

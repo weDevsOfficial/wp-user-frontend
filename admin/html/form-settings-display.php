@@ -1,5 +1,6 @@
 <?php
 $label_position = isset( $form_settings['label_position'] ) ? $form_settings['label_position'] : 'left';
+$form_layout    = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
 ?>
 
 <table class="form-table">
@@ -27,4 +28,37 @@ $label_position = isset( $form_settings['label_position'] ) ? $form_settings['la
             </p>
         </td>
     </tr>
+
+    <?php if( class_exists( 'WP_User_Frontend_Pro' ) ) : ?>
+        <tr class="wpuf-form-layouts">
+            <th><?php _e( 'Form Style', 'wpuf' ); ?></th>
+            <td>
+                <ul>
+                    <?php
+                        $layouts = array(
+                            'layout1' => WPUF_PRO_ASSET_URI . '/images/forms/layout1.png',
+                            'layout2' => WPUF_PRO_ASSET_URI . '/images/forms/layout2.png',
+                            'layout3' => WPUF_PRO_ASSET_URI . '/images/forms/layout3.png'
+                        );
+
+                        foreach ( $layouts as $key => $image ) {
+                            $class = '';
+
+                            if ( $key == $form_layout ) {
+                                $class = 'active';
+                            }
+
+                            $output  = '<li class="' . $class . '">';
+                            $output .= '<input type="radio" name="wpuf_settings[form_layout]" value="' . $key . '" ' . checked( $form_layout, $key, false ). '>';
+                            $output .= '<img src="' . $image . '" alt="">';
+                            $output .= '</li>';
+
+                            echo $output;
+                        }
+                    ?>
+                </ul>
+            </td>
+        </tr>
+    <?php endif; ?>
+
 </table>

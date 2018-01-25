@@ -727,6 +727,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     $mail_body = $this->prepare_mail_body( $form_settings['notification']['edit_body'], $post_author, $post_id );
                     $to        = $this->prepare_mail_body( $form_settings['notification']['edit_to'], $post_author, $post_id );
                     $subject   = $this->prepare_mail_body( $form_settings['notification']['edit_subject'], $post_author, $post_id );
+                    $subject   = wp_strip_all_tags( $subject );
                     $headers  = array('Content-Type: text/html; charset=UTF-8');
 
                     wp_mail( $to, $subject, $mail_body, $headers );
@@ -745,6 +746,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     $mail_body = $this->prepare_mail_body( $form_settings['notification']['new_body'], $post_author, $post_id );
                     $to        = $this->prepare_mail_body( $form_settings['notification']['new_to'], $post_author, $post_id );
                     $subject   = $this->prepare_mail_body( $form_settings['notification']['new_subject'], $post_author, $post_id );
+                    $subject   = wp_strip_all_tags( $subject );
 
                     wp_mail( $to, $subject, $mail_body );
                 }

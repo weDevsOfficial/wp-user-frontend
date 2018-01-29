@@ -272,12 +272,13 @@ class WPUF_User_Subscription {
      *
      * @param int $pack_id
      */
-    public function add_free_pack( $pack_id ) {
+    public function add_free_pack( $user_id, $pack_id ) {
         $has_used = get_user_meta( $this->user->id, 'wpuf_fp_used', true );
         $has_used = is_array( $has_used ) ? $has_used : array();
 
         $has_used[$pack_id] = $pack_id;
-        $this->update_meta( $has_used, 'wpuf_fp_used' );
+
+        update_user_meta( $user_id, 'wpuf_fp_used', $has_used );
     }
 
     public function pack_info( $form_id ) {

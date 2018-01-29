@@ -182,7 +182,7 @@ class WPUF_Subscription {
 
         if ( $billing_amount === false ) {
             wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, null, false, 'free' );
-            wpuf_get_user( $user_id )->subscription()->add_free_pack( $pack_id );
+            wpuf_get_user( $user_id )->subscription()->add_free_pack( $user_id, $pack_id );
         } else {
             $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
             $redirect = add_query_arg( array( 'action' => 'wpuf_pay', 'type' => 'pack', 'pack_id' => (int) $pack_id ), get_permalink( $pay_page ) );
@@ -1090,7 +1090,7 @@ class WPUF_Subscription {
     public static function add_free_pack( $user_id, $pack_id ) {
         // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user( $user_id )->subscription()->add_free_pack( $pack_id );' );
 
-        wpuf_get_user( $user_id )->subscription()->add_free_pack( $pack_id );
+        wpuf_get_user( $user_id )->subscription()->add_free_pack( $user_id, $pack_id );
     }
 
     function packdropdown( $packs, $selected = '' ) {

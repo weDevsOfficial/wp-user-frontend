@@ -89,6 +89,11 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
             <th><?php _e( 'Default Post Category', 'wpuf' ); ?></th>
             <td>
                 <?php
+
+                if ( !is_array( $default_cat ) ) {
+                    $default_cat = (array) $default_cat;
+                }
+
                 $args = array(
                     'hide_empty'       => false,
                     'hierarchical'     => true,

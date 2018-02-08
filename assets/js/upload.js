@@ -183,6 +183,7 @@
                     'action' : 'wpuf_file_del'
                 };
                 this.removed_files.push(data);
+                jQuery('#del_attach').val(el.data('attach_id'));
                 jQuery.post(wpuf_frontend_upload.ajaxurl, data, function() {
                     self.perFileCount--;
                     el.parent().parent().remove();

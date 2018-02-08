@@ -686,6 +686,7 @@ class WPUF_Render_Form {
             <?php wp_nonce_field( 'wpuf_form_add' ); ?>
             <input type="hidden" name="form_id" value="<?php echo $form_id; ?>">
             <input type="hidden" name="page_id" value="<?php echo get_post() ? get_the_ID() : '0'; ?>">
+            <input type="hidden" id="del_attach" name="delete_attachments[]">
             <input type="hidden" name="action" value="wpuf_submit_post">
 
             <?php
@@ -1269,7 +1270,7 @@ class WPUF_Render_Form {
             ?>
 
             <div class="wpuf-fields">
-                <input id="pass2" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="confirm_password"<?php $this->required_html5( $attr ); ?> name="pass2" value="" size="<?php echo esc_attr( $attr['size'] ) ?>" />
+                <input id="pass2" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="confirm_password"<?php $this->required_html5( $attr ); ?> name="pass2" value="" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" size="<?php echo esc_attr( $attr['size'] ) ?>" />
             </div>
 
             <?php

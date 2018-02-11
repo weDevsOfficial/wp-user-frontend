@@ -53,7 +53,9 @@ class WPUF_User_Subscription {
         $pack = $this->pack;
 
         if ( ! isset( $this->pack['pack_id'] ) ) {
-            return new WP_Error( 'no-pack', __( 'You must purchase a pack before posting', 'wpuf') );
+            $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
+
+            return new WP_Error( 'no-pack', sprintf( __( 'You must <a href="%s">purchase a pack</a> before posting', 'wpuf'), $pack_page ) );
         }
 
         // seems like the user has a pack, now check expiration
@@ -226,7 +228,7 @@ class WPUF_User_Subscription {
 
                 $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );
             }
-            
+
         }
     }
 

@@ -233,7 +233,7 @@ function wpuf_override_admin_edit_link( $url, $post_id ) {
     if ( is_admin() ) {
         return $url;
     }
-
+   
     $override = wpuf_get_option( 'override_editlink', 'wpuf_general', 'no' );
 
     if ( $override == 'yes' ) {
@@ -247,7 +247,7 @@ function wpuf_override_admin_edit_link( $url, $post_id ) {
         }
     }
 
-    return $url;
+    return apply_filters( 'wpuf_front_post_edit_link', $url );
 }
 
 add_filter( 'get_edit_post_link', 'wpuf_override_admin_edit_link', 10, 2 );

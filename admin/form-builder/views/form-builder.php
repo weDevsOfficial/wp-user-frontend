@@ -20,6 +20,8 @@
                     <span class="loader"></span> <?php _e( 'Saving Form Data', 'wpuf' ); ?>
                 </button>
             </span>
+            <span id="wpuf-toggle-field-options"><?php _e( 'Add Fields', 'wpuf' ); ?></span>
+            <span id="wpuf-toggle-show-form"><?php _e( 'Show Form', 'wpuf' ); ?></span>
         </h2>
 
         <div class="tab-contents">

@@ -712,8 +712,6 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            var_dump($attr['input_type']);
-
             switch ( $attr['input_type'] ) {
                 case 'image_upload':
                 case 'file_upload':

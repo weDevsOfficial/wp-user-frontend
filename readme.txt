@@ -86,7 +86,7 @@ The <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_so
 * <strong>Registration form</strong> builder
 * <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#captcha">Captcha Support</a>
 
-Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
+Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the Pro version.
 
 = Translation =
 

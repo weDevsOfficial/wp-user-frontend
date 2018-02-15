@@ -1,6 +1,32 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.8.3',
+        'released' => '2018-02-15',
+        'changes' => array(
+            array(
+                'title'       => __( 'Admin form builder is now fully responsive.', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Now you can edit forms from your mobile devices directly. Our improved responsive layouts of form builder makes it easy for you to build forms on the go.', 'wpuf' )
+            ),
+            array(
+                'title'       => __( 'Added color schemes for creating attractive form layouts.', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'We have added 3 new color schemes for the form layouts which you can choose from each form\'s new display settings.', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Restrict Free subscription pack to be enabled multiple times ', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Free subscription packs now can only be purchased once and the limit applies properly', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Various other bug fixes and improvements were made ', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Please see the change log to see full details.', 'wpuf' ),
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 2.8.2',
         'released' => '2018-01-23',
         'changes' => array(

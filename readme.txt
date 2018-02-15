@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 4.8.1
 Requires PHP: 5.4
-Stable tag: 2.8.2
+Stable tag: 2.8.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,7 +86,7 @@ The <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_so
 * <strong>Registration form</strong> builder
 * <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#captcha">Captcha Support</a>
 
-Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
+Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the Pro version.
 
 = Translation =
 

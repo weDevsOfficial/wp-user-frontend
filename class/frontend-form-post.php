@@ -243,11 +243,16 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
-        $form_id       = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
-        $form_vars     = $this->get_input_fields( $form_id );
-        $form_settings = wpuf_get_form_settings( $form_id );
-        $guest_mode    = isset( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : '';
-        $guest_verify  = isset( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false' ;
+        $form_id               = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
+        $form_vars             = $this->get_input_fields( $form_id );
+        $form_settings         = wpuf_get_form_settings( $form_id );
+        $guest_mode            = isset( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : '';
+        $guest_verify          = isset( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false' ;
+        $attachments_to_delete = isset( $_POST['delete_attachments'] ) ? $_POST['delete_attachments'] : array();
+
+        foreach ( $attachments_to_delete as $attach_id ) {
+            wp_delete_attachment( $attach_id, true );
+        }
 
         list( $post_vars, $taxonomy_vars, $meta_vars ) = $form_vars;
 
@@ -727,6 +732,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     $mail_body = $this->prepare_mail_body( $form_settings['notification']['edit_body'], $post_author, $post_id );
                     $to        = $this->prepare_mail_body( $form_settings['notification']['edit_to'], $post_author, $post_id );
                     $subject   = $this->prepare_mail_body( $form_settings['notification']['edit_subject'], $post_author, $post_id );
+                    $subject   = wp_strip_all_tags( $subject );
                     $headers  = array('Content-Type: text/html; charset=UTF-8');
 
                     wp_mail( $to, $subject, $mail_body, $headers );
@@ -745,6 +751,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     $mail_body = $this->prepare_mail_body( $form_settings['notification']['new_body'], $post_author, $post_id );
                     $to        = $this->prepare_mail_body( $form_settings['notification']['new_to'], $post_author, $post_id );
                     $subject   = $this->prepare_mail_body( $form_settings['notification']['new_subject'], $post_author, $post_id );
+                    $subject   = wp_strip_all_tags( $subject );
 
                     wp_mail( $to, $subject, $mail_body );
                 }

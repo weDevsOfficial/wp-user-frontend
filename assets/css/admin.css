@@ -492,6 +492,38 @@ span.wpuf_help {
 #wpuf_mails table tbody tr th {
   padding-left: 30px;
 }
+tr.wpuf-form-layouts ul {
+  margin: 0;
+  overflow: hidden;
+}
+tr.wpuf-form-layouts ul li {
+  margin: 0;
+  padding: 0 15px 15px 0;
+  position: relative;
+  width: 50%;
+  float: left;
+}
+tr.wpuf-form-layouts ul li input[type="radio"] {
+  display: none;
+}
+tr.wpuf-form-layouts ul li img {
+  max-width: 100%;
+  cursor: pointer;
+}
+tr.wpuf-form-layouts ul li.active:before {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  font-family: dashicons;
+  font-size: 40px;
+  color: #18d118;
+  content: "\f147";
+  text-align: center;
+  background: #f5f5f5;
+  line-height: 40px;
+}
 .wpuf-help-tabbed {
   display: flex;
   width: 100%;

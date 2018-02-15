@@ -101,7 +101,13 @@ class WPUF_Admin_Subscription {
             return;
         }
 
+        if ( isset( $_POST['wpuf_profile_mail_noti'] ) ) {
+            update_user_meta( $user_id, '_pack_assign_notification',  $_POST['wpuf_profile_mail_noti'] );
+        }
+
         $pack_id = $_POST['pack_id'];
+        $pack  = WPUF_Subscription::get_subscription( $_POST['pack_id'] );
+
         $user_pack = WPUF_Subscription::get_user_pack( $_POST['user_id'] );
         if ( isset ( $user_pack['pack_id'] ) && $pack_id == $user_pack['pack_id'] ) {
             //updating number of posts
@@ -148,7 +154,7 @@ class WPUF_Admin_Subscription {
             $data = array(
                 'user_id'          => $user_id,
                 'status'           => 'completed',
-                'cost'             => 0,
+                'cost'             => $pack->$meta_value['_billing_amount'][0],
                 'post_id'          => 0,
                 'pack_id'          => $pack_id,
                 'payer_first_name' => $user_info->first_name,
@@ -759,7 +765,8 @@ class WPUF_Admin_Subscription {
                     </tr>
                 </table>
             <?php endif;?>
-
+            <?php 
+            do_action( 'wpuf_admin_subscription_content', $userdata->ID ) ?>
             <?php if ( !empty( $user_sub ) ): ?>
                 <div class="wpuf-sub-actions">
                     <a class="btn button-secondary wpuf-delete-pack-btn" href="javascript:" data-userid="<?php echo $userdata->ID; ?>" data-packid="<?php echo $user_sub['pack_id']; ?>"><?php _e( 'Delete Package', 'wpuf' ); ?></a>

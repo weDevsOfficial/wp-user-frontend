@@ -1024,7 +1024,9 @@ Vue.component('form-taxonomy', {
             var self    = this,
                 options = '';
 
-            options = '<option value="">' + this.field.first + '</option>';
+            if ( this.field.type === 'select' ) {
+                options = '<option value="">' + this.field.first + '</option>';
+            }
 
             _.each(self.sorted_terms, function (term) {
                 options += self.get_term_dropdown_options_children(term, 0);
@@ -1118,19 +1120,19 @@ Vue.component('form-taxonomy', {
     }
 });
 
-Vue.component('form-textarea_field', {
-    template: '#tmpl-wpuf-form-textarea_field',
+/**
+ * Field template: Text
+ */
+Vue.component('form-text_field', {
+    template: '#tmpl-wpuf-form-text_field',
 
     mixins: [
         wpuf_mixins.form_field_mixin
     ]
 });
 
-/**
- * Field template: Text
- */
-Vue.component('form-text_field', {
-    template: '#tmpl-wpuf-form-text_field',
+Vue.component('form-textarea_field', {
+    template: '#tmpl-wpuf-form-textarea_field',
 
     mixins: [
         wpuf_mixins.form_field_mixin

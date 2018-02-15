@@ -1,11 +1,11 @@
 === WP User Frontend - Membership, Profile, Registration & Post Submission Plugin for WordPress ===
-Contributors: tareq1988, sk.shaikat, rabbii, wedevs
+Contributors: tareq1988, sk.shaikat, rabbii, wedevs, rafsuntaskin
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 4.8.1
 Requires PHP: 5.4
-Stable tag: 2.8.2
+Stable tag: 2.8.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,7 +86,7 @@ The <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_so
 * <strong>Registration form</strong> builder
 * <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#captcha">Captcha Support</a>
 
-Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
+Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the Pro version.
 
 = Translation =
 
@@ -170,12 +170,23 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
-= v2.8.3 (23 January, 2017) =
+= v2.8.3 (15 February, 2018) =
+
+ * **New:** Admin form builder is now fully responsive.
+ * **New:** Added color schemes for creating attractive form layouts.
+ * **Fix:** Confirmation password field size is not updated
+ * **Fix:** Email notification contains unnecessary texts
+ * **Fix:** Assign pack costs not showing on admin fixed
+ * **Fix:** Restrict Free subscription pack to be enabled multiple times 
+ * **Fix:** While updating post, image changes are updated after saving the post
+ * **Improved:** Show purchase link on notice of post purchase
+ * **Improved:** Hide edit link on front-end post listing if editing is disabled
+
+= v2.8.2 (23 January, 2017) =
 
  * **Improved:** Added upgrade function for default category: Upgrader added to upgrade previously set default post category.
- * **Fix:** Subscription pack cannot be canceled: Fixed recurring subscription pack cannot be canceled from my account page in subscription details section.
+ * **New:** Subscription pack cannot be canceled: Fixed recurring subscription pack cannot be canceled from my account page in subscription details section.
  * **Fix:** page installer admin notice logic issue: Fixed page installer admin notice logic problem due to new payment settings default value not set.
-
 
 = v2.8.1 (14 January, 2017) =
 

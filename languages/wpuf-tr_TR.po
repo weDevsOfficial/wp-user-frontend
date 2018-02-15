@@ -2,145 +2,143 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.8.3\n"
+"Project-Id-Version: WP User Frontend 2.8.2\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2018-02-15 10:24:40+00:00\n"
+"POT-Creation-Date: 2018-02-05 05:32:17+00:00\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2018-02-11 02:50+0300\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
-"X-Generator: grunt-wp-i18n 0.5.4\n"
-"X-Poedit-KeywordsList: "
-"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
-"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
-"Language: en\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
+"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
+"esc_html_x:1,2c\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Country: United States\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Basepath: ../\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-Bookmarks: \n"
+"X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
+"Last-Translator: \n"
+"Language: tr\n"
+"X-Poedit-SearchPath-0: .\n"
 
 #. Plugin Name of the plugin/theme
 msgid "WP User Frontend"
-msgstr ""
+msgstr "WP Kullanıcı Arayüzü"
 
 #: admin/class-admin-settings.php:87
 msgid "User Frontend"
-msgstr ""
+msgstr "Kullanıcı Arayüzü"
 
 #: admin/class-admin-settings.php:89 admin/post-forms-list-table-view.php:4
 msgid "Post Forms"
-msgstr ""
+msgstr "Post Formlar"
 
 #: admin/class-admin-settings.php:98 admin/weforms.php:2
 msgid "weForms"
-msgstr ""
+msgstr "weFormlar"
 
 #: admin/class-admin-settings.php:98
 msgid "Contact Form"
-msgstr ""
+msgstr "İletişim Formu"
 
 #: admin/class-admin-settings.php:101
 msgid "Subscriptions"
-msgstr ""
+msgstr "Abonelikler"
 
 #: admin/class-admin-settings.php:107 admin/class-tools.php:378
 #: admin/transactions.php:2
 msgid "Transactions"
-msgstr ""
+msgstr "İşlemler"
 
 #: admin/class-admin-settings.php:110 admin/tools.php:13
 msgid "Tools"
-msgstr ""
+msgstr "Araçlar"
 
 #: admin/class-admin-settings.php:115
 msgid "Premium"
-msgstr ""
+msgstr "Ödül"
 
 #: admin/class-admin-settings.php:117
 msgid "Help"
-msgstr ""
+msgstr "Yardım"
 
 #: admin/class-admin-settings.php:117
 msgid "<span style=\"color:#f18500\">Help</span>"
-msgstr ""
+msgstr "<span style=\"color:#f18500\">Yardım</span>"
 
 #: admin/class-admin-settings.php:118 admin/class-admin-settings.php:156
 #: admin/form-builder/views/form-builder.php:9 includes/setup-wizard.php:103
 msgid "Settings"
-msgstr ""
+msgstr "Ayarlar"
 
 #: admin/class-admin-settings.php:120 admin/class-admin-subscription.php:191
 #: admin/subscribers.php:18
 msgid "Subscribers"
-msgstr ""
+msgstr "Takipçiler"
 
 #: admin/class-admin-settings.php:377
 msgid "Number of items per page:"
-msgstr ""
+msgstr "Sayfa başına öğe sayısı:"
 
 #: admin/class-admin-subscription.php:60
 msgid "Pack Description"
-msgstr ""
+msgstr "Paket Tanımlaması"
 
 #: admin/class-admin-subscription.php:73 admin/class-admin-subscription.php:76
 msgid "Subscription pack updated."
-msgstr ""
+msgstr "Abonelik paketi güncellendi."
 
 #: admin/class-admin-subscription.php:74
 msgid "Custom field updated."
-msgstr ""
+msgstr "Özel alan güncellendi."
 
 #: admin/class-admin-subscription.php:75
 msgid "Custom field deleted."
-msgstr ""
+msgstr "Özel alan silindi."
 
 #: admin/class-admin-subscription.php:77
 msgid "Subscription pack restored to revision from %s"
-msgstr ""
+msgstr "Abonelik paketi %s'ten itibaren gözden geçirildi"
 
 #: admin/class-admin-subscription.php:78
 msgid "Subscription pack published."
-msgstr ""
+msgstr "Abonelik paketi yayınlandı."
 
 #: admin/class-admin-subscription.php:79
 msgid "Subscription pack saved."
-msgstr ""
+msgstr "Abonelik paketi kaydedildi."
 
 #: admin/class-admin-subscription.php:80
 msgid "Subscription pack submitted."
-msgstr ""
+msgstr "Abonelik paketi gönderildi."
 
 #: admin/class-admin-subscription.php:82
 msgid "Subscription pack draft updated."
-msgstr ""
+msgstr "Abonelik paketi taslağı güncellendi."
 
 #: admin/class-admin-subscription.php:189 class/subscription.php:297
 msgid "Pack Name"
-msgstr ""
+msgstr "Paket Adı"
 
 #: admin/class-admin-subscription.php:190
 msgid "Amount"
-msgstr ""
+msgstr "Miktar"
 
 #: admin/class-admin-subscription.php:192 includes/free/subscription.php:8
 msgid "Recurring"
-msgstr ""
+msgstr "Tekrarlayan"
 
 #: admin/class-admin-subscription.php:193
 msgid "Duration"
-msgstr ""
+msgstr "Süreklilik"
 
 #: admin/class-admin-subscription.php:212
 #: admin/class-admin-subscription.php:566 class/frontend-account.php:135
 #: class/subscription.php:849 class/subscription.php:862
-#: includes/class-user-subscription.php:304
+#: includes/class-user-subscription.php:302
 msgid "Free"
-msgstr ""
+msgstr "Ücretsiz"
 
 #: admin/class-admin-subscription.php:230
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:66
@@ -152,7 +150,7 @@ msgstr ""
 #: admin/settings-options.php:204 admin/settings-options.php:263
 #: admin/template.php:70 includes/free/form-element.php:477
 msgid "Yes"
-msgstr ""
+msgstr "Evet"
 
 #: admin/class-admin-subscription.php:232
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:67
@@ -164,124 +162,124 @@ msgstr ""
 #: admin/settings-options.php:205 admin/settings-options.php:264
 #: admin/template.php:71 includes/free/form-element.php:478
 msgid "No"
-msgstr ""
+msgstr "Hayır"
 
 #: admin/class-admin-subscription.php:321 admin/form.php:230
 msgid "Payment Settings"
-msgstr ""
+msgstr "Ödeme Ayarları"
 
 #: admin/class-admin-subscription.php:328
 msgid "Posting Restriction"
-msgstr ""
+msgstr "Gönderme Kısıtlaması"
 
 #: admin/class-admin-subscription.php:342
 msgid "Billing amount:"
-msgstr ""
+msgstr "Fatura bedeli:"
 
 #: admin/class-admin-subscription.php:343
 msgid "Billing amount each cycle:"
-msgstr ""
+msgstr "Fatura tutarı her aşamada:"
 
 #: admin/class-admin-subscription.php:351
 msgid "Expires In:"
-msgstr ""
+msgstr "İçinde Sona Eriyor:"
 
 #: admin/class-admin-subscription.php:375 admin/form.php:232
 #: includes/free/form-element.php:56
 msgid "Post Expiration"
-msgstr ""
+msgstr "Son Kullanma Tarihi"
 
 #: admin/class-admin-subscription.php:380 includes/free/form-element.php:60
 msgid "Enable Post Expiration"
-msgstr ""
+msgstr "Son Kullanma Tarihini Etkinleştir"
 
 #: admin/class-admin-subscription.php:392
 #: admin/class-admin-subscription.php:670 includes/free/form-element.php:66
 msgid "Post Expiration Time"
-msgstr ""
+msgstr "Son Kullanma Zamanı"
 
 #: admin/class-admin-subscription.php:417 admin/html/form-settings-post.php:57
 #: admin/post-forms-list-table.php:298
 msgid "Post Status"
-msgstr ""
+msgstr "Yayın Durumu"
 
 #: admin/class-admin-subscription.php:431 includes/free/form-element.php:112
 msgid "Status of post after post expiration time is over "
-msgstr ""
+msgstr "Yayın durumu süresi son kullanım tarihinden sonra dolmuştur "
 
 #: admin/class-admin-subscription.php:436
 msgid "Expiration Mail"
-msgstr ""
+msgstr "Süre Sonu Postası"
 
 #: admin/class-admin-subscription.php:441
 msgid "Send Expiration Email to Post Author"
-msgstr ""
+msgstr "Yayın Yazarına Süre Sonu Epostası Gönder"
 
 #: admin/class-admin-subscription.php:445
 msgid "Send Mail to Author After Exceeding Post Expiration Time"
-msgstr ""
+msgstr "Sona Erme Süresini Aştıktan Sonra Yazara Posta Gönder"
 
 #: admin/class-admin-subscription.php:450
 msgid "Expiration Message"
-msgstr ""
+msgstr "Sona Erme Mesajı"
 
 #: admin/class-admin-subscription.php:513
 msgid "Day(s)"
-msgstr ""
+msgstr "Gün(ler)"
 
 #: admin/class-admin-subscription.php:514
 msgid "Week(s)"
-msgstr ""
+msgstr "Hafta(lar)"
 
 #: admin/class-admin-subscription.php:515
 msgid "Month(s)"
-msgstr ""
+msgstr "Ay(lar)"
 
 #: admin/class-admin-subscription.php:516
 msgid "Year(s)"
-msgstr ""
+msgstr "Yıl(lar)"
 
 #: admin/class-admin-subscription.php:557
 msgid "WPUF Subscription Information"
-msgstr ""
+msgstr "WPUF Abonelik Bilgileri"
 
 #: admin/class-admin-subscription.php:583
 msgid "Subcription Name"
-msgstr ""
+msgstr "Abonelik Adı"
 
 #: admin/class-admin-subscription.php:593
 msgid "Billing Info"
-msgstr ""
+msgstr "Fatura bilgisi"
 
 #: admin/class-admin-subscription.php:607
 msgid "This user is using recurring subscription pack"
-msgstr ""
+msgstr "Bu kullanıcı tekrar eden abonelik paketi kullanıyor"
 
 #: admin/class-admin-subscription.php:613
 msgid "Remaining Posting Count"
-msgstr ""
+msgstr "Kalan Postalama Sayısı"
 
 #: admin/class-admin-subscription.php:634
 msgid "Subscription Expiration Info"
-msgstr ""
+msgstr "Abonelik Sona Erme Bilgisi"
 
 #: admin/class-admin-subscription.php:645
-#: includes/class-user-subscription.php:358
+#: includes/class-user-subscription.php:356
 #: templates/dashboard/subscription.php:41
 msgid "Expire date:"
-msgstr ""
+msgstr "Son erme tarihi:"
 
 #: admin/class-admin-subscription.php:659
 msgid "Post Expiration Enabled"
-msgstr ""
+msgstr "Sona Erme Yayını Etkin"
 
 #: admin/class-admin-subscription.php:696
 msgid "Allowed Taxonomy Terms"
-msgstr ""
+msgstr "İzin Verilen Taksonomi Koşulları"
 
 #: admin/class-admin-subscription.php:751
 msgid "Assign Package"
-msgstr ""
+msgstr "Paketi Ata"
 
 #: admin/class-admin-subscription.php:752
 #: admin/form-builder/class-wpuf-admin-form-builder.php:329
@@ -289,267 +287,277 @@ msgstr ""
 #: includes/class-list-table-subscribers.php:128
 #: lib/class-wedevs-insights.php:667 templates/dashboard/subscription.php:62
 msgid "Cancel"
-msgstr ""
+msgstr "İptal"
 
 #: admin/class-admin-subscription.php:758
 msgid "Select Package:"
-msgstr ""
+msgstr "Paket Seç:"
 
 #: admin/class-admin-subscription.php:761
 msgid "&mdash; Select &mdash;"
-msgstr ""
+msgstr "&mdash; Seç &mdash;"
 
 #: admin/class-admin-subscription.php:772
 msgid "Delete Package"
-msgstr ""
+msgstr "Paketi Sil"
 
 #: admin/class-admin-subscription.php:821
 msgid "Learn more about <a href=\"%s\" target=\"_blank\">Subscription</a>"
 msgstr ""
+"Daha fazlasını öğrenmek için <a href=\"%s\" target=\"_blank\">Abonelik</a>"
 
 #: admin/class-admin-welcome.php:22
 msgid "Welcome to WP User Frontend"
-msgstr ""
+msgstr "WP Kullanıcı Arayüzü'ne Hoşgeldiniz"
 
 #: admin/class-tools.php:33
 msgid "Form Export"
-msgstr ""
+msgstr "Dışa Aktarma Formu"
 
 #: admin/class-tools.php:39 admin/class-tools.php:95
 #: admin/post-forms-list-table.php:43 class/transactions-list-table.php:85
 #: includes/class-list-table-subscribers.php:126
 msgid "All"
-msgstr ""
+msgstr "Tümü"
 
 #: admin/class-tools.php:44 admin/class-tools.php:100
 msgid "Select individual"
-msgstr ""
+msgstr "Bireysel seç"
 
 #: admin/class-tools.php:54 admin/class-tools.php:113 admin/tools.php:15
 msgid "Export"
-msgstr ""
+msgstr "Dışa Aktarma"
 
 #: admin/class-tools.php:62 admin/class-tools.php:120
 msgid "Sorry you have no form to export"
-msgstr ""
+msgstr "Üzgünüm dışa aktarılacak formunuz yok"
 
 #: admin/class-tools.php:87
 msgid "Registration Form Export"
-msgstr ""
+msgstr "Dışa Aktarma Formu Kaydı"
 
 #: admin/class-tools.php:133
 msgid "Somthing went wrong. Please choose a file again"
-msgstr ""
+msgstr "Bir şeyler yanlış gitti. Lütfen tekrar bir dosya seçin"
 
 #: admin/class-tools.php:145
 msgid "Import successful. Have fun!"
-msgstr ""
+msgstr "İçe aktarma başarılı. İyi eğlenceler!"
 
 #: admin/class-tools.php:148
 msgid "Invalid file or file size too big."
-msgstr ""
+msgstr "Geçersiz dosya veya dosya boyutu çok büyük."
 
 #: admin/class-tools.php:154
 msgid "Import forms"
-msgstr ""
+msgstr "Formları içe aktar"
 
 #: admin/class-tools.php:156
 msgid "Click Browse button and choose a json file that you backup before."
 msgstr ""
+"Gözat butonuna tıklayın ve daha önce yedeklediğiniz bir json dosyası seçin."
 
 #: admin/class-tools.php:157
 msgid "Press <strong>Import</strong> button, we will do the rest for you."
 msgstr ""
+"Basın <strong>İçe Aktar</strong> butonuna, biz de sizin için kalanı "
+"halledeceğiz."
 
 #: admin/class-tools.php:162 admin/tools.php:14
 msgid "Import"
-msgstr ""
+msgstr "İçe Aktarma"
 
 #: admin/class-tools.php:217 admin/class-tools.php:237
 msgid "Please select some form for exporting"
-msgstr ""
+msgstr "Lütfen dışa aktarmak için biraz form seçin"
 
 #: admin/class-tools.php:322
 msgid "All forms has been deleted"
-msgstr ""
+msgstr "Tüm formlar silinmiş"
 
 #: admin/class-tools.php:326
 msgid "Settings has been cleared!"
-msgstr ""
+msgstr "Ayarlar temizlendi!"
 
 #: admin/class-tools.php:330
 msgid "All transactions has been deleted!"
-msgstr ""
+msgstr "Tüm işlemler silindi!"
 
 #: admin/class-tools.php:347
 msgid "Page Installation"
-msgstr ""
+msgstr "Sayfa Kurulumu"
 
 #: admin/class-tools.php:350
 msgid ""
 "Clicking this button will create required pages for the plugin. Note: It'll "
 "not delete/replace existing pages."
 msgstr ""
+"Bu butona tıklamak, eklenti için gerekli sayfaları oluşturacaktır. Not: "
+"Mevcut sayfaları silmez/değiştiremez."
 
 #: admin/class-tools.php:351 admin/installer.php:30
 #: includes/setup-wizard.php:280
 msgid "Install WPUF Pages"
-msgstr ""
+msgstr "WPUF Sayfaları Kurulumu"
 
 #: admin/class-tools.php:356 admin/class-tools.php:360
 msgid "Reset Settings"
-msgstr ""
+msgstr "Ayarları Sıfırla"
 
 #: admin/class-tools.php:359
 msgid ""
 "<strong>Caution:</strong> This tool will delete all the plugin settings of "
 "WP User Frontend Pro"
 msgstr ""
+"<strong>Dikkat:</strong> Bu araç WP Kullanıcı Arayüzü Pro'nun tüm eklenti "
+"ayarlarını silecektir"
 
 #: admin/class-tools.php:365
 msgid "Delete Forms"
-msgstr ""
+msgstr "Formları Sil"
 
 #: admin/class-tools.php:368
 msgid ""
 "<strong>Caution:</strong> This tool will delete all the post and "
 "registration/profile forms."
 msgstr ""
+"<strong>Dikkat:</strong> Bu araç, tüm yayınları ve kayıt/profil formlarını "
+"silecektir."
 
 #: admin/class-tools.php:370
 msgid "Delete Post Forms"
-msgstr ""
+msgstr "Yayın Formlarını Sil"
 
 #: admin/class-tools.php:371
 msgid "Delete Registration Forms"
-msgstr ""
+msgstr "Kayıt Formlarını Sil"
 
 #: admin/class-tools.php:372
 msgid "Delete Subscriptions"
-msgstr ""
+msgstr "Abonelikleri Sil"
 
 #: admin/class-tools.php:373
 msgid "Delete Coupons"
-msgstr ""
+msgstr "Kuponları Sil"
 
 #: admin/class-tools.php:381
 msgid "This tool will delete all the transactions from the transaction table."
-msgstr ""
+msgstr "Bu araç işlem tablosundaki tüm işlemleri silecektir."
 
 #: admin/class-tools.php:383
 msgid "Delete Transactions"
-msgstr ""
+msgstr "İşlemleri Sil"
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:3
 msgid "Add fields by dragging the fields from the right sidebar to this area."
-msgstr ""
+msgstr "Bu bölgeye sağ kenar çubuğundan alanları sürükleyerek alan ekleyin."
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:29
 msgid "is available in Pro Version"
-msgstr ""
+msgstr "mevcuttur Pro Sürümü"
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:53
 msgid "Hidden Fields"
-msgstr ""
+msgstr "Gizlenmiş Alanlar"
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:60
 msgid "key"
-msgstr ""
+msgstr "anahtar"
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:60
 msgid "value"
-msgstr ""
+msgstr "değer"
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:5
 #: admin/template.php:244
 msgid "Show values"
-msgstr ""
+msgstr "Değerleri Göster"
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:16
 #: admin/template.php:247 admin/template.php:305
 msgid "Label"
-msgstr ""
+msgstr "Etiket"
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:20
 #: admin/template.php:247 admin/template.php:305
 msgid "Value"
-msgstr ""
+msgstr "Değer"
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:68
 msgid "Clear Selection"
-msgstr ""
+msgstr "Seçimi Sil"
 
 #: admin/form-builder/assets/js/components/field-option-pro-feature-alert/template.php:4
 msgid "Available in Pro Version"
-msgstr ""
+msgstr "Pro Sürümünde mevcuttur"
 
 #: admin/form-builder/assets/js/components/field-select/template.php:7
 msgid "Select an option"
-msgstr ""
+msgstr "Bir seçenek seçin"
 
 #: admin/form-builder/assets/js/components/field-visibility/template.php:53
 msgid "No subscription plan found."
-msgstr ""
+msgstr "Abonelik planı bulunamadı."
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:5
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:5
 #: class/render-form.php:1600
 msgid "Select Image"
-msgstr ""
+msgstr "Resim Seç"
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:4
 #: class/render-form.php:1003
 msgid "Insert Photo"
-msgstr ""
+msgstr "Fotoğraf Ekle"
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:11
 msgid "— Select —"
-msgstr ""
+msgstr "— Seç —"
 
 #: admin/form-builder/class-wpuf-admin-form-builder-ajax.php:29
 msgid "Unauthorized operation"
-msgstr ""
+msgstr "Yetkisiz işlem"
 
 #: admin/form-builder/class-wpuf-admin-form-builder-ajax.php:33
 msgid "Invalid form id"
-msgstr ""
+msgstr "Geçersiz form kimliği"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:287
 msgid "Custom Fields"
-msgstr ""
+msgstr "Özel Alanlar"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:308
 msgid "Others"
-msgstr ""
+msgstr "Diğerleri"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:324
 msgid "Advanced Options"
-msgstr ""
+msgstr "Gelişmiş Seçenekler"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:325
 msgid "Are you sure you want to delete this field?"
-msgstr ""
+msgstr "Bu alanı silmek istediğinize emin misiniz?"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:326
 msgid "Yes, delete it"
-msgstr ""
+msgstr "Evet, bunu sil"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:327
 msgid "No, cancel it"
-msgstr ""
+msgstr "Hayır, bunu iptal et"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:328
 msgid "OK"
-msgstr ""
+msgstr "TAMAM"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:330
 #: includes/free/admin/shortcode-builder.php:69
 msgid "Close"
-msgstr ""
+msgstr "Kapat"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:331
 msgid "This field must contain at least one choice"
-msgstr ""
+msgstr "Bu alanın en az bir seçim içermesi gereklidir"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:332
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:454
@@ -557,260 +565,264 @@ msgstr ""
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:556
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:614
 msgid "Option"
-msgstr ""
+msgstr "Seçim"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:333
 msgid "Column"
-msgstr ""
+msgstr "Sütun"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:334
 msgid "This field must contain at least one column"
-msgstr ""
+msgstr "Bu alanın en az bir sütun içermesi gereklidir"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:335
 msgid "is available in Pro version"
-msgstr ""
+msgstr "mevcuttur Pro Sürümü"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:336
 msgid "Please upgrade to the Pro version to unlock all these awesome features"
 msgstr ""
+"Tüm bu müthiş özelliklerin kilidini açmak için lütfen Pro sürümüne geçin"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:337
 msgid "Get the Pro version"
-msgstr ""
+msgstr "Pro sürümünü edin"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:338 admin/form.php:770
 msgid "Select"
-msgstr ""
+msgstr "Seçim"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:339
 msgid "Saved form data"
-msgstr ""
+msgstr "Kayıtlı form verileri"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:340
 msgid "You have unsaved changes."
-msgstr ""
+msgstr "Kaydedilmemiş değişiklikleriniz mevcut."
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:341
-#: admin/form-builder/views/form-builder.php:47
+#: admin/form-builder/views/form-builder.php:45
 msgid "Click to copy shortcode"
-msgstr ""
+msgstr "Kısa kodu kopyalamak için tıklayın"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:45
 #: admin/template.php:76
 msgid "Field Label"
-msgstr ""
+msgstr "Alan Etiketi"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:49
 #: admin/template.php:77
 msgid "Enter a title of this field"
-msgstr ""
+msgstr "Bu alana bir başlık girin"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:54
 #: admin/template.php:94
 msgid "Help text"
-msgstr ""
+msgstr "Yardım metni"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:58
 #: admin/template.php:95
 msgid "Give the user some information about this field"
-msgstr ""
+msgstr "Kullanıcıya bu alanla ilgili biraz bilgi verin"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:63
 #: admin/template.php:67
 msgid "Required"
-msgstr ""
+msgstr "Gerekli"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:73
 msgid ""
 "Check this option to mark the field required. A form will not submit unless "
 "all required fields are provided."
 msgstr ""
+"Gerekli alanı işaretlemek için bu seçeneği kontrol edin. Form gerekli tüm "
+"alanlar sağlanmadıkça sunulmayacaktır."
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:78
 msgid "Field Size"
-msgstr ""
+msgstr "Alan Boyutu"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:81
 msgid "Small"
-msgstr ""
+msgstr "Küçük"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:82
 msgid "Medium"
-msgstr ""
+msgstr "Orta"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:83
 msgid "Large"
-msgstr ""
+msgstr "Büyük"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:93
 #: admin/template.php:99
 msgid "CSS Class Name"
-msgstr ""
+msgstr "CSS Sınıf Adı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:97
 msgid "Provide a container class name for this field."
-msgstr ""
+msgstr "Bu alan için bir kapsayıcı sınıf adı sağlayın."
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:105
 #: admin/template-post.php:210
 msgid "Visibility"
-msgstr ""
+msgstr "Görünürlük"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:109
 msgid "Everyone"
-msgstr ""
+msgstr "Herkes"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:110
 #: admin/html/form-settings-display.php:17
 msgid "Hidden"
-msgstr ""
+msgstr "Gizlenmiş"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:111
 msgid "Logged in users only"
-msgstr ""
+msgstr "Yalnızca kayıtlı kullanıcılar"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:112
 msgid "Subscription users only"
-msgstr ""
+msgstr "Yalnızca abonelik kullanıcıları"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:116
 msgid "Select option"
-msgstr ""
+msgstr "Seçeneği seçin"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:125
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:711
 #: admin/template.php:82 admin/template.php:575
 msgid "Meta Key"
-msgstr ""
+msgstr "Meta Anahtar"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:129
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:715
 #: admin/template.php:83 admin/template.php:576
 msgid "Name of the meta key this field will save to"
-msgstr ""
+msgstr "Bu alanın kaydedileceği meta anahtarın adı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:137
 msgid "Show Data in Post"
-msgstr ""
+msgstr "Verileri Yayınla Göster"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:147
 msgid "Select Yes if you want to show the field data in single post."
 msgstr ""
+"Alan verilerini tek bir gönderimde göstermek istiyorsanız Evet'i seçin."
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:167
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:237
 #: admin/template.php:126 admin/template.php:186
 msgid "Placeholder text"
-msgstr ""
+msgstr "Yer tutucu metin"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:171
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:241
 #: admin/template.php:127
 msgid "Text for HTML5 placeholder attribute"
-msgstr ""
+msgstr "HTML5 yer tutucu simgesi için metin"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:176
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:249
 #: admin/template.php:131 admin/template.php:191
 msgid "Default value"
-msgstr ""
+msgstr "Varsayılan değer"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:180
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:253
 #: admin/template.php:132
 msgid "The default value this field will have"
-msgstr ""
+msgstr "Bu alanın varsayılan değeri"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:185
 #: admin/template.php:136
 msgid "Size"
-msgstr ""
+msgstr "Boyut"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:190
 #: admin/template.php:137
 msgid "Size of this input field"
-msgstr ""
+msgstr "Bu girdi alanının boyutu"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:197
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:272
 #: admin/template.php:141 admin/template.php:206
 msgid "Word Restriction"
-msgstr ""
+msgstr "Kelime Kısıtlaması"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:201
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:276
 #: admin/template.php:145 admin/template.php:210
 msgid "Numebr of words the author to be restricted in"
-msgstr ""
+msgstr "Yaratıcının kısıtlanacak sözcük sayısı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:219
 #: admin/template.php:176
 msgid "Rows"
-msgstr ""
+msgstr "Satırlar"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:223
 msgid "Number of rows in textarea"
-msgstr ""
+msgstr "Metin alanındaki satır sayısı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:228
 #: admin/template.php:181
 msgid "Columns"
-msgstr ""
+msgstr "Sütunlar"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:232
 msgid "Number of columns in textarea"
-msgstr ""
+msgstr "Metin alanındaki sütun sayısı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:258
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:364
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:371
 #: admin/template.php:196
 msgid "Textarea"
-msgstr ""
+msgstr "Metinalanı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:261
 #: admin/template.php:199
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:262
 #: admin/template.php:200
 msgid "Rich textarea"
-msgstr ""
+msgstr "Zengin metinalanı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:263
 #: admin/template.php:201
 msgid "Teeny Rich textarea"
-msgstr ""
+msgstr "Minik zengin metin alanı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:307
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:455
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:498
 #: admin/form.php:899
 msgid "- select -"
-msgstr ""
+msgstr "- seç -"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:325
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:332
 msgid "Text"
-msgstr ""
+msgstr "Metin"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:404
 #: admin/template.php:398 admin/template.php:422 admin/template.php:454
 #: admin/template.php:486 templates/dashboard/posts.php:85
 #: templates/dashboard.php:112
 msgid "Options"
-msgstr ""
+msgstr "Seçenekler"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:409
 msgid "Add options for the form field"
-msgstr ""
+msgstr "Form alanı için seçenekler ekleyin"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:428
 #: admin/form.php:783 admin/template.php:449 admin/template.php:481
 msgid "Select Text"
-msgstr ""
+msgstr "Metin Seçimi"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:432
 #: admin/form.php:787 admin/template.php:438 admin/template.php:470
@@ -818,815 +830,832 @@ msgid ""
 "First element of the select dropdown. Leave this empty if you don't want to "
 "show this field"
 msgstr ""
+"Açılır menüsü seçiminin ilk öğesi. Bu alanı göstermek istemiyorsanız boş "
+"bırakın"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:440
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:447
 #: admin/template-post.php:156
 msgid "Dropdown"
-msgstr ""
+msgstr "Açılır menü"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:483
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:490
 #: admin/form.php:771 admin/template-post.php:157
 msgid "Multi Select"
-msgstr ""
+msgstr "Çoklu seçim"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:523
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:581
 #: admin/form.php:792
 msgid "Show in inline list"
-msgstr ""
+msgstr "Sıralı listede göster"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:533
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:591
 #: admin/form.php:802
 msgid "Show this option in an inline list"
-msgstr ""
+msgstr "Show this option in an inline list"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:541
 msgid "Radio"
-msgstr ""
+msgstr "Radyo"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:548
 msgid "Radio Field"
-msgstr ""
+msgstr "Radyo Alanı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:599
 #: admin/form.php:772 admin/template-post.php:158
 msgid "Checkbox"
-msgstr ""
+msgstr "Onay Kutusu"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:606
 msgid "Checkbox Field"
-msgstr ""
+msgstr "Onay Kutusu Alanı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:637
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:644
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:675
 msgid "Email Address"
-msgstr ""
+msgstr "E-posta Adresi"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:682
 #: admin/html/form-submission-restriction.php:12 admin/html/support.php:224
 #: class/transactions-list-table.php:48 includes/free/edit-user.php:152
 #: templates/registration-form.php:44
 msgid "Email"
-msgstr ""
+msgstr "E-posta"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:720
 #: admin/template.php:582
 msgid "Meta Value"
-msgstr ""
+msgstr "Meta Değer"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:724
 #: admin/template.php:583
 msgid "Enter the meta value"
-msgstr ""
+msgstr "Meta değeri girin"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:730
 msgid "Hidden Field"
-msgstr ""
+msgstr "Gizlenmiş Alan"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:762
 #: admin/form.php:686 admin/template-post.php:105 admin/template.php:646
 msgid "Max. file size"
-msgstr ""
+msgstr "Maks. dosya boyutu"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:766
 #: admin/form.php:690 admin/template-post.php:93 admin/template.php:634
 msgid "Enter maximum upload size limit in KB"
-msgstr ""
+msgstr "KB olarak maksimum yükleme boyutu sınırı girin"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:771
 #: admin/template.php:651
 msgid "Max. files"
-msgstr ""
+msgstr "Maks. dosyalar"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:775
 #: admin/template.php:635
 msgid "Number of images can be uploaded"
-msgstr ""
+msgstr "Yüklenebilecek resim sayısı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:781
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:788
 #: includes/free/form-element.php:8
 msgid "Image Upload"
-msgstr ""
+msgstr "Resim Yükle"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:816
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:902
 #: admin/template.php:544 admin/template.php:604 admin/template.php:683
 #: class/upload.php:164 templates/dashboard/posts.php:75
-#: templates/dashboard.php:73 wpuf-functions.php:738
+#: templates/dashboard.php:73 wpuf-functions.php:740
 msgid "Title"
-msgstr ""
+msgstr "Başlık"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:820
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:906
 msgid "Title of the section"
-msgstr ""
+msgstr "Bölüm başlığı"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:825
-#: admin/template.php:609 class/upload.php:166 wpuf-functions.php:744
+#: admin/template.php:609 class/upload.php:166 wpuf-functions.php:746
 msgid "Description"
-msgstr ""
+msgstr "Tanımlama"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:829
 msgid "Some details text about the section"
-msgstr ""
+msgstr "Bölüm hakkındaki bazı metin ayrıntıları"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:835
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:842
 msgid "Section Break"
-msgstr ""
+msgstr "Bölüm Sonu"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:843
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:882
 msgid "Some description about this section"
-msgstr ""
+msgstr "Bu bölüm hakkında biraz açıklama"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:864
 #: admin/template.php:549
 msgid "HTML Codes"
-msgstr ""
+msgstr "HTML Kodları"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:868
 msgid "Paste your HTML codes, WordPress shortcodes will also work here"
 msgstr ""
+"HTML kodlarınızı yapıştırın, WordPress kısa kodları da burada çalışacaktır"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:874
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:881
 msgid "Custom HTML"
-msgstr ""
+msgstr "Özelleştirilmiş HTML"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:914
 #: admin/template.php:703
 msgid "Enable noCaptcha"
-msgstr ""
+msgstr "NoCaptcha'yı etkinleştir"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:915
 #: admin/template.php:699
 msgid "Enable Invisible reCaptcha"
-msgstr ""
+msgstr "Görünmez reCaptcha'yı etkinleştir"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:920
 msgid "Select reCaptcha type"
-msgstr ""
+msgstr "ReCaptcha türünü seç"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:926
 #: includes/free/form-element.php:31
 msgid "reCaptcha"
-msgstr ""
+msgstr "reCaptcha"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:931
 msgid "Site key and Secret key"
-msgstr ""
+msgstr "Site anahtarı ve Gizli anahtar"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:933
 msgid ""
-"You need to set Site key and Secret key in <a href=\"%s\" "
-"target=\"_blank\">Settings</a> in order to use \"Recaptcha\" field. <a "
-"href=\"%s\" target=\"_blank\">Click here to get the these key</a>."
+"You need to set Site key and Secret key in <a href=\"%s\" target=\"_blank"
+"\">Settings</a> in order to use \"Recaptcha\" field. <a href=\"%s\" target="
+"\"_blank\">Click here to get the these key</a>."
 msgstr ""
+"Site anahtarı ve Gizli anahtar ayarlamanız gerekli <a href=\"%s\" target="
+"\"_blank\">Ayarlar</a> Recaptcha\" alanını kullanmak için. <a href=\"%s\" "
+"target=\"_blank\">Bu anahtarı almak için buraya tıklayın.</a>."
 
 #: admin/form-builder/views/form-builder.php:5
 msgid "Form Editor"
-msgstr ""
+msgstr "Form Düzenleyici"
 
 #: admin/form-builder/views/form-builder.php:16
 msgid "Save Form"
-msgstr ""
+msgstr "Formu Kaydet"
 
 #: admin/form-builder/views/form-builder.php:20
 msgid "Saving Form Data"
-msgstr ""
+msgstr "Form Verilerini Kaydetme"
 
-#: admin/form-builder/views/form-builder.php:23
-#: admin/form-builder/views/form-builder.php:74
-msgid "Add Fields"
-msgstr ""
-
-#: admin/form-builder/views/form-builder.php:24
-msgid "Show Form"
-msgstr ""
-
-#: admin/form-builder/views/form-builder.php:44
+#: admin/form-builder/views/form-builder.php:42
 msgid "Click to copy %s shortcode"
-msgstr ""
+msgstr "Kısa kodu %s kopyalamak için tıklayın"
 
-#: admin/form-builder/views/form-builder.php:80
+#: admin/form-builder/views/form-builder.php:72
+msgid "Add Fields"
+msgstr "Alanlar Ekleme"
+
+#: admin/form-builder/views/form-builder.php:78
 msgid "Field Options"
-msgstr ""
+msgstr "Alan Seçenekleri"
 
 #: admin/form-handler.php:54 admin/form-handler.php:181
 msgid "You do not have sufficient permissions to do this action"
-msgstr ""
+msgstr "Bu işlemi yapmak için yeterli izniniz yok"
 
 #: admin/form-handler.php:317 admin/form-handler.php:337
 msgid "%d form moved to the trash."
 msgid_plural "%d forms moved to the trash."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d formu çöp kutusuna taşındı."
+msgstr[1] "%d formları çöp kutusuna taşındı."
 
 #: admin/form-handler.php:321 admin/form-handler.php:341
 msgid "%d form restored from the trash."
 msgid_plural "%d forms restored from the trash."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d formu çöp kutusundan geri yükle."
+msgstr[1] "%d formları çöp kutusundan geri yükle."
 
 #: admin/form-handler.php:325 admin/form-handler.php:345
 msgid "%d form permanently deleted."
 msgid_plural "%d forms permanently deleted."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d formu kalıcı olarak silinmiş."
+msgstr[1] "%d formları kalıcı olarak silinmiş."
 
 #: admin/form-handler.php:330 admin/form-handler.php:350
 msgid "Form duplicated successfully. <a href=\"%s\">View form.</a>"
-msgstr ""
+msgstr "Form başarıyla çoğaltıldı. <a href=\"%s\">Formu göster.</a>"
 
 #: admin/form-template.php:63
-msgid "Want a new integration? <a href=\"%s\" target=\"_blank\">Let us know</a>."
+msgid ""
+"Want a new integration? <a href=\"%s\" target=\"_blank\">Let us know</a>."
 msgstr ""
+"Yeni bir entegrasyon isterseniz? <a href=\"%s\" target=\"_blank\">Bize haber "
+"verin</a>."
 
 #: admin/form-template.php:168
 msgid "Form Template"
-msgstr ""
+msgstr "Form Şablonu"
 
 #: admin/form-template.php:171
 msgid "&mdash; No Template &mdash;"
-msgstr ""
+msgstr "&mdash; Şablon Yok&mdash;"
 
 #: admin/form-template.php:180
 msgid ""
-"If selected a form template, it will try to execute that integration "
-"options when new post created and updated."
+"If selected a form template, it will try to execute that integration options "
+"when new post created and updated."
 msgstr ""
+"Eğer bir form şablonu seçildiyse, yeni yayın yaratılıp güncellendiğinde bu "
+"entegrasyon seçeneklerini uygulamaya çalışacaktır."
 
 #: admin/form.php:49 admin/form.php:69 admin/form.php:71 admin/form.php:107
 msgid "Forms"
-msgstr ""
+msgstr "Formlar"
 
 #: admin/form.php:70 admin/form.php:108
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: admin/form.php:72 admin/form.php:110 admin/post-forms-list-table-view.php:8
 msgid "Add Form"
-msgstr ""
+msgstr "Form Ekle"
 
 #: admin/form.php:73 admin/form.php:111
 msgid "Add New Form"
-msgstr ""
+msgstr "Yeni Form Ekle"
 
 #: admin/form.php:74 admin/form.php:112 admin/installer.php:75
 #: admin/post-forms-list-table.php:392 class/subscription.php:381
 #: includes/free/admin/shortcode-button.php:90 includes/free/edit-user.php:99
 #: templates/dashboard/posts.php:151 templates/dashboard.php:212
 msgid "Edit"
-msgstr ""
+msgstr "Düzenle"
 
 #: admin/form.php:75 admin/form.php:113
 msgid "Edit Form"
-msgstr ""
+msgstr "Formu Düzenle"
 
 #: admin/form.php:76 admin/form.php:114
 msgid "New Form"
-msgstr ""
+msgstr "Yeni Form"
 
 #: admin/form.php:77 admin/form.php:78 admin/form.php:115 admin/form.php:116
 msgid "View Form"
-msgstr ""
+msgstr "Formu Göster"
 
 #: admin/form.php:79 admin/form.php:117
 msgid "Search Form"
-msgstr ""
+msgstr "Form Ara"
 
 #: admin/form.php:80 admin/form.php:118
 msgid "No Form Found"
-msgstr ""
+msgstr "Form Bulunamadı"
 
 #: admin/form.php:81 admin/form.php:119
 msgid "No Form Found in Trash"
-msgstr ""
+msgstr "Çöp Kutusunda Form Bulunamadı"
 
 #: admin/form.php:82 admin/form.php:120
 msgid "Parent Form"
-msgstr ""
+msgstr "Ebeveyn Formu"
 
 #: admin/form.php:87
 msgid "Registraton Forms"
-msgstr ""
+msgstr "Kayıt Formları"
 
 #: admin/form.php:109 includes/free/loader.php:77
 msgid "Registration Forms"
-msgstr ""
+msgstr "Kayıt Formları"
 
 #: admin/form.php:194 includes/free/form-element.php:212
 #: includes/free/form-element.php:250
 msgid "Notification"
-msgstr ""
+msgstr "Bildirim"
 
 #: admin/form.php:227
 msgid "Post Settings"
-msgstr ""
+msgstr "Yayın Ayarları"
 
 #: admin/form.php:228
 msgid "Edit Settings"
-msgstr ""
+msgstr "Ayarları Düzenle"
 
 #: admin/form.php:229
 msgid "Submission Restriction"
-msgstr ""
+msgstr "Gönderme Kısıtlaması"
 
 #: admin/form.php:231
 msgid "Display Settings"
-msgstr ""
+msgstr "Görüntü Ayarları"
 
 #: admin/form.php:294 admin/form.php:298
 msgid "- Select -"
-msgstr ""
+msgstr "- Seç -"
 
 #: admin/form.php:332
 msgid "Post Fields"
-msgstr ""
+msgstr "Yayın Alanları"
 
 #: admin/form.php:338
 msgid "Taxonomies"
-msgstr ""
+msgstr "Taksonomiler"
 
 #: admin/form.php:440 admin/html/form-settings-post.php:22
 #: class/render-form.php:707
 msgid "Save Draft"
-msgstr ""
+msgstr "Taslağı kaydet"
 
 #: admin/form.php:550 admin/form.php:557
 msgid "Post Title"
-msgstr ""
+msgstr "Yayın Başlığı"
 
 #: admin/form.php:589 admin/template-post.php:41
 msgid "Enable Image Insertion"
-msgstr ""
+msgstr "Resim Eklemeyi Etkinleştir"
 
 #: admin/form.php:591 admin/template-post.php:47
 msgid "Enable image upload in post area"
-msgstr ""
+msgstr "Yayın bölgesinde resim yüklemeyi etkinleştir"
 
 #: admin/form.php:600 admin/form.php:607
 msgid "Post Body"
-msgstr ""
+msgstr "Yayın Hacmi"
 
 #: admin/form.php:646 admin/form.php:653 templates/dashboard.php:99
 msgid "Excerpt"
-msgstr ""
+msgstr "Alıntı"
 
 #: admin/form.php:696 admin/form.php:703 templates/dashboard/posts.php:72
 #: templates/dashboard.php:70
 msgid "Featured Image"
-msgstr ""
+msgstr "Özellikli resim"
 
 #: admin/form.php:731 admin/form.php:737
 msgid "Tags"
-msgstr ""
+msgstr "Etiketler"
 
 #: admin/form.php:767 admin/template-post.php:154
 msgid "Type"
-msgstr ""
+msgstr "Tür"
 
 #: admin/form.php:773 admin/template-post.php:159
 msgid "Text Input"
-msgstr ""
+msgstr "Metin Girişi"
 
 #: admin/form.php:774 admin/template-post.php:160
 msgid "Ajax"
-msgstr ""
+msgstr "Ajax"
 
 #: admin/form.php:807 admin/template-post.php:165
 msgid "Order By"
-msgstr ""
+msgstr "Tarafından sipariş"
 
 #: admin/form.php:810 admin/html/form-submission-restriction.php:11
 #: admin/template-post.php:167 includes/free/edit-profile.php:97
 #: templates/registration-form.php:27
 msgid "Name"
-msgstr ""
+msgstr "İsim"
 
 #: admin/form.php:811 admin/template-post.php:168
 msgid "Term ID"
-msgstr ""
+msgstr "Terim Kimliği"
 
 #: admin/form.php:812 admin/template-post.php:169
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
 #: admin/form.php:813 admin/template-post.php:170
 msgid "Count"
-msgstr ""
+msgstr "Sayı"
 
 #: admin/form.php:814 admin/template-post.php:171
 msgid "Term Group"
-msgstr ""
+msgstr "Terim Grubu"
 
 #: admin/form.php:823 admin/template-post.php:176
 msgid "Order"
-msgstr ""
+msgstr "Sipariş"
 
 #: admin/form.php:827 admin/template-post.php:178
 msgid "ASC"
-msgstr ""
+msgstr "ASC"
 
 #: admin/form.php:828 admin/template-post.php:179
 msgid "DESC"
-msgstr ""
+msgstr "DESC"
 
 #: admin/form.php:837 admin/template-post.php:184
 msgid "Selection Type"
-msgstr ""
+msgstr "Seçim Türü"
 
 #: admin/form.php:840 admin/template-post.php:186
 msgid "Exclude"
-msgstr ""
+msgstr "Hariç"
 
 #: admin/form.php:841 admin/template-post.php:187
 msgid "Include"
-msgstr ""
+msgstr "Dahil"
 
 #: admin/form.php:842 admin/template-post.php:188
 msgid "Child of"
-msgstr ""
+msgstr "Alt teması"
 
 #: admin/form.php:851
 msgid "Selection Terms"
-msgstr ""
+msgstr "Seçim Terimleri"
 
 #: admin/form.php:855 admin/template-post.php:194
 msgid ""
 "Enter the term IDs as comma separated (without space) to exclude/include in "
 "the form."
-msgstr ""
+msgstr "Formda hariç/dahil için terim kimliklerini virgül (boşluksuz) girin."
 
 #: admin/form.php:863 admin/template-post.php:204
 msgid "This taxonomy is a WooCommerce attribute"
-msgstr ""
+msgstr "Bu taksonomi WooCommerce özelliğidir"
 
 #: admin/form.php:874 admin/template-post.php:216
 msgid "Visible on product page"
-msgstr ""
+msgstr "Ürün sayfasında görünür"
 
 #: admin/form.php:926
 msgid "Post Forms must have either Post Title, Post Body or Excerpt field"
 msgstr ""
+"Yayın Formları Mesaj Başlığı, Yayın Hacmi veya Alıntı alanlarına sahip "
+"olmalıdır"
 
 #: admin/html/form-settings-display.php:9
 msgid "Label Position"
-msgstr ""
+msgstr "Etiket Konumu"
 
 #: admin/html/form-settings-display.php:14
 msgid "Above Element"
-msgstr ""
+msgstr "Öğe Üzerinde"
 
 #: admin/html/form-settings-display.php:15
 msgid "Left of Element"
-msgstr ""
+msgstr "Öğe Solunda"
 
 #: admin/html/form-settings-display.php:16
 msgid "Right of Element"
-msgstr ""
+msgstr "Öğe Sağında"
 
 #: admin/html/form-settings-display.php:27
 msgid "Where the labels of the form should display"
-msgstr ""
+msgstr "Formun etiketlerinin nerede görüntüleneceği"
 
 #: admin/html/form-settings-display.php:34
 msgid "Form Style"
-msgstr ""
+msgstr "Form Stili"
 
 #: admin/html/form-settings-payment.php:20
 msgid "Payment Options"
-msgstr ""
+msgstr "Ödeme Seçenekleri"
 
 #: admin/html/form-settings-payment.php:25 admin/settings-options.php:301
 #: includes/setup-wizard.php:273
 msgid "Enable Payments"
-msgstr ""
+msgstr "Ödemeleri Etkinleştir"
 
 #: admin/html/form-settings-payment.php:27
 msgid "Check to enable Payments for this form."
-msgstr ""
+msgstr "Bu form için Ödemeleri etkinleştirmeyi kontrol edin."
 
 #: admin/html/form-settings-payment.php:32
 msgid "Force Pack"
-msgstr ""
+msgstr "Force Paketi"
 
 #: admin/html/form-settings-payment.php:37
 msgid "Force subscription pack"
-msgstr ""
+msgstr "Force Abonelik Paketi"
 
 #: admin/html/form-settings-payment.php:39
 msgid "Force users to purchase and use subscription pack."
-msgstr ""
+msgstr "Force kullanıcılarının abonelik paketini satın alıp kullanmaları."
 
 #: admin/html/form-settings-payment.php:44
 msgid "Fallback to pay per post"
-msgstr ""
+msgstr "Yayın başına düşen geri ödeme"
 
 #: admin/html/form-settings-payment.php:49
 msgid "Fallback pay per post charging"
-msgstr ""
+msgstr "Yayın doldurma başına düşen geri ödeme"
 
 #: admin/html/form-settings-payment.php:51
 msgid "Fallback to pay per post charging if pack limit exceeds"
-msgstr ""
+msgstr "Paket sınırı aşılırsa yayın doldurma başına düşen geri ödeme"
 
 #: admin/html/form-settings-payment.php:56
 msgid "Fallback cost"
-msgstr ""
+msgstr "Geri ödeme maliyeti"
 
 #: admin/html/form-settings-payment.php:61
 msgid "Cost of pay per post after a subscription pack limit is reached."
 msgstr ""
+"Bir abonelik paketi limitine ulaşıldıktan sonra yayın başına ücreti ödemesi "
+"yapılır."
 
 #: admin/html/form-settings-payment.php:66
 msgid "Pay Per Post"
-msgstr ""
+msgstr "Yayın Başına Ödeme"
 
 #: admin/html/form-settings-payment.php:71
 msgid "Enable Pay Per Post"
-msgstr ""
+msgstr "Yayın Başına Ödemeyi Etkinleştir"
 
 #: admin/html/form-settings-payment.php:73
 msgid "Charge users for posting,"
-msgstr ""
+msgstr "Yayınlamak için kullanıcıları ücretlendirin,"
 
 #: admin/html/form-settings-payment.php:73
 msgid " Learn More about Pay Per Post."
-msgstr ""
+msgstr " Yayın Başına Ödeme İle İlgili Daha Fazla Öğrenin."
 
 #: admin/html/form-settings-payment.php:78
 msgid "Cost Settings"
-msgstr ""
+msgstr "Maliyet Ayarları"
 
 #: admin/html/form-settings-payment.php:83
 msgid "Amount to be charged per post"
-msgstr ""
+msgstr "Yayın başına ücret alınacak tutar"
 
 #: admin/html/form-settings-post-edit.php:4
 #: admin/html/form-settings-post.php:16
 msgid "Post updated successfully"
-msgstr ""
+msgstr "Yayın başarıyla güncellendi"
 
 #: admin/html/form-settings-post-edit.php:7
 msgid "Update"
-msgstr ""
+msgstr "Güncelleme"
 
 #: admin/html/form-settings-post-edit.php:13
 msgid "Set Post Status to"
-msgstr ""
+msgstr "Yayın Durumunu Şunda Ayarlarla"
 
 #: admin/html/form-settings-post-edit.php:23
 msgid "No Change"
-msgstr ""
+msgstr "Değişiklik Yok"
 
 #: admin/html/form-settings-post-edit.php:30
 #: admin/html/form-settings-post.php:124 includes/free/form-element.php:376
 msgid "Redirect To"
-msgstr ""
+msgstr "Yönlendirme"
 
 #: admin/html/form-settings-post-edit.php:35
 #: admin/html/form-settings-post.php:129
 msgid "Newly created post"
-msgstr ""
+msgstr "En yeni oluşturulan yayın"
 
 #: admin/html/form-settings-post-edit.php:36
 #: admin/html/form-settings-post.php:130 includes/free/form-element.php:381
 msgid "Same Page"
-msgstr ""
+msgstr "Aynı Sayfa"
 
 #: admin/html/form-settings-post-edit.php:37
 #: admin/html/form-settings-post.php:131 includes/free/form-element.php:382
 msgid "To a page"
-msgstr ""
+msgstr "Bir sayfaya"
 
 #: admin/html/form-settings-post-edit.php:38
 #: admin/html/form-settings-post.php:132 includes/free/form-element.php:383
 msgid "To a custom URL"
-msgstr ""
+msgstr "Özel URL'ye"
 
 #: admin/html/form-settings-post-edit.php:47
 #: admin/html/form-settings-post.php:141 includes/free/form-element.php:392
 msgid "After successfull submit, where the page will redirect to"
-msgstr ""
+msgstr "Başarılı bir şekilde sunumdan sonra, sayfanın nereye yönlendirileceği"
 
 #: admin/html/form-settings-post-edit.php:53
 msgid "Post Update Message"
-msgstr ""
+msgstr "Yayın Güncelleme Mesajı"
 
 #: admin/html/form-settings-post-edit.php:60
 #: admin/html/form-settings-post.php:154 includes/free/form-element.php:412
 msgid "Page"
-msgstr ""
+msgstr "Sayfa"
 
 #: admin/html/form-settings-post-edit.php:75
 #: admin/html/form-settings-post.php:169 includes/free/form-element.php:427
 msgid "Custom URL"
-msgstr ""
+msgstr "Özel URL"
 
 #: admin/html/form-settings-post-edit.php:82
 msgid "Subscription Title"
-msgstr ""
+msgstr "Abonelik Başlığı"
 
 #: admin/html/form-settings-post-edit.php:91
 msgid "Update Post Button text"
-msgstr ""
+msgstr "Yayın Butonu metnini güncelle"
 
 #: admin/html/form-settings-post.php:7
 msgid "This page is restricted. Please Log in / Register to view this page."
 msgstr ""
+"Bu sayfa sınırlıdır. Lütfen bu sayfayı görüntülemek için Giriş Yapın/Kayıt "
+"Olun."
 
 #: admin/html/form-settings-post.php:15
 msgid "Post saved"
-msgstr ""
+msgstr "Yayın kaydedildi"
 
 #: admin/html/form-settings-post.php:21
 msgid "Submit"
-msgstr ""
+msgstr "Sunum"
 
 #: admin/html/form-settings-post.php:23
 msgid "Preview"
-msgstr ""
+msgstr "Önizleme"
 
 #: admin/html/form-settings-post.php:30 admin/post-forms-list-table.php:297
 msgid "Post Type"
-msgstr ""
+msgstr "Yayın Türü"
 
 #: admin/html/form-settings-post.php:52
 msgid "Custom Post Type will appear here. "
-msgstr ""
+msgstr "Özel Yayın Türü burada görünecektir "
 
 #: admin/html/form-settings-post.php:52
 msgid "Learn More "
-msgstr ""
+msgstr "Dahasını Öğrenin "
 
 #: admin/html/form-settings-post.php:71
 msgid "Post Format"
-msgstr ""
+msgstr "Yayın Biçimi"
 
 #: admin/html/form-settings-post.php:74
 msgid "- None -"
-msgstr ""
+msgstr "- Hİçbiri -"
 
 #: admin/html/form-settings-post.php:89
 msgid "Default Post Category"
-msgstr ""
+msgstr "Varsayılan Yayın Kategorisi"
 
 #: admin/html/form-settings-post.php:119
 msgid ""
 "If users are not allowed to choose any category, this category will be used "
 "instead (if post type supports)"
 msgstr ""
+"Eğer kullanıcıların hiçbir kategoriyi seçmesine izin verilmiyorsa, bunun "
+"yerine bu kategori kullanılacaktır (yayın türü destekliyorsa)"
 
 #: admin/html/form-settings-post.php:147
 msgid "Message to show"
-msgstr ""
+msgstr "Gösterilecek mesaj"
 
 #: admin/html/form-settings-post.php:176
 msgid "Comment Status"
-msgstr ""
+msgstr "Durum Yorumu"
 
 #: admin/html/form-settings-post.php:179
 msgid "Open"
-msgstr ""
+msgstr "Açık"
 
 #: admin/html/form-settings-post.php:180
 msgid "Closed"
-msgstr ""
+msgstr "Kapalı"
 
 #: admin/html/form-settings-post.php:186
 msgid "Submit Post Button text"
-msgstr ""
+msgstr "Yayın Butonu metnini sunma"
 
 #: admin/html/form-settings-post.php:193
 msgid "Post Draft"
-msgstr ""
+msgstr "Taslağı Yayınla"
 
 #: admin/html/form-settings-post.php:198
 msgid "Enable Saving as draft"
-msgstr ""
+msgstr "Taslak olarak Kaydetmeyi Etkinleştirme"
 
 #: admin/html/form-settings-post.php:200
 msgid "It will show a button to save as draft"
-msgstr ""
+msgstr "Taslak olarak kaydetmek için bir buton gösterecektir"
 
 #: admin/html/form-submission-restriction.php:29
 #: admin/post-forms-list-table.php:299
 msgid "Guest Post"
-msgstr ""
+msgstr "Misafir Yayını"
 
 #: admin/html/form-submission-restriction.php:34
 msgid "Enable Guest Post"
-msgstr ""
+msgstr "Misafir Yayınını Etkinleştir"
 
 #: admin/html/form-submission-restriction.php:36
 msgid "Unregistered users will be able to submit posts"
-msgstr ""
+msgstr "Kayıtsız kullanıcılar yayınlar sunabilecek"
 
 #: admin/html/form-submission-restriction.php:36
 msgid "Learn more about guest posting."
-msgstr ""
+msgstr "Misafir yayınlarıyla ilgili dahasını öğrenin."
 
 #: admin/html/form-submission-restriction.php:41
 msgid "User Details"
-msgstr ""
+msgstr "Kullanıcı Detayları"
 
 #: admin/html/form-submission-restriction.php:46
 msgid "Require Name and Email address"
-msgstr ""
+msgstr "İsim ve Eposta adresi gerekli"
 
 #: admin/html/form-submission-restriction.php:48
 msgid ""
 "If requires, users will be automatically registered to the site using the "
 "name and email address"
 msgstr ""
+"Eğer gerekirse, kullanıcılar isim ve e-posta adreslerini kullanarak siteye "
+"otomatik olarak kayıt yaptırılacaktır"
 
 #: admin/html/form-submission-restriction.php:53
 msgid "Name Label"
-msgstr ""
+msgstr "İsim Etiket"
 
 #: admin/html/form-submission-restriction.php:58
 msgid "Label text for name field"
-msgstr ""
+msgstr "İsim alanı için metin etiketi"
 
 #: admin/html/form-submission-restriction.php:63
 msgid "E-Mail Label"
-msgstr ""
+msgstr "E-POSTA ETİKETİ"
 
 #: admin/html/form-submission-restriction.php:68
 msgid "Label text for email field"
-msgstr ""
+msgstr "Eposta alanı için metin etiketi"
 
 #: admin/html/form-submission-restriction.php:73
 msgid "Email Verification"
-msgstr ""
+msgstr "Eposta Doğrulama"
 
 #: admin/html/form-submission-restriction.php:77
 msgid "Require Email Verification for Guests"
-msgstr ""
+msgstr "Misafirler için E-Posta Doğrulaması Gerekir"
 
 #: admin/html/form-submission-restriction.php:79
 msgid "If requires, users will be required to verify their email adress."
 msgstr ""
+"Eğer gerekirse, kullanıcıların e-posta adreslerini doğrulaması gerekir."
 
 #: admin/html/form-submission-restriction.php:84
 msgid "Role Base"
-msgstr ""
+msgstr "Rol Tabanı"
 
 #: admin/html/form-submission-restriction.php:89
 msgid "Enable role base post"
-msgstr ""
+msgstr "Rol Tabanı yayınını etkinleştir"
 
 #: admin/html/form-submission-restriction.php:91
 msgid "You can choose which role can submit posts by this form."
-msgstr ""
+msgstr "Bu formu kullanarak hangi rolün yayın yapabileceğini seçebilirsiniz."
 
 #: admin/html/form-submission-restriction.php:96
 msgid "Roles"
-msgstr ""
+msgstr "Roller"
 
 #: admin/html/form-submission-restriction.php:109
 msgid "Choose which roles can submit posts."
-msgstr ""
+msgstr "Yayın yapabilecek rolleri seçin."
 
 #: admin/html/form-submission-restriction.php:114
 #: admin/settings-options.php:250
 msgid "Unauthorized Message"
-msgstr ""
+msgstr "Yetkisiz Mesaj"
 
 #: admin/html/form-submission-restriction.php:117
 #: admin/settings-options.php:251
 msgid "Not logged in users will see this message"
-msgstr ""
+msgstr "Giriş yapmayan kullanıcılar bu mesajı görecek"
 
 #: admin/html/form-submission-restriction.php:122
 msgid "Schedule form"
-msgstr ""
+msgstr "Zaman formu"
 
 #: admin/html/form-submission-restriction.php:127
 msgid "Schedule form for a period"
-msgstr ""
+msgstr "Bir dönem için zaman formu"
 
 #: admin/html/form-submission-restriction.php:129
 msgid "Schedule for a time period the form is active."
-msgstr ""
+msgstr "Formun etkin olduğu bir zaman dilimi için zamanlayın."
 
 #: admin/html/form-submission-restriction.php:134
 msgid "Schedule Period"
-msgstr ""
+msgstr "Dönem Zamanı"
 
 #: admin/html/form-submission-restriction.php:137
 msgid "From"
-msgstr ""
+msgstr "Den"
 
 #: admin/html/form-submission-restriction.php:141
 #: includes/free/form-element.php:224 includes/free/form-element.php:261
@@ -1674,7 +1703,8 @@ msgid "Select a Template"
 msgstr ""
 
 #: admin/html/modal.php:12
-msgid "Select from a pre-defined template or from a <a href=\"%s\">blank form</a>"
+msgid ""
+"Select from a pre-defined template or from a <a href=\"%s\">blank form</a>"
 msgstr ""
 
 #: admin/html/modal.php:23 admin/html/modal.php:27 admin/html/modal.php:31
@@ -1833,8 +1863,8 @@ msgstr ""
 
 #: admin/html/whats-new.php:15
 msgid ""
-"Fixed recurring subscription pack cannot be canceled from my account page "
-"in subscription details section."
+"Fixed recurring subscription pack cannot be canceled from my account page in "
+"subscription details section."
 msgstr ""
 
 #: admin/html/whats-new.php:18
@@ -1936,7 +1966,8 @@ msgid "Form submission with Captcha field"
 msgstr ""
 
 #: admin/html/whats-new.php:91
-msgid "Form field validation process updated if form submits with captcha field."
+msgid ""
+"Form field validation process updated if form submits with captcha field."
 msgstr ""
 
 #: admin/html/whats-new.php:105
@@ -1945,8 +1976,8 @@ msgstr ""
 
 #: admin/installer.php:27
 msgid ""
-"If you have not created <strong>WP User Frontend</strong> pages yet, you "
-"can do this by one click."
+"If you have not created <strong>WP User Frontend</strong> pages yet, you can "
+"do this by one click."
 msgstr ""
 
 #: admin/installer.php:31
@@ -1968,7 +1999,7 @@ msgid ""
 msgstr ""
 
 #: admin/installer.php:73 admin/settings-options.php:23
-#: includes/free/admin/shortcode-button.php:82 wpuf-functions.php:1447
+#: includes/free/admin/shortcode-button.php:82 wpuf-functions.php:1449
 msgid "Dashboard"
 msgstr ""
 
@@ -1983,7 +2014,7 @@ msgstr ""
 
 #: admin/installer.php:84 class/subscription.php:356 class/subscription.php:376
 #: class/subscription.php:377 class/subscription.php:378
-#: includes/free/admin/shortcode-button.php:102 wpuf-functions.php:1450
+#: includes/free/admin/shortcode-button.php:102 wpuf-functions.php:1452
 msgid "Subscription"
 msgstr ""
 
@@ -2092,7 +2123,8 @@ msgid "Maximum number of files reached!"
 msgstr ""
 
 #: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:504
-msgid "The file you have uploaded exceeds the file size limit. Please try again."
+msgid ""
+"The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
 #: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:505
@@ -2117,8 +2149,7 @@ msgstr ""
 
 #: admin/premium.php:4
 msgid ""
-"Upgrade to the premium versions of WPUF and unlock even more useful "
-"features."
+"Upgrade to the premium versions of WPUF and unlock even more useful features."
 msgstr ""
 
 #: admin/premium.php:10
@@ -2128,8 +2159,7 @@ msgstr ""
 #: admin/premium.php:11
 msgid ""
 "WPUF Pro is designed just for you, specially to fulfil your business needs. "
-"We have designed and curated every feature keeping your requirements in "
-"mind."
+"We have designed and curated every feature keeping your requirements in mind."
 msgstr ""
 
 #: admin/premium.php:18 admin/premium.php:21
@@ -2226,8 +2256,8 @@ msgstr ""
 
 #: admin/premium.php:75
 msgid ""
-"Configure your form’s settings and user flow based on conditional "
-"selection. Your forms should appear just the way you want it."
+"Configure your form’s settings and user flow based on conditional selection. "
+"Your forms should appear just the way you want it."
 msgstr ""
 
 #: admin/premium.php:81 admin/premium.php:84
@@ -2236,8 +2266,8 @@ msgstr ""
 
 #: admin/premium.php:85
 msgid ""
-"Break down the long forms into smaller and attractive multi step forms. "
-"Long and lengthy forms are uninviting, why build one?"
+"Break down the long forms into smaller and attractive multi step forms. Long "
+"and lengthy forms are uninviting, why build one?"
 msgstr ""
 
 #: admin/premium.php:93
@@ -2285,7 +2315,8 @@ msgid "User Analytics"
 msgstr ""
 
 #: admin/premium.php:135
-msgid "Show user tracking info during post and registration directly on Frontend."
+msgid ""
+"Show user tracking info during post and registration directly on Frontend."
 msgstr ""
 
 #: admin/premium.php:141 admin/premium.php:144
@@ -2332,7 +2363,8 @@ msgid "SMS Notification"
 msgstr ""
 
 #: admin/premium.php:185
-msgid "Get instant SMS notification on your mobile when post submits on your site."
+msgid ""
+"Get instant SMS notification on your mobile when post submits on your site."
 msgstr ""
 
 #: admin/premium.php:194
@@ -2364,7 +2396,8 @@ msgid "Upgrade To The Most Powerful Frontend Plugin"
 msgstr ""
 
 #: admin/premium.php:227
-msgid "WP User Frontend Pro is the most powerful solution for your frontend needs."
+msgid ""
+"WP User Frontend Pro is the most powerful solution for your frontend needs."
 msgstr ""
 
 #: admin/premium.php:231
@@ -2388,9 +2421,8 @@ msgstr ""
 #: admin/promotion.php:41
 msgid ""
 "<p>Get <strong class=\"highlight-text\">44&#37; discount</strong> on %2$s "
-"also <a target=\"_blank\" href=\"%1$s\"><strong>WIN any "
-"product</strong></a> from our 4th year anniversary giveaway. Offer ending "
-"soon!</p>"
+"also <a target=\"_blank\" href=\"%1$s\"><strong>WIN any product</strong></a> "
+"from our 4th year anniversary giveaway. Offer ending soon!</p>"
 msgstr ""
 
 #: admin/settings-options.php:13
@@ -2472,8 +2504,8 @@ msgstr ""
 #: admin/settings-options.php:97
 msgid ""
 "Users see the edit link in post if s/he is capable to edit the post/page. "
-"Selecting <strong>Yes</strong> will override the default WordPress edit "
-"post link in frontend"
+"Selecting <strong>Yes</strong> will override the default WordPress edit post "
+"link in frontend"
 msgstr ""
 
 #: admin/settings-options.php:107
@@ -2522,8 +2554,8 @@ msgstr ""
 
 #: admin/settings-options.php:139
 msgid ""
-"If guest post is enabled and user details are OFF, the posts are assigned "
-"to this user"
+"If guest post is enabled and user details are OFF, the posts are assigned to "
+"this user"
 msgstr ""
 
 #: admin/settings-options.php:146
@@ -2644,8 +2676,8 @@ msgstr ""
 
 #: admin/settings-options.php:259
 msgid ""
-"Show Subscriptions tab in \"my account\" page where "
-"<code>[wpuf_account]</code> is located"
+"Show Subscriptions tab in \"my account\" page where <code>[wpuf_account]</"
+"code> is located"
 msgstr ""
 
 #: admin/settings-options.php:271
@@ -2757,7 +2789,8 @@ msgid "Enable demo/sandbox mode"
 msgstr ""
 
 #: admin/settings-options.php:369
-msgid "When sandbox mode is active, all payment gateway will be used in demo mode"
+msgid ""
+"When sandbox mode is active, all payment gateway will be used in demo mode"
 msgstr ""
 
 #: admin/settings-options.php:375
@@ -2785,7 +2818,8 @@ msgid "Active payment gateways"
 msgstr ""
 
 #: admin/settings-options.php:398
-msgid "<span class=\"dashicons dashicons-universal-access-alt\"></span> Guest Email"
+msgid ""
+"<span class=\"dashicons dashicons-universal-access-alt\"></span> Guest Email"
 msgstr ""
 
 #: admin/settings-options.php:404
@@ -2803,7 +2837,7 @@ msgstr ""
 #: admin/settings-options.php:413
 msgid ""
 "This sets the body of the emails sent to guest users. Please DON'T edit the "
-"<code>{activation_link}</code> part, you can use {sitename} too."
+"<code>{activation_link}</code> part"
 msgstr ""
 
 #: admin/settings-options.php:437
@@ -3042,8 +3076,8 @@ msgstr ""
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
-"Clicking 'OK' will redirect you to the login page and you will lose the "
-"form data.\n"
+"Clicking 'OK' will redirect you to the login page and you will lose the form "
+"data.\n"
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
@@ -3258,7 +3292,7 @@ msgid ""
 "add a new post."
 msgstr ""
 
-#: class/subscription.php:973 includes/class-user-subscription.php:58
+#: class/subscription.php:973
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
@@ -3329,11 +3363,11 @@ msgstr ""
 msgid "No transactions found."
 msgstr ""
 
-#: class/upload.php:165 wpuf-functions.php:741
+#: class/upload.php:165 wpuf-functions.php:743
 msgid "Caption"
 msgstr ""
 
-#: includes/class-dokan-integration.php:37 wpuf-functions.php:1448
+#: includes/class-dokan-integration.php:37 wpuf-functions.php:1450
 msgid "Posts"
 msgstr ""
 
@@ -3414,7 +3448,8 @@ msgid "<strong>ERROR</strong>: Enter a username or email address."
 msgstr ""
 
 #: includes/class-login-widget.php:107
-msgid "<strong>ERROR</strong>: There is no user registered with that email address."
+msgid ""
+"<strong>ERROR</strong>: There is no user registered with that email address."
 msgstr ""
 
 #: includes/class-login-widget.php:122
@@ -3535,37 +3570,37 @@ msgstr ""
 msgid "Password Reset Label:"
 msgstr ""
 
-#: includes/class-user-subscription.php:63
+#: includes/class-user-subscription.php:56
+msgid "You must purchase a pack before posting"
+msgstr ""
+
+#: includes/class-user-subscription.php:61
 msgid "The subscription pack has been expired. Please buy a pack."
 msgstr ""
 
-#: includes/class-user-subscription.php:315
+#: includes/class-user-subscription.php:313
 #: templates/dashboard/subscription.php:2
 msgid "Subscription Details"
 msgstr ""
 
-#: includes/class-user-subscription.php:317
+#: includes/class-user-subscription.php:315
 #: templates/dashboard/subscription.php:4
 msgid "Subcription Name: "
 msgstr ""
 
-#: includes/class-user-subscription.php:319
+#: includes/class-user-subscription.php:317
 #: templates/dashboard/subscription.php:6
 msgid "Package & billing details: "
 msgstr ""
 
-#: includes/class-user-subscription.php:330
+#: includes/class-user-subscription.php:328
 #: templates/dashboard/subscription.php:10
 msgid "Remaining post: "
 msgstr ""
 
-#: includes/class-user-subscription.php:343
+#: includes/class-user-subscription.php:341
 #: templates/dashboard/subscription.php:24
 msgid "Unlimited"
-msgstr ""
-
-#: includes/class-user-subscription.php:377
-msgid "Change"
 msgstr ""
 
 #: includes/class-whats-new.php:67
@@ -3932,8 +3967,8 @@ msgstr ""
 
 #: includes/free/edit-user.php:242
 msgid ""
-"<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the "
-"<a href=\"mailto:%s\">webmaster</a> !"
+"<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a "
+"href=\"mailto:%s\">webmaster</a> !"
 msgstr ""
 
 #: includes/free/form-element.php:6 includes/free/form-element.php:26
@@ -4278,9 +4313,9 @@ msgstr ""
 
 #: templates/dashboard/dashboard.php:13
 msgid ""
-"From your account dashboard you can view your dashboard, manage your <a "
-"href=\"%1$s\">posts</a>, <a href=\"%2$s\">subscription</a> and <a "
-"href=\"%3$s\">edit your password and profile</a>."
+"From your account dashboard you can view your dashboard, manage your <a href="
+"\"%1$s\">posts</a>, <a href=\"%2$s\">subscription</a> and <a href=\"%3$s"
+"\">edit your password and profile</a>."
 msgstr ""
 
 #: templates/dashboard/edit-profile.php:5
@@ -4451,211 +4486,211 @@ msgstr ""
 msgid "CSV"
 msgstr ""
 
-#: wpuf-functions.php:1449
+#: wpuf-functions.php:1451
 msgid "Edit Profile"
 msgstr ""
 
-#: wpuf-functions.php:1554
+#: wpuf-functions.php:1556
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:1555
+#: wpuf-functions.php:1557
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1556
+#: wpuf-functions.php:1558
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:1557
+#: wpuf-functions.php:1559
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:1558
+#: wpuf-functions.php:1560
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:1559
+#: wpuf-functions.php:1561
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:1560
+#: wpuf-functions.php:1562
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1561
+#: wpuf-functions.php:1563
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:1562
+#: wpuf-functions.php:1564
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:1563
+#: wpuf-functions.php:1565
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:1564
+#: wpuf-functions.php:1566
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:1565
+#: wpuf-functions.php:1567
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:1566
+#: wpuf-functions.php:1568
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1567
+#: wpuf-functions.php:1569
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:1568
+#: wpuf-functions.php:1570
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:1569
+#: wpuf-functions.php:1571
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1570
+#: wpuf-functions.php:1572
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:1571
+#: wpuf-functions.php:1573
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:1572
+#: wpuf-functions.php:1574
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:1573
+#: wpuf-functions.php:1575
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:1574
+#: wpuf-functions.php:1576
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1575
+#: wpuf-functions.php:1577
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1576
+#: wpuf-functions.php:1578
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:1577
+#: wpuf-functions.php:1579
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:1578
+#: wpuf-functions.php:1580
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:1579
+#: wpuf-functions.php:1581
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:1580
+#: wpuf-functions.php:1582
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:1581
+#: wpuf-functions.php:1583
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1582
+#: wpuf-functions.php:1584
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:1583
+#: wpuf-functions.php:1585
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:1584
+#: wpuf-functions.php:1586
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1585
+#: wpuf-functions.php:1587
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:1586
+#: wpuf-functions.php:1588
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:1587
+#: wpuf-functions.php:1589
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1588
+#: wpuf-functions.php:1590
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:1589
+#: wpuf-functions.php:1591
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:1590
+#: wpuf-functions.php:1592
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:1591
+#: wpuf-functions.php:1593
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:1592
+#: wpuf-functions.php:1594
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:1593
+#: wpuf-functions.php:1595
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:1594
+#: wpuf-functions.php:1596
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:1595
+#: wpuf-functions.php:1597
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1596
+#: wpuf-functions.php:1598
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:1597
+#: wpuf-functions.php:1599
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:1598
+#: wpuf-functions.php:1600
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:1599
+#: wpuf-functions.php:1601
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1600
+#: wpuf-functions.php:1602
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:1601
+#: wpuf-functions.php:1603
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:1602
+#: wpuf-functions.php:1604
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1603
+#: wpuf-functions.php:1605
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:1604
+#: wpuf-functions.php:1606
 msgid "Egyptian Pound"
 msgstr ""
 
@@ -4664,7 +4699,8 @@ msgid "Your installed PHP Version is: "
 msgstr ""
 
 #: wpuf.php:105
-msgid "The <strong>WP User Frontend</strong> plugin requires PHP version <strong>"
+msgid ""
+"The <strong>WP User Frontend</strong> plugin requires PHP version <strong>"
 msgstr ""
 
 #: wpuf.php:105
@@ -4757,7 +4793,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: wpuf-functions.php:1066
+#: wpuf-functions.php:1068
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

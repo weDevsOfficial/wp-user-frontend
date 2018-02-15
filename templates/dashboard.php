@@ -197,7 +197,7 @@
 
                         <td>
                             <?php
-                            if ( wpuf_get_option( 'enable_post_edit', 'wpuf_frontend_posting', 'yes' ) == 'yes' ) {
+                            if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
                                 $disable_pending_edit   = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
                                 $edit_page              = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
                                 $post_id                = $post->ID;

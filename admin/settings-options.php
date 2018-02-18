@@ -74,7 +74,7 @@ function wpuf_settings_fields() {
                 'name'    => 'show_admin_bar',
                 'label'   => __( 'Show Admin Bar', 'wpuf' ),
                 'desc'    => __( 'Select user by roles, who can view admin bar in frontend.', 'wpuf' ),
-                'type'    => 'multicheck',
+                'type'    => 'multiselect',
                 'options' => $user_roles,
                 'default' => array( 'administrator', 'editor', 'author', 'contributor' ),
             ),

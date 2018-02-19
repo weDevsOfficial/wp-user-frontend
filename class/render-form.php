@@ -478,7 +478,32 @@ class WPUF_Render_Form {
 
         //if multistep form is enabled
         if ( isset( $form_settings['enable_multistep'] ) && $form_settings['enable_multistep'] == 'yes' ) {
+            $ms_ac_txt_color   = isset( $form_settings['ms_ac_txt_color'] ) ? $form_settings['ms_ac_txt_color'] : '#ffffff';
+            $ms_active_bgcolor = isset( $form_settings['ms_active_bgcolor'] ) ? $form_settings['ms_active_bgcolor'] : '#00a0d2';
+            $ms_bgcolor        = isset( $form_settings['ms_bgcolor'] ) ? $form_settings['ms_bgcolor'] : '#E4E4E4';
+
             ?>
+            <style type="text/css">
+                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li,
+                .wpuf-form .wpuf-multistep-progressbar.ui-progressbar {
+                    background-color:  <?php echo $ms_bgcolor; ?>;
+                    background:  <?php echo $ms_bgcolor; ?>;
+                }
+                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li::after{
+                    border-left-color: <?php echo $ms_bgcolor; ?>;
+                }
+                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step,
+                .wpuf-form .wpuf-multistep-progressbar .ui-widget-header{
+                    color: <?php echo $ms_ac_txt_color; ?>;
+                    background-color:  <?php echo $ms_active_bgcolor; ?>;
+                }
+                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step::after {
+                    border-left-color: <?php echo $ms_active_bgcolor; ?>;
+                }
+                .wpuf-form .wpuf-multistep-progressbar.ui-progressbar .wpuf-progress-percentage{
+                    color: <?php echo $ms_ac_txt_color; ?>;
+                }
+            </style>
             <input type="hidden" name="wpuf_multistep_type" value="<?php echo $form_settings['multistep_progressbar_type'] ?>"/>
             <?php
             if ( $form_settings['multistep_progressbar_type'] == 'step_by_step' ){

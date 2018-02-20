@@ -462,7 +462,7 @@ class WPUF_Simple_Login {
      * @return bool True: when finish. False: on error
      */
     function retrieve_password() {
-        global $wpdb;
+        global $wpdb, $wp_hasher;
 
         if ( empty( $_POST['user_login'] ) ) {
 
@@ -521,11 +521,18 @@ class WPUF_Simple_Login {
 
             // Generate something random for a key...
             $key = wp_generate_password( 20, false );
+            
+            if ( empty( $wp_hasher ) ) {
+                require_once ABSPATH . WPINC . '/class-phpass.php';
+                $wp_hasher = new PasswordHash( 8, true );
+            }
 
+            $hashed = time() . ':' . $wp_hasher->HashPassword( $key );
+            
             do_action('retrieve_password_key', $user_login, $user_email, $key);
 
-            // Now insert the new md5 key into the db
-            $wpdb->update( $wpdb->users, array( 'user_activation_key' => $key ), array( 'user_login' => $user_login ) );
+            // Now insert the new hash key into the db
+            $wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) );
         }
 
         // Send email notification
@@ -546,8 +553,11 @@ class WPUF_Simple_Login {
      */
     function check_password_reset_key( $key, $login ) {
         global $wpdb;
-
-        $key = preg_replace( '/[^a-z0-9]/i', '', $key );
+        
+        //keeping backward compatible
+        if ( strlen( $key ) == 20 ) {
+            $key = preg_replace( '/[^a-z0-9]/i', '', $key );
+        }
 
         if ( empty( $key ) || ! is_string( $key ) ) {
             $this->login_errors[] = __( 'Invalid key', 'wpuf' );
@@ -555,7 +565,7 @@ class WPUF_Simple_Login {
         }
 
         if ( empty( $login ) || ! is_string( $login ) ) {
-            $this->login_errors[] = __( 'Invalid key', 'wpuf' );
+            $this->login_errors[] = __( 'Invalid Login', 'wpuf' );
             return false;
         }
 

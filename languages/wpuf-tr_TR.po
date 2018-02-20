@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-02-11 02:50+0300\n"
+"PO-Revision-Date: 2018-02-20 23:06+0300\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "X-Generator: Poedit 2.0.6\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
@@ -1660,278 +1660,301 @@ msgstr "Den"
 #: admin/html/form-submission-restriction.php:141
 #: includes/free/form-element.php:224 includes/free/form-element.php:261
 msgid "To"
-msgstr ""
+msgstr "e"
 
 #: admin/html/form-submission-restriction.php:148
 msgid "Form Pending Message"
-msgstr ""
+msgstr "Form Bekleyen Mesaj"
 
 #: admin/html/form-submission-restriction.php:155
 msgid "Form Expired Message"
-msgstr ""
+msgstr "Form Süresi Doldu Mesajı"
 
 #: admin/html/form-submission-restriction.php:162
 msgid "Limit Entries"
-msgstr ""
+msgstr "Sınır Girişleri"
 
 #: admin/html/form-submission-restriction.php:167
 msgid "Enable form entry limit"
-msgstr ""
+msgstr "Form girişi sınırını etkinleştir"
 
 #: admin/html/form-submission-restriction.php:171
 msgid "Limit the number of entries allowed for this form"
-msgstr ""
+msgstr "Bu form için izin verilen girişlerin sayısını sınırlayın"
 
 #: admin/html/form-submission-restriction.php:177
 msgid "Number of Entries"
-msgstr ""
+msgstr "Girdilerin sayısı"
 
 #: admin/html/form-submission-restriction.php:184
 msgid "Limit Reached Message"
-msgstr ""
+msgstr "Sınırlandırılmış Mesaja Ulaşıldı"
 
 #: admin/html/modal.php:4
 msgid "Modal window. Press escape to close."
-msgstr ""
+msgstr "Modal pencere. Kapatmak için escape tuşuna basın."
 
 #: admin/html/modal.php:5
 msgid "Close modal window"
-msgstr ""
+msgstr "Modal pencereyi kapat"
 
 #: admin/html/modal.php:9
 msgid "Select a Template"
-msgstr ""
+msgstr "Bir Şablon seçin"
 
 #: admin/html/modal.php:12
 msgid ""
 "Select from a pre-defined template or from a <a href=\"%s\">blank form</a>"
 msgstr ""
+"Önceden tanımlanmış bir şablondan veya bir <a href=\"%s\">boş form</a>'dan "
+"seçim yapın"
 
 #: admin/html/modal.php:23 admin/html/modal.php:27 admin/html/modal.php:31
 msgid "Blank Form"
-msgstr ""
+msgstr "Boş Form"
 
 #: admin/html/modal.php:34 admin/html/modal.php:67
 msgid "Create Form"
-msgstr ""
+msgstr "Form Oluştur"
 
 #: admin/html/modal.php:54
 msgid "This integration is not installed."
-msgstr ""
+msgstr "Bu entegrasyon kurulu değil."
 
 #: admin/html/support.php:187
 msgid "Related Articles:"
-msgstr ""
+msgstr "İlgili Makaleler:"
 
 #: admin/html/support.php:206
 msgid "General Help Questions"
-msgstr ""
+msgstr "Genel Yardım Soruları"
 
 #: admin/html/support.php:206
 msgid "View all Documentations"
-msgstr ""
+msgstr "Tüm Dokümantasyonları görüntüle"
 
 #: admin/html/support.php:211
 msgid "Subscribe to Our Newsletter"
-msgstr ""
+msgstr "Haber bültenimize abone olun"
 
 #: admin/html/support.php:213
 msgid ""
 "Subscribe to our newsletter for regular <strong>tips</strong>, "
 "<strong>offers</strong> and <strong>news updates</strong>."
 msgstr ""
+"Haber bültenimize abone olun düzenli <strong>ipuçları</strong>, "
+"<strong>teklifler</strong> ve <strong>haber güncellemeleri</strong> için."
 
 #: admin/html/support.php:219 includes/free/edit-profile.php:105
 msgid "First Name"
-msgstr ""
+msgstr "İlk İsim"
 
 #: admin/html/support.php:230
 msgid "Subscribe"
-msgstr ""
+msgstr "Abonelik"
 
 #: admin/html/support.php:241
 msgid "Plugin Setup"
-msgstr ""
+msgstr "Eklenti Kurulumu"
 
 #: admin/html/support.php:247 admin/settings-options.php:18
 msgid "Frontend Posting"
-msgstr ""
+msgstr "Arayüz Yayını"
 
 #: admin/html/support.php:253
 msgid "Frontend Dashboard"
-msgstr ""
+msgstr "Arayüz Gösterge Paneli"
 
 #: admin/html/support.php:259
 msgid "User Registration"
-msgstr ""
+msgstr "Kullanıcı Kaydı"
 
 #: admin/html/support.php:265
 msgid "User Login"
-msgstr ""
+msgstr "Kullanıcı Girişi"
 
 #: admin/html/support.php:271
 msgid "Profile Editing"
-msgstr ""
+msgstr "Profil Düzenleme"
 
 #: admin/html/support.php:277
 msgid "Subscription &amp; Payment"
-msgstr ""
+msgstr "Abonelik&amp; Ödeme"
 
 #: admin/html/support.php:283
 msgid "Content Restriction"
-msgstr ""
+msgstr "İçerik Kısıtlaması"
 
 #: admin/html/support.php:305
 msgid "Learn More About Installation"
-msgstr ""
+msgstr "Kurulum Hakkında Daha Fazla Bilgi Edinin"
 
 #: admin/html/support.php:316
 msgid "Learn More About Frontend Posting"
-msgstr ""
+msgstr "Arayüz Yayını Hakkında Daha Fazla Bilgi Edinin"
 
 #: admin/html/support.php:326
 msgid "Learn More About Frontend Dashboard"
-msgstr ""
+msgstr "Arayüz Gösterge Paneli Hakkında Daha Fazla Bilgi Edinin"
 
 #: admin/html/support.php:356
 msgid "Learn More About Registration"
-msgstr ""
+msgstr "Kayıt Hakkında Daha Fazla Bilgi Edinin"
 
 #: admin/html/support.php:372
 msgid "Learn More About Login"
-msgstr ""
+msgstr "Giriş Hakkında Daha Fazla Bilgi Edinin"
 
 #: admin/html/support.php:389
 msgid "Learn More About Profile Editing"
-msgstr ""
+msgstr "Profil Düzenleme Hakkında Daha Fazla Bilgi Edinin"
 
 #: admin/html/support.php:442
 msgid "Learn More About Payments"
-msgstr ""
+msgstr "Ödemeler Hakkında Daha Fazla Bilgi Edinin"
 
 #: admin/html/support.php:459
 msgid "Learn More About Content Restriction"
-msgstr ""
+msgstr "İçerik Kısıtlaması Hakkında Daha Fazla Bilgi Edinin"
 
 #: admin/html/support.php:468 admin/html/support.php:470
 msgid "Like The Plugin?"
-msgstr ""
+msgstr "Eklenti Gibi Mi?"
 
 #: admin/html/support.php:472
 msgid "Your Review is very important to us as it helps us to grow more."
 msgstr ""
+"İncelemeniz bizim için çok önemlidir çünkü daha fazla gelişmemize yardımcı "
+"olur."
 
 #: admin/html/support.php:474
 msgid "Review Us on WP.org"
-msgstr ""
+msgstr "Bizi inceleyin WP.org da"
 
 #: admin/html/support.php:478 admin/html/support.php:480
 msgid "Found Any Bugs?"
-msgstr ""
+msgstr "Herhangi bir Hata Buldunuz mu?"
 
 #: admin/html/support.php:482
 msgid "Report any Bug that you Discovered, Get Instant Solutions."
-msgstr ""
+msgstr "Bulduğunuz Hataları Rapor Edin, Anında Çözüm Alın."
 
 #: admin/html/support.php:484
 msgid "Report to GitHub"
-msgstr ""
+msgstr "GitHub'a Rapor Edin"
 
 #: admin/html/support.php:488 admin/html/support.php:490
 msgid "Need Any Assistance?"
-msgstr ""
+msgstr "Herhangi bir Yardıma ihtiyacınız var mı?"
 
 #: admin/html/support.php:492
 msgid "Our EXPERT Support Team is always ready to Help you out."
-msgstr ""
+msgstr "UZMAN Destek Ekibimiz size yardımcı olmaya her zaman hazırdır."
 
 #: admin/html/support.php:494
 msgid "Contact Support"
-msgstr ""
+msgstr "Destekle İrtibat"
 
 #: admin/html/whats-new.php:8
 msgid "Added upgrade function for default category"
-msgstr ""
+msgstr "Varsayılan kategori için yükseltme işlevi eklendi"
 
 #: admin/html/whats-new.php:10
 msgid "Upgrader added to upgrade previously set default post category."
 msgstr ""
+"Daha önceden ayarlanmış varsayılan yayın kategorisini yükseltmek için "
+"yükseltici eklendi."
 
 #: admin/html/whats-new.php:13
 msgid "Subscription pack cannot be canceled"
-msgstr ""
+msgstr "Abonelik paketi iptal edilemez"
 
 #: admin/html/whats-new.php:15
 msgid ""
 "Fixed recurring subscription pack cannot be canceled from my account page in "
 "subscription details section."
 msgstr ""
+"Sabit yinelenen abonelik paketi, abonelik ayrıntıları bölümündeki hesap "
+"sayfamdan iptal edilemez."
 
 #: admin/html/whats-new.php:18
 msgid "page installer admin notice logic issue"
-msgstr ""
+msgstr "sayfa yükleyici yönetici uyarısı mantık sorunu"
 
 #: admin/html/whats-new.php:20
 msgid ""
 "Fixed page installer admin notice logic problem due to new payment settings "
 "default value not set."
 msgstr ""
+"Yeni ödeme ayarları varsayılan değerine bağlı olmadığından, sabit sayfa "
+"yükleyici yönetici uyarısı mantık sorunu ayarlanmadı."
 
 #: admin/html/whats-new.php:30
 msgid "Setup Wizard"
-msgstr ""
+msgstr "Kurulum sihirbazı"
 
 #: admin/html/whats-new.php:32
 msgid "Setup Wizard added to turn off payment options and install pages."
 msgstr ""
+"Ödeme seçeneklerini kapatmak ve sayfaları yüklemek için Kurulum Sihirbazı "
+"eklendi."
 
 #: admin/html/whats-new.php:36
 msgid "Multi-select Category"
-msgstr ""
+msgstr "Çoklu-Seçim Kategorisi"
 
 #: admin/html/whats-new.php:38
 msgid "Add multi-select to default category in post form settings."
-msgstr ""
+msgstr "Yayın form ayarları içinde varsayılan kategoriye çoklu seçimi ekleyin."
 
 #: admin/html/whats-new.php:42
 msgid "Select Text option for Taxonomy"
-msgstr ""
+msgstr "Taksonomi için Metin seçeneğini belirtin"
 
 #: admin/html/whats-new.php:44
 msgid ""
 "Add Select Text option for taxonomy fields. Now you can add default text "
 "with empty value as first option for Taxonomy dropdown."
 msgstr ""
+"Taksonomi alanları için Metin Seçme tercihini ekleyin. Şimdi Taksonomi "
+"açılır listesindeki ilk seçenek olarak boş değeri olan varsayılan metni "
+"ekleyebilirsiniz."
 
 #: admin/html/whats-new.php:47
 msgid "Taxonomy Checkbox Inline"
-msgstr ""
+msgstr "Taksonomi Onay Kutusu Hizası"
 
 #: admin/html/whats-new.php:49
 msgid ""
 "Added checkbox inline option to taxonomy checkbox. You can now display "
 "Taxonomy checkbox fields inline."
 msgstr ""
+"Taksonomi onay kutusuna hizada onay kutusu seçeneği eklendi. Artık Taksonomi "
+"onay kutusu alanlarını hizada görüntüleyebilirsiniz."
 
 #: admin/html/whats-new.php:59
 msgid "Manage schedule for form submission"
-msgstr ""
+msgstr "Form sunum programını zamanlama"
 
 #: admin/html/whats-new.php:61
 msgid ""
 "Do not accept form submission if the current date is not between the date "
 "range of the schedule."
 msgstr ""
+"Eğer form sunumu geçerli tarih çizelgesinin programlanmış tarih aralığı "
+"arasında değilse kabul etmeyin."
 
 #: admin/html/whats-new.php:65
 msgid "Restrict form submission based on the user roles"
-msgstr ""
+msgstr "Form sunum işlemini kullanıcı rollerine dayalı olarak kısıtla"
 
 #: admin/html/whats-new.php:67
 msgid ""
 "Restrict form submission based on the user roles. Now you can manage user "
 "role base permission on form submission."
 msgstr ""
+"Form sunum işlemini kullanıcı rollerine dayalı olarak kısıtlayın. Artık form "
+"sunumda kullanıcı rolü taban iznini yönetebilirsiniz."
 
 #: admin/html/whats-new.php:71
 msgid "Limit how many entries a form will accept"
@@ -1942,229 +1965,249 @@ msgid ""
 "Limit how many entries a form will accept and display a custom message when "
 "that limit is reached."
 msgstr ""
+"Bir formun kaç girişi kabul edeceğini sınırlayın ve bu sınırın üzerine "
+"ulaşıldığında özel bir mesaj görüntüleyin."
 
 #: admin/html/whats-new.php:77
 msgid "Show/hide Admin Bar"
-msgstr ""
+msgstr "Göster/gizle Yönetici Çubuğunu"
 
 #: admin/html/whats-new.php:79
 msgid "Control the admin bar visibility based on user roles."
 msgstr ""
+"Kullanıcı rollerine dayalı olarak yönetici çubuğu görünürlüğünü kontrol etme."
 
 #: admin/html/whats-new.php:83
 msgid "Ajax Login widget"
-msgstr ""
+msgstr "Ajax Giriş widgeti"
 
 #: admin/html/whats-new.php:85
 msgid ""
 "Login user is more simple now with Ajax Login Widget. The simple ajax login "
 "form do not required page loading for login."
 msgstr ""
+"Giriş kullanıcısı Ajax Giriş Widget'ıyla artık daha basittir. Basit ajax "
+"giriş formu giriş için sayfa yükleme gerektirmez."
 
 #: admin/html/whats-new.php:89
 msgid "Form submission with Captcha field"
-msgstr ""
+msgstr "Captcha alanı ile form sunumu"
 
 #: admin/html/whats-new.php:91
 msgid ""
 "Form field validation process updated if form submits with captcha field."
 msgstr ""
+"Eğer form captcha alanı ile sunulursa form alan doğrulama işlemi güncellenir."
 
 #: admin/html/whats-new.php:105
 msgid "What's New in WPUF?"
-msgstr ""
+msgstr "WPUF'da Neler Yeni?"
 
 #: admin/installer.php:27
 msgid ""
 "If you have not created <strong>WP User Frontend</strong> pages yet, you can "
 "do this by one click."
 msgstr ""
+"Eğer hala <strong>WP Kullanıcı Arayüzü</strong> sayfaları oluşturmadıysanız, "
+"bunu tek bir tıklamayla yapabilirsiniz."
 
 #: admin/installer.php:31
 msgid "or"
-msgstr ""
+msgstr "veya"
 
 #: admin/installer.php:32
 msgid "Skip Setup"
-msgstr ""
+msgstr "Kurulumu Atla"
 
 #: admin/installer.php:42
 msgid "Congratulations!"
-msgstr ""
+msgstr "Tebrikler!"
 
 #: admin/installer.php:42
 msgid ""
 "Pages for <strong>WP User Frontend</strong> has been successfully installed "
 "and saved!"
 msgstr ""
+"Sayfalar <strong>WP Kullanıcı Arayüzü</strong> için başarıyla yüklendi ve "
+"kaydedildi!"
 
 #: admin/installer.php:73 admin/settings-options.php:23
 #: includes/free/admin/shortcode-button.php:82 wpuf-functions.php:1449
 msgid "Dashboard"
-msgstr ""
+msgstr "Gösterge paneli"
 
 #: admin/installer.php:74 includes/free/admin/shortcode-button.php:86
 msgid "Account"
-msgstr ""
+msgstr "Hesap"
 
 #: admin/installer.php:78 includes/class-login-widget.php:235
 #: includes/free/admin/shortcode-button.php:94
 msgid "Login"
-msgstr ""
+msgstr "Oturum açma"
 
 #: admin/installer.php:84 class/subscription.php:356 class/subscription.php:376
 #: class/subscription.php:377 class/subscription.php:378
 #: includes/free/admin/shortcode-button.php:102 wpuf-functions.php:1452
 msgid "Subscription"
-msgstr ""
+msgstr "Abonelik"
 
 #: admin/installer.php:84
 msgid "[wpuf_sub_pack]"
-msgstr ""
+msgstr "[wpuf_sub_pack]"
 
 #: admin/installer.php:85 templates/dashboard/posts.php:82
 #: templates/dashboard.php:109
 msgid "Payment"
-msgstr ""
+msgstr "Ödeme"
 
 #: admin/installer.php:85
 msgid "Please select a gateway for payment"
-msgstr ""
+msgstr "Lütfen ödeme için bir ağ geçidi seçin"
 
 #: admin/installer.php:86
 msgid "Thank You"
-msgstr ""
+msgstr "Teşekkür Ederiz"
 
 #: admin/installer.php:86
 msgid ""
 "<h1>Payment is complete</h1><p>Congratulations, your payment has been "
 "completed!</p>"
-msgstr ""
+msgstr "<h1>Ödeme tamamlandı</h1><p>Tebrikler, ödemeniz tamamlanmıştır!</p>"
 
 #: admin/installer.php:87
 msgid "Order Received"
-msgstr ""
+msgstr "Sipariş Alındı"
 
 #: admin/installer.php:87
 msgid ""
 "Hi, we have received your order. We will validate the order and will take "
 "necessary steps to move forward."
 msgstr ""
+"Merhaba, siparişinizi aldık. Siparişi doğrulayacağız ve ileri gitmek için "
+"gerekli adımları atacağız."
 
 #: admin/installer.php:169 includes/free/admin/shortcode-button.php:98
 msgid "Registration"
-msgstr ""
+msgstr "Kayıt"
 
 #: admin/installer.php:178
 msgid "Sample Form"
-msgstr ""
+msgstr "Örnek Form"
 
 #: admin/post-forms-list-table-view.php:23
 msgid "Search Forms"
-msgstr ""
+msgstr "Formları Ara"
 
 #: admin/post-forms-list-table-view.php:39
 msgid "Learn more about <a href=\"%s\" target=\"_blank\">Frontend Posting</a>"
 msgstr ""
+"Hakkında daha fazla bilgi edinin <a href=\"%s\" target=\"_blank\">Arayüzü "
+"Yayınlama</a>"
 
 #: admin/post-forms-list-table.php:44 wpuf-functions.php:61
 msgid "Published"
-msgstr ""
+msgstr "Yayınlanan"
 
 #: admin/post-forms-list-table.php:45 admin/post-forms-list-table.php:393
 msgid "Trash"
-msgstr ""
+msgstr "Çöp Kutusu"
 
 #: admin/post-forms-list-table.php:95
 msgid "No form found."
-msgstr ""
+msgstr "Form Bulunamadı."
 
 #: admin/post-forms-list-table.php:109
 msgid "Move to Trash"
-msgstr ""
+msgstr "Çöp Kutusuna Taşı"
 
 #: admin/post-forms-list-table.php:113 admin/post-forms-list-table.php:405
 msgid "Restore"
-msgstr ""
+msgstr "Geri Yükle"
 
 #: admin/post-forms-list-table.php:114 admin/post-forms-list-table.php:406
 msgid "Delete Permanently"
-msgstr ""
+msgstr "Kalıcı Olarak Sil"
 
 #: admin/post-forms-list-table.php:296
 msgid "Form Name"
-msgstr ""
+msgstr "Form Adı"
 
 #: admin/post-forms-list-table.php:300 admin/premium.php:39
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:195
 #: includes/free/form-element.php:30
 msgid "Shortcode"
-msgstr ""
+msgstr "Kısakod"
 
 #: admin/post-forms-list-table.php:394
 msgid "Duplicate"
-msgstr ""
+msgstr "Çoğaltma"
 
 #: admin/post-forms-list-table.php:415 wpuf-functions.php:65
 msgid "Draft"
-msgstr ""
+msgstr "Taslak"
 
 #: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1612
 #: wpuf.php:489
 msgid "Are you sure?"
-msgstr ""
+msgstr "Emin misiniz?"
 
 #: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:497
 msgid "Allowed Files"
-msgstr ""
+msgstr "İzin Verilen Dosyalar"
 
 #: admin/posting.php:75 class/asset-loader.php:60 wpuf.php:503
 msgid "Maximum number of files reached!"
-msgstr ""
+msgstr "Maksimum dosya sayısına erişildi!"
 
 #: admin/posting.php:76 class/asset-loader.php:61 wpuf.php:504
 msgid ""
 "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
+"Yüklediğiniz dosya dosya boyutu sınırını aşıyor. Lütfen tekrar deneyin."
 
 #: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:505
 msgid "You have uploaded an incorrect file type. Please try again."
-msgstr ""
+msgstr "Yanlış bir dosya türü yüklediniz. Lütfen tekrar deneyin."
 
 #: admin/posting.php:96
 msgid "WPUF Form"
-msgstr ""
+msgstr "WPUF Formu"
 
 #: admin/posting.php:167
 msgid "WPUF Custom Fields"
-msgstr ""
+msgstr "WPUF Özel Alanlar"
 
 #: admin/posting.php:211
 msgid "No custom fields found."
-msgstr ""
+msgstr "Özel alanlar bulunamadı."
 
 #: admin/premium.php:2 admin/premium.php:5
 msgid "WPUF Pro"
-msgstr ""
+msgstr "WPUF Pro"
 
 #: admin/premium.php:4
 msgid ""
 "Upgrade to the premium versions of WPUF and unlock even more useful features."
 msgstr ""
+"WPUF'nin premium sürümlerine geçin ve daha da kullanışlı özelliklerin "
+"kilidini açın."
 
 #: admin/premium.php:10
 msgid "Pro Features"
-msgstr ""
+msgstr "Pro Özellikleri"
 
 #: admin/premium.php:11
 msgid ""
 "WPUF Pro is designed just for you, specially to fulfil your business needs. "
 "We have designed and curated every feature keeping your requirements in mind."
 msgstr ""
+"WPUF PRO, özellikle iş ihtiyaçlarınızı karşılamak üzere sizin için "
+"tasarlanmıştır. İhtiyaçlarınızı aklımızda tutarak her özelliği tasarladık ve "
+"küratörledik."
 
 #: admin/premium.php:18 admin/premium.php:21
 msgid "Registration Form Builder"
-msgstr ""
+msgstr "Kayıt Formu Kurucu"
 
 #: admin/premium.php:22
 msgid ""
@@ -2172,251 +2215,282 @@ msgid ""
 "registration and profile editing. You could also manage Register for "
 "Subscription Package Purchase."
 msgstr ""
+"Kayıt formu kurucu hem kullanıcı kaydı hem de profil düzenleme için "
+"kullanılabilen iki yönlü bir formdur. Ayrıca Abone Paketi Satın Alma Kaydını "
+"yönetebilirsiniz."
 
 #: admin/premium.php:28 admin/premium.php:31
 msgid "Advanced Fields"
-msgstr ""
+msgstr "Gelişmiş Alanlar"
 
 #: admin/premium.php:33
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:113
 #: includes/free/form-element.php:15
 msgid "Country List"
-msgstr ""
+msgstr "Ülke Listesi"
 
 #: admin/premium.php:34
 msgid "Address"
-msgstr ""
+msgstr "Adres"
 
 #: admin/premium.php:35
 msgid "Date Field"
-msgstr ""
+msgstr "Veri Alanı"
 
 #: admin/premium.php:36
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:179
 msgid "Google Map"
-msgstr ""
+msgstr "Google Harita"
 
 #: admin/premium.php:37
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:225
 #: includes/free/form-element.php:33
 msgid "Action Hook"
-msgstr ""
+msgstr "Eylem İğnesi"
 
 #: admin/premium.php:38
 msgid "Rating"
-msgstr ""
+msgstr "Değerlendirme"
 
 #: admin/premium.php:40
 msgid "Number"
-msgstr ""
+msgstr "Numara"
 
 #: admin/premium.php:41
 msgid "Repeater"
-msgstr ""
+msgstr "Tekrarlayıcı"
 
 #: admin/premium.php:42
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:97
 #: includes/free/form-element.php:13
 msgid "File Upload"
-msgstr ""
+msgstr "Dosya Yükleme"
 
 #: admin/premium.php:43
 msgid "Captcha"
-msgstr ""
+msgstr "Captcha"
 
 #: admin/premium.php:44
 msgid "TOC"
-msgstr ""
+msgstr "TOC"
 
 #: admin/premium.php:51 admin/premium.php:54
 msgid "Manage Coupons"
-msgstr ""
+msgstr "Yönetim Kuponlar"
 
 #: admin/premium.php:55
 msgid ""
 "Simple yet powerful coupon management system. Use Coupon codes for selling "
 "subscription pack with discounts."
 msgstr ""
+"Basit yine de güçlü kupon yönetim sistemi. İndirimle abonelik paketi satmak "
+"için kupon kodlarını kullanın."
 
 #: admin/premium.php:61 admin/premium.php:64
 msgid "Content Restrictions"
-msgstr ""
+msgstr "İçerik Kısıtlamaları"
 
 #: admin/premium.php:65
 msgid ""
 "You can restrict premium content for users by access role, registration or "
 "subscriptions only with just a shortcode."
 msgstr ""
+"Kullanıcılar için premium içeriği role dayalı olarak, abonelikler veya "
+"sadece kısa kodla kayıtla kısıtlayabilirsiniz."
 
 #: admin/premium.php:71 admin/premium.php:74
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:46
 #: includes/free/form-element.php:474
 msgid "Conditional Logic"
-msgstr ""
+msgstr "Şartlı Mantık"
 
 #: admin/premium.php:75
 msgid ""
 "Configure your form’s settings and user flow based on conditional selection. "
 "Your forms should appear just the way you want it."
 msgstr ""
+"Şartlı seçiminize dayalı olarak form ayarlarınızı ve kullanıcı akışınızı "
+"yapılandırın. Formlarınız tam istediğiniz şekilde görünmelidir."
 
 #: admin/premium.php:81 admin/premium.php:84
 msgid "Multi-step Form"
-msgstr ""
+msgstr "Çok-adımlı Form"
 
 #: admin/premium.php:85
 msgid ""
 "Break down the long forms into smaller and attractive multi step forms. Long "
 "and lengthy forms are uninviting, why build one?"
 msgstr ""
+"Uzun formları küçük ve ilgi çekici çok aşamalı formlara ayırın. Uzun ve "
+"ayrıntılı formlar ilgi çekici değildir, neden kuruyoruz?"
 
 #: admin/premium.php:93
 msgid "Modules"
-msgstr ""
+msgstr "Modüller"
 
 #: admin/premium.php:94
 msgid "A bunch of awesome modules to speed up your business growth."
-msgstr ""
+msgstr "İş büyümenizi hızlandıracak bir dizi harika modül."
 
 #: admin/premium.php:101 admin/premium.php:121 admin/premium.php:124
 msgid "BuddyPress Profile"
-msgstr ""
+msgstr "BuddyPress Profili"
 
 #: admin/premium.php:104
 msgid "Social Login"
-msgstr ""
+msgstr "Sosyal Giriş"
 
 #: admin/premium.php:105
 msgid ""
 "Allow your users to Register or Login using Social networks like Google, "
 "Facebook, Twitter and LinkedIn."
 msgstr ""
+"Kullanıcılarınızın Google, Facebook, Twitter ve LinkedIn gibi Sosyal ağları "
+"kullanarak Kaydolmasına veya Giriş yapmasına izin verin."
 
 #: admin/premium.php:111 admin/premium.php:114
 msgid "User Directory"
-msgstr ""
+msgstr "Kullanıcı Rehberi"
 
 #: admin/premium.php:115
 msgid ""
 "Handle user listing and user profile in the frontend. Create a directory "
 "site easily."
 msgstr ""
+"Kullanıcı listelemeyi ve kullanıcı profilini arayüzde işleyin. Kolayca bir "
+"rehber sitesi oluşturun."
 
 #: admin/premium.php:125
 msgid "Register and upgrade user profiles and sync data with BuddyPress."
 msgstr ""
+"Kayıt olun ve kullanıcı profillerini yükseltin ve BuddyPress ile veriyi "
+"senkronize edin."
 
 #: admin/premium.php:131 admin/premium.php:171
 msgid "MailChimp Integration"
-msgstr ""
+msgstr "MailChimp Entegrasyonu"
 
 #: admin/premium.php:134
 msgid "User Analytics"
-msgstr ""
+msgstr "Kullanıcı Analizi"
 
 #: admin/premium.php:135
 msgid ""
 "Show user tracking info during post and registration directly on Frontend."
 msgstr ""
+"Yayın ve kayıt sırasında kullanıcı takip bilgilerini doğrudan Arayüzde "
+"gösterin."
 
 #: admin/premium.php:141 admin/premium.php:144
 msgid "Paid Membership Pro"
-msgstr ""
+msgstr "Ücretli Üyelik Pro"
 
 #: admin/premium.php:145
 msgid "Membership Integration of WP User Frontend with Paid Membership Pro."
-msgstr ""
+msgstr "Ücretli Üyelik Pro'yla WP Kullanıcı Arayüzü Üyeliği Entegrasyonu."
 
 #: admin/premium.php:151 admin/premium.php:154
 msgid "Stripe Payment"
-msgstr ""
+msgstr "Stripe Ödeme"
 
 #: admin/premium.php:155
 msgid ""
 "Stripe payment gateway for WP User Frontend. Get your subscription payment "
 "with Stripe."
 msgstr ""
+"WP Kullanıcı Arayüzü için Stripe ödeme ağ geçidi. Abone ödemenizi Stripe ile "
+"alın."
 
 #: admin/premium.php:161 admin/premium.php:164
 msgid "Mailpoet"
-msgstr ""
+msgstr "Mailpoet"
 
 #: admin/premium.php:165
 msgid ""
 "Add subscribers to mailpoet mailing list when they registers via WP User "
 "Frontend Pro."
 msgstr ""
+"WP Kullanıcı Arayüz Pro üzerinden kaydolurken mailpoet posta listesine abone "
+"ekleyin."
 
 #: admin/premium.php:174
 msgid "MailChimp"
-msgstr ""
+msgstr "MailChimp"
 
 #: admin/premium.php:175
 msgid ""
 "Integrate your desired form to your MailChimp email newsletter using latest "
 "API."
 msgstr ""
+"İstediğiniz formu en yeni API'yı kullanarak MailChimp e-posta bülteninize "
+"entegre edin."
 
 #: admin/premium.php:181 admin/premium.php:184 admin/premium.php:191
 #: admin/premium.php:201
 msgid "SMS Notification"
-msgstr ""
+msgstr "SMS Bildirimi"
 
 #: admin/premium.php:185
 msgid ""
 "Get instant SMS notification on your mobile when post submits on your site."
 msgstr ""
+"Yayınınız sitenize gönderildiğinde cep telefonunuzdan anında SMS bildirimi "
+"alın."
 
 #: admin/premium.php:194
 msgid "Comment Manager"
-msgstr ""
+msgstr "Yorum Yöneticisi"
 
 #: admin/premium.php:195
 msgid "Handle comments in frontend. View / reply comments on post."
 msgstr ""
+"Yorumları arayüzde işleyin. Gönderi hakkındaki görüşleri görüntüleyin / "
+"yanıtlayın."
 
 #: admin/premium.php:204
 msgid "QR Code Generator"
-msgstr ""
+msgstr "QR Kod düzenleyici"
 
 #: admin/premium.php:205
 msgid "Generate QR Code with your custom fields or custom post meta."
-msgstr ""
+msgstr "Özel alanlarınız veya özel post metalarınızla QR Kodu oluşturun."
 
 #: admin/premium.php:211 admin/premium.php:214
 msgid "More..."
-msgstr ""
+msgstr "Dahası..."
 
 #: admin/premium.php:215
 msgid "A bunch of more modules are coming soon."
-msgstr ""
+msgstr "Bir dizi daha modül yakında çıkacak."
 
 #: admin/premium.php:225
 msgid "Upgrade To The Most Powerful Frontend Plugin"
-msgstr ""
+msgstr "En Güçlü Arayüz Eklentisine Geçiş Yapın"
 
 #: admin/premium.php:227
 msgid ""
 "WP User Frontend Pro is the most powerful solution for your frontend needs."
-msgstr ""
+msgstr "WP Kullanıcı Arayüzü Pro arayüz ihtiyaçlarınız için en güçlü çözümdür."
 
 #: admin/premium.php:231
 msgid "Upgrade Now"
-msgstr ""
+msgstr "Şimdi Yükselt"
 
 #: admin/promotion.php:38
 msgid "Pro upgrade and all extensions, "
-msgstr ""
+msgstr "Pro yükseltme ve tüm uzantılar, "
 
 #: admin/promotion.php:38
 msgid "all extensions, "
-msgstr ""
+msgstr "tüm uzantılar, "
 
 #: admin/promotion.php:40
 msgid ""
 "<h2><span class=\"dashicons dashicons-awards\"></span> weDevs 4th Year "
 "Anniversary Offer</h2>"
 msgstr ""
+"<h2><span class=\"dashicons dashicons-awards\"></span> weDevs 4.Yıldönümü "
+"Teklifi</h2>"
 
 #: admin/promotion.php:41
 msgid ""
@@ -2424,82 +2498,89 @@ msgid ""
 "also <a target=\"_blank\" href=\"%1$s\"><strong>WIN any product</strong></a> "
 "from our 4th year anniversary giveaway. Offer ending soon!</p>"
 msgstr ""
+"<p>Alın <strong class=\"highlight-text\">44&#37; indirim</strong> ayrıca "
+"%2$s <a target=\"_blank\" href=\"%1$s\"><strong>herhangi ürünü KAZANIN</"
+"strong></a> 4.yıldönümü hediyemizden. Teklif yakında bitiyor!</p>"
 
 #: admin/settings-options.php:13
 msgid "General Options"
-msgstr ""
+msgstr "Genel Seçenekler"
 
 #: admin/settings-options.php:28
 msgid "My Account"
-msgstr ""
+msgstr "Hesabım"
 
 #: admin/settings-options.php:33
 msgid "Login / Registration"
-msgstr ""
+msgstr "Giriş / Kayıt"
 
 #: admin/settings-options.php:38
 msgid "Payments"
-msgstr ""
+msgstr "Ödemeler"
 
 #: admin/settings-options.php:43
 msgid "E-Mails"
-msgstr ""
+msgstr "E-Postalar"
 
 #: admin/settings-options.php:69
 msgid "Show Admin Bar"
-msgstr ""
+msgstr "Yönetici Çubuğunu Göster"
 
 #: admin/settings-options.php:70
 msgid "Select user by roles, who can view admin bar in frontend."
 msgstr ""
+"Arayüzde, yönetici çubuğunu görüntüleyebilecek kullanıcıları rollerine göre "
+"seçin."
 
 #: admin/settings-options.php:73
 msgid "Administrator"
-msgstr ""
+msgstr "Yönetici"
 
 #: admin/settings-options.php:74
 msgid "Editor"
-msgstr ""
+msgstr "Editör"
 
 #: admin/settings-options.php:75
 msgid "Author"
-msgstr ""
+msgstr "Yaratıcı"
 
 #: admin/settings-options.php:76
 msgid "Contributor"
-msgstr ""
+msgstr "Yazar"
 
 #: admin/settings-options.php:82
 msgid "Admin area access"
-msgstr ""
+msgstr "Yönetici bölgesi erişimi"
 
 #: admin/settings-options.php:83
 msgid "Allow you to block specific user role to Ajax request and Media upload."
 msgstr ""
+"Ajax isteğine ve Medya yüklemesine belirli kullanıcı rollerini engellemenize "
+"izin verir."
 
 #: admin/settings-options.php:87
 msgid "Admin Only"
-msgstr ""
+msgstr "Sadece Yönetici"
 
 #: admin/settings-options.php:88
 msgid "Admins, Editors"
-msgstr ""
+msgstr "Yöneticiler, Editörler"
 
 #: admin/settings-options.php:89
 msgid "Admins, Editors, Authors"
-msgstr ""
+msgstr "Yöneticiler, Editörler, Yaratıcılar"
 
 #: admin/settings-options.php:90
 msgid "Admins, Editors, Authors, Contributors"
-msgstr ""
+msgstr "Yöneticiler, Editörler, Yaratıcılar, Yazarlar"
 
 #: admin/settings-options.php:91
 msgid "Default"
-msgstr ""
+msgstr "Varsayılan"
 
 #: admin/settings-options.php:96
 msgid "Override the post edit link"
-msgstr ""
+msgstr "Yayın düzenleme bağlantısını geçersiz kıl"
 
 #: admin/settings-options.php:97
 msgid ""
@@ -2507,156 +2588,172 @@ msgid ""
 "Selecting <strong>Yes</strong> will override the default WordPress edit post "
 "link in frontend"
 msgstr ""
+"Yazıyı/sayfayı düzenleyebilen kullanıcılar yayında düzenleme bağlantısını "
+"görür. <Strong>Evet</strong> seçeneğini belirlemek, arazüdeki varsayılan "
+"WordPress düzenleme yayın bağlantısını geçersiz kılacaktır"
 
 #: admin/settings-options.php:107
 msgid "Load Scripts"
-msgstr ""
+msgstr "Komut Dosyalarını Yükle"
 
 #: admin/settings-options.php:108
 msgid "Load scripts/styles in all pages"
-msgstr ""
+msgstr "Tüm sayfalara komut dosyası/stilleri yükle"
 
 #: admin/settings-options.php:114
 msgid "reCAPTCHA Site Key"
-msgstr ""
+msgstr "reCAPTCHA Site Anahtarı"
 
 #: admin/settings-options.php:118
 msgid "reCAPTCHA Secret Key"
-msgstr ""
+msgstr "reCAPTCHA Gizli Anahtar"
 
 #: admin/settings-options.php:119
 msgid ""
 "<a target=\"_blank\" href=\"https://www.google.com/recaptcha/\">Register "
 "here</a> to get reCaptcha Site and Secret keys."
 msgstr ""
+"<a target=\"_blank\" href=\"https://www.google.com/recaptcha/\">Buraya kayıt "
+"olun</a> reCaptcha Site ve Gizli anahtarları almak için."
 
 #: admin/settings-options.php:123
 msgid "Custom CSS codes"
-msgstr ""
+msgstr "Özel CSS kodları"
 
 #: admin/settings-options.php:124
 msgid ""
 "If you want to add your custom CSS code, it will be added on page header "
 "wrapped with style tag"
 msgstr ""
+"Eğer özel CSS kodunuzu eklemek isterseniz, sayfa üstbilgisine stil etiketi "
+"ile eklenir"
 
 #: admin/settings-options.php:131
 msgid "Edit Page"
-msgstr ""
+msgstr "Sayfa Düzenle"
 
 #: admin/settings-options.php:132
 msgid "Select the page where <code>[wpuf_edit]</code> is located"
-msgstr ""
+msgstr "Sayfayı <code>[wpuf_edit]</code> 'un konumlandığı yerde seçin"
 
 #: admin/settings-options.php:138
 msgid "Default Post Owner"
-msgstr ""
+msgstr "Varsayılan Yayın Sahibi"
 
 #: admin/settings-options.php:139
 msgid ""
 "If guest post is enabled and user details are OFF, the posts are assigned to "
 "this user"
 msgstr ""
+"Eğer misafir yayını etkinleştirilirse ve kullanıcı bilgileri KAPALI ise, "
+"yayınlar bu kullanıcıya atanır"
 
 #: admin/settings-options.php:146
 msgid "Custom Fields in post"
-msgstr ""
+msgstr "Yayında Özel Alanlar"
 
 #: admin/settings-options.php:147
 msgid "Show custom fields on post content area"
-msgstr ""
+msgstr "Yayın içeriği bölgesinde özel alanları göster"
 
 #: admin/settings-options.php:153
 msgid "Insert Photo image size"
-msgstr ""
+msgstr "Fotoğraf resim boyutunu ekle"
 
 #: admin/settings-options.php:154
 msgid ""
 "Default image size of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
+"Varsayılan resim boyutu \"<strong>Fotoğraf Ekle</strong>\" butonu yayın "
+"içeriği alanındadır"
 
 #: admin/settings-options.php:161
 msgid "Insert Photo image type"
-msgstr ""
+msgstr "Fotoğraf resim türünü ekle"
 
 #: admin/settings-options.php:162
 msgid ""
 "Default image type of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
+"Varsayılan resim türü \"<strong>Fotoğraf Ekle</strong>\" butonu yayın "
+"içeriği alanındadır"
 
 #: admin/settings-options.php:165
 msgid "Image only"
-msgstr ""
+msgstr "Sadece resim"
 
 #: admin/settings-options.php:166
 msgid "Image with link"
-msgstr ""
+msgstr "Resim ile bağlantı"
 
 #: admin/settings-options.php:172
 msgid "Enable Image Caption"
-msgstr ""
+msgstr "Resim Başlığını Etkinleştir"
 
 #: admin/settings-options.php:173
 msgid "Allow users to update image/video title, caption and description"
 msgstr ""
+"Kullanıcıların resim adını, başlığını ve tanımlamasını güncellemesine izin "
+"verin"
 
 #: admin/settings-options.php:179
 msgid "Default Post Form"
-msgstr ""
+msgstr "Varsayılan Yayın Formu"
 
 #: admin/settings-options.php:180
 msgid "Fallback form for post editing if no associated form found"
 msgstr ""
+"Eğer ilişkili herhangi bir form bulunmaz ise yayın düzenleme için yedek form"
 
 #: admin/settings-options.php:188
 msgid "Users can edit post?"
-msgstr ""
+msgstr "Kullanıcılar yayını düzenleyebilir mi?"
 
 #: admin/settings-options.php:189
 msgid "Users will be able to edit their own posts"
-msgstr ""
+msgstr "Kullanıcıların kendi yayınlarını düzenlemelerine izin verir"
 
 #: admin/settings-options.php:199
 msgid "User can delete post?"
-msgstr ""
+msgstr "Kullanıcılar yayını silebilir mi?"
 
 #: admin/settings-options.php:200
 msgid "Users will be able to delete their own posts"
-msgstr ""
+msgstr "Kullanıcıların kendi yayınlarını silmelerine izin verir"
 
 #: admin/settings-options.php:210
 msgid "Pending Post Edit"
-msgstr ""
+msgstr "Bekleyen Yayın Düzenleme"
 
 #: admin/settings-options.php:211
 msgid "Disable post editing while post in \"pending\" status"
-msgstr ""
+msgstr "Yayın \"beklemede\" durumundayken yayın düzenlemeyi devre dışı bırak"
 
 #: admin/settings-options.php:217
 msgid "Posts per page"
-msgstr ""
+msgstr "Sayfa başı yayın"
 
 #: admin/settings-options.php:218
 msgid "How many posts will be listed in a page"
-msgstr ""
+msgstr "Bir sayfada  kaç tane yayın listelenecek"
 
 #: admin/settings-options.php:224
 msgid "Show user bio"
-msgstr ""
+msgstr "Kullanıcıların biyosunu göster"
 
 #: admin/settings-options.php:225
 msgid "Users biographical info will be shown"
-msgstr ""
+msgstr "Kullanıcıların biyografik bilgisi gösterilecek"
 
 #: admin/settings-options.php:231
 msgid "Show post count"
-msgstr ""
+msgstr "Yayın sayısını göster"
 
 #: admin/settings-options.php:232
 msgid "Show how many posts are created by the user"
-msgstr ""
+msgstr "Kaç tane yayının kullanıcı tarafından oluşturulduğunu göster"
 
 #: admin/settings-options.php:238
 msgid "Show Featured Image"

@@ -258,12 +258,15 @@ function wpuf_settings_fields() {
                 'name'    => 'show_subscriptions',
                 'label'   => __( 'Show Subscriptions', 'wpuf' ),
                 'desc'    => __( 'Show Subscriptions tab in "my account" page where <code>[wpuf_account]</code> is located', 'wpuf' ),
-                'type'    => 'select',
-                'default' => 'yes',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no'  => __( 'No', 'wpuf' )
-                )
+                'type'    => 'checkbox',
+                'default' => 'on',
+            ),
+            array(
+                'name'  => 'show_billing_address',
+                'label' => __( 'Show Billing Address', 'wpuf' ),
+                'desc'  => __( 'Show billing address in account page.', 'wpuf' ),
+                'type'  => 'checkbox',
+                'default' => 'on',
             ),
         ) ),
         'wpuf_profile' => apply_filters( 'wpuf_options_profile', array(

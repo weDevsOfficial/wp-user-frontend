@@ -62,7 +62,7 @@ class WPUF_Payment {
      * @return string
      */
     function payment_page( $content ) {
-        global $post;
+        global $post, $current_user;
 
         $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
 
@@ -174,6 +174,10 @@ class WPUF_Payment {
                             </div>
 
                         <?php } ?>
+                        
+                        <?php if ( ! metadata_exists( 'user', $current_user->ID, 'address_fields') ) {
+                            wpuf_load_template('dashboard/billing-address.php');
+                        } else { ?>
                         <?php wp_nonce_field( 'wpuf_payment_gateway' ) ?>
 
                         <?php do_action( 'wpuf_before_payment_gateway' ); ?>
@@ -218,6 +222,7 @@ class WPUF_Payment {
                             <?php } ?>
                             <input type="submit" name="wpuf_payment_submit" class="wpuf-btn" value="<?php _e( 'Proceed', 'wpuf' ); ?>"/>
                         </p>
+                        <?php } ?>
                     </form>
                 <?php } else { ?>
                     <?php _e( 'No Payment gateway found', 'wpuf' ); ?>
@@ -278,9 +283,11 @@ class WPUF_Payment {
                     $post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
                     if ( !is_wp_error ( $current_pack ) && !$post_count ) {
-                        $amount      = $form->get_subs_fallback_cost();
+                        $amount    = $form->get_subs_fallback_cost();
+                        $amount    = apply_filters( 'wpuf_amount_with_tax', $amount );
                     } else {
-                        $amount      = $form->get_pay_per_post_cost();
+                        $amount    = $form->get_pay_per_post_cost();
+                        $amount    = apply_filters( 'wpuf_amount_with_tax', $amount );
                     }
                     $item_number = $post->ID;
                     $item_name   = $post->post_title;
@@ -290,7 +297,7 @@ class WPUF_Payment {
                     $pack           = WPUF_Subscription::init()->get_subscription( $pack_id );
                     $custom         = $pack->meta_value;
                     $billing_amount = $pack->meta_value['billing_amount'];
-                    $amount         = $billing_amount;
+                    $amount         = apply_filters( 'wpuf_amount_with_tax', $billing_amount);
                     $item_name      = $pack->post_title;
                     $item_number    = $pack->ID;
                     break;

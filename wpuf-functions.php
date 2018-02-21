@@ -1454,6 +1454,7 @@ function wpuf_get_account_sections() {
         array( 'slug' => 'posts', 'label' => __( 'Posts', 'wpuf' ) ),
         array( 'slug' => 'edit-profile', 'label' => __( 'Edit Profile', 'wpuf' ) ),
         array( 'slug' => 'subscription', 'label' => __( 'Subscription', 'wpuf' ) ),
+        array( 'slug' => 'billing-address', 'label' => __( 'Billing Address', 'wpuf' ) ),
     );
 
     return apply_filters( 'wpuf_account_sections', $account_sections );

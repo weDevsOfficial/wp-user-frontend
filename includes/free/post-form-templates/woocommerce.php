@@ -269,14 +269,15 @@ Edit URL: %editlink%',
      * @return void
      */
     public function update_reviews( $post_id ) {
-        $reviews = get_post_meta( $post_id, 'product_reviews', true );
-        $status  = !empty( $reviews ) ? 'open' : 'close';
+        global $wpdb;
 
-        if ( 'open' === $status ) {
-            apply_filters( 'comments_open', true , $post_id );
-        } else {
-            apply_filters( 'comments_open', false , $post_id );
-        }
+        $reviews = get_post_meta( $post_id, 'product_reviews', true );
+        $status  = !empty( $reviews ) ? 'open' : 'closed';
+
+        // wp_update_post( array( 'ID' => $post_id, 'comment_status' => $status ) );
+
+        $comment_sql = "UPDATE {$wpdb->prefix}posts SET comment_status='{$status}' WHERE ID={$post_id} AND post_status='publish' AND post_type='product'";
+        $wpdb->get_results( $comment_sql );
     }
 
     /**

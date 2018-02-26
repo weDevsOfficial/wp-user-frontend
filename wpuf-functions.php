@@ -233,7 +233,7 @@ function wpuf_override_admin_edit_link( $url, $post_id ) {
     if ( is_admin() ) {
         return $url;
     }
-   
+
     $override = wpuf_get_option( 'override_editlink', 'wpuf_general', 'no' );
 
     if ( $override == 'yes' ) {
@@ -795,6 +795,13 @@ function wpuf_show_custom_fields( $content ) {
                     if ( $new ) {
                         $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
                     }
+                    break;
+
+                case 'url':
+                    $value = get_post_meta( $post->ID, $attr['name'] , true );
+                    $open_in = $attr['open_window'] == 'same' ? '' : '_blank';
+                    $link = sprintf( "<li><label>%s :</label><a href='%s' target = '%s'>%s</a>", $attr['label'], $value, $open_in, $value);
+                    $html.= $link;
                     break;
 
                 default:

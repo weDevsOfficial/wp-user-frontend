@@ -18,10 +18,11 @@ if ( isset( $_POST['add_line_1'] )
         'country'       => $_POST['country']
     );   
     update_user_meta( $current_user->ID, 'address_fields', $address_fields );
+    echo '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wpuf' ) . '</div>';
 } else {
     if ( metadata_exists( 'user', $current_user->ID, 'address_fields') ) {
-        $address_fields = get_user_meta( $current_user->ID, 'address_fields', false );
-        $address_fields = $address_fields[0];  
+        $address_fields = get_user_meta( $current_user->ID, 'address_fields', true );
+        $address_fields = $address_fields;  
     } else {
         $address_fields = array_fill_keys(
             array( 'add_line_1', 'add_line_2', 'city', 'state', 'zip_code', 'country' ), '' );
@@ -42,7 +43,7 @@ if ( isset( $_POST['add_line_1'] )
             </li>
 
             <li>
-                <div class="wpuf-label"><?php _e( 'Address Line 2 ', 'wpuf' ); ?><span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e( 'Address Line 2 ', 'wpuf' ); ?></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="add_line_2" id="add_line_2" value="<?php echo $address_fields['add_line_2']; ?>" />
                 </div>
@@ -93,15 +94,16 @@ if ( isset( $_POST['add_line_1'] )
                 </div>
             </li>
 
-
+            <?php if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_pay' && isset( $_POST['update_billing_address'] ) ) { ?>
+                <input type="submit" name="wpuf_payment_submit" class="wpuf-btn" value="<?php _e( 'Proceed', 'wpuf' ); ?>"/>
+            <?php } else { ?>
             <li class="wpuf-submit">
-                <input type="submit"  name="update_billing_address" id="wpuf-account-update-billing_address" value="<?php _e( 'Update Billing Address', 'wpuf' ); ?>" />
+                <input type="submit" name="update_billing_address" id="wpuf-account-update-billing_address" value="<?php _e( 'Update Billing Address', 'wpuf' ); ?>" />
             </li>
+            <?php } ?>
         </ul>
 
     <div class="clear"></div>
 
     </div>
-
-
 </form>

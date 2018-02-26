@@ -91,7 +91,7 @@ class WPUF_Payment {
 
             $gateways = $this->get_active_gateways();
 
-            if ( isset( $_REQUEST['wpuf_payment_submit'] ) ) {
+            if ( isset( $_REQUEST['wpuf_payment_submit'] ) && isset( $_REQUEST['wpuf_payment_method'] ) ) {
                 $selected_gateway = $_REQUEST['wpuf_payment_method'];
             } else {
                 $selected_gateway = 'paypal';
@@ -126,16 +126,35 @@ class WPUF_Payment {
                 ?>
                 <?php if ( count( $gateways ) ) {
                    ?>
+                   <?php if ( ! metadata_exists( 'user', $current_user->ID, 'address_fields') ) { ?>
+                    <h3>Please First Update Your Billing Address</h3>
+                    <?php 
+                        wpuf_load_template('dashboard/billing-address.php');
+                    } else { ?>
                     <form id="wpuf-payment-gateway" action="<?php echo $_SERVER["REQUEST_URI"]; ?>" method="POST">
 
                         <?php if ( $pack_id ) {
                         $pack         = WPUF_Subscription::init()->get_subscription( $pack_id );
-                        $details_meta = WPUF_Subscription::init()->get_details_meta_value();
+                        $details_meta = WPUF_Subscription::init()->get_details_meta_value();get_permalink( wpuf_get_option( 'reg_override_page', 'wpuf_profile' ) );
                         $currency     = wpuf_get_currency( 'symbol' );
                         if ( is_user_logged_in() ) {
                             ?>
                             <input type="hidden" name="user_id" value="<?php echo $current_user->ID; ?>">
                             <?php } ?>
+
+                            <div class="wpuf-coupon-info-wrap">
+                                <div class="wpuf-coupon-info">
+                                    <div class="wpuf-pack-info">
+                                        <h3>
+                                            <?php _e( 'Billing Address', 'wpuf' ); ?>
+                                        </h3>
+
+                                        <div class="wpuf-pack-inner">
+                                            <a href="<?php echo esc_url( add_query_arg( array( 'section' => 'billing-address' ), get_permalink( wpuf_get_option( 'account_page', 'wpuf_my_account' ) ) ) ) ?>"><?php _e( 'Update Billing Address', 'wpuf' ); ?></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="wpuf-coupon-info-wrap">
                                 <div class="wpuf-coupon-info">
@@ -175,9 +194,6 @@ class WPUF_Payment {
 
                         <?php } ?>
                         
-                        <?php if ( ! metadata_exists( 'user', $current_user->ID, 'address_fields') ) {
-                            wpuf_load_template('dashboard/billing-address.php');
-                        } else { ?>
                         <?php wp_nonce_field( 'wpuf_payment_gateway' ) ?>
 
                         <?php do_action( 'wpuf_before_payment_gateway' ); ?>
@@ -332,7 +348,7 @@ class WPUF_Payment {
      * @param int $transaction_id the transaction id in case of update
      */
     public static function insert_payment( $data, $transaction_id = 0, $recurring = false ) {
-        global $wpdb;
+        global $wpdb, $current_user;
 
         //check if it's already there
         $sql = $wpdb->prepare( "SELECT transaction_id
@@ -347,6 +363,11 @@ class WPUF_Payment {
 
         if ( isset( $data['profile_id'] ) || empty( $data['profile_id'] ) ) {
             unset( $data['profile_id'] );
+        }
+
+        if ( metadata_exists( 'user', $data['user_id'], 'address_fields') ) {
+            $billing_address = get_user_meta( $current_user->ID, 'address_fields', true );
+            $data['payer_address'] = serialize($billing_address);
         }
 
         if ( !$result ) {

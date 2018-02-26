@@ -255,6 +255,13 @@ function wpuf_settings_fields() {
         ) ),
         'wpuf_my_account' => apply_filters( 'wpuf_options_wpuf_my_account', array(
             array(
+                'name'    => 'account_page',
+                'label'   => __( 'Account Page', 'wpuf' ),
+                'desc'    => __( 'Select the page which contains <code>[wpuf_account]</code> shortcode', 'wpuf' ),
+                'type'    => 'select',
+                'options' => $pages
+            ),
+            array(
                 'name'    => 'show_subscriptions',
                 'label'   => __( 'Show Subscriptions', 'wpuf' ),
                 'desc'    => __( 'Show Subscriptions tab in "my account" page where <code>[wpuf_account]</code> is located', 'wpuf' ),

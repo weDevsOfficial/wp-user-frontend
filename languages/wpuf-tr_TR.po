@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-02-20 23:06+0300\n"
+"PO-Revision-Date: 2018-02-26 02:48+0300\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "X-Generator: Poedit 2.0.6\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
@@ -454,7 +454,7 @@ msgstr "Bu bölgeye sağ kenar çubuğundan alanları sürükleyerek alan ekleyi
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:29
 msgid "is available in Pro Version"
-msgstr "mevcuttur Pro Sürümü"
+msgstr "mevcuttur Pro Sürümünde"
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:53
 msgid "Hidden Fields"
@@ -577,7 +577,7 @@ msgstr "Bu alanın en az bir sütun içermesi gereklidir"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:335
 msgid "is available in Pro version"
-msgstr "mevcuttur Pro Sürümü"
+msgstr "mevcuttur Pro Sürümünde"
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:336
 msgid "Please upgrade to the Pro version to unlock all these awesome features"
@@ -881,14 +881,14 @@ msgstr "URL"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:675
 msgid "Email Address"
-msgstr "E-posta Adresi"
+msgstr "Eposta Adresi"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:682
 #: admin/html/form-submission-restriction.php:12 admin/html/support.php:224
 #: class/transactions-list-table.php:48 includes/free/edit-user.php:152
 #: templates/registration-form.php:44
 msgid "Email"
-msgstr "E-posta"
+msgstr "Eposta"
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:720
 #: admin/template.php:582
@@ -1042,7 +1042,7 @@ msgstr "Bu işlemi yapmak için yeterli izniniz yok"
 msgid "%d form moved to the trash."
 msgid_plural "%d forms moved to the trash."
 msgstr[0] "%d formu çöp kutusuna taşındı."
-msgstr[1] "%d formları çöp kutusuna taşındı."
+msgstr[1] "%d formlar çöp kutusuna taşındı."
 
 #: admin/form-handler.php:321 admin/form-handler.php:341
 msgid "%d form restored from the trash."
@@ -1054,7 +1054,7 @@ msgstr[1] "%d formları çöp kutusundan geri yükle."
 msgid "%d form permanently deleted."
 msgid_plural "%d forms permanently deleted."
 msgstr[0] "%d formu kalıcı olarak silinmiş."
-msgstr[1] "%d formları kalıcı olarak silinmiş."
+msgstr[1] "%d formlar kalıcı olarak silinmiş."
 
 #: admin/form-handler.php:330 admin/form-handler.php:350
 msgid "Form duplicated successfully. <a href=\"%s\">View form.</a>"
@@ -1499,7 +1499,7 @@ msgstr "Yayın Biçimi"
 
 #: admin/html/form-settings-post.php:74
 msgid "- None -"
-msgstr "- Hİçbiri -"
+msgstr "- Hiçbiri -"
 
 #: admin/html/form-settings-post.php:89
 msgid "Default Post Category"
@@ -1580,7 +1580,7 @@ msgstr ""
 
 #: admin/html/form-submission-restriction.php:53
 msgid "Name Label"
-msgstr "İsim Etiket"
+msgstr "İsim Etiketi"
 
 #: admin/html/form-submission-restriction.php:58
 msgid "Label text for name field"
@@ -1588,7 +1588,7 @@ msgstr "İsim alanı için metin etiketi"
 
 #: admin/html/form-submission-restriction.php:63
 msgid "E-Mail Label"
-msgstr "E-POSTA ETİKETİ"
+msgstr "E-Posta Etiketi"
 
 #: admin/html/form-submission-restriction.php:68
 msgid "Label text for email field"
@@ -1600,12 +1600,11 @@ msgstr "Eposta Doğrulama"
 
 #: admin/html/form-submission-restriction.php:77
 msgid "Require Email Verification for Guests"
-msgstr "Misafirler için E-Posta Doğrulaması Gerekir"
+msgstr "Misafirler için Eposta Doğrulaması Gerekir"
 
 #: admin/html/form-submission-restriction.php:79
 msgid "If requires, users will be required to verify their email adress."
-msgstr ""
-"Eğer gerekirse, kullanıcıların e-posta adreslerini doğrulaması gerekir."
+msgstr "Eğer gerekirse, kullanıcıların eposta adreslerini doğrulaması gerekir."
 
 #: admin/html/form-submission-restriction.php:84
 msgid "Role Base"
@@ -1660,7 +1659,7 @@ msgstr "Den"
 #: admin/html/form-submission-restriction.php:141
 #: includes/free/form-element.php:224 includes/free/form-element.php:261
 msgid "To"
-msgstr "e"
+msgstr "Ya"
 
 #: admin/html/form-submission-restriction.php:148
 msgid "Form Pending Message"
@@ -1763,7 +1762,7 @@ msgstr "Arayüz Yayını"
 
 #: admin/html/support.php:253
 msgid "Frontend Dashboard"
-msgstr "Arayüz Gösterge Paneli"
+msgstr "Arayüz Kontrol Paneli"
 
 #: admin/html/support.php:259
 msgid "User Registration"
@@ -1795,7 +1794,7 @@ msgstr "Arayüz Yayını Hakkında Daha Fazla Bilgi Edinin"
 
 #: admin/html/support.php:326
 msgid "Learn More About Frontend Dashboard"
-msgstr "Arayüz Gösterge Paneli Hakkında Daha Fazla Bilgi Edinin"
+msgstr "Arayüz Kontrol Paneli Hakkında Daha Fazla Bilgi Edinin"
 
 #: admin/html/support.php:356
 msgid "Learn More About Registration"
@@ -1958,7 +1957,7 @@ msgstr ""
 
 #: admin/html/whats-new.php:71
 msgid "Limit how many entries a form will accept"
-msgstr ""
+msgstr "Bir formun kaç giriş kabul edeceğini sınırla"
 
 #: admin/html/whats-new.php:73
 msgid ""
@@ -2034,7 +2033,7 @@ msgstr ""
 #: admin/installer.php:73 admin/settings-options.php:23
 #: includes/free/admin/shortcode-button.php:82 wpuf-functions.php:1449
 msgid "Dashboard"
-msgstr "Gösterge paneli"
+msgstr "Kontrol paneli"
 
 #: admin/installer.php:74 includes/free/admin/shortcode-button.php:86
 msgid "Account"
@@ -2757,281 +2756,300 @@ msgstr "Kaç tane yayının kullanıcı tarafından oluşturulduğunu göster"
 
 #: admin/settings-options.php:238
 msgid "Show Featured Image"
-msgstr ""
+msgstr "Öne Çıkan Resmi Göster"
 
 #: admin/settings-options.php:239
 msgid "Show featured image of the post (Overridden by Shortcode)"
 msgstr ""
+"Yayının öne çıkan resmini göster  (Kısa Kod tarafından Geçersiz Kılınan)"
 
 #: admin/settings-options.php:244
 msgid "Featured Image size"
-msgstr ""
+msgstr "Öne Çıkan Resim Boyutu"
 
 #: admin/settings-options.php:258
 msgid "Show Subscriptions"
-msgstr ""
+msgstr "Abonelikleri Göster"
 
 #: admin/settings-options.php:259
 msgid ""
 "Show Subscriptions tab in \"my account\" page where <code>[wpuf_account]</"
 "code> is located"
 msgstr ""
+"Abonelikler sekmesini \"hesabım\" içinde <code>[wpuf_account]</code> 'un "
+"konumlandığı yerde göster"
 
 #: admin/settings-options.php:271
 msgid "Auto Login After Registration"
-msgstr ""
+msgstr "Kayıt Sonrası Otomatik Giriş"
 
 #: admin/settings-options.php:272
 msgid "If enabled, users after registration will be logged in to the system"
 msgstr ""
+"Eğer etkinleştirilirse, kayıt sonrasında kullanıcılar sisteme giriş "
+"yapacaklardır"
 
 #: admin/settings-options.php:278
 msgid "Login/Registration override"
-msgstr ""
+msgstr "Giriş/Kayıt geçersiz kılma"
 
 #: admin/settings-options.php:279
 msgid ""
 "If enabled, default login and registration forms will be overridden by WPUF "
 "with pages below"
 msgstr ""
+"Eğer etkinleştirilirse, varsayılan giriş ve kayıt formları WPUF tarafından "
+"aşağıdaki sayfalarla geçersiz kılınır"
 
 #: admin/settings-options.php:285
 msgid "Registration Page"
-msgstr ""
+msgstr "Kayıt Sayfası"
 
 #: admin/settings-options.php:286
 msgid ""
 "Select the page you want to use as registration page override <em>(should "
 "have shortcode)</em>"
 msgstr ""
+"Kayıt sayfası geçersiz kılma olarak kullanmak istediğiniz sayfayı seçin "
+"<em>(kısakodu olmak zorunda)</em>"
 
 #: admin/settings-options.php:292
 msgid "Login Page"
-msgstr ""
+msgstr "Giriş Sayfası"
 
 #: admin/settings-options.php:293
 msgid "Select the page which contains <code>[wpuf-login]</code> shortcode"
-msgstr ""
+msgstr "Bu kısakodu <code>[wpuf-login]</code> içeren sayfayı seçin"
 
 #: admin/settings-options.php:302
 msgid "Enable payments on your site."
-msgstr ""
+msgstr "Sitenizdeki ödemeleri etkinleştirin."
 
 #: admin/settings-options.php:308
 msgid "Subscription Pack Page"
-msgstr ""
+msgstr "Abonelik Pakedi Sayfası"
 
 #: admin/settings-options.php:309
 msgid "Select the page where <code>[wpuf_sub_pack]</code> located."
-msgstr ""
+msgstr "Bu <code>[wpuf_sub_pack]</code> öğenin yerleştirildiği sayfayı seçin."
 
 #: admin/settings-options.php:315
 msgid "Subscription at registration"
-msgstr ""
+msgstr "Kayıt sırasında abonelik"
 
 #: admin/settings-options.php:316
 msgid "Registration time redirect to subscription page"
-msgstr ""
+msgstr "Üyelik zamanı abone sayfasına yönlendirme"
 
 #: admin/settings-options.php:321
 msgid "Currency"
-msgstr ""
+msgstr "Para birimi"
 
 #: admin/settings-options.php:328
 msgid "Currency Position"
-msgstr ""
+msgstr "Para Birimi Pozisyonu"
 
 #: admin/settings-options.php:332
 msgid "Left"
-msgstr ""
+msgstr "Sol"
 
 #: admin/settings-options.php:333
 msgid "Right"
-msgstr ""
+msgstr "Sağ"
 
 #: admin/settings-options.php:334
 msgid "Left with space"
-msgstr ""
+msgstr "Boşluk ile sol"
 
 #: admin/settings-options.php:335
 msgid "Right with space"
-msgstr ""
+msgstr "Boşluk ile sağ"
 
 #: admin/settings-options.php:340
 msgid "Thousand Separator"
-msgstr ""
+msgstr "Bin Ayırıcı"
 
 #: admin/settings-options.php:341
 msgid "This sets the thousand separator of displayed prices."
-msgstr ""
+msgstr "Bu görüntülenen fiyatların bin ayırıcısını belirler."
 
 #: admin/settings-options.php:349
 msgid "Decimal Separator"
-msgstr ""
+msgstr "Ondalık Ayırıcı"
 
 #: admin/settings-options.php:350
 msgid "This sets the decimal separator of displayed prices."
-msgstr ""
+msgstr "Bu görüntülenen fiyatların ondalık ayırıcısını belirler."
 
 #: admin/settings-options.php:357
 msgid "Number of Decimals"
-msgstr ""
+msgstr "Ondalıkların Sayısı"
 
 #: admin/settings-options.php:358
 msgid "This sets the number of decimal points shown in displayed prices."
-msgstr ""
+msgstr "Bu görüntülenen fiyatlarda gösterilen ondalık sayısını belirler."
 
 #: admin/settings-options.php:368
 msgid "Enable demo/sandbox mode"
-msgstr ""
+msgstr "Demo/sandbox modunu etkinleştirin"
 
 #: admin/settings-options.php:369
 msgid ""
 "When sandbox mode is active, all payment gateway will be used in demo mode"
 msgstr ""
+"Sandbox modu etkinken, tüm ödeme ağ geçidi demo modunda kullanılacaktır"
 
 #: admin/settings-options.php:375
 msgid "Payment Page"
-msgstr ""
+msgstr "Ödeme Sayfası"
 
 #: admin/settings-options.php:376
 msgid "This page will be used to process payment options"
-msgstr ""
+msgstr "Bu sayfa ödeme seçeneklerini işlemek için kullanılacaktır"
 
 #: admin/settings-options.php:382
 msgid "Payment Success Page"
-msgstr ""
+msgstr "Ödeme Başarılı Sayfası"
 
 #: admin/settings-options.php:383 lib/gateway/bank.php:37
 msgid "After payment users will be redirected here"
-msgstr ""
+msgstr "Ödeme yapıldıktan sonra kullanıcılar buraya yönlendirilecektir"
 
 #: admin/settings-options.php:389
 msgid "Payment Gateways"
-msgstr ""
+msgstr "Ödeme Ağ Geçitleri"
 
 #: admin/settings-options.php:390
 msgid "Active payment gateways"
-msgstr ""
+msgstr "Ödeme Ağ Geçitlerini Etkinleştirin"
 
 #: admin/settings-options.php:398
 msgid ""
 "<span class=\"dashicons dashicons-universal-access-alt\"></span> Guest Email"
 msgstr ""
+"<span class=\"dashicons dashicons-universal-access-alt\"></span> Misafir "
+"Eposta"
 
 #: admin/settings-options.php:404
 msgid "Guest mail subject"
-msgstr ""
+msgstr "Misafir posta konusu"
 
 #: admin/settings-options.php:405
 msgid "This sets the subject of the emails sent to guest users"
-msgstr ""
+msgstr "Bu konuk kullanıcılara gönderilen epostaların konusunu belirler"
 
 #: admin/settings-options.php:412
 msgid "Guest mail body"
-msgstr ""
+msgstr "Misafir posta iletisi"
 
 #: admin/settings-options.php:413
 msgid ""
 "This sets the body of the emails sent to guest users. Please DON'T edit the "
 "<code>{activation_link}</code> part"
 msgstr ""
+"Bu konuk kullanıcılara gönderilen epostaların iletisini belirler. Lütfen "
+"<code>{activation_link}</code> bölümünü DÜZENLEMEYİN"
 
 #: admin/settings-options.php:437
 msgid ""
 "Select profile/registration forms for user roles. These forms will be used "
 "to populate extra edit profile fields in backend."
 msgstr ""
+"Kullanıcı rolleri için profil/kayıt formlarını seçin. Bu formlar arka planda "
+"ek düzenleme profili alanlarını doldurmak için kullanılacaktır."
 
 #: admin/settings-options.php:448
 msgid " - select - "
-msgstr ""
+msgstr " - seç - "
 
 #: admin/subscribers.php:4
 msgid "Number of subscribers per page:"
-msgstr ""
+msgstr "Sayfa başına abone sayısı:"
 
 #: admin/template-post.php:193
 msgid "Selection terms"
-msgstr ""
+msgstr "Seçim terimleri"
 
 #: admin/template-post.php:198
 msgid "WooCommerce Attribute"
-msgstr ""
+msgstr "WooCommerce Niteliği"
 
 #: admin/template-post.php:257
 msgid "all"
-msgstr ""
+msgstr "tümü"
 
 #: admin/template-post.php:257
 msgid "Show All"
-msgstr ""
+msgstr "Hepsini Göster"
 
 #: admin/template-post.php:260
 msgid "hide"
-msgstr ""
+msgstr "gizle"
 
 #: admin/template-post.php:260
 msgid "Hide These Countries"
-msgstr ""
+msgstr "Bu Ülkeleri Gizle"
 
 #: admin/template-post.php:261
 msgid "Chose Country to hide from List"
-msgstr ""
+msgstr "Listeden gizlenecek Ülkeyi seçin"
 
 #: admin/template-post.php:265
 msgid "show"
-msgstr ""
+msgstr "göster"
 
 #: admin/template-post.php:265
 msgid "Show These Countries"
-msgstr ""
+msgstr "Bu Ülkeleri Göster"
 
 #: admin/template-post.php:266
 msgid "Add Country to List"
-msgstr ""
+msgstr "Listeye Ülke Ekle"
 
 #: admin/template.php:25
 msgid "Click and Drag to rearrange"
-msgstr ""
+msgstr "Yeniden düzenlemek için tıklayın ve sürükleyin"
 
 #: admin/template.php:29
 msgid "Remove"
-msgstr ""
+msgstr "Kaldır"
 
 #: admin/template.php:30
 msgid "Toggle"
-msgstr ""
+msgstr "Geçiş"
 
 #: admin/template.php:100
 msgid "Add a CSS class name for this field"
-msgstr ""
+msgstr "Bu alan için bir CSS sınıfı adı ekleyin"
 
 #: admin/template.php:304
 msgid "show values"
-msgstr ""
+msgstr "değerleri göster"
 
 #: admin/template.php:689
 msgid ""
 "Insert your public key and private key in <a href='%s'>plugin settings</a>. "
 "<a href='%s' target='_blank'>Register</a> first if you don't have any keys."
 msgstr ""
+"Genel anahtarınızı ve özel anahtarınızı <a href='%s'>eklenti ayarları</a>na "
+"ekleyin. Anahtarınız yoksa öncelikle <a href='%s' target='_blank'>Kaydolun</"
+"a>."
 
 #: admin/template.php:695
 msgid "reCaptcha type"
-msgstr ""
+msgstr "reCaptcha türü"
 
 #: admin/transactions.php:12
 msgid "Total Income:"
-msgstr ""
+msgstr "Toplam gelir:"
 
 #: admin/transactions.php:15
 msgid "This Month:"
-msgstr ""
+msgstr "Bu Ay:"
 
 #: admin/weforms.php:4
 msgid "The Easiest &amp; Fastest Contact Form Plugin on WordPress"
-msgstr ""
+msgstr "En Kolay &amp; En Hızlı İletişim Formu Eklentisi WordPress'de"
 
 #: admin/weforms.php:7
 msgid ""
@@ -3039,135 +3057,140 @@ msgid ""
 "onboarding visitors and flourishing <br /> your imagination! Comes with the "
 "best frontend post submission plugin for WordPress, WP User Frontend."
 msgstr ""
+"Potansiyel müşteri oluşturmak, geribildirim almak, ziyaretçileri "
+"yönlendirmek ve hayal gücünüzü <br /> artırmak için zengin iletişim "
+"formlarını hızlı bir şekilde oluşturun! WordPress, WP Kullanıcı Arayüzü için "
+"en iyi arayüz yayın sunum eklentisi ile birlikte gelir."
 
 #: admin/weforms.php:12 lib/class-weforms-upsell.php:77
 msgid "Install Now"
-msgstr ""
+msgstr "Şimdi Kur"
 
 #: class/asset-loader.php:31 wpuf.php:414
 msgid "is required"
-msgstr ""
+msgstr "gereklidir"
 
 #: class/asset-loader.php:32 wpuf.php:415
 msgid "does not match"
-msgstr ""
+msgstr "eşleşmiyor"
 
 #: class/asset-loader.php:33 wpuf.php:416
 msgid "is not valid"
-msgstr ""
+msgstr "geçerli değil"
 
 #: class/asset-loader.php:45 wpuf.php:483
 msgid "Please fix the errors to proceed"
-msgstr ""
+msgstr "İlerlemek için lütfen hataları düzeltin"
 
 #: class/asset-loader.php:47 wpuf.php:485
 msgid "Word limit reached"
-msgstr ""
+msgstr "Kelime sınırına ulaşıldı"
 
 #: class/frontend-account.php:114 class/frontend-account.php:124
 msgid "<p>You've not subscribed any package yet.</p>"
-msgstr ""
+msgstr "<p>Henüz hiçbir pakete abone değilsiniz.</p>"
 
 #: class/frontend-account.php:126
 msgid "<p>You've subscribed to the following package.</p>"
-msgstr ""
+msgstr "<p>Aşağıdaki pakete abone oldunuz.</p>"
 
 #: class/frontend-account.php:184 class/subscription.php:73
 msgid "Nonce failure"
-msgstr ""
+msgstr "Nonce arızası"
 
 #: class/frontend-account.php:198
 msgid "First Name is a required field."
-msgstr ""
+msgstr "İlk İsim zorunlu bir alandır."
 
 #: class/frontend-account.php:202
 msgid "Last Name is a required field."
-msgstr ""
+msgstr "Soy Ad zorunlu bir alandır."
 
 #: class/frontend-account.php:206
 msgid "Email is a required field."
-msgstr ""
+msgstr "Eposta gerekli bir alandır."
 
 #: class/frontend-account.php:217
 msgid "Please provide a valid email address."
-msgstr ""
+msgstr "Lütfen geçerli bir eposta adresi girin."
 
 #: class/frontend-account.php:219
 msgid "This email address is already registered."
-msgstr ""
+msgstr "Bu eposta adresi zaten kayıtlı."
 
 #: class/frontend-account.php:225
 msgid "Please fill out all password fields."
-msgstr ""
+msgstr "Lütfen tüm şifre alanlarını doldurun."
 
 #: class/frontend-account.php:228
 msgid "Please enter your current password."
-msgstr ""
+msgstr "Lütfen geçerli şifrenizi girin."
 
 #: class/frontend-account.php:231
 msgid "Please re-enter your password."
-msgstr ""
+msgstr "Lütfen şifrenizi tekrar girin."
 
 #: class/frontend-account.php:234
 msgid "New passwords do not match."
-msgstr ""
+msgstr "Yeni şifreler uyuşmuyor."
 
 #: class/frontend-account.php:237 class/frontend-account.php:248
 msgid "Your current password is incorrect."
-msgstr ""
+msgstr "Geçerli şifreniz doğru değildir."
 
 #: class/frontend-dashboard.php:65 templates/dashboard/posts.php:36
 msgid "Post Deleted"
-msgstr ""
+msgstr "Yayın Silindi"
 
 #: class/frontend-dashboard.php:108
 msgid "Author Info"
-msgstr ""
+msgstr "Yaratıcı Bilgisi"
 
 #: class/frontend-dashboard.php:112 includes/free/edit-user.php:97
 msgid "%s"
-msgstr ""
+msgstr "%s"
 
 #: class/frontend-dashboard.php:144 templates/dashboard/posts.php:30
 msgid "You are not the post author. Cheeting huh!"
-msgstr ""
+msgstr "Yayın yazarı değilsiniz. Hile yapmak!"
 
 #: class/frontend-form-post.php:87 class/frontend-form-post.php:126
 #: class/frontend-form-post.php:133
 msgid "Payment type not selected for this form. Please contact admin."
 msgstr ""
+"Bu form için ödeme türü seçilmedi. Lütfen yönetici ile iletişime geçin."
 
 #: class/frontend-form-post.php:176
 msgid "You are not logged in"
-msgstr ""
+msgstr "Giriş yapmadınız"
 
 #: class/frontend-form-post.php:184 class/frontend-form-post.php:195
 msgid "Invalid post"
-msgstr ""
+msgstr "Geçersiz yayın"
 
 #: class/frontend-form-post.php:189
 msgid "Post Editing is disabled"
-msgstr ""
+msgstr "Yayın Düzenleme devre dışı"
 
 #: class/frontend-form-post.php:200
 msgid "You are not allowed to edit"
-msgstr ""
+msgstr "Düzenleme izniniz yok"
 
 #: class/frontend-form-post.php:212
 msgid "I don't know how to edit this post, I don't have the form ID"
-msgstr ""
+msgstr "Bu yayını nasıl düzenleyeceğimi bilmiyorum, form kimliğim yok"
 
 #: class/frontend-form-post.php:218
 msgid "You can't edit a post while in pending mode."
-msgstr ""
+msgstr "Beklemen modunda iken bir yayını düzenleyemezsiniz."
 
 #: class/frontend-form-post.php:306
 msgid "Empty reCaptcha Field"
-msgstr ""
+msgstr "Boş reCaptcha Alanı"
 
 #: class/frontend-form-post.php:337
 msgid "Invalid email address."
-msgstr ""
+msgstr "Geçersiz eposta adresi."
 
 #: class/frontend-form-post.php:346
 msgid ""
@@ -3177,638 +3200,655 @@ msgid ""
 "data.\n"
 "Click 'Cancel' to stay at this page."
 msgstr ""
+"Sitemizde zaten bir hesabınız var. Devam etmek için lütfen giriş yapınız.\n"
+"\n"
+"'Tamam'a tıklandığınızda sizi oturum açma sayfasına yönlendirecek ve form "
+"verilerini kaybedeceksiniz.\n"
+"Bu sayfada kalmak için 'İptal'e tıklayın."
 
 #: class/frontend-form-post.php:395
 msgid "You do not have sufficient permissions to access this form."
-msgstr ""
+msgstr "Bu forma erişmek için yeterli izniniz yok."
 
 #: class/frontend-form-post.php:771
 msgid "Something went wrong"
-msgstr ""
+msgstr "Bir şeyler yanlış gitti"
 
 #: class/frontend-form-post.php:1128
 msgid "Email successfully verified. Please Login."
-msgstr ""
+msgstr "Eposta başarıyla doğrulandı. Lütfen giriş yapın."
 
 #: class/payment.php:23 class/payment.php:24
 msgid "PayPal"
-msgstr ""
+msgstr "PayPal"
 
 #: class/payment.php:28 class/payment.php:29
 msgid "Bank Payment"
-msgstr ""
+msgstr "Banka Ödemesi"
 
 #: class/payment.php:70
 msgid "Please select your payment page from admin panel"
-msgstr ""
+msgstr "Lütfen ödeme sayfasını yönetici panelinden seçin"
 
 #: class/payment.php:118
 msgid "Your free package has been activated. Enjoy!"
-msgstr ""
+msgstr "Ücretsiz paketiniz etkinleştirildi. Tadını çıkarın!"
 
 #: class/payment.php:120
 msgid "You already have activated a free package previously."
-msgstr ""
+msgstr "Daha önceden zaten bir ücretsiz paketi etkinleştirmişsiniz."
 
 #: class/payment.php:144
 msgid "Pricing & Plans"
-msgstr ""
+msgstr "Fiyatlandırma & Planlar"
 
 #: class/payment.php:146
 msgid "Change Pack"
-msgstr ""
+msgstr "Paketi Değiştirme"
 
 #: class/payment.php:154
 msgid "Selected Pack "
-msgstr ""
+msgstr "Seçilen Paket "
 
 #: class/payment.php:155
 msgid "Pack Price "
-msgstr ""
+msgstr "Paket Fiyatı "
 
 #: class/payment.php:167
 msgid "Apply Coupon"
-msgstr ""
+msgstr "Kuponu Uygula"
 
 #: class/payment.php:171
 msgid "Have a discount code?"
-msgstr ""
+msgstr "Bir indirim kodunuz var mı?"
 
 #: class/payment.php:182
 msgid "Choose Your Payment Method"
-msgstr ""
+msgstr "Ödeme Şeklinizi Seçin"
 
 #: class/payment.php:219
 msgid "Proceed"
-msgstr ""
+msgstr "İlerleyin"
 
 #: class/payment.php:223
 msgid "No Payment gateway found"
-msgstr ""
+msgstr "Ödeme ağ geçidi bulunamadı"
 
 #: class/payment.php:365 lib/gateway/bank.php:105
 msgid "[%s] Payment Received"
-msgstr ""
+msgstr "[%s] Ödeme Alındı"
 
 #: class/payment.php:366
 msgid "New payment received at %s"
-msgstr ""
+msgstr "Yeni ödeme alındı tarihinde"
 
 #: class/post-form-templates/post.php:12
 #: includes/free/admin/shortcode-builder.php:8
 msgid "Post Form"
-msgstr ""
+msgstr "Yayın Formu"
 
 #: class/post-form-templates/post.php:13
 msgid "Form for creating a blog post."
-msgstr ""
+msgstr "Bir blog yayını oluşturmak için form."
 
 #: class/render-form.php:76
 msgid "Really Simple Captcha validation failed"
-msgstr ""
+msgstr "Gerçek Basit Captcha doğrulaması başarısız oldu"
 
 #: class/render-form.php:105
 msgid "noCaptcha reCAPTCHA validation failed"
-msgstr ""
+msgstr "noCaptcha reCAPTCHA doğrulaması başarısız oldu"
 
 #: class/render-form.php:116
 msgid "reCAPTCHA validation failed"
-msgstr ""
+msgstr "reCAPTCHA doğrulaması başarısız oldu"
 
 #: class/render-form.php:128
 msgid "Invisible reCAPTCHA validation failed"
-msgstr ""
+msgstr "Görünmez reCAPTCHA doğrulaması başarısız oldu"
 
 #: class/render-form.php:340
 msgid "Your selected form is no longer available."
-msgstr ""
+msgstr "Seçtiğiniz form artık mevcut değil."
 
 #: class/render-form.php:345
 msgid "Please make sure you've published your form."
-msgstr ""
+msgstr "Lütfen formunuzu yayınladığınızdan emin olun."
 
 #: class/render-form.php:1291 includes/free/edit-profile.php:203
 #: templates/dashboard/edit-profile.php:54
 msgid "Strength indicator"
-msgstr ""
+msgstr "Güç göstergesi"
 
 #: class/render-form.php:1351
 msgid "-- Select --"
-msgstr ""
+msgstr "-- Seçim --"
 
 #: class/render-form.php:1411
 msgid "This field is no longer available."
-msgstr ""
+msgstr "Bu alan artık mevcut değil."
 
 #: class/render-form.php:1612 class/transactions-list-table.php:114
 #: class/transactions-list-table.php:178 class/upload.php:171
 #: includes/free/edit-user.php:100 templates/dashboard/posts.php:161
 #: templates/dashboard.php:222
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: class/subscription.php:379
 msgid "Add Subscription"
-msgstr ""
+msgstr "Abonelik Ekle"
 
 #: class/subscription.php:380
 msgid "Add New Subscription"
-msgstr ""
+msgstr "Yeni Abonelik Ekle"
 
 #: class/subscription.php:382
 msgid "Edit Subscription"
-msgstr ""
+msgstr "Abonelik Düzenle"
 
 #: class/subscription.php:383
 msgid "New Subscription"
-msgstr ""
+msgstr "Yeni Abonelik"
 
 #: class/subscription.php:384 class/subscription.php:385
 msgid "View Subscription"
-msgstr ""
+msgstr "Abonelik Gösterme"
 
 #: class/subscription.php:386
 msgid "Search Subscription"
-msgstr ""
+msgstr "Abonelik Arama"
 
 #: class/subscription.php:387
 msgid "No Subscription Found"
-msgstr ""
+msgstr "Abonelik Bulunamadı"
 
 #: class/subscription.php:388
 msgid "No Subscription Found in Trash"
-msgstr ""
+msgstr "Çöp Kutusunda Abonelik Bulunamadı"
 
 #: class/subscription.php:389
 msgid "Parent Subscription"
-msgstr ""
+msgstr "Ebeveyn Aboneliği"
 
 #: class/subscription.php:744
 msgid "Payment is complete"
-msgstr ""
+msgstr "Ödeme tamamlandı"
 
 #: class/subscription.php:744
 msgid "Congratulations, your payment has been completed!"
-msgstr ""
+msgstr "Tebrikler, ödemenizi tamamlandı!"
 
 #: class/subscription.php:748 class/subscription.php:752
 msgid "Please buy a subscription pack to post"
-msgstr ""
+msgstr "Lütfen yayına bir abonelik pakedi satın alın"
 
 #: class/subscription.php:766
 msgid "<p><i>You have a subscription pack activated. </i></p>"
-msgstr ""
+msgstr "<p><i>Etkinleştirilmiş bir abonelik paketiniz var.</i></p>"
 
 #: class/subscription.php:770
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
-msgstr ""
+msgstr "<p><i>Pakedi iptal etmek için, aşağıdaki iptal butonuna basın </i></p>"
 
 #: class/subscription.php:830
 msgid "Every"
-msgstr ""
+msgstr "Her"
 
 #: class/subscription.php:834
 msgid "One time payment"
-msgstr ""
+msgstr "Tek seferlik ödeme"
 
 #: class/subscription.php:846
 msgid "Sign Up"
-msgstr ""
+msgstr "Kaydol"
 
 #: class/subscription.php:851
 msgid "Buy Now"
-msgstr ""
+msgstr "Şimdi Satın Al"
 
 #: class/subscription.php:917
 msgid "There is a <strong>%s</strong> charge to add a new post."
-msgstr ""
+msgstr "Yeni bir yayın eklemek için <strong>%s</strong> ücreti var."
 
 #: class/subscription.php:929
 msgid ""
 "Your Subscription pack exhausted. There is a <strong>%s</strong> charge to "
 "add a new post."
 msgstr ""
+"Abonelik paketiniz bitti. Yeni bir yayın eklemek için <strong>%s</strong> "
+"ücreti var."
 
 #: class/subscription.php:973
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
+"Yayınlamadan önce <a href=\"%s\"> bir paket satın alma </a>nız gerekiyor"
 
 #: class/transactions-list-table.php:13
 msgid "transaction"
-msgstr ""
+msgstr "işlem"
 
 #: class/transactions-list-table.php:14
 msgid "transactions"
-msgstr ""
+msgstr "işlemler"
 
 #: class/transactions-list-table.php:40
 msgid "ID"
-msgstr ""
+msgstr "Kimlik"
 
 #: class/transactions-list-table.php:41
 #: includes/class-list-table-subscribers.php:44
 #: templates/dashboard/posts.php:76 templates/dashboard.php:103
 msgid "Status"
-msgstr ""
+msgstr "Durum"
 
 #: class/transactions-list-table.php:42
 msgid "User"
-msgstr ""
+msgstr "Kullanıcı"
 
 #: class/transactions-list-table.php:43
 msgid "Cost"
-msgstr ""
+msgstr "Maliyet"
 
 #: class/transactions-list-table.php:44
 msgid "Post ID"
-msgstr ""
+msgstr "Yayın Kimliği"
 
 #: class/transactions-list-table.php:45
 msgid "Pack ID"
-msgstr ""
+msgstr "Paket Kimliği"
 
 #: class/transactions-list-table.php:46
 #: includes/class-list-table-subscribers.php:45
 msgid "Gateway"
-msgstr ""
+msgstr "Ağ geçidi"
 
 #: class/transactions-list-table.php:47
 msgid "Payer"
-msgstr ""
+msgstr "Ödeyen"
 
 #: class/transactions-list-table.php:49
 msgid "Trans ID"
-msgstr ""
+msgstr "Trans Kimliği"
 
 #: class/transactions-list-table.php:50 includes/free/form-element.php:12
 msgid "Date"
-msgstr ""
+msgstr "Tarih"
 
 #: class/transactions-list-table.php:86 wpuf-functions.php:69
 msgid "Pending"
-msgstr ""
+msgstr "Bekleyen"
 
 #: class/transactions-list-table.php:109 class/transactions-list-table.php:173
 msgid "Accept"
-msgstr ""
+msgstr "Kabul et"
 
 #: class/transactions-list-table.php:110 class/transactions-list-table.php:174
 msgid "Reject"
-msgstr ""
+msgstr "Reddet"
 
 #: class/transactions-list-table.php:161
 msgid "No transactions found."
-msgstr ""
+msgstr "İşlemler bulunamadı."
 
 #: class/upload.php:165 wpuf-functions.php:743
 msgid "Caption"
-msgstr ""
+msgstr "Başlık"
 
 #: includes/class-dokan-integration.php:37 wpuf-functions.php:1450
 msgid "Posts"
-msgstr ""
+msgstr "Yayınlar"
 
 #: includes/class-dokan-integration.php:92
 msgid "Allow Post"
-msgstr ""
+msgstr "Yayına İzin Ver"
 
 #: includes/class-dokan-integration.php:93
 msgid "Allow Vendors to submit post from dashboard area"
-msgstr ""
+msgstr "Satıcıların kontrol paneli tablosundan yayın sunmasına izin ver"
 
 #: includes/class-dokan-integration.php:100
 msgid "Select Post Form"
-msgstr ""
+msgstr "Yayın Formu Seç"
 
 #: includes/class-dokan-integration.php:101
 msgid "Select a post form that will show on the vendor dashboard."
-msgstr ""
+msgstr "Satıcı kontrol panelinde görünecek bir yayın formu seçin."
 
 #: includes/class-list-table-subscribers.php:30
 msgid "No subscribers found"
-msgstr ""
+msgstr "Abone bulunamadı"
 
 #: includes/class-list-table-subscribers.php:41
 msgid "User ID"
-msgstr ""
+msgstr "Kullanıcı Kimliği"
 
 #: includes/class-list-table-subscribers.php:42
 msgid "User Name"
-msgstr ""
+msgstr "Kullanıcı Adı"
 
 #: includes/class-list-table-subscribers.php:43
 msgid "Subscription ID"
-msgstr ""
+msgstr "Abone Kimliği"
 
 #: includes/class-list-table-subscribers.php:46
 msgid "Transaction ID"
-msgstr ""
+msgstr "İşlem Kimliği"
 
 #: includes/class-list-table-subscribers.php:47
 msgid "Starts from"
-msgstr ""
+msgstr "Den başlar"
 
 #: includes/class-list-table-subscribers.php:48
 msgid "Expire date"
-msgstr ""
+msgstr "Son erme tarihi"
 
 #: includes/class-list-table-subscribers.php:127
 msgid "Completed"
-msgstr ""
+msgstr "Tamamlanan"
 
 #: includes/class-login-widget.php:15
 msgid "WPUF Ajax Login"
-msgstr ""
+msgstr "WPUF Ajax Oturum Açma"
 
 #: includes/class-login-widget.php:16
 msgid "Ajax Login widget for WP User Frontend"
-msgstr ""
+msgstr "WP Kullanıcı Arayüzü için Ajax Giriş widgeti"
 
 #: includes/class-login-widget.php:36 includes/class-login-widget.php:71
 msgid "Please fill all form fields"
-msgstr ""
+msgstr "Lütfen tüm form alanlarını doldurun"
 
 #: includes/class-login-widget.php:43
 msgid "Login successful!"
-msgstr ""
+msgstr "Oturum açma başarılı!"
 
 #: includes/class-login-widget.php:57
 msgid "Logout successful!"
-msgstr ""
+msgstr "Oturum kapatma başarılı!"
 
 #: includes/class-login-widget.php:87
 msgid "Password has been reset. Please check your email."
-msgstr ""
+msgstr "Şifreniz sıfırlandı. Lütfen epostanızı kontrol edin."
 
 #: includes/class-login-widget.php:103
 msgid "<strong>ERROR</strong>: Enter a username or email address."
-msgstr ""
+msgstr "<strong>HATA</strong>: Bir kullanıcı adı veya eposta adresi girin."
 
 #: includes/class-login-widget.php:107
 msgid ""
 "<strong>ERROR</strong>: There is no user registered with that email address."
-msgstr ""
+msgstr "<strong>HATA</strong>:Bu eposta adresine kayıtlı bir kullanıcı yok."
 
 #: includes/class-login-widget.php:122
 msgid "<strong>ERROR</strong>: Invalid username or email."
-msgstr ""
+msgstr "<strong>HATA</strong>: Geçersiz kullanıcı adı veya epostası."
 
 #: includes/class-login-widget.php:135
 msgid "Someone has requested a password reset for the following account:"
-msgstr ""
+msgstr "Birisi aşağıdaki hesap için bir şifre sıfırlaması istiyor:"
 
 #: includes/class-login-widget.php:137 includes/free/class-login.php:682
 msgid "Username: %s"
-msgstr ""
+msgstr "Kullanıcı adı: %s"
 
 #: includes/class-login-widget.php:138 includes/free/class-login.php:683
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
+"Eğer bu bir hata ise,hiçbir şey olmayacaktır bu epostayı görmezden gelin."
 
 #: includes/class-login-widget.php:139 includes/free/class-login.php:684
 msgid "To reset your password, visit the following address:"
-msgstr ""
+msgstr "Şifrenizi sıfırlamak için, aşağıdaki adresi ziyaret edin:"
 
 #: includes/class-login-widget.php:144 includes/free/class-login.php:693
 msgid "[%s] Password Reset"
-msgstr ""
+msgstr "[%s] Şifre Sıfırlama"
 
 #: includes/class-login-widget.php:151
 msgid ""
 "<strong>ERROR</strong>: The email could not be sent.Possible reason: your "
 "host may have disabled the mail() function."
 msgstr ""
+"<strong>HATA</strong>: Eposta gönderilemedi. Muhtemel sorun: ana makineniz "
+"posta() işlevini devre dışı bırakmış olabilir."
 
 #: includes/class-login-widget.php:206 includes/class-login-widget.php:239
 #: includes/free/class-login.php:212 includes/free/class-registration.php:124
 #: includes/free/form-element.php:345 templates/registration-form.php:72
 msgid "Register"
-msgstr ""
+msgstr "Kaydolma"
 
 #: includes/class-login-widget.php:210
 msgid "Lost your password?"
-msgstr ""
+msgstr "Şifrenizi unuttunuz mu?"
 
 #: includes/class-login-widget.php:219 templates/lost-pass-form.php:14
 msgid "Username or E-mail:"
-msgstr ""
+msgstr "Kullanıcı Adı veya E-posta:"
 
 #: includes/class-login-widget.php:247
 msgid "Log out"
-msgstr ""
+msgstr "Çıkış Yapma"
 
 #: includes/class-login-widget.php:263
 msgid "WPUF Login Widget"
-msgstr ""
+msgstr "WPUF Giriş Widgeti"
 
 #: includes/class-login-widget.php:264
 msgid "Username or Email Address"
-msgstr ""
+msgstr "Kullanıcı Adı veya E-posta Adresi"
 
 #: includes/class-login-widget.php:265
 msgid ""
 "Please enter your username or email address. You will receive a link to "
 "create a new password via email"
 msgstr ""
+"Lütfen kullanıcı adınızı veya eposta adresinizi girin. Eposta ile yeni bir "
+"şifre oluşturmak için bir bağlantı alacaksınız"
 
 #: includes/class-login-widget.php:266 includes/free/edit-profile.php:101
 #: includes/free/edit-user.php:92 includes/free/edit-user.php:144
 #: templates/login-form.php:21 templates/registration-form.php:51
 msgid "Username"
-msgstr ""
+msgstr "Kullanıcı adı"
 
 #: includes/class-login-widget.php:267 templates/login-form.php:25
 #: templates/registration-form.php:58
 msgid "Password"
-msgstr ""
+msgstr "Şifre"
 
 #: includes/class-login-widget.php:268 templates/login-form.php:31
 msgid "Remember Me"
-msgstr ""
+msgstr "Beni Hatırla"
 
 #: includes/class-login-widget.php:269 includes/free/class-login.php:208
 #: includes/free/class-login.php:264 templates/login-form.php:35
 msgid "Log In"
-msgstr ""
+msgstr "Oturum açma"
 
 #: includes/class-login-widget.php:270 templates/reset-pass-form.php:26
 msgid "Reset Password"
-msgstr ""
+msgstr "Şifre Sıfırlama"
 
 #: includes/class-login-widget.php:274
 msgid "Title:"
-msgstr ""
+msgstr "Başlık:"
 
 #: includes/class-login-widget.php:278
 msgid "Log-in Text:"
-msgstr ""
+msgstr "Giriş Metni:"
 
 #: includes/class-login-widget.php:282
 msgid "Username Label:"
-msgstr ""
+msgstr "Kullanıcı Etiketi:"
 
 #: includes/class-login-widget.php:286
 msgid "Password Label:"
-msgstr ""
+msgstr "Şifre Etiketi:"
 
 #: includes/class-login-widget.php:290
 msgid "Remember Me Label:"
-msgstr ""
+msgstr "Beni Hatırla Etiketi:"
 
 #: includes/class-login-widget.php:293
 msgid "Log In Label:"
-msgstr ""
+msgstr "Giriş Etiketi:"
 
 #: includes/class-login-widget.php:297
 msgid "Password Reset Text:"
-msgstr ""
+msgstr "Şifre Sıfırlama Metni:"
 
 #: includes/class-login-widget.php:301
 msgid "Password Reset Label:"
-msgstr ""
+msgstr "Şifre Sıfırlama Etiketi:"
 
 #: includes/class-user-subscription.php:56
 msgid "You must purchase a pack before posting"
-msgstr ""
+msgstr "Yayınlamadan önce bir paket satın almalısınız"
 
 #: includes/class-user-subscription.php:61
 msgid "The subscription pack has been expired. Please buy a pack."
-msgstr ""
+msgstr "Abonelik paketi süresi doldu. Lütfen bir paket satın alın."
 
 #: includes/class-user-subscription.php:313
 #: templates/dashboard/subscription.php:2
 msgid "Subscription Details"
-msgstr ""
+msgstr "Abonelik Detayları"
 
 #: includes/class-user-subscription.php:315
 #: templates/dashboard/subscription.php:4
 msgid "Subcription Name: "
-msgstr ""
+msgstr "Abonelik Adı: "
 
 #: includes/class-user-subscription.php:317
 #: templates/dashboard/subscription.php:6
 msgid "Package & billing details: "
-msgstr ""
+msgstr "Paket & fatura ayrıntıları: "
 
 #: includes/class-user-subscription.php:328
 #: templates/dashboard/subscription.php:10
 msgid "Remaining post: "
-msgstr ""
+msgstr "Kalan Yayın: "
 
 #: includes/class-user-subscription.php:341
 #: templates/dashboard/subscription.php:24
 msgid "Unlimited"
-msgstr ""
+msgstr "Sınırsız"
 
 #: includes/class-whats-new.php:67
 msgid "Whats New"
-msgstr ""
+msgstr "Neler Yeni"
 
 #: includes/class-whats-new.php:100
 msgid "WP User Frontend - Version %s"
-msgstr ""
+msgstr "WP Kullanıcı Arayüzü - Sürüm %s"
 
 #: includes/class-whats-new.php:101
 msgid ""
 "Welcome to the new version of WP User Frontend. See what's been changed in "
 "the <strong>%s</strong> version."
 msgstr ""
+"WP Kullanıcı Arayüzü yeni sürümüne hoşgeldiniz. Nelerin <strong>%s</strong> "
+"sürümünde değiştiğini görmek için bakın."
 
 #: includes/class-whats-new.php:105
 msgid "What's New?"
-msgstr ""
+msgstr "Neler Yeni?"
 
 #: includes/class-whats-new.php:106 lib/class-weforms-upsell.php:80
 #: lib/class-weforms-upsell.php:81
 msgid "Dismiss this notice."
-msgstr ""
+msgstr "Bu uyarıyı görmezden gel."
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:65
 #: includes/free/form-element.php:11
 msgid "Repeat Field"
-msgstr ""
+msgstr "Alanı Tekrarla"
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:81
 msgid "Date / Time"
-msgstr ""
+msgstr "Tarih / Zaman"
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:129
 #: includes/free/form-element.php:16
 msgid "Numeric Field"
-msgstr ""
+msgstr "Sayısal Alan"
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:145
 #: includes/free/form-element.php:17
 msgid "Address Field"
-msgstr ""
+msgstr "Adres Alanı"
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:161
 #: includes/free/form-element.php:18
 msgid "Step Start"
-msgstr ""
+msgstr "Başlangıç Adımı"
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:210
 #: includes/free/form-element.php:32
 msgid "Really Simple Captcha"
-msgstr ""
+msgstr "Gerçek Basit Captcha"
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:240
 msgid "Term & Conditions"
-msgstr ""
+msgstr "Terim & Koşullar"
 
 #: includes/free/admin/form-builder/class-wpuf-form-builder-field-settings-free.php:255
 msgid "Ratings"
-msgstr ""
+msgstr "Puanlar"
 
 #: includes/free/admin/shortcode-builder.php:5
 msgid "Select a form to insert"
-msgstr ""
+msgstr "Eklenecek bir form seçin"
 
 #: includes/free/admin/shortcode-builder.php:9 includes/free/loader.php:89
 msgid "Registration Form"
-msgstr ""
+msgstr "Kayıt Formu"
 
 #: includes/free/admin/shortcode-builder.php:13
 msgid "Form Type"
-msgstr ""
+msgstr "Form Türü"
 
 #: includes/free/admin/shortcode-builder.php:68
 msgid "Insert Form"
-msgstr ""
+msgstr "Form Ekle"
 
 #: includes/free/admin/shortcode-button.php:50
 msgid "Add a Form"
-msgstr ""
+msgstr "Bir Form Ekle"
 
 #: includes/free/admin/shortcode-button.php:51
 msgid " Add Form"
-msgstr ""
+msgstr " Form Ekle"
 
 #: includes/free/class-login.php:216
 msgid "Lost Password"
-msgstr ""
+msgstr "Şifre Unutma"
 
 #: includes/free/class-login.php:254
 msgid ""
 "Please enter your username or email address. You will receive a link to "
 "create a new password via email."
 msgstr ""
+"Lütfen kullanıcı adınızı veya eposta adresinizi girin. Eposta ile yeni bir "
+"şifre oluşturmak için bir bağlantı alacaksınız."
 
 #: includes/free/class-login.php:264
 msgid "Your password has been reset. %s"
-msgstr ""
+msgstr "Şifreniz sıfırlandı. %s"
 
 #: includes/free/class-login.php:268
 msgid "Enter your new password below.."
-msgstr ""
+msgstr "Yeni şifrenizi aşağıya girin.."
 
 #: includes/free/class-login.php:278
 msgid "Check your e-mail for the confirmation link."
-msgstr ""
+msgstr "Onay bağlantısı için epostanızı kontrol edin."
 
 #: includes/free/class-login.php:282
 msgid "You are now logged out."
-msgstr ""
+msgstr "Şimdi çıkış yaptınız."
 
 #: includes/free/class-login.php:311 includes/free/class-login.php:316
 #: includes/free/class-login.php:321 includes/free/class-login.php:331
@@ -3823,438 +3863,455 @@ msgstr ""
 #: includes/free/class-registration.php:232
 #: includes/free/class-registration.php:242
 msgid "Error"
-msgstr ""
+msgstr "Hata"
 
 #: includes/free/class-login.php:316 includes/free/class-registration.php:212
 msgid "Username is required."
-msgstr ""
+msgstr "Kullanıcı adı gereklidir."
 
 #: includes/free/class-login.php:321 includes/free/class-registration.php:217
 msgid "Password is required."
-msgstr ""
+msgstr "Şifre gereklidir."
 
 #: includes/free/class-login.php:331 includes/free/class-registration.php:242
 msgid "A user could not be found with this email address."
-msgstr ""
+msgstr "Bu eposta adresine kayıtlı bir kullanıcı yok."
 
 #: includes/free/class-login.php:421
 msgid "Please enter your password."
-msgstr ""
+msgstr "Lütfen şifrenizi girin."
 
 #: includes/free/class-login.php:426
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Şifreler uyuşmuyor."
 
 #: includes/free/class-login.php:469
 msgid "Enter a username or e-mail address."
-msgstr ""
+msgstr "Bir kullanıcı adı veya e-posta adresi girin."
 
 #: includes/free/class-login.php:477
 msgid "There is no user registered with that email address."
-msgstr ""
+msgstr "Bu eposta adresine kayıtlı bir kullanıcı yok."
 
 #: includes/free/class-login.php:495
 msgid "Invalid username or e-mail."
-msgstr ""
+msgstr "Geçersiz kullanıcı adı veya e-posta adresi."
 
 #: includes/free/class-login.php:509
 msgid "Password reset is not allowed for this user"
-msgstr ""
+msgstr "Bu kullanıcı için şifre sıfırlama işlemine izin verilmiyor"
 
 #: includes/free/class-login.php:553 includes/free/class-login.php:558
 #: includes/free/class-login.php:565
 msgid "Invalid key"
-msgstr ""
+msgstr "Geçersiz anahtar"
 
 #: includes/free/class-login.php:588
 msgid ""
 "<strong>Your account is not active.</strong><br>Please check your email for "
 "activation link."
 msgstr ""
+"<strong>Hesabınız aktif değil..</strong><br> Lütfen aktivasyon bağlantısı "
+"için eposta adresinizi kontrol edin."
 
 #: includes/free/class-login.php:636
 msgid "Your account has been activated"
-msgstr ""
+msgstr "Hesabınız aktifleştirildi"
 
 #: includes/free/class-login.php:680
 msgid "Someone requested that the password be reset for the following account:"
-msgstr ""
+msgstr "Birisi aşağıdaki hesap için bir şifre sıfırlaması istiyor:"
 
 #: includes/free/class-login.php:698
 msgid "The e-mail could not be sent."
-msgstr ""
+msgstr "E-posta gönderilemedi."
 
 #: includes/free/class-login.php:698
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
+"Muhtemel sorun: ana makineniz posta() işlevini devre dışı bırakmış olabilir."
 
 #: includes/free/class-registration.php:197
 msgid "First name is required."
-msgstr ""
+msgstr "İlk İsim zorunlu gereklidir."
 
 #: includes/free/class-registration.php:202
 msgid "Last name is required."
-msgstr ""
+msgstr "Soy Ad gereklidir."
 
 #: includes/free/class-registration.php:207
 msgid "Email is required."
-msgstr ""
+msgstr "Eposta gereklidir."
 
 #: includes/free/class-registration.php:222
 msgid "Confirm Password is required."
-msgstr ""
+msgstr "Şifreyi Onaylamanız Gerekiyor."
 
 #: includes/free/class-registration.php:227
 msgid "Passwords are not same."
-msgstr ""
+msgstr "Şifreler aynı değil."
 
 #: includes/free/class-registration.php:232
 msgid "A user with same username already exists."
-msgstr ""
+msgstr "Aynı kullanıcı adına sahip bir kullanıcı zaten var."
 
 #: includes/free/edit-profile.php:32 includes/free/edit-user.php:37
 #: templates/unauthorized.php:3
 msgid "This page is restricted. Please %s to view this page."
-msgstr ""
+msgstr "Bu sayfa sınırlıdır. Lütfen %s bu sayfayı görüntülemek için."
 
 #: includes/free/edit-profile.php:71
 msgid "<strong>Success</strong>: Profile updated"
-msgstr ""
+msgstr "<strong>Başarılı</strong>: Profil güncellendi"
 
 #: includes/free/edit-profile.php:102
 msgid "Usernames cannot be changed."
-msgstr ""
+msgstr "Kullanıcı adları değiştirilemez."
 
 #: includes/free/edit-profile.php:110
 msgid "Last Name"
-msgstr ""
+msgstr "Soy Ad"
 
 #: includes/free/edit-profile.php:115
 msgid "Nickname"
-msgstr ""
+msgstr "Takma ad"
 
 #: includes/free/edit-profile.php:115 includes/free/edit-profile.php:156
 msgid "(required)"
-msgstr ""
+msgstr "(gerekli)"
 
 #: includes/free/edit-profile.php:120
 msgid "Display to Public as"
-msgstr ""
+msgstr "Herkese açık olarak göster"
 
 #: includes/free/edit-profile.php:152
 msgid "Contact Info"
-msgstr ""
+msgstr "İletişim bilgisi"
 
 #: includes/free/edit-profile.php:156
 msgid "E-mail"
-msgstr ""
+msgstr "E-Posta"
 
 #: includes/free/edit-profile.php:161
 msgid "Website"
-msgstr ""
+msgstr "Website"
 
 #: includes/free/edit-profile.php:179
 msgid "About Yourself"
-msgstr ""
+msgstr "Kendiniz Hakkında"
 
 #: includes/free/edit-profile.php:183
 msgid "Biographical Info"
-msgstr ""
+msgstr "Biyografik Bilgi"
 
 #: includes/free/edit-profile.php:185
 msgid ""
 "Share a little biographical information to fill out your profile. This may "
 "be shown publicly."
 msgstr ""
+"Profilinizi doldurmak için biraz biyografik bilgi paylaşın. Bu herkese "
+"gösterilebilir."
 
 #: includes/free/edit-profile.php:188 templates/dashboard/edit-profile.php:49
 msgid "New Password"
-msgstr ""
+msgstr "Yeni Şifre"
 
 #: includes/free/edit-profile.php:194 templates/registration-form.php:65
 msgid "Confirm Password"
-msgstr ""
+msgstr "Şifreyi Onaylama"
 
 #: includes/free/edit-profile.php:196
 msgid "Type your new password again."
-msgstr ""
+msgstr "Yeni şifrenizi tekrar yazın."
 
 #: includes/free/edit-profile.php:201
 msgid "Password Strength"
-msgstr ""
+msgstr "Şifre Gücü"
 
 #: includes/free/edit-profile.php:227 includes/free/form-element.php:346
 #: templates/dashboard/edit-profile.php:86
 msgid "Update Profile"
-msgstr ""
+msgstr "Profil Güncelleme"
 
 #: includes/free/edit-profile.php:249
 msgid "WPUF Post Lock"
-msgstr ""
+msgstr "WPUF Yayın Engeli"
 
 #: includes/free/edit-profile.php:252
 msgid "Lock Post:"
-msgstr ""
+msgstr "Yayın Engelleme:"
 
 #: includes/free/edit-profile.php:258
 msgid "Lock user from creating new post."
-msgstr ""
+msgstr "Kullanıcıyı yeni yayın oluşturmada engelle."
 
 #: includes/free/edit-profile.php:263
 msgid "Lock Reason:"
-msgstr ""
+msgstr "Engelleme Nedeni:"
 
 #: includes/free/edit-user.php:23
 msgid "User doesn't exists"
-msgstr ""
+msgstr "Kullanıcı mevcut değil"
 
 #: includes/free/edit-user.php:34
 msgid "You don't have permission for this purpose"
-msgstr ""
+msgstr "Bu işlem için yetkiniz yok"
 
 #: includes/free/edit-user.php:76
 msgid "User Deleted"
-msgstr ""
+msgstr "Kullanıcı Silindi"
 
 #: includes/free/edit-user.php:93
 msgid "Action"
-msgstr ""
+msgstr "Eylem"
 
 #: includes/free/edit-user.php:119 includes/free/edit-user.php:177
 msgid "Add New User"
-msgstr ""
+msgstr "Yeni Kullanıcı Ekle"
 
 #: includes/free/edit-user.php:132
 msgid "User Added"
-msgstr ""
+msgstr "Kullanıcı Eklendi"
 
 #: includes/free/edit-user.php:160
 msgid "Role"
-msgstr ""
+msgstr "Rol"
 
 #: includes/free/edit-user.php:204
 msgid "<strong>ERROR</strong>: Please enter a username"
-msgstr ""
+msgstr "<strong>HATA</strong>: Lütfen bir kullanıcı adı girin"
 
 #: includes/free/edit-user.php:206
 msgid ""
 "<strong>ERROR</strong>: This username is invalid because it uses illegal "
 "characters. Please enter a valid username"
 msgstr ""
+"<strong>HATA</strong>: Bu kullanıcı adında geçersiz karakter olduğu için "
+"geçersizdir. Lütfen geçerli bir kullanıcı adı girin"
 
 #: includes/free/edit-user.php:209
 msgid ""
 "<strong>ERROR</strong>: This username is already registered, please choose "
 "another one"
 msgstr ""
+"<strong>HATA</strong>: Bu kullanıcı adı zaten kayıtlı, lütfen başka bir tane "
+"seçin"
 
 #: includes/free/edit-user.php:214
 msgid "<strong>ERROR</strong>: Please type your e-mail address"
-msgstr ""
+msgstr "<strong>HATA</strong>: Lütfen e-posta adresinizi yazın"
 
 #: includes/free/edit-user.php:216
 msgid "<strong>ERROR</strong>: The email address isn&#8217;t correct"
-msgstr ""
+msgstr "<strong>HATA</strong>: ,E-posta adresi doğru&#8217;değil"
 
 #: includes/free/edit-user.php:219
 msgid ""
 "<strong>ERROR</strong>: This email is already registered, please choose "
 "another one"
 msgstr ""
+"<strong>HATA</strong>: Bu e-posta adresi zaten kayıtlı, lütfen başka bir "
+"tane seçin"
 
 #: includes/free/edit-user.php:242
 msgid ""
 "<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a "
 "href=\"mailto:%s\">webmaster</a> !"
 msgstr ""
+"<strong>HATA</strong>:Sizi&#8217;kaydedemedik...Lütfen iletişime geçin <a "
+"href=\"mailto:%s\">webmaster</a>ile !"
 
 #: includes/free/form-element.php:6 includes/free/form-element.php:26
 msgid "Click to add to the editor"
-msgstr ""
+msgstr "Editöre eklemek için tıklayın"
 
 #: includes/free/form-element.php:14
 msgid "Google Maps"
-msgstr ""
+msgstr "Google Haritalar"
 
 #: includes/free/form-element.php:34
 msgid "Term &amp; Conditions"
-msgstr ""
+msgstr "Terim &amp; Koşullar"
 
 #: includes/free/form-element.php:63
 msgid "Learn more about Automatic Post Expiration"
-msgstr ""
+msgstr "Otomatik yayın sona ermesi süresi ile ilgili daha fazla bilgi edinin"
 
 #: includes/free/form-element.php:123
 msgid "Send Email to Author After Exceeding Post Expiration Time"
-msgstr ""
+msgstr "Yayın Sona Erme Süresini Aştıktan Sonra Yaratıcıya Eposta Gönder"
 
 #: includes/free/form-element.php:148 includes/free/form-element.php:152
 msgid "Enable Multistep"
-msgstr ""
+msgstr "Çoklu Adımı Etkinleştirme"
 
 #: includes/free/form-element.php:155
 msgid "If checked, form will be displayed in frontend in multiple steps"
-msgstr ""
+msgstr "İşaretlenirse, form arayüzde çoklu adımda görüntülenecektir"
 
 #: includes/free/form-element.php:156
 msgid " Learn more about Multistep"
-msgstr ""
+msgstr " Çoklu Adım Hakkında Daha Fazla Bilgi Edinin"
 
 #: includes/free/form-element.php:160
 msgid "Multistep Progressbar Type"
-msgstr ""
+msgstr "Çoklu Adım Geliştirme Çubuğu Türü"
 
 #: includes/free/form-element.php:170
 msgid "Choose how you want the progressbar"
-msgstr ""
+msgstr "Geliştirme çubuğunuzu nasıl istiyorsanız seçin"
 
 #: includes/free/form-element.php:200
 msgid "New post created"
-msgstr ""
+msgstr "Yeni yayın oluşturuldu"
 
 #: includes/free/form-element.php:205
 msgid "A post has been edited"
-msgstr ""
+msgstr "Bir yayın düzenlendi"
 
 #: includes/free/form-element.php:209
 msgid "New Post Notification"
-msgstr ""
+msgstr "Yeni Yayın Bildirimi"
 
 #: includes/free/form-element.php:217 includes/free/form-element.php:255
 msgid "Enable post notification"
-msgstr ""
+msgstr "Yayın bildirimini etkinleştir"
 
 #: includes/free/form-element.php:220
 msgid "Learn more about Email Notification"
-msgstr ""
+msgstr "Eposta Bildirimi Hakkında Daha Fazla Bilgi Edinin"
 
 #: includes/free/form-element.php:231 includes/free/form-element.php:266
 msgid "Subject"
-msgstr ""
+msgstr "Konu"
 
 #: includes/free/form-element.php:236 includes/free/form-element.php:271
 msgid "Message"
-msgstr ""
+msgstr "Mesaj"
 
 #: includes/free/form-element.php:243
 msgid "Update Post Notification"
-msgstr ""
+msgstr "Yayın Bildirimini Güncelleme"
 
 #: includes/free/form-element.php:279
 msgid "You may use in to, subject & message:"
-msgstr ""
+msgstr "Konu & mesaj içinde, kullanabilirsiniz:"
 
 #: includes/free/form-element.php:303
 msgid "Toggle All"
-msgstr ""
+msgstr "Hepsine Ekle"
 
 #: includes/free/form-element.php:307
 msgid "Click on a form element to add to the editor"
-msgstr ""
+msgstr "Editöre eklemek için bir form öğesine tıklayın"
 
 #: includes/free/form-element.php:341
 msgid "Registration successful"
-msgstr ""
+msgstr "Kayıt başarılı"
 
 #: includes/free/form-element.php:342
 msgid "Profile updated successfully"
-msgstr ""
+msgstr "Profil başarıyla güncellendi"
 
 #: includes/free/form-element.php:354
 msgid "Enable Email Verfication"
-msgstr ""
+msgstr "Eposta Doğrulamayı Etkinleştirme"
 
 #: includes/free/form-element.php:362
 msgid "New User Role"
-msgstr ""
+msgstr "Yeni Kullanıcı Rolü"
 
 #: includes/free/form-element.php:398
 msgid "Registration success message"
-msgstr ""
+msgstr "Kayıt başarı mesajı"
 
 #: includes/free/form-element.php:405
 msgid "Update profile message"
-msgstr ""
+msgstr "Profil mesajını güncelleme"
 
 #: includes/free/form-element.php:434
 msgid "Submit Button text"
-msgstr ""
+msgstr "Buton metni sunma"
 
 #: includes/free/form-element.php:441
 msgid "Update Button text"
-msgstr ""
+msgstr "Buton metnini güncelleme"
 
 #: includes/free/loader.php:83 includes/free/loader.php:143
 msgid "Coupons"
-msgstr ""
+msgstr "Kuponlar"
 
 #: includes/free/loader.php:92
 msgid ""
 "Use the shortcode <code>[wpuf-registration]</code> for a simple and default "
 "WordPress registration form."
 msgstr ""
+"Basit ve varsayılan bir WordPress kayıt formu için <code>[wpuf-"
+"registration]</code> kısa kodunu kullanın."
 
 #: includes/free/loader.php:106
 msgid ""
 "Registration form builder is a two way form which can be used both for "
 "<strong>user registration</strong> and <strong>profile editing</strong>."
 msgstr ""
+"Kayıt formu oluşturucu iki yönlü formdur <strong>kullanıcı kaydı</strong> ve "
+"<strong>profil düzenleme</strong> nin ikisi için de kullanılabilir."
 
 #: includes/free/loader.php:125 includes/free/loader.php:155
 msgid "Upgrade to Pro Version"
-msgstr ""
+msgstr "Pro Sürümüne Yükseltme"
 
 #: includes/free/loader.php:126
 msgid "Learn More"
-msgstr ""
+msgstr "Daha Fazla Öğrenin"
 
 #: includes/free/loader.php:147
 msgid "Use Coupon codes for subscription for discounts."
-msgstr ""
+msgstr "İndirimler için abone olmak için Kupon kodlarını kullanın."
 
 #: includes/free/loader.php:151
 msgid "This feature is only available in the Pro Version."
-msgstr ""
+msgstr "Bu özellik sadece Pro Sürümünde mevcuttur."
 
 #: includes/free/loader.php:156
 msgid "Learn more about Coupons"
-msgstr ""
+msgstr "Kuponlar Hakkında Daha Fazla Öğrenin"
 
 #: includes/free/loader.php:197
 msgid "Upgrade to Pro"
-msgstr ""
+msgstr "Pro Sürümüne Yükseltme"
 
 #: includes/free/post-form-templates/woocommerce.php:12
 msgid "WooCommerce Product"
-msgstr ""
+msgstr "WoCommerce Ürünü"
 
 #: includes/free/post-form-templates/woocommerce.php:13
 msgid "Create a simple product form for WooCommerce."
-msgstr ""
+msgstr "WoCommerce için basit bir ürün formu oluşturun."
 
 #: includes/free/subscription.php:12
 msgid "Enable Recurring Payment"
-msgstr ""
+msgstr "Devamlı Ödemeyi Etkinleştirme"
 
 #: includes/setup-wizard.php:98
 msgid "Introduction"
-msgstr ""
+msgstr "Tanıtım"
 
 #: includes/setup-wizard.php:108
 msgid "Ready!"
-msgstr ""
+msgstr "Hazır!"
 
 #: includes/setup-wizard.php:145
 msgid "WPUF &rsaquo; Setup Wizard"
-msgstr ""
+msgstr "WPUF &rsaquo; Kurulum Sihirbazı"
 
 #: includes/setup-wizard.php:210
 msgid "Return to the WordPress Dashboard"
-msgstr ""
+msgstr "WordPress Kontrol paneline geri dön"
 
 #: includes/setup-wizard.php:252
 msgid "Welcome to the world of WPUF!"
-msgstr ""
+msgstr "WPUF dünyasına hoş geldiniz!"
 
 #: includes/setup-wizard.php:253
 msgid ""
@@ -4262,6 +4319,10 @@ msgid ""
 "setup wizard will help you configure the basic settings. <strong>It’s "
 "completely optional and shouldn’t take longer than a minute.</strong>"
 msgstr ""
+"Web sitelerinizin arayüzünü güçlendirmek için WPUF'yi seçtiğiniz için "
+"teşekkür ederiz! Bu hızlı kurulum sihirbazı temel ayarları yapılandırmanıza "
+"yardımcı olacaktır.<strong>Tamamen seçmelidir ve bir dakikadan fazla sürmez."
+"</strong>"
 
 #: includes/setup-wizard.php:254
 msgid ""
@@ -4269,144 +4330,153 @@ msgid ""
 "and return to the WordPress dashboard. Come back anytime if you change your "
 "mind!"
 msgstr ""
+"Şu anda vakit mi yok? Eğer sihirbazdan geçmek istemiyorsanız, atlayıp "
+"WordPress kontrol paneline dönebilirsiniz. Fikriniz değiştiğinde istediğiniz "
+"zaman geri gelin!"
 
 #: includes/setup-wizard.php:256
 msgid "Let's Go!"
-msgstr ""
+msgstr "Hadi Başlayalım!"
 
 #: includes/setup-wizard.php:257
 msgid "Not right now"
-msgstr ""
+msgstr "Şimdi değil"
 
 #: includes/setup-wizard.php:269
 msgid "Basic Setting"
-msgstr ""
+msgstr "Temel Ayar"
 
 #: includes/setup-wizard.php:276
 msgid "Make payment enable for user to add posts on frontend."
 msgstr ""
+"Arayüzde kullanıcıların yayın eklemesi için ödeme yapmayı etkinleştirin."
 
 #: includes/setup-wizard.php:283
 msgid "Install neccessery pages on your site frontend."
-msgstr ""
+msgstr "Sitenizin arayüzüne gerekli olan sayfaları kurun."
 
 #: includes/setup-wizard.php:288
 msgid "Continue"
-msgstr ""
+msgstr "Devam et"
 
 #: includes/setup-wizard.php:289
 msgid "Skip this step"
-msgstr ""
+msgstr "Bu adımı atla"
 
 #: includes/setup-wizard.php:323
 msgid "Thank you!"
-msgstr ""
+msgstr "Teşekkürler!"
 
 #: includes/setup-wizard.php:328
 msgid "Welcome to Awesomeness!"
-msgstr ""
+msgstr "Harika özelliklere hoş geldiniz!"
 
 #: includes/setup-wizard.php:332
 msgid "Go to Full Settings"
-msgstr ""
+msgstr "Tüm Ayarlara Git"
 
 #: lib/class-wedevs-insights.php:326
 msgid ""
 "Want to help make <strong>%s</strong> even more awesome? Allow weDevs to "
 "collect non-sensitive diagnostic data and usage information."
 msgstr ""
+"Daha da harika yapmak için <strong>%s</strong> yardım etmek ister misiniz? "
+"WeDevs'in hassas olmayan teşhis verileri ve kullanım bilgileri toplamasına "
+"izin verin."
 
 #: lib/class-wedevs-insights.php:331
 msgid "what we collect"
-msgstr ""
+msgstr "biz ne topluyoruz"
 
 #: lib/class-wedevs-insights.php:337
 msgid "Allow"
-msgstr ""
+msgstr "İzin ver"
 
 #: lib/class-wedevs-insights.php:338
 msgid "No thanks"
-msgstr ""
+msgstr "Hayır teşekkürler"
 
 #: lib/class-wedevs-insights.php:515
 msgid "Once Weekly"
-msgstr ""
+msgstr "Haftalık Bir Defa"
 
 #: lib/class-wedevs-insights.php:651
 msgid "If you have a moment, please let us know why you are deactivating:"
 msgstr ""
+"Eğer biraz vaktiniz varsa, lütfen bize neden devre dışı bıraktığınız "
+"söyleyin:"
 
 #: lib/class-wedevs-insights.php:665
 msgid "I rather wouldn't say"
-msgstr ""
+msgstr "Ben söylememeyi tercih ediyorum"
 
 #: lib/class-wedevs-insights.php:666
 msgid "Submit & Deactivate"
-msgstr ""
+msgstr "Sunma & Devre Dışı Bırakma"
 
 #: lib/class-weforms-upsell.php:353
 msgid "You don't have permission to install the plugins"
-msgstr ""
+msgstr "Eklentileri kurmak için yetkiniz yok"
 
 #: lib/class.settings-api.php:366
 msgid "Choose File"
-msgstr ""
+msgstr "Dosya Seçme"
 
 #: lib/gateway/bank.php:29
 msgid "Bank Instruction"
-msgstr ""
+msgstr "Banka Talimatı"
 
 #: lib/gateway/bank.php:36
 msgid "Bank Payment Success Page"
-msgstr ""
+msgstr "Banka Ödemesi Başarılı Sayması"
 
 #: lib/gateway/bank.php:83
 msgid "[%s] New Bank Order Received"
-msgstr ""
+msgstr "[%s] Yeni Banka Talimatı Alındı"
 
 #: lib/gateway/bank.php:84
 msgid "New bank order received at %s, please check it out: %s"
-msgstr ""
+msgstr "Yeni banka talimatı %s da alındı, lütfen bunu kontrol edin: %s"
 
 #: lib/gateway/bank.php:106
 msgid "Hello %s,"
-msgstr ""
+msgstr "Merhaba %s,"
 
 #: lib/gateway/bank.php:107
 msgid "We have received your bank payment."
-msgstr ""
+msgstr "Banka ödemenizi aldık."
 
 #: lib/gateway/bank.php:108
 msgid "Thanks for being with us."
-msgstr ""
+msgstr "Bizimle olduğunuz için teşekkür ederiz."
 
 #: lib/gateway/paypal.php:61
 msgid "Subscription %s at %s"
-msgstr ""
+msgstr "Abonelik %s de %s"
 
 #: lib/gateway/paypal.php:91
 msgid "PayPal Email"
-msgstr ""
+msgstr "PayPal Eposta"
 
 #: lib/gateway/paypal.php:96
 msgid "PayPal Instruction"
-msgstr ""
+msgstr "PayPal Talimatı"
 
 #: lib/gateway/paypal.php:103
 msgid "PayPal API username"
-msgstr ""
+msgstr "PayPal API kullanıcı adı"
 
 #: lib/gateway/paypal.php:107
 msgid "PayPal API password"
-msgstr ""
+msgstr "PayPal API şifresi"
 
 #: lib/gateway/paypal.php:111
 msgid "PayPal API signature"
-msgstr ""
+msgstr "PayPal API imzası"
 
 #: templates/dashboard/dashboard.php:5
 msgid "Hello %1$s, (not %1$s? <a href=\"%2$s\">Sign out</a>)"
-msgstr ""
+msgstr "Merhaba %1$s, (değil mi %1$s? <a href=\"%2$s\">Oturumu kapatın</a>)"
 
 #: templates/dashboard/dashboard.php:13
 msgid ""
@@ -4414,483 +4484,491 @@ msgid ""
 "\"%1$s\">posts</a>, <a href=\"%2$s\">subscription</a> and <a href=\"%3$s"
 "\">edit your password and profile</a>."
 msgstr ""
+"Hesap kontrol panelinizden kontrol panelinizi görüntüleyebilir, <a href="
+"\"%1$s\">yayınlarınızı</a>, <a href=\"%2$s\">abonelikleri</a> yönetebilir ve "
+"<a href=\"%3$s\">şifre ve profilinizi düzenleyebilirsiniz</a>."
 
 #: templates/dashboard/edit-profile.php:5
 msgid "Profile updated successfully!"
-msgstr ""
+msgstr "Profil başarıyla güncellendi!"
 
 #: templates/dashboard/edit-profile.php:6
 msgid "Something went wrong!"
-msgstr ""
+msgstr "Bir şeyler yanlış gitti!"
 
 #: templates/dashboard/edit-profile.php:10
 msgid "First Name "
-msgstr ""
+msgstr "İlk İsim "
 
 #: templates/dashboard/edit-profile.php:18
 msgid "Last Name "
-msgstr ""
+msgstr "Soy Ad "
 
 #: templates/dashboard/edit-profile.php:28
 msgid "Email Address "
-msgstr ""
+msgstr "Eposta Adresi "
 
 #: templates/dashboard/edit-profile.php:38
 msgid "Current Password"
-msgstr ""
+msgstr "Geçerli Şifre"
 
 #: templates/dashboard/edit-profile.php:43
 msgid "Leave this field empty to keep your password unchanged."
-msgstr ""
+msgstr "Şifrenizin değişmemesi için bu alanı boş bırakın."
 
 #: templates/dashboard/edit-profile.php:75
 msgid "Confirm New Password"
-msgstr ""
+msgstr "Yeni Şifreyi Onaylama"
 
 #: templates/dashboard/posts.php:54 templates/dashboard.php:8
 msgid "You have created <span>%d</span> %s"
-msgstr ""
+msgstr "Siz oluşturdunuz <span>%d</span> %s"
 
 #: templates/dashboard/posts.php:105 templates/dashboard.php:132
 msgid "No Image"
-msgstr ""
+msgstr "Görüntü Yok"
 
 #: templates/dashboard/posts.php:119 templates/dashboard.php:146
 msgid "Permalink to %s"
-msgstr ""
+msgstr "Kalıcı bağlantı %s ye"
 
 #: templates/dashboard/posts.php:135 templates/dashboard.php:190
 msgid "Pay Now"
-msgstr ""
+msgstr "Şimdi Öde"
 
 #: templates/dashboard/posts.php:179 templates/dashboard.php:240
 msgid "&laquo;"
-msgstr ""
+msgstr "&laquo;"
 
 #: templates/dashboard/posts.php:180 templates/dashboard.php:241
 msgid "&raquo;"
-msgstr ""
+msgstr "&raquo;"
 
 #: templates/dashboard/posts.php:194 templates/dashboard.php:255
 msgid "No %s found"
-msgstr ""
+msgstr "Hayır %s bulunmadı"
 
 #: templates/dashboard/subscription.php:57
 msgid "<p><i>To cancel the pack, press the following cancel button.</i></p>"
-msgstr ""
+msgstr "<p><i>Paketi iptal etmek için, sonraki iptal butonuna basın.</i></p>"
 
 #: templates/dashboard.php:4
 msgid "%s's Dashboard"
-msgstr ""
+msgstr "%s's Kontrol paneli"
 
 #: templates/dashboard.php:77
 msgid "Category"
-msgstr ""
+msgstr "Kategori"
 
 #: templates/dokan/new-post.php:7
 msgid "You are not allowed to submit post. Please contact admin"
-msgstr ""
+msgstr "Yayın sunmaya yetkiniz yok. Lütfen yöneticiyle iletişime geçin"
 
 #: templates/dokan/post-listing.php:3
 msgid "+ Add Post"
-msgstr ""
+msgstr "+ Yayın Ekleme"
 
 #: templates/logged-in.php:8
 msgid "Hello %s"
-msgstr ""
+msgstr "Merhaba %s"
 
 #: templates/logged-in.php:11
 msgid "You are currently logged in! %s?"
-msgstr ""
+msgstr "Oturumunuz açık! %s?"
 
 #: templates/lost-pass-form.php:21
 msgid "Get New Password"
-msgstr ""
+msgstr "Yeni Şifre Al"
 
 #: templates/registration-form.php:16
 msgid "Registration has been successful!"
-msgstr ""
+msgstr "Kayıt başarıyla gerçekleşti!"
 
 #: templates/reset-pass-form.php:14
 msgid "New password"
-msgstr ""
+msgstr "Yeni Şifre"
 
 #: templates/reset-pass-form.php:19
 msgid "Confirm new password"
-msgstr ""
+msgstr "Yeni şifreyi onaylama"
 
 #: views/welcome-page.php:445 views/welcome-page.php:586
 msgid "Create Your First Form"
-msgstr ""
+msgstr "İlk Formunuzu Oluşturun"
 
 #: views/welcome-page.php:446 views/welcome-page.php:587
 msgid "Read the Full Guide"
-msgstr ""
+msgstr "Tüm Rehberi Okuyun"
 
 #: wpuf-functions.php:27
 msgid "Live"
-msgstr ""
+msgstr "Etkin"
 
 #: wpuf-functions.php:31
 msgid "Offline"
-msgstr ""
+msgstr "Çevrimdışı"
 
 #: wpuf-functions.php:35
 msgid "Awaiting Approval"
-msgstr ""
+msgstr "Onay Bekleniyor"
 
 #: wpuf-functions.php:38 wpuf-functions.php:72
 msgid "Scheduled"
-msgstr ""
+msgstr "Programlanmış"
 
 #: wpuf-functions.php:42
 msgid "Private"
-msgstr ""
+msgstr "Özel"
 
 #: wpuf-functions.php:213
 msgid "-- select --"
-msgstr ""
+msgstr "-- seç --"
 
 #: wpuf-functions.php:418
 msgid "Images"
-msgstr ""
+msgstr "Resimler"
 
 #: wpuf-functions.php:419
 msgid "Audio"
-msgstr ""
+msgstr "Sesler"
 
 #: wpuf-functions.php:420
 msgid "Videos"
-msgstr ""
+msgstr "Videolar"
 
 #: wpuf-functions.php:421
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: wpuf-functions.php:422
 msgid "Office Documents"
-msgstr ""
+msgstr "Office Belgeleri"
 
 #: wpuf-functions.php:423
 msgid "Zip Archives"
-msgstr ""
+msgstr "Zip Arşivleri"
 
 #: wpuf-functions.php:424
 msgid "Executable Files"
-msgstr ""
+msgstr "Executable Dosyaları"
 
 #: wpuf-functions.php:425
 msgid "CSV"
-msgstr ""
+msgstr "CSV"
 
 #: wpuf-functions.php:1451
 msgid "Edit Profile"
-msgstr ""
+msgstr "Profil Düzenleme"
 
 #: wpuf-functions.php:1556
 msgid "United Arab Emirates Dirham"
-msgstr ""
+msgstr "Birleşik Arap Emirlikleri Dirhemi"
 
 #: wpuf-functions.php:1557
 msgid "Australian Dollars"
-msgstr ""
+msgstr "Avustralya Doları"
 
 #: wpuf-functions.php:1558
 msgid "Argentine Peso"
-msgstr ""
+msgstr "Arjantin Pezosu"
 
 #: wpuf-functions.php:1559
 msgid "Bangladeshi Taka"
-msgstr ""
+msgstr "Bangladeş Taka'sı"
 
 #: wpuf-functions.php:1560
 msgid "Brazilian Real"
-msgstr ""
+msgstr "Brezilya Reali"
 
 #: wpuf-functions.php:1561
 msgid "Bulgarian Lev"
-msgstr ""
+msgstr "Bulgar Levası"
 
 #: wpuf-functions.php:1562
 msgid "Canadian Dollars"
-msgstr ""
+msgstr "Kanada Doları"
 
 #: wpuf-functions.php:1563
 msgid "Chilean Peso"
-msgstr ""
+msgstr "Şili Pezosu"
 
 #: wpuf-functions.php:1564
 msgid "Chinese Yuan"
-msgstr ""
+msgstr "Çin Yuanı"
 
 #: wpuf-functions.php:1565
 msgid "Colombian Peso"
-msgstr ""
+msgstr "Kolombiya Pezosu"
 
 #: wpuf-functions.php:1566
 msgid "Czech Koruna"
-msgstr ""
+msgstr "Çek Korunası"
 
 #: wpuf-functions.php:1567
 msgid "Danish Krone"
-msgstr ""
+msgstr "Danimarka Kronu"
 
 #: wpuf-functions.php:1568
 msgid "Dominican Peso"
-msgstr ""
+msgstr "Dominik Pezosu"
 
 #: wpuf-functions.php:1569
 msgid "Algerian Dinar"
-msgstr ""
+msgstr "Cezayir Dinarı"
 
 #: wpuf-functions.php:1570
 msgid "Euros"
-msgstr ""
+msgstr "Eurolar"
 
 #: wpuf-functions.php:1571
 msgid "Hong Kong Dollar"
-msgstr ""
+msgstr "Hong Kong Doları"
 
 #: wpuf-functions.php:1572
 msgid "Croatia kuna"
-msgstr ""
+msgstr "Hırvatistan kunası"
 
 #: wpuf-functions.php:1573
 msgid "Hungarian Forint"
-msgstr ""
+msgstr "Macar Forinti"
 
 #: wpuf-functions.php:1574
 msgid "Icelandic krona"
-msgstr ""
+msgstr "İzlanda kronu"
 
 #: wpuf-functions.php:1575
 msgid "Indonesia Rupiah"
-msgstr ""
+msgstr "Endonezya Rupisi"
 
 #: wpuf-functions.php:1576
 msgid "Indian Rupee"
-msgstr ""
+msgstr "Hint Rupisi"
 
 #: wpuf-functions.php:1577
 msgid "Nepali Rupee"
-msgstr ""
+msgstr "Nepal Rupisi"
 
 #: wpuf-functions.php:1578
 msgid "Israeli Shekel"
-msgstr ""
+msgstr "İsrail Şekeli"
 
 #: wpuf-functions.php:1579
 msgid "Japanese Yen"
-msgstr ""
+msgstr "Japon Yeni"
 
 #: wpuf-functions.php:1580
 msgid "Lao Kip"
-msgstr ""
+msgstr "Lao Kipi"
 
 #: wpuf-functions.php:1581
 msgid "South Korean Won"
-msgstr ""
+msgstr "Güney Kore Wonu"
 
 #: wpuf-functions.php:1582
 msgid "Malaysian Ringgits"
-msgstr ""
+msgstr "Malezya Lirası"
 
 #: wpuf-functions.php:1583
 msgid "Mexican Peso"
-msgstr ""
+msgstr "Meksika Pezosu"
 
 #: wpuf-functions.php:1584
 msgid "Nigerian Naira"
-msgstr ""
+msgstr "Nijerya Nairası"
 
 #: wpuf-functions.php:1585
 msgid "Norwegian Krone"
-msgstr ""
+msgstr "Norveç Kronu"
 
 #: wpuf-functions.php:1586
 msgid "New Zealand Dollar"
-msgstr ""
+msgstr "Yeni Zelanda Doları"
 
 #: wpuf-functions.php:1587
 msgid "Omani Rial"
-msgstr ""
+msgstr "Umman Riyali"
 
 #: wpuf-functions.php:1588
 msgid "Iranian Rial"
-msgstr ""
+msgstr "İran Riyali"
 
 #: wpuf-functions.php:1589
 msgid "Pakistani Rupee"
-msgstr ""
+msgstr "Pakistan Rupisi"
 
 #: wpuf-functions.php:1590
 msgid "Paraguayan Guaraní"
-msgstr ""
+msgstr "Paraguay Guaranísi"
 
 #: wpuf-functions.php:1591
 msgid "Philippine Pesos"
-msgstr ""
+msgstr "Filipin Pezosu"
 
 #: wpuf-functions.php:1592
 msgid "Polish Zloty"
-msgstr ""
+msgstr "Polonya Zlotisi"
 
 #: wpuf-functions.php:1593
 msgid "Pounds Sterling"
-msgstr ""
+msgstr "İngiliz Lirası Sterlin"
 
 #: wpuf-functions.php:1594
 msgid "Romanian Leu"
-msgstr ""
+msgstr "Romanya Leusu"
 
 #: wpuf-functions.php:1595
 msgid "Russian Ruble"
-msgstr ""
+msgstr "Rus Rublesi"
 
 #: wpuf-functions.php:1596
 msgid "Saudi Riyal"
-msgstr ""
+msgstr "Suudi Riyali"
 
 #: wpuf-functions.php:1597
 msgid "Singapore Dollar"
-msgstr ""
+msgstr "Singapur Doları"
 
 #: wpuf-functions.php:1598
 msgid "South African rand"
-msgstr ""
+msgstr "Güney Afrika randı"
 
 #: wpuf-functions.php:1599
 msgid "Swedish Krona"
-msgstr ""
+msgstr "İsveç Kronu"
 
 #: wpuf-functions.php:1600
 msgid "Swiss Franc"
-msgstr ""
+msgstr "İsviçre Frangı"
 
 #: wpuf-functions.php:1601
 msgid "Taiwan New Dollars"
-msgstr ""
+msgstr "Tayvan Yeni Doları"
 
 #: wpuf-functions.php:1602
 msgid "Thai Baht"
-msgstr ""
+msgstr "Tayland Bahtı"
 
 #: wpuf-functions.php:1603
 msgid "Turkish Lira"
-msgstr ""
+msgstr "Türk Lirası"
 
 #: wpuf-functions.php:1604
 msgid "US Dollar"
-msgstr ""
+msgstr "Amerikan Doları"
 
 #: wpuf-functions.php:1605
 msgid "Vietnamese Dong"
-msgstr ""
+msgstr "Vietnam Dongu"
 
 #: wpuf-functions.php:1606
 msgid "Egyptian Pound"
-msgstr ""
+msgstr "Mısır Lirası"
 
 #: wpuf.php:104
 msgid "Your installed PHP Version is: "
-msgstr ""
+msgstr "Kurulu olan PHP Versiyonunuz: "
 
 #: wpuf.php:105
 msgid ""
 "The <strong>WP User Frontend</strong> plugin requires PHP version <strong>"
 msgstr ""
+"<strong>WP Kullanıcı Arayüzü</strong> PHP sürümü eklenti gereklidir<strong>"
 
 #: wpuf.php:105
 msgid "</strong> or greater."
-msgstr ""
+msgstr "</strong> veya daha büyük."
 
 #: wpuf.php:186
 msgid "Your Post Has Been Expired"
-msgstr ""
+msgstr "Yayınınızın Süresi Doldu"
 
 #: wpuf.php:642
 msgid "Error: Nonce verification failed"
-msgstr ""
+msgstr "Hata: Nonce doğrulama başarısız"
 
 #. Plugin URI of the plugin/theme
 msgid "https://wordpress.org/plugins/wp-user-frontend/"
-msgstr ""
+msgstr "https://wordpress.org/plugins/wp-user-frontend/"
 
 #. Description of the plugin/theme
 msgid ""
 "Create, edit, delete, manages your post, pages or custom post types from "
 "frontend. Create registration forms, frontend profile and more..."
 msgstr ""
+"Arayüzden yazılanlarınızı, sayfalarınızı veya özel yayın türlerini "
+"oluşturun, düzenleyin, silin, yönetin. Kayıt formu, arayüz profili ve "
+"dahasını oluşturun..."
 
 #. Author of the plugin/theme
 msgid "Tareq Hasan"
-msgstr ""
+msgstr "Tareq Hasan"
 
 #. Author URI of the plugin/theme
 msgid "https://tareq.co"
-msgstr ""
+msgstr "https://tareq.co"
 
 #: includes/setup-wizard.php:39
 msgctxt "enhanced select"
 msgid "One result is available, press enter to select it."
-msgstr ""
+msgstr "Bir sonuç var, seçmek için enter tuşuna basın."
 
 #: includes/setup-wizard.php:40
 msgctxt "enhanced select"
 msgid "%qty% results are available, use up and down arrow keys to navigate."
 msgstr ""
+"%qty% sonuçları var, gezinmek için yukarı ve aşağı ok tuşlarını kullanın."
 
 #: includes/setup-wizard.php:41
 msgctxt "enhanced select"
 msgid "No matches found"
-msgstr ""
+msgstr "Eşleşme Bulunamadı"
 
 #: includes/setup-wizard.php:42
 msgctxt "enhanced select"
 msgid "Loading failed"
-msgstr ""
+msgstr "Yükleme başarısız"
 
 #: includes/setup-wizard.php:43
 msgctxt "enhanced select"
 msgid "Please enter 1 or more characters"
-msgstr ""
+msgstr "Lütfen 1 veya daha fazla karakter girin"
 
 #: includes/setup-wizard.php:44
 msgctxt "enhanced select"
 msgid "Please enter %qty% or more characters"
-msgstr ""
+msgstr "Lütfen %qty% veya daha fazla karakter girin"
 
 #: includes/setup-wizard.php:45
 msgctxt "enhanced select"
 msgid "Please delete 1 character"
-msgstr ""
+msgstr "Lütfen 1 karakter silin"
 
 #: includes/setup-wizard.php:46
 msgctxt "enhanced select"
 msgid "Please delete %qty% characters"
-msgstr ""
+msgstr "Lütfen %qty% karakterleri silin"
 
 #: includes/setup-wizard.php:47
 msgctxt "enhanced select"
 msgid "You can only select 1 item"
-msgstr ""
+msgstr "Sadece 1 öge seçebilirsiniz"
 
 #: includes/setup-wizard.php:48
 msgctxt "enhanced select"
 msgid "You can only select %qty% items"
-msgstr ""
+msgstr "Sadece %qty% öge seçebilirsiniz"
 
 #: includes/setup-wizard.php:49
 msgctxt "enhanced select"
 msgid "Loading more results&hellip;"
-msgstr ""
+msgstr "Daha fazla sonuç yükleniyor&hellip;"
 
 #: includes/setup-wizard.php:50
 msgctxt "enhanced select"
 msgid "Searching&hellip;"
-msgstr ""
+msgstr "Aranıyor&hellip;"
 
 #: wpuf-functions.php:1068
 msgctxt "tag delimiter"
 msgid ","
-msgstr ""
+msgstr ","

@@ -28,6 +28,8 @@ class WPUF_Simple_Login {
         add_filter( 'logout_url', array($this, 'filter_logout_url'), 10, 2 );
         add_filter( 'lostpassword_url', array($this, 'filter_lostpassword_url'), 10, 2 );
         add_filter( 'register_url', array($this, 'get_registration_url') );
+        add_filter( 'wpuf_login_redirect', array( $this, 'login_redirect' ) );
+        add_filter( 'login_redirect', array( $this, 'default_login_redirect' ) );
 
         add_filter( 'authenticate', array($this, 'successfully_authenticate'), 30, 3 );
     }
@@ -360,6 +362,36 @@ class WPUF_Simple_Login {
     }
 
     /**
+     * Redirect user to a specific page after login
+     *
+     * @return  string $url
+     */
+    function login_redirect() {
+        $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
+
+        if ( !$redirect_to ) {
+            return home_url();
+        }
+
+        return get_permalink( $redirect_to );
+    }
+
+    /**
+     * Redirect user to a specific page after login using default WordPress login form
+     *
+     * @return  string $url
+     */
+    function default_login_redirect( $redirect_to ) {
+        $override = wpuf_get_option( 'wp_default_login_redirect', 'wpuf_profile', false );
+
+        if ( $override != 'on' ) {
+            return $redirect_to;
+        }
+
+        return $this->login_redirect();
+    }
+
+    /**
      * Logout the user
      *
      * @return void
@@ -521,14 +553,14 @@ class WPUF_Simple_Login {
 
             // Generate something random for a key...
             $key = wp_generate_password( 20, false );
-            
+
             if ( empty( $wp_hasher ) ) {
                 require_once ABSPATH . WPINC . '/class-phpass.php';
                 $wp_hasher = new PasswordHash( 8, true );
             }
 
             $hashed = time() . ':' . $wp_hasher->HashPassword( $key );
-            
+
             do_action('retrieve_password_key', $user_login, $user_email, $key);
 
             // Now insert the new hash key into the db
@@ -553,7 +585,7 @@ class WPUF_Simple_Login {
      */
     function check_password_reset_key( $key, $login ) {
         global $wpdb;
-        
+
         //keeping backward compatible
         if ( strlen( $key ) == 20 ) {
             $key = preg_replace( '/[^a-z0-9]/i', '', $key );

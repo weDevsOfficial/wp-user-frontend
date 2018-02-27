@@ -295,6 +295,20 @@ function wpuf_settings_fields() {
                 'type'    => 'select',
                 'options' => $pages
             ),
+            array(
+                'name'    => 'redirect_after_login_page',
+                'label'   => __( 'Redirect After Login', 'wpuf' ),
+                'desc'    => __( 'After successfull login, where the page will redirect to', 'wpuf' ),
+                'type'    => 'select',
+                'options' => $pages
+            ),
+            array(
+                'name'    => 'wp_default_login_redirect',
+                'label'   => __( 'Default Login Redirect', 'wpuf' ),
+                'desc'    => __( 'If enabled, users who login using WordPress default login form will be redirected to the selected page.', 'wpuf' ),
+                'type'    => 'checkbox',
+                'default' => 'off'
+            ),
         ) ),
         'wpuf_payment' => apply_filters( 'wpuf_options_payment', array(
             array(

@@ -1617,12 +1617,13 @@ class WPUF_Render_Form {
                 }
             }
         }
+        $button_label = empty( $attr['button_label'] ) ? __( 'Select Image', 'wpuf' ) : $attr['button_label'];
         ?>
 
         <div class="wpuf-fields">
             <div id="wpuf-<?php echo $unique_id; ?>-upload-container">
                 <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo $attr['required']; ?>">
-                    <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" href="#"><?php _e( 'Select Image', 'wpuf' ); ?></a>
+                    <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" href="#"><?php echo $button_label ?></a>
 
                     <ul class="wpuf-attachment-list thumbnails">
                         <?php

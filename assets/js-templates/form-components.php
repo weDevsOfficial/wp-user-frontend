@@ -500,7 +500,7 @@
     <div :id="'wpuf-img_label-' + field.id + '-upload-container'">
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector wpuf_img_label_148" href="#">
-                <?php _e( 'Select Image', 'wpuf' ); ?>
+                {{ field.button_label }}
             </a>
         </div>
     </div>

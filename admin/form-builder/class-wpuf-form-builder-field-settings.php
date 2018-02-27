@@ -773,6 +773,15 @@ class WPUF_Form_Builder_Field_Settings {
 
         $settings = array_merge( $settings, array(
             array(
+                'name'          => 'button_label',
+                'title'         => __( 'Button Label', 'wpuf' ),
+                'type'          => 'text',
+                'default'       => __( 'Select Image', 'wpuf' ),
+                'section'       => 'basic',
+                'priority'      => 30,
+                'help_text'     => __( 'Enter a label for the Select button', 'wpuf' ),
+            ),
+            array(
                 'name'          => 'max_size',
                 'title'         => __( 'Max. file size', 'wpuf' ),
                 'type'          => 'text',
@@ -780,7 +789,6 @@ class WPUF_Form_Builder_Field_Settings {
                 'priority'      => 20,
                 'help_text'     => __( 'Enter maximum upload size limit in KB', 'wpuf' ),
             ),
-
             array(
                 'name'          => 'count',
                 'title'         => __( 'Max. files', 'wpuf' ),
@@ -802,6 +810,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'required'          => 'no',
                 'label'             => __( 'Image Upload', 'wpuf' ),
                 'name'              => '',
+                'button_label'      => __( 'Select Image', 'wpuf' ),
                 'is_meta'           => 'yes',
                 'help'              => '',
                 'width'             => '',

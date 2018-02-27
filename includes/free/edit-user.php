@@ -82,6 +82,7 @@ function wpuf_show_users() {
     //$sql = "SELECT ID, display_name FROM $wpdb->users ORDER BY user_registered ASC";
     //$users = $wpdb->get_results( $sql );
     $users = get_users(apply_filters('wpuf_show_users', array()));
+    $delete_message = __( 'Are you sure to delete this user?', 'wpuf' );
     ?>
 
     <a class="wpuf-button" href="<?php the_permalink(); ?>?action=wpuf_add_user">Add New User</a>
@@ -97,7 +98,7 @@ function wpuf_show_users() {
                     <td><a href="<?php echo get_author_posts_url( $user->ID ); ?>"><?php printf( esc_attr__( '%s', 'wpuf' ), $user->display_name ); ?></td>
                     <td>
                         <a href="<?php echo wp_nonce_url(get_permalink() . '?action=edit&user_id='. $user->ID, 'wpuf_edit_user'); ?>"><?php _e( 'Edit', 'wpuf' ); ?></a>
-                        <a href="<?php echo wp_nonce_url( the_permalink( 'echo=false' ) . "?action=del&user_id=" . $user->ID, 'wpuf_del_user' ) ?>" onclick="return confirm('Are you sure to delete this user?');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
+                        <a href="<?php echo wp_nonce_url( the_permalink( 'echo=false' ) . "?action=del&user_id=" . $user->ID, 'wpuf_del_user' ) ?>" onclick="return confirm('<?php echo $delete_message ?>');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
                     </td>
                 </tr>
 

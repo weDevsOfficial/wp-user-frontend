@@ -316,7 +316,7 @@ class WPUF_Admin_Tools {
     function tool_page() {
         $msg = isset( $_GET['msg'] ) ? $_GET['msg'] : '';
         $text = '';
-
+        $confirmation_message  = __( 'Are you Sure?', 'wpuf' );
         switch ($msg) {
             case 'del_forms':
                 $text = __( 'All forms has been deleted', 'wpuf' );
@@ -367,10 +367,10 @@ class WPUF_Admin_Tools {
                 <div class="inside">
                     <p><?php _e( '<strong>Caution:</strong> This tool will delete all the post and registration/profile forms.', 'wpuf' ); ?></p>
 
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( array( 'wpuf_action' => 'del_post_forms' ), 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('Are you sure?');"><?php _e( 'Delete Post Forms', 'wpuf' ); ?></a>
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( array( 'wpuf_action' => 'del_pro_forms' ), 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('Are you sure?');"><?php _e( 'Delete Registration Forms', 'wpuf' ); ?></a>
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( array( 'wpuf_action' => 'del_subs' ), 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('Are you sure?');"><?php _e( 'Delete Subscriptions', 'wpuf' ); ?></a>
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( array( 'wpuf_action' => 'del_coupon' ), 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('Are you sure?');"><?php _e( 'Delete Coupons', 'wpuf' ); ?></a>
+                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( array( 'wpuf_action' => 'del_post_forms' ), 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('<?php echo $confirmation_message ?>');"><?php _e( 'Delete Post Forms', 'wpuf' ); ?></a>
+                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( array( 'wpuf_action' => 'del_pro_forms' ), 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('<?php echo $confirmation_message ?>');"><?php _e( 'Delete Registration Forms', 'wpuf' ); ?></a>
+                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( array( 'wpuf_action' => 'del_subs' ), 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('<?php echo $confirmation_message ?>');"><?php _e( 'Delete Subscriptions', 'wpuf' ); ?></a>
+                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( array( 'wpuf_action' => 'del_coupon' ), 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('<?php echo $confirmation_message ?>');"><?php _e( 'Delete Coupons', 'wpuf' ); ?></a>
                 </div>
             </div>
 
@@ -380,7 +380,7 @@ class WPUF_Admin_Tools {
                 <div class="inside">
                     <p><?php _e( 'This tool will delete all the transactions from the transaction table.', 'wpuf' ); ?></p>
 
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( array( 'wpuf_action' => 'clear_transaction' ), 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('Are you sure?');"><?php _e( 'Delete Transactions', 'wpuf' ); ?></a>
+                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( array( 'wpuf_action' => 'clear_transaction' ), 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('<?php echo $confirmation_message ?>');"><?php _e( 'Delete Transactions', 'wpuf' ); ?></a>
                 </div>
             </div>
         </div>

@@ -218,8 +218,9 @@
                             <?php
                             if ( wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
                                 $del_url = add_query_arg( array('action' => 'del', 'pid' => $post->ID) );
+                                $message = __( 'Are you sure to delete?', 'wpuf' );
                                 ?>
-                                <a href="<?php echo wp_nonce_url( $del_url, 'wpuf_del' ) ?>" onclick="return confirm('Are you sure to delete?');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
+                                <a href="<?php echo wp_nonce_url( $del_url, 'wpuf_del' ) ?>" onclick="return confirm('<?php echo $message ?>');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
                             <?php } ?>
                         </td>
                     </tr>

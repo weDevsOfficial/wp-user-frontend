@@ -492,7 +492,9 @@ class WPUF_Subscription {
             $count       = isset( $sub_info['posts'][$post_type] ) ? intval( $sub_info['posts'][$post_type] ) : 0;
             $post_status = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
 
-            wp_update_post( array( 'ID' => $post_id , 'post_status' => $post_status) );
+            $old_status = $post->post_status;
+            wp_transition_post_status( $post_status, $old_status, $post );
+            // wp_update_post( array( 'ID' => $post_id , 'post_status' => $post_status) );
 
             // decrease the post count, if not umlimited
             $wpuf_post_status = get_post_meta( $post_id, 'wpuf_post_status', true );
@@ -504,9 +506,8 @@ class WPUF_Subscription {
                 }
             }
             //meta added to make post have flag if post is published
-            //update_post_meta( $post_id, 'wpuf_post_status', 'published' );
-            $old_status = $post->post_status;
-            wp_transition_post_status( $post_status, $old_status, $post );
+            update_post_meta( $post_id, 'wpuf_post_status', 'published' );
+
 
         } elseif ( $pay_per_post || ($fallback_cost && !$has_post )) {
             //there is some error and it needs payment

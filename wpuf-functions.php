@@ -1156,10 +1156,9 @@ function wpuf_get_date( $date, $show_time = false ) {
 
     if ( $show_time ) {
         $format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
-    } else {
+    }else{
         $format = get_option( 'date_format' );
     }
-    $format = 'M j, Y';
 
     return date_i18n( $format, $date );
 }

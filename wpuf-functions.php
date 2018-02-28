@@ -1152,12 +1152,12 @@ function wpuf_get_date( $date, $show_time = false ) {
     if ( empty( $date ) ) {
         return;
     }
-    $date = strtotime( $date );
+
+    $date   = strtotime( $date );
+    $format = get_option( 'date_format' );
 
     if ( $show_time ) {
         $format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
-    }else{
-        $format = get_option( 'date_format' );
     }
 
     return date_i18n( $format, $date );

@@ -504,7 +504,9 @@ class WPUF_Subscription {
                 }
             }
             //meta added to make post have flag if post is published
-            update_post_meta( $post_id, 'wpuf_post_status', 'published' );
+            //update_post_meta( $post_id, 'wpuf_post_status', 'published' );
+            $old_status = $post->post_status;
+            wp_transition_post_status( $post_status, $old_status, $post );
 
         } elseif ( $pay_per_post || ($fallback_cost && !$has_post )) {
             //there is some error and it needs payment

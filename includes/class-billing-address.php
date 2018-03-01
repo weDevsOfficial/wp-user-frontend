@@ -110,7 +110,7 @@ class WPUF_Ajax_Address_Form {
                             <input  type="text" class="input" name="wpuf_biiling_zip_code" id="wpuf_biiling_zip_code" value="<?php echo $address_fields['add_line_2']; ?>" />
                         </div>
                     </td>
-                    <td class="wpuf-submit" style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;">
+                    <td class="wpuf-submit" style="display:none;">
                         <input type="submit" class="wpuf-btn" name="submit" id="wpuf-account-update-billing_address" value="<?php _e( 'Update Billing Address', 'wpuf' ); ?>" />
                     </td>
                 </tr>
@@ -138,7 +138,7 @@ class WPUF_Ajax_Address_Form {
                 && isset( $_POST['wpuf_biiling_state'] )
                 && isset( $_POST['wpuf_biiling_zip_code'] )
                 && isset( $_POST['wpuf_biiling_country'] ) ) {
-                 $address_fields = array(
+                $address_fields = array(
                     'add_line_1'    => $_POST['wpuf_biiling_add_line_1'],
                     'add_line_2'    => $_POST['wpuf_biiling_add_line_2'],
                     'city'          => $_POST['wpuf_biiling_city'],

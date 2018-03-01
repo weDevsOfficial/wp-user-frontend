@@ -13,19 +13,19 @@ jQuery(function($){
         var data = {
             action: 'wpuf_get_shop_states',
             country: $(this).val(),
-            field_name: $("#wpuf_biiling_state").attr("name")
+            field_name: $("#wpuf_biiling_state").attr("name"),
         };
         $.post(ajaxurl, data, function (response) {
+            console.log(response);
             if( 'nostates' == response ) {
                 var text_field = '<input type="text" name="' + data.field_name + '" value=""/>';
                 $this.parent().next().find('select').replaceWith( text_field );
             } else {
                 $this.parent().next().find('input,select').show();
-                $this.parent().next().find('input,select').replaceWith( response );
+                $this.parent().next().find('input,select').replaceWith(response);
+                $this.parent().next().find('input,select').prepend("<option value='' selected='selected'>- select -</option>");
             }
         });
-
-        return false;
     });
 
     $(document.body).on('change', 'select#wpuf_biiling_state', function () {
@@ -42,6 +42,10 @@ jQuery(function($){
             action: 'wpuf_calculate_tax',
             billing_country: $wpuf_cc_address.find('#wpuf_biiling_country').val(),
             billing_state: $wpuf_cc_address.find('#wpuf_biiling_state').val(),
+            billing_add_line1: $wpuf_cc_address.find('#wpuf_biiling_add_line_1').val(),
+            billing_add_line2: $wpuf_cc_address.find('#wpuf_biiling_add_line_2').val(),
+            billing_city: $wpuf_cc_address.find('#wpuf_biiling_city').val(),
+            billing_zip: $wpuf_cc_address.find('#wpuf_biiling_zip_code').val(),
             type: $payment_form.find('#wpuf_type').html(),
             id: $payment_form.find('#wpuf_id').html(),
         };

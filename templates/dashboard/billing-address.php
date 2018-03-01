@@ -2,7 +2,9 @@
 
 global $current_user;
 
-$address_fields     = array();
+$address_fields = array();
+$countries = array();
+$cs = new CountryState();
 
 if ( isset( $_POST['add_line_1'] ) 
     && isset( $_POST['city'] )
@@ -59,7 +61,7 @@ if ( isset( $_POST['add_line_1'] )
             <li>
                 <div class="wpuf-label"><?php _e('State ', 'wpuf' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
-                    <input type="text" class="input" name="state" id="state" value="<?php echo $address_fields['state']; ?>" />
+                    <input type="text" class="input" name="state" id="state" value="<?php echo $cs->getStateName( $address_fields['state'], $address_fields['country'] ); ?>" />
                 </div>
             </li>
 
@@ -75,15 +77,15 @@ if ( isset( $_POST['add_line_1'] )
                             <label class="wpuf-fields wpuf-label"><?php _e('Country ', 'wpuf' ); ?></label>
                             <div class="wpuf-fields">
                                 <?php
-                                $countries = wpuf_get_countries() ;
+                                $countries = $cs->countries();
                                 ?>
                                 <select name="country" id="country">
                                     <?php
-                                    foreach ( $countries as $country ) {
-                                        if ( $country['name'] == $address_fields['country'] ) { ?>
-                                            <option selected value="<?php echo $country['name']; ?>" selected ><?php echo $country['name']; ?></option>
+                                    foreach ( $countries as $key => $value ) {
+                                        if ( $key == $address_fields['country'] ) { ?>
+                                            <option selected value="<?php $key; ?>" selected ><?php echo $value; ?></option>
                                         <?php } else { ?>
-                                            <option value="<?php echo $country['name']; ?>"><?php echo $country['name']; ?></option>
+                                            <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                                         <?php }
                                     } ?>
                                 </select>

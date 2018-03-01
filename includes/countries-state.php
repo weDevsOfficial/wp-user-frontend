@@ -325,7 +325,7 @@ class CountryState {
         }
     }
     
-    # getCountry accepts only name of state
+    # findState accepts only name of state
     public function findState($state = null){
         if(!empty($state) && is_string($state)){
             $list = array();
@@ -343,12 +343,14 @@ class CountryState {
             return array();
         }
     }
-    
-    public function isState($state){
-        if(!empty($this->findState($state))){
-            return true;
-        } else {
-            return false;
+
+    public function getStateName( $state , $country ){
+        $states = $this->getStates( $country );
+
+        foreach ($states as $key => $value) {
+            if ( $key ==  $state ) {
+                return $value;
+            }
         }
     }
     

@@ -131,10 +131,7 @@ class WPUF_Payment {
                         <div class="wpuf-coupon-info-wrap" style="width: 40%; display: inline-block;">
                             <div class="wpuf-coupon-info">
                                 <div class="wpuf-pack-info">
-                                    <h3>
-                                        <?php _e( 'Billing Address', 'wpuf' ); ?>
-                                    </h3>
-
+                                    <h3> <?php _e( 'Billing Address', 'wpuf' ); ?> </h3>
                                     <div class="wpuf-pack-inner">
                                         <?php
                                         $add_form = new WPUF_Ajax_Address_Form( '100' );
@@ -267,7 +264,7 @@ class WPUF_Payment {
                                 <?php if ( $pack_id ) { ?>
                                     <input type="hidden" name="pack_id" value="<?php echo $pack_id; ?>" />
                                 <?php } ?>
-                                <input type="submit" onclick="wpuf_bill_add_sub()" name="wpuf_payment_submit" class="wpuf-btn" value="<?php _e( 'Proceed', 'wpuf' ); ?>"/>
+                                <input type="submit" name="wpuf_payment_submit" class="wpuf-btn" value="<?php _e( 'Proceed', 'wpuf' ); ?>"/>
                             </p>
                         </form>
                         </div>
@@ -331,9 +328,11 @@ class WPUF_Payment {
                     $post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
                     if ( !is_wp_error ( $current_pack ) && !$post_count ) {
-                        $amount      = $form->get_subs_fallback_cost();
+                        $amount    = $form->get_subs_fallback_cost();
+                        $amount    = apply_filters( 'wpuf_amount_with_tax', $amount );
                     } else {
                         $amount      = $form->get_pay_per_post_cost();
+                        $amount    = apply_filters( 'wpuf_amount_with_tax', $amount );
                     }
                     $item_number = $post->ID;
                     $item_name   = $post->post_title;
@@ -342,7 +341,7 @@ class WPUF_Payment {
                 case 'pack':
                     $pack           = WPUF_Subscription::init()->get_subscription( $pack_id );
                     $custom         = $pack->meta_value;
-                    $billing_amount = $pack->meta_value['billing_amount'];
+                    $billing_amount = apply_filters( 'wpuf_amount_with_tax', $pack->meta_value['billing_amount'] );
                     $amount         = $billing_amount;
                     $item_name      = $pack->post_title;
                     $item_number    = $pack->ID;

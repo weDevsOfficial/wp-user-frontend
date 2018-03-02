@@ -377,7 +377,7 @@ class WPUF_Payment {
      * @param int $transaction_id the transaction id in case of update
      */
     public static function insert_payment( $data, $transaction_id = 0, $recurring = false ) {
-        global $wpdb;
+        global $wpdb, $current_user;
 
         //check if it's already there
         $sql = $wpdb->prepare( "SELECT transaction_id
@@ -392,6 +392,11 @@ class WPUF_Payment {
 
         if ( isset( $data['profile_id'] ) || empty( $data['profile_id'] ) ) {
             unset( $data['profile_id'] );
+        }
+
+        if ( metadata_exists( 'user', $current_user->ID, 'wpuf_address_fields') ) {
+            $address_fields = get_user_meta( $current_user->ID, 'wpuf_address_fields', true );
+            $data['payer_address'] = serialize( $address_fields );
         }
 
         if ( !$result ) {

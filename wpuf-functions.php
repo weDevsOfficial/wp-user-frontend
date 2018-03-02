@@ -2236,12 +2236,6 @@ function wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, $charging
     $body    = get_formatted_mail_body( $body, $subject);
 
     wp_mail( $to, $subject, $body, $headers );
-
-    if ( $is_update ) {
-        $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $form_settings );
-    } else {
-        $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $form_settings );
-    }
 }
 
 
@@ -2420,4 +2414,175 @@ function get_formatted_mail_body( $message, $subject ) {
     }
 
     return $message;
+}
+
+/**
+ * Renders an HTML Dropdown
+ *
+ * @param array $args
+ *
+ * @return string
+ */
+
+function wpuf_select( $args = array() ) {
+    $defaults = array(
+        'options'          => array(),
+        'name'             => null,
+        'class'            => '',
+        'id'               => '',
+        'selected'         => array(),
+        'chosen'           => false,
+        'placeholder'      => null,
+        'multiple'         => false,
+        'show_option_all'  => __( 'All', 'all dropdown items', 'wpuf-pro' ),
+        'show_option_none' => __( 'None', 'no dropdown items', 'wpuf-pro' ),
+        'data'             => array(),
+        'readonly'         => false,
+        'disabled'         => false,
+    );
+
+    $args = wp_parse_args( $args, $defaults );
+
+    $data_elements = ''; $selected = '';
+    foreach ( $args['data'] as $key => $value ) {
+        $data_elements .= ' data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+    }
+
+    if ( $args['multiple'] ) {
+        $multiple = ' MULTIPLE';
+    } else {
+        $multiple = '';
+    }
+
+    if ( $args['chosen'] ) {
+        $args['class'] .= ' wpuf-select-chosen';
+        if ( is_rtl() ) {
+            $args['class'] .= ' chosen-rtl';
+        }
+    }
+
+    if ( $args['placeholder'] ) {
+        $placeholder = $args['placeholder'];
+    } else {
+        $placeholder = '';
+    }
+
+    if ( isset( $args['readonly'] ) && $args['readonly'] ) {
+        $readonly = ' readonly="readonly"';
+    } else {
+        $readonly = '';
+    }
+
+    if ( isset( $args['disabled'] ) && $args['disabled'] ) {
+        $disabled = ' disabled="disabled"';
+    } else {
+        $disabled = '';
+    }
+
+    $class  = implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $args['class'] ) ) );
+    $output = '<select' . $disabled . $readonly . ' name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( str_replace( '-', '_', $args['id'] ) ) . '" class="wpuf-select ' . $class . '"' . $multiple . ' data-placeholder="' . $placeholder . '"'. $data_elements . '>';
+
+    if ( ! isset( $args['selected'] ) || ( is_array( $args['selected'] ) && empty( $args['selected'] ) ) || ! $args['selected'] ) {
+        $selected = "";
+    }
+
+    if ( $args['show_option_all'] ) {
+        if ( $args['multiple'] && ! empty( $args['selected'] ) ) {
+            $selected = selected( true, in_array( 0, $args['selected'] ), false );
+        } else {
+            $selected = selected( $args['selected'], 0, false );
+        }
+        $output .= '<option value="all"' . $selected . '>' . esc_html( $args['show_option_all'] ) . '</option>';
+    }
+
+    if ( ! empty( $args['options'] ) ) {
+        if ( $args['show_option_none'] ) {
+            if ( $args['multiple'] ) {
+                $selected = selected( true, in_array( -1, $args['selected'] ), false );
+            } elseif ( isset( $args['selected'] ) && ! is_array( $args['selected'] ) && ! empty( $args['selected'] ) ) {
+                $selected = selected( $args['selected'], -1, false );
+            }
+            $output .= '<option value="-1"' . $selected . '>' . esc_html( $args['show_option_none'] ) . '</option>';
+        }
+
+        foreach ( $args['options'] as $key => $option ) {
+            if ( $args['multiple'] && is_array( $args['selected'] ) ) {
+                $selected = selected( true, in_array( (string) $key, $args['selected'] ), false );
+            } elseif ( isset( $args['selected'] ) && ! is_array( $args['selected'] ) ) {
+                $selected = selected( $args['selected'], $key, false );
+            }
+
+            $output .= '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option ) . '</option>';
+        }
+    }
+
+    $output .= '</select>';
+
+    return $output;
+}
+
+/**
+ * Renders a Text field in settings field
+ *
+ * @param array $args Arguments for the text field
+ *
+ * @return string Text field
+ */
+
+function wpuf_text( $args = array() ) {
+    $defaults = array(
+        'id'           => '',
+        'name'         => isset( $name )  ? $name  : 'text',
+        'value'        => isset( $value ) ? $value : null,
+        'label'        => isset( $label ) ? $label : null,
+        'desc'         => isset( $desc )  ? $desc  : null,
+        'placeholder'  => '',
+        'class'        => 'regular-text',
+        'disabled'     => false,
+        'autocomplete' => '',
+        'data'         => false
+    );
+
+    $args = wp_parse_args( $args, $defaults );
+
+    $class = implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $args['class'] ) ) );
+    $disabled = '';
+    if ( $args['disabled'] ) {
+        $disabled = ' disabled="disabled"';
+    }
+
+    $data = '';
+    if ( ! empty( $args['data'] ) ) {
+        foreach ( $args['data'] as $key => $value ) {
+            $data .= 'data-' . $key . '="' . esc_attr( $value ) . '" ';
+        }
+    }
+
+    $output = '<span id="wpuf-' . $args['name'] . '-wrap">';
+    if ( ! empty( $args['label'] ) ) {
+        $output .= '<label class="wpuf-label" for="' . $args['id'] . '">' . esc_html( $args['label'] ) . '</label>';
+    }
+
+    if ( ! empty( $args['desc'] ) ) {
+        $output .= '<span class="wpuf-description">' . esc_html( $args['desc'] ) . '</span>';
+    }
+
+    $output .= '<input type="text" name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['id'] )  . '" autocomplete="' . esc_attr( $args['autocomplete'] )  . '" value="' . esc_attr( $args['value'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="' . $class . '" ' . $data . '' . $disabled . '/>';
+
+    $output .= '</span>';
+
+    return $output;
+}
+
+/**
+ * Descriptive text callback
+ *
+ * @param array $args Arguments passed by the setting
+ * @return void
+ */
+
+function wpuf_descriptive_text( $args ) {
+    $html = wp_kses_post( $args['desc'] );
+
+    echo $html;
 }

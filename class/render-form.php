@@ -1042,6 +1042,7 @@ class WPUF_Render_Form {
             $form_settings = wpuf_get_form_settings( $form_id );
             $layout        = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
             $textarea_id   = $attr['name'] ? $attr['name'] . '_' . $form_id : 'textarea_' . $this->field_count;
+            $content_css   = includes_url()."js/tinymce/skins/wordpress/wp-content.css";
 
             if ( $attr['rich'] == 'yes' ) {
                 $editor_settings = array(
@@ -1051,7 +1052,7 @@ class WPUF_Render_Form {
                     'editor_class'  => $req_class,
                     'textarea_name' => $attr['name'],
                     'tinymce'       => array(
-                        'content_css'   => WPUF_ASSET_URI . '/css/frontend-form/' . $layout . '.css'
+                        'content_css'   => $content_css.", ". WPUF_ASSET_URI . '/css/frontend-form/' . $layout . '.css'
                     )
                 );
 
@@ -1068,7 +1069,7 @@ class WPUF_Render_Form {
                     'editor_class'  => $req_class,
                     'textarea_name' => $attr['name'],
                     'tinymce'       => array(
-                        'content_css'   => WPUF_ASSET_URI . '/css/frontend-form/' . $layout . '.css'
+                        'content_css'   => $content_css.", ". WPUF_ASSET_URI . '/css/frontend-form/' . $layout . '.css'
                     )
                 );
 

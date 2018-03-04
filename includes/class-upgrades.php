@@ -18,6 +18,7 @@ class WPUF_Upgrades {
         '2.7.0' => 'upgrades/upgrade-2.7.0.php',
         '2.8.0' => 'upgrades/upgrade-2.8.0.php',
         '2.8.2' => 'upgrades/upgrade-2.8.2.php',
+        '2.9.0' => 'upgrades/upgrade-2.9.0.php',
     );
 
     /**

@@ -2586,3 +2586,19 @@ function wpuf_descriptive_text( $args ) {
 
     echo $html;
 }
+
+/**
+ * Update the value of a settings field
+ *
+ * @param string $option settings field name
+ * @param string $section the section name this field belongs to
+ * @param string $value the value to be set
+ * @return mixed
+ */
+function wpuf_update_option( $option, $section, $value ) {
+    $options = get_option( $section );
+
+    $options[$option] = $value;
+
+    update_option( $section, $options );
+}

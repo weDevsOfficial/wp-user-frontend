@@ -177,7 +177,7 @@ class WPUF_Paypal {
                 'p3'            =>  !empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number']: '0',
                 't3'            =>  $period,
                 'item_name'     =>  $data['custom']['post_title'],
-                'custom'        =>  json_encode( array( 'billing_amount' => $billing_amount, 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id )),
+                'custom'        =>  json_encode( array( 'billing_amount' => $billing_amount, 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id, 'subtotal' => $data['subtotal'], 'tax' => $data['tax'] )),
                 'no_shipping'   =>  '1',
                 'shipping'      =>  '0',
                 'no_note'       =>  '1',
@@ -211,7 +211,7 @@ class WPUF_Paypal {
                 'item_number'   => $data['item_number'],
                 'charset'       => 'UTF-8',
                 'rm'            => '2',
-                'custom'        => json_encode( array( 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id ) ),
+                'custom'        => json_encode( array( 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id, 'subtotal' => $data['subtotal'], 'tax' => $data['tax'] ) ),
                 'return'        => $return_url,
                 'notify_url'    => $listener_url,
             );
@@ -351,6 +351,8 @@ class WPUF_Paypal {
             $data = array(
                 'user_id'          => (int) $custom->user_id,
                 'status'           => strtolower( $postdata['payment_status'] ),
+                'subtotal'         => (float) $custom->subtotal,
+                'tax'              => (float) $custom->tax,
                 'cost'             => $postdata['mc_gross'],
                 'post_id'          => isset( $post_id ) ? $post_id : '',
                 'pack_id'          => isset( $pack_id ) ? $pack_id : '',

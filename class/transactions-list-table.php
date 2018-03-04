@@ -41,6 +41,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
             'status'         => __( 'Status', 'wpuf' ),
             'user'           => __( 'User', 'wpuf' ),
             'cost'           => __( 'Cost', 'wpuf' ),
+            'tax'            => __( 'Tax', 'wpuf' ),
             'post_id'        => __( 'Post ID', 'wpuf' ),
             'pack_id'        => __( 'Pack ID', 'wpuf' ),
             'payment_type'   => __( 'Gateway', 'wpuf' ),
@@ -138,6 +139,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 return ! empty( $user ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->display_name ) : $post_author ;
             case 'cost':
                 return wpuf_format_price( $item->cost );
+            case 'tax':
+                return wpuf_format_price( $item->tax );
             case 'post_id':
                 return ! empty( $item->post_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->post_id . '&action=edit' ), $item->post_id ) : '-';
             case 'pack_id':
@@ -351,6 +354,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 $transaction = array(
                     'user_id'          => $info['user_info']['id'],
                     'status'           => 'completed',
+                    'subtotal'         => $info['subtotal'],
+                    'tax'              => $info['tax'],
                     'cost'             => $info['price'],
                     'post_id'          => $post_id,
                     'pack_id'          => $pack_id,
@@ -407,6 +412,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                     $transaction = array(
                         'user_id'          => $info['user_info']['id'],
                         'status'           => 'completed',
+                        'subtotal'         => $info['subtotal'],
+                        'tax'              => $info['tax'], 
                         'cost'             => $info['price'],
                         'post_id'          => $post_id,
                         'pack_id'          => $pack_id,

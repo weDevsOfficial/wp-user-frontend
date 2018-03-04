@@ -151,10 +151,16 @@ class WPUF_Admin_Subscription {
 
             $user_info = get_userdata( $user_id );
 
+            $cost           = $pack->$meta_value['_billing_amount'][0];
+            $billing_amount = apply_filters( 'wpuf_amount_with_tax', $cost );
+            $tax_amount = $billing_amount - $cost;
+
             $data = array(
                 'user_id'          => $user_id,
                 'status'           => 'completed',
-                'cost'             => $pack->$meta_value['_billing_amount'][0],
+                'subtotal'         => $cost,
+                'tax'              => $tax_amount,
+                'cost'             => $billing_amount,
                 'post_id'          => 0,
                 'pack_id'          => $pack_id,
                 'payer_first_name' => $user_info->first_name,

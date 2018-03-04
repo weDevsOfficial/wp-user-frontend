@@ -302,6 +302,7 @@ class WPUF_Payment {
             $type    = $_POST['type'];
             $current_user  = wpuf_get_user();
             $current_pack  = $current_user->subscription()->current_pack();
+            $cost = 0 ;
 
             if ( is_user_logged_in() ) {
                 $userdata = wp_get_current_user();
@@ -328,11 +329,11 @@ class WPUF_Payment {
                     $post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
                     if ( !is_wp_error ( $current_pack ) && !$post_count ) {
-                        $amount    = $form->get_subs_fallback_cost();
-                        $amount    = apply_filters( 'wpuf_amount_with_tax', $amount );
+                        $cost    = $form->get_subs_fallback_cost();
+                        $amount    = apply_filters( 'wpuf_amount_with_tax', $cost );
                     } else {
-                        $amount      = $form->get_pay_per_post_cost();
-                        $amount    = apply_filters( 'wpuf_amount_with_tax', $amount );
+                        $cost      = $form->get_pay_per_post_cost();
+                        $amount    = apply_filters( 'wpuf_amount_with_tax', $cost );
                     }
                     $item_number = $post->ID;
                     $item_name   = $post->post_title;
@@ -341,8 +342,8 @@ class WPUF_Payment {
                 case 'pack':
                     $pack           = WPUF_Subscription::init()->get_subscription( $pack_id );
                     $custom         = $pack->meta_value;
-                    $billing_amount = apply_filters( 'wpuf_amount_with_tax', $pack->meta_value['billing_amount'] );
-                    $amount         = $billing_amount;
+                    $cost           = $pack->meta_value['billing_amount'];
+                    $amount         = apply_filters( 'wpuf_amount_with_tax', $cost );
                     $item_name      = $pack->post_title;
                     $item_number    = $pack->ID;
                     break;
@@ -350,6 +351,8 @@ class WPUF_Payment {
 
             $payment_vars = array(
                 'currency'    => wpuf_get_option( 'currency', 'wpuf_payment' ),
+                'subtotal'    => $cost,
+                'tax'         => $amount - $cost,
                 'price'       => $amount,
                 'item_number' => $item_number,
                 'item_name'   => $item_name,

@@ -54,6 +54,8 @@ class WPUF_Installer {
                 `id` int(11) NOT NULL AUTO_INCREMENT,
                 `user_id` bigint(20) DEFAULT NULL,
                 `status` varchar(60) NOT NULL DEFAULT 'pending_payment',
+                `subtotal` varchar(255) DEFAULT '',
+                `tax` varchar(255) DEFAULT '',
                 `cost` varchar(255) DEFAULT '',
                 `post_id` varchar(20) DEFAULT NULL,
                 `pack_id` bigint(20) DEFAULT NULL,

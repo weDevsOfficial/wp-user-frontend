@@ -233,7 +233,7 @@ function wpuf_override_admin_edit_link( $url, $post_id ) {
     if ( is_admin() ) {
         return $url;
     }
-   
+
     $override = wpuf_get_option( 'override_editlink', 'wpuf_general', 'no' );
 
     if ( $override == 'yes' ) {
@@ -797,6 +797,13 @@ function wpuf_show_custom_fields( $content ) {
                     }
                     break;
 
+                case 'url':
+                    $value = get_post_meta( $post->ID, $attr['name'] , true );
+                    $open_in = $attr['open_window'] == 'same' ? '' : '_blank';
+                    $link = sprintf( "<li><label>%s :</label><a href='%s' target = '%s'>%s</a>", $attr['label'], $value, $open_in, $value);
+                    $html.= $link;
+                    break;
+
                 default:
                     $value       = get_post_meta( $post->ID, $attr['name'] );
                     $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );
@@ -1145,14 +1152,13 @@ function wpuf_get_date( $date, $show_time = false ) {
     if ( empty( $date ) ) {
         return;
     }
-    $date = strtotime( $date );
+
+    $date   = strtotime( $date );
+    $format = get_option( 'date_format' );
 
     if ( $show_time ) {
         $format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
-    } else {
-        $format = get_option( 'date_format' );
     }
-    $format = 'M j, Y';
 
     return date_i18n( $format, $date );
 }

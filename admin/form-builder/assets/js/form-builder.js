@@ -575,4 +575,11 @@
         SettingsTab.init();
     });
 
+    // Mobile view menu toggle
+    $('#wpuf-form-builder').on('click', '#wpuf-toggle-field-options, #wpuf-toggle-show-form, .control-buttons .fa-pencil, .ui-draggable-handle', function() {
+        $('#wpuf-toggle-field-options').toggleClass('hide');
+        $('#wpuf-toggle-show-form').toggleClass('show');
+        $('#builder-form-fields').toggleClass('show');
+    });
+
 })(jQuery);

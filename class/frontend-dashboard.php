@@ -64,7 +64,7 @@ class WPUF_Frontend_Dashboard {
         if ( isset( $_GET['msg'] ) && $_GET['msg'] == 'deleted' ) {
             echo '<div class="success">' . __( 'Post Deleted', 'wpuf' ) . '</div>';
         }
-
+        $post_type  = explode( ",", $post_type );
         $args = array(
             'author'         => get_current_user_id(),
             'post_status'    => array('draft', 'future', 'pending', 'publish', 'private'),
@@ -74,7 +74,7 @@ class WPUF_Frontend_Dashboard {
         );
 
         $original_post   = $post;
-        $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args ) );
+        $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args, $attributes ) );
         $post_type_obj   = get_post_type_object( $post_type );
 
         wpuf_load_template( 'dashboard.php', array(

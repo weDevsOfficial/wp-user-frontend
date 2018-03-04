@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 2.8.3\n"
+"Project-Id-Version: WP User Frontend 2.8.4\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2018-02-15 10:24:40+00:00\n"
+"POT-Creation-Date: 2018-03-04 10:24:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -137,7 +137,7 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:212
 #: admin/class-admin-subscription.php:566 class/frontend-account.php:135
-#: class/subscription.php:849 class/subscription.php:862
+#: class/subscription.php:852 class/subscription.php:865
 #: includes/class-user-subscription.php:304
 msgid "Free"
 msgstr ""
@@ -148,8 +148,8 @@ msgstr ""
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:526
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:584
 #: admin/form.php:795 admin/post-forms-list-table.php:345
-#: admin/settings-options.php:101 admin/settings-options.php:193
-#: admin/settings-options.php:204 admin/settings-options.php:263
+#: admin/settings-options.php:102 admin/settings-options.php:194
+#: admin/settings-options.php:205 admin/settings-options.php:264
 #: admin/template.php:70 includes/free/form-element.php:477
 msgid "Yes"
 msgstr ""
@@ -160,8 +160,8 @@ msgstr ""
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:527
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:585
 #: admin/form.php:796 admin/post-forms-list-table.php:346
-#: admin/settings-options.php:102 admin/settings-options.php:194
-#: admin/settings-options.php:205 admin/settings-options.php:264
+#: admin/settings-options.php:103 admin/settings-options.php:195
+#: admin/settings-options.php:206 admin/settings-options.php:265
 #: admin/template.php:71 includes/free/form-element.php:478
 msgid "No"
 msgstr ""
@@ -285,7 +285,7 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:752
 #: admin/form-builder/class-wpuf-admin-form-builder.php:329
-#: class/payment.php:168 class/subscription.php:776
+#: class/payment.php:168 class/subscription.php:779
 #: includes/class-list-table-subscribers.php:128
 #: lib/class-wedevs-insights.php:667 templates/dashboard/subscription.php:62
 msgid "Cancel"
@@ -367,6 +367,10 @@ msgstr ""
 
 #: admin/class-tools.php:217 admin/class-tools.php:237
 msgid "Please select some form for exporting"
+msgstr ""
+
+#: admin/class-tools.php:319
+msgid "Are you Sure?"
 msgstr ""
 
 #: admin/class-tools.php:322
@@ -492,13 +496,14 @@ msgid "No subscription plan found."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:5
-#: admin/form-builder/assets/js/components/form-image_upload/template.php:5
-#: class/render-form.php:1600
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:779
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:813
+#: class/render-form.php:1621
 msgid "Select Image"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:4
-#: class/render-form.php:1003
+#: class/render-form.php:1028
 msgid "Insert Photo"
 msgstr ""
 
@@ -679,13 +684,13 @@ msgid "Select option"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:125
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:711
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:726
 #: admin/template.php:82 admin/template.php:575
 msgid "Meta Key"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-form-builder-field-settings.php:129
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:715
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:730
 #: admin/template.php:83 admin/template.php:576
 msgid "Name of the meta key this field will save to"
 msgstr ""
@@ -860,132 +865,156 @@ msgstr ""
 msgid "Checkbox Field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:637
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:644
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:636
+msgid "Open in : "
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:639
+msgid "Same Window"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:640
+msgid "New Window"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:646
+msgid "Choose whether the link will open in new tab or same window"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:651
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:658
 msgid "URL"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:675
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:690
 msgid "Email Address"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:682
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:697
 #: admin/html/form-submission-restriction.php:12 admin/html/support.php:224
-#: class/transactions-list-table.php:48 includes/free/edit-user.php:152
+#: class/transactions-list-table.php:48 includes/free/edit-user.php:153
 #: templates/registration-form.php:44
 msgid "Email"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:720
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:735
 #: admin/template.php:582
 msgid "Meta Value"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:724
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:739
 #: admin/template.php:583
 msgid "Enter the meta value"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:730
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:745
 msgid "Hidden Field"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:762
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:777
+msgid "Button Label"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:782
+msgid "Enter a label for the Select button"
+msgstr ""
+
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:786
 #: admin/form.php:686 admin/template-post.php:105 admin/template.php:646
 msgid "Max. file size"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:766
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:790
 #: admin/form.php:690 admin/template-post.php:93 admin/template.php:634
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:771
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:794
 #: admin/template.php:651
 msgid "Max. files"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:775
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:798
 #: admin/template.php:635
 msgid "Number of images can be uploaded"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:781
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:788
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:804
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:811
 #: includes/free/form-element.php:8
 msgid "Image Upload"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:816
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:902
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:840
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:926
 #: admin/template.php:544 admin/template.php:604 admin/template.php:683
 #: class/upload.php:164 templates/dashboard/posts.php:75
 #: templates/dashboard.php:73 wpuf-functions.php:738
 msgid "Title"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:820
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:906
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:844
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:930
 msgid "Title of the section"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:825
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:849
 #: admin/template.php:609 class/upload.php:166 wpuf-functions.php:744
 msgid "Description"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:829
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:853
 msgid "Some details text about the section"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:835
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:842
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:859
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:866
 msgid "Section Break"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:843
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:882
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:867
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:906
 msgid "Some description about this section"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:864
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:888
 #: admin/template.php:549
 msgid "HTML Codes"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:868
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:892
 msgid "Paste your HTML codes, WordPress shortcodes will also work here"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:874
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:881
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:898
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:905
 msgid "Custom HTML"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:914
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:938
 #: admin/template.php:703
 msgid "Enable noCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:915
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:939
 #: admin/template.php:699
 msgid "Enable Invisible reCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:920
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:944
 msgid "Select reCaptcha type"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:926
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:950
 #: includes/free/form-element.php:31
 msgid "reCaptcha"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:931
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:955
 msgid "Site key and Secret key"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-form-builder-field-settings.php:933
+#: admin/form-builder/class-wpuf-form-builder-field-settings.php:957
 msgid ""
 "You need to set Site key and Secret key in <a href=\"%s\" "
 "target=\"_blank\">Settings</a> in order to use \"Recaptcha\" field. <a "
@@ -1083,7 +1112,7 @@ msgstr ""
 
 #: admin/form.php:74 admin/form.php:112 admin/installer.php:75
 #: admin/post-forms-list-table.php:392 class/subscription.php:381
-#: includes/free/admin/shortcode-button.php:90 includes/free/edit-user.php:99
+#: includes/free/admin/shortcode-button.php:90 includes/free/edit-user.php:100
 #: templates/dashboard/posts.php:151 templates/dashboard.php:212
 msgid "Edit"
 msgstr ""
@@ -1158,7 +1187,7 @@ msgid "Taxonomies"
 msgstr ""
 
 #: admin/form.php:440 admin/html/form-settings-post.php:22
-#: class/render-form.php:707
+#: class/render-form.php:732
 msgid "Save Draft"
 msgstr ""
 
@@ -1307,7 +1336,7 @@ msgstr ""
 msgid "Payment Options"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:25 admin/settings-options.php:301
+#: admin/html/form-settings-payment.php:25 admin/settings-options.php:316
 #: includes/setup-wizard.php:273
 msgid "Enable Payments"
 msgstr ""
@@ -1599,12 +1628,12 @@ msgid "Choose which roles can submit posts."
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:114
-#: admin/settings-options.php:250
+#: admin/settings-options.php:251
 msgid "Unauthorized Message"
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:117
-#: admin/settings-options.php:251
+#: admin/settings-options.php:252
 msgid "Not logged in users will see this message"
 msgstr ""
 
@@ -1820,126 +1849,214 @@ msgid "Contact Support"
 msgstr ""
 
 #: admin/html/whats-new.php:8
-msgid "Added upgrade function for default category"
+msgid "Dashboard Post Listing now supports multiple post types"
 msgstr ""
 
 #: admin/html/whats-new.php:10
-msgid "Upgrader added to upgrade previously set default post category."
+msgid ""
+"Now you can show multiple post type in user dashboard using shortcode like "
+"this : <br><b>[wpuf_dashboard post_type=\"post,page,custom_type\"]</b> "
 msgstr ""
 
 #: admin/html/whats-new.php:13
-msgid "Subscription pack cannot be canceled"
+msgid "Added Login Redirect Settings"
 msgstr ""
 
 #: admin/html/whats-new.php:15
+msgid ""
+"You can now set a page from <i>WPUF Settings > Login/Registration > "
+"Redirect after Login</i>. When login redirection is active the user will be "
+"redirected to this page after login."
+msgstr ""
+
+#: admin/html/whats-new.php:18
+msgid "Image Upload field button text can be changed"
+msgstr ""
+
+#: admin/html/whats-new.php:20
+msgid ""
+"The upload button text can now be changed for image upload fields which "
+"defaults to \"Select Image\" if not set. "
+msgstr ""
+
+#: admin/html/whats-new.php:23
+msgid "Multi Step Form styles made compatible with more themes"
+msgstr ""
+
+#: admin/html/whats-new.php:25
+msgid "Multi Step form can now be styled more easily with other themes "
+msgstr ""
+
+#: admin/html/whats-new.php:28
+msgid "Required field condition for google map not working is fixed"
+msgstr ""
+
+#: admin/html/whats-new.php:30
+msgid ""
+"If Google Map field was set as required users were able to submit form "
+"without changing the default value."
+msgstr ""
+
+#: admin/html/whats-new.php:39
+msgid "Admin form builder is now fully responsive."
+msgstr ""
+
+#: admin/html/whats-new.php:41
+msgid ""
+"Now you can edit forms from your mobile devices directly. Our improved "
+"responsive layouts of form builder makes it easy for you to build forms on "
+"the go."
+msgstr ""
+
+#: admin/html/whats-new.php:44
+msgid "Added color schemes for creating attractive form layouts."
+msgstr ""
+
+#: admin/html/whats-new.php:46
+msgid ""
+"We have added 3 new color schemes for the form layouts which you can choose "
+"from each form's new display settings."
+msgstr ""
+
+#: admin/html/whats-new.php:49
+msgid "Restrict Free subscription pack to be enabled multiple times "
+msgstr ""
+
+#: admin/html/whats-new.php:51
+msgid ""
+"Free subscription packs now can only be purchased once and the limit "
+"applies properly"
+msgstr ""
+
+#: admin/html/whats-new.php:54
+msgid "Various other bug fixes and improvements were made "
+msgstr ""
+
+#: admin/html/whats-new.php:56
+msgid "Please see the change log to see full details."
+msgstr ""
+
+#: admin/html/whats-new.php:65
+msgid "Added upgrade function for default category"
+msgstr ""
+
+#: admin/html/whats-new.php:67
+msgid "Upgrader added to upgrade previously set default post category."
+msgstr ""
+
+#: admin/html/whats-new.php:70
+msgid "Subscription pack cannot be canceled"
+msgstr ""
+
+#: admin/html/whats-new.php:72
 msgid ""
 "Fixed recurring subscription pack cannot be canceled from my account page "
 "in subscription details section."
 msgstr ""
 
-#: admin/html/whats-new.php:18
+#: admin/html/whats-new.php:75
 msgid "page installer admin notice logic issue"
 msgstr ""
 
-#: admin/html/whats-new.php:20
+#: admin/html/whats-new.php:77
 msgid ""
 "Fixed page installer admin notice logic problem due to new payment settings "
 "default value not set."
 msgstr ""
 
-#: admin/html/whats-new.php:30
+#: admin/html/whats-new.php:87
 msgid "Setup Wizard"
 msgstr ""
 
-#: admin/html/whats-new.php:32
+#: admin/html/whats-new.php:89
 msgid "Setup Wizard added to turn off payment options and install pages."
 msgstr ""
 
-#: admin/html/whats-new.php:36
+#: admin/html/whats-new.php:93
 msgid "Multi-select Category"
 msgstr ""
 
-#: admin/html/whats-new.php:38
+#: admin/html/whats-new.php:95
 msgid "Add multi-select to default category in post form settings."
 msgstr ""
 
-#: admin/html/whats-new.php:42
+#: admin/html/whats-new.php:99
 msgid "Select Text option for Taxonomy"
 msgstr ""
 
-#: admin/html/whats-new.php:44
+#: admin/html/whats-new.php:101
 msgid ""
 "Add Select Text option for taxonomy fields. Now you can add default text "
 "with empty value as first option for Taxonomy dropdown."
 msgstr ""
 
-#: admin/html/whats-new.php:47
+#: admin/html/whats-new.php:104
 msgid "Taxonomy Checkbox Inline"
 msgstr ""
 
-#: admin/html/whats-new.php:49
+#: admin/html/whats-new.php:106
 msgid ""
 "Added checkbox inline option to taxonomy checkbox. You can now display "
 "Taxonomy checkbox fields inline."
 msgstr ""
 
-#: admin/html/whats-new.php:59
+#: admin/html/whats-new.php:116
 msgid "Manage schedule for form submission"
 msgstr ""
 
-#: admin/html/whats-new.php:61
+#: admin/html/whats-new.php:118
 msgid ""
 "Do not accept form submission if the current date is not between the date "
 "range of the schedule."
 msgstr ""
 
-#: admin/html/whats-new.php:65
+#: admin/html/whats-new.php:122
 msgid "Restrict form submission based on the user roles"
 msgstr ""
 
-#: admin/html/whats-new.php:67
+#: admin/html/whats-new.php:124
 msgid ""
 "Restrict form submission based on the user roles. Now you can manage user "
 "role base permission on form submission."
 msgstr ""
 
-#: admin/html/whats-new.php:71
+#: admin/html/whats-new.php:128
 msgid "Limit how many entries a form will accept"
 msgstr ""
 
-#: admin/html/whats-new.php:73
+#: admin/html/whats-new.php:130
 msgid ""
 "Limit how many entries a form will accept and display a custom message when "
 "that limit is reached."
 msgstr ""
 
-#: admin/html/whats-new.php:77
+#: admin/html/whats-new.php:134
 msgid "Show/hide Admin Bar"
 msgstr ""
 
-#: admin/html/whats-new.php:79
+#: admin/html/whats-new.php:136
 msgid "Control the admin bar visibility based on user roles."
 msgstr ""
 
-#: admin/html/whats-new.php:83
+#: admin/html/whats-new.php:140
 msgid "Ajax Login widget"
 msgstr ""
 
-#: admin/html/whats-new.php:85
+#: admin/html/whats-new.php:142
 msgid ""
 "Login user is more simple now with Ajax Login Widget. The simple ajax login "
 "form do not required page loading for login."
 msgstr ""
 
-#: admin/html/whats-new.php:89
+#: admin/html/whats-new.php:146
 msgid "Form submission with Captcha field"
 msgstr ""
 
-#: admin/html/whats-new.php:91
+#: admin/html/whats-new.php:148
 msgid "Form field validation process updated if form submits with captcha field."
 msgstr ""
 
-#: admin/html/whats-new.php:105
+#: admin/html/whats-new.php:162
 msgid "What's New in WPUF?"
 msgstr ""
 
@@ -1968,7 +2085,7 @@ msgid ""
 msgstr ""
 
 #: admin/installer.php:73 admin/settings-options.php:23
-#: includes/free/admin/shortcode-button.php:82 wpuf-functions.php:1447
+#: includes/free/admin/shortcode-button.php:82 wpuf-functions.php:1453
 msgid "Dashboard"
 msgstr ""
 
@@ -1983,7 +2100,7 @@ msgstr ""
 
 #: admin/installer.php:84 class/subscription.php:356 class/subscription.php:376
 #: class/subscription.php:377 class/subscription.php:378
-#: includes/free/admin/shortcode-button.php:102 wpuf-functions.php:1450
+#: includes/free/admin/shortcode-button.php:102 wpuf-functions.php:1456
 msgid "Subscription"
 msgstr ""
 
@@ -2078,7 +2195,7 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1612
+#: admin/posting.php:66 class/asset-loader.php:51 class/render-form.php:1639
 #: wpuf.php:489
 msgid "Are you sure?"
 msgstr ""
@@ -2413,406 +2530,408 @@ msgstr ""
 msgid "E-Mails"
 msgstr ""
 
-#: admin/settings-options.php:69
+#: admin/settings-options.php:75
 msgid "Show Admin Bar"
 msgstr ""
 
-#: admin/settings-options.php:70
+#: admin/settings-options.php:76
 msgid "Select user by roles, who can view admin bar in frontend."
 msgstr ""
 
-#: admin/settings-options.php:73
-msgid "Administrator"
-msgstr ""
-
-#: admin/settings-options.php:74
-msgid "Editor"
-msgstr ""
-
-#: admin/settings-options.php:75
-msgid "Author"
-msgstr ""
-
-#: admin/settings-options.php:76
-msgid "Contributor"
-msgstr ""
-
-#: admin/settings-options.php:82
+#: admin/settings-options.php:83
 msgid "Admin area access"
 msgstr ""
 
-#: admin/settings-options.php:83
+#: admin/settings-options.php:84
 msgid "Allow you to block specific user role to Ajax request and Media upload."
 msgstr ""
 
-#: admin/settings-options.php:87
+#: admin/settings-options.php:88
 msgid "Admin Only"
 msgstr ""
 
-#: admin/settings-options.php:88
+#: admin/settings-options.php:89
 msgid "Admins, Editors"
 msgstr ""
 
-#: admin/settings-options.php:89
+#: admin/settings-options.php:90
 msgid "Admins, Editors, Authors"
 msgstr ""
 
-#: admin/settings-options.php:90
+#: admin/settings-options.php:91
 msgid "Admins, Editors, Authors, Contributors"
 msgstr ""
 
-#: admin/settings-options.php:91
+#: admin/settings-options.php:92
 msgid "Default"
 msgstr ""
 
-#: admin/settings-options.php:96
+#: admin/settings-options.php:97
 msgid "Override the post edit link"
 msgstr ""
 
-#: admin/settings-options.php:97
+#: admin/settings-options.php:98
 msgid ""
 "Users see the edit link in post if s/he is capable to edit the post/page. "
 "Selecting <strong>Yes</strong> will override the default WordPress edit "
 "post link in frontend"
 msgstr ""
 
-#: admin/settings-options.php:107
+#: admin/settings-options.php:108
 msgid "Load Scripts"
 msgstr ""
 
-#: admin/settings-options.php:108
+#: admin/settings-options.php:109
 msgid "Load scripts/styles in all pages"
 msgstr ""
 
-#: admin/settings-options.php:114
+#: admin/settings-options.php:115
 msgid "reCAPTCHA Site Key"
 msgstr ""
 
-#: admin/settings-options.php:118
+#: admin/settings-options.php:119
 msgid "reCAPTCHA Secret Key"
 msgstr ""
 
-#: admin/settings-options.php:119
+#: admin/settings-options.php:120
 msgid ""
 "<a target=\"_blank\" href=\"https://www.google.com/recaptcha/\">Register "
 "here</a> to get reCaptcha Site and Secret keys."
 msgstr ""
 
-#: admin/settings-options.php:123
+#: admin/settings-options.php:124
 msgid "Custom CSS codes"
 msgstr ""
 
-#: admin/settings-options.php:124
+#: admin/settings-options.php:125
 msgid ""
 "If you want to add your custom CSS code, it will be added on page header "
 "wrapped with style tag"
 msgstr ""
 
-#: admin/settings-options.php:131
+#: admin/settings-options.php:132
 msgid "Edit Page"
 msgstr ""
 
-#: admin/settings-options.php:132
+#: admin/settings-options.php:133
 msgid "Select the page where <code>[wpuf_edit]</code> is located"
 msgstr ""
 
-#: admin/settings-options.php:138
+#: admin/settings-options.php:139
 msgid "Default Post Owner"
 msgstr ""
 
-#: admin/settings-options.php:139
+#: admin/settings-options.php:140
 msgid ""
 "If guest post is enabled and user details are OFF, the posts are assigned "
 "to this user"
 msgstr ""
 
-#: admin/settings-options.php:146
+#: admin/settings-options.php:147
 msgid "Custom Fields in post"
 msgstr ""
 
-#: admin/settings-options.php:147
+#: admin/settings-options.php:148
 msgid "Show custom fields on post content area"
 msgstr ""
 
-#: admin/settings-options.php:153
+#: admin/settings-options.php:154
 msgid "Insert Photo image size"
 msgstr ""
 
-#: admin/settings-options.php:154
+#: admin/settings-options.php:155
 msgid ""
 "Default image size of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
 
-#: admin/settings-options.php:161
+#: admin/settings-options.php:162
 msgid "Insert Photo image type"
 msgstr ""
 
-#: admin/settings-options.php:162
+#: admin/settings-options.php:163
 msgid ""
 "Default image type of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
 
-#: admin/settings-options.php:165
+#: admin/settings-options.php:166
 msgid "Image only"
 msgstr ""
 
-#: admin/settings-options.php:166
+#: admin/settings-options.php:167
 msgid "Image with link"
 msgstr ""
 
-#: admin/settings-options.php:172
+#: admin/settings-options.php:173
 msgid "Enable Image Caption"
 msgstr ""
 
-#: admin/settings-options.php:173
+#: admin/settings-options.php:174
 msgid "Allow users to update image/video title, caption and description"
 msgstr ""
 
-#: admin/settings-options.php:179
+#: admin/settings-options.php:180
 msgid "Default Post Form"
 msgstr ""
 
-#: admin/settings-options.php:180
+#: admin/settings-options.php:181
 msgid "Fallback form for post editing if no associated form found"
 msgstr ""
 
-#: admin/settings-options.php:188
+#: admin/settings-options.php:189
 msgid "Users can edit post?"
 msgstr ""
 
-#: admin/settings-options.php:189
+#: admin/settings-options.php:190
 msgid "Users will be able to edit their own posts"
 msgstr ""
 
-#: admin/settings-options.php:199
+#: admin/settings-options.php:200
 msgid "User can delete post?"
 msgstr ""
 
-#: admin/settings-options.php:200
+#: admin/settings-options.php:201
 msgid "Users will be able to delete their own posts"
 msgstr ""
 
-#: admin/settings-options.php:210
+#: admin/settings-options.php:211
 msgid "Pending Post Edit"
 msgstr ""
 
-#: admin/settings-options.php:211
+#: admin/settings-options.php:212
 msgid "Disable post editing while post in \"pending\" status"
 msgstr ""
 
-#: admin/settings-options.php:217
+#: admin/settings-options.php:218
 msgid "Posts per page"
 msgstr ""
 
-#: admin/settings-options.php:218
+#: admin/settings-options.php:219
 msgid "How many posts will be listed in a page"
 msgstr ""
 
-#: admin/settings-options.php:224
+#: admin/settings-options.php:225
 msgid "Show user bio"
 msgstr ""
 
-#: admin/settings-options.php:225
+#: admin/settings-options.php:226
 msgid "Users biographical info will be shown"
 msgstr ""
 
-#: admin/settings-options.php:231
+#: admin/settings-options.php:232
 msgid "Show post count"
 msgstr ""
 
-#: admin/settings-options.php:232
+#: admin/settings-options.php:233
 msgid "Show how many posts are created by the user"
 msgstr ""
 
-#: admin/settings-options.php:238
+#: admin/settings-options.php:239
 msgid "Show Featured Image"
 msgstr ""
 
-#: admin/settings-options.php:239
+#: admin/settings-options.php:240
 msgid "Show featured image of the post (Overridden by Shortcode)"
 msgstr ""
 
-#: admin/settings-options.php:244
+#: admin/settings-options.php:245
 msgid "Featured Image size"
 msgstr ""
 
-#: admin/settings-options.php:258
+#: admin/settings-options.php:259
 msgid "Show Subscriptions"
 msgstr ""
 
-#: admin/settings-options.php:259
+#: admin/settings-options.php:260
 msgid ""
 "Show Subscriptions tab in \"my account\" page where "
 "<code>[wpuf_account]</code> is located"
 msgstr ""
 
-#: admin/settings-options.php:271
+#: admin/settings-options.php:272
 msgid "Auto Login After Registration"
 msgstr ""
 
-#: admin/settings-options.php:272
+#: admin/settings-options.php:273
 msgid "If enabled, users after registration will be logged in to the system"
 msgstr ""
 
-#: admin/settings-options.php:278
+#: admin/settings-options.php:279
 msgid "Login/Registration override"
 msgstr ""
 
-#: admin/settings-options.php:279
+#: admin/settings-options.php:280
 msgid ""
 "If enabled, default login and registration forms will be overridden by WPUF "
 "with pages below"
 msgstr ""
 
-#: admin/settings-options.php:285
+#: admin/settings-options.php:286
 msgid "Registration Page"
 msgstr ""
 
-#: admin/settings-options.php:286
+#: admin/settings-options.php:287
 msgid ""
 "Select the page you want to use as registration page override <em>(should "
 "have shortcode)</em>"
 msgstr ""
 
-#: admin/settings-options.php:292
+#: admin/settings-options.php:293
 msgid "Login Page"
 msgstr ""
 
-#: admin/settings-options.php:293
+#: admin/settings-options.php:294
 msgid "Select the page which contains <code>[wpuf-login]</code> shortcode"
 msgstr ""
 
-#: admin/settings-options.php:302
-msgid "Enable payments on your site."
+#: admin/settings-options.php:300
+msgid "Redirect After Login"
+msgstr ""
+
+#: admin/settings-options.php:301
+msgid "After successfull login, where the page will redirect to"
+msgstr ""
+
+#: admin/settings-options.php:307
+msgid "Default Login Redirect"
 msgstr ""
 
 #: admin/settings-options.php:308
+msgid ""
+"If enabled, users who login using WordPress default login form will be "
+"redirected to the selected page."
+msgstr ""
+
+#: admin/settings-options.php:317
+msgid "Enable payments on your site."
+msgstr ""
+
+#: admin/settings-options.php:323
 msgid "Subscription Pack Page"
 msgstr ""
 
-#: admin/settings-options.php:309
+#: admin/settings-options.php:324
 msgid "Select the page where <code>[wpuf_sub_pack]</code> located."
 msgstr ""
 
-#: admin/settings-options.php:315
+#: admin/settings-options.php:330
 msgid "Subscription at registration"
 msgstr ""
 
-#: admin/settings-options.php:316
+#: admin/settings-options.php:331
 msgid "Registration time redirect to subscription page"
 msgstr ""
 
-#: admin/settings-options.php:321
+#: admin/settings-options.php:336
 msgid "Currency"
 msgstr ""
 
-#: admin/settings-options.php:328
+#: admin/settings-options.php:343
 msgid "Currency Position"
 msgstr ""
 
-#: admin/settings-options.php:332
+#: admin/settings-options.php:347
 msgid "Left"
 msgstr ""
 
-#: admin/settings-options.php:333
+#: admin/settings-options.php:348
 msgid "Right"
 msgstr ""
 
-#: admin/settings-options.php:334
+#: admin/settings-options.php:349
 msgid "Left with space"
 msgstr ""
 
-#: admin/settings-options.php:335
+#: admin/settings-options.php:350
 msgid "Right with space"
 msgstr ""
 
-#: admin/settings-options.php:340
+#: admin/settings-options.php:355
 msgid "Thousand Separator"
 msgstr ""
 
-#: admin/settings-options.php:341
+#: admin/settings-options.php:356
 msgid "This sets the thousand separator of displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:349
+#: admin/settings-options.php:364
 msgid "Decimal Separator"
 msgstr ""
 
-#: admin/settings-options.php:350
+#: admin/settings-options.php:365
 msgid "This sets the decimal separator of displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:357
+#: admin/settings-options.php:372
 msgid "Number of Decimals"
 msgstr ""
 
-#: admin/settings-options.php:358
+#: admin/settings-options.php:373
 msgid "This sets the number of decimal points shown in displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:368
+#: admin/settings-options.php:383
 msgid "Enable demo/sandbox mode"
 msgstr ""
 
-#: admin/settings-options.php:369
+#: admin/settings-options.php:384
 msgid "When sandbox mode is active, all payment gateway will be used in demo mode"
 msgstr ""
 
-#: admin/settings-options.php:375
+#: admin/settings-options.php:390
 msgid "Payment Page"
 msgstr ""
 
-#: admin/settings-options.php:376
+#: admin/settings-options.php:391
 msgid "This page will be used to process payment options"
 msgstr ""
 
-#: admin/settings-options.php:382
+#: admin/settings-options.php:397
 msgid "Payment Success Page"
 msgstr ""
 
-#: admin/settings-options.php:383 lib/gateway/bank.php:37
+#: admin/settings-options.php:398 lib/gateway/bank.php:37
 msgid "After payment users will be redirected here"
 msgstr ""
 
-#: admin/settings-options.php:389
+#: admin/settings-options.php:404
 msgid "Payment Gateways"
 msgstr ""
 
-#: admin/settings-options.php:390
+#: admin/settings-options.php:405
 msgid "Active payment gateways"
 msgstr ""
 
-#: admin/settings-options.php:398
+#: admin/settings-options.php:413
 msgid "<span class=\"dashicons dashicons-universal-access-alt\"></span> Guest Email"
 msgstr ""
 
-#: admin/settings-options.php:404
+#: admin/settings-options.php:419
 msgid "Guest mail subject"
 msgstr ""
 
-#: admin/settings-options.php:405
+#: admin/settings-options.php:420
 msgid "This sets the subject of the emails sent to guest users"
 msgstr ""
 
-#: admin/settings-options.php:412
+#: admin/settings-options.php:427
 msgid "Guest mail body"
 msgstr ""
 
-#: admin/settings-options.php:413
+#: admin/settings-options.php:428
 msgid ""
 "This sets the body of the emails sent to guest users. Please DON'T edit the "
 "<code>{activation_link}</code> part, you can use {sitename} too."
 msgstr ""
 
-#: admin/settings-options.php:437
+#: admin/settings-options.php:452
 msgid ""
 "Select profile/registration forms for user roles. These forms will be used "
 "to populate extra edit profile fields in backend."
 msgstr ""
 
-#: admin/settings-options.php:448
+#: admin/settings-options.php:463
 msgid " - select - "
 msgstr ""
 
@@ -2993,7 +3112,7 @@ msgstr ""
 msgid "Author Info"
 msgstr ""
 
-#: class/frontend-dashboard.php:112 includes/free/edit-user.php:97
+#: class/frontend-dashboard.php:112 includes/free/edit-user.php:98
 msgid "%s"
 msgstr ""
 
@@ -3156,23 +3275,23 @@ msgstr ""
 msgid "Please make sure you've published your form."
 msgstr ""
 
-#: class/render-form.php:1291 includes/free/edit-profile.php:203
+#: class/render-form.php:1317 includes/free/edit-profile.php:203
 #: templates/dashboard/edit-profile.php:54
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1351
+#: class/render-form.php:1377
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1411
+#: class/render-form.php:1437
 msgid "This field is no longer available."
 msgstr ""
 
-#: class/render-form.php:1612 class/transactions-list-table.php:114
+#: class/render-form.php:1639 class/transactions-list-table.php:114
 #: class/transactions-list-table.php:178 class/upload.php:171
-#: includes/free/edit-user.php:100 templates/dashboard/posts.php:161
-#: templates/dashboard.php:222
+#: includes/free/edit-user.php:101 templates/dashboard/posts.php:162
+#: templates/dashboard.php:223
 msgid "Delete"
 msgstr ""
 
@@ -3212,53 +3331,53 @@ msgstr ""
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:744
+#: class/subscription.php:747
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:744
+#: class/subscription.php:747
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:748 class/subscription.php:752
+#: class/subscription.php:751 class/subscription.php:755
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:766
+#: class/subscription.php:769
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:770
+#: class/subscription.php:773
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
-#: class/subscription.php:830
+#: class/subscription.php:833
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:834
+#: class/subscription.php:837
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:846
+#: class/subscription.php:849
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:851
+#: class/subscription.php:854
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:917
+#: class/subscription.php:920
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:929
+#: class/subscription.php:932
 msgid ""
 "Your Subscription pack exhausted. There is a <strong>%s</strong> charge to "
 "add a new post."
 msgstr ""
 
-#: class/subscription.php:973 includes/class-user-subscription.php:58
+#: class/subscription.php:976 includes/class-user-subscription.php:58
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
@@ -3333,7 +3452,7 @@ msgstr ""
 msgid "Caption"
 msgstr ""
 
-#: includes/class-dokan-integration.php:37 wpuf-functions.php:1448
+#: includes/class-dokan-integration.php:37 wpuf-functions.php:1454
 msgid "Posts"
 msgstr ""
 
@@ -3425,19 +3544,19 @@ msgstr ""
 msgid "Someone has requested a password reset for the following account:"
 msgstr ""
 
-#: includes/class-login-widget.php:137 includes/free/class-login.php:682
+#: includes/class-login-widget.php:137 includes/free/class-login.php:724
 msgid "Username: %s"
 msgstr ""
 
-#: includes/class-login-widget.php:138 includes/free/class-login.php:683
+#: includes/class-login-widget.php:138 includes/free/class-login.php:725
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 
-#: includes/class-login-widget.php:139 includes/free/class-login.php:684
+#: includes/class-login-widget.php:139 includes/free/class-login.php:726
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: includes/class-login-widget.php:144 includes/free/class-login.php:693
+#: includes/class-login-widget.php:144 includes/free/class-login.php:735
 msgid "[%s] Password Reset"
 msgstr ""
 
@@ -3448,7 +3567,7 @@ msgid ""
 msgstr ""
 
 #: includes/class-login-widget.php:206 includes/class-login-widget.php:239
-#: includes/free/class-login.php:212 includes/free/class-registration.php:124
+#: includes/free/class-login.php:214 includes/free/class-registration.php:124
 #: includes/free/form-element.php:345 templates/registration-form.php:72
 msgid "Register"
 msgstr ""
@@ -3480,7 +3599,7 @@ msgid ""
 msgstr ""
 
 #: includes/class-login-widget.php:266 includes/free/edit-profile.php:101
-#: includes/free/edit-user.php:92 includes/free/edit-user.php:144
+#: includes/free/edit-user.php:93 includes/free/edit-user.php:145
 #: templates/login-form.php:21 templates/registration-form.php:51
 msgid "Username"
 msgstr ""
@@ -3494,8 +3613,8 @@ msgstr ""
 msgid "Remember Me"
 msgstr ""
 
-#: includes/class-login-widget.php:269 includes/free/class-login.php:208
-#: includes/free/class-login.php:264 templates/login-form.php:35
+#: includes/class-login-widget.php:269 includes/free/class-login.php:210
+#: includes/free/class-login.php:266 templates/login-form.php:35
 msgid "Log In"
 msgstr ""
 
@@ -3652,34 +3771,34 @@ msgstr ""
 msgid " Add Form"
 msgstr ""
 
-#: includes/free/class-login.php:216
+#: includes/free/class-login.php:218
 msgid "Lost Password"
 msgstr ""
 
-#: includes/free/class-login.php:254
+#: includes/free/class-login.php:256
 msgid ""
 "Please enter your username or email address. You will receive a link to "
 "create a new password via email."
 msgstr ""
 
-#: includes/free/class-login.php:264
+#: includes/free/class-login.php:266
 msgid "Your password has been reset. %s"
 msgstr ""
 
-#: includes/free/class-login.php:268
+#: includes/free/class-login.php:270
 msgid "Enter your new password below.."
 msgstr ""
 
-#: includes/free/class-login.php:278
+#: includes/free/class-login.php:280
 msgid "Check your e-mail for the confirmation link."
 msgstr ""
 
-#: includes/free/class-login.php:282
+#: includes/free/class-login.php:284
 msgid "You are now logged out."
 msgstr ""
 
-#: includes/free/class-login.php:311 includes/free/class-login.php:316
-#: includes/free/class-login.php:321 includes/free/class-login.php:331
+#: includes/free/class-login.php:313 includes/free/class-login.php:318
+#: includes/free/class-login.php:323 includes/free/class-login.php:333
 #: includes/free/class-registration.php:192
 #: includes/free/class-registration.php:197
 #: includes/free/class-registration.php:202
@@ -3693,66 +3812,69 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: includes/free/class-login.php:316 includes/free/class-registration.php:212
+#: includes/free/class-login.php:318 includes/free/class-registration.php:212
 msgid "Username is required."
 msgstr ""
 
-#: includes/free/class-login.php:321 includes/free/class-registration.php:217
+#: includes/free/class-login.php:323 includes/free/class-registration.php:217
 msgid "Password is required."
 msgstr ""
 
-#: includes/free/class-login.php:331 includes/free/class-registration.php:242
+#: includes/free/class-login.php:333 includes/free/class-registration.php:242
 msgid "A user could not be found with this email address."
 msgstr ""
 
-#: includes/free/class-login.php:421
+#: includes/free/class-login.php:453
 msgid "Please enter your password."
 msgstr ""
 
-#: includes/free/class-login.php:426
+#: includes/free/class-login.php:458
 msgid "Passwords do not match."
 msgstr ""
 
-#: includes/free/class-login.php:469
+#: includes/free/class-login.php:501
 msgid "Enter a username or e-mail address."
 msgstr ""
 
-#: includes/free/class-login.php:477
+#: includes/free/class-login.php:509
 msgid "There is no user registered with that email address."
 msgstr ""
 
-#: includes/free/class-login.php:495
+#: includes/free/class-login.php:527
 msgid "Invalid username or e-mail."
 msgstr ""
 
-#: includes/free/class-login.php:509
+#: includes/free/class-login.php:541
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: includes/free/class-login.php:553 includes/free/class-login.php:558
-#: includes/free/class-login.php:565
+#: includes/free/class-login.php:595 includes/free/class-login.php:607
 msgid "Invalid key"
 msgstr ""
 
-#: includes/free/class-login.php:588
+#: includes/free/class-login.php:600
+msgid "Invalid Login"
+msgstr ""
+
+#: includes/free/class-login.php:630
 msgid ""
 "<strong>Your account is not active.</strong><br>Please check your email for "
 "activation link."
 msgstr ""
 
-#: includes/free/class-login.php:636
+#: includes/free/class-login.php:678
 msgid "Your account has been activated"
 msgstr ""
 
-#: includes/free/class-login.php:680
+#: includes/free/class-login.php:722
 msgid "Someone requested that the password be reset for the following account:"
 msgstr ""
 
-#: includes/free/class-login.php:698
+#: includes/free/class-login.php:740
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: includes/free/class-login.php:698
+#: includes/free/class-login.php:740
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
@@ -3884,53 +4006,57 @@ msgstr ""
 msgid "User Deleted"
 msgstr ""
 
-#: includes/free/edit-user.php:93
+#: includes/free/edit-user.php:85
+msgid "Are you sure to delete this user?"
+msgstr ""
+
+#: includes/free/edit-user.php:94
 msgid "Action"
 msgstr ""
 
-#: includes/free/edit-user.php:119 includes/free/edit-user.php:177
+#: includes/free/edit-user.php:120 includes/free/edit-user.php:178
 msgid "Add New User"
 msgstr ""
 
-#: includes/free/edit-user.php:132
+#: includes/free/edit-user.php:133
 msgid "User Added"
 msgstr ""
 
-#: includes/free/edit-user.php:160
+#: includes/free/edit-user.php:161
 msgid "Role"
 msgstr ""
 
-#: includes/free/edit-user.php:204
+#: includes/free/edit-user.php:205
 msgid "<strong>ERROR</strong>: Please enter a username"
 msgstr ""
 
-#: includes/free/edit-user.php:206
+#: includes/free/edit-user.php:207
 msgid ""
 "<strong>ERROR</strong>: This username is invalid because it uses illegal "
 "characters. Please enter a valid username"
 msgstr ""
 
-#: includes/free/edit-user.php:209
+#: includes/free/edit-user.php:210
 msgid ""
 "<strong>ERROR</strong>: This username is already registered, please choose "
 "another one"
 msgstr ""
 
-#: includes/free/edit-user.php:214
+#: includes/free/edit-user.php:215
 msgid "<strong>ERROR</strong>: Please type your e-mail address"
 msgstr ""
 
-#: includes/free/edit-user.php:216
+#: includes/free/edit-user.php:217
 msgid "<strong>ERROR</strong>: The email address isn&#8217;t correct"
 msgstr ""
 
-#: includes/free/edit-user.php:219
+#: includes/free/edit-user.php:220
 msgid ""
 "<strong>ERROR</strong>: This email is already registered, please choose "
 "another one"
 msgstr ""
 
-#: includes/free/edit-user.php:242
+#: includes/free/edit-user.php:243
 msgid ""
 "<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the "
 "<a href=\"mailto:%s\">webmaster</a> !"
@@ -4216,7 +4342,7 @@ msgstr ""
 msgid "You don't have permission to install the plugins"
 msgstr ""
 
-#: lib/class.settings-api.php:366
+#: lib/class.settings-api.php:389
 msgid "Choose File"
 msgstr ""
 
@@ -4331,15 +4457,19 @@ msgstr ""
 msgid "Pay Now"
 msgstr ""
 
-#: templates/dashboard/posts.php:179 templates/dashboard.php:240
-msgid "&laquo;"
+#: templates/dashboard/posts.php:160 templates/dashboard.php:221
+msgid "Are you sure to delete?"
 msgstr ""
 
 #: templates/dashboard/posts.php:180 templates/dashboard.php:241
+msgid "&laquo;"
+msgstr ""
+
+#: templates/dashboard/posts.php:181 templates/dashboard.php:242
 msgid "&raquo;"
 msgstr ""
 
-#: templates/dashboard/posts.php:194 templates/dashboard.php:255
+#: templates/dashboard/posts.php:195 templates/dashboard.php:256
 msgid "No %s found"
 msgstr ""
 
@@ -4451,211 +4581,211 @@ msgstr ""
 msgid "CSV"
 msgstr ""
 
-#: wpuf-functions.php:1449
+#: wpuf-functions.php:1455
 msgid "Edit Profile"
 msgstr ""
 
-#: wpuf-functions.php:1554
+#: wpuf-functions.php:1560
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:1555
+#: wpuf-functions.php:1561
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1556
+#: wpuf-functions.php:1562
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:1557
+#: wpuf-functions.php:1563
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:1558
+#: wpuf-functions.php:1564
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:1559
+#: wpuf-functions.php:1565
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:1560
+#: wpuf-functions.php:1566
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1561
+#: wpuf-functions.php:1567
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:1562
+#: wpuf-functions.php:1568
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:1563
+#: wpuf-functions.php:1569
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:1564
+#: wpuf-functions.php:1570
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:1565
+#: wpuf-functions.php:1571
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:1566
+#: wpuf-functions.php:1572
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1567
+#: wpuf-functions.php:1573
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:1568
+#: wpuf-functions.php:1574
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:1569
+#: wpuf-functions.php:1575
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1570
+#: wpuf-functions.php:1576
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:1571
+#: wpuf-functions.php:1577
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:1572
+#: wpuf-functions.php:1578
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:1573
+#: wpuf-functions.php:1579
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:1574
+#: wpuf-functions.php:1580
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1575
+#: wpuf-functions.php:1581
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1576
+#: wpuf-functions.php:1582
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:1577
+#: wpuf-functions.php:1583
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:1578
+#: wpuf-functions.php:1584
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:1579
+#: wpuf-functions.php:1585
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:1580
+#: wpuf-functions.php:1586
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:1581
+#: wpuf-functions.php:1587
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1582
+#: wpuf-functions.php:1588
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:1583
+#: wpuf-functions.php:1589
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:1584
+#: wpuf-functions.php:1590
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1585
+#: wpuf-functions.php:1591
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:1586
+#: wpuf-functions.php:1592
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:1587
+#: wpuf-functions.php:1593
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1588
+#: wpuf-functions.php:1594
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:1589
+#: wpuf-functions.php:1595
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:1590
+#: wpuf-functions.php:1596
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:1591
+#: wpuf-functions.php:1597
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:1592
+#: wpuf-functions.php:1598
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:1593
+#: wpuf-functions.php:1599
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:1594
+#: wpuf-functions.php:1600
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:1595
+#: wpuf-functions.php:1601
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1596
+#: wpuf-functions.php:1602
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:1597
+#: wpuf-functions.php:1603
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:1598
+#: wpuf-functions.php:1604
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:1599
+#: wpuf-functions.php:1605
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1600
+#: wpuf-functions.php:1606
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:1601
+#: wpuf-functions.php:1607
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:1602
+#: wpuf-functions.php:1608
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1603
+#: wpuf-functions.php:1609
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:1604
+#: wpuf-functions.php:1610
 msgid "Egyptian Pound"
 msgstr ""
 
@@ -4757,7 +4887,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: wpuf-functions.php:1066
+#: wpuf-functions.php:1073
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

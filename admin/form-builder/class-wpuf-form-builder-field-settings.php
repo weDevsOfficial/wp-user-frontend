@@ -631,6 +631,20 @@ class WPUF_Form_Builder_Field_Settings {
     public static function website_url() {
         $settings = self::get_common_properties();
         $settings = array_merge( $settings, self::get_common_text_properties() );
+        $settings[] =  array(
+            'name'      => 'open_window',
+            'title'     => __( 'Open in : ', 'wpuf' ),
+            'type'      => 'radio',
+            'options'   => array(
+                'same'   => __( 'Same Window', 'wpuf' ),
+                'new'    => __( 'New Window', 'wpuf' ),
+            ),
+            'section'   => 'basic',
+            'default'   => 'same',
+            'inline'    => true,
+            'priority'  => 32,
+            'help_text' => __( 'Choose whether the link will open in new tab or same window', 'wpuf' ),
+        );
 
         return array(
             'template'      => 'website_url',
@@ -649,6 +663,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'css'               => '',
                 'placeholder'       => '',
                 'default'           => '',
+                'open_window'       => 'same',
                 'size'              => 40,
                 'id'                => 0,
                 'is_new'            => true,
@@ -758,6 +773,15 @@ class WPUF_Form_Builder_Field_Settings {
 
         $settings = array_merge( $settings, array(
             array(
+                'name'          => 'button_label',
+                'title'         => __( 'Button Label', 'wpuf' ),
+                'type'          => 'text',
+                'default'       => __( 'Select Image', 'wpuf' ),
+                'section'       => 'basic',
+                'priority'      => 30,
+                'help_text'     => __( 'Enter a label for the Select button', 'wpuf' ),
+            ),
+            array(
                 'name'          => 'max_size',
                 'title'         => __( 'Max. file size', 'wpuf' ),
                 'type'          => 'text',
@@ -765,7 +789,6 @@ class WPUF_Form_Builder_Field_Settings {
                 'priority'      => 20,
                 'help_text'     => __( 'Enter maximum upload size limit in KB', 'wpuf' ),
             ),
-
             array(
                 'name'          => 'count',
                 'title'         => __( 'Max. files', 'wpuf' ),
@@ -787,6 +810,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'required'          => 'no',
                 'label'             => __( 'Image Upload', 'wpuf' ),
                 'name'              => '',
+                'button_label'      => __( 'Select Image', 'wpuf' ),
                 'is_meta'           => 'yes',
                 'help'              => '',
                 'width'             => '',

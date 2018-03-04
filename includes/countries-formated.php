@@ -590,6 +590,10 @@ $countries = array(
         'code' => 'MS',
     ),
     array(
+        'name' => 'Montenegro',
+        'code' => 'ME',
+    ),
+    array(
         'name' => 'Morocco',
         'code' => 'MA',
     ),
@@ -770,8 +774,8 @@ $countries = array(
         'code' => 'SN',
     ),
     array(
-        'name' => 'Serbia and Montenegro',
-        'code' => 'CS',
+        'name' => 'Serbia',
+        'code' => 'RS',
     ),
     array(
         'name' => 'Seychelles',

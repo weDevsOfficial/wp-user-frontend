@@ -1,6 +1,37 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.8.4',
+        'released' => '2018-03-04',
+        'changes' => array(
+            array(
+                'title'       => __( 'Dashboard Post Listing now supports multiple post types', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Now you can show multiple post type in user dashboard using shortcode like this : <br><b>[wpuf_dashboard post_type="post,page,custom_type"]</b> ', 'wpuf' )
+            ),
+            array(
+                'title'       => __( 'Added Login Redirect Settings', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'You can now set a page from <i>WPUF Settings > Login/Registration > Redirect after Login</i>. When login redirection is active the user will be redirected to this page after login.', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Image Upload field button text can be changed', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'The upload button text can now be changed for image upload fields which defaults to "Select Image" if not set. ', 'wpuf' ).'<img src="'. WPUF_ASSET_URI .'/images/whats-new/image_upload_label.png" alt="Multi-select Category">',
+            ),
+            array(
+                'title'       => __( 'Multi Step Form styles made compatible with more themes', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Multi Step form can now be styled more easily with other themes ', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Required field condition for google map not working is fixed', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'If Google Map field was set as required users were able to submit form without changing the default value.', 'wpuf' ),
+            )
+        )
+    ),
+    array(
         'version'  => 'Version 2.8.3',
         'released' => '2018-02-15',
         'changes' => array(

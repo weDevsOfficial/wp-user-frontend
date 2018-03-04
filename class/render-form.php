@@ -478,7 +478,32 @@ class WPUF_Render_Form {
 
         //if multistep form is enabled
         if ( isset( $form_settings['enable_multistep'] ) && $form_settings['enable_multistep'] == 'yes' ) {
+            $ms_ac_txt_color   = isset( $form_settings['ms_ac_txt_color'] ) ? $form_settings['ms_ac_txt_color'] : '#ffffff';
+            $ms_active_bgcolor = isset( $form_settings['ms_active_bgcolor'] ) ? $form_settings['ms_active_bgcolor'] : '#00a0d2';
+            $ms_bgcolor        = isset( $form_settings['ms_bgcolor'] ) ? $form_settings['ms_bgcolor'] : '#E4E4E4';
+
             ?>
+            <style type="text/css">
+                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li,
+                .wpuf-form .wpuf-multistep-progressbar.ui-progressbar {
+                    background-color:  <?php echo $ms_bgcolor; ?>;
+                    background:  <?php echo $ms_bgcolor; ?>;
+                }
+                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li::after{
+                    border-left-color: <?php echo $ms_bgcolor; ?>;
+                }
+                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step,
+                .wpuf-form .wpuf-multistep-progressbar .ui-widget-header{
+                    color: <?php echo $ms_ac_txt_color; ?>;
+                    background-color:  <?php echo $ms_active_bgcolor; ?>;
+                }
+                .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step::after {
+                    border-left-color: <?php echo $ms_active_bgcolor; ?>;
+                }
+                .wpuf-form .wpuf-multistep-progressbar.ui-progressbar .wpuf-progress-percentage{
+                    color: <?php echo $ms_ac_txt_color; ?>;
+                }
+            </style>
             <input type="hidden" name="wpuf_multistep_type" value="<?php echo $form_settings['multistep_progressbar_type'] ?>"/>
             <?php
             if ( $form_settings['multistep_progressbar_type'] == 'step_by_step' ){
@@ -1017,6 +1042,7 @@ class WPUF_Render_Form {
             $form_settings = wpuf_get_form_settings( $form_id );
             $layout        = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
             $textarea_id   = $attr['name'] ? $attr['name'] . '_' . $form_id : 'textarea_' . $this->field_count;
+            $content_css   = includes_url()."js/tinymce/skins/wordpress/wp-content.css";
 
             if ( $attr['rich'] == 'yes' ) {
                 $editor_settings = array(
@@ -1026,7 +1052,7 @@ class WPUF_Render_Form {
                     'editor_class'  => $req_class,
                     'textarea_name' => $attr['name'],
                     'tinymce'       => array(
-                        'content_css'   => WPUF_ASSET_URI . '/css/frontend-form/' . $layout . '.css'
+                        'content_css'   => $content_css.", ". WPUF_ASSET_URI . '/css/frontend-form/' . $layout . '.css'
                     )
                 );
 
@@ -1043,7 +1069,7 @@ class WPUF_Render_Form {
                     'editor_class'  => $req_class,
                     'textarea_name' => $attr['name'],
                     'tinymce'       => array(
-                        'content_css'   => WPUF_ASSET_URI . '/css/frontend-form/' . $layout . '.css'
+                        'content_css'   => $content_css.", ". WPUF_ASSET_URI . '/css/frontend-form/' . $layout . '.css'
                     )
                 );
 
@@ -1592,12 +1618,13 @@ class WPUF_Render_Form {
                 }
             }
         }
+        $button_label = empty( $attr['button_label'] ) ? __( 'Select Image', 'wpuf' ) : $attr['button_label'];
         ?>
 
         <div class="wpuf-fields">
             <div id="wpuf-<?php echo $unique_id; ?>-upload-container">
                 <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo $attr['required']; ?>">
-                    <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" href="#"><?php _e( 'Select Image', 'wpuf' ); ?></a>
+                    <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" href="#"><?php echo $button_label ?></a>
 
                     <ul class="wpuf-attachment-list thumbnails">
                         <?php

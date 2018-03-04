@@ -62,19 +62,20 @@ function wpuf_settings_fields() {
 
     $default_currency_symbol = wpuf_get_currency( 'symbol' );
 
+    $user_roles = array();
+    $all_roles = get_editable_roles();
+    foreach( $all_roles as $key=>$value ) {
+        $user_roles[$key] = $value['name'];
+    }
+
     $settings_fields = array(
         'wpuf_general' => apply_filters( 'wpuf_options_others', array(
             array(
                 'name'    => 'show_admin_bar',
                 'label'   => __( 'Show Admin Bar', 'wpuf' ),
                 'desc'    => __( 'Select user by roles, who can view admin bar in frontend.', 'wpuf' ),
-                'type'    => 'multicheck',
-                'options' => array(
-                    'administrator' => __( 'Administrator', 'wpuf' ),
-                    'editor'        => __( 'Editor', 'wpuf' ),
-                    'author'        => __( 'Author', 'wpuf' ),
-                    'contributor'   => __( 'Contributor', 'wpuf' )
-                ),
+                'type'    => 'multiselect',
+                'options' => $user_roles,
                 'default' => array( 'administrator', 'editor', 'author', 'contributor' ),
             ),
             array(
@@ -293,6 +294,20 @@ function wpuf_settings_fields() {
                 'desc'    => __( 'Select the page which contains <code>[wpuf-login]</code> shortcode', 'wpuf' ),
                 'type'    => 'select',
                 'options' => $pages
+            ),
+            array(
+                'name'    => 'redirect_after_login_page',
+                'label'   => __( 'Redirect After Login', 'wpuf' ),
+                'desc'    => __( 'After successfull login, where the page will redirect to', 'wpuf' ),
+                'type'    => 'select',
+                'options' => $pages
+            ),
+            array(
+                'name'    => 'wp_default_login_redirect',
+                'label'   => __( 'Default Login Redirect', 'wpuf' ),
+                'desc'    => __( 'If enabled, users who login using WordPress default login form will be redirected to the selected page.', 'wpuf' ),
+                'type'    => 'checkbox',
+                'default' => 'off'
             ),
         ) ),
         'wpuf_payment' => apply_filters( 'wpuf_options_payment', array(

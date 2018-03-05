@@ -1289,3 +1289,6 @@ table#wpuf-address-country-state select {
 table#wpuf-address-country-state input.wpuf-btn {
   width: inherit;
 }
+table#wpuf-address-country-state td {
+  border: none;
+}

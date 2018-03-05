@@ -1535,6 +1535,7 @@ function wpuf_get_pending_transactions( $args = array() ) {
             'user_id'          => $info['user_info']['id'],
             'status'           => 'pending',
             'cost'             => $info['price'],
+            'tax'              => $info['tax'],
             'post_id'          => ( $info['type'] == 'post' ) ? $info['item_number'] : 0,
             'pack_id'          => ( $info['type'] == 'pack' ) ? $info['item_number'] : 0,
             'payer_first_name' => $info['user_info']['first_name'],
@@ -2595,10 +2596,36 @@ function wpuf_descriptive_text( $args ) {
  * @param string $value the value to be set
  * @return mixed
  */
+
 function wpuf_update_option( $option, $section, $value ) {
     $options = get_option( $section );
 
     $options[$option] = $value;
 
     update_option( $section, $options );
+}
+
+/**
+ * Get terms of related taxonomy
+ *
+ * @since  2.8.5
+ *
+ * @param  string $taxonomy
+ *
+ * @return array
+ */
+function wpuf_get_terms( $taxonomy = 'category' ) {
+    $items = array();
+
+    $terms = get_terms(  array(
+            'taxonomy'   => $taxonomy,
+            'hide_empty' => false
+        )
+    );
+
+    foreach ($terms as $key => $term) {
+        $items[$term->term_id] = $term->name;
+    }
+
+    return $items;
 }

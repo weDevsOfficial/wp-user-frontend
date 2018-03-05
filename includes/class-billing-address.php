@@ -84,7 +84,7 @@ class WPUF_Ajax_Address_Form {
                         ?>
                     </td>
                     <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;">
-                        <div class="wpuf-label"><?php _e( 'Address Line 1 ', 'wpuf' ); ?><span class="required">*</span></div>
+                        <div class="wpuf-label"><?php _e( 'Address Line 1 ', 'wpuf' ); ?></div>
                         <div class="wpuf-fields">
                             <input type="text" class="input" name="wpuf_biiling_add_line_1" id="wpuf_biiling_add_line_1" value="<?php echo $address_fields['add_line_1']; ?>" />
                         </div>
@@ -96,13 +96,13 @@ class WPUF_Ajax_Address_Form {
                         </div>
                     </td>
                     <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;">
-                        <div class="wpuf-label"><?php _e( 'City', 'wpuf' ); ?><span class="required">*</span></div>
+                        <div class="wpuf-label"><?php _e( 'City', 'wpuf' ); ?></div>
                         <div class="wpuf-fields">
                             <input  type="text" class="input" name="wpuf_biiling_city" id="wpuf_biiling_city" value="<?php echo $address_fields['add_line_2']; ?>" />
                         </div>
                     </td>
                     <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;">
-                        <div class="wpuf-label"><?php _e( 'ZIP', 'wpuf' ); ?><span class="required">*</span></div>
+                        <div class="wpuf-label"><?php _e( 'ZIP', 'wpuf' ); ?></div>
                         <div class="wpuf-fields">
                             <input  type="text" class="input" name="wpuf_biiling_zip_code" id="wpuf_biiling_zip_code" value="<?php echo $address_fields['add_line_2']; ?>" />
                         </div>

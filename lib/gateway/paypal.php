@@ -142,6 +142,10 @@ class WPUF_Paypal {
             $coupon_id = '';
         }
 
+        $data['subtotal'] = $billing_amount;
+        $billing_amount   = apply_filters( 'wpuf_amount_with_tax', $data['subtotal'] );
+        $data['tax']      = $billing_amount - $data['subtotal'];
+
         if ( $billing_amount == 0 ) {
             wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], $profile_id = null, false,'free' );
             wp_redirect( $return_url );
@@ -372,10 +376,11 @@ class WPUF_Paypal {
             WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
 
             if ( $coupon_id ) {
-                $pre_usage = get_post_meta( $post_id, '_coupon_used', true );
+                $pre_usage = get_post_meta( $coupon_id, '_coupon_used', true );
+                $pre_usage = (empty( $pre_usage )) ? 0 : $pre_usage;
                 $new_use   = $pre_usage + 1;
 
-                update_post_meta( $post_id, '_coupon_used', $coupon_id );
+                update_post_meta( $coupon_id, '_coupon_used', $new_use );
             }
 
             delete_user_meta( $custom->user_id, '_wpuf_user_active' );

@@ -370,6 +370,17 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 do_action( 'wpuf_gateway_bank_order_complete', $transaction, $id );
 
                 WPUF_Payment::insert_payment( $transaction );
+
+                $coupon_id = $info['post_data']['coupon_id'];
+
+                if ( $coupon_id ) {
+                    $pre_usage = get_post_meta( $coupon_id, '_coupon_used', true );
+                    $pre_usage = (empty( $pre_usage )) ? 0 : $pre_usage;
+                    $new_use   = $pre_usage + 1;
+
+                    update_post_meta( $coupon_id, '_coupon_used', $new_use );
+                }
+
                 wp_delete_post( $id, true );
             }
 

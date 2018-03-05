@@ -2420,3 +2420,28 @@ function get_formatted_mail_body( $message, $subject ) {
 
     return $message;
 }
+
+/**
+ * Get terms of related taxonomy
+ *
+ * @since  2.8.5
+ *
+ * @param  string $taxonomy
+ *
+ * @return array
+ */
+function wpuf_get_terms( $taxonomy = 'category' ) {
+    $items = array();
+
+    $terms = get_terms(  array(
+            'taxonomy'   => $taxonomy,
+            'hide_empty' => false
+        )
+    );
+
+    foreach ($terms as $key => $term) {
+        $items[$term->term_id] = $term->name;
+    }
+
+    return $items;
+}

@@ -1,11 +1,11 @@
 # WP User Frontend - Membership, Profile, Registration & Post Submission Plugin for WordPress #
-**Contributors:** [tareq1988](https://profiles.wordpress.org/tareq1988), [sk.shaikat](https://profiles.wordpress.org/sk.shaikat), [rabbii](https://profiles.wordpress.org/rabbii), [wedevs](https://profiles.wordpress.org/wedevs), [rafsuntaskin](https://profiles.wordpress.org/rafsuntaskin)  
+**Contributors:** [tareq1988](https://profiles.wordpress.org/tareq1988), [sk.shaikat](https://profiles.wordpress.org/sk.shaikat), [rabbii](https://profiles.wordpress.org/rabbii), [rafsuntaskin](https://profiles.wordpress.org/rafsuntaskin), [itowhid06](https://profiles.wordpress.org/itowhid06), [wedevs](https://profiles.wordpress.org/wedevs)  
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership  
 **Requires at least:** 4.0  
-**Tested up to:** 4.8.1  
+**Tested up to:** 4.9.4  
 **Requires PHP:** 5.4  
-**Stable tag:** 2.8.3  
+**Stable tag:** 2.8.4  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -86,7 +86,7 @@ The <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_so
 * <strong>Registration form</strong> builder
 * <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#captcha">Captcha Support</a>
 
-Try an <a href="http://wpufdemo.wedevs.com/">online demo</a> of the Pro version.
+Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the Pro version.
 
 ### Translation ###
 
@@ -170,6 +170,20 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
+### v2.8.4 (04 March, 2018) ###
+
+ * **New:** Dashboard post listing now supports multiple post type within shortcode
+ * **New:** Added settings in URL field to view link on new window or same window
+ * **New:** Added settings to change button text for Image upload field
+ * **New:** Added Login Redirect settings to redirect users to a page after login
+ * **Fix:** MultiStep Form styles not working properly
+ * **Fix:** Account Activation link not working for new users
+ * **Fix:** Separated Serbia and Montenegro in country list
+ * **Fix:** Required field condition for google map not working
+ * **Fix:** Post submission infinity loop issue fixed
+ * **Fix:** TinyMCE styling not working on frontend layouts fixed
+ * **Improved:** Updated turkish translation
+
 ### v2.8.3 (15 February, 2018) ###
 
  * **New:** Admin form builder is now fully responsive.
@@ -177,7 +191,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
  * **Fix:** Confirmation password field size is not updated
  * **Fix:** Email notification contains unnecessary texts
  * **Fix:** Assign pack costs not showing on admin fixed
- * **Fix:** Restrict Free subscription pack to be enabled multiple times 
+ * **Fix:** Restrict Free subscription pack to be enabled multiple times
  * **Fix:** While updating post, image changes are updated after saving the post
  * **Improved:** Show purchase link on notice of post purchase
  * **Improved:** Hide edit link on front-end post listing if editing is disabled

@@ -167,8 +167,8 @@ class WPUF_Payment {
                                                     <?php echo WPUF_Coupons::init()->after_apply_coupon( $pack ); ?>
                                                 <?php } else {
                                                     $pack_cost = $pack->meta_value['billing_amount'];
-                                                    $billing_amount = apply_filters( 'wpuf_amount_with_tax', $pack->meta_value['billing_amount'] );
-                                                    if ( class_exists( 'wpuf_current_tax_rate' ) ) {
+                                                    $billing_amount = apply_filters( 'wpuf_payment_amount', $pack->meta_value['billing_amount'] );
+                                                    if ( function_exists( 'wpuf_current_tax_rate' ) ) {
                                                         $tax_rate = wpuf_current_tax_rate() . '%';
                                                     }
                                                     ?>
@@ -176,7 +176,9 @@ class WPUF_Payment {
                                                     <div id="wpuf_id" style="display: none"><?php echo $pack_id; ?></div>
                                                     <div><?php _e( 'Selected Pack ', 'wpuf' ); ?>: <strong><?php echo $pack->post_title; ?></strong></div>
                                                     <div><?php _e( 'Pack Price ', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_cost"><?php echo wpuf_format_price( $pack_cost ); ?></strong></span></div>
-                                                    <?php if ( class_exists( 'WP_User_Frontend_Pro' ) ) { ?>
+                                                    <?php
+                                                    $is_pro = wpuf()->is_pro();
+                                                    if ( $is_pro ) { ?>
                                                     <div><?php _e( 'Tax', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_tax"><?php echo $tax_rate; ?></strong></span></div>
                                                     <?php } ?>
                                                     <div><?php _e( 'Total', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo wpuf_format_price( $billing_amount ); ?></strong></span></div>
@@ -209,23 +211,25 @@ class WPUF_Payment {
                                 $fallback_cost     = (float)$form->get_subs_fallback_cost();
                                 $pay_per_post_cost = (float)$form->get_pay_per_post_cost();
                                 $current_user = wpuf_get_user();
-                                if ( class_exists( 'wpuf_current_tax_rate' ) ) {
+                                if ( function_exists( 'wpuf_current_tax_rate' ) ) {
                                     $tax_rate = wpuf_current_tax_rate() . '%';
                                 }
                                 $current_pack = $current_user->subscription()->current_pack();
                                 if ( $force_pack && is_wp_error( $current_pack ) && $fallback_enabled ) {
                                     $post_cost = $fallback_cost;
-                                    $billing_amount = apply_filters( 'wpuf_amount_with_tax', $fallback_cost );
+                                    $billing_amount = apply_filters( 'wpuf_payment_amount', $fallback_cost );
                                 } else {
                                     $post_cost = $pay_per_post_cost;
-                                    $billing_amount = apply_filters( 'wpuf_amount_with_tax', $pay_per_post_cost );
+                                    $billing_amount = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
                                 }
 
                                 ?>
                                 <div id="wpuf_type" style="display: none"><?php echo 'post'; ?></div>
                                 <div id="wpuf_id" style="display: none"><?php echo $post_id; ?></div>
                                 <div><?php _e( 'Post cost', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_cost"><?php echo wpuf_format_price( $post_cost ); ?></strong></span></div>
-                                <?php if ( class_exists( 'WP_User_Frontend_Pro' ) ) { ?>
+                                <?php
+                                $is_pro = wpuf()->is_pro();
+	                            if ( $is_pro ) { ?>
                                     <div><?php _e( 'Tax', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_tax"><?php echo $tax_rate; ?></strong></span></div>
                                 <?php } ?>
                                 <div><?php _e( 'Total', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo wpuf_format_price( $billing_amount ); ?></strong></span></div>
@@ -336,7 +340,7 @@ class WPUF_Payment {
                     $post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
                     if ( !is_wp_error ( $current_pack ) && !$post_count ) {
-                        $amount  = $form->get_subs_fallback_cost();
+                        $amount    = $form->get_subs_fallback_cost();
                     } else {
                         $amount    = $form->get_pay_per_post_cost();
                     }
@@ -347,7 +351,7 @@ class WPUF_Payment {
                 case 'pack':
                     $pack           = WPUF_Subscription::init()->get_subscription( $pack_id );
                     $custom         = $pack->meta_value;
-                    $cost           = (float) $pack->meta_value['billing_amount'];
+                    $cost           = $pack->meta_value['billing_amount'];
                     $amount         = $cost;
                     $item_name      = $pack->post_title;
                     $item_number    = $pack->ID;
@@ -356,7 +360,7 @@ class WPUF_Payment {
 
             $payment_vars = array(
                 'currency'    => wpuf_get_option( 'currency', 'wpuf_payment' ),
-                'price'       => (float) $amount,
+                'price'       => $amount,
                 'item_number' => $item_number,
                 'item_name'   => $item_name,
                 'type'        => $type,
@@ -383,7 +387,8 @@ class WPUF_Payment {
      * @param int $transaction_id the transaction id in case of update
      */
     public static function insert_payment( $data, $transaction_id = 0, $recurring = false ) {
-        global $wpdb, $current_user;
+        global $wpdb;
+        $user_id = get_current_user();
 
         //check if it's already there
         $sql = $wpdb->prepare( "SELECT transaction_id
@@ -400,8 +405,12 @@ class WPUF_Payment {
             unset( $data['profile_id'] );
         }
 
-        if ( metadata_exists( 'user', $current_user->ID, 'wpuf_address_fields') ) {
-            $address_fields = get_user_meta( $current_user->ID, 'wpuf_address_fields', true );
+        if ( empty( $data['tax'] ) ) {
+            $data['tax'] = $data['cost'] - $data['subtotal'];
+        }
+
+        if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
+            $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );
             $data['payer_address'] = serialize( $address_fields );
         }
 

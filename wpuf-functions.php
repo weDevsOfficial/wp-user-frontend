@@ -2661,6 +2661,7 @@ function wpuf_ajax_get_states_field() {
     wp_die();
 }
 add_action( 'wp_ajax_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' );
+add_action( 'wp_ajax_nopriv_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' );
 
 /**
  * Performs tax calculations and updates billing address
@@ -2671,7 +2672,7 @@ add_action( 'wp_ajax_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' );
 function wpuf_update_billing_address() {
     ob_start();
 
-    global $current_user;
+    $user_id = get_current_user_id();
     $address_fields = array(
         'add_line_1'    => $_POST['billing_add_line1'],
         'add_line_2'    => $_POST['billing_add_line2'],
@@ -2681,12 +2682,17 @@ function wpuf_update_billing_address() {
         'country'       => $_POST['billing_country']
     );
 
-    update_user_meta( $current_user->ID, 'wpuf_address_fields', $address_fields );
+    update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
 
-    if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
-        do_action( 'wpuf_calculate_tax', $_POST );
+    $post_data['type'] = $_POST['type'];
+    $post_data['id']   = $_POST['id'];
+
+    $is_pro = wpuf()->is_pro();
+    if ( $is_pro ) {
+        do_action( 'wpuf_calculate_tax', $post_data );
     } else {
         die();
     }
 }
 add_action( 'wp_ajax_wpuf_update_billing_address', 'wpuf_update_billing_address' );
+add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_address' );

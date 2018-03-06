@@ -63,7 +63,7 @@ class WPUF_Gateway_Bank {
         }
 
         $data['subtotal'] = $data['price'];
-        $data['price']    = apply_filters( 'wpuf_amount_with_tax', $data['price'] );
+        $data['price']    = apply_filters( 'wpuf_payment_amount', $data['price'] );
         $data['tax']      = $data['price'] - $data['subtotal'];
 
         if ( $order_id ) {

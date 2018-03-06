@@ -143,7 +143,7 @@ class WPUF_Paypal {
         }
 
         $data['subtotal'] = $billing_amount;
-        $billing_amount   = apply_filters( 'wpuf_amount_with_tax', $data['subtotal'] );
+        $billing_amount   = apply_filters( 'wpuf_payment_amount', $data['subtotal'] );
         $data['tax']      = $billing_amount - $data['subtotal'];
 
         if ( $billing_amount == 0 ) {
@@ -241,7 +241,7 @@ class WPUF_Paypal {
         }
     }
 
-        /**
+    /**
      * Check for PayPal IPN Response.
      */
     public function check_response() {

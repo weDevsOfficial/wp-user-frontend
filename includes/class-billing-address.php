@@ -26,10 +26,10 @@ class WPUF_Ajax_Address_Form {
      * Address Form
      */
     public static function wpuf_ajax_address_form() {
-        global $current_user;
+        $user_id = get_current_user_id();
 
-        if ( metadata_exists( 'user', $current_user->ID, 'wpuf_address_fields') ) {
-            $address_fields = get_user_meta( $current_user->ID, 'wpuf_address_fields', true );
+        if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
+            $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );
             $address_fields = $address_fields;  
         } else {
             $address_fields = array_fill_keys(
@@ -44,7 +44,7 @@ class WPUF_Ajax_Address_Form {
                         <label>Country<span class="required">*</span></label>
                         <br>
                         <?php
-                        if ( class_exists( 'wpuf_get_tax_rates' ) ) {
+                        if ( function_exists( 'wpuf_get_tax_rates' ) ) {
                             $rates = wpuf_get_tax_rates();
                         }
                         $cs = new CountryState();
@@ -128,7 +128,7 @@ class WPUF_Ajax_Address_Form {
         if (isset($_POST)) {
             parse_str($_POST["data"], $_POST);
 
-            global $current_user;
+            $user_id = get_current_user_id();
 
             $address_fields     = array();
 
@@ -145,7 +145,7 @@ class WPUF_Ajax_Address_Form {
                     'zip_code'      => $_POST['wpuf_biiling_zip_code'],
                     'country'       => $_POST['wpuf_biiling_country']
                 );   
-                update_user_meta( $current_user->ID, 'wpuf_address_fields', $address_fields );
+                update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
                 $msg = '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wpuf' ) . '</div>';
 
                 echo $msg;

@@ -834,7 +834,7 @@ class WPUF_Subscription {
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : '0.00';
 
         if ( isset( $price_with_tax ) && $price_with_tax ) {
-            $billing_amount = apply_filters( 'wpuf_amount_with_tax', $billing_amount);
+            $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount);
         }
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' ) {
@@ -931,7 +931,7 @@ class WPUF_Subscription {
                 $pay_per_post_cost = (float) $form->get_pay_per_post_cost();
 
                 if ( isset( $price_with_tax ) && $price_with_tax ) {
-                    $pay_per_post_cost = apply_filters( 'wpuf_amount_with_tax', $pay_per_post_cost );
+                    $pay_per_post_cost = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
                 }
 
                 $text              = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
@@ -948,7 +948,7 @@ class WPUF_Subscription {
                 $fallback_cost     = (int )$form->get_subs_fallback_cost();
 
                 if ( isset( $price_with_tax ) && $price_with_tax ) {
-                    $fallback_cost     = apply_filters( 'wpuf_amount_with_tax', $fallback_cost );
+                    $fallback_cost     = apply_filters( 'wpuf_payment_amount', $fallback_cost );
                 }
 
                 $text              = sprintf( __( 'Your Subscription pack exhausted. There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $fallback_cost ));

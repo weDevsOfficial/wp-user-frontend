@@ -284,7 +284,6 @@ class WPUF_User_Subscription {
     }
 
     public function pack_info( $form_id ) {
-        global $current_user;
 
         $form             = new WPUF_Form( $form_id );
         $payment_options  = $form->is_charging_enabled();

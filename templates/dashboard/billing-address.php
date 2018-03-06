@@ -1,6 +1,6 @@
 <?php 
 
-global $current_user;
+$user_id = get_current_user();
 
 $address_fields = array();
 $countries = array();
@@ -19,11 +19,11 @@ if ( isset( $_POST['add_line_1'] )
         'zip_code'      => $_POST['zip_code'],
         'country'       => $_POST['country']
     );   
-    update_user_meta( $current_user->ID, 'wpuf_address_fields', $address_fields );
+    update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
     echo '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wpuf' ) . '</div>';
 } else {
-    if ( metadata_exists( 'user', $current_user->ID, 'wpuf_address_fields') ) {
-        $address_fields = get_user_meta( $current_user->ID, 'wpuf_address_fields', true );
+    if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
+        $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );
         $address_fields = $address_fields;  
     } else {
         $address_fields = array_fill_keys(

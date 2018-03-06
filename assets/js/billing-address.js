@@ -39,7 +39,7 @@ jQuery(function($){
         var $payment_form = jQuery('#wpuf-payment-gateway');
 
         var postData = {
-            action: 'wpuf_calculate_tax',
+            action: 'wpuf_update_billing_address',
             billing_country: $wpuf_cc_address.find('#wpuf_biiling_country').val(),
             billing_state: $wpuf_cc_address.find('#wpuf_biiling_state').val(),
             billing_add_line1: $wpuf_cc_address.find('#wpuf_biiling_add_line_1').val(),
@@ -58,7 +58,7 @@ jQuery(function($){
             url: ajaxurl,
             success: function (tax_response) {
                 // Only update tax info if this response is the most recent ajax call. This avoids bug with form autocomplete firing multiple ajax calls at the same time
-                if (current_ajax_count === ajax_tax_count) {
+                if ((current_ajax_count === ajax_tax_count) && tax_response) {
                     jQuery('#wpuf_pay_page_tax').html(tax_response.tax);
                     jQuery('#wpuf_pay_page_total').html(tax_response.cost);
                     var tax_data = new Object();

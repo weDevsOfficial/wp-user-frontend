@@ -2629,3 +2629,64 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
 
     return $items;
 }
+
+/**
+ * Retrieve a states drop down
+ *
+ * @return void
+ */
+function wpuf_ajax_get_states_field() {
+    $cs = new CountryState();
+    $countries = $cs->countries();
+    $states    = $cs->getStates( $countries[$_POST['country']] );
+
+    if( ! empty( $states ) ) {
+        $args = array(
+            'name'    => isset ( $_POST['field_name'] ) ? $_POST['field_name'] : '',
+            'id'      => isset ( $_POST['field_name'] ) ? $_POST['field_name'] : '',
+            'class'   => isset ( $_POST['field_name'] ) ? $_POST['field_name'] : '',
+            'options' => $states,
+            'show_option_all'  => false,
+            'show_option_none' => false
+        );
+
+        $response = wpuf_select( $args );
+
+    } else {
+        $response = 'nostates';
+    }
+
+    echo $response;
+
+    wp_die();
+}
+add_action( 'wp_ajax_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' );
+
+/**
+ * Performs tax calculations and updates billing address
+ *
+ * @return void
+ */
+
+function wpuf_update_billing_address() {
+    ob_start();
+
+    global $current_user;
+    $address_fields = array(
+        'add_line_1'    => $_POST['billing_add_line1'],
+        'add_line_2'    => $_POST['billing_add_line2'],
+        'city'          => $_POST['billing_city'],
+        'state'         => $_POST['billing_state'],
+        'zip_code'      => $_POST['billing_zip'],
+        'country'       => $_POST['billing_country']
+    );
+
+    update_user_meta( $current_user->ID, 'wpuf_address_fields', $address_fields );
+
+    if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+        do_action( 'wpuf_calculate_tax', $_POST );
+    } else {
+        die();
+    }
+}
+add_action( 'wp_ajax_wpuf_update_billing_address', 'wpuf_update_billing_address' );

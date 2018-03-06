@@ -168,13 +168,17 @@ class WPUF_Payment {
                                                 <?php } else {
                                                     $pack_cost = $pack->meta_value['billing_amount'];
                                                     $billing_amount = apply_filters( 'wpuf_amount_with_tax', $pack->meta_value['billing_amount'] );
-                                                    $tax_rate = wpuf_current_tax_rate() . '%';
+                                                    if ( class_exists( 'wpuf_current_tax_rate' ) ) {
+                                                        $tax_rate = wpuf_current_tax_rate() . '%';
+                                                    }
                                                     ?>
                                                     <div id="wpuf_type" style="display: none"><?php echo 'pack'; ?></div>
                                                     <div id="wpuf_id" style="display: none"><?php echo $pack_id; ?></div>
                                                     <div><?php _e( 'Selected Pack ', 'wpuf' ); ?>: <strong><?php echo $pack->post_title; ?></strong></div>
                                                     <div><?php _e( 'Pack Price ', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_cost"><?php echo wpuf_format_price( $pack_cost ); ?></strong></span></div>
+                                                    <?php if ( class_exists( 'WP_User_Frontend_Pro' ) ) { ?>
                                                     <div><?php _e( 'Tax', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_tax"><?php echo $tax_rate; ?></strong></span></div>
+                                                    <?php } ?>
                                                     <div><?php _e( 'Total', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo wpuf_format_price( $billing_amount ); ?></strong></span></div>
                                                 <?php } ?>
                                             </div>
@@ -205,7 +209,9 @@ class WPUF_Payment {
                                 $fallback_cost     = (float)$form->get_subs_fallback_cost();
                                 $pay_per_post_cost = (float)$form->get_pay_per_post_cost();
                                 $current_user = wpuf_get_user();
-                                $tax_rate = wpuf_current_tax_rate() . '%';
+                                if ( class_exists( 'wpuf_current_tax_rate' ) ) {
+                                    $tax_rate = wpuf_current_tax_rate() . '%';
+                                }
                                 $current_pack = $current_user->subscription()->current_pack();
                                 if ( $force_pack && is_wp_error( $current_pack ) && $fallback_enabled ) {
                                     $post_cost = $fallback_cost;
@@ -219,7 +225,9 @@ class WPUF_Payment {
                                 <div id="wpuf_type" style="display: none"><?php echo 'post'; ?></div>
                                 <div id="wpuf_id" style="display: none"><?php echo $post_id; ?></div>
                                 <div><?php _e( 'Post cost', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_cost"><?php echo wpuf_format_price( $post_cost ); ?></strong></span></div>
-                                <div><?php _e( 'Tax', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_tax"><?php echo $tax_rate; ?></strong></span></div>
+                                <?php if ( class_exists( 'WP_User_Frontend_Pro' ) ) { ?>
+                                    <div><?php _e( 'Tax', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_tax"><?php echo $tax_rate; ?></strong></span></div>
+                                <?php } ?>
                                 <div><?php _e( 'Total', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo wpuf_format_price( $billing_amount ); ?></strong></span></div>
                             <?php } ?>
                             <?php wp_nonce_field( 'wpuf_payment_gateway' ) ?>

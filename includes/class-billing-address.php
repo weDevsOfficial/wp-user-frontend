@@ -44,7 +44,9 @@ class WPUF_Ajax_Address_Form {
                         <label>Country<span class="required">*</span></label>
                         <br>
                         <?php
-                        $rates = wpuf_get_tax_rates();
+                        if ( class_exists( 'wpuf_get_tax_rates' ) ) {
+                            $rates = wpuf_get_tax_rates();
+                        }
                         $cs = new CountryState();
                         $states = array(); $selected = array();
                         $base_addr = get_option( 'wpuf_base_country_state', false );

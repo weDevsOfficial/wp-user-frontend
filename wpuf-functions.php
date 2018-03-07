@@ -955,6 +955,8 @@ function wpuf_meta_shortcode( $atts ) {
 
     } elseif ( $type == 'repeat' ) {
         return implode( '; ', get_post_meta( $post->ID, $name ) );
+    } elseif ( $type == 'normal' ) {
+        return implode( ', ', get_post_meta( $post->ID, $name ) );
     } else {
         return make_clickable( implode( ', ', get_post_meta( $post->ID, $name ) ) );
     }

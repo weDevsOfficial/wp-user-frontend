@@ -1535,7 +1535,7 @@ function wpuf_get_pending_transactions( $args = array() ) {
             'user_id'          => $info['user_info']['id'],
             'status'           => 'pending',
             'cost'             => $info['price'],
-            'tax'              => $info['tax'],
+            'tax'              => isset( $info['tax'] ) ? $info['tax'] : 0,
             'post_id'          => ( $info['type'] == 'post' ) ? $info['item_number'] : 0,
             'pack_id'          => ( $info['type'] == 'pack' ) ? $info['item_number'] : 0,
             'payer_first_name' => $info['user_info']['first_name'],
@@ -2684,8 +2684,10 @@ function wpuf_update_billing_address() {
 
     update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
 
-    $post_data['type'] = $_POST['type'];
-    $post_data['id']   = $_POST['id'];
+    $post_data['type']            = $_POST['type'];
+    $post_data['id']              = $_POST['id'];
+    $post_data['billing_country'] = $_POST['billing_country'];
+    $post_data['billing_state']   = $_POST['billing_state'];
 
     $is_pro = wpuf()->is_pro();
     if ( $is_pro ) {

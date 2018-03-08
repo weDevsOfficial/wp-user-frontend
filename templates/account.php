@@ -5,7 +5,12 @@
                 if ( is_user_logged_in() ) {
                     foreach ( $sections as $section ) {
                         if ( 'subscription' == $section['slug']) {
-                            if ( 'on' == wpuf_get_option( 'show_subscriptions', 'wpuf_my_account' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+                            if ( 'off' == wpuf_get_option( 'show_subscriptions', 'wpuf_my_account', 'on' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+                                continue;
+                            }
+                        }
+                        if ( 'billing-address' == $section['slug']) {
+                            if ( 'off' == wpuf_get_option( 'show_billing_address', 'wpuf_my_account', 'on' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
                                 continue;
                             }
                         }

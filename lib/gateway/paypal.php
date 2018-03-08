@@ -142,6 +142,10 @@ class WPUF_Paypal {
             $coupon_id = '';
         }
 
+        $data['subtotal'] = $billing_amount;
+        $billing_amount   = apply_filters( 'wpuf_payment_amount', $data['subtotal'] );
+        $data['tax']      = $billing_amount - $data['subtotal'];
+
         if ( $billing_amount == 0 ) {
             wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], $profile_id = null, false,'free' );
             wp_redirect( $return_url );
@@ -177,7 +181,7 @@ class WPUF_Paypal {
                 'p3'            =>  !empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number']: '0',
                 't3'            =>  $period,
                 'item_name'     =>  $data['custom']['post_title'],
-                'custom'        =>  json_encode( array( 'billing_amount' => $billing_amount, 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id )),
+                'custom'        =>  json_encode( array( 'billing_amount' => $billing_amount, 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id, 'subtotal' => $data['subtotal'], 'tax' => $data['tax'] )),
                 'no_shipping'   =>  '1',
                 'shipping'      =>  '0',
                 'no_note'       =>  '1',
@@ -211,7 +215,7 @@ class WPUF_Paypal {
                 'item_number'   => $data['item_number'],
                 'charset'       => 'UTF-8',
                 'rm'            => '2',
-                'custom'        => json_encode( array( 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id ) ),
+                'custom'        => json_encode( array( 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id, 'subtotal' => $data['subtotal'], 'tax' => $data['tax'] ) ),
                 'return'        => $return_url,
                 'notify_url'    => $listener_url,
             );
@@ -237,7 +241,7 @@ class WPUF_Paypal {
         }
     }
 
-        /**
+    /**
      * Check for PayPal IPN Response.
      */
     public function check_response() {
@@ -351,6 +355,8 @@ class WPUF_Paypal {
             $data = array(
                 'user_id'          => (int) $custom->user_id,
                 'status'           => strtolower( $postdata['payment_status'] ),
+                'subtotal'         => (float) $custom->subtotal,
+                'tax'              => (float) $custom->tax,
                 'cost'             => $postdata['mc_gross'],
                 'post_id'          => isset( $post_id ) ? $post_id : '',
                 'pack_id'          => isset( $pack_id ) ? $pack_id : '',
@@ -370,10 +376,11 @@ class WPUF_Paypal {
             WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
 
             if ( $coupon_id ) {
-                $pre_usage = get_post_meta( $post_id, '_coupon_used', true );
+                $pre_usage = get_post_meta( $coupon_id, '_coupon_used', true );
+                $pre_usage = (empty( $pre_usage )) ? 0 : $pre_usage;
                 $new_use   = $pre_usage + 1;
 
-                update_post_meta( $post_id, '_coupon_used', $coupon_id );
+                update_post_meta( $coupon_id, '_coupon_used', $new_use );
             }
 
             delete_user_meta( $custom->user_id, '_wpuf_user_active' );

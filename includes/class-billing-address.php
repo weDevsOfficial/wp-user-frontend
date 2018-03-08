@@ -9,16 +9,12 @@ class WPUF_Ajax_Address_Form {
         add_action( 'wp_ajax_wpuf_address_ajax_action', array( $this, 'ajax_form_action' ), 10, 1 ); 
     }
 
-
     /**
      * Enqueue scripts
      */
     public function register_plugin_scripts() {
-        $ajax_vars = array(
-            'ajaxurl' => admin_url( 'admin-ajax.php'),
-        );
         wp_enqueue_script( 'wpuf-ajax-script', plugins_url( 'assets/js/billing-address.js', dirname( __FILE__ ) ), array('jquery'), false );
-        wp_localize_script( 'wpuf-ajax-script', 'ajax_object', $ajax_vars ) ;
+        wp_localize_script( 'wpuf-ajax-script', 'ajax_object', array(  'ajaxurl' => admin_url( 'admin-ajax.php' ) )) ;
     }
 
 
@@ -67,7 +63,7 @@ class WPUF_Ajax_Address_Form {
                         ?>
                     </td>
                     <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;">
-                        <label>State<span class="required">*</span></label>
+                        <label>State/Province/Region<span class="required">*</span></label>
                         <br>
                         <?php
                         $states = $cs->getStates( $selected['country'] );
@@ -104,7 +100,7 @@ class WPUF_Ajax_Address_Form {
                         </div>
                     </td>
                     <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;">
-                        <div class="wpuf-label"><?php _e( 'ZIP', 'wpuf' ); ?></div>
+                        <div class="wpuf-label"><?php _e( 'Postal Code/ZIP', 'wpuf' ); ?></div>
                         <div class="wpuf-fields">
                             <input  type="text" class="input" name="wpuf_biiling_zip_code" id="wpuf_biiling_zip_code" value="<?php echo $address_fields['add_line_2']; ?>" />
                         </div>

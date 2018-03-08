@@ -2684,8 +2684,10 @@ function wpuf_update_billing_address() {
 
     update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
 
-    $post_data['type'] = $_POST['type'];
-    $post_data['id']   = $_POST['id'];
+    $post_data['type']            = $_POST['type'];
+    $post_data['id']              = $_POST['id'];
+    $post_data['billing_country'] = $_POST['billing_country'];
+    $post_data['billing_state']   = $_POST['billing_state'];
 
     $is_pro = wpuf()->is_pro();
     if ( $is_pro ) {

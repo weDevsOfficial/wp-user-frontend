@@ -59,7 +59,7 @@ if ( isset( $_POST['add_line_1'] )
             </li>
 
             <li>
-                <div class="wpuf-label"><?php _e('State ', 'wpuf' ); ?> <span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e('State/Province/Region', 'wpuf' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="state" id="state" value="<?php echo $cs->getStateName( $address_fields['state'], $address_fields['country'] ); ?>" />
                 </div>
@@ -69,12 +69,12 @@ if ( isset( $_POST['add_line_1'] )
                 <div class="wpuf-fields">
                     <div class="wpuf-name-field-wrap format-first-last">
                         <div class="wpuf-name-field-first-name">
-                            <label class="wpuf-fields wpuf-label"><?php _e( 'Zip Code ', 'wpuf' ); ?></label>
+                            <label class="wpuf-fields wpuf-label"><?php _e( 'Postal Code/ZIP', 'wpuf' ); ?></label>
                             <input type="number" class="input" name="zip_code" id="zip_code" value="<?php echo $address_fields['zip_code']; ?>" />
                         </div>
 
                         <div class="wpuf-name-field-last-name">
-                            <label class="wpuf-fields wpuf-label"><?php _e('Country ', 'wpuf' ); ?></label>
+                            <label class="wpuf-fields wpuf-label"><?php _e('Country', 'wpuf' ); ?></label>
                             <div class="wpuf-fields">
                                 <?php
                                 $countries = $cs->countries();

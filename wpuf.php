@@ -241,6 +241,8 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/includes/class-form.php';
         require_once WPUF_ROOT . '/includes/class-login-widget.php';
         require_once WPUF_ROOT . '/includes/setup-wizard.php';
+        require_once WPUF_ROOT . '/includes/countries-state.php';
+        require_once WPUF_ROOT . '/includes/class-billing-address.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
@@ -296,6 +298,7 @@ final class WP_User_Frontend {
         $this->container['frontend_post']           = WPUF_Frontend_Form_Post::init();
         $this->container['account']                 = new WPUF_Frontend_Account();
         $this->container['insights']                = new WPUF_WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
+        $this->container['billing_address']         = new WPUF_Ajax_Address_Form();
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();

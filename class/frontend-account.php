@@ -17,6 +17,7 @@ class WPUF_Frontend_Account {
         add_action( 'wpuf_account_content_posts', array( $this, 'posts_section' ), 10, 2 );
         add_action( 'wpuf_account_content_subscription', array( $this, 'subscription_section' ), 10, 2 );
         add_action( 'wpuf_account_content_edit-profile', array( $this, 'edit_profile_section' ), 10, 2 );
+        add_action( 'wpuf_account_content_billing-address', array( $this, 'billing_address_section' ), 10, 2 );
         add_action( 'wp_ajax_wpuf_account_update_profile', array( $this, 'update_profile' ) );
     }
 
@@ -168,6 +169,21 @@ class WPUF_Frontend_Account {
     public function edit_profile_section( $sections, $current_section ) {
         wpuf_load_template(
             "dashboard/edit-profile.php",
+            array( 'sections' => $sections, 'current_section' => $current_section )
+        );
+    }
+
+    /**
+     * Display the billing address section
+     *
+     * @param  array  $sections
+     * @param  string $current_section
+     *
+     * @return void
+     */
+    public function billing_address_section( $sections, $current_section ) {
+        wpuf_load_template(
+            "dashboard/billing-address.php",
             array( 'sections' => $sections, 'current_section' => $current_section )
         );
     }

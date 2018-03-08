@@ -827,7 +827,15 @@ class WPUF_Subscription {
 
     function pack_details( $pack, $details_meta, $current_pack_id = '', $coupon_satus = false ) {
 
+        if ( function_exists( 'wpuf_prices_include_tax' ) ) {
+            $price_with_tax = wpuf_prices_include_tax();
+        }
+
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : '0.00';
+
+        if ( isset( $price_with_tax ) && $price_with_tax ) {
+            $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount);
+        }
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' ) {
             $recurring_des = sprintf( __('Every', 'wpuf').' %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
@@ -911,12 +919,21 @@ class WPUF_Subscription {
         $current_pack      = $current_user->subscription()->current_pack();
         $payment_enabled   = $form->is_charging_enabled();
 
+        if ( function_exists( 'wpuf_prices_include_tax' ) ) {
+            $price_with_tax = wpuf_prices_include_tax();
+        }
+
         if ( self::has_user_error( $form_settings ) || ( $payment_enabled && $pay_per_post && !$force_pack ) ) {
             ?>
             <div class="wpuf-info">
                 <?php
                 $form              = new WPUF_Form( $form_id );
                 $pay_per_post_cost = (float) $form->get_pay_per_post_cost();
+
+                if ( isset( $price_with_tax ) && $price_with_tax ) {
+                    $pay_per_post_cost = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
+                }
+
                 $text              = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
 
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
@@ -929,7 +946,13 @@ class WPUF_Subscription {
                 <?php
                 $form              = new WPUF_Form( $form_id );
                 $fallback_cost     = (int )$form->get_subs_fallback_cost();
+
+                if ( isset( $price_with_tax ) && $price_with_tax ) {
+                    $fallback_cost     = apply_filters( 'wpuf_payment_amount', $fallback_cost );
+                }
+
                 $text              = sprintf( __( 'Your Subscription pack exhausted. There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $fallback_cost ));
+                
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
                 ?>
             </div>

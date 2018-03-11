@@ -15,8 +15,7 @@ jQuery(function($){
             country: $(this).val(),
             field_name: $("#wpuf_biiling_state").attr("name"),
         };
-        $.post(ajaxurl, data, function (response) {
-            console.log(response);
+        $.post(ajax_object.ajaxurl, data, function (response) {
             if( 'nostates' == response ) {
                 var text_field = '<input type="text" name="' + data.field_name + '" value=""/>';
                 $this.parent().next().find('select').replaceWith( text_field );
@@ -55,7 +54,7 @@ jQuery(function($){
             type: "POST",
             data: postData,
             dataType: "json",
-            url: ajaxurl,
+            url: ajax_object.ajaxurl,
             success: function (tax_response) {
                 // Only update tax info if this response is the most recent ajax call. This avoids bug with form autocomplete firing multiple ajax calls at the same time
                 if ((current_ajax_count === ajax_tax_count) && tax_response) {

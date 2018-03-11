@@ -41,8 +41,8 @@ class WPUF_Upgrades {
         if ( ! $this->get_version() ) {
             return false;
         }
-
-        if ( version_compare( $this->get_version(), WPUF_VERSION, '<' ) && in_array( WPUF_VERSION, self::$upgrades ) ) {
+        //check if current version is greater then installed version and any update key is available
+        if ( version_compare( $this->get_version(), WPUF_VERSION, '<' ) && in_array( WPUF_VERSION, array_keys( self::$upgrades ) ) ) {
             return true;
         }
 

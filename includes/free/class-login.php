@@ -741,7 +741,9 @@ class WPUF_Simple_Login {
         $title   = sprintf( __('[%s] Password Reset', 'wpuf' ), $blogname );
         $title   = apply_filters( 'retrieve_password_title', $title );
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login );
-
+        
+        $message = esc_html( $message );
+        
         if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
             wp_die( __('The e-mail could not be sent.', 'wpuf') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.', 'wpuf') );
         }

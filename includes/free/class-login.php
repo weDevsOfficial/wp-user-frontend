@@ -367,10 +367,15 @@ class WPUF_Simple_Login {
      * @return  string $url
      */
     function login_redirect() {
-        $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
 
+        $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
+        
         if ( !$redirect_to ) {
             return home_url();
+        }
+        
+        if ( 'previous_page' == $redirect_to && !empty( $_POST['redirect_to'] ) ) {
+            return $_POST['redirect_to'];
         }
 
         return get_permalink( $redirect_to );
@@ -381,13 +386,14 @@ class WPUF_Simple_Login {
      *
      * @return  string $url
      */
-    function default_login_redirect( $redirect_to ) {
-        $override = wpuf_get_option( 'wp_default_login_redirect', 'wpuf_profile', false );
+    function default_login_redirect( $redirect ) {
+        $override    = wpuf_get_option( 'wp_default_login_redirect', 'wpuf_profile', false );
+        $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
 
-        if ( $override != 'on' ) {
-            return $redirect_to;
+        if ( $override != 'on' || 'previous_page' == $redirect_to ) {
+            return $redirect;
         }
-
+        
         return $this->login_redirect();
     }
 

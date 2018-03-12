@@ -7,6 +7,7 @@
 <div class="login" id="wpuf-login-form">
 
     <?php
+
     $message = apply_filters( 'login_message', '' );
     if ( ! empty( $message ) ) {
         echo $message . "\n";
@@ -33,7 +34,7 @@
 
         <p class="submit">
             <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Log In', 'wpuf' ); ?>" />
-            <input type="hidden" name="redirect_to" value="<?php echo wpuf()->login->get_posted_value( 'redirect_to' ); ?>" />
+            <input type="hidden" name="redirect_to" value="<?php echo wp_get_referer() ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />
             <?php wp_nonce_field( 'wpuf_login_action' ); ?>

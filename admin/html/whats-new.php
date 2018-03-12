@@ -1,6 +1,32 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.8.5',
+        'released' => '2018-03-12',
+        'changes' => array(
+            array(
+                'title'       => __( 'Enhanced Login Redirect to redirect users to previous page', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'You can choose Previous Page as Login Redirect page settings now to redirect users to the page from which they went for Login. ', 'wpuf' )
+            ),
+            array(
+                'title'       => __( 'Email HTML links not Rendreing properly issue is fixed', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'For some clients emails were not rendering the HTML links properly, this is now fixed', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Form Builder : Help texts on form fields styles were not showing properly', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Help texts styling is now fixed and much easier to read and understand', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Various other code improvements', 'wpuf' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Code structure organization and optimization for better performance', 'wpuf' ),
+            )
+        )
+    ),
+    array(
         'version'  => 'Version 2.8.4',
         'released' => '2018-03-04',
         'changes' => array(

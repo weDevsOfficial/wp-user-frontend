@@ -731,6 +731,8 @@ class WPUF_Simple_Login {
         $message .= __('If this was a mistake, just ignore this email and nothing will happen.', 'wpuf') . "\r\n\r\n";
         $message .= __('To reset your password, visit the following address:', 'wpuf') . "\r\n\r\n";
         $message .= '<' . $reset_url . ">\r\n";
+        
+        $message = esc_html( $message );
 
         if ( is_multisite() ) {
             $blogname = $GLOBALS['current_site']->site_name;

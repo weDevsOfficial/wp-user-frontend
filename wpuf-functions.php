@@ -1537,7 +1537,7 @@ function wpuf_get_pending_transactions( $args = array() ) {
             'user_id'          => $info['user_info']['id'],
             'status'           => 'pending',
             'cost'             => $info['price'],
-            'tax'              => $info['tax'],
+            'tax'              => isset( $info['tax'] ) ? $info['tax'] : 0,
             'post_id'          => ( $info['type'] == 'post' ) ? $info['item_number'] : 0,
             'pack_id'          => ( $info['type'] == 'pack' ) ? $info['item_number'] : 0,
             'payer_first_name' => $info['user_info']['first_name'],
@@ -2002,6 +2002,9 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
     if ( ! empty( $settings ) ) {
         update_post_meta( $form_id, 'wpuf_form_settings', $settings );
     }
+
+    //set form Version
+    update_post_meta( $form_id, 'wpuf_form_version', get_option( 'wpuf_version' ) );
 
     return $form_id;
 }

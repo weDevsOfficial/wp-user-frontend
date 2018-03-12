@@ -3,11 +3,11 @@
 /* CountryState class */
 
 class CountryState {
-    
+
     /**
     An array of countries, iso_2_code, iso_3_code, iso_num_code, iso_something code :-), states/counties, international dial code.
     It can be used to quickly generate web forms.  You can do a split on the counties/states string.
-    
+
     */
     private $sorted_countries = [
         ['Afghanistan', 'AF', 'AFG', '004', 'ISO 3166-2:AF', 'Badakhshan|Badghis|Baghlan|Balkh|Bamian|Farah|Faryab|Ghazni|Ghowr|Helmand|Herat|Jowzjan|Kabol|Kandahar|Kapisa|Konar|Kondoz|Laghman|Lowgar|Nangarhar|Nimruz|Oruzgan|Paktia|Paktika|Parvan|Samangan|Sar-e Pol|Takhar|Vardak|Zabol', '93'],
@@ -260,8 +260,8 @@ class CountryState {
         ['Zambia', 'ZM', 'ZMB', '894', 'ISO 3166-2:ZM', 'Central|Copperbelt|Eastern|Luapula|Lusaka|North-Western|Northern|Southern|Western', '260'],
         ['Zimbabwe', 'ZW', 'ZWE', '716', 'ISO 3166-2:ZW', 'Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Mashonaland West|Masvingo|Matabeleland North|Matabeleland South|Midlands', '263']
     ];
-    
-    
+
+
     # returns a list of all countries
     public function countries(){
         $list = array(); $list2 = array();
@@ -272,7 +272,7 @@ class CountryState {
 
         return array_combine( $list2, $list) ;
     }
-    
+
     # returns a list of all states
     public function states(){
         $list = array();
@@ -285,7 +285,7 @@ class CountryState {
         sort($list);
         return $list;
     }
-    
+
     # getStates accepts a name, iso_2_code, iso_3_code, iso_num_code or iso_something_code of a country
     public function getStates($country = null){
         if(!empty($country) && (is_string($country) || is_numeric($country))){
@@ -306,7 +306,7 @@ class CountryState {
             return array();
         }
     }
-    
+
     # getCountry accepts a name, iso_2_code, iso_3_code, iso_num_code or iso_something_code of a country
     public function getCountry($country = null){
         if(!empty($country) && (is_string($country) || is_numeric($country))){
@@ -324,7 +324,7 @@ class CountryState {
             return array();
         }
     }
-    
+
     # findState accepts only name of state
     public function findState($state = null){
         if(!empty($state) && is_string($state)){
@@ -353,13 +353,13 @@ class CountryState {
             }
         }
     }
-    
-    public function isCountry($state){
-        if(!empty($this->getCountry($state))){
+
+    public function isCountry( $state ) {
+        $state = $this->getCountry($state);
+        if ( !empty($state) ) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public function getCountryCode( $country = null ) {

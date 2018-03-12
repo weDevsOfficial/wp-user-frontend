@@ -53,6 +53,10 @@ function wpuf_settings_fields() {
     $pages = wpuf_get_pages();
     $users = wpuf_list_users();
 
+    $login_redirect_pages =  array(
+        'previous_page' => __( 'Previous Page', 'wpuf' )
+    ) + $pages;
+
     $all_currencies = wpuf_get_currencies();
 
     $currencies = array();
@@ -255,15 +259,25 @@ function wpuf_settings_fields() {
         ) ),
         'wpuf_my_account' => apply_filters( 'wpuf_options_wpuf_my_account', array(
             array(
+                'name'    => 'account_page',
+                'label'   => __( 'Account Page', 'wpuf' ),
+                'desc'    => __( 'Select the page which contains <code>[wpuf_account]</code> shortcode', 'wpuf' ),
+                'type'    => 'select',
+                'options' => $pages
+            ),
+            array(
                 'name'    => 'show_subscriptions',
                 'label'   => __( 'Show Subscriptions', 'wpuf' ),
                 'desc'    => __( 'Show Subscriptions tab in "my account" page where <code>[wpuf_account]</code> is located', 'wpuf' ),
-                'type'    => 'select',
-                'default' => 'yes',
-                'options' => array(
-                    'yes' => __( 'Yes', 'wpuf' ),
-                    'no'  => __( 'No', 'wpuf' )
-                )
+                'type'    => 'checkbox',
+                'default' => 'on',
+            ),
+            array(
+                'name'  => 'show_billing_address',
+                'label' => __( 'Show Billing Address', 'wpuf' ),
+                'desc'  => __( 'Show billing address in account page.', 'wpuf' ),
+                'type'  => 'checkbox',
+                'default' => 'on',
             ),
         ) ),
         'wpuf_profile' => apply_filters( 'wpuf_options_profile', array(
@@ -300,7 +314,7 @@ function wpuf_settings_fields() {
                 'label'   => __( 'Redirect After Login', 'wpuf' ),
                 'desc'    => __( 'After successfull login, where the page will redirect to', 'wpuf' ),
                 'type'    => 'select',
-                'options' => $pages
+                'options' => $login_redirect_pages
             ),
             array(
                 'name'    => 'wp_default_login_redirect',

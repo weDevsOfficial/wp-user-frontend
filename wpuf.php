@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.8.4
+Version: 2.8.5
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wpuf
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.8.4' );
+define( 'WPUF_VERSION', '2.8.5' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -241,6 +241,8 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/includes/class-form.php';
         require_once WPUF_ROOT . '/includes/class-login-widget.php';
         require_once WPUF_ROOT . '/includes/setup-wizard.php';
+        require_once WPUF_ROOT . '/includes/countries-state.php';
+        require_once WPUF_ROOT . '/includes/class-billing-address.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
@@ -296,6 +298,7 @@ final class WP_User_Frontend {
         $this->container['frontend_post']           = WPUF_Frontend_Form_Post::init();
         $this->container['account']                 = new WPUF_Frontend_Account();
         $this->container['insights']                = new WPUF_WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
+        $this->container['billing_address']         = new WPUF_Ajax_Address_Form();
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();

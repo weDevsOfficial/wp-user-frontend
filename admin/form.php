@@ -849,10 +849,11 @@ class WPUF_Admin_Form {
             array(
                 'name'      => 'exclude',
                 'title'     => __( 'Selection Terms', 'wpuf' ),
-                'type'      => 'text',
+                'type'      => 'multiselect',
                 'section'   => 'advanced',
                 'priority'  => 27,
                 'help_text' => __( 'Enter the term IDs as comma separated (without space) to exclude/include in the form.', 'wpuf' ),
+                'options'   => wpuf_get_terms( $tax_name ),
             ),
 
             array(
@@ -901,7 +902,7 @@ class WPUF_Admin_Form {
                 'orderby'           => 'name',
                 'order'             => 'ASC',
                 'exclude_type'      => '',
-                'exclude'           => '',
+                'exclude'           => array(),
                 'woo_attr'          => '',
                 'woo_attr_vis'      => '',
                 'id'                => 0,

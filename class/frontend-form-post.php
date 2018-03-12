@@ -260,7 +260,6 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         if ( !isset( $_POST['post_id'] ) ) {
 
             $has_limit    = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
-            $is_scheduled = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] == 'true' ) ? true : false;
 
             if ( $has_limit ) {
 
@@ -269,20 +268,6 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
                 if ( $limit && $limit <= $form_entries ) {
                     $this->send_error( $form_settings['limit_message'] );
-                }
-            }
-
-            if ( $is_scheduled ) {
-
-                $start_time   = !empty( $form_settings['schedule_start'] ) ? strtotime( $form_settings['schedule_start'] ) : 0;
-                $end_time     = !empty( $form_settings['schedule_end'] ) ? strtotime( $form_settings['schedule_end'] ) : 0;
-                $current_time = current_time( 'timestamp' );
-
-                // too early?
-                if ( $current_time < $start_time ) {
-                    $this->send_error( $form_settings['form_pending_message'] );
-                } elseif ( $current_time > $end_time ) {
-                    $this->send_error( $form_settings['form_expired_message'] );
                 }
             }
 

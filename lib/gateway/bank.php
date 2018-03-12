@@ -62,6 +62,10 @@ class WPUF_Gateway_Bank {
             $data['price'] = WPUF_Coupons::init()->discount( $data['price'], $_POST['coupon_id'], $data['item_number'] );
         }
 
+        $data['subtotal'] = $data['price'];
+        $data['price']    = apply_filters( 'wpuf_payment_amount', $data['price'] );
+        $data['tax']      = $data['price'] - $data['subtotal'];
+
         if ( $order_id ) {
             update_post_meta( $order_id, '_data', $data );
         }

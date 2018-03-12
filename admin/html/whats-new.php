@@ -15,7 +15,7 @@ $changelog = array(
                 'description' => __( 'For some clients emails were not rendering the HTML links properly, this is now fixed', 'wpuf' ),
             ),
             array(
-                'title'       => __( 'Form Builder : Help texts on form fields styles were not showing properly', 'wpuf' ),
+                'title'       => __( 'Form Builder : Form Field\'s Help text styles not showing properly', 'wpuf' ),
                 'type'        => 'Fix',
                 'description' => __( 'Help texts styling is now fixed and much easier to read and understand', 'wpuf' ),
             ),

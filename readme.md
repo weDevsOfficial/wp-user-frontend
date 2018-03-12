@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 4.9.4  
 **Requires PHP:** 5.4  
-**Stable tag:** 2.8.4  
+**Stable tag:** 2.8.5  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -92,6 +92,7 @@ Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the Pro vers
 
 * Italian translation by Gabriele Lamberti
 * Persian translation by Abolfazl Esmailinejad
+* Turkish translation by mugurcagdas
 
 ### Checkout Our Other Products ###
 * [weForms - Best Contact Form Plugin](https://wordpress.org/plugins/weforms/)
@@ -169,6 +170,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v2.8.5 (12 March, 2018) ###
+
+ * **New:** Enhanced Login Redirect settings to redirect to previous page
+ * **Fix:** Form fields help text styles now showing properly
+ * **Fix:** Reset Links not showing on HTML email in some cases
+ * **Improved:** Show Form schedule notice before form submission
+ * **Improved:** Added version meta for Forms
+ * **Improved:** various other code improvements
 
 ### v2.8.4 (04 March, 2018) ###
 

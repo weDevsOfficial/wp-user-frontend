@@ -54,7 +54,7 @@ function wpuf_settings_fields() {
     $users = wpuf_list_users();
 
     $login_redirect_pages =  array(
-        'previous_page' => __( 'Previous Page', 'wpuf-pro' )
+        'previous_page' => __( 'Previous Page', 'wpuf' )
     ) + $pages;
 
     $all_currencies = wpuf_get_currencies();

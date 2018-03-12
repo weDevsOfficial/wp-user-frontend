@@ -58,7 +58,7 @@ class WPUF_Ajax_Address_Form {
                             'id'               => 'wpuf_biiling_country',
                             'class'            => 'wpuf_biiling_country',
                             'chosen'           => false,
-                            'placeholder'      => __( 'Choose a country', 'wpuf-pro' )
+                            'placeholder'      => __( 'Choose a country', 'wpuf' )
                         ) );
                         ?>
                     </td>
@@ -77,7 +77,7 @@ class WPUF_Ajax_Address_Form {
                             'id'               => 'wpuf_biiling_state',
                             'class'            => 'wpuf_biiling_state',
                             'chosen'           => false,
-                            'placeholder'      => __( 'Choose a state', 'wpuf-pro' )
+                            'placeholder'      => __( 'Choose a state', 'wpuf' )
                         ) );
                         ?>
                     </td>

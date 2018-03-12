@@ -131,7 +131,7 @@ class WPUF_Admin_Form_Template {
 
         // form has been created, lets setup
         update_post_meta( $form_id, 'wpuf_form_settings', $template_object->get_form_settings() );
-        update_post_meta( $form_id, 'wpuf_form_version', get_option( 'wpuf_version' ) );
+        update_post_meta( $form_id, 'wpuf_form_version', WPUF_VERSION );
 
         $form_fields = $template_object->get_form_fields();
 

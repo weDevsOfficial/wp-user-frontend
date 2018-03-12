@@ -2004,7 +2004,7 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
     }
 
     //set form Version
-    update_post_meta( $form_id, 'wpuf_form_version', get_option( 'wpuf_version' ) );
+    update_post_meta( $form_id, 'wpuf_form_version', WPUF_VERSION );
 
     return $form_id;
 }

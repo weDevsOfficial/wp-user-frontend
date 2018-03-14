@@ -75,7 +75,11 @@ class WPUF_Frontend_Dashboard {
 
         $original_post   = $post;
         $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args, $attributes ) );
-        $post_type_obj   = get_post_type_object( $post_type );
+        $post_type_obj   = array();
+
+        foreach ($post_type as $key => $value) {
+           $post_type_obj[$value] = get_post_type_object( $value );
+        }
 
         wpuf_load_template( 'dashboard.php', array(
             'post_type'       => $post_type,

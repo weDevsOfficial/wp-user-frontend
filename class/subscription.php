@@ -847,7 +847,8 @@ class WPUF_Subscription {
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' && $pack->meta_value['trial_status'] == 'yes' ) {
 
-            $trial_des = __( sprintf( 'The first %s %s', $pack->meta_value['wpuf'], $pack->meta_value['trial_duration_type']  ), 'wpuf' );
+            $duration = _n( $pack->meta_value['trial_duration_type'], $pack->meta_value['trial_duration_type'].'s', $pack->meta_value['trial_duration'], 'wpuf'  );
+            $trial_des = __( sprintf( 'Trial available for first %s %s', $pack->meta_value['trial_duration'], $duration ), 'wpuf' );
 
         } else {
             $trial_des = '';
@@ -952,7 +953,7 @@ class WPUF_Subscription {
                 }
 
                 $text              = sprintf( __( 'Your Subscription pack exhausted. There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $fallback_cost ));
-                
+
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
                 ?>
             </div>

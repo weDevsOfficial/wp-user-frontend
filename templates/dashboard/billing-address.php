@@ -1,17 +1,18 @@
 <?php 
 
-$user_id = get_current_user();
+$user_id = get_current_user_id();
 
 $address_fields = array();
 $countries = array();
 $cs = new CountryState();
 
-if ( isset( $_POST['add_line_1'] ) 
+if ( isset( $_POST['update_billing_address'] ) 
+    && isset( $_POST['add_line_1'] ) 
     && isset( $_POST['city'] )
     && isset( $_POST['state'] )
     && isset( $_POST['zip_code'] )
     && isset( $_POST['country'] ) ) {
-     $address_fields = array(
+    $address_fields = array(
         'add_line_1'    => $_POST['add_line_1'],
         'add_line_2'    => $_POST['add_line_2'],
         'city'          => $_POST['city'],
@@ -32,7 +33,7 @@ if ( isset( $_POST['add_line_1'] )
 }
 ?>
 
-<form class="wpuf-form form-label-above" action="<?php echo $_SERVER["REQUEST_URI"]; ?>" method="post">
+<form class="wpuf-form form-label-above" action="" method="post">
     <div class="wpuf-fields">
 
         <ul class="wpuf-form form-label-above">
@@ -96,13 +97,9 @@ if ( isset( $_POST['add_line_1'] )
                 </div>
             </li>
 
-            <?php if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_pay' && isset( $_POST['update_billing_address'] ) ) { ?>
-                <input type="submit" name="wpuf_payment_submit" class="wpuf-btn" value="<?php _e( 'Proceed', 'wpuf' ); ?>"/>
-            <?php } else { ?>
             <li class="wpuf-submit">
                 <input type="submit" name="update_billing_address" id="wpuf-account-update-billing_address" value="<?php _e( 'Update Billing Address', 'wpuf' ); ?>" />
             </li>
-            <?php } ?>
         </ul>
 
     <div class="clear"></div>

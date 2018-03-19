@@ -388,7 +388,7 @@ class WPUF_Payment {
      */
     public static function insert_payment( $data, $transaction_id = 0, $recurring = false ) {
         global $wpdb;
-        $user_id = get_current_user();
+        $user_id = get_current_user_id();
 
         //check if it's already there
         $sql = $wpdb->prepare( "SELECT transaction_id

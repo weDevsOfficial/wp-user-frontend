@@ -24,7 +24,7 @@ class WPUF_Admin_Promotion {
         }
 
         // 2017-03-22 23:59:00
-        if ( time() > 1490227140 ) {
+        if ( time() > 1522053782 ) {
             return;
         }
 
@@ -37,8 +37,16 @@ class WPUF_Admin_Promotion {
 
         $product_text = ( ! wpuf()->is_pro() ) ? __( 'Pro upgrade and all extensions, ', 'wpuf' ) : __( 'all extensions, ', 'wpuf' );
 
-        $offer_msg  = __( '<h2><span class="dashicons dashicons-awards"></span> weDevs 4th Year Anniversary Offer</h2>', 'wpuf' );
-        $offer_msg .= sprintf( __( '<p>Get <strong class="highlight-text">44&#37; discount</strong> on %2$s also <a target="_blank" href="%1$s"><strong>WIN any product</strong></a> from our 4th year anniversary giveaway. Offer ending soon!</p>', 'wpuf' ), 'https://wedevs.com/in/4years/?utm_source=freeplugin&utm_medium=prompt&utm_term=wpuf_plugin&utm_content=textlink&utm_campaign=wedevs_4_years', $product_text );
+        // $offer_msg  = __( '<h2><span class="dashicons dashicons-awards"></span> weDevs 5th Birthday Offer</h2>', 'wpuf' );
+        $offer_msg .= sprintf( __( '<p>
+                                        <strong class="highlight-text">It’s Our Birthday <span class="wpuf-cake" style="font-size: 20px"> &#x1F382;</span> </strong>
+                                        But You Get The Present <span class="wpuf-gift" style="font-size: 20px"> &#x1F381;</span><br>
+                                        Get 25&#37; Discounts with coupon:
+                                        <a target="_blank" href="%1$s"><strong> we25 </strong></a>
+                                        <br>
+                                        Offer ending soon!
+                                    </p>', 'wpuf' ), 'https://wedevs.com/in/get-25-off', $product_text );
+
         ?>
             <div class="notice is-dismissible" id="wpuf-promotional-offer-notice">
                 <table>

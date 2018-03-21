@@ -804,6 +804,11 @@ function wpuf_show_custom_fields( $content ) {
                     $html.= $link;
                     break;
 
+                case 'date':
+                    $value = wpuf_get_date( get_post_meta( $post->ID, $attr['name'], true ) );
+                    $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $value ) );
+                    break;
+
                 default:
                     $value       = get_post_meta( $post->ID, $attr['name'] );
                     $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );

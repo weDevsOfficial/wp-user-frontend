@@ -16,7 +16,7 @@ if ( isset( $_POST['update_billing_address'] )
         'add_line_1'    => $_POST['add_line_1'],
         'add_line_2'    => $_POST['add_line_2'],
         'city'          => $_POST['city'],
-        'state'         => $_POST['state'],
+        'state'         => strtolower( str_replace( ' ', '', $_POST['state'] ) ),
         'zip_code'      => $_POST['zip_code'],
         'country'       => $_POST['country']
     );   

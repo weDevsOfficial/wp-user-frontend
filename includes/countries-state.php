@@ -346,9 +346,8 @@ class CountryState {
 
     public function getStateName( $state , $country ){
         $states = $this->getStates( $country );
-
         foreach ($states as $key => $value) {
-            if ( $key ==  $state ) {
+            if ( $key == $state || $value == $state ) {
                 return $value;
             }
         }

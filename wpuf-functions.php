@@ -658,6 +658,10 @@ function wpuf_show_custom_fields( $content ) {
 
         foreach ($meta as $attr) {
 
+            if ( !isset( $attr['name'] ) ) {
+                $attr['name'] = $attr['input_type'];
+            }
+
             $field_value = get_post_meta( $post->ID, $attr['name'] );
 
             $return_for_no_cond = 0;

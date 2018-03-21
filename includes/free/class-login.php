@@ -28,7 +28,7 @@ class WPUF_Simple_Login {
         add_filter( 'logout_url', array($this, 'filter_logout_url'), 10, 2 );
         add_filter( 'lostpassword_url', array($this, 'filter_lostpassword_url'), 10, 2 );
         add_filter( 'register_url', array($this, 'get_registration_url') );
-        add_filter( 'wpuf_login_redirect', array( $this, 'login_redirect' ) );
+
         add_filter( 'login_redirect', array( $this, 'default_login_redirect' ) );
 
         add_filter( 'authenticate', array($this, 'successfully_authenticate'), 30, 3 );
@@ -346,15 +346,7 @@ class WPUF_Simple_Login {
                 $this->login_errors[] = $user->get_error_message();
                 return;
             } else {
-
-                if ( !empty( $_POST['redirect_to'] ) ) {
-                    $redirect = esc_url( $_POST['redirect_to'] );
-                } elseif ( wp_get_referer() ) {
-                    $redirect = esc_url( wp_get_referer() );
-                } else {
-                    $redirect = home_url( '/' );
-                }
-
+                $redirect = $this->login_redirect();
                 wp_redirect( apply_filters( 'wpuf_login_redirect', $redirect, $user ) );
                 exit;
             }
@@ -370,15 +362,17 @@ class WPUF_Simple_Login {
 
         $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
 
-        if ( !$redirect_to ) {
-            return home_url();
-        }
-
         if ( 'previous_page' == $redirect_to && !empty( $_POST['redirect_to'] ) ) {
-            return $_POST['redirect_to'];
+            return esc_url( $_POST['redirect_to'] );
         }
 
-        return get_permalink( $redirect_to );
+        $redirect = get_permalink( $redirect_to );
+
+        if ( !empty( $redirect ) ) {
+            return $redirect;
+        }
+
+        return home_url();
     }
 
     /**
@@ -390,7 +384,7 @@ class WPUF_Simple_Login {
         $override    = wpuf_get_option( 'wp_default_login_redirect', 'wpuf_profile', false );
         $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
 
-        if ( $override != 'on' || 'previous_page' == $redirect_to ) {
+        if ( $override != 'on' || 'previous_page' == $redirect_to || empty( get_permalink( $redirect_to ) ) ) {
             return $redirect;
         }
 

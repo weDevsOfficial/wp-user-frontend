@@ -1,6 +1,37 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.8.6',
+        'released' => '2018-03-22',
+        'changes' => array(
+            array(
+                'title'       => __( 'WoooCommerce billing address Sync', 'wpuf' ),
+                'type'        => 'Improvement',
+                'description' => __( 'If an existing customer has previously set his billing address, that will be imported into WPUF Billing address ', 'wpuf' )
+            ),
+            array(
+                'title'       => __( 'Trial subscription message not showing properly', 'wpuf' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Subscriptions with Trial now shows trial notices', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Reset email Key not working', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Reset Email key was not working in some cases', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Post count not showing on the frontend dashboard', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Dashboard with multiple post type was not showing post counts properly, is now fixed and shows count for each post type', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Login Redirect showing blank page is fixed', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'If "Previous Page" was set for redirection, login redirect was redirecting to blank page for users who hit login page directly', 'wpuf' ),
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 2.8.5',
         'released' => '2018-03-12',
         'changes' => array(

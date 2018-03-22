@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 4.9.4
 Requires PHP: 5.4
-Stable tag: 2.8.5
+Stable tag: 2.8.6
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -170,6 +170,21 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.8.6 (22 March, 2018) =
+
+* **Improved:** Added backward compatibility for WooCommerce product template
+* **Fix:** Some fields were rendered as Array
+* **Fix:** Added WoooCommerce address sync with WP User Frontend billing address
+* **Fix:** Fixed issues in Reset Password Mail
+* **Fix:** Fixed invalid key in email
+* **Fix:** Subscription trial message was not showing properly
+* **Fix:** Address Field was not updating
+* **Fix:** Subscription Email toggle in settings was not working properly
+* **Fix:** Sometimes username was not showing in transaction list
+* **Fix:** Post count not showing on the frontend dashboard
+* **Fix:** Date/Time was not following backend format in frontend
+* **Fix:** Login redirect issues with blank page
 
 = v2.8.5 (12 March, 2018) =
 

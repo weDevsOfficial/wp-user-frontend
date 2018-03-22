@@ -136,7 +136,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 $user = get_user_by( 'id', $item->user_id );
                 $post_author_id =  get_post_field( 'post_author', $item->post_id ) ;
                 $post_author    =  get_the_author_meta( 'nickname', $post_author_id);
-                return ! empty( $user ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->display_name ) : $post_author ;
+                return ! empty( $user ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->user_nicename ) : $post_author ;
             case 'cost':
                 return wpuf_format_price( $item->cost );
             case 'tax':
@@ -351,6 +351,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                         break;
                 }
 
+                $payer_address = wpuf_get_user_address();
+
                 $transaction = array(
                     'user_id'          => $info['user_info']['id'],
                     'status'           => 'completed',
@@ -361,6 +363,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                     'pack_id'          => $pack_id,
                     'payer_first_name' => $info['user_info']['first_name'],
                     'payer_last_name'  => $info['user_info']['last_name'],
+                    'payer_address'    => $payer_address,
                     'payer_email'      => $info['user_info']['email'],
                     'payment_type'     => 'Bank/Manual',
                     'transaction_id'   => $id,

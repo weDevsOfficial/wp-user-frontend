@@ -5,7 +5,17 @@
     </h2>
 
     <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
-        <div class="post_count"><?php if ( !empty( $post_type_obj ) ) printf( __( 'You have created <span>%d</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
+        <?php if ( !empty( $post_type_obj )): ?>
+            <div class="post_count">
+            <?php
+                $labels = array();
+                foreach ($post_type_obj as $key => $post_type_name) {
+                    $labels[] = $post_type_name->label;
+                }
+                printf( __( 'You have created <span>%d</span> (%s)', 'wpuf' ), $dashboard_query->found_posts, implode( ', ', $labels ) );
+            ?>
+            </div>
+        <?php endif ?>
     <?php } ?>
 
     <?php if ( !empty( $post_type_obj ) ) do_action( 'wpuf_dashboard_top', $userdata->ID, $post_type_obj ) ?>
@@ -62,7 +72,8 @@
         $current_user       = wpuf_get_user();
         $charging_enabled   = $current_user->subscription()->current_pack_id();
         ?>
-        <table class="items-table <?php echo $post_type; ?>" cellpadding="0" cellspacing="0">
+
+        <table class="items-table <?php echo implode( ' ', $post_type ); ?>" cellpadding="0" cellspacing="0">
             <thead>
                 <tr class="items-list-header">
                     <?php
@@ -253,7 +264,7 @@
     <?php
     } else {
         if ( !empty( $post_type_obj ) ) {
-            printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', $post_type_obj->label );
+            printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', implode( ', ', $labels ) );
             do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
         }
     }

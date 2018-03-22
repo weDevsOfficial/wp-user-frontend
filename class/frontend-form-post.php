@@ -398,10 +398,9 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $form             = new WPUF_Form( $form_id );
         $payment_options  = $form->is_charging_enabled();
         $ppp_cost_enabled = $form->is_enabled_pay_per_post();
-        $forcePack        = $form->is_enabled_force_pack();
         $current_user     = wpuf_get_user();
 
-        if ( !$payment_options || !is_user_logged_in() ) {
+        if ( !$payment_options ) {
             $charging_enabled = 'no';
         } else {
             $charging_enabled = 'yes';
@@ -1079,8 +1078,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         if ( isset($_GET['post_msg']) && $_GET['post_msg'] == 'verified' ) {
             $response = array();
 
-            $post_id = wpuf_decryption ( $_GET['p_id'] );
-            $form_id = wpuf_decryption ( $_GET['f_id'] );
+            $post_id = wpuf_decryption( $_GET['p_id'] );
+            $form_id = wpuf_decryption( $_GET['f_id'] );
             $form_settings  = wpuf_get_form_settings( $form_id );
             $post_author_id = get_post_field( 'post_author', $post_id );
             $payment_status = new WPUF_Subscription();
@@ -1101,7 +1100,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
                     wp_redirect( $response['redirect_to'] );
                     wpuf_clear_buffer();
-                    wpuf_send_json ( $response );
+                    wpuf_send_json( $response );
                 }
             } else {
                 $p_status = get_post_status( $post_id );

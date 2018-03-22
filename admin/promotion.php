@@ -38,7 +38,7 @@ class WPUF_Admin_Promotion {
         // $product_text = (  wpuf()->is_pro() ) ? __( 'Pro upgrade and all extensions, ', 'wpuf' ) : __( 'all extensions, ', 'wpuf' );
 
         // $offer_msg  = __( '<h2><span class="dashicons dashicons-awards"></span> weDevs 5th Birthday Offer</h2>', 'wpuf' );
-        $offer_msg .= sprintf( __( '<p>
+        $offer_msg = sprintf( __( '<p>
                                         <strong class="highlight-text" style="font-size: 18px">It’s Our Birthday <span class="wpuf-cake" style="font-size: 20px"> &#x1F382;</span>
                                         But You Get The Present <span class="wpuf-gift" style="font-size: 20px"> &#x1F381;</span> </strong><br>
                                         Get 25&#37; Discount with coupon:

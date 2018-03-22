@@ -655,6 +655,10 @@ function wpuf_show_custom_fields( $content ) {
 
         foreach ($meta as $attr) {
 
+            if ( !isset( $attr['name'] ) ) {
+                $attr['name'] = $attr['input_type'];
+            }
+
             $field_value = get_post_meta( $post->ID, $attr['name'] );
 
             $return_for_no_cond = 0;
@@ -2705,3 +2709,48 @@ function wpuf_update_billing_address() {
 }
 add_action( 'wp_ajax_wpuf_update_billing_address', 'wpuf_update_billing_address' );
 add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_address' );
+
+/**
+ * Retrieve user address
+ *
+ * @return void
+ */
+
+function wpuf_get_user_address() {
+    $user_id = get_current_user_id();
+    $address_fields = array();
+
+    if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
+        $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );  
+    } else {
+        $address_fields = array_fill_keys( array( 'add_line_1', 'add_line_2', 'city', 'state', 'zip_code', 'country' ), '' );
+        
+        if ( class_exists( 'WooCommerce' ) ) {
+            $customer_id = get_current_user_id();
+            $woo_address = array();
+            $customer    = new WC_Customer( $customer_id );
+
+            $woo_address = $customer->get_billing();
+            unset( $woo_address['email'], $woo_address['tel'], $woo_address['phone'], $woo_address['company'] );
+
+            $countries_obj = new WC_Countries();
+            $countries_array = $countries_obj->get_countries();
+            $country_states_array = $countries_obj->get_states();
+            $woo_address['state'] = $country_states_array[$woo_address['country']][$woo_address['state']];
+            $woo_address['state'] = strtolower( str_replace( ' ', '', $woo_address['state'] ) );
+
+            if ( !empty( $woo_address ) ) {
+                $address_fields = array(
+                    'add_line_1'    => $woo_address['address_1'],
+                    'add_line_2'    => $woo_address['address_2'],
+                    'city'          => $woo_address['city'],
+                    'state'         => $woo_address['state'],
+                    'zip_code'      => $woo_address['postcode'],
+                    'country'       => $woo_address['country']
+                );
+            }
+        }
+    }
+
+    return $address_fields;
+}

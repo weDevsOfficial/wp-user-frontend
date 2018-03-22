@@ -356,13 +356,9 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $walker       = new WPUF_Walker_Category_Checklist();
 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-    $exclude      = explode( ',', $attr['exclude'] );
+    $exclude      = $attr['exclude'];
     $tax          = $attr['name'];
     $current_user = get_current_user_id();
-
-    $args = array(
-        'taxonomy' => $tax,
-    );
 
     if ( $post_id ) {
         $args['selected_cats'] = wp_get_object_terms( $post_id, $tax, array('fields' => 'ids') );
@@ -377,14 +373,15 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $args['class'] = $class;
 
     $tax_args = array(
+        'taxonomy' => $tax,
         'hide_empty'  => false,
-        $exclude_type => (array) $exclude,
+        $exclude_type => $exclude,
         'orderby'     => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
         'order'       => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
     );
     $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
 
-    $categories = (array) get_terms( $tax, $tax_args );
+    $categories = (array) get_terms( $tax_args );
 
     echo '<ul class="wpuf-category-checklist">';
     printf( '<input type="hidden" name="%s" value="0" />', $tax );

@@ -724,7 +724,7 @@ class WPUF_Simple_Login {
         $message .= sprintf(__('Username: %s', 'wpuf' ), $user_login) . "\r\n\r\n";
         $message .= __('If this was a mistake, just ignore this email and nothing will happen.', 'wpuf') . "\r\n\r\n";
         $message .= __('To reset your password, visit the following address:', 'wpuf') . "\r\n\r\n";
-        $message .= '<  ' . $reset_url . "  >\r\n";
+        $message .= ' ' . $reset_url . " \r\n";
 
         $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 

@@ -35,17 +35,17 @@ class WPUF_Admin_Promotion {
             return;
         }
 
-        $product_text = ( ! wpuf()->is_pro() ) ? __( 'Pro upgrade and all extensions, ', 'wpuf' ) : __( 'all extensions, ', 'wpuf' );
+        // $product_text = (  wpuf()->is_pro() ) ? __( 'Pro upgrade and all extensions, ', 'wpuf' ) : __( 'all extensions, ', 'wpuf' );
 
         // $offer_msg  = __( '<h2><span class="dashicons dashicons-awards"></span> weDevs 5th Birthday Offer</h2>', 'wpuf' );
         $offer_msg .= sprintf( __( '<p>
-                                        <strong class="highlight-text">It’s Our Birthday <span class="wpuf-cake" style="font-size: 20px"> &#x1F382;</span> </strong>
-                                        But You Get The Present <span class="wpuf-gift" style="font-size: 20px"> &#x1F381;</span><br>
-                                        Get 25&#37; Discounts with coupon:
+                                        <strong class="highlight-text" style="font-size: 18px">It’s Our Birthday <span class="wpuf-cake" style="font-size: 20px"> &#x1F382;</span>
+                                        But You Get The Present <span class="wpuf-gift" style="font-size: 20px"> &#x1F381;</span> </strong><br>
+                                        Get 25&#37; Discount with coupon:
                                         <a target="_blank" href="%1$s"><strong> we25 </strong></a>
                                         <br>
                                         Offer ending soon!
-                                    </p>', 'wpuf' ), 'https://wedevs.com/in/get-25-off', $product_text );
+                                    </p>', 'wpuf' ), 'https://wedevs.com/in/get-25-off' );
 
         ?>
             <div class="notice is-dismissible" id="wpuf-promotional-offer-notice">
@@ -63,6 +63,7 @@ class WPUF_Admin_Promotion {
                 </table>
 
                 <span class="dashicons dashicons-megaphone"></span>
+                <a href="https://wedevs.com/in/get-25-off" class="button button-primary promo-btn" target="_blank"><?php _e( 'Get the Offer', 'wpuf' ); ?></a>
             </div><!-- #wpuf-promotional-offer-notice -->
 
             <style>
@@ -145,10 +146,27 @@ class WPUF_Admin_Promotion {
                 #wpuf-promotional-offer-notice span.dashicons-megaphone {
                     position: absolute;
                     bottom: 46px;
-                    right: 119px;
+                    right: 248px;
                     color: rgba(253, 253, 253, 0.29);
                     font-size: 96px;
                     transform: rotate(-21deg);
+                }
+
+                #wpuf-promotional-offer-notice a.promo-btn{
+                    background: #fff;
+                    border-color: #fafafa #fafafa #fafafa;
+                    box-shadow: 0 1px 0 #fafafa;
+                    color: #4caf4f;
+                    text-decoration: none;
+                    text-shadow: none;
+                    position: absolute;
+                    top: 30px;
+                    right: 26px;
+                    height: 40px;
+                    line-height: 40px;
+                    width: 130px;
+                    text-align: center;
+                    font-weight: 600;
                 }
 
             </style>

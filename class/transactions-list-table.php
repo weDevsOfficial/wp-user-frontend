@@ -351,6 +351,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                         break;
                 }
 
+                $payer_address = wpuf_get_user_address();
+
                 $transaction = array(
                     'user_id'          => $info['user_info']['id'],
                     'status'           => 'completed',
@@ -361,6 +363,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                     'pack_id'          => $pack_id,
                     'payer_first_name' => $info['user_info']['first_name'],
                     'payer_last_name'  => $info['user_info']['last_name'],
+                    'payer_address'    => $payer_address,
                     'payer_email'      => $info['user_info']['email'],
                     'payment_type'     => 'Bank/Manual',
                     'transaction_id'   => $id,

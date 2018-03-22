@@ -375,6 +375,12 @@ class WPUF_Payment {
                 'custom'    => isset( $custom ) ? $custom : '',
             );
 
+            $address_fields = wpuf_get_user_address();
+
+            if ( !empty( $address_fields ) ) {
+                update_user_meta( $userdata->ID, 'wpuf_address_fields', $address_fields );
+            }
+
             do_action( 'wpuf_gateway_' . $gateway, $payment_vars );
         }
     }

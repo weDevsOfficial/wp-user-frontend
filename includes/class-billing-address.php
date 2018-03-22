@@ -1,6 +1,9 @@
 <?php 
 
-/* Ajax Address Form Class */
+/* 
+ * Ajax Address Form Class
+ * 
+ */
 
 class WPUF_Ajax_Address_Form {
 
@@ -22,15 +25,7 @@ class WPUF_Ajax_Address_Form {
      * Address Form
      */
     public static function wpuf_ajax_address_form() {
-        $user_id = get_current_user_id();
-
-        if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
-            $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );
-            $address_fields = $address_fields;  
-        } else {
-            $address_fields = array_fill_keys(
-                array( 'add_line_1', 'add_line_2', 'city', 'state', 'zip_code', 'country' ), '' );
-        }
+        $address_fields = wpuf_get_user_address();
         ?>
 
         <form class="wpuf-form form-label-above" id="wpuf-ajax-address-form" action="" method="post">

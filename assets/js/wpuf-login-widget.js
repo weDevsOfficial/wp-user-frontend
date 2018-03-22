@@ -8,18 +8,18 @@ jQuery( function($) {
         e.preventDefault();
 
         $('.wpuf-ajax-login-form').show();
-        $('.wpuf-ajax-reset-password-form').hide();  
+        $('.wpuf-ajax-reset-password-form').hide();
     });
 
     login_widget.on('click', '#wpuf-ajax-lost-pw-url', function(e) {
         e.preventDefault();
 
         $('.wpuf-ajax-reset-password-form').show();
-        $('.wpuf-ajax-login-form').hide(); 
+        $('.wpuf-ajax-login-form').hide();
     });
 
     // Login
-    login_widget.on('submit', function(e) {
+    login_widget.find( '#wpuf_ajax_login_form' ).on('submit', function(e) {
         e.preventDefault();
 
         var button = $(this).find('submit');
@@ -45,22 +45,19 @@ jQuery( function($) {
     });
 
     // Reset Password
-    login_widget.on('submit', function(e) {
+    login_widget.find( '#wpuf_ajax_reset_pass_form' ).on('submit', function(e) {
         e.preventDefault();
 
         var button = $(this).find('submit');
-
+        var form_data = $('#wpuf_ajax_reset_pass_form').serialize() + '&action=wpuf_lost_password';
         $.ajax({
             url: wpuf_ajax.ajaxurl,
             type: 'POST',
             dataType: 'json',
-            data: { 
-                'action': 'wpuf_lost_password', 
-                'user_login': $('#wpuf-user_login').val(), 
-            }
+            data: form_data
         })
         .done( function( response, textStatus, jqXHR ) {
-            $('.wpuf-ajax-reset-password-form .wpuf-ajax-errors').append(response.data.message);
+            $('.wpuf-ajax-reset-password-form .wpuf-ajax-message p').html(response.data.message);
         } )
         .fail( function( jqXHR, textStatus, errorThrown ) {
             console.log( 'AJAX failed', errorThrown );
@@ -83,6 +80,6 @@ jQuery( function($) {
                 window.location.reload(true);
             }
         });
-    });  
+    });
 
 });

@@ -23,8 +23,8 @@ class WPUF_Admin_Promotion {
             return;
         }
 
-        // 2017-03-22 23:59:00
-        if ( time() > 1522053782 ) {
+        // 2018-03-26 23:59:00
+        if ( time() > 1522108740 ) {
             return;
         }
 

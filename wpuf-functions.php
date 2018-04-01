@@ -816,6 +816,14 @@ function wpuf_show_custom_fields( $content ) {
 
                     if ( !empty( $filter_html ) ) {
                         $html .= $filter_html;
+                    } elseif ( is_serialized( $value[0] ) ) {
+                        $separator      = '| ';
+                        $new            = maybe_unserialize( $value[0] );
+                        $modified_value = implode( $separator, $new );
+
+                        if ( $modified_value ) {
+                           $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                        }
                     } else {
 
                         $new = implode( ', ', $value );

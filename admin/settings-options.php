@@ -108,6 +108,17 @@ function wpuf_settings_fields() {
                 )
             ),
             array(
+                'name'    => 'wpuf_compatibility_acf',
+                'label'   => __( 'ACF Compatibility', 'wpuf' ),
+                'desc'    => __( 'Select <strong>Yes</strong> if you want to make compatible WPUF custom fields data with advanced custom fields.', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'no',
+                'options' => array(
+                    'yes' => __( 'Yes', 'wpuf' ),
+                    'no'  => __( 'No', 'wpuf' )
+                )
+            ),
+            array(
                 'name'    => 'load_script',
                 'label'   => __( 'Load Scripts', 'wpuf' ),
                 'desc'    => __( 'Load scripts/styles in all pages', 'wpuf' ),

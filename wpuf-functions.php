@@ -2721,10 +2721,10 @@ function wpuf_get_user_address() {
     $address_fields = array();
 
     if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
-        $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );  
+        $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );
     } else {
         $address_fields = array_fill_keys( array( 'add_line_1', 'add_line_2', 'city', 'state', 'zip_code', 'country' ), '' );
-        
+
         if ( class_exists( 'WooCommerce' ) ) {
             $customer_id = get_current_user_id();
             $woo_address = array();
@@ -2753,4 +2753,28 @@ function wpuf_get_user_address() {
     }
 
     return $address_fields;
+}
+
+/**
+ * Displays a multi select dropdown for a settings field
+ *
+ * @param array   $args settings field args
+ */
+function wpuf_settings_multiselect( $args ) {
+
+    $settings = new WeDevs_Settings_API();
+    $value = $settings->get_option( $args['id'], $args['section'], $args['std'] );
+    $value = is_array($value) ? (array)$value : array();
+    $size  = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
+    $html  = sprintf( '<select multiple="multiple" class="%1$s" name="%2$s[%3$s][]" id="%2$s[%3$s]">', $size, $args['section'], $args['id'] );
+
+    foreach ( $args['options'] as $key => $label ) {
+        $checked = in_array($key, $value) ? $key : '0';
+        $html   .= sprintf( '<option value="%s"%s>%s</option>', $key, selected( $checked, $key, false ), $label );
+    }
+
+    $html .= sprintf( '</select>' );
+    $html .= $settings->get_field_description( $args );
+
+    echo $html;
 }

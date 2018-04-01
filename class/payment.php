@@ -313,6 +313,10 @@ class WPUF_Payment {
 
                 if ( $user_id ) {
                     $userdata = get_userdata( $user_id );
+                } else if ( $type == 'post' && !is_user_logged_in() ) {
+                    $post      = get_post( $post_id );
+                    $user_id   = $post->post_author;
+                    $userdata  = get_userdata( $user_id );
                 } else {
                     $userdata             = new stdClass;
                     $userdata->ID         = 0;

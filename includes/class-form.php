@@ -35,7 +35,7 @@ class WPUF_Form {
     /**
      * Get the form settings
      *
-     * @return boolean
+     * @return array
      */
     public function get_settings() {
         $form_settings = wpuf_get_form_settings( $this->id );

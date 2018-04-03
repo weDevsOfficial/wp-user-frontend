@@ -24,6 +24,15 @@ class WPUF_Form {
     }
 
     /**
+     * Returns form title
+     *
+     * @return string
+     */
+    public function get_title() {
+        return $this->data->post_title;
+    }
+
+    /**
      * Get the form settings
      *
      * @return boolean
@@ -41,7 +50,7 @@ class WPUF_Form {
      */
     public function guest_post() {
         $settings = $this->get_settings();
-        if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' ) {
+        if ( isset( $settings['guest_post'] ) && $settings['guest_post'] == 'true' ) {
             return true;
         }
 

@@ -268,6 +268,7 @@ final class WP_User_Frontend {
             include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
             include_once WPUF_ROOT . '/includes/class-whats-new.php';
             include_once WPUF_ROOT . '/includes/class-acf.php';
+            include_once WPUF_ROOT . '/includes/class-form-preview.php';
 
         } else {
 
@@ -317,6 +318,7 @@ final class WP_User_Frontend {
             $this->container['welcome']            = new WPUF_Admin_Welcome();
             $this->container['whats_new']          = new WPUF_Whats_New();
             $this->container['wpuf_acf']           = new WPUF_ACF_Compatibility();
+            $this->container['preview']            = new WPUF_Form_Preview();
 
         } else {
 

@@ -334,6 +334,14 @@ function wpuf_settings_fields() {
                 'type'    => 'checkbox',
                 'default' => 'off'
             ),
+            array(
+                'name'    => 'avatar_size',
+                'label'   => __( 'Avatar Size', 'wpuf' ),
+                'desc'    => __( 'Avatar size to crop when upload using the registration/profile form.(e.g:100x100)', 'wpuf' ),
+                'type'    => 'text',
+                'default'    => '100x100',
+            ),
+
         ) ),
         'wpuf_payment' => apply_filters( 'wpuf_options_payment', array(
             array(

@@ -561,7 +561,12 @@ function wpuf_update_avatar( $user_id, $attachment_id ) {
         $editor = wp_get_image_editor( $file_path );
 
         if ( !is_wp_error( $editor ) ) {
-            //$editor->resize( 200, 200, true );
+            $avatar_size    = wpuf_get_option( 'avatar_size', 'wpuf_profile', '100x100' );
+            $avatar_size    = explode( 'x', $avatar_size );
+            $avatar_width   = $avatar_size[0];
+            $avatar_height  = $avatar_size[1];
+
+            $editor->resize( $avatar_width, $avatar_height, true );
             $editor->save( $small_url );
 
             // if the file creation successfull, delete the original attachment

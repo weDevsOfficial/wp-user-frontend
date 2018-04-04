@@ -74,11 +74,11 @@ class WPUF_Form_Block {
                 }
                 .wpuf-form-add {
                     z-index: 9001;
-                    position: fixed;
+                    position: fixed !important;
                     top: 0; left: 0;
                     width: 100vw;
                     height: 100vh;
-                    background-color: white;
+                    background-color: #ffffff;
                     /* overflow-x: hidden; */
                 }
             </style>

@@ -1,0 +1,17 @@
+.wpuf-form-container {
+    position: relative;
+}
+.wpuf-form-overlay {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+}
+.wpuf-title{
+    display: inline;
+    position: absolute;
+    margin: 0px;
+    padding: 5px;
+    top: 20px;
+}
+.wpuf-icon{
+    width: 60px;
+}

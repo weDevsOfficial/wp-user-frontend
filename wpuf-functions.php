@@ -357,6 +357,11 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude      = $attr['exclude'];
+    
+    if ( $exclude_type == 'child_of' ) {
+      $exclude = $exclude[0];
+    }
+
     $tax          = $attr['name'];
     $current_user = get_current_user_id();
 

@@ -161,7 +161,28 @@
 
                         <?php if ( 'on' == $category ) { ?>
                         <td>
-                            <?php the_category( ', ' ); ?>
+                            <?php
+
+                            $taxonomies = get_object_taxonomies( get_post_type(), 'objects' );
+                            $post_tax_terms = array();
+
+                            foreach ( $taxonomies as $taxonomy_slug => $taxonomy ) {
+                                if ( $taxonomy->hierarchical == 1 ) {
+                                    $terms = get_the_terms( $post->ID, $taxonomy_slug );
+
+                                    if ( ! empty( $terms ) ) {
+                                        foreach ( $terms as $term ) {
+                                            $post_tax_terms[] = sprintf( '<a href="%1$s">%2$s</a>',
+                                                esc_url( get_term_link( $term->slug, $taxonomy_slug ) ),
+                                                esc_html( $term->name )
+                                            );
+                                        }
+                                    }
+                                }
+                            }
+                            echo apply_filters( 'wpuf_dashboard_post_taxonomy', implode( ',', $post_tax_terms ) );
+
+                            ?>
                         </td>
                         <?php }
 

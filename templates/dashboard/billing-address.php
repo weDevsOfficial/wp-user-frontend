@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $user_id = get_current_user_id();
 
@@ -6,8 +6,8 @@ $address_fields = array();
 $countries = array();
 $cs = new CountryState();
 
-if ( isset( $_POST['update_billing_address'] ) 
-    && isset( $_POST['add_line_1'] ) 
+if ( isset( $_POST['update_billing_address'] )
+    && isset( $_POST['add_line_1'] )
     && isset( $_POST['city'] )
     && isset( $_POST['state'] )
     && isset( $_POST['zip_code'] )
@@ -19,13 +19,13 @@ if ( isset( $_POST['update_billing_address'] )
         'state'         => strtolower( str_replace( ' ', '', $_POST['state'] ) ),
         'zip_code'      => $_POST['zip_code'],
         'country'       => $_POST['country']
-    );   
+    );
     update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
     echo '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wpuf' ) . '</div>';
 } else {
     if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
         $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );
-        $address_fields = $address_fields;  
+        $address_fields = $address_fields;
     } else {
         $address_fields = array_fill_keys(
             array( 'add_line_1', 'add_line_2', 'city', 'state', 'zip_code', 'country' ), '' );
@@ -71,7 +71,7 @@ if ( isset( $_POST['update_billing_address'] )
                     <div class="wpuf-name-field-wrap format-first-last">
                         <div class="wpuf-name-field-first-name">
                             <label class="wpuf-fields wpuf-label"><?php _e( 'Postal Code/ZIP', 'wpuf' ); ?></label>
-                            <input type="number" class="input" name="zip_code" id="zip_code" value="<?php echo $address_fields['zip_code']; ?>" />
+                            <input type="text" class="input" name="zip_code" id="zip_code" value="<?php echo $address_fields['zip_code']; ?>" />
                         </div>
 
                         <div class="wpuf-name-field-last-name">

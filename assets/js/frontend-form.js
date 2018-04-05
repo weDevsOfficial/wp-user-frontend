@@ -793,6 +793,7 @@
             if ( confirm( $(this).data('confirm') ) ) {
                 $.post(wpuf_frontend.ajaxurl, {action: 'wpuf_delete_avatar', _wpnonce: wpuf_frontend.nonce}, function() {
                     $(e.target).parent().remove();
+                    $('[id^=wpuf-avatar]').css("display", "");
                 });
             }
         },

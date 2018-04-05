@@ -823,13 +823,19 @@ function wpuf_show_custom_fields( $content ) {
                 default:
                     $value       = get_post_meta( $post->ID, $attr['name'] );
                     $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );
+                    $separator   = '| ';
 
                     if ( !empty( $filter_html ) ) {
                         $html .= $filter_html;
                     } elseif ( is_serialized( $value[0] ) ) {
-                        $separator      = '| ';
                         $new            = maybe_unserialize( $value[0] );
                         $modified_value = implode( $separator, $new );
+
+                        if ( $modified_value ) {
+                           $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                        }
+                    } elseif ( is_array( $value ) ) {
+                        $modified_value = implode( $separator, $value[0] );
 
                         if ( $modified_value ) {
                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );

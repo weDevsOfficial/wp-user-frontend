@@ -1409,6 +1409,11 @@ class WPUF_Render_Form {
         $class              = ' wpuf_'.$attr['name'].'_'.$selected;
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
         $exclude            = $attr['exclude'];
+        
+        if ( $exclude_type == 'child_of' ) {
+          $exclude = $exclude[0];
+        }
+
         $tax_args           = array(
             'show_option_none' => __( '-- Select --', 'wpuf' ),
             'hierarchical'     => 1,
@@ -1458,6 +1463,11 @@ class WPUF_Render_Form {
 
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
         $exclude            = $attr['exclude'];
+
+        if ( $exclude_type == 'child_of' ) {
+          $exclude = $exclude[0];
+        }
+
         $taxonomy           = $attr['name'];
         $class              = ' wpuf_'.$attr['name'].'_'.$form_id;
         $current_user       = get_current_user_id();

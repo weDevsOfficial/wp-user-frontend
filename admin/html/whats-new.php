@@ -1,6 +1,32 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.8.7',
+        'released' => '2018-04-09',
+        'changes' => array(
+            array(
+                'title'       => __( 'WP User Frontend Guten Block is added', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'WPUF Form Block is now available to be used within gutenberg editor with preview of the form.  ', 'wpuf' )
+            ),
+            array(
+                'title'       => __( 'Advanced Custom Fields plugin compatibility', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Now all your ACF fields can be used within WPUF Post forms. ', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Taxonomy Terms not showing for custom post types', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Fixed an issue with taxonomy terms not appearing for Custom Post types within Form Settings and Dashboard Post Listing', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Various other code optimizations', 'wpuf' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Code structure organization and optimization for better performance', 'wpuf' ),
+            )
+        )
+    ),
+    array(
         'version'  => 'Version 2.8.6',
         'released' => '2018-03-22',
         'changes' => array(

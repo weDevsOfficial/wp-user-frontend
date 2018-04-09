@@ -816,7 +816,7 @@ function wpuf_show_custom_fields( $content ) {
                     break;
 
                 case 'date':
-                    $value = wpuf_get_date( get_post_meta( $post->ID, $attr['name'], true ) );
+                    $value = get_post_meta( $post->ID, $attr['name'], true );
                     $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $value ) );
                     break;
 
@@ -1180,22 +1180,26 @@ function wpuf_load_template( $file, $args = array() ) {
  * @param bool $show_time
  * @return string
  */
-function wpuf_get_date( $date, $show_time = false ) {
+function wpuf_get_date( $date, $show_time = false, $format = false ) {
     if ( empty( $date ) ) {
         return $date;
     }
 
-    $dateobj = DateTime::createFromFormat( 'd/m/yy', $date );
-    $format = get_option( 'date_format' );
-
-    if ( !$dateobj ) {
-        return $date;
+    $timestamp = strtotime( $date );
+    if ( $format ) {
+        $dateobj = DateTime::createFromFormat( $format, $date );
+        if ( $dateobj ) {
+            $timestamp = $dateobj->getTimestamp();
+        }
     }
+
+    $format = get_option( 'date_format' );
 
     if ( $show_time ) {
         $format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
     }
-    return date_i18n( $format, $dateobj->getTimestamp() );
+
+    return date_i18n( $format, $timestamp );
 }
 
 /**

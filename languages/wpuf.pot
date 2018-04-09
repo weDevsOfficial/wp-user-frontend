@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 2.8.7\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2018-04-09 08:55:59+00:00\n"
+"POT-Creation-Date: 2018-04-09 09:20:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1336,7 +1336,7 @@ msgstr ""
 msgid "Payment Options"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:25 admin/settings-options.php:349
+#: admin/html/form-settings-payment.php:25 admin/settings-options.php:342
 #: includes/setup-wizard.php:273
 msgid "Enable Payments"
 msgstr ""
@@ -2946,145 +2946,135 @@ msgid ""
 "redirected to the selected page."
 msgstr ""
 
-#: admin/settings-options.php:339
-msgid "Avatar Size"
-msgstr ""
-
-#: admin/settings-options.php:340
-msgid ""
-"Avatar size to crop when upload using the registration/profile "
-"form.(e.g:100x100)"
-msgstr ""
-
-#: admin/settings-options.php:350
+#: admin/settings-options.php:343
 msgid "Enable payments on your site."
 msgstr ""
 
-#: admin/settings-options.php:356
+#: admin/settings-options.php:349
 msgid "Subscription Pack Page"
 msgstr ""
 
-#: admin/settings-options.php:357
+#: admin/settings-options.php:350
 msgid "Select the page where <code>[wpuf_sub_pack]</code> located."
 msgstr ""
 
-#: admin/settings-options.php:363
+#: admin/settings-options.php:356
 msgid "Subscription at registration"
 msgstr ""
 
-#: admin/settings-options.php:364
+#: admin/settings-options.php:357
 msgid "Registration time redirect to subscription page"
 msgstr ""
 
-#: admin/settings-options.php:369
+#: admin/settings-options.php:362
 msgid "Currency"
 msgstr ""
 
-#: admin/settings-options.php:376
+#: admin/settings-options.php:369
 msgid "Currency Position"
 msgstr ""
 
-#: admin/settings-options.php:380
+#: admin/settings-options.php:373
 msgid "Left"
 msgstr ""
 
-#: admin/settings-options.php:381
+#: admin/settings-options.php:374
 msgid "Right"
 msgstr ""
 
-#: admin/settings-options.php:382
+#: admin/settings-options.php:375
 msgid "Left with space"
 msgstr ""
 
-#: admin/settings-options.php:383
+#: admin/settings-options.php:376
 msgid "Right with space"
 msgstr ""
 
-#: admin/settings-options.php:388
+#: admin/settings-options.php:381
 msgid "Thousand Separator"
 msgstr ""
 
-#: admin/settings-options.php:389
+#: admin/settings-options.php:382
 msgid "This sets the thousand separator of displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:397
+#: admin/settings-options.php:390
 msgid "Decimal Separator"
 msgstr ""
 
-#: admin/settings-options.php:398
+#: admin/settings-options.php:391
 msgid "This sets the decimal separator of displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:405
+#: admin/settings-options.php:398
 msgid "Number of Decimals"
 msgstr ""
 
-#: admin/settings-options.php:406
+#: admin/settings-options.php:399
 msgid "This sets the number of decimal points shown in displayed prices."
 msgstr ""
 
-#: admin/settings-options.php:416
+#: admin/settings-options.php:409
 msgid "Enable demo/sandbox mode"
 msgstr ""
 
-#: admin/settings-options.php:417
+#: admin/settings-options.php:410
 msgid "When sandbox mode is active, all payment gateway will be used in demo mode"
 msgstr ""
 
-#: admin/settings-options.php:423
+#: admin/settings-options.php:416
 msgid "Payment Page"
 msgstr ""
 
-#: admin/settings-options.php:424
+#: admin/settings-options.php:417
 msgid "This page will be used to process payment options"
 msgstr ""
 
-#: admin/settings-options.php:430
+#: admin/settings-options.php:423
 msgid "Payment Success Page"
 msgstr ""
 
-#: admin/settings-options.php:431 lib/gateway/bank.php:37
+#: admin/settings-options.php:424 lib/gateway/bank.php:37
 msgid "After payment users will be redirected here"
 msgstr ""
 
-#: admin/settings-options.php:437
+#: admin/settings-options.php:430
 msgid "Payment Gateways"
 msgstr ""
 
-#: admin/settings-options.php:438
+#: admin/settings-options.php:431
 msgid "Active payment gateways"
 msgstr ""
 
-#: admin/settings-options.php:446
+#: admin/settings-options.php:439
 msgid "<span class=\"dashicons dashicons-universal-access-alt\"></span> Guest Email"
 msgstr ""
 
-#: admin/settings-options.php:452
+#: admin/settings-options.php:445
 msgid "Guest mail subject"
 msgstr ""
 
-#: admin/settings-options.php:453
+#: admin/settings-options.php:446
 msgid "This sets the subject of the emails sent to guest users"
 msgstr ""
 
-#: admin/settings-options.php:460
+#: admin/settings-options.php:453
 msgid "Guest mail body"
 msgstr ""
 
-#: admin/settings-options.php:461
+#: admin/settings-options.php:454
 msgid ""
 "This sets the body of the emails sent to guest users. Please DON'T edit the "
 "<code>{activation_link}</code> part, you can use {sitename} too."
 msgstr ""
 
-#: admin/settings-options.php:485
+#: admin/settings-options.php:478
 msgid ""
 "Select profile/registration forms for user roles. These forms will be used "
 "to populate extra edit profile fields in backend."
 msgstr ""
 
-#: admin/settings-options.php:496
+#: admin/settings-options.php:489
 msgid " - select - "
 msgstr ""
 

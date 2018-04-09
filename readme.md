@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 4.9.4  
 **Requires PHP:** 5.4  
-**Stable tag:** 2.8.6  
+**Stable tag:** trunk  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -170,6 +170,17 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v2.8.7 (09 April, 2018) ###
+
+* **New:** Added WP User Frontend Guten Block
+* **New:** Added Advanced Custom Fields(Free) compatibility
+* **New:** Added Avatar size settings
+* **Improved:** Changed postcode input field to string in billing address
+* **Improved:** Added PHP backward compatibility for login redirect
+* **Fix:** Taxonomy Terms not showing for custom post types in form settings
+* **Fix:** Taxonomy Terms not showing for custom post types in front-end dashboard
+* **Fix:** Fixed some issues in billing address
 
 ### v2.8.6 (22 March, 2018) ###
 

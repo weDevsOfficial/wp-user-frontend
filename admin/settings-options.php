@@ -78,7 +78,7 @@ function wpuf_settings_fields() {
                 'name'    => 'show_admin_bar',
                 'label'   => __( 'Show Admin Bar', 'wpuf' ),
                 'desc'    => __( 'Select user by roles, who can view admin bar in frontend.', 'wpuf' ),
-                'type'    => 'multiselect',
+                'callback'=> 'wpuf_settings_multiselect',
                 'options' => $user_roles,
                 'default' => array( 'administrator', 'editor', 'author', 'contributor' ),
             ),
@@ -100,6 +100,17 @@ function wpuf_settings_fields() {
                 'name'    => 'override_editlink',
                 'label'   => __( 'Override the post edit link', 'wpuf' ),
                 'desc'    => __( 'Users see the edit link in post if s/he is capable to edit the post/page. Selecting <strong>Yes</strong> will override the default WordPress edit post link in frontend', 'wpuf' ),
+                'type'    => 'select',
+                'default' => 'no',
+                'options' => array(
+                    'yes' => __( 'Yes', 'wpuf' ),
+                    'no'  => __( 'No', 'wpuf' )
+                )
+            ),
+            array(
+                'name'    => 'wpuf_compatibility_acf',
+                'label'   => __( 'ACF Compatibility', 'wpuf' ),
+                'desc'    => __( 'Select <strong>Yes</strong> if you want to make compatible WPUF custom fields data with advanced custom fields.', 'wpuf' ),
                 'type'    => 'select',
                 'default' => 'no',
                 'options' => array(
@@ -323,6 +334,7 @@ function wpuf_settings_fields() {
                 'type'    => 'checkbox',
                 'default' => 'off'
             ),
+
         ) ),
         'wpuf_payment' => apply_filters( 'wpuf_options_payment', array(
             array(

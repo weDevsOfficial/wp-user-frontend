@@ -284,9 +284,12 @@ class WPUF_Render_Form {
                 default:
                     // if it's an array, implode with this->separator
                     if ( is_array( $_POST[$value['name']] ) ) {
+                        $acf_compatibility = wpuf_get_option( 'wpuf_compatibility_acf', 'wpuf_general', 'no' );
 
                         if ( $value['input_type'] == 'address' ) {
                             $meta_key_value[$value['name']] = $_POST[$value['name']];
+                        } elseif ( !empty( $acf_compatibility ) && $acf_compatibility == 'yes' ) {
+                           $meta_key_value[$value['name']] = maybe_serialize( $_POST[$value['name']] ); 
                         } else {
                             $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
                         }
@@ -1117,7 +1120,16 @@ class WPUF_Render_Form {
     function select( $attr, $multiselect = false, $post_id, $type, $form_id = null ) {
         if ( $post_id ) {
             $selected = $this->get_meta( $post_id, $attr['name'], $type );
-            $selected = $multiselect ? explode( self::$separator, $selected ) : $selected;
+            
+            if ( $multiselect ) {
+                if ( is_serialized( $selected ) ) {
+                   $selected = maybe_unserialize( $selected );
+                } elseif ( is_array( $selected ) ) {
+                   $selected = $selected; 
+                } else {
+                    $selected = explode( self::$separator, $selected );  
+                }
+            }
         } else {
             $selected = isset( $attr['selected'] ) ? $attr['selected'] : '';
             $selected = $multiselect ? ( is_array( $selected ) ? $selected : array() ) : $selected;
@@ -1196,11 +1208,19 @@ class WPUF_Render_Form {
     function checkbox( $attr, $post_id, $type, $form_id ) {
         $selected = isset( $attr['selected'] ) ? $attr['selected'] : array();
 
+
         if ( $post_id ) {
             if ( $value = $this->get_meta( $post_id, $attr['name'], $type, true ) ) {
-                $selected = explode( self::$separator, $value );
+                if ( is_serialized( $value ) ) {
+                   $selected = maybe_unserialize( $value );
+                } elseif ( is_array( $value ) ) {
+                   $selected = $value; 
+                } else {
+                    $selected = explode( self::$separator, $value );  
+                }
             }
         }
+
         ?>
 
         <div class="wpuf-fields" data-required="<?php echo $attr['required'] ?>" data-type="radio">
@@ -1389,6 +1409,11 @@ class WPUF_Render_Form {
         $class              = ' wpuf_'.$attr['name'].'_'.$selected;
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
         $exclude            = $attr['exclude'];
+        
+        if ( $exclude_type == 'child_of' ) {
+          $exclude = $exclude[0];
+        }
+
         $tax_args           = array(
             'show_option_none' => __( '-- Select --', 'wpuf' ),
             'hierarchical'     => 1,
@@ -1438,6 +1463,11 @@ class WPUF_Render_Form {
 
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
         $exclude            = $attr['exclude'];
+
+        if ( $exclude_type == 'child_of' ) {
+          $exclude = $exclude[0];
+        }
+
         $taxonomy           = $attr['name'];
         $class              = ' wpuf_'.$attr['name'].'_'.$form_id;
         $current_user       = get_current_user_id();

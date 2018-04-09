@@ -767,9 +767,8 @@ class WPUF_Subscription {
             ?>
 
             <?php _e( '<p><i>You have a subscription pack activated. </i></p>', 'wpuf' ); ?>
-            <?php _e( '<p><i>Pack name : '.get_the_title( $current_pack['pack_id'] ).' </i></p>', 'wpuf' );
+            <?php echo sprintf( __( "<p><i>Pack name: %s </i></p>", "wpuf" ), get_the_title( $current_pack['pack_id'] ) ); ?>
 
-            ?>
             <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wpuf' ); ?>
 
             <form action="" method="post">

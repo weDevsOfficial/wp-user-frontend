@@ -94,20 +94,28 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     $default_cat = (array) $default_cat;
                 }
 
+                $post_taxonomies = get_object_taxonomies( $post_type_selected, 'objects' );
+                $post_terms = array();
+
+                foreach ( $post_taxonomies as $tax ) {
+                    if ( $tax->hierarchical ) {
+                        $post_terms[] = $tax->name;
+                    }
+                }
+
                 $args = array(
                     'hide_empty'       => false,
                     'hierarchical'     => true,
                     'selected'         => $default_cat,
-                    'taxonomy'         => ( $post_type_selected == 'product' ) ? 'product_cat' : 'category'
+                    'taxonomy'         => $post_terms
                 );
 
                 echo '<select multiple name="wpuf_settings[default_cat][]">';
-
-                $categories = get_categories( $args );
+                $categories = get_terms( $args );
 
                 foreach ( $categories as $category ) {
                     $selected = '';
-                    if ( in_array( $category->term_id, $default_cat ) ) {
+                    if ( in_array( $category->name, $default_cat ) ) {
                         $selected = 'selected ';
                     }
                     echo '<option ' . $selected . 'value="' . $category->term_id . '">' . $category->name . '</option>';

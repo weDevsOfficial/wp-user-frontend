@@ -147,7 +147,7 @@ module.exports = function(grunt) {
             main: {
                 options: {
                     mode: 'zip',
-                    archive: './build/wp-user-frontend.zip'
+                    archive: './build/wp-user-frontend-v'+pkg.version+'.zip'
                 },
                 expand: true,
                 cwd: 'build/',

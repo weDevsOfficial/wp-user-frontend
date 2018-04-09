@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.8.6
+Version: 2.8.7
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wpuf
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.8.6' );
+define( 'WPUF_VERSION', '2.8.7' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -239,10 +239,13 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/frontend-form-post.php';
         require_once WPUF_ROOT . '/class/frontend-account.php';
         require_once WPUF_ROOT . '/includes/class-form.php';
+        require_once WPUF_ROOT . '/includes/class-form-manager.php';
         require_once WPUF_ROOT . '/includes/class-login-widget.php';
         require_once WPUF_ROOT . '/includes/setup-wizard.php';
         require_once WPUF_ROOT . '/includes/countries-state.php';
         require_once WPUF_ROOT . '/includes/class-billing-address.php';
+        include_once WPUF_ROOT . '/includes/class-gutenblock.php';
+        include_once WPUF_ROOT . '/includes/class-form-preview.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
@@ -267,6 +270,7 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder-ajax.php';
             include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
             include_once WPUF_ROOT . '/includes/class-whats-new.php';
+            include_once WPUF_ROOT . '/includes/class-acf.php';
 
         } else {
 
@@ -299,6 +303,9 @@ final class WP_User_Frontend {
         $this->container['account']                 = new WPUF_Frontend_Account();
         $this->container['insights']                = new WPUF_WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
         $this->container['billing_address']         = new WPUF_Ajax_Address_Form();
+        $this->container['forms']                   = new WPUF_Form_Manager();
+        $this->container['preview']                 = new WPUF_Form_Preview();
+        $this->container['block']                   = new WPUF_Form_Block();
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();
@@ -315,6 +322,7 @@ final class WP_User_Frontend {
             $this->container['admin_promotion']    = new WPUF_Admin_Promotion();
             $this->container['welcome']            = new WPUF_Admin_Welcome();
             $this->container['whats_new']          = new WPUF_Whats_New();
+            $this->container['wpuf_acf']           = new WPUF_ACF_Compatibility();
 
         } else {
 
@@ -406,7 +414,9 @@ final class WP_User_Frontend {
         $scheme  = is_ssl() ? 'https' : 'http';
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
-        if ( ! empty( $api_key ) ) {
+        $load_gmap = apply_filters( 'wpuf_load_gmap_script', true );
+
+        if ( ! empty( $api_key ) && $load_gmap ) {
             wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key, array(), null );
         }
 

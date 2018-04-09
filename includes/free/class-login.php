@@ -384,7 +384,8 @@ class WPUF_Simple_Login {
         $override    = wpuf_get_option( 'wp_default_login_redirect', 'wpuf_profile', false );
         $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
 
-        if ( $override != 'on' || 'previous_page' == $redirect_to || empty( get_permalink( $redirect_to ) ) ) {
+        $link = get_permalink( $redirect_to );
+        if ( $override != 'on' || 'previous_page' == $redirect_to || empty( $link ) ) {
             return $redirect;
         }
 
@@ -734,7 +735,7 @@ class WPUF_Simple_Login {
 
         $title   = sprintf( __('[%s] Password Reset', 'wpuf' ), $blogname );
         $title   = apply_filters( 'retrieve_password_title', $title );
-        
+
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login );
 
         if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {

@@ -357,6 +357,11 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude      = $attr['exclude'];
+    
+    if ( $exclude_type == 'child_of' ) {
+      $exclude = $exclude[0];
+    }
+
     $tax          = $attr['name'];
     $current_user = get_current_user_id();
 
@@ -561,7 +566,12 @@ function wpuf_update_avatar( $user_id, $attachment_id ) {
         $editor = wp_get_image_editor( $file_path );
 
         if ( !is_wp_error( $editor ) ) {
-            $editor->resize( 100, 100, true );
+            $avatar_size    = wpuf_get_option( 'avatar_size', 'wpuf_profile', '100x100' );
+            $avatar_size    = explode( 'x', $avatar_size );
+            $avatar_width   = $avatar_size[0];
+            $avatar_height  = $avatar_size[1];
+
+            $editor->resize( $avatar_width, $avatar_height, true );
             $editor->save( $small_url );
 
             // if the file creation successfull, delete the original attachment
@@ -806,16 +816,30 @@ function wpuf_show_custom_fields( $content ) {
                     break;
 
                 case 'date':
-                    $value = wpuf_get_date( get_post_meta( $post->ID, $attr['name'], true ) );
+                    $value = get_post_meta( $post->ID, $attr['name'], true );
                     $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $value ) );
                     break;
 
                 default:
                     $value       = get_post_meta( $post->ID, $attr['name'] );
                     $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );
+                    $separator   = '| ';
 
                     if ( !empty( $filter_html ) ) {
                         $html .= $filter_html;
+                    } elseif ( is_serialized( $value[0] ) ) {
+                        $new            = maybe_unserialize( $value[0] );
+                        $modified_value = implode( $separator, $new );
+
+                        if ( $modified_value ) {
+                           $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                        }
+                    } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value ) ) {
+                        $modified_value = implode( $separator, $value[0] );
+
+                        if ( $modified_value ) {
+                           $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                        }
                     } else {
 
                         $new = implode( ', ', $value );
@@ -1156,19 +1180,26 @@ function wpuf_load_template( $file, $args = array() ) {
  * @param bool $show_time
  * @return string
  */
-function wpuf_get_date( $date, $show_time = false ) {
+function wpuf_get_date( $date, $show_time = false, $format = false ) {
     if ( empty( $date ) ) {
-        return;
+        return $date;
     }
 
-    $date   = strtotime( $date );
+    $timestamp = strtotime( $date );
+    if ( $format ) {
+        $dateobj = DateTime::createFromFormat( $format, $date );
+        if ( $dateobj ) {
+            $timestamp = $dateobj->getTimestamp();
+        }
+    }
+
     $format = get_option( 'date_format' );
 
     if ( $show_time ) {
         $format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
     }
 
-    return date_i18n( $format, $date );
+    return date_i18n( $format, $timestamp );
 }
 
 /**
@@ -2721,10 +2752,10 @@ function wpuf_get_user_address() {
     $address_fields = array();
 
     if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
-        $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );  
+        $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );
     } else {
         $address_fields = array_fill_keys( array( 'add_line_1', 'add_line_2', 'city', 'state', 'zip_code', 'country' ), '' );
-        
+
         if ( class_exists( 'WooCommerce' ) ) {
             $customer_id = get_current_user_id();
             $woo_address = array();
@@ -2753,4 +2784,28 @@ function wpuf_get_user_address() {
     }
 
     return $address_fields;
+}
+
+/**
+ * Displays a multi select dropdown for a settings field
+ *
+ * @param array   $args settings field args
+ */
+function wpuf_settings_multiselect( $args ) {
+
+    $settings = new WeDevs_Settings_API();
+    $value = $settings->get_option( $args['id'], $args['section'], $args['std'] );
+    $value = is_array($value) ? (array)$value : array();
+    $size  = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
+    $html  = sprintf( '<select multiple="multiple" class="%1$s" name="%2$s[%3$s][]" id="%2$s[%3$s]">', $size, $args['section'], $args['id'] );
+
+    foreach ( $args['options'] as $key => $label ) {
+        $checked = in_array($key, $value) ? $key : '0';
+        $html   .= sprintf( '<option value="%s"%s>%s</option>', $key, selected( $checked, $key, false ), $label );
+    }
+
+    $html .= sprintf( '</select>' );
+    $html .= $settings->get_field_description( $args );
+
+    echo $html;
 }

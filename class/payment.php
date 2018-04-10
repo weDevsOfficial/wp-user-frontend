@@ -215,7 +215,6 @@ class WPUF_Payment {
                                     $post_cost = $pay_per_post_cost;
                                     $billing_amount = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
                                 }
-
                                 ?>
                                 <div id="wpuf_type" style="display: none"><?php echo 'post'; ?></div>
                                 <div id="wpuf_id" style="display: none"><?php echo $post_id; ?></div>
@@ -332,9 +331,11 @@ class WPUF_Payment {
                     $form_id       = get_post_meta( $post_id, '_wpuf_form_id', true );
                     $form          = new WPUF_Form( $form_id );
                     $form_settings = $form->get_settings();
+                    $force_pack    = $form->is_enabled_force_pack();
+                    $fallback_on   = $form->is_enabled_fallback_cost();
                     $post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-                    if ( !is_wp_error ( $current_pack ) && !$post_count ) {
+                    if ( $force_pack && $fallback_on && !is_wp_error ( $current_pack ) && !$post_count ) {
                         $amount    = $form->get_subs_fallback_cost();
                     } else {
                         $amount    = $form->get_pay_per_post_cost();

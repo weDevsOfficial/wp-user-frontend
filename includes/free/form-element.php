@@ -195,7 +195,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
         $form_settings    = wpuf_get_form_settings( $post->ID );
 
-        $new_notificaton  = isset( $form_settings['notification']['new'] ) ? $form_settings['notification']['new'] : 'on';
+        $new_notificaton  = isset( $form_settings['notification']['new'] ) ? $form_settings['notification']['new'] : '';
         $new_to           = isset( $form_settings['notification']['new_to'] ) ? $form_settings['notification']['new_to'] : get_option( 'admin_email' );
         $new_subject      = isset( $form_settings['notification']['new_subject'] ) ? $form_settings['notification']['new_subject'] : __( 'New post created', 'wpuf' );
         $new_body         = isset( $form_settings['notification']['new_body'] ) ? $form_settings['notification']['new_body'] : $new_mail_body . $mail_body;
@@ -212,7 +212,6 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                 <th><?php _e( 'Notification', 'wpuf' ); ?></th>
                 <td>
                     <label>
-                        <input type="hidden" name="wpuf_settings[notification][new]" value="on">
                         <input type="checkbox" name="wpuf_settings[notification][new]" value="on"<?php checked( $new_notificaton, 'on' ); ?>>
                         <?php _e( 'Enable post notification', 'wpuf' ); ?>
                     </label>

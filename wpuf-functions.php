@@ -835,7 +835,7 @@ function wpuf_show_custom_fields( $content ) {
                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
                         }
                     } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value ) ) {
-                        $modified_value = implode( $separator, $value[0] );
+                        $modified_value = implode( $separator, $value );
 
                         if ( $modified_value ) {
                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );

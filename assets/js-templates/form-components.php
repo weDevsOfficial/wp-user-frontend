@@ -450,7 +450,12 @@
     <div :id="'wpuf-img_label-' + field.id + '-upload-container'">
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector" href="#">
-                <?php _e( 'Select Image', 'wpuf' ); ?>
+                <template v-if="field.button_label === ''">
+                    <?php _e( 'Select Image', 'wpuf' ); ?>
+                </template>
+                <template v-else>
+                    {{ field.button_label }}
+                </template>
             </a>
         </div>
     </div>
@@ -516,7 +521,12 @@
     <div :id="'wpuf-img_label-' + field.id + '-upload-container'">
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector wpuf_img_label_148" href="#">
-                {{ field.button_label }}
+                <template v-if="field.button_label === ''">
+                    <?php _e( 'Select Image', 'wpuf' ); ?>
+                </template>
+                <template v-else>
+                    {{ field.button_label }}
+                </template>
             </a>
         </div>
     </div>

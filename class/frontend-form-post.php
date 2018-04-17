@@ -498,8 +498,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             // if user has a subscription pack
             $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
 
-            if ( !empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['_enable_post_expiration'] ) && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) >= time()
-            ) {
+            if ( !empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['_enable_post_expiration'] ) && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) >= time() ) {
                 $expire_date = date( 'Y-m-d', strtotime( "+" . $user_wpuf_subscription_pack['_post_expiration_time'] ) );
                 update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
 
@@ -529,7 +528,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                         update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
                     }
                 }
-            } elseif ( empty( $user_wpuf_subscription_pack ) ) {
+            } elseif ( empty( $user_wpuf_subscription_pack ) || $user_wpuf_subscription_pack == 'Cancel' || $user_wpuf_subscription_pack == 'cancel' ) {
 
                 if ( isset( $form_settings['expiration_settings']['enable_post_expiration'] ) ) {
                     $expire_date = date( 'Y-m-d', strtotime( "+" . $form_settings['expiration_settings']['expiration_time_value'] . ' ' . $form_settings['expiration_settings']['expiration_time_type'] . "" ) );

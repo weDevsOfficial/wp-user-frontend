@@ -95,7 +95,7 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
         <li class="featured_image">
             <?php self::legend( $label, $values, $field_id ); ?>
             <?php self::hidden_field( "[$field_id][input_type]", 'image_upload' ); ?>
-            <?php self::hidden_field( "[$field_id][template]", 'featured_image' ); ?>
+            <?php self::hidden_field( "[$field_id][template]", 'image_upload' ); ?>
             <?php self::hidden_field( "[$field_id][count]", '1' ); ?>
 
             <div class="wpuf-form-holder">

@@ -682,6 +682,15 @@ class WPUF_Admin_Form {
 
         $settings = array_merge( $settings, array(
             array(
+                'name'          => 'button_label',
+                'title'         => __( 'Button Label', 'wpuf' ),
+                'type'          => 'text',
+                'default'       => __( 'Select Image', 'wpuf' ),
+                'section'       => 'basic',
+                'priority'      => 30,
+                'help_text'     => __( 'Enter a label for the Select button', 'wpuf' ),
+            ),
+            array(
                 'name'          => 'max_size',
                 'title'         => __( 'Max. file size', 'wpuf' ),
                 'type'          => 'text',
@@ -702,6 +711,7 @@ class WPUF_Admin_Form {
                 'required'          => 'no',
                 'label'             => __( 'Featured Image', 'wpuf' ),
                 'name'              => 'featured_image',
+                'button_label'      => __( 'Select Image', 'wpuf' ),
                 'is_meta'           => 'no',
                 'help'              => '',
                 'css'               => '',

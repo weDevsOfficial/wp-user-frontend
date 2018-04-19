@@ -625,10 +625,11 @@ class WPUF_Simple_Login {
         if ( !is_wp_error( $user ) ) {
 
             if ( $user->ID ) {
-
+                $resend_link = add_query_arg( 'resend_activation', $user->ID, $this->get_login_url() );
                 $error = new WP_Error();
-                if ( get_user_meta( $user->ID, '_wpuf_user_active', true ) == '0' ) {
-                    $error->add( 'acitve_user', sprintf( __( '<strong>Your account is not active.</strong><br>Please check your email for activation link.', 'wpuf' ) ) );
+                $wpuf_user = new WPUF_User( $user->ID );
+                if ( ! $wpuf_user->is_verified() ) {
+                    $error->add( 'acitve_user', sprintf( __( '<strong>Your account is not active.</strong><br>Please check your email for activation link. <br><a href="%s">Click here</a> to resend the activation link', 'wpuf' ), $resend_link ) );
                     return $error;
                 }
             }
@@ -649,21 +650,32 @@ class WPUF_Simple_Login {
         }
 
         if ( !isset( $_GET['id'] ) && empty( $_GET['id'] ) ) {
+            wpuf()->login->add_error( 'Activation URL is not valid 1' );
             return;
         }
 
         $user_id = intval( $_GET['id'] );
-        $activation_key = $_GET['wpuf_registration_activation'];
+        $user =  new WPUF_User( $user_id );
 
-        if ( get_user_meta( $user_id, '_wpuf_activation_key', true ) != $activation_key ) {
+        if ( !$user || $user->is_verified() ) {
+            wpuf()->login->add_error( 'Invalid User activation url' );
             return;
         }
 
-        delete_user_meta( $user_id, '_wpuf_user_active' );
-        delete_user_meta( $user_id, '_wpuf_activation_key' );
+        $activation_key = $_GET['wpuf_registration_activation'];
+
+        if ( $user->get_activation_key() != $activation_key ) {
+            wpuf()->login->add_error( 'Activation URL is not valid' );
+            return;
+        }
+
+        $user->mark_verified();
+        $user->remove_activation_key();
+
+        wpuf()->login->add_message( 'Your account has been activated' );
 
         // show activation message
-        add_filter( 'wp_login_errors', array($this, 'user_activation_message') );
+        add_filter( 'wp_login_errors', array( $this, 'user_activation_message' ) );
         wp_send_new_user_notifications( $user_id );
 
         do_action( 'wpuf_user_activated', $user_id );
@@ -743,6 +755,27 @@ class WPUF_Simple_Login {
         }
     }
 
+    /**
+     * Add Error message
+     *
+     * @since 2.8.8
+     *
+     * @param $message
+     */
+    public function add_error( $message ) {
+        $this->login_errors[] = $message;
+    }
+
+    /**
+     * Add info message
+     *
+     * @since 2.8.8
+     *
+     * @param $message
+     */
+    public function add_message( $message ) {
+        $this->messages[] = $message;
+    }
     /**
      * Show erros on the form
      *

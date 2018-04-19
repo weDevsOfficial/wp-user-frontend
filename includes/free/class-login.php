@@ -650,15 +650,20 @@ class WPUF_Simple_Login {
         }
 
         if ( !isset( $_GET['id'] ) && empty( $_GET['id'] ) ) {
-            wpuf()->login->add_error( 'Activation URL is not valid 1' );
+            wpuf()->login->add_error( 'Activation URL is not valid' );
             return;
         }
 
         $user_id = intval( $_GET['id'] );
-        $user =  new WPUF_User( $user_id );
+        $user    =  new WPUF_User( $user_id );
 
-        if ( !$user || $user->is_verified() ) {
+        if ( !$user ) {
             wpuf()->login->add_error( 'Invalid User activation url' );
+            return;
+        }
+
+        if ( $user->is_verified() ){
+            wpuf()->login->add_error( 'User already verified' );
             return;
         }
 

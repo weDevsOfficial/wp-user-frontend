@@ -439,6 +439,8 @@ final class WP_User_Frontend {
         wp_register_style( 'wpuf-layout1', WPUF_ASSET_URI . '/css/frontend-form/layout1.css' );
         wp_register_style( 'wpuf-layout2', WPUF_ASSET_URI . '/css/frontend-form/layout2.css' );
         wp_register_style( 'wpuf-layout3', WPUF_ASSET_URI . '/css/frontend-form/layout3.css' );
+        wp_register_style( 'wpuf-layout4', WPUF_ASSET_URI . '/css/frontend-form/layout4.css' );
+        wp_register_style( 'wpuf-layout5', WPUF_ASSET_URI . '/css/frontend-form/layout5.css' );
 
         wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array( 'jquery' ), false, true );
 

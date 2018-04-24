@@ -106,40 +106,27 @@ class WPUF_Frontend_Account {
      */
     public function subscription_section( $sections, $current_section ) {
 
-        // if ( wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' || ! is_user_logged_in() ) {
-        //     return;
-        // }
-        $current_user  = wpuf_get_user();
+        $wpuf_user  = wpuf_get_user();
+        $sub_id     = $wpuf_user->subscription()->current_pack_id();
 
-        if ( !$current_user->subscription()->current_pack_id() ) {
-            _e( "<p>You've not subscribed any package yet.</p>", 'wpuf' );
+        if ( !$sub_id ) {
+            _e( "<p>You are not subscribed to any package yet.</p>", 'wpuf' );
             return;
         }
-
-        global $userdata;
-
-        $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix
-
-        $user_sub = WPUF_Subscription::get_user_pack( $userdata->ID );
-        if ( ! isset( $user_sub['pack_id'] ) ) {
-            die( __( "<p>You've not subscribed any package yet.</p>", 'wpuf' ) );
-        } else {
-            _e( "<p>You've subscribed to the following package.</p>", 'wpuf' );
-        }
-
-        $pack = WPUF_Subscription::get_subscription( $user_sub['pack_id'] );
+        $user_subscription = new WPUF_User_Subscription( $wpuf_user );
+        $user_sub = $user_subscription->current_pack();
+        $pack     = WPUF_Subscription::get_subscription( $sub_id );
 
         $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
         $details_meta['onclick']      = '';
         $details_meta['symbol']       = wpuf_get_currency( 'symbol' );
 
+        $recurring_des = '';
+
         $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wpuf' );
         if ( $pack->meta_value['recurring_pay'] == 'yes' ) {
-            $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
-            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
-            $recurring_des = $recurring_des;
-        } else {
-            $recurring_des = '';
+            $recurring_des = sprintf( __( 'For each %s %s', 'wpuf' ), $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments', 'wpuf' ), $pack->meta_value['billing_limit'] ) : '';
         }
 
         wpuf_load_template(
@@ -147,7 +134,7 @@ class WPUF_Frontend_Account {
             array(
                 'sections'        => $sections,
                 'current_section' => $current_section,
-                'userdata'        => $userdata,
+                'userdata'        => $wpuf_user->user,
                 'user_sub'        => $user_sub,
                 'pack'            => $pack,
                 'billing_amount'  => $billing_amount,

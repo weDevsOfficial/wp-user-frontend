@@ -386,33 +386,6 @@ ul.wpuf-form {
                     .attachment-name {
                         text-align: center;
                     }
-
-                    a.attachment-delete,a.wpuf-delete-avatar {
-                        text-decoration: none;
-                        padding: 3px 12px;
-                        border: 1px solid #C47272;
-                        color:#ffffff;
-                        text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
-                        .border-radius(3px);
-                        background-color:#da4f49;
-                        background-image:-moz-linear-gradient(top, #ee5f5b, #bd362f);
-                        background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
-                        background-image:-webkit-linear-gradient(top, #ee5f5b, #bd362f);
-                        background-image:-o-linear-gradient(top, #ee5f5b, #bd362f);
-                        background-image:linear-gradient(to bottom, #ee5f5b, #bd362f);
-                        background-repeat:repeat-x;
-                        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
-                        border-color:#bd362f #bd362f #802420;
-                        border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-                        *background-color:#bd362f;
-                        filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);
-
-                        &:hover, &:active {
-                            color:#ffffff;
-                            background-color:#bd362f;
-                            *background-color:#a9302a;
-                        }
-                    }
                 }
             }
 
@@ -1507,4 +1480,39 @@ table#wpuf-address-country-state {
     td {
         border: none;
     }
+}
+
+.wpuf-image-wrap {
+    display:inline-block;
+    position:relative;
+    z-index:1;
+    transition:.3s;
+    margin:4px;
+    .attachment-name img {
+        width:100%;
+        height:100%;
+        transition:.3s;
+        border-radius:4px;
+    }
+    :not(.attachment-name img) {
+        position:absolute;
+        width:100%;
+        opacity:0;
+        transition:.3s;
+    }
+}
+li.wpuf-image-wrap.thumbnail {
+    position:relative;
+    .caption {
+        position:absolute;
+        left:50%;
+        margin-left:-10px;
+        top:50%;
+        margin-top:-10px;
+        display:none;
+        width:16px;
+    }
+}
+li.wpuf-image-wrap.thumbnail:hover .caption {
+    display:block;
 }

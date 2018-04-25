@@ -713,7 +713,6 @@ class WPUF_Subscription {
         do_action( "wpuf_account_content_subscription", $sections, 'subscription' );
     }
 
-
     /**
      * Show the subscription packs that are built
      * from admin Panel
@@ -780,39 +779,17 @@ class WPUF_Subscription {
             <?php
         }
 
-        if ( $packs ) {
-            echo '<ul class="wpuf_packs">';
-            if ( isset($args['include']) && $args['include'] != "" ) {
-                for ( $i = 0; $i < count( $pack_order ); $i++ ) {
-                    foreach ($packs as $pack) {
-                        if (  (int) $pack->ID == $pack_order[$i] ) {
-                            $class = 'wpuf-pack-' . $pack->ID;
-                            ?>
-                            <li class="<?php echo $class; ?>">
-                                <?php $this->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
-                            </li>
-                            <?php
-                        }
-                    }
-                }
-            } else {
-                foreach ($packs as $pack) {
-                    $class = 'wpuf-pack-' . $pack->ID;
-                    ?>
-                    <li class="<?php echo $class; ?>">
-                        <?php $this->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
-                    </li>
-                    <?php
-                }
-            }
-            echo '</ul>';
-        }
+        wpuf_load_template( 'subscriptions/listing.php', apply_filters( 'wpuf_subscription_listing_args', array(
+            'subscription' => $this,
+            'args'         => $args,
+            'packs'        => $packs,
+            'pack_order'   => isset( $pack_order ) ? $pack_order : '',
+            'details_meta' => $details_meta
+        ) ) );
 
         $contents = ob_get_clean();
 
         return apply_filters( 'wpuf_subscription_packs', $contents, $packs );
-
-
     }
 
     function get_details_meta_value() {
@@ -824,13 +801,23 @@ class WPUF_Subscription {
         return $meta;
     }
 
-    function pack_details( $pack, $details_meta, $current_pack_id = '', $coupon_satus = false ) {
+    /**
+     * Render Subscription Pack details
+     *
+     * @param $pack
+     * @param $details_meta
+     * @param string $current_pack_id
+     * @param bool $coupon_status
+     */
+    function pack_details( $pack, $details_meta, $current_pack_id = '', $coupon_status = false ) {
 
         if ( function_exists( 'wpuf_prices_include_tax' ) ) {
             $price_with_tax = wpuf_prices_include_tax();
         }
 
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : '0.00';
+        $trial_des     = '';
+        $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . __( 'One time payment', 'wpuf' ) . '</div>';
 
         if ( isset( $price_with_tax ) && $price_with_tax ) {
             $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount);
@@ -840,71 +827,49 @@ class WPUF_Subscription {
             $recurring_des = sprintf( __('Every', 'wpuf').' %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
             $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? __( sprintf( ', '.__('for', 'wpuf').' %s '.__( 'installments', 'wpuf' ), $pack->meta_value['billing_limit'] ), 'wpuf' ) : '';
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">'.$recurring_des.'</div>';
-        } else {
-            $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . __( 'One time payment', 'wpuf' ) . '</div>';
         }
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' && $pack->meta_value['trial_status'] == 'yes' ) {
-
             $duration = _n( $pack->meta_value['trial_duration_type'], $pack->meta_value['trial_duration_type'].'s', $pack->meta_value['trial_duration'], 'wpuf'  );
             $trial_des = __( sprintf( 'Trial available for first %s %s', $pack->meta_value['trial_duration'], $duration ), 'wpuf' );
-
-        } else {
-            $trial_des = '';
         }
 
+        $button_name = __('Buy Now', 'wpuf');
         if (  ! is_user_logged_in()  ) {
             $button_name = __( 'Sign Up', 'wpuf' );
             $url = wp_login_url();
         } else if ( $billing_amount == '0.00' ) {
             $button_name = __( 'Free', 'wpuf' );
-        } else {
-            $button_name = __( 'Buy Now', 'wpuf' );
-        }
-        ?>
-        <div class="wpuf-pricing-wrap">
-            <h3><?php echo wp_kses_post( $pack->post_title ); ?> </h3>
-            <div class="wpuf-sub-amount">
-
-                <?php if ( $billing_amount != '0.00' ) { ?>
-                    <sup class="wpuf-sub-symbol"><?php echo $details_meta['symbol']; ?></sup>
-                    <span class="wpuf-sub-cost"><?php echo $billing_amount; ?></span>
-                <?php } else { ?>
-                    <span class="wpuf-sub-cost"><?php _e( 'Free', 'wpuf' ); ?></span>
-                <?php } ?>
-
-                <?php _e( $recurring_des , 'wpuf' ); ?>
-
-            </div>
-            <?php
-            if ( $pack->meta_value['recurring_pay'] == 'yes' ) {
-            ?>
-                <div class="wpuf-sub-body wpuf-nullamount-hide">
-                    <div class="wpuf-sub-terms"><?php echo $trial_des; ?></div>
-                </div>
-            <?php
-            }
-            ?>
-        </div>
-        <div class="wpuf-sub-desciption">
-            <?php echo wpautop( wp_kses_post( $pack->post_content ) ); ?>
-        </div>
-        <?php
-
-        if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_pay' || $coupon_satus ) {
-            return;
-        }
-        if ( $coupon_satus === false && is_user_logged_in() ) {
-            ?>
-                <div class="wpuf-sub-button"><a <?php echo ( $current_pack_id != '' ) ? ' class = "wpuf-disabled-link" ' : '' ;?> href="<?php echo ( $current_pack_id != '' ) ? 'javascript:' : add_query_arg( array('action' => 'wpuf_pay', 'type' => 'pack', 'pack_id' => $pack->ID ), $details_meta['payment_page'] ); ?>" onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>"><?php echo $button_name; ?></a></div>
-            <?php
-        } else {
-            ?>
-                <div class="wpuf-sub-button"><a <?php echo ( $current_pack_id != '' ) ? ' class = "wpuf-disabled-link" ' : '' ;?>  href="<?php echo ( $current_pack_id != '' ) ? 'javascript:' : add_query_arg( array( 'action' => 'register', 'type' => 'wpuf_sub', 'pack_id' => $pack->ID ), wp_registration_url() ); ?>" onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>"><?php echo $button_name; ?></a></div>
-            <?php
-            //wp_registration_url()
         }
 
+        $query_args = array(
+            'action' => 'register',
+            'type'   => 'wpuf_sub',
+            'pack_id' => $pack->ID,
+        );
+        $query_url = wp_registration_url();
+
+        if ( $coupon_status === false && is_user_logged_in() ) {
+            $query_args = array(
+                'action' => 'wpuf_pay',
+                'type'   => 'pack',
+                'pack_id' => $pack->ID
+            );
+            $query_url = $details_meta['payment_page'];
+        }
+
+        wpuf_load_template( 'subscriptions/pack-details.php', apply_filters( 'wpuf_subscription_pack_details_args', array(
+            'pack'            => $pack,
+            'billing_amount'  => $billing_amount,
+            'details_meta'    => $details_meta,
+            'recurring_des'   => $recurring_des,
+            'trial_des'       => $trial_des,
+            'coupon_status'   => $coupon_status,
+            'current_pack_id' => $current_pack_id,
+            'button_name'     => $button_name,
+            'query_args'      => $query_args,
+            'query_url'       => $query_url,
+        ) ) );
     }
 
     /**

@@ -129,6 +129,25 @@
     font-size: 13px;
 }
 
+.wpuf-form-add{
+
+    &.wpuf-style{
+        ul.wpuf-form{
+            .wpuf-submit{
+                
+                input[type=submit] {
+                    font-size: 16px;
+                    padding: 5px 15px;
+                    border: 1px solid #ccc;
+                    .border-radius(3px);
+                    .core-button();
+                }
+            }
+        }
+    }
+
+}
+
 ul.wpuf-form {
     list-style: none !important;
     margin: 0 !important;
@@ -632,14 +651,6 @@ ul.wpuf-form {
     }
 
     .wpuf-submit {
-
-        input[type=submit] {
-            font-size: 16px;
-            padding: 5px 15px;
-            border: 1px solid #ccc;
-            .border-radius(3px);
-            .core-button();
-        }
 
         .button-primary-disabled {
             color: #94cde7 !important;

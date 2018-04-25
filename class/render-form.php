@@ -349,11 +349,12 @@ class WPUF_Render_Form {
             return;
         }
 
-        $form_vars      = wpuf_get_form_fields( $form_id );
-        $form_settings  = wpuf_get_form_settings( $form_id );
-        $label_position = isset( $form_settings['label_position'] ) ? $form_settings['label_position'] : 'left';
-        $layout         = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
-        $is_scheduled   = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] == 'true' ) ? true : false;
+        $form_vars       = wpuf_get_form_fields( $form_id );
+        $form_settings   = wpuf_get_form_settings( $form_id );
+        $label_position  = isset( $form_settings['label_position'] ) ? $form_settings['label_position'] : 'left';
+        $layout          = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
+        $theme_css       = isset( $form_settings['use_theme_css'] ) ? $form_settings['use_theme_css'] : 'wpuf-style';
+        $is_scheduled    = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] == 'true' ) ? true : false;
 
         if ( $is_scheduled ) {
             $start_time   = !empty( $form_settings['schedule_start'] ) ? strtotime( $form_settings['schedule_start'] ) : 0;
@@ -381,7 +382,7 @@ class WPUF_Render_Form {
 
         if ( $form_vars ) {
             ?>
-            <form class="wpuf-form-add wpuf-form-<?php echo $layout; ?>" action="" method="post">
+            <form class="wpuf-form-add wpuf-form-<?php echo $layout; ?> <?php echo ($layout == 'layout1') ? $theme_css : 'wpuf-style'; ?>" action="" method="post">
 
                 <ul class="wpuf-form form-label-<?php echo $label_position; ?>">
 

@@ -784,7 +784,8 @@ class WPUF_Subscription {
             'args'         => $args,
             'packs'        => $packs,
             'pack_order'   => isset( $pack_order ) ? $pack_order : '',
-            'details_meta' => $details_meta
+            'details_meta' => $details_meta,
+            'current_pack' => $current_pack
         ) ) );
 
         $contents = ob_get_clean();

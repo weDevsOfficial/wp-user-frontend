@@ -9,7 +9,10 @@
  * @var $pack_order array
  * @var $args array
  * @var $details_meta
+ * @var $current_pack
  */
+
+do_action( 'wpuf_before_subscription_listing', $packs );
 
 if ( $packs ) {
     echo '<ul class="wpuf_packs">';
@@ -38,3 +41,5 @@ if ( $packs ) {
     }
     echo '</ul>';
 }
+
+do_action( 'wpuf_after_subscription_listing', $packs );

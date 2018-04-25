@@ -60,7 +60,7 @@ class WPUF_User_Subscription {
 
         // seems like the user has a pack, now check expiration
         if ( $this->expired() ) {
-            return new WP_Error( 'expired', __( 'The subscription pack has been expired. Please buy a pack.', 'wpuf' ) );
+            return new WP_Error( 'expired', __( 'The subscription pack has expired. Please buy a pack.', 'wpuf' ) );
         }
 
         return $pack;

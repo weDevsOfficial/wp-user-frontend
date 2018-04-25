@@ -320,37 +320,6 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li .wpuf-file-input-wrap te
 ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li .attachment-name {
   text-align: center;
 }
-ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete,
-ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.wpuf-delete-avatar {
-  text-decoration: none;
-  padding: 3px 12px;
-  border: 1px solid #C47272;
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  background-color: #da4f49;
-  background-image: -moz-linear-gradient(top, #ee5f5b, #bd362f);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
-  background-image: -webkit-linear-gradient(top, #ee5f5b, #bd362f);
-  background-image: -o-linear-gradient(top, #ee5f5b, #bd362f);
-  background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
-  border-color: #bd362f #bd362f #802420;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #bd362f;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-}
-ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete:hover,
-ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.wpuf-delete-avatar:hover,
-ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.attachment-delete:active,
-ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li a.wpuf-delete-avatar:active {
-  color: #ffffff;
-  background-color: #bd362f;
-  *background-color: #a9302a;
-}
 ul.wpuf-form li .wpuf-fields .progress {
   background: -moz-linear-gradient(center bottom, #FFFFFF 0%, #F7F7F7 100%) repeat scroll 0 0 #FFFFFF;
   border: 1px solid #D1D1D1;
@@ -1291,4 +1260,38 @@ table#wpuf-address-country-state input.wpuf-btn {
 }
 table#wpuf-address-country-state td {
   border: none;
+}
+.wpuf-image-wrap {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  transition: .3s;
+  margin: 4px;
+}
+.wpuf-image-wrap .attachment-name img {
+  width: 100%;
+  height: 100%;
+  transition: .3s;
+  border-radius: 4px;
+}
+.wpuf-image-wrap :not(.attachment-name img) {
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+  transition: .3s;
+}
+li.wpuf-image-wrap.thumbnail {
+  position: relative;
+}
+li.wpuf-image-wrap.thumbnail .caption {
+  position: absolute;
+  left: 50%;
+  margin-left: -10px;
+  top: 50%;
+  margin-top: -10px;
+  display: none;
+  width: 16px;
+}
+li.wpuf-image-wrap.thumbnail:hover .caption {
+  display: block;
 }

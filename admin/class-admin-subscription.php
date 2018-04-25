@@ -571,8 +571,8 @@ class WPUF_Admin_Subscription {
                 $recurring_pay  = ( isset( $pack->meta_value['recurring_pay'] ) && $pack->meta_value['recurring_pay'] == 'yes' ) ? true : false;
 
                 if ( $billing_amount && $recurring_pay ) {
-                    $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
-                    $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
+                    $recurring_des = sprintf( __( 'For each %s %s', 'wpuf' ), $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+                    $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments', 'wpuf' ), $pack->meta_value['billing_limit'] ) : '';
                     $recurring_des = $recurring_des;
                 } else {
                     $recurring_des = '';
@@ -767,7 +767,7 @@ class WPUF_Admin_Subscription {
                     </tr>
                 </table>
             <?php endif;?>
-            <?php 
+            <?php
             do_action( 'wpuf_admin_subscription_content', $userdata->ID ) ?>
             <?php if ( !empty( $user_sub ) ): ?>
                 <div class="wpuf-sub-actions">

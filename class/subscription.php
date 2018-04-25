@@ -834,12 +834,15 @@ class WPUF_Subscription {
             $trial_des = __( sprintf( 'Trial available for first %s %s', $pack->meta_value['trial_duration'], $duration ), 'wpuf' );
         }
 
-        $button_name = __('Buy Now', 'wpuf');
-        if (  ! is_user_logged_in()  ) {
-            $button_name = __( 'Sign Up', 'wpuf' );
-            $url = wp_login_url();
+        $label       = wpuf_get_option( 'logged_in_label','subscription_settings', false );
+        $button_name = $label ? $label : __('Buy Now', 'wpuf');
+
+        if ( ! is_user_logged_in() ) {
+            $label = wpuf_get_option( 'logged_out_label','subscription_settings', false );
+            $button_name = $label ? $label : __( 'Sign Up', 'wpuf' );
         } else if ( $billing_amount == '0.00' ) {
-            $button_name = __( 'Free', 'wpuf' );
+            $label = wpuf_get_option( 'free_label','subscription_settings', false );
+            $button_name = $label ? $label : __( 'Free', 'wpuf' );
         }
 
         $query_args = array(

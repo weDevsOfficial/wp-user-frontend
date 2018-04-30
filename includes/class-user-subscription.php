@@ -492,4 +492,20 @@ class WPUF_User_Subscription {
         return false;
     }
 
+    /**
+     * Get Expiration Message
+     *
+     * @since 2.8.8
+     * @param $pack_id
+     * @return string
+     */
+    public function get_subscription_exp_msg( $pack_id ) {
+        $sub_pack  = WPUF_Subscription::get_subscription( $pack_id );
+        $sub_info  = $this->pack;
+
+        $exp_message = !empty( $sub_pack->meta_value['_post_expiration_message'] )  ? $sub_pack->meta_value['_post_expiration_message'] : $sub_info['_post_expiration_message'];
+
+        return $exp_message;
+    }
+
 }

@@ -510,7 +510,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 if ( isset( $user_wpuf_subscription_pack['_enable_mail_after_expired'] ) && $user_wpuf_subscription_pack['_enable_mail_after_expired'] == 'on' ) {
                     $wpuf_user  = wpuf_get_user();
                     $user_subscription = new WPUF_User_Subscription( $wpuf_user );
-                    $post_expiration_message = $user_subscription->get_subscription_exp_msg( $user_wpuf_subscription_pack['pack_id'] );
+                    $post_expiration_message = $user_subscription->get_subscription_exp_msg( $user_subscription['pack_id'] );
                     update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
                 }
             } elseif ( !empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) <= time() ) {

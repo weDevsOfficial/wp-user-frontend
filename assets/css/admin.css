@@ -189,6 +189,9 @@ span.wpuf_help {
 .wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#user_directory-tab .dashicons {
   color: #e74c3c;
 }
+.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#subscription_settings-tab .dashicons {
+  color: #00aeff;
+}
 .wpuf-settings-wrap .metabox-holder {
   flex: 3;
   margin-left: 30px;

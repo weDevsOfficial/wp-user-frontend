@@ -2,6 +2,7 @@
 
 $label_position = isset( $form_settings['label_position'] ) ? $form_settings['label_position'] : 'left';
 $form_layout    = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
+$theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use_theme_css'] : 'wpuf-style';
 ?>
 
 <table class="form-table">
@@ -26,6 +27,28 @@ $form_layout    = isset( $form_settings['form_layout'] ) ? $form_settings['form_
 
             <p class="description">
                 <?php _e( 'Where the labels of the form should display', 'wpuf' ) ?>
+            </p>
+        </td>
+    </tr>
+
+    <tr class="wpuf-override-theme-css">
+        <th><?php _e( 'Use Theme CSS', 'wpuf' ); ?></th>
+        <td>
+            <select name="wpuf_settings[use_theme_css]">
+                <?php
+                $options = array(
+                    'wpuf-style'         => __( 'No', 'wpuf' ),
+                    'wpuf-theme-style'   => __( 'Yes', 'wpuf' ),
+                );
+
+                foreach ($options as $to => $label) {
+                    printf('<option value="%s"%s>%s</option>', $to, selected( $theme_css, $to, false ), $label );
+                }
+                ?>
+            </select>
+
+            <p class="description">
+                <?php _e( 'Selecting "Yes" will use your theme\'s style for form fields.', 'wpuf' ) ?>
             </p>
         </td>
     </tr>

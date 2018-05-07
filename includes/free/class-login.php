@@ -123,14 +123,11 @@ class WPUF_Simple_Login {
      */
     function get_registration_url( $register_url = null ) {
         $register_link_override = wpuf_get_option('register_link_override','wpuf_profile',false);
-        $page_id = wpuf_get_option( 'reg_override_page', 'wpuf_profile', false );
+        $page_id                = wpuf_get_option( 'reg_override_page', 'wpuf_profile', false );
+        $wp_reg_url             = site_url( 'wp-login.php?action=register', 'login' );
 
-        if ( $register_link_override == 'off' ) {
-            return $register_url;
-        }
-
-        if ( !$page_id ) {
-            return false;
+        if ( $register_link_override == 'off' || !$page_id ) {
+            return $wp_reg_url;
         }
 
         $url = get_permalink( $page_id );

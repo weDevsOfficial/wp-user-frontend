@@ -42,7 +42,7 @@ body.mceContentBody {
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields input,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields textarea,
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields select {
-    width: 100%;
+    width: auto;
     background: transparent;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -54,6 +54,7 @@ body.mceContentBody {
     padding: 10px 0 10px 10px;
     box-sizing: border-box;
     position: relative;
+    display: block;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .wpuf-fields select {
@@ -242,7 +243,7 @@ body.mceContentBody {
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li.field-size-small .wpuf-fields {
-    width: 100%;
+    width: auto;
 }
 
 .wpuf-form-add.wpuf-form-layout4 ul.wpuf-form li .br-theme-css-stars .br-widget {

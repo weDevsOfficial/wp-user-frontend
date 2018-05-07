@@ -189,9 +189,6 @@ span.wpuf_help {
 .wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#user_directory-tab .dashicons {
   color: #e74c3c;
 }
-.wpuf-settings-wrap h2.nav-tab-wrapper a.nav-tab#subscription_settings-tab .dashicons {
-  color: #00aeff;
-}
 .wpuf-settings-wrap .metabox-holder {
   flex: 3;
   margin-left: 30px;
@@ -472,6 +469,15 @@ tr.wpuf-form-layouts ul li img {
   max-width: 100%;
   cursor: pointer;
 }
+tr.wpuf-form-layouts ul li label {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+tr.wpuf-form-layouts ul li:hover {
+  opacity: 0.3;
+  transition: .3s;
+}
 tr.wpuf-form-layouts ul li.active:before {
   position: absolute;
   top: 0;
@@ -483,7 +489,7 @@ tr.wpuf-form-layouts ul li.active:before {
   color: #18d118;
   content: "\f147";
   text-align: center;
-  background: #f5f5f5;
+  background: inherit;
   line-height: 40px;
 }
 .wpuf-help-tabbed {

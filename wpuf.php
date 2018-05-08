@@ -49,6 +49,13 @@ final class WP_User_Frontend {
     private $is_pro = false;
 
     /**
+     * Form field value seperator
+     *
+     * @var string
+     */
+    static $field_separator = '| ';
+
+    /**
      * Minimum PHP version required
      *
      * @var string

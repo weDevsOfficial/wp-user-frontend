@@ -543,7 +543,7 @@ abstract class WPUF_Field_Contract {
 
         if ( is_array( $value ) ) {
 
-            $entry_value = implode( WeForms::$field_separator, $_POST[$field['name']] );
+            $entry_value = implode( WP_User_Frontend::$field_separator, $_POST[$field['name']] );
 
         } else {
             $entry_value = trim( $value  );

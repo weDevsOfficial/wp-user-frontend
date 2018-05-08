@@ -259,6 +259,7 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/admin/class-admin-settings.php';
             require_once WPUF_ROOT . '/admin/form-handler.php';
             require_once WPUF_ROOT . '/admin/form.php';
+            require_once WPUF_ROOT . '/admin/form-builder/class-field-manager.php';
             require_once WPUF_ROOT . '/admin/posting.php';
             require_once WPUF_ROOT . '/admin/class-admin-subscription.php';
             require_once WPUF_ROOT . '/admin/installer.php';
@@ -323,6 +324,7 @@ final class WP_User_Frontend {
             $this->container['welcome']            = new WPUF_Admin_Welcome();
             $this->container['whats_new']          = new WPUF_Whats_New();
             $this->container['wpuf_acf']           = new WPUF_ACF_Compatibility();
+            $this->container['fields']             = new WPUF_Field_Manager();
 
         } else {
 

@@ -3,10 +3,10 @@
 /**
  * Text Field Class
  */
-class WeForms_Form_Field_Email extends WeForms_Form_Field_Text {
+class WPUF_Form_Field_Email extends WPUF_Form_Field_Text {
 
     function __construct() {
-        $this->name       = __( 'Email Address', 'weforms' );
+        $this->name       = __( 'Email Address', 'wpuf' );
         $this->input_type = 'email_address';
         $this->icon       = 'envelope-o';
     }
@@ -66,12 +66,12 @@ class WeForms_Form_Field_Email extends WeForms_Form_Field_Text {
                 'type'          => 'checkbox',
                 'is_single_opt' => true,
                 'options'       => array(
-                    'no'   => __( 'Unique Values Only', 'weforms' )
+                    'no'   => __( 'Unique Values Only', 'wpuf' )
                 ),
                 'default'       => '',
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'Select this option to limit user input to unique values only. This will require that a value entered in a field does not currently exist in the entry database for that field.', 'weforms' ),
+                'help_text'     => __( 'Select this option to limit user input to unique values only. This will require that a value entered in a field does not currently exist in the entry database for that field.', 'wpuf' ),
             ),
             array(
                 'name'          => 'auto_populate',
@@ -79,12 +79,12 @@ class WeForms_Form_Field_Email extends WeForms_Form_Field_Text {
                 'type'          => 'checkbox',
                 'is_single_opt' => true,
                 'options'       => array(
-                    'yes'   => __( 'Auto-populate Email', 'weforms' )
+                    'yes'   => __( 'Auto-populate Email', 'wpuf' )
                 ),
                 'default'       => '',
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'If a user is logged into the site, this email field will be auto-populated with his email. And form\'s email field will be hidden.', 'weforms' ),
+                'help_text'     => __( 'If a user is logged into the site, this email field will be auto-populated with his email. And form\'s email field will be hidden.', 'wpuf' ),
             ),
         );
 

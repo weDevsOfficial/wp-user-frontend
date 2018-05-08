@@ -229,6 +229,9 @@ class WPUF_User_Subscription {
                 $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );
             }
 
+            if ( self::is_free_pack( $pack_id ) ) {
+                wpuf()->subscription->insert_free_pack_subscribers( $pack_id, $this->user );
+            }
         }
     }
 

@@ -1128,4 +1128,39 @@ class WPUF_Subscription {
         return get_post_meta( $post_id, '_wpuf_payment_status', true);
     }
 
+    /**
+     * Insert Free pack users to subscribers list
+     *
+     * @since 2.8.8
+     *
+     * @param $post_id
+     * @return void
+     */
+
+    public function insert_free_pack_subscribers( $pack_id, $userdata ) {
+        global $wpdb;
+
+        $subscription = wpuf()->subscription->get_subscription( $pack_id );
+        if ( $userdata->id && $subscription ) {
+
+            $user_meta = array(
+                'pack_id' => $pack_id,
+                'posts'   => $subscription->meta_value['post_type_name'],
+            );
+
+            $table_data = array(
+                'user_id'             => $userdata->id,
+                'name'                => $userdata->user->data->display_name,
+                'subscribtion_id'     => $pack_id,
+                'subscribtion_status' => 'free',
+                'gateway'             => 'free',
+                'transaction_id'      => 'free',
+                'starts_from'         => date( 'd-m-Y' ),
+                'expire'              => $user_meta['expire'] == '' ? 'recurring' : $user_meta['expire'],
+            );
+
+            $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );
+        }
+    }
+
 }

@@ -66,13 +66,6 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
                             'layout4' => WPUF_PRO_ASSET_URI . '/images/forms/layout4.png',
                             'layout5' => WPUF_PRO_ASSET_URI . '/images/forms/layout5.png'
                         );
-                        $layout_label = array(
-                            'layout1'  => __( 'Default Layout', 'wpuf' ),
-                            'layout2'  => __( 'Dark Layout', 'wpuf' ),
-                            'layout3'  => __( 'Material Layout', 'wpuf' ),
-                            'layout4'  => __( 'Light Layout', 'wpuf' ),
-                            'layout5'  => __( 'Dark Layout 2', 'wpuf' ),
-                        );
 
                         foreach ( $layouts as $key => $image ) {
                             $class = '';
@@ -82,7 +75,6 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
                             }
 
                             $output  = '<li class="' . $class . '">';
-                            $output .= '<label>' . $layout_label[$key] . '</label><br>';
                             $output .= '<input type="radio" name="wpuf_settings[form_layout]" value="' . $key . '" ' . checked( $form_layout, $key, false ). '>';
                             $output .= '<img src="' . $image . '" alt="">';
                             $output .= '</li>';

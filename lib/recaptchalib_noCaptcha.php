@@ -34,16 +34,14 @@
  * A ReCaptchaResponse is returned from checkAnswer().
  */
 
-if ( !class_exists( 'ReCaptchaResponse' ) ) {
-    class ReCaptchaResponse
-    {
-        public $success;
-        public $errorCodes;
-    }
+class WPUF_ReCaptchaResponse
+{
+    public $success;
+    public $errorCodes;
 }
 
 
-class ReCaptcha
+class WPUF_ReCaptcha
 {
     private static $_signupUrl = "https://www.google.com/recaptcha/admin";
     private static $_siteVerifyUrl =
@@ -95,7 +93,35 @@ class ReCaptcha
     private function _submitHTTPGet($path, $data)
     {
         $req = $this->_encodeQS($data);
-        $response = file_get_contents($path . $req);
+        $url = $path . $req;
+
+        // Use curl if possible because allow_url_fopen is off in many
+        // environments, making file_get_contents fail.
+        if (function_exists('curl_init')) {
+            $response = $this->_curl($url);
+        } else {
+            $response = file_get_contents($url);
+        }
+        return $response;
+    }
+
+    private function _curl($url)
+    {
+        // Initiate curl.
+        $c = curl_init();
+        // Set timeout.
+        $timeout = 3;
+        curl_setopt($c, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, TRUE);
+        // Set url for call.
+        curl_setopt($c, CURLOPT_URL, $url);
+
+        // Execute curl call.
+        $response = curl_exec($c);
+
+        // Close curl.
+        curl_close($c);
+
         return $response;
     }
 
@@ -106,13 +132,13 @@ class ReCaptcha
      * @param string $remoteIp   IP address of end user.
      * @param string $response   response string from recaptcha verification.
      *
-     * @return ReCaptchaResponse
+     * @return WPUF_ReCaptchaResponse
      */
     public function verifyResponse($remoteIp, $response)
     {
         // Discard empty solution submissions
         if ($response == null || strlen($response) == 0) {
-            $recaptchaResponse = new ReCaptchaResponse();
+            $recaptchaResponse = new WPUF_ReCaptchaResponse();
             $recaptchaResponse->success = false;
             $recaptchaResponse->errorCodes = 'missing-input';
             return $recaptchaResponse;
@@ -128,7 +154,7 @@ class ReCaptcha
             )
         );
         $answers = json_decode($getResponse, true);
-        $recaptchaResponse = new ReCaptchaResponse();
+        $recaptchaResponse = new WPUF_ReCaptchaResponse();
 
         if (trim($answers ['success']) == true) {
             $recaptchaResponse->success = true;

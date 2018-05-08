@@ -94,7 +94,7 @@ class WPUF_Render_Form {
         if ( $no_captcha == 1 && 0 == $invisible ) {
 
             $response = null;
-            $reCaptcha = new ReCaptcha($private_key);
+            $reCaptcha = new WPUF_ReCaptcha($private_key);
 
             $resp = $reCaptcha->verifyResponse(
                 $_SERVER["REMOTE_ADDR"],
@@ -289,7 +289,7 @@ class WPUF_Render_Form {
                         if ( $value['input_type'] == 'address' ) {
                             $meta_key_value[$value['name']] = $_POST[$value['name']];
                         } elseif ( !empty( $acf_compatibility ) && $acf_compatibility == 'yes' ) {
-                           $meta_key_value[$value['name']] = maybe_serialize( $_POST[$value['name']] ); 
+                           $meta_key_value[$value['name']] = maybe_serialize( $_POST[$value['name']] );
                         } else {
                             $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
                         }
@@ -1121,14 +1121,14 @@ class WPUF_Render_Form {
     function select( $attr, $multiselect = false, $post_id, $type, $form_id = null ) {
         if ( $post_id ) {
             $selected = $this->get_meta( $post_id, $attr['name'], $type );
-            
+
             if ( $multiselect ) {
                 if ( is_serialized( $selected ) ) {
                    $selected = maybe_unserialize( $selected );
                 } elseif ( is_array( $selected ) ) {
-                   $selected = $selected; 
+                   $selected = $selected;
                 } else {
-                    $selected = explode( self::$separator, $selected );  
+                    $selected = explode( self::$separator, $selected );
                 }
             }
         } else {
@@ -1215,9 +1215,9 @@ class WPUF_Render_Form {
                 if ( is_serialized( $value ) ) {
                    $selected = maybe_unserialize( $value );
                 } elseif ( is_array( $value ) ) {
-                   $selected = $value; 
+                   $selected = $value;
                 } else {
-                    $selected = explode( self::$separator, $value );  
+                    $selected = explode( self::$separator, $value );
                 }
             }
         }
@@ -1410,7 +1410,7 @@ class WPUF_Render_Form {
         $class              = ' wpuf_'.$attr['name'].'_'.$selected;
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
         $exclude            = $attr['exclude'];
-        
+
         if ( $exclude_type == 'child_of' ) {
           $exclude = $exclude[0];
         }

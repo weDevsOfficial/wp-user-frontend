@@ -5,7 +5,7 @@
  *
  * @since 1.1.0
  */
-abstract class WeForms_Field_Contract {
+abstract class WPUF_Field_Contract {
 
     /**
      * The field name
@@ -101,7 +101,7 @@ abstract class WeForms_Field_Contract {
             $settings['validator'] = $validator;
         }
 
-        return apply_filters( 'weforms_field_get_js_settings', $settings );
+        return apply_filters( 'wpuf_field_get_js_settings', $settings );
     }
 
     /**
@@ -143,7 +143,7 @@ abstract class WeForms_Field_Contract {
             'condition_status'  => 'no',
             'cond_field'        => array(),
             'cond_operator'     => array( '=' ),
-            'cond_option'       => array( __( '- select -', 'weforms' ) ),
+            'cond_option'       => array( __( '- select -', 'wpuf' ) ),
             'cond_logic'        => 'all'
         );
     }
@@ -185,45 +185,45 @@ abstract class WeForms_Field_Contract {
         $common_properties = array(
             array(
                 'name'      => 'label',
-                'title'     => __( 'Field Label', 'weforms' ),
+                'title'     => __( 'Field Label', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 10,
-                'help_text' => __( 'Enter a title of this field', 'weforms' ),
+                'help_text' => __( 'Enter a title of this field', 'wpuf' ),
             ),
 
             array(
                 'name'      => 'help',
-                'title'     => __( 'Help text', 'weforms' ),
+                'title'     => __( 'Help text', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 20,
-                'help_text' => __( 'Give the user some information about this field', 'weforms' ),
+                'help_text' => __( 'Give the user some information about this field', 'wpuf' ),
             ),
 
             array(
                 'name'      => 'required',
-                'title'     => __( 'Required', 'weforms' ),
+                'title'     => __( 'Required', 'wpuf' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'yes'   => __( 'Yes', 'weforms' ),
-                    'no'    => __( 'No', 'weforms' ),
+                    'yes'   => __( 'Yes', 'wpuf' ),
+                    'no'    => __( 'No', 'wpuf' ),
                 ),
                 'section'   => 'basic',
                 'priority'  => 21,
                 'default'   => 'no',
                 'inline'    => true,
-                'help_text' => __( 'Check this option to mark the field required. A form will not submit unless all required fields are provided.', 'weforms' ),
+                'help_text' => __( 'Check this option to mark the field required. A form will not submit unless all required fields are provided.', 'wpuf' ),
             ),
 
             array(
                 'name'      => 'width',
-                'title'     => __( 'Field Size', 'weforms' ),
+                'title'     => __( 'Field Size', 'wpuf' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'small'     => __( 'Small', 'weforms' ),
-                    'medium'    => __( 'Medium', 'weforms' ),
-                    'large'     => __( 'Large', 'weforms' ),
+                    'small'     => __( 'Small', 'wpuf' ),
+                    'medium'    => __( 'Medium', 'wpuf' ),
+                    'large'     => __( 'Large', 'wpuf' ),
                 ),
                 'section'   => 'advanced',
                 'priority'  => 21,
@@ -233,11 +233,11 @@ abstract class WeForms_Field_Contract {
 
             array(
                 'name'      => 'css',
-                'title'     => __( 'CSS Class Name', 'weforms' ),
+                'title'     => __( 'CSS Class Name', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 22,
-                'help_text' => __( 'Provide a container class name for this field.', 'weforms' ),
+                'help_text' => __( 'Provide a container class name for this field.', 'wpuf' ),
             ),
 
             array(
@@ -246,18 +246,18 @@ abstract class WeForms_Field_Contract {
                 'type'          => 'dynamic-field',
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'Check this option to allow field to be populated dynamically using hooks/query string/shortcode', 'weforms' ),
+                'help_text'     => __( 'Check this option to allow field to be populated dynamically using hooks/query string/shortcode', 'wpuf' ),
             ),
         );
 
         if ( $is_meta ) {
             $common_properties[] = array(
                 'name'      => 'name',
-                'title'     => __( 'Meta Key', 'weforms' ),
+                'title'     => __( 'Meta Key', 'wpuf' ),
                 'type'      => 'text-meta',
                 'section'   => 'basic',
                 'priority'  => 11,
-                'help_text' => __( 'Name of the meta key this field will save to', 'weforms' ),
+                'help_text' => __( 'Name of the meta key this field will save to', 'wpuf' ),
             );
         }
 
@@ -285,43 +285,43 @@ abstract class WeForms_Field_Contract {
         $properties = array(
             array(
                 'name'      => 'placeholder',
-                'title'     => __( 'Placeholder text', 'weforms' ),
+                'title'     => __( 'Placeholder text', 'wpuf' ),
                 'type'      => 'text-with-tag',
                 'tag_filter' => 'no_fields', // we don't want to show any fields with merge tags, just basic tags
                 'section'   => 'advanced',
                 'priority'  => 10,
-                'help_text' => __( 'Text for HTML5 placeholder attribute', 'weforms' ),
+                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wpuf' ),
             ),
 
             array(
                 'name'       => 'default',
-                'title'      => __( 'Default value', 'weforms' ),
+                'title'      => __( 'Default value', 'wpuf' ),
                 'type'       => 'text-with-tag',
                 'tag_filter' => 'no_fields',
                 'section'    => 'advanced',
                 'priority'   => 11,
-                'help_text'  => __( 'The default value this field will have', 'weforms' ),
+                'help_text'  => __( 'The default value this field will have', 'wpuf' ),
             ),
 
             array(
                 'name'      => 'size',
-                'title'     => __( 'Size', 'weforms' ),
+                'title'     => __( 'Size', 'wpuf' ),
                 'type'      => 'text',
                 'variation' => 'number',
                 'section'   => 'advanced',
                 'priority'  => 20,
-                'help_text' => __( 'Size of this input field', 'weforms' ),
+                'help_text' => __( 'Size of this input field', 'wpuf' ),
             ),
         );
 
         if ( $word_restriction ) {
             $properties[] = array(
                 'name'      => 'word_restriction',
-                'title'     => __( 'Word Restriction', 'weforms' ),
+                'title'     => __( 'Word Restriction', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 15,
-                'help_text' => __( 'Numebr of words the author to be restricted in', 'weforms' ),
+                'help_text' => __( 'Numebr of words the author to be restricted in', 'wpuf' ),
             );
         }
 
@@ -338,12 +338,12 @@ abstract class WeForms_Field_Contract {
     public function get_default_option_dropdown_settings( $is_multiple = false ) {
         return array(
             'name'          => 'options',
-            'title'         => __( 'Options', 'weforms' ),
+            'title'         => __( 'Options', 'wpuf' ),
             'type'          => 'option-data',
             'is_multiple'   => $is_multiple,
             'section'       => 'basic',
             'priority'      => 12,
-            'help_text'     => __( 'Add options for the form field', 'weforms' ),
+            'help_text'     => __( 'Add options for the form field', 'wpuf' ),
         );
     }
 
@@ -356,29 +356,29 @@ abstract class WeForms_Field_Contract {
         return array(
             array(
                 'name'      => 'rows',
-                'title'     => __( 'Rows', 'weforms' ),
+                'title'     => __( 'Rows', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 10,
-                'help_text' => __( 'Number of rows in textarea', 'weforms' ),
+                'help_text' => __( 'Number of rows in textarea', 'wpuf' ),
             ),
 
             array(
                 'name'      => 'cols',
-                'title'     => __( 'Columns', 'weforms' ),
+                'title'     => __( 'Columns', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 11,
-                'help_text' => __( 'Number of columns in textarea', 'weforms' ),
+                'help_text' => __( 'Number of columns in textarea', 'wpuf' ),
             ),
 
             array(
                 'name'      => 'placeholder',
-                'title'     => __( 'Placeholder text', 'weforms' ),
+                'title'     => __( 'Placeholder text', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 12,
-                'help_text' => __( 'Text for HTML5 placeholder attribute', 'weforms' ),
+                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wpuf' ),
                 'dependencies' => array(
                     'rich' => 'no'
                 )
@@ -386,21 +386,21 @@ abstract class WeForms_Field_Contract {
 
             array(
                 'name'      => 'default',
-                'title'     => __( 'Default value', 'weforms' ),
+                'title'     => __( 'Default value', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 13,
-                'help_text' => __( 'The default value this field will have', 'weforms' ),
+                'help_text' => __( 'The default value this field will have', 'wpuf' ),
             ),
 
             array(
                 'name'      => 'rich',
-                'title'     => __( 'Textarea', 'weforms' ),
+                'title'     => __( 'Textarea', 'wpuf' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'no'    => __( 'Normal', 'weforms' ),
-                    'yes'   => __( 'Rich textarea', 'weforms' ),
-                    'teeny' => __( 'Teeny Rich textarea', 'weforms' ),
+                    'no'    => __( 'Normal', 'wpuf' ),
+                    'yes'   => __( 'Rich textarea', 'wpuf' ),
+                    'teeny' => __( 'Teeny Rich textarea', 'wpuf' ),
                 ),
                 'section'   => 'advanced',
                 'priority'  => 14,
@@ -409,11 +409,11 @@ abstract class WeForms_Field_Contract {
 
             array(
                 'name'      => 'word_restriction',
-                'title'     => __( 'Word Restriction', 'weforms' ),
+                'title'     => __( 'Word Restriction', 'wpuf' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 15,
-                'help_text' => __( 'Numebr of words the author to be restricted in', 'weforms' ),
+                'help_text' => __( 'Numebr of words the author to be restricted in', 'wpuf' ),
             ),
         );
     }

@@ -365,6 +365,10 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $tax          = $attr['name'];
     $current_user = get_current_user_id();
 
+    $args = array(
+        'taxonomy' => $tax,
+    );
+
     if ( $post_id ) {
         $args['selected_cats'] = wp_get_object_terms( $post_id, $tax, array('fields' => 'ids') );
     } elseif ( $selected_cats ) {

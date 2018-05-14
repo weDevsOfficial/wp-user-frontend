@@ -365,6 +365,10 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $tax          = $attr['name'];
     $current_user = get_current_user_id();
 
+    $args = array(
+        'taxonomy' => $tax,
+    );
+
     if ( $post_id ) {
         $args['selected_cats'] = wp_get_object_terms( $post_id, $tax, array('fields' => 'ids') );
     } elseif ( $selected_cats ) {
@@ -835,11 +839,15 @@ function wpuf_show_custom_fields( $content ) {
                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
                         }
                     } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value ) ) {
-                        $modified_value = implode( $separator, $value );
 
-                        if ( $modified_value ) {
-                           $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                        if ( !empty( $value[0] ) ) {
+                            $modified_value = implode( $separator, $value[0] );
+                            
+                            if ( $modified_value ) {
+                               $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                            }
                         }
+
                     } else {
 
                         $new = implode( ', ', $value );

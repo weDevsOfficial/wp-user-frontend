@@ -105,6 +105,14 @@
   text-decoration: none;
   text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
 }
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-submit input[type=submit]:disabled {
+  background: #dddddd;
+  border-color: #dddddd;
+  -webkit-box-shadow: 0 1px 0 #dddddd;
+  box-shadow: 0 1px 0 #dddddd;
+  color: #000;
+  text-shadow: 0 -1px 1px #dddddd, 1px 0 1px #dddddd, 0 1px 1px #dddddd, -1px 0 1px #dddddd;
+}
 ul.wpuf-form {
   list-style: none !important;
   margin: 0 !important;

@@ -492,6 +492,21 @@ tr.wpuf-form-layouts ul li.active:before {
   background: inherit;
   line-height: 40px;
 }
+ul.wpuf-form .wpuf-submit input[type=submit] {
+  font-size: 16px;
+  padding: 5px 15px;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: #0085ba;
+  border-color: #0073aa #006799 #006799;
+  -webkit-box-shadow: 0 1px 0 #006799;
+  box-shadow: 0 1px 0 #006799;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+}
 .wpuf-help-tabbed {
   display: flex;
   width: 100%;

@@ -245,27 +245,28 @@ class WPUF_Edit_Profile {
         if ( is_admin() && current_user_can( 'edit_users' ) ) {
             $select = ( $post_locked == true ) ? 'yes' : 'no';
             ?>
+            <div class="wpuf-user-post-lock">
+                <h3><?php _e( 'WPUF Post Lock', 'wpuf' ); ?></h3>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="post-lock"><?php _e( 'Lock Post:', 'wpuf' ); ?> </label></th>
+                        <td>
+                            <select name="wpuf_postlock" id="post-lock">
+                                <option value="no"<?php selected( $select, 'no' ); ?>>No</option>
+                                <option value="yes"<?php selected( $select, 'yes' ); ?>>Yes</option>
+                            </select>
+                            <span class="description"><?php _e( 'Lock user from creating new post.', 'wpuf' ); ?></span></em>
+                        </td>
+                    </tr>
 
-            <h3><?php _e( 'WPUF Post Lock', 'wpuf' ); ?></h3>
-            <table class="form-table">
-                <tr>
-                    <th><label for="post-lock"><?php _e( 'Lock Post:', 'wpuf' ); ?> </label></th>
-                    <td>
-                        <select name="wpuf_postlock" id="post-lock">
-                            <option value="no"<?php selected( $select, 'no' ); ?>>No</option>
-                            <option value="yes"<?php selected( $select, 'yes' ); ?>>Yes</option>
-                        </select>
-                        <span class="description"><?php _e( 'Lock user from creating new post.', 'wpuf' ); ?></span></em>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th><label for="post-lock"><?php _e( 'Lock Reason:', 'wpuf' ); ?> </label></th>
-                    <td>
-                        <input type="text" name="wpuf_lock_cause" id="wpuf_lock_cause" class="regular-text" value="<?php echo esc_attr( $lock_reason ); ?>" />
-                    </td>
-                </tr>
-            </table>
+                    <tr>
+                        <th><label for="post-lock"><?php _e( 'Lock Reason:', 'wpuf' ); ?> </label></th>
+                        <td>
+                            <input type="text" name="wpuf_lock_cause" id="wpuf_lock_cause" class="regular-text" value="<?php echo esc_attr( $lock_reason ); ?>" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
             <?php
         }
     }

@@ -258,6 +258,13 @@ class WPUF_Registration {
             }
 
             $user = wp_insert_user( $userdata );
+            $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
+
+            if ( $autologin_after_registration == 'on' ) {
+                wp_clear_auth_cookie();
+                wp_set_current_user( $user );
+                wp_set_auth_cookie( $user );
+            }
 
             if ( is_wp_error( $user ) ) {
                 $this->registration_errors[] = $user->get_error_message();
@@ -266,8 +273,6 @@ class WPUF_Registration {
 
                 if ( !empty( $_POST['redirect_to'] ) ) {
                     $redirect = esc_url( $_POST['redirect_to'] );
-                } elseif ( wp_get_referer() ) {
-                    $redirect = esc_url( wp_get_referer() );
                 } else {
                     $redirect = $this->get_registration_url() . '?success=yes';
                 }
@@ -292,7 +297,7 @@ class WPUF_Registration {
                 return;
             }
 
-            $reg_page = get_permalink( wpuf_get_option( 'reg_override_page', 'wpuf_profile' ) );
+            $reg_page = get_permalink( wpuf_get_option( 'reg_override_page', 'wpuf_profile', false ) );
             wp_redirect( $reg_page );
             exit;
         }

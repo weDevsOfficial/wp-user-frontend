@@ -10,7 +10,9 @@
             <?php
                 $labels = array();
                 foreach ($post_type_obj as $key => $post_type_name) {
-                    $labels[] = $post_type_name->label;
+                    if ( isset( $post_type_name->label ) ) {
+                        $labels[] = $post_type_name->label;
+                    }
                 }
                 printf( __( 'You have created <span>%d</span> (%s)', 'wpuf' ), $dashboard_query->found_posts, implode( ', ', $labels ) );
             ?>

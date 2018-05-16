@@ -89,6 +89,7 @@ class WPUF_Field_Manager {
      */
     public function get_field_groups() {
 
+        $before_custom_fields = apply_filters( 'wpuf-form-builder-fields-section-before', array() );
         $groups = array(
             array(
                 'title'  => __( 'Custom Fields', 'wpuf' ),
@@ -123,7 +124,7 @@ class WPUF_Field_Manager {
             )
         );
 
-        return apply_filters( 'wpuf_field_groups', $groups );
+        return apply_filters( 'wpuf_field_groups', array_merge( $before_custom_fields, $groups ) );
     }
 
     /**

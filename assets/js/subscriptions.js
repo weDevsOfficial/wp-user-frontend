@@ -154,7 +154,7 @@
 
             if ( coupon === '' ) {
 
-                $('.wpuf-subscription-error').html('Please enter a coupon code!');
+                $('.wpuf-subscription-error').html( wpuf_frontend.coupon_error );
                 return;
 
             }

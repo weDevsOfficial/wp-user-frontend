@@ -493,12 +493,12 @@ final class WP_User_Frontend {
         wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker' ) );
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array( 'jquery', 'plupload-handlers' ) );
 
-        wp_localize_script( 'wpuf-form', 'wpuf_frontend', array(
-			'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-			'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
-			'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
-			'word_limit'    => __( 'Word limit reached', 'wpuf' )
-        ) );
+        wp_localize_script( 'wpuf-form', 'wpuf_frontend', apply_filters( 'wpuf_frontend_js_data' , array(
+            'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+            'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
+            'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
+            'word_limit'    => __( 'Word limit reached', 'wpuf' )
+        )) );
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
 			'confirmMsg' => __( 'Are you sure?', 'wpuf' ),

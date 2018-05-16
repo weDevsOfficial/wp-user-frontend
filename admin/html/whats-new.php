@@ -5,24 +5,24 @@ $changelog = array(
         'released' => '2018-05-16',
         'changes' => array(
             array(
-                'title'       => __( 'Allow override form input style using theme styling.', 'wpuf' ),
+                'title'       => __( 'Allow overriding form input styles using theme styling.', 'wpuf' ),
                 'type'        => 'New',
                 'description' => __( 'Overriding form input styles using theme style is now possible.', 'wpuf' )
             ),
             array(
                 'title'       => __( 'Fixed Auto Login after registration.', 'wpuf' ),
                 'type'        => 'Fix',
-                'description' => __( 'Auto Login after registration was not working, now it will.', 'wpuf' ),
+                'description' => __( 'Auto Login after registration was not working is fixed now.', 'wpuf' ),
             ),
             array(
                 'title'       => __( 'Fixed fallback cost calculation', 'wpuf' ),
                 'type'        => 'Fix',
-                'description' => __( 'Fallback cost calculation was inaccurate, it is fixed now.', 'wpuf' ),
+                'description' => __( 'Fallback cost calculation was inaccurate for some cases, it is fixed now.', 'wpuf' ),
             ),
             array(
-                'title'       => __( 'Fixed subscription deletion gets reverted if updated', 'wpuf' ),
+                'title'       => __( 'Removal of subscription from User Profile gets reverted if updated', 'wpuf' ),
                 'type'        => 'Fix',
-                'description' => __( 'User subscription deletion gets reverted if updated, it is fixed now.', 'wpuf' ),
+                'description' => __( 'User subscription deletion gets reverted if updated is fixed.', 'wpuf' ),
             ),
             array(
                 'title'       => __( 'Show Free pack users in subscribers list.', 'wpuf' ),

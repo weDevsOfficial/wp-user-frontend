@@ -1,6 +1,37 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.8.8',
+        'released' => '2018-05-16',
+        'changes' => array(
+            array(
+                'title'       => __( 'Allow override form input style using theme styling.', 'wpuf' ),
+                'type'        => 'New',
+                'description' => __( 'Overriding form input styles using theme style is now possible.', 'wpuf' )
+            ),
+            array(
+                'title'       => __( 'Fixed Auto Login after registration.', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Auto Login after registration was not working, now it will.', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Fixed fallback cost calculation', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'Fallback cost calculation was inaccurate, it is fixed now.', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Fixed subscription deletion gets reverted if updated', 'wpuf' ),
+                'type'        => 'Fix',
+                'description' => __( 'User subscription deletion gets reverted if updated, it is fixed now.', 'wpuf' ),
+            ),
+            array(
+                'title'       => __( 'Show Free pack users in subscribers list.', 'wpuf' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Free pack users were not showing in subscribers list, now they will.', 'wpuf' ),
+            )
+        )
+    ),
+    array(
         'version'  => 'Version 2.8.7',
         'released' => '2018-04-09',
         'changes' => array(

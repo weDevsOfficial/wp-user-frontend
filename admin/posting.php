@@ -86,7 +86,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * form select box to assign a form id.
      *
      * @since 2.5.2
-     * 
+     *
      * @return void
      */
     function add_meta_box_form_select() {
@@ -150,14 +150,14 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
         update_post_meta( $post->ID, '_wpuf_form_id', $_POST['wpuf_form_select'] );
     }
-    
+
     /**
      * Meta box to show WPUF Custom Fields
      *
      * Registers a meta box in public post types to show WPUF Custom Fields
      *
      * @since 2.5
-     * 
+     *
      * @return void
      */
     function add_meta_boxes() {
@@ -172,7 +172,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * function to hide form custom field
      *
      * @since 2.5
-     * 
+     *
      * @return void
      */
     function hide_form() {
@@ -187,10 +187,10 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * generate frontend form field
      *
      * @since 2.5
-     * 
+     *
      * @param int $form_id
      * @param int $post_id
-     * 
+     *
      * @return void
      */
     function render_form( $form_id, $post_id = null ) {
@@ -242,10 +242,10 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * generate table header of frontend form field
      *
      * @since 2.5
-     * 
+     *
      * @param array $form_field
      * @param int $post_id
-     * 
+     *
      * @return void
      */
     function render_item_before( $form_field, $post_id = 0 ) {
@@ -260,9 +260,9 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * generate table bottom of frontend form field
      *
      * @since 2.5
-     * 
+     *
      * @param array $form_field
-     * 
+     *
      * @return void
      */
     function render_item_after( $form_field ) {
@@ -334,35 +334,6 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
                 border-radius: 5px;
                 margin-right: 5px;
             }
-            ul.wpuf-attachment-list li a.attachment-delete {
-                text-decoration: none;
-                padding: 3px 12px;
-                border: 1px solid #C47272;
-                color: #ffffff;
-                text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-                -webkit-border-radius: 3px;
-                -moz-border-radius: 3px;
-                border-radius: 3px;
-                background-color: #da4f49;
-                background-image: -moz-linear-gradient(top, #ee5f5b, #bd362f);
-                background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
-                background-image: -webkit-linear-gradient(top, #ee5f5b, #bd362f);
-                background-image: -o-linear-gradient(top, #ee5f5b, #bd362f);
-                background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
-                background-repeat: repeat-x;
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
-                border-color: #bd362f #bd362f #802420;
-                border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-                *background-color: #bd362f;
-                filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-            }
-            ul.wpuf-attachment-list li a.attachment-delete:hover,
-            ul.wpuf-attachment-list li a.attachment-delete:active {
-                color: #ffffff;
-                background-color: #bd362f;
-                *background-color: #a9302a;
-            }
-
             .wpuf-cf-table table th,
             .wpuf-cf-table table td{
                 padding-left: 0 !important;
@@ -415,9 +386,9 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * save post meta
      *
      * @since 2.5
-     * 
+     *
      * @param object $post
-     * 
+     *
      * @return void
      */
     // Save the Metabox Data

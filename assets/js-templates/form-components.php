@@ -450,7 +450,12 @@
     <div :id="'wpuf-img_label-' + field.id + '-upload-container'">
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector" href="#">
-                <?php _e( 'Select Image', 'wpuf' ); ?>
+                <template v-if="field.button_label === ''">
+                    <?php _e( 'Select Image', 'wpuf' ); ?>
+                </template>
+                <template v-else>
+                    {{ field.button_label }}
+                </template>
             </a>
         </div>
     </div>
@@ -516,7 +521,12 @@
     <div :id="'wpuf-img_label-' + field.id + '-upload-container'">
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector wpuf_img_label_148" href="#">
-                {{ field.button_label }}
+                <template v-if="field.button_label === ''">
+                    <?php _e( 'Select Image', 'wpuf' ); ?>
+                </template>
+                <template v-else>
+                    {{ field.button_label }}
+                </template>
             </a>
         </div>
     </div>
@@ -696,19 +706,6 @@
 </div>
 </script>
 
-<script type="text/x-template" id="tmpl-wpuf-form-text_field">
-<div class="wpuf-fields">
-    <input
-        type="text"
-        :class="class_names('textfield')"
-        :placeholder="field.placeholder"
-        :value="field.default"
-        :size="field.size"
-    >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
-</div>
-</script>
-
 <script type="text/x-template" id="tmpl-wpuf-form-textarea_field">
 <div class="wpuf-fields">
     <textarea
@@ -721,6 +718,19 @@
 
     <text-editor v-if="'no' !== field.rich" :rich="field.rich"></text-editor>
 
+    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+</div>
+</script>
+
+<script type="text/x-template" id="tmpl-wpuf-form-text_field">
+<div class="wpuf-fields">
+    <input
+        type="text"
+        :class="class_names('textfield')"
+        :placeholder="field.placeholder"
+        :value="field.default"
+        :size="field.size"
+    >
     <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 </div>
 </script>

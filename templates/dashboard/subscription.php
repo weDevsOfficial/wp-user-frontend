@@ -1,3 +1,4 @@
+<p><?php _e( "You've subscribed to the following package.", 'wpuf' ); ?></p>
 <div class="wpuf_sub_info">
     <h3><?php _e( 'Subscription Details', 'wpuf' ); ?></h3>
     <div class="wpuf-text">
@@ -33,12 +34,10 @@
         <?php
         if ( $user_sub['recurring'] != 'yes' ) {
             if ( ! empty( $user_sub['expire'] ) ) {
-
-                $expire =  ( $user_sub['expire'] == 'unlimited' ) ? ucfirst( 'unlimited' ) : wpuf_date2mysql( $user_sub['expire'] );
-
+                $expiry_date =  ( $user_sub['expire'] == 'unlimited' ) ? ucfirst( 'unlimited' ) : wpuf_get_date( wpuf_date2mysql( $user_sub['expire'] ) );
                 ?>
                 <div class="wpuf-expire">
-                    <strong><?php echo _e( 'Expire date:', 'wpuf' ); ?></strong> <?php echo wpuf_get_date( $expire ); ?>
+                    <strong><?php echo _e( 'Expire date:', 'wpuf' ); ?></strong> <?php echo $expiry_date ?>
                 </div>
                 <?php
             }

@@ -33,13 +33,16 @@ Vue.component('form-taxonomy', {
 
             // selection type and terms
             if (this.field.exclude_type && this.field.exclude) {
-                var filter_ids = this.field.exclude.split(',').map(function (id) {
-                    id = id.trim();
-                    id = parseInt(id);
-                    return id;
-                }).filter(function (id) {
-                    return isFinite(id);
-                });
+
+                if ( this.field.exclude.length > 1 ) {
+                    var filter_ids = this.field.exclude.split(',').map(function (id) {
+                        id = id.trim();
+                        id = parseInt(id);
+                        return id;
+                    }).filter(function (id) {
+                        return isFinite(id);
+                    });
+                }
 
                 terms = terms.filter(function (term) {
 

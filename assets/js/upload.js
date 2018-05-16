@@ -91,6 +91,8 @@
             this.showHide();
 
             $.each(files, function(i, file) {
+                $(".wpuf-submit-button").attr("disabled", "disabled");
+
                 $container.append(
                     '<div class="upload-item" id="' + file.id + '"><div class="progress progress-striped active"><div class="bar"></div></div><div class="filename original">' +
                     file.name + ' (' + plupload.formatSize(file.size) + ') <b></b>' +
@@ -167,6 +169,13 @@
 
                 this.count -= 1;
                 this.showHide();
+            }
+            
+            var uploaded        = this.perFileCount;
+            var FileProgress    = up.files.length;
+
+            if ( FileProgress == uploaded ) {
+                $(".wpuf-submit-button").removeAttr("disabled");  
             }
         },
 

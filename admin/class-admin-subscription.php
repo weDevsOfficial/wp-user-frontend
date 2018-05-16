@@ -105,10 +105,10 @@ class WPUF_Admin_Subscription {
             update_user_meta( $user_id, '_pack_assign_notification',  $_POST['wpuf_profile_mail_noti'] );
         }
 
-        $pack_id = $_POST['pack_id'];
-        $pack  = WPUF_Subscription::get_subscription( $_POST['pack_id'] );
-
+        $pack_id   = $_POST['pack_id'];
+        $pack      = WPUF_Subscription::get_subscription( $_POST['pack_id'] );
         $user_pack = WPUF_Subscription::get_user_pack( $_POST['user_id'] );
+
         if ( isset ( $user_pack['pack_id'] ) && $pack_id == $user_pack['pack_id'] ) {
             //updating number of posts
 
@@ -129,7 +129,6 @@ class WPUF_Admin_Subscription {
             }
 
             //updating post time
-
             if( isset( $_POST['post_expiration_settings'] ) ) {
                 echo $user_pack['_post_expiration_time'] = $_POST['post_expiration_settings']['expiration_time_value'].' '.$_POST['post_expiration_settings']['expiration_time_type'];
             }
@@ -149,11 +148,10 @@ class WPUF_Admin_Subscription {
                 return;
             }
 
-            $user_info = get_userdata( $user_id );
-
-            $cost           = $pack->$meta_value['_billing_amount'][0];
+            $user_info      = get_userdata( $user_id );
+            $cost           = $pack->meta_value['_billing_amount'][0];
             $billing_amount = apply_filters( 'wpuf_payment_amount', $cost );
-            $tax_amount = $billing_amount - $cost;
+            $tax_amount     = $billing_amount - $cost;
 
             $data = array(
                 'user_id'          => $user_id,
@@ -173,13 +171,13 @@ class WPUF_Admin_Subscription {
                 'profile_id'       => null,
             );
 
+            $is_recurring = false;
+
             if ( isset( $user_pack['recurring'] ) && $user_pack['recurring'] == 'yes' ) {
                 $is_recurring = true;
-            } else {
-                $is_recurring = false;
             }
 
-            WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
+            WPUF_Payment::insert_payment( $data, 0, $is_recurring );
         }
     }
 
@@ -573,8 +571,8 @@ class WPUF_Admin_Subscription {
                 $recurring_pay  = ( isset( $pack->meta_value['recurring_pay'] ) && $pack->meta_value['recurring_pay'] == 'yes' ) ? true : false;
 
                 if ( $billing_amount && $recurring_pay ) {
-                    $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
-                    $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
+                    $recurring_des = sprintf( __( 'For each %s %s', 'wpuf' ), $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+                    $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments', 'wpuf' ), $pack->meta_value['billing_limit'] ) : '';
                     $recurring_des = $recurring_des;
                 } else {
                     $recurring_des = '';
@@ -643,13 +641,11 @@ class WPUF_Admin_Subscription {
                             <?php
                             if ( $user_sub['recurring'] != 'yes' ) {
                                 if ( !empty( $user_sub['expire'] ) ) {
-
-                                    $expire =  ( $user_sub['expire'] == 'unlimited' ) ? ucfirst( 'unlimited' ) : wpuf_date2mysql( $user_sub['expire'] );
-
+                                    $expire =  ( $user_sub['expire'] == 'unlimited' ) ? ucfirst( 'unlimited' ) : wpuf_get_date( wpuf_date2mysql( $user_sub['expire'] ));
                                     ?>
                                     <tr>
                                         <th><label><?php echo _e('Expire date:' , 'wpuf'); ?></label></th>
-                                        <td><input type="text" class="wpuf-date-picker" name="expire" value="<?php echo wpuf_get_date( $expire ); ?>"></td>
+                                        <td><input type="text" class="wpuf-date-picker" name="expire" value="<?php echo $expire; ?>"></td>
                                     </tr>
                                     <?php
                                 }
@@ -771,7 +767,7 @@ class WPUF_Admin_Subscription {
                     </tr>
                 </table>
             <?php endif;?>
-            <?php 
+            <?php
             do_action( 'wpuf_admin_subscription_content', $userdata->ID ) ?>
             <?php if ( !empty( $user_sub ) ): ?>
                 <div class="wpuf-sub-actions">

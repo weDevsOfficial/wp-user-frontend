@@ -60,7 +60,7 @@ class WPUF_User_Subscription {
 
         // seems like the user has a pack, now check expiration
         if ( $this->expired() ) {
-            return new WP_Error( 'expired', __( 'The subscription pack has been expired. Please buy a pack.', 'wpuf' ) );
+            return new WP_Error( 'expired', __( 'The subscription pack has expired. Please buy a pack.', 'wpuf' ) );
         }
 
         return $pack;
@@ -229,6 +229,9 @@ class WPUF_User_Subscription {
                 $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );
             }
 
+            if ( self::is_free_pack( $pack_id ) ) {
+                wpuf()->subscription->insert_free_pack_subscribers( $pack_id, $this->user );
+            }
         }
     }
 
@@ -490,6 +493,22 @@ class WPUF_User_Subscription {
         }
 
         return false;
+    }
+
+    /**
+     * Get Expiration Message
+     *
+     * @since 2.8.8
+     * @param $pack_id
+     * @return string
+     */
+    public function get_subscription_exp_msg( $pack_id ) {
+        $sub_pack  = WPUF_Subscription::get_subscription( $pack_id );
+        $sub_info  = $this->pack;
+
+        $exp_message = !empty( $sub_pack->meta_value['_post_expiration_message'] )  ? $sub_pack->meta_value['_post_expiration_message'] : $sub_info['_post_expiration_message'];
+
+        return $exp_message;
     }
 
 }

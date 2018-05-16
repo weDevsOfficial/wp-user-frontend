@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.8.7
+Version: 2.8.8
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wpuf
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.8.7' );
+define( 'WPUF_VERSION', '2.8.8' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -439,6 +439,8 @@ final class WP_User_Frontend {
         wp_register_style( 'wpuf-layout1', WPUF_ASSET_URI . '/css/frontend-form/layout1.css' );
         wp_register_style( 'wpuf-layout2', WPUF_ASSET_URI . '/css/frontend-form/layout2.css' );
         wp_register_style( 'wpuf-layout3', WPUF_ASSET_URI . '/css/frontend-form/layout3.css' );
+        wp_register_style( 'wpuf-layout4', WPUF_ASSET_URI . '/css/frontend-form/layout4.css' );
+        wp_register_style( 'wpuf-layout5', WPUF_ASSET_URI . '/css/frontend-form/layout5.css' );
 
         wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array( 'jquery' ), false, true );
 
@@ -491,12 +493,12 @@ final class WP_User_Frontend {
         wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker' ) );
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array( 'jquery', 'plupload-handlers' ) );
 
-        wp_localize_script( 'wpuf-form', 'wpuf_frontend', array(
-			'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-			'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
-			'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
-			'word_limit'    => __( 'Word limit reached', 'wpuf' )
-        ) );
+        wp_localize_script( 'wpuf-form', 'wpuf_frontend', apply_filters( 'wpuf_frontend_js_data' , array(
+            'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+            'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
+            'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
+            'word_limit'    => __( 'Word limit reached', 'wpuf' )
+        )) );
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
 			'confirmMsg' => __( 'Are you sure?', 'wpuf' ),

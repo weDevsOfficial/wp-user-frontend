@@ -3,7 +3,7 @@ Contributors: tareq1988, sk.shaikat, rabbii, rafsuntaskin, itowhid06, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
-Tested up to: 4.9.4
+Tested up to: 4.9.6
 Requires PHP: 5.4
 Stable tag: trunk
 License: GPLv2
@@ -170,6 +170,23 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v2.8.8 (16 May, 2018) =
+
+* **New:** Allow override form input style using theme styling.
+* **Improved:** Nocaptcha recaptcha wasn't working when allow_url_fopen is disabled is fixed.
+* **Improved:** Free pack users were not showing in subscribers list, now they will.
+* **Improved:** If login override is disabled redirect to default wordpress register page.
+* **Improved:** Updated image upload field style.
+* **Improved:** Updated logged in user display style.
+* **Improved:** Added label in featured image field.
+* **Improved:** Changed content of subscription expiration mail.
+* **Fix:** Taxonomy fields checkboxes were disappearing from builder in some cases, now they won't.
+* **Fix:** Fallback cost calculation was inaccurate, it is fixed now.
+* **Fix:** Subscription expiry date showing wrong time for unlimited packs, it is fixed now.
+* **Fix:** User subscription deletion gets reverted if updated, it is fixed now.
+* **Fix:** Fixed some issues in Advanced Custom Fields(Free) compatibility
+* **Fix:** Fixed some translations issues.
 
 = v2.8.7 (09 April, 2018) =
 

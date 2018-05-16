@@ -16,10 +16,23 @@ class WPUF_Ajax_Address_Form {
      * Enqueue scripts
      */
     public function register_plugin_scripts() {
+        global $post;
+        $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+
+        if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {
+            $this->plugin_scripts();
+        } elseif ( isset( $post->ID  ) && ( $pay_page == $post->ID ) ) {
+            $this->plugin_scripts();
+        }
+    }
+
+    /**
+     * Load billing scripts
+     */
+    public function plugin_scripts() {
         wp_enqueue_script( 'wpuf-ajax-script', plugins_url( 'assets/js/billing-address.js', dirname( __FILE__ ) ), array('jquery'), false );
         wp_localize_script( 'wpuf-ajax-script', 'ajax_object', array(  'ajaxurl' => admin_url( 'admin-ajax.php' ) )) ;
     }
-
 
     /**
      * Address Form

@@ -46,37 +46,37 @@ class WPUF_Field_Manager {
     private function register_field_types() {
         require_once dirname( __FILE__ ) . '/fields/class-abstract-fields.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-text.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-name.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-name.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-email.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-textarea.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-checkbox.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-radio.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-dropdown.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-multidropdown.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-url.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-sectionbreak.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-html.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-hidden.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-image.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-recaptcha.php';
-//        require_once dirname( __FILE__ ) . '/fields/class-field-date.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-textarea.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-checkbox.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-radio.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-dropdown.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-multidropdown.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-url.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-sectionbreak.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-html.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-hidden.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-image.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-recaptcha.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-date.php';
 
         $fields = array(
             'text_field'          => new WPUF_Form_Field_Text(),
 //            'name_field'          => new WPUF_Form_Field_Name(),
-//            'date_field'          => new WPUF_Form_Field_Date_Free(),
+            'date_field'          => new WPUF_Form_Field_Date_Free(),
             'email_address'       => new WPUF_Form_Field_Email(),
-//            'textarea_field'      => new WPUF_Form_Field_Textarea(),
-//            'radio_field'         => new WPUF_Form_Field_Radio(),
-//            'checkbox_field'      => new WPUF_Form_Field_Checkbox(),
-//            'dropdown_field'      => new WPUF_Form_Field_Dropdown(),
-//            'multiple_select'     => new WPUF_Form_Field_MultiDropdown(),
-//            'website_url'         => new WPUF_Form_Field_URL(),
-//            'section_break'       => new WPUF_Form_Field_SectionBreak(),
-//            'custom_html'         => new WPUF_Form_Field_HTML(),
-//            'custom_hidden_field' => new WPUF_Form_Field_Hidden(),
-//            'image_upload'        => new WPUF_Form_Field_Image(),
-//            'recaptcha'           => new WPUF_Form_Field_reCaptcha(),
+            'textarea_field'      => new WPUF_Form_Field_Textarea(),
+            'radio_field'         => new WPUF_Form_Field_Radio(),
+            'checkbox_field'      => new WPUF_Form_Field_Checkbox(),
+            'dropdown_field'      => new WPUF_Form_Field_Dropdown(),
+            'multiple_select'     => new WPUF_Form_Field_MultiDropdown(),
+            'website_url'         => new WPUF_Form_Field_URL(),
+            'section_break'       => new WPUF_Form_Field_SectionBreak(),
+            'custom_html'         => new WPUF_Form_Field_HTML(),
+            'custom_hidden_field' => new WPUF_Form_Field_Hidden(),
+            'image_upload'        => new WPUF_Form_Field_Image(),
+            'recaptcha'           => new WPUF_Form_Field_reCaptcha(),
         );
 
         $this->fields = apply_filters( 'wpuf_form_fields', $fields );
@@ -98,15 +98,15 @@ class WPUF_Field_Manager {
                     array(
 //						'name_field',
 						'text_field',
-//						'textarea_field',
-//						'dropdown_field',
-//						'multiple_select',
-//						'radio_field',
-//						'checkbox_field',
-//						'website_url',
+						'textarea_field',
+						'dropdown_field',
+						'multiple_select',
+						'radio_field',
+						'checkbox_field',
+						'website_url',
 						'email_address',
-//						'custom_hidden_field',
-//						'image_upload'
+						'custom_hidden_field',
+						'image_upload'
                     )
                 )
             ),
@@ -134,6 +134,8 @@ class WPUF_Field_Manager {
      */
     public function get_js_settings() {
         $fields   = $this->get_fields();
+        $post_field_settings = apply_filters( 'wpuf-form-builder-field-settings', array() );
+
         $js_array = array();
 
         if ( $fields ) {
@@ -142,7 +144,7 @@ class WPUF_Field_Manager {
             }
         }
 
-        return $js_array;
+        return array_merge( $post_field_settings, $js_array );
     }
 
     /**

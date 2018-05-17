@@ -19,7 +19,7 @@
 
     <form name="loginform" class="wpuf-login-form" id="loginform" action="<?php echo $action_url; ?>" method="post">
         <p>
-            <label for="wpuf-user_login"><?php _e( 'Username', 'wpuf' ); ?></label>
+            <label for="wpuf-user_login"><?php _e( 'Username or Email', 'wpuf' ); ?></label>
             <input type="text" name="log" id="wpuf-user_login" class="input" value="" size="20" />
         </p>
         <p>

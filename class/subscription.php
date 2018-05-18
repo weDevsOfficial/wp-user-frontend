@@ -400,7 +400,6 @@ class WPUF_Subscription {
      * @return void
      */
     function update_paypal_subscr_payment() {
-        $pack_id = $_POST['item_number'];
         if ( !isset( $_POST['txn_type'] ) && $_POST['txn_type'] != 'subscr_payment'  ) {
             return;
         }

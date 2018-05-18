@@ -443,17 +443,18 @@ class WPUF_Subscription {
 
         $form             = new WPUF_Form( $form_id );
         $payment_options  = $form->is_charging_enabled();
+        $force_pack       = $form->is_enabled_force_pack();
         $pay_per_post     = $form->is_enabled_pay_per_post();
         $fallback_cost    = $form->is_enabled_fallback_cost();
         $current_user     = wpuf_get_user();
         $current_pack     = $current_user->subscription()->current_pack();
         $has_post         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-        if ( is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
+        if ( $force_pack && is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
             $postdata['post_status'] = 'pending';
         }
 
-        if ( $payment_options && ( $pay_per_post || ( $fallback_cost && !$has_post )))  {
+        if ( !$force_pack && ( $pay_per_post || ( $fallback_cost && !$has_post )))  {
             $postdata['post_status'] = 'pending';
         }
 
@@ -468,8 +469,8 @@ class WPUF_Subscription {
      * @param int $post_id
      */
     function monitor_new_post( $post_id, $form_id, $form_settings ) {
-
         global $wpdb, $userdata;
+        $post = get_post( $post_id );
 
         // bail out if charging is not enabled
         $form = new WPUF_Form( $form_id );
@@ -509,7 +510,7 @@ class WPUF_Subscription {
             update_post_meta( $post_id, 'wpuf_post_status', 'published' );
 
 
-        } elseif ( $pay_per_post || ($fallback_cost && !$has_post )) {
+        } elseif ( !$force_pack && ( $pay_per_post || ( $fallback_cost && !$has_post ) ) ) {
             //there is some error and it needs payment
             //add a uniqid to track the post easily
             $order_id = uniqid( rand( 10, 1000 ), false );
@@ -718,7 +719,7 @@ class WPUF_Subscription {
      * from admin Panel
      */
     function subscription_packs( $atts = null ) {
-        $cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
+        //$cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
 
         $defaults = array(
             'include' => '',

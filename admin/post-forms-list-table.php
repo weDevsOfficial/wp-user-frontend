@@ -262,11 +262,10 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
                     'ID'                    => $form->ID,
                     'post_title'            => $form->post_title,
                     'post_status'           => $form->post_status,
-                    'settings_post_type'    => $settings['post_type'],
-                    'settings_post_status'  => $settings['post_status'],
-                    'settings_guest_post'   => $settings['guest_post']
+                    'settings_post_type'    => isset( $settings['post_type'] ) ? $settings['post_type'] : '',
+                    'settings_post_status'  => isset( $settings['post_status'] ) ? $settings['post_status'] : '',
+                    'settings_guest_post'   => isset( $settings['guest_post'] ) ? $settings['guest_post'] : '',
                 );
-
 
                 $i++;
             }

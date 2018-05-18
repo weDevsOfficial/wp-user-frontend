@@ -416,6 +416,8 @@ final class WP_User_Frontend {
 
         $load_gmap = apply_filters( 'wpuf_load_gmap_script', true );
 
+        $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+
         if ( ! empty( $api_key ) && $load_gmap ) {
             wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key, array(), null );
         }
@@ -430,10 +432,10 @@ final class WP_User_Frontend {
                 }
             </script>
             <?php
-            wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form' . $suffix . '.js', array( 'jquery' ) );
+            wp_register_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form' . $suffix . '.js', array( 'jquery' ) );
         }
 
-        wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
+        wp_register_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
 
         // register css files for different layouts of frontend form
         wp_register_style( 'wpuf-layout1', WPUF_ASSET_URI . '/css/frontend-form/layout1.css' );
@@ -442,11 +444,11 @@ final class WP_User_Frontend {
         wp_register_style( 'wpuf-layout4', WPUF_ASSET_URI . '/css/frontend-form/layout4.css' );
         wp_register_style( 'wpuf-layout5', WPUF_ASSET_URI . '/css/frontend-form/layout5.css' );
 
-        wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array( 'jquery' ), false, true );
+        wp_register_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array( 'jquery' ), false, true );
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {
             $this->plugin_scripts();
-        } elseif ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) ) {
+        } elseif ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_sub_pack' ) || ( isset( $post->ID  ) && ( $pay_page == $post->ID ) ) ) {
             $this->plugin_scripts();
         }
     }
@@ -482,6 +484,7 @@ final class WP_User_Frontend {
 
     function plugin_scripts() {
 
+        wp_enqueue_style( 'wpuf-css' );
         wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
 
         wp_enqueue_script( 'jquery' );
@@ -492,6 +495,8 @@ final class WP_User_Frontend {
         wp_enqueue_script( 'plupload-handlers' );
         wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker' ) );
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array( 'jquery', 'plupload-handlers' ) );
+        wp_enqueue_script( 'wpuf-form' );
+        wp_enqueue_script( 'wpuf-subscriptions' );
 
         wp_localize_script( 'wpuf-form', 'wpuf_frontend', apply_filters( 'wpuf_frontend_js_data' , array(
             'ajaxurl'       => admin_url( 'admin-ajax.php' ),

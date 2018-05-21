@@ -78,7 +78,13 @@ class WPUF_User {
      * @return bool
      */
     public function is_verified() {
-       return  0 !== get_user_meta( $this->id, '_wpuf_user_active', true );
+        if ( !metadata_exists( 'user', $this->id, '_wpuf_user_active' ) ) {
+            return true;
+        }
+        if ( intval( get_user_meta( $this->id, '_wpuf_user_active', true ) ) == 1 ) {
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -682,7 +682,7 @@ class WPUF_Simple_Login {
             wp_set_auth_cookie( $user_id );
         }
 
-        wpuf()->login->add_message( 'Your account has been activated' );
+        wpuf()->login->add_message( __( 'Your account has been activated' , 'wpuf') );
 
         // show activation message
         add_filter( 'wp_login_errors', array( $this, 'user_activation_message' ) );

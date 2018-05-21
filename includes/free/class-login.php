@@ -674,6 +674,14 @@ class WPUF_Simple_Login {
         $user->mark_verified();
         $user->remove_activation_key();
 
+        $register_link_override = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
+
+        if ( $register_link_override == 'on' ) {
+            wp_clear_auth_cookie();
+            wp_set_current_user( $user_id );
+            wp_set_auth_cookie( $user_id );
+        }
+
         wpuf()->login->add_message( 'Your account has been activated' );
 
         // show activation message

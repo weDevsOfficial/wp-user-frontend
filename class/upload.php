@@ -96,7 +96,7 @@ class WPUF_Upload {
 
             echo $response['html'];
         } else {
-            echo 'error';
+            echo $attach['error'];
         }
 
 

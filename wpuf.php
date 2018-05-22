@@ -246,6 +246,7 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/includes/class-billing-address.php';
         include_once WPUF_ROOT . '/includes/class-gutenblock.php';
         include_once WPUF_ROOT . '/includes/class-form-preview.php';
+        include_once WPUF_ROOT . '/includes/class-customizer.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
@@ -306,6 +307,7 @@ final class WP_User_Frontend {
         $this->container['forms']                   = new WPUF_Form_Manager();
         $this->container['preview']                 = new WPUF_Form_Preview();
         $this->container['block']                   = new WPUF_Form_Block();
+        $this->container['customize']               = new WPUF_Customizer_Options();
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();

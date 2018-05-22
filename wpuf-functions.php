@@ -357,7 +357,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude      = $attr['exclude'];
-    
+
     if ( $exclude_type == 'child_of' ) {
       $exclude = $exclude[0];
     }
@@ -842,7 +842,7 @@ function wpuf_show_custom_fields( $content ) {
 
                         if ( !empty( $value[0] ) ) {
                             $modified_value = implode( $separator, $value[0] );
-                            
+
                             if ( $modified_value ) {
                                $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
                             }
@@ -2775,7 +2775,7 @@ function wpuf_get_user_address() {
             $countries_obj = new WC_Countries();
             $countries_array = $countries_obj->get_countries();
             $country_states_array = $countries_obj->get_states();
-            $woo_address['state'] = $country_states_array[$woo_address['country']][$woo_address['state']];
+            $woo_address['state'] = isset( $country_states_array[$woo_address['country']][$woo_address['state']] ) ? $country_states_array[$woo_address['country']][$woo_address['state']] : '';
             $woo_address['state'] = strtolower( str_replace( ' ', '', $woo_address['state'] ) );
 
             if ( !empty( $woo_address ) ) {

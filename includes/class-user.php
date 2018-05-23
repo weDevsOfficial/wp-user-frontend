@@ -142,4 +142,26 @@ class WPUF_User {
         delete_user_meta( $this->id, '_wpuf_activation_key' );
     }
 
+    /**
+     *
+     * @since 2.8.9
+     *
+     * @param bool $array
+     *
+     * @return mixed|string
+     */
+    public function get_billing_address( $array = false ) {
+
+        $address = get_user_meta( $this->id, 'wpuf_address_fields', true );
+        if ( $array ) {
+            return $address;
+        }
+
+        if ( !empty( $address ) ) {
+            return implode( " ,", $address );
+        }
+
+        return "";
+    }
+
 }

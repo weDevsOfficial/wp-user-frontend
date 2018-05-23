@@ -155,6 +155,7 @@ Class WPUF_Privacy {
         }
 
         $address = $wpuf_user->get_billing_address( true );
+        include_once WPUF_ROOT . '/includes/countries.php';
 
         if ( !empty( $address ) ) {
             $address_data = array(
@@ -180,7 +181,7 @@ Class WPUF_Privacy {
                 ),
                 array(
                     'name'  => __( 'Country' ),
-                    'value' => $address['country']
+                    'value' => $countries[$address['country']]
                 ),
             );
 

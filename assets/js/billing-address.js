@@ -1,5 +1,9 @@
 jQuery(function($){
 
+    $('#wpuf-payment-gateway').submit(function (e) {
+        wpuf_validate_address(e);
+    });
+
     $('#wpuf-ajax-address-form').submit(function (e) {
         e.preventDefault();
         $.post(ajax_object.ajaxurl, {
@@ -32,6 +36,23 @@ jQuery(function($){
     });
 
     var ajax_tax_count = 0;
+
+    function wpuf_validate_address(e) {
+        var country = $("td.bill_required").find('.wpuf_biiling_country, .input');
+        var state   = $("td.bill_required").find('.wpuf_biiling_state, .input');
+        var add_1   = $("#wpuf_biiling_add_line_1");
+        var add_2   = $("#wpuf_biiling_add_line_2");
+        var city    = $("#wpuf_biiling_city");
+        var zip     = $("#wpuf_biiling_zip_code");
+
+        if ( ( country.val() === '' || state.val() === '' ) || ( add_1.hasClass('bill_required') && add_1.val() === "" ) ||
+            ( add_1.hasClass('bill_required') && add_1.val() === "" ) || ( add_2.hasClass('bill_required') && add_2.val() === "" ) ||
+            ( city.hasClass('bill_required') && city.val() === "" ) || ( zip.hasClass('bill_required') && zip.val() === "" ) ) {
+            alert( ajax_object.fill_notice );
+            e.preventDefault();
+        }
+    }
+
     function wpuf_calculate_tax() {
 
         var $wpuf_cc_address = jQuery('#wpuf-address-country-state');

@@ -127,13 +127,13 @@ class WPUF_Payment {
                 ?>
                 <?php if ( count( $gateways ) ) {
                     ?>
-                    <div class="wpuf-payment-page-wrap">
+                    <div class="wpuf-payment-page-wrap row">
                         <?php
                         $pay_page_style = "";
                         ?>
-                        <div class="wpuf-bill-addr-wrap" style="width: 40%; display: inline-block;">
+                        <div class="wpuf-bill-addr-wrap col">
                             <?php if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
-                                $pay_page_style = "width: 40%; vertical-align:top; margin-left: 20px; display: inline-block;";
+                                $pay_page_style = "vertical-align:top; margin-left: 20px; display: inline-block;";
                                 ?>
                                 <div class="wpuf-bill-addr-info">
                                     <h3> <?php _e( 'Billing Address', 'wpuf' ); ?> </h3>
@@ -158,13 +158,13 @@ class WPUF_Payment {
                                 <input type="hidden" name="user_id" value="<?php echo $current_user->ID; ?>">
                                 <?php } ?>
 
-                                <div class="wpuf-coupon-info-wrap">
+                                <div class="wpuf-coupon-info-wrap col">
                                     <div class="wpuf-coupon-info">
                                         <div class="wpuf-pack-info">
-                                            <h3>
+                                            <h3 class="col">
                                                 <?php _e( 'Pricing & Plans', 'wpuf' ); ?>
 
-                                                <a href="<?php echo wpuf_get_subscription_page_url(); ?>"><?php _e( 'Change Pack', 'wpuf' ); ?></a>
+                                                <a style="white-space: nowrap" href="<?php echo wpuf_get_subscription_page_url(); ?>"><?php _e( 'Change Pack', 'wpuf' ); ?></a>
                                             </h3>
                                             <div class="wpuf-subscription-error"></div>
 

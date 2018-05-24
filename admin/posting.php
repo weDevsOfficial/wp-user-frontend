@@ -392,28 +392,28 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * @return void
      */
     // Save the Metabox Data
-    function save_meta( $post_id, $post ) {
+    function save_meta( $post_id, $post = null ) {
 
-        if ( !isset( $post->ID ) ) {
+        if ( !isset( $post_id ) ) {
             return;
         }
 
         if ( !isset( $_POST['wpuf_cf_update'] ) ) {
-            return $post->ID;
+            return $post_id;
         }
 
         if ( !wp_verify_nonce( $_POST['wpuf_cf_update'], plugin_basename( __FILE__ ) ) ) {
-            return $post->ID;
+            return $post_id;
         }
 
         // Is the user allowed to edit the post or page?
-        if ( !current_user_can( 'edit_post', $post->ID ) ) {
-            return $post->ID;
+        if ( !current_user_can( 'edit_post', $post_id ) ) {
+            return $post_id;
         }
 
         list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $_POST['wpuf_cf_form_id'] );
 
-        WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post->ID );
+        WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
     }
 
 }

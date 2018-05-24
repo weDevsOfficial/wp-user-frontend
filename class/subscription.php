@@ -450,11 +450,11 @@ class WPUF_Subscription {
         $current_pack     = $current_user->subscription()->current_pack();
         $has_post         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-        if ( $force_pack && is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
+        if ( $payment_options && $force_pack && is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
             $postdata['post_status'] = 'pending';
         }
 
-        if ( !$force_pack && ( $pay_per_post || ( $fallback_cost && !$has_post )))  {
+        if ( $payment_options && !$force_pack && ( $pay_per_post || ( $fallback_cost && !$has_post )))  {
             $postdata['post_status'] = 'pending';
         }
 

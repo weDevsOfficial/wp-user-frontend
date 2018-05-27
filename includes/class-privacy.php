@@ -13,7 +13,7 @@ Class WPUF_Privacy {
     public function __construct(){
         add_action( 'admin_init', array( $this, 'add_privacy_message' ) );
         add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'register_exporters' ), 10 );
-        add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'register_erasers' ), 10 );
+//        add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'register_erasers' ), 10 );
 
         add_filter( 'wpuf_privacy_user_data', array( $this, 'export_billing_address' ), 5, 3 );
     }
@@ -99,6 +99,22 @@ Class WPUF_Privacy {
     }
 
     /**
+     * Register WPUF Eraser to delete data
+     *
+     * @param $erasers
+     *
+     * @return array
+     */
+    function register_erasers( $erasers ) {
+        $erasers['wpuf-personal-data-erase'] = array(
+            'eraser_friendly_name' => __( 'WPUF User Data' ),
+            'callback'             => array( 'WPUF_Privacy', 'erase_user_data'),
+        );
+
+        return apply_filters( 'wpuf_privacy_register_erasers', $erasers );
+    }
+
+    /**
      * Get WP_User for given $email address
      *
      * @param string $email
@@ -148,6 +164,50 @@ Class WPUF_Privacy {
         );
     }
 
+    /**
+     * Erases personal data associated with an email address from the WPUF user data
+     *
+     * @param  string $email_address
+     *
+     * @param  int $page
+     *
+     * @return array
+     */
+    public static function erase_user_data( $email_address, $page = 1 ){
+
+        if ( empty( $email_address ) ) {
+            return array(
+                'items_removed'  => false,
+                'items_retained' => false,
+                'messages'       => array(),
+                'done'           => true,
+            );
+        }
+
+
+        $erased = apply_filters( 'wpuf_erase_user_data', array(
+            'items_removed'  => false,
+            'items_retained' => false,
+            'messages'       => array(),
+            'done'           => true,
+            ), $email_address, $page
+        );
+
+        return $erased;
+
+    }
+
+    /**
+     * Add Billing address data to export
+     *
+     * @param $data
+     *
+     * @param $wpuf_user
+     *
+     * @param $page
+     *
+     * @return array
+     */
     public function export_billing_address( $data, $wpuf_user, $page ) {
 
         if ( ! ( $wpuf_user instanceof WPUF_User ) ) {
@@ -155,6 +215,10 @@ Class WPUF_Privacy {
         }
 
         $address = $wpuf_user->get_billing_address( true );
+
+        /**
+         * @var array $countries
+         */
         include_once WPUF_ROOT . '/includes/countries.php';
 
         if ( !empty( $address ) ) {

@@ -95,6 +95,11 @@ Class WPUF_Privacy {
             'callback'               => array( 'WPUF_Privacy', 'export_user_data'),
         );
 
+        $exporters['wpuf-subscription-data-export'] = array(
+            'exporter_friendly_name' => __('WPUF Subscription Data'),
+            'callback'               => array( 'WPUF_Privacy', 'export_subscription_data'),
+        );
+
         return apply_filters( 'wpuf_privacy_register_exporters', $exporters );
     }
 
@@ -256,5 +261,76 @@ Class WPUF_Privacy {
 
     }
 
+    /**
+     * Export Subscription Data for User
+     *
+     * @param $email_address
+     *
+     * @param $page
+     *
+     * @return array
+     */
+    public static function export_subscription_data( $email_address, $page ) {
 
+        $data_to_export[] = array(
+            'group_id'    => 'wpuf-subscription-data',
+            'group_label' => __( 'WPUF Subscription Data' ),
+            'item_id'     => "wpuf-subscription",
+            'data'        => self::get_subscription_data( $email_address, $page )
+        );
+
+        $response = array(
+            'data' => $data_to_export,
+            'done' => true
+        );
+
+        return $response;
+    }
+
+    /**
+     * Generate Subscription data to export
+     *
+     * @param $email_address
+     *
+     * @param $page
+     *
+     * @return array
+     */
+    public static function get_subscription_data( $email_address, $page ) {
+
+        $wpuf_user = self::get_user( $email_address );
+
+        if ( ! ( $wpuf_user instanceof WPUF_User ) ) {
+            return array();
+        }
+
+        $sub_id = $wpuf_user->subscription()->current_pack_id();
+
+        if ( !$sub_id ) {
+            return array();
+        }
+
+        $pack = $wpuf_user->subscription()->current_pack();
+
+        $subscription_data = array(
+            array(
+                'name'  => __( 'Pack ID' ),
+                'value' => $pack['pack_id']
+            ),
+            array(
+                'name'  => __( 'Pack Title' ),
+                'value' => get_the_title( $pack['pack_id'] ),
+            ),
+            array(
+                'name'  => __( 'Expiry' ),
+                'value' => $pack['expire']
+            ),
+            array(
+                'name'  => __( 'Recurring' ),
+                'value' => $pack['recurring']
+            ),
+        );
+
+        return apply_filters( 'wpuf_privacy_subscription_export_data', $subscription_data, $email_address, $page );
+    }
 }

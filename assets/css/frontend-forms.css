@@ -327,6 +327,7 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li {
   border: 1px solid #eee;
   padding: 5px;
   width: 150px;
+  height: 150px;
   margin-right: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -1284,7 +1285,6 @@ table#wpuf-address-country-state td {
 .wpuf-image-wrap :not(.attachment-name img) {
   position: absolute;
   width: 100%;
-  opacity: 0;
   transition: .3s;
 }
 li.wpuf-image-wrap.thumbnail {

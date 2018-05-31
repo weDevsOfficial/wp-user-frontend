@@ -164,4 +164,21 @@ class WPUF_User {
         return "";
     }
 
+    /**
+     *
+     * @since 2.8.9
+     *
+     * @param bool $array
+     *
+     * @return mixed|string
+     */
+    public function get_transaction_data( $array = false ) {
+        global $wpdb;
+
+        $sql = "SELECT * FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = $this->id";
+        $txn_data = $wpdb->get_results( $sql, ARRAY_A );
+
+        return apply_filters( 'wpuf_privacy_transaction_export_data', $txn_data[0] );
+    }
+
 }

@@ -333,4 +333,86 @@ Class WPUF_Privacy {
 
         return apply_filters( 'wpuf_privacy_subscription_export_data', $subscription_data, $email_address, $page );
     }
+
+    /**
+     * Generate Transaction data to export
+     *
+     * @param $email_address
+     *
+     * @param $page
+     *
+     * @return array
+     */
+    public function export_transaction_data( $data, $wpuf_user, $page ) {
+
+        if ( ! ( $wpuf_user instanceof WPUF_User ) ) {
+            return $data;
+        }
+
+        $txn_data = $wpuf_user->get_transaction_data( true );
+
+        if ( !empty( $txn_data ) ) {
+
+            $transaction_data = array(
+                array(
+                    'name'  => __( 'Transaction Id', 'wpuf' ),
+                    'value' => $txn_data['transaction_id']
+                ),
+                array(
+                    'name'  => __( 'Payment Status', 'wpuf' ),
+                    'value' => $txn_data['status']
+                ),
+                array(
+                    'name'  => __( 'Subtotal', 'wpuf' ),
+                    'value' => $txn_data['subtotal']
+                ),
+                array(
+                    'name'  => __( 'Tax', 'wpuf' ),
+                    'value' => $txn_data['tax']
+                ),
+                array(
+                    'name'  => __( 'Total', 'wpuf' ),
+                    'value' => $txn_data['cost']
+                ),
+                array(
+                    'name'  => __( 'Post Id', 'wpuf' ),
+                    'value' => $txn_data['post_id']
+                ),
+                array(
+                    'name'  => __( 'Pack Id', 'wpuf' ),
+                    'value' => $txn_data['post_id']
+                ),
+                array(
+                    'name'  => __( 'First Name', 'wpuf' ),
+                    'value' => $txn_data['payer_first_name']
+                ),
+                array(
+                    'name'  => __( 'Last Name', 'wpuf' ),
+                    'value' => $txn_data['payer_last_name']
+                ),
+                array(
+                    'name'  => __( 'Email', 'wpuf' ),
+                    'value' => $txn_data['payer_email']
+                ),
+                array(
+                    'name'  => __( 'Payment Type', 'wpuf' ),
+                    'value' => $txn_data['payment_type']
+                ),
+                array(
+                    'name'  => __( 'payer_address', 'wpuf' ),
+                    'value' => $txn_data['payer_address']
+                ),
+                array(
+                    'name'  => __( 'Transaction Date', 'wpuf' ),
+                    'value' => $txn_data['created']
+                ),
+            );
+
+            return array_merge( $data, $transaction_data );
+        }
+
+        return $data;
+
+    }
+
 }

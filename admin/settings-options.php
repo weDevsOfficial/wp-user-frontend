@@ -42,7 +42,11 @@ function wpuf_settings_sections() {
             'id'    => 'wpuf_mails',
             'title' => __( 'E-Mails', 'wpuf' ),
             'icon' => 'dashicons-email-alt'
-
+        ),
+        array(
+            'id'    => 'wpuf_privacy',
+            'title' => __( 'Privacy Options', 'wpuf' ),
+            'icon' => 'dashicons-shield-alt'
         ),
     );
 
@@ -52,6 +56,8 @@ function wpuf_settings_sections() {
 function wpuf_settings_fields() {
     $pages = wpuf_get_pages();
     $users = wpuf_list_users();
+    $post_types = get_post_types();
+    unset( $post_types['attachment'], $post_types['revision'], $post_types['nav_menu_item'], $post_types['wpuf_forms'], $post_types['wpuf_profile'], $post_types['wpuf_input'], $post_types['wpuf_subscription'], $post_types['custom_css'], $post_types['customize_changeset'], $post_types['wpuf_coupon'], $post_types['oembed_cache'] );
 
     $login_redirect_pages =  array(
         'previous_page' => __( 'Previous Page', 'wpuf' )
@@ -456,7 +462,16 @@ function wpuf_settings_fields() {
                 'type'    => 'wysiwyg',
                 'class'   => 'guest-email-setting-option',
             ),
-        ) )
+        ) ),
+        'wpuf_privacy' => apply_filters( 'wpuf_privacy_options', array(
+            array(
+                'name'    => 'export_post_types',
+                'label'   => __( 'Post Types', 'wpuf' ),
+                'desc'    => __( 'Select the post types you want to export.', 'wpuf' ),
+                'callback'=> 'wpuf_settings_multiselect',
+                'options' => $post_types,
+            ),
+        ) ),
     );
 
     return apply_filters( 'wpuf_settings_fields', $settings_fields );

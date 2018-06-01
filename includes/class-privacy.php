@@ -91,13 +91,23 @@ Class WPUF_Privacy {
      */
     function register_exporters( $exporters ) {
         $exporters['wpuf-personal-data-export'] = array(
-            'exporter_friendly_name' => __('WPUF User Data'),
+            'exporter_friendly_name' => __( 'WPUF User Data', 'wpuf' ),
             'callback'               => array( 'WPUF_Privacy', 'export_user_data'),
         );
 
         $exporters['wpuf-subscription-data-export'] = array(
-            'exporter_friendly_name' => __('WPUF Subscription Data'),
+            'exporter_friendly_name' => __( 'WPUF Subscription Data', 'wpuf' ),
             'callback'               => array( 'WPUF_Privacy', 'export_subscription_data'),
+        );
+
+        $exporters['wpuf-transaction-data-export'] = array(
+            'exporter_friendly_name' => __( 'WPUF Transaction Data', 'wpuf' ),
+            'callback'               => array( 'WPUF_Privacy', 'export_transaction_data'),
+        );
+
+        $exporters['wpuf-post-data-export'] = array(
+            'exporter_friendly_name' => __( 'WPUF Post Data', 'wpuf' ),
+            'callback'               => array( 'WPUF_Privacy', 'export_post_data'),
         );
 
         return apply_filters( 'wpuf_privacy_register_exporters', $exporters );
@@ -112,7 +122,7 @@ Class WPUF_Privacy {
      */
     function register_erasers( $erasers ) {
         $erasers['wpuf-personal-data-erase'] = array(
-            'eraser_friendly_name' => __( 'WPUF User Data' ),
+            'eraser_friendly_name' => __( 'WPUF User Data', 'wpuf' ),
             'callback'             => array( 'WPUF_Privacy', 'erase_user_data'),
         );
 
@@ -151,7 +161,7 @@ Class WPUF_Privacy {
 
         $data_to_export[] = array(
             'group_id'    => 'wpuf-user-data',
-            'group_label' => __( 'WPUF User Data' ),
+            'group_label' => __( 'WPUF User Data', 'wpuf' ),
             'item_id'     => "wpuf-user",
             'data'        => apply_filters( 'wpuf_privacy_user_data', array(), $wpuf_user, $page ),
         );
@@ -274,10 +284,143 @@ Class WPUF_Privacy {
 
         $data_to_export[] = array(
             'group_id'    => 'wpuf-subscription-data',
-            'group_label' => __( 'WPUF Subscription Data' ),
+            'group_label' => __( 'WPUF Subscription Data', 'wpuf' ),
             'item_id'     => "wpuf-subscription",
             'data'        => self::get_subscription_data( $email_address, $page )
         );
+
+        $response = array(
+            'data' => $data_to_export,
+            'done' => true
+        );
+
+        return $response;
+    }
+
+    /**
+     * Export transaction Data for User
+     *
+     * @param $email_address
+     *
+     * @param $page
+     *
+     * @return array
+     */
+    public static function export_transaction_data( $email_address, $page ) {
+
+        $transaction_data = self::get_transaction_data( $email_address, $page );
+        foreach ( $transaction_data as $txn_data ) {
+
+            $data_to_export[] = array(
+                'group_id' => 'wpuf-transaction-data',
+                'group_label' => __('WPUF Transaction Data', 'wpuf'),
+                'item_id' => "wpuf-transaction" . $txn_data['transaction_id'],
+                'data' => array(
+                    array(
+                        'name' => __('Transaction ID', 'wpuf'),
+                        'value' => $txn_data['transaction_id']
+                    ),
+                    array(
+                        'name' => __('Payment Status', 'wpuf'),
+                        'value' => $txn_data['status']
+                    ),
+                    array(
+                        'name' => __('Subtotal', 'wpuf'),
+                        'value' => $txn_data['subtotal']
+                    ),
+                    array(
+                        'name' => __('Tax', 'wpuf'),
+                        'value' => $txn_data['tax']
+                    ),
+                    array(
+                        'name' => __('Total', 'wpuf'),
+                        'value' => $txn_data['cost']
+                    ),
+                    array(
+                        'name' => __('Post ID', 'wpuf'),
+                        'value' => $txn_data['post_id']
+                    ),
+                    array(
+                        'name' => __('Pack ID', 'wpuf'),
+                        'value' => $txn_data['post_id']
+                    ),
+                    array(
+                        'name' => __('First Name', 'wpuf'),
+                        'value' => $txn_data['payer_first_name']
+                    ),
+                    array(
+                        'name' => __('Last Name', 'wpuf'),
+                        'value' => $txn_data['payer_last_name']
+                    ),
+                    array(
+                        'name' => __('Email', 'wpuf'),
+                        'value' => $txn_data['payer_email']
+                    ),
+                    array(
+                        'name' => __('Payment Type', 'wpuf'),
+                        'value' => $txn_data['payment_type']
+                    ),
+                    array(
+                        'name' => __('payer_address', 'wpuf'),
+                        'value' => implode(', ', array_map(
+                            function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
+                            maybe_unserialize( $txn_data['payer_address'] ),
+                            array_keys( maybe_unserialize( $txn_data['payer_address'] ) )
+                        ) ),
+                    ),
+                    array(
+                        'name' => __('Transaction Date', 'wpuf'),
+                        'value' => $txn_data['created']
+                    ),
+                ),
+            );
+        }
+        $response = array(
+            'data' => $data_to_export,
+            'done' => true
+        );
+
+        return $response;
+    }
+
+    /**
+     * Export Post Data for User
+     *
+     * @param $email_address
+     *
+     * @param $page
+     *
+     * @return array
+     */
+    public static function export_post_data( $email_address, $page ) {
+
+        $post_data = self::get_post_data( $email_address, $page );
+        $data_to_export = array();
+        foreach ( $post_data as $data ) {
+            $data_to_export[] = array(
+                'group_id'    => 'wpuf-post-data',
+                'group_label' => __( 'WPUF Post Data', 'wpuf' ),
+                'item_id'     => "wpuf-posts-" . $data['id'],
+                'data'        => array(
+                    array(
+                        'name'  => __('Post ID', 'wpuf'),
+                        'value' => $data['id']
+                    ),
+                    array(
+                        'name'  => __('Post Title', 'wpuf'),
+                        'value' => $data['title']
+                    ),
+                    array(
+                        'name'  => __('Post URL', 'wpuf'),
+                        'value' => $data['url']
+                    ),
+                    array(
+                        'name'  => __('Post Date', 'wpuf'),
+                        'value' => $data['date']
+                    ),
+                ),
+            );
+        }
 
         $response = array(
             'data' => $data_to_export,
@@ -337,81 +480,71 @@ Class WPUF_Privacy {
     /**
      * Generate Transaction data to export
      *
-     * @param $email_address
+     * @param $wpuf_user
      *
      * @param $page
      *
      * @return array
      */
-    public function export_transaction_data( $data, $wpuf_user, $page ) {
+    public static function get_transaction_data( $email_address, $page ) {
+
+        $wpuf_user = self::get_user( $email_address );
 
         if ( ! ( $wpuf_user instanceof WPUF_User ) ) {
-            return $data;
+            return array();
         }
 
         $txn_data = $wpuf_user->get_transaction_data( true );
 
         if ( !empty( $txn_data ) ) {
 
-            $transaction_data = array(
-                array(
-                    'name'  => __( 'Transaction Id', 'wpuf' ),
-                    'value' => $txn_data['transaction_id']
-                ),
-                array(
-                    'name'  => __( 'Payment Status', 'wpuf' ),
-                    'value' => $txn_data['status']
-                ),
-                array(
-                    'name'  => __( 'Subtotal', 'wpuf' ),
-                    'value' => $txn_data['subtotal']
-                ),
-                array(
-                    'name'  => __( 'Tax', 'wpuf' ),
-                    'value' => $txn_data['tax']
-                ),
-                array(
-                    'name'  => __( 'Total', 'wpuf' ),
-                    'value' => $txn_data['cost']
-                ),
-                array(
-                    'name'  => __( 'Post Id', 'wpuf' ),
-                    'value' => $txn_data['post_id']
-                ),
-                array(
-                    'name'  => __( 'Pack Id', 'wpuf' ),
-                    'value' => $txn_data['post_id']
-                ),
-                array(
-                    'name'  => __( 'First Name', 'wpuf' ),
-                    'value' => $txn_data['payer_first_name']
-                ),
-                array(
-                    'name'  => __( 'Last Name', 'wpuf' ),
-                    'value' => $txn_data['payer_last_name']
-                ),
-                array(
-                    'name'  => __( 'Email', 'wpuf' ),
-                    'value' => $txn_data['payer_email']
-                ),
-                array(
-                    'name'  => __( 'Payment Type', 'wpuf' ),
-                    'value' => $txn_data['payment_type']
-                ),
-                array(
-                    'name'  => __( 'payer_address', 'wpuf' ),
-                    'value' => $txn_data['payer_address']
-                ),
-                array(
-                    'name'  => __( 'Transaction Date', 'wpuf' ),
-                    'value' => $txn_data['created']
-                ),
-            );
-
-            return array_merge( $data, $transaction_data );
+            return $txn_data;
         }
 
-        return $data;
+    }
+
+    /**
+     * Generate Post data to export
+     *
+     * @param $email_address
+     *
+     * @param $page
+     *
+     * @return array
+     */
+    public static function get_post_data( $email_address, $page ) {
+
+        $wpuf_user = self::get_user( $email_address );
+
+        if ( ! ( $wpuf_user instanceof WPUF_User ) ) {
+            return array();
+        }
+
+        $post_data = array();
+
+        $allowed_posts = wpuf_get_option( 'export_post_types', 'wpuf_privacy', 'post' );
+
+        if ( !empty( $allowed_posts ) ) {
+            $idx = 0;
+            foreach ( $allowed_posts as $allowed_post ) {
+                $posts = get_posts([
+                    'author'      => $wpuf_user->id,
+                    'post_type'   => $allowed_post,
+                    'numberposts' => '-1',
+                    'order'       => 'ASC',
+                ]);
+
+                foreach ( $posts as $post ) {
+                    $post_data[$idx]['id']    = $post->ID;
+                    $post_data[$idx]['title'] = $post->post_title;
+                    $post_data[$idx]['url']   = $post->guid;
+                    $post_data[$idx]['date']  = $post->post_date;
+                    $idx++;
+                }
+            }
+        }
+
+        return $post_data;
 
     }
 

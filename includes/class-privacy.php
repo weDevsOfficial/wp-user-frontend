@@ -521,30 +521,28 @@ Class WPUF_Privacy {
         }
 
         $post_data = array();
-
         $allowed_posts = wpuf_get_option( 'export_post_types', 'wpuf_privacy', 'post' );
 
         if ( !empty( $allowed_posts ) ) {
-            $idx = 0;
-            foreach ( $allowed_posts as $allowed_post ) {
-                $posts = get_posts([
+                $posts = get_posts( apply_filters( 'wpuf_privacy_post_export_query_args',  array(
                     'author'      => $wpuf_user->id,
-                    'post_type'   => $allowed_post,
+                    'post_type'   => $allowed_posts,
                     'numberposts' => '-1',
                     'order'       => 'ASC',
-                ]);
+                ), $email_address, $page ) );
 
                 foreach ( $posts as $post ) {
-                    $post_data[$idx]['id']    = $post->ID;
-                    $post_data[$idx]['title'] = $post->post_title;
-                    $post_data[$idx]['url']   = $post->guid;
-                    $post_data[$idx]['date']  = $post->post_date;
-                    $idx++;
+                    $data = array();
+                    $data['id']    = $post->ID;
+                    $data['title'] = $post->post_title;
+                    $data['url']   = $post->guid;
+                    $data['date']  = $post->post_date;
+
+                    $post_data[] = $data;
                 }
-            }
         }
 
-        return $post_data;
+        return apply_filters( 'wpuf_privacy_export_post_data', $post_data, $email_address, $page );
 
     }
 

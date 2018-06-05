@@ -14,7 +14,7 @@
                         $labels[] = $post_type_name->label;
                     }
                 }
-                printf( __( 'You have created <span>%d</span> (%s)', 'wpuf' ), $dashboard_query->found_posts, implode( ', ', $labels ) );
+                printf( __( 'You have created <span>%d</span> (%ss)', 'wpuf' ), $dashboard_query->found_posts, implode( 's, ', $dashboard_query->query['post_type'] ) );
             ?>
             </div>
         <?php endif ?>

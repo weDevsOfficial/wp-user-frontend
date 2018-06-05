@@ -2817,3 +2817,27 @@ function wpuf_settings_multiselect( $args ) {
 
     echo $html;
 }
+
+/**
+ * Filters custom avatar url
+ *
+ * @param array $args
+ */
+function wpuf_get_custom_avatar( $args, $id_or_email ) {
+
+    $user_id = get_current_user_id();
+
+    if ( email_exists( $id_or_email ) ) {
+        $user_id = email_exists( $id_or_email );
+    }
+
+    if ( $user_id ) {
+        $custom_avatar_url = get_user_meta( $user_id, 'user_avatar', true );
+    }
+    if ( !empty( $custom_avatar_url )) {
+        $args['url'] = $custom_avatar_url;
+    }
+
+    return $args;
+}
+add_filter( 'get_avatar_data', 'wpuf_get_custom_avatar', 10, 2 );

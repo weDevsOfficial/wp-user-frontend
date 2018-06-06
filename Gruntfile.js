@@ -59,7 +59,7 @@ module.exports = function(grunt) {
                     exclude: ['build/.*', 'node_modules/*', 'assets/*'],
                     mainFile: 'wpuf.php',
                     domainPath: '/languages/',
-                    potFilename: 'wpuf.pot',
+                    potFilename: 'wp-user-frontend.pot',
                     type: 'wp-plugin',
                     updateTimestamp: true,
                     potHeaders: {

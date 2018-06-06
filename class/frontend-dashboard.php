@@ -62,7 +62,7 @@ class WPUF_Frontend_Dashboard {
 
         //show delete success message
         if ( isset( $_GET['msg'] ) && $_GET['msg'] == 'deleted' ) {
-            echo '<div class="success">' . __( 'Post Deleted', 'wpuf' ) . '</div>';
+            echo '<div class="success">' . __( 'Post Deleted', 'wp-user-frontend' ) . '</div>';
         }
         $post_type  = explode( ",", $post_type );
         $args = array(
@@ -109,11 +109,11 @@ class WPUF_Frontend_Dashboard {
         if ( wpuf_get_option( 'show_user_bio', 'wpuf_dashboard', 'on' ) == 'on' ) {
             ?>
             <div class="wpuf-author">
-                <h3><?php _e( 'Author Info', 'wpuf' ); ?></h3>
+                <h3><?php _e( 'Author Info', 'wp-user-frontend' ); ?></h3>
                 <div class="wpuf-author-inside odd">
                     <div class="wpuf-user-image"><?php echo get_avatar( $userdata->user_email, 80 ); ?></div>
                     <div class="wpuf-author-body">
-                        <p class="wpuf-user-name"><a href="<?php echo get_author_posts_url( $userdata->ID ); ?>"><?php printf( esc_attr__( '%s', 'wpuf' ), $userdata->display_name ); ?></a></p>
+                        <p class="wpuf-user-name"><a href="<?php echo get_author_posts_url( $userdata->ID ); ?>"><?php printf( esc_attr__( '%s', 'wp-user-frontend' ), $userdata->display_name ); ?></a></p>
                         <p class="wpuf-author-info"><?php echo $userdata->description; ?></p>
                     </div>
                 </div>
@@ -145,7 +145,7 @@ class WPUF_Frontend_Dashboard {
             $redirect = add_query_arg( array('msg' => 'deleted'), get_permalink() );
             wp_redirect( $redirect );
         } else {
-            echo '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wpuf' ) . '</div>';
+            echo '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wp-user-frontend' ) . '</div>';
         }
     }
 

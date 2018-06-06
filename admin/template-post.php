@@ -38,13 +38,13 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
                 <?php self::common_textarea( $field_id, $values ); ?>
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Enable Image Insertion', 'wpuf' ); ?></label>
+                    <label><?php _e( 'Enable Image Insertion', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields">
                         <label>
                             <?php self::hidden_field( "[$field_id][insert_image]", 'no' ); ?>
                             <input type="checkbox" name="<?php echo $image_insert_name ?>" value="yes"<?php checked( $image_insert_value, 'yes' ); ?> />
-                            <?php _e( 'Enable image upload in post area', 'wpuf' ); ?>
+                            <?php _e( 'Enable image upload in post area', 'wp-user-frontend' ); ?>
                         </label>
                     </div>
                 </div> <!-- .wpuf-form-rows -->
@@ -90,7 +90,7 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
     public static function featured_image( $field_id, $label, $values = array() ) {
         $max_file_name = sprintf( '%s[%d][max_size]', self::$input_name, $field_id );
         $max_file_value = $values ? $values['max_size'] : '1024';
-        $help = esc_attr( __( 'Enter maximum upload size limit in KB', 'wpuf' ) );
+        $help = esc_attr( __( 'Enter maximum upload size limit in KB', 'wp-user-frontend' ) );
         ?>
         <li class="featured_image">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -102,7 +102,7 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
                 <?php self::common( $field_id, 'featured_image', false, $values ); ?>
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Max. file size', 'wpuf' ); ?></label>
+                    <label><?php _e( 'Max. file size', 'wp-user-frontend' ); ?></label>
                     <input type="text" class="smallipopInput" name="<?php echo $max_file_name; ?>" value="<?php echo $max_file_value; ?>" title="<?php echo $help; ?>">
                 </div> <!-- .wpuf-form-rows -->
                 <?php self::conditional_field( $field_id, $values ); ?>
@@ -151,69 +151,69 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
                 <?php self::common( $field_id, $taxonomy, false, $values ); ?>
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Type', 'wpuf' ); ?></label>
+                    <label><?php _e( 'Type', 'wp-user-frontend' ); ?></label>
                     <select name="<?php echo $type_name ?>">
-                        <option value="select"<?php selected( $type_value, 'select' ); ?>><?php _e( 'Dropdown', 'wpuf' ); ?></option>
-                        <option value="multiselect"<?php selected( $type_value, 'multiselect' ); ?>><?php _e( 'Multi Select', 'wpuf' ); ?></option>
-                        <option value="checkbox"<?php selected( $type_value, 'checkbox' ); ?>><?php _e( 'Checkbox', 'wpuf' ); ?></option>
-                        <option value="text"<?php selected( $type_value, 'text' ); ?>><?php _e( 'Text Input', 'wpuf' ); ?></option>
-                        <option value="ajax"<?php selected( $type_value, 'ajax' ); ?>><?php _e( 'Ajax', 'wpuf' ); ?></option>
+                        <option value="select"<?php selected( $type_value, 'select' ); ?>><?php _e( 'Dropdown', 'wp-user-frontend' ); ?></option>
+                        <option value="multiselect"<?php selected( $type_value, 'multiselect' ); ?>><?php _e( 'Multi Select', 'wp-user-frontend' ); ?></option>
+                        <option value="checkbox"<?php selected( $type_value, 'checkbox' ); ?>><?php _e( 'Checkbox', 'wp-user-frontend' ); ?></option>
+                        <option value="text"<?php selected( $type_value, 'text' ); ?>><?php _e( 'Text Input', 'wp-user-frontend' ); ?></option>
+                        <option value="ajax"<?php selected( $type_value, 'ajax' ); ?>><?php _e( 'Ajax', 'wp-user-frontend' ); ?></option>
                     </select>
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Order By', 'wpuf' ); ?></label>
+                    <label><?php _e( 'Order By', 'wp-user-frontend' ); ?></label>
                     <select name="<?php echo $orderby_name ?>">
-                        <option value="name"<?php selected( $orderby_value, 'name' ); ?>><?php _e( 'Name', 'wpuf' ); ?></option>
-                        <option value="id"<?php selected( $orderby_value, 'id' ); ?>><?php _e( 'Term ID', 'wpuf' ); ?></option>
-                        <option value="slug"<?php selected( $orderby_value, 'slug' ); ?>><?php _e( 'Slug', 'wpuf' ); ?></option>
-                        <option value="count"<?php selected( $orderby_value, 'count' ); ?>><?php _e( 'Count', 'wpuf' ); ?></option>
-                        <option value="term_group"<?php selected( $orderby_value, 'term_group' ); ?>><?php _e( 'Term Group', 'wpuf' ); ?></option>
+                        <option value="name"<?php selected( $orderby_value, 'name' ); ?>><?php _e( 'Name', 'wp-user-frontend' ); ?></option>
+                        <option value="id"<?php selected( $orderby_value, 'id' ); ?>><?php _e( 'Term ID', 'wp-user-frontend' ); ?></option>
+                        <option value="slug"<?php selected( $orderby_value, 'slug' ); ?>><?php _e( 'Slug', 'wp-user-frontend' ); ?></option>
+                        <option value="count"<?php selected( $orderby_value, 'count' ); ?>><?php _e( 'Count', 'wp-user-frontend' ); ?></option>
+                        <option value="term_group"<?php selected( $orderby_value, 'term_group' ); ?>><?php _e( 'Term Group', 'wp-user-frontend' ); ?></option>
                     </select>
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Order', 'wpuf' ); ?></label>
+                    <label><?php _e( 'Order', 'wp-user-frontend' ); ?></label>
                     <select name="<?php echo $order_name ?>">
-                        <option value="ASC"<?php selected( $order_value, 'ASC' ); ?>><?php _e( 'ASC', 'wpuf' ); ?></option>
-                        <option value="DESC"<?php selected( $order_value, 'DESC' ); ?>><?php _e( 'DESC', 'wpuf' ); ?></option>
+                        <option value="ASC"<?php selected( $order_value, 'ASC' ); ?>><?php _e( 'ASC', 'wp-user-frontend' ); ?></option>
+                        <option value="DESC"<?php selected( $order_value, 'DESC' ); ?>><?php _e( 'DESC', 'wp-user-frontend' ); ?></option>
                     </select>
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Selection Type', 'wpuf' ); ?></label>
+                    <label><?php _e( 'Selection Type', 'wp-user-frontend' ); ?></label>
                     <select name="<?php echo $exclude_type_name ?>">
-                        <option value="exclude"<?php selected( $exclude_type_value, 'exclude' ); ?>><?php _e( 'Exclude', 'wpuf' ); ?></option>
-                        <option value="include"<?php selected( $exclude_type_value, 'include' ); ?>><?php _e( 'Include', 'wpuf' ); ?></option>
-                        <option value="child_of"<?php selected( $exclude_type_value, 'child_of' ); ?>><?php _e( 'Child of', 'wpuf' ); ?></option>
+                        <option value="exclude"<?php selected( $exclude_type_value, 'exclude' ); ?>><?php _e( 'Exclude', 'wp-user-frontend' ); ?></option>
+                        <option value="include"<?php selected( $exclude_type_value, 'include' ); ?>><?php _e( 'Include', 'wp-user-frontend' ); ?></option>
+                        <option value="child_of"<?php selected( $exclude_type_value, 'child_of' ); ?>><?php _e( 'Child of', 'wp-user-frontend' ); ?></option>
                     </select>
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Selection terms', 'wpuf' ); ?></label>
-                    <input type="text" class="smallipopInput" name="<?php echo $exclude_name; ?>" title="<?php _e( 'Enter the term IDs as comma separated (without space) to exclude/include in the form.', 'wpuf' ); ?>" value="<?php echo $exclude_value; ?>" />
+                    <label><?php _e( 'Selection terms', 'wp-user-frontend' ); ?></label>
+                    <input type="text" class="smallipopInput" name="<?php echo $exclude_name; ?>" title="<?php _e( 'Enter the term IDs as comma separated (without space) to exclude/include in the form.', 'wp-user-frontend' ); ?>" value="<?php echo $exclude_value; ?>" />
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'WooCommerce Attribute', 'wpuf' ); ?></label>
+                    <label><?php _e( 'WooCommerce Attribute', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields">
                         <label>
                             <?php self::hidden_field( "[$field_id][woo_attr]", 'no' ); ?>
                             <input type="checkbox" class="woo_attr" name="<?php echo $woo_attr_name ?>" value="yes"<?php checked( $woo_attr_value, 'yes' ); ?> />
-                            <?php _e( 'This taxonomy is a WooCommerce attribute', 'wpuf' ); ?>
+                            <?php _e( 'This taxonomy is a WooCommerce attribute', 'wp-user-frontend' ); ?>
                         </label>
                     </div>
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows<?php echo $woo_attr_value == 'no' ? ' wpuf-hide' : ''; ?>">
-                    <label><?php _e( 'Visibility', 'wpuf' ); ?></label>
+                    <label><?php _e( 'Visibility', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields">
                         <label>
                             <?php self::hidden_field( "[$field_id][woo_attr_vis]", 'no' ); ?>
                             <input type="checkbox" name="<?php echo $woo_attr_vis_name ?>" value="yes"<?php checked( $woo_attr_vis_value, 'yes' ); ?> />
-                            <?php _e( 'Visible on product page', 'wpuf' ); ?>
+                            <?php _e( 'Visible on product page', 'wp-user-frontend' ); ?>
                         </label>
                     </div>
                 </div> <!-- .wpuf-form-rows -->
@@ -254,16 +254,16 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
 
         ?>
         <div class="wpuf-form-rows">
-            <label><input type="radio" name="<?php echo $param['option_to_chose']['name']  ?>" value="<?php echo _e('all','wpuf'); ?>" <?php echo ( ( $param['option_to_chose']['value'] == 'all' )?'checked':'' ); ?> /><?php _e( 'Show All', 'wpuf' ); ?></label>
+            <label><input type="radio" name="<?php echo $param['option_to_chose']['name']  ?>" value="<?php echo _e('all','wp-user-frontend'); ?>" <?php echo ( ( $param['option_to_chose']['value'] == 'all' )?'checked':'' ); ?> /><?php _e( 'Show All', 'wp-user-frontend' ); ?></label>
         </div>
         <div class="wpuf-form-rows">
-            <label><input type="radio" name="<?php echo $param['option_to_chose']['name']  ?>" value="<?php echo _e('hide','wpuf'); ?>" <?php echo ( ( $param['option_to_chose']['value'] == 'hide' )?'checked':'' ); ?>  /><?php _e( 'Hide These Countries', 'wpuf' ); ?></label>
-            <select name="<?php echo $param['names_to_hide']['name'];?>" class="wpuf-country_to_hide" multiple data-placeholder="<?php esc_attr_e( 'Chose Country to hide from List', 'wpuf' ); ?>"></select>
+            <label><input type="radio" name="<?php echo $param['option_to_chose']['name']  ?>" value="<?php echo _e('hide','wp-user-frontend'); ?>" <?php echo ( ( $param['option_to_chose']['value'] == 'hide' )?'checked':'' ); ?>  /><?php _e( 'Hide These Countries', 'wp-user-frontend' ); ?></label>
+            <select name="<?php echo $param['names_to_hide']['name'];?>" class="wpuf-country_to_hide" multiple data-placeholder="<?php esc_attr_e( 'Chose Country to hide from List', 'wp-user-frontend' ); ?>"></select>
         </div>
 
         <div class="wpuf-form-rows">
-            <label><input type="radio" name="<?php echo $param['option_to_chose']['name']  ?>" value="<?php echo _e('show','wpuf'); ?>" <?php echo ( ( $param['option_to_chose']['value'] == 'show' )?'checked':'' ); ?>  /><?php _e( 'Show These Countries', 'wpuf' ); ?></label>
-            <select name="<?php echo $param['names_to_show']['name'];?>" class="wpuf-country_to_hide" multiple data-placeholder="<?php esc_attr_e( 'Add Country to List', 'wpuf' ); ?>"></select>
+            <label><input type="radio" name="<?php echo $param['option_to_chose']['name']  ?>" value="<?php echo _e('show','wp-user-frontend'); ?>" <?php echo ( ( $param['option_to_chose']['value'] == 'show' )?'checked':'' ); ?>  /><?php _e( 'Show These Countries', 'wp-user-frontend' ); ?></label>
+            <select name="<?php echo $param['names_to_show']['name'];?>" class="wpuf-country_to_hide" multiple data-placeholder="<?php esc_attr_e( 'Add Country to List', 'wp-user-frontend' ); ?>"></select>
         </div>
 
         <script>

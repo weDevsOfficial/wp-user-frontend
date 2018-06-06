@@ -60,7 +60,7 @@ class WPUF_Admin_Form_Template {
         $registry       = wpuf_get_post_form_templates();
         $blank_form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
         $action_name    = 'wpuf_post_form_template';
-        $footer_help    = sprintf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wpuf'), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' );
+        $footer_help    = sprintf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wp-user-frontend'), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' );
 
         if ( ! $registry ) {
             return;
@@ -166,10 +166,10 @@ class WPUF_Admin_Form_Template {
         $selected = isset( $form_settings['form_template'] ) ? $form_settings['form_template'] : '';
         ?>
         <tr>
-            <th><?php _e( 'Form Template', 'wpuf' ); ?></th>
+            <th><?php _e( 'Form Template', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[form_template]">
-                    <option value=""><?php echo __( '&mdash; No Template &mdash;', 'wpuf' ); ?></option>
+                    <option value=""><?php echo __( '&mdash; No Template &mdash;', 'wp-user-frontend' ); ?></option>
                     <?php
                     if ( $registry ) {
                         foreach ($registry as $key => $template) {
@@ -178,7 +178,7 @@ class WPUF_Admin_Form_Template {
                     }
                     ?>
                 </select>
-                <p class="description"><?php _e( 'If selected a form template, it will try to execute that integration options when new post created and updated.', 'wpuf' ); ?></p>
+                <p class="description"><?php _e( 'If selected a form template, it will try to execute that integration options when new post created and updated.', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
         <?php

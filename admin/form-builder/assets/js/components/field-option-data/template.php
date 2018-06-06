@@ -2,7 +2,7 @@
     <label class="clearfix">
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
         <span class="pull-right">
-            <input type="checkbox" v-model="show_value"> <?php _e( 'Show values', 'wpuf' ); ?>
+            <input type="checkbox" v-model="show_value"> <?php _e( 'Show values', 'wp-user-frontend' ); ?>
         </span>
     </label>
 
@@ -13,11 +13,11 @@
             <div class="sort-handler">&nbsp;</div>
 
             <div class="label">
-                <?php _e( 'Label', 'wpuf' ); ?>
+                <?php _e( 'Label', 'wp-user-frontend' ); ?>
             </div>
 
             <div v-if="show_value" class="value">
-                <?php _e( 'Value', 'wpuf' ) ?>
+                <?php _e( 'Value', 'wp-user-frontend' ) ?>
             </div>
 
             <div class="action-buttons">&nbsp;</div>
@@ -65,5 +65,5 @@
         </li>
     </ul>
 
-    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _e( 'Clear Selection', 'wpuf' ); ?></a>
+    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _e( 'Clear Selection', 'wp-user-frontend' ); ?></a>
 </div>

@@ -19,7 +19,7 @@ class WPUF_Admin_Welcome {
      * @return void
      */
     public function register_menu() {
-        add_dashboard_page( __( 'Welcome to WP User Frontend', 'wpuf' ), __( 'Welcome to WP User Frontend', 'wpuf' ), 'manage_options', 'wpuf-welcome', array( $this, 'welcome_page' ) );
+        add_dashboard_page( __( 'Welcome to WP User Frontend', 'wp-user-frontend' ), __( 'Welcome to WP User Frontend', 'wp-user-frontend' ), 'manage_options', 'wpuf-welcome', array( $this, 'welcome_page' ) );
     }
 
     /**

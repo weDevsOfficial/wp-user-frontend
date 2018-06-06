@@ -110,7 +110,7 @@ class WPUF_Frontend_Account {
         $sub_id     = $wpuf_user->subscription()->current_pack_id();
 
         if ( !$sub_id ) {
-            _e( "<p>You are not subscribed to any package yet.</p>", 'wpuf' );
+            _e( "<p>You are not subscribed to any package yet.</p>", 'wp-user-frontend' );
             return;
         }
         $user_subscription = new WPUF_User_Subscription( $wpuf_user );
@@ -123,10 +123,10 @@ class WPUF_Frontend_Account {
 
         $recurring_des = '';
 
-        $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wpuf' );
+        $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wp-user-frontend' );
         if ( $pack->meta_value['recurring_pay'] == 'yes' ) {
-            $recurring_des = sprintf( __( 'For each %s %s', 'wpuf' ), $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
-            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments', 'wpuf' ), $pack->meta_value['billing_limit'] ) : '';
+            $recurring_des = sprintf( __( 'For each %s %s', 'wp-user-frontend' ), $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
         }
 
         wpuf_load_template(
@@ -184,7 +184,7 @@ class WPUF_Frontend_Account {
      */
     public function update_profile() {
         if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-account-update-profile' ) ) {
-            wp_send_json_error( __( 'Nonce failure', 'wpuf' ) );
+            wp_send_json_error( __( 'Nonce failure', 'wp-user-frontend' ) );
         }
 
         global $current_user;
@@ -198,15 +198,15 @@ class WPUF_Frontend_Account {
         $save_pass        = true;
 
         if ( empty( $first_name ) ) {
-            wp_send_json_error( __( 'First Name is a required field.', 'wpuf' ) );
+            wp_send_json_error( __( 'First Name is a required field.', 'wp-user-frontend' ) );
         }
 
         if ( empty( $last_name ) ) {
-            wp_send_json_error( __( 'Last Name is a required field.', 'wpuf' ) );
+            wp_send_json_error( __( 'Last Name is a required field.', 'wp-user-frontend' ) );
         }
 
         if ( empty( $email ) ) {
-            wp_send_json_error( __( 'Email is a required field.', 'wpuf' ) );
+            wp_send_json_error( __( 'Email is a required field.', 'wp-user-frontend' ) );
         }
 
         $user             = new stdClass();
@@ -217,27 +217,27 @@ class WPUF_Frontend_Account {
         if ( $email ) {
             $email = sanitize_email( $email );
             if ( ! is_email( $email ) ) {
-                wp_send_json_error( __( 'Please provide a valid email address.', 'wpuf' ) );
+                wp_send_json_error( __( 'Please provide a valid email address.', 'wp-user-frontend' ) );
             } elseif ( email_exists( $email ) && $email !== $current_user->user_email ) {
-                wp_send_json_error( __( 'This email address is already registered.', 'wpuf' ) );
+                wp_send_json_error( __( 'This email address is already registered.', 'wp-user-frontend' ) );
             }
             $user->user_email = $email;
         }
 
         if ( ! empty( $current_password ) && empty( $pass1 ) && empty( $pass2 ) ) {
-            wp_send_json_error( __( 'Please fill out all password fields.', 'wpuf' ) );
+            wp_send_json_error( __( 'Please fill out all password fields.', 'wp-user-frontend' ) );
             $save_pass = false;
         } elseif ( ! empty( $pass1 ) && empty( $current_password ) ) {
-            wp_send_json_error( __( 'Please enter your current password.', 'wpuf' ) );
+            wp_send_json_error( __( 'Please enter your current password.', 'wp-user-frontend' ) );
             $save_pass = false;
         } elseif ( ! empty( $pass1 ) && empty( $pass2 ) ) {
-            wp_send_json_error( __( 'Please re-enter your password.', 'wpuf' ) );
+            wp_send_json_error( __( 'Please re-enter your password.', 'wp-user-frontend' ) );
             $save_pass = false;
         } elseif ( ( ! empty( $pass1 ) || ! empty( $pass2 ) ) && $pass1 !== $pass2 ) {
-            wp_send_json_error( __( 'New passwords do not match.', 'wpuf' ) );
+            wp_send_json_error( __( 'New passwords do not match.', 'wp-user-frontend' ) );
             $save_pass = false;
         } elseif ( ! empty( $pass1 ) && ! wp_check_password( $current_password, $current_user->user_pass, $current_user->ID ) ) {
-            wp_send_json_error( __( 'Your current password is incorrect.', 'wpuf' ) );
+            wp_send_json_error( __( 'Your current password is incorrect.', 'wp-user-frontend' ) );
             $save_pass = false;
         }
 
@@ -248,7 +248,7 @@ class WPUF_Frontend_Account {
         $result = wp_update_user( $user );
 
         if ( is_wp_error( $result ) ) {
-            wp_send_json_error( __( 'Your current password is incorrect.', 'wpuf' ) );
+            wp_send_json_error( __( 'Your current password is incorrect.', 'wp-user-frontend' ) );
         }
 
         wp_send_json_success();

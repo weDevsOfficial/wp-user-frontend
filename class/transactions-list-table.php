@@ -10,8 +10,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
      */
     public function __construct() {
         parent::__construct( array(
-            'singular' => __( 'transaction', 'wpuf' ),
-            'plural'   => __( 'transactions', 'wpuf' ),
+            'singular' => __( 'transaction', 'wp-user-frontend' ),
+            'plural'   => __( 'transactions', 'wp-user-frontend' ),
             'ajax'     => false
         ) );
     }
@@ -37,18 +37,18 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
     public function get_columns() {
         $columns = array(
             'cb'             => '<input type="checkbox" />',
-            'id'             => __( 'ID', 'wpuf' ),
-            'status'         => __( 'Status', 'wpuf' ),
-            'user'           => __( 'User', 'wpuf' ),
-            'cost'           => __( 'Cost', 'wpuf' ),
-            'tax'            => __( 'Tax', 'wpuf' ),
-            'post_id'        => __( 'Post ID', 'wpuf' ),
-            'pack_id'        => __( 'Pack ID', 'wpuf' ),
-            'payment_type'   => __( 'Gateway', 'wpuf' ),
-            'payer'          => __( 'Payer', 'wpuf' ),
-            'payer_email'    => __( 'Email', 'wpuf' ),
-            'transaction_id' => __( 'Trans ID', 'wpuf' ),
-            'created'        => __( 'Date', 'wpuf' ),
+            'id'             => __( 'ID', 'wp-user-frontend' ),
+            'status'         => __( 'Status', 'wp-user-frontend' ),
+            'user'           => __( 'User', 'wp-user-frontend' ),
+            'cost'           => __( 'Cost', 'wp-user-frontend' ),
+            'tax'            => __( 'Tax', 'wp-user-frontend' ),
+            'post_id'        => __( 'Post ID', 'wp-user-frontend' ),
+            'pack_id'        => __( 'Pack ID', 'wp-user-frontend' ),
+            'payment_type'   => __( 'Gateway', 'wp-user-frontend' ),
+            'payer'          => __( 'Payer', 'wp-user-frontend' ),
+            'payer_email'    => __( 'Email', 'wp-user-frontend' ),
+            'transaction_id' => __( 'Trans ID', 'wp-user-frontend' ),
+            'created'        => __( 'Date', 'wp-user-frontend' ),
         );
 
         return $columns;
@@ -83,8 +83,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( $_REQUEST['status'] ) : 'all';
 
-        $status_links['all']     = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( array( 'status' => 'all' ), $base_link ), ( $status == 'all' ) ? 'current' : '', __( 'All', 'wpuf' ), $transactions_count );
-        $status_links['pending'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( array( 'status' => 'pending' ), $base_link ), ( $status == 'pending' ) ? 'current' : '', __( 'Pending', 'wpuf' ), $transactions_pending_count );
+        $status_links['all']     = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( array( 'status' => 'all' ), $base_link ), ( $status == 'all' ) ? 'current' : '', __( 'All', 'wp-user-frontend' ), $transactions_count );
+        $status_links['pending'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( array( 'status' => 'pending' ), $base_link ), ( $status == 'pending' ) ? 'current' : '', __( 'Pending', 'wp-user-frontend' ), $transactions_pending_count );
 
         return $status_links;
     }
@@ -107,12 +107,12 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
             $reject_nonce = wp_create_nonce( 'wpuf-reject-transaction' );
 
             $actions = array(
-                'accept' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $_REQUEST['page'] ), 'accept', absint( $id ), $accept_nonce, __( 'Accept', 'wpuf' ) ),
-                'reject' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $_REQUEST['page'] ), 'reject', absint( $id ), $reject_nonce, __( 'Reject', 'wpuf' ) )
+                'accept' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $_REQUEST['page'] ), 'accept', absint( $id ), $accept_nonce, __( 'Accept', 'wp-user-frontend' ) ),
+                'reject' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $_REQUEST['page'] ), 'reject', absint( $id ), $reject_nonce, __( 'Reject', 'wp-user-frontend' ) )
             );
         } else {
             $actions = array(
-                'delete' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $id ), $delete_nonce, __( 'Delete', 'wpuf' ) )
+                'delete' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $id ), $delete_nonce, __( 'Delete', 'wp-user-frontend' ) )
             );
         }
 
@@ -161,7 +161,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
      * @return void
      */
     public function no_items() {
-        _e( 'No transactions found.', 'wpuf' );
+        _e( 'No transactions found.', 'wp-user-frontend' );
     }
 
     /**
@@ -173,12 +173,12 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         if ( isset( $_REQUEST['status'] ) && $_REQUEST['status'] == 'pending' ) {
             $actions = array(
-                'bulk-accept' => __( 'Accept', 'wpuf' ),
-                'bulk-reject' => __( 'Reject', 'wpuf' ),
+                'bulk-accept' => __( 'Accept', 'wp-user-frontend' ),
+                'bulk-reject' => __( 'Reject', 'wp-user-frontend' ),
             );
         } else {
             $actions = array(
-                'bulk-delete' => __( 'Delete', 'wpuf' ),
+                'bulk-delete' => __( 'Delete', 'wp-user-frontend' ),
             );
         }
 
@@ -324,8 +324,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Accept Transaction
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'accept' ) 
-            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'accept' ) 
+        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'accept' )
+            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'accept' )
         ) {
             if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-accept-transaction' ) ) {
                 return false;
@@ -351,7 +351,10 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                         break;
                 }
 
-                $payer_address = wpuf_get_user_address();
+                $payer_address = '';
+                if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
+                    $payer_address = wpuf_get_user_address();
+                }
 
                 $transaction = array(
                     'user_id'          => $info['user_info']['id'],
@@ -392,8 +395,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Bulk Accept Transaction
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-accept' ) 
-            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-accept' ) 
+        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-accept' )
+            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-accept' )
         ) {
             if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-transactions' ) ) {
                 return false;
@@ -427,7 +430,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                         'user_id'          => $info['user_info']['id'],
                         'status'           => 'completed',
                         'subtotal'         => $info['subtotal'],
-                        'tax'              => $info['tax'], 
+                        'tax'              => $info['tax'],
                         'cost'             => $info['price'],
                         'post_id'          => $post_id,
                         'pack_id'          => $pack_id,
@@ -445,7 +448,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                     wp_delete_post( $id, true );
                 }
             }
-            
+
             wp_redirect( $page_url );
             exit;
         }

@@ -24,12 +24,12 @@ class WPUF_Admin_Installer {
             ?>
             <div class="updated error">
                 <p>
-                    <?php _e( 'If you have not created <strong>WP User Frontend</strong> pages yet, you can do this by one click.', 'wpuf' ); ?>
+                    <?php _e( 'If you have not created <strong>WP User Frontend</strong> pages yet, you can do this by one click.', 'wp-user-frontend' ); ?>
                 </p>
                 <p class="submit">
-                    <a class="button button-primary" href="<?php echo add_query_arg( array( 'install_wpuf_pages' => true ), admin_url( 'admin.php?page=wpuf-settings' ) ); ?>"><?php _e( 'Install WPUF Pages', 'wpuf' ); ?></a>
-                    <?php _e( 'or', 'wpuf' ); ?>
-                    <a class="button" href="<?php echo add_query_arg( array( 'wpuf_hide_page_nag' => true ) ); ?>"><?php _e( 'Skip Setup', 'wpuf' ); ?></a>
+                    <a class="button button-primary" href="<?php echo add_query_arg( array( 'install_wpuf_pages' => true ), admin_url( 'admin.php?page=wpuf-settings' ) ); ?>"><?php _e( 'Install WPUF Pages', 'wp-user-frontend' ); ?></a>
+                    <?php _e( 'or', 'wp-user-frontend' ); ?>
+                    <a class="button" href="<?php echo add_query_arg( array( 'wpuf_hide_page_nag' => true ) ); ?>"><?php _e( 'Skip Setup', 'wp-user-frontend' ); ?></a>
                 </p>
             </div>
             <?php
@@ -39,7 +39,7 @@ class WPUF_Admin_Installer {
             ?>
             <div class="updated">
                 <p>
-                    <strong><?php _e( 'Congratulations!', 'wpuf' ); ?></strong> <?php _e( 'Pages for <strong>WP User Frontend</strong> has been successfully installed and saved!', 'wpuf' ); ?>
+                    <strong><?php _e( 'Congratulations!', 'wp-user-frontend' ); ?></strong> <?php _e( 'Pages for <strong>WP User Frontend</strong> has been successfully installed and saved!', 'wp-user-frontend' ); ?>
                 </p>
             </div>
             <?php
@@ -70,21 +70,21 @@ class WPUF_Admin_Installer {
     function init_pages() {
 
         // create a dashboard page
-        $dashboard_page = $this->create_page( __( 'Dashboard', 'wpuf' ), '[wpuf_dashboard]' );
-        $account_page   = $this->create_page( __( 'Account', 'wpuf' ), '[wpuf_account]' );
-        $edit_page      = $this->create_page( __( 'Edit', 'wpuf' ), '[wpuf_edit]' );
+        $dashboard_page = $this->create_page( __( 'Dashboard', 'wp-user-frontend' ), '[wpuf_dashboard]' );
+        $account_page   = $this->create_page( __( 'Account', 'wp-user-frontend' ), '[wpuf_account]' );
+        $edit_page      = $this->create_page( __( 'Edit', 'wp-user-frontend' ), '[wpuf_edit]' );
 
         // login page
-        $login_page     = $this->create_page( __( 'Login', 'wpuf' ), '[wpuf-login]' );
+        $login_page     = $this->create_page( __( 'Login', 'wp-user-frontend' ), '[wpuf-login]' );
 
         $post_form      = $this->create_form();
 
         if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             // payment page
-            $subscr_page    = $this->create_page( __( 'Subscription', 'wpuf' ), __( '[wpuf_sub_pack]', 'wpuf') );
-            $payment_page   = $this->create_page( __( 'Payment', 'wpuf' ), __( 'Please select a gateway for payment', 'wpuf') );
-            $thank_page     = $this->create_page( __( 'Thank You', 'wpuf' ), __( '<h1>Payment is complete</h1><p>Congratulations, your payment has been completed!</p>', 'wpuf') );
-            $bank_page      = $this->create_page( __( 'Order Received', 'wpuf' ), __( 'Hi, we have received your order. We will validate the order and will take necessary steps to move forward.', 'wpuf') );
+            $subscr_page    = $this->create_page( __( 'Subscription', 'wp-user-frontend' ), __( '[wpuf_sub_pack]', 'wp-user-frontend') );
+            $payment_page   = $this->create_page( __( 'Payment', 'wp-user-frontend' ), __( 'Please select a gateway for payment', 'wp-user-frontend') );
+            $thank_page     = $this->create_page( __( 'Thank You', 'wp-user-frontend' ), __( '<h1>Payment is complete</h1><p>Congratulations, your payment has been completed!</p>', 'wp-user-frontend') );
+            $bank_page      = $this->create_page( __( 'Order Received', 'wp-user-frontend' ), __( 'Hi, we have received your order. We will validate the order and will take necessary steps to move forward.', 'wp-user-frontend') );
         }
 
         // save the settings
@@ -166,7 +166,7 @@ class WPUF_Admin_Installer {
      * @return int|boolean
      */
     function create_reg_form() {
-        return wpuf_create_sample_form( __( 'Registration', 'wpuf' ), 'wpuf_profile' );
+        return wpuf_create_sample_form( __( 'Registration', 'wp-user-frontend' ), 'wpuf_profile' );
     }
 
     /**
@@ -175,7 +175,7 @@ class WPUF_Admin_Installer {
      * @return void
      */
     function create_form() {
-        return wpuf_create_sample_form( __( 'Sample Form', 'wpuf' ), 'wpuf_forms' );
+        return wpuf_create_sample_form( __( 'Sample Form', 'wp-user-frontend' ), 'wpuf_forms' );
     }
 
 }

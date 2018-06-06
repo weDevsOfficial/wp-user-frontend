@@ -121,7 +121,7 @@ class WPUF_Registration {
         $links = array();
 
         if ( $args['register'] ) {
-            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wpuf' ) );
+            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wp-user-frontend' ) );
         }
 
         return implode( ' | ', $links );
@@ -189,47 +189,47 @@ class WPUF_Registration {
             $validation_error = apply_filters( 'wpuf_process_registration_errors', $validation_error, $_POST['reg_fname'], $_POST['reg_lname'], $_POST['reg_email'],  $_POST['log'], $_POST['pwd1'], $_POST['pwd2'] );
 
             if ( $validation_error->get_error_code() ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . $validation_error->get_error_message();
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . $validation_error->get_error_message();
                 return;
             }
 
             if ( empty( $_POST['reg_fname'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'First name is required.', 'wpuf' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'First name is required.', 'wp-user-frontend' );
                 return;
             }
 
             if ( empty( $_POST['reg_lname'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Last name is required.', 'wpuf' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Last name is required.', 'wp-user-frontend' );
                 return;
             }
 
             if ( empty( $_POST['reg_email'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Email is required.', 'wpuf' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Email is required.', 'wp-user-frontend' );
                 return;
             }
 
             if ( empty( $_POST['log'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Username is required.', 'wpuf' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Username is required.', 'wp-user-frontend' );
                 return;
             }
 
             if ( empty( $_POST['pwd1'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Password is required.', 'wpuf' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Password is required.', 'wp-user-frontend' );
                 return;
             }
 
             if ( empty( $_POST['pwd2'] ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Confirm Password is required.', 'wpuf' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Confirm Password is required.', 'wp-user-frontend' );
                 return;
             }
 
             if ( $_POST['pwd1'] != $_POST['pwd2'] ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Passwords are not same.', 'wpuf' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Passwords are not same.', 'wp-user-frontend' );
                 return;
             }
 
             if ( get_user_by( 'login', $_POST['log'] ) === $_POST['log'] ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'A user with same username already exists.', 'wpuf' );
+                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user with same username already exists.', 'wp-user-frontend' );
                 return;
             }
 
@@ -239,7 +239,7 @@ class WPUF_Registration {
                 if ( isset( $user->user_login ) ) {
                     $userdata['user_login']  = $user->user_login;
                 } else {
-                    $this->registration_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wpuf' );
+                    $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
                     return;
                 }
             } else {
@@ -312,7 +312,7 @@ class WPUF_Registration {
         if ( $this->registration_errors ) {
             foreach ($this->registration_errors as $error) {
                 echo '<div class="wpuf-error">';
-                _e( $error,'wpuf' );
+                _e( $error,'wp-user-frontend' );
                 echo '</div>';
             }
         }

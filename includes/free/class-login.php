@@ -204,15 +204,15 @@ class WPUF_Simple_Login {
         $links = array();
 
         if ( $args['login'] ) {
-            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'login' ), __( 'Log In', 'wpuf' ) );
+            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'login' ), __( 'Log In', 'wp-user-frontend' ) );
         }
 
         if ( $args['register'] ) {
-            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wpuf' ) );
+            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wp-user-frontend' ) );
         }
 
         if ( $args['lostpassword'] ) {
-            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'lostpassword' ), __( 'Lost Password', 'wpuf' ) );
+            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'lostpassword' ), __( 'Lost Password', 'wp-user-frontend' ) );
         }
 
         return implode( ' | ', $links );
@@ -250,7 +250,7 @@ class WPUF_Simple_Login {
             switch ($action) {
                 case 'lostpassword':
 
-                    $this->messages[] = __( 'Please enter your username or email address. You will receive a link to create a new password via email.', 'wpuf' );
+                    $this->messages[] = __( 'Please enter your username or email address. You will receive a link to create a new password via email.', 'wp-user-frontend' );
 
                     wpuf_load_template( 'lost-pass-form.php', $args );
                     break;
@@ -260,11 +260,11 @@ class WPUF_Simple_Login {
 
                     if ( isset( $_GET['reset'] ) && $_GET['reset'] == 'true' ) {
 
-                        printf( '<div class="wpuf-message">' . __( 'Your password has been reset. %s', 'wpuf' ) . '</div>', sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'login' ), __( 'Log In', 'wpuf' ) ) );
+                        printf( '<div class="wpuf-message">' . __( 'Your password has been reset. %s', 'wp-user-frontend' ) . '</div>', sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'login' ), __( 'Log In', 'wp-user-frontend' ) ) );
                         return;
                     } else {
 
-                        $this->messages[] = __( 'Enter your new password below..', 'wpuf' );
+                        $this->messages[] = __( 'Enter your new password below..', 'wp-user-frontend' );
 
                         wpuf_load_template( 'reset-pass-form.php', $args );
                     }
@@ -274,11 +274,11 @@ class WPUF_Simple_Login {
                 default:
 
                     if ( isset( $_GET['checkemail'] ) && $_GET['checkemail'] == 'confirm' ) {
-                        $this->messages[] = __( 'Check your e-mail for the confirmation link.', 'wpuf' );
+                        $this->messages[] = __( 'Check your e-mail for the confirmation link.', 'wp-user-frontend' );
                     }
 
                     if ( isset( $_GET['loggedout'] ) && $_GET['loggedout'] == 'true' ) {
-                        $this->messages[] = __( 'You are now logged out.', 'wpuf' );
+                        $this->messages[] = __( 'You are now logged out.', 'wp-user-frontend' );
                     }
 
                     wpuf_load_template( 'login-form.php', $args );
@@ -307,17 +307,17 @@ class WPUF_Simple_Login {
             $validation_error = apply_filters( 'wpuf_process_login_errors', $validation_error, $_POST['log'], $_POST['pwd'] );
 
             if ( $validation_error->get_error_code() ) {
-                $this->login_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . $validation_error->get_error_message();
+                $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . $validation_error->get_error_message();
                 return;
             }
 
             if ( empty( $_POST['log'] ) ) {
-                $this->login_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Username is required.', 'wpuf' );
+                $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Username is required.', 'wp-user-frontend' );
                 return;
             }
 
             if ( empty( $_POST['pwd'] ) ) {
-                $this->login_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'Password is required.', 'wpuf' );
+                $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Password is required.', 'wp-user-frontend' );
                 return;
             }
 
@@ -327,7 +327,7 @@ class WPUF_Simple_Login {
                 if ( isset( $user->user_login ) ) {
                     $creds['user_login'] = $user->user_login;
                 } else {
-                    $this->login_errors[] = '<strong>' . __( 'Error', 'wpuf' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wpuf' );
+                    $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
                     return;
                 }
             } else {
@@ -448,12 +448,12 @@ class WPUF_Simple_Login {
                 wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_reset_pass' );
 
                 if ( empty( $_POST['pass1'] ) || empty( $_POST['pass2'] ) ) {
-                    $this->login_errors[] = __( 'Please enter your password.', 'wpuf' );
+                    $this->login_errors[] = __( 'Please enter your password.', 'wp-user-frontend' );
                     return;
                 }
 
                 if ( $_POST[ 'pass1' ] !== $_POST[ 'pass2' ] ) {
-                    $this->login_errors[] = __( 'Passwords do not match.', 'wpuf' );
+                    $this->login_errors[] = __( 'Passwords do not match.', 'wp-user-frontend' );
                     return;
                 }
 
@@ -496,7 +496,7 @@ class WPUF_Simple_Login {
 
         if ( empty( $_POST['user_login'] ) ) {
 
-            $this->login_errors[] = __( 'Enter a username or e-mail address.', 'wpuf' );
+            $this->login_errors[] = __( 'Enter a username or e-mail address.', 'wp-user-frontend' );
             return;
 
         } elseif ( strpos( $_POST['user_login'], '@' ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {
@@ -504,7 +504,7 @@ class WPUF_Simple_Login {
             $user_data = get_user_by( 'email', trim( $_POST['user_login'] ) );
 
             if ( empty( $user_data ) ) {
-                $this->login_errors[] = __( 'There is no user registered with that email address.', 'wpuf' );
+                $this->login_errors[] = __( 'There is no user registered with that email address.', 'wp-user-frontend' );
                 return;
             }
 
@@ -522,7 +522,7 @@ class WPUF_Simple_Login {
         }
 
         if ( ! $user_data ) {
-            $this->login_errors[] = __( 'Invalid username or e-mail.', 'wpuf' );
+            $this->login_errors[] = __( 'Invalid username or e-mail.', 'wp-user-frontend' );
             return false;
         }
 
@@ -536,7 +536,7 @@ class WPUF_Simple_Login {
 
         if ( ! $allow ) {
 
-            $this->login_errors[] = __( 'Password reset is not allowed for this user', 'wpuf' );
+            $this->login_errors[] = __( 'Password reset is not allowed for this user', 'wp-user-frontend' );
             return false;
 
         } elseif ( is_wp_error( $allow ) ) {
@@ -590,19 +590,19 @@ class WPUF_Simple_Login {
         }
 
         if ( empty( $key ) || ! is_string( $key ) ) {
-            $this->login_errors[] = __( 'Invalid key', 'wpuf' );
+            $this->login_errors[] = __( 'Invalid key', 'wp-user-frontend' );
             return false;
         }
 
         if ( empty( $login ) || ! is_string( $login ) ) {
-            $this->login_errors[] = __( 'Invalid Login', 'wpuf' );
+            $this->login_errors[] = __( 'Invalid Login', 'wp-user-frontend' );
             return false;
         }
 
         $user = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->users WHERE user_activation_key = %s AND user_login = %s", $key, $login ) );
 
         if ( empty( $user ) ) {
-            $this->login_errors[] = __( 'Invalid key', 'wpuf' );
+            $this->login_errors[] = __( 'Invalid key', 'wp-user-frontend' );
             return false;
         }
 
@@ -626,7 +626,7 @@ class WPUF_Simple_Login {
                 $error = new WP_Error();
                 $wpuf_user = new WPUF_User( $user->ID );
                 if ( ! $wpuf_user->is_verified() ) {
-                    $error->add( 'acitve_user', sprintf( __( '<strong>Your account is not active.</strong><br>Please check your email for activation link. <br><a href="%s">Click here</a> to resend the activation link', 'wpuf' ), $resend_link ) );
+                    $error->add( 'acitve_user', sprintf( __( '<strong>Your account is not active.</strong><br>Please check your email for activation link. <br><a href="%s">Click here</a> to resend the activation link', 'wp-user-frontend' ), $resend_link ) );
                     return $error;
                 }
             }
@@ -674,7 +674,15 @@ class WPUF_Simple_Login {
         $user->mark_verified();
         $user->remove_activation_key();
 
-        wpuf()->login->add_message( 'Your account has been activated' );
+        $register_link_override = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
+
+        if ( $register_link_override == 'on' ) {
+            wp_clear_auth_cookie();
+            wp_set_current_user( $user_id );
+            wp_set_auth_cookie( $user_id );
+        }
+
+        wpuf()->login->add_message( __( 'Your account has been activated' , 'wp-user-frontend') );
 
         // show activation message
         add_filter( 'wp_login_errors', array( $this, 'user_activation_message' ) );
@@ -690,7 +698,7 @@ class WPUF_Simple_Login {
      * @return \WP_Error
      */
     function user_activation_message() {
-        return new WP_Error( 'user-activated', __( 'Your account has been activated', 'wpuf' ), 'message' );
+        return new WP_Error( 'user-activated', __( 'Your account has been activated', 'wp-user-frontend' ), 'message' );
     }
 
     function wp_login_page_redirect() {
@@ -734,11 +742,11 @@ class WPUF_Simple_Login {
     function email_reset_pass( $user_login, $user_email, $key ) {
         $reset_url = add_query_arg( array( 'action' => 'rp', 'key' => $key, 'login' => urlencode( $user_login ) ), $this->get_login_url() );
 
-        $message = __('Someone requested that the password be reset for the following account:', 'wpuf') . "\r\n\r\n";
+        $message = __('Someone requested that the password be reset for the following account:', 'wp-user-frontend') . "\r\n\r\n";
         $message .= network_home_url( '/' ) . "\r\n\r\n";
-        $message .= sprintf(__('Username: %s', 'wpuf' ), $user_login) . "\r\n\r\n";
-        $message .= __('If this was a mistake, just ignore this email and nothing will happen.', 'wpuf') . "\r\n\r\n";
-        $message .= __('To reset your password, visit the following address:', 'wpuf') . "\r\n\r\n";
+        $message .= sprintf(__('Username: %s', 'wp-user-frontend' ), $user_login) . "\r\n\r\n";
+        $message .= __('If this was a mistake, just ignore this email and nothing will happen.', 'wp-user-frontend') . "\r\n\r\n";
+        $message .= __('To reset your password, visit the following address:', 'wp-user-frontend') . "\r\n\r\n";
         $message .= ' ' . $reset_url . " \r\n";
 
         $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
@@ -747,13 +755,13 @@ class WPUF_Simple_Login {
             $blogname = $GLOBALS['current_site']->site_name;
         }
 
-        $title   = sprintf( __('[%s] Password Reset', 'wpuf' ), $blogname );
+        $title   = sprintf( __('[%s] Password Reset', 'wp-user-frontend' ), $blogname );
         $title   = apply_filters( 'retrieve_password_title', $title );
 
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login );
 
         if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
-            wp_die( __('The e-mail could not be sent.', 'wpuf') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.', 'wpuf') );
+            wp_die( __('The e-mail could not be sent.', 'wp-user-frontend') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.', 'wp-user-frontend') );
         }
     }
 
@@ -787,7 +795,7 @@ class WPUF_Simple_Login {
         if ( $this->login_errors ) {
             foreach ($this->login_errors as $error) {
                 echo '<div class="wpuf-error">';
-                _e( $error,'wpuf' );
+                _e( $error,'wp-user-frontend' );
                 echo '</div>';
             }
         }

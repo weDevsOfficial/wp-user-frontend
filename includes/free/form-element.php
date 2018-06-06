@@ -3,19 +3,19 @@
 class WPUF_form_element extends WPUF_Pro_Prompt {
 
     public static function add_form_custom_buttons() {
-        $title = esc_attr( __( 'Click to add to the editor', 'wpuf' ) );
+        $title = esc_attr( __( 'Click to add to the editor', 'wp-user-frontend' ) );
         ?>
-        <button class="button" data-name="custom_image" data-type="image" title="<?php echo $title; ?>"><?php _e( 'Image Upload', 'wpuf' ); ?></button>
+        <button class="button" data-name="custom_image" data-type="image" title="<?php echo $title; ?>"><?php _e( 'Image Upload', 'wp-user-frontend' ); ?></button>
 
         <?php self::get_pro_prompt(); ?>
-        <button class="button" disabled data-type="repeat" title="<?php echo $title; ?>"><?php _e( 'Repeat Field', 'wpuf' ); ?></button>
-        <button class="button" disabled data-type="date" title="<?php echo $title; ?>"><?php _e( 'Date', 'wpuf' ); ?></button>
-        <button class="button" disabled data-type="file" title="<?php echo $title; ?>"><?php _e( 'File Upload', 'wpuf' ); ?></button>
-        <button class="button" disabled data-type="map" title="<?php echo $title; ?>"><?php _e( 'Google Maps', 'wpuf' ); ?></button>
-        <button class="button" disabled data-type="select" title="<?php echo $title; ?>"><?php _e( 'Country List', 'wpuf' ); ?></button>
-        <button class="button" disabled data-type="text" title="<?php echo $title; ?>"><?php _e( 'Numeric Field', 'wpuf' ); ?></button>
-        <button class="button" disabled data-type="text" title="<?php echo $title; ?>"><?php _e( 'Address Field', 'wpuf' ); ?></button>
-        <button class="button" disabled data-type="text" title="<?php echo $title; ?>"><?php _e( 'Step Start', 'wpuf' ); ?></button>
+        <button class="button" disabled data-type="repeat" title="<?php echo $title; ?>"><?php _e( 'Repeat Field', 'wp-user-frontend' ); ?></button>
+        <button class="button" disabled data-type="date" title="<?php echo $title; ?>"><?php _e( 'Date', 'wp-user-frontend' ); ?></button>
+        <button class="button" disabled data-type="file" title="<?php echo $title; ?>"><?php _e( 'File Upload', 'wp-user-frontend' ); ?></button>
+        <button class="button" disabled data-type="map" title="<?php echo $title; ?>"><?php _e( 'Google Maps', 'wp-user-frontend' ); ?></button>
+        <button class="button" disabled data-type="select" title="<?php echo $title; ?>"><?php _e( 'Country List', 'wp-user-frontend' ); ?></button>
+        <button class="button" disabled data-type="text" title="<?php echo $title; ?>"><?php _e( 'Numeric Field', 'wp-user-frontend' ); ?></button>
+        <button class="button" disabled data-type="text" title="<?php echo $title; ?>"><?php _e( 'Address Field', 'wp-user-frontend' ); ?></button>
+        <button class="button" disabled data-type="text" title="<?php echo $title; ?>"><?php _e( 'Step Start', 'wp-user-frontend' ); ?></button>
     <?php
     }
 
@@ -23,15 +23,15 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
      * add formbuilder's button in Others section
      */
     public static function add_form_other_buttons() {
-        $title = esc_attr( __( 'Click to add to the editor', 'wpuf' ) );
+        $title = esc_attr( __( 'Click to add to the editor', 'wp-user-frontend' ) );
 
         self::get_pro_prompt();
         ?>
-        <button class="button" disabled data-type="shortcode" title="<?php echo $title; ?>"><?php _e( 'Shortcode', 'wpuf' ); ?></button>
-        <button class="button" data-name="recaptcha" data-type="captcha" title="<?php echo $title; ?>"><?php _e( 'reCaptcha', 'wpuf' ); ?></button>
-        <button class="button" disabled data-type="rscaptcha" title="<?php echo $title; ?>"><?php _e( 'Really Simple Captcha', 'wpuf' ); ?></button>
-        <button class="button" disabled data-type="action" title="<?php echo $title; ?>"><?php _e( 'Action Hook', 'wpuf' ); ?></button>
-        <button class="button" disabled data-type="action" title="<?php echo $title; ?>"><?php _e( 'Term &amp; Conditions', 'wpuf' ); ?></button>
+        <button class="button" disabled data-type="shortcode" title="<?php echo $title; ?>"><?php _e( 'Shortcode', 'wp-user-frontend' ); ?></button>
+        <button class="button" data-name="recaptcha" data-type="captcha" title="<?php echo $title; ?>"><?php _e( 'reCaptcha', 'wp-user-frontend' ); ?></button>
+        <button class="button" disabled data-type="rscaptcha" title="<?php echo $title; ?>"><?php _e( 'Really Simple Captcha', 'wp-user-frontend' ); ?></button>
+        <button class="button" disabled data-type="action" title="<?php echo $title; ?>"><?php _e( 'Action Hook', 'wp-user-frontend' ); ?></button>
+        <button class="button" disabled data-type="action" title="<?php echo $title; ?>"><?php _e( 'Term &amp; Conditions', 'wp-user-frontend' ); ?></button>
     <?php
     }
 
@@ -53,17 +53,17 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         <div id="wpuf-pro-content">
             <table class="form-table">
                 <tr>
-                    <th><?php _e( 'Post Expiration', 'wpuf' ); ?></th>
+                    <th><?php _e( 'Post Expiration', 'wp-user-frontend' ); ?></th>
                     <td>
                         <label>
                             <input disabled type="checkbox" id="wpuf-enable_post_expiration" name="" value="on" <?php echo $is_post_exp_selected;?> />
-                            <?php _e( 'Enable Post Expiration', 'wpuf' ); ?>
+                            <?php _e( 'Enable Post Expiration', 'wp-user-frontend' ); ?>
                         </label>
                     </td>
-                     <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/"><?php _e('Learn more about Automatic Post Expiration', 'wpuf'); ?></a></p>
+                     <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/"><?php _e('Learn more about Automatic Post Expiration', 'wp-user-frontend'); ?></a></p>
                 </tr>
                 <tr class="wpuf_expiration_field">
-                    <th><?php _e( 'Post Expiration Time', 'wpuf' ); ?></th>
+                    <th><?php _e( 'Post Expiration Time', 'wp-user-frontend' ); ?></th>
                     <td>
                         <?php
                         $timeType_array = array(
@@ -109,7 +109,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                             }
                             ?>
                         </select>
-                        <p class="description"><?php echo __( 'Status of post after post expiration time is over ', 'wpuf' ); ?></p>
+                        <p class="description"><?php echo __( 'Status of post after post expiration time is over ', 'wp-user-frontend' ); ?></p>
 
                     </td>
                 </tr>
@@ -120,7 +120,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                     <td>
                         <label>
                             <input disabled type="checkbox" name="" value="on" <?php echo $is_enable_mail_after_expired;?> />
-                            <?php echo __( 'Send Email to Author After Exceeding Post Expiration Time', 'wpuf' ); ?>
+                            <?php echo __( 'Send Email to Author After Exceeding Post Expiration Time', 'wp-user-frontend' ); ?>
                         </label>
                     </td>
                 </tr>
@@ -145,19 +145,19 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
             <td colspan="2"><?php self::get_pro_prompt(); ?></td>
         </tr>
         <tr class="wpuf_enable_multistep_section wpuf-pro-content">
-            <th><?php _e( 'Enable Multistep', 'wpuf' ); ?></th>
+            <th><?php _e( 'Enable Multistep', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
                     <input disabled type="checkbox" name="" value="yes" checked />
-                    <?php _e( 'Enable Multistep', 'wpuf' ); ?>
+                    <?php _e( 'Enable Multistep', 'wp-user-frontend' ); ?>
                 </label>
 
-                <p class="description"><?php echo __( 'If checked, form will be displayed in frontend in multiple steps', 'wpuf' ); ?>
-                <a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/"><?php _e( ' Learn more about Multistep', 'wpuf' ); ?></a></p>
+                <p class="description"><?php echo __( 'If checked, form will be displayed in frontend in multiple steps', 'wp-user-frontend' ); ?>
+                <a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/"><?php _e( ' Learn more about Multistep', 'wp-user-frontend' ); ?></a></p>
             </td>
         </tr>
         <tr class="wpuf_multistep_progress_type wpuf-pro-content">
-            <th><?php _e( 'Multistep Progressbar Type', 'wpuf' ); ?></th>
+            <th><?php _e( 'Multistep Progressbar Type', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
                     <select disabled name="">
@@ -167,7 +167,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                 </label>
 
 
-                <p class="description"><?php echo __( 'Choose how you want the progressbar', 'wpuf' ); ?></p>
+                <p class="description"><?php echo __( 'Choose how you want the progressbar', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
     <?php
@@ -197,78 +197,78 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
         $new_notificaton  = isset( $form_settings['notification']['new'] ) ? $form_settings['notification']['new'] : 'on';
         $new_to           = isset( $form_settings['notification']['new_to'] ) ? $form_settings['notification']['new_to'] : get_option( 'admin_email' );
-        $new_subject      = isset( $form_settings['notification']['new_subject'] ) ? $form_settings['notification']['new_subject'] : __( 'New post created', 'wpuf' );
+        $new_subject      = isset( $form_settings['notification']['new_subject'] ) ? $form_settings['notification']['new_subject'] : __( 'New post created', 'wp-user-frontend' );
         $new_body         = isset( $form_settings['notification']['new_body'] ) ? $form_settings['notification']['new_body'] : $new_mail_body . $mail_body;
 
         $edit_notificaton = 'off';
         $edit_to          = get_option( 'admin_email' );
-        $edit_subject     = __( 'A post has been edited', 'wpuf' );
+        $edit_subject     = __( 'A post has been edited', 'wp-user-frontend' );
         $edit_body        = $edit_mail_body . $mail_body;
         ?>
 
-        <h3><?php _e( 'New Post Notification', 'wpuf' ); ?></h3>
+        <h3><?php _e( 'New Post Notification', 'wp-user-frontend' ); ?></h3>
         <table class="form-table">
             <tr>
-                <th><?php _e( 'Notification', 'wpuf' ); ?></th>
+                <th><?php _e( 'Notification', 'wp-user-frontend' ); ?></th>
                 <td>
                     <label>
                         <input type="hidden" name="wpuf_settings[notification][new]" value="on">
                         <input type="checkbox" name="wpuf_settings[notification][new]" value="on"<?php checked( $new_notificaton, 'on' ); ?>>
-                        <?php _e( 'Enable post notification', 'wpuf' ); ?>
+                        <?php _e( 'Enable post notification', 'wp-user-frontend' ); ?>
                     </label>
                 </td>
-                 <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-set-up-submission-email-notification/"><?php _e('Learn more about Email Notification', 'wpuf'); ?></a></p>
+                 <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-set-up-submission-email-notification/"><?php _e('Learn more about Email Notification', 'wp-user-frontend'); ?></a></p>
             </tr>
 
             <tr>
-                <th><?php _e( 'To', 'wpuf' ); ?></th>
+                <th><?php _e( 'To', 'wp-user-frontend' ); ?></th>
                 <td>
                     <input type="text" name="wpuf_settings[notification][new_to]" class="regular-text" value="<?php echo esc_attr( $new_to ) ?>">
                 </td>
             </tr>
 
             <tr>
-                <th><?php _e( 'Subject', 'wpuf' ); ?></th>
+                <th><?php _e( 'Subject', 'wp-user-frontend' ); ?></th>
                 <td><input type="text" name="wpuf_settings[notification][new_subject]" class="regular-text" value="<?php echo esc_attr( $new_subject ) ?>"></td>
             </tr>
 
             <tr>
-                <th><?php _e( 'Message', 'wpuf' ); ?></th>
+                <th><?php _e( 'Message', 'wp-user-frontend' ); ?></th>
                 <td>
                     <textarea rows="6" cols="60" name="wpuf_settings[notification][new_body]"><?php echo esc_textarea( $new_body ) ?></textarea>
                 </td>
             </tr>
         </table>
 
-        <h3><?php _e( 'Update Post Notification', 'wpuf' ); ?></h3>
+        <h3><?php _e( 'Update Post Notification', 'wp-user-frontend' ); ?></h3>
 
         <div id="wpuf-pro-content">
             <?php self::get_pro_prompt(); ?>
 
             <table class="form-table">
                 <tr>
-                    <th><?php _e( 'Notification', 'wpuf' ); ?></th>
+                    <th><?php _e( 'Notification', 'wp-user-frontend' ); ?></th>
                     <td>
                         <label>
                             <input disabled type="checkbox" name="" value="on"<?php checked( $edit_notificaton, 'on' ); ?>>
                             <input type="hidden" name="wpuf_settings[notification][edit]" value="off">
-                            <?php _e( 'Enable post notification', 'wpuf' ); ?>
+                            <?php _e( 'Enable post notification', 'wp-user-frontend' ); ?>
                         </label>
                     </td>
                 </tr>
 
                 <tr>
-                    <th><?php _e( 'To', 'wpuf' ); ?></th>
+                    <th><?php _e( 'To', 'wp-user-frontend' ); ?></th>
                     <td><input disabled type="text" name="" class="regular-text" value="<?php echo esc_attr( $edit_to ) ?>"></td>
                 </tr>
 
                 <tr>
-                    <th><?php _e( 'Subject', 'wpuf' ); ?></th>
+                    <th><?php _e( 'Subject', 'wp-user-frontend' ); ?></th>
                     <td><input disabled type="text" name="" class="regular-text" value="<?php echo esc_attr( $edit_subject ) ?>"></td>
                 </tr>
 
                 <tr>
-                    <th><?php _e( 'Message', 'wpuf' ); ?></th>
+                    <th><?php _e( 'Message', 'wp-user-frontend' ); ?></th>
                     <td>
                         <textarea disabled rows="6" cols="60" name=""><?php echo esc_textarea( $edit_body ) ?></textarea>
                     </td>
@@ -276,7 +276,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
             </table>
         </div>
 
-        <h3><?php _e( 'You may use in to, subject & message:', 'wpuf' ); ?></h3>
+        <h3><?php _e( 'You may use in to, subject & message:', 'wp-user-frontend' ); ?></h3>
         <p>
             <code>%post_title%</code>, <code>%post_content%</code>, <code>%post_excerpt%</code>, <code>%tags%</code>, <code>%category%</code>,
             <code>%author%</code>, <code>%author_email%</code>, <code>%author_bio%</code>, <code>%sitename%</code>, <code>%siteurl%</code>, <code>%permalink%</code>, <code>%editlink%</code>
@@ -300,11 +300,11 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
         ?>
         <div style="margin-bottom: 10px">
-            <button class="button wpuf-collapse"><?php _e( 'Toggle All', 'wpuf' ); ?></button>
+            <button class="button wpuf-collapse"><?php _e( 'Toggle All', 'wp-user-frontend' ); ?></button>
         </div>
 
         <div class="wpuf-updated">
-            <p><?php _e( 'Click on a form element to add to the editor', 'wpuf' ); ?></p>
+            <p><?php _e( 'Click on a form element to add to the editor', 'wp-user-frontend' ); ?></p>
         </div>
 
         <ul id="wpuf-form-editor" class="wpuf-form-editor unstyled">
@@ -338,12 +338,12 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         $email_verification = 'no';
         $role_selected      = 'subscriber';
         $redirect_to        = 'post';
-        $message            = __( 'Registration successful', 'wpuf' );
-        $update_message     = __( 'Profile updated successfully', 'wpuf' );
+        $message            = __( 'Registration successful', 'wp-user-frontend' );
+        $update_message     = __( 'Profile updated successfully', 'wp-user-frontend' );
         $page_id            = 0;
         $url                = '';
-        $submit_text        = __( 'Register', 'wpuf' );
-        $update_text        = __( 'Update Profile', 'wpuf' );
+        $submit_text        = __( 'Register', 'wp-user-frontend' );
+        $update_text        = __( 'Update Profile', 'wp-user-frontend' );
         ?>
         <tr>
             <td colspan="2">
@@ -351,7 +351,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
             </td>
         </tr>
         <tr class="wpuf-post-type">
-            <th><?php _e( 'Enable Email Verfication', 'wpuf' ); ?></th>
+            <th><?php _e( 'Enable Email Verfication', 'wp-user-frontend' ); ?></th>
             <td>
                 <input type="hidden" name="" value="no">
                 <input disabled type="checkbox" id="wpuf-enable_email_verification" name="" value="yes" <?php checked( $email_verification, 'yes' ); ?> > <label for="wpuf-enable_email_verification">Enable Email Verification</label>
@@ -359,7 +359,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         </tr>
 
         <tr class="wpuf-post-type">
-            <th><?php _e( 'New User Role', 'wpuf' ); ?></th>
+            <th><?php _e( 'New User Role', 'wp-user-frontend' ); ?></th>
             <td>
                 <select disabled name="">
                     <?php
@@ -373,14 +373,14 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         </tr>
 
         <tr class="wpuf-redirect-to">
-            <th><?php _e( 'Redirect To', 'wpuf' ); ?></th>
+            <th><?php _e( 'Redirect To', 'wp-user-frontend' ); ?></th>
             <td>
                 <select disabled name="">
                     <?php
                     $redirect_options = array(
-                        'same' => __( 'Same Page', 'wpuf' ),
-                        'page' => __( 'To a page', 'wpuf' ),
-                        'url' => __( 'To a custom URL', 'wpuf' )
+                        'same' => __( 'Same Page', 'wp-user-frontend' ),
+                        'page' => __( 'To a page', 'wp-user-frontend' ),
+                        'url' => __( 'To a custom URL', 'wp-user-frontend' )
                     );
 
                     foreach ( $redirect_options as $to => $label ) {
@@ -389,27 +389,27 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                     ?>
                 </select>
                 <div class="description">
-                    <?php _e( 'After successfull submit, where the page will redirect to', 'wpuf' ) ?>
+                    <?php _e( 'After successfull submit, where the page will redirect to', 'wp-user-frontend' ) ?>
                 </div>
             </td>
         </tr>
 
         <tr class="wpuf-same-page">
-            <th><?php _e( 'Registration success message', 'wpuf' ); ?></th>
+            <th><?php _e( 'Registration success message', 'wp-user-frontend' ); ?></th>
             <td>
                 <textarea disabled rows="3" cols="40" name=""><?php echo esc_textarea( $message ); ?></textarea>
             </td>
         </tr>
 
         <tr class="wpuf-same-page">
-            <th><?php _e( 'Update profile message', 'wpuf' ); ?></th>
+            <th><?php _e( 'Update profile message', 'wp-user-frontend' ); ?></th>
             <td>
                 <textarea disabled rows="3" cols="40" name=""><?php echo esc_textarea( $update_message ); ?></textarea>
             </td>
         </tr>
 
         <tr class="wpuf-page-id">
-            <th><?php _e( 'Page', 'wpuf' ); ?></th>
+            <th><?php _e( 'Page', 'wp-user-frontend' ); ?></th>
             <td>
                 <select disabled name="">
                     <?php
@@ -424,21 +424,21 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         </tr>
 
         <tr class="wpuf-url">
-            <th><?php _e( 'Custom URL', 'wpuf' ); ?></th>
+            <th><?php _e( 'Custom URL', 'wp-user-frontend' ); ?></th>
             <td>
                 <input disabled type="url" name="" value="<?php echo esc_attr( $url ); ?>">
             </td>
         </tr>
 
         <tr class="wpuf-submit-text">
-            <th><?php _e( 'Submit Button text', 'wpuf' ); ?></th>
+            <th><?php _e( 'Submit Button text', 'wp-user-frontend' ); ?></th>
             <td>
                 <input disabled type="text" name="" value="<?php echo esc_attr( $submit_text ); ?>">
             </td>
         </tr>
 
         <tr class="wpuf-update-text">
-            <th><?php _e( 'Update Button text', 'wpuf' ); ?></th>
+            <th><?php _e( 'Update Button text', 'wp-user-frontend' ); ?></th>
             <td>
                 <input disabled type="text" name="" value="<?php echo esc_attr( $update_text ); ?>">
             </td>
@@ -471,11 +471,11 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
     public static function render_conditional_field( $field_id, $con_fields, $obj ) {
         ?>
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Conditional Logic', 'wpuf' ); ?></label>
+            <label><?php _e( 'Conditional Logic', 'wp-user-frontend' ); ?></label>
 
             <div class="wpuf-form-sub-fields">
-                <label><input type="radio" name="" disabled class="wpuf-conditional-enable" value="yes"> <?php _e( 'Yes', 'wpuf' ); ?></label>
-                <label><input type="radio" name="" disabled class="wpuf-conditional-enable" value="no" checked> <?php _e( 'No', 'wpuf' ); ?></label>
+                <label><input type="radio" name="" disabled class="wpuf-conditional-enable" value="yes"> <?php _e( 'Yes', 'wp-user-frontend' ); ?></label>
+                <label><input type="radio" name="" disabled class="wpuf-conditional-enable" value="no" checked> <?php _e( 'No', 'wp-user-frontend' ); ?></label>
 
                 <label class="wpuf-pro-text-alert"> (<?php echo self::get_pro_prompt_text(); ?>)</label>
             </div>

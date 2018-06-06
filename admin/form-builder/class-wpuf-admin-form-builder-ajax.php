@@ -26,11 +26,11 @@ class WPUF_Admin_Form_Builder_Ajax {
         parse_str( $_POST['form_data'], $form_data );
 
         if ( ! wp_verify_nonce( $form_data['wpuf_form_builder_nonce'], 'wpuf_form_builder_save_form' ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wpuf' ) );
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
         if ( empty( $form_data['wpuf_form_id'] ) ) {
-            wp_send_json_error( __( 'Invalid form id', 'wpuf' ) );
+            wp_send_json_error( __( 'Invalid form id', 'wp-user-frontend' ) );
         }
 
         $form_fields   = isset( $_POST['form_fields'] ) ? $_POST['form_fields'] : '';

@@ -34,7 +34,7 @@ class WPUF_Dokan_Integration{
 
 	    if ( $access == 'on' ) {
 		    $urls['posts'] = array(
-				'title' => __( 'Posts', 'wpuf'),
+				'title' => __( 'Posts', 'wp-user-frontend'),
 				'icon'  => '<i class="fa fa-wordpress"></i>',
 				'url'   => dokan_get_navigation_url( 'posts' ),
 				'pos'   => 56
@@ -89,16 +89,16 @@ class WPUF_Dokan_Integration{
 
     	$settings_fields['dokan_general']['allow_wpuf_post'] = array(
 			'name'    => 'allow_wpuf_post',
-			'label'   => __( 'Allow Post', 'wpuf' ),
-			'desc'    => __( 'Allow Vendors to submit post from dashboard area', 'wpuf' ),
+			'label'   => __( 'Allow Post', 'wp-user-frontend' ),
+			'desc'    => __( 'Allow Vendors to submit post from dashboard area', 'wp-user-frontend' ),
 			'type'    => 'checkbox',
 			'default' => 'off'
 	    );
 
 	    $settings_fields['dokan_general']['wpuf_post_forms'] = array(
             'name'    => 'wpuf_post_forms',
-            'label'   => __( 'Select Post Form', 'wpuf' ),
-            'desc'    => __( 'Select a post form that will show on the vendor dashboard.', 'wpuf' ),
+            'label'   => __( 'Select Post Form', 'wp-user-frontend' ),
+            'desc'    => __( 'Select a post form that will show on the vendor dashboard.', 'wp-user-frontend' ),
             'type'    => 'select',
             'options' => $this->get_post_forms(),
             'default' => 'seller'

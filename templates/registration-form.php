@@ -13,7 +13,7 @@
     }
 
     if ( isset($_GET['success']) && "yes" == $_GET['success'] ) {
-        echo "<div class='wpuf-success' style='text-align:center'>" . __( 'Registration has been successful!', 'wpuf' ) ."</div>";
+        echo "<div class='wpuf-success' style='text-align:center'>" . __( 'Registration has been successful!', 'wp-user-frontend' ) ."</div>";
     }
     ?>
 
@@ -24,7 +24,7 @@
 
         <ul class="wpuf-form form-label-above">
             <li>
-                <div class="wpuf-label"><?php _e( 'Name', 'wpuf' ); ?> <span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e( 'Name', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
                     <div class="wpuf-name-field-wrap format-first-last">
                         <div class="wpuf-name-field-first-name">
@@ -41,35 +41,35 @@
             </li>
 
             <li>
-                <div class="wpuf-label"><?php _e( 'Email', 'wpuf' ); ?> <span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e( 'Email', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="text" name="reg_email" id="wpuf-user_email" class="input" value="<?php echo wpuf()->registration->get_posted_value( 'reg_email' ); ?>" size="40">
                 </div>
             </li>
 
             <li>
-                <div class="wpuf-label"><?php _e( 'Username', 'wpuf' ); ?> <span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e( 'Username', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="text" name="log" id="wpuf-user_login" class="input" value="<?php echo wpuf()->registration->get_posted_value( 'log' ); ?>" size="40" />
                 </div>
             </li>
 
             <li>
-                <div class="wpuf-label"><?php _e( 'Password', 'wpuf' ); ?> <span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e( 'Password', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="password" name="pwd1" id="wpuf-user_pass1" class="input" value="" size="40" />
                 </div>
             </li>
 
             <li>
-                <div class="wpuf-label"><?php _e( 'Confirm Password', 'wpuf' ); ?> <span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e( 'Confirm Password', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="password" name="pwd2" id="wpuf-user_pass2" class="input" value="" size="40" />
                 </div>
             </li>
 
             <li class="wpuf-submit">
-                <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Register', 'wpuf' ); ?>" />
+                <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Register', 'wp-user-frontend' ); ?>" />
                 <input type="hidden" name="urhidden" value=" <?php echo $userrole; ?>" />
                 <input type="hidden" name="redirect_to" value="<?php echo wpuf()->registration->get_posted_value( 'redirect_to' ); ?>" />
                 <input type="hidden" name="wpuf_registration" value="true" />

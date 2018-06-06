@@ -467,7 +467,7 @@ function wpuf_settings_fields() {
             array(
                 'name'    => 'export_post_types',
                 'label'   => __( 'Post Types', 'wp-user-frontend' ),
-                'desc'    => __( 'Select the post types you want to export.', 'wp-user-frontend' ),
+                'desc'    => __( 'Select the post types you will allow users to export.', 'wp-user-frontend' ),
                 'callback'=> 'wpuf_settings_multiselect',
                 'options' => $post_types,
             ),

@@ -42,7 +42,7 @@ module.exports = function(grunt) {
 
         addtextdomain: {
             options: {
-                textdomain: 'wpuf',
+                textdomain: 'wp-user-frontend',
             },
             update_all_domains: {
                 options: {

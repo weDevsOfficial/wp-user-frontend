@@ -2,26 +2,26 @@
     <fieldset :class="[is_form_saving ? 'disabled' : '']" :disabled="is_form_saving">
         <h2 class="nav-tab-wrapper">
             <a href="#wpuf-form-builder-container" class="nav-tab nav-tab-active">
-                <?php _e( 'Form Editor', 'wpuf' ); ?>
+                <?php _e( 'Form Editor', 'wp-user-frontend' ); ?>
             </a>
 
             <a href="#wpuf-form-builder-settings" class="nav-tab">
-                <?php _e( 'Settings', 'wpuf' ); ?>
+                <?php _e( 'Settings', 'wp-user-frontend' ); ?>
             </a>
 
             <?php do_action( "wpuf-form-builder-tabs-{$form_type}" ); ?>
 
             <span class="pull-right">
                 <button v-if="!is_form_saving" type="button" class="button button-primary" @click="save_form_builder">
-                    <?php _e( 'Save Form', 'wpuf' ); ?>
+                    <?php _e( 'Save Form', 'wp-user-frontend' ); ?>
                 </button>
 
                 <button v-else type="button" class="button button-primary button-ajax-working" disabled>
-                    <span class="loader"></span> <?php _e( 'Saving Form Data', 'wpuf' ); ?>
+                    <span class="loader"></span> <?php _e( 'Saving Form Data', 'wp-user-frontend' ); ?>
                 </button>
             </span>
-            <span id="wpuf-toggle-field-options"><?php _e( 'Add Fields', 'wpuf' ); ?></span>
-            <span id="wpuf-toggle-show-form"><?php _e( 'Show Form', 'wpuf' ); ?></span>
+            <span id="wpuf-toggle-field-options"><?php _e( 'Add Fields', 'wp-user-frontend' ); ?></span>
+            <span id="wpuf-toggle-show-form"><?php _e( 'Show Form', 'wp-user-frontend' ); ?></span>
         </h2>
 
         <div class="tab-contents">
@@ -41,10 +41,10 @@
 
                             if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
                                 foreach ( $shortcodes as $shortcode ) {
-                                    printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> %s: #{{ post.ID }}</span>", sprintf( __( 'Click to copy %s shortcode', 'wpuf' ), $shortcode['type'] ), sprintf( '[%s type="%s" id="%s"]', $shortcode['name'], $shortcode['type'], $form_id ), ucwords( $shortcode['type'] ), $shortcode['type'] );
+                                    printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> %s: #{{ post.ID }}</span>", sprintf( __( 'Click to copy %s shortcode', 'wp-user-frontend' ), $shortcode['type'] ), sprintf( '[%s type="%s" id="%s"]', $shortcode['name'], $shortcode['type'], $form_id ), ucwords( $shortcode['type'] ), $shortcode['type'] );
                                 }
                             } else {
-                                printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wpuf' ), '[' . $shortcodes[0]['name'] . ' id="' . $form_id . '"]' );
+                                printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> #{{ post.ID }}</span>", __( 'Click to copy shortcode', 'wp-user-frontend' ), '[' . $shortcodes[0]['name'] . ' id="' . $form_id . '"]' );
                             }
                         ?>
                     </header>
@@ -71,13 +71,13 @@
                         <ul class="clearfix">
                             <li :class="['form-fields' === current_panel ? 'active' : '']">
                                 <a href="#add-fields" @click.prevent="set_current_panel('form-fields')">
-                                    <?php _e( 'Add Fields', 'wpuf' ); ?>
+                                    <?php _e( 'Add Fields', 'wp-user-frontend' ); ?>
                                 </a>
                             </li>
 
                             <li :class="['field-options' === current_panel ? 'active' : '', !form_fields_count ? 'disabled' : '']">
                                 <a href="#field-options" @click.prevent="set_current_panel('field-options')">
-                                    <?php _e( 'Field Options', 'wpuf' ); ?>
+                                    <?php _e( 'Field Options', 'wp-user-frontend' ); ?>
                                 </a>
                             </li>
                         </ul>

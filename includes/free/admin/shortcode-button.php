@@ -47,8 +47,8 @@ class WPUF_Shortcodes_Button {
      */
     function add_media_button( $editor_id ) {
         ?>
-            <a href="#TB_inline?width=480&amp;inlineId=wpuf-media-dialog" class="button thickbox insert-form" data-editor="<?php echo esc_attr( $editor_id ); ?>" title="<?php _e( 'Add a Form', 'wpuf' ); ?>">
-                <?php echo '<span class="wp-media-buttons-icon dashicons dashicons-welcome-widgets-menus"></span>' . __( ' Add Form', 'wpuf' ); ?>
+            <a href="#TB_inline?width=480&amp;inlineId=wpuf-media-dialog" class="button thickbox insert-form" data-editor="<?php echo esc_attr( $editor_id ); ?>" title="<?php _e( 'Add a Form', 'wp-user-frontend' ); ?>">
+                <?php echo '<span class="wp-media-buttons-icon dashicons dashicons-welcome-widgets-menus"></span>' . __( ' Add Form', 'wp-user-frontend' ); ?>
             </a>
         <?php
 
@@ -79,27 +79,27 @@ class WPUF_Shortcodes_Button {
 
         $shortcodes = apply_filters( 'wpuf_page_shortcodes', array(
             'wpuf-dashboard'=> array(
-                'title'   => __( 'Dashboard', 'wpuf' ),
+                'title'   => __( 'Dashboard', 'wp-user-frontend' ),
                 'content' => '[wpuf_dashboard]'
             ),
             'wpuf-account'  => array(
-                'title'   => __( 'Account', 'wpuf' ),
+                'title'   => __( 'Account', 'wp-user-frontend' ),
                 'content' => '[wpuf_account]'
             ),
             'wpuf-edit'     => array(
-                'title'   => __( 'Edit', 'wpuf' ),
+                'title'   => __( 'Edit', 'wp-user-frontend' ),
                 'content' => '[wpuf_edit]'
             ),
             'wpuf-login'    => array(
-                'title'   => __( 'Login', 'wpuf' ),
+                'title'   => __( 'Login', 'wp-user-frontend' ),
                 'content' => '[wpuf-login]'
             ),
             'wpuf-registration'    => array(
-                'title'   => __( 'Registration', 'wpuf' ),
+                'title'   => __( 'Registration', 'wp-user-frontend' ),
                 'content' => '[wpuf-registration]'
             ),
             'wpuf-sub-pack' => array(
-                'title'   => __( 'Subscription', 'wpuf' ),
+                'title'   => __( 'Subscription', 'wp-user-frontend' ),
                 'content' => '[wpuf_sub_pack]'
             )
         ) );

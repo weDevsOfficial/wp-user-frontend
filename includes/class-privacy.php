@@ -32,52 +32,52 @@ Class WPUF_Privacy {
         $content = '
 			<div contenteditable="false">' .
             '<p class="wp-policy-help">' .
-            __( 'This sample language includes the basics around what personal data your site may be collecting, storing and sharing, as well as who may have access to that data. Depending on what settings are enabled and which additional plugins are used, the specific information shared by your site will vary. We recommend consulting with a lawyer when deciding what information to disclose on your privacy policy.', 'wpuf' ) .
+            __( 'This sample language includes the basics around what personal data your site may be collecting, storing and sharing, as well as who may have access to that data. Depending on what settings are enabled and which additional plugins are used, the specific information shared by your site will vary. We recommend consulting with a lawyer when deciding what information to disclose on your privacy policy.', 'wp-user-frontend' ) .
             '</p>' .
             '</div>' .
-            '<p>' . __( 'We collect information about you during the checkout process on our site.', 'wpuf' ) . '</p>' .
-            '<h2>' . __( 'What we collect and store', 'wpuf' ) . '</h2>' .
-            '<p>' . __( 'While you visit our , we’ll track:', 'wpuf' ) . '</p>' .
+            '<p>' . __( 'We collect information about you during the checkout process on our site.', 'wp-user-frontend' ) . '</p>' .
+            '<h2>' . __( 'What we collect and store', 'wp-user-frontend' ) . '</h2>' .
+            '<p>' . __( 'While you visit our , we’ll track:', 'wp-user-frontend' ) . '</p>' .
             '<ul>' .
-            '<li>' . __( 'Products you’ve viewed:  we’ll use this to, for example, show you products you’ve recently viewed', 'wpuf' ) . '</li>' .
-            '<li>' . __( 'Location, IP address and browser type: we’ll use this for purposes like estimating taxes and shipping', 'wpuf' ) . '</li>' .
-            '<li>' . __( 'Shipping address: we’ll ask you to enter this so we can, for instance, estimate shipping before you place an order, and send you the order!', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Products you’ve viewed:  we’ll use this to, for example, show you products you’ve recently viewed', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Location, IP address and browser type: we’ll use this for purposes like estimating taxes and shipping', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Shipping address: we’ll ask you to enter this so we can, for instance, estimate shipping before you place an order, and send you the order!', 'wp-user-frontend' ) . '</li>' .
             '</ul>' .
-            '<p>' . __( 'We’ll also use cookies to keep track of cart contents while you’re browsing our .', 'wpuf' ) . '</p>' .
+            '<p>' . __( 'We’ll also use cookies to keep track of cart contents while you’re browsing our .', 'wp-user-frontend' ) . '</p>' .
             '<div contenteditable="false">' .
-            '<p class="wp-policy-help">' . __( 'Note: you may want to further detail your cookie policy, and link to that section from here.', 'wpuf' ) . '</p>' .
+            '<p class="wp-policy-help">' . __( 'Note: you may want to further detail your cookie policy, and link to that section from here.', 'wp-user-frontend' ) . '</p>' .
             '</div>' .
-            '<p>' . __( 'When you purchase from us, we’ll ask you to provide information including your name, billing address, shipping address, email address, phone number, credit card/payment details and optional account information like username and password. We’ll use this information for purposes, such as, to:', 'wpuf' ) . '</p>' .
+            '<p>' . __( 'When you purchase from us, we’ll ask you to provide information including your name, billing address, shipping address, email address, phone number, credit card/payment details and optional account information like username and password. We’ll use this information for purposes, such as, to:', 'wp-user-frontend' ) . '</p>' .
             '<ul>' .
-            '<li>' . __( 'Send you information about your account and order', 'wpuf' ) . '</li>' .
-            '<li>' . __( 'Respond to your requests, including refunds and complaints', 'wpuf' ) . '</li>' .
-            '<li>' . __( 'Process payments and prevent fraud', 'wpuf' ) . '</li>' .
-            '<li>' . __( 'Set up your account for our site', 'wpuf' ) . '</li>' .
-            '<li>' . __( 'Comply with any legal obligations we have, such as calculating taxes', 'wpuf' ) . '</li>' .
-            '<li>' . __( 'Improve our site offerings', 'wpuf' ) . '</li>' .
-            '<li>' . __( 'Send you marketing messages, if you choose to receive them', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Send you information about your account and order', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Respond to your requests, including refunds and complaints', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Process payments and prevent fraud', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Set up your account for our site', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Comply with any legal obligations we have, such as calculating taxes', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Improve our site offerings', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Send you marketing messages, if you choose to receive them', 'wp-user-frontend' ) . '</li>' .
             '</ul>' .
-            '<p>' . __( 'If you create an account, we will store your name, address, email and phone number, which will be used to populate the checkout for future orders.', 'wpuf' ) . '</p>' .
-            '<p>' . __( 'We generally store information about you for as long as we need the information for the purposes for which we collect and use it, and we are not legally required to continue to keep it. For example, we will store order information for XXX years for tax and accounting purposes. This includes your name, email address and billing and shipping addresses.', 'wpuf' ) . '</p>' .
-            '<p>' . __( 'We will also store comments or reviews, if you choose to leave them.', 'wpuf' ) . '</p>' .
-            '<h2>' . __( 'Who on our team has access', 'wpuf' ) . '</h2>' .
-            '<p>' . __( 'Members of our team have access to the information you provide us. For example, both Administrators and Shop Managers can access:', 'wpuf' ) . '</p>' .
+            '<p>' . __( 'If you create an account, we will store your name, address, email and phone number, which will be used to populate the checkout for future orders.', 'wp-user-frontend' ) . '</p>' .
+            '<p>' . __( 'We generally store information about you for as long as we need the information for the purposes for which we collect and use it, and we are not legally required to continue to keep it. For example, we will store order information for XXX years for tax and accounting purposes. This includes your name, email address and billing and shipping addresses.', 'wp-user-frontend' ) . '</p>' .
+            '<p>' . __( 'We will also store comments or reviews, if you choose to leave them.', 'wp-user-frontend' ) . '</p>' .
+            '<h2>' . __( 'Who on our team has access', 'wp-user-frontend' ) . '</h2>' .
+            '<p>' . __( 'Members of our team have access to the information you provide us. For example, both Administrators and Shop Managers can access:', 'wp-user-frontend' ) . '</p>' .
             '<ul>' .
-            '<li>' . __( 'Order information like what was purchased, when it was purchased and where it should be sent, and', 'wpuf' ) . '</li>' .
-            '<li>' . __( 'Customer information like your name, email address, and billing and shipping information.', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Order information like what was purchased, when it was purchased and where it should be sent, and', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Customer information like your name, email address, and billing and shipping information.', 'wp-user-frontend' ) . '</li>' .
             '</ul>' .
-            '<p>' . __( 'Our team members have access to this information to help fulfill orders, process refunds and support you.', 'wpuf' ) . '</p>' .
-            '<h2>' . __( 'What we share with others', 'wpuf' ) . '</h2>' .
+            '<p>' . __( 'Our team members have access to this information to help fulfill orders, process refunds and support you.', 'wp-user-frontend' ) . '</p>' .
+            '<h2>' . __( 'What we share with others', 'wp-user-frontend' ) . '</h2>' .
             '<div contenteditable="false">' .
-            '<p class="wp-policy-help">' . __( 'In this section you should list who you’re sharing data with, and for what purpose. This could include, but may not be limited to, analytics, marketing, payment gateways, shipping providers, and third party embeds.', 'wpuf' ) . '</p>' .
+            '<p class="wp-policy-help">' . __( 'In this section you should list who you’re sharing data with, and for what purpose. This could include, but may not be limited to, analytics, marketing, payment gateways, shipping providers, and third party embeds.', 'wp-user-frontend' ) . '</p>' .
             '</div>' .
-            '<p>' . __( 'We share information with third parties who help us provide our orders and store services to you; for example --', 'wpuf' ) . '</p>' .
-            '<h3>' . __( 'Payments', 'wpuf' ) . '</h3>' .
+            '<p>' . __( 'We share information with third parties who help us provide our orders and store services to you; for example --', 'wp-user-frontend' ) . '</p>' .
+            '<h3>' . __( 'Payments', 'wp-user-frontend' ) . '</h3>' .
             '<div contenteditable="false">' .
-            '<p class="wp-policy-help">' . __( 'In this subsection you should list which third party payment processors you’re using to take payments on your site since these may handle customer data. We’ve included PayPal as an example, but you should remove this if you’re not using PayPal.', 'wpuf' ) . '</p>' .
+            '<p class="wp-policy-help">' . __( 'In this subsection you should list which third party payment processors you’re using to take payments on your site since these may handle customer data. We’ve included PayPal as an example, but you should remove this if you’re not using PayPal.', 'wp-user-frontend' ) . '</p>' .
             '</div>' .
-            '<p>' . __( 'We accept payments through PayPal. When processing payments, some of your data will be passed to PayPal, including information required to process or support the payment, such as the purchase total and billing information.', 'wpuf' ) . '</p>' .
-            '<p>' . __( 'Please see the <a href="https://www.paypal.com/us/webapps/mpp/ua/privacy-full">PayPal Privacy Policy</a> for more details.', 'wpuf' ) . '</p>';
+            '<p>' . __( 'We accept payments through PayPal. When processing payments, some of your data will be passed to PayPal, including information required to process or support the payment, such as the purchase total and billing information.', 'wp-user-frontend' ) . '</p>' .
+            '<p>' . __( 'Please see the <a href="https://www.paypal.com/us/webapps/mpp/ua/privacy-full">PayPal Privacy Policy</a> for more details.', 'wp-user-frontend' ) . '</p>';
 
         return apply_filters( 'wpuf_privacy_policy_content', $content );
     }
@@ -91,22 +91,22 @@ Class WPUF_Privacy {
      */
     function register_exporters( $exporters ) {
         $exporters['wpuf-personal-data-export'] = array(
-            'exporter_friendly_name' => __( 'WPUF User Data', 'wpuf' ),
+            'exporter_friendly_name' => __( 'WPUF User Data', 'wp-user-frontend' ),
             'callback'               => array( 'WPUF_Privacy', 'export_user_data'),
         );
 
         $exporters['wpuf-subscription-data-export'] = array(
-            'exporter_friendly_name' => __( 'WPUF Subscription Data', 'wpuf' ),
+            'exporter_friendly_name' => __( 'WPUF Subscription Data', 'wp-user-frontend' ),
             'callback'               => array( 'WPUF_Privacy', 'export_subscription_data'),
         );
 
         $exporters['wpuf-transaction-data-export'] = array(
-            'exporter_friendly_name' => __( 'WPUF Transaction Data', 'wpuf' ),
+            'exporter_friendly_name' => __( 'WPUF Transaction Data', 'wp-user-frontend' ),
             'callback'               => array( 'WPUF_Privacy', 'export_transaction_data'),
         );
 
         $exporters['wpuf-post-data-export'] = array(
-            'exporter_friendly_name' => __( 'WPUF Post Data', 'wpuf' ),
+            'exporter_friendly_name' => __( 'WPUF Post Data', 'wp-user-frontend' ),
             'callback'               => array( 'WPUF_Privacy', 'export_post_data'),
         );
 
@@ -122,7 +122,7 @@ Class WPUF_Privacy {
      */
     function register_erasers( $erasers ) {
         $erasers['wpuf-personal-data-erase'] = array(
-            'eraser_friendly_name' => __( 'WPUF User Data', 'wpuf' ),
+            'eraser_friendly_name' => __( 'WPUF User Data', 'wp-user-frontend' ),
             'callback'             => array( 'WPUF_Privacy', 'erase_user_data'),
         );
 
@@ -161,7 +161,7 @@ Class WPUF_Privacy {
 
         $data_to_export[] = array(
             'group_id'    => 'wpuf-user-data',
-            'group_label' => __( 'WPUF User Data', 'wpuf' ),
+            'group_label' => __( 'WPUF User Data', 'wp-user-frontend' ),
             'item_id'     => "wpuf-user",
             'data'        => apply_filters( 'wpuf_privacy_user_data', array(), $wpuf_user, $page ),
         );
@@ -246,27 +246,27 @@ Class WPUF_Privacy {
         if ( !empty( $address ) ) {
             $address_data = array(
                 array(
-                    'name'  => __( 'Billing Address 1' ),
+                    'name'  => __( 'Billing Address 1', 'wp-user-frontend' ),
                     'value' => $address['add_line_1']
                 ),
                 array(
-                    'name'  => __( 'Billing Address 2' ),
+                    'name'  => __( 'Billing Address 2', 'wp-user-frontend' ),
                     'value' => $address['add_line_2']
                 ),
                 array(
-                    'name'  => __( 'City' ),
+                    'name'  => __( 'City', 'wp-user-frontend' ),
                     'value' => $address['city']
                 ),
                 array(
-                    'name'  => __( 'State' ),
+                    'name'  => __( 'State', 'wp-user-frontend' ),
                     'value' => $address['state']
                 ),
                 array(
-                    'name'  => __( 'Zip' ),
+                    'name'  => __( 'Zip', 'wp-user-frontend' ),
                     'value' => $address['zip_code']
                 ),
                 array(
-                    'name'  => __( 'Country' ),
+                    'name'  => __( 'Country', 'wp-user-frontend' ),
                     'value' => $countries[$address['country']]
                 ),
             );
@@ -291,7 +291,7 @@ Class WPUF_Privacy {
 
         $data_to_export[] = array(
             'group_id'    => 'wpuf-subscription-data',
-            'group_label' => __( 'WPUF Subscription Data', 'wpuf' ),
+            'group_label' => __( 'WPUF Subscription Data', 'wp-user-frontend' ),
             'item_id'     => "wpuf-subscription",
             'data'        => self::get_subscription_data( $email_address, $page )
         );
@@ -320,55 +320,55 @@ Class WPUF_Privacy {
 
             $data_to_export[] = array(
                 'group_id' => 'wpuf-transaction-data',
-                'group_label' => __('WPUF Transaction Data', 'wpuf'),
+                'group_label' => __('WPUF Transaction Data', 'wp-user-frontend'),
                 'item_id' => "wpuf-transaction" . $txn_data['transaction_id'],
                 'data' => array(
                     array(
-                        'name' => __('Transaction ID', 'wpuf'),
+                        'name' => __('Transaction ID', 'wp-user-frontend'),
                         'value' => $txn_data['transaction_id']
                     ),
                     array(
-                        'name' => __('Payment Status', 'wpuf'),
+                        'name' => __('Payment Status', 'wp-user-frontend'),
                         'value' => $txn_data['status']
                     ),
                     array(
-                        'name' => __('Subtotal', 'wpuf'),
+                        'name' => __('Subtotal', 'wp-user-frontend'),
                         'value' => $txn_data['subtotal']
                     ),
                     array(
-                        'name' => __('Tax', 'wpuf'),
+                        'name' => __('Tax', 'wp-user-frontend'),
                         'value' => $txn_data['tax']
                     ),
                     array(
-                        'name' => __('Total', 'wpuf'),
+                        'name' => __('Total', 'wp-user-frontend'),
                         'value' => $txn_data['cost']
                     ),
                     array(
-                        'name' => __('Post ID', 'wpuf'),
+                        'name' => __('Post ID', 'wp-user-frontend'),
                         'value' => $txn_data['post_id']
                     ),
                     array(
-                        'name' => __('Pack ID', 'wpuf'),
+                        'name' => __('Pack ID', 'wp-user-frontend'),
                         'value' => $txn_data['post_id']
                     ),
                     array(
-                        'name' => __('First Name', 'wpuf'),
+                        'name' => __('First Name', 'wp-user-frontend'),
                         'value' => $txn_data['payer_first_name']
                     ),
                     array(
-                        'name' => __('Last Name', 'wpuf'),
+                        'name' => __('Last Name', 'wp-user-frontend'),
                         'value' => $txn_data['payer_last_name']
                     ),
                     array(
-                        'name' => __('Email', 'wpuf'),
+                        'name' => __('Email', 'wp-user-frontend'),
                         'value' => $txn_data['payer_email']
                     ),
                     array(
-                        'name' => __('Payment Type', 'wpuf'),
+                        'name' => __('Payment Type', 'wp-user-frontend'),
                         'value' => $txn_data['payment_type']
                     ),
                     array(
-                        'name' => __('payer_address', 'wpuf'),
+                        'name' => __('payer_address', 'wp-user-frontend'),
                         'value' => implode(', ', array_map(
                             function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
                             maybe_unserialize( $txn_data['payer_address'] ),
@@ -376,7 +376,7 @@ Class WPUF_Privacy {
                         ) ),
                     ),
                     array(
-                        'name' => __('Transaction Date', 'wpuf'),
+                        'name' => __('Transaction Date', 'wp-user-frontend'),
                         'value' => $txn_data['created']
                     ),
                 ),
@@ -406,23 +406,23 @@ Class WPUF_Privacy {
         foreach ( $post_data as $data ) {
             $data_to_export[] = array(
                 'group_id'    => 'wpuf-post-data',
-                'group_label' => __( 'WPUF Post Data', 'wpuf' ),
+                'group_label' => __( 'WPUF Post Data', 'wp-user-frontend' ),
                 'item_id'     => "wpuf-posts-" . $data['id'],
                 'data'        => array(
                     array(
-                        'name'  => __('Post ID', 'wpuf'),
+                        'name'  => __('Post ID', 'wp-user-frontend'),
                         'value' => $data['id']
                     ),
                     array(
-                        'name'  => __('Post Title', 'wpuf'),
+                        'name'  => __('Post Title', 'wp-user-frontend'),
                         'value' => $data['title']
                     ),
                     array(
-                        'name'  => __('Post URL', 'wpuf'),
+                        'name'  => __('Post URL', 'wp-user-frontend'),
                         'value' => $data['url']
                     ),
                     array(
-                        'name'  => __('Post Date', 'wpuf'),
+                        'name'  => __('Post Date', 'wp-user-frontend'),
                         'value' => $data['date']
                     ),
                 ),
@@ -464,19 +464,19 @@ Class WPUF_Privacy {
 
         $subscription_data = array(
             array(
-                'name'  => __( 'Pack ID' ),
+                'name'  => __( 'Pack ID', 'wp-user-frontend' ),
                 'value' => $pack['pack_id']
             ),
             array(
-                'name'  => __( 'Pack Title' ),
+                'name'  => __( 'Pack Title', 'wp-user-frontend' ),
                 'value' => get_the_title( $pack['pack_id'] ),
             ),
             array(
-                'name'  => __( 'Expiry' ),
+                'name'  => __( 'Expiry', 'wp-user-frontend' ),
                 'value' => $pack['expire']
             ),
             array(
-                'name'  => __( 'Recurring' ),
+                'name'  => __( 'Recurring', 'wp-user-frontend' ),
                 'value' => $pack['recurring']
             ),
         );

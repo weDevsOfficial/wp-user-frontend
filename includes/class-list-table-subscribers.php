@@ -27,7 +27,7 @@ class WPUF_List_Table_Subscribers extends \WP_List_Table {
      * @return void
      */
     function no_items() {
-        _e( 'No subscribers found', 'wpuf' );
+        _e( 'No subscribers found', 'wp-user-frontend' );
     }
 
     /**
@@ -38,14 +38,14 @@ class WPUF_List_Table_Subscribers extends \WP_List_Table {
     function get_columns() {
         $columns = array(
             'cb'                    => '<input type="checkbox" />',
-            'id'                    => __( 'User ID', 'wpuf' ),
-            'name'                  => __( 'User Name', 'wpuf' ),
-            'subscription_id'       => __( 'Subscription ID', 'wpuf' ),
-            'status'                => __( 'Status', 'wpuf' ),
-            'gateway'               => __( 'Gateway', 'wpuf' ),
-            'transaction_id'        => __( 'Transaction ID', 'wpuf' ),
-            'starts_from'           => __( 'Starts from', 'wpuf' ),
-            'expire'                => __( 'Expire date', 'wpuf' ),
+            'id'                    => __( 'User ID', 'wp-user-frontend' ),
+            'name'                  => __( 'User Name', 'wp-user-frontend' ),
+            'subscription_id'       => __( 'Subscription ID', 'wp-user-frontend' ),
+            'status'                => __( 'Status', 'wp-user-frontend' ),
+            'gateway'               => __( 'Gateway', 'wp-user-frontend' ),
+            'transaction_id'        => __( 'Transaction ID', 'wp-user-frontend' ),
+            'starts_from'           => __( 'Starts from', 'wp-user-frontend' ),
+            'expire'                => __( 'Expire date', 'wp-user-frontend' ),
         );
         return $columns;
     }
@@ -123,9 +123,9 @@ class WPUF_List_Table_Subscribers extends \WP_List_Table {
 
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( $_REQUEST['status'] ) : 'all';
 
-        $status_links['all']     = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( array( 'status' => 'all' ), $base_link ), ( $status == 'all' ) ? 'current' : '', __( 'All', 'wpuf' ), $subscribers_count );
-        $status_links['Completed'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( array( 'status' => 'Completed' ), $base_link ), ( $status == 'pending' ) ? 'current' : '', __( 'Completed', 'wpuf' ), $subscriptions_active_count );
-        $status_links['Cancel'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( array( 'status' => 'Cancel' ), $base_link ), ( $status == 'Cancel' ) ? 'current' : '', __( 'Cancel', 'wpuf' ), $subscriptions_cancle_count );
+        $status_links['all']     = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( array( 'status' => 'all' ), $base_link ), ( $status == 'all' ) ? 'current' : '', __( 'All', 'wp-user-frontend' ), $subscribers_count );
+        $status_links['Completed'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( array( 'status' => 'Completed' ), $base_link ), ( $status == 'pending' ) ? 'current' : '', __( 'Completed', 'wp-user-frontend' ), $subscriptions_active_count );
+        $status_links['Cancel'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( array( 'status' => 'Cancel' ), $base_link ), ( $status == 'Cancel' ) ? 'current' : '', __( 'Cancel', 'wp-user-frontend' ), $subscriptions_cancle_count );
 
         return $status_links;
     }

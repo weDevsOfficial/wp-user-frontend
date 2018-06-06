@@ -79,7 +79,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                         // echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
                     } else {
                         $user_can_post = 'no';
-                        $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
+                        $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wp-user-frontend' ));
                     }
                 } else {
                     $user_can_post = 'yes';
@@ -118,14 +118,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 } elseif ( !$pay_per_post && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
 
                     $user_can_post = 'no';
-                    $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
+                    $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wp-user-frontend' ));
 
                 } else {
                     $user_can_post = 'no';
                     if ( !is_user_logged_in() ) {
                         $info = $form_settings['message_restrict'];
                     } else {
-                        $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wpuf' ));
+                        $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wp-user-frontend' ));
                     }
 
                 }
@@ -168,7 +168,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         ob_start();
 
         if ( !is_user_logged_in() ) {
-            echo '<div class="wpuf-message">' . __( 'You are not logged in', 'wpuf' ) . '</div>';
+            echo '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>';
             wp_login_form();
             return;
         }
@@ -176,23 +176,23 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         $post_id = isset( $_GET['pid'] ) ? intval( $_GET['pid'] ) : 0;
 
         if ( !$post_id ) {
-            return '<div class="wpuf-info">' . __( 'Invalid post', 'wpuf' ) . '</div>';
+            return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' ) . '</div>';
         }
 
         //is editing enabled?
         if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) != 'yes' ) {
-            return '<div class="wpuf-info">' . __( 'Post Editing is disabled', 'wpuf' ) . '</div>';
+            return '<div class="wpuf-info">' . __( 'Post Editing is disabled', 'wp-user-frontend' ) . '</div>';
         }
 
         $curpost = get_post( $post_id );
 
         if ( !$curpost ) {
-            return '<div class="wpuf-info">' . __( 'Invalid post', 'wpuf' );
+            return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' );
         }
 
         // has permission?
         if ( !current_user_can( 'delete_others_posts' ) && ( $userdata->ID != $curpost->post_author ) ) {
-            return '<div class="wpuf-info">' . __( 'You are not allowed to edit', 'wpuf' ) . '</div>';
+            return '<div class="wpuf-info">' . __( 'You are not allowed to edit', 'wp-user-frontend' ) . '</div>';
         }
 
         $form_id       = get_post_meta( $post_id, self::$config_id, true );
@@ -204,13 +204,13 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         }
 
         if ( !$form_id ) {
-            return '<div class="wpuf-info">' . __( "I don't know how to edit this post, I don't have the form ID", 'wpuf' ) . '</div>';
+            return '<div class="wpuf-info">' . __( "I don't know how to edit this post, I don't have the form ID", 'wp-user-frontend' ) . '</div>';
         }
 
         $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
 
         if ( $curpost->post_status == 'pending' && $disable_pending_edit == 'on' ) {
-            return '<div class="wpuf-info">' . __( 'You can\'t edit a post while in pending mode.', 'wpuf' );
+            return '<div class="wpuf-info">' . __( 'You can\'t edit a post while in pending mode.', 'wp-user-frontend' );
         }
 
         if ( isset( $_GET['msg'] ) && $_GET['msg'] == 'post_updated' ) {
@@ -283,7 +283,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
                 if ( isset ( $_POST["g-recaptcha-response"] ) ) {
                     if ( empty( $_POST['g-recaptcha-response'] ) && $check_recaptcha[0]['recaptcha_type'] !== 'invisible_recaptcha') {
-                        $this->send_error( __( 'Empty reCaptcha Field', 'wpuf' ) );
+                        $this->send_error( __( 'Empty reCaptcha Field', 'wp-user-frontend' ) );
                     }
 
                     if ( $recaptcha_type == 'enable_no_captcha' ) {
@@ -314,7 +314,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
                 // is valid email?
                 if ( !is_email( $guest_email ) ) {
-                    $this->send_error( __( 'Invalid email address.', 'wpuf' ) );
+                    $this->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
                 }
 
                 // check if the user email already exists
@@ -323,7 +323,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                     // $post_author = $user->ID;
                     wp_send_json( array(
                         'success'     => false,
-                        'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wpuf' ),
+                        'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
                         'type'        => 'login',
                         'redirect_to' => wp_login_url( get_permalink( $_POST['page_id'] ) )
                     ) );
@@ -372,7 +372,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             $current_user = wp_get_current_user();
 
             if ( !in_array( $current_user->roles[0], $form_settings['roles'] ) ) {
-                $this->send_error( __( 'You do not have sufficient permissions to access this form.', 'wpuf' ) );
+                $this->send_error( __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) );
             }
 
         } else {
@@ -748,7 +748,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         }
 
-        $this->send_error( __( 'Something went wrong', 'wpuf' ) );
+        $this->send_error( __( 'Something went wrong', 'wp-user-frontend' ) );
     }
 
     /**
@@ -1105,7 +1105,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                         'ID'            =>  $post_id,
                         'post_status'   =>  isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish'
                     ));
-                    echo "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wpuf' ) ."</div>";
+                    echo "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) ."</div>";
                 }
 
             }

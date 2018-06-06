@@ -1,6 +1,6 @@
 <div id="form-preview-stage">
     <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wpuf' ) ?>
+        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ) ?>
     </h4>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
@@ -26,7 +26,7 @@
 
             <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
                 <label class="wpuf-pro-text-alert">
-                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wpuf' ); ?></a>
+                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                 </label>
             </div>
 
@@ -50,14 +50,14 @@
     </ul><!-- .wpuf-form -->
 
     <div v-if="hidden_fields.length" class="hidden-field-list">
-        <h4><?php _e( 'Hidden Fields', 'wpuf' ); ?></h4>
+        <h4><?php _e( 'Hidden Fields', 'wp-user-frontend' ); ?></h4>
 
         <ul class="wpuf-form">
             <li
                 v-for="(field, index) in hidden_fields"
                 :class="['field-items', parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '']"
             >
-                <strong><?php _e('key', 'wpuf'); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wpuf' ); ?></strong>: {{ field.meta_value }}
+                <strong><?php _e('key', 'wp-user-frontend'); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
 
                 <div class="control-buttons">
                     <p>

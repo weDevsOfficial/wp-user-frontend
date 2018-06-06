@@ -19,21 +19,21 @@
 
     <form name="loginform" class="wpuf-login-form" id="loginform" action="<?php echo $action_url; ?>" method="post">
         <p>
-            <label for="wpuf-user_login"><?php _e( 'Username or Email', 'wpuf' ); ?></label>
+            <label for="wpuf-user_login"><?php _e( 'Username or Email', 'wp-user-frontend' ); ?></label>
             <input type="text" name="log" id="wpuf-user_login" class="input" value="" size="20" />
         </p>
         <p>
-            <label for="wpuf-user_pass"><?php _e( 'Password', 'wpuf' ); ?></label>
+            <label for="wpuf-user_pass"><?php _e( 'Password', 'wp-user-frontend' ); ?></label>
             <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" />
         </p>
 
         <p class="forgetmenot">
             <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
-            <label for="wpuf-rememberme"><?php esc_attr_e( 'Remember Me', 'wpuf' ); ?></label>
+            <label for="wpuf-rememberme"><?php esc_attr_e( 'Remember Me', 'wp-user-frontend' ); ?></label>
         </p>
 
         <p class="submit">
-            <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Log In', 'wpuf' ); ?>" />
+            <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Log In', 'wp-user-frontend' ); ?>" />
             <input type="hidden" name="redirect_to" value="<?php echo wp_get_referer() ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />

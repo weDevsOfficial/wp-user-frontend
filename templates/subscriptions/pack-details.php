@@ -23,10 +23,10 @@
             <sup class="wpuf-sub-symbol"><?php echo $details_meta['symbol']; ?></sup>
             <span class="wpuf-sub-cost"><?php echo $billing_amount; ?></span>
         <?php } else { ?>
-            <span class="wpuf-sub-cost"><?php _e( 'Free', 'wpuf' ); ?></span>
+            <span class="wpuf-sub-cost"><?php _e( 'Free', 'wp-user-frontend' ); ?></span>
         <?php } ?>
 
-        <?php _e( $recurring_des , 'wpuf' ); ?>
+        <?php _e( $recurring_des , 'wp-user-frontend' ); ?>
 
     </div>
     <?php

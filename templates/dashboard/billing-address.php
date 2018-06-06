@@ -21,7 +21,7 @@ if ( isset( $_POST['update_billing_address'] )
         'country'       => $_POST['country']
     );
     update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
-    echo '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wpuf' ) . '</div>';
+    echo '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wp-user-frontend' ) . '</div>';
 } else {
     if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
         $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );
@@ -39,28 +39,28 @@ if ( isset( $_POST['update_billing_address'] )
         <ul class="wpuf-form form-label-above">
 
             <li>
-                <div class="wpuf-label"><?php _e( 'Address Line 1 ', 'wpuf' ); ?><span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e( 'Address Line 1 ', 'wp-user-frontend' ); ?><span class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="add_line_1" id="add_line_1" value="<?php echo $address_fields['add_line_1']; ?>" />
                 </div>
             </li>
 
             <li>
-                <div class="wpuf-label"><?php _e( 'Address Line 2 ', 'wpuf' ); ?></div>
+                <div class="wpuf-label"><?php _e( 'Address Line 2 ', 'wp-user-frontend' ); ?></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="add_line_2" id="add_line_2" value="<?php echo $address_fields['add_line_2']; ?>" />
                 </div>
             </li>
 
             <li>
-                <div class="wpuf-label"><?php _e( 'City', 'wpuf' ); ?> <span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e( 'City', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="city" id="city" value="<?php echo $address_fields['city']; ?>" />
                 </div>
             </li>
 
             <li>
-                <div class="wpuf-label"><?php _e('State/Province/Region', 'wpuf' ); ?> <span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e('State/Province/Region', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="state" id="state" value="<?php echo $cs->getStateName( $address_fields['state'], $address_fields['country'] ); ?>" />
                 </div>
@@ -70,12 +70,12 @@ if ( isset( $_POST['update_billing_address'] )
                 <div class="wpuf-fields">
                     <div class="wpuf-name-field-wrap format-first-last">
                         <div class="wpuf-name-field-first-name">
-                            <label class="wpuf-fields wpuf-label"><?php _e( 'Postal Code/ZIP', 'wpuf' ); ?></label>
+                            <label class="wpuf-fields wpuf-label"><?php _e( 'Postal Code/ZIP', 'wp-user-frontend' ); ?></label>
                             <input type="text" class="input" name="zip_code" id="zip_code" value="<?php echo $address_fields['zip_code']; ?>" />
                         </div>
 
                         <div class="wpuf-name-field-last-name">
-                            <label class="wpuf-fields wpuf-label"><?php _e('Country', 'wpuf' ); ?></label>
+                            <label class="wpuf-fields wpuf-label"><?php _e('Country', 'wp-user-frontend' ); ?></label>
                             <div class="wpuf-fields">
                                 <?php
                                 $countries = $cs->countries();
@@ -98,7 +98,7 @@ if ( isset( $_POST['update_billing_address'] )
             </li>
 
             <li class="wpuf-submit">
-                <input type="submit" name="update_billing_address" id="wpuf-account-update-billing_address" value="<?php _e( 'Update Billing Address', 'wpuf' ); ?>" />
+                <input type="submit" name="update_billing_address" id="wpuf-account-update-billing_address" value="<?php _e( 'Update Billing Address', 'wp-user-frontend' ); ?>" />
             </li>
         </ul>
 

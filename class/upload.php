@@ -161,9 +161,9 @@ class WPUF_Upload {
 
         if ( wpuf_get_option( 'image_caption', 'wpuf_frontend_posting', 'off' ) == 'on' ) {
             $html .= '<div class="wpuf-file-input-wrap">';
-            $html .= sprintf( '<input type="text" name="wpuf_files_data[%d][title]" value="%s" placeholder="%s">', $attach_id, esc_attr( $attachment->post_title ), __( 'Title', 'wpuf' ) );
-            $html .= sprintf( '<textarea name="wpuf_files_data[%d][caption]" placeholder="%s">%s</textarea>', $attach_id, __( 'Caption', 'wpuf' ), esc_textarea( $attachment->post_excerpt ) );
-            $html .= sprintf( '<textarea name="wpuf_files_data[%d][desc]" placeholder="%s">%s</textarea>', $attach_id, __( 'Description', 'wpuf' ), esc_textarea( $attachment->post_content ) );
+            $html .= sprintf( '<input type="text" name="wpuf_files_data[%d][title]" value="%s" placeholder="%s">', $attach_id, esc_attr( $attachment->post_title ), __( 'Title', 'wp-user-frontend' ) );
+            $html .= sprintf( '<textarea name="wpuf_files_data[%d][caption]" placeholder="%s">%s</textarea>', $attach_id, __( 'Caption', 'wp-user-frontend' ), esc_textarea( $attachment->post_excerpt ) );
+            $html .= sprintf( '<textarea name="wpuf_files_data[%d][desc]" placeholder="%s">%s</textarea>', $attach_id, __( 'Description', 'wp-user-frontend' ), esc_textarea( $attachment->post_content ) );
             $html .= '</div>';
         }
 

@@ -20,13 +20,13 @@ class WPUF_Payment {
         // default, built-in gateways
         $gateways = array(
             'paypal' => array(
-                'admin_label'    => __( 'PayPal', 'wpuf' ),
-                'checkout_label' => __( 'PayPal', 'wpuf' ),
+                'admin_label'    => __( 'PayPal', 'wp-user-frontend' ),
+                'checkout_label' => __( 'PayPal', 'wp-user-frontend' ),
                 'icon'           => apply_filters( 'wpuf_paypal_checkout_icon', WPUF_ASSET_URI . '/images/paypal.png' )
              ),
             'bank' => array(
-                'admin_label'    => __( 'Bank Payment', 'wpuf' ),
-                'checkout_label' => __( 'Bank Payment', 'wpuf' ),
+                'admin_label'    => __( 'Bank Payment', 'wp-user-frontend' ),
+                'checkout_label' => __( 'Bank Payment', 'wp-user-frontend' ),
             )
         );
 
@@ -68,7 +68,7 @@ class WPUF_Payment {
         $billing_amount = 0;
 
         if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'wpuf_pay' && $pay_page == 0 ) {
-            _e('Please select your payment page from admin panel', 'wpuf' );
+            _e('Please select your payment page from admin panel', 'wp-user-frontend' );
             return;
         }
 
@@ -116,9 +116,9 @@ class WPUF_Payment {
                     wpuf_get_user( $current_user->ID )->subscription()->add_pack( $pack_id, null, false, 'free' );
                     $wpuf_user->subscription()->add_free_pack( $current_user->ID, $pack_id );
 
-                    $message = apply_filters( 'wpuf_fp_activated_msg', __( 'Your free package has been activated. Enjoy!', 'wpuf' ), 'wpuf' );
+                    $message = apply_filters( 'wpuf_fp_activated_msg', __( 'Your free package has been activated. Enjoy!', 'wp-user-frontend' ), 'wpuf' );
                 } else {
-                    $message = apply_filters( 'wpuf_fp_activated_error', __( 'You already have activated a free package previously.', 'wpuf' ), 'wpuf' );
+                    $message = apply_filters( 'wpuf_fp_activated_error', __( 'You already have activated a free package previously.', 'wp-user-frontend' ), 'wpuf' );
                 }
                 ?>
                     <div class="wpuf-info"><?php echo $message; ?></div>
@@ -136,7 +136,7 @@ class WPUF_Payment {
                                 $pay_page_style = "vertical-align:top; margin-left: 20px; display: inline-block;";
                                 ?>
                                 <div class="wpuf-bill-addr-info">
-                                    <h3> <?php _e( 'Billing Address', 'wpuf' ); ?> </h3>
+                                    <h3> <?php _e( 'Billing Address', 'wp-user-frontend' ); ?> </h3>
                                     <div class="wpuf-bill_addr-inner">
                                         <?php
                                         $add_form = new WPUF_Ajax_Address_Form();
@@ -162,9 +162,9 @@ class WPUF_Payment {
                                     <div class="wpuf-coupon-info">
                                         <div class="wpuf-pack-info">
                                             <h3 class="col">
-                                                <?php _e( 'Pricing & Plans', 'wpuf' ); ?>
+                                                <?php _e( 'Pricing & Plans', 'wp-user-frontend' ); ?>
 
-                                                <a style="white-space: nowrap" href="<?php echo wpuf_get_subscription_page_url(); ?>"><?php _e( 'Change Pack', 'wpuf' ); ?></a>
+                                                <a style="white-space: nowrap" href="<?php echo wpuf_get_subscription_page_url(); ?>"><?php _e( 'Change Pack', 'wp-user-frontend' ); ?></a>
                                             </h3>
                                             <div class="wpuf-subscription-error"></div>
 
@@ -178,12 +178,12 @@ class WPUF_Payment {
                                                     ?>
                                                     <div id="wpuf_type" style="display: none"><?php echo 'pack'; ?></div>
                                                     <div id="wpuf_id" style="display: none"><?php echo $pack_id; ?></div>
-                                                    <div><?php _e( 'Selected Pack ', 'wpuf' ); ?>: <strong><?php echo $pack->post_title; ?></strong></div>
-                                                    <div><?php _e( 'Pack Price ', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_cost"><?php echo wpuf_format_price( $pack_cost ); ?></strong></span></div>
+                                                    <div><?php _e( 'Selected Pack ', 'wp-user-frontend' ); ?>: <strong><?php echo $pack->post_title; ?></strong></div>
+                                                    <div><?php _e( 'Pack Price ', 'wp-user-frontend' ); ?>: <strong><span id="wpuf_pay_page_cost"><?php echo wpuf_format_price( $pack_cost ); ?></strong></span></div>
 
                                                     <?php do_action( 'wpuf_before_pack_payment_total' ); ?>
 
-                                                    <div><?php _e( 'Total', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo wpuf_format_price( $billing_amount ); ?></strong></span></div>
+                                                    <div><?php _e( 'Total', 'wp-user-frontend' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo wpuf_format_price( $billing_amount ); ?></strong></span></div>
                                                 <?php } ?>
                                             </div>
                                         </div>
@@ -195,11 +195,11 @@ class WPUF_Payment {
                                         <input type="text" name="coupon_code" size="20" class="wpuf-coupon-field">
                                         <input type="hidden" name="coupon_id" size="20" class="wpuf-coupon-id-field">
                                         <div>
-                                            <a href="#" data-pack_id="<?php echo $pack_id; ?>" class="wpuf-apply-coupon"><?php _e( 'Apply Coupon', 'wpuf' ); ?></a>
-                                            <a href="#" data-pack_id="<?php echo $pack_id; ?>" class="wpuf-copon-cancel"><?php _e( 'Cancel', 'wpuf' ); ?></a>
+                                            <a href="#" data-pack_id="<?php echo $pack_id; ?>" class="wpuf-apply-coupon"><?php _e( 'Apply Coupon', 'wp-user-frontend' ); ?></a>
+                                            <a href="#" data-pack_id="<?php echo $pack_id; ?>" class="wpuf-copon-cancel"><?php _e( 'Cancel', 'wp-user-frontend' ); ?></a>
                                         </div>
                                     </div>
-                                    <a href="#" class="wpuf-copon-show"><?php _e( 'Have a discount code?', 'wpuf' ); ?></a>
+                                    <a href="#" class="wpuf-copon-show"><?php _e( 'Have a discount code?', 'wp-user-frontend' ); ?></a>
 
                                     <?php } // coupon ?>
                                 </div>
@@ -225,18 +225,18 @@ class WPUF_Payment {
                                 ?>
                                 <div id="wpuf_type" style="display: none"><?php echo 'post'; ?></div>
                                 <div id="wpuf_id" style="display: none"><?php echo $post_id; ?></div>
-                                <div><?php _e( 'Post cost', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_cost"><?php echo wpuf_format_price( $post_cost ); ?></strong></span></div>
+                                <div><?php _e( 'Post cost', 'wp-user-frontend' ); ?>: <strong><span id="wpuf_pay_page_cost"><?php echo wpuf_format_price( $post_cost ); ?></strong></span></div>
 
                                 <?php do_action( 'wpuf_before_pack_payment_total' ); ?>
 
-                                <div><?php _e( 'Total', 'wpuf' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo wpuf_format_price( $billing_amount ); ?></strong></span></div>
+                                <div><?php _e( 'Total', 'wp-user-frontend' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo wpuf_format_price( $billing_amount ); ?></strong></span></div>
                             <?php } ?>
                             <?php wp_nonce_field( 'wpuf_payment_gateway' ) ?>
 
                             <?php do_action( 'wpuf_before_payment_gateway' ); ?>
 
                             <p>
-                                <label for="wpuf-payment-method"><?php _e( 'Choose Your Payment Method', 'wpuf' ); ?></label><br />
+                                <label for="wpuf-payment-method"><?php _e( 'Choose Your Payment Method', 'wp-user-frontend' ); ?></label><br />
 
                                 <ul class="wpuf-payment-gateways">
                                     <?php foreach ($gateways as $gateway_id => $gateway) { ?>
@@ -272,13 +272,13 @@ class WPUF_Payment {
                                 <?php if ( $pack_id ) { ?>
                                     <input type="hidden" name="pack_id" value="<?php echo $pack_id; ?>" />
                                 <?php } ?>
-                                <input type="submit" name="wpuf_payment_submit" class="wpuf-btn" value="<?php _e( 'Proceed', 'wpuf' ); ?>"/>
+                                <input type="submit" name="wpuf_payment_submit" class="wpuf-btn" value="<?php _e( 'Proceed', 'wp-user-frontend' ); ?>"/>
                             </p>
                         </form>
                         </div>
                     </div>
                 <?php } else { ?>
-                    <?php _e( 'No Payment gateway found', 'wpuf' ); ?>
+                    <?php _e( 'No Payment gateway found', 'wp-user-frontend' ); ?>
                 <?php } ?>
 
                 <?php
@@ -442,8 +442,8 @@ class WPUF_Payment {
      */
     function payment_notify_admin( $info ) {
         $headers = "From: " . get_bloginfo( 'name' ) . " <" . get_bloginfo( 'admin_email' ) . ">" . "\r\n\\";
-        $subject = sprintf( __( '[%s] Payment Received', 'wpuf' ), get_bloginfo( 'name' ) );
-        $msg = sprintf( __( 'New payment received at %s', 'wpuf' ), get_bloginfo( 'name' ) );
+        $subject = sprintf( __( '[%s] Payment Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
+        $msg = sprintf( __( 'New payment received at %s', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
 
         $receiver = get_bloginfo( 'admin_email' );
         wp_mail( $receiver, $subject, $msg, $headers );

@@ -55,12 +55,12 @@ class WPUF_User_Subscription {
         if ( ! isset( $this->pack['pack_id'] ) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
 
-            return new WP_Error( 'no-pack', sprintf( __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wpuf'), $pack_page ) );
+            return new WP_Error( 'no-pack', sprintf( __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend'), $pack_page ) );
         }
 
         // seems like the user has a pack, now check expiration
         if ( $this->expired() ) {
-            return new WP_Error( 'expired', __( 'The subscription pack has expired. Please buy a pack.', 'wpuf' ) );
+            return new WP_Error( 'expired', __( 'The subscription pack has expired. Please buy a pack.', 'wp-user-frontend' ) );
         }
 
         return $pack;
@@ -304,7 +304,7 @@ class WPUF_User_Subscription {
 
         $details_meta = WPUF_Subscription::init()->get_details_meta_value();
 
-        $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wpuf' );
+        $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wp-user-frontend' );
         if ( $pack->meta_value['recurring_pay'] == 'yes' ) {
             $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
             $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
@@ -315,11 +315,11 @@ class WPUF_User_Subscription {
 
         ?>
         <div class="wpuf_sub_info">
-            <h3><?php _e( 'Subscription Details', 'wpuf' ); ?></h3>
+            <h3><?php _e( 'Subscription Details', 'wp-user-frontend' ); ?></h3>
             <div class="wpuf-text">
-                <div><strong><?php _e( 'Subcription Name: ','wpuf' ); ?></strong><?php echo $pack->post_title; ?></div>
+                <div><strong><?php _e( 'Subcription Name: ','wp-user-frontend' ); ?></strong><?php echo $pack->post_title; ?></div>
                 <div>
-                    <strong><?php _e( 'Package & billing details: ', 'wpuf'); ?></strong>
+                    <strong><?php _e( 'Package & billing details: ', 'wp-user-frontend'); ?></strong>
 
                     <div class="wpuf-pricing-wrap">
                         <div class="wpuf-sub-amount">
@@ -330,7 +330,7 @@ class WPUF_User_Subscription {
 
                 </div>
                 <div>
-                    <strong><?php _e( 'Remaining post: ', 'wpuf'); ?></strong>
+                    <strong><?php _e( 'Remaining post: ', 'wp-user-frontend'); ?></strong>
                     <?php
                     foreach ($this->pack['posts'] as $key => $value) {
                         $value = intval( $value );
@@ -343,7 +343,7 @@ class WPUF_User_Subscription {
                         if ( ! $post_type_obj ) {
                             continue;
                         }
-                        $value = ( $value == '-1' ) ? __( 'Unlimited', 'wpuf' ) : $value;
+                        $value = ( $value == '-1' ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value;
                         ?>
                         <div><?php echo $post_type_obj->labels->name . ': ' . $value; ?></div>
                         <?php
@@ -358,7 +358,7 @@ class WPUF_User_Subscription {
 
                         ?>
                         <div class="wpuf-expire">
-                            <strong><?php echo _e( 'Expire date:', 'wpuf' ); ?></strong> <?php echo wpuf_get_date( $expire ); ?>
+                            <strong><?php echo _e( 'Expire date:', 'wp-user-frontend' ); ?></strong> <?php echo wpuf_get_date( $expire ); ?>
                         </div>
                         <?php
                     }
@@ -377,7 +377,7 @@ class WPUF_User_Subscription {
                     <input type="submit" name="wpuf_payment_cancel_submit" value="cancel">
                 </form>
                 <?php $subscription_page = wpuf_get_option( 'subscription_page','wpuf_payment' ); ?>
-                <a href="<?php echo get_permalink( $subscription_page ); ?>"><? _e( 'Change', 'wpuf'); ?></a>
+                <a href="<?php echo get_permalink( $subscription_page ); ?>"><? _e( 'Change', 'wp-user-frontend'); ?></a>
                 <?php
             }
         echo '</div>';

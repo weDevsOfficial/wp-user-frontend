@@ -46,7 +46,7 @@ class WPUF_Admin_Form {
         $capability = wpuf_admin_role();
 
         register_post_type( 'wpuf_forms', array(
-            'label'           => __( 'Forms', 'wpuf' ),
+            'label'           => __( 'Forms', 'wp-user-frontend' ),
             'public'          => false,
             'show_ui'         => false,
             'show_in_menu'    => false, //false,
@@ -66,25 +66,25 @@ class WPUF_Admin_Form {
                 'read_post'           => $capability,
             ),
             'labels' => array(
-                'name'               => __( 'Forms', 'wpuf' ),
-                'singular_name'      => __( 'Form', 'wpuf' ),
-                'menu_name'          => __( 'Forms', 'wpuf' ),
-                'add_new'            => __( 'Add Form', 'wpuf' ),
-                'add_new_item'       => __( 'Add New Form', 'wpuf' ),
-                'edit'               => __( 'Edit', 'wpuf' ),
-                'edit_item'          => __( 'Edit Form', 'wpuf' ),
-                'new_item'           => __( 'New Form', 'wpuf' ),
-                'view'               => __( 'View Form', 'wpuf' ),
-                'view_item'          => __( 'View Form', 'wpuf' ),
-                'search_items'       => __( 'Search Form', 'wpuf' ),
-                'not_found'          => __( 'No Form Found', 'wpuf' ),
-                'not_found_in_trash' => __( 'No Form Found in Trash', 'wpuf' ),
-                'parent'             => __( 'Parent Form', 'wpuf' ),
+                'name'               => __( 'Forms', 'wp-user-frontend' ),
+                'singular_name'      => __( 'Form', 'wp-user-frontend' ),
+                'menu_name'          => __( 'Forms', 'wp-user-frontend' ),
+                'add_new'            => __( 'Add Form', 'wp-user-frontend' ),
+                'add_new_item'       => __( 'Add New Form', 'wp-user-frontend' ),
+                'edit'               => __( 'Edit', 'wp-user-frontend' ),
+                'edit_item'          => __( 'Edit Form', 'wp-user-frontend' ),
+                'new_item'           => __( 'New Form', 'wp-user-frontend' ),
+                'view'               => __( 'View Form', 'wp-user-frontend' ),
+                'view_item'          => __( 'View Form', 'wp-user-frontend' ),
+                'search_items'       => __( 'Search Form', 'wp-user-frontend' ),
+                'not_found'          => __( 'No Form Found', 'wp-user-frontend' ),
+                'not_found_in_trash' => __( 'No Form Found in Trash', 'wp-user-frontend' ),
+                'parent'             => __( 'Parent Form', 'wp-user-frontend' ),
             ),
         ) );
 
         register_post_type( 'wpuf_profile', array(
-            'label'           => __( 'Registraton Forms', 'wpuf' ),
+            'label'           => __( 'Registraton Forms', 'wp-user-frontend' ),
             'public'          => false,
             'show_ui'         => false,
             'show_in_menu'    => false,
@@ -104,20 +104,20 @@ class WPUF_Admin_Form {
                 'read_post'           => $capability,
             ),
             'labels' => array(
-                'name'               => __( 'Forms', 'wpuf' ),
-                'singular_name'      => __( 'Form', 'wpuf' ),
-                'menu_name'          => __( 'Registration Forms', 'wpuf' ),
-                'add_new'            => __( 'Add Form', 'wpuf' ),
-                'add_new_item'       => __( 'Add New Form', 'wpuf' ),
-                'edit'               => __( 'Edit', 'wpuf' ),
-                'edit_item'          => __( 'Edit Form', 'wpuf' ),
-                'new_item'           => __( 'New Form', 'wpuf' ),
-                'view'               => __( 'View Form', 'wpuf' ),
-                'view_item'          => __( 'View Form', 'wpuf' ),
-                'search_items'       => __( 'Search Form', 'wpuf' ),
-                'not_found'          => __( 'No Form Found', 'wpuf' ),
-                'not_found_in_trash' => __( 'No Form Found in Trash', 'wpuf' ),
-                'parent'             => __( 'Parent Form', 'wpuf' ),
+                'name'               => __( 'Forms', 'wp-user-frontend' ),
+                'singular_name'      => __( 'Form', 'wp-user-frontend' ),
+                'menu_name'          => __( 'Registration Forms', 'wp-user-frontend' ),
+                'add_new'            => __( 'Add Form', 'wp-user-frontend' ),
+                'add_new_item'       => __( 'Add New Form', 'wp-user-frontend' ),
+                'edit'               => __( 'Edit', 'wp-user-frontend' ),
+                'edit_item'          => __( 'Edit Form', 'wp-user-frontend' ),
+                'new_item'           => __( 'New Form', 'wp-user-frontend' ),
+                'view'               => __( 'View Form', 'wp-user-frontend' ),
+                'view_item'          => __( 'View Form', 'wp-user-frontend' ),
+                'search_items'       => __( 'Search Form', 'wp-user-frontend' ),
+                'not_found'          => __( 'No Form Found', 'wp-user-frontend' ),
+                'not_found_in_trash' => __( 'No Form Found in Trash', 'wp-user-frontend' ),
+                'parent'             => __( 'Parent Form', 'wp-user-frontend' ),
             ),
         ) );
 
@@ -191,7 +191,7 @@ class WPUF_Admin_Form {
         ?>
 
         <a href="#wpuf-form-builder-notification" class="nav-tab">
-            <?php _e( 'Notification', 'wpuf' ); ?>
+            <?php _e( 'Notification', 'wp-user-frontend' ); ?>
         </a>
 
         <?php
@@ -224,12 +224,12 @@ class WPUF_Admin_Form {
     public function add_settings_tabs() {
         ?>
 
-            <a href="#wpuf-metabox-settings" class="nav-tab"><?php _e( 'Post Settings', 'wpuf' ); ?></a>
-            <a href="#wpuf-metabox-settings-update" class="nav-tab"><?php _e( 'Edit Settings', 'wpuf' ); ?></a>
-            <a href="#wpuf-metabox-submission-restriction" class="nav-tab"><?php _e( 'Submission Restriction', 'wpuf' ); ?></a>
-            <a href="#wpuf-metabox-settings-payment" class="nav-tab"><?php _e( 'Payment Settings', 'wpuf' ); ?></a>
-            <a href="#wpuf-metabox-settings-display" class="nav-tab"><?php _e( 'Display Settings', 'wpuf' ); ?></a>
-            <a href="#wpuf-metabox-post_expiration" class="nav-tab"><?php _e( 'Post Expiration', 'wpuf' ); ?></a>
+            <a href="#wpuf-metabox-settings" class="nav-tab"><?php _e( 'Post Settings', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-settings-update" class="nav-tab"><?php _e( 'Edit Settings', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-submission-restriction" class="nav-tab"><?php _e( 'Submission Restriction', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-settings-payment" class="nav-tab"><?php _e( 'Payment Settings', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-settings-display" class="nav-tab"><?php _e( 'Display Settings', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-post_expiration" class="nav-tab"><?php _e( 'Post Expiration', 'wp-user-frontend' ); ?></a>
 
             <?php do_action( 'wpuf_post_form_tab' ); ?>
 
@@ -291,11 +291,11 @@ class WPUF_Admin_Form {
         $subscriptions = WPUF_Subscription::init()->get_subscriptions();
 
         if ( ! $subscriptions ) {
-            printf( '<option>%s</option>', __( '- Select -', 'wpuf' ), 'wpuf' );
+            printf( '<option>%s</option>', __( '- Select -', 'wp-user-frontend' ), 'wpuf' );
             return;
         }
 
-        printf( '<option>%s</option>', __( '- Select -', 'wpuf' ) );
+        printf( '<option>%s</option>', __( '- Select -', 'wp-user-frontend' ) );
 
         foreach ( $subscriptions as $key => $subscription ) {
             ?>
@@ -329,13 +329,13 @@ class WPUF_Admin_Form {
 
         return array(
             array(
-                'title'     => __( 'Post Fields', 'wpuf' ),
+                'title'     => __( 'Post Fields', 'wp-user-frontend' ),
                 'id'        => 'post-fields',
                 'fields'    => $post_fields
             ),
 
             array(
-                'title'     => __( 'Taxonomies', 'wpuf' ),
+                'title'     => __( 'Taxonomies', 'wp-user-frontend' ),
                 'id'        => 'taxonomies',
                 'fields'    => array()
             )
@@ -437,7 +437,7 @@ class WPUF_Admin_Form {
                 class="btn"
                 id="wpuf-post-draft"
             >
-                <?php _e( 'Save Draft', 'wpuf' ); ?>
+                <?php _e( 'Save Draft', 'wp-user-frontend' ); ?>
             </a>
         <?php
     }
@@ -547,14 +547,14 @@ class WPUF_Admin_Form {
 
         return array(
             'template'      => 'post_title',
-            'title'         => __( 'Post Title', 'wpuf' ),
+            'title'         => __( 'Post Title', 'wp-user-frontend' ),
             'icon'          => 'header',
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'        => 'text',
                 'template'          => 'post_title',
                 'required'          => 'no',
-                'label'             => __( 'Post Title', 'wpuf' ),
+                'label'             => __( 'Post Title', 'wp-user-frontend' ),
                 'name'              => 'post_title',
                 'is_meta'           => 'no',
                 'help'              => '',
@@ -586,9 +586,9 @@ class WPUF_Admin_Form {
         $settings = array_merge( $settings, array(
             array(
                 'name'          => 'insert_image',
-                'title'         => __( 'Enable Image Insertion', 'wpuf' ),
+                'title'         => __( 'Enable Image Insertion', 'wp-user-frontend' ),
                 'type'          => 'checkbox',
-                'options'       => array( 'yes' => __( 'Enable image upload in post area', 'wpuf' ) ),
+                'options'       => array( 'yes' => __( 'Enable image upload in post area', 'wp-user-frontend' ) ),
                 'is_single_opt' => true,
                 'section'       => 'advanced',
                 'priority'      => 14,
@@ -597,14 +597,14 @@ class WPUF_Admin_Form {
 
         return array(
             'template'      => 'post_content',
-            'title'         => __( 'Post Body', 'wpuf' ),
+            'title'         => __( 'Post Body', 'wp-user-frontend' ),
             'icon'          => 'file-text',
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'       => 'textarea',
                 'template'         => 'post_content',
                 'required'         => 'no',
-                'label'            => __( 'Post Body', 'wpuf' ),
+                'label'            => __( 'Post Body', 'wp-user-frontend' ),
                 'name'             => 'post_content',
                 'is_meta'          => 'no',
                 'help'             => '',
@@ -643,14 +643,14 @@ class WPUF_Admin_Form {
 
         return array(
             'template'      => 'post_excerpt',
-            'title'         => __( 'Excerpt', 'wpuf' ),
+            'title'         => __( 'Excerpt', 'wp-user-frontend' ),
             'icon'          => 'compress',
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'       => 'textarea',
                 'template'         => 'post_excerpt',
                 'required'         => 'no',
-                'label'            => __( 'Excerpt', 'wpuf' ),
+                'label'            => __( 'Excerpt', 'wp-user-frontend' ),
                 'name'             => 'post_excerpt',
                 'is_meta'          => 'no',
                 'help'             => '',
@@ -683,35 +683,35 @@ class WPUF_Admin_Form {
         $settings = array_merge( $settings, array(
             array(
                 'name'          => 'button_label',
-                'title'         => __( 'Button Label', 'wpuf' ),
+                'title'         => __( 'Button Label', 'wp-user-frontend' ),
                 'type'          => 'text',
-                'default'       => __( 'Select Image', 'wpuf' ),
+                'default'       => __( 'Select Image', 'wp-user-frontend' ),
                 'section'       => 'basic',
                 'priority'      => 30,
-                'help_text'     => __( 'Enter a label for the Select button', 'wpuf' ),
+                'help_text'     => __( 'Enter a label for the Select button', 'wp-user-frontend' ),
             ),
             array(
                 'name'          => 'max_size',
-                'title'         => __( 'Max. file size', 'wpuf' ),
+                'title'         => __( 'Max. file size', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'advanced',
                 'priority'      => 20,
-                'help_text'     => __( 'Enter maximum upload size limit in KB', 'wpuf' ),
+                'help_text'     => __( 'Enter maximum upload size limit in KB', 'wp-user-frontend' ),
             )
         ) );
 
         return array(
             'template'      => 'featured_image',
-            'title'         => __( 'Featured Image', 'wpuf' ),
+            'title'         => __( 'Featured Image', 'wp-user-frontend' ),
             'icon'          => 'picture-o',
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'        => 'image_upload',
                 'template'          => 'featured_image',
                 'required'          => 'no',
-                'label'             => __( 'Featured Image', 'wpuf' ),
+                'label'             => __( 'Featured Image', 'wp-user-frontend' ),
                 'name'              => 'featured_image',
-                'button_label'      => __( 'Select Image', 'wpuf' ),
+                'button_label'      => __( 'Select Image', 'wp-user-frontend' ),
                 'is_meta'           => 'no',
                 'help'              => '',
                 'css'               => '',
@@ -738,13 +738,13 @@ class WPUF_Admin_Form {
 
         return array(
             'template'      => 'post_tags',
-            'title'         => __( 'Tags', 'wpuf' ),
+            'title'         => __( 'Tags', 'wp-user-frontend' ),
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'        => 'text',
                 'template'          => 'post_tags',
                 'required'          => 'no',
-                'label'             => __( 'Tags', 'wpuf' ),
+                'label'             => __( 'Tags', 'wp-user-frontend' ),
                 'name'              => 'tags',
                 'is_meta'           => 'no',
                 'help'              => '',
@@ -774,14 +774,14 @@ class WPUF_Admin_Form {
         $settings = array_merge( $settings, array(
             array(
                 'name'      => 'type',
-                'title'     => __( 'Type', 'wpuf' ),
+                'title'     => __( 'Type', 'wp-user-frontend' ),
                 'type'      => 'select',
                 'options'   => array(
-                    'select'        => __( 'Select', 'wpuf' ),
-                    'multiselect'   => __( 'Multi Select', 'wpuf' ),
-                    'checkbox'      => __( 'Checkbox', 'wpuf' ),
-                    'text'          => __( 'Text Input', 'wpuf' ),
-                    'ajax'          => __( 'Ajax', 'wpuf' ),
+                    'select'        => __( 'Select', 'wp-user-frontend' ),
+                    'multiselect'   => __( 'Multi Select', 'wp-user-frontend' ),
+                    'checkbox'      => __( 'Checkbox', 'wp-user-frontend' ),
+                    'text'          => __( 'Text Input', 'wp-user-frontend' ),
+                    'ajax'          => __( 'Ajax', 'wp-user-frontend' ),
                 ),
                 'section'   => 'advanced',
                 'priority'  => 23,
@@ -790,38 +790,38 @@ class WPUF_Admin_Form {
 
             array(
                 'name'          => 'first',
-                'title'         => __( 'Select Text', 'wpuf' ),
+                'title'         => __( 'Select Text', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'basic',
                 'priority'      => 13,
-                'help_text'     => __( "First element of the select dropdown. Leave this empty if you don't want to show this field", 'wpuf' ),
+                'help_text'     => __( "First element of the select dropdown. Leave this empty if you don't want to show this field", 'wp-user-frontend' ),
             ),
 
             array(
                 'name'          => 'show_inline',
-                'title'         => __( 'Show in inline list', 'wpuf' ),
+                'title'         => __( 'Show in inline list', 'wp-user-frontend' ),
                 'type'          => 'radio',
                 'options'       => array(
-                    'yes'   => __( 'Yes', 'wpuf' ),
-                    'no'    => __( 'No', 'wpuf' ),
+                    'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                    'no'    => __( 'No', 'wp-user-frontend' ),
                 ),
                 'default'       => 'no',
                 'inline'        => true,
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'Show this option in an inline list', 'wpuf' ),
+                'help_text'     => __( 'Show this option in an inline list', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'orderby',
-                'title'     => __( 'Order By', 'wpuf' ),
+                'title'     => __( 'Order By', 'wp-user-frontend' ),
                 'type'      => 'select',
                 'options'   => array(
-                    'name'          => __( 'Name', 'wpuf' ),
-                    'term_id'       => __( 'Term ID', 'wpuf' ), // NOTE: before 2.5 the key was 'id' not 'term_id'
-                    'slug'          => __( 'Slug', 'wpuf' ),
-                    'count'         => __( 'Count', 'wpuf' ),
-                    'term_group'    => __( 'Term Group', 'wpuf' ),
+                    'name'          => __( 'Name', 'wp-user-frontend' ),
+                    'term_id'       => __( 'Term ID', 'wp-user-frontend' ), // NOTE: before 2.5 the key was 'id' not 'term_id'
+                    'slug'          => __( 'Slug', 'wp-user-frontend' ),
+                    'count'         => __( 'Count', 'wp-user-frontend' ),
+                    'term_group'    => __( 'Term Group', 'wp-user-frontend' ),
                 ),
                 'section'   => 'advanced',
                 'priority'  => 24,
@@ -830,12 +830,12 @@ class WPUF_Admin_Form {
 
             array(
                 'name'      => 'order',
-                'title'     => __( 'Order', 'wpuf' ),
+                'title'     => __( 'Order', 'wp-user-frontend' ),
                 'type'      => 'radio',
                 'inline'    => true,
                 'options'   => array(
-                    'ASC'           => __( 'ASC', 'wpuf' ),
-                    'DESC'          => __( 'DESC', 'wpuf' ),
+                    'ASC'           => __( 'ASC', 'wp-user-frontend' ),
+                    'DESC'          => __( 'DESC', 'wp-user-frontend' ),
                 ),
                 'section'   => 'advanced',
                 'priority'  => 25,
@@ -844,12 +844,12 @@ class WPUF_Admin_Form {
 
             array(
                 'name'      => 'exclude_type',
-                'title'     => __( 'Selection Type', 'wpuf' ),
+                'title'     => __( 'Selection Type', 'wp-user-frontend' ),
                 'type'      => 'select',
                 'options'   => array(
-                    'exclude'       => __( 'Exclude', 'wpuf' ),
-                    'include'       => __( 'Include', 'wpuf' ),
-                    'child_of'      => __( 'Child of', 'wpuf' ),
+                    'exclude'       => __( 'Exclude', 'wp-user-frontend' ),
+                    'include'       => __( 'Include', 'wp-user-frontend' ),
+                    'child_of'      => __( 'Child of', 'wp-user-frontend' ),
                 ),
                 'section'   => 'advanced',
                 'priority'  => 26,
@@ -858,11 +858,11 @@ class WPUF_Admin_Form {
 
             array(
                 'name'      => 'exclude',
-                'title'     => __( 'Selection Terms', 'wpuf' ),
+                'title'     => __( 'Selection Terms', 'wp-user-frontend' ),
                 'type'      => 'multiselect',
                 'section'   => 'advanced',
                 'priority'  => 27,
-                'help_text' => __( 'Enter the term IDs as comma separated (without space) to exclude/include in the form.', 'wpuf' ),
+                'help_text' => __( 'Enter the term IDs as comma separated (without space) to exclude/include in the form.', 'wp-user-frontend' ),
                 'options'   => wpuf_get_terms( $tax_name ),
             ),
 
@@ -871,7 +871,7 @@ class WPUF_Admin_Form {
                 'type'          => 'checkbox',
                 'is_single_opt' => true,
                 'options'       => array(
-                    'yes'   => __( 'This taxonomy is a WooCommerce attribute', 'wpuf' )
+                    'yes'   => __( 'This taxonomy is a WooCommerce attribute', 'wp-user-frontend' )
                 ),
                 'section'       => 'advanced',
                 'priority'      => 28,
@@ -882,7 +882,7 @@ class WPUF_Admin_Form {
                 'type'          => 'checkbox',
                 'is_single_opt' => true,
                 'options'       => array(
-                    'yes'   => __( 'Visible on product page', 'wpuf' )
+                    'yes'   => __( 'Visible on product page', 'wp-user-frontend' )
                 ),
                 'section'       => 'advanced',
                 'priority'      => 29,
@@ -907,7 +907,7 @@ class WPUF_Admin_Form {
                 'width'             => 'small',
                 'css'               => '',
                 'type'              => 'select',
-                'first'             => __( '- select -', 'wpuf' ),
+                'first'             => __( '- select -', 'wp-user-frontend' ),
                 'show_inline'       => 'inline',
                 'orderby'           => 'name',
                 'order'             => 'ASC',
@@ -934,7 +934,7 @@ class WPUF_Admin_Form {
      */
     public function i18n( $i18n ) {
         return array_merge( $i18n, array(
-            'any_of_three_needed' => __( 'Post Forms must have either Post Title, Post Body or Excerpt field', 'wpuf' )
+            'any_of_three_needed' => __( 'Post Forms must have either Post Title, Post Body or Excerpt field', 'wp-user-frontend' )
         ) );
     }
 

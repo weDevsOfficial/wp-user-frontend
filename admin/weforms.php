@@ -1,15 +1,15 @@
 <div class="wrap about-wrap">
-    <h1><?php _e( 'weForms', 'wpuf' ); ?></h1>
+    <h1><?php _e( 'weForms', 'wp-user-frontend' ); ?></h1>
 
-    <p class="about-text"><?php _e( 'The Easiest &amp; Fastest Contact Form Plugin on WordPress', 'wpuf' ) ?></p>
+    <p class="about-text"><?php _e( 'The Easiest &amp; Fastest Contact Form Plugin on WordPress', 'wp-user-frontend' ) ?></p>
 
     <hr>
-    <p><?php _e( 'Quickly create rich contact forms to generate leads, taking feedbacks, onboarding visitors and flourishing <br /> your imagination! Comes with the best frontend post submission plugin for WordPress, WP User Frontend.', 'wpuf' ) ?>
+    <p><?php _e( 'Quickly create rich contact forms to generate leads, taking feedbacks, onboarding visitors and flourishing <br /> your imagination! Comes with the best frontend post submission plugin for WordPress, WP User Frontend.', 'wp-user-frontend' ) ?>
 
 
     <div class="install" id="wpuf-weforms-installer-notice" style="padding: 1em 0; position: relative;">
         <p>
-            <button id="wpuf-weforms-installer" class="button button-primary"><?php _e( 'Install Now', 'wpuf' ); ?></button>
+            <button id="wpuf-weforms-installer" class="button button-primary"><?php _e( 'Install Now', 'wp-user-frontend' ); ?></button>
         </p>
     </div>
 

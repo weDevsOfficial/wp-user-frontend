@@ -64,7 +64,7 @@ class WPUF_Whats_New {
      * @return void
      */
     public function register_menu() {
-        add_submenu_page( null, __( 'Whats New', 'wpuf' ), __( 'Whats New', 'wpuf' ), 'manage_options', 'whats-new-wpuf', array( $this, 'menu_page' ) );
+        add_submenu_page( null, __( 'Whats New', 'wp-user-frontend' ), __( 'Whats New', 'wp-user-frontend' ), 'manage_options', 'whats-new-wpuf', array( $this, 'menu_page' ) );
     }
 
     /**
@@ -97,13 +97,13 @@ class WPUF_Whats_New {
             </div>
 
             <div class="wpuf-whats-new-text">
-                <p><strong><?php printf( __( 'WP User Frontend - Version %s', 'wpuf' ), WPUF_VERSION ); ?></strong></p>
-                <p><?php printf( __( 'Welcome to the new version of WP User Frontend. See what\'s been changed in the <strong>%s</strong> version.', 'wpuf' ), WPUF_VERSION ); ?></strong></p>
+                <p><strong><?php printf( __( 'WP User Frontend - Version %s', 'wp-user-frontend' ), WPUF_VERSION ); ?></strong></p>
+                <p><?php printf( __( 'Welcome to the new version of WP User Frontend. See what\'s been changed in the <strong>%s</strong> version.', 'wp-user-frontend' ), WPUF_VERSION ); ?></strong></p>
             </div>
 
             <div class="wpuf-whats-new-actions">
-                <a href="<?php echo admin_url( 'index.php?page=whats-new-wpuf' ); ?>" class="button button-primary"><?php _e( 'What\'s New?', 'wpuf' ); ?></a>
-                <button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php _e( 'Dismiss this notice.', 'wpuf' ); ?></span></button>
+                <a href="<?php echo admin_url( 'index.php?page=whats-new-wpuf' ); ?>" class="button button-primary"><?php _e( 'What\'s New?', 'wp-user-frontend' ); ?></a>
+                <button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php _e( 'Dismiss this notice.', 'wp-user-frontend' ); ?></span></button>
             </div>
         </div>
 

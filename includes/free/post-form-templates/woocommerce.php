@@ -9,8 +9,8 @@ class WPUF_Post_Form_Template_WooCommerce extends WPUF_Post_Form_Template {
         parent::__construct();
 
         $this->enabled     = class_exists( 'WooCommerce' );
-        $this->title       = __( 'WooCommerce Product', 'wpuf' );
-        $this->description = __( 'Create a simple product form for WooCommerce.', 'wpuf' );
+        $this->title       = __( 'WooCommerce Product', 'wp-user-frontend' );
+        $this->description = __( 'Create a simple product form for WooCommerce.', 'wp-user-frontend' );
         $this->image       = WPUF_ASSET_URI . '/images/templates/woocommerce.png';
         $this->form_fields = array(
             array(

@@ -31,7 +31,7 @@ class WPUF_Ajax_Address_Form {
      */
     public function plugin_scripts() {
         wp_enqueue_script( 'wpuf-ajax-script', plugins_url( 'assets/js/billing-address.js', dirname( __FILE__ ) ), array('jquery'), false );
-        wp_localize_script( 'wpuf-ajax-script', 'ajax_object', array(  'ajaxurl' => admin_url( 'admin-ajax.php' ), 'fill_notice' => __( 'Some Required Fields are not filled!', 'wpuf' ) )  ) ;
+        wp_localize_script( 'wpuf-ajax-script', 'ajax_object', array(  'ajaxurl' => admin_url( 'admin-ajax.php' ), 'fill_notice' => __( 'Some Required Fields are not filled!', 'wp-user-frontend' ) )  ) ;
     }
 
     /**
@@ -144,7 +144,7 @@ class WPUF_Ajax_Address_Form {
                                 'id' => 'wpuf_biiling_country',
                                 'class' => 'wpuf_biiling_country',
                                 'chosen' => false,
-                                'placeholder' => __('Choose a country', 'wpuf')
+                                'placeholder' => __('Choose a country', 'wp-user-frontend')
                             ));
                             ?>
                         </td>
@@ -163,12 +163,12 @@ class WPUF_Ajax_Address_Form {
                                 'id' => 'wpuf_biiling_state',
                                 'class' => 'wpuf_biiling_state',
                                 'chosen' => false,
-                                'placeholder' => __('Choose a state', 'wpuf')
+                                'placeholder' => __('Choose a state', 'wp-user-frontend')
                             ));
                             ?>
                         </td>
                         <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo $add1_hide;?>">
-                            <div class="wpuf-label"><?php _e('Address Line 1 ', 'wpuf'); ?><?php echo $add1_req; ?></div>
+                            <div class="wpuf-label"><?php _e('Address Line 1 ', 'wp-user-frontend'); ?><?php echo $add1_req; ?></div>
                             <div class="wpuf-fields">
                                 <input type="text" class="input <?php echo $required; ?>" name="wpuf_biiling_add_line_1"
                                        id="wpuf_biiling_add_line_1"
@@ -176,7 +176,7 @@ class WPUF_Ajax_Address_Form {
                             </div>
                         </td>
                         <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo $add2_hide;?>">
-                            <div class="wpuf-label"><?php _e('Address Line 2 ', 'wpuf'); ?><?php echo $add2_req; ?></div>
+                            <div class="wpuf-label"><?php _e('Address Line 2 ', 'wp-user-frontend'); ?><?php echo $add2_req; ?></div>
                             <div class="wpuf-fields">
                                 <input type="text" class="input <?php echo $required; ?>" name="wpuf_biiling_add_line_2"
                                        id="wpuf_biiling_add_line_2"
@@ -184,14 +184,14 @@ class WPUF_Ajax_Address_Form {
                             </div>
                         </td>
                         <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo $city_hide; ?>">
-                            <div class="wpuf-label"><?php _e('City', 'wpuf'); ?><?php echo $city_req ?></div>
+                            <div class="wpuf-label"><?php _e('City', 'wp-user-frontend'); ?><?php echo $city_req ?></div>
                             <div class="wpuf-fields">
                                 <input type="text" class="input <?php echo $required; ?>" name="wpuf_biiling_city" id="wpuf_biiling_city"
                                        value="<?php echo $address_fields['city']; ?>"/>
                             </div>
                         </td>
                         <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo $zip_hide; ?>">
-                            <div class="wpuf-label"><?php _e('Postal Code/ZIP', 'wpuf'); ?><?php echo $zip_req ?></div>
+                            <div class="wpuf-label"><?php _e('Postal Code/ZIP', 'wp-user-frontend'); ?><?php echo $zip_req ?></div>
                             <div class="wpuf-fields">
                                 <input type="text" class="input <?php echo $required; ?>" name="wpuf_biiling_zip_code" id="wpuf_biiling_zip_code"
                                        value="<?php echo $address_fields['zip_code']; ?>"/>
@@ -199,7 +199,7 @@ class WPUF_Ajax_Address_Form {
                         </td>
                         <td class="<?php echo $required; ?>" class="wpuf-submit" style="display:none;">
                             <input type="submit" class="wpuf-btn" name="submit" id="wpuf-account-update-billing_address"
-                                   value="<?php _e('Update Billing Address', 'wpuf'); ?>"/>
+                                   value="<?php _e('Update Billing Address', 'wp-user-frontend'); ?>"/>
                         </td>
                     </tr>
 
@@ -237,7 +237,7 @@ class WPUF_Ajax_Address_Form {
                     'country'       => $_POST['wpuf_biiling_country']
                 );
                 update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
-                $msg = '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wpuf' ) . '</div>';
+                $msg = '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wp-user-frontend' ) . '</div>';
 
                 echo $msg;
                 exit();

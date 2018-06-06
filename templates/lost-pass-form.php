@@ -11,14 +11,14 @@ WPUF will always look in your theme's directory first, before using this default
 
 	<form name="lostpasswordform" id="lostpasswordform" action="" method="post">
 		<p>
-			<label for="wpuf-user_login"><?php _e( 'Username or E-mail:', 'wpuf' ); ?></label>
+			<label for="wpuf-user_login"><?php _e( 'Username or E-mail:', 'wp-user-frontend' ); ?></label>
 			<input type="text" name="user_login" id="wpuf-user_login" class="input" value="" size="20" />
 		</p>
 
 		<?php do_action( 'lostpassword_form' ); ?>
 
 		<p class="submit">
-			<input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Get New Password', 'wpuf' ); ?>" />
+			<input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Get New Password', 'wp-user-frontend' ); ?>" />
 			<input type="hidden" name="redirect_to" value="<?php echo WPUF_Simple_Login::get_posted_value( 'redirect_to' ); ?>" />
 			<input type="hidden" name="wpuf_reset_password" value="true" />
 			<input type="hidden" name="action" value="lostpassword" />

@@ -1,11 +1,11 @@
 <div class="wrap">
     <h2>
         <?php
-            _e( 'Post Forms', 'wpuf' );
+            _e( 'Post Forms', 'wp-user-frontend' );
 
             if ( current_user_can( wpuf_admin_role() ) ):
             ?>
-                <a href="<?php echo $add_new_page_url; ?>" id="new-wpuf-post-form" class="page-title-action add-form"><?php _e( 'Add Form', 'wpuf' ); ?></a>
+                <a href="<?php echo $add_new_page_url; ?>" id="new-wpuf-post-form" class="page-title-action add-form"><?php _e( 'Add Form', 'wp-user-frontend' ); ?></a>
             <?php
             endif;
         ?>
@@ -20,7 +20,7 @@
                 <?php
                     $wpuf_post_form = new WPUF_Admin_Post_Forms_List_Table();
                     $wpuf_post_form->prepare_items();
-                    $wpuf_post_form->search_box( __( 'Search Forms', 'wpuf' ), 'wpuf-post-form-search' );
+                    $wpuf_post_form->search_box( __( 'Search Forms', 'wp-user-frontend' ), 'wpuf-post-form-search' );
 
                     if ( current_user_can( wpuf_admin_role() ) ) {
                         $wpuf_post_form->views();
@@ -36,7 +36,7 @@
     <div class="wpuf-footer-help">
         <span class="wpuf-footer-help-content">
             <span class="dashicons dashicons-editor-help"></span>
-            <?php printf( __( 'Learn more about <a href="%s" target="_blank">Frontend Posting</a>', 'wpuf' ), 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-frontend-posting' ); ?>
+            <?php printf( __( 'Learn more about <a href="%s" target="_blank">Frontend Posting</a>', 'wp-user-frontend' ), 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-frontend-posting' ); ?>
         </span>
     </div>
 </div>

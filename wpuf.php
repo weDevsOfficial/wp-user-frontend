@@ -507,6 +507,10 @@ final class WP_User_Frontend {
             'word_limit'    => __( 'Word limit reached', 'wpuf' )
         )) );
 
+        wp_localize_script( 'wpuf-subscriptions', 'wpuf_subscription', apply_filters( 'wpuf_subscription_js_data' , array(
+            'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wpuf' ),
+        )) );
+
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
 			'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
 			'nonce'      => wp_create_nonce( 'wpuf_nonce' ),

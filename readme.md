@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership  
 **Requires at least:** 4.0  
-**Tested up to:** 4.9.4  
+**Tested up to:** 4.9.6  
 **Requires PHP:** 5.4  
-**Stable tag:** trunk  
+**Stable tag:** 2.8.9  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -170,6 +170,20 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v2.8.9 (6 June, 2018) ###
+
+* **New:** Added functionality to export and erase WP User Frontend Data.
+* **New:** Added billing address customizer.
+* **New:** Changed plugin text-domain to 'wp-user-frontend' from 'wpuf'.
+* **Improved:** Some responsive adjustments are made in payment page.
+* **Improved:** Some scripts and styles were loading in all pages, it is fixed now.
+* **Improved:** Fixed warning on dashboard for custom post types with no label.
+* **Fix:** Images were not showing after upload in safari, it is fixed now.
+* **Fix:** Posts cannot be updated after changing post images, it is fixed now.
+* **Fix:** Fixed getting fatal error when submitting post with image in some cases.
+* **Fix:** Fixed billing amount not showing when assign pack from backend.
+* **Fix:** Fixed some translations issues.
 
 ### v2.8.8 (16 May, 2018) ###
 

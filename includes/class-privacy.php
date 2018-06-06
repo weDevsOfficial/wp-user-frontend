@@ -13,7 +13,7 @@ Class WPUF_Privacy {
     public function __construct(){
         add_action( 'admin_init', array( $this, 'add_privacy_message' ) );
         add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'register_exporters' ), 10 );
-//        add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'register_erasers' ), 10 );
+        add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'register_erasers' ), 10 );
 
         add_filter( 'wpuf_privacy_user_data', array( $this, 'export_billing_address' ), 5, 3 );
     }
@@ -199,9 +199,16 @@ Class WPUF_Privacy {
             );
         }
 
+        $posts     = self::get_post_data( $email_address, $page );
+        $post_ids  = wp_list_pluck( $posts, 'id' );
+
+        global $wpdb;
+        $ids = sprintf( '(%s)', implode(',', $post_ids) );
+        $query = "Update `$wpdb->posts` Set `post_author` = 0 WHERE `ID` in $ids";
+        $wpdb->query( $query );
 
         $erased = apply_filters( 'wpuf_erase_user_data', array(
-            'items_removed'  => false,
+            'items_removed'  => true,
             'items_retained' => false,
             'messages'       => array(),
             'done'           => true,

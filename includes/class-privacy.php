@@ -32,52 +32,58 @@ Class WPUF_Privacy {
         $content = '
 			<div contenteditable="false">' .
             '<p class="wp-policy-help">' .
-            __( 'This sample language includes the basics around what personal data your site may be collecting, storing and sharing, as well as who may have access to that data. Depending on what settings are enabled and which additional plugins are used, the specific information shared by your site will vary. We recommend consulting with a lawyer when deciding what information to disclose on your privacy policy.', 'wp-user-frontend' ) .
+            __( 'This sample policy includes the basics around what personal data you may be collecting, storing and sharing, as well as who may have access to that data. Depending on what settings are enabled and which additional plugins are used, the specific information shared by your form will vary. We recommend consulting with a lawyer when deciding what information to disclose on your privacy policy.', 'wpuf' ) .
             '</p>' .
             '</div>' .
-            '<p>' . __( 'We collect information about you during the checkout process on our site.', 'wp-user-frontend' ) . '</p>' .
-            '<h2>' . __( 'What we collect and store', 'wp-user-frontend' ) . '</h2>' .
-            '<p>' . __( 'While you visit our , we’ll track:', 'wp-user-frontend' ) . '</p>' .
+            '<p>' . __( 'We collect information about you during the form submission process on our WordPress website.', 'wpuf' ) . '</p>' .
+            '<h2>' . __( 'What we collect and store', 'wpuf' ) . '</h2>' .
+            '<p>' . __( 'While you visit our , we’ll track:', 'wpuf' ) . '</p>' .
             '<ul>' .
-            '<li>' . __( 'Products you’ve viewed:  we’ll use this to, for example, show you products you’ve recently viewed', 'wp-user-frontend' ) . '</li>' .
-            '<li>' . __( 'Location, IP address and browser type: we’ll use this for purposes like estimating taxes and shipping', 'wp-user-frontend' ) . '</li>' .
-            '<li>' . __( 'Shipping address: we’ll ask you to enter this so we can, for instance, estimate shipping before you place an order, and send you the order!', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Form Fields Data: Forms Fields data includes the available field types when creating a form. We’ll use this to, for example, collect informations like Name, Email and other available fields.', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Location, IP address and browser type: we’ll use this for purposes like estimating taxes and shipping. Also, for reducing fraudulent activities and prevent identity theft while placing orders', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Transaction Details: we’ll ask you to enter this so we can, for instance, provide & regulate subscription packs that you bought and keep track of your payment details for subscription packs!', 'wpuf' ) . '</li>' .
             '</ul>' .
-            '<p>' . __( 'We’ll also use cookies to keep track of cart contents while you’re browsing our .', 'wp-user-frontend' ) . '</p>' .
+            '<p>' . __( 'We’ll also use cookies to keep track of form elements while you’re browsing our site.', 'wpuf' ) . '</p>' .
             '<div contenteditable="false">' .
-            '<p class="wp-policy-help">' . __( 'Note: you may want to further detail your cookie policy, and link to that section from here.', 'wp-user-frontend' ) . '</p>' .
+            '<p class="wp-policy-help">' . __( 'Note: you may want to further detail your cookie policy, and link to that section from here.', 'wpuf' ) . '</p>' .
             '</div>' .
-            '<p>' . __( 'When you purchase from us, we’ll ask you to provide information including your name, billing address, shipping address, email address, phone number, credit card/payment details and optional account information like username and password. We’ll use this information for purposes, such as, to:', 'wp-user-frontend' ) . '</p>' .
+            '<p>' . __( 'When you fill up a form, we’ll ask you to provide information including your name, billing address, shipping address, email address, phone number, credit card/payment details and optional account information like username and password and any other form fields found in the form building options. We’ll use this information for purposes, such as, to:', 'wpuf' ) . '</p>' .
             '<ul>' .
-            '<li>' . __( 'Send you information about your account and order', 'wp-user-frontend' ) . '</li>' .
-            '<li>' . __( 'Respond to your requests, including refunds and complaints', 'wp-user-frontend' ) . '</li>' .
-            '<li>' . __( 'Process payments and prevent fraud', 'wp-user-frontend' ) . '</li>' .
-            '<li>' . __( 'Set up your account for our site', 'wp-user-frontend' ) . '</li>' .
-            '<li>' . __( 'Comply with any legal obligations we have, such as calculating taxes', 'wp-user-frontend' ) . '</li>' .
-            '<li>' . __( 'Improve our site offerings', 'wp-user-frontend' ) . '</li>' .
-            '<li>' . __( 'Send you marketing messages, if you choose to receive them', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Send you information about your account and order', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Respond to your requests, including transaction details and complaints', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Process payments and prevent fraud', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Set up your account', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Comply with any legal obligations we have, such as calculating taxes', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Improve our form offerings', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Send you marketing messages, if you choose to receive them', 'wpuf' ) . '</li>' .
             '</ul>' .
-            '<p>' . __( 'If you create an account, we will store your name, address, email and phone number, which will be used to populate the checkout for future orders.', 'wp-user-frontend' ) . '</p>' .
-            '<p>' . __( 'We generally store information about you for as long as we need the information for the purposes for which we collect and use it, and we are not legally required to continue to keep it. For example, we will store order information for XXX years for tax and accounting purposes. This includes your name, email address and billing and shipping addresses.', 'wp-user-frontend' ) . '</p>' .
-            '<p>' . __( 'We will also store comments or reviews, if you choose to leave them.', 'wp-user-frontend' ) . '</p>' .
-            '<h2>' . __( 'Who on our team has access', 'wp-user-frontend' ) . '</h2>' .
-            '<p>' . __( 'Members of our team have access to the information you provide us. For example, both Administrators and Shop Managers can access:', 'wp-user-frontend' ) . '</p>' .
+            '<p>' . __( 'If you create an account, we will store your name, address, email and phone number, which will be used to populate the form fields for future submissions.', 'wpuf' ) . '</p>' .
+            '<p>' . __( 'We generally store information about you for as long as we need the information for the purposes for which we collect and use it, and we are not legally required to continue keeping it. For example, we will store form submission information for XXX years for tax, accounting and marketing purposes. This includes your name, email address and billing and shipping addresses.', 'wpuf' ) . '</p>' .
+            '<h2>' . __( 'Who on our team has access', 'wpuf' ) . '</h2>' .
+            '<p>' . __( 'Members of our team have access to the information you provide us. For example, Administrators and Editors and any body else who has permission can access:', 'wpuf' ) . '</p>' .
             '<ul>' .
-            '<li>' . __( 'Order information like what was purchased, when it was purchased and where it should be sent, and', 'wp-user-frontend' ) . '</li>' .
-            '<li>' . __( 'Customer information like your name, email address, and billing and shipping information.', 'wp-user-frontend' ) . '</li>' .
+            '<li>' . __( 'Form submission information and other details related to it', 'wpuf' ) . '</li>' .
+            '<li>' . __( 'Customer information like your name, email address, and billing and shipping information.', 'wpuf' ) . '</li>' .
             '</ul>' .
-            '<p>' . __( 'Our team members have access to this information to help fulfill orders, process refunds and support you.', 'wp-user-frontend' ) . '</p>' .
-            '<h2>' . __( 'What we share with others', 'wp-user-frontend' ) . '</h2>' .
+            '<p>' . __( 'Our team members have access to this information to help fulfill transactions and support you.', 'wpuf' ) . '</p>' .
+            '<h2>' . __( 'What we share with others', 'wpuf' ) . '</h2>' .
             '<div contenteditable="false">' .
-            '<p class="wp-policy-help">' . __( 'In this section you should list who you’re sharing data with, and for what purpose. This could include, but may not be limited to, analytics, marketing, payment gateways, shipping providers, and third party embeds.', 'wp-user-frontend' ) . '</p>' .
+            '<p class="wp-policy-help">' . __( 'In this section you should list who you’re sharing data with, and for what purpose. This could include, but may not be limited to, analytics, marketing, payment gateways, shipping providers, and third party embeds.', 'wpuf' ) . '</p>' .
             '</div>' .
-            '<p>' . __( 'We share information with third parties who help us provide our orders and store services to you; for example --', 'wp-user-frontend' ) . '</p>' .
-            '<h3>' . __( 'Payments', 'wp-user-frontend' ) . '</h3>' .
+            '<p>' . __( 'We share information with third parties who help us provide our orders and store services to you; for example --', 'wpuf' ) . '</p>' .
+            '<h3>' . __( 'Payments', 'wpuf' ) . '</h3>' .
             '<div contenteditable="false">' .
-            '<p class="wp-policy-help">' . __( 'In this subsection you should list which third party payment processors you’re using to take payments on your site since these may handle customer data. We’ve included PayPal as an example, but you should remove this if you’re not using PayPal.', 'wp-user-frontend' ) . '</p>' .
+            '<p class="wp-policy-help">' . __( 'In this subsection you should list which third party payment processors you’re using to take payments on your site since these may handle customer data. We’ve included PayPal as an example, but you should remove this if you’re not using PayPal.', 'wpuf' ) . '</p>' .
             '</div>' .
-            '<p>' . __( 'We accept payments through PayPal. When processing payments, some of your data will be passed to PayPal, including information required to process or support the payment, such as the purchase total and billing information.', 'wp-user-frontend' ) . '</p>' .
-            '<p>' . __( 'Please see the <a href="https://www.paypal.com/us/webapps/mpp/ua/privacy-full">PayPal Privacy Policy</a> for more details.', 'wp-user-frontend' ) . '</p>';
+            '<p>' . __( 'We accept payments through PayPal. When processing payments, some of your data will be passed to PayPal, including information required to process or support the payment, such as the purchase total and billing information.', 'wpuf' ) . '</p>' .
+            '<p>' . __( 'Please see the <a href="https://www.paypal.com/us/webapps/mpp/ua/privacy-full">PayPal Privacy Policy</a> for more details.', 'wpuf' ) . '</p>'.
+            '<p>' . __( 'Also, we accept payments through Stripe. When processing payments, some of your data will be passed to Stripe, including information required to process or support the payment, such as the purchase total and billing information.', 'wpuf' ) . '</p>' .
+            '<p>' . __( 'Please see the <a href="https://stripe.com/us/privacy">Stripe Privacy Policy</a> for more details.', 'wpuf' ) . '</p>'.
+            '<h3>' . __( 'Available Modules', 'wpuf' ) . '</h3>' .
+            '<p>' . __( 'In this subsection you should list which third party modules you’re using to increase the functionality of your created forms using WP User Frontend since these may handle customer data.', 'wpuf' ) . '</p>' .
+            '<p>' . __( 'WP User Frontend Pro comes with support for modules like MailChimp, ConvertKit, Stipe, Paid Membership Pro, MailPoet, Zapier, GetResponse, MailPoet 3, Campaign Monitor, Social Login, BuddyPress. Please note any future modules that will be added will have some data transferred to their own platform which falls in their own data policy. ', 'wpuf' ) . '</p>' .
+            '<p>' . __( 'As an example while using MailChimp for your marketing email automation service by integrating it with WP User Frontend, some of your data will be passed to MailChimp, including information required to process or support the email marketing services, such as name, email address and any other information that you intend to pass or collect including all collected information through subscription. ', 'wpuf' ) . '</p>' .
+            '<p>' . __( 'Please see the <a href="https://mailchimp.com/legal/privacy/">MailChimp Privacy Policy</a> for more details.', 'wpuf' ) . '</p>';
 
         return apply_filters( 'wpuf_privacy_policy_content', $content );
     }

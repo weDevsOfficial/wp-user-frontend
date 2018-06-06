@@ -327,6 +327,7 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li {
   border: 1px solid #eee;
   padding: 5px;
   width: 150px;
+  height: 150px;
   margin-right: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -620,7 +621,6 @@ ul.wpuf-form:not(.form-label-left) .wpuf-submit .wpuf-label {
   border-bottom: 1px solid #eee;
 }
 .wpuf-coupon-info-wrap .wpuf-pack-info h3 a {
-  float: right;
   text-decoration: none;
   background: #64C3DE;
   color: #fff;
@@ -1285,7 +1285,6 @@ table#wpuf-address-country-state td {
 .wpuf-image-wrap :not(.attachment-name img) {
   position: absolute;
   width: 100%;
-  opacity: 0;
   transition: .3s;
 }
 li.wpuf-image-wrap.thumbnail {
@@ -1302,4 +1301,15 @@ li.wpuf-image-wrap.thumbnail .caption {
 }
 li.wpuf-image-wrap.thumbnail:hover .caption {
   display: block;
+}
+@media (min-width: 480px) {
+  .row {
+    width: 100%;
+    display: table;
+    table-layout: auto;
+  }
+  .col {
+    width: 50%;
+    display: table-cell;
+  }
 }

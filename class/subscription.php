@@ -450,11 +450,11 @@ class WPUF_Subscription {
         $current_pack     = $current_user->subscription()->current_pack();
         $has_post         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-        if ( $force_pack && is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
+        if ( $payment_options && $force_pack && is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
             $postdata['post_status'] = 'pending';
         }
 
-        if ( !$force_pack && ( $pay_per_post || ( $fallback_cost && !$has_post )))  {
+        if ( $payment_options && !$force_pack && ( $pay_per_post || ( $fallback_cost && !$has_post )))  {
             $postdata['post_status'] = 'pending';
         }
 
@@ -836,14 +836,14 @@ class WPUF_Subscription {
             $trial_des = __( sprintf( 'Trial available for first %s %s', $pack->meta_value['trial_duration'], $duration ), 'wpuf' );
         }
 
-        $label       = wpuf_get_option( 'logged_in_label','subscription_settings', false );
+        $label       = wpuf_get_option( 'logged_in_label','wpuf_subscription_settings', false );
         $button_name = $label ? $label : __('Buy Now', 'wpuf');
 
         if ( ! is_user_logged_in() ) {
-            $label = wpuf_get_option( 'logged_out_label','subscription_settings', false );
+            $label = wpuf_get_option( 'logged_out_label','wpuf_subscription_settings', false );
             $button_name = $label ? $label : __( 'Sign Up', 'wpuf' );
         } else if ( $billing_amount == '0.00' ) {
-            $label = wpuf_get_option( 'free_label','subscription_settings', false );
+            $label = wpuf_get_option( 'free_label','wpuf_subscription_settings', false );
             $button_name = $label ? $label : __( 'Free', 'wpuf' );
         }
 

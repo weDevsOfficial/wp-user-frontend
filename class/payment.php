@@ -127,19 +127,26 @@ class WPUF_Payment {
                 ?>
                 <?php if ( count( $gateways ) ) {
                     ?>
-                    <div class="wpuf-payment-page-wrap">
-                        <div class="wpuf-bill-addr-wrap" style="width: 40%; display: inline-block;">
-                            <div class="wpuf-bill-addr-info">
-                                <h3> <?php _e( 'Billing Address', 'wpuf' ); ?> </h3>
-                                <div class="wpuf-bill_addr-inner">
-                                    <?php
-                                    $add_form = new WPUF_Ajax_Address_Form( '100' );
-                                    $add_form->wpuf_ajax_address_form();
-                                    ?>
+                    <div class="wpuf-payment-page-wrap row">
+                        <?php
+                        $pay_page_style = "";
+                        ?>
+                        <div class="wpuf-bill-addr-wrap col">
+                            <?php if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
+                                $pay_page_style = "vertical-align:top; margin-left: 20px; display: inline-block;";
+                                ?>
+                                <div class="wpuf-bill-addr-info">
+                                    <h3> <?php _e( 'Billing Address', 'wpuf' ); ?> </h3>
+                                    <div class="wpuf-bill_addr-inner">
+                                        <?php
+                                        $add_form = new WPUF_Ajax_Address_Form();
+                                        $add_form->wpuf_ajax_address_form();
+                                        ?>
+                                    </div>
                                 </div>
-                            </div>
+                            <?php } ?>
                         </div>
-                        <div class="wpuf-payment-gateway-wrap" style="width: 40%; vertical-align:top; margin-left: 20px; display: inline-block;">
+                        <div class="wpuf-payment-gateway-wrap" style="<?php echo $pay_page_style; ?>">
                         <form id="wpuf-payment-gateway" action="" method="POST">
 
                             <?php if ( $pack_id ) {
@@ -151,13 +158,13 @@ class WPUF_Payment {
                                 <input type="hidden" name="user_id" value="<?php echo $current_user->ID; ?>">
                                 <?php } ?>
 
-                                <div class="wpuf-coupon-info-wrap">
+                                <div class="wpuf-coupon-info-wrap col">
                                     <div class="wpuf-coupon-info">
                                         <div class="wpuf-pack-info">
-                                            <h3>
+                                            <h3 class="col">
                                                 <?php _e( 'Pricing & Plans', 'wpuf' ); ?>
 
-                                                <a href="<?php echo wpuf_get_subscription_page_url(); ?>"><?php _e( 'Change Pack', 'wpuf' ); ?></a>
+                                                <a style="white-space: nowrap" href="<?php echo wpuf_get_subscription_page_url(); ?>"><?php _e( 'Change Pack', 'wpuf' ); ?></a>
                                             </h3>
                                             <div class="wpuf-subscription-error"></div>
 
@@ -411,9 +418,8 @@ class WPUF_Payment {
             $data['tax'] = $data['cost'] - $data['subtotal'];
         }
 
-        if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
-            $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );
-            $data['payer_address'] = serialize( $address_fields );
+        if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
+            $data['payer_address'] = wpuf_get_user_address();
         }
 
         if ( !$result ) {

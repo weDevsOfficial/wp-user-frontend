@@ -246,6 +246,7 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/includes/class-billing-address.php';
         include_once WPUF_ROOT . '/includes/class-gutenblock.php';
         include_once WPUF_ROOT . '/includes/class-form-preview.php';
+        include_once WPUF_ROOT . '/includes/class-customizer.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
@@ -307,6 +308,7 @@ final class WP_User_Frontend {
         $this->container['forms']                   = new WPUF_Form_Manager();
         $this->container['preview']                 = new WPUF_Form_Preview();
         $this->container['block']                   = new WPUF_Form_Block();
+        $this->container['customize']               = new WPUF_Customizer_Options();
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();
@@ -505,6 +507,10 @@ final class WP_User_Frontend {
             'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
             'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
             'word_limit'    => __( 'Word limit reached', 'wpuf' )
+        )) );
+
+        wp_localize_script( 'wpuf-subscriptions', 'wpuf_subscription', apply_filters( 'wpuf_subscription_js_data' , array(
+            'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wpuf' ),
         )) );
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(

@@ -357,7 +357,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude      = $attr['exclude'];
-    
+
     if ( $exclude_type == 'child_of' ) {
       $exclude = $exclude[0];
     }
@@ -841,8 +841,9 @@ function wpuf_show_custom_fields( $content ) {
                     } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value ) ) {
 
                         if ( !empty( $value[0] ) ) {
-                            $modified_value = implode( $separator, $value[0] );
-                            
+                            $glue = array( '| ', '', );
+                            $modified_value = implode( $glue, $value[0] );
+
                             if ( $modified_value ) {
                                $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
                             }
@@ -2775,7 +2776,7 @@ function wpuf_get_user_address() {
             $countries_obj = new WC_Countries();
             $countries_array = $countries_obj->get_countries();
             $country_states_array = $countries_obj->get_states();
-            $woo_address['state'] = $country_states_array[$woo_address['country']][$woo_address['state']];
+            $woo_address['state'] = isset( $country_states_array[$woo_address['country']][$woo_address['state']] ) ? $country_states_array[$woo_address['country']][$woo_address['state']] : '';
             $woo_address['state'] = strtolower( str_replace( ' ', '', $woo_address['state'] ) );
 
             if ( !empty( $woo_address ) ) {
@@ -2817,3 +2818,27 @@ function wpuf_settings_multiselect( $args ) {
 
     echo $html;
 }
+
+/**
+ * Filters custom avatar url
+ *
+ * @param array $args
+ */
+function wpuf_get_custom_avatar( $args, $id_or_email ) {
+
+    $user_id = get_current_user_id();
+
+    if ( email_exists( $id_or_email ) ) {
+        $user_id = email_exists( $id_or_email );
+    }
+
+    if ( $user_id ) {
+        $custom_avatar_url = get_user_meta( $user_id, 'user_avatar', true );
+    }
+    if ( !empty( $custom_avatar_url )) {
+        $args['url'] = $custom_avatar_url;
+    }
+
+    return $args;
+}
+add_filter( 'get_avatar_data', 'wpuf_get_custom_avatar', 10, 2 );

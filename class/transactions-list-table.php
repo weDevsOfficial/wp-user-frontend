@@ -324,8 +324,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Accept Transaction
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'accept' ) 
-            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'accept' ) 
+        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'accept' )
+            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'accept' )
         ) {
             if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-accept-transaction' ) ) {
                 return false;
@@ -351,7 +351,10 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                         break;
                 }
 
-                $payer_address = wpuf_get_user_address();
+                $payer_address = '';
+                if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
+                    $payer_address = wpuf_get_user_address();
+                }
 
                 $transaction = array(
                     'user_id'          => $info['user_info']['id'],
@@ -392,8 +395,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Bulk Accept Transaction
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-accept' ) 
-            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-accept' ) 
+        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-accept' )
+            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-accept' )
         ) {
             if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-transactions' ) ) {
                 return false;
@@ -427,7 +430,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                         'user_id'          => $info['user_info']['id'],
                         'status'           => 'completed',
                         'subtotal'         => $info['subtotal'],
-                        'tax'              => $info['tax'], 
+                        'tax'              => $info['tax'],
                         'cost'             => $info['price'],
                         'post_id'          => $post_id,
                         'pack_id'          => $pack_id,
@@ -445,7 +448,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                     wp_delete_post( $id, true );
                 }
             }
-            
+
             wp_redirect( $page_url );
             exit;
         }

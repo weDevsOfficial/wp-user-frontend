@@ -832,8 +832,8 @@ class WPUF_Subscription {
         }
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' && $pack->meta_value['trial_status'] == 'yes' ) {
-            $duration = _n( $pack->meta_value['trial_duration_type'], $pack->meta_value['trial_duration_type'].'s', $pack->meta_value['trial_duration'], 'wp-user-frontend'  );
-            $trial_des = __( sprintf( 'Trial available for first %s %s', $pack->meta_value['wp-user-frontend'], $duration ), 'wpuf' );
+            $duration  = _n( $pack->meta_value['trial_duration_type'], $pack->meta_value['trial_duration_type'].'s', $pack->meta_value['trial_duration'], 'wp-user-frontend'  );
+            $trial_des = sprintf( __( 'Trial available for first %s %s','wp-user-frontend' ), $pack->meta_value['trial_duration'], $duration );
         }
 
         $label       = wpuf_get_option( 'logged_in_label','wpuf_subscription_settings', false );

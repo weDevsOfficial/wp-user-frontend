@@ -5,6 +5,11 @@ $changelog = array(
         'released' => '2018-06-06',
         'changes' => array(
             array(
+                'title'       => __( 'Changed text domain to `wp-user-frontend` from `wpuf`  ', 'wp-user-frontend' ),
+                'type'        => 'Improvement',
+                'description' => __( 'If you are using other language than English. Please <b>rename</b> your <i>.po and .mo </i> files to `wp-user-frontend_` from `wpuf_` <br> This change was made to support translations from translate.wordpress.org', 'wp-user-frontend' )
+            ),
+            array(
                 'title'       => __( 'Added WP User Frontend Data export and erase functionality.', 'wp-user-frontend' ),
                 'type'        => 'New',
                 'description' => __( 'Added functionality to export WP User Frontend Data to comply with GDPR.', 'wp-user-frontend' )

@@ -1,6 +1,37 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.8.9',
+        'released' => '2018-06-06',
+        'changes' => array(
+            array(
+                'title'       => __( 'Added WP User Frontend Data export and erase functionality.', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'Added functionality to export WP User Frontend Data to comply with GDPR.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Added billing address customizer.', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'Added customizer options for billing address in payment page.', 'wp-user-frontend' ),
+            ),
+            array(
+                'title'       => __( 'Make the payment page responsive.', 'wp-user-frontend' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Some css adjustments are made in payment page to make it responsive.', 'wp-user-frontend' ),
+            ),
+            array(
+                'title'       => __( 'Fixed image upload issue in Safari.', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Images were not showing after upload in safari, it is fixed now.', 'wp-user-frontend' ),
+            ),
+            array(
+                'title'       => __( 'Post update issue after updating or removing post images.', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Posts cannot be updated after updating or removing post images, it is fixed now.', 'wp-user-frontend' ),
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 2.8.8',
         'released' => '2018-05-16',
         'changes' => array(

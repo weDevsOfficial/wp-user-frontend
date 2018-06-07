@@ -1327,7 +1327,7 @@ class WPUF_Render_Form {
             $field_size    = !empty( $attr['width'] ) ? ' field-size-' . $attr['width'] : '';
 
             echo '</li>';
-            echo '<li class="wpuf-el password-repeat ' . $field_size . '" data-label="' . esc_attr( 'Confirm Password', 'wpuf' ) . '">';
+            echo '<li class="wpuf-el password-repeat ' . $field_size . '" data-label="' . esc_attr( __('Confirm Password', 'wp-user-frontend') ) . '">';
 
             $this->label( array('name' => 'pass2', 'label' => $attr['re_pass_label'], 'required' => $post_id ? 'no' : 'yes') );
             ?>

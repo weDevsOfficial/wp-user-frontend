@@ -291,7 +291,7 @@ class WPUF_Admin_Form {
         $subscriptions = WPUF_Subscription::init()->get_subscriptions();
 
         if ( ! $subscriptions ) {
-            printf( '<option>%s</option>', __( '- Select -', 'wp-user-frontend' ), 'wpuf' );
+            printf( '<option>%s</option>', __( '- Select -', 'wp-user-frontend' ) );
             return;
         }
 

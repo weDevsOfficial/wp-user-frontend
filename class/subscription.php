@@ -827,7 +827,7 @@ class WPUF_Subscription {
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' ) {
             $recurring_des = sprintf( __('Every', 'wp-user-frontend').' %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
-            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? __( sprintf( ', '.__('for', 'wp-user-frontend').' %s '.__( 'installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ), 'wpuf' ) : '';
+            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ?  sprintf( ', '.__('for', 'wp-user-frontend').' %s '.__( 'installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">'.$recurring_des.'</div>';
         }
 

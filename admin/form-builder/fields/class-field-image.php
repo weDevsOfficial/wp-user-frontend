@@ -90,6 +90,9 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
         $props    = array(
+            'input_type'        => 'image_upload',
+            'label'             => __( 'Image Upload', 'wp-user-frontend' ),
+            'button_label'      => __( 'Select Image', 'wp-user-frontend' ),
             'max_size' => '1024',
             'count'    => '1',
         );

@@ -112,6 +112,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
         $props    = array(
+            'input_type'       => 'textarea',
             'word_restriction' => '',
             'rows'             => 5,
             'cols'             => 25,

@@ -182,17 +182,12 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
      * @return array
      */
     public function get_field_props() {
+        $defaults = $this->default_attributes();
         $props = array(
-            'template'        => $this->get_type(),
-            'label'           => '',
-            'recaptcha_type'  => 'enable_no_captcha',
-            'is_meta'         => 'yes',
-            'id'              => 0,
-            'is_new'          => true,
-            'wpuf_cond'       => null,
-            'recaptcha_theme' => 'light',
+            'input_type'        => 'recaptcha',
+            'recaptcha_type'    => 'enable_no_captcha',
         );
 
-        return $props;
+        return array_merge( $defaults, $props );
     }
 }

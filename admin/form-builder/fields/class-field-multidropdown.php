@@ -60,6 +60,7 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
     public function get_field_props() {
         $defaults = $this->default_attributes();
         $props    = array(
+            'input_type'       => 'multiselect',
             'selected' => array(),
             'options'  => array( 'Option' => __( 'Option', 'wpuf' ) ),
             'first'    => __( '— Select —', 'wpuf' ),

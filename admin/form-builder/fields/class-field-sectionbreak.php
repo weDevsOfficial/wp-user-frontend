@@ -77,15 +77,11 @@ class WPUF_Form_Field_SectionBreak extends WPUF_Field_Contract {
      * @return array
      */
     public function get_field_props() {
+        $defaults = $this->default_attributes();
         $props = array(
-            'template'    => $this->get_type(),
-            'label'       => $this->get_name(),
-            'description' => __( 'Some description about this section', 'wpuf' ),
-            'id'          => 0,
-            'is_new'      => true,
-            'wpuf_cond'   => null
+            'input_type'   => 'section_break',
         );
 
-        return $props;
+        return array_merge( $defaults, $props );
     }
 }

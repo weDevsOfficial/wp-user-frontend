@@ -87,9 +87,10 @@ class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
         $props    = array(
-            'selected' => '',
-            'options'  => array( 'Option' => __( 'Option', 'wpuf' ) ),
-            'first'    => __( '— Select —', 'wpuf' ),
+            'input_type'  => 'select',
+            'selected'    => '',
+            'options'     => array( 'Option' => __( 'Option', 'wpuf' ) ),
+            'first'       => __( '— Select —', 'wpuf' ),
         );
 
         return array_merge( $defaults, $props );

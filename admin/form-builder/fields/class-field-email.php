@@ -121,7 +121,12 @@ class WPUF_Form_Field_Email extends WPUF_Form_Field_Text {
      */
     public function get_field_props() {
         $defaults = $this->default_attributes();
-        $defaults['duplicate'] = '';
-        return $defaults;
+        $props = array(
+            'input_type'        => 'email',
+            'duplicate'         => '',
+        );
+
+        return array_merge( $defaults, $props );
+
     }
 }

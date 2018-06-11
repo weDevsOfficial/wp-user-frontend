@@ -61,7 +61,8 @@ class WPUF_Form_Field_Hidden extends WPUF_Field_Contract {
      */
     public function get_field_props() {
         $props = array(
-            'template'    => $this->get_type(),
+            'input_type'    => 'hidden',
+            'template'      => $this->get_type(),
             'name'          => '',
             'meta_value'    => '',
             'is_meta'       => 'yes',

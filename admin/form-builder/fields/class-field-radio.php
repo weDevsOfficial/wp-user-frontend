@@ -90,9 +90,10 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
     public function get_field_props() {
         $defaults = $this->default_attributes();
         $props    = array(
-            'selected' => '',
-            'inline'   => 'no',
-            'options'  => array( 'Option' => __( 'Option', 'wpuf' ) ),
+            'input_type'  => 'radio',
+            'selected'    => '',
+            'inline'      => 'no',
+            'options'     => array( 'Option' => __( 'Option', 'wpuf' ) ),
         );
 
         return array_merge( $defaults, $props );

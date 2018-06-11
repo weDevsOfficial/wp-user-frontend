@@ -88,6 +88,7 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
         $props    = array(
+            'input_type'       => 'text',
             'word_restriction' => '',
             'duplicate' => '',
         );

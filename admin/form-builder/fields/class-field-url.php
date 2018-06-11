@@ -77,8 +77,11 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
      */
     public function get_field_props() {
         $defaults = $this->default_attributes();
-        $defaults['duplicate'] = '';
-        return $defaults;
+        $props = array(
+            'input_type'   => 'url',
+            'duplicate'    => '',
+        );
+        return array_merge( $defaults, $props);
     }
 
 

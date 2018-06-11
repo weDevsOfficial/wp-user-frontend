@@ -86,9 +86,10 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
         $props    = array(
-            'selected' => array(),
-            'inline'   => 'no',
-            'options'  => array( 'Option' => __( 'Option', 'wpuf' ) ),
+            'input_type' => 'checkbox',
+            'selected'   => array(),
+            'inline'     => 'no',
+            'options'    => array( 'Option' => __( 'Option', 'wpuf' ) ),
         );
 
         return array_merge( $defaults, $props );

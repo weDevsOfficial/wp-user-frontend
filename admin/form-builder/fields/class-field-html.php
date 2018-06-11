@@ -66,14 +66,12 @@ class WPUF_Form_Field_HTML extends WPUF_Field_Contract {
      * @return array
      */
     public function get_field_props() {
-        $props = array(
-            'template'  => $this->get_type(),
-            'html'      => sprintf( '<p>%s</p>', __( 'Some description about this section', 'wpuf' ) ),
-            'id'        => 0,
-            'is_new'    => true,
-            'wpuf_cond' => $this->default_conditional_prop()
+        $defaults = $this->default_attributes();
+        $props    = array(
+            'input_type'  => 'html',
+            'html'        => sprintf( '<p>%s</p>', __( 'Some description about this section', 'wpuf' ) ),
         );
 
-        return $props;
+        return array_merge( $defaults, $props );
     }
 }

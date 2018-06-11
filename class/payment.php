@@ -127,11 +127,11 @@ class WPUF_Payment {
                 ?>
                 <?php if ( count( $gateways ) ) {
                     ?>
-                    <div class="wpuf-payment-page-wrap row">
+                    <div class="wpuf-payment-page-wrap wpuf-pay-row">
                         <?php
                         $pay_page_style = "";
                         ?>
-                        <div class="wpuf-bill-addr-wrap col">
+                        <div class="wpuf-bill-addr-wrap wpuf-pay-col">
                             <?php if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
                                 $pay_page_style = "vertical-align:top; margin-left: 20px; display: inline-block;";
                                 ?>
@@ -158,10 +158,10 @@ class WPUF_Payment {
                                 <input type="hidden" name="user_id" value="<?php echo $current_user->ID; ?>">
                                 <?php } ?>
 
-                                <div class="wpuf-coupon-info-wrap col">
+                                <div class="wpuf-coupon-info-wrap wpuf-pay-col">
                                     <div class="wpuf-coupon-info">
                                         <div class="wpuf-pack-info">
-                                            <h3 class="col">
+                                            <h3 class="wpuf-pay-col">
                                                 <?php _e( 'Pricing & Plans', 'wp-user-frontend' ); ?>
 
                                                 <a style="white-space: nowrap" href="<?php echo wpuf_get_subscription_page_url(); ?>"><?php _e( 'Change Pack', 'wp-user-frontend' ); ?></a>

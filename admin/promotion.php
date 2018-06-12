@@ -45,7 +45,7 @@ class WPUF_Admin_Promotion {
                                         <a target="_blank" href="%1$s"><strong> we25 </strong></a>
                                         <br>
                                         Offer ending soon!
-                                    </p>', 'wpuf' ), 'https://wedevs.com/in/get-25-off' );
+                                    </p>', 'wp-user-frontend' ), 'https://wedevs.com/in/get-25-off' );
 
         ?>
             <div class="notice is-dismissible" id="wpuf-promotional-offer-notice">
@@ -63,7 +63,7 @@ class WPUF_Admin_Promotion {
                 </table>
 
                 <span class="dashicons dashicons-megaphone"></span>
-                <a href="https://wedevs.com/in/get-25-off" class="button button-primary promo-btn" target="_blank"><?php _e( 'Get the Offer', 'wpuf' ); ?></a>
+                <a href="https://wedevs.com/in/get-25-off" class="button button-primary promo-btn" target="_blank"><?php _e( 'Get the Offer', 'wp-user-frontend' ); ?></a>
             </div><!-- #wpuf-promotional-offer-notice -->
 
             <style>

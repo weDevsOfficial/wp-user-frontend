@@ -442,8 +442,8 @@
 					<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/welcome-video.png" alt="Watch how to create your first form" class="video-thumbnail">
 				</a>
 				<div class="action-block">
-					<a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" class="wpuf-btn primary"><?php _e( 'Create Your First Form', 'wpuf' ); ?></a>
-					<a href="<?php echo admin_url( 'admin.php?page=wpuf-support' ); ?>" class="wpuf-btn default"><?php _e( 'Read the Full Guide', 'wpuf' ); ?></a>
+					<a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" class="wpuf-btn primary"><?php _e( 'Create Your First Form', 'wp-user-frontend' ); ?></a>
+					<a href="<?php echo admin_url( 'admin.php?page=wpuf-support' ); ?>" class="wpuf-btn default"><?php _e( 'Read the Full Guide', 'wp-user-frontend' ); ?></a>
 				</div>
 			</div>
 			<div class="wpuf-welcome-modal" id="wpuf-welcome-modal">
@@ -583,8 +583,8 @@
 
 		<div class="footer">
 			<div class="action-block">
-				<a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" class="wpuf-btn primary"><?php _e( 'Create Your First Form', 'wpuf' ); ?></a>
-				<a href="<?php echo admin_url( 'admin.php?page=wpuf-support' ); ?>" class="wpuf-btn default"><?php _e( 'Read the Full Guide', 'wpuf' ); ?></a>
+				<a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" class="wpuf-btn primary"><?php _e( 'Create Your First Form', 'wp-user-frontend' ); ?></a>
+				<a href="<?php echo admin_url( 'admin.php?page=wpuf-support' ); ?>" class="wpuf-btn default"><?php _e( 'Read the Full Guide', 'wp-user-frontend' ); ?></a>
 			</div>
 		</div><!-- /.footer -->
 

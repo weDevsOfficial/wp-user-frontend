@@ -1,7 +1,7 @@
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
 <div id="form-preview-stage">
     <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wpuf' ) ?>
+        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ) ?>
     </h4>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
@@ -27,7 +27,7 @@
 
             <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
                 <label class="wpuf-pro-text-alert">
-                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wpuf' ); ?></a>
+                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                 </label>
             </div>
 
@@ -51,14 +51,14 @@
     </ul><!-- .wpuf-form -->
 
     <div v-if="hidden_fields.length" class="hidden-field-list">
-        <h4><?php _e( 'Hidden Fields', 'wpuf' ); ?></h4>
+        <h4><?php _e( 'Hidden Fields', 'wp-user-frontend' ); ?></h4>
 
         <ul class="wpuf-form">
             <li
                 v-for="(field, index) in hidden_fields"
                 :class="['field-items', parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '']"
             >
-                <strong><?php _e('key', 'wpuf'); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wpuf' ); ?></strong>: {{ field.meta_value }}
+                <strong><?php _e('key', 'wp-user-frontend'); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
 
                 <div class="control-buttons">
                     <p>
@@ -115,7 +115,7 @@
     <label class="clearfix">
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
         <span class="pull-right">
-            <input type="checkbox" v-model="show_value"> <?php _e( 'Show values', 'wpuf' ); ?>
+            <input type="checkbox" v-model="show_value"> <?php _e( 'Show values', 'wp-user-frontend' ); ?>
         </span>
     </label>
 
@@ -126,11 +126,11 @@
             <div class="sort-handler">&nbsp;</div>
 
             <div class="label">
-                <?php _e( 'Label', 'wpuf' ); ?>
+                <?php _e( 'Label', 'wp-user-frontend' ); ?>
             </div>
 
             <div v-if="show_value" class="value">
-                <?php _e( 'Value', 'wpuf' ) ?>
+                <?php _e( 'Value', 'wp-user-frontend' ) ?>
             </div>
 
             <div class="action-buttons">&nbsp;</div>
@@ -178,7 +178,7 @@
         </li>
     </ul>
 
-    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _e( 'Clear Selection', 'wpuf' ); ?></a>
+    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _e( 'Clear Selection', 'wp-user-frontend' ); ?></a>
 </div>
 </script>
 
@@ -186,7 +186,7 @@
 <div class="panel-field-opt panel-field-opt-pro-feature">
     <label>{{ option_field.title }}</label><br>
     <label class="wpuf-pro-text-alert">
-        <a :href="pro_link" target="_blank"><?php _e( 'Available in Pro Version', 'wpuf' ); ?></a>
+        <a :href="pro_link" target="_blank"><?php _e( 'Available in Pro Version', 'wp-user-frontend' ); ?></a>
     </label>
 </div>
 </script>
@@ -264,7 +264,7 @@
     </label>
 
     <select class="opt-select-element" v-model="value">
-        <option value=""><?php _e( 'Select an option', 'wpuf' ); ?></option>
+        <option value=""><?php _e( 'Select an option', 'wp-user-frontend' ); ?></option>
         <option v-for="(option, key) in option_field.options" :value="key">{{ option }}</option>
     </select>
 </div>
@@ -369,7 +369,7 @@
 
                     }
                 } else {
-                    _e( 'No subscription plan found.', 'wpuf' );
+                    _e( 'No subscription plan found.', 'wp-user-frontend' );
                 }
             ?>
     	</ul>
@@ -451,7 +451,7 @@
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector" href="#">
                 <template v-if="field.button_label === ''">
-                    <?php _e( 'Select Image', 'wpuf' ); ?>
+                    <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
                 </template>
                 <template v-else>
                     {{ field.button_label }}
@@ -522,7 +522,7 @@
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector wpuf_img_label_148" href="#">
                 <template v-if="field.button_label === ''">
-                    <?php _e( 'Select Image', 'wpuf' ); ?>
+                    <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
                 </template>
                 <template v-else>
                     {{ field.button_label }}
@@ -559,7 +559,7 @@
 <div class="wpuf-fields">
     <div class="wp-media-buttons" v-if="field.insert_image == 'yes'">
         <button type="button" class="button insert-media add_media" data-editor="content">
-            <span class="dashicons dashicons-admin-media insert-photo-icon"></span> <?php _e( 'Insert Photo', 'wpuf' ); ?>
+            <span class="dashicons dashicons-admin-media insert-photo-icon"></span> <?php _e( 'Insert Photo', 'wp-user-frontend' ); ?>
         </button>
     </div>
     <br v-if="field.insert_image == 'yes'" />
@@ -668,7 +668,7 @@
     <div v-if="'ajax' === field.type" class="category-wrap">
         <div>
             <select>
-                <option><?php _e( '— Select —', 'wpuf' ); ?></option>
+                <option><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
         </div>
@@ -706,6 +706,19 @@
 </div>
 </script>
 
+<script type="text/x-template" id="tmpl-wpuf-form-text_field">
+<div class="wpuf-fields">
+    <input
+        type="text"
+        :class="class_names('textfield')"
+        :placeholder="field.placeholder"
+        :value="field.default"
+        :size="field.size"
+    >
+    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+</div>
+</script>
+
 <script type="text/x-template" id="tmpl-wpuf-form-textarea_field">
 <div class="wpuf-fields">
     <textarea
@@ -718,19 +731,6 @@
 
     <text-editor v-if="'no' !== field.rich" :rich="field.rich"></text-editor>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
-</div>
-</script>
-
-<script type="text/x-template" id="tmpl-wpuf-form-text_field">
-<div class="wpuf-fields">
-    <input
-        type="text"
-        :class="class_names('textfield')"
-        :placeholder="field.placeholder"
-        :value="field.default"
-        :size="field.size"
-    >
     <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 </div>
 </script>

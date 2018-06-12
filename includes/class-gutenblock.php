@@ -41,7 +41,7 @@ class WPUF_Form_Block {
         $forms = array();
         $forms[] = array (
             'value' => '',
-            'label' => __('-- Select a Form --', 'wpuf' ),
+            'label' => __('-- Select a Form --', 'wp-user-frontend' ),
         );
 
         $all_forms = wpuf()->forms->get_forms( array( 'post_status' => 'publish' ) );

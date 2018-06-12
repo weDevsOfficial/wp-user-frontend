@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.8.8
+Version: 2.8.9
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wpuf
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.8.8' );
+define( 'WPUF_VERSION', '2.8.9' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -108,8 +108,8 @@ final class WP_User_Frontend {
             return;
         }
 
-        $error = __( 'Your installed PHP Version is: ', 'wpuf' ) . PHP_VERSION . '. ';
-        $error .= __( 'The <strong>WP User Frontend</strong> plugin requires PHP version <strong>', 'wpuf' ) . $this->min_php . __( '</strong> or greater.', 'wpuf' );
+        $error = __( 'Your installed PHP Version is: ', 'wp-user-frontend' ) . PHP_VERSION . '. ';
+        $error .= __( 'The <strong>WP User Frontend</strong> plugin requires PHP version <strong>', 'wp-user-frontend' ) . $this->min_php . __( '</strong> or greater.', 'wp-user-frontend' );
         ?>
         <div class="error">
             <p><?php printf( $error ); ?></p>
@@ -190,7 +190,7 @@ final class WP_User_Frontend {
             'posts_per_page' => -1
         );
 
-        $mail_subject = apply_filters( 'wpuf_post_expiry_mail_subject', sprintf( '[%s] %s', get_bloginfo( 'name' ), __( 'Your Post Has Been Expired', 'wpuf' ) ) );
+        $mail_subject = apply_filters( 'wpuf_post_expiry_mail_subject', sprintf( '[%s] %s', get_bloginfo( 'name' ), __( 'Your Post Has Been Expired', 'wp-user-frontend' ) ) );
         $posts        = get_posts( $args );
 
         foreach ( $posts as $each_post ) {
@@ -253,6 +253,7 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/includes/class-billing-address.php';
         include_once WPUF_ROOT . '/includes/class-gutenblock.php';
         include_once WPUF_ROOT . '/includes/class-form-preview.php';
+        include_once WPUF_ROOT . '/includes/class-customizer.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
@@ -279,6 +280,7 @@ final class WP_User_Frontend {
             include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
             include_once WPUF_ROOT . '/includes/class-whats-new.php';
             include_once WPUF_ROOT . '/includes/class-acf.php';
+            include_once WPUF_ROOT . '/includes/class-privacy.php';
 
         } else {
 
@@ -314,6 +316,7 @@ final class WP_User_Frontend {
         $this->container['forms']                   = new WPUF_Form_Manager();
         $this->container['preview']                 = new WPUF_Form_Preview();
         $this->container['block']                   = new WPUF_Form_Block();
+        $this->container['customize']               = new WPUF_Customizer_Options();
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();
@@ -331,8 +334,8 @@ final class WP_User_Frontend {
             $this->container['welcome']            = new WPUF_Admin_Welcome();
             $this->container['whats_new']          = new WPUF_Whats_New();
             $this->container['wpuf_acf']           = new WPUF_ACF_Compatibility();
-            $this->container['fields']             = new WPUF_Field_Manager();
-
+            $this->container['privacy']            = new WPUF_Privacy();
+            
         } else {
 
             $this->container['dashboard']       = new WPUF_Frontend_Dashboard();
@@ -425,6 +428,8 @@ final class WP_User_Frontend {
 
         $load_gmap = apply_filters( 'wpuf_load_gmap_script', true );
 
+        $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+
         if ( ! empty( $api_key ) && $load_gmap ) {
             wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key, array(), null );
         }
@@ -433,16 +438,16 @@ final class WP_User_Frontend {
             ?>
             <script type="text/javascript" id="wpuf-language-script">
                 var error_str_obj = {
-                    'required' : '<?php esc_attr_e( 'is required', 'wpuf' ); ?>',
-                    'mismatch' : '<?php esc_attr_e( 'does not match', 'wpuf' ); ?>',
-                    'validation' : '<?php esc_attr_e( 'is not valid', 'wpuf' ); ?>'
+                    'required' : '<?php esc_attr_e( 'is required', 'wp-user-frontend' ); ?>',
+                    'mismatch' : '<?php esc_attr_e( 'does not match', 'wp-user-frontend' ); ?>',
+                    'validation' : '<?php esc_attr_e( 'is not valid', 'wp-user-frontend' ); ?>'
                 }
             </script>
             <?php
-            wp_enqueue_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form' . $suffix . '.js', array( 'jquery' ) );
+            wp_register_script( 'wpuf-form', WPUF_ASSET_URI . '/js/frontend-form' . $suffix . '.js', array( 'jquery' ) );
         }
 
-        wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
+        wp_register_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
 
         // register css files for different layouts of frontend form
         wp_register_style( 'wpuf-layout1', WPUF_ASSET_URI . '/css/frontend-form/layout1.css' );
@@ -451,11 +456,11 @@ final class WP_User_Frontend {
         wp_register_style( 'wpuf-layout4', WPUF_ASSET_URI . '/css/frontend-form/layout4.css' );
         wp_register_style( 'wpuf-layout5', WPUF_ASSET_URI . '/css/frontend-form/layout5.css' );
 
-        wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array( 'jquery' ), false, true );
+        wp_register_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', array( 'jquery' ), false, true );
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {
             $this->plugin_scripts();
-        } elseif ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) ) {
+        } elseif ( wpuf_has_shortcode( 'wpuf-login' ) || wpuf_has_shortcode( 'wpuf-registration' ) || wpuf_has_shortcode( 'wpuf-meta' ) || wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_sub_pack' ) || ( isset( $post->ID  ) && ( $pay_page == $post->ID ) ) ) {
             $this->plugin_scripts();
         }
     }
@@ -470,7 +475,10 @@ final class WP_User_Frontend {
             return;
         }
 
-        if ( wpuf_has_shortcode( 'wpuf_form', $post->ID )
+        if ( wpuf_has_shortcode( 'wpuf-login', $post->ID )
+            || wpuf_has_shortcode( 'wpuf-registration', $post->ID )
+            || wpuf_has_shortcode( 'wpuf-meta', $post->ID )
+            || wpuf_has_shortcode( 'wpuf_form', $post->ID )
             || wpuf_has_shortcode( 'wpuf_edit', $post->ID )
             || wpuf_has_shortcode( 'wpuf_profile', $post->ID )
             || wpuf_has_shortcode( 'wpuf_dashboard', $post->ID )
@@ -491,6 +499,7 @@ final class WP_User_Frontend {
 
     function plugin_scripts() {
 
+        wp_enqueue_style( 'wpuf-css' );
         wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
 
         wp_enqueue_script( 'jquery' );
@@ -501,16 +510,22 @@ final class WP_User_Frontend {
         wp_enqueue_script( 'plupload-handlers' );
         wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker' ) );
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array( 'jquery', 'plupload-handlers' ) );
+        wp_enqueue_script( 'wpuf-form' );
+        wp_enqueue_script( 'wpuf-subscriptions' );
 
         wp_localize_script( 'wpuf-form', 'wpuf_frontend', apply_filters( 'wpuf_frontend_js_data' , array(
             'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-            'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
+            'error_message' => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
             'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
-            'word_limit'    => __( 'Word limit reached', 'wpuf' )
+            'word_limit'    => __( 'Word limit reached', 'wp-user-frontend' )
+        )) );
+
+        wp_localize_script( 'wpuf-subscriptions', 'wpuf_subscription', apply_filters( 'wpuf_subscription_js_data' , array(
+            'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wp-user-frontend' ),
         )) );
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
-			'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
+			'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
 			'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
 			'ajaxurl'    => admin_url( 'admin-ajax.php' ),
 			'plupload'   => array(
@@ -518,15 +533,15 @@ final class WP_User_Frontend {
 				'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
 				'filters'          => array(
 					array(
-						'title' => __( 'Allowed Files', 'wpuf' ),
+						'title' => __( 'Allowed Files', 'wp-user-frontend' ),
 						'extensions' => '*'
 					)
 				),
 				'multipart'        => true,
 				'urlstream_upload' => true,
-				'warning'          => __( 'Maximum number of files reached!', 'wpuf' ),
-				'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wpuf' ),
-				'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wpuf' )
+				'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
+				'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
+				'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' )
 			)
         ) );
     }
@@ -583,7 +598,7 @@ final class WP_User_Frontend {
      * @author Tareq Hasan
      */
     function load_textdomain() {
-        load_plugin_textdomain( 'wpuf', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+        load_plugin_textdomain( 'wp-user-frontend', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
     /**
@@ -663,7 +678,7 @@ final class WP_User_Frontend {
     public function install_weforms() {
 
         if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-weforms-installer-nonce' ) ) {
-            wp_send_json_error( __( 'Error: Nonce verification failed', 'wpuf' ) );
+            wp_send_json_error( __( 'Error: Nonce verification failed', 'wp-user-frontend' ) );
         }
 
         include_once ABSPATH . 'wp-admin/includes/plugin-install.php';

@@ -70,7 +70,7 @@ class WPUF_Subscription {
         if ( isset( $_POST['wpuf_cancel_subscription'] ) ) {
 
             if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-sub-cancel' ) ) {
-                wp_die( __( 'Nonce failure', 'wpuf' ) );
+                wp_die( __( 'Nonce failure', 'wp-user-frontend' ) );
             }
 
             $current_pack = self::get_user_pack( $_POST['user_id'] );
@@ -294,7 +294,7 @@ class WPUF_Subscription {
         $screen = get_current_screen();
 
         if ( 'wpuf_subscription' == $screen->post_type ) {
-            $title = __( 'Pack Name', 'wpuf' );
+            $title = __( 'Pack Name', 'wp-user-frontend' );
         }
 
         return $title;
@@ -353,7 +353,7 @@ class WPUF_Subscription {
         $capability = wpuf_admin_role();
 
         register_post_type( 'wpuf_subscription', array(
-            'label'           => __( 'Subscription', 'wpuf' ),
+            'label'           => __( 'Subscription', 'wp-user-frontend' ),
             'public'          => false,
             'show_ui'         => true,
             'show_in_menu'    => false,
@@ -373,20 +373,20 @@ class WPUF_Subscription {
                 'read_post'           => $capability,
             ),
             'labels' => array(
-                'name'               => __( 'Subscription', 'wpuf' ),
-                'singular_name'      => __( 'Subscription', 'wpuf' ),
-                'menu_name'          => __( 'Subscription', 'wpuf' ),
-                'add_new'            => __( 'Add Subscription', 'wpuf' ),
-                'add_new_item'       => __( 'Add New Subscription', 'wpuf' ),
-                'edit'               => __( 'Edit', 'wpuf' ),
-                'edit_item'          => __( 'Edit Subscription', 'wpuf' ),
-                'new_item'           => __( 'New Subscription', 'wpuf' ),
-                'view'               => __( 'View Subscription', 'wpuf' ),
-                'view_item'          => __( 'View Subscription', 'wpuf' ),
-                'search_items'       => __( 'Search Subscription', 'wpuf' ),
-                'not_found'          => __( 'No Subscription Found', 'wpuf' ),
-                'not_found_in_trash' => __( 'No Subscription Found in Trash', 'wpuf' ),
-                'parent'             => __( 'Parent Subscription', 'wpuf' ),
+                'name'               => __( 'Subscription', 'wp-user-frontend' ),
+                'singular_name'      => __( 'Subscription', 'wp-user-frontend' ),
+                'menu_name'          => __( 'Subscription', 'wp-user-frontend' ),
+                'add_new'            => __( 'Add Subscription', 'wp-user-frontend' ),
+                'add_new_item'       => __( 'Add New Subscription', 'wp-user-frontend' ),
+                'edit'               => __( 'Edit', 'wp-user-frontend' ),
+                'edit_item'          => __( 'Edit Subscription', 'wp-user-frontend' ),
+                'new_item'           => __( 'New Subscription', 'wp-user-frontend' ),
+                'view'               => __( 'View Subscription', 'wp-user-frontend' ),
+                'view_item'          => __( 'View Subscription', 'wp-user-frontend' ),
+                'search_items'       => __( 'Search Subscription', 'wp-user-frontend' ),
+                'not_found'          => __( 'No Subscription Found', 'wp-user-frontend' ),
+                'not_found_in_trash' => __( 'No Subscription Found in Trash', 'wp-user-frontend' ),
+                'parent'             => __( 'Parent Subscription', 'wp-user-frontend' ),
             ),
         ) );
     }
@@ -443,17 +443,18 @@ class WPUF_Subscription {
 
         $form             = new WPUF_Form( $form_id );
         $payment_options  = $form->is_charging_enabled();
+        $force_pack       = $form->is_enabled_force_pack();
         $pay_per_post     = $form->is_enabled_pay_per_post();
         $fallback_cost    = $form->is_enabled_fallback_cost();
         $current_user     = wpuf_get_user();
         $current_pack     = $current_user->subscription()->current_pack();
         $has_post         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-        if ( is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
+        if ( $payment_options && $force_pack && is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
             $postdata['post_status'] = 'pending';
         }
 
-        if ( $payment_options && ( $pay_per_post || ( $fallback_cost && !$has_post )))  {
+        if ( $payment_options && !$force_pack && ( $pay_per_post || ( $fallback_cost && !$has_post )))  {
             $postdata['post_status'] = 'pending';
         }
 
@@ -468,8 +469,8 @@ class WPUF_Subscription {
      * @param int $post_id
      */
     function monitor_new_post( $post_id, $form_id, $form_settings ) {
-
         global $wpdb, $userdata;
+        $post = get_post( $post_id );
 
         // bail out if charging is not enabled
         $form = new WPUF_Form( $form_id );
@@ -509,7 +510,7 @@ class WPUF_Subscription {
             update_post_meta( $post_id, 'wpuf_post_status', 'published' );
 
 
-        } elseif ( $pay_per_post || ($fallback_cost && !$has_post )) {
+        } elseif ( !$force_pack && ( $pay_per_post || ( $fallback_cost && !$has_post ) ) ) {
             //there is some error and it needs payment
             //add a uniqid to track the post easily
             $order_id = uniqid( rand( 10, 1000 ), false );
@@ -718,7 +719,7 @@ class WPUF_Subscription {
      * from admin Panel
      */
     function subscription_packs( $atts = null ) {
-        $cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
+        //$cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
 
         $defaults = array(
             'include' => '',
@@ -743,15 +744,15 @@ class WPUF_Subscription {
         ob_start();
 
         if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
-            printf( '<h1>%1$s</h1><p>%2$s</p>', __( 'Payment is complete', 'wpuf' ), __( 'Congratulations, your payment has been completed!', 'wpuf' ) );
+            printf( '<h1>%1$s</h1><p>%2$s</p>', __( 'Payment is complete', 'wp-user-frontend' ), __( 'Congratulations, your payment has been completed!', 'wp-user-frontend' ) );
         }
 
         if ( isset( $_GET['pack_msg'] ) && $_GET['pack_msg'] == 'buy_pack' ) {
-            _e('Please buy a subscription pack to post', 'wpuf' );
+            _e('Please buy a subscription pack to post', 'wp-user-frontend' );
         }
 
         if ( isset( $_GET['ppp_msg'] ) && $_GET['ppp_msg'] == 'pay_per_post' ) {
-            _e('Please buy a subscription pack to post', 'wpuf' );
+            _e('Please buy a subscription pack to post', 'wp-user-frontend' );
         }
 
         $current_pack = self::get_user_pack( get_current_user_id() );
@@ -765,16 +766,16 @@ class WPUF_Subscription {
             $payment_gateway = strtolower( $payment_gateway );
             ?>
 
-            <?php _e( '<p><i>You have a subscription pack activated. </i></p>', 'wpuf' ); ?>
-            <?php echo sprintf( __( "<p><i>Pack name: %s </i></p>", "wpuf" ), get_the_title( $current_pack['pack_id'] ) ); ?>
+            <?php _e( '<p><i>You have a subscription pack activated. </i></p>', 'wp-user-frontend' ); ?>
+            <?php echo sprintf( __( "<p><i>Pack name: %s </i></p>", "wp-user-frontend" ), get_the_title( $current_pack['pack_id'] ) ); ?>
 
-            <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wpuf' ); ?>
+            <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wp-user-frontend' ); ?>
 
             <form action="" method="post">
                 <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
                 <input type="hidden" name="user_id" value="<?php echo get_current_user_id(); ?>">
                 <input type="hidden" name="gateway" value="<?php echo $payment_gateway; ?>">
-                <input type="submit" name="wpuf_cancel_subscription" class="btn btn-sm btn-danger" value="<?php _e( 'Cancel', 'wpuf' ); ?>">
+                <input type="submit" name="wpuf_cancel_subscription" class="btn btn-sm btn-danger" value="<?php _e( 'Cancel', 'wp-user-frontend' ); ?>">
             </form>
             <?php
         }
@@ -818,32 +819,32 @@ class WPUF_Subscription {
 
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : '0.00';
         $trial_des     = '';
-        $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . __( 'One time payment', 'wpuf' ) . '</div>';
+        $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . __( 'One time payment', 'wp-user-frontend' ) . '</div>';
 
         if ( isset( $price_with_tax ) && $price_with_tax ) {
             $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount);
         }
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' ) {
-            $recurring_des = sprintf( __('Every', 'wpuf').' %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
-            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? __( sprintf( ', '.__('for', 'wpuf').' %s '.__( 'installments', 'wpuf' ), $pack->meta_value['billing_limit'] ), 'wpuf' ) : '';
+            $recurring_des = sprintf( __('Every', 'wp-user-frontend').' %s %s', $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+            $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ?  sprintf( ', '.__('for', 'wp-user-frontend').' %s '.__( 'installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">'.$recurring_des.'</div>';
         }
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' && $pack->meta_value['trial_status'] == 'yes' ) {
-            $duration = _n( $pack->meta_value['trial_duration_type'], $pack->meta_value['trial_duration_type'].'s', $pack->meta_value['trial_duration'], 'wpuf'  );
-            $trial_des = __( sprintf( 'Trial available for first %s %s', $pack->meta_value['trial_duration'], $duration ), 'wpuf' );
+            $duration  = _n( $pack->meta_value['trial_duration_type'], $pack->meta_value['trial_duration_type'].'s', $pack->meta_value['trial_duration'], 'wp-user-frontend'  );
+            $trial_des = sprintf( __( 'Trial available for first %s %s','wp-user-frontend' ), $pack->meta_value['trial_duration'], $duration );
         }
 
-        $label       = wpuf_get_option( 'logged_in_label','subscription_settings', false );
-        $button_name = $label ? $label : __('Buy Now', 'wpuf');
+        $label       = wpuf_get_option( 'logged_in_label','wpuf_subscription_settings', false );
+        $button_name = $label ? $label : __('Buy Now', 'wp-user-frontend');
 
         if ( ! is_user_logged_in() ) {
-            $label = wpuf_get_option( 'logged_out_label','subscription_settings', false );
-            $button_name = $label ? $label : __( 'Sign Up', 'wpuf' );
+            $label = wpuf_get_option( 'logged_out_label','wpuf_subscription_settings', false );
+            $button_name = $label ? $label : __( 'Sign Up', 'wp-user-frontend' );
         } else if ( $billing_amount == '0.00' ) {
-            $label = wpuf_get_option( 'free_label','subscription_settings', false );
-            $button_name = $label ? $label : __( 'Free', 'wpuf' );
+            $label = wpuf_get_option( 'free_label','wpuf_subscription_settings', false );
+            $button_name = $label ? $label : __( 'Free', 'wp-user-frontend' );
         }
 
         $query_args = array(
@@ -903,7 +904,7 @@ class WPUF_Subscription {
                     $pay_per_post_cost = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
                 }
 
-                $text              = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
+                $text              = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $pay_per_post_cost ));
 
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
                 ?>
@@ -920,7 +921,7 @@ class WPUF_Subscription {
                     $fallback_cost     = apply_filters( 'wpuf_payment_amount', $fallback_cost );
                 }
 
-                $text              = sprintf( __( 'Your Subscription pack exhausted. There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $fallback_cost ));
+                $text              = sprintf( __( 'Your Subscription pack exhausted. There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $fallback_cost ));
 
                 echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings );
                 ?>
@@ -965,7 +966,7 @@ class WPUF_Subscription {
         if ( $force_pack && self::has_user_error($form_settings) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
 
-            $text = sprintf( __( 'You must <a href="%s">purchase a pack</a> before posting', 'wpuf' ), $pack_page );
+            $text = sprintf( __( 'You must <a href="%s">purchase a pack</a> before posting', 'wp-user-frontend' ), $pack_page );
         }
 
         return apply_filters( 'wpuf_pack_notice', $text, $id, $form_settings );

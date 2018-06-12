@@ -9,7 +9,7 @@
      * @param string {type}
      */
     window.WPUF_Uploader = function (browse_button, container, max, type, allowed_type, max_file_size) {
-        this.removed_files = [],
+        this.removed_files = [];
         this.container = container;
         this.browse_button = browse_button;
         this.max = max || 1;
@@ -170,12 +170,14 @@
                 this.count -= 1;
                 this.showHide();
             }
-            
+
             var uploaded        = this.perFileCount;
             var FileProgress    = up.files.length;
+            var imageCount      = $('ul.wpuf-attachment-list li').length;
 
-            if ( FileProgress == uploaded ) {
-                $(".wpuf-submit-button").removeAttr("disabled");  
+            if ( FileProgress === uploaded || imageCount >= this.max ) {
+                $(".wpuf-submit-button").removeAttr("disabled");
+                $('#' + this.container).find('.file-selector').hide();
             }
         },
 

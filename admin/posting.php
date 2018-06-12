@@ -63,18 +63,18 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array('jquery', 'plupload-handlers') );
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
-            'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
+            'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
             'ajaxurl'    => admin_url( 'admin-ajax.php' ),
             'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
             'plupload'   => array(
                 'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
                 'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
-                'filters'          => array(array('title' => __( 'Allowed Files', 'wpuf' ), 'extensions' => '*')),
+                'filters'          => array(array('title' => __( 'Allowed Files', 'wp-user-frontend' ), 'extensions' => '*')),
                 'multipart'        => true,
                 'urlstream_upload' => true,
-                'warning'          => __( 'Maximum number of files reached!', 'wpuf' ),
-                'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wpuf' ),
-                'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wpuf' )
+                'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
+                'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
+                'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' )
             )
         ) );
     }
@@ -93,7 +93,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
         $post_types = get_post_types( array('public' => true) );
         foreach ($post_types as $post_type) {
-            add_meta_box( 'wpuf-select-form', __('WPUF Form', 'wpuf'), array($this, 'form_selection_metabox'), $post_type, 'side', 'high' );
+            add_meta_box( 'wpuf-select-form', __('WPUF Form', 'wp-user-frontend'), array($this, 'form_selection_metabox'), $post_type, 'side', 'high' );
         }
     }
 
@@ -164,7 +164,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         $post_types = get_post_types( array('public' => true) );
 
         foreach ($post_types as $post_type) {
-            add_meta_box( 'wpuf-custom-fields', __( 'WPUF Custom Fields', 'wpuf' ), array($this, 'render_form'), $post_type, 'normal', 'high' );
+            add_meta_box( 'wpuf-custom-fields', __( 'WPUF Custom Fields', 'wp-user-frontend' ), array($this, 'render_form'), $post_type, 'normal', 'high' );
         }
     }
 
@@ -208,7 +208,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         list($post_fields, $taxonomy_fields, $custom_fields) = $this->get_input_fields( $form_id );
 
         if ( empty( $custom_fields ) ) {
-            _e( 'No custom fields found.', 'wpuf' );
+            _e( 'No custom fields found.', 'wp-user-frontend' );
             return;
         }
         ?>
@@ -392,28 +392,28 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * @return void
      */
     // Save the Metabox Data
-    function save_meta( $post_id, $post ) {
+    function save_meta( $post_id, $post = null ) {
 
-        if ( !isset( $post->ID ) ) {
+        if ( !isset( $post_id ) ) {
             return;
         }
 
         if ( !isset( $_POST['wpuf_cf_update'] ) ) {
-            return $post->ID;
+            return $post_id;
         }
 
         if ( !wp_verify_nonce( $_POST['wpuf_cf_update'], plugin_basename( __FILE__ ) ) ) {
-            return $post->ID;
+            return $post_id;
         }
 
         // Is the user allowed to edit the post or page?
-        if ( !current_user_can( 'edit_post', $post->ID ) ) {
-            return $post->ID;
+        if ( !current_user_can( 'edit_post', $post_id ) ) {
+            return $post_id;
         }
 
         list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $_POST['wpuf_cf_form_id'] );
 
-        WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post->ID );
+        WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
     }
 
 }

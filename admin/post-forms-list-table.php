@@ -40,9 +40,9 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
         $base_link      = admin_url( 'admin.php?page=wpuf-post-forms' );
 
         $post_statuses  = apply_filters( 'wpuf_post_forms_list_table_post_statuses', array(
-            'all'       => __( 'All', 'wpuf' ),
-            'publish'   => __( 'Published', 'wpuf' ),
-            'trash'     => __( 'Trash', 'wpuf' )
+            'all'       => __( 'All', 'wp-user-frontend' ),
+            'publish'   => __( 'Published', 'wp-user-frontend' ),
+            'trash'     => __( 'Trash', 'wp-user-frontend' )
         ) );
 
         $current_status = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'all';
@@ -92,7 +92,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return void
      */
     public function no_items() {
-        _e( 'No form found.', 'wpuf' );
+        _e( 'No form found.', 'wp-user-frontend' );
     }
 
     /**
@@ -106,12 +106,12 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
         $actions = array();
 
         if ( ! isset( $_GET['post_status'] ) || 'trash' !== $_GET['post_status'] ) {
-            $actions['trash'] = __( 'Move to Trash', 'wpuf' );
+            $actions['trash'] = __( 'Move to Trash', 'wp-user-frontend' );
         }
 
         if ( isset( $_GET['post_status'] ) && 'trash' === $_GET['post_status'] ) {
-            $actions['restore'] = __( 'Restore', 'wpuf' );
-            $actions['delete']  = __( 'Delete Permanently', 'wpuf' );
+            $actions['restore'] = __( 'Restore', 'wp-user-frontend' );
+            $actions['delete']  = __( 'Delete Permanently', 'wp-user-frontend' );
         }
 
         return apply_filters( 'wpuf_post_forms_list_table_get_bulk_actions', $actions );
@@ -262,11 +262,10 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
                     'ID'                    => $form->ID,
                     'post_title'            => $form->post_title,
                     'post_status'           => $form->post_status,
-                    'settings_post_type'    => $settings['post_type'],
-                    'settings_post_status'  => $settings['post_status'],
-                    'settings_guest_post'   => $settings['guest_post']
+                    'settings_post_type'    => isset( $settings['post_type'] ) ? $settings['post_type'] : '',
+                    'settings_post_status'  => isset( $settings['post_status'] ) ? $settings['post_status'] : '',
+                    'settings_guest_post'   => isset( $settings['guest_post'] ) ? $settings['guest_post'] : '',
                 );
-
 
                 $i++;
             }
@@ -293,11 +292,11 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
     public function get_columns() {
         $columns = array(
             'cb'            => '<input type="checkbox" />',
-            'form_name'     => __( 'Form Name', 'wpuf' ),
-            'post_type'     => __( 'Post Type', 'wpuf' ),
-            'post_status'   => __( 'Post Status', 'wpuf' ),
-            'guest_post'    => __( 'Guest Post', 'wpuf' ),
-            'shortcode'     => __( 'Shortcode', 'wpuf' ),
+            'form_name'     => __( 'Form Name', 'wp-user-frontend' ),
+            'post_type'     => __( 'Post Type', 'wp-user-frontend' ),
+            'post_status'   => __( 'Post Status', 'wp-user-frontend' ),
+            'guest_post'    => __( 'Guest Post', 'wp-user-frontend' ),
+            'shortcode'     => __( 'Shortcode', 'wp-user-frontend' ),
         );
 
         return apply_filters( 'wpuf_post_forms_list_table_cols', $columns );
@@ -342,8 +341,8 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
                 $image          = '<img src="%s" alt="%s">';
 
                 return filter_var( $is_guest_post, FILTER_VALIDATE_BOOLEAN ) ?
-                            sprintf( $image, $url . 'tick.png', __( 'Yes', 'wpuf' ) ) :
-                            sprintf( $image, $url . 'cross.png', __( 'No', 'wpuf' ) );
+                            sprintf( $image, $url . 'tick.png', __( 'Yes', 'wp-user-frontend' ) ) :
+                            sprintf( $image, $url . 'cross.png', __( 'No', 'wp-user-frontend' ) );
 
             case 'shortcode':
                 return '<code>[wpuf_form id="' . $item['ID'] . '"]</code>';
@@ -389,9 +388,9 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
         $delete_url     = $admin_url . '&action=delete';
 
         if ( ( !isset( $_GET['post_status'] ) || 'trash' !== $_GET['post_status'] ) && current_user_can( wpuf_admin_role() ) ) {
-            $actions['edit']        = sprintf( '<a href="%s">%s</a>', $edit_url, __( 'Edit', 'wpuf' ) );
-            $actions['trash']       = sprintf( '<a href="%s" class="submitdelete">%s</a>', $trash_url, __( 'Trash', 'wpuf' ) );
-            $actions['duplicate']   = sprintf( '<a href="%s">%s</a>', $duplicate_url, __( 'Duplicate', 'wpuf' ) );
+            $actions['edit']        = sprintf( '<a href="%s">%s</a>', $edit_url, __( 'Edit', 'wp-user-frontend' ) );
+            $actions['trash']       = sprintf( '<a href="%s" class="submitdelete">%s</a>', $trash_url, __( 'Trash', 'wp-user-frontend' ) );
+            $actions['duplicate']   = sprintf( '<a href="%s">%s</a>', $duplicate_url, __( 'Duplicate', 'wp-user-frontend' ) );
 
             $title = sprintf(
                 '<a class="row-title" href="%1s" aria-label="%2s">%3s</a>',
@@ -402,8 +401,8 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
         }
 
         if ( ( isset( $_GET['post_status'] ) && 'trash' === $_GET['post_status'] ) && current_user_can( wpuf_admin_role() ) ) {
-            $actions['restore'] = sprintf( '<a href="%s">%s</a>', $restore_url, __( 'Restore', 'wpuf' ) );
-            $actions['delete']  = sprintf( '<a href="%s" class="submitdelete">%s</a>', $delete_url, __( 'Delete Permanently', 'wpuf' ) );
+            $actions['restore'] = sprintf( '<a href="%s">%s</a>', $restore_url, __( 'Restore', 'wp-user-frontend' ) );
+            $actions['delete']  = sprintf( '<a href="%s" class="submitdelete">%s</a>', $delete_url, __( 'Delete Permanently', 'wp-user-frontend' ) );
 
             $title = sprintf(
                 '<strong>%1s</strong>',
@@ -412,7 +411,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
         }
 
         $draft_marker = ( 'draft' === $item['post_status'] ) ?
-                            '<strong> — <span class="post-state">' . __( 'Draft', 'wpuf' ) . '</span></strong>' :
+                            '<strong> — <span class="post-state">' . __( 'Draft', 'wp-user-frontend' ) . '</span></strong>' :
                             '';
 
         $form_name = sprintf( '%1s %2s %3s', $title, $draft_marker, $this->row_actions( $actions ) );

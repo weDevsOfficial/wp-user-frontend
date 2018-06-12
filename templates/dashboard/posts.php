@@ -27,13 +27,13 @@ if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == "del" ) {
         $redirect = add_query_arg( array( 'section' => 'posts', 'msg' => 'deleted'), get_permalink() );
         wp_redirect( $redirect );
     } else {
-        echo '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wpuf' ) . '</div>';
+        echo '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wp-user-frontend' ) . '</div>';
     }
 }
 
 // show delete success message
 if ( isset( $_GET['msg'] ) && $_GET['msg'] == 'deleted' ) {
-    echo '<div class="success">' . __( 'Post Deleted', 'wpuf' ) . '</div>';
+    echo '<div class="success">' . __( 'Post Deleted', 'wp-user-frontend' ) . '</div>';
 }
 
 $args = array(
@@ -51,7 +51,7 @@ $post_type_obj = get_post_type_object( $post_type );
 ?>
 
 <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
-    <div class="post_count"><?php printf( __( 'You have created <span>%d</span> %s', 'wpuf' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
+    <div class="post_count"><?php printf( __( 'You have created <span>%d</span> %s', 'wp-user-frontend' ), $dashboard_query->found_posts, $post_type_obj->label ); ?></div>
 <?php } ?>
 
 <?php do_action( 'wpuf_account_posts_top', $userdata->ID, $post_type_obj ) ?>
@@ -69,20 +69,20 @@ $post_type_obj = get_post_type_object( $post_type );
             <tr class="items-list-header">
                 <?php
                 if ( 'on' == $featured_img ) {
-                    echo '<th>' . __( 'Featured Image', 'wpuf' ) . '</th>';
+                    echo '<th>' . __( 'Featured Image', 'wp-user-frontend' ) . '</th>';
                 }
                 ?>
-                <th><?php _e( 'Title', 'wpuf' ); ?></th>
-                <th><?php _e( 'Status', 'wpuf' ); ?></th>
+                <th><?php _e( 'Title', 'wp-user-frontend' ); ?></th>
+                <th><?php _e( 'Status', 'wp-user-frontend' ); ?></th>
 
                 <?php do_action( 'wpuf_account_posts_head_col', $args ) ?>
 
                 <?php
                 if ( $charging_enabled ) {
-                    echo '<th>' . __( 'Payment', 'wpuf' ) . '</th>';
+                    echo '<th>' . __( 'Payment', 'wp-user-frontend' ) . '</th>';
                 }
                 ?>
-                <th><?php _e( 'Options', 'wpuf' ); ?></th>
+                <th><?php _e( 'Options', 'wp-user-frontend' ); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -102,7 +102,7 @@ $post_type_obj = get_post_type_object( $post_type );
                             if ( has_post_thumbnail() ) {
                                 the_post_thumbnail( $featured_img_size );
                             } else {
-                                printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', apply_filters( 'wpuf_no_image', plugins_url( '/assets/images/no-image.png', dirname( __FILE__ ) ) ), __( 'No Image', 'wpuf' ) );
+                                printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', apply_filters( 'wpuf_no_image', plugins_url( '/assets/images/no-image.png', dirname( __FILE__ ) ) ), __( 'No Image', 'wp-user-frontend' ) );
                             }
 
                             echo $show_link ? '</a>' : '';
@@ -116,7 +116,7 @@ $post_type_obj = get_post_type_object( $post_type );
 
                         <?php } else { ?>
 
-                            <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpuf' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
+                            <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
 
                         <?php } ?>
                     </td>
@@ -132,7 +132,7 @@ $post_type_obj = get_post_type_object( $post_type );
                         ?>
                         <td>
                             <?php if ( $post->post_status == 'pending' && $order_id ) { ?>
-                                <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wpuf' ); ?></a>
+                                <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wp-user-frontend' ); ?></a>
                             <?php } ?>
                         </td>
                     <?php } ?>
@@ -148,7 +148,7 @@ $post_type_obj = get_post_type_object( $post_type );
                                 // don't show the edit link
                             } else {
                                 ?>
-                                <a href="<?php echo wp_nonce_url( $url, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wpuf' ); ?></a> /
+                                <a href="<?php echo wp_nonce_url( $url, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wp-user-frontend' ); ?></a> /
                                 <?php
                             }
                         }
@@ -157,9 +157,9 @@ $post_type_obj = get_post_type_object( $post_type );
                         <?php
                         if ( wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
                             $del_url = add_query_arg( array('action' => 'del', 'pid' => $post->ID) );
-                            $message = __( 'Are you sure to delete?', 'wpuf' );
+                            $message = __( 'Are you sure to delete?', 'wp-user-frontend' );
                             ?>
-                            <a href="<?php echo wp_nonce_url( $del_url, 'wpuf_del' ) ?>" onclick="return confirm('<?php echo $message ?>');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
+                            <a href="<?php echo wp_nonce_url( $del_url, 'wpuf_del' ) ?>" onclick="return confirm('<?php echo $message ?>');"><span style="color: red;"><?php _e( 'Delete', 'wp-user-frontend' ); ?></span></a>
                         <?php } ?>
                     </td>
                 </tr>
@@ -177,8 +177,8 @@ $post_type_obj = get_post_type_object( $post_type );
         $pagination = paginate_links( array(
             'base'      => add_query_arg( 'pagenum', '%#%' ),
             'format'    => '',
-            'prev_text' => __( '&laquo;', 'wpuf' ),
-            'next_text' => __( '&raquo;', 'wpuf' ),
+            'prev_text' => __( '&laquo;', 'wp-user-frontend' ),
+            'next_text' => __( '&raquo;', 'wp-user-frontend' ),
             'total'     => $dashboard_query->max_num_pages,
             'current'   => $pagenum,
             'add_args'  => false
@@ -192,7 +192,7 @@ $post_type_obj = get_post_type_object( $post_type );
 
     <?php
 } else {
-    printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', $post_type_obj->label );
+    printf( '<div class="wpuf-message">' . __( 'No %s found', 'wp-user-frontend' ) . '</div>', $post_type_obj->label );
     do_action( 'wpuf_account_posts_nopost', $userdata->ID, $post_type_obj );
 }
 

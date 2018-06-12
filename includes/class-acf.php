@@ -165,15 +165,15 @@ class WPUF_ACF_Compatibility {
 
         ?>
         <div class="notice notice-info">
-            <p><strong><?php printf( __( '%s Detected', 'wpuf' ), $this->title ); ?></strong></p>
-            <p><?php printf( __( 'Hey, looks like you have <strong>%s</strong> installed. What do you want to do with WPUF?', 'wpuf' ), $this->title ); ?></p>
-            <p><i><strong style="color:#46b450;">Compatible: </strong><?php printf( __( 'It will update compatibility option only, so existing custom fields data format will not change.', 'wpuf' ) ); ?></i></p>
-            <p><i><strong style="color:#46b450;">Compatible & Migrate: </strong><?php printf( __( 'It will update existing custom fields data to ACF format and update compatibility option too.', 'wpuf' ) ); ?></i></p>
+            <p><strong><?php printf( __( '%s Detected', 'wp-user-frontend' ), $this->title ); ?></strong></p>
+            <p><?php printf( __( 'Hey, looks like you have <strong>%s</strong> installed. What do you want to do with WPUF?', 'wp-user-frontend' ), $this->title ); ?></p>
+            <p><i><strong style="color:#46b450;">Compatible: </strong><?php printf( __( 'It will update compatibility option only, so existing custom fields data format will not change.', 'wp-user-frontend' ) ); ?></i></p>
+            <p><i><strong style="color:#46b450;">Compatible & Migrate: </strong><?php printf( __( 'It will update existing custom fields data to ACF format and update compatibility option too.', 'wp-user-frontend' ) ); ?></i></p>
 
             <p>
-                <a href="#" class="button button-primary" id="wpuf-compatible-<?php echo $this->id ;?>"><?php _e( 'Compatible', 'wpuf' ); ?></a>
-                <a href="#" class="button button-primary" id="wpuf-migrate-<?php echo $this->id ;?>"><?php _e( 'Compatible & Migrate', 'wpuf' ); ?></a>
-                <a href="#" class="button" id="wpuf-dismiss-<?php echo $this->id ;?>"><?php _e( 'No Thanks', 'wpuf' ); ?></a>
+                <a href="#" class="button button-primary" id="wpuf-compatible-<?php echo $this->id ;?>"><?php _e( 'Compatible', 'wp-user-frontend' ); ?></a>
+                <a href="#" class="button button-primary" id="wpuf-migrate-<?php echo $this->id ;?>"><?php _e( 'Compatible & Migrate', 'wp-user-frontend' ); ?></a>
+                <a href="#" class="button" id="wpuf-dismiss-<?php echo $this->id ;?>"><?php _e( 'No Thanks', 'wp-user-frontend' ); ?></a>
             </p>
         </div>
 

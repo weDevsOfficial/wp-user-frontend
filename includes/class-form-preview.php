@@ -82,13 +82,13 @@ class WPUF_Form_Preview {
         if ( $this->is_preview ) {
 
             if ( ! is_user_logged_in() ) {
-                return __( 'You must be logged in to preview this form.', 'wpuf' );
+                return __( 'You must be logged in to preview this form.', 'wp-user-frontend' );
             }
 
             $viewing_capability = apply_filters( 'wpuf_preview_form_cap', 'edit_posts' ); // at least has to be contributor
 
             if ( ! current_user_can( $viewing_capability ) ) {
-                return __( 'Sorry, you are not eligible to preview this form.', 'wpuf' );
+                return __( 'Sorry, you are not eligible to preview this form.', 'wp-user-frontend' );
             }
         }
 

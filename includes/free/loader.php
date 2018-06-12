@@ -74,22 +74,22 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     function admin_menu_top() {
         $capability = wpuf_admin_role();
 
-        add_submenu_page( 'wp-user-frontend', __( 'Registration Forms', 'wpuf' ), __( 'Registration Forms', 'wpuf' ), $capability, 'wpuf-profile-forms', array($this, 'admin_reg_forms_page') );
+        add_submenu_page( 'wp-user-frontend', __( 'Registration Forms', 'wp-user-frontend' ), __( 'Registration Forms', 'wp-user-frontend' ), $capability, 'wpuf-profile-forms', array($this, 'admin_reg_forms_page') );
     }
 
     function admin_menu() {
         if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             $capability = wpuf_admin_role();
-            add_submenu_page( 'wp-user-frontend', __( 'Coupons', 'wpuf' ), __( 'Coupons', 'wpuf' ), $capability, 'wpuf_coupon', array($this, 'admin_coupon_page' ) );
+            add_submenu_page( 'wp-user-frontend', __( 'Coupons', 'wp-user-frontend' ), __( 'Coupons', 'wp-user-frontend' ), $capability, 'wpuf_coupon', array($this, 'admin_coupon_page' ) );
         }
     }
 
     function admin_reg_forms_page() {
         ?>
-        <h2><?php _e( 'Registration Form', 'wpuf' ); ?></h2>
+        <h2><?php _e( 'Registration Form', 'wp-user-frontend' ); ?></h2>
 
         <p>
-            <?php _e( 'Use the shortcode <code>[wpuf-registration]</code> for a simple and default WordPress registration form.', 'wpuf' ); ?>
+            <?php _e( 'Use the shortcode <code>[wpuf-registration]</code> for a simple and default WordPress registration form.', 'wp-user-frontend' ); ?>
         </p>
 
         <p>
@@ -103,7 +103,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             <h3 style="margin: 0;">Pro Features</h3>
 
             <p>
-                <?php _e( 'Registration form builder is a two way form which can be used both for <strong>user registration</strong> and <strong>profile editing</strong>.', 'wpuf' ); ?>
+                <?php _e( 'Registration form builder is a two way form which can be used both for <strong>user registration</strong> and <strong>profile editing</strong>.', 'wp-user-frontend' ); ?>
             </p>
 
             <ul class="wpuf-pro-features">
@@ -122,8 +122,8 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             </ul>
 
             <p style="margin-top: 30px;">
-                <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wpuf' ); ?></a>
-                <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php _e( 'Learn More', 'wpuf' ); ?></a>
+                <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php _e( 'Learn More', 'wp-user-frontend' ); ?></a>
             </p>
         </div>
 
@@ -140,20 +140,20 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
     function admin_coupon_page() {
         ?>
-        <h2><?php _e( 'Coupons', 'wpuf' ); ?></h2>
+        <h2><?php _e( 'Coupons', 'wp-user-frontend' ); ?></h2>
 
         <div class="wpuf-notice" style="padding: 20px; background: #fff; border: 1px solid #ddd;">
             <p>
-                <?php _e( 'Use Coupon codes for subscription for discounts.', 'wpuf' ); ?>
+                <?php _e( 'Use Coupon codes for subscription for discounts.', 'wp-user-frontend' ); ?>
             </p>
 
             <p>
-                <?php _e( 'This feature is only available in the Pro Version.', 'wpuf' ); ?>
+                <?php _e( 'This feature is only available in the Pro Version.', 'wp-user-frontend' ); ?>
             </p>
 
             <p>
-                <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wpuf' ); ?></a>
-                <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank" class="button"><?php _e( 'Learn more about Coupons', 'wpuf' ); ?></a>
+                <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank" class="button"><?php _e( 'Learn more about Coupons', 'wp-user-frontend' ); ?></a>
             </p>
         </div>
 
@@ -194,7 +194,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      * @return void
      */
     function add_meta_box_post() {
-        add_meta_box( 'wpuf-metabox-fields-banner', __( 'Upgrade to Pro', 'wpuf' ), array($this, 'show_banner_metabox'), 'wpuf_forms', 'side', 'core' );
+        add_meta_box( 'wpuf-metabox-fields-banner', __( 'Upgrade to Pro', 'wp-user-frontend' ), array($this, 'show_banner_metabox'), 'wpuf_forms', 'side', 'core' );
     }
 
     function show_banner_metabox() {

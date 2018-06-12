@@ -73,7 +73,7 @@ class WPUF_Render_Form {
 
             if ( !$captcha_instance->check( $rs_captcha_file, $rs_captcha_input ) ) {
 
-                $this->send_error( __( 'Really Simple Captcha validation failed', 'wpuf' ) );
+                $this->send_error( __( 'Really Simple Captcha validation failed', 'wp-user-frontend' ) );
             } else {
                 // validation success, remove the files
                 $captcha_instance->remove( $rs_captcha_file );
@@ -102,7 +102,7 @@ class WPUF_Render_Form {
             );
 
             if ( !$resp->success ) {
-                $this->send_error( __( 'noCaptcha reCAPTCHA validation failed', 'wpuf' ) );
+                $this->send_error( __( 'noCaptcha reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
 
         } elseif ( $no_captcha == 0 && 0 == $invisible  ) {
@@ -113,7 +113,7 @@ class WPUF_Render_Form {
             $resp            = recaptcha_check_answer( $private_key, $_SERVER["REMOTE_ADDR"], $recap_challenge, $recap_response );
 
             if ( !$resp->is_valid ) {
-                $this->send_error( __( 'reCAPTCHA validation failed', 'wpuf' ) );
+                $this->send_error( __( 'reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
 
         } elseif ( $no_captcha == 0 && 1 == $invisible ) {
@@ -125,7 +125,7 @@ class WPUF_Render_Form {
             $response  = $object->verifyResponse( $recaptcha );
 
             if ( isset( $response['success'] ) and $response['success'] != true) {
-                $this->send_error( __( 'Invisible reCAPTCHA validation failed', 'wpuf' ) );
+                $this->send_error( __( 'Invisible reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
         }
 
@@ -340,12 +340,12 @@ class WPUF_Render_Form {
         $form_status = get_post_status( $form_id );
 
         if ( ! $form_status ) {
-            echo '<div class="wpuf-message">' . __( 'Your selected form is no longer available.', 'wpuf' ) . '</div>';
+            echo '<div class="wpuf-message">' . __( 'Your selected form is no longer available.', 'wp-user-frontend' ) . '</div>';
             return;
         }
 
         if ( $form_status != 'publish' ) {
-            echo '<div class="wpuf-message">' . __( "Please make sure you've published your form.", 'wpuf' ) . '</div>';
+            echo '<div class="wpuf-message">' . __( "Please make sure you've published your form.", 'wp-user-frontend' ) . '</div>';
             return;
         }
 
@@ -749,7 +749,7 @@ class WPUF_Render_Form {
             <?php } ?>
 
             <?php if ( isset( $form_settings['draft_post'] ) && $form_settings['draft_post'] == 'true' ) { ?>
-                <a href="#" class="btn" id="wpuf-post-draft"><?php _e( 'Save Draft', 'wpuf' ); ?></a>
+                <a href="#" class="btn" id="wpuf-post-draft"><?php _e( 'Save Draft', 'wp-user-frontend' ); ?></a>
             <?php } ?>
         </li>
     <?php
@@ -1045,7 +1045,7 @@ class WPUF_Render_Form {
                 <div id="wpuf-insert-image-container">
                     <a class="wpuf-button wpuf-insert-image" id="wpuf-insert-image_<?php echo $form_id; ?>" href="#" data-form_id="<?php echo $form_id; ?>">
                         <span class="wpuf-media-icon"></span>
-                        <?php _e( 'Insert Photo', 'wpuf' ); ?>
+                        <?php _e( 'Insert Photo', 'wp-user-frontend' ); ?>
                     </a>
                 </div>
 
@@ -1327,7 +1327,7 @@ class WPUF_Render_Form {
             $field_size    = !empty( $attr['width'] ) ? ' field-size-' . $attr['width'] : '';
 
             echo '</li>';
-            echo '<li class="wpuf-el password-repeat ' . $field_size . '" data-label="' . esc_attr( 'Confirm Password', 'wpuf' ) . '">';
+            echo '<li class="wpuf-el password-repeat ' . $field_size . '" data-label="' . esc_attr( __('Confirm Password', 'wp-user-frontend') ) . '">';
 
             $this->label( array('name' => 'pass2', 'label' => $attr['re_pass_label'], 'required' => $post_id ? 'no' : 'yes') );
             ?>
@@ -1351,7 +1351,7 @@ class WPUF_Render_Form {
             </div>
 
             <div class="wpuf-fields">
-                <div id="pass-strength-result" style="display: block"><?php _e( 'Strength indicator', 'wpuf' ); ?></div>
+                <div id="pass-strength-result" style="display: block"><?php _e( 'Strength indicator', 'wp-user-frontend' ); ?></div>
             </div>
 
             <script type="text/javascript">
@@ -1416,7 +1416,7 @@ class WPUF_Render_Form {
         }
 
         $tax_args           = array(
-            'show_option_none' => __( '-- Select --', 'wpuf' ),
+            'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
             'hierarchical'     => 1,
             'hide_empty'       => 0,
             'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
@@ -1481,7 +1481,7 @@ class WPUF_Render_Form {
         }
 
         if ( ! taxonomy_exists( $taxonomy ) ) {
-            echo '<br><div class="wpuf-message">' . __( 'This field is no longer available.', 'wpuf' ) . '</div>';
+            echo '<br><div class="wpuf-message">' . __( 'This field is no longer available.', 'wp-user-frontend' ) . '</div>';
             return;
         }
 
@@ -1665,7 +1665,7 @@ class WPUF_Render_Form {
                 }
             }
         }
-        $button_label = empty( $attr['button_label'] ) ? __( 'Select Image', 'wpuf' ) : $attr['button_label'];
+        $button_label = empty( $attr['button_label'] ) ? __( 'Select Image', 'wp-user-frontend' ) : $attr['button_label'];
         ?>
 
         <div class="wpuf-fields">
@@ -1683,7 +1683,7 @@ class WPUF_Render_Form {
                             $avatar = get_user_meta( $post_id, 'user_avatar', true );
                             if ( $avatar ) {
                                 echo '<li>'.$featured_image;
-                                printf( '<br><a href="#" data-confirm="%s" class="btn btn-danger btn-small wpuf-button button wpuf-delete-avatar">%s</a>', __( 'Are you sure?', 'wpuf' ), __( 'Delete', 'wpuf' ) );
+                                printf( '<br><a href="#" data-confirm="%s" class="btn btn-danger btn-small wpuf-button button wpuf-delete-avatar">%s</a>', __( 'Are you sure?', 'wp-user-frontend' ), __( 'Delete', 'wp-user-frontend' ) );
                                 echo '</li>';
                             }
                         }

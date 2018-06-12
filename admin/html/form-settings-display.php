@@ -8,15 +8,15 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
 <table class="form-table">
 
     <tr class="wpuf-label-position">
-        <th><?php _e( 'Label Position', 'wpuf' ); ?></th>
+        <th><?php _e( 'Label Position', 'wp-user-frontend' ); ?></th>
         <td>
             <select name="wpuf_settings[label_position]">
                 <?php
                 $positions = array(
-                    'above'  => __( 'Above Element', 'wpuf' ),
-                    'left'   => __( 'Left of Element', 'wpuf' ),
-                    'right'  => __( 'Right of Element', 'wpuf' ),
-                    'hidden' => __( 'Hidden', 'wpuf' ),
+                    'above'  => __( 'Above Element', 'wp-user-frontend' ),
+                    'left'   => __( 'Left of Element', 'wp-user-frontend' ),
+                    'right'  => __( 'Right of Element', 'wp-user-frontend' ),
+                    'hidden' => __( 'Hidden', 'wp-user-frontend' ),
                 );
 
                 foreach ($positions as $to => $label) {
@@ -26,19 +26,19 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
             </select>
 
             <p class="description">
-                <?php _e( 'Where the labels of the form should display', 'wpuf' ) ?>
+                <?php _e( 'Where the labels of the form should display', 'wp-user-frontend' ) ?>
             </p>
         </td>
     </tr>
 
     <tr class="wpuf-override-theme-css">
-        <th><?php _e( 'Use Theme CSS', 'wpuf' ); ?></th>
+        <th><?php _e( 'Use Theme CSS', 'wp-user-frontend' ); ?></th>
         <td>
             <select name="wpuf_settings[use_theme_css]">
                 <?php
                 $options = array(
-                    'wpuf-style'         => __( 'No', 'wpuf' ),
-                    'wpuf-theme-style'   => __( 'Yes', 'wpuf' ),
+                    'wpuf-style'         => __( 'No', 'wp-user-frontend' ),
+                    'wpuf-theme-style'   => __( 'Yes', 'wp-user-frontend' ),
                 );
 
                 foreach ($options as $to => $label) {
@@ -48,14 +48,14 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
             </select>
 
             <p class="description">
-                <?php _e( 'Selecting "Yes" will use your theme\'s style for form fields.', 'wpuf' ) ?>
+                <?php _e( 'Selecting "Yes" will use your theme\'s style for form fields.', 'wp-user-frontend' ) ?>
             </p>
         </td>
     </tr>
 
     <?php if( class_exists( 'WP_User_Frontend_Pro' ) ) : ?>
         <tr class="wpuf-form-layouts">
-            <th><?php _e( 'Form Style', 'wpuf' ); ?></th>
+            <th><?php _e( 'Form Style', 'wp-user-frontend' ); ?></th>
             <td>
                 <ul>
                     <?php

@@ -58,7 +58,7 @@ class WPUF_Paypal {
             'METHOD'    => 'ManageRecurringPaymentsProfileStatus',
             'PROFILEID' => $profile_id,
             'ACTION'    => ucfirst( $new_status ),
-            'NOTE'      => sprintf( __( 'Subscription %s at %s', 'wpuf' ), $new_status_string, get_bloginfo( 'name' ) ),
+            'NOTE'      => sprintf( __( 'Subscription %s at %s', 'wp-user-frontend' ), $new_status_string, get_bloginfo( 'name' ) ),
         );
 
         // Send back post vars to paypal
@@ -88,27 +88,27 @@ class WPUF_Paypal {
 
         $options[] = array(
             'name' => 'paypal_email',
-            'label' => __( 'PayPal Email', 'wpuf' )
+            'label' => __( 'PayPal Email', 'wp-user-frontend' )
         );
 
         $options[] = array(
             'name' => 'gate_instruct_paypal',
-            'label' => __( 'PayPal Instruction', 'wpuf' ),
+            'label' => __( 'PayPal Instruction', 'wp-user-frontend' ),
             'type' => 'textarea',
             'default' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account"
         );
 
         $options[] = array(
             'name' => 'paypal_api_username',
-            'label' => __( 'PayPal API username', 'wpuf' )
+            'label' => __( 'PayPal API username', 'wp-user-frontend' )
         );
         $options[] = array(
             'name' => 'paypal_api_password',
-            'label' => __( 'PayPal API password', 'wpuf' )
+            'label' => __( 'PayPal API password', 'wp-user-frontend' )
         );
         $options[] = array(
             'name' => 'paypal_api_signature',
-            'label' => __( 'PayPal API signature', 'wpuf' )
+            'label' => __( 'PayPal API signature', 'wp-user-frontend' )
         );
 
         return $options;

@@ -50,7 +50,7 @@
 
                     }
                 } else {
-                    _e( 'No subscription plan found.', 'wpuf' );
+                    _e( 'No subscription plan found.', 'wp-user-frontend' );
                 }
             ?>
     	</ul>

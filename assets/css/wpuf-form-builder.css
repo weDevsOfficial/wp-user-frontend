@@ -593,7 +593,7 @@
 }
 .wpuf-form-builder-field-options .option-field-section-fields {
   margin-top: 15px;
-  max-height: 150vh;
+  height: auto;
   opacity: 1;
 }
 .wpuf-form-builder-field-options .panel-field-opt {

@@ -43,7 +43,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function get_field_wpuf_cond() {
         return array(
             'name'           => 'wpuf_cond',
-            'title'          => __( 'Conditional Logic', 'wpuf' ),
+            'title'          => __( 'Conditional Logic', 'wp-user-frontend' ),
             'type'           => 'option-pro-feature-alert',
             'section'        => 'advanced',
             'priority'       => 30,
@@ -62,7 +62,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function repeat_field() {
         return array(
             'template'      => 'repeat_field',
-            'title'         => __( 'Repeat Field', 'wpuf' ),
+            'title'         => __( 'Repeat Field', 'wp-user-frontend' ),
             'icon'          => 'clone',
             'pro_feature'   => true,
         );
@@ -78,7 +78,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function date_field() {
         return array(
             'template'      => 'date_field',
-            'title'         => __( 'Date / Time', 'wpuf' ),
+            'title'         => __( 'Date / Time', 'wp-user-frontend' ),
             'icon'          => 'calendar-o',
             'pro_feature'   => true
         );
@@ -94,7 +94,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function file_upload() {
         return array(
             'template'      => 'file_upload',
-            'title'         => __( 'File Upload', 'wpuf' ),
+            'title'         => __( 'File Upload', 'wp-user-frontend' ),
             'icon'          => 'upload',
             'pro_feature'   => true
         );
@@ -110,7 +110,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function country_list_field() {
         return array(
             'template'      => 'country_list_field',
-            'title'         => __( 'Country List', 'wpuf' ),
+            'title'         => __( 'Country List', 'wp-user-frontend' ),
             'icon'          => 'globe',
             'pro_feature'   => true
         );
@@ -126,7 +126,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function numeric_text_field() {
         return array(
             'template'      => 'numeric_text_field',
-            'title'         => __( 'Numeric Field', 'wpuf' ),
+            'title'         => __( 'Numeric Field', 'wp-user-frontend' ),
             'icon'          => 'hashtag',
             'pro_feature'   => true
         );
@@ -142,7 +142,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function address_field() {
         return array(
             'template'      => 'address_field',
-            'title'         => __( 'Address Field', 'wpuf' ),
+            'title'         => __( 'Address Field', 'wp-user-frontend' ),
             'icon'          => 'address-card-o',
             'pro_feature'   => true,
         );
@@ -158,7 +158,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function step_start() {
         return array(
             'template'      => 'step_start',
-            'title'         => __( 'Step Start', 'wpuf' ),
+            'title'         => __( 'Step Start', 'wp-user-frontend' ),
             'icon'          => 'step-forward',
             'pro_feature'   => true,
             'is_full_width' => true,
@@ -176,7 +176,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function google_map() {
         return array(
             'template'      => 'google_map',
-            'title'         => __( 'Google Map', 'wpuf' ),
+            'title'         => __( 'Google Map', 'wp-user-frontend' ),
             'icon'          => 'map-marker',
             'pro_feature'   => true,
         );
@@ -192,7 +192,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function shortcode() {
         return array(
             'template'      => 'shortcode',
-            'title'         => __( 'Shortcode', 'wpuf' ),
+            'title'         => __( 'Shortcode', 'wp-user-frontend' ),
             'pro_feature'   => true,
         );
     }
@@ -207,7 +207,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function really_simple_captcha() {
         return array(
             'template'      => 'really_simple_captcha',
-            'title'         => __( 'Really Simple Captcha', 'wpuf' ),
+            'title'         => __( 'Really Simple Captcha', 'wp-user-frontend' ),
             'pro_feature'   => true,
         );
     }
@@ -222,7 +222,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function action_hook() {
         return array(
             'template'      => 'action_hook',
-            'title'         => __( 'Action Hook', 'wpuf' ),
+            'title'         => __( 'Action Hook', 'wp-user-frontend' ),
             'pro_feature'   => true,
         );
     }
@@ -237,7 +237,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function toc() {
         return array(
             'template'      => 'toc',
-            'title'         => __( 'Term & Conditions', 'wpuf' ),
+            'title'         => __( 'Term & Conditions', 'wp-user-frontend' ),
             'pro_feature'   => true,
         );
     }
@@ -252,7 +252,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
     public static function ratings() {
         return array(
             'template'      => 'ratings',
-            'title'         => __( 'Ratings', 'wpuf' ),
+            'title'         => __( 'Ratings', 'wp-user-frontend' ),
             'pro_feature'   => true,
         );
     }

@@ -2,15 +2,15 @@
 
     <div class="wpuf-popup-container">
 
-        <h3><?php _e( 'Select a form to insert', 'wpuf' ); ?></h3>
+        <h3><?php _e( 'Select a form to insert', 'wp-user-frontend' ); ?></h3>
 
         <?php $form_types = apply_filters( 'wpuf_shortcode_dialog_form_type', array(
-            'post'         => __( 'Post Form', 'wpuf' ),
-            'registration' => __( 'Registration Form', 'wpuf' ),
+            'post'         => __( 'Post Form', 'wp-user-frontend' ),
+            'registration' => __( 'Registration Form', 'wp-user-frontend' ),
         ) ); ?>
 
         <div class="wpuf-div">
-            <label for="wpuf-form-type" class="label"><?php _e( 'Form Type', 'wpuf' ); ?></label>
+            <label for="wpuf-form-type" class="label"><?php _e( 'Form Type', 'wp-user-frontend' ); ?></label>
             <select id="wpuf-form-type">
 
                 <?php foreach ( $form_types as $key => $form_type ) { ?>
@@ -65,8 +65,8 @@
         do_action( 'wpuf_shortcode_dialog_content', $form_types ); ?>
 
         <div class="submit-button wpuf-div">
-            <button id="wpuf-form-insert" class="button-primary"><?php _e( 'Insert Form', 'wpuf' ); ?></button>
-            <button id="wpuf-form-close" class="button-secondary" style="margin-left: 5px;" onClick="tb_remove();"><?php _e( 'Close', 'wpuf' ); ?></a>
+            <button id="wpuf-form-insert" class="button-primary"><?php _e( 'Insert Form', 'wp-user-frontend' ); ?></button>
+            <button id="wpuf-form-close" class="button-secondary" style="margin-left: 5px;" onClick="tb_remove();"><?php _e( 'Close', 'wp-user-frontend' ); ?></a>
         </div>
 
     </div>

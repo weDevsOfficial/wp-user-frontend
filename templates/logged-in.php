@@ -5,7 +5,7 @@
 	</span>
 
     <br>
-    <h3> <?php printf( __( 'Hello, %s', 'wpuf' ), $user->display_name ); ?> </h3>
+    <h3> <?php printf( __( 'Hello, %s', 'wp-user-frontend' ), $user->display_name ); ?> </h3>
 
-    <?php printf( __( 'You are currently logged in! %s?', 'wpuf' ), wp_loginout( '', false ) ) ?>
+    <?php printf( __( 'You are currently logged in! %s?', 'wp-user-frontend' ), wp_loginout( '', false ) ) ?>
 </div>

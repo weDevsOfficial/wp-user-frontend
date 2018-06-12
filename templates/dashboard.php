@@ -1,7 +1,7 @@
 <div class="wpuf-dashboard-container">
 
     <h2 class="page-head">
-        <span class="colour"><?php printf( __( "%s's Dashboard", 'wpuf' ), $userdata->user_login ); ?></span>
+        <span class="colour"><?php printf( __( "%s's Dashboard", 'wp-user-frontend' ), $userdata->user_login ); ?></span>
     </h2>
 
     <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
@@ -14,7 +14,7 @@
                         $labels[] = $post_type_name->label;
                     }
                 }
-                printf( __( 'You have created <span>%d</span> (%s)', 'wpuf' ), $dashboard_query->found_posts, implode( ', ', $labels ) );
+                printf( __( 'You have created <span>%d</span> (%ss)', 'wp-user-frontend' ), $dashboard_query->found_posts, implode( 's, ', $dashboard_query->query['post_type'] ) );
             ?>
             </div>
         <?php endif ?>
@@ -80,14 +80,14 @@
                 <tr class="items-list-header">
                     <?php
                     if ((( 'on' == $featured_img || 'on' == $featured_image ) || ( 'off' == $featured_img && 'on' == $featured_image ) || ( 'on' == $featured_img && 'default' == $featured_image )) && !( 'on' == $featured_img && 'off' == $featured_image )) {
-                        echo '<th>' . __( 'Featured Image', 'wpuf' ) . '</th>';
+                        echo '<th>' . __( 'Featured Image', 'wp-user-frontend' ) . '</th>';
                     }
                     ?>
-                    <th><?php _e( 'Title', 'wpuf' ); ?></th>
+                    <th><?php _e( 'Title', 'wp-user-frontend' ); ?></th>
 
                     <?php
                     if ( 'on' == $category ) {
-                        echo '<th>' . __( 'Category', 'wpuf' ) . '</th>';
+                        echo '<th>' . __( 'Category', 'wp-user-frontend' ) . '</th>';
                     }
                     ?>
 
@@ -99,7 +99,7 @@
                             for ( $j = 0; $j < $len; $j++ ) {
                                 if ( $meta_key[$j] == $meta_name[$i] ) {
                                     echo '<th>';
-                                    echo __( $meta_label[$i], 'wpuf' );
+                                    echo __( $meta_label[$i], 'wp-user-frontend' );
                                     echo '</th>';
                                 }
                             }
@@ -109,20 +109,20 @@
 
                     <?php
                     if ( 'on' == $excerpt ) {
-                        echo '<th>' . __( 'Excerpt', 'wpuf' ) . '</th>';
+                        echo '<th>' . __( 'Excerpt', 'wp-user-frontend' ) . '</th>';
                     }
                     ?>
 
-                    <th><?php _e( 'Status', 'wpuf' ); ?></th>
+                    <th><?php _e( 'Status', 'wp-user-frontend' ); ?></th>
 
                     <?php do_action( 'wpuf_dashboard_head_col', $args ) ?>
 
                     <?php
                     if ( $charging_enabled ) {
-                        echo '<th>' . __( 'Payment', 'wpuf' ) . '</th>';
+                        echo '<th>' . __( 'Payment', 'wp-user-frontend' ) . '</th>';
                     }
                     ?>
-                    <th><?php _e( 'Options', 'wpuf' ); ?></th>
+                    <th><?php _e( 'Options', 'wp-user-frontend' ); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -142,7 +142,7 @@
                                 if ( has_post_thumbnail() ) {
                                     the_post_thumbnail( $featured_img_size );
                                 } else {
-                                    printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', apply_filters( 'wpuf_no_image', plugins_url( '/assets/images/no-image.png', dirname( __FILE__ ) ) ), __( 'No Image', 'wpuf' ) );
+                                    printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', apply_filters( 'wpuf_no_image', plugins_url( '/assets/images/no-image.png', dirname( __FILE__ ) ) ), __( 'No Image', 'wp-user-frontend' ) );
                                 }
 
                                 echo $show_link ? '</a>' : '';
@@ -156,7 +156,7 @@
 
                             <?php } else { ?>
 
-                                <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpuf' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
+                                <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
 
                             <?php } ?>
                         </td>
@@ -221,7 +221,7 @@
                             ?>
                             <td>
                                 <?php if ( $post->post_status == 'pending' && $order_id && $payment_status != 'completed' ) { ?>
-                                    <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wpuf' ); ?></a>
+                                    <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wp-user-frontend' ); ?></a>
                                 <?php }
                                 elseif ( $payment_status == 'completed' ) {
                                     echo "Completed";
@@ -243,7 +243,7 @@
                                     // don't show the edit link
                                 } else {
                                     ?>
-                                    <a href="<?php echo wp_nonce_url( $edit_page_url, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wpuf' ); ?></a>
+                                    <a href="<?php echo wp_nonce_url( $edit_page_url, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wp-user-frontend' ); ?></a>
                                     <?php
                                 }
                             }
@@ -252,9 +252,9 @@
                             <?php
                             if ( wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
                                 $del_url = add_query_arg( array('action' => 'del', 'pid' => $post->ID) );
-                                $message = __( 'Are you sure to delete?', 'wpuf' );
+                                $message = __( 'Are you sure to delete?', 'wp-user-frontend' );
                                 ?>
-                                <a href="<?php echo wp_nonce_url( $del_url, 'wpuf_del' ) ?>" onclick="return confirm('<?php echo $message ?>');"><span style="color: red;"><?php _e( 'Delete', 'wpuf' ); ?></span></a>
+                                <a href="<?php echo wp_nonce_url( $del_url, 'wpuf_del' ) ?>" onclick="return confirm('<?php echo $message ?>');"><span style="color: red;"><?php _e( 'Delete', 'wp-user-frontend' ); ?></span></a>
                             <?php } ?>
                         </td>
                     </tr>
@@ -272,8 +272,8 @@
             $pagination = paginate_links( array(
                 'base'      => add_query_arg( 'pagenum', '%#%' ),
                 'format'    => '',
-                'prev_text' => __( '&laquo;', 'wpuf' ),
-                'next_text' => __( '&raquo;', 'wpuf' ),
+                'prev_text' => __( '&laquo;', 'wp-user-frontend' ),
+                'next_text' => __( '&raquo;', 'wp-user-frontend' ),
                 'total'     => $dashboard_query->max_num_pages,
                 'current'   => $pagenum,
                 'add_args'  => false
@@ -287,7 +287,7 @@
     <?php
     } else {
         if ( !empty( $post_type_obj ) ) {
-            printf( '<div class="wpuf-message">' . __( 'No %s found', 'wpuf' ) . '</div>', implode( ', ', $labels ) );
+            printf( '<div class="wpuf-message">' . __( 'No %s found', 'wp-user-frontend' ) . '</div>', implode( ', ', $labels ) );
             do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
         }
     }

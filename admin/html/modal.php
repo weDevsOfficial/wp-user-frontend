@@ -1,15 +1,15 @@
 <div id="wpuf-form-template-modal">
     <div class="wpuf-form-template-modal">
 
-        <span id="modal-label" class="screen-reader-text"><?php _e( 'Modal window. Press escape to close.',  'wpuf'  ); ?></span>
-        <a href="#" class="close">× <span class="screen-reader-text"><?php _e( 'Close modal window',  'wpuf'  ); ?></span></a>
+        <span id="modal-label" class="screen-reader-text"><?php _e( 'Modal window. Press escape to close.',  'wp-user-frontend'  ); ?></span>
+        <a href="#" class="close">× <span class="screen-reader-text"><?php _e( 'Close modal window',  'wp-user-frontend'  ); ?></span></a>
 
         <header class="modal-header">
             <h2>
-                <?php _e( 'Select a Template', 'wpuf' ); ?>
+                <?php _e( 'Select a Template', 'wp-user-frontend' ); ?>
                 <small><?php
                 printf(
-                    __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wpuf' ),
+                    __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ),
                     $blank_form_url
                 ); ?></small>
             </h2>
@@ -20,18 +20,18 @@
 
                 <ul>
                     <li class="blank-form">
-                        <h3><?php _e( 'Blank Form', 'wpuf' ); ?></h3>
+                        <h3><?php _e( 'Blank Form', 'wp-user-frontend' ); ?></h3>
 
                         <div class="form-middle-text">
                             <span class="dashicons dashicons-plus"></span>
-                            <div class="title"><?php _e( 'Blank Form', 'wpuf' ); ?></div>
+                            <div class="title"><?php _e( 'Blank Form', 'wp-user-frontend' ); ?></div>
                         </div>
 
                         <div class="form-create-overlay">
-                            <div class="title"><?php _e( 'Blank Form', 'wpuf' ); ?></div>
+                            <div class="title"><?php _e( 'Blank Form', 'wp-user-frontend' ); ?></div>
                             <br>
                             <a href="<?php echo $blank_form_url; ?>" class="button button-primary" title="<?php echo esc_attr('Blank Form'); ?>">
-                                <?php _e('Create Form', 'wpuf' );  ?>
+                                <?php _e('Create Form', 'wp-user-frontend' );  ?>
                             </a>
                         </div>
                     </li>
@@ -51,7 +51,7 @@
                         if ( ! $template->is_enabled() ) {
                             $url   = '#';
                             $class = 'template-inactive';
-                            $title = __( 'This integration is not installed.', 'wpuf' );
+                            $title = __( 'This integration is not installed.', 'wp-user-frontend' );
                         }
                         ?>
 
@@ -64,7 +64,7 @@
                                 <div class="description"><?php echo $template->get_description(); ?></div>
                                 <br>
                                 <a href="<?php echo $url; ?>" class="button button-primary" title="<?php echo $template->get_title(); ?>">
-                                    <?php _e('Create Form', 'wpuf' );  ?>
+                                    <?php _e('Create Form', 'wp-user-frontend' );  ?>
                                 </a>
                             </div>
                         </li>

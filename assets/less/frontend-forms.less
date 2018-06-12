@@ -134,7 +134,7 @@
     &.wpuf-style{
         ul.wpuf-form{
             .wpuf-submit{
-                
+
                 input[type=submit] {
                     font-size: 16px;
                     padding: 5px 15px;
@@ -399,6 +399,7 @@ ul.wpuf-form {
                     border: 1px solid @borderColor;
                     padding: 5px;
                     width: 150px;
+                    height: 150px;
                     margin-right: 5px;
                     .border-radius(5px);
 
@@ -756,7 +757,6 @@ ul.wpuf-form {
             border-bottom: 1px solid @borderColor;
 
             a {
-                float: right;
                 text-decoration: none;
                 background: @mainColor;
                 color: #fff;
@@ -1517,7 +1517,6 @@ table#wpuf-address-country-state {
     :not(.attachment-name img) {
         position:absolute;
         width:100%;
-        opacity:0;
         transition:.3s;
     }
 }
@@ -1535,4 +1534,16 @@ li.wpuf-image-wrap.thumbnail {
 }
 li.wpuf-image-wrap.thumbnail:hover .caption {
     display:block;
+}
+
+@media (min-width: 480px) {
+    .wpuf-pay-row {
+        width: 100%;
+        display: table;
+        table-layout: auto;
+    }
+    .wpuf-pay-col {
+        width: 50%;
+        display: table-cell;
+    }
 }

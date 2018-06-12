@@ -31,7 +31,7 @@
 		},
 
         packAlert : function () {
-            alert( 'Please Cancel Your Currently Active Pack first ! ' );
+            alert( wpuf_subscription.pack_notice );
         },
 
         showPackDropdown: function(e) {

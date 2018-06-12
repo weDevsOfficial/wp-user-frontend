@@ -139,10 +139,8 @@ class WPUF_Admin_Form_Builder {
             'i18n'              => $this->i18n(),
             'post'              => $post,
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
-            'panel_sections'    => wpuf()->fields->get_field_groups(),
-            'field_settings'    => wpuf()->fields->get_js_settings(),
-//            'panel_sections'    => $this->get_panel_sections(),
-//            'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
+            'panel_sections'    => $this->get_panel_sections(),
+            'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
             'notifications'     => wpuf_get_form_notifications( $post->ID ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
             'site_url'          => site_url('/'),
@@ -172,29 +170,29 @@ class WPUF_Admin_Form_Builder {
      */
     public function admin_print_scripts() {
         ?>
-            <script>
-                if (!window.Promise) {
-                    var promise_polyfill = document.createElement('script');
-                    promise_polyfill.setAttribute('src','https://cdn.polyfill.io/v2/polyfill.min.js');
-                    document.head.appendChild(promise_polyfill);
+        <script>
+            if (!window.Promise) {
+                var promise_polyfill = document.createElement('script');
+                promise_polyfill.setAttribute('src','https://cdn.polyfill.io/v2/polyfill.min.js');
+                document.head.appendChild(promise_polyfill);
+            }
+        </script>
+
+        <script>
+            var wpuf_form_builder_mixins = function(mixins, mixin_parent) {
+                if (!mixins || !mixins.length) {
+                    return [];
                 }
-            </script>
 
-            <script>
-                var wpuf_form_builder_mixins = function(mixins, mixin_parent) {
-                    if (!mixins || !mixins.length) {
-                        return [];
-                    }
+                if (!mixin_parent) {
+                    mixin_parent = window;
+                }
 
-                    if (!mixin_parent) {
-                        mixin_parent = window;
-                    }
-
-                    return mixins.map(function (mixin) {
-                        return mixin_parent[mixin];
-                    });
-                };
-            </script>
+                return mixins.map(function (mixin) {
+                    return mixin_parent[mixin];
+                });
+            };
+        </script>
         <?php
     }
 
@@ -286,7 +284,7 @@ class WPUF_Admin_Form_Builder {
 
         return array(
             array(
-                'title'     => __( 'Custom Fields', 'wpuf' ),
+                'title'     => __( 'Custom Fields', 'wp-user-frontend' ),
                 'id'        => 'custom-fields',
                 'fields'    => $fields
             )
@@ -307,7 +305,7 @@ class WPUF_Admin_Form_Builder {
 
         return array(
             array(
-                'title'     => __( 'Others', 'wpuf' ),
+                'title'     => __( 'Others', 'wp-user-frontend' ),
                 'id'        => 'others',
                 'fields'    => $fields
             )
@@ -323,24 +321,24 @@ class WPUF_Admin_Form_Builder {
      */
     private function i18n() {
         return apply_filters( 'wpuf-form-builder-i18n', array(
-            'advanced_options'      => __( 'Advanced Options', 'wpuf' ),
-            'delete_field_warn_msg' => __( 'Are you sure you want to delete this field?', 'wpuf' ),
-            'yes_delete_it'         => __( 'Yes, delete it', 'wpuf' ),
-            'no_cancel_it'          => __( 'No, cancel it', 'wpuf' ),
-            'ok'                    => __( 'OK', 'wpuf' ),
-            'cancel'                => __( 'Cancel', 'wpuf' ),
-            'close'                 => __( 'Close', 'wpuf' ),
-            'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wpuf' ),
-            'option'                => __( 'Option', 'wpuf' ),
-            'column'                => __( 'Column', 'wpuf' ),
-            'last_column_warn_msg'  => __( 'This field must contain at least one column', 'wpuf' ),
-            'is_a_pro_feature'      => __( 'is available in Pro version', 'wpuf' ),
-            'pro_feature_msg'       => __( 'Please upgrade to the Pro version to unlock all these awesome features', 'wpuf' ),
-            'upgrade_to_pro'        => __( 'Get the Pro version', 'wpuf' ),
-            'select'                => __( 'Select', 'wpuf' ),
-            'saved_form_data'       => __( 'Saved form data', 'wpuf' ),
-            'unsaved_changes'       => __( 'You have unsaved changes.', 'wpuf' ),
-            'copy_shortcode'        => __( 'Click to copy shortcode', 'wpuf' ),
+            'advanced_options'      => __( 'Advanced Options', 'wp-user-frontend' ),
+            'delete_field_warn_msg' => __( 'Are you sure you want to delete this field?', 'wp-user-frontend' ),
+            'yes_delete_it'         => __( 'Yes, delete it', 'wp-user-frontend' ),
+            'no_cancel_it'          => __( 'No, cancel it', 'wp-user-frontend' ),
+            'ok'                    => __( 'OK', 'wp-user-frontend' ),
+            'cancel'                => __( 'Cancel', 'wp-user-frontend' ),
+            'close'                 => __( 'Close', 'wp-user-frontend' ),
+            'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wp-user-frontend' ),
+            'option'                => __( 'Option', 'wp-user-frontend' ),
+            'column'                => __( 'Column', 'wp-user-frontend' ),
+            'last_column_warn_msg'  => __( 'This field must contain at least one column', 'wp-user-frontend' ),
+            'is_a_pro_feature'      => __( 'is available in Pro version', 'wp-user-frontend' ),
+            'pro_feature_msg'       => __( 'Please upgrade to the Pro version to unlock all these awesome features', 'wp-user-frontend' ),
+            'upgrade_to_pro'        => __( 'Get the Pro version', 'wp-user-frontend' ),
+            'select'                => __( 'Select', 'wp-user-frontend' ),
+            'saved_form_data'       => __( 'Saved form data', 'wp-user-frontend' ),
+            'unsaved_changes'       => __( 'You have unsaved changes.', 'wp-user-frontend' ),
+            'copy_shortcode'        => __( 'Click to copy shortcode', 'wp-user-frontend' ),
         ) );
     }
 

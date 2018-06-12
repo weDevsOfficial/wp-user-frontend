@@ -335,7 +335,8 @@ final class WP_User_Frontend {
             $this->container['whats_new']          = new WPUF_Whats_New();
             $this->container['wpuf_acf']           = new WPUF_ACF_Compatibility();
             $this->container['privacy']            = new WPUF_Privacy();
-            
+            $this->container['fields']             = new WPUF_Field_Manager();
+
         } else {
 
             $this->container['dashboard']       = new WPUF_Frontend_Dashboard();

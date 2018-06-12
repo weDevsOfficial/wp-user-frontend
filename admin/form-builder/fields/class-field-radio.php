@@ -6,7 +6,7 @@
 class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
 
     function __construct() {
-        $this->name       = __( 'Radio', 'wpuf' );
+        $this->name       = __( 'Radio', 'wp-user-frontend' );
         $this->input_type = 'radio_field';
         $this->icon       = 'dot-circle-o';
     }
@@ -65,17 +65,17 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
 
             array(
                 'name'          => 'inline',
-                'title'         => __( 'Show in inline list', 'wpuf' ),
+                'title'         => __( 'Show in inline list', 'wp-user-frontend' ),
                 'type'          => 'radio',
                 'options'       => array(
-                    'yes'   => __( 'Yes', 'wpuf' ),
-                    'no'    => __( 'No', 'wpuf' ),
+                    'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                    'no'    => __( 'No', 'wp-user-frontend' ),
                 ),
                 'default'       => 'no',
                 'inline'        => true,
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'Show this option in an inline list', 'wpuf' ),
+                'help_text'     => __( 'Show this option in an inline list', 'wp-user-frontend' ),
             )
         );
 
@@ -93,7 +93,7 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
             'input_type'  => 'radio',
             'selected'    => '',
             'inline'      => 'no',
-            'options'     => array( 'Option' => __( 'Option', 'wpuf' ) ),
+            'options'     => array( 'Option' => __( 'Option', 'wp-user-frontend' ) ),
         );
 
         return array_merge( $defaults, $props );

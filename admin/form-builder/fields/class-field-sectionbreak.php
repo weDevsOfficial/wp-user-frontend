@@ -6,7 +6,7 @@
 class WPUF_Form_Field_SectionBreak extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'Section Break', 'wpuf' );
+        $this->name       = __( 'Section Break', 'wp-user-frontend' );
         $this->input_type = 'section_break';
         $this->icon       = 'columns';
     }
@@ -51,20 +51,20 @@ class WPUF_Form_Field_SectionBreak extends WPUF_Field_Contract {
         $options = array(
             array(
                 'name'      => 'label',
-                'title'     => __( 'Title', 'wpuf' ),
+                'title'     => __( 'Title', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 10,
-                'help_text' => __( 'Title of the section', 'wpuf' ),
+                'help_text' => __( 'Title of the section', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'description',
-                'title'     => __( 'Description', 'wpuf' ),
+                'title'     => __( 'Description', 'wp-user-frontend' ),
                 'type'      => 'textarea',
                 'section'   => 'basic',
                 'priority'  => 11,
-                'help_text' => __( 'Some details text about the section', 'wpuf' ),
+                'help_text' => __( 'Some details text about the section', 'wp-user-frontend' ),
             ),
         );
 

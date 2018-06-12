@@ -6,7 +6,7 @@
 class WPUF_Form_Field_Date_Free extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'Date / Time', 'wpuf' );
+        $this->name       = __( 'Date / Time', 'wp-user-frontend' );
         $this->input_type = 'date_field';
         $this->icon       = 'calendar-o';
     }
@@ -54,11 +54,11 @@ class WPUF_Form_Field_Date_Free extends WPUF_Field_Contract {
         $settings = array(
             array(
                 'name'      => 'format',
-                'title'     => __( 'Date Format', 'wpuf' ),
+                'title'     => __( 'Date Format', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 23,
-                'help_text' => __( 'The date format', 'wpuf' ),
+                'help_text' => __( 'The date format', 'wp-user-frontend' ),
             ),
 
             array(
@@ -67,7 +67,7 @@ class WPUF_Form_Field_Date_Free extends WPUF_Field_Contract {
                 'type'          => 'checkbox',
                 'is_single_opt' => true,
                 'options'       => array(
-                    'yes'   => __( 'Enable time input', 'wpuf' )
+                    'yes'   => __( 'Enable time input', 'wp-user-frontend' )
                 ),
                 'section'       => 'advanced',
                 'priority'      => 24,
@@ -80,7 +80,7 @@ class WPUF_Form_Field_Date_Free extends WPUF_Field_Contract {
                 'type'          => 'checkbox',
                 'is_single_opt' => true,
                 'options'       => array(
-                    'yes'   => __( 'Set this as publish time input', 'wpuf' )
+                    'yes'   => __( 'Set this as publish time input', 'wp-user-frontend' )
                 ),
                 'section'       => 'advanced',
                 'priority'      => 24,

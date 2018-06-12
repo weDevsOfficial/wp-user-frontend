@@ -6,7 +6,7 @@
 class WPUF_Form_Field_Name extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'Name', 'wpuf' );
+        $this->name       = __( 'Name', 'wp-user-frontend' );
         $this->input_type = 'name_field';
         $this->icon       = 'user';
     }
@@ -47,7 +47,7 @@ class WPUF_Form_Field_Name extends WPUF_Field_Contract {
                         >
 
                         <?php if ( ! $field_settings['hide_subs'] ) : ?>
-                            <label class="wpuf-form-sub-label"><?php _e( 'First', 'wpuf' ); ?></label>
+                            <label class="wpuf-form-sub-label"><?php _e( 'First', 'wp-user-frontend' ); ?></label>
                         <?php endif; ?>
                     </div>
 
@@ -63,7 +63,7 @@ class WPUF_Form_Field_Name extends WPUF_Field_Contract {
                             >
 
                             <?php if ( ! $field_settings['hide_subs'] ) : ?>
-                                <label class="wpuf-form-sub-label"><?php _e( 'Middle', 'wpuf' ); ?></label>
+                                <label class="wpuf-form-sub-label"><?php _e( 'Middle', 'wp-user-frontend' ); ?></label>
                             <?php endif; ?>
                         </div>
                     <?php else: ?>
@@ -80,7 +80,7 @@ class WPUF_Form_Field_Name extends WPUF_Field_Contract {
                             autocomplete="family-name"
                         >
                         <?php if ( ! $field_settings['hide_subs'] ) : ?>
-                            <label class="wpuf-form-sub-label"><?php _e( 'Last', 'wpuf' ); ?></label>
+                            <label class="wpuf-form-sub-label"><?php _e( 'Last', 'wp-user-frontend' ); ?></label>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -101,16 +101,16 @@ class WPUF_Form_Field_Name extends WPUF_Field_Contract {
         $name_settings = array(
             array(
                 'name'      => 'format',
-                'title'     => __( 'Format', 'wpuf' ),
+                'title'     => __( 'Format', 'wp-user-frontend' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'first-last'        => __( 'First and Last name', 'wpuf' ),
-                    'first-middle-last' => __( 'First, Middle and Last name', 'wpuf' )
+                    'first-last'        => __( 'First and Last name', 'wp-user-frontend' ),
+                    'first-middle-last' => __( 'First, Middle and Last name', 'wp-user-frontend' )
                 ),
                 'selected'  => 'first-last',
                 'section'   => 'advanced',
                 'priority'  => 20,
-                'help_text' => __( 'Select format to use for the name field', 'wpuf' ),
+                'help_text' => __( 'Select format to use for the name field', 'wp-user-frontend' ),
             ),
             array(
                 'name'          => 'auto_populate',
@@ -118,20 +118,20 @@ class WPUF_Form_Field_Name extends WPUF_Field_Contract {
                 'type'          => 'checkbox',
                 'is_single_opt' => true,
                 'options'       => array(
-                    'yes'   => __( 'Auto-populate Name', 'wpuf' )
+                    'yes'   => __( 'Auto-populate Name', 'wp-user-frontend' )
                 ),
                 'default'       => '',
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'If a user is logged into the site, this name field will be auto-populated with his first-last/display name. And form\'s name field will be hidden.', 'wpuf' ),
+                'help_text'     => __( 'If a user is logged into the site, this name field will be auto-populated with his first-last/display name. And form\'s name field will be hidden.', 'wp-user-frontend' ),
             ),
             array(
                 'name'      => 'sub-labels',
-                'title'     => __( 'Label', 'wpuf' ),
+                'title'     => __( 'Label', 'wp-user-frontend' ),
                 'type'      => 'name',
                 'section'   => 'advanced',
                 'priority'  => 21,
-                'help_text' => __( 'Select format to use for the name field', 'wpuf' ),
+                'help_text' => __( 'Select format to use for the name field', 'wp-user-frontend' ),
             ),
             array(
                 'name'          => 'hide_subs',
@@ -139,7 +139,7 @@ class WPUF_Form_Field_Name extends WPUF_Field_Contract {
                 'type'          => 'checkbox',
                 'is_single_opt' => true,
                 'options'       => array(
-                    'true'   => __( 'Hide Sub Labels', 'wpuf' )
+                    'true'   => __( 'Hide Sub Labels', 'wp-user-frontend' )
                 ),
                 'section'       => 'advanced',
                 'priority'      => 23,
@@ -147,17 +147,17 @@ class WPUF_Form_Field_Name extends WPUF_Field_Contract {
             ),
             array(
                 'name'          => 'inline',
-                'title'         => __( 'Show in inline list', 'wpuf' ),
+                'title'         => __( 'Show in inline list', 'wp-user-frontend' ),
                 'type'          => 'radio',
                 'options'       => array(
-                    'yes'   => __( 'Yes', 'wpuf' ),
-                    'no'    => __( 'No', 'wpuf' ),
+                    'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                    'no'    => __( 'No', 'wp-user-frontend' ),
                 ),
                 'default'       => 'no',
                 'inline'        => true,
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'Show this option in an inline list', 'wpuf' ),
+                'help_text'     => __( 'Show this option in an inline list', 'wp-user-frontend' ),
             )
         );
 
@@ -176,17 +176,17 @@ class WPUF_Form_Field_Name extends WPUF_Field_Contract {
             'first_name' => array(
                 'placeholder' => '',
                 'default'     => '',
-                'sub'         => __( 'First', 'wpuf' )
+                'sub'         => __( 'First', 'wp-user-frontend' )
             ),
             'middle_name' => array(
                 'placeholder' => '',
                 'default'     => '',
-                'sub'         => __( 'Middle', 'wpuf' )
+                'sub'         => __( 'Middle', 'wp-user-frontend' )
             ),
             'last_name' => array(
                 'placeholder' => '',
                 'default'     => '',
-                'sub'         => __( 'Last', 'wpuf' )
+                'sub'         => __( 'Last', 'wp-user-frontend' )
             ),
             'inline'   => 'yes',
             'hide_subs'        => false,

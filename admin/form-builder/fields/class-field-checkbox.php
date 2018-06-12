@@ -6,7 +6,7 @@
 class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'Checkbox', 'wpuf' );
+        $this->name       = __( 'Checkbox', 'wp-user-frontend' );
         $this->input_type = 'checkbox_field';
         $this->icon       = 'check-square-o';
     }
@@ -61,17 +61,17 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
 
             array(
                 'name'          => 'inline',
-                'title'         => __( 'Show in inline list', 'wpuf' ),
+                'title'         => __( 'Show in inline list', 'wp-user-frontend' ),
                 'type'          => 'radio',
                 'options'       => array(
-                    'yes'   => __( 'Yes', 'wpuf' ),
-                    'no'    => __( 'No', 'wpuf' ),
+                    'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                    'no'    => __( 'No', 'wp-user-frontend' ),
                 ),
                 'default'       => 'no',
                 'inline'        => true,
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'Show this option in an inline list', 'wpuf' ),
+                'help_text'     => __( 'Show this option in an inline list', 'wp-user-frontend' ),
             ),
         );
 
@@ -89,7 +89,7 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
             'input_type' => 'checkbox',
             'selected'   => array(),
             'inline'     => 'no',
-            'options'    => array( 'Option' => __( 'Option', 'wpuf' ) ),
+            'options'    => array( 'Option' => __( 'Option', 'wp-user-frontend' ) ),
         );
 
         return array_merge( $defaults, $props );

@@ -92,7 +92,7 @@ class WPUF_Field_Manager {
         $before_custom_fields = apply_filters( 'wpuf-form-builder-fields-section-before', array() );
         $groups = array(
             array(
-                'title'  => __( 'Custom Fields', 'wpuf' ),
+                'title'  => __( 'Custom Fields', 'wp-user-frontend' ),
                 'id'     => 'custom-fields',
                 'fields' => apply_filters( 'wpuf_field_groups_custom',
                     array(
@@ -112,7 +112,7 @@ class WPUF_Field_Manager {
             ),
 
             array(
-                'title'  => __( 'Others', 'wpuf' ),
+                'title'  => __( 'Others', 'wp-user-frontend' ),
                 'id'     => 'others',
                 'fields' => apply_filters( 'wpuf_field_groups_others',
                     array(

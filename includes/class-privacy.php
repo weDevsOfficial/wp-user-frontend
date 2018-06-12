@@ -321,73 +321,77 @@ Class WPUF_Privacy {
      */
     public static function export_transaction_data( $email_address, $page ) {
 
-        $transaction_data = self::get_transaction_data( $email_address, $page );
-        foreach ( $transaction_data as $txn_data ) {
+        $transaction_data = self::get_transaction_data( $email_address, $page ); $data_to_export = array();
 
-            $data_to_export[] = array(
-                'group_id' => 'wpuf-transaction-data',
-                'group_label' => __('WPUF Transaction Data', 'wp-user-frontend'),
-                'item_id' => "wpuf-transaction" . $txn_data['transaction_id'],
-                'data' => array(
-                    array(
-                        'name' => __('Transaction ID', 'wp-user-frontend'),
-                        'value' => $txn_data['transaction_id']
+        if ( !empty( $transaction_data ) ) {
+            foreach ( $transaction_data as $txn_data ) {
+
+                $data_to_export[] = array(
+                    'group_id' => 'wpuf-transaction-data',
+                    'group_label' => __('WPUF Transaction Data', 'wp-user-frontend'),
+                    'item_id' => "wpuf-transaction" . $txn_data['transaction_id'],
+                    'data' => array(
+                        array(
+                            'name' => __('Transaction ID', 'wp-user-frontend'),
+                            'value' => $txn_data['transaction_id']
+                        ),
+                        array(
+                            'name' => __('Payment Status', 'wp-user-frontend'),
+                            'value' => $txn_data['status']
+                        ),
+                        array(
+                            'name' => __('Subtotal', 'wp-user-frontend'),
+                            'value' => $txn_data['subtotal']
+                        ),
+                        array(
+                            'name' => __('Tax', 'wp-user-frontend'),
+                            'value' => $txn_data['tax']
+                        ),
+                        array(
+                            'name' => __('Total', 'wp-user-frontend'),
+                            'value' => $txn_data['cost']
+                        ),
+                        array(
+                            'name' => __('Post ID', 'wp-user-frontend'),
+                            'value' => $txn_data['post_id']
+                        ),
+                        array(
+                            'name' => __('Pack ID', 'wp-user-frontend'),
+                            'value' => $txn_data['post_id']
+                        ),
+                        array(
+                            'name' => __('First Name', 'wp-user-frontend'),
+                            'value' => $txn_data['payer_first_name']
+                        ),
+                        array(
+                            'name' => __('Last Name', 'wp-user-frontend'),
+                            'value' => $txn_data['payer_last_name']
+                        ),
+                        array(
+                            'name' => __('Email', 'wp-user-frontend'),
+                            'value' => $txn_data['payer_email']
+                        ),
+                        array(
+                            'name' => __('Payment Type', 'wp-user-frontend'),
+                            'value' => $txn_data['payment_type']
+                        ),
+                        array(
+                            'name' => __('payer_address', 'wp-user-frontend'),
+                            'value' => implode(', ', array_map(
+                                function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
+                                maybe_unserialize( $txn_data['payer_address'] ),
+                                array_keys( maybe_unserialize( $txn_data['payer_address'] ) )
+                            ) ),
+                        ),
+                        array(
+                            'name' => __('Transaction Date', 'wp-user-frontend'),
+                            'value' => $txn_data['created']
+                        ),
                     ),
-                    array(
-                        'name' => __('Payment Status', 'wp-user-frontend'),
-                        'value' => $txn_data['status']
-                    ),
-                    array(
-                        'name' => __('Subtotal', 'wp-user-frontend'),
-                        'value' => $txn_data['subtotal']
-                    ),
-                    array(
-                        'name' => __('Tax', 'wp-user-frontend'),
-                        'value' => $txn_data['tax']
-                    ),
-                    array(
-                        'name' => __('Total', 'wp-user-frontend'),
-                        'value' => $txn_data['cost']
-                    ),
-                    array(
-                        'name' => __('Post ID', 'wp-user-frontend'),
-                        'value' => $txn_data['post_id']
-                    ),
-                    array(
-                        'name' => __('Pack ID', 'wp-user-frontend'),
-                        'value' => $txn_data['post_id']
-                    ),
-                    array(
-                        'name' => __('First Name', 'wp-user-frontend'),
-                        'value' => $txn_data['payer_first_name']
-                    ),
-                    array(
-                        'name' => __('Last Name', 'wp-user-frontend'),
-                        'value' => $txn_data['payer_last_name']
-                    ),
-                    array(
-                        'name' => __('Email', 'wp-user-frontend'),
-                        'value' => $txn_data['payer_email']
-                    ),
-                    array(
-                        'name' => __('Payment Type', 'wp-user-frontend'),
-                        'value' => $txn_data['payment_type']
-                    ),
-                    array(
-                        'name' => __('payer_address', 'wp-user-frontend'),
-                        'value' => implode(', ', array_map(
-                            function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
-                            maybe_unserialize( $txn_data['payer_address'] ),
-                            array_keys( maybe_unserialize( $txn_data['payer_address'] ) )
-                        ) ),
-                    ),
-                    array(
-                        'name' => __('Transaction Date', 'wp-user-frontend'),
-                        'value' => $txn_data['created']
-                    ),
-                ),
-            );
+                );
+            }
         }
+
         $response = array(
             'data' => $data_to_export,
             'done' => true
@@ -409,30 +413,33 @@ Class WPUF_Privacy {
 
         $post_data = self::get_post_data( $email_address, $page );
         $data_to_export = array();
-        foreach ( $post_data as $data ) {
-            $data_to_export[] = array(
-                'group_id'    => 'wpuf-post-data',
-                'group_label' => __( 'WPUF Post Data', 'wp-user-frontend' ),
-                'item_id'     => "wpuf-posts-" . $data['id'],
-                'data'        => array(
-                    array(
-                        'name'  => __('Post ID', 'wp-user-frontend'),
-                        'value' => $data['id']
+
+        if ( !empty( $post_data ) ) {
+            foreach ( $post_data as $data ) {
+                $data_to_export[] = array(
+                    'group_id'    => 'wpuf-post-data',
+                    'group_label' => __( 'WPUF Post Data', 'wp-user-frontend' ),
+                    'item_id'     => "wpuf-posts-" . $data['id'],
+                    'data'        => array(
+                        array(
+                            'name'  => __('Post ID', 'wp-user-frontend'),
+                            'value' => $data['id']
+                        ),
+                        array(
+                            'name'  => __('Post Title', 'wp-user-frontend'),
+                            'value' => $data['title']
+                        ),
+                        array(
+                            'name'  => __('Post URL', 'wp-user-frontend'),
+                            'value' => $data['url']
+                        ),
+                        array(
+                            'name'  => __('Post Date', 'wp-user-frontend'),
+                            'value' => $data['date']
+                        ),
                     ),
-                    array(
-                        'name'  => __('Post Title', 'wp-user-frontend'),
-                        'value' => $data['title']
-                    ),
-                    array(
-                        'name'  => __('Post URL', 'wp-user-frontend'),
-                        'value' => $data['url']
-                    ),
-                    array(
-                        'name'  => __('Post Date', 'wp-user-frontend'),
-                        'value' => $data['date']
-                    ),
-                ),
-            );
+                );
+            }
         }
 
         $response = array(

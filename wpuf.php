@@ -452,7 +452,7 @@ final class WP_User_Frontend {
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {
             $this->plugin_scripts();
-        } elseif ( wpuf_has_shortcode( 'wpuf-login' ) || wpuf_has_shortcode( 'wpuf-registration' ) || wpuf_has_shortcode( 'wpuf-meta' ) || wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_sub_pack' ) || ( isset( $post->ID  ) && ( $pay_page == $post->ID ) ) ) {
+        } elseif ( wpuf_has_shortcode( 'wpuf-login' ) || wpuf_has_shortcode( 'wpuf-registration' ) || wpuf_has_shortcode( 'wpuf-meta' ) || wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_sub_pack' ) || ( isset( $post->ID  ) && ( $pay_page == $post->ID ) ) || isset( $_GET['wpuf_preview'] ) ) {
             $this->plugin_scripts();
         }
     }

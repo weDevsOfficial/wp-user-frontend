@@ -6,7 +6,7 @@
 class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'Textarea', 'wpuf' );
+        $this->name       = __( 'Textarea', 'wp-user-frontend' );
         $this->input_type = 'textarea_field';
         $this->icon       = 'paragraph';
     }

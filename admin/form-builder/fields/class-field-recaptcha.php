@@ -6,7 +6,7 @@
 class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'reCaptcha', 'wpuf' );
+        $this->name       = __( 'reCaptcha', 'wp-user-frontend' );
         $this->input_type = 'recaptcha';
         $this->icon       = 'qrcode';
     }
@@ -41,7 +41,7 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
             }
 
             if ( ! $public_key ) {
-                _e( 'reCaptcha API key is missing.', 'wpuf');
+                _e( 'reCaptcha API key is missing.', 'wp-user-frontend');
 
             } else {
 
@@ -119,9 +119,9 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
         return array(
             'callback'      => 'has_recaptcha_api_keys',
             'button_class'  => 'button-faded',
-            'msg_title'     => __( 'Site key and Secret key', 'wpuf' ),
+            'msg_title'     => __( 'Site key and Secret key', 'wp-user-frontend' ),
             'msg'           => sprintf(
-                __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wpuf' ),
+                __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wp-user-frontend' ),
                 admin_url( 'admin.php?page=weforms#/settings' ),
                 'https://www.google.com/recaptcha/'
             ),
@@ -137,11 +137,11 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
         $settings = array(
             array(
                 'name'          => 'label',
-                'title'         => __( 'Title', 'wpuf' ),
+                'title'         => __( 'Title', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'basic',
                 'priority'      => 10,
-                'help_text'     => __( 'Title of the section', 'wpuf' ),
+                'help_text'     => __( 'Title of the section', 'wp-user-frontend' ),
             ),
 
             array(
@@ -149,13 +149,13 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
                 'title'         => 'reCaptcha type',
                 'type'          => 'radio',
                 'options'       => array(
-                    'enable_no_captcha'    => __( 'Enable noCaptcha', 'wpuf' ),
-                    'invisible_recaptcha'  => __( 'Enable Invisible reCaptcha', 'wpuf' ),
+                    'enable_no_captcha'    => __( 'Enable noCaptcha', 'wp-user-frontend' ),
+                    'invisible_recaptcha'  => __( 'Enable Invisible reCaptcha', 'wp-user-frontend' ),
                 ),
                 'default'       => 'enable_no_captcha',
                 'section'       => 'basic',
                 'priority'      => 11,
-                'help_text'     => __( 'Select reCaptcha type', 'wpuf' ),
+                'help_text'     => __( 'Select reCaptcha type', 'wp-user-frontend' ),
             ),
 
             array(
@@ -163,13 +163,13 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
                 'title'         => 'reCaptcha Theme',
                 'type'          => 'radio',
                 'options'       => array(
-                    'light' => __( 'Light', 'wpuf' ),
-                    'dark'  => __( 'Dark', 'wpuf' ),
+                    'light' => __( 'Light', 'wp-user-frontend' ),
+                    'dark'  => __( 'Dark', 'wp-user-frontend' ),
                 ),
                 'default'       => 'light',
                 'section'       => 'advanced',
                 'priority'      => 12,
-                'help_text'     => __( 'Select reCaptcha Theme', 'wpuf' ),
+                'help_text'     => __( 'Select reCaptcha Theme', 'wp-user-frontend' ),
             ),
         );
 

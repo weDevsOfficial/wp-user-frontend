@@ -6,7 +6,7 @@
 class WPUF_Form_Field_Hidden extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'Hidden Field', 'wpuf' );
+        $this->name       = __( 'Hidden Field', 'wp-user-frontend' );
         $this->input_type = 'custom_hidden_field';
         $this->icon       = 'eye-slash';
     }
@@ -34,20 +34,20 @@ class WPUF_Form_Field_Hidden extends WPUF_Field_Contract {
         $settings = array(
             array(
                 'name'      => 'name',
-                'title'     => __( 'Meta Key', 'wpuf' ),
+                'title'     => __( 'Meta Key', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 10,
-                'help_text' => __( 'Name of the meta key this field will save to', 'wpuf' ),
+                'help_text' => __( 'Name of the meta key this field will save to', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'meta_value',
-                'title'     => __( 'Meta Value', 'wpuf' ),
+                'title'     => __( 'Meta Value', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 11,
-                'help_text' => __( 'Enter the meta value', 'wpuf' ),
+                'help_text' => __( 'Enter the meta value', 'wp-user-frontend' ),
             ),
         );
 

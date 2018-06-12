@@ -143,7 +143,7 @@ abstract class WPUF_Field_Contract {
             'condition_status'  => 'no',
             'cond_field'        => array(),
             'cond_operator'     => array( '=' ),
-            'cond_option'       => array( __( '- select -', 'wpuf' ) ),
+            'cond_option'       => array( __( '- select -', 'wp-user-frontend' ) ),
             'cond_logic'        => 'all'
         );
     }
@@ -185,45 +185,45 @@ abstract class WPUF_Field_Contract {
         $common_properties = array(
             array(
                 'name'      => 'label',
-                'title'     => __( 'Field Label', 'wpuf' ),
+                'title'     => __( 'Field Label', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 10,
-                'help_text' => __( 'Enter a title of this field', 'wpuf' ),
+                'help_text' => __( 'Enter a title of this field', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'help',
-                'title'     => __( 'Help text', 'wpuf' ),
+                'title'     => __( 'Help text', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 20,
-                'help_text' => __( 'Give the user some information about this field', 'wpuf' ),
+                'help_text' => __( 'Give the user some information about this field', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'required',
-                'title'     => __( 'Required', 'wpuf' ),
+                'title'     => __( 'Required', 'wp-user-frontend' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'yes'   => __( 'Yes', 'wpuf' ),
-                    'no'    => __( 'No', 'wpuf' ),
+                    'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                    'no'    => __( 'No', 'wp-user-frontend' ),
                 ),
                 'section'   => 'basic',
                 'priority'  => 21,
                 'default'   => 'no',
                 'inline'    => true,
-                'help_text' => __( 'Check this option to mark the field required. A form will not submit unless all required fields are provided.', 'wpuf' ),
+                'help_text' => __( 'Check this option to mark the field required. A form will not submit unless all required fields are provided.', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'width',
-                'title'     => __( 'Field Size', 'wpuf' ),
+                'title'     => __( 'Field Size', 'wp-user-frontend' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'small'     => __( 'Small', 'wpuf' ),
-                    'medium'    => __( 'Medium', 'wpuf' ),
-                    'large'     => __( 'Large', 'wpuf' ),
+                    'small'     => __( 'Small', 'wp-user-frontend' ),
+                    'medium'    => __( 'Medium', 'wp-user-frontend' ),
+                    'large'     => __( 'Large', 'wp-user-frontend' ),
                 ),
                 'section'   => 'advanced',
                 'priority'  => 21,
@@ -233,11 +233,11 @@ abstract class WPUF_Field_Contract {
 
             array(
                 'name'      => 'css',
-                'title'     => __( 'CSS Class Name', 'wpuf' ),
+                'title'     => __( 'CSS Class Name', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 22,
-                'help_text' => __( 'Provide a container class name for this field.', 'wpuf' ),
+                'help_text' => __( 'Provide a container class name for this field.', 'wp-user-frontend' ),
             ),
 
             array(
@@ -246,18 +246,18 @@ abstract class WPUF_Field_Contract {
                 'type'          => 'dynamic-field',
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'Check this option to allow field to be populated dynamically using hooks/query string/shortcode', 'wpuf' ),
+                'help_text'     => __( 'Check this option to allow field to be populated dynamically using hooks/query string/shortcode', 'wp-user-frontend' ),
             ),
         );
 
         if ( $is_meta ) {
             $common_properties[] = array(
                 'name'      => 'name',
-                'title'     => __( 'Meta Key', 'wpuf' ),
+                'title'     => __( 'Meta Key', 'wp-user-frontend' ),
                 'type'      => 'text-meta',
                 'section'   => 'basic',
                 'priority'  => 11,
-                'help_text' => __( 'Name of the meta key this field will save to', 'wpuf' ),
+                'help_text' => __( 'Name of the meta key this field will save to', 'wp-user-frontend' ),
             );
         }
 
@@ -285,43 +285,43 @@ abstract class WPUF_Field_Contract {
         $properties = array(
             array(
                 'name'      => 'placeholder',
-                'title'     => __( 'Placeholder text', 'wpuf' ),
+                'title'     => __( 'Placeholder text', 'wp-user-frontend' ),
                 'type'      => 'text-with-tag',
                 'tag_filter' => 'no_fields', // we don't want to show any fields with merge tags, just basic tags
                 'section'   => 'advanced',
                 'priority'  => 10,
-                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wpuf' ),
+                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'       => 'default',
-                'title'      => __( 'Default value', 'wpuf' ),
+                'title'      => __( 'Default value', 'wp-user-frontend' ),
                 'type'       => 'text-with-tag',
                 'tag_filter' => 'no_fields',
                 'section'    => 'advanced',
                 'priority'   => 11,
-                'help_text'  => __( 'The default value this field will have', 'wpuf' ),
+                'help_text'  => __( 'The default value this field will have', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'size',
-                'title'     => __( 'Size', 'wpuf' ),
+                'title'     => __( 'Size', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'variation' => 'number',
                 'section'   => 'advanced',
                 'priority'  => 20,
-                'help_text' => __( 'Size of this input field', 'wpuf' ),
+                'help_text' => __( 'Size of this input field', 'wp-user-frontend' ),
             ),
         );
 
         if ( $word_restriction ) {
             $properties[] = array(
                 'name'      => 'word_restriction',
-                'title'     => __( 'Word Restriction', 'wpuf' ),
+                'title'     => __( 'Word Restriction', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 15,
-                'help_text' => __( 'Numebr of words the author to be restricted in', 'wpuf' ),
+                'help_text' => __( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ),
             );
         }
 
@@ -338,12 +338,12 @@ abstract class WPUF_Field_Contract {
     public function get_default_option_dropdown_settings( $is_multiple = false ) {
         return array(
             'name'          => 'options',
-            'title'         => __( 'Options', 'wpuf' ),
+            'title'         => __( 'Options', 'wp-user-frontend' ),
             'type'          => 'option-data',
             'is_multiple'   => $is_multiple,
             'section'       => 'basic',
             'priority'      => 12,
-            'help_text'     => __( 'Add options for the form field', 'wpuf' ),
+            'help_text'     => __( 'Add options for the form field', 'wp-user-frontend' ),
         );
     }
 
@@ -356,29 +356,29 @@ abstract class WPUF_Field_Contract {
         return array(
             array(
                 'name'      => 'rows',
-                'title'     => __( 'Rows', 'wpuf' ),
+                'title'     => __( 'Rows', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 10,
-                'help_text' => __( 'Number of rows in textarea', 'wpuf' ),
+                'help_text' => __( 'Number of rows in textarea', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'cols',
-                'title'     => __( 'Columns', 'wpuf' ),
+                'title'     => __( 'Columns', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 11,
-                'help_text' => __( 'Number of columns in textarea', 'wpuf' ),
+                'help_text' => __( 'Number of columns in textarea', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'placeholder',
-                'title'     => __( 'Placeholder text', 'wpuf' ),
+                'title'     => __( 'Placeholder text', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 12,
-                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wpuf' ),
+                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wp-user-frontend' ),
                 'dependencies' => array(
                     'rich' => 'no'
                 )
@@ -386,21 +386,21 @@ abstract class WPUF_Field_Contract {
 
             array(
                 'name'      => 'default',
-                'title'     => __( 'Default value', 'wpuf' ),
+                'title'     => __( 'Default value', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 13,
-                'help_text' => __( 'The default value this field will have', 'wpuf' ),
+                'help_text' => __( 'The default value this field will have', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'rich',
-                'title'     => __( 'Textarea', 'wpuf' ),
+                'title'     => __( 'Textarea', 'wp-user-frontend' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'no'    => __( 'Normal', 'wpuf' ),
-                    'yes'   => __( 'Rich textarea', 'wpuf' ),
-                    'teeny' => __( 'Teeny Rich textarea', 'wpuf' ),
+                    'no'    => __( 'Normal', 'wp-user-frontend' ),
+                    'yes'   => __( 'Rich textarea', 'wp-user-frontend' ),
+                    'teeny' => __( 'Teeny Rich textarea', 'wp-user-frontend' ),
                 ),
                 'section'   => 'advanced',
                 'priority'  => 14,
@@ -409,11 +409,11 @@ abstract class WPUF_Field_Contract {
 
             array(
                 'name'      => 'word_restriction',
-                'title'     => __( 'Word Restriction', 'wpuf' ),
+                'title'     => __( 'Word Restriction', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 15,
-                'help_text' => __( 'Numebr of words the author to be restricted in', 'wpuf' ),
+                'help_text' => __( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ),
             ),
         );
     }

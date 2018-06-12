@@ -6,7 +6,7 @@
 class WPUF_Form_Field_HTML extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'Custom HTML', 'wpuf' );
+        $this->name       = __( 'Custom HTML', 'wp-user-frontend' );
         $this->input_type = 'custom_html';
         $this->icon       = 'code';
     }
@@ -49,11 +49,11 @@ class WPUF_Form_Field_HTML extends WPUF_Field_Contract {
         $settings = array(
             array(
                 'name'      => 'html',
-                'title'     => __( 'HTML Codes', 'wpuf' ),
+                'title'     => __( 'HTML Codes', 'wp-user-frontend' ),
                 'type'      => 'textarea',
                 'section'   => 'basic',
                 'priority'  => 11,
-                'help_text' => __( 'Paste your HTML codes, WordPress shortcodes will also work here', 'wpuf' ),
+                'help_text' => __( 'Paste your HTML codes, WordPress shortcodes will also work here', 'wp-user-frontend' ),
             ),
         );
 
@@ -69,7 +69,7 @@ class WPUF_Form_Field_HTML extends WPUF_Field_Contract {
         $defaults = $this->default_attributes();
         $props    = array(
             'input_type'  => 'html',
-            'html'        => sprintf( '<p>%s</p>', __( 'Some description about this section', 'wpuf' ) ),
+            'html'        => sprintf( '<p>%s</p>', __( 'Some description about this section', 'wp-user-frontend' ) ),
         );
 
         return array_merge( $defaults, $props );

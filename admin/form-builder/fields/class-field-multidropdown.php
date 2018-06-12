@@ -6,7 +6,7 @@
 class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
 
     function __construct() {
-        $this->name       = __( 'Multi Select', 'wpuf' );
+        $this->name       = __( 'Multi Select', 'wp-user-frontend' );
         $this->input_type = 'multiple_select';
         $this->icon       = 'list-ul';
     }
@@ -62,8 +62,8 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
         $props    = array(
             'input_type'       => 'multiselect',
             'selected' => array(),
-            'options'  => array( 'Option' => __( 'Option', 'wpuf' ) ),
-            'first'    => __( '— Select —', 'wpuf' ),
+            'options'  => array( 'Option' => __( 'Option', 'wp-user-frontend' ) ),
+            'first'    => __( '— Select —', 'wp-user-frontend' ),
         );
 
         return array_merge( $defaults, $props );

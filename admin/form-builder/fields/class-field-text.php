@@ -6,7 +6,7 @@
 class WPUF_Form_Field_Text extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'Text',  'wpuf' );
+        $this->name       = __( 'Text',  'wp-user-frontend' );
         $this->input_type = 'text_field';
         $this->icon       = 'text-width';
     }
@@ -69,12 +69,12 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
                 'type'          => 'checkbox',
                 'is_single_opt' => true,
                 'options'       => array(
-                    'no'   => __( 'Unique Values Only',  'wpuf' )
+                    'no'   => __( 'Unique Values Only',  'wp-user-frontend' )
                 ),
                 'default'       => '',
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'Select this option to limit user input to unique values only. This will require that a value entered in a field does not currently exist in the entry database for that field.',  'wpuf' ),
+                'help_text'     => __( 'Select this option to limit user input to unique values only. This will require that a value entered in a field does not currently exist in the entry database for that field.',  'wp-user-frontend' ),
             )
         );
         return array_merge( $default_options, $default_text_options, $check_duplicate );

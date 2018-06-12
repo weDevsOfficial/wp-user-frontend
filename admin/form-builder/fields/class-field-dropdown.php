@@ -6,7 +6,7 @@
 class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'Dropdown', 'wpuf' );
+        $this->name       = __( 'Dropdown', 'wp-user-frontend' );
         $this->input_type = 'dropdown_field';
         $this->icon       = 'caret-square-o-down';
     }
@@ -68,11 +68,11 @@ class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
 
             array(
                 'name'          => 'first',
-                'title'         => __( 'Select Text', 'wpuf' ),
+                'title'         => __( 'Select Text', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'basic',
                 'priority'      => 13,
-                'help_text'     => __( "First element of the select dropdown. Leave this empty if you don't want to show this field", 'wpuf' ),
+                'help_text'     => __( "First element of the select dropdown. Leave this empty if you don't want to show this field", 'wp-user-frontend' ),
             ),
         );
 
@@ -89,8 +89,8 @@ class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
         $props    = array(
             'input_type'  => 'select',
             'selected'    => '',
-            'options'     => array( 'Option' => __( 'Option', 'wpuf' ) ),
-            'first'       => __( '— Select —', 'wpuf' ),
+            'options'     => array( 'Option' => __( 'Option', 'wp-user-frontend' ) ),
+            'first'       => __( '— Select —', 'wp-user-frontend' ),
         );
 
         return array_merge( $defaults, $props );

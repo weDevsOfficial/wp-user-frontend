@@ -6,7 +6,7 @@
 class WPUF_Form_Field_Image extends WPUF_Field_Contract {
 
     function __construct() {
-        $this->name       = __( 'Image Upload', 'wpuf' );
+        $this->name       = __( 'Image Upload', 'wp-user-frontend' );
         $this->input_type = 'image_upload';
         $this->icon       = 'file-image-o';
     }
@@ -28,7 +28,7 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
             <div class="wpuf-fields">
                 <div id="wpuf-<?php echo $unique_id; ?>-upload-container">
                     <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo $field_settings['required']; ?>">
-                        <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $field_settings['name'] . '_' . $form_id; ?>" href="#"><?php _e( 'Select Image', 'wpuf' ); ?></a>
+                        <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $field_settings['name'] . '_' . $form_id; ?>" href="#"><?php _e( 'Select Image', 'wp-user-frontend' ); ?></a>
 
                         <ul class="wpuf-attachment-list thumbnails"></ul>
                     </div>
@@ -62,20 +62,20 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
         $settings = array(
             array(
                 'name'          => 'max_size',
-                'title'         => __( 'Max. file size', 'wpuf' ),
+                'title'         => __( 'Max. file size', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'advanced',
                 'priority'      => 20,
-                'help_text'     => __( 'Enter maximum upload size limit in KB', 'wpuf' ),
+                'help_text'     => __( 'Enter maximum upload size limit in KB', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'          => 'count',
-                'title'         => __( 'Max. files', 'wpuf' ),
+                'title'         => __( 'Max. files', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'advanced',
                 'priority'      => 21,
-                'help_text'     => __( 'Number of images can be uploaded', 'wpuf' ),
+                'help_text'     => __( 'Number of images can be uploaded', 'wp-user-frontend' ),
             ),
         );
 

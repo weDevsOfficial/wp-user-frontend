@@ -14,7 +14,7 @@
                         $labels[] = $post_type_name->label;
                     }
                 }
-                printf( __( 'You have created <span>%d</span> (%ss)', 'wp-user-frontend' ), $dashboard_query->found_posts, implode( 's, ', $dashboard_query->query['post_type'] ) );
+                printf( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ), $dashboard_query->found_posts, implode( ', ', $labels ) );
             ?>
             </div>
         <?php endif ?>

@@ -2825,10 +2825,11 @@ function wpuf_settings_multiselect( $args ) {
  * @param array $args
  */
 function wpuf_get_custom_avatar( $args, $id_or_email ) {
+    $user_id = $id_or_email;
 
-    $user_id = get_current_user_id();
-
-    if ( email_exists( $id_or_email ) ) {
+    if ( $id_or_email instanceof WP_Comment ){
+        $user_id = $id_or_email->user_id;
+    } elseif ( is_email( $id_or_email ) ) {
         $user_id = email_exists( $id_or_email );
     }
 

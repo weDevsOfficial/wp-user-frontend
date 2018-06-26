@@ -15,6 +15,7 @@
         this.max = max || 1;
         this.count = $('#' + container).find('.wpuf-attachment-list > li').length; //count how many items are there
         this.perFileCount = 0; //file count on each upload
+        this.UploadedFiles = 0; //file count on each upload
 
         //if no element found on the page, bail out
         if( !$('#'+browse_button).length ) {
@@ -154,6 +155,7 @@
             if(response.response !== 'error') {
 
                 this.perFileCount++;
+                this.UploadedFiles++;
                 var $container = $('#' + this.container).find('.wpuf-attachment-list');
                 $container.append(response.response);
 
@@ -171,13 +173,16 @@
                 this.showHide();
             }
 
-            var uploaded        = this.perFileCount;
-            var FileProgress    = up.files.length;
-            var imageCount      = $('ul.wpuf-attachment-list li').length;
+            var uploaded        = this.UploadedFiles,
+                FileProgress    = up.files.length,
+                imageCount      = $('ul.wpuf-attachment-list > li').length;
 
-            if ( FileProgress === uploaded || imageCount >= this.max ) {
-                $(".wpuf-submit-button").removeAttr("disabled");
+            if ( imageCount >= this.max ) {
                 $('#' + this.container).find('.file-selector').hide();
+            }
+
+            if ( FileProgress === uploaded ) {
+                $(".wpuf-submit-button").removeAttr("disabled");
             }
         },
 

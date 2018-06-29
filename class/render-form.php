@@ -354,22 +354,8 @@ class WPUF_Render_Form {
         $label_position  = isset( $form_settings['label_position'] ) ? $form_settings['label_position'] : 'left';
         $layout          = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
         $theme_css       = isset( $form_settings['use_theme_css'] ) ? $form_settings['use_theme_css'] : 'wpuf-style';
-        $is_scheduled    = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] == 'true' ) ? true : false;
 
-        if ( $is_scheduled ) {
-            $start_time   = !empty( $form_settings['schedule_start'] ) ? strtotime( $form_settings['schedule_start'] ) : 0;
-            $end_time     = !empty( $form_settings['schedule_end'] ) ? strtotime( $form_settings['schedule_end'] ) : 0;
-            $current_time = current_time( 'timestamp' );
-
-            // too early?
-            if ( $current_time < $start_time ) {
-                echo '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>';
-                return;
-            } elseif ( $current_time > $end_time ) {
-                echo '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>';
-                return;
-            }
-        }
+        do_action( 'wpuf_before_form_render', $form_id );
 
         if ( !empty( $layout ) ) {
             wp_enqueue_style( 'wpuf-' . $layout );
@@ -413,6 +399,7 @@ class WPUF_Render_Form {
 
             <?php
         } //endif
+        do_action( 'wpuf_after_form_render', $form_id );
     }
 
     function render_item_before( $form_field, $post_id ) {

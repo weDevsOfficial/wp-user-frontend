@@ -336,6 +336,15 @@ class WPUF_Simple_Login {
 
             $creds['user_password'] = $_POST['pwd'];
             $creds['remember'] = isset( $_POST['rememberme'] );
+
+            if ( isset( $user->user_login ) ) {
+                $validate = wp_authenticate_email_password( null, trim( $_POST['log'] ), $creds['user_password'] );
+                if ( is_wp_error( $validate ) ) {
+                    $this->login_errors[] = $validate->get_error_message();
+                    return;
+                }
+            }
+
             $secure_cookie = is_ssl() ? true : false;
             $user = wp_signon( apply_filters( 'wpuf_login_credentials', $creds ), $secure_cookie );
 
@@ -505,8 +514,8 @@ class WPUF_Simple_Login {
 
             if ( empty( $user_data ) ) {
                 $this->login_errors[] = __( 'There is no user registered with that email address.', 'wp-user-frontend' );
-                return;
-            }
+            return;
+        }
 
         } else {
 

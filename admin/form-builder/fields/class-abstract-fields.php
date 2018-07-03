@@ -157,6 +157,7 @@ abstract class WPUF_Field_Contract {
      */
     public function default_attributes() {
         return array(
+            'input_type'  => $this->get_type(),
             'template'    => $this->get_type(),
             'name'        => '',
             'label'       => $this->get_name(),

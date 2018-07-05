@@ -50,6 +50,8 @@ Vue.component('field-visibility', {
     },
 
     watch: {
-
+    	selected: function (new_val) {
+            this.update_value('selected', new_val);
+        }
     }
 });

@@ -156,7 +156,7 @@ class WPUF_Upload {
             $image = wp_mime_type_icon( $attach_id );
         }
 
-        $html = '<li class="wpuf-image-wrap thumbnail">';
+        $html = '<li class="ui-state-default wpuf-image-wrap thumbnail">';
         $html .= sprintf( '<div class="attachment-name"><img src="%s" alt="%s" /></div>', $image, esc_attr( $attachment->post_title ) );
 
         if ( wpuf_get_option( 'image_caption', 'wpuf_frontend_posting', 'off' ) == 'on' ) {
@@ -168,7 +168,10 @@ class WPUF_Upload {
         }
 
         $html .= sprintf( '<input type="hidden" name="wpuf_files[%s][]" value="%d">', $type, $attach_id );
-        $html .= sprintf( '<div class="caption"><a href="#" class="attachment-delete" data-attach_id="%d"> <img src="%s" /></a></div>', $attach_id, WPUF_ASSET_URI . '/images/del-img.png' );
+        $html .= '<div class="caption">';
+        $html .= sprintf( '<a href="#" class="attachment-delete" data-attach_id="%d"> <img src="%s" /></a>', $attach_id, WPUF_ASSET_URI . '/images/del-img.png' );
+        $html .= sprintf( '<span class="wpuf-drag-file"> <img src="%s" /></span>', WPUF_ASSET_URI . '/images/move-img.png' );
+        $html .= '</div>';
         $html .= '</li>';
 
         return $html;

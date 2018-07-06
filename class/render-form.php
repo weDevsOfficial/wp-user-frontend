@@ -93,6 +93,10 @@ class WPUF_Render_Form {
         $private_key     = wpuf_get_option( 'recaptcha_private', 'wpuf_general' );
         if ( $no_captcha == 1 && 0 == $invisible ) {
 
+            if ( !class_exists( 'WPUF_ReCaptcha' ) ) {
+                require_once WPUF_ROOT . '/lib/recaptchalib_noCaptcha.php';
+            }
+
             $response = null;
             $reCaptcha = new WPUF_ReCaptcha($private_key);
 

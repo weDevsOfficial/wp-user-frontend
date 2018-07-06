@@ -284,7 +284,6 @@ final class WP_User_Frontend {
         // add reCaptcha library if not found
         if ( ! function_exists( 'recaptcha_get_html' ) ) {
             require_once dirname( __FILE__ ) . '/lib/recaptchalib.php';
-            require_once dirname( __FILE__ ) . '/lib/recaptchalib_noCaptcha.php';
             require_once dirname( __FILE__ ) . '/lib/invisible_recaptcha.php';
         }
     }

@@ -22,6 +22,12 @@
             return;
         }
 
+        // enable drag option for ordering
+        $( "ul.wpuf-attachment-list" ).sortable({
+            placeholder: "highlight"
+        });
+        $( "ul.wpuf-attachment-list" ).disableSelection();
+
         //instantiate the uploader
         this.uploader = new plupload.Uploader({
             runtimes: 'html5,html4',

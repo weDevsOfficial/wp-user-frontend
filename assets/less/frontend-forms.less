@@ -1523,13 +1523,17 @@ table#wpuf-address-country-state {
 li.wpuf-image-wrap.thumbnail {
     position:relative;
     .caption {
-        position:absolute;
-        left:50%;
-        margin-left:-10px;
-        top:50%;
-        margin-top:-10px;
-        display:none;
-        width:16px;
+        position: absolute;
+        left: 50%;
+        margin-left: -40px;
+        top: 50%;
+        margin-top: -10px;
+        display: none;
+        width: 80px;
+        background: #23282d;
+        text-align: center;
+        padding: 0;
+        border-radius: 3px;
     }
 }
 li.wpuf-image-wrap.thumbnail:hover .caption {
@@ -1546,4 +1550,25 @@ li.wpuf-image-wrap.thumbnail:hover .caption {
         width: 50%;
         display: table-cell;
     }
+}
+
+.ui-state-default.wpuf-image-wrap{
+    top: 0!important;
+}
+
+.ui-state-default.wpuf-image-wrap:hover{
+    cursor: move;
+}
+
+.ui-state-default.wpuf-image-wrap .caption a,
+.ui-state-default.wpuf-image-wrap .caption span{
+    display: inline-block;
+    line-height: 0;
+    height: 22px;
+    padding: 6px 5px 3px 5px;
+}
+
+.ui-state-default.wpuf-image-wrap .caption a:hover,
+.ui-state-default.wpuf-image-wrap .caption span:hover{
+    background: #0073aa;
 }

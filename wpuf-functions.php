@@ -827,7 +827,7 @@ function wpuf_show_custom_fields( $content ) {
                 default:
                     $value       = get_post_meta( $post->ID, $attr['name'] );
                     $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );
-                    $separator   = '| ';
+                    $separator   = ' | ';
 
                     if ( !empty( $filter_html ) ) {
                         $html .= $filter_html;
@@ -841,7 +841,7 @@ function wpuf_show_custom_fields( $content ) {
                     } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value ) ) {
 
                         if ( !empty( $value[0] ) ) {
-                            $glue = array( '| ', '', );
+                            $glue = array( $separator, '', );
                             $modified_value = implode( $glue, $value[0] );
 
                             if ( $modified_value ) {

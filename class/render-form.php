@@ -8,7 +8,7 @@
 class WPUF_Render_Form {
 
     static $meta_key            = 'wpuf_form';
-    static $separator           = '| ';
+    static $separator           = ' | ';
     static $config_id           = '_wpuf_form_id';
     private $form_condition_key = 'wpuf_cond';
     private static $_instance;

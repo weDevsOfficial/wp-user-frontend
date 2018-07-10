@@ -492,6 +492,7 @@ final class WP_User_Frontend {
 
         wp_enqueue_style( 'wpuf-css' );
         wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
+        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css', array(), WPUF_VERSION );
 
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'jquery-ui-datepicker' );
@@ -503,6 +504,7 @@ final class WP_User_Frontend {
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array( 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ) );
         wp_enqueue_script( 'wpuf-form' );
         wp_enqueue_script( 'wpuf-subscriptions' );
+        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', array(), WPUF_VERSION );
 
         wp_localize_script( 'wpuf-form', 'wpuf_frontend', apply_filters( 'wpuf_frontend_js_data' , array(
             'ajaxurl'       => admin_url( 'admin-ajax.php' ),

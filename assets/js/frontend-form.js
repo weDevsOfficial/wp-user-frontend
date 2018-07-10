@@ -410,7 +410,7 @@
                             }
 
                             swal({
-                                text: res.error,
+                                html: res.error,
                                 type: 'warning',
                                 showCancelButton: false,
                                 confirmButtonColor: '#d54e21',

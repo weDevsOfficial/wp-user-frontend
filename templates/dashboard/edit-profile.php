@@ -1,4 +1,9 @@
-<?php global $current_user; ?>
+<?php
+
+global $current_user;
+ob_start();
+
+?>
 
 <form class="wpuf-form wpuf-update-profile-form" action="" method="post">
 
@@ -88,3 +93,9 @@
     </ul>
 
 </form>
+
+<?php
+    $output = ob_get_clean();
+
+    echo apply_filters( 'wpuf_account_edit_profile_content', $output );
+?>

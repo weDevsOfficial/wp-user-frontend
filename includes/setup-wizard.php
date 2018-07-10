@@ -71,7 +71,7 @@ class WPUF_Setup_Wizard {
      * @return void
      */
     public function redirect_to_page() {
-        if ( ! get_transient( 'wpuf_activation_redirect' ) ) {
+        if ( ! get_transient( 'wpuf_activation_redirect' ) || get_option( 'wpuf_setup_wizard' ) ) {
             return;
         }
 
@@ -311,6 +311,7 @@ class WPUF_Setup_Wizard {
             $installer->init_pages();
         }
 
+        update_option( 'wpuf_setup_wizard', 1 );
         wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
         exit;
     }

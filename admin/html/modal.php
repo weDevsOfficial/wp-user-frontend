@@ -41,6 +41,7 @@
                         $class = 'template-active';
                         $title = $template->title;
                         $image = $template->image ? $template->image : '';
+                        $disabled = '';
 
                         $url   = esc_url( add_query_arg( array(
                             'action'   => $action_name,
@@ -52,6 +53,7 @@
                             $url   = '#';
                             $class = 'template-inactive';
                             $title = __( 'This integration is not installed.', 'wp-user-frontend' );
+                            $disabled = 'disabled';
                         }
                         ?>
 
@@ -60,10 +62,10 @@
                             <?php if ( $image ) { printf( '<img src="%s" alt="%s">', $image, $title );   }  ?>
 
                             <div class="form-create-overlay">
-                                <div class="title"><?php echo $template->get_title(); ?></div>
+                                <div class="title"><?php echo $title; ?></div>
                                 <div class="description"><?php echo $template->get_description(); ?></div>
                                 <br>
-                                <a href="<?php echo $url; ?>" class="button button-primary" title="<?php echo $template->get_title(); ?>">
+                                <a href="<?php echo $url; ?>" class="button button-primary" title="<?php echo $template->get_title(); ?>" <?php echo $disabled ?>>
                                     <?php _e('Create Form', 'wp-user-frontend' );  ?>
                                 </a>
                             </div>

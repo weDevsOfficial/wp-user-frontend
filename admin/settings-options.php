@@ -340,6 +340,13 @@ function wpuf_settings_fields() {
                 'type'    => 'checkbox',
                 'default' => 'off'
             ),
+            array(
+                'name'    => 'login_form_recaptcha',
+                'label'   => __( 'reCAPTCHA in Login Form', 'wp-user-frontend' ),
+                'desc'    => __( 'If enabled, users have to verify reCAPTCHA in login page. Also, make sure that reCAPTCHA is configured properly from <b>General Options</b>', 'wp-user-frontend' ),
+                'type'    => 'checkbox',
+                'default' => 'off'
+            ),
 
         ) ),
         'wpuf_payment' => apply_filters( 'wpuf_options_payment', array(

@@ -22,6 +22,9 @@ class WPUF_Simple_Login {
 
         add_action( 'init', array($this, 'wp_login_page_redirect') );
         add_action( 'init', array($this, 'activation_user_registration') );
+        add_action( 'login_form', array($this, 'add_custom_fields') );
+        add_action( 'login_enqueue_scripts', array($this, 'login_form_scripts') );
+        add_filter( 'wp_authenticate_user', array($this, 'validate_custom_fields'), 10, 2 );
 
         // URL filters
         add_filter( 'login_url', array($this, 'filter_login_url'), 10, 2 );
@@ -60,6 +63,67 @@ class WPUF_Simple_Login {
         }
 
         return true;
+    }
+
+    /**
+     * Add custom fields to WordPress default login form
+     *
+     * @since 2.9.0
+     */
+    public function add_custom_fields() {
+        $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off');
+
+        if ( $recaptcha == 'on' ) {
+            echo '<p>'. recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ) .'</p>';
+        }
+    }
+
+    /**
+     * Add custom scripts to WordPress default login form
+     *
+     * @since 2.9.0
+     */
+    public function login_form_scripts() {
+        if ( isset($_POST['wpuf_login']) ) {
+            return;
+        }
+
+        $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off');
+
+        if ( $recaptcha == 'on' ) { ?>
+            <style type="text/css">
+                body #login {
+                    width: 350px;
+                }
+
+                body .g-recaptcha {
+                    margin: 15px 0px 30px 0;
+                }
+            </style>
+        <?php }
+    }
+
+    /**
+     * Validate custom fields of WordPress default login form
+     *
+     * @since 2.9.0
+     */
+    public function validate_custom_fields( $user, $password ) {
+        if ( isset($_POST['wpuf_login']) ) {
+            return $user;
+        }
+
+        if ( isset ( $_POST["g-recaptcha-response"] ) ) {
+            if ( empty( $_POST['g-recaptcha-response'] ) ) {
+                $user = new WP_Error( 'WPUFLoginCaptchaError', 'Empty reCaptcha Field.' );
+            } else {
+                $no_captcha = 1;
+                $invisible_captcha = 0;
+
+                WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+            }
+        }
+        return $user;
     }
 
     /**
@@ -319,6 +383,18 @@ class WPUF_Simple_Login {
             if ( empty( $_POST['pwd'] ) ) {
                 $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Password is required.', 'wp-user-frontend' );
                 return;
+            }
+
+            if ( isset ( $_POST["g-recaptcha-response"] ) ) {
+                if ( empty( $_POST['g-recaptcha-response'] ) ) {
+                    $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Empty reCaptcha Field', 'wp-user-frontend' );
+                    return;
+                } else {
+                    $no_captcha = 1;
+                    $invisible_captcha = 0;
+
+                    WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+                }
             }
 
             if ( is_email( $_POST['log'] ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {

@@ -838,11 +838,10 @@ function wpuf_show_custom_fields( $content ) {
                         if ( $modified_value ) {
                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
                         }
-                    } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value ) ) {
+                    } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value[0] ) ) {
 
                         if ( !empty( $value[0] ) ) {
-                            $glue = array( $separator, '', );
-                            $modified_value = implode( $glue, $value[0] );
+                            $modified_value = implode( $separator, $value[0] );
 
                             if ( $modified_value ) {
                                $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );

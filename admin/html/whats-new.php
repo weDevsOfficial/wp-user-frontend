@@ -1,6 +1,62 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.8.10',
+        'released' => '2018-07-13',
+        'changes' => array(
+            array(
+                'title'       => __( 'Added drag and drop images ordering on uploading', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'Now frontend user can drag & drop the images/files to change the order on uploading.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Added reCAPTCHA field in login form', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'Admin has the option to enable/disable reCAPTCHA field in login form. Check the related settings from <strong>User Frontend > Settings > Login/Registration</strong>', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Added preview option in forms', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'You can see a nice <strong>Preview</strong> button with <strong>Save Form</strong> button, admin can see the form without creating & inserting form shortcode.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Fixed “Select Image” button disappears while uploading multiple images.', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Configured the “select images” button for the user to insert 10 images, for example. If the user clicks and selects 10 images at once, they will be uploaded correctly. But if the user selects only 01 image, this image will be loaded and the “Select images” button will disappear, so the user will not be able to send the 09 images that she could still send. You will get it fixed in this version.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Internationalized subscription pack cycle period labels', 'wp-user-frontend' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Strings has been added to translate subscription pack cycle period labels', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Fixed showing username while login with wrong password and email', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Keeping the username hidden from the user notice for failed login attempt.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Added form limit message and refactor form schedule message', 'wp-user-frontend' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Limit message was showing after submission, now it is showing when rendering form', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Fixed: default post category not saving', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'From the form <strong>Settings > Post Settings</strong>, default post category options were not saving. Now, you will get it fixed.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Fixed: pages was not being created from setup wizard', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'Setup wizard is now working perfectly.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Fixed form id specific posts are not displaying on the dashboard', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Now you can list posts on the frontend by using <strong>form_id<strong/> attribute with <strong>[wpuf_dashboard]</strong> shortcode', 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 2.8.9',
         'released' => '2018-06-06',
         'changes' => array(

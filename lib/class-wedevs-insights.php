@@ -48,7 +48,7 @@ class WPUF_WeDevs_Insights {
      *
      * @var string
      */
-    private static $api_url = 'http://tracking.wedevs.com/';
+    private static $api_url = 'https://tracking.wedevs.com/';
 
     /**
      * Initialize the class

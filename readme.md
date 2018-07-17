@@ -171,6 +171,21 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
+### v2.8.10 (17 July, 2018) ###
+
+* **New:** Added drag and drop image ordering on image upload field
+* **New:** Added preview option in forms
+* **New:** Added form limit message before form submission
+* **New:** Added option to show reCAPTCHA field in login forms
+* **Improved:** Replace alert with Sweet-alert in frontend
+* **Improved:** Internationalized subscription pack cycle period labels
+* **Fix:** "Select Image" button disappears while uploading multiple images.
+* **Fix:** Showing username while login with wrong password and email
+* **Fix:** Default post category not saving
+* **Fix:** Pages was not being created from setup wizard
+* **Fix:** Separator spacing for multi select and checkbox render view
+* **Fix:** Form id specific posts are not displaying on the dashboard
+
 ### v2.8.9 (6 June, 2018) ###
 
 * **New:** Added functionality to export and erase WP User Frontend Data.

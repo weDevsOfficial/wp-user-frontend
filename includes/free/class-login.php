@@ -371,23 +371,23 @@ class WPUF_Simple_Login {
             $validation_error = apply_filters( 'wpuf_process_login_errors', $validation_error, $_POST['log'], $_POST['pwd'] );
 
             if ( $validation_error->get_error_code() ) {
-                $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . $validation_error->get_error_message();
+                $this->login_errors[] = $validation_error->get_error_message();
                 return;
             }
 
             if ( empty( $_POST['log'] ) ) {
-                $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Username is required.', 'wp-user-frontend' );
+                $this->login_errors[] = __( 'Username is required.', 'wp-user-frontend' );
                 return;
             }
 
             if ( empty( $_POST['pwd'] ) ) {
-                $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Password is required.', 'wp-user-frontend' );
+                $this->login_errors[] = __( 'Password is required.', 'wp-user-frontend' );
                 return;
             }
 
             if ( isset ( $_POST["g-recaptcha-response"] ) ) {
                 if ( empty( $_POST['g-recaptcha-response'] ) ) {
-                    $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Empty reCaptcha Field', 'wp-user-frontend' );
+                    $this->login_errors[] = __( 'Empty reCaptcha Field', 'wp-user-frontend' );
                     return;
                 } else {
                     $no_captcha = 1;

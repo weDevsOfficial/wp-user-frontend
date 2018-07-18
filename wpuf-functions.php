@@ -827,7 +827,7 @@ function wpuf_show_custom_fields( $content ) {
                 default:
                     $value       = get_post_meta( $post->ID, $attr['name'] );
                     $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );
-                    $separator   = '| ';
+                    $separator   = ' | ';
 
                     if ( !empty( $filter_html ) ) {
                         $html .= $filter_html;
@@ -838,11 +838,10 @@ function wpuf_show_custom_fields( $content ) {
                         if ( $modified_value ) {
                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
                         }
-                    } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value ) ) {
+                    } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value[0] ) ) {
 
                         if ( !empty( $value[0] ) ) {
-                            $glue = array( '| ', '', );
-                            $modified_value = implode( $glue, $value[0] );
+                            $modified_value = implode( $separator, $value[0] );
 
                             if ( $modified_value ) {
                                $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
@@ -1123,7 +1122,7 @@ function wpufe_ajax_tag_search() {
     if ( strlen( $s ) < 2 )
         wp_die(); // require 2 chars for matching
 
-    $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . like_escape( $s ) . '%' ) );
+    $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
 
     echo join( $results, "\n" );
     wp_die();
@@ -2825,10 +2824,11 @@ function wpuf_settings_multiselect( $args ) {
  * @param array $args
  */
 function wpuf_get_custom_avatar( $args, $id_or_email ) {
+    $user_id = $id_or_email;
 
-    $user_id = get_current_user_id();
-
-    if ( email_exists( $id_or_email ) ) {
+    if ( $id_or_email instanceof WP_Comment ){
+        $user_id = $id_or_email->user_id;
+    } elseif ( is_email( $id_or_email ) ) {
         $user_id = email_exists( $id_or_email );
     }
 
@@ -2842,3 +2842,72 @@ function wpuf_get_custom_avatar( $args, $id_or_email ) {
     return $args;
 }
 add_filter( 'get_avatar_data', 'wpuf_get_custom_avatar', 10, 2 );
+
+/**
+ * Displays Form Schedule Messages
+ *
+ * @since 2.8.10
+ *
+ * @param int $form_id
+ */
+function wpuf_show_form_schedule_message( $form_id ) {
+
+    $form_settings   = wpuf_get_form_settings( $form_id );
+    $is_scheduled    = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] == 'true' ) ? true : false;
+
+    if ( $is_scheduled ) {
+        $start_time   = !empty( $form_settings['schedule_start'] ) ? strtotime( $form_settings['schedule_start'] ) : 0;
+        $end_time     = !empty( $form_settings['schedule_end'] ) ? strtotime( $form_settings['schedule_end'] ) : 0;
+        $current_time = current_time( 'timestamp' );
+
+        // too early?
+        if ( $current_time < $start_time ) {
+            echo '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>';
+        } elseif ( $current_time > $end_time ) {
+            echo '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>';
+        }
+        ?>
+        <script>
+            jQuery( function($) {
+                $(".wpuf-submit-button").attr("disabled", "disabled");
+            });
+        </script>
+        <?php
+        return;
+    }
+}
+add_action( 'wpuf_before_form_render', 'wpuf_show_form_schedule_message' );
+
+/**
+ * Displays Form Limit Messages
+ *
+ * @since 2.8.10
+ *
+ * @param int $form_id
+ */
+function wpuf_show_form_limit_message( $form_id ){
+
+    $form_settings   = wpuf_get_form_settings( $form_id );
+    $has_limit    = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
+    if ( $has_limit ) {
+
+        $limit        = (int) !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 0;
+        $form_entries = wpuf_form_posts_count( $form_id );
+
+        if ( $limit && $limit <= $form_entries ) {
+            $info = $form_settings['limit_message'];
+            echo '<div class="wpuf-info">' . $info . '</div>';
+            ?>
+            <script>
+                jQuery( function($) {
+                    $(".wpuf-submit-button").attr("disabled", "disabled");
+                });
+            </script>
+            <?php
+        }
+        return;
+    }
+}
+add_action( 'wpuf_before_form_render', 'wpuf_show_form_limit_message' );
+
+

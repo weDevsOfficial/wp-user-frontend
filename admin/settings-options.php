@@ -340,6 +340,13 @@ function wpuf_settings_fields() {
                 'type'    => 'checkbox',
                 'default' => 'off'
             ),
+            array(
+                'name'    => 'login_form_recaptcha',
+                'label'   => __( 'reCAPTCHA in Login Form', 'wp-user-frontend' ),
+                'desc'    => __( 'If enabled, users have to verify reCAPTCHA in login page. Also, make sure that reCAPTCHA is configured properly from <b>General Options</b>', 'wp-user-frontend' ),
+                'type'    => 'checkbox',
+                'default' => 'off'
+            ),
 
         ) ),
         'wpuf_payment' => apply_filters( 'wpuf_options_payment', array(
@@ -458,7 +465,15 @@ function wpuf_settings_fields() {
                 'name'    => 'guest_email_body',
                 'label'   => __( 'Guest mail body', 'wp-user-frontend' ),
                 'desc'    => __( "This sets the body of the emails sent to guest users. Please DON'T edit the <code>{activation_link}</code> part, you can use {sitename} too.", 'wp-user-frontend' ),
-                'default' => "Hey There, \r\n\r\nWe just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.\r\n\r\nPlease click the link below to verify: \r\n\r\n{activation_link}\r\n\r\nRegards,\r\n{sitename}",
+                'default' => "Hey There,
+
+                We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.
+
+                Please click the link below to verify:
+                {activation_link}
+
+                Regards,
+                {sitename}",
                 'type'    => 'wysiwyg',
                 'class'   => 'guest-email-setting-option',
             ),

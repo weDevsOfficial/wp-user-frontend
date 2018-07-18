@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.8.9
+Version: 2.8.10
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wpuf
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.8.9' );
+define( 'WPUF_VERSION', '2.8.10' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -284,7 +284,6 @@ final class WP_User_Frontend {
         // add reCaptcha library if not found
         if ( ! function_exists( 'recaptcha_get_html' ) ) {
             require_once dirname( __FILE__ ) . '/lib/recaptchalib.php';
-            require_once dirname( __FILE__ ) . '/lib/recaptchalib_noCaptcha.php';
             require_once dirname( __FILE__ ) . '/lib/invisible_recaptcha.php';
         }
     }
@@ -452,7 +451,7 @@ final class WP_User_Frontend {
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {
             $this->plugin_scripts();
-        } elseif ( wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_sub_pack' ) || ( isset( $post->ID  ) && ( $pay_page == $post->ID ) ) ) {
+        } elseif ( wpuf_has_shortcode( 'wpuf-login' ) || wpuf_has_shortcode( 'wpuf-registration' ) || wpuf_has_shortcode( 'wpuf-meta' ) || wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_sub_pack' ) || ( isset( $post->ID  ) && ( $pay_page == $post->ID ) ) || isset( $_GET['wpuf_preview'] ) ) {
             $this->plugin_scripts();
         }
     }
@@ -467,7 +466,10 @@ final class WP_User_Frontend {
             return;
         }
 
-        if ( wpuf_has_shortcode( 'wpuf_form', $post->ID )
+        if ( wpuf_has_shortcode( 'wpuf-login', $post->ID )
+            || wpuf_has_shortcode( 'wpuf-registration', $post->ID )
+            || wpuf_has_shortcode( 'wpuf-meta', $post->ID )
+            || wpuf_has_shortcode( 'wpuf_form', $post->ID )
             || wpuf_has_shortcode( 'wpuf_edit', $post->ID )
             || wpuf_has_shortcode( 'wpuf_profile', $post->ID )
             || wpuf_has_shortcode( 'wpuf_dashboard', $post->ID )
@@ -490,6 +492,7 @@ final class WP_User_Frontend {
 
         wp_enqueue_style( 'wpuf-css' );
         wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
+        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css', array(), WPUF_VERSION );
 
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'jquery-ui-datepicker' );
@@ -498,9 +501,10 @@ final class WP_User_Frontend {
         wp_enqueue_script( 'jquery-ui-slider' );
         wp_enqueue_script( 'plupload-handlers' );
         wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker' ) );
-        wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array( 'jquery', 'plupload-handlers' ) );
+        wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array( 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ) );
         wp_enqueue_script( 'wpuf-form' );
         wp_enqueue_script( 'wpuf-subscriptions' );
+        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', array(), WPUF_VERSION );
 
         wp_localize_script( 'wpuf-form', 'wpuf_frontend', apply_filters( 'wpuf_frontend_js_data' , array(
             'ajaxurl'       => admin_url( 'admin-ajax.php' ),

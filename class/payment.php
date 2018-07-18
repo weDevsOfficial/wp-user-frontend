@@ -116,9 +116,9 @@ class WPUF_Payment {
                     wpuf_get_user( $current_user->ID )->subscription()->add_pack( $pack_id, null, false, 'free' );
                     $wpuf_user->subscription()->add_free_pack( $current_user->ID, $pack_id );
 
-                    $message = apply_filters( 'wpuf_fp_activated_msg', __( 'Your free package has been activated. Enjoy!', 'wp-user-frontend' ), 'wpuf' );
+                    $message = apply_filters( 'wpuf_fp_activated_msg', __( 'Your free package has been activated. Enjoy!', 'wp-user-frontend' ) );
                 } else {
-                    $message = apply_filters( 'wpuf_fp_activated_error', __( 'You already have activated a free package previously.', 'wp-user-frontend' ), 'wpuf' );
+                    $message = apply_filters( 'wpuf_fp_activated_error', __( 'You already have activated a free package previously.', 'wp-user-frontend' ) );
                 }
                 ?>
                     <div class="wpuf-info"><?php echo $message; ?></div>
@@ -127,11 +127,11 @@ class WPUF_Payment {
                 ?>
                 <?php if ( count( $gateways ) ) {
                     ?>
-                    <div class="wpuf-payment-page-wrap row">
+                    <div class="wpuf-payment-page-wrap wpuf-pay-row">
                         <?php
                         $pay_page_style = "";
                         ?>
-                        <div class="wpuf-bill-addr-wrap col">
+                        <div class="wpuf-bill-addr-wrap wpuf-pay-col">
                             <?php if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
                                 $pay_page_style = "vertical-align:top; margin-left: 20px; display: inline-block;";
                                 ?>
@@ -158,10 +158,10 @@ class WPUF_Payment {
                                 <input type="hidden" name="user_id" value="<?php echo $current_user->ID; ?>">
                                 <?php } ?>
 
-                                <div class="wpuf-coupon-info-wrap col">
+                                <div class="wpuf-coupon-info-wrap wpuf-pay-col">
                                     <div class="wpuf-coupon-info">
                                         <div class="wpuf-pack-info">
-                                            <h3 class="col">
+                                            <h3 class="wpuf-pay-col">
                                                 <?php _e( 'Pricing & Plans', 'wp-user-frontend' ); ?>
 
                                                 <a style="white-space: nowrap" href="<?php echo wpuf_get_subscription_page_url(); ?>"><?php _e( 'Change Pack', 'wp-user-frontend' ); ?></a>

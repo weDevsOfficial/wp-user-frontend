@@ -70,8 +70,18 @@ class WPUF_Frontend_Dashboard {
             'post_status'    => array('draft', 'future', 'pending', 'publish', 'private'),
             'post_type'      => $post_type,
             'posts_per_page' => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
-            'paged'          => $pagenum
+            'paged'          => $pagenum,
         );
+
+        if ( isset($attributes['form_id']) && $attributes['form_id'] != 'off' ) {
+            $args['meta_query'] =  array(
+                array(
+                    'key'     => '_wpuf_form_id',
+                    'value'   => $attributes['form_id'],
+                    'compare' => 'IN',
+                )
+            );
+        }
 
         $original_post   = $post;
         $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args, $attributes ) );

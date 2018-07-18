@@ -8,7 +8,7 @@
 class WPUF_Render_Form {
 
     static $meta_key            = 'wpuf_form';
-    static $separator           = '| ';
+    static $separator           = ' | ';
     static $config_id           = '_wpuf_form_id';
     private $form_condition_key = 'wpuf_cond';
     private static $_instance;
@@ -92,6 +92,10 @@ class WPUF_Render_Form {
         $site_key        = wpuf_get_option( 'recaptcha_public', 'wpuf_general' );
         $private_key     = wpuf_get_option( 'recaptcha_private', 'wpuf_general' );
         if ( $no_captcha == 1 && 0 == $invisible ) {
+
+            if ( !class_exists( 'WPUF_ReCaptcha' ) ) {
+                require_once WPUF_ROOT . '/lib/recaptchalib_noCaptcha.php';
+            }
 
             $response = null;
             $reCaptcha = new WPUF_ReCaptcha($private_key);
@@ -354,22 +358,8 @@ class WPUF_Render_Form {
         $label_position  = isset( $form_settings['label_position'] ) ? $form_settings['label_position'] : 'left';
         $layout          = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
         $theme_css       = isset( $form_settings['use_theme_css'] ) ? $form_settings['use_theme_css'] : 'wpuf-style';
-        $is_scheduled    = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] == 'true' ) ? true : false;
 
-        if ( $is_scheduled ) {
-            $start_time   = !empty( $form_settings['schedule_start'] ) ? strtotime( $form_settings['schedule_start'] ) : 0;
-            $end_time     = !empty( $form_settings['schedule_end'] ) ? strtotime( $form_settings['schedule_end'] ) : 0;
-            $current_time = current_time( 'timestamp' );
-
-            // too early?
-            if ( $current_time < $start_time ) {
-                echo '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>';
-                return;
-            } elseif ( $current_time > $end_time ) {
-                echo '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>';
-                return;
-            }
-        }
+        do_action( 'wpuf_before_form_render', $form_id );
 
         if ( !empty( $layout ) ) {
             wp_enqueue_style( 'wpuf-' . $layout );
@@ -413,6 +403,7 @@ class WPUF_Render_Form {
 
             <?php
         } //endif
+        do_action( 'wpuf_after_form_render', $form_id );
     }
 
     function render_item_before( $form_field, $post_id ) {
@@ -1327,7 +1318,7 @@ class WPUF_Render_Form {
             $field_size    = !empty( $attr['width'] ) ? ' field-size-' . $attr['width'] : '';
 
             echo '</li>';
-            echo '<li class="wpuf-el password-repeat ' . $field_size . '" data-label="' . esc_attr( 'Confirm Password', 'wpuf' ) . '">';
+            echo '<li class="wpuf-el password-repeat ' . $field_size . '" data-label="' . esc_attr( __('Confirm Password', 'wp-user-frontend') ) . '">';
 
             $this->label( array('name' => 'pass2', 'label' => $attr['re_pass_label'], 'required' => $post_id ? 'no' : 'yes') );
             ?>

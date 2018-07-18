@@ -414,6 +414,7 @@ ul.wpuf-form {
 
                     .attachment-name {
                         text-align: center;
+                        line-height: 0;
                     }
                 }
             }
@@ -1510,9 +1511,11 @@ table#wpuf-address-country-state {
     margin:4px;
     .attachment-name img {
         width:100%;
-        height:150px;
+        max-height:150px;
         transition:.3s;
         border-radius:4px;
+        box-shadow: none;
+        -webkit-box-shadow: none;
     }
     :not(.attachment-name img) {
         position:absolute;
@@ -1534,6 +1537,7 @@ li.wpuf-image-wrap.thumbnail {
         text-align: center;
         padding: 0;
         border-radius: 3px;
+        line-height: 0;
     }
 }
 li.wpuf-image-wrap.thumbnail:hover .caption {
@@ -1563,19 +1567,29 @@ ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li.highlight{
     padding-bottom: 0;
 }
 
-.ui-state-default.wpuf-image-wrap:hover{
+ul.wpuf-form .ui-state-default.wpuf-image-wrap:hover{
     cursor: move;
 }
 
-.ui-state-default.wpuf-image-wrap .caption a,
-.ui-state-default.wpuf-image-wrap .caption span{
+ul.wpuf-form .ui-state-default.wpuf-image-wrap .caption a,
+ul.wpuf-form .ui-state-default.wpuf-image-wrap .caption span{
     display: inline-block;
     line-height: 0;
-    height: 22px;
-    padding: 6px 5px 3px 5px;
+    height: inherit;
+    padding: 5px;
+    color: transparent;
+    vertical-align: top;
 }
 
-.ui-state-default.wpuf-image-wrap .caption a:hover,
-.ui-state-default.wpuf-image-wrap .caption span:hover{
+ul.wpuf-form .ui-state-default
+.wpuf-image-wrap .caption a img{
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+ul.wpuf-form .ui-state-default.wpuf-image-wrap .caption a:hover,
+ul.wpuf-form .ui-state-default.wpuf-image-wrap .caption span:hover{
     background: #0073aa;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }

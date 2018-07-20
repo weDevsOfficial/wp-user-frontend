@@ -737,7 +737,8 @@ function wpuf_show_custom_fields( $content ) {
 
                         foreach ($field_value as $attachment_id) {
                             if ( $attr['input_type'] == 'image_upload' ) {
-                                $thumb = wp_get_attachment_image( $attachment_id, 'thumbnail' );
+                                $image_size = wpuf_get_option( 'insert_photo_size', 'wpuf_frontend_posting', 'thumbnail' );
+                                $thumb = wp_get_attachment_image( $attachment_id, $image_size );
                             } else {
                                 $thumb = get_post_field( 'post_title', $attachment_id );
                             }

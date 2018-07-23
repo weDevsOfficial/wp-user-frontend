@@ -8,7 +8,7 @@
 class WPUF_Render_Form {
 
     static $meta_key            = 'wpuf_form';
-    static $separator           = '| ';
+    static $separator           = ' | ';
     static $config_id           = '_wpuf_form_id';
     private $form_condition_key = 'wpuf_cond';
     private static $_instance;
@@ -92,6 +92,10 @@ class WPUF_Render_Form {
         $site_key        = wpuf_get_option( 'recaptcha_public', 'wpuf_general' );
         $private_key     = wpuf_get_option( 'recaptcha_private', 'wpuf_general' );
         if ( $no_captcha == 1 && 0 == $invisible ) {
+
+            if ( !class_exists( 'WPUF_ReCaptcha' ) ) {
+                require_once WPUF_ROOT . '/lib/recaptchalib_noCaptcha.php';
+            }
 
             $response = null;
             $reCaptcha = new WPUF_ReCaptcha($private_key);

@@ -737,7 +737,8 @@ function wpuf_show_custom_fields( $content ) {
 
                         foreach ($field_value as $attachment_id) {
                             if ( $attr['input_type'] == 'image_upload' ) {
-                                $thumb = wp_get_attachment_image( $attachment_id, 'thumbnail' );
+                                $image_size = wpuf_get_option( 'insert_photo_size', 'wpuf_frontend_posting', 'thumbnail' );
+                                $thumb = wp_get_attachment_image( $attachment_id, $image_size );
                             } else {
                                 $thumb = get_post_field( 'post_title', $attachment_id );
                             }
@@ -827,7 +828,7 @@ function wpuf_show_custom_fields( $content ) {
                 default:
                     $value       = get_post_meta( $post->ID, $attr['name'] );
                     $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );
-                    $separator   = '| ';
+                    $separator   = ' | ';
 
                     if ( !empty( $filter_html ) ) {
                         $html .= $filter_html;
@@ -838,11 +839,10 @@ function wpuf_show_custom_fields( $content ) {
                         if ( $modified_value ) {
                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
                         }
-                    } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value ) ) {
+                    } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value[0] ) ) {
 
                         if ( !empty( $value[0] ) ) {
-                            $glue = array( '| ', '', );
-                            $modified_value = implode( $glue, $value[0] );
+                            $modified_value = implode( $separator, $value[0] );
 
                             if ( $modified_value ) {
                                $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );

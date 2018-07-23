@@ -2,7 +2,7 @@
 
 $label_position = isset( $form_settings['label_position'] ) ? $form_settings['label_position'] : 'left';
 $form_layout    = isset( $form_settings['form_layout'] ) ? $form_settings['form_layout'] : 'layout1';
-$theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use_theme_css'] : 'wpuf-style';
+$theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use_theme_css'] : 'wpuf-theme-style';
 ?>
 
 <table class="form-table">

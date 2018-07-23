@@ -27,6 +27,15 @@
             <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" />
         </p>
 
+        <?php $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off'); ?>
+        <?php if( $recaptcha == 'on' ) : ?>
+            <p>
+                <div class="wpuf-fields">
+                    <?php echo recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ); ?>
+                </div>
+            </p>
+        <?php endif; ?>
+
         <p class="forgetmenot">
             <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
             <label for="wpuf-rememberme"><?php esc_attr_e( 'Remember Me', 'wp-user-frontend' ); ?></label>

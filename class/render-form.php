@@ -468,6 +468,7 @@ class WPUF_Render_Form {
 
         $edit_ignore = array( 'really_simple_captcha' );
         $hidden_fields = array();
+        $registered_fields = wpuf()->fields->get_fields();
         ?>
         <script type="text/javascript">
             if ( typeof wpuf_conditional_items === 'undefined' ) {
@@ -605,102 +606,109 @@ class WPUF_Render_Form {
                 continue;
             }
 
+            $template = $form_field['template'];
+            if ( !isset( $registered_fields[$template] ) ) {
+                continue;
+            }
+
             if ( $form_field['input_type'] != 'step_start' && $form_field['input_type'] != 'step_end' ) {
                 $this->render_item_before( $form_field, $post_id );
             }
 
             $this->field_count++;
 
-            switch ($form_field['input_type']) {
-                case 'text':
-                    $this->text( $form_field, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
+            $registered_fields[$template]->render( $form_field, $post_id, $type, $form_id );
+            $this->conditional_logic( $form_field, $form_id );
 
-                case 'textarea':
-                    $this->textarea( $form_field, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'select':
-                    $this->select( $form_field, false, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'multiselect':
-                    $this->select( $form_field, true, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'radio':
-                    $this->radio( $form_field, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'checkbox':
-                    $this->checkbox( $form_field, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'url':
-                    $this->url( $form_field, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'email':
-                    $this->email( $form_field, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'password':
-                    $this->password( $form_field, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'taxonomy':
-
-                    $this->taxonomy( $form_field, $post_id, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'section_break':
-                    $form_field['name'] = 'section_break';
-                    $this->section_break( $form_field, $post_id, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'html':
-                    $form_field['name'] = 'custom_html_'.str_replace( ' ','_', $form_field['label'] );
-
-                    $this->html( $form_field, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'image_upload':
-                    $this->image_upload( $form_field, $post_id, $type, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                case 'recaptcha':
-                    $this->recaptcha( $form_field, $post_id, $form_id );
-                    $this->conditional_logic( $form_field, $form_id );
-                    break;
-
-                default:
-
-                    // fallback for a dynamic method of this class if exists
-                    $dynamic_method = 'field_' . $form_field['input_type'];
-
-                    if ( method_exists( $this, $dynamic_method ) ) {
-                        $this->{$dynamic_method}( $form_field, $post_id, $type, $form_id );
-                    }
-
-                    do_action( 'wpuf_render_form_' . $form_field['input_type'], $form_field, $form_id, $post_id, $form_settings );
-                    do_action( 'wpuf_render_pro_' . $form_field['input_type'], $form_field, $post_id, $type, $form_id, $form_settings, 'WPUF_Render_Form', $this, $this->multiform_start, isset( $form_settings['enable_multistep'] )?$form_settings['enable_multistep']:'' );
-                    break;
-            }
-
-
+//            switch ($form_field['input_type']) {
+//                case 'text':
+////                    $this->text( $form_field, $post_id, $type, $form_id );
+//                    $this->conditional_logic( $form_field, $form_id );
+//                    break;
+//
+////                case 'textarea':
+////                    $this->textarea( $form_field, $post_id, $type, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'select':
+////                    $this->select( $form_field, false, $post_id, $type, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'multiselect':
+////                    $this->select( $form_field, true, $post_id, $type, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'radio':
+////                    $this->radio( $form_field, $post_id, $type, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'checkbox':
+////                    $this->checkbox( $form_field, $post_id, $type, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'url':
+////                    $this->url( $form_field, $post_id, $type, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'email':
+////                    $this->email( $form_field, $post_id, $type, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'password':
+////                    $this->password( $form_field, $post_id, $type, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'taxonomy':
+////
+////                    $this->taxonomy( $form_field, $post_id, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'section_break':
+////                    $form_field['name'] = 'section_break';
+////                    $this->section_break( $form_field, $post_id, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'html':
+////                    $form_field['name'] = 'custom_html_'.str_replace( ' ','_', $form_field['label'] );
+////
+////                    $this->html( $form_field, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'image_upload':
+////                    $this->image_upload( $form_field, $post_id, $type, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+////
+////                case 'recaptcha':
+////                    $this->recaptcha( $form_field, $post_id, $form_id );
+////                    $this->conditional_logic( $form_field, $form_id );
+////                    break;
+//
+//                default:
+//                    var_dump( $registered_fields[$input_type] ); die();
+//
+//                    // fallback for a dynamic method of this class if exists
+//                    $dynamic_method = 'field_' . $form_field['input_type'];
+//
+//                    if ( method_exists( $this, $dynamic_method ) ) {
+//                        $this->{$dynamic_method}( $form_field, $post_id, $type, $form_id );
+//                    }
+//
+//                    do_action( 'wpuf_render_form_' . $form_field['input_type'], $form_field, $form_id, $post_id, $form_settings );
+//                    do_action( 'wpuf_render_pro_' . $form_field['input_type'], $form_field, $post_id, $type, $form_id, $form_settings, 'WPUF_Render_Form', $this, $this->multiform_start, isset( $form_settings['enable_multistep'] )?$form_settings['enable_multistep']:'' );
+//                    break;
+//            }
             $this->render_item_after( $form_field );
         } //end foreach
 
@@ -916,7 +924,7 @@ class WPUF_Render_Form {
      *
      * @param array $attr
      * @param int|null $post_id
-     */
+
     function text( $attr, $post_id, $type = 'post', $form_id = null ) {
         // checking for user profile username
         $username = false;
@@ -979,7 +987,7 @@ class WPUF_Render_Form {
             $this->check_word_restriction_func( $attr['word_restriction'], 'no', $attr['name'] . '_' . $form_id );
         }
     }
-
+*/
 
     /**
      * Function to check word restriction
@@ -1007,7 +1015,7 @@ class WPUF_Render_Form {
      * Prints a textarea field
      * @param array $attr
      * @param int|null $post_id
-     */
+
     function textarea( $attr, $post_id, $type, $form_id ) {
         $req_class = ( $attr['required'] == 'yes' ) ? 'required' : 'rich-editor';
         if ( $post_id ) {
@@ -1100,7 +1108,7 @@ class WPUF_Render_Form {
             $this->check_word_restriction_func( $attr['word_restriction'], $attr['rich'], $attr['name'] . '_' . $form_id );
         }
     }
-
+*/
 
     /**
      * Prints a select or multiselect field

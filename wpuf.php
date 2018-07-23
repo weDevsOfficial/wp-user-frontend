@@ -254,6 +254,7 @@ final class WP_User_Frontend {
         include_once WPUF_ROOT . '/includes/class-gutenblock.php';
         include_once WPUF_ROOT . '/includes/class-form-preview.php';
         include_once WPUF_ROOT . '/includes/class-customizer.php';
+        require_once WPUF_ROOT . '/admin/form-builder/class-field-manager.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
@@ -267,7 +268,6 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/admin/class-admin-settings.php';
             require_once WPUF_ROOT . '/admin/form-handler.php';
             require_once WPUF_ROOT . '/admin/form.php';
-            require_once WPUF_ROOT . '/admin/form-builder/class-field-manager.php';
             require_once WPUF_ROOT . '/admin/posting.php';
             require_once WPUF_ROOT . '/admin/class-admin-subscription.php';
             require_once WPUF_ROOT . '/admin/installer.php';
@@ -316,6 +316,7 @@ final class WP_User_Frontend {
         $this->container['preview']                 = new WPUF_Form_Preview();
         $this->container['block']                   = new WPUF_Form_Block();
         $this->container['customize']               = new WPUF_Customizer_Options();
+        $this->container['fields']                  = new WPUF_Field_Manager();
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();
@@ -334,7 +335,6 @@ final class WP_User_Frontend {
             $this->container['whats_new']          = new WPUF_Whats_New();
             $this->container['wpuf_acf']           = new WPUF_ACF_Compatibility();
             $this->container['privacy']            = new WPUF_Privacy();
-            $this->container['fields']             = new WPUF_Field_Manager();
 
         } else {
 

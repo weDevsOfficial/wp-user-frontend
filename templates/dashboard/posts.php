@@ -102,7 +102,7 @@ $post_type_obj = get_post_type_object( $post_type );
                             if ( has_post_thumbnail() ) {
                                 the_post_thumbnail( $featured_img_size );
                             } else {
-                                printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', apply_filters( 'wpuf_no_image', plugins_url( '/assets/images/no-image.png', dirname( __FILE__ ) ) ), __( 'No Image', 'wp-user-frontend' ) );
+                                printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', apply_filters( 'wpuf_no_image', plugins_url( '../assets/images/no-image.png', dirname( __FILE__ ) ) ), __( 'No Image', 'wp-user-frontend' ) );
                             }
 
                             echo $show_link ? '</a>' : '';

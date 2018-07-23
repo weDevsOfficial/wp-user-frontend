@@ -198,9 +198,16 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
         $form_id = get_post_meta( $post->ID, '_wpuf_form_id', true );
         $form_settings = wpuf_get_form_settings( $form_id );
+        
+        /**
+         * There may be incompatibilities with WPUF metabox display when Advanced Custom Fields
+         * is active. By default WPUF metaboxes will be hidden when ACF is detected. However,
+         * you can override that by using the following filter.
+         */
+        $hide_with_acf = class_exists( 'acf' ) ? apply_filters( 'wpuf_hide_meta_when_acf_active', true ) : false;
 
         // hide the metabox itself if no form ID is set
-        if ( !$form_id || class_exists('acf') ) {
+        if ( !$form_id || $hide_with_acf ) {
             $this->hide_form();
             return;
         }

@@ -157,21 +157,22 @@ abstract class WPUF_Field_Contract {
      */
     public function default_attributes() {
         return array(
-            'input_type'  => $this->get_type(),
-            'template'    => $this->get_type(),
-            'name'        => '',
-            'label'       => $this->get_name(),
-            'required'    => 'no',
-            'id'          => 0,
-            'width'       => 'large',
-            'css'         => '',
-            'placeholder' => '',
-            'default'     => '',
-            'size'        => 40,
-            'help'        => '',
-            'is_meta'     => 'yes', // wpuf uses it to differentiate meta fields with core fields, maybe removed
-            'is_new'      => true, // introduced by @edi, not sure what it does. Have to remove
-            'wpuf_cond'   => $this->default_conditional_prop()
+            'input_type'      => $this->get_type(),
+            'template'        => $this->get_type(),
+            'name'            => '',
+            'label'           => $this->get_name(),
+            'required'        => 'no',
+            'id'              => 0,
+            'width'           => 'large',
+            'css'             => '',
+            'placeholder'     => '',
+            'default'         => '',
+            'size'            => 40,
+            'help'            => '',
+            'is_meta'         => 'yes', // wpuf uses it to differentiate meta fields with core fields, maybe removed
+            'is_new'          => true, // introduced by @edi, not sure what it does. Have to remove
+            'wpuf_visibility' => $this->get_wpuf_visibility_prop(),
+            'wpuf_cond'       => $this->default_conditional_prop()
         );
     }
 
@@ -553,7 +554,81 @@ abstract class WPUF_Field_Contract {
         return $entry_value;
     }
 
+    /**
+     * Print required class name
+     *
+     * @param array $attr
+     * @return string
+     */
+    function required_class( $attr ) {
+        return;
+        if ( $attr['required'] == 'yes' ) {
+            echo ' required';
+        }
+    }
 
+    /**
+     * Check if its a meta field
+     *
+     * @param array $attr
+     * @return boolean
+     */
+    function is_meta( $attr ) {
+        if ( isset( $attr['is_meta'] ) && $attr['is_meta'] == 'yes' ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get a meta value
+     *
+     * @param int $object_id user_ID or post_ID
+     * @param string $meta_key
+     * @param string $type post or user
+     * @param bool $single
+     * @return string
+     */
+    function get_meta( $object_id, $meta_key, $type = 'post', $single = true ) {
+        if ( !$object_id ) {
+            return '';
+        }
+
+        if ( $type == 'post' ) {
+            return get_post_meta( $object_id, $meta_key, $single );
+        }
+
+        return get_user_meta( $object_id, $meta_key, $single );
+    }
+
+    function get_user_data( $user_id, $field ) {
+        return get_user_by( 'id', $user_id )->$field;
+    }
+
+    /**
+     * Prints HTML5 required attribute
+     *
+     * @param array $attr
+     * @return string
+     */
+    function required_html5( $attr ) {
+        if ( $attr['required'] == 'yes' ) {
+            // echo ' required="required"';
+        }
+    }
+
+    /**
+     * wpuf_visibility property for all fields
+     *
+     * @return array
+     */
+    public function get_wpuf_visibility_prop( $default = 'everyone' ) {
+        return array(
+            'selected'         => $default,
+            'choices'          => array()
+        );
+    }
 
     /**
      * Function to check word restriction

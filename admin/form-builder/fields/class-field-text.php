@@ -14,44 +14,72 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
     /**
      * Render the text field
      *
-     * @param  array  $field_settings
-     * @param  integer  $form_id
+     * @param array $attr
+     * @param int $post_id
+     * @param string $type
+     * @param null $form_id
      *
-     * @return void
      */
-    public function render( $field_settings, $form_id ) {
-        $value = $field_settings['default'];
-        ?>
-        <li <?php $this->print_list_attributes( $field_settings ); ?>>
-            <?php $this->print_label( $field_settings, $form_id ); ?>
+    public function render( $attr, $post_id, $type = 'post', $form_id = null ) {
+        // checking for user profile username
+        $username = false;
+        $taxonomy = false;
+        if ( $post_id ) {
 
-            <div class="wpuf-fields">
-                <input
-                    class="textfield <?php echo 'wpuf_' . $field_settings['name'] . '_' . $form_id; ?>"
-                    id="<?php echo $field_settings['name'] . '_' . $form_id; ?>"
-                    type="text"
-                    data-duplicate="<?php echo $field_settings['duplicate'] ? $field_settings['duplicate'] : 'no'; ?>"
-                    data-required="<?php echo $field_settings['required'] ?>"
-                    data-type="text" name="<?php echo esc_attr( $field_settings['name'] ); ?>"
-                    placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
-                    value="<?php echo esc_attr( $value ) ?>"
-                    size="<?php echo esc_attr( $field_settings['size'] ) ?>"
-                />
+            if ( $this->is_meta( $attr ) ) {
+                $value = $this->get_meta( $post_id, $attr['name'], $type );
+            } else {
 
-                <span class="wpuf-wordlimit-message wpuf-help"></span>
-                <?php $this->help_text( $field_settings ); ?>
-            </div>
-            <?php
-            if ( isset( $field_settings['word_restriction'] ) && $field_settings['word_restriction'] ) {
-                $this->check_word_restriction_func(
-                    $field_settings['word_restriction'],
-                    'no',
-                    $field_settings['name'] . '_' . $form_id
-                );
+                // applicable for post tags
+                if ( $type == 'post' && $attr['name'] == 'tags' ) {
+                    $post_tags = wp_get_post_tags( $post_id );
+                    $tagsarray = array();
+                    foreach ($post_tags as $tag) {
+                        $tagsarray[] = $tag->name;
+                    }
+
+                    $value = implode( ', ', $tagsarray );
+                    $taxonomy = true;
+                } elseif ( $type == 'post' ) {
+                    $value = get_post_field( $attr['name'], $post_id );
+                } elseif ( $type == 'user' ) {
+                    $name = $attr['name'];
+                    $value = get_user_by( 'id', $post_id )->$name;
+                    if ( $attr['name'] == 'user_login' ) {
+                        $username = true;
+                    }
+                }
             }
-            ?>
-        </li>
+        } else {
+            $value = $attr['default'];
+
+            if ( $type == 'post' && $attr['name'] == 'tags' ) {
+                $taxonomy = true;
+            }
+        }
+
+        ?>
+
+        <div class="wpuf-fields">
+            <input class="textfield<?php echo $this->required_class( $attr );  echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" id="<?php echo $attr['name'].'_'.$form_id; ?>" type="text" data-required="<?php echo $attr['required'] ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="<?php echo esc_attr( $value ) ?>" size="<?php echo esc_attr( $attr['size'] ) ?>" <?php echo $username ? 'disabled' : ''; ?> />
+            <span class="wpuf-wordlimit-message wpuf-help"></span>
+            <?php $this->help_text( $attr ); ?>
+
+            <?php if ( $taxonomy ) { ?>
+                <script type="text/javascript">
+                    ;(function($) {
+                        $(document).ready( function(){
+                            $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=post_tag', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                        });
+                    })(jQuery);
+                </script>
+            <?php } ?>
+        </div>
+
         <?php
+        if ( isset( $attr['word_restriction'] ) && $attr['word_restriction'] ) {
+            $this->check_word_restriction_func( $attr['word_restriction'], 'no', $attr['name'] . '_' . $form_id );
+        }
     }
 
     /**
@@ -90,7 +118,8 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
         $props    = array(
             'input_type'       => 'text',
             'word_restriction' => '',
-            'duplicate' => '',
+            'show_in_post'     => 'yes',
+            'width'            => ''
         );
 
         return array_merge( $defaults, $props );

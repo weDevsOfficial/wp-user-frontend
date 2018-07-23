@@ -46,7 +46,6 @@ class WPUF_Field_Manager {
     private function register_field_types() {
         require_once dirname( __FILE__ ) . '/fields/class-abstract-fields.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-text.php';
-        require_once dirname( __FILE__ ) . '/fields/class-field-name.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-email.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-textarea.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-checkbox.php';
@@ -60,10 +59,15 @@ class WPUF_Field_Manager {
         require_once dirname( __FILE__ ) . '/fields/class-field-image.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-recaptcha.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-date.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-post-title.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-featured-image.php';
 
         $fields = array(
+            'post_title'          => new WPUF_Form_Field_Post_Title(),
+            'post_content'        => new WPUF_Form_Field_Textarea(),
+            'post_excerpt'        => new WPUF_Form_Field_Textarea(),
+            'featured_image'      => new WPUF_Form_Field_Featured_Image(),
             'text_field'          => new WPUF_Form_Field_Text(),
-//            'name_field'          => new WPUF_Form_Field_Name(),
             'date_field'          => new WPUF_Form_Field_Date_Free(),
             'email_address'       => new WPUF_Form_Field_Email(),
             'textarea_field'      => new WPUF_Form_Field_Textarea(),

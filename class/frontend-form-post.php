@@ -770,6 +770,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
         $form_id       = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
+        $form          = new WPUF_Form( $form_id );
+        $pay_per_post  = $form->is_enabled_pay_per_post();
         $form_vars     = $this->get_input_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
         $post_content  = isset( $_POST[ 'post_content' ] ) ? $_POST[ 'post_content' ] : '';
@@ -815,6 +817,11 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 if ( post_type_supports( $form_settings['post_type'], 'post-formats' ) ) {
                     set_post_format( $post_id, $form_settings['post_format'] );
                 }
+            }
+
+            // if pay per post is enabled then update payment status as pending
+            if ( $pay_per_post ) {
+                update_post_meta ( $post_id, '_wpuf_payment_status', 'pending' );
             }
 
             // save any custom taxonomies

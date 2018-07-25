@@ -71,6 +71,7 @@
         $len_id    = count( $meta_id );
         $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
         $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
+        $enable_payment     = wpuf_get_option( 'enable_payment', 'wpuf_payment' );
         $current_user       = wpuf_get_user();
         ?>
 
@@ -116,7 +117,7 @@
 
                     <?php do_action( 'wpuf_dashboard_head_col', $args ) ?>
 
-                    <?php if( 'on' == $payment_column): ?>
+                    <?php if( 'on' == $enable_payment && 'off' != $payment_column ): ?>
                         <th><?php _e( 'Payment', 'wp-user-frontend' ); ?></th>
                     <?php endif; ?>
 
@@ -213,7 +214,7 @@
 
                         <?php do_action( 'wpuf_dashboard_row_col', $args, $post ) ?>
 
-                        <?php if( 'on' == $payment_column): ?>
+                        <?php if( 'on' == $enable_payment && 'off' != $payment_column ): ?>
                             <td>
                                 <?php if( empty( $payment_status ) ) : ?>
                                     <?php _e( 'Not Applicable', 'wp-user-frontend' ); ?>

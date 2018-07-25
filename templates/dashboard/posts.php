@@ -61,7 +61,8 @@ $post_type_obj = get_post_type_object( $post_type );
     <?php
     $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
     $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
-    $payment_column     = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'off' );
+    $payment_column     = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' );
+    $enable_payment     = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
     $current_user       = wpuf_get_user();
     ?>
     <table class="items-table <?php echo $post_type; ?>" cellpadding="0" cellspacing="0">
@@ -77,7 +78,7 @@ $post_type_obj = get_post_type_object( $post_type );
 
                 <?php do_action( 'wpuf_account_posts_head_col', $args ) ?>
 
-                <?php if( 'on' == $payment_column ) : ?>
+                <?php if( 'on' == $enable_payment && 'off' != $payment_column ): ?>
                     <th><?php _e( 'Payment', 'wp-user-frontend' ); ?></th>
                 <?php endif; ?>
 
@@ -126,7 +127,7 @@ $post_type_obj = get_post_type_object( $post_type );
 
                     <?php do_action( 'wpuf_account_posts_row_col', $args, $post ) ?>
 
-                    <?php if( 'on' == $payment_column ) : ?>
+                    <?php if( 'on' == $enable_payment && 'off' != $payment_column ): ?>
                         <td>
                             <?php if( empty( $payment_status ) ) : ?>
                                 <?php _e( 'Not Applicable', 'wp-user-frontend' ); ?>

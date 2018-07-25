@@ -27,7 +27,7 @@ class WPUF_Frontend_Dashboard {
             <?php //echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
         </style>
         <?php
-        $attributes =  shortcode_atts( array( 'form_id'=>'off', 'post_type' => 'post', 'category' =>'off', 'featured_image' => 'default', 'meta' => 'off', 'excerpt' =>'off', 'payment_column' => 'off' ), $atts ) ;
+        $attributes =  shortcode_atts( array( 'form_id'=>'off', 'post_type' => 'post', 'category' =>'off', 'featured_image' => 'default', 'meta' => 'off', 'excerpt' =>'off', 'payment_column' => 'on' ), $atts ) ;
         ob_start();
 
         if ( is_user_logged_in() ) {

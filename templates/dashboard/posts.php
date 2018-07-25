@@ -59,9 +59,10 @@ $post_type_obj = get_post_type_object( $post_type );
 <?php if ( $dashboard_query->have_posts() ) { ?>
 
     <?php
-    $featured_img = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
-    $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
-    $current_user    = wpuf_get_user();
+    $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
+    $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
+    $payment_column     = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'off' );
+    $current_user       = wpuf_get_user();
     ?>
     <table class="items-table <?php echo $post_type; ?>" cellpadding="0" cellspacing="0">
         <thead>
@@ -76,7 +77,10 @@ $post_type_obj = get_post_type_object( $post_type );
 
                 <?php do_action( 'wpuf_account_posts_head_col', $args ) ?>
 
-                <th><?php _e( 'Payment', 'wp-user-frontend' ); ?></th>
+                <?php if( 'on' == $payment_column ) : ?>
+                    <th><?php _e( 'Payment', 'wp-user-frontend' ); ?></th>
+                <?php endif; ?>
+
                 <th><?php _e( 'Options', 'wp-user-frontend' ); ?></th>
             </tr>
         </thead>
@@ -122,15 +126,17 @@ $post_type_obj = get_post_type_object( $post_type );
 
                     <?php do_action( 'wpuf_account_posts_row_col', $args, $post ) ?>
 
-                    <td>
-                        <?php if( empty( $payment_status ) ) : ?>
-                            <?php _e( 'Not Applicable', 'wp-user-frontend' ); ?>
-                        <?php elseif( $payment_status != 'completed' ) : ?>
-                            <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wp-user-frontend' ); ?></a>
-                        <?php elseif( $payment_status == 'completed' ) : ?>
-                            <?php _e( 'Completed', 'wp-user-frontend' ); ?>
-                        <?php endif; ?>
-                    </td>
+                    <?php if( 'on' == $payment_column ) : ?>
+                        <td>
+                            <?php if( empty( $payment_status ) ) : ?>
+                                <?php _e( 'Not Applicable', 'wp-user-frontend' ); ?>
+                            <?php elseif( $payment_status != 'completed' ) : ?>
+                                <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wp-user-frontend' ); ?></a>
+                            <?php elseif( $payment_status == 'completed' ) : ?>
+                                <?php _e( 'Completed', 'wp-user-frontend' ); ?>
+                            <?php endif; ?>
+                        </td>
+                    <?php endif; ?>
 
                     <td>
                         <?php

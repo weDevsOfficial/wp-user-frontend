@@ -262,6 +262,13 @@ function wpuf_settings_fields() {
                 'type'  => 'checkbox'
             ),
             array(
+                'name'  => 'show_payment_column',
+                'label' => __( 'Show Payment Column', 'wp-user-frontend' ),
+                'desc'  => __( 'Enable if you want show payment column on posts table', 'wp-user-frontend' ),
+                'type'  => 'checkbox',
+                'default' => 'off',
+            ),
+            array(
                 'name'    => 'ft_img_size',
                 'label'   => __( 'Featured Image size', 'wp-user-frontend' ),
                 'type'    => 'select',

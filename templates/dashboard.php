@@ -116,7 +116,10 @@
 
                     <?php do_action( 'wpuf_dashboard_head_col', $args ) ?>
 
-                    <th><?php _e( 'Payment', 'wp-user-frontend' ); ?></th>
+                    <?php if( 'on' == $payment_column): ?>
+                        <th><?php _e( 'Payment', 'wp-user-frontend' ); ?></th>
+                    <?php endif; ?>
+
                     <th><?php _e( 'Options', 'wp-user-frontend' ); ?></th>
                 </tr>
             </thead>
@@ -210,15 +213,17 @@
 
                         <?php do_action( 'wpuf_dashboard_row_col', $args, $post ) ?>
 
-                        <td>
-                            <?php if( empty( $payment_status ) ) : ?>
-                                <?php _e( 'Not Applicable', 'wp-user-frontend' ); ?>
-                            <?php elseif( $payment_status != 'completed' ) : ?>
-                                <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wp-user-frontend' ); ?></a>
-                            <?php elseif( $payment_status == 'completed' ) : ?>
-                                <?php _e( 'Completed', 'wp-user-frontend' ); ?>
-                            <?php endif; ?>
-                        </td>
+                        <?php if( 'on' == $payment_column): ?>
+                            <td>
+                                <?php if( empty( $payment_status ) ) : ?>
+                                    <?php _e( 'Not Applicable', 'wp-user-frontend' ); ?>
+                                <?php elseif( $payment_status != 'completed' ) : ?>
+                                    <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wp-user-frontend' ); ?></a>
+                                <?php elseif( $payment_status == 'completed' ) : ?>
+                                    <?php _e( 'Completed', 'wp-user-frontend' ); ?>
+                                <?php endif; ?>
+                            </td>
+                        <?php endif; ?>
 
                         <td>
                             <?php

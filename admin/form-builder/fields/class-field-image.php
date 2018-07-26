@@ -12,42 +12,84 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
     }
 
     /**
-     * Render the text field
+     * Prints a image upload field
      *
-     * @param  array  $field_settings
-     * @param  integer  $form_id
-     *
-     * @return void
+     * @param array $attr
+     * @param int|null $post_id
      */
-    public function render( $field_settings, $form_id ) {
-        $unique_id = sprintf( '%s-%d', $field_settings['name'], $form_id );
+    function render( $attr, $post_id, $type = '', $form_id = null ) {
+
+        $has_featured_image = false;
+        $has_images         = false;
+        $has_avatar         = false;
+        $unique_id          = sprintf( '%s-%d', $attr['name'], $form_id );
+
+        if ( $post_id ) {
+            if ( $this->is_meta( $attr ) ) {
+                $images = $this->get_meta( $post_id, $attr['name'], $type, false );
+                $has_images = true;
+            } else {
+
+                if ( $type == 'post' ) {
+                    // it's a featured image then
+                    $thumb_id = get_post_thumbnail_id( $post_id );
+
+                    if ( $thumb_id ) {
+                        $has_featured_image = true;
+                        $featured_image = WPUF_Upload::attach_html( $thumb_id, 'featured_image' );
+                    }
+                } else {
+                    // it must be a user avatar
+                    $has_avatar = true;
+                    $featured_image = get_avatar( $post_id );
+                }
+            }
+        }
+        $button_label = empty( $attr['button_label'] ) ? __( 'Select Image', 'wp-user-frontend' ) : $attr['button_label'];
         ?>
-        <li <?php $this->print_list_attributes( $field_settings ); ?>>
-            <?php $this->print_label( $field_settings, $form_id ); ?>
 
-            <div class="wpuf-fields">
-                <div id="wpuf-<?php echo $unique_id; ?>-upload-container">
-                    <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo $field_settings['required']; ?>">
-                        <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $field_settings['name'] . '_' . $form_id; ?>" href="#"><?php _e( 'Select Image', 'wp-user-frontend' ); ?></a>
+        <div class="wpuf-fields">
+            <div id="wpuf-<?php echo $unique_id; ?>-upload-container">
+                <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo $attr['required']; ?>">
+                    <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" href="#"><?php echo $button_label ?></a>
 
-                        <ul class="wpuf-attachment-list thumbnails"></ul>
-                    </div>
-                </div><!-- .container -->
+                    <ul class="wpuf-attachment-list thumbnails">
+                        <?php
+                        if ( $has_featured_image ) {
+                            echo $featured_image;
+                        }
 
-                <?php $this->help_text( $field_settings ); ?>
+                        if ( $has_avatar ) {
+                            $avatar = get_user_meta( $post_id, 'user_avatar', true );
+                            if ( $avatar ) {
+                                echo '<li>'.$featured_image;
+                                printf( '<br><a href="#" data-confirm="%s" class="btn btn-danger btn-small wpuf-button button wpuf-delete-avatar">%s</a>', __( 'Are you sure?', 'wp-user-frontend' ), __( 'Delete', 'wp-user-frontend' ) );
+                                echo '</li>';
+                            }
+                        }
 
-            </div> <!-- .wpuf-fields -->
+                        if ( $has_images ) {
+                            foreach ($images as $attach_id) {
+                                echo WPUF_Upload::attach_html( $attach_id, $attr['name'] );
+                            }
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div><!-- .container -->
 
-            <script type="text/javascript">
-                ;(function($) {
-                    $(document).ready( function(){
-                        var uploader = new WPUF_Uploader('wpuf-<?php echo $unique_id; ?>-pickfiles', 'wpuf-<?php echo $unique_id; ?>-upload-container', <?php echo $field_settings['count']; ?>, '<?php echo $field_settings['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $field_settings['max_size'] ?>);
-                        wpuf_plupload_items.push(uploader);
-                    });
-                })(jQuery);
-            </script>
+            <?php $this->help_text( $attr ); ?>
 
-        </li>
+        </div> <!-- .wpuf-fields -->
+
+        <script type="text/javascript">
+            ;(function($) {
+                $(document).ready( function(){
+                    var uploader = new WPUF_Uploader('wpuf-<?php echo $unique_id; ?>-pickfiles', 'wpuf-<?php echo $unique_id; ?>-upload-container', <?php echo $attr['count']; ?>, '<?php echo $attr['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $attr['max_size'] ?>);
+                    wpuf_plupload_items.push(uploader);
+                });
+            })(jQuery);
+        </script>
         <?php
     }
 
@@ -90,8 +132,6 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
         $props    = array(
-            'input_type'        => 'image_upload',
-            'label'             => __( 'Image Upload', 'wp-user-frontend' ),
             'button_label'      => __( 'Select Image', 'wp-user-frontend' ),
             'max_size' => '1024',
             'count'    => '1',

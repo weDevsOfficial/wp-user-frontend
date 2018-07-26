@@ -2888,9 +2888,14 @@ add_action( 'wpuf_before_form_render', 'wpuf_show_form_schedule_message' );
  */
 function wpuf_show_form_limit_message( $form_id ){
 
-    $form_settings   = wpuf_get_form_settings( $form_id );
-    $has_limit    = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
-    if ( $has_limit ) {
+    $form_settings  = wpuf_get_form_settings( $form_id );
+    $has_limit      = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
+    $post_to_check  =  get_post( get_the_ID() );
+    $is_edit_page   = false;
+    if ( stripos( $post_to_check->post_content, '[' . 'wpuf_edit' ) !== false ) {
+        $is_edit_page = true;
+    }
+    if ( $has_limit && !$is_edit_page ) {
 
         $limit        = (int) !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 0;
         $form_entries = wpuf_form_posts_count( $form_id );

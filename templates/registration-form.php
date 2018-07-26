@@ -29,12 +29,12 @@
                     <div class="wpuf-name-field-wrap format-first-last">
                         <div class="wpuf-name-field-first-name">
                             <input type="text" name="reg_fname" id="wpuf-user_fname" class="input" value="<?php echo wpuf()->registration->get_posted_value( 'reg_fname' ); ?>" size="" />
-                            <label class="wpuf-form-sub-label">First</label>
+                            <label class="wpuf-form-sub-label"><?php _e( 'First', 'wp-user-frontend' ); ?></label>
                         </div>
 
                         <div class="wpuf-name-field-last-name">
                             <input type="text" name="reg_lname" id="wpuf-user_lname" class="input" value="<?php echo wpuf()->registration->get_posted_value( 'reg_lname' ); ?>" size="16" />
-                            <label class="wpuf-form-sub-label">Last</label>
+                            <label class="wpuf-form-sub-label"><?php _e( 'Last', 'wp-user-frontend' ); ?></label>
                         </div>
                     </div>
                 </div>

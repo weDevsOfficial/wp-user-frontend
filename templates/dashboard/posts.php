@@ -59,10 +59,11 @@ $post_type_obj = get_post_type_object( $post_type );
 <?php if ( $dashboard_query->have_posts() ) { ?>
 
     <?php
-    $featured_img = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
-    $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
-    $current_user    = wpuf_get_user();
-    $charging_enabled   = $current_user->subscription()->current_pack_id();
+    $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
+    $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
+    $payment_column     = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' );
+    $enable_payment     = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
+    $current_user       = wpuf_get_user();
     ?>
     <table class="items-table <?php echo $post_type; ?>" cellpadding="0" cellspacing="0">
         <thead>
@@ -77,11 +78,10 @@ $post_type_obj = get_post_type_object( $post_type );
 
                 <?php do_action( 'wpuf_account_posts_head_col', $args ) ?>
 
-                <?php
-                if ( $charging_enabled ) {
-                    echo '<th>' . __( 'Payment', 'wp-user-frontend' ) . '</th>';
-                }
-                ?>
+                <?php if( 'on' == $enable_payment && 'off' != $payment_column ): ?>
+                    <th><?php _e( 'Payment', 'wp-user-frontend' ); ?></th>
+                <?php endif; ?>
+
                 <th><?php _e( 'Options', 'wp-user-frontend' ); ?></th>
             </tr>
         </thead>
@@ -91,7 +91,8 @@ $post_type_obj = get_post_type_object( $post_type );
 
             while ( $dashboard_query->have_posts() ) {
                 $dashboard_query->the_post();
-                $show_link = !in_array( $post->post_status, array('draft', 'future', 'pending') );
+                $show_link        = !in_array( $post->post_status, array('draft', 'future', 'pending') );
+                $payment_status   = get_post_meta( $post->ID, '_wpuf_payment_status', true );
                 ?>
                 <tr>
                     <?php if ( 'on' == $featured_img ) { ?>
@@ -102,7 +103,7 @@ $post_type_obj = get_post_type_object( $post_type );
                             if ( has_post_thumbnail() ) {
                                 the_post_thumbnail( $featured_img_size );
                             } else {
-                                printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', apply_filters( 'wpuf_no_image', plugins_url( '/assets/images/no-image.png', dirname( __FILE__ ) ) ), __( 'No Image', 'wp-user-frontend' ) );
+                                printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', apply_filters( 'wpuf_no_image', plugins_url( '../assets/images/no-image.png', dirname( __FILE__ ) ) ), __( 'No Image', 'wp-user-frontend' ) );
                             }
 
                             echo $show_link ? '</a>' : '';
@@ -126,16 +127,17 @@ $post_type_obj = get_post_type_object( $post_type );
 
                     <?php do_action( 'wpuf_account_posts_row_col', $args, $post ) ?>
 
-                    <?php
-                    if ( $charging_enabled ) {
-                        $order_id = get_post_meta( $post->ID, '_wpuf_order_id', true );
-                        ?>
+                    <?php if( 'on' == $enable_payment && 'off' != $payment_column ): ?>
                         <td>
-                            <?php if ( $post->post_status == 'pending' && $order_id ) { ?>
+                            <?php if( empty( $payment_status ) ) : ?>
+                                <?php _e( 'Not Applicable', 'wp-user-frontend' ); ?>
+                            <?php elseif( $payment_status != 'completed' ) : ?>
                                 <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wp-user-frontend' ); ?></a>
-                            <?php } ?>
+                            <?php elseif( $payment_status == 'completed' ) : ?>
+                                <?php _e( 'Completed', 'wp-user-frontend' ); ?>
+                            <?php endif; ?>
                         </td>
-                    <?php } ?>
+                    <?php endif; ?>
 
                     <td>
                         <?php
@@ -144,9 +146,17 @@ $post_type_obj = get_post_type_object( $post_type );
                             $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
                             $url = add_query_arg( array('pid' => $post->ID), get_permalink( $edit_page ) );
 
+                            $show_edit = true;
+
                             if ( $post->post_status == 'pending' && $disable_pending_edit == 'on' ) {
-                                // don't show the edit link
-                            } else {
+                                $show_edit  = false;
+                            }
+
+                            if ( $post->post_status =='draft' && ( !empty( $payment_status ) && $payment_status != 'completed' ) ) {
+                                $show_edit  = false;
+                            }
+
+                            if ( $show_edit ) {
                                 ?>
                                 <a href="<?php echo wp_nonce_url( $url, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wp-user-frontend' ); ?></a> /
                                 <?php

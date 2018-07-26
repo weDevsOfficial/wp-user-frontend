@@ -148,7 +148,7 @@ $post_type_obj = get_post_type_object( $post_type );
                                 // don't show the edit link
                             } else {
                                 ?>
-                                <a href="<?php echo wp_nonce_url( $url, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wp-user-frontend' ); ?></a> /
+                                <a class="wpuf-posts-options wpuf-posts-edit" href="<?php echo wp_nonce_url( $url, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wp-user-frontend' ); ?></a>
                                 <?php
                             }
                         }
@@ -159,7 +159,7 @@ $post_type_obj = get_post_type_object( $post_type );
                             $del_url = add_query_arg( array('action' => 'del', 'pid' => $post->ID) );
                             $message = __( 'Are you sure to delete?', 'wp-user-frontend' );
                             ?>
-                            <a href="<?php echo wp_nonce_url( $del_url, 'wpuf_del' ) ?>" onclick="return confirm('<?php echo $message ?>');"><span style="color: red;"><?php _e( 'Delete', 'wp-user-frontend' ); ?></span></a>
+                            <a class="wpuf-posts-options wpuf-posts-delete" style="color: red;" href="<?php echo wp_nonce_url( $del_url, 'wpuf_del' ) ?>" onclick="return confirm('<?php echo $message ?>');"><?php _e( 'Delete', 'wp-user-frontend' ); ?></a>
                         <?php } ?>
                     </td>
                 </tr>

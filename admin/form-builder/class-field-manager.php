@@ -59,8 +59,8 @@ class WPUF_Field_Manager {
         require_once dirname( __FILE__ ) . '/fields/class-field-image.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-recaptcha.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-date.php';
-        require_once dirname( __FILE__ ) . '/fields/class-field-post-title.php';
-        require_once dirname( __FILE__ ) . '/fields/class-field-featured-image.php';
+        require_once dirname( __FILE__ ) . '/fields/post-fields/class-field-post-title.php';
+        require_once dirname( __FILE__ ) . '/fields/post-fields/class-field-featured-image.php';
 
         $fields = array(
             'post_title'          => new WPUF_Form_Field_Post_Title(),

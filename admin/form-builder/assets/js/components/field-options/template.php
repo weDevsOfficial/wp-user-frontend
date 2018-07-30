@@ -42,6 +42,8 @@
                 </div>
             </transition>
         </div>
+
+        <?php do_action( 'wpuf_builder_field_options' ); ?>
     </div>
 
 </div>

@@ -118,8 +118,6 @@ After having installed the plugin:
 
 ### Video ###
 [youtube https://www.youtube.com/watch?v=pK3nLeR2fzc]
-* <a href="https://www.youtube.com/watch?v=rzxdIN8ZMYc&list=PLJorZsV2RVv9G5J3kcqJQjUwgqZSwc_Hf">How To install and Setup WP User Frontend</a>
-
 
 ## Screenshots ##
 

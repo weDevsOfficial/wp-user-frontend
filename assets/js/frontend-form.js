@@ -165,6 +165,15 @@
                     o.change_fieldset( --step_number,progressbar_type );
                 }
 
+                var formDiv  = document.querySelector( "form.wpuf-form-add" );
+                var position = formDiv.getBoundingClientRect();
+
+                // this changes the scrolling behavior to "smooth"
+                window.scrollTo({
+                    top: position.top,
+                    behavior: "smooth"
+                });
+
                 return false;
             });
         },

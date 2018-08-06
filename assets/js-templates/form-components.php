@@ -236,6 +236,8 @@
                 </div>
             </transition>
         </div>
+
+        <?php do_action( 'wpuf_builder_field_options' ); ?>
     </div>
 
 </div>
@@ -352,24 +354,26 @@
     </div>
 
     <div v-if="'subscribed_users' === selected" class="condiotional-logic-container">
-    	
+
     	<ul>
     		<?php
 
-                $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+                if ( class_exists( 'WPUF_Subscription' ) ) {
+                    $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
 
-                if ( $subscriptions ) {
-                    foreach ($subscriptions as $pack) {
+                    if ( $subscriptions ) {
+                        foreach ($subscriptions as $pack) {
 
-                        $output  = "<li>";
-                        $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
-                        $output .= "</li>";
+                            $output  = "<li>";
+                            $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
+                            $output .= "</li>";
 
-                        echo $output;
+                            echo $output;
 
+                        }
+                    } else {
+                        _e( 'No subscription plan found.', 'wp-user-frontend' );
                     }
-                } else {
-                    _e( 'No subscription plan found.', 'wp-user-frontend' );
                 }
             ?>
     	</ul>

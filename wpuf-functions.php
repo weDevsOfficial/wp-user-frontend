@@ -2284,10 +2284,9 @@ function wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, $charging
         $body = $default_body;
     }
 
-    $headers = array('Content-Type: text/html; charset=UTF-8');
     $body    = get_formatted_mail_body( $body, $subject);
 
-    wp_mail( $to, $subject, $body, $headers );
+    wp_mail( $to, $subject, $body );
 }
 
 

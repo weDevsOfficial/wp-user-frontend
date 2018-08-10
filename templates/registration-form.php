@@ -78,6 +78,10 @@
                 <?php wp_nonce_field( 'wpuf_registration_action' ); ?>
             </li>
 
+            <li>
+                <?php echo wpuf()->login->get_action_links( array( 'register' => false ) ); ?>
+            </li>
+
             <?php do_action( 'wpuf_reg_form_bottom' ); ?>
 
         </ul>

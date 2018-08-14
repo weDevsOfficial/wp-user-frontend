@@ -292,7 +292,7 @@
         </div>
     <?php
     } else {
-        if ( !empty( $post_type_obj ) ) {
+        if ( !empty( $post_type_obj ) && !empty( $labels ) ) {
             printf( '<div class="wpuf-message">' . __( 'No %s found', 'wp-user-frontend' ) . '</div>', implode( ', ', $labels ) );
             do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
         }

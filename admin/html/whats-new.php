@@ -1,6 +1,27 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.9.0',
+        'released' => '2018-08-14',
+        'changes' => array(
+            array(
+                'title'       => __( 'The Events Calendar Integration Form', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'Now admin can allow users to create event from the frontend. Currently WPUF has a one click pre-build event form that has been integrated with The Events Calendar plugin', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Post Submission Facility From Account Page', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'On the frontend account page, added a new menu item named <b>Submit Post</b>. Now admin can allow users to submit post from their default account page. As an admin you can disable or enable this option from <b>User Frontend -> Settings -> My Account -> Post Submission</b>, Also, you can assign any post form that will use to submit posts.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Login/Lost Password Link Under Registration Form', 'wp-user-frontend' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Added Login/Lost Password link under registration form', 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 2.8.10',
         'released' => '2018-07-17',
         'changes' => array(

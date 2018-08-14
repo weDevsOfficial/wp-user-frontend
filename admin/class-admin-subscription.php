@@ -763,6 +763,8 @@ class WPUF_Admin_Subscription {
                                 <option value="-1"><?php _e( '&mdash; Select &mdash;', 'wp-user-frontend' ); ?></option>
                                 <?php $this->packdropdown_without_recurring( $packs, $pack_id );//WPUF_Subscription::init()->packdropdown( $packs, $selected = '' ); ?>
                             </select>
+                            <br>
+                            <span class="description"><?php _e( 'Only non-recurring pack can be assigned', 'wp-user-frontend' ); ?></span>
                         </td>
                     </tr>
                 </table>

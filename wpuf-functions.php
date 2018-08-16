@@ -737,7 +737,8 @@ function wpuf_show_custom_fields( $content ) {
 
                         foreach ($field_value as $attachment_id) {
                             if ( $attr['input_type'] == 'image_upload' ) {
-                                $thumb = wp_get_attachment_image( $attachment_id, 'thumbnail' );
+                                $image_size = wpuf_get_option( 'insert_photo_size', 'wpuf_frontend_posting', 'thumbnail' );
+                                $thumb = wp_get_attachment_image( $attachment_id, $image_size );
                             } else {
                                 $thumb = get_post_field( 'post_title', $attachment_id );
                             }
@@ -2283,10 +2284,9 @@ function wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, $charging
         $body = $default_body;
     }
 
-    $headers = array('Content-Type: text/html; charset=UTF-8');
     $body    = get_formatted_mail_body( $body, $subject);
 
-    wp_mail( $to, $subject, $body, $headers );
+    wp_mail( $to, $subject, $body );
 }
 
 
@@ -2887,9 +2887,14 @@ add_action( 'wpuf_before_form_render', 'wpuf_show_form_schedule_message' );
  */
 function wpuf_show_form_limit_message( $form_id ){
 
-    $form_settings   = wpuf_get_form_settings( $form_id );
-    $has_limit    = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
-    if ( $has_limit ) {
+    $form_settings  = wpuf_get_form_settings( $form_id );
+    $has_limit      = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
+    $post_to_check  =  get_post( get_the_ID() );
+    $is_edit_page   = false;
+    if ( stripos( $post_to_check->post_content, '[' . 'wpuf_edit' ) !== false ) {
+        $is_edit_page = true;
+    }
+    if ( $has_limit && !$is_edit_page ) {
 
         $limit        = (int) !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 0;
         $form_entries = wpuf_form_posts_count( $form_id );

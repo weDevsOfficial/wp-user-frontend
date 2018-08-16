@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership  
 **Requires at least:** 4.0  
-**Tested up to:** 4.9.6  
+**Tested up to:** 4.9.8  
 **Requires PHP:** 5.4  
-**Stable tag:** 2.8.10  
+**Stable tag:** 2.9.0  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -13,80 +13,106 @@ Frontend post submission, guest post, membership, login, registration and profil
 
 ## Description ##
 
-<strong>#1 Frontend Post Submission, Membership and Profile Builder Plugin</strong>
+WP User Frontend is one of the best frontend builder plugin for WordPress. It includes frontend dashboard, frontend editor & publishing, and frontend uploader for WordPress user profile, post submissions, and memberships.
 
-The forms gives users the ability to create new posts, edit their profile all from the site frontend, so that the user does not need to enter the backend admin panel to do action.
+<strong>FREE FEATURES</strong>
 
-### The best free plugin with most features ###
+<strong>#1 Frontend Post Submission, Membership, Profile Builder & WordPress Editor Plugin</strong>
 
-WP User Frontend offers you the most features for free
-than the other frontend post submission plugins out there.
+Unlimited post type form creation. The forms give users the ability to create new posts, edit their profile all from the site frontend, so that the user does not need to enter the backend admin panel to do action.
 
-### Use anywhere easily with shortcodes ###
+<strong>Update Profile from the Frontend</strong>
+
+This WordPress Profile Plugin allows registered users to edit their profile using default fields from frontend without having backend access. Unlimited fields can be added using PRO.
+
+<strong>Flexibility for admins</strong>
+
+Admins can manage users from frontend as well as configure from backend those who can access the dashboard.
+
+<strong>Files & attachments</strong>
+
+Users can upload attachments from the frontend. Users can also upload post featured image. Image upload on post content area
+
+<strong>Drag-n-drop form builder</strong>
+
+Easily fill your form with fields using drag-n-drops and real-time preview that updates as you make changes. You can see how your form will look like eventually from the dashboard!
+
+<strong>Use anywhere easily with shortcodes</strong>
 
 All of the forms get an unique shortcode which you can paste on any page and the form will generate without breaking the style of your theme.
 
-### Submit and update anything from Frontend ###
+<strong>WordPress Guest Post Submission</strong>
 
-Users can upload files, fill out forms, even entry data with multiple choice menus. Also, since all the forms are created as a custom post, so our post management can allow users to update their posts from the frontend.
+Enable guests to post from your site frontend without registering with WP User Frontend, the WordPress User Registration Plugin. Choose to require name and email address to automatically register and allow them to comment on their posts. Allow email verification for guests.
 
-### Build customized forms with custom post types ###
+<strong>Role Base Support</strong>
+
+Enable certain user roles to make posts, create unauthorized message you want to show.
+
+<strong>Submit and update anything from Frontend</strong>
+
+Users can upload files, fill out forms, even entry data with multiple choice menus. Allow users to update their posts from the frontend.
+
+<strong>Build customized forms with custom post types</strong>
 
 Taking the advantage of custom post types will allow you to work on any platform. WP User Frontend is WooCommerce supported, so you can also create products using our forms.
 
-### Earn with subscription based posting ###
+<strong>Set post status, post message, update post button text</strong>
+
+Assign separate default status for a new and edit post, the message you want to show to users after form submission, and change the text of submit buttons as you like.
+
+<strong>Custom Redirection after login and submission</strong>
+
+Redirect users to another page after logging in, form submission or edit form submission.
+
+<strong>Earn with subscription based posting</strong>
 
 Create subscription packs to take “Pay Per Post” payments. Submissions posted via these subscriptions have duration and posting limits.
 
-### Get reminded with emails ###
+<strong>Schedule forms & restrict entries</strong>
 
-Trigger emails on multiple events like new submission, publish notification, subscription join/leave to stay notified about your forms performance.
+Choose to keep your form active for certain dates. Set a message when form expires. And limit entries to as many as required. The PRO version also allows setting up post expiration.
 
-### Build forms with one click (PRO feature) ###
+<strong>Get reminded with emails</strong>
 
-Quickly create registration forms, woocommerce product forms, guest posting forms, frontend posting forms etc with one click using our templates and assorted fields.
+Trigger emails on multiple events like new form submission, guest posts, publish notification and new subscriptions. With PRO, more email notifications can be set up.
 
-### Features:  ###
+<strong>Integrate with Advanced Custom Fields (ACF)</strong>
 
-* The user can create a new post and edit it from the frontend
-* They can view their page in the frontend custom dashboard
-* Users can edit their profile
-* Administrator can restrict any user level on accessing the WordPress backend
-* New posts status, submitted by users are configurable via admin panel. i.e. Published, Draft, Pending
-* Get email notification on new posts
-* Configurable options giving access to the user edit or delete their posts
-* Upload attachments from the frontend
-* Upload post featured image
-* Admins can manage users from frontend
-* Pay-per-post or subscription package for posting
+Connect form fields with ACF fields to view user submissions in ACF format from dashboard. Allow users to edit fields from frontend.
 
-### WP User Frontend PRO - Premium Features ###
+<strong>Create subscription packs, pay-per-posts & receive payments from users</strong>
 
-The <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro">premium version</a> of WP User Frontend is completely different from the free version as there are a lot more features included.
+Create and subscribe users to membership packs, allow pay per post, force subscription package purchase, and set fallback pay per post charges with this WordPress Membership Plugin.
 
-[youtube http://www.youtube.com/watch?v=C0sInxx49Vg]
+<strong>Manage Transactions</strong>
 
+Approve or make pending membership requests. View all details from a single screen.
 
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Unlimited post type form creation</a>
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#post-forms">Drag-n-drop form builder</a>
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-taxonomy">Custom taxonomy support</a>
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-fields">13 variations of custom fields</a>
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#guest-posting">Guest post support</a>
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-redirection">Custom Redirection</a>
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#image-upload-post">Image upload on post content area</a>
-* Post status selection on new post and edited post separately
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#post-notification">New or edit post notification</a>
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#custom-field-admin">Custom fields are also generated in admin area</a>
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#profile-builder">Profile form builder</a>
-* Different profile edit forms for different user roles
-* Drag-n-Drop profile form builder
-* Profile fields are also generated on the backend
-* Avatar Upload
-* Frontend profile edit
-* <strong>Registration form</strong> builder
-* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#captcha">Captcha Support</a>
+<strong>Manage or Import/Export forms</strong>
 
-Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the Pro version.
+Install required WPUF pages in a click, delete post forms, registration forms or subscriptions in one go. Import forms from other places and export forms as CSV.
+
+<strong>Custom Login/Registration Form</strong>
+
+This WordPress Registration Form Plugin also allows to build registration form using default forms. With PRO, more fields can be added.
+
+<strong>Display Custom Fields Data in Post</strong>
+
+Custom fields data are viewable to visitors on frontend on single post pages. Admins can disable this feature also.
+
+### How to download and install WPUF FREE ###
+
+[youtube https://www.youtube.com/watch?v=rzxdIN8ZMYc]
+
+### Checkout all WP User Frontend resources: ###
+
+* <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Home page</a>
+* <a href="https://wedevs.com/docs/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Documentation</a>
+* <a href="https://www.youtube.com/watch?v=rzxdIN8ZMYc&list=PLJorZsV2RVv9G5J3kcqJQjUwgqZSwc_Hf">WPUF Videos</a>
+* <a href="https://github.com/weDevsOfficial/wp-user-frontend">Github Repository</a>
+
+Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the FREE & PRO version.
 
 ### Translation ###
 
@@ -94,13 +120,46 @@ Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the Pro vers
 * Persian translation by Abolfazl Esmailinejad
 * Turkish translation by mugurcagdas
 
+<strong>WP User Frontend PRO – Premium Features</strong>
+
+* 20+ Modules [BuddyPress, Paid Memberships Pro, Social Login, User Directory, User Activity, Stripe, MailChimp, Private Messaging, HTML Email Templates & more]
+* Content restriction
+* Menu restriction
+* Post expiration facility
+* Conditional logic
+* Profile form builder
+* 18 custom fields
+* Custom taxonomy support
+* Post update notification
+* Multistep forms
+* Payment invoice
+* Coupons
+* Different profile edit forms for different user roles
+* Profile fields are also generated on the backend
+* Custom taxonomies
+* Taxonomy restriction
+* Form layouts and form templates
+* WooCommerce support
+* Registration form builder
+* Assign new roles to forms
+* Captcha support
+* Update user profile information from frontend
+* Avatar upload
+* User profiles in backend
+* Exclusive contents
+* Frontend Customizer
+* More email notification options
+* Tax in payments
+* Vendor registration template for Dokan, WC Marketplace, WC Vendors
+
+Check out the <a href="https://wedevs.com/wp-user-frontend-pro/pricing/">full feature list and pricing plans here.</a> of the Pro version.
+
 ### Checkout Our Other Products ###
 * [weForms - Best Contact Form Plugin](https://wordpress.org/plugins/weforms/)
 * [WP ERP](https://wperp.com/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+ERP)
 * [Dokan - Multivendor Plugin](https://wedevs.com/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
 * [WP Project Manager](https://wedevs.com/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
-
-[Github Repository](https://github.com/tareq1988/WP-User-Frontend).
+* [WooCommerce Conversion Tracking](https://wedevs.com/woocommerce-conversion-tracking/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Conversion+Tracking)
 
 ## Installation ##
 
@@ -120,7 +179,7 @@ After having installed the plugin:
 1. For subscription payment page, set the *Payment Page* from *Payments* tab on settings page.
 
 ### Video ###
-[youtube https://www.youtube.com/watch?v=pK3nLeR2fzc]
+[youtube https://www.youtube.com/watch?v=rzxdIN8ZMYc]
 
 ## Screenshots ##
 
@@ -170,6 +229,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v2.9.0 (16 August, 2018) ###
+
+* **New:** The Events Calendar Integration Form
+* **New:** Post Submission Facility From Account Page
+* **Improved:** Login/Lost Password Link Under Registration Form
+* **Improved:** Added settings to show/hide payment column on frontend dashboard table
+* **Fix:** Draft post gets published after editing without even asking for payment
+* **Fix:** Added Placeholder for Empty Featured Image
 
 ### v2.8.10 (17 July, 2018) ###
 

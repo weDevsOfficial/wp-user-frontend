@@ -216,6 +216,6 @@ module.exports = function(grunt) {
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff
-    grunt.registerTask( 'release', [ 'i18n', 'readme' ] );
+    grunt.registerTask( 'release', [ 'uglify', 'i18n', 'readme' ] );
     grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
 };

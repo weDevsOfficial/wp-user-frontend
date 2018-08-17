@@ -94,7 +94,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 22,
-                'help_text' => __( 'Provide a container class name for this field.', 'wp-user-frontend' ),
+                'help_text' => __( 'Provide a container class name for this field. Available classes: wpuf-col-half, wpuf-col-half-last, wpuf-col-one-third, wpuf-col-one-third-last', 'wp-user-frontend' ),
             )
         );
 

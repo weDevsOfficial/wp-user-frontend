@@ -1424,3 +1424,30 @@ ul.wpuf-form .weforms-frontend-field-points {
   padding: 10px;
   padding-left: 0;
 }
+/* Front End Posts List Tools */
+.wpuf-posts-options {
+  padding: 0 10px;
+  border-right: 1px solid #ccc;
+}
+.wpuf-posts-options:first-child {
+  padding-left: 0;
+}
+.wpuf-posts-options:last-child {
+  padding-right: 0;
+  border-right: 0;
+}
+/* CSS for custom columns */
+.wpuf-col-half,
+.wpuf-col-half-last {
+  width: 50%;
+  float: left;
+}
+.wpuf-col-one-third,
+.wpuf-col-one-third-last {
+  width: 33%;
+  float: left;
+}
+.wpuf-col-half-last + li,
+.wpuf-col-one-third-last + li {
+  clear: left;
+}

@@ -1693,3 +1693,21 @@ ul.wpuf-form .weforms-frontend-field-points{
    padding-right: 0;
    border-right: 0;
 }
+
+/* CSS for custom columns */
+.wpuf-col-half,
+.wpuf-col-half-last {
+    width: 50%;
+    float: left;
+}
+
+.wpuf-col-one-third,
+.wpuf-col-one-third-last {
+    width: 33%;
+    float: left;
+}
+
+.wpuf-col-half-last + li,
+.wpuf-col-one-third-last + li {
+    clear: left;
+}

@@ -230,6 +230,12 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v2.9.1 (18 August, 2018) =
+
+* **New:** Added custom classes to make two or three columns form
+* **Fix:** If add a field with the 'field visibility' to the admin only, it was fine to the admin. But, the field and the fields below were not showing to the non-admin users. It has been fixed in this version.
+* **Fix:** Duplicated field was not saving on the post form
+
 = v2.9.0 (16 August, 2018) =
 
 * **New:** The Events Calendar Integration Form

@@ -590,7 +590,7 @@ class WPUF_Render_Form {
                 }
 
                 if ( !$show_field ) {
-                    break;
+                    continue;
                 }
             }
 

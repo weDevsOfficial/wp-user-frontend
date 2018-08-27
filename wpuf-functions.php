@@ -708,6 +708,9 @@ function wpuf_show_custom_fields( $content ) {
 
                             if ( $attr['wpuf_cond']['cond_option'][$field_key] != $cond_field_value ) {
                                 $return_for_no_cond = 1;
+                            }else{
+                                $return_for_no_cond = 0;
+                                break;
                             }
                         }
 

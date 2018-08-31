@@ -818,8 +818,24 @@ function wpuf_show_custom_fields( $content ) {
 
                 case 'url':
                     $value = get_post_meta( $post->ID, $attr['name'] , true );
+
+                    if ( $attr['template'] == 'embed' ) {
+                        $preview_width  = isset($attr['preview_width']) ? $attr['preview_width'] : '123';
+                        $preview_height = isset($attr['preview_height']) ? $attr['preview_height'] : '456';
+
+                        $preview  = "<li>";
+                        $preview .= sprintf( "<label>%s: </label>", $attr['label'] );
+                        $preview .= "<div class='wpuf-embed-preview'>";
+                        $preview .= '[embed width="'.$preview_width.'" height="'.$preview_height.'"]'.$value.'[/embed]';
+                        $preview .= "</div>";
+                        $preview .= "</li>";
+
+                        $html    .= $preview;
+                        break;
+                    }
+
                     $open_in = $attr['open_window'] == 'same' ? '' : '_blank';
-                    $link = sprintf( "<li><label>%s :</label><a href='%s' target = '%s'>%s</a>", $attr['label'], $value, $open_in, $value);
+                    $link = sprintf( "<li><label>%s</label>: <a href='%s' target = '%s'>%s</a></li>", $attr['label'], $value, $open_in, $value);
                     $html.= $link;
                     break;
 
@@ -871,7 +887,7 @@ function wpuf_show_custom_fields( $content ) {
     return $content . $html;
 }
 
-add_filter( 'the_content', 'wpuf_show_custom_fields' );
+add_filter( 'the_content', 'wpuf_show_custom_fields', 7 );
 
 /**
  * Map display shortcode

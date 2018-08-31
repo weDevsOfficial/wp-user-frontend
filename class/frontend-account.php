@@ -42,7 +42,7 @@ class WPUF_Frontend_Account {
 
         $options[] = array(
             'name'  => 'post_submission_label',
-            'label' => __( 'Sumission Menu Label', 'wp-user-frontend' ),
+            'label' => __( 'Submission Menu Label', 'wp-user-frontend' ),
             'desc'  => __( 'Label for post submission menu', 'wp-user-frontend' ),
             'type'  => 'text',
             'default' => __( 'Submit Post', 'wp-user-frontend' ),
@@ -50,7 +50,7 @@ class WPUF_Frontend_Account {
 
         $options[] = array(
             'name'    => 'post_submission_form',
-            'label'   => __( 'Sumission Form', 'wp-user-frontend' ),
+            'label'   => __( 'Submission Form', 'wp-user-frontend' ),
             'desc'    => __( 'Select a post form that will use to submit post by the users from their account page.', 'wp-user-frontend' ),
             'type'    => 'select',
             'options' => $this->get_post_forms()

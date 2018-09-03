@@ -747,9 +747,36 @@ function wpuf_show_custom_fields( $content ) {
                             }
 
                             $full_size = wp_get_attachment_url( $attachment_id );
+                            $path      = parse_url($full_size, PHP_URL_PATH);
+                            $extension = pathinfo($path, PATHINFO_EXTENSION);
 
                             if( $thumb ) {
-                                $image_html .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
+                                $playable                   = isset( $attr['playable_audio_video'] ) ? $attr['playable_audio_video'] : 'no';$wpuf_allowed_extensions    = wpuf_allowed_extensions();
+                                $allowed_audio_extensions   = explode( ',', $wpuf_allowed_extensions['audio']['ext'] );
+                                $allowed_video_extensions   = explode( ',', $wpuf_allowed_extensions['video']['ext'] );
+                                $allowed_extenstions        = array_merge( $allowed_audio_extensions, $allowed_video_extensions );
+
+                                if ( $playable == 'yes' && in_array( $extension, $allowed_extenstions ) ) {
+                                    $is_video       = in_array( $extension, $allowed_video_extensions );
+                                    $is_audio       = in_array( $extension, $allowed_audio_extensions );
+                                    $preview_width  = isset( $attr['preview_width'] ) ? $attr['preview_width'] : '123';
+                                    $preview_height = isset( $attr['preview_height'] ) ? $attr['preview_height'] : '456';
+
+                                    $image_html .= '<div class="wpuf-embed-preview">';
+
+                                    if ( $is_video ) {
+                                        $image_html .= '[video src="'.$full_size.'" width="'.$preview_width.'" height="'.$preview_height.'"]';
+                                    }
+
+                                    if ( $is_audio ) {
+                                        $image_html .= '[audio src="'.$full_size.'" width="'.$preview_width.'" height="'.$preview_height.'"]';
+                                    }
+
+                                    $image_html .= '</div>';
+
+                                } else {
+                                  $image_html .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
+                                }
 
                                 if ( $show_caption == 'on' ) {
                                     $post_detail = get_post( $attachment_id );

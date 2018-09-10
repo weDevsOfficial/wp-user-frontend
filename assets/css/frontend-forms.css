@@ -1285,11 +1285,6 @@ table#wpuf-address-country-state td {
   box-shadow: none;
   -webkit-box-shadow: none;
 }
-.wpuf-image-wrap :not(.attachment-name img) {
-  position: absolute;
-  width: 100%;
-  transition: .3s;
-}
 li.wpuf-image-wrap.thumbnail {
   position: relative;
 }

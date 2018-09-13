@@ -2490,7 +2490,7 @@ function get_formatted_mail_body( $message, $subject ) {
         include WPUF_PRO_INCLUDES . '/templates/email/style.php';
         $css = apply_filters( 'wpuf_email_style', ob_get_clean() );
 
-        $content = $header . $message . $footer;
+        $content = $header . '<pre>' . $message . '</pre>' . $footer;
 
         if ( ! class_exists( 'Emogrifier' ) ) {
             require_once WPUF_PRO_INCLUDES . '/libs/Emogrifier.php';

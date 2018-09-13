@@ -771,7 +771,55 @@ class WPUF_Simple_Login {
 
         // show activation message
         add_filter( 'wp_login_errors', array( $this, 'user_activation_message' ) );
-        wp_send_new_user_notifications( $user_id );
+
+        $password_info_email = isset( $_GET['wpuf_password_info_email'] ) ? $_GET['wpuf_password_info_email'] : false;
+        $the_user            = get_user_by( 'id', $user_id );
+        $user_email          = $the_user->user_email;
+        $blogname            = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+
+        if ( $password_info_email ) {
+            global $wpdb, $wp_hasher;
+
+            // Generate something random for a password reset key.
+            $key = wp_generate_password( 20, false );
+
+            /** This action is documented in wp-login.php */
+            add_action( 'retrieve_password_key', $the_user->user_login, $key );
+
+            // Now insert the key, hashed, into the DB.
+            if ( empty( $wp_hasher ) ) {
+                require_once ABSPATH . WPINC . '/class-phpass.php';
+                $wp_hasher = new PasswordHash( 8, true );
+            }
+            $hashed = time() . ':' . $wp_hasher->HashPassword( $key );
+            $wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $the_user->user_login ) );
+
+            $subject = sprintf( __('[%s] Your username and password info', 'wp-user-frontend' ), $blogname );
+
+            $message  = sprintf(__('Username: %s'), $the_user->user_login) . "\r\n\r\n";
+            $message .= __('To set your password, visit the following address:') . "\r\n\r\n";
+            $message .= network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($the_user->user_login), 'login') . "\r\n\r\n";
+            $message .= wp_login_url() . "\r\n";
+
+            $subject  = apply_filters( 'wpuf_password_info_mail_subject', $subject );
+            $message  = apply_filters( 'wpuf_password_info_mail_body', $message );
+            $message  = get_formatted_mail_body( $message, $subject );
+
+            wp_mail( $user_email, $subject, $message );
+        } else {
+            $subject  = sprintf( __('[%s] Account has been activated', 'wp-user-frontend' ), $blogname );
+
+            $message  = sprintf( __('Hi %s,', 'wp-user-frontend' ), $the_user->user_login ) ."\r\n\r\n";
+            $message .= __( "Congrats! Your account has been activated. To login visit the following url:", "wp-user-frontend") ."\r\n\r\n";
+            $message .= wp_login_url() ."\r\n\r\n";
+            $message .= __( "Thanks", "wp-user-frontend" );
+
+            $subject  = apply_filters( 'wpuf_mail_after_confirmation_subject', $subject );
+            $message  = apply_filters( 'wpuf_mail_after_confirmation_body', $message );
+            $message  = get_formatted_mail_body( $message, $subject );
+
+            wp_mail( $user_email, $subject, $message );
+        }
 
         do_action( 'wpuf_user_activated', $user_id );
     }

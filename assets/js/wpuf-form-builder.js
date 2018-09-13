@@ -404,6 +404,9 @@
             $('.wpuf_enable_multistep_section :input[type="checkbox"]').click(function() {
                 self.changeMultistepVisibility($(this));
             });
+
+            this.showRegFormNotificationFields();
+
         },
 
         settingsGuest: function (e) {
@@ -554,6 +557,50 @@
             } else {
                 $('.wpuf_multistep_content').hide();
             }
+        },
+
+        showRegFormNotificationFields: function() {
+            var newUserStatus                 = document.querySelector( "input#wpuf_new_user_status" ),
+                emailVerification             = document.querySelector( "input#notification_type_verification" ),
+                welcomeEmail                  = document.querySelector( "#notification_type_welcome_email" );
+
+            if ( newUserStatus.checked ) {
+                $('#wpuf_pending_user_admin_notification').show();
+                $('#wpuf_approved_user_admin_notification').hide();
+            } else{
+                $('#wpuf_pending_user_admin_notification').hide();
+                $('#wpuf_approved_user_admin_notification').show();
+            }
+
+            $( newUserStatus ).on( "click", function() {
+                $('#wpuf_pending_user_admin_notification').hide();
+                $('#wpuf_approved_user_admin_notification').show();
+
+                if ( this.checked ) {
+                    $('#wpuf_pending_user_admin_notification').show();
+                    $('#wpuf_approved_user_admin_notification').hide();
+                }
+            });
+
+            if ( emailVerification.checked ) {
+                $('.wpuf-email-verification-settings-fields').show();
+                $('.wpuf-welcome-email-settings-fields').hide();
+            }
+
+            if ( welcomeEmail.checked ) {
+                $('.wpuf-welcome-email-settings-fields').show();
+                $('.wpuf-email-verification-settings-fields').hide();
+            }
+
+            $( emailVerification ).on( "click", function() {
+                $('.wpuf-email-verification-settings-fields').show();
+                $('.wpuf-welcome-email-settings-fields').hide();
+            });
+
+            $( welcomeEmail ).on( "click", function() {
+                $('.wpuf-welcome-email-settings-fields').show();
+                $('.wpuf-email-verification-settings-fields').hide();
+            });
         }
     };
 

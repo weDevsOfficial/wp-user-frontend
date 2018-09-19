@@ -59,7 +59,7 @@ class WPUF_Admin_Form_Builder_Free {
     public function add_custom_fields( $fields ) {
         return array_merge( $fields, array(
             'repeat_field', 'date_field', 'file_upload', 'country_list_field',
-            'numeric_text_field', 'address_field', 'step_start', 'google_map'
+            'numeric_text_field', 'address_field', 'step_start', 'google_map', 'embed'
         ) );
     }
 

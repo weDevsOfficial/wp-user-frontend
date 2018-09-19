@@ -708,6 +708,9 @@ function wpuf_show_custom_fields( $content ) {
 
                             if ( $attr['wpuf_cond']['cond_option'][$field_key] != $cond_field_value ) {
                                 $return_for_no_cond = 1;
+                            }else{
+                                $return_for_no_cond = 0;
+                                break;
                             }
                         }
 
@@ -744,9 +747,36 @@ function wpuf_show_custom_fields( $content ) {
                             }
 
                             $full_size = wp_get_attachment_url( $attachment_id );
+                            $path      = parse_url($full_size, PHP_URL_PATH);
+                            $extension = pathinfo($path, PATHINFO_EXTENSION);
 
                             if( $thumb ) {
-                                $image_html .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
+                                $playable                   = isset( $attr['playable_audio_video'] ) ? $attr['playable_audio_video'] : 'no';$wpuf_allowed_extensions    = wpuf_allowed_extensions();
+                                $allowed_audio_extensions   = explode( ',', $wpuf_allowed_extensions['audio']['ext'] );
+                                $allowed_video_extensions   = explode( ',', $wpuf_allowed_extensions['video']['ext'] );
+                                $allowed_extenstions        = array_merge( $allowed_audio_extensions, $allowed_video_extensions );
+
+                                if ( $playable == 'yes' && in_array( $extension, $allowed_extenstions ) ) {
+                                    $is_video       = in_array( $extension, $allowed_video_extensions );
+                                    $is_audio       = in_array( $extension, $allowed_audio_extensions );
+                                    $preview_width  = isset( $attr['preview_width'] ) ? $attr['preview_width'] : '123';
+                                    $preview_height = isset( $attr['preview_height'] ) ? $attr['preview_height'] : '456';
+
+                                    $image_html .= '<div class="wpuf-embed-preview">';
+
+                                    if ( $is_video ) {
+                                        $image_html .= '[video src="'.$full_size.'" width="'.$preview_width.'" height="'.$preview_height.'"]';
+                                    }
+
+                                    if ( $is_audio ) {
+                                        $image_html .= '[audio src="'.$full_size.'" width="'.$preview_width.'" height="'.$preview_height.'"]';
+                                    }
+
+                                    $image_html .= '</div>';
+
+                                } else {
+                                  $image_html .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
+                                }
 
                                 if ( $show_caption == 'on' ) {
                                     $post_detail = get_post( $attachment_id );
@@ -815,8 +845,24 @@ function wpuf_show_custom_fields( $content ) {
 
                 case 'url':
                     $value = get_post_meta( $post->ID, $attr['name'] , true );
+
+                    if ( $attr['template'] == 'embed' ) {
+                        $preview_width  = isset($attr['preview_width']) ? $attr['preview_width'] : '123';
+                        $preview_height = isset($attr['preview_height']) ? $attr['preview_height'] : '456';
+
+                        $preview  = "<li>";
+                        $preview .= sprintf( "<label>%s: </label>", $attr['label'] );
+                        $preview .= "<div class='wpuf-embed-preview'>";
+                        $preview .= '[embed width="'.$preview_width.'" height="'.$preview_height.'"]'.$value.'[/embed]';
+                        $preview .= "</div>";
+                        $preview .= "</li>";
+
+                        $html    .= $preview;
+                        break;
+                    }
+
                     $open_in = $attr['open_window'] == 'same' ? '' : '_blank';
-                    $link = sprintf( "<li><label>%s :</label><a href='%s' target = '%s'>%s</a>", $attr['label'], $value, $open_in, $value);
+                    $link = sprintf( "<li><label>%s</label>: <a href='%s' target = '%s'>%s</a></li>", $attr['label'], $value, $open_in, $value);
                     $html.= $link;
                     break;
 
@@ -868,7 +914,7 @@ function wpuf_show_custom_fields( $content ) {
     return $content . $html;
 }
 
-add_filter( 'the_content', 'wpuf_show_custom_fields' );
+add_filter( 'the_content', 'wpuf_show_custom_fields', 7 );
 
 /**
  * Map display shortcode
@@ -2444,7 +2490,7 @@ function get_formatted_mail_body( $message, $subject ) {
         include WPUF_PRO_INCLUDES . '/templates/email/style.php';
         $css = apply_filters( 'wpuf_email_style', ob_get_clean() );
 
-        $content = $header . $message . $footer;
+        $content = $header . '<pre>' . $message . '</pre>' . $footer;
 
         if ( ! class_exists( 'Emogrifier' ) ) {
             require_once WPUF_PRO_INCLUDES . '/libs/Emogrifier.php';

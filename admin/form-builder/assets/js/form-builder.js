@@ -404,6 +404,10 @@
             $('.wpuf_enable_multistep_section :input[type="checkbox"]').click(function() {
                 self.changeMultistepVisibility($(this));
             });
+
+            this.showRegFormNotificationFields();
+            this.integrationsCondFieldsVisibility();
+
         },
 
         settingsGuest: function (e) {
@@ -554,6 +558,100 @@
             } else {
                 $('.wpuf_multistep_content').hide();
             }
+        },
+
+        showRegFormNotificationFields: function() {
+            var newUserStatus                 = document.querySelector( "input#wpuf_new_user_status" ),
+                emailVerification             = document.querySelector( "input#notification_type_verification" ),
+                welcomeEmail                  = document.querySelector( "#notification_type_welcome_email" );
+
+            if ( newUserStatus.checked ) {
+                $('#wpuf_pending_user_admin_notification').show();
+                $('#wpuf_approved_user_admin_notification').hide();
+            } else{
+                $('#wpuf_pending_user_admin_notification').hide();
+                $('#wpuf_approved_user_admin_notification').show();
+            }
+
+            $( newUserStatus ).on( "click", function() {
+                $('#wpuf_pending_user_admin_notification').hide();
+                $('#wpuf_approved_user_admin_notification').show();
+
+                if ( this.checked ) {
+                    $('#wpuf_pending_user_admin_notification').show();
+                    $('#wpuf_approved_user_admin_notification').hide();
+                }
+            });
+
+            if ( emailVerification.checked ) {
+                $('.wpuf-email-verification-settings-fields').show();
+                $('.wpuf-welcome-email-settings-fields').hide();
+            }
+
+            if ( welcomeEmail.checked ) {
+                $('.wpuf-welcome-email-settings-fields').show();
+                $('.wpuf-email-verification-settings-fields').hide();
+            }
+
+            $( emailVerification ).on( "click", function() {
+                $('.wpuf-email-verification-settings-fields').show();
+                $('.wpuf-welcome-email-settings-fields').hide();
+            });
+
+            $( welcomeEmail ).on( "click", function() {
+                $('.wpuf-welcome-email-settings-fields').show();
+                $('.wpuf-email-verification-settings-fields').hide();
+            });
+        },
+
+        integrationsCondFieldsVisibility: function() {
+            var conditional_logic      = $( '.wpuf-integrations-conditional-logic' ),
+                cond_fields_container  = $( '.wpuf-integrations-conditional-logic-container' ),
+                cond_fields            = $( '.wpuf_available_conditional_fields' ),
+                cond_field_options     = $( '.wpuf_selected_conditional_field_options' );
+
+            $( conditional_logic ).on( "click", function(e) {
+                $( cond_fields_container ).hide();
+
+                if ( e.target.value === 'yes' ) {
+                    $( cond_fields_container ).show();
+                }
+            });
+
+            $( cond_fields ).on('click', function(e) {
+                var form_fields = wpuf_form_builder.form_fields,
+                    options     = '';
+                    options     += '<option value="-1">- select -</option>';
+
+                form_fields.forEach(function(field) {
+                  if ( field.template === 'radio_field' || field.template === 'checkbox_field' || field.template === 'dropdown_field' ) {
+                    options += '<option value="'+field.name+'">'+field.label+'</option>';
+                  }
+                });
+                e.target.innerHTML = options;
+                console.log(options);
+            });
+
+            $( cond_fields ).on('change', function(e){
+                var form_fields = wpuf_form_builder.form_fields,
+                    field_name = e.target.value,
+                    field_options  = '';
+                    field_options += '<option value="-1">- select -</option>';
+
+                form_fields.forEach(function(field) {
+                    if ( field.name === field_name ) {
+                        var options = field.options;
+
+                        for (var key in options) {
+                            if (options.hasOwnProperty(key)) {
+                                field_options += '<option value="'+key+'">'+options[key]+'</option>';
+                            }
+                        }
+                    }
+                });
+
+                cond_field_options[0].innerHTML = field_options;
+            });
         }
     };
 

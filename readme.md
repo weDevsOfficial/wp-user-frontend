@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 4.9.8  
 **Requires PHP:** 5.4  
-**Stable tag:** 2.9.1  
+**Stable tag:** 2.9.2  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -229,6 +229,11 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v2.9.2 (20 September, 2018) ###
+
+* **Fix:** Delete & drag icon showing inappropriately
+* **Fix:** Custom fields data not showing on the frontend when different conditional logic apply based on same field with different options
 
 ### v2.9.1 (18 August, 2018) ###
 

@@ -796,8 +796,8 @@ class WPUF_Simple_Login {
 
             $subject = sprintf( __('[%s] Your username and password info', 'wp-user-frontend' ), $blogname );
 
-            $message  = sprintf(__('Username: %s'), $the_user->user_login) . "\r\n\r\n";
-            $message .= __('To set your password, visit the following address:') . "\r\n\r\n";
+            $message  = sprintf(__('Username: %s', 'wp-user-frontend'), $the_user->user_login) . "\r\n\r\n";
+            $message .= __('To set your password, visit the following address:', 'wp-user-frontend') . "\r\n\r\n";
             $message .= network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($the_user->user_login), 'login') . "\r\n\r\n";
             $message .= wp_login_url() . "\r\n";
 

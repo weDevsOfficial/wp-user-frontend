@@ -28,6 +28,7 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
             'action_hook'           => self::action_hook(),
             'toc'                   => self::toc(),
             'ratings'               => self::ratings(),
+            'embed'                 => self::embed(),
         );
     }
 
@@ -253,6 +254,22 @@ class WPUF_Form_Builder_Field_Settings_Free extends WPUF_Form_Builder_Field_Sett
         return array(
             'template'      => 'ratings',
             'title'         => __( 'Ratings', 'wp-user-frontend' ),
+            'pro_feature'   => true,
+        );
+    }
+
+    /**
+     * Ratings
+     *
+     * @since 2.5
+     *
+     * @return array
+     */
+    public static function embed() {
+        return array(
+            'template'      => 'embed',
+            'title'         => __( 'Embed', 'wp-user-frontend' ),
+            'icon'          => 'play-circle',
             'pro_feature'   => true,
         );
     }

@@ -561,11 +561,11 @@
         },
 
         showRegFormNotificationFields: function() {
-            var newUserStatus                 = document.querySelector( "input#wpuf_new_user_status" ),
-                emailVerification             = document.querySelector( "input#notification_type_verification" ),
-                welcomeEmail                  = document.querySelector( "#notification_type_welcome_email" );
+            var newUserStatus                 = $( "input#wpuf_new_user_status" ),
+                emailVerification             = $( "input#notification_type_verification" ),
+                welcomeEmail                  = $( "#notification_type_welcome_email" );
 
-            if ( newUserStatus.checked ) {
+            if ( newUserStatus.is(':checked') ) {
                 $('#wpuf_pending_user_admin_notification').show();
                 $('#wpuf_approved_user_admin_notification').hide();
             } else{
@@ -577,18 +577,18 @@
                 $('#wpuf_pending_user_admin_notification').hide();
                 $('#wpuf_approved_user_admin_notification').show();
 
-                if ( this.checked ) {
+                if ( newUserStatus.is(':checked') ) {
                     $('#wpuf_pending_user_admin_notification').show();
                     $('#wpuf_approved_user_admin_notification').hide();
                 }
             });
 
-            if ( emailVerification.checked ) {
+            if ( emailVerification.is(':checked') ) {
                 $('.wpuf-email-verification-settings-fields').show();
                 $('.wpuf-welcome-email-settings-fields').hide();
             }
 
-            if ( welcomeEmail.checked ) {
+            if ( welcomeEmail.is(':checked') ) {
                 $('.wpuf-welcome-email-settings-fields').show();
                 $('.wpuf-email-verification-settings-fields').hide();
             }
@@ -629,7 +629,6 @@
                   }
                 });
                 e.target.innerHTML = options;
-                console.log(options);
             });
 
             $( cond_fields ).on('change', function(e){

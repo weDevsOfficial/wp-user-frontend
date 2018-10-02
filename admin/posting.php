@@ -64,6 +64,8 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array('jquery', 'plupload-handlers') );
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
             'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
+            'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
+            'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
             'ajaxurl'    => admin_url( 'admin-ajax.php' ),
             'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
             'plupload'   => array(
@@ -198,7 +200,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
         $form_id = get_post_meta( $post->ID, '_wpuf_form_id', true );
         $form_settings = wpuf_get_form_settings( $form_id );
-        
+
         /**
          * There may be incompatibilities with WPUF metabox display when Advanced Custom Fields
          * is active. By default WPUF metaboxes will be hidden when ACF is detected. However,

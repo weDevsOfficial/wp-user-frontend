@@ -771,11 +771,12 @@ class WPUF_Subscription {
 
             <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wp-user-frontend' ); ?>
 
-            <form action="" method="post">
+            <form action="" id="wpuf_cancel_subscription" method="post">
                 <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
                 <input type="hidden" name="user_id" value="<?php echo get_current_user_id(); ?>">
                 <input type="hidden" name="gateway" value="<?php echo $payment_gateway; ?>">
-                <input type="submit" name="wpuf_cancel_subscription" class="btn btn-sm btn-danger" value="<?php _e( 'Cancel', 'wp-user-frontend' ); ?>">
+                <input type="hidden" name="wpuf_cancel_subscription" value="Cancel">
+                <input type="submit" name="wpuf_user_subscription_cancel" class="btn btn-sm btn-danger" value="<?php _e( 'Cancel', 'wp-user-frontend' ); ?>">
             </form>
             <?php
         }

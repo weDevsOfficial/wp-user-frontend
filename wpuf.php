@@ -510,7 +510,10 @@ final class WP_User_Frontend {
             'ajaxurl'       => admin_url( 'admin-ajax.php' ),
             'error_message' => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
             'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
-            'word_limit'    => __( 'Word limit reached', 'wp-user-frontend' )
+            'word_limit'    => __( 'Word limit reached', 'wp-user-frontend' ),
+            'cancelSubMsg'  => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
+            'delete_it'     => __( 'Yes', 'wp-user-frontend' ),
+            'cancel_it'     => __( 'No', 'wp-user-frontend' ),
         )) );
 
         wp_localize_script( 'wpuf-subscriptions', 'wpuf_subscription', apply_filters( 'wpuf_subscription_js_data' , array(
@@ -519,6 +522,8 @@ final class WP_User_Frontend {
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
 			'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
+            'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
+            'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
 			'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
 			'ajaxurl'    => admin_url( 'admin-ajax.php' ),
 			'plupload'   => array(

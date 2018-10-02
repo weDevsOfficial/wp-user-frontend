@@ -49,11 +49,24 @@
             // this.insertImage();
 
             //comfirmation alert for canceling subscription
-            $( ':submit[name="wpuf_cancel_subscription"]').click(function(){
-                if ( !confirm( 'Are you sure you want to cancel your current subscription ?' ) ) {
-                    return false;
-                }
+            $( ':submit[name="wpuf_user_subscription_cancel"]').click(function(e){
+                e.preventDefault();
 
+                swal({
+                    text: wpuf_frontend.cancelSubMsg,
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d54e21',
+                    confirmButtonText: wpuf_frontend.delete_it,
+                    cancelButtonText: wpuf_frontend.cancel_it,
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                }).then(function ( isConfirmed ) {
+                    if ( !isConfirmed ) {
+                        return false;
+                    }
+                    $('#wpuf_cancel_subscription').submit();
+                });
             });
         },
 

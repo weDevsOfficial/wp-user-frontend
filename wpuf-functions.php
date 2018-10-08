@@ -733,10 +733,16 @@ function wpuf_show_custom_fields( $content ) {
             switch ( $attr['input_type'] ) {
                 case 'image_upload':
                 case 'file_upload':
-
                     $image_html = '<li><label>' . $attr['label'] . ':</label> ';
 
                     if ( $field_value ) {
+                        if( is_serialized( $field_value[0] ) ) {
+                            $field_value = maybe_unserialize( $field_value[0] );
+                        }
+
+                        if ( is_array( $field_value[0] ) ) {
+                            $field_value = $field_value[0];
+                        }
 
                         foreach ($field_value as $attachment_id) {
                             if ( $attr['input_type'] == 'image_upload' ) {
@@ -847,13 +853,16 @@ function wpuf_show_custom_fields( $content ) {
                     $value = get_post_meta( $post->ID, $attr['name'] , true );
 
                     if ( $attr['template'] == 'embed' ) {
+                        global $wp_embed;
+
                         $preview_width  = isset($attr['preview_width']) ? $attr['preview_width'] : '123';
                         $preview_height = isset($attr['preview_height']) ? $attr['preview_height'] : '456';
+                        $shortcode      = '[embed width="'.$preview_width.'" height="'.$preview_height.'"]'.$value.'[/embed]';
 
                         $preview  = "<li>";
                         $preview .= sprintf( "<label>%s: </label>", $attr['label'] );
                         $preview .= "<div class='wpuf-embed-preview'>";
-                        $preview .= '[embed width="'.$preview_width.'" height="'.$preview_height.'"]'.$value.'[/embed]';
+                        $preview .= $wp_embed->run_shortcode( $shortcode );
                         $preview .= "</div>";
                         $preview .= "</li>";
 
@@ -914,7 +923,7 @@ function wpuf_show_custom_fields( $content ) {
     return $content . $html;
 }
 
-add_filter( 'the_content', 'wpuf_show_custom_fields', 7 );
+add_filter( 'the_content', 'wpuf_show_custom_fields', 10 );
 
 /**
  * Map display shortcode
@@ -935,12 +944,19 @@ function wpuf_shortcode_map( $location, $post_id = null, $args = array(), $meta_
         return;
     }
 
-    $default = array('width' => 450, 'height' => 250, 'zoom' => 12);
-    $args = wp_parse_args( $args, $default );
+    $default        = array('width' => 450, 'height' => 250, 'zoom' => 12);
+    $args           = wp_parse_args( $args, $default );
 
-    list( $def_lat, $def_long ) = explode( ',', $location );
-    $def_lat = $def_lat ? $def_lat : 0;
-    $def_long = $def_long ? $def_long : 0;
+    if ( is_array( $location ) ) {
+        $def_address = isset( $location['address'] ) ? $location['address'] : '';
+        $def_lat     = isset( $location['lat'] ) ? $location['lat'] : '';
+        $def_long    = isset( $location['lng'] ) ? $location['lng'] : '';
+        $location    = implode( ' || ', $location );
+    } else {
+        list( $def_lat, $def_long ) = explode( ',', $location );
+        $def_lat = $def_lat ? $def_lat : 0;
+        $def_long = $def_long ? $def_long : 0;
+    }
     ?>
 
     <div class="google-map" style="margin: 10px 0; height: <?php echo $args['height']; ?>px; width: <?php echo $args['width']; ?>px;" id="wpuf-map-<?php echo $meta_key . $post->ID; ?>"></div>

@@ -285,6 +285,16 @@ class WPUF_Render_Form {
 
                     break;
 
+                case 'map':
+                    $data = array();
+                    $map_field_data = sanitize_text_field( trim( $_POST[$value['name']] ) );
+
+                    if ( !empty( $map_field_data ) ) {
+                        list($data['address'], $data['lat'], $data['lng']) = explode(" || ", $map_field_data);
+                        $meta_key_value[$value['name']] = $data;
+                    }
+                    break;
+
                 default:
                     // if it's an array, implode with this->separator
                     if ( is_array( $_POST[$value['name']] ) ) {
@@ -1638,6 +1648,17 @@ class WPUF_Render_Form {
         if ( $post_id ) {
             if ( $this->is_meta( $attr ) ) {
                 $images = $this->get_meta( $post_id, $attr['name'], $type, false );
+
+                if ( $images ) {
+                    if( is_serialized( $images[0] ) ) {
+                        $images = maybe_unserialize( $images[0] );
+                    }
+
+                    if ( is_array( $images[0] ) ) {
+                        $images = $images[0];
+                    }
+                }
+
                 $has_images = true;
             } else {
 

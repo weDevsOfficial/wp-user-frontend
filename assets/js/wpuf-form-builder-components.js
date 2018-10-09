@@ -123,11 +123,6 @@ Vue.component('builder-stage', {
                 cancelButtonClass: 'btn btn-danger',
             }).then(function () {
                 self.$store.commit('delete_form_field_element', index);
-                swal(
-                    'Deleted!',
-                    'The field has been deleted.',
-                    'success'
-                );
             }, function() {
 
             });

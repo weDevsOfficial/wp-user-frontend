@@ -90,6 +90,52 @@
   margin: 0 0 10px 0;
   font-size: 13px;
 }
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=text],
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=password],
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=email],
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=url],
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=number],
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields textarea {
+  background: #fafafa;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  color: #888;
+  width: 95%;
+}
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=text]:focus,
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=password]:focus,
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=email]:focus,
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=url]:focus,
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=number]:focus,
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields textarea:focus {
+  color: #373737;
+}
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields textarea {
+  padding-left: 3px;
+  width: 95%;
+}
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=text],
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=password],
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=email],
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=url],
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields input[type=number] {
+  padding: 5px;
+}
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields select {
+  border: 1px solid #eee;
+  padding: 2px;
+  height: 2em;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  min-width: 150px;
+  max-width: 100%;
+}
+.wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields select[multiple] {
+  height: auto;
+}
 .wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-submit input[type=submit] {
   font-size: 16px;
   padding: 5px 15px;
@@ -162,52 +208,6 @@ ul.wpuf-form li.field-size-small .wpuf-fields {
 ul.wpuf-form li .wpuf-fields {
   float: left;
   width: 70%;
-}
-ul.wpuf-form li .wpuf-fields input[type=text],
-ul.wpuf-form li .wpuf-fields input[type=password],
-ul.wpuf-form li .wpuf-fields input[type=email],
-ul.wpuf-form li .wpuf-fields input[type=url],
-ul.wpuf-form li .wpuf-fields input[type=number],
-ul.wpuf-form li .wpuf-fields textarea {
-  background: #fafafa;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ddd;
-  color: #888;
-  width: 95%;
-}
-ul.wpuf-form li .wpuf-fields input[type=text]:focus,
-ul.wpuf-form li .wpuf-fields input[type=password]:focus,
-ul.wpuf-form li .wpuf-fields input[type=email]:focus,
-ul.wpuf-form li .wpuf-fields input[type=url]:focus,
-ul.wpuf-form li .wpuf-fields input[type=number]:focus,
-ul.wpuf-form li .wpuf-fields textarea:focus {
-  color: #373737;
-}
-ul.wpuf-form li .wpuf-fields textarea {
-  padding-left: 3px;
-  width: 95%;
-}
-ul.wpuf-form li .wpuf-fields input[type=text],
-ul.wpuf-form li .wpuf-fields input[type=password],
-ul.wpuf-form li .wpuf-fields input[type=email],
-ul.wpuf-form li .wpuf-fields input[type=url],
-ul.wpuf-form li .wpuf-fields input[type=number] {
-  padding: 5px;
-}
-ul.wpuf-form li .wpuf-fields select {
-  border: 1px solid #eee;
-  padding: 2px;
-  height: 2em;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  min-width: 150px;
-  max-width: 100%;
-}
-ul.wpuf-form li .wpuf-fields select[multiple] {
-  height: auto;
 }
 ul.wpuf-form li .wpuf-fields .wpuf-radio-inline,
 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-inline {

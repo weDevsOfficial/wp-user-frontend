@@ -1005,6 +1005,9 @@ class WPUF_Render_Form {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
+                    tinymce.init({
+                        selector: '#<?php echo $field_name;?>',
+                    });
                     WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s"', $word_nums, $field_name, $rich_text ); ?>);
                 });
             })(jQuery);

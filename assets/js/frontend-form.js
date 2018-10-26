@@ -860,11 +860,11 @@
                 } else {
                     // it's a rich textarea
                     setTimeout(function () {
-                        tinyMCE.get(field).on('keydown', function(ed, event) {
+                        tinyMCE.get(field).onKeyDown.add(function(ed, event) {
                             WP_User_Frontend.editorLimit.tinymce.onKeyDown(ed, event, limit);
                         } );
 
-                        tinyMCE.get(field).on('paste', function(ed, event) {
+                        tinyMCE.get(field).onPaste.add(function(ed, event) {
                             setTimeout(function() {
                                 WP_User_Frontend.editorLimit.tinymce.onPaste(ed, event, limit);
                             }, 100);
@@ -877,7 +877,7 @@
             tinymce: {
 
                 getStats: function(ed) {
-                    var body = ed.srcElement, text = tinymce.trim(body.innerText || body.textContent);
+                    var body = ed.getBody(), text = tinymce.trim(body.innerText || body.textContent);
 
                     return {
                         chars: text.length,

@@ -852,6 +852,10 @@ function wpuf_show_custom_fields( $content ) {
                 case 'url':
                     $value = get_post_meta( $post->ID, $attr['name'] , true );
 
+                    if ( empty( $value ) ) {
+                        break;
+                    }
+
                     if ( $attr['template'] == 'embed' ) {
                         global $wp_embed;
 

@@ -673,7 +673,8 @@ function wpuf_show_custom_fields( $content ) {
                 $attr['name'] = $attr['input_type'];
             }
 
-            $field_value = get_post_meta( $post->ID, $attr['name'] );
+            $field_value    = get_post_meta( $post->ID, $attr['name'] );
+            $hide_label     = isset( $attr['hide_field_label'] ) ? $attr['hide_field_label'] : 'no';
 
             $return_for_no_cond = 0;
 
@@ -733,7 +734,11 @@ function wpuf_show_custom_fields( $content ) {
             switch ( $attr['input_type'] ) {
                 case 'image_upload':
                 case 'file_upload':
-                    $image_html = '<li><label>' . $attr['label'] . ':</label> ';
+                    $image_html  = '<li>';
+
+                    if ( $hide_label == 'no' ) {
+                        $image_html .= '<label>' . $attr['label'] . ':</label> ';
+                    }
 
                     if ( $field_value ) {
                         if( is_serialized( $field_value[0] ) ) {
@@ -823,7 +828,13 @@ function wpuf_show_custom_fields( $content ) {
                                     $value = $countries[$value];
                                 }
                             }
-                            $address_html .= '<li><label>' . $attr['address'][$field_key]['label'] . ': </label> ';
+
+                            $address_html .= '<li>';
+
+                            if ( $hide_label == 'no' ) {
+                                $address_html .= '<label>' . $attr['address'][$field_key]['label'] . ': </label> ';
+                            }
+
                             $address_html .= ' '.$value.'</li>';
                         }
 
@@ -845,7 +856,13 @@ function wpuf_show_custom_fields( $content ) {
                     $new = implode( ', ', $newvalue );
 
                     if ( $new ) {
-                        $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                        $html .= '<li>';
+
+                        if ( $hide_label == 'no' ) {
+                            $html .= '<label>' . $attr['label'] . ': </label>';
+                        }
+
+                        $html .= make_clickable( $new ) . '</li>';
                     }
                     break;
 
@@ -864,7 +881,11 @@ function wpuf_show_custom_fields( $content ) {
                         $shortcode      = '[embed width="'.$preview_width.'" height="'.$preview_height.'"]'.$value.'[/embed]';
 
                         $preview  = "<li>";
-                        $preview .= sprintf( "<label>%s: </label>", $attr['label'] );
+
+                        if ( $hide_label == 'no' ) {
+                            $preview .= sprintf( "<label>%s: </label>", $attr['label'] );
+                        }
+
                         $preview .= "<div class='wpuf-embed-preview'>";
                         $preview .= $wp_embed->run_shortcode( $shortcode );
                         $preview .= "</div>";
@@ -875,13 +896,28 @@ function wpuf_show_custom_fields( $content ) {
                     }
 
                     $open_in = $attr['open_window'] == 'same' ? '' : '_blank';
-                    $link = sprintf( "<li><label>%s</label>: <a href='%s' target = '%s'>%s</a></li>", $attr['label'], $value, $open_in, $value);
+
+                    $link  = '<li>';
+
+                    if ( $hide_label == 'no' ) {
+                        $link .= '<label>' .$attr['label']. '</label>:';
+                    }
+
+                    $link .= sprintf( " <a href='%s' target = '%s'>%s</a></li>", $value, $open_in, $value);
+
                     $html.= $link;
                     break;
 
                 case 'date':
                     $value = get_post_meta( $post->ID, $attr['name'], true );
-                    $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $value ) );
+
+                    $html  .= '<li>';
+
+                    if ( $hide_label == 'no' ) {
+                        $html .= '<label>' .$attr['label']. '</label>:';
+                    }
+
+                    $html .= sprintf( ' %s</li>', make_clickable( $value ) );
                     break;
 
                 default:
@@ -896,7 +932,13 @@ function wpuf_show_custom_fields( $content ) {
                         $modified_value = implode( $separator, $new );
 
                         if ( $modified_value ) {
-                           $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                            $html  .= '<li>';
+
+                            if ( $hide_label == 'no' ) {
+                                $html .= '<label>' .$attr['label']. '</label>:';
+                            }
+
+                            $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
                         }
                     } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value[0] ) ) {
 
@@ -904,7 +946,13 @@ function wpuf_show_custom_fields( $content ) {
                             $modified_value = implode( $separator, $value[0] );
 
                             if ( $modified_value ) {
-                               $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                                $html  .= '<li>';
+
+                                if ( $hide_label == 'no' ) {
+                                    $html .= '<label>' .$attr['label']. '</label>:';
+                                }
+
+                                $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
                             }
                         }
 
@@ -913,7 +961,13 @@ function wpuf_show_custom_fields( $content ) {
                         $new = implode( ', ', $value );
 
                         if ( $new ) {
-                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                            $html  .= '<li>';
+
+                            if ( $hide_label == 'no' ) {
+                                $html .= '<label>' .$attr['label']. '</label>:';
+                            }
+
+                            $html .= sprintf( ' %s</li>', make_clickable( $new ) );
                         }
                     }
 

@@ -126,6 +126,9 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
             <option value="<?php echo $form->ID; ?>"<?php selected($selected, $form->ID); ?>><?php echo $form->post_title; ?></option>
             <?php } ?>
         </select>
+        <div>
+            <p><a href="https://wedevs.com/docs/wp-user-frontend-pro/tutorials/purpose-of-the-wpuf-form-metabox/" target="_blank"><?php _e( 'Purpose of this metabox', 'wp-user-frontend' ); ?></a></p>
+        </div>
         <?php
     }
 

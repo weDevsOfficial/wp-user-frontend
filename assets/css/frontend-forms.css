@@ -862,7 +862,7 @@ ul.wpuf_packs .cost {
 .ui-timepicker-rtl dl dd {
   margin: 0 65px 10px 10px;
 }
-#pass-strength-result {
+.pass-strength-result {
   border-style: solid;
   border-width: 1px;
   float: left;
@@ -874,19 +874,19 @@ ul.wpuf_packs .cost {
   background-color: #eee;
   border-color: #ddd !important;
 }
-#pass-strength-result.bad {
+.pass-strength-result.bad {
   background-color: #ffb78c;
   border-color: #ff853c !important;
 }
-#pass-strength-result.good {
+.pass-strength-result.good {
   background-color: #ffec8b;
   border-color: #fc0 !important;
 }
-#pass-strength-result.short {
+.pass-strength-result.short {
   background-color: #ffa0a0;
   border-color: #f04040 !important;
 }
-#pass-strength-result.strong {
+.pass-strength-result.strong {
   background-color: #c3ff88;
   border-color: #8dff1c !important;
 }

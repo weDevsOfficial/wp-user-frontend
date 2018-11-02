@@ -673,7 +673,8 @@ function wpuf_show_custom_fields( $content ) {
                 $attr['name'] = $attr['input_type'];
             }
 
-            $field_value = get_post_meta( $post->ID, $attr['name'] );
+            $field_value    = get_post_meta( $post->ID, $attr['name'] );
+            $hide_label     = isset( $attr['hide_field_label'] ) ? $attr['hide_field_label'] : 'no';
 
             $return_for_no_cond = 0;
 
@@ -733,10 +734,20 @@ function wpuf_show_custom_fields( $content ) {
             switch ( $attr['input_type'] ) {
                 case 'image_upload':
                 case 'file_upload':
+                    $image_html  = '<li>';
 
-                    $image_html = '<li><label>' . $attr['label'] . ':</label> ';
+                    if ( $hide_label == 'no' ) {
+                        $image_html .= '<label>' . $attr['label'] . ':</label> ';
+                    }
 
                     if ( $field_value ) {
+                        if( is_serialized( $field_value[0] ) ) {
+                            $field_value = maybe_unserialize( $field_value[0] );
+                        }
+
+                        if ( is_array( $field_value[0] ) ) {
+                            $field_value = $field_value[0];
+                        }
 
                         foreach ($field_value as $attachment_id) {
                             if ( $attr['input_type'] == 'image_upload' ) {
@@ -817,7 +828,13 @@ function wpuf_show_custom_fields( $content ) {
                                     $value = $countries[$value];
                                 }
                             }
-                            $address_html .= '<li><label>' . $attr['address'][$field_key]['label'] . ': </label> ';
+
+                            $address_html .= '<li>';
+
+                            if ( $hide_label == 'no' ) {
+                                $address_html .= '<label>' . $attr['address'][$field_key]['label'] . ': </label> ';
+                            }
+
                             $address_html .= ' '.$value.'</li>';
                         }
 
@@ -839,21 +856,38 @@ function wpuf_show_custom_fields( $content ) {
                     $new = implode( ', ', $newvalue );
 
                     if ( $new ) {
-                        $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                        $html .= '<li>';
+
+                        if ( $hide_label == 'no' ) {
+                            $html .= '<label>' . $attr['label'] . ': </label>';
+                        }
+
+                        $html .= make_clickable( $new ) . '</li>';
                     }
                     break;
 
                 case 'url':
                     $value = get_post_meta( $post->ID, $attr['name'] , true );
 
+                    if ( empty( $value ) ) {
+                        break;
+                    }
+
                     if ( $attr['template'] == 'embed' ) {
+                        global $wp_embed;
+
                         $preview_width  = isset($attr['preview_width']) ? $attr['preview_width'] : '123';
                         $preview_height = isset($attr['preview_height']) ? $attr['preview_height'] : '456';
+                        $shortcode      = '[embed width="'.$preview_width.'" height="'.$preview_height.'"]'.$value.'[/embed]';
 
                         $preview  = "<li>";
-                        $preview .= sprintf( "<label>%s: </label>", $attr['label'] );
+
+                        if ( $hide_label == 'no' ) {
+                            $preview .= sprintf( "<label>%s: </label>", $attr['label'] );
+                        }
+
                         $preview .= "<div class='wpuf-embed-preview'>";
-                        $preview .= '[embed width="'.$preview_width.'" height="'.$preview_height.'"]'.$value.'[/embed]';
+                        $preview .= $wp_embed->run_shortcode( $shortcode );
                         $preview .= "</div>";
                         $preview .= "</li>";
 
@@ -862,13 +896,28 @@ function wpuf_show_custom_fields( $content ) {
                     }
 
                     $open_in = $attr['open_window'] == 'same' ? '' : '_blank';
-                    $link = sprintf( "<li><label>%s</label>: <a href='%s' target = '%s'>%s</a></li>", $attr['label'], $value, $open_in, $value);
+
+                    $link  = '<li>';
+
+                    if ( $hide_label == 'no' ) {
+                        $link .= '<label>' .$attr['label']. '</label>:';
+                    }
+
+                    $link .= sprintf( " <a href='%s' target = '%s'>%s</a></li>", $value, $open_in, $value);
+
                     $html.= $link;
                     break;
 
                 case 'date':
                     $value = get_post_meta( $post->ID, $attr['name'], true );
-                    $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $value ) );
+
+                    $html  .= '<li>';
+
+                    if ( $hide_label == 'no' ) {
+                        $html .= '<label>' .$attr['label']. '</label>:';
+                    }
+
+                    $html .= sprintf( ' %s</li>', make_clickable( $value ) );
                     break;
 
                 default:
@@ -883,7 +932,13 @@ function wpuf_show_custom_fields( $content ) {
                         $modified_value = implode( $separator, $new );
 
                         if ( $modified_value ) {
-                           $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                            $html  .= '<li>';
+
+                            if ( $hide_label == 'no' ) {
+                                $html .= '<label>' .$attr['label']. '</label>:';
+                            }
+
+                            $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
                         }
                     } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value[0] ) ) {
 
@@ -891,7 +946,13 @@ function wpuf_show_custom_fields( $content ) {
                             $modified_value = implode( $separator, $value[0] );
 
                             if ( $modified_value ) {
-                               $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                                $html  .= '<li>';
+
+                                if ( $hide_label == 'no' ) {
+                                    $html .= '<label>' .$attr['label']. '</label>:';
+                                }
+
+                                $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
                             }
                         }
 
@@ -900,7 +961,13 @@ function wpuf_show_custom_fields( $content ) {
                         $new = implode( ', ', $value );
 
                         if ( $new ) {
-                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                            $html  .= '<li>';
+
+                            if ( $hide_label == 'no' ) {
+                                $html .= '<label>' .$attr['label']. '</label>:';
+                            }
+
+                            $html .= sprintf( ' %s</li>', make_clickable( $new ) );
                         }
                     }
 
@@ -914,7 +981,7 @@ function wpuf_show_custom_fields( $content ) {
     return $content . $html;
 }
 
-add_filter( 'the_content', 'wpuf_show_custom_fields', 7 );
+add_filter( 'the_content', 'wpuf_show_custom_fields', 10 );
 
 /**
  * Map display shortcode
@@ -935,12 +1002,19 @@ function wpuf_shortcode_map( $location, $post_id = null, $args = array(), $meta_
         return;
     }
 
-    $default = array('width' => 450, 'height' => 250, 'zoom' => 12);
-    $args = wp_parse_args( $args, $default );
+    $default        = array('width' => 450, 'height' => 250, 'zoom' => 12);
+    $args           = wp_parse_args( $args, $default );
 
-    list( $def_lat, $def_long ) = explode( ',', $location );
-    $def_lat = $def_lat ? $def_lat : 0;
-    $def_long = $def_long ? $def_long : 0;
+    if ( is_array( $location ) ) {
+        $def_address = isset( $location['address'] ) ? $location['address'] : '';
+        $def_lat     = isset( $location['lat'] ) ? $location['lat'] : '';
+        $def_long    = isset( $location['lng'] ) ? $location['lng'] : '';
+        $location    = implode( ' || ', $location );
+    } else {
+        list( $def_lat, $def_long ) = explode( ',', $location );
+        $def_lat = $def_lat ? $def_lat : 0;
+        $def_long = $def_long ? $def_long : 0;
+    }
     ?>
 
     <div class="google-map" style="margin: 10px 0; height: <?php echo $args['height']; ?>px; width: <?php echo $args['width']; ?>px;" id="wpuf-map-<?php echo $meta_key . $post->ID; ?>"></div>

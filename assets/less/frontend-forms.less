@@ -129,10 +129,63 @@
     font-size: 13px;
 }
 
+#form-preview-stage,
 .wpuf-form-add{
 
     &.wpuf-style{
         ul.wpuf-form{
+
+            .wpuf-fields {
+                input[type=text],
+                input[type=password],
+                input[type=email],
+                input[type=url],
+                input[type=number],
+                input[type=tel],
+                textarea {
+                    background: #fafafa;
+                    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+                    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+                    box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+                    border: 1px solid #ddd;
+                    color: #888;
+                    width: 95%;
+                }
+
+                input[type=text]:focus,
+                input[type=password]:focus,
+                input[type=email]:focus,
+                input[type=url]:focus,
+                input[type=number]:focus,
+                textarea:focus {
+                    color: #373737;
+                }
+                textarea {
+                    padding-left: 3px;
+                    width: 95%;
+                }
+                input[type=text],
+                input[type=password],
+                input[type=email],
+                input[type=url],
+                input[type=number] {
+                    padding: 5px;
+                }
+
+                select {
+                    border: 1px solid @borderColor;
+                    padding: 2px;
+                    height: 2em;
+                    .border-radius(3px);
+                    min-width: 150px;
+                    max-width: 100%;
+                }
+
+                select[multiple] {
+                    height: auto;
+                }
+            }
+
             .wpuf-submit{
 
                 input[type=submit] {
@@ -213,54 +266,6 @@ ul.wpuf-form {
         .wpuf-fields {
             float: left;
             width: 70%;
-
-            input[type=text],
-            input[type=password],
-            input[type=email],
-            input[type=url],
-            input[type=number],
-            textarea {
-                background: #fafafa;
-                -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
-                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
-                box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
-                border: 1px solid #ddd;
-                color: #888;
-                width: 95%;
-            }
-
-            input[type=text]:focus,
-            input[type=password]:focus,
-            input[type=email]:focus,
-            input[type=url]:focus,
-            input[type=number]:focus,
-            textarea:focus {
-                color: #373737;
-            }
-            textarea {
-                padding-left: 3px;
-                width: 95%;
-            }
-            input[type=text],
-            input[type=password],
-            input[type=email],
-            input[type=url],
-            input[type=number] {
-                padding: 5px;
-            }
-
-            select {
-                border: 1px solid @borderColor;
-                padding: 2px;
-                height: 2em;
-                .border-radius(3px);
-                min-width: 150px;
-                max-width: 100%;
-            }
-
-            select[multiple] {
-                height: auto;
-            }
 
             .wpuf-radio-inline,
             .wpuf-checkbox-inline{
@@ -959,7 +964,7 @@ ul.wpuf_packs {
 .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
 
 // Password Strength
-#pass-strength-result {
+.pass-strength-result {
     border-style: solid;
     border-width: 1px;
     float: left;

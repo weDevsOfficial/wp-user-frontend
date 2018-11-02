@@ -954,6 +954,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             // delete any previous value
             delete_post_meta( $post_id, $file_input['name'] );
 
+            if ( count( $file_input['value'] ) > 1  ) {
+                $image_ids = maybe_serialize( $file_input['value'] );
+            } else {
+                $image_ids = $file_input['value'][0];
+            }
+
+            add_post_meta( $post_id, $file_input['name'], $image_ids );
+
             //to track how many files are being uploaded
             $file_numbers = 0;
 
@@ -966,7 +974,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 }
 
                 wpuf_associate_attachment( $attachment_id, $post_id );
-                add_post_meta( $post_id, $file_input['name'], $attachment_id );
+                //add_post_meta( $post_id, $file_input['name'], $attachment_id );
 
                 // file title, caption, desc update
                 $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? $_POST['wpuf_files_data'][$attachment_id] : false;

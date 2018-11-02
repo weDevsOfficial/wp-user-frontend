@@ -285,6 +285,16 @@ class WPUF_Render_Form {
 
                     break;
 
+                case 'map':
+                    $data = array();
+                    $map_field_data = sanitize_text_field( trim( $_POST[$value['name']] ) );
+
+                    if ( !empty( $map_field_data ) ) {
+                        list($data['address'], $data['lat'], $data['lng']) = explode(" || ", $map_field_data);
+                        $meta_key_value[$value['name']] = $data;
+                    }
+                    break;
+
                 default:
                     // if it's an array, implode with this->separator
                     if ( is_array( $_POST[$value['name']] ) ) {
@@ -1309,7 +1319,7 @@ class WPUF_Render_Form {
         ?>
 
         <div class="wpuf-fields">
-            <input id="pass1" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="password"<?php $this->required_html5( $attr ); ?> data-repeat="<?php echo $repeat_pass ? 'true' : 'false'; ?>" name="pass1" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="" size="<?php echo esc_attr( $attr['size'] ) ?>" />
+            <input id="<?php echo $attr['name'].'_'.$form_id .'_1'; ?>" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="password"<?php $this->required_html5( $attr ); ?> data-repeat="<?php echo $repeat_pass ? 'true' : 'false'; ?>" name="pass1" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="" size="<?php echo esc_attr( $attr['size'] ) ?>" />
             <?php $this->help_text( $attr ); ?>
         </div>
 
@@ -1324,7 +1334,7 @@ class WPUF_Render_Form {
             ?>
 
             <div class="wpuf-fields">
-                <input id="pass2" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="confirm_password"<?php $this->required_html5( $attr ); ?> name="pass2" value="" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" size="<?php echo esc_attr( $attr['size'] ) ?>" />
+                <input id="<?php echo $attr['name'].'_'.$form_id .'_2'; ?>" type="password" class="password <?php echo ' wpuf_'.$attr['name'].'_'.$form_id; ?>" data-required="<?php echo $attr['required'] ?>" data-type="confirm_password"<?php $this->required_html5( $attr ); ?> name="pass2" value="" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" size="<?php echo esc_attr( $attr['size'] ) ?>" />
             </div>
 
             <?php
@@ -1342,23 +1352,23 @@ class WPUF_Render_Form {
             </div>
 
             <div class="wpuf-fields">
-                <div id="pass-strength-result" style="display: block"><?php _e( 'Strength indicator', 'wp-user-frontend' ); ?></div>
+                <div class="pass-strength-result" id="pass-strength-result_<?php echo $form_id; ?>" style="display: block"><?php _e( 'Strength indicator', 'wp-user-frontend' ); ?></div>
             </div>
 
             <script type="text/javascript">
                 jQuery(function($) {
                     function check_pass_strength() {
-                        var pass1 = $('#pass1').val(),
-                            pass2 = $('#pass2').val(),
+                        var pass1 = $("#<?php echo $attr['name'].'_'.$form_id .'_1'; ?>").val(),
+                            pass2 = $("#<?php echo $attr['name'].'_'.$form_id .'_2'; ?>").val(),
                             strength;
 
                         if ( typeof pass2 === undefined ) {
                             pass2 = pass1;
                         }
 
-                        $('#pass-strength-result').removeClass('short bad good strong');
+                        $("#pass-strength-result_<?php echo $form_id; ?>").removeClass('short bad good strong');
                         if (!pass1) {
-                            $('#pass-strength-result').html(pwsL10n.empty);
+                            $("#pass-strength-result_<?php echo $form_id; ?>").html(pwsL10n.empty);
                             return;
                         }
 
@@ -1366,25 +1376,25 @@ class WPUF_Render_Form {
 
                         switch (strength) {
                             case 2:
-                                $('#pass-strength-result').addClass('bad').html(pwsL10n.bad);
+                                $("#pass-strength-result_<?php echo $form_id; ?>").addClass('bad').html(pwsL10n.bad);
                                 break;
                             case 3:
-                                $('#pass-strength-result').addClass('good').html(pwsL10n.good);
+                                $("#pass-strength-result_<?php echo $form_id; ?>").addClass('good').html(pwsL10n.good);
                                 break;
                             case 4:
-                                $('#pass-strength-result').addClass('strong').html(pwsL10n.strong);
+                                $("#pass-strength-result_<?php echo $form_id; ?>").addClass('strong').html(pwsL10n.strong);
                                 break;
                             case 5:
-                                $('#pass-strength-result').addClass('short').html(pwsL10n.mismatch);
+                                $("#pass-strength-result_<?php echo $form_id; ?>").addClass('short').html(pwsL10n.mismatch);
                                 break;
                             default:
-                                $('#pass-strength-result').addClass('short').html(pwsL10n['short']);
+                                $("#pass-strength-result_<?php echo $form_id; ?>").addClass('short').html(pwsL10n['short']);
                         }
                     }
 
-                    $('#pass1').val('').keyup(check_pass_strength);
-                    $('#pass2').val('').keyup(check_pass_strength);
-                    $('#pass-strength-result').show();
+                    $("#<?php echo $attr['name'].'_'.$form_id .'_1'; ?>").val('').keyup(check_pass_strength);
+                    $("#<?php echo $attr['name'].'_'.$form_id .'_2'; ?>").val('').keyup(check_pass_strength);
+                    $("#pass-strength-result_<?php echo $form_id; ?>").show();
                 });
             </script>
             <?php
@@ -1638,6 +1648,17 @@ class WPUF_Render_Form {
         if ( $post_id ) {
             if ( $this->is_meta( $attr ) ) {
                 $images = $this->get_meta( $post_id, $attr['name'], $type, false );
+
+                if ( $images ) {
+                    if( is_serialized( $images[0] ) ) {
+                        $images = maybe_unserialize( $images[0] );
+                    }
+
+                    if ( is_array( $images[0] ) ) {
+                        $images = $images[0];
+                    }
+                }
+
                 $has_images = true;
             } else {
 

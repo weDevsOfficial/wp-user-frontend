@@ -618,7 +618,7 @@
                 }
             });
 
-            $( cond_fields ).on('click', function(e) {
+            $( cond_fields ).on('focus', function(e) {
                 var form_fields = wpuf_form_builder.form_fields,
                     options     = '';
                     options     += '<option value="-1">- select -</option>';

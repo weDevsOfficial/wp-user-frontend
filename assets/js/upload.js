@@ -111,12 +111,8 @@
         },
 
         upload: function (uploader) {
-
-
             this.count = uploader.files.length - this.removed_files.length ;
             this.showHide();
-
-
         },
 
         progress: function (up, file) {
@@ -198,13 +194,22 @@
             var self = this,
             el = $(e.currentTarget);
 
-            if ( confirm(wpuf_frontend_upload.confirmMsg) ) {
+            swal({
+                text: wpuf_frontend_upload.confirmMsg,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d54e21',
+                confirmButtonText: wpuf_frontend_upload.delete_it,
+                cancelButtonText: wpuf_frontend_upload.cancel_it,
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+            }).then(function () {
                 var data = {
                     'attach_id' : el.data('attach_id'),
                     'nonce' : wpuf_frontend_upload.nonce,
                     'action' : 'wpuf_file_del'
                 };
-                this.removed_files.push(data);
+                self.removed_files.push(data);
                 jQuery('#del_attach').val(el.data('attach_id'));
                 jQuery.post(wpuf_frontend_upload.ajaxurl, data, function() {
                     self.perFileCount--;
@@ -214,7 +219,7 @@
                     self.showHide();
                     self.uploader.refresh();
                 });
-            }
+            });
         },
 
         removeExtraAttachment : function( attach_id ) {

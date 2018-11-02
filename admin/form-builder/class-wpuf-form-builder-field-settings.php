@@ -145,6 +145,20 @@ class WPUF_Form_Builder_Field_Settings {
                         'default'   => 'yes',
                         'inline'    => true,
                         'help_text' => __( 'Select Yes if you want to show the field data in single post.', 'wp-user-frontend' ),
+                    ),
+                    array(
+                        'name'      => 'hide_field_label',
+                        'title'     => __( 'Hide Field Label in Post', 'wp-user-frontend' ),
+                        'type'      => 'radio',
+                        'options'   => array(
+                            'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                            'no'    => __( 'No', 'wp-user-frontend' ),
+                        ),
+                        'section'   => 'advanced',
+                        'priority'  => 24,
+                        'default'   => 'no',
+                        'inline'    => true,
+                        'help_text' => __( 'Select Yes if you want to hide the field label in single post.', 'wp-user-frontend' ),
                     )
                 ));
             }
@@ -342,6 +356,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'                => 0,
                 'is_new'            => true,
                 'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
                 'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
@@ -383,6 +398,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'               => 0,
                 'is_new'           => true,
                 'show_in_post'     => 'yes',
+                'hide_field_label'  => 'no',
                 'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
@@ -456,6 +472,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'               => 0,
                 'is_new'           => true,
                 'show_in_post'     => 'yes',
+                'hide_field_label' => 'no',
                 'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
@@ -499,6 +516,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'               => 0,
                 'is_new'           => true,
                 'show_in_post'     => 'yes',
+                'hide_field_label' => 'no',
                 'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
@@ -557,6 +575,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'               => 0,
                 'is_new'           => true,
                 'show_in_post'     => 'yes',
+                'hide_field_label' => 'no',
                 'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
@@ -615,6 +634,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'               => 0,
                 'is_new'           => true,
                 'show_in_post'     => 'yes',
+                'hide_field_label' => 'no',
                 'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
@@ -668,6 +688,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'                => 0,
                 'is_new'            => true,
                 'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
                 'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
@@ -706,6 +727,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'                => 0,
                 'is_new'            => true,
                 'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
                 'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
@@ -755,6 +777,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'                => 0,
                 'is_new'            => true,
                 'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
                 'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => null
             )
@@ -820,6 +843,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'                => 0,
                 'is_new'            => true,
                 'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
                 'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
@@ -868,6 +892,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'id'                => 0,
                 'is_new'            => true,
                 'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
                 'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => self::get_wpuf_cond_prop()
             )

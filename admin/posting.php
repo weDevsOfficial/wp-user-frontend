@@ -61,9 +61,13 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
             }
         }
 
+        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css', array(), WPUF_VERSION );
+        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', array(), WPUF_VERSION, true );
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array('jquery', 'plupload-handlers') );
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
             'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
+            'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
+            'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
             'ajaxurl'    => admin_url( 'admin-ajax.php' ),
             'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
             'plupload'   => array(
@@ -122,6 +126,9 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
             <option value="<?php echo $form->ID; ?>"<?php selected($selected, $form->ID); ?>><?php echo $form->post_title; ?></option>
             <?php } ?>
         </select>
+        <div>
+            <p><a href="https://wedevs.com/docs/wp-user-frontend-pro/tutorials/purpose-of-the-wpuf-form-metabox/" target="_blank"><?php _e( 'Purpose of this metabox', 'wp-user-frontend' ); ?></a></p>
+        </div>
         <?php
     }
 
@@ -198,7 +205,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
         $form_id = get_post_meta( $post->ID, '_wpuf_form_id', true );
         $form_settings = wpuf_get_form_settings( $form_id );
-        
+
         /**
          * There may be incompatibilities with WPUF metabox display when Advanced Custom Fields
          * is active. By default WPUF metaboxes will be hidden when ACF is detected. However,

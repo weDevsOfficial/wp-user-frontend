@@ -113,14 +113,18 @@ class WPUF_Simple_Login {
             return $user;
         }
 
-        if ( isset ( $_POST["g-recaptcha-response"] ) ) {
-            if ( empty( $_POST['g-recaptcha-response'] ) ) {
-                $user = new WP_Error( 'WPUFLoginCaptchaError', 'Empty reCaptcha Field.' );
-            } else {
-                $no_captcha = 1;
-                $invisible_captcha = 0;
+        $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off');
 
-                WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+        if ( $recaptcha == 'on' ) {
+            if ( isset ( $_POST["g-recaptcha-response"] ) ) {
+                if ( empty( $_POST['g-recaptcha-response'] ) ) {
+                    $user = new WP_Error( 'WPUFLoginCaptchaError', 'Empty reCaptcha Field.' );
+                } else {
+                    $no_captcha = 1;
+                    $invisible_captcha = 0;
+
+                    WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+                }
             }
         }
         return $user;

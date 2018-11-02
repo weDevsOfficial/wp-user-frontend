@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 4.9.8  
 **Requires PHP:** 5.4  
-**Stable tag:** 2.9.2  
+**Stable tag:** 2.9.3  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -229,6 +229,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v2.9.3 (02 November, 2018) ###
+
+* **Fix:** NoCaptcha reCaptcha compatibility issue
+* **Fix:** Empty URL field label showing with the post on frontend
+* **New:** Add option to hide field label
+* **New:** Use theme style for all input fields
+* **New:** Added SweetAlert pop up box for image delete & subscription cancel confirmaton
+* **Improved:** Showing user display name instead of username on the frontend dashboard
 
 ### v2.9.2 (20 September, 2018) ###
 

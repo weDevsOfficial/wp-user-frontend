@@ -96,30 +96,32 @@ class WPUF_Post_Form_Template_WooCommerce extends WPUF_Post_Form_Template {
                 'wpuf_cond'       => $this->conditionals
             ),
             array(
-                'input_type' => 'image_upload',
-                'template'   => 'featured_image',
-                'count'      => '1',
-                'required'   => 'yes',
-                'label'      => 'Product Image',
-                'name'       => 'featured_image',
-                'is_meta'    => 'no',
-                'help'       => 'Upload the main image of your product',
-                'css'        => '',
-                'max_size'   => '1024',
-                'wpuf_cond'  => $this->conditionals
+                'input_type'   => 'image_upload',
+                'template'     => 'featured_image',
+                'count'        => '1',
+                'required'     => 'yes',
+                'label'        => 'Product Image',
+                'button_label' => 'Product Image',
+                'name'         => 'featured_image',
+                'is_meta'      => 'no',
+                'help'         => 'Upload the main image of your product',
+                'css'          => '',
+                'max_size'     => '1024',
+                'wpuf_cond'    => $this->conditionals
             ),
             array(
-                'input_type' => 'image_upload',
-                'template'   => 'image_upload',
-                'required'   => 'no',
-                'label'      => 'Product Image Gallery',
-                'name'       => '_product_image',
-                'is_meta'    => 'yes',
-                'help'       => 'Upload additional pictures of your product and will be shown as image gallery',
-                'css'        => '',
-                'max_size'   => '1024',
-                'count'      => '5',
-                'wpuf_cond'  => $this->conditionals
+                'input_type'   => 'image_upload',
+                'template'     => 'image_upload',
+                'required'     => 'no',
+                'label'        => 'Product Image Gallery',
+                'button_label' => 'Product Image Gallery',
+                'name'         => '_product_image',
+                'is_meta'      => 'yes',
+                'help'         => 'Upload additional pictures of your product and will be shown as image gallery',
+                'css'          => '',
+                'max_size'     => '1024',
+                'count'        => '5',
+                'wpuf_cond'    => $this->conditionals
             ),
             array(
                 'input_type' => 'select',
@@ -308,7 +310,10 @@ Edit URL: %editlink%',
     public function update_gallery_images( $post_id ) {
         $images = get_post_meta( $post_id, '_product_image' );
         if ( !empty( $images ) ) {
-            update_post_meta( $post_id, '_product_image_gallery', implode(',', $images) );
+            if ( is_array( $images ) ) {
+                $images = maybe_unserialize( $images[0] );
+            }
+            update_post_meta( $post_id, '_product_image_gallery', implode( ',', $images ) );
         }
     }
 

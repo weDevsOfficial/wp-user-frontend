@@ -1,6 +1,17 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 2.9.4',
+        'released' => '2018-11-20',
+        'changes' => array(
+            array(
+                'title'       => __( 'WooCommerce gallery images not getting saved', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'After releasing version 2.9.3, WooCommerce gallery image field stopped working. You will get it fixed in this version.', 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 2.9.0',
         'released' => '2018-08-14',
         'changes' => array(

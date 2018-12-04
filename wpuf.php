@@ -259,6 +259,10 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/includes/class-wcmp-integration.php';
         }
 
+        if ( class_exists( 'WC_Vendors' ) ) {
+            require_once WPUF_ROOT . '/includes/class-wc-vendors-integration.php';
+        }
+
         require_once WPUF_ROOT . '/includes/class-user.php';
         require_once WPUF_ROOT . '/includes/class-user-subscription.php';
 
@@ -322,6 +326,10 @@ final class WP_User_Frontend {
 
         if ( class_exists( 'WCMp' ) ) {
             $this->container['wcmp_integration']    = new WPUF_WCMp_Integration();
+        }
+
+        if ( class_exists( 'WC_Vendors' ) ) {
+            $this->container['WCV_Integration']     = new WPUF_WC_Vendors_Integration();
         }
 
         if ( is_admin() ) {

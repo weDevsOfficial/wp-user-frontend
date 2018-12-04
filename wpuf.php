@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.9.4
+Version: 3.0.0
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.9.4' );
+define( 'WPUF_VERSION', '3.0.0' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -129,7 +129,10 @@ final class WP_User_Frontend {
 
         add_filter( 'show_admin_bar', array( $this, 'show_admin_bar' ) );
 
-        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        // enqueue plugin scripts, don't remove priority.
+        // If remove or set priority under 1000 then registered styles will not load on WC Marketplace vendor dashboard.
+        // we have integration with WC Marketplace plugin since version 3.0 where WC Marketplae vendors' can submit post
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ), 9999 );
 
         // do plugin upgrades
         add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_action_links' ) );
@@ -252,6 +255,14 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
         }
 
+        if ( class_exists( 'WCMp' ) ) {
+            require_once WPUF_ROOT . '/includes/class-wcmp-integration.php';
+        }
+
+        if ( class_exists( 'WC_Vendors' ) ) {
+            require_once WPUF_ROOT . '/includes/class-wc-vendors-integration.php';
+        }
+
         require_once WPUF_ROOT . '/includes/class-user.php';
         require_once WPUF_ROOT . '/includes/class-user-subscription.php';
 
@@ -311,6 +322,14 @@ final class WP_User_Frontend {
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();
+        }
+
+        if ( class_exists( 'WCMp' ) ) {
+            $this->container['wcmp_integration']    = new WPUF_WCMp_Integration();
+        }
+
+        if ( class_exists( 'WC_Vendors' ) ) {
+            $this->container['WCV_Integration']     = new WPUF_WC_Vendors_Integration();
         }
 
         if ( is_admin() ) {

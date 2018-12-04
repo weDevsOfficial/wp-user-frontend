@@ -3,31 +3,31 @@
 if ( ! class_exists( 'WPUF_Dokan_Integration' ) ) :
 
 /**
-* 
+*
 * WPUF Dokan Integration Class
 *
 * @since  2.7
 */
 class WPUF_Dokan_Integration{
-	
+
 	function __construct() {
-		
+
 		add_filter( 'dokan_get_dashboard_nav', array($this, 'add_wpuf_posts_page' ) );
 		add_action( 'dokan_load_custom_template', array( $this, 'load_wpuf_posts_template' ) );
 		add_filter( 'dokan_query_var_filter', array( $this, 'register_wpuf_posts_queryvar' ) );
 		add_filter( 'dokan_settings_fields', array( $this, 'dokan_wpuf_settings' ) );
 		add_filter( 'wpuf_edit_post_link', array( $this, 'generate_edit_post_link' ) );
-		
+
 	}
 
 	/**
 	 * Insert new URL's to the dashboard navigation bar
 	 *
-	 * @param  array  $urls 
-	 * 
+	 * @param  array  $urls
+	 *
 	 * @since  2.7
-	 * 
-	 * @return array  
+	 *
+	 * @return array
 	 */
 	public function add_wpuf_posts_page( $urls ) {
 	    $access   	   = dokan_get_option( 'allow_wpuf_post', 'dokan_general' );
@@ -47,11 +47,11 @@ class WPUF_Dokan_Integration{
 	/**
 	 * Load posts template
 	 *
-	 * @param  array  $query_vars 
-	 * 
+	 * @param  array  $query_vars
+	 *
 	 * @since  2.7
-	 * 
-	 * @return void  
+	 *
+	 * @return void
 	 */
 	public function load_wpuf_posts_template( $query_vars ) {
 
@@ -64,11 +64,11 @@ class WPUF_Dokan_Integration{
 	/**
 	 * Register WPUF query var
 	 *
-	 * @param  array  $query_vars 
-	 * 
+	 * @param  array  $query_vars
+	 *
 	 * @since  2.7
-	 * 
-	 * @return void  
+	 *
+	 * @return void
 	 */
 	public function register_wpuf_posts_queryvar( $query_vars ) {
         $query_vars[] = 'posts';
@@ -79,11 +79,11 @@ class WPUF_Dokan_Integration{
 	/**
 	 * Dokan settings for WPUF integration
 	 *
-	 * @param  array  $settings_fields 
-	 * 
+	 * @param  array  $settings_fields
+	 *
 	 * @since  2.7
-	 * 
-	 * @return array  $settings_fields  
+	 *
+	 * @return array  $settings_fields
 	 */
     public function dokan_wpuf_settings( $settings_fields ) {
 
@@ -111,10 +111,10 @@ class WPUF_Dokan_Integration{
 	 * Get all the post forms
 	 *
 	 * @param  str  $post_type
-	 * 
+	 *
 	 * @since  2.7
-	 * 
-	 * @return array  $post_forms  
+	 *
+	 * @return array  $post_forms
 	 */
     public function get_post_forms( $post_type='post') {
     	$post_forms = array();
@@ -122,13 +122,14 @@ class WPUF_Dokan_Integration{
     	$args = array(
 		    'post_type'   => 'wpuf_forms',
 		    'post_status' => 'publish',
+            'numberposts' => -1,
 		);
 
 		$form_posts = get_posts( $args );
 
 		foreach ($form_posts as $form) {
-			$form_settings = wpuf_get_form_settings($form->ID);
-			$form_post_type = $form_settings['post_type'];
+			$form_settings 	= wpuf_get_form_settings($form->ID);
+			$form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : '';
 
 			if ( $form_post_type == $post_type ) {
 				$post_forms[$form->ID] = $form->post_title;
@@ -142,10 +143,10 @@ class WPUF_Dokan_Integration{
 	 * Generate edit post link
 	 *
 	 * @param  str  $url
-	 * 
+	 *
 	 * @since  2.7
-	 * 
-	 * @return str  $url  
+	 *
+	 * @return str  $url
 	 */
     public function generate_edit_post_link( $url ) {
 		global $post;
@@ -154,11 +155,11 @@ class WPUF_Dokan_Integration{
 		$dashboard = (int) dokan_get_option( 'dashboard', 'dokan_pages' );
 
     	if ( is_page( $dashboard ) ) {
-	        $url = add_query_arg( 
+	        $url = add_query_arg(
 			array(
 				'action' => 'edit-post',
 				'pid'    => $post->ID
-			), 
+			),
 			$posts_page_url );
 	    }
 

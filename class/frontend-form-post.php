@@ -956,11 +956,15 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
             if ( count( $file_input['value'] ) > 1  ) {
                 $image_ids = maybe_serialize( $file_input['value'] );
-            } else {
+            }
+
+            if ( count( $file_input['value'] ) == 1 ) {
                 $image_ids = $file_input['value'][0];
             }
 
-            add_post_meta( $post_id, $file_input['name'], $image_ids );
+            if ( !empty( $image_ids ) ) {
+                add_post_meta( $post_id, $file_input['name'], $image_ids );
+            }
 
             //to track how many files are being uploaded
             $file_numbers = 0;

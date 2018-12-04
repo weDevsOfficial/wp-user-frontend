@@ -154,6 +154,9 @@ class WPUF_Frontend_Dashboard {
 
             //redirect
             $redirect = add_query_arg( array('msg' => 'deleted'), get_permalink() );
+
+            $redirect = apply_filters( 'wpuf_delete_post_redirect', $redirect );
+
             wp_redirect( $redirect );
         } else {
             echo '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wp-user-frontend' ) . '</div>';

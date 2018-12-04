@@ -1213,6 +1213,14 @@ body.rtl ul.wpuf-form li .wpuf-label {
   width: 43%;
   overflow: visible;
 }
+.wpuf-wcmp-integration-content .wpuf-dashboard-container .page-head {
+  opacity: 0;
+  margin-bottom: 40px;
+}
+.wpuf-wcmp-integration-content .wpuf-dashboard-container table.items-table {
+  width: 100%;
+  margin-bottom: 40px !important;
+}
 .wpuf-toc-container .wpuf-fields {
   position: relative;
 }

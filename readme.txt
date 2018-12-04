@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 4.9.8
 Requires PHP: 5.4
-Stable tag: 2.9.4
+Stable tag: 3.0.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -229,6 +229,12 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.0.0 (4 December, 2018) =
+
+* **New:** Integrated WC Marketplace plugin: vendor can submit post from their frontend dashboard
+* **New:** Integrated WC Vendors plugin: vendor can submit post from their frontend dashboard
+* **Fix:** Post is getting duplicate while updating
 
 = v2.9.4 (20 November, 2018) =
 

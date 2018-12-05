@@ -230,6 +230,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v3.0.1 (5 December, 2018) =
+
+* **Fix:** Image is duplicating
+
 = v3.0.0 (4 December, 2018) =
 
 * **New:** Integrated WC Marketplace plugin: vendor can submit post from their frontend dashboard

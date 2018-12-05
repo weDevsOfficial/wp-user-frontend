@@ -954,6 +954,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             // delete any previous value
             delete_post_meta( $post_id, $file_input['name'] );
 
+            $image_ids = '';
+
             if ( count( $file_input['value'] ) > 1  ) {
                 $image_ids = maybe_serialize( $file_input['value'] );
             }

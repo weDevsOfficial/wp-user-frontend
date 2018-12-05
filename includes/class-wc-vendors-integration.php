@@ -42,7 +42,7 @@ class WPUF_WC_Vendors_Integration{
         );
 
         $settings[] = array(
-            'title'     => __('Allow Post', 'wp-user-frontend'),
+            'title'     => __('Select Post Form', 'wp-user-frontend'),
             'desc_tip'  => __('Select a post form that will show on the vendor dashboard.', 'wp-user-frontend'),
             'id'        => 'wcvendors_wpuf_allowed_post_form',
             'type'      => 'select',

@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.0.0\n"
+"Project-Id-Version: WP User Frontend 3.0.1\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2018-12-04 10:16:48+00:00\n"
+"POT-Creation-Date: 2018-12-05 07:27:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3639,7 +3639,7 @@ msgstr ""
 msgid "Something went wrong"
 msgstr ""
 
-#: class/frontend-form-post.php:1127
+#: class/frontend-form-post.php:1129
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
@@ -4148,7 +4148,6 @@ msgstr ""
 
 #: includes/class-dokan-integration.php:92
 #: includes/class-wc-vendors-integration.php:37
-#: includes/class-wc-vendors-integration.php:45
 #: includes/class-wcmp-integration.php:37
 msgid "Allow Post"
 msgstr ""
@@ -4158,6 +4157,7 @@ msgid "Allow Vendors to submit post from dashboard area"
 msgstr ""
 
 #: includes/class-dokan-integration.php:100
+#: includes/class-wc-vendors-integration.php:45
 #: includes/class-wcmp-integration.php:47
 msgid "Select Post Form"
 msgstr ""

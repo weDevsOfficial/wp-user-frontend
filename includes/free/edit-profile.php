@@ -241,9 +241,12 @@ class WPUF_Edit_Profile {
         $wpuf_subscription = $current_user->subscription();
         $post_locked       = $current_user->post_locked();
         $lock_reason       = $current_user->lock_reason();
+        $edit_post_locked  = $current_user->edit_post_locked();
+        $edit_lock_reason  = $current_user->edit_post_lock_reason();
 
         if ( is_admin() && current_user_can( 'edit_users' ) ) {
-            $select = ( $post_locked == true ) ? 'yes' : 'no';
+            $select           = ( $post_locked == true ) ? 'yes' : 'no';
+            $edit_post_select = ( $edit_post_locked == true ) ? 'yes' : 'no';
             ?>
             <div class="wpuf-user-post-lock">
                 <h3><?php _e( 'WPUF Post Lock', 'wp-user-frontend' ); ?></h3>
@@ -258,11 +261,27 @@ class WPUF_Edit_Profile {
                             <span class="description"><?php _e( 'Lock user from creating new post.', 'wp-user-frontend' ); ?></span></em>
                         </td>
                     </tr>
-
                     <tr>
                         <th><label for="post-lock"><?php _e( 'Lock Reason:', 'wp-user-frontend' ); ?> </label></th>
                         <td>
                             <input type="text" name="wpuf_lock_cause" id="wpuf_lock_cause" class="regular-text" value="<?php echo esc_attr( $lock_reason ); ?>" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th><label for="post-lock"><?php _e( 'Lock Edit Post:', 'wp-user-frontend' ); ?> </label></th>
+                        <td>
+                            <select name="wpuf_edit_postlock" id="edit-post-lock">
+                                <option value="no"<?php selected( $edit_post_select, 'no' ); ?>>No</option>
+                                <option value="yes"<?php selected( $edit_post_select, 'yes' ); ?>>Yes</option>
+                            </select>
+                            <span class="description"><?php _e( 'Lock user from editing post.', 'wp-user-frontend' ); ?></span></em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="post-lock"><?php _e( 'Edit Post Lock Reason:', 'wp-user-frontend' ); ?> </label></th>
+                        <td>
+                            <input type="text" name="wpuf_edit_post_lock_cause" id="wpuf_edit_post_lock_cause" class="regular-text" value="<?php echo esc_attr( $edit_lock_reason ); ?>" />
                         </td>
                     </tr>
                 </table>
@@ -280,6 +299,8 @@ class WPUF_Edit_Profile {
         if ( is_admin() && current_user_can( 'edit_users' ) ) {
             update_user_meta( $user_id, 'wpuf_postlock', $_POST['wpuf_postlock'] );
             update_user_meta( $user_id, 'wpuf_lock_cause', $_POST['wpuf_lock_cause'] );
+            update_user_meta( $user_id, 'wpuf_edit_postlock', $_POST['wpuf_edit_postlock'] );
+            update_user_meta( $user_id, 'wpuf_edit_post_lock_cause', $_POST['wpuf_edit_post_lock_cause'] );
         }
     }
 

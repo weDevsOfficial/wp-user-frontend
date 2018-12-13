@@ -62,6 +62,24 @@ class WPUF_User {
     }
 
     /**
+     * Check if a user's post edit capability is locked
+     *
+     * @return boolean
+     */
+    public function edit_post_locked() {
+        return 'yes' ==  get_user_meta( $this->id, 'wpuf_edit_postlock', true );
+    }
+
+    /**
+     * Get the edit post lock reason
+     *
+     * @return string
+     */
+    public function edit_post_lock_reason() {
+        return get_user_meta( $this->id, 'wpuf_edit_post_lock_cause', true );
+    }
+
+    /**
      * Handles user subscription
      *
      * @return \WPUF_User_Subscription

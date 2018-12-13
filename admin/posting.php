@@ -16,11 +16,12 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         // meta boxes
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes') );
         add_action( 'add_meta_boxes', array( $this, 'add_meta_box_form_select') );
-
+        add_action( 'add_meta_boxes', array( $this, 'add_meta_box_post_lock') );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_script') );
-
         add_action( 'save_post', array( $this, 'save_meta'), 1, 2 ); // save the custom fields
         add_action( 'save_post', array( $this, 'form_selection_metabox_save' ), 1, 2 ); // save edit form id
+        add_action( 'save_post', array( $this, 'post_lock_metabox_save' ), 1, 2 ); // save post lock option
+        add_action( 'wp_ajax_wpuf_clear_schedule_lock', array($this, 'clear_schedule_lock') );
     }
 
     public static function init() {
@@ -101,7 +102,6 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         }
     }
 
-
     /**
      * Form selection meta box in post types
      *
@@ -127,7 +127,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
             <?php } ?>
         </select>
         <div>
-            <p><a href="https://wedevs.com/docs/wp-user-frontend-pro/tutorials/purpose-of-the-wpuf-form-metabox/" target="_blank"><?php _e( 'Purpose of this metabox', 'wp-user-frontend' ); ?></a></p>
+            <p><a href="https://wedevs.com/docs/wp-user-frontend-pro/tutorials/purpose-of-the-wpuf-form-metabox/" target="_blank"><?php _e( 'Learn more', 'wp-user-frontend' ); ?></a></p>
         </div>
         <?php
     }
@@ -156,6 +156,89 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         }
 
         update_post_meta( $post->ID, '_wpuf_form_id', $_POST['wpuf_form_select'] );
+    }
+
+    /**
+     * Meta box for post lock
+     *
+     * Registers a meta box in public post types to select the desired WPUF
+     * form select box to assign a form id.
+     *
+     * @since 3.0.2
+     *
+     * @return void
+     */
+    function add_meta_box_post_lock() {
+        $post_types = get_post_types( array('public' => true) );
+
+        foreach ($post_types as $post_type) {
+            add_meta_box( 'wpuf-post-lock', __('WPUF Lock User', 'wp-user-frontend'), array($this, 'post_lock_metabox'), $post_type, 'side', 'high' );
+        }
+    }
+
+    /**
+     * Post lock meta box in post types
+     *
+     * Registered via $this->add_meta_box_post_lock()
+     *
+     * @since 3.0.2
+     *
+     * @global object $post
+     */
+    function post_lock_metabox() {
+        global $post;
+
+        $msg                 = '';
+        $edit_post_lock      = get_post_meta( $post->ID, '_wpuf_lock_editing_post', true );
+        $edit_post_lock_time = get_post_meta( $post->ID, '_wpuf_lock_user_editing_post_time', true );
+
+        if( !empty( $edit_post_lock_time ) && $edit_post_lock_time > time() ) {
+            $time         = date( 'Y-m-d H:i:s', $edit_post_lock_time );
+            $local_time   = get_date_from_gmt( $time, get_option('date_format') . ' ' . get_option('time_format') );
+            $msg          = sprintf( __( 'Frontend edit access for this post will be automatically locked after %s, <a id="wpuf_clear_schedule_lock" data="%s" href="#">Clear Schedule Lock</a> Or,', 'wp-user-frontend' ), $local_time, $post->ID );
+        }
+
+        ?>
+
+        <input type="hidden" name="wpuf_lock_editing_post_nonce" value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" />
+
+        <p><?php echo $msg; ?></p>
+
+        <label>
+            <input type="hidden" name="wpuf_lock_post" value="no">
+            <input type="checkbox" name="wpuf_lock_post" value="yes" <?php checked($edit_post_lock, 'yes'); ?>>
+            <?php _e( 'Lock Post', 'wp-user-frontend' ); ?>
+        </label>
+        <p style="margin-top: 10px"><?php _e( 'Lock user from editing this post from the frontend dashboard', 'wp-user-frontend' ); ?></p>
+        <?php
+    }
+
+    /**
+     * Save the lock post option
+     *
+     * @since 3.0.2
+     *
+     * @param int $post_id
+     * @param object $post
+     * @return int|void
+     */
+    function post_lock_metabox_save( $post_id, $post ) {
+        $edit_post_lock_time = isset( $_POST['_wpuf_lock_user_editing_post_time'] ) ? $_POST['_wpuf_lock_user_editing_post_time'] : '';
+
+        if ( !isset($_POST['wpuf_lock_post'])) {
+            return $post->ID;
+        }
+
+        if ( !wp_verify_nonce( $_POST['wpuf_lock_editing_post_nonce'], plugin_basename( __FILE__ ) ) ) {
+            return $post->ID;
+        }
+
+        // Is the user allowed to edit the post or page?
+        if ( !current_user_can( 'edit_post', $post->ID ) ) {
+            return $post->ID;
+        }
+
+        update_post_meta( $post->ID, '_wpuf_lock_editing_post', $_POST['wpuf_lock_post'] );
     }
 
     /**
@@ -428,6 +511,25 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $_POST['wpuf_cf_form_id'] );
 
         WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
+    }
+
+    /**
+     * Clear Schedule lock
+     *
+     * @since 3.0.2
+     */
+    public function clear_schedule_lock() {
+        check_ajax_referer( 'wpuf_nonce', 'nonce' );
+
+        $post_id = isset( $_POST['post_id'] ) ? $_POST['post_id'] : '';
+        if ( !empty( $post_id ) ) {
+            $edit_post_lock_time = get_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', true );
+
+            if ( !empty( $edit_post_lock_time ) ) {
+                update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
+            }
+        }
+        exit;
     }
 
 }

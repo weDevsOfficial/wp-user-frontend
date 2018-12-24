@@ -428,7 +428,19 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         if ( isset( $_POST['wpuf_is_publish_time'] ) ) {
 
             if ( isset( $_POST[$_POST['wpuf_is_publish_time']] ) && !empty( $_POST[$_POST['wpuf_is_publish_time']] ) ) {
-                $postarr['post_date'] = date( 'Y-m-d H:i:s', strtotime( str_replace( array( ':', '/' ), '-', $_POST[$_POST['wpuf_is_publish_time']] ) ) );
+                $date_time = explode(" ", $_POST[$_POST['wpuf_is_publish_time']] );
+
+                if ( !empty ( $date_time[0] ) ) {
+                    $timestamp = strtotime( str_replace( array( '/' ), '-', $date_time[0] ) );
+                }
+
+                if ( !empty ( $date_time[1] ) ) {
+                    $time       = explode(':', $date_time[1] );
+                    $seconds    = ( $time[0] * 60 * 60 ) + ($time[1] * 60);
+                    $timestamp  = $timestamp + $seconds;
+                }
+
+                $postarr['post_date'] = date( 'Y-m-d H:i:s', $timestamp );
             }
         }
 

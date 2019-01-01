@@ -152,6 +152,29 @@ Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the FREE & P
 * Tax in payments
 * Vendor registration template for Dokan, WC Marketplace, WC Vendors
 
+<strong>Premium Modules</strong>
+
+* [BuddyPress Profile](https://wedevs.com/wp-user-frontend-pro/modules/buddypress/)
+* [Campaign Monitor](https://wedevs.com/wp-user-frontend-pro/modules/campaign-monitor/)
+* [Comments Manager](https://wedevs.com/wp-user-frontend-pro/modules/comments-manager/)
+* [ConvertKit](https://wedevs.com/wp-user-frontend-pro/modules/convertkit/)
+* [GetResponse](https://wedevs.com/wp-user-frontend-pro/modules/getresponse/)
+* [HTML Email Templates](https://wedevs.com/wp-user-frontend-pro/modules/html-email-templates/)
+* [MailChimp](https://wedevs.com/wp-user-frontend-pro/modules/mailchimp/)
+* [MailPoet](https://wedevs.com/wp-user-frontend-pro/modules/mailpoet/)
+* [MailPoet 3](https://wedevs.com/wp-user-frontend-pro/modules/mailpoet-3/)
+* [Paid Memberships Pro](https://wedevs.com/wp-user-frontend-pro/modules/paid-membership-pro-integration/)
+* [Private Messaging](https://wedevs.com/wp-user-frontend-pro/modules/private-messaging/)
+* [QR Code Generator](https://wedevs.com/wp-user-frontend-pro/modules/qr-code-generator/)
+* [Reports](https://wedevs.com/wp-user-frontend-pro/modules/reports/)
+* [SMS Notification](https://wedevs.com/wp-user-frontend-pro/modules/sms-notification/)
+* [Social Login & Registration](https://wedevs.com/wp-user-frontend-pro/modules/social-login/)
+* [Stripe Payment](https://wedevs.com/products/plugins/wp-user-frontend-pro/stripe-gateway/)
+* [User Analytics](https://wedevs.com/wp-user-frontend-pro/modules/user-analytics/)
+* [User Directory](https://wedevs.com/wp-user-frontend-pro/modules/user-directory/)
+* [User Activity](https://wedevs.com/wp-user-frontend-pro/modules/user-activity/)
+* [Zapier](https://wedevs.com/wp-user-frontend-pro/modules/zapier/)
+
 Check out the <a href="https://wedevs.com/wp-user-frontend-pro/pricing/">full feature list and pricing plans here.</a> of the Pro version.
 
 = Checkout Our Other Products =

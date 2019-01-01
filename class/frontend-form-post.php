@@ -179,6 +179,24 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' ) . '</div>';
         }
 
+        $edit_post_lock      = get_post_meta( $post_id, '_wpuf_lock_editing_post', true );
+        $edit_post_lock_time = get_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', true );
+
+        if ( $edit_post_lock == 'yes' ) {
+            return '<div class="wpuf-info">' . apply_filters( 'wpuf_edit_post_lock_user_notice', __( 'Your edit access for this post has been locked by an administrator.', 'wp-user-frontend' ) ) . '</div>';
+        }
+
+        if ( !empty( $edit_post_lock_time ) &&  $edit_post_lock_time < time() ) {
+            return '<div class="wpuf-info">' . apply_filters( 'wpuf_edit_post_lock_expire_notice', __( 'Your allocated time for editing this post has been expired.', 'wp-user-frontend' ) ) . '</div>';
+        }
+
+        if ( wpuf_get_user()->edit_post_locked() ) {
+            if ( !empty( wpuf_get_user()->edit_post_lock_reason() ) ) {
+                return '<div class="wpuf-info">' . wpuf_get_user()->edit_post_lock_reason() . '</div>';
+            }
+            return '<div class="wpuf-info">' . apply_filters( 'wpuf_user_edit_post_lock_notice', __( 'Your post edit access has been locked by an administrator.', 'wp-user-frontend' ) ) . '</div>';
+        }
+
         //is editing enabled?
         if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) != 'yes' ) {
             return '<div class="wpuf-info">' . __( 'Post Editing is disabled', 'wp-user-frontend' ) . '</div>';
@@ -410,7 +428,19 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         if ( isset( $_POST['wpuf_is_publish_time'] ) ) {
 
             if ( isset( $_POST[$_POST['wpuf_is_publish_time']] ) && !empty( $_POST[$_POST['wpuf_is_publish_time']] ) ) {
-                $postarr['post_date'] = date( 'Y-m-d H:i:s', strtotime( str_replace( array( ':', '/' ), '-', $_POST[$_POST['wpuf_is_publish_time']] ) ) );
+                $date_time = explode(" ", $_POST[$_POST['wpuf_is_publish_time']] );
+
+                if ( !empty ( $date_time[0] ) ) {
+                    $timestamp = strtotime( str_replace( array( '/' ), '-', $date_time[0] ) );
+                }
+
+                if ( !empty ( $date_time[1] ) ) {
+                    $time       = explode(':', $date_time[1] );
+                    $seconds    = ( $time[0] * 60 * 60 ) + ($time[1] * 60);
+                    $timestamp  = $timestamp + $seconds;
+                }
+
+                $postarr['post_date'] = date( 'Y-m-d H:i:s', $timestamp );
             }
         }
 
@@ -490,6 +520,17 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         }
 
         $post_id = wp_insert_post( $postarr );
+
+        // add _wpuf_lock_editing_post_time meta to
+        // lock user from editing the published post after a certain time
+        if ( !$is_update ) {
+            $lock_edit_post = isset( $form_settings['lock_edit_post'] ) ? floatval( $form_settings['lock_edit_post'] ) : 0;
+
+            if ( $post_id && $lock_edit_post > 0 ) {
+                $lock_edit_post_time    = time() + ( $lock_edit_post * 60 * 60 );
+                update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', $lock_edit_post_time );
+            }
+        }
 
         if ( $post_id ) {
 

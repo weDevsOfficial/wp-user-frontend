@@ -811,6 +811,17 @@ function wpuf_show_custom_fields( $content ) {
                 case 'map':
                     ob_start();
                     wpuf_shortcode_map_post($attr['name'], $post->ID);
+
+                    if ( isset( $attr['directions'] ) && $attr['directions'] ) {
+                        $location   = get_post_meta( $post->ID, $attr['name'] , true );
+                        $def_lat    = isset( $location['lat'] ) ? $location['lat'] : 40.7143528;
+                        $def_long   = isset( $location['lng'] ) ? $location['lng'] : -74.0059731;
+                    ?>
+                        <div>
+                            <a class="btn btn-brand btn-sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=<?php echo $def_lat; ?>,<?php echo $def_long; ?>" target="_blank" rel="nofollow external"><?php _e( 'Directions »', 'wp-user-frontend' ); ?></a>
+                        </div>
+                    <?php }
+
                     $html .= ob_get_clean();
                     break;
 

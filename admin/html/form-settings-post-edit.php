@@ -6,6 +6,7 @@ $page_id              = isset( $form_settings['edit_page_id'] ) ? $form_settings
 $url                  = isset( $form_settings['edit_url'] ) ? $form_settings['edit_url'] : '';
 $update_text          = isset( $form_settings['update_text'] ) ? $form_settings['update_text'] : __( 'Update', 'wp-user-frontend' );
 $subscription         = isset( $form_settings['subscription'] ) ? $form_settings['subscription'] : null;
+$lock_edit_post       = isset( $form_settings['lock_edit_post'] ) ? $form_settings['lock_edit_post'] : '';
 ?>
 <table class="form-table">
 
@@ -91,6 +92,17 @@ $subscription         = isset( $form_settings['subscription'] ) ? $form_settings
         <th><?php _e( 'Update Post Button text', 'wp-user-frontend' ); ?></th>
         <td>
             <input type="text" name="wpuf_settings[update_text]" value="<?php echo esc_attr( $update_text ); ?>">
+        </td>
+    </tr>
+
+    <tr class="lock-edit-post">
+        <th><?php _e( 'Lock User From Editing After', 'wp-user-frontend' ); ?></th>
+        <td>
+            <input type="number" name="wpuf_settings[lock_edit_post]" id="lock_edit_post" value="<?php echo $lock_edit_post; ?>">
+            <span><?php _e( 'hours', 'wp-user-frontend' ); ?></span>
+            <p class="description">
+                <?php _e( 'After how many hours user will be locked from editing the submitted post.', 'wp-user-frontend' ) ?>
+            </p>
         </td>
     </tr>
 </table>

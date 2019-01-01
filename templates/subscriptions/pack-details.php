@@ -20,8 +20,7 @@
     <div class="wpuf-sub-amount">
 
         <?php if ( $billing_amount != '0.00' ) { ?>
-            <sup class="wpuf-sub-symbol"><?php echo $details_meta['symbol']; ?></sup>
-            <span class="wpuf-sub-cost"><?php echo $billing_amount; ?></span>
+            <span class="wpuf-sub-cost"><?php echo wpuf_format_price( $billing_amount ); ?></span>
         <?php } else { ?>
             <span class="wpuf-sub-cost"><?php _e( 'Free', 'wp-user-frontend' ); ?></span>
         <?php } ?>

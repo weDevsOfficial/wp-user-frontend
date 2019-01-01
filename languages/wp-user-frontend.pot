@@ -1,14 +1,14 @@
-# Copyright (C) 2018 Tareq Hasan
+# Copyright (C) 2019 Tareq Hasan
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.0.1\n"
+"Project-Id-Version: WP User Frontend 3.0.2\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2018-12-05 07:27:48+00:00\n"
+"POT-Creation-Date: 2019-01-01 06:09:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
@@ -83,6 +83,10 @@ msgstr ""
 msgid "Number of items per page:"
 msgstr ""
 
+#: admin/class-admin-settings.php:408
+msgid "Schedule lock has been cleared"
+msgstr ""
+
 #: admin/class-admin-subscription.php:60
 msgid "Pack Description"
 msgstr ""
@@ -139,7 +143,7 @@ msgstr ""
 #: admin/class-admin-subscription.php:216
 #: admin/class-admin-subscription.php:570 class/frontend-account.php:244
 #: class/subscription.php:866 includes/class-user-subscription.php:307
-#: templates/subscriptions/pack-details.php:26
+#: templates/subscriptions/pack-details.php:25
 msgid "Free"
 msgstr ""
 
@@ -334,7 +338,7 @@ msgstr ""
 
 #: admin/class-tools.php:39 admin/class-tools.php:95
 #: admin/post-forms-list-table.php:43 class/transactions-list-table.php:86
-#: includes/class-list-table-subscribers.php:126 wpuf-functions.php:2608
+#: includes/class-list-table-subscribers.php:126 wpuf-functions.php:2619
 msgid "All"
 msgstr ""
 
@@ -554,12 +558,12 @@ msgid "Are you sure you want to delete this field?"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:326
-#: admin/posting.php:69 class/asset-loader.php:55 wpuf.php:544
+#: admin/posting.php:70 class/asset-loader.php:55 wpuf.php:544
 msgid "Yes, delete it"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:327
-#: admin/posting.php:70 class/asset-loader.php:56 wpuf.php:545
+#: admin/posting.php:71 class/asset-loader.php:56 wpuf.php:545
 msgid "No, cancel it"
 msgstr ""
 
@@ -1462,64 +1466,76 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:13
+#: admin/html/form-settings-post-edit.php:14
 msgid "Set Post Status to"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:23
+#: admin/html/form-settings-post-edit.php:24
 msgid "No Change"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:30
+#: admin/html/form-settings-post-edit.php:31
 #: admin/html/form-settings-post.php:132 includes/free/form-element.php:376
 msgid "Redirect To"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:35
+#: admin/html/form-settings-post-edit.php:36
 #: admin/html/form-settings-post.php:137
 msgid "Newly created post"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:36
+#: admin/html/form-settings-post-edit.php:37
 #: admin/html/form-settings-post.php:138 includes/free/form-element.php:381
 msgid "Same Page"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:37
+#: admin/html/form-settings-post-edit.php:38
 #: admin/html/form-settings-post.php:139 includes/free/form-element.php:382
 msgid "To a page"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:38
+#: admin/html/form-settings-post-edit.php:39
 #: admin/html/form-settings-post.php:140 includes/free/form-element.php:383
 msgid "To a custom URL"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:47
+#: admin/html/form-settings-post-edit.php:48
 #: admin/html/form-settings-post.php:149 includes/free/form-element.php:392
 msgid "After successfull submit, where the page will redirect to"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:53
+#: admin/html/form-settings-post-edit.php:54
 msgid "Post Update Message"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:60
+#: admin/html/form-settings-post-edit.php:61
 #: admin/html/form-settings-post.php:162 includes/free/form-element.php:412
 msgid "Page"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:75
+#: admin/html/form-settings-post-edit.php:76
 #: admin/html/form-settings-post.php:177 includes/free/form-element.php:427
 msgid "Custom URL"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:82
+#: admin/html/form-settings-post-edit.php:83
 msgid "Subscription Title"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:91
+#: admin/html/form-settings-post-edit.php:92
 msgid "Update Post Button text"
+msgstr ""
+
+#: admin/html/form-settings-post-edit.php:99
+msgid "Lock User From Editing After"
+msgstr ""
+
+#: admin/html/form-settings-post-edit.php:102
+msgid "hours"
+msgstr ""
+
+#: admin/html/form-settings-post-edit.php:104
+msgid "After how many hours user will be locked from editing the submitted post."
 msgstr ""
 
 #: admin/html/form-settings-post.php:7 class/post-form-templates/post.php:118
@@ -2458,7 +2474,7 @@ msgid ""
 msgstr ""
 
 #: admin/installer.php:77 admin/settings-options.php:23
-#: includes/free/admin/shortcode-button.php:82 wpuf-functions.php:1621
+#: includes/free/admin/shortcode-button.php:82 wpuf-functions.php:1632
 msgid "Dashboard"
 msgstr ""
 
@@ -2474,7 +2490,7 @@ msgstr ""
 #: admin/installer.php:88 class/subscription.php:356 class/subscription.php:376
 #: class/subscription.php:377 class/subscription.php:378
 #: includes/free/admin/shortcode-button.php:102
-#: templates/dashboard/dashboard.php:18 wpuf-functions.php:1624
+#: templates/dashboard/dashboard.php:18 wpuf-functions.php:1635
 msgid "Subscription"
 msgstr ""
 
@@ -2569,40 +2585,59 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: admin/posting.php:68 class/asset-loader.php:54 class/render-form.php:1698
+#: admin/posting.php:69 class/asset-loader.php:54 class/render-form.php:1698
 #: wpuf.php:543
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:76 class/asset-loader.php:62 wpuf.php:553
+#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:553
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:79 class/asset-loader.php:65 wpuf.php:559
+#: admin/posting.php:80 class/asset-loader.php:65 wpuf.php:559
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:80 class/asset-loader.php:66 wpuf.php:560
+#: admin/posting.php:81 class/asset-loader.php:66 wpuf.php:560
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:81 class/asset-loader.php:67 wpuf.php:561
+#: admin/posting.php:82 class/asset-loader.php:67 wpuf.php:561
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
-#: admin/posting.php:100
+#: admin/posting.php:101
 msgid "WPUF Form"
 msgstr ""
 
 #: admin/posting.php:130
-msgid "Purpose of this metabox"
+msgid "Learn more"
 msgstr ""
 
-#: admin/posting.php:174
+#: admin/posting.php:175
+msgid "WPUF Lock User"
+msgstr ""
+
+#: admin/posting.php:198
+msgid ""
+"Frontend edit access for this post will be automatically locked after %s, "
+"<a id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Clear Schedule "
+"Lock</a> Or,"
+msgstr ""
+
+#: admin/posting.php:210
+msgid "Lock Post"
+msgstr ""
+
+#: admin/posting.php:212
+msgid "Lock user from editing this post from the frontend dashboard"
+msgstr ""
+
+#: admin/posting.php:257
 msgid "WPUF Custom Fields"
 msgstr ""
 
-#: admin/posting.php:225
+#: admin/posting.php:308
 msgid "No custom fields found."
 msgstr ""
 
@@ -3588,35 +3623,47 @@ msgstr ""
 msgid "You are not logged in"
 msgstr ""
 
-#: class/frontend-form-post.php:179 class/frontend-form-post.php:190
+#: class/frontend-form-post.php:179 class/frontend-form-post.php:208
 msgid "Invalid post"
 msgstr ""
 
-#: class/frontend-form-post.php:184
+#: class/frontend-form-post.php:186
+msgid "Your edit access for this post has been locked by an administrator."
+msgstr ""
+
+#: class/frontend-form-post.php:190
+msgid "Your allocated time for editing this post has been expired."
+msgstr ""
+
+#: class/frontend-form-post.php:197
+msgid "Your post edit access has been locked by an administrator."
+msgstr ""
+
+#: class/frontend-form-post.php:202
 msgid "Post Editing is disabled"
 msgstr ""
 
-#: class/frontend-form-post.php:195
+#: class/frontend-form-post.php:213
 msgid "You are not allowed to edit"
 msgstr ""
 
-#: class/frontend-form-post.php:207
+#: class/frontend-form-post.php:225
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: class/frontend-form-post.php:213
+#: class/frontend-form-post.php:231
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: class/frontend-form-post.php:286 includes/free/class-login.php:394
+#: class/frontend-form-post.php:304 includes/free/class-login.php:394
 msgid "Empty reCaptcha Field"
 msgstr ""
 
-#: class/frontend-form-post.php:317
+#: class/frontend-form-post.php:335
 msgid "Invalid email address."
 msgstr ""
 
-#: class/frontend-form-post.php:326
+#: class/frontend-form-post.php:344
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -3625,21 +3672,21 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: class/frontend-form-post.php:375
+#: class/frontend-form-post.php:393
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
 
-#: class/frontend-form-post.php:691 class/frontend-form-post.php:698
+#: class/frontend-form-post.php:732 class/frontend-form-post.php:739
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
 msgstr ""
 
-#: class/frontend-form-post.php:751
+#: class/frontend-form-post.php:792
 msgid "Something went wrong"
 msgstr ""
 
-#: class/frontend-form-post.php:1129
+#: class/frontend-form-post.php:1170
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
@@ -3664,7 +3711,7 @@ msgid "You already have activated a free package previously."
 msgstr ""
 
 #: class/payment.php:139 includes/class-customizer.php:59
-#: wpuf-functions.php:1625
+#: wpuf-functions.php:1636
 msgid "Billing Address"
 msgstr ""
 
@@ -4142,7 +4189,7 @@ msgstr ""
 
 #: includes/class-dokan-integration.php:37
 #: includes/class-wc-vendors-integration.php:109
-#: templates/dashboard/dashboard.php:14 wpuf-functions.php:1622
+#: templates/dashboard/dashboard.php:14 wpuf-functions.php:1633
 msgid "Posts"
 msgstr ""
 
@@ -5020,20 +5067,32 @@ msgstr ""
 msgid "Update Profile"
 msgstr ""
 
-#: includes/free/edit-profile.php:249
+#: includes/free/edit-profile.php:252
 msgid "WPUF Post Lock"
 msgstr ""
 
-#: includes/free/edit-profile.php:252
+#: includes/free/edit-profile.php:255
 msgid "Lock Post:"
 msgstr ""
 
-#: includes/free/edit-profile.php:258
+#: includes/free/edit-profile.php:261
 msgid "Lock user from creating new post."
 msgstr ""
 
-#: includes/free/edit-profile.php:263
+#: includes/free/edit-profile.php:265
 msgid "Lock Reason:"
+msgstr ""
+
+#: includes/free/edit-profile.php:272
+msgid "Lock Edit Post:"
+msgstr ""
+
+#: includes/free/edit-profile.php:278
+msgid "Lock user from editing post."
+msgstr ""
+
+#: includes/free/edit-profile.php:282
+msgid "Edit Post Lock Reason:"
 msgstr ""
 
 #: includes/free/edit-user.php:23
@@ -5724,215 +5783,219 @@ msgstr ""
 msgid "CSV"
 msgstr ""
 
-#: wpuf-functions.php:1623
+#: wpuf-functions.php:821
+msgid "Directions »"
+msgstr ""
+
+#: wpuf-functions.php:1634
 msgid "Edit Profile"
 msgstr ""
 
-#: wpuf-functions.php:1730
+#: wpuf-functions.php:1741
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:1731
+#: wpuf-functions.php:1742
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1732
+#: wpuf-functions.php:1743
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:1733
+#: wpuf-functions.php:1744
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:1734
+#: wpuf-functions.php:1745
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:1735
+#: wpuf-functions.php:1746
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:1736
+#: wpuf-functions.php:1747
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1737
+#: wpuf-functions.php:1748
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:1738
+#: wpuf-functions.php:1749
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:1739
+#: wpuf-functions.php:1750
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:1740
+#: wpuf-functions.php:1751
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:1741
+#: wpuf-functions.php:1752
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:1742
+#: wpuf-functions.php:1753
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1743
+#: wpuf-functions.php:1754
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:1744
+#: wpuf-functions.php:1755
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:1745
+#: wpuf-functions.php:1756
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1746
+#: wpuf-functions.php:1757
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:1747
+#: wpuf-functions.php:1758
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:1748
+#: wpuf-functions.php:1759
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:1749
+#: wpuf-functions.php:1760
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:1750
+#: wpuf-functions.php:1761
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1751
+#: wpuf-functions.php:1762
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1752
+#: wpuf-functions.php:1763
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:1753
+#: wpuf-functions.php:1764
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:1754
+#: wpuf-functions.php:1765
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:1755
+#: wpuf-functions.php:1766
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:1756
+#: wpuf-functions.php:1767
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:1757
+#: wpuf-functions.php:1768
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1758
+#: wpuf-functions.php:1769
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:1759
+#: wpuf-functions.php:1770
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:1760
+#: wpuf-functions.php:1771
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1761
+#: wpuf-functions.php:1772
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:1762
+#: wpuf-functions.php:1773
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:1763
+#: wpuf-functions.php:1774
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1764
+#: wpuf-functions.php:1775
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:1765
+#: wpuf-functions.php:1776
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:1766
+#: wpuf-functions.php:1777
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:1767
+#: wpuf-functions.php:1778
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:1768
+#: wpuf-functions.php:1779
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:1769
+#: wpuf-functions.php:1780
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:1770
+#: wpuf-functions.php:1781
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:1771
+#: wpuf-functions.php:1782
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1772
+#: wpuf-functions.php:1783
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:1773
+#: wpuf-functions.php:1784
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:1774
+#: wpuf-functions.php:1785
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:1775
+#: wpuf-functions.php:1786
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1776
+#: wpuf-functions.php:1787
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:1777
+#: wpuf-functions.php:1788
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:1778
+#: wpuf-functions.php:1789
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1779
+#: wpuf-functions.php:1790
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:1780
+#: wpuf-functions.php:1791
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:2609
+#: wpuf-functions.php:2620
 msgid "None"
 msgstr ""
 
@@ -6038,7 +6101,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: wpuf-functions.php:1234
+#: wpuf-functions.php:1245
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

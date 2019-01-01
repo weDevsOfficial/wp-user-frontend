@@ -3,9 +3,9 @@ Contributors: tareq1988, sk.shaikat, rabbii, rafsuntaskin, itowhid06, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
-Tested up to: 4.9.8
+Tested up to: 5.0.2
 Requires PHP: 5.4
-Stable tag: 3.0.0
+Stable tag: 3.0.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -252,6 +252,13 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.0.2 (1 January, 2019) =
+
+* **Feature:** Added post lock feature based on posts and user
+* **Fix:** 'show directions' link doesn't show with the google map on submitted post
+* **Fix:** Subscription pack price not formatting according to the settings
+* **Fix:** Post date is not updating when enable time input option for date field
 
 = v3.0.1 (5 December, 2018) =
 

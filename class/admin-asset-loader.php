@@ -47,11 +47,9 @@ class WPUF_Admin_Assets {
         require_once WPUF_ROOT . '/includes/free/prompt.php';
 
         $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', array(
-            // 'i18n'              => $this->i18n(),
             'post'              => $post,
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
-            // 'panel_sections'    => $this->get_panel_sections(),
-            'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
+            'field_settings'    => wpuf()->fields->get_js_settings(),
             'notifications'     => wpuf_get_form_notifications( $post->ID ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
             'site_url'          => site_url('/'),

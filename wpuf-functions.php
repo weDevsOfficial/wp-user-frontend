@@ -2991,6 +2991,10 @@ function wpuf_show_form_schedule_message( $form_id ) {
         $end_time     = !empty( $form_settings['schedule_end'] ) ? strtotime( $form_settings['schedule_end'] ) : 0;
         $current_time = current_time( 'timestamp' );
 
+        if ( $current_time >= $start_time  && $current_time <= $end_time)  {
+            return ;
+        }
+
         // too early?
         if ( $current_time < $start_time ) {
             echo '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>';
@@ -2998,11 +3002,11 @@ function wpuf_show_form_schedule_message( $form_id ) {
             echo '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>';
         }
         ?>
-        <script>
-            jQuery( function($) {
-                $(".wpuf-submit-button").attr("disabled", "disabled");
-            });
-        </script>
+            <script>
+                jQuery( function($) {
+                    $(".wpuf-submit-button").attr("disabled", "disabled");
+                });
+            </script>
         <?php
         return;
     }

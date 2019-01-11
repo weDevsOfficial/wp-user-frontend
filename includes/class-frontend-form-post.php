@@ -197,6 +197,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
 
         $post_id = wp_insert_post( $postarr );
 
+        // add post revision when post edit from the frontend
+        wpuf_frontend_post_revision( $post_id, $this->form_settings );
+
         if ( $post_id ) {
 
             self::update_post_meta( $meta_vars, $post_id );
@@ -387,6 +390,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
         }
 
         $post_id = wp_insert_post( $postarr, $wp_error = false );
+
+        // add post revision when post edit from the frontend
+        wpuf_frontend_post_revision( $post_id, $this->form_settings );
 
         // add _wpuf_lock_editing_post_time meta to
         // lock user from editing the published post after a certain time

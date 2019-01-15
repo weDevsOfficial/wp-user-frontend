@@ -263,7 +263,7 @@ class WPUF_Field_Manager {
                 continue;
             }
 
-            if( $this->check_field_visibility( $field ) ){
+            if( $this->check_field_visibility( $field ) ) {
 
                 if ( is_object( $field_object ) ) {
                     $field_object->render( $field, $form_id,$type , $post_id );
@@ -274,15 +274,13 @@ class WPUF_Field_Manager {
         }
     }
 
-
-
     /**
      * Check field  Visibility
      *
      * @param array  $form_field
      *
      * @return boolean
-     */
+     **/
     public function check_field_visibility( &$form_field ) {
 
         $show_field = true;
@@ -309,14 +307,13 @@ class WPUF_Field_Manager {
                         $show_field = true;
                     } else {
                         foreach ( $visibility_choices as $key => $choice ) {
-                            if( current_user_can( $choice ) ) {
+                            if ( current_user_can( $choice ) ) {
                                 $show_field = true;
                                 break;
                             }
                             continue;
                         }
                     }
-
                 }
 
                 if ( $visibility_selected == 'subscribed_users' && is_user_logged_in() ) {
@@ -325,7 +322,7 @@ class WPUF_Field_Manager {
 
                     if ( empty( $visibility_choices ) && !empty( $user_pack ) ) {
                         $show_field = true;
-                    } elseif( !empty( $user_pack ) && !empty( $visibility_choices ) ) {
+                    } elseif ( !empty( $user_pack ) && !empty( $visibility_choices ) ) {
 
                         foreach ( $visibility_choices as $pack => $id ) {
                             if ( $user_pack['pack_id'] == $id ) {
@@ -356,6 +353,7 @@ class WPUF_Field_Manager {
         if ( array_key_exists( $field_type, $this->get_fields() ) ) {
             return $this->fields[ $field_type ];
         }
+
         return false;
     }
 }

@@ -932,7 +932,7 @@ class WPUF_Simple_Login {
         if ( $this->login_errors ) {
             foreach ($this->login_errors as $error) {
                 echo '<div class="wpuf-error">';
-                _e( $error,'wp-user-frontend' );
+                _e( apply_filters( 'login_errors', $error),'wp-user-frontend' );
                 echo '</div>';
             }
         }

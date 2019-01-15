@@ -592,7 +592,7 @@ final class WP_User_Frontend {
      * @since 2.2.3
      * @return void
      */
-    function show_admin_bar() {
+    function show_admin_bar($val) {
 
         if ( !is_user_logged_in() ) {
             return false;
@@ -605,7 +605,7 @@ final class WP_User_Frontend {
             return false;
         }
 
-        return true;
+        return $val;
     }
 
     /**

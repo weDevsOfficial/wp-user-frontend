@@ -740,8 +740,10 @@ class WPUF_Simple_Login {
             return;
         }
 
-        $user_id = intval( $_GET['id'] );
-        $user    =  new WPUF_User( $user_id );
+        $user_id          = intval( $_GET['id'] );
+        $user             =  new WPUF_User( $user_id );
+        $wpuf_user_active = get_user_meta( $user_id, '_wpuf_user_active', true );
+        $wpuf_user_status = get_user_meta( $user_id, 'wpuf_user_status', true );
 
         if ( !$user ) {
             wpuf()->login->add_error( 'Invalid User activation url' );
@@ -763,15 +765,13 @@ class WPUF_Simple_Login {
         $user->mark_verified();
         $user->remove_activation_key();
 
-        $register_link_override = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
+        $message = __( "Your account has been activated", "wp-user-frontend" );
 
-        if ( $register_link_override == 'on' ) {
-            wp_clear_auth_cookie();
-            wp_set_current_user( $user_id );
-            wp_set_auth_cookie( $user_id );
+        if ( $wpuf_user_status != "approved" ) {
+            $message = __( "Your account has been verified , but you can't login until manually approved your account by an administrator.", "wp-user-frontend" );
         }
 
-        wpuf()->login->add_message( __( 'Your account has been activated' , 'wp-user-frontend') );
+        wpuf()->login->add_message( $message );
 
         // show activation message
         add_filter( 'wp_login_errors', array( $this, 'user_activation_message' ) );
@@ -824,7 +824,7 @@ class WPUF_Simple_Login {
 
             wp_mail( $user_email, $subject, $message );
         }
-
+        add_filter('redirect_canonical', '__return_false');
         do_action( 'wpuf_user_activated', $user_id );
     }
 

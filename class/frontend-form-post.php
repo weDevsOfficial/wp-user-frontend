@@ -9,23 +9,23 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
     function __construct() {
 
-        add_shortcode( 'wpuf_form', array( $this, 'add_post_shortcode' ) );
-        add_shortcode( 'wpuf_edit', array( $this, 'edit_post_shortcode' ) );
+        // add_shortcode( 'wpuf_form', array( $this, 'add_post_shortcode' ) );
+        // add_shortcode( 'wpuf_edit', array( $this, 'edit_post_shortcode' ) );
 
-        // ajax requests
-        add_action( 'wp_ajax_wpuf_submit_post', array( $this, 'submit_post' ) );
-        add_action( 'wp_ajax_nopriv_wpuf_submit_post', array( $this, 'submit_post' ) );
-        add_action( 'wp_ajax_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
-        add_action( 'wp_ajax_nopriv_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
+        // // ajax requests
+        // add_action( 'wp_ajax_wpuf_submit_post', array( $this, 'submit_post' ) );
+        // add_action( 'wp_ajax_nopriv_wpuf_submit_post', array( $this, 'submit_post' ) );
+        // add_action( 'wp_ajax_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
+        // add_action( 'wp_ajax_nopriv_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
 
-        // draft
-        add_action( 'wp_ajax_wpuf_draft_post', array( $this, 'draft_post' ) );
+        // // draft
+        // add_action( 'wp_ajax_wpuf_draft_post', array( $this, 'draft_post' ) );
 
-        // guest post hook
-        add_action( 'init', array( $this, 'publish_guest_post' ) );
+        // // guest post hook
+        // add_action( 'init', array( $this, 'publish_guest_post' ) );
 
-        // form preview
-        add_action( 'wp_ajax_wpuf_form_preview', array( $this, 'preview_form' ) );
+        // // form preview
+        // add_action( 'wp_ajax_wpuf_form_preview', array( $this, 'preview_form' ) );
     }
 
     public static function init() {

@@ -139,8 +139,8 @@ class WPUF_Admin_Form_Builder {
             'i18n'              => $this->i18n(),
             'post'              => $post,
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
-            'panel_sections'    => $this->get_panel_sections(),
-            'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
+            'panel_sections'    => wpuf()->fields->get_field_groups(),
+            'field_settings'    => wpuf()->fields->get_js_settings(),
             'notifications'     => wpuf_get_form_notifications( $post->ID ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
             'site_url'          => site_url('/'),
@@ -246,70 +246,6 @@ class WPUF_Admin_Form_Builder {
         $forms = get_posts( array( 'post_type' => $post_type, 'post_status' => 'any' ) );
 
         include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
-    }
-
-    /**
-     * Add Fields panel sections
-     *
-     * @since 2.5
-     *
-     * @return array
-     */
-    private function get_panel_sections() {
-        $before_custom_fields = apply_filters( 'wpuf-form-builder-fields-section-before', array() );
-
-        $sections = array_merge( $before_custom_fields, $this->get_custom_fields() );
-        $sections = array_merge( $sections, $this->get_others_fields() );
-
-        $after_custom_fields = apply_filters( 'wpuf-form-builder-fields-section-after', array() );
-
-        $sections = array_merge( $sections, $after_custom_fields );
-
-        return $sections;
-    }
-
-    /**
-     * Custom field section
-     *
-     * @since 2.5
-     *
-     * @return array
-     */
-    private function get_custom_fields() {
-        $fields = apply_filters( 'wpuf-form-builder-fields-custom-fields', array(
-            'text_field', 'textarea_field', 'dropdown_field', 'multiple_select',
-            'radio_field', 'checkbox_field', 'website_url', 'email_address',
-            'custom_hidden_field', 'image_upload'
-        ) );
-
-        return array(
-            array(
-                'title'     => __( 'Custom Fields', 'wp-user-frontend' ),
-                'id'        => 'custom-fields',
-                'fields'    => $fields
-            )
-        );
-    }
-
-    /**
-     * Others field section
-     *
-     * @since 2.5
-     *
-     * @return array
-     */
-    private function get_others_fields() {
-        $fields = apply_filters( 'wpuf-form-builder-fields-others-fields', array(
-            'section_break', 'custom_html', 'recaptcha'
-        ) );
-
-        return array(
-            array(
-                'title'     => __( 'Others', 'wp-user-frontend' ),
-                'id'        => 'others',
-                'fields'    => $fields
-            )
-        );
     }
 
     /**

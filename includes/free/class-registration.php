@@ -258,6 +258,39 @@ class WPUF_Registration {
             }
 
             $user = wp_insert_user( $userdata );
+
+            if ( is_wp_error( $user ) ) {
+                    $this->registration_errors[] = $user->get_error_message();
+                    return;
+            } else {
+
+                $wpuf_user  = new WP_User( $user );
+                $user_login = stripslashes( $wpuf_user->user_login );
+                $user_email = stripslashes( $wpuf_user->user_email );
+                $blogname   = wp_specialchars_decode( get_option('blogname'), ENT_QUOTES );
+
+                $message = sprintf(__('New user registration on your site %s:'), get_option('blogname')) . "\r\n\r\n";
+                $message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
+                $message .= sprintf(__('E-mail: %s'), $user_email) . "\r\n";
+                $subject = "New User Registration";
+
+                $subject = apply_filters( 'wpuf_default_reg_admin_mail_subject', $subject );
+                $message = apply_filters( 'wpuf_default_reg_admin_mail_body', $message );
+
+                wp_mail(get_option('admin_email'), sprintf(__('[%s] %s'), $blogname, $subject ), $message);
+
+                $message = sprintf(__('Hi, %s'), $user_login) . "\r\n";
+                $message .= "Congrats! You are Successfully registered to ". $blogname ."\r\n\r\n";
+                $message .= "Thanks";
+                $subject = "Thank you for registering";
+
+                $subject = apply_filters( 'wpuf_default_reg_mail_subject', $subject );
+                $message = apply_filters( 'wpuf_default_reg_mail_body', $message );
+
+                wp_mail( $user_email, sprintf(__('[%s] %s'), $blogname, $subject ), $message );
+
+            }
+
             $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
 
             if ( $autologin_after_registration == 'on' ) {

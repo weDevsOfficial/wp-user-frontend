@@ -21,12 +21,6 @@ class WPUF_Frontend_Dashboard {
      * @since 0.1
      */
     function shortcode( $atts ) {
-        // wpuf()->plugin_scripts();
-        ?>
-        <style>
-            <?php //echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
-        </style>
-        <?php
         $attributes =  shortcode_atts( array( 'form_id'=>'off', 'post_type' => 'post', 'category' =>'off', 'featured_image' => 'default', 'meta' => 'off', 'excerpt' =>'off', 'payment_column' => 'on' ), $atts ) ;
         ob_start();
 

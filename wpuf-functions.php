@@ -700,11 +700,7 @@ function wpuf_show_custom_fields( $content ) {
                     if ( isset( $attr['wpuf_cond']['cond_option'][$field_key] ) ) {
 
                         if ( is_array( $cond_field_value ) ) {
-
-                            if ( !in_array( $attr['wpuf_cond']['cond_option'][$field_key], $cond_field_value ) ) {
-                                $return_for_no_cond = 1;
-                            }
-
+                            continue;
                         } else {
 
                             if ( $attr['wpuf_cond']['cond_option'][$field_key] != $cond_field_value ) {

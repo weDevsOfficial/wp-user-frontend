@@ -441,11 +441,10 @@ final class WP_User_Frontend {
             return;
         }
 
-                $offer_msg = __( '<p>
-                                        <strong class="highlight-text" style="font-size: 18px"> UPDATE REQUIRED </strong><br>
-                                        <strong class="highlight-text" style="font-size: 16px"> WP User Frontend Pro </strong> is
-                                        <strong class="highlight-text" style="font-size: 16px"> not working </strong> because you are using an old version  of WP User Frontend Pro. Please Update WPUF Pro to >=v3.0 to work with the latest version of WP User Frontend
-                                    </p>', 'wp-user-frontend' );
+        $offer_msg = __( '<p style="font-size: 13px">
+                            <strong class="highlight-text" style="font-size: 18px; display:block; margin-bottom:8px"> UPDATE REQUIRED </strong>
+                            WP User Frontend Pro is not working because you are using an old version of WP User Frontend Pro. Please update <strong>WPUF Pro</strong> to >= <strong>v3.1.0</strong> to work with the latest version of WP User Frontend
+                        </p>', 'wp-user-frontend' );
 
         ?>
             <div class="notice is-dismissible" id="wpuf-update-offer-notice">
@@ -458,7 +457,7 @@ final class WP_User_Frontend {
                             <td class="message-container">
                                 <?php echo $offer_msg; ?>
                             </td>
-                            <td><a href="https://wedevs.com/account/downloads/" class="button button-primary promo-btn" target="_blank"><?php _e( 'Update WP User Frontend Pro NOW', 'wp-user-frontend' ); ?></a></td>
+                            <td><a href="https://wedevs.com/account/downloads/" class="button button-primary promo-btn" target="_blank"><?php _e( 'Update WP User Frontend Pro Now', 'wp-user-frontend' ); ?></a></td>
                         </tr>
                     </tbody>
                 </table>

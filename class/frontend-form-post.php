@@ -191,7 +191,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         }
 
         if ( wpuf_get_user()->edit_post_locked() ) {
-            if ( !empty( wpuf_get_user()->edit_post_lock_reason() ) ) {
+            if ( wpuf_get_user()->edit_post_lock_reason() ) {
                 return '<div class="wpuf-info">' . wpuf_get_user()->edit_post_lock_reason() . '</div>';
             }
             return '<div class="wpuf-info">' . apply_filters( 'wpuf_user_edit_post_lock_notice', __( 'Your post edit access has been locked by an administrator.', 'wp-user-frontend' ) ) . '</div>';

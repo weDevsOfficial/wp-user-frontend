@@ -309,8 +309,9 @@ Edit URL: %editlink%',
      */
     public function update_gallery_images( $post_id ) {
         $images = get_post_meta( $post_id, '_product_image' );
+
         if ( !empty( $images ) ) {
-            if ( is_array( $images ) ) {
+            if ( is_serialized( $images[0] ) ) {
                 $images = maybe_unserialize( $images[0] );
             }
             update_post_meta( $post_id, '_product_image_gallery', implode( ',', $images ) );

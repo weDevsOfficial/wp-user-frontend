@@ -9,19 +9,21 @@
 ?></p>
 
 <p><?php
-    $tabs = array(
-        'posts'  => array(
-            'label' => __( 'Posts', 'wp-user-frontend' ),
-            'url'   => esc_url( add_query_arg( array( 'section' => 'posts' ), get_permalink() ) ),
-        ),
-        'subscription'  => array(
-            'label' => __( 'Subscription', 'wp-user-frontend' ),
-            'url'   => esc_url( add_query_arg( array( 'section' => 'subscription' ), get_permalink() ) ),
-        ),
-        'edit-profile'  => array(
-            'label' => __( 'edit your password and profile', 'wp-user-frontend' ),
-            'url'   => esc_url( add_query_arg( array( 'section' => 'edit-profile' ), get_permalink() ) ),
-        ),
+
+    $tabs = apply_filters( 'wpuf_my_account_tab_links', array(
+            'posts'  => array(
+                'label' => __( 'Posts', 'wp-user-frontend' ),
+                'url'   => esc_url( add_query_arg( array( 'section' => 'posts' ), get_permalink() ) ),
+            ),
+            'subscription'  => array(
+                'label' => __( 'Subscription', 'wp-user-frontend' ),
+                'url'   => esc_url( add_query_arg( array( 'section' => 'subscription' ), get_permalink() ) ),
+            ),
+            'edit-profile'  => array(
+                'label' => __( 'edit your password and profile', 'wp-user-frontend' ),
+                'url'   => esc_url( add_query_arg( array( 'section' => 'edit-profile' ), get_permalink() ) ),
+            ),
+        )
     );
 
     if( 'off' == wpuf_get_option( 'show_subscriptions', 'wpuf_my_account', 'on' ) ) {

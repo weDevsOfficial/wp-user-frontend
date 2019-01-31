@@ -202,7 +202,7 @@ class WPUF_Form_Field_Step extends WPUF_Form_Field_Pro {
 class WPUF_Form_Field_Toc extends WPUF_Form_Field_Pro {
 
     function __construct() {
-        $this->name       = __( 'Terms & Conditions', 'WPUF' );
+        $this->name       = __( 'Terms & Conditions', 'wp-user-frontend' );
         $this->input_type = 'toc';
         $this->icon       = 'file-text';
     }

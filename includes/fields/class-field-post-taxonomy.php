@@ -17,7 +17,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
 
 	function __construct( $tax_name, $taxonomy,$post_id = null , $user_id = null ) {
-        $this->name       = __( $tax_name, 'wpuf' );
+        $this->name       = __( $tax_name, 'wp-user-frontend' );
         $this->input_type = 'taxonomy';
         $this->tax_name   = $tax_name;
         // $this->taxonomy=$taxonomy;

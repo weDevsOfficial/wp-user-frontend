@@ -269,17 +269,17 @@ class WPUF_Registration {
                 $user_email = stripslashes( $wpuf_user->user_email );
                 $blogname   = wp_specialchars_decode( get_option('blogname'), ENT_QUOTES );
 
-                $message = sprintf(__('New user registration on your site %s:'), get_option('blogname')) . "\r\n\r\n";
-                $message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
-                $message .= sprintf(__('E-mail: %s'), $user_email) . "\r\n";
+                $message = sprintf(__('New user registration on your site %s:', 'wp-user-frontend'), get_option('blogname')) . "\r\n\r\n";
+                $message .= sprintf(__('Username: %s', 'wp-user-frontend'), $user_login) . "\r\n\r\n";
+                $message .= sprintf(__('E-mail: %s', 'wp-user-frontend'), $user_email) . "\r\n";
                 $subject = "New User Registration";
 
                 $subject = apply_filters( 'wpuf_default_reg_admin_mail_subject', $subject );
                 $message = apply_filters( 'wpuf_default_reg_admin_mail_body', $message );
 
-                wp_mail(get_option('admin_email'), sprintf(__('[%s] %s'), $blogname, $subject ), $message);
+                wp_mail(get_option('admin_email'), sprintf(__('[%s] %s', 'wp-user-frontend'), $blogname, $subject ), $message);
 
-                $message = sprintf(__('Hi, %s'), $user_login) . "\r\n";
+                $message = sprintf(__('Hi, %s', 'wp-user-frontend'), $user_login) . "\r\n";
                 $message .= "Congrats! You are Successfully registered to ". $blogname ."\r\n\r\n";
                 $message .= "Thanks";
                 $subject = "Thank you for registering";
@@ -287,7 +287,7 @@ class WPUF_Registration {
                 $subject = apply_filters( 'wpuf_default_reg_mail_subject', $subject );
                 $message = apply_filters( 'wpuf_default_reg_mail_body', $message );
 
-                wp_mail( $user_email, sprintf(__('[%s] %s'), $blogname, $subject ), $message );
+                wp_mail( $user_email, sprintf(__('[%s] %s', 'wp-user-frontend'), $blogname, $subject ), $message );
 
             }
 

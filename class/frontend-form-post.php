@@ -9,23 +9,23 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
     function __construct() {
 
-        add_shortcode( 'wpuf_form', array( $this, 'add_post_shortcode' ) );
-        add_shortcode( 'wpuf_edit', array( $this, 'edit_post_shortcode' ) );
+        // add_shortcode( 'wpuf_form', array( $this, 'add_post_shortcode' ) );
+        // add_shortcode( 'wpuf_edit', array( $this, 'edit_post_shortcode' ) );
 
-        // ajax requests
-        add_action( 'wp_ajax_wpuf_submit_post', array( $this, 'submit_post' ) );
-        add_action( 'wp_ajax_nopriv_wpuf_submit_post', array( $this, 'submit_post' ) );
-        add_action( 'wp_ajax_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
-        add_action( 'wp_ajax_nopriv_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
+        // // ajax requests
+        // add_action( 'wp_ajax_wpuf_submit_post', array( $this, 'submit_post' ) );
+        // add_action( 'wp_ajax_nopriv_wpuf_submit_post', array( $this, 'submit_post' ) );
+        // add_action( 'wp_ajax_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
+        // add_action( 'wp_ajax_nopriv_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
 
-        // draft
-        add_action( 'wp_ajax_wpuf_draft_post', array( $this, 'draft_post' ) );
+        // // draft
+        // add_action( 'wp_ajax_wpuf_draft_post', array( $this, 'draft_post' ) );
 
-        // guest post hook
-        add_action( 'init', array( $this, 'publish_guest_post' ) );
+        // // guest post hook
+        // add_action( 'init', array( $this, 'publish_guest_post' ) );
 
-        // form preview
-        add_action( 'wp_ajax_wpuf_form_preview', array( $this, 'preview_form' ) );
+        // // form preview
+        // add_action( 'wp_ajax_wpuf_form_preview', array( $this, 'preview_form' ) );
     }
 
     public static function init() {
@@ -191,7 +191,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         }
 
         if ( wpuf_get_user()->edit_post_locked() ) {
-            if ( !empty( wpuf_get_user()->edit_post_lock_reason() ) ) {
+            if ( wpuf_get_user()->edit_post_lock_reason() ) {
                 return '<div class="wpuf-info">' . wpuf_get_user()->edit_post_lock_reason() . '</div>';
             }
             return '<div class="wpuf-info">' . apply_filters( 'wpuf_user_edit_post_lock_notice', __( 'Your post edit access has been locked by an administrator.', 'wp-user-frontend' ) ) . '</div>';

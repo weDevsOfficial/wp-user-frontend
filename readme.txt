@@ -3,9 +3,9 @@ Contributors: tareq1988, sk.shaikat, rabbii, rafsuntaskin, itowhid06, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
-Tested up to: 5.0.2
+Tested up to: 5.0.3
 Requires PHP: 5.4
-Stable tag: 3.0.2
+Stable tag: 3.1.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -252,6 +252,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.1.0 (31 January, 2019) =
+
+* **Fix:** The Default registration form `[wpuf-registration]` was unable to send the new user registration email.
+* **Fix:** With the latest version of WordPress the Gutenberg block of WP User Frontend were not working. Fixed in this version.
+* **Fix:** While using Gutenberg editor, the pages were not being updated with WPUF shortcode consisting`[wpuf dashboard]`
+* **Fix:** From the User Frontend Settings, you had the capability to set if the Administrator, Editor, Vendor etc can see the admin bar. Now, the super admin want one specific user ( who has the user role from the above ) can't see the admin bar and disabled it from the Toolbar form that specific user profile. And this configuration ( Toolbar ) from the specific user profile were unable to impact on the frontend.
+* **Fix:** WP User Frontend was unable to install with PHP 5.4 or lower version.
+* **Fix:** When a user uploaded single image for product gallery using WPUF WooCommerce product form, that image was not showing on the frontend.
 
 = v3.0.2 (1 January, 2019) =
 

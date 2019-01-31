@@ -8,7 +8,7 @@
  *
  * @package WP User Frontend
  */
-class WPUF_Admin_Posting extends WPUF_Render_Form {
+class WPUF_Admin_Posting {
 
     private static $_instance;
 
@@ -315,56 +315,29 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
         <table class="form-table wpuf-cf-table">
             <tbody>
+                
+                <script type="text/javascript">
+                    if ( typeof wpuf_conditional_items === 'undefined' ) {
+                        wpuf_conditional_items = [];
+                    }
+
+                    if ( typeof wpuf_plupload_items === 'undefined' ) {
+                        wpuf_plupload_items = [];
+                    }
+
+                    if ( typeof wpuf_map_items === 'undefined' ) {
+                        wpuf_map_items = [];
+                    }
+                </script>
+
                 <?php
-                $this->render_items( $custom_fields, $post->ID, 'post', $form_id, $form_settings );
+                    $atts = array();
+                    wpuf()->fields->render_fields( $custom_fields, $form_id, $atts, $type = 'post', $post->ID );
                 ?>
             </tbody>
         </table>
         <?php
         $this->scripts_styles();
-    }
-
-    /**
-     * Prints form input label
-     *
-     * @param string $attr
-     */
-    function label( $attr, $post_id = 0 ) {
-        ?>
-        <?php echo $attr['label'] . $this->required_mark( $attr ); ?>
-        <?php
-    }
-
-    /**
-     * generate table header of frontend form field
-     *
-     * @since 2.5
-     *
-     * @param array $form_field
-     * @param int $post_id
-     *
-     * @return void
-     */
-    function render_item_before( $form_field, $post_id = 0 ) {
-        echo '<tr>';
-        echo '<th><strong>';
-        $this->label( $form_field );
-        echo '</strong></th>';
-        echo '<td>';
-    }
-
-    /**
-     * generate table bottom of frontend form field
-     *
-     * @since 2.5
-     *
-     * @param array $form_field
-     *
-     * @return void
-     */
-    function render_item_after( $form_field ) {
-        echo '</td>';
-        echo '</tr>';
     }
 
     function scripts_styles() {
@@ -510,7 +483,8 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
         list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $_POST['wpuf_cf_form_id'] );
 
-        WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
+        // WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
+        WPUF_Frontend_Form::update_post_meta( $meta_vars, $post_id );
     }
 
     /**
@@ -532,4 +506,44 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         exit;
     }
 
+    /**
+     * Get input meta fields separated as post vars, taxonomy and meta vars
+     *
+     * @param int $form_id form id
+     * @return array
+     */
+    public static function get_input_fields( $form_id ) {
+        $form_vars    = wpuf_get_form_fields( $form_id );
+
+        $ignore_lists = array('section_break', 'html');
+        $post_vars    = $meta_vars = $taxonomy_vars = array();
+
+        foreach ($form_vars as $key => $value) {
+
+            // ignore section break and HTML input type
+            if ( in_array( $value['input_type'], $ignore_lists ) ) {
+                continue;
+            }
+
+            //separate the post and custom fields
+            if ( isset( $value['is_meta'] ) && $value['is_meta'] == 'yes' ) {
+                $meta_vars[] = $value;
+                continue;
+            }
+
+            if ( $value['input_type'] == 'taxonomy' ) {
+
+                // don't add "category"
+                if ( $value['name'] == 'category' ) {
+                    continue;
+                }
+
+                $taxonomy_vars[] = $value;
+            } else {
+                $post_vars[] = $value;
+            }
+        }
+
+        return array($post_vars, $taxonomy_vars, $meta_vars);
+    }
 }

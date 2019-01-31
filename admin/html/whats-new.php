@@ -1,6 +1,42 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 3.1.0',
+        'released' => '2019-01-31',
+        'changes' => array(
+            array(
+                'title'       => __( 'Unable to send new user registration email', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'WP User Frontend default registration form `[wpuf-registration]` was unable to send the new user registration email.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'WPUF forms block compatibility issue with the latest WP version', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'With the latest version of WordPress the gutenberg block of WP User Frontend were not working. In this version, you will get it fixed.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Page not update where `[wpuf_dashboard]` shortcode exist', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'While using Gutenberg, the page were not being updated with WPUF shortcode [wpuf dashboard]', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Retain default when determining whether to display the admin bar', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "From the User Frontend Settings, set that Administrator, Editor, Vendor can see the admin bar. Now, the super admin want, one specific user ( who has the user role from the above ) can't see the admin bar and disabled it from the Toolbar form that specific user profile. And this configuration ( Toolbar ) from the specific user profile were unable to impact on the frontend.", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Fatal error when use PHP lower version (5.4 or lower)', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "It was unable to install WP User Frontend with PHP 5.4 or lower version. Here is the error details: <br><br><strong>Fatal error: Can't use method return value in write context in /wp-user-frontend/class/frontend-form-post.php on line 194</strong>", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Product form was unable to show the single gallery image', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "When user upload single image for product gallery using WPUF WooCommerce product form, that image were not showing on the frontend.", 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 2.9.4',
         'released' => '2018-11-20',
         'changes' => array(

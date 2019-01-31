@@ -152,4 +152,18 @@ abstract class WPUF_Post_Form_Template {
      * @return void
      */
     public function after_update( $post_id, $form_id, $form_settings ) {}
+
+    /**
+     * wpuf_visibility property for all fields
+     *
+     * @since 2.6
+     *
+     * @return array
+    */
+    public function get_default_visibility_prop( $default = 'everyone' ) {
+        return array(
+            'selected'         => $default,
+            'choices'          => array()
+        );
+    }
 }

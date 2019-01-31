@@ -700,11 +700,7 @@ function wpuf_show_custom_fields( $content ) {
                     if ( isset( $attr['wpuf_cond']['cond_option'][$field_key] ) ) {
 
                         if ( is_array( $cond_field_value ) ) {
-
-                            if ( !in_array( $attr['wpuf_cond']['cond_option'][$field_key], $cond_field_value ) ) {
-                                $return_for_no_cond = 1;
-                            }
-
+                            continue;
                         } else {
 
                             if ( $attr['wpuf_cond']['cond_option'][$field_key] != $cond_field_value ) {
@@ -2991,6 +2987,10 @@ function wpuf_show_form_schedule_message( $form_id ) {
         $end_time     = !empty( $form_settings['schedule_end'] ) ? strtotime( $form_settings['schedule_end'] ) : 0;
         $current_time = current_time( 'timestamp' );
 
+        if ( $current_time >= $start_time  && $current_time <= $end_time)  {
+            return ;
+        }
+
         // too early?
         if ( $current_time < $start_time ) {
             echo '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>';
@@ -2998,11 +2998,11 @@ function wpuf_show_form_schedule_message( $form_id ) {
             echo '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>';
         }
         ?>
-        <script>
-            jQuery( function($) {
-                $(".wpuf-submit-button").attr("disabled", "disabled");
-            });
-        </script>
+            <script>
+                jQuery( function($) {
+                    $(".wpuf-submit-button").attr("disabled", "disabled");
+                });
+            </script>
         <?php
         return;
     }
@@ -3046,4 +3046,19 @@ function wpuf_show_form_limit_message( $form_id ){
 }
 add_action( 'wpuf_before_form_render', 'wpuf_show_form_limit_message' );
 
+/**
+ * save frontend post revision
+ *
+ * @param  int $post_id
+ * @param  array $form_settings
+ * @return void
+ */
+function wpuf_frontend_post_revision( $post_id, $form_settings ) {
+    $post = get_post( $post_id );
+    if ( post_type_supports( $form_settings['post_type'], 'revisions' ) ) {
+        $revisions = wp_get_post_revisions( $post_id, array( 'order' => 'ASC', 'posts_per_page' => 1 ) );
+        $revision  = current( $revisions );
 
+        _wp_upgrade_revisions_of_post( $post, wp_get_post_revisions( $post_id ) );
+    }
+}

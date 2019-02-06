@@ -101,7 +101,10 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
                 # code...
                 break;
 
-        }
+        } ?>
+       
+        <span class="wpuf-wordlimit-message wpuf-help"></span>
+        <?php $this->help_text( $field_settings );
 
     }
 

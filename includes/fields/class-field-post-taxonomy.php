@@ -51,8 +51,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         $this->exclude_type       = isset( $this->field_settings['exclude_type'] ) ? $this->field_settings['exclude_type'] : 'exclude';
 
         $this->exclude            = $this->field_settings['exclude'];
-
-        if ( $this->exclude_type == 'child_of' ) {
+        if ( $this->exclude_type == 'child_of' && !empty( $this->exclude ) ) {
           $this->exclude = $this->exclude[0];
         }
 
@@ -102,7 +101,6 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
                 break;
 
         } ?>
-       
         <span class="wpuf-wordlimit-message wpuf-help"></span>
         <?php $this->help_text( $field_settings );
 
@@ -119,10 +117,9 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         // $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
         // $exclude            = $attr['exclude'];
 
-        // if ( $this->exclude_type == 'child_of' ) {
-        //   $this->exclude = $this->exclude[0];
-        // }
-
+        if ( $this->exclude_type == 'child_of' && !empty( $this->exclude ) ) {
+          $this->exclude = $this->exclude[0];
+        }
         $tax_args  = array(
             'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
             'hierarchical'     => 1,
@@ -156,12 +153,12 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             'orderby'      => $attr['orderby'],
             'order'        => $attr['order'],
             'name'         => $attr['name'],
-            //'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
+           // 'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
             //'term_id'      => $selected
         );
         $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
         ?>
-        <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
+        <span data-taxonomy=<?php  echo json_encode( $attr ); ?>></span>
         <?php
     }
 
@@ -184,21 +181,19 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             } else {
 
                 $level = 0;
-                asort( $terms );
-                $last_term_id = end( $terms );
-
-                foreach( $terms as $term_id) {
+                asort( $this->terms );
+                $last_term_id = end( $this->terms );
+                foreach( $this->terms as $term_id) {
                     $class = ( $last_term_id != $term_id ) ? 'hasChild' : '';
                     ?>
                     <div id="lvl<?php echo $level; ?>" level="<?php echo $level; ?>" >
                         <?php $this->taxnomy_select( $term_id); ?>
                     </div>
                 <?php
-                    $attr['parent_cat'] = $term_id;
+                    $this->field_settings['parent_cat'] = $term_id;
                     $level++;
                 }
             }
-
         ?>
         </div>
         <span class="loading"></span>

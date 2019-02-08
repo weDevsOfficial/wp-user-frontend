@@ -2,8 +2,6 @@
 
 class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
 
-
-
     private static $_instance;
     private $post_expiration_date    = 'wpuf-post_expiration_date';
     private $expired_post_status     = 'wpuf-expired_post_status';
@@ -615,13 +613,19 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
             // delete any previous value
             delete_post_meta( $post_id, $file_input['name'] );
 
+            $image_ids = '';
+
             if ( count( $file_input['value'] ) > 1  ) {
                 $image_ids = maybe_serialize( $file_input['value'] );
-            } else {
+            }
+
+            if ( count( $file_input['value'] ) == 1 ) {
                 $image_ids = $file_input['value'][0];
             }
 
-            add_post_meta( $post_id, $file_input['name'], $image_ids );
+            if ( !empty( $image_ids ) ) {
+                add_post_meta( $post_id, $file_input['name'], $image_ids );
+            }
 
             //to track how many files are being uploaded
             $file_numbers = 0;

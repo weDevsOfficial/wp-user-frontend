@@ -774,10 +774,6 @@ final class WP_User_Frontend {
         $roles = $roles ? $roles : array();
         $current_user = wp_get_current_user();
 
-        if ( get_user_meta( $current_user->ID, 'show_admin_bar_front', true ) == "true" ) {
-            return true;
-        }
-
         if ( !in_array( $current_user->roles[0], $roles ) ) {
             return false;
         }

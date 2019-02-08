@@ -50,13 +50,16 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
 
 
         $this->field_print_label($field_settings, $form_id );
+        
+        // Check for the existance of 'button_label' and fallback to label if it is not found
+        $label = array_key_exists( 'button_label', $field_settings ) ? $field_settings['button_label'] : $field_settings['label'];
 
     ?>
 
             <div class="wpuf-fields">
                 <div id="wpuf-<?php echo $unique_id; ?>-upload-container">
                     <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo $field_settings['required']; ?>">
-                        <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $field_settings['name'] . '_' . $form_id; ?>" href="#"><?php echo $field_settings['button_label']; ?></a>
+                        <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $field_settings['name'] . '_' . $form_id; ?>" href="#"><?php echo $label; ?></a>
 
                         <ul class="wpuf-attachment-list thumbnails">
 

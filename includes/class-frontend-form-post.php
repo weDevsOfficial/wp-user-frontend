@@ -409,7 +409,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
             // if user has a subscription pack
-            $this->wpuf_user_subscription_pack($this->form_settings);
+            $this->wpuf_user_subscription_pack( $this->form_settings, $post_id );
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
 
@@ -791,7 +791,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
         }
     }
 
-    function wpuf_user_subscription_pack($form_settings) {
+    function wpuf_user_subscription_pack( $form_settings, $post_id=null ) {
 
         // if user has a subscription pack
         $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );

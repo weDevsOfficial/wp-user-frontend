@@ -25,8 +25,15 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
 
         if ( isset($post_id) &&  $post_id != '0'  ) {
             if ( $this->is_meta( $field_settings ) ) {
-                $selected = $this->get_meta( $post_id, $field_settings['name'], $type );
-                $selected = explode(" | ",$selected);
+                if ( $value = $this->get_meta( $post_id, $field_settings['name'], $type, true ) ) {
+                    if ( is_serialized( $value ) ) {
+                        $selected = maybe_unserialize( $value );
+                    } elseif ( is_array( $value ) ) {
+                        $selected = $value;
+                    } else {
+                        $selected = explode( "|", $value );
+                    }
+                }
             }
         }else{
             $selected = !empty( $field_settings['selected'] ) ? $field_settings['selected'] : array();

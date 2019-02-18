@@ -696,7 +696,7 @@ class WPUF_Frontend_Render_Form{
                         if ( $value['input_type'] == 'address' ) {
                             $meta_key_value[$value['name']] = $_POST[$value['name']];
                         } elseif ( !empty( $acf_compatibility ) && $acf_compatibility == 'yes' ) {
-                           $meta_key_value[$value['name']] = maybe_serialize( $_POST[$value['name']] );
+                           $meta_key_value[$value['name']] = $_POST[$value['name']];
                         } else {
                             $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
                         }

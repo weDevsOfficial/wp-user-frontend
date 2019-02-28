@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership  
 **Requires at least:** 4.0  
-**Tested up to:** 5.0.3  
+**Tested up to:** 5.1  
 **Requires PHP:** 5.4  
-**Stable tag:** 3.1.0  
+**Stable tag:** 3.1.1  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -252,6 +252,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v3.1.1 (28 February, 2019) ###
+
+* **Fix:** Help text in the Category field were not displaying on the frontend.
+* **Fix:** Category was not editable when editing the post from the frontend.
+* **Fix:** Display the admin bar when user role exist.
+* **Fix:** When the admin edits a post from the backend, it was creating duplicate post.
+* **Fix:** After enabling post expiration in post form do not save post_expiration meta.
+* **Fix:** Checkboxes were not linking/syncing with ACF field.
+* **Fix:** Publish time input option in the Date/Time field, was not working.
 
 ### v3.1.0 (31 January, 2019) ###
 

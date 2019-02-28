@@ -2,8 +2,6 @@
 
 class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
 
-
-
     private static $_instance;
     private $post_expiration_date    = 'wpuf-post_expiration_date';
     private $expired_post_status     = 'wpuf-expired_post_status';
@@ -308,7 +306,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
         if ( isset( $_POST['wpuf_is_publish_time'] ) ) {
             if ( isset( $_POST[$_POST['wpuf_is_publish_time']] ) && !empty( $_POST[$_POST['wpuf_is_publish_time']] ) ) {
                 // $postarr['post_date'] = date( 'Y-m-d H:i:s', strtotime( str_replace( array( ':', '/' ), '-', $_POST[$_POST['wpuf_is_publish_time']] ) ) );
-                $date_time = explode(" ", $_POST[$_POST['wpuf_is_publish_time']] );
+                $date_time = explode(" ", trim($_POST[$_POST['wpuf_is_publish_time']]) );
                 if ( !empty ( $date_time[0] ) ) {
                     $timestamp = strtotime( str_replace( array( '/' ), '-', $date_time[0] ) );
                 }
@@ -411,7 +409,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
             // if user has a subscription pack
-            $this->wpuf_user_subscription_pack($this->form_settings);
+            $this->wpuf_user_subscription_pack( $this->form_settings, $post_id );
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
 
@@ -615,13 +613,19 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
             // delete any previous value
             delete_post_meta( $post_id, $file_input['name'] );
 
+            $image_ids = '';
+
             if ( count( $file_input['value'] ) > 1  ) {
                 $image_ids = maybe_serialize( $file_input['value'] );
-            } else {
+            }
+
+            if ( count( $file_input['value'] ) == 1 ) {
                 $image_ids = $file_input['value'][0];
             }
 
-            add_post_meta( $post_id, $file_input['name'], $image_ids );
+            if ( !empty( $image_ids ) ) {
+                add_post_meta( $post_id, $file_input['name'], $image_ids );
+            }
 
             //to track how many files are being uploaded
             $file_numbers = 0;
@@ -787,7 +791,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
         }
     }
 
-    function wpuf_user_subscription_pack($form_settings) {
+    function wpuf_user_subscription_pack( $form_settings, $post_id=null ) {
 
         // if user has a subscription pack
         $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );

@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.1.0\n"
+"Project-Id-Version: WP User Frontend 3.1.1\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2019-01-31 11:48:06+00:00\n"
+"POT-Creation-Date: 2019-02-28 11:59:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -156,7 +156,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:344
 #: includes/fields/class-abstract-fields.php:358
 #: includes/fields/class-abstract-fields.php:426
-#: includes/fields/class-field-checkbox.php:81
+#: includes/fields/class-field-checkbox.php:88
 #: includes/fields/class-field-radio.php:86 includes/free/form-element.php:477
 #: wpuf.php:706
 msgid "Yes"
@@ -171,7 +171,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:345
 #: includes/fields/class-abstract-fields.php:359
 #: includes/fields/class-abstract-fields.php:427
-#: includes/fields/class-field-checkbox.php:82
+#: includes/fields/class-field-checkbox.php:89
 #: includes/fields/class-field-radio.php:87 includes/free/form-element.php:478
 #: wpuf.php:707
 msgid "No"
@@ -522,8 +522,8 @@ msgstr ""
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:6
 #: class/render-form.php:1680
 #: includes/fields/class-field-featured-image.php:103
-#: includes/fields/class-field-image.php:122
-#: includes/fields/class-field-image.php:143
+#: includes/fields/class-field-image.php:125
+#: includes/fields/class-field-image.php:146
 msgid "Select Image"
 msgstr ""
 
@@ -576,7 +576,7 @@ msgid "This field must contain at least one choice"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:268
-#: includes/fields/class-field-checkbox.php:110
+#: includes/fields/class-field-checkbox.php:117
 #: includes/fields/class-field-dropdown.php:101
 #: includes/fields/class-field-multidropdown.php:93
 #: includes/fields/class-field-radio.php:114
@@ -2961,13 +2961,13 @@ msgstr ""
 
 #: admin/template-post.php:93 admin/template.php:634
 #: includes/fields/class-field-featured-image.php:97
-#: includes/fields/class-field-image.php:107
+#: includes/fields/class-field-image.php:110
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
 #: admin/template-post.php:105 admin/template.php:646
 #: includes/fields/class-field-featured-image.php:93
-#: includes/fields/class-field-image.php:103
+#: includes/fields/class-field-image.php:106
 msgid "Max. file size"
 msgstr ""
 
@@ -3277,11 +3277,11 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: admin/template.php:635 includes/fields/class-field-image.php:116
+#: admin/template.php:635 includes/fields/class-field-image.php:119
 msgid "Number of images can be uploaded"
 msgstr ""
 
-#: admin/template.php:651 includes/fields/class-field-image.php:112
+#: admin/template.php:651 includes/fields/class-field-image.php:115
 msgid "Max. files"
 msgstr ""
 
@@ -3444,41 +3444,41 @@ msgstr ""
 msgid "Payment type not selected for this form. Please contact admin."
 msgstr ""
 
-#: class/frontend-form-post.php:171 includes/class-frontend-form-post.php:41
+#: class/frontend-form-post.php:171 includes/class-frontend-form-post.php:39
 msgid "You are not logged in"
 msgstr ""
 
 #: class/frontend-form-post.php:179 class/frontend-form-post.php:208
-#: includes/class-frontend-form-post.php:47
-#: includes/class-frontend-form-post.php:76
+#: includes/class-frontend-form-post.php:45
+#: includes/class-frontend-form-post.php:74
 msgid "Invalid post"
 msgstr ""
 
-#: class/frontend-form-post.php:186 includes/class-frontend-form-post.php:54
+#: class/frontend-form-post.php:186 includes/class-frontend-form-post.php:52
 msgid "Your edit access for this post has been locked by an administrator."
 msgstr ""
 
-#: class/frontend-form-post.php:190 includes/class-frontend-form-post.php:58
+#: class/frontend-form-post.php:190 includes/class-frontend-form-post.php:56
 msgid "Your allocated time for editing this post has been expired."
 msgstr ""
 
-#: class/frontend-form-post.php:197 includes/class-frontend-form-post.php:65
+#: class/frontend-form-post.php:197 includes/class-frontend-form-post.php:63
 msgid "Your post edit access has been locked by an administrator."
 msgstr ""
 
-#: class/frontend-form-post.php:202 includes/class-frontend-form-post.php:70
+#: class/frontend-form-post.php:202 includes/class-frontend-form-post.php:68
 msgid "Post Editing is disabled"
 msgstr ""
 
-#: class/frontend-form-post.php:213 includes/class-frontend-form-post.php:81
+#: class/frontend-form-post.php:213 includes/class-frontend-form-post.php:79
 msgid "You are not allowed to edit"
 msgstr ""
 
-#: class/frontend-form-post.php:225 includes/class-frontend-form-post.php:92
+#: class/frontend-form-post.php:225 includes/class-frontend-form-post.php:90
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: class/frontend-form-post.php:231 includes/class-frontend-form-post.php:104
+#: class/frontend-form-post.php:231 includes/class-frontend-form-post.php:102
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
@@ -3487,11 +3487,11 @@ msgstr ""
 msgid "Empty reCaptcha Field"
 msgstr ""
 
-#: class/frontend-form-post.php:335 includes/class-frontend-form-post.php:467
+#: class/frontend-form-post.php:335 includes/class-frontend-form-post.php:465
 msgid "Invalid email address."
 msgstr ""
 
-#: class/frontend-form-post.php:344 includes/class-frontend-form-post.php:477
+#: class/frontend-form-post.php:344 includes/class-frontend-form-post.php:475
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -3500,23 +3500,23 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: class/frontend-form-post.php:393 includes/class-frontend-form-post.php:533
+#: class/frontend-form-post.php:393 includes/class-frontend-form-post.php:531
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
 
 #: class/frontend-form-post.php:732 class/frontend-form-post.php:739
-#: includes/class-frontend-form-post.php:889
-#: includes/class-frontend-form-post.php:895
+#: includes/class-frontend-form-post.php:893
+#: includes/class-frontend-form-post.php:899
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
 msgstr ""
 
-#: class/frontend-form-post.php:792 includes/class-frontend-form-post.php:451
+#: class/frontend-form-post.php:792 includes/class-frontend-form-post.php:449
 msgid "Something went wrong"
 msgstr ""
 
-#: class/frontend-form-post.php:1170 includes/class-frontend-form-post.php:783
+#: class/frontend-form-post.php:1170 includes/class-frontend-form-post.php:787
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
@@ -3627,7 +3627,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:196
 #: includes/fields/class-field-dropdown.php:102
 #: includes/fields/class-field-multidropdown.php:94
-#: includes/fields/class-field-post-taxonomy.php:317
+#: includes/fields/class-field-post-taxonomy.php:315
 msgid "- select -"
 msgstr ""
 
@@ -3724,7 +3724,7 @@ msgstr ""
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1485 includes/fields/class-field-post-taxonomy.php:72
+#: class/render-form.php:1485 includes/fields/class-field-post-taxonomy.php:71
 msgid "This field is no longer available."
 msgstr ""
 
@@ -4709,13 +4709,13 @@ msgid "Select Yes if you want to hide the field label in single post."
 msgstr ""
 
 #: includes/fields/class-abstract-fields.php:423
-#: includes/fields/class-field-checkbox.php:78
+#: includes/fields/class-field-checkbox.php:85
 #: includes/fields/class-field-radio.php:83
 msgid "Show in inline list"
 msgstr ""
 
 #: includes/fields/class-abstract-fields.php:433
-#: includes/fields/class-field-checkbox.php:88
+#: includes/fields/class-field-checkbox.php:95
 #: includes/fields/class-field-radio.php:93
 msgid "Show this option in an inline list"
 msgstr ""
@@ -4741,12 +4741,12 @@ msgid "Email Address"
 msgstr ""
 
 #: includes/fields/class-field-featured-image.php:101
-#: includes/fields/class-field-image.php:120
+#: includes/fields/class-field-image.php:123
 msgid "Button Label"
 msgstr ""
 
 #: includes/fields/class-field-featured-image.php:106
-#: includes/fields/class-field-image.php:125
+#: includes/fields/class-field-image.php:128
 msgid "Enter a label for the Select button"
 msgstr ""
 
@@ -6160,7 +6160,7 @@ msgstr ""
 msgid "Please Cancel Your Currently Active Pack first!"
 msgstr ""
 
-#: wpuf.php:875
+#: wpuf.php:871
 msgid "Error: Nonce verification failed"
 msgstr ""
 

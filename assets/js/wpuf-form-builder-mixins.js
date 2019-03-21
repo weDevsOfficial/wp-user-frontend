@@ -102,12 +102,33 @@ Vue.mixin({
         },
 
         containsField: function(field_name) {
-            var i = 0;
+            var self = this,
+                i = 0;
 
-            for (i = 0; i < this.$store.state.form_fields.length; i++) {
-                if (this.$store.state.form_fields[i].name === field_name) {
+            for (i = 0; i < self.$store.state.form_fields.length; i++) {
+                // check if the single instance field exist in normal fields
+                if (self.$store.state.form_fields[i].template === field_name) {
                     return true;
                 }
+
+                // check if the single instance field exist in column fields
+                if (self.$store.state.form_fields[i].template === 'column_field') {
+                    var innerColumnFields = self.$store.state.form_fields[i].inner_fields;
+
+                    for (const columnFields in innerColumnFields) {
+                        if (innerColumnFields.hasOwnProperty(columnFields)) {
+                            var columnFieldIndex = 0;
+
+                            while (columnFieldIndex < innerColumnFields[columnFields].length) {
+                                if (innerColumnFields[columnFields][columnFieldIndex].template === field_name) {
+                                    return true;
+                                }
+                                columnFieldIndex++;
+                            }
+                        }
+                    }
+                }
+
             }
 
             return false;

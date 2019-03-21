@@ -604,6 +604,7 @@
   margin-left: 6px;
 }
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="text"],
+.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="range"],
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="number"] {
   display: block;
   width: 100%;
@@ -785,7 +786,8 @@ ul.wpuf-form li .wpuf-password-field:after {
   display: table;
 }
 .wpuf-recaptcha-placeholder {
-  width: 304px;
+  width: 100%;
+  max-width: 304px;
 }
 .wpuf-merge-tag-wrap .merge-tag-link {
   position: absolute;

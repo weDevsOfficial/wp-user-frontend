@@ -122,6 +122,7 @@ class WPUF_Form_Field_Featured_Image extends WPUF_Field_Contract {
             'max_size'       => '1024',
             'button_label'   => __( 'Featured Image', 'wp-user-frontend' ),
             'is_meta'           => 'no',
+            'name'              => 'featured_image',
             'max_size'          => '1024',
             'count'             => '1',
             'id'                => 0,

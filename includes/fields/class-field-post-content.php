@@ -154,6 +154,7 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
         $props    = array(
             'input_type'       => 'textarea',
             'is_meta'          => 'no',
+            'name'             => 'post_content',
             'rows'             => 5,
             'cols'             => 25,
             'rich'             => 'yes',

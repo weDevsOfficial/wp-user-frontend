@@ -1480,3 +1480,75 @@ ul.wpuf-form .weforms-frontend-field-points {
 .wpuf-col-one-third-last + li {
   clear: left;
 }
+ul.wpuf-form .wpuf-field-columns {
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .wpuf-column-inner-fields {
+  width: 100%;
+  float: left;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .column-1 .ui-resizable-handle {
+  display: none !important;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .column-2.wpuf-column-inner-fields,
+ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .column-3.wpuf-column-inner-fields {
+  display: none;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .wpuf-column-inner-fields {
+  width: 50%;
+  float: left;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .column-2 .ui-resizable-handle {
+  display: none !important;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .column-3.wpuf-column-inner-fields {
+  display: none;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-3 .wpuf-column .wpuf-column-inner-fields {
+  width: 33.33%;
+  float: left;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns {
+  margin-left: 0;
+  margin-right: 0;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column {
+  padding: 0;
+  border: 0;
+  float: none;
+  width: 100%;
+  overflow: hidden;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields {
+  padding: 0 5px 0 0;
+  position: relative;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li {
+  padding: 0;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="text"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="email"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="url"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="password"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="search"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="number"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="tel"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="range"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="date"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="month"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="week"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="time"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="datetime"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="datetime-local"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="color"],
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li textarea {
+  width: 100%;
+}

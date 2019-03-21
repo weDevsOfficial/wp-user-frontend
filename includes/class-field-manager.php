@@ -118,6 +118,7 @@ class WPUF_Field_Manager {
         require_once dirname( __FILE__ ) . '/fields/class-field-dropdown.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-multidropdown.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-url.php';
+        require_once dirname( __FILE__ ) . '/fields/class-field-column.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-sectionbreak.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-html.php';
         require_once dirname( __FILE__ ) . '/fields/class-field-hidden.php';
@@ -134,6 +135,7 @@ class WPUF_Field_Manager {
             'dropdown_field'      => new WPUF_Form_Field_Dropdown(),
             'multiple_select'     => new WPUF_Form_Field_MultiDropdown(),
             'website_url'         => new WPUF_Form_Field_URL(),
+            'column_field'        => new WPUF_Form_Field_Column(),
             'section_break'       => new WPUF_Form_Field_SectionBreak(),
             'custom_html'         => new WPUF_Form_Field_HTML(),
             'custom_hidden_field' => new WPUF_Form_Field_Hidden(),
@@ -197,7 +199,7 @@ class WPUF_Field_Manager {
     private function get_others_fields() {
 
         $fields = apply_filters( 'wpuf-form-fields-others-fields', array(
-            'section_break', 'custom_html', 'recaptcha'
+            'column_field', 'section_break', 'custom_html', 'recaptcha'
         ) );
 
         return array(

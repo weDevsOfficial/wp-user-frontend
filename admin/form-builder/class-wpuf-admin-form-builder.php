@@ -110,7 +110,7 @@ class WPUF_Admin_Form_Builder {
         wp_enqueue_script( 'wpuf-tooltip', WPUF_ASSET_URI . '/vendor/tooltip/tooltip' . $prefix . '.js', array(), WPUF_VERSION, true );
 
         $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', array(
-            'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'underscore',
+            'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-resizable', 'underscore',
             'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert2', 'wpuf-jquery-scrollTo',
             'wpuf-selectize', 'wpuf-toastr', 'wpuf-clipboard', 'wpuf-tooltip'
         ) );

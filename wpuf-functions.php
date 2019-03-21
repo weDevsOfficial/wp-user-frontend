@@ -658,6 +658,23 @@ function wpuf_show_custom_fields( $content ) {
 
     if ( $form_vars ) {
         foreach ($form_vars as $attr) {
+            // get column field input fields
+            if ( $attr['input_type'] == 'column_field' ) {
+                $inner_fields = $attr['inner_fields'];
+
+                foreach ($inner_fields as $column_key => $column_fields) {
+                    if (!empty($column_fields)) {
+                        // ignore section break and HTML input type
+                        foreach ($column_fields as $column_field_key => $column_field) {
+                            if ( isset( $column_field['show_in_post'] ) && $column_field['show_in_post'] == 'yes' ) {
+                                $meta[] = $column_field;
+                            }
+                        }
+                    }
+                }
+                continue;
+            }
+
             if ( isset( $attr['show_in_post'] ) && $attr['show_in_post'] == 'yes' ) {
                 $meta[] = $attr;
             }

@@ -31,16 +31,22 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
      **/
     function edit_post_shortcode( $atts ) {
         add_filter( 'wpuf-form-fields', array( $this, 'add_field_settings'));
+
         extract( shortcode_atts( array( 'id' => 0 ), $atts ) );
         ob_start();
+
         global $userdata;
+
         ob_start();
+
         if ( !is_user_logged_in() ) {
             echo '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>';
             wp_login_form();
             return;
         }
+
         $post_id = isset( $_GET['pid'] ) ? intval( $_GET['pid'] ) : 0;
+
         if ( !$post_id ) {
             return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' ) . '</div>';
         }
@@ -354,6 +360,12 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
             $postarr['comment_status'] = $_POST['comment_status'];
             $postarr['post_author']    = $_POST['post_author'];
             $postarr['post_parent']    = get_post_field( 'post_parent', $_POST['post_id'] );
+
+            $menu_order = get_post_field('menu_order', $_POST['post_id']);
+
+            if (!empty($menu_order)) {
+                $postarr['menu_order'] = $menu_order;
+            }
 
             if ( $this->form_settings['edit_post_status'] == '_nochange' ) {
                 $postarr['post_status'] = get_post_field( 'post_status', $_POST['post_id'] );

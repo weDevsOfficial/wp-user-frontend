@@ -23,6 +23,8 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
 
+        $selected = !empty( $field_settings['selected'] ) ? $field_settings['selected'] : array();
+
         if ( isset($post_id) &&  $post_id != '0'  ) {
             if ( $this->is_meta( $field_settings ) ) {
                 if ( $value = $this->get_meta( $post_id, $field_settings['name'], $type, true ) ) {
@@ -33,17 +35,17 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
                     } else {
                         $selected = explode( "|", $value );
                     }
+                } else {
+
                 }
             }
-        }else{
-            $selected = !empty( $field_settings['selected'] ) ? $field_settings['selected'] : array();
         }
 
         $this->field_print_label($field_settings, $form_id );
 
     ?>
 
-        <div class="wpuf-fields" data-required="<?php echo $field_settings['required'] ?>" data-type="radio">
+        <div class="wpuf-fields" data-required="<?php echo $field_settings['required'] ?>" data-type="checkbox">
 
             <?php
             if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {

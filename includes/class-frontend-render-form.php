@@ -722,7 +722,7 @@ class WPUF_Frontend_Render_Form{
 
                 default:
                     // if it's an array, implode with this->separator
-                    if ( is_array( $_POST[$value['name']] ) ) {
+                    if ( !empty( $_POST[ $value['name'] ] ) && is_array( $_POST[$value['name']] ) ) {
                         $acf_compatibility = wpuf_get_option( 'wpuf_compatibility_acf', 'wpuf_general', 'no' );
 
                         if ( $value['input_type'] == 'address' ) {
@@ -733,7 +733,9 @@ class WPUF_Frontend_Render_Form{
                             $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
                         }
                     } else {
-                        $meta_key_value[$value['name']] = trim( $_POST[$value['name']] );
+                        if ( !empty( $_POST[ $value['name'] ] ) ) {
+                            $meta_key_value[$value['name']] = trim( $_POST[$value['name']] );
+                        }
                     }
 
                     break;

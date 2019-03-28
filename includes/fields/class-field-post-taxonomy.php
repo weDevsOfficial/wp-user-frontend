@@ -2,6 +2,7 @@
 // Post Taxonomy Class
 class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
+    use WPUF_Form_Field_Post_trait;
 
     protected $tax_name;
 

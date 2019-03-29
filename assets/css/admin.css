@@ -520,6 +520,9 @@ ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .wpuf-column-inner-f
   width: 100%;
   float: left;
 }
+ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .wpuf-column-inner-fields:nth-child(1) {
+  padding-right: 0!important;
+}
 ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .column-1 .ui-resizable-handle {
   display: none !important;
 }
@@ -531,6 +534,9 @@ ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .wpuf-column-inner-f
   width: 50%;
   float: left;
 }
+ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .wpuf-column-inner-fields:nth-child(2) {
+  padding-right: 0!important;
+}
 ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .column-2 .ui-resizable-handle {
   display: none !important;
 }
@@ -540,6 +546,9 @@ ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .column-3.wpuf-colum
 ul.wpuf-form .wpuf-field-columns.has-columns-3 .wpuf-column .wpuf-column-inner-fields {
   width: 33.33%;
   float: left;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-3 .wpuf-column .wpuf-column-inner-fields:nth-child(3) {
+  padding-right: 0!important;
 }
 ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns {
   margin-left: 0;

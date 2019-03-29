@@ -21,7 +21,19 @@ Vue.component('form-column_field', {
         // bind jquery ui draggable
         var self = this,
             sortableFields = $(self.$el).find('.wpuf-column-inner-fields .wpuf-column-fields-sortable-list'),
-            sortableTriggered = 1;
+            sortableTriggered = 1,
+            columnFieldArea = $('.wpuf-field-columns'),
+            columnFields = $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields");
+
+        columnFieldArea.mouseenter(function() {
+            self.resizeColumns(self.field.columns);
+        });
+
+
+        columnFieldArea.mouseleave(function() {
+            columnFields.unbind( "mouseup" );
+            columnFields.unbind( "mousemove" );
+        });
 
         // bind jquery ui sortable
         $(sortableFields).sortable({

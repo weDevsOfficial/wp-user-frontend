@@ -83,7 +83,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
         switch ($this->field_settings['type']) {
             case 'ajax':
-                $this->tax_ajax($post_id=NULL);
+                $this->tax_ajax( $post_id );
                 break;
             case 'select':
                 $this->tax_select($post_id=NULL);
@@ -113,10 +113,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
         $selected           = $terms ? $terms : '';
         $required           = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
-        // $taxonomy           = $attr['name'];
         $class              = ' wpuf_'.$attr['name'].'_'.$selected;
-        // $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-        // $exclude            = $attr['exclude'];
 
         if ( $this->exclude_type == 'child_of' && !empty( $this->exclude ) ) {
           $this->exclude = $this->exclude[0];
@@ -163,9 +160,44 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         <?php
     }
 
+    public function catbuildTree($items) {
+        $childs = array();
+
+        foreach($items as &$item) $childs[$item->parent][] = &$item;
+        unset($item);
+
+        foreach($items as &$item) {
+            if (isset($childs[$item->term_id])) {
+                $item->childs = $childs[$item->term_id];
+            }
+        }
+
+        return $childs[0];
+    }
+
+    public function RecursiveCatWrite($tree) {
+        foreach ($tree as $vals) {
+            $level = 0;
+        ?>
+             <div id="lvl<?php echo $level; ?>" level="<?php echo $level; ?>" >
+                <?php $this->taxnomy_select( $vals->term_id ); ?>
+            </div>
+
+            <?php
+            $this->field_settings['parent_cat'] = $vals->term_id;
+            if( isset( $vals->childs ) ){
+                $this->RecursiveCatWrite( $vals->childs );
+            }else{
+
+            }
+        }
+    }
+
     public function tax_ajax( $post_id = NULL ) {
 
-        // $class = ' wpuf_'.$attr['name'].'_'.$form_id;
+        if( isset( $post_id ) ) {
+            $this->terms = wp_get_post_terms( $post_id, $this->taxonomy, array('fields' => 'all') );
+        }
     ?>
 
         <div class="category-wrap <?php echo $this->class; ?>">
@@ -176,24 +208,12 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
                 ?>
                 <div id="lvl0" level="0">
-                    <?php $this->taxnomy_select( null); ?>
+                    <?php $this->taxnomy_select( null ); ?>
                 </div>
                 <?php
             } else {
-
-                $level = 0;
-                asort( $this->terms );
-                $last_term_id = end( $this->terms );
-                foreach( $this->terms as $term_id) {
-                    $class = ( $last_term_id != $term_id ) ? 'hasChild' : '';
-                    ?>
-                    <div id="lvl<?php echo $level; ?>" level="<?php echo $level; ?>" >
-                        <?php $this->taxnomy_select( $term_id); ?>
-                    </div>
-                <?php
-                    $this->field_settings['parent_cat'] = $term_id;
-                    $level++;
-                }
+                $tree = $this->catbuildTree( $this->terms );
+                $this->RecursiveCatWrite($tree);
             }
         ?>
         </div>

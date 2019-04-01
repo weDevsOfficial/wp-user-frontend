@@ -1,6 +1,47 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 3.1.2',
+        'released' => '2019-04-01',
+        'changes' => array(
+            array(
+                'title'       => __( 'Added column field', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => 'Now, creating multi-column in a single row is super easy with WPUF Column field. Just drag the column field in the builder area, configure columns number, column space and any fields you want inside that Column field.' .'<img src="'. WPUF_ASSET_URI .'/images/whats-new/column-field.png" alt="Multi-select Category">',
+            ),
+            array(
+                'title'       => __( 'Unable to render the events on the front-end dashboard', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'On the frontend dashboard, the submitted events were not showing, you will get it fixed in this version.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Page order getting 0(zero) after editing from the frontend', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Page order was not saving while editing a post using WPUF form, it has been fixed.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Text input field for taxonomies not working', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "When taxonomy field type is set to `Text Input` then a fatal error was showing on the frontend, no error with taxonomy field in the latest version.", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'In radio and checkbox field use conditional logic that value does not save in database', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "The selected value of radio and checkbox field were not showing while editing posts from the backend or frontend, you can see the selected value in this version.", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'The args param not working with get_avatar filter', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "The args parameter did not exist with get_avatar filter, which now exists.", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'The item in ajax taxonomy field was not selected', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "When the taxonomy field type is set to Ajax, the submitted terms were not showing in the backend and frontend which have been fixed.", 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 3.1.0',
         'released' => '2019-01-31',
         'changes' => array(

@@ -315,7 +315,7 @@ class WPUF_Admin_Posting {
 
         <table class="form-table wpuf-cf-table">
             <tbody>
-                
+
                 <script type="text/javascript">
                     if ( typeof wpuf_conditional_items === 'undefined' ) {
                         wpuf_conditional_items = [];
@@ -519,6 +519,40 @@ class WPUF_Admin_Posting {
         $post_vars    = $meta_vars = $taxonomy_vars = array();
 
         foreach ($form_vars as $key => $value) {
+            // get column field input fields
+            if ( $value['input_type'] == 'column_field' ) {
+                $inner_fields = $value['inner_fields'];
+
+                foreach ($inner_fields as $column_key => $column_fields) {
+                    if (!empty($column_fields)) {
+                        // ignore section break and HTML input type
+                        foreach ($column_fields as $column_field_key => $column_field) {
+                            if ( in_array( $column_field['input_type'], $ignore_lists ) ) {
+                                continue;
+                            }
+
+                            //separate the post and custom fields
+                            if ( isset( $column_field['is_meta'] ) && $column_field['is_meta'] == 'yes' ) {
+                                $meta_vars[] = $column_field;
+                                continue;
+                            }
+
+                            if ( $column_field['input_type'] == 'taxonomy' ) {
+
+                                // don't add "category"
+                                if ( $column_field['name'] == 'category' ) {
+                                    continue;
+                                }
+
+                                $taxonomy_vars[] = $column_field;
+                            } else {
+                                $post_vars[] = $column_field;
+                            }
+                        }
+                    }
+                }
+                continue;
+            }
 
             // ignore section break and HTML input type
             if ( in_array( $value['input_type'], $ignore_lists ) ) {

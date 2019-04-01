@@ -464,12 +464,44 @@ class WPUF_Frontend_Render_Form{
      * @return array
      */
     public function get_input_fields( $form_vars ) {
-
         $ignore_lists = array('section_break', 'html');
-
         $post_vars    = $meta_vars = $taxonomy_vars = array();
 
         foreach ($form_vars as $key => $value) {
+            // get column field input fields
+            if ( $value['input_type'] == 'column_field' ) {
+                $inner_fields = $value['inner_fields'];
+
+                foreach ($inner_fields as $column_key => $column_fields) {
+                    if (!empty($column_fields)) {
+                        // ignore section break and HTML input type
+                        foreach ($column_fields as $column_field_key => $column_field) {
+                            if ( in_array( $column_field['input_type'], $ignore_lists ) ) {
+                                continue;
+                            }
+
+                            //separate the post and custom fields
+                            if ( isset( $column_field['is_meta'] ) && $column_field['is_meta'] == 'yes' ) {
+                                $meta_vars[] = $column_field;
+                                continue;
+                            }
+
+                            if ( $column_field['input_type'] == 'taxonomy' ) {
+
+                                // don't add "category"
+                                if ( $column_field['name'] == 'category' ) {
+                                    continue;
+                                }
+
+                                $taxonomy_vars[] = $column_field;
+                            } else {
+                                $post_vars[] = $column_field;
+                            }
+                        }
+                    }
+                }
+                continue;
+            }
 
             // ignore section break and HTML input type
             if ( in_array( $value['input_type'], $ignore_lists ) ) {
@@ -690,7 +722,7 @@ class WPUF_Frontend_Render_Form{
 
                 default:
                     // if it's an array, implode with this->separator
-                    if ( is_array( $_POST[$value['name']] ) ) {
+                    if ( !empty( $_POST[ $value['name'] ] ) && is_array( $_POST[$value['name']] ) ) {
                         $acf_compatibility = wpuf_get_option( 'wpuf_compatibility_acf', 'wpuf_general', 'no' );
 
                         if ( $value['input_type'] == 'address' ) {
@@ -701,7 +733,9 @@ class WPUF_Frontend_Render_Form{
                             $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
                         }
                     } else {
-                        $meta_key_value[$value['name']] = trim( $_POST[$value['name']] );
+                        if ( !empty( $_POST[ $value['name'] ] ) ) {
+                            $meta_key_value[$value['name']] = trim( $_POST[$value['name']] );
+                        }
                     }
 
                     break;

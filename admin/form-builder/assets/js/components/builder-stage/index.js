@@ -28,7 +28,8 @@ Vue.component('builder-stage', {
     },
 
     mounted: function () {
-        var self = this;
+        var self = this,
+            in_column_field = false;
 
         // bind jquery ui sortable
         $('#form-preview-stage .wpuf-form.sortable-list').sortable({
@@ -36,6 +37,19 @@ Vue.component('builder-stage', {
             items: '.field-items',
             handle: '.control-buttons .move',
             scroll: true,
+            over: function() {
+                in_column_field = false;
+
+                // if the field drop in column field, then stop field rendering in the builder stage
+                $(".wpuf-column-inner-fields" ).on( "drop", function(event) {
+                    var targetColumn = event.currentTarget.classList,
+                        isColumnExist = $.inArray(".wpuf-column-inner-fields", targetColumn);
+
+                    if ( isColumnExist ) {
+                        in_column_field = true;
+                    }
+                } );
+            },
             update: function (e, ui) {
                 var item    = ui.item[0],
                     data    = item.dataset,
@@ -50,6 +64,17 @@ Vue.component('builder-stage', {
                     var field_template  = ui.item[0].dataset.formField,
                         field           = $.extend(true, {}, self.field_settings[field_template].field_props);
 
+                    // check if these are already inserted
+                    if ( self.isSingleInstance( field_template ) && self.containsField( field_template ) ) {
+                        swal({
+                            title: "Oops...",
+                            text: "You already have this field in the form"
+                        });
+
+                        $(this).find('.button.ui-draggable.ui-draggable-handle').remove();
+                        return;
+                    }
+
                     // add a random integer id
                     field.id = self.get_random_id();
 
@@ -61,7 +86,9 @@ Vue.component('builder-stage', {
                     payload.field = field;
 
                     // add new form element
-                    self.$store.commit('add_form_field_element', payload);
+                    if ( !in_column_field ) {
+                        self.$store.commit('add_form_field_element', payload);
+                    }
 
                     // remove button from stage
                     $(this).find('.button.ui-draggable.ui-draggable-handle').remove();

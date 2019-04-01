@@ -31,16 +31,22 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
      **/
     function edit_post_shortcode( $atts ) {
         add_filter( 'wpuf-form-fields', array( $this, 'add_field_settings'));
+
         extract( shortcode_atts( array( 'id' => 0 ), $atts ) );
         ob_start();
+
         global $userdata;
+
         ob_start();
+
         if ( !is_user_logged_in() ) {
             echo '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>';
             wp_login_form();
             return;
         }
+
         $post_id = isset( $_GET['pid'] ) ? intval( $_GET['pid'] ) : 0;
+
         if ( !$post_id ) {
             return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' ) . '</div>';
         }
@@ -258,10 +264,13 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
         $guest_mode            = isset( $this->form_settings['guest_post'] ) ? $this->form_settings['guest_post'] : '';
         $guest_verify          = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : 'false' ;
         $attachments_to_delete = isset( $_POST['delete_attachments'] ) ? $_POST['delete_attachments'] : array();
+
         foreach ( $attachments_to_delete as $attach_id ) {
             wp_delete_attachment( $attach_id, true );
         }
+
         list( $post_vars, $taxonomy_vars, $meta_vars ) =$this->get_input_fields($this->form_fields);
+
         if ( !isset( $_POST['post_id'] ) ) {
             $has_limit    = ( isset( $this->form_settings['limit_entries'] ) && $this->form_settings['limit_entries'] == 'true' ) ? true : false;
             if ( $has_limit ) {
@@ -278,6 +287,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
         $post_author         = null;
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
         $post_author = $this->wpuf_get_post_user();
+
         $postarr = array(
             'post_type'    => $this->form_settings['post_type'],
             'post_status'  => isset( $this->form_settings['post_status'] ) ? $this->form_settings['post_status'] : 'publish',
@@ -286,17 +296,20 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
             'post_content' => isset( $_POST['post_content'] ) ? trim( $_POST['post_content'] ) : '',
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? trim( $_POST['post_excerpt'] ) : '',
         );
+
         // $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
         $charging_enabled = '';
         $form             = new WPUF_Form( $form_id );
         $payment_options  = $form->is_charging_enabled();
         $ppp_cost_enabled = $form->is_enabled_pay_per_post();
         $current_user     = wpuf_get_user();
+
         if ( !$payment_options ) {
             $charging_enabled = 'no';
         } else {
             $charging_enabled = 'yes';
         }
+
         if ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() && $charging_enabled == 'yes' ) {
             $postarr['post_status'] = wpuf_get_draft_post_status( $this->form_settings );
         } elseif ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() ) {
@@ -320,10 +333,12 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
         }
 
         if ( isset( $_POST['category'] ) && ( $_POST['category'] !='' && $_POST['category'] !='0' && $_POST['category'][0] !='-1' ) ) {
-            $category                 = $_POST['category'];
+            $category  = $_POST['category'];
+
             if ( !is_array( $category ) && is_string( $category ) ) {
                 $category_strings = explode( ',', $category );
                 $cat_ids = array();
+
                 foreach ( $category_strings as $key => $each_cat_string ) {
                     $cat_ids[]                = get_cat_ID( trim( $each_cat_string ) );
                     $postarr['post_category'] = $cat_ids;
@@ -345,6 +360,13 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
             $postarr['comment_status'] = $_POST['comment_status'];
             $postarr['post_author']    = $_POST['post_author'];
             $postarr['post_parent']    = get_post_field( 'post_parent', $_POST['post_id'] );
+
+            $menu_order = get_post_field('menu_order', $_POST['post_id']);
+
+            if (!empty($menu_order)) {
+                $postarr['menu_order'] = $menu_order;
+            }
+
             if ( $this->form_settings['edit_post_status'] == '_nochange' ) {
                 $postarr['post_status'] = get_post_field( 'post_status', $_POST['post_id'] );
             } else {
@@ -355,6 +377,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
                 $postarr['comment_status'] = $this->form_settings['comment_status'];
             }
         }
+
         // check the form status, it might be already a draft
         // in that case, it already has the post_id field
         // so, WPUF's add post action/filters won't work for new posts

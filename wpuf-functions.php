@@ -522,8 +522,7 @@ function wpuf_get_user_roles() {
  * @param string $alt
  * @return string image tag of the user avatar
  */
-function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
-
+function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args ) {
     if ( is_numeric( $id_or_email ) ) {
         $user = get_user_by( 'id', $id_or_email );
     } elseif ( is_object( $id_or_email ) ) {
@@ -540,7 +539,7 @@ function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
         return $avatar;
     }
 
-    // see if there is a user_avatar meta field
+    // see if there is a user_avatar meta fields
     $user_avatar = get_user_meta( $user->ID, 'user_avatar', true );
     if ( empty( $user_avatar ) ) {
         return $avatar;
@@ -549,7 +548,7 @@ function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
     return sprintf( '<img src="%1$s" alt="%2$s" height="%3$s" width="%3$s" class="avatar">', esc_url( $user_avatar ), $alt, $size );
 }
 
-add_filter( 'get_avatar', 'wpuf_get_avatar', 99, 5 );
+add_filter( 'get_avatar', 'wpuf_get_avatar', 99, 6);
 
 function wpuf_update_avatar( $user_id, $attachment_id ) {
 
@@ -658,6 +657,23 @@ function wpuf_show_custom_fields( $content ) {
 
     if ( $form_vars ) {
         foreach ($form_vars as $attr) {
+            // get column field input fields
+            if ( $attr['input_type'] == 'column_field' ) {
+                $inner_fields = $attr['inner_fields'];
+
+                foreach ($inner_fields as $column_key => $column_fields) {
+                    if (!empty($column_fields)) {
+                        // ignore section break and HTML input type
+                        foreach ($column_fields as $column_field_key => $column_field) {
+                            if ( isset( $column_field['show_in_post'] ) && $column_field['show_in_post'] == 'yes' ) {
+                                $meta[] = $column_field;
+                            }
+                        }
+                    }
+                }
+                continue;
+            }
+
             if ( isset( $attr['show_in_post'] ) && $attr['show_in_post'] == 'yes' ) {
                 $meta[] = $attr;
             }
@@ -1443,12 +1459,66 @@ function wpuf_get_child_cats() {
                 $terms[$key] = (array)$term;
             }
         }
-        $result .= WPUF_Render_Form::init()->taxnomy_select( '', $field_attr );
+        // $result .= WPUF_Render_Form::init()->taxnomy_select( '', $field_attr );
+         $result .= taxnomy_select( '', $field_attr );
     } else {
         die( '' );
     }
 
     die( $result );
+}
+
+
+function taxnomy_select( $terms, $attr ) {
+
+    $selected           = $terms ? $terms : '';
+    $required           = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
+    $taxonomy           = $attr['name'];
+    $class              = ' wpuf_'.$attr['name'].'_'.$selected;
+    $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
+    $exclude            = isset( $attr['exclude'] ) ? $attr['exclude'] : '';
+
+    if ( $exclude_type == 'child_of' && !empty( $exclude ) ) {
+      $exclude = $exclude[0];
+    }
+
+    $tax_args           = array(
+        'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
+        'hierarchical'     => 1,
+        'hide_empty'       => 0,
+        'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
+        'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
+        'name'             => $taxonomy . '[]',
+        'taxonomy'         => $taxonomy,
+        'echo'             => 0,
+        'title_li'         => '',
+        'class'            => 'cat-ajax '. $taxonomy . $class,
+        $exclude_type      => $exclude,
+        'selected'         => $selected,
+        'depth'            => 1,
+        'child_of'         => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : ''
+    );
+
+    $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
+
+    $select = wp_dropdown_categories( $tax_args );
+
+    echo str_replace( '<select', '<select ' . $required, $select );
+    $attr = array(
+        'required'     => $attr['required'],
+        'name'         => $attr['name'],
+        'exclude_type' => $attr['exclude_type'],
+        'exclude'      => isset( $attr['exclude'] ) ? $attr['exclude']  : '',
+        'orderby'      => $attr['orderby'],
+        'order'        => $attr['order'],
+        'name'         => $attr['name'],
+        //'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
+        //'term_id'      => $selected
+    );
+    $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
+    ?>
+    <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
+    <?php
 }
 
 /**

@@ -1,7 +1,7 @@
 <?php
 
 class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
-    
+
     function __construct() {
         $this->name       = __( 'Post Title', 'wp-user-frontend' );
         $this->input_type = 'post_title';
@@ -20,8 +20,8 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
 
         if( isset( $post_id ) ){
           $value = get_post_field( $field_settings['name'], $post_id );
-        } else { 
-            $value = $field_settings['default']; 
+        } else {
+            $value = $field_settings['default'];
         }
 
     ?>
@@ -84,7 +84,7 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
             <?php } ?>
         </li>
         <?php
-     
+
     }
 
     /**
@@ -108,6 +108,7 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
         $props    = array(
             'input_type'        => 'text',
             'is_meta'           => 'no',
+            'name'              => 'post_title',
             'width'             => 'large',
             'size'              => 40,
             'word_restriction'  => '',
@@ -125,7 +126,7 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
      *
      * @return mixed
      */
-    
+
     public function prepare_entry( $field ) {
        return sanitize_text_field(trim($_POST[$field['name']]));
     }

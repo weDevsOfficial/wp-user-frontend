@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership  
 **Requires at least:** 4.0  
-**Tested up to:** 5.1  
+**Tested up to:** 5.1.1  
 **Requires PHP:** 5.4  
-**Stable tag:** 3.1.1  
+**Stable tag:** 3.1.2  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -36,6 +36,10 @@ Users can upload attachments from the frontend. Users can also upload post featu
 <strong>Drag-n-drop form builder</strong>
 
 Easily fill your form with fields using drag-n-drops and real-time preview that updates as you make changes. You can see how your form will look like eventually from the dashboard!
+
+<strong>Publish your WPUF forms using Gutenberg</strong>
+
+Easily add your published forms in Gutenberg editor with the WPUF block. When users want to publish forms on a page, they can simply select it from the drop-down included in the dedicated WPUF block for Gutenberg. The entire form automatically renders within the editor as well as on page. It’s much easier than manually copying and pasting shortcodes! Saves you a ton of time and clicks. But you can also do it the old style using the shortcodes block.
 
 <strong>Use anywhere easily with shortcodes</strong>
 
@@ -252,6 +256,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v3.1.2 (01 April, 2019) ###
+
+* **Feature:** Added column field: Now, creating multi-column in a single row is super easy with WPUF Column field. Just drag the column field in the builder area, configure columns number, column space and add any fields you want inside that Column field.
+* **Fix:** Unable to render the events on the front-end: On the frontend dashboard, the submitted events were not showing, you will get it fixed in this version.
+* **Fix:** Page order getting 0(zero) after editing from the frontend: Page order was not saving while editing a post using WPUF form, it has been fixed.
+* **Fix:** Text Input field for Taxonomies not working: When taxonomy field type is set to `Text Input` then a fatal error was showing on the frontend, no error with taxonomy field in the latest version
+* **Fix:** In radio and checkbox field use conditional logic that value does not save in database: The selected value of radio and checkbox field were not showing while editing posts from the backend or frontend, you can see the selected value in this version.
+* **Fix:** The args parameter not working with get_avatar filter: The args parameter did not exist with get_avatar filter, which now exists.
+* **Fix:** The item in ajax taxonomy field is not selected: When the taxonomy field type is set to Ajax, the submitted terms were not showing in the backend and frontend which have been fixed.
 
 ### v3.1.1 (28 February, 2019) ###
 

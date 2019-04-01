@@ -24,16 +24,19 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null) {
 
+        $selected = isset( $field_settings['selected'] ) ? $field_settings['selected'] : '';
+
         if ( isset( $post_id ) &&  $post_id != '0'  ) {
 
             if ( $this->is_meta( $field_settings ) ) {
                 $selected = $this->get_meta( $post_id, $field_settings['name'], $type );
             }
 
-        }  else {
-
-            $selected = isset( $field_settings['selected'] ) ? $field_settings['selected'] : '';
         }
+        // else {
+
+        //     $selected = isset( $field_settings['selected'] ) ? $field_settings['selected'] : '';
+        // }
 
         $this->field_print_label($field_settings, $form_id );
 

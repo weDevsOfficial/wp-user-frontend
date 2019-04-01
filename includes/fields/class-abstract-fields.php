@@ -795,7 +795,7 @@ abstract class WPUF_Field_Contract {
         $cond_inputs['condition_status'] = isset( $cond_inputs['condition_status'] ) ? $cond_inputs['condition_status'] : '';
 
         if ( $cond_inputs['condition_status'] == 'yes') {
-            $cond_inputs['type']    = $form_field['template'];
+            $cond_inputs['type']    = $form_field['input_type'];
             $cond_inputs['name']    = $form_field['name'];
             $cond_inputs['form_id'] = $form_id;
             $condition              = json_encode( $cond_inputs );
@@ -804,11 +804,17 @@ abstract class WPUF_Field_Contract {
             $condition = '';
         }
 
-        // for section break
-//        if ( $form_field['template'] == 'section_break' ) {
-//            $cond_inputs['name'] = $form_field['name'] .'_'. $form_field['id'];
-//            $condition           = json_encode( $cond_inputs );
-//        }
+        //taxnomy name create unique
+        if ( $form_field['input_type'] == 'taxonomy' ) {
+            $cond_inputs['name'] = $form_field['name'] . '_' . $form_field['type'] .'_'. $form_field['id'];
+            $condition           = json_encode( $cond_inputs );
+        }
+
+        //for section break
+        if ( $form_field['input_type'] == 'section_break' ) {
+            $cond_inputs['name'] = $form_field['name'] .'_'. $form_field['id'];
+            $condition           = json_encode( $cond_inputs );
+        }
 
         ?>
         <script type="text/javascript">

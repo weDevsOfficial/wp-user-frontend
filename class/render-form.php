@@ -1410,9 +1410,9 @@ class WPUF_Render_Form {
         $taxonomy           = $attr['name'];
         $class              = ' wpuf_'.$attr['name'].'_'.$selected;
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-        $exclude            = $attr['exclude'];
+        $exclude            = isset( $attr['exclude'] ) ? $attr['exclude'] : '';
 
-        if ( $exclude_type == 'child_of' ) {
+        if ( $exclude_type == 'child_of' && !empty( $exclude ) ) {
           $exclude = $exclude[0];
         }
 
@@ -1442,7 +1442,7 @@ class WPUF_Render_Form {
             'required'     => $attr['required'],
             'name'         => $attr['name'],
             'exclude_type' => $attr['exclude_type'],
-            'exclude'      => $attr['exclude'],
+            'exclude'      => isset( $attr['exclude'] ) ? $attr['exclude']  : '',
             'orderby'      => $attr['orderby'],
             'order'        => $attr['order'],
             'name'         => $attr['name'],
@@ -1464,7 +1464,9 @@ class WPUF_Render_Form {
     function taxonomy( $attr, $post_id, $form_id ) {
 
         $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-        $exclude            = $attr['exclude'];
+        // $exclude            = $attr['exclude'];
+        $exclude            = isset( $attr['exclude'] ) ? $attr['exclude'] : '';
+
 
         if ( $exclude_type == 'child_of' ) {
           $exclude = $exclude[0];

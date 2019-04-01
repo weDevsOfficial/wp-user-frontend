@@ -89,6 +89,7 @@ class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
         $props    = array(
             'input_type'        => 'text',
             'is_meta'           => 'no',
+            'name'              => 'tags',
             'width'             => 'large',
             'size'              => 40,
             'id'                => 0,

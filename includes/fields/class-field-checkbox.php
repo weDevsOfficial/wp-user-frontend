@@ -45,7 +45,7 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
 
     ?>
 
-        <div class="wpuf-fields" data-required="<?php echo $field_settings['required'] ?>" data-type="checkbox">
+        <div class="wpuf-fields" data-required="<?php echo $field_settings['required'] ?>" data-type="radio">
 
             <?php
             if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {

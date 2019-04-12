@@ -33,7 +33,12 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
                     } elseif ( is_array( $value ) ) {
                         $selected = $value;
                     } else {
-                        $selected = explode( "|", $value );
+                        $selected = array();
+                        $selected_options = explode( "|", $value );
+
+                        foreach ($selected_options as $option) {
+                            array_push($selected, trim($option));
+                        }
                     }
                 } else {
 

@@ -215,7 +215,7 @@ class WPUF_Payment {
                                 $current_user = wpuf_get_user();
 
                                 $current_pack = $current_user->subscription()->current_pack();
-                                if ( $force_pack && is_wp_error( $current_pack ) && $fallback_enabled ) {
+                                if ( $force_pack && !is_wp_error( $current_pack ) && $fallback_enabled ) {
                                     $post_cost = $fallback_cost;
                                     $billing_amount = apply_filters( 'wpuf_payment_amount', $fallback_cost );
                                 } else {

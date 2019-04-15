@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 5.1.1  
 **Requires PHP:** 5.4  
-**Stable tag:** 3.1.2  
+**Stable tag:** 3.1.3  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -256,6 +256,12 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v3.1.3 (15 April, 2019) ###
+
+* **Fix:** Required option of checkbox field was not validating on the frontend.
+* **Fix:** Select mulitple options in checkbox field doesn't save the data.
+* **Fix:** Fallback pay per post was not respecting the payment procedure & fallback cost was not correct on the payment page.
 
 ### v3.1.2 (01 April, 2019) ###
 

@@ -243,7 +243,7 @@
                                     $show_edit  = false;
                                 }
 
-                                if ( $post->post_status =='draft' && ( !empty( $payment_status ) && $payment_status != 'completed' ) ) {
+                                if ( ($post->post_status =='draft' || $post->post_status =='pending') && ( !empty( $payment_status ) && $payment_status != 'completed' ) ) {
                                     $show_edit  = false;
                                 }
 

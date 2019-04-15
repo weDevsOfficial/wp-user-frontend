@@ -1,13 +1,22 @@
 /**
  * Field template: Column Field
  */
+const mixins = [
+    wpuf_mixins.form_field_mixin
+];
+
+if (window.wpuf_forms_mixin_builder_stage) {
+    mixins.push(window.wpuf_forms_mixin_builder_stage);
+}
+
+if (window.weforms_mixin_builder_stage) {
+    mixins.push(window.weforms_mixin_builder_stage);
+}
+
 Vue.component('form-column_field', {
     template: '#tmpl-wpuf-form-column_field',
 
-    mixins: [
-        wpuf_mixins.form_field_mixin,
-        window.wpuf_forms_mixin_builder_stage
-    ],
+    mixins: mixins,
 
     data() {
         return{

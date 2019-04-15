@@ -33,7 +33,12 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
                     } elseif ( is_array( $value ) ) {
                         $selected = $value;
                     } else {
-                        $selected = explode( "|", $value );
+                        $selected = array();
+                        $selected_options = explode( "|", $value );
+
+                        foreach ($selected_options as $option) {
+                            array_push($selected, trim($option));
+                        }
                     }
                 } else {
 
@@ -45,7 +50,7 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
 
     ?>
 
-        <div class="wpuf-fields" data-required="<?php echo $field_settings['required'] ?>" data-type="checkbox">
+        <div class="wpuf-fields" data-required="<?php echo $field_settings['required'] ?>" data-type="radio">
 
             <?php
             if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {

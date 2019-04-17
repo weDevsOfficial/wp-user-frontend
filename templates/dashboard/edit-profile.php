@@ -57,7 +57,7 @@ ob_start();
                 <input type="password" class="input-text" name="pass1" id="pass1" size="16" value="" autocomplete="off" />
             </div>
             <span style="width: 100%;" id="pass-strength-result"><?php _e( 'Strength indicator', 'wp-user-frontend' ); ?></span>
-            <script src="<?php echo site_url(); ?>/wp-includes/js/zxcvbn.min.js"></script>
+            <script src="<?php echo includes_url(); ?>/js/zxcvbn.min.js"></script>
             <script src="<?php echo admin_url(); ?>/js/password-strength-meter.js"></script>
             <script type="text/javascript">
                 var pwsL10n = {

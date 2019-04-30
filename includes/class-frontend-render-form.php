@@ -745,7 +745,6 @@ class WPUF_Frontend_Render_Form{
             }
 
         } //end foreach
-
         return array($meta_key_value, $multi_repeated, $files);
     }
 

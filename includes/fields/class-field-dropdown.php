@@ -44,7 +44,7 @@ class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
                 data-type="select">
 
                 <?php if ( !empty( $field_settings['first'] ) ) { ?>
-                    <option value=""><?php echo $field_settings['first']; ?></option>
+                    <option value="-1"><?php echo $field_settings['first']; ?></option>
                 <?php } ?>
 
                 <?php

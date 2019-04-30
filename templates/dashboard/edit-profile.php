@@ -56,22 +56,6 @@ ob_start();
             <div class="wpuf-fields" >
                 <input type="password" class="input-text" name="pass1" id="pass1" size="16" value="" autocomplete="off" />
             </div>
-            <span style="width: 100%;" id="pass-strength-result"><?php _e( 'Strength indicator', 'wp-user-frontend' ); ?></span>
-            <script src="<?php echo includes_url(); ?>/js/zxcvbn.min.js"></script>
-            <script src="<?php echo admin_url(); ?>/js/password-strength-meter.js"></script>
-            <script type="text/javascript">
-                var pwsL10n = {
-                    empty: "Strength indicator",
-                    short: "Very weak",
-                    bad: "Weak",
-                    good: "Medium",
-                    strong: "Strong",
-                    mismatch: "Mismatch"
-                };
-                try {
-                    convertEntities(pwsL10n);
-                } catch (e) {};
-            </script>
         </li>
         <div class="clear"></div>
 
@@ -82,6 +66,61 @@ ob_start();
             <div class="wpuf-fields" >
                 <input type="password" class="input-text" name="pass2" id="pass2" size="16" value="" autocomplete="off" />
             </div>
+
+            <span style="display: block; margin-top:20px" class="pass-strength-result" id="pass-strength-result"><?php _e( 'Strength indicator', 'wp-user-frontend' ); ?></span>
+            <script src="<?php echo includes_url(); ?>/js/zxcvbn.min.js"></script>
+            <script src="<?php echo admin_url(); ?>/js/password-strength-meter.js"></script>
+            <script type="text/javascript">
+                jQuery(function($) {
+                    function check_pass_strength() {
+                        var pass1 = $("#pass1").val(),
+                            pass2 = $("#pass2").val(),
+                            strength;
+
+                        if ( typeof pass2 === undefined ) {
+                            pass2 = pass1;
+                        }
+
+                        var pwsL10n = {
+                            empty: "Strength indicator",
+                            short: "Very weak",
+                            bad: "Weak",
+                            good: "Medium",
+                            strong: "Strong",
+                            mismatch: "Mismatch"
+                        };
+
+                        $("#pass-strength-result").removeClass('short bad good strong');
+                        if (!pass1) {
+                            $("#pass-strength-result").html(pwsL10n.empty);
+                            return;
+                        }
+
+                        strength = wp.passwordStrength.meter(pass1, wp.passwordStrength.userInputBlacklist(), pass2);
+
+                        switch (strength) {
+                            case 2:
+                                $("#pass-strength-result").addClass('bad').html(pwsL10n.bad);
+                                break;
+                            case 3:
+                                $("#pass-strength-result").addClass('good').html(pwsL10n.good);
+                                break;
+                            case 4:
+                                $("#pass-strength-result").addClass('strong').html(pwsL10n.strong);
+                                break;
+                            case 5:
+                                $("#pass-strength-result").addClass('short').html(pwsL10n.mismatch);
+                                break;
+                            default:
+                                $("#pass-strength-result").addClass('short').html(pwsL10n['short']);
+                        }
+                    }
+
+                    $("#pass1").val('').keyup(check_pass_strength);
+                    $("#pass2").val('').keyup(check_pass_strength);
+                    $("#pass-strength-result").show();
+                });
+            </script>
         </li>
         <div class="clear"></div>
 

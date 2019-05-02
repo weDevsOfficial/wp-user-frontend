@@ -55,7 +55,7 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
                 <select multiple="multiple" class="multiselect <?php echo 'wpuf_'. $field_settings['name'] .'_'. $form_id; ?>" id="<?php echo $field_settings['name'] . '_' . $form_id; ?>" name="<?php echo $name; ?>" mulitple="multiple" data-required="<?php echo $field_settings['required'] ?>" data-type="multiselect">
 
                     <?php if ( !empty( $field_settings['first'] ) ) { ?>
-                        <option value=""><?php echo $field_settings['first']; ?></option>
+                        <option value="-1"><?php echo $field_settings['first']; ?></option>
                     <?php } ?>
 
                     <?php

@@ -598,13 +598,16 @@ class WPUF_Frontend_Render_Form{
 
                 else {
 
-                    if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+                    if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'no' && !empty( $_POST[$taxonomy['name']] ) ) {
 
-                        foreach ($this->form_settings['default_cat'] as $value) {
-                            $term = get_term( $value );
-                            wp_set_post_terms( $post_id, $value , $term->taxonomy);
+                        if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+
+                            foreach ($this->form_settings['default_cat'] as $value) {
+                                $term = get_term( $value );
+                                wp_set_post_terms( $post_id, $value , $term->taxonomy);
+                            }
+                            // wp_set_post_terms( $post_id, $form_settings['default_cat'], $taxonomy['name'] );
                         }
-                        // wp_set_post_terms( $post_id, $form_settings['default_cat'], $taxonomy['name'] );
                     }
                 }
             }
@@ -742,7 +745,6 @@ class WPUF_Frontend_Render_Form{
             }
 
         } //end foreach
-
         return array($meta_key_value, $multi_repeated, $files);
     }
 

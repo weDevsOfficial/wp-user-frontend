@@ -45,7 +45,6 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
                 }
             }
         }
-
         $this->field_print_label($field_settings, $form_id );
 
     ?>

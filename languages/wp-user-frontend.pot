@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.1.4\n"
+"Project-Id-Version: WP User Frontend 3.1.5\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2019-05-02 04:42:14+00:00\n"
+"POT-Creation-Date: 2019-05-02 08:00:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -305,7 +305,7 @@ msgstr ""
 #: admin/class-admin-subscription.php:754
 #: admin/form-builder/class-wpuf-admin-form-builder.php:265
 #: class/payment.php:199 class/subscription.php:780
-#: includes/class-list-table-subscribers.php:128 lib/appsero/Insights.php:738
+#: includes/class-list-table-subscribers.php:128 lib/appsero/Insights.php:742
 #: templates/dashboard/subscription.php:61
 msgid "Cancel"
 msgstr ""
@@ -5686,37 +5686,37 @@ msgstr ""
 msgid "Go to Full Settings"
 msgstr ""
 
-#: lib/appsero/Insights.php:352
+#: lib/appsero/Insights.php:356
 msgid ""
 "Want to help make <strong>%1$s</strong> even more awesome? Allow %1$s to "
 "collect non-sensitive diagnostic data and usage information."
 msgstr ""
 
-#: lib/appsero/Insights.php:357
+#: lib/appsero/Insights.php:361
 msgid "what we collect"
 msgstr ""
 
-#: lib/appsero/Insights.php:363
+#: lib/appsero/Insights.php:367
 msgid "Allow"
 msgstr ""
 
-#: lib/appsero/Insights.php:364
+#: lib/appsero/Insights.php:368
 msgid "No thanks"
 msgstr ""
 
-#: lib/appsero/Insights.php:563
+#: lib/appsero/Insights.php:567
 msgid "Once Weekly"
 msgstr ""
 
-#: lib/appsero/Insights.php:722
+#: lib/appsero/Insights.php:726
 msgid "If you have a moment, please let us know why you are deactivating:"
 msgstr ""
 
-#: lib/appsero/Insights.php:736
+#: lib/appsero/Insights.php:740
 msgid "I rather wouldn't say"
 msgstr ""
 
-#: lib/appsero/Insights.php:737
+#: lib/appsero/Insights.php:741
 msgid "Submit & Deactivate"
 msgstr ""
 

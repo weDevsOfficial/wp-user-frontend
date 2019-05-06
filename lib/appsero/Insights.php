@@ -44,6 +44,7 @@ class Insights {
      * @param AppSero\Client
      */
     public function __construct( $client, $name = null, $file = null ) {
+
         if ( is_string( $client ) && ! empty( $name ) && ! empty( $file ) ) {
             $client = new Client( $client, $name, $file );
         }
@@ -123,7 +124,7 @@ class Insights {
     public function init_plugin() {
         // plugin deactivate popup
         if ( ! $this->is_local_server() ) {
-            add_action( 'plugin_action_links_' . $this->client->basename, array( $this, 'plugin_action_links' ) );
+            add_filter( 'plugin_action_links_' . $this->client->basename, array( $this, 'plugin_action_links' ) );
             add_action( 'admin_footer', array( $this, 'deactivate_scripts' ) );
         }
 
@@ -153,6 +154,7 @@ class Insights {
         // cron events
         add_action( 'cron_schedules', array( $this, 'add_weekly_schedule' ) );
         add_action( $this->client->slug . '_tracker_send_event', array( $this, 'send_tracking_data' ) );
+        // add_action( 'admin_init', array( $this, 'send_tracking_data' ) ); // test
     }
 
     /**
@@ -179,7 +181,7 @@ class Insights {
             return;
         }
 
-        $this->client->send_request( $this->get_tracking_data(), 'track' );
+        $response = $this->client->send_request( $this->get_tracking_data(), 'track' );
 
         update_option( $this->client->slug . '_tracking_last_send', time() );
     }
@@ -223,9 +225,10 @@ class Insights {
             'inactive_plugins' => count( $all_plugins['inactive_plugins'] ),
             'ip_address'       => $this->get_user_ip_address(),
             'theme'            => get_stylesheet(),
+            'version'          => $this->client->project_version,
         );
 
-        // for child classes
+        // Add metadata
         if ( $extra = $this->get_extra_data() ) {
             $data['extra'] = $extra;
         }
@@ -697,8 +700,14 @@ class Insights {
             'server'      => $this->get_server_info(),
             'wp'          => $this->get_wp_info(),
             'ip_address'  => $this->get_user_ip_address(),
+            'theme'       => get_stylesheet(),
             'version'     => $this->client->project_version,
         );
+
+        // Add metadata
+        if ( $extra = $this->get_extra_data() ) {
+            $data['extra'] = $extra;
+        }
 
         $this->client->send_request( $data, 'deactivate' );
 
@@ -890,6 +899,7 @@ class Insights {
                 'server'      => $this->get_server_info(),
                 'wp'          => $this->get_wp_info(),
                 'ip_address'  => $this->get_user_ip_address(),
+                'theme'       => get_stylesheet(),
                 'version'     => $this->client->project_version,
             );
 

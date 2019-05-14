@@ -735,10 +735,10 @@ class WPUF_Frontend_Render_Form{
                         } else {
                             $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
                         }
+                    } else if ( !empty( $_POST[ $value['name'] ] ) ) {
+                        $meta_key_value[$value['name']] = trim( $_POST[$value['name']] );
                     } else {
-                        if ( !empty( $_POST[ $value['name'] ] ) ) {
-                            $meta_key_value[$value['name']] = trim( $_POST[$value['name']] );
-                        }
+                        $meta_key_value[$value['name']] = trim( $_POST[$value['name']] );
                     }
 
                     break;

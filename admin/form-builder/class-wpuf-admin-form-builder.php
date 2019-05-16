@@ -141,6 +141,7 @@ class WPUF_Admin_Form_Builder {
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
             'panel_sections'    => wpuf()->fields->get_field_groups(),
             'field_settings'    => wpuf()->fields->get_js_settings(),
+            'form_settings'     => wpuf_get_form_settings( $post->ID ),
             'notifications'     => wpuf_get_form_notifications( $post->ID ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
             'site_url'          => site_url('/'),

@@ -126,6 +126,17 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
                 'redirect_to'                => 'post',
                 'comment_status'             => 'open',
                 'submit_text'                => __( 'Create Post', 'wp-user-frontend' ),
+                'submit_button_cond'  => array(
+                    'condition_status' => 'no',
+                    'cond_logic'       => 'any',
+                    'conditions'       => array(
+                        array(
+                            'name'             => '',
+                            'operator'         => '=',
+                            'option'           => ''
+                        )
+                    )
+                ),
                 'edit_post_status'           => 'publish',
                 'edit_redirect_to'           => 'same',
                 'update_message'             => __( 'Post has been updated successfully. <a target="_blank" href="%link%">View post</a>', 'wp-user-frontend' ),

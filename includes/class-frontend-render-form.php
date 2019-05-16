@@ -145,6 +145,8 @@ class WPUF_Frontend_Render_Form{
             <input type="hidden" id="del_attach" name="delete_attachments[]">
             <input type="hidden" name="action" value="wpuf_submit_post">
 
+            <?php do_action( 'wpuf_submit_btn', $form_id, $form_settings ); ?>
+
             <?php
             if ( $post_id ) {
                 $cur_post = get_post( $post_id );
@@ -153,9 +155,9 @@ class WPUF_Frontend_Render_Form{
                 <input type="hidden" name="post_date" value="<?php echo esc_attr( $cur_post->post_date ); ?>">
                 <input type="hidden" name="comment_status" value="<?php echo esc_attr( $cur_post->comment_status ); ?>">
                 <input type="hidden" name="post_author" value="<?php echo esc_attr( $cur_post->post_author ); ?>">
-                <input type="submit" class="wpuf-submit-button" name="submit" value="<?php echo $form_settings['update_text']; ?>" />
+                <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo $form_id; ?>" name="submit" value="<?php echo $form_settings['update_text']; ?>" />
             <?php } else { ?>
-                <input type="submit" class="wpuf-submit-button" name="submit" value="<?php echo $form_settings['submit_text']; ?>" />
+                <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo $form_id; ?>" name="submit" value="<?php echo $form_settings['submit_text']; ?>" />
             <?php } ?>
 
             <?php if ( isset( $form_settings['draft_post'] ) && $form_settings['draft_post'] == 'true' ) { ?>

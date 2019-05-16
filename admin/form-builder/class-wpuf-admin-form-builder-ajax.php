@@ -66,7 +66,7 @@ class WPUF_Admin_Form_Builder_Ajax {
 
         $form_fields = WPUF_Admin_Form_Builder::save_form( $data );
 
-        wp_send_json_success( array( 'form_fields' => $form_fields ) );
+        wp_send_json_success( array( 'form_fields' => $form_fields, 'form_settings' => $settings ) );
     }
 
 }

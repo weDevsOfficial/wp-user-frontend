@@ -22,6 +22,7 @@ class WPUF_Setup_Wizard {
         add_action( 'admin_menu', array( $this, 'admin_menus' ) );
         add_action( 'admin_init', array( $this, 'setup_wizard' ), 99 );
         add_action( 'admin_init', array( $this, 'redirect_to_page' ), 9999 );
+        add_action( 'admin_init', array( $this, 'add_custom_menu_class') );
     }
 
     /**
@@ -62,7 +63,24 @@ class WPUF_Setup_Wizard {
      * Add admin menus/screens.
      */
     public function admin_menus() {
-        add_dashboard_page( '', '', 'manage_options', 'wpuf-setup', '' );
+        add_dashboard_page( 'WPUF Setup', 'WPUF Setup', 'manage_options', 'wpuf-setup', '' );
+    }
+
+    /**
+     * Add custom class to WPUF Setup menu link, it's needed to hide the link from the dashboard
+     *
+     * @since 3.1.6
+     */
+    public function add_custom_menu_class() {
+        global $submenu;
+
+        foreach( $submenu as $key => $items ) {
+            foreach ($items as $index => $item) {
+                if( 'wpuf-setup' == $item[2] ) {
+                    $submenu['index.php'][$index][4] = "wpuf-setup-menu-link";
+                }
+            }
+        }
     }
 
     /**

@@ -28,6 +28,9 @@
 .wpufTableBody {
   display: table-row-group;
 }
+.wpuf-menu-item.active a {
+  color: #040202;
+}
 .wpuf-loading {
   width: 16px;
   height: 16px;

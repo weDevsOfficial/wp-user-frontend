@@ -14,8 +14,10 @@
                                 continue;
                             }
                         }
+
                         echo sprintf(
-                            '<li><a href="%s">%s</a></li>',
+                            '<li class="wpuf-menu-item %s"><a href="%s">%s</a></li>',
+                            ( isset( $_GET['section'] ) && $_GET['section'] == $section['slug'] ) ? $section['slug'] . ' active' : $section['slug'],
                             add_query_arg( array( 'section' => $section['slug'] ), get_permalink() ),
                             $section['label']
                         );

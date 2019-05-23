@@ -1,5 +1,8 @@
 @borderColor: #eee;
 @mainColor: #64C3DE;
+@mediaXS: 767px;
+@mediaSM: 991px;
+@mediaMD: 1200px;
 
 /* DivTable.com */
 .wpufTable{
@@ -57,9 +60,9 @@
     color: #fff;
     text-decoration: none;
     text-shadow: 0 -1px 1px #006799,
-        1px 0 1px #006799,
-        0 1px 1px #006799,
-        -1px 0 1px #006799;
+    1px 0 1px #006799,
+    0 1px 1px #006799,
+    -1px 0 1px #006799;
 }
 
 .core-button-hover() {
@@ -120,6 +123,17 @@
     padding: 10px;
     .border-radius(3px);
     font-size: 13px;
+}
+
+#wpuf-private-message {
+    .chat-box {
+        margin-bottom: 30px;
+    }
+    .write-area {
+        width: 100%;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
 }
 
 .wpuf-info {
@@ -338,6 +352,12 @@ ul.wpuf-form {
                     .wpuf-name-field-last-name {
                         float: right;
                         width: 48%;
+                    }
+                    @media(max-width: @mediaXS){
+                        .wpuf-name-field-last-name,
+                        .wpuf-name-field-first-name {
+                            width: 100%;
+                        }
                     }
                 }
 
@@ -803,14 +823,17 @@ ul.wpuf-form {
 
     .wpuf-copon-cancel {
         text-decoration: none;
-         font-size: 11px;
+        font-size: 11px;
     }
 }
 
 .entry-content ul.wpuf_packs,
 ul.wpuf_packs {
     overflow: hidden;
-    margin: 15px;
+    margin: 15px 0;
+    max-width: initial;
+    width: 100%;
+    padding-left: 0;
 
     > li {
         background: #fff;
@@ -819,13 +842,20 @@ ul.wpuf_packs {
         border: 1px solid #DDD;
         border-radius: 5px 5px 5px 5px;
         list-style: none outside none;
-        margin: 5px 25px 25px 0;
+        margin: 0 25px 25px 0;
         position: relative;
         width: 200px;
         box-shadow: 0 2px 6px rgba(100, 100, 100, 0.3);
-
-        &:first-child {
-            margin-left: 5px;
+    }
+    @media (max-width: @mediaSM) {
+        text-align: center;
+        padding-left: 25px;
+    }
+    @media (max-width: 500px) {
+        padding-left: 0;
+        > li {
+            width: 100%;
+            margin-left: 0;
         }
     }
 
@@ -1028,6 +1058,9 @@ table.wpuf-table {
 }
 
 #wpuf-payment-gateway {
+    @media(max-width: 549px){
+        margin-left: -15px;
+    }
     ul.wpuf-payment-gateways {
         list-style: none;
         margin: 10px 0;
@@ -1162,7 +1195,7 @@ table.wpuf-table {
 /*------------------------------------
  * Multistep form
  *-----------------------------------*/
-fieldset.wpuf-multistep-fieldset {
+ fieldset.wpuf-multistep-fieldset {
     position: relative;
     padding-bottom: 50px;
     border: none;
@@ -1293,7 +1326,7 @@ input.wpuf-btn {
 body.rtl{
   ul.wpuf-form li .wpuf-label{
     float: right;
-  }
+}
 }
 
 // landscape phones and smaller
@@ -1334,10 +1367,11 @@ body.rtl{
     }
 }
 .wpuf-dashboard-container {
+    .clearfix();
     .wpuf-dashboard-navigation {
         width: 30%;
         float: left;
-
+        
         a {
             text-decoration: none;
             box-shadow: none;
@@ -1345,18 +1379,57 @@ body.rtl{
 
         ul {
             list-style: none;
+            margin: 0;
+            padding: 0;
             li {
                 padding-bottom: 2px;
             }
         }
+        
+        @media (max-width: @mediaSM){
+            width: 100%;
+            margin-bottom: 30px;
+            ul {
+                margin: 0 -7px;
+                li {
+                    margin: 0 7px;
+                    display: inline-block;
+                }
+            }
+        }
+
     }
 
     .wpuf-dashboard-content {
         width: 68%;
         float: right;
+        @media (max-width: @mediaSM){
+            width: 100%;
+        }
+        .wpuf-fields {
+            select, 
+            textarea, 
+            input {
+                &:not([type="submit"]),
+                &:not([type="button"]),
+                &:not([type="checkbox"]),
+                &:not([type="radio"]),
+                &:not([type="file"]),
+                &:not([type="reset"]){
+                    width: 100%;
+                }
+            }   
+        } 
+
     }
 
+    .items-table-container,
+    .wpuf-dashboard-content.invoices {
+        max-width: 100%;
+        overflow-y: auto;
+    }
     table.items-table {
+        min-width: 600px;
         a {
             text-decoration: none;
             box-shadow: none;
@@ -1370,6 +1443,7 @@ body.rtl{
         }
 
         tr {
+            text-align: left;
             outline: 1px solid #f1f1f1;
         }
 
@@ -1379,17 +1453,32 @@ body.rtl{
     }
 
     .wpuf-update-profile-form {
-        .form-row-first {
-            float: left;
-            width: 47%;
-            overflow: visible;
+        ul.wpuf-form {
+            margin: 0 -15px !important;
+            width: inherit;
+            .form-row-first {
+                float: left;
+                width: 50%;
+                padding: 0 15px;
+                overflow: visible;
+            }
+
+            .form-row-last {
+                float: right;
+                width: 50%;
+                padding: 0 15px;
+                overflow: visible;
+            }
+            
+            @media(max-width: @mediaXS){
+                .form-row-first,
+                .form-row-last {
+                    float: none;
+                    width: 100%;
+                }  
+            }
         }
 
-        .form-row-last {
-            float: right;
-            width: 43%;
-            overflow: visible;
-        }
     }
 }
 
@@ -1564,7 +1653,7 @@ li.wpuf-image-wrap.thumbnail:hover .caption {
     display:block;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 550px) {
     .wpuf-pay-row {
         width: 100%;
         display: table;

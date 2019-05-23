@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 5.1.1  
 **Requires PHP:** 5.4  
-**Stable tag:** 3.1.5  
+**Stable tag:** 3.1.6  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -256,6 +256,14 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v3.1.6 (23 May, 2019) ###
+
+* **Fix:** URL field empty value was not saving.
+* **Fix:** Custom taxonomy field empty data were not updating.
+* **Fix:** Added translation function for missing strings.
+* **Improvement:** Added active class to account page menu items.
+* **Improvement:** Responsive frontend pages.
 
 ### v3.1.5 (02 May, 2019) ###
 

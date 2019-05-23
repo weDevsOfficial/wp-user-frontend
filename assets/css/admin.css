@@ -634,6 +634,9 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
   background: transparent;
   border: 0;
 }
+.wpuf-setup-menu-link {
+  display: none;
+}
 .wpuf-help-tabbed {
   display: flex;
   width: 100%;

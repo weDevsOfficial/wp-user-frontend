@@ -97,6 +97,34 @@ class Client {
     }
 
     /**
+     * Initialize plugin/theme updater
+     *
+     * @return Appsero\Updater
+     */
+    public function updater() {
+
+        if ( ! class_exists( __NAMESPACE__ . '\Updater') ) {
+            require_once __DIR__ . '/Updater.php';
+        }
+
+        return new Updater( $this );
+    }
+
+    /**
+     * Initialize license checker
+     *
+     * @return Appsero\License
+     */
+    public function license() {
+
+        if ( ! class_exists( __NAMESPACE__ . '\License') ) {
+            require_once __DIR__ . '/License.php';
+        }
+
+        return new License( $this );
+    }
+
+    /**
      * API Endpoint
      *
      * @return string

@@ -736,7 +736,7 @@ class WPUF_Simple_Login {
         }
 
         if ( !isset( $_GET['id'] ) && empty( $_GET['id'] ) ) {
-            wpuf()->login->add_error( 'Activation URL is not valid' );
+            wpuf()->login->add_error( __('Activation URL is not valid', 'wp-user-frontend') );
             return;
         }
 
@@ -746,19 +746,19 @@ class WPUF_Simple_Login {
         $wpuf_user_status = get_user_meta( $user_id, 'wpuf_user_status', true );
 
         if ( !$user ) {
-            wpuf()->login->add_error( 'Invalid User activation url' );
+            wpuf()->login->add_error( __('Invalid User activation url', 'wp-user-frontend') );
             return;
         }
 
         if ( $user->is_verified() ){
-            wpuf()->login->add_error( 'User already verified' );
+            wpuf()->login->add_error( __('User already verified', 'wp-user-frontend') );
             return;
         }
 
         $activation_key = $_GET['wpuf_registration_activation'];
 
         if ( $user->get_activation_key() != $activation_key ) {
-            wpuf()->login->add_error( 'Activation URL is not valid' );
+            wpuf()->login->add_error( __('Activation URL is not valid', 'wp-user-frontend') );
             return;
         }
 

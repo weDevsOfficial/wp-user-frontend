@@ -2166,6 +2166,17 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
             'url'              => '',
             'comment_status'   => 'open',
             'submit_text'      => 'Submit',
+            'submit_button_cond'  => array(
+                'condition_status' => 'no',
+                'cond_logic'       => 'any',
+                'conditions'       => array(
+                    array(
+                        'name'             => '',
+                        'operator'         => '=',
+                        'option'           => ''
+                    )
+                )
+            ),
             'draft_post'       => 'false',
             'edit_post_status' => 'publish',
             'edit_redirect_to' => 'same',

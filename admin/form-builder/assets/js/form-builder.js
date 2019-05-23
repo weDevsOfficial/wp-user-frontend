@@ -40,6 +40,7 @@
             panel_sections: wpuf_form_builder.panel_sections,
             field_settings: wpuf_form_builder.field_settings,
             notifications: wpuf_form_builder.notifications,
+            settings: wpuf_form_builder.form_settings,
             current_panel: 'form-fields',
             editing_field_id: 0, // editing form field id
         },
@@ -47,6 +48,10 @@
         mutations: {
             set_form_fields: function (state, form_fields) {
                 Vue.set(state, 'form_fields', form_fields);
+            },
+
+            set_form_settings: function (state, value) {
+                Vue.set(state, 'settings', value);
             },
 
             // set the current panel
@@ -363,6 +368,10 @@
 
             notifications: function() {
                 return this.$store.state.notifications;
+            },
+
+            settings: function() {
+                return this.$store.state.settings;
             }
         },
 
@@ -478,6 +487,10 @@
                     success: function (response) {
                         if (response.form_fields) {
                             self.$store.commit('set_form_fields', response.form_fields);
+                        }
+
+                        if (response.form_settings) {
+                            self.$store.commit('set_form_settings', response.form_settings);
                         }
 
                         self.is_form_saving = false;

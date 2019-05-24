@@ -1,6 +1,115 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 3.1.2',
+        'released' => '2019-04-01',
+        'changes' => array(
+            array(
+                'title'       => __( 'Added column field', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => 'Now, creating multi-column in a single row is super easy with WPUF Column field. Just drag the column field in the builder area, configure columns number, column space and any fields you want inside that Column field.' .'<img src="'. WPUF_ASSET_URI .'/images/whats-new/column-field.png" alt="Multi-select Category">',
+            ),
+            array(
+                'title'       => __( 'Unable to render the events on the front-end dashboard', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'On the frontend dashboard, the submitted events were not showing, you will get it fixed in this version.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Page order getting 0(zero) after editing from the frontend', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Page order was not saving while editing a post using WPUF form, it has been fixed.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Text input field for taxonomies not working', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "When taxonomy field type is set to `Text Input` then a fatal error was showing on the frontend, no error with taxonomy field in the latest version.", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'In radio and checkbox field use conditional logic that value does not save in database', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "The selected value of radio and checkbox field were not showing while editing posts from the backend or frontend, you can see the selected value in this version.", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'The args param not working with get_avatar filter', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "The args parameter did not exist with get_avatar filter, which now exists.", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'The item in ajax taxonomy field was not selected', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "When the taxonomy field type is set to Ajax, the submitted terms were not showing in the backend and frontend which have been fixed.", 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
+        'version'  => 'Version 3.1.0',
+        'released' => '2019-01-31',
+        'changes' => array(
+            array(
+                'title'       => __( 'Unable to send new user registration email', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'WP User Frontend default registration form `[wpuf-registration]` was unable to send the new user registration email.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'WPUF forms block compatibility issue with the latest WP version', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'With the latest version of WordPress the gutenberg block of WP User Frontend were not working. In this version, you will get it fixed.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Page not update where `[wpuf_dashboard]` shortcode exist', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'While using Gutenberg, the page were not being updated with WPUF shortcode [wpuf dashboard]', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Retain default when determining whether to display the admin bar', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "From the User Frontend Settings, set that Administrator, Editor, Vendor can see the admin bar. Now, the super admin want, one specific user ( who has the user role from the above ) can't see the admin bar and disabled it from the Toolbar form that specific user profile. And this configuration ( Toolbar ) from the specific user profile were unable to impact on the frontend.", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Fatal error when use PHP lower version (5.4 or lower)', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "It was unable to install WP User Frontend with PHP 5.4 or lower version. Here is the error details: <br><br><strong>Fatal error: Can't use method return value in write context in /wp-user-frontend/class/frontend-form-post.php on line 194</strong>", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Product form was unable to show the single gallery image', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "When user upload single image for product gallery using WPUF WooCommerce product form, that image were not showing on the frontend.", 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
+        'version'  => 'Version 2.9.4',
+        'released' => '2018-11-20',
+        'changes' => array(
+            array(
+                'title'       => __( 'WooCommerce gallery images not getting saved', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'After releasing version 2.9.3, WooCommerce gallery image field stopped working. You will get it fixed in this version.', 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
+        'version'  => 'Version 2.9.0',
+        'released' => '2018-08-14',
+        'changes' => array(
+            array(
+                'title'       => __( 'The Events Calendar Integration Form', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'Now admin can allow users to create event from the frontend. Currently WPUF has a one click pre-build event form that has been integrated with The Events Calendar plugin', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Post Submission Facility From Account Page', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'On the frontend account page, added a new menu item named <b>Submit Post</b>. Now admin can allow users to submit post from their default account page. As an admin you can disable or enable this option from <b>User Frontend -> Settings -> My Account -> Post Submission</b>, Also, you can assign any post form that will use to submit posts.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( 'Login/Lost Password Link Under Registration Form', 'wp-user-frontend' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Added Login/Lost Password link under registration form', 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 2.8.10',
         'released' => '2018-07-17',
         'changes' => array(

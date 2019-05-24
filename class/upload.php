@@ -53,11 +53,15 @@ class WPUF_Upload {
                 $guest_post = true;
             }
 
+            // check if the request coming from weForms & allow users to upload when require login option is disabled
+            if ( isset( $form_settings['require_login'] ) && $form_settings['require_login'] == 'false' ) {
+                $guest_post = true;
+            }
+
             //if it is registration form, let the user upload the file
             if ( get_post_type( $form_id ) == 'wpuf_profile' ) {
                 $guest_post = true;
             }
-
 
             if ( ! $guest_post ) {
                 die( 'error' );

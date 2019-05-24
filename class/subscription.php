@@ -450,7 +450,8 @@ class WPUF_Subscription {
         $current_pack     = $current_user->subscription()->current_pack();
         $has_post         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-        if ( $payment_options && $force_pack && is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
+
+        if ( $payment_options && $force_pack && !is_wp_error( $current_pack ) && $fallback_cost && !$has_post )  {
             $postdata['post_status'] = 'pending';
         }
 
@@ -495,9 +496,8 @@ class WPUF_Subscription {
 
             $old_status = $post->post_status;
             wp_transition_post_status( $post_status, $old_status, $post );
-            // wp_update_post( array( 'ID' => $post_id , 'post_status' => $post_status) );
 
-            // decrease the post count, if not umlimited
+            // decrease the post count, if not unlimited
             $wpuf_post_status = get_post_meta( $post_id, 'wpuf_post_status', true );
 
             if ( $wpuf_post_status != 'new_draft' ) {
@@ -506,11 +506,12 @@ class WPUF_Subscription {
                     $this->update_user_subscription_meta( $userdata->ID, $sub_info );
                 }
             }
+
             //meta added to make post have flag if post is published
             update_post_meta( $post_id, 'wpuf_post_status', 'published' );
 
 
-        } elseif ( !$force_pack && ( $pay_per_post || ( $fallback_cost && !$has_post ) ) ) {
+        } elseif ( $force_pack && $fallback_cost && !$has_post ) {
             //there is some error and it needs payment
             //add a uniqid to track the post easily
             $order_id = uniqid( rand( 10, 1000 ), false );
@@ -771,11 +772,12 @@ class WPUF_Subscription {
 
             <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wp-user-frontend' ); ?>
 
-            <form action="" method="post">
+            <form action="" id="wpuf_cancel_subscription" method="post">
                 <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
                 <input type="hidden" name="user_id" value="<?php echo get_current_user_id(); ?>">
                 <input type="hidden" name="gateway" value="<?php echo $payment_gateway; ?>">
-                <input type="submit" name="wpuf_cancel_subscription" class="btn btn-sm btn-danger" value="<?php _e( 'Cancel', 'wp-user-frontend' ); ?>">
+                <input type="hidden" name="wpuf_cancel_subscription" value="Cancel">
+                <input type="submit" name="wpuf_user_subscription_cancel" class="btn btn-sm btn-danger" value="<?php _e( 'Cancel', 'wp-user-frontend' ); ?>">
             </form>
             <?php
         }

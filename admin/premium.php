@@ -228,7 +228,7 @@
         </div>
 
         <div class="text-right">
-            <a class="button button-primary" href="<?php echo WPUF_Pro_Prompt::get_pro_url(); ?>" target="_blank"><?php _e( 'Upgrade Now', 'wp-user-frontend' ); ?></a>
+            
         </div>
     </div>
 

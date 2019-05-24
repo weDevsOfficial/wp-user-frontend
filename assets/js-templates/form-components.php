@@ -1,5 +1,5 @@
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
-<div id="form-preview-stage">
+<div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
         <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ) ?>
     </h4>
@@ -236,6 +236,8 @@
                 </div>
             </transition>
         </div>
+
+        <?php do_action( 'wpuf_builder_field_options' ); ?>
     </div>
 
 </div>
@@ -254,6 +256,21 @@
             </label>
         </li>
     </ul>
+</div>
+</script>
+
+<script type="text/x-template" id="tmpl-wpuf-field-range">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-text">
+    <label>
+        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+        {{ option_field.min_column }}
+        <input
+            type="range"
+            v-model="value"
+            v-bind:min="minColumn"
+            v-bind:max="maxColumn"
+        >
+    </label>
 </div>
 </script>
 
@@ -352,24 +369,26 @@
     </div>
 
     <div v-if="'subscribed_users' === selected" class="condiotional-logic-container">
-    	
+
     	<ul>
     		<?php
 
-                $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+                if ( class_exists( 'WPUF_Subscription' ) ) {
+                    $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
 
-                if ( $subscriptions ) {
-                    foreach ($subscriptions as $pack) {
+                    if ( $subscriptions ) {
+                        foreach ($subscriptions as $pack) {
 
-                        $output  = "<li>";
-                        $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
-                        $output .= "</li>";
+                            $output  = "<li>";
+                            $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
+                            $output .= "</li>";
 
-                        echo $output;
+                            echo $output;
 
+                        }
+                    } else {
+                        _e( 'No subscription plan found.', 'wp-user-frontend' );
                     }
-                } else {
-                    _e( 'No subscription plan found.', 'wp-user-frontend' );
                 }
             ?>
     	</ul>
@@ -395,6 +414,55 @@
     <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 </div>
 </script>
+
+<script type="text/x-template" id="tmpl-wpuf-form-column_field">
+<div v-bind:class="['wpuf-field-columns', 'has-columns-'+field.columns]">
+    <div class="wpuf-column-field-inner-columns">
+        <div class="wpuf-column">
+            <!-- don't change column class names -->
+            <div v-for="column in columnClasses" :class="[column, 'items-of-column-'+field.columns, 'wpuf-column-inner-fields']" :style="{ width: field.inner_columns_size[column], paddingRight: field.column_space+'px'}">
+                <ul class="wpuf-column-fields-sortable-list">
+                    <li
+                        v-for="(field, index) in column_fields[column]"
+                        :key="field.id"
+                        :class="[
+                            'column-field-items', 'wpuf-el', field.name, field.css, 'form-field-' + field.template,
+                            field.width ? 'field-size-' + field.width : '',
+                            parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : ''
+                        ]"
+                        :column-field-index="index"
+                        :in-column="column"
+                        data-source="column-field-stage"
+                    >
+                        <div v-if="!is_full_width(field.template)" class="wpuf-label wpuf-column-field-label">
+                            <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
+                                {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
+                            </label>
+                        </div>
+
+                        <component v-if="is_template_available(field)" :is="'form-' + field.template" :field="field"></component>
+
+                        <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
+                            <label class="wpuf-pro-text-alert">
+                                <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                            </label>
+                        </div>
+
+                        <div class="wpuf-column-field-control-buttons">
+                            <p>
+                                <i class="fa fa-arrows move"></i>
+                                <i class="fa fa-pencil" @click="open_column_field_settings(field, index, column)"></i>
+                                <i class="fa fa-clone" @click="clone_column_field(field, index, column)"></i>
+                                <i class="fa fa-trash-o" @click="delete_column_field(index, column)"></i>
+                            </p>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div></script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-custom_hidden_field">
 <div class="wpuf-fields">
@@ -646,6 +714,7 @@
     	<div v-if="'invisible_recaptcha' != field.recaptcha_type">
         	<img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ?>" alt="">
         </div>
+        <div v-else><p><?php _e( 'Invisible reCaptcha', 'wp-user-frontend' ); ?></p></div>
     </template>
 </div>
 </script>

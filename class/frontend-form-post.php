@@ -9,23 +9,23 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
     function __construct() {
 
-        add_shortcode( 'wpuf_form', array( $this, 'add_post_shortcode' ) );
-        add_shortcode( 'wpuf_edit', array( $this, 'edit_post_shortcode' ) );
+        // add_shortcode( 'wpuf_form', array( $this, 'add_post_shortcode' ) );
+        // add_shortcode( 'wpuf_edit', array( $this, 'edit_post_shortcode' ) );
 
-        // ajax requests
-        add_action( 'wp_ajax_wpuf_submit_post', array( $this, 'submit_post' ) );
-        add_action( 'wp_ajax_nopriv_wpuf_submit_post', array( $this, 'submit_post' ) );
-        add_action( 'wp_ajax_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
-        add_action( 'wp_ajax_nopriv_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
+        // // ajax requests
+        // add_action( 'wp_ajax_wpuf_submit_post', array( $this, 'submit_post' ) );
+        // add_action( 'wp_ajax_nopriv_wpuf_submit_post', array( $this, 'submit_post' ) );
+        // add_action( 'wp_ajax_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
+        // add_action( 'wp_ajax_nopriv_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
 
-        // draft
-        add_action( 'wp_ajax_wpuf_draft_post', array( $this, 'draft_post' ) );
+        // // draft
+        // add_action( 'wp_ajax_wpuf_draft_post', array( $this, 'draft_post' ) );
 
-        // guest post hook
-        add_action( 'init', array( $this, 'publish_guest_post' ) );
+        // // guest post hook
+        // add_action( 'init', array( $this, 'publish_guest_post' ) );
 
-        // form preview
-        add_action( 'wp_ajax_wpuf_form_preview', array( $this, 'preview_form' ) );
+        // // form preview
+        // add_action( 'wp_ajax_wpuf_form_preview', array( $this, 'preview_form' ) );
     }
 
     public static function init() {
@@ -177,6 +177,24 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
 
         if ( !$post_id ) {
             return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' ) . '</div>';
+        }
+
+        $edit_post_lock      = get_post_meta( $post_id, '_wpuf_lock_editing_post', true );
+        $edit_post_lock_time = get_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', true );
+
+        if ( $edit_post_lock == 'yes' ) {
+            return '<div class="wpuf-info">' . apply_filters( 'wpuf_edit_post_lock_user_notice', __( 'Your edit access for this post has been locked by an administrator.', 'wp-user-frontend' ) ) . '</div>';
+        }
+
+        if ( !empty( $edit_post_lock_time ) &&  $edit_post_lock_time < time() ) {
+            return '<div class="wpuf-info">' . apply_filters( 'wpuf_edit_post_lock_expire_notice', __( 'Your allocated time for editing this post has been expired.', 'wp-user-frontend' ) ) . '</div>';
+        }
+
+        if ( wpuf_get_user()->edit_post_locked() ) {
+            if ( wpuf_get_user()->edit_post_lock_reason() ) {
+                return '<div class="wpuf-info">' . wpuf_get_user()->edit_post_lock_reason() . '</div>';
+            }
+            return '<div class="wpuf-info">' . apply_filters( 'wpuf_user_edit_post_lock_notice', __( 'Your post edit access has been locked by an administrator.', 'wp-user-frontend' ) ) . '</div>';
         }
 
         //is editing enabled?
@@ -410,7 +428,19 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         if ( isset( $_POST['wpuf_is_publish_time'] ) ) {
 
             if ( isset( $_POST[$_POST['wpuf_is_publish_time']] ) && !empty( $_POST[$_POST['wpuf_is_publish_time']] ) ) {
-                $postarr['post_date'] = date( 'Y-m-d H:i:s', strtotime( str_replace( array( ':', '/' ), '-', $_POST[$_POST['wpuf_is_publish_time']] ) ) );
+                $date_time = explode(" ", $_POST[$_POST['wpuf_is_publish_time']] );
+
+                if ( !empty ( $date_time[0] ) ) {
+                    $timestamp = strtotime( str_replace( array( '/' ), '-', $date_time[0] ) );
+                }
+
+                if ( !empty ( $date_time[1] ) ) {
+                    $time       = explode(':', $date_time[1] );
+                    $seconds    = ( $time[0] * 60 * 60 ) + ($time[1] * 60);
+                    $timestamp  = $timestamp + $seconds;
+                }
+
+                $postarr['post_date'] = date( 'Y-m-d H:i:s', $timestamp );
             }
         }
 
@@ -490,6 +520,17 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         }
 
         $post_id = wp_insert_post( $postarr );
+
+        // add _wpuf_lock_editing_post_time meta to
+        // lock user from editing the published post after a certain time
+        if ( !$is_update ) {
+            $lock_edit_post = isset( $form_settings['lock_edit_post'] ) ? floatval( $form_settings['lock_edit_post'] ) : 0;
+
+            if ( $post_id && $lock_edit_post > 0 ) {
+                $lock_edit_post_time    = time() + ( $lock_edit_post * 60 * 60 );
+                update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', $lock_edit_post_time );
+            }
+        }
 
         if ( $post_id ) {
 
@@ -688,14 +729,14 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, 'no', 1 );
                 $response['show_message'] = true;
                 $response['redirect_to'] = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
-                $response['message'] = 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!';
+                $response['message'] = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
 
             } elseif ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() && $charging_enabled == 'yes' ) {
                 $post_id_encoded   = wpuf_encryption( $post_id ) ;
                 $form_id_encoded   = wpuf_encryption( $form_id ) ;
                 $response['show_message'] = true;
                 $response['redirect_to'] = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
-                $response['message'] = 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!';
+                $response['message'] = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
                 update_post_meta ( $post_id, '_wpuf_payment_status', 'pending' );
                 wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, 'yes', 2 );
             }
@@ -770,6 +811,8 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
         $form_id       = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
+        $form          = new WPUF_Form( $form_id );
+        $pay_per_post  = $form->is_enabled_pay_per_post();
         $form_vars     = $this->get_input_fields( $form_id );
         $form_settings = wpuf_get_form_settings( $form_id );
         $post_content  = isset( $_POST[ 'post_content' ] ) ? $_POST[ 'post_content' ] : '';
@@ -815,6 +858,11 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 if ( post_type_supports( $form_settings['post_type'], 'post-formats' ) ) {
                     set_post_format( $post_id, $form_settings['post_format'] );
                 }
+            }
+
+            // if pay per post is enabled then update payment status as pending
+            if ( $pay_per_post ) {
+                update_post_meta ( $post_id, '_wpuf_payment_status', 'pending' );
             }
 
             // save any custom taxonomies
@@ -947,6 +995,20 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
             // delete any previous value
             delete_post_meta( $post_id, $file_input['name'] );
 
+            $image_ids = '';
+
+            if ( count( $file_input['value'] ) > 1  ) {
+                $image_ids = maybe_serialize( $file_input['value'] );
+            }
+
+            if ( count( $file_input['value'] ) == 1 ) {
+                $image_ids = $file_input['value'][0];
+            }
+
+            if ( !empty( $image_ids ) ) {
+                add_post_meta( $post_id, $file_input['name'], $image_ids );
+            }
+
             //to track how many files are being uploaded
             $file_numbers = 0;
 
@@ -959,7 +1021,7 @@ class WPUF_Frontend_Form_Post extends WPUF_Render_Form {
                 }
 
                 wpuf_associate_attachment( $attachment_id, $post_id );
-                add_post_meta( $post_id, $file_input['name'], $attachment_id );
+                //add_post_meta( $post_id, $file_input['name'], $attachment_id );
 
                 // file title, caption, desc update
                 $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? $_POST['wpuf_files_data'][$attachment_id] : false;

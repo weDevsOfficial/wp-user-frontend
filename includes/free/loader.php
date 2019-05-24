@@ -267,8 +267,10 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      */
     public function post_form_templates( $integrations ) {
         require_once dirname( __FILE__ ) . '/post-form-templates/woocommerce.php';
+        require_once dirname( __FILE__ ) . '/post-form-templates/the_events_calendar.php';
 
-        $integrations['WPUF_Post_Form_Template_WooCommerce'] = new WPUF_Post_Form_Template_WooCommerce();
+        $integrations['WPUF_Post_Form_Template_WooCommerce']        = new WPUF_Post_Form_Template_WooCommerce();
+        $integrations['WPUF_Post_Form_Template_Events_Calendar']    = new WPUF_Post_Form_Template_Events_Calendar();
 
         return $integrations;
     }

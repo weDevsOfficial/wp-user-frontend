@@ -401,6 +401,12 @@ class WPUF_Admin_Settings {
 
         wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css', false, WPUF_VERSION );
         wp_enqueue_script( 'wpuf-admin-script', WPUF_ASSET_URI . '/js/wpuf-admin.js', array( 'jquery' ), false, WPUF_VERSION );
+
+        wp_localize_script( 'wpuf-admin-script', 'wpuf_admin_script', array(
+            'ajaxurl'               => admin_url( 'admin-ajax.php' ),
+            'nonce'                 => wp_create_nonce( 'wpuf_nonce' ),
+            'cleared_schedule_lock' => __( 'Schedule lock has been cleared', 'wp-user-frontend' ),
+        ) );
     }
 
 }

@@ -4,15 +4,15 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 2.8.10
+Version: 3.1.6
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: wpuf
+Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '2.8.10' );
+define( 'WPUF_VERSION', '3.1.6' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -33,6 +33,13 @@ final class WP_User_Frontend {
      * @var array
      */
     private $container = array();
+
+        /**
+     * Form field value seperator
+     *
+     * @var string
+    */
+    static $field_separator = '| ';
 
     /**
      * The singleton instance
@@ -129,7 +136,10 @@ final class WP_User_Frontend {
 
         add_filter( 'show_admin_bar', array( $this, 'show_admin_bar' ) );
 
-        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        // enqueue plugin scripts, don't remove priority.
+        // If remove or set priority under 1000 then registered styles will not load on WC Marketplace vendor dashboard.
+        // we have integration with WC Marketplace plugin since version 3.0 where WC Marketplae vendors' can submit post
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ), 9999 );
 
         // do plugin upgrades
         add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_action_links' ) );
@@ -140,6 +150,9 @@ final class WP_User_Frontend {
         // set schedule event
         add_action( 'wpuf_remove_expired_post_hook', array( $this, 'action_to_remove_exipred_post' ) );
         add_action( 'wp_ajax_wpuf_weforms_install', array( $this, 'install_weforms' ) );
+
+        // Insight class instentiate
+        $this->container['insights'] = new WPUF_WeDevs_Insights( __FILE__ );
     }
 
     /**
@@ -229,6 +242,9 @@ final class WP_User_Frontend {
         require_once dirname( __FILE__ ) . '/lib/gateway/bank.php';
         require_once dirname( __FILE__ ) . '/lib/class-wedevs-insights.php';
 
+        require_once WPUF_ROOT . '/includes/class-frontend-render-form.php';
+        require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
+
         // global classes/functions
         require_once WPUF_ROOT . '/class/upload.php';
         require_once WPUF_ROOT . '/admin/form-template.php';
@@ -250,6 +266,14 @@ final class WP_User_Frontend {
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
+        }
+
+        if ( class_exists( 'WCMp' ) ) {
+            require_once WPUF_ROOT . '/includes/class-wcmp-integration.php';
+        }
+
+        if ( class_exists( 'WC_Vendors' ) ) {
+            require_once WPUF_ROOT . '/includes/class-wc-vendors-integration.php';
         }
 
         require_once WPUF_ROOT . '/includes/class-user.php';
@@ -286,6 +310,11 @@ final class WP_User_Frontend {
             require_once dirname( __FILE__ ) . '/lib/recaptchalib.php';
             require_once dirname( __FILE__ ) . '/lib/invisible_recaptcha.php';
         }
+
+        require_once WPUF_ROOT . '/includes/class-frontend-form-post.php';
+        require_once WPUF_ROOT . '/includes/class-field-manager.php';
+        require_once WPUF_ROOT . '/includes/class-pro-upgrades.php';
+        require_once WPUF_ROOT . '/includes/fields/field-trait.php';
     }
 
     /**
@@ -302,7 +331,6 @@ final class WP_User_Frontend {
         $this->container['subscription']            = WPUF_Subscription::init();
         $this->container['frontend_post']           = WPUF_Frontend_Form_Post::init();
         $this->container['account']                 = new WPUF_Frontend_Account();
-        $this->container['insights']                = new WPUF_WeDevs_Insights( 'wp-user-frontend', 'WP User Frontend', __FILE__ );
         $this->container['billing_address']         = new WPUF_Ajax_Address_Form();
         $this->container['forms']                   = new WPUF_Form_Manager();
         $this->container['preview']                 = new WPUF_Form_Preview();
@@ -311,6 +339,14 @@ final class WP_User_Frontend {
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();
+        }
+
+        if ( class_exists( 'WCMp' ) ) {
+            $this->container['wcmp_integration']    = new WPUF_WCMp_Integration();
+        }
+
+        if ( class_exists( 'WC_Vendors' ) ) {
+            $this->container['WCV_Integration']     = new WPUF_WC_Vendors_Integration();
         }
 
         if ( is_admin() ) {
@@ -334,6 +370,9 @@ final class WP_User_Frontend {
             $this->container['login']           = WPUF_Simple_Login::init();
             $this->container['registration']    = WPUF_Registration::init();
         }
+        $this->container['fields']                  = new WPUF_Field_Manager();
+        $this->container['frontend_form']           = WPUF_Frontend_Form::init();
+        $this->container['pro_upgrades']            = new WPUF_Pro_Upgrades();
     }
 
     /**
@@ -385,6 +424,7 @@ final class WP_User_Frontend {
 
         if ( $has_pro ) {
             $this->is_pro = true;
+            add_action( 'admin_notices', array( $this,'wpuf_latest_pro_activation_notice') );
         } else {
 
             include dirname( __FILE__ ) . '/includes/free/loader.php';
@@ -392,6 +432,159 @@ final class WP_User_Frontend {
             $this->container['free_loader'] = new WPUF_Free_Loader();
         }
     }
+
+    /**
+     * Latest Pro Activation Message
+     *
+     * @return void
+     */
+    function wpuf_latest_pro_activation_notice() {
+        if ( ! version_compare(WPUF_PRO_VERSION, '3.1.0', '<' ) ) {
+            return;
+        }
+
+        $offer_msg = __( '<p style="font-size: 13px">
+                            <strong class="highlight-text" style="font-size: 18px; display:block; margin-bottom:8px"> UPDATE REQUIRED </strong>
+                            WP User Frontend Pro is not working because you are using an old version of WP User Frontend Pro. Please update <strong>WPUF Pro</strong> to >= <strong>v3.1.0</strong> to work with the latest version of WP User Frontend
+                        </p>', 'wp-user-frontend' );
+
+        ?>
+            <div class="notice is-dismissible" id="wpuf-update-offer-notice">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="image-container">
+                                <img src="https://ps.w.org/wp-user-frontend/assets/icon-256x256.png" alt="">
+                            </td>
+                            <td class="message-container">
+                                <?php echo $offer_msg; ?>
+                            </td>
+                            <td><a href="https://wedevs.com/account/downloads/" class="button button-primary promo-btn" target="_blank"><?php _e( 'Update WP User Frontend Pro Now', 'wp-user-frontend' ); ?></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- <a href="https://wedevs.com/account/downloads/" class="button button-primary promo-btn" target="_blank"><?php _e( 'Update WP User Frontend Pro NOW', 'wp-user-frontend' ); ?></a> -->
+            </div><!-- #wpuf-update-offer-notice -->
+
+            <style>
+                #wpuf-update-offer-notice {
+                    background-size: cover;
+                    border: 0px;
+                    padding: 10px;
+                    opacity: 0;
+                    border-left: 3px solid red;
+                }
+
+                .wrap > #wpuf-update-offer-notice {
+                    opacity: 1;
+                }
+
+                #wpuf-update-offer-notice table {
+                    border-collapse: collapse;
+                    width: 70%;
+                }
+
+                #wpuf-update-offer-notice table td {
+                    padding: 0;
+                }
+
+                #wpuf-update-offer-notice table td.image-container {
+                    background-color: #fff;
+                    vertical-align: middle;
+                    width: 95px;
+                }
+
+
+                #wpuf-update-offer-notice img {
+                    max-width: 100%;
+                    max-height: 100px;
+                    vertical-align: middle;
+                    border-radius: 100%;
+                }
+
+                #wpuf-update-offer-notice table td.message-container {
+                    padding: 0 10px;
+                }
+
+                #wpuf-update-offer-notice h2{
+                    color: #000;
+                    margin-bottom: 10px;
+                    font-weight: normal;
+                    margin: 16px 0 14px;
+                    -webkit-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
+                    -moz-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
+                    -o-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
+                    text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
+                }
+
+
+                #wpuf-update-offer-notice h2 span {
+                    position: relative;
+                    top: 0;
+                }
+
+                #wpuf-update-offer-notice p{
+                    color: #000;
+                    font-size: 14px;
+                    margin-bottom: 10px;
+                    -webkit-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
+                    -moz-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
+                    -o-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
+                    text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
+                }
+
+                #wpuf-update-offer-notice p strong.highlight-text{
+                    color: #000;
+                }
+
+                #wpuf-update-offer-notice p a {
+                    color: #000;
+                }
+
+                #wpuf-update-offer-notice .notice-dismiss:before {
+                    color: #000;
+                }
+
+                #wpuf-update-offer-notice span.dashicons-megaphone {
+                    position: absolute;
+                    bottom: 46px;
+                    right: 248px;
+                    color: rgba(253, 253, 253, 0.29);
+                    font-size: 96px;
+                    transform: rotate(-21deg);
+                }
+
+                #wpuf-update-offer-notice a.promo-btn{
+                    background: #0073aa;
+                    /*border-color: #fafafa #fafafa #fafafa;*/
+                    box-shadow: 0 1px 0 #fafafa;
+                    color: #fff;
+                    text-decoration: none;
+                    text-shadow: none;
+                    position: absolute;
+                    top: 40px;
+                    right: 26px;
+                    height: 40px;
+                    line-height: 40px;
+                    width: 300px;
+                    text-align: center;
+                    font-weight: 600;
+                }
+
+            </style>
+            <script type='text/javascript'>
+                jQuery('body').on('click', '#wpuf-update-offer-notice .notice-dismiss', function(e) {
+                    e.preventDefault();
+
+                    wp.ajax.post('wpuf-dismiss-update-offer-notice', {
+                        dismissed: true
+                    });
+                });
+            </script>
+
+        <?php
+    }
+
 
     /**
      * Manage task on plugin deactivation
@@ -510,7 +703,10 @@ final class WP_User_Frontend {
             'ajaxurl'       => admin_url( 'admin-ajax.php' ),
             'error_message' => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
             'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
-            'word_limit'    => __( 'Word limit reached', 'wp-user-frontend' )
+            'word_limit'    => __( 'Word limit reached', 'wp-user-frontend' ),
+            'cancelSubMsg'  => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
+            'delete_it'     => __( 'Yes', 'wp-user-frontend' ),
+            'cancel_it'     => __( 'No', 'wp-user-frontend' ),
         )) );
 
         wp_localize_script( 'wpuf-subscriptions', 'wpuf_subscription', apply_filters( 'wpuf_subscription_js_data' , array(
@@ -519,6 +715,8 @@ final class WP_User_Frontend {
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
 			'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
+            'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
+            'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
 			'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
 			'ajaxurl'    => admin_url( 'admin-ajax.php' ),
 			'plupload'   => array(
@@ -568,7 +766,7 @@ final class WP_User_Frontend {
      * @since 2.2.3
      * @return void
      */
-    function show_admin_bar() {
+    function show_admin_bar($val) {
 
         if ( !is_user_logged_in() ) {
             return false;
@@ -577,11 +775,12 @@ final class WP_User_Frontend {
         $roles = wpuf_get_option( 'show_admin_bar', 'wpuf_general', array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' ) );
         $roles = $roles ? $roles : array();
         $current_user = wp_get_current_user();
+
         if ( !in_array( $current_user->roles[0], $roles ) ) {
             return false;
         }
 
-        return true;
+        return $val;
     }
 
     /**

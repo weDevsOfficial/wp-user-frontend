@@ -522,8 +522,7 @@ function wpuf_get_user_roles() {
  * @param string $alt
  * @return string image tag of the user avatar
  */
-function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
-
+function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args ) {
     if ( is_numeric( $id_or_email ) ) {
         $user = get_user_by( 'id', $id_or_email );
     } elseif ( is_object( $id_or_email ) ) {
@@ -540,7 +539,7 @@ function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
         return $avatar;
     }
 
-    // see if there is a user_avatar meta field
+    // see if there is a user_avatar meta fields
     $user_avatar = get_user_meta( $user->ID, 'user_avatar', true );
     if ( empty( $user_avatar ) ) {
         return $avatar;
@@ -549,7 +548,7 @@ function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
     return sprintf( '<img src="%1$s" alt="%2$s" height="%3$s" width="%3$s" class="avatar">', esc_url( $user_avatar ), $alt, $size );
 }
 
-add_filter( 'get_avatar', 'wpuf_get_avatar', 99, 5 );
+add_filter( 'get_avatar', 'wpuf_get_avatar', 99, 6);
 
 function wpuf_update_avatar( $user_id, $attachment_id ) {
 
@@ -658,6 +657,23 @@ function wpuf_show_custom_fields( $content ) {
 
     if ( $form_vars ) {
         foreach ($form_vars as $attr) {
+            // get column field input fields
+            if ( $attr['input_type'] == 'column_field' ) {
+                $inner_fields = $attr['inner_fields'];
+
+                foreach ($inner_fields as $column_key => $column_fields) {
+                    if (!empty($column_fields)) {
+                        // ignore section break and HTML input type
+                        foreach ($column_fields as $column_field_key => $column_field) {
+                            if ( isset( $column_field['show_in_post'] ) && $column_field['show_in_post'] == 'yes' ) {
+                                $meta[] = $column_field;
+                            }
+                        }
+                    }
+                }
+                continue;
+            }
+
             if ( isset( $attr['show_in_post'] ) && $attr['show_in_post'] == 'yes' ) {
                 $meta[] = $attr;
             }
@@ -673,7 +689,8 @@ function wpuf_show_custom_fields( $content ) {
                 $attr['name'] = $attr['input_type'];
             }
 
-            $field_value = get_post_meta( $post->ID, $attr['name'] );
+            $field_value    = get_post_meta( $post->ID, $attr['name'] );
+            $hide_label     = isset( $attr['hide_field_label'] ) ? $attr['hide_field_label'] : 'no';
 
             $return_for_no_cond = 0;
 
@@ -699,15 +716,14 @@ function wpuf_show_custom_fields( $content ) {
                     if ( isset( $attr['wpuf_cond']['cond_option'][$field_key] ) ) {
 
                         if ( is_array( $cond_field_value ) ) {
-
-                            if ( !in_array( $attr['wpuf_cond']['cond_option'][$field_key], $cond_field_value ) ) {
-                                $return_for_no_cond = 1;
-                            }
-
+                            continue;
                         } else {
 
                             if ( $attr['wpuf_cond']['cond_option'][$field_key] != $cond_field_value ) {
                                 $return_for_no_cond = 1;
+                            }else{
+                                $return_for_no_cond = 0;
+                                break;
                             }
                         }
 
@@ -730,22 +746,60 @@ function wpuf_show_custom_fields( $content ) {
             switch ( $attr['input_type'] ) {
                 case 'image_upload':
                 case 'file_upload':
+                    $image_html  = '<li>';
 
-                    $image_html = '<li><label>' . $attr['label'] . ':</label> ';
+                    if ( $hide_label == 'no' ) {
+                        $image_html .= '<label>' . $attr['label'] . ':</label> ';
+                    }
 
                     if ( $field_value ) {
+                        if( is_serialized( $field_value[0] ) ) {
+                            $field_value = maybe_unserialize( $field_value[0] );
+                        }
+
+                        if ( is_array( $field_value[0] ) ) {
+                            $field_value = $field_value[0];
+                        }
 
                         foreach ($field_value as $attachment_id) {
                             if ( $attr['input_type'] == 'image_upload' ) {
-                                $thumb = wp_get_attachment_image( $attachment_id, 'thumbnail' );
+                                $image_size = wpuf_get_option( 'insert_photo_size', 'wpuf_frontend_posting', 'thumbnail' );
+                                $thumb = wp_get_attachment_image( $attachment_id, $image_size );
                             } else {
                                 $thumb = get_post_field( 'post_title', $attachment_id );
                             }
 
                             $full_size = wp_get_attachment_url( $attachment_id );
+                            $path      = parse_url($full_size, PHP_URL_PATH);
+                            $extension = pathinfo($path, PATHINFO_EXTENSION);
 
                             if( $thumb ) {
-                                $image_html .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
+                                $playable                   = isset( $attr['playable_audio_video'] ) ? $attr['playable_audio_video'] : 'no';$wpuf_allowed_extensions    = wpuf_allowed_extensions();
+                                $allowed_audio_extensions   = explode( ',', $wpuf_allowed_extensions['audio']['ext'] );
+                                $allowed_video_extensions   = explode( ',', $wpuf_allowed_extensions['video']['ext'] );
+                                $allowed_extenstions        = array_merge( $allowed_audio_extensions, $allowed_video_extensions );
+
+                                if ( $playable == 'yes' && in_array( $extension, $allowed_extenstions ) ) {
+                                    $is_video       = in_array( $extension, $allowed_video_extensions );
+                                    $is_audio       = in_array( $extension, $allowed_audio_extensions );
+                                    $preview_width  = isset( $attr['preview_width'] ) ? $attr['preview_width'] : '123';
+                                    $preview_height = isset( $attr['preview_height'] ) ? $attr['preview_height'] : '456';
+
+                                    $image_html .= '<div class="wpuf-embed-preview">';
+
+                                    if ( $is_video ) {
+                                        $image_html .= '[video src="'.$full_size.'" width="'.$preview_width.'" height="'.$preview_height.'"]';
+                                    }
+
+                                    if ( $is_audio ) {
+                                        $image_html .= '[audio src="'.$full_size.'" width="'.$preview_width.'" height="'.$preview_height.'"]';
+                                    }
+
+                                    $image_html .= '</div>';
+
+                                } else {
+                                  $image_html .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
+                                }
 
                                 if ( $show_caption == 'on' ) {
                                     $post_detail = get_post( $attachment_id );
@@ -769,6 +823,17 @@ function wpuf_show_custom_fields( $content ) {
                 case 'map':
                     ob_start();
                     wpuf_shortcode_map_post($attr['name'], $post->ID);
+
+                    if ( isset( $attr['directions'] ) && $attr['directions'] ) {
+                        $location   = get_post_meta( $post->ID, $attr['name'] , true );
+                        $def_lat    = isset( $location['lat'] ) ? $location['lat'] : 40.7143528;
+                        $def_long   = isset( $location['lng'] ) ? $location['lng'] : -74.0059731;
+                    ?>
+                        <div>
+                            <a class="btn btn-brand btn-sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=<?php echo $def_lat; ?>,<?php echo $def_long; ?>" target="_blank" rel="nofollow external"><?php _e( 'Directions »', 'wp-user-frontend' ); ?></a>
+                        </div>
+                    <?php }
+
                     $html .= ob_get_clean();
                     break;
 
@@ -786,7 +851,13 @@ function wpuf_show_custom_fields( $content ) {
                                     $value = $countries[$value];
                                 }
                             }
-                            $address_html .= '<li><label>' . $attr['address'][$field_key]['label'] . ': </label> ';
+
+                            $address_html .= '<li>';
+
+                            if ( $hide_label == 'no' ) {
+                                $address_html .= '<label>' . $attr['address'][$field_key]['label'] . ': </label> ';
+                            }
+
                             $address_html .= ' '.$value.'</li>';
                         }
 
@@ -808,20 +879,68 @@ function wpuf_show_custom_fields( $content ) {
                     $new = implode( ', ', $newvalue );
 
                     if ( $new ) {
-                        $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                        $html .= '<li>';
+
+                        if ( $hide_label == 'no' ) {
+                            $html .= '<label>' . $attr['label'] . ': </label>';
+                        }
+
+                        $html .= make_clickable( $new ) . '</li>';
                     }
                     break;
 
                 case 'url':
                     $value = get_post_meta( $post->ID, $attr['name'] , true );
+
+                    if ( empty( $value ) ) {
+                        break;
+                    }
+
+                    if ( $attr['template'] == 'embed' ) {
+                        global $wp_embed;
+
+                        $preview_width  = isset($attr['preview_width']) ? $attr['preview_width'] : '123';
+                        $preview_height = isset($attr['preview_height']) ? $attr['preview_height'] : '456';
+                        $shortcode      = '[embed width="'.$preview_width.'" height="'.$preview_height.'"]'.$value.'[/embed]';
+
+                        $preview  = "<li>";
+
+                        if ( $hide_label == 'no' ) {
+                            $preview .= sprintf( "<label>%s: </label>", $attr['label'] );
+                        }
+
+                        $preview .= "<div class='wpuf-embed-preview'>";
+                        $preview .= $wp_embed->run_shortcode( $shortcode );
+                        $preview .= "</div>";
+                        $preview .= "</li>";
+
+                        $html    .= $preview;
+                        break;
+                    }
+
                     $open_in = $attr['open_window'] == 'same' ? '' : '_blank';
-                    $link = sprintf( "<li><label>%s :</label><a href='%s' target = '%s'>%s</a>", $attr['label'], $value, $open_in, $value);
+
+                    $link  = '<li>';
+
+                    if ( $hide_label == 'no' ) {
+                        $link .= '<label>' .$attr['label']. '</label>:';
+                    }
+
+                    $link .= sprintf( " <a href='%s' target = '%s'>%s</a></li>", $value, $open_in, $value);
+
                     $html.= $link;
                     break;
 
                 case 'date':
                     $value = get_post_meta( $post->ID, $attr['name'], true );
-                    $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $value ) );
+
+                    $html  .= '<li>';
+
+                    if ( $hide_label == 'no' ) {
+                        $html .= '<label>' .$attr['label']. '</label>:';
+                    }
+
+                    $html .= sprintf( ' %s</li>', make_clickable( $value ) );
                     break;
 
                 default:
@@ -836,7 +955,13 @@ function wpuf_show_custom_fields( $content ) {
                         $modified_value = implode( $separator, $new );
 
                         if ( $modified_value ) {
-                           $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                            $html  .= '<li>';
+
+                            if ( $hide_label == 'no' ) {
+                                $html .= '<label>' .$attr['label']. '</label>:';
+                            }
+
+                            $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
                         }
                     } elseif ( ( $attr['input_type'] == 'checkbox' || $attr['input_type'] == 'multiselect' ) && is_array( $value[0] ) ) {
 
@@ -844,7 +969,13 @@ function wpuf_show_custom_fields( $content ) {
                             $modified_value = implode( $separator, $value[0] );
 
                             if ( $modified_value ) {
-                               $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $modified_value ) );
+                                $html  .= '<li>';
+
+                                if ( $hide_label == 'no' ) {
+                                    $html .= '<label>' .$attr['label']. '</label>:';
+                                }
+
+                                $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
                             }
                         }
 
@@ -853,7 +984,13 @@ function wpuf_show_custom_fields( $content ) {
                         $new = implode( ', ', $value );
 
                         if ( $new ) {
-                            $html .= sprintf( '<li><label>%s</label>: %s</li>', $attr['label'], make_clickable( $new ) );
+                            $html  .= '<li>';
+
+                            if ( $hide_label == 'no' ) {
+                                $html .= '<label>' .$attr['label']. '</label>:';
+                            }
+
+                            $html .= sprintf( ' %s</li>', make_clickable( $new ) );
                         }
                     }
 
@@ -867,7 +1004,7 @@ function wpuf_show_custom_fields( $content ) {
     return $content . $html;
 }
 
-add_filter( 'the_content', 'wpuf_show_custom_fields' );
+add_filter( 'the_content', 'wpuf_show_custom_fields', 10 );
 
 /**
  * Map display shortcode
@@ -888,12 +1025,19 @@ function wpuf_shortcode_map( $location, $post_id = null, $args = array(), $meta_
         return;
     }
 
-    $default = array('width' => 450, 'height' => 250, 'zoom' => 12);
-    $args = wp_parse_args( $args, $default );
+    $default        = array('width' => 450, 'height' => 250, 'zoom' => 12);
+    $args           = wp_parse_args( $args, $default );
 
-    list( $def_lat, $def_long ) = explode( ',', $location );
-    $def_lat = $def_lat ? $def_lat : 0;
-    $def_long = $def_long ? $def_long : 0;
+    if ( is_array( $location ) ) {
+        $def_address = isset( $location['address'] ) ? $location['address'] : '';
+        $def_lat     = isset( $location['lat'] ) ? $location['lat'] : '';
+        $def_long    = isset( $location['lng'] ) ? $location['lng'] : '';
+        $location    = implode( ' || ', $location );
+    } else {
+        list( $def_lat, $def_long ) = explode( ',', $location );
+        $def_lat = $def_lat ? $def_lat : 0;
+        $def_long = $def_long ? $def_long : 0;
+    }
     ?>
 
     <div class="google-map" style="margin: 10px 0; height: <?php echo $args['height']; ?>px; width: <?php echo $args['width']; ?>px;" id="wpuf-map-<?php echo $meta_key . $post->ID; ?>"></div>
@@ -1315,12 +1459,66 @@ function wpuf_get_child_cats() {
                 $terms[$key] = (array)$term;
             }
         }
-        $result .= WPUF_Render_Form::init()->taxnomy_select( '', $field_attr );
+        // $result .= WPUF_Render_Form::init()->taxnomy_select( '', $field_attr );
+         $result .= taxnomy_select( '', $field_attr );
     } else {
         die( '' );
     }
 
     die( $result );
+}
+
+
+function taxnomy_select( $terms, $attr ) {
+
+    $selected           = $terms ? $terms : '';
+    $required           = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
+    $taxonomy           = $attr['name'];
+    $class              = ' wpuf_'.$attr['name'].'_'.$selected;
+    $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
+    $exclude            = isset( $attr['exclude'] ) ? $attr['exclude'] : '';
+
+    if ( $exclude_type == 'child_of' && !empty( $exclude ) ) {
+      $exclude = $exclude[0];
+    }
+
+    $tax_args           = array(
+        'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
+        'hierarchical'     => 1,
+        'hide_empty'       => 0,
+        'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
+        'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
+        'name'             => $taxonomy . '[]',
+        'taxonomy'         => $taxonomy,
+        'echo'             => 0,
+        'title_li'         => '',
+        'class'            => 'cat-ajax '. $taxonomy . $class,
+        $exclude_type      => $exclude,
+        'selected'         => $selected,
+        'depth'            => 1,
+        'child_of'         => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : ''
+    );
+
+    $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
+
+    $select = wp_dropdown_categories( $tax_args );
+
+    echo str_replace( '<select', '<select ' . $required, $select );
+    $attr = array(
+        'required'     => $attr['required'],
+        'name'         => $attr['name'],
+        'exclude_type' => $attr['exclude_type'],
+        'exclude'      => isset( $attr['exclude'] ) ? $attr['exclude']  : '',
+        'orderby'      => $attr['orderby'],
+        'order'        => $attr['order'],
+        'name'         => $attr['name'],
+        //'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
+        //'term_id'      => $selected
+    );
+    $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
+    ?>
+    <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
+    <?php
 }
 
 /**
@@ -1968,6 +2166,17 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
             'url'              => '',
             'comment_status'   => 'open',
             'submit_text'      => 'Submit',
+            'submit_button_cond'  => array(
+                'condition_status' => 'no',
+                'cond_logic'       => 'any',
+                'conditions'       => array(
+                    array(
+                        'name'             => '',
+                        'operator'         => '=',
+                        'option'           => ''
+                    )
+                )
+            ),
             'draft_post'       => 'false',
             'edit_post_status' => 'publish',
             'edit_redirect_to' => 'same',
@@ -2283,10 +2492,9 @@ function wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, $charging
         $body = $default_body;
     }
 
-    $headers = array('Content-Type: text/html; charset=UTF-8');
     $body    = get_formatted_mail_body( $body, $subject);
 
-    wp_mail( $to, $subject, $body, $headers );
+    wp_mail( $to, $subject, $body );
 }
 
 
@@ -2444,7 +2652,7 @@ function get_formatted_mail_body( $message, $subject ) {
         include WPUF_PRO_INCLUDES . '/templates/email/style.php';
         $css = apply_filters( 'wpuf_email_style', ob_get_clean() );
 
-        $content = $header . $message . $footer;
+        $content = $header . '<pre>' . $message . '</pre>' . $footer;
 
         if ( ! class_exists( 'Emogrifier' ) ) {
             require_once WPUF_PRO_INCLUDES . '/libs/Emogrifier.php';
@@ -2860,6 +3068,10 @@ function wpuf_show_form_schedule_message( $form_id ) {
         $end_time     = !empty( $form_settings['schedule_end'] ) ? strtotime( $form_settings['schedule_end'] ) : 0;
         $current_time = current_time( 'timestamp' );
 
+        if ( $current_time >= $start_time  && $current_time <= $end_time)  {
+            return ;
+        }
+
         // too early?
         if ( $current_time < $start_time ) {
             echo '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>';
@@ -2867,11 +3079,11 @@ function wpuf_show_form_schedule_message( $form_id ) {
             echo '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>';
         }
         ?>
-        <script>
-            jQuery( function($) {
-                $(".wpuf-submit-button").attr("disabled", "disabled");
-            });
-        </script>
+            <script>
+                jQuery( function($) {
+                    $(".wpuf-submit-button").attr("disabled", "disabled");
+                });
+            </script>
         <?php
         return;
     }
@@ -2887,9 +3099,14 @@ add_action( 'wpuf_before_form_render', 'wpuf_show_form_schedule_message' );
  */
 function wpuf_show_form_limit_message( $form_id ){
 
-    $form_settings   = wpuf_get_form_settings( $form_id );
-    $has_limit    = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
-    if ( $has_limit ) {
+    $form_settings  = wpuf_get_form_settings( $form_id );
+    $has_limit      = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] == 'true' ) ? true : false;
+    $post_to_check  =  get_post( get_the_ID() );
+    $is_edit_page   = false;
+    if ( stripos( $post_to_check->post_content, '[' . 'wpuf_edit' ) !== false ) {
+        $is_edit_page = true;
+    }
+    if ( $has_limit && !$is_edit_page ) {
 
         $limit        = (int) !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 0;
         $form_entries = wpuf_form_posts_count( $form_id );
@@ -2910,4 +3127,19 @@ function wpuf_show_form_limit_message( $form_id ){
 }
 add_action( 'wpuf_before_form_render', 'wpuf_show_form_limit_message' );
 
+/**
+ * save frontend post revision
+ *
+ * @param  int $post_id
+ * @param  array $form_settings
+ * @return void
+ */
+function wpuf_frontend_post_revision( $post_id, $form_settings ) {
+    $post = get_post( $post_id );
+    if ( post_type_supports( $form_settings['post_type'], 'revisions' ) ) {
+        $revisions = wp_get_post_revisions( $post_id, array( 'order' => 'ASC', 'posts_per_page' => 1 ) );
+        $revision  = current( $revisions );
 
+        _wp_upgrade_revisions_of_post( $post, wp_get_post_revisions( $post_id ) );
+    }
+}

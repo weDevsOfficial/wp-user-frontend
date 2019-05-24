@@ -113,14 +113,18 @@ class WPUF_Simple_Login {
             return $user;
         }
 
-        if ( isset ( $_POST["g-recaptcha-response"] ) ) {
-            if ( empty( $_POST['g-recaptcha-response'] ) ) {
-                $user = new WP_Error( 'WPUFLoginCaptchaError', 'Empty reCaptcha Field.' );
-            } else {
-                $no_captcha = 1;
-                $invisible_captcha = 0;
+        $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off');
 
-                WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+        if ( $recaptcha == 'on' ) {
+            if ( isset ( $_POST["g-recaptcha-response"] ) ) {
+                if ( empty( $_POST['g-recaptcha-response'] ) ) {
+                    $user = new WP_Error( 'WPUFLoginCaptchaError', 'Empty reCaptcha Field.' );
+                } else {
+                    $no_captcha = 1;
+                    $invisible_captcha = 0;
+
+                    WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+                }
             }
         }
         return $user;
@@ -732,47 +736,95 @@ class WPUF_Simple_Login {
         }
 
         if ( !isset( $_GET['id'] ) && empty( $_GET['id'] ) ) {
-            wpuf()->login->add_error( 'Activation URL is not valid' );
+            wpuf()->login->add_error( __('Activation URL is not valid', 'wp-user-frontend') );
             return;
         }
 
-        $user_id = intval( $_GET['id'] );
-        $user    =  new WPUF_User( $user_id );
+        $user_id          = intval( $_GET['id'] );
+        $user             =  new WPUF_User( $user_id );
+        $wpuf_user_active = get_user_meta( $user_id, '_wpuf_user_active', true );
+        $wpuf_user_status = get_user_meta( $user_id, 'wpuf_user_status', true );
 
         if ( !$user ) {
-            wpuf()->login->add_error( 'Invalid User activation url' );
+            wpuf()->login->add_error( __('Invalid User activation url', 'wp-user-frontend') );
             return;
         }
 
         if ( $user->is_verified() ){
-            wpuf()->login->add_error( 'User already verified' );
+            wpuf()->login->add_error( __('User already verified', 'wp-user-frontend') );
             return;
         }
 
         $activation_key = $_GET['wpuf_registration_activation'];
 
         if ( $user->get_activation_key() != $activation_key ) {
-            wpuf()->login->add_error( 'Activation URL is not valid' );
+            wpuf()->login->add_error( __('Activation URL is not valid', 'wp-user-frontend') );
             return;
         }
 
         $user->mark_verified();
         $user->remove_activation_key();
 
-        $register_link_override = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
+        $message = __( "Your account has been activated", "wp-user-frontend" );
 
-        if ( $register_link_override == 'on' ) {
-            wp_clear_auth_cookie();
-            wp_set_current_user( $user_id );
-            wp_set_auth_cookie( $user_id );
+        if ( $wpuf_user_status != "approved" ) {
+            $message = __( "Your account has been verified , but you can't login until manually approved your account by an administrator.", "wp-user-frontend" );
         }
 
-        wpuf()->login->add_message( __( 'Your account has been activated' , 'wp-user-frontend') );
+        wpuf()->login->add_message( $message );
 
         // show activation message
         add_filter( 'wp_login_errors', array( $this, 'user_activation_message' ) );
-        wp_send_new_user_notifications( $user_id );
 
+        $password_info_email = isset( $_GET['wpuf_password_info_email'] ) ? $_GET['wpuf_password_info_email'] : false;
+        $the_user            = get_user_by( 'id', $user_id );
+        $user_email          = $the_user->user_email;
+        $blogname            = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+
+        if ( $password_info_email ) {
+            global $wpdb, $wp_hasher;
+
+            // Generate something random for a password reset key.
+            $key = wp_generate_password( 20, false );
+
+            /** This action is documented in wp-login.php */
+            add_action( 'retrieve_password_key', $the_user->user_login, $key );
+
+            // Now insert the key, hashed, into the DB.
+            if ( empty( $wp_hasher ) ) {
+                require_once ABSPATH . WPINC . '/class-phpass.php';
+                $wp_hasher = new PasswordHash( 8, true );
+            }
+            $hashed = time() . ':' . $wp_hasher->HashPassword( $key );
+            $wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $the_user->user_login ) );
+
+            $subject = sprintf( __('[%s] Your username and password info', 'wp-user-frontend' ), $blogname );
+
+            $message  = sprintf(__('Username: %s', 'wp-user-frontend'), $the_user->user_login) . "\r\n\r\n";
+            $message .= __('To set your password, visit the following address:', 'wp-user-frontend') . "\r\n\r\n";
+            $message .= network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($the_user->user_login), 'login') . "\r\n\r\n";
+            $message .= wp_login_url() . "\r\n";
+
+            $subject  = apply_filters( 'wpuf_password_info_mail_subject', $subject );
+            $message  = apply_filters( 'wpuf_password_info_mail_body', $message );
+            $message  = get_formatted_mail_body( $message, $subject );
+
+            wp_mail( $user_email, $subject, $message );
+        } else {
+            $subject  = sprintf( __('[%s] Account has been activated', 'wp-user-frontend' ), $blogname );
+
+            $message  = sprintf( __('Hi %s,', 'wp-user-frontend' ), $the_user->user_login ) ."\r\n\r\n";
+            $message .= __( "Congrats! Your account has been activated. To login visit the following url:", "wp-user-frontend") ."\r\n\r\n";
+            $message .= wp_login_url() ."\r\n\r\n";
+            $message .= __( "Thanks", "wp-user-frontend" );
+
+            $subject  = apply_filters( 'wpuf_mail_after_confirmation_subject', $subject );
+            $message  = apply_filters( 'wpuf_mail_after_confirmation_body', $message );
+            $message  = get_formatted_mail_body( $message, $subject );
+
+            wp_mail( $user_email, $subject, $message );
+        }
+        add_filter('redirect_canonical', '__return_false');
         do_action( 'wpuf_user_activated', $user_id );
     }
 

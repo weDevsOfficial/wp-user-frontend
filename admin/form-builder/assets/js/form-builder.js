@@ -40,6 +40,7 @@
             panel_sections: wpuf_form_builder.panel_sections,
             field_settings: wpuf_form_builder.field_settings,
             notifications: wpuf_form_builder.notifications,
+            settings: wpuf_form_builder.form_settings,
             current_panel: 'form-fields',
             editing_field_id: 0, // editing form field id
         },
@@ -47,6 +48,10 @@
         mutations: {
             set_form_fields: function (state, form_fields) {
                 Vue.set(state, 'form_fields', form_fields);
+            },
+
+            set_form_settings: function (state, value) {
+                Vue.set(state, 'settings', value);
             },
 
             // set the current panel
@@ -101,11 +106,32 @@
             },
 
             update_editing_form_field: function (state, payload) {
-                var editing_field = _.find(state.form_fields, function (item) {
-                    return parseInt(item.id) === parseInt(payload.editing_field_id);
-                });
+                var i = 0;
 
-                editing_field[payload.field_name] = payload.value;
+                for (i = 0; i < state.form_fields.length; i++) {
+                    // check if the editing field exist in normal fields
+                    if (state.form_fields[i].id === parseInt(payload.editing_field_id)) {
+                        state.form_fields[i][payload.field_name] = payload.value;
+                    }
+
+                    // check if the editing field belong to a column field
+                    if (state.form_fields[i].template === 'column_field') {
+                        var innerColumnFields = state.form_fields[i].inner_fields;
+
+                        for (const columnFields in innerColumnFields) {
+                            if (innerColumnFields.hasOwnProperty(columnFields)) {
+                                var columnFieldIndex = 0;
+
+                                while (columnFieldIndex < innerColumnFields[columnFields].length) {
+                                    if (innerColumnFields[columnFields][columnFieldIndex].id === parseInt(payload.editing_field_id)) {
+                                       innerColumnFields[columnFields][columnFieldIndex][payload.field_name] = payload.value;
+                                    }
+                                    columnFieldIndex++;
+                                }
+                            }
+                        }
+                    }
+                }
             },
 
             // add new form field element
@@ -135,8 +161,9 @@
                 var clone = $.extend(true, {}, field),
                     index = parseInt(payload.index) + 1;
 
-                clone.id   = payload.new_id;
-                clone.name = clone.name + '_copy';
+                clone.id     = payload.new_id;
+                clone.name   = clone.name + '_copy';
+                clone.is_new = true;
 
                 state.form_fields.splice(index, 0, clone);
             },
@@ -179,7 +206,128 @@
 
             updateNotification: function(state, payload) {
                 state.notifications[payload.index] = payload.value;
-            }
+            },
+
+            // add new form field element to column field
+            add_column_inner_field_element: function (state, payload) {
+                var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.toWhichColumnField);
+
+                if (state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] === undefined) {
+                    state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] = [];
+                }
+
+                if (state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] !== undefined) {
+                    var innerColumnFields   = state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn];
+
+                    if ( innerColumnFields.filter(innerField => innerField.name === payload.field.name).length <= 0 ) {
+                        state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn].splice(payload.toIndex, 0, payload.field);
+                    }
+                }
+            },
+
+            move_column_inner_fields: function(state, payload) {
+                var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id),
+                    innerFields  = payload.inner_fields,
+                    mergedFields = [];
+
+                Object.keys(innerFields).forEach(function (column) {
+                    // clear column-1, column-2 and column-3 fields if move_to specified column-1
+                    // add column-1, column-2 and column-3 fields to mergedFields, later mergedFields will move to column-1 field
+                    if (payload.move_to === "column-1") {
+                        innerFields[column].forEach(function(field){
+                            mergedFields.push(field);
+                        });
+
+                        // clear current column inner fields
+                        state.form_fields[columnFieldIndex].inner_fields[column].splice(0, innerFields[column].length);
+                    }
+
+                    // clear column-2 and column-3 fields if move_to specified column-2
+                    // add column-2 and column-3 fields to mergedFields, later mergedFields will move to column-2 field
+                    if (payload.move_to === "column-2") {
+                        if ( column === "column-2" || column === "column-3" ) {
+                            innerFields[column].forEach(function(field){
+                                mergedFields.push(field);
+                            });
+
+                            // clear current column inner fields
+                            state.form_fields[columnFieldIndex].inner_fields[column].splice(0, innerFields[column].length);
+                        }
+                    }
+                });
+
+                // move inner fields to specified column
+                if (mergedFields.length !== 0) {
+                    mergedFields.forEach(function(field){
+                        state.form_fields[columnFieldIndex].inner_fields[payload.move_to].splice(0, 0, field);
+                    });
+                }
+            },
+
+            // sorting inside column field
+            swap_column_field_elements: function (state, payload) {
+                var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id),
+                    fieldObj         = state.form_fields[columnFieldIndex].inner_fields[payload.fromColumn][payload.fromIndex];
+
+                if( payload.fromColumn !== payload.toColumn) {
+                    // add the field object to the target column
+                    state.form_fields[columnFieldIndex].inner_fields[payload.toColumn].splice(payload.toIndex, 0, fieldObj);
+
+                    // remove the field index from the source column
+                    state.form_fields[columnFieldIndex].inner_fields[payload.fromColumn].splice(payload.fromIndex, 1);
+                }else{
+                    state.form_fields[columnFieldIndex].inner_fields[payload.toColumn].swap(payload.fromIndex, payload.toIndex);
+                }
+            },
+
+            // open field settings panel
+            open_column_field_settings: function (state, payload) {
+                var field = payload.column_field;
+
+                if ('field-options' === state.current_panel && field.id === state.editing_field_id) {
+                    return;
+                }
+
+                if (field) {
+                    state.editing_field_id = 0;
+                    state.current_panel = 'field-options';
+                    state.editing_field_type = 'column_field';
+                    state.editing_column_field_id = payload.field_id;
+                    state.edting_field_column = payload.column;
+                    state.editing_inner_field_index = payload.index;
+
+                    setTimeout(function () {
+                        state.editing_field_id = field.id;
+                    }, 400);
+                }
+            },
+
+            clone_column_field_element: function (state, payload) {
+                var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id);
+
+                var field = _.find(state.form_fields[columnFieldIndex].inner_fields[payload.toColumn], function (item) {
+                    return parseInt(item.id) === parseInt(payload.column_field_id);
+                });
+
+                var clone = $.extend(true, {}, field),
+                    index = parseInt(payload.index) + 1;
+
+                clone.id     = payload.new_id;
+                clone.name   = clone.name + '_copy';
+                clone.is_new = true;
+
+                state.form_fields[columnFieldIndex].inner_fields[payload.toColumn].splice(index, 0, clone);
+            },
+
+            // delete a column field
+            delete_column_field_element: function (state, payload) {
+                var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id);
+
+                state.current_panel = 'form-fields';
+                state.form_fields[columnFieldIndex].inner_fields[payload.fromColumn].splice(payload.index, 1);
+            },
+
+
         }
     });
 
@@ -220,6 +368,10 @@
 
             notifications: function() {
                 return this.$store.state.notifications;
+            },
+
+            settings: function() {
+                return this.$store.state.settings;
             }
         },
 
@@ -337,6 +489,10 @@
                             self.$store.commit('set_form_fields', response.form_fields);
                         }
 
+                        if (response.form_settings) {
+                            self.$store.commit('set_form_settings', response.form_settings);
+                        }
+
                         self.is_form_saving = false;
                         self.is_form_saved = true;
 
@@ -403,6 +559,10 @@
             $('.wpuf_enable_multistep_section :input[type="checkbox"]').click(function() {
                 self.changeMultistepVisibility($(this));
             });
+
+            this.showRegFormNotificationFields();
+            this.integrationsCondFieldsVisibility();
+
         },
 
         settingsGuest: function (e) {
@@ -553,6 +713,99 @@
             } else {
                 $('.wpuf_multistep_content').hide();
             }
+        },
+
+        showRegFormNotificationFields: function() {
+            var newUserStatus                 = $( "input#wpuf_new_user_status" ),
+                emailVerification             = $( "input#notification_type_verification" ),
+                welcomeEmail                  = $( "#notification_type_welcome_email" );
+
+            if ( newUserStatus.is(':checked') ) {
+                $('#wpuf_pending_user_admin_notification').show();
+                $('#wpuf_approved_user_admin_notification').hide();
+            } else{
+                $('#wpuf_pending_user_admin_notification').hide();
+                $('#wpuf_approved_user_admin_notification').show();
+            }
+
+            $( newUserStatus ).on( "click", function() {
+                $('#wpuf_pending_user_admin_notification').hide();
+                $('#wpuf_approved_user_admin_notification').show();
+
+                if ( newUserStatus.is(':checked') ) {
+                    $('#wpuf_pending_user_admin_notification').show();
+                    $('#wpuf_approved_user_admin_notification').hide();
+                }
+            });
+
+            if ( emailVerification.is(':checked') ) {
+                $('.wpuf-email-verification-settings-fields').show();
+                $('.wpuf-welcome-email-settings-fields').hide();
+            }
+
+            if ( welcomeEmail.is(':checked') ) {
+                $('.wpuf-welcome-email-settings-fields').show();
+                $('.wpuf-email-verification-settings-fields').hide();
+            }
+
+            $( emailVerification ).on( "click", function() {
+                $('.wpuf-email-verification-settings-fields').show();
+                $('.wpuf-welcome-email-settings-fields').hide();
+            });
+
+            $( welcomeEmail ).on( "click", function() {
+                $('.wpuf-welcome-email-settings-fields').show();
+                $('.wpuf-email-verification-settings-fields').hide();
+            });
+        },
+
+        integrationsCondFieldsVisibility: function() {
+            var conditional_logic      = $( '.wpuf-integrations-conditional-logic' ),
+                cond_fields_container  = $( '.wpuf-integrations-conditional-logic-container' ),
+                cond_fields            = $( '.wpuf_available_conditional_fields' ),
+                cond_field_options     = $( '.wpuf_selected_conditional_field_options' );
+
+            $( conditional_logic ).on( "click", function(e) {
+                $( cond_fields_container ).hide();
+
+                if ( e.target.value === 'yes' ) {
+                    $( cond_fields_container ).show();
+                }
+            });
+
+            $( cond_fields ).on('focus', function(e) {
+                var form_fields = wpuf_form_builder.form_fields,
+                    options     = '';
+                    options     += '<option value="-1">- select -</option>';
+
+                form_fields.forEach(function(field) {
+                  if ( field.template === 'radio_field' || field.template === 'checkbox_field' || field.template === 'dropdown_field' ) {
+                    options += '<option value="'+field.name+'">'+field.label+'</option>';
+                  }
+                });
+                e.target.innerHTML = options;
+            });
+
+            $( cond_fields ).on('change', function(e){
+                var form_fields = wpuf_form_builder.form_fields,
+                    field_name = e.target.value,
+                    field_options  = '';
+                    field_options += '<option value="-1">- select -</option>';
+
+                form_fields.forEach(function(field) {
+                    if ( field.name === field_name ) {
+                        var options = field.options;
+
+                        for (var key in options) {
+                            if (options.hasOwnProperty(key)) {
+                                field_options += '<option value="'+key+'">'+options[key]+'</option>';
+                            }
+                        }
+                    }
+                });
+
+                cond_field_options[0].innerHTML = field_options;
+            });
         }
     };
 

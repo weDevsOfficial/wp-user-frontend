@@ -19,6 +19,124 @@ class WPUF_Frontend_Account {
         add_action( 'wpuf_account_content_edit-profile', array( $this, 'edit_profile_section' ), 10, 2 );
         add_action( 'wpuf_account_content_billing-address', array( $this, 'billing_address_section' ), 10, 2 );
         add_action( 'wp_ajax_wpuf_account_update_profile', array( $this, 'update_profile' ) );
+        add_filter( 'wpuf_options_wpuf_my_account', array( $this, 'add_settings_options' ) );
+        add_filter( 'wpuf_account_sections', array( $this, 'add_account_sections' ) );
+        add_action( 'wpuf_account_content_submit-post', array( $this, 'submit_post_section' ), 10, 2 );
+    }
+
+    /**
+     * Add new settings options
+     *
+     * @return array $options
+     *
+     * @since 2.9.0
+     */
+    public function add_settings_options( $options ) {
+        $options[] = array(
+            'name'  => 'allow_post_submission',
+            'label' => __( 'Post Submission', 'wp-user-frontend' ),
+            'desc'  => __( 'Enable if you want to allow users to submit post from the account page.', 'wp-user-frontend' ),
+            'type'  => 'checkbox',
+            'default' => 'on',
+        );
+
+        $options[] = array(
+            'name'  => 'post_submission_label',
+            'label' => __( 'Submission Menu Label', 'wp-user-frontend' ),
+            'desc'  => __( 'Label for post submission menu', 'wp-user-frontend' ),
+            'type'  => 'text',
+            'default' => __( 'Submit Post', 'wp-user-frontend' ),
+        );
+
+        $options[] = array(
+            'name'    => 'post_submission_form',
+            'label'   => __( 'Submission Form', 'wp-user-frontend' ),
+            'desc'    => __( 'Select a post form that will use to submit post by the users from their account page.', 'wp-user-frontend' ),
+            'type'    => 'select',
+            'options' => $this->get_post_forms()
+        );
+
+        return $options;
+    }
+
+    /**
+     * Get post forms created by WPUF
+     *
+     * @return array $forms
+     *
+     * @since 2.9.0
+     */
+    public function get_post_forms() {
+        $args = array(
+            'post_type' => 'wpuf_forms',
+            'post_status' => 'any',
+            'orderby'     => 'DESC',
+            'order'       => 'ID'
+        );
+
+        $query = new WP_Query( $args );
+
+        $forms = array();
+
+        if ( $query->have_posts() ) {
+
+            $i = 0;
+
+            while ( $query->have_posts() ) {
+                $query->the_post();
+
+                $form = $query->posts[ $i ];
+
+                $settings = get_post_meta( get_the_ID(), 'wpuf_form_settings', true );
+
+                $forms[ $form->ID ] = $form->post_title;
+
+                $i++;
+            }
+        }
+
+        return $forms;
+    }
+
+    /**
+     * Show/Hide frontend post submission menu depending on option
+     *
+     * @return array $sections
+     *
+     * @since 2.9.0
+     */
+    public function add_account_sections( $sections ) {
+        $allow_post_submission = wpuf_get_option( 'allow_post_submission', 'wpuf_my_account', 'on' );
+        $submission_label      = wpuf_get_option( 'post_submission_label', 'wpuf_my_account', __( 'Submit Post', 'wp-user-frontend' ) );
+
+        if ( $allow_post_submission == 'on' ) {
+            $sections = array_merge( $sections, array( array( 'slug' => 'submit-post', 'label' => $submission_label ) ) );
+        }
+
+        return $sections;
+    }
+
+    /**
+     * Display the submit post section
+     *
+     * @param  array  $sections
+     * @param  string $current_section
+     *
+     * @return void
+     *
+     * @since 2.9.0
+     */
+    public function submit_post_section( $sections, $current_section ) {
+        $allow_post_submission = wpuf_get_option( 'allow_post_submission', 'wpuf_my_account', 'on' );
+
+        if ( $allow_post_submission != 'on' ) {
+            return;
+        }
+
+        wpuf_load_template(
+            "submit-post.php",
+            array( 'sections' => $sections, 'current_section' => $current_section )
+        );
     }
 
     /**

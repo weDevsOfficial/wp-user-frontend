@@ -28,9 +28,9 @@ class WPUF_Login_Widget extends WP_Widget {
      */
     public function ajax_login() {
 
-        $user_login     = $_POST['log'];
-        $user_pass      = $_POST['pwd'];
-        $rememberme     = $_POST['rememberme'];
+        $user_login     = trim( $_POST['log'] );
+        $user_pass      = trim( $_POST['pwd'] );
+        $rememberme     = isset( $_POST['rememberme'] ) ? $_POST['rememberme'] : false;
 
         if ( empty( $user_login ) || empty( $user_pass ) ) {
             wp_send_json_error( array( 'message'=> __( 'Please fill all form fields', 'wp-user-frontend') ) );
@@ -43,7 +43,7 @@ class WPUF_Login_Widget extends WP_Widget {
                 wp_send_json_success( array( 'message'=> __( 'Login successful!', 'wp-user-frontend' ) ) );
             }
         }
-        wp_set_auth_cookie( $user->ID, $rememberme, $secure_cookie );
+        wp_set_auth_cookie( $user->ID, $rememberme );
     }
 
     /**
@@ -64,7 +64,7 @@ class WPUF_Login_Widget extends WP_Widget {
      */
     function ajax_reset_pass() {
 
-        $username_or_email = $_POST['user_login'];
+        $username_or_email = trim( $_POST['user_login'] );
 
         // Check if input variables are empty
         if ( empty( $username_or_email ) ) {

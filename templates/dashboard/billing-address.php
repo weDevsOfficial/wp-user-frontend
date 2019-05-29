@@ -81,6 +81,7 @@ if ( isset( $_POST['update_billing_address'] )
                                 $countries = $cs->countries();
                                 ?>
                                 <select name="country" id="country">
+                                        <option selected value="-1"><?php _e('Select Country', 'wp-user-frontend'); ?></option>
                                     <?php
                                     foreach ( $countries as $key => $value ) {
                                         if ( $key == $address_fields['country'] ) { ?>

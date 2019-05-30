@@ -544,7 +544,7 @@ class WPUF_Frontend_Render_Form{
 
         foreach ($taxonomy_vars as $taxonomy ) {
 
-            if(isset($_POST[$taxonomy['name']] ) && ( $_POST[$taxonomy['name']] !='' && $_POST[$taxonomy['name']] !='0' ) ) {
+            if(isset($_POST[$taxonomy['name']] ) && ( $_POST[$taxonomy['name']] !='' ) ) {
 
                 if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
 

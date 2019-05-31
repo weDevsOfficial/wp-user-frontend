@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.1.6\n"
+"Project-Id-Version: WP User Frontend 3.1.7\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2019-05-23 08:19:41+00:00\n"
+"POT-Creation-Date: 2019-05-31 09:35:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -70,7 +70,7 @@ msgid "<span style=\"color:#f18500\">Help</span>"
 msgstr ""
 
 #: admin/class-admin-settings.php:118 admin/class-admin-settings.php:156
-#: admin/form-builder/views/form-builder.php:9 includes/setup-wizard.php:121
+#: admin/form-builder/views/form-builder.php:9 includes/setup-wizard.php:123
 msgid "Settings"
 msgstr ""
 
@@ -142,7 +142,7 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:216
 #: admin/class-admin-subscription.php:570 class/frontend-account.php:244
-#: class/subscription.php:867 includes/class-user-subscription.php:307
+#: class/subscription.php:864 includes/class-user-subscription.php:307
 #: templates/subscriptions/pack-details.php:25
 msgid "Free"
 msgstr ""
@@ -304,7 +304,7 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:754
 #: admin/form-builder/class-wpuf-admin-form-builder.php:266
-#: class/payment.php:199 class/subscription.php:780
+#: class/payment.php:199 class/subscription.php:777
 #: includes/class-list-table-subscribers.php:128 lib/appsero/Insights.php:751
 #: templates/dashboard/subscription.php:61
 msgid "Cancel"
@@ -419,7 +419,7 @@ msgid ""
 msgstr ""
 
 #: admin/class-tools.php:351 admin/installer.php:30
-#: includes/setup-wizard.php:298
+#: includes/setup-wizard.php:300
 msgid "Install WPUF Pages"
 msgstr ""
 
@@ -522,7 +522,7 @@ msgstr ""
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:6
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:6
 #: class/render-form.php:1682
-#: includes/fields/class-field-featured-image.php:103
+#: includes/fields/class-field-featured-image.php:104
 #: includes/fields/class-field-image.php:125
 #: includes/fields/class-field-image.php:146
 msgid "Select Image"
@@ -847,7 +847,7 @@ msgid "Payment Options"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:25 admin/settings-options.php:362
-#: includes/setup-wizard.php:291
+#: includes/setup-wizard.php:293
 msgid "Enable Payments"
 msgstr ""
 
@@ -3030,13 +3030,13 @@ msgid "Enable image upload in post area"
 msgstr ""
 
 #: admin/template-post.php:93 admin/template.php:634
-#: includes/fields/class-field-featured-image.php:97
+#: includes/fields/class-field-featured-image.php:98
 #: includes/fields/class-field-image.php:110
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
 #: admin/template-post.php:105 admin/template.php:646
-#: includes/fields/class-field-featured-image.php:93
+#: includes/fields/class-field-featured-image.php:94
 #: includes/fields/class-field-image.php:106
 msgid "Max. file size"
 msgstr ""
@@ -3713,7 +3713,7 @@ msgstr ""
 
 #: class/post-form-templates/post.php:76 class/post-form-templates/post.php:77
 #: includes/fields/class-field-featured-image.php:9
-#: includes/fields/class-field-featured-image.php:123
+#: includes/fields/class-field-featured-image.php:124
 #: includes/free/post-form-templates/the_events_calendar.php:125
 #: includes/free/post-form-templates/the_events_calendar.php:126
 #: templates/dashboard/posts.php:74 templates/dashboard.php:84
@@ -3843,93 +3843,93 @@ msgstr ""
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:748
+#: class/subscription.php:745
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:748
+#: class/subscription.php:745
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:752 class/subscription.php:756
+#: class/subscription.php:749 class/subscription.php:753
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:770
+#: class/subscription.php:767
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:771
+#: class/subscription.php:768
 msgid "<p><i>Pack name: %s </i></p>"
 msgstr ""
 
-#: class/subscription.php:773
+#: class/subscription.php:770
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
-#: class/subscription.php:817
+#: class/subscription.php:814
 msgid "Day"
 msgid_plural "Days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:818
+#: class/subscription.php:815
 msgid "Week"
 msgid_plural "Weeks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:819
+#: class/subscription.php:816
 msgid "Month"
 msgid_plural "Months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:820
+#: class/subscription.php:817
 msgid "Year"
 msgid_plural "Years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:842
+#: class/subscription.php:839
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:849
+#: class/subscription.php:846
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:850
+#: class/subscription.php:847
 msgid "for"
 msgstr ""
 
-#: class/subscription.php:850
+#: class/subscription.php:847
 msgid "installments"
 msgstr ""
 
-#: class/subscription.php:856
+#: class/subscription.php:853
 msgid "Trial available for first %s %s"
 msgstr ""
 
-#: class/subscription.php:860
+#: class/subscription.php:857
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:864
+#: class/subscription.php:861
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:927
+#: class/subscription.php:924
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:944
+#: class/subscription.php:941
 msgid ""
 "Your Subscription pack exhausted. There is a <strong>%s</strong> charge to "
 "add a new post."
 msgstr ""
 
-#: class/subscription.php:989
+#: class/subscription.php:986
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
@@ -4079,7 +4079,7 @@ msgid "Postal Code/ZIP"
 msgstr ""
 
 #: includes/class-billing-address.php:202
-#: templates/dashboard/billing-address.php:101
+#: templates/dashboard/billing-address.php:102
 msgid "Update Billing Address"
 msgstr ""
 
@@ -4836,12 +4836,12 @@ msgstr ""
 msgid "Email Address"
 msgstr ""
 
-#: includes/fields/class-field-featured-image.php:101
+#: includes/fields/class-field-featured-image.php:102
 #: includes/fields/class-field-image.php:123
 msgid "Button Label"
 msgstr ""
 
-#: includes/fields/class-field-featured-image.php:106
+#: includes/fields/class-field-featured-image.php:107
 #: includes/fields/class-field-image.php:128
 msgid "Enter a label for the Select button"
 msgstr ""
@@ -5624,77 +5624,77 @@ msgstr ""
 msgid "Enable Recurring Payment"
 msgstr ""
 
-#: includes/setup-wizard.php:116
+#: includes/setup-wizard.php:118
 msgid "Introduction"
 msgstr ""
 
-#: includes/setup-wizard.php:126
+#: includes/setup-wizard.php:128
 msgid "Ready!"
 msgstr ""
 
-#: includes/setup-wizard.php:163
+#: includes/setup-wizard.php:165
 msgid "WPUF &rsaquo; Setup Wizard"
 msgstr ""
 
-#: includes/setup-wizard.php:228
+#: includes/setup-wizard.php:230
 msgid "Return to the WordPress Dashboard"
 msgstr ""
 
-#: includes/setup-wizard.php:270
+#: includes/setup-wizard.php:272
 msgid "Welcome to the world of WPUF!"
 msgstr ""
 
-#: includes/setup-wizard.php:271
+#: includes/setup-wizard.php:273
 msgid ""
 "Thank you for choosing WPUF to power your websites frontend! This quick "
 "setup wizard will help you configure the basic settings. <strong>It’s "
 "completely optional and shouldn’t take longer than a minute.</strong>"
 msgstr ""
 
-#: includes/setup-wizard.php:272
+#: includes/setup-wizard.php:274
 msgid ""
 "No time right now? If you don’t want to go through the wizard, you can skip "
 "and return to the WordPress dashboard. Come back anytime if you change your "
 "mind!"
 msgstr ""
 
-#: includes/setup-wizard.php:274
+#: includes/setup-wizard.php:276
 msgid "Let's Go!"
 msgstr ""
 
-#: includes/setup-wizard.php:275
+#: includes/setup-wizard.php:277
 msgid "Not right now"
 msgstr ""
 
-#: includes/setup-wizard.php:287
+#: includes/setup-wizard.php:289
 msgid "Basic Setting"
 msgstr ""
 
-#: includes/setup-wizard.php:294
+#: includes/setup-wizard.php:296
 msgid "Make payment enable for user to add posts on frontend."
 msgstr ""
 
-#: includes/setup-wizard.php:301
+#: includes/setup-wizard.php:303
 msgid "Install neccessery pages on your site frontend."
 msgstr ""
 
-#: includes/setup-wizard.php:306
+#: includes/setup-wizard.php:308
 msgid "Continue"
 msgstr ""
 
-#: includes/setup-wizard.php:307
+#: includes/setup-wizard.php:309
 msgid "Skip this step"
 msgstr ""
 
-#: includes/setup-wizard.php:342
+#: includes/setup-wizard.php:344
 msgid "Thank you!"
 msgstr ""
 
-#: includes/setup-wizard.php:347
+#: includes/setup-wizard.php:349
 msgid "Welcome to Awesomeness!"
 msgstr ""
 
-#: includes/setup-wizard.php:351
+#: includes/setup-wizard.php:353
 msgid "Go to Full Settings"
 msgstr ""
 
@@ -5790,6 +5790,10 @@ msgstr ""
 
 #: lib/gateway/paypal.php:111
 msgid "PayPal API signature"
+msgstr ""
+
+#: templates/dashboard/billing-address.php:84
+msgid "Select Country"
 msgstr ""
 
 #: templates/dashboard/dashboard.php:5

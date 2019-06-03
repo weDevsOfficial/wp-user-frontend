@@ -74,7 +74,7 @@ $countries = array(
         'code' => 'BH',
     ),
     array(
-        'name' => 'Bangladesh',
+        'name' => __('Bangladesh', 'wp-user-frontend'),
         'code' => 'BD',
     ),
     array(

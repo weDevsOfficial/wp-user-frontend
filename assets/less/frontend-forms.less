@@ -1727,3 +1727,106 @@ ul.wpuf-form .weforms-frontend-field-points{
 .wpuf-col-one-third-last + li {
     clear: left;
 }
+
+ul.wpuf-form{
+    .wpuf-field-columns{
+        padding: 0;
+        border: 0;
+        overflow: hidden;
+
+        &.has-columns-1{
+            .wpuf-column{
+                .wpuf-column-inner-fields{
+                    width: 100%;
+                    float: left;
+                }
+
+                .column-1{
+                    .ui-resizable-handle{
+                        display: none !important;
+                    }
+                }
+
+                .column-2.wpuf-column-inner-fields,
+                .column-3.wpuf-column-inner-fields{
+                    display: none;
+                }
+            }
+        }
+
+        &.has-columns-2{
+            .wpuf-column{
+                .wpuf-column-inner-fields{
+                    width: 50%;
+                    float: left;
+                }
+
+                .column-2{
+                    .ui-resizable-handle{
+                        display: none !important;
+                    }
+                }
+
+                .column-3.wpuf-column-inner-fields{
+                    display: none;
+                }
+            }
+        }
+
+        &.has-columns-3{
+            .wpuf-column{
+                .wpuf-column-inner-fields{
+                    width: 33.33%;
+                    float: left;
+                }
+            }
+        }
+
+        .wpuf-column-field-inner-columns{
+            margin-left: 0;
+            margin-right: 0;
+
+            .wpuf-column{
+                padding: 0;
+                border: 0;
+                float: none;
+                width: 100%;
+                overflow: hidden;
+
+                .wpuf-column-inner-fields{
+                    padding: 0 5px 0 0;
+                    position: relative;
+
+                    ul.wpuf-column-fields{
+                        border: 0;
+                        margin: 0;
+                        padding: 0;
+                        list-style: none;
+
+                        li{
+                            padding: 0;
+
+                            input[type="text"],
+                            input[type="email"],
+                            input[type="url"],
+                            input[type="password"],
+                            input[type="search"],
+                            input[type="number"],
+                            input[type="tel"],
+                            input[type="range"],
+                            input[type="date"],
+                            input[type="month"],
+                            input[type="week"],
+                            input[type="time"],
+                            input[type="datetime"],
+                            input[type="datetime-local"],
+                            input[type="color"], textarea{
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

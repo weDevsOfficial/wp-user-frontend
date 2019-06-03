@@ -1,11 +1,11 @@
 === WP User Frontend - Membership, Profile, Registration & Post Submission Plugin for WordPress ===
-Contributors: tareq1988, sk.shaikat, rabbii, rafsuntaskin, itowhid06, wedevs
+Contributors: tareq1988, nizamuddinbabu, sk.shaikat, rabbii, itowhid06, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
-Tested up to: 5.0.2
+Tested up to: 5.1.1
 Requires PHP: 5.4
-Stable tag: 3.0.2
+Stable tag: 3.1.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,10 @@ Users can upload attachments from the frontend. Users can also upload post featu
 <strong>Drag-n-drop form builder</strong>
 
 Easily fill your form with fields using drag-n-drops and real-time preview that updates as you make changes. You can see how your form will look like eventually from the dashboard!
+
+<strong>Publish your WPUF forms using Gutenberg</strong>
+
+Easily add your published forms in Gutenberg editor with the WPUF block. When users want to publish forms on a page, they can simply select it from the drop-down included in the dedicated WPUF block for Gutenberg. The entire form automatically renders within the editor as well as on page. It’s much easier than manually copying and pasting shortcodes! Saves you a ton of time and clicks. But you can also do it the old style using the shortcodes block.
 
 <strong>Use anywhere easily with shortcodes</strong>
 
@@ -252,6 +256,52 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.1.5 (02 May, 2019) =
+
+* **Fix:** Conflict weDevs insight library with WP Project Manager plugin.
+
+= v3.1.4 (02 May, 2019) =
+
+* **Fix:** Category field data were not being saved when conditional logic is applied to custom taxonomy fields based on category field.
+* **Fix:** While editing the checkbox values from the backend user profile page, the values were not being saved.
+* **Fix:** While editing profile, using the default profile form, the password strength indicator didn't respond.
+* **Fix:** Insights data were not being sent.
+
+= v3.1.3 (15 April, 2019) =
+
+* **Fix:** Required option of checkbox field was not validating on the frontend.
+* **Fix:** Select mulitple options in checkbox field doesn't save the data.
+* **Fix:** Fallback pay per post was not respecting the payment procedure & fallback cost was not correct on the payment page.
+
+= v3.1.2 (01 April, 2019) =
+
+* **Feature:** Added column field: Now, creating multi-column in a single row is super easy with WPUF Column field. Just drag the column field in the builder area, configure columns number, column space and add any fields you want inside that Column field.
+* **Fix:** Unable to render the events on the front-end: On the frontend dashboard, the submitted events were not showing, you will get it fixed in this version.
+* **Fix:** Page order getting 0(zero) after editing from the frontend: Page order was not saving while editing a post using WPUF form, it has been fixed.
+* **Fix:** Text Input field for Taxonomies not working: When taxonomy field type is set to `Text Input` then a fatal error was showing on the frontend, no error with taxonomy field in the latest version
+* **Fix:** In radio and checkbox field use conditional logic that value does not save in database: The selected value of radio and checkbox field were not showing while editing posts from the backend or frontend, you can see the selected value in this version.
+* **Fix:** The args parameter not working with get_avatar filter: The args parameter did not exist with get_avatar filter, which now exists.
+* **Fix:** The item in ajax taxonomy field is not selected: When the taxonomy field type is set to Ajax, the submitted terms were not showing in the backend and frontend which have been fixed.
+
+= v3.1.1 (28 February, 2019) =
+
+* **Fix:** Help text in the Category field were not displaying on the frontend.
+* **Fix:** Category was not editable when editing the post from the frontend.
+* **Fix:** Display the admin bar when user role exist.
+* **Fix:** When the admin edits a post from the backend, it was creating duplicate post.
+* **Fix:** After enabling post expiration in post form do not save post_expiration meta.
+* **Fix:** Checkboxes were not linking/syncing with ACF field.
+* **Fix:** Publish time input option in the Date/Time field, was not working.
+
+= v3.1.0 (31 January, 2019) =
+
+* **Fix:** The Default registration form `[wpuf-registration]` was unable to send the new user registration email.
+* **Fix:** With the latest version of WordPress the Gutenberg block of WP User Frontend were not working. Fixed in this version.
+* **Fix:** While using Gutenberg editor, the pages were not being updated with WPUF shortcode consisting`[wpuf dashboard]`
+* **Fix:** From the User Frontend Settings, you had the capability to set if the Administrator, Editor, Vendor etc can see the admin bar. Now, the super admin want one specific user ( who has the user role from the above ) can't see the admin bar and disabled it from the Toolbar form that specific user profile. And this configuration ( Toolbar ) from the specific user profile were unable to impact on the frontend.
+* **Fix:** WP User Frontend was unable to install with PHP 5.4 or lower version.
+* **Fix:** When a user uploaded single image for product gallery using WPUF WooCommerce product form, that image was not showing on the frontend.
 
 = v3.0.2 (1 January, 2019) =
 

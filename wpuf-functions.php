@@ -522,8 +522,7 @@ function wpuf_get_user_roles() {
  * @param string $alt
  * @return string image tag of the user avatar
  */
-function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
-
+function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args ) {
     if ( is_numeric( $id_or_email ) ) {
         $user = get_user_by( 'id', $id_or_email );
     } elseif ( is_object( $id_or_email ) ) {
@@ -540,7 +539,7 @@ function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
         return $avatar;
     }
 
-    // see if there is a user_avatar meta field
+    // see if there is a user_avatar meta fields
     $user_avatar = get_user_meta( $user->ID, 'user_avatar', true );
     if ( empty( $user_avatar ) ) {
         return $avatar;
@@ -549,7 +548,7 @@ function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
     return sprintf( '<img src="%1$s" alt="%2$s" height="%3$s" width="%3$s" class="avatar">', esc_url( $user_avatar ), $alt, $size );
 }
 
-add_filter( 'get_avatar', 'wpuf_get_avatar', 99, 5 );
+add_filter( 'get_avatar', 'wpuf_get_avatar', 99, 6);
 
 function wpuf_update_avatar( $user_id, $attachment_id ) {
 
@@ -658,6 +657,23 @@ function wpuf_show_custom_fields( $content ) {
 
     if ( $form_vars ) {
         foreach ($form_vars as $attr) {
+            // get column field input fields
+            if ( $attr['input_type'] == 'column_field' ) {
+                $inner_fields = $attr['inner_fields'];
+
+                foreach ($inner_fields as $column_key => $column_fields) {
+                    if (!empty($column_fields)) {
+                        // ignore section break and HTML input type
+                        foreach ($column_fields as $column_field_key => $column_field) {
+                            if ( isset( $column_field['show_in_post'] ) && $column_field['show_in_post'] == 'yes' ) {
+                                $meta[] = $column_field;
+                            }
+                        }
+                    }
+                }
+                continue;
+            }
+
             if ( isset( $attr['show_in_post'] ) && $attr['show_in_post'] == 'yes' ) {
                 $meta[] = $attr;
             }
@@ -700,11 +716,7 @@ function wpuf_show_custom_fields( $content ) {
                     if ( isset( $attr['wpuf_cond']['cond_option'][$field_key] ) ) {
 
                         if ( is_array( $cond_field_value ) ) {
-
-                            if ( !in_array( $attr['wpuf_cond']['cond_option'][$field_key], $cond_field_value ) ) {
-                                $return_for_no_cond = 1;
-                            }
-
+                            continue;
                         } else {
 
                             if ( $attr['wpuf_cond']['cond_option'][$field_key] != $cond_field_value ) {
@@ -1447,12 +1459,66 @@ function wpuf_get_child_cats() {
                 $terms[$key] = (array)$term;
             }
         }
-        $result .= WPUF_Render_Form::init()->taxnomy_select( '', $field_attr );
+        // $result .= WPUF_Render_Form::init()->taxnomy_select( '', $field_attr );
+         $result .= taxnomy_select( '', $field_attr );
     } else {
         die( '' );
     }
 
     die( $result );
+}
+
+
+function taxnomy_select( $terms, $attr ) {
+
+    $selected           = $terms ? $terms : '';
+    $required           = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
+    $taxonomy           = $attr['name'];
+    $class              = ' wpuf_'.$attr['name'].'_'.$selected;
+    $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
+    $exclude            = isset( $attr['exclude'] ) ? $attr['exclude'] : '';
+
+    if ( $exclude_type == 'child_of' && !empty( $exclude ) ) {
+      $exclude = $exclude[0];
+    }
+
+    $tax_args           = array(
+        'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
+        'hierarchical'     => 1,
+        'hide_empty'       => 0,
+        'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
+        'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
+        'name'             => $taxonomy . '[]',
+        'taxonomy'         => $taxonomy,
+        'echo'             => 0,
+        'title_li'         => '',
+        'class'            => 'cat-ajax '. $taxonomy . $class,
+        $exclude_type      => $exclude,
+        'selected'         => $selected,
+        'depth'            => 1,
+        'child_of'         => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : ''
+    );
+
+    $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
+
+    $select = wp_dropdown_categories( $tax_args );
+
+    echo str_replace( '<select', '<select ' . $required, $select );
+    $attr = array(
+        'required'     => $attr['required'],
+        'name'         => $attr['name'],
+        'exclude_type' => $attr['exclude_type'],
+        'exclude'      => isset( $attr['exclude'] ) ? $attr['exclude']  : '',
+        'orderby'      => $attr['orderby'],
+        'order'        => $attr['order'],
+        'name'         => $attr['name'],
+        //'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
+        //'term_id'      => $selected
+    );
+    $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
+    ?>
+    <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
+    <?php
 }
 
 /**
@@ -2100,6 +2166,17 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
             'url'              => '',
             'comment_status'   => 'open',
             'submit_text'      => 'Submit',
+            'submit_button_cond'  => array(
+                'condition_status' => 'no',
+                'cond_logic'       => 'any',
+                'conditions'       => array(
+                    array(
+                        'name'             => '',
+                        'operator'         => '=',
+                        'option'           => ''
+                    )
+                )
+            ),
             'draft_post'       => 'false',
             'edit_post_status' => 'publish',
             'edit_redirect_to' => 'same',
@@ -2991,6 +3068,10 @@ function wpuf_show_form_schedule_message( $form_id ) {
         $end_time     = !empty( $form_settings['schedule_end'] ) ? strtotime( $form_settings['schedule_end'] ) : 0;
         $current_time = current_time( 'timestamp' );
 
+        if ( $current_time >= $start_time  && $current_time <= $end_time)  {
+            return ;
+        }
+
         // too early?
         if ( $current_time < $start_time ) {
             echo '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>';
@@ -2998,11 +3079,11 @@ function wpuf_show_form_schedule_message( $form_id ) {
             echo '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>';
         }
         ?>
-        <script>
-            jQuery( function($) {
-                $(".wpuf-submit-button").attr("disabled", "disabled");
-            });
-        </script>
+            <script>
+                jQuery( function($) {
+                    $(".wpuf-submit-button").attr("disabled", "disabled");
+                });
+            </script>
         <?php
         return;
     }
@@ -3046,4 +3127,19 @@ function wpuf_show_form_limit_message( $form_id ){
 }
 add_action( 'wpuf_before_form_render', 'wpuf_show_form_limit_message' );
 
+/**
+ * save frontend post revision
+ *
+ * @param  int $post_id
+ * @param  array $form_settings
+ * @return void
+ */
+function wpuf_frontend_post_revision( $post_id, $form_settings ) {
+    $post = get_post( $post_id );
+    if ( post_type_supports( $form_settings['post_type'], 'revisions' ) ) {
+        $revisions = wp_get_post_revisions( $post_id, array( 'order' => 'ASC', 'posts_per_page' => 1 ) );
+        $revision  = current( $revisions );
 
+        _wp_upgrade_revisions_of_post( $post, wp_get_post_revisions( $post_id ) );
+    }
+}

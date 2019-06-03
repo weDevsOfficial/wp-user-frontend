@@ -29,7 +29,7 @@ class WPUF_Admin_Assets {
         wp_register_script( 'wpuf-tooltip', WPUF_ASSET_URI . '/vendor/tooltip/tooltip' . $prefix . '.js', array(), WPUF_VERSION, true );
 
         $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', array(
-            'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'underscore',
+            'jquery', 'jquery-ui-sortable', 'jquery-ui-draggable', 'jquery-ui-droppable', 'underscore',
             'wpuf-vue', 'wpuf-vuex', 'wpuf-sweetalert2', 'wpuf-jquery-scrollTo',
             'wpuf-selectize', 'wpuf-toastr', 'wpuf-clipboard', 'wpuf-tooltip'
         ) );
@@ -47,11 +47,9 @@ class WPUF_Admin_Assets {
         require_once WPUF_ROOT . '/includes/free/prompt.php';
 
         $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', array(
-            // 'i18n'              => $this->i18n(),
             'post'              => $post,
             'form_fields'       => wpuf_get_form_fields( $post->ID ),
-            // 'panel_sections'    => $this->get_panel_sections(),
-            'field_settings'    => WPUF_Form_Builder_Field_Settings::get_field_settings(),
+            'field_settings'    => wpuf()->fields->get_js_settings(),
             'notifications'     => wpuf_get_form_notifications( $post->ID ),
             'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
             'site_url'          => site_url('/'),

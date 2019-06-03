@@ -10,6 +10,19 @@ class WPUF_Frontend_Dashboard {
 
     function __construct() {
         add_shortcode( 'wpuf_dashboard', array($this, 'shortcode') );
+        add_action( 'wpuf_dashboard_shortcode_init', array( $this, 'remove_tribe_pre_get_posts' ) );
+    }
+
+    /**
+     * Events from the events calendar plugin don't show on the frontend dashboard,
+     * that's why this function is reequired.
+     *
+     * @since 3.1.2
+     */
+    public function remove_tribe_pre_get_posts() {
+        if ( class_exists( 'Tribe__Events__Query' ) ) {
+            remove_action( 'pre_get_posts', [ Tribe__Events__Query::class, 'pre_get_posts' ], 50 );
+        }
     }
 
     /**
@@ -21,12 +34,8 @@ class WPUF_Frontend_Dashboard {
      * @since 0.1
      */
     function shortcode( $atts ) {
-        // wpuf()->plugin_scripts();
-        ?>
-        <style>
-            <?php //echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
-        </style>
-        <?php
+        do_action( 'wpuf_dashboard_shortcode_init', $atts );
+
         $attributes =  shortcode_atts( array( 'form_id'=>'off', 'post_type' => 'post', 'category' =>'off', 'featured_image' => 'default', 'meta' => 'off', 'excerpt' =>'off', 'payment_column' => 'on' ), $atts ) ;
         ob_start();
 

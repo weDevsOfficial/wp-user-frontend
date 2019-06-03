@@ -24,10 +24,34 @@ Vue.component('field-options', {
         },
 
         editing_form_field: function () {
-            var self = this;
-            return _.find(this.$store.state.form_fields, function (item) {
-                return parseInt(item.id) === parseInt(self.editing_field_id);
-            });
+            var self = this,
+                i = 0;
+
+            for (i = 0; i < self.$store.state.form_fields.length; i++) {
+                // check if the editing field exist in normal fields
+                if (self.$store.state.form_fields[i].id === parseInt(self.editing_field_id)) {
+                    return self.$store.state.form_fields[i];
+                }
+
+                // check if the editing field belong to column field
+                if (self.$store.state.form_fields[i].template === 'column_field') {
+                    var innerColumnFields = self.$store.state.form_fields[i].inner_fields;
+
+                    for (const columnFields in innerColumnFields) {
+                        if (innerColumnFields.hasOwnProperty(columnFields)) {
+                            var columnFieldIndex = 0;
+
+                            while (columnFieldIndex < innerColumnFields[columnFields].length) {
+                                if (innerColumnFields[columnFields][columnFieldIndex].id === self.editing_field_id) {
+                                    return innerColumnFields[columnFields][columnFieldIndex];
+                                }
+                                columnFieldIndex++;
+                            }
+                        }
+                    }
+                }
+
+            }
         },
 
         settings: function() {

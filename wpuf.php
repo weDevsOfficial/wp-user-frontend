@@ -776,8 +776,10 @@ final class WP_User_Frontend {
         $roles = $roles ? $roles : array();
         $current_user = wp_get_current_user();
 
-        if ( !in_array( $current_user->roles[0], $roles ) ) {
-            return false;
+        if ( isset( $current_user->roles[0] ) ) {
+            if ( !in_array( $current_user->roles[0], $roles ) ) {
+                return false;
+            }
         }
 
         return $val;

@@ -2965,7 +2965,7 @@ add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_a
  */
 
 function wpuf_get_user_address() {
-    $user_id = get_current_user_id();
+    $user_id        = get_current_user_id();
     $address_fields = array();
 
     if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {

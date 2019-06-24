@@ -228,6 +228,7 @@ class WPUF_Ajax_Address_Form {
                 && isset( $_POST['wpuf_biiling_state'] )
                 && isset( $_POST['wpuf_biiling_zip_code'] )
                 && isset( $_POST['wpuf_biiling_country'] ) ) {
+
                 $address_fields = array(
                     'add_line_1'    => $_POST['wpuf_biiling_add_line_1'],
                     'add_line_2'    => $_POST['wpuf_biiling_add_line_2'],
@@ -236,7 +237,9 @@ class WPUF_Ajax_Address_Form {
                     'zip_code'      => $_POST['wpuf_biiling_zip_code'],
                     'country'       => $_POST['wpuf_biiling_country']
                 );
+
                 update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
+
                 $msg = '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wp-user-frontend' ) . '</div>';
 
                 echo $msg;

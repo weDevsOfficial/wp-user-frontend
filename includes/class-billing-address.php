@@ -122,7 +122,7 @@ class WPUF_Ajax_Address_Form {
                 <table id="wpuf-address-country-state" class="wp-list-table widefat">
                     <tr>
                         <td class="<?php echo $required; ?>" style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo $country_hide; ?>">
-                            <label>Country<?php echo $country_req ?></label>
+                            <label><?php _e( "Country", "wp-user-frontend" ); ?><?php echo $country_req ?></label>
                             <br>
                             <?php
                             if (function_exists('wpuf_get_tax_rates')) {
@@ -149,7 +149,7 @@ class WPUF_Ajax_Address_Form {
                             ?>
                         </td>
                         <td class="<?php echo $required; ?>" style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo $state_hide;?>">
-                            <label>State/Province/Region<?php echo $state_req; ?></label>
+                            <label><?php _e( "State/Province/Region", "wp-user-frontend" ); ?><?php echo $state_req; ?></label>
                             <br>
                             <?php
                             $states = $cs->getStates($selected['country']);

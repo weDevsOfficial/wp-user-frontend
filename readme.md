@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership  
 **Requires at least:** 4.0  
-**Tested up to:** 5.2.1  
+**Tested up to:** 5.2.2  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.1.7  
+**Stable tag:** 3.1.8  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -256,6 +256,14 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v3.1.8 (26 June, 2019) ###
+
+* **Fix:** Multistep form was scrolling to the top of the browser instead of moving to the top of the form when clicking on `Next` or `Previous` button.
+* **Fix:** Uploaded images were not showing in the ACF gallery field.
+* **Fix:** Billing address was not saved from the frontend payment page.
+* **Fix:** Added translation functions to the missing strings.
+* **Fix:** Dependency styles error of Gutenblock-editor.css.
 
 ### v3.1.7 (31 May, 2019) ###
 

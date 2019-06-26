@@ -11,7 +11,7 @@ class WPUF_Form_Block {
         //when wpuf_form shortcode exists in admin pages.
         add_action( 'admin_enqueue_scripts', array( $this, 'load_dashicons' ) );
         // wait for Gutenberg to enqueue it's block assets
-        add_action( 'enqueue_block_editor_assets', array( $this, 'wpuf_form_block' ) );
+        add_action( 'enqueue_block_editor_assets', array( $this, 'wpuf_form_block', 10 ) );
         // load the preview information and form
         add_action( 'wp_head', array( $this, 'load_preview_data' ) );
     }

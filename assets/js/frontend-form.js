@@ -165,7 +165,6 @@
             this.change_fieldset(step_number, progressbar_type);
 
             $('fieldset .wpuf-multistep-prev-btn, fieldset .wpuf-multistep-next-btn').click(function(e) {
-
                 // js_obj.formSubmit();
                 if ( $(this).hasClass('wpuf-multistep-next-btn') ) {
                     var result = js_obj.formStepCheck( '', $(this).closest('fieldset') );
@@ -179,11 +178,11 @@
                 }
 
                 var formDiv  = document.querySelector( "form.wpuf-form-add" );
-                var position = formDiv.getBoundingClientRect();
+                var position = formDiv.offsetTop;
 
                 // this changes the scrolling behavior to "smooth"
                 window.scrollTo({
-                    top: position.top,
+                    top: position - 32,
                     behavior: "smooth"
                 });
 

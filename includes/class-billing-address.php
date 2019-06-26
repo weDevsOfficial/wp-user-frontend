@@ -122,7 +122,7 @@ class WPUF_Ajax_Address_Form {
                 <table id="wpuf-address-country-state" class="wp-list-table widefat">
                     <tr>
                         <td class="<?php echo $required; ?>" style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo $country_hide; ?>">
-                            <label>Country<?php echo $country_req ?></label>
+                            <label><?php _e( "Country", "wp-user-frontend" ); ?><?php echo $country_req ?></label>
                             <br>
                             <?php
                             if (function_exists('wpuf_get_tax_rates')) {
@@ -149,7 +149,7 @@ class WPUF_Ajax_Address_Form {
                             ?>
                         </td>
                         <td class="<?php echo $required; ?>" style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo $state_hide;?>">
-                            <label>State/Province/Region<?php echo $state_req; ?></label>
+                            <label><?php _e( "State/Province/Region", "wp-user-frontend" ); ?><?php echo $state_req; ?></label>
                             <br>
                             <?php
                             $states = $cs->getStates($selected['country']);
@@ -228,6 +228,7 @@ class WPUF_Ajax_Address_Form {
                 && isset( $_POST['wpuf_biiling_state'] )
                 && isset( $_POST['wpuf_biiling_zip_code'] )
                 && isset( $_POST['wpuf_biiling_country'] ) ) {
+
                 $address_fields = array(
                     'add_line_1'    => $_POST['wpuf_biiling_add_line_1'],
                     'add_line_2'    => $_POST['wpuf_biiling_add_line_2'],
@@ -236,7 +237,9 @@ class WPUF_Ajax_Address_Form {
                     'zip_code'      => $_POST['wpuf_biiling_zip_code'],
                     'country'       => $_POST['wpuf_biiling_country']
                 );
+
                 update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
+
                 $msg = '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wp-user-frontend' ) . '</div>';
 
                 echo $msg;

@@ -639,7 +639,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
             $image_ids = '';
 
             if ( count( $file_input['value'] ) > 1  ) {
-                $image_ids = maybe_serialize( $file_input['value'] );
+                $image_ids = $file_input['value'];
             }
 
             if ( count( $file_input['value'] ) == 1 ) {

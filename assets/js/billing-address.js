@@ -2,6 +2,8 @@ jQuery(function($){
 
     $('#wpuf-payment-gateway').submit(function (e) {
         wpuf_validate_address(e);
+
+        $('#wpuf-ajax-address-form').trigger('submit');
     });
 
     $('#wpuf-ajax-address-form').submit(function (e) {

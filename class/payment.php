@@ -415,11 +415,15 @@ class WPUF_Payment {
         }
 
         if ( empty( $data['tax'] ) ) {
-            $data['tax'] = $data['cost'] - $data['subtotal'];
+            $data['tax'] = floatval( $data['cost'] ) - floatval( $data['subtotal'] );
         }
 
         if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
             $data['payer_address'] = wpuf_get_user_address();
+        }
+
+        if ( !empty( $data['payer_address'] ) ) {
+            $data['payer_address'] = maybe_serialize( $data['payer_address'] );
         }
 
         if ( !$result ) {

@@ -774,7 +774,8 @@ function wpuf_show_custom_fields( $content ) {
                             $extension = pathinfo($path, PATHINFO_EXTENSION);
 
                             if( $thumb ) {
-                                $playable                   = isset( $attr['playable_audio_video'] ) ? $attr['playable_audio_video'] : 'no';$wpuf_allowed_extensions    = wpuf_allowed_extensions();
+                                $playable                   = isset( $attr['playable_audio_video'] ) ? $attr['playable_audio_video'] : 'no';
+                                $wpuf_allowed_extensions    = wpuf_allowed_extensions();
                                 $allowed_audio_extensions   = explode( ',', $wpuf_allowed_extensions['audio']['ext'] );
                                 $allowed_video_extensions   = explode( ',', $wpuf_allowed_extensions['video']['ext'] );
                                 $allowed_extenstions        = array_merge( $allowed_audio_extensions, $allowed_video_extensions );
@@ -2964,7 +2965,7 @@ add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_a
  */
 
 function wpuf_get_user_address() {
-    $user_id = get_current_user_id();
+    $user_id        = get_current_user_id();
     $address_fields = array();
 
     if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {

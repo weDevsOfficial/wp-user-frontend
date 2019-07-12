@@ -167,6 +167,7 @@ class WPUF_Payment {
                                                 <a style="white-space: nowrap" href="<?php echo wpuf_get_subscription_page_url(); ?>"><?php _e( 'Change Pack', 'wp-user-frontend' ); ?></a>
                                             </h3>
                                             <div class="wpuf-subscription-error"></div>
+                                            <div class="wpuf-subscription-success"></div>
 
                                             <div class="wpuf-pack-inner">
 

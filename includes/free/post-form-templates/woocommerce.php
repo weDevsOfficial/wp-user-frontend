@@ -311,6 +311,10 @@ Edit URL: %editlink%',
         $images = get_post_meta( $post_id, '_product_image' );
 
         if ( !empty( $images ) ) {
+            if ( is_array( $images[0] ) ) {
+                $images = $images[0];
+            }
+
             if ( is_serialized( $images[0] ) ) {
                 $images = maybe_unserialize( $images[0] );
             }

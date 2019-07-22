@@ -637,6 +637,9 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
 .wpuf-setup-menu-link {
   display: none;
 }
+.wpuf-xmp-tag {
+  display: inline;
+}
 .wpuf-help-tabbed {
   display: flex;
   width: 100%;

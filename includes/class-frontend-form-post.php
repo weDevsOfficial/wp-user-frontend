@@ -867,94 +867,112 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
     }
 
 
-    public function send_mail_for_guest($charging_enabled,$post_id,$form_id,$is_update,$post_author,$meta_vars) {
+    public function send_mail_for_guest( $charging_enabled, $post_id, $form_id, $is_update, $post_author, $meta_vars ) {
+        global $wp;
 
-            $show_message = false;
-            $redirect_to  = false;
-            $response = array();
-            if ( $is_update ) {
-                if ( $this->form_settings['edit_redirect_to'] == 'page' ) {
-                    $redirect_to = get_permalink( $this->form_settings['edit_page_id'] );
-                } elseif ( $this->form_settings['edit_redirect_to'] == 'url' ) {
-                    $redirect_to = $this->form_settings['edit_url'];
-                } elseif ( $this->form_settings['edit_redirect_to'] == 'same' ) {
-                    $redirect_to = add_query_arg( array(
-                        'pid'      => $post_id,
-                        '_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
-                        'msg'      => 'post_updated'
-                    ), get_permalink( $_POST['page_id'] )
-                    );
-                } else {
-                    $redirect_to = get_permalink( $post_id );
-                }
+        $show_message = false;
+        $redirect_to  = false;
+        $response     = array();
+
+        if ( $is_update ) {
+
+            if ( $this->form_settings['edit_redirect_to'] == 'page' ) {
+                $redirect_to = get_permalink( $this->form_settings['edit_page_id'] );
+            } elseif ( $this->form_settings['edit_redirect_to'] == 'url' ) {
+                $redirect_to = $this->form_settings['edit_url'];
+            } elseif ( $this->form_settings['edit_redirect_to'] == 'same' ) {
+                $redirect_to = add_query_arg( array(
+                    'pid'      => $post_id,
+                    '_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
+                    'msg'      => 'post_updated'
+                ), get_permalink( $_POST['page_id'] ) );
             } else {
-                if ( $this->form_settings['redirect_to'] == 'page' ) {
-                    $redirect_to = get_permalink( $this->form_settings['page_id'] );
-                } elseif ( $this->form_settings['redirect_to'] == 'url' ) {
-                    $redirect_to = $this->form_settings['url'];
-                } elseif ( $this->form_settings['redirect_to'] == 'same' ) {
-                    $show_message = true;
-                } else {
-                    $redirect_to = get_permalink( $post_id );
-                }
-            }
-            $response = array(
-                'success'      => true,
-                'redirect_to'  => $redirect_to,
-                'show_message' => $show_message,
-                'message'      => $this->form_settings['message']
-            );
-            global $wp;
-            $guest_mode = isset( $this->form_settings['guest_post'] ) ? $this->form_settings['guest_post'] : '';
-            $guest_verify = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : 'false' ;
-            if ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in()  && $charging_enabled != 'yes') {
-                $post_id_encoded          = wpuf_encryption( $post_id ) ;
-                $form_id_encoded          = wpuf_encryption( $form_id ) ;
-                wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, 'no', 1 );
-                $response['show_message'] = true;
-                $response['redirect_to']  = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
-                $response['message']      = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
-            } elseif ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() && $charging_enabled == 'yes' ) {
-                $post_id_encoded          = wpuf_encryption( $post_id ) ;
-                $form_id_encoded          = wpuf_encryption( $form_id ) ;
-                $response['show_message'] = true;
-                $response['redirect_to']  = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
-                $response['message']      = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
-                update_post_meta ( $post_id, '_wpuf_payment_status', 'pending' );
-                wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, 'yes', 2 );
-            }
-            if ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() ) {
-                $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
-            } elseif ( $is_update ) {
-                //send mail notification
-                if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['edit'] == 'on' ) {
-                    $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['edit_body'], $post_author, $post_id );
-                    $to        = $this->prepare_mail_body( $this->form_settings['notification']['edit_to'], $post_author, $post_id );
-                    $subject   = $this->prepare_mail_body( $this->form_settings['notification']['edit_subject'], $post_author, $post_id );
-                    $subject   = wp_strip_all_tags( $subject );
-                    $headers   = array('Content-Type: text/html; charset=UTF-8');
-                    wp_mail( $to, $subject, $mail_body, $headers );
-                }
-                //now redirect the user
-                $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
-                //now perform some post related actions
-                do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
-            } else {
-                // send mail notification
-                if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['new'] == 'on' ) {
-                    $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $post_author, $post_id );
-                    $to        = $this->prepare_mail_body( $this->form_settings['notification']['new_to'], $post_author, $post_id );
-                    $subject   = $this->prepare_mail_body( $this->form_settings['notification']['new_subject'], $post_author, $post_id );
-                    $subject   = wp_strip_all_tags( $subject );
-                    wp_mail( $to, $subject, $mail_body );
-                }
-                //redirect the user
-                $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $this->form_settings );
-                //now perform some post related actions
-                do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
+                $redirect_to = get_permalink( $post_id );
             }
 
-            return $response;
+        } else {
+
+            if ( $this->form_settings['redirect_to'] == 'page' ) {
+                $redirect_to = get_permalink( $this->form_settings['page_id'] );
+            } elseif ( $this->form_settings['redirect_to'] == 'url' ) {
+                $redirect_to = $this->form_settings['url'];
+            } elseif ( $this->form_settings['redirect_to'] == 'same' ) {
+                $show_message = true;
+            } else {
+                $redirect_to = get_permalink( $post_id );
+            }
+
+        }
+
+        $response = array(
+            'success'      => true,
+            'redirect_to'  => $redirect_to,
+            'show_message' => $show_message,
+            'message'      => $this->form_settings['message']
+        );
+
+        $guest_mode     = isset( $this->form_settings['guest_post'] ) ? $this->form_settings['guest_post'] : '';
+        $guest_verify   = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : 'false' ;
+
+        if ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in()  && $charging_enabled != 'yes') {
+            $post_id_encoded          = wpuf_encryption( $post_id ) ;
+            $form_id_encoded          = wpuf_encryption( $form_id ) ;
+
+            wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, 'no', 1 );
+
+            $response['show_message'] = true;
+            $response['redirect_to']  = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
+            $response['message']      = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
+        } elseif ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() && $charging_enabled == 'yes' ) {
+            $post_id_encoded          = wpuf_encryption( $post_id ) ;
+            $form_id_encoded          = wpuf_encryption( $form_id ) ;
+            $response['show_message'] = true;
+            $response['redirect_to']  = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
+            $response['message']      = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
+
+            update_post_meta ( $post_id, '_wpuf_payment_status', 'pending' );
+            wpuf_send_mail_to_guest ( $post_id_encoded, $form_id_encoded, 'yes', 2 );
+        }
+
+        if ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() ) {
+            $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
+        } elseif ( $is_update ) {
+            //send mail notification
+            if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['edit'] == 'on' ) {
+                $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['edit_body'], $post_author, $post_id );
+                $to        = $this->prepare_mail_body( $this->form_settings['notification']['edit_to'], $post_author, $post_id );
+                $subject   = $this->prepare_mail_body( $this->form_settings['notification']['edit_subject'], $post_author, $post_id );
+                $subject   = wp_strip_all_tags( $subject );
+                $mail_body = get_formatted_mail_body( $mail_body, $subject );
+
+                wp_mail( $to, $subject, $mail_body );
+            }
+
+            //now redirect the user
+            $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
+
+            //now perform some post related actions
+            do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
+        } else {
+            // send mail notification
+            if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['new'] == 'on' ) {
+                $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $post_author, $post_id );
+                $to        = $this->prepare_mail_body( $this->form_settings['notification']['new_to'], $post_author, $post_id );
+                $subject   = $this->prepare_mail_body( $this->form_settings['notification']['new_subject'], $post_author, $post_id );
+                $subject   = wp_strip_all_tags( $subject );
+                $mail_body = get_formatted_mail_body( $mail_body, $subject );
+
+                wp_mail( $to, $subject, $mail_body, $headers );
+            }
+
+            //redirect the user
+            $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $this->form_settings );
+
+            //now perform some post related actions
+            do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
+        }
+
+        return $response;
     }
 
 }

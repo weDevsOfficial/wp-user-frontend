@@ -275,7 +275,7 @@ class WPUF_Simple_Login {
             $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'login' ), __( 'Log In', 'wp-user-frontend' ) );
         }
 
-        if ( $args['register'] ) {
+        if ( $args['register'] && get_option( 'users_can_register' ) ) {
             $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wp-user-frontend' ) );
         }
 

@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 5.2.2
 Requires PHP: 5.6
-Stable tag: 3.1.8
+Stable tag: 3.1.9
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -256,6 +256,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.1.9 (22 July, 2019) =
+
+* **Fix:** call_user_func_array() error while editing or add a new post from admin panel.
+* **Fix:** Address fields on payment page were not checking which fields are optional.
+* **Fix:** WooCommerce gallery images were not being shown on the frontend.
+* **Fix:** Show & hide coupon message based on response.
+* **Fix:** Login page was including registration page link even when user registration was turned off.
+* **Fix:** Notification emails were not respecting the spaces.
 
 = v3.1.8 (26 June, 2019) =
 

@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.1.8\n"
+"Project-Id-Version: WP User Frontend 3.1.9\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2019-06-26 06:39:07+00:00\n"
+"POT-Creation-Date: 2019-07-22 05:21:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -304,7 +304,7 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:754
 #: admin/form-builder/class-wpuf-admin-form-builder.php:266
-#: class/payment.php:199 class/subscription.php:777
+#: class/payment.php:200 class/subscription.php:777
 #: includes/class-list-table-subscribers.php:128 lib/appsero/Insights.php:751
 #: templates/dashboard/subscription.php:61
 msgid "Cancel"
@@ -3577,8 +3577,8 @@ msgid "You do not have sufficient permissions to access this form."
 msgstr ""
 
 #: class/frontend-form-post.php:732 class/frontend-form-post.php:739
-#: includes/class-frontend-form-post.php:916
-#: includes/class-frontend-form-post.php:922
+#: includes/class-frontend-form-post.php:925
+#: includes/class-frontend-form-post.php:931
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
@@ -3625,47 +3625,47 @@ msgstr ""
 msgid "Change Pack"
 msgstr ""
 
-#: class/payment.php:181
+#: class/payment.php:182
 msgid "Selected Pack "
 msgstr ""
 
-#: class/payment.php:182
+#: class/payment.php:183
 msgid "Pack Price "
 msgstr ""
 
-#: class/payment.php:186 class/payment.php:232 includes/class-privacy.php:351
+#: class/payment.php:187 class/payment.php:233 includes/class-privacy.php:351
 msgid "Total"
 msgstr ""
 
-#: class/payment.php:198
+#: class/payment.php:199
 msgid "Apply Coupon"
 msgstr ""
 
-#: class/payment.php:202
+#: class/payment.php:203
 msgid "Have a discount code?"
 msgstr ""
 
-#: class/payment.php:228
+#: class/payment.php:229
 msgid "Post cost"
 msgstr ""
 
-#: class/payment.php:239
+#: class/payment.php:240
 msgid "Choose Your Payment Method"
 msgstr ""
 
-#: class/payment.php:275
+#: class/payment.php:276
 msgid "Proceed"
 msgstr ""
 
-#: class/payment.php:281
+#: class/payment.php:282
 msgid "No Payment gateway found"
 msgstr ""
 
-#: class/payment.php:449 lib/gateway/bank.php:109
+#: class/payment.php:450 lib/gateway/bank.php:109
 msgid "[%s] Payment Received"
 msgstr ""
 
-#: class/payment.php:450
+#: class/payment.php:451
 msgid "New payment received at %s"
 msgstr ""
 
@@ -4049,52 +4049,52 @@ msgstr ""
 msgid "Some Required Fields are not filled!"
 msgstr ""
 
-#: includes/class-billing-address.php:125 includes/class-customizer.php:24
+#: includes/class-billing-address.php:122 includes/class-customizer.php:24
 #: includes/class-customizer.php:69 includes/class-privacy.php:275
 #: templates/dashboard/billing-address.php:78
 msgid "Country"
 msgstr ""
 
-#: includes/class-billing-address.php:147
+#: includes/class-billing-address.php:144
 msgid "Choose a country"
 msgstr ""
 
-#: includes/class-billing-address.php:152 includes/class-customizer.php:25
+#: includes/class-billing-address.php:149 includes/class-customizer.php:25
 #: includes/class-customizer.php:70 templates/dashboard/billing-address.php:63
 msgid "State/Province/Region"
 msgstr ""
 
-#: includes/class-billing-address.php:166
+#: includes/class-billing-address.php:163
 msgid "Choose a state"
 msgstr ""
 
-#: includes/class-billing-address.php:171
+#: includes/class-billing-address.php:168
 #: templates/dashboard/billing-address.php:42
 msgid "Address Line 1 "
 msgstr ""
 
-#: includes/class-billing-address.php:179
+#: includes/class-billing-address.php:176
 #: templates/dashboard/billing-address.php:49
 msgid "Address Line 2 "
 msgstr ""
 
-#: includes/class-billing-address.php:187 includes/class-customizer.php:28
+#: includes/class-billing-address.php:184 includes/class-customizer.php:28
 #: includes/class-customizer.php:73 includes/class-privacy.php:263
 #: templates/dashboard/billing-address.php:56
 msgid "City"
 msgstr ""
 
-#: includes/class-billing-address.php:194 includes/class-customizer.php:29
+#: includes/class-billing-address.php:191 includes/class-customizer.php:29
 #: includes/class-customizer.php:74 templates/dashboard/billing-address.php:73
 msgid "Postal Code/ZIP"
 msgstr ""
 
-#: includes/class-billing-address.php:202
+#: includes/class-billing-address.php:199
 #: templates/dashboard/billing-address.php:102
 msgid "Update Billing Address"
 msgstr ""
 
-#: includes/class-billing-address.php:243
+#: includes/class-billing-address.php:240
 #: templates/dashboard/billing-address.php:24
 msgid "Billing address is updated."
 msgstr ""

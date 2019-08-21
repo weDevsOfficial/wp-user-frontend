@@ -773,7 +773,7 @@ class WPUF_Admin_Subscription {
             do_action( 'wpuf_admin_subscription_content', $userdata->ID ) ?>
             <?php if ( !empty( $user_sub ) ): ?>
                 <div class="wpuf-sub-actions">
-                    <a class="btn button-secondary wpuf-delete-pack-btn" href="javascript:" data-userid="<?php echo $userdata->ID; ?>" data-packid="<?php echo $user_sub['pack_id']; ?>"><?php _e( 'Delete Package', 'wp-user-frontend' ); ?></a>
+                    <a class="btn button-secondary wpuf-delete-pack-btn" href="javascript:" data-userid="<?php echo $userdata->ID; ?>" data-packid="<?php echo isset( $user_sub['pack_id'] ) ? $user_sub['pack_id'] : ''; ?>"><?php _e( 'Delete Package', 'wp-user-frontend' ); ?></a>
                 </div>
             <?php endif; ?>
         </div>

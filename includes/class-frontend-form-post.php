@@ -963,7 +963,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
                 $subject   = wp_strip_all_tags( $subject );
                 $mail_body = get_formatted_mail_body( $mail_body, $subject );
 
-                wp_mail( $to, $subject, $mail_body, $headers );
+                wp_mail( $to, $subject, $mail_body );
             }
 
             //redirect the user

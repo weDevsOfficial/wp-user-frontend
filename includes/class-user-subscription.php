@@ -209,7 +209,7 @@ class WPUF_User_Subscription {
 
             if ( ! $this->is_free_pack( $pack_id ) ) {
                 $sql = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "wpuf_transaction
-                WHERE user_id = %d AND pack_id = %d LIMIT 1", $this->user->id, $pack_id );
+                WHERE user_id = %d AND pack_id = %d ORDER BY id DESC LIMIT 1", $this->user->id, $pack_id );
 
                 $result = $wpdb->get_row( $sql );
             }

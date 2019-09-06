@@ -1,6 +1,22 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 3.1.10',
+        'released' => '2019-09-06',
+        'changes' => array(
+            array(
+                'title'       => __( 'Post Owner problem', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Posts were not assigned to the selected default post owner, this issue has been fixed.', 'wp-user-frontend' ),
+            ),
+            array(
+                'title'       => __( 'Google reCaptcha was not working', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Google reCaptcha was not working, users could submit the form without reCaptcha validation.', 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 3.1.2',
         'released' => '2019-04-01',
         'changes' => array(

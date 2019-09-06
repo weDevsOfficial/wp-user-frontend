@@ -474,6 +474,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
 
 
     public function wpuf_get_post_user() {
+        $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
 
         if ( !is_user_logged_in() ) {
 
@@ -538,7 +539,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
 
                 }
 
-                // guest post is enabled and details are off
+            // guest post is enabled and details are off
             } elseif ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] == 'true' && $this->form_settings['guest_details'] == 'false' ) {
                 $post_author = $default_post_author;
             } elseif ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] != 'true' ) {
@@ -962,7 +963,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
                 $subject   = wp_strip_all_tags( $subject );
                 $mail_body = get_formatted_mail_body( $mail_body, $subject );
 
-                wp_mail( $to, $subject, $mail_body, $headers );
+                wp_mail( $to, $subject, $mail_body );
             }
 
             //redirect the user

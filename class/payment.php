@@ -84,7 +84,9 @@ class WPUF_Payment {
             $is_free = false;
 
             if ( $pack_id ) {
-                $pack_detail = WPUF_Subscription::get_subscription( $pack_id );
+                $pack_detail    = WPUF_Subscription::get_subscription( $pack_id );
+                $recurring_pay  = isset( $pack_detail->meta_value['recurring_pay'] ) ? $pack_detail->meta_value['recurring_pay'] : 'no';
+
                 if ( empty( $pack_detail->meta_value['billing_amount'] ) ||  $pack_detail->meta_value['billing_amount'] <= 0) {
                     $is_free = true;
                 }
@@ -272,6 +274,7 @@ class WPUF_Payment {
 
                                 <?php if ( $pack_id ) { ?>
                                     <input type="hidden" name="pack_id" value="<?php echo $pack_id; ?>" />
+                                    <input type="hidden" name="recurring_pay" value="<?php echo $recurring_pay; ?>" />
                                 <?php } ?>
                                 <input type="submit" name="wpuf_payment_submit" class="wpuf-btn" value="<?php _e( 'Proceed', 'wp-user-frontend' ); ?>"/>
                             </p>

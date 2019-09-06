@@ -44,7 +44,7 @@ class WPUF_Paypal {
         $api_username      = wpuf_get_option( 'paypal_api_username', 'wpuf_payment' );
         $api_password      = wpuf_get_option( 'paypal_api_password', 'wpuf_payment' );
         $api_signature     = wpuf_get_option( 'paypal_api_signature', 'wpuf_payment' );
-        $profile_id        = $sub_info['profile_id'];
+        $profile_id        = isset( $sub_info['profile_id'] ) ? $sub_info['profile_id'] : '';
         $new_status        = $status;
         $new_status_string = $status;
 

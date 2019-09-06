@@ -755,7 +755,12 @@ class WPUF_Subscription {
 
         $current_pack = self::get_user_pack( get_current_user_id() );
 
-        if ( isset( $current_pack['pack_id'] ) ) {
+        if (
+            isset( $current_pack['pack_id'] ) &&
+            !empty( $current_pack['pack_id'] ) &&
+            isset( $current_pack['status'] ) &&
+            $current_pack['status'] == 'completed'
+        ) {
             global $wpdb;
 
             $user_id = get_current_user_id();
@@ -834,6 +839,17 @@ class WPUF_Subscription {
             $price_with_tax = wpuf_prices_include_tax();
         }
 
+        $user_id = get_current_user_id();
+
+        if ( $user_id != 0 ) {
+            $user_pack_meta      = '_wpuf_subscription_pack';
+            $pack_details        = get_user_meta( $user_id, $user_pack_meta, true);
+
+            if ( !empty( $pack_details ) ) {
+                $current_pack_status = isset( $pack_details['status'] ) ? $pack_details['status'] : '';
+            }
+        }
+
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : '0.00';
         $trial_des     = '';
         $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . __( 'One time payment', 'wp-user-frontend' ) . '</div>';
@@ -881,16 +897,17 @@ class WPUF_Subscription {
         }
 
         wpuf_load_template( 'subscriptions/pack-details.php', apply_filters( 'wpuf_subscription_pack_details_args', array(
-            'pack'            => $pack,
-            'billing_amount'  => $billing_amount,
-            'details_meta'    => $details_meta,
-            'recurring_des'   => $recurring_des,
-            'trial_des'       => $trial_des,
-            'coupon_status'   => $coupon_status,
-            'current_pack_id' => $current_pack_id,
-            'button_name'     => $button_name,
-            'query_args'      => $query_args,
-            'query_url'       => $query_url,
+            'pack'                  => $pack,
+            'billing_amount'        => $billing_amount,
+            'details_meta'          => $details_meta,
+            'recurring_des'         => $recurring_des,
+            'trial_des'             => $trial_des,
+            'coupon_status'         => $coupon_status,
+            'current_pack_id'       => $current_pack_id,
+            'current_pack_status'   => isset( $current_pack_status ) ? $current_pack_status : '',
+            'button_name'           => $button_name,
+            'query_args'            => $query_args,
+            'query_url'             => $query_url,
         ) ) );
     }
 

@@ -61,12 +61,12 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
                     <script>
                         function weformsRecaptchaCallback(token) {
                             jQuery('[name="g-recaptcha-response"]').val(token);
-                            jQuery('.weforms_submit_btn').attr('disabled',false).show();
+                            jQuery('.wpuf-submit-button').attr('disabled',false).show();
                             jQuery('.weforms_submit_btn_recaptcha').hide();
                         }
 
                         jQuery(document).ready( function($) {
-                            $('.weforms_submit_btn').attr('disabled',true);
+                            $('.wpuf-submit-button').attr('disabled',true);
                         });
                     </script>
 
@@ -80,7 +80,7 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
                     <script>
 
                         jQuery(document).ready(function($) {
-                            var btn = $('.weforms_submit_btn');
+                            var btn = $('.wpuf-submit-button');
                             var gc_btn = btn.clone().removeClass().addClass('weforms_submit_btn_recaptcha').attr('disabled',false);
                             btn.after(gc_btn);
                             btn.hide();

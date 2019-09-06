@@ -233,6 +233,12 @@ class WPUF_Frontend_Account {
         }
         $user_subscription = new WPUF_User_Subscription( $wpuf_user );
         $user_sub = $user_subscription->current_pack();
+
+        if ( $user_sub['status'] != "completed" ) {
+            _e( "<p>You may processed your payment, but the pack is not activated yet.</p>", 'wp-user-frontend' );
+            return;
+        }
+
         $pack     = WPUF_Subscription::get_subscription( $sub_id );
 
         $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );

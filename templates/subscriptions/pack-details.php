@@ -47,7 +47,7 @@ if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_pay' || $coupon_status
 }
 ?>
 <div class="wpuf-sub-button">
-    <a <?php echo ( $current_pack_id != '' ) ? ' class = "wpuf-disabled-link" ' : '' ;?>  href="<?php echo ( $current_pack_id != '' ) ? 'javascript:' : add_query_arg( $query_args, $query_url ) ?>" onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
+    <a <?php echo ( $current_pack_status == 'completed' ) ? ' class = "wpuf-disabled-link" ' : '' ;?>  href="<?php echo ( $current_pack_status == 'completed' ) ? 'javascript:' : add_query_arg( $query_args, $query_url ) ?>" onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
         <?php echo $button_name; ?>
     </a>
 </div>

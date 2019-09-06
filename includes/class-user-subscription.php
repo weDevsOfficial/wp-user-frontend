@@ -209,7 +209,7 @@ class WPUF_User_Subscription {
 
             if ( ! $this->is_free_pack( $pack_id ) ) {
                 $sql = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "wpuf_transaction
-                WHERE user_id = %d AND pack_id = %d LIMIT 1", $this->user->id, $pack_id );
+                WHERE user_id = %d AND pack_id = %d ORDER BY id DESC LIMIT 1", $this->user->id, $pack_id );
 
                 $result = $wpdb->get_row( $sql );
             }
@@ -220,8 +220,8 @@ class WPUF_User_Subscription {
                     'name'                  => $this->user->user->data->display_name,
                     'subscribtion_id'       => $pack_id,
                     'subscribtion_status'   => $status,
-                    'gateway'               => isset( $result->payment_type ) ? 'bank' : $result->payment_type,
-                    'transaction_id'        => isset( $result->transaction_id ) ? 'NA' : $result->transaction_id,
+                    'gateway'               => isset( $result->payment_type ) ? $result->payment_type : 'bank',
+                    'transaction_id'        => isset( $result->transaction_id ) ? $result->transaction_id : 'NA',
                     'starts_from'           => date( 'd-m-Y' ),
                     'expire'                => $user_meta['expire'] == '' ? 'recurring' : $user_meta['expire'],
                 );

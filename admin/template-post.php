@@ -191,7 +191,7 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
 
                 <div class="wpuf-form-rows">
                     <label><?php _e( 'Selection terms', 'wp-user-frontend' ); ?></label>
-                    <input type="text" class="smallipopInput" name="<?php echo $exclude_name; ?>" title="<?php _e( 'Enter the term IDs as comma separated (without space) to exclude/include in the form.', 'wp-user-frontend' ); ?>" value="<?php echo $exclude_value; ?>" />
+                    <input type="text" class="smallipopInput" name="<?php echo $exclude_name; ?>" title="<?php _e( 'Search the terms name.', 'wp-user-frontend' ); ?>" value="<?php echo $exclude_value; ?>" />
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">

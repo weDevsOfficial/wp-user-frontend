@@ -483,7 +483,7 @@ abstract class WPUF_Field_Contract {
                 'type'      => 'multiselect',
                 'section'   => 'advanced',
                 'priority'  => 27,
-                'help_text' => __( 'Enter the term IDs as comma separated (without space) to exclude/include in the form.', 'wp-user-frontend' ),
+                'help_text' => __( 'Search the terms name.', 'wp-user-frontend' ),
                 'options'   => wpuf_get_terms( $tax_name ),
             ),
 

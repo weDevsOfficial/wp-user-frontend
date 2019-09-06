@@ -10,6 +10,7 @@ class WPUF_Ajax_Address_Form {
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'register_plugin_scripts' ) );
         add_action( 'wp_ajax_wpuf_address_ajax_action', array( $this, 'ajax_form_action' ), 10, 1 );
+        add_action( 'wp_ajax_nopriv_wpuf_address_ajax_action', array( $this, 'ajax_form_action' ), 10, 1 );
     }
 
     /**

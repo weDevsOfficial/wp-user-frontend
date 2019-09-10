@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.1.5\n"
+"Project-Id-Version: WP User Frontend 3.1.7\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2019-05-02 08:00:22+00:00\n"
+"POT-Creation-Date: 2019-05-31 09:35:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -70,7 +70,7 @@ msgid "<span style=\"color:#f18500\">Help</span>"
 msgstr ""
 
 #: admin/class-admin-settings.php:118 admin/class-admin-settings.php:156
-#: admin/form-builder/views/form-builder.php:9 includes/setup-wizard.php:103
+#: admin/form-builder/views/form-builder.php:9 includes/setup-wizard.php:123
 msgid "Settings"
 msgstr ""
 
@@ -142,7 +142,7 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:216
 #: admin/class-admin-subscription.php:570 class/frontend-account.php:244
-#: class/subscription.php:867 includes/class-user-subscription.php:307
+#: class/subscription.php:864 includes/class-user-subscription.php:307
 #: templates/subscriptions/pack-details.php:25
 msgid "Free"
 msgstr ""
@@ -303,9 +303,9 @@ msgid "Assign Package"
 msgstr ""
 
 #: admin/class-admin-subscription.php:754
-#: admin/form-builder/class-wpuf-admin-form-builder.php:265
-#: class/payment.php:199 class/subscription.php:780
-#: includes/class-list-table-subscribers.php:128 lib/appsero/Insights.php:742
+#: admin/form-builder/class-wpuf-admin-form-builder.php:266
+#: class/payment.php:199 class/subscription.php:777
+#: includes/class-list-table-subscribers.php:128 lib/appsero/Insights.php:751
 #: templates/dashboard/subscription.php:61
 msgid "Cancel"
 msgstr ""
@@ -340,7 +340,7 @@ msgstr ""
 
 #: admin/class-tools.php:39 admin/class-tools.php:95
 #: admin/post-forms-list-table.php:43 class/transactions-list-table.php:86
-#: includes/class-list-table-subscribers.php:126 wpuf-functions.php:2685
+#: includes/class-list-table-subscribers.php:126 wpuf-functions.php:2696
 msgid "All"
 msgstr ""
 
@@ -419,7 +419,7 @@ msgid ""
 msgstr ""
 
 #: admin/class-tools.php:351 admin/installer.php:30
-#: includes/setup-wizard.php:280
+#: includes/setup-wizard.php:300
 msgid "Install WPUF Pages"
 msgstr ""
 
@@ -522,7 +522,7 @@ msgstr ""
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:6
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:6
 #: class/render-form.php:1682
-#: includes/fields/class-field-featured-image.php:103
+#: includes/fields/class-field-featured-image.php:104
 #: includes/fields/class-field-image.php:125
 #: includes/fields/class-field-image.php:146
 msgid "Select Image"
@@ -549,38 +549,38 @@ msgstr ""
 msgid "Invalid form id"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:260
+#: admin/form-builder/class-wpuf-admin-form-builder.php:261
 msgid "Advanced Options"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:261
+#: admin/form-builder/class-wpuf-admin-form-builder.php:262
 msgid "Are you sure you want to delete this field?"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:262
+#: admin/form-builder/class-wpuf-admin-form-builder.php:263
 #: admin/posting.php:70 class/asset-loader.php:55 wpuf.php:718
 msgid "Yes, delete it"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:263
+#: admin/form-builder/class-wpuf-admin-form-builder.php:264
 #: admin/posting.php:71 class/asset-loader.php:56 wpuf.php:719
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:264
+#: admin/form-builder/class-wpuf-admin-form-builder.php:265
 msgid "OK"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:266
+#: admin/form-builder/class-wpuf-admin-form-builder.php:267
 #: includes/free/admin/shortcode-builder.php:69
 msgid "Close"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:267
+#: admin/form-builder/class-wpuf-admin-form-builder.php:268
 msgid "This field must contain at least one choice"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:268
+#: admin/form-builder/class-wpuf-admin-form-builder.php:269
 #: includes/fields/class-field-checkbox.php:123
 #: includes/fields/class-field-dropdown.php:101
 #: includes/fields/class-field-multidropdown.php:93
@@ -588,40 +588,40 @@ msgstr ""
 msgid "Option"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:269
+#: admin/form-builder/class-wpuf-admin-form-builder.php:270
 msgid "Column"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:270
+#: admin/form-builder/class-wpuf-admin-form-builder.php:271
 msgid "This field must contain at least one column"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:271
+#: admin/form-builder/class-wpuf-admin-form-builder.php:272
 msgid "is available in Pro version"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:272
+#: admin/form-builder/class-wpuf-admin-form-builder.php:273
 msgid "Please upgrade to the Pro version to unlock all these awesome features"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:273
+#: admin/form-builder/class-wpuf-admin-form-builder.php:274
 msgid "Get the Pro version"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:274
+#: admin/form-builder/class-wpuf-admin-form-builder.php:275
 #: includes/fields/class-abstract-fields.php:401
 msgid "Select"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:275
+#: admin/form-builder/class-wpuf-admin-form-builder.php:276
 msgid "Saved form data"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:276
+#: admin/form-builder/class-wpuf-admin-form-builder.php:277
 msgid "You have unsaved changes."
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:277
+#: admin/form-builder/class-wpuf-admin-form-builder.php:278
 #: admin/form-builder/views/form-builder.php:49
 msgid "Click to copy shortcode"
 msgstr ""
@@ -723,7 +723,7 @@ msgstr ""
 #: admin/form.php:74 admin/form.php:112 admin/installer.php:79
 #: admin/post-forms-list-table.php:391 class/subscription.php:381
 #: includes/free/admin/shortcode-button.php:90 includes/free/edit-user.php:100
-#: templates/dashboard/posts.php:161 templates/dashboard.php:252
+#: templates/dashboard/posts.php:162 templates/dashboard.php:253
 msgid "Edit"
 msgstr ""
 
@@ -797,7 +797,7 @@ msgid "Taxonomies"
 msgstr ""
 
 #: admin/form.php:440 admin/html/form-settings-post.php:22
-#: class/render-form.php:753 includes/class-frontend-render-form.php:162
+#: class/render-form.php:753 includes/class-frontend-render-form.php:164
 msgid "Save Draft"
 msgstr ""
 
@@ -847,7 +847,7 @@ msgid "Payment Options"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:25 admin/settings-options.php:362
-#: includes/setup-wizard.php:273
+#: includes/setup-wizard.php:293
 msgid "Enable Payments"
 msgstr ""
 
@@ -2095,8 +2095,8 @@ msgstr ""
 msgid "[wpuf_sub_pack]"
 msgstr ""
 
-#: admin/installer.php:89 templates/dashboard/posts.php:82
-#: templates/dashboard.php:121
+#: admin/installer.php:89 templates/dashboard/posts.php:83
+#: templates/dashboard.php:122
 msgid "Payment"
 msgstr ""
 
@@ -3030,13 +3030,13 @@ msgid "Enable image upload in post area"
 msgstr ""
 
 #: admin/template-post.php:93 admin/template.php:634
-#: includes/fields/class-field-featured-image.php:97
+#: includes/fields/class-field-featured-image.php:98
 #: includes/fields/class-field-image.php:110
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
 #: admin/template-post.php:105 admin/template.php:646
-#: includes/fields/class-field-featured-image.php:93
+#: includes/fields/class-field-featured-image.php:94
 #: includes/fields/class-field-image.php:106
 msgid "Max. file size"
 msgstr ""
@@ -3306,7 +3306,7 @@ msgstr ""
 
 #: admin/template.php:398 admin/template.php:422 admin/template.php:454
 #: admin/template.php:486 includes/fields/class-abstract-fields.php:596
-#: templates/dashboard/posts.php:85 templates/dashboard.php:124
+#: templates/dashboard/posts.php:86 templates/dashboard.php:125
 msgid "Options"
 msgstr ""
 
@@ -3327,7 +3327,7 @@ msgstr ""
 #: admin/template.php:544 admin/template.php:604 admin/template.php:683
 #: class/upload.php:168 includes/fields/class-field-recaptcha.php:156
 #: includes/fields/class-field-sectionbreak.php:56
-#: templates/dashboard/posts.php:76 templates/dashboard.php:86
+#: templates/dashboard/posts.php:77 templates/dashboard.php:87
 #: wpuf-functions.php:807
 msgid "Title"
 msgstr ""
@@ -3554,7 +3554,7 @@ msgstr ""
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: class/frontend-form-post.php:304 includes/class-frontend-render-form.php:771
+#: class/frontend-form-post.php:304 includes/class-frontend-render-form.php:773
 #: includes/free/class-login.php:394
 msgid "Empty reCaptcha Field"
 msgstr ""
@@ -3687,7 +3687,7 @@ msgstr ""
 msgid "Please enter your post name"
 msgstr ""
 
-#: class/post-form-templates/post.php:35 templates/dashboard.php:90
+#: class/post-form-templates/post.php:35 templates/dashboard.php:91
 msgid "Category"
 msgstr ""
 
@@ -3713,10 +3713,10 @@ msgstr ""
 
 #: class/post-form-templates/post.php:76 class/post-form-templates/post.php:77
 #: includes/fields/class-field-featured-image.php:9
-#: includes/fields/class-field-featured-image.php:123
+#: includes/fields/class-field-featured-image.php:124
 #: includes/free/post-form-templates/the_events_calendar.php:125
 #: includes/free/post-form-templates/the_events_calendar.php:126
-#: templates/dashboard/posts.php:73 templates/dashboard.php:83
+#: templates/dashboard/posts.php:74 templates/dashboard.php:84
 msgid "Featured Image"
 msgstr ""
 
@@ -3726,7 +3726,7 @@ msgstr ""
 
 #: class/post-form-templates/post.php:90
 #: includes/free/post-form-templates/the_events_calendar.php:138
-#: templates/dashboard.php:112
+#: templates/dashboard.php:113
 msgid "Excerpt"
 msgstr ""
 
@@ -3748,13 +3748,13 @@ msgstr ""
 msgid "Create Post"
 msgstr ""
 
-#: class/post-form-templates/post.php:131
+#: class/post-form-templates/post.php:142
 msgid ""
 "Post has been updated successfully. <a target=\"_blank\" "
 "href=\"%link%\">View post</a>"
 msgstr ""
 
-#: class/post-form-templates/post.php:133
+#: class/post-form-templates/post.php:144
 msgid "Update Post"
 msgstr ""
 
@@ -3774,11 +3774,11 @@ msgstr ""
 msgid "Invisible reCAPTCHA validation failed"
 msgstr ""
 
-#: class/render-form.php:357 includes/class-frontend-render-form.php:264
+#: class/render-form.php:357 includes/class-frontend-render-form.php:266
 msgid "Your selected form is no longer available."
 msgstr ""
 
-#: class/render-form.php:362 includes/class-frontend-render-form.php:269
+#: class/render-form.php:362 includes/class-frontend-render-form.php:271
 msgid "Please make sure you've published your form."
 msgstr ""
 
@@ -3803,7 +3803,7 @@ msgstr ""
 
 #: class/render-form.php:1700 class/transactions-list-table.php:115
 #: class/transactions-list-table.php:181 includes/free/edit-user.php:101
-#: templates/dashboard/posts.php:172 templates/dashboard.php:263
+#: templates/dashboard/posts.php:173 templates/dashboard.php:264
 msgid "Delete"
 msgstr ""
 
@@ -3843,93 +3843,93 @@ msgstr ""
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:748
+#: class/subscription.php:745
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:748
+#: class/subscription.php:745
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:752 class/subscription.php:756
+#: class/subscription.php:749 class/subscription.php:753
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:770
+#: class/subscription.php:767
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:771
+#: class/subscription.php:768
 msgid "<p><i>Pack name: %s </i></p>"
 msgstr ""
 
-#: class/subscription.php:773
+#: class/subscription.php:770
 msgid "<p><i>To cancel the pack, press the following cancel button</i></p>"
 msgstr ""
 
-#: class/subscription.php:817
+#: class/subscription.php:814
 msgid "Day"
 msgid_plural "Days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:818
+#: class/subscription.php:815
 msgid "Week"
 msgid_plural "Weeks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:819
+#: class/subscription.php:816
 msgid "Month"
 msgid_plural "Months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:820
+#: class/subscription.php:817
 msgid "Year"
 msgid_plural "Years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:842
+#: class/subscription.php:839
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:849
+#: class/subscription.php:846
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:850
+#: class/subscription.php:847
 msgid "for"
 msgstr ""
 
-#: class/subscription.php:850
+#: class/subscription.php:847
 msgid "installments"
 msgstr ""
 
-#: class/subscription.php:856
+#: class/subscription.php:853
 msgid "Trial available for first %s %s"
 msgstr ""
 
-#: class/subscription.php:860
+#: class/subscription.php:857
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:864
+#: class/subscription.php:861
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:927
+#: class/subscription.php:924
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:944
+#: class/subscription.php:941
 msgid ""
 "Your Subscription pack exhausted. There is a <strong>%s</strong> charge to "
 "add a new post."
 msgstr ""
 
-#: class/subscription.php:989
+#: class/subscription.php:986
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
@@ -3947,7 +3947,7 @@ msgstr ""
 
 #: class/transactions-list-table.php:41
 #: includes/class-list-table-subscribers.php:44
-#: templates/dashboard/posts.php:77 templates/dashboard.php:116
+#: templates/dashboard/posts.php:78 templates/dashboard.php:117
 msgid "Status"
 msgstr ""
 
@@ -4079,7 +4079,7 @@ msgid "Postal Code/ZIP"
 msgstr ""
 
 #: includes/class-billing-address.php:202
-#: templates/dashboard/billing-address.php:101
+#: templates/dashboard/billing-address.php:102
 msgid "Update Billing Address"
 msgstr ""
 
@@ -4196,7 +4196,7 @@ msgid "Expire date"
 msgstr ""
 
 #: includes/class-list-table-subscribers.php:127
-#: templates/dashboard/posts.php:137 templates/dashboard.php:224
+#: templates/dashboard/posts.php:138 templates/dashboard.php:225
 msgid "Completed"
 msgstr ""
 
@@ -4836,12 +4836,12 @@ msgstr ""
 msgid "Email Address"
 msgstr ""
 
-#: includes/fields/class-field-featured-image.php:101
+#: includes/fields/class-field-featured-image.php:102
 #: includes/fields/class-field-image.php:123
 msgid "Button Label"
 msgstr ""
 
-#: includes/fields/class-field-featured-image.php:106
+#: includes/fields/class-field-featured-image.php:107
 #: includes/fields/class-field-image.php:128
 msgid "Enter a label for the Select button"
 msgstr ""
@@ -5121,6 +5121,18 @@ msgid ""
 "<strong>Your account is not active.</strong><br>Please check your email for "
 "activation link. <br><a href=\"%s\">Click here</a> to resend the activation "
 "link"
+msgstr ""
+
+#: includes/free/class-login.php:739 includes/free/class-login.php:761
+msgid "Activation URL is not valid"
+msgstr ""
+
+#: includes/free/class-login.php:749
+msgid "Invalid User activation url"
+msgstr ""
+
+#: includes/free/class-login.php:754
+msgid "User already verified"
 msgstr ""
 
 #: includes/free/class-login.php:768 includes/free/class-login.php:838
@@ -5612,111 +5624,111 @@ msgstr ""
 msgid "Enable Recurring Payment"
 msgstr ""
 
-#: includes/setup-wizard.php:98
+#: includes/setup-wizard.php:118
 msgid "Introduction"
 msgstr ""
 
-#: includes/setup-wizard.php:108
+#: includes/setup-wizard.php:128
 msgid "Ready!"
 msgstr ""
 
-#: includes/setup-wizard.php:145
+#: includes/setup-wizard.php:165
 msgid "WPUF &rsaquo; Setup Wizard"
 msgstr ""
 
-#: includes/setup-wizard.php:210
+#: includes/setup-wizard.php:230
 msgid "Return to the WordPress Dashboard"
 msgstr ""
 
-#: includes/setup-wizard.php:252
+#: includes/setup-wizard.php:272
 msgid "Welcome to the world of WPUF!"
 msgstr ""
 
-#: includes/setup-wizard.php:253
+#: includes/setup-wizard.php:273
 msgid ""
 "Thank you for choosing WPUF to power your websites frontend! This quick "
 "setup wizard will help you configure the basic settings. <strong>It’s "
 "completely optional and shouldn’t take longer than a minute.</strong>"
 msgstr ""
 
-#: includes/setup-wizard.php:254
+#: includes/setup-wizard.php:274
 msgid ""
 "No time right now? If you don’t want to go through the wizard, you can skip "
 "and return to the WordPress dashboard. Come back anytime if you change your "
 "mind!"
 msgstr ""
 
-#: includes/setup-wizard.php:256
+#: includes/setup-wizard.php:276
 msgid "Let's Go!"
 msgstr ""
 
-#: includes/setup-wizard.php:257
+#: includes/setup-wizard.php:277
 msgid "Not right now"
 msgstr ""
 
-#: includes/setup-wizard.php:269
+#: includes/setup-wizard.php:289
 msgid "Basic Setting"
 msgstr ""
 
-#: includes/setup-wizard.php:276
+#: includes/setup-wizard.php:296
 msgid "Make payment enable for user to add posts on frontend."
 msgstr ""
 
-#: includes/setup-wizard.php:283
+#: includes/setup-wizard.php:303
 msgid "Install neccessery pages on your site frontend."
 msgstr ""
 
-#: includes/setup-wizard.php:288
+#: includes/setup-wizard.php:308
 msgid "Continue"
 msgstr ""
 
-#: includes/setup-wizard.php:289
+#: includes/setup-wizard.php:309
 msgid "Skip this step"
 msgstr ""
 
-#: includes/setup-wizard.php:324
+#: includes/setup-wizard.php:344
 msgid "Thank you!"
 msgstr ""
 
-#: includes/setup-wizard.php:329
+#: includes/setup-wizard.php:349
 msgid "Welcome to Awesomeness!"
 msgstr ""
 
-#: includes/setup-wizard.php:333
+#: includes/setup-wizard.php:353
 msgid "Go to Full Settings"
 msgstr ""
 
-#: lib/appsero/Insights.php:356
+#: lib/appsero/Insights.php:359
 msgid ""
 "Want to help make <strong>%1$s</strong> even more awesome? Allow %1$s to "
 "collect non-sensitive diagnostic data and usage information."
 msgstr ""
 
-#: lib/appsero/Insights.php:361
+#: lib/appsero/Insights.php:364
 msgid "what we collect"
 msgstr ""
 
-#: lib/appsero/Insights.php:367
+#: lib/appsero/Insights.php:370
 msgid "Allow"
 msgstr ""
 
-#: lib/appsero/Insights.php:368
+#: lib/appsero/Insights.php:371
 msgid "No thanks"
 msgstr ""
 
-#: lib/appsero/Insights.php:567
+#: lib/appsero/Insights.php:570
 msgid "Once Weekly"
 msgstr ""
 
-#: lib/appsero/Insights.php:726
+#: lib/appsero/Insights.php:735
 msgid "If you have a moment, please let us know why you are deactivating:"
 msgstr ""
 
-#: lib/appsero/Insights.php:740
+#: lib/appsero/Insights.php:749
 msgid "I rather wouldn't say"
 msgstr ""
 
-#: lib/appsero/Insights.php:741
+#: lib/appsero/Insights.php:750
 msgid "Submit & Deactivate"
 msgstr ""
 
@@ -5780,6 +5792,10 @@ msgstr ""
 msgid "PayPal API signature"
 msgstr ""
 
+#: templates/dashboard/billing-address.php:84
+msgid "Select Country"
+msgstr ""
+
 #: templates/dashboard/dashboard.php:5
 msgid "Hello %1$s, (not %1$s? <a href=\"%2$s\">Sign out</a>)"
 msgstr ""
@@ -5828,35 +5844,35 @@ msgstr ""
 msgid "You have created <span>%d</span> %s"
 msgstr ""
 
-#: templates/dashboard/posts.php:106 templates/dashboard.php:145
+#: templates/dashboard/posts.php:107 templates/dashboard.php:146
 msgid "No Image"
 msgstr ""
 
-#: templates/dashboard/posts.php:120 templates/dashboard.php:159
+#: templates/dashboard/posts.php:121 templates/dashboard.php:160
 msgid "Permalink to %s"
 msgstr ""
 
-#: templates/dashboard/posts.php:133 templates/dashboard.php:220
+#: templates/dashboard/posts.php:134 templates/dashboard.php:221
 msgid "Not Applicable"
 msgstr ""
 
-#: templates/dashboard/posts.php:135 templates/dashboard.php:222
+#: templates/dashboard/posts.php:136 templates/dashboard.php:223
 msgid "Pay Now"
 msgstr ""
 
-#: templates/dashboard/posts.php:170 templates/dashboard.php:261
+#: templates/dashboard/posts.php:171 templates/dashboard.php:262
 msgid "Are you sure to delete?"
 msgstr ""
 
-#: templates/dashboard/posts.php:190 templates/dashboard.php:281
+#: templates/dashboard/posts.php:192 templates/dashboard.php:283
 msgid "&laquo;"
 msgstr ""
 
-#: templates/dashboard/posts.php:191 templates/dashboard.php:282
+#: templates/dashboard/posts.php:193 templates/dashboard.php:284
 msgid "&raquo;"
 msgstr ""
 
-#: templates/dashboard/posts.php:205 templates/dashboard.php:296
+#: templates/dashboard/posts.php:207 templates/dashboard.php:298
 msgid "No %s found"
 msgstr ""
 
@@ -6206,7 +6222,7 @@ msgstr ""
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:2686
+#: wpuf-functions.php:2697
 msgid "None"
 msgstr ""
 
@@ -6273,62 +6289,62 @@ msgstr ""
 msgid "https://tareq.co"
 msgstr ""
 
-#: includes/setup-wizard.php:39
+#: includes/setup-wizard.php:40
 msgctxt "enhanced select"
 msgid "One result is available, press enter to select it."
 msgstr ""
 
-#: includes/setup-wizard.php:40
+#: includes/setup-wizard.php:41
 msgctxt "enhanced select"
 msgid "%qty% results are available, use up and down arrow keys to navigate."
 msgstr ""
 
-#: includes/setup-wizard.php:41
+#: includes/setup-wizard.php:42
 msgctxt "enhanced select"
 msgid "No matches found"
 msgstr ""
 
-#: includes/setup-wizard.php:42
+#: includes/setup-wizard.php:43
 msgctxt "enhanced select"
 msgid "Loading failed"
 msgstr ""
 
-#: includes/setup-wizard.php:43
+#: includes/setup-wizard.php:44
 msgctxt "enhanced select"
 msgid "Please enter 1 or more characters"
 msgstr ""
 
-#: includes/setup-wizard.php:44
+#: includes/setup-wizard.php:45
 msgctxt "enhanced select"
 msgid "Please enter %qty% or more characters"
 msgstr ""
 
-#: includes/setup-wizard.php:45
+#: includes/setup-wizard.php:46
 msgctxt "enhanced select"
 msgid "Please delete 1 character"
 msgstr ""
 
-#: includes/setup-wizard.php:46
+#: includes/setup-wizard.php:47
 msgctxt "enhanced select"
 msgid "Please delete %qty% characters"
 msgstr ""
 
-#: includes/setup-wizard.php:47
+#: includes/setup-wizard.php:48
 msgctxt "enhanced select"
 msgid "You can only select 1 item"
 msgstr ""
 
-#: includes/setup-wizard.php:48
+#: includes/setup-wizard.php:49
 msgctxt "enhanced select"
 msgid "You can only select %qty% items"
 msgstr ""
 
-#: includes/setup-wizard.php:49
+#: includes/setup-wizard.php:50
 msgctxt "enhanced select"
 msgid "Loading more results&hellip;"
 msgstr ""
 
-#: includes/setup-wizard.php:50
+#: includes/setup-wizard.php:51
 msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""

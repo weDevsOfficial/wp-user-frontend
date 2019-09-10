@@ -511,7 +511,7 @@ class WPUF_Subscription {
             update_post_meta( $post_id, 'wpuf_post_status', 'published' );
 
 
-        } elseif ( $force_pack && $fallback_cost && !$has_post ) {
+        } elseif ( $pay_per_post || ($force_pack && $fallback_cost && !$has_post) ) {
             //there is some error and it needs payment
             //add a uniqid to track the post easily
             $order_id = uniqid( rand( 10, 1000 ), false );
@@ -541,9 +541,6 @@ class WPUF_Subscription {
         } else {
             $charging_enabled = 'yes';
         }
-        // if ( wpuf_get_option( 'charge_posting', 'wpuf_payment', 'no' ) != 'yes' ) {
-        //     return;
-        // }
 
         $userdata = get_userdata( get_current_user_id() );
 

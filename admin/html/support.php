@@ -9,7 +9,7 @@ $articles = array(
         ),
         array(
             'title' => 'License Activation',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/license-activation/'
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/troubleshoot/license-activation/'
         ),
         array(
             'title' => 'Shortcodes',

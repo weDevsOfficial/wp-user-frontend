@@ -74,10 +74,12 @@ class WPUF_Setup_Wizard {
     public function add_custom_menu_class() {
         global $submenu;
 
-        foreach( $submenu as $key => $items ) {
-            foreach ($items as $index => $item) {
-                if( 'wpuf-setup' == $item[2] ) {
-                    $submenu['index.php'][$index][4] = "wpuf-setup-menu-link";
+        if ( !empty($submenu) ) {
+            foreach( $submenu as $key => $items ) {
+                foreach ($items as $index => $item) {
+                    if( 'wpuf-setup' == $item[2] ) {
+                        $submenu['index.php'][$index][4] = "wpuf-setup-menu-link";
+                    }
                 }
             }
         }

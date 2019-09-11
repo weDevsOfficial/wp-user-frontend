@@ -154,10 +154,10 @@ class WPUF_Frontend_Account {
         ob_start();
 
         if ( is_user_logged_in() ) {
-            $section = isset( $_REQUEST['section'] ) ? $_REQUEST['section'] : 'dashboard';
-
-            $sections        = wpuf_get_account_sections();
-            $current_section = array();
+            $default_active_tab = wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' );
+            $section            = isset( $_REQUEST['section'] ) ? $_REQUEST['section'] : $default_active_tab;
+            $sections           = wpuf_get_account_sections();
+            $current_section    = array();
 
             foreach ( $sections as $account_section ) {
                 if ( $section == $account_section['slug'] ) {

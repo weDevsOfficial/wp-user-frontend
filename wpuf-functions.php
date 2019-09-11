@@ -1707,6 +1707,25 @@ function wpuf_get_account_sections() {
 }
 
 /**
+ * Get account dashboard's sections in a list array
+ *
+ * @since 2.4.2
+ *
+ * @return array
+ */
+function wpuf_get_account_sections_list( $post_type = 'page' ) {
+    $sections = wpuf_get_account_sections();
+    $array    = array( '' => __( '-- select --', 'wp-user-frontend' ) );
+
+    if ( $sections ) {
+        foreach ($sections as $section) {
+            $array[$section['slug']] = esc_attr( $section['label'] );
+        }
+    }
+
+    return $array;
+}
+/**
  * Get all transactions
  *
  * @since 2.4.2

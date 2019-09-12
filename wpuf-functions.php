@@ -1326,6 +1326,38 @@ function wpuf_load_template( $file, $args = array() ) {
 }
 
 /**
+ * Include a template file
+ *
+ * Looks up first on the theme directory, if not found
+ * lods from pro plugin folder
+ *
+ * @since 3.1.11
+ *
+ * @param string $file file name or path to file
+ */
+function wpuf_load_pro_template( $file, $args = array() ) {
+    if ( $args && is_array( $args ) ) {
+        extract( $args );
+    }
+
+    if ( wpuf()->is_pro() ) {
+        $child_theme_dir    = get_stylesheet_directory() . '/wpuf/';
+        $parent_theme_dir   = get_template_directory() . '/wpuf/';
+        $wpuf_pro_dir       = WPUF_PRO_INCLUDES . '/templates/';
+
+        if ( file_exists( $child_theme_dir . $file ) ) {
+            include $child_theme_dir . $file;
+
+        } else if ( file_exists( $parent_theme_dir . $file ) ) {
+            include $parent_theme_dir . $file;
+
+        } else {
+            include $wpuf_pro_dir . $file;
+        }
+    }
+}
+
+/**
  * Helper function for formatting date field
  *
  * @since 0.1
@@ -2658,18 +2690,33 @@ function get_formatted_mail_body( $message, $subject ) {
 
         if ( empty( $header ) ) {
             ob_start();
-            include WPUF_PRO_INCLUDES . '/templates/email/header.php';
+
+            wpuf_load_pro_template(
+                "email/header.php",
+                array( 'subject' => $subject )
+            );
+
             $header = ob_get_clean();
         }
 
         if ( empty( $footer ) ) {
             ob_start();
-            include WPUF_PRO_INCLUDES . '/templates/email/footer.php';
+
+            wpuf_load_pro_template(
+                "email/footer.php",
+                array()
+            );
+
             $footer = ob_get_clean();
         }
 
         ob_start();
-        include WPUF_PRO_INCLUDES . '/templates/email/style.php';
+
+        wpuf_load_pro_template(
+            "email/style.php",
+            array()
+        );
+
         $css = apply_filters( 'wpuf_email_style', ob_get_clean() );
 
         $content = $header . '<pre>' . $message . '</pre>' . $footer;

@@ -192,10 +192,20 @@ class WPUF_Admin_Posting {
         $edit_post_lock      = get_post_meta( $post->ID, '_wpuf_lock_editing_post', true );
         $edit_post_lock_time = get_post_meta( $post->ID, '_wpuf_lock_user_editing_post_time', true );
 
+        if ( empty( $edit_post_lock_time ) ) {
+            $is_locked = false;
+        }
+
+        if( ( !empty( $edit_post_lock_time ) && $edit_post_lock_time < time() ) || $edit_post_lock == "yes" ) {
+            $is_locked = true;
+            $msg       = sprintf( __( 'Post is locked, to allow user to edit this post <a id="wpuf_clear_schedule_lock" data="%s" href="#">Click here</a>', 'wp-user-frontend' ), $post->ID );
+        }
+
         if( !empty( $edit_post_lock_time ) && $edit_post_lock_time > time() ) {
+            $is_locked    = false;
             $time         = date( 'Y-m-d H:i:s', $edit_post_lock_time );
             $local_time   = get_date_from_gmt( $time, get_option('date_format') . ' ' . get_option('time_format') );
-            $msg          = sprintf( __( 'Frontend edit access for this post will be automatically locked after %s, <a id="wpuf_clear_schedule_lock" data="%s" href="#">Clear Schedule Lock</a> Or,', 'wp-user-frontend' ), $local_time, $post->ID );
+            $msg          = sprintf( __( 'Frontend edit access for this post will be automatically locked after %s, <a id="wpuf_clear_schedule_lock" data="%s" href="#">Clear Lock</a> Or,', 'wp-user-frontend' ), $local_time, $post->ID );
         }
 
         ?>
@@ -205,11 +215,17 @@ class WPUF_Admin_Posting {
         <p><?php echo $msg; ?></p>
 
         <label>
-            <input type="hidden" name="wpuf_lock_post" value="no">
-            <input type="checkbox" name="wpuf_lock_post" value="yes" <?php checked($edit_post_lock, 'yes'); ?>>
-            <?php _e( 'Lock Post', 'wp-user-frontend' ); ?>
+            <?php if ( !$is_locked ): ?>
+                <input type="hidden" name="wpuf_lock_post" value="no">
+                <input type="checkbox" name="wpuf_lock_post" value="yes" <?php checked($edit_post_lock, 'yes'); ?>>
+                <?php _e( 'Lock Post Permanently', 'wp-user-frontend' ); ?>
+            <?php endif ?>
         </label>
-        <p style="margin-top: 10px"><?php _e( 'Lock user from editing this post from the frontend dashboard', 'wp-user-frontend' ); ?></p>
+
+        <?php if ( !$is_locked ): ?>
+            <p style="margin-top: 10px"><?php _e( 'Lock user from editing this post from the frontend dashboard', 'wp-user-frontend' ); ?></p>
+        <?php endif ?>
+
         <?php
     }
 
@@ -496,12 +512,10 @@ class WPUF_Admin_Posting {
         check_ajax_referer( 'wpuf_nonce', 'nonce' );
 
         $post_id = isset( $_POST['post_id'] ) ? $_POST['post_id'] : '';
-        if ( !empty( $post_id ) ) {
-            $edit_post_lock_time = get_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', true );
 
-            if ( !empty( $edit_post_lock_time ) ) {
-                update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
-            }
+        if ( !empty( $post_id ) ) {
+            update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
+            update_post_meta( $post_id, '_wpuf_lock_editing_post', 'no' );
         }
         exit;
     }

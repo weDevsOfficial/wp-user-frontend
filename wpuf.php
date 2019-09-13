@@ -207,7 +207,30 @@ final class WP_User_Frontend {
 
             wp_update_post( $post_to_update );
 
-            $message = get_post_meta( $each_post->ID, 'wpuf-post_expiration_message', true );
+            $post_url       = get_permalink( $each_post->ID );
+            $author_id      = $each_post->post_author;
+            $post_author    = get_the_author_meta( 'user_login', $author_id );
+            $blogname       = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+
+            $search = array(
+                '{post_author}',
+                '{post_url}',
+                '{blogname}',
+                '{post_title}',
+                '{post_status}'
+            );
+
+            $replace = array(
+                $post_author,
+                $post_url,
+                $blogname,
+                $each_post->post_title,
+                $each_post->post_status
+            );
+
+            $message        = get_post_meta( $each_post->ID, 'wpuf-post_expiration_message', true );
+            $message        = str_replace( $search, $replace, $message );
+            $message        = get_formatted_mail_body( $message, $mail_subject );
 
             if ( ! empty( $message ) ) {
                 wp_mail( get_the_author_meta( 'user_email', $each_post->post_author ), $mail_subject, $message );

@@ -152,7 +152,7 @@ final class WP_User_Frontend {
         add_action( 'wp_ajax_wpuf_weforms_install', array( $this, 'install_weforms' ) );
 
         // Insight class instentiate
-        $this->container['insights'] = new WPUF_WeDevs_Insights( __FILE__ );
+        $this->container['tracker'] = new WPUF_WeDevs_Insights( __FILE__ );
     }
 
     /**

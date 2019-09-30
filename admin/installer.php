@@ -137,8 +137,10 @@ class WPUF_Admin_Installer {
 
         update_option( '_wpuf_page_created', '1' );
 
-        wp_redirect( admin_url( 'admin.php?page=wpuf-settings&wpuf_page_installed=1' ) );
-        exit;
+        if ( $_GET['page'] != 'wpuf-setup' ) {
+            wp_redirect( admin_url( 'admin.php?page=wpuf-settings&wpuf_page_installed=1' ) );
+            exit;
+        }
     }
 
     /**

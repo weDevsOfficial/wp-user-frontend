@@ -401,6 +401,7 @@ class WPUF_Payment {
      */
     public static function insert_payment( $data, $transaction_id = 0, $recurring = false ) {
         global $wpdb;
+
         $user_id = get_current_user_id();
 
         //check if it's already there
@@ -430,17 +431,17 @@ class WPUF_Payment {
             $data['payer_address'] = maybe_serialize( $data['payer_address'] );
         }
 
-        if ( !$result ) {
-            $wpdb->insert( $wpdb->prefix . 'wpuf_transaction', $data );
-        } else {
-            $wpdb->update( $wpdb->prefix . 'wpuf_transaction', $data, array('transaction_id' => $transaction_id) );
-        }
-
         if( isset( $profile_id ) ) {
             $data['profile_id'] = $profile_id;
         }
 
-        do_action( 'wpuf_payment_received', $data, $recurring );
+        if ( !$result ) {
+            $wpdb->insert( $wpdb->prefix . 'wpuf_transaction', $data );
+
+            do_action( 'wpuf_payment_received', $data, $recurring );
+        } else {
+            $wpdb->update( $wpdb->prefix . 'wpuf_transaction', $data, array('transaction_id' => $transaction_id) );
+        }
     }
 
     /**

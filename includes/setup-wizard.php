@@ -308,7 +308,7 @@ class WPUF_Setup_Wizard {
                     <th scope="row"><label for="share_wpuf_essentials"><?php _e( 'Share Essentials ', 'wp-user-frontend' ); ?></label></th>
                     <td>
                         <input type="checkbox" name="share_wpuf_essentials" id="share_wpuf_essentials" class="input-checkbox" value="1" <?php echo ( $share_wpuf_essentials == 'on' ) ? 'checked="checked"' : ''; ?>/>
-                        <label for="share_wpuf_essentials"><?php _e( 'Want to help make Dokan even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'wp-user-frontend' ); ?></label>
+                        <label for="share_wpuf_essentials"><?php _e( 'Want to help make WP User Frontend even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'wp-user-frontend' ); ?></label>
 
                         <?php printf( '<a class="wpuf-insights-data-we-collect" href="#">%s</a>', esc_html__( 'What we collect', 'dokan-lite' ) ); ?>
                         <p id="collection-info" class="description" style="display:none;">

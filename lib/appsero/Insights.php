@@ -356,19 +356,19 @@ class Insights {
             $optout_url = add_query_arg( $this->client->slug . '_tracker_optout', 'true' );
 
             if ( empty( $this->notice ) ) {
-                $notice = sprintf( __( 'Want to help make <strong>%1$s</strong> even more awesome? Allow %1$s to collect non-sensitive diagnostic data and usage information.', 'textdomain' ), $this->client->name );
+                $notice = sprintf( __( 'Want to help make <strong>%1$s</strong> even more awesome? Allow %1$s to collect non-sensitive diagnostic data and usage information.', 'wp-user-frontend' ), $this->client->name );
             } else {
                 $notice = $this->notice;
             }
 
-            $notice .= ' (<a class="' . $this->client->slug . '-insights-data-we-collect" href="#">' . __( 'what we collect', 'textdomain' ) . '</a>)';
+            $notice .= ' (<a class="' . $this->client->slug . '-insights-data-we-collect" href="#">' . __( 'what we collect', 'wp-user-frontend' ) . '</a>)';
             $notice .= '<p class="description" style="display:none;">' . implode( ', ', $this->data_we_collect() ) . '. No sensitive data is tracked.</p>';
 
             echo '<div class="updated"><p>';
                 echo $notice;
                 echo '</p><p class="submit">';
-                echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-primary button-large">' . __( 'Allow', 'textdomain' ) . '</a>';
-                echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary button-large">' . __( 'No thanks', 'textdomain' ) . '</a>';
+                echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-primary button-large">' . __( 'Allow', 'wp-user-frontend' ) . '</a>';
+                echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary button-large">' . __( 'No thanks', 'wp-user-frontend' ) . '</a>';
             echo '</p></div>';
 
             echo "<script type='text/javascript'>jQuery('." . $this->client->slug . "-insights-data-we-collect').on('click', function(e) {
@@ -567,7 +567,7 @@ class Insights {
 
         $schedules['weekly'] = array(
             'interval' => DAY_IN_SECONDS * 7,
-            'display'  => __( 'Once Weekly', 'textdomain' )
+            'display'  => __( 'Once Weekly', 'wp-user-frontend' )
         );
 
         return $schedules;
@@ -732,7 +732,7 @@ class Insights {
         <div class="wd-dr-modal" id="<?php echo $this->client->slug; ?>-wd-dr-modal">
             <div class="wd-dr-modal-wrap">
                 <div class="wd-dr-modal-header">
-                    <h3><?php _e( 'If you have a moment, please let us know why you are deactivating:', 'domain' ); ?></h3>
+                    <h3><?php _e( 'If you have a moment, please let us know why you are deactivating:', 'wp-user-frontend' ); ?></h3>
                 </div>
 
                 <div class="wd-dr-modal-body">
@@ -746,9 +746,9 @@ class Insights {
                 </div>
 
                 <div class="wd-dr-modal-footer">
-                    <a href="#" class="dont-bother-me"><?php _e( 'I rather wouldn\'t say', 'domain' ); ?></a>
-                    <button class="button-secondary"><?php _e( 'Submit & Deactivate', 'domain' ); ?></button>
-                    <button class="button-primary"><?php _e( 'Cancel', 'domain' ); ?></button>
+                    <a href="#" class="dont-bother-me"><?php _e( 'I rather wouldn\'t say', 'wp-user-frontend' ); ?></a>
+                    <button class="button-secondary"><?php _e( 'Submit & Deactivate', 'wp-user-frontend' ); ?></button>
+                    <button class="button-primary"><?php _e( 'Cancel', 'wp-user-frontend' ); ?></button>
                 </div>
             </div>
         </div>

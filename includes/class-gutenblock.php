@@ -65,7 +65,7 @@ class WPUF_Form_Block {
 
         wp_localize_script( 'wpuf-forms-block', 'wpufBlock', array(
             'forms'          => $forms,
-            'siteUrl'        => get_site_url(),
+            'siteUrl'        => get_home_url(),
             'block_logo'     => $block_logo,
             'thumbnail_logo' => $thumbnail_logo
         ) );

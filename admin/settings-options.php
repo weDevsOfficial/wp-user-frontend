@@ -290,6 +290,13 @@ function wpuf_settings_fields() {
                 'options' => $pages
             ),
             array(
+                'name'    => 'account_page_active_tab',
+                'label'   => __( 'Active Tab', 'wp-user-frontend' ),
+                'desc'    => __( 'Which tab should be set as active by default when opening the account page', 'wp-user-frontend' ),
+                'type'    => 'select',
+                'options' => wpuf_get_account_sections_list()
+            ),
+            array(
                 'name'    => 'show_subscriptions',
                 'label'   => __( 'Show Subscriptions', 'wp-user-frontend' ),
                 'desc'    => __( 'Show Subscriptions tab in "my account" page where <code>[wpuf_account]</code> is located', 'wp-user-frontend' ),

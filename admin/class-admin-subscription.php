@@ -454,6 +454,7 @@ class WPUF_Admin_Subscription {
                                 <th><?php _e( 'Expiration Message', 'wp-user-frontend' ); ?></th>
                                 <td>
                                     <textarea name="post_expiration_settings[post_expiration_message]" id="wpuf-post_expiration_message" cols="50" rows="5"><?php echo $post_expiration_message;?></textarea>
+                                    <p class="description"><strong><?php echo __( 'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}', 'wp-user-frontend' ); ?></strong></p>
                                 </td>
                             </tr>
 

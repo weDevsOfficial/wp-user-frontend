@@ -232,7 +232,7 @@ class WPUF_Form {
                                     $user_can_post = 'yes';
                                 } else {
                                     $user_can_post = 'no';
-                                    $info = 'Post Limit Exceeded for your purchased subscription pack.';
+                                    $info = __('Post Limit Exceeded for your purchased subscription pack.', 'wp-user-frontend');
                                 }
                             }
                         } else {

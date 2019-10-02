@@ -154,10 +154,10 @@ class WPUF_Frontend_Account {
         ob_start();
 
         if ( is_user_logged_in() ) {
-            $section = isset( $_REQUEST['section'] ) ? $_REQUEST['section'] : 'dashboard';
-
-            $sections        = wpuf_get_account_sections();
-            $current_section = array();
+            $default_active_tab = wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' );
+            $section            = isset( $_REQUEST['section'] ) ? $_REQUEST['section'] : $default_active_tab;
+            $sections           = wpuf_get_account_sections();
+            $current_section    = array();
 
             foreach ( $sections as $account_section ) {
                 if ( $section == $account_section['slug'] ) {
@@ -249,7 +249,7 @@ class WPUF_Frontend_Account {
 
         $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wp-user-frontend' );
         if ( $pack->meta_value['recurring_pay'] == 'yes' ) {
-            $recurring_des = sprintf( __( 'For each %s %s', 'wp-user-frontend' ), $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+            $recurring_des = sprintf( __( 'For each', 'wp-user-frontend' ).' %s %s', $pack->meta_value['billing_cycle_number'], WPUF_Subscription::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
             $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
         }
 

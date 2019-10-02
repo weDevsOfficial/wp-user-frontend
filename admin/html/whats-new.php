@@ -1,6 +1,42 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 3.1.11',
+        'released' => '2019-10-02',
+        'changes' => array(
+            array(
+                'title'       => __( 'Option to set which tab shows as active on the account page', 'wp-user-frontend' ),
+                'type'        => 'New',
+                'description' => __( 'Option to set which tab shows as active on the account page. To configure this setting navigate to wp-admin->User Frontend->Settings->My Account->Active Tab ', 'wp-user-frontend' ),
+            ),
+            array(
+                'title'       => __( 'Unlock option was unavailable after the post being locked', 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Unlock option was unavailable after the post being locked.', 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( "Gutenberg block of WPUF didn't work on bedrock installation", 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "Gutenberg block of WPUF didn't work on bedrock installation.", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( "Sending admin payment received email twice", 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "After processing payment admin & user was receiving payment received email twice.", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( "Add shortcode support to display post information in the Post Expiration Message", 'wp-user-frontend' ),
+                'type'        => 'Improvement',
+                'description' => __( "Add shortcode support to display post information in the Post Expiration Message. You can use: <strong>{post_author} {post_url} {blogname} {post_title} {post_status}</strong>", 'wp-user-frontend' )
+            ),
+            array(
+                'title'       => __( "Add optin on the setup wizard", 'wp-user-frontend' ),
+                'type'        => 'Improvement',
+                'description' => __( "Added optin on the setup wizard, admin can choose whether he/she wants to share server environment details (php, mysql, server, WordPress versions), Number of users, Site language, Number of active and inactive plugins, Site name and url, admin name and email address. No sensitive data is tracked", 'wp-user-frontend' )
+            ),
+        )
+    ),
+    array(
         'version'  => 'Version 3.1.10',
         'released' => '2019-09-06',
         'changes' => array(

@@ -15,9 +15,16 @@
                             }
                         }
 
+                        $default_active_tab = wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' );
+                        $active_tab         = false;
+
+                        if ( ( isset( $_GET['section'] ) && $_GET['section'] == $section['slug'] ) || ( !isset( $_GET['section'] ) && $default_active_tab ==  $section['slug'] ) ) {
+                            $active_tab = true;
+                        }
+
                         echo sprintf(
                             '<li class="wpuf-menu-item %s"><a href="%s">%s</a></li>',
-                            ( isset( $_GET['section'] ) && $_GET['section'] == $section['slug'] ) ? $section['slug'] . ' active' : $section['slug'],
+                            $active_tab ? $section['slug'] . ' active' : $section['slug'],
                             add_query_arg( array( 'section' => $section['slug'] ), get_permalink() ),
                             $section['label']
                         );

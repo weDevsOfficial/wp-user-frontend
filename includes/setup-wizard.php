@@ -283,8 +283,9 @@ class WPUF_Setup_Wizard {
      * Selling step.
      */
     public function wpuf_setup_basic() {
-        $enable_payment = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
+        $enable_payment           = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
         $install_wpuf_pages       = wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' );
+        $share_wpuf_essentials    = wpuf_get_option( 'share_wpuf_essentials', 'wpuf_general', 'on' );
         ?>
         <h1><?php _e( 'Basic Setting', 'wp-user-frontend' ); ?></h1>
         <form method="post">
@@ -303,6 +304,18 @@ class WPUF_Setup_Wizard {
                         <label for="install_wpuf_pages"><?php _e( 'Install neccessery pages on your site frontend.', 'wp-user-frontend' ); ?></label>
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row"><label for="share_wpuf_essentials"><?php _e( 'Share Essentials ', 'wp-user-frontend' ); ?></label></th>
+                    <td>
+                        <input type="checkbox" name="share_wpuf_essentials" id="share_wpuf_essentials" class="input-checkbox" value="1" <?php echo ( $share_wpuf_essentials == 'on' ) ? 'checked="checked"' : ''; ?>/>
+                        <label for="share_wpuf_essentials"><?php _e( 'Want to help make WP User Frontend even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'wp-user-frontend' ); ?></label>
+
+                        <?php printf( '<a class="wpuf-insights-data-we-collect" href="#">%s</a>', esc_html__( 'What we collect', 'wp-user-frontend' ) ); ?>
+                        <p id="collection-info" class="description" style="display:none;">
+                            <?php esc_html_e( 'Server environment details (php, mysql, server, WordPress versions), Number of users in your site, Site language, Number of active and inactive plugins, Site name and url, Your name and email address. No sensitive data is tracked.', 'wp-user-frontend' ); ?>
+                        </p>
+                    </td>
+                </tr>
             </table>
             <p class="wpuf-setup-actions step">
                 <input type="submit" class="button-primary button button-large button-next" value="<?php esc_attr_e( 'Continue', 'wp-user-frontend' ); ?>" name="save_step" />
@@ -310,6 +323,13 @@ class WPUF_Setup_Wizard {
                 <?php wp_nonce_field( 'wpuf-setup' ); ?>
             </p>
         </form>
+
+        <script type="text/javascript">
+            jQuery('.wpuf-insights-data-we-collect').on('click', function(e) {
+                e.preventDefault();
+                jQuery('#collection-info').slideToggle('fast');
+            });
+        </script>
         <?php
     }
 
@@ -318,13 +338,22 @@ class WPUF_Setup_Wizard {
      */
     public function wpuf_setup_basic_save() {
         check_admin_referer( 'wpuf-setup' );
+
         $payment_options = get_option( 'wpuf_payment' );
         $general_options = get_option( 'wpuf_general' );
-        $payment_options['enable_payment'] = isset( $_POST['enable_payment'] ) ? 'on' : 'off';
+
+        $payment_options['enable_payment']           = isset( $_POST['enable_payment'] ) ? 'on' : 'off';
         $general_options['install_wpuf_pages']       = isset( $_POST['install_wpuf_pages'] ) ? 'on' : 'off';
+        $general_options['share_wpuf_essentials']    = isset( $_POST['share_wpuf_essentials'] ) ? 'on' : 'off';
 
         update_option( 'wpuf_payment', $payment_options );
         update_option( 'wpuf_general', $general_options );
+
+        if ( $general_options['share_wpuf_essentials'] == 'on' ) {
+            wpuf()->tracker->insights->optin();
+        } else {
+            wpuf()->tracker->insights->optout();
+        }
 
         if ( 'on' == $general_options['install_wpuf_pages'] ) {
             $installer = new WPUF_Admin_Installer();

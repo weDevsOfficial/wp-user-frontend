@@ -310,9 +310,9 @@ class WPUF_Setup_Wizard {
                         <input type="checkbox" name="share_wpuf_essentials" id="share_wpuf_essentials" class="input-checkbox" value="1" <?php echo ( $share_wpuf_essentials == 'on' ) ? 'checked="checked"' : ''; ?>/>
                         <label for="share_wpuf_essentials"><?php _e( 'Want to help make WP User Frontend even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'wp-user-frontend' ); ?></label>
 
-                        <?php printf( '<a class="wpuf-insights-data-we-collect" href="#">%s</a>', esc_html__( 'What we collect', 'dokan-lite' ) ); ?>
+                        <?php printf( '<a class="wpuf-insights-data-we-collect" href="#">%s</a>', esc_html__( 'What we collect', 'wp-user-frontend' ) ); ?>
                         <p id="collection-info" class="description" style="display:none;">
-                            <?php esc_html_e( 'Server environment details (php, mysql, server, WordPress versions), Number of users in your site, Site language, Number of active and inactive plugins, Site name and url, Your name and email address. No sensitive data is tracked.', 'dokan-lite' ); ?>
+                            <?php esc_html_e( 'Server environment details (php, mysql, server, WordPress versions), Number of users in your site, Site language, Number of active and inactive plugins, Site name and url, Your name and email address. No sensitive data is tracked.', 'wp-user-frontend' ); ?>
                         </p>
                     </td>
                 </tr>

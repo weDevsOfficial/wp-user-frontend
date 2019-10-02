@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership  
 **Requires at least:** 4.0  
-**Tested up to:** 5.2.2  
+**Tested up to:** 5.2.3  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.1.10  
+**Stable tag:** 3.1.11  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -256,6 +256,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v3.1.11 (02 October, 2019) ###
+
+* **Feature:** Option to set which tab shows as active on the account page.
+* **Fix:** Unlock option was unavailable after the post being locked.
+* **Fix:** The email template from the WPUF pro was not possible to override.
+* **Fix:** Gutenberg block of WPUF didn't work on bedrock installation.
+* **Fix:** Sending admin payment received email twice.
+* **Enhancement:** Add shortcode support to display post information in the Post Expiration Message.
+* **Enhancement:** Add Appsero option checkbox on the setup wizard.
 
 ### v3.1.10 (06 September, 2019) ###
 

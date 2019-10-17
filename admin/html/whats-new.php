@@ -1,6 +1,17 @@
 <?php
 $changelog = array(
     array(
+        'version'  => 'Version 3.1.12',
+        'released' => '2019-10-17',
+        'changes' => array(
+            array(
+                'title'       => __( "Nonce not verify on login", 'wp-user-frontend' ),
+                'type'        => 'Fix',
+                'description' => __( "Return of function wp_verify_nonce() was ignored.", 'wp-user-frontend' )
+            )
+        )
+    ),
+    array(
         'version'  => 'Version 3.1.11',
         'released' => '2019-10-02',
         'changes' => array(

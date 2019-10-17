@@ -367,8 +367,9 @@ class WPUF_Simple_Login {
         if ( !empty( $_POST['wpuf_login'] ) && !empty( $_POST['_wpnonce'] ) ) {
             $creds = array();
 
-            if ( isset( $_POST['_wpnonce'] ) ) {
-                wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_login_action' );
+            if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_login_action' ) ) {
+                $this->login_errors[] = __( 'Nonce is invalid', 'wp-user-frontend' );
+                return;
             }
 
             $validation_error = new WP_Error();

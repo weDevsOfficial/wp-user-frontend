@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 5.2.3  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.1.11  
+**Stable tag:** 3.1.12  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -257,11 +257,14 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
+### v3.1.12 (17 October, 2019) ###
+
+* **Fix:** Nonce not verify on login
+
 ### v3.1.11 (02 October, 2019) ###
 
 * **Feature:** Option to set which tab shows as active on the account page.
 * **Fix:** Unlock option was unavailable after the post being locked.
-* **Fix:** The email template from the WPUF pro was not possible to override.
 * **Fix:** Gutenberg block of WPUF didn't work on bedrock installation.
 * **Fix:** Sending admin payment received email twice.
 * **Enhancement:** Add shortcode support to display post information in the Post Expiration Message.

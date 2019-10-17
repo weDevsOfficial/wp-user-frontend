@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 5.2.3
 Requires PHP: 5.6
-Stable tag: 3.1.11
+Stable tag: 3.1.12
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -256,6 +256,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.1.12 (17 October, 2019) =
+
+* **Fix:** Nonce not verify on login
 
 = v3.1.11 (02 October, 2019) =
 

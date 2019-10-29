@@ -21,7 +21,6 @@ trait WPUF_Form_Field_Post_trait {
      * @return string
      */
     function required_class( $attr ) {
-        return;
         if ( $attr['required'] == 'yes' ) {
             echo ' required';
         }

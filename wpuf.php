@@ -275,7 +275,6 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/subscription.php';
         require_once WPUF_ROOT . '/class/render-form.php';
         require_once WPUF_ROOT . '/class/payment.php';
-        require_once WPUF_ROOT . '/class/frontend-form-post.php';
         require_once WPUF_ROOT . '/class/frontend-account.php';
         require_once WPUF_ROOT . '/includes/class-form.php';
         require_once WPUF_ROOT . '/includes/class-form-manager.php';
@@ -352,7 +351,6 @@ final class WP_User_Frontend {
         $this->container['form_template']           = new WPUF_Admin_Form_Template();
 
         $this->container['subscription']            = WPUF_Subscription::init();
-        $this->container['frontend_post']           = WPUF_Frontend_Form_Post::init();
         $this->container['account']                 = new WPUF_Frontend_Account();
         $this->container['billing_address']         = new WPUF_Ajax_Address_Form();
         $this->container['forms']                   = new WPUF_Form_Manager();

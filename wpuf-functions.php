@@ -319,22 +319,24 @@ class WPUF_Walker_Category_Checklist extends Walker {
 
     function start_el( &$output, $category, $depth = 0, $args = array(), $current_object_id = 0 ) {
         extract( $args );
-        if ( empty( $taxonomy ) )
+        if ( empty( $taxonomy ) ) {
             $taxonomy = 'category';
+        }
 
-        if ( $taxonomy == 'category' )
+        if ( $taxonomy == 'category' ) {
             $name = 'category';
-        else
+        } else {
             $name = $taxonomy;
+        }
 
-        if ( 'yes' === $show_inline ) {
+        if ( 'yes' === $args['show_inline'] ) {
             $inline_class = 'wpuf-checkbox-inline';
         } else {
             $inline_class = '';
         }
 
         $class = isset( $args['class'] ) ? $args['class'] : '';
-        $output .= "\n<li class='" . $inline_class . "' id='{$taxonomy}-{$category->term_id}'>" . '<label class="selectit"><input class="'. $class . '" value="' . $category->term_id . '" type="checkbox" name="' . $name . '[]" id="in-' . $taxonomy . '-' . $category->term_id . '"' . checked( in_array( $category->term_id, $selected_cats ), true, false ) . disabled( empty( $args['disabled'] ), false, false ) . ' /> ' . esc_html( apply_filters( 'the_category', $category->name ) ) . '</label>';
+        $output .= "\n<li class='" . $inline_class . "' id='{$taxonomy}-{$category->term_id}'>" . '<label class="selectit"><input class="'. $class . '" value="' . $category->term_id . '" type="checkbox" name="' . $name . '[]" id="in-' . $taxonomy . '-' . $category->term_id . '"' . checked( in_array( $category->term_id, $args['selected_cats'] ), true, false ) . disabled( empty( $args['disabled'] ), false, false ) . ' /> ' . esc_html( apply_filters( 'the_category', $category->name ) ) . '</label>';
     }
 
     function end_el( &$output, $category, $depth = 0, $args = array() ) {

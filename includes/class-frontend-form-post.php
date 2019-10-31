@@ -799,7 +799,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
 
                     wp_redirect( $response['redirect_to'] );
                     wpuf_clear_buffer();
-                    wpuf_send_json( $response );
+                    wp_send_json( $response );
                 }
             } else {
                 $p_status = get_post_status( $post_id );

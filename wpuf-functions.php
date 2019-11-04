@@ -748,7 +748,7 @@ function wpuf_show_custom_fields( $content ) {
             switch ( $attr['input_type'] ) {
                 case 'image_upload':
                 case 'file_upload':
-                    $image_html  = '<li>';
+                    $image_html  = '<li style="list-style-type:none;">';
 
                     if ( $hide_label == 'no' ) {
                         $image_html .= '<label>' . $attr['label'] . ':</label> ';

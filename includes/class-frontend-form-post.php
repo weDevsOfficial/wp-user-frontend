@@ -16,6 +16,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
         add_action( 'wp_ajax_nopriv_wpuf_submit_post', array( $this, 'submit_post' ) );
         add_action( 'wp_ajax_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
         add_action( 'wp_ajax_nopriv_make_media_embed_code', array( $this, 'make_media_embed_code' ) );
+        // // guest post hook
+        add_action( 'init', array( $this, 'publish_guest_post' ) );
         // draft
         add_action( 'wp_ajax_wpuf_draft_post', array( $this, 'draft_post' ) );
         // form preview
@@ -776,6 +778,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
     function publish_guest_post () {
 
         if ( isset($_GET['post_msg']) && $_GET['post_msg'] == 'verified' ) {
+            error_log( 'hello' );
 
             $response       = array();
             $post_id        = wpuf_decryption( $_GET['p_id'] );

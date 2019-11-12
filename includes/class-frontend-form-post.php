@@ -778,7 +778,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form{
     function publish_guest_post () {
 
         if ( isset($_GET['post_msg']) && $_GET['post_msg'] == 'verified' ) {
-            error_log( 'hello' );
 
             $response       = array();
             $post_id        = wpuf_decryption( $_GET['p_id'] );

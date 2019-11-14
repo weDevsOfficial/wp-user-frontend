@@ -442,6 +442,11 @@ class WPUF_Payment {
         } else {
             $wpdb->update( $wpdb->prefix . 'wpuf_transaction', $data, array('transaction_id' => $transaction_id) );
         }
+
+        //workaround for subscriptions can't be assigned from user profile regression
+        if ( ! did_action( 'wpuf_payment_received' ) ) {
+            do_action( 'wpuf_payment_received', $data, $recurring );
+        }
     }
 
     /**

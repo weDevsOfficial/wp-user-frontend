@@ -24,13 +24,13 @@ class WPUF_Admin_Promotion {
             return;
         }
 
-        if ( ! isset( $_GET['page'] ) ) {
+        if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
             return;
         }
 
         // check if it has already been dismissed
         $offer_key        = 'wpuf_promotional_offer_notice';
-        $offer_start_date = strtotime( '2019-11-26 00:00:01' );
+        $offer_start_date = strtotime( '2019-11-20 00:00:01' );
         $offer_end_date   = strtotime( '2019-12-04 23:59:00' );
         $hide_notice      = get_option( $offer_key, 'show' );
 
@@ -45,17 +45,19 @@ class WPUF_Admin_Promotion {
                     <img src="<?php echo WPUF_ASSET_URI . '/images/promo-logo.png' ?>" alt="WPUF">
                 </div>
                 <div class="content">
-                    <h3><span class="highlight-red">Black Friday</span> &amp; <span
-                            class="highlight-blue">Cyber Monday</span></h3>
-                    <p>Don't miss out on the biggest sale of the year on <span class="highlight-red">WP User Frontend</span></p>
-                    <div class="coupon-box">
-                        <div class="highlight-red">Use this coupon</div>
-                        <div class="highlight-code">BFCM2019</div>
-                    </div>
+                    <p>Biggest Sale of the year on this</p>
+
+                    <h3><span class="highlight-green">Black Friday &amp; </span>Cyber Monday</h3>
+                    <p><span class="highlight-lightgreen">Claim your discount on </span>WP User Frontend <span class="highlight-lightgreen">till 4th December</span></p>
                 </div>
                 <div class="call-to-action">
-                    <a href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_campaign=black_friday_&_cyber_monday&utm_medium=banner&utm_source=plugin_dashboard">Save 33%</a>
-                    <p>Valid till 4th December.</p>
+                    <a target="_blank" href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_campaign=black_friday_&_cyber_monday&utm_medium=banner&utm_source=plugin_dashboard">
+                        <img src="<?php echo WPUF_ASSET_URI . '/images/promo-btn.png' ?>" alt="Btn">
+                    </a>
+                    <p>
+                        <span class="highlight-green2">Coupon: </span>
+                        <span class="coupon-code">BFCM2019</span>
+                    </p>
                 </div>
             </div>
 
@@ -63,27 +65,38 @@ class WPUF_Admin_Promotion {
                 #wpuf-bfcm-notice {
                     font-size: 14px;
                     border-left: none;
-                    background: #000;
+                    background: #468E4B;
                     color: #fff;
                     display: flex
+                }
+
+                #wpuf-bfcm-notice .notice-dismiss:before {
+                    color: #76E5FF;
+                }
+
+                #wpuf-bfcm-notice .notice-dismiss:hover:before {
+                    color: #b71c1c;
                 }
 
                 #wpuf-bfcm-notice .logo {
                     text-align: center;
                     text-align: center;
-                    margin: 13px 30px 5px 15px;
+                    margin: auto 50px;
                 }
 
                 #wpuf-bfcm-notice .logo img {
                     width: 80%;
                 }
 
-                #wpuf-bfcm-notice .highlight-red {
-                    color: #FF0000;
+                #wpuf-bfcm-notice .highlight-green {
+                    color: #4FFF67;
+                }
+                #wpuf-bfcm-notice .highlight-green2 {
+                    color: #5AB035;
                 }
 
-                #wpuf-bfcm-notice .highlight-blue {
-                    color: #48ABFF;
+                #wpuf-bfcm-notice .highlight-lightgreen {
+                    color: #E0EFE7;
                 }
 
                 #wpuf-bfcm-notice .content {
@@ -92,59 +105,41 @@ class WPUF_Admin_Promotion {
 
                 #wpuf-bfcm-notice .content h3 {
                     color: #FFF;
-                    margin: 12px 0px 5px;
+                    margin: 12px 0 5px;
                     font-weight: normal;
-                    font-size: 20px;
+                    font-size: 30px;
                 }
 
                 #wpuf-bfcm-notice .content p {
-                    margin: 0px 0px;
-                    padding: 0px;
-                    letter-spacing: 0.4px;
-                }
-
-                #wpuf-bfcm-notice .coupon-box {
-                    margin-top: 10px;
-                    display: flex;
-                    align-items: center;
-                    font-size: 17px;
-                }
-
-                #wpuf-bfcm-notice .coupon-box .highlight-code {
-                    margin-left: 15px;
-                    border: 1px dashed;
-                    padding: 4px 10px;
-                    border-radius: 15px;
-                    letter-spacing: 1px;
-                    background: #1E1B1B;
-
-                    -webkit-user-select: all;
-                    -moz-user-select: all;
-                    -ms-user-select: all;
-                    user-select: all;
+                    margin-top: 12px;
+                    padding: 0;
+                    letter-spacing: .4px;
+                    color: #ffffff;
+                    font-size: 15px;
                 }
 
                 #wpuf-bfcm-notice .call-to-action {
-                    margin-left: 8%;
-                    margin-top: 25px;
+                    margin-left: 10%;
+                    margin-top: 20px;
                 }
 
-                #wpuf-bfcm-notice .call-to-action a {
-                    border: none;
-                    background: #FF0000;
-                    padding: 8px 15px;
-                    font-size: 15px;
-                    color: #fff;
-                    border-radius: 20px;
-                    text-decoration: none;
-                    display: block;
-                    text-align: center;
+                #wpuf-bfcm-notice .call-to-action a:focus {
+                    box-shadow: none;
                 }
 
                 #wpuf-bfcm-notice .call-to-action p {
-                    font-size: 12px;
+                    font-size: 16px;
+                    color: #fff;
                     margin-top: 1px;
+                    text-align: center;
                 }
+
+                #wpuf-bfcm-notice .coupon-code {
+                    -moz-user-select: all;
+                    -webkit-user-select: all;
+                    user-select: all;
+                }
+            </style>
             </style>
 
             <script type='text/javascript'>

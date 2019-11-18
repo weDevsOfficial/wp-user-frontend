@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.1.12\n"
+"Project-Id-Version: WP User Frontend 3.1.13\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2019-10-17 10:48:43+00:00\n"
+"POT-Creation-Date: 2019-11-18 03:17:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -158,7 +158,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:426
 #: includes/fields/class-field-checkbox.php:94
 #: includes/fields/class-field-radio.php:89 includes/free/form-element.php:478
-#: wpuf.php:731
+#: wpuf.php:729
 msgid "Yes"
 msgstr ""
 
@@ -173,7 +173,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:427
 #: includes/fields/class-field-checkbox.php:95
 #: includes/fields/class-field-radio.php:90 includes/free/form-element.php:479
-#: wpuf.php:732
+#: wpuf.php:730
 msgid "No"
 msgstr ""
 
@@ -344,7 +344,7 @@ msgstr ""
 
 #: admin/class-tools.php:39 admin/class-tools.php:95
 #: admin/post-forms-list-table.php:43 class/transactions-list-table.php:86
-#: includes/class-list-table-subscribers.php:126 wpuf-functions.php:2763
+#: includes/class-list-table-subscribers.php:126 wpuf-functions.php:2765
 msgid "All"
 msgstr ""
 
@@ -562,12 +562,12 @@ msgid "Are you sure you want to delete this field?"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:263
-#: admin/posting.php:70 class/asset-loader.php:55 wpuf.php:741
+#: admin/posting.php:70 class/asset-loader.php:55 wpuf.php:739
 msgid "Yes, delete it"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:264
-#: admin/posting.php:71 class/asset-loader.php:56 wpuf.php:742
+#: admin/posting.php:71 class/asset-loader.php:56 wpuf.php:740
 msgid "No, cancel it"
 msgstr ""
 
@@ -2165,7 +2165,7 @@ msgid ""
 msgstr ""
 
 #: admin/installer.php:77 admin/settings-options.php:23
-#: includes/free/admin/shortcode-button.php:82 wpuf-functions.php:1731
+#: includes/free/admin/shortcode-button.php:82 wpuf-functions.php:1733
 msgid "Dashboard"
 msgstr ""
 
@@ -2181,7 +2181,7 @@ msgstr ""
 #: admin/installer.php:88 class/subscription.php:356 class/subscription.php:376
 #: class/subscription.php:377 class/subscription.php:378
 #: includes/free/admin/shortcode-button.php:102
-#: templates/dashboard/dashboard.php:19 wpuf-functions.php:1734
+#: templates/dashboard/dashboard.php:19 wpuf-functions.php:1736
 msgid "Subscription"
 msgstr ""
 
@@ -2277,23 +2277,23 @@ msgid "Draft"
 msgstr ""
 
 #: admin/posting.php:69 class/asset-loader.php:54 class/render-form.php:1700
-#: wpuf.php:740
+#: wpuf.php:738
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:750
+#: admin/posting.php:77 class/asset-loader.php:62 wpuf.php:748
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:80 class/asset-loader.php:65 wpuf.php:756
+#: admin/posting.php:80 class/asset-loader.php:65 wpuf.php:754
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:81 class/asset-loader.php:66 wpuf.php:757
+#: admin/posting.php:81 class/asset-loader.php:66 wpuf.php:755
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:82 class/asset-loader.php:67 wpuf.php:758
+#: admin/posting.php:82 class/asset-loader.php:67 wpuf.php:756
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -2588,29 +2588,11 @@ msgstr ""
 msgid "WP User Frontend Pro is the most powerful solution for your frontend needs."
 msgstr ""
 
-#: admin/promotion.php:43
-msgid ""
-"<p>\n"
-"                                        <strong class=\"highlight-text\" "
-"style=\"font-size: 18px\">33&#37; flat discount on all our "
-"products</strong><br>\n"
-"                                        Save money this holiday season "
-"while supercharging your WordPress site with plugins that were made to "
-"empower you.\n"
-"                                        <br>\n"
-"                                        Offer ending soon!\n"
-"                                    </p>"
-msgstr ""
-
-#: admin/promotion.php:66
-msgid "Get the Offer"
-msgstr ""
-
-#: admin/promotion.php:218
+#: admin/promotion.php:189
 msgid "Enjoying <strong>WP User Frontend</strong>?"
 msgstr ""
 
-#: admin/promotion.php:219
+#: admin/promotion.php:190
 msgid ""
 "Hope that you had a neat and snappy experience with the tool. Would you "
 "please show us a little love by rating us in the <a "
@@ -2618,15 +2600,15 @@ msgid ""
 "post\" target=\"_blank\"><strong>WordPress.org</strong></a>?"
 msgstr ""
 
-#: admin/promotion.php:222
+#: admin/promotion.php:193
 msgid "Sure! I'd love to!"
 msgstr ""
 
-#: admin/promotion.php:223
+#: admin/promotion.php:194
 msgid "I've already left a review"
 msgstr ""
 
-#: admin/promotion.php:224
+#: admin/promotion.php:195
 msgid "Never show again"
 msgstr ""
 
@@ -3433,7 +3415,7 @@ msgstr ""
 #: class/upload.php:168 includes/fields/class-field-recaptcha.php:156
 #: includes/fields/class-field-sectionbreak.php:56
 #: templates/dashboard/posts.php:77 templates/dashboard.php:87
-#: wpuf-functions.php:808
+#: wpuf-functions.php:810
 msgid "Title"
 msgstr ""
 
@@ -3450,7 +3432,7 @@ msgid "Enter the meta value"
 msgstr ""
 
 #: admin/template.php:609 class/upload.php:170
-#: includes/fields/class-field-sectionbreak.php:64 wpuf-functions.php:814
+#: includes/fields/class-field-sectionbreak.php:64 wpuf-functions.php:816
 msgid "Description"
 msgstr ""
 
@@ -3495,27 +3477,27 @@ msgstr ""
 msgid "Install Now"
 msgstr ""
 
-#: class/asset-loader.php:31 wpuf.php:648
+#: class/asset-loader.php:31 wpuf.php:646
 msgid "is required"
 msgstr ""
 
-#: class/asset-loader.php:32 wpuf.php:649
+#: class/asset-loader.php:32 wpuf.php:647
 msgid "does not match"
 msgstr ""
 
-#: class/asset-loader.php:33 wpuf.php:650
+#: class/asset-loader.php:33 wpuf.php:648
 msgid "is not valid"
 msgstr ""
 
-#: class/asset-loader.php:45 wpuf.php:727
+#: class/asset-loader.php:45 wpuf.php:725
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: class/asset-loader.php:47 wpuf.php:729
+#: class/asset-loader.php:47 wpuf.php:727
 msgid "Word limit reached"
 msgstr ""
 
-#: class/asset-loader.php:48 wpuf.php:730
+#: class/asset-loader.php:48 wpuf.php:728
 msgid "Are you sure you want to cancel your current subscription ?"
 msgstr ""
 
@@ -3623,92 +3605,6 @@ msgstr ""
 msgid "You are not the post author. Cheeting huh!"
 msgstr ""
 
-#: class/frontend-form-post.php:82 class/frontend-form-post.php:121
-#: class/frontend-form-post.php:128 includes/class-form.php:214
-#: includes/class-form.php:251 includes/class-form.php:258
-msgid "Payment type not selected for this form. Please contact admin."
-msgstr ""
-
-#: class/frontend-form-post.php:103 includes/class-form.php:235
-msgid "Post Limit Exceeded for your purchased subscription pack."
-msgstr ""
-
-#: class/frontend-form-post.php:171 includes/class-frontend-form-post.php:43
-msgid "You are not logged in"
-msgstr ""
-
-#: class/frontend-form-post.php:179 class/frontend-form-post.php:208
-#: includes/class-frontend-form-post.php:51
-#: includes/class-frontend-form-post.php:80
-msgid "Invalid post"
-msgstr ""
-
-#: class/frontend-form-post.php:186 includes/class-frontend-form-post.php:58
-msgid "Your edit access for this post has been locked by an administrator."
-msgstr ""
-
-#: class/frontend-form-post.php:190 includes/class-frontend-form-post.php:62
-msgid "Your allocated time for editing this post has been expired."
-msgstr ""
-
-#: class/frontend-form-post.php:197 includes/class-frontend-form-post.php:69
-msgid "Your post edit access has been locked by an administrator."
-msgstr ""
-
-#: class/frontend-form-post.php:202 includes/class-frontend-form-post.php:74
-msgid "Post Editing is disabled"
-msgstr ""
-
-#: class/frontend-form-post.php:213 includes/class-frontend-form-post.php:85
-msgid "You are not allowed to edit"
-msgstr ""
-
-#: class/frontend-form-post.php:225 includes/class-frontend-form-post.php:96
-msgid "I don't know how to edit this post, I don't have the form ID"
-msgstr ""
-
-#: class/frontend-form-post.php:231 includes/class-frontend-form-post.php:108
-msgid "You can't edit a post while in pending mode."
-msgstr ""
-
-#: class/frontend-form-post.php:304 includes/class-frontend-render-form.php:773
-#: includes/free/class-login.php:395
-msgid "Empty reCaptcha Field"
-msgstr ""
-
-#: class/frontend-form-post.php:335 includes/class-frontend-form-post.php:489
-msgid "Invalid email address."
-msgstr ""
-
-#: class/frontend-form-post.php:344 includes/class-frontend-form-post.php:499
-msgid ""
-"You already have an account in our site. Please login to continue.\n"
-"\n"
-"Clicking 'OK' will redirect you to the login page and you will lose the "
-"form data.\n"
-"Click 'Cancel' to stay at this page."
-msgstr ""
-
-#: class/frontend-form-post.php:393 includes/class-frontend-form-post.php:555
-msgid "You do not have sufficient permissions to access this form."
-msgstr ""
-
-#: class/frontend-form-post.php:732 class/frontend-form-post.php:739
-#: includes/class-frontend-form-post.php:926
-#: includes/class-frontend-form-post.php:932
-msgid ""
-"Thank you for posting on our site. We have sent you an confirmation email. "
-"Please check your inbox!"
-msgstr ""
-
-#: class/frontend-form-post.php:792 includes/class-frontend-form-post.php:472
-msgid "Something went wrong"
-msgstr ""
-
-#: class/frontend-form-post.php:1170 includes/class-frontend-form-post.php:811
-msgid "Email successfully verified. Please Login."
-msgstr ""
-
 #: class/payment.php:23 class/payment.php:24
 msgid "PayPal"
 msgstr ""
@@ -3730,7 +3626,7 @@ msgid "You already have activated a free package previously."
 msgstr ""
 
 #: class/payment.php:141 includes/class-customizer.php:59
-#: wpuf-functions.php:1735
+#: wpuf-functions.php:1737
 msgid "Billing Address"
 msgstr ""
 
@@ -3778,11 +3674,11 @@ msgstr ""
 msgid "No Payment gateway found"
 msgstr ""
 
-#: class/payment.php:454 lib/gateway/bank.php:109
+#: class/payment.php:459 lib/gateway/bank.php:109
 msgid "[%s] Payment Received"
 msgstr ""
 
-#: class/payment.php:455
+#: class/payment.php:460
 msgid "New payment received at %s"
 msgstr ""
 
@@ -3910,7 +3806,7 @@ msgid "Strength indicator"
 msgstr ""
 
 #: class/render-form.php:1420 includes/fields/class-field-post-taxonomy.php:122
-#: wpuf-functions.php:1519
+#: wpuf-functions.php:1521
 msgid "-- Select --"
 msgstr ""
 
@@ -4124,7 +4020,7 @@ msgstr ""
 msgid "No transactions found."
 msgstr ""
 
-#: class/upload.php:169 wpuf-functions.php:811
+#: class/upload.php:169 wpuf-functions.php:813
 msgid "Caption"
 msgstr ""
 
@@ -4243,7 +4139,7 @@ msgstr ""
 
 #: includes/class-dokan-integration.php:37
 #: includes/class-wc-vendors-integration.php:109
-#: templates/dashboard/dashboard.php:15 wpuf-functions.php:1732
+#: templates/dashboard/dashboard.php:15 wpuf-functions.php:1734
 msgid "Posts"
 msgstr ""
 
@@ -4283,6 +4179,89 @@ msgstr ""
 
 #: includes/class-form-preview.php:91
 msgid "Sorry, you are not eligible to preview this form."
+msgstr ""
+
+#: includes/class-form.php:214 includes/class-form.php:251
+#: includes/class-form.php:258
+msgid "Payment type not selected for this form. Please contact admin."
+msgstr ""
+
+#: includes/class-form.php:235
+msgid "Post Limit Exceeded for your purchased subscription pack."
+msgstr ""
+
+#: includes/class-frontend-form-post.php:45
+msgid "You are not logged in"
+msgstr ""
+
+#: includes/class-frontend-form-post.php:53
+#: includes/class-frontend-form-post.php:82
+msgid "Invalid post"
+msgstr ""
+
+#: includes/class-frontend-form-post.php:60
+msgid "Your edit access for this post has been locked by an administrator."
+msgstr ""
+
+#: includes/class-frontend-form-post.php:64
+msgid "Your allocated time for editing this post has been expired."
+msgstr ""
+
+#: includes/class-frontend-form-post.php:71
+msgid "Your post edit access has been locked by an administrator."
+msgstr ""
+
+#: includes/class-frontend-form-post.php:76
+msgid "Post Editing is disabled"
+msgstr ""
+
+#: includes/class-frontend-form-post.php:87
+msgid "You are not allowed to edit"
+msgstr ""
+
+#: includes/class-frontend-form-post.php:98
+msgid "I don't know how to edit this post, I don't have the form ID"
+msgstr ""
+
+#: includes/class-frontend-form-post.php:110
+msgid "You can't edit a post while in pending mode."
+msgstr ""
+
+#: includes/class-frontend-form-post.php:474
+msgid "Something went wrong"
+msgstr ""
+
+#: includes/class-frontend-form-post.php:491
+msgid "Invalid email address."
+msgstr ""
+
+#: includes/class-frontend-form-post.php:501
+msgid ""
+"You already have an account in our site. Please login to continue.\n"
+"\n"
+"Clicking 'OK' will redirect you to the login page and you will lose the "
+"form data.\n"
+"Click 'Cancel' to stay at this page."
+msgstr ""
+
+#: includes/class-frontend-form-post.php:557
+msgid "You do not have sufficient permissions to access this form."
+msgstr ""
+
+#: includes/class-frontend-form-post.php:813
+msgid "Email successfully verified. Please Login."
+msgstr ""
+
+#: includes/class-frontend-form-post.php:928
+#: includes/class-frontend-form-post.php:934
+msgid ""
+"Thank you for posting on our site. We have sent you an confirmation email. "
+"Please check your inbox!"
+msgstr ""
+
+#: includes/class-frontend-render-form.php:773
+#: includes/free/class-login.php:395
+msgid "Empty reCaptcha Field"
 msgstr ""
 
 #: includes/class-list-table-subscribers.php:30
@@ -6118,255 +6097,255 @@ msgstr ""
 msgid "Private"
 msgstr ""
 
-#: wpuf-functions.php:213 wpuf-functions.php:1750
+#: wpuf-functions.php:213 wpuf-functions.php:1752
 msgid "-- select --"
 msgstr ""
 
-#: wpuf-functions.php:424
+#: wpuf-functions.php:426
 msgid "Images"
 msgstr ""
 
-#: wpuf-functions.php:425
+#: wpuf-functions.php:427
 msgid "Audio"
 msgstr ""
 
-#: wpuf-functions.php:426
+#: wpuf-functions.php:428
 msgid "Videos"
 msgstr ""
 
-#: wpuf-functions.php:427
+#: wpuf-functions.php:429
 msgid "PDF"
 msgstr ""
 
-#: wpuf-functions.php:428
+#: wpuf-functions.php:430
 msgid "Office Documents"
 msgstr ""
 
-#: wpuf-functions.php:429
+#: wpuf-functions.php:431
 msgid "Zip Archives"
 msgstr ""
 
-#: wpuf-functions.php:430
+#: wpuf-functions.php:432
 msgid "Executable Files"
 msgstr ""
 
-#: wpuf-functions.php:431
+#: wpuf-functions.php:433
 msgid "CSV"
 msgstr ""
 
-#: wpuf-functions.php:834
+#: wpuf-functions.php:836
 msgid "Directions »"
 msgstr ""
 
-#: wpuf-functions.php:1733
+#: wpuf-functions.php:1735
 msgid "Edit Profile"
 msgstr ""
 
-#: wpuf-functions.php:1859
+#: wpuf-functions.php:1861
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:1860
+#: wpuf-functions.php:1862
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1861
+#: wpuf-functions.php:1863
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:1862
+#: wpuf-functions.php:1864
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:1863
+#: wpuf-functions.php:1865
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:1864
+#: wpuf-functions.php:1866
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:1865
+#: wpuf-functions.php:1867
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1866
+#: wpuf-functions.php:1868
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:1867
+#: wpuf-functions.php:1869
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:1868
+#: wpuf-functions.php:1870
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:1869
+#: wpuf-functions.php:1871
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:1870
+#: wpuf-functions.php:1872
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:1871
+#: wpuf-functions.php:1873
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1872
+#: wpuf-functions.php:1874
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:1873
+#: wpuf-functions.php:1875
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:1874
+#: wpuf-functions.php:1876
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1875
+#: wpuf-functions.php:1877
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:1876
+#: wpuf-functions.php:1878
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:1877
+#: wpuf-functions.php:1879
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:1878
+#: wpuf-functions.php:1880
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:1879
+#: wpuf-functions.php:1881
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1880
+#: wpuf-functions.php:1882
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1881
+#: wpuf-functions.php:1883
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:1882
+#: wpuf-functions.php:1884
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:1883
+#: wpuf-functions.php:1885
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:1884
+#: wpuf-functions.php:1886
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:1885
+#: wpuf-functions.php:1887
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:1886
+#: wpuf-functions.php:1888
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1887
+#: wpuf-functions.php:1889
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:1888
+#: wpuf-functions.php:1890
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:1889
+#: wpuf-functions.php:1891
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1890
+#: wpuf-functions.php:1892
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:1891
+#: wpuf-functions.php:1893
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:1892
+#: wpuf-functions.php:1894
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1893
+#: wpuf-functions.php:1895
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:1894
+#: wpuf-functions.php:1896
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:1895
+#: wpuf-functions.php:1897
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:1896
+#: wpuf-functions.php:1898
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:1897
+#: wpuf-functions.php:1899
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:1898
+#: wpuf-functions.php:1900
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:1899
+#: wpuf-functions.php:1901
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:1900
+#: wpuf-functions.php:1902
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1901
+#: wpuf-functions.php:1903
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:1902
+#: wpuf-functions.php:1904
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:1903
+#: wpuf-functions.php:1905
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:1904
+#: wpuf-functions.php:1906
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1905
+#: wpuf-functions.php:1907
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:1906
+#: wpuf-functions.php:1908
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:1907
+#: wpuf-functions.php:1909
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1908
+#: wpuf-functions.php:1910
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:1909
+#: wpuf-functions.php:1911
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:2764
+#: wpuf-functions.php:2766
 msgid "None"
 msgstr ""
 
@@ -6386,7 +6365,7 @@ msgstr ""
 msgid "Your Post Has Been Expired"
 msgstr ""
 
-#: wpuf.php:469
+#: wpuf.php:467
 msgid ""
 "<p style=\"font-size: 13px\">\n"
 "                            <strong class=\"highlight-text\" "
@@ -6399,19 +6378,19 @@ msgid ""
 "                        </p>"
 msgstr ""
 
-#: wpuf.php:485
+#: wpuf.php:483
 msgid "Update WP User Frontend Pro Now"
 msgstr ""
 
-#: wpuf.php:489
+#: wpuf.php:487
 msgid "Update WP User Frontend Pro NOW"
 msgstr ""
 
-#: wpuf.php:736
+#: wpuf.php:734
 msgid "Please Cancel Your Currently Active Pack first!"
 msgstr ""
 
-#: wpuf.php:898
+#: wpuf.php:896
 msgid "Error: Nonce verification failed"
 msgstr ""
 
@@ -6493,7 +6472,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: wpuf-functions.php:1258
+#: wpuf-functions.php:1260
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

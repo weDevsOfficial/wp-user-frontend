@@ -3,9 +3,9 @@ Contributors: tareq1988, nizamuddinbabu, sk.shaikat, rabbii, itowhid06, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
-Tested up to: 5.2.3
+Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 3.1.12
+Stable tag: 3.1.13
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 

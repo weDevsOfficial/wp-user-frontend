@@ -234,7 +234,7 @@ class WPUF_Frontend_Account {
         $user_subscription = new WPUF_User_Subscription( $wpuf_user );
         $user_sub = $user_subscription->current_pack();
 
-        if ( $user_sub['status'] != "completed" ) {
+        if ( $user_sub['status'] != "completed" && $user_sub['status'] != "free" ) {
             _e( "<p>You may processed your payment, but the pack is not activated yet.</p>", 'wp-user-frontend' );
             return;
         }

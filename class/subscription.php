@@ -1178,10 +1178,9 @@ class WPUF_Subscription {
         $subscription = wpuf()->subscription->get_subscription( $pack_id );
         if ( $userdata->id && $subscription ) {
 
-            $user_meta = array(
-                'pack_id' => $pack_id,
-                'posts'   => $subscription->meta_value['post_type_name'],
-            );
+            $user_sub = WPUF_Subscription::get_user_pack( $userdata->id );
+            $post_expiration_time = wpuf_date2mysql( $user_sub['expire'] );
+
 
             $table_data = array(
                 'user_id'             => $userdata->id,
@@ -1191,7 +1190,7 @@ class WPUF_Subscription {
                 'gateway'             => 'free',
                 'transaction_id'      => 'free',
                 'starts_from'         => date( 'd-m-Y' ),
-                'expire'              => $user_meta['expire'] == '' ? 'recurring' : $user_meta['expire'],
+                'expire'              => empty( $post_expiration_time ) ? 'recurring' : $post_expiration_time,
             );
 
             $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );

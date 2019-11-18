@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: Tareq Hasan
-Version: 3.1.12
+Version: 3.1.13
 Author URI: https://tareq.co
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '3.1.12' );
+define( 'WPUF_VERSION', '3.1.13' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', dirname( __FILE__ ) );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -275,7 +275,6 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/class/subscription.php';
         require_once WPUF_ROOT . '/class/render-form.php';
         require_once WPUF_ROOT . '/class/payment.php';
-        require_once WPUF_ROOT . '/class/frontend-form-post.php';
         require_once WPUF_ROOT . '/class/frontend-account.php';
         require_once WPUF_ROOT . '/includes/class-form.php';
         require_once WPUF_ROOT . '/includes/class-form-manager.php';
@@ -352,7 +351,6 @@ final class WP_User_Frontend {
         $this->container['form_template']           = new WPUF_Admin_Form_Template();
 
         $this->container['subscription']            = WPUF_Subscription::init();
-        $this->container['frontend_post']           = WPUF_Frontend_Form_Post::init();
         $this->container['account']                 = new WPUF_Frontend_Account();
         $this->container['billing_address']         = new WPUF_Ajax_Address_Form();
         $this->container['forms']                   = new WPUF_Form_Manager();

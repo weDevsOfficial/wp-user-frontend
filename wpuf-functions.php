@@ -319,22 +319,24 @@ class WPUF_Walker_Category_Checklist extends Walker {
 
     function start_el( &$output, $category, $depth = 0, $args = array(), $current_object_id = 0 ) {
         extract( $args );
-        if ( empty( $taxonomy ) )
+        if ( empty( $taxonomy ) ) {
             $taxonomy = 'category';
+        }
 
-        if ( $taxonomy == 'category' )
+        if ( $taxonomy == 'category' ) {
             $name = 'category';
-        else
+        } else {
             $name = $taxonomy;
+        }
 
-        if ( 'yes' === $show_inline ) {
+        if ( 'yes' === $args['show_inline'] ) {
             $inline_class = 'wpuf-checkbox-inline';
         } else {
             $inline_class = '';
         }
 
         $class = isset( $args['class'] ) ? $args['class'] : '';
-        $output .= "\n<li class='" . $inline_class . "' id='{$taxonomy}-{$category->term_id}'>" . '<label class="selectit"><input class="'. $class . '" value="' . $category->term_id . '" type="checkbox" name="' . $name . '[]" id="in-' . $taxonomy . '-' . $category->term_id . '"' . checked( in_array( $category->term_id, $selected_cats ), true, false ) . disabled( empty( $args['disabled'] ), false, false ) . ' /> ' . esc_html( apply_filters( 'the_category', $category->name ) ) . '</label>';
+        $output .= "\n<li class='" . $inline_class . "' id='{$taxonomy}-{$category->term_id}'>" . '<label class="selectit"><input class="'. $class . '" value="' . $category->term_id . '" type="checkbox" name="' . $name . '[]" id="in-' . $taxonomy . '-' . $category->term_id . '"' . checked( in_array( $category->term_id, $args['selected_cats'] ), true, false ) . disabled( empty( $args['disabled'] ), false, false ) . ' /> ' . esc_html( apply_filters( 'the_category', $category->name ) ) . '</label>';
     }
 
     function end_el( &$output, $category, $depth = 0, $args = array() ) {
@@ -746,7 +748,7 @@ function wpuf_show_custom_fields( $content ) {
             switch ( $attr['input_type'] ) {
                 case 'image_upload':
                 case 'file_upload':
-                    $image_html  = '<li>';
+                    $image_html  = '<li style="list-style-type:none;">';
 
                     if ( $hide_label == 'no' ) {
                         $image_html .= '<label>' . $attr['label'] . ':</label> ';
@@ -2760,8 +2762,8 @@ function wpuf_select( $args = array() ) {
         'chosen'           => false,
         'placeholder'      => null,
         'multiple'         => false,
-        'show_option_all'  => __( 'All', 'all dropdown items', 'wp-user-frontend' ),
-        'show_option_none' => __( 'None', 'no dropdown items', 'wp-user-frontend' ),
+        'show_option_all'  => __( 'All', 'wp-user-frontend', 'wp-user-frontend' ),
+        'show_option_none' => __( 'None', 'wp-user-frontend', 'wp-user-frontend' ),
         'data'             => array(),
         'readonly'         => false,
         'disabled'         => false,

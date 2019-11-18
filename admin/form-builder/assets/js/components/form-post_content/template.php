@@ -10,11 +10,12 @@
         v-if="'no' === field.rich"
         :class="class_names('textareafield')"
         :placeholder="field.placeholder"
+        :default_text="field.default"
         :rows="field.rows"
         :cols="field.cols"
     >{{ field.default }}</textarea>
 
-    <text-editor v-if="'no' !== field.rich" :rich="field.rich"></text-editor>
+    <text-editor v-if="'no' !== field.rich" :rich="field.rich" :default_text="field.default"></text-editor>
 
     <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
 </div>

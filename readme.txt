@@ -95,7 +95,7 @@ Approve or make pending membership requests. View all details from a single scre
 
 <strong>Manage or Import/Export forms</strong>
 
-Install required WPUF pages in a click, delete post forms, registration forms or subscriptions in one go. Import forms from other places and export forms as CSV.
+Install required WPUF pages in a click, delete post forms, registration forms or subscriptions in one go. Import forms from other places and export forms as JSON.
 
 <strong>Custom Login/Registration Form</strong>
 
@@ -256,6 +256,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.1.13 (18 November, 2019) =
+
+* **New:** Added Arabic translations.
+* **Fix:** Free subscription info was not showing in dashboard.
+* **Fix:** Fixed subscriptions can't be assigned from user profile due to a regression.
+* **Fix:** Fixed some column field issues. closes #734
+* **Fix:** Guest post hook was not working properly. Closes #704
+* **Fix:** Fixed missing default value for post content rich text editor. Closes #730
 
 = v3.1.12 (17 October, 2019) =
 

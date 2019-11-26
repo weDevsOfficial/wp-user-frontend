@@ -40,7 +40,7 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
             <div class="wpuf-fields">
                 <input
                     id="<?php echo $field_settings['name'] . '_' . $form_id; ?>"
-                    type="url" class="url <?php echo ' wpuf_'.$field_settings['name'].'_'.$form_id; ?>"
+                    type="url" pattern="^(https?://)?([a-zA-Z0-9]([a-zA-ZäöüÄÖÜ0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$" class="url <?php echo ' wpuf_'.$field_settings['name'].'_'.$form_id; ?>"
                     data-required="<?php echo $field_settings['required'] ?>"
                     data-type="text"
                     name="<?php echo esc_attr( $field_settings['name'] ); ?>"

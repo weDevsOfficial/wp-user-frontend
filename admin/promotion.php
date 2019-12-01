@@ -20,160 +20,135 @@ class WPUF_Admin_Promotion {
      * @return void
      */
     public function promotional_offer() {
-        // Show only to Admins
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
 
-        // 2018-03-26 23:59:00
-        if ( time() > 1543276740 ) {
+        if ( ! isset( $_GET['page'] ) ) {
             return;
         }
 
         // check if it has already been dismissed
-        $hide_notice = get_option( 'wpuf_promotional_offer_notice', 'no' );
+        $offer_key        = 'wpuf_promotional_offer_notice';
+        $offer_start_date = strtotime( '2019-11-26 00:00:01' );
+        $offer_end_date   = strtotime( '2019-12-04 23:59:00' );
+        $hide_notice      = get_option( $offer_key, 'show' );
 
         if ( 'hide' == $hide_notice ) {
             return;
         }
 
-        // $product_text = (  wpuf()->is_pro() ) ? __( 'Pro upgrade and all extensions, ', 'wpuf' ) : __( 'all extensions, ', 'wpuf' );
-
-        // $offer_msg  = __( '<h2><span class="dashicons dashicons-awards"></span> weDevs 5th Birthday Offer</h2>', 'wpuf' );
-        $offer_msg = __( '<p>
-                                        <strong class="highlight-text" style="font-size: 18px">33&#37; flat discount on all our products</strong><br>
-                                        Save money this holiday season while supercharging your WordPress site with plugins that were made to empower you.
-                                        <br>
-                                        Offer ending soon!
-                                    </p>', 'wp-user-frontend' );
-
-        ?>
-            <div class="notice is-dismissible" id="wpuf-promotional-offer-notice">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td class="image-container">
-                                <img src="https://ps.w.org/wp-user-frontend/assets/icon-256x256.png" alt="">
-                            </td>
-                            <td class="message-container">
-                                <?php echo $offer_msg; ?>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <span class="dashicons dashicons-megaphone"></span>
-                <a href="https://wedevs.com/coupons/?utm_campaign=black_friday_cyber_monday&utm_medium=banner&utm_source=inside_plugin" class="button button-primary promo-btn" target="_blank"><?php _e( 'Get the Offer', 'wp-user-frontend' ); ?></a>
-            </div><!-- #wpuf-promotional-offer-notice -->
+        if ( $offer_start_date < current_time( 'timestamp' ) && current_time( 'timestamp' ) < $offer_end_date ) {
+            ?>
+            <div class="notice notice-success is-dismissible" id="wpuf-bfcm-notice">
+                <div class="logo">
+                    <img src="<?php echo WPUF_ASSET_URI . '/images/promo-logo.png' ?>" alt="WPUF">
+                </div>
+                <div class="content">
+                    <h3><span class="highlight-red">Black Friday</span> &amp; <span
+                            class="highlight-blue">Cyber Monday</span></h3>
+                    <p>Don't miss out on the biggest sale of the year on <span class="highlight-red">WP User Frontend</span></p>
+                    <div class="coupon-box">
+                        <div class="highlight-red">Use this coupon</div>
+                        <div class="highlight-code">BFCM2019</div>
+                    </div>
+                </div>
+                <div class="call-to-action">
+                    <a href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_campaign=black_friday_&_cyber_monday&utm_medium=banner&utm_source=plugin_dashboard">Save 33%</a>
+                    <p>Valid till 4th December.</p>
+                </div>
+            </div>
 
             <style>
-                #wpuf-promotional-offer-notice {
-                    background-image: url("<?php echo WPUF_ASSET_URI . '/images/promotional-offer/bg.png' ?>");
-                    background-size: cover;
-                    border: 0px;
-                    padding: 0;
-                    opacity: 0;
-                }
-
-                .wrap > #wpuf-promotional-offer-notice {
-                    opacity: 1;
-                }
-
-                #wpuf-promotional-offer-notice table {
-                    border-collapse: collapse;
-                    width: 100%;
-                }
-
-                #wpuf-promotional-offer-notice table td {
-                    padding: 0;
-                }
-
-                #wpuf-promotional-offer-notice table td.image-container {
-                    background-color: #fff;
-                    vertical-align: middle;
-                    width: 95px;
-                }
-
-
-                #wpuf-promotional-offer-notice img {
-                    max-width: 100%;
-                    max-height: 100px;
-                    vertical-align: middle;
-                }
-
-                #wpuf-promotional-offer-notice table td.message-container {
-                    padding: 0 10px;
-                }
-
-                #wpuf-promotional-offer-notice h2{
-                    color: rgba(250, 250, 250, 0.77);
-                    margin-bottom: 10px;
-                    font-weight: normal;
-                    margin: 16px 0 14px;
-                    -webkit-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -moz-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -o-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                }
-
-
-                #wpuf-promotional-offer-notice h2 span {
-                    position: relative;
-                    top: 0;
-                }
-
-                #wpuf-promotional-offer-notice p{
-                    color: rgba(250, 250, 250, 0.77);
+                #wpuf-bfcm-notice {
                     font-size: 14px;
-                    margin-bottom: 10px;
-                    -webkit-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -moz-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -o-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                }
-
-                #wpuf-promotional-offer-notice p strong.highlight-text{
+                    border-left: none;
+                    background: #000;
                     color: #fff;
+                    display: flex
                 }
 
-                #wpuf-promotional-offer-notice p a {
-                    color: #fafafa;
-                }
-
-                #wpuf-promotional-offer-notice .notice-dismiss:before {
-                    color: #fff;
-                }
-
-                #wpuf-promotional-offer-notice span.dashicons-megaphone {
-                    position: absolute;
-                    bottom: 46px;
-                    right: 248px;
-                    color: rgba(253, 253, 253, 0.29);
-                    font-size: 96px;
-                    transform: rotate(-21deg);
-                }
-
-                #wpuf-promotional-offer-notice a.promo-btn{
-                    background: #fff;
-                    border-color: #fafafa #fafafa #fafafa;
-                    box-shadow: 0 1px 0 #fafafa;
-                    color: #4caf4f;
-                    text-decoration: none;
-                    text-shadow: none;
-                    position: absolute;
-                    top: 30px;
-                    right: 26px;
-                    height: 40px;
-                    line-height: 40px;
-                    width: 130px;
+                #wpuf-bfcm-notice .logo {
                     text-align: center;
-                    font-weight: 600;
+                    text-align: center;
+                    margin: 13px 30px 5px 15px;
                 }
 
+                #wpuf-bfcm-notice .logo img {
+                    width: 80%;
+                }
+
+                #wpuf-bfcm-notice .highlight-red {
+                    color: #FF0000;
+                }
+
+                #wpuf-bfcm-notice .highlight-blue {
+                    color: #48ABFF;
+                }
+
+                #wpuf-bfcm-notice .content {
+                    margin-top: 5px;
+                }
+
+                #wpuf-bfcm-notice .content h3 {
+                    color: #FFF;
+                    margin: 12px 0px 5px;
+                    font-weight: normal;
+                    font-size: 20px;
+                }
+
+                #wpuf-bfcm-notice .content p {
+                    margin: 0px 0px;
+                    padding: 0px;
+                    letter-spacing: 0.4px;
+                }
+
+                #wpuf-bfcm-notice .coupon-box {
+                    margin-top: 10px;
+                    display: flex;
+                    align-items: center;
+                    font-size: 17px;
+                }
+
+                #wpuf-bfcm-notice .coupon-box .highlight-code {
+                    margin-left: 15px;
+                    border: 1px dashed;
+                    padding: 4px 10px;
+                    border-radius: 15px;
+                    letter-spacing: 1px;
+                    background: #1E1B1B;
+
+                    -webkit-user-select: all;
+                    -moz-user-select: all;
+                    -ms-user-select: all;
+                    user-select: all;
+                }
+
+                #wpuf-bfcm-notice .call-to-action {
+                    margin-left: 8%;
+                    margin-top: 25px;
+                }
+
+                #wpuf-bfcm-notice .call-to-action a {
+                    border: none;
+                    background: #FF0000;
+                    padding: 8px 15px;
+                    font-size: 15px;
+                    color: #fff;
+                    border-radius: 20px;
+                    text-decoration: none;
+                    display: block;
+                    text-align: center;
+                }
+
+                #wpuf-bfcm-notice .call-to-action p {
+                    font-size: 12px;
+                    margin-top: 1px;
+                }
             </style>
 
             <script type='text/javascript'>
-                jQuery('body').on('click', '#wpuf-promotional-offer-notice .notice-dismiss', function(e) {
+                jQuery('body').on('click', '#wpuf-bfcm-notice .notice-dismiss', function (e) {
                     e.preventDefault();
 
                     wp.ajax.post('wpuf-dismiss-promotional-offer-notice', {
@@ -181,7 +156,8 @@ class WPUF_Admin_Promotion {
                     });
                 });
             </script>
-        <?php
+            <?php
+        }
     }
 
     /**

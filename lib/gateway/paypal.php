@@ -220,7 +220,15 @@ class WPUF_Paypal {
                 'notify_url'    => $listener_url,
             );
         }
+
         $this->set_mode();
+
+        /**
+         * Filter: wpuf_paypal_args
+         *
+         * @since 3.1.13
+         */
+        $paypal_args = apply_filters( 'wpuf_paypal_args', $paypal_args );
 
         $paypal_url =  $this->gateway_url . http_build_query( $paypal_args );
 

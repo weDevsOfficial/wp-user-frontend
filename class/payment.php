@@ -388,6 +388,13 @@ class WPUF_Payment {
                 update_user_meta( $userdata->ID, 'wpuf_address_fields', $address_fields );
             }
 
+            /**
+             * Filter: wpuf_payment_vars
+             *
+             * @since 3.1.13
+             */
+            $payment_vars = apply_filters( 'wpuf_payment_vars', $payment_vars );
+
             do_action( 'wpuf_gateway_' . $gateway, $payment_vars );
         }
     }

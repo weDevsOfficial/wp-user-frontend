@@ -3098,14 +3098,17 @@ function wpuf_settings_multiselect( $args ) {
 /**
  * Filters custom avatar url
  *
- * @param array $args
+ * @param $args
+ * @param $id_or_email
+ *
+ * @return mixed
  */
 function wpuf_get_custom_avatar( $args, $id_or_email ) {
     $user_id = $id_or_email;
 
     if ( $id_or_email instanceof WP_Comment ){
         $user_id = $id_or_email->user_id;
-    } elseif ( is_email( $id_or_email ) ) {
+    } elseif ( is_string( $id_or_email ) && is_email( $id_or_email ) ) {
         $user_id = email_exists( $id_or_email );
     }
 

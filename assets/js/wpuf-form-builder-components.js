@@ -1110,11 +1110,11 @@ Vue.component('form-column_field', {
                         colTwoWidth = 0,
                         colThreeWidth = 0;
 
-                    if (columnsNumber === 3) {
+                    if (columnsNumber == 3) {
                         colOneWidth = 100/columnsNumber;
                         colTwoWidth = 100/columnsNumber;
                         colThreeWidth = 100/columnsNumber;
-                    } else if (columnsNumber === 2){
+                    } else if (columnsNumber == 2){
                         colOneWidth = 100/columnsNumber;
                         colTwoWidth = 100/columnsNumber;
                         colThreeWidth = 0;

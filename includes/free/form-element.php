@@ -213,7 +213,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                 <th><?php _e( 'Notification', 'wp-user-frontend' ); ?></th>
                 <td>
                     <label>
-                        <input type="hidden" name="wpuf_settings[notification][new]" value="on">
+                        <input type="hidden" name="wpuf_settings[notification][new]" value="off">
                         <input type="checkbox" name="wpuf_settings[notification][new]" value="on"<?php checked( $new_notificaton, 'on' ); ?>>
                         <?php _e( 'Enable post notification', 'wp-user-frontend' ); ?>
                     </label>

@@ -4,7 +4,7 @@
  *
  * @version 2.8.8
  *
- * @var $pack WP_Post
+ * @var WP_Post
  * @var $billing_amount
  * @var $details_meta
  * @var $recurring_des
@@ -12,7 +12,6 @@
  * @var $coupon_status
  * @var $current_pack_id
  * @var $button_name
- *
  */
 ?>
 <div class="wpuf-pricing-wrap">
@@ -25,7 +24,7 @@
             <span class="wpuf-sub-cost"><?php _e( 'Free', 'wp-user-frontend' ); ?></span>
         <?php } ?>
 
-        <?php _e( $recurring_des , 'wp-user-frontend' ); ?>
+        <?php _e( $recurring_des, 'wp-user-frontend' ); ?>
 
     </div>
     <?php
@@ -47,7 +46,7 @@ if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_pay' || $coupon_status
 }
 ?>
 <div class="wpuf-sub-button">
-    <a <?php echo ( $current_pack_status == 'completed' ) ? ' class = "wpuf-disabled-link" ' : '' ;?>  href="<?php echo ( $current_pack_status == 'completed' ) ? 'javascript:' : add_query_arg( $query_args, $query_url ) ?>" onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
+    <a <?php echo ( $current_pack_status == 'completed' ) ? ' class = "wpuf-disabled-link" ' : ''; ?>  href="<?php echo ( $current_pack_status == 'completed' ) ? 'javascript:' : add_query_arg( $query_args, $query_url ); ?>" onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
         <?php echo $button_name; ?>
     </a>
 </div>

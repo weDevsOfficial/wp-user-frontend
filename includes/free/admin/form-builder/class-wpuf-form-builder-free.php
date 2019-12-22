@@ -3,7 +3,6 @@
  * Form Builder framework
  */
 class WPUF_Admin_Form_Builder_Free {
-
     /**
      * Class construction
      *
@@ -11,8 +10,5 @@ class WPUF_Admin_Form_Builder_Free {
      *
      * @return void
      */
-    public function __construct() {
-        
-    }
-
+    public function __construct() {}
 }

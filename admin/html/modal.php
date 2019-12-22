@@ -1,17 +1,17 @@
 <div id="wpuf-form-template-modal">
     <div class="wpuf-form-template-modal">
 
-        <span id="modal-label" class="screen-reader-text"><?php _e( 'Modal window. Press escape to close.',  'wp-user-frontend'  ); ?></span>
-        <a href="#" class="close">× <span class="screen-reader-text"><?php _e( 'Close modal window',  'wp-user-frontend'  ); ?></span></a>
+        <span id="modal-label" class="screen-reader-text"><?php _e( 'Modal window. Press escape to close.', 'wp-user-frontend'  ); ?></span>
+        <a href="#" class="close">× <span class="screen-reader-text"><?php _e( 'Close modal window', 'wp-user-frontend'  ); ?></span></a>
 
         <header class="modal-header">
             <h2>
                 <?php _e( 'Select a Template', 'wp-user-frontend' ); ?>
                 <small><?php
-                printf(
+                printf( 
                     __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ),
                     $blank_form_url
-                ); ?></small>
+                 ); ?></small>
             </h2>
         </header>
 
@@ -30,57 +30,59 @@
                         <div class="form-create-overlay">
                             <div class="title"><?php _e( 'Blank Form', 'wp-user-frontend' ); ?></div>
                             <br>
-                            <a href="<?php echo $blank_form_url; ?>" class="button button-primary" title="<?php echo esc_attr('Blank Form'); ?>">
-                                <?php _e('Create Form', 'wp-user-frontend' );  ?>
+                            <a href="<?php echo $blank_form_url; ?>" class="button button-primary" title="<?php echo esc_attr( 'Blank Form' ); ?>">
+                                <?php _e( 'Create Form', 'wp-user-frontend' ); ?>
                             </a>
                         </div>
                     </li>
 
                     <?php
-                    foreach ($registry as $key => $template ) {
-                        $class = 'template-active';
-                        $title = $template->title;
-                        $image = $template->image ? $template->image : '';
+                    foreach ( $registry as $key => $template ) {
+                        $class    = 'template-active';
+                        $title    = $template->title;
+                        $image    = $template->image ? $template->image : '';
                         $disabled = '';
 
-                        $url   = esc_url( add_query_arg( array(
+                        $url   = esc_url( add_query_arg( [
                             'action'   => $action_name,
                             'template' => $key,
-                            '_wpnonce' => wp_create_nonce( 'wpuf_create_from_template' )
-                        ), admin_url( 'admin.php' ) ) );
+                            '_wpnonce' => wp_create_nonce( 'wpuf_create_from_template' ),
+                        ], admin_url( 'admin.php' ) ) );
 
-                        if ( ! $template->is_enabled() ) {
-                            $url   = '#';
-                            $class = 'template-inactive';
-                            $title = __( 'This integration is not installed.', 'wp-user-frontend' );
+                        if ( !$template->is_enabled() ) {
+                            $url      = '#';
+                            $class    = 'template-inactive';
+                            $title    = __( 'This integration is not installed.', 'wp-user-frontend' );
                             $disabled = 'disabled';
-                        }
-                        ?>
+                        } ?>
 
                         <li class="<?php echo $class; ?>">
                             <h3><?php echo $template->get_title(); ?></h3>
-                            <?php if ( $image ) { printf( '<img src="%s" alt="%s">', $image, $title );   }  ?>
+                            <?php if ( $image ) {
+                            printf( '<img src="%s" alt="%s">', $image, $title );
+                        } ?>
 
                             <div class="form-create-overlay">
                                 <div class="title"><?php echo $title; ?></div>
                                 <div class="description"><?php echo $template->get_description(); ?></div>
                                 <br>
-                                <a href="<?php echo $url; ?>" class="button button-primary" title="<?php echo $template->get_title(); ?>" <?php echo $disabled ?>>
-                                    <?php _e('Create Form', 'wp-user-frontend' );  ?>
+                                <a href="<?php echo $url; ?>" class="button button-primary" title="<?php echo $template->get_title(); ?>" <?php echo $disabled; ?>>
+                                    <?php _e( 'Create Form', 'wp-user-frontend' ); ?>
                                 </a>
                             </div>
                         </li>
 
-                    <?php } ?>
+                    <?php
+                    } ?>
                 </ul>
             </div>
         </div>
 
-        <?php if ( $footer_help ) : ?>
+        <?php if ( $footer_help ) { ?>
             <footer>
                 <?php echo $footer_help; ?>
             </footer>
-        <?php endif; ?>
+        <?php } ?>
     </div>
     <div class="wpuf-form-template-modal-backdrop"></div>
 </div>

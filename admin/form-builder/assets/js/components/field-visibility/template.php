@@ -13,22 +13,20 @@
 
     <div v-if="'logged_in' === selected" class="condiotional-logic-container">
 
-    	<?php $roles = get_editable_roles() ?>
+    	<?php $roles = get_editable_roles(); ?>
 
     	<ul>
 			<?php
-				foreach ($roles as $role => $value) {
+                foreach ( $roles as $role => $value ) {
+                    $role_name = $value['name'];
 
-					$role_name = $value['name'];
+                    $output  = '<li>';
+                    $output .= "<label><input type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
+                    $output .= '</li>';
 
-					$output  = "<li>";
-					$output .= "<label><input type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
-					$output .= "</li>";
-
-					echo $output;
-
-				}
-			?>
+                    echo $output;
+                }
+            ?>
 	    </ul>
     </div>
 
@@ -41,14 +39,12 @@
                     $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
 
                     if ( $subscriptions ) {
-                        foreach ($subscriptions as $pack) {
-
-                            $output  = "<li>";
+                        foreach ( $subscriptions as $pack ) {
+                            $output  = '<li>';
                             $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
-                            $output .= "</li>";
+                            $output .= '</li>';
 
                             echo $output;
-
                         }
                     } else {
                         _e( 'No subscription plan found.', 'wp-user-frontend' );

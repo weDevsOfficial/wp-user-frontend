@@ -5,7 +5,7 @@
  */
 class WPUF_Form_Field_Image extends WPUF_Field_Contract {
 
-    function __construct() {
+    public function __construct() {
         $this->name       = __( 'Image Upload', 'wp-user-frontend' );
         $this->input_type = 'image_upload';
         $this->icon       = 'file-image-o';
@@ -14,26 +14,22 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
     /**
      * Render the Image field
      *
-     * @param  array  $field_settings
-     * @param  integer  $form_id
-     * @param  string  $type
-     * @param  integer  $post_id
+     * @param array  $field_settings
+     * @param int    $form_id
+     * @param string $type
+     * @param int    $post_id
      *
      * @return void
      */
-    public function render( $field_settings, $form_id, $type = 'post', $post_id = null) {
-
+    public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
         $has_images         = false;
 
-        if ( isset($post_id) &&  $post_id != '0' ) {
-
+        if ( isset( $post_id ) && $post_id != '0' ) {
             if ( $this->is_meta( $field_settings ) ) {
-
                 $images = $this->get_meta( $post_id, $field_settings['name'], $type, false );
 
                 if ( $images ) {
-
-                    if( is_serialized( $images[0] ) ) {
+                    if ( is_serialized( $images[0] ) ) {
                         $images = maybe_unserialize( $images[0] );
                     }
 
@@ -43,18 +39,14 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
                 }
                 $has_images         = true;
             }
-
         }
 
         $unique_id = sprintf( '%s-%d', $field_settings['name'], $form_id );
 
+        $this->field_print_label( $field_settings, $form_id );
 
-        $this->field_print_label($field_settings, $form_id );
-        
         // Check for the existance of 'button_label' and fallback to label if it is not found
-        $label = array_key_exists( 'button_label', $field_settings ) ? $field_settings['button_label'] : $field_settings['label'];
-
-    ?>
+        $label = array_key_exists( 'button_label', $field_settings ) ? $field_settings['button_label'] : $field_settings['label']; ?>
 
             <div class="wpuf-fields">
                 <div id="wpuf-<?php echo $unique_id; ?>-upload-container">
@@ -64,12 +56,11 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
                         <ul class="wpuf-attachment-list thumbnails">
 
                             <?php
-                                    if ( $has_images ) {
-                                        foreach ($images as $attach_id) {
-                                            echo WPUF_Upload::attach_html( $attach_id, $field_settings['name'] );
-                                        }
-                                    }
-                            ?>
+                            if ( $has_images ) {
+                                foreach ( $images as $attach_id ) {
+                                    echo WPUF_Upload::attach_html( $attach_id, $field_settings['name'] );
+                                }
+                            } ?>
                         </ul>
                     </div>
                 </div><!-- .container -->
@@ -79,9 +70,9 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
             </div> <!-- .wpuf-fields -->
 
             <script type="text/javascript">
-                ;(function($) {
+                (function($) {
                     $(document).ready( function(){
-                        var uploader = new WPUF_Uploader('wpuf-<?php echo $unique_id; ?>-pickfiles', 'wpuf-<?php echo $unique_id; ?>-upload-container', <?php echo $field_settings['count']; ?>, '<?php echo $field_settings['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $field_settings['max_size'] ?>);
+                        var uploader = new WPUF_Uploader('wpuf-<?php echo $unique_id; ?>-pickfiles', 'wpuf-<?php echo $unique_id; ?>-upload-container', <?php echo $field_settings['count']; ?>, '<?php echo $field_settings['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $field_settings['max_size']; ?>);
                         wpuf_plupload_items.push(uploader);
                     });
                 })(jQuery);
@@ -89,7 +80,6 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
 
 
         <?php $this->after_field_print_label();
-
     }
 
     /**
@@ -98,27 +88,27 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options      = $this->get_default_option_settings(true, array('dynamic', 'width') ); // exclude dynamic
+        $default_options      = $this->get_default_option_settings( true, ['dynamic', 'width'] ); // exclude dynamic
 
-        $settings = array(
-            array(
+        $settings = [
+            [
                 'name'          => 'max_size',
                 'title'         => __( 'Max. file size', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'advanced',
                 'priority'      => 20,
                 'help_text'     => __( 'Enter maximum upload size limit in KB', 'wp-user-frontend' ),
-            ),
+            ],
 
-            array(
+            [
                 'name'          => 'count',
                 'title'         => __( 'Max. files', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'advanced',
                 'priority'      => 21,
                 'help_text'     => __( 'Number of images can be uploaded', 'wp-user-frontend' ),
-            ),
-            array(
+            ],
+            [
                 'name'          => 'button_label',
                 'title'         => __( 'Button Label', 'wp-user-frontend' ),
                 'type'          => 'text',
@@ -126,8 +116,8 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
                 'section'       => 'basic',
                 'priority'      => 22,
                 'help_text'     => __( 'Enter a label for the Select button', 'wp-user-frontend' ),
-            )
-        );
+            ],
+        ];
 
         return array_merge( $default_options, $settings );
     }
@@ -139,7 +129,7 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
      */
     public function get_field_props() {
         $defaults = $this->default_attributes();
-        $props    = array(
+        $props    = [
             'input_type'        => 'image_upload',
             'max_size'          => '1024',
             'count'             => '1',
@@ -151,7 +141,7 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
             'is_new'            => true,
             'show_in_post'      => 'yes',
             'hide_field_label'  => 'no',
-        );
+        ];
 
         return array_merge( $defaults, $props );
     }
@@ -164,6 +154,6 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
      * @return @return mixed
      */
     public function prepare_entry( $field ) {
-       return isset( $_POST['wpuf_files'][$field['name']] ) ? $_POST['wpuf_files'][$field['name']] : array();
+        return isset( $_POST['wpuf_files'][$field['name']] ) ? $_POST['wpuf_files'][$field['name']] : [];
     }
 }

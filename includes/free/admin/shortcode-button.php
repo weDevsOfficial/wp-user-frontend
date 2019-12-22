@@ -11,47 +11,46 @@ class WPUF_Shortcodes_Button {
      * Constructor for shortcode class
      */
     public function __construct() {
+        add_filter( 'mce_external_plugins', [ $this, 'enqueue_plugin_scripts' ] );
+        add_filter( 'mce_buttons', [ $this, 'register_buttons_editor' ] );
 
-        add_filter( 'mce_external_plugins',  array( $this, 'enqueue_plugin_scripts' ) );
-        add_filter( 'mce_buttons',  array( $this, 'register_buttons_editor' ) );
+        add_action( 'admin_enqueue_scripts', [ $this, 'localize_shortcodes' ], 90  );
+        add_action( 'admin_enqueue_scripts', [$this, 'enqueue_scripts'], 80 );
 
-        add_action( 'admin_enqueue_scripts', array( $this, 'localize_shortcodes' ) , 90  );
-        add_action( 'admin_enqueue_scripts', array($this, 'enqueue_scripts'), 80 );
-
-        add_action( 'media_buttons', array( $this, 'add_media_button' ), 20 );
-        add_action( 'admin_footer', array( $this, 'media_thickbox_content' ) );
+        add_action( 'media_buttons', [ $this, 'add_media_button' ], 20 );
+        add_action( 'admin_footer', [ $this, 'media_thickbox_content' ] );
     }
-
 
     /**
      * Enqueue scripts and styles for form builder
      *
      * @global string $pagenow
+     *
      * @return void
      */
-    function enqueue_scripts() {
+    public function enqueue_scripts() {
         global $pagenow;
 
-        if ( !in_array( $pagenow, array( 'post.php', 'post-new.php') ) ) {
+        if ( !in_array( $pagenow, [ 'post.php', 'post-new.php'] ) ) {
             return;
         }
 
-        wp_enqueue_script( 'wpuf-shortcode', WPUF_ASSET_URI . '/js/admin-shortcode.js', array('jquery') );
+        wp_enqueue_script( 'wpuf-shortcode', WPUF_ASSET_URI . '/js/admin-shortcode.js', ['jquery'] );
     }
 
     /**
      * Adds a media button (for inserting a form) to the Post Editor
      *
-     * @param  int  $editor_id The editor ID
+     * @param int $editor_id The editor ID
+     *
      * @return void
      */
-    function add_media_button( $editor_id ) {
+    public function add_media_button( $editor_id ) {
         ?>
             <a href="#TB_inline?width=480&amp;inlineId=wpuf-media-dialog" class="button thickbox insert-form" data-editor="<?php echo esc_attr( $editor_id ); ?>" title="<?php _e( 'Add a Form', 'wp-user-frontend' ); ?>">
                 <?php echo '<span class="wp-media-buttons-icon dashicons dashicons-welcome-widgets-menus"></span>' . __( ' Add Form', 'wp-user-frontend' ); ?>
             </a>
         <?php
-
     }
 
     /**
@@ -62,47 +61,45 @@ class WPUF_Shortcodes_Button {
     public function media_thickbox_content() {
         global $pagenow;
 
-        if ( !in_array( $pagenow, array( 'post.php', 'post-new.php') ) ) {
+        if ( !in_array( $pagenow, [ 'post.php', 'post-new.php'] ) ) {
             return;
         }
 
-        include dirname( __FILE__ ) . '/shortcode-builder.php';
+        include __DIR__ . '/shortcode-builder.php';
     }
 
     /**
      * Generate shortcode array
      *
      * @since 2.5.2
-     *
      */
-    function localize_shortcodes() {
-
-        $shortcodes = apply_filters( 'wpuf_page_shortcodes', array(
-            'wpuf-dashboard'=> array(
+    public function localize_shortcodes() {
+        $shortcodes = apply_filters( 'wpuf_page_shortcodes', [
+            'wpuf-dashboard'=> [
                 'title'   => __( 'Dashboard', 'wp-user-frontend' ),
-                'content' => '[wpuf_dashboard]'
-            ),
-            'wpuf-account'  => array(
+                'content' => '[wpuf_dashboard]',
+            ],
+            'wpuf-account'  => [
                 'title'   => __( 'Account', 'wp-user-frontend' ),
-                'content' => '[wpuf_account]'
-            ),
-            'wpuf-edit'     => array(
+                'content' => '[wpuf_account]',
+            ],
+            'wpuf-edit'     => [
                 'title'   => __( 'Edit', 'wp-user-frontend' ),
-                'content' => '[wpuf_edit]'
-            ),
-            'wpuf-login'    => array(
+                'content' => '[wpuf_edit]',
+            ],
+            'wpuf-login'    => [
                 'title'   => __( 'Login', 'wp-user-frontend' ),
-                'content' => '[wpuf-login]'
-            ),
-            'wpuf-registration'    => array(
+                'content' => '[wpuf-login]',
+            ],
+            'wpuf-registration'    => [
                 'title'   => __( 'Registration', 'wp-user-frontend' ),
-                'content' => '[wpuf-registration]'
-            ),
-            'wpuf-sub-pack' => array(
+                'content' => '[wpuf-registration]',
+            ],
+            'wpuf-sub-pack' => [
                 'title'   => __( 'Subscription', 'wp-user-frontend' ),
-                'content' => '[wpuf_sub_pack]'
-            )
-        ) );
+                'content' => '[wpuf_sub_pack]',
+            ],
+        ] );
 
         $assets_url = WPUF_ASSET_URI;
 
@@ -136,9 +133,9 @@ class WPUF_Shortcodes_Button {
      *
      * @return array
      */
-    function enqueue_plugin_scripts( $plugin_array ) {
+    public function enqueue_plugin_scripts( $plugin_array ) {
         //enqueue TinyMCE plugin script with its ID.
-        $plugin_array["wpuf_button"] =  WPUF_ASSET_URI . "/js/wpuf-tmc-button.js";
+        $plugin_array['wpuf_button'] =  WPUF_ASSET_URI . '/js/wpuf-tmc-button.js';
 
         return $plugin_array;
     }
@@ -152,13 +149,12 @@ class WPUF_Shortcodes_Button {
      *
      * @return array
      */
-    function register_buttons_editor( $buttons ) {
+    public function register_buttons_editor( $buttons ) {
         //register buttons with their id.
-        array_push( $buttons, "wpuf_button" );
+        array_push( $buttons, 'wpuf_button' );
 
         return $buttons;
     }
-
 }
 
 WPUF_Shortcodes_Button::init();

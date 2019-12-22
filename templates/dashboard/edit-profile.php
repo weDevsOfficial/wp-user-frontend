@@ -20,7 +20,7 @@ ob_start();
         </li>
         <li class="wpuf-el form-row-last">
             <div class="wpuf-label" >
-                <label for="last_name"><?php _e('Last Name ', 'wp-user-frontend' ); ?><span class="required">*</span></label>
+                <label for="last_name"><?php _e( 'Last Name ', 'wp-user-frontend' ); ?><span class="required">*</span></label>
             </div>
             <div class="wpuf-fields" >
                 <input type="text" class="input-text" name="last_name" id="last_name" value="<?php echo $current_user->last_name; ?>" required>

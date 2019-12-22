@@ -1,6 +1,6 @@
 <?php
 
-if ( ! class_exists( 'WP_List_Table' ) ) {
+if ( !class_exists( 'WP_List_Table' ) ) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
@@ -21,11 +21,11 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
     public function __construct() {
         global $status, $page, $page_status;
 
-        parent::__construct( array(
+        parent::__construct( [
             'singular' => 'post-form',
             'plural'   => 'post-forms',
-            'ajax'     => false
-        ) );
+            'ajax'     => false,
+        ] );
     }
 
     /**
@@ -36,14 +36,14 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return array
      */
     public function get_views() {
-        $status_links   = array();
+        $status_links   = [];
         $base_link      = admin_url( 'admin.php?page=wpuf-post-forms' );
 
-        $post_statuses  = apply_filters( 'wpuf_post_forms_list_table_post_statuses', array(
+        $post_statuses  = apply_filters( 'wpuf_post_forms_list_table_post_statuses', [
             'all'       => __( 'All', 'wp-user-frontend' ),
             'publish'   => __( 'Published', 'wp-user-frontend' ),
-            'trash'     => __( 'Trash', 'wp-user-frontend' )
-        ) );
+            'trash'     => __( 'Trash', 'wp-user-frontend' ),
+        ] );
 
         $current_status = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'all';
 
@@ -78,7 +78,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
             $status_links[ $status ] = sprintf(
                 '<a class="%s" href="%s">%s <span class="count">(%s)</span></a>',
                 $class, $link, $status_title, $count
-            );
+             );
         }
 
         return apply_filters( 'wpuf_post_forms_list_table_get_views', $status_links, $post_statuses, $current_status );
@@ -103,9 +103,9 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return array
      */
     public function get_bulk_actions() {
-        $actions = array();
+        $actions = [];
 
-        if ( ! isset( $_GET['post_status'] ) || 'trash' !== $_GET['post_status'] ) {
+        if ( !isset( $_GET['post_status'] ) || 'trash' !== $_GET['post_status'] ) {
             $actions['trash'] = __( 'Move to Trash', 'wp-user-frontend' );
         }
 
@@ -128,31 +128,29 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return void
      */
     public function search_box( $text, $input_id ) {
-        if ( empty( $_GET['s'] ) && ! $this->has_items() ) {
+        if ( empty( $_GET['s'] ) && !$this->has_items() ) {
             return;
         }
 
-        if ( ! empty( $_GET['orderby'] ) ) {
+        if ( !empty( $_GET['orderby'] ) ) {
             echo '<input type="hidden" name="orderby" value="' . esc_attr( $_GET['orderby'] ) . '" />';
         }
 
-        if ( ! empty( $_GET['order'] ) ) {
+        if ( !empty( $_GET['order'] ) ) {
             echo '<input type="hidden" name="order" value="' . esc_attr( $_GET['order'] ) . '" />';
         }
 
-        if ( ! empty( $_GET['post_status'] ) ) {
+        if ( !empty( $_GET['post_status'] ) ) {
             echo '<input type="hidden" name="post_status" value="' . esc_attr( $_GET['post_status'] ) . '" />';
         }
 
         do_action( 'wpuf_post_forms_list_table_search_box', $text, $input_id );
 
-        $input_id = $input_id . '-search-input';
-
-        ?>
+        $input_id = $input_id . '-search-input'; ?>
         <p class="search-box">
-            <label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-            <input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
-            <?php submit_button( $text, 'button', 'post_form_search', false, array( 'id' => 'search-submit' ) ); ?>
+            <label class="screen-reader-text" for="<?php echo $input_id; ?>"><?php echo $text; ?>:</label>
+            <input type="search" id="<?php echo $input_id; ?>" name="s" value="<?php _admin_search_query(); ?>" />
+            <?php submit_button( $text, 'button', 'post_form_search', false, [ 'id' => 'search-submit' ] ); ?>
         </p>
         <?php
     }
@@ -165,7 +163,6 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return string
      */
     public function current_action() {
-
         if ( isset( $_GET['post_form_search'] ) ) {
             return 'post_form_search';
         }
@@ -182,18 +179,18 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      */
     public function prepare_items() {
         $columns               = $this->get_columns();
-        $hidden                = array();
+        $hidden                = [];
         $sortable              = $this->get_sortable_columns();
-        $this->_column_headers = array( $columns, $hidden, $sortable );
+        $this->_column_headers = [ $columns, $hidden, $sortable ];
 
         $per_page              = get_option( 'posts_per_page', 20 );
         $current_page          = $this->get_pagenum();
         $offset                = ( $current_page - 1 ) * $per_page;
 
-        $args = array(
+        $args = [
             'offset'         => $offset,
             'posts_per_page' => $per_page,
-        );
+        ];
 
         if ( isset( $_GET['s'] ) && !empty( $_GET['s'] ) ) {
             $args['s'] = $_GET['s'];
@@ -211,16 +208,15 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
             $args['order'] = $_GET['order'];
         }
 
-
         $items  = $this->item_query( $args );
 
         $this->counts = $items['count'];
         $this->items  = $items['forms'];
 
-        $this->set_pagination_args( array(
+        $this->set_pagination_args( [
             'total_items' => $items['count'],
-            'per_page'    => $per_page
-        ) );
+            'per_page'    => $per_page,
+        ] );
     }
 
     /**
@@ -233,11 +229,11 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return array
      */
     public function item_query( $args ) {
-        $defauls = array(
+        $defauls = [
             'post_status' => 'any',
             'orderby'     => 'DESC',
             'order'       => 'ID',
-        );
+        ];
 
         $args = wp_parse_args( $args, $defauls );
 
@@ -245,10 +241,9 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
         $query = new WP_Query( $args );
 
-        $forms = array();
+        $forms = [];
 
         if ( $query->have_posts() ) {
-
             $i = 0;
 
             while ( $query->have_posts() ) {
@@ -258,14 +253,14 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
                 $settings = get_post_meta( get_the_ID(), 'wpuf_form_settings', true );
 
-                $forms[ $i ] = array(
+                $forms[ $i ] = [
                     'ID'                    => $form->ID,
                     'post_title'            => $form->post_title,
                     'post_status'           => $form->post_status,
                     'settings_post_type'    => isset( $settings['post_type'] ) ? $settings['post_type'] : '',
                     'settings_post_status'  => isset( $settings['post_status'] ) ? $settings['post_status'] : '',
                     'settings_guest_post'   => isset( $settings['guest_post'] ) ? $settings['guest_post'] : '',
-                );
+                ];
 
                 $i++;
             }
@@ -276,10 +271,10 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
         wp_reset_postdata();
 
-        return array(
+        return [
             'forms' => $forms,
-            'count' => $count
-        );
+            'count' => $count,
+        ];
     }
 
     /**
@@ -290,14 +285,14 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return array
      */
     public function get_columns() {
-        $columns = array(
+        $columns = [
             'cb'            => '<input type="checkbox" />',
             'form_name'     => __( 'Form Name', 'wp-user-frontend' ),
             'post_type'     => __( 'Post Type', 'wp-user-frontend' ),
             'post_status'   => __( 'Post Status', 'wp-user-frontend' ),
             'guest_post'    => __( 'Guest Post', 'wp-user-frontend' ),
             'shortcode'     => __( 'Shortcode', 'wp-user-frontend' ),
-        );
+        ];
 
         return apply_filters( 'wpuf_post_forms_list_table_cols', $columns );
     }
@@ -310,9 +305,9 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return array
      */
     public function get_sortable_columns() {
-        $sortable_columns = array(
-            'form_name' => array( 'form_name', false ),
-        );
+        $sortable_columns = [
+            'form_name' => [ 'form_name', false ],
+        ];
 
         return apply_filters( 'wpuf_post_forms_list_table_sortable_columns', $sortable_columns );
     }
@@ -322,7 +317,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      *
      * @since 2.5
      *
-     * @param array $item
+     * @param array  $item
      * @param string $column_name
      *
      * @return string
@@ -375,10 +370,9 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_form_name( $item ) {
-        $actions = array();
+        $actions = [];
 
         $edit_url       = admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $item['ID'] );
-
         $wpnonce        = wp_create_nonce( 'bulk-post-forms' );
         $admin_url      = admin_url( 'admin.php?page=wpuf-post-forms&id=' . $item['ID'] . '&_wpnonce=' . $wpnonce );
 
@@ -418,5 +412,4 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
         return apply_filters( 'wpuf_post_forms_list_table_column_form_name', $form_name, $item );
     }
-
 }

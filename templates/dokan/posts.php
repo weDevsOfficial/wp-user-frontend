@@ -16,16 +16,16 @@
 
     <div class="dokan-dashboard-content dokan-wpuf-dashboard">
 			<?php
-				$action = isset( $_GET['action'] ) ?  $_GET['action'] : '';
+                $action = isset( $_GET['action'] ) ? $_GET['action'] : '';
 
-				if ( $action == 'new-post' ) {
-					require_once WPUF_ROOT . '/templates/dokan/new-post.php';
-				}else if( $action == 'edit-post' ) {
-					require_once WPUF_ROOT . '/templates/dokan/edit-post.php';
-				}else{ 
-					require_once WPUF_ROOT . '/templates/dokan/post-listing.php';
-				}
-			?>
+                if ( $action == 'new-post' ) {
+                    require_once WPUF_ROOT . '/templates/dokan/new-post.php';
+                } elseif ( $action == 'edit-post' ) {
+                    require_once WPUF_ROOT . '/templates/dokan/edit-post.php';
+                } else {
+                    require_once WPUF_ROOT . '/templates/dokan/post-listing.php';
+                }
+            ?>
 
     </div><!-- .dokan-dashboard-content -->
 

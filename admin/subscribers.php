@@ -1,14 +1,14 @@
 <?php
 $option = 'per_page';
-$args   = array(
+$args   = [
     'label'   => __( 'Number of subscribers per page:', 'wp-user-frontend' ),
     'default' => 20,
-    'option'  => 'subscribers_per_page'
-);
+    'option'  => 'subscribers_per_page',
+];
 
 add_screen_option( $option, $args );
 
-if ( ! class_exists( 'WPUF_List_Table_Subscribers' ) ) {
+if ( !class_exists( 'WPUF_List_Table_Subscribers' ) ) {
     require_once WPUF_ROOT . '/includes/class-list-table-subscribers.php';
 }
 

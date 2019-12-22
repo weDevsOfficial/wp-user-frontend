@@ -3,8 +3,7 @@
 class WPUF_form_element extends WPUF_Pro_Prompt {
 
     public static function add_form_custom_buttons() {
-        $title = esc_attr( __( 'Click to add to the editor', 'wp-user-frontend' ) );
-        ?>
+        $title = esc_attr( __( 'Click to add to the editor', 'wp-user-frontend' ) ); ?>
         <button class="button" data-name="custom_image" data-type="image" title="<?php echo $title; ?>"><?php _e( 'Image Upload', 'wp-user-frontend' ); ?></button>
 
         <?php self::get_pro_prompt(); ?>
@@ -16,7 +15,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         <button class="button" disabled data-type="text" title="<?php echo $title; ?>"><?php _e( 'Numeric Field', 'wp-user-frontend' ); ?></button>
         <button class="button" disabled data-type="text" title="<?php echo $title; ?>"><?php _e( 'Address Field', 'wp-user-frontend' ); ?></button>
         <button class="button" disabled data-type="text" title="<?php echo $title; ?>"><?php _e( 'Step Start', 'wp-user-frontend' ); ?></button>
-    <?php
+        <?php
     }
 
     /**
@@ -25,14 +24,13 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
     public static function add_form_other_buttons() {
         $title = esc_attr( __( 'Click to add to the editor', 'wp-user-frontend' ) );
 
-        self::get_pro_prompt();
-        ?>
+        self::get_pro_prompt(); ?>
         <button class="button" disabled data-type="shortcode" title="<?php echo $title; ?>"><?php _e( 'Shortcode', 'wp-user-frontend' ); ?></button>
         <button class="button" data-name="recaptcha" data-type="captcha" title="<?php echo $title; ?>"><?php _e( 'reCaptcha', 'wp-user-frontend' ); ?></button>
         <button class="button" disabled data-type="rscaptcha" title="<?php echo $title; ?>"><?php _e( 'Really Simple Captcha', 'wp-user-frontend' ); ?></button>
         <button class="button" disabled data-type="action" title="<?php echo $title; ?>"><?php _e( 'Action Hook', 'wp-user-frontend' ); ?></button>
         <button class="button" disabled data-type="action" title="<?php echo $title; ?>"><?php _e( 'Term &amp; Conditions', 'wp-user-frontend' ); ?></button>
-    <?php
+        <?php
     }
 
     /**
@@ -48,47 +46,43 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         $is_enable_mail_after_expired = 'checked';
         $post_expiration_message      = '';
 
-        self::get_pro_prompt();
-        ?>
+        self::get_pro_prompt(); ?>
         <div id="wpuf-pro-content">
             <table class="form-table">
                 <tr>
                     <th><?php _e( 'Post Expiration', 'wp-user-frontend' ); ?></th>
                     <td>
                         <label>
-                            <input disabled type="checkbox" id="wpuf-enable_post_expiration" name="" value="on" <?php echo $is_post_exp_selected;?> />
+                            <input disabled type="checkbox" id="wpuf-enable_post_expiration" name="" value="on" <?php echo $is_post_exp_selected; ?> />
                             <?php _e( 'Enable Post Expiration', 'wp-user-frontend' ); ?>
                         </label>
                     </td>
-                     <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/"><?php _e('Learn more about Automatic Post Expiration', 'wp-user-frontend'); ?></a></p>
+                     <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/"><?php _e( 'Learn more about Automatic Post Expiration', 'wp-user-frontend' ); ?></a></p>
                 </tr>
                 <tr class="wpuf_expiration_field">
                     <th><?php _e( 'Post Expiration Time', 'wp-user-frontend' ); ?></th>
                     <td>
                         <?php
-                        $timeType_array = array(
+                        $timeType_array = [
                             'year'  => 100,
                             'month' => 12,
-                            'day'   => 30
-                        );
-                        ?>
+                            'day'   => 30,
+                        ]; ?>
                         <select disabled name="" id="wpuf-expiration_time_value">
                             <?php
-                            for( $i = 1; $i <= $timeType_array[$time_type]; $i++ ){
+                            for ( $i = 1; $i <= $timeType_array[$time_type]; $i++ ) {
                                 ?>
-                                <option value="<?php echo $i; ?>" <?php echo $i == $time_value?'selected':''; ?> ><?php echo $i;?></option>
+                                <option value="<?php echo $i; ?>" <?php echo $i == $time_value ? 'selected' : ''; ?> ><?php echo $i; ?></option>
                             <?php
-                            }
-                            ?>
+                            } ?>
                         </select>
                         <select disabled name="" id="wpuf-expiration_time_type">
                             <?php
-                            foreach( $timeType_array as $each_time_type=>$each_time_type_val ){
+                            foreach ( $timeType_array as $each_time_type=>$each_time_type_val ) {
                                 ?>
-                                <option value="<?php echo $each_time_type;?>" <?php echo $each_time_type==$time_type?'selected':''; ?> ><?php echo ucfirst( $each_time_type ); ?></option>
+                                <option value="<?php echo $each_time_type; ?>" <?php echo $each_time_type == $time_type ? 'selected' : ''; ?> ><?php echo ucfirst( $each_time_type ); ?></option>
                             <?php
-                            }
-                            ?>
+                            } ?>
                         </select>
                     </td>
                 </tr>
@@ -98,16 +92,14 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                         Post Status :
                     </th>
                     <td>
-                        <?php $post_statuses = get_post_statuses();
-                        ?>
+                        <?php $post_statuses = get_post_statuses(); ?>
                         <select disabled name="" id="wpuf-expired_post_status">
                             <?php
-                            foreach( $post_statuses as $post_status => $text ){
+                            foreach ( $post_statuses as $post_status => $text ) {
                                 ?>
-                                <option value="<?php echo $post_status ?>" <?php echo ( $expired_post_status == $post_status )?'selected':''; ?> ><?php echo $text;?></option>
+                                <option value="<?php echo $post_status; ?>" <?php echo ( $expired_post_status == $post_status ) ? 'selected' : ''; ?> ><?php echo $text; ?></option>
                             <?php
-                            }
-                            ?>
+                            } ?>
                         </select>
                         <p class="description"><?php echo __( 'Status of post after post expiration time is over ', 'wp-user-frontend' ); ?></p>
 
@@ -119,7 +111,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                     </th>
                     <td>
                         <label>
-                            <input disabled type="checkbox" name="" value="on" <?php echo $is_enable_mail_after_expired;?> />
+                            <input disabled type="checkbox" name="" value="on" <?php echo $is_enable_mail_after_expired; ?> />
                             <?php echo __( 'Send Email to Author After Exceeding Post Expiration Time', 'wp-user-frontend' ); ?>
                         </label>
                     </td>
@@ -171,28 +163,27 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                 <p class="description"><?php echo __( 'Choose how you want the progressbar', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
-    <?php
+        <?php
     }
 
     /**
      * Add content to post notification section
      */
     public static function add_post_notification_content() {
-
         global $post;
 
         $new_mail_body  = "Hi Admin,\r\n";
-        $new_mail_body  .= "A new post has been created in your site %sitename% (%siteurl%).\r\n\r\n";
+        $new_mail_body .= "A new post has been created in your site %sitename% (%siteurl%).\r\n\r\n";
 
         $edit_mail_body = "Hi Admin,\r\n";
         $edit_mail_body .= "The post \"%post_title%\" has been updated.\r\n\r\n";
 
         $mail_body      = "Here is the details:\r\n";
-        $mail_body      .= "Post Title: %post_title%\r\n";
-        $mail_body      .= "Content: %post_content%\r\n";
-        $mail_body      .= "Author: %author%\r\n";
-        $mail_body      .= "Post URL: %permalink%\r\n";
-        $mail_body      .= "Edit URL: %editlink%";
+        $mail_body .= "Post Title: %post_title%\r\n";
+        $mail_body .= "Content: %post_content%\r\n";
+        $mail_body .= "Author: %author%\r\n";
+        $mail_body .= "Post URL: %permalink%\r\n";
+        $mail_body .= 'Edit URL: %editlink%';
 
         $form_settings    = wpuf_get_form_settings( $post->ID );
 
@@ -204,8 +195,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         $edit_notificaton = 'off';
         $edit_to          = get_option( 'admin_email' );
         $edit_subject     = __( 'A post has been edited', 'wp-user-frontend' );
-        $edit_body        = $edit_mail_body . $mail_body;
-        ?>
+        $edit_body        = $edit_mail_body . $mail_body; ?>
 
         <h3><?php _e( 'New Post Notification', 'wp-user-frontend' ); ?></h3>
         <table class="form-table">
@@ -218,25 +208,25 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                         <?php _e( 'Enable post notification', 'wp-user-frontend' ); ?>
                     </label>
                 </td>
-                 <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-set-up-submission-email-notification/"><?php _e('Learn more about Email Notification', 'wp-user-frontend'); ?></a></p>
+                 <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-set-up-submission-email-notification/"><?php _e( 'Learn more about Email Notification', 'wp-user-frontend' ); ?></a></p>
             </tr>
 
             <tr>
                 <th><?php _e( 'To', 'wp-user-frontend' ); ?></th>
                 <td>
-                    <input type="text" name="wpuf_settings[notification][new_to]" class="regular-text" value="<?php echo esc_attr( $new_to ) ?>">
+                    <input type="text" name="wpuf_settings[notification][new_to]" class="regular-text" value="<?php echo esc_attr( $new_to ); ?>">
                 </td>
             </tr>
 
             <tr>
                 <th><?php _e( 'Subject', 'wp-user-frontend' ); ?></th>
-                <td><input type="text" name="wpuf_settings[notification][new_subject]" class="regular-text" value="<?php echo esc_attr( $new_subject ) ?>"></td>
+                <td><input type="text" name="wpuf_settings[notification][new_subject]" class="regular-text" value="<?php echo esc_attr( $new_subject ); ?>"></td>
             </tr>
 
             <tr>
                 <th><?php _e( 'Message', 'wp-user-frontend' ); ?></th>
                 <td>
-                    <textarea rows="6" cols="60" name="wpuf_settings[notification][new_body]"><?php echo esc_textarea( $new_body ) ?></textarea>
+                    <textarea rows="6" cols="60" name="wpuf_settings[notification][new_body]"><?php echo esc_textarea( $new_body ); ?></textarea>
                 </td>
             </tr>
         </table>
@@ -260,18 +250,18 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
                 <tr>
                     <th><?php _e( 'To', 'wp-user-frontend' ); ?></th>
-                    <td><input disabled type="text" name="" class="regular-text" value="<?php echo esc_attr( $edit_to ) ?>"></td>
+                    <td><input disabled type="text" name="" class="regular-text" value="<?php echo esc_attr( $edit_to ); ?>"></td>
                 </tr>
 
                 <tr>
                     <th><?php _e( 'Subject', 'wp-user-frontend' ); ?></th>
-                    <td><input disabled type="text" name="" class="regular-text" value="<?php echo esc_attr( $edit_subject ) ?>"></td>
+                    <td><input disabled type="text" name="" class="regular-text" value="<?php echo esc_attr( $edit_subject ); ?>"></td>
                 </tr>
 
                 <tr>
                     <th><?php _e( 'Message', 'wp-user-frontend' ); ?></th>
                     <td>
-                        <textarea disabled rows="6" cols="60" name=""><?php echo esc_textarea( $edit_body ) ?></textarea>
+                        <textarea disabled rows="6" cols="60" name=""><?php echo esc_textarea( $edit_body ); ?></textarea>
                     </td>
                 </tr>
             </table>
@@ -285,21 +275,17 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         </p>
 
     <?php
-
     }
 
     /**
      * Render registration form
      */
     public static function render_registration_form() {
-
         global $post, $pagenow, $form_inputs;
 
         $form_inputs = wpuf_get_form_fields( $post->ID );
 
-        self::get_pro_prompt();
-
-        ?>
+        self::get_pro_prompt(); ?>
         <div style="margin-bottom: 10px">
             <button class="button wpuf-collapse"><?php _e( 'Toggle All', 'wp-user-frontend' ); ?></button>
         </div>
@@ -312,20 +298,19 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
 
             <?php
 
-            if ($form_inputs) {
+            if ( $form_inputs ) {
                 $count = 0;
-                foreach ($form_inputs as $order => $input_field) {
+
+                foreach ( $form_inputs as $order => $input_field ) {
                     $name = ucwords( str_replace( '_', ' ', $input_field['template'] ) );
 
                     WPUF_Admin_Template_Profile::$input_field['template']( $count, $name, $input_field );
 
                     $count++;
                 }
-            }
-            ?>
+            } ?>
         </ul>
         <?php
-
     }
 
     /**
@@ -344,8 +329,7 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
         $page_id            = 0;
         $url                = '';
         $submit_text        = __( 'Register', 'wp-user-frontend' );
-        $update_text        = __( 'Update Profile', 'wp-user-frontend' );
-        ?>
+        $update_text        = __( 'Update Profile', 'wp-user-frontend' ); ?>
         <tr>
             <td colspan="2">
                 <?php self::get_pro_prompt(); ?>
@@ -365,10 +349,10 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                 <select disabled name="">
                     <?php
                     $user_roles = wpuf_get_user_roles();
-                    foreach ( $user_roles as $role => $label ) {
-                        printf('<option value="%s"%s>%s</option>', $role, selected( $role_selected, $role, false ), $label );
-                    }
-                    ?>
+
+        foreach ( $user_roles as $role => $label ) {
+            printf( '<option value="%s"%s>%s</option>', $role, selected( $role_selected, $role, false ), $label );
+        } ?>
                 </select>
             </td>
         </tr>
@@ -378,19 +362,18 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
             <td>
                 <select disabled name="">
                     <?php
-                    $redirect_options = array(
+                    $redirect_options = [
                         'same' => __( 'Same Page', 'wp-user-frontend' ),
                         'page' => __( 'To a page', 'wp-user-frontend' ),
-                        'url' => __( 'To a custom URL', 'wp-user-frontend' )
-                    );
+                        'url'  => __( 'To a custom URL', 'wp-user-frontend' ),
+                    ];
 
                     foreach ( $redirect_options as $to => $label ) {
-                        printf('<option value="%s"%s>%s</option>', $to, selected( $redirect_to, $to, false ), $label );
-                    }
-                    ?>
+                        printf( '<option value="%s"%s>%s</option>', $to, selected( $redirect_to, $to, false ), $label );
+                    } ?>
                 </select>
                 <div class="description">
-                    <?php _e( 'After successfull submit, where the page will redirect to', 'wp-user-frontend' ) ?>
+                    <?php _e( 'After successfull submit, where the page will redirect to', 'wp-user-frontend' ); ?>
                 </div>
             </td>
         </tr>
@@ -414,12 +397,11 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
             <td>
                 <select disabled name="">
                     <?php
-                    $pages = get_posts(  array( 'numberposts' => -1, 'post_type' => 'page') );
+                    $pages = get_posts(  [ 'numberposts' => -1, 'post_type' => 'page'] );
 
-                    foreach ($pages as $page) {
-                        printf('<option value="%s"%s>%s</option>', $page->ID, selected( $page_id, $page->ID, false ), esc_attr( $page->post_title ) );
-                    }
-                    ?>
+                    foreach ( $pages as $page ) {
+                        printf( '<option value="%s"%s>%s</option>', $page->ID, selected( $page_id, $page->ID, false ), esc_attr( $page->post_title ) );
+                    } ?>
                 </select>
             </td>
         </tr>
@@ -451,10 +433,8 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
      * Checks what the post type is
      */
     public static function check_post_type( $post, $update ) {
-
-        if( get_post_type( $post->ID ) == 'wpuf_profile' && $update ){
-
-            wp_redirect($_SERVER["HTTP_REFERER"]);
+        if ( get_post_type( $post->ID ) == 'wpuf_profile' && $update ) {
+            wp_redirect( $_SERVER['HTTP_REFERER'] );
             die();
         }
     }
@@ -482,7 +462,5 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
             </div>
         </div> <!-- .wpuf-form-rows -->
     <?php
-
     }
-
 }

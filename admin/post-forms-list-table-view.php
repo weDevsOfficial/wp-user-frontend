@@ -3,11 +3,11 @@
         <?php
             _e( 'Post Forms', 'wp-user-frontend' );
 
-            if ( current_user_can( wpuf_admin_role() ) ):
-            ?>
+            if ( current_user_can( wpuf_admin_role() ) ) {
+                ?>
                 <a href="<?php echo $add_new_page_url; ?>" id="new-wpuf-post-form" class="page-title-action add-form"><?php _e( 'Add Form', 'wp-user-frontend' ); ?></a>
             <?php
-            endif;
+            }
         ?>
     </h2>
 

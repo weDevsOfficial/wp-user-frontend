@@ -12,21 +12,21 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
         <td>
             <select name="wpuf_settings[label_position]">
                 <?php
-                $positions = array(
+                $positions = [
                     'above'  => __( 'Above Element', 'wp-user-frontend' ),
                     'left'   => __( 'Left of Element', 'wp-user-frontend' ),
                     'right'  => __( 'Right of Element', 'wp-user-frontend' ),
                     'hidden' => __( 'Hidden', 'wp-user-frontend' ),
-                );
+                ];
 
-                foreach ($positions as $to => $label) {
-                    printf('<option value="%s"%s>%s</option>', $to, selected( $label_position, $to, false ), $label );
+                foreach ( $positions as $to => $label ) {
+                    printf( '<option value="%s"%s>%s</option>', $to, selected( $label_position, $to, false ), $label );
                 }
                 ?>
             </select>
 
             <p class="description">
-                <?php _e( 'Where the labels of the form should display', 'wp-user-frontend' ) ?>
+                <?php _e( 'Where the labels of the form should display', 'wp-user-frontend' ); ?>
             </p>
         </td>
     </tr>
@@ -36,36 +36,36 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
         <td>
             <select name="wpuf_settings[use_theme_css]">
                 <?php
-                $options = array(
+                $options = [
                     'wpuf-style'         => __( 'No', 'wp-user-frontend' ),
                     'wpuf-theme-style'   => __( 'Yes', 'wp-user-frontend' ),
-                );
+                ];
 
-                foreach ($options as $to => $label) {
-                    printf('<option value="%s"%s>%s</option>', $to, selected( $theme_css, $to, false ), $label );
+                foreach ( $options as $to => $label ) {
+                    printf( '<option value="%s"%s>%s</option>', $to, selected( $theme_css, $to, false ), $label );
                 }
                 ?>
             </select>
 
             <p class="description">
-                <?php _e( 'Selecting "Yes" will use your theme\'s style for form fields.', 'wp-user-frontend' ) ?>
+                <?php _e( 'Selecting "Yes" will use your theme\'s style for form fields.', 'wp-user-frontend' ); ?>
             </p>
         </td>
     </tr>
 
-    <?php if( class_exists( 'WP_User_Frontend_Pro' ) ) : ?>
+    <?php if ( class_exists( 'WP_User_Frontend_Pro' ) ) { ?>
         <tr class="wpuf-form-layouts">
             <th><?php _e( 'Form Style', 'wp-user-frontend' ); ?></th>
             <td>
                 <ul>
                     <?php
-                        $layouts = array(
+                        $layouts = [
                             'layout1' => WPUF_PRO_ASSET_URI . '/images/forms/layout1.png',
                             'layout2' => WPUF_PRO_ASSET_URI . '/images/forms/layout2.png',
                             'layout3' => WPUF_PRO_ASSET_URI . '/images/forms/layout3.png',
                             'layout4' => WPUF_PRO_ASSET_URI . '/images/forms/layout4.png',
-                            'layout5' => WPUF_PRO_ASSET_URI . '/images/forms/layout5.png'
-                        );
+                            'layout5' => WPUF_PRO_ASSET_URI . '/images/forms/layout5.png',
+                        ];
 
                         foreach ( $layouts as $key => $image ) {
                             $class = '';
@@ -75,7 +75,7 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
                             }
 
                             $output  = '<li class="' . $class . '">';
-                            $output .= '<input type="radio" name="wpuf_settings[form_layout]" value="' . $key . '" ' . checked( $form_layout, $key, false ). '>';
+                            $output .= '<input type="radio" name="wpuf_settings[form_layout]" value="' . $key . '" ' . checked( $form_layout, $key, false ) . '>';
                             $output .= '<img src="' . $image . '" alt="">';
                             $output .= '</li>';
 
@@ -85,6 +85,6 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
                 </ul>
             </td>
         </tr>
-    <?php endif; ?>
+    <?php } ?>
 
 </table>

@@ -22,7 +22,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
                 <label>
                     <input type="hidden" name="wpuf_settings[payment_options]" value="false">
                     <input type="checkbox" name="wpuf_settings[payment_options]" value="true"<?php checked( $payment_options, 'true' ); ?> />
-                    <?php _e( 'Enable Payments', 'wp-user-frontend' ) ?>
+                    <?php _e( 'Enable Payments', 'wp-user-frontend' ); ?>
                 </label>
                 <p class="description"><?php _e( 'Check to enable Payments for this form.', 'wp-user-frontend' ); ?></p>
             </td>
@@ -34,7 +34,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
                 <label>
                     <input type="hidden" name="wpuf_settings[force_pack_purchase]" value="false">
                     <input type="checkbox" name="wpuf_settings[force_pack_purchase]" value="true"<?php checked( $force_pack_purchase, 'true' ); ?> />
-                    <?php _e( 'Force subscription pack', 'wp-user-frontend' ) ?>
+                    <?php _e( 'Force subscription pack', 'wp-user-frontend' ); ?>
                 </label>
                 <p class="description"><?php _e( 'Force users to purchase and use subscription pack.', 'wp-user-frontend' ); ?></p>
             </td>
@@ -46,7 +46,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
                 <label>
                     <input type="hidden" name="wpuf_settings[fallback_ppp_enable]" value="false">
                     <input type="checkbox" name="wpuf_settings[fallback_ppp_enable]" value="true"<?php checked( $fallback_ppp_enable, 'true' ); ?> />
-                    <?php _e( 'Fallback pay per post charging', 'wp-user-frontend' ) ?>
+                    <?php _e( 'Fallback pay per post charging', 'wp-user-frontend' ); ?>
                 </label>
                 <p class="description"><?php _e( 'Fallback to pay per post charging if pack limit exceeds', 'wp-user-frontend' ); ?></p>
             </td>
@@ -68,7 +68,7 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
                 <label>
                     <input type="hidden" name="wpuf_settings[enable_pay_per_post]" value="false">
                     <input type="checkbox" name="wpuf_settings[enable_pay_per_post]" value="true"<?php checked( $enable_pay_per_post, 'true' ); ?> />
-                    <?php _e( 'Enable Pay Per Post', 'wp-user-frontend' ) ?>
+                    <?php _e( 'Enable Pay Per Post', 'wp-user-frontend' ); ?>
                 </label>
                 <p class="description"><?php _e( 'Charge users for posting,', 'wp-user-frontend' ); ?><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/"><?php _e( ' Learn More about Pay Per Post.', 'wp-user-frontend' ); ?></a></p>
             </td>

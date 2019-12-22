@@ -5,7 +5,7 @@ $form_settings = wpuf_get_form_settings( $post->ID );
 
 $guest_post             = !empty( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
 $role_base              = !empty( $form_settings['role_base'] ) ? $form_settings['role_base'] : 'false';
-$roles                  = !empty( $form_settings['roles'] ) ? $form_settings['roles'] : array( 'administrator' );
+$roles                  = !empty( $form_settings['roles'] ) ? $form_settings['roles'] : [ 'administrator' ];
 $guest_details          = !empty( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
 $guest_email_verify     = !empty( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false';
 $name_label             = !empty( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wp-user-frontend' );
@@ -19,7 +19,7 @@ $form_pending_message   = !empty( $form_settings['form_pending_message'] ) ? $fo
 $form_expired_message   = !empty( $form_settings['form_expired_message'] ) ? $form_settings['form_expired_message'] : 'Submission date expired.';
 
 $limit_entries   = !empty( $form_settings['limit_entries'] ) ? $form_settings['limit_entries'] : 'false';
-$limit_number   = !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 100;
+$limit_number    = !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 100;
 $limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['limit_message'] : 'Form submission limit exceeded';
 ?>
     <table class="form-table">
@@ -31,7 +31,7 @@ $limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['l
                 <label>
                     <input type="hidden" name="wpuf_settings[guest_post]" value="false">
                     <input type="checkbox" name="wpuf_settings[guest_post]" value="true"<?php checked( $guest_post, 'true' ); ?> />
-                    <?php _e( 'Enable Guest Post', 'wp-user-frontend' ) ?>
+                    <?php _e( 'Enable Guest Post', 'wp-user-frontend' ); ?>
                 </label>
                 <p class="description"><?php _e( 'Unregistered users will be able to submit posts', 'wp-user-frontend' ); ?>. <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/"><?php _e( 'Learn more about guest posting.', 'wp-user-frontend' ); ?></a></p>
             </td>
@@ -43,7 +43,7 @@ $limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['l
                 <label>
                     <input type="hidden" name="wpuf_settings[guest_details]" value="false">
                     <input type="checkbox" name="wpuf_settings[guest_details]" value="true"<?php checked( $guest_details, 'true' ); ?> />
-                    <?php _e( 'Require Name and Email address', 'wp-user-frontend' ) ?>
+                    <?php _e( 'Require Name and Email address', 'wp-user-frontend' ); ?>
                 </label>
                 <p class="description"><?php _e( 'If requires, users will be automatically registered to the site using the name and email address', 'wp-user-frontend' ); ?></p>
             </td>
@@ -74,7 +74,7 @@ $limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['l
             <td>
                 <label>
                     <input type="checkbox" name="wpuf_settings[guest_email_verify]" value="true"<?php checked( $guest_email_verify, 'true' ); ?> />
-                    <?php _e( 'Require Email Verification for Guests', 'wp-user-frontend' ) ?>
+                    <?php _e( 'Require Email Verification for Guests', 'wp-user-frontend' ); ?>
                 </label>
                 <p class="description"><?php _e( 'If requires, users will be required to verify their email adress.', 'wp-user-frontend' ); ?></p>
             </td>
@@ -86,7 +86,7 @@ $limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['l
                 <label>
                     <input type="hidden" name="wpuf_settings[role_base]" value="false">
                     <input type="checkbox" name="wpuf_settings[role_base]" value="true"<?php checked( $role_base, 'true' ); ?> />
-                    <?php _e( 'Enable role base post', 'wp-user-frontend' ) ?>
+                    <?php _e( 'Enable role base post', 'wp-user-frontend' ); ?>
                 </label>
                 <p class="description"><?php _e( 'You can choose which role can submit posts by this form.', 'wp-user-frontend' ); ?></p>
             </td>
@@ -99,7 +99,7 @@ $limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['l
                 foreach ( wpuf_get_user_roles() as $key => $role ) { ?>
                     <label>
                         <input type="checkbox" name="wpuf_settings[roles][]" value="<?php echo $key; ?>"
-                        <?php echo in_array($key, $roles) || 'administrator' == $key ? 'checked="checked"' : '';
+                        <?php echo in_array( $key, $roles ) || 'administrator' == $key ? 'checked="checked"' : '';
                         echo 'administrator' == $key ? 'disabled' : '';
                         ?> />
                         <?php echo $role; ?>
@@ -124,7 +124,7 @@ $limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['l
                 <label>
                     <input type="hidden" name="wpuf_settings[schedule_form]" value="false">
                     <input type="checkbox" name="wpuf_settings[schedule_form]" value="true"<?php checked( $schedule_form, 'true' ); ?> />
-                    <?php _e( 'Schedule form for a period', 'wp-user-frontend' ) ?>
+                    <?php _e( 'Schedule form for a period', 'wp-user-frontend' ); ?>
                 </label>
                 <p class="description"><?php _e( 'Schedule for a time period the form is active.', 'wp-user-frontend' ); ?></p>
             </td>
@@ -168,7 +168,7 @@ $limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['l
                 </label>
 
                 <p class="description">
-                    <?php _e( 'Limit the number of entries allowed for this form', 'wp-user-frontend' ) ?>
+                    <?php _e( 'Limit the number of entries allowed for this form', 'wp-user-frontend' ); ?>
                 </p>
             </td>
         </tr>

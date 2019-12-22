@@ -10,7 +10,7 @@ abstract class WPUF_Post_Form_Template {
     /**
      * If the form is enabled
      *
-     * @var boolean
+     * @var bool
      */
     public $enabled = true;
 
@@ -66,13 +66,13 @@ abstract class WPUF_Post_Form_Template {
     protected $form_notifications;
 
     public function __construct() {
-        $this->conditionals = array(
+        $this->conditionals = [
             'condition_status' => 'no',
-            'cond_field'       => array(),
-            'cond_operator'    => array( '=' ),
-            'cond_option'      => array( '- select -' ),
-            'cond_logic'       => 'all'
-        );
+            'cond_field'       => [],
+            'cond_operator'    => [ '=' ],
+            'cond_option'      => [ '- select -' ],
+            'cond_logic'       => 'all',
+        ];
     }
 
     /**
@@ -125,7 +125,7 @@ abstract class WPUF_Post_Form_Template {
     /**
      * Check if the template is enabled
      *
-     * @return boolean
+     * @return bool
      */
     public function is_enabled() {
         return $this->enabled;
@@ -134,24 +134,26 @@ abstract class WPUF_Post_Form_Template {
     /**
      * Run necessary processing after new post insert
      *
-     * @param  int   $post_id
-     * @param  int   $form_id
-     * @param  array $form_settings
+     * @param int   $post_id
+     * @param int   $form_id
+     * @param array $form_settings
      *
      * @return void
      */
-    public function after_insert( $post_id, $form_id, $form_settings ) {}
+    public function after_insert( $post_id, $form_id, $form_settings ) {
+    }
 
     /**
      * Run necessary processing after editing a post
      *
-     * @param  int   $post_id
-     * @param  int   $form_id
-     * @param  array $form_settings
+     * @param int   $post_id
+     * @param int   $form_id
+     * @param array $form_settings
      *
      * @return void
      */
-    public function after_update( $post_id, $form_id, $form_settings ) {}
+    public function after_update( $post_id, $form_id, $form_settings ) {
+    }
 
     /**
      * wpuf_visibility property for all fields
@@ -159,11 +161,11 @@ abstract class WPUF_Post_Form_Template {
      * @since 2.6
      *
      * @return array
-    */
+     */
     public function get_default_visibility_prop( $default = 'everyone' ) {
-        return array(
-            'selected'         => $default,
-            'choices'          => array()
-        );
+        return [
+            'selected' => $default,
+            'choices'  => [],
+        ];
     }
 }

@@ -27,5 +27,5 @@ WPUF will always look in your theme's directory first, before using this default
 		</p>
 	</form>
 
-	<?php echo WPUF_Simple_Login::init()->get_action_links( array( 'lostpassword' => false ) ); ?>
+	<?php echo WPUF_Simple_Login::init()->get_action_links( [ 'lostpassword' => false ] ); ?>
 </div>

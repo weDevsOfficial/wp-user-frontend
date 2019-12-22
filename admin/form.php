@@ -1,10 +1,7 @@
 <?php
 /**
  * Post Forms or wpuf_forms form builder class
- *
- * @package WP User Frontend
  */
-
 class WPUF_Admin_Form {
     /**
      * Form type of which we're working on
@@ -25,7 +22,7 @@ class WPUF_Admin_Form {
      *
      * @var string
      */
-    private $wp_post_types = array();
+    private $wp_post_types = [];
 
     /**
      * Add neccessary actions and filters
@@ -33,8 +30,8 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function __construct() {
-        add_action( 'init', array($this, 'register_post_type') );
-        add_action( "load-user-frontend_page_wpuf-post-forms", array( $this, 'post_forms_builder_init' ) );
+        add_action( 'init', [$this, 'register_post_type'] );
+        add_action( 'load-user-frontend_page_wpuf-post-forms', [ $this, 'post_forms_builder_init' ] );
     }
 
     /**
@@ -45,7 +42,7 @@ class WPUF_Admin_Form {
     public function register_post_type() {
         $capability = wpuf_admin_role();
 
-        register_post_type( 'wpuf_forms', array(
+        register_post_type( 'wpuf_forms', [
             'label'           => __( 'Forms', 'wp-user-frontend' ),
             'public'          => false,
             'show_ui'         => false,
@@ -53,8 +50,8 @@ class WPUF_Admin_Form {
             'capability_type' => 'post',
             'hierarchical'    => false,
             'query_var'       => false,
-            'supports'        => array('title'),
-            'capabilities' => array(
+            'supports'        => ['title'],
+            'capabilities'    => [
                 'publish_posts'       => $capability,
                 'edit_posts'          => $capability,
                 'edit_others_posts'   => $capability,
@@ -64,8 +61,8 @@ class WPUF_Admin_Form {
                 'edit_post'           => $capability,
                 'delete_post'         => $capability,
                 'read_post'           => $capability,
-            ),
-            'labels' => array(
+            ],
+            'labels' => [
                 'name'               => __( 'Forms', 'wp-user-frontend' ),
                 'singular_name'      => __( 'Form', 'wp-user-frontend' ),
                 'menu_name'          => __( 'Forms', 'wp-user-frontend' ),
@@ -80,10 +77,10 @@ class WPUF_Admin_Form {
                 'not_found'          => __( 'No Form Found', 'wp-user-frontend' ),
                 'not_found_in_trash' => __( 'No Form Found in Trash', 'wp-user-frontend' ),
                 'parent'             => __( 'Parent Form', 'wp-user-frontend' ),
-            ),
-        ) );
+            ],
+        ] );
 
-        register_post_type( 'wpuf_profile', array(
+        register_post_type( 'wpuf_profile', [
             'label'           => __( 'Registraton Forms', 'wp-user-frontend' ),
             'public'          => false,
             'show_ui'         => false,
@@ -91,8 +88,8 @@ class WPUF_Admin_Form {
             'capability_type' => 'post',
             'hierarchical'    => false,
             'query_var'       => false,
-            'supports'        => array('title'),
-            'capabilities' => array(
+            'supports'        => ['title'],
+            'capabilities'    => [
                 'publish_posts'       => $capability,
                 'edit_posts'          => $capability,
                 'edit_others_posts'   => $capability,
@@ -102,8 +99,8 @@ class WPUF_Admin_Form {
                 'edit_post'           => $capability,
                 'delete_post'         => $capability,
                 'read_post'           => $capability,
-            ),
-            'labels' => array(
+            ],
+            'labels' => [
                 'name'               => __( 'Forms', 'wp-user-frontend' ),
                 'singular_name'      => __( 'Form', 'wp-user-frontend' ),
                 'menu_name'          => __( 'Registration Forms', 'wp-user-frontend' ),
@@ -118,14 +115,14 @@ class WPUF_Admin_Form {
                 'not_found'          => __( 'No Form Found', 'wp-user-frontend' ),
                 'not_found_in_trash' => __( 'No Form Found in Trash', 'wp-user-frontend' ),
                 'parent'             => __( 'Parent Form', 'wp-user-frontend' ),
-            ),
-        ) );
+            ],
+        ] );
 
-        register_post_type( 'wpuf_input', array(
+        register_post_type( 'wpuf_input', [
             'public'          => false,
             'show_ui'         => false,
             'show_in_menu'    => false,
-        ) );
+        ] );
     }
 
     /**
@@ -136,45 +133,43 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function post_forms_builder_init() {
-
-        if ( ! isset( $_GET['action'] ) ) {
+        if ( !isset( $_GET['action'] ) ) {
             return;
         }
 
         if ( 'add-new' === $_GET['action'] && empty( $_GET['id'] ) ) {
             $form_id          = wpuf_create_sample_form( 'Sample Form', 'wpuf_forms', true );
-            $add_new_page_url = add_query_arg( array( 'id' => $form_id ), admin_url( 'admin.php?page=wpuf-post-forms&action=edit' ) );
+            $add_new_page_url = add_query_arg( [ 'id' => $form_id ], admin_url( 'admin.php?page=wpuf-post-forms&action=edit' ) );
             wp_redirect( $add_new_page_url );
         }
 
-        if ( ( 'edit' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
-
-            add_action( 'wpuf-form-builder-tabs-post', array( $this, 'add_primary_tabs' ) );
-            add_action( 'wpuf-form-builder-tab-contents-post', array( $this, 'add_primary_tab_contents' ) );
-            add_action( 'wpuf-form-builder-settings-tabs-post', array( $this, 'add_settings_tabs' ) );
-            add_action( 'wpuf-form-builder-settings-tab-contents-post', array( $this, 'add_settings_tab_contents' ) );
-            add_filter( 'wpuf-form-fields-section-before', array( $this, 'add_post_field_section' ) );
-            add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-            add_action( 'wpuf-form-builder-js-deps', array( $this, 'js_dependencies' ) );
-            add_filter( 'wpuf-form-builder-js-root-mixins', array( $this, 'js_root_mixins' ) );
-            add_filter( 'wpuf-form-builder-js-builder-stage-mixins', array( $this, 'js_builder_stage_mixins' ) );
-            add_filter( 'wpuf-form-builder-js-field-options-mixins', array( $this, 'js_field_options_mixins' ) );
-            add_action( 'wpuf-form-builder-template-builder-stage-submit-area', array( $this, 'add_form_submit_area' ) );
-            add_action( 'wpuf-form-builder-localize-script', array( $this, 'add_to_localize_script' ) );
-            add_filter( 'wpuf-form-fields', array( $this, 'add_field_settings' ) );
-            add_filter( 'wpuf-form-builder-i18n', array( $this, 'i18n' ) );
+        if ( ( 'edit' === $_GET['action'] ) && !empty( $_GET['id'] ) ) {
+            add_action( 'wpuf-form-builder-tabs-post', [ $this, 'add_primary_tabs' ] );
+            add_action( 'wpuf-form-builder-tab-contents-post', [ $this, 'add_primary_tab_contents' ] );
+            add_action( 'wpuf-form-builder-settings-tabs-post', [ $this, 'add_settings_tabs' ] );
+            add_action( 'wpuf-form-builder-settings-tab-contents-post', [ $this, 'add_settings_tab_contents' ] );
+            add_filter( 'wpuf-form-fields-section-before', [ $this, 'add_post_field_section' ] );
+            add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
+            add_action( 'wpuf-form-builder-js-deps', [ $this, 'js_dependencies' ] );
+            add_filter( 'wpuf-form-builder-js-root-mixins', [ $this, 'js_root_mixins' ] );
+            add_filter( 'wpuf-form-builder-js-builder-stage-mixins', [ $this, 'js_builder_stage_mixins' ] );
+            add_filter( 'wpuf-form-builder-js-field-options-mixins', [ $this, 'js_field_options_mixins' ] );
+            add_action( 'wpuf-form-builder-template-builder-stage-submit-area', [ $this, 'add_form_submit_area' ] );
+            add_action( 'wpuf-form-builder-localize-script', [ $this, 'add_to_localize_script' ] );
+            add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
+            add_filter( 'wpuf-form-builder-i18n', [ $this, 'i18n' ] );
 
             do_action( 'wpuf-form-builder-init-type-wpuf_forms' );
 
             $this->set_wp_post_types();
 
-            $settings = array(
+            $settings = [
                 'form_type'         => 'post',
                 'post_type'         => 'wpuf_forms',
                 'post_id'           => $_GET['id'],
                 'form_settings_key' => $this->form_settings_key,
-                'shortcodes'        => array( array( 'name' => 'wpuf_form' ) )
-            );
+                'shortcodes'        => [ [ 'name' => 'wpuf_form' ] ],
+            ];
 
             new WPUF_Admin_Form_Builder( $settings );
         }
@@ -208,7 +203,7 @@ class WPUF_Admin_Form {
         ?>
 
         <div id="wpuf-form-builder-notification" class="group">
-            <?php do_action('wpuf_form_settings_post_notification'); ?>
+            <?php do_action( 'wpuf_form_settings_post_notification' ); ?>
         </div><!-- #wpuf-form-builder-notification -->
 
         <?php
@@ -246,27 +241,26 @@ class WPUF_Admin_Form {
     public function add_settings_tab_contents() {
         global $post;
 
-        $form_settings = wpuf_get_form_settings( $post->ID );
-        ?>
+        $form_settings = wpuf_get_form_settings( $post->ID ); ?>
 
             <div id="wpuf-metabox-settings" class="group">
-                <?php include_once dirname( __FILE__ ) . '/html/form-settings-post.php'; ?>
+                <?php include_once __DIR__ . '/html/form-settings-post.php'; ?>
             </div>
 
             <div id="wpuf-metabox-settings-update" class="group">
-                <?php include_once dirname( __FILE__ ) . '/html/form-settings-post-edit.php'; ?>
+                <?php include_once __DIR__ . '/html/form-settings-post-edit.php'; ?>
             </div>
 
             <div id="wpuf-metabox-submission-restriction" class="group">
-                <?php include_once dirname( __FILE__ ) . '/html/form-submission-restriction.php'; ?>
+                <?php include_once __DIR__ . '/html/form-submission-restriction.php'; ?>
             </div>
 
             <div id="wpuf-metabox-settings-payment" class="group">
-                <?php include_once dirname( __FILE__ ) . '/html/form-settings-payment.php'; ?>
+                <?php include_once __DIR__ . '/html/form-settings-payment.php'; ?>
             </div>
 
             <div id="wpuf-metabox-settings-display" class="group">
-                <?php include_once dirname( __FILE__ ) . '/html/form-settings-display.php'; ?>
+                <?php include_once __DIR__ . '/html/form-settings-display.php'; ?>
             </div>
 
             <div id="wpuf-metabox-post_expiration" class="group wpuf-metabox-post_expiration">
@@ -290,8 +284,9 @@ class WPUF_Admin_Form {
     public function subscription_dropdown( $selected = null ) {
         $subscriptions = WPUF_Subscription::init()->get_subscriptions();
 
-        if ( ! $subscriptions ) {
+        if ( !$subscriptions ) {
             printf( '<option>%s</option>', __( '- Select -', 'wp-user-frontend' ) );
+
             return;
         }
 
@@ -311,8 +306,8 @@ class WPUF_Admin_Form {
      *
      * @global $post
      */
-    public function form_post_expiration(){
-        do_action('wpuf_form_post_expiration');
+    public function form_post_expiration() {
+        do_action( 'wpuf_form_post_expiration' );
     }
 
     /**
@@ -323,23 +318,23 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function add_post_field_section() {
-        $post_fields = apply_filters( 'wpuf-form-builder-wp_forms-fields-section-post-fields', array(
-            'post_title', 'post_content', 'post_excerpt', 'featured_image'
-        ) );
+        $post_fields = apply_filters( 'wpuf-form-builder-wp_forms-fields-section-post-fields', [
+            'post_title', 'post_content', 'post_excerpt', 'featured_image',
+        ] );
 
-        return array(
-            array(
+        return [
+            [
                 'title'     => __( 'Post Fields', 'wp-user-frontend' ),
                 'id'        => 'post-fields',
-                'fields'    => $post_fields
-            ),
+                'fields'    => $post_fields,
+            ],
 
-            array(
+            [
                 'title'     => __( 'Taxonomies', 'wp-user-frontend' ),
                 'id'        => 'taxonomies',
-                'fields'    => array()
-            )
-        );
+                'fields'    => [],
+            ],
+        ];
     }
 
     /**
@@ -350,13 +345,13 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function admin_enqueue_scripts() {
-        wp_register_script(
+        wp_register_script( 
             'wpuf-form-builder-wpuf-forms',
             WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',
-            array( 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ),
+            [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ],
             WPUF_VERSION,
             true
-        );
+         );
     }
 
     /**
@@ -384,7 +379,7 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function js_root_mixins( $mixins ) {
-        array_push( $mixins , 'wpuf_forms_mixin_root' );
+        array_push( $mixins, 'wpuf_forms_mixin_root' );
 
         return $mixins;
     }
@@ -399,7 +394,7 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function js_builder_stage_mixins( $mixins ) {
-        array_push( $mixins , 'wpuf_forms_mixin_builder_stage' );
+        array_push( $mixins, 'wpuf_forms_mixin_builder_stage' );
 
         return $mixins;
     }
@@ -414,7 +409,7 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function js_field_options_mixins( $mixins ) {
-        array_push( $mixins , 'wpuf_forms_mixin_field_options' );
+        array_push( $mixins, 'wpuf_forms_mixin_field_options' );
 
         return $mixins;
     }
@@ -450,30 +445,30 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function set_wp_post_types() {
-        $args = array( '_builtin' => true );
+        $args = [ '_builtin' => true ];
 
         $wpuf_post_types = wpuf_get_post_types( $args );
 
-        $ignore_taxonomies = apply_filters( 'wpuf-ignore-taxonomies', array(
-            'post_format'
-        ) );
+        $ignore_taxonomies = apply_filters( 'wpuf-ignore-taxonomies', [
+            'post_format',
+        ] );
 
         foreach ( $wpuf_post_types as $post_type ) {
-            $this->wp_post_types[ $post_type ] = array();
+            $this->wp_post_types[ $post_type ] = [];
 
             $taxonomies = get_object_taxonomies( $post_type, 'object' );
 
             foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                if ( ! in_array( $tax_name, $ignore_taxonomies ) ) {
-                    $this->wp_post_types[ $post_type ][ $tax_name ] = array(
+                if ( !in_array( $tax_name, $ignore_taxonomies ) ) {
+                    $this->wp_post_types[ $post_type ][ $tax_name ] = [
                         'title'         => $taxonomy->label,
-                        'hierarchical'  => $taxonomy->hierarchical
-                    );
+                        'hierarchical'  => $taxonomy->hierarchical,
+                    ];
 
-                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = get_terms( array(
-                        'taxonomy' => $tax_name,
-                        'hide_empty' => false
-                    ) );
+                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = get_terms( [
+                        'taxonomy'   => $tax_name,
+                        'hide_empty' => false,
+                    ] );
                 }
             }
         }
@@ -489,9 +484,9 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function add_to_localize_script( $data ) {
-        return array_merge( $data, array(
-            'wp_post_types'     => $this->wp_post_types
-        ) );
+        return array_merge( $data, [
+            'wp_post_types'     => $this->wp_post_types,
+        ] );
     }
 
     /**
@@ -504,9 +499,7 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function add_field_settings( $field_settings ) {
-
         if ( class_exists( 'WPUF_Field_Contract' ) ) {
-
             require_once WPUF_ROOT . '/includes/fields/class-field-post-title.php';
             require_once WPUF_ROOT . '/includes/fields/class-field-post-content.php';
             require_once WPUF_ROOT . '/includes/fields/class-field-post-tags.php';
@@ -514,37 +507,31 @@ class WPUF_Admin_Form {
             require_once WPUF_ROOT . '/includes/fields/class-field-post-taxonomy.php';
             require_once WPUF_ROOT . '/includes/fields/class-field-featured-image.php';
 
-            $field_settings['post_title'] = new WPUF_Form_Field_Post_Title();
-            $field_settings['post_content'] = new WPUF_Form_Field_Post_Content();
-            $field_settings['post_excerpt'] = new WPUF_Form_Field_Post_Excerpt();
+            $field_settings['post_title']     = new WPUF_Form_Field_Post_Title();
+            $field_settings['post_content']   = new WPUF_Form_Field_Post_Content();
+            $field_settings['post_excerpt']   = new WPUF_Form_Field_Post_Excerpt();
             $field_settings['featured_image'] = new WPUF_Form_Field_Featured_Image();
 
-            $taxonomy_templates = array();
+            $taxonomy_templates = [];
 
             foreach ( $this->wp_post_types as $post_type => $taxonomies ) {
-
-                if ( ! empty( $taxonomies ) ) {
-
+                if ( !empty( $taxonomies ) ) {
                     foreach ( $taxonomies as $tax_name => $taxonomy ) {
                         if ( 'post_tag' === $tax_name ) {
                             $taxonomy_templates['post_tag'] = new WPUF_Form_Field_Post_Tags();
                         } else {
-                            $taxonomy_templates[ $tax_name ] = new WPUF_Form_Field_Post_Taxonomy($tax_name, $taxonomy);
+                            $taxonomy_templates[ $tax_name ] = new WPUF_Form_Field_Post_Taxonomy( $tax_name, $taxonomy );
                             // $taxonomy_templates[ 'taxonomy' ] = new WPUF_Form_Field_Post_Taxonomy($tax_name, $taxonomy);
                         }
                     }
-
                 }
-
             }
 
             $field_settings = array_merge( $field_settings, $taxonomy_templates );
-
         }
 
         return $field_settings;
     }
-
 
     /**
      * i18n strings specially for Post Forms
@@ -556,9 +543,8 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function i18n( $i18n ) {
-        return array_merge( $i18n, array(
-            'any_of_three_needed' => __( 'Post Forms must have either Post Title, Post Body or Excerpt field', 'wp-user-frontend' )
-        ) );
+        return array_merge( $i18n, [
+            'any_of_three_needed' => __( 'Post Forms must have either Post Title, Post Body or Excerpt field', 'wp-user-frontend' ),
+        ] );
     }
-
 }

@@ -5,22 +5,22 @@ class WPUF_Form_Field_Pro extends WPUF_Field_Contract {
     /**
      * Render the text field
      *
-     * @param  array  $field_settings
-     * @param  integer  $form_id
+     * @param array $field_settings
+     * @param int   $form_id
      *
      * @return void
      */
-    public function render( $field_settings, $form_id , $post_id = null , $user_id = null ) {
+    public function render( $field_settings, $form_id, $post_id = null, $user_id = null ) {
         if ( current_user_can( 'manage_options' ) ) {
-            echo __($field_settings['template'] .'  is a premium field. To use this field you need to upgrade to the premium version.', 'wp-user-frontend' );
-            echo "<br/>";
+            echo __( $field_settings['template'] . '  is a premium field. To use this field you need to upgrade to the premium version.', 'wp-user-frontend' );
+            echo '<br/>';
         }
     }
 
     /**
      * Check if it's a pro feature
      *
-     * @return boolean
+     * @return bool
      */
     public function is_pro() {
         return true;

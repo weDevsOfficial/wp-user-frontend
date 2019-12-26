@@ -6,22 +6,23 @@
  * @since 2.5.8
  */
 class WPUF_Registration {
+    private $registration_errors = [];
 
-    private $registration_errors = array();
-    private $messages = array();
+    private $messages = [];
 
     private static $_instance;
-    public $atts = array();
+
+    public $atts = [];
+
     public $userrole = '';
 
-    function __construct() {
+    public function __construct() {
+        add_shortcode( 'wpuf-registration', [$this, 'registration_form'] );
 
-        add_shortcode( 'wpuf-registration', array($this, 'registration_form') );
+        add_action( 'init', [$this, 'process_registration'] );
+        add_action( 'init', [$this, 'wp_registration_page_redirect'] );
 
-        add_action( 'init', array($this, 'process_registration') );
-        add_action( 'init', array($this, 'wp_registration_page_redirect') );
-
-        add_filter( 'register_url', array($this, 'get_registration_url') );
+        add_filter( 'register_url', [$this, 'get_registration_url'] );
     }
 
     /**
@@ -30,9 +31,8 @@ class WPUF_Registration {
      * @return self
      */
     public static function init() {
-
         if ( !self::$_instance ) {
-            self::$_instance = new self;
+            self::$_instance = new self();
         }
 
         return self::$_instance;
@@ -41,10 +41,9 @@ class WPUF_Registration {
     /**
      * Is override enabled
      *
-     * @return boolean
+     * @return bool
      */
-    function is_override_enabled() {
-
+    public function is_override_enabled() {
         $override = wpuf_get_option( 'register_link_override', 'wpuf_profile', 'off' );
 
         if ( $override !== 'on' ) {
@@ -59,13 +58,13 @@ class WPUF_Registration {
      *
      * @param string $action
      * @param string $redirect_to url to redirect to
+     *
      * @return string
      */
-    function get_action_url( $action = 'registration', $redirect_to = '' ) {
-
+    public function get_action_url( $action = 'registration', $redirect_to = '' ) {
         $root_url = $this->get_registration_url();
 
-        switch ($action) {
+        switch ( $action ) {
             case 'register':
                 return $this->get_registration_url();
                 break;
@@ -75,21 +74,19 @@ class WPUF_Registration {
                     return $root_url;
                 }
 
-                return add_query_arg( array('redirect_to' => urlencode( $redirect_to )), $root_url );
+                return add_query_arg( ['redirect_to' => urlencode( $redirect_to )], $root_url );
                 break;
         }
     }
 
-
     /**
      * Get registration page url
      *
-     * @return boolean|string
+     * @return bool|string
      */
-    function get_registration_url( $register_url = null ) {
-
-        $register_link_override = wpuf_get_option('register_link_override','wpuf_profile',false);
-        $page_id = wpuf_get_option( 'reg_override_page', 'wpuf_profile', false );
+    public function get_registration_url( $register_url = null ) {
+        $register_link_override = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
+        $page_id                = wpuf_get_option( 'reg_override_page', 'wpuf_profile', false );
 
         if ( $register_link_override == 'off' ) {
             return $register_url;
@@ -104,21 +101,20 @@ class WPUF_Registration {
         return apply_filters( 'wpuf_register_url', $url, $page_id );
     }
 
-
     /**
      * Get actions links for displaying in forms
      *
      * @param array $args
+     *
      * @return string
      */
-    function get_action_links( $args = array() ) {
-
-        $defaults = array(
-            'register'     => true
-        );
+    public function get_action_links( $args = [] ) {
+        $defaults = [
+            'register'     => true,
+        ];
 
         $args   = wp_parse_args( $args, $defaults );
-        $links  = array();
+        $links  = [];
 
         if ( $args['register'] && get_option( 'users_can_register' ) ) {
             $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wp-user-frontend' ) );
@@ -132,12 +128,12 @@ class WPUF_Registration {
      *
      * @return string
      */
-    function registration_form( $atts ) {
-        $atts = shortcode_atts(
-        array(
+    public function registration_form( $atts ) {
+        $atts = shortcode_atts( 
+        [
                 'role' => '',
-            ), $atts
-        );
+            ], $atts
+         );
         $userrole = $atts['role'];
 
         $roleencoded = wpuf_encryption( $userrole );
@@ -151,22 +147,18 @@ class WPUF_Registration {
         ob_start();
 
         if ( is_user_logged_in() ) {
-
-            wpuf_load_template( 'logged-in.php', array(
-                'user' => wp_get_current_user()
-            ) );
-
+            wpuf_load_template( 'logged-in.php', [
+                'user' => wp_get_current_user(),
+            ] );
         } else {
-
             $action = isset( $_GET['action'] ) ? $_GET['action'] : 'register';
 
-            $args = array(
+            $args = [
                 'action_url' => $reg_page,
-                'userrole'   => $roleencoded
-            );
+                'userrole'   => $roleencoded,
+            ];
 
             wpuf_load_template( 'registration-form.php', $args );
-
         }
 
         return ob_get_clean();
@@ -177,59 +169,68 @@ class WPUF_Registration {
      *
      * @return void
      */
-    function process_registration() {
+    public function process_registration() {
         if ( !empty( $_POST['wpuf_registration'] ) && !empty( $_POST['_wpnonce'] ) ) {
-            $userdata = array();
+            $userdata = [];
 
             if ( isset( $_POST['_wpnonce'] ) ) {
                 wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_registration_action' );
             }
 
             $validation_error = new WP_Error();
-            $validation_error = apply_filters( 'wpuf_process_registration_errors', $validation_error, $_POST['reg_fname'], $_POST['reg_lname'], $_POST['reg_email'],  $_POST['log'], $_POST['pwd1'], $_POST['pwd2'] );
+            $validation_error = apply_filters( 'wpuf_process_registration_errors', $validation_error, $_POST['reg_fname'], $_POST['reg_lname'], $_POST['reg_email'], $_POST['log'], $_POST['pwd1'], $_POST['pwd2'] );
 
             if ( $validation_error->get_error_code() ) {
                 $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . $validation_error->get_error_message();
+
                 return;
             }
 
             if ( empty( $_POST['reg_fname'] ) ) {
                 $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'First name is required.', 'wp-user-frontend' );
+
                 return;
             }
 
             if ( empty( $_POST['reg_lname'] ) ) {
                 $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Last name is required.', 'wp-user-frontend' );
+
                 return;
             }
 
             if ( empty( $_POST['reg_email'] ) ) {
                 $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Email is required.', 'wp-user-frontend' );
+
                 return;
             }
 
             if ( empty( $_POST['log'] ) ) {
                 $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Username is required.', 'wp-user-frontend' );
+
                 return;
             }
 
             if ( empty( $_POST['pwd1'] ) ) {
                 $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Password is required.', 'wp-user-frontend' );
+
                 return;
             }
 
             if ( empty( $_POST['pwd2'] ) ) {
                 $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Confirm Password is required.', 'wp-user-frontend' );
+
                 return;
             }
 
             if ( $_POST['pwd1'] != $_POST['pwd2'] ) {
                 $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Passwords are not same.', 'wp-user-frontend' );
+
                 return;
             }
 
             if ( get_user_by( 'login', $_POST['log'] ) === $_POST['log'] ) {
                 $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user with same username already exists.', 'wp-user-frontend' );
+
                 return;
             }
 
@@ -240,6 +241,7 @@ class WPUF_Registration {
                     $userdata['user_login']  = $user->user_login;
                 } else {
                     $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
+
                     return;
                 }
             } else {
@@ -260,35 +262,34 @@ class WPUF_Registration {
             $user = wp_insert_user( $userdata );
 
             if ( is_wp_error( $user ) ) {
-                    $this->registration_errors[] = $user->get_error_message();
-                    return;
-            } else {
+                $this->registration_errors[] = $user->get_error_message();
 
+                return;
+            } else {
                 $wpuf_user  = new WP_User( $user );
                 $user_login = stripslashes( $wpuf_user->user_login );
                 $user_email = stripslashes( $wpuf_user->user_email );
-                $blogname   = wp_specialchars_decode( get_option('blogname'), ENT_QUOTES );
+                $blogname   = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 
-                $message = sprintf(__('New user registration on your site %s:', 'wp-user-frontend'), get_option('blogname')) . "\r\n\r\n";
-                $message .= sprintf(__('Username: %s', 'wp-user-frontend'), $user_login) . "\r\n\r\n";
-                $message .= sprintf(__('E-mail: %s', 'wp-user-frontend'), $user_email) . "\r\n";
-                $subject = "New User Registration";
+                $message = sprintf( __( 'New user registration on your site %s:', 'wp-user-frontend' ), get_option( 'blogname' ) ) . "\r\n\r\n";
+                $message .= sprintf( __( 'Username: %s', 'wp-user-frontend' ), $user_login ) . "\r\n\r\n";
+                $message .= sprintf( __( 'E-mail: %s', 'wp-user-frontend' ), $user_email ) . "\r\n";
+                $subject = 'New User Registration';
 
                 $subject = apply_filters( 'wpuf_default_reg_admin_mail_subject', $subject );
                 $message = apply_filters( 'wpuf_default_reg_admin_mail_body', $message );
 
-                wp_mail(get_option('admin_email'), sprintf(__('[%s] %s', 'wp-user-frontend'), $blogname, $subject ), $message);
+                wp_mail( get_option( 'admin_email' ), sprintf( __( '[%s] %s', 'wp-user-frontend' ), $blogname, $subject ), $message );
 
-                $message = sprintf(__('Hi, %s', 'wp-user-frontend'), $user_login) . "\r\n";
-                $message .= "Congrats! You are Successfully registered to ". $blogname ."\r\n\r\n";
-                $message .= "Thanks";
-                $subject = "Thank you for registering";
+                $message = sprintf( __( 'Hi, %s', 'wp-user-frontend' ), $user_login ) . "\r\n";
+                $message .= 'Congrats! You are Successfully registered to ' . $blogname . "\r\n\r\n";
+                $message .= 'Thanks';
+                $subject = 'Thank you for registering';
 
                 $subject = apply_filters( 'wpuf_default_reg_mail_subject', $subject );
                 $message = apply_filters( 'wpuf_default_reg_mail_body', $message );
 
-                wp_mail( $user_email, sprintf(__('[%s] %s', 'wp-user-frontend'), $blogname, $subject ), $message );
-
+                wp_mail( $user_email, sprintf( __( '[%s] %s', 'wp-user-frontend' ), $blogname, $subject ), $message );
             }
 
             $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
@@ -301,9 +302,9 @@ class WPUF_Registration {
 
             if ( is_wp_error( $user ) ) {
                 $this->registration_errors[] = $user->get_error_message();
+
                 return;
             } else {
-
                 if ( !empty( $_POST['redirect_to'] ) ) {
                     $redirect = esc_url( $_POST['redirect_to'] );
                 } else {
@@ -321,11 +322,10 @@ class WPUF_Registration {
      *
      * @return void
      */
-    function wp_registration_page_redirect() {
+    public function wp_registration_page_redirect() {
         global $pagenow;
 
-        if ( ! is_admin() && $pagenow == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] == 'register' ) {
-
+        if ( !is_admin() && $pagenow == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] == 'register' ) {
             if ( wpuf_get_option( 'register_link_override', 'wpuf_profile' ) != 'on' ) {
                 return;
             }
@@ -341,11 +341,11 @@ class WPUF_Registration {
      *
      * @return void
      */
-    function show_errors() {
+    public function show_errors() {
         if ( $this->registration_errors ) {
-            foreach ($this->registration_errors as $error) {
+            foreach ( $this->registration_errors as $error ) {
                 echo '<div class="wpuf-error">';
-                _e( $error,'wp-user-frontend' );
+                _e( $error, 'wp-user-frontend' );
                 echo '</div>';
             }
         }
@@ -356,9 +356,9 @@ class WPUF_Registration {
      *
      * @return void
      */
-    function show_messages() {
+    public function show_messages() {
         if ( $this->messages ) {
-            foreach ($this->messages as $message) {
+            foreach ( $this->messages as $message ) {
                 printf( '<div class="wpuf-message">%s</div>', $message );
             }
         }
@@ -368,6 +368,7 @@ class WPUF_Registration {
      * Get a posted value for showing in the form field
      *
      * @param string $key
+     *
      * @return string
      */
     public static function get_posted_value( $key ) {
@@ -377,5 +378,4 @@ class WPUF_Registration {
 
         return '';
     }
-
 }

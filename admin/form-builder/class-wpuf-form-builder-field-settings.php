@@ -12,8 +12,6 @@ class WPUF_Form_Builder_Field_Settings {
      * @return array
      */
     public static function get_field_settings() {
-
-    	return array();
+        return [];
     }
-
 }

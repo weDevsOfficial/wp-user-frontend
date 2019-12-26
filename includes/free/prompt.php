@@ -2,8 +2,6 @@
 
 /**
  * Free to Pro prompter class
- *
- * @package WPUF
  */
 class WPUF_Pro_Prompt {
 

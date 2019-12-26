@@ -6,20 +6,19 @@
  *
  * @since   3.0
  */
-
 global $WCMp;
 ?>
 <div class="col-md-12 wpuf-wcmp-integration-content">
     <div class="panel panel-default">
         <div class="panel-body">
             <?php
-                $action = isset( $_GET['action'] ) ?  $_GET['action'] : '';
+                $action = isset( $_GET['action'] ) ? $_GET['action'] : '';
 
                 if ( $action == 'new-post' ) {
                     require_once WPUF_ROOT . '/templates/wc-marketplace/new-post.php';
-                }else if( $action == 'edit-post' ) {
+                } elseif ( $action == 'edit-post' ) {
                     require_once WPUF_ROOT . '/templates/wc-marketplace/edit-post.php';
-                }else{
+                } else {
                     require_once WPUF_ROOT . '/templates/wc-marketplace/post-listing.php';
                 }
             ?>

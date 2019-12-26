@@ -9,7 +9,8 @@
     <?php
 
     $message = apply_filters( 'login_message', '' );
-    if ( ! empty( $message ) ) {
+
+    if ( !empty( $message ) ) {
         echo $message . "\n";
     }
     ?>
@@ -27,14 +28,14 @@
             <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" />
         </p>
 
-        <?php $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off'); ?>
-        <?php if( $recaptcha == 'on' ) : ?>
+        <?php $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' ); ?>
+        <?php if ( $recaptcha == 'on' ) { ?>
             <p>
                 <div class="wpuf-fields">
                     <?php echo recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ); ?>
                 </div>
             </p>
-        <?php endif; ?>
+        <?php } ?>
 
         <p class="forgetmenot">
             <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
@@ -43,7 +44,7 @@
 
         <p class="submit">
             <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Log In', 'wp-user-frontend' ); ?>" />
-            <input type="hidden" name="redirect_to" value="<?php echo wp_get_referer() ?>" />
+            <input type="hidden" name="redirect_to" value="<?php echo wp_get_referer(); ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />
             <?php wp_nonce_field( 'wpuf_login_action' ); ?>
@@ -53,5 +54,5 @@
         </p>
     </form>
 
-    <?php echo wpuf()->login->get_action_links( array( 'login' => false ) ); ?>
+    <?php echo wpuf()->login->get_action_links( [ 'login' => false ] ); ?>
 </div>

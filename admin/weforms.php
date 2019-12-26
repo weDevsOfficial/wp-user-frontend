@@ -1,10 +1,10 @@
 <div class="wrap about-wrap">
     <h1><?php _e( 'weForms', 'wp-user-frontend' ); ?></h1>
 
-    <p class="about-text"><?php _e( 'The Easiest &amp; Fastest Contact Form Plugin on WordPress', 'wp-user-frontend' ) ?></p>
+    <p class="about-text"><?php _e( 'The Easiest &amp; Fastest Contact Form Plugin on WordPress', 'wp-user-frontend' ); ?></p>
 
     <hr>
-    <p><?php _e( 'Quickly create rich contact forms to generate leads, taking feedbacks, onboarding visitors and flourishing <br /> your imagination! Comes with the best frontend post submission plugin for WordPress, WP User Frontend.', 'wp-user-frontend' ) ?>
+    <p><?php _e( 'Quickly create rich contact forms to generate leads, taking feedbacks, onboarding visitors and flourishing <br /> your imagination! Comes with the best frontend post submission plugin for WordPress, WP User Frontend.', 'wp-user-frontend' ); ?>
 
 
     <div class="install" id="wpuf-weforms-installer-notice" style="padding: 1em 0; position: relative;">
@@ -30,7 +30,7 @@
             self.text('<?php echo esc_js( 'Installing...', 'weforms' ); ?>');
             var data = {
                 action: 'wpuf_weforms_install',
-                _wpnonce: '<?php echo wp_create_nonce('wpuf-weforms-installer-nonce'); ?>'
+                _wpnonce: '<?php echo wp_create_nonce( 'wpuf-weforms-installer-nonce' ); ?>'
             };
 
             $.post(ajaxurl, data, function (response) {

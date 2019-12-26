@@ -2,9 +2,9 @@
 
 $user_id = get_current_user_id();
 
-$address_fields = array();
-$countries = array();
-$cs = new CountryState();
+$address_fields = [];
+$countries      = [];
+$cs             = new CountryState();
 
 if ( isset( $_POST['update_billing_address'] )
     && isset( $_POST['add_line_1'] )
@@ -12,23 +12,23 @@ if ( isset( $_POST['update_billing_address'] )
     && isset( $_POST['state'] )
     && isset( $_POST['zip_code'] )
     && isset( $_POST['country'] ) ) {
-    $address_fields = array(
+    $address_fields = [
         'add_line_1'    => $_POST['add_line_1'],
         'add_line_2'    => $_POST['add_line_2'],
         'city'          => $_POST['city'],
         'state'         => strtolower( str_replace( ' ', '', $_POST['state'] ) ),
         'zip_code'      => $_POST['zip_code'],
-        'country'       => $_POST['country']
-    );
+        'country'       => $_POST['country'],
+    ];
     update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
     echo '<div class="wpuf-success">' . __( 'Billing address is updated.', 'wp-user-frontend' ) . '</div>';
 } else {
-    if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields') ) {
+    if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields' ) ) {
         $address_fields = get_user_meta( $user_id, 'wpuf_address_fields', true );
         $address_fields = $address_fields;
     } else {
-        $address_fields = array_fill_keys(
-            array( 'add_line_1', 'add_line_2', 'city', 'state', 'zip_code', 'country' ), '' );
+        $address_fields = array_fill_keys( 
+            [ 'add_line_1', 'add_line_2', 'city', 'state', 'zip_code', 'country' ], '' );
     }
 }
 ?>
@@ -60,7 +60,7 @@ if ( isset( $_POST['update_billing_address'] )
             </li>
 
             <li>
-                <div class="wpuf-label"><?php _e('State/Province/Region', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
+                <div class="wpuf-label"><?php _e( 'State/Province/Region', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="state" id="state" value="<?php echo $cs->getStateName( $address_fields['state'], $address_fields['country'] ); ?>" />
                 </div>
@@ -75,13 +75,13 @@ if ( isset( $_POST['update_billing_address'] )
                         </div>
 
                         <div class="wpuf-name-field-last-name">
-                            <label class="wpuf-fields wpuf-label"><?php _e('Country', 'wp-user-frontend' ); ?></label>
+                            <label class="wpuf-fields wpuf-label"><?php _e( 'Country', 'wp-user-frontend' ); ?></label>
                             <div class="wpuf-fields">
                                 <?php
                                 $countries = $cs->countries();
                                 ?>
                                 <select name="country" id="country">
-                                        <option selected value="-1"><?php _e('Select Country', 'wp-user-frontend'); ?></option>
+                                        <option selected value="-1"><?php _e( 'Select Country', 'wp-user-frontend' ); ?></option>
                                     <?php
                                     foreach ( $countries as $key => $value ) {
                                         if ( $key == $address_fields['country'] ) { ?>

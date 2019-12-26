@@ -54,7 +54,7 @@
                     <ul v-if="is_form_switcher" class="form-switcher-content">
                         <?php
                             foreach ( $forms as $form ) {
-                        ?>
+                                ?>
                                 <li><a class="<?php echo ( $form->ID == $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ); ?>"><?php echo $form->post_title; ?></a></li>
                         <?php
                             }
@@ -108,9 +108,9 @@
             <?php do_action( "wpuf-form-builder-tab-contents-{$form_type}" ); ?>
         </div>
 
-        <?php if ( ! empty( $form_settings_key ) ): ?>
+        <?php if ( !empty( $form_settings_key ) ) { ?>
             <input type="hidden" name="form_settings_key" value="<?php echo $form_settings_key; ?>">
-        <?php endif; ?>
+        <?php } ?>
 
         <?php wp_nonce_field( 'wpuf_form_builder_save_form', 'wpuf_form_builder_nonce' ); ?>
 

@@ -13,16 +13,16 @@ class WPUF_Setup_Wizard {
     protected $step   = '';
 
     /** @var array Steps for the setup wizard */
-    protected $steps  = array();
+    protected $steps  = [];
 
     /**
      * Hook in tabs.
      */
     public function __construct() {
-        add_action( 'admin_menu', array( $this, 'admin_menus' ) );
-        add_action( 'admin_init', array( $this, 'setup_wizard' ), 99 );
-        add_action( 'admin_init', array( $this, 'redirect_to_page' ), 9999 );
-        add_action( 'admin_init', array( $this, 'add_custom_menu_class') );
+        add_action( 'admin_menu', [ $this, 'admin_menus' ] );
+        add_action( 'admin_init', [ $this, 'setup_wizard' ], 99 );
+        add_action( 'admin_init', [ $this, 'redirect_to_page' ], 9999 );
+        add_action( 'admin_init', [ $this, 'add_custom_menu_class'] );
     }
 
     /**
@@ -33,10 +33,10 @@ class WPUF_Setup_Wizard {
     public function enqueue_scripts() {
         $suffix     = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-        wp_register_script( 'jquery-blockui', WPUF_ASSET_URI . '/js/jquery-blockui/jquery.blockUI' . $suffix . '.js', array( 'jquery' ), '2.70', true );
-        wp_register_script( 'selectWPUF', WPUF_ASSET_URI . '/js/selectWPUF/selectWPUF.full' . $suffix . '.js', array( 'jquery' ), '1.0.1' );
-        wp_register_script( 'wpuf-enhanced-select', WPUF_ASSET_URI . '/js/admin/wpuf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWPUF' ) );
-        wp_localize_script( 'wpuf-enhanced-select', 'wpuf_enhanced_select_params', array(
+        wp_register_script( 'jquery-blockui', WPUF_ASSET_URI . '/js/jquery-blockui/jquery.blockUI' . $suffix . '.js', [ 'jquery' ], '2.70', true );
+        wp_register_script( 'selectWPUF', WPUF_ASSET_URI . '/js/selectWPUF/selectWPUF.full' . $suffix . '.js', [ 'jquery' ], '1.0.1' );
+        wp_register_script( 'wpuf-enhanced-select', WPUF_ASSET_URI . '/js/admin/wpuf-enhanced-select' . $suffix . '.js', [ 'jquery', 'selectWPUF' ] );
+        wp_localize_script( 'wpuf-enhanced-select', 'wpuf_enhanced_select_params', [
             'i18n_matches_1'            => _x( 'One result is available, press enter to select it.', 'enhanced select', 'wp-user-frontend' ),
             'i18n_matches_n'            => _x( '%qty% results are available, use up and down arrow keys to navigate.', 'enhanced select', 'wp-user-frontend' ),
             'i18n_no_matches'           => _x( 'No matches found', 'enhanced select', 'wp-user-frontend' ),
@@ -50,13 +50,13 @@ class WPUF_Setup_Wizard {
             'i18n_load_more'            => _x( 'Loading more results&hellip;', 'enhanced select', 'wp-user-frontend' ),
             'i18n_searching'            => _x( 'Searching&hellip;', 'enhanced select', 'wp-user-frontend' ),
             'ajax_url'                  => admin_url( 'admin-ajax.php' ),
-        ) );
+        ] );
 
-        wp_enqueue_style( 'wpuf_admin_styles', WPUF_ASSET_URI . '/css/admin/admin.css', array() );
-        wp_enqueue_style( 'wpuf-setup', WPUF_ASSET_URI . '/css/admin/wpuf-setup.css', array( 'dashicons', 'install' ) );
+        wp_enqueue_style( 'wpuf_admin_styles', WPUF_ASSET_URI . '/css/admin/admin.css', [] );
+        wp_enqueue_style( 'wpuf-setup', WPUF_ASSET_URI . '/css/admin/wpuf-setup.css', [ 'dashicons', 'install' ] );
 
-        wp_register_script( 'wpuf-setup', WPUF_ASSET_URI . '/js/admin/wpuf-setup' . $suffix . '.js', array( 'jquery', 'wpuf-enhanced-select', 'jquery-blockui' ) );
-        wp_localize_script( 'wpuf-setup', 'wpuf_setup_params', array() );
+        wp_register_script( 'wpuf-setup', WPUF_ASSET_URI . '/js/admin/wpuf-setup' . $suffix . '.js', [ 'jquery', 'wpuf-enhanced-select', 'jquery-blockui' ] );
+        wp_localize_script( 'wpuf-setup', 'wpuf_setup_params', [] );
     }
 
     /**
@@ -74,11 +74,11 @@ class WPUF_Setup_Wizard {
     public function add_custom_menu_class() {
         global $submenu;
 
-        if ( !empty($submenu) ) {
-            foreach( $submenu as $key => $items ) {
-                foreach ($items as $index => $item) {
-                    if( 'wpuf-setup' == $item[2] ) {
-                        $submenu['index.php'][$index][4] = "wpuf-setup-menu-link";
+        if ( !empty( $submenu ) ) {
+            foreach ( $submenu as $key => $items ) {
+                foreach ( $items as $index => $item ) {
+                    if ( 'wpuf-setup' == $item[2] ) {
+                        $submenu['index.php'][$index][4] = 'wpuf-setup-menu-link';
                     }
                 }
             }
@@ -91,7 +91,7 @@ class WPUF_Setup_Wizard {
      * @return void
      */
     public function redirect_to_page() {
-        if ( ! get_transient( 'wpuf_activation_redirect' ) || get_option( 'wpuf_setup_wizard' ) ) {
+        if ( !get_transient( 'wpuf_activation_redirect' ) || get_option( 'wpuf_setup_wizard' ) ) {
             return;
         }
 
@@ -113,28 +113,28 @@ class WPUF_Setup_Wizard {
         if ( empty( $_GET['page'] ) || 'wpuf-setup' !== $_GET['page'] ) {
             return;
         }
-        $this->steps = array(
-            'introduction' => array(
-                'name'    =>  __( 'Introduction', 'wp-user-frontend' ),
-                'view'    => array( $this, 'wpuf_setup_introduction' ),
-                'handler' => ''
-            ),
-            'basic' => array(
-                'name'    =>  __( 'Settings', 'wp-user-frontend' ),
-                'view'    => array( $this, 'wpuf_setup_basic' ),
-                'handler' => array( $this, 'wpuf_setup_basic_save' ),
-            ),
-            'next_steps' => array(
-                'name'    =>  __( 'Ready!', 'wp-user-frontend' ),
-                'view'    => array( $this, 'wpuf_setup_ready' ),
-                'handler' => ''
-            )
-        );
+        $this->steps = [
+            'introduction' => [
+                'name'    => __( 'Introduction', 'wp-user-frontend' ),
+                'view'    => [ $this, 'wpuf_setup_introduction' ],
+                'handler' => '',
+            ],
+            'basic' => [
+                'name'    => __( 'Settings', 'wp-user-frontend' ),
+                'view'    => [ $this, 'wpuf_setup_basic' ],
+                'handler' => [ $this, 'wpuf_setup_basic_save' ],
+            ],
+            'next_steps' => [
+                'name'    => __( 'Ready!', 'wp-user-frontend' ),
+                'view'    => [ $this, 'wpuf_setup_ready' ],
+                'handler' => '',
+            ],
+        ];
         $this->step = isset( $_GET['step'] ) ? sanitize_key( $_GET['step'] ) : current( array_keys( $this->steps ) );
 
         $this->enqueue_scripts();
 
-        if ( ! empty( $_POST['save_step'] ) && isset( $this->steps[ $this->step ]['handler'] ) ) { // WPCS: CSRF ok.
+        if ( !empty( $_POST['save_step'] ) && isset( $this->steps[ $this->step ]['handler'] ) ) { // WPCS: CSRF ok.
             call_user_func( $this->steps[ $this->step ]['handler'] );
         }
 
@@ -226,9 +226,9 @@ class WPUF_Setup_Wizard {
      */
     public function setup_wizard_footer() {
         ?>
-            <?php if ( 'next_steps' === $this->step ) : ?>
+            <?php if ( 'next_steps' === $this->step ) { ?>
                 <a class="wpuf-return-to-dashboard" href="<?php echo esc_url( admin_url() ); ?>"><?php _e( 'Return to the WordPress Dashboard', 'wp-user-frontend' ); ?></a>
-            <?php endif; ?>
+            <?php } ?>
             </body>
         </html>
         <?php
@@ -239,10 +239,9 @@ class WPUF_Setup_Wizard {
      */
     public function setup_wizard_steps() {
         $ouput_steps = $this->steps;
-        array_shift( $ouput_steps );
-        ?>
+        array_shift( $ouput_steps ); ?>
         <ol class="wpuf-setup-steps">
-            <?php foreach ( $ouput_steps as $step_key => $step ) : ?>
+            <?php foreach ( $ouput_steps as $step_key => $step ) { ?>
                 <li class="<?php
                     if ( $step_key === $this->step ) {
                         echo 'active';
@@ -250,7 +249,7 @@ class WPUF_Setup_Wizard {
                         echo 'done';
                     }
                 ?>"><?php echo esc_html( $step['name'] ); ?></li>
-            <?php endforeach; ?>
+            <?php } ?>
         </ol>
         <?php
     }
@@ -285,8 +284,7 @@ class WPUF_Setup_Wizard {
     public function wpuf_setup_basic() {
         $enable_payment           = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
         $install_wpuf_pages       = wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' );
-        $share_wpuf_essentials    = wpuf_get_option( 'share_wpuf_essentials', 'wpuf_general', 'on' );
-        ?>
+        $share_wpuf_essentials    = wpuf_get_option( 'share_wpuf_essentials', 'wpuf_general', 'on' ); ?>
         <h1><?php _e( 'Basic Setting', 'wp-user-frontend' ); ?></h1>
         <form method="post">
             <table class="form-table">

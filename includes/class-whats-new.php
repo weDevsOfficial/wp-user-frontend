@@ -10,22 +10,22 @@ class WPUF_Whats_New {
     /**
      * Initialize the actions
      */
-    function __construct() {
-        add_action( 'admin_menu', array( $this, 'register_menu' ) );
-        add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+    public function __construct() {
+        add_action( 'admin_menu', [ $this, 'register_menu' ] );
+        add_action( 'admin_notices', [ $this, 'admin_notice' ] );
 
-        add_action( 'wp_ajax_wpuf_whats_new_dismiss', array( $this, 'dismiss_notice' ) );
+        add_action( 'wp_ajax_wpuf_whats_new_dismiss', [ $this, 'dismiss_notice' ] );
     }
 
     /**
      * Check if a changelog is unread
      *
-     * @return boolean
+     * @return bool
      */
     public function has_new() {
         $options = $this->get_option();
 
-        if ( ! current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             return false;
         }
 
@@ -55,7 +55,7 @@ class WPUF_Whats_New {
      * @return array
      */
     public function get_option() {
-        return get_option( 'wpuf_whats_new', array() );
+        return get_option( 'wpuf_whats_new', [] );
     }
 
     /**
@@ -64,7 +64,7 @@ class WPUF_Whats_New {
      * @return void
      */
     public function register_menu() {
-        add_submenu_page( null, __( 'Whats New', 'wp-user-frontend' ), __( 'Whats New', 'wp-user-frontend' ), 'manage_options', 'whats-new-wpuf', array( $this, 'menu_page' ) );
+        add_submenu_page( null, __( 'Whats New', 'wp-user-frontend' ), __( 'Whats New', 'wp-user-frontend' ), 'manage_options', 'whats-new-wpuf', [ $this, 'menu_page' ] );
     }
 
     /**
@@ -73,7 +73,6 @@ class WPUF_Whats_New {
      * @return void
      */
     public function menu_page() {
-
         $this->mark_read();
 
         include_once WPUF_ROOT . '/admin/html/whats-new.php';
@@ -85,11 +84,9 @@ class WPUF_Whats_New {
      * @return void
      */
     public function admin_notice() {
-
-        if ( ! $this->has_new() ) {
+        if ( !$this->has_new() ) {
             return;
-        }
-        ?>
+        } ?>
         <div class="notice notice-success wpuf-whats-new-notice free">
 
             <div class="wpuf-whats-new-icon">

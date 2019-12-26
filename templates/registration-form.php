@@ -8,12 +8,13 @@
 
     <?php
     $message = apply_filters( 'registration_message', '' );
-    if ( ! empty( $message ) ) {
+
+    if ( !empty( $message ) ) {
         echo $message . "\n";
     }
 
-    if ( isset($_GET['success']) && "yes" == $_GET['success'] ) {
-        echo "<div class='wpuf-success' style='text-align:center'>" . __( 'Registration has been successful!', 'wp-user-frontend' ) ."</div>";
+    if ( isset( $_GET['success'] ) && 'yes' == $_GET['success'] ) {
+        echo "<div class='wpuf-success' style='text-align:center'>" . __( 'Registration has been successful!', 'wp-user-frontend' ) . '</div>';
     }
     ?>
 
@@ -79,7 +80,7 @@
             </li>
 
             <li>
-                <?php echo wpuf()->login->get_action_links( array( 'register' => false ) ); ?>
+                <?php echo wpuf()->login->get_action_links( [ 'register' => false ] ); ?>
             </li>
 
             <?php do_action( 'wpuf_reg_form_bottom' ); ?>

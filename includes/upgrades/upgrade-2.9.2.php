@@ -1,10 +1,10 @@
 <?php
 
 function wpuf_upgrade_2_9_2_migration() {
-    $args = array(
+    $args = [
         'post_type'     => 'wpuf_profile',
         'post_status'   => 'publish',
-    );
+    ];
 
     $profile_forms = get_posts( $args );
 

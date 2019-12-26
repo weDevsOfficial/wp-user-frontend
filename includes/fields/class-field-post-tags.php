@@ -2,7 +2,7 @@
 //Post Tags Class
 class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
 
-    function __construct() {
+    public function __construct() {
         $this->name       = __( 'Tags', 'wp-user-frontend' );
         $this->input_type = 'post_tags';
         $this->icon       = 'text-width';
@@ -11,27 +11,25 @@ class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
     /**
      * Render the Post Tags field
      *
-     * @param  array  $field_settings
-     * @param  integer  $form_id
-     * @param  string  $type
-     * @param  integer  $post_id
+     * @param array  $field_settings
+     * @param int    $form_id
+     * @param string $type
+     * @param int    $post_id
      *
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
-
         if ( isset( $post_id ) ) {
             $post_tags = wp_get_post_tags( $post_id );
-            $tagsarray = array();
-            foreach ($post_tags as $tag) {
+            $tagsarray = [];
+
+            foreach ( $post_tags as $tag ) {
                 $tagsarray[] = $tag->name;
             }
             $value = implode( ', ', $tagsarray );
         } else {
             $value = $field_settings['default'];
-        }
-
-    ?>
+        } ?>
 
 
         <li <?php $this->print_list_attributes( $field_settings ); ?>>
@@ -42,11 +40,11 @@ class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
                     class="textfield <?php echo 'wpuf_' . $field_settings['name'] . '_' . $form_id; ?>"
                     id="<?php echo $field_settings['name'] . '_' . $form_id; ?>"
                     type="text"
-                    data-required="<?php echo $field_settings['required'] ?>"
+                    data-required="<?php echo $field_settings['required']; ?>"
                     data-type="text" name="<?php echo esc_attr( $field_settings['name'] ); ?>"
                     placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
-                    value="<?php echo esc_attr( $value ) ?>"
-                    size="<?php echo esc_attr( $field_settings['size'] ) ?>"
+                    value="<?php echo esc_attr( $value ); ?>"
+                    size="<?php echo esc_attr( $field_settings['size'] ); ?>"
                 />
 
                 <span class="wpuf-wordlimit-message wpuf-help"></span>
@@ -65,17 +63,17 @@ class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
 
         </li>
         <?php
-
     }
 
     /**
      * Get field options setting
      *
      * @return array
-    */
+     */
     public function get_options_settings() {
-        $default_options      = $this->get_default_option_settings(false,array('dynamic'));
-        $settings = $this->get_default_text_option_settings();
+        $default_options      = $this->get_default_option_settings( false, ['dynamic'] );
+        $settings             = $this->get_default_text_option_settings();
+
         return array_merge( $default_options, $settings );
     }
 
@@ -86,7 +84,7 @@ class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
      */
     public function get_field_props() {
         $defaults = $this->default_attributes();
-        $props    = array(
+        $props    = [
             'input_type'        => 'text',
             'is_meta'           => 'no',
             'name'              => 'tags',
@@ -94,10 +92,10 @@ class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
             'size'              => 40,
             'id'                => 0,
             'is_new'            => true,
-        );
+        ];
+
         return array_merge( $defaults, $props );
     }
-
 
     /**
      * Prepare entry
@@ -106,9 +104,7 @@ class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
      *
      * @return mixed
      */
-
     public function prepare_entry( $field ) {
-       return sanitize_text_field(trim($_POST[$field['name']]));
+        return sanitize_text_field( trim( $_POST[$field['name']] ) );
     }
-
 }

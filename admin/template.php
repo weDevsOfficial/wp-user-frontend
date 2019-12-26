@@ -2,26 +2,21 @@
 
 /**
  * WPUF Form builder template
- *
- * @package WP User Frontend
- * @author Tareq Hasan <tareq@wedevs.com>
  */
 class WPUF_Admin_Template {
+    public static $input_name = 'wpuf_input';
 
-    static $input_name = 'wpuf_input';
-    static $cond_name = 'wpuf_cond';
+    public static $cond_name = 'wpuf_cond';
 
     /**
      * Legend of a form item
      *
      * @param string $title
-     * @param array $values
+     * @param array  $values
      */
-    public static function legend( $title = 'Field Name', $values = array(), $field_id = 0 ) {
-
+    public static function legend( $title = 'Field Name', $values = [], $field_id = 0 ) {
         $field_label = $values ? ': <strong>' . $values['label'] . '</strong>' : '';
-        $id          = isset( $values['id'] ) ? $values['id'] : '';
-        ?>
+        $id          = isset( $values['id'] ) ? $values['id'] : ''; ?>
         <div class="wpuf-legend" title="<?php _e( 'Click and Drag to rearrange', 'wp-user-frontend' ); ?>">
             <input type="hidden" value="<?php echo $id; ?>" name="wpuf_input[<?php echo $field_id; ?>][id]">
             <div class="wpuf-label"><?php echo $title . $field_label; ?></div>
@@ -38,13 +33,12 @@ class WPUF_Admin_Template {
      *
      * Contains required, label, meta_key, help text, css class name
      *
-     * @param int $id field order
+     * @param int   $id               field order
      * @param mixed $field_name_value
-     * @param bool $custom_field if it a custom field or not
-     * @param array $values saved value
+     * @param bool  $custom_field     if it a custom field or not
+     * @param array $values           saved value
      */
-    public static function common( $id, $field_name_value = '', $custom_field = true, $values = array() ) {
-
+    public static function common( $id, $field_name_value = '', $custom_field = true, $values = [] ) {
         $tpl                 = '%s[%d][%s]';
         $required_name       = sprintf( $tpl, self::$input_name, $id, 'required' );
         $field_name          = sprintf( $tpl, self::$input_name, $id, 'name' );
@@ -61,8 +55,7 @@ class WPUF_Admin_Template {
 
         if ( $custom_field && $values ) {
             $field_name_value = $values['name'];
-        }
-        ?>
+        } ?>
         <div class="wpuf-form-rows required-field">
             <label><?php _e( 'Required', 'wp-user-frontend' ); ?></label>
 
@@ -106,10 +99,10 @@ class WPUF_Admin_Template {
     /**
      * Common fields for a text area
      *
-     * @param int $id
+     * @param int   $id
      * @param array $values
      */
-    public static function common_text( $id, $values = array() ) {
+    public static function common_text( $id, $values = [] ) {
         $tpl                    = '%s[%d][%s]';
         $placeholder_name       = sprintf( $tpl, self::$input_name, $id, 'placeholder' );
         $default_name           = sprintf( $tpl, self::$input_name, $id, 'default' );
@@ -119,9 +112,7 @@ class WPUF_Admin_Template {
         $placeholder_value      = $values ? esc_attr( $values['placeholder'] ) : '';
         $default_value          = $values ? esc_attr( $values['default'] ) : '';
         $size_value             = $values ? esc_attr( $values['size'] ) : '40';
-        $word_restriction_value = $values ? esc_attr( $values['word_restriction'] ) : '';
-
-        ?>
+        $word_restriction_value = $values ? esc_attr( $values['word_restriction'] ) : ''; ?>
         <div class="wpuf-form-rows">
             <label><?php _e( 'Placeholder text', 'wp-user-frontend' ); ?></label>
             <input type="text" class="smallipopInput" name="<?php echo $placeholder_name; ?>" title="<?php esc_attr_e( 'Text for HTML5 placeholder attribute', 'wp-user-frontend' ); ?>" value="<?php echo $placeholder_value; ?>" />
@@ -142,7 +133,7 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-sub-fields">
                 <label>
-                    <input type="text" class="smallipopInput" name="<?php echo $word_restriction_name ?>" value="<?php echo $word_restriction_value; ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
+                    <input type="text" class="smallipopInput" name="<?php echo $word_restriction_name; ?>" value="<?php echo $word_restriction_value; ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
                 </label>
             </div>
         </div> <!-- .wpuf-form-rows -->
@@ -152,11 +143,11 @@ class WPUF_Admin_Template {
     /**
      * Common fields for a textarea
      *
-     * @param int $id
+     * @param int   $id
      * @param array $values
      */
-    public static function common_textarea( $id, $values = array() ) {
-        $tpl = '%s[%d][%s]';
+    public static function common_textarea( $id, $values = [] ) {
+        $tpl                    = '%s[%d][%s]';
         $rows_name              = sprintf( $tpl, self::$input_name, $id, 'rows' );
         $cols_name              = sprintf( $tpl, self::$input_name, $id, 'cols' );
         $rich_name              = sprintf( $tpl, self::$input_name, $id, 'rich' );
@@ -169,9 +160,7 @@ class WPUF_Admin_Template {
         $rich_value             = $values ? esc_attr( $values['rich'] ) : 'no';
         $placeholder_value      = $values ? esc_attr( $values['placeholder'] ) : '';
         $default_value          = $values ? esc_attr( $values['default'] ) : '';
-        $word_restriction_value = $values ? esc_attr( $values['word_restriction'] ) : '';
-
-        ?>
+        $word_restriction_value = $values ? esc_attr( $values['word_restriction'] ) : ''; ?>
         <div class="wpuf-form-rows">
             <label><?php _e( 'Rows', 'wp-user-frontend' ); ?></label>
             <input type="text" class="smallipopInput" name="<?php echo $rows_name; ?>" title="Number of rows in textarea" value="<?php echo $rows_value; ?>" />
@@ -207,7 +196,7 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-sub-fields">
                 <label>
-                    <input type="text" class="smallipopInput" name="<?php echo $word_restriction_name ?>" value="<?php echo $word_restriction_value; ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
+                    <input type="text" class="smallipopInput" name="<?php echo $word_restriction_name; ?>" value="<?php echo $word_restriction_value; ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
                 </label>
             </div>
         </div> <!-- .wpuf-form-rows -->
@@ -227,30 +216,28 @@ class WPUF_Admin_Template {
     /**
      * Displays a radio custom field
      *
-     * @param int $field_id
+     * @param int    $field_id
      * @param string $name
-     * @param array $values
+     * @param array  $values
      */
-    public static function radio_fields( $field_id, $name, $values = array() ) {
-
+    public static function radio_fields( $field_id, $name, $values = [] ) {
         $selected_name    = sprintf( '%s[%d][selected]', self::$input_name, $field_id );
         $input_name       = sprintf( '%s[%d][%s]', self::$input_name, $field_id, $name );
-        $input_value_name = sprintf( '%s[%d][%s]', self::$input_name, $field_id, $name.'_values' );
+        $input_value_name = sprintf( '%s[%d][%s]', self::$input_name, $field_id, $name . '_values' );
 
-        $selected_value   = ( $values && isset( $values['selected'] ) ) ? $values['selected'] : '';
-        ?>
+        $selected_value   = ( $values && isset( $values['selected'] ) ) ? $values['selected'] : ''; ?>
 
-        <label for="wpuf-<?php echo $name.'_'.$field_id; ?>" class="wpuf-show-field-value">
+        <label for="wpuf-<?php echo $name . '_' . $field_id; ?>" class="wpuf-show-field-value">
             <input type="checkbox" class="wpuf-value-handelar" id="wpuf-<?php echo $name . '_' . $field_id; ?>"><?php _e( 'Show values', 'wp-user-frontend' ); ?>
         </label>
 
         <div class="wpuf-option-label-value"><span><?php _e( 'Label', 'wp-user-frontend' ); ?></span><span class="wpuf-option-value" style="display: none;"><?php _e( 'Value', 'wp-user-frontend' ); ?></span></div>
         <?php
         if ( $values && $values['options'] > 0 ) {
-            foreach ($values['options'] as $key => $value) {
+            foreach ( $values['options'] as $key => $value ) {
                 ?>
                 <div class="wpuf-clone-field">
-                    <input type="radio" name="<?php echo $selected_name ?>" value="<?php echo $value; ?>" <?php checked( $selected_value, $value ); ?>>
+                    <input type="radio" name="<?php echo $selected_name; ?>" value="<?php echo $value; ?>" <?php checked( $selected_value, $value ); ?>>
                     <input type="text" data-type="option" name="<?php echo $input_name; ?>[]" value="<?php echo $value; ?>">
                     <input type="text" data-type="option_value" name="<?php echo $input_value_name; ?>[]" value="<?php echo $key; ?>" style="display:none;">
 
@@ -258,11 +245,10 @@ class WPUF_Admin_Template {
                 </div>
                 <?php
             }
-
         } else {
             ?>
             <div class="wpuf-clone-field">
-                <input type="radio" name="<?php echo $selected_name ?>">
+                <input type="radio" name="<?php echo $selected_name; ?>">
                 <input type="text" data-type="option" name="<?php echo $input_name; ?>[]" value="">
                 <input type="text" data-type="option_value" name="<?php echo $input_value_name; ?>[]" value="" style="display:none;">
 
@@ -272,28 +258,23 @@ class WPUF_Admin_Template {
         }
     }
 
-    public static function conditional_field( $field_id, $con_fields = array() ) {
-
-        do_action( 'wpuf_conditional_field_render_hook',$field_id, $con_fields, 'WPUF_Admin_Template' );
-
+    public static function conditional_field( $field_id, $con_fields = [] ) {
+        do_action( 'wpuf_conditional_field_render_hook', $field_id, $con_fields, 'WPUF_Admin_Template' );
     }
 
     /**
      * Displays a checkbox custom field
      *
-     * @param int $field_id
+     * @param int    $field_id
      * @param string $name
-     * @param array $values
+     * @param array  $values
      */
-    public static function common_checkbox( $field_id, $name, $values = array() ) {
-
+    public static function common_checkbox( $field_id, $name, $values = [] ) {
         $selected_name    = sprintf( '%s[%d][selected]', self::$input_name, $field_id );
         $input_name       = sprintf( '%s[%d][%s]', self::$input_name, $field_id, $name );
-        $input_value_name = sprintf( '%s[%d][%s]', self::$input_name, $field_id, $name.'_values' );
+        $input_value_name = sprintf( '%s[%d][%s]', self::$input_name, $field_id, $name . '_values' );
 
-        $selected_value   = ( $values && isset( $values['selected'] ) ) ? $values['selected'] : array();
-
-        ?>
+        $selected_value   = ( $values && isset( $values['selected'] ) ) ? $values['selected'] : []; ?>
         <style>
             .wpuf-option-label-value span {
                 font-weight: bold;
@@ -301,15 +282,15 @@ class WPUF_Admin_Template {
                 margin-right: 27%;
             }
         </style>
-        <input type="checkbox" class="wpuf-value-handelar" id="<?php echo $name.'_'.$field_id; ?>"><label for="<?php echo $name.'_'.$field_id; ?>"><?php _e('show values', 'wp-user-frontend'); ?></label>
+        <input type="checkbox" class="wpuf-value-handelar" id="<?php echo $name . '_' . $field_id; ?>"><label for="<?php echo $name . '_' . $field_id; ?>"><?php _e( 'show values', 'wp-user-frontend' ); ?></label>
         <div class="wpuf-option-label-value"><span><?php _e( 'Label', 'wp-user-frontend' ); ?></span><span class="wpuf-option-value" style="display: none;"><?php _e( 'Value', 'wp-user-frontend' ); ?></span></div>
         <?php
         if ( $values && $values['options'] > 0 ) {
-            foreach ($values['options'] as $key => $value) {
+            foreach ( $values['options'] as $key => $value ) {
                 ?>
                 <div class="wpuf-clone-field">
 
-                    <input type="checkbox" name="<?php echo $selected_name ?>[]" value="<?php echo $value; ?>"<?php echo in_array( $value, $selected_value ) ? ' checked="checked"' : ''; ?> />
+                    <input type="checkbox" name="<?php echo $selected_name; ?>[]" value="<?php echo $value; ?>"<?php echo in_array( $value, $selected_value ) ? ' checked="checked"' : ''; ?> />
                     <input type="text" data-type="option" name="<?php echo $input_name; ?>[]" value="<?php echo $value; ?>">
                     <input type="text" data-type="option_value" name="<?php echo $input_value_name; ?>[]" value="<?php echo $key; ?>" style="display:none;">
                     <?php self::remove_button(); ?>
@@ -319,7 +300,7 @@ class WPUF_Admin_Template {
         } else {
             ?>
             <div class="wpuf-clone-field">
-                <input type="checkbox" name="<?php echo $selected_name ?>[]">
+                <input type="checkbox" name="<?php echo $selected_name; ?>[]">
                 <input type="text" data-type="option" name="<?php echo $input_name; ?>[]" value="">
                 <input type="text" data-type="option_value" name="<?php echo $input_value_name; ?>[]" value="" style="display:none;">
 
@@ -335,9 +316,8 @@ class WPUF_Admin_Template {
      * @return void
      */
     public static function remove_button() {
-        $add = plugins_url( 'assets/images/add.png', dirname( __FILE__ ) );
-        $remove = plugins_url( 'assets/images/remove.png', dirname( __FILE__ ) );
-        ?>
+        $add    = plugins_url( 'assets/images/add.png', __DIR__ );
+        $remove = plugins_url( 'assets/images/remove.png', __DIR__ ); ?>
         <img style="cursor:pointer; margin:0 3px;" alt="add another choice" title="add another choice" class="wpuf-clone-field" src="<?php echo $add; ?>">
         <img style="cursor:pointer;" class="wpuf-remove-field" alt="remove this choice" title="remove this choice" src="<?php echo $remove; ?>">
         <?php
@@ -351,8 +331,7 @@ class WPUF_Admin_Template {
         return ob_get_clean();
     }
 
-    public static function text_field( $field_id, $label, $values = array() ) {
-
+    public static function text_field( $field_id, $label, $values = [] ) {
         ?>
         <li class="custom-field text_field">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -368,7 +347,7 @@ class WPUF_Admin_Template {
         <?php
     }
 
-    public static function textarea_field( $field_id, $label, $values = array() ) {
+    public static function textarea_field( $field_id, $label, $values = [] ) {
         ?>
         <li class="custom-field textarea_field">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -384,7 +363,7 @@ class WPUF_Admin_Template {
         <?php
     }
 
-    public static function radio_field( $field_id, $label, $values = array() ) {
+    public static function radio_field( $field_id, $label, $values = [] ) {
         ?>
         <li class="custom-field radio_field wpuf-conditional">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -408,7 +387,7 @@ class WPUF_Admin_Template {
         <?php
     }
 
-    public static function checkbox_field( $field_id, $label, $values = array() ) {
+    public static function checkbox_field( $field_id, $label, $values = [] ) {
         ?>
         <li class="custom-field checkbox_field wpuf-conditional">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -432,11 +411,10 @@ class WPUF_Admin_Template {
         <?php
     }
 
-    public static function dropdown_field( $field_id, $label, $values = array() ) {
-        $first_name = sprintf( '%s[%d][first]', self::$input_name, $field_id );
+    public static function dropdown_field( $field_id, $label, $values = [] ) {
+        $first_name  = sprintf( '%s[%d][first]', self::$input_name, $field_id );
         $first_value = $values ? $values['first'] : ' - select -';
-        $help = esc_attr( __( 'First element of the select dropdown. Leave this empty if you don\'t want to show this field', 'wp-user-frontend' ) );
-        ?>
+        $help        = esc_attr( __( 'First element of the select dropdown. Leave this empty if you don\'t want to show this field', 'wp-user-frontend' ) ); ?>
         <li class="custom-field dropdown_field wpuf-conditional">
             <?php self::legend( $label, $values, $field_id ); ?>
             <?php self::hidden_field( "[$field_id][input_type]", 'select' ); ?>
@@ -464,11 +442,10 @@ class WPUF_Admin_Template {
         <?php
     }
 
-    public static function multiple_select( $field_id, $label, $values = array() ) {
-        $first_name = sprintf( '%s[%d][first]', self::$input_name, $field_id );
+    public static function multiple_select( $field_id, $label, $values = [] ) {
+        $first_name  = sprintf( '%s[%d][first]', self::$input_name, $field_id );
         $first_value = $values ? $values['first'] : ' - select -';
-        $help = esc_attr( __( 'First element of the select dropdown. Leave this empty if you don\'t want to show this field', 'wp-user-frontend' ) );
-        ?>
+        $help        = esc_attr( __( 'First element of the select dropdown. Leave this empty if you don\'t want to show this field', 'wp-user-frontend' ) ); ?>
         <li class="custom-field multiple_select">
             <?php self::legend( $label, $values, $field_id ); ?>
             <?php self::hidden_field( "[$field_id][input_type]", 'multiselect' ); ?>
@@ -496,7 +473,7 @@ class WPUF_Admin_Template {
         <?php
     }
 
-    public static function website_url( $field_id, $label, $values = array() ) {
+    public static function website_url( $field_id, $label, $values = [] ) {
         ?>
         <li class="custom-field website_url">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -512,7 +489,7 @@ class WPUF_Admin_Template {
         <?php
     }
 
-    public static function email_address( $field_id, $label, $values = array() ) {
+    public static function email_address( $field_id, $label, $values = [] ) {
         ?>
         <li class="custom-field eamil_address">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -528,12 +505,11 @@ class WPUF_Admin_Template {
         <?php
     }
 
-    public static function custom_html( $field_id, $label, $values = array() ) {
+    public static function custom_html( $field_id, $label, $values = [] ) {
         $title_name  = sprintf( '%s[%d][label]', self::$input_name, $field_id );
         $html_name   = sprintf( '%s[%d][html]', self::$input_name, $field_id );
         $title_value = $values ? esc_attr( $values['label'] ) : '';
-        $html_value  = $values ? esc_attr( $values['html'] ) : '';
-        ?>
+        $html_value  = $values ? esc_attr( $values['html'] ) : ''; ?>
         <li class="custom-field custom_html">
             <?php self::legend( $label, $values, $field_id ); ?>
             <?php self::hidden_field( "[$field_id][input_type]", 'html' ); ?>
@@ -556,15 +532,14 @@ class WPUF_Admin_Template {
         <?php
     }
 
-    public static function custom_hidden_field( $field_id, $label, $values = array() ) {
+    public static function custom_hidden_field( $field_id, $label, $values = [] ) {
         $meta_name    = sprintf( '%s[%d][name]', self::$input_name, $field_id );
         $value_name   = sprintf( '%s[%d][meta_value]', self::$input_name, $field_id );
         $is_meta_name = sprintf( '%s[%d][is_meta]', self::$input_name, $field_id );
         $label_name   = sprintf( '%s[%d][label]', self::$input_name, $field_id );
 
         $meta_value   = $values ? esc_attr( $values['name'] ) : '';
-        $value_value  = $values ? esc_attr( $values['meta_value'] ) : '';
-        ?>
+        $value_value  = $values ? esc_attr( $values['meta_value'] ) : ''; ?>
         <li class="custom-field custom_hidden_field">
             <?php self::legend( $label, $values, $field_id ); ?>
             <?php self::hidden_field( "[$field_id][input_type]", 'hidden' ); ?>
@@ -587,13 +562,12 @@ class WPUF_Admin_Template {
         <?php
     }
 
-    public static function section_break( $field_id, $label, $values = array() ) {
+    public static function section_break( $field_id, $label, $values = [] ) {
         $title_name        = sprintf( '%s[%d][label]', self::$input_name, $field_id );
         $description_name  = sprintf( '%s[%d][description]', self::$input_name, $field_id );
 
         $title_value       = $values ? esc_attr( $values['label'] ) : '';
-        $description_value = $values ? esc_attr( $values['description'] ) : '';
-        ?>
+        $description_value = $values ? esc_attr( $values['description'] ) : ''; ?>
         <li class="custom-field custom_html">
             <?php self::legend( $label, $values, $field_id ); ?>
             <?php self::hidden_field( "[$field_id][input_type]", 'section_break' ); ?>
@@ -624,7 +598,7 @@ class WPUF_Admin_Template {
      * @param self
      * @param array $values
      */
-    public static function image_upload( $field_id, $label, $values = array() ) {
+    public static function image_upload( $field_id, $label, $values = [] ) {
         $max_size_name   = sprintf( '%s[%d][max_size]', self::$input_name, $field_id );
         $max_files_name  = sprintf( '%s[%d][count]', self::$input_name, $field_id );
 
@@ -632,8 +606,7 @@ class WPUF_Admin_Template {
         $max_files_value = $values ? $values['count'] : '1';
 
         $help            = esc_attr( __( 'Enter maximum upload size limit in KB', 'wp-user-frontend' ) );
-        $count           = esc_attr( __( 'Number of images can be uploaded', 'wp-user-frontend' ) );
-        ?>
+        $count           = esc_attr( __( 'Number of images can be uploaded', 'wp-user-frontend' ) ); ?>
         <li class="custom-field image_upload">
             <?php self::legend( $label, $values, $field_id ); ?>
             <?php self::hidden_field( "[$field_id][input_type]", 'image_upload' ); ?>
@@ -660,19 +633,19 @@ class WPUF_Admin_Template {
 
     /**
      * Render recaptcha
+     *
      * @param $field_id
      * @param $label
      * @param array $values
      */
-    public static function recaptcha( $field_id, $label, $values = array() ) {
-        $title_name  = sprintf( '%s[%d][label]', self::$input_name, $field_id );
-        $html_name   = sprintf( '%s[%d][html]', self::$input_name, $field_id );
+    public static function recaptcha( $field_id, $label, $values = [] ) {
+        $title_name          = sprintf( '%s[%d][label]', self::$input_name, $field_id );
+        $html_name           = sprintf( '%s[%d][html]', self::$input_name, $field_id );
         $recaptcha_type_name = sprintf( '%s[%d][recaptcha_type]', self::$input_name, $field_id );
 
-        $title_value = $values ? esc_attr( $values['label'] ) : '';
-        $html_value  = isset( $values['html'] ) ? esc_attr( $values['html'] ) : '';
-        $recaptcha_type_value = isset( $values['recaptcha_type'] ) ? esc_attr( $values['recaptcha_type'] ) : ( !empty( $values ) ? '' : 'enable_no_captcha' );
-        ?>
+        $title_value          = $values ? esc_attr( $values['label'] ) : '';
+        $html_value           = isset( $values['html'] ) ? esc_attr( $values['html'] ) : '';
+        $recaptcha_type_value = isset( $values['recaptcha_type'] ) ? esc_attr( $values['recaptcha_type'] ) : ( !empty( $values ) ? '' : 'enable_no_captcha' ); ?>
         <li class="custom-field custom_html">
             <?php self::legend( $label, $values, $field_id ); ?>
             <?php self::hidden_field( "[$field_id][input_type]", 'recaptcha' ); ?>
@@ -695,12 +668,12 @@ class WPUF_Admin_Template {
                     <label><?php _e( 'reCaptcha type', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields">
-                        <input type="radio" class="smallipopInput" title="reCaptcha type" name="<?php echo $recaptcha_type_name; ?>" value="invisible_recaptcha" <?php echo $recaptcha_type_value == 'invisible_recaptcha' ? 'checked':''; ?> />
-                        <?php _e( 'Enable Invisible reCaptcha', 'wp-user-frontend' );?>
+                        <input type="radio" class="smallipopInput" title="reCaptcha type" name="<?php echo $recaptcha_type_name; ?>" value="invisible_recaptcha" <?php echo $recaptcha_type_value == 'invisible_recaptcha' ? 'checked' : ''; ?> />
+                        <?php _e( 'Enable Invisible reCaptcha', 'wp-user-frontend' ); ?>
                     </div> <!-- .wpuf-form-rows -->
                     <div class="wpuf-form-sub-fields">
-                        <input type="radio" class="smallipopInput" title="reCaptcha type" name="<?php echo $recaptcha_type_name; ?>" value="enable_no_captcha" <?php echo $recaptcha_type_value == 'enable_no_captcha' ? 'checked':''; ?> />
-                        <?php _e( 'Enable noCaptcha', 'wp-user-frontend' );?>
+                        <input type="radio" class="smallipopInput" title="reCaptcha type" name="<?php echo $recaptcha_type_name; ?>" value="enable_no_captcha" <?php echo $recaptcha_type_value == 'enable_no_captcha' ? 'checked' : ''; ?> />
+                        <?php _e( 'Enable noCaptcha', 'wp-user-frontend' ); ?>
                     </div> <!-- .wpuf-form-rows -->
                 </div>
 
@@ -709,5 +682,4 @@ class WPUF_Admin_Template {
         </li>
     <?php
     }
-
 }

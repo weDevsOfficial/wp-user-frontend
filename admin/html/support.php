@@ -1,184 +1,184 @@
 <?php
 $current_user = wp_get_current_user();
 
-$articles = array(
-    'setup' => array(
-        array(
+$articles = [
+    'setup' => [
+        [
             'title' => 'How to Install',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/',
+        ],
+        [
             'title' => 'License Activation',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/troubleshoot/license-activation/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/troubleshoot/license-activation/',
+        ],
+        [
             'title' => 'Shortcodes',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/wpuf-shortcodes/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/wpuf-shortcodes/',
+        ],
+        [
             'title' => 'User Dashboard',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/user-dashboard/'
-        ),
-    ),
-    'posting' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/user-dashboard/',
+        ],
+    ],
+    'posting' => [
+        [
             'title' => 'Creating Posting Forms',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/',
+        ],
+        [
             'title' => 'Available Form Elements',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-elements/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-elements/',
+        ],
+        [
             'title' => 'Creating Forms Using The Form Templates',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-templates/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-templates/',
+        ],
+        [
             'title' => 'How to Allow Guest Posting',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/',
+        ],
+        [
             'title' => 'Setup Automatic Post Expiration',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/',
+        ],
+        [
             'title' => 'How to create Multistep forms',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/'
-        ),
-    ),
-    'dashboard' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/',
+        ],
+    ],
+    'dashboard' => [
+        [
             'title' => 'Setting up Frontend Dashboard for Users',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/configuring-dashboard-settings/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/configuring-dashboard-settings/',
+        ],
+        [
             'title' => 'Unified My Account Page',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/',
+        ],
+        [
             'title' => 'Showing meta fields in frontend',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/showing-meta-fields-in-frontend/'
-        ),
-    ),
-    'settings' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/showing-meta-fields-in-frontend/',
+        ],
+    ],
+    'settings' => [
+        [
             'title' => 'General Options',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-general-options/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-general-options/',
+        ],
+        [
             'title' => 'Dashboard Settings',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-dashboard-settings/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-dashboard-settings/',
+        ],
+        [
             'title' => 'Login Registration Settings',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/login-registration-settings/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/login-registration-settings/',
+        ],
+        [
             'title' => 'Payment Settings',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-payment-settings/'
-        ),
-    ),
-    'registration' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-payment-settings/',
+        ],
+    ],
+    'registration' => [
+        [
             'title' => 'Creating Registration Form',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/',
+        ],
+        [
             'title' => 'Creating a Multistep Registration Form',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/creating-a-multistep-registration-form/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/creating-a-multistep-registration-form/',
+        ],
+        [
             'title' => 'Setting Up Confirmation Message',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setup-confirmation-message/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setup-confirmation-message/',
+        ],
+        [
             'title' => 'Paid Membership Registration',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/paid-membership-registration/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/paid-membership-registration/',
+        ],
+        [
             'title' => 'Setting Up Email Verification for New Users',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setting-up-email-verification-for-new-users/'
-        ),
-    ),
-    'profile' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setting-up-email-verification-for-new-users/',
+        ],
+    ],
+    'profile' => [
+        [
             'title' => 'Creating a Profile Editing Form',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/wordpress-edit-user-profile-from-front-end/'
-        ),
-    ),
-    'subscription' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/wordpress-edit-user-profile-from-front-end/',
+        ],
+    ],
+    'subscription' => [
+        [
             'title' => 'Creating Subscription Packs',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/creating-subscription-packs/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/creating-subscription-packs/',
+        ],
+        [
             'title' => 'Payment & Gateway Settings',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/configuring-payment-settings/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/configuring-payment-settings/',
+        ],
+        [
             'title' => 'Setting Up Recurring Payment',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/setting-up-recurring-payment/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/setting-up-recurring-payment/',
+        ],
+        [
             'title' => 'Forcing Subscription Pack For Post Submission',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/forcing-subscription-pack-for-post-submission/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/forcing-subscription-pack-for-post-submission/',
+        ],
+        [
             'title' => 'How to Charge for Each Post Submission?',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/',
+        ],
+        [
             'title' => 'Creating Coupons',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/coupons/'
-        ),
-    ),
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/coupons/',
+        ],
+    ],
 
-    'developer' => array(
-        array(
+    'developer' => [
+        [
             'title' => 'Action Hook Field',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/action-hook-field/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/action-hook-field/',
+        ],
+        [
             'title' => 'Add a New Tab on My Account Page',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/add-a-new-tab-on-my-account-page/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/add-a-new-tab-on-my-account-page/',
+        ],
+        [
             'title' => 'Insert/update checkbox or radio field data as serialize',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/insertupdate-checkbox-or-radio-field-data-as-serialize/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/insertupdate-checkbox-or-radio-field-data-as-serialize/',
+        ],
+        [
             'title' => 'Filters',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/filters/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/filters/',
+        ],
+        [
             'title' => 'Actions',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/actions/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/actions/',
+        ],
+        [
             'title' => 'Changelog',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/changelog/'
-        ),
-    ),
-    'restriction' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/changelog/',
+        ],
+    ],
+    'restriction' => [
+        [
             'title' => 'Content Restriction for Logged in Users',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/content-restriction/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/content-restriction/',
+        ],
+        [
             'title' => 'Restricting Content by User Roles',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/restricting-content-by-user-roles/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/restricting-content-by-user-roles/',
+        ],
+        [
             'title' => 'Restricting Contents for Different Subscription Packs',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/restricting-contents-for-different-subscription-packs/'
-        ),
-    )
-);
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/restricting-contents-for-different-subscription-packs/',
+        ],
+    ],
+];
 
 /**
  * Print related articles
  *
- * @param  array $articles
+ * @param array $articles
  *
  * @return void
  */
@@ -195,8 +195,7 @@ function wpuf_help_related_articles( $articles ) {
                 <a href="<?php echo trailingslashit( $article['link'] ); ?>?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=<?php echo sanitize_title( $article['title'] ); ?>" target="_blank"><?php echo $article['title']; ?></a>
             </li>
             <?php
-        }
-    ?>
+        } ?>
     </ul>
     <?php
 }

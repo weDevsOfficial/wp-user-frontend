@@ -5,7 +5,7 @@
  */
 class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
 
-    function __construct() {
+    public function __construct() {
         $this->name       = __( 'Multi Select', 'wp-user-frontend' );
         $this->input_type = 'multiple_select';
         $this->icon       = 'list-ul';
@@ -14,45 +14,38 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
     /**
      * Render the MultiDropDown field
      *
-     * @param  array  $field_settings
-     * @param  integer  $form_id
-     * @param  string  $type
-     * @param  integer  $post_id
+     * @param array  $field_settings
+     * @param int    $form_id
+     * @param string $type
+     * @param int    $post_id
      *
      * @return void
      */
-    public function render( $field_settings, $form_id, $type = 'post', $post_id = null) {
-
-        if ( isset( $post_id ) &&  $post_id != '0' ) {
-
+    public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
+        if ( isset( $post_id ) && $post_id != '0' ) {
             $selected = $this->get_meta( $post_id, $field_settings['name'], $type );
 
             if ( is_serialized( $selected ) ) {
-               $selected = maybe_unserialize( $selected );
+                $selected = maybe_unserialize( $selected );
             } elseif ( is_array( $selected ) ) {
-               $selected = $selected;
+                $selected = $selected;
             } else {
-                $selected = explode( " | ", $selected );
+                $selected = explode( ' | ', $selected );
             }
-
         } else {
-
             $selected = isset( $field_settings['selected'] ) ? $field_settings['selected'] : '';
 
-            $selected = is_array( $selected ) ? $selected : array();
-
+            $selected = is_array( $selected ) ? $selected : [];
         }
 
         $name     = $field_settings['name'] . '[]';
 
-        $this->field_print_label($field_settings, $form_id );
-
-    ?>
+        $this->field_print_label( $field_settings, $form_id ); ?>
 
             <?php do_action( 'WPUF_multidropdown_field_after_label', $field_settings ); ?>
 
             <div class="wpuf-fields">
-                <select multiple="multiple" class="multiselect <?php echo 'wpuf_'. $field_settings['name'] .'_'. $form_id; ?>" id="<?php echo $field_settings['name'] . '_' . $form_id; ?>" name="<?php echo $name; ?>" mulitple="multiple" data-required="<?php echo $field_settings['required'] ?>" data-type="multiselect">
+                <select multiple="multiple" class="multiselect <?php echo 'wpuf_' . $field_settings['name'] . '_' . $form_id; ?>" id="<?php echo $field_settings['name'] . '_' . $form_id; ?>" name="<?php echo $name; ?>" mulitple="multiple" data-required="<?php echo $field_settings['required']; ?>" data-type="multiselect">
 
                     <?php if ( !empty( $field_settings['first'] ) ) { ?>
                         <option value="-1"><?php echo $field_settings['first']; ?></option>
@@ -60,22 +53,18 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
 
                     <?php
                     if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
-                        foreach ($field_settings['options'] as $value => $option) {
-                            $current_select = selected( in_array( $value, $selected ), true, false );
-                            ?>
+                        foreach ( $field_settings['options'] as $value => $option ) {
+                            $current_select = selected( in_array( $value, $selected ), true, false ); ?>
                             <option value="<?php echo esc_attr( $value ); ?>"<?php echo $current_select; ?>><?php echo $option; ?></option>
                             <?php
                         }
-                    }
-                    ?>
+                    } ?>
                 </select>
                 <?php $this->help_text( $field_settings ); ?>
             </div>
 
 
         <?php $this->after_field_print_label();
-
-
     }
 
     /**
@@ -85,18 +74,19 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
      */
     public function get_field_props() {
         $defaults = $this->default_attributes();
-        $props    = array(
+        $props    = [
             'input_type'       => 'multiselect',
             'label'            => __( 'Multi Select', 'wp-user-frontend' ),
             'is_meta'          => 'yes',
-            'selected'         => array(),
-            'options'          => array( 'Option' => __( 'Option', 'wp-user-frontend' ) ),
+            'selected'         => [],
+            'options'          => [ 'Option' => __( 'Option', 'wp-user-frontend' ) ],
             'first'            => __( '- select -', 'wp-user-frontend' ),
             'id'               => 0,
             'is_new'           => true,
             'show_in_post'     => 'yes',
             'hide_field_label' => 'no',
-        );
+        ];
+
         return array_merge( $defaults, $props );
     }
 
@@ -108,13 +98,12 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
      * @return mixed
      */
     public function prepare_entry( $field ) {
-
-        $entry_value  = ( is_array( $_POST[$field['name']] ) && $_POST[$field['name']] ) ? $_POST[$field['name']] : array();
+        $entry_value  = ( is_array( $_POST[$field['name']] ) && $_POST[$field['name']] ) ? $_POST[$field['name']] : [];
 
         if ( $entry_value ) {
-            $new_val = array();
+            $new_val = [];
 
-            foreach ($entry_value as $option_key) {
+            foreach ( $entry_value as $option_key ) {
                 $new_val[] = isset( $field['options'][$option_key] ) ? $field['options'][$option_key] : '';
             }
             $entry_value = implode( WP_User_Frontend::$field_separator, $new_val );

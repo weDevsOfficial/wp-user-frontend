@@ -4,10 +4,10 @@
 
         <h3><?php _e( 'Select a form to insert', 'wp-user-frontend' ); ?></h3>
 
-        <?php $form_types = apply_filters( 'wpuf_shortcode_dialog_form_type', array(
+        <?php $form_types = apply_filters( 'wpuf_shortcode_dialog_form_type', [
             'post'         => __( 'Post Form', 'wp-user-frontend' ),
             'registration' => __( 'Registration Form', 'wp-user-frontend' ),
-        ) ); ?>
+        ] ); ?>
 
         <div class="wpuf-div">
             <label for="wpuf-form-type" class="label"><?php _e( 'Form Type', 'wp-user-frontend' ); ?></label>
@@ -21,7 +21,6 @@
         </div>
 
         <?php foreach ( $form_types as $key => $form_type ) {
-
             switch ( $key ) {
                 case 'post':
                     $form_post_type = 'wpuf_forms';
@@ -44,13 +43,14 @@
                 <select id="wpuf-form-<?php echo $key; ?>">
 
                     <?php
-                    $args = array(
+                    $args = [
                         'post_type'   => $form_post_type,
                         'post_status' => 'publish',
-                    );
+                    ];
+
                     $form_posts = get_posts( $args );
 
-                    foreach ($form_posts as $form) { ?>
+                    foreach ( $form_posts as $form ) { ?>
 
                         <option value="<?php echo $form->ID; ?>"><?php echo $form->post_title; ?></option>
 
@@ -60,7 +60,8 @@
 
             </div>
 
-        <?php }
+        <?php
+        }
 
         do_action( 'wpuf_shortcode_dialog_content', $form_types ); ?>
 

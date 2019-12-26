@@ -10,7 +10,7 @@ class WPUF_User {
     /**
      * User ID
      *
-     * @var integer
+     * @var int
      */
     public $id;
 
@@ -24,20 +24,17 @@ class WPUF_User {
     /**
      * The constructor
      *
-     * @param integer|WP_User $user
+     * @param int|WP_User $user
      */
-    function __construct( $user ) {
-
+    public function __construct( $user ) {
         if ( is_numeric( $user ) ) {
-
             $the_user = get_user_by( 'id', $user );
 
             if ( $the_user ) {
                 $this->id   = $the_user->ID;
                 $this->user = $the_user;
             }
-
-        } elseif ( is_a( $user, 'WP_User') ) {
+        } elseif ( is_a( $user, 'WP_User' ) ) {
             $this->id   = $user->ID;
             $this->user = $user;
         }
@@ -46,10 +43,10 @@ class WPUF_User {
     /**
      * Check if a user's posting capability is locked
      *
-     * @return boolean
+     * @return bool
      */
     public function post_locked() {
-        return 'yes' ==  get_user_meta( $this->id, 'wpuf_postlock', true );
+        return 'yes' == get_user_meta( $this->id, 'wpuf_postlock', true );
     }
 
     /**
@@ -64,10 +61,10 @@ class WPUF_User {
     /**
      * Check if a user's post edit capability is locked
      *
-     * @return boolean
+     * @return bool
      */
     public function edit_post_locked() {
-        return 'yes' ==  get_user_meta( $this->id, 'wpuf_edit_postlock', true );
+        return 'yes' == get_user_meta( $this->id, 'wpuf_edit_postlock', true );
     }
 
     /**
@@ -99,9 +96,11 @@ class WPUF_User {
         if ( !metadata_exists( 'user', $this->id, '_wpuf_user_active' ) ) {
             return true;
         }
+
         if ( intval( get_user_meta( $this->id, '_wpuf_user_active', true ) ) == 1 ) {
             return true;
         }
+
         return false;
     }
 
@@ -156,12 +155,11 @@ class WPUF_User {
      *
      * @return void
      */
-    public function remove_activation_key( ) {
+    public function remove_activation_key() {
         delete_user_meta( $this->id, '_wpuf_activation_key' );
     }
 
     /**
-     *
      * @since 2.8.9
      *
      * @param bool $array
@@ -169,21 +167,20 @@ class WPUF_User {
      * @return mixed|string
      */
     public function get_billing_address( $array = false ) {
-
         $address = get_user_meta( $this->id, 'wpuf_address_fields', true );
+
         if ( $array ) {
             return $address;
         }
 
         if ( !empty( $address ) ) {
-            return implode( " ,", $address );
+            return implode( ' ,', $address );
         }
 
-        return "";
+        return '';
     }
 
     /**
-     *
      * @since 2.8.9
      *
      * @param bool $array
@@ -193,10 +190,9 @@ class WPUF_User {
     public function get_transaction_data( $array = false ) {
         global $wpdb;
 
-        $sql = "SELECT * FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = $this->id";
+        $sql      = "SELECT * FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = $this->id";
         $txn_data = $wpdb->get_results( $sql, ARRAY_A );
 
         return apply_filters( 'wpuf_privacy_transaction_export_data', $txn_data );
     }
-
 }

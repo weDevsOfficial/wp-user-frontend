@@ -1,129 +1,125 @@
 <?php
 
-if ( ! class_exists( 'WPUF_WC_Vendors_Integration' ) ) :
-
-/**
-*
-* WC Vendors Integration Class
-*
-* @since  3.0
-*/
-class WPUF_WC_Vendors_Integration{
-
-    function __construct() {
-        add_action( 'wcvendors_after_links', array( $this, 'add_wpuf_posts_page' ) );
-        add_action( 'wcvendors_after_dashboard', array( $this, 'after_dashboard' ) );
-
-        add_filter( 'wcvendors_get_settings_general', array( $this, 'add_wpuf_options' ), 10, 2 );
-        add_filter( 'wpuf_edit_post_link', array( $this, 'generate_edit_post_link' ) );
-        add_filter( 'wpuf_edit_post_redirect', array( $this, 'update_edit_post_redirect_url' ), 10, 4 );
-        add_filter( 'wpuf_delete_post_redirect', array( $this, 'update_delete_post_redirect_url' ) );
-    }
+if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
 
     /**
-     * WC Vendors settings for WPUF integration
-     *
-     * @param  array  $settings_fields
+     * WC Vendors Integration Class
      *
      * @since  3.0
-     *
-     * @return array  $settings_fields
      */
-    public function add_wpuf_options( $settings, $current_section ) {
-        $last_option = end($settings);
-        array_pop($settings);
+    class WPUF_WC_Vendors_Integration {
 
-        $settings[] = array(
-            'title'     => __('Allow Post', 'wp-user-frontend'),
-            'desc'      => __('If checked, vendor can submit post from dashboard area.', 'wp-user-frontend'),
-            'id'        => 'allow_wcvendors_wpuf_post',
-            'default'   => 'no',
-            'type'      => 'checkbox',
-        );
+        public function __construct() {
+            add_action( 'wcvendors_after_links', [ $this, 'add_wpuf_posts_page' ] );
+            add_action( 'wcvendors_after_dashboard', [ $this, 'after_dashboard' ] );
 
-        $settings[] = array(
-            'title'     => __('Select Post Form', 'wp-user-frontend'),
-            'desc_tip'  => __('Select a post form that will show on the vendor dashboard.', 'wp-user-frontend'),
-            'id'        => 'wcvendors_wpuf_allowed_post_form',
-            'type'      => 'select',
-            'class'     => 'wc-enhanced-select',
-            'options'   => $this->get_post_forms()
-        );
+            add_filter( 'wcvendors_get_settings_general', [ $this, 'add_wpuf_options' ], 10, 2 );
+            add_filter( 'wpuf_edit_post_link', [ $this, 'generate_edit_post_link' ] );
+            add_filter( 'wpuf_edit_post_redirect', [ $this, 'update_edit_post_redirect_url' ], 10, 4 );
+            add_filter( 'wpuf_delete_post_redirect', [ $this, 'update_delete_post_redirect_url' ] );
+        }
 
-        array_push($settings, $last_option);
+        /**
+         * WC Vendors settings for WPUF integration
+         *
+         * @param array $settings_fields
+         *
+         * @since  3.0
+         *
+         * @return array $settings_fields
+         */
+        public function add_wpuf_options( $settings, $current_section ) {
+            $last_option = end( $settings );
+            array_pop( $settings );
 
-        return $settings;
-    }
+            $settings[] = [
+                'title'     => __( 'Allow Post', 'wp-user-frontend' ),
+                'desc'      => __( 'If checked, vendor can submit post from dashboard area.', 'wp-user-frontend' ),
+                'id'        => 'allow_wcvendors_wpuf_post',
+                'default'   => 'no',
+                'type'      => 'checkbox',
+            ];
 
-    /**
-     * Get all the post forms
-     *
-     * @param  str  $post_type
-     *
-     * @since  3.0
-     *
-     * @return array  $post_forms
-     */
-    public function get_post_forms( $post_type='post' ) {
-        $post_forms = array();
+            $settings[] = [
+                'title'     => __( 'Select Post Form', 'wp-user-frontend' ),
+                'desc_tip'  => __( 'Select a post form that will show on the vendor dashboard.', 'wp-user-frontend' ),
+                'id'        => 'wcvendors_wpuf_allowed_post_form',
+                'type'      => 'select',
+                'class'     => 'wc-enhanced-select',
+                'options'   => $this->get_post_forms(),
+            ];
 
-        $args = array(
-            'post_type'   => 'wpuf_forms',
-            'post_status' => 'publish',
-            'numberposts' => -1,
-        );
+            array_push( $settings, $last_option );
 
-        $form_posts = get_posts( $args );
+            return $settings;
+        }
 
-        foreach ($form_posts as $form) {
-            $form_settings  = wpuf_get_form_settings($form->ID);
-            $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : '';
+        /**
+         * Get all the post forms
+         *
+         * @param string $post_type
+         *
+         * @since  3.0
+         *
+         * @return array $post_forms
+         */
+        public function get_post_forms( $post_type='post' ) {
+            $post_forms = [];
 
-            if ( $form_post_type == $post_type ) {
-                $post_forms[$form->ID] = $form->post_title;
+            $args = [
+                'post_type'   => 'wpuf_forms',
+                'post_status' => 'publish',
+                'numberposts' => -1,
+            ];
+
+            $form_posts = get_posts( $args );
+
+            foreach ( $form_posts as $form ) {
+                $form_settings  = wpuf_get_form_settings( $form->ID );
+                $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : '';
+
+                if ( $form_post_type == $post_type ) {
+                    $post_forms[$form->ID] = $form->post_title;
+                }
+            }
+
+            return $post_forms;
+        }
+
+        /**
+         * Insert new URL's to the frontend dashboard navigation bar
+         *
+         * @param array $urls
+         *
+         * @since  3.0
+         *
+         * @return array
+         */
+        public function add_wpuf_posts_page() {
+            $allow_wpuf_post  = get_option( 'allow_wcvendors_wpuf_post', 'no' );
+
+            if ( $allow_wpuf_post == 'yes' ) {
+                $dashboard_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
+                $post_page_url = add_query_arg( [
+                    'action' => 'post-listing',
+                ], $dashboard_url );
+
+                $output  = '<a href="' . $post_page_url . '" class="button">';
+                $output .= __( 'Posts', 'wp-user-frontend' );
+                $output .= '</a>';
+
+                echo $output;
             }
         }
 
-        return $post_forms;
-    }
+        /**
+         * Include requrired template & load additional style, script after dashboard
+         */
+        public function after_dashboard() {
+            $action = isset( $_GET['action'] ) ? $_GET['action'] : '';
 
-    /**
-     * Insert new URL's to the frontend dashboard navigation bar
-     *
-     * @param  array  $urls
-     *
-     * @since  3.0
-     *
-     * @return array
-     */
-    public function add_wpuf_posts_page() {
-        $allow_wpuf_post  = get_option( 'allow_wcvendors_wpuf_post', 'no' );
-
-        if ( $allow_wpuf_post == 'yes' ) {
-            $dashboard_url = get_permalink(get_option( 'wcvendors_vendor_dashboard_page_id' ) );
-            $post_page_url = add_query_arg( array(
-                'action' => 'post-listing',
-            ), $dashboard_url );
-
-            $output  = '<a href="'. $post_page_url .'" class="button">';
-            $output .= __( 'Posts', 'wp-user-frontend' );
-            $output .= '</a>';
-
-            echo $output;
-        }
-    }
-
-    /**
-     * Include requrired template & load additional style, script after dashboard
-     */
-    public function after_dashboard() {
-        $action = isset($_GET['action']) ? $_GET['action'] : '';
-
-        if ( $action == 'post-listing' || $action == 'new-post' || $action == 'edit-post' || $action == 'del' ) {
-
-            require_once WPUF_ROOT . '/templates/wc-vendors/posts.php';
-
-            ?>
+            if ( $action == 'post-listing' || $action == 'new-post' || $action == 'edit-post' || $action == 'del' ) {
+                require_once WPUF_ROOT . '/templates/wc-vendors/posts.php'; ?>
             <script type="text/javascript">
                 var WPUFContent = document.querySelector('.wpuf-wc-vendors-submit-post-page');
                 var WCVendorArea = WPUFContent.parentElement;
@@ -165,84 +161,80 @@ class WPUF_WC_Vendors_Integration{
                 }
             </style>
             <?php
-        }
-    }
-
-    /**
-     * Generate edit post link
-     *
-     * @param  str  $url
-     *
-     * @since  3.0
-     *
-     * @return str  $url
-     */
-    public function generate_edit_post_link( $url ) {
-        global $post;
-
-        $posts_page_url = get_permalink(get_option( 'wcvendors_vendor_dashboard_page_id' ) );
-
-        if ( is_page( get_option( 'wcvendors_vendor_dashboard_page_id' ) ) ) {
-            $url = add_query_arg(
-                array(
-                    'action' => 'edit-post',
-                    'pid'    => $post->ID
-                ),
-                $posts_page_url
-            );
+            }
         }
 
-        return $url;
-    }
+        /**
+         * Generate edit post link
+         *
+         * @param string $url
+         *
+         * @since  3.0
+         *
+         * @return string $url
+         */
+        public function generate_edit_post_link( $url ) {
+            global $post;
 
-    /**
-     * Redirect user after editing post from vendor dashboard
-     *
-     */
-    public function update_edit_post_redirect_url( $response, $post_id, $form_id, $form_settings ) {
-        $user          = wp_get_current_user();
-        $role          = ( array ) $user->roles;
-        $selected_form = get_option( 'wcvendors_wpuf_allowed_post_form', '' );
+            $posts_page_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
 
-        if ( $role[0] == 'vendor' && $form_id == $selected_form && $form_settings['edit_redirect_to'] == 'same' ) {
-            $post_page_url = get_permalink(get_option( 'wcvendors_vendor_dashboard_page_id' ) );
+            if ( is_page( get_option( 'wcvendors_vendor_dashboard_page_id' ) ) ) {
+                $url = add_query_arg(
+                    [
+                        'action' => 'edit-post',
+                        'pid'    => $post->ID,
+                    ],
+                    $posts_page_url
+                );
+            }
 
-            $redirect_url = add_query_arg(
-                array(
-                    'action'    => 'edit-post',
-                    'pid'       => $post_id,
-                    '_wpnonce'  => wp_create_nonce( 'wpuf_edit' ),
-                    'msg'       => 'post_updated'
-                ),
-                $post_page_url
-            );
-
-            $response['redirect_to'] = $redirect_url;
+            return $url;
         }
 
-        return $response;
-    }
+        /**
+         * Redirect user after editing post from vendor dashboard
+         */
+        public function update_edit_post_redirect_url( $response, $post_id, $form_id, $form_settings ) {
+            $user          = wp_get_current_user();
+            $role          = (array) $user->roles;
+            $selected_form = get_option( 'wcvendors_wpuf_allowed_post_form', '' );
 
-    /**
-     * Redirect user after deleting post from vendor dashboard
-     *
-     */
-    public function update_delete_post_redirect_url( $redirect_url ) {
-        if ( is_page( get_option( 'wcvendors_vendor_dashboard_page_id' ) ) ) {
-            $post_page_url = get_permalink(get_option( 'wcvendors_vendor_dashboard_page_id' ) );
+            if ( $role[0] == 'vendor' && $form_id == $selected_form && $form_settings['edit_redirect_to'] == 'same' ) {
+                $post_page_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
 
-            $redirect_url = add_query_arg(
-                array(
-                    'action' => 'post-listing',
-                    'msg'    => 'deleted'
-                ),
-                $post_page_url
-            );
+                $redirect_url = add_query_arg(
+                    [
+                        'action'    => 'edit-post',
+                        'pid'       => $post_id,
+                        '_wpnonce'  => wp_create_nonce( 'wpuf_edit' ),
+                        'msg'       => 'post_updated',
+                    ],
+                    $post_page_url
+                );
+
+                $response['redirect_to'] = $redirect_url;
+            }
+
+            return $response;
         }
 
-        return $redirect_url;
-    }
+        /**
+         * Redirect user after deleting post from vendor dashboard
+         */
+        public function update_delete_post_redirect_url( $redirect_url ) {
+            if ( is_page( get_option( 'wcvendors_vendor_dashboard_page_id' ) ) ) {
+                $post_page_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
 
+                $redirect_url = add_query_arg(
+                    [
+                        'action' => 'post-listing',
+                        'msg'    => 'deleted',
+                    ],
+                    $post_page_url
+                );
+            }
+
+            return $redirect_url;
+        }
+    }
 }
-
-endif;

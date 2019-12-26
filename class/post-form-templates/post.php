@@ -12,8 +12,8 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
         $this->title       = __( 'Post Form', 'wp-user-frontend' );
         $this->description = __( 'Form for creating a blog post.', 'wp-user-frontend' );
         $this->image       = WPUF_ASSET_URI . '/images/templates/post.png';
-        $this->form_fields = array(
-            array(
+        $this->form_fields = [
+            [
                 'input_type'      => 'text',
                 'template'        => 'post_title',
                 'required'        => 'yes',
@@ -26,30 +26,30 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
                 'default'         => '',
                 'size'            => '40',
                 'wpuf_cond'       => $this->conditionals,
-                'wpuf_visibility' => $this->get_default_visibility_prop()
-            ),
-            array(
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+            ],
+            [
                 'input_type'      => 'taxonomy',
                 'template'        => 'taxonomy',
                 'required'        => 'yes',
                 'label'           => __( 'Category', 'wp-user-frontend' ),
                 'name'            => 'category',
                 'is_meta'         => 'no',
-                'help'            => __( 'Select a category for your post', 'wp-user-frontend' ) ,
+                'help'            => __( 'Select a category for your post', 'wp-user-frontend' ),
                 'first'           => __( '- select -', 'wp-user-frontend' ),
                 'css'             => '',
                 'type'            => 'select',
                 'orderby'         => 'name',
                 'order'           => 'ASC',
                 'exclude_type'    => 'exclude',
-                'exclude'         => array(),
+                'exclude'         => [],
                 'woo_attr'        => 'no',
                 'woo_attr_vis'    => 'no',
-                'options'         => array(),
+                'options'         => [],
                 'wpuf_cond'       => $this->conditionals,
-                'wpuf_visibility' => $this->get_default_visibility_prop()
-            ),
-            array(
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+            ],
+            [
                 'input_type'       => 'textarea',
                 'template'         => 'post_content',
                 'required'         => 'yes',
@@ -66,9 +66,9 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
                 'insert_image'     => 'yes',
                 'word_restriction' => '',
                 'wpuf_cond'        => $this->conditionals,
-                'wpuf_visibility'  => $this->get_default_visibility_prop()
-            ),
-            array(
+                'wpuf_visibility'  => $this->get_default_visibility_prop(),
+            ],
+            [
                 'input_type'      => 'image_upload',
                 'template'        => 'featured_image',
                 'count'           => '1',
@@ -81,9 +81,9 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
                 'css'             => '',
                 'max_size'        => '1024',
                 'wpuf_cond'       => $this->conditionals,
-                'wpuf_visibility' => $this->get_default_visibility_prop()
-            ),
-            array(
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+            ],
+            [
                 'input_type'      => 'textarea',
                 'template'        => 'post_excerpt',
                 'required'        => 'no',
@@ -98,9 +98,9 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
                 'default'         => '',
                 'rich'            => 'no',
                 'wpuf_cond'       => $this->conditionals,
-                'wpuf_visibility' => $this->get_default_visibility_prop()
-            ),
-            array(
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+            ],
+            [
                 'input_type'      => 'text',
                 'template'        => 'post_tags',
                 'required'        => 'no',
@@ -113,11 +113,11 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
                 'default'         => '',
                 'size'            => '40',
                 'wpuf_cond'       => $this->conditionals,
-                'wpuf_visibility' => $this->get_default_visibility_prop()
-            ),
-        );
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+            ],
+        ];
 
-        $this->form_settings = array (
+        $this->form_settings = [
                 'post_type'                  => 'post',
                 'post_status'                => 'publish',
                 'default_cat'                => '-1',
@@ -126,24 +126,24 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
                 'redirect_to'                => 'post',
                 'comment_status'             => 'open',
                 'submit_text'                => __( 'Create Post', 'wp-user-frontend' ),
-                'submit_button_cond'  => array(
+                'submit_button_cond'         => [
                     'condition_status' => 'no',
                     'cond_logic'       => 'any',
-                    'conditions'       => array(
-                        array(
+                    'conditions'       => [
+                        [
                             'name'             => '',
                             'operator'         => '=',
-                            'option'           => ''
-                        )
-                    )
-                ),
+                            'option'           => '',
+                        ],
+                    ],
+                ],
                 'edit_post_status'           => 'publish',
                 'edit_redirect_to'           => 'same',
                 'update_message'             => __( 'Post has been updated successfully. <a target="_blank" href="%link%">View post</a>', 'wp-user-frontend' ),
                 'edit_url'                   => '',
                 'update_text'                => __( 'Update Post', 'wp-user-frontend' ),
                 'form_template'              => __CLASS__,
-                'notification'               => array(
+                'notification'               => [
                 'new'                        => 'on',
                 'new_to'                     => get_option( 'admin_email' ),
                 'new_subject'                => 'New post has been created',
@@ -170,7 +170,7 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
                 Author: %author%
                 Post URL: %permalink%
                 Edit URL: %editlink%',
-                ),
-            );
+                ],
+            ];
     }
 }

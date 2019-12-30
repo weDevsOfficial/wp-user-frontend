@@ -12,8 +12,7 @@
   "minimum-stability": "dev",
   "require": {
     "php": ">=5.4.0",
-    "composer/installers": ">=1.4",
-    "appsero/client": "dev-master"
+    "composer/installers": ">=1.4"
   },
   "require-dev": {
     "automattic/vipwpcs": "dev-master",

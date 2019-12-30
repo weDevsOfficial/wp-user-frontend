@@ -45,7 +45,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
             'trash'     => __( 'Trash', 'wp-user-frontend' ),
         ] );
 
-        $current_status = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'all';
+        $current_status = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : 'all';
 
         $post_counts = (array) wp_count_posts( 'wpuf_forms' );
 
@@ -92,7 +92,7 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
      * @return void
      */
     public function no_items() {
-        _e( 'No form found.', 'wp-user-frontend' );
+        esc_html_e( 'No form found.', 'wp-user-frontend' );
     }
 
     /**
@@ -133,23 +133,28 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
         }
 
         if ( !empty( $_GET['orderby'] ) ) {
-            echo '<input type="hidden" name="orderby" value="' . esc_attr( $_GET['orderby'] ) . '" />';
+            $orderby = sanitize_text_field( wp_unslash( $_GET['orderby'] ) );
+
+            echo wp_kses_post( '<input type="hidden" name="orderby" value="' . esc_attr( $orderby ) . '" />' );
         }
 
         if ( !empty( $_GET['order'] ) ) {
-            echo '<input type="hidden" name="order" value="' . esc_attr( $_GET['order'] ) . '" />';
+            $order = sanitize_text_field( wp_unslash( $_GET['order'] ) );
+            echo wp_kses_post( '<input type="hidden" name="order" value="' . esc_attr( $order . '" />' ) );
         }
 
         if ( !empty( $_GET['post_status'] ) ) {
-            echo '<input type="hidden" name="post_status" value="' . esc_attr( $_GET['post_status'] ) . '" />';
+            $post_status = sanitize_text_field( wp_unslash( $_GET['post_status'] ) );
+
+            echo wp_kses_post( '<input type="hidden" name="post_status" value="' . esc_attr( $post_status . '" />' ) );
         }
 
         do_action( 'wpuf_post_forms_list_table_search_box', $text, $input_id );
 
         $input_id = $input_id . '-search-input'; ?>
         <p class="search-box">
-            <label class="screen-reader-text" for="<?php echo $input_id; ?>"><?php echo $text; ?>:</label>
-            <input type="search" id="<?php echo $input_id; ?>" name="s" value="<?php _admin_search_query(); ?>" />
+            <label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_attr( $text ); ?>:</label>
+            <input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s" value="<?php _admin_search_query(); ?>" />
             <?php submit_button( $text, 'button', 'post_form_search', false, [ 'id' => 'search-submit' ] ); ?>
         </p>
         <?php
@@ -193,19 +198,19 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
         ];
 
         if ( isset( $_GET['s'] ) && !empty( $_GET['s'] ) ) {
-            $args['s'] = $_GET['s'];
+            $args['s'] = sanitize_text_field( wp_unslash( $_GET['s'] ) );
         }
 
         if ( isset( $_GET['post_status'] ) && !empty( $_GET['post_status'] ) ) {
-            $args['post_status'] = $_GET['post_status'];
+            $args['post_status'] = sanitize_text_field( wp_unslash( $_GET['post_status'] ) );
         }
 
         if ( isset( $_GET['orderby'] ) && !empty( $_GET['orderby'] ) ) {
-            $args['orderby'] = $_GET['orderby'];
+            $args['orderby'] = sanitize_text_field( wp_unslash( $_GET['orderby'] ) );
         }
 
         if ( isset( $_GET['order'] ) && !empty( $_GET['order'] ) ) {
-            $args['order'] = $_GET['order'];
+            $args['order'] = sanitize_text_field( wp_unslash( $_GET['order'] ) );
         }
 
         $items  = $this->item_query( $args );

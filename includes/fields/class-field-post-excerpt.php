@@ -36,7 +36,7 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
             <?php $this->print_label( $field_settings, $form_id ); ?>
 
             <?php if ( in_array( $field_settings['rich'], [ 'yes', 'teeny' ] ) ) { ?>
-                <div class="wpuf-fields wpuf-rich-validation <?php printf( 'wpuf_%s_%s', $field_settings['name'], $form_id ); ?>" data-type="rich" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-id="<?php echo esc_attr( $field_settings['name'] ) . '_' . $form_id; ?>" data-name="<?php echo esc_attr( $field_settings['name'] ); ?>">
+                <div class="wpuf-fields wpuf-rich-validation <?php printf( 'wpuf_%s_%s', esc_attr( $field_settings['name'] ), esc_attr( $form_id ) ); ?>" data-type="rich" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" data-name="<?php echo esc_attr( $field_settings['name'] ); ?>">
             <?php } else { ?>
                 <div class="wpuf-fields">
             <?php } ?>
@@ -69,14 +69,14 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
                 } else {
                     ?>
                     <textarea
-                        class="textareafield <?php echo ' wpuf_' . $field_settings['name'] . '_' . $form_id; ?>"
-                        id="<?php echo $field_settings['name'] . '_' . $form_id; ?>"
-                        name="<?php echo $field_settings['name']; ?>"
-                        data-required="<?php echo $field_settings['required']; ?>"
+                        class="textareafield <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
+                        id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
+                        name="<?php echo esc_attr( $field_settings['name'] ); ?>"
+                        data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                         data-type="textarea"
                         placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
-                        rows="<?php echo $field_settings['rows']; ?>"
-                        cols="<?php echo $field_settings['cols']; ?>"
+                        rows="<?php echo esc_attr( $field_settings['rows'] ); ?>"
+                        cols="<?php echo esc_attr( $field_settings['cols'] ); ?>"
                     ><?php echo esc_textarea( $value ); ?></textarea>
                     <span class="wpuf-wordlimit-message wpuf-help"></span>
 
@@ -139,6 +139,10 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
      * @return mixed
      */
     public function prepare_entry( $field ) {
-        return wp_kses_post( $_POST[$field['name']] );
+        check_ajax_referer( 'wpuf_form_add' );
+
+        $field = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+
+        return wp_kses_post( $field );
     }
 }

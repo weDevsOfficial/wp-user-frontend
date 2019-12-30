@@ -4,15 +4,17 @@ if ( !class_exists( 'WPUF_Admin_Tools' ) ) {
     require_once WPUF_ROOT . '/admin/class-tools.php';
 }
 
-$tab   = isset( $_GET['tab'] ) ? $_GET['tab'] : 'tools';
+$tab   = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'tools';
 $tools = new WPUF_Admin_Tools();
 ?>
 
 <div class="wrap">
     <h2 class="nav-tab-wrapper">
-        <a class="nav-tab <?php echo ( $tab == 'tools' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'tools' ], admin_url( 'admin.php' ) ); ?>"><?php _e( 'Tools', 'wp-user-frontend' ); ?></a>
-        <a class="nav-tab <?php echo ( $tab == 'import' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'import' ], admin_url( 'admin.php' ) ); ?>"><?php _e( 'Import', 'wp-user-frontend' ); ?></a>
-        <a class="nav-tab <?php echo ( $tab == 'export' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'export' ], admin_url( 'admin.php' ) ); ?>"><?php _e( 'Export', 'wp-user-frontend' ); ?></a>
+        <a class="nav-tab <?php echo ( $tab == 'tools' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'tools' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html_e( 'Tools', 'wp-user-frontend' ); ?></a>
+
+        <a class="nav-tab <?php echo ( $tab == 'import' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'import' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html( 'Import', 'wp-user-frontend' ); ?></a>
+
+        <a class="nav-tab <?php echo ( $tab == 'export' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'export' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html( 'Export', 'wp-user-frontend' ); ?></a>
     </h2>
 
     <?php

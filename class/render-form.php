@@ -71,8 +71,14 @@ class WPUF_Render_Form {
      * @return void
      */
     public function validate_rs_captcha() {
-        $rs_captcha_input = isset( $_POST['rs_captcha'] ) ? $_POST['rs_captcha'] : '';
-        $rs_captcha_file  = isset( $_POST['rs_captcha_val'] ) ? $_POST['rs_captcha_val'] : '';
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            die( esc_html( 'Failed nonce verification !' ) );
+        }
+
+        $rs_captcha_input = isset( $_POST['rs_captcha'] ) ? sanitize_text_field( wp_unslash( $_POST['rs_captcha'] ) ) : '';
+        $rs_captcha_file  = isset( $_POST['rs_captcha_val'] ) ? sanitize_text_field( wp_unslash( $_POST['rs_captcha_val'] ) ) : '';
 
         if ( class_exists( 'ReallySimpleCaptcha' ) ) {
             $captcha_instance = new ReallySimpleCaptcha();
@@ -92,10 +98,17 @@ class WPUF_Render_Form {
      * @return void
      */
     public function validate_re_captcha( $no_captcha = '', $invisible = '' ) {
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            die( esc_html( 'Failed nonce verification !' ) );
+        }
         // need to check if invisible reCaptcha need library or we can do it here.
         // ref: https://shareurcodes.com/blog/google%20invisible%20recaptcha%20integration%20with%20php
-        $site_key        = wpuf_get_option( 'recaptcha_public', 'wpuf_general' );
-        $private_key     = wpuf_get_option( 'recaptcha_private', 'wpuf_general' );
+        $site_key             = wpuf_get_option( 'recaptcha_public', 'wpuf_general' );
+        $private_key          = wpuf_get_option( 'recaptcha_private', 'wpuf_general' );
+        $rremote_addr         = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+        $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 
         if ( $no_captcha == 1 && 0 == $invisible ) {
             if ( !class_exists( 'WPUF_ReCaptcha' ) ) {
@@ -105,26 +118,26 @@ class WPUF_Render_Form {
             $response  = null;
             $reCaptcha = new WPUF_ReCaptcha( $private_key );
 
-            $resp = $reCaptcha->verifyResponse( 
-                $_SERVER['REMOTE_ADDR'],
-                $_POST['g-recaptcha-response']
+            $resp = $reCaptcha->verifyResponse(
+                $rremote_addr,
+                $g_recaptcha_response
              );
 
             if ( !$resp->success ) {
                 $this->send_error( __( 'noCaptcha reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
         } elseif ( $no_captcha == 0 && 0 == $invisible  ) {
-            $recap_challenge = isset( $_POST['recaptcha_challenge_field'] ) ? $_POST['recaptcha_challenge_field'] : '';
-            $recap_response  = isset( $_POST['recaptcha_response_field'] ) ? $_POST['recaptcha_response_field'] : '';
+            $recap_challenge = isset( $_POST['recaptcha_challenge_field'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_challenge_field'] ) ) : '';
+            $recap_response  = isset( $_POST['recaptcha_response_field'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_response_field'] ) ) : '';
 
-            $resp            = recaptcha_check_answer( $private_key, $_SERVER['REMOTE_ADDR'], $recap_challenge, $recap_response );
+            $resp            = recaptcha_check_answer( $private_key, $rremote_addr, $recap_challenge, $recap_response );
 
             if ( !$resp->is_valid ) {
                 $this->send_error( __( 'reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
         } elseif ( $no_captcha == 0 && 1 == $invisible ) {
             $response  = null;
-            $recaptcha = $_POST['g-recaptcha-response'];
+            $recaptcha = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
             $object    = new Invisible_Recaptcha( $site_key, $private_key );
 
             $response  = $object->verifyResponse( $recaptcha );
@@ -206,12 +219,15 @@ class WPUF_Render_Form {
         // skip files, put in a key => value paired array for later executation
         // process repeatable fields separately
         // if the input is array type, implode with separator in a field
+        check_ajax_referer( 'wpuf_form_add' );
 
         $files          = [];
         $meta_key_value = [];
         $multi_repeated = []; //multi repeated fields will in sotre duplicated meta key
 
         foreach ( $meta_vars as $key => $value ) {
+            $value_name = isset( $_POST[$value['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$value['name']] ) ) : '';
+            $wpuf_files = isset( $_POST['wpuf_files'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wpuf_files'] ) ) : [];
             switch ( $value['input_type'] ) {
 
                 // put files in a separate array, we'll process it later
@@ -220,7 +236,7 @@ class WPUF_Render_Form {
 
                     $files[] = [
                         'name'  => $value['name'],
-                        'value' => isset( $_POST['wpuf_files'][$value['name']] ) ? $_POST['wpuf_files'][$value['name']] : [],
+                        'value' => isset( $wpuf_files[$value['name']] ) ? $wpuf_files[$value['name']] : [],
                         'count' => $value['count'],
                     ];
                     break;
@@ -231,10 +247,10 @@ class WPUF_Render_Form {
                     if ( isset( $value['multiple'] ) && $value['multiple'] == 'true' ) {
 
                         // if there's any items in the array, process it
-                        if ( $_POST[$value['name']] ) {
+                        if ( $value_name ) {
                             $ref_arr = [];
                             $cols    = count( $value['columns'] );
-                            $first   = array_shift( array_values( $_POST[$value['name']] ) ); //first element
+                            $first   = array_shift( array_values( $value_name ) ); //first element
                             $rows    = count( $first );
 
                             // loop through columns
@@ -244,7 +260,7 @@ class WPUF_Render_Form {
                                 $temp = [];
 
                                 for ( $j = 0; $j < $cols; $j++ ) {
-                                    $temp[] = $_POST[$value['name']][$j][$i];
+                                    $temp[] = $value_name[$j][$i];
                                 }
 
                                 // store all fields in a row with self::$separator separated
@@ -257,15 +273,15 @@ class WPUF_Render_Form {
                             }
                         }
                     } else {
-                        $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
+                        $meta_key_value[$value['name']] = implode( self::$separator, $value_name );
                     }
 
                     break;
 
                 case 'address':
 
-                    if ( isset( $_POST[ $value['name'] ] ) && is_array( $_POST[ $value['name'] ] ) ) {
-                        foreach ( $_POST[ $value['name'] ] as $address_field => $field_value ) {
+                    if ( is_array( $value_name ) ) {
+                        foreach ( $value_name as $address_field => $field_value ) {
                             $meta_key_value[ $value['name'] ][ $address_field ] = sanitize_text_field( $field_value );
                         }
                     }
@@ -277,19 +293,19 @@ class WPUF_Render_Form {
                 case 'number':
                 case 'date':
 
-                    $meta_key_value[$value['name']] = sanitize_text_field( trim( $_POST[$value['name']] ) );
+                    $meta_key_value[$value['name']] = sanitize_text_field( trim( $value_name ) );
 
                     break;
 
                 case 'textarea':
 
-                    $meta_key_value[$value['name']] = wp_kses_post( $_POST[$value['name']] );
+                    $meta_key_value[$value['name']] = wp_kses_post( $value_name );
 
                     break;
 
                 case 'map':
                     $data           = [];
-                    $map_field_data = sanitize_text_field( trim( $_POST[$value['name']] ) );
+                    $map_field_data = sanitize_text_field( trim( $value_name ) );
 
                     if ( !empty( $map_field_data ) ) {
                         list( $data['address'], $data['lat'], $data['lng'] ) = explode( ' || ', $map_field_data );
@@ -299,18 +315,18 @@ class WPUF_Render_Form {
 
                 default:
                     // if it's an array, implode with this->separator
-                    if ( is_array( $_POST[$value['name']] ) ) {
+                    if ( is_array( $value_name ) ) {
                         $acf_compatibility = wpuf_get_option( 'wpuf_compatibility_acf', 'wpuf_general', 'no' );
 
                         if ( $value['input_type'] == 'address' ) {
-                            $meta_key_value[$value['name']] = $_POST[$value['name']];
+                            $meta_key_value[$value['name']] = $value_name;
                         } elseif ( !empty( $acf_compatibility ) && $acf_compatibility == 'yes' ) {
-                            $meta_key_value[$value['name']] = maybe_serialize( $_POST[$value['name']] );
+                            $meta_key_value[$value['name']] = maybe_serialize( $value_name );
                         } else {
-                            $meta_key_value[$value['name']] = implode( self::$separator, $_POST[$value['name']] );
+                            $meta_key_value[$value['name']] = implode( self::$separator, $value_name );
                         }
                     } else {
-                        $meta_key_value[$value['name']] = trim( $_POST[$value['name']] );
+                        $meta_key_value[$value['name']] = trim( $value_name );
                     }
 
                     break;
@@ -324,7 +340,7 @@ class WPUF_Render_Form {
         ?>
         <li class="el-name">
             <div class="wpuf-label">
-                <label><?php echo $form_settings['name_label']; ?> <span class="required">*</span></label>
+                <label><?php echo esc_attr( $form_settings['name_label'] ); ?> <span class="required">*</span></label>
             </div>
 
             <div class="wpuf-fields">
@@ -334,7 +350,7 @@ class WPUF_Render_Form {
 
         <li class="el-email">
             <div class="wpuf-label">
-                <label><?php echo $form_settings['email_label']; ?> <span class="required">*</span></label>
+                <label><?php echo esc_attr( $form_settings['email_label'] ); ?> <span class="required">*</span></label>
             </div>
 
             <div class="wpuf-fields">
@@ -354,13 +370,13 @@ class WPUF_Render_Form {
         $form_status = get_post_status( $form_id );
 
         if ( !$form_status ) {
-            echo '<div class="wpuf-message">' . __( 'Your selected form is no longer available.', 'wp-user-frontend' ) . '</div>';
+            echo wp_kses_post( '<div class="wpuf-message">' . __( 'Your selected form is no longer available.', 'wp-user-frontend' ) . '</div>' );
 
             return;
         }
 
         if ( $form_status != 'publish' ) {
-            echo '<div class="wpuf-message">' . __( "Please make sure you've published your form.", 'wp-user-frontend' ) . '</div>';
+            echo wp_kses_post( '<div class="wpuf-message">' . __( "Please make sure you've published your form.", 'wp-user-frontend' ) . '</div>' );
 
             return;
         }
@@ -378,16 +394,16 @@ class WPUF_Render_Form {
         }
 
         if ( !is_user_logged_in() && $form_settings['guest_post'] != 'true' ) {
-            echo '<div class="wpuf-message">' . $form_settings['message_restrict'] . '</div>';
+            echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['message_restrict'] . '</div>' );
 
             return;
         }
 
         if ( $form_vars ) {
             ?>
-            <form class="wpuf-form-add wpuf-form-<?php echo $layout; ?> <?php echo ( $layout == 'layout1' ) ? $theme_css : 'wpuf-style'; ?>" action="" method="post">
+            <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( $layout == 'layout1' ) ? esc_attr( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">
 
-                <ul class="wpuf-form form-label-<?php echo $label_position; ?>">
+                <ul class="wpuf-form form-label-<?php echo esc_attr( $label_position ); ?>">
 
                     <?php
                     if ( !$post_id ) {
@@ -424,7 +440,7 @@ class WPUF_Render_Form {
         $class_name    = !empty( $form_field['css'] ) ? ' ' . $form_field['css'] : '';
         $field_size    = !empty( $form_field['width'] ) ? ' field-size-' . $form_field['width'] : '';
 
-        printf( '<li class="wpuf-el %s%s%s" data-label="%s">', $el_name, $class_name, $field_size, $form_field['label'] );
+        printf( '<li class="wpuf-el %s%s%s" data-label="%s">', esc_attr( $el_name ), esc_attr( $class_name ), esc_attr( $field_size ),esc_attr(  $form_field['label'] ) );
 
         if ( isset( $form_field['input_type'] ) && !in_array( $form_field['input_type'], $label_exclude ) ) {
             $this->label( $form_field, $post_id );
@@ -432,7 +448,7 @@ class WPUF_Render_Form {
     }
 
     public function render_item_after( $form_field ) {
-        echo '</li>';
+        echo wp_kses_post( '</li>' );
     }
 
     public function conditional_logic( $form_field, $form_id ) {
@@ -460,7 +476,7 @@ class WPUF_Render_Form {
             $condition           = json_encode( $cond_inputs );
         } ?>
         <script type="text/javascript">
-            wpuf_conditional_items.push(<?php echo $condition; ?>);
+            wpuf_conditional_items.push(<?php echo esc_html( $condition ); ?>);
         </script>
         <?php
     }
@@ -501,25 +517,25 @@ class WPUF_Render_Form {
             <style type="text/css">
                 .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li,
                 .wpuf-form .wpuf-multistep-progressbar.ui-progressbar {
-                    background-color:  <?php echo $ms_bgcolor; ?>;
-                    background:  <?php echo $ms_bgcolor; ?>;
+                    background-color:  <?php echo esc_html( $ms_bgcolor ); ?>;
+                    background:  <?php echo esc_html( $ms_bgcolor ); ?>;
                 }
                 .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li::after{
-                    border-left-color: <?php echo $ms_bgcolor; ?>;
+                    border-left-color: <?php echo esc_html( $ms_bgcolor ); ?>;
                 }
                 .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step,
                 .wpuf-form .wpuf-multistep-progressbar .ui-widget-header{
-                    color: <?php echo $ms_ac_txt_color; ?>;
-                    background-color:  <?php echo $ms_active_bgcolor; ?>;
+                    color: <?php echo esc_html( $ms_ac_txt_color ); ?>;
+                    background-color:  <?php echo esc_html( $ms_active_bgcolor ); ?>;
                 }
                 .wpuf-form .wpuf-multistep-progressbar ul.wpuf-step-wizard li.active-step::after {
-                    border-left-color: <?php echo $ms_active_bgcolor; ?>;
+                    border-left-color: <?php echo esc_html( $ms_active_bgcolor ); ?>;
                 }
                 .wpuf-form .wpuf-multistep-progressbar.ui-progressbar .wpuf-progress-percentage{
-                    color: <?php echo $ms_ac_txt_color; ?>;
+                    color: <?php echo esc_html( $ms_ac_txt_color ); ?>;
                 }
             </style>
-            <input type="hidden" name="wpuf_multistep_type" value="<?php echo $form_settings['multistep_progressbar_type']; ?>"/>
+            <input type="hidden" name="wpuf_multistep_type" value="<?php echo esc_attr( $form_settings['multistep_progressbar_type'] ); ?>"/>
             <?php
             if ( $form_settings['multistep_progressbar_type'] == 'step_by_step' ) {
                 ?>
@@ -714,27 +730,27 @@ class WPUF_Render_Form {
             </div>
 
             <?php wp_nonce_field( 'wpuf_form_add' ); ?>
-            <input type="hidden" name="form_id" value="<?php echo $form_id; ?>">
-            <input type="hidden" name="page_id" value="<?php echo get_post() ? get_the_ID() : '0'; ?>">
+            <input type="hidden" name="form_id" value="<?php echo esc_attr( $form_id ); ?>">
+            <input type="hidden" name="page_id" value="<?php echo get_post() ? esc_attr( get_the_ID() ) : '0'; ?>">
             <input type="hidden" id="del_attach" name="delete_attachments[]">
             <input type="hidden" name="action" value="wpuf_submit_post">
 
             <?php
             if ( $post_id ) {
                 $cur_post = get_post( $post_id ); ?>
-                <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+                <input type="hidden" name="post_id" value="<?php echo esc_attr( $post_id ); ?>">
                 <input type="hidden" name="post_date" value="<?php echo esc_attr( $cur_post->post_date ); ?>">
                 <input type="hidden" name="comment_status" value="<?php echo esc_attr( $cur_post->comment_status ); ?>">
                 <input type="hidden" name="post_author" value="<?php echo esc_attr( $cur_post->post_author ); ?>">
-                <input type="submit" class="wpuf-submit-button" name="submit" value="<?php echo $form_settings['update_text']; ?>" />
+                <input type="submit" class="wpuf-submit-button" name="submit" value="<?php echo esc_attr( $form_settings['update_text'] ); ?>" />
             <?php
             } else { ?>
-                <input type="submit" class="wpuf-submit-button" name="submit" value="<?php echo $form_settings['submit_text']; ?>" />
+                <input type="submit" class="wpuf-submit-button" name="submit" value="<?php echo esc_attr( $form_settings['submit_text'] ); ?>" />
                 <input type="hidden" name="wpuf_form_status" value="new">
             <?php } ?>
 
             <?php if ( isset( $form_settings['draft_post'] ) && $form_settings['draft_post'] == 'true' ) { ?>
-                <a href="#" class="btn" id="wpuf-post-draft"><?php _e( 'Save Draft', 'wp-user-frontend' ); ?></a>
+                <a href="#" class="btn" id="wpuf-post-draft"><?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?></a>
             <?php } ?>
         </li>
     <?php
@@ -746,7 +762,7 @@ class WPUF_Render_Form {
      * @return void
      */
     public function preview_form() {
-        $form_id = isset( $_GET['form_id'] ) ? intval( $_GET['form_id'] ) : 0;
+        $form_id = isset( $_GET['form_id'] ) ? intval( wp_unslash( $_GET['form_id'] ) ) : 0;
 
         if ( $form_id ) {
             ?>
@@ -756,7 +772,7 @@ class WPUF_Render_Form {
                 <head>
                     <meta charset="UTF-8">
                     <title>Form Preview</title>
-                    <link rel="stylesheet" href="<?php echo plugins_url( 'assets/css/frontend-forms.css', __DIR__ ); ?>">
+                    <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
 
                     <style type="text/css">
                         body {
@@ -777,7 +793,7 @@ class WPUF_Render_Form {
                         }
                     </style>
 
-                    <script type="text/javascript" src="<?php echo includes_url( 'js/jquery/jquery.js' ); ?>"></script>
+                    <script type="text/javascript" src="<?php echo esc_url( includes_url( 'js/jquery/jquery.js' ) ); ?>"></script>
                 </head>
                 <body>
                     <div class="container">
@@ -849,7 +865,7 @@ class WPUF_Render_Form {
             return;
         } ?>
         <div class="wpuf-label">
-            <label for="<?php echo isset( $attr['name'] ) ? $attr['name'] : 'cls'; ?>"><?php echo $attr['label'] . $this->required_mark( $attr ); ?></label>
+            <label for="<?php echo isset( $attr['name'] ) ? esc_attr( $attr['name'] ) : 'cls'; ?>"><?php echo esc_attr( $attr['label'] ) . esc_attr( $this->required_mark( $attr ) ); ?></label>
         </div>
         <?php
     }
@@ -863,7 +879,7 @@ class WPUF_Render_Form {
         if ( empty( $attr['help'] ) ) {
             return;
         } ?>
-        <span class="wpuf-help"><?php echo stripslashes( $attr['help'] ); ?></span>
+        <span class="wpuf-help"><?php echo esc_html( stripslashes( $attr['help'] ) ); ?></span>
         <?php
     }
 
@@ -955,8 +971,8 @@ class WPUF_Render_Form {
         } ?>
 
         <div class="wpuf-fields">
-            <input class="textfield<?php echo $this->required_class( $attr );
-        echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" id="<?php echo $attr['name'] . '_' . $form_id; ?>" type="text" data-required="<?php echo $attr['required']; ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" size="<?php echo esc_attr( $attr['size'] ); ?>" <?php echo $username ? 'disabled' : ''; ?> />
+            <input class="textfield<?php echo esc_attr( $this->required_class( $attr ) );
+        echo ' wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" id="<?php echo esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" size="<?php echo esc_attr( $attr['size'] ); ?>" <?php echo esc_attr( $username ) ? 'disabled' : ''; ?> />
             <span class="wpuf-wordlimit-message wpuf-help"></span>
             <?php $this->help_text( $attr ); ?>
 
@@ -990,7 +1006,7 @@ class WPUF_Render_Form {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s"', $word_nums, $field_name, $rich_text ); ?>);
+                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s"', esc_attr( $word_nums ), esc_attr( $field_name ), esc_attr( $rich_text ) ); ?>);
                 });
             })(jQuery);
         </script>
@@ -1021,23 +1037,23 @@ class WPUF_Render_Form {
         } ?>
 
         <?php if ( in_array( $attr['rich'], [ 'yes', 'teeny' ] ) ) { ?>
-            <div class="wpuf-fields wpuf-rich-validation <?php printf( 'wpuf_%s_%s', $attr['name'], $form_id ); ?>" data-type="rich" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-id="<?php echo esc_attr( $attr['name'] ) . '_' . $form_id; ?>" data-name="<?php echo esc_attr( $attr['name'] ); ?>">
+            <div class="wpuf-fields wpuf-rich-validation <?php printf( 'wpuf_%s_%s', esc_attr( $attr['name'] ), esc_attr( $form_id ) ); ?>" data-type="rich" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-id="<?php echo esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" data-name="<?php echo esc_attr( $attr['name'] ); ?>">
         <?php } else { ?>
             <div class="wpuf-fields">
         <?php } ?>
 
             <?php if ( isset( $attr['insert_image'] ) && $attr['insert_image'] == 'yes' ) { ?>
                 <div id="wpuf-insert-image-container">
-                    <a class="wpuf-button wpuf-insert-image" id="wpuf-insert-image_<?php echo $form_id; ?>" href="#" data-form_id="<?php echo $form_id; ?>">
+                    <a class="wpuf-button wpuf-insert-image" id="wpuf-insert-image_<?php echo esc_attr( $form_id ); ?>" href="#" data-form_id="<?php echo esc_attr( $form_id ); ?>">
                         <span class="wpuf-media-icon"></span>
-                        <?php _e( 'Insert Photo', 'wp-user-frontend' ); ?>
+                        <?php esc_html_e( 'Insert Photo', 'wp-user-frontend' ); ?>
                     </a>
                 </div>
 
                 <script type="text/javascript">
                     ;(function($) {
                         $(document).ready( function(){
-                            WP_User_Frontend.insertImage('wpuf-insert-image_<?php echo $form_id; ?>', '<?php echo $form_id; ?>');
+                            WP_User_Frontend.insertImage('wpuf-insert-image_<?php echo esc_attr( $form_id ); ?>', '<?php echo esc_attr( $form_id ); ?>');
                         });
                     })(jQuery);
                 </script>
@@ -1080,7 +1096,7 @@ class WPUF_Render_Form {
             wp_editor( $value, $textarea_id, $editor_settings );
         } else {
             ?>
-                <textarea class="textareafield<?php echo $this->required_class( $attr ); ?> <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" id="<?php echo $attr['name'] . '_' . $form_id; ?>" name="<?php echo $attr['name']; ?>" data-required="<?php echo $attr['required']; ?>" data-type="textarea"<?php $this->required_html5( $attr ); ?> placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" rows="<?php echo $attr['rows']; ?>" cols="<?php echo $attr['cols']; ?>"><?php echo esc_textarea( $value ); ?></textarea>
+                <textarea class="textareafield<?php echo esc_attr( $this->required_class( $attr ) ); ?> <?php echo ' wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" id="<?php echo esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" name="<?php echo esc_attr( $attr['name'] ); ?>" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="textarea"<?php $this->required_html5( $attr ); ?> placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" rows="<?php echo esc_attr( $attr['rows'] ); ?>" cols="<?php echo esc_attr( $attr['cols'] ); ?>"><?php echo esc_textarea( $value ); ?></textarea>
                 <span class="wpuf-wordlimit-message wpuf-help"></span>
             <?php
         } ?>
@@ -1124,17 +1140,17 @@ class WPUF_Render_Form {
         $css       = $multiselect ? ' class="multiselect  wpuf_' . $attr['name'] . '_' . $form_id . '"' : ''; ?>
 
         <div class="wpuf-fields">
-            <select <?php echo $css; ?> class="<?php echo 'wpuf_' . $attr['name'] . '_' . $form_id; ?>" name="<?php echo $name; ?>"<?php echo $multi; ?> data-required="<?php echo $attr['required']; ?>" data-type="<?php echo $data_type; ?>"<?php $this->required_html5( $attr ); ?>>
+            <select <?php echo esc_attr( $css ); ?> class="<?php echo 'wpuf_' . esc_attr( $attr['name'] ) . '_' .esc_attr(  $form_id ); ?>" name="<?php echo esc_attr( $name ); ?>"<?php echo esc_attr( $multi ); ?> data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="<?php echo esc_attr($data_type ); ?>"<?php esc_attr( $this->required_html5( $attr ) ); ?>>
 
                 <?php if ( !empty( $attr['first'] ) ) { ?>
-                    <option value=""><?php echo $attr['first']; ?></option>
+                    <option value=""><?php echo esc_attr( $attr['first'] ); ?></option>
                 <?php } ?>
 
                 <?php
                 if ( $attr['options'] && count( $attr['options'] ) > 0 ) {
                     foreach ( $attr['options'] as $value => $option ) {
                         $current_select = $multiselect ? selected( in_array( $value, $selected ), true, false ) : selected( $selected, $value, false ); ?>
-                        <option value="<?php echo esc_attr( $value ); ?>"<?php echo $current_select; ?>><?php echo $option; ?></option>
+                        <option value="<?php echo esc_attr( $value ); ?>"<?php echo esc_attr( $current_select ); ?>><?php echo esc_html( $option ); ?></option>
                         <?php
                     }
                 } ?>
@@ -1157,7 +1173,7 @@ class WPUF_Render_Form {
             $selected = $this->get_meta( $post_id, $attr['name'], $type, true );
         } ?>
 
-        <div class="wpuf-fields" data-required="<?php echo $attr['required']; ?>" data-type="radio">
+        <div class="wpuf-fields" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="radio">
 
             <?php
             if ( $attr['options'] && count( $attr['options'] ) > 0 ) {
@@ -1165,8 +1181,8 @@ class WPUF_Render_Form {
                     ?>
 
                     <label <?php echo $attr['inline'] == 'yes' ? 'class="wpuf-radio-inline"' : 'class="wpuf-radio-block"'; ?>>
-                        <input name="<?php echo $attr['name']; ?>" class="<?php echo 'wpuf_' . $attr['name'] . '_' . $form_id; ?>" type="radio" value="<?php echo esc_attr( $value ); ?>"<?php checked( $selected, $value ); ?> />
-                        <?php echo $option; ?>
+                        <input name="<?php echo esc_attr( $attr['name'] ); ?>" class="<?php echo 'wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" type="radio" value="<?php echo esc_attr( $value ); ?>"<?php checked( $selected, $value ); ?> />
+                        <?php echo esc_html( $option ); ?>
                     </label>
                     <?php
                 }
@@ -1199,15 +1215,15 @@ class WPUF_Render_Form {
             }
         } ?>
 
-        <div class="wpuf-fields" data-required="<?php echo $attr['required']; ?>" data-type="radio">
+        <div class="wpuf-fields" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="radio">
 
             <?php
             if ( $attr['options'] && count( $attr['options'] ) > 0 ) {
                 foreach ( $attr['options'] as $value => $option ) {
                     ?>
                     <label <?php echo $attr['inline'] == 'yes' ? 'class="wpuf-checkbox-inline"' : 'class="wpuf-checkbox-block"'; ?>>
-                        <input type="checkbox" class="<?php echo 'wpuf_' . $attr['name'] . '_' . $form_id; ?>" name="<?php echo $attr['name']; ?>[]" value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?> />
-                        <?php echo $option; ?>
+                        <input type="checkbox" class="<?php echo 'wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" name="<?php echo esc_attr( $attr['name'] ); ?>[]" value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?> />
+                        <?php echo esc_html( $option ); ?>
                     </label>
                     <?php
                 }
@@ -1239,7 +1255,7 @@ class WPUF_Render_Form {
         } ?>
 
         <div class="wpuf-fields">
-            <input id="wpuf-<?php echo $attr['name']; ?>" type="url" class="url <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" data-required="<?php echo $attr['required']; ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" size="<?php echo esc_attr( $attr['size'] ); ?>" />
+            <input id="wpuf-<?php echo esc_attr( $attr['name'] ); ?>" type="url" class="url <?php echo ' wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" size="<?php echo esc_attr( $attr['size'] ); ?>" />
             <?php $this->help_text( $attr ); ?>
         </div>
 
@@ -1265,7 +1281,7 @@ class WPUF_Render_Form {
         } ?>
 
         <div class="wpuf-fields">
-            <input id="wpuf-<?php echo $attr['name']; ?>" type="email" class="email <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" data-required="<?php echo $attr['required']; ?>" data-type="email" <?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" size="<?php echo esc_attr( $attr['size'] ); ?>" />
+            <input id="wpuf-<?php echo esc_attr( $attr['name'] ); ?>" type="email" class="email <?php echo ' wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="email" <?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" size="<?php echo esc_attr( $attr['size'] ); ?>" />
             <?php $this->help_text( $attr ); ?>
         </div>
 
@@ -1286,7 +1302,7 @@ class WPUF_Render_Form {
         $pass_strength = ( $attr['pass_strength'] == 'yes' ) ? true : false; ?>
 
         <div class="wpuf-fields">
-            <input id="<?php echo $attr['name'] . '_' . $form_id . '_1'; ?>" type="password" class="password <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" data-required="<?php echo $attr['required']; ?>" data-type="password"<?php $this->required_html5( $attr ); ?> data-repeat="<?php echo $repeat_pass ? 'true' : 'false'; ?>" name="pass1" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="" size="<?php echo esc_attr( $attr['size'] ); ?>" />
+            <input id="<?php echo esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ) . '_1'; ?>" type="password" class="password <?php echo ' wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="password"<?php $this->required_html5( $attr ); ?> data-repeat="<?php echo esc_attr( $repeat_pass ) ? 'true' : 'false'; ?>" name="pass1" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" value="" size="<?php echo esc_attr( $attr['size'] ); ?>" />
             <?php $this->help_text( $attr ); ?>
         </div>
 
@@ -1294,21 +1310,21 @@ class WPUF_Render_Form {
         if ( $repeat_pass ) {
             $field_size    = !empty( $attr['width'] ) ? ' field-size-' . $attr['width'] : '';
 
-            echo '</li>';
-            echo '<li class="wpuf-el password-repeat ' . $field_size . '" data-label="' . esc_attr( __( 'Confirm Password', 'wp-user-frontend' ) ) . '">';
+            echo wp_kses_post( '</li>' );
+            echo wp_kses_post( '<li class="wpuf-el password-repeat ' . $field_size . '" data-label="' . esc_attr( __( 'Confirm Password', 'wp-user-frontend' ) ) . '">' );
 
             $this->label( ['name' => 'pass2', 'label' => $attr['re_pass_label'], 'required' => $post_id ? 'no' : 'yes'] ); ?>
 
             <div class="wpuf-fields">
-                <input id="<?php echo $attr['name'] . '_' . $form_id . '_2'; ?>" type="password" class="password <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" data-required="<?php echo $attr['required']; ?>" data-type="confirm_password"<?php $this->required_html5( $attr ); ?> name="pass2" value="" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" size="<?php echo esc_attr( $attr['size'] ); ?>" />
+                <input id="<?php echo esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ) . '_2'; ?>" type="password" class="password <?php echo ' wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="confirm_password"<?php $this->required_html5( $attr ); ?> name="pass2" value="" placeholder="<?php echo esc_attr( $attr['placeholder'] ); ?>" size="<?php echo esc_attr( $attr['size'] ); ?>" />
             </div>
 
             <?php
         }
 
         if ( $pass_strength ) {
-            echo '</li>';
-            echo '<li>';
+            echo wp_kses_post( '</li>' );
+            echo wp_kses_post( '<li>' );
 
             wp_enqueue_script( 'zxcvbn' );
             wp_enqueue_script( 'password-strength-meter' ); ?>
@@ -1317,23 +1333,23 @@ class WPUF_Render_Form {
             </div>
 
             <div class="wpuf-fields">
-                <div class="pass-strength-result" id="pass-strength-result_<?php echo $form_id; ?>" style="display: block"><?php _e( 'Strength indicator', 'wp-user-frontend' ); ?></div>
+                <div class="pass-strength-result" id="pass-strength-result_<?php echo esc_attr( $form_id ); ?>" style="display: block"><?php esc_html_e( 'Strength indicator', 'wp-user-frontend' ); ?></div>
             </div>
 
             <script type="text/javascript">
                 jQuery(function($) {
                     function check_pass_strength() {
-                        var pass1 = $("#<?php echo $attr['name'] . '_' . $form_id . '_1'; ?>").val(),
-                            pass2 = $("#<?php echo $attr['name'] . '_' . $form_id . '_2'; ?>").val(),
+                        var pass1 = $("#<?php echo esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ) . '_1'; ?>").val(),
+                            pass2 = $("#<?php echo esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ) . '_2'; ?>").val(),
                             strength;
 
                         if ( typeof pass2 === undefined ) {
                             pass2 = pass1;
                         }
 
-                        $("#pass-strength-result_<?php echo $form_id; ?>").removeClass('short bad good strong');
+                        $("#pass-strength-result_<?php echo esc_attr( $form_id ); ?>").removeClass('short bad good strong');
                         if (!pass1) {
-                            $("#pass-strength-result_<?php echo $form_id; ?>").html(pwsL10n.empty);
+                            $("#pass-strength-result_<?php echo esc_attr( $form_id ); ?>").html(pwsL10n.empty);
                             return;
                         }
 
@@ -1341,25 +1357,25 @@ class WPUF_Render_Form {
 
                         switch (strength) {
                             case 2:
-                                $("#pass-strength-result_<?php echo $form_id; ?>").addClass('bad').html(pwsL10n.bad);
+                                $("#pass-strength-result_<?php echo esc_attr( $form_id ); ?>").addClass('bad').html(pwsL10n.bad);
                                 break;
                             case 3:
-                                $("#pass-strength-result_<?php echo $form_id; ?>").addClass('good').html(pwsL10n.good);
+                                $("#pass-strength-result_<?php echo esc_attr( $form_id ); ?>").addClass('good').html(pwsL10n.good);
                                 break;
                             case 4:
-                                $("#pass-strength-result_<?php echo $form_id; ?>").addClass('strong').html(pwsL10n.strong);
+                                $("#pass-strength-result_<?php echo esc_attr( $form_id ); ?>").addClass('strong').html(pwsL10n.strong);
                                 break;
                             case 5:
-                                $("#pass-strength-result_<?php echo $form_id; ?>").addClass('short').html(pwsL10n.mismatch);
+                                $("#pass-strength-result_<?php echo esc_attr( $form_id ); ?>").addClass('short').html(pwsL10n.mismatch);
                                 break;
                             default:
-                                $("#pass-strength-result_<?php echo $form_id; ?>").addClass('short').html(pwsL10n['short']);
+                                $("#pass-strength-result_<?php echo esc_attr( $form_id ); ?>").addClass('short').html(pwsL10n['short']);
                         }
                     }
 
-                    $("#<?php echo $attr['name'] . '_' . $form_id . '_1'; ?>").val('').keyup(check_pass_strength);
-                    $("#<?php echo $attr['name'] . '_' . $form_id . '_2'; ?>").val('').keyup(check_pass_strength);
-                    $("#pass-strength-result_<?php echo $form_id; ?>").show();
+                    $("#<?php echo esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ) . '_1'; ?>").val('').keyup(check_pass_strength);
+                    $("#<?php echo esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ) . '_2'; ?>").val('').keyup(check_pass_strength);
+                    $("#pass-strength-result_<?php echo esc_attr( $form_id ); ?>").show();
                 });
             </script>
             <?php
@@ -1399,7 +1415,7 @@ class WPUF_Render_Form {
 
         $select = wp_dropdown_categories( $tax_args );
 
-        echo str_replace( '<select', '<select ' . $required, $select );
+        echo wp_kses_post( str_replace( '<select', '<select ' . $required, $select ) );
         $attr = [
             'required'     => $attr['required'],
             'name'         => $attr['name'],
@@ -1412,7 +1428,7 @@ class WPUF_Render_Form {
             //'term_id'      => $selected
         ];
         $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr ); ?>
-        <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
+        <span data-taxonomy=<?php echo esc_attr( json_encode( $attr ) ); ?>></span>
         <?php
     }
 
@@ -1423,9 +1439,9 @@ class WPUF_Render_Form {
      * @param int|null $post_id
      */
     public function taxonomy( $attr, $post_id, $form_id ) {
-        $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
+        $exclude_type       = isset( $attr['exclude_type'] ) ? esc_attr( $attr['exclude_type'] ) : 'exclude';
         // $exclude            = $attr['exclude'];
-        $exclude            = isset( $attr['exclude'] ) ? $attr['exclude'] : '';
+        $exclude            = isset( $attr['exclude'] ) ? esc_attr( $attr['exclude'] ) : '';
 
         if ( $exclude_type == 'child_of' ) {
             $exclude = $exclude[0];
@@ -1444,7 +1460,7 @@ class WPUF_Render_Form {
         }
 
         if ( !taxonomy_exists( $taxonomy ) ) {
-            echo '<br><div class="wpuf-message">' . __( 'This field is no longer available.', 'wp-user-frontend' ) . '</div>';
+            echo wp_kses_post( '<br><div class="wpuf-message">' . __( 'This field is no longer available.', 'wp-user-frontend' ) . '</div>' );
 
             return;
         }
@@ -1453,9 +1469,9 @@ class WPUF_Render_Form {
 
 
         <?php if ( $attr['type'] == 'checkbox' ) { ?>
-            <div class="wpuf-fields <?php echo $div_class; ?>" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="tax-checkbox">
+            <div class="wpuf-fields <?php echo esc_attr( $div_class ); ?>" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="tax-checkbox">
         <?php } else { ?>
-            <div class="wpuf-fields <?php echo $div_class; ?>">
+            <div class="wpuf-fields <?php echo esc_attr( $div_class ); ?>">
         <?php } ?>
 
                 <?php
@@ -1463,7 +1479,7 @@ class WPUF_Render_Form {
                     case 'ajax':
                         $class = ' wpuf_' . $attr['name'] . '_' . $form_id;
                         ?>
-                        <div class="category-wrap <?php echo $class; ?>">
+                        <div class="category-wrap <?php echo esc_attr( $class ); ?>">
                             <?php
 
                             if ( !count( $terms ) ) {
@@ -1479,7 +1495,7 @@ class WPUF_Render_Form {
 
                                 foreach ( $terms as $term_id ) {
                                     $class = ( $last_term_id != $term_id ) ? 'hasChild' : ''; ?>
-                                    <div id="lvl<?php echo $level; ?>" level="<?php echo $level; ?>" >
+                                    <div id="lvl<?php echo esc_attr( $level ); ?>" level="<?php echo esc_attr( $level ); ?>" >
                                         <?php $this->taxnomy_select( $term_id, $attr ); ?>
                                     </div>
                                 <?php
@@ -1516,7 +1532,7 @@ class WPUF_Render_Form {
 
                         $select   = wp_dropdown_categories( $tax_args );
 
-                        echo str_replace( '<select', '<select ' . $required, $select );
+                        echo wp_kses_post( str_replace( '<select', '<select ' . $required, $select ) );
                         break;
 
                     case 'multiselect':
@@ -1544,7 +1560,7 @@ class WPUF_Render_Form {
 
                         $select   = wp_dropdown_categories( $tax_args );
 
-                        echo str_replace( '<select', '<select multiple="multiple" ' . $required, $select );
+                        echo wp_kses_post( str_replace( '<select', '<select multiple="multiple" ' . $required, $select ) );
                         break;
 
                     case 'checkbox':
@@ -1554,12 +1570,12 @@ class WPUF_Render_Form {
                     case 'text':
                         ?>
 
-                        <input class="textfield<?php echo $this->required_class( $attr ); ?>" id="<?php echo $attr['name']; ?>" type="text" data-required="<?php echo $attr['required']; ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $terms ) ); ?>" size="40" />
+                        <input class="textfield<?php echo esc_attr( $this->required_class( $attr ) ); ?>" id="<?php echo esc_attr( $attr['name'] ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php esc_attr( $this->required_html5( $attr ) ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $terms ) ); ?>" size="40" />
 
                         <script type="text/javascript">
                             ;(function($) {
                                 $(document).ready( function(){
-                                        $('#<?php echo $attr['name']; ?>').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=<?php echo $attr['name']; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                                        $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=<?php echo esc_attr( $attr['name'] ); ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                                 });
                             })(jQuery);
                         </script>
@@ -1585,8 +1601,8 @@ class WPUF_Render_Form {
      */
     public function html( $attr, $form_id ) {
         ?>
-        <div class="wpuf-fields <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>">
-            <?php echo $attr['html']; ?>
+        <div class="wpuf-fields <?php echo ' wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>">
+            <?php echo esc_html( $attr['html'] ); ?>
         </div>
         <?php
     }
@@ -1637,29 +1653,29 @@ class WPUF_Render_Form {
         $button_label = empty( $attr['button_label'] ) ? __( 'Select Image', 'wp-user-frontend' ) : $attr['button_label']; ?>
 
         <div class="wpuf-fields">
-            <div id="wpuf-<?php echo $unique_id; ?>-upload-container">
-                <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo $attr['required']; ?>">
-                    <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>" href="#"><?php echo $button_label; ?></a>
+            <div id="wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container">
+                <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo esc_attr( $attr['required'] ); ?>">
+                    <a id="wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles" data-form_id="<?php echo esc_attr( $form_id ); ?>" class="button file-selector <?php echo ' wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>" href="#"><?php echo esc_attr( $button_label ); ?></a>
 
                     <ul class="wpuf-attachment-list thumbnails">
                         <?php
                         if ( $has_featured_image ) {
-                            echo $featured_image;
+                            echo esc_attr( $featured_image );
                         }
 
         if ( $has_avatar ) {
             $avatar = get_user_meta( $post_id, 'user_avatar', true );
 
             if ( $avatar ) {
-                echo '<li>' . $featured_image;
-                printf( '<br><a href="#" data-confirm="%s" class="btn btn-danger btn-small wpuf-button button wpuf-delete-avatar">%s</a>', __( 'Are you sure?', 'wp-user-frontend' ), __( 'Delete', 'wp-user-frontend' ) );
-                echo '</li>';
+                echo wp_kses_post( '<li>' . $featured_image );
+                printf( '<br><a href="#" data-confirm="%s" class="btn btn-danger btn-small wpuf-button button wpuf-delete-avatar">%s</a>', esc_html( __( 'Are you sure?', 'wp-user-frontend' ) ),esc_html(  __( 'Delete', 'wp-user-frontend' ) ) );
+                echo wp_kses_post( '</li>' );
             }
         }
 
         if ( $has_images ) {
             foreach ( $images as $attach_id ) {
-                echo WPUF_Upload::attach_html( $attach_id, $attr['name'] );
+                echo esc_attr( WPUF_Upload::attach_html( $attach_id, $attr['name'] ) );
             }
         } ?>
                     </ul>
@@ -1673,7 +1689,7 @@ class WPUF_Render_Form {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    var uploader = new WPUF_Uploader('wpuf-<?php echo $unique_id; ?>-pickfiles', 'wpuf-<?php echo $unique_id; ?>-upload-container', <?php echo $attr['count']; ?>, '<?php echo $attr['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $attr['max_size']; ?>);
+                    var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( $attr['count'] ); ?>, '<?php echo esc_attr( $attr['name'] ); ?>', 'jpg,jpeg,gif,png,bmp', <?php echo esc_attr( $attr['max_size'] ); ?>);
                     wpuf_plupload_items.push(uploader);
                 });
             })(jQuery);
@@ -1689,9 +1705,9 @@ class WPUF_Render_Form {
      */
     public function section_break( $attr, $post_id, $form_id ) {
         ?>
-        <div class="wpuf-section-wrap <?php echo ' wpuf_' . $attr['name'] . '_' . $attr['id'] . '_' . $form_id; ?>">
-            <h2 class="wpuf-section-title"><?php echo $attr['label']; ?></h2>
-            <div class="wpuf-section-details"><?php echo $attr['description']; ?></div>
+        <div class="wpuf-section-wrap <?php echo ' wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $attr['id'] ) . '_' . esc_attr( $form_id ); ?>">
+            <h2 class="wpuf-section-title"><?php echo esc_attr( $attr['label'] ); ?></h2>
+            <div class="wpuf-section-details"><?php echo esc_attr( $attr['description'] ); ?></div>
         </div>
         <?php
     }
@@ -1716,7 +1732,7 @@ class WPUF_Render_Form {
             <script src="https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en" async defer></script>
             <script>
                 jQuery(document).ready(function($) {
-                    jQuery('[name="submit"]').removeClass('wpuf-submit-button').addClass('g-recaptcha').attr('data-sitekey', '<?php echo wpuf_get_option( 'recaptcha_public', 'wpuf_general' ); ?>');
+                    jQuery('[name="submit"]').removeClass('wpuf-submit-button').addClass('g-recaptcha').attr('data-sitekey', '<?php echo esc_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ) ); ?>');
 
                     $(document).on('click','.g-recaptcha', function(e){
                         e.preventDefault();
@@ -1738,11 +1754,11 @@ class WPUF_Render_Form {
                     jQuery('[name="submit"]').removeClass('g-recaptcha').addClass('wpuf-submit-button');
                 }
             </script>
-            <!-- <input type="submit" class="g-recaptcha" data-sitekey=<?php echo wpuf_get_option( 'recaptcha_public', 'wpuf_general' ); ?> data-callback="onSubmit"> -->
-            <div type="submit" id='recaptcha' class="g-recaptcha" data-sitekey=<?php echo wpuf_get_option( 'recaptcha_public', 'wpuf_general' ); ?> data-callback="onSubmit" data-size="invisible"></div>
+
+            <div type="submit" id='recaptcha' class="g-recaptcha" data-sitekey=<?php echo esc_attr( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ) ); ?> data-callback="onSubmit" data-size="invisible"></div>
         <?php } else { ?>
-            <div class="wpuf-fields <?php echo ' wpuf_' . $attr['name'] . '_' . $form_id; ?>">
-                <?php echo recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), $enable_no_captcha, null, is_ssl() ); ?>
+            <div class="wpuf-fields <?php echo ' wpuf_' . esc_attr( $attr['name'] ) . '_' . esc_attr( $form_id ); ?>">
+                <?php echo esc_html( recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), $enable_no_captcha, null, is_ssl() ) ); ?>
             </div>
         <?php }
     }

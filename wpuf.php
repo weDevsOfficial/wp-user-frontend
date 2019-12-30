@@ -107,7 +107,7 @@ final class WP_User_Frontend {
         $error = __( 'Your installed PHP Version is: ', 'wp-user-frontend' ) . PHP_VERSION . '. ';
         $error .= __( 'The <strong>WP User Frontend</strong> plugin requires PHP version <strong>', 'wp-user-frontend' ) . $this->min_php . __( '</strong> or greater.', 'wp-user-frontend' ); ?>
         <div class="error">
-            <p><?php printf( $error ); ?></p>
+            <p><?php printf( esc_html( $error ) ); ?></p>
         </div>
         <?php
     }
@@ -462,13 +462,13 @@ final class WP_User_Frontend {
                                 <img src="https://ps.w.org/wp-user-frontend/assets/icon-256x256.png" alt="">
                             </td>
                             <td class="message-container">
-                                <?php echo $offer_msg; ?>
+                                <?php echo esc_html( $offer_msg ); ?>
                             </td>
-                            <td><a href="https://wedevs.com/account/downloads/" class="button button-primary promo-btn" target="_blank"><?php _e( 'Update WP User Frontend Pro Now', 'wp-user-frontend' ); ?></a></td>
+                            <td><a href="https://wedevs.com/account/downloads/" class="button button-primary promo-btn" target="_blank"><?php esc_html_e( 'Update WP User Frontend Pro Now', 'wp-user-frontend' ); ?></a></td>
                         </tr>
                     </tbody>
                 </table>
-                <!-- <a href="https://wedevs.com/account/downloads/" class="button button-primary promo-btn" target="_blank"><?php _e( 'Update WP User Frontend Pro NOW', 'wp-user-frontend' ); ?></a> -->
+                <!-- <a href="https://wedevs.com/account/downloads/" class="button button-primary promo-btn" target="_blank"><?php esc_html_e( 'Update WP User Frontend Pro NOW', 'wp-user-frontend' ); ?></a> -->
             </div><!-- #wpuf-update-offer-notice -->
 
             <style>
@@ -677,7 +677,10 @@ final class WP_User_Frontend {
          ) {
             ?>
             <style>
-                <?php echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
+                <?php
+                    $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' );
+                    echo esc_html( $custom_css );
+                ?>
             </style>
             <?php
         }
@@ -874,7 +877,9 @@ final class WP_User_Frontend {
      * @return void
      */
     public function install_weforms() {
-        if ( !isset( $_REQUEST['_wpnonce'] ) || !wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-weforms-installer-nonce' ) ) {
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( !wp_verify_nonce( $nonce, 'wpuf-weforms-installer-nonce' ) ) {
             wp_send_json_error( __( 'Error: Nonce verification failed', 'wp-user-frontend' ) );
         }
 

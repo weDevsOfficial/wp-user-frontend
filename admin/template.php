@@ -17,12 +17,12 @@ class WPUF_Admin_Template {
     public static function legend( $title = 'Field Name', $values = [], $field_id = 0 ) {
         $field_label = $values ? ': <strong>' . $values['label'] . '</strong>' : '';
         $id          = isset( $values['id'] ) ? $values['id'] : ''; ?>
-        <div class="wpuf-legend" title="<?php _e( 'Click and Drag to rearrange', 'wp-user-frontend' ); ?>">
-            <input type="hidden" value="<?php echo $id; ?>" name="wpuf_input[<?php echo $field_id; ?>][id]">
-            <div class="wpuf-label"><?php echo $title . $field_label; ?></div>
+        <div class="wpuf-legend" title="<?php esc_html_e( 'Click and Drag to rearrange', 'wp-user-frontend' ); ?>">
+            <input type="hidden" value="<?php echo esc_attr( $id ); ?>" name="wpuf_input[<?php echo esc_attr( $field_id ); ?>][id]">
+            <div class="wpuf-label"><?php echo esc_attr( $title . $field_label ); ?></div>
             <div class="wpuf-actions">
-                <a href="#" class="wpuf-remove"><?php _e( 'Remove', 'wp-user-frontend' ); ?></a>
-                <a href="#" class="wpuf-toggle"><?php _e( 'Toggle', 'wp-user-frontend' ); ?></a>
+                <a href="#" class="wpuf-remove"><?php esc_html_e( 'Remove', 'wp-user-frontend' ); ?></a>
+                <a href="#" class="wpuf-toggle"><?php esc_html_e( 'Toggle', 'wp-user-frontend' ); ?></a>
             </div>
         </div> <!-- .wpuf-legend -->
         <?php
@@ -57,40 +57,40 @@ class WPUF_Admin_Template {
             $field_name_value = $values['name'];
         } ?>
         <div class="wpuf-form-rows required-field">
-            <label><?php _e( 'Required', 'wp-user-frontend' ); ?></label>
+            <label><?php esc_html_e( 'Required', 'wp-user-frontend' ); ?></label>
 
             <div class="wpuf-form-sub-fields">
-                <label><input type="radio" name="<?php echo $required_name; ?>" value="yes"<?php checked( $required, 'yes' ); ?>> <?php _e( 'Yes', 'wp-user-frontend' ); ?> </label>
-                <label><input type="radio" name="<?php echo $required_name; ?>" value="no"<?php checked( $required, 'no' ); ?>> <?php _e( 'No', 'wp-user-frontend' ); ?> </label>
+                <label><input type="radio" name="<?php echo esc_attr( $required_name ); ?>" value="yes"<?php checked( $required, 'yes' ); ?>> <?php esc_html_e( 'Yes', 'wp-user-frontend' ); ?> </label>
+                <label><input type="radio" name="<?php echo esc_attr( $required_name ); ?>" value="no"<?php checked( $required, 'no' ); ?>> <?php esc_html_e( 'No', 'wp-user-frontend' ); ?> </label>
             </div>
         </div> <!-- .wpuf-form-rows -->
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Field Label', 'wp-user-frontend' ); ?></label>
-            <input type="text" data-type="label" name="<?php echo $label_name; ?>" value="<?php echo $label_value; ?>" class="smallipopInput" title="<?php _e( 'Enter a title of this field', 'wp-user-frontend' ); ?>">
+            <label><?php esc_html_e( 'Field Label', 'wp-user-frontend' ); ?></label>
+            <input type="text" data-type="label" name="<?php echo esc_attr( $label_name ); ?>" value="<?php echo esc_attr( $label_value ); ?>" class="smallipopInput" title="<?php esc_html_e( 'Enter a title of this field', 'wp-user-frontend' ); ?>">
         </div> <!-- .wpuf-form-rows -->
 
         <?php if ( $custom_field ) { ?>
             <div class="wpuf-form-rows">
-                <label><?php _e( 'Meta Key', 'wp-user-frontend' ); ?></label>
-                <input type="text" data-type="name" name="<?php echo $field_name; ?>" value="<?php echo $field_name_value; ?>" class="smallipopInput" title="<?php _e( 'Name of the meta key this field will save to', 'wp-user-frontend' ); ?>">
-                <input type="hidden" name="<?php echo $is_meta_name; ?>" value="yes">
+                <label><?php esc_html_e( 'Meta Key', 'wp-user-frontend' ); ?></label>
+                <input type="text" data-type="name" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $field_name_value ); ?>" class="smallipopInput" title="<?php esc_html_e( 'Name of the meta key this field will save to', 'wp-user-frontend' ); ?>">
+                <input type="hidden" name="<?php echo esc_attr( $is_meta_name ); ?>" value="yes">
             </div> <!-- .wpuf-form-rows -->
         <?php } else { ?>
 
-            <input type="hidden" data-type="name" name="<?php echo $field_name; ?>" value="<?php echo $field_name_value; ?>">
-            <input type="hidden" name="<?php echo $is_meta_name; ?>" value="no">
+            <input type="hidden" data-type="name" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $field_name_value ); ?>">
+            <input type="hidden" name="<?php echo esc_attr( $is_meta_name ); ?>" value="no">
 
         <?php } ?>
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Help text', 'wp-user-frontend' ); ?></label>
-            <textarea name="<?php echo $help_name; ?>" class="smallipopInput" title="<?php _e( 'Give the user some information about this field', 'wp-user-frontend' ); ?>"><?php echo $help_value; ?></textarea>
+            <label><?php esc_html_e( 'Help text', 'wp-user-frontend' ); ?></label>
+            <textarea name="<?php echo esc_attr( $help_name ); ?>" class="smallipopInput" title="<?php esc_html_e( 'Give the user some information about this field', 'wp-user-frontend' ); ?>"><?php echo esc_attr( $help_value ); ?></textarea>
         </div> <!-- .wpuf-form-rows -->
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'CSS Class Name', 'wp-user-frontend' ); ?></label>
-            <input type="text" name="<?php echo $css_name; ?>" value="<?php echo $css_value; ?>" class="smallipopInput" title="<?php _e( 'Add a CSS class name for this field', 'wp-user-frontend' ); ?>">
+            <label><?php esc_html_e( 'CSS Class Name', 'wp-user-frontend' ); ?></label>
+            <input type="text" name="<?php echo esc_attr( $css_name ); ?>" value="<?php echo esc_attr( $css_value ); ?>" class="smallipopInput" title="<?php esc_html_e( 'Add a CSS class name for this field', 'wp-user-frontend' ); ?>">
         </div> <!-- .wpuf-form-rows -->
 
         <?php
@@ -114,26 +114,26 @@ class WPUF_Admin_Template {
         $size_value             = $values ? esc_attr( $values['size'] ) : '40';
         $word_restriction_value = $values ? esc_attr( $values['word_restriction'] ) : ''; ?>
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Placeholder text', 'wp-user-frontend' ); ?></label>
-            <input type="text" class="smallipopInput" name="<?php echo $placeholder_name; ?>" title="<?php esc_attr_e( 'Text for HTML5 placeholder attribute', 'wp-user-frontend' ); ?>" value="<?php echo $placeholder_value; ?>" />
+            <label><?php esc_html_e( 'Placeholder text', 'wp-user-frontend' ); ?></label>
+            <input type="text" class="smallipopInput" name="<?php echo esc_attr( $placeholder_name ); ?>" title="<?php esc_attr_e( 'Text for HTML5 placeholder attribute', 'wp-user-frontend' ); ?>" value="<?php echo esc_attr( $placeholder_value ); ?>" />
         </div> <!-- .wpuf-form-rows -->
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Default value', 'wp-user-frontend' ); ?></label>
-            <input type="text" class="smallipopInput" name="<?php echo $default_name; ?>" title="<?php esc_attr_e( 'The default value this field will have', 'wp-user-frontend' ); ?>" value="<?php echo $default_value; ?>" />
+            <label><?php esc_html_e( 'Default value', 'wp-user-frontend' ); ?></label>
+            <input type="text" class="smallipopInput" name="<?php echo esc_attr( $default_name ); ?>" title="<?php esc_attr_e( 'The default value this field will have', 'wp-user-frontend' ); ?>" value="<?php echo esc_attr( $default_value ); ?>" />
         </div> <!-- .wpuf-form-rows -->
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Size', 'wp-user-frontend' ); ?></label>
-            <input type="text" class="smallipopInput" name="<?php echo $size_name; ?>" title="<?php esc_attr_e( 'Size of this input field', 'wp-user-frontend' ); ?>" value="<?php echo $size_value; ?>" />
+            <label><?php esc_html_e( 'Size', 'wp-user-frontend' ); ?></label>
+            <input type="text" class="smallipopInput" name="<?php echo esc_attr( $size_name ); ?>" title="<?php esc_attr_e( 'Size of this input field', 'wp-user-frontend' ); ?>" value="<?php echo esc_attr( $size_value ); ?>" />
         </div> <!-- .wpuf-form-rows -->
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Word Restriction', 'wp-user-frontend' ); ?></label>
+            <label><?php esc_html_e( 'Word Restriction', 'wp-user-frontend' ); ?></label>
 
             <div class="wpuf-form-sub-fields">
                 <label>
-                    <input type="text" class="smallipopInput" name="<?php echo $word_restriction_name; ?>" value="<?php echo $word_restriction_value; ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
+                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>" value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
                 </label>
             </div>
         </div> <!-- .wpuf-form-rows -->
@@ -162,41 +162,41 @@ class WPUF_Admin_Template {
         $default_value          = $values ? esc_attr( $values['default'] ) : '';
         $word_restriction_value = $values ? esc_attr( $values['word_restriction'] ) : ''; ?>
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Rows', 'wp-user-frontend' ); ?></label>
-            <input type="text" class="smallipopInput" name="<?php echo $rows_name; ?>" title="Number of rows in textarea" value="<?php echo $rows_value; ?>" />
+            <label><?php esc_html_e( 'Rows', 'wp-user-frontend' ); ?></label>
+            <input type="text" class="smallipopInput" name="<?php echo esc_attr( $rows_name ); ?>" title="Number of rows in textarea" value="<?php echo esc_attr( $rows_value ); ?>" />
         </div> <!-- .wpuf-form-rows -->
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Columns', 'wp-user-frontend' ); ?></label>
-            <input type="text" class="smallipopInput" name="<?php echo $cols_name; ?>" title="Number of columns in textarea" value="<?php echo $cols_value; ?>" />
+            <label><?php esc_html_e( 'Columns', 'wp-user-frontend' ); ?></label>
+            <input type="text" class="smallipopInput" name="<?php echo esc_attr( $cols_name ); ?>" title="Number of columns in textarea" value="<?php echo esc_attr( $cols_value ); ?>" />
         </div> <!-- .wpuf-form-rows -->
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Placeholder text', 'wp-user-frontend' ); ?></label>
-            <input type="text" class="smallipopInput" name="<?php echo $placeholder_name; ?>" title="text for HTML5 placeholder attribute" value="<?php echo $placeholder_value; ?>" />
+            <label><?php esc_html_e( 'Placeholder text', 'wp-user-frontend' ); ?></label>
+            <input type="text" class="smallipopInput" name="<?php echo esc_attr( $placeholder_name ); ?>" title="text for HTML5 placeholder attribute" value="<?php echo esc_attr( $placeholder_value ); ?>" />
         </div> <!-- .wpuf-form-rows -->
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Default value', 'wp-user-frontend' ); ?></label>
-            <input type="text" class="smallipopInput" name="<?php echo $default_name; ?>" title="the default value this field will have" value="<?php echo $default_value; ?>" />
+            <label><?php esc_html_e( 'Default value', 'wp-user-frontend' ); ?></label>
+            <input type="text" class="smallipopInput" name="<?php echo esc_attr( $default_name ); ?>" title="the default value this field will have" value="<?php echo esc_attr( $default_value ); ?>" />
         </div> <!-- .wpuf-form-rows -->
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Textarea', 'wp-user-frontend' ); ?></label>
+            <label><?php esc_html_e( 'Textarea', 'wp-user-frontend' ); ?></label>
 
             <div class="wpuf-form-sub-fields">
-                <label><input type="radio" name="<?php echo $rich_name; ?>" value="no"<?php checked( $rich_value, 'no' ); ?>> <?php _e( 'Normal', 'wp-user-frontend' ); ?></label>
-                <label><input type="radio" name="<?php echo $rich_name; ?>" value="yes"<?php checked( $rich_value, 'yes' ); ?>> <?php _e( 'Rich textarea', 'wp-user-frontend' ); ?></label>
-                <label><input type="radio" name="<?php echo $rich_name; ?>" value="teeny"<?php checked( $rich_value, 'teeny' ); ?>> <?php _e( 'Teeny Rich textarea', 'wp-user-frontend' ); ?></label>
+                <label><input type="radio" name="<?php echo esc_attr( $rich_name ); ?>" value="no"<?php checked( $rich_value, 'no' ); ?>> <?php esc_html_e( 'Normal', 'wp-user-frontend' ); ?></label>
+                <label><input type="radio" name="<?php echo esc_attr( $rich_name ); ?>" value="yes"<?php checked( $rich_value, 'yes' ); ?>> <?php esc_html_e( 'Rich textarea', 'wp-user-frontend' ); ?></label>
+                <label><input type="radio" name="<?php echo esc_attr( $rich_name ); ?>" value="teeny"<?php checked( $rich_value, 'teeny' ); ?>> <?php esc_html_e( 'Teeny Rich textarea', 'wp-user-frontend' ); ?></label>
             </div>
         </div> <!-- .wpuf-form-rows -->
 
         <div class="wpuf-form-rows">
-            <label><?php _e( 'Word Restriction', 'wp-user-frontend' ); ?></label>
+            <label><?php esc_html_e( 'Word Restriction', 'wp-user-frontend' ); ?></label>
 
             <div class="wpuf-form-sub-fields">
                 <label>
-                    <input type="text" class="smallipopInput" name="<?php echo $word_restriction_name; ?>" value="<?php echo $word_restriction_value; ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
+                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>" value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
                 </label>
             </div>
         </div> <!-- .wpuf-form-rows -->
@@ -210,7 +210,7 @@ class WPUF_Admin_Template {
      * @param string $value
      */
     public static function hidden_field( $name, $value = '' ) {
-        printf( '<input type="hidden" name="%s" value="%s" />', self::$input_name . $name, $value );
+        printf( '<input type="hidden" name="%s" value="%s" />', esc_attr( self::$input_name ) . esc_attr( $name ), esc_attr( $value ) );
     }
 
     /**
@@ -227,19 +227,19 @@ class WPUF_Admin_Template {
 
         $selected_value   = ( $values && isset( $values['selected'] ) ) ? $values['selected'] : ''; ?>
 
-        <label for="wpuf-<?php echo $name . '_' . $field_id; ?>" class="wpuf-show-field-value">
-            <input type="checkbox" class="wpuf-value-handelar" id="wpuf-<?php echo $name . '_' . $field_id; ?>"><?php _e( 'Show values', 'wp-user-frontend' ); ?>
+        <label for="wpuf-<?php echo esc_attr( $name . '_' . $field_id ); ?>" class="wpuf-show-field-value">
+            <input type="checkbox" class="wpuf-value-handelar" id="wpuf-<?php echo esc_attr( $name . '_' . $field_id ); ?>"><?php esc_html_e( 'Show values', 'wp-user-frontend' ); ?>
         </label>
 
-        <div class="wpuf-option-label-value"><span><?php _e( 'Label', 'wp-user-frontend' ); ?></span><span class="wpuf-option-value" style="display: none;"><?php _e( 'Value', 'wp-user-frontend' ); ?></span></div>
+        <div class="wpuf-option-label-value"><span><?php esc_html_e( 'Label', 'wp-user-frontend' ); ?></span><span class="wpuf-option-value" style="display: none;"><?php esc_html_e( 'Value', 'wp-user-frontend' ); ?></span></div>
         <?php
         if ( $values && $values['options'] > 0 ) {
             foreach ( $values['options'] as $key => $value ) {
                 ?>
                 <div class="wpuf-clone-field">
-                    <input type="radio" name="<?php echo $selected_name; ?>" value="<?php echo $value; ?>" <?php checked( $selected_value, $value ); ?>>
-                    <input type="text" data-type="option" name="<?php echo $input_name; ?>[]" value="<?php echo $value; ?>">
-                    <input type="text" data-type="option_value" name="<?php echo $input_value_name; ?>[]" value="<?php echo $key; ?>" style="display:none;">
+                    <input type="radio" name="<?php echo esc_attr( $selected_name ); ?>" value="<?php echo esc_attr( $value ); ?>" <?php checked( $selected_value, $value ); ?>>
+                    <input type="text" data-type="option" name="<?php echo esc_attr( $input_name ); ?>[]" value="<?php echo esc_attr( $value ); ?>">
+                    <input type="text" data-type="option_value" name="<?php echo esc_attr( $input_value_name ); ?>[]" value="<?php echo esc_attr( $key ); ?>" style="display:none;">
 
                     <?php self::remove_button(); ?>
                 </div>
@@ -248,9 +248,9 @@ class WPUF_Admin_Template {
         } else {
             ?>
             <div class="wpuf-clone-field">
-                <input type="radio" name="<?php echo $selected_name; ?>">
-                <input type="text" data-type="option" name="<?php echo $input_name; ?>[]" value="">
-                <input type="text" data-type="option_value" name="<?php echo $input_value_name; ?>[]" value="" style="display:none;">
+                <input type="radio" name="<?php echo esc_attr( $selected_name ); ?>">
+                <input type="text" data-type="option" name="<?php echo esc_attr( $input_name ); ?>[]" value="">
+                <input type="text" data-type="option_value" name="<?php echo esc_attr( $input_value_name ); ?>[]" value="" style="display:none;">
 
                 <?php self::remove_button(); ?>
             </div>
@@ -282,17 +282,17 @@ class WPUF_Admin_Template {
                 margin-right: 27%;
             }
         </style>
-        <input type="checkbox" class="wpuf-value-handelar" id="<?php echo $name . '_' . $field_id; ?>"><label for="<?php echo $name . '_' . $field_id; ?>"><?php _e( 'show values', 'wp-user-frontend' ); ?></label>
-        <div class="wpuf-option-label-value"><span><?php _e( 'Label', 'wp-user-frontend' ); ?></span><span class="wpuf-option-value" style="display: none;"><?php _e( 'Value', 'wp-user-frontend' ); ?></span></div>
+        <input type="checkbox" class="wpuf-value-handelar" id="<?php echo esc_attr( $name . '_' . $field_id ); ?>"><label for="<?php echo esc_attr( $name . '_' . $field_id ); ?>"><?php esc_html_e( 'show values', 'wp-user-frontend' ); ?></label>
+        <div class="wpuf-option-label-value"><span><?php esc_html_e( 'Label', 'wp-user-frontend' ); ?></span><span class="wpuf-option-value" style="display: none;"><?php esc_html_e( 'Value', 'wp-user-frontend' ); ?></span></div>
         <?php
         if ( $values && $values['options'] > 0 ) {
             foreach ( $values['options'] as $key => $value ) {
                 ?>
                 <div class="wpuf-clone-field">
 
-                    <input type="checkbox" name="<?php echo $selected_name; ?>[]" value="<?php echo $value; ?>"<?php echo in_array( $value, $selected_value ) ? ' checked="checked"' : ''; ?> />
-                    <input type="text" data-type="option" name="<?php echo $input_name; ?>[]" value="<?php echo $value; ?>">
-                    <input type="text" data-type="option_value" name="<?php echo $input_value_name; ?>[]" value="<?php echo $key; ?>" style="display:none;">
+                    <input type="checkbox" name="<?php echo esc_attr( $selected_name ); ?>[]" value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected_value ) ? ' checked="checked"' : ''; ?> />
+                    <input type="text" data-type="option" name="<?php echo esc_attr( $input_name ); ?>[]" value="<?php echo esc_attr( $value ); ?>">
+                    <input type="text" data-type="option_value" name="<?php echo esc_attr( $input_value_name ); ?>[]" value="<?php echo esc_attr( $key ); ?>" style="display:none;">
                     <?php self::remove_button(); ?>
                 </div>
                 <?php
@@ -300,9 +300,9 @@ class WPUF_Admin_Template {
         } else {
             ?>
             <div class="wpuf-clone-field">
-                <input type="checkbox" name="<?php echo $selected_name; ?>[]">
-                <input type="text" data-type="option" name="<?php echo $input_name; ?>[]" value="">
-                <input type="text" data-type="option_value" name="<?php echo $input_value_name; ?>[]" value="" style="display:none;">
+                <input type="checkbox" name="<?php echo esc_attr( $selected_name ); ?>[]">
+                <input type="text" data-type="option" name="<?php echo esc_attr( $input_name ); ?>[]" value="">
+                <input type="text" data-type="option_value" name="<?php echo esc_attr( $input_value_name ); ?>[]" value="" style="display:none;">
 
                 <?php self::remove_button(); ?>
             </div>
@@ -318,8 +318,8 @@ class WPUF_Admin_Template {
     public static function remove_button() {
         $add    = plugins_url( 'assets/images/add.png', __DIR__ );
         $remove = plugins_url( 'assets/images/remove.png', __DIR__ ); ?>
-        <img style="cursor:pointer; margin:0 3px;" alt="add another choice" title="add another choice" class="wpuf-clone-field" src="<?php echo $add; ?>">
-        <img style="cursor:pointer;" class="wpuf-remove-field" alt="remove this choice" title="remove this choice" src="<?php echo $remove; ?>">
+        <img style="cursor:pointer; margin:0 3px;" alt="add another choice" title="add another choice" class="wpuf-clone-field" src="<?php echo esc_attr( $add ); ?>">
+        <img style="cursor:pointer;" class="wpuf-remove-field" alt="remove this choice" title="remove this choice" src="<?php echo esc_attr( $remove ); ?>">
         <?php
     }
 
@@ -374,7 +374,7 @@ class WPUF_Admin_Template {
                 <?php self::common( $field_id, '', true, $values ); ?>
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Options', 'wp-user-frontend' ); ?></label>
+                    <label><?php esc_html_e( 'Options', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields wpuf-options">
                     <?php self::radio_fields( $field_id, 'options', $values ); ?>
@@ -398,7 +398,7 @@ class WPUF_Admin_Template {
                 <?php self::common( $field_id, '', true, $values ); ?>
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Options', 'wp-user-frontend' ); ?></label>
+                    <label><?php esc_html_e( 'Options', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields wpuf-options">
                     <?php self::common_checkbox( $field_id, 'options', $values ); ?>
@@ -424,12 +424,12 @@ class WPUF_Admin_Template {
                 <?php self::common( $field_id, '', true, $values ); ?>
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Select Text', 'wp-user-frontend' ); ?></label>
-                    <input type="text" class="smallipopInput" name="<?php echo $first_name; ?>" value="<?php echo $first_value; ?>" title="<?php echo $help; ?>">
+                    <label><?php esc_html_e( 'Select Text', 'wp-user-frontend' ); ?></label>
+                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $first_name ); ?>" value="<?php echo esc_attr( $first_value ); ?>" title="<?php echo esc_attr( $help ); ?>">
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Options', 'wp-user-frontend' ); ?></label>
+                    <label><?php esc_html_e( 'Options', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields wpuf-options">
                         <?php self::radio_fields( $field_id, 'options', $values ); ?>
@@ -443,7 +443,7 @@ class WPUF_Admin_Template {
     }
 
     public static function multiple_select( $field_id, $label, $values = [] ) {
-        $first_name  = sprintf( '%s[%d][first]', self::$input_name, $field_id );
+        $first_name  = sprintf( '%s[%d][first]', esc_attr( self::$input_name ), esc_attr( $field_id ) );
         $first_value = $values ? $values['first'] : ' - select -';
         $help        = esc_attr( __( 'First element of the select dropdown. Leave this empty if you don\'t want to show this field', 'wp-user-frontend' ) ); ?>
         <li class="custom-field multiple_select">
@@ -455,12 +455,12 @@ class WPUF_Admin_Template {
                 <?php self::common( $field_id, '', true, $values ); ?>
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Select Text', 'wp-user-frontend' ); ?></label>
-                    <input type="text" class="smallipopInput" name="<?php echo $first_name; ?>" value="<?php echo $first_value; ?>" title="<?php echo $help; ?>">
+                    <label><?php esc_html_e( 'Select Text', 'wp-user-frontend' ); ?></label>
+                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $first_name ); ?>" value="<?php echo esc_attr( $first_value ); ?>" title="<?php echo esc_attr( $help ); ?>">
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Options', 'wp-user-frontend' ); ?></label>
+                    <label><?php esc_html_e( 'Options', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields wpuf-options">
                         <?php self::radio_fields( $field_id, 'options', $values ); ?>
@@ -517,13 +517,13 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-holder">
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Title', 'wp-user-frontend' ); ?></label>
-                    <input type="text" class="smallipopInput" title="Title of the section" name="<?php echo $title_name; ?>" value="<?php echo esc_attr( $title_value ); ?>" />
+                    <label><?php esc_html_e( 'Title', 'wp-user-frontend' ); ?></label>
+                    <input type="text" class="smallipopInput" title="Title of the section" name="<?php echo esc_attr( $title_name ); ?>" value="<?php echo esc_attr( $title_value ); ?>" />
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'HTML Codes', 'wp-user-frontend' ); ?></label>
-                    <textarea class="smallipopInput" title="Paste your HTML codes, WordPress shortcodes will also work here" name="<?php echo $html_name; ?>" rows="10"><?php echo esc_html( $html_value ); ?></textarea>
+                    <label><?php esc_html_e( 'HTML Codes', 'wp-user-frontend' ); ?></label>
+                    <textarea class="smallipopInput" title="Paste your HTML codes, WordPress shortcodes will also work here" name="<?php echo esc_attr( $html_name ); ?>" rows="10"><?php echo esc_html( $html_value ); ?></textarea>
                 </div>
 
                 <?php self::conditional_field( $field_id, $values ); ?>
@@ -547,15 +547,15 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-holder">
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Meta Key', 'wp-user-frontend' ); ?></label>
-                    <input type="text" name="<?php echo $meta_name; ?>" value="<?php echo $meta_value; ?>" class="smallipopInput" title="<?php _e( 'Name of the meta key this field will save to', 'wp-user-frontend' ); ?>">
-                    <input type="hidden" name="<?php echo $is_meta_name; ?>" value="yes">
-                    <input type="hidden" name="<?php echo $label_name; ?>" value="">
+                    <label><?php esc_html_e( 'Meta Key', 'wp-user-frontend' ); ?></label>
+                    <input type="text" name="<?php echo esc_attr( $meta_name ); ?>" value="<?php echo esc_attr( $meta_value ); ?>" class="smallipopInput" title="<?php esc_html_e( 'Name of the meta key this field will save to', 'wp-user-frontend' ); ?>">
+                    <input type="hidden" name="<?php echo esc_attr( $is_meta_name ); ?>" value="yes">
+                    <input type="hidden" name="<?php echo esc_attr( $label_name ); ?>" value="">
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Meta Value', 'wp-user-frontend' ); ?></label>
-                    <input type="text" class="smallipopInput" title="<?php esc_attr_e( 'Enter the meta value', 'wp-user-frontend' ); ?>" name="<?php echo $value_name; ?>" value="<?php echo $value_value; ?>">
+                    <label><?php esc_html_e( 'Meta Value', 'wp-user-frontend' ); ?></label>
+                    <input type="text" class="smallipopInput" title="<?php esc_attr_e( 'Enter the meta value', 'wp-user-frontend' ); ?>" name="<?php echo esc_attr(  $value_name ); ?>" value="<?php echo esc_attr( $value_value ); ?>">
                 </div>
             </div> <!-- .wpuf-form-holder -->
         </li>
@@ -575,13 +575,13 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-holder">
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Title', 'wp-user-frontend' ); ?></label>
-                    <input type="text" class="smallipopInput" title="Title of the section" name="<?php echo $title_name; ?>" value="<?php echo esc_attr( $title_value ); ?>" />
+                    <label><?php esc_html_e( 'Title', 'wp-user-frontend' ); ?></label>
+                    <input type="text" class="smallipopInput" title="Title of the section" name="<?php echo esc_attr( $title_name ); ?>" value="<?php echo esc_attr( $title_value ); ?>" />
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Description', 'wp-user-frontend' ); ?></label>
-                    <textarea class="smallipopInput" title="Some details text about the section" name="<?php echo $description_name; ?>" rows="3"><?php echo esc_html( $description_value ); ?></textarea>
+                    <label><?php esc_html_e( 'Description', 'wp-user-frontend' ); ?></label>
+                    <textarea class="smallipopInput" title="Some details text about the section" name="<?php echo esc_attr( $description_name ); ?>" rows="3"><?php echo esc_html( $description_value ); ?></textarea>
                 </div> <!-- .wpuf-form-rows -->
 
                 <?php self::conditional_field( $field_id, $values ); ?>
@@ -616,13 +616,13 @@ class WPUF_Admin_Template {
                 <?php self::common( $field_id, '', true, $values ); ?>
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Max. file size', 'wp-user-frontend' ); ?></label>
-                    <input type="text" class="smallipopInput" name="<?php echo $max_size_name; ?>" value="<?php echo $max_size_value; ?>" title="<?php echo $help; ?>">
+                    <label><?php esc_html_e( 'Max. file size', 'wp-user-frontend' ); ?></label>
+                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $max_size_name ); ?>" value="<?php echo esc_attr( $max_size_value ); ?>" title="<?php echo esc_attr( $help ); ?>">
                 </div> <!-- .wpuf-form-rows -->
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Max. files', 'wp-user-frontend' ); ?></label>
-                    <input type="text" class="smallipopInput" name="<?php echo $max_files_name; ?>" value="<?php echo $max_files_value; ?>" title="<?php echo $count; ?>">
+                    <label><?php esc_html_e( 'Max. files', 'wp-user-frontend' ); ?></label>
+                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $max_files_name ); ?>" value="<?php echo esc_attr( $max_files_value ); ?>" title="<?php echo esc_attr( $count ); ?>">
                 </div> <!-- .wpuf-form-rows -->
 
                 <?php self::conditional_field( $field_id, $values ); ?>
@@ -653,27 +653,27 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-holder">
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'Title', 'wp-user-frontend' ); ?></label>
+                    <label><?php esc_html_e( 'Title', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields">
-                        <input type="text" class="smallipopInput" title="Title of the section" name="<?php echo $title_name; ?>" value="<?php echo esc_attr( $title_value ); ?>" />
+                        <input type="text" class="smallipopInput" title="Title of the section" name="<?php echo esc_attr( $title_name ); ?>" value="<?php echo esc_attr( $title_value ); ?>" />
 
                         <div class="description" style="margin-top: 8px;">
-                            <?php printf( __( "Insert your public key and private key in <a href='%s'>plugin settings</a>. <a href='%s' target='_blank'>Register</a> first if you don't have any keys.", 'wp-user-frontend' ), admin_url( 'admin.php?page=wpuf-settings' ), 'https://www.google.com/recaptcha/' ); ?>
+                            <?php printf( esc_html( __( "Insert your public key and private key in <a href='%s'>plugin settings</a>. <a href='%s' target='_blank'>Register</a> first if you don't have any keys.", 'wp-user-frontend' ) ), esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ), 'https://www.google.com/recaptcha/' ); ?>
                         </div>
                     </div> <!-- .wpuf-form-rows -->
                 </div>
 
                 <div class="wpuf-form-rows">
-                    <label><?php _e( 'reCaptcha type', 'wp-user-frontend' ); ?></label>
+                    <label><?php esc_html_e( 'reCaptcha type', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields">
-                        <input type="radio" class="smallipopInput" title="reCaptcha type" name="<?php echo $recaptcha_type_name; ?>" value="invisible_recaptcha" <?php echo $recaptcha_type_value == 'invisible_recaptcha' ? 'checked' : ''; ?> />
-                        <?php _e( 'Enable Invisible reCaptcha', 'wp-user-frontend' ); ?>
+                        <input type="radio" class="smallipopInput" title="reCaptcha type" name="<?php echo esc_attr( $recaptcha_type_name ); ?>" value="invisible_recaptcha" <?php echo $recaptcha_type_value == 'invisible_recaptcha' ? 'checked' : ''; ?> />
+                        <?php esc_html_e( 'Enable Invisible reCaptcha', 'wp-user-frontend' ); ?>
                     </div> <!-- .wpuf-form-rows -->
                     <div class="wpuf-form-sub-fields">
-                        <input type="radio" class="smallipopInput" title="reCaptcha type" name="<?php echo $recaptcha_type_name; ?>" value="enable_no_captcha" <?php echo $recaptcha_type_value == 'enable_no_captcha' ? 'checked' : ''; ?> />
-                        <?php _e( 'Enable noCaptcha', 'wp-user-frontend' ); ?>
+                        <input type="radio" class="smallipopInput" title="reCaptcha type" name="<?php echo esc_attr( $recaptcha_type_name ); ?>" value="enable_no_captcha" <?php echo $recaptcha_type_value == 'enable_no_captcha' ? 'checked' : ''; ?> />
+                        <?php esc_html_e( 'Enable noCaptcha', 'wp-user-frontend' ); ?>
                     </div> <!-- .wpuf-form-rows -->
                 </div>
 

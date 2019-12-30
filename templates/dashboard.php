@@ -1,7 +1,7 @@
 <div class="wpuf-dashboard-container">
 
     <h2 class="page-head">
-        <span class="colour"><?php printf( __( "%s's Dashboard", 'wp-user-frontend' ), $userdata->display_name ); ?></span>
+        <span class="colour"><?php printf( esc_attr( __( "%s's Dashboard", 'wp-user-frontend' ) ), esc_html( $userdata->display_name ); ?></span>
     </h2>
 
     <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
@@ -15,7 +15,7 @@
                         $labels[] = $post_type_name->label;
                     }
                 }
-                printf( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ), $dashboard_query->found_posts, implode( ', ', $labels ) );
+                printf( esc_html( __( 'You have created <span>%d</span> (%s)' ), 'wp-user-frontend' ), esc_html($dashboard_query->found_posts ), implode( ', ', esc_attr( $labels ) ) );
                 ?>
             </div>
         <?php } ?>
@@ -79,18 +79,18 @@
         $current_user       = wpuf_get_user(); ?>
 
         <div class="items-table-container">
-            <table class="items-table <?php echo implode( ' ', $post_type ); ?>" cellpadding="0" cellspacing="0">
+            <table class="items-table <?php echo implode( ' ', esc_attr( $post_type ) ); ?>" cellpadding="0" cellspacing="0">
                 <thead>
                     <tr class="items-list-header">
                         <?php
                         if ( ( ( 'on' == $featured_img || 'on' == $featured_image ) || ( 'off' == $featured_img && 'on' == $featured_image ) || ( 'on' == $featured_img && 'default' == $featured_image ) ) && !( 'on' == $featured_img && 'off' == $featured_image ) ) {
-                            echo '<th>' . __( 'Featured Image', 'wp-user-frontend' ) . '</th>';
+                            echo wp_kses_post( '<th>' . __( 'Featured Image', 'wp-user-frontend' ) . '</th>' );
                         } ?>
-                        <th><?php _e( 'Title', 'wp-user-frontend' ); ?></th>
+                        <th><?php esc_html_e( 'Title', 'wp-user-frontend' ); ?></th>
 
                         <?php
                         if ( 'on' == $category ) {
-                            echo '<th>' . __( 'Category', 'wp-user-frontend' ) . '</th>';
+                            echo wp_kses_post( '<th>' . __( 'Category', 'wp-user-frontend' ) . '</th>' );
                         } ?>
 
                         <?php
@@ -100,9 +100,9 @@
                             for ( $i = 0; $i < $len_label; $i++ ) {
                                 for ( $j = 0; $j < $len; $j++ ) {
                                     if ( $meta_key[$j] == $meta_name[$i] ) {
-                                        echo '<th>';
-                                        echo __( $meta_label[$i], 'wp-user-frontend' );
-                                        echo '</th>';
+                                        echo wp_kses_post( '<th>' );
+                                        echo wp_kses_post( __( $meta_label[$i], 'wp-user-frontend' ) );
+                                        echo wp_kses_post( '</th>' );
                                     }
                                 }
                             }
@@ -110,18 +110,18 @@
 
                         <?php
                         if ( 'on' == $excerpt ) {
-                            echo '<th>' . __( 'Excerpt', 'wp-user-frontend' ) . '</th>';
+                            echo wp_kses_post( '<th>' . __( 'Excerpt', 'wp-user-frontend' ) . '</th>' );
                         } ?>
 
-                        <th><?php _e( 'Status', 'wp-user-frontend' ); ?></th>
+                        <th><?php esc_html_e( 'Status', 'wp-user-frontend' ); ?></th>
 
                         <?php do_action( 'wpuf_dashboard_head_col', $args ); ?>
 
                         <?php if ( 'on' == $enable_payment && 'off' != $payment_column ) { ?>
-                            <th><?php _e( 'Payment', 'wp-user-frontend' ); ?></th>
+                            <th><?php esc_html_e( 'Payment', 'wp-user-frontend' ); ?></th>
                         <?php } ?>
 
-                        <th><?php _e( 'Options', 'wp-user-frontend' ); ?></th>
+                        <th><?php esc_html_e( 'Options', 'wp-user-frontend' ); ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -136,12 +136,12 @@
                             <?php if ( ( ( 'on' == $featured_img || 'on' == $featured_image ) || ( 'off' == $featured_img && 'on' == $featured_image ) || ( 'on' == $featured_img && 'default' == $featured_image ) ) && !( 'on' == $featured_img && 'off' == $featured_image ) ) { ?>
                                 <td>
                                     <?php
-                                    echo $show_link ? '<a href="' . get_permalink( $post->ID ) . '">' : '';
+                                    echo $show_link ? wp_kses_post( '<a href="' . get_permalink( $post->ID ) . '">' ) : '';
 
                                     if ( has_post_thumbnail() ) {
                                         the_post_thumbnail( $featured_img_size );
                                     } else {
-                                        printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', apply_filters( 'wpuf_no_image', plugins_url( '/assets/images/no-image.png', __DIR__ ) ), __( 'No Image', 'wp-user-frontend' ) );
+                                        printf( '<img src="%1$s" class="attachment-thumbnail wp-post-image" alt="%2$s" title="%2$s" />', esc_attr( apply_filters( 'wpuf_no_image', plugins_url( '/assets/images/no-image.png', __DIR__ ) ) ), esc_html( __( 'No Image', 'wp-user-frontend' ) ) );
                                     }
 
                                     echo $show_link ? '</a>' : '';
@@ -181,7 +181,7 @@
                                             }
                                         }
                                     }
-                                    echo apply_filters( 'wpuf_dashboard_post_taxonomy', implode( ',', $post_tax_terms ) );
+                                    echo esc_html( apply_filters( 'wpuf_dashboard_post_taxonomy', implode( ',', $post_tax_terms ) ) );
 
                                     ?>
                                 </td>
@@ -192,10 +192,10 @@
                                 for ( $i = 0; $i < $len_label; $i++ ) {
                                     for ( $j = 0; $j < $len; $j++ ) {
                                         if ( $meta_key[$j] == $meta_name[$i] ) {
-                                            echo '<td>';
+                                            echo wp_kses_post( '<td>' );
                                             $m_val = get_post_meta( $post->ID, $meta_name[$i], true );
-                                            echo $m_val;
-                                            echo '</td>';
+                                            echo esc_html( $m_val );
+                                            echo wp_kses_post( '</td>' );
                                         }
                                     }
                                 }
@@ -215,11 +215,11 @@
                             <?php if ( 'on' == $enable_payment && 'off' != $payment_column ) { ?>
                                 <td>
                                     <?php if ( empty( $payment_status ) ) { ?>
-                                        <?php _e( 'Not Applicable', 'wp-user-frontend' ); ?>
+                                        <?php esc_html_e( 'Not Applicable', 'wp-user-frontend' ); ?>
                                         <?php } elseif ( $payment_status != 'completed' ) { ?>
-                                            <a href="<?php echo trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo $post->ID; ?>"><?php _e( 'Pay Now', 'wp-user-frontend' ); ?></a>
+                                            <a href="<?php echo esc_url( trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Pay Now', 'wp-user-frontend' ); ?></a>
                                             <?php } elseif ( $payment_status == 'completed' ) { ?>
-                                                <?php _e( 'Completed', 'wp-user-frontend' ); ?>
+                                                <?php esc_html_e( 'Completed', 'wp-user-frontend' ); ?>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>
@@ -246,7 +246,7 @@
 
                                             if ( $show_edit ) {
                                                 ?>
-                                                <a href="<?php echo wp_nonce_url( $edit_page_url, 'wpuf_edit' ); ?>"><?php _e( 'Edit', 'wp-user-frontend' ); ?></a>
+                                                <a href="<?php echo esc_url( wp_nonce_url( $edit_page_url, 'wpuf_edit' ) ); ?>"><?php esc_html_e( 'Edit', 'wp-user-frontend' ); ?></a>
                                                 <?php
                                             }
                                         } ?>
@@ -255,7 +255,7 @@
                                         if ( wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
                                             $del_url = add_query_arg( ['action' => 'del', 'pid' => $post->ID] );
                                             $message = __( 'Are you sure to delete?', 'wp-user-frontend' ); ?>
-                                            <a href="<?php echo wp_nonce_url( $del_url, 'wpuf_del' ); ?>" onclick="return confirm('<?php echo $message; ?>');"><span style="color: red;"><?php _e( 'Delete', 'wp-user-frontend' ); ?></span></a>
+                                            <a href="<?php echo esc_url( wp_nonce_url( $del_url, 'wpuf_del' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $message ); ?>');"><span style="color: red;"><?php esc_html_e( 'Delete', 'wp-user-frontend' ); ?></span></a>
                                         <?php
                                         } ?>
                                     </td>
@@ -282,13 +282,13 @@
                     ] );
 
                     if ( $pagination ) {
-                        echo $pagination;
+                        echo esc_html( $pagination );
                     } ?>
                 </div>
                 <?php
             } else {
                 if ( !empty( $post_type_obj ) && !empty( $labels ) ) {
-                    printf( '<div class="wpuf-message">' . __( 'No %s found', 'wp-user-frontend' ) . '</div>', implode( ', ', $labels ) );
+                    printf( '<div class="wpuf-message">' . wp_kses_post( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', implode( ', ', esc_attr( $labels ) ) );
                     do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
                 }
             }

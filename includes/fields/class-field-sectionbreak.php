@@ -24,9 +24,9 @@ class WPUF_Form_Field_SectionBreak extends WPUF_Field_Contract {
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
         $field_settings['description'] = isset( $field_settings['description'] ) ? $field_settings['description'] : ''; ?>
         <li <?php $this->print_list_attributes( $field_settings ); ?>>
-            <div class="wpuf-section-wrap wpuf-fields <?php echo 'section_' . $form_id; ?><?php echo ' wpuf_' . $field_settings['name'] . '_' . $form_id; ?>">
-                <h2 class="wpuf-section-title"><?php echo $field_settings['label']; ?></h2>
-                <div class="wpuf-section-details"><?php echo $field_settings['description']; ?></div>
+            <div class="wpuf-section-wrap wpuf-fields <?php echo esc_attr( 'section_' . $form_id ); ?><?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>">
+                <h2 class="wpuf-section-title"><?php echo esc_attr( $field_settings['label'] ); ?></h2>
+                <div class="wpuf-section-details"><?php echo esc_attr( $field_settings['description'] ); ?></div>
             </div>
 
         </li>

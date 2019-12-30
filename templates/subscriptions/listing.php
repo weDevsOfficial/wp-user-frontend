@@ -14,14 +14,14 @@
 do_action( 'wpuf_before_subscription_listing', $packs );
 
 if ( $packs ) {
-    echo '<ul class="wpuf_packs">';
+    echo wp_kses_post( '<ul class="wpuf_packs">' );
 
     if ( isset( $args['include'] ) && $args['include'] != '' ) {
         for ( $i = 0; $i < count( $pack_order ); $i++ ) {
             foreach ( $packs as $pack ) {
                 if (  (int) $pack->ID == $pack_order[$i] ) {
                     $class = 'wpuf-pack-' . $pack->ID; ?>
-                    <li class="<?php echo $class; ?>">
+                    <li class="<?php echo esc_attr( $class ); ?>">
                         <?php $subscription->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
                     </li>
                     <?php
@@ -31,13 +31,13 @@ if ( $packs ) {
     } else {
         foreach ( $packs as $pack ) {
             $class = 'wpuf-pack-' . $pack->ID; ?>
-            <li class="<?php echo $class; ?>">
+            <li class="<?php echo esc_attr( $class ); ?>">
                 <?php $subscription->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
             </li>
             <?php
         }
     }
-    echo '</ul>';
+    echo wp_kses_post( '</ul>' );
 }
 
 do_action( 'wpuf_after_subscription_listing', $packs );

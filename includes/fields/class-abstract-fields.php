@@ -664,7 +664,7 @@ abstract class WPUF_Field_Contract {
      */
     public function field_print_label( $field, $form_id = 0 ) {
         if ( is_admin() ) { ?>
-            <tr> <th><strong> <?php echo $field['label'] . $this->required_mark( $field ); ?> </strong></th> <td>
+            <tr> <th><strong> <?php echo esc_html( $field['label'] . $this->required_mark( $field ) ); ?> </strong></th> <td>
         <?php } else { ?>
 
             <li <?php $this->print_list_attributes( $field ); ?>>
@@ -675,9 +675,9 @@ abstract class WPUF_Field_Contract {
 
     public function after_field_print_label() {
         if ( is_admin() ) {
-            echo '</td> </tr>';
+            echo wp_kses_post( '</td> </tr>' );
         } else {
-            echo '</li>';
+            echo wp_kses_post( '</li>' );
         }
     }
 
@@ -695,7 +695,7 @@ abstract class WPUF_Field_Contract {
         $class_name = !empty( $field['css'] ) ? ' ' . $field['css'] : '';
         $field_size = !empty( $field['width'] ) ? ' field-size-' . $field['width'] : '';
 
-        printf( 'class="wpuf-el %s%s%s" data-label="%s"', $el_name, $class_name, $field_size, $label );
+        printf( 'class="wpuf-el %s%s%s" data-label="%s"', esc_attr( $el_name ), esc_attr( $class_name ), esc_attr( $field_size ), esc_attr( $label ) );
     }
 
     /**
@@ -707,7 +707,7 @@ abstract class WPUF_Field_Contract {
     public function print_label( $field, $form_id = 0 ) {
         ?>
         <div class="wpuf-label">
-            <label for="<?php echo isset( $field['name'] ) ? $field['name'] . '_' . $form_id : 'cls'; ?>"><?php echo $field['label'] . $this->required_mark( $field ); ?></label>
+            <label for="<?php echo isset( $field['name'] ) ? esc_attr( $field['name'] ) . '_' . esc_attr( $form_id ) : 'cls'; ?>"><?php echo esc_html( $field['label'] . $this->required_mark( $field ) ); ?></label>
         </div>
         <?php
     }
@@ -749,7 +749,7 @@ abstract class WPUF_Field_Contract {
         if ( empty( $field['help'] ) ) {
             return;
         } ?>
-        <span class="wpuf-help"><?php echo stripslashes( $field['help'] ); ?></span>
+        <span class="wpuf-help"><?php echo esc_html( stripslashes( $field['help'] ) ); ?></span>
         <?php
     }
 
@@ -790,7 +790,7 @@ abstract class WPUF_Field_Contract {
             $condition           = json_encode( $cond_inputs );
         } ?>
         <script type="text/javascript">
-            wpuf_conditional_items.push(<?php echo $condition; ?>);
+            wpuf_conditional_items.push(<?php echo esc_attr( $condition ); ?>);
         </script>
         <?php
     }
@@ -803,10 +803,12 @@ abstract class WPUF_Field_Contract {
      * @return mixed
      */
     public function prepare_entry( $field ) {
-        $value = !empty( $_POST[$field['name']] ) ? $_POST[$field['name']] : '';
+        check_ajax_referer( 'wpuf_form_add' );
+
+        $value = !empty( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ): '';
 
         if ( is_array( $value ) ) {
-            $entry_value = implode( WP_User_Frontend::$field_separator, $_POST[$field['name']] );
+            $entry_value = implode( WP_User_Frontend::$field_separator, $value );
         } else {
             $entry_value = trim( $value  );
         }
@@ -827,7 +829,7 @@ abstract class WPUF_Field_Contract {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s"', $word_nums, $field_name, $rich_text ); ?>);
+                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s"', esc_attr( $word_nums ), esc_attr( $field_name ), esc_attr( $rich_text ) ); ?>);
                 });
             })(jQuery);
         </script>

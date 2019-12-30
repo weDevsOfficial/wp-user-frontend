@@ -108,7 +108,7 @@ if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
                 $output .= __( 'Posts', 'wp-user-frontend' );
                 $output .= '</a>';
 
-                echo $output;
+                echo wp_kses_post( $output );
             }
         }
 
@@ -116,7 +116,7 @@ if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
          * Include requrired template & load additional style, script after dashboard
          */
         public function after_dashboard() {
-            $action = isset( $_GET['action'] ) ? $_GET['action'] : '';
+            $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 
             if ( $action == 'post-listing' || $action == 'new-post' || $action == 'edit-post' || $action == 'del' ) {
                 require_once WPUF_ROOT . '/templates/wc-vendors/posts.php'; ?>

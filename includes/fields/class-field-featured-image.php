@@ -43,15 +43,15 @@ class WPUF_Form_Field_Featured_Image extends WPUF_Field_Contract {
         $label = array_key_exists( 'button_label', $field_settings ) ? $field_settings['button_label'] : $field_settings['label']; ?>
 
         <div class="wpuf-fields">
-            <div id="wpuf-<?php echo $unique_id; ?>-upload-container">
-                <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo $field_settings['required']; ?>">
-                    <a id="wpuf-<?php echo $unique_id; ?>-pickfiles" data-form_id="<?php echo $form_id; ?>" class="button file-selector <?php echo ' wpuf_' . $field_settings['name'] . '_' . $form_id; ?>" href="#"><?php echo $label; ?></a>
+            <div id="wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container">
+                <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>">
+                    <a id="wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles" data-form_id="<?php echo esc_attr( $form_id ); ?>" class="button file-selector <?php echo ' wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" href="#"><?php echo esc_html( $label ); ?></a>
 
                     <ul class="wpuf-attachment-list thumbnails">
 
                         <?php
                             if ( $has_featured_image ) {
-                                echo $featured_image;
+                                echo esc_html( $featured_image );
                             } ?>
 
                     </ul>
@@ -65,7 +65,7 @@ class WPUF_Form_Field_Featured_Image extends WPUF_Field_Contract {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    var uploader = new WPUF_Uploader('wpuf-<?php echo $unique_id; ?>-pickfiles', 'wpuf-<?php echo $unique_id; ?>-upload-container', <?php echo $field_settings['count']; ?>, '<?php echo $field_settings['name']; ?>', 'jpg,jpeg,gif,png,bmp', <?php echo $field_settings['max_size']; ?>);
+                    var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr($field_settings['count'] ); ?>, '<?php echo esc_attr( $field_settings['name'] ); ?>', 'jpg,jpeg,gif,png,bmp', <?php echo esc_attr( $field_settings['max_size'] ); ?>);
                     wpuf_plupload_items.push(uploader);
                 });
             })(jQuery);
@@ -135,6 +135,10 @@ class WPUF_Form_Field_Featured_Image extends WPUF_Field_Contract {
      * @return @return mixed
      */
     public function prepare_entry( $field ) {
-        return isset( $_POST['wpuf_files'][$field['name']] ) ? $_POST['wpuf_files'][$field['name']] : [];
+        check_ajax_referer( 'wpuf_form_add' );
+
+        $wpuf_files = isset( $_POST['wpuf_files'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wpuf_files'] ) ) : [];
+
+        return isset( $wpuf_files[$field['name']] ) ? $wpuf_files[$field['name']] : [];
     }
 }

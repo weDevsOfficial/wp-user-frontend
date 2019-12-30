@@ -45,17 +45,17 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
             <?php do_action( 'WPUF_multidropdown_field_after_label', $field_settings ); ?>
 
             <div class="wpuf-fields">
-                <select multiple="multiple" class="multiselect <?php echo 'wpuf_' . $field_settings['name'] . '_' . $form_id; ?>" id="<?php echo $field_settings['name'] . '_' . $form_id; ?>" name="<?php echo $name; ?>" mulitple="multiple" data-required="<?php echo $field_settings['required']; ?>" data-type="multiselect">
+                <select multiple="multiple" class="multiselect <?php echo 'wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" name="<?php echo esc_attr( $name ); ?>" mulitple="multiple" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-type="multiselect">
 
                     <?php if ( !empty( $field_settings['first'] ) ) { ?>
-                        <option value="-1"><?php echo $field_settings['first']; ?></option>
+                        <option value="-1"><?php echo esc_attr( $field_settings['first'] ); ?></option>
                     <?php } ?>
 
                     <?php
                     if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
                         foreach ( $field_settings['options'] as $value => $option ) {
                             $current_select = selected( in_array( $value, $selected ), true, false ); ?>
-                            <option value="<?php echo esc_attr( $value ); ?>"<?php echo $current_select; ?>><?php echo $option; ?></option>
+                            <option value="<?php echo esc_attr( $value ); ?>"<?php echo esc_attr( $current_select ); ?>><?php echo esc_html( $option ); ?></option>
                             <?php
                         }
                     } ?>
@@ -98,7 +98,10 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
      * @return mixed
      */
     public function prepare_entry( $field ) {
-        $entry_value  = ( is_array( $_POST[$field['name']] ) && $_POST[$field['name']] ) ? $_POST[$field['name']] : [];
+        check_ajax_referer( 'wpuf_form_add' );
+
+        $field_name = isset( $_POST[$field['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[$field['name']] ) ) : [];
+        $entry_value  = ( is_array( $field_name ) && $field_name ) ? $field_name : [];
 
         if ( $entry_value ) {
             $new_val = [];

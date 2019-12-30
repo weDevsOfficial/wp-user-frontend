@@ -29,7 +29,7 @@ class WPUF_List_Table_Subscribers extends WP_List_Table {
      * @return void
      */
     public function no_items() {
-        _e( 'No subscribers found', 'wp-user-frontend' );
+        esc_html_e( 'No subscribers found', 'wp-user-frontend' );
     }
 
     /**
@@ -113,8 +113,9 @@ class WPUF_List_Table_Subscribers extends WP_List_Table {
      * @return string
      */
     public function column_cb( $item ) {
+        $post_ID = isset( $_REQUEST['post_ID'] ) ? intval( wp_unslash( $_REQUEST['post_ID'] ) ) : 0;
         return sprintf(
-            '<input type="checkbox" name="subscriber_id[]" value="%d" />', $_REQUEST['post_ID']
+            '<input type="checkbox" name="subscriber_id[]" value="%d" />', $post_ID
          );
     }
 
@@ -125,13 +126,14 @@ class WPUF_List_Table_Subscribers extends WP_List_Table {
      */
     public function get_views() {
         $status_links = [];
-        $base_link    = admin_url( 'admin.php?page=wpuf_subscribers&pack=' . $_REQUEST['post_ID'] );
+        $post_ID = isset( $_REQUEST['post_ID'] ) ? intval( wp_unslash( $_REQUEST['post_ID'] ) ) : 0;
+        $base_link    = admin_url( 'admin.php?page=wpuf_subscribers&pack=' . $post_ID );
 
-        $subscribers_count          = count( $users = WPUF_Subscription::init()->subscription_pack_users( $_REQUEST['post_ID'] ) );
-        $subscriptions_active_count = count( $users = WPUF_Subscription::init()->subscription_pack_users( $_REQUEST['post_ID'] ) );
-        $subscriptions_cancle_count = count( $users = WPUF_Subscription::init()->subscription_pack_users( $_REQUEST['post_ID'] ) );
+        $subscribers_count          = count( $users = WPUF_Subscription::init()->subscription_pack_users( $post_ID ) );
+        $subscriptions_active_count = count( $users = WPUF_Subscription::init()->subscription_pack_users( $post_ID ) );
+        $subscriptions_cancle_count = count( $users = WPUF_Subscription::init()->subscription_pack_users( $post_ID ) );
 
-        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( $_REQUEST['status'] ) : 'all';
+        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'all';
 
         $status_links['all']       = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'all' ], $base_link ), ( $status == 'all' ) ? 'current' : '', __( 'All', 'wp-user-frontend' ), $subscribers_count );
         $status_links['Completed'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'Completed' ], $base_link ), ( $status == 'pending' ) ? 'current' : '', __( 'Completed', 'wp-user-frontend' ), $subscriptions_active_count );
@@ -156,7 +158,7 @@ class WPUF_List_Table_Subscribers extends WP_List_Table {
         $per_page              = 20;
         $current_page          = $this->get_pagenum();
         $offset                = ( $current_page - 1 ) * $per_page;
-        $this->page_status     = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : '2';
+        $this->page_status     = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : '2';
 
         // only ncessary because we have sample data
         $args = [
@@ -165,13 +167,18 @@ class WPUF_List_Table_Subscribers extends WP_List_Table {
         ];
 
         if ( isset( $_REQUEST['orderby'] ) && isset( $_REQUEST['order'] ) ) {
-            $args['orderby'] = $_REQUEST['orderby'];
-            $args['order']   = $_REQUEST['order'];
+            $args['orderby'] = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) ;
+            $args['order']   = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) );
         }
 
+        $post_ID = isset( $_REQUEST['post_ID'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) : '';
+        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
+
+
         $sql = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
-        $sql .= isset( $_REQUEST['post_ID'] ) ? ' WHERE subscribtion_id = ' . $_REQUEST['post_ID'] : '';
-        $sql .= isset( $_REQUEST['status'] ) ? ' AND subscribtion_status = "' . sanitize_text_field( $_REQUEST['status'] ) . '"' : '';
+        $sql .= isset( $_REQUEST['post_ID'] ) ? ' WHERE subscribtion_id = ' . sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) )  : '';
+
+        $sql .= isset( $_REQUEST['status'] ) ? ' AND subscribtion_status = "' . sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) . '"' : '';
 
         $this->items  = $wpdb->get_results( $sql, OBJECT );
 

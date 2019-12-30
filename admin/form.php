@@ -166,7 +166,7 @@ class WPUF_Admin_Form {
             $settings = [
                 'form_type'         => 'post',
                 'post_type'         => 'wpuf_forms',
-                'post_id'           => $_GET['id'],
+                'post_id'           => isset( $_GET['id'] ) ? intval( wp_unslash( $_GET['id'] ) ) : '',
                 'form_settings_key' => $this->form_settings_key,
                 'shortcodes'        => [ [ 'name' => 'wpuf_form' ] ],
             ];
@@ -186,7 +186,7 @@ class WPUF_Admin_Form {
         ?>
 
         <a href="#wpuf-form-builder-notification" class="nav-tab">
-            <?php _e( 'Notification', 'wp-user-frontend' ); ?>
+            <?php esc_html_e( 'Notification', 'wp-user-frontend' ); ?>
         </a>
 
         <?php
@@ -219,12 +219,12 @@ class WPUF_Admin_Form {
     public function add_settings_tabs() {
         ?>
 
-            <a href="#wpuf-metabox-settings" class="nav-tab"><?php _e( 'Post Settings', 'wp-user-frontend' ); ?></a>
-            <a href="#wpuf-metabox-settings-update" class="nav-tab"><?php _e( 'Edit Settings', 'wp-user-frontend' ); ?></a>
-            <a href="#wpuf-metabox-submission-restriction" class="nav-tab"><?php _e( 'Submission Restriction', 'wp-user-frontend' ); ?></a>
-            <a href="#wpuf-metabox-settings-payment" class="nav-tab"><?php _e( 'Payment Settings', 'wp-user-frontend' ); ?></a>
-            <a href="#wpuf-metabox-settings-display" class="nav-tab"><?php _e( 'Display Settings', 'wp-user-frontend' ); ?></a>
-            <a href="#wpuf-metabox-post_expiration" class="nav-tab"><?php _e( 'Post Expiration', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-settings" class="nav-tab"><?php esc_html_e( 'Post Settings', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-settings-update" class="nav-tab"><?php esc_html_e( 'Edit Settings', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-submission-restriction" class="nav-tab"><?php esc_html_e( 'Submission Restriction', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-settings-payment" class="nav-tab"><?php esc_html_e( 'Payment Settings', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-settings-display" class="nav-tab"><?php esc_html_e( 'Display Settings', 'wp-user-frontend' ); ?></a>
+            <a href="#wpuf-metabox-post_expiration" class="nav-tab"><?php esc_html_e( 'Post Expiration', 'wp-user-frontend' ); ?></a>
 
             <?php do_action( 'wpuf_post_form_tab' ); ?>
 
@@ -285,16 +285,16 @@ class WPUF_Admin_Form {
         $subscriptions = WPUF_Subscription::init()->get_subscriptions();
 
         if ( !$subscriptions ) {
-            printf( '<option>%s</option>', __( '- Select -', 'wp-user-frontend' ) );
+            printf( '<option>%s</option>', esc_html( __( '- Select -', 'wp-user-frontend' ) ) );
 
             return;
         }
 
-        printf( '<option>%s</option>', __( '- Select -', 'wp-user-frontend' ) );
+        printf( '<option>%s</option>', esc_html( __( '- Select -', 'wp-user-frontend' ) ) );
 
         foreach ( $subscriptions as $key => $subscription ) {
             ?>
-                <option value="<?php echo esc_attr( $subscription->ID ); ?>" <?php selected( $selected, $subscription->ID ); ?> ><?php echo $subscription->post_title; ?></option>
+                <option value="<?php echo esc_attr( $subscription->ID ); ?>" <?php selected( $selected, $subscription->ID ); ?> ><?php echo esc_html( $subscription->post_title ); ?></option>
             <?php
         }
     }
@@ -345,7 +345,7 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function admin_enqueue_scripts() {
-        wp_register_script( 
+        wp_register_script(
             'wpuf-form-builder-wpuf-forms',
             WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',
             [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ],
@@ -432,7 +432,7 @@ class WPUF_Admin_Form {
                 class="btn"
                 id="wpuf-post-draft"
             >
-                <?php _e( 'Save Draft', 'wp-user-frontend' ); ?>
+                <?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?>
             </a>
         <?php
     }

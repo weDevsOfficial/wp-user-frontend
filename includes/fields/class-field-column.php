@@ -29,12 +29,12 @@ class WPUF_Form_Field_Column extends WPUF_Field_Contract {
         $inner_fields = $field_settings['inner_fields'];
         $atts         = []; ?>
         <li class="wpuf-el">
-            <div class="wpuf-field-columns <?php echo 'has-columns-' . $columns; ?>">
+            <div class="wpuf-field-columns <?php echo 'has-columns-' . esc_attr( $columns ); ?>">
                 <div class="wpuf-column-field-inner-columns">
                     <div class="wpuf-column">
                         <?php while ( $i <= $columns ) { ?>
 
-                            <div class="<?php echo 'column-' . $i; ?> <?php echo 'items-of-column-' . $columns; ?> wpuf-column-inner-fields" style="width: <?php echo $columns_size['column-' . $i]; ?>; padding-right: <?php echo $column_space . 'px'; ?>">
+                            <div class="<?php echo 'column-' .esc_attr( $i ); ?> <?php echo 'items-of-column-' . esc_attr( $columns ); ?> wpuf-column-inner-fields" style="width: <?php echo esc_attr( $columns_size['column-' . $i] ); ?>; padding-right: <?php echo esc_attr( $column_space ) . 'px'; ?>">
                                 <ul class="wpuf-column-fields">
                                     <?php wpuf()->fields->render_fields( $inner_fields['column-' . $i], $form_id, $atts, $type, $post_id ); ?>
                                 </ul>

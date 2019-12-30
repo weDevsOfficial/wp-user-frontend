@@ -228,7 +228,7 @@ class WPUF_Field_Manager {
         foreach ( $fields as $field ) {
             if ( !$field_object = $this->field_exists( $field['template'] ) ) {
                 if ( defined( 'WP_DEBUG' && WP_DEBUG ) ) {
-                    echo '<h4 style="color: red;"><em>' . $field['template'] . '</em> field not found.</h4>';
+                    echo wp_kses_post( '<h4 style="color: red;"><em>' . $field['template'] . '</em> field not found.</h4>' );
                 }
 
                 continue;

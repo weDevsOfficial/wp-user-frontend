@@ -45,15 +45,15 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
         }
         $this->field_print_label( $field_settings, $form_id ); ?>
 
-        <div class="wpuf-fields" data-required="<?php echo $field_settings['required']; ?>" data-type="radio">
+        <div class="wpuf-fields" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-type="radio">
 
             <?php
             if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
                 foreach ( $field_settings['options'] as $value => $option ) {
                     ?>
-                    <label <?php echo $field_settings['inline'] == 'yes' ? 'class="wpuf-checkbox-inline"' : 'class="wpuf-checkbox-block"'; ?>>
-                        <input type="checkbox" class="<?php echo 'wpuf_' . $field_settings['name'] . '_' . $form_id; ?>" name="<?php echo $field_settings['name']; ?>[]" value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?> />
-                        <?php echo $option; ?>
+                    <label <?php echo esc_attr( $field_settings['inline'] ) == 'yes' ? 'class="wpuf-checkbox-inline"' : 'class="wpuf-checkbox-block"'; ?>>
+                        <input type="checkbox" class="<?php echo 'wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" name="<?php echo esc_attr( $field_settings['name'] ); ?>[]" value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?> />
+                        <?php echo esc_html( $option ); ?>
                     </label>
                     <?php
                 }
@@ -127,7 +127,11 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
      * @return mixed
      */
     public function prepare_entry( $field ) {
-        $entry_value  = ( is_array( $_POST[$field['name']] ) && $_POST[$field['name']] ) ? $_POST[$field['name']] : [];
+        check_ajax_referer( 'wpuf_form_add' );
+
+        $field_name = isset( $_POST[$field['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[$field['name']] ) ) : [];
+
+        $entry_value  = ( is_array( $field_name ) && $field_name ) ? $field_name : [];
 
         if ( $entry_value ) {
             $new_val = [];

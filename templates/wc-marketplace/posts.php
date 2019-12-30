@@ -12,7 +12,7 @@ global $WCMp;
     <div class="panel panel-default">
         <div class="panel-body">
             <?php
-                $action = isset( $_GET['action'] ) ? $_GET['action'] : '';
+                $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 
                 if ( $action == 'new-post' ) {
                     require_once WPUF_ROOT . '/templates/wc-marketplace/new-post.php';

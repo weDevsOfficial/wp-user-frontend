@@ -85,10 +85,10 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
     public function admin_reg_forms_page() {
         ?>
-        <h2><?php _e( 'Registration Form', 'wp-user-frontend' ); ?></h2>
+        <h2><?php esc_html_e( 'Registration Form', 'wp-user-frontend' ); ?></h2>
 
         <p>
-            <?php _e( 'Use the shortcode <code>[wpuf-registration]</code> for a simple and default WordPress registration form.', 'wp-user-frontend' ); ?>
+            <?php esc_html_e( 'Use the shortcode <code>[wpuf-registration]</code> for a simple and default WordPress registration form.', 'wp-user-frontend' ); ?>
         </p>
 
         <p>
@@ -102,7 +102,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             <h3 style="margin: 0;">Pro Features</h3>
 
             <p>
-                <?php _e( 'Registration form builder is a two way form which can be used both for <strong>user registration</strong> and <strong>profile editing</strong>.', 'wp-user-frontend' ); ?>
+                <?php esc_html_e( 'Registration form builder is a two way form which can be used both for <strong>user registration</strong> and <strong>profile editing</strong>.', 'wp-user-frontend' ); ?>
             </p>
 
             <ul class="wpuf-pro-features">
@@ -121,8 +121,8 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             </ul>
 
             <p style="margin-top: 30px;">
-                <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
-                <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php _e( 'Learn More', 'wp-user-frontend' ); ?></a>
+                <a href="<?php echo esc_url(self::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php esc_html_e( 'Learn More', 'wp-user-frontend' ); ?></a>
             </p>
         </div>
 
@@ -139,20 +139,20 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
     public function admin_coupon_page() {
         ?>
-        <h2><?php _e( 'Coupons', 'wp-user-frontend' ); ?></h2>
+        <h2><?php esc_html_e( 'Coupons', 'wp-user-frontend' ); ?></h2>
 
         <div class="wpuf-notice" style="padding: 20px; background: #fff; border: 1px solid #ddd;">
             <p>
-                <?php _e( 'Use Coupon codes for subscription for discounts.', 'wp-user-frontend' ); ?>
+                <?php esc_html_e( 'Use Coupon codes for subscription for discounts.', 'wp-user-frontend' ); ?>
             </p>
 
             <p>
-                <?php _e( 'This feature is only available in the Pro Version.', 'wp-user-frontend' ); ?>
+                <?php esc_html_e( 'This feature is only available in the Pro Version.', 'wp-user-frontend' ); ?>
             </p>
 
             <p>
-                <a href="<?php echo self::get_pro_url(); ?>" target="_blank" class="button-primary"><?php _e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
-                <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank" class="button"><?php _e( 'Learn more about Coupons', 'wp-user-frontend' ); ?></a>
+                <a href="<?php echo esc_url( self::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank" class="button"><?php esc_html_e( 'Learn more about Coupons', 'wp-user-frontend' ); ?></a>
             </p>
         </div>
 
@@ -197,7 +197,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     public function show_banner_metabox() {
-        printf( 'Upgrade to in <a href="%s" target="_blank">Pro Version</a> to get more fields and features.', self::get_pro_url() );
+        printf( 'Upgrade to in <a href="%s" target="_blank">Pro Version</a> to get more fields and features.',esc_url( self::get_pro_url() )  );
     }
 
     public function wpuf_form_buttons_custom_runner() {

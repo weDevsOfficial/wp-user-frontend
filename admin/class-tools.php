@@ -13,7 +13,16 @@ class WPUF_Admin_Tools {
      */
     public function list_forms() {
         if ( isset( $_POST['export'] ) ) {
-            $this->export_data( $_POST['export_content'], $_POST['formlist'] );
+
+            $export_content = isset( $_POST['export_content'] ) ? sanitize_text_field( wp_unslash( $_POST['export_content'] ) ) : '';
+            $formlist       = isset( $_POST['formlist'] ) ? sanitize_text_field( wp_unslash( $_POST['formlist'] ) ) : '';
+            $this->export_data( $export_content, $formlist );
+
+            $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+            if ( wp_verify_nonce( $nonce, 'wpuf-export-form' ) ) {
+                die( 'Failed nonce verification !' );
+            }
         }
 
         $args = [
@@ -26,18 +35,18 @@ class WPUF_Admin_Tools {
         if ( $forms ) {
             ?>
             <div class="postbox" style="margin-top: 15px;">
-                <h3 style="padding:10px 15px"><?php _e( 'Form Export', 'wp-user-frontend' ); ?></h3>
+                <h3 style="padding:10px 15px"><?php esc_html_e( 'Form Export', 'wp-user-frontend' ); ?></h3>
                 <div class="inside">
                     <div class="main">
                         <form action="" method="post" style="margin-top: 20px;">
                             <p>
                                 <input class="export_type" type="radio" name="export_content" value="all" id="wpuf-all_export" checked>
-                                <label for="wpuf-all_export"><?php _e( 'All', 'wp-user-frontend' ); ?></label>
+                                <label for="wpuf-all_export"><?php esc_html_e( 'All', 'wp-user-frontend' ); ?></label>
                             </p>
 
                             <p>
                                 <input class="export_type" type="radio" name="export_content" value="selected" id="wpuf-selected_export">
-                                <label for="wpuf-selected_export"><?php _e( 'Select individual', 'wp-user-frontend' ); ?></label></p>
+                                <label for="wpuf-selected_export"><?php esc_html_e( 'Select individual', 'wp-user-frontend' ); ?></label></p>
                             <p>
                                 <select class="formlist" name="formlist[]" multiple="multiple">
                                     <?php foreach ( $forms as $form ) { ?>
@@ -47,7 +56,7 @@ class WPUF_Admin_Tools {
                             </p>
 
                             <?php wp_nonce_field( 'wpuf-export-form' ); ?>
-                            <input type="submit" class="button button-primary" name="export" value="<?php _e( 'Export', 'wp-user-frontend' ); ?>">
+                            <input type="submit" class="button button-primary" name="export" value="<?php esc_html_e( 'Export', 'wp-user-frontend' ); ?>">
                         </form>
                     </div>
                 </div>
@@ -66,7 +75,18 @@ class WPUF_Admin_Tools {
      */
     public function list_regis_forms() {
         if ( isset( $_POST['export_regis_form'] ) ) {
-            $this->export_regis_data( $_POST['export_regis_content'], $_POST['formlist'] );
+
+            $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ): '';
+
+            $export_regis_content = isset( $_POST['export_regis_content'] ) ? sanitize_text_field( wp_unslash( $_POST['export_regis_content'] ) ) : '';
+            $formlist = isset( $_POST['formlist'] ) ? sanitize_text_field( wp_unslash( $_POST['formlist'] ) ) : '';
+
+            $this->export_regis_data( $export_regis_content, $formlist );
+
+
+            if ( ! wp_verify_nonce( $nonce, 'wpuf-export-regs-form' ) ) {
+                die( esc_html('Failed nonce verification !') );
+            }
         }
 
         $args = [
@@ -80,7 +100,7 @@ class WPUF_Admin_Tools {
         if ( $forms ) {
             ?>
             <div class="postbox">
-                <h3 style="padding:10px 15px"><?php _e( 'Registration Form Export', 'wp-user-frontend' ); ?></h3>
+                <h3 style="padding:10px 15px"><?php esc_html_e( 'Registration Form Export', 'wp-user-frontend' ); ?></h3>
                 <div class="inside">
                     <div class="main">
 
@@ -88,12 +108,12 @@ class WPUF_Admin_Tools {
 
                             <p>
                                 <input class="export_type" type="radio" name="export_regis_content" value="all" id="wpuf-all_regis_export" checked>
-                                <label for="wpuf-all_regis_export"><?php _e( 'All', 'wp-user-frontend' ); ?></label>
+                                <label for="wpuf-all_regis_export"><?php esc_html_e( 'All', 'wp-user-frontend' ); ?></label>
                             </p>
 
                             <p>
                                 <input class="export_type" type="radio" name="export_regis_content" value="selected" id="wpuf-selected_regis_export">
-                                <label for="wpuf-selected_regis_export"><?php _e( 'Select individual', 'wp-user-frontend' ); ?></label>
+                                <label for="wpuf-selected_regis_export"><?php esc_html_e( 'Select individual', 'wp-user-frontend' ); ?></label>
                             </p>
 
                             <p>
@@ -106,7 +126,7 @@ class WPUF_Admin_Tools {
 
                             <?php wp_nonce_field( 'wpuf-export-regs-form' ); ?>
 
-                            <input type="submit" class="button button-primary" name="export_regis_form" value="<?php _e( 'Export', 'wp-user-frontend' ); ?>">
+                            <input type="submit" class="button button-primary" name="export_regis_form" value="<?php esc_html_e( 'Export', 'wp-user-frontend' ); ?>">
                         </form>
                     </div>
                 </div>
@@ -122,34 +142,36 @@ class WPUF_Admin_Tools {
      */
     public function import_data() {
         if ( isset( $_FILES['import'] ) && check_admin_referer( 'wpuf-import' ) ) {
-            if ( $_FILES['import']['error'] > 0 ) {
-                printf( '<div class="error"><p>%s</p></div>', __( 'Somthing went wrong. Please choose a file again', 'wp-user-frontend' ) );
+            $import_files = array_map( 'sanitize_text_field', wp_unslash( ['import'] ) );
+
+            if ( $import_files['error'] > 0 ) {
+                printf( '<div class="error"><p>%s</p></div>', esc_html( __( 'Somthing went wrong. Please choose a file again', 'wp-user-frontend' ) ) );
             } else {
-                $file_name = $_FILES['import']['name'];
+                $file_name = $import_files['name'];
                 $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
-                $file_size = $_FILES['import']['size'];
+                $file_size = $import_files['size'];
 
                 if ( ( $file_ext == 'json' ) && ( $file_size < 500000 ) ) {
-                    $data = static::import_json_file( $_FILES['import']['tmp_name'] );
+                    $data = static::import_json_file( $import_files['tmp_name'] );
 
                     if ( $data ) {
-                        printf( '<div class="updated"><p>%s</p></div>', __( 'Import successful. Have fun!', 'wp-user-frontend' ) );
+                        printf( '<div class="updated"><p>%s</p></div>', esc_html( __( 'Import successful. Have fun!', 'wp-user-frontend' ) ) );
                     }
                 } else {
-                    printf( '<div class="error"><p>%s</p></div>', __( 'Invalid file or file size too big.', 'wp-user-frontend' ) );
+                    printf( '<div class="error"><p>%s</p></div>',esc_html( __( 'Invalid file or file size too big.', 'wp-user-frontend' ) ) );
                 }
             }
         } ?>
 
-        <h3><?php _e( 'Import forms', 'wp-user-frontend' ); ?></h3>
+        <h3><?php esc_html_e( 'Import forms', 'wp-user-frontend' ); ?></h3>
 
-        <p><?php _e( 'Click Browse button and choose a json file that you backup before.', 'wp-user-frontend' ); ?></p>
-        <p><?php _e( 'Press <strong>Import</strong> button, we will do the rest for you.', 'wp-user-frontend' ); ?></p>
+        <p><?php esc_html_e( 'Click Browse button and choose a json file that you backup before.', 'wp-user-frontend' ); ?></p>
+        <p><?php esc_html_e( 'Press <strong>Import</strong> button, we will do the rest for you.', 'wp-user-frontend' ); ?></p>
 
         <form action="" method="post" enctype='multipart/form-data' style="margin-top: 20px;">
             <?php wp_nonce_field( 'wpuf-import' ); ?>
             <input type='file' name='import' />
-            <input type="submit" class="button button-primary" name="import_data" value="<?php _e( 'Import', 'wp-user-frontend' ); ?>">
+            <input type="submit" class="button button-primary" name="import_data" value="<?php esc_html_e( 'Import', 'wp-user-frontend' ); ?>">
         </form>
         <?php
     }
@@ -199,8 +221,10 @@ class WPUF_Admin_Tools {
         if ( $export_type == 'all' && check_admin_referer( 'wpuf-export-regs-form' ) ) {
             static::export_to_json( 'wpuf_profile' );
         } elseif ( $export_type == 'selected' && check_admin_referer( 'wpuf-export-regs-form' ) ) {
-            if ( $_POST['formlist'] == null ) {
-                printf( '<div class="error"><p>%s</p></div>', __( 'Please select some form for exporting', 'wp-user-frontend' ) );
+            $formlist = isset( $_POST['formlist'] ) ? sanitize_text_field( wp_unslash( $_POST['formlist'] ) ) : '';
+
+            if ( $formlist == null ) {
+                printf( '<div class="error"><p>%s</p></div>', esc_html( __( 'Please select some form for exporting', 'wp-user-frontend' ) ) );
             } else {
                 static::export_to_json( 'wpuf_profile', $post_ids );
             }
@@ -214,11 +238,13 @@ class WPUF_Admin_Tools {
      * @param int    $post_ids
      */
     public function export_data( $export_type, $post_ids ) {
+        $formlist = isset( $_POST['formlist'] ) ? sanitize_text_field( wp_unslash( $_POST['formlist'] ) ) : '';
+
         if ( $export_type == 'all' && check_admin_referer( 'wpuf-export-form' ) ) {
             static::export_to_json( 'wpuf_forms' );
         } elseif ( $export_type == 'selected' && check_admin_referer( 'wpuf-export-form' ) ) {
-            if ( $_POST['formlist'] == null ) {
-                printf( '<div class="error"><p>%s</p></div>', __( 'Please select some form for exporting', 'wp-user-frontend' ) );
+            if ( $formlist == null ) {
+                printf( '<div class="error"><p>%s</p></div>',esc_html( __( 'Please select some form for exporting', 'wp-user-frontend' ) ) );
             } else {
                 static::export_to_json( 'wpuf_forms', $post_ids );
             }
@@ -272,7 +298,7 @@ class WPUF_Admin_Tools {
 
         ob_clean();
 
-        echo $json_file;
+        echo esc_js( $json_file );
 
         header( 'Content-Type: text/json; charset=' . get_option( 'blog_charset' ) );
         header( "Content-Disposition: attachment; filename=$json_name.json" );
@@ -298,7 +324,7 @@ class WPUF_Admin_Tools {
     }
 
     public function tool_page() {
-        $msg                   = isset( $_GET['msg'] ) ? $_GET['msg'] : '';
+        $msg                   = isset( $_GET['msg'] ) ? sanitize_text_field( wp_unslash( $_GET['msg'] ) ) : '';
         $text                  = '';
         $confirmation_message  = __( 'Are you Sure?', 'wp-user-frontend' );
         switch ( $msg ) {
@@ -319,7 +345,7 @@ class WPUF_Admin_Tools {
             ?>
             <div class="updated">
                 <p>
-                    <?php echo $text; ?>
+                    <?php echo esc_html( $text ); ?>
                 </p>
             </div>
 
@@ -327,43 +353,43 @@ class WPUF_Admin_Tools {
 
         <div class="metabox-holder">
             <div class="postbox">
-                <h3><?php _e( 'Page Installation', 'wp-user-frontend' ); ?></h3>
+                <h3><?php esc_html_e( 'Page Installation', 'wp-user-frontend' ); ?></h3>
 
                 <div class="inside">
-                    <p><?php _e( 'Clicking this button will create required pages for the plugin. Note: It\'ll not delete/replace existing pages.', 'wp-user-frontend' ); ?></p>
-                    <a class="button button-primary" href="<?php echo add_query_arg( [ 'install_wpuf_pages' => true ] ); ?>"><?php _e( 'Install WPUF Pages', 'wp-user-frontend' ); ?></a>
+                    <p><?php esc_html_e( 'Clicking this button will create required pages for the plugin. Note: It\'ll not delete/replace existing pages.', 'wp-user-frontend' ); ?></p>
+                    <a class="button button-primary" href="<?php echo esc_attr( add_query_arg( [ 'install_wpuf_pages' => true ] ) ); ?>"><?php esc_html_e( 'Install WPUF Pages', 'wp-user-frontend' ); ?></a>
                 </div>
             </div>
 
             <div class="postbox">
-                <h3><?php _e( 'Reset Settings', 'wp-user-frontend' ); ?></h3>
+                <h3><?php esc_html_e( 'Reset Settings', 'wp-user-frontend' ); ?></h3>
 
                 <div class="inside">
-                    <p><?php _e( '<strong>Caution:</strong> This tool will delete all the plugin settings of WP User Frontend Pro', 'wp-user-frontend' ); ?></p>
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'clear_settings' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('Are you sure?');"><?php _e( 'Reset Settings', 'wp-user-frontend' ); ?></a>
+                    <p><?php wp_kses_post('<strong>Caution:</strong> This tool will delete all the plugin settings of WP User Frontend Pro', 'wp-user-frontend' ); ?></p>
+                    <a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'clear_settings' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ) ); ?>" onclick="return confirm('Are you sure?');"><?php esc_html_e( 'Reset Settings', 'wp-user-frontend' ); ?></a>
                 </div>
             </div>
 
             <div class="postbox">
-                <h3><?php _e( 'Delete Forms', 'wp-user-frontend' ); ?></h3>
+                <h3><?php esc_html_e( 'Delete Forms', 'wp-user-frontend' ); ?></h3>
 
                 <div class="inside">
-                    <p><?php _e( '<strong>Caution:</strong> This tool will delete all the post and registration/profile forms.', 'wp-user-frontend' ); ?></p>
+                    <p><?php wp_kses_post( '<strong>Caution:</strong> This tool will delete all the post and registration/profile forms.', 'wp-user-frontend' ); ?></p>
 
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'del_post_forms' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('<?php echo $confirmation_message; ?>');"><?php _e( 'Delete Post Forms', 'wp-user-frontend' ); ?></a>
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'del_pro_forms' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('<?php echo $confirmation_message; ?>');"><?php _e( 'Delete Registration Forms', 'wp-user-frontend' ); ?></a>
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'del_subs' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('<?php echo $confirmation_message; ?>');"><?php _e( 'Delete Subscriptions', 'wp-user-frontend' ); ?></a>
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'del_coupon' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('<?php echo $confirmation_message; ?>');"><?php _e( 'Delete Coupons', 'wp-user-frontend' ); ?></a>
+                    <a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'del_post_forms' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $confirmation_message ); ?>');"><?php esc_html_e( 'Delete Post Forms', 'wp-user-frontend' ); ?></a>
+                    <a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'del_pro_forms' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $confirmation_message ); ?>');"><?php esc_html_e( 'Delete Registration Forms', 'wp-user-frontend' ); ?></a>
+                    <a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'del_subs' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $confirmation_message ); ?>');"><?php esc_html_e( 'Delete Subscriptions', 'wp-user-frontend' ); ?></a>
+                    <a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'del_coupon' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $confirmation_message ); ?>');"><?php esc_html_e( 'Delete Coupons', 'wp-user-frontend' ); ?></a>
                 </div>
             </div>
 
             <div class="postbox">
-                <h3><?php _e( 'Transactions', 'wp-user-frontend' ); ?></h3>
+                <h3><?php esc_html_e( 'Transactions', 'wp-user-frontend' ); ?></h3>
 
                 <div class="inside">
-                    <p><?php _e( 'This tool will delete all the transactions from the transaction table.', 'wp-user-frontend' ); ?></p>
+                    <p><?php esc_html_e( 'This tool will delete all the transactions from the transaction table.', 'wp-user-frontend' ); ?></p>
 
-                    <a class="button button-primary" href="<?php echo wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'clear_transaction' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ); ?>" onclick="return confirm('<?php echo $confirmation_message; ?>');"><?php _e( 'Delete Transactions', 'wp-user-frontend' ); ?></a>
+                    <a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'clear_transaction' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $confirmation_message ); ?>');"><?php esc_html_e( 'Delete Transactions', 'wp-user-frontend' ); ?></a>
                 </div>
             </div>
         </div>

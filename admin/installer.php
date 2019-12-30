@@ -24,12 +24,12 @@ class WPUF_Admin_Installer {
             ?>
             <div class="updated error">
                 <p>
-                    <?php _e( 'If you have not created <strong>WP User Frontend</strong> pages yet, you can do this by one click.', 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'If you have not created <strong>WP User Frontend</strong> pages yet, you can do this by one click.', 'wp-user-frontend' ); ?>
                 </p>
                 <p class="submit">
-                    <a class="button button-primary" href="<?php echo add_query_arg( [ 'install_wpuf_pages' => true ], admin_url( 'admin.php?page=wpuf-settings' ) ); ?>"><?php _e( 'Install WPUF Pages', 'wp-user-frontend' ); ?></a>
-                    <?php _e( 'or', 'wp-user-frontend' ); ?>
-                    <a class="button" href="<?php echo add_query_arg( [ 'wpuf_hide_page_nag' => true ] ); ?>"><?php _e( 'Skip Setup', 'wp-user-frontend' ); ?></a>
+                    <a class="button button-primary" href="<?php echo esc_url( add_query_arg( [ 'install_wpuf_pages' => true ], admin_url( 'admin.php?page=wpuf-settings' ) ) ); ?>"><?php esc_html_e( 'Install WPUF Pages', 'wp-user-frontend' ); ?></a>
+                    <?php esc_html_e( 'or', 'wp-user-frontend' ); ?>
+                    <a class="button" href="<?php echo esc_url( add_query_arg( [ 'wpuf_hide_page_nag' => true ] ) ); ?>"><?php esc_html_e( 'Skip Setup', 'wp-user-frontend' ); ?></a>
                 </p>
             </div>
             <?php
@@ -39,7 +39,7 @@ class WPUF_Admin_Installer {
             ?>
             <div class="updated">
                 <p>
-                    <strong><?php _e( 'Congratulations!', 'wp-user-frontend' ); ?></strong> <?php _e( 'Pages for <strong>WP User Frontend</strong> has been successfully installed and saved!', 'wp-user-frontend' ); ?>
+                    <strong><?php esc_html_e( 'Congratulations!', 'wp-user-frontend' ); ?></strong> <?php esc_html_e( 'Pages for <strong>WP User Frontend</strong> has been successfully installed and saved!', 'wp-user-frontend' ); ?>
                 </p>
             </div>
             <?php
@@ -52,6 +52,12 @@ class WPUF_Admin_Installer {
      * @return void
      */
     public function handle_request() {
+        $nonce = isset($_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        // if ( ! wp_verify_nonce( $nonce, 'wpuf-setup' ) ) {
+        //     die( esc_html( 'Failed nonce verification !' ) );
+        // }
+
         if ( isset( $_GET['install_wpuf_pages'] ) && $_GET['install_wpuf_pages'] == '1' ) {
             $this->init_pages();
         }
@@ -138,7 +144,8 @@ class WPUF_Admin_Installer {
 
         update_option( '_wpuf_page_created', '1' );
 
-        if ( $_GET['page'] != 'wpuf-setup' ) {
+        $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+        if ( $page != 'wpuf-setup' ) {
             wp_redirect( admin_url( 'admin.php?page=wpuf-settings&wpuf_page_installed=1' ) );
             exit;
         }

@@ -8,7 +8,7 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
 <table class="form-table">
 
     <tr class="wpuf-label-position">
-        <th><?php _e( 'Label Position', 'wp-user-frontend' ); ?></th>
+        <th><?php esc_html_e( 'Label Position', 'wp-user-frontend' ); ?></th>
         <td>
             <select name="wpuf_settings[label_position]">
                 <?php
@@ -20,19 +20,19 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
                 ];
 
                 foreach ( $positions as $to => $label ) {
-                    printf( '<option value="%s"%s>%s</option>', $to, selected( $label_position, $to, false ), $label );
+                    printf( '<option value="%s"%s>%s</option>', esc_attr( $to ), esc_attr( selected( $label_position, $to, false ) ), esc_html( $label ) );
                 }
                 ?>
             </select>
 
             <p class="description">
-                <?php _e( 'Where the labels of the form should display', 'wp-user-frontend' ); ?>
+                <?php esc_html_e( 'Where the labels of the form should display', 'wp-user-frontend' ); ?>
             </p>
         </td>
     </tr>
 
     <tr class="wpuf-override-theme-css">
-        <th><?php _e( 'Use Theme CSS', 'wp-user-frontend' ); ?></th>
+        <th><?php esc_html_e( 'Use Theme CSS', 'wp-user-frontend' ); ?></th>
         <td>
             <select name="wpuf_settings[use_theme_css]">
                 <?php
@@ -42,20 +42,20 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
                 ];
 
                 foreach ( $options as $to => $label ) {
-                    printf( '<option value="%s"%s>%s</option>', $to, selected( $theme_css, $to, false ), $label );
+                    printf( '<option value="%s"%s>%s</option>', esc_attr( $to ), esc_attr( selected( $theme_css, $to, false ) ), esc_html( $label ) );
                 }
                 ?>
             </select>
 
             <p class="description">
-                <?php _e( 'Selecting "Yes" will use your theme\'s style for form fields.', 'wp-user-frontend' ); ?>
+                <?php esc_html_e( 'Selecting "Yes" will use your theme\'s style for form fields.', 'wp-user-frontend' ); ?>
             </p>
         </td>
     </tr>
 
     <?php if ( class_exists( 'WP_User_Frontend_Pro' ) ) { ?>
         <tr class="wpuf-form-layouts">
-            <th><?php _e( 'Form Style', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Form Style', 'wp-user-frontend' ); ?></th>
             <td>
                 <ul>
                     <?php
@@ -79,7 +79,7 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
                             $output .= '<img src="' . $image . '" alt="">';
                             $output .= '</li>';
 
-                            echo $output;
+                            echo wp_kses_post( $output );
                         }
                     ?>
                 </ul>

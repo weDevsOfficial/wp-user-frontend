@@ -41,7 +41,7 @@ function wpuf_show_post_status( $status ) {
     }
 
     $show_status = '<span style="color:' . $fontcolor . ';">' . $title . '</span>';
-    echo apply_filters( 'wpuf_show_post_status', $show_status, $status );
+    echo esc_attr( apply_filters( 'wpuf_show_post_status', $show_status, $status ) );
 }
 
 /**
@@ -68,7 +68,7 @@ function wpuf_admin_post_status( $status ) {
         $fontcolor = '#bbbbbb';
     }
 
-    echo '<span style="color:' . $fontcolor . ';">' . $title . '</span>';
+    echo wp_kses_post( '<span style="color:' . $fontcolor . ';">' . $title . '</span>' );
 }
 
 /**
@@ -81,19 +81,23 @@ function wpuf_upload_attachment( $post_id ) {
         return false;
     }
 
+
+
     $fields = (int) wpuf_get_option( 'attachment_num' );
 
+    $wpuf_post_attachments = isset( $_FILES['wpuf_post_attachments'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_FILES['wpuf_post_attachments'] ) ) : [];
+
     for ( $i = 0; $i < $fields; $i++ ) {
-        $file_name = basename( $_FILES['wpuf_post_attachments']['name'][$i] );
+        $file_name = basename( $wpuf_post_attachments['name'][$i] );
 
         if ( $file_name ) {
             if ( $file_name ) {
                 $upload = [
-                    'name'     => $_FILES['wpuf_post_attachments']['name'][$i],
-                    'type'     => $_FILES['wpuf_post_attachments']['type'][$i],
-                    'tmp_name' => $_FILES['wpuf_post_attachments']['tmp_name'][$i],
-                    'error'    => $_FILES['wpuf_post_attachments']['error'][$i],
-                    'size'     => $_FILES['wpuf_post_attachments']['size'][$i],
+                    'name'     => $wpuf_post_attachments['name'][$i],
+                    'type'     => $wpuf_post_attachments['type'][$i],
+                    'tmp_name' => $wpuf_post_attachments['tmp_name'][$i],
+                    'error'    => $wpuf_post_attachments['error'][$i],
+                    'size'     => $wpuf_post_attachments['size'][$i],
                 ];
 
                 wpuf_upload_file( $upload );
@@ -400,16 +404,16 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     $categories = (array) get_terms( $tax_args );
 
-    echo '<ul class="wpuf-category-checklist">';
-    printf( '<input type="hidden" name="%s" value="0" />', $tax );
-    echo call_user_func_array( [&$walker, 'walk'], [$categories, 0, $args] );
-    echo '</ul>';
+    echo wp_kses_post( '<ul class="wpuf-category-checklist">' );
+    printf( '<input type="hidden" name="%s" value="0" />', esc_attr( $tax ) );
+    echo wp_kses_post( call_user_func_array( [&$walker, 'walk'], [$categories, 0, $args] ) );
+    echo wp_kses_post( '</ul>' );
 }
 
 function wpuf_pre( $data ) {
-    echo '<pre>';
+    echo wp_kses_post( '<pre>' );
     print_r( $data );
-    echo '</pre>';
+    echo wp_kses_post( '</pre>' );
 }
 
 /**
@@ -843,7 +847,7 @@ function wpuf_show_custom_fields( $content ) {
                         $def_lat    = isset( $location['lat'] ) ? $location['lat'] : 40.7143528;
                         $def_long   = isset( $location['lng'] ) ? $location['lng'] : -74.0059731; ?>
                         <div>
-                            <a class="btn btn-brand btn-sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=<?php echo $def_lat; ?>,<?php echo $def_long; ?>" target="_blank" rel="nofollow external"><?php _e( 'Directions »', 'wp-user-frontend' ); ?></a>
+                            <a class="btn btn-brand btn-sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=<?php echo esc_attr( $def_lat ); ?>,<?php echo esc_attr( $def_long ); ?>" target="_blank" rel="nofollow external"><?php esc_html_e( 'Directions »', 'wp-user-frontend' ); ?></a>
                         </div>
                     <?php
                     }
@@ -1049,15 +1053,15 @@ function wpuf_shortcode_map( $location, $post_id = null, $args = [], $meta_key =
         $def_long                   = $def_long ? $def_long : 0;
     } ?>
 
-    <div class="google-map" style="margin: 10px 0; height: <?php echo $args['height']; ?>px; width: <?php echo $args['width']; ?>px;" id="wpuf-map-<?php echo $meta_key . $post->ID; ?>"></div>
+    <div class="google-map" style="margin: 10px 0; height: <?php echo esc_attr( $args['height'] ); ?>px; width: <?php echo esc_attr( $args['width'] ); ?>px;" id="wpuf-map-<?php echo esc_attr( $meta_key . $post->ID ); ?>"></div>
 
     <script type="text/javascript">
         jQuery(function($){
-            var curpoint = new google.maps.LatLng(<?php echo $def_lat; ?>, <?php echo $def_long; ?>);
+            var curpoint = new google.maps.LatLng(<?php echo esc_html( $def_lat ); ?>, <?php echo esc_html( $def_long ); ?>);
 
-            var gmap = new google.maps.Map( $('#wpuf-map-<?php echo $meta_key . $post->ID; ?>')[0], {
+            var gmap = new google.maps.Map( $('#wpuf-map-<?php echo esc_attr( $meta_key . $post->ID ); ?>')[0], {
                 center: curpoint,
-                zoom: <?php echo $args['zoom']; ?>,
+                zoom: <?php echo esc_attr( $args['zoom'] ); ?>,
                 mapTypeId: window.google.maps.MapTypeId.ROADMAP
             });
 
@@ -1258,14 +1262,14 @@ function wpuf_get_attachment_id_from_url( $attachment_url = '' ) {
 function wpufe_ajax_tag_search() {
     global $wpdb;
 
-    $taxonomy = sanitize_key( $_GET['tax'] );
+    $taxonomy = isset( $_GET['tax'] ) ? sanitize_key( wp_unslash( $_GET['tax'] ) ) : '';
     $tax      = get_taxonomy( $taxonomy );
 
     if ( !$tax ) {
         wp_die( 0 );
     }
 
-    $s = wp_unslash( $_GET['q'] );
+    $s = isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) ) : '';
 
     $comma = _x( ',', 'tag delimiter', 'wp-user-frontend' );
 
@@ -1286,7 +1290,7 @@ function wpufe_ajax_tag_search() {
 
     $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
 
-    echo join( $results, "\n" );
+    echo esc_html( join( $results, "\n" ) );
     wp_die();
 }
 
@@ -1491,15 +1495,24 @@ add_action( 'wp_ajax_nopriv_wpuf_get_child_cat', 'wpuf_get_child_cats' );
  * Returns child category dropdown on ajax request
  */
 function wpuf_get_child_cats() {
-    $parentCat  = $_POST['catID'];
-    $field_attr = $_POST['field_attr'];
-    $taxonomy   = $_POST['field_attr']['name'];
+
+    $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+    $parentCat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
+    $field_attr = isset( $_POST['field_attr'] ) ? sanitize_text_field( wp_unslash( $_POST['field_attr'] ) ) : '';
+
+    if ( ! wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
+        return;
+    }
+
+
+    $taxonomy   = $field_attr['name'];
 
     $terms  = null;
     $result = '';
 
     if ( $parentCat < 1 ) {
-        die( $result );
+        die( esc_html( $result ) );
     }
 
     if ( $terms = get_categories( 'taxonomy=' . $taxonomy . '&child_of=' . $parentCat . '&hide_empty=0' ) ) {
@@ -1516,7 +1529,7 @@ function wpuf_get_child_cats() {
         die( '' );
     }
 
-    die( $result );
+    die( esc_html( $result ) );
 }
 
 function taxnomy_select( $terms, $attr ) {
@@ -1552,7 +1565,7 @@ function taxnomy_select( $terms, $attr ) {
 
     $select = wp_dropdown_categories( $tax_args );
 
-    echo str_replace( '<select', '<select ' . $required, $select );
+    echo wp_kses_post( str_replace( '<select', '<select ' . $required, $select ) );
     $attr = [
         'required'     => $attr['required'],
         'name'         => $attr['name'],
@@ -1565,7 +1578,7 @@ function taxnomy_select( $terms, $attr ) {
         //'term_id'      => $selected
     ];
     $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr ); ?>
-    <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
+    <span data-taxonomy=<?php echo esc_attr( json_encode( $attr ) ); ?>></span>
     <?php
 }
 
@@ -1675,7 +1688,9 @@ function wpuf_clear_buffer() {
  * @return bool
  */
 function wpuf_is_license_expired() {
-    if ( in_array( $_SERVER['REMOTE_ADDR'], [ '127.0.0.1', '::1' ] ) ) {
+    $remote_addr = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+
+    if ( in_array( $remote_addr, [ '127.0.0.1', '::1' ] ) ) {
         return false;
     }
 
@@ -2350,17 +2365,17 @@ function wpuf_get_client_ip() {
     $ipaddress = '';
 
     if ( isset( $_SERVER['HTTP_CLIENT_IP'] ) ) {
-        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        $ipaddress = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) );
     } elseif ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $ipaddress = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
     } elseif ( isset( $_SERVER['HTTP_X_FORWARDED'] ) ) {
-        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        $ipaddress = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED'] ) );
     } elseif ( isset( $_SERVER['HTTP_FORWARDED_FOR'] ) ) {
-        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        $ipaddress = sanitize_text_field( wp_unslash( $_SERVER['HTTP_FORWARDED_FOR'] ) );
     } elseif ( isset( $_SERVER['HTTP_FORWARDED'] ) ) {
-        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        $ipaddress = sanitize_text_field( wp_unslash( $_SERVER['HTTP_FORWARDED'] ) );
     } elseif ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
-        $ipaddress = $_SERVER['REMOTE_ADDR'];
+        $ipaddress = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
     } else {
         $ipaddress = 'UNKNOWN';
     }
@@ -2402,6 +2417,13 @@ function wpuf_delete_form( $form_id, $force = true ) {
  * @return string $post_status
  */
 function wpuf_get_draft_post_status( $form_settings ) {
+
+    $noce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+    if ( ! wp_verify_nonce( $noce, 'wpuf_form_add' ) ) {
+        die( esc_html( 'Failed nonce verification !' ) );
+    }
+
     $post_status                 = 'draft';
     $current_user                = wpuf_get_user();
     $charging_enabled            = $current_user->subscription()->current_pack_id();
@@ -2524,6 +2546,12 @@ function wpuf_decryption( $id ) {
  * @return void
  */
 function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag ) {
+    $noce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+    if ( ! wp_verify_nonce( $noce, 'wpuf_edit' ) ) {
+        return;
+    }
+
     if ( $charging_enabled ) {
         $encoded_guest_url = add_query_arg(
             [
@@ -2545,7 +2573,7 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
     }
 
     $default_body     = 'Hey There,' . '<br>' . '<br>' . 'We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process.' . '<br>' . '<br>' . 'Please click the link below to verify:' . '<br>' . '<br>' . '<a href="' . $encoded_guest_url . '">Publish Post</a>' . '<br>' . '<br>' . 'Regards,' . '<br>' . '<br>' . bloginfo( 'name' );
-    $to               = trim( $_POST['guest_email'] );
+    $to               = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
     $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_mails', 'Please Confirm Your Email to Get the Post Published!' );
     $subject          = $guest_email_sub;
     $guest_email_body = wpuf_get_option( 'guest_email_body', 'wpuf_mails', $default_body );
@@ -2577,7 +2605,9 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
  * @return bool
  */
 function is_wpuf_post_form_builder() {
-    return isset( $_GET['page'] ) && $_GET['page'] == 'wpuf-post-forms' ? true : false;
+    $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+
+    return $page == 'wpuf-post-forms' ? true : false;
 }
 
 /**
@@ -2588,7 +2618,9 @@ function is_wpuf_post_form_builder() {
  * @return bool
  */
 function is_wpuf_profile_form_builder() {
-    return isset( $_GET['page'] ) && $_GET['page'] == 'wpuf-profile-forms' ? true : false;
+    $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+
+    return $page == 'wpuf-profile-forms' ? true : false;
 }
 
 /**
@@ -2750,7 +2782,7 @@ function get_formatted_mail_body( $message, $subject ) {
             $emogrifier = new Emogrifier( $content, $css );
             $content    = $emogrifier->emogrify();
         } catch ( Exception $e ) {
-            echo $e->getMessage();
+            echo esc_html( $e->getMessage() );
         }
 
         return $content;
@@ -2931,7 +2963,7 @@ function wpuf_text( $args = [] ) {
 function wpuf_descriptive_text( $args ) {
     $html = wp_kses_post( $args['desc'] );
 
-    echo $html;
+    echo esc_html( $html );
 }
 
 /**
@@ -2982,15 +3014,23 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
  * @return void
  */
 function wpuf_ajax_get_states_field() {
+    $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+    if ( ! wp_verify_nonce( sanitize_key( $nonce ), 'wpuf-ajax-address' ) ) {
+        die( esc_html( 'Failed nonce verification !' ) );
+    }
+
+    $country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
     $cs        = new CountryState();
     $countries = $cs->countries();
-    $states    = $cs->getStates( $countries[$_POST['country']] );
+    $states    = $cs->getStates( $countries[$country] );
 
     if ( !empty( $states ) ) {
         $args = [
-            'name'             => isset( $_POST['field_name'] ) ? $_POST['field_name'] : '',
-            'id'               => isset( $_POST['field_name'] ) ? $_POST['field_name'] : '',
-            'class'            => isset( $_POST['field_name'] ) ? $_POST['field_name'] : '',
+            'name'             => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash(
+            $_POST['field_name'] ) ) : '',
+            'id'               => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
+            'class'            => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
             'options'          => $states,
             'show_option_all'  => false,
             'show_option_none' => false,
@@ -3001,7 +3041,7 @@ function wpuf_ajax_get_states_field() {
         $response = 'nostates';
     }
 
-    echo $response;
+    echo esc_html( $response );
 
     wp_die();
 }
@@ -3015,23 +3055,37 @@ add_action( 'wp_ajax_nopriv_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' 
  */
 function wpuf_update_billing_address() {
     ob_start();
+    $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+    if ( ! wp_verify_nonce( sanitize_key( $nonce ), 'wpuf-ajax-address' ) ) {
+        die( esc_html( 'Failed nonce verification !' ) );
+    }
 
     $user_id        = get_current_user_id();
+    $add_line_1 =   isset( $_POST['billing_add_line1'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_add_line1'] ) ) : '';
+    $add_line_2 =   isset( $_POST['billing_add_line2'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_add_line2'] ) ) : '';
+    $city       =   isset( $_POST['billing_city'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_city'] ) ) : '';
+    $state      =   isset( $_POST['billing_state'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_state'] ) ) : '';
+    $zip        =   isset( $_POST['billing_zip'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_zip'] ) ) : '';
+    $country    =   isset( $_POST['billing_country'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_country'] ) ) : '';
+    $type       =   isset( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : '';
+    $id         =   isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
+
     $address_fields = [
-        'add_line_1'    => $_POST['billing_add_line1'],
-        'add_line_2'    => $_POST['billing_add_line2'],
-        'city'          => $_POST['billing_city'],
-        'state'         => $_POST['billing_state'],
-        'zip_code'      => $_POST['billing_zip'],
-        'country'       => $_POST['billing_country'],
+        'add_line_1'    => $add_line_1,
+        'add_line_2'    => $add_line_2,
+        'city'          => $city,
+        'state'         => $state,
+        'zip_code'      => $zip,
+        'country'       => $country,
     ];
 
     update_user_meta( $user_id, 'wpuf_address_fields', $address_fields );
 
-    $post_data['type']            = $_POST['type'];
-    $post_data['id']              = $_POST['id'];
-    $post_data['billing_country'] = $_POST['billing_country'];
-    $post_data['billing_state']   = $_POST['billing_state'];
+    $post_data['type']            = $type;
+    $post_data['id']              = $id;
+    $post_data['billing_country'] = $billing_country;
+    $post_data['billing_state']   = $billing_state;
 
     $is_pro = wpuf()->is_pro();
 
@@ -3108,7 +3162,16 @@ function wpuf_settings_multiselect( $args ) {
     $html .= sprintf( '</select>' );
     $html .= $settings->get_field_description( $args );
 
-    echo $html;
+    echo wp_kses( $html, [
+        'p' =>  [],
+        'select' => [
+            'multiple'  =>  []
+        ],
+        'option' => [
+            'value' => [],
+            'selected' => []
+        ]
+    ] );
 }
 
 /**
@@ -3162,9 +3225,9 @@ function wpuf_show_form_schedule_message( $form_id ) {
 
         // too early?
         if ( $current_time < $start_time ) {
-            echo '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>';
+            echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_pending_message'] . '</div>' );
         } elseif ( $current_time > $end_time ) {
-            echo '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>';
+            echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>' );
         } ?>
             <script>
                 jQuery( function($) {
@@ -3200,7 +3263,8 @@ function wpuf_show_form_limit_message( $form_id ) {
 
         if ( $limit && $limit <= $form_entries ) {
             $info = $form_settings['limit_message'];
-            echo '<div class="wpuf-info">' . $info . '</div>'; ?>
+            echo wp_kses_post( '<div class="wpuf-info">' . $info . '</div>');
+            ?>
             <script>
                 jQuery( function($) {
                     $(".wpuf-submit-button").attr("disabled", "disabled");

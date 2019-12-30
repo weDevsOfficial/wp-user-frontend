@@ -33,9 +33,9 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
         $this->field_print_label( $field_settings, $form_id ); ?>
             <div class="wpuf-fields">
                 <input
-                    id="<?php echo $field_settings['name'] . '_' . $form_id; ?>"
-                    type="url" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" class="url <?php echo ' wpuf_' . $field_settings['name'] . '_' . $form_id; ?>"
-                    data-required="<?php echo $field_settings['required']; ?>"
+                    id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
+                    type="url" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" class="url <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
+                    data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                     data-type="text"
                     name="<?php echo esc_attr( $field_settings['name'] ); ?>"
                     placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
@@ -106,6 +106,9 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
      * @return mixed
      */
     public function prepare_entry( $field ) {
-        return esc_url( trim( $_POST[$field['name']] ) );
+        check_ajax_referer( 'wpuf_form_add' );
+
+        $field = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+        return esc_url( trim( $field ) );
     }
 }

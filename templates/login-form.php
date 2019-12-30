@@ -11,20 +11,20 @@
     $message = apply_filters( 'login_message', '' );
 
     if ( !empty( $message ) ) {
-        echo $message . "\n";
+        echo esc_html( $message ) . "\n";
     }
     ?>
 
     <?php wpuf()->login->show_errors(); ?>
     <?php wpuf()->login->show_messages(); ?>
 
-    <form name="loginform" class="wpuf-login-form" id="loginform" action="<?php echo $action_url; ?>" method="post">
+    <form name="loginform" class="wpuf-login-form" id="loginform" action="<?php echo esc_attr( $action_url ); ?>" method="post">
         <p>
-            <label for="wpuf-user_login"><?php _e( 'Username or Email', 'wp-user-frontend' ); ?></label>
+            <label for="wpuf-user_login"><?php esc_html_e( 'Username or Email', 'wp-user-frontend' ); ?></label>
             <input type="text" name="log" id="wpuf-user_login" class="input" value="" size="20" />
         </p>
         <p>
-            <label for="wpuf-user_pass"><?php _e( 'Password', 'wp-user-frontend' ); ?></label>
+            <label for="wpuf-user_pass"><?php esc_html_e( 'Password', 'wp-user-frontend' ); ?></label>
             <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" />
         </p>
 
@@ -32,19 +32,19 @@
         <?php if ( $recaptcha == 'on' ) { ?>
             <p>
                 <div class="wpuf-fields">
-                    <?php echo recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ); ?>
+                    <?php echo esc_html( recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ) ); ?>
                 </div>
             </p>
         <?php } ?>
 
         <p class="forgetmenot">
             <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
-            <label for="wpuf-rememberme"><?php esc_attr_e( 'Remember Me', 'wp-user-frontend' ); ?></label>
+            <label for="wpuf-rememberme"><?php esc_attr( 'Remember Me', 'wp-user-frontend' ); ?></label>
         </p>
 
         <p class="submit">
-            <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Log In', 'wp-user-frontend' ); ?>" />
-            <input type="hidden" name="redirect_to" value="<?php echo wp_get_referer(); ?>" />
+            <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_html_e( 'Log In', 'wp-user-frontend' ); ?>" />
+            <input type="hidden" name="redirect_to" value="<?php echo esc_attr( wp_get_referer() ); ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />
             <?php wp_nonce_field( 'wpuf_login_action' ); ?>
@@ -54,5 +54,5 @@
         </p>
     </form>
 
-    <?php echo wpuf()->login->get_action_links( [ 'login' => false ] ); ?>
+    <?php echo esc_attr( wpuf()->login->get_action_links( [ 'login' => false ] ) ); ?>
 </div>

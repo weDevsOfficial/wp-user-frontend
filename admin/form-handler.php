@@ -29,7 +29,9 @@ class WPUF_Admin_Form_Handler {
             return false;
         }
 
-        if ( !wp_verify_nonce( $_GET['_wpnonce'], $bulk_action ) ) {
+        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+
+        if ( !wp_verify_nonce( $nonce, $bulk_action ) ) {
             return false;
         }
 
@@ -51,7 +53,7 @@ class WPUF_Admin_Form_Handler {
 
         // Check permission if not wpuf admin then go out from here
         if ( !current_user_can( wpuf_admin_role() ) ) {
-            wp_die( __( 'You do not have sufficient permissions to do this action', 'wp-user-frontend' ) );
+            wp_die( esc_html( __( 'You do not have sufficient permissions to do this action', 'wp-user-frontend' ) ) );
         }
 
         $post_forms = new WPUF_Admin_Post_Forms_List_Table();
@@ -73,15 +75,17 @@ class WPUF_Admin_Form_Handler {
                 case 'trash':
 
                     if ( !empty( $_GET['id'] ) ) {
-                        delete_post_meta( $_GET['id'], '_wp_trash_meta_status' );
-                        delete_post_meta( $_GET['id'], '_wp_trash_meta_time' );
-                        delete_post_meta( $_GET['id'], '_wp_desired_post_slug' );
+                        $id  = intval( wp_unslash( $_GET['id'] ) );
+                        delete_post_meta( $id, '_wp_trash_meta_status' );
+                        delete_post_meta( $id, '_wp_trash_meta_time' );
+                        delete_post_meta( $id, '_wp_desired_post_slug' );
 
-                        wp_trash_post( $_GET['id']  );
+                        wp_trash_post( $id  );
 
                         $add_query_args['trashed'] = 1;
                     } elseif ( !empty( $_GET['post'] ) ) {
-                        foreach ( $_GET['post'] as $post_id ) {
+                        $posts = isset( $_GET['post'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['post'] ) ) : [];
+                        foreach ( $posts as $post_id ) {
                             delete_post_meta( $post_id, '_wp_trash_meta_status' );
                             delete_post_meta( $post_id, '_wp_trash_meta_time' );
                             delete_post_meta( $post_id, '_wp_desired_post_slug' );
@@ -96,10 +100,11 @@ class WPUF_Admin_Form_Handler {
 
                 case 'restore':
                     if ( !empty( $_GET['id'] ) ) {
-                        $trash_meta_status = get_post_meta( $_GET['id'], '_wp_trash_meta_status', true );
+                        $id = intval( wp_unslash( $_GET['id'] ) );
+                        $trash_meta_status = get_post_meta( $id, '_wp_trash_meta_status', true );
 
                         $args = [
-                            'ID'            => $_GET['id'],
+                            'ID'            => $id,
                             'post_status'   => $trash_meta_status,
                         ];
 
@@ -107,7 +112,10 @@ class WPUF_Admin_Form_Handler {
 
                         $add_query_args['untrashed'] = 1;
                     } elseif ( !empty( $_GET['post'] ) ) {
-                        foreach ( $_GET['post'] as $post_id ) {
+
+                        $posts = array_map( 'sanitize_text_field', wp_unslash( $_GET['post'] ) );
+
+                        foreach ( $posts as $post_id ) {
                             $trash_meta_status = get_post_meta( $post_id, '_wp_trash_meta_status', true );
 
                             $args = [
@@ -117,7 +125,7 @@ class WPUF_Admin_Form_Handler {
 
                             wp_update_post( $args  );
 
-                            $add_query_args['untrashed'] = count( $_GET['post'] );
+                            $add_query_args['untrashed'] = count( $posts );
                         }
                     }
 
@@ -126,15 +134,18 @@ class WPUF_Admin_Form_Handler {
                 case 'delete':
 
                     if ( !empty( $_GET['id'] ) ) {
-                        wp_delete_post( $_GET['id']  );
+
+                        $id = intval( wp_unslash( $_GET['id'] ) );
+                        wp_delete_post( $id  );
 
                         $add_query_args['deleted'] = 1;
                     } elseif ( !empty( $_GET['post'] ) ) {
-                        foreach ( $_GET['post'] as $post_id ) {
+                        $posts = array_map( 'sanitize_text_field', wp_unslash( $_GET['post'] ) );
+                        foreach ( $posts as $post_id ) {
                             wp_delete_post( $post_id  );
                         }
 
-                        $add_query_args['deleted'] = count( $_GET['post'] );
+                        $add_query_args['deleted'] = count( $posts );
                     }
 
                     $add_query_args['post_status'] = 'trash';
@@ -143,13 +154,15 @@ class WPUF_Admin_Form_Handler {
 
                 case 'duplicate':
                     if ( !empty( $_GET['id'] ) ) {
-                        $add_query_args['duplicated'] = wpuf_duplicate_form( $_GET['id'] );
+                        $id = intval( wp_unslash( $_GET['id'] ) );
+                        $add_query_args['duplicated'] = wpuf_duplicate_form( $id );
                     }
 
                     break;
             }
 
-            $redirect = remove_query_arg( $remove_query_args, wp_unslash( $_SERVER['REQUEST_URI'] ) );
+            $request_uri = isset( $_SERVER['REQUEST_URI'] )  ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+            $redirect = remove_query_arg( $remove_query_args, $request_uri );
 
             $redirect = add_query_arg( $add_query_args, $redirect );
 
@@ -173,7 +186,7 @@ class WPUF_Admin_Form_Handler {
 
         // Check permission if not wpuf admin then go out from here
         if ( !current_user_can( wpuf_admin_role() ) ) {
-            wp_die( __( 'You do not have sufficient permissions to do this action', 'wp-user-frontend' ) );
+            wp_die( esc_html( __( 'You do not have sufficient permissions to do this action', 'wp-user-frontend' ) ) );
         }
 
         $profile_forms = new WPUF_Admin_Profile_Forms_List_Table();
@@ -195,15 +208,18 @@ class WPUF_Admin_Form_Handler {
                 case 'trash':
 
                     if ( !empty( $_GET['id'] ) ) {
-                        delete_post_meta( $_GET['id'], '_wp_trash_meta_status' );
-                        delete_post_meta( $_GET['id'], '_wp_trash_meta_time' );
-                        delete_post_meta( $_GET['id'], '_wp_desired_post_slug' );
+                        $id = intval( wp_unslash( $_GET['id'] ) );
+                        delete_post_meta( $id, '_wp_trash_meta_status' );
+                        delete_post_meta( $id, '_wp_trash_meta_time' );
+                        delete_post_meta( $id, '_wp_desired_post_slug' );
 
-                        wp_trash_post( $_GET['id']  );
+                        wp_trash_post( $id  );
 
                         $add_query_args['trashed'] = 1;
                     } elseif ( !empty( $_GET['post'] ) ) {
-                        foreach ( $_GET['post'] as $post_id ) {
+                        $posts = array_map( 'sanitize_text_field', wp_unslash( $_GET['post'] ) );
+
+                        foreach ( $posts as $post_id ) {
                             delete_post_meta( $post_id, '_wp_trash_meta_status' );
                             delete_post_meta( $post_id, '_wp_trash_meta_time' );
                             delete_post_meta( $post_id, '_wp_desired_post_slug' );
@@ -218,10 +234,11 @@ class WPUF_Admin_Form_Handler {
 
                 case 'restore':
                     if ( !empty( $_GET['id'] ) ) {
-                        $trash_meta_status = get_post_meta( $_GET['id'], '_wp_trash_meta_status', true );
+                        $id = intval( wp_unslash( $_GET['id'] ) );
+                        $trash_meta_status = get_post_meta( $id, '_wp_trash_meta_status', true );
 
                         $args = [
-                            'ID'            => $_GET['id'],
+                            'ID'            => $id,
                             'post_status'   => $trash_meta_status,
                         ];
 
@@ -229,7 +246,9 @@ class WPUF_Admin_Form_Handler {
 
                         $add_query_args['untrashed'] = 1;
                     } elseif ( !empty( $_GET['post'] ) ) {
-                        foreach ( $_GET['post'] as $post_id ) {
+                        $posts = array_map( 'sanitize_text_field', wp_unslash( $_GET['post'] ) );
+
+                        foreach ( $posts as $post_id ) {
                             $trash_meta_status = get_post_meta( $post_id, '_wp_trash_meta_status', true );
 
                             $args = [
@@ -248,15 +267,19 @@ class WPUF_Admin_Form_Handler {
                 case 'delete':
 
                     if ( !empty( $_GET['id'] ) ) {
-                        wp_delete_post( $_GET['id']  );
+                        $id = intval( wp_unslash( $_GET['id'] ) );
+
+                        wp_delete_post( $id  );
 
                         $add_query_args['deleted'] = 1;
                     } elseif ( !empty( $_GET['post'] ) ) {
-                        foreach ( $_GET['post'] as $post_id ) {
+                        $posts = array_map( 'sanitize_text_field', wp_unslash( $_GET['post'] ) );
+
+                        foreach ( $posts as $post_id ) {
                             wp_delete_post( $post_id  );
                         }
 
-                        $add_query_args['deleted'] = count( $_GET['post'] );
+                        $add_query_args['deleted'] = count( $posts );
                     }
 
                     $add_query_args['post_status'] = 'trash';
@@ -265,13 +288,16 @@ class WPUF_Admin_Form_Handler {
 
                 case 'duplicate':
                     if ( !empty( $_GET['id'] ) ) {
-                        $add_query_args['duplicated'] = wpuf_duplicate_form( $_GET['id'] );
+                        $id = intval( wp_unslash( $_GET['id'] ) );
+                        $add_query_args['duplicated'] = wpuf_duplicate_form( $id );
                     }
 
                     break;
             }
 
-            $redirect = remove_query_arg( $remove_query_args, wp_unslash( $_SERVER['REQUEST_URI'] ) );
+            $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+            $redirect = remove_query_arg( $remove_query_args, $request_uri );
 
             $redirect = add_query_arg( $add_query_args, $redirect );
 
@@ -291,7 +317,7 @@ class WPUF_Admin_Form_Handler {
      * @return void
      */
     public function display_notice( $text, $type = 'updated' ) {
-        printf( '<div class="%s"><p>%s</p></div>', esc_attr( $type ), $text );
+        printf( '<div class="%s"><p>%s</p></div>', esc_attr( $type ), esc_html( $text ) );
     }
 
     /**
@@ -304,16 +330,23 @@ class WPUF_Admin_Form_Handler {
     public function admin_notices() {
         if ( !empty( $_GET['page'] ) && 'wpuf-post-forms' === $_GET['page'] ) {
             if ( !empty( $_GET['trashed'] ) ) {
-                $notice = sprintf( _n( '%d form moved to the trash.', '%d forms moved to the trash.', $_GET['trashed'], 'wp-user-frontend' ), $_GET['trashed'] );
+                $trashed = sanitize_text_field( wp_unslash( $_GET['trashed'] ) );
+                $notice = sprintf( _n( '%d form moved to the trash.', '%d forms moved to the trash.', $trashed, 'wp-user-frontend' ), $trashed );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['untrashed'] ) ) {
-                $notice = sprintf( _n( '%d form restored from the trash.', '%d forms restored from the trash.', $_GET['untrashed'], 'wp-user-frontend' ), $_GET['untrashed'] );
+                $untrashed = isset( $_GET['untrashed'] ) ? sanitize_text_field( wp_unslash( $_GET['untrashed'] ) ) : '';
+
+                $notice = sprintf( _n( '%d form restored from the trash.', '%d forms restored from the trash.', $untrashed, 'wp-user-frontend' ), $untrashed );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['deleted'] ) ) {
-                $notice = sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $_GET['deleted'], 'wp-user-frontend' ), $_GET['deleted'] );
+                $deleted = sanitize_text_field( wp_unslash( $_GET['deleted'] ) );
+
+                $notice = sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $deleted, 'wp-user-frontend' ), $deleted );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['duplicated'] ) ) {
-                $form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $_GET['duplicated'] );
+                $duplicated = sanitize_text_field( wp_unslash( $_GET['duplicated'] ) );
+
+                $form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $duplicated );
                 $notice   = sprintf( __( 'Form duplicated successfully. <a href="%s">View form.</a>', 'wp-user-frontend' ), $form_url );
                 $this->display_notice( $notice );
             }
@@ -321,16 +354,24 @@ class WPUF_Admin_Form_Handler {
 
         if ( !empty( $_GET['page'] ) && 'wpuf-profile-forms' === $_GET['page'] ) {
             if ( !empty( $_GET['trashed'] ) ) {
-                $notice = sprintf( _n( '%d form moved to the trash.', '%d forms moved to the trash.', $_GET['trashed'], 'wp-user-frontend' ), $_GET['trashed'] );
+                $trashed = sanitize_text_field( wp_unslash( $_GET['trashed'] ) );
+
+                $notice = sprintf( _n( '%d form moved to the trash.', '%d forms moved to the trash.', $trashed, 'wp-user-frontend' ), $trashed );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['untrashed'] ) ) {
-                $notice = sprintf( _n( '%d form restored from the trash.', '%d forms restored from the trash.', $_GET['untrashed'], 'wp-user-frontend' ), $_GET['untrashed'] );
+                $untrashed = sanitize_text_field( wp_unslash( $_GET['untrashed'] ) );
+
+                $notice = sprintf( _n( '%d form restored from the trash.', '%d forms restored from the trash.', $untrashed, 'wp-user-frontend' ), $untrashed );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['deleted'] ) ) {
-                $notice = sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $_GET['deleted'], 'wp-user-frontend' ), $_GET['deleted'] );
+                $deleted = sanitize_text_field( wp_unslash( $_GET['deleted'] ) );
+
+                $notice = sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $deleted, 'wp-user-frontend' ), $deleted );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['duplicated'] ) ) {
-                $form_url = admin_url( 'admin.php?page=wpuf-profile-forms&action=edit&id=' . $_GET['duplicated'] );
+                $duplicated = sanitize_text_field( wp_unslash( $_GET['duplicated'] ) );
+
+                $form_url = admin_url( 'admin.php?page=wpuf-profile-forms&action=edit&id=' . $duplicated );
                 $notice   = sprintf( __( 'Form duplicated successfully. <a href="%s">View form.</a>', 'wp-user-frontend' ), $form_url );
                 $this->display_notice( $notice );
             }

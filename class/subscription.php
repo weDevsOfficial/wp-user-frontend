@@ -66,23 +66,29 @@ class WPUF_Subscription {
      */
     public function user_subscription_cancel() {
         if ( isset( $_POST['wpuf_cancel_subscription'] ) ) {
-            if ( !wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-sub-cancel' ) ) {
-                wp_die( __( 'Nonce failure', 'wp-user-frontend' ) );
+            $nonce       = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+            $user_id     = isset( $_POST['user_id'] ) ? intval( wp_unslash( $_POST['user_id'] ) ) : 0;
+            $gateway     = isset( $_POST['gateway'] ) ? intval( wp_unslash( $_POST['gateway'] ) ) : 0;
+            $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+
+            if ( !wp_verify_nonce( $nonce, 'wpuf-sub-cancel' ) ) {
+                wp_die( esc_html( __( 'Nonce failure', 'wp-user-frontend' ) ) );
             }
 
-            $current_pack = self::get_user_pack( $_POST['user_id'] );
+            $current_pack = self::get_user_pack( $user_id );
 
-            $gateway = ( $_POST['gateway'] == 'bank/manual' ) ? 'bank' : sanitize_text_field( $_POST['gateway'] );
+            $gateway = ( $gateway == 'bank/manual' ) ? 'bank' : $gateway;
 
             if ( 'bank' == $gateway || 'no' == $current_pack['recurring'] ) {
-                $this->update_user_subscription_meta( $_POST['user_id'], 'Cancel' );
+                $this->update_user_subscription_meta( $user_id, 'Cancel' );
             } else {
                 do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );
             }
 
-            $this::subscriber_cancel( $_POST['user_id'], $current_pack['pack_id'] );
+            $this::subscriber_cancel( $user_id, $current_pack['pack_id'] );
 
-            wp_redirect( $_SERVER['REQUEST_URI'] );
+            wp_redirect( $request_uri );
         }
     }
 
@@ -108,20 +114,24 @@ class WPUF_Subscription {
      * @return array
      */
     public function subs_redirect_pram( $response, $user_id, $userdata, $form_id, $form_settings ) {
-        if ( !isset( $_POST['wpuf_sub'] ) || $_POST['wpuf_sub'] != 'yes' ) {
+        $wpuf_sub = isset( $_POST['wpuf_sub'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_sub'] ) ) : '';
+        $pack_id = isset( $_POST['pack_id'] ) ? sanitize_text_field( wp_unslash( $_POST['pack_id'] ) ) : '';
+
+
+        if ( $wpuf_sub != 'yes' ) {
             return $response;
         }
 
-        if ( !isset( $_POST['pack_id'] ) || empty( $_POST['pack_id'] ) ) {
+        if ( empty( $pack_id ) ) {
             return $response;
         }
 
-        $pack           = $this->get_subscription( $_POST['pack_id'] );
+        $pack           = $this->get_subscription( $pack_id );
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : false;
 
         if ( $billing_amount !== false ) {
             $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
-            $redirect =  add_query_arg( ['action' => 'wpuf_pay', 'user_id' => $user_id, 'type' => 'pack', 'pack_id' => (int) $_POST['pack_id'] ], get_permalink( $pay_page ) );
+            $redirect =  add_query_arg( ['action' => 'wpuf_pay', 'user_id' => $user_id, 'type' => 'pack', 'pack_id' => (int) $pack_id, get_permalink( $pay_page ) ]);
 
             $response['redirect_to']  = $redirect;
             $response['show_message'] = false;
@@ -138,17 +148,19 @@ class WPUF_Subscription {
      * @return void
      */
     public function register_form() {
-        if ( !isset( $_GET['type'] ) || $_GET['type'] != 'wpuf_sub' ) {
+        $type = isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : '';
+        $pack_id = isset( $_GET['pack_id'] ) ? intval( wp_unslash( $_GET['pack_id'] ) ) : 0;
+
+        if ( $type != 'wpuf_sub' ) {
             return;
         }
 
-        if ( !isset( $_GET['pack_id'] ) || empty( $_GET['pack_id'] ) ) {
+        if ( empty( $pack_id ) ) {
             return;
         }
-
-        $pack_id = (int) $_GET['pack_id']; ?>
+        ?>
         <input type="hidden" name="wpuf_sub" value="yes" />
-        <input type="hidden" name="pack_id" value="<?php echo $pack_id; ?>" />
+        <input type="hidden" name="pack_id" value="<?php echo esc_attr( $pack_id ); ?>" />
 
         <?php
     }
@@ -163,15 +175,18 @@ class WPUF_Subscription {
      * @return void
      */
     public function after_registration( $user_id ) {
-        if ( !isset( $_POST['wpuf_sub'] ) || $_POST['wpuf_sub'] != 'yes' ) {
+        $wpuf_sub = isset( $_POST['wpuf_sub'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_sub'] ) ) : '';
+        $pack_id = isset( $_POST['pack_id'] ) ? intval( wp_unslash( $_POST['pack_id'] ) ) : 0;
+
+
+        if ( $wpuf_sub != 'yes' ) {
             return $user_id;
         }
 
-        if ( !isset( $_POST['pack_id'] ) || empty( $_POST['pack_id'] ) ) {
+        if ( empty( $pack_id ) ) {
             return $user_id;
         }
 
-        $pack_id        = isset( $_POST['pack_id'] ) ? intval( $_POST['pack_id'] ) : 0;
         $pack           = $this->get_subscription( $pack_id );
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : false;
 
@@ -311,7 +326,9 @@ class WPUF_Subscription {
             return;
         }
 
-        if ( !isset( $_POST['meta_box_nonce'] ) || !wp_verify_nonce( $_POST['meta_box_nonce'], 'subs_meta_box_nonce' ) ) {
+        $nonce = isset( $_POST['meta_box_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['meta_box_nonce'] ) ) : '';
+
+        if ( !wp_verify_nonce( $nonce, 'subs_meta_box_nonce' ) ) {
             return;
         }
 
@@ -395,16 +412,21 @@ class WPUF_Subscription {
      * @return void
      */
     public function update_paypal_subscr_payment() {
-        if ( !isset( $_POST['txn_type'] ) && $_POST['txn_type'] != 'subscr_payment'  ) {
+        $txn_type = isset( $_POST['txn_type'] ) ? sanitize_text_field( wp_unslash( $_POST['txn_type'] ) ) : '';
+        $payment_status = isset( $_POST['payment_status'] ) ? sanitize_text_field( wp_unslash( $_POST['payment_status'] ) ) : '';
+
+        $custom = isset( $_POST['custom'] ) ? sanitize_text_field( wp_unslash( $_POST['custom'] ) ) : '';
+
+        if ( $txn_type != 'subscr_payment'  ) {
             return;
         }
 
-        if ( strtolower( $_POST['payment_status'] ) != 'completed' ) {
+        if ( strtolower( $payment_status ) != 'completed' ) {
             return;
         }
 
         $pack  = $this->get_subscription( $pack_id );
-        $payer = json_decode( stripcslashes( $_POST['custom'] ) );
+        $payer = json_decode( stripcslashes( $custom ) );
 
         $this->update_user_subscription_meta( $payer->payer_id, $pack );
     }
@@ -712,6 +734,11 @@ class WPUF_Subscription {
     public function subscription_packs( $atts = null ) {
         //$cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
 
+        $action   = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
+        $pack_msg = isset( $_GET['pack_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['pack_msg'] ) ) : '';
+        $ppp_msg  = isset( $_GET['ppp_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['ppp_msg'] ) ) : '';
+
+
         $defaults = [
             'include' => '',
             'exclude' => '',
@@ -734,16 +761,16 @@ class WPUF_Subscription {
 
         ob_start();
 
-        if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
-            printf( '<h1>%1$s</h1><p>%2$s</p>', __( 'Payment is complete', 'wp-user-frontend' ), __( 'Congratulations, your payment has been completed!', 'wp-user-frontend' ) );
+        if ( $action == 'wpuf_paypal_success' ) {
+            printf( '<h1>%1$s</h1><p>%2$s</p>', esc_html( __( 'Payment is complete', 'wp-user-frontend' ) ), esc_html( __( 'Congratulations, your payment has been completed!', 'wp-user-frontend' ) ) );
         }
 
-        if ( isset( $_GET['pack_msg'] ) && $_GET['pack_msg'] == 'buy_pack' ) {
-            _e( 'Please buy a subscription pack to post', 'wp-user-frontend' );
+        if ( $pack_msg == 'buy_pack' ) {
+            esc_html_e( 'Please buy a subscription pack to post', 'wp-user-frontend' );
         }
 
-        if ( isset( $_GET['ppp_msg'] ) && $_GET['ppp_msg'] == 'pay_per_post' ) {
-            _e( 'Please buy a subscription pack to post', 'wp-user-frontend' );
+        if ( $ppp_msg == 'pay_per_post' ) {
+            esc_html_e( 'Please buy a subscription pack to post', 'wp-user-frontend' );
         }
 
         $current_pack = self::get_user_pack( get_current_user_id() );
@@ -761,17 +788,17 @@ class WPUF_Subscription {
 
             $payment_gateway = strtolower( $payment_gateway ); ?>
 
-            <?php _e( '<p><i>You have a subscription pack activated. </i></p>', 'wp-user-frontend' ); ?>
-            <?php echo sprintf( __( '<p><i>Pack name: %s </i></p>', 'wp-user-frontend' ), get_the_title( $current_pack['pack_id'] ) ); ?>
+            <?php esc_html_e( '<p><i>You have a subscription pack activated. </i></p>', 'wp-user-frontend' ); ?>
+            <?php echo sprintf( esc_html( __( '<p><i>Pack name: %s </i></p>', 'wp-user-frontend' ) ), esc_html( get_the_title( $current_pack['pack_id'] ) ) ); ?>
 
-            <?php _e( '<p><i>To cancel the pack, press the following cancel button</i></p>', 'wp-user-frontend' ); ?>
+            <?php wp_kses_post('<p><i>' . __( 'To cancel the pack, press the following cancel button' ) . '</i></p>', 'wp-user-frontend' ); ?>
 
             <form action="" id="wpuf_cancel_subscription" method="post">
                 <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
-                <input type="hidden" name="user_id" value="<?php echo get_current_user_id(); ?>">
-                <input type="hidden" name="gateway" value="<?php echo $payment_gateway; ?>">
+                <input type="hidden" name="user_id" value="<?php echo esc_attr( get_current_user_id() ); ?>">
+                <input type="hidden" name="gateway" value="<?php echo esc_attr( $payment_gateway ); ?>">
                 <input type="hidden" name="wpuf_cancel_subscription" value="Cancel">
-                <input type="submit" name="wpuf_user_subscription_cancel" class="btn btn-sm btn-danger" value="<?php _e( 'Cancel', 'wp-user-frontend' ); ?>">
+                <input type="submit" name="wpuf_user_subscription_cancel" class="btn btn-sm btn-danger" value="<?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?>">
             </form>
             <?php
         }
@@ -930,7 +957,7 @@ class WPUF_Subscription {
 
             $text              = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $pay_per_post_cost ) );
 
-            echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings ); ?>
+            echo esc_html( apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings ) ); ?>
             </div>
             <?php
         } elseif ( self::has_user_error( $form_settings ) || ( $payment_enabled && $force_pack && !is_wp_error( $current_pack ) && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) ) {
@@ -946,7 +973,7 @@ class WPUF_Subscription {
 
             $text              = sprintf( __( 'Your Subscription pack exhausted. There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $fallback_cost ) );
 
-            echo apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings ); ?>
+            echo esc_html( apply_filters( 'wpuf_ppp_notice', esc_html( $text ), esc_html( $form_id ), esc_html( $form_settings ) ) ); ?>
             </div>
             <?php
         }
@@ -1116,7 +1143,7 @@ class WPUF_Subscription {
 
         foreach ( $packs as $key => $pack ) {
             ?>
-            <option value="<?php echo $pack->ID; ?>" <?php selected( $selected, $pack->ID ); ?>><?php echo $pack->post_title; ?></option>
+            <option value="<?php echo esc_attr( $pack->ID ); ?>" <?php selected( $selected, $pack->ID ); ?>><?php echo esc_attr( $pack->post_title ); ?></option>
             <?php
         }
     }

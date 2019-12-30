@@ -40,11 +40,11 @@ class WPUF_Form_Field_Email extends WPUF_Form_Field_Text {
 
             <div class="wpuf-fields">
                 <input
-                    id="<?php echo $field_settings['name'] . '_' . $form_id; ?>"
+                    id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>"
                     type="email"
-                    class="email <?php echo ' wpuf_' . $field_settings['name'] . '_' . $form_id; ?>"
-                    data-duplicate="<?php echo isset( $field_settings['duplicate'] ) ? $field_settings['duplicate'] : 'no'; ?>"
-                    data-required="<?php echo $field_settings['required']; ?>"
+                    class="email <?php echo ' wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>"
+                    data-duplicate="<?php echo isset( $field_settings['duplicate'] ) ? esc_attr( $field_settings['duplicate'] ) : 'no'; ?>"
+                    data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                     data-type="email"
                     name="<?php echo esc_attr( $field_settings['name'] ); ?>"
                     placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
@@ -78,6 +78,8 @@ class WPUF_Form_Field_Email extends WPUF_Form_Field_Text {
      * @return mixed
      */
     public function prepare_entry( $field ) {
+        check_ajax_referer( 'wpuf_form_add' );
+
         if ( isset( $field['auto_populate'] ) && $field['auto_populate'] == 'yes' && is_user_logged_in() ) {
             $user = wp_get_current_user();
 
@@ -85,8 +87,7 @@ class WPUF_Form_Field_Email extends WPUF_Form_Field_Text {
                 return $user->user_email;
             }
         }
-
-        $value = !empty( $_POST[$field['name']] ) ? $_POST[$field['name']] : '';
+        $value = !empty( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
 
         return sanitize_text_field( trim( $value ) );
     }

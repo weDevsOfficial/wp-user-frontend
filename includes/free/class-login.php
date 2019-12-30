@@ -75,7 +75,7 @@ class WPUF_Simple_Login {
         $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
 
         if ( $recaptcha == 'on' ) {
-            echo '<p>' . recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ) . '</p>';
+            wp_kses_post( '<p>' . recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ) . '</p>' );
         }
     }
 
@@ -85,6 +85,12 @@ class WPUF_Simple_Login {
      * @since 2.9.0
      */
     public function login_form_scripts() {
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            die( esc_html( 'Failed nonce verification !' ) );
+        }
+
         if ( isset( $_POST['wpuf_login'] ) ) {
             return;
         }
@@ -110,6 +116,12 @@ class WPUF_Simple_Login {
      * @since 2.9.0
      */
     public function validate_custom_fields( $user, $password ) {
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        // if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+        //     die( esc_html( 'Failed nonce verification !' ) );
+        // }
+
         if ( isset( $_POST['wpuf_login'] ) ) {
             return $user;
         }
@@ -293,6 +305,7 @@ class WPUF_Simple_Login {
      */
     public function login_form() {
         $login_page = $this->get_login_url();
+        $reset = isset( $_GET['reset'] ) ? sanitize_text_field( wp_unslash( $_GET['reset'] ) ) : '';
 
         if ( false === $login_page ) {
             return;
@@ -305,7 +318,7 @@ class WPUF_Simple_Login {
                 'user' => wp_get_current_user(),
             ] );
         } else {
-            $action = isset( $_GET['action'] ) ? $_GET['action'] : 'login';
+            $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'login';
 
             $args = [
                 'action_url' => $login_page,
@@ -322,8 +335,8 @@ class WPUF_Simple_Login {
                 case 'rp':
                 case 'resetpass':
 
-                    if ( isset( $_GET['reset'] ) && $_GET['reset'] == 'true' ) {
-                        printf( '<div class="wpuf-message">' . __( 'Your password has been reset. %s', 'wp-user-frontend' ) . '</div>', sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'login' ), __( 'Log In', 'wp-user-frontend' ) ) );
+                    if ( $reset == 'true' ) {
+                        printf( '<div class="wpuf-message">' . esc_html( __( 'Your password has been reset. %s', 'wp-user-frontend' ) ) . '</div>', sprintf( '<a href="%s">%s</a>', esc_attr( $this->get_action_url( 'login' ) ), esc_html( __( 'Log In', 'wp-user-frontend' ) ) ) );
 
                         return;
                     } else {
@@ -335,12 +348,15 @@ class WPUF_Simple_Login {
                     break;
 
                 default:
+                    $checkemail = isset( $_GET['checkemail'] ) ? sanitize_email( wp_unslash( $_GET['checkemail'] ) ) : '';
 
-                    if ( isset( $_GET['checkemail'] ) && $_GET['checkemail'] == 'confirm' ) {
+                    $loggedout = isset( $_GET['loggedout'] ) ? sanitize_text_field( wp_unslash( $_GET['loggedout'] ) ) : '';
+
+                    if ( $checkemail == 'confirm' ) {
                         $this->messages[] = __( 'Check your e-mail for the confirmation link.', 'wp-user-frontend' );
                     }
 
-                    if ( isset( $_GET['loggedout'] ) && $_GET['loggedout'] == 'true' ) {
+                    if ( $loggedout == 'true' ) {
                         $this->messages[] = __( 'You are now logged out.', 'wp-user-frontend' );
                     }
 
@@ -362,14 +378,20 @@ class WPUF_Simple_Login {
         if ( !empty( $_POST['wpuf_login'] ) && !empty( $_POST['_wpnonce'] ) ) {
             $creds = [];
 
-            if ( !wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_login_action' ) ) {
-                $this->login_errors[] = __( 'Nonce is invalid', 'wp-user-frontend' );
+            $nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
 
-                return;
-            }
+            // if ( !wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            //     $this->login_errors[] = __( 'Nonce is invalid', 'wp-user-frontend' );
+
+            //     return;
+            // }
+
+            $log = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
+            $pwd = isset( $_POST['pwd'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd'] ) ) : '';
+            $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 
             $validation_error = new WP_Error();
-            $validation_error = apply_filters( 'wpuf_process_login_errors', $validation_error, $_POST['log'], $_POST['pwd'] );
+            $validation_error = apply_filters( 'wpuf_process_login_errors', $validation_error, $log, $pwd );
 
             if ( $validation_error->get_error_code() ) {
                 $this->login_errors[] = $validation_error->get_error_message();
@@ -377,33 +399,33 @@ class WPUF_Simple_Login {
                 return;
             }
 
-            if ( empty( $_POST['log'] ) ) {
+            if ( empty( $log ) ) {
                 $this->login_errors[] = __( 'Username is required.', 'wp-user-frontend' );
 
                 return;
             }
 
-            if ( empty( $_POST['pwd'] ) ) {
+            if ( empty( $pwd ) ) {
                 $this->login_errors[] = __( 'Password is required.', 'wp-user-frontend' );
 
                 return;
             }
 
-            if ( isset( $_POST['g-recaptcha-response'] ) ) {
-                if ( empty( $_POST['g-recaptcha-response'] ) ) {
-                    $this->login_errors[] = __( 'Empty reCaptcha Field', 'wp-user-frontend' );
 
-                    return;
-                } else {
-                    $no_captcha        = 1;
-                    $invisible_captcha = 0;
+            if ( empty( $g_recaptcha_response ) ) {
+                $this->login_errors[] = __( 'Empty reCaptcha Field', 'wp-user-frontend' );
 
-                    WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
-                }
+                return;
+            } else {
+                $no_captcha        = 1;
+                $invisible_captcha = 0;
+
+                WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
             }
 
-            if ( is_email( $_POST['log'] ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {
-                $user = get_user_by( 'email', $_POST['log'] );
+
+            if ( is_email( $log ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {
+                $user = get_user_by( 'email', $log );
 
                 if ( isset( $user->user_login ) ) {
                     $creds['user_login'] = $user->user_login;
@@ -413,14 +435,14 @@ class WPUF_Simple_Login {
                     return;
                 }
             } else {
-                $creds['user_login'] = $_POST['log'];
+                $creds['user_login'] = $log;
             }
 
-            $creds['user_password'] = $_POST['pwd'];
-            $creds['remember']      = isset( $_POST['rememberme'] );
+            $creds['user_password'] = $pwd;
+            $creds['remember']      = isset( $_POST['rememberme'] ) ? sanitize_text_field( wp_unslash( $_POST['rememberme'] ) ) : '';
 
             if ( isset( $user->user_login ) ) {
-                $validate = wp_authenticate_email_password( null, trim( $_POST['log'] ), $creds['user_password'] );
+                $validate = wp_authenticate_email_password( null, trim( $log ), $creds['user_password'] );
 
                 if ( is_wp_error( $validate ) ) {
                     $this->login_errors[] = $validate->get_error_message();
@@ -450,10 +472,17 @@ class WPUF_Simple_Login {
      * @return string $url
      */
     public function login_redirect() {
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            die( esc_html( 'Failed nonce verification !' ) );
+        }
+
         $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
 
         if ( 'previous_page' == $redirect_to && !empty( $_POST['redirect_to'] ) ) {
-            return esc_url( $_POST['redirect_to'] );
+            $re_to = sanitize_text_field( wp_unslash( $_POST['redirect_to'] ) );
+            return $re_to;
         }
 
         $redirect = get_permalink( $redirect_to );
@@ -489,7 +518,9 @@ class WPUF_Simple_Login {
      * @return void
      */
     public function process_logout() {
-        if ( isset( $_GET['action'] ) && $_GET['action'] == 'logout' ) {
+        $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
+
+        if ( $action == 'logout' ) {
             if ( !$this->is_override_enabled() ) {
                 return;
             }
@@ -497,7 +528,7 @@ class WPUF_Simple_Login {
             check_admin_referer( 'log-out' );
             wp_logout();
 
-            $redirect_to = !empty( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : add_query_arg( [ 'loggedout' => 'true' ], $this->get_login_url() );
+            $redirect_to = !empty( $_REQUEST['redirect_to'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['redirect_to'] ) ) : add_query_arg( [ 'loggedout' => 'true' ], $this->get_login_url() );
             wp_safe_redirect( $redirect_to );
             exit();
         }
@@ -515,7 +546,9 @@ class WPUF_Simple_Login {
 
         // process lost password form
         if ( isset( $_POST['user_login'] ) && isset( $_POST['_wpnonce'] ) ) {
-            wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_lost_pass' );
+
+            $nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
+            wp_verify_nonce( $nonce, 'wpuf_lost_pass' );
 
             if ( $this->retrieve_password() ) {
                 $url = add_query_arg( [ 'checkemail' => 'confirm' ], $this->get_login_url() );
@@ -527,24 +560,30 @@ class WPUF_Simple_Login {
         // process reset password form
         if ( isset( $_POST['pass1'] ) && isset( $_POST['pass2'] ) && isset( $_POST['key'] ) && isset( $_POST['login'] ) && isset( $_POST['_wpnonce'] ) ) {
 
+            $pass1 = sanitize_text_field( wp_unslash( $_POST['pass1'] ) );
+            $pass2 = sanitize_text_field( wp_unslash( $_POST['pass2'] ) );
+            $key = sanitize_key( wp_unslash( $_POST['key'] ) );
+            $login = sanitize_key( wp_unslash( $_POST['login'] ) );
+            $nonce = sanitize_key( wp_unslash( $_POST['_wpnonce'] ) );
+
             // verify reset key again
-            $user = $this->check_password_reset_key( $_POST['key'], $_POST['login'] );
+            $user = $this->check_password_reset_key( $key, $login );
 
             if ( is_object( $user ) ) {
 
                 // save these values into the form again in case of errors
-                $args['key']   = $_POST['key'];
-                $args['login'] = $_POST['login'];
+                $args['key']   = $key;
+                $args['login'] = $login;
 
-                wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_reset_pass' );
+                wp_verify_nonce( $nonce, 'wpuf_reset_pass' );
 
-                if ( empty( $_POST['pass1'] ) || empty( $_POST['pass2'] ) ) {
+                if ( empty( $pass1 ) || empty( $pass2 ) ) {
                     $this->login_errors[] = __( 'Please enter your password.', 'wp-user-frontend' );
 
                     return;
                 }
 
-                if ( $_POST[ 'pass1' ] !== $_POST[ 'pass2' ] ) {
+                if ( $pass1 !== $pass2 ) {
                     $this->login_errors[] = __( 'Passwords do not match.', 'wp-user-frontend' );
 
                     return;
@@ -563,7 +602,7 @@ class WPUF_Simple_Login {
                 }
 
                 if ( !$this->login_errors ) {
-                    $this->reset_password( $user, $_POST['pass1'] );
+                    $this->reset_password( $user, $pass1 );
 
                     do_action( 'wpuf_customer_reset_password', $user );
 
@@ -584,12 +623,20 @@ class WPUF_Simple_Login {
     public function retrieve_password() {
         global $wpdb, $wp_hasher;
 
-        if ( empty( $_POST['user_login'] ) ) {
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+            die( 'Failed nonce verification !' );
+        }
+
+        $user_login = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';
+
+        if ( empty( $user_login ) ) {
             $this->login_errors[] = __( 'Enter a username or e-mail address.', 'wp-user-frontend' );
 
             return;
-        } elseif ( strpos( $_POST['user_login'], '@' ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {
-            $user_data = get_user_by( 'email', trim( $_POST['user_login'] ) );
+        } elseif ( strpos( $user_login, '@' ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {
+            $user_data = get_user_by( 'email', trim( $user_login ) );
 
             if ( empty( $user_data ) ) {
                 $this->login_errors[] = __( 'There is no user registered with that email address.', 'wp-user-frontend' );
@@ -597,7 +644,7 @@ class WPUF_Simple_Login {
                 return;
             }
         } else {
-            $login = trim( $_POST['user_login'] );
+            $login = trim( $user_login );
 
             $user_data = get_user_by( 'login', $login );
         }
@@ -742,7 +789,7 @@ class WPUF_Simple_Login {
             return;
         }
 
-        $user_id          = intval( $_GET['id'] );
+        $user_id          = intval( wp_unslash( $_GET['id'] ) );
         $user             =  new WPUF_User( $user_id );
         $wpuf_user_active = get_user_meta( $user_id, '_wpuf_user_active', true );
         $wpuf_user_status = get_user_meta( $user_id, 'wpuf_user_status', true );
@@ -759,7 +806,7 @@ class WPUF_Simple_Login {
             return;
         }
 
-        $activation_key = $_GET['wpuf_registration_activation'];
+        $activation_key = isset( $_GET['wpuf_registration_activation'] ) ? sanitize_text_field( wp_unslash( $_GET['wpuf_registration_activation'] ) ) : '';
 
         if ( $user->get_activation_key() != $activation_key ) {
             wpuf()->login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
@@ -781,7 +828,7 @@ class WPUF_Simple_Login {
         // show activation message
         add_filter( 'wp_login_errors', [ $this, 'user_activation_message' ] );
 
-        $password_info_email = isset( $_GET['wpuf_password_info_email'] ) ? $_GET['wpuf_password_info_email'] : false;
+        $password_info_email = isset( $_GET['wpuf_password_info_email'] ) ? sanitize_email( wp_unslash( $_GET['wpuf_password_info_email'] ) ) : false;
         $the_user            = get_user_by( 'id', $user_id );
         $user_email          = $the_user->user_email;
         $blogname            = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
@@ -903,7 +950,7 @@ class WPUF_Simple_Login {
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login );
 
         if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
-            wp_die( __( 'The e-mail could not be sent.', 'wp-user-frontend' ) . "<br />\n" . __( 'Possible reason: your host may have disabled the mail() function.', 'wp-user-frontend' ) );
+            wp_die( esc_html( __( 'The e-mail could not be sent.', 'wp-user-frontend' ) ) . "<br />\n" . esc_html( __( 'Possible reason: your host may have disabled the mail() function.', 'wp-user-frontend' ) ) );
         }
     }
 
@@ -937,9 +984,9 @@ class WPUF_Simple_Login {
     public function show_errors() {
         if ( $this->login_errors ) {
             foreach ( $this->login_errors as $error ) {
-                echo '<div class="wpuf-error">';
-                _e( $error, 'wp-user-frontend' );
-                echo '</div>';
+                echo wp_kses_post( '<div class="wpuf-error">' );
+                esc_html_e( $error, 'wp-user-frontend' );
+                echo wp_kses_post( '</div>' );
             }
         }
     }
@@ -952,7 +999,7 @@ class WPUF_Simple_Login {
     public function show_messages() {
         if ( $this->messages ) {
             foreach ( $this->messages as $message ) {
-                printf( '<div class="wpuf-message">%s</div>', $message );
+                printf( '<div class="wpuf-message">%s</div>', esc_html( $message ) );
             }
         }
     }
@@ -966,7 +1013,8 @@ class WPUF_Simple_Login {
      */
     public static function get_posted_value( $key ) {
         if ( isset( $_REQUEST[$key] ) ) {
-            return esc_attr( $_REQUEST[$key] );
+            $requested_key = sanitize_key( wp_unslash( $_REQUEST[$key] ) );
+            return esc_attr( $requested_key );
         }
 
         return '';

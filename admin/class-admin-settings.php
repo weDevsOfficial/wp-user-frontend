@@ -153,7 +153,7 @@ class WPUF_Admin_Settings {
         ?>
         <div class="wrap">
 
-            <h2 style="margin-bottom: 15px;"><?php _e( 'Settings', 'wp-user-frontend' ); ?></h2>
+            <h2 style="margin-bottom: 15px;"><?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?></h2>
             <div class="wpuf-settings-wrap">
                 <?php
                 settings_errors();
@@ -177,7 +177,7 @@ class WPUF_Admin_Settings {
      * @return void
      */
     public function wpuf_post_forms_page() {
-        $action           = isset( $_GET['action'] ) ? $_GET['action'] : null;
+        $action           = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : null;
         $add_new_page_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
 
         switch ( $action ) {
@@ -298,7 +298,7 @@ class WPUF_Admin_Settings {
 
         global $wpdb;
 
-        $action  = $_GET['wpuf_action'];
+        $action  = isset( $_GET['wpuf_action'] ) ? sanitize_text_field( wp_unslash( $_GET['wpuf_action'] ) ) : '';
         $message = 'del_forms';
 
         switch ( $action ) {

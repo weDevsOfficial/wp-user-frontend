@@ -61,16 +61,17 @@ class WPUF_Frontend_Dashboard {
         global $post;
         extract( $attributes );
 
-        $pagenum = isset( $_GET['pagenum'] ) ? intval( $_GET['pagenum'] ) : 1;
-
+        $pagenum = isset( $_GET['pagenum'] ) ? intval( wp_unslash( $_GET['pagenum'] ) ) : 1;
+        $action  = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
+        $msg  = isset( $_GET['msg'] ) ? sanitize_text_field( wp_unslash( $_GET['msg'] ) ) : '';
         //delete post
-        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'del' ) {
+        if ( $action == 'del' ) {
             $this->delete_post();
         }
 
         //show delete success message
-        if ( isset( $_GET['msg'] ) && $_GET['msg'] == 'deleted' ) {
-            echo '<div class="success">' . __( 'Post Deleted', 'wp-user-frontend' ) . '</div>';
+        if ( $msg == 'deleted' ) {
+            echo wp_kses_post( '<div class="success">' . __( 'Post Deleted', 'wp-user-frontend' ) . '</div>' );
         }
         $post_type  = explode( ',', $post_type );
         $args       = [
@@ -128,12 +129,12 @@ class WPUF_Frontend_Dashboard {
         if ( wpuf_get_option( 'show_user_bio', 'wpuf_dashboard', 'on' ) == 'on' ) {
             ?>
             <div class="wpuf-author">
-                <h3><?php _e( 'Author Info', 'wp-user-frontend' ); ?></h3>
+                <h3><?php esc_html_e( 'Author Info', 'wp-user-frontend' ); ?></h3>
                 <div class="wpuf-author-inside odd">
-                    <div class="wpuf-user-image"><?php echo get_avatar( $userdata->user_email, 80 ); ?></div>
+                    <div class="wpuf-user-image"><?php echo esc_attr( get_avatar( $userdata->user_email, 80 ) ); ?></div>
                     <div class="wpuf-author-body">
-                        <p class="wpuf-user-name"><a href="<?php echo get_author_posts_url( $userdata->ID ); ?>"><?php printf( esc_attr__( '%s', 'wp-user-frontend' ), $userdata->display_name ); ?></a></p>
-                        <p class="wpuf-author-info"><?php echo $userdata->description; ?></p>
+                        <p class="wpuf-user-name"><a href="<?php echo esc_url( get_author_posts_url( esc_attr( $userdata->ID ) ) ); ?>"><?php printf( esc_attr__( '%s', 'wp-user-frontend' ), esc_attr( $userdata->display_name ) ); ?></a></p>
+                        <p class="wpuf-author-info"><?php echo esc_html( $userdata->description ); ?></p>
                     </div>
                 </div>
             </div><!-- .author -->
@@ -149,17 +150,18 @@ class WPUF_Frontend_Dashboard {
     public function delete_post() {
         global $userdata;
 
-        $nonce = $_REQUEST['_wpnonce'];
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $pid = isset( $_REQUEST['pid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['pid'] ) ) : '';
 
         if ( !wp_verify_nonce( $nonce, 'wpuf_del' ) ) {
             die( 'Security check' );
         }
 
         //check, if the requested user is the post author
-        $maybe_delete = get_post( $_REQUEST['pid'] );
+        $maybe_delete = get_post( $pid );
 
         if ( ( $maybe_delete->post_author == $userdata->ID ) || current_user_can( 'delete_others_pages' ) ) {
-            wp_trash_post( $_REQUEST['pid'] );
+            wp_trash_post( $pid );
 
             //redirect
             $redirect = add_query_arg( ['msg' => 'deleted'], get_permalink() );
@@ -168,7 +170,7 @@ class WPUF_Frontend_Dashboard {
 
             wp_redirect( $redirect );
         } else {
-            echo '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wp-user-frontend' ) . '</div>';
+            echo wp_kses_post( '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wp-user-frontend' ) . '</div>' );
         }
     }
 }

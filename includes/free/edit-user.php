@@ -9,8 +9,8 @@ function wpuf_edit_users() {
 
         //this user can edit the users
         if ( current_user_can( 'edit_users' ) ) {
-            $action   = isset( $_GET['action'] ) ? $_GET['action'] : 'show';
-            $user_id  = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : 0;
+            $action   = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'show';
+            $user_id  = isset( $_GET['user_id'] ) ? intval( wp_unslash( $_GET['user_id'] ) ) : 0;
             $userdata = get_userdata( $user_id );
 
             switch ( $action ) {
@@ -19,7 +19,7 @@ function wpuf_edit_users() {
                     if ( $user_id && $userdata ) {
                         WPUF_Edit_Profile::show_form( $user_id );
                     } else {
-                        printf( __( "User doesn't exists", 'wp-user-frontend' ) );
+                        printf( esc_html( __( "User doesn't exists", 'wp-user-frontend' ) ) );
                     }
                     break;
 
@@ -30,10 +30,10 @@ function wpuf_edit_users() {
                 default: wpuf_show_users();
             }
         } else { // user don't have any permission
-            printf( __( "You don't have permission for this purpose", 'wp-user-frontend' ) );
+            printf( esc_html( __( "You don't have permission for this purpose", 'wp-user-frontend' ) ) );
         }
     } else { //user is not logged in
-        printf( __( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ), wp_loginout( '', false ) );
+        printf( esc_html( __( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ) ), wp_loginout( '', false ) );
     }
 
     return ob_get_clean();
@@ -45,8 +45,10 @@ function wpuf_show_users() {
     global $wpdb, $userdata;
 
     //delete user
-    if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'del' ) {
-        $nonce = $_REQUEST['_wpnonce'];
+    $action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
+
+    if ( $action == 'del' ) {
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
         if ( !wp_verify_nonce( $nonce, 'wpuf_del_user' ) ) {
             wp_die( 'Cheting?' );
@@ -56,7 +58,7 @@ function wpuf_show_users() {
 
         //get users info
         $cur_user      = $userdata->ID;
-        $to_be_deleted = ( isset( $_GET['user_id'] ) ) ? intval( $_GET['user_id'] ) : 0;
+        $to_be_deleted = ( isset( $_GET['user_id'] ) ) ? intval( wp_unslash( $_GET['user_id'] ) ) : 0;
 
         //user can't delete himself and not the admin, whose id is 1
         if ( $cur_user != $to_be_deleted && $to_be_deleted != 1 ) {
@@ -72,9 +74,9 @@ function wpuf_show_users() {
         //delete the user
         if ( current_user_can( 'delete_users' ) && $delete_flag == true ) {
             wp_delete_user( $to_be_deleted );
-            echo '<div class="success">' . __( 'User Deleted', 'wp-user-frontend' ) . '</div>';
+            echo wp_kses_post( '<div class="success">' . __( 'User Deleted', 'wp-user-frontend' ) . '</div>' );
         } else {
-            echo '<div class="error">Cheatin&#8217; uh?</div>';
+            echo wp_kses_post( '<div class="error">Cheatin&#8217; uh?</div>' );
         }
     }
 
@@ -88,15 +90,15 @@ function wpuf_show_users() {
     <?php if ( $users ) { ?>
         <table class="wpuf-table" cellpadding="0" cellspacing="0">
             <tr>
-                <th><?php _e( 'Username', 'wp-user-frontend' ); ?></th>
-                <th><?php _e( 'Action', 'wp-user-frontend' ); ?></th>
+                <th><?php esc_html_e( 'Username', 'wp-user-frontend' ); ?></th>
+                <th><?php esc_html_e( 'Action', 'wp-user-frontend' ); ?></th>
             </tr>
             <?php foreach ( $users as $user ) { ?>
                 <tr>
-                    <td><a href="<?php echo get_author_posts_url( $user->ID ); ?>"><?php printf( esc_attr__( '%s', 'wp-user-frontend' ), $user->display_name ); ?></td>
+                    <td><a href="<?php echo esc_attr( get_author_posts_url( $user->ID ) ); ?>"><?php printf( esc_attr__( '%s', 'wp-user-frontend' ), esc_attr( $user->display_name ) ); ?></td>
                     <td>
-                        <a href="<?php echo wp_nonce_url( get_permalink() . '?action=edit&user_id=' . $user->ID, 'wpuf_edit_user' ); ?>"><?php _e( 'Edit', 'wp-user-frontend' ); ?></a>
-                        <a href="<?php echo wp_nonce_url( the_permalink( 'echo=false' ) . '?action=del&user_id=' . $user->ID, 'wpuf_del_user' ); ?>" onclick="return confirm('<?php echo $delete_message; ?>');"><span style="color: red;"><?php _e( 'Delete', 'wp-user-frontend' ); ?></span></a>
+                        <a href="<?php echo esc_url( wp_nonce_url( get_permalink() . '?action=edit&user_id=' . $user->ID, 'wpuf_edit_user' ) ); ?>"><?php esc_html_e( 'Edit', 'wp-user-frontend' ); ?></a>
+                        <a href="<?php echo esc_url( wp_nonce_url( the_permalink( 'echo=false' ) . '?action=del&user_id=' . $user->ID, 'wpuf_del_user' ) ); ?>" onclick="return confirm('<?php echo esc_html( $delete_message ); ?>');"><span style="color: red;"><?php esc_html_e( 'Delete', 'wp-user-frontend' ); ?></span></a>
                     </td>
                 </tr>
 
@@ -114,53 +116,64 @@ function wpuf_add_user() {
     require_once ABSPATH . '/wp-admin/includes/template.php'; ?>
     <?php if ( current_user_can( 'create_users' ) ) { ?>
 
-        <h3><?php _e( 'Add New User', 'wp-user-frontend' ); ?></h3>
+        <h3><?php esc_html_e( 'Add New User', 'wp-user-frontend' ); ?></h3>
 
         <?php
+
         if ( isset( $_POST['wpuf_new_user_submit'] ) ) {
+
+            $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+            if ( ! wp_verify_nonce(  $nonce, 'wpuf_add_user' ) )  {
+                die( 'Failed nonce verication !' );
+            }
+        }
+
             $errors = [];
 
-            $username = sanitize_user( $_POST['user_login'] );
-            $email    = trim( $_POST['user_email'] );
-            $role     = $_POST['role'];
+            $username =  isset( $_POST['user_login'] ) ? sanitize_user( wp_unslash( $_POST['user_login'] ) ) : '';
+            $email    = isset( $_POST['user_email'] ) ? sanitize_text_field( wp_unslash( $_POST['user_email'] ) ) : '';
+            $role     = isset( $_POST['role'] ) ? sanitize_text_field( wp_unslash( $_POST['role'] ) ) : '';
 
             $error = null;
             $error = wpuf_register_new_user( $username, $email, $role );
 
             if ( !is_wp_error( $error ) ) {
-                echo '<div class="success">' . __( 'User Added', 'wp-user-frontend' ) . '</div>';
+                echo wp_kses_post( '<div class="success">' . __( 'User Added', 'wp-user-frontend' ) . '</div>' );
             } else {
-                echo '<div class="error">' . $error->get_error_message() . '</div>';
+                echo wp_kses_post( '<div class="error">' . $error->get_error_message() . '</div>' );
             }
         }
         ?>
 
         <form action="" method="post">
-
+            <?php wp_nonce_field( 'wpuf_add_user' ); ?>
             <ul class="wpuf-post-form">
                 <li>
                     <label for="user_login">
-                        <?php _e( 'Username', 'wp-user-frontend' ); ?> <span class="required">*</span>
+                        <?php esc_html_e( 'Username', 'wp-user-frontend' ); ?> <span class="required">*</span>
                     </label>
                     <input type="text" name="user_login" id="user_login" minlength="2" value="<?php if ( isset( $_POST['user_login'] ) ) {
-                        echo wpuf_clean_tags( $_POST['user_login'] );
+                            $u_login = sanitize_text_field( wp_unslash( $_POST['user_login'] ) );
+                        echo esc_html( wpuf_clean_tags( $u_login ) );
                     } ?>">
                     <div class="clear"></div>
                 </li>
 
                 <li>
                     <label for="user_email">
-                        <?php _e( 'Email', 'wp-user-frontend' ); ?> <span class="required">*</span>
+                        <?php esc_html_e( 'Email', 'wp-user-frontend' ); ?> <span class="required">*</span>
                     </label>
                     <input type="text" name="user_email" id="user_email" minlength="2" value="<?php if ( isset( $_POST['user_email'] ) ) {
-                        echo wpuf_clean_tags( $_POST['user_email'] );
+                            $u_email = sanitize_email( wp_unslash( $_POST['user_email'] ) );
+                            echo esc_html( wpuf_clean_tags( $u_email ) );
                     } ?>">
                     <div class="clear"></div>
                 </li>
 
                 <li>
                     <label for="role">
-                        <?php _e( 'Role', 'wp-user-frontend' ); ?>
+                        <?php esc_html_e( 'Role', 'wp-user-frontend' ); ?>
                     </label>
 
                     <select name="role" id="role">
@@ -187,7 +200,6 @@ function wpuf_add_user() {
     <?php } ?>
 
     <?php
-}
 
 /**
  * Handles registering a new user.

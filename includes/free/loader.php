@@ -102,7 +102,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             <h3 style="margin: 0;">Pro Features</h3>
 
             <p>
-                <?php esc_html_e( 'Registration form builder is a two way form which can be used both for <strong>user registration</strong> and <strong>profile editing</strong>.', 'wp-user-frontend' ); ?>
+                <?php echo wp_kses_post( __( 'Registration form builder is a two way form which can be used both for <strong>user registration</strong> and <strong>profile editing</strong>.', 'wp-user-frontend' ) ); ?>
             </p>
 
             <ul class="wpuf-pro-features">

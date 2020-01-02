@@ -12,9 +12,9 @@ $tools = new WPUF_Admin_Tools();
     <h2 class="nav-tab-wrapper">
         <a class="nav-tab <?php echo ( $tab == 'tools' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'tools' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html_e( 'Tools', 'wp-user-frontend' ); ?></a>
 
-        <a class="nav-tab <?php echo ( $tab == 'import' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'import' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html( 'Import', 'wp-user-frontend' ); ?></a>
+        <a class="nav-tab <?php echo ( $tab == 'import' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'import' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html_e( 'Import', 'wp-user-frontend' ); ?></a>
 
-        <a class="nav-tab <?php echo ( $tab == 'export' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'export' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html( 'Export', 'wp-user-frontend' ); ?></a>
+        <a class="nav-tab <?php echo ( $tab == 'export' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'export' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html_e( 'Export', 'wp-user-frontend' ); ?></a>
     </h2>
 
     <?php

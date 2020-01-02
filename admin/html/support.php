@@ -209,7 +209,7 @@ function wpuf_help_related_articles( $articles ) {
         <div class="text-wrap">
             <h3><?php esc_html_e( 'Subscribe to Our Newsletter', 'wp-user-frontend' ); ?></h3>
             <p>
-                <?php esc_html_e( 'Subscribe to our newsletter for regular <strong>tips</strong>, <strong>offers</strong> and <strong>news updates</strong>.', 'wp-user-frontend' ); ?>
+                <?php echo wp_kses_post( __( 'Subscribe to our newsletter for regular <strong>tips</strong>, <strong>offers</strong> and <strong>news updates</strong>.', 'wp-user-frontend' ) ); ?>
             </p>
         </div>
 

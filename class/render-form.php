@@ -71,7 +71,7 @@ class WPUF_Render_Form {
      * @return void
      */
     public function validate_rs_captcha() {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $nonce = isset( $_REQUEST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-login-nonce'] ) ) : '';
 
         if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
             die( esc_html( 'Failed nonce verification !' ) );
@@ -98,7 +98,7 @@ class WPUF_Render_Form {
      * @return void
      */
     public function validate_re_captcha( $no_captcha = '', $invisible = '' ) {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $nonce = isset( $_REQUEST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-login-nonce'] ) ) : '';
 
         if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
             die( esc_html( 'Failed nonce verification !' ) );
@@ -227,7 +227,11 @@ class WPUF_Render_Form {
 
         foreach ( $meta_vars as $key => $value ) {
             $value_name = isset( $_POST[$value['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$value['name']] ) ) : '';
-            $wpuf_files = isset( $_POST['wpuf_files'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wpuf_files'] ) ) : [];
+            if ( isset( $_POST['wpuf_files'][$value['name']] ) ) {
+                $wpuf_files = isset( $_POST['wpuf_files'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_files'][$value['name']] ) ) : [];
+            } else {
+                $wpuf_files = [];
+            }
             switch ( $value['input_type'] ) {
 
                 // put files in a separate array, we'll process it later
@@ -236,7 +240,8 @@ class WPUF_Render_Form {
 
                     $files[] = [
                         'name'  => $value['name'],
-                        'value' => isset( $wpuf_files[$value['name']] ) ? $wpuf_files[$value['name']] : [],
+                        // 'value' => isset( $wpuf_files[$value['name']] ) ? $wpuf_files[$value['name']] : [],
+                        'value' => isset( $wpuf_files ) ? $wpuf_files : [],
                         'count' => $value['count'],
                     ];
                     break;

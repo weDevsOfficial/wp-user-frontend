@@ -73,7 +73,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
             <li>
                 <div class="wpuf-label"><?php esc_html_e( 'State/Province/Region', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
                 <div class="wpuf-fields">
-                    <input type="text" class="input" name="state" id="state" value="<?php echo esc_attr( $cs->getStateName( $address_fields['state'] ) , esc_attr( $address_fields['country'] ) ) ; ?>" />
+                    <input type="text" class="input" name="state" id="state" value="<?php echo esc_attr( $cs->getStateName( $address_fields['state'], esc_attr( $address_fields['country'] ) ) ) ; ?>" />
                 </div>
             </li>
 

@@ -94,7 +94,7 @@ class WPUF_Admin_Subscription {
         if ( !is_admin() && !current_user_can( 'edit_users' ) ) {
             return;
         }
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $nonce = isset( $_REQUEST['wpuf-subscription-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-subscription-nonce'] ) ) : '';
 
         if ( ! wp_verify_nonce( $nonce, 'update-profile_' . $user_id ) ) {
             die( esc_html( 'Failed nonce verification !' ) );
@@ -379,7 +379,31 @@ class WPUF_Admin_Subscription {
                 <section id="wpuf-post-restriction">
                     <table class="form-table">
                         <tbody>
-                            <?php echo esc_html( $this->get_post_types( $sub_meta['post_type_name'] ) ); ?>
+                            <?php
+                                echo wp_kses( $this->get_post_types( $sub_meta['post_type_name'] ),
+                                    [
+                                        'div'    => [],
+                                        'tr'     => [],
+                                        'td'     => [],
+                                        'th'     => [],
+                                        'label'  => [
+                                            'for' => []
+                                        ],
+                                        'input' => [
+                                            'type'  => [],
+                                            'size'  => [],
+                                            'style' => [],
+                                            'id'    => [],
+                                            'value' => [],
+                                            'name'  => []
+                                        ],
+                                        'span' => [
+                                            'class' => []
+                                        ],
+                                        'strong' => []
+                                    ]
+                                );
+                            ?>
                             <?php
                            // do_action( 'wpuf_admin_subscription_detail', $sub_meta, $hidden_recurring_class, $hidden_trial_class, $this );
                             ?>
@@ -766,6 +790,7 @@ class WPUF_Admin_Subscription {
                 </table>
             <?php } ?>
             <?php
+            wp_nonce_field( 'update-profile_' . $userdata->ID, 'wpuf-subscription-nonce'  );
             do_action( 'wpuf_admin_subscription_content', $userdata->ID ); ?>
             <?php if ( !empty( $user_sub ) ) { ?>
                 <div class="wpuf-sub-actions">
@@ -790,6 +815,11 @@ class WPUF_Admin_Subscription {
      * @since 2.2.7
      */
     public function delete_user_package() {
+        $nonce = isset( $_REQUEST['wpuf_subscription_delete_nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf_subscription_delete_nonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf-subscription-delete-nonce' ) ) {
+            die( esc_html( 'Failed nonce verification !' ) );
+        }
         $userid = isset( $_POST['userid'] ) ? intval( wp_unslash( $_POST['userid'] ) ) : 0;
 
         echo esc_html( delete_user_meta( $userid, '_wpuf_subscription_pack' ) );

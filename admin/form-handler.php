@@ -317,7 +317,7 @@ class WPUF_Admin_Form_Handler {
      * @return void
      */
     public function display_notice( $text, $type = 'updated' ) {
-        printf( '<div class="%s"><p>%s</p></div>', esc_attr( $type ), esc_html( $text ) );
+        printf( '<div class="%s"><p>%s</p></div>', esc_attr( $type ), wp_kses_post( $text ) );
     }
 
     /**

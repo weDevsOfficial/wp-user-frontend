@@ -271,7 +271,7 @@ class WPUF_Setup_Wizard {
     public function wpuf_setup_introduction() {
         ?>
         <h1><?php esc_html_e( 'Welcome to the world of WPUF!', 'wp-user-frontend' ); ?></h1>
-        <p><?php esc_html_e( 'Thank you for choosing WPUF to power your websites frontend! This quick setup wizard will help you configure the basic settings. <strong>It’s completely optional and shouldn’t take longer than a minute.</strong>', 'wp-user-frontend' ); ?></p>
+        <p><?php echo wp_kses_post( __( 'Thank you for choosing WPUF to power your websites frontend! This quick setup wizard will help you configure the basic settings. <strong>It’s completely optional and shouldn’t take longer than a minute.</strong>', 'wp-user-frontend' ) ); ?></p>
         <p><?php esc_html_e( 'No time right now? If you don’t want to go through the wizard, you can skip and return to the WordPress dashboard. Come back anytime if you change your mind!', 'wp-user-frontend' ); ?></p>
         <p class="wpuf-setup-actions step">
             <a href="<?php echo esc_url( $this->get_next_step_link() ); ?>" class="button-primary button button-large button-next"><?php esc_html_e( 'Let\'s Go!', 'wp-user-frontend' ); ?></a>
@@ -302,6 +302,7 @@ class WPUF_Setup_Wizard {
                     <td>
                         <input type="checkbox" name="install_wpuf_pages" id="install_wpuf_pages" class="input-checkbox" value="1" <?php echo ( $install_wpuf_pages == 'on' ) ? 'checked="checked"' : ''; ?>/>
                         <label for="install_wpuf_pages"><?php esc_html_e( 'Install neccessery pages on your site frontend.', 'wp-user-frontend' ); ?></label>
+                        <?php wp_nonce_field('wpuf_setup','wpuf-setup');?>
                     </td>
                 </tr>
                 <tr>
@@ -394,11 +395,11 @@ class WPUF_Setup_Wizard {
         <div class="wpuf-setup-next-steps">
             <div class="wpuf-setup-next-steps-first">
                 <ul>
-                    <li class="setup-product"><a class="button button-primary button-large" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-welcome' ) ); ?>"><?php esc_html_e( 'Welcome to Awesomeness!', 'wp-user-frontend' ); ?></a></li>
+                    <li class="setup-product"><a class="button button-primary button-large" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-welcome&wpuf_steup='. wp_create_nonce('wpuf-setup') ) ); ?>"><?php esc_html_e( 'Welcome to Awesomeness!', 'wp-user-frontend' ); ?></a></li>
                 </ul>
             </div>
             <div class="wpuf-setup-next-steps-last">
-                <h2><a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ); ?>"><?php esc_html_e( 'Go to Full Settings', 'wp-user-frontend' ); ?></a></h2>
+                <h2><a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-settings&wpuf_steup='. wp_create_nonce('wpuf-setup') ) ); ?>"><?php esc_html_e( 'Go to Full Settings', 'wp-user-frontend' ); ?></a></h2>
             </div>
         </div>
         <?php

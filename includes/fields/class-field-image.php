@@ -58,7 +58,31 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
                             <?php
                             if ( $has_images ) {
                                 foreach ( $images as $attach_id ) {
-                                    echo esc_html( WPUF_Upload::attach_html( $attach_id, $field_settings['name'] ) );
+                                    echo wp_kses_post( WPUF_Upload::attach_html( $attach_id, $field_settings['name'] ),[
+                                        'li' => [
+                                                'class' => []
+                                            ],
+                                            'div' => [
+                                                'class' => []
+                                            ],
+                                            'img' => [
+                                                'src' => [],
+                                                'alt' => [],
+                                            ],
+                                            'input' => [
+                                                'type' => [],
+                                                'name' => [],
+                                                'value' => [],
+                                            ],
+                                            'a' => [
+                                                'href' => [],
+                                                'class' => [],
+                                                'data-attach_id' => [],
+                                            ],
+                                            'span' => [
+                                                'class' => []
+                                            ]
+                                    ] );
                                 }
                             } ?>
                         </ul>

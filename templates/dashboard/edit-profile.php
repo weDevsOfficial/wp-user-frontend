@@ -134,7 +134,50 @@ ob_start();
 </form>
 
 <?php
-    $output = ob_get_clean();
+    $output       = apply_filters( 'wpuf_account_edit_profile_content', ob_get_clean() );
+    $allowed_html = apply_filters( 'wpuf_account_edit_profile_content_allowed_html', [
+        'form'   => [
+            'class'  => [],
+            'action' => [],
+            'method' => [],
+        ],
+        'div'    => [
+            'style' => [],
+            'class' => []
+        ],
+        'ul'     => [
+            'class' => []
+        ],
+        'li'     => [
+            'class' => []
+        ],
+        'input'  => [
+            'type'     => [],
+            'class'    => [],
+            'name'     => [],
+            'id'       => [],
+            'value'    => [],
+            'required' => []
+        ],
+        'button' => [
+            'type' => [],
+            'name' => [],
+            'id'   => [],
+            'class' => []
+        ],
+        'label'  => [
+            'for'   => [],
+            'class' => []
+        ],
+        'span'   => [
+            'class' => [],
+            'style' => [],
+            'id'    => []
+        ],
+        'script' => [
+            'src' => [],
+        ]
+    ]);
 
-    echo esc_html( apply_filters( 'wpuf_account_edit_profile_content', $output ) );
+    echo wp_kses( $output, $allowed_html );
 ?>

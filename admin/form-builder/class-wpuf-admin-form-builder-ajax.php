@@ -23,9 +23,13 @@ class WPUF_Admin_Form_Builder_Ajax {
      * @return void
      */
     public function save_form() {
-        $form = isset( $_POST['form_data'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['form_data'] ) ) : '';
+        $post_data =  wp_unslash($_POST);
 
-        parse_str( $_POST['form_data'], $form_data );
+        if ( isset( $post_data['form_data'] ) ) {
+            parse_str( wp_unslash( $post_data['form_data'] ),  $form_data );
+        } else {
+            wp_send_json_error( __( 'form data is missing', 'wp-user-frontend'));
+        }
 
         if ( !wp_verify_nonce( $form_data['wpuf_form_builder_nonce'], 'wpuf_form_builder_save_form' ) ) {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
@@ -35,20 +39,20 @@ class WPUF_Admin_Form_Builder_Ajax {
             wp_send_json_error( __( 'Invalid form id', 'wp-user-frontend' ) );
         }
 
-        $form_fields   = isset( $_POST['form_fields'] ) ? sanitize_text_field( wp_unslash( $_POST['form_fields'] ) ) : '';
-        $notifications = isset( $_POST['notifications'] ) ? sanitize_text_field( wp_unslash( $_POST['notifications'] ) ) : '';
+        $form_fields   = isset( $post_data['form_fields'] ) ? sanitize_text_field( wp_unslash( $post_data['form_fields'] ) ) : '';
+        $notifications = isset( $post_data['notifications'] ) ? sanitize_text_field( wp_unslash( $post_data['notifications'] ) ) : '';
         $settings      = [];
         $integrations  = [];
 
-        if ( isset( $_POST['settings'] ) ) {
-            $settings_data = array_map( 'sanitize_text_field', wp_unslash( $_POST['settings'] ) );
+        if ( isset( $post_data['settings'] ) ) {
+            $settings_data = array_map( 'sanitize_text_field', wp_unslash( $post_data['settings'] ) );
             $settings = (array) json_decode( $settings_data );
         } else {
             $settings = isset( $form_data['wpuf_settings'] ) ? $form_data['wpuf_settings'] : [];
         }
 
-        if ( isset( $_POST['integrations'] ) ) {
-            $integrations = (array) json_decode( sanitize_text_field( wp_unslash( $_POST['integrations'] ) ) );
+        if ( isset( $post_data['integrations'] ) ) {
+            $integrations = (array) json_decode( sanitize_text_field( wp_unslash( $post_data['integrations'] ) ) );
         }
 
         $form_fields   = wp_unslash( $form_fields );

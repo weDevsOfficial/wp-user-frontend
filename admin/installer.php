@@ -39,7 +39,7 @@ class WPUF_Admin_Installer {
             ?>
             <div class="updated">
                 <p>
-                    <strong><?php esc_html_e( 'Congratulations!', 'wp-user-frontend' ); ?></strong> <?php esc_html_e( 'Pages for <strong>WP User Frontend</strong> has been successfully installed and saved!', 'wp-user-frontend' ); ?>
+                    <strong><?php esc_html_e( 'Congratulations!', 'wp-user-frontend' ); ?></strong> <?php echo wp_kses_post( 'Pages for <strong>WP User Frontend</strong> has been successfully installed and saved!', 'wp-user-frontend' ); ?>
                 </p>
             </div>
             <?php
@@ -52,11 +52,11 @@ class WPUF_Admin_Installer {
      * @return void
      */
     public function handle_request() {
-        $nonce = isset($_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $nonce = isset($_REQUEST['wpuf_steup'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf_steup'] ) ) : '';
 
-        // if ( ! wp_verify_nonce( $nonce, 'wpuf-setup' ) ) {
-        //     die( esc_html( 'Failed nonce verification !' ) );
-        // }
+        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( 'wpuf_steup' ) ) {
+
+        }
 
         if ( isset( $_GET['install_wpuf_pages'] ) && $_GET['install_wpuf_pages'] == '1' ) {
             $this->init_pages();

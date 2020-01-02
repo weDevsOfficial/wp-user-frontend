@@ -24,8 +24,8 @@ class WPUF_Simple_Login {
         add_action( 'init', [$this, 'wp_login_page_redirect'] );
         add_action( 'init', [$this, 'activation_user_registration'] );
         add_action( 'login_form', [$this, 'add_custom_fields'] );
-        add_action( 'login_enqueue_scripts', [$this, 'login_form_scripts'] );
-        add_filter( 'wp_authenticate_user', [$this, 'validate_custom_fields'], 10, 2 );
+        // add_action( 'login_enqueue_scripts', [$this, 'login_form_scripts'] );
+        // add_filter( 'wp_authenticate_user', [$this, 'validate_custom_fields'], 10, 2 );
 
         // URL filters
         add_filter( 'login_url', [$this, 'filter_login_url'], 10, 2 );
@@ -85,13 +85,13 @@ class WPUF_Simple_Login {
      * @since 2.9.0
      */
     public function login_form_scripts() {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( 'wp_login_nonce' ) ) {
 
-        // if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
-        //     die( esc_html( 'Failed nonce verification !' ) );
-        // }
+        }
 
-        if ( isset( $_POST['wpuf_login'] ) ) {
+        $post_data = wp_unslash( $_POST );
+
+        if ( isset( $post_data['wpuf_login'] ) ) {
             return;
         }
 
@@ -116,11 +116,10 @@ class WPUF_Simple_Login {
      * @since 2.9.0
      */
     public function validate_custom_fields( $user, $password ) {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        // if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
-        //     die( esc_html( 'Failed nonce verification !' ) );
-        // }
+        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( 'wp_login_nonce' ) ) {
+
+        }
 
         if ( isset( $_POST['wpuf_login'] ) ) {
             return $user;
@@ -375,20 +374,20 @@ class WPUF_Simple_Login {
      * @return void
      */
     public function process_login() {
-        if ( !empty( $_POST['wpuf_login'] ) && !empty( $_POST['_wpnonce'] ) ) {
+        if ( !empty( $_POST['wpuf_login'] ) && !empty( $_POST['wpuf-login-nonce'] ) ) {
             $creds = [];
 
-            $nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
+            $nonce = sanitize_text_field( wp_unslash( $_POST['wpuf-login-nonce'] ) );
 
-            // if ( !wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
-            //     $this->login_errors[] = __( 'Nonce is invalid', 'wp-user-frontend' );
+            if ( !wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+                $this->login_errors[] = __( 'Nonce is invalid', 'wp-user-frontend' );
 
-            //     return;
-            // }
+                return;
+            }
 
             $log = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
             $pwd = isset( $_POST['pwd'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd'] ) ) : '';
-            $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
+            // $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 
             $validation_error = new WP_Error();
             $validation_error = apply_filters( 'wpuf_process_login_errors', $validation_error, $log, $pwd );
@@ -411,16 +410,15 @@ class WPUF_Simple_Login {
                 return;
             }
 
-
-            if ( empty( $g_recaptcha_response ) ) {
-                $this->login_errors[] = __( 'Empty reCaptcha Field', 'wp-user-frontend' );
-
-                return;
-            } else {
-                $no_captcha        = 1;
-                $invisible_captcha = 0;
-
-                WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+            if ( isset ( $_POST["g-recaptcha-response"] ) ) {
+                if ( empty( $_POST['g-recaptcha-response'] ) ) {
+                    $this->login_errors[] = __( 'Empty reCaptcha Field', 'wp-user-frontend' );
+                    return;
+                } else {
+                    $no_captcha = 1;
+                    $invisible_captcha = 0;
+                    WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+                }
             }
 
 
@@ -446,7 +444,6 @@ class WPUF_Simple_Login {
 
                 if ( is_wp_error( $validate ) ) {
                     $this->login_errors[] = $validate->get_error_message();
-
                     return;
                 }
             }
@@ -472,7 +469,7 @@ class WPUF_Simple_Login {
      * @return string $url
      */
     public function login_redirect() {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $nonce = isset( $_REQUEST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-login-nonce'] ) ) : '';
 
         if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
             die( esc_html( 'Failed nonce verification !' ) );
@@ -984,9 +981,7 @@ class WPUF_Simple_Login {
     public function show_errors() {
         if ( $this->login_errors ) {
             foreach ( $this->login_errors as $error ) {
-                echo wp_kses_post( '<div class="wpuf-error">' );
-                esc_html_e( $error, 'wp-user-frontend' );
-                echo wp_kses_post( '</div>' );
+                echo wp_kses_post( '<div class="wpuf-error">' . __( $error, 'wp-user-frontend' ) . '</div>' );
             }
         }
     }

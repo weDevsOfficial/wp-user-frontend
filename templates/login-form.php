@@ -39,7 +39,7 @@
 
         <p class="forgetmenot">
             <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
-            <label for="wpuf-rememberme"><?php esc_attr( 'Remember Me', 'wp-user-frontend' ); ?></label>
+            <label for="wpuf-rememberme"><?php esc_html_e( 'Remember Me', 'wp-user-frontend' ); ?></label>
         </p>
 
         <p class="submit">
@@ -47,12 +47,12 @@
             <input type="hidden" name="redirect_to" value="<?php echo esc_attr( wp_get_referer() ); ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />
-            <?php wp_nonce_field( 'wpuf_login_action' ); ?>
+            <?php wp_nonce_field( 'wpuf_login_action','wpuf-login-nonce' ); ?>
         </p>
         <p>
             <?php do_action( 'wpuf_login_form_bottom' ); ?>
         </p>
     </form>
 
-    <?php echo esc_attr( wpuf()->login->get_action_links( [ 'login' => false ] ) ); ?>
+    <?php echo wp_kses_post( wpuf()->login->get_action_links( [ 'login' => false ] ) ); ?>
 </div>

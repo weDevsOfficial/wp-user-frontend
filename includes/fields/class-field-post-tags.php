@@ -108,6 +108,6 @@ class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
         check_ajax_referer( 'wpuf_form_add' );
 
         $field = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
-        return sanitize_text_field( $field );
+        return $field;
     }
 }

@@ -53,7 +53,7 @@ $post_type_obj   = get_post_type_object( $post_type );
 ?>
 
 <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
-    <div class="post_count"><?php printf( esc_attr( __( 'You have created <span>%d</span> %s', 'wp-user-frontend'  ) ), esc_attr( $dashboard_query->found_posts ), esc_attr( $post_type_obj->label ) ); ?></div>
+    <div class="post_count"><?php printf( wp_kses_post( __( 'You have created <span>%d</span> %s', 'wp-user-frontend'  ) ), esc_attr( $dashboard_query->found_posts ), esc_attr( $post_type_obj->label ) ); ?></div>
 <?php } ?>
 
 <?php do_action( 'wpuf_account_posts_top', $userdata->ID, $post_type_obj ); ?>
@@ -197,7 +197,16 @@ $post_type_obj   = get_post_type_object( $post_type );
                 ] );
 
                 if ( $pagination ) {
-                    echo esc_html( $pagination );
+                    echo wp_kses( $pagination, [
+                        'span' => [
+                            'aria-current' => [],
+                            'class' => [],
+                        ],
+                        'a' => [
+                            'href' => [],
+                            'class' => [],
+                        ]
+                    ] );
                 }
                 ?>
             </div>

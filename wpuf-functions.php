@@ -41,7 +41,7 @@ function wpuf_show_post_status( $status ) {
     }
 
     $show_status = '<span style="color:' . $fontcolor . ';">' . $title . '</span>';
-    echo esc_attr( apply_filters( 'wpuf_show_post_status', $show_status, $status ) );
+    echo wp_kses_post( apply_filters( 'wpuf_show_post_status', $show_status, $status ) );
 }
 
 /**
@@ -406,7 +406,21 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     echo wp_kses_post( '<ul class="wpuf-category-checklist">' );
     printf( '<input type="hidden" name="%s" value="0" />', esc_attr( $tax ) );
-    echo wp_kses_post( call_user_func_array( [&$walker, 'walk'], [$categories, 0, $args] ) );
+    echo wp_kses( call_user_func_array( [&$walker, 'walk'], [$categories, 0, $args] ),[
+        'li' => [
+            'class' => []
+        ],
+        'label' => [
+            'class' => []
+        ],
+        'input' => [
+            'class' =>[],
+            'type'  =>[],
+            'value' =>[],
+            'name'  => [],
+            'id'    => [],
+        ]
+    ] );
     echo wp_kses_post( '</ul>' );
 }
 
@@ -3294,5 +3308,13 @@ function wpuf_frontend_post_revision( $post_id, $form_settings ) {
         $revision  = current( $revisions );
 
         _wp_upgrade_revisions_of_post( $post, wp_get_post_revisions( $post_id ) );
+    }
+}
+
+function wpuf_clean( $var ) {
+    if ( is_array( $var ) ) {
+        return array_map( 'wpuf_clean', $var );
+    } else {
+        return is_scalar( $var ) ? sanitize_text_field( wp_unslash( $var ) ) : $var;
     }
 }

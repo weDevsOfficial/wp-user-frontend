@@ -35,7 +35,7 @@ class WPUF_Subscription {
 
         add_action( 'register_form', [ $this, 'register_form'] );
         add_action( 'wpuf_add_post_form_top', [ $this, 'register_form'] );
-        add_filter( 'wpuf_user_register_redirect', [ $this, 'subs_redirect_pram' ], 10, 5 );
+        // add_filter( 'wpuf_user_register_redirect', [ $this, 'subs_redirect_pram' ], 10, 5 );
 
         add_filter( 'template_redirect', [ $this, 'user_subscription_cancel' ] );
 
@@ -113,32 +113,32 @@ class WPUF_Subscription {
      *
      * @return array
      */
-    public function subs_redirect_pram( $response, $user_id, $userdata, $form_id, $form_settings ) {
-        $wpuf_sub = isset( $_POST['wpuf_sub'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_sub'] ) ) : '';
-        $pack_id = isset( $_POST['pack_id'] ) ? sanitize_text_field( wp_unslash( $_POST['pack_id'] ) ) : '';
+    // public function subs_redirect_pram( $response, $user_id, $userdata, $form_id, $form_settings ) {
+    //     $wpuf_sub = isset( $_POST['wpuf_sub'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_sub'] ) ) : '';
+    //     $pack_id = isset( $_POST['pack_id'] ) ? sanitize_text_field( wp_unslash( $_POST['pack_id'] ) ) : '';
 
 
-        if ( $wpuf_sub != 'yes' ) {
-            return $response;
-        }
+    //     if ( $wpuf_sub != 'yes' ) {
+    //         return $response;
+    //     }
 
-        if ( empty( $pack_id ) ) {
-            return $response;
-        }
+    //     if ( empty( $pack_id ) ) {
+    //         return $response;
+    //     }
 
-        $pack           = $this->get_subscription( $pack_id );
-        $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : false;
+    //     $pack           = $this->get_subscription( $pack_id );
+    //     $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : false;
 
-        if ( $billing_amount !== false ) {
-            $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
-            $redirect =  add_query_arg( ['action' => 'wpuf_pay', 'user_id' => $user_id, 'type' => 'pack', 'pack_id' => (int) $pack_id, get_permalink( $pay_page ) ]);
+    //     if ( $billing_amount !== false ) {
+    //         $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+    //         $redirect =  add_query_arg( ['action' => 'wpuf_pay', 'user_id' => $user_id, 'type' => 'pack', 'pack_id' => (int) $pack_id, get_permalink( $pay_page ) ]);
 
-            $response['redirect_to']  = $redirect;
-            $response['show_message'] = false;
-        }
+    //         $response['redirect_to']  = $redirect;
+    //         $response['show_message'] = false;
+    //     }
 
-        return $response;
-    }
+    //     return $response;
+    // }
 
     /**
      * Insert hidden field on the register form based on selected package
@@ -175,6 +175,10 @@ class WPUF_Subscription {
      * @return void
      */
     public function after_registration( $user_id ) {
+        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( '_wpnonce' ) ) {
+
+        }
+
         $wpuf_sub = isset( $_POST['wpuf_sub'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_sub'] ) ) : '';
         $pack_id = isset( $_POST['pack_id'] ) ? intval( wp_unslash( $_POST['pack_id'] ) ) : 0;
 
@@ -320,11 +324,6 @@ class WPUF_Subscription {
      * @return void
      */
     public function save_form_meta( $subscription_id, $post ) {
-        $post_data = $_POST;
-
-        if ( !isset( $post_data['billing_amount'] ) ) {
-            return;
-        }
 
         $nonce = isset( $_POST['meta_box_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['meta_box_nonce'] ) ) : '';
 
@@ -334,6 +333,12 @@ class WPUF_Subscription {
 
         // Is the user allowed to edit the post or page?
         if ( !current_user_can( 'edit_post', $post->ID ) ) {
+            return;
+        }
+
+        $post_data = wp_unslash( $_POST );
+
+        if ( !isset( $post_data['billing_amount'] ) ) {
             return;
         }
 
@@ -411,7 +416,7 @@ class WPUF_Subscription {
      *
      * @return void
      */
-    public function update_paypal_subscr_payment() {
+    /*public function update_paypal_subscr_payment() {
         $txn_type = isset( $_POST['txn_type'] ) ? sanitize_text_field( wp_unslash( $_POST['txn_type'] ) ) : '';
         $payment_status = isset( $_POST['payment_status'] ) ? sanitize_text_field( wp_unslash( $_POST['payment_status'] ) ) : '';
 
@@ -429,7 +434,7 @@ class WPUF_Subscription {
         $payer = json_decode( stripcslashes( $custom ) );
 
         $this->update_user_subscription_meta( $payer->payer_id, $pack );
-    }
+    } */
 
     /**
      * Get a subscription row from database

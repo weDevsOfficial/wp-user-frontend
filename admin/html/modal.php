@@ -9,7 +9,7 @@
                 <?php esc_html_e( 'Select a Template', 'wp-user-frontend' ); ?>
                 <small><?php
                 printf(
-                    esc_html( __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ) ),
+                    wp_kses_post( __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ) ),
                     esc_attr( $blank_form_url )
                  ); ?></small>
             </h2>
@@ -80,7 +80,7 @@
 
         <?php if ( $footer_help ) { ?>
             <footer>
-                <?php echo esc_html( $footer_help ); ?>
+                <?php echo wp_kses_post( $footer_help ); ?>
             </footer>
         <?php } ?>
     </div>

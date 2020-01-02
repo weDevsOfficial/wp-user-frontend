@@ -134,19 +134,35 @@ class WPUF_Admin_Post_Forms_List_Table extends WP_List_Table {
 
         if ( !empty( $_GET['orderby'] ) ) {
             $orderby = sanitize_text_field( wp_unslash( $_GET['orderby'] ) );
-
-            echo wp_kses_post( '<input type="hidden" name="orderby" value="' . esc_attr( $orderby ) . '" />' );
+            echo wp_kses('<input type="hidden" name="orderby" value="' . esc_attr( $orderby ) . '" />', [
+                'input' => [
+                    'type' => [],
+                    'name' => [],
+                    'value' => [],
+                ]
+            ]);
         }
 
         if ( !empty( $_GET['order'] ) ) {
             $order = sanitize_text_field( wp_unslash( $_GET['order'] ) );
-            echo wp_kses_post( '<input type="hidden" name="order" value="' . esc_attr( $order . '" />' ) );
+            echo wp_kses( '<input type="hidden" name="order" value="' . esc_attr( $order ) . '" />', [
+               'input' => [
+                    'type' => [],
+                    'name' => [],
+                    'value' => [],
+                ]
+            ] );
         }
 
         if ( !empty( $_GET['post_status'] ) ) {
             $post_status = sanitize_text_field( wp_unslash( $_GET['post_status'] ) );
-
-            echo wp_kses_post( '<input type="hidden" name="post_status" value="' . esc_attr( $post_status . '" />' ) );
+            echo wp_kses( '<input type="hidden" name="post_status" value="' . esc_attr( $post_status ) . '" />', [
+                'input' => [
+                    'type' => [],
+                    'name' => [],
+                    'value' => [],
+                ]
+            ] );
         }
 
         do_action( 'wpuf_post_forms_list_table_search_box', $text, $input_id );

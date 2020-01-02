@@ -32,7 +32,11 @@ class WPUF_Upload {
     }
 
     public function upload_file( $image_only = false ) {
-        $this->validate_nonce();
+        $nonce = isset( $_GET['nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
+
+        if ( !wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
+            die( 'error' );
+        }
 
         // a valid request will have a form ID
         $form_id = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : false;
@@ -95,7 +99,31 @@ class WPUF_Upload {
                 $response['html'] = $this->attach_html( $attach['attach_id'] );
             }
 
-            echo wp_kses_post( $response['html'] );
+            echo wp_kses( $response['html'], [
+                'li' => [
+                    'class' => []
+                ],
+                'div' => [
+                    'class' => []
+                ],
+                'img' => [
+                    'src' => [],
+                    'alt' => [],
+                ],
+                'input' => [
+                    'type' => [],
+                    'name' => [],
+                    'value' => [],
+                ],
+                'a' => [
+                    'href' => [],
+                    'class' => [],
+                    'data-attach_id' => [],
+                ],
+                'span' => [
+                    'class' => []
+                ]
+            ]);
         } else {
             echo wp_kses_post( $attach['error'] );
         }

@@ -147,7 +147,8 @@ class WPUF_Admin_Promotion {
                     e.preventDefault();
 
                     wp.ajax.post('wpuf-dismiss-promotional-offer-notice', {
-                        dismissed: true
+                        dismissed: true,
+                        _wpnonce: '<?php echo esc_attr ( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
                     });
                 });
             </script>
@@ -269,7 +270,8 @@ class WPUF_Admin_Promotion {
                     jQuery("#wpuf-review-notice").hide();
 
                     wp.ajax.post('wpuf-dismiss-review-notice', {
-                        dismissed: true
+                        dismissed: true,
+                        _wpnonce: '<?php echo esc_attr ( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
                     });
                 });
             </script>
@@ -284,6 +286,14 @@ class WPUF_Admin_Promotion {
      * @return void
      */
     public function dismiss_promotional_offer() {
+        if( empty( $_POST['_wpnonce'] ) ) {
+             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         if ( !empty( $_POST['dismissed'] ) ) {
             $offer_key = 'wpuf_promotional_offer_notice';
             update_option( $offer_key, 'hide' );
@@ -298,6 +308,14 @@ class WPUF_Admin_Promotion {
      * @return void
      **/
     public function dismiss_review_notice() {
+        if( empty( $_POST['_wpnonce'] ) ) {
+             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         if ( !empty( $_POST['dismissed'] ) ) {
             update_option( 'wpuf_review_notice_dismiss', 'yes' );
         }

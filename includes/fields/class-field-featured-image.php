@@ -51,7 +51,31 @@ class WPUF_Form_Field_Featured_Image extends WPUF_Field_Contract {
 
                         <?php
                             if ( $has_featured_image ) {
-                                echo esc_html( $featured_image );
+                                echo wp_kses( $featured_image, [
+                                    'li' => [
+                                        'class' => []
+                                    ],
+                                    'div' => [
+                                        'class' => []
+                                    ],
+                                    'img' => [
+                                        'src' => [],
+                                        'alt' => [],
+                                    ],
+                                    'input' => [
+                                        'type' => [],
+                                        'name' => [],
+                                        'value' => [],
+                                    ],
+                                    'a' => [
+                                        'href' => [],
+                                        'class' => [],
+                                        'data-attach_id' => [],
+                                    ],
+                                    'span' => [
+                                        'class' => []
+                                    ]
+                                ]);
                             } ?>
 
                     </ul>

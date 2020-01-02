@@ -1,7 +1,7 @@
 <div class="wpuf-dashboard-container">
 
     <h2 class="page-head">
-        <span class="colour"><?php printf( esc_attr( __( "%s's Dashboard", 'wp-user-frontend' ) ), esc_html( $userdata->display_name ); ?></span>
+        <span class="colour"><?php printf( esc_attr( __( "%s's Dashboard", 'wp-user-frontend' ) ), esc_html( $userdata->display_name )); ?></span>
     </h2>
 
     <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
@@ -15,7 +15,12 @@
                         $labels[] = $post_type_name->label;
                     }
                 }
-                printf( esc_html( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ), 'wp-user-frontend' ), esc_html($dashboard_query->found_posts ), implode( ', ', esc_attr( $labels ) ) );
+
+                printf(
+                   wp_kses_post( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ) ),
+                   esc_html( $dashboard_query->found_posts ),
+                   esc_html( implode( ', ', $labels ) )
+                );
                 ?>
             </div>
         <?php } ?>
@@ -282,13 +287,22 @@
                     ] );
 
                     if ( $pagination ) {
-                        echo esc_html( $pagination );
+                        echo wp_kses( $pagination, [
+                            'span' => [
+                                'aria-current' => [],
+                                'class' => [],
+                            ],
+                            'a' => [
+                                'href' => [],
+                                'class' => [],
+                            ]
+                        ] );
                     } ?>
                 </div>
                 <?php
             } else {
                 if ( !empty( $post_type_obj ) && !empty( $labels ) ) {
-                    printf( '<div class="wpuf-message">' . wp_kses_post( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', implode( ', ', esc_attr( $labels ) ) );
+                    printf( '<div class="wpuf-message">' . wp_kses_post( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', implode( ', ', $labels ) );
                     do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
                 }
             }

@@ -144,6 +144,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
      * this will embed media to the editor
      */
     public function make_media_embed_code() {
+        $nonce = isset( $_GET['nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
+
+        if ( !wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
+            die( 'error' );
+        }
 
         $content = isset( $_POST['content'] ) ? sanitize_text_field( wp_unslash( $_POST['content'] ) ) : '';
 
@@ -362,7 +367,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         }
 
         if ( isset( $_POST['tags'] ) ) {
-            $postarr['tags_input'] = explode( ',', array_map( 'sanitize_text_field', wp_unslash( $_POST['tags'] ) ) );
+            $postarr['tags_input'] = explode( ',', sanitize_text_field( wp_unslash( $_POST['tags'] ) ) );
         }
 
         // if post_id is passed, we update the post
@@ -608,9 +613,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         check_ajax_referer( 'wpuf_form_add' );
         // prepare the meta vars
         list( $meta_key_value, $multi_repeated, $files ) = self::prepare_meta_fields( $meta_vars );
-
         // set featured image if there's any
-        $wpuf_files = isset( $_POST['wpuf_files'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wpuf_files'] ) ) : [];
+        $wpuf_files = isset( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
+
         if ( isset( $wpuf_files['featured_image'] ) ) {
             $attachment_id = $wpuf_files['featured_image'][0];
 

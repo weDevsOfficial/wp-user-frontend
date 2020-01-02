@@ -664,7 +664,7 @@ abstract class WPUF_Field_Contract {
      */
     public function field_print_label( $field, $form_id = 0 ) {
         if ( is_admin() ) { ?>
-            <tr> <th><strong> <?php echo esc_html( $field['label'] . $this->required_mark( $field ) ); ?> </strong></th> <td>
+            <tr> <th><strong> <?php echo wp_kses_post( $field['label'] . $this->required_mark( $field ) ); ?> </strong></th> <td>
         <?php } else { ?>
 
             <li <?php $this->print_list_attributes( $field ); ?>>
@@ -707,7 +707,7 @@ abstract class WPUF_Field_Contract {
     public function print_label( $field, $form_id = 0 ) {
         ?>
         <div class="wpuf-label">
-            <label for="<?php echo isset( $field['name'] ) ? esc_attr( $field['name'] ) . '_' . esc_attr( $form_id ) : 'cls'; ?>"><?php echo esc_html( $field['label'] . $this->required_mark( $field ) ); ?></label>
+            <label for="<?php echo isset( $field['name'] ) ? esc_attr( $field['name'] ) . '_' . esc_attr( $form_id ) : 'cls'; ?>"><?php echo wp_kses_post( $field['label'] . $this->required_mark( $field ) ); ?></label>
         </div>
         <?php
     }
@@ -790,7 +790,7 @@ abstract class WPUF_Field_Contract {
             $condition           = json_encode( $cond_inputs );
         } ?>
         <script type="text/javascript">
-            wpuf_conditional_items.push(<?php echo esc_attr( $condition ); ?>);
+            wpuf_conditional_items.push(<?php echo wp_kses( $condition, [] ); ?>);
         </script>
         <?php
     }

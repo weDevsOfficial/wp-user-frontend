@@ -131,7 +131,7 @@ class WPUF_Frontend_Dashboard {
             <div class="wpuf-author">
                 <h3><?php esc_html_e( 'Author Info', 'wp-user-frontend' ); ?></h3>
                 <div class="wpuf-author-inside odd">
-                    <div class="wpuf-user-image"><?php echo esc_attr( get_avatar( $userdata->user_email, 80 ) ); ?></div>
+                    <div class="wpuf-user-image"><?php echo get_avatar( $userdata->user_email, 80 ); ?></div>
                     <div class="wpuf-author-body">
                         <p class="wpuf-user-name"><a href="<?php echo esc_url( get_author_posts_url( esc_attr( $userdata->ID ) ) ); ?>"><?php printf( esc_attr__( '%s', 'wp-user-frontend' ), esc_attr( $userdata->display_name ) ); ?></a></p>
                         <p class="wpuf-author-info"><?php echo esc_html( $userdata->description ); ?></p>

@@ -111,7 +111,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     'taxonomy'         => $post_terms,
                 ];
 
-                echo wp_kses_post( '<select multiple name="wpuf_settings[default_cat][]">' );
+                $cat = '<select multiple name="wpuf_settings[default_cat][]">';
                 $categories = get_terms( $args );
 
                 foreach ( $categories as $category ) {
@@ -120,10 +120,20 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     if ( in_array( $category->term_id, $default_cat ) ) {
                         $selected = 'selected ';
                     }
-                    echo wp_kses_post( '<option ' . $selected . 'value="' . $category->term_id . '">' . $category->name . '</option>' );
+                    $cat .= '<option ' . $selected . 'value="' . $category->term_id . '">' . $category->name . '</option>';
                 }
 
-                echo wp_kses_post( '</select>' );
+                $cat .='</select>';
+                echo wp_kses( $cat, [
+                    'select' => [
+                        'multiple' => [],
+                        'name' => []
+                    ],
+                    'option' => [
+                        'selected' => [],
+                        'value' => [],
+                    ]
+                ]);
 
                 ?>
                 <p class="description"><?php echo esc_html( __( 'If users are not allowed to choose any category, this category will be used instead (if post type supports)', 'wp-user-frontend' ) ); ?></p>

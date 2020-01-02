@@ -23,6 +23,7 @@ class WPUF_Setup_Wizard {
         add_action( 'admin_init', [ $this, 'setup_wizard' ], 99 );
         add_action( 'admin_init', [ $this, 'redirect_to_page' ], 9999 );
         add_action( 'admin_init', [ $this, 'add_custom_menu_class'] );
+        add_filter( 'safe_style_css', [ $this, 'wpuf_safe_style_css' ] );
     }
 
     /**
@@ -307,12 +308,31 @@ class WPUF_Setup_Wizard {
                     <th scope="row"><label for="share_wpuf_essentials"><?php esc_html_e( 'Share Essentials ', 'wp-user-frontend' ); ?></label></th>
                     <td>
                         <input type="checkbox" name="share_wpuf_essentials" id="share_wpuf_essentials" class="input-checkbox" value="1" <?php echo ( $share_wpuf_essentials == 'on' ) ? 'checked="checked"' : ''; ?>/>
-                        <label for="share_wpuf_essentials"><?php esc_html_e( 'Want to help make WP User Frontend even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'wp-user-frontend' ); ?></label>
-
-                        <?php printf( '<a class="wpuf-insights-data-we-collect" href="#">%s</a>', esc_html__( 'What we collect', 'wp-user-frontend' ) ); ?>
-                        <p id="collection-info" class="description" style="display:none;">
-                            <?php esc_html_e( 'Server environment details (php, mysql, server, WordPress versions), Number of users in your site, Site language, Number of active and inactive plugins, Site name and url, Your name and email address. No sensitive data is tracked.', 'wp-user-frontend' ); ?>
-                        </p>
+                     <?php   $share = '<span class="description">
+                    Want to help make <b> WP User Frontend </b> even more awesome? Allow WP User Frontend to collect non-sensitive diagnostic data and usage information
+                    <a class="wpuf-insights-data-we-collect" href="#">What we collect</a>                </span>
+                <p id="collection-info" class="description" style="display:none;">
+                    Server environment details (php, mysql, server, WordPress versions), Number of users in your site, Site language, Number of active and inactive plugins, Site name and url, Your name and email address. No sensitive data is tracked.                    We are using <a href="https://appsero.com" target="_blank">Appsero</a> to collect your data. <a href="https://appsero.com/privacy-policy/" target="_blank">Learn more</a> about how <a href="https://appsero.com" target="_blank">Appsero</a> collects and handle your data.                </p>'; ?>
+                        <label for="share_wpuf_essentials"><?php echo wp_kses( __( $share, 'wp-user-frontend' ),
+                            [
+                                'span'      => [
+                                    'class' => []
+                                ],
+                                'a'  => [
+                                    'class'  => [],
+                                    'href'   => [],
+                                    'target' => []
+                                ],
+                                'p'     => [
+                                    'id'    => [],
+                                    'class' => [],
+                                    'style' => []
+                                ],
+                                'strong' => [],
+                                'b' => []
+                            ])
+                        //esc_html_e( $share , 'wp-user-frontend' );
+                        ?></label>
                     </td>
                 </tr>
             </table>
@@ -382,6 +402,19 @@ class WPUF_Setup_Wizard {
             </div>
         </div>
         <?php
+    }
+
+    /**
+     * update safe styles
+     *
+     * @params $styles
+     *
+     * @return $styles
+     */
+    public function wpuf_safe_style_css( $styles ) {
+        $styles[] = 'display';
+
+        return $styles;
     }
 }
 

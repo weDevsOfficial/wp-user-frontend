@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 5.3.1
 Requires PHP: 5.6
-Stable tag: 3.1.14
+Stable tag: 3.1.15
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -256,6 +256,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.1.15 (02 January, 2020) =
+* **Fix:** update url validation
+Tweak: Added privacy policy info in setup wizard for admin
 
 = v3.1.14 (13 December, 2019) =
 

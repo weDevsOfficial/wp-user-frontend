@@ -15,7 +15,7 @@
                         $labels[] = $post_type_name->label;
                     }
                 }
-                printf( esc_html( __( 'You have created <span>%d</span> (%s)' ), 'wp-user-frontend' ), esc_html($dashboard_query->found_posts ), implode( ', ', esc_attr( $labels ) ) );
+                printf( esc_html( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ), 'wp-user-frontend' ), esc_html($dashboard_query->found_posts ), implode( ', ', esc_attr( $labels ) ) );
                 ?>
             </div>
         <?php } ?>

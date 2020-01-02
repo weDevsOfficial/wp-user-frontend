@@ -12,7 +12,7 @@ class WPUF_Subscription_Element extends WPUF_Pro_Prompt {
                     <?php esc_html_e( 'Enable Recurring Payment', 'wp-user-frontend' ); ?>
                 </label>
 
-                <label class="wpuf-pro-text-alert"> (<?php echo esc_html( self::get_pro_prompt_text() ); ?>)</label>
+                <label class="wpuf-pro-text-alert"> (<?php echo wp_kses_post( self::get_pro_prompt_text() ); ?>)</label>
             </td>
         </tr>
     <?php

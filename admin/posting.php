@@ -52,11 +52,14 @@ class WPUF_Admin_Posting {
             add_action( 'admin_head', 'wpuf_hide_google_map_button' );
 
             function wpuf_hide_google_map_button() {
-                echo wp_kses_post( "<style>
+                echo wp_kses( "<style>
                 button.button[data-name='custom_map'] {
                     display: none;
                 }
-              </style>" );
+              </style>", [
+                'style' =>  [],
+                'button'    =>  []
+              ] );
             }
         }
 

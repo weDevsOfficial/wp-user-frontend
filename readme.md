@@ -1,13 +1,13 @@
 # WP User Frontend - Membership, Profile, Registration & Post Submission Plugin for WordPress #
-**Contributors:** [tareq1988](https://profiles.wordpress.org/tareq1988), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu), [sk.shaikat](https://profiles.wordpress.org/sk.shaikat), [rabbii](https://profiles.wordpress.org/rabbii), [itowhid06](https://profiles.wordpress.org/itowhid06), [wedevs](https://profiles.wordpress.org/wedevs)
-**Donate link:** https://tareq.co/donate/
-**Tags:** Forms, registration, profile-builder, login, membership
-**Requires at least:** 4.0
-**Tested up to:** 5.3.1
-**Requires PHP:** 5.6
-**Stable tag:** 3.1.14
-**License:** GPLv2
-**License URI:** https://www.gnu.org/licenses/gpl-2.0.html
+**Contributors:** [tareq1988](https://profiles.wordpress.org/tareq1988), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu), [sk.shaikat](https://profiles.wordpress.org/sk.shaikat), [rabbii](https://profiles.wordpress.org/rabbii), [itowhid06](https://profiles.wordpress.org/itowhid06), [wedevs](https://profiles.wordpress.org/wedevs)  
+**Donate link:** https://tareq.co/donate/  
+**Tags:** Forms, registration, profile-builder, login, membership  
+**Requires at least:** 4.0  
+**Tested up to:** 5.3.1  
+**Requires PHP:** 5.6  
+**Stable tag:** 3.1.15  
+**License:** GPLv2  
+**License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
 Frontend post submission, guest post, membership, login, registration and profile builder. The best frontend plugin for WordPress.
 
@@ -255,18 +255,11 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 
-## Privacy Policy
-wp-user-frontend uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
-
-Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure great user experience for all our users.
-
-Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
-
-Learn more how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
-
-Additionally, read weDevs [privacy policy](https://wedevs.com/privacy-policy/) for more.
-
 ## Changelog ##
+
+### v3.1.15 (02 January, 2020) ###
+* **Fix:** update url validation
+Tweak: Added privacy policy info in setup wizard for admin
 
 ### v3.1.14 (13 December, 2019) ###
 

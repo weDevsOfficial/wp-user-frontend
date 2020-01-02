@@ -37,10 +37,10 @@ class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
 
             <div class="wpuf-fields">
                 <input
-                    class="textfield <?php echo 'wpuf_' . $field_settings['name'] . '_' . $form_id; ?>"
-                    id="<?php echo $field_settings['name'] . '_' . $form_id; ?>"
+                    class="textfield <?php echo esc_attr( 'wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
+                    id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
                     type="text"
-                    data-required="<?php echo $field_settings['required']; ?>"
+                    data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                     data-type="text" name="<?php echo esc_attr( $field_settings['name'] ); ?>"
                     placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
                     value="<?php echo esc_attr( $value ); ?>"
@@ -105,6 +105,9 @@ class WPUF_Form_Field_Post_Tags extends WPUF_Field_Contract {
      * @return mixed
      */
     public function prepare_entry( $field ) {
-        return sanitize_text_field( trim( $_POST[$field['name']] ) );
+        check_ajax_referer( 'wpuf_form_add' );
+
+        $field = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+        return sanitize_text_field( $field );
     }
 }

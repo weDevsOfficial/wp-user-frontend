@@ -1,0 +1,26 @@
+{
+  "name": "wp-user-frontend",
+  "description": "A Frontend Plugin for WordPress",
+  "type": "wordpress-plugin",
+  "license": "GPLv2",
+  "authors": [
+    {
+      "name": "Tareq Hasan",
+      "email": "tareq@wedevs.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.4.0",
+    "composer/installers": ">=1.4"
+  },
+  "require-dev": {
+    "automattic/vipwpcs": "dev-master",
+    "dealerdirect/phpcodesniffer-composer-installer": "dev-master"
+  },
+  "scripts": {
+    "phpcs": [
+      "phpcs -p -s"
+    ]
+  }
+}

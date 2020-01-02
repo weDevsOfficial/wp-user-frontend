@@ -110,7 +110,8 @@ class WPUF_Setup_Wizard {
      * Show the setup wizard.
      */
     public function setup_wizard() {
-        if ( empty( $_GET['page'] ) || 'wpuf-setup' !== $_GET['page'] ) {
+        $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+        if ( empty( $page ) || 'wpuf-setup' !== $page ) {
             return;
         }
         $this->steps = [
@@ -130,7 +131,7 @@ class WPUF_Setup_Wizard {
                 'handler' => '',
             ],
         ];
-        $this->step = isset( $_GET['step'] ) ? sanitize_key( $_GET['step'] ) : current( array_keys( $this->steps ) );
+        $this->step = isset( $_GET['step'] ) ? sanitize_key( wp_unslash( $_GET['step'] ) ) : current( array_keys( $this->steps ) );
 
         $this->enqueue_scripts();
 
@@ -162,7 +163,7 @@ class WPUF_Setup_Wizard {
         <head>
             <meta name="viewport" content="width=device-width" />
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-            <title><?php _e( 'WPUF &rsaquo; Setup Wizard', 'wp-user-frontend' ); ?></title>
+            <title><?php esc_html_e( 'WPUF &rsaquo; Setup Wizard', 'wp-user-frontend' ); ?></title>
             <?php wp_print_scripts( 'wpuf-setup' ); ?>
             <?php do_action( 'admin_print_styles' ); ?>
             <?php do_action( 'admin_head' ); ?>
@@ -217,7 +218,7 @@ class WPUF_Setup_Wizard {
             </style>
         </head>
         <body class="wpuf-setup wp-core-ui">
-            <h1 id="wpuf-logo"><a href="https://wedevs.com/wp-user-frontend-pro/"><img src="<?php echo WPUF_ASSET_URI . '/images/icon-128x128.png'; ?>" alt="WPUF" /></a></h1>
+            <h1 id="wpuf-logo"><a href="https://wedevs.com/wp-user-frontend-pro/"><img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="WPUF" /></a></h1>
         <?php
     }
 
@@ -227,7 +228,7 @@ class WPUF_Setup_Wizard {
     public function setup_wizard_footer() {
         ?>
             <?php if ( 'next_steps' === $this->step ) { ?>
-                <a class="wpuf-return-to-dashboard" href="<?php echo esc_url( admin_url() ); ?>"><?php _e( 'Return to the WordPress Dashboard', 'wp-user-frontend' ); ?></a>
+                <a class="wpuf-return-to-dashboard" href="<?php echo esc_url( admin_url() ); ?>"><?php esc_html_e( 'Return to the WordPress Dashboard', 'wp-user-frontend' ); ?></a>
             <?php } ?>
             </body>
         </html>
@@ -258,9 +259,9 @@ class WPUF_Setup_Wizard {
      * Output the content for the current step.
      */
     public function setup_wizard_content() {
-        echo '<div class="wpuf-setup-content">';
+        echo wp_kses_post( '<div class="wpuf-setup-content">' );
         call_user_func( $this->steps[ $this->step ]['view'] );
-        echo '</div>';
+        echo wp_kses_post( '</div>' );
     }
 
     /**
@@ -268,12 +269,12 @@ class WPUF_Setup_Wizard {
      */
     public function wpuf_setup_introduction() {
         ?>
-        <h1><?php _e( 'Welcome to the world of WPUF!', 'wp-user-frontend' ); ?></h1>
-        <p><?php _e( 'Thank you for choosing WPUF to power your websites frontend! This quick setup wizard will help you configure the basic settings. <strong>It’s completely optional and shouldn’t take longer than a minute.</strong>', 'wp-user-frontend' ); ?></p>
-        <p><?php _e( 'No time right now? If you don’t want to go through the wizard, you can skip and return to the WordPress dashboard. Come back anytime if you change your mind!', 'wp-user-frontend' ); ?></p>
+        <h1><?php esc_html_e( 'Welcome to the world of WPUF!', 'wp-user-frontend' ); ?></h1>
+        <p><?php esc_html_e( 'Thank you for choosing WPUF to power your websites frontend! This quick setup wizard will help you configure the basic settings. <strong>It’s completely optional and shouldn’t take longer than a minute.</strong>', 'wp-user-frontend' ); ?></p>
+        <p><?php esc_html_e( 'No time right now? If you don’t want to go through the wizard, you can skip and return to the WordPress dashboard. Come back anytime if you change your mind!', 'wp-user-frontend' ); ?></p>
         <p class="wpuf-setup-actions step">
-            <a href="<?php echo esc_url( $this->get_next_step_link() ); ?>" class="button-primary button button-large button-next"><?php _e( 'Let\'s Go!', 'wp-user-frontend' ); ?></a>
-            <a href="<?php echo esc_url( admin_url() ); ?>" class="button button-large"><?php _e( 'Not right now', 'wp-user-frontend' ); ?></a>
+            <a href="<?php echo esc_url( $this->get_next_step_link() ); ?>" class="button-primary button button-large button-next"><?php esc_html_e( 'Let\'s Go!', 'wp-user-frontend' ); ?></a>
+            <a href="<?php echo esc_url( admin_url() ); ?>" class="button button-large"><?php esc_html_e( 'Not right now', 'wp-user-frontend' ); ?></a>
         </p>
         <?php
     }
@@ -285,28 +286,28 @@ class WPUF_Setup_Wizard {
         $enable_payment           = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
         $install_wpuf_pages       = wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' );
         $share_wpuf_essentials    = wpuf_get_option( 'share_wpuf_essentials', 'wpuf_general', 'on' ); ?>
-        <h1><?php _e( 'Basic Setting', 'wp-user-frontend' ); ?></h1>
+        <h1><?php esc_html_e( 'Basic Setting', 'wp-user-frontend' ); ?></h1>
         <form method="post">
             <table class="form-table">
                 <tr>
-                    <th scope="row"><label for="enable_payment"><?php _e( 'Enable Payments', 'wp-user-frontend' ); ?></label></th>
+                    <th scope="row"><label for="enable_payment"><?php esc_html_e( 'Enable Payments', 'wp-user-frontend' ); ?></label></th>
                     <td>
                         <input type="checkbox" name="enable_payment" id="enable_payment" class="input-checkbox" value="1" <?php echo ( $enable_payment == 'on' ) ? 'checked="checked"' : ''; ?>/>
-                        <label for="enable_payment"><?php _e( 'Make payment enable for user to add posts on frontend.', 'wp-user-frontend' ); ?></label>
+                        <label for="enable_payment"><?php esc_html_e( 'Make payment enable for user to add posts on frontend.', 'wp-user-frontend' ); ?></label>
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="install_wpuf_pages"><?php _e( 'Install WPUF Pages', 'wp-user-frontend' ); ?></label></th>
+                    <th scope="row"><label for="install_wpuf_pages"><?php esc_html_e( 'Install WPUF Pages', 'wp-user-frontend' ); ?></label></th>
                     <td>
                         <input type="checkbox" name="install_wpuf_pages" id="install_wpuf_pages" class="input-checkbox" value="1" <?php echo ( $install_wpuf_pages == 'on' ) ? 'checked="checked"' : ''; ?>/>
-                        <label for="install_wpuf_pages"><?php _e( 'Install neccessery pages on your site frontend.', 'wp-user-frontend' ); ?></label>
+                        <label for="install_wpuf_pages"><?php esc_html_e( 'Install neccessery pages on your site frontend.', 'wp-user-frontend' ); ?></label>
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="share_wpuf_essentials"><?php _e( 'Share Essentials ', 'wp-user-frontend' ); ?></label></th>
+                    <th scope="row"><label for="share_wpuf_essentials"><?php esc_html_e( 'Share Essentials ', 'wp-user-frontend' ); ?></label></th>
                     <td>
                         <input type="checkbox" name="share_wpuf_essentials" id="share_wpuf_essentials" class="input-checkbox" value="1" <?php echo ( $share_wpuf_essentials == 'on' ) ? 'checked="checked"' : ''; ?>/>
-                        <label for="share_wpuf_essentials"><?php _e( 'Want to help make WP User Frontend even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'wp-user-frontend' ); ?></label>
+                        <label for="share_wpuf_essentials"><?php esc_html_e( 'Want to help make WP User Frontend even more awesome? Allow weDevs to collect non-sensitive diagnostic data and usage information.', 'wp-user-frontend' ); ?></label>
 
                         <?php printf( '<a class="wpuf-insights-data-we-collect" href="#">%s</a>', esc_html__( 'What we collect', 'wp-user-frontend' ) ); ?>
                         <p id="collection-info" class="description" style="display:none;">
@@ -317,7 +318,7 @@ class WPUF_Setup_Wizard {
             </table>
             <p class="wpuf-setup-actions step">
                 <input type="submit" class="button-primary button button-large button-next" value="<?php esc_attr_e( 'Continue', 'wp-user-frontend' ); ?>" name="save_step" />
-                <a href="<?php echo esc_url( $this->get_next_step_link() ); ?>" class="button button-large button-next"><?php _e( 'Skip this step', 'wp-user-frontend' ); ?></a>
+                <a href="<?php echo esc_url( $this->get_next_step_link() ); ?>" class="button button-large button-next"><?php esc_html_e( 'Skip this step', 'wp-user-frontend' ); ?></a>
                 <?php wp_nonce_field( 'wpuf-setup' ); ?>
             </p>
         </form>
@@ -368,16 +369,16 @@ class WPUF_Setup_Wizard {
      */
     public function wpuf_setup_ready() {
         ?>
-        <h1><?php _e( 'Thank you!', 'wp-user-frontend' ); ?></h1>
+        <h1><?php esc_html_e( 'Thank you!', 'wp-user-frontend' ); ?></h1>
 
         <div class="wpuf-setup-next-steps">
             <div class="wpuf-setup-next-steps-first">
                 <ul>
-                    <li class="setup-product"><a class="button button-primary button-large" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-welcome' ) ); ?>"><?php _e( 'Welcome to Awesomeness!', 'wp-user-frontend' ); ?></a></li>
+                    <li class="setup-product"><a class="button button-primary button-large" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-welcome' ) ); ?>"><?php esc_html_e( 'Welcome to Awesomeness!', 'wp-user-frontend' ); ?></a></li>
                 </ul>
             </div>
             <div class="wpuf-setup-next-steps-last">
-                <h2><a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ); ?>"><?php _e( 'Go to Full Settings', 'wp-user-frontend' ); ?></a></h2>
+                <h2><a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ); ?>"><?php esc_html_e( 'Go to Full Settings', 'wp-user-frontend' ); ?></a></h2>
             </div>
         </div>
         <?php

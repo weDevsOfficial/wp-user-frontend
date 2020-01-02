@@ -12,8 +12,8 @@ class WPUF_Form_Field_Pro extends WPUF_Field_Contract {
      */
     public function render( $field_settings, $form_id, $post_id = null, $user_id = null ) {
         if ( current_user_can( 'manage_options' ) ) {
-            echo __( $field_settings['template'] . '  is a premium field. To use this field you need to upgrade to the premium version.', 'wp-user-frontend' );
-            echo '<br/>';
+            esc_html( __( $field_settings['template'] . '  is a premium field. To use this field you need to upgrade to the premium version.', 'wp-user-frontend' ) );
+            echo wp_kses_post( '<br/>' );
         }
     }
 

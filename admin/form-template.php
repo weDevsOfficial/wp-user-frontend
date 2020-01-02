@@ -102,7 +102,7 @@ class WPUF_Admin_Form_Template {
     public function create_post_form_from_template() {
         check_admin_referer( 'wpuf_create_from_template' );
 
-        $template_name = isset( $_GET['template'] ) ? sanitize_text_field( $_GET['template'] ) : '';
+        $template_name = isset( $_GET['template'] ) ? sanitize_text_field( wp_unslash( $_GET['template'] ) ) : '';
 
         if ( !$template_name ) {
             return;
@@ -165,18 +165,18 @@ class WPUF_Admin_Form_Template {
         $registry = wpuf_get_post_form_templates();
         $selected = isset( $form_settings['form_template'] ) ? $form_settings['form_template'] : ''; ?>
         <tr>
-            <th><?php _e( 'Form Template', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Form Template', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[form_template]">
-                    <option value=""><?php echo __( '&mdash; No Template &mdash;', 'wp-user-frontend' ); ?></option>
+                    <option value=""><?php esc_html_e( '&mdash; No Template &mdash;', 'wp-user-frontend' ); ?></option>
                     <?php
                     if ( $registry ) {
                         foreach ( $registry as $key => $template ) {
-                            printf( '<option value="%s"%s>%s</option>' . "\n", $key, selected( $selected, $key, false ), $template->get_title() );
+                            printf( '<option value="%s"%s>%s</option>' . "\n", esc_attr( $key ), esc_attr( selected( $selected, $key, false ) ), esc_html( $template->get_title() ) );
                         }
                     } ?>
                 </select>
-                <p class="description"><?php _e( 'If selected a form template, it will try to execute that integration options when new post created and updated.', 'wp-user-frontend' ); ?></p>
+                <p class="description"><?php esc_html_e( 'If selected a form template, it will try to execute that integration options when new post created and updated.', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
         <?php

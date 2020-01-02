@@ -2,7 +2,7 @@
 
     <div class="wpuf-popup-container">
 
-        <h3><?php _e( 'Select a form to insert', 'wp-user-frontend' ); ?></h3>
+        <h3><?php esc_html_e( 'Select a form to insert', 'wp-user-frontend' ); ?></h3>
 
         <?php $form_types = apply_filters( 'wpuf_shortcode_dialog_form_type', [
             'post'         => __( 'Post Form', 'wp-user-frontend' ),
@@ -10,11 +10,11 @@
         ] ); ?>
 
         <div class="wpuf-div">
-            <label for="wpuf-form-type" class="label"><?php _e( 'Form Type', 'wp-user-frontend' ); ?></label>
+            <label for="wpuf-form-type" class="label"><?php esc_html_e( 'Form Type', 'wp-user-frontend' ); ?></label>
             <select id="wpuf-form-type">
 
                 <?php foreach ( $form_types as $key => $form_type ) { ?>
-                    <option value="<?php echo $key; ?>"><?php echo $form_type; ?></option>
+                    <option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $form_type ); ?></option>
                 <?php } ?>
 
             </select>
@@ -36,11 +36,11 @@
 
             } ?>
 
-            <div class="wpuf-div show-if-<?php echo $key; ?>">
+            <div class="wpuf-div show-if-<?php echo esc_attr( $key ); ?>">
 
-                <label for="wpuf-form-<?php echo $key; ?>" class="label"><?php echo $form_type; ?></label>
+                <label for="wpuf-form-<?php echo esc_attr( $key ); ?>" class="label"><?php echo esc_html( $form_type ); ?></label>
 
-                <select id="wpuf-form-<?php echo $key; ?>">
+                <select id="wpuf-form-<?php echo esc_attr( $key ); ?>">
 
                     <?php
                     $args = [
@@ -52,7 +52,7 @@
 
                     foreach ( $form_posts as $form ) { ?>
 
-                        <option value="<?php echo $form->ID; ?>"><?php echo $form->post_title; ?></option>
+                        <option value="<?php echo esc_attr( $form->ID ); ?>"><?php echo esc_html( $form->post_title ); ?></option>
 
                     <?php } ?>
 
@@ -66,8 +66,8 @@
         do_action( 'wpuf_shortcode_dialog_content', $form_types ); ?>
 
         <div class="submit-button wpuf-div">
-            <button id="wpuf-form-insert" class="button-primary"><?php _e( 'Insert Form', 'wp-user-frontend' ); ?></button>
-            <button id="wpuf-form-close" class="button-secondary" style="margin-left: 5px;" onClick="tb_remove();"><?php _e( 'Close', 'wp-user-frontend' ); ?></a>
+            <button id="wpuf-form-insert" class="button-primary"><?php esc_html_e( 'Insert Form', 'wp-user-frontend' ); ?></button>
+            <button id="wpuf-form-close" class="button-secondary" style="margin-left: 5px;" onClick="tb_remove();"><?php esc_html_e( 'Close', 'wp-user-frontend' ); ?></a>
         </div>
 
     </div>

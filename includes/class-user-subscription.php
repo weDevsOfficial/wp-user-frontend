@@ -312,22 +312,22 @@ class WPUF_User_Subscription {
             $recurring_des = '';
         } ?>
         <div class="wpuf_sub_info">
-            <h3><?php _e( 'Subscription Details', 'wp-user-frontend' ); ?></h3>
+            <h3><?php esc_html_e( 'Subscription Details', 'wp-user-frontend' ); ?></h3>
             <div class="wpuf-text">
-                <div><strong><?php _e( 'Subcription Name: ', 'wp-user-frontend' ); ?></strong><?php echo $pack->post_title; ?></div>
+                <div><strong><?php esc_html_e( 'Subcription Name: ', 'wp-user-frontend' ); ?></strong><?php echo esc_html( $pack->post_title ); ?></div>
                 <div>
-                    <strong><?php _e( 'Package & billing details: ', 'wp-user-frontend' ); ?></strong>
+                    <strong><?php esc_html_e( 'Package & billing details: ', 'wp-user-frontend' ); ?></strong>
 
                     <div class="wpuf-pricing-wrap">
                         <div class="wpuf-sub-amount">
-                            <?php echo $billing_amount; ?>
-                            <?php echo $recurring_des; ?>
+                            <?php echo esc_html( $billing_amount ); ?>
+                            <?php echo esc_html( $recurring_des ); ?>
                         </div>
                     </div>
 
                 </div>
                 <div>
-                    <strong><?php _e( 'Remaining post: ', 'wp-user-frontend' ); ?></strong>
+                    <strong><?php esc_html_e( 'Remaining post: ', 'wp-user-frontend' ); ?></strong>
                     <?php
                     foreach ( $this->pack['posts'] as $key => $value ) {
                         $value = intval( $value );
@@ -342,7 +342,7 @@ class WPUF_User_Subscription {
                             continue;
                         }
                         $value = ( $value == '-1' ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value; ?>
-                        <div><?php echo $post_type_obj->labels->name . ': ' . $value; ?></div>
+                        <div><?php echo esc_html( $post_type_obj->labels->name . ': ' . $value ); ?></div>
                         <?php
                     } ?>
                 </div>
@@ -351,7 +351,7 @@ class WPUF_User_Subscription {
                     if ( !empty( $this->pack['expire'] ) ) {
                         $expire =  ( $this->pack['expire'] == 'unlimited' ) ? ucfirst( 'unlimited' ) : wpuf_date2mysql( $this->pack['expire'] ); ?>
                         <div class="wpuf-expire">
-                            <strong><?php echo _e( 'Expire date:', 'wp-user-frontend' ); ?></strong> <?php echo wpuf_get_date( $expire ); ?>
+                            <strong><?php echo esc_html( 'Expire date:', 'wp-user-frontend' ); ?></strong> <?php echo esc_html( wpuf_get_date( $expire ) ); ?>
                         </div>
                         <?php
                     }
@@ -362,16 +362,16 @@ class WPUF_User_Subscription {
                 $payment_page = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ); ?>
                 <form action="" method="post">
                     <?php wp_nonce_field( '_wpnonce', 'wpuf_payment_cancel' ); ?>
-                    <input type="hidden" name="user_id" value="<?php echo $this->user->id; ?>">
+                    <input type="hidden" name="user_id" value="<?php echo esc_attr( $this->user->id ); ?>">
                     <input type="hidden" name="action" value="wpuf_cancel_pay">
                     <input type="hidden" name="gateway" value="paypal">
                     <input type="submit" name="wpuf_payment_cancel_submit" value="cancel">
                 </form>
                 <?php $subscription_page = wpuf_get_option( 'subscription_page', 'wpuf_payment' ); ?>
-                <a href="<?php echo get_permalink( $subscription_page ); ?>"><?php _e( 'Change', 'wp-user-frontend' ); ?></a>
+                <a href="<?php echo esc_attr( get_permalink( $subscription_page ) ); ?>"><?php esc_html_e( 'Change', 'wp-user-frontend' ); ?></a>
                 <?php
             }
-        echo '</div>';
+        echo wp_kses_post( '</div>' );
 
         $content = ob_get_clean();
 

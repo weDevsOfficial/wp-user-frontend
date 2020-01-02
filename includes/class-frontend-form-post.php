@@ -45,13 +45,13 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         ob_start();
 
         if ( !is_user_logged_in() ) {
-            echo '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>';
-            wp_login_form();
+            echo wp_kses_post( '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>',
+            wp_login_form() );
 
             return;
         }
 
-        $post_id = isset( $_GET['pid'] ) ? intval( $_GET['pid'] ) : 0;
+        $post_id = isset( $_GET['pid'] ) ? intval( wp_unslash( $_GET['pid'] ) ) : 0;
 
         if ( !$post_id ) {
             return '<div class="wpuf-info">' . __( 'Invalid post', 'wp-user-frontend' ) . '</div>';
@@ -115,10 +115,12 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             return '<div class="wpuf-info">' . __( 'You can\'t edit a post while in pending mode.', 'wp-user-frontend' );
         }
 
-        if ( isset( $_GET['msg'] ) && $_GET['msg'] == 'post_updated' ) {
-            echo '<div class="wpuf-success">';
-            echo str_replace( '%link%', get_permalink( $post_id ), $this->form_settings['update_message'] );
-            echo '</div>';
+        $msg = isset( $_GET['msg'] ) ? sanitize_text_field( wp_unslash( $_GET['msg'] ) ) : '';
+
+        if ( $msg == 'post_updated' ) {
+            echo wp_kses_post( '<div class="wpuf-success">' );
+            echo wp_kses_post( str_replace( '%link%', get_permalink( $post_id ), $this->form_settings['update_message'] ) );
+            echo wp_kses_post( '</div>' );
         }
 
         $this->render_form( $form_id, $post_id, $atts, $form );
@@ -142,8 +144,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
      * this will embed media to the editor
      */
     public function make_media_embed_code() {
-        if ( $embed_code = wp_oembed_get( $_POST['content'] ) ) {
-            echo $embed_code;
+
+        $content = isset( $_POST['content'] ) ? sanitize_text_field( wp_unslash( $_POST['content'] ) ) : '';
+
+        if ( $embed_code = wp_oembed_get( $content ) ) {
+            echo esc_html( $embed_code );
         } else {
             echo '';
         }
@@ -158,7 +163,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings'] );
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
-        $form_id             = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
+        $form_id             = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0;
         $form                = new WPUF_Form( $form_id );
         $this->form_settings = $form->get_settings();
         $this->form_fields   = $form->get_fields();
@@ -167,19 +172,20 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         list( $post_vars, $taxonomy_vars, $meta_vars ) =$this->get_input_fields( $this->form_fields );
 
         $entry_fields = $form->prepare_entries();
-        $post_content = isset( $_POST[ 'post_content' ] ) ? $_POST[ 'post_content' ] : '';
+        $post_content = isset( $_POST[ 'post_content' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'post_content' ] ) ) : '';
 
         $postarr = [
             'post_type'    => $this->form_settings['post_type'],
             'post_status'  => wpuf_get_draft_post_status( $this->form_settings ),
             'post_author'  => get_current_user_id(),
-            'post_title'   => isset( $_POST['post_title'] ) ? trim( $_POST['post_title'] ) : '',
+            'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
             'post_content' => $post_content,
-            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? trim( $_POST['post_excerpt'] ) : '',
+            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? sanitize_text_field( wp_unslash( $_POST['post_excerpt'] ) ) : '',
         ];
 
-        if ( isset( $_POST['category'] ) && ( $_POST['category'] != '' && $_POST['category'] != '0' && $_POST['category'][0] != '-1' ) ) {
-            $category                 = $_POST['category'];
+        $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : '';
+
+        if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
             $postarr['post_category'] = is_array( $category ) ? $category : [ $category ];
         }
 
@@ -193,13 +199,13 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         }
 
         if ( isset( $_POST['tags'] ) ) {
-            $postarr['tags_input'] = explode( ',', $_POST['tags'] );
+            $postarr['tags_input'] = explode( ',', array_map( 'sanitize_text_field', wp_unslash( $_POST['tags'] ) ) );
         }
 
         // if post_id is passed, we update the post
         if ( isset( $_POST['post_id'] ) ) {
             $is_update                 = true;
-            $postarr['ID']             = $_POST['post_id'];
+            $postarr['ID']             = intval( wp_unslash( $_POST['post_id'] ) );
             $postarr['comment_status'] = 'open';
         }
 
@@ -238,7 +244,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         echo json_encode( [
             'post_id'        => $post_id,
-            'action'         => $_POST['action'],
+            'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
             'date'           => current_time( 'mysql' ),
             'post_author'    => get_current_user_id(),
             'comment_status' => get_option( 'default_comment_status' ),
@@ -258,13 +264,13 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings'] );
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
-        $form_id               = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
+        $form_id               = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0;
         $form                  = new WPUF_Form( $form_id );
         $this->form_settings   = $form->get_settings();
         $this->form_fields     = $form->get_fields();
         $guest_mode            = isset( $this->form_settings['guest_post'] ) ? $this->form_settings['guest_post'] : '';
         $guest_verify          = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : 'false';
-        $attachments_to_delete = isset( $_POST['delete_attachments'] ) ? $_POST['delete_attachments'] : [];
+        $attachments_to_delete = isset( $_POST['delete_attachments'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_attachments'] ) ) : [];
 
         foreach ( $attachments_to_delete as $attach_id ) {
             wp_delete_attachment( $attach_id, true );
@@ -295,9 +301,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             'post_type'    => $this->form_settings['post_type'],
             'post_status'  => isset( $this->form_settings['post_status'] ) ? $this->form_settings['post_status'] : 'publish',
             'post_author'  => $post_author,
-            'post_title'   => isset( $_POST['post_title'] ) ? trim( $_POST['post_title'] ) : '',
-            'post_content' => isset( $_POST['post_content'] ) ? trim( $_POST['post_content'] ) : '',
-            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? trim( $_POST['post_excerpt'] ) : '',
+            'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
+            'post_content' => isset( $_POST['post_content'] ) ? sanitize_text_field( wp_unslash( $_POST['post_content'] ) ) : '',
+            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? sanitize_text_field( wp_unslash( $_POST['post_excerpt'] ) ) : '',
         ];
 
         // $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
@@ -322,7 +328,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( isset( $_POST['wpuf_is_publish_time'] ) ) {
             if ( isset( $_POST[$_POST['wpuf_is_publish_time']] ) && !empty( $_POST[$_POST['wpuf_is_publish_time']] ) ) {
                 // $postarr['post_date'] = date( 'Y-m-d H:i:s', strtotime( str_replace( array( ':', '/' ), '-', $_POST[$_POST['wpuf_is_publish_time']] ) ) );
-                $date_time = explode( ' ', trim( $_POST[$_POST['wpuf_is_publish_time']] ) );
+                $date_time = explode( ' ', sanitize_text_field( wp_unslash( ( $_POST[$_POST['wpuf_is_publish_time']] ) ) ) );
 
                 if ( !empty( $date_time[0] ) ) {
                     $timestamp = strtotime( str_replace( [ '/' ], '-', $date_time[0] ) );
@@ -337,8 +343,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
-        if ( isset( $_POST['category'] ) && ( $_POST['category'] != '' && $_POST['category'] != '0' && $_POST['category'][0] != '-1' ) ) {
-            $category  = $_POST['category'];
+        $category  = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : '';
+
+        if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
+
 
             if ( !is_array( $category ) && is_string( $category ) ) {
                 $category_strings = explode( ',', $category );
@@ -354,26 +362,27 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         }
 
         if ( isset( $_POST['tags'] ) ) {
-            $postarr['tags_input'] = explode( ',', $_POST['tags'] );
+            $postarr['tags_input'] = explode( ',', array_map( 'sanitize_text_field', wp_unslash( $_POST['tags'] ) ) );
         }
 
         // if post_id is passed, we update the post
         if ( isset( $_POST['post_id'] ) ) {
+            $post_id                   = intval( wp_unslash( $_POST['post_id'] ) );
             $is_update                 = true;
-            $postarr['ID']             = $_POST['post_id'];
-            $postarr['post_date']      = $_POST['post_date'];
-            $postarr['comment_status'] = $_POST['comment_status'];
-            $postarr['post_author']    = $_POST['post_author'];
-            $postarr['post_parent']    = get_post_field( 'post_parent', $_POST['post_id'] );
+            $postarr['ID']             = $post_id;
+            $postarr['post_date']      = isset( $_POST['post_date'] ) ? sanitize_text_field( wp_unslash( $_POST['post_date'] ) ) : '';
+            $postarr['comment_status'] = isset( $_POST['comment_status'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_status'] ) ) : '';
+            $postarr['post_author']    = isset( $_POST['post_author'] ) ? sanitize_text_field( wp_unslash( $_POST['post_author'] ) ) : '';
+            $postarr['post_parent']    = get_post_field( 'post_parent', $post_id );
 
-            $menu_order = get_post_field( 'menu_order', $_POST['post_id'] );
+            $menu_order = get_post_field( 'menu_order', $post_id );
 
             if ( !empty( $menu_order ) ) {
                 $postarr['menu_order'] = $menu_order;
             }
 
             if ( $this->form_settings['edit_post_status'] == '_nochange' ) {
-                $postarr['post_status'] = get_post_field( 'post_status', $_POST['post_id'] );
+                $postarr['post_status'] = get_post_field( 'post_status', $post_id );
             } else {
                 $postarr['post_status'] = $this->form_settings['edit_post_status'];
             }
@@ -386,7 +395,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         // check the form status, it might be already a draft
         // in that case, it already has the post_id field
         // so, WPUF's add post action/filters won't work for new posts
-        if ( isset( $_POST['wpuf_form_status'] ) && $_POST['wpuf_form_status'] == 'new' ) {
+        $wpuf_form_status = isset( $_POST['wpuf_form_status'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_form_status'] ) ) : '';
+        if ( $wpuf_form_status == 'new' ) {
             $is_update = false;
         }
 
@@ -478,13 +488,20 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     }
 
     public function wpuf_get_post_user() {
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_form_add' ) ) {
+            die( 'Failed nonce verification !' );
+        }
+
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
 
         if ( !is_user_logged_in() ) {
             if ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] == 'true' && $this->form_settings['guest_details'] == 'true' ) {
-                $guest_name  = trim( $_POST['guest_name'] );
+                $guest_name  = isset( $_POST['guest_name'] ) ? sanitize_text_field( wp_unslash( $_POST['guest_name'] ) ) : '';
 
-                $guest_email = trim( $_POST['guest_email'] );
+                $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
+                $page_id = isset( $_POST['page_id'] ) ? sanitize_text_field( wp_unslash( $_POST['page_id'] ) ) : '';
 
                 // is valid email?
                 if ( !is_email( $guest_email ) ) {
@@ -500,7 +517,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                         'success'     => false,
                         'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
                         'type'        => 'login',
-                        'redirect_to' => wp_login_url( get_permalink( $_POST['page_id'] ) ),
+                        'redirect_to' => wp_login_url( get_permalink( $page_id ) ),
                     ] );
                 } else {
 
@@ -579,7 +596,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( $user_can_post == 'yes' ) {
             $this->render_form( $id, null, $atts, $form );
         } else {
-            echo '<div class="wpuf-info">' . $info . '</div>';
+            echo wp_kses_post( '<div class="wpuf-info">' . $info . '</div>' );
         }
         $content = ob_get_contents();
         ob_end_clean();
@@ -588,18 +605,19 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     }
 
     public static function update_post_meta( $meta_vars, $post_id ) {
-
+        check_ajax_referer( 'wpuf_form_add' );
         // prepare the meta vars
         list( $meta_key_value, $multi_repeated, $files ) = self::prepare_meta_fields( $meta_vars );
 
         // set featured image if there's any
-        if ( isset( $_POST['wpuf_files']['featured_image'] ) ) {
-            $attachment_id = $_POST['wpuf_files']['featured_image'][0];
+        $wpuf_files = isset( $_POST['wpuf_files'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wpuf_files'] ) ) : [];
+        if ( isset( $wpuf_files['featured_image'] ) ) {
+            $attachment_id = $wpuf_files['featured_image'][0];
 
             wpuf_associate_attachment( $attachment_id, $post_id );
             set_post_thumbnail( $post_id, $attachment_id );
 
-            $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? $_POST['wpuf_files_data'][$attachment_id] : false;
+            $file_data = isset( $wpuf_files[$attachment_id] ) ? $wpuf_files[$attachment_id] : false;
 
             if ( $file_data ) {
                 $args = [
@@ -664,7 +682,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 //add_post_meta( $post_id, $file_input['name'], $attachment_id );
 
                 // file title, caption, desc update
-                $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? $_POST['wpuf_files_data'][$attachment_id] : false;
+                $file_data = isset( $wpuf_files[$attachment_id] ) ? $wpuf_files[$attachment_id] : false;
 
                 if ( $file_data ) {
                     $args = [
@@ -760,9 +778,12 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     }
 
     public function woo_attribute( $taxonomy ) {
+        check_ajax_referer( 'wpuf_form_add' );
+        $taxonomy_name = isset( $_POST[$taxonomy['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$taxonomy['name']] ) ) : '';
+
         return [
             'name'         => $taxonomy['name'],
-            'value'        => $_POST[$taxonomy['name']],
+            'value'        => $taxonomy_name,
             'is_visible'   => $taxonomy['woo_attr_vis'] == 'yes' ? 1 : 0,
             'is_variation' => 0,
             'is_taxonomy'  => 1,
@@ -775,10 +796,14 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
      * @since 2.5.8
      */
     public function publish_guest_post() {
-        if ( isset( $_GET['post_msg'] ) && $_GET['post_msg'] == 'verified' ) {
+        $post_msg = isset( $_GET['post_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['post_msg'] ) ) : '';
+        $pid      = isset( $_GET['p_id'] ) ? sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) : '';
+        $fid      = isset( $_GET['f_id'] ) ? sanitize_text_field( wp_unslash( $_GET['f_id'] ) ) : '';
+
+        if ( $post_msg == 'verified' ) {
             $response       = [];
-            $post_id        = wpuf_decryption( $_GET['p_id'] );
-            $form_id        = wpuf_decryption( $_GET['f_id'] );
+            $post_id        = wpuf_decryption( $pid );
+            $form_id        = wpuf_decryption( $fid );
             $form_settings  = wpuf_get_form_settings( $form_id );
             $post_author_id = get_post_field( 'post_author', $post_id );
             $payment_status = new WPUF_Subscription();
@@ -807,7 +832,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                         'ID'            => $post_id,
                         'post_status'   => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
                     ] );
-                    echo "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>';
+                    echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
                 }
             }
         }
@@ -864,10 +889,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
     public function send_mail_for_guest( $charging_enabled, $post_id, $form_id, $is_update, $post_author, $meta_vars ) {
         global $wp;
-
+        check_ajax_referer( 'wpuf_form_add' );
         $show_message = false;
         $redirect_to  = false;
         $response     = [];
+        $page_id      = isset( $_POST['page_id'] ) ? intval( wp_unslash( $_POST['page_id'] ) ) : '';
 
         if ( $is_update ) {
             if ( $this->form_settings['edit_redirect_to'] == 'page' ) {
@@ -879,7 +905,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                     'pid'      => $post_id,
                     '_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
                     'msg'      => 'post_updated',
-                ], get_permalink( $_POST['page_id'] ) );
+                ], get_permalink( $page_id ) );
             } else {
                 $redirect_to = get_permalink( $post_id );
             }

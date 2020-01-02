@@ -82,7 +82,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         $transactions_count         = wpuf_get_transactions( [ 'count' => true ] );
         $transactions_pending_count = wpuf_get_pending_transactions( [ 'count' => true ] );
 
-        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( $_REQUEST['status'] ) : 'all';
+        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'all';
 
         $status_links['all']     = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'all' ], $base_link ), ( $status == 'all' ) ? 'current' : '', __( 'All', 'wp-user-frontend' ), $transactions_count );
         $status_links['pending'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'pending' ], $base_link ), ( $status == 'pending' ) ? 'current' : '', __( 'Pending', 'wp-user-frontend' ), $transactions_pending_count );
@@ -103,17 +103,20 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         $delete_nonce = wp_create_nonce( 'wpuf-delete-transaction' );
         $title        = '<strong>#' . $id . '</strong>';
 
-        if ( isset( $_REQUEST['status'] ) && $_REQUEST['status'] == 'pending' ) {
+        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
+        $page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
+
+        if ( $status == 'pending' ) {
             $accept_nonce = wp_create_nonce( 'wpuf-accept-transaction' );
             $reject_nonce = wp_create_nonce( 'wpuf-reject-transaction' );
 
             $actions = [
-                'accept' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $_REQUEST['page'] ), 'accept', absint( $id ), $accept_nonce, __( 'Accept', 'wp-user-frontend' ) ),
-                'reject' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $_REQUEST['page'] ), 'reject', absint( $id ), $reject_nonce, __( 'Reject', 'wp-user-frontend' ) ),
+                'accept' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page, 'accept', absint( $id ), $accept_nonce, __( 'Accept', 'wp-user-frontend' ) ) ),
+                'reject' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ), 'reject', absint( $id ), $reject_nonce, __( 'Reject', 'wp-user-frontend' ) ),
             ];
         } else {
             $actions = [
-                'delete' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $id ), $delete_nonce, __( 'Delete', 'wp-user-frontend' ) ),
+                'delete' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ), 'delete', absint( $id ), $delete_nonce, __( 'Delete', 'wp-user-frontend' ) ),
             ];
         }
 
@@ -169,7 +172,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
      * @return void
      */
     public function no_items() {
-        _e( 'No transactions found.', 'wp-user-frontend' );
+        esc_html_e( 'No transactions found.', 'wp-user-frontend' );
     }
 
     /**
@@ -178,7 +181,9 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
      * @return array
      */
     public function get_bulk_actions() {
-        if ( isset( $_REQUEST['status'] ) && $_REQUEST['status'] == 'pending' ) {
+        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
+
+        if ( $status == 'pending' ) {
             $actions = [
                 'bulk-accept' => __( 'Accept', 'wp-user-frontend' ),
                 'bulk-reject' => __( 'Reject', 'wp-user-frontend' ),
@@ -201,7 +206,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         $per_page     = $this->get_items_per_page( 'transactions_per_page', 20 );
         $current_page = $this->get_pagenum();
 
-        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( $_REQUEST['status'] ) : 'all';
+        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'all';
 
         if ( $status == 'pending' ) {
             $total_items = wpuf_get_pending_transactions( [ 'count' => true ] );
@@ -226,8 +231,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         ];
 
         if ( isset( $_REQUEST['orderby'] ) && isset( $_REQUEST['order'] ) ) {
-            $args['orderby'] = $_REQUEST['orderby'];
-            $args['order']   = $_REQUEST['order'];
+            $args['orderby'] = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) );
+            $args['order']   = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) );
         }
 
         if ( $status == 'pending' ) {
@@ -248,14 +253,17 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         $page_url = menu_page_url( 'wpuf_transaction', false );
 
         // Delete Transaction
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'delete' )
-             || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'delete' )
-         ) {
-            if ( !wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-delete-transaction' ) ) {
+        $action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
+        $action2 = isset( $_REQUEST['action2'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action2'] ) ) : '';
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $id = isset( $_REQUEST['id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) : '';
+
+        if ( $action == 'delete' || $action2 == 'delete' ) {
+            if ( !wp_verify_nonce( $nonce, 'wpuf-delete-transaction' ) ) {
                 return false;
             }
 
-            $id = absint( esc_sql( $_REQUEST['id'] ) );
+            $id = absint( esc_sql( $id ) );
 
             $wpdb->delete( $wpdb->prefix . 'wpuf_transaction', [ 'id' => $id ], [ '%d' ] );
 
@@ -265,14 +273,14 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Delete Transactions
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-delete' )
-             || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-delete' )
-         ) {
-            if ( !wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-transactions' ) ) {
+        if ( $action == 'bulk-delete' || $action2 == 'bulk-delete' ) {
+            if ( !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
 
-            $ids = esc_sql( $_REQUEST['bulk-items'] );
+            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
+
+            $ids = esc_sql( $bulk_items );
 
             foreach ( $ids as $id ) {
                 $id = absint( $id );
@@ -286,14 +294,12 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Reject Transaction
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'reject' )
-             || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'reject' )
-         ) {
-            if ( !wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-reject-transaction' ) ) {
+        if ( $action == 'reject' || $action2 == 'reject' ) {
+            if ( !wp_verify_nonce( $nonce, 'wpuf-reject-transaction' ) ) {
                 return false;
             }
 
-            $id      = absint( esc_sql( $_REQUEST['id'] ) );
+            $id      = isset( $_REQUEST['id'] ) ? intval( wp_unslash( $_REQUEST['id'] ) ) : 0;
             $info    = get_post_meta( $id, '_data', true );
             $gateway = $info['post_data']['wpuf_payment_method'];
 
@@ -306,14 +312,12 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Reject Transactions
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-reject' )
-             || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-reject' )
-         ) {
-            if ( !wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-transactions' ) ) {
+        if ( $action == 'bulk-reject' || $action2 == 'bulk-reject' ) {
+            if ( !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
-
-            $ids = esc_sql( $_REQUEST['bulk-items'] );
+            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
+            $ids = esc_sql( $bulk_items );
 
             foreach ( $ids as $id ) {
                 $id      = absint( $id );
@@ -331,10 +335,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Accept Transaction
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'accept' )
-            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'accept' )
-         ) {
-            if ( !wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-accept-transaction' ) ) {
+        if ( $action == 'accept' || $action2 == 'accept' ) {
+            if ( !wp_verify_nonce( $nonce, 'wpuf-accept-transaction' ) ) {
                 return false;
             }
 
@@ -342,7 +344,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 return;
             }
 
-            $id   = absint( $_REQUEST['id'] );
+            $id   = isset( $_REQUEST['id'] ) ? intval( wp_unslash( $_REQUEST['id'] ) ) : 0 ;
             $info = get_post_meta( $id, '_data', true );
 
             if ( $info ) {
@@ -403,10 +405,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Bulk Accept Transaction
-        if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'bulk-accept' )
-            || ( isset( $_REQUEST['action2'] ) && $_REQUEST['action2'] == 'bulk-accept' )
-         ) {
-            if ( !wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-transactions' ) ) {
+        if ( $action == 'bulk-accept' || $action2 == 'bulk-accept' ) {
+            if ( !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
 
@@ -414,7 +414,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 return;
             }
 
-            $ids = esc_sql( $_REQUEST['bulk-items'] );
+            $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
+            $ids = esc_sql( $bulk_items );
 
             foreach ( $ids as $id ) {
                 $id = absint( $id );

@@ -34,21 +34,21 @@ class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
 
         <div class="wpuf-fields">
             <select
-                class="<?php echo 'wpuf_' . $field_settings['name'] . '_' . $form_id; ?>"
-                id="<?php echo $field_settings['name'] . '_' . $form_id; ?>"
-                name="<?php echo $name; ?>"
-                data-required="<?php echo $field_settings['required']; ?>"
+                class="<?php echo 'wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>"
+                id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>"
+                name="<?php echo esc_attr( $name ); ?>"
+                data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                 data-type="select">
 
                 <?php if ( !empty( $field_settings['first'] ) ) { ?>
-                    <option value="-1"><?php echo $field_settings['first']; ?></option>
+                    <option value="-1"><?php echo esc_html( $field_settings['first'] ); ?></option>
                 <?php } ?>
 
                 <?php
                 if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
                     foreach ( $field_settings['options'] as $value => $option ) {
                         $current_select = selected( $selected, $value, false ); ?>
-                        <option value="<?php echo esc_attr( $value ); ?>"<?php echo $current_select; ?>><?php echo $option; ?></option>
+                        <option value="<?php echo esc_attr( $value ); ?>"<?php echo esc_attr( $current_select ); ?>><?php echo esc_html( $option ); ?></option>
                         <?php
                     }
                 } ?>
@@ -112,7 +112,9 @@ class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
      * @return mixed
      */
     public function prepare_entry( $field ) {
-        $val = $_POST[$field['name']];
+        check_ajax_referer( 'wpuf_form_add' );
+
+        $val = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
 
         return isset( $field['options'][$val] ) ? $field['options'][$val] : '';
     }

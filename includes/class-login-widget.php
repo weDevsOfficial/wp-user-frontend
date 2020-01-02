@@ -25,9 +25,14 @@ class WPUF_Login_Widget extends WP_Widget {
      * @return void
      */
     public function ajax_login() {
-        $user_login     = trim( $_POST['log'] );
-        $user_pass      = trim( $_POST['pwd'] );
-        $rememberme     = isset( $_POST['rememberme'] ) ? $_POST['rememberme'] : false;
+        $user_login     = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
+        $user_pass      = isset( $_POST['pwd'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd'] ) ) : '';
+        $rememberme     = isset( $_POST['rememberme'] ) ? sanitize_text_field( wp_unslash( $_POST['rememberme'] ) ) : false;
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( sanitize_key( $nonce ), 'wpuf_lost_pass' ) ) {
+            die( 'Failed nonce verification !' );
+        }
 
         if ( empty( $user_login ) || empty( $user_pass ) ) {
             wp_send_json_error( [ 'message'=> __( 'Please fill all form fields', 'wp-user-frontend' ) ] );
@@ -59,7 +64,12 @@ class WPUF_Login_Widget extends WP_Widget {
      * @return void
      */
     public function ajax_reset_pass() {
-        $username_or_email = trim( $_POST['user_login'] );
+        $username_or_email = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( sanitize_key( $nonce ), 'wpuf_lost_pass' ) ) {
+            die( 'Failed nonce verification !' );
+        }
 
         // Check if input variables are empty
         if ( empty( $username_or_email ) ) {
@@ -171,15 +181,15 @@ class WPUF_Login_Widget extends WP_Widget {
         $log_in_label     = apply_filters( 'widget_text', $instance['log_in_label'] );
         $pass_reset_label = apply_filters( 'widget_text', $instance['pass_reset_label'] );
 
-        echo $args['before_widget'];
+        echo esc_html( $args['before_widget'] );
 
         if ( !empty( $title ) ) {
-            echo $args['before_title'] . $title . $args['after_title'];
+            echo esc_html( $args['before_title'] . $title . $args['after_title'] );
         }
 
         if ( is_user_logged_in() ) {
             $user_id = get_current_user_id();
-            echo get_avatar( $user_id, 24 );
+            echo esc_html( get_avatar( $user_id, 24 ) );
         }
 
         $login_args = [
@@ -197,33 +207,33 @@ class WPUF_Login_Widget extends WP_Widget {
                 <div class="wpuf-ajax-login-form">
                     <div class="wpuf-ajax-errors"></div>
 
-                    <p><?php echo $log_in_header; ?></p>
+                    <p><?php echo esc_html( $log_in_header ); ?></p>
 
                     <?php
                     wp_login_form( $login_args );
 
                     if ( get_option( 'users_can_register' ) ) {
                         $registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register', 'wp-user-frontend' ) );
-                        echo $registration_url;
-                        echo apply_filters( 'login_link_separator', ' | ' );
+                        echo esc_html( $registration_url );
+                        echo esc_html( apply_filters( 'login_link_separator', ' | ' ) );
                     }?>
-                    <a href="#wpuf-ajax-lost-pw-url" id="wpuf-ajax-lost-pw-url"><?php _e( 'Lost your password?', 'wp-user-frontend' ); ?></a>
+                    <a href="#wpuf-ajax-lost-pw-url" id="wpuf-ajax-lost-pw-url"><?php esc_html_e( 'Lost your password?', 'wp-user-frontend' ); ?></a>
                 </div>
 
                 <!-- Lost Password form -->
                 <div class="wpuf-ajax-reset-password-form">
-                    <form id="wpuf_ajax_reset_pass_form" action="<?php echo home_url( '/' ); ?>" method="POST">
-                        <div class="wpuf-ajax-message"> <?php echo $pwd_reset_header; ?></div>
+                    <form id="wpuf_ajax_reset_pass_form" action="<?php echo esc_url( home_url( '/' ) ); ?>" method="POST">
+                        <div class="wpuf-ajax-message"> <?php echo esc_html( $pwd_reset_header ); ?></div>
                         <p>
-                            <label for="wpuf-user_login"><?php _e( 'Username or E-mail:', 'wp-user-frontend' ); ?></label>
+                            <label for="wpuf-user_login"><?php esc_html_e( 'Username or E-mail:', 'wp-user-frontend' ); ?></label>
                             <input type="text" name="user_login" id="wpuf-user_login" class="input" value="" size="20" />
                         </p>
 
                         <?php do_action( 'lostpassword_form' ); ?>
 
                         <p class="submit">
-                            <input type="submit" name="wp-submit" id="wp-submit" value="<?php echo $pass_reset_label; ?>" />
-                            <input type="hidden" name="redirect_to" value="<?php echo WPUF_Simple_Login::get_posted_value( 'redirect_to' ); ?>" />
+                            <input type="submit" name="wp-submit" id="wp-submit" value="<?php echo esc_attr(  $pass_reset_label ); ?>" />
+                            <input type="hidden" name="redirect_to" value="<?php echo esc_attr( WPUF_Simple_Login::get_posted_value( 'redirect_to' ) ); ?>" />
                             <input type="hidden" name="wpuf_reset_password" value="true" />
                             <input type="hidden" name="action" value="lost_password" />
 
@@ -231,25 +241,25 @@ class WPUF_Login_Widget extends WP_Widget {
                         </p>
                     </form>
                     <div id="ajax-lp-section">
-                        <a href="#wpuf-ajax-login-url" id="wpuf-ajax-login-url"> <?php _e( 'Login', 'wp-user-frontend' ); ?> </a>
+                        <a href="#wpuf-ajax-login-url" id="wpuf-ajax-login-url"> <?php esc_html_e( 'Login', 'wp-user-frontend' ); ?> </a>
                         <?php
                         if ( get_option( 'users_can_register' ) ) {
-                            echo apply_filters( 'login_link_separator', ' | ' );
+                            echo esc_html( apply_filters( 'login_link_separator', ' | ' ) );
                             $registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register', 'wp-user-frontend' ) );
-                            echo $registration_url;
+                            echo esc_url( $registration_url );
                         }
                         ?>
                     </div>
                 </div>
             <?php } else { ?>
                 <div class="wpuf-ajax-logout">
-                    <a id="logout-url" href="#logout"><?php echo __( 'Log out', 'wp-user-frontend' ); ?></a>
+                    <a id="logout-url" href="#logout"><?php echo esc_attr( __( 'Log out', 'wp-user-frontend' ) ); ?></a>
                 </div>
             <?php } ?>
         </div>
 
         <?php
-        echo $args['after_widget'];
+        echo esc_html( $args['after_widget'] );
     }
 
     /**
@@ -268,35 +278,35 @@ class WPUF_Login_Widget extends WP_Widget {
         $pass_reset_label = isset( $instance[ 'pass_reset_label' ] ) ? $instance[ 'pass_reset_label' ] : __( 'Reset Password', 'wp-user-frontend' ); ?>
 
         <p>
-            <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'wp-user-frontend' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'wp-user-frontend' ); ?></label>
+            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
         </p>
         <p>
-            <label for="<?php echo $this->get_field_id( 'log_in_header' ); ?>"><?php _e( 'Log-in Text:', 'wp-user-frontend' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'log_in_header' ); ?>" name="<?php echo $this->get_field_name( 'log_in_header' ); ?>" type="textarea" value="<?php echo esc_attr( $log_in_header ); ?>" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'log_in_header' ) ); ?>"><?php esc_html_e( 'Log-in Text:', 'wp-user-frontend' ); ?></label>
+            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'log_in_header' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'log_in_header' ) ); ?>" type="textarea" value="<?php echo esc_attr( $log_in_header ); ?>" />
         </p>
         <p>
-            <label for="<?php echo $this->get_field_id( 'uname_label' ); ?>"><?php _e( 'Username Label:', 'wp-user-frontend' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'uname_label' ); ?>" name="<?php echo $this->get_field_name( 'uname_label' ); ?>" type="text" value="<?php echo esc_attr( $uname_label ); ?>" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'uname_label' ) ); ?>"><?php esc_html_e( 'Username Label:', 'wp-user-frontend' ); ?></label>
+            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'uname_label' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'uname_label' ) ); ?>" type="text" value="<?php echo esc_attr( $uname_label ); ?>" />
         </p>
         <p>
-            <label for="<?php echo $this->get_field_id( 'pwd_label' ); ?>"><?php _e( 'Password Label:', 'wp-user-frontend' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'pwd_label' ); ?>" name="<?php echo $this->get_field_name( 'pwd_label' ); ?>" type="text" value="<?php echo esc_attr( $pwd_label ); ?>" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'pwd_label' ) ); ?>"><?php esc_html_e( 'Password Label:', 'wp-user-frontend' ); ?></label>
+            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'pwd_label' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'pwd_label' ) ); ?>" type="text" value="<?php echo esc_attr( $pwd_label ); ?>" />
         </p>
         <p>
-            <label for="<?php echo $this->get_field_id( 'remember_label' ); ?>"><?php _e( 'Remember Me Label:', 'wp-user-frontend' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'remember_label' ); ?>" name="<?php echo $this->get_field_name( 'remember_label' ); ?>" type="text" value="<?php echo esc_attr( $remember_label ); ?>" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'remember_label' ) ); ?>"><?php esc_html_e( 'Remember Me Label:', 'wp-user-frontend' ); ?></label>
+            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'remember_label' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'remember_label' ) ); ?>" type="text" value="<?php echo esc_attr( $remember_label ); ?>" />
         </p>
-            <label for="<?php echo $this->get_field_id( 'log_in_label' ); ?>"><?php _e( 'Log In Label:', 'wp-user-frontend' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'log_in_label' ); ?>" name="<?php echo $this->get_field_name( 'log_in_label' ); ?>" type="text" value="<?php echo esc_attr( $log_in_label ); ?>" />
-        </p>
-        <p>
-            <label for="<?php echo $this->get_field_id( 'pwd_reset_header' ); ?>"><?php _e( 'Password Reset Text:', 'wp-user-frontend' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'pwd_reset_header' ); ?>" name="<?php echo $this->get_field_name( 'pwd_reset_header' ); ?>" type="textarea" value="<?php echo esc_attr( $pwd_reset_header ); ?>" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'log_in_label' ) ); ?>"><?php esc_html_e( 'Log In Label:', 'wp-user-frontend' ); ?></label>
+            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'log_in_label' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'log_in_label' ) ); ?>" type="text" value="<?php echo esc_attr( $log_in_label ); ?>" />
         </p>
         <p>
-            <label for="<?php echo $this->get_field_id( 'pass_reset_label' ); ?>"><?php _e( 'Password Reset Label:', 'wp-user-frontend' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'pass_reset_label' ); ?>" name="<?php echo $this->get_field_name( 'pass_reset_label' ); ?>" type="text" value="<?php echo esc_attr( $pass_reset_label ); ?>" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'pwd_reset_header' ) ); ?>"><?php esc_html_e( 'Password Reset Text:', 'wp-user-frontend' ); ?></label>
+            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'pwd_reset_header' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'pwd_reset_header' ) ); ?>" type="textarea" value="<?php echo esc_attr( $pwd_reset_header ); ?>" />
+        </p>
+        <p>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'pass_reset_label' ) ); ?>"><?php esc_html_e( 'Password Reset Label:', 'wp-user-frontend' ); ?></label>
+            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'pass_reset_label' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'pass_reset_label' ) ); ?>" type="text" value="<?php echo esc_attr( $pass_reset_label ); ?>" />
         </p>
         <?php
     }

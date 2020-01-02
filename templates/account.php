@@ -23,11 +23,12 @@
                             $active_tab = true;
                         }
 
-                        echo sprintf( 
+                        $active = $active_tab ? $section['slug'] . ' active' : $section['slug'];
+                        echo sprintf(
                             '<li class="wpuf-menu-item %s"><a href="%s">%s</a></li>',
-                            $active_tab ? $section['slug'] . ' active' : $section['slug'],
-                            add_query_arg( [ 'section' => $section['slug'] ], get_permalink() ),
-                            $section['label']
+                            esc_attr( $active ),
+                            esc_attr( add_query_arg( [ 'section' => $section['slug'] ], get_permalink() ) ),
+                            esc_attr( $section['label'] )
                          );
                     }
                 }
@@ -35,7 +36,7 @@
         </ul>
     </nav>
 
-    <div class="wpuf-dashboard-content <?php echo ( !empty( $current_section ) ) ? $current_section['slug'] : ''; ?>">
+    <div class="wpuf-dashboard-content <?php echo ( !empty( $current_section ) ) ? esc_attr( $current_section['slug'] ) : ''; ?>">
         <?php
             if ( !empty( $current_section ) && is_user_logged_in() ) {
                 do_action( "wpuf_account_content_{$current_section['slug']}", $sections, $current_section );

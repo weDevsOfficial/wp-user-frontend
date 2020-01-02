@@ -522,7 +522,7 @@ function _wpuf_changelog_content( $content ) {
 ?>
 
 <div class="wrap wpuf-whats-new">
-    <h1><?php _e( 'What\'s New in WPUF?', 'wp-user-frontend' ); ?></h1>
+    <h1><?php esc_html_e( 'What\'s New in WPUF?', 'wp-user-frontend' ); ?></h1>
 
     <div class="wedevs-changelog-wrapper">
 
@@ -531,7 +531,7 @@ function _wpuf_changelog_content( $content ) {
                 <div class="wedevs-changelog-version">
                     <h3><?php echo esc_html( $release['version'] ); ?></h3>
                     <p class="released">
-                        (<?php echo human_time_diff( time(), strtotime( $release['released'] ) ); ?> ago)
+                        (<?php echo esc_html( human_time_diff( time(), strtotime( $release['released'] ) ) ); ?> ago)
                     </p>
                 </div>
                 <div class="wedevs-changelog-history">
@@ -540,11 +540,11 @@ function _wpuf_changelog_content( $content ) {
                             <li>
                                 <h4>
                                     <span class="title"><?php echo esc_html( $change['title'] ); ?></span>
-                                    <span class="label <?php echo strtolower( $change['type'] ); ?>"><?php echo esc_html( $change['type'] ); ?></span>
+                                    <span class="label <?php echo esc_html( strtolower( $change['type'] ) ); ?>"><?php echo esc_html( $change['type'] ); ?></span>
                                 </h4>
 
                                 <div class="description">
-                                    <?php echo _wpuf_changelog_content( $change['description'] ); ?>
+                                    <?php echo esc_html( _wpuf_changelog_content( $change['description'] ) ); ?>
                                 </div>
                             </li>
                         <?php } ?>

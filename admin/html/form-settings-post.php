@@ -27,7 +27,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
     <table class="form-table">
 
         <tr class="wpuf-post-type">
-            <th><?php _e( 'Post Type', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Post Type', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[post_type]">
                     <?php
@@ -45,23 +45,23 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     unset( $post_types['oembed_cache'] );
 
                     foreach ( $post_types as $post_type ) {
-                        printf( '<option value="%s"%s>%s</option>', $post_type, selected( $post_type_selected, $post_type, false ), $post_type );
+                        printf( '<option value="%s"%s>%s</option>', esc_attr( $post_type ), esc_attr( selected( $post_type_selected, $post_type, false ) ), esc_html( $post_type ) );
                     }
                     ?>
                 </select>
-                <p class="description"><?php _e( 'Custom Post Type will appear here. ', 'wp-user-frontend' ); ?><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/"><?php _e( 'Learn More ', 'wp-user-frontend' ); ?></a></p>
+                <p class="description"><?php esc_html_e( 'Custom Post Type will appear here. ', 'wp-user-frontend' ); ?><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/"><?php esc_html_e( 'Learn More ', 'wp-user-frontend' ); ?></a></p>
             </td>
         </tr>
 
         <tr class="wpuf-post-status">
-            <th><?php _e( 'Post Status', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Post Status', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[post_status]">
                     <?php
                     $statuses = get_post_statuses();
 
                     foreach ( $statuses as $status => $label ) {
-                        printf( '<option value="%s"%s>%s</option>', $status, selected( $post_status_selected, $status, false ), $label );
+                        printf( '<option value="%s"%s>%s</option>', esc_attr( $status ), esc_attr( selected( $post_status_selected, $status, false ) ), esc_html( $label ) );
                     }
                     ?>
                 </select>
@@ -69,16 +69,16 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
         </tr>
 
         <tr class="wpuf-post-fromat">
-            <th><?php _e( 'Post Format', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Post Format', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[post_format]">
-                    <option value="0"><?php _e( '- None -', 'wp-user-frontend' ); ?></option>
+                    <option value="0"><?php esc_html_e( '- None -', 'wp-user-frontend' ); ?></option>
                     <?php
                     $post_formats = get_theme_support( 'post-formats' );
 
                     if ( isset( $post_formats[0] ) && is_array( $post_formats[0] ) ) {
                         foreach ( $post_formats[0] as $format ) {
-                            printf( '<option value="%s"%s>%s</option>', $format, selected( $post_format_selected, $format, false ), $format );
+                            printf( '<option value="%s"%s>%s</option>', esc_attr( $format ), esc_attr( selected( $post_format_selected, $format, false ) ), esc_html( $format ) );
                         }
                     }
                     ?>
@@ -87,7 +87,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
         </tr>
 
         <tr class="wpuf-default-cat">
-            <th><?php _e( 'Default Post Category', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Default Post Category', 'wp-user-frontend' ); ?></th>
             <td>
                 <?php
 
@@ -111,7 +111,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     'taxonomy'         => $post_terms,
                 ];
 
-                echo '<select multiple name="wpuf_settings[default_cat][]">';
+                echo wp_kses_post( '<select multiple name="wpuf_settings[default_cat][]">' );
                 $categories = get_terms( $args );
 
                 foreach ( $categories as $category ) {
@@ -120,18 +120,18 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     if ( in_array( $category->term_id, $default_cat ) ) {
                         $selected = 'selected ';
                     }
-                    echo '<option ' . $selected . 'value="' . $category->term_id . '">' . $category->name . '</option>';
+                    echo wp_kses_post( '<option ' . $selected . 'value="' . $category->term_id . '">' . $category->name . '</option>' );
                 }
 
-                echo '</select>';
+                echo wp_kses_post( '</select>' );
 
                 ?>
-                <p class="description"><?php echo __( 'If users are not allowed to choose any category, this category will be used instead (if post type supports)', 'wp-user-frontend' ); ?></p>
+                <p class="description"><?php echo esc_html( __( 'If users are not allowed to choose any category, this category will be used instead (if post type supports)', 'wp-user-frontend' ) ); ?></p>
             </td>
         </tr>
 
         <tr class="wpuf-redirect-to">
-            <th><?php _e( 'Redirect To', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Redirect To', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[redirect_to]">
                     <?php
@@ -143,32 +143,32 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     ];
 
                     foreach ( $redirect_options as $to => $label ) {
-                        printf( '<option value="%s"%s>%s</option>', $to, selected( $redirect_to, $to, false ), $label );
+                        printf( '<option value="%s"%s>%s</option>', esc_attr( $to ), esc_attr( selected( $redirect_to, $to, false ) ), esc_html( $label ) );
                     }
                     ?>
                 </select>
                 <p class="description">
-                    <?php _e( 'After successfull submit, where the page will redirect to', $domain = 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'After successfull submit, where the page will redirect to', $domain = 'wp-user-frontend' ); ?>
                 </p>
             </td>
         </tr>
 
         <tr class="wpuf-same-page">
-            <th><?php _e( 'Message to show', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Message to show', 'wp-user-frontend' ); ?></th>
             <td>
                 <textarea rows="3" cols="40" name="wpuf_settings[message]"><?php echo esc_textarea( $message ); ?></textarea>
             </td>
         </tr>
 
         <tr class="wpuf-page-id">
-            <th><?php _e( 'Page', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Page', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[page_id]">
                     <?php
                     $pages = get_posts(  [ 'numberposts' => -1, 'post_type' => 'page'] );
 
                     foreach ( $pages as $page ) {
-                        printf( '<option value="%s"%s>%s</option>', $page->ID, selected( $page_id, $page->ID, false ), esc_attr( $page->post_title ) );
+                        printf( '<option value="%s"%s>%s</option>', esc_attr( $page->ID ), esc_attr( selected( $page_id, $page->ID, false ) ), esc_attr( $page->post_title ) );
                     }
                     ?>
                 </select>
@@ -176,38 +176,38 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
         </tr>
 
         <tr class="wpuf-url">
-            <th><?php _e( 'Custom URL', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Custom URL', 'wp-user-frontend' ); ?></th>
             <td>
                 <input type="url" name="wpuf_settings[url]" value="<?php echo esc_attr( $url ); ?>">
             </td>
         </tr>
 
         <tr class="wpuf-comment">
-            <th><?php _e( 'Comment Status', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Comment Status', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[comment_status]">
-                    <option value="open" <?php selected( $comment_status, 'open' ); ?>><?php _e( 'Open', 'wp-user-frontend' ); ?></option>
-                    <option value="closed" <?php selected( $comment_status, 'closed' ); ?>><?php _e( 'Closed', 'wp-user-frontend' ); ?></option>
+                    <option value="open" <?php selected( $comment_status, 'open' ); ?>><?php esc_html_e( 'Open', 'wp-user-frontend' ); ?></option>
+                    <option value="closed" <?php selected( $comment_status, 'closed' ); ?>><?php esc_html_e( 'Closed', 'wp-user-frontend' ); ?></option>
                 </select>
             </td>
         </tr>
 
         <tr class="wpuf-submit-text">
-            <th><?php _e( 'Submit Post Button text', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Submit Post Button text', 'wp-user-frontend' ); ?></th>
             <td>
                 <input type="text" name="wpuf_settings[submit_text]" value="<?php echo esc_attr( $submit_text ); ?>">
             </td>
         </tr>
 
         <tr>
-            <th><?php _e( 'Post Draft', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Post Draft', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[draft_post]" value="false">
                     <input type="checkbox" name="wpuf_settings[draft_post]" value="true"<?php checked( $draft_post, 'true' ); ?> />
-                    <?php _e( 'Enable Saving as draft', 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'Enable Saving as draft', 'wp-user-frontend' ); ?>
                 </label>
-                <p class="description"><?php _e( 'It will show a button to save as draft', 'wp-user-frontend' ); ?></p>
+                <p class="description"><?php esc_html_e( 'It will show a button to save as draft', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
 

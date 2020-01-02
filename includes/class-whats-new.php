@@ -90,17 +90,17 @@ class WPUF_Whats_New {
         <div class="notice notice-success wpuf-whats-new-notice free">
 
             <div class="wpuf-whats-new-icon">
-                <img src="<?php echo WPUF_ASSET_URI . '/images/icon-128x128.png'; ?>" alt="WPUF Icon">
+                <img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="WPUF Icon">
             </div>
 
             <div class="wpuf-whats-new-text">
-                <p><strong><?php printf( __( 'WP User Frontend - Version %s', 'wp-user-frontend' ), WPUF_VERSION ); ?></strong></p>
-                <p><?php printf( __( 'Welcome to the new version of WP User Frontend. See what\'s been changed in the <strong>%s</strong> version.', 'wp-user-frontend' ), WPUF_VERSION ); ?></strong></p>
+                <p><strong><?php printf( esc_html( __( 'WP User Frontend - Version %s', 'wp-user-frontend' ) ), esc_html( WPUF_VERSION ) ); ?></strong></p>
+                <p><?php printf( wp_kses_post( __( 'Welcome to the new version of WP User Frontend. See what\'s been changed in the <strong>%s</strong> version.', 'wp-user-frontend' ) ), esc_html( WPUF_VERSION ) ); ?></strong></p>
             </div>
 
             <div class="wpuf-whats-new-actions">
-                <a href="<?php echo admin_url( 'index.php?page=whats-new-wpuf' ); ?>" class="button button-primary"><?php _e( 'What\'s New?', 'wp-user-frontend' ); ?></a>
-                <button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php _e( 'Dismiss this notice.', 'wp-user-frontend' ); ?></span></button>
+                <a href="<?php echo esc_url( admin_url( 'index.php?page=whats-new-wpuf' ) ); ?>" class="button button-primary"><?php esc_html_e( 'What\'s New?', 'wp-user-frontend' ); ?></a>
+                <button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'wp-user-frontend' ); ?></span></button>
             </div>
         </div>
 

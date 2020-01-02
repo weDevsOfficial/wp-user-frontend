@@ -52,11 +52,11 @@ class WPUF_Admin_Posting {
             add_action( 'admin_head', 'wpuf_hide_google_map_button' );
 
             function wpuf_hide_google_map_button() {
-                echo "<style>
+                echo wp_kses_post( "<style>
                 button.button[data-name='custom_map'] {
                     display: none;
                 }
-              </style>";
+              </style>" );
             }
         }
 
@@ -115,16 +115,16 @@ class WPUF_Admin_Posting {
         $forms    = get_posts( ['post_type' => 'wpuf_forms', 'numberposts' => '-1'] );
         $selected = get_post_meta( $post->ID, '_wpuf_form_id', true ); ?>
 
-        <input type="hidden" name="wpuf_form_select_nonce" value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" />
+        <input type="hidden" name="wpuf_form_select_nonce" value="<?php echo esc_url( wp_create_nonce( plugin_basename( __FILE__ ) ) ); ?>" />
 
         <select name="wpuf_form_select">
             <option value="">--</option>
             <?php foreach ( $forms as $form ) { ?>
-            <option value="<?php echo $form->ID; ?>"<?php selected( $selected, $form->ID ); ?>><?php echo $form->post_title; ?></option>
+            <option value="<?php echo esc_attr( $form->ID ); ?>"<?php selected( $selected, $form->ID ); ?>><?php echo esc_html( $form->post_title ); ?></option>
             <?php } ?>
         </select>
         <div>
-            <p><a href="https://wedevs.com/docs/wp-user-frontend-pro/tutorials/purpose-of-the-wpuf-form-metabox/" target="_blank"><?php _e( 'Learn more', 'wp-user-frontend' ); ?></a></p>
+            <p><a href="https://wedevs.com/docs/wp-user-frontend-pro/tutorials/purpose-of-the-wpuf-form-metabox/" target="_blank"><?php esc_html_e( 'Learn more', 'wp-user-frontend' ); ?></a></p>
         </div>
         <?php
     }
@@ -143,8 +143,8 @@ class WPUF_Admin_Posting {
         if ( !isset( $_POST['wpuf_form_select'] ) ) {
             return $post->ID;
         }
-
-        if ( !wp_verify_nonce( $_POST['wpuf_form_select_nonce'], plugin_basename( __FILE__ ) ) ) {
+        $nonce = isset( $_POST['wpuf_form_select_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_form_select_nonce'] ) ) : '';
+        if ( !wp_verify_nonce( $nonce , plugin_basename( __FILE__ ) ) ) {
             return $post->ID;
         }
 
@@ -152,8 +152,9 @@ class WPUF_Admin_Posting {
         if ( !current_user_can( 'edit_post', $post->ID ) ) {
             return $post->ID;
         }
+        $wpuf_form_select = isset( $_POST['wpuf_form_select'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_form_select'] ) ) : '';
 
-        update_post_meta( $post->ID, '_wpuf_form_id', $_POST['wpuf_form_select'] );
+        update_post_meta( $post->ID, '_wpuf_form_id', $wpuf_form_select );
     }
 
     /**
@@ -206,20 +207,20 @@ class WPUF_Admin_Posting {
             $msg          = sprintf( __( 'Frontend edit access for this post will be automatically locked after %s, <a id="wpuf_clear_schedule_lock" data="%s" href="#">Clear Lock</a> Or,', 'wp-user-frontend' ), $local_time, $post->ID );
         } ?>
 
-        <input type="hidden" name="wpuf_lock_editing_post_nonce" value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" />
+        <input type="hidden" name="wpuf_lock_editing_post_nonce" value="<?php echo esc_url( wp_create_nonce( plugin_basename( __FILE__ ) ) ); ?>" />
 
-        <p><?php echo $msg; ?></p>
+        <p><?php echo esc_html( $msg ); ?></p>
 
         <label>
             <?php if ( !$is_locked ) { ?>
                 <input type="hidden" name="wpuf_lock_post" value="no">
                 <input type="checkbox" name="wpuf_lock_post" value="yes" <?php checked( $edit_post_lock, 'yes' ); ?>>
-                <?php _e( 'Lock Post Permanently', 'wp-user-frontend' ); ?>
+                <?php esc_html_e( 'Lock Post Permanently', 'wp-user-frontend' ); ?>
             <?php } ?>
         </label>
 
         <?php if ( !$is_locked ) { ?>
-            <p style="margin-top: 10px"><?php _e( 'Lock user from editing this post from the frontend dashboard', 'wp-user-frontend' ); ?></p>
+            <p style="margin-top: 10px"><?php esc_html_e( 'Lock user from editing this post from the frontend dashboard', 'wp-user-frontend' ); ?></p>
         <?php } ?>
 
         <?php
@@ -236,13 +237,15 @@ class WPUF_Admin_Posting {
      * @return int|void
      */
     public function post_lock_metabox_save( $post_id, $post ) {
-        $edit_post_lock_time = isset( $_POST['_wpuf_lock_user_editing_post_time'] ) ? $_POST['_wpuf_lock_user_editing_post_time'] : '';
+        $edit_post_lock_time = isset( $_POST['_wpuf_lock_user_editing_post_time'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpuf_lock_user_editing_post_time'] ) ) : '';
 
         if ( !isset( $_POST['wpuf_lock_post'] ) ) {
             return $post->ID;
         }
 
-        if ( !wp_verify_nonce( $_POST['wpuf_lock_editing_post_nonce'], plugin_basename( __FILE__ ) ) ) {
+        $nonce = isset( $_POST['wpuf_lock_editing_post_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_lock_editing_post_nonce'] ) ) : '';
+
+        if ( !wp_verify_nonce( $nonce, plugin_basename( __FILE__ ) ) ) {
             return $post->ID;
         }
 
@@ -250,8 +253,9 @@ class WPUF_Admin_Posting {
         if ( !current_user_can( 'edit_post', $post->ID ) ) {
             return $post->ID;
         }
+        $wpuf_lock_post = isset( $_POST['wpuf_lock_post'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_lock_post'] ) ) : '';
 
-        update_post_meta( $post->ID, '_wpuf_lock_editing_post', $_POST['wpuf_lock_post'] );
+        update_post_meta( $post->ID, '_wpuf_lock_editing_post', $wpuf_lock_post );
     }
 
     /**
@@ -319,13 +323,13 @@ class WPUF_Admin_Posting {
         list( $post_fields, $taxonomy_fields, $custom_fields ) = $this->get_input_fields( $form_id );
 
         if ( empty( $custom_fields ) ) {
-            _e( 'No custom fields found.', 'wp-user-frontend' );
+            esc_html_e( 'No custom fields found.', 'wp-user-frontend' );
 
             return;
         } ?>
 
-        <input type="hidden" name="wpuf_cf_update" value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" />
-        <input type="hidden" name="wpuf_cf_form_id" value="<?php echo $form_id; ?>" />
+        <input type="hidden" name="wpuf_cf_update" value="<?php echo esc_attr( wp_create_nonce( plugin_basename( __FILE__ ) ) ); ?>" />
+        <input type="hidden" name="wpuf_cf_form_id" value="<?php echo esc_attr( $form_id ); ?>" />
 
         <table class="form-table wpuf-cf-table">
             <tbody>
@@ -392,7 +396,7 @@ class WPUF_Admin_Posting {
                         var data = {
                             action: 'wpuf_delete_avatar',
                             user_id : $('#profile-page').find('#user_id').val(),
-                            _wpnonce: '<?php echo wp_create_nonce( 'wpuf_nonce' ); ?>'
+                            _wpnonce: '<?php echo esc_url( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
                         };
 
                         if ( confirm( $(this).data('confirm') ) ) {
@@ -476,15 +480,18 @@ class WPUF_Admin_Posting {
      */
     // Save the Metabox Data
     public function save_meta( $post_id, $post = null ) {
+        $wpuf_cf_update = isset( $_POST['wpuf_cf_update'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_cf_update'] ) ) : '';
+        $wpuf_cf_form_id  = isset( $_POST['wpuf_cf_form_id'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_cf_form_id'] ) ) : '';
+
         if ( !isset( $post_id ) ) {
             return;
         }
 
-        if ( !isset( $_POST['wpuf_cf_update'] ) ) {
+        if ( empty( $wpuf_cf_update ) ) {
             return $post_id;
         }
 
-        if ( !wp_verify_nonce( $_POST['wpuf_cf_update'], plugin_basename( __FILE__ ) ) ) {
+        if ( !wp_verify_nonce( $wpuf_cf_update, plugin_basename( __FILE__ ) ) ) {
             return $post_id;
         }
 
@@ -493,7 +500,7 @@ class WPUF_Admin_Posting {
             return $post_id;
         }
 
-        list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $_POST['wpuf_cf_form_id'] );
+        list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $wpuf_cf_form_id );
 
         // WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
         WPUF_Frontend_Form::update_post_meta( $meta_vars, $post_id );
@@ -507,7 +514,7 @@ class WPUF_Admin_Posting {
     public function clear_schedule_lock() {
         check_ajax_referer( 'wpuf_nonce', 'nonce' );
 
-        $post_id = isset( $_POST['post_id'] ) ? $_POST['post_id'] : '';
+        $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
 
         if ( !empty( $post_id ) ) {
             update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );

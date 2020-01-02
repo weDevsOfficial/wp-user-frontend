@@ -153,7 +153,7 @@ class WPUF_Frontend_Account {
 
         if ( is_user_logged_in() ) {
             $default_active_tab = wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' );
-            $section            = isset( $_REQUEST['section'] ) ? $_REQUEST['section'] : $default_active_tab;
+            $section            = isset( $_REQUEST['section'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['section'] ) ) : $default_active_tab;
             $sections           = wpuf_get_account_sections();
             $current_section    = [];
 
@@ -225,7 +225,7 @@ class WPUF_Frontend_Account {
         $sub_id     = $wpuf_user->subscription()->current_pack_id();
 
         if ( !$sub_id ) {
-            _e( '<p>You are not subscribed to any package yet.</p>', 'wp-user-frontend' );
+            esc_html_e( '<p>You are not subscribed to any package yet.</p>', 'wp-user-frontend' );
 
             return;
         }
@@ -233,7 +233,7 @@ class WPUF_Frontend_Account {
         $user_sub          = $user_subscription->current_pack();
 
         if ( $user_sub['status'] != 'completed' && $user_sub['status'] != 'free' ) {
-            _e( '<p>You may processed your payment, but the pack is not activated yet.</p>', 'wp-user-frontend' );
+            esc_html_e( '<p>You may processed your payment, but the pack is not activated yet.</p>', 'wp-user-frontend' );
 
             return;
         }
@@ -307,18 +307,20 @@ class WPUF_Frontend_Account {
      * @return json
      */
     public function update_profile() {
-        if ( !wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpuf-account-update-profile' ) ) {
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( !wp_verify_nonce( $nonce, 'wpuf-account-update-profile' ) ) {
             wp_send_json_error( __( 'Nonce failure', 'wp-user-frontend' ) );
         }
 
         global $current_user;
 
-        $first_name       = !empty( $_POST['first_name'] ) ? sanitize_text_field( $_POST['first_name'] ) : '';
-        $last_name        = !empty( $_POST['last_name'] ) ? sanitize_text_field( $_POST['last_name'] ) : '';
-        $email            = !empty( $_POST['email'] ) ? sanitize_text_field( $_POST['email'] ) : '';
-        $current_password = !empty( $_POST['current_password'] ) ? $_POST['current_password'] : '';
-        $pass1            = !empty( $_POST['pass1'] ) ? $_POST['pass1'] : '';
-        $pass2            = !empty( $_POST['pass2'] ) ? $_POST['pass2'] : '';
+        $first_name       = !empty( $_POST['first_name'] ) ? sanitize_text_field( wp_unslash( $_POST['first_name'] ) ) : '';
+        $last_name        = !empty( $_POST['last_name'] ) ? sanitize_text_field( wp_unslash( $_POST['last_name'] ) ) : '';
+        $email            = !empty( $_POST['email'] ) ? sanitize_text_field( wp_unslash( $_POST['email'] ) ) : '';
+        $current_password = !empty( $_POST['current_password'] ) ? sanitize_text_field( wp_unslash( $_POST['current_password']  ) ): '';
+        $pass1            = !empty( $_POST['pass1'] ) ? sanitize_text_field( wp_unslash( $_POST['pass1'] ) ) : '';
+        $pass2            = !empty( $_POST['pass2'] ) ? sanitize_text_field( wp_unslash( $_POST['pass2'] ) ) : '';
         $save_pass        = true;
 
         if ( empty( $first_name ) ) {

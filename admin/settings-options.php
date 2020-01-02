@@ -521,19 +521,19 @@ function wpuf_settings_field_profile( $form ) {
         ?>
 
     <p style="padding-left: 10px; font-style: italic; font-size: 13px;">
-        <strong><?php _e( 'Select profile/registration forms for user roles. These forms will be used to populate extra edit profile fields in backend.', 'wp-user-frontend' ); ?></strong>
+        <strong><?php esc_html_e( 'Select profile/registration forms for user roles. These forms will be used to populate extra edit profile fields in backend.', 'wp-user-frontend' ); ?></strong>
     </p>
     <table class="form-table">
         <?php
         foreach ( $user_roles as $role => $name ) {
             $current = isset( $val['roles'][$role] ) ? $val['roles'][$role] : ''; ?>
             <tr valign="top">
-                <th scrope="row"><?php echo $name; ?></th>
+                <th scrope="row"><?php echo esc_attr( $name ); ?></th>
                 <td>
-                    <select name="wpuf_profile[roles][<?php echo $role; ?>]">
-                        <option value=""><?php _e( ' - select - ', 'wp-user-frontend' ); ?></option>
+                    <select name="wpuf_profile[roles][<?php echo esc_attr( $role ); ?>]">
+                        <option value=""><?php esc_html_e( ' - select - ', 'wp-user-frontend' ); ?></option>
                         <?php foreach ( $forms as $form ) { ?>
-                            <option value="<?php echo $form->ID; ?>"<?php selected( $current, $form->ID ); ?>><?php echo $form->post_title; ?></option>
+                            <option value="<?php echo esc_attr( $form->ID ); ?>"<?php selected( $current, $form->ID ); ?>><?php echo esc_html( $form->post_title ); ?></option>
                         <?php } ?>
                     </select>
                 </td>

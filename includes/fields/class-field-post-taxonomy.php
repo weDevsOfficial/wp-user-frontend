@@ -62,7 +62,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         }
 
         if ( !taxonomy_exists( $this->taxonomy ) ) {
-            echo '<br><div class="wpuf-message">' . __( 'This field is no longer available.', 'wp-user-frontend' ) . '</div>';
+            echo wp_kses_post( '<br><div class="wpuf-message">' . __( 'This field is no longer available.', 'wp-user-frontend' ) . '</div>' );
 
             return;
         }
@@ -70,9 +70,9 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         $div_class = 'wpuf_' . $this->field_settings['name'] . '_' . $this->field_settings['type'] . '_' . $field_settings['id'] . '_' . $form_id;
 
         if ( $this->field_settings['type'] == 'checkbox' ) { ?>
-            <div class="wpuf-fields <?php echo $div_class; ?>" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-type="tax-checkbox">
+            <div class="wpuf-fields <?php echo wp_kses_post( $div_class ); ?>" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-type="tax-checkbox">
         <?php } else { ?>
-            <div class="wpuf-fields <?php echo $div_class; ?>">
+            <div class="wpuf-fields <?php echo esc_attr( $div_class ); ?>">
         <?php }
 
         switch ( $this->field_settings['type'] ) {
@@ -135,7 +135,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
         $select = wp_dropdown_categories( $tax_args );
 
-        echo str_replace( '<select', '<select ' . $required, $select );
+        echo wp_kses_post( str_replace( '<select', '<select ' . $required, $select ) );
         $attr = [
             'required'      => $attr['required'],
             'name'          => $attr['name'],
@@ -149,7 +149,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             //'term_id'      => $selected
         ];
         $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr ); ?>
-        <span data-taxonomy=<?php  echo json_encode( $attr ); ?>></span>
+        <span data-taxonomy=<?php  echo esc_attr( json_encode( $attr ) ); ?>></span>
         <?php
     }
 
@@ -174,7 +174,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
     public function RecursiveCatWrite( $tree ) {
         foreach ( $tree as $vals ) {
             $level = 0; ?>
-             <div id="lvl<?php echo $level; ?>" level="<?php echo $level; ?>" >
+             <div id="lvl<?php echo esc_attr( $level ); ?>" level="<?php echo esc_attr( $level ); ?>" >
                 <?php $this->taxnomy_select( $vals->term_id ); ?>
             </div>
 
@@ -193,7 +193,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             $this->terms = wp_get_post_terms( $post_id, $this->taxonomy, ['fields' => 'all'] );
         } ?>
 
-        <div class="category-wrap <?php echo $this->class; ?>">
+        <div class="category-wrap <?php echo esc_attr( $this->class ); ?>">
 
             <?php
 
@@ -238,7 +238,23 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
         $select   = wp_dropdown_categories( $tax_args );
 
-        echo str_replace( '<select', '<select ' . $required, $select );
+        $allowed_html = [
+            'option'    =>  [
+                'value' =>  [],
+                'selected' => []
+            ]
+        ];
+
+        // echo str_replace( '<select', '<select ' . $required, $select );
+
+        echo wp_kses( str_replace( '<select', '<select ' . $required, $select ), [
+            'select' => [],
+            'option' => [
+                'value' => [],
+                'selected' => []
+            ]
+        ] );
+
     }
 
     public function tax_multiselect( $post_id = null ) {
@@ -270,18 +286,18 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
         $select   = wp_dropdown_categories( $tax_args );
 
-        echo str_replace( '<select', '<select multiple="multiple" ' . $required, $select );
+        echo wp_kses_post( str_replace( '<select', '<select multiple="multiple" ' . esc_attr( $required ), esc_attr( $select ) ) );
     }
 
     public function tax_input( $post_id = null ) {
         $attr = $this->field_settings; ?>
 
-        <input class="textfield<?php echo $this->required_class( $attr ); ?>" id="<?php echo $attr['name']; ?>" type="text" data-required="<?php echo $attr['required']; ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $this->terms ) ); ?>" size="40" />
+        <input class="textfield<?php echo esc_attr( $this->required_class( $attr ) ); ?>" id="<?php echo esc_attr( $attr['name'] ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $this->terms ) ); ?>" size="40" />
 
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                        $('#<?php echo $attr['name']; ?>').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=<?php echo $attr['name']; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                        $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=<?php echo esc_attr( $attr['name'] ); ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                 });
             })(jQuery);
         </script>
@@ -337,8 +353,9 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         // $val   = $_POST[$field['name']];
         // return isset( $field['options'][$val] ) ? $field['options'][$val] : '';
         // return sanitize_text_field($_POST[$field['name']]);
+        check_ajax_referer( 'wpuf_form_add' );
 
-        return $val   = $_POST[$field['name']];
+        return $val   = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
 
         return isset( $field['options'][$val] ) ? $field['options'][$val] : '';
     }

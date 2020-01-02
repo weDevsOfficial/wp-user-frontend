@@ -94,50 +94,62 @@ class WPUF_Admin_Subscription {
         if ( !is_admin() && !current_user_can( 'edit_users' ) ) {
             return;
         }
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'update-profile_' . $user_id ) ) {
+            die( esc_html( 'Failed nonce verification !' ) );
+        }
 
         if ( !isset( $_POST['pack_id'] ) ) {
             return;
         }
 
         if ( isset( $_POST['wpuf_profile_mail_noti'] ) ) {
-            update_user_meta( $user_id, '_pack_assign_notification', $_POST['wpuf_profile_mail_noti'] );
+            $wpuf_profile_mail_noti = sanitize_text_field( wp_unslash( $_POST['wpuf_profile_mail_noti'] ) );
+            update_user_meta( $user_id, '_pack_assign_notification', $wpuf_profile_mail_noti );
         }
 
-        $pack_id   = $_POST['pack_id'];
-        $pack      = WPUF_Subscription::get_subscription( $_POST['pack_id'] );
-        $user_pack = WPUF_Subscription::get_user_pack( $_POST['user_id'] );
+        $pack_id   = isset( $_POST['pack_id'] ) ? intval( wp_unslash( $_POST['pack_id'] ) ) : '';
+        $u_id   = isset( $_POST['user_id'] ) ? intval( wp_unslash( $_POST['user_id'] ) ) : '';
+        $pack      = WPUF_Subscription::get_subscription( $pack_id );
+        $user_pack = WPUF_Subscription::get_user_pack( $u_id );
 
         if ( isset( $user_pack['pack_id'] ) && $pack_id == $user_pack['pack_id'] ) {
             //updating number of posts
 
             if ( isset( $user_pack['posts'] ) ) {
+                $p_type = isset( $_POST[$post_type] ) ? sanitize_text_field( wp_unslash( $_POST[$post_type] ) ) : '';
                 foreach ( $user_pack['posts'] as $post_type => $post_num ) {
-                    $user_pack['posts'][$post_type] = $_POST[$post_type];
+                    $user_pack['posts'][$post_type] = $p_type;
                 }
             }
 
             //post expiration enable or disable
 
             if ( isset( $_POST['is_post_expiration_enabled'] ) ) {
-                $user_pack['_enable_post_expiration'] = $_POST['is_post_expiration_enabled'];
+                $user_pack['_enable_post_expiration'] = sanitize_text_field( wp_unslash( $_POST['is_post_expiration_enabled'] ) );
             } else {
                 unset( $user_pack['_enable_post_expiration'] );
             }
 
             //updating post time
             if ( isset( $_POST['post_expiration_settings'] ) ) {
-                echo $user_pack['_post_expiration_time'] = $_POST['post_expiration_settings']['expiration_time_value'] . ' ' . $_POST['post_expiration_settings']['expiration_time_type'];
+                $post_expiration_settings = array_map( 'sanitize_text_field', wp_unslash( $_POST['post_expiration_settings'] ) );
+
+                $user_pack['_post_expiration_time'] = post_expiration_settings['expiration_time_value'] . ' ' . post_expiration_settings['expiration_time_type'];
+
+                echo esc_html( $user_pack['_post_expiration_time'] );
             }
 
             if ( isset( $user_pack['recurring'] ) && $user_pack['recurring'] == 'yes' ) {
                 foreach ( $user_pack['posts'] as $type => $value ) {
-                    $user_pack['posts'][$type] = isset( $_POST[$type] ) ? $_POST[$type] : 0;
+                    $user_pack['posts'][$type] = isset( $_POST[$type] ) ? sanitize_text_field( wp_unslash( $_POST[$type] ) ) : 0;
                 }
             } else {
                 foreach ( $user_pack['posts'] as $type => $value ) {
-                    $user_pack['posts'][$type] = isset( $_POST[$type] ) ? $_POST[$type] : 0;
+                    $user_pack['posts'][$type] = isset( $_POST[$type] ) ? sanitize_text_field( wp_unslash( $_POST[$type] ) ) : 0;
                 }
-                $user_pack['expire'] = isset( $_POST['expire'] ) ? wpuf_date2mysql( $_POST['expire'] ) : $user_pack['expire'];
+                $user_pack['expire'] = isset( $_POST['expire'] ) ? wpuf_date2mysql( sanitize_text_field( wp_unslash( $_POST['expire'] ) ) ) : $user_pack['expire'];
             }
             wpuf_get_user( $user_id )->subscription()->update_meta( $user_pack );
         } else {
@@ -215,14 +227,14 @@ class WPUF_Admin_Subscription {
                 } else {
                     $amount = wpuf_format_price( $amount );
                 }
-                echo $amount;
+                echo esc_html( $amount );
                 break;
 
             case 'subscribers':
 
                 $users = WPUF_Subscription::init()->subscription_pack_users( $post_ID );
 
-                echo '<a href="' . admin_url( 'edit.php?post_type=wpuf_subscription&page=wpuf_subscribers&post_ID=' . $post_ID ) . '" />' . count( $users ) . '</a>';
+                echo wp_kses_post( '<a href="' . admin_url( 'edit.php?post_type=wpuf_subscription&page=wpuf_subscribers&post_ID=' . $post_ID ) . '" />' . count( $users ) . '</a>' );
                 break;
 
             case 'recurring':
@@ -230,9 +242,9 @@ class WPUF_Admin_Subscription {
                 $recurring = get_post_meta( $post_ID, '_recurring_pay', true );
 
                 if ( $recurring == 'yes' ) {
-                    _e( 'Yes', 'wp-user-frontend' );
+                    esc_html_e( 'Yes', 'wp-user-frontend' );
                 } else {
-                    _e( 'No', 'wp-user-frontend' );
+                    esc_html_e( 'No', 'wp-user-frontend' );
                 }
                 break;
 
@@ -243,11 +255,11 @@ class WPUF_Admin_Subscription {
                 $cycle_period         =  get_post_meta( $post_ID, '_cycle_period', true );
 
                 if ( $recurring_pay == 'yes' ) {
-                    echo $billing_cycle_number . ' ' . $cycle_period . '\'s (cycle)';
+                    echo esc_attr( $billing_cycle_number . ' ' . $cycle_period ) . '\'s (cycle)';
                 } else {
                     $expiration_number    =  get_post_meta( $post_ID, '_expiration_number', true );
                     $expiration_period    =  get_post_meta( $post_ID, '_expiration_period', true );
-                    echo $expiration_number . ' ' . $expiration_period . '\'s';
+                    echo esc_attr( $expiration_number . ' ' . $expiration_period ) . '\'s';
                 }
                 break;
         }
@@ -265,10 +277,10 @@ class WPUF_Admin_Subscription {
 
             if ( $post_type_object ) { ?>
                 <tr>
-                    <th><label for="wpuf-<?php echo esc_attr( $key ); ?>"><?php printf( 'Number of %s', $post_type_object->label ); ?></label></th>
+                    <th><label for="wpuf-<?php echo esc_attr( $key ); ?>"><?php printf( 'Number of %s', esc_html( $post_type_object->label ) ); ?></label></th>
                     <td>
                         <input type="text" size="20" style="" id="wpuf-<?php echo esc_attr( $key ); ?>" value="<?php echo intval( $name ); ?>" name="post_type_name[<?php echo esc_attr( $key ); ?>]" />
-                        <div><span class="description"><span><?php printf( 'How many %s the user can list with this pack? Enter <strong>-1</strong> for unlimited.', $key ); ?></span></span></div>
+                        <div><span class="description"><span><?php printf( 'How many %s the user can list with this pack? Enter <strong>-1</strong> for unlimited.', esc_html( $key ) ); ?></span></span></div>
                     </td>
                 </tr>
             <?php
@@ -319,14 +331,14 @@ class WPUF_Admin_Subscription {
                     <li class="tab-current">
                         <a href="#wpuf-payment-settings">
                             <span class="dashicons dashicons-cart"></span>
-                            <?php _e( 'Payment Settings', 'wp-user-frontend' ); ?>
+                            <?php esc_html_e( 'Payment Settings', 'wp-user-frontend' ); ?>
                         </a>
                     </li>
 
                     <li>
                         <a href="#wpuf-post-restriction">
                             <span class="dashicons dashicons-admin-post"></span>
-                            <?php _e( 'Posting Restriction', 'wp-user-frontend' ); ?>
+                            <?php esc_html_e( 'Posting Restriction', 'wp-user-frontend' ); ?>
                         </a>
                     </li>
 
@@ -340,21 +352,21 @@ class WPUF_Admin_Subscription {
                         <tbody>
                         <tr>
                             <th><label for="wpuf-billing-amount">
-                                <span class="wpuf-biling-amount wpuf-subcription-expire" style="display: <?php echo $hidden_expire; ?>;"><?php _e( 'Billing amount:', 'wp-user-frontend' ); ?></span>
-                                <span class="wpuf-billing-cycle wpuf-recurring-child" style="display: <?php echo $hidden_recurring_class; ?>;"><?php _e( 'Billing amount each cycle:', 'wp-user-frontend' ); ?></span></label></th>
+                                <span class="wpuf-biling-amount wpuf-subcription-expire" style="display: <?php echo esc_attr( $hidden_expire ); ?>;"><?php esc_html_e( 'Billing amount:', 'wp-user-frontend' ); ?></span>
+                                <span class="wpuf-billing-cycle wpuf-recurring-child" style="display: <?php echo esc_attr( $hidden_recurring_class ); ?>;"><?php esc_html_e( 'Billing amount each cycle:', 'wp-user-frontend' ); ?></span></label></th>
                             <td>
-                                <?php echo wpuf_get_currency( 'symbol' ); ?>
+                                <?php echo esc_attr( wpuf_get_currency( 'symbol' ) ); ?>
                                 <input type="text" size="20" style="" id="wpuf-billing-amount" value="<?php echo esc_attr( $sub_meta['billing_amount'] ); ?>" name="billing_amount" />
                                 <div><span class="description"></span></div>
                             </td>
                         </tr>
-                        <tr class="wpuf-subcription-expire" style="display: <?php echo $hidden_expire; ?>;">
-                            <th><label for="wpuf-expiration-number"><?php _e( 'Expires In:', 'wp-user-frontend' ); ?></label></th>
+                        <tr class="wpuf-subcription-expire" style="display: <?php echo esc_attr( $hidden_expire ); ?>;">
+                            <th><label for="wpuf-expiration-number"><?php esc_html_e( 'Expires In:', 'wp-user-frontend' ); ?></label></th>
                             <td>
                                 <input type="text" size="20" style="" id="wpuf-expiration-number" value="<?php echo esc_attr( $sub_meta['expiration_number'] ); ?>" name="expiration_number" />
 
                                 <select id="expiration-period" name="expiration_period">
-                                    <?php echo $this->option_field( $sub_meta['expiration_period'] ); ?>
+                                    <?php echo esc_html( $this->option_field( $sub_meta['expiration_period'] ) ); ?>
                                 </select>
                                 <div><span class="description"></span></div>
                             </td>
@@ -367,18 +379,18 @@ class WPUF_Admin_Subscription {
                 <section id="wpuf-post-restriction">
                     <table class="form-table">
                         <tbody>
-                            <?php echo $this->get_post_types( $sub_meta['post_type_name'] ); ?>
+                            <?php echo esc_html( $this->get_post_types( $sub_meta['post_type_name'] ) ); ?>
                             <?php
                            // do_action( 'wpuf_admin_subscription_detail', $sub_meta, $hidden_recurring_class, $hidden_trial_class, $this );
                             ?>
                             <tr class="wpuf-metabox-post_expiration">
 
-                                <th><?php _e( 'Post Expiration', 'wp-user-frontend' ); ?></th>
+                                <th><?php esc_html_e( 'Post Expiration', 'wp-user-frontend' ); ?></th>
 
                                 <td>
                                     <label>
-                                        <input type="checkbox" id="wpuf-enable_post_expiration" name="post_expiration_settings[enable_post_expiration]" value="on" <?php echo $is_post_exp_selected; ?> />
-                                        <?php _e( 'Enable Post Expiration', 'wp-user-frontend' ); ?>
+                                        <input type="checkbox" id="wpuf-enable_post_expiration" name="post_expiration_settings[enable_post_expiration]" value="on" <?php echo esc_attr( $is_post_exp_selected ); ?> />
+                                        <?php esc_html_e( 'Enable Post Expiration', 'wp-user-frontend' ); ?>
                                     </label>
                                 </td>
                             </tr>
@@ -389,13 +401,13 @@ class WPUF_Admin_Subscription {
                                     'month' => 12,
                                     'day'   => 30,
                                 ]; ?>
-                                <th class="wpuf-post-exp-time"> <?php _e( 'Post Expiration Time', 'wp-user-frontend' ); ?> </th>
+                                <th class="wpuf-post-exp-time"> <?php esc_html_e( 'Post Expiration Time', 'wp-user-frontend' ); ?> </th>
                                 <td class="wpuf-post-exp-time">
                                     <select name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value">
                                         <?php
                                         for ( $i = 1; $i <= $timeType_array[$time_type]; $i++ ) {
                                             ?>
-                                            <option value="<?php echo $i; ?>" <?php echo $i == $time_value ? 'selected' : ''; ?>><?php echo $i; ?></option>
+                                            <option value="<?php echo esc_attr( $i ); ?>" <?php echo $i == $time_value ? 'selected' : ''; ?>><?php echo esc_attr( $i ); ?></option>
                                         <?php
                                         } ?>
                                     </select>
@@ -403,7 +415,7 @@ class WPUF_Admin_Subscription {
                                         <?php
                                         foreach ( $timeType_array as $each_time_type=>$each_time_type_val ) {
                                             ?>
-                                            <option value="<?php echo $each_time_type; ?>" <?php echo $each_time_type == $time_type ? 'selected' : ''; ?>><?php echo ucfirst( $each_time_type ); ?></option>
+                                            <option value="<?php echo esc_attr( $each_time_type ); ?>" <?php echo $each_time_type == $time_type ? 'selected' : ''; ?>><?php echo esc_html( ucfirst( $each_time_type ) ); ?></option>
                                         <?php
                                         } ?>
                                     </select>
@@ -412,7 +424,7 @@ class WPUF_Admin_Subscription {
                             </tr>
                             <tr class="wpuf_subscription_expiration_field">
                                 <th>
-                                    <?php _e( 'Post Status', 'wp-user-frontend' ); ?>
+                                    <?php esc_html_e( 'Post Status', 'wp-user-frontend' ); ?>
                                 </th>
                                 <td>
                                     <?php $post_statuses = get_post_statuses(); ?>
@@ -420,33 +432,33 @@ class WPUF_Admin_Subscription {
                                         <?php
                                         foreach ( $post_statuses as $post_status => $text ) {
                                             ?>
-                                            <option value="<?php echo $post_status; ?>" <?php echo ( $expired_post_status == $post_status ) ? 'selected' : ''; ?>><?php echo $text; ?></option>
+                                            <option value="<?php echo esc_attr( $post_status ); ?>" <?php echo ( $expired_post_status == $post_status ) ? 'selected' : ''; ?>><?php echo esc_html( $text ); ?></option>
                                         <?php
                                         } ?>
                                     </select>
-                                    <p class="description"><?php _e( 'Status of post after post expiration time is over ', 'wp-user-frontend' ); ?></p>
+                                    <p class="description"><?php esc_html_e( 'Status of post after post expiration time is over ', 'wp-user-frontend' ); ?></p>
                                 </td>
                             </tr>
                             <tr class="wpuf_subscription_expiration_field">
                                 <th>
-                                    <?php _e( 'Expiration Mail', 'wp-user-frontend' ); ?>
+                                    <?php esc_html_e( 'Expiration Mail', 'wp-user-frontend' ); ?>
                                 </th>
                                 <td>
                                     <label>
-                                        <input type="checkbox" name="post_expiration_settings[enable_mail_after_expired]" value="on" <?php echo $is_enable_mail_after_expired; ?> />
-                                        <?php _e( 'Send Expiration Email to Post Author', 'wp-user-frontend' ); ?>
+                                        <input type="checkbox" name="post_expiration_settings[enable_mail_after_expired]" value="on" <?php echo esc_attr( $is_enable_mail_after_expired ); ?> />
+                                        <?php esc_html_e( 'Send Expiration Email to Post Author', 'wp-user-frontend' ); ?>
                                     </label>
 
                                     <p class="help">
-                                        <?php _e( 'Send Mail to Author After Exceeding Post Expiration Time', 'wp-user-frontend' ); ?>
+                                        <?php esc_html_e( 'Send Mail to Author After Exceeding Post Expiration Time', 'wp-user-frontend' ); ?>
                                     </p>
                                 </td>
                             </tr>
                             <tr class="wpuf_subscription_expiration_field">
-                                <th><?php _e( 'Expiration Message', 'wp-user-frontend' ); ?></th>
+                                <th><?php esc_html_e( 'Expiration Message', 'wp-user-frontend' ); ?></th>
                                 <td>
-                                    <textarea name="post_expiration_settings[post_expiration_message]" id="wpuf-post_expiration_message" cols="50" rows="5"><?php echo $post_expiration_message; ?></textarea>
-                                    <p class="description"><strong><?php echo __( 'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}', 'wp-user-frontend' ); ?></strong></p>
+                                    <textarea name="post_expiration_settings[post_expiration_message]" id="wpuf-post_expiration_message" cols="50" rows="5"><?php echo esc_attr( $post_expiration_message ); ?></textarea>
+                                    <p class="description"><strong><?php echo esc_html( __( 'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}', 'wp-user-frontend' ) ); ?></strong></p>
                                 </td>
                             </tr>
 
@@ -506,10 +518,10 @@ class WPUF_Admin_Subscription {
      */
     public function option_field( $selected ) {
         ?>
-        <option value="day" <?php selected( $selected, 'day' ); ?> ><?php _e( 'Day(s)', 'wp-user-frontend' ); ?></option>
-        <option value="week" <?php selected( $selected, 'week' ); ?> ><?php _e( 'Week(s)', 'wp-user-frontend' ); ?></option>
-        <option value="month" <?php selected( $selected, 'month' ); ?> ><?php _e( 'Month(s)', 'wp-user-frontend' ); ?></option>
-        <option value="year" <?php selected( $selected, 'year' ); ?> ><?php _e( 'Year(s)', 'wp-user-frontend' ); ?></option>
+        <option value="day" <?php selected( $selected, 'day' ); ?> ><?php esc_html_e( 'Day(s)', 'wp-user-frontend' ); ?></option>
+        <option value="week" <?php selected( $selected, 'week' ); ?> ><?php esc_html_e( 'Week(s)', 'wp-user-frontend' ); ?></option>
+        <option value="month" <?php selected( $selected, 'month' ); ?> ><?php esc_html_e( 'Month(s)', 'wp-user-frontend' ); ?></option>
+        <option value="year" <?php selected( $selected, 'year' ); ?> ><?php esc_html_e( 'Year(s)', 'wp-user-frontend' ); ?></option>
         <?php
     }
 
@@ -522,7 +534,7 @@ class WPUF_Admin_Subscription {
             if ( $recurring == 'yes' ) {
                 continue;
             } ?>
-            <option value="<?php echo $pack->ID; ?>" <?php selected( $selected, $pack->ID ); ?>><?php echo $pack->post_title; ?></option>
+            <option value="<?php echo esc_attr( $pack->ID ); ?>" <?php selected( $selected, $pack->ID ); ?>><?php echo esc_attr( $pack->post_title ); ?></option>
             <?php
         }
     }
@@ -549,7 +561,7 @@ class WPUF_Admin_Subscription {
         $user_sub = WPUF_Subscription::get_user_pack( $userdata->ID );
         $pack_id  = isset( $user_sub['pack_id'] ) ? $user_sub['pack_id'] : ''; ?>
         <div class="wpuf-user-subscription" style="width: 640px;">
-            <h3><?php _e( 'WPUF Subscription Information', 'wp-user-frontend' ); ?></h3>
+            <h3><?php esc_html_e( 'WPUF Subscription Information', 'wp-user-frontend' ); ?></h3>
 
             <?php
 
@@ -572,37 +584,37 @@ class WPUF_Admin_Subscription {
                     <div class="wpuf-sub-summary">
                         <div class="sub-name">
                             <span class="label">
-                                <?php _e( 'Subcription Name', 'wp-user-frontend' ); ?>
+                                <?php esc_html_e( 'Subcription Name', 'wp-user-frontend' ); ?>
                             </span>
 
                             <span class="value">
-                                <?php echo isset( $pack->post_title ) ? $pack->post_title : ''; ?>
+                                <?php echo isset( $pack->post_title ) ? esc_html( $pack->post_title ) : ''; ?>
                             </span>
                         </div>
 
                         <div class="sub-price">
                             <span class="label">
-                                <?php _e( 'Billing Info', 'wp-user-frontend' ); ?>
+                                <?php esc_html_e( 'Billing Info', 'wp-user-frontend' ); ?>
                             </span>
 
                             <span class="value">
-                                <?php echo $billing_amount; ?>
+                                <?php echo esc_html( $billing_amount ); ?>
 
                                 <?php if ( $recurring_des ) { ?>
-                                    <p><?php echo $recurring_des; ?></p>
+                                    <p><?php echo esc_html( $recurring_des ); ?></p>
                                 <?php } ?>
                             </span>
                         </div>
 
                         <?php if ( isset( $user_sub['recurring'] ) && $user_sub['recurring'] == 'yes' ) { ?>
                             <div class="info">
-                                <p><?php _e( 'This user is using recurring subscription pack', 'wp-user-frontend' ); ?></p>
+                                <p><?php esc_html_e( 'This user is using recurring subscription pack', 'wp-user-frontend' ); ?></p>
                             </div>
                         <?php } ?>
                     </div>
 
                     <div class="wpuf-sub-section remaining-posts">
-                        <h4><?php _e( 'Remaining Posting Count', 'wp-user-frontend' ); ?></h4>
+                        <h4><?php esc_html_e( 'Remaining Posting Count', 'wp-user-frontend' ); ?></h4>
 
                         <table class="form-table">
 
@@ -612,8 +624,8 @@ class WPUF_Admin_Subscription {
                     if ( $post_type_object ) {
                         ?>
                                      <tr>
-                                         <th><label><?php echo $post_type_object->labels->name; ?></label></th>
-                                         <td><input type="text" value="<?php echo $value; ?>" name="<?php echo $key; ?>" ></td>
+                                         <th><label><?php echo esc_html( $post_type_object->labels->name ); ?></label></th>
+                                         <td><input type="text" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
                                      </tr>
                                     <?php
                     }
@@ -622,7 +634,7 @@ class WPUF_Admin_Subscription {
                     </div>
 
                     <div class="wpuf-sub-section post-expiration">
-                        <h4><?php _e( 'Subscription Expiration Info', 'wp-user-frontend' ); ?></h4>
+                        <h4><?php esc_html_e( 'Subscription Expiration Info', 'wp-user-frontend' ); ?></h4>
 
                         <table class="form-table">
                             <?php
@@ -630,8 +642,8 @@ class WPUF_Admin_Subscription {
                                 if ( !empty( $user_sub['expire'] ) ) {
                                     $expire =  ( $user_sub['expire'] == 'unlimited' ) ? ucfirst( 'unlimited' ) : wpuf_get_date( wpuf_date2mysql( $user_sub['expire'] ) ); ?>
                                     <tr>
-                                        <th><label><?php echo _e( 'Expire date:', 'wp-user-frontend' ); ?></label></th>
-                                        <td><input type="text" class="wpuf-date-picker" name="expire" value="<?php echo $expire; ?>"></td>
+                                        <th><label><?php esc_html_e( 'Expire date:', 'wp-user-frontend' ); ?></label></th>
+                                        <td><input type="text" class="wpuf-date-picker" name="expire" value="<?php echo esc_html( $expire ); ?>"></td>
                                     </tr>
                                     <?php
                                 }
@@ -642,8 +654,8 @@ class WPUF_Admin_Subscription {
                 $time_value            = isset( $_post_expiration_time[0] ) && !empty( $_post_expiration_time[0] ) ? $_post_expiration_time[0] : '1';
                 $time_type             = isset( $_post_expiration_time[1] ) && !empty( $_post_expiration_time[1] ) ? $_post_expiration_time[1] : 'day'; ?>
                             <tr>
-                                <th><label><?php echo _e( 'Post Expiration Enabled', 'wp-user-frontend' ); ?></label></th>
-                                <td><input type="checkbox" class="wpuf-post-exp-enabled" name="is_post_expiration_enabled" value="on" <?php echo $is_post_exp_selected; ?>></td>
+                                <th><label><?php esc_html_e( 'Post Expiration Enabled', 'wp-user-frontend' ); ?></label></th>
+                                <td><input type="checkbox" class="wpuf-post-exp-enabled" name="is_post_expiration_enabled" value="on" <?php echo esc_attr( $is_post_exp_selected ); ?>></td>
                             </tr>
                             <tr class="wpuf-post-exp-time">
                                 <?php
@@ -652,13 +664,13 @@ class WPUF_Admin_Subscription {
                                     'month' => 12,
                                     'day'   => 30,
                                 ]; ?>
-                                <th><?php _e( 'Post Expiration Time', 'wp-user-frontend' ); ?></th>
+                                <th><?php esc_html_e( 'Post Expiration Time', 'wp-user-frontend' ); ?></th>
                                 <td>
                                     <select name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value">
                                         <?php
                                         for ( $i = 1; $i <= $timeType_array[$time_type]; $i++ ) {
                                             ?>
-                                            <option value="<?php echo $i; ?>" <?php echo $i == $time_value ? 'selected' : ''; ?>><?php echo $i; ?></option>
+                                            <option value="<?php echo esc_attr( $i ); ?>" <?php echo $i == $time_value ? 'selected' : ''; ?>><?php echo esc_attr( $i ); ?></option>
                                         <?php
                                         } ?>
                                     </select>
@@ -666,7 +678,7 @@ class WPUF_Admin_Subscription {
                                         <?php
                                         foreach ( $timeType_array as $each_time_type=>$each_time_type_val ) {
                                             ?>
-                                            <option value="<?php echo $each_time_type; ?>" <?php echo $each_time_type == $time_type ? 'selected' : ''; ?>><?php echo ucfirst( $each_time_type ); ?></option>
+                                            <option value="<?php echo esc_attr( $each_time_type ); ?>" <?php echo $each_time_type == $time_type ? 'selected' : ''; ?>><?php echo esc_html( ucfirst( $each_time_type ) ); ?></option>
                                         <?php
                                         } ?>
                                     </select>
@@ -676,7 +688,7 @@ class WPUF_Admin_Subscription {
                     </div>
 
                     <div class="wpuf-sub-section tax-restriction">
-                        <h4><?php _e( 'Allowed Taxonomy Terms', 'wp-user-frontend' ); ?></h4>
+                        <h4><?php esc_html_e( 'Allowed Taxonomy Terms', 'wp-user-frontend' ); ?></h4>
 
                         <table class="form-table">
                             <tr>
@@ -701,7 +713,7 @@ class WPUF_Admin_Subscription {
 
                         foreach ( $tax_terms as $tax_term ) {
                             if ( in_array( $tax_term->term_id, $allowed_tax_id_arr ) ) {
-                                ?> <td> <?php  echo $tax_term->name; ?> </td> <?php
+                                ?> <td> <?php  echo esc_html( $tax_term->name ); ?> </td> <?php
                             }
                         }
                     }
@@ -718,7 +730,7 @@ class WPUF_Admin_Subscription {
 
                         foreach ( $tax_terms as $tax_term ) {
                             if ( in_array( $tax_term->term_id, $allowed_tax_id_arr ) ) {
-                                ?> <td> <?php  echo $tax_term->name; ?> </td> <?php
+                                ?> <td> <?php  echo esc_html( $tax_term->name ); ?> </td> <?php
                             }
                         }
                     }
@@ -734,21 +746,21 @@ class WPUF_Admin_Subscription {
 
                 <?php if ( empty( $user_sub ) ) { ?>
                     <div class="wpuf-sub-actions">
-                        <a class="btn button-secondary wpuf-assing-pack-btn wpuf-add-pack" href="#"><?php _e( 'Assign Package', 'wp-user-frontend' ); ?></a>
-                        <a class="btn button-secondary wpuf-assing-pack-btn wpuf-cancel-pack" style="display:none;" href="#"><?php _e( 'Cancel', 'wp-user-frontend' ); ?></a>
+                        <a class="btn button-secondary wpuf-assing-pack-btn wpuf-add-pack" href="#"><?php esc_html_e( 'Assign Package', 'wp-user-frontend' ); ?></a>
+                        <a class="btn button-secondary wpuf-assing-pack-btn wpuf-cancel-pack" style="display:none;" href="#"><?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?></a>
                     </div>
                 <?php } ?>
 
                 <table class="form-table wpuf-pack-dropdown" disabled="disabled" style="display: none;">
                     <tr>
-                        <th><label for="wpuf_sub_pack"><?php _e( 'Select Package:', 'wp-user-frontend' ); ?> </label></th>
+                        <th><label for="wpuf_sub_pack"><?php esc_html_e( 'Select Package:', 'wp-user-frontend' ); ?> </label></th>
                         <td>
                             <select name="pack_id" id="wpuf_sub_pack">
-                                <option value="-1"><?php _e( '&mdash; Select &mdash;', 'wp-user-frontend' ); ?></option>
+                                <option value="-1"><?php esc_html_e( '&mdash; Select &mdash;', 'wp-user-frontend' ); ?></option>
                                 <?php $this->packdropdown_without_recurring( $packs, $pack_id ); //WPUF_Subscription::init()->packdropdown( $packs, $selected = '' );?>
                             </select>
                             <br>
-                            <span class="description"><?php _e( 'Only non-recurring pack can be assigned', 'wp-user-frontend' ); ?></span>
+                            <span class="description"><?php esc_html_e( 'Only non-recurring pack can be assigned', 'wp-user-frontend' ); ?></span>
                         </td>
                     </tr>
                 </table>
@@ -757,7 +769,7 @@ class WPUF_Admin_Subscription {
             do_action( 'wpuf_admin_subscription_content', $userdata->ID ); ?>
             <?php if ( !empty( $user_sub ) ) { ?>
                 <div class="wpuf-sub-actions">
-                    <a class="btn button-secondary wpuf-delete-pack-btn" href="javascript:" data-userid="<?php echo $userdata->ID; ?>" data-packid="<?php echo isset( $user_sub['pack_id'] ) ? $user_sub['pack_id'] : ''; ?>"><?php _e( 'Delete Package', 'wp-user-frontend' ); ?></a>
+                    <a class="btn button-secondary wpuf-delete-pack-btn" href="javascript:" data-userid="<?php echo esc_attr( $userdata->ID ); ?>" data-packid="<?php echo isset( $user_sub['pack_id'] ) ? esc_attr( $user_sub['pack_id'] ) : ''; ?>"><?php esc_html_e( 'Delete Package', 'wp-user-frontend' ); ?></a>
                 </div>
             <?php } ?>
         </div>
@@ -767,7 +779,7 @@ class WPUF_Admin_Subscription {
     public function lenght_type_option( $selected ) {
         for ( $i = 1; $i <= 30; $i++ ) {
             ?>
-                <option value="<?php echo $i; ?>" <?php selected( $i, $selected ); ?>><?php echo $i; ?></option>
+                <option value="<?php echo esc_attr( $i ); ?>" <?php selected( $i, $selected ); ?>><?php echo esc_html( $i ); ?></option>
             <?php
         }
     }
@@ -778,12 +790,15 @@ class WPUF_Admin_Subscription {
      * @since 2.2.7
      */
     public function delete_user_package() {
-        echo delete_user_meta( $_POST['userid'], '_wpuf_subscription_pack' );
+        $userid = isset( $_POST['userid'] ) ? intval( wp_unslash( $_POST['userid'] ) ) : 0;
+
+        echo esc_html( delete_user_meta( $userid, '_wpuf_subscription_pack' ) );
         $wpuf_paypal = new WPUF_Paypal();
-        $wpuf_paypal->recurring_change_status( $_POST['userid'], 'Cancel' );
+        $wpuf_paypal->recurring_change_status( $userid, 'Cancel' );
 
         if ( isset( $_POST['packid'] ) ) {
-            WPUF_Subscription::subscriber_cancel( $_POST['userid'], $_POST['packid'] );
+            $pack_id = intval( wp_unslash( $_POST['packid'] ) );
+            WPUF_Subscription::subscriber_cancel( $userid, $pack_id );
         }
         exit;
     }
@@ -802,7 +817,7 @@ class WPUF_Admin_Subscription {
         <div class="wpuf-footer-help">
             <span class="wpuf-footer-help-content">
                 <span class="dashicons dashicons-editor-help"></span>
-                <?php printf( __( 'Learn more about <a href="%s" target="_blank">Subscription</a>', 'wp-user-frontend' ), 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-subscription' ); ?>
+                <?php printf( wp_kses_post( __( 'Learn more about <a href="%s" target="_blank">Subscription</a>', 'wp-user-frontend' ) ), 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-subscription' ); ?>
             </span>
         </div>
 

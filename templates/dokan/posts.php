@@ -16,7 +16,7 @@
 
     <div class="dokan-dashboard-content dokan-wpuf-dashboard">
 			<?php
-                $action = isset( $_GET['action'] ) ? $_GET['action'] : '';
+                $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 
                 if ( $action == 'new-post' ) {
                     require_once WPUF_ROOT . '/templates/dokan/new-post.php';

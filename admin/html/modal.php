@@ -1,16 +1,16 @@
 <div id="wpuf-form-template-modal">
     <div class="wpuf-form-template-modal">
 
-        <span id="modal-label" class="screen-reader-text"><?php _e( 'Modal window. Press escape to close.', 'wp-user-frontend'  ); ?></span>
-        <a href="#" class="close">× <span class="screen-reader-text"><?php _e( 'Close modal window', 'wp-user-frontend'  ); ?></span></a>
+        <span id="modal-label" class="screen-reader-text"><?php esc_html_e( 'Modal window. Press escape to close.', 'wp-user-frontend'  ); ?></span>
+        <a href="#" class="close">× <span class="screen-reader-text"><?php esc_html_e( 'Close modal window', 'wp-user-frontend'  ); ?></span></a>
 
         <header class="modal-header">
             <h2>
-                <?php _e( 'Select a Template', 'wp-user-frontend' ); ?>
+                <?php esc_html_e( 'Select a Template', 'wp-user-frontend' ); ?>
                 <small><?php
-                printf( 
-                    __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ),
-                    $blank_form_url
+                printf(
+                    esc_html( __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ) ),
+                    esc_attr( $blank_form_url )
                  ); ?></small>
             </h2>
         </header>
@@ -20,18 +20,18 @@
 
                 <ul>
                     <li class="blank-form">
-                        <h3><?php _e( 'Blank Form', 'wp-user-frontend' ); ?></h3>
+                        <h3><?php esc_html_e( 'Blank Form', 'wp-user-frontend' ); ?></h3>
 
                         <div class="form-middle-text">
                             <span class="dashicons dashicons-plus"></span>
-                            <div class="title"><?php _e( 'Blank Form', 'wp-user-frontend' ); ?></div>
+                            <div class="title"><?php esc_html_e( 'Blank Form', 'wp-user-frontend' ); ?></div>
                         </div>
 
                         <div class="form-create-overlay">
-                            <div class="title"><?php _e( 'Blank Form', 'wp-user-frontend' ); ?></div>
+                            <div class="title"><?php esc_html_e( 'Blank Form', 'wp-user-frontend' ); ?></div>
                             <br>
-                            <a href="<?php echo $blank_form_url; ?>" class="button button-primary" title="<?php echo esc_attr( 'Blank Form' ); ?>">
-                                <?php _e( 'Create Form', 'wp-user-frontend' ); ?>
+                            <a href="<?php echo esc_url( $blank_form_url ); ?>" class="button button-primary" title="<?php echo esc_attr( 'Blank Form' ); ?>">
+                                <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>
                             </a>
                         </div>
                     </li>
@@ -56,18 +56,18 @@
                             $disabled = 'disabled';
                         } ?>
 
-                        <li class="<?php echo $class; ?>">
-                            <h3><?php echo $template->get_title(); ?></h3>
+                        <li class="<?php echo esc_attr( $class ); ?>">
+                            <h3><?php echo esc_html( $template->get_title() ); ?></h3>
                             <?php if ( $image ) {
-                            printf( '<img src="%s" alt="%s">', $image, $title );
+                            printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
                         } ?>
 
                             <div class="form-create-overlay">
-                                <div class="title"><?php echo $title; ?></div>
-                                <div class="description"><?php echo $template->get_description(); ?></div>
+                                <div class="title"><?php echo esc_html( $title ); ?></div>
+                                <div class="description"><?php echo esc_html( $template->get_description() ); ?></div>
                                 <br>
-                                <a href="<?php echo $url; ?>" class="button button-primary" title="<?php echo $template->get_title(); ?>" <?php echo $disabled; ?>>
-                                    <?php _e( 'Create Form', 'wp-user-frontend' ); ?>
+                                <a href="<?php echo esc_url( $url ); ?>" class="button button-primary" title="<?php echo esc_attr( $template->get_title() ); ?>" <?php echo esc_attr($disabled ); ?>>
+                                    <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>
                                 </a>
                             </div>
                         </li>
@@ -80,7 +80,7 @@
 
         <?php if ( $footer_help ) { ?>
             <footer>
-                <?php echo $footer_help; ?>
+                <?php echo esc_html( $footer_help ); ?>
             </footer>
         <?php } ?>
     </div>

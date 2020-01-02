@@ -38,7 +38,7 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
 
         do_action( 'WPUF_radio_field_after_label', $field_settings ); ?>
 
-            <div class="wpuf-fields" data-required="<?php echo $field_settings['required']; ?>" data-type="radio">
+            <div class="wpuf-fields" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-type="radio">
 
                 <?php
                 if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
@@ -47,12 +47,12 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
 
                         <label <?php echo $field_settings['inline'] == 'yes' ? 'class="wpuf-radio-inline"' : 'class="wpuf-radio-block"'; ?>>
                             <input
-                                name="<?php echo $field_settings['name']; ?>"
-                                class="<?php echo 'wpuf_' . $field_settings['name'] . '_' . $form_id; ?>"
+                                name="<?php echo esc_attr( $field_settings['name'] ); ?>"
+                                class="<?php echo esc_attr( 'wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                                 type="radio"
                                 value="<?php echo esc_attr( $value ); ?>"<?php checked( $selected, $value ); ?>
                             />
-                            <?php echo $option; ?>
+                            <?php echo esc_html( $option ); ?>
                         </label>
                         <?php
                     }
@@ -124,7 +124,9 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
      * @return mixed
      */
     public function prepare_entry( $field ) {
-        $val   = $_POST[$field['name']];
+        check_ajax_referer( 'wpuf_form_add' );
+
+        $val   = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
 
         return isset( $field['options'][$val] ) ? $field['options'][$val] : '';
     }

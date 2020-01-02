@@ -87,9 +87,9 @@ class WPUF_Simple_Login {
     public function login_form_scripts() {
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
-            die( esc_html( 'Failed nonce verification !' ) );
-        }
+        // if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+        //     die( esc_html( 'Failed nonce verification !' ) );
+        // }
 
         if ( isset( $_POST['wpuf_login'] ) ) {
             return;

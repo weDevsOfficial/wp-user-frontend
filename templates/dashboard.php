@@ -302,7 +302,7 @@
                 <?php
             } else {
                 if ( !empty( $post_type_obj ) && !empty( $labels ) ) {
-                    printf( '<div class="wpuf-message">' . wp_kses_post( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', implode( ', ', $labels ) );
+                    printf( '<div class="wpuf-message">' . wp_kses_post( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', esc_html( implode( ', ', $labels ) ) );
                     do_action( 'wpuf_dashboard_nopost', $userdata->ID, $post_type_obj );
                 }
             }

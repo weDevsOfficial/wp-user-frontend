@@ -35,7 +35,7 @@ class WPUF_Subscription {
 
         add_action( 'register_form', [ $this, 'register_form'] );
         add_action( 'wpuf_add_post_form_top', [ $this, 'register_form'] );
-        // add_filter( 'wpuf_user_register_redirect', [ $this, 'subs_redirect_pram' ], 10, 5 );
+        add_filter( 'wpuf_user_register_redirect', [ $this, 'subs_redirect_pram' ], 10, 5 );
 
         add_filter( 'template_redirect', [ $this, 'user_subscription_cancel' ] );
 
@@ -113,32 +113,32 @@ class WPUF_Subscription {
      *
      * @return array
      */
-    // public function subs_redirect_pram( $response, $user_id, $userdata, $form_id, $form_settings ) {
-    //     $wpuf_sub = isset( $_POST['wpuf_sub'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_sub'] ) ) : '';
-    //     $pack_id = isset( $_POST['pack_id'] ) ? sanitize_text_field( wp_unslash( $_POST['pack_id'] ) ) : '';
+     public function subs_redirect_pram( $response, $user_id, $userdata, $form_id, $form_settings ) {
+         $wpuf_sub = isset( $_POST['wpuf_sub'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_sub'] ) ) : '';
+         $pack_id = isset( $_POST['pack_id'] ) ? sanitize_text_field( wp_unslash( $_POST['pack_id'] ) ) : '';
 
 
-    //     if ( $wpuf_sub != 'yes' ) {
-    //         return $response;
-    //     }
+         if ( $wpuf_sub != 'yes' ) {
+             return $response;
+         }
 
-    //     if ( empty( $pack_id ) ) {
-    //         return $response;
-    //     }
+         if ( empty( $pack_id ) ) {
+             return $response;
+         }
 
-    //     $pack           = $this->get_subscription( $pack_id );
-    //     $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : false;
+         $pack           = $this->get_subscription( $pack_id );
+         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && !empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : false;
 
-    //     if ( $billing_amount !== false ) {
-    //         $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
-    //         $redirect =  add_query_arg( ['action' => 'wpuf_pay', 'user_id' => $user_id, 'type' => 'pack', 'pack_id' => (int) $pack_id, get_permalink( $pay_page ) ]);
+         if ( $billing_amount !== false ) {
+             $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+             $redirect =  add_query_arg( ['action' => 'wpuf_pay', 'user_id' => $user_id, 'type' => 'pack', 'pack_id' => (int) $pack_id, get_permalink( $pay_page ) ]);
 
-    //         $response['redirect_to']  = $redirect;
-    //         $response['show_message'] = false;
-    //     }
+             $response['redirect_to']  = $redirect;
+             $response['show_message'] = false;
+         }
 
-    //     return $response;
-    // }
+         return $response;
+     }
 
     /**
      * Insert hidden field on the register form based on selected package

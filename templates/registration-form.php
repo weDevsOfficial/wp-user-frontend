@@ -82,7 +82,7 @@
             </li>
 
             <li>
-                <?php echo esc_attr( wpuf()->login->get_action_links( [ 'register' => false ] ) ); ?>
+                <?php echo wp_kses_post( wpuf()->login->get_action_links( [ 'register' => false ] ) ); ?>
             </li>
 
             <?php do_action( 'wpuf_reg_form_bottom' ); ?>

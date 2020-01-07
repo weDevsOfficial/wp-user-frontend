@@ -966,7 +966,7 @@ class WPUF_Subscription {
 
             $text              = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $pay_per_post_cost ) );
 
-            echo esc_html( apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings ) ); ?>
+            echo wp_kses_post( apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings ) ); ?>
             </div>
             <?php
         } elseif ( self::has_user_error( $form_settings ) || ( $payment_enabled && $force_pack && !is_wp_error( $current_pack ) && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) ) {

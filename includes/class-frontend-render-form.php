@@ -554,12 +554,17 @@ class WPUF_Frontend_Render_Form {
         $woo_attr = [];
 
         foreach ( $taxonomy_vars as $taxonomy ) {
-            $taxonomy_name = isset( $_POST[$taxonomy['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$taxonomy['name']] ) ) : '';
+            if ( isset( $_POST[$taxonomy['name']] ) && is_array( $_POST[$taxonomy['name']] ) ) {
+               $taxonomy_name = array_map( 'sanitize_text_field',  wp_unslash( $_POST[$taxonomy['name']] ) );
+            }
+
+            if ( isset( $_POST[$taxonomy['name']] ) && !is_array( $_POST[$taxonomy['name']] ) ) {
+               $taxonomy_name = sanitize_text_field( wp_unslash( $_POST[$taxonomy['name']] ) );
+            }
 
             if (  $taxonomy_name != '' ) {
                 if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
-                    $tax = isset( $_POST[$taxonomy['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$taxonomy['name']] ) ) : '';
-
+                    $tax = $taxonomy_name;
                     // if it's not an array, make it one
                     if ( !is_array( $tax ) ) {
                         $tax = [ $tax ];
@@ -572,7 +577,7 @@ class WPUF_Frontend_Render_Form {
 
                         // woocommerce check
                         if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $taxonomy_name ) ) {
-                            $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
+                            $woo_attr[$taxonomy['name']] = $this->woo_attribute( $taxonomy );
                         }
                     } else {
                         if ( is_taxonomy_hierarchical( $taxonomy['name'] ) ) {
@@ -580,7 +585,7 @@ class WPUF_Frontend_Render_Form {
 
                             // woocommerce check
                             if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $taxonomy_name ) ) {
-                                $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
+                                $woo_attr[$taxonomy['name']] = $this->woo_attribute( $taxonomy );
                             }
                         } else {
                             if ( $tax ) {
@@ -598,7 +603,7 @@ class WPUF_Frontend_Render_Form {
 
                                 // woocommerce check
                                 if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $_POST[$taxonomy['name']] ) ) {
-                                    $woo_attr[sanitize_title( $taxonomy['name'] )] = $this->woo_attribute( $taxonomy );
+                                    $woo_attr[$taxonomy['name']] = $this->woo_attribute( $taxonomy );
                                 }
                             }
                         } // hierarchical

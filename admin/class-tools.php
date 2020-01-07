@@ -166,7 +166,7 @@ class WPUF_Admin_Tools {
         <h3><?php esc_html_e( 'Import forms', 'wp-user-frontend' ); ?></h3>
 
         <p><?php esc_html_e( 'Click Browse button and choose a json file that you backup before.', 'wp-user-frontend' ); ?></p>
-        <p><?php esc_html_e( 'Press <strong>Import</strong> button, we will do the rest for you.', 'wp-user-frontend' ); ?></p>
+        <p><?php wp_kses_post( 'Press <strong>Import</strong> button, we will do the rest for you.', 'wp-user-frontend' ); ?></p>
 
         <form action="" method="post" enctype='multipart/form-data' style="margin-top: 20px;">
             <?php wp_nonce_field( 'wpuf-import' ); ?>

@@ -27,10 +27,10 @@ class WPUF_Frontend_Render_Form {
      * @param string $error
      */
     public function send_error( $error ) {
-        echo esc_js( json_encode( [
+        echo json_encode( [
             'success' => false,
             'error'   => $error,
-        ] ) );
+        ] );
 
         die();
     }

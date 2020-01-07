@@ -175,7 +175,7 @@ class WPUF_Payment {
 
                                                 <?php
                                                 if ( class_exists( 'WPUF_Coupons' ) ) {
-                                                    echo esc_html( WPUF_Coupons::init()->after_apply_coupon( $pack ) );
+                                                    echo wp_kses_post( WPUF_Coupons::init()->after_apply_coupon( $pack ) );
                                                 } else {
                                                     $pack_cost      = $pack->meta_value['billing_amount'];
                                                     $billing_amount = apply_filters( 'wpuf_payment_amount', $pack->meta_value['billing_amount'] );
@@ -256,7 +256,7 @@ class WPUF_Payment {
                                                 echo esc_html( $gateway['label'] );
 
                                                 if ( !empty( $gateway['icon'] ) ) {
-                                                    printf( ' <img src="%s" alt="image">', esc_attr( $gateway['icon'] ) );
+                                                    printf( ' <img src="%s" alt="image">', wp_kses_post( $gateway['icon'] ) );
                                                 }
                                                 ?>
                                             </label>

@@ -2957,7 +2957,7 @@ function wpuf_text( $args = [] ) {
     }
 
     if ( !empty( $args['desc'] ) ) {
-        $output .= '<span class="wpuf-description">' . esc_html( $args['desc'] ) . '</span>';
+        $output .= '<span class="wpuf-description">' . wp_kses_post( $args['desc'] ) . '</span>';
     }
 
     $output .= '<input type="text" name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['id'] ) . '" autocomplete="' . esc_attr( $args['autocomplete'] ) . '" value="' . esc_attr( $args['value'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="' . $class . '" ' . $data . '' . $disabled . '/>';
@@ -2977,7 +2977,7 @@ function wpuf_text( $args = [] ) {
 function wpuf_descriptive_text( $args ) {
     $html = wp_kses_post( $args['desc'] );
 
-    echo esc_html( $html );
+    echo $html;
 }
 
 /**

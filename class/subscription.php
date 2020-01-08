@@ -797,8 +797,8 @@ class WPUF_Subscription {
 
             $payment_gateway = strtolower( $payment_gateway ); ?>
 
-            <?php esc_html_e( '<p><i>You have a subscription pack activated. </i></p>', 'wp-user-frontend' ); ?>
-            <?php echo sprintf( esc_html( __( '<p><i>Pack name: %s </i></p>', 'wp-user-frontend' ) ), esc_html( get_the_title( $current_pack['pack_id'] ) ) ); ?>
+            <?php echo wp_kses_post( __('<p><i>You have a subscription pack activated. </i></p>', 'wp-user-frontend' ) ); ?>
+            <?php echo sprintf( wp_kses_post( __( '<p><i>Pack name: %s </i></p>', 'wp-user-frontend' ) ), esc_html( get_the_title( $current_pack['pack_id'] ) ) ); ?>
 
             <?php wp_kses_post('<p><i>' . __( 'To cancel the pack, press the following cancel button', 'wp-user-frontend' ) . '</i></p>', 'wp-user-frontend' ); ?>
 

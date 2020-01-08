@@ -4,7 +4,7 @@
     <p class="about-text"><?php esc_html_e( 'The Easiest &amp; Fastest Contact Form Plugin on WordPress', 'wp-user-frontend' ); ?></p>
 
     <hr>
-    <p><?php esc_html_e( 'Quickly create rich contact forms to generate leads, taking feedbacks, onboarding visitors and flourishing <br /> your imagination! Comes with the best frontend post submission plugin for WordPress, WP User Frontend.', 'wp-user-frontend' ); ?>
+    <p><?php echo wp_kses_post( __( 'Quickly create rich contact forms to generate leads, taking feedbacks, onboarding visitors and flourishing <br /> your imagination! Comes with the best frontend post submission plugin for WordPress, WP User Frontend.', 'wp-user-frontend' ) ); ?>
 
 
     <div class="install" id="wpuf-weforms-installer-notice" style="padding: 1em 0; position: relative;">
@@ -14,7 +14,7 @@
     </div>
 
     <figure class="we-gif" style="width: 944px;">
-        <img class="img-responsive inline-block image-gif shadow" src="https://wedevs-com-wedevs.netdna-ssl.com/wp-content/uploads/2017/08/weforms-final-promo-video.gif" >
+        <img class="img-responsive inline-block image-gif shadow" src="esc_url(https://wedevs-com-wedevs.netdna-ssl.com/wp-content/uploads/2017/08/weforms-final-promo-video.gif )" >
     </figure>
 </div>
 

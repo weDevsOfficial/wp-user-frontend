@@ -111,7 +111,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
             $reject_nonce = wp_create_nonce( 'wpuf-reject-transaction' );
 
             $actions = [
-                'accept' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page, 'accept', absint( $id ), $accept_nonce, __( 'Accept', 'wp-user-frontend' ) ) ),
+                'accept' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ), 'accept', absint( $id ), $accept_nonce, __( 'Accept', 'wp-user-frontend' ) ),
                 'reject' => sprintf( '<a href="?page=%s&action=%s&id=%d&_wpnonce=%s">%s</a>', esc_attr( $page ), 'reject', absint( $id ), $reject_nonce, __( 'Reject', 'wp-user-frontend' ) ),
             ];
         } else {

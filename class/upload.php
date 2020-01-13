@@ -24,18 +24,18 @@ class WPUF_Upload {
      * @return void
      */
     public function validate_nonce() {
-        $nonce = isset( $_GET['nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
+        $nonce = isset( $_GET['nonce'] ) ? sanitize_key( wp_unslash( $_GET['nonce'] ) ) : '';
 
-        if ( !wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
-            die( 'error' );
+        if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
+            return ;
         }
     }
 
     public function upload_file( $image_only = false ) {
-        $nonce = isset( $_GET['nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
+        $nonce = isset( $_GET['nonce'] ) ? sanitize_key( wp_unslash( $_GET['nonce'] ) ) : '';
 
-        if ( !wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
-            die( 'error' );
+        if ( isset( $nonce ) &&  !wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
+            return ;
         }
 
         // a valid request will have a form ID

@@ -144,10 +144,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
      * this will embed media to the editor
      */
     public function make_media_embed_code() {
-        $nonce = isset( $_GET['nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
+        $nonce = isset( $_GET['nonce'] ) ? sanitize_key( wp_unslash( $_GET['nonce'] ) ) : '';
 
-        if ( !wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
-            die( 'error' );
+        if ( isset( $nonce )  && !wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
+            return ;
         }
 
         $content = isset( $_POST['content'] ) ? sanitize_text_field( wp_unslash( $_POST['content'] ) ) : '';
@@ -495,8 +495,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     public function wpuf_get_post_user() {
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf_form_add' ) ) {
-            die( 'Failed nonce verification !' );
+        if ( isset( $nonce )  && ! wp_verify_nonce( $nonce, 'wpuf_form_add' ) ) {
+            return ;
         }
 
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );

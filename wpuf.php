@@ -877,9 +877,9 @@ final class WP_User_Frontend {
      * @return void
      */
     public function install_weforms() {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( !wp_verify_nonce( $nonce, 'wpuf-weforms-installer-nonce' ) ) {
+        if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-weforms-installer-nonce' ) ) {
             wp_send_json_error( __( 'Error: Nonce verification failed', 'wp-user-frontend' ) );
         }
 

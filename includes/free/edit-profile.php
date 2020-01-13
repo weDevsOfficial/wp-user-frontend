@@ -304,8 +304,8 @@ class WPUF_Edit_Profile {
     public function post_lock_update( $user_id ) {
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'update-profile_' . $user_id ) ) {
-            die( esc_html( 'Faield nonce verification !' ) );
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'update-profile_' . $user_id ) ) {
+            return ;
         }
 
         $wpuf_postlock             = isset( $_POST['wpuf_postlock'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_postlock'] ) ) : '';

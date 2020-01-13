@@ -150,11 +150,11 @@ class WPUF_Frontend_Dashboard {
     public function delete_post() {
         global $userdata;
 
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
         $pid = isset( $_REQUEST['pid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['pid'] ) ) : '';
 
-        if ( !wp_verify_nonce( $nonce, 'wpuf_del' ) ) {
-            die( 'Security check' );
+        if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf_del' ) ) {
+            return ;
         }
 
         //check, if the requested user is the post author

@@ -32,7 +32,36 @@
         <?php if ( $recaptcha == 'on' ) { ?>
             <p>
                 <div class="wpuf-fields">
-                    <?php echo esc_html( recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ) ); ?>
+                    <?php echo wp_kses( recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ),[
+                        'div' => [
+                            'class' => [],
+                            'data-sitekey' => [],
+                        ],
+
+                        'script' => [
+                            'src' => []
+                        ],
+
+                        'noscript' => [],
+
+                        'iframe' => [
+                            'src' => [],
+                            'height' => [],
+                            'width' => [],
+                            'frameborder' => [],
+                        ],
+                        'br' => [],
+                        'textarea' => [
+                            'name' => [],
+                            'rows' => [],
+                            'cols' => [],
+                        ],
+                        'input' => [
+                            'type'   => [],
+                            'value' => [],
+                            'name'   => [],
+                        ]
+                    ] ); ?>
                 </div>
             </p>
         <?php } ?>

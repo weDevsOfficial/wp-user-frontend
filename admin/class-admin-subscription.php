@@ -96,8 +96,8 @@ class WPUF_Admin_Subscription {
         }
         $nonce = isset( $_REQUEST['wpuf-subscription-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-subscription-nonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'update-profile_' . $user_id ) ) {
-            die( esc_html( 'Failed nonce verification !' ) );
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'update-profile_' . $user_id ) ) {
+            return ;
         }
 
         if ( !isset( $_POST['pack_id'] ) ) {
@@ -817,8 +817,8 @@ class WPUF_Admin_Subscription {
     public function delete_user_package() {
         $nonce = isset( $_REQUEST['wpuf_subscription_delete_nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf_subscription_delete_nonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf-subscription-delete-nonce' ) ) {
-            die( esc_html( 'Failed nonce verification !' ) );
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-subscription-delete-nonce' ) ) {
+            return ;
         }
         $userid = isset( $_POST['userid'] ) ? intval( wp_unslash( $_POST['userid'] ) ) : 0;
 

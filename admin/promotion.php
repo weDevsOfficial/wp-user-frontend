@@ -290,7 +290,7 @@ class WPUF_Admin_Promotion {
              wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
-        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
@@ -312,7 +312,7 @@ class WPUF_Admin_Promotion {
              wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
-        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 

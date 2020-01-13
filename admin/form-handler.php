@@ -29,9 +29,9 @@ class WPUF_Admin_Form_Handler {
             return false;
         }
 
-        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ) : '';
 
-        if ( !wp_verify_nonce( $nonce, $bulk_action ) ) {
+        if ( isset( $nonce ) && !wp_verify_nonce( $nonce, $bulk_action ) ) {
             return false;
         }
 

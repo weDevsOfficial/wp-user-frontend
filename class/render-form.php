@@ -73,8 +73,8 @@ class WPUF_Render_Form {
     public function validate_rs_captcha() {
         $nonce = isset( $_REQUEST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-login-nonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
-            die( esc_html( 'Failed nonce verification !' ) );
+        if ( isset( $nonce) && ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            return ;
         }
 
         $rs_captcha_input = isset( $_POST['rs_captcha'] ) ? sanitize_text_field( wp_unslash( $_POST['rs_captcha'] ) ) : '';
@@ -100,8 +100,8 @@ class WPUF_Render_Form {
     public function validate_re_captcha( $no_captcha = '', $invisible = '' ) {
         $nonce = isset( $_REQUEST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-login-nonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
-            die( esc_html( 'Failed nonce verification !' ) );
+        if ( isset( $nonce ) ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            return ;
         }
         // need to check if invisible reCaptcha need library or we can do it here.
         // ref: https://shareurcodes.com/blog/google%20invisible%20recaptcha%20integration%20with%20php

@@ -30,8 +30,8 @@ class WPUF_Login_Widget extends WP_Widget {
         $rememberme     = isset( $_POST['rememberme'] ) ? sanitize_text_field( wp_unslash( $_POST['rememberme'] ) ) : false;
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( sanitize_key( $nonce ), 'wpuf_lost_pass' ) ) {
-            die( 'Failed nonce verification !' );
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce , 'wpuf_lost_pass' ) ) {
+            return ;
         }
 
         if ( empty( $user_login ) || empty( $user_pass ) ) {
@@ -67,8 +67,8 @@ class WPUF_Login_Widget extends WP_Widget {
         $username_or_email = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( sanitize_key( $nonce ), 'wpuf_lost_pass' ) ) {
-            die( 'Failed nonce verification !' );
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+            return ;
         }
 
         // Check if input variables are empty

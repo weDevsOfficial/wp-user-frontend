@@ -1515,7 +1515,7 @@ function wpuf_get_child_cats() {
     $parentCat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
     $field_attr = isset( $_POST['field_attr'] ) ? sanitize_text_field( wp_unslash( $_POST['field_attr'] ) ) : '';
 
-    if ( ! wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
+    if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
         return;
     }
 
@@ -2434,8 +2434,8 @@ function wpuf_get_draft_post_status( $form_settings ) {
 
     $noce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-    if ( ! wp_verify_nonce( $noce, 'wpuf_form_add' ) ) {
-        die( esc_html( 'Failed nonce verification !' ) );
+    if ( isset( $nonce ) ! wp_verify_nonce( $noce, 'wpuf_form_add' ) ) {
+        return ;
     }
 
     $post_status                 = 'draft';
@@ -2562,7 +2562,7 @@ function wpuf_decryption( $id ) {
 function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag ) {
     $noce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-    if ( ! wp_verify_nonce( $noce, 'wpuf_edit' ) ) {
+    if ( isset( $nonce ) && ! wp_verify_nonce( $noce, 'wpuf_edit' ) ) {
         return;
     }
 
@@ -3030,8 +3030,8 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
 function wpuf_ajax_get_states_field() {
     $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-    if ( ! wp_verify_nonce( sanitize_key( $nonce ), 'wpuf-ajax-address' ) ) {
-        die( esc_html( 'Failed nonce verification !' ) );
+    if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
+        return ;
     }
 
     $country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
@@ -3071,8 +3071,8 @@ function wpuf_update_billing_address() {
     ob_start();
     $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-    if ( ! wp_verify_nonce( sanitize_key( $nonce ), 'wpuf-ajax-address' ) ) {
-        die( esc_html( 'Failed nonce verification !' ) );
+    if ( isset( $nonce ) &&  ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
+        return ;
     }
 
     $user_id        = get_current_user_id();

@@ -20,8 +20,8 @@ class WPUF_Admin_Tools {
 
             $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-            if ( wp_verify_nonce( $nonce, 'wpuf-export-form' ) ) {
-                die( 'Failed nonce verification !' );
+            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-export-form' ) ) {
+                return ;
             }
         }
 
@@ -84,8 +84,8 @@ class WPUF_Admin_Tools {
             $this->export_regis_data( $export_regis_content, $formlist );
 
 
-            if ( ! wp_verify_nonce( $nonce, 'wpuf-export-regs-form' ) ) {
-                die( esc_html('Failed nonce verification !') );
+            if ( isset( $nonce) && ! wp_verify_nonce( $nonce, 'wpuf-export-regs-form' ) ) {
+                return ;
             }
         }
 

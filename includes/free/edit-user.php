@@ -48,10 +48,10 @@ function wpuf_show_users() {
     $action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
 
     if ( $action == 'del' ) {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( !wp_verify_nonce( $nonce, 'wpuf_del_user' ) ) {
-            wp_die( 'Cheting?' );
+        if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf_del_user' ) ) {
+            return ;
         }
 
         $delete_flag = false;
@@ -124,8 +124,8 @@ function wpuf_add_user() {
 
             $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-            if ( ! wp_verify_nonce(  $nonce, 'wpuf_add_user' ) )  {
-                die( 'Failed nonce verication !' );
+            if ( isset( $nonce ) &&  ! wp_verify_nonce(  $nonce, 'wpuf_add_user' ) )  {
+                return ;
             }
         }
 

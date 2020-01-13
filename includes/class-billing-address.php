@@ -241,8 +241,8 @@ class WPUF_Ajax_Address_Form {
     public function ajax_form_action() {
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
-            die( esc_html( 'Failed nonce verification !' ) );
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
+            return ;
         }
 
         if ( isset( $_POST ) ) {

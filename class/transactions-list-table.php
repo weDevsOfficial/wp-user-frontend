@@ -255,11 +255,11 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         // Delete Transaction
         $action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
         $action2 = isset( $_REQUEST['action2'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action2'] ) ) : '';
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
         $id = isset( $_REQUEST['id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) : '';
 
         if ( $action == 'delete' || $action2 == 'delete' ) {
-            if ( !wp_verify_nonce( $nonce, 'wpuf-delete-transaction' ) ) {
+            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-delete-transaction' ) ) {
                 return false;
             }
 
@@ -274,7 +274,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         // Delete Transactions
         if ( $action == 'bulk-delete' || $action2 == 'bulk-delete' ) {
-            if ( !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
+            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
 
@@ -295,7 +295,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         // Reject Transaction
         if ( $action == 'reject' || $action2 == 'reject' ) {
-            if ( !wp_verify_nonce( $nonce, 'wpuf-reject-transaction' ) ) {
+            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-reject-transaction' ) ) {
                 return false;
             }
 
@@ -313,7 +313,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         // Reject Transactions
         if ( $action == 'bulk-reject' || $action2 == 'bulk-reject' ) {
-            if ( !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
+            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
             $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
@@ -336,7 +336,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         // Accept Transaction
         if ( $action == 'accept' || $action2 == 'accept' ) {
-            if ( !wp_verify_nonce( $nonce, 'wpuf-accept-transaction' ) ) {
+            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-accept-transaction' ) ) {
                 return false;
             }
 
@@ -406,7 +406,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         // Bulk Accept Transaction
         if ( $action == 'bulk-accept' || $action2 == 'bulk-accept' ) {
-            if ( !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
+            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
 

@@ -225,7 +225,7 @@ class WPUF_Frontend_Account {
         $sub_id     = $wpuf_user->subscription()->current_pack_id();
 
         if ( !$sub_id ) {
-            esc_html_e( '<p>You are not subscribed to any package yet.</p>', 'wp-user-frontend' );
+           echo wp_kses_post( __( '<p>You are not subscribed to any package yet.</p>', 'wp-user-frontend' ) );
 
             return;
         }
@@ -307,9 +307,9 @@ class WPUF_Frontend_Account {
      * @return json
      */
     public function update_profile() {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( !wp_verify_nonce( $nonce, 'wpuf-account-update-profile' ) ) {
+        if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-account-update-profile' ) ) {
             wp_send_json_error( __( 'Nonce failure', 'wp-user-frontend' ) );
         }
 

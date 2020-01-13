@@ -146,8 +146,8 @@ class WPUF_Admin_Posting {
         if ( !isset( $_POST['wpuf_form_select'] ) ) {
             return $post->ID;
         }
-        $nonce = isset( $_POST['wpuf_form_select_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_form_select_nonce'] ) ) : '';
-        if ( !wp_verify_nonce( $nonce , plugin_basename( __FILE__ ) ) ) {
+        $nonce = isset( $_POST['wpuf_form_select_nonce'] ) ? sanitize_key( wp_unslash( $_POST['wpuf_form_select_nonce'] ) ) : '';
+        if ( isset( $nonce ) && !wp_verify_nonce( $nonce , plugin_basename( __FILE__ ) ) ) {
             return $post->ID;
         }
 
@@ -246,9 +246,9 @@ class WPUF_Admin_Posting {
             return $post->ID;
         }
 
-        $nonce = isset( $_POST['wpuf_lock_editing_post_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_lock_editing_post_nonce'] ) ) : '';
+        $nonce = isset( $_POST['wpuf_lock_editing_post_nonce'] ) ? sanitize_key( wp_unslash( $_POST['wpuf_lock_editing_post_nonce'] ) ) : '';
 
-        if ( !wp_verify_nonce( $nonce, plugin_basename( __FILE__ ) ) ) {
+        if ( isset( $nonce ) && !wp_verify_nonce( $nonce, plugin_basename( __FILE__ ) ) ) {
             return $post->ID;
         }
 
@@ -494,7 +494,7 @@ class WPUF_Admin_Posting {
             return $post_id;
         }
 
-        if ( !wp_verify_nonce( $wpuf_cf_update, plugin_basename( __FILE__ ) ) ) {
+        if ( isset( $wpuf_cf_update ) && !wp_verify_nonce( $wpuf_cf_update, plugin_basename( __FILE__ ) ) ) {
             return $post_id;
         }
 

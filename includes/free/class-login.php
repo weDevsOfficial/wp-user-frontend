@@ -75,7 +75,36 @@ class WPUF_Simple_Login {
         $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
 
         if ( $recaptcha == 'on' ) {
-            wp_kses_post( '<p>' . recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ) . '</p>' );
+            echo wp_kses( recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ), [
+                'div' => [
+                    'class' => [],
+                    'data-sitekey' => [],
+                ],
+
+                'script' => [
+                    'src' => []
+                ],
+
+                'noscript' => [],
+
+                'iframe' => [
+                    'src' => [],
+                    'height' => [],
+                    'width' => [],
+                    'frameborder' => [],
+                ],
+                'br' => [],
+                'textarea' => [
+                    'name' => [],
+                    'rows' => [],
+                    'cols' => [],
+                ],
+                'input' => [
+                    'type'   => [],
+                    'value' => [],
+                    'name'   => [],
+                ]
+            ] );
         }
     }
 
@@ -378,9 +407,9 @@ class WPUF_Simple_Login {
         if ( !empty( $_POST['wpuf_login'] ) && !empty( $_POST['wpuf-login-nonce'] ) ) {
             $creds = [];
 
-            $nonce = sanitize_text_field( wp_unslash( $_POST['wpuf-login-nonce'] ) );
+            $nonce = sanitize_key( wp_unslash( $_POST['wpuf-login-nonce'] ) );
 
-            if ( !wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
                 $this->login_errors[] = __( 'Nonce is invalid', 'wp-user-frontend' );
 
                 return;
@@ -545,7 +574,7 @@ class WPUF_Simple_Login {
         // process lost password form
         if ( isset( $_POST['user_login'] ) && isset( $_POST['_wpnonce'] ) ) {
 
-            $nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
+            $nonce = sanitize_key( wp_unslash( $_POST['_wpnonce'] ) );
             wp_verify_nonce( $nonce, 'wpuf_lost_pass' );
 
             if ( $this->retrieve_password() ) {

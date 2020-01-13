@@ -66,14 +66,14 @@ class WPUF_Subscription {
      */
     public function user_subscription_cancel() {
         if ( isset( $_POST['wpuf_cancel_subscription'] ) ) {
-            $nonce       = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+            $nonce       = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
             $user_id     = isset( $_POST['user_id'] ) ? intval( wp_unslash( $_POST['user_id'] ) ) : 0;
             $gateway     = isset( $_POST['gateway'] ) ? intval( wp_unslash( $_POST['gateway'] ) ) : 0;
             $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 
 
-            if ( !wp_verify_nonce( $nonce, 'wpuf-sub-cancel' ) ) {
-                wp_die( esc_html( __( 'Nonce failure', 'wp-user-frontend' ) ) );
+            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-sub-cancel' ) ) {
+                return ;
             }
 
             $current_pack = self::get_user_pack( $user_id );
@@ -329,9 +329,9 @@ class WPUF_Subscription {
      */
     public function save_form_meta( $subscription_id, $post ) {
 
-        $nonce = isset( $_POST['meta_box_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['meta_box_nonce'] ) ) : '';
+        $nonce = isset( $_POST['meta_box_nonce'] ) ? sanitize_key( wp_unslash( $_POST['meta_box_nonce'] ) ) : '';
 
-        if ( !wp_verify_nonce( $nonce, 'subs_meta_box_nonce' ) ) {
+        if ( isset( $nonce ) !wp_verify_nonce( $nonce, 'subs_meta_box_nonce' ) ) {
             return;
         }
 

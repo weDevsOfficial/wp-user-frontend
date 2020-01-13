@@ -313,9 +313,9 @@ class WPUF_Payment {
      */
     public function send_to_gateway() {
         $action = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '';
-        $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+        $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
-        if ( $action == 'wpuf_pay' && wp_verify_nonce( $nonce, 'wpuf_payment_gateway' ) ) {
+        if ( $action == 'wpuf_pay' && isset( $nonce ) && wp_verify_nonce( $nonce, 'wpuf_payment_gateway' ) ) {
             $post_id       = isset( $_REQUEST['post_id'] ) ? intval( wp_unslash( $_REQUEST['post_id'] ) ) : 0;
             $pack_id       = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
             $gateway       = isset( $_POST['wpuf_payment_method'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_payment_method'] ) ) : '';

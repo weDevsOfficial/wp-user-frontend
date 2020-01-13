@@ -24,8 +24,8 @@ class WPUF_Simple_Login {
         add_action( 'init', [$this, 'wp_login_page_redirect'] );
         add_action( 'init', [$this, 'activation_user_registration'] );
         add_action( 'login_form', [$this, 'add_custom_fields'] );
-        // add_action( 'login_enqueue_scripts', [$this, 'login_form_scripts'] );
-        // add_filter( 'wp_authenticate_user', [$this, 'validate_custom_fields'], 10, 2 );
+        add_action( 'login_enqueue_scripts', [$this, 'login_form_scripts'] );
+        add_filter( 'wp_authenticate_user', [$this, 'validate_custom_fields'], 10, 2 );
 
         // URL filters
         add_filter( 'login_url', [$this, 'filter_login_url'], 10, 2 );
@@ -85,6 +85,7 @@ class WPUF_Simple_Login {
      * @since 2.9.0
      */
     public function login_form_scripts() {
+
         if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( 'wp_login_nonce' ) ) {
 
         }
@@ -471,8 +472,8 @@ class WPUF_Simple_Login {
     public function login_redirect() {
         $nonce = isset( $_REQUEST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-login-nonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
-            die( esc_html( 'Failed nonce verification !' ) );
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            return;
         }
 
         $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
@@ -622,8 +623,8 @@ class WPUF_Simple_Login {
 
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
-            die( 'Failed nonce verification !' );
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+            return;
         }
 
         $user_login = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';

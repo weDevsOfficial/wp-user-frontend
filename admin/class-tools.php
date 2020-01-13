@@ -142,7 +142,7 @@ class WPUF_Admin_Tools {
      */
     public function import_data() {
         if ( isset( $_FILES['import'] ) && check_admin_referer( 'wpuf-import' ) ) {
-            $import_files = array_map( 'sanitize_text_field', wp_unslash( ['import'] ) );
+            $import_files = array_map( 'sanitize_text_field', wp_unslash( $_FILES['import'] ) );
 
             if ( $import_files['error'] > 0 ) {
                 printf( '<div class="error"><p>%s</p></div>', esc_html( __( 'Somthing went wrong. Please choose a file again', 'wp-user-frontend' ) ) );
@@ -166,7 +166,9 @@ class WPUF_Admin_Tools {
         <h3><?php esc_html_e( 'Import forms', 'wp-user-frontend' ); ?></h3>
 
         <p><?php esc_html_e( 'Click Browse button and choose a json file that you backup before.', 'wp-user-frontend' ); ?></p>
-        <p><?php wp_kses_post( 'Press <strong>Import</strong> button, we will do the rest for you.', 'wp-user-frontend' ); ?></p>
+        <p><?php echo wp_kses( __( 'Press <strong>Import</strong> button, we will do the rest for you.', 'wp-user-frontend' ), array(
+            'strong' => array()
+            ) ); ?></p>
 
         <form action="" method="post" enctype='multipart/form-data' style="margin-top: 20px;">
             <?php wp_nonce_field( 'wpuf-import' ); ?>

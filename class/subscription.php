@@ -958,31 +958,31 @@ class WPUF_Subscription {
             <div class="wpuf-info">
                 <?php
                 $form              = new WPUF_Form( $form_id );
-            $pay_per_post_cost     = (float) $form->get_pay_per_post_cost();
+                $pay_per_post_cost = (float) $form->get_pay_per_post_cost();
 
-            if ( isset( $price_with_tax ) && $price_with_tax ) {
-                $pay_per_post_cost = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
-            }
+                if ( isset( $price_with_tax ) && $price_with_tax ) {
+                    $pay_per_post_cost = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
+                }
 
-            $text              = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $pay_per_post_cost ) );
+                $text = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $pay_per_post_cost ) );
 
-            echo wp_kses_post( apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings ) ); ?>
+                echo wp_kses_post( apply_filters( 'wpuf_ppp_notice', $text, $form_id, $form_settings ) ); ?>
             </div>
             <?php
         } elseif ( self::has_user_error( $form_settings ) || ( $payment_enabled && $force_pack && !is_wp_error( $current_pack ) && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) ) {
             ?>
             <div class="wpuf-info">
                 <?php
-                $form              = new WPUF_Form( $form_id );
-            $fallback_cost         = (int) $form->get_subs_fallback_cost();
+                $form          = new WPUF_Form( $form_id );
+                $fallback_cost = (int) $form->get_subs_fallback_cost();
 
-            if ( isset( $price_with_tax ) && $price_with_tax ) {
-                $fallback_cost     = apply_filters( 'wpuf_payment_amount', $fallback_cost );
-            }
+                if ( isset( $price_with_tax ) && $price_with_tax ) {
+                    $fallback_cost = apply_filters( 'wpuf_payment_amount', $fallback_cost );
+                }
 
-            $text              = sprintf( __( 'Your Subscription pack exhausted. There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $fallback_cost ) );
+                $text = sprintf( __( 'Your Subscription pack is exhausted. There is a <strong>%s</strong> charge to add a new post.', 'wp-user-frontend' ), wpuf_format_price( $fallback_cost ) );
 
-            echo esc_html( apply_filters( 'wpuf_ppp_notice', esc_html( $text ), esc_html( $form_id ), esc_html( $form_settings ) ) ); ?>
+                echo wp_kses_post( apply_filters( 'wpuf_ppp_notice', wp_kses_post( $text ), esc_html( $form_id ), $form_settings ) ); ?>
             </div>
             <?php
         }

@@ -2434,7 +2434,7 @@ function wpuf_get_draft_post_status( $form_settings ) {
 
     $noce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-    if ( isset( $nonce ) ! wp_verify_nonce( $noce, 'wpuf_form_add' ) ) {
+    if ( isset( $nonce ) && ! wp_verify_nonce( $noce, 'wpuf_form_add' ) ) {
         return ;
     }
 

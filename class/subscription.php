@@ -331,7 +331,7 @@ class WPUF_Subscription {
 
         $nonce = isset( $_POST['meta_box_nonce'] ) ? sanitize_key( wp_unslash( $_POST['meta_box_nonce'] ) ) : '';
 
-        if ( isset( $nonce ) !wp_verify_nonce( $nonce, 'subs_meta_box_nonce' ) ) {
+        if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'subs_meta_box_nonce' ) ) {
             return;
         }
 

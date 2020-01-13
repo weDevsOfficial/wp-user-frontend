@@ -100,7 +100,7 @@ class WPUF_Render_Form {
     public function validate_re_captcha( $no_captcha = '', $invisible = '' ) {
         $nonce = isset( $_REQUEST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['wpuf-login-nonce'] ) ) : '';
 
-        if ( isset( $nonce ) ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
             return ;
         }
         // need to check if invisible reCaptcha need library or we can do it here.

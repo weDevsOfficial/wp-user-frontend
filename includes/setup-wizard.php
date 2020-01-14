@@ -359,23 +359,21 @@ class WPUF_Setup_Wizard {
     public function wpuf_setup_basic_save() {
         check_admin_referer( 'wpuf-setup' );
 
-        $payment_options = get_option( 'wpuf_payment' );
-        $general_options = get_option( 'wpuf_general' );
+        $enable_payment          = isset( $_POST['enable_payment'] ) ? 'on' : 'off';
+        $install_wpuf_pages      = isset( $_POST['install_wpuf_pages'] ) ? 'on' : 'off';
+        $share_wpuf_essentials   = isset( $_POST['share_wpuf_essentials'] ) ? 'on' : 'off';
 
-        $payment_options['enable_payment']           = isset( $_POST['enable_payment'] ) ? 'on' : 'off';
-        $general_options['install_wpuf_pages']       = isset( $_POST['install_wpuf_pages'] ) ? 'on' : 'off';
-        $general_options['share_wpuf_essentials']    = isset( $_POST['share_wpuf_essentials'] ) ? 'on' : 'off';
+        update_option( 'enable_payment', $enable_payment, 'on' );
+        wpuf_update_option( 'install_wpuf_pages','wpuf_general', $install_wpuf_pages );
+        wpuf_update_option( 'share_wpuf_essentials', 'wpuf_general', $share_wpuf_essentials );
 
-        update_option( 'wpuf_payment', $payment_options );
-        update_option( 'wpuf_general', $general_options );
-
-        if ( $general_options['share_wpuf_essentials'] == 'on' ) {
+        if ( 'on' == $share_wpuf_essentials ) {
             wpuf()->tracker->insights->optin();
         } else {
             wpuf()->tracker->insights->optout();
         }
 
-        if ( 'on' == $general_options['install_wpuf_pages'] ) {
+        if ( 'on' == $install_wpuf_pages ) {
             $installer = new WPUF_Admin_Installer();
             $installer->init_pages();
         }

@@ -17,7 +17,7 @@
             </div>
 
             <div v-if="show_value" class="value">
-                <?php _e( 'Value', 'wp-user-frontend' ) ?>
+                <?php _e( 'Value', 'wp-user-frontend' ); ?>
             </div>
 
             <div class="action-buttons">&nbsp;</div>

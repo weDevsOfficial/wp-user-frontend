@@ -1,7 +1,7 @@
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
 <div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ) ?>
+        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
     </h4>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
@@ -58,7 +58,7 @@
                 v-for="(field, index) in hidden_fields"
                 :class="['field-items', parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '']"
             >
-                <strong><?php _e('key', 'wp-user-frontend'); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
+                <strong><?php _e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
 
                 <div class="control-buttons">
                     <p>
@@ -130,7 +130,7 @@
             </div>
 
             <div v-if="show_value" class="value">
-                <?php _e( 'Value', 'wp-user-frontend' ) ?>
+                <?php _e( 'Value', 'wp-user-frontend' ); ?>
             </div>
 
             <div class="action-buttons">&nbsp;</div>
@@ -349,22 +349,20 @@
 
     <div v-if="'logged_in' === selected" class="condiotional-logic-container">
 
-    	<?php $roles = get_editable_roles() ?>
+    	<?php $roles = get_editable_roles(); ?>
 
     	<ul>
 			<?php
-				foreach ($roles as $role => $value) {
+                foreach ( $roles as $role => $value ) {
+                    $role_name = $value['name'];
 
-					$role_name = $value['name'];
+                    $output  = '<li>';
+                    $output .= "<label><input type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
+                    $output .= '</li>';
 
-					$output  = "<li>";
-					$output .= "<label><input type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
-					$output .= "</li>";
-
-					echo $output;
-
-				}
-			?>
+                    echo $output;
+                }
+            ?>
 	    </ul>
     </div>
 
@@ -377,14 +375,12 @@
                     $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
 
                     if ( $subscriptions ) {
-                        foreach ($subscriptions as $pack) {
-
-                            $output  = "<li>";
+                        foreach ( $subscriptions as $pack ) {
+                            $output  = '<li>';
                             $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
-                            $output .= "</li>";
+                            $output .= '</li>';
 
                             echo $output;
-
                         }
                     } else {
                         _e( 'No subscription plan found.', 'wp-user-frontend' );
@@ -713,7 +709,7 @@
 
     <template v-else>
     	<div v-if="'invisible_recaptcha' != field.recaptcha_type">
-        	<img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ?>" alt="">
+        	<img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png'; ?>" alt="">
         </div>
         <div v-else><p><?php _e( 'Invisible reCaptcha', 'wp-user-frontend' ); ?></p></div>
     </template>

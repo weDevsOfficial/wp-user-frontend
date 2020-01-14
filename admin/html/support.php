@@ -1,190 +1,190 @@
 <?php
 $current_user = wp_get_current_user();
 
-$articles = array(
-    'setup' => array(
-        array(
+$articles = [
+    'setup' => [
+        [
             'title' => 'How to Install',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/',
+        ],
+        [
             'title' => 'License Activation',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/troubleshoot/license-activation/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/troubleshoot/license-activation/',
+        ],
+        [
             'title' => 'Shortcodes',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/wpuf-shortcodes/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/wpuf-shortcodes/',
+        ],
+        [
             'title' => 'User Dashboard',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/user-dashboard/'
-        ),
-    ),
-    'posting' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/user-dashboard/',
+        ],
+    ],
+    'posting' => [
+        [
             'title' => 'Creating Posting Forms',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/',
+        ],
+        [
             'title' => 'Available Form Elements',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-elements/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-elements/',
+        ],
+        [
             'title' => 'Creating Forms Using The Form Templates',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-templates/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-templates/',
+        ],
+        [
             'title' => 'How to Allow Guest Posting',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/',
+        ],
+        [
             'title' => 'Setup Automatic Post Expiration',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/',
+        ],
+        [
             'title' => 'How to create Multistep forms',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/'
-        ),
-    ),
-    'dashboard' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/',
+        ],
+    ],
+    'dashboard' => [
+        [
             'title' => 'Setting up Frontend Dashboard for Users',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/configuring-dashboard-settings/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/configuring-dashboard-settings/',
+        ],
+        [
             'title' => 'Unified My Account Page',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/',
+        ],
+        [
             'title' => 'Showing meta fields in frontend',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/showing-meta-fields-in-frontend/'
-        ),
-    ),
-    'settings' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/showing-meta-fields-in-frontend/',
+        ],
+    ],
+    'settings' => [
+        [
             'title' => 'General Options',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-general-options/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-general-options/',
+        ],
+        [
             'title' => 'Dashboard Settings',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-dashboard-settings/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-dashboard-settings/',
+        ],
+        [
             'title' => 'Login Registration Settings',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/login-registration-settings/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/login-registration-settings/',
+        ],
+        [
             'title' => 'Payment Settings',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-payment-settings/'
-        ),
-    ),
-    'registration' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-payment-settings/',
+        ],
+    ],
+    'registration' => [
+        [
             'title' => 'Creating Registration Form',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/',
+        ],
+        [
             'title' => 'Creating a Multistep Registration Form',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/creating-a-multistep-registration-form/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/creating-a-multistep-registration-form/',
+        ],
+        [
             'title' => 'Setting Up Confirmation Message',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setup-confirmation-message/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setup-confirmation-message/',
+        ],
+        [
             'title' => 'Paid Membership Registration',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/paid-membership-registration/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/paid-membership-registration/',
+        ],
+        [
             'title' => 'Setting Up Email Verification for New Users',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setting-up-email-verification-for-new-users/'
-        ),
-    ),
-    'profile' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setting-up-email-verification-for-new-users/',
+        ],
+    ],
+    'profile' => [
+        [
             'title' => 'Creating a Profile Editing Form',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/wordpress-edit-user-profile-from-front-end/'
-        ),
-    ),
-    'subscription' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/wordpress-edit-user-profile-from-front-end/',
+        ],
+    ],
+    'subscription' => [
+        [
             'title' => 'Creating Subscription Packs',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/creating-subscription-packs/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/creating-subscription-packs/',
+        ],
+        [
             'title' => 'Payment & Gateway Settings',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/configuring-payment-settings/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/configuring-payment-settings/',
+        ],
+        [
             'title' => 'Setting Up Recurring Payment',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/setting-up-recurring-payment/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/setting-up-recurring-payment/',
+        ],
+        [
             'title' => 'Forcing Subscription Pack For Post Submission',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/forcing-subscription-pack-for-post-submission/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/forcing-subscription-pack-for-post-submission/',
+        ],
+        [
             'title' => 'How to Charge for Each Post Submission?',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/',
+        ],
+        [
             'title' => 'Creating Coupons',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/coupons/'
-        ),
-    ),
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/coupons/',
+        ],
+    ],
 
-    'developer' => array(
-        array(
+    'developer' => [
+        [
             'title' => 'Action Hook Field',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/action-hook-field/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/action-hook-field/',
+        ],
+        [
             'title' => 'Add a New Tab on My Account Page',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/add-a-new-tab-on-my-account-page/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/add-a-new-tab-on-my-account-page/',
+        ],
+        [
             'title' => 'Insert/update checkbox or radio field data as serialize',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/insertupdate-checkbox-or-radio-field-data-as-serialize/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/insertupdate-checkbox-or-radio-field-data-as-serialize/',
+        ],
+        [
             'title' => 'Filters',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/filters/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/filters/',
+        ],
+        [
             'title' => 'Actions',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/actions/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/actions/',
+        ],
+        [
             'title' => 'Changelog',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/changelog/'
-        ),
-    ),
-    'restriction' => array(
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/changelog/',
+        ],
+    ],
+    'restriction' => [
+        [
             'title' => 'Content Restriction for Logged in Users',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/content-restriction/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/content-restriction/',
+        ],
+        [
             'title' => 'Restricting Content by User Roles',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/restricting-content-by-user-roles/'
-        ),
-        array(
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/restricting-content-by-user-roles/',
+        ],
+        [
             'title' => 'Restricting Contents for Different Subscription Packs',
-            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/restricting-contents-for-different-subscription-packs/'
-        ),
-    )
-);
+            'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/restricting-contents-for-different-subscription-packs/',
+        ],
+    ],
+];
 
 /**
  * Print related articles
  *
- * @param  array $articles
+ * @param array $articles
  *
  * @return void
  */
 function wpuf_help_related_articles( $articles ) {
     ?>
-    <h2><?php _e( 'Related Articles:', 'wp-user-frontend' ); ?></h2>
+    <h2><?php esc_html_e( 'Related Articles:', 'wp-user-frontend' ); ?></h2>
 
     <ul class="related-articles">
     <?php
@@ -192,36 +192,35 @@ function wpuf_help_related_articles( $articles ) {
             ?>
             <li>
                 <span class="dashicons dashicons-media-text"></span>
-                <a href="<?php echo trailingslashit( $article['link'] ); ?>?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=<?php echo sanitize_title( $article['title'] ); ?>" target="_blank"><?php echo $article['title']; ?></a>
+                <a href="<?php echo  esc_attr( trailingslashit( $article['link'] ) ); ?>?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=<?php echo esc_attr( $article['title'] ); ?>" target="_blank"><?php echo esc_attr( $article['title'] ); ?></a>
             </li>
             <?php
-        }
-    ?>
+        } ?>
     </ul>
     <?php
 }
 ?>
 
 <div class="wrap wpuf-help-page">
-    <h1><?php _e( 'General Help Questions', 'wp-user-frontend' ); ?> <a href="https://wedevs.com/docs/wp-user-frontend-pro/?utm_source=wpuf-help-page&utm_medium=button-primary&utm_campaign=view-all-docs" target="_blank" class="page-title-action"><span class="dashicons dashicons-external" style="margin-top: 8px;"></span> <?php _e( 'View all Documentations', 'wp-user-frontend' ); ?></a></h1>
+    <h1><?php esc_html_e( 'General Help Questions', 'wp-user-frontend' ); ?> <a href="https://wedevs.com/docs/wp-user-frontend-pro/?utm_source=wpuf-help-page&utm_medium=button-primary&utm_campaign=view-all-docs" target="_blank" class="page-title-action"><span class="dashicons dashicons-external" style="margin-top: 8px;"></span> <?php esc_html_e( 'View all Documentations', 'wp-user-frontend' ); ?></a></h1>
 
     <form class="wpuf-subscribe-box" id="wpuf-form-subscribe" action="https://wedevs.us16.list-manage.com/subscribe/post-json?u=66e606cfe0af264974258f030&id=0d176bb256&c=?" method="get">
 
         <div class="text-wrap">
-            <h3><?php _e( 'Subscribe to Our Newsletter', 'wp-user-frontend' ); ?></h3>
+            <h3><?php esc_html_e( 'Subscribe to Our Newsletter', 'wp-user-frontend' ); ?></h3>
             <p>
-                <?php _e( 'Subscribe to our newsletter for regular <strong>tips</strong>, <strong>offers</strong> and <strong>news updates</strong>.', 'wp-user-frontend' ); ?>
+                <?php echo wp_kses_post( __( 'Subscribe to our newsletter for regular <strong>tips</strong>, <strong>offers</strong> and <strong>news updates</strong>.', 'wp-user-frontend' ) ); ?>
             </p>
         </div>
 
         <div class="form-wrap">
             <div class="fname">
-                <label for="fname"><?php _e( 'First Name', 'wp-user-frontend' ); ?></label>
+                <label for="fname"><?php esc_html_e( 'First Name', 'wp-user-frontend' ); ?></label>
                 <input type="text" name="FNAME" id="fname" class="regular-text" value="<?php echo esc_attr( $current_user->first_name ); ?>" required>
             </div>
 
             <div class="email">
-                <label for="email"><?php _e( 'Email', 'wp-user-frontend' ); ?></label>
+                <label for="email"><?php esc_html_e( 'Email', 'wp-user-frontend' ); ?></label>
                 <input type="email" name="EMAIL" id="email" class="regular-text" value="<?php echo esc_attr( $current_user->user_email ); ?>" required>
             </div>
 
@@ -238,49 +237,49 @@ function wpuf_help_related_articles( $articles ) {
                 <li class="tab-current">
                     <a href="#setup">
                         <span class="dashicons dashicons-admin-home"></span>
-                        <label><?php _e( 'Plugin Setup', 'wp-user-frontend' ); ?></label>
+                        <label><?php esc_html_e( 'Plugin Setup', 'wp-user-frontend' ); ?></label>
                     </a>
                 </li>
                 <li>
                     <a href="#frontend-posting">
                         <span class="dashicons dashicons-media-text"></span>
-                        <label><?php _e( 'Frontend Posting', 'wp-user-frontend' ); ?></label>
+                        <label><?php esc_html_e( 'Frontend Posting', 'wp-user-frontend' ); ?></label>
                     </a>
                 </li>
                 <li>
                     <a href="#frontend-dashboard">
                         <span class="dashicons dashicons-dashboard"></span>
-                        <label><?php _e( 'Frontend Dashboard', 'wp-user-frontend' ); ?></label>
+                        <label><?php esc_html_e( 'Frontend Dashboard', 'wp-user-frontend' ); ?></label>
                     </a>
                 </li>
                 <li>
                     <a href="#user-registration">
                         <span class="dashicons dashicons-admin-users"></span>
-                        <label><?php _e( 'User Registration', 'wp-user-frontend' ); ?></label>
+                        <label><?php esc_html_e( 'User Registration', 'wp-user-frontend' ); ?></label>
                     </a>
                 </li>
                 <li>
                     <a href="#login-page">
                         <span class="dashicons dashicons-lock"></span>
-                        <label><?php _e( 'User Login', 'wp-user-frontend' ); ?></label>
+                        <label><?php esc_html_e( 'User Login', 'wp-user-frontend' ); ?></label>
                     </a>
                 </li>
                 <li>
                     <a href="#profile-editing">
                         <span class="dashicons dashicons-edit"></span>
-                        <label><?php _e( 'Profile Editing', 'wp-user-frontend' ); ?></label>
+                        <label><?php esc_html_e( 'Profile Editing', 'wp-user-frontend' ); ?></label>
                     </a>
                 </li>
                 <li>
                     <a href="#subscription-payment">
                         <span class="dashicons dashicons-cart"></span>
-                        <label><?php _e( 'Subscription &amp; Payment', 'wp-user-frontend' ); ?></label>
+                        <label><?php esc_html_e( 'Subscription &amp; Payment', 'wp-user-frontend' ); ?></label>
                     </a>
                 </li>
                 <li>
                     <a href="#content-restriction">
                         <span class="dashicons dashicons-unlock"></span>
-                        <label><?php _e( 'Content Restriction', 'wp-user-frontend' ); ?></label>
+                        <label><?php esc_html_e( 'Content Restriction', 'wp-user-frontend' ); ?></label>
                     </a>
                 </li>
             </ul>
@@ -296,13 +295,13 @@ function wpuf_help_related_articles( $articles ) {
                     <li><strong>Install WPUF Pages</strong> with a single click. Check your admin dashboard for a message to install WPUF required pages.</li>
                     <li>You can create amazing frontend posting forms with more than 20 useful form fields. </li>
                     <li>Posting the forms in the frontend is also very easy. All you have to do is <strong>put the shortcode</strong> of your form to a page. </li>
-                    <li>Building registration &amp; profile editing forms has never been easier, thanks to WP User Frontend. <a href="<?php echo admin_url( 'admin.php?page=wpuf-profile-forms' ); ?>" target="_blank">Build registration &amp; profile forms</a> on the go with simple steps.</li>
+                    <li>Building registration &amp; profile editing forms has never been easier, thanks to WP User Frontend. <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-profile-forms' ) ); ?>" target="_blank">Build registration &amp; profile forms</a> on the go with simple steps.</li>
                     <li>Add customized <strong>login forms</strong> using simple shortcodes and override default WordPress login and registration.</li>
                     <li>Create customized <strong>subscription forms</strong> and let your users buy with multiple payment gateways.</li>
                     <li><strong>Enable guest posting</strong> and earn from each posts without any difficulties. </li>
                 </ol>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=how-to-install" target="_blank"><?php _e( 'Learn More About Installation', 'wp-user-frontend' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=how-to-install" target="_blank"><?php esc_html_e( 'Learn More About Installation', 'wp-user-frontend' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['setup'] ); ?>
             </section>
@@ -310,10 +309,10 @@ function wpuf_help_related_articles( $articles ) {
                 <h2>Frontend Posting</h2>
 
                 <p>Posting Forms are used to <strong>create new</strong> blog posts, WooCommerce Products, Directory Listing Entries etc. You can create any custom post type from the front using this feature. You just need to create a form with necessary fields and embed the form in a page and your users will be able to create posts from frontend in no time.</p>
-                <p>To create a posting form, go to <a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" target="_blank">Post Forms</a> → Add Form and start building your ultimate frontend posting forms. </p>
+                <p>To create a posting form, go to <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-post-forms' ) ); ?>" target="_blank">Post Forms</a> → Add Form and start building your ultimate frontend posting forms. </p>
                 <p>After building your forms, <strong>use the shortcodes</strong> on any new page or post and publish them before sharing.</p>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=frontend-posting" target="_blank"><?php _e( 'Learn More About Frontend Posting', 'wp-user-frontend' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=frontend-posting" target="_blank"><?php esc_html_e( 'Learn More About Frontend Posting', 'wp-user-frontend' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['posting'] ); ?>
             </section>
@@ -321,16 +320,16 @@ function wpuf_help_related_articles( $articles ) {
                 <h2>Frontend Dashboard</h2>
 
                 <p>WP User Frontend generates <strong>Frontend Dashboard</strong> and <strong>My Account</strong> page for all your users. Using these pages, they can get a list of their posts and subscriptions directly at frontend. They can also customize the details of their profile. You don’t need to give them access to the backend at all!</p>
-                <p>To crate this page, <a href="<?php echo admin_url( 'post-new.php?post_type=page' ); ?>" target="_blank">create a new page</a>, put a title and simply copy-paste the following shortcode: <code>[wpuf_dashboard]</code>. Alternatively, there is an unified <a href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=unified-my-account-page" target="_blank">my account page</a> as well. Finally, hit the publish button and you are done.</p>
+                <p>To crate this page, <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=page' ) ); ?>" target="_blank">create a new page</a>, put a title and simply copy-paste the following shortcode: <code>[wpuf_dashboard]</code>. Alternatively, there is an unified <a href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=unified-my-account-page" target="_blank">my account page</a> as well. Finally, hit the publish button and you are done.</p>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/configuring-dashboard-settings/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=frontend-dashboard" target="_blank"><?php _e( 'Learn More About Frontend Dashboard', 'wp-user-frontend' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/configuring-dashboard-settings/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=frontend-dashboard" target="_blank"><?php esc_html_e( 'Learn More About Frontend Dashboard', 'wp-user-frontend' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['dashboard'] ); ?>
             </section>
             <section id="user-registration">
                 <h2>User Registration</h2>
 
-                <p>You can create as many registration forms as you want and assign them to different user roles. Creating Registration forms are easy. Navigate to <a href="<?php echo admin_url( 'admin.php?page=wpuf-profile-forms' ); ?>" target="_blank">Registration Forms</a>.</p>
+                <p>You can create as many registration forms as you want and assign them to different user roles. Creating Registration forms are easy. Navigate to <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-profile-forms' ) ); ?>" target="_blank">Registration Forms</a>.</p>
                 <p>You can create new forms just you would create posts in WordPress.</p>
 
                 <ol>
@@ -353,7 +352,7 @@ function wpuf_help_related_articles( $articles ) {
                 </ul>
 
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=registration-profile-forms" target="_blank"><?php _e( 'Learn More About Registration', 'wp-user-frontend' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=registration-profile-forms" target="_blank"><?php esc_html_e( 'Learn More About Registration', 'wp-user-frontend' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['registration'] ); ?>
             </section>
@@ -362,14 +361,14 @@ function wpuf_help_related_articles( $articles ) {
 
                 <p>WP User Frontend Automatically creates important pages when you install it for the first time. You can also create login forms manually. </p>
 
-                <p>Navigate to <a href="<?php echo admin_url( 'admin.php?page=wpuf-settings' ); ?>" target="_blank">Settings</a> → <strong>Login/Registration</strong> tab.
+                <p>Navigate to <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ); ?>" target="_blank">Settings</a> → <strong>Login/Registration</strong> tab.
                 In this page, you will find several useful settings related to WPUF login. You can override default registration and login forms with WPUF login &amp; registration feature if you want. To do this, check the <strong>Login/Registration override option</strong>.</p>
 
                 <p>You can also specify the login page. WPUF automatically adds the default login page that it has created. If you manually create one, use the following shortcode – <code>[wpuf-login]</code></p>
 
                 <p>Simply, create a new page and put the above shortcode. Finally, publish the page and add it to the Login Page option in the settings.</p>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/user-login/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=learn-more-login" target="_blank"><?php _e( 'Learn More About Login', 'wp-user-frontend' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/user-login/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=learn-more-login" target="_blank"><?php esc_html_e( 'Learn More About Login', 'wp-user-frontend' ); ?></a>
             </section>
             <section id="profile-editing">
                 <h2>Creating a Profile Editing Form</h2>
@@ -386,7 +385,7 @@ function wpuf_help_related_articles( $articles ) {
                 <p>We assume that you already have created a registration form. If not you can use the default registration form, that was created automatically while installing the plugin.
                 So to get the shortcode, navigate to <strong>User Frontend</strong> → <strong>Registration Forms</strong> and you will be able to see the shortcodes on the right side of your screen.</p>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=registration-profile-forms" target="_blank"><?php _e( 'Learn More About Profile Editing', 'wp-user-frontend' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=registration-profile-forms" target="_blank"><?php esc_html_e( 'Learn More About Profile Editing', 'wp-user-frontend' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['profile'] ); ?>
             </section>
@@ -439,14 +438,14 @@ function wpuf_help_related_articles( $articles ) {
                 <p>Currently only PayPal basic gateway is supported. The plugin is extension aware, that means other gateways can be integrated.</p>
 
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=subscription-payment" target="_blank"><?php _e( 'Learn More About Payments', 'wp-user-frontend' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=subscription-payment" target="_blank"><?php esc_html_e( 'Learn More About Payments', 'wp-user-frontend' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['subscription'] ); ?>
             </section>
             <section id="content-restriction">
                 <h2>Content Restriction</h2>
 
-                <p>To set content restriction for a certain form, navigate to <a href="<?php echo admin_url( 'edit.php?post_type=page' ); ?>" target="_blank">Pages</a></strong></p>
+                <p>To set content restriction for a certain form, navigate to <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=page' ) ); ?>" target="_blank">Pages</a></strong></p>
 
                 <ol>
                     <li>Now, select the page that has the shortcode of the selected form.</li>
@@ -456,7 +455,7 @@ function wpuf_help_related_articles( $articles ) {
                     <li>Finally, update the page.</li>
                 </ol>
 
-                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=content-restriction" target="_blank"><?php _e( 'Learn More About Content Restriction', 'wp-user-frontend' ); ?></a>
+                <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=content-restriction" target="_blank"><?php esc_html_e( 'Learn More About Content Restriction', 'wp-user-frontend' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['restriction'] ); ?>
             </section>
@@ -465,33 +464,33 @@ function wpuf_help_related_articles( $articles ) {
 
     <div class="help-blocks">
         <div class="help-block">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/help/like.svg" alt="<?php esc_attr_e( 'Like The Plugin?', 'wp-user-frontend' ); ?>">
+            <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/help/like.svg" alt="<?php esc_attr_e( 'Like The Plugin?', 'wp-user-frontend' ); ?>">
 
-            <h3><?php _e( 'Like The Plugin?', 'wp-user-frontend' ); ?></h3>
+            <h3><?php esc_html_e( 'Like The Plugin?', 'wp-user-frontend' ); ?></h3>
 
-            <p><?php _e( 'Your Review is very important to us as it helps us to grow more.', 'wp-user-frontend' ); ?></p>
+            <p><?php esc_html_e( 'Your Review is very important to us as it helps us to grow more.', 'wp-user-frontend' ); ?></p>
 
-            <a target="_blank" class="button button-primary" href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/?rate=5#new-post"><?php _e( 'Review Us on WP.org', 'wp-user-frontend' ); ?></a>
+            <a target="_blank" class="button button-primary" href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/?rate=5#new-post"><?php esc_html_e( 'Review Us on WP.org', 'wp-user-frontend' ); ?></a>
         </div>
 
         <div class="help-block">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/help/bugs.svg" alt="<?php esc_attr_e( 'Found Any Bugs?', 'wp-user-frontend' ); ?>">
+            <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/help/bugs.svg" alt="<?php esc_attr_e( 'Found Any Bugs?', 'wp-user-frontend' ); ?>">
 
-            <h3><?php _e( 'Found Any Bugs?', 'wp-user-frontend' ); ?></h3>
+            <h3><?php esc_html_e( 'Found Any Bugs?', 'wp-user-frontend' ); ?></h3>
 
-            <p><?php _e( 'Report any Bug that you Discovered, Get Instant Solutions.', 'wp-user-frontend' ); ?></p>
+            <p><?php esc_html_e( 'Report any Bug that you Discovered, Get Instant Solutions.', 'wp-user-frontend' ); ?></p>
 
-            <a target="_blank" class="button button-primary" href="https://github.com/weDevsOfficial/wp-user-frontend/?utm_source=wpuf-help-page&utm_medium=help-block&utm_campaign=found-bugs"><?php _e( 'Report to GitHub', 'wp-user-frontend' ); ?></a>
+            <a target="_blank" class="button button-primary" href="https://github.com/weDevsOfficial/wp-user-frontend/?utm_source=wpuf-help-page&utm_medium=help-block&utm_campaign=found-bugs"><?php esc_html_e( 'Report to GitHub', 'wp-user-frontend' ); ?></a>
         </div>
 
         <div class="help-block">
-            <img src="<?php echo WPUF_ASSET_URI; ?>/images/help/support.svg" alt="<?php esc_attr_e( 'Need Any Assistance?', 'wp-user-frontend' ); ?>">
+            <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/help/support.svg" alt="<?php esc_attr_e( 'Need Any Assistance?', 'wp-user-frontend' ); ?>">
 
-            <h3><?php _e( 'Need Any Assistance?', 'wp-user-frontend' ); ?></h3>
+            <h3><?php esc_html_e( 'Need Any Assistance?', 'wp-user-frontend' ); ?></h3>
 
-            <p><?php _e( 'Our EXPERT Support Team is always ready to Help you out.', 'wp-user-frontend' ); ?></p>
+            <p><?php esc_html_e( 'Our EXPERT Support Team is always ready to Help you out.', 'wp-user-frontend' ); ?></p>
 
-            <a target="_blank" class="button button-primary" href="https://wedevs.com/account/tickets/?utm_source=wpuf-help-page&utm_medium=help-block&utm_campaign=need-assistance"><?php _e( 'Contact Support', 'wp-user-frontend' ); ?></a>
+            <a target="_blank" class="button button-primary" href="https://wedevs.com/account/tickets/?utm_source=wpuf-help-page&utm_medium=help-block&utm_campaign=need-assistance"><?php esc_html_e( 'Contact Support', 'wp-user-frontend' ); ?></a>
         </div>
     </div>
 </div>

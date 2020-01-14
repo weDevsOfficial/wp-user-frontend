@@ -13,13 +13,12 @@ class WPUF_Installer {
      * @return void
      */
     public function install() {
-
         $this->create_tables();
         $this->schedule_events();
 
         $installed = get_option( 'wpuf_installed' );
 
-        if ( ! $installed ) {
+        if ( !$installed ) {
             update_option( 'wpuf_installed', time() );
         }
 
@@ -40,16 +39,16 @@ class WPUF_Installer {
         $collate = '';
 
         if ( $wpdb->has_cap( 'collation' ) ) {
-            if ( ! empty($wpdb->charset ) ) {
+            if ( !empty( $wpdb->charset ) ) {
                 $collate .= "DEFAULT CHARACTER SET $wpdb->charset";
             }
 
-            if ( ! empty($wpdb->collate ) ) {
+            if ( !empty( $wpdb->collate ) ) {
                 $collate .= " COLLATE $wpdb->collate";
             }
         }
 
-        $table_schema = array(
+        $table_schema = [
             "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}wpuf_transaction` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
                 `user_id` bigint(20) DEFAULT NULL,
@@ -86,9 +85,10 @@ class WPUF_Installer {
                 PRIMARY KEY (`id`),
                 key `user_id` (`user_id`)
             ) $collate;",
-        );
+        ];
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
         foreach ( $table_schema as $table ) {
             dbDelta( $table );
         }
@@ -102,5 +102,4 @@ class WPUF_Installer {
     public function schedule_events() {
         wp_schedule_event( time(), 'daily', 'wpuf_remove_expired_post_hook' );
     }
-
 }

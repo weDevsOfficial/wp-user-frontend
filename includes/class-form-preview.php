@@ -19,7 +19,7 @@ class WPUF_Form_Preview {
     /**
      * Form id
      *
-     * @var integer
+     * @var int
      */
     private $form_id;
 
@@ -30,38 +30,37 @@ class WPUF_Form_Preview {
      */
     private $is_preview = true;
 
-    function __construct() {
-
-        if ( ! isset( $_GET['wpuf_preview'] ) && empty( $_GET['wpuf'] ) ) {
+    public function __construct() {
+        if ( !isset( $_GET['wpuf_preview'] ) && empty( $_GET['wpuf'] ) ) {
             return;
         }
 
         $this->form_id = isset( $_GET['form_id'] ) ? intval( $_GET['form_id'] ) : 0;
 
-        add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
-        add_filter( 'template_include', array( $this, 'template_include' ) );
+        add_action( 'pre_get_posts', [ $this, 'pre_get_posts' ] );
+        add_filter( 'template_include', [ $this, 'template_include' ] );
 
-        add_filter( 'the_title', array( $this, 'the_title' ) );
-        add_filter( 'the_content', array( $this, 'the_content' ) );
-        add_filter( 'get_the_excerpt', array( $this, 'the_content' ) );
+        add_filter( 'the_title', [ $this, 'the_title' ] );
+        add_filter( 'the_content', [ $this, 'the_content' ] );
+        add_filter( 'get_the_excerpt', [ $this, 'the_content' ] );
         add_filter( 'post_thumbnail_html', '__return_empty_string' );
     }
 
     /**
      * Set the page title
      *
-     * @param  string $title
+     * @param string $title
      *
      * @return string
      */
     public function the_title( $title ) {
-        if ( ! in_the_loop() ) {
+        if ( !in_the_loop() ) {
             return $title;
         }
 
         $form = new WPUF_Form( $this->form_id );
 
-        if ( ! $form ) {
+        if ( !$form ) {
             return $title;
         }
 
@@ -73,21 +72,19 @@ class WPUF_Form_Preview {
     /**
      * Set the content of the page
      *
-     * @param  string $content
+     * @param string $content
      *
      * @return string
      */
     public function the_content( $content ) {
-
         if ( $this->is_preview ) {
-
-            if ( ! is_user_logged_in() ) {
+            if ( !is_user_logged_in() ) {
                 return __( 'You must be logged in to preview this form.', 'wp-user-frontend' );
             }
 
             $viewing_capability = apply_filters( 'wpuf_preview_form_cap', 'edit_posts' ); // at least has to be contributor
 
-            if ( ! current_user_can( $viewing_capability ) ) {
+            if ( !current_user_can( $viewing_capability ) ) {
                 return __( 'Sorry, you are not eligible to preview this form.', 'wp-user-frontend' );
             }
         }
@@ -98,7 +95,7 @@ class WPUF_Form_Preview {
     /**
      * Set the posts to one
      *
-     * @param  WP_Query $query
+     * @param WP_Query $query
      *
      * @return void
      */
@@ -113,7 +110,7 @@ class WPUF_Form_Preview {
      *
      * @return string
      */
-    function template_include() {
-        return locate_template( array( 'page.php', 'single.php', 'index.php' ) );
+    public function template_include() {
+        return locate_template( [ 'page.php', 'single.php', 'index.php' ] );
     }
 }

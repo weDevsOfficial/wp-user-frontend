@@ -6,19 +6,19 @@
  *
  * @since 2.8.9
  */
-Class WPUF_Privacy {
+class WPUF_Privacy {
 
-    private $name = "WP User Frontend";
+    private $name = 'WP User Frontend';
 
-    public function __construct(){
-        add_action( 'admin_init', array( $this, 'add_privacy_message' ) );
-        add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'register_exporters' ), 10 );
-        add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'register_erasers' ), 10 );
+    public function __construct() {
+        add_action( 'admin_init', [ $this, 'add_privacy_message' ] );
+        add_filter( 'wp_privacy_personal_data_exporters', [ $this, 'register_exporters' ], 10 );
+        add_filter( 'wp_privacy_personal_data_erasers', [ $this, 'register_erasers' ], 10 );
 
-        add_filter( 'wpuf_privacy_user_data', array( $this, 'export_billing_address' ), 5, 3 );
+        add_filter( 'wpuf_privacy_user_data', [ $this, 'export_billing_address' ], 5, 3 );
     }
 
-    function add_privacy_message(){
+    public function add_privacy_message() {
         if ( function_exists( 'wp_add_privacy_policy_content' ) ) {
             $content = $this->get_privacy_message();
             wp_add_privacy_policy_content( $this->name, $content );
@@ -28,7 +28,7 @@ Class WPUF_Privacy {
     /**
      * Add privacy policy content for the privacy policy page.
      */
-    function get_privacy_message() {
+    public function get_privacy_message() {
         $content = '
 			<div contenteditable="false">' .
             '<p class="wp-policy-help">' .
@@ -76,9 +76,9 @@ Class WPUF_Privacy {
             '<p class="wp-policy-help">' . __( 'In this subsection you should list which third party payment processors you’re using to take payments on your site since these may handle customer data. We’ve included PayPal as an example, but you should remove this if you’re not using PayPal.', 'wp-user-frontend' ) . '</p>' .
             '</div>' .
             '<p>' . __( 'We accept payments through PayPal. When processing payments, some of your data will be passed to PayPal, including information required to process or support the payment, such as the purchase total and billing information.', 'wp-user-frontend' ) . '</p>' .
-            '<p>' . __( 'Please see the <a href="https://www.paypal.com/us/webapps/mpp/ua/privacy-full">PayPal Privacy Policy</a> for more details.', 'wp-user-frontend' ) . '</p>'.
+            '<p>' . __( 'Please see the <a href="https://www.paypal.com/us/webapps/mpp/ua/privacy-full">PayPal Privacy Policy</a> for more details.', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'Also, we accept payments through Stripe. When processing payments, some of your data will be passed to Stripe, including information required to process or support the payment, such as the purchase total and billing information.', 'wp-user-frontend' ) . '</p>' .
-            '<p>' . __( 'Please see the <a href="https://stripe.com/us/privacy">Stripe Privacy Policy</a> for more details.', 'wp-user-frontend' ) . '</p>'.
+            '<p>' . __( 'Please see the <a href="https://stripe.com/us/privacy">Stripe Privacy Policy</a> for more details.', 'wp-user-frontend' ) . '</p>' .
             '<h3>' . __( 'Available Modules', 'wp-user-frontend' ) . '</h3>' .
             '<p>' . __( 'In this subsection you should list which third party modules you’re using to increase the functionality of your created forms using WP User Frontend since these may handle customer data.', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'WP User Frontend Pro comes with support for modules like MailChimp, ConvertKit, Stipe, Paid Membership Pro, MailPoet, Zapier, GetResponse, MailPoet 3, Campaign Monitor, Social Login, BuddyPress. Please note any future modules that will be added will have some data transferred to their own platform which falls in their own data policy. ', 'wp-user-frontend' ) . '</p>' .
@@ -95,26 +95,26 @@ Class WPUF_Privacy {
      *
      * @return array
      */
-    function register_exporters( $exporters ) {
-        $exporters['wpuf-personal-data-export'] = array(
+    public function register_exporters( $exporters ) {
+        $exporters['wpuf-personal-data-export'] = [
             'exporter_friendly_name' => __( 'WPUF User Data', 'wp-user-frontend' ),
-            'callback'               => array( 'WPUF_Privacy', 'export_user_data'),
-        );
+            'callback'               => [ 'WPUF_Privacy', 'export_user_data'],
+        ];
 
-        $exporters['wpuf-subscription-data-export'] = array(
+        $exporters['wpuf-subscription-data-export'] = [
             'exporter_friendly_name' => __( 'WPUF Subscription Data', 'wp-user-frontend' ),
-            'callback'               => array( 'WPUF_Privacy', 'export_subscription_data'),
-        );
+            'callback'               => [ 'WPUF_Privacy', 'export_subscription_data'],
+        ];
 
-        $exporters['wpuf-transaction-data-export'] = array(
+        $exporters['wpuf-transaction-data-export'] = [
             'exporter_friendly_name' => __( 'WPUF Transaction Data', 'wp-user-frontend' ),
-            'callback'               => array( 'WPUF_Privacy', 'export_transaction_data'),
-        );
+            'callback'               => [ 'WPUF_Privacy', 'export_transaction_data'],
+        ];
 
-        $exporters['wpuf-post-data-export'] = array(
+        $exporters['wpuf-post-data-export'] = [
             'exporter_friendly_name' => __( 'WPUF Post Data', 'wp-user-frontend' ),
-            'callback'               => array( 'WPUF_Privacy', 'export_post_data'),
-        );
+            'callback'               => [ 'WPUF_Privacy', 'export_post_data'],
+        ];
 
         return apply_filters( 'wpuf_privacy_register_exporters', $exporters );
     }
@@ -126,11 +126,11 @@ Class WPUF_Privacy {
      *
      * @return array
      */
-    function register_erasers( $erasers ) {
-        $erasers['wpuf-personal-data-erase'] = array(
+    public function register_erasers( $erasers ) {
+        $erasers['wpuf-personal-data-erase'] = [
             'eraser_friendly_name' => __( 'WPUF User Data', 'wp-user-frontend' ),
-            'callback'             => array( 'WPUF_Privacy', 'erase_user_data'),
-        );
+            'callback'             => [ 'WPUF_Privacy', 'erase_user_data'],
+        ];
 
         return apply_filters( 'wpuf_privacy_register_erasers', $erasers );
     }
@@ -147,30 +147,31 @@ Class WPUF_Privacy {
 
         if ( $user ) {
             $wpuf_user = new WPUF_User( $user );
+
             return $wpuf_user;
         }
 
         return $email;
     }
+
     /**
      * Finds and exports customer data by email address.
      *
-     * @param string $email_address The user email address.
-     * @param int    $page  Page.
+     * @param string $email_address the user email address
+     * @param int    $page          page
      *
      * @return array An array of data in name value pairs
      */
-    public static function export_user_data( $email_address, $page ){
+    public static function export_user_data( $email_address, $page ) {
+        $data_to_export = [];
+        $wpuf_user      = self::get_user( $email_address );
 
-        $data_to_export = array();
-        $wpuf_user = self::get_user( $email_address );
-
-        $data_to_export[] = array(
+        $data_to_export[] = [
             'group_id'    => 'wpuf-user-data',
             'group_label' => __( 'WPUF User Data', 'wp-user-frontend' ),
-            'item_id'     => "wpuf-user",
-            'data'        => apply_filters( 'wpuf_privacy_user_data', array(), $wpuf_user, $page ),
-        );
+            'item_id'     => 'wpuf-user',
+            'data'        => apply_filters( 'wpuf_privacy_user_data', [], $wpuf_user, $page ),
+        ];
 
         /**
          * Filters the export data array
@@ -179,133 +180,124 @@ Class WPUF_Privacy {
          */
         $data_to_export = apply_filters( 'wpuf_privacy_export_data', $data_to_export, $wpuf_user, $page );
 
-        return array(
+        return [
             'data' => $data_to_export,
-            'done' => true
-        );
+            'done' => true,
+        ];
     }
 
     /**
      * Erases personal data associated with an email address from the WPUF user data
      *
-     * @param  string $email_address
-     *
-     * @param  int $page
+     * @param string $email_address
+     * @param int    $page
      *
      * @return array
      */
-    public static function erase_user_data( $email_address, $page = 1 ){
-
+    public static function erase_user_data( $email_address, $page = 1 ) {
         if ( empty( $email_address ) ) {
-            return array(
+            return [
                 'items_removed'  => false,
                 'items_retained' => false,
-                'messages'       => array(),
+                'messages'       => [],
                 'done'           => true,
-            );
+            ];
         }
 
         $posts     = self::get_post_data( $email_address, $page );
         $post_ids  = wp_list_pluck( $posts, 'id' );
 
         global $wpdb;
-        $ids = sprintf( '(%s)', implode(',', $post_ids) );
+        $ids   = sprintf( '(%s)', implode( ',', $post_ids ) );
         $query = "Update `$wpdb->posts` Set `post_author` = 0 WHERE `ID` in $ids";
         $wpdb->query( $query );
 
-        $erased = apply_filters( 'wpuf_erase_user_data', array(
+        $erased = apply_filters( 'wpuf_erase_user_data', [
             'items_removed'  => true,
             'items_retained' => false,
-            'messages'       => array(),
+            'messages'       => [],
             'done'           => true,
-            ), $email_address, $page
-        );
+            ], $email_address, $page
+         );
 
         return $erased;
-
     }
 
     /**
      * Add Billing address data to export
      *
      * @param $data
-     *
      * @param $wpuf_user
-     *
      * @param $page
      *
      * @return array
      */
     public function export_billing_address( $data, $wpuf_user, $page ) {
-
-        if ( ! ( $wpuf_user instanceof WPUF_User ) ) {
+        if ( !( $wpuf_user instanceof WPUF_User ) ) {
             return $data;
         }
 
         $address = $wpuf_user->get_billing_address( true );
 
         /**
-         * @var array $countries
+         * @var array
          */
         include_once WPUF_ROOT . '/includes/countries.php';
 
         if ( !empty( $address ) ) {
-            $address_data = array(
-                array(
+            $address_data = [
+                [
                     'name'  => __( 'Billing Address 1', 'wp-user-frontend' ),
-                    'value' => $address['add_line_1']
-                ),
-                array(
+                    'value' => $address['add_line_1'],
+                ],
+                [
                     'name'  => __( 'Billing Address 2', 'wp-user-frontend' ),
-                    'value' => $address['add_line_2']
-                ),
-                array(
+                    'value' => $address['add_line_2'],
+                ],
+                [
                     'name'  => __( 'City', 'wp-user-frontend' ),
-                    'value' => $address['city']
-                ),
-                array(
+                    'value' => $address['city'],
+                ],
+                [
                     'name'  => __( 'State', 'wp-user-frontend' ),
-                    'value' => $address['state']
-                ),
-                array(
+                    'value' => $address['state'],
+                ],
+                [
                     'name'  => __( 'Zip', 'wp-user-frontend' ),
-                    'value' => $address['zip_code']
-                ),
-                array(
+                    'value' => $address['zip_code'],
+                ],
+                [
                     'name'  => __( 'Country', 'wp-user-frontend' ),
-                    'value' => $countries[$address['country']]
-                ),
-            );
+                    'value' => $countries[$address['country']],
+                ],
+            ];
 
             return array_merge( $data, $address_data );
         }
 
         return $data;
-
     }
 
     /**
      * Export Subscription Data for User
      *
      * @param $email_address
-     *
      * @param $page
      *
      * @return array
      */
     public static function export_subscription_data( $email_address, $page ) {
-
-        $data_to_export[] = array(
+        $data_to_export[] = [
             'group_id'    => 'wpuf-subscription-data',
             'group_label' => __( 'WPUF Subscription Data', 'wp-user-frontend' ),
-            'item_id'     => "wpuf-subscription",
-            'data'        => self::get_subscription_data( $email_address, $page )
-        );
+            'item_id'     => 'wpuf-subscription',
+            'data'        => self::get_subscription_data( $email_address, $page ),
+        ];
 
-        $response = array(
+        $response = [
             'data' => $data_to_export,
-            'done' => true
-        );
+            'done' => true,
+        ];
 
         return $response;
     }
@@ -314,88 +306,88 @@ Class WPUF_Privacy {
      * Export transaction Data for User
      *
      * @param $email_address
-     *
      * @param $page
      *
      * @return array
      */
     public static function export_transaction_data( $email_address, $page ) {
-
-        $transaction_data = self::get_transaction_data( $email_address, $page ); $data_to_export = array();
+        $transaction_data = self::get_transaction_data( $email_address, $page );
+        $data_to_export   = [];
 
         if ( !empty( $transaction_data ) ) {
             foreach ( $transaction_data as $txn_data ) {
-
-                $data_to_export[] = array(
-                    'group_id' => 'wpuf-transaction-data',
-                    'group_label' => __('WPUF Transaction Data', 'wp-user-frontend'),
-                    'item_id' => "wpuf-transaction" . $txn_data['transaction_id'],
-                    'data' => array(
-                        array(
-                            'name' => __('Transaction ID', 'wp-user-frontend'),
-                            'value' => $txn_data['transaction_id']
-                        ),
-                        array(
-                            'name' => __('Payment Status', 'wp-user-frontend'),
-                            'value' => $txn_data['status']
-                        ),
-                        array(
-                            'name' => __('Subtotal', 'wp-user-frontend'),
-                            'value' => $txn_data['subtotal']
-                        ),
-                        array(
-                            'name' => __('Tax', 'wp-user-frontend'),
-                            'value' => $txn_data['tax']
-                        ),
-                        array(
-                            'name' => __('Total', 'wp-user-frontend'),
-                            'value' => $txn_data['cost']
-                        ),
-                        array(
-                            'name' => __('Post ID', 'wp-user-frontend'),
-                            'value' => $txn_data['post_id']
-                        ),
-                        array(
-                            'name' => __('Pack ID', 'wp-user-frontend'),
-                            'value' => $txn_data['post_id']
-                        ),
-                        array(
-                            'name' => __('First Name', 'wp-user-frontend'),
-                            'value' => $txn_data['payer_first_name']
-                        ),
-                        array(
-                            'name' => __('Last Name', 'wp-user-frontend'),
-                            'value' => $txn_data['payer_last_name']
-                        ),
-                        array(
-                            'name' => __('Email', 'wp-user-frontend'),
-                            'value' => $txn_data['payer_email']
-                        ),
-                        array(
-                            'name' => __('Payment Type', 'wp-user-frontend'),
-                            'value' => $txn_data['payment_type']
-                        ),
-                        array(
-                            'name' => __('payer_address', 'wp-user-frontend'),
-                            'value' => implode(', ', array_map(
-                                function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
+                $data_to_export[] = [
+                    'group_id'    => 'wpuf-transaction-data',
+                    'group_label' => __( 'WPUF Transaction Data', 'wp-user-frontend' ),
+                    'item_id'     => 'wpuf-transaction' . $txn_data['transaction_id'],
+                    'data'        => [
+                        [
+                            'name'  => __( 'Transaction ID', 'wp-user-frontend' ),
+                            'value' => $txn_data['transaction_id'],
+                        ],
+                        [
+                            'name'  => __( 'Payment Status', 'wp-user-frontend' ),
+                            'value' => $txn_data['status'],
+                        ],
+                        [
+                            'name'  => __( 'Subtotal', 'wp-user-frontend' ),
+                            'value' => $txn_data['subtotal'],
+                        ],
+                        [
+                            'name'  => __( 'Tax', 'wp-user-frontend' ),
+                            'value' => $txn_data['tax'],
+                        ],
+                        [
+                            'name'  => __( 'Total', 'wp-user-frontend' ),
+                            'value' => $txn_data['cost'],
+                        ],
+                        [
+                            'name'  => __( 'Post ID', 'wp-user-frontend' ),
+                            'value' => $txn_data['post_id'],
+                        ],
+                        [
+                            'name'  => __( 'Pack ID', 'wp-user-frontend' ),
+                            'value' => $txn_data['post_id'],
+                        ],
+                        [
+                            'name'  => __( 'First Name', 'wp-user-frontend' ),
+                            'value' => $txn_data['payer_first_name'],
+                        ],
+                        [
+                            'name'  => __( 'Last Name', 'wp-user-frontend' ),
+                            'value' => $txn_data['payer_last_name'],
+                        ],
+                        [
+                            'name'  => __( 'Email', 'wp-user-frontend' ),
+                            'value' => $txn_data['payer_email'],
+                        ],
+                        [
+                            'name'  => __( 'Payment Type', 'wp-user-frontend' ),
+                            'value' => $txn_data['payment_type'],
+                        ],
+                        [
+                            'name'  => __( 'payer_address', 'wp-user-frontend' ),
+                            'value' => implode( ', ', array_map(
+                                function ( $v, $k ) {
+                                    return sprintf( "%s='%s'", $k, $v );
+                                },
                                 maybe_unserialize( $txn_data['payer_address'] ),
                                 array_keys( maybe_unserialize( $txn_data['payer_address'] ) )
-                            ) ),
-                        ),
-                        array(
-                            'name' => __('Transaction Date', 'wp-user-frontend'),
-                            'value' => $txn_data['created']
-                        ),
-                    ),
-                );
+                             ) ),
+                        ],
+                        [
+                            'name'  => __( 'Transaction Date', 'wp-user-frontend' ),
+                            'value' => $txn_data['created'],
+                        ],
+                    ],
+                ];
             }
         }
 
-        $response = array(
+        $response = [
             'data' => $data_to_export,
-            'done' => true
-        );
+            'done' => true,
+        ];
 
         return $response;
     }
@@ -404,48 +396,46 @@ Class WPUF_Privacy {
      * Export Post Data for User
      *
      * @param $email_address
-     *
      * @param $page
      *
      * @return array
      */
     public static function export_post_data( $email_address, $page ) {
-
-        $post_data = self::get_post_data( $email_address, $page );
-        $data_to_export = array();
+        $post_data      = self::get_post_data( $email_address, $page );
+        $data_to_export = [];
 
         if ( !empty( $post_data ) ) {
             foreach ( $post_data as $data ) {
-                $data_to_export[] = array(
+                $data_to_export[] = [
                     'group_id'    => 'wpuf-post-data',
                     'group_label' => __( 'WPUF Post Data', 'wp-user-frontend' ),
-                    'item_id'     => "wpuf-posts-" . $data['id'],
-                    'data'        => array(
-                        array(
-                            'name'  => __('Post ID', 'wp-user-frontend'),
-                            'value' => $data['id']
-                        ),
-                        array(
-                            'name'  => __('Post Title', 'wp-user-frontend'),
-                            'value' => $data['title']
-                        ),
-                        array(
-                            'name'  => __('Post URL', 'wp-user-frontend'),
-                            'value' => $data['url']
-                        ),
-                        array(
-                            'name'  => __('Post Date', 'wp-user-frontend'),
-                            'value' => $data['date']
-                        ),
-                    ),
-                );
+                    'item_id'     => 'wpuf-posts-' . $data['id'],
+                    'data'        => [
+                        [
+                            'name'  => __( 'Post ID', 'wp-user-frontend' ),
+                            'value' => $data['id'],
+                        ],
+                        [
+                            'name'  => __( 'Post Title', 'wp-user-frontend' ),
+                            'value' => $data['title'],
+                        ],
+                        [
+                            'name'  => __( 'Post URL', 'wp-user-frontend' ),
+                            'value' => $data['url'],
+                        ],
+                        [
+                            'name'  => __( 'Post Date', 'wp-user-frontend' ),
+                            'value' => $data['date'],
+                        ],
+                    ],
+                ];
             }
         }
 
-        $response = array(
+        $response = [
             'data' => $data_to_export,
-            'done' => true
-        );
+            'done' => true,
+        ];
 
         return $response;
     }
@@ -454,45 +444,43 @@ Class WPUF_Privacy {
      * Generate Subscription data to export
      *
      * @param $email_address
-     *
      * @param $page
      *
      * @return array
      */
     public static function get_subscription_data( $email_address, $page ) {
-
         $wpuf_user = self::get_user( $email_address );
 
-        if ( ! ( $wpuf_user instanceof WPUF_User ) ) {
-            return array();
+        if ( !( $wpuf_user instanceof WPUF_User ) ) {
+            return [];
         }
 
         $sub_id = $wpuf_user->subscription()->current_pack_id();
 
         if ( !$sub_id ) {
-            return array();
+            return [];
         }
 
         $pack = $wpuf_user->subscription()->current_pack();
 
-        $subscription_data = array(
-            array(
+        $subscription_data = [
+            [
                 'name'  => __( 'Pack ID', 'wp-user-frontend' ),
-                'value' => $pack['pack_id']
-            ),
-            array(
+                'value' => $pack['pack_id'],
+            ],
+            [
                 'name'  => __( 'Pack Title', 'wp-user-frontend' ),
                 'value' => get_the_title( $pack['pack_id'] ),
-            ),
-            array(
+            ],
+            [
                 'name'  => __( 'Expiry', 'wp-user-frontend' ),
-                'value' => $pack['expire']
-            ),
-            array(
+                'value' => $pack['expire'],
+            ],
+            [
                 'name'  => __( 'Recurring', 'wp-user-frontend' ),
-                'value' => $pack['recurring']
-            ),
-        );
+                'value' => $pack['recurring'],
+            ],
+        ];
 
         return apply_filters( 'wpuf_privacy_subscription_export_data', $subscription_data, $email_address, $page );
     }
@@ -501,69 +489,61 @@ Class WPUF_Privacy {
      * Generate Transaction data to export
      *
      * @param $wpuf_user
-     *
      * @param $page
      *
      * @return array
      */
     public static function get_transaction_data( $email_address, $page ) {
-
         $wpuf_user = self::get_user( $email_address );
 
-        if ( ! ( $wpuf_user instanceof WPUF_User ) ) {
-            return array();
+        if ( !( $wpuf_user instanceof WPUF_User ) ) {
+            return [];
         }
 
         $txn_data = $wpuf_user->get_transaction_data( true );
 
         if ( !empty( $txn_data ) ) {
-
             return $txn_data;
         }
-
     }
 
     /**
      * Generate Post data to export
      *
      * @param $email_address
-     *
      * @param $page
      *
      * @return array
      */
     public static function get_post_data( $email_address, $page ) {
-
         $wpuf_user = self::get_user( $email_address );
 
-        if ( ! ( $wpuf_user instanceof WPUF_User ) ) {
-            return array();
+        if ( !( $wpuf_user instanceof WPUF_User ) ) {
+            return [];
         }
 
-        $post_data = array();
+        $post_data     = [];
         $allowed_posts = wpuf_get_option( 'export_post_types', 'wpuf_privacy', 'post' );
 
         if ( !empty( $allowed_posts ) ) {
-                $posts = get_posts( apply_filters( 'wpuf_privacy_post_export_query_args',  array(
+            $posts = get_posts( apply_filters( 'wpuf_privacy_post_export_query_args', [
                     'author'      => $wpuf_user->id,
                     'post_type'   => $allowed_posts,
                     'numberposts' => '-1',
                     'order'       => 'ASC',
-                ), $email_address, $page ) );
+                ], $email_address, $page ) );
 
-                foreach ( $posts as $post ) {
-                    $data = array();
-                    $data['id']    = $post->ID;
-                    $data['title'] = $post->post_title;
-                    $data['url']   = $post->guid;
-                    $data['date']  = $post->post_date;
+            foreach ( $posts as $post ) {
+                $data          = [];
+                $data['id']    = $post->ID;
+                $data['title'] = $post->post_title;
+                $data['url']   = $post->guid;
+                $data['date']  = $post->post_date;
 
-                    $post_data[] = $data;
-                }
+                $post_data[] = $data;
+            }
         }
 
         return apply_filters( 'wpuf_privacy_export_post_data', $post_data, $email_address, $page );
-
     }
-
 }

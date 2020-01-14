@@ -6,10 +6,10 @@
 class WPUF_Admin_Promotion {
 
     public function __construct() {
-        add_action( 'admin_notices', array( $this, 'promotional_offer' ) );
-        add_action( 'admin_notices' , array( $this, 'wpuf_review_notice_message' ) );
-        add_action( 'wp_ajax_wpuf-dismiss-promotional-offer-notice', array( $this, 'dismiss_promotional_offer' ) );
-        add_action( 'wp_ajax_wpuf-dismiss-review-notice', array( $this, 'dismiss_review_notice' ) );
+        add_action( 'admin_notices', [ $this, 'promotional_offer' ] );
+        add_action( 'admin_notices', [ $this, 'wpuf_review_notice_message' ] );
+        add_action( 'wp_ajax_wpuf-dismiss-promotional-offer-notice', [ $this, 'dismiss_promotional_offer' ] );
+        add_action( 'wp_ajax_wpuf-dismiss-review-notice', [ $this, 'dismiss_review_notice' ] );
     }
 
     /**
@@ -20,7 +20,7 @@ class WPUF_Admin_Promotion {
      * @return void
      */
     public function promotional_offer() {
-        if ( ! current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             return;
         }
 
@@ -42,7 +42,7 @@ class WPUF_Admin_Promotion {
             ?>
             <div class="notice notice-success is-dismissible" id="wpuf-bfcm-notice">
                 <div class="logo">
-                    <img src="<?php echo WPUF_ASSET_URI . '/images/promo-logo.png' ?>" alt="WPUF">
+                    <img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/promo-logo.png'; ?>" alt="WPUF">
                 </div>
                 <div class="content">
                     <p>Biggest Sale of the year on this</p>
@@ -52,7 +52,7 @@ class WPUF_Admin_Promotion {
                 </div>
                 <div class="call-to-action">
                     <a target="_blank" href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_campaign=black_friday_&_cyber_monday&utm_medium=banner&utm_source=plugin_dashboard">
-                        <img src="<?php echo WPUF_ASSET_URI . '/images/promo-btn.png' ?>" alt="Btn">
+                        <img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/promo-btn.png'; ?>" alt="Btn">
                     </a>
                     <p>
                         <span class="highlight-green2">Coupon: </span>
@@ -147,7 +147,8 @@ class WPUF_Admin_Promotion {
                     e.preventDefault();
 
                     wp.ajax.post('wpuf-dismiss-promotional-offer-notice', {
-                        dismissed: true
+                        dismissed: true,
+                        _wpnonce: '<?php echo esc_attr ( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
                     });
                 });
             </script>
@@ -156,14 +157,13 @@ class WPUF_Admin_Promotion {
     }
 
     /**
-     *
      * @since 3.1.0
      *
      * @return void
      **/
     public function wpuf_review_notice_message() {
         // Show only to Admins
-        if ( ! current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             return;
         }
 
@@ -178,21 +178,19 @@ class WPUF_Admin_Promotion {
 
         if ( time() - $activation_time < 1296000 ) {
             return;
-        }
-
-        ?>
+        } ?>
             <div id="wpuf-review-notice" class="wpuf-review-notice">
                 <div class="wpuf-review-thumbnail">
-                    <img src="<?php echo WPUF_ASSET_URI . '/images/icon-128x128.png' ?>" alt="">
+                    <img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="">
                 </div>
                 <div class="wpuf-review-text">
-                        <h3><?php _e( 'Enjoying <strong>WP User Frontend</strong>?', 'wp-user-frontend' ) ?></h3>
-                        <p><?php _e( 'Hope that you had a neat and snappy experience with the tool. Would you please show us a little love by rating us in the <a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><strong>WordPress.org</strong></a>?', 'wp-user-frontend' ) ?></p>
+                        <h3><?php esc_html_e( 'Enjoying <strong>WP User Frontend</strong>?', 'wp-user-frontend' ); ?></h3>
+                        <p><?php esc_html_e( 'Hope that you had a neat and snappy experience with the tool. Would you please show us a little love by rating us in the <a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><strong>WordPress.org</strong></a>?', 'wp-user-frontend' ); ?></p>
 
                     <ul class="wpuf-review-ul">
-                        <li><a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><span class="dashicons dashicons-external"></span><?php _e( 'Sure! I\'d love to!', 'wp-user-frontend' ) ?></a></li>
-                        <li><a href="#" class="notice-dismiss"><span class="dashicons dashicons-smiley"></span><?php _e( 'I\'ve already left a review', 'wp-user-frontend' ) ?></a></li>
-                        <li><a href="#" class="notice-dismiss"><span class="dashicons dashicons-dismiss"></span><?php _e( 'Never show again', 'wp-user-frontend' ) ?></a></li>
+                        <li><a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Sure! I\'d love to!', 'wp-user-frontend' ); ?></a></li>
+                        <li><a href="#" class="notice-dismiss"><span class="dashicons dashicons-smiley"></span><?php esc_html_e( 'I\'ve already left a review', 'wp-user-frontend' ); ?></a></li>
+                        <li><a href="#" class="notice-dismiss"><span class="dashicons dashicons-dismiss"></span><?php esc_html_e( 'Never show again', 'wp-user-frontend' ); ?></a></li>
                      </ul>
                 </div>
             </div>
@@ -272,37 +270,53 @@ class WPUF_Admin_Promotion {
                     jQuery("#wpuf-review-notice").hide();
 
                     wp.ajax.post('wpuf-dismiss-review-notice', {
-                        dismissed: true
+                        dismissed: true,
+                        _wpnonce: '<?php echo esc_attr ( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
                     });
                 });
             </script>
         <?php
-
     }
 
-   /**
-    * Dismiss promotion notice
-    *
-    * @since  2.5
-    *
-    * @return void
-    */
-   public function dismiss_promotional_offer() {
-        if ( ! empty( $_POST['dismissed'] ) ) {
+    /**
+     * Dismiss promotion notice
+     *
+     * @since  2.5
+     *
+     * @return void
+     */
+    public function dismiss_promotional_offer() {
+        if( empty( $_POST['_wpnonce'] ) ) {
+             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( !empty( $_POST['dismissed'] ) ) {
             $offer_key = 'wpuf_promotional_offer_notice';
             update_option( $offer_key, 'hide' );
         }
     }
 
     /**
-    * Dismiss review notice
-    *
-    * @since  3.1.0
-    *
-    * @return void
-    **/
-   public function dismiss_review_notice() {
-        if ( ! empty( $_POST['dismissed'] ) ) {
+     * Dismiss review notice
+     *
+     * @since  3.1.0
+     *
+     * @return void
+     **/
+    public function dismiss_review_notice() {
+        if( empty( $_POST['_wpnonce'] ) ) {
+             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( !empty( $_POST['dismissed'] ) ) {
             update_option( 'wpuf_review_notice_dismiss', 'yes' );
         }
     }

@@ -11,3 +11,5 @@ build
 secret.json
 log.txt
 npm-debug.log
+vendor
+phpcs-report.txt

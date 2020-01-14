@@ -14,7 +14,7 @@ class WPUF_Admin_Form_Free {
      * @return void
      */
     public function __construct() {
-        add_action( 'wpuf-form-builder-init-type-wpuf_forms', array( $this, 'init_free' ) );
+        add_action( 'wpuf-form-builder-init-type-wpuf_forms', [ $this, 'init_free' ] );
     }
 
     /**

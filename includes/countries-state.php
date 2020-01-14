@@ -3,12 +3,10 @@
 /* CountryState class */
 
 class CountryState {
-
     /**
-    An array of countries, iso_2_code, iso_3_code, iso_num_code, iso_something code :-), states/counties, international dial code.
-    It can be used to quickly generate web forms.  You can do a split on the counties/states string.
-
-    */
+     * An array of countries, iso_2_code, iso_3_code, iso_num_code, iso_something code :-), states/counties, international dial code.
+     * It can be used to quickly generate web forms.  You can do a split on the counties/states string.
+     */
     private $sorted_countries = [
         ['Afghanistan', 'AF', 'AFG', '004', 'ISO 3166-2:AF', 'Badakhshan|Badghis|Baghlan|Balkh|Bamian|Farah|Faryab|Ghazni|Ghowr|Helmand|Herat|Jowzjan|Kabol|Kandahar|Kapisa|Konar|Kondoz|Laghman|Lowgar|Nangarhar|Nimruz|Oruzgan|Paktia|Paktika|Parvan|Samangan|Sar-e Pol|Takhar|Vardak|Zabol', '93'],
         ['Aland Islands', 'AX', 'ALA', '248', 'ISO 3166-2:AX', 'Aland Islands', ''],
@@ -258,95 +256,108 @@ class CountryState {
         ['Western Sahara', 'EH', 'ESH', '732', 'ISO 3166-2:EH', 'Western Sahara', '-'],
         ['Yemen', 'YE', 'YEM', '887', 'ISO 3166-2:YE', "'Adan|'Ataq|Abyan|Al Bayda'|Al Hudaydah|Al Jawf|Al Mahrah|Al Mahwit|Dhamar|Hadhramawt|Hajjah|Ibb|Lahij|Ma'rib|Sa'dah|San'a'|Ta'izz", '967'],
         ['Zambia', 'ZM', 'ZMB', '894', 'ISO 3166-2:ZM', 'Central|Copperbelt|Eastern|Luapula|Lusaka|North-Western|Northern|Southern|Western', '260'],
-        ['Zimbabwe', 'ZW', 'ZWE', '716', 'ISO 3166-2:ZW', 'Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Mashonaland West|Masvingo|Matabeleland North|Matabeleland South|Midlands', '263']
+        ['Zimbabwe', 'ZW', 'ZWE', '716', 'ISO 3166-2:ZW', 'Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Mashonaland West|Masvingo|Matabeleland North|Matabeleland South|Midlands', '263'],
     ];
 
+    // returns a list of all countries
+    public function countries() {
+        $list  = [];
+        $list2 = [];
 
-    # returns a list of all countries
-    public function countries(){
-        $list = array(); $list2 = array();
-        foreach($this->sorted_countries as $rarray){
-            array_push($list, $rarray[0]);
-            array_push($list2, $rarray[1]);
+        foreach ( $this->sorted_countries as $rarray ) {
+            array_push( $list, $rarray[0] );
+            array_push( $list2, $rarray[1] );
         }
 
-        return array_combine( $list2, $list) ;
+        return array_combine( $list2, $list );
     }
 
-    # returns a list of all states
-    public function states(){
-        $list = array();
-        foreach($this->sorted_countries as $rarray){
-            $t = explode("|", $rarray[5]);
-            foreach($t as $m){
-                array_push($list, $m);
+    // returns a list of all states
+    public function states() {
+        $list = [];
+
+        foreach ( $this->sorted_countries as $rarray ) {
+            $t = explode( '|', $rarray[5] );
+
+            foreach ( $t as $m ) {
+                array_push( $list, $m );
             }
         }
-        sort($list);
+        sort( $list );
+
         return $list;
     }
 
-    # getStates accepts a name, iso_2_code, iso_3_code, iso_num_code or iso_something_code of a country
-    public function getStates($country = null){
-        if(!empty($country) && (is_string($country) || is_numeric($country))){
-            $list = array(); $list2 = array();
-            $country = strtoupper($country);
-            foreach($this->sorted_countries as $rarray){
-                if((is_string($country) && ((strlen($country) > 3 && strtolower($rarray[0]) == strtolower($country)) || (strlen($country) == 2 && strtoupper($rarray[1]) == $country) || (strlen($country) == 3 && strtoupper($rarray[2]) == $country) || (strlen($country) > 3 && strtoupper(str_replace(" ", "", $rarray[4])) == str_replace(" ", "", $country)))) || (is_numeric($country) && $rarray[3] == $country)){
-                    $t = explode("|", $rarray[5]);
-                    for($i=0; $i<sizeof($t); $i++){
-                        array_push($list, $t[$i]);
-                        $string = str_replace(' ', '', $t[$i]);
-                        array_push($list2, strtolower($string));
+    // getStates accepts a name, iso_2_code, iso_3_code, iso_num_code or iso_something_code of a country
+    public function getStates( $country = null ) {
+        if ( !empty( $country ) && ( is_string( $country ) || is_numeric( $country ) ) ) {
+            $list    = [];
+            $list2   = [];
+            $country = strtoupper( $country );
+
+            foreach ( $this->sorted_countries as $rarray ) {
+                if ( ( is_string( $country ) && ( ( strlen( $country ) > 3 && strtolower( $rarray[0] ) == strtolower( $country ) ) || ( strlen( $country ) == 2 && strtoupper( $rarray[1] ) == $country ) || ( strlen( $country ) == 3 && strtoupper( $rarray[2] ) == $country ) || ( strlen( $country ) > 3 && strtoupper( str_replace( ' ', '', $rarray[4] ) ) == str_replace( ' ', '', $country ) ) ) ) || ( is_numeric( $country ) && $rarray[3] == $country ) ) {
+                    $t = explode( '|', $rarray[5] );
+
+                    for ( $i=0; $i < sizeof( $t ); $i++ ) {
+                        array_push( $list, $t[$i] );
+                        $string = str_replace( ' ', '', $t[$i] );
+                        array_push( $list2, strtolower( $string ) );
                     }
                 }
             }
-            return array_combine( $list2, $list) ;
+
+            return array_combine( $list2, $list );
         } else {
-            return array();
+            return [];
         }
     }
 
-    # getCountry accepts a name, iso_2_code, iso_3_code, iso_num_code or iso_something_code of a country
-    public function getCountry($country = null){
-        if(!empty($country) && (is_string($country) || is_numeric($country))){
-            $list = array();
-            $country = strtoupper($country);
-            foreach($this->sorted_countries as $rarray){
-                if((is_string($country) && ((strlen($country) > 3 && strtolower($rarray[0]) == strtolower($country)) || (strlen($country) == 2 && strtoupper($rarray[1]) == $country) || (strlen($country) == 3 && strtoupper($rarray[2]) == $country) || (strlen($country) > 3 && strtoupper(str_replace(" ", "", $rarray[4])) == str_replace(" ", "", $country)))) || (is_numeric($country) && $rarray[3] == $country)){
-                    $last = sizeof($rarray) - 1;
-                    $list = array_combine(array("name", "iso2", "iso3", "iso_num", "something_code", "dial_code", "states"), array($rarray[0], $rarray[1], $rarray[2], $rarray[3], $rarray[4], $rarray[$last], $this->getStates($rarray[1])));
+    // getCountry accepts a name, iso_2_code, iso_3_code, iso_num_code or iso_something_code of a country
+    public function getCountry( $country = null ) {
+        if ( !empty( $country ) && ( is_string( $country ) || is_numeric( $country ) ) ) {
+            $list    = [];
+            $country = strtoupper( $country );
+
+            foreach ( $this->sorted_countries as $rarray ) {
+                if ( ( is_string( $country ) && ( ( strlen( $country ) > 3 && strtolower( $rarray[0] ) == strtolower( $country ) ) || ( strlen( $country ) == 2 && strtoupper( $rarray[1] ) == $country ) || ( strlen( $country ) == 3 && strtoupper( $rarray[2] ) == $country ) || ( strlen( $country ) > 3 && strtoupper( str_replace( ' ', '', $rarray[4] ) ) == str_replace( ' ', '', $country ) ) ) ) || ( is_numeric( $country ) && $rarray[3] == $country ) ) {
+                    $last = sizeof( $rarray ) - 1;
+                    $list = array_combine( ['name', 'iso2', 'iso3', 'iso_num', 'something_code', 'dial_code', 'states'], [$rarray[0], $rarray[1], $rarray[2], $rarray[3], $rarray[4], $rarray[$last], $this->getStates( $rarray[1] )] );
                 }
             }
-            sort($list);
+            sort( $list );
+
             return $list;
         } else {
-            return array();
+            return [];
         }
     }
 
-    # findState accepts only name of state
-    public function findState($state = null){
-        if(!empty($state) && is_string($state)){
-            $list = array();
-            $state = strtolower($state);
-            foreach($this->sorted_countries as $rarray){
-                if(preg_match("@\b{$state}\b@", strtolower($rarray[5]))){
+    // findState accepts only name of state
+    public function findState( $state = null ) {
+        if ( !empty( $state ) && is_string( $state ) ) {
+            $list  = [];
+            $state = strtolower( $state );
+
+            foreach ( $this->sorted_countries as $rarray ) {
+                if ( preg_match( "@\b{$state}\b@", strtolower( $rarray[5] ) ) ) {
                     //array_push($list, $rarray[0]);
-                    $last = sizeof($rarray) - 1;
-                    array_push($list, array_combine(array("country", "iso2", "iso3", "iso_num", "something_code", "dial_code"), array($rarray[0], $rarray[1], $rarray[2], $rarray[3], $rarray[4], $rarray[$last])));
+                    $last = sizeof( $rarray ) - 1;
+                    array_push( $list, array_combine( ['country', 'iso2', 'iso3', 'iso_num', 'something_code', 'dial_code'], [$rarray[0], $rarray[1], $rarray[2], $rarray[3], $rarray[4], $rarray[$last]] ) );
                 }
             }
-            sort($list);
+            sort( $list );
+
             return $list;
         } else {
-            return array();
+            return [];
         }
     }
 
-    public function getStateName( $state , $country ){
+    public function getStateName( $state, $country ) {
         $states = $this->getStates( $country );
-        foreach ($states as $key => $value) {
+
+        foreach ( $states as $key => $value ) {
             if ( $key == $state || $value == $state ) {
                 return $value;
             }
@@ -354,15 +365,17 @@ class CountryState {
     }
 
     public function isCountry( $state ) {
-        $state = $this->getCountry($state);
-        if ( !empty($state) ) {
+        $state = $this->getCountry( $state );
+
+        if ( !empty( $state ) ) {
             return true;
         }
+
         return false;
     }
 
     public function getCountryCode( $country = null ) {
-        foreach($this->sorted_countries as $rarray){
+        foreach ( $this->sorted_countries as $rarray ) {
             if ( $country == $rarray[0] ) {
                 return $rarray[1];
             }

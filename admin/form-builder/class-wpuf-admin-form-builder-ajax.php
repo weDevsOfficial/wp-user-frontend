@@ -12,7 +12,7 @@ class WPUF_Admin_Form_Builder_Ajax {
      * @return void
      */
     public function __construct() {
-        add_action( 'wp_ajax_wpuf_form_builder_save_form', array( $this, 'save_form' ) );
+        add_action( 'wp_ajax_wpuf_form_builder_save_form', [ $this, 'save_form' ] );
     }
 
     /**
@@ -23,9 +23,15 @@ class WPUF_Admin_Form_Builder_Ajax {
      * @return void
      */
     public function save_form() {
-        parse_str( $_POST['form_data'], $form_data );
+        $post_data =  wp_unslash($_POST);
 
-        if ( ! wp_verify_nonce( $form_data['wpuf_form_builder_nonce'], 'wpuf_form_builder_save_form' ) ) {
+        if ( isset( $post_data['form_data'] ) ) {
+            parse_str( wp_unslash( $post_data['form_data'] ),  $form_data );
+        } else {
+            wp_send_json_error( __( 'form data is missing', 'wp-user-frontend'));
+        }
+
+        if ( !wp_verify_nonce( $form_data['wpuf_form_builder_nonce'], 'wpuf_form_builder_save_form' ) ) {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
@@ -33,19 +39,20 @@ class WPUF_Admin_Form_Builder_Ajax {
             wp_send_json_error( __( 'Invalid form id', 'wp-user-frontend' ) );
         }
 
-        $form_fields   = isset( $_POST['form_fields'] ) ? $_POST['form_fields'] : '';
-        $notifications = isset( $_POST['notifications'] ) ? $_POST['notifications'] : '';
-        $settings      = array();
-        $integrations  = array();
+        $form_fields   = isset( $post_data['form_fields'] ) ? sanitize_text_field( wp_unslash( $post_data['form_fields'] ) ) : '';
+        $notifications = isset( $post_data['notifications'] ) ? sanitize_text_field( wp_unslash( $post_data['notifications'] ) ) : '';
+        $settings      = [];
+        $integrations  = [];
 
-        if ( isset( $_POST['settings'] ) ) {
-            $settings = (array) json_decode( wp_unslash( $_POST['settings'] ) );
+        if ( isset( $post_data['settings'] ) ) {
+            $settings_data = array_map( 'sanitize_text_field', wp_unslash( $post_data['settings'] ) );
+            $settings = (array) json_decode( $settings_data );
         } else {
-            $settings = isset( $form_data['wpuf_settings'] ) ? $form_data['wpuf_settings'] : array();
+            $settings = isset( $form_data['wpuf_settings'] ) ? $form_data['wpuf_settings'] : [];
         }
 
-        if ( isset( $_POST['integrations'] ) ) {
-            $integrations = (array) json_decode( wp_unslash( $_POST['integrations'] ) );
+        if ( isset( $post_data['integrations'] ) ) {
+            $integrations = (array) json_decode( sanitize_text_field( wp_unslash( $post_data['integrations'] ) ) );
         }
 
         $form_fields   = wp_unslash( $form_fields );
@@ -54,21 +61,20 @@ class WPUF_Admin_Form_Builder_Ajax {
         $form_fields   = json_decode( $form_fields, true );
         $notifications = json_decode( $notifications, true );
 
-        $data = array(
+        $data = [
             'form_id'           => absint( $form_data['wpuf_form_id'] ),
             'post_title'        => sanitize_text_field( $form_data['post_title'] ),
             'form_fields'       => $form_fields,
             'form_settings'     => $settings,
             'form_settings_key' => isset( $form_data['form_settings_key'] ) ? $form_data['form_settings_key'] : '',
             'notifications'     => $notifications,
-            'integrations'      => $integrations
-        );
+            'integrations'      => $integrations,
+        ];
 
         $form_fields = WPUF_Admin_Form_Builder::save_form( $data );
 
-        wp_send_json_success( array( 'form_fields' => $form_fields, 'form_settings' => $settings ) );
+        wp_send_json_success( [ 'form_fields' => $form_fields, 'form_settings' => $settings ] );
     }
-
 }
 
 new WPUF_Admin_Form_Builder_Ajax();

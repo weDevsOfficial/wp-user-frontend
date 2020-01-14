@@ -10,29 +10,29 @@
 class WPUF_Admin_Form_Template {
 
     public function __construct() {
-        add_action( 'admin_enqueue_scripts', array($this, 'enqueue_scripts') );
+        add_action( 'admin_enqueue_scripts', [$this, 'enqueue_scripts'] );
 
         // post form templates
-        add_action( 'admin_footer', array( $this, 'render_post_form_templates' ) );
-        add_filter( 'admin_action_wpuf_post_form_template', array( $this, 'create_post_form_from_template' ) );
+        add_action( 'admin_footer', [ $this, 'render_post_form_templates' ] );
+        add_filter( 'admin_action_wpuf_post_form_template', [ $this, 'create_post_form_from_template' ] );
 
         // form settings
-        add_action( 'wpuf_form_setting', array( $this, 'post_form_settings' ), 8, 2 );
+        add_action( 'wpuf_form_setting', [ $this, 'post_form_settings' ], 8, 2 );
 
         // frontend insert/update
-        add_action( 'wpuf_add_post_after_insert', array( $this, 'post_form_submission' ), 10, 3 );
-        add_action( 'wpuf_edit_post_after_update', array( $this, 'post_form_submission' ), 10, 3 );
+        add_action( 'wpuf_add_post_after_insert', [ $this, 'post_form_submission' ], 10, 3 );
+        add_action( 'wpuf_edit_post_after_update', [ $this, 'post_form_submission' ], 10, 3 );
     }
 
     /**
      * Should a form displayed or sciprt enqueued?
      *
-     * @return boolean
+     * @return bool
      */
     public function should_display() {
         $current_screen = get_current_screen();
 
-        if ( in_array( $current_screen->id, array( 'user-frontend_page_wpuf-post-forms' ) ) ) {
+        if ( in_array( $current_screen->id, [ 'user-frontend_page_wpuf-post-forms' ] ) ) {
             return true;
         }
 
@@ -40,7 +40,7 @@ class WPUF_Admin_Form_Template {
     }
 
     public function enqueue_scripts() {
-        if ( ! $this->should_display() ) {
+        if ( !$this->should_display() ) {
             return;
         }
 
@@ -53,39 +53,39 @@ class WPUF_Admin_Form_Template {
      * @return void
      */
     public function render_post_form_templates() {
-        if ( ! $this->should_display() ) {
+        if ( !$this->should_display() ) {
             return;
         }
 
         $registry       = wpuf_get_post_form_templates();
         $blank_form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
         $action_name    = 'wpuf_post_form_template';
-        $footer_help    = sprintf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wp-user-frontend'), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' );
+        $footer_help    = sprintf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wp-user-frontend' ), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' );
 
-        if ( ! $registry ) {
+        if ( !$registry ) {
             return;
         }
 
-        include dirname( __FILE__ ) . '/html/modal.php';
+        include __DIR__ . '/html/modal.php';
     }
 
     /**
      * Get a template object by name from the registry
      *
-     * @param  string $template
+     * @param string $template
      *
-     * @return boolean|WPUF_Post_Form_Template
+     * @return bool|WPUF_Post_Form_Template
      */
     public function get_template_object( $template ) {
         $registry = wpuf_get_post_form_templates();
 
-        if ( ! array_key_exists( $template, $registry ) ) {
+        if ( !array_key_exists( $template, $registry ) ) {
             return false;
         }
 
         $template_object = $registry[ $template ];
 
-        if ( ! is_a( $template_object, 'WPUF_Post_Form_Template') ) {
+        if ( !is_a( $template_object, 'WPUF_Post_Form_Template' ) ) {
             return false;
         }
 
@@ -102,9 +102,9 @@ class WPUF_Admin_Form_Template {
     public function create_post_form_from_template() {
         check_admin_referer( 'wpuf_create_from_template' );
 
-        $template_name = isset( $_GET['template'] ) ? sanitize_text_field( $_GET['template'] ) : '';
+        $template_name = isset( $_GET['template'] ) ? sanitize_text_field( wp_unslash( $_GET['template'] ) ) : '';
 
-        if ( ! $template_name ) {
+        if ( !$template_name ) {
             return;
         }
 
@@ -116,12 +116,12 @@ class WPUF_Admin_Form_Template {
 
         $current_user = get_current_user_id();
 
-        $form_post_data = array(
+        $form_post_data = [
             'post_title'  => $template_object->get_title(),
             'post_type'   => 'wpuf_forms',
             'post_status' => 'publish',
-            'post_author' => $current_user
-        );
+            'post_author' => $current_user,
+        ];
 
         $form_id = wp_insert_post( $form_post_data );
 
@@ -135,18 +135,18 @@ class WPUF_Admin_Form_Template {
 
         $form_fields = $template_object->get_form_fields();
 
-        if ( ! $form_fields ) {
+        if ( !$form_fields ) {
             return;
         }
 
-        foreach ($form_fields as $menu_order => $field) {
-            wp_insert_post( array(
+        foreach ( $form_fields as $menu_order => $field ) {
+            wp_insert_post( [
                 'post_type'    => 'wpuf_input',
                 'post_status'  => 'publish',
                 'post_content' => maybe_serialize( $field ),
                 'post_parent'  => $form_id,
-                'menu_order'   => $menu_order
-            ) );
+                'menu_order'   => $menu_order,
+            ] );
         }
 
         wp_redirect( admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $form_id ) );
@@ -156,29 +156,27 @@ class WPUF_Admin_Form_Template {
     /**
      * Add settings field to override a form template
      *
-     * @param  array    $form_settings
-     * @param  object   $post
+     * @param array  $form_settings
+     * @param object $post
      *
      * @return void
      */
     public function post_form_settings( $form_settings, $post ) {
         $registry = wpuf_get_post_form_templates();
-        $selected = isset( $form_settings['form_template'] ) ? $form_settings['form_template'] : '';
-        ?>
+        $selected = isset( $form_settings['form_template'] ) ? $form_settings['form_template'] : ''; ?>
         <tr>
-            <th><?php _e( 'Form Template', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Form Template', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[form_template]">
-                    <option value=""><?php echo __( '&mdash; No Template &mdash;', 'wp-user-frontend' ); ?></option>
+                    <option value=""><?php esc_html_e( '&mdash; No Template &mdash;', 'wp-user-frontend' ); ?></option>
                     <?php
                     if ( $registry ) {
-                        foreach ($registry as $key => $template) {
-                            printf( '<option value="%s"%s>%s</option>' . "\n", $key, selected( $selected, $key, false ), $template->get_title() );
+                        foreach ( $registry as $key => $template ) {
+                            printf( '<option value="%s"%s>%s</option>' . "\n", esc_attr( $key ), esc_attr( selected( $selected, $key, false ) ), esc_html( $template->get_title() ) );
                         }
-                    }
-                    ?>
+                    } ?>
                 </select>
-                <p class="description"><?php _e( 'If selected a form template, it will try to execute that integration options when new post created and updated.', 'wp-user-frontend' ); ?></p>
+                <p class="description"><?php esc_html_e( 'If selected a form template, it will try to execute that integration options when new post created and updated.', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
         <?php
@@ -187,9 +185,9 @@ class WPUF_Admin_Form_Template {
     /**
      * Call the integration functions on form submission/update
      *
-     * @param  int $post_id
-     * @param  int $form_id
-     * @param  array $form_settings
+     * @param int   $post_id
+     * @param int   $form_id
+     * @param array $form_settings
      *
      * @return void
      */

@@ -17,70 +17,70 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
         <!-- Added Payment Settings -->
 
         <tr>
-            <th><?php _e( 'Payment Options', 'wp-user-frontend' ); ?></th>
+            <th><?php esc_html_e( 'Payment Options', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[payment_options]" value="false">
                     <input type="checkbox" name="wpuf_settings[payment_options]" value="true"<?php checked( $payment_options, 'true' ); ?> />
-                    <?php _e( 'Enable Payments', 'wp-user-frontend' ) ?>
+                    <?php esc_html_e( 'Enable Payments', 'wp-user-frontend' ); ?>
                 </label>
-                <p class="description"><?php _e( 'Check to enable Payments for this form.', 'wp-user-frontend' ); ?></p>
+                <p class="description"><?php esc_html_e( 'Check to enable Payments for this form.', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
 
         <tr class="show-if-payment">
-            <th>&mdash; <?php _e( 'Force Pack', 'wp-user-frontend' ); ?></th>
+            <th>&mdash; <?php esc_html_e( 'Force Pack', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[force_pack_purchase]" value="false">
                     <input type="checkbox" name="wpuf_settings[force_pack_purchase]" value="true"<?php checked( $force_pack_purchase, 'true' ); ?> />
-                    <?php _e( 'Force subscription pack', 'wp-user-frontend' ) ?>
+                    <?php esc_html_e( 'Force subscription pack', 'wp-user-frontend' ); ?>
                 </label>
-                <p class="description"><?php _e( 'Force users to purchase and use subscription pack.', 'wp-user-frontend' ); ?></p>
+                <p class="description"><?php esc_html_e( 'Force users to purchase and use subscription pack.', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
 
         <tr class="show-if-payment show-if-force-pack">
-            <th>&mdash; &mdash; <?php _e( 'Fallback to pay per post', 'wp-user-frontend' ); ?></th>
+            <th>&mdash; &mdash; <?php esc_html_e( 'Fallback to pay per post', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[fallback_ppp_enable]" value="false">
                     <input type="checkbox" name="wpuf_settings[fallback_ppp_enable]" value="true"<?php checked( $fallback_ppp_enable, 'true' ); ?> />
-                    <?php _e( 'Fallback pay per post charging', 'wp-user-frontend' ) ?>
+                    <?php esc_html_e( 'Fallback pay per post charging', 'wp-user-frontend' ); ?>
                 </label>
-                <p class="description"><?php _e( 'Fallback to pay per post charging if pack limit exceeds', 'wp-user-frontend' ); ?></p>
+                <p class="description"><?php esc_html_e( 'Fallback to pay per post charging if pack limit exceeds', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
 
         <tr class="show-if-payment show-if-force-pack">
-            <th>&mdash; &mdash; <?php _e( 'Fallback cost', 'wp-user-frontend' ); ?></th>
+            <th>&mdash; &mdash; <?php esc_html_e( 'Fallback cost', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
                     <input type="number" name="wpuf_settings[fallback_ppp_cost]" value="<?php echo esc_attr( $fallback_ppp_cost ); ?>" />
                 </label>
-                <p class="description"><?php _e( 'Cost of pay per post after a subscription pack limit is reached.', 'wp-user-frontend' ); ?></p>
+                <p class="description"><?php esc_html_e( 'Cost of pay per post after a subscription pack limit is reached.', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
 
         <tr class="show-if-payment">
-            <th>&mdash; <?php _e( 'Pay Per Post', 'wp-user-frontend' ); ?></th>
+            <th>&mdash; <?php esc_html_e( 'Pay Per Post', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[enable_pay_per_post]" value="false">
                     <input type="checkbox" name="wpuf_settings[enable_pay_per_post]" value="true"<?php checked( $enable_pay_per_post, 'true' ); ?> />
-                    <?php _e( 'Enable Pay Per Post', 'wp-user-frontend' ) ?>
+                    <?php esc_html_e( 'Enable Pay Per Post', 'wp-user-frontend' ); ?>
                 </label>
-                <p class="description"><?php _e( 'Charge users for posting,', 'wp-user-frontend' ); ?><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/"><?php _e( ' Learn More about Pay Per Post.', 'wp-user-frontend' ); ?></a></p>
+                <p class="description"><?php esc_html_e( 'Charge users for posting,', 'wp-user-frontend' ); ?><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/"><?php esc_html_e( ' Learn More about Pay Per Post.', 'wp-user-frontend' ); ?></a></p>
             </td>
         </tr>
 
         <tr class="show-if-payment show-if-pay-per-post">
-            <th>&mdash; &mdash; <?php _e( 'Cost Settings', 'wp-user-frontend' ); ?></th>
+            <th>&mdash; &mdash; <?php esc_html_e( 'Cost Settings', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
                     <input type="number" name="wpuf_settings[pay_per_post_cost]" value="<?php echo esc_attr( $pay_per_post_cost ); ?>" />
                 </label>
-                <p class="description"><?php _e( 'Amount to be charged per post', 'wp-user-frontend' ); ?></p>
+                <p class="description"><?php esc_html_e( 'Amount to be charged per post', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
         <?php do_action( 'wpuf_form_setting_payment', $form_settings, $post ); ?>

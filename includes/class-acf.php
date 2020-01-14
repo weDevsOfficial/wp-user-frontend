@@ -6,38 +6,39 @@
 class WPUF_ACF_Compatibility {
 
     public $id      = 'acf';
+
     public $title   = 'Advanced Custom Fields';
 
-	function __construct() {
-        add_action( 'admin_notices', array( $this, 'maybe_show_notice' ) );
+    public function __construct() {
+        add_action( 'admin_notices', [ $this, 'maybe_show_notice' ] );
 
-        add_action( 'wp_ajax_wpuf_dismiss_notice_' . $this->id, array( $this, 'dismiss_notice' ) );
-        add_action( 'wp_ajax_wpuf_compatibility_' . $this->id, array( $this, 'maybe_compatible' ) );
-        add_action( 'wp_ajax_wpuf_migrate_' . $this->id, array( $this, 'migrate_cf_data' ) );
-	}
+        add_action( 'wp_ajax_wpuf_dismiss_notice_' . $this->id, [ $this, 'dismiss_notice' ] );
+        add_action( 'wp_ajax_wpuf_compatibility_' . $this->id, [ $this, 'maybe_compatible' ] );
+        add_action( 'wp_ajax_wpuf_migrate_' . $this->id, [ $this, 'migrate_cf_data' ] );
+    }
 
     /**
      * See if ACF plugin exists
      *
-     * @return boolean
+     * @return bool
      */
-	public function plugin_exists() {
-		return class_exists( 'acf' );
-	}
+    public function plugin_exists() {
+        return class_exists( 'acf' );
+    }
 
     /**
      * If the prompt is dismissed
      *
-     * @return boolean
+     * @return bool
      */
     public function is_dismissed() {
         return 'yes' == get_option( 'wpuf_dismiss_notice_' . $this->id );
     }
 
     /**
-     * Check if 
+     * Check if
      *
-     * @return boolean
+     * @return bool
      */
     public function is_compatible() {
         return 'yes' == wpuf_get_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'no' );
@@ -46,7 +47,7 @@ class WPUF_ACF_Compatibility {
     /**
      * Check if
      *
-     * @return boolean
+     * @return bool
      */
     public function is_migrated() {
         return 'yes' == get_option( 'wpuf_migrate_' . $this->id );
@@ -93,15 +94,15 @@ class WPUF_ACF_Compatibility {
 
                     if ( $meta == 'yes' && ( $field_type == 'checkbox' || $field_type == 'multiselect' ) ) {
                         $meta_key = $attr['name'];
-                        
-                        $args = array(
+
+                        $args = [
                             'post_type'   => $post_type,
                             'meta_key'    => '_wpuf_form_id',
-                        );
-                        $posts = get_posts( $args ); 
+                        ];
+                        $posts = get_posts( $args );
 
                         if ( !empty( $posts ) ) {
-                            foreach ($posts as $post) {
+                            foreach ( $posts as $post ) {
                                 $post_id    = $post->ID;
                                 $separator  = '| ';
                                 $meta_value = get_post_meta( $post_id, $meta_key );
@@ -126,16 +127,17 @@ class WPUF_ACF_Compatibility {
     }
 
     /**
-     * Get all post form 
+     * Get all post form
      *
      *@return array
      */
     public function get_post_forms() {
-        $args = array(
+        $args = [
             'post_type'   => 'wpuf_forms',
             'post_status' => 'publish',
-        );
-        return $form_posts = get_posts( $args ); 
+        ];
+
+        return $form_posts = get_posts( $args );
     }
 
     /**
@@ -149,42 +151,40 @@ class WPUF_ACF_Compatibility {
         wp_send_json_success();
     }
 
-	/**
+    /**
      * Show notice if the plugin found
      *
      * @return void
      */
     public function maybe_show_notice() {
-        if ( ! $this->plugin_exists() ) {
+        if ( !$this->plugin_exists() ) {
             return;
         }
 
         if ( $this->is_dismissed() || $this->is_compatible() || $this->is_migrated() || !current_user_can( 'manage_options' ) ) {
             return;
-        }
-
-        ?>
+        } ?>
         <div class="notice notice-info">
-            <p><strong><?php printf( __( '%s Detected', 'wp-user-frontend' ), $this->title ); ?></strong></p>
-            <p><?php printf( __( 'Hey, looks like you have <strong>%s</strong> installed. What do you want to do with WPUF?', 'wp-user-frontend' ), $this->title ); ?></p>
-            <p><i><strong style="color:#46b450;">Compatible: </strong><?php printf( __( 'It will update compatibility option only, so existing custom fields data format will not change.', 'wp-user-frontend' ) ); ?></i></p>
-            <p><i><strong style="color:#46b450;">Compatible & Migrate: </strong><?php printf( __( 'It will update existing custom fields data to ACF format and update compatibility option too.', 'wp-user-frontend' ) ); ?></i></p>
+            <p><strong><?php printf( esc_html( __( '%s Detected', 'wp-user-frontend' ) ), esc_html( $this->title ) ); ?></strong></p>
+            <p><?php printf( wp_kses_post( __( 'Hey, looks like you have <strong>%s</strong> installed. What do you want to do with WPUF?', 'wp-user-frontend' ) ), esc_html( $this->title ) ); ?></p>
+            <p><i><strong style="color:#46b450;">Compatible: </strong><?php printf( esc_html( __( 'It will update compatibility option only, so existing custom fields data format will not change.', 'wp-user-frontend' ) ) ); ?></i></p>
+            <p><i><strong style="color:#46b450;">Compatible & Migrate: </strong><?php printf( esc_html( __( 'It will update existing custom fields data to ACF format and update compatibility option too.', 'wp-user-frontend' ) ) ); ?></i></p>
 
             <p>
-                <a href="#" class="button button-primary" id="wpuf-compatible-<?php echo $this->id ;?>"><?php _e( 'Compatible', 'wp-user-frontend' ); ?></a>
-                <a href="#" class="button button-primary" id="wpuf-migrate-<?php echo $this->id ;?>"><?php _e( 'Compatible & Migrate', 'wp-user-frontend' ); ?></a>
-                <a href="#" class="button" id="wpuf-dismiss-<?php echo $this->id ;?>"><?php _e( 'No Thanks', 'wp-user-frontend' ); ?></a>
+                <a href="#" class="button button-primary" id="wpuf-compatible-<?php echo esc_attr( $this->id ); ?>"><?php esc_html_e( 'Compatible', 'wp-user-frontend' ); ?></a>
+                <a href="#" class="button button-primary" id="wpuf-migrate-<?php echo esc_attr( $this->id ); ?>"><?php esc_html_e( 'Compatible & Migrate', 'wp-user-frontend' ); ?></a>
+                <a href="#" class="button" id="wpuf-dismiss-<?php echo esc_attr( $this->id ); ?>"><?php esc_html_e( 'No Thanks', 'wp-user-frontend' ); ?></a>
             </p>
         </div>
 
         <script type="text/javascript">
             jQuery(function($) {
-                $('.notice').on('click', 'a#wpuf-compatible-<?php echo $this->id ;?>', function(e) {
+                $('.notice').on('click', 'a#wpuf-compatible-<?php echo esc_attr( $this->id ); ?>', function(e) {
                     e.preventDefault();
 
                     var self = $(this);
                     self.addClass('updating-message');
-                    wp.ajax.send('wpuf_compatibility_<?php echo $this->id ;?>', {
+                    wp.ajax.send('wpuf_compatibility_<?php echo esc_attr( $this->id ); ?>', {
                         success: function() {
                             var html = '<p><strong>Compatible Option Updated</strong></p>';
 
@@ -199,16 +199,16 @@ class WPUF_ACF_Compatibility {
 
                         complete: function() {
                             self.removeClass('updating-message');
-                        }                         
+                        }
                     });
                 });
 
-                $('.notice').on('click', 'a#wpuf-migrate-<?php echo $this->id ;?>', function(e) {
+                $('.notice').on('click', 'a#wpuf-migrate-<?php echo esc_attr( $this->id ); ?>', function(e) {
                     e.preventDefault();
 
                     var self = $(this);
                     self.addClass('updating-message');
-                    wp.ajax.send('wpuf_migrate_<?php echo $this->id ;?>', {
+                    wp.ajax.send('wpuf_migrate_<?php echo esc_attr( $this->id ); ?>', {
                         success: function() {
                             var html  = '<p><strong>Compatible option and existing custom fields data updated</strong></p>';
 
@@ -223,20 +223,20 @@ class WPUF_ACF_Compatibility {
 
                         complete: function() {
                             self.removeClass('updating-message');
-                        }                        
+                        }
                     });
                 });
 
-                $('.notice').on('click', '#wpuf-dismiss-<?php echo $this->id ;?>', function(e) {
+                $('.notice').on('click', '#wpuf-dismiss-<?php echo esc_attr( $this->id ); ?>', function(e) {
                     e.preventDefault();
 
                     $(this).closest('.notice').remove();
-                    wp.ajax.send('wpuf_dismiss_notice_<?php echo $this->id ;?>');
+                    wp.ajax.send('wpuf_dismiss_notice_<?php echo esc_attr( $this->id ); ?>');
                 });
 
             });
         </script>
-        
+
         <?php
     }
 }

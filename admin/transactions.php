@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h2><?php _e( 'Transactions', 'wp-user-frontend' ); ?></h2>
+    <h2><?php esc_html_e( 'Transactions', 'wp-user-frontend' ); ?></h2>
 
     <?php
         global $wpdb;

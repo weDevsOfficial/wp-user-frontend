@@ -188,6 +188,13 @@ Check out the <a href="https://wedevs.com/wp-user-frontend-pro/pricing/">full fe
 * [WP Project Manager](https://wedevs.com/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
 * [WooCommerce Conversion Tracking](https://wedevs.com/woocommerce-conversion-tracking/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Conversion+Tracking)
 
+= Privacy Policy =
+WP User Frontend uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
+
+Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure great user experience for all our users.
+
+Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
+
 == Installation ==
 
 After having installed the plugin:
@@ -257,9 +264,9 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
-= v3.1.15 (02 January, 2020) =
+= v3.1.15 (14 January, 2020) =
 * **Fix:** update url validation
-Tweak: Added privacy policy info in setup wizard for admin
+* **Tweak:** Added privacy policy info in setup wizard for admin
 
 = v3.1.14 (13 December, 2019) =
 

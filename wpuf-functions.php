@@ -3179,7 +3179,10 @@ function wpuf_settings_multiselect( $args ) {
     echo wp_kses( $html, [
         'p' =>  [],
         'select' => [
-            'multiple'  =>  []
+            'multiple' =>  [],
+            'class'    => [],
+            'name'     => [],
+            'id'       => [],
         ],
         'option' => [
             'value' => [],

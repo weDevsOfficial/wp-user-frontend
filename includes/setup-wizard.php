@@ -285,8 +285,7 @@ class WPUF_Setup_Wizard {
      */
     public function wpuf_setup_basic() {
         $enable_payment           = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
-        $install_wpuf_pages       = wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' );
-        $share_wpuf_essentials    = wpuf_get_option( 'share_wpuf_essentials', 'wpuf_general', 'on' ); ?>
+        $install_wpuf_pages       = wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' ); ?>
         <h1><?php esc_html_e( 'Basic Setting', 'wp-user-frontend' ); ?></h1>
         <form method="post">
             <table class="form-table">
@@ -308,7 +307,7 @@ class WPUF_Setup_Wizard {
                 <tr>
                     <th scope="row"><label for="share_wpuf_essentials"><?php esc_html_e( 'Share Essentials ', 'wp-user-frontend' ); ?></label></th>
                     <td>
-                        <input type="checkbox" name="share_wpuf_essentials" id="share_wpuf_essentials" class="input-checkbox" value="1" <?php echo ( $share_wpuf_essentials == 'on' ) ? 'checked="checked"' : ''; ?>/>
+                        <input type="checkbox" name="share_wpuf_essentials" id="share_wpuf_essentials" class="input-checkbox" value="1"/>
                      <?php   $share = '<span class="description">
                     Want to help make <b> WP User Frontend </b> even more awesome? Allow WP User Frontend to collect non-sensitive diagnostic data and usage information
                     <a class="wpuf-insights-data-we-collect" href="#">What we collect</a>                </span>

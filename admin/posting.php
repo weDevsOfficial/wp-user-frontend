@@ -118,7 +118,7 @@ class WPUF_Admin_Posting {
         $forms    = get_posts( ['post_type' => 'wpuf_forms', 'numberposts' => '-1'] );
         $selected = get_post_meta( $post->ID, '_wpuf_form_id', true ); ?>
 
-        <input type="hidden" name="wpuf_form_select_nonce" value="<?php echo esc_url( wp_create_nonce( plugin_basename( __FILE__ ) ) ); ?>" />
+        <input type="hidden" name="wpuf_form_select_nonce" value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" />
 
         <select name="wpuf_form_select">
             <option value="">--</option>
@@ -210,7 +210,7 @@ class WPUF_Admin_Posting {
             $msg          = sprintf( __( 'Frontend edit access for this post will be automatically locked after %s, <a id="wpuf_clear_schedule_lock" data="%s" href="#">Clear Lock</a> Or,', 'wp-user-frontend' ), $local_time, $post->ID );
         } ?>
 
-        <input type="hidden" name="wpuf_lock_editing_post_nonce" value="<?php echo esc_url( wp_create_nonce( plugin_basename( __FILE__ ) ) ); ?>" />
+        <input type="hidden" name="wpuf_lock_editing_post_nonce" value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" />
 
         <p><?php echo esc_html( $msg ); ?></p>
 
@@ -331,7 +331,7 @@ class WPUF_Admin_Posting {
             return;
         } ?>
 
-        <input type="hidden" name="wpuf_cf_update" value="<?php echo esc_attr( wp_create_nonce( plugin_basename( __FILE__ ) ) ); ?>" />
+        <input type="hidden" name="wpuf_cf_update" value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" />
         <input type="hidden" name="wpuf_cf_form_id" value="<?php echo esc_attr( $form_id ); ?>" />
 
         <table class="form-table wpuf-cf-table">
@@ -353,7 +353,8 @@ class WPUF_Admin_Posting {
 
                 <?php
                     $atts = [];
-        wpuf()->fields->render_fields( $custom_fields, $form_id, $atts, $type = 'post', $post->ID ); ?>
+        wpuf()->fields->render_fields( $custom_fields, $form_id, $atts, $type = 'post', $post->ID );
+        wp_nonce_field( 'wpuf_form_add' ); ?>
             </tbody>
         </table>
         <?php
@@ -399,7 +400,7 @@ class WPUF_Admin_Posting {
                         var data = {
                             action: 'wpuf_delete_avatar',
                             user_id : $('#profile-page').find('#user_id').val(),
-                            _wpnonce: '<?php echo esc_url( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
+                            _wpnonce: '<?php echo wp_create_nonce( 'wpuf_nonce' ); ?>'
                         };
 
                         if ( confirm( $(this).data('confirm') ) ) {

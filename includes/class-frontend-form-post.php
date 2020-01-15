@@ -610,7 +610,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     }
 
     public static function update_post_meta( $meta_vars, $post_id ) {
-        check_ajax_referer( 'wpuf_form_add' );
+        // check_ajax_referer( 'wpuf_form_add' );
         // prepare the meta vars
         list( $meta_key_value, $multi_repeated, $files ) = self::prepare_meta_fields( $meta_vars );
         // set featured image if there's any

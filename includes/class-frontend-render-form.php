@@ -644,7 +644,7 @@ class WPUF_Frontend_Render_Form {
         // skip files, put in a key => value paired array for later executation
         // process repeatable fields separately
         // if the input is array type, implode with separator in a field
-        check_ajax_referer( 'wpuf_form_add' );
+        // /check_ajax_referer( 'wpuf_form_add' );
 
         $files          = [];
         $meta_key_value = [];

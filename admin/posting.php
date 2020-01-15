@@ -354,7 +354,7 @@ class WPUF_Admin_Posting {
                 <?php
                     $atts = [];
         wpuf()->fields->render_fields( $custom_fields, $form_id, $atts, $type = 'post', $post->ID );
-        wp_nonce_field( 'wpuf_form_add' ); ?>
+        // wp_nonce_field( 'wpuf_form_add' ); ?>
             </tbody>
         </table>
         <?php

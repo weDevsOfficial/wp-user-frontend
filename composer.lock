@@ -4,50 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c6277c7c54515aa21c1aeebef1e6a56",
+    "content-hash": "b5cffe6152944f04de823e69cc42d28b",
     "packages": [
-        {
-            "name": "appsero/client",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/AppSero/client.git",
-                "reference": "0b40040a22c46a7e101dec09a886f551a02b8737"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/AppSero/client/zipball/0b40040a22c46a7e101dec09a886f551a02b8737",
-                "reference": "0b40040a22c46a7e101dec09a886f551a02b8737",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Appsero\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Tareq Hasan",
-                    "email": "tareq@appsero.com"
-                }
-            ],
-            "description": "Appsero Client",
-            "keywords": [
-                "analytics",
-                "plugin",
-                "theme",
-                "wordpress"
-            ],
-            "time": "2019-12-19T09:55:46+00:00"
-        },
         {
             "name": "composer/installers",
             "version": "dev-master",
@@ -291,12 +249,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "278b643f2a5ec1b92fd60b2d7dac034f3a52ea4e"
+                "reference": "bb50f790f17a431f8cf294274081a723bf376878"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/278b643f2a5ec1b92fd60b2d7dac034f3a52ea4e",
-                "reference": "278b643f2a5ec1b92fd60b2d7dac034f3a52ea4e",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/bb50f790f17a431f8cf294274081a723bf376878",
+                "reference": "bb50f790f17a431f8cf294274081a723bf376878",
                 "shasum": ""
             },
             "require": {
@@ -334,7 +292,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-12-20T03:33:58+00:00"
+            "time": "2020-01-14T22:43:20+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -385,7 +343,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "appsero/client": 20,
         "automattic/vipwpcs": 20,
         "dealerdirect/phpcodesniffer-composer-installer": 20
     },

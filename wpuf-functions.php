@@ -2975,9 +2975,7 @@ function wpuf_text( $args = [] ) {
  * @return void
  */
 function wpuf_descriptive_text( $args ) {
-    $html = wp_kses_post( $args['desc'] );
-
-    echo $html;
+    echo wp_kses_post( $args['desc'] );
 }
 
 /**

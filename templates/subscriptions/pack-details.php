@@ -38,7 +38,7 @@
     ?>
 </div>
 <div class="wpuf-sub-desciption">
-    <?php echo esc_html( wpautop( wp_kses_post( $pack->post_content ) ) ); ?>
+    <?php echo wpautop( wp_kses_post( $pack->post_content ) ); ?>
 </div>
 <?php
 $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';

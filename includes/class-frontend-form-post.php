@@ -302,12 +302,13 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
         $post_author         = $this->wpuf_get_post_user();
 
+        $allowed_tags = wp_kses_allowed_html( 'post' );
         $postarr = [
             'post_type'    => $this->form_settings['post_type'],
             'post_status'  => isset( $this->form_settings['post_status'] ) ? $this->form_settings['post_status'] : 'publish',
             'post_author'  => $post_author,
             'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
-            'post_content' => isset( $_POST['post_content'] ) ? sanitize_text_field( wp_unslash( $_POST['post_content'] ) ) : '',
+            'post_content' => isset( $_POST['post_content'] ) ? wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) : '',
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? sanitize_text_field( wp_unslash( $_POST['post_excerpt'] ) ) : '',
         ];
 

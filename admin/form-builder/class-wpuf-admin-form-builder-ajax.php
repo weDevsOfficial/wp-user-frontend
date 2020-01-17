@@ -39,8 +39,8 @@ class WPUF_Admin_Form_Builder_Ajax {
             wp_send_json_error( __( 'Invalid form id', 'wp-user-frontend' ) );
         }
 
-        $form_fields   = isset( $post_data['form_fields'] ) ? sanitize_text_field( wp_unslash( $post_data['form_fields'] ) ) : '';
-        $notifications = isset( $post_data['notifications'] ) ? sanitize_text_field( wp_unslash( $post_data['notifications'] ) ) : '';
+        $form_fields   = isset( $post_data['form_fields'] ) ? $post_data['form_fields'] : '';
+        $notifications = isset( $post_data['notifications'] ) ? $post_data['notifications'] : '';
         $settings      = [];
         $integrations  = [];
 

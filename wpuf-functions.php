@@ -2341,14 +2341,15 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
         ];
 
         $settings = [
-            'role'           => 'subscriber',
-            'redirect_to'    => 'same',
-            'message'        => 'Registration successful',
-            'update_message' => 'Profile updated successfully',
-            'page_id'        => '0',
-            'url'            => '',
-            'submit_text'    => 'Register',
-            'update_text'    => 'Update Profile',
+            'role'             => 'subscriber',
+            'reg_redirect_to'  => 'same',
+            'message'          => 'Registration successful',
+            'update_message'   => 'Profile updated successfully',
+            'reg_page_id'      => '0',
+            'registration_url' => '',
+            'profile_url'      => '',
+            'submit_text'      => 'Register',
+            'update_text'      => 'Update Profile',
         ];
     }
 
@@ -2975,9 +2976,7 @@ function wpuf_text( $args = [] ) {
  * @return void
  */
 function wpuf_descriptive_text( $args ) {
-    $html = wp_kses_post( $args['desc'] );
-
-    echo $html;
+    echo wp_kses_post( $args['desc'] );
 }
 
 /**

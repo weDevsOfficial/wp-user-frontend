@@ -4,6 +4,8 @@ require_once __DIR__ . '/prompt.php';
 
 class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
+    public $edit_profile = null;
+
     public function __construct() {
         $this->includes();
         $this->instantiate();
@@ -51,7 +53,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     public function instantiate() {
-        new WPUF_Edit_Profile();
+        $this->edit_profile = new WPUF_Edit_Profile();
 
         if ( is_admin() ) {
 

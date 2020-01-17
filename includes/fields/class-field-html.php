@@ -26,7 +26,7 @@ class WPUF_Form_Field_HTML extends WPUF_Field_Contract {
         <li <?php $this->print_list_attributes( $field_settings ); ?>>
 
             <div class="wpuf-fields <?php echo 'html_' . esc_attr( $form_id ); ?><?php echo ' wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>">
-                <?php echo esc_attr( $field_settings['html'] ); ?>
+                <?php echo wp_kses_post( $field_settings['html'] ); ?>
             </div>
 
         </li>

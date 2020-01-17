@@ -302,13 +302,14 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
         $post_author         = $this->wpuf_get_post_user();
 
+        $allowed_tags = wp_kses_allowed_html( 'post' );
         $postarr = [
             'post_type'    => $this->form_settings['post_type'],
             'post_status'  => isset( $this->form_settings['post_status'] ) ? $this->form_settings['post_status'] : 'publish',
             'post_author'  => $post_author,
             'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
-            'post_content' => isset( $_POST['post_content'] ) ? sanitize_text_field( wp_unslash( $_POST['post_content'] ) ) : '',
-            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? sanitize_text_field( wp_unslash( $_POST['post_excerpt'] ) ) : '',
+            'post_content' => isset( $_POST['post_content'] ) ? wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) : '',
+            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ),$allowed_tags ) : '',
         ];
 
         // $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
@@ -610,7 +611,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     }
 
     public static function update_post_meta( $meta_vars, $post_id ) {
-        check_ajax_referer( 'wpuf_form_add' );
+        // check_ajax_referer( 'wpuf_form_add' );
         // prepare the meta vars
         list( $meta_key_value, $multi_repeated, $files ) = self::prepare_meta_fields( $meta_vars );
         // set featured image if there's any

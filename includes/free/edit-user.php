@@ -17,7 +17,11 @@ function wpuf_edit_users() {
                 case 'edit':
                     //if user exists
                     if ( $user_id && $userdata ) {
-                        WPUF_Edit_Profile::show_form( $user_id );
+                        if ( ! empty( wpuf()->free_loader->edit_profile ) ) {
+                            wpuf()->free_loader->edit_profile->show_form( $user_id );
+                        } else {
+                            printf( esc_html( __( "User doesn't exists", 'wp-user-frontend' ) ) );
+                        }
                     } else {
                         printf( esc_html( __( "User doesn't exists", 'wp-user-frontend' ) ) );
                     }
@@ -127,7 +131,6 @@ function wpuf_add_user() {
             if ( isset( $nonce ) &&  ! wp_verify_nonce(  $nonce, 'wpuf_add_user' ) )  {
                 return ;
             }
-        }
 
             $errors = [];
 
@@ -200,6 +203,7 @@ function wpuf_add_user() {
     <?php } ?>
 
     <?php
+}
 
 /**
  * Handles registering a new user.

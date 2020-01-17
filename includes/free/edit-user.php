@@ -17,7 +17,11 @@ function wpuf_edit_users() {
                 case 'edit':
                     //if user exists
                     if ( $user_id && $userdata ) {
-                        WPUF_Edit_Profile::show_form( $user_id );
+                        if ( ! empty( wpuf()->free_loader->edit_profile ) ) {
+                            wpuf()->free_loader->edit_profile->show_form( $user_id );
+                        } else {
+                            printf( esc_html( __( "User doesn't exists", 'wp-user-frontend' ) ) );
+                        }
                     } else {
                         printf( esc_html( __( "User doesn't exists", 'wp-user-frontend' ) ) );
                     }

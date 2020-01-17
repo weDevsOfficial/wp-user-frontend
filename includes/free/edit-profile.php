@@ -144,7 +144,6 @@ class WPUF_Edit_Profile {
         }
         $public_display = array_map( 'trim', $public_display );
         $public_display = array_unique( $public_display );
-
         foreach ( $public_display as $id => $item ) {
             ?>
                                         <option id="<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $item ); ?>"<?php selected( $profileuser->display_name, $item ); ?>><?php echo esc_html( $item ); ?></option>
@@ -157,16 +156,16 @@ class WPUF_Edit_Profile {
                 </fieldset>
 
                 <fieldset>
-                    <legend><?php $item( 'Contact Info', 'wp-user-frontend' ); ?></legend>
+                    <legend><?php esc_html_e( 'Contact Info', 'wp-user-frontend' ); ?></legend>
 
                     <table class="wpuf-table">
                         <tr>
-                            <th><label for="email"><?php $item( 'E-mail', 'wp-user-frontend' ); ?> <span class="description"><?php $item( '(required)', 'wp-user-frontend' ); ?></span></label></th>
+                            <th><label for="email"><?php esc_html_e( 'E-mail', 'wp-user-frontend' ); ?> <span class="description"><?php esc_html_e( '(required)', 'wp-user-frontend' ); ?></span></label></th>
                             <td><input type="text" name="email" id="email" value="<?php echo esc_attr( $profileuser->user_email ); ?>" class="regular-text" /> </td>
                         </tr>
 
                         <tr>
-                            <th><label for="url"><?php $item( 'Website', 'wp-user-frontend' ); ?></label></th>
+                            <th><label for="url"><?php esc_html_e( 'Website', 'wp-user-frontend' ); ?></label></th>
                             <td><input type="text" name="url" id="url" value="<?php echo esc_attr( $profileuser->user_url ); ?>" class="regular-text code" /></td>
                         </tr>
 

@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.1.15\n"
+"Project-Id-Version: WP User Frontend 3.1.16\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2020-01-14 11:02:43+00:00\n"
+"POT-Creation-Date: 2020-01-17 13:10:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -342,7 +342,7 @@ msgstr ""
 
 #: admin/class-tools.php:44 admin/class-tools.php:111
 #: admin/post-forms-list-table.php:43 class/transactions-list-table.php:87
-#: includes/class-list-table-subscribers.php:136 wpuf-functions.php:2825
+#: includes/class-list-table-subscribers.php:136 wpuf-functions.php:2826
 msgid "All"
 msgstr ""
 
@@ -718,7 +718,7 @@ msgstr ""
 
 #: admin/form.php:71 admin/form.php:109 admin/installer.php:86
 #: admin/post-forms-list-table.php:406 class/subscription.php:402
-#: includes/free/admin/shortcode-button.php:87 includes/free/edit-user.php:100
+#: includes/free/admin/shortcode-button.php:87 includes/free/edit-user.php:104
 #: templates/dashboard/posts.php:163 templates/dashboard.php:254
 msgid "Edit"
 msgstr ""
@@ -755,7 +755,7 @@ msgstr ""
 msgid "Registraton Forms"
 msgstr ""
 
-#: admin/form.php:106 includes/free/loader.php:76
+#: admin/form.php:106 includes/free/loader.php:78
 msgid "Registration Forms"
 msgstr ""
 
@@ -1071,7 +1071,7 @@ msgstr ""
 
 #: admin/html/form-submission-restriction.php:12 admin/html/support.php:223
 #: class/transactions-list-table.php:50 includes/class-privacy.php:361
-#: includes/free/edit-user.php:165 templates/registration-form.php:47
+#: includes/free/edit-user.php:168 templates/registration-form.php:47
 msgid "Email"
 msgstr ""
 
@@ -3583,7 +3583,7 @@ msgstr ""
 msgid "Author Info"
 msgstr ""
 
-#: class/frontend-dashboard.php:136 includes/free/edit-user.php:98
+#: class/frontend-dashboard.php:136 includes/free/edit-user.php:102
 msgid "%s"
 msgstr ""
 
@@ -3781,12 +3781,12 @@ msgstr ""
 msgid "Please make sure you've published your form."
 msgstr ""
 
-#: class/render-form.php:1319 includes/free/edit-profile.php:201
+#: class/render-form.php:1319 includes/free/edit-profile.php:200
 #: templates/registration-form.php:68
 msgid "Confirm Password"
 msgstr ""
 
-#: class/render-form.php:1341 includes/free/edit-profile.php:210
+#: class/render-form.php:1341 includes/free/edit-profile.php:209
 #: templates/dashboard/edit-profile.php:70
 msgid "Strength indicator"
 msgstr ""
@@ -3801,7 +3801,7 @@ msgid "This field is no longer available."
 msgstr ""
 
 #: class/render-form.php:1676 class/transactions-list-table.php:119
-#: class/transactions-list-table.php:193 includes/free/edit-user.php:101
+#: class/transactions-list-table.php:193 includes/free/edit-user.php:105
 #: templates/dashboard/posts.php:172 templates/dashboard.php:263
 msgid "Delete"
 msgstr ""
@@ -4213,15 +4213,15 @@ msgstr ""
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:492
+#: includes/class-frontend-form-post.php:493
 msgid "Something went wrong"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:513
+#: includes/class-frontend-form-post.php:514
 msgid "Invalid email address."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:523
+#: includes/class-frontend-form-post.php:524
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -4230,22 +4230,22 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:574
+#: includes/class-frontend-form-post.php:575
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:840
+#: includes/class-frontend-form-post.php:841
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:947
-#: includes/class-frontend-form-post.php:953
+#: includes/class-frontend-form-post.php:948
+#: includes/class-frontend-form-post.php:954
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
 msgstr ""
 
-#: includes/class-frontend-render-form.php:801
+#: includes/class-frontend-render-form.php:802
 #: includes/free/class-login.php:445
 msgid "Empty reCaptcha Field"
 msgstr ""
@@ -4379,7 +4379,7 @@ msgid ""
 msgstr ""
 
 #: includes/class-login-widget.php:274 includes/free/edit-profile.php:102
-#: includes/free/edit-user.php:93 includes/free/edit-user.php:154
+#: includes/free/edit-user.php:97 includes/free/edit-user.php:157
 #: templates/registration-form.php:54
 msgid "Username"
 msgstr ""
@@ -5100,7 +5100,7 @@ msgstr ""
 msgid "Select a form to insert"
 msgstr ""
 
-#: includes/free/admin/shortcode-builder.php:9 includes/free/loader.php:88
+#: includes/free/admin/shortcode-builder.php:9 includes/free/loader.php:90
 msgid "Registration Form"
 msgstr ""
 
@@ -5313,7 +5313,7 @@ msgstr ""
 msgid "Hi, %s"
 msgstr ""
 
-#: includes/free/edit-profile.php:32 includes/free/edit-user.php:36
+#: includes/free/edit-profile.php:32 includes/free/edit-user.php:40
 #: templates/unauthorized.php:4
 msgid "This page is restricted. Please %s to view this page."
 msgstr ""
@@ -5330,7 +5330,7 @@ msgstr ""
 msgid "Nickname"
 msgstr ""
 
-#: includes/free/edit-profile.php:116
+#: includes/free/edit-profile.php:116 includes/free/edit-profile.php:163
 msgid "(required)"
 msgstr ""
 
@@ -5338,128 +5338,140 @@ msgstr ""
 msgid "Display to Public as"
 msgstr ""
 
-#: includes/free/edit-profile.php:186
+#: includes/free/edit-profile.php:159
+msgid "Contact Info"
+msgstr ""
+
+#: includes/free/edit-profile.php:163
+msgid "E-mail"
+msgstr ""
+
+#: includes/free/edit-profile.php:168
+msgid "Website"
+msgstr ""
+
+#: includes/free/edit-profile.php:185
 msgid "About Yourself"
 msgstr ""
 
-#: includes/free/edit-profile.php:190
+#: includes/free/edit-profile.php:189
 msgid "Biographical Info"
 msgstr ""
 
-#: includes/free/edit-profile.php:192
+#: includes/free/edit-profile.php:191
 msgid ""
 "Share a little biographical information to fill out your profile. This may "
 "be shown publicly."
 msgstr ""
 
-#: includes/free/edit-profile.php:195 templates/dashboard/edit-profile.php:54
+#: includes/free/edit-profile.php:194 templates/dashboard/edit-profile.php:54
 msgid "New Password"
 msgstr ""
 
-#: includes/free/edit-profile.php:203
+#: includes/free/edit-profile.php:202
 msgid "Type your new password again."
 msgstr ""
 
-#: includes/free/edit-profile.php:208
+#: includes/free/edit-profile.php:207
 msgid "Password Strength"
 msgstr ""
 
-#: includes/free/edit-profile.php:234 includes/free/form-element.php:333
+#: includes/free/edit-profile.php:233 includes/free/form-element.php:333
 #: templates/dashboard/edit-profile.php:130
 msgid "Update Profile"
 msgstr ""
 
-#: includes/free/edit-profile.php:258
+#: includes/free/edit-profile.php:257
 msgid "WPUF Post Lock"
 msgstr ""
 
-#: includes/free/edit-profile.php:261
+#: includes/free/edit-profile.php:260
 msgid "Lock Post:"
 msgstr ""
 
-#: includes/free/edit-profile.php:267
+#: includes/free/edit-profile.php:266
 msgid "Lock user from creating new post."
 msgstr ""
 
-#: includes/free/edit-profile.php:271
+#: includes/free/edit-profile.php:270
 msgid "Lock Reason:"
 msgstr ""
 
-#: includes/free/edit-profile.php:278
+#: includes/free/edit-profile.php:277
 msgid "Lock Edit Post:"
 msgstr ""
 
-#: includes/free/edit-profile.php:284
+#: includes/free/edit-profile.php:283
 msgid "Lock user from editing post."
 msgstr ""
 
-#: includes/free/edit-profile.php:288
+#: includes/free/edit-profile.php:287
 msgid "Edit Post Lock Reason:"
 msgstr ""
 
-#: includes/free/edit-user.php:22
+#: includes/free/edit-user.php:23 includes/free/edit-user.php:26
 msgid "User doesn't exists"
 msgstr ""
 
-#: includes/free/edit-user.php:33
+#: includes/free/edit-user.php:37
 msgid "You don't have permission for this purpose"
 msgstr ""
 
-#: includes/free/edit-user.php:77
+#: includes/free/edit-user.php:81
 msgid "User Deleted"
 msgstr ""
 
-#: includes/free/edit-user.php:86
+#: includes/free/edit-user.php:90
 msgid "Are you sure to delete this user?"
 msgstr ""
 
-#: includes/free/edit-user.php:94
+#: includes/free/edit-user.php:98
 msgid "Action"
 msgstr ""
 
-#: includes/free/edit-user.php:119 includes/free/edit-user.php:193
+#: includes/free/edit-user.php:123 includes/free/edit-user.php:196
 msgid "Add New User"
 msgstr ""
 
-#: includes/free/edit-user.php:142
+#: includes/free/edit-user.php:145
 msgid "User Added"
 msgstr ""
 
-#: includes/free/edit-user.php:176
+#: includes/free/edit-user.php:179
 msgid "Role"
 msgstr ""
 
-#: includes/free/edit-user.php:220
+#: includes/free/edit-user.php:224
 msgid "<strong>ERROR</strong>: Please enter a username"
 msgstr ""
 
-#: includes/free/edit-user.php:222
+#: includes/free/edit-user.php:226
 msgid ""
 "<strong>ERROR</strong>: This username is invalid because it uses illegal "
 "characters. Please enter a valid username"
 msgstr ""
 
-#: includes/free/edit-user.php:225
+#: includes/free/edit-user.php:229
 msgid ""
 "<strong>ERROR</strong>: This username is already registered, please choose "
 "another one"
 msgstr ""
 
-#: includes/free/edit-user.php:230
+#: includes/free/edit-user.php:234
 msgid "<strong>ERROR</strong>: Please type your e-mail address"
 msgstr ""
 
-#: includes/free/edit-user.php:232
+#: includes/free/edit-user.php:236
 msgid "<strong>ERROR</strong>: The email address isn&#8217;t correct"
 msgstr ""
 
-#: includes/free/edit-user.php:235
+#: includes/free/edit-user.php:239
 msgid ""
 "<strong>ERROR</strong>: This email is already registered, please choose "
 "another one"
 msgstr ""
 
-#: includes/free/edit-user.php:259
+#: includes/free/edit-user.php:263
 msgid ""
 "<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the "
 "<a href=\"mailto:%s\">webmaster</a> !"
@@ -5581,43 +5593,43 @@ msgstr ""
 msgid "Update Button text"
 msgstr ""
 
-#: includes/free/loader.php:82 includes/free/loader.php:142
+#: includes/free/loader.php:84 includes/free/loader.php:144
 msgid "Coupons"
 msgstr ""
 
-#: includes/free/loader.php:91
+#: includes/free/loader.php:93
 msgid ""
 "Use the shortcode <code>[wpuf-registration]</code> for a simple and default "
 "WordPress registration form."
 msgstr ""
 
-#: includes/free/loader.php:105
+#: includes/free/loader.php:107
 msgid ""
 "Registration form builder is a two way form which can be used both for "
 "<strong>user registration</strong> and <strong>profile editing</strong>."
 msgstr ""
 
-#: includes/free/loader.php:124 includes/free/loader.php:154
+#: includes/free/loader.php:126 includes/free/loader.php:156
 msgid "Upgrade to Pro Version"
 msgstr ""
 
-#: includes/free/loader.php:125
+#: includes/free/loader.php:127
 msgid "Learn More"
 msgstr ""
 
-#: includes/free/loader.php:146
+#: includes/free/loader.php:148
 msgid "Use Coupon codes for subscription for discounts."
 msgstr ""
 
-#: includes/free/loader.php:150
+#: includes/free/loader.php:152
 msgid "This feature is only available in the Pro Version."
 msgstr ""
 
-#: includes/free/loader.php:155
+#: includes/free/loader.php:157
 msgid "Learn more about Coupons"
 msgstr ""
 
-#: includes/free/loader.php:196
+#: includes/free/loader.php:198
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -6301,7 +6313,7 @@ msgstr ""
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:2826
+#: wpuf-functions.php:2827
 msgid "None"
 msgstr ""
 

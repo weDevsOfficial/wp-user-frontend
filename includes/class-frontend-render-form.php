@@ -645,21 +645,22 @@ class WPUF_Frontend_Render_Form {
         // process repeatable fields separately
         // if the input is array type, implode with separator in a field
         // /check_ajax_referer( 'wpuf_form_add' );
-
+        $post_data = wp_unslash( $_POST );
         $files          = [];
         $meta_key_value = [];
         $multi_repeated = []; //multi repeated fields will in sotre duplicated meta key
 
         foreach ( $meta_vars as $key => $value ) {
             // $wpuf_files = isset( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
-            if( isset( $_POST[$value['name']] ) && is_array( $_POST[$value['name']] ) ) {
-                $value_name = isset( $_POST[$value['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[$value['name']] ) ): '';
+            if( isset( $post_data[$value['name']] ) && is_array( $post_data[$value['name']] ) ) {
+                $value_name = isset( $post_data[$value['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $post_data[$value['name']] ) ): '';
             } else {
-                $value_name = isset( $_POST[$value['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$value['name']] ) ): '';
+                // $value_name = isset( $post_data[$value['name']] ) ? sanitize_text_field( wp_unslash( $post_data[$value['name']] ) ): '';
+                $value_name = isset( $post_data[$value['name']] ) ? wp_unslash( $post_data[$value['name']] ): '';
             }
 
-            if ( isset( $_POST['wpuf_files'][$value['name']] ) ) {
-                $wpuf_files = isset( $_POST['wpuf_files'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wpuf_files'][$value['name']] ) ) : [];
+            if ( isset( $post_data['wpuf_files'][$value['name']] ) ) {
+                $wpuf_files = isset( $post_data['wpuf_files'] ) ? array_map( 'sanitize_text_field', wp_unslash( $post_data['wpuf_files'][$value['name']] ) ) : [];
             } else {
                 $wpuf_files = [];
             }
@@ -735,8 +736,8 @@ class WPUF_Frontend_Render_Form {
                     break;
 
                 case 'textarea':
-
-                    $meta_key_value[$value['name']] = wp_kses_post( $value_name );
+                    $allowed_tags = wp_kses_allowed_html( 'post' );
+                    $meta_key_value[$value['name']] = wp_kses( $value_name, $allowed_tags );
 
                     break;
 

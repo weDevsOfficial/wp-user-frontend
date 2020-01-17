@@ -309,7 +309,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             'post_author'  => $post_author,
             'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
             'post_content' => isset( $_POST['post_content'] ) ? wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) : '',
-            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? sanitize_text_field( wp_unslash( $_POST['post_excerpt'] ) ) : '',
+            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ),$allowed_tags ) : '',
         ];
 
         // $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );

@@ -135,7 +135,7 @@ class WPUF_Subscription {
 
          if ( $billing_amount !== false ) {
              $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
-             $redirect =  add_query_arg( ['action' => 'wpuf_pay', 'user_id' => $user_id, 'type' => 'pack', 'pack_id' => (int) $pack_id, get_permalink( $pay_page ) ]);
+             $redirect =  add_query_arg( ['action' => 'wpuf_pay', 'user_id' => $user_id, 'type' => 'pack', 'pack_id' => (int) $pack_id ], get_permalink( $pay_page ) );
 
              $response['redirect_to']  = $redirect;
              $response['show_message'] = false;

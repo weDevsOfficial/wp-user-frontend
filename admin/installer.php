@@ -62,9 +62,9 @@ class WPUF_Admin_Installer {
             $this->init_pages();
         }
 
-        if ( isset( $_POST['install_wpuf_pages'] ) && $_POST['install_wpuf_pages'] == '1' ) {
-            $this->init_pages();
-        }
+        // if ( isset( $_POST['install_wpuf_pages'] ) && $_POST['install_wpuf_pages'] == '1' ) {
+        //     $this->init_pages();
+        // }
 
         if ( isset( $_GET['wpuf_hide_page_nag'] ) && $_GET['wpuf_hide_page_nag'] == '1' ) {
             update_option( '_wpuf_page_created', '1' );

@@ -1069,60 +1069,56 @@ Vue.component('form-column_field', {
             });
         },
 
-        resizeColumns: function resizeColumns(columnsNumber) {
-            let self = this;
+        resizeColumns(columnsNumber) {
+            var self = this;
 
             (function () {
-                let columnElement;
-                let startOffset;
-                let columnField = $(self.$el).context.parentElement;
-                let total_width = parseInt($(columnField).width());
+                var columnElement;
+                var startOffset;
+                var columnField = $(self.$el).context.parentElement;
+                var total_width = parseInt($(columnField).width());
 
-                Array.prototype.forEach.call($(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields"), function (column) {
-                    column.style.position = 'relative';
+                Array.prototype.forEach.call(
+                    $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields"),
 
-                    var grip = document.createElement('div');
-                    grip.innerHTML = "&nbsp;";
-                    grip.style.top = 0;
-                    grip.style.right = 0;
-                    grip.style.bottom = 0;
-                    grip.style.width = '5px';
-                    grip.style.position = 'absolute';
-                    grip.style.cursor = 'col-resize';
-                    grip.addEventListener('mousedown', function (e) {
-                        columnElement = column;
-                        startOffset = column.offsetWidth - e.pageX;
+                    function (column) {
+                        column.style.position = 'relative';
+
+                        var grip = document.createElement('div');
+                        grip.innerHTML = "&nbsp;";
+                        grip.style.top = 0;
+                        grip.style.right = 0;
+                        grip.style.bottom = 0;
+                        grip.style.width = '5px';
+                        grip.style.position = 'absolute';
+                        grip.style.cursor = 'col-resize';
+                        grip.addEventListener('mousedown', function (e) {
+                            columnElement = column;
+                            startOffset = column.offsetWidth - e.pageX;
+                        });
+
+                        column.appendChild(grip);
                     });
 
-                    column.appendChild(grip);
-                });
-
-                $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields").mousemove(function (e) {
+                $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields").mousemove(function( e ) {
                     if (columnElement) {
-                        var currentColumnWidth = startOffset + e.pageX;
+                    var currentColumnWidth = startOffset + e.pageX;
 
-                        columnElement.style.width = 100 * currentColumnWidth / total_width + '%';
+                    columnElement.style.width = (100*currentColumnWidth) / total_width + '%';
                     }
                 });
 
-                $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields").mouseup(function () {
-                    let colOneWidth = 0,
-                        colTwoWidth = 0,
-                        colThreeWidth = 0;
+                $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields").mouseup(function() {
+                    var columnOneWidth   = $(columnField).find(".column-1").width(),
+                        columnTwoWidth   = $(columnField).find(".column-2").width(),
+                        colOneWidth      = (100*columnOneWidth) / total_width,
+                        colTwoWidth      = 100 - colOneWidth,
+                        colThreeWidth    = 0;
 
-                    if (columnsNumber == 3) {
-                        colOneWidth = 100/columnsNumber;
-                        colTwoWidth = 100/columnsNumber;
-                        colThreeWidth = 100/columnsNumber;
-                    } else if (columnsNumber == 2){
-                        colOneWidth = 100/columnsNumber;
-                        colTwoWidth = 100/columnsNumber;
-                        colThreeWidth = 0;
-                    } else {
-                        colOneWidth = $(columnField).find(".column-1").width();
-                        colTwoWidth = $(columnField).find(".column-2").width();
-                        colThreeWidth = 0;
-                    }
+                        if (columnsNumber === 3) {
+                            colTwoWidth   = (100*columnTwoWidth) / total_width;
+                            colThreeWidth = 100 - (colOneWidth + colTwoWidth);
+                        }
 
                     self.field.inner_columns_size['column-1'] = colOneWidth + '%';
                     self.field.inner_columns_size['column-2'] = colTwoWidth + '%';

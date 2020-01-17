@@ -68,7 +68,7 @@ class WPUF_Admin_Form_Handler {
 
             switch ( $action ) {
                 case 'post_form_search':
-                    $redirect = remove_query_arg( [ 'post_form_search' ], $redirect );
+                    $redirect = remove_query_arg( [ 'post_form_search' ], $remove_query_args );
 
                     break;
 

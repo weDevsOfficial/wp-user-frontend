@@ -264,6 +264,13 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 == Changelog ==
 
+= v3.1.16 (17 January, 2020) =
+* **Fix:** Photo insert option in content editor
+* **Fix:** Subscription page is not showing the content/package description as formatted content
+* **Fix:** Predefined form is not saving on the WPUF form page's backend area
+* **Fix:** WPUF Custom HTML field is not saving the data
+* **Improve:** Improve Code Quality
+
 = v3.1.15 (14 January, 2020) =
 * **Fix:** update url validation
 * **Tweak:** Added privacy policy info in setup wizard for admin

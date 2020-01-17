@@ -127,7 +127,6 @@ function wpuf_add_user() {
             if ( isset( $nonce ) &&  ! wp_verify_nonce(  $nonce, 'wpuf_add_user' ) )  {
                 return ;
             }
-        }
 
             $errors = [];
 
@@ -200,6 +199,7 @@ function wpuf_add_user() {
     <?php } ?>
 
     <?php
+}
 
 /**
  * Handles registering a new user.

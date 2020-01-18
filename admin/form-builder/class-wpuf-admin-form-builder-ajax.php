@@ -55,8 +55,6 @@ class WPUF_Admin_Form_Builder_Ajax {
             $integrations = (array) json_decode( sanitize_text_field( wp_unslash( $post_data['integrations'] ) ) );
         }
 
-        $form_fields   = wp_unslash( $form_fields );
-        $notifications = wp_unslash( $notifications );
 
         $form_fields   = json_decode( $form_fields, true );
         $notifications = json_decode( $notifications, true );

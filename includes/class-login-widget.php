@@ -31,7 +31,7 @@ class WPUF_Login_Widget extends WP_Widget {
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
         if ( isset( $nonce ) && ! wp_verify_nonce( $nonce , 'wpuf_lost_pass' ) ) {
-            return ;
+
         }
 
         if ( empty( $user_login ) || empty( $user_pass ) ) {
@@ -68,7 +68,7 @@ class WPUF_Login_Widget extends WP_Widget {
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
         if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
-            return ;
+
         }
 
         // Check if input variables are empty
@@ -181,15 +181,15 @@ class WPUF_Login_Widget extends WP_Widget {
         $log_in_label     = apply_filters( 'widget_text', $instance['log_in_label'] );
         $pass_reset_label = apply_filters( 'widget_text', $instance['pass_reset_label'] );
 
-        echo esc_html( $args['before_widget'] );
+        echo wp_kses_post( $args['before_widget'] );
 
         if ( !empty( $title ) ) {
-            echo esc_html( $args['before_title'] . $title . $args['after_title'] );
+            echo wp_kses_post( $args['before_title'] . $title . $args['after_title'] );
         }
 
         if ( is_user_logged_in() ) {
             $user_id = get_current_user_id();
-            echo esc_html( get_avatar( $user_id, 24 ) );
+            echo wp_kses_post( get_avatar( $user_id, 24 ) );
         }
 
         $login_args = [
@@ -207,14 +207,18 @@ class WPUF_Login_Widget extends WP_Widget {
                 <div class="wpuf-ajax-login-form">
                     <div class="wpuf-ajax-errors"></div>
 
-                    <p><?php echo esc_html( $log_in_header ); ?></p>
+                    <p><?php echo wp_kses_post( $log_in_header ); ?></p>
 
                     <?php
                     wp_login_form( $login_args );
 
                     if ( get_option( 'users_can_register' ) ) {
                         $registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register', 'wp-user-frontend' ) );
-                        echo esc_html( $registration_url );
+                        echo wp_kses( $registration_url, [
+                            'a' => [
+                                'href' => []
+                            ]
+                        ] );
                         echo esc_html( apply_filters( 'login_link_separator', ' | ' ) );
                     }?>
                     <a href="#wpuf-ajax-lost-pw-url" id="wpuf-ajax-lost-pw-url"><?php esc_html_e( 'Lost your password?', 'wp-user-frontend' ); ?></a>
@@ -223,7 +227,7 @@ class WPUF_Login_Widget extends WP_Widget {
                 <!-- Lost Password form -->
                 <div class="wpuf-ajax-reset-password-form">
                     <form id="wpuf_ajax_reset_pass_form" action="<?php echo esc_url( home_url( '/' ) ); ?>" method="POST">
-                        <div class="wpuf-ajax-message"> <?php echo esc_html( $pwd_reset_header ); ?></div>
+                        <div class="wpuf-ajax-message"> <?php echo wp_kses_post( $pwd_reset_header ); ?></div>
                         <p>
                             <label for="wpuf-user_login"><?php esc_html_e( 'Username or E-mail:', 'wp-user-frontend' ); ?></label>
                             <input type="text" name="user_login" id="wpuf-user_login" class="input" value="" size="20" />
@@ -246,7 +250,7 @@ class WPUF_Login_Widget extends WP_Widget {
                         if ( get_option( 'users_can_register' ) ) {
                             echo esc_html( apply_filters( 'login_link_separator', ' | ' ) );
                             $registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register', 'wp-user-frontend' ) );
-                            echo esc_url( $registration_url );
+                            echo wp_kses_post( $registration_url );
                         }
                         ?>
                     </div>
@@ -259,7 +263,7 @@ class WPUF_Login_Widget extends WP_Widget {
         </div>
 
         <?php
-        echo esc_html( $args['after_widget'] );
+        echo wp_kses_post( $args['after_widget'] );
     }
 
     /**

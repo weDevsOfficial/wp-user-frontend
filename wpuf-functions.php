@@ -1513,11 +1513,12 @@ function wpuf_get_child_cats() {
     $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
     $parentCat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
-    $field_attr = isset( $_POST['field_attr'] ) ? sanitize_text_field( wp_unslash( $_POST['field_attr'] ) ) : '';
+    $field_attr = isset( $_POST['field_attr'] ) ? array_map('sanitize_text_field', wp_unslash( $_POST['field_attr'] ) ) : [];
 
     if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
-        return;
+
     }
+    $allowed_tags = wp_kses_allowed_html( 'post' );
 
 
     $taxonomy   = $field_attr['name'];
@@ -1526,7 +1527,7 @@ function wpuf_get_child_cats() {
     $result = '';
 
     if ( $parentCat < 1 ) {
-        die( esc_html( $result ) );
+        die( wp_kses_post( $result, $allowed_tags ) );
     }
 
     if ( $terms = get_categories( 'taxonomy=' . $taxonomy . '&child_of=' . $parentCat . '&hide_empty=0' ) ) {
@@ -1539,11 +1540,11 @@ function wpuf_get_child_cats() {
         }
         // $result .= WPUF_Render_Form::init()->taxnomy_select( '', $field_attr );
         $result .= taxnomy_select( '', $field_attr );
+
     } else {
         die( '' );
     }
-
-    die( esc_html( $result ) );
+    die( wp_kses_post( $result, $allowed_tags ) );
 }
 
 function taxnomy_select( $terms, $attr ) {
@@ -1579,7 +1580,7 @@ function taxnomy_select( $terms, $attr ) {
 
     $select = wp_dropdown_categories( $tax_args );
 
-    echo wp_kses_post( str_replace( '<select', '<select ' . $required, $select ) );
+    echo str_replace( '<select', '<select ' . $required, $select ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     $attr = [
         'required'     => $attr['required'],
         'name'         => $attr['name'],
@@ -1592,7 +1593,7 @@ function taxnomy_select( $terms, $attr ) {
         //'term_id'      => $selected
     ];
     $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr ); ?>
-    <span data-taxonomy=<?php echo esc_attr( json_encode( $attr ) ); ?>></span>
+    <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
     <?php
 }
 

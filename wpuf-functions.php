@@ -730,7 +730,7 @@ function wpuf_show_custom_fields( $content ) {
             if ( isset( $attr['wpuf_cond']['condition_status'] ) && $attr['wpuf_cond']['condition_status'] == 'yes' ) {
                 foreach ( $attr['wpuf_cond']['cond_field'] as $field_key => $cond_field_name ) {
 
-                    //check if the condintal field is a taxonomuy
+                    //check if the conditional field is a taxonomy
                     if ( taxonomy_exists( $cond_field_name ) ) {
                         $post_terms       = wp_get_post_terms( $post->ID, $cond_field_name, true );
                         $cond_field_value = [];
@@ -740,7 +740,7 @@ function wpuf_show_custom_fields( $content ) {
                                 $cond_field_value[] = $term_array->term_id;
                             }
                         }
-                        //$cond_field_value = isset($post_terms[0]) ? $post_terms[0]->term_id : '';
+                        $cond_field_value = isset($post_terms[0]) ? $post_terms[0]->term_id : '';
                     } else {
                         $cond_field_value = get_post_meta( $post->ID, $cond_field_name, 'true' );
                     }

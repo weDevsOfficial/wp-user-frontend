@@ -18,7 +18,7 @@ $lock_edit_post       = isset( $form_settings['lock_edit_post'] ) ? $form_settin
                 $statuses = get_post_statuses();
 
                 foreach ( $statuses as $status => $label ) {
-                    printf( '<option value="%s"%s>%s</option>', esc_attr( $status ), esc_attr( selected( $post_status_selected ), $status, false ), esc_html( $label ) );
+                    printf( '<option value="%s"%s>%s</option>', esc_attr( $status ), selected( esc_attr( $post_status_selected ), $status, false ), esc_html( $label ) );
                 }
 
                 printf( '<option value="_nochange"%s>%s</option>', esc_attr( selected( $post_status_selected, '_nochange', false ) ), esc_html( __( 'No Change', 'wp-user-frontend' ) ) );

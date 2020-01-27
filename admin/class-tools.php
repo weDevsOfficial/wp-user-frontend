@@ -300,7 +300,7 @@ class WPUF_Admin_Tools {
 
         ob_clean();
 
-        echo esc_js( $json_file );
+        echo $json_file; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 
         header( 'Content-Type: text/json; charset=' . get_option( 'blog_charset' ) );
         header( "Content-Disposition: attachment; filename=$json_name.json" );

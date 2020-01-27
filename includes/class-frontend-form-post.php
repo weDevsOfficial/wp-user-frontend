@@ -177,15 +177,15 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         list( $post_vars, $taxonomy_vars, $meta_vars ) =$this->get_input_fields( $this->form_fields );
 
         $entry_fields = $form->prepare_entries();
-        $post_content = isset( $_POST[ 'post_content' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'post_content' ] ) ) : '';
-
+        $allowed_tags = wp_kses_allowed_html( 'post' );
+        $post_content = isset( $_POST[ 'post_content' ] ) ? wp_kses( wp_unslash( $_POST[ 'post_content' ] ), $allowed_tags ) : '';
         $postarr = [
             'post_type'    => $this->form_settings['post_type'],
             'post_status'  => wpuf_get_draft_post_status( $this->form_settings ),
             'post_author'  => get_current_user_id(),
             'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
             'post_content' => $post_content,
-            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? sanitize_text_field( wp_unslash( $_POST['post_excerpt'] ) ) : '',
+            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
         ];
 
         $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : '';
@@ -204,7 +204,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         }
 
         if ( isset( $_POST['tags'] ) ) {
-            $postarr['tags_input'] = explode( ',', array_map( 'sanitize_text_field', wp_unslash( $_POST['tags'] ) ) );
+            $postarr['tags_input'] = explode( ',', sanitize_text_field( wp_unslash( $_POST['tags'] ) ) );
         }
 
         // if post_id is passed, we update the post

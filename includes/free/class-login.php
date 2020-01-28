@@ -589,9 +589,9 @@ class WPUF_Simple_Login {
 
             $pass1 = sanitize_text_field( wp_unslash( $_POST['pass1'] ) );
             $pass2 = sanitize_text_field( wp_unslash( $_POST['pass2'] ) );
-            $key = sanitize_key( wp_unslash( $_POST['key'] ) );
-            $login = sanitize_key( wp_unslash( $_POST['login'] ) );
-            $nonce = sanitize_key( wp_unslash( $_POST['_wpnonce'] ) );
+            $key = sanitize_text_field( wp_unslash( $_POST['key'] ) );
+            $login = sanitize_text_field( wp_unslash( $_POST['login'] ) );
+            $nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
 
             // verify reset key again
             $user = $this->check_password_reset_key( $key, $login );
@@ -1038,8 +1038,7 @@ class WPUF_Simple_Login {
      */
     public static function get_posted_value( $key ) {
         if ( isset( $_REQUEST[$key] ) ) {
-            $requested_key = sanitize_key( wp_unslash( $_REQUEST[$key] ) );
-            return esc_attr( $requested_key );
+            return sanitize_text_field( wp_unslash( $_REQUEST[$key] ) );
         }
 
         return '';

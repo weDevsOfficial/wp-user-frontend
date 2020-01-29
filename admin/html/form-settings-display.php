@@ -59,28 +59,28 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
             <td>
                 <ul>
                     <?php
-                        $layouts = [
-                            'layout1' => WPUF_PRO_ASSET_URI . '/images/forms/layout1.png',
-                            'layout2' => WPUF_PRO_ASSET_URI . '/images/forms/layout2.png',
-                            'layout3' => WPUF_PRO_ASSET_URI . '/images/forms/layout3.png',
-                            'layout4' => WPUF_PRO_ASSET_URI . '/images/forms/layout4.png',
-                            'layout5' => WPUF_PRO_ASSET_URI . '/images/forms/layout5.png',
-                        ];
+                    $layouts = [
+                        'layout1' => WPUF_PRO_ASSET_URI . '/images/forms/layout1.png',
+                        'layout2' => WPUF_PRO_ASSET_URI . '/images/forms/layout2.png',
+                        'layout3' => WPUF_PRO_ASSET_URI . '/images/forms/layout3.png',
+                        'layout4' => WPUF_PRO_ASSET_URI . '/images/forms/layout4.png',
+                        'layout5' => WPUF_PRO_ASSET_URI . '/images/forms/layout5.png',
+                    ];
 
-                        foreach ( $layouts as $key => $image ) {
-                            $class = '';
+                    foreach ( $layouts as $key => $image ) {
+                        $active = '';
 
-                            if ( $key == $form_layout ) {
-                                $class = 'active';
-                            }
-
-                            $output  = '<li class="' . $class . '">';
-                            $output .= '<input type="radio" name="wpuf_settings[form_layout]" value="' . $key . '" ' . checked( $form_layout, $key, false ) . '>';
-                            $output .= '<img src="' . $image . '" alt="">';
-                            $output .= '</li>';
-
-                            echo wp_kses_post( $output );
+                        if ( $key == $form_layout ) {
+                            $active = 'active';
                         }
+
+                        $output = '<li class="' . $active . '">';
+                        $output .= '<input type="radio" name="wpuf_settings[form_layout]" value="' . $key . '" ' . checked( $form_layout, $key, false ) . '>';
+                        $output .= '<img src="' . $image . '" alt="">';
+                        $output .= '</li>';
+
+                        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+                    }
                     ?>
                 </ul>
             </td>

@@ -971,10 +971,12 @@ class WPUF_Simple_Login {
             $blogname = $GLOBALS['current_site']->site_name;
         }
 
+        $user_data = get_user_by( 'login', $user_login );
+
         $title   = sprintf( __( '[%s] Password Reset', 'wp-user-frontend' ), $blogname );
         $title   = apply_filters( 'retrieve_password_title', $title );
 
-        $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login );
+        $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 
         if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
             wp_die( esc_html( __( 'The e-mail could not be sent.', 'wp-user-frontend' ) ) . "<br />\n" . esc_html( __( 'Possible reason: your host may have disabled the mail() function.', 'wp-user-frontend' ) ) );

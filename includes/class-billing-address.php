@@ -48,7 +48,6 @@ class WPUF_Ajax_Address_Form {
         $show_zip       = wpuf_get_option( 'zip', 'wpuf_address_options', false );
 
         $required_class = 'bill_required';
-        $req_div        = '<span class="required">*</span>';
 
         $country_req  = '';
         $country_hide = '';
@@ -150,7 +149,7 @@ class WPUF_Ajax_Address_Form {
                 <table id="wpuf-address-country-state" class="wp-list-table widefat">
                     <tr>
                         <td class="<?php echo isset( $country_required ) ? esc_attr( $required_class ) : null; ?>" style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo esc_attr( $country_hide ); ?>">
-                            <label><?php esc_html_e( 'Country', 'wp-user-frontend' ); ?><?php echo isset( $country_required ) ? esc_attr( $req_div ) : null; ?></label>
+                            <label><?php esc_html_e( 'Country', 'wp-user-frontend' ); ?><?php echo isset( $country_required ) ? wp_kses( '<span class="required">*</span>', array( 'span' => array() ) ) : null; ?></label>
                             <br>
                             <?php
                             if ( function_exists( 'wpuf_get_tax_rates' ) ) {
@@ -191,7 +190,7 @@ class WPUF_Ajax_Address_Form {
                         </td>
                         <td class="<?php echo isset( $state_required ) ? esc_attr( $required_class ) : null; ?>"
                             style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo esc_attr( $state_hide ); ?>">
-                            <label><?php esc_html_e( 'State/Province/Region', 'wp-user-frontend' ); ?><?php echo isset( $state_required ) ? esc_attr( $req_div ) : null; ?></label>
+                            <label><?php esc_html_e( 'State/Province/Region', 'wp-user-frontend' ); ?><?php echo isset( $state_required ) ? wp_kses( '<span class="required">*</span>', array( 'span' => array() ) ) : null; ?></label>
                             <br>
                             <?php
                             $states            = $cs->getStates( $selected['country'] );
@@ -222,7 +221,7 @@ class WPUF_Ajax_Address_Form {
                             ] ); ?>
                         </td>
                         <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo esc_attr( $add1_hide ); ?>">
-                            <div class="wpuf-label"><?php esc_html_e( 'Address Line 1 ', 'wp-user-frontend' ); ?><?php echo isset( $address1_required ) ? esc_attr( $req_div ) : null; ?></div>
+                            <div class="wpuf-label"><?php esc_html_e( 'Address Line 1 ', 'wp-user-frontend' ); ?><?php echo isset( $address1_required ) ? wp_kses( '<span class="required">*</span>', array( 'span' => array() ) ) : null; ?></div>
                             <div class="wpuf-fields">
                                 <input type="text" class="input <?php echo isset( $address1_required ) ? esc_attr( $required_class ) : null; ?>" name="wpuf_biiling_add_line_1"
                                        id="wpuf_biiling_add_line_1"
@@ -230,7 +229,7 @@ class WPUF_Ajax_Address_Form {
                             </div>
                         </td>
                         <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo esc_attr( $add2_hide ); ?>">
-                            <div class="wpuf-label"><?php esc_html_e( 'Address Line 2 ', 'wp-user-frontend' ); ?><?php echo isset( $address2_required ) ? esc_attr( $req_div ) : null; ?></div>
+                            <div class="wpuf-label"><?php esc_html_e( 'Address Line 2 ', 'wp-user-frontend' ); ?><?php echo isset( $address2_required ) ? wp_kses( '<span class="required">*</span>', array( 'span' => array() ) ) : null; ?></div>
                             <div class="wpuf-fields">
                                 <input type="text" class="input <?php echo isset( $address2_required ) ? esc_attr( $required_class ) : null; ?>" name="wpuf_biiling_add_line_2"
                                        id="wpuf_biiling_add_line_2"
@@ -238,14 +237,14 @@ class WPUF_Ajax_Address_Form {
                             </div>
                         </td>
                         <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo esc_attr( $city_hide ); ?>">
-                            <div class="wpuf-label"><?php esc_html_e( 'City', 'wp-user-frontend' ); ?><?php echo isset( $city_required ) ? esc_attr( $req_div ) : null; ?></div>
+                            <div class="wpuf-label"><?php esc_html_e( 'City', 'wp-user-frontend' ); ?><?php echo isset( $city_required ) ? wp_kses( '<span class="required">*</span>', array( 'span' => array() ) ) : null; ?></div>
                             <div class="wpuf-fields">
                                 <input type="text" class="input <?php echo isset( $city_required ) ? esc_attr( $required_class ) : null; ?>" name="wpuf_biiling_city" id="wpuf_biiling_city"
                                        value="<?php echo esc_attr( $address_fields['city'] ); ?>"/>
                             </div>
                         </td>
                         <td style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo esc_attr( $zip_hide ); ?>">
-                            <div class="wpuf-label"><?php esc_html_e( 'Postal Code/ZIP', 'wp-user-frontend' ); ?><?php echo isset( $zip_required ) ? esc_attr( $req_div ) : null; ?></div>
+                            <div class="wpuf-label"><?php esc_html_e( 'Postal Code/ZIP', 'wp-user-frontend' ); ?><?php echo isset( $zip_required ) ? esc_html( wp_kses( '<span class="required">*</span>', array( 'span' => array() ) ) ) : null; ?></div>
                             <div class="wpuf-fields">
                                 <input type="text" class="input <?php echo isset( $zip_required ) ? esc_attr( $required_class ) : null; ?>" name="wpuf_biiling_zip_code" id="wpuf_biiling_zip_code"
                                        value="<?php echo esc_attr( $address_fields['zip_code'] ); ?>"/>

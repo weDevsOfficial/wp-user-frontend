@@ -3058,9 +3058,8 @@ function wpuf_ajax_get_states_field() {
         $response = 'nostates';
     }
 
-    echo $response;
-
-    wp_die();
+    wp_send_json( $response ) ; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    
 }
 add_action( 'wp_ajax_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
 add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );

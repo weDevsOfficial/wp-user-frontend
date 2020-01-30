@@ -10,7 +10,7 @@ ob_start();
     <div style="display: none;" class="wpuf-success"><?php esc_html_e( 'Profile updated successfully!', 'wp-user-frontend' ); ?></div>
     <div style="display: none;" class="wpuf-error"><?php esc_html_e( 'Something went wrong!', 'wp-user-frontend' ); ?></div>
     <ul class="wpuf-form form-label-above">
-        <li class="wpuf-el form-row form-row-first">
+        <li class="wpuf-el form-row form-row">
             <div class="wpuf-label" >
                 <label for="first_name"><?php esc_html_e( 'First Name ', 'wp-user-frontend' ); ?><span class="required">*</span></label>
             </div>
@@ -18,7 +18,8 @@ ob_start();
                 <input type="text" class="input-text" name="first_name" id="first_name" value="<?php echo esc_attr( $current_user->first_name ); ?>" required>
             </div>
         </li>
-        <li class="wpuf-el form-row-last">
+        <div class="clear"></div>
+        <li class="wpuf-el form-row">
             <div class="wpuf-label" >
                 <label for="last_name"><?php esc_html_e( 'Last Name ', 'wp-user-frontend' ); ?><span class="required">*</span></label>
             </div>

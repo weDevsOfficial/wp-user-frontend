@@ -3031,7 +3031,7 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
  * @return void
  */
 function wpuf_ajax_get_states_field() {
-    $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+    $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
     if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
         return ;
@@ -3058,12 +3058,12 @@ function wpuf_ajax_get_states_field() {
         $response = 'nostates';
     }
 
-    echo esc_html( $response );
+    echo $response;
 
     wp_die();
 }
-add_action( 'wp_ajax_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' );
-add_action( 'wp_ajax_nopriv_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' );
+add_action( 'wp_ajax_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
+add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
 
 /**
  * Performs tax calculations and updates billing address
@@ -3071,12 +3071,13 @@ add_action( 'wp_ajax_nopriv_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' 
  * @return void
  */
 function wpuf_update_billing_address() {
-    ob_start();
-    $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+    $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
     if ( isset( $nonce ) &&  ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
         return ;
     }
+
+    ob_start();
 
     $user_id        = get_current_user_id();
     $add_line_1 =   isset( $_POST['billing_add_line1'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_add_line1'] ) ) : '';
@@ -3101,8 +3102,8 @@ function wpuf_update_billing_address() {
 
     $post_data['type']            = $type;
     $post_data['id']              = $id;
-    $post_data['billing_country'] = $billing_country;
-    $post_data['billing_state']   = $billing_state;
+    $post_data['billing_country'] = $country;
+    $post_data['billing_state']   = $state;
 
     $is_pro = wpuf()->is_pro();
 
@@ -3118,7 +3119,7 @@ add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_a
 /**
  * Retrieve user address
  *
- * @return void
+ * @return mixed
  */
 function wpuf_get_user_address() {
     $user_id        = get_current_user_id();

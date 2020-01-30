@@ -22,6 +22,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         add_action( 'init', [ $this, 'publish_guest_post' ] );
         // draft
         add_action( 'wp_ajax_wpuf_draft_post', [ $this, 'draft_post' ] );
+        add_action( 'wp_ajax_nopriv_wpuf_draft_post', [ $this, 'draft_post' ] );
         // form preview
         add_action( 'wp_ajax_wpuf_form_preview', [ $this, 'preview_form' ] );
         $this->set_wp_post_types();

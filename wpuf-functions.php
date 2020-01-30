@@ -419,6 +419,9 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
             'value' =>[],
             'name'  => [],
             'id'    => [],
+        ],
+        'ul' => [
+            'class' => []
         ]
     ] );
     echo wp_kses_post( '</ul>' );

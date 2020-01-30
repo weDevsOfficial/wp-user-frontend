@@ -160,8 +160,7 @@ class WPUF_Ajax_Address_Form {
                             $base_addr = get_option( 'wpuf_base_country_state', false );
 
                             $selected['country'] = !( empty( $address_fields['country'] ) ) ? $address_fields['country'] : $base_addr['country'];
-
-                            echo wp_kses_post( wpuf_select( [
+                            echo wp_kses( wpuf_select( [
                                 'options'          => $cs->countries(),
                                 'name'             => 'wpuf_biiling_country',
                                 'selected'         => $selected['country'],
@@ -171,7 +170,19 @@ class WPUF_Ajax_Address_Form {
                                 'class'            => 'wpuf_biiling_country',
                                 'chosen'           => false,
                                 'placeholder'      => __( 'Choose a country', 'wp-user-frontend' ),
-                            ] ) ); ?>
+                            ] ), [
+                                'select' => [
+                                    'class' => [],
+                                    'name' => [],
+                                    'id' => [],
+                                    'data-placeholder' => []
+                                ],
+                                'option' => [
+                                    'value' => [],
+                                    'class' => [],
+                                    'id' => []
+                                ],
+                            ] ); ?>
                         </td>
                         <td class="<?php echo isset( $state_required ) ? esc_attr( $required_class ) : null; ?>" style="display:inline-block;float:left;width:100%;margin:0px;padding:5px;<?php echo esc_attr( $state_hide ); ?>">
                             <label><?php esc_html_e( 'State/Province/Region', 'wp-user-frontend' ); ?><?php echo isset( $state_required ) ? esc_attr( $req_div ) : null; ?></label>

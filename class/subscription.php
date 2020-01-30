@@ -412,33 +412,6 @@ class WPUF_Subscription {
         ] );
     }
 
-    /**
-     * Update users subscription
-     *
-     * Updates the pack when new re-curring payment IPN notification is being
-     * sent from PayPal.
-     *
-     * @return void
-     */
-    /*public function update_paypal_subscr_payment() {
-        $txn_type = isset( $_POST['txn_type'] ) ? sanitize_text_field( wp_unslash( $_POST['txn_type'] ) ) : '';
-        $payment_status = isset( $_POST['payment_status'] ) ? sanitize_text_field( wp_unslash( $_POST['payment_status'] ) ) : '';
-
-        $custom = isset( $_POST['custom'] ) ? sanitize_text_field( wp_unslash( $_POST['custom'] ) ) : '';
-
-        if ( $txn_type != 'subscr_payment'  ) {
-            return;
-        }
-
-        if ( strtolower( $payment_status ) != 'completed' ) {
-            return;
-        }
-
-        $pack  = $this->get_subscription( $pack_id );
-        $payer = json_decode( stripcslashes( $custom ) );
-
-        $this->update_user_subscription_meta( $payer->payer_id, $pack );
-    } */
 
     /**
      * Get a subscription row from database

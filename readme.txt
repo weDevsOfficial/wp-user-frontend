@@ -3,9 +3,9 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
-Tested up to: 5.3
+Tested up to: 5.3.2
 Requires PHP: 5.6
-Stable tag: 3.1.16
+Stable tag: 3.1.17
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -263,6 +263,9 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.1.17 (31 January, 2020) =
+* **Fix:** some regressions after phpcs fixes
 
 = v3.1.16 (17 January, 2020) =
 * **Fix:** Photo insert option in content editor

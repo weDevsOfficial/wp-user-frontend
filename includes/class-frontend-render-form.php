@@ -645,7 +645,7 @@ class WPUF_Frontend_Render_Form {
         // process repeatable fields separately
         // if the input is array type, implode with separator in a field
         // /check_ajax_referer( 'wpuf_form_add' );
-        $post_data = wp_unslash( $_POST );
+        $post_data = wp_unslash( $_POST ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
         $files          = [];
         $meta_key_value = [];
         $multi_repeated = []; //multi repeated fields will in sotre duplicated meta key

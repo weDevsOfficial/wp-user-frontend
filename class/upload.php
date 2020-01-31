@@ -111,13 +111,18 @@ class WPUF_Upload {
                     'alt' => [],
                 ],
                 'input' => [
-                    'type' => [],
-                    'name' => [],
-                    'value' => [],
+                    'type'        => [],
+                    'name'        => [],
+                    'value'       => [],
+                    'placeholder' => []
+                ],
+                'textarea' => [
+                    'name'        => [],
+                    'placeholder' => []
                 ],
                 'a' => [
-                    'href' => [],
-                    'class' => [],
+                    'href'           => [],
+                    'class'          => [],
                     'data-attach_id' => [],
                 ],
                 'span' => [

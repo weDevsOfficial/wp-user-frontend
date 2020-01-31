@@ -589,9 +589,9 @@ class WPUF_Simple_Login {
 
             $pass1 = sanitize_text_field( wp_unslash( $_POST['pass1'] ) );
             $pass2 = sanitize_text_field( wp_unslash( $_POST['pass2'] ) );
-            $key = sanitize_key( wp_unslash( $_POST['key'] ) );
-            $login = sanitize_key( wp_unslash( $_POST['login'] ) );
-            $nonce = sanitize_key( wp_unslash( $_POST['_wpnonce'] ) );
+            $key = sanitize_text_field( wp_unslash( $_POST['key'] ) );
+            $login = sanitize_text_field( wp_unslash( $_POST['login'] ) );
+            $nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
 
             // verify reset key again
             $user = $this->check_password_reset_key( $key, $login );
@@ -971,10 +971,12 @@ class WPUF_Simple_Login {
             $blogname = $GLOBALS['current_site']->site_name;
         }
 
+        $user_data = get_user_by( 'login', $user_login );
+
         $title   = sprintf( __( '[%s] Password Reset', 'wp-user-frontend' ), $blogname );
         $title   = apply_filters( 'retrieve_password_title', $title );
 
-        $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login );
+        $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 
         if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
             wp_die( esc_html( __( 'The e-mail could not be sent.', 'wp-user-frontend' ) ) . "<br />\n" . esc_html( __( 'Possible reason: your host may have disabled the mail() function.', 'wp-user-frontend' ) ) );
@@ -1038,8 +1040,7 @@ class WPUF_Simple_Login {
      */
     public static function get_posted_value( $key ) {
         if ( isset( $_REQUEST[$key] ) ) {
-            $requested_key = sanitize_key( wp_unslash( $_REQUEST[$key] ) );
-            return esc_attr( $requested_key );
+            return sanitize_text_field( wp_unslash( $_REQUEST[$key] ) );
         }
 
         return '';

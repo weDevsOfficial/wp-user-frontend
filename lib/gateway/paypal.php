@@ -23,6 +23,7 @@ class WPUF_Paypal {
         add_action( 'wpuf_paypal_ipn_success', [ $this, 'paypal_success' ] );
         add_action( 'wpuf_cancel_payment_paypal', [ $this, 'handle_cancel_subscription' ] );
         add_action( 'wpuf_cancel_subscription_paypal', [ $this, 'handle_cancel_subscription' ] );
+        add_action( 'wpuf_paypal_ipn_success', [ $this, 'update_paypal_subscr_payment' ] );
     }
 
     public function subscription_cancel( $user_id ) {
@@ -451,5 +452,35 @@ class WPUF_Paypal {
         }
 
         return false;
+    }
+
+    /**
+     * Update users subscription
+     *
+     * Updates the pack when new recurring payment IPN notification is being
+     * sent from PayPal.
+     *
+     * @return void
+     */
+    public function update_paypal_subscr_payment() {
+        $txn_type       = isset( $_POST['txn_type'] ) ? sanitize_text_field( wp_unslash( $_POST['txn_type'] ) ) : '';
+        $payment_status = isset( $_POST['payment_status'] ) ? sanitize_text_field( wp_unslash( $_POST['payment_status'] ) ) : '';
+
+        $custom = isset( $_POST['custom'] ) ? sanitize_text_field( wp_unslash( $_POST['custom'] ) ) : '';
+
+        $pack_id = $_POST['item_number'];
+
+        if ( $txn_type != 'subscr_payment' ) {
+            return;
+        }
+
+        if ( strtolower( $payment_status ) != 'completed' ) {
+            return;
+        }
+
+        $pack  = $this->get_subscription( $pack_id );
+        $payer = json_decode( stripcslashes( $custom ) );
+
+        $this->update_user_subscription_meta( $payer->payer_id, $pack );
     }
 }

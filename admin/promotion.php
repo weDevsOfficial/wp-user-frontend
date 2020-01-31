@@ -184,8 +184,8 @@ class WPUF_Admin_Promotion {
                     <img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="">
                 </div>
                 <div class="wpuf-review-text">
-                        <h3><?php esc_html_e( 'Enjoying <strong>WP User Frontend</strong>?', 'wp-user-frontend' ); ?></h3>
-                        <p><?php esc_html_e( 'Hope that you had a neat and snappy experience with the tool. Would you please show us a little love by rating us in the <a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><strong>WordPress.org</strong></a>?', 'wp-user-frontend' ); ?></p>
+                        <h3><?php echo wp_kses_post( 'Enjoying <strong>WP User Frontend</strong>?', 'wp-user-frontend' ); ?></h3>
+                        <p><?php echo wp_kses_post( 'Hope that you had a neat and snappy experience with the tool. Would you please show us a little love by rating us in the <a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><strong>WordPress.org</strong></a>?', 'wp-user-frontend' ); ?></p>
 
                     <ul class="wpuf-review-ul">
                         <li><a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Sure! I\'d love to!', 'wp-user-frontend' ); ?></a></li>

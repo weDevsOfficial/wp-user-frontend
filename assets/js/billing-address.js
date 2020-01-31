@@ -20,7 +20,7 @@ jQuery(function($){
             isValid = false;
         }
         return isValid;
-    }
+    };
 
     $('#wpuf-payment-gateway').submit(function (e) {
         if ( ! window.wpuf_validate_address(e) ) {
@@ -32,18 +32,26 @@ jQuery(function($){
 
     $('#wpuf-ajax-address-form').submit(function (e) {
         e.preventDefault();
+        var $wpuf_cc_address = jQuery('#wpuf-address-country-state');
         $.post(ajax_object.ajaxurl, {
+            _wpnonce: $("#_wpnonce").val(),
             action: 'wpuf_address_ajax_action',
-            data: $('#wpuf-ajax-address-form').serialize(),
+            billing_country: $wpuf_cc_address.find('#wpuf_biiling_country').val(),
+            billing_state: $wpuf_cc_address.find('#wpuf_biiling_state').val(),
+            billing_add_line1: $wpuf_cc_address.find('#wpuf_biiling_add_line_1').val(),
+            billing_add_line2: $wpuf_cc_address.find('#wpuf_biiling_add_line_2').val(),
+            billing_city: $wpuf_cc_address.find('#wpuf_biiling_city').val(),
+            billing_zip: $wpuf_cc_address.find('#wpuf_biiling_zip_code').val(),
         });
     });
 
     $( document.body ).on('change', 'select#wpuf_biiling_country', function() {
         var $this = $(this), $tr = $this.closest('tr');
         var data = {
-            action: 'wpuf_get_shop_states',
+            action: 'wpuf-ajax-address',
             country: $(this).val(),
             field_name: $("#wpuf_biiling_state").attr("name"),
+            _wpnonce: $("#_wpnonce").val()
         };
         $.post(ajax_object.ajaxurl, data, function (response) {
             if( 'nostates' == response ) {

@@ -419,6 +419,9 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
             'value' =>[],
             'name'  => [],
             'id'    => [],
+        ],
+        'ul' => [
+            'class' => []
         ]
     ] );
     echo wp_kses_post( '</ul>' );
@@ -730,7 +733,7 @@ function wpuf_show_custom_fields( $content ) {
             if ( isset( $attr['wpuf_cond']['condition_status'] ) && $attr['wpuf_cond']['condition_status'] == 'yes' ) {
                 foreach ( $attr['wpuf_cond']['cond_field'] as $field_key => $cond_field_name ) {
 
-                    //check if the condintal field is a taxonomuy
+                    //check if the conditional field is a taxonomy
                     if ( taxonomy_exists( $cond_field_name ) ) {
                         $post_terms       = wp_get_post_terms( $post->ID, $cond_field_name, true );
                         $cond_field_value = [];
@@ -740,7 +743,7 @@ function wpuf_show_custom_fields( $content ) {
                                 $cond_field_value[] = $term_array->term_id;
                             }
                         }
-                        //$cond_field_value = isset($post_terms[0]) ? $post_terms[0]->term_id : '';
+                        $cond_field_value = isset($post_terms[0]) ? $post_terms[0]->term_id : '';
                     } else {
                         $cond_field_value = get_post_meta( $post->ID, $cond_field_name, 'true' );
                     }
@@ -1513,11 +1516,12 @@ function wpuf_get_child_cats() {
     $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
     $parentCat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
-    $field_attr = isset( $_POST['field_attr'] ) ? sanitize_text_field( wp_unslash( $_POST['field_attr'] ) ) : '';
+    $field_attr = isset( $_POST['field_attr'] ) ? array_map('sanitize_text_field', wp_unslash( $_POST['field_attr'] ) ) : [];
 
     if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
-        return;
+
     }
+    $allowed_tags = wp_kses_allowed_html( 'post' );
 
 
     $taxonomy   = $field_attr['name'];
@@ -1526,7 +1530,7 @@ function wpuf_get_child_cats() {
     $result = '';
 
     if ( $parentCat < 1 ) {
-        die( esc_html( $result ) );
+        die( wp_kses_post( $result, $allowed_tags ) );
     }
 
     if ( $terms = get_categories( 'taxonomy=' . $taxonomy . '&child_of=' . $parentCat . '&hide_empty=0' ) ) {
@@ -1539,11 +1543,11 @@ function wpuf_get_child_cats() {
         }
         // $result .= WPUF_Render_Form::init()->taxnomy_select( '', $field_attr );
         $result .= taxnomy_select( '', $field_attr );
+
     } else {
         die( '' );
     }
-
-    die( esc_html( $result ) );
+    die( wp_kses_post( $result, $allowed_tags ) );
 }
 
 function taxnomy_select( $terms, $attr ) {
@@ -1579,7 +1583,7 @@ function taxnomy_select( $terms, $attr ) {
 
     $select = wp_dropdown_categories( $tax_args );
 
-    echo wp_kses_post( str_replace( '<select', '<select ' . $required, $select ) );
+    echo str_replace( '<select', '<select ' . $required, $select ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     $attr = [
         'required'     => $attr['required'],
         'name'         => $attr['name'],
@@ -1592,7 +1596,7 @@ function taxnomy_select( $terms, $attr ) {
         //'term_id'      => $selected
     ];
     $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr ); ?>
-    <span data-taxonomy=<?php echo esc_attr( json_encode( $attr ) ); ?>></span>
+    <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
     <?php
 }
 
@@ -3027,7 +3031,7 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
  * @return void
  */
 function wpuf_ajax_get_states_field() {
-    $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+    $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
     if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
         return ;
@@ -3054,12 +3058,11 @@ function wpuf_ajax_get_states_field() {
         $response = 'nostates';
     }
 
-    echo esc_html( $response );
-
-    wp_die();
+    wp_send_json( $response ) ; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    
 }
-add_action( 'wp_ajax_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' );
-add_action( 'wp_ajax_nopriv_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' );
+add_action( 'wp_ajax_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
+add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
 
 /**
  * Performs tax calculations and updates billing address
@@ -3067,12 +3070,13 @@ add_action( 'wp_ajax_nopriv_wpuf_get_shop_states', 'wpuf_ajax_get_states_field' 
  * @return void
  */
 function wpuf_update_billing_address() {
-    ob_start();
-    $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+    $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
     if ( isset( $nonce ) &&  ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
         return ;
     }
+
+    ob_start();
 
     $user_id        = get_current_user_id();
     $add_line_1 =   isset( $_POST['billing_add_line1'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_add_line1'] ) ) : '';
@@ -3097,8 +3101,8 @@ function wpuf_update_billing_address() {
 
     $post_data['type']            = $type;
     $post_data['id']              = $id;
-    $post_data['billing_country'] = $billing_country;
-    $post_data['billing_state']   = $billing_state;
+    $post_data['billing_country'] = $country;
+    $post_data['billing_state']   = $state;
 
     $is_pro = wpuf()->is_pro();
 
@@ -3114,7 +3118,7 @@ add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_a
 /**
  * Retrieve user address
  *
- * @return void
+ * @return mixed
  */
 function wpuf_get_user_address() {
     $user_id        = get_current_user_id();

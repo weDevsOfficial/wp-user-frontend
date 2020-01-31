@@ -651,7 +651,7 @@ abstract class WPUF_Field_Contract {
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 15,
-                'help_text' => __( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ),
+                'help_text' => __( 'Number of words the author to be restricted in', 'wp-user-frontend' ),
             ],
         ];
     }

@@ -544,7 +544,7 @@ function _wpuf_changelog_content( $content ) {
                                 </h4>
 
                                 <div class="description">
-                                    <?php echo esc_html( _wpuf_changelog_content( $change['description'] ) ); ?>
+                                    <?php echo wp_kses_post( _wpuf_changelog_content( $change['description'] ) ); ?>
                                 </div>
                             </li>
                         <?php } ?>

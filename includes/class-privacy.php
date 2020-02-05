@@ -77,7 +77,7 @@ class WPUF_Privacy {
             '<p>' . __( 'WP User Frontend Pro comes with support for modules like MailChimp, ConvertKit, Stipe, Paid Membership Pro, MailPoet, Zapier, GetResponse, MailPoet 3, Campaign Monitor, Social Login, BuddyPress. Please note any future modules that will be added will have some data transferred to their own platform which falls in their own data policy. ', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'As an example while using MailChimp for your marketing email automation service by integrating it with WP User Frontend, some of your data will be passed to MailChimp, including information required to process or support the email marketing services, such as name, email address and any other information that you intend to pass or collect including all collected information through subscription. ', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'Please see the <a href="https://mailchimp.com/legal/privacy/">MailChimp Privacy Policy</a> for more details.', 'wp-user-frontend' ) . '</p>' .
-            '</div>;
+            '</div>';
 
         return apply_filters( 'wpuf_privacy_policy_content', $content );
     }

@@ -163,7 +163,7 @@ class WPUF_Privacy {
         $data_to_export[] = [
             'group_id'          => 'wpuf-user-data',
             'group_label'       => __( 'WPUF User Data', 'wp-user-frontend' ),
-            'group_description' => __( 'WordPress User Frontend customer data.', 'wp-user-frontend' ),
+            'group_description' => __( 'WP User Frontend user data.', 'wp-user-frontend' ),
             'item_id'           => 'wpuf-user',
             'data'              => apply_filters( 'wpuf_privacy_user_data', [], $wpuf_user, $page ),
         ];
@@ -285,7 +285,7 @@ class WPUF_Privacy {
         $data_to_export[] = [
             'group_id'          => 'wpuf-subscription-data',
             'group_label'       => __( 'WPUF Subscription Data', 'wp-user-frontend' ),
-            'group_description' => __( 'WordPress User Frontend subscription data.', 'wp-user-frontend' ),
+            'group_description' => __( 'WP User Frontend subscription data.', 'wp-user-frontend' ),
             'item_id'           => 'wpuf-subscription',
             'data'              => self::get_subscription_data( $email_address, $page ),
         ];
@@ -315,7 +315,7 @@ class WPUF_Privacy {
                 $data_to_export[] = [
                     'group_id'          => 'wpuf-transaction-data',
                     'group_label'       => __( 'WPUF Transaction Data', 'wp-user-frontend' ),
-                    'group_description' => __( 'WordPress User Frontend transaction data.', 'wp-user-frontend' ),
+                    'group_description' => __( 'WP User Frontend transaction data.', 'wp-user-frontend' ),
                     'item_id'           => 'wpuf-transaction' . $txn_data['transaction_id'],
                     'data'              => [
                         [
@@ -406,7 +406,7 @@ class WPUF_Privacy {
                 $data_to_export[] = [
                     'group_id'          => 'wpuf-post-data',
                     'group_label'       => __( 'WPUF Post Data', 'wp-user-frontend' ),
-                    'group_description' => __( 'WordPress User Frontend post data.', 'wp-user-frontend' ),
+                    'group_description' => __( 'WP User Frontend post data.', 'wp-user-frontend' ),
                     'item_id'           => 'wpuf-posts-' . $data['id'],
                     'data'              => [
                         [

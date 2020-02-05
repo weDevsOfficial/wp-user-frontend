@@ -100,7 +100,7 @@ function wpuf_upload_attachment( $post_id ) {
                     'size'     => $wpuf_post_attachments['size'][$i],
                 ];
 
-                wpuf_upload_file( $upload );
+                wp_handle_upload( $upload );
             }//file exists
         }// end for
     }

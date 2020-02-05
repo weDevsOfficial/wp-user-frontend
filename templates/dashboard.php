@@ -17,9 +17,9 @@
                 }
 
                 printf(
-                   wp_kses_post( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ) ),
-                   esc_html( $dashboard_query->found_posts ),
-                   esc_html( implode( ', ', $labels ) )
+                    wp_kses_post( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ) ),
+                    wp_kses_post( $dashboard_query->found_posts ),
+                    wp_kses_post( implode( ', ', $labels ) )
                 );
                 ?>
             </div>
@@ -47,7 +47,7 @@
     <?php if ( $dashboard_query->have_posts() ) {
         $args = [
             'post_status' => 'publish',
-            'post_type'   => 'wpuf_forms',
+            'post_type'   => [ 'wpuf_forms' ],
         ];
 
         $query = new WP_Query( $args );
@@ -84,7 +84,7 @@
         $current_user       = wpuf_get_user(); ?>
 
         <div class="items-table-container">
-            <table class="items-table <?php echo implode( ' ', esc_attr( $post_type ) ); ?>" cellpadding="0" cellspacing="0">
+            <table class="items-table <?php echo wp_kses_post( implode( ' ', $post_type ) ); ?>" cellpadding="0" cellspacing="0">
                 <thead>
                     <tr class="items-list-header">
                         <?php
@@ -179,14 +179,14 @@
                                             if ( !empty( $terms ) ) {
                                                 foreach ( $terms as $term ) {
                                                     $post_tax_terms[] = sprintf( '<a href="%1$s">%2$s</a>',
-                                                        esc_url( get_term_link( $term->slug, $taxonomy_slug ) ),
+                                                        esc_url_raw( get_term_link( $term->slug, $taxonomy_slug ) ),
                                                         esc_html( $term->name )
                                                      );
                                                 }
                                             }
                                         }
                                     }
-                                    echo esc_html( apply_filters( 'wpuf_dashboard_post_taxonomy', implode( ',', $post_tax_terms ) ) );
+                                    echo wp_kses_post( apply_filters( 'wpuf_dashboard_post_taxonomy', implode( ',', $post_tax_terms ) ) );
 
                                     ?>
                                 </td>

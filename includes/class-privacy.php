@@ -30,11 +30,10 @@ class WPUF_Privacy {
      */
     public function get_privacy_message() {
         $content = '
-			<div contenteditable="false">' .
-            '<p class="wp-policy-help">' .
+			<div class="wp-suggested-text">' .
+            '<p class="privacy-policy-tutorial">' .
             __( 'This sample policy includes the basics around what personal data you may be collecting, storing and sharing, as well as who may have access to that data. Depending on what settings are enabled and which additional plugins are used, the specific information shared by your form will vary. We recommend consulting with a lawyer when deciding what information to disclose on your privacy policy.', 'wp-user-frontend' ) .
             '</p>' .
-            '</div>' .
             '<p>' . __( 'We collect information about you during the form submission process on our WordPress website.', 'wp-user-frontend' ) . '</p>' .
             '<h2>' . __( 'What we collect and store', 'wp-user-frontend' ) . '</h2>' .
             '<p>' . __( 'While you visit our , we’ll track:', 'wp-user-frontend' ) . '</p>' .
@@ -44,9 +43,7 @@ class WPUF_Privacy {
             '<li>' . __( 'Transaction Details: we’ll ask you to enter this so we can, for instance, provide & regulate subscription packs that you bought and keep track of your payment details for subscription packs!', 'wp-user-frontend' ) . '</li>' .
             '</ul>' .
             '<p>' . __( 'We’ll also use cookies to keep track of form elements while you’re browsing our site.', 'wp-user-frontend' ) . '</p>' .
-            '<div contenteditable="false">' .
-            '<p class="wp-policy-help">' . __( 'Note: you may want to further detail your cookie policy, and link to that section from here.', 'wp-user-frontend' ) . '</p>' .
-            '</div>' .
+            '<p class="privacy-policy-tutorial">' . __( 'Note: you may want to further detail your cookie policy, and link to that section from here.', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'When you fill up a form, we’ll ask you to provide information including your name, billing address, shipping address, email address, phone number, credit card/payment details and optional account information like username and password and any other form fields found in the form building options. We’ll use this information for purposes, such as, to:', 'wp-user-frontend' ) . '</p>' .
             '<ul>' .
             '<li>' . __( 'Send you information about your account and order', 'wp-user-frontend' ) . '</li>' .
@@ -67,14 +64,10 @@ class WPUF_Privacy {
             '</ul>' .
             '<p>' . __( 'Our team members have access to this information to help fulfill transactions and support you.', 'wp-user-frontend' ) . '</p>' .
             '<h2>' . __( 'What we share with others', 'wp-user-frontend' ) . '</h2>' .
-            '<div contenteditable="false">' .
-            '<p class="wp-policy-help">' . __( 'In this section you should list who you’re sharing data with, and for what purpose. This could include, but may not be limited to, analytics, marketing, payment gateways, shipping providers, and third party embeds.', 'wp-user-frontend' ) . '</p>' .
-            '</div>' .
+            '<p class="privacy-policy-tutorial">' . __( 'In this section you should list who you’re sharing data with, and for what purpose. This could include, but may not be limited to, analytics, marketing, payment gateways, shipping providers, and third party embeds.', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'We share information with third parties who help us provide our orders and store services to you; for example --', 'wp-user-frontend' ) . '</p>' .
             '<h3>' . __( 'Payments', 'wp-user-frontend' ) . '</h3>' .
-            '<div contenteditable="false">' .
-            '<p class="wp-policy-help">' . __( 'In this subsection you should list which third party payment processors you’re using to take payments on your site since these may handle customer data. We’ve included PayPal as an example, but you should remove this if you’re not using PayPal.', 'wp-user-frontend' ) . '</p>' .
-            '</div>' .
+            '<p class="privacy-policy-tutorial">' . __( 'In this subsection you should list which third party payment processors you’re using to take payments on your site since these may handle customer data. We’ve included PayPal as an example, but you should remove this if you’re not using PayPal.', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'We accept payments through PayPal. When processing payments, some of your data will be passed to PayPal, including information required to process or support the payment, such as the purchase total and billing information.', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'Please see the <a href="https://www.paypal.com/us/webapps/mpp/ua/privacy-full">PayPal Privacy Policy</a> for more details.', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'Also, we accept payments through Stripe. When processing payments, some of your data will be passed to Stripe, including information required to process or support the payment, such as the purchase total and billing information.', 'wp-user-frontend' ) . '</p>' .
@@ -83,7 +76,8 @@ class WPUF_Privacy {
             '<p>' . __( 'In this subsection you should list which third party modules you’re using to increase the functionality of your created forms using WP User Frontend since these may handle customer data.', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'WP User Frontend Pro comes with support for modules like MailChimp, ConvertKit, Stipe, Paid Membership Pro, MailPoet, Zapier, GetResponse, MailPoet 3, Campaign Monitor, Social Login, BuddyPress. Please note any future modules that will be added will have some data transferred to their own platform which falls in their own data policy. ', 'wp-user-frontend' ) . '</p>' .
             '<p>' . __( 'As an example while using MailChimp for your marketing email automation service by integrating it with WP User Frontend, some of your data will be passed to MailChimp, including information required to process or support the email marketing services, such as name, email address and any other information that you intend to pass or collect including all collected information through subscription. ', 'wp-user-frontend' ) . '</p>' .
-            '<p>' . __( 'Please see the <a href="https://mailchimp.com/legal/privacy/">MailChimp Privacy Policy</a> for more details.', 'wp-user-frontend' ) . '</p>';
+            '<p>' . __( 'Please see the <a href="https://mailchimp.com/legal/privacy/">MailChimp Privacy Policy</a> for more details.', 'wp-user-frontend' ) . '</p>' .
+            '</div>;
 
         return apply_filters( 'wpuf_privacy_policy_content', $content );
     }
@@ -167,10 +161,11 @@ class WPUF_Privacy {
         $wpuf_user      = self::get_user( $email_address );
 
         $data_to_export[] = [
-            'group_id'    => 'wpuf-user-data',
-            'group_label' => __( 'WPUF User Data', 'wp-user-frontend' ),
-            'item_id'     => 'wpuf-user',
-            'data'        => apply_filters( 'wpuf_privacy_user_data', [], $wpuf_user, $page ),
+            'group_id'          => 'wpuf-user-data',
+            'group_label'       => __( 'WPUF User Data', 'wp-user-frontend' ),
+            'group_description' => __( 'WP User Frontend user data.', 'wp-user-frontend' ),
+            'item_id'           => 'wpuf-user',
+            'data'              => apply_filters( 'wpuf_privacy_user_data', [], $wpuf_user, $page ),
         ];
 
         /**
@@ -288,10 +283,11 @@ class WPUF_Privacy {
      */
     public static function export_subscription_data( $email_address, $page ) {
         $data_to_export[] = [
-            'group_id'    => 'wpuf-subscription-data',
-            'group_label' => __( 'WPUF Subscription Data', 'wp-user-frontend' ),
-            'item_id'     => 'wpuf-subscription',
-            'data'        => self::get_subscription_data( $email_address, $page ),
+            'group_id'          => 'wpuf-subscription-data',
+            'group_label'       => __( 'WPUF Subscription Data', 'wp-user-frontend' ),
+            'group_description' => __( 'WP User Frontend subscription data.', 'wp-user-frontend' ),
+            'item_id'           => 'wpuf-subscription',
+            'data'              => self::get_subscription_data( $email_address, $page ),
         ];
 
         $response = [
@@ -317,10 +313,11 @@ class WPUF_Privacy {
         if ( !empty( $transaction_data ) ) {
             foreach ( $transaction_data as $txn_data ) {
                 $data_to_export[] = [
-                    'group_id'    => 'wpuf-transaction-data',
-                    'group_label' => __( 'WPUF Transaction Data', 'wp-user-frontend' ),
-                    'item_id'     => 'wpuf-transaction' . $txn_data['transaction_id'],
-                    'data'        => [
+                    'group_id'          => 'wpuf-transaction-data',
+                    'group_label'       => __( 'WPUF Transaction Data', 'wp-user-frontend' ),
+                    'group_description' => __( 'WP User Frontend transaction data.', 'wp-user-frontend' ),
+                    'item_id'           => 'wpuf-transaction' . $txn_data['transaction_id'],
+                    'data'              => [
                         [
                             'name'  => __( 'Transaction ID', 'wp-user-frontend' ),
                             'value' => $txn_data['transaction_id'],
@@ -407,10 +404,11 @@ class WPUF_Privacy {
         if ( !empty( $post_data ) ) {
             foreach ( $post_data as $data ) {
                 $data_to_export[] = [
-                    'group_id'    => 'wpuf-post-data',
-                    'group_label' => __( 'WPUF Post Data', 'wp-user-frontend' ),
-                    'item_id'     => 'wpuf-posts-' . $data['id'],
-                    'data'        => [
+                    'group_id'          => 'wpuf-post-data',
+                    'group_label'       => __( 'WPUF Post Data', 'wp-user-frontend' ),
+                    'group_description' => __( 'WP User Frontend post data.', 'wp-user-frontend' ),
+                    'item_id'           => 'wpuf-posts-' . $data['id'],
+                    'data'              => [
                         [
                             'name'  => __( 'Post ID', 'wp-user-frontend' ),
                             'value' => $data['id'],

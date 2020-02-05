@@ -227,8 +227,8 @@ class WPUF_Frontend_Render_Form {
             <html lang="en">
                 <head>
                     <meta charset="UTF-8">
-                    <title>Form Preview</title>
-                    <link rel="stylesheet" href="<?php echo esc_attr( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
+                    <title>__( 'Form Preview', 'wp-user-frontend' )</title>
+                    <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
 
                     <style type="text/css">
                         body {

@@ -223,7 +223,7 @@ class WPUF_Admin_Tools {
         if ( $export_type == 'all' && check_admin_referer( 'wpuf-export-regs-form' ) ) {
             static::export_to_json( 'wpuf_profile' );
         } elseif ( $export_type == 'selected' && check_admin_referer( 'wpuf-export-regs-form' ) ) {
-            $formlist = isset( $_POST['formlist'] ) ? sanitize_text_field( wp_unslash( $_POST['formlist'] ) ) : '';
+            $formlist = isset( $_POST['formlist'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['formlist'] ) ) : [];
 
             if ( $formlist == null ) {
                 printf( '<div class="error"><p>%s</p></div>', esc_html( __( 'Please select some form for exporting', 'wp-user-frontend' ) ) );
@@ -240,7 +240,7 @@ class WPUF_Admin_Tools {
      * @param int    $post_ids
      */
     public function export_data( $export_type, $post_ids ) {
-        $formlist = isset( $_POST['formlist'] ) ? sanitize_text_field( wp_unslash( $_POST['formlist'] ) ) : '';
+        $formlist = isset( $_POST['formlist'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['formlist'] ) ) : [];
 
         if ( $export_type == 'all' && check_admin_referer( 'wpuf-export-form' ) ) {
             static::export_to_json( 'wpuf_forms' );

@@ -357,15 +357,16 @@ class WPUF_Walker_Category_Checklist extends Walker {
 /**
  * Displays checklist of a taxonomy
  *
+ * @param int $post_id
+ * @param array $selected_cats
+ *
  * @since 0.8
  *
- * @param int   $post_id
- * @param array $selected_cats
  */
 function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = [], $class = null ) {
     require_once ABSPATH . '/wp-admin/includes/template.php';
 
-    $walker       = new WPUF_Walker_Category_Checklist();
+    $walker = new WPUF_Walker_Category_Checklist();
 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude      = $attr['exclude'];
@@ -382,7 +383,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     ];
 
     if ( $post_id ) {
-        $args['selected_cats'] = wp_get_object_terms( $post_id, $tax, ['fields' => 'ids'] );
+        $args['selected_cats'] = wp_get_object_terms( $post_id, $tax, [ 'fields' => 'ids' ] );
     } elseif ( $selected_cats ) {
         $args['selected_cats'] = $selected_cats;
     } else {
@@ -406,21 +407,22 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     echo wp_kses_post( '<ul class="wpuf-category-checklist">' );
     printf( '<input type="hidden" name="%s" value="0" />', esc_attr( $tax ) );
-    echo wp_kses( call_user_func_array( [&$walker, 'walk'], [$categories, 0, $args] ),[
-        'li' => [
+    echo wp_kses( call_user_func_array( [ &$walker, 'walk' ], [ $categories, 0, $args ] ), [
+        'li'    => [
             'class' => []
         ],
         'label' => [
             'class' => []
         ],
         'input' => [
-            'class' =>[],
-            'type'  =>[],
-            'value' =>[],
-            'name'  => [],
-            'id'    => [],
+            'class'   => [],
+            'type'    => [],
+            'value'   => [],
+            'name'    => [],
+            'id'      => [],
+            'checked' => [],
         ],
-        'ul' => [
+        'ul'    => [
             'class' => []
         ]
     ] );

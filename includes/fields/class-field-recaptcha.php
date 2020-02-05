@@ -51,10 +51,10 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
 
                 <div class="wpuf-fields <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>">
                     <script>
-                        function weformsRecaptchaCallback(token) {
+                        function wpufRecaptchaCallback(token) {
                             jQuery('[name="g-recaptcha-response"]').val(token);
                             jQuery('.wpuf-submit-button').attr('disabled',false).show();
-                            jQuery('.weforms_submit_btn_recaptcha').hide();
+                            jQuery('.wpuf-submit-btn-recaptcha').hide();
                         }
 
                         jQuery(document).ready( function($) {
@@ -67,41 +67,41 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
 
                 if ( $is_invisible ) { ?>
 
-                    <script src="https://www.google.com/recaptcha/api.js?onload=weFormsreCaptchaLoaded&render=explicit&hl=en" async defer></script>
+                    <script src="https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en" async defer></script>
 
                     <script>
 
                         jQuery(document).ready(function($) {
                             var btn = $('.wpuf-submit-button');
-                            var gc_btn = btn.clone().removeClass().addClass('weforms_submit_btn_recaptcha').attr('disabled',false);
+                            var gc_btn = btn.clone().removeClass().addClass('wpuf-submit-btn-recaptcha').attr('disabled',false);
                             btn.after(gc_btn);
                             btn.hide();
 
-                            $(document).on('click','.weforms_submit_btn_recaptcha',function(e){
+                            $(document).on('click','.wpuf-submit-btn-recaptcha',function(e){
                                 e.preventDefault();
                                 e.stopPropagation();
                                 grecaptcha.execute();
                             })
                         });
 
-                        var weFormsreCaptchaLoaded = function() {
+                        var wpufreCaptchaLoaded = function() {
 
                             grecaptcha.render('recaptcha', {
                                 'size' : 'invisible',
                                 'sitekey' : '<?php echo esc_attr( $public_key ); ?>',
-                                'callback' : weformsRecaptchaCallback
+                                'callback' : wpufRecaptchaCallback
                             });
 
                             grecaptcha.execute();
                         };
                     </script>
 
-                    <div id='recaptcha' class="g-recaptcha" data-theme="<?php echo esc_attr( $theme ); ?>" data-sitekey="<?php echo esc_attr( $public_key ); ?>" data-callback="weformsRecaptchaCallback" data-size="invisible"></div>
+                    <div id='recaptcha' class="g-recaptcha" data-theme="<?php echo esc_attr( $theme ); ?>" data-sitekey="<?php echo esc_attr( $public_key ); ?>" data-callback="wpufRecaptchaCallback" data-size="invisible"></div>
 
                 <?php } else { ?>
 
                     <script src="https://www.google.com/recaptcha/api.js"></script>
-                    <div id='recaptcha' data-theme="<?php echo esc_attr( $theme ); ?>" class="g-recaptcha" data-sitekey="<?php echo esc_attr( $public_key ); ?>" data-callback="weformsRecaptchaCallback"></div>
+                    <div id='recaptcha' data-theme="<?php echo esc_attr( $theme ); ?>" class="g-recaptcha" data-sitekey="<?php echo esc_attr( $public_key ); ?>" data-callback="wpufRecaptchaCallback"></div>
                 <?php } ?>
 
                 </div>

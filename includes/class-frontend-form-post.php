@@ -45,9 +45,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         ob_start();
 
-        if ( !is_user_logged_in() ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>',
-            wp_login_form() );
+        if ( ! is_user_logged_in() ) {
+            echo wp_kses_post( '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>' ),
+
+            wp_login_form();
 
             return;
         }

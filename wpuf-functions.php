@@ -977,6 +977,25 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= sprintf( ' %s</li>', make_clickable( $value ) );
                     break;
 
+                case 'country_list':
+                    $value = get_post_meta( $post->ID, $attr['name'], true );
+                    $countries = wpuf_get_countries();
+
+                    $value = array_filter( $countries, function( $item ) use ( $value ) {
+                        return $item['code'] == $value;
+                    } );
+
+                    $value = $value[0]['name'];
+
+                    $html .= '<li>';
+
+                    if ( $hide_label == 'no' ) {
+                        $html .= '<label>' . $attr['label'] . '</label>:';
+                    }
+
+                    $html .= sprintf( ' %s</li>', make_clickable( $value ) );
+                    break;
+
                 default:
                     $value       = get_post_meta( $post->ID, $attr['name'] );
                     $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );
@@ -3061,7 +3080,7 @@ function wpuf_ajax_get_states_field() {
     }
 
     wp_send_json( $response ) ; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
-    
+
 }
 add_action( 'wp_ajax_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
 add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );

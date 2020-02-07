@@ -52,7 +52,7 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
                                 type="radio"
                                 value="<?php echo esc_attr( $value ); ?>"<?php checked( $selected, $value ); ?>
                             />
-                            <?php echo esc_html( $option ); ?>
+                            <?php echo $option; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </label>
                         <?php
                     }

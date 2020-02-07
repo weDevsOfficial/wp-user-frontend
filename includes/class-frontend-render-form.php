@@ -680,25 +680,27 @@ class WPUF_Frontend_Render_Form {
                     break;
 
                 case 'repeat':
+                    $repeater_value = wp_unslash( $_POST[$value['name']] ); // WPCS: sanitization ok.
 
                     // if it is a multi column repeat field
                     if ( isset( $value['multiple'] ) && $value['multiple'] == 'true' ) {
 
                         // if there's any items in the array, process it
-                        if ( $value_name ) {
-                            $ref_arr = [];
+                        if ( $repeater_value ) {
+
+                            $ref_arr = array();
                             $cols    = count( $value['columns'] );
-                            $first   = array_shift( array_values( $value_name ) ); //first element
+                            $first   = array_shift( array_values( $repeater_value ) ); //first element
                             $rows    = count( $first );
 
                             // loop through columns
-                            for ( $i = 0; $i < $rows; $i++ ) {
+                            for ($i = 0; $i < $rows; $i++) {
 
                                 // loop through the rows and store in a temp array
-                                $temp = [];
+                                $temp = array();
+                                for ($j = 0; $j < $cols; $j++) {
 
-                                for ( $j = 0; $j < $cols; $j++ ) {
-                                    $temp[] = $value_name[$j][$i];
+                                    $temp[] = $repeater_value[$j][$i];
                                 }
 
                                 // store all fields in a row with self::$separator separated
@@ -711,7 +713,7 @@ class WPUF_Frontend_Render_Form {
                             }
                         }
                     } else {
-                        $meta_key_value[$value['name']] = implode( self::$separator, $value_name );
+                        $meta_key_value[$value['name']] = implode( self::$separator, $repeater_value );
                     }
 
                     break;

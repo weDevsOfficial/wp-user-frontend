@@ -41,10 +41,12 @@ class WPUF_Admin_Posting {
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
         wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
-
-        wp_enqueue_script( 'jquery-ui-datepicker' );
         wp_enqueue_script( 'jquery-ui-slider' );
-        wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', ['jquery-ui-datepicker'] );
+
+        if( ! class_exists('ACF') ) {
+            wp_enqueue_script( 'jquery-ui-datepicker' );
+            wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', ['jquery-ui-datepicker'] );
+        }
 
         if ( !empty( $api_key ) ) {
             wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key, [], null );
@@ -57,9 +59,9 @@ class WPUF_Admin_Posting {
                     display: none;
                 }
               </style>", [
-                'style' =>  [],
-                'button'    =>  []
-              ] );
+                    'style' =>  [],
+                    'button'    =>  []
+                ] );
             }
         }
 
@@ -123,7 +125,7 @@ class WPUF_Admin_Posting {
         <select name="wpuf_form_select">
             <option value="">--</option>
             <?php foreach ( $forms as $form ) { ?>
-            <option value="<?php echo esc_attr( $form->ID ); ?>"<?php selected( $selected, $form->ID ); ?>><?php echo esc_html( $form->post_title ); ?></option>
+                <option value="<?php echo esc_attr( $form->ID ); ?>"<?php selected( $selected, $form->ID ); ?>><?php echo esc_html( $form->post_title ); ?></option>
             <?php } ?>
         </select>
         <div>
@@ -211,7 +213,7 @@ class WPUF_Admin_Posting {
         } ?>
 
         <!-- <input type="hidden" name="wpuf_lock_editing_post_nonce" value="<?php // echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" /> -->
-         <?php wp_nonce_field( plugin_basename( __FILE__ ), 'wpuf_lock_editing_post_nonce' ); ?>
+        <?php wp_nonce_field( plugin_basename( __FILE__ ), 'wpuf_lock_editing_post_nonce' ); ?>
         <p><?php echo wp_kses_post( $msg ); ?></p>
 
         <label>
@@ -338,24 +340,24 @@ class WPUF_Admin_Posting {
         <table class="form-table wpuf-cf-table">
             <tbody>
 
-                <script type="text/javascript">
-                    if ( typeof wpuf_conditional_items === 'undefined' ) {
-                        wpuf_conditional_items = [];
-                    }
+            <script type="text/javascript">
+                if ( typeof wpuf_conditional_items === 'undefined' ) {
+                    wpuf_conditional_items = [];
+                }
 
-                    if ( typeof wpuf_plupload_items === 'undefined' ) {
-                        wpuf_plupload_items = [];
-                    }
+                if ( typeof wpuf_plupload_items === 'undefined' ) {
+                    wpuf_plupload_items = [];
+                }
 
-                    if ( typeof wpuf_map_items === 'undefined' ) {
-                        wpuf_map_items = [];
-                    }
-                </script>
+                if ( typeof wpuf_map_items === 'undefined' ) {
+                    wpuf_map_items = [];
+                }
+            </script>
 
-                <?php
-                    $atts = [];
-        wpuf()->fields->render_fields( $custom_fields, $form_id, $atts, $type = 'post', $post->ID );
-        // wp_nonce_field( 'wpuf_form_add' ); ?>
+            <?php
+            $atts = [];
+            wpuf()->fields->render_fields( $custom_fields, $form_id, $atts, $type = 'post', $post->ID );
+            // wp_nonce_field( 'wpuf_form_add' ); ?>
             </tbody>
         </table>
         <?php

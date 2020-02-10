@@ -1977,6 +1977,7 @@ function wpuf_get_currencies() {
         [ 'currency' => 'USD', 'label' => __( 'US Dollar', 'wp-user-frontend' ), 'symbol' => '&#36;' ],
         [ 'currency' => 'VND', 'label' => __( 'Vietnamese Dong', 'wp-user-frontend' ), 'symbol' => '&#8363;' ],
         [ 'currency' => 'EGP', 'label' => __( 'Egyptian Pound', 'wp-user-frontend' ), 'symbol' => 'EGP' ],
+        [ 'currency' => 'JOD', 'label' => __( 'Jordanian dinar', 'wp-user-frontend' ), 'symbol' => 'د.أ' ],
     ];
 
     return apply_filters( 'wpuf_currencies', $currencies );

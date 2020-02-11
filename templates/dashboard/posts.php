@@ -66,6 +66,8 @@ $post_type_obj   = get_post_type_object( $post_type );
     $payment_column     = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' );
     $enable_payment     = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
     $current_user       = wpuf_get_user();
+    $user_subscription  = new WPUF_User_Subscription( $current_user );
+    $subs_expired       = $user_subscription->expired();
     ?>
     <div class="items-table-container">
         <table class="items-table <?php echo esc_attr( $post_type ); ?>" cellpadding="0" cellspacing="0">
@@ -155,6 +157,10 @@ $post_type_obj   = get_post_type_object( $post_type );
                                         }
 
                                         if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( !empty( $payment_status ) && $payment_status != 'completed' ) ) {
+                                            $show_edit  = false;
+                                        }
+
+                                        if ( $subs_expired ) {
                                             $show_edit  = false;
                                         }
 

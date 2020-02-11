@@ -81,7 +81,10 @@
         $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
         $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
         $enable_payment     = wpuf_get_option( 'enable_payment', 'wpuf_payment' );
-        $current_user       = wpuf_get_user(); ?>
+        $current_user       = wpuf_get_user();
+        $user_subscription  = new WPUF_User_Subscription( $current_user );
+        $subs_expired       = $user_subscription->expired();
+        ?>
 
         <div class="items-table-container">
             <table class="items-table <?php echo wp_kses_post( implode( ' ', $post_type ) ); ?>" cellpadding="0" cellspacing="0">
@@ -246,6 +249,10 @@
                                             }
 
                                             if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( !empty( $payment_status ) && $payment_status != 'completed' ) ) {
+                                                $show_edit  = false;
+                                            }
+
+                                            if ( $subs_expired ) {
                                                 $show_edit  = false;
                                             }
 

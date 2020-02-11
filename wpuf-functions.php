@@ -1163,7 +1163,11 @@ function wpuf_meta_shortcode( $atts ) {
     }
 
     if ( $type == 'image' || $type == 'file' ) {
-        $images = get_post_meta( $post->ID, $name );
+        $images = get_post_meta( $post->ID, $name, true );
+
+        if ( ! is_array( $images ) ) {
+            $images = (array) $images;
+        }
 
         if ( $images ) {
             $html = '';
@@ -1176,7 +1180,7 @@ function wpuf_meta_shortcode( $atts ) {
                 }
 
                 $full_size = wp_get_attachment_url( $attachment_id );
-                $html .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
+                $html      .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
             }
 
             return $html;

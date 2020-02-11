@@ -190,7 +190,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
         ];
 
-        $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : '';
+        if ( is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
+            $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : [];
+        } else {
+            $category = sanitize_text_field( wp_unslash( $_POST['category'] ) );
+        }
 
         if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
             $postarr['post_category'] = is_array( $category ) ? $category : [ $category ];
@@ -351,11 +355,13 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
-        $category  = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : '';
+        if ( is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
+            $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : [];
+        } else {
+            $category = sanitize_text_field( wp_unslash( $_POST['category'] ) );
+        }
 
         if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
-
-
             if ( !is_array( $category ) && is_string( $category ) ) {
                 $category_strings = explode( ',', $category );
                 $cat_ids          = [];

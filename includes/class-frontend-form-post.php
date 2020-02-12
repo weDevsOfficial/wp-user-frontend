@@ -193,7 +193,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
             $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : [];
         } else {
-            $category = sanitize_text_field( wp_unslash( $_POST['category'] ) );
+            $category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
         }
 
         if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
@@ -358,7 +358,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
             $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : [];
         } else {
-            $category = sanitize_text_field( wp_unslash( $_POST['category'] ) );
+            $category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
         }
 
         if ( $category != '' && $category != '0' && $category[0] != '-1' )  {

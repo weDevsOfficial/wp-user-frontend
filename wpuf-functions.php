@@ -1555,7 +1555,7 @@ function wpuf_get_child_cats() {
     $result = '';
 
     if ( $parentCat < 1 ) {
-        die( wp_kses_post( $result, $allowed_tags ) );
+        die( wp_kses( $result, $allowed_tags ) );
     }
 
     if ( $terms = get_categories( 'taxonomy=' . $taxonomy . '&child_of=' . $parentCat . '&hide_empty=0' ) ) {
@@ -1572,7 +1572,7 @@ function wpuf_get_child_cats() {
     } else {
         die( '' );
     }
-    die( wp_kses_post( $result, $allowed_tags ) );
+    die( wp_kses( $result, $allowed_tags ) );
 }
 
 function taxnomy_select( $terms, $attr ) {

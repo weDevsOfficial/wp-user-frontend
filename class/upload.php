@@ -69,8 +69,8 @@ class WPUF_Upload {
             }
         }
 
-        $wpuf_file = isset( $_FILES['wpuf_file'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_FILES['wpuf_file'] ) ) : []; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        // $wpuf_file = isset( $_FILES['wpuf_file'] ) ? $_FILES['wpuf_file'] : []; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        //$wpuf_file = isset( $_FILES['wpuf_file'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_FILES['wpuf_file'] ) ) : []; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        $wpuf_file = isset( $_FILES['wpuf_file'] ) ? $_FILES['wpuf_file'] : []; // WPCS: sanitization ok.
 
         $upload = [
             'name'     => $wpuf_file['name'],

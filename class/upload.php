@@ -8,11 +8,11 @@
 class WPUF_Upload {
 
     public function __construct() {
-        add_action( 'wp_ajax_wpuf_upload_file', [$this, 'upload_file'] );
-        add_action( 'wp_ajax_nopriv_wpuf_upload_file', [$this, 'upload_file'] );
+        add_action( 'wp_ajax_wpuf_upload_file', [ $this, 'upload_file' ] );
+        add_action( 'wp_ajax_nopriv_wpuf_upload_file', [ $this, 'upload_file' ] );
 
-        add_action( 'wp_ajax_wpuf_file_del', [$this, 'delete_file'] );
-        add_action( 'wp_ajax_nopriv_wpuf_file_del', [$this, 'delete_file'] );
+        add_action( 'wp_ajax_wpuf_file_del', [ $this, 'delete_file' ] );
+        add_action( 'wp_ajax_nopriv_wpuf_file_del', [ $this, 'delete_file' ] );
 
         add_action( 'wp_ajax_wpuf_insert_image', [ $this, 'insert_image' ] );
         add_action( 'wp_ajax_nopriv_wpuf_insert_image', [ $this, 'insert_image' ] );
@@ -26,27 +26,27 @@ class WPUF_Upload {
     public function validate_nonce() {
         $nonce = isset( $_GET['nonce'] ) ? sanitize_key( wp_unslash( $_GET['nonce'] ) ) : '';
 
-        if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
-            return ;
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
+            return;
         }
     }
 
     public function upload_file( $image_only = false ) {
-        $nonce = isset( $_GET['nonce'] ) ? sanitize_key( wp_unslash( $_GET['nonce'] ) ) : '';
+        $nonce = isset( $_REQUEST['nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ) : '';
 
-        if ( isset( $nonce ) &&  !wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
-            return ;
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
+            return;
         }
 
         // a valid request will have a form ID
         $form_id = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : false;
 
-        if ( !$form_id ) {
+        if ( ! $form_id ) {
             die( 'error' );
         }
 
         // check if guest post enabled for guests
-        if ( !is_user_logged_in() ) {
+        if ( ! is_user_logged_in() ) {
             $guest_post    = false;
             $form_settings = wpuf_get_form_settings( $form_id );
 
@@ -64,7 +64,7 @@ class WPUF_Upload {
                 $guest_post = true;
             }
 
-            if ( !$guest_post ) {
+            if ( ! $guest_post ) {
                 die( 'error' );
             }
         }
@@ -101,17 +101,17 @@ class WPUF_Upload {
             }
 
             echo wp_kses( $response['html'], [
-                'li' => [
+                'li'       => [
                     'class' => []
                 ],
-                'div' => [
+                'div'      => [
                     'class' => []
                 ],
-                'img' => [
+                'img'      => [
                     'src' => [],
                     'alt' => [],
                 ],
-                'input' => [
+                'input'    => [
                     'type'        => [],
                     'name'        => [],
                     'value'       => [],
@@ -121,15 +121,15 @@ class WPUF_Upload {
                     'name'        => [],
                     'placeholder' => []
                 ],
-                'a' => [
+                'a'        => [
                     'href'           => [],
                     'class'          => [],
                     'data-attach_id' => [],
                 ],
-                'span' => [
+                'span'     => [
                     'class' => []
                 ]
-            ]);
+            ] );
         } else {
             echo wp_kses_post( $attach['error'] );
         }
@@ -147,13 +147,20 @@ class WPUF_Upload {
      * @return bool|int attachment id on success, bool false instead
      */
     public function handle_upload( $upload_data ) {
-        $uploaded_file = wp_handle_upload( $upload_data, ['test_form' => false] );
+        $check_duplicate = $this->duplicate_upload( $upload_data );
+
+        if ( isset( $check_duplicate['duplicate'] ) && $check_duplicate['duplicate'] ) {
+            return [ 'success' => true, 'attach_id' => $check_duplicate['duplicate'] ];
+        }
+
+        $uploaded_file = wp_handle_upload( $upload_data, [ 'test_form' => false ] );
 
         // If the wp_handle_upload call returned a local path for the image
         if ( isset( $uploaded_file['file'] ) ) {
-            $file_loc  = $uploaded_file['file'];
-            $file_name = basename( $upload_data['name'] );
-            $file_type = wp_check_filetype( $file_name );
+            $file_loc    = $uploaded_file['file'];
+            $file_name   = basename( $upload_data['name'] );
+            $upload_hash = md5( $upload_data['name'] );
+            $file_type   = wp_check_filetype( $file_name );
 
             $attachment = [
                 'post_mime_type' => $file_type['type'],
@@ -165,21 +172,22 @@ class WPUF_Upload {
             $attach_id   = wp_insert_attachment( $attachment, $file_loc );
             $attach_data = wp_generate_attachment_metadata( $attach_id, $file_loc );
             wp_update_attachment_metadata( $attach_id, $attach_data );
+            update_post_meta( $attach_id, 'wpuf_file_hash', $upload_hash );
 
-            return ['success' => true, 'attach_id' => $attach_id];
+            return [ 'success' => true, 'attach_id' => $attach_id ];
         }
 
-        return ['success' => false, 'error' => $uploaded_file['error']];
+        return [ 'success' => false, 'error' => $uploaded_file['error'] ];
     }
 
     public static function attach_html( $attach_id, $type = null ) {
-        if ( !$type ) {
+        if ( ! $type ) {
             $type = isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : 'image';
         }
 
         $attachment = get_post( $attach_id );
 
-        if ( !$attachment ) {
+        if ( ! $attachment ) {
             return;
         }
 
@@ -234,5 +242,27 @@ class WPUF_Upload {
 
     public function insert_image() {
         $this->upload_file( true );
+    }
+
+    /**
+     * Check if duplicate file
+     *
+     * @param array $file
+     *
+     * @return mixed
+     */
+    function duplicate_upload( $file ) {
+        global $wpdb;
+
+        $upload_hash = md5( $file['name'] );
+
+        $sql   = $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta m JOIN $wpdb->posts p ON p.ID = m.post_id WHERE m.meta_key = 'wpuf_file_hash' AND m.meta_value = %s AND p.post_status != 'trash' LIMIT 1;", $upload_hash );
+        $match = $wpdb->get_var( $sql );
+
+        if ( $match ) {
+            $file['duplicate'] = $match;
+        }
+
+        return $file;
     }
 }

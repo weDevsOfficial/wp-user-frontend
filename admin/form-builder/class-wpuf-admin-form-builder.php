@@ -114,8 +114,27 @@ class WPUF_Admin_Form_Builder {
             'wpuf-selectize', 'wpuf-toastr', 'wpuf-clipboard', 'wpuf-tooltip',
         ] );
 
-        wp_enqueue_script( 'wpuf-form-builder-mixins', WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js', $form_builder_js_deps, WPUF_VERSION, true );
+        $single_objects = [
+            'post_title',
+            'post_content',
+            'post_excerpt',
+            'featured_image',
+            'user_login',
+            'first_name',
+            'last_name',
+            'nickname',
+            'user_email',
+            'user_url',
+            'user_bio',
+            'password',
+            'user_avatar',
+            'taxonomy'
+        ];
+        $taxonomy_terms = array_keys( get_taxonomies( array( 'hierarchical' => true ) ) );
+        $single_objects = array_merge( $single_objects, $taxonomy_terms );
 
+        wp_enqueue_script( 'wpuf-form-builder-mixins', WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js', $form_builder_js_deps, WPUF_VERSION, true );
+        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_single_objects', $single_objects );
         do_action( 'wpuf-form-builder-enqueue-after-mixins' );
 
         wp_enqueue_script( 'wpuf-form-builder-components', WPUF_ASSET_URI . '/js/wpuf-form-builder-components.js', [ 'wpuf-form-builder-mixins' ], WPUF_VERSION, true );

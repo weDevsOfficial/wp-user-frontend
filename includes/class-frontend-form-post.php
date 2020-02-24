@@ -696,7 +696,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 //add_post_meta( $post_id, $file_input['name'], $attachment_id );
 
                 // file title, caption, desc update
-                $file_data = isset( $wpuf_files[$attachment_id] ) ? $wpuf_files[$attachment_id] : false;
+                $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? wp_unslash( $_POST['wpuf_files_data'][$attachment_id] ) : false;
 
                 if ( $file_data ) {
                     $args = [

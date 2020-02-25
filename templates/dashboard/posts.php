@@ -61,13 +61,20 @@ $post_type_obj   = get_post_type_object( $post_type );
 <?php if ( $dashboard_query->have_posts() ) { ?>
 
     <?php
-    $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
-    $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
-    $payment_column     = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' );
-    $enable_payment     = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
-    $current_user       = wpuf_get_user();
-    $user_subscription  = new WPUF_User_Subscription( $current_user );
-    $subs_expired       = $user_subscription->expired();
+    $featured_img      = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
+    $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
+    $payment_column    = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' );
+    $enable_payment    = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
+    $current_user      = wpuf_get_user();
+    $user_subscription = new WPUF_User_Subscription( $current_user );
+    $user_sub          = $user_subscription->current_pack();
+    $sub_id            = $current_user->subscription()->current_pack_id();
+
+    if ( $sub_id ) {
+        $subs_expired = $user_subscription->expired();
+    } else {
+        $subs_expired = false;
+    }
     ?>
     <div class="items-table-container">
         <table class="items-table <?php echo esc_attr( $post_type ); ?>" cellpadding="0" cellspacing="0">

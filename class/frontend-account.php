@@ -221,11 +221,11 @@ class WPUF_Frontend_Account {
      * @return void
      */
     public function subscription_section( $sections, $current_section ) {
-        $wpuf_user  = wpuf_get_user();
-        $sub_id     = $wpuf_user->subscription()->current_pack_id();
+        $wpuf_user = wpuf_get_user();
+        $sub_id    = $wpuf_user->subscription()->current_pack_id();
 
-        if ( !$sub_id ) {
-           echo wp_kses_post( __( '<p>You are not subscribed to any package yet.</p>', 'wp-user-frontend' ) );
+        if ( ! $sub_id ) {
+            echo wp_kses_post( __( '<p>You are not subscribed to any package yet.</p>', 'wp-user-frontend' ) );
 
             return;
         }

@@ -75,15 +75,22 @@
 
         wp_reset_postdata();
 
-        $len                = count( $meta_key );
-        $len_label          = count( $meta_label );
-        $len_id             = count( $meta_id );
-        $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
-        $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
-        $enable_payment     = wpuf_get_option( 'enable_payment', 'wpuf_payment' );
-        $current_user       = wpuf_get_user();
-        $user_subscription  = new WPUF_User_Subscription( $current_user );
-        $subs_expired       = $user_subscription->expired();
+        $len               = count( $meta_key );
+        $len_label         = count( $meta_label );
+        $len_id            = count( $meta_id );
+        $featured_img      = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
+        $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
+        $enable_payment    = wpuf_get_option( 'enable_payment', 'wpuf_payment' );
+        $current_user      = wpuf_get_user();
+        $user_subscription = new WPUF_User_Subscription( $current_user );
+        $user_sub          = $user_subscription->current_pack();
+        $sub_id            = $current_user->subscription()->current_pack_id();
+
+        if ( $sub_id ) {
+            $subs_expired = $user_subscription->expired();
+        } else {
+            $subs_expired = false;
+        }
         ?>
 
         <div class="items-table-container">

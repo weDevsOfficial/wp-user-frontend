@@ -61,14 +61,12 @@ class WPUF_Admin_Settings {
     }
 
     public function admin_init() {
-        if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpuf-settings' ) {
-            //set the settings
-            $this->settings_api->set_sections( $this->get_settings_sections() );
-            $this->settings_api->set_fields( $this->get_settings_fields() );
+        //set the settings
+        $this->settings_api->set_sections( $this->get_settings_sections() );
+        $this->settings_api->set_fields( $this->get_settings_fields() );
 
-            //initialize settings
-            $this->settings_api->admin_init();
-        }
+        //initialize settings
+        $this->settings_api->admin_init();
     }
 
     /**

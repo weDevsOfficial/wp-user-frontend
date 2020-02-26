@@ -225,7 +225,7 @@ class WPUF_Frontend_Account {
         $sub_id    = $wpuf_user->subscription()->current_pack_id();
 
         if ( ! $sub_id ) {
-            echo wp_kses_post( __( '<p>You are not subscribed to any package yet.</p>', 'wp-user-frontend' ) );
+            echo wp_kses_post( __( '<p>You have not subscribed to any package yet.</p>', 'wp-user-frontend' ) );
 
             return;
         }
@@ -233,7 +233,7 @@ class WPUF_Frontend_Account {
         $user_sub          = $user_subscription->current_pack();
 
         if ( ! is_wp_error( $user_sub ) && $user_sub['status'] != 'completed' && $user_sub['status'] != 'free' ) {
-            esc_html_e( '<p>You may processed your payment, but the pack is not activated yet.</p>', 'wp-user-frontend' );
+            esc_html_e( '<p>You may have processed your payment, but the pack is not active yet.</p>', 'wp-user-frontend' );
 
             return;
         }

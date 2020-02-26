@@ -207,14 +207,17 @@ function wpuf_list_users() {
  * @return string HTML content, if not displaying
  */
 function wpuf_get_pages( $post_type = 'page' ) {
-    global $wpdb;
-
     $array = [ '' => __( '-- select --', 'wp-user-frontend' ) ];
-    $pages = get_posts( ['post_type' => $post_type, 'numberposts' => -1] );
+    $pages = get_posts( [ 'post_type'              => $post_type,
+                          'numberposts'            => - 1,
+                          'no_found_rows'          => true,
+                          'update_post_meta_cache' => false,
+                          'update_post_term_cache' => false
+    ] );
 
     if ( $pages ) {
         foreach ( $pages as $page ) {
-            $array[$page->ID] = esc_attr( $page->post_title );
+            $array[ $page->ID ] = esc_attr( $page->post_title );
         }
     }
 

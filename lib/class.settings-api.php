@@ -34,11 +34,14 @@ class WeDevs_Settings_API {
      * Enqueue scripts and styles
      */
     function admin_enqueue_scripts() {
-        wp_enqueue_style( 'wp-color-picker' );
-
-        wp_enqueue_media();
-        wp_enqueue_script( 'wp-color-picker' );
         wp_enqueue_script( 'jquery' );
+
+        if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpuf-settings' ) {
+            wp_enqueue_style( 'wp-color-picker' );
+            wp_enqueue_script( 'wp-color-picker' );
+
+            wp_enqueue_media();
+        }
     }
 
     /**

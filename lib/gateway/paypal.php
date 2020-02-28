@@ -39,8 +39,6 @@ class WPUF_Paypal {
      * @return void
      */
     public function recurring_change_status( $user_id, $status ) {
-        global $wp_version;
-
         $sub_info          = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
         $api_username      = wpuf_get_option( 'paypal_api_username', 'wpuf_payment' );
         $api_password      = wpuf_get_option( 'paypal_api_password', 'wpuf_payment' );
@@ -400,10 +398,6 @@ class WPUF_Paypal {
                 'created'          => current_time( 'mysql' ),
             ];
 
-            if ( isset( $postdata['profile_id'] ) ) {
-                update_user_meta( $custom->user_id, $custom->user_id, $postdata['profile_id'] );
-            }
-
             WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
 
             $transaction_id = wp_strip_all_tags( $postdata['txn_id'] );
@@ -416,6 +410,12 @@ class WPUF_Paypal {
                 $new_use   = $pre_usage + 1;
 
                 update_post_meta( $coupon_id, '_coupon_used', $new_use );
+            }
+
+            if ( isset( $postdata['profile_id'] ) ) {
+                $umeta = get_user_meta( $custom->user_id, '_wpuf_subscription_pack', true );
+                $umeta['profile_id'] = $postdata['profile_id'];
+                update_user_meta( $custom->user_id, '_wpuf_subscription_pack', $umeta );
             }
 
             delete_user_meta( $custom->user_id, '_wpuf_user_active' );

@@ -316,11 +316,11 @@ class WPUF_Paypal {
                 return;
             }
 
-            if ( $this->transaction_exists( $postdata['transaction_id'] ) ) {
+            if ( isset( $postdata['txn_id'] ) && $this->transaction_exists( $postdata['txn_id'] ) ) {
                 $wpdb->update( $wpdb->prefix . 'wpuf_transaction',
                     array( 'status' => strtolower( $postdata['payment_status'] ) ),
                     array(
-                        'transaction_id' => $postdata['transaction_id']
+                        'transaction_id' => $postdata['txn_id']
                     ) );
             }
 
@@ -490,7 +490,7 @@ class WPUF_Paypal {
     public function transaction_exists( $trns_id ) {
         global $wpdb;
 
-        if ( $wpdb->get_var( "SELECT transaction_id FROM `{$wpdb->prefix}wpuf_transaction` WHERE transaction_id={$trns_id} LIMIT 0, 1" ) ) {
+        if ( $wpdb->get_var( "SELECT transaction_id FROM `{$wpdb->prefix}wpuf_transaction` WHERE transaction_id='{$trns_id}' LIMIT 0, 1" ) ) {
             return true;
         }
 

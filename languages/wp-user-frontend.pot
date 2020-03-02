@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 3.1.17\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2020-01-31 06:48:49+00:00\n"
+"POT-Creation-Date: 2020-03-02 09:50:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,62 +28,62 @@ msgstr ""
 msgid "WP User Frontend"
 msgstr ""
 
-#: admin/class-admin-settings.php:84
+#: admin/class-admin-settings.php:83
 msgid "User Frontend"
 msgstr ""
 
-#: admin/class-admin-settings.php:86 admin/post-forms-list-table-view.php:4
+#: admin/class-admin-settings.php:85 admin/post-forms-list-table-view.php:4
 msgid "Post Forms"
 msgstr ""
 
-#: admin/class-admin-settings.php:95 admin/weforms.php:2
+#: admin/class-admin-settings.php:94 admin/weforms.php:2
 msgid "weForms"
 msgstr ""
 
-#: admin/class-admin-settings.php:95
+#: admin/class-admin-settings.php:94
 msgid "Contact Form"
 msgstr ""
 
-#: admin/class-admin-settings.php:99
+#: admin/class-admin-settings.php:98
 msgid "Subscriptions"
 msgstr ""
 
-#: admin/class-admin-settings.php:105 admin/class-tools.php:389
+#: admin/class-admin-settings.php:104 admin/class-tools.php:389
 #: admin/transactions.php:2
 msgid "Transactions"
 msgstr ""
 
-#: admin/class-admin-settings.php:108 admin/tools.php:13
+#: admin/class-admin-settings.php:107 admin/tools.php:13
 msgid "Tools"
 msgstr ""
 
-#: admin/class-admin-settings.php:113
+#: admin/class-admin-settings.php:112
 msgid "Premium"
 msgstr ""
 
-#: admin/class-admin-settings.php:115
+#: admin/class-admin-settings.php:114
 msgid "Help"
 msgstr ""
 
-#: admin/class-admin-settings.php:115
+#: admin/class-admin-settings.php:114
 msgid "<span style=\"color:#f18500\">Help</span>"
 msgstr ""
 
-#: admin/class-admin-settings.php:116 admin/class-admin-settings.php:156
+#: admin/class-admin-settings.php:115 admin/class-admin-settings.php:155
 #: admin/form-builder/views/form-builder.php:9 includes/setup-wizard.php:125
 msgid "Settings"
 msgstr ""
 
-#: admin/class-admin-settings.php:118 admin/class-admin-subscription.php:204
+#: admin/class-admin-settings.php:117 admin/class-admin-subscription.php:204
 #: admin/subscribers.php:18
 msgid "Subscribers"
 msgstr ""
 
-#: admin/class-admin-settings.php:377
+#: admin/class-admin-settings.php:376
 msgid "Number of items per page:"
 msgstr ""
 
-#: admin/class-admin-settings.php:407
+#: admin/class-admin-settings.php:406
 msgid "Post lock has been cleared"
 msgstr ""
 
@@ -131,7 +131,7 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
-#: admin/class-admin-subscription.php:205 includes/class-privacy.php:480
+#: admin/class-admin-subscription.php:205 includes/class-privacy.php:478
 #: includes/free/subscription.php:8
 msgid "Recurring"
 msgstr ""
@@ -305,10 +305,10 @@ msgid "Assign Package"
 msgstr ""
 
 #: admin/class-admin-subscription.php:774
-#: admin/form-builder/class-wpuf-admin-form-builder.php:264
+#: admin/form-builder/class-wpuf-admin-form-builder.php:283
 #: class/payment.php:205 class/subscription.php:783
 #: includes/class-list-table-subscribers.php:138 lib/appsero/Insights.php:764
-#: templates/dashboard/subscription.php:59
+#: templates/dashboard/subscription.php:65
 msgid "Cancel"
 msgstr ""
 
@@ -342,7 +342,7 @@ msgstr ""
 
 #: admin/class-tools.php:44 admin/class-tools.php:111
 #: admin/post-forms-list-table.php:43 class/transactions-list-table.php:87
-#: includes/class-list-table-subscribers.php:136 wpuf-functions.php:2830
+#: includes/class-list-table-subscribers.php:136 wpuf-functions.php:2859
 msgid "All"
 msgstr ""
 
@@ -545,38 +545,38 @@ msgstr ""
 msgid "Invalid form id"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:259
+#: admin/form-builder/class-wpuf-admin-form-builder.php:278
 msgid "Advanced Options"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:260
+#: admin/form-builder/class-wpuf-admin-form-builder.php:279
 msgid "Are you sure you want to delete this field?"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:261
-#: admin/posting.php:71 class/asset-loader.php:56 wpuf.php:722
+#: admin/form-builder/class-wpuf-admin-form-builder.php:280
+#: admin/posting.php:73 class/asset-loader.php:56 wpuf.php:722
 msgid "Yes, delete it"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:262
-#: admin/posting.php:72 class/asset-loader.php:57 wpuf.php:723
+#: admin/form-builder/class-wpuf-admin-form-builder.php:281
+#: admin/posting.php:74 class/asset-loader.php:57 wpuf.php:723
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:263
+#: admin/form-builder/class-wpuf-admin-form-builder.php:282
 msgid "OK"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:265
+#: admin/form-builder/class-wpuf-admin-form-builder.php:284
 #: includes/free/admin/shortcode-builder.php:70
 msgid "Close"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:266
+#: admin/form-builder/class-wpuf-admin-form-builder.php:285
 msgid "This field must contain at least one choice"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:267
+#: admin/form-builder/class-wpuf-admin-form-builder.php:286
 #: includes/fields/class-field-checkbox.php:112
 #: includes/fields/class-field-dropdown.php:96
 #: includes/fields/class-field-multidropdown.php:82
@@ -584,40 +584,40 @@ msgstr ""
 msgid "Option"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:268
+#: admin/form-builder/class-wpuf-admin-form-builder.php:287
 msgid "Column"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:269
+#: admin/form-builder/class-wpuf-admin-form-builder.php:288
 msgid "This field must contain at least one column"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:270
+#: admin/form-builder/class-wpuf-admin-form-builder.php:289
 msgid "is available in Pro version"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:271
+#: admin/form-builder/class-wpuf-admin-form-builder.php:290
 msgid "Please upgrade to the Pro version to unlock all these awesome features"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:272
+#: admin/form-builder/class-wpuf-admin-form-builder.php:291
 msgid "Get the Pro version"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:273
+#: admin/form-builder/class-wpuf-admin-form-builder.php:292
 #: includes/fields/class-abstract-fields.php:384
 msgid "Select"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:274
+#: admin/form-builder/class-wpuf-admin-form-builder.php:293
 msgid "Saved form data"
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:275
+#: admin/form-builder/class-wpuf-admin-form-builder.php:294
 msgid "You have unsaved changes."
 msgstr ""
 
-#: admin/form-builder/class-wpuf-admin-form-builder.php:276
+#: admin/form-builder/class-wpuf-admin-form-builder.php:295
 #: admin/form-builder/views/form-builder.php:49
 msgid "Click to copy shortcode"
 msgstr ""
@@ -719,7 +719,7 @@ msgstr ""
 #: admin/form.php:71 admin/form.php:109 admin/installer.php:86
 #: admin/post-forms-list-table.php:406 class/subscription.php:402
 #: includes/free/admin/shortcode-button.php:87 includes/free/edit-user.php:104
-#: templates/dashboard/posts.php:163 templates/dashboard.php:254
+#: templates/dashboard/posts.php:176 templates/dashboard.php:268
 msgid "Edit"
 msgstr ""
 
@@ -1070,7 +1070,7 @@ msgid "Name"
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:12 admin/html/support.php:223
-#: class/transactions-list-table.php:50 includes/class-privacy.php:361
+#: class/transactions-list-table.php:50 includes/class-privacy.php:358
 #: includes/free/edit-user.php:168 templates/registration-form.php:47
 msgid "Email"
 msgstr ""
@@ -1267,7 +1267,7 @@ msgid ""
 "<strong>offers</strong> and <strong>news updates</strong>."
 msgstr ""
 
-#: admin/html/support.php:218 includes/class-privacy.php:353
+#: admin/html/support.php:218 includes/class-privacy.php:350
 #: includes/free/edit-profile.php:106
 msgid "First Name"
 msgstr ""
@@ -2151,7 +2151,7 @@ msgid "Congratulations!"
 msgstr ""
 
 #: admin/installer.php:84 admin/settings-options.php:24
-#: includes/free/admin/shortcode-button.php:79 wpuf-functions.php:1779
+#: includes/free/admin/shortcode-button.php:79 wpuf-functions.php:1807
 msgid "Dashboard"
 msgstr ""
 
@@ -2167,7 +2167,7 @@ msgstr ""
 #: admin/installer.php:95 class/subscription.php:377 class/subscription.php:397
 #: class/subscription.php:398 class/subscription.php:399
 #: includes/free/admin/shortcode-button.php:99
-#: templates/dashboard/dashboard.php:19 wpuf-functions.php:1782
+#: templates/dashboard/dashboard.php:19 wpuf-functions.php:1810
 msgid "Subscription"
 msgstr ""
 
@@ -2175,8 +2175,8 @@ msgstr ""
 msgid "[wpuf_sub_pack]"
 msgstr ""
 
-#: admin/installer.php:96 templates/dashboard/posts.php:85
-#: templates/dashboard.php:126
+#: admin/installer.php:96 templates/dashboard/posts.php:94
+#: templates/dashboard.php:136
 msgid "Payment"
 msgstr ""
 
@@ -2262,64 +2262,64 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: admin/posting.php:70 class/asset-loader.php:55 class/render-form.php:1676
+#: admin/posting.php:72 class/asset-loader.php:55 class/render-form.php:1676
 #: wpuf.php:721
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:78 class/asset-loader.php:63 wpuf.php:731
+#: admin/posting.php:80 class/asset-loader.php:63 wpuf.php:731
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:81 class/asset-loader.php:66 wpuf.php:737
+#: admin/posting.php:83 class/asset-loader.php:66 wpuf.php:737
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:82 class/asset-loader.php:67 wpuf.php:738
+#: admin/posting.php:84 class/asset-loader.php:67 wpuf.php:738
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:83 class/asset-loader.php:68 wpuf.php:739
+#: admin/posting.php:85 class/asset-loader.php:68 wpuf.php:739
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
-#: admin/posting.php:102
+#: admin/posting.php:104
 msgid "WPUF Form"
 msgstr ""
 
-#: admin/posting.php:130
+#: admin/posting.php:132
 msgid "Learn more"
 msgstr ""
 
-#: admin/posting.php:177
+#: admin/posting.php:179
 msgid "WPUF Lock User"
 msgstr ""
 
-#: admin/posting.php:203
+#: admin/posting.php:205
 msgid ""
 "Post is locked, to allow user to edit this post <a "
 "id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Click here</a>"
 msgstr ""
 
-#: admin/posting.php:210
+#: admin/posting.php:212
 msgid ""
 "Frontend edit access for this post will be automatically locked after %s, "
 "<a id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Clear Lock</a> Or,"
 msgstr ""
 
-#: admin/posting.php:221
+#: admin/posting.php:223
 msgid "Lock Post Permanently"
 msgstr ""
 
-#: admin/posting.php:226
+#: admin/posting.php:228
 msgid "Lock user from editing this post from the frontend dashboard"
 msgstr ""
 
-#: admin/posting.php:277
+#: admin/posting.php:279
 msgid "WPUF Custom Fields"
 msgstr ""
 
-#: admin/posting.php:329
+#: admin/posting.php:331
 msgid "No custom fields found."
 msgstr ""
 
@@ -2598,7 +2598,7 @@ msgstr ""
 msgid "Login / Registration"
 msgstr ""
 
-#: admin/settings-options.php:39 includes/class-privacy.php:74
+#: admin/settings-options.php:39 includes/class-privacy.php:69
 msgid "Payments"
 msgstr ""
 
@@ -3366,7 +3366,7 @@ msgstr ""
 
 #: admin/template.php:377 admin/template.php:401 admin/template.php:432
 #: admin/template.php:463 includes/fields/class-abstract-fields.php:579
-#: templates/dashboard/posts.php:88 templates/dashboard.php:129
+#: templates/dashboard/posts.php:97 templates/dashboard.php:139
 msgid "Options"
 msgstr ""
 
@@ -3385,10 +3385,10 @@ msgid "Select Text"
 msgstr ""
 
 #: admin/template.php:520 admin/template.php:578 admin/template.php:656
-#: class/upload.php:197 includes/fields/class-field-recaptcha.php:147
+#: class/upload.php:206 includes/fields/class-field-recaptcha.php:147
 #: includes/fields/class-field-sectionbreak.php:54
-#: templates/dashboard/posts.php:79 templates/dashboard.php:94
-#: wpuf-functions.php:840
+#: templates/dashboard/posts.php:88 templates/dashboard.php:104
+#: wpuf-functions.php:845
 msgid "Title"
 msgstr ""
 
@@ -3404,8 +3404,8 @@ msgstr ""
 msgid "Enter the meta value"
 msgstr ""
 
-#: admin/template.php:583 class/upload.php:199
-#: includes/fields/class-field-sectionbreak.php:62 wpuf-functions.php:848
+#: admin/template.php:583 class/upload.php:208
+#: includes/fields/class-field-sectionbreak.php:62 wpuf-functions.php:853
 msgid "Description"
 msgstr ""
 
@@ -3507,11 +3507,11 @@ msgid ""
 msgstr ""
 
 #: class/frontend-account.php:228
-msgid "<p>You are not subscribed to any package yet.</p>"
+msgid "<p>You have not subscribed to any package yet.</p>"
 msgstr ""
 
 #: class/frontend-account.php:236
-msgid "<p>You may processed your payment, but the pack is not activated yet.</p>"
+msgid "<p>You may have processed your payment, but the pack is not active yet.</p>"
 msgstr ""
 
 #: class/frontend-account.php:252
@@ -3599,7 +3599,7 @@ msgid "You already have activated a free package previously."
 msgstr ""
 
 #: class/payment.php:138 includes/class-customizer.php:56
-#: wpuf-functions.php:1783
+#: wpuf-functions.php:1811
 msgid "Billing Address"
 msgstr ""
 
@@ -3619,7 +3619,7 @@ msgstr ""
 msgid "Pack Price "
 msgstr ""
 
-#: class/payment.php:191 class/payment.php:240 includes/class-privacy.php:341
+#: class/payment.php:191 class/payment.php:240 includes/class-privacy.php:338
 msgid "Total"
 msgstr ""
 
@@ -3664,7 +3664,7 @@ msgstr ""
 msgid "Form for creating a blog post."
 msgstr ""
 
-#: class/post-form-templates/post.php:20 includes/class-privacy.php:419
+#: class/post-form-templates/post.php:20 includes/class-privacy.php:417
 #: includes/fields/class-field-post-title.php:6
 msgid "Post Title"
 msgstr ""
@@ -3673,7 +3673,7 @@ msgstr ""
 msgid "Please enter your post name"
 msgstr ""
 
-#: class/post-form-templates/post.php:35 templates/dashboard.php:98
+#: class/post-form-templates/post.php:35 templates/dashboard.php:108
 msgid "Category"
 msgstr ""
 
@@ -3702,7 +3702,7 @@ msgstr ""
 #: includes/fields/class-field-featured-image.php:142
 #: includes/free/post-form-templates/the_events_calendar.php:125
 #: includes/free/post-form-templates/the_events_calendar.php:126
-#: templates/dashboard/posts.php:76 templates/dashboard.php:92
+#: templates/dashboard/posts.php:85 templates/dashboard.php:102
 msgid "Featured Image"
 msgstr ""
 
@@ -3712,7 +3712,7 @@ msgstr ""
 
 #: class/post-form-templates/post.php:90
 #: includes/free/post-form-templates/the_events_calendar.php:138
-#: templates/dashboard.php:118
+#: templates/dashboard.php:128
 msgid "Excerpt"
 msgstr ""
 
@@ -3779,7 +3779,7 @@ msgid "Strength indicator"
 msgstr ""
 
 #: class/render-form.php:1403 includes/fields/class-field-post-taxonomy.php:119
-#: wpuf-functions.php:1566
+#: wpuf-functions.php:1594
 msgid "-- Select --"
 msgstr ""
 
@@ -3789,7 +3789,7 @@ msgstr ""
 
 #: class/render-form.php:1676 class/transactions-list-table.php:119
 #: class/transactions-list-table.php:193 includes/free/edit-user.php:105
-#: templates/dashboard/posts.php:172 templates/dashboard.php:263
+#: templates/dashboard/posts.php:185 templates/dashboard.php:277
 msgid "Delete"
 msgstr ""
 
@@ -3933,7 +3933,7 @@ msgstr ""
 
 #: class/transactions-list-table.php:42
 #: includes/class-list-table-subscribers.php:44
-#: templates/dashboard/posts.php:80 templates/dashboard.php:121
+#: templates/dashboard/posts.php:89 templates/dashboard.php:131
 msgid "Status"
 msgstr ""
 
@@ -3946,17 +3946,17 @@ msgstr ""
 msgid "Cost"
 msgstr ""
 
-#: class/transactions-list-table.php:45 includes/class-privacy.php:337
+#: class/transactions-list-table.php:45 includes/class-privacy.php:334
 msgid "Tax"
 msgstr ""
 
-#: class/transactions-list-table.php:46 includes/class-privacy.php:345
-#: includes/class-privacy.php:415
+#: class/transactions-list-table.php:46 includes/class-privacy.php:342
+#: includes/class-privacy.php:413
 msgid "Post ID"
 msgstr ""
 
-#: class/transactions-list-table.php:47 includes/class-privacy.php:349
-#: includes/class-privacy.php:468
+#: class/transactions-list-table.php:47 includes/class-privacy.php:346
+#: includes/class-privacy.php:466
 msgid "Pack ID"
 msgstr ""
 
@@ -3993,7 +3993,7 @@ msgstr ""
 msgid "No transactions found."
 msgstr ""
 
-#: class/upload.php:198 wpuf-functions.php:844
+#: class/upload.php:207 wpuf-functions.php:849
 msgid "Caption"
 msgstr ""
 
@@ -4031,57 +4031,59 @@ msgstr ""
 msgid "No Thanks"
 msgstr ""
 
-#: includes/class-billing-address.php:34
+#: includes/class-billing-address.php:35
 msgid "Some Required Fields are not filled!"
 msgstr ""
 
-#: includes/class-billing-address.php:152 includes/class-customizer.php:22
-#: includes/class-customizer.php:66 includes/class-privacy.php:270
-#: templates/dashboard/billing-address.php:89
+#: includes/class-billing-address.php:155 includes/class-customizer.php:22
+#: includes/class-customizer.php:66 includes/class-privacy.php:265
+#: templates/dashboard/billing-address.php:52
 msgid "Country"
 msgstr ""
 
-#: includes/class-billing-address.php:175
+#: includes/class-billing-address.php:178
+#: templates/dashboard/billing-address.php:66
 msgid "Choose a country"
 msgstr ""
 
-#: includes/class-billing-address.php:193 includes/class-customizer.php:23
-#: includes/class-customizer.php:67 templates/dashboard/billing-address.php:74
+#: includes/class-billing-address.php:197 includes/class-customizer.php:23
+#: includes/class-customizer.php:67 templates/dashboard/billing-address.php:85
 msgid "State/Province/Region"
 msgstr ""
 
-#: includes/class-billing-address.php:207
+#: includes/class-billing-address.php:211
+#: templates/dashboard/billing-address.php:100
 msgid "Choose a state"
 msgstr ""
 
-#: includes/class-billing-address.php:224
-#: templates/dashboard/billing-address.php:53
+#: includes/class-billing-address.php:230
+#: templates/dashboard/billing-address.php:120
 msgid "Address Line 1 "
 msgstr ""
 
-#: includes/class-billing-address.php:232
-#: templates/dashboard/billing-address.php:60
+#: includes/class-billing-address.php:241
+#: templates/dashboard/billing-address.php:129
 msgid "Address Line 2 "
 msgstr ""
 
-#: includes/class-billing-address.php:240 includes/class-customizer.php:26
-#: includes/class-customizer.php:70 includes/class-privacy.php:258
-#: templates/dashboard/billing-address.php:67
+#: includes/class-billing-address.php:252 includes/class-customizer.php:26
+#: includes/class-customizer.php:70 includes/class-privacy.php:253
+#: templates/dashboard/billing-address.php:137
 msgid "City"
 msgstr ""
 
-#: includes/class-billing-address.php:247 includes/class-customizer.php:27
-#: includes/class-customizer.php:71 templates/dashboard/billing-address.php:84
+#: includes/class-billing-address.php:262 includes/class-customizer.php:27
+#: includes/class-customizer.php:71
 msgid "Postal Code/ZIP"
 msgstr ""
 
-#: includes/class-billing-address.php:255
-#: templates/dashboard/billing-address.php:113
+#: includes/class-billing-address.php:272
+#: templates/dashboard/billing-address.php:156
 msgid "Update Billing Address"
 msgstr ""
 
-#: includes/class-billing-address.php:302
-#: templates/dashboard/billing-address.php:35
+#: includes/class-billing-address.php:319
+#: templates/dashboard/billing-address.php:32
 msgid "Billing address is updated."
 msgstr ""
 
@@ -4112,7 +4114,7 @@ msgstr ""
 
 #: includes/class-dokan-integration.php:34
 #: includes/class-wc-vendors-integration.php:108
-#: templates/dashboard/dashboard.php:15 wpuf-functions.php:1780
+#: templates/dashboard/dashboard.php:15 wpuf-functions.php:1808
 msgid "Posts"
 msgstr ""
 
@@ -4167,48 +4169,48 @@ msgstr ""
 msgid "You are not logged in"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:58
-#: includes/class-frontend-form-post.php:88
+#: includes/class-frontend-form-post.php:59
+#: includes/class-frontend-form-post.php:89
 msgid "Invalid post"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:65
+#: includes/class-frontend-form-post.php:66
 msgid "Your edit access for this post has been locked by an administrator."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:69
+#: includes/class-frontend-form-post.php:70
 msgid "Your allocated time for editing this post has been expired."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:77
+#: includes/class-frontend-form-post.php:78
 msgid "Your post edit access has been locked by an administrator."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:82
+#: includes/class-frontend-form-post.php:83
 msgid "Post Editing is disabled"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:93
+#: includes/class-frontend-form-post.php:94
 msgid "You are not allowed to edit"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:104
+#: includes/class-frontend-form-post.php:105
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:116
+#: includes/class-frontend-form-post.php:117
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:494
+#: includes/class-frontend-form-post.php:501
 msgid "Something went wrong"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:515
+#: includes/class-frontend-form-post.php:522
 msgid "Invalid email address."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:525
+#: includes/class-frontend-form-post.php:532
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -4217,22 +4219,22 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:576
+#: includes/class-frontend-form-post.php:583
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:842
+#: includes/class-frontend-form-post.php:849
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:949
-#: includes/class-frontend-form-post.php:955
+#: includes/class-frontend-form-post.php:956
+#: includes/class-frontend-form-post.php:962
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
 msgstr ""
 
-#: includes/class-frontend-render-form.php:802
+#: includes/class-frontend-render-form.php:804
 #: includes/free/class-login.php:445
 msgid "Empty reCaptcha Field"
 msgstr ""
@@ -4253,7 +4255,7 @@ msgstr ""
 msgid "Subscription ID"
 msgstr ""
 
-#: includes/class-list-table-subscribers.php:46 includes/class-privacy.php:325
+#: includes/class-list-table-subscribers.php:46 includes/class-privacy.php:322
 msgid "Transaction ID"
 msgstr ""
 
@@ -4266,7 +4268,7 @@ msgid "Expire date"
 msgstr ""
 
 #: includes/class-list-table-subscribers.php:137
-#: templates/dashboard/posts.php:139 templates/dashboard.php:227
+#: templates/dashboard/posts.php:148 templates/dashboard.php:237
 msgid "Completed"
 msgstr ""
 
@@ -4431,54 +4433,54 @@ msgid ""
 "disclose on your privacy policy."
 msgstr ""
 
-#: includes/class-privacy.php:38
+#: includes/class-privacy.php:37
 msgid ""
 "We collect information about you during the form submission process on our "
 "WordPress website."
 msgstr ""
 
-#: includes/class-privacy.php:39
+#: includes/class-privacy.php:38
 msgid "What we collect and store"
 msgstr ""
 
-#: includes/class-privacy.php:40
+#: includes/class-privacy.php:39
 msgid "While you visit our , we’ll track:"
 msgstr ""
 
-#: includes/class-privacy.php:42
+#: includes/class-privacy.php:41
 msgid ""
 "Form Fields Data: Forms Fields data includes the available field types when "
 "creating a form. We’ll use this to, for example, collect informations like "
 "Name, Email and other available fields."
 msgstr ""
 
-#: includes/class-privacy.php:43
+#: includes/class-privacy.php:42
 msgid ""
 "Location, IP address and browser type: we’ll use this for purposes like "
 "estimating taxes and shipping. Also, for reducing fraudulent activities and "
 "prevent identity theft while placing orders"
 msgstr ""
 
-#: includes/class-privacy.php:44
+#: includes/class-privacy.php:43
 msgid ""
 "Transaction Details: we’ll ask you to enter this so we can, for instance, "
 "provide & regulate subscription packs that you bought and keep track of "
 "your payment details for subscription packs!"
 msgstr ""
 
-#: includes/class-privacy.php:46
+#: includes/class-privacy.php:45
 msgid ""
 "We’ll also use cookies to keep track of form elements while you’re browsing "
 "our site."
 msgstr ""
 
-#: includes/class-privacy.php:48
+#: includes/class-privacy.php:46
 msgid ""
 "Note: you may want to further detail your cookie policy, and link to that "
 "section from here."
 msgstr ""
 
-#: includes/class-privacy.php:50
+#: includes/class-privacy.php:47
 msgid ""
 "When you fill up a form, we’ll ask you to provide information including "
 "your name, billing address, shipping address, email address, phone number, "
@@ -4487,42 +4489,42 @@ msgid ""
 "We’ll use this information for purposes, such as, to:"
 msgstr ""
 
-#: includes/class-privacy.php:52
+#: includes/class-privacy.php:49
 msgid "Send you information about your account and order"
 msgstr ""
 
-#: includes/class-privacy.php:53
+#: includes/class-privacy.php:50
 msgid "Respond to your requests, including transaction details and complaints"
 msgstr ""
 
-#: includes/class-privacy.php:54
+#: includes/class-privacy.php:51
 msgid "Process payments and prevent fraud"
 msgstr ""
 
-#: includes/class-privacy.php:55
+#: includes/class-privacy.php:52
 msgid "Set up your account"
 msgstr ""
 
-#: includes/class-privacy.php:56
+#: includes/class-privacy.php:53
 msgid "Comply with any legal obligations we have, such as calculating taxes"
 msgstr ""
 
-#: includes/class-privacy.php:57
+#: includes/class-privacy.php:54
 msgid "Improve our form offerings"
 msgstr ""
 
-#: includes/class-privacy.php:58
+#: includes/class-privacy.php:55
 msgid "Send you marketing messages, if you choose to receive them"
 msgstr ""
 
-#: includes/class-privacy.php:60
+#: includes/class-privacy.php:57
 msgid ""
 "If you create an account, we will store your name, address, email and phone "
 "number, which will be used to populate the form fields for future "
 "submissions."
 msgstr ""
 
-#: includes/class-privacy.php:61
+#: includes/class-privacy.php:58
 msgid ""
 "We generally store information about you for as long as we need the "
 "information for the purposes for which we collect and use it, and we are "
@@ -4532,51 +4534,51 @@ msgid ""
 "addresses."
 msgstr ""
 
-#: includes/class-privacy.php:62
+#: includes/class-privacy.php:59
 msgid "Who on our team has access"
 msgstr ""
 
-#: includes/class-privacy.php:63
+#: includes/class-privacy.php:60
 msgid ""
 "Members of our team have access to the information you provide us. For "
 "example, Administrators and Editors and any body else who has permission "
 "can access:"
 msgstr ""
 
-#: includes/class-privacy.php:65
+#: includes/class-privacy.php:62
 msgid "Form submission information and other details related to it"
 msgstr ""
 
-#: includes/class-privacy.php:66
+#: includes/class-privacy.php:63
 msgid ""
 "Customer information like your name, email address, and billing and "
 "shipping information."
 msgstr ""
 
-#: includes/class-privacy.php:68
+#: includes/class-privacy.php:65
 msgid ""
 "Our team members have access to this information to help fulfill "
 "transactions and support you."
 msgstr ""
 
-#: includes/class-privacy.php:69
+#: includes/class-privacy.php:66
 msgid "What we share with others"
 msgstr ""
 
-#: includes/class-privacy.php:71
+#: includes/class-privacy.php:67
 msgid ""
 "In this section you should list who you’re sharing data with, and for what "
 "purpose. This could include, but may not be limited to, analytics, "
 "marketing, payment gateways, shipping providers, and third party embeds."
 msgstr ""
 
-#: includes/class-privacy.php:73
+#: includes/class-privacy.php:68
 msgid ""
 "We share information with third parties who help us provide our orders and "
 "store services to you; for example --"
 msgstr ""
 
-#: includes/class-privacy.php:76
+#: includes/class-privacy.php:70
 msgid ""
 "In this subsection you should list which third party payment processors "
 "you’re using to take payments on your site since these may handle customer "
@@ -4584,21 +4586,21 @@ msgid ""
 "you’re not using PayPal."
 msgstr ""
 
-#: includes/class-privacy.php:78
+#: includes/class-privacy.php:71
 msgid ""
 "We accept payments through PayPal. When processing payments, some of your "
 "data will be passed to PayPal, including information required to process or "
 "support the payment, such as the purchase total and billing information."
 msgstr ""
 
-#: includes/class-privacy.php:79
+#: includes/class-privacy.php:72
 msgid ""
 "Please see the <a "
 "href=\"https://www.paypal.com/us/webapps/mpp/ua/privacy-full\">PayPal "
 "Privacy Policy</a> for more details."
 msgstr ""
 
-#: includes/class-privacy.php:80
+#: includes/class-privacy.php:73
 msgid ""
 "Also, we accept payments through Stripe. When processing payments, some of "
 "your data will be passed to Stripe, including information required to "
@@ -4606,24 +4608,24 @@ msgid ""
 "information."
 msgstr ""
 
-#: includes/class-privacy.php:81
+#: includes/class-privacy.php:74
 msgid ""
 "Please see the <a href=\"https://stripe.com/us/privacy\">Stripe Privacy "
 "Policy</a> for more details."
 msgstr ""
 
-#: includes/class-privacy.php:82
+#: includes/class-privacy.php:75
 msgid "Available Modules"
 msgstr ""
 
-#: includes/class-privacy.php:83
+#: includes/class-privacy.php:76
 msgid ""
 "In this subsection you should list which third party modules you’re using "
 "to increase the functionality of your created forms using WP User Frontend "
 "since these may handle customer data."
 msgstr ""
 
-#: includes/class-privacy.php:84
+#: includes/class-privacy.php:77
 msgid ""
 "WP User Frontend Pro comes with support for modules like MailChimp, "
 "ConvertKit, Stipe, Paid Membership Pro, MailPoet, Zapier, GetResponse, "
@@ -4632,7 +4634,7 @@ msgid ""
 "own platform which falls in their own data policy. "
 msgstr ""
 
-#: includes/class-privacy.php:85
+#: includes/class-privacy.php:78
 msgid ""
 "As an example while using MailChimp for your marketing email automation "
 "service by integrating it with WP User Frontend, some of your data will be "
@@ -4642,82 +4644,98 @@ msgid ""
 "information through subscription. "
 msgstr ""
 
-#: includes/class-privacy.php:86
+#: includes/class-privacy.php:79
 msgid ""
 "Please see the <a href=\"https://mailchimp.com/legal/privacy/\">MailChimp "
 "Privacy Policy</a> for more details."
 msgstr ""
 
-#: includes/class-privacy.php:100 includes/class-privacy.php:131
-#: includes/class-privacy.php:171
+#: includes/class-privacy.php:94 includes/class-privacy.php:125
+#: includes/class-privacy.php:165
 msgid "WPUF User Data"
 msgstr ""
 
-#: includes/class-privacy.php:105 includes/class-privacy.php:292
+#: includes/class-privacy.php:99 includes/class-privacy.php:287
 msgid "WPUF Subscription Data"
 msgstr ""
 
-#: includes/class-privacy.php:110 includes/class-privacy.php:321
+#: includes/class-privacy.php:104 includes/class-privacy.php:317
 msgid "WPUF Transaction Data"
 msgstr ""
 
-#: includes/class-privacy.php:115 includes/class-privacy.php:411
+#: includes/class-privacy.php:109 includes/class-privacy.php:408
 msgid "WPUF Post Data"
 msgstr ""
 
-#: includes/class-privacy.php:250
+#: includes/class-privacy.php:166
+msgid "WP User Frontend user data."
+msgstr ""
+
+#: includes/class-privacy.php:245
 msgid "Billing Address 1"
 msgstr ""
 
-#: includes/class-privacy.php:254
+#: includes/class-privacy.php:249
 msgid "Billing Address 2"
 msgstr ""
 
-#: includes/class-privacy.php:262
+#: includes/class-privacy.php:257
 msgid "State"
 msgstr ""
 
-#: includes/class-privacy.php:266
+#: includes/class-privacy.php:261
 msgid "Zip"
 msgstr ""
 
-#: includes/class-privacy.php:329
+#: includes/class-privacy.php:288
+msgid "WP User Frontend subscription data."
+msgstr ""
+
+#: includes/class-privacy.php:318
+msgid "WP User Frontend transaction data."
+msgstr ""
+
+#: includes/class-privacy.php:326
 msgid "Payment Status"
 msgstr ""
 
-#: includes/class-privacy.php:333
+#: includes/class-privacy.php:330
 msgid "Subtotal"
 msgstr ""
 
-#: includes/class-privacy.php:357 includes/free/edit-profile.php:111
+#: includes/class-privacy.php:354 includes/free/edit-profile.php:111
 msgid "Last Name"
 msgstr ""
 
-#: includes/class-privacy.php:365
+#: includes/class-privacy.php:362
 msgid "Payment Type"
 msgstr ""
 
-#: includes/class-privacy.php:369
+#: includes/class-privacy.php:366
 msgid "payer_address"
 msgstr ""
 
-#: includes/class-privacy.php:379
+#: includes/class-privacy.php:376
 msgid "Transaction Date"
 msgstr ""
 
-#: includes/class-privacy.php:423
+#: includes/class-privacy.php:409
+msgid "WP User Frontend post data."
+msgstr ""
+
+#: includes/class-privacy.php:421
 msgid "Post URL"
 msgstr ""
 
-#: includes/class-privacy.php:427
+#: includes/class-privacy.php:425
 msgid "Post Date"
 msgstr ""
 
-#: includes/class-privacy.php:472
+#: includes/class-privacy.php:470
 msgid "Pack Title"
 msgstr ""
 
-#: includes/class-privacy.php:476
+#: includes/class-privacy.php:474
 msgid "Expiry"
 msgstr ""
 
@@ -4745,12 +4763,12 @@ msgid "Package & billing details: "
 msgstr ""
 
 #: includes/class-user-subscription.php:330
-#: templates/dashboard/subscription.php:11
+#: templates/dashboard/subscription.php:17
 msgid "Remaining post: "
 msgstr ""
 
 #: includes/class-user-subscription.php:344
-#: templates/dashboard/subscription.php:27
+#: templates/dashboard/subscription.php:33
 msgid "Unlimited"
 msgstr ""
 
@@ -5818,7 +5836,7 @@ msgstr ""
 msgid "You don't have permission to install the plugins"
 msgstr ""
 
-#: lib/class.settings-api.php:366
+#: lib/class.settings-api.php:368
 msgid "Choose File"
 msgstr ""
 
@@ -5850,32 +5868,32 @@ msgstr ""
 msgid "Thanks for being with us."
 msgstr ""
 
-#: lib/gateway/paypal.php:63
+#: lib/gateway/paypal.php:60
 msgid "Subscription %s at %s"
 msgstr ""
 
-#: lib/gateway/paypal.php:93
+#: lib/gateway/paypal.php:90
 msgid "PayPal Email"
 msgstr ""
 
-#: lib/gateway/paypal.php:98
+#: lib/gateway/paypal.php:95
 msgid "PayPal Instruction"
 msgstr ""
 
-#: lib/gateway/paypal.php:105
+#: lib/gateway/paypal.php:102
 msgid "PayPal API username"
 msgstr ""
 
-#: lib/gateway/paypal.php:109
+#: lib/gateway/paypal.php:106
 msgid "PayPal API password"
 msgstr ""
 
-#: lib/gateway/paypal.php:113
+#: lib/gateway/paypal.php:110
 msgid "PayPal API signature"
 msgstr ""
 
-#: templates/dashboard/billing-address.php:95
-msgid "Select Country"
+#: templates/dashboard/billing-address.php:146
+msgid "Postal/ZIP Code"
 msgstr ""
 
 #: templates/dashboard/dashboard.php:5
@@ -5926,35 +5944,35 @@ msgstr ""
 msgid "You have created <span>%d</span> %s"
 msgstr ""
 
-#: templates/dashboard/posts.php:108 templates/dashboard.php:149
+#: templates/dashboard/posts.php:117 templates/dashboard.php:159
 msgid "No Image"
 msgstr ""
 
-#: templates/dashboard/posts.php:122 templates/dashboard.php:163
+#: templates/dashboard/posts.php:131 templates/dashboard.php:173
 msgid "Permalink to %s"
 msgstr ""
 
-#: templates/dashboard/posts.php:135 templates/dashboard.php:223
+#: templates/dashboard/posts.php:144 templates/dashboard.php:233
 msgid "Not Applicable"
 msgstr ""
 
-#: templates/dashboard/posts.php:137 templates/dashboard.php:225
+#: templates/dashboard/posts.php:146 templates/dashboard.php:235
 msgid "Pay Now"
 msgstr ""
 
-#: templates/dashboard/posts.php:171 templates/dashboard.php:262
+#: templates/dashboard/posts.php:184 templates/dashboard.php:276
 msgid "Are you sure to delete?"
 msgstr ""
 
-#: templates/dashboard/posts.php:192 templates/dashboard.php:282
+#: templates/dashboard/posts.php:205 templates/dashboard.php:296
 msgid "&laquo;"
 msgstr ""
 
-#: templates/dashboard/posts.php:193 templates/dashboard.php:283
+#: templates/dashboard/posts.php:206 templates/dashboard.php:297
 msgid "&raquo;"
 msgstr ""
 
-#: templates/dashboard/posts.php:216 templates/dashboard.php:305
+#: templates/dashboard/posts.php:229 templates/dashboard.php:319
 msgid "No %s found"
 msgstr ""
 
@@ -5962,7 +5980,15 @@ msgstr ""
 msgid "You've subscribed to the following package."
 msgstr ""
 
-#: templates/dashboard/subscription.php:55
+#: templates/dashboard/subscription.php:12
+msgid "Subscription Status: "
+msgstr ""
+
+#: templates/dashboard/subscription.php:13
+msgid "Subscription Expired!"
+msgstr ""
+
+#: templates/dashboard/subscription.php:61
 msgid "<p><i>To cancel the pack, press the following cancel button.</i></p>"
 msgstr ""
 
@@ -6056,255 +6082,259 @@ msgstr ""
 msgid "Private"
 msgstr ""
 
-#: wpuf-functions.php:212 wpuf-functions.php:1798
+#: wpuf-functions.php:210 wpuf-functions.php:1826
 msgid "-- select --"
 msgstr ""
 
-#: wpuf-functions.php:455
+#: wpuf-functions.php:460
 msgid "Images"
 msgstr ""
 
-#: wpuf-functions.php:456
+#: wpuf-functions.php:461
 msgid "Audio"
 msgstr ""
 
-#: wpuf-functions.php:457
+#: wpuf-functions.php:462
 msgid "Videos"
 msgstr ""
 
-#: wpuf-functions.php:458
+#: wpuf-functions.php:463
 msgid "PDF"
 msgstr ""
 
-#: wpuf-functions.php:459
+#: wpuf-functions.php:464
 msgid "Office Documents"
 msgstr ""
 
-#: wpuf-functions.php:460
+#: wpuf-functions.php:465
 msgid "Zip Archives"
 msgstr ""
 
-#: wpuf-functions.php:461
+#: wpuf-functions.php:466
 msgid "Executable Files"
 msgstr ""
 
-#: wpuf-functions.php:462
+#: wpuf-functions.php:467
 msgid "CSV"
 msgstr ""
 
-#: wpuf-functions.php:867
+#: wpuf-functions.php:872
 msgid "Directions »"
 msgstr ""
 
-#: wpuf-functions.php:1781
+#: wpuf-functions.php:1809
 msgid "Edit Profile"
 msgstr ""
 
-#: wpuf-functions.php:1908
+#: wpuf-functions.php:1936
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:1909
+#: wpuf-functions.php:1937
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1910
+#: wpuf-functions.php:1938
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:1911
+#: wpuf-functions.php:1939
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:1912
+#: wpuf-functions.php:1940
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:1913
+#: wpuf-functions.php:1941
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:1914
+#: wpuf-functions.php:1942
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1915
+#: wpuf-functions.php:1943
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:1916
+#: wpuf-functions.php:1944
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:1917
+#: wpuf-functions.php:1945
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:1918
+#: wpuf-functions.php:1946
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:1919
+#: wpuf-functions.php:1947
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:1920
+#: wpuf-functions.php:1948
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1921
+#: wpuf-functions.php:1949
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:1922
+#: wpuf-functions.php:1950
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:1923
+#: wpuf-functions.php:1951
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1924
+#: wpuf-functions.php:1952
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:1925
+#: wpuf-functions.php:1953
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:1926
+#: wpuf-functions.php:1954
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:1927
+#: wpuf-functions.php:1955
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:1928
+#: wpuf-functions.php:1956
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1929
+#: wpuf-functions.php:1957
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1930
+#: wpuf-functions.php:1958
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:1931
+#: wpuf-functions.php:1959
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:1932
+#: wpuf-functions.php:1960
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:1933
+#: wpuf-functions.php:1961
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:1934
+#: wpuf-functions.php:1962
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:1935
+#: wpuf-functions.php:1963
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1936
+#: wpuf-functions.php:1964
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:1937
+#: wpuf-functions.php:1965
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:1938
+#: wpuf-functions.php:1966
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1939
+#: wpuf-functions.php:1967
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:1940
+#: wpuf-functions.php:1968
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:1941
+#: wpuf-functions.php:1969
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1942
+#: wpuf-functions.php:1970
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:1943
+#: wpuf-functions.php:1971
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:1944
+#: wpuf-functions.php:1972
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:1945
+#: wpuf-functions.php:1973
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:1946
+#: wpuf-functions.php:1974
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:1947
+#: wpuf-functions.php:1975
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:1948
+#: wpuf-functions.php:1976
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:1949
+#: wpuf-functions.php:1977
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1950
+#: wpuf-functions.php:1978
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:1951
+#: wpuf-functions.php:1979
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:1952
+#: wpuf-functions.php:1980
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:1953
+#: wpuf-functions.php:1981
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1954
+#: wpuf-functions.php:1982
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:1955
+#: wpuf-functions.php:1983
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:1956
+#: wpuf-functions.php:1984
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1957
+#: wpuf-functions.php:1985
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:1958
+#: wpuf-functions.php:1986
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:2831
+#: wpuf-functions.php:1987
+msgid "Jordanian dinar"
+msgstr ""
+
+#: wpuf-functions.php:2860
 msgid "None"
 msgstr ""
 
@@ -6431,7 +6461,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: wpuf-functions.php:1291
+#: wpuf-functions.php:1319
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

@@ -749,7 +749,7 @@ abstract class WPUF_Field_Contract {
         if ( empty( $field['help'] ) ) {
             return;
         } ?>
-        <span class="wpuf-help"><?php echo esc_html( stripslashes( $field['help'] ) ); ?></span>
+        <span class="wpuf-help"><?php echo stripslashes( $field['help'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
         <?php
     }
 

@@ -10,5 +10,5 @@
 
     <text-editor v-if="'no' !== field.rich" :default_text="field.default" :rich="field.rich"></text-editor>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>

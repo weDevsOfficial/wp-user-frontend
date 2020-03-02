@@ -407,7 +407,7 @@
         </li>
     </ul>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -469,7 +469,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -505,7 +505,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -524,7 +524,7 @@
         </div>
     </div>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -595,7 +595,7 @@
         </div>
     </div>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"/>
 </div>
 </script>
 
@@ -639,7 +639,7 @@
 
     <text-editor v-if="'no' !== field.rich" :rich="field.rich" :default_text="field.default"></text-editor>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -665,7 +665,7 @@
         :size="field.size"
     >
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -678,7 +678,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -697,7 +697,7 @@
         </li>
     </ul>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"/>
 </div>
 </script>
 
@@ -757,7 +757,7 @@
             <div v-html="get_term_checklist()"></div>
         </div>
     </div>
-    
+
 
     <input
         v-if="'text' === field.type"
@@ -768,7 +768,7 @@
         autocomplete="off"
     >
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -781,7 +781,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -798,7 +798,7 @@
 
     <text-editor v-if="'no' !== field.rich" :default_text="field.default" :rich="field.rich"></text-editor>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -811,7 +811,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"/>
 </div>
 </script>
 

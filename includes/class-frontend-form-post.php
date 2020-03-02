@@ -631,7 +631,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             wpuf_associate_attachment( $attachment_id, $post_id );
             set_post_thumbnail( $post_id, $attachment_id );
 
-            $file_data = isset( $wpuf_files[$attachment_id] ) ? $wpuf_files[$attachment_id] : false;
+            $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? wp_unslash( $_POST['wpuf_files_data'][$attachment_id] ) : false;
 
             if ( $file_data ) {
                 $args = [

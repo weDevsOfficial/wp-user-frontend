@@ -835,4 +835,21 @@
         $('#builder-form-fields').toggleClass('show');
     });
 
+    $('#wpuf_settings_posttype').on('change', function() {
+        event.preventDefault();
+        var post_type =  $(this).val();
+        wp.ajax.send('wpuf_form_setting_post', {
+            data: {
+                post_type: post_type
+            },
+            success: function (response) {
+                $('.wpuf_settings_taxonomy').remove();
+                $('.wpuf-post-fromat').after(response.data);
+            },
+            error: function ( error ) {
+                console.log(error);
+            }
+        });
+    });
+
 })(jQuery);

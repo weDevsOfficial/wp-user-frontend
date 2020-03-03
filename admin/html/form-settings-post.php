@@ -22,14 +22,13 @@ $submit_text           = isset( $form_settings['submit_text'] ) ? $form_settings
 $draft_text            = isset( $form_settings['draft_text'] ) ? $form_settings['draft_text'] : __( 'Save Draft', 'wp-user-frontend' );
 $preview_text          = isset( $form_settings['preview_text'] ) ? $form_settings['preview_text'] : __( 'Preview', 'wp-user-frontend' );
 $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings['draft_post'] : 'false';
-
 ?>
     <table class="form-table">
 
         <tr class="wpuf-post-type">
             <th><?php esc_html_e( 'Post Type', 'wp-user-frontend' ); ?></th>
             <td>
-                <select name="wpuf_settings[post_type]">
+                <select name="wpuf_settings[post_type]" id="wpuf_settings_posttype">
                     <?php
                     $post_types = get_post_types();
                     unset( $post_types['attachment'] );
@@ -86,59 +85,46 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
             </td>
         </tr>
 
-        <tr class="wpuf-default-cat">
-            <th><?php esc_html_e( 'Default Post Category', 'wp-user-frontend' ); ?></th>
-            <td>
-                <?php
-
-                if ( !is_array( $default_cat ) ) {
-                    $default_cat = (array) $default_cat;
-                }
-
-                $post_taxonomies = get_object_taxonomies( $post_type_selected, 'objects' );
-                $post_terms      = [];
-
-                foreach ( $post_taxonomies as $tax ) {
-                    if ( $tax->hierarchical ) {
-                        $post_terms[] = $tax->name;
+        <?php
+            $post_taxonomies = get_object_taxonomies( $post_type_selected, 'objects' );
+            foreach ( $post_taxonomies as $tax ) {
+                if ( $tax->hierarchical ) {
+                    $name             = 'default_'. $tax->name;
+                    $default_category = !empty( $form_settings[$name] ) ? $form_settings[$name] : [];
+                    if ( !is_array( $default_category ) ) {
+                        $default_category = (array) $default_category;
                     }
-                }
+                    error_log(print_r($default_category,true));
+                    $args = [
+                        'hide_empty'       => false,
+                        'hierarchical'     => true,
+                        'selected'         => $default_category,
+                        'taxonomy'         => $tax->name,
+                    ];
 
-                $args = [
-                    'hide_empty'       => false,
-                    'hierarchical'     => true,
-                    'selected'         => $default_cat,
-                    'taxonomy'         => $post_terms,
-                ];
+                    $tax = '<tr class="wpuf_settings_taxonomy"> <th> Default '. $post_type_selected . ' '. $tax->name .'</th> <td>
+                    <select multiple name="wpuf_settings[default_'.$tax->name.'][]">';
+                    $categories = get_terms( $args );
 
-                $cat = '<select multiple name="wpuf_settings[default_cat][]">';
-                $categories = get_terms( $args );
+                    foreach ( $categories as $category ) {
+                        $selected = '';
+                        if ( in_array( $category->term_id, $default_category ) ) {
+                            $selected = 'selected ';
+                        }
 
-                foreach ( $categories as $category ) {
-                    $selected = '';
-
-                    if ( in_array( $category->term_id, $default_cat ) ) {
-                        $selected = 'selected ';
+                        $tax .= '<option ' . $selected . 'value="' . $category->term_id . '">' . $category->name . '</option>';
                     }
-                    $cat .= '<option ' . $selected . 'value="' . $category->term_id . '">' . $category->name . '</option>';
+
+                    $tax .='</select>
+                        <p class="description">'.
+                            esc_html( __( "If users are not allowed to choose any category, this category will be used instead (if post type supports)", "wp-user-frontend" ) )
+                        .'</p>
+                    </td>';
+
+                    echo $tax;
                 }
-
-                $cat .='</select>';
-                echo wp_kses( $cat, [
-                    'select' => [
-                        'multiple' => [],
-                        'name' => []
-                    ],
-                    'option' => [
-                        'selected' => [],
-                        'value' => [],
-                    ]
-                ]);
-
-                ?>
-                <p class="description"><?php echo esc_html( __( 'If users are not allowed to choose any category, this category will be used instead (if post type supports)', 'wp-user-frontend' ) ); ?></p>
-            </td>
-        </tr>
+            }
+        ?>
 
         <tr class="wpuf-redirect-to">
             <th><?php esc_html_e( 'Redirect To', 'wp-user-frontend' ); ?></th>

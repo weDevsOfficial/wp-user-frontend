@@ -240,6 +240,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             if ( !empty( $taxonomy_vars ) ) {
                 $this->set_custom_taxonomy( $post_id, $taxonomy_vars );
+            } else {
+                $this->set_default_taxonomy( $post_id );
             }
         }
 
@@ -486,7 +488,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             if ( !empty( $taxonomy_vars ) ) {
                 $this->set_custom_taxonomy( $post_id, $taxonomy_vars );
+            } else {
+                $this->set_default_taxonomy( $post_id );
             }
+
             $response = $this->send_mail_for_guest( $charging_enabled, $post_id, $form_id, $is_update, $post_author, $meta_vars );
             wpuf_clear_buffer();
             wp_send_json( $response );

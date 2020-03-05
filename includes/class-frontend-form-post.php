@@ -190,7 +190,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
         ];
 
-        if ( is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
+        if ( isset( $_POST['category'] ) && is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
             $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : [];
         } else {
             $category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
@@ -355,7 +355,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
-        if ( is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
+        if ( isset( $_POST['category'] ) && is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
             $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : [];
         } else {
             $category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
@@ -745,7 +745,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( $replace ) {
             foreach ( $replace as $index => $meta_key ) {
                 $value     = get_post_meta( $post_id, $meta_key, false );
-                $new_value = implode( '; ', $value );
+                if ( is_array( $value ) ) {
+                    $new_value = implode( '; ', $value );
+                }
 
                 $original_value = '';
                 $meta_val       = '';
@@ -777,6 +779,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                     }
                     $original_value = $original_value . $meta_val;
                 } else {
+                    if ( 'address_field' == $meta_key ) {
+                        $value     = get_post_meta( $post_id, $meta_key, true );
+                        $new_value = implode( ', ', $value );
+                    }
+
                     if ( get_post_mime_type( (int) $new_value ) ) {
                         $original_value = wp_get_attachment_url( $new_value );
                     } else {

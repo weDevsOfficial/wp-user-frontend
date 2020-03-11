@@ -136,7 +136,15 @@ module.exports = function(grunt) {
                     '!**/package.json',
                     '!**/readme.md',
                     '!**/docs.md',
-                    '!**/*~'
+                    '!**/*~',
+                    '!vendor/**',
+                    '!**/log.txt',
+                    '!**/package-lock.json',
+                    '!**/appsero.json',
+                    '!**/composer.json',
+                    '!**/composer.lock',
+                    '!**/phpcs-report.txt',
+                    '!**/phpcs.xml.dist'
                 ],
                 dest: 'build/'
             }

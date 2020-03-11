@@ -28,6 +28,15 @@ class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
             $selected = isset( $field_settings['selected'] ) ? $field_settings['selected'] : '';
         }
 
+        /* Workaround for Events calendar venue and organizer field render in wpuf custom fields metabox */
+        if ( 'tribe_events' == get_post_type( $post_id ) ) {
+            if ( '_EventVenueID' == $field_settings['name'] ) {
+                $field_settings['options'] = $this->get_posts( 'tribe_venue' );
+            } else if ( '_EventOrganizerID' == $field_settings['name'] ) {
+                $field_settings['options'] = $this->get_posts( 'tribe_organizer' );
+            }
+        }
+
         $name  = $field_settings['name'];
 
         $this->field_print_label( $field_settings, $form_id ); ?>
@@ -117,5 +126,38 @@ class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
         $val = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
 
         return isset( $field['options'][$val] ) ? $field['options'][$val] : '';
+    }
+
+    public function get_posts( $post_type ) {
+        $args = array(
+            'post_type'         => $post_type,
+            'post_status'       => 'publish',
+            'orderby'           => 'DESC',
+            'order'             => 'ID',
+            'posts_per_page'    => -1
+        );
+
+        $query = new WP_Query( $args );
+
+        $posts = array();
+
+        if ( $query->have_posts() ) {
+
+            $i = 0;
+
+            while ( $query->have_posts() ) {
+                $query->the_post();
+
+                $post = $query->posts[ $i ];
+
+                $posts[ $post->ID ] = $post->post_title;
+
+                $i++;
+            }
+        }
+
+        wp_reset_postdata();
+
+        return $posts;
     }
 }

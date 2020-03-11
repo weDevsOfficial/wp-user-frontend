@@ -108,6 +108,10 @@ class WPUF_Frontend_Account {
         $allow_post_submission = wpuf_get_option( 'allow_post_submission', 'wpuf_my_account', 'on' );
         $submission_label      = wpuf_get_option( 'post_submission_label', 'wpuf_my_account', __( 'Submit Post', 'wp-user-frontend' ) );
 
+        if ( ! is_array( $sections ) ) {
+            $sections = (array) $sections;
+        }
+
         if ( $allow_post_submission == 'on' ) {
             $sections = array_merge( $sections, [ [ 'slug' => 'submit-post', 'label' => $submission_label ] ] );
         }

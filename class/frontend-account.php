@@ -94,6 +94,8 @@ class WPUF_Frontend_Account {
             }
         }
 
+        wp_reset_postdata();
+
         return $forms;
     }
 

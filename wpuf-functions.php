@@ -1921,6 +1921,8 @@ function wpuf_get_pending_transactions( $args = [] ) {
         ];
     }
 
+    wp_reset_postdata();
+
     return $items;
 }
 

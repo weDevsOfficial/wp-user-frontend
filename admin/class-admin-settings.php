@@ -363,6 +363,8 @@ class WPUF_Admin_Settings {
                 wp_delete_post( $item->ID, true );
             }
         }
+
+        wp_reset_postdata();
     }
 
     /**

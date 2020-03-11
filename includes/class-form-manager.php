@@ -51,6 +51,8 @@ class WPUF_Form_Manager {
         $forms_array['meta']['total'] = (int) $query->found_posts;
         $forms_array['meta']['pages'] = (int) $query->max_num_pages;
 
+        wp_reset_postdata();
+
         return $forms_array;
     }
 

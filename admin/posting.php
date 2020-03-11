@@ -16,7 +16,7 @@ class WPUF_Admin_Posting {
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_form_select'] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_post_lock'] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
-        add_action( 'save_post', [ $this, 'save_meta'], 1, 2 ); // save the custom fields
+        add_action( 'save_post', [ $this, 'save_meta'], 100, 2 ); // save the custom fields
         add_action( 'save_post', [ $this, 'form_selection_metabox_save' ], 1, 2 ); // save edit form id
         add_action( 'save_post', [ $this, 'post_lock_metabox_save' ], 1, 2 ); // save post lock option
         add_action( 'wp_ajax_wpuf_clear_schedule_lock', [$this, 'clear_schedule_lock'] );
@@ -488,8 +488,8 @@ class WPUF_Admin_Posting {
      */
     // Save the Metabox Data
     public function save_meta( $post_id, $post = null ) {
-        $wpuf_cf_update = isset( $_POST['wpuf_cf_update'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_cf_update'] ) ) : '';
-        $wpuf_cf_form_id  = isset( $_POST['wpuf_cf_form_id'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_cf_form_id'] ) ) : '';
+        $wpuf_cf_update = isset( $_POST['wpuf_cf_update'] ) ? sanitize_key( wp_unslash( $_POST['wpuf_cf_update'] ) ) : '';
+        $wpuf_cf_form_id  = isset( $_POST['wpuf_cf_form_id'] ) ? intval( $_POST['wpuf_cf_form_id'] ) : 0;
 
         if ( !isset( $post_id ) ) {
             return;

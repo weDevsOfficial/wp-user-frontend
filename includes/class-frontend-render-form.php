@@ -753,6 +753,10 @@ class WPUF_Frontend_Render_Form {
                     }
                     break;
 
+                case 'checkbox':
+                    $meta_key_value[ $value['name'] ] = $value_name[0];
+                    break;
+
                 default:
                     // if it's an array, implode with this->separator
                     if ( !empty( $value_name ) && is_array( $value_name ) ) {
@@ -763,7 +767,7 @@ class WPUF_Frontend_Render_Form {
                         } elseif ( !empty( $acf_compatibility ) && $acf_compatibility == 'yes' ) {
                             $meta_key_value[$value['name']] = $value_name;
                         } else {
-                            $meta_key_value[$value['name']] = implode( self::$separator, $value_name );
+                            $meta_key_value[$value['name']] = implode( $value_name[0] );
                         }
                     } elseif ( !empty( $value_name ) ) {
                         $meta_key_value[$value['name']] = trim( $value_name );

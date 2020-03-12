@@ -500,9 +500,9 @@ class WPUF_Frontend_Render_Form {
                             if ( $column_field['input_type'] == 'taxonomy' ) {
 
                                 // don't add "category"
-                                if ( $column_field['name'] == 'category' ) {
-                                    continue;
-                                }
+                                // if ( $column_field['name'] == 'category' ) {
+                                //     continue;
+                                // }
 
                                 $taxonomy_vars[] = $column_field;
                             } else {
@@ -528,9 +528,9 @@ class WPUF_Frontend_Render_Form {
             if ( $value['input_type'] == 'taxonomy' ) {
 
                 // don't add "category"
-                if ( $value['name'] == 'category' ) {
-                    continue;
-                }
+                // if ( $value['name'] == 'category' ) {
+                //     continue;
+                // }
 
                 $taxonomy_vars[] = $value;
             } else {

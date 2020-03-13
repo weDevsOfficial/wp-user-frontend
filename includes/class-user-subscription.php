@@ -351,7 +351,7 @@ class WPUF_User_Subscription {
                     if ( !empty( $this->pack['expire'] ) ) {
                         $expire =  ( $this->pack['expire'] == 'unlimited' ) ? ucfirst( 'unlimited' ) : wpuf_date2mysql( $this->pack['expire'] ); ?>
                         <div class="wpuf-expire">
-                            <strong><?php echo esc_html( 'Expire date:', 'wp-user-frontend' ); ?></strong> <?php echo esc_html( wpuf_get_date( $expire ) ); ?>
+                            <strong><?php esc_html_e( 'Expire date:', 'wp-user-frontend' ); ?></strong> <?php echo esc_html( wpuf_get_date( $expire ) ); ?>
                         </div>
                         <?php
                     }

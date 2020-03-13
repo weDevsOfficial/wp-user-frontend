@@ -27,7 +27,7 @@
 
             e.preventDefault();
             self.addClass('install-now updating-message');
-            self.text('<?php echo esc_js( 'Installing...', 'weforms' ); ?>');
+            self.text('<?php echo esc_html__( 'Installing...', 'weforms' ); ?>');
             var data = {
                 action: 'wpuf_weforms_install',
                 _wpnonce: '<?php echo esc_html( wp_create_nonce( 'wpuf-weforms-installer-nonce' ) ); ?>'
@@ -37,7 +37,7 @@
                 if (response.success) {
                     self.attr('disabled', 'disabled');
                     self.removeClass('install-now updating-message');
-                    self.text('<?php echo esc_js( 'Installed', 'weforms' ); ?>');
+                    self.text('<?php echo esc_html__( 'Installed', 'weforms' ); ?>');
 
                     window.location.href = '<?php echo esc_url( admin_url( 'admin.php?page=weforms' ) ); ?>';
                 }

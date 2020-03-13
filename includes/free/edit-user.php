@@ -158,7 +158,7 @@ function wpuf_add_user() {
                     </label>
                     <input type="text" name="user_login" id="user_login" minlength="2" value="<?php if ( isset( $_POST['user_login'] ) ) {
                             $u_login = sanitize_text_field( wp_unslash( $_POST['user_login'] ) );
-                        echo esc_html( wpuf_clean_tags( $u_login ) );
+                            echo $u_login;
                     } ?>">
                     <div class="clear"></div>
                 </li>
@@ -169,7 +169,7 @@ function wpuf_add_user() {
                     </label>
                     <input type="text" name="user_email" id="user_email" minlength="2" value="<?php if ( isset( $_POST['user_email'] ) ) {
                             $u_email = sanitize_email( wp_unslash( $_POST['user_email'] ) );
-                            echo esc_html( wpuf_clean_tags( $u_email ) );
+                            echo $u_email;
                     } ?>">
                     <div class="clear"></div>
                 </li>

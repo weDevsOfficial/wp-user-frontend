@@ -1619,7 +1619,6 @@ function taxnomy_select( $terms, $attr ) {
         'exclude'      => isset( $attr['exclude'] ) ? $attr['exclude'] : '',
         'orderby'      => $attr['orderby'],
         'order'        => $attr['order'],
-        'name'         => $attr['name'],
         //'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
         //'term_id'      => $selected
     ];

@@ -849,8 +849,6 @@ class WPUF_Render_Form {
      * @return string
      */
     public function required_class( $attr ) {
-        return;
-
         if ( $attr['required'] == 'yes' ) {
             echo ' required';
         }
@@ -1428,7 +1426,6 @@ class WPUF_Render_Form {
             'exclude'      => isset( $attr['exclude'] ) ? $attr['exclude'] : '',
             'orderby'      => $attr['orderby'],
             'order'        => $attr['order'],
-            'name'         => $attr['name'],
             //'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
             //'term_id'      => $selected
         ];

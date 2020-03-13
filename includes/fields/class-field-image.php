@@ -135,8 +135,6 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
             'count'             => '1',
             'button_label'      => __( 'Select Image', 'wp-user-frontend' ),
             'is_meta'           => 'yes',
-            'max_size'          => '1024',
-            'count'             => '1',
             'id'                => 0,
             'is_new'            => true,
             'show_in_post'      => 'yes',

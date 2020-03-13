@@ -61,7 +61,6 @@ class WPUF_Admin_Settings {
     }
 
     public function admin_init() {
-
         //set the settings
         $this->settings_api->set_sections( $this->get_settings_sections() );
         $this->settings_api->set_fields( $this->get_settings_fields() );
@@ -90,10 +89,6 @@ class WPUF_Admin_Settings {
          * @since 2.3
          */
         do_action( 'wpuf_admin_menu_top' );
-
-        if ( !class_exists( 'WeForms' ) ) {
-            $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'weForms', 'wp-user-frontend' ), __( 'Contact Form', 'wp-user-frontend' ), $capability, 'wpuf_weforms', [$this, 'weforms_page'] );
-        }
 
         if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Subscriptions', 'wp-user-frontend' ), __( 'Subscriptions', 'wp-user-frontend' ), $capability, 'edit.php?post_type=wpuf_subscription' );
@@ -195,16 +190,8 @@ class WPUF_Admin_Settings {
         }
     }
 
-    public function subscription_page() {
-        require_once dirname( __DIR__ ) . '/admin/subscription.php';
-    }
-
     public function subscribers_page( $post_ID ) {
         include dirname( __DIR__ ) . '/admin/subscribers.php';
-    }
-
-    public function weforms_page() {
-        require_once dirname( __DIR__ ) . '/admin/weforms.php';
     }
 
     public function premium_page() {
@@ -364,6 +351,8 @@ class WPUF_Admin_Settings {
                 wp_delete_post( $item->ID, true );
             }
         }
+
+        wp_reset_postdata();
     }
 
     /**

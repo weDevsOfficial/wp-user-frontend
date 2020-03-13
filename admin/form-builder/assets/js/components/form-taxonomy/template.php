@@ -31,7 +31,7 @@
             <div v-html="get_term_checklist()"></div>
         </div>
     </div>
-    
+
 
     <input
         v-if="'text' === field.type"
@@ -42,5 +42,5 @@
         autocomplete="off"
     >
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>

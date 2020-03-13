@@ -17,9 +17,9 @@
                 }
 
                 printf(
-                   wp_kses_post( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ) ),
-                   esc_html( $dashboard_query->found_posts ),
-                   esc_html( implode( ', ', $labels ) )
+                    wp_kses_post( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ) ),
+                    wp_kses_post( $dashboard_query->found_posts ),
+                    wp_kses_post( implode( ', ', $labels ) )
                 );
                 ?>
             </div>
@@ -47,7 +47,7 @@
     <?php if ( $dashboard_query->have_posts() ) {
         $args = [
             'post_status' => 'publish',
-            'post_type'   => 'wpuf_forms',
+            'post_type'   => [ 'wpuf_forms' ],
         ];
 
         $query = new WP_Query( $args );
@@ -75,16 +75,26 @@
 
         wp_reset_postdata();
 
-        $len                = count( $meta_key );
-        $len_label          = count( $meta_label );
-        $len_id             = count( $meta_id );
-        $featured_img       = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
-        $featured_img_size  = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
-        $enable_payment     = wpuf_get_option( 'enable_payment', 'wpuf_payment' );
-        $current_user       = wpuf_get_user(); ?>
+        $len               = count( $meta_key );
+        $len_label         = count( $meta_label );
+        $len_id            = count( $meta_id );
+        $featured_img      = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
+        $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
+        $enable_payment    = wpuf_get_option( 'enable_payment', 'wpuf_payment' );
+        $current_user      = wpuf_get_user();
+        $user_subscription = new WPUF_User_Subscription( $current_user );
+        $user_sub          = $user_subscription->current_pack();
+        $sub_id            = $current_user->subscription()->current_pack_id();
+
+        if ( $sub_id ) {
+            $subs_expired = $user_subscription->expired();
+        } else {
+            $subs_expired = false;
+        }
+        ?>
 
         <div class="items-table-container">
-            <table class="items-table <?php echo implode( ' ', esc_attr( $post_type ) ); ?>" cellpadding="0" cellspacing="0">
+            <table class="items-table <?php echo wp_kses_post( implode( ' ', $post_type ) ); ?>" cellpadding="0" cellspacing="0">
                 <thead>
                     <tr class="items-list-header">
                         <?php
@@ -179,14 +189,14 @@
                                             if ( !empty( $terms ) ) {
                                                 foreach ( $terms as $term ) {
                                                     $post_tax_terms[] = sprintf( '<a href="%1$s">%2$s</a>',
-                                                        esc_url( get_term_link( $term->slug, $taxonomy_slug ) ),
+                                                        esc_url_raw( get_term_link( $term->slug, $taxonomy_slug ) ),
                                                         esc_html( $term->name )
                                                      );
                                                 }
                                             }
                                         }
                                     }
-                                    echo esc_html( apply_filters( 'wpuf_dashboard_post_taxonomy', implode( ',', $post_tax_terms ) ) );
+                                    echo wp_kses_post( apply_filters( 'wpuf_dashboard_post_taxonomy', implode( ',', $post_tax_terms ) ) );
 
                                     ?>
                                 </td>
@@ -246,6 +256,10 @@
                                             }
 
                                             if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( !empty( $payment_status ) && $payment_status != 'completed' ) ) {
+                                                $show_edit  = false;
+                                            }
+
+                                            if ( $subs_expired ) {
                                                 $show_edit  = false;
                                             }
 

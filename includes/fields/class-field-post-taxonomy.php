@@ -144,7 +144,6 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             'exclude'      => $attr['exclude'],
             'orderby'      => $attr['orderby'],
             'order'        => $attr['order'],
-            'name'         => $attr['name'],
            // 'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
             //'term_id'      => $selected
         ];
@@ -225,7 +224,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             'hide_empty'             => 0,
             'orderby'                => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
             'order'                  => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
-            'name'                   => $this->taxonomy . '[]',
+            'name'                   => $this->taxonomy,
             'taxonomy'               => $this->taxonomy,
             'echo'                   => 0,
             'title_li'               => '',
@@ -355,7 +354,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         // return sanitize_text_field($_POST[$field['name']]);
         check_ajax_referer( 'wpuf_form_add' );
 
-        return $val   = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+        $val   = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
 
         return isset( $field['options'][$val] ) ? $field['options'][$val] : '';
     }

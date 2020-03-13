@@ -90,7 +90,7 @@ class WPUF_Whats_New {
         <div class="notice notice-success wpuf-whats-new-notice free">
 
             <div class="wpuf-whats-new-icon">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="WPUF Icon">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="WPUF Icon">
             </div>
 
             <div class="wpuf-whats-new-text">

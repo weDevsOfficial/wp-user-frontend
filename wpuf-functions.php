@@ -100,7 +100,7 @@ function wpuf_upload_attachment( $post_id ) {
                     'size'     => $wpuf_post_attachments['size'][$i],
                 ];
 
-                wpuf_upload_file( $upload );
+                wp_handle_upload( $upload );
             }//file exists
         }// end for
     }
@@ -207,14 +207,17 @@ function wpuf_list_users() {
  * @return string HTML content, if not displaying
  */
 function wpuf_get_pages( $post_type = 'page' ) {
-    global $wpdb;
-
     $array = [ '' => __( '-- select --', 'wp-user-frontend' ) ];
-    $pages = get_posts( ['post_type' => $post_type, 'numberposts' => -1] );
+    $pages = get_posts( [ 'post_type'              => $post_type,
+                          'numberposts'            => - 1,
+                          'no_found_rows'          => true,
+                          'update_post_meta_cache' => false,
+                          'update_post_term_cache' => false
+    ] );
 
     if ( $pages ) {
         foreach ( $pages as $page ) {
-            $array[$page->ID] = esc_attr( $page->post_title );
+            $array[ $page->ID ] = esc_attr( $page->post_title );
         }
     }
 
@@ -357,15 +360,16 @@ class WPUF_Walker_Category_Checklist extends Walker {
 /**
  * Displays checklist of a taxonomy
  *
+ * @param int $post_id
+ * @param array $selected_cats
+ *
  * @since 0.8
  *
- * @param int   $post_id
- * @param array $selected_cats
  */
 function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = [], $class = null ) {
     require_once ABSPATH . '/wp-admin/includes/template.php';
 
-    $walker       = new WPUF_Walker_Category_Checklist();
+    $walker = new WPUF_Walker_Category_Checklist();
 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude      = $attr['exclude'];
@@ -382,7 +386,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     ];
 
     if ( $post_id ) {
-        $args['selected_cats'] = wp_get_object_terms( $post_id, $tax, ['fields' => 'ids'] );
+        $args['selected_cats'] = wp_get_object_terms( $post_id, $tax, [ 'fields' => 'ids' ] );
     } elseif ( $selected_cats ) {
         $args['selected_cats'] = $selected_cats;
     } else {
@@ -406,21 +410,22 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 
     echo wp_kses_post( '<ul class="wpuf-category-checklist">' );
     printf( '<input type="hidden" name="%s" value="0" />', esc_attr( $tax ) );
-    echo wp_kses( call_user_func_array( [&$walker, 'walk'], [$categories, 0, $args] ),[
-        'li' => [
+    echo wp_kses( call_user_func_array( [ &$walker, 'walk' ], [ $categories, 0, $args ] ), [
+        'li'    => [
             'class' => []
         ],
         'label' => [
             'class' => []
         ],
         'input' => [
-            'class' =>[],
-            'type'  =>[],
-            'value' =>[],
-            'name'  => [],
-            'id'    => [],
+            'class'   => [],
+            'type'    => [],
+            'value'   => [],
+            'name'    => [],
+            'id'      => [],
+            'checked' => [],
         ],
-        'ul' => [
+        'ul'    => [
             'class' => []
         ]
     ] );
@@ -975,6 +980,25 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= sprintf( ' %s</li>', make_clickable( $value ) );
                     break;
 
+                case 'country_list':
+                    $value = get_post_meta( $post->ID, $attr['name'], true );
+                    $countries = wpuf_get_countries();
+
+                    $value = array_filter( $countries, function( $item ) use ( $value ) {
+                        return $item['code'] == $value;
+                    } );
+
+                    $value = $value[0]['name'];
+
+                    $html .= '<li>';
+
+                    if ( $hide_label == 'no' ) {
+                        $html .= '<label>' . $attr['label'] . '</label>:';
+                    }
+
+                    $html .= sprintf( ' %s</li>', make_clickable( $value ) );
+                    break;
+
                 default:
                     $value       = get_post_meta( $post->ID, $attr['name'] );
                     $filter_html = apply_filters( 'wpuf_custom_field_render', '', $value, $attr, $form_settings );
@@ -1142,7 +1166,11 @@ function wpuf_meta_shortcode( $atts ) {
     }
 
     if ( $type == 'image' || $type == 'file' ) {
-        $images = get_post_meta( $post->ID, $name );
+        $images = get_post_meta( $post->ID, $name, true );
+
+        if ( ! is_array( $images ) ) {
+            $images = (array) $images;
+        }
 
         if ( $images ) {
             $html = '';
@@ -1155,7 +1183,7 @@ function wpuf_meta_shortcode( $atts ) {
                 }
 
                 $full_size = wp_get_attachment_url( $attachment_id );
-                $html .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
+                $html      .= sprintf( '<a href="%s">%s</a> ', $full_size, $thumb );
             }
 
             return $html;
@@ -1530,7 +1558,7 @@ function wpuf_get_child_cats() {
     $result = '';
 
     if ( $parentCat < 1 ) {
-        die( wp_kses_post( $result, $allowed_tags ) );
+        die( wp_kses( $result, $allowed_tags ) );
     }
 
     if ( $terms = get_categories( 'taxonomy=' . $taxonomy . '&child_of=' . $parentCat . '&hide_empty=0' ) ) {
@@ -1547,7 +1575,7 @@ function wpuf_get_child_cats() {
     } else {
         die( '' );
     }
-    die( wp_kses_post( $result, $allowed_tags ) );
+    die( wp_kses( $result, $allowed_tags ) );
 }
 
 function taxnomy_select( $terms, $attr ) {
@@ -1591,7 +1619,6 @@ function taxnomy_select( $terms, $attr ) {
         'exclude'      => isset( $attr['exclude'] ) ? $attr['exclude'] : '',
         'orderby'      => $attr['orderby'],
         'order'        => $attr['order'],
-        'name'         => $attr['name'],
         //'last_term_id' => isset( $attr['parent_cat'] ) ? $attr['parent_cat'] : '',
         //'term_id'      => $selected
     ];
@@ -1893,6 +1920,8 @@ function wpuf_get_pending_transactions( $args = [] ) {
         ];
     }
 
+    wp_reset_postdata();
+
     return $items;
 }
 
@@ -1956,6 +1985,7 @@ function wpuf_get_currencies() {
         [ 'currency' => 'USD', 'label' => __( 'US Dollar', 'wp-user-frontend' ), 'symbol' => '&#36;' ],
         [ 'currency' => 'VND', 'label' => __( 'Vietnamese Dong', 'wp-user-frontend' ), 'symbol' => '&#8363;' ],
         [ 'currency' => 'EGP', 'label' => __( 'Egyptian Pound', 'wp-user-frontend' ), 'symbol' => 'EGP' ],
+        [ 'currency' => 'JOD', 'label' => __( 'Jordanian dinar', 'wp-user-frontend' ), 'symbol' => 'د.أ' ],
     ];
 
     return apply_filters( 'wpuf_currencies', $currencies );
@@ -3059,7 +3089,7 @@ function wpuf_ajax_get_states_field() {
     }
 
     wp_send_json( $response ) ; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
-    
+
 }
 add_action( 'wp_ajax_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
 add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );

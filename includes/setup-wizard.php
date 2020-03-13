@@ -219,7 +219,7 @@ class WPUF_Setup_Wizard {
             </style>
         </head>
         <body class="wpuf-setup wp-core-ui">
-            <h1 id="wpuf-logo"><a href="https://wedevs.com/wp-user-frontend-pro/"><img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="WPUF" /></a></h1>
+            <h1 id="wpuf-logo"><a href="https://wedevs.com/wp-user-frontend-pro/"><img src="<?php echo esc_url( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="WPUF" /></a></h1>
         <?php
     }
 

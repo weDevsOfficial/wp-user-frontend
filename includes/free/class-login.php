@@ -369,7 +369,7 @@ class WPUF_Simple_Login {
 
                         return;
                     } else {
-                        $this->messages[] = __( 'Enter your new password below..', 'wp-user-frontend' );
+                        $this->messages[] = __( 'Enter your new password below.', 'wp-user-frontend' );
 
                         wpuf_load_template( 'reset-pass-form.php', $args );
                     }

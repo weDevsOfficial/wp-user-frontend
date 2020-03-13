@@ -227,8 +227,8 @@ class WPUF_Frontend_Render_Form {
             <html lang="en">
                 <head>
                     <meta charset="UTF-8">
-                    <title>Form Preview</title>
-                    <link rel="stylesheet" href="<?php echo esc_attr( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
+                    <title>__( 'Form Preview', 'wp-user-frontend' )</title>
+                    <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
 
                     <style type="text/css">
                         body {
@@ -500,9 +500,9 @@ class WPUF_Frontend_Render_Form {
                             if ( $column_field['input_type'] == 'taxonomy' ) {
 
                                 // don't add "category"
-                                if ( $column_field['name'] == 'category' ) {
-                                    continue;
-                                }
+                                // if ( $column_field['name'] == 'category' ) {
+                                //     continue;
+                                // }
 
                                 $taxonomy_vars[] = $column_field;
                             } else {
@@ -528,9 +528,9 @@ class WPUF_Frontend_Render_Form {
             if ( $value['input_type'] == 'taxonomy' ) {
 
                 // don't add "category"
-                if ( $value['name'] == 'category' ) {
-                    continue;
-                }
+                // if ( $value['name'] == 'category' ) {
+                //     continue;
+                // }
 
                 $taxonomy_vars[] = $value;
             } else {
@@ -548,7 +548,6 @@ class WPUF_Frontend_Render_Form {
      * @param array $taxonomy_vars
      */
     public function set_custom_taxonomy( $post_id, $taxonomy_vars ) {
-
         check_ajax_referer( 'wpuf_form_add' );
         // save any custom taxonomies
         $woo_attr = [];
@@ -562,7 +561,7 @@ class WPUF_Frontend_Render_Form {
                $taxonomy_name = sanitize_text_field( wp_unslash( $_POST[$taxonomy['name']] ) );
             }
 
-            if (  $taxonomy_name != '' ) {
+            if ( isset( $taxonomy_name ) && $taxonomy_name !=0 && $taxonomy_name !=-1  ) {
                 if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
                     $tax = $taxonomy_name;
                     // if it's not an array, make it one
@@ -612,14 +611,8 @@ class WPUF_Frontend_Render_Form {
             } // isset tax
 
                 else {
-                    if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'no' && !empty( $taxonomy_name ) ) {
-                        if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
-                            foreach ( $this->form_settings['default_cat'] as $value ) {
-                                $term = get_term( $value );
-                                wp_set_post_terms( $post_id, $value, $term->taxonomy );
-                            }
-                            // wp_set_post_terms( $post_id, $form_settings['default_cat'], $taxonomy['name'] );
-                        }
+                    if ( !isset( $taxonomy['woo_attr'] ) ) {
+                        $this->set_default_taxonomy( $post_id );
                     }
                 }
         }
@@ -630,6 +623,20 @@ class WPUF_Frontend_Render_Form {
         }
 
         return $woo_attr;
+    }
+
+
+    public function set_default_taxonomy( $post_id ) {
+        $post_taxonomies = get_object_taxonomies( $this->form_settings['post_type'], 'objects' );
+        foreach ( $post_taxonomies as $tax ) {
+            if ( $tax->hierarchical ) {
+                $name  = 'default_'. $tax->name;
+                if( isset( $this->form_settings[$name] ) && !empty( $this->form_settings[$name] ) ){
+                    $value = $this->form_settings[$name];
+                    wp_set_post_terms( $post_id, $value, $tax->name );
+                }
+            }
+        }
     }
 
     /**
@@ -680,25 +687,27 @@ class WPUF_Frontend_Render_Form {
                     break;
 
                 case 'repeat':
+                    $repeater_value = wp_unslash( $_POST[$value['name']] ); // WPCS: sanitization ok.
 
                     // if it is a multi column repeat field
                     if ( isset( $value['multiple'] ) && $value['multiple'] == 'true' ) {
 
                         // if there's any items in the array, process it
-                        if ( $value_name ) {
-                            $ref_arr = [];
+                        if ( $repeater_value ) {
+
+                            $ref_arr = array();
                             $cols    = count( $value['columns'] );
-                            $first   = array_shift( array_values( $value_name ) ); //first element
+                            $first   = array_shift( array_values( $repeater_value ) ); //first element
                             $rows    = count( $first );
 
                             // loop through columns
-                            for ( $i = 0; $i < $rows; $i++ ) {
+                            for ($i = 0; $i < $rows; $i++) {
 
                                 // loop through the rows and store in a temp array
-                                $temp = [];
+                                $temp = array();
+                                for ($j = 0; $j < $cols; $j++) {
 
-                                for ( $j = 0; $j < $cols; $j++ ) {
-                                    $temp[] = $value_name[$j][$i];
+                                    $temp[] = $repeater_value[$j][$i];
                                 }
 
                                 // store all fields in a row with self::$separator separated
@@ -711,7 +720,7 @@ class WPUF_Frontend_Render_Form {
                             }
                         }
                     } else {
-                        $meta_key_value[$value['name']] = implode( self::$separator, $value_name );
+                        $meta_key_value[$value['name']] = implode( self::$separator, $repeater_value );
                     }
 
                     break;
@@ -751,6 +760,10 @@ class WPUF_Frontend_Render_Form {
                     }
                     break;
 
+                case 'checkbox':
+                    $meta_key_value[ $value['name'] ] = $value_name[0];
+                    break;
+
                 default:
                     // if it's an array, implode with this->separator
                     if ( !empty( $value_name ) && is_array( $value_name ) ) {
@@ -761,7 +774,7 @@ class WPUF_Frontend_Render_Form {
                         } elseif ( !empty( $acf_compatibility ) && $acf_compatibility == 'yes' ) {
                             $meta_key_value[$value['name']] = $value_name;
                         } else {
-                            $meta_key_value[$value['name']] = implode( self::$separator, $value_name );
+                            $meta_key_value[$value['name']] = implode( $value_name[0] );
                         }
                     } elseif ( !empty( $value_name ) ) {
                         $meta_key_value[$value['name']] = trim( $value_name );

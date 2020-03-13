@@ -23,7 +23,6 @@ class WPUF_Paypal {
         add_action( 'wpuf_paypal_ipn_success', [ $this, 'paypal_success' ] );
         add_action( 'wpuf_cancel_payment_paypal', [ $this, 'handle_cancel_subscription' ] );
         add_action( 'wpuf_cancel_subscription_paypal', [ $this, 'handle_cancel_subscription' ] );
-        add_action( 'wpuf_paypal_ipn_success', [ $this, 'update_paypal_subscr_payment' ] );
     }
 
     public function subscription_cancel( $user_id ) {
@@ -34,14 +33,12 @@ class WPUF_Paypal {
     /**
      * Change PayPal recurring payment status
      *
-     * @param int    $user_id
+     * @param int $user_id
      * @param string $status
      *
      * @return void
      */
     public function recurring_change_status( $user_id, $status ) {
-        global $wp_version;
-
         $sub_info          = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
         $api_username      = wpuf_get_option( 'paypal_api_username', 'wpuf_payment' );
         $api_password      = wpuf_get_option( 'paypal_api_password', 'wpuf_payment' );
@@ -119,9 +116,10 @@ class WPUF_Paypal {
     /**
      * Prepare the payment form and send to paypal
      *
+     * @param array $data payment info
+     *
      * @since 0.8
      *
-     * @param array $data payment info
      */
     public function prepare_to_send( $data ) {
         $user_id          = $data['user_info']['id'];
@@ -129,14 +127,14 @@ class WPUF_Paypal {
         $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
 
         if ( $redirect_page_id ) {
-            $return_url   = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( $redirect_page_id ) );
+            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( $redirect_page_id ) );
         } else {
-            $return_url  = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) );
+            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) );
         }
 
         $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
 
-        if ( isset( $_POST['coupon_id'] ) && !empty( $_POST['coupon_id'] ) ) {
+        if ( isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) ) {
             $billing_amount = WPUF_Coupons::init()->discount( $billing_amount, $_POST['coupon_id'], $data['item_number'] );
 
             $coupon_id = $_POST['coupon_id'];
@@ -179,22 +177,30 @@ class WPUF_Paypal {
                 'cmd'           => '_xclick-subscriptions',
                 'business'      => wpuf_get_option( 'paypal_email', 'wpuf_payment' ),
                 'a3'            => $billing_amount,
-                'p3'            => !empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number'] : '0',
+                'mc_amount3'    => $billing_amount,
+                'p3'            => ! empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number'] : '0',
                 't3'            => $period,
                 'item_name'     => $data['custom']['post_title'],
-                'custom'        => json_encode( [ 'billing_amount' => $billing_amount, 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id, 'subtotal' => $data['subtotal'], 'tax' => $data['tax'] ] ),
-                'no_shipping'   => '1',
-                'shipping'      => '0',
-                'no_note'       => '1',
+                'custom'        => json_encode( [
+                    'billing_amount' => $billing_amount,
+                    'type'           => $data['type'],
+                    'user_id'        => $user_id,
+                    'coupon_id'      => $coupon_id,
+                    'subtotal'       => $data['subtotal'],
+                    'tax'            => $data['tax']
+                ] ),
+                'shipping'      => 0,
+                'no_note'       => 1,
                 'currency_code' => $data['currency'],
                 'item_number'   => $data['item_number'],
-                'charset'       => 'UTF-8',
-                'rm'            => '2',
+                'rm'            => 2,
                 'return'        => $return_url,
+                'cancel_return' => $return_url,
                 'notify_url'    => $listener_url,
-                'src'           => '1',
-                'sra'           => '1',
+                'src'           => 1,
+                'sra'           => 1,
                 'srt'           => intval( $data['custom']['billing_limit'] ),
+                'recurring'     => 1
             ];
 
             if ( $data['custom']['trial_status'] == 'yes' ) {
@@ -214,7 +220,12 @@ class WPUF_Paypal {
                 'item_number'   => $data['item_number'],
                 'charset'       => 'UTF-8',
                 'rm'            => '2',
-                'custom'        => json_encode( [ 'type' => $data['type'], 'user_id' => $user_id, 'coupon_id' => $coupon_id, 'subtotal' => $data['subtotal'], 'tax' => $data['tax'] ] ),
+                'custom'        => json_encode( [ 'type'      => $data['type'],
+                                                  'user_id'   => $user_id,
+                                                  'coupon_id' => $coupon_id,
+                                                  'subtotal'  => $data['subtotal'],
+                                                  'tax'       => $data['tax']
+                ] ),
                 'return'        => $return_url,
                 'notify_url'    => $listener_url,
             ];
@@ -229,7 +240,7 @@ class WPUF_Paypal {
          */
         $paypal_args = apply_filters( 'wpuf_paypal_args', $paypal_args );
 
-        $paypal_url =  $this->gateway_url . http_build_query( $paypal_args );
+        $paypal_url = $this->gateway_url . http_build_query( $paypal_args );
 
         wp_redirect( $paypal_url );
         exit;
@@ -252,7 +263,7 @@ class WPUF_Paypal {
      * Check for PayPal IPN Response.
      */
     public function check_response() {
-        if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' && $this->validateIpn() ) {
+        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'wpuf_paypal_success' && $this->validateIpn() ) {
             do_action( 'wpuf_paypal_ipn_success' );
         }
     }
@@ -263,6 +274,8 @@ class WPUF_Paypal {
      * @since 0.8
      */
     public function paypal_success() {
+        global $wpdb;
+
         $postdata = $_POST;
 
         // when subscription expire
@@ -291,18 +304,34 @@ class WPUF_Paypal {
             $item_number  = $postdata['item_number'];
             $amount       = $postdata['mc_gross'];
             $is_recurring = false;
+            $post_id      = 0;
+            $pack_id      = 0;
 
             $custom    = json_decode( stripcslashes( $postdata['custom'] ) );
             $coupon_id = isset( $custom->coupon_id ) ? $custom->coupon_id : false;
 
+            if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_signup' ) ) {
+                WP_User_Frontend::log( 'paypal-recurring', 'got subscriber with email ' . $postdata['payer_email'] );
+
+                return;
+            }
+
+            if ( isset( $postdata['txn_id'] ) && $this->transaction_exists( $postdata['txn_id'] ) ) {
+                $wpdb->update( $wpdb->prefix . 'wpuf_transaction',
+                    array( 'status' => strtolower( $postdata['payment_status'] ) ),
+                    array(
+                        'transaction_id' => $postdata['txn_id']
+                    ) );
+            }
+
             // check if recurring payment
             if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_payment' ) && ( strtolower( $postdata['payment_status'] ) == 'completed' ) ) {
-                if ( $postdata['mc_gross'] == $custom->billing_amount ) {
-                    $insert_payment     = true;
-                    $post_id            = 0;
-                    $pack_id            = $item_number;
-                    $is_recurring       = true;
-                    $status             = 'subscr_payment';
+                if ( $postdata['mc_gross'] <= ceil( $custom->billing_amount ) ) {
+                    $insert_payment = true;
+                    $post_id        = 0;
+                    $pack_id        = $item_number;
+                    $is_recurring   = true;
+                    $status         = 'subscr_payment';
 
                     WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment, should insert of pack_id: ' . $pack_id );
                 } else {
@@ -314,7 +343,7 @@ class WPUF_Paypal {
                 WP_User_Frontend::log( 'paypal', 'got web_accept. type: ' . $custom->type . '. item_number: ' . $item_number );
 
                 //verify payment
-                $status   = 'web_accept';
+                $status = 'web_accept';
 
                 switch ( $custom->type ) {
                     case 'post':
@@ -329,16 +358,16 @@ class WPUF_Paypal {
                 }
             } elseif (
                 isset( $postdata['verify_sign'] )
-                && !empty( $postdata['verify_sign'] )
+                && ! empty( $postdata['verify_sign'] )
                 && isset( $postdata['payment_status'] )
                 && $postdata['payment_status'] == 'Pending'
                 && isset( $postdata['pending_reason'] )
                 && $postdata['pending_reason'] == 'multi_currency'
                 && isset( $postdata['txn_type'] )
                 && $postdata['txn_type'] == 'web_accept'
-             ) {
+            ) {
                 //verify payment
-                $status  = 'web_accept';
+                $status = 'web_accept';
                 switch ( $custom->type ) {
                     case 'post':
                         $post_id = $item_number;
@@ -367,12 +396,12 @@ class WPUF_Paypal {
                 'payer_address'    => isset( $postdata['residence_country'] ) ? $postdata['residence_country'] : null,
                 'transaction_id'   => $postdata['txn_id'],
                 'created'          => current_time( 'mysql' ),
-                'profile_id'       => isset( $postdata['subscr_id'] ) ? $postdata['subscr_id'] : null,
             ];
 
             WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
 
             $transaction_id = wp_strip_all_tags( $postdata['txn_id'] );
+            
             WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
 
             if ( $coupon_id ) {
@@ -381,6 +410,12 @@ class WPUF_Paypal {
                 $new_use   = $pre_usage + 1;
 
                 update_post_meta( $coupon_id, '_coupon_used', $new_use );
+            }
+
+            if ( isset( $postdata['profile_id'] ) ) {
+                $umeta = get_user_meta( $custom->user_id, '_wpuf_subscription_pack', true );
+                $umeta['profile_id'] = $postdata['profile_id'];
+                update_user_meta( $custom->user_id, '_wpuf_subscription_pack', $umeta );
             }
 
             delete_user_meta( $custom->user_id, '_wpuf_user_active' );
@@ -408,8 +443,6 @@ class WPUF_Paypal {
      * @return bool
      */
     public function validateIpn() {
-        global $wp_version;
-
         WP_User_Frontend::log( 'paypal', 'Checking if PayPal IPN response is valid' );
 
         $this->set_mode();
@@ -439,7 +472,7 @@ class WPUF_Paypal {
         WP_User_Frontend::log( 'paypal', 'IPN Response: ' . print_r( $response, true ) );
 
         // check to see if the request was valid
-        if ( !is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && strstr( $response['body'], 'VERIFIED' ) ) {
+        if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && strstr( $response['body'], 'VERIFIED' ) ) {
             WP_User_Frontend::log( 'paypal', 'Received valid response from PayPal' );
 
             return true;
@@ -454,33 +487,14 @@ class WPUF_Paypal {
         return false;
     }
 
-    /**
-     * Update users subscription
-     *
-     * Updates the pack when new recurring payment IPN notification is being
-     * sent from PayPal.
-     *
-     * @return void
-     */
-    public function update_paypal_subscr_payment() {
-        $txn_type       = isset( $_POST['txn_type'] ) ? sanitize_text_field( wp_unslash( $_POST['txn_type'] ) ) : '';
-        $payment_status = isset( $_POST['payment_status'] ) ? sanitize_text_field( wp_unslash( $_POST['payment_status'] ) ) : '';
+    public function transaction_exists( $trns_id ) {
+        global $wpdb;
 
-        $custom = isset( $_POST['custom'] ) ? sanitize_text_field( wp_unslash( $_POST['custom'] ) ) : '';
-
-        $pack_id = $_POST['item_number'];
-
-        if ( $txn_type != 'subscr_payment' ) {
-            return;
+        if ( $wpdb->get_var( "SELECT transaction_id FROM `{$wpdb->prefix}wpuf_transaction` WHERE transaction_id='{$trns_id}' LIMIT 0, 1" ) ) {
+            return true;
         }
 
-        if ( strtolower( $payment_status ) != 'completed' ) {
-            return;
-        }
-
-        $pack  = $this->get_subscription( $pack_id );
-        $payer = json_decode( stripcslashes( $custom ) );
-
-        $this->update_user_subscription_meta( $payer->payer_id, $pack );
+        return false;
     }
+
 }

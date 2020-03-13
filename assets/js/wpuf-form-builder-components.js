@@ -1109,16 +1109,23 @@ Vue.component('form-column_field', {
                 });
 
                 $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields").mouseup(function() {
-                    var columnOneWidth   = $(columnField).find(".column-1").width(),
-                        columnTwoWidth   = $(columnField).find(".column-2").width(),
-                        colOneWidth      = (100*columnOneWidth) / total_width,
-                        colTwoWidth      = 100 - colOneWidth,
-                        colThreeWidth    = 0;
+                    let colOneWidth   = 0,
+                        colTwoWidth   = 0,
+                        colThreeWidth = 0;
 
-                        if (columnsNumber === 3) {
-                            colTwoWidth   = (100*columnTwoWidth) / total_width;
-                            colThreeWidth = 100 - (colOneWidth + colTwoWidth);
-                        }
+                    if (columnsNumber === 3) {
+                        colOneWidth = 100 / columnsNumber;
+                        colTwoWidth = 100 / columnsNumber;
+                        colThreeWidth = 100 / columnsNumber;
+                    } else if (columnsNumber === 2) {
+                        colOneWidth = 100 / columnsNumber;
+                        colTwoWidth = 100 / columnsNumber;
+                        colThreeWidth = 0;
+                    } else {
+                        colOneWidth = $(columnField).find(".column-1").width();
+                        colTwoWidth = $(columnField).find(".column-2").width();
+                        colThreeWidth = 0;
+                    }
 
                     self.field.inner_columns_size['column-1'] = colOneWidth + '%';
                     self.field.inner_columns_size['column-2'] = colTwoWidth + '%';

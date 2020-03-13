@@ -45,9 +45,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         ob_start();
 
-        if ( !is_user_logged_in() ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>',
-            wp_login_form() );
+        if ( ! is_user_logged_in() ) {
+            echo wp_kses_post( '<div class="wpuf-message">' . __( 'You are not logged in', 'wp-user-frontend' ) . '</div>' ),
+
+            wp_login_form();
 
             return;
         }
@@ -189,7 +190,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
         ];
 
-        $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : '';
+        if ( isset( $_POST['category'] ) && is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
+            $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : [];
+        } else {
+            $category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
+        }
 
         if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
             $postarr['post_category'] = is_array( $category ) ? $category : [ $category ];
@@ -240,6 +245,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             if ( !empty( $taxonomy_vars ) ) {
                 $this->set_custom_taxonomy( $post_id, $taxonomy_vars );
+            } else {
+                $this->set_default_taxonomy( $post_id );
             }
         }
 
@@ -350,11 +357,13 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
-        $category  = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : '';
+        if ( isset( $_POST['category'] ) && is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
+            $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : [];
+        } else {
+            $category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
+        }
 
         if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
-
-
             if ( !is_array( $category ) && is_string( $category ) ) {
                 $category_strings = explode( ',', $category );
                 $cat_ids          = [];
@@ -486,7 +495,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             if ( !empty( $taxonomy_vars ) ) {
                 $this->set_custom_taxonomy( $post_id, $taxonomy_vars );
+            } else {
+                $this->set_default_taxonomy( $post_id );
             }
+
             $response = $this->send_mail_for_guest( $charging_enabled, $post_id, $form_id, $is_update, $post_author, $meta_vars );
             wpuf_clear_buffer();
             wp_send_json( $response );
@@ -624,7 +636,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             wpuf_associate_attachment( $attachment_id, $post_id );
             set_post_thumbnail( $post_id, $attachment_id );
 
-            $file_data = isset( $wpuf_files[$attachment_id] ) ? $wpuf_files[$attachment_id] : false;
+            $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? wp_unslash( $_POST['wpuf_files_data'][$attachment_id] ) : false;
 
             if ( $file_data ) {
                 $args = [
@@ -689,7 +701,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 //add_post_meta( $post_id, $file_input['name'], $attachment_id );
 
                 // file title, caption, desc update
-                $file_data = isset( $wpuf_files[$attachment_id] ) ? $wpuf_files[$attachment_id] : false;
+                $file_data = isset( $_POST['wpuf_files_data'][$attachment_id] ) ? wp_unslash( $_POST['wpuf_files_data'][$attachment_id] ) : false;
 
                 if ( $file_data ) {
                     $args = [
@@ -738,7 +750,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( $replace ) {
             foreach ( $replace as $index => $meta_key ) {
                 $value     = get_post_meta( $post_id, $meta_key, false );
-                $new_value = implode( '; ', $value );
+                if ( is_array( $value ) ) {
+                    $new_value = implode( '; ', $value );
+                }
 
                 $original_value = '';
                 $meta_val       = '';
@@ -770,6 +784,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                     }
                     $original_value = $original_value . $meta_val;
                 } else {
+                    if ( 'address_field' == $meta_key ) {
+                        $value     = get_post_meta( $post_id, $meta_key, true );
+                        $new_value = implode( ', ', $value );
+                    }
+
                     if ( get_post_mime_type( (int) $new_value ) ) {
                         $original_value = wp_get_attachment_url( $new_value );
                     } else {

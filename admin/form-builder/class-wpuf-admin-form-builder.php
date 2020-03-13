@@ -114,8 +114,27 @@ class WPUF_Admin_Form_Builder {
             'wpuf-selectize', 'wpuf-toastr', 'wpuf-clipboard', 'wpuf-tooltip',
         ] );
 
-        wp_enqueue_script( 'wpuf-form-builder-mixins', WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js', $form_builder_js_deps, WPUF_VERSION, true );
+        $single_objects = [
+            'post_title',
+            'post_content',
+            'post_excerpt',
+            'featured_image',
+            'user_login',
+            'first_name',
+            'last_name',
+            'nickname',
+            'user_email',
+            'user_url',
+            'user_bio',
+            'password',
+            'user_avatar',
+            'taxonomy'
+        ];
+        $taxonomy_terms = array_keys( get_taxonomies() );
+        $single_objects = array_merge( $single_objects, $taxonomy_terms );
 
+        wp_enqueue_script( 'wpuf-form-builder-mixins', WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js', $form_builder_js_deps, WPUF_VERSION, true );
+        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_single_objects', $single_objects );
         do_action( 'wpuf-form-builder-enqueue-after-mixins' );
 
         wp_enqueue_script( 'wpuf-form-builder-components', WPUF_ASSET_URI . '/js/wpuf-form-builder-components.js', [ 'wpuf-form-builder-mixins' ], WPUF_VERSION, true );
@@ -146,6 +165,7 @@ class WPUF_Admin_Form_Builder {
             'site_url'          => site_url( '/' ),
             'recaptcha_site'    => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
             'recaptcha_secret'  => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
+            'nonce'             => wp_create_nonce( 'form-builder-setting-nonce' )
         ] );
 
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );

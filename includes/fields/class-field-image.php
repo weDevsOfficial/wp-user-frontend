@@ -58,31 +58,7 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
                             <?php
                             if ( $has_images ) {
                                 foreach ( $images as $attach_id ) {
-                                    echo wp_kses( WPUF_Upload::attach_html( $attach_id, $field_settings['name'] ),[
-                                        'li' => [
-                                                'class' => []
-                                            ],
-                                            'div' => [
-                                                'class' => []
-                                            ],
-                                            'img' => [
-                                                'src' => [],
-                                                'alt' => [],
-                                            ],
-                                            'input' => [
-                                                'type' => [],
-                                                'name' => [],
-                                                'value' => [],
-                                            ],
-                                            'a' => [
-                                                'href' => [],
-                                                'class' => [],
-                                                'data-attach_id' => [],
-                                            ],
-                                            'span' => [
-                                                'class' => []
-                                            ]
-                                    ] );
+                                    echo WPUF_Upload::attach_html( $attach_id, $field_settings['name'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                 }
                             } ?>
                         </ul>
@@ -159,8 +135,6 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
             'count'             => '1',
             'button_label'      => __( 'Select Image', 'wp-user-frontend' ),
             'is_meta'           => 'yes',
-            'max_size'          => '1024',
-            'count'             => '1',
             'id'                => 0,
             'is_new'            => true,
             'show_in_post'      => 'yes',

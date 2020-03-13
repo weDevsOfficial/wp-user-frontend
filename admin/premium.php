@@ -15,7 +15,7 @@
     <div class="feature-section two-col">
         <div class="col feature-wrap">
             <div class="feature-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/premium/registration.gif" alt="<?php esc_html_e( 'Registration Form Builder', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/premium/registration.gif" alt="<?php esc_html_e( 'Registration Form Builder', 'wp-user-frontend' ); ?>">
             </div>
             <div class="feature-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/how-to-setup-registrationlogin-page/" target="_blank"><?php esc_html_e( 'Registration Form Builder', 'wp-user-frontend' ); ?></a></h3>
@@ -25,7 +25,7 @@
 
         <div class="col feature-wrap">
             <div class="feature-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/premium/advanced-fields.png" alt="<?php esc_html_e( 'Advanced Fields', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/premium/advanced-fields.png" alt="<?php esc_html_e( 'Advanced Fields', 'wp-user-frontend' ); ?>">
             </div>
             <div class="feature-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-elements/" target="_blank"><?php esc_html_e( 'Advanced Fields', 'wp-user-frontend' ); ?></a></h3>
@@ -48,7 +48,7 @@
 
         <div class="col feature-wrap">
             <div class="feature-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/premium/coupon.gif" alt="<?php esc_html_e( 'Manage Coupons', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/premium/coupon.gif" alt="<?php esc_html_e( 'Manage Coupons', 'wp-user-frontend' ); ?>">
             </div>
             <div class="feature-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank"><?php esc_html_e( 'Manage Coupons', 'wp-user-frontend' ); ?></a></h3>
@@ -58,7 +58,7 @@
 
         <div class="col feature-wrap">
             <div class="feature-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/premium/content-restrictions.gif" alt="<?php esc_html_e( 'Content Restrictions', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/premium/content-restrictions.gif" alt="<?php esc_html_e( 'Content Restrictions', 'wp-user-frontend' ); ?>">
             </div>
             <div class="feature-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/content-restriction/" target="_blank"><?php esc_html_e( 'Content Restrictions', 'wp-user-frontend' ); ?></a></h3>
@@ -68,7 +68,7 @@
 
         <div class="col feature-wrap">
             <div class="feature-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/premium/conditional-logic.gif" alt="<?php esc_html_e( 'Conditional Logic', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/premium/conditional-logic.gif" alt="<?php esc_html_e( 'Conditional Logic', 'wp-user-frontend' ); ?>">
             </div>
             <div class="feature-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-use-conditional-logic/" target="_blank"><?php esc_html_e( 'Conditional Logic', 'wp-user-frontend' ); ?></a></h3>
@@ -78,7 +78,7 @@
 
         <div class="col feature-wrap">
             <div class="feature-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/premium/multi-step.gif" alt="<?php esc_html_e( 'Multi-step Form', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/premium/multi-step.gif" alt="<?php esc_html_e( 'Multi-step Form', 'wp-user-frontend' ); ?>">
             </div>
             <div class="feature-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/" target="_blank"><?php esc_html_e( 'Multi-step Form', 'wp-user-frontend' ); ?></a></h3>
@@ -98,7 +98,7 @@
     <div class="headline-feature two-col">
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/Social-Media-Login.png" alt="<?php esc_html_e( 'BuddyPress Profile', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/Social-Media-Login.png" alt="<?php esc_html_e( 'BuddyPress Profile', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/social-login-registration/" target="_blank"><?php esc_html_e( 'Social Login', 'wp-user-frontend' ); ?></a></h3>
@@ -108,7 +108,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/wpuf-ul.png" alt="<?php esc_html_e( 'User Directory', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/wpuf-ul.png" alt="<?php esc_html_e( 'User Directory', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/user-listing-profile/" target="_blank"><?php esc_html_e( 'User Directory', 'wp-user-frontend' ); ?></a></h3>
@@ -118,7 +118,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/wpuf-buddypress.png" alt="<?php esc_html_e( 'BuddyPress Profile', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/wpuf-buddypress.png" alt="<?php esc_html_e( 'BuddyPress Profile', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/buddypress-profile-integration/" target="_blank"><?php esc_html_e( 'BuddyPress Profile', 'wp-user-frontend' ); ?></a></h3>
@@ -128,7 +128,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/wpuf-ua.png" alt="<?php esc_html_e( 'MailChimp Integration', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/wpuf-ua.png" alt="<?php esc_html_e( 'MailChimp Integration', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/user-analytics/" target="_blank"><?php esc_html_e( 'User Analytics', 'wp-user-frontend' ); ?></a></h3>
@@ -138,7 +138,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/wpuf-pmpro.png" alt="<?php esc_html_e( 'Paid Membership Pro', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/wpuf-pmpro.png" alt="<?php esc_html_e( 'Paid Membership Pro', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/install-and-configure-pmpro-add-on-for-wpuf/" target="_blank"><?php esc_html_e( 'Paid Membership Pro', 'wp-user-frontend' ); ?></a></h3>
@@ -148,7 +148,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/wpuf-stripe.png" alt="<?php esc_html_e( 'Stripe Payment', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/wpuf-stripe.png" alt="<?php esc_html_e( 'Stripe Payment', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/stripe/" target="_blank"><?php esc_html_e( 'Stripe Payment', 'wp-user-frontend' ); ?></a></h3>
@@ -158,7 +158,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/wpuf-mailpoet.png" alt="<?php esc_html_e( 'Mailpoet', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/wpuf-mailpoet.png" alt="<?php esc_html_e( 'Mailpoet', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/mailpoet/" target="_blank"><?php esc_html_e( 'Mailpoet', 'wp-user-frontend' ); ?></a></h3>
@@ -168,7 +168,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/wpuf-mailchimp.png" alt="<?php esc_html_e( 'MailChimp Integration', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/wpuf-mailchimp.png" alt="<?php esc_html_e( 'MailChimp Integration', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/add-users-to-mailchimp-subscribers-list-upon-registration-from-frontend/" target="_blank"><?php esc_html_e( 'MailChimp', 'wp-user-frontend' ); ?></a></h3>
@@ -178,7 +178,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/wpuf-sms.png" alt="<?php esc_html_e( 'SMS Notification', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/wpuf-sms.png" alt="<?php esc_html_e( 'SMS Notification', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/sms-notification/" target="_blank"><?php esc_html_e( 'SMS Notification', 'wp-user-frontend' ); ?></a></h3>
@@ -188,7 +188,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/wpuf-comment.png" alt="<?php esc_html_e( 'SMS Notification', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/wpuf-comment.png" alt="<?php esc_html_e( 'SMS Notification', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/frontend-comment-manager/" target="_blank"><?php esc_html_e( 'Comment Manager', 'wp-user-frontend' ); ?></a></h3>
@@ -198,7 +198,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/wpuf-qr.png" alt="<?php esc_html_e( 'SMS Notification', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/wpuf-qr.png" alt="<?php esc_html_e( 'SMS Notification', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><a href="https://wedevs.com/docs/wp-user-frontend-pro/modules/qr-code/" target="_blank"><?php esc_html_e( 'QR Code Generator', 'wp-user-frontend' ); ?></a></h3>
@@ -208,7 +208,7 @@
 
         <div class="col module-wrap">
             <div class="module-image">
-                <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/modules/more.png" alt="<?php esc_html_e( 'More...', 'wp-user-frontend' ); ?>">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/modules/more.png" alt="<?php esc_html_e( 'More...', 'wp-user-frontend' ); ?>">
             </div>
             <div class="module-details">
                 <h3><?php esc_html_e( 'More...', 'wp-user-frontend' ); ?></h3>

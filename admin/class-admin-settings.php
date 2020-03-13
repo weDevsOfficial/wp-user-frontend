@@ -190,10 +190,6 @@ class WPUF_Admin_Settings {
         }
     }
 
-    public function subscription_page() {
-        require_once dirname( __DIR__ ) . '/admin/subscription.php';
-    }
-
     public function subscribers_page( $post_ID ) {
         include dirname( __DIR__ ) . '/admin/subscribers.php';
     }

@@ -492,7 +492,7 @@
         >{{ label }}</option>
     </select>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"> </span>
 </div>
 </script>
 
@@ -615,7 +615,7 @@
         >{{ label }}</option>
     </select>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"></span>
 </div>
 </script>
 
@@ -651,7 +651,7 @@
         :rows="field.rows"
         :cols="field.cols"
     >{{ field.default }}</textarea>
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" ></span>
 </div>
 </script>
 

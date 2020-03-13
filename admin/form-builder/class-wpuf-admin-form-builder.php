@@ -130,7 +130,7 @@ class WPUF_Admin_Form_Builder {
             'user_avatar',
             'taxonomy'
         ];
-        $taxonomy_terms = array_keys( get_taxonomies( array( 'hierarchical' => true ) ) );
+        $taxonomy_terms = array_keys( get_taxonomies() );
         $single_objects = array_merge( $single_objects, $taxonomy_terms );
 
         wp_enqueue_script( 'wpuf-form-builder-mixins', WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js', $form_builder_js_deps, WPUF_VERSION, true );

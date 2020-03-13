@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 5.3.2
 Requires PHP: 5.6
-Stable tag: 3.1.17
+Stable tag: 3.1.18
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -263,6 +263,40 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.1.18 (13 March, 2020) =
+* **Improvement:** Hide post edit option when subscription is expired
+* **Improvement:** Check files to prevent duplicity in media upload
+* **Improvement:** Added Jordanian Dinar to currency list
+* **Improvement:** Update post edit button display logic
+* **Improvement:** Update some notice messages
+* **Improvement:** Made some query and asset loading improvements
+* **Improvement:** Refactor address fields in Account section & Payment page
+* **Improvement:** Enqueue color picker only in some WPUF pages
+* **Improvement:** Update Paypal payment gateway
+* **Improvement:** Inconsistency with the Shop Name & Shop URL in WPUF Vendor registration form
+* **Fix:** Prevent taxonomy and category fields from being duplicated
+* **Fix:** Selected form export issue
+* **Fix:** Category column issue in dashboard
+* **Fix:** Taxonomy checkbox checked not showing
+* **Fix:** Fatal error after updating privacy policy page
+* **Fix:** Fixed some instances of wrong escaping
+* **Fix:** Submit issue with image and reCaptcha
+* **Fix:** Expired subscription pack throwing error on dashboard
+* **Fix:** Photo insert option in content editor and feature image field is not working on windows server
+* **Fix:** HTML Tags are not rendering the HTML format for the Radio or Checkbox Field
+* **Fix:** Country List field issue in frontend
+* **Fix:** Multi-column Repeater field data saving issue
+* **Fix:** Multistep form conflict with Elementor
+* **Fix:** Compatibility issue with ACF date time field
+* **Fix:** Meta field issue with multiple images
+* **Fix:** Category type as "Text Input" is not saving.
+* **Fix:** Some warnings in user directory
+* **Fix:** File upload can fail in some cases
+* **Fix:** Media title, caption & description not saving
+* **Fix:** Address Field not rendering properly in email notification
+* **Fix:** Checkbox data not saving from WPUF Custom Fields metabox
+* **Fix:** Workaround for The Events Calendar venue and organizer fields in metabox
 
 = v3.1.17 (31 January, 2020) =
 * **Fix:** some regressions after phpcs fixes

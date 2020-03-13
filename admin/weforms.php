@@ -14,7 +14,7 @@
     </div>
 
     <figure class="we-gif" style="width: 944px;">
-        <img class="img-responsive inline-block image-gif shadow" src="esc_url(https://wedevs-com-wedevs.netdna-ssl.com/wp-content/uploads/2017/08/weforms-final-promo-video.gif )" >
+        <img class="img-responsive inline-block image-gif shadow" src="<?php echo esc_url("https://wedevs-com-wedevs.netdna-ssl.com/wp-content/uploads/2017/08/weforms-final-promo-video.gif" ) ?>" >
     </figure>
 </div>
 

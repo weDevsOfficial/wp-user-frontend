@@ -326,7 +326,7 @@ class WPUF_Paypal {
 
             // check if recurring payment
             if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_payment' ) && ( strtolower( $postdata['payment_status'] ) == 'completed' ) ) {
-                if ( $postdata['mc_gross'] == $custom->billing_amount ) {
+                if ( $postdata['mc_gross'] <= ceil( $custom->billing_amount ) ) {
                     $insert_payment = true;
                     $post_id        = 0;
                     $pack_id        = $item_number;

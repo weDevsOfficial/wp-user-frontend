@@ -76,8 +76,13 @@ class WPUF_Admin_Form_Builder_Ajax {
     public function wpuf_get_post_taxonomies() {
         $post_data =  wp_unslash($_POST);
         $post_type = $post_data['post_type'];
+        $nonce     = $post_data['wpuf_form_builder_setting_nonce'];
 
-        if ( empty( $post_data['post_type'] ) ) {
+        if ( isset( $nonce ) && !wp_verify_nonce( $post_data['wpuf_form_builder_setting_nonce'], 'form-builder-setting-nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( isset( $post_type ) && empty( $post_data['post_type'] ) ) {
             wp_send_json_error( __( 'Invalid post type', 'wp-user-frontend' ) );
         }
 

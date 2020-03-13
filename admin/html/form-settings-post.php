@@ -94,7 +94,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     if ( !is_array( $default_category ) ) {
                         $default_category = (array) $default_category;
                     }
-                    error_log(print_r($default_category,true));
+
                     $args = [
                         'hide_empty'       => false,
                         'hierarchical'     => true,
@@ -121,7 +121,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                         .'</p>
                     </td>';
 
-                    echo $tax;
+                    echo $tax; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 }
             }
         ?>

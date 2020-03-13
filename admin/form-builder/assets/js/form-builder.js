@@ -840,7 +840,8 @@
         var post_type =  $(this).val();
         wp.ajax.send('wpuf_form_setting_post', {
             data: {
-                post_type: post_type
+                post_type: post_type,
+                wpuf_form_builder_setting_nonce: wpuf_form_builder.nonce
             },
             success: function (response) {
                 $('.wpuf_settings_taxonomy').remove();

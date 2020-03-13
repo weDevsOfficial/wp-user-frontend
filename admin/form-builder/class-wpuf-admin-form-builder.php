@@ -146,6 +146,7 @@ class WPUF_Admin_Form_Builder {
             'site_url'          => site_url( '/' ),
             'recaptcha_site'    => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
             'recaptcha_secret'  => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
+            'nonce'             => wp_create_nonce( 'form-builder-setting-nonce' )
         ] );
 
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );

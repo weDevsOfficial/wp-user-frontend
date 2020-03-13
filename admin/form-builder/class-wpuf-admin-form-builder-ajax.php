@@ -13,6 +13,7 @@ class WPUF_Admin_Form_Builder_Ajax {
      */
     public function __construct() {
         add_action( 'wp_ajax_wpuf_form_builder_save_form', [ $this, 'save_form' ] );
+        add_action( 'wp_ajax_wpuf_form_setting_post', [ $this, 'wpuf_get_post_taxonomies' ] );
     }
 
     /**
@@ -24,7 +25,6 @@ class WPUF_Admin_Form_Builder_Ajax {
      */
     public function save_form() {
         $post_data =  wp_unslash($_POST);
-
         if ( isset( $post_data['form_data'] ) ) {
             parse_str( $post_data['form_data'],  $form_data );
         } else {
@@ -71,6 +71,44 @@ class WPUF_Admin_Form_Builder_Ajax {
         $form_fields = WPUF_Admin_Form_Builder::save_form( $data );
 
         wp_send_json_success( [ 'form_fields' => $form_fields, 'form_settings' => $settings ] );
+    }
+
+    public function wpuf_get_post_taxonomies() {
+        $post_data =  wp_unslash($_POST);
+        $post_type = $post_data['post_type'];
+        $nonce     = $post_data['wpuf_form_builder_setting_nonce'];
+
+        if ( isset( $nonce ) && !wp_verify_nonce( $post_data['wpuf_form_builder_setting_nonce'], 'form-builder-setting-nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( isset( $post_type ) && empty( $post_data['post_type'] ) ) {
+            wp_send_json_error( __( 'Invalid post type', 'wp-user-frontend' ) );
+        }
+
+        $post_taxonomies = get_object_taxonomies( $post_type, 'objects' );
+        $cat = '';
+        foreach ( $post_taxonomies as $tax ) {
+            if ( $tax->hierarchical ) {
+                $args = [
+                    'hide_empty'       => false,
+                    'hierarchical'     => true,
+                    'taxonomy'         => $tax->name,
+                ];
+
+                $cat .= '<tr class="wpuf_settings_taxonomy"> <th> Default '. $post_type . ' '. $tax->name  .'</th> <td>
+                <select multiple name="wpuf_settings[default_'.$tax->name.'][]">';
+                $categories = get_terms( $args );
+
+                foreach ( $categories as $category ) {
+                    $cat .= '<option value="' . $category->term_id . '">' . $category->name . '</option>';
+                }
+
+                $cat .='</select></td>';
+            }
+        }
+
+        wp_send_json_success( [ 'success' => 'true' , 'data' => $cat ] );
     }
 }
 

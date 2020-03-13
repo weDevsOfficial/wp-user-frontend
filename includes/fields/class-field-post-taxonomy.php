@@ -224,7 +224,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             'hide_empty'             => 0,
             'orderby'                => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
             'order'                  => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
-            'name'                   => $this->taxonomy . '[]',
+            'name'                   => $this->taxonomy,
             'taxonomy'               => $this->taxonomy,
             'echo'                   => 0,
             'title_li'               => '',

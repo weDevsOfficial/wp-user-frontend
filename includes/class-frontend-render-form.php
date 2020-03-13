@@ -500,9 +500,9 @@ class WPUF_Frontend_Render_Form {
                             if ( $column_field['input_type'] == 'taxonomy' ) {
 
                                 // don't add "category"
-                                if ( $column_field['name'] == 'category' ) {
-                                    continue;
-                                }
+                                // if ( $column_field['name'] == 'category' ) {
+                                //     continue;
+                                // }
 
                                 $taxonomy_vars[] = $column_field;
                             } else {
@@ -528,9 +528,9 @@ class WPUF_Frontend_Render_Form {
             if ( $value['input_type'] == 'taxonomy' ) {
 
                 // don't add "category"
-                if ( $value['name'] == 'category' ) {
-                    continue;
-                }
+                // if ( $value['name'] == 'category' ) {
+                //     continue;
+                // }
 
                 $taxonomy_vars[] = $value;
             } else {
@@ -548,7 +548,6 @@ class WPUF_Frontend_Render_Form {
      * @param array $taxonomy_vars
      */
     public function set_custom_taxonomy( $post_id, $taxonomy_vars ) {
-
         check_ajax_referer( 'wpuf_form_add' );
         // save any custom taxonomies
         $woo_attr = [];
@@ -562,7 +561,7 @@ class WPUF_Frontend_Render_Form {
                $taxonomy_name = sanitize_text_field( wp_unslash( $_POST[$taxonomy['name']] ) );
             }
 
-            if (  $taxonomy_name != '' ) {
+            if ( isset( $taxonomy_name ) && $taxonomy_name !=0 && $taxonomy_name !=-1  ) {
                 if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
                     $tax = $taxonomy_name;
                     // if it's not an array, make it one
@@ -612,14 +611,8 @@ class WPUF_Frontend_Render_Form {
             } // isset tax
 
                 else {
-                    if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'no' && !empty( $taxonomy_name ) ) {
-                        if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
-                            foreach ( $this->form_settings['default_cat'] as $value ) {
-                                $term = get_term( $value );
-                                wp_set_post_terms( $post_id, $value, $term->taxonomy );
-                            }
-                            // wp_set_post_terms( $post_id, $form_settings['default_cat'], $taxonomy['name'] );
-                        }
+                    if ( !isset( $taxonomy['woo_attr'] ) ) {
+                        $this->set_default_taxonomy( $post_id );
                     }
                 }
         }
@@ -630,6 +623,20 @@ class WPUF_Frontend_Render_Form {
         }
 
         return $woo_attr;
+    }
+
+
+    public function set_default_taxonomy( $post_id ) {
+        $post_taxonomies = get_object_taxonomies( $this->form_settings['post_type'], 'objects' );
+        foreach ( $post_taxonomies as $tax ) {
+            if ( $tax->hierarchical ) {
+                $name  = 'default_'. $tax->name;
+                if( isset( $this->form_settings[$name] ) && !empty( $this->form_settings[$name] ) ){
+                    $value = $this->form_settings[$name];
+                    wp_set_post_terms( $post_id, $value, $tax->name );
+                }
+            }
+        }
     }
 
     /**

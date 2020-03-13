@@ -1,6 +1,72 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.1.18',
+        'released' => '2020-03-13',
+        'changes'  => [
+            [
+                'title'       => __( 'Hide post edit option when subscription is expired' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Hide post edit option from users whose subscription pack is expired.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'Check files to prevent duplicity in media upload' ),
+                'type'        => 'Improvement',
+                'description' => __( 'A simple measure has been taken to prevent maliciously flooding the site by uploading same file multiple times. Though this won\'t work with already uploaded medias.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'Refactor address fields in Account section' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Address edit section from Account section has been rewritten to improve UX.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'Update Paypal payment gateway' ),
+                'type'        => 'Improvement',
+                'description' => __( 'Paypal payment gateway has seen some improvements.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'Default Category selection improvements' ),
+                'type'        => 'Improvement',
+                'description' => __( 'An intuitive way of selecting default category of a selected post type has been introduced.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'Compatibility issue with ACF date time field' ),
+                'type'        => 'Fix',
+                'description' => __( 'A Compatibility issue with ACF date time field has been addressed.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'Media title, caption & description not saving' ),
+                'type'        => 'Fix',
+                'description' => __( 'Media title, caption & description were not saving from frontend. They will now.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'The Events Calendar venue and organizer fields issue in WPUF Custom Fields metabox' ),
+                'type'        => 'Fix',
+                'description' => __( 'A workaround has been introduced to save The Events Calendar Venue and Organizer fields properly from WPUF Custom Fields metabox.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'Checkbox data not saving from WPUF Custom Fields metabox' ),
+                'type'        => 'Fix',
+                'description' => __( 'Checkboxe data from WPUF Custom Fields metabox were not saving. It has been fixed.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'Multi-column Repeater field data saving issue' ),
+                'type'        => 'Fix',
+                'description' => __( 'Multi-column Repeater field data from a form was not saving. It has been fixed.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'Multistep form conflict with Elementor' ),
+                'type'        => 'Fix',
+                'description' => __( 'Multistep form had a conflict with Elementor. It has been fixed.', 'wp-user-frontend' ),
+            ],
+            [
+                'title'       => __( 'Multiple images showing issue in frontend' ),
+                'type'        => 'Fix',
+                'description' => __( 'Multiple images in a post were not showing in frontend. Now they will.', 'wp-user-frontend' ),
+            ]
+        ],
+    ],
+    [
         'version'  => 'Version 3.1.12',
         'released' => '2019-10-17',
         'changes'  => [

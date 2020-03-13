@@ -42,7 +42,7 @@ class WPUF_Admin_Promotion {
             ?>
             <div class="notice notice-success is-dismissible" id="wpuf-bfcm-notice">
                 <div class="logo">
-                    <img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/promo-logo.png'; ?>" alt="WPUF">
+                    <img src="<?php echo esc_url( WPUF_ASSET_URI ) . '/images/promo-logo.png'; ?>" alt="WPUF">
                 </div>
                 <div class="content">
                     <p>Biggest Sale of the year on this</p>
@@ -52,7 +52,7 @@ class WPUF_Admin_Promotion {
                 </div>
                 <div class="call-to-action">
                     <a target="_blank" href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_campaign=black_friday_&_cyber_monday&utm_medium=banner&utm_source=plugin_dashboard">
-                        <img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/promo-btn.png'; ?>" alt="Btn">
+                        <img src="<?php echo esc_url( WPUF_ASSET_URI ) . '/images/promo-btn.png'; ?>" alt="Btn">
                     </a>
                     <p>
                         <span class="highlight-green2">Coupon: </span>
@@ -181,7 +181,7 @@ class WPUF_Admin_Promotion {
         } ?>
             <div id="wpuf-review-notice" class="wpuf-review-notice">
                 <div class="wpuf-review-thumbnail">
-                    <img src="<?php echo esc_attr( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="">
+                    <img src="<?php echo esc_url( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="">
                 </div>
                 <div class="wpuf-review-text">
                         <h3><?php echo wp_kses_post( 'Enjoying WP User Frontend?', 'wp-user-frontend' ); ?></h3>

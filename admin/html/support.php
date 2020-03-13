@@ -464,7 +464,7 @@ function wpuf_help_related_articles( $articles ) {
 
     <div class="help-blocks">
         <div class="help-block">
-            <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/help/like.svg" alt="<?php esc_attr_e( 'Like The Plugin?', 'wp-user-frontend' ); ?>">
+            <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/help/like.svg" alt="<?php esc_attr_e( 'Like The Plugin?', 'wp-user-frontend' ); ?>">
 
             <h3><?php esc_html_e( 'Like The Plugin?', 'wp-user-frontend' ); ?></h3>
 
@@ -474,7 +474,7 @@ function wpuf_help_related_articles( $articles ) {
         </div>
 
         <div class="help-block">
-            <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/help/bugs.svg" alt="<?php esc_attr_e( 'Found Any Bugs?', 'wp-user-frontend' ); ?>">
+            <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/help/bugs.svg" alt="<?php esc_attr_e( 'Found Any Bugs?', 'wp-user-frontend' ); ?>">
 
             <h3><?php esc_html_e( 'Found Any Bugs?', 'wp-user-frontend' ); ?></h3>
 
@@ -484,7 +484,7 @@ function wpuf_help_related_articles( $articles ) {
         </div>
 
         <div class="help-block">
-            <img src="<?php echo esc_attr( WPUF_ASSET_URI ); ?>/images/help/support.svg" alt="<?php esc_attr_e( 'Need Any Assistance?', 'wp-user-frontend' ); ?>">
+            <img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/help/support.svg" alt="<?php esc_attr_e( 'Need Any Assistance?', 'wp-user-frontend' ); ?>">
 
             <h3><?php esc_html_e( 'Need Any Assistance?', 'wp-user-frontend' ); ?></h3>
 

@@ -89,6 +89,7 @@ class WPUF_Subscription {
             $this::subscriber_cancel( $user_id, $current_pack['pack_id'] );
 
             wp_redirect( $request_uri );
+            exit;
         }
     }
 

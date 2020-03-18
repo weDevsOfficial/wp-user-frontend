@@ -1307,7 +1307,7 @@ function wpuf_get_attachment_id_from_url( $attachment_url = '' ) {
 function wpufe_ajax_tag_search() {
     global $wpdb;
 
-    $taxonomy = isset( $_GET['tax'] ) ? sanitize_key( wp_unslash( $_GET['tax'] ) ) : '';
+    $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
     $tax      = get_taxonomy( $taxonomy );
 
     if ( !$tax ) {

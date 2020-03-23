@@ -35,7 +35,7 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
         } else {
             $selected = isset( $field_settings['selected'] ) ? $field_settings['selected'] : '';
 
-            $selected = is_array( $selected ) ? $selected : [];
+            $selected = is_array( $selected ) ? $selected : (array) $selected;
         }
 
         $name     = $field_settings['name'] . '[]';

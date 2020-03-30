@@ -215,6 +215,9 @@ class WPUF_Subscription {
      */
     public function subscription_script() {
         wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', ['jquery'], false, true );
+        wp_localize_script( 'wpuf-subscriptions', 'wpuf_subs_vars', array(
+            'wpuf_subscription_delete_nonce' => wp_create_nonce('wpuf-subscription-delete-nonce' )
+        ) );
     }
 
     /**

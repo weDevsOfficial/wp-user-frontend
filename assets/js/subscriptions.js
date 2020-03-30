@@ -73,7 +73,7 @@
                     'action' : 'wpuf_delete_user_package',
                     'userid' : userid,
                     'packid' : packid,
-                    'wpuf_subscription_delete_nonce': '<?php echo wp_create_nonce("wpuf-subscription-delete-nonce"); ?>'
+                    'wpuf_subscription_delete_nonce': wpuf_subs_vars.wpuf_subscription_delete_nonce
                 },
                 function(data){
                     if(data){

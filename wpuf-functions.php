@@ -1569,7 +1569,9 @@ function wpuf_get_child_cats() {
                 $terms[$key] = (array) $term;
             }
         }
-        // $result .= WPUF_Render_Form::init()->taxnomy_select( '', $field_attr );
+
+        $field_attr[ 'form_id' ] = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
+
         $result .= taxnomy_select( '', $field_attr );
 
     } else {
@@ -1580,11 +1582,16 @@ function wpuf_get_child_cats() {
 
 function taxnomy_select( $terms, $attr ) {
     $selected           = $terms ? $terms : '';
-    $required           = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
     $taxonomy           = $attr['name'];
-    $class              = ' wpuf_' . $attr['name'] . '_' . $selected;
+    $class              = ' wpuf_' . $attr['name'] . '_' . $attr['form_id'];
     $exclude_type       = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
     $exclude            = isset( $attr['exclude'] ) ? $attr['exclude'] : '';
+
+    $dataset  = sprintf(
+        'data-required="%s" data-type="select" data-form-id="%d"',
+        $attr['required'],
+        $attr['form_id']
+     );
 
     if ( $exclude_type == 'child_of' && !empty( $exclude ) ) {
         $exclude = $exclude[0];
@@ -1611,7 +1618,7 @@ function taxnomy_select( $terms, $attr ) {
 
     $select = wp_dropdown_categories( $tax_args );
 
-    echo str_replace( '<select', '<select ' . $required, $select ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    echo str_replace( '<select', '<select ' . $dataset, $select ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     $attr = [
         'required'     => $attr['required'],
         'name'         => $attr['name'],

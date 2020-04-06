@@ -4,7 +4,7 @@
 Vue.component('builder-stage', {
     template: '#tmpl-wpuf-builder-stage',
 
-    mixins: wpuf_form_builder_mixins(wpuf_mixins.builder_stage),
+    mixins: wpuf_form_builder_mixins(wpuf_mixins.builder_stage).concat(wpuf_mixins.add_form_field),
 
     computed: {
         form_fields: function () {
@@ -63,34 +63,10 @@ Vue.component('builder-stage', {
                     };
 
                 if ('panel' === source) {
-                    // prepare the payload to add new form element
-                    var field_template  = ui.item[0].dataset.formField,
-                        field           = $.extend(true, {}, self.field_settings[field_template].field_props);
-
-                    // check if these are already inserted
-                    if ( self.isSingleInstance( field_template ) && self.containsField( field_template ) ) {
-                        swal({
-                            title: "Oops...",
-                            text: "You already have this field in the form"
-                        });
-
-                        $(this).find('.button.ui-draggable.ui-draggable-handle').remove();
-                        return;
-                    }
-
-                    // add a random integer id
-                    field.id = self.get_random_id();
-
-                    // add meta key
-                    if ('yes' === field.is_meta && !field.name) {
-                        field.name = field.label.replace(/\W/g, '_').toLowerCase() + '_' + field.id;
-                    }
-
-                    payload.field = field;
-
                     // add new form element
-                    if ( !in_column_field ) {
-                        self.$store.commit('add_form_field_element', payload);
+                    if ( ! in_column_field ) {
+                        var field_template  = ui.item[0].dataset.formField;
+                        self.add_form_field(field_template);
                     }
 
                     // remove button from stage
@@ -1238,7 +1214,7 @@ Vue.component('form-featured_image', {
 Vue.component('form-fields', {
     template: '#tmpl-wpuf-form-fields',
 
-    mixins: wpuf_form_builder_mixins(wpuf_mixins.form_fields),
+    mixins: wpuf_form_builder_mixins(wpuf_mixins.form_fields).concat(wpuf_mixins.add_form_field),
 
     computed: {
         panel_sections: function () {
@@ -1267,42 +1243,6 @@ Vue.component('form-fields', {
     methods: {
         panel_toggle: function (index) {
             this.$store.commit('panel_toggle', index);
-        },
-
-        add_form_field: function (field_template) {
-            var payload = {
-                toIndex: this.$store.state.form_fields.length,
-            };
-
-            // check if these are already inserted
-            if ( this.isSingleInstance( field_template ) && this.containsField( field_template ) ) {
-                swal({
-                    title: "Oops...",
-                    text: "You already have this field in the form"
-                });
-                return;
-            }
-
-            var field = $.extend(true, {}, this.$store.state.field_settings[field_template].field_props);
-
-            field.id = this.get_random_id();
-
-            if (!field.name && field.label) {
-                field.name = field.label.replace(/\W/g, '_').toLowerCase();
-
-                var same_template_fields = this.form_fields.filter(function (form_field) {
-                   return (form_field.template === field.template);
-                });
-
-                if (same_template_fields.length) {
-                    field.name += '_' + same_template_fields.length;
-                }
-            }
-
-            payload.field = field;
-
-            // add new form element
-            this.$store.commit('add_form_field_element', payload);
         },
 
         is_pro_feature: function (field) {

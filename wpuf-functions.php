@@ -3032,6 +3032,10 @@ function wpuf_descriptive_text( $args ) {
 function wpuf_update_option( $option, $section, $value ) {
     $options = get_option( $section );
 
+    if ( ! is_array( $options ) ) {
+        $options = array();
+    }
+
     $options[$option] = $value;
 
     update_option( $section, $options );

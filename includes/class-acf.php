@@ -15,6 +15,7 @@ class WPUF_ACF_Compatibility {
         add_action( 'wp_ajax_wpuf_dismiss_notice_' . $this->id, [ $this, 'dismiss_notice' ] );
         add_action( 'wp_ajax_wpuf_compatibility_' . $this->id, [ $this, 'maybe_compatible' ] );
         add_action( 'wp_ajax_wpuf_migrate_' . $this->id, [ $this, 'migrate_cf_data' ] );
+        add_filter( 'acf/load_value', [ $this, 'load_compatible_value' ], 10, 3 );
     }
 
     /**
@@ -238,5 +239,29 @@ class WPUF_ACF_Compatibility {
         </script>
 
         <?php
+    }
+
+    /**
+     * ACF compatible wpuf field values
+     *
+     * @since WPUF_SINCE
+     *
+     * @param mixed $value
+     * @param int   $post_id
+     * @param array $field
+     *
+     * @return mixed
+     */
+    public function load_compatible_value( $value, $post_id, $field ) {
+        switch ( $field['type'] ) {
+            case 'checkbox':
+                $value = wpuf()->fields->get_field( 'checkbox_field' )->get_formatted_value( $value );
+                break;
+
+            default:
+                break;
+        }
+
+        return $value;
     }
 }

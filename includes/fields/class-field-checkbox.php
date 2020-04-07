@@ -27,18 +27,7 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
         if ( isset( $post_id ) && $post_id != '0'  ) {
             if ( $this->is_meta( $field_settings ) ) {
                 if ( $value = $this->get_meta( $post_id, $field_settings['name'], $type, true ) ) {
-                    if ( is_serialized( $value ) ) {
-                        $selected = maybe_unserialize( $value );
-                    } elseif ( is_array( $value ) ) {
-                        $selected = $value;
-                    } else {
-                        $selected         = [];
-                        $selected_options = explode( '|', $value );
-
-                        foreach ( $selected_options as $option ) {
-                            array_push( $selected, trim( $option ) );
-                        }
-                    }
+                    $selected = $this->get_formatted_value( $value );
                 } else {
                 }
             }
@@ -146,5 +135,33 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
         }
 
         return $entry_value;
+    }
+
+    /**
+     * Get field formatted value
+     *
+     * @since WPUF_SINCE
+     *
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function get_formatted_value( $value ) {
+        $formatted_value = [];
+
+        if ( is_serialized( $value ) ) {
+            $formatted_value = maybe_unserialize( $value );
+        } elseif ( is_array( $value ) ) {
+            $formatted_value = $value;
+        } else {
+            $formatted_value = [];
+            $options         = explode( '|', $value );
+
+            foreach ( $options as $option ) {
+                array_push( $formatted_value, trim( $option ) );
+            }
+        }
+
+        return $formatted_value;
     }
 }

@@ -21,9 +21,6 @@ class WPUF_Field_Manager {
      */
     private $wp_post_types = [];
 
-    public function __construct() {
-    }
-
     /**
      * Get all the registered fields
      *
@@ -37,6 +34,23 @@ class WPUF_Field_Manager {
         $this->register_field_types();
 
         return $this->fields;
+    }
+
+    /**
+     * Get field type class instance
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $field_type
+     *
+     * @return \WPUF_Field_Contract
+     */
+    public function get_field( $field_type ) {
+        $fields = $this->get_fields();
+
+        if ( isset( $field_type, $fields ) ) {
+            return $fields[ $field_type ];
+        }
     }
 
     /**

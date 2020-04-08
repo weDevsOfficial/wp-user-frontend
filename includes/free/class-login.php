@@ -709,7 +709,7 @@ class WPUF_Simple_Login {
         $key = get_password_reset_key( $user_data );
 
         if ( is_wp_error( $key ) ) {
-            return $key;
+            return;
         }
 
         // Send email notification
@@ -812,7 +812,7 @@ class WPUF_Simple_Login {
             $key = get_password_reset_key( $user );
 
             if ( is_wp_error( $key ) ) {
-                return $key;
+                return;
             }
 
             $subject = sprintf( __( '[%s] Your username and password info', 'wp-user-frontend' ), $blogname );

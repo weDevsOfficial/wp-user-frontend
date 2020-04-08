@@ -594,9 +594,9 @@ class WPUF_Simple_Login {
             $nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
 
             // verify reset key again
-            $user = $this->check_password_reset_key( $key, $login );
+            $user = check_password_reset_key( $key, $login );
 
-            if ( is_object( $user ) ) {
+            if ( $user instanceof WP_User ) {
 
                 // save these values into the form again in case of errors
                 $args['key']   = $key;
@@ -706,71 +706,16 @@ class WPUF_Simple_Login {
             return false;
         }
 
-        $key = $wpdb->get_var( $wpdb->prepare( "SELECT user_activation_key FROM $wpdb->users WHERE user_login = %s", $user_login ) );
+        $key = get_password_reset_key( $user_data );
 
-        if ( empty( $key ) ) {
-
-            // Generate something random for a key...
-            $key = wp_generate_password( 20, false );
-
-            if ( empty( $wp_hasher ) ) {
-                require_once ABSPATH . WPINC . '/class-phpass.php';
-                $wp_hasher = new PasswordHash( 8, true );
-            }
-
-            $key = time() . ':' . $wp_hasher->HashPassword( $key );
-
-            do_action( 'retrieve_password_key', $user_login, $user_email, $key );
-
-            // Now insert the new hash key into the db
-            $wpdb->update( $wpdb->users, [ 'user_activation_key' => $key ], [ 'user_login' => $user_login ] );
+        if ( is_wp_error( $key ) ) {
+            return $key;
         }
 
         // Send email notification
         $this->email_reset_pass( $user_login, $user_email, $key );
 
         return true;
-    }
-
-    /**
-     * Retrieves a user row based on password reset key and login
-     *
-     * @uses $wpdb WordPress Database object
-     *
-     * @param string $key   Hash to validate sending user's password
-     * @param string $login The user login
-     *
-     * @return object|bool User's database row on success, false for invalid keys
-     */
-    public function check_password_reset_key( $key, $login ) {
-        global $wpdb;
-
-        //keeping backward compatible
-        if ( strlen( $key ) == 20 ) {
-            $key = preg_replace( '/[^a-z0-9]/i', '', $key );
-        }
-
-        if ( empty( $key ) || !is_string( $key ) ) {
-            $this->login_errors[] = __( 'Invalid key', 'wp-user-frontend' );
-
-            return false;
-        }
-
-        if ( empty( $login ) || !is_string( $login ) ) {
-            $this->login_errors[] = __( 'Invalid Login', 'wp-user-frontend' );
-
-            return false;
-        }
-
-        $user = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->users WHERE user_activation_key = %s AND user_login = %s", $key, $login ) );
-
-        if ( empty( $user ) ) {
-            $this->login_errors[] = __( 'Invalid key', 'wp-user-frontend' );
-
-            return false;
-        }
-
-        return $user;
     }
 
     /**
@@ -864,18 +809,11 @@ class WPUF_Simple_Login {
             global $wpdb, $wp_hasher;
 
             // Generate something random for a password reset key.
-            $key = wp_generate_password( 20, false );
+            $key = get_password_reset_key( $user );
 
-            /* This action is documented in wp-login.php */
-            add_action( 'retrieve_password_key', $the_user->user_login, $key );
-
-            // Now insert the key, hashed, into the DB.
-            if ( empty( $wp_hasher ) ) {
-                require_once ABSPATH . WPINC . '/class-phpass.php';
-                $wp_hasher = new PasswordHash( 8, true );
+            if ( is_wp_error( $key ) ) {
+                return $key;
             }
-            $hashed = time() . ':' . $wp_hasher->HashPassword( $key );
-            $wpdb->update( $wpdb->users, [ 'user_activation_key' => $hashed ], [ 'user_login' => $the_user->user_login ] );
 
             $subject = sprintf( __( '[%s] Your username and password info', 'wp-user-frontend' ), $blogname );
 

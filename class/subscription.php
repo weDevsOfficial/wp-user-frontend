@@ -818,7 +818,7 @@ class WPUF_Subscription {
      *
      *@return string $labels[$cycle_period]
      */
-    public function get_cycle_label( $cycle_period, $cycle_number ) {
+    public static function get_cycle_label( $cycle_period, $cycle_number ) {
         $labels = [
             'day'   => _n( 'Day', 'Days', $cycle_number, 'wp-user-frontend' ),
             'week'  => _n( 'Week', 'Weeks', $cycle_number, 'wp-user-frontend' ),
@@ -862,7 +862,7 @@ class WPUF_Subscription {
         }
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' ) {
-            $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $pack->meta_value['billing_cycle_number'], $this->get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
+            $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $pack->meta_value['billing_cycle_number'], self::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
             $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', ' . __( 'for', 'wp-user-frontend' ) . ' %s ' . __( 'installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . $recurring_des . '</div>';
         }

@@ -6,23 +6,22 @@
  * @since 2.2
  */
 class WPUF_Admin_Tools {
+
     /**
      * List of All the post forms
      *
      * @return void
      */
     public function list_forms() {
-        if ( isset( $_POST['export'] ) ) {
+        $post_data = wp_unslash( $_POST );
 
-            $export_content = isset( $_POST['export_content'] ) ? sanitize_text_field( wp_unslash( $_POST['export_content'] ) ) : '';
-            $formlist       = isset( $_POST['formlist'] ) ? sanitize_text_field( wp_unslash( $_POST['formlist'] ) ) : '';
-            $this->export_data( $export_content, $formlist );
+        if ( isset( $post_data['export'] ) ) {
+            check_admin_referer( 'wpuf-export-form' );
 
-            $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+            $export_type = isset( $post_data['export_type'] ) ? sanitize_text_field( $post_data['export_type'] ) : 'all';
+            $form_ids    = isset( $post_data['form_ids'] ) ? array_map( 'absint', $post_data['form_ids'] ) : array();
 
-            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-export-form' ) ) {
-                return ;
-            }
+            $this->export_forms( 'wpuf_forms', $export_type, $form_ids );
         }
 
         $args = [
@@ -40,15 +39,15 @@ class WPUF_Admin_Tools {
                     <div class="main">
                         <form action="" method="post" style="margin-top: 20px;">
                             <p>
-                                <input class="export_type" type="radio" name="export_content" value="all" id="wpuf-all_export" checked>
+                                <input class="export_type" type="radio" name="export_type" value="all" id="wpuf-all_export" checked>
                                 <label for="wpuf-all_export"><?php esc_html_e( 'All', 'wp-user-frontend' ); ?></label>
                             </p>
 
                             <p>
-                                <input class="export_type" type="radio" name="export_content" value="selected" id="wpuf-selected_export">
+                                <input class="export_type" type="radio" name="export_type" value="selected" id="wpuf-selected_export">
                                 <label for="wpuf-selected_export"><?php esc_html_e( 'Select individual', 'wp-user-frontend' ); ?></label></p>
                             <p>
-                                <select class="formlist" name="formlist[]" multiple="multiple">
+                                <select class="formlist" name="form_ids[]" multiple="multiple">
                                     <?php foreach ( $forms as $form ) { ?>
                                         <option value="<?php echo esc_attr( $form->ID ); ?>"><?php echo esc_attr( $form->post_title ); ?></option>
                                     <?php } ?>
@@ -74,19 +73,15 @@ class WPUF_Admin_Tools {
      * @return void
      */
     public function list_regis_forms() {
-        if ( isset( $_POST['export_regis_form'] ) ) {
+        $post_data = wp_unslash( $_POST );
 
-            $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ): '';
+        if ( isset( $post_data['export_regis_form'] ) ) {
+            check_admin_referer( 'wpuf-export-regs-form' );
 
-            $export_regis_content = isset( $_POST['export_regis_content'] ) ? sanitize_text_field( wp_unslash( $_POST['export_regis_content'] ) ) : '';
-            $formlist = isset( $_POST['formlist'] ) ? sanitize_text_field( wp_unslash( $_POST['formlist'] ) ) : '';
+            $export_type = isset( $post_data['export_type'] ) ? sanitize_text_field( $post_data['export_type'] ) : 'all';
+            $form_ids    = isset( $post_data['form_ids'] ) ? array_map( 'absint', $post_data['form_ids'] ) : array();
 
-            $this->export_regis_data( $export_regis_content, $formlist );
-
-
-            if ( isset( $nonce) && ! wp_verify_nonce( $nonce, 'wpuf-export-regs-form' ) ) {
-                return ;
-            }
+            $this->export_forms( 'wpuf_profile', $export_type, $form_ids );
         }
 
         $args = [
@@ -107,17 +102,17 @@ class WPUF_Admin_Tools {
                         <form action="" method="post" style="margin-top: 20px;">
 
                             <p>
-                                <input class="export_type" type="radio" name="export_regis_content" value="all" id="wpuf-all_regis_export" checked>
+                                <input class="export_type" type="radio" name="export_type" value="all" id="wpuf-all_regis_export" checked>
                                 <label for="wpuf-all_regis_export"><?php esc_html_e( 'All', 'wp-user-frontend' ); ?></label>
                             </p>
 
                             <p>
-                                <input class="export_type" type="radio" name="export_regis_content" value="selected" id="wpuf-selected_regis_export">
+                                <input class="export_type" type="radio" name="export_type" value="selected" id="wpuf-selected_regis_export">
                                 <label for="wpuf-selected_regis_export"><?php esc_html_e( 'Select individual', 'wp-user-frontend' ); ?></label>
                             </p>
 
                             <p>
-                                <select class="formlist" name="formlist[]" multiple="multiple">
+                                <select class="formlist" name="form_ids[]" multiple="multiple">
                                     <?php foreach ( $forms as $form ) { ?>
                                         <option value="<?php echo esc_attr( $form->ID ); ?>"><?php echo esc_attr( $form->post_title ); ?></option>";
                                     <?php } ?>
@@ -214,41 +209,22 @@ class WPUF_Admin_Tools {
     }
 
     /**
-     * Export Registration form
-     *
-     * @param string $export_type
-     * @param int    $post_ids
-     */
-    public function export_regis_data( $export_type, $post_ids ) {
-        if ( $export_type == 'all' && check_admin_referer( 'wpuf-export-regs-form' ) ) {
-            static::export_to_json( 'wpuf_profile' );
-        } elseif ( $export_type == 'selected' && check_admin_referer( 'wpuf-export-regs-form' ) ) {
-            $formlist = isset( $_POST['formlist'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['formlist'] ) ) : [];
-
-            if ( $formlist == null ) {
-                printf( '<div class="error"><p>%s</p></div>', esc_html( __( 'Please select some form for exporting', 'wp-user-frontend' ) ) );
-            } else {
-                static::export_to_json( 'wpuf_profile', $post_ids );
-            }
-        }
-    }
-
-    /**
      * Export normal form data
      *
      * @param string $export_type
-     * @param int    $post_ids
+     * @param int    $form_ids
      */
-    public function export_data( $export_type, $post_ids ) {
-        $formlist = isset( $_POST['formlist'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['formlist'] ) ) : [];
-
-        if ( $export_type == 'all' && check_admin_referer( 'wpuf-export-form' ) ) {
-            static::export_to_json( 'wpuf_forms' );
-        } elseif ( $export_type == 'selected' && check_admin_referer( 'wpuf-export-form' ) ) {
-            if ( $formlist == null ) {
-                printf( '<div class="error"><p>%s</p></div>',esc_html( __( 'Please select some form for exporting', 'wp-user-frontend' ) ) );
+    public function export_forms( $form_type, $export_type, $form_ids ) {
+        if ( $export_type === 'all' ) {
+            static::export_to_json( $form_type );
+        } else if ( $export_type === 'selected' ) {
+            if ( empty( $form_ids ) ) {
+                printf(
+                    '<div class="error"><p>%s</p></div>',
+                    esc_html__( 'Please select some form for exporting', 'wp-user-frontend' )
+                );
             } else {
-                static::export_to_json( 'wpuf_forms', $post_ids );
+                static::export_to_json( $form_type, $form_ids );
             }
         }
     }
@@ -259,7 +235,7 @@ class WPUF_Admin_Tools {
      * @param string $post_type
      * @param array  $post_ids
      */
-    public static function export_to_json( $post_type, $post_ids = [ ] ) {
+    public static function export_to_json( $post_type, $post_ids = [] ) {
         $formatted_data = [];
         $ids            = [];
         $blogname       = strtolower( str_replace( ' ', '-', get_option( 'blogname' ) ) );

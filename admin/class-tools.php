@@ -136,40 +136,25 @@ class WPUF_Admin_Tools {
      * Import functionality
      */
     public function import_data() {
-        if ( isset( $_FILES['import'] ) && check_admin_referer( 'wpuf-import' ) ) {
-            $import_files = array_map( 'sanitize_text_field', wp_unslash( $_FILES['import'] ) );
-
-            if ( $import_files['error'] > 0 ) {
-                printf( '<div class="error"><p>%s</p></div>', esc_html( __( 'Somthing went wrong. Please choose a file again', 'wp-user-frontend' ) ) );
-            } else {
-                $file_name = $import_files['name'];
-                $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
-                $file_size = $import_files['size'];
-
-                if ( ( $file_ext == 'json' ) && ( $file_size < 500000 ) ) {
-                    $data = static::import_json_file( $import_files['tmp_name'] );
-
-                    if ( $data ) {
-                        printf( '<div class="updated"><p>%s</p></div>', esc_html( __( 'Import successful. Have fun!', 'wp-user-frontend' ) ) );
-                    }
-                } else {
-                    printf( '<div class="error"><p>%s</p></div>',esc_html( __( 'Invalid file or file size too big.', 'wp-user-frontend' ) ) );
-                }
-            }
-        } ?>
-
+        ?>
         <h3><?php esc_html_e( 'Import forms', 'wp-user-frontend' ); ?></h3>
 
-        <p><?php esc_html_e( 'Click Browse button and choose a json file that you backup before.', 'wp-user-frontend' ); ?></p>
-        <p><?php echo wp_kses( __( 'Press <strong>Import</strong> button, we will do the rest for you.', 'wp-user-frontend' ), array(
-            'strong' => array()
-            ) ); ?></p>
+        <p>
+            <?php esc_html_e( 'Upload your JSON file and start imporing WPUF forms here', 'wp-user-frontend' ); ?>
+        </p>
 
-        <form action="" method="post" enctype='multipart/form-data' style="margin-top: 20px;">
-            <?php wp_nonce_field( 'wpuf-import' ); ?>
-            <input type='file' name='import' />
-            <input type="submit" class="button button-primary" name="import_data" value="<?php esc_html_e( 'Import', 'wp-user-frontend' ); ?>">
-        </form>
+        <div id="wpuf-import-form">
+            <wpuf-form-uploader />
+        </div>
+
+        <script type="text/x-template" id="wpuf-import-form-template">
+            <button v-if="! isBusy" type="button" class="button button-primary" @click="openImageManager()">
+                <?php esc_html_e( 'Upload JSON File', 'wp-user-frontend' ); ?>
+            </button>
+            <button v-else type="button" class="button button-primary" disabled>
+                <?php esc_html_e( 'Importing JSON File', 'wp-user-frontend' ); ?>...
+            </button>
+        </script>
         <?php
     }
 
@@ -184,6 +169,8 @@ class WPUF_Admin_Tools {
         $encode_data = file_get_contents( $file );
         $options     = json_decode( $encode_data, true );
 
+        $errors = new WP_Error();
+
         foreach ( $options as $key => $value ) {
             $generate_post = [
                 'post_title'     => $value['post_data']['post_title'],
@@ -195,7 +182,9 @@ class WPUF_Admin_Tools {
 
             $post_id = wp_insert_post( $generate_post, true );
 
-            if ( $post_id && !is_wp_error( $post_id ) ) {
+            if ( is_wp_error( $post_id ) ) {
+                $errors->add( $post_id->get_error_code(), $post_id->get_error_message() );
+            } else {
                 foreach ( $value['meta_data']['fields'] as $order => $field ) {
                     wpuf_insert_form_field( $post_id, $field, false, $order );
                 }
@@ -203,6 +192,10 @@ class WPUF_Admin_Tools {
                 update_post_meta( $post_id, 'wpuf_form_settings', $value['meta_data']['settings'] );
                 update_post_meta( $post_id, 'notifications', $value['meta_data']['notifications'] );
             }
+        }
+
+        if ( $errors->has_errors() ) {
+            return $errors;
         }
 
         return true;

@@ -353,11 +353,11 @@ class WPUF_Subscription {
         update_post_meta( $subscription_id, '_billing_amount', $post_data['billing_amount'] );
         update_post_meta( $subscription_id, '_expiration_number', $post_data['expiration_number'] );
         update_post_meta( $subscription_id, '_expiration_period', $post_data['expiration_period'] );
-        update_post_meta( $subscription_id, '_recurring_pay', $post_data['recurring_pay'] );
+        update_post_meta( $subscription_id, '_recurring_pay', isset( $post_data['recurring_pay'] ) ? $post_data['recurring_pay'] : 'no' );
         update_post_meta( $subscription_id, '_billing_cycle_number', $post_data['billing_cycle_number'] );
         update_post_meta( $subscription_id, '_cycle_period', $post_data['cycle_period'] );
         update_post_meta( $subscription_id, '_billing_limit', $post_data['billing_limit'] );
-        update_post_meta( $subscription_id, '_trial_status', $post_data['trial_status'] );
+        update_post_meta( $subscription_id, '_trial_status', isset( $post_data['trial_status'] ) ? $post_data['trial_status'] : 'no' );
         update_post_meta( $subscription_id, '_trial_duration', $post_data['trial_duration'] );
         update_post_meta( $subscription_id, '_trial_duration_type', $post_data['trial_duration_type'] );
         update_post_meta( $subscription_id, '_post_type_name', $post_data['post_type_name'] );

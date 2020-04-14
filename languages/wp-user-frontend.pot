@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.1.18\n"
+"Project-Id-Version: WP User Frontend 3.2.0\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2020-03-13 10:36:35+00:00\n"
+"POT-Creation-Date: 2020-04-14 13:32:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,55 +28,79 @@ msgstr ""
 msgid "WP User Frontend"
 msgstr ""
 
-#: admin/class-admin-settings.php:83
+#: admin/class-admin-settings.php:86
 msgid "User Frontend"
 msgstr ""
 
-#: admin/class-admin-settings.php:85 admin/post-forms-list-table-view.php:4
+#: admin/class-admin-settings.php:88 admin/post-forms-list-table-view.php:4
 msgid "Post Forms"
 msgstr ""
 
-#: admin/class-admin-settings.php:94
+#: admin/class-admin-settings.php:97
 msgid "Subscriptions"
 msgstr ""
 
-#: admin/class-admin-settings.php:100 admin/class-tools.php:389
+#: admin/class-admin-settings.php:103 admin/class-tools.php:358
 #: admin/transactions.php:2
 msgid "Transactions"
 msgstr ""
 
-#: admin/class-admin-settings.php:103 admin/tools.php:13
+#: admin/class-admin-settings.php:106 admin/tools.php:13
 msgid "Tools"
 msgstr ""
 
-#: admin/class-admin-settings.php:108
+#: admin/class-admin-settings.php:111
 msgid "Premium"
 msgstr ""
 
-#: admin/class-admin-settings.php:110
+#: admin/class-admin-settings.php:113
 msgid "Help"
 msgstr ""
 
-#: admin/class-admin-settings.php:110
+#: admin/class-admin-settings.php:113
 msgid "<span style=\"color:#f18500\">Help</span>"
 msgstr ""
 
-#: admin/class-admin-settings.php:111 admin/class-admin-settings.php:151
+#: admin/class-admin-settings.php:114 admin/class-admin-settings.php:154
 #: admin/form-builder/views/form-builder.php:9 includes/setup-wizard.php:125
 msgid "Settings"
 msgstr ""
 
-#: admin/class-admin-settings.php:113 admin/class-admin-subscription.php:204
+#: admin/class-admin-settings.php:116 admin/class-admin-subscription.php:204
 #: admin/subscribers.php:18
 msgid "Subscribers"
 msgstr ""
 
-#: admin/class-admin-settings.php:366
+#: admin/class-admin-settings.php:370
 msgid "Number of items per page:"
 msgstr ""
 
-#: admin/class-admin-settings.php:396
+#: admin/class-admin-settings.php:400
 msgid "Post lock has been cleared"
+msgstr ""
+
+#: admin/class-admin-settings.php:430
+msgid "WPUF Import Forms"
+msgstr ""
+
+#: admin/class-admin-settings.php:431
+msgid "Add JSON file"
+msgstr ""
+
+#: admin/class-admin-settings.php:432
+msgid "Could not import forms."
+msgstr ""
+
+#: admin/class-admin-settings.php:512
+msgid "Missing file_id param"
+msgstr ""
+
+#: admin/class-admin-settings.php:522
+msgid "JSON file not found"
+msgstr ""
+
+#: admin/class-admin-settings.php:538
+msgid "Forms imported successfully."
 msgstr ""
 
 #: admin/class-admin-subscription.php:57
@@ -115,7 +139,7 @@ msgstr ""
 msgid "Subscription pack draft updated."
 msgstr ""
 
-#: admin/class-admin-subscription.php:202 class/subscription.php:316
+#: admin/class-admin-subscription.php:202 class/subscription.php:320
 msgid "Pack Name"
 msgstr ""
 
@@ -134,7 +158,7 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:226
 #: admin/class-admin-subscription.php:596 class/frontend-account.php:255
-#: class/subscription.php:879 includes/class-user-subscription.php:305
+#: class/subscription.php:883 includes/class-user-subscription.php:305
 #: templates/subscriptions/pack-details.php:24
 msgid "Free"
 msgstr ""
@@ -148,7 +172,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:332
 #: includes/fields/class-abstract-fields.php:346
 #: includes/fields/class-abstract-fields.php:409
-#: includes/fields/class-field-checkbox.php:85
+#: includes/fields/class-field-checkbox.php:74
 #: includes/fields/class-field-radio.php:82 includes/free/form-element.php:460
 #: wpuf.php:712
 msgid "Yes"
@@ -163,7 +187,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:333
 #: includes/fields/class-abstract-fields.php:347
 #: includes/fields/class-abstract-fields.php:410
-#: includes/fields/class-field-checkbox.php:86
+#: includes/fields/class-field-checkbox.php:75
 #: includes/fields/class-field-radio.php:83 includes/free/form-element.php:461
 #: wpuf.php:713
 msgid "No"
@@ -300,9 +324,9 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:774
 #: admin/form-builder/class-wpuf-admin-form-builder.php:284
-#: class/payment.php:205 class/subscription.php:783
+#: class/payment.php:205 class/subscription.php:787
 #: includes/class-list-table-subscribers.php:138 lib/appsero/Insights.php:764
-#: templates/dashboard/subscription.php:65
+#: templates/dashboard/subscription.php:64
 msgid "Cancel"
 msgstr ""
 
@@ -330,134 +354,122 @@ msgstr ""
 msgid "Welcome to WP User Frontend"
 msgstr ""
 
-#: admin/class-tools.php:38
+#: admin/class-tools.php:37
 msgid "Form Export"
 msgstr ""
 
-#: admin/class-tools.php:44 admin/class-tools.php:111
+#: admin/class-tools.php:43 admin/class-tools.php:106
 #: admin/post-forms-list-table.php:43 class/transactions-list-table.php:87
-#: includes/class-list-table-subscribers.php:136 wpuf-functions.php:2860
+#: includes/class-list-table-subscribers.php:136 wpuf-functions.php:2867
 msgid "All"
 msgstr ""
 
-#: admin/class-tools.php:49 admin/class-tools.php:116
+#: admin/class-tools.php:48 admin/class-tools.php:111
 msgid "Select individual"
 msgstr ""
 
-#: admin/class-tools.php:59 admin/class-tools.php:129 admin/tools.php:17
+#: admin/class-tools.php:58 admin/class-tools.php:124 admin/tools.php:17
 msgid "Export"
 msgstr ""
 
-#: admin/class-tools.php:67 admin/class-tools.php:136
+#: admin/class-tools.php:66 admin/class-tools.php:131
 msgid "Sorry you have no form to export"
 msgstr ""
 
-#: admin/class-tools.php:103
+#: admin/class-tools.php:98
 msgid "Registration Form Export"
 msgstr ""
 
-#: admin/class-tools.php:148
-msgid "Somthing went wrong. Please choose a file again"
-msgstr ""
-
-#: admin/class-tools.php:158
-msgid "Import successful. Have fun!"
-msgstr ""
-
-#: admin/class-tools.php:161
-msgid "Invalid file or file size too big."
-msgstr ""
-
-#: admin/class-tools.php:166
+#: admin/class-tools.php:140
 msgid "Import forms"
 msgstr ""
 
-#: admin/class-tools.php:168
-msgid "Click Browse button and choose a json file that you backup before."
+#: admin/class-tools.php:143
+msgid "Upload your JSON file and start imporing WPUF forms here"
 msgstr ""
 
-#: admin/class-tools.php:169
-msgid "Press <strong>Import</strong> button, we will do the rest for you."
+#: admin/class-tools.php:152
+msgid "Upload JSON File"
 msgstr ""
 
-#: admin/class-tools.php:176 admin/tools.php:15
-msgid "Import"
+#: admin/class-tools.php:155
+msgid "Importing JSON File"
 msgstr ""
 
-#: admin/class-tools.php:229 admin/class-tools.php:249
+#: admin/class-tools.php:217
 msgid "Please select some form for exporting"
 msgstr ""
 
-#: admin/class-tools.php:331
+#: admin/class-tools.php:300
 msgid "Are you Sure?"
 msgstr ""
 
-#: admin/class-tools.php:334
+#: admin/class-tools.php:303
 msgid "All forms has been deleted"
 msgstr ""
 
-#: admin/class-tools.php:338
+#: admin/class-tools.php:307
 msgid "Settings has been cleared!"
 msgstr ""
 
-#: admin/class-tools.php:342
+#: admin/class-tools.php:311
 msgid "All transactions has been deleted!"
 msgstr ""
 
-#: admin/class-tools.php:358
+#: admin/class-tools.php:327
 msgid "Page Installation"
 msgstr ""
 
-#: admin/class-tools.php:361
+#: admin/class-tools.php:330
 msgid ""
 "Clicking this button will create required pages for the plugin. Note: It'll "
 "not delete/replace existing pages."
 msgstr ""
 
-#: admin/class-tools.php:362 admin/installer.php:30
+#: admin/class-tools.php:331 admin/installer.php:30
 #: includes/setup-wizard.php:300
 msgid "Install WPUF Pages"
 msgstr ""
 
-#: admin/class-tools.php:367 admin/class-tools.php:371
+#: admin/class-tools.php:336 admin/class-tools.php:340
 msgid "Reset Settings"
 msgstr ""
 
-#: admin/class-tools.php:370
+#: admin/class-tools.php:339
 msgid ""
 "Caution: This tool will delete all the plugin settings of WP User Frontend "
 "Pro"
 msgstr ""
 
-#: admin/class-tools.php:376
+#: admin/class-tools.php:345
 msgid "Delete Forms"
 msgstr ""
 
-#: admin/class-tools.php:379
+#: admin/class-tools.php:348
 msgid "Caution: This tool will delete all the post and registration/profile forms."
 msgstr ""
 
-#: admin/class-tools.php:381
+#: admin/class-tools.php:350
 msgid "Delete Post Forms"
 msgstr ""
 
-#: admin/class-tools.php:382
+#: admin/class-tools.php:351
 msgid "Delete Registration Forms"
 msgstr ""
 
-#: admin/class-tools.php:383
+#: admin/class-tools.php:352
 msgid "Delete Subscriptions"
 msgstr ""
 
-#: admin/class-tools.php:384
+#: admin/class-tools.php:353
 msgid "Delete Coupons"
 msgstr ""
 
-#: admin/class-tools.php:392
+#: admin/class-tools.php:361
 msgid "This tool will delete all the transactions from the transaction table."
 msgstr ""
 
-#: admin/class-tools.php:394
+#: admin/class-tools.php:363
 msgid "Delete Transactions"
 msgstr ""
 
@@ -586,7 +598,7 @@ msgid "This field must contain at least one choice"
 msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder.php:287
-#: includes/fields/class-field-checkbox.php:112
+#: includes/fields/class-field-checkbox.php:101
 #: includes/fields/class-field-dropdown.php:105
 #: includes/fields/class-field-multidropdown.php:82
 #: includes/fields/class-field-radio.php:108
@@ -726,9 +738,9 @@ msgid "Add New Form"
 msgstr ""
 
 #: admin/form.php:71 admin/form.php:109 admin/installer.php:86
-#: admin/post-forms-list-table.php:406 class/subscription.php:402
+#: admin/post-forms-list-table.php:406 class/subscription.php:406
 #: includes/free/admin/shortcode-button.php:87 includes/free/edit-user.php:104
-#: templates/dashboard/posts.php:176 templates/dashboard.php:268
+#: templates/dashboard/posts.php:177 templates/dashboard.php:268
 msgid "Edit"
 msgstr ""
 
@@ -2267,7 +2279,7 @@ msgid "Congratulations!"
 msgstr ""
 
 #: admin/installer.php:84 admin/settings-options.php:24
-#: includes/free/admin/shortcode-button.php:79 wpuf-functions.php:1806
+#: includes/free/admin/shortcode-button.php:79 wpuf-functions.php:1813
 msgid "Dashboard"
 msgstr ""
 
@@ -2280,10 +2292,10 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: admin/installer.php:95 class/subscription.php:377 class/subscription.php:397
-#: class/subscription.php:398 class/subscription.php:399
+#: admin/installer.php:95 class/subscription.php:381 class/subscription.php:401
+#: class/subscription.php:402 class/subscription.php:403
 #: includes/free/admin/shortcode-button.php:99
-#: templates/dashboard/dashboard.php:19 wpuf-functions.php:1809
+#: templates/dashboard/dashboard.php:19 wpuf-functions.php:1816
 msgid "Subscription"
 msgstr ""
 
@@ -2291,7 +2303,7 @@ msgstr ""
 msgid "[wpuf_sub_pack]"
 msgstr ""
 
-#: admin/installer.php:96 templates/dashboard/posts.php:94
+#: admin/installer.php:96 templates/dashboard/posts.php:95
 #: templates/dashboard.php:136
 msgid "Payment"
 msgstr ""
@@ -3482,7 +3494,7 @@ msgstr ""
 
 #: admin/template.php:377 admin/template.php:401 admin/template.php:432
 #: admin/template.php:463 includes/fields/class-abstract-fields.php:579
-#: templates/dashboard/posts.php:97 templates/dashboard.php:139
+#: templates/dashboard/posts.php:98 templates/dashboard.php:139
 msgid "Options"
 msgstr ""
 
@@ -3502,8 +3514,8 @@ msgstr ""
 
 #: admin/template.php:520 admin/template.php:578 admin/template.php:656
 #: class/upload.php:206 includes/fields/class-field-recaptcha.php:147
-#: includes/fields/class-field-sectionbreak.php:54
-#: templates/dashboard/posts.php:88 templates/dashboard.php:104
+#: includes/fields/class-field-sectionbreak.php:55
+#: templates/dashboard/posts.php:89 templates/dashboard.php:104
 #: wpuf-functions.php:845
 msgid "Title"
 msgstr ""
@@ -3521,7 +3533,7 @@ msgid "Enter the meta value"
 msgstr ""
 
 #: admin/template.php:583 class/upload.php:208
-#: includes/fields/class-field-sectionbreak.php:62 wpuf-functions.php:853
+#: includes/fields/class-field-sectionbreak.php:63 wpuf-functions.php:853
 msgid "Description"
 msgstr ""
 
@@ -3549,6 +3561,10 @@ msgstr ""
 
 #: admin/template.php:676 includes/fields/class-field-recaptcha.php:159
 msgid "Enable noCaptcha"
+msgstr ""
+
+#: admin/tools.php:15
+msgid "Import"
 msgstr ""
 
 #: class/asset-loader.php:32 wpuf.php:629
@@ -3663,7 +3679,7 @@ msgstr ""
 msgid "Your current password is incorrect."
 msgstr ""
 
-#: class/frontend-dashboard.php:74 templates/dashboard/posts.php:38
+#: class/frontend-dashboard.php:74 templates/dashboard/posts.php:39
 msgid "Post Deleted"
 msgstr ""
 
@@ -3675,7 +3691,7 @@ msgstr ""
 msgid "%s"
 msgstr ""
 
-#: class/frontend-dashboard.php:173 templates/dashboard/posts.php:31
+#: class/frontend-dashboard.php:174 templates/dashboard/posts.php:32
 msgid "You are not the post author. Cheeting huh!"
 msgstr ""
 
@@ -3700,7 +3716,7 @@ msgid "You already have activated a free package previously."
 msgstr ""
 
 #: class/payment.php:138 includes/class-customizer.php:56
-#: wpuf-functions.php:1810
+#: wpuf-functions.php:1817
 msgid "Billing Address"
 msgstr ""
 
@@ -3786,7 +3802,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:188
 #: includes/fields/class-field-dropdown.php:106
 #: includes/fields/class-field-multidropdown.php:83
-#: includes/fields/class-field-post-taxonomy.php:332
+#: includes/fields/class-field-post-taxonomy.php:335
 msgid "- select -"
 msgstr ""
 
@@ -3803,7 +3819,7 @@ msgstr ""
 #: includes/fields/class-field-featured-image.php:142
 #: includes/free/post-form-templates/the_events_calendar.php:125
 #: includes/free/post-form-templates/the_events_calendar.php:126
-#: templates/dashboard/posts.php:85 templates/dashboard.php:102
+#: templates/dashboard/posts.php:86 templates/dashboard.php:102
 msgid "Featured Image"
 msgstr ""
 
@@ -3879,8 +3895,8 @@ msgstr ""
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1401 includes/fields/class-field-post-taxonomy.php:119
-#: wpuf-functions.php:1594
+#: class/render-form.php:1401 includes/fields/class-field-post-taxonomy.php:122
+#: wpuf-functions.php:1601
 msgid "-- Select --"
 msgstr ""
 
@@ -3890,133 +3906,133 @@ msgstr ""
 
 #: class/render-form.php:1673 class/transactions-list-table.php:119
 #: class/transactions-list-table.php:193 includes/free/edit-user.php:105
-#: templates/dashboard/posts.php:185 templates/dashboard.php:277
+#: templates/dashboard/posts.php:186 templates/dashboard.php:277
 msgid "Delete"
 msgstr ""
 
-#: class/subscription.php:400
+#: class/subscription.php:404
 msgid "Add Subscription"
 msgstr ""
 
-#: class/subscription.php:401
+#: class/subscription.php:405
 msgid "Add New Subscription"
 msgstr ""
 
-#: class/subscription.php:403
+#: class/subscription.php:407
 msgid "Edit Subscription"
 msgstr ""
 
-#: class/subscription.php:404
+#: class/subscription.php:408
 msgid "New Subscription"
 msgstr ""
 
-#: class/subscription.php:405 class/subscription.php:406
+#: class/subscription.php:409 class/subscription.php:410
 msgid "View Subscription"
 msgstr ""
 
-#: class/subscription.php:407
+#: class/subscription.php:411
 msgid "Search Subscription"
 msgstr ""
 
-#: class/subscription.php:408
+#: class/subscription.php:412
 msgid "No Subscription Found"
 msgstr ""
 
-#: class/subscription.php:409
+#: class/subscription.php:413
 msgid "No Subscription Found in Trash"
 msgstr ""
 
-#: class/subscription.php:410
+#: class/subscription.php:414
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:747
+#: class/subscription.php:751
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:747
+#: class/subscription.php:751
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:751 class/subscription.php:755
+#: class/subscription.php:755 class/subscription.php:759
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:773
+#: class/subscription.php:777
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:774
+#: class/subscription.php:778
 msgid "<p><i>Pack name: %s </i></p>"
 msgstr ""
 
-#: class/subscription.php:776
+#: class/subscription.php:780
 msgid "To cancel the pack, press the following cancel button"
 msgstr ""
 
-#: class/subscription.php:819
+#: class/subscription.php:823
 msgid "Day"
 msgid_plural "Days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:820
+#: class/subscription.php:824
 msgid "Week"
 msgid_plural "Weeks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:821
+#: class/subscription.php:825
 msgid "Month"
 msgid_plural "Months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:822
+#: class/subscription.php:826
 msgid "Year"
 msgid_plural "Years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:854
+#: class/subscription.php:858
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:861
+#: class/subscription.php:865
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:862
+#: class/subscription.php:866
 msgid "for"
 msgstr ""
 
-#: class/subscription.php:862
+#: class/subscription.php:866
 msgid "installments"
 msgstr ""
 
-#: class/subscription.php:868
+#: class/subscription.php:872
 msgid "Trial available for first %s %s"
 msgstr ""
 
-#: class/subscription.php:872
+#: class/subscription.php:876
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:876
+#: class/subscription.php:880
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:940
+#: class/subscription.php:944
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:956
+#: class/subscription.php:960
 msgid ""
 "Your Subscription pack is exhausted. There is a <strong>%s</strong> charge "
 "to add a new post."
 msgstr ""
 
-#: class/subscription.php:1001
+#: class/subscription.php:1005
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
@@ -4034,7 +4050,7 @@ msgstr ""
 
 #: class/transactions-list-table.php:42
 #: includes/class-list-table-subscribers.php:44
-#: templates/dashboard/posts.php:89 templates/dashboard.php:131
+#: templates/dashboard/posts.php:90 templates/dashboard.php:131
 msgid "Status"
 msgstr ""
 
@@ -4098,37 +4114,37 @@ msgstr ""
 msgid "Caption"
 msgstr ""
 
-#: includes/class-acf.php:168
+#: includes/class-acf.php:169
 msgid "%s Detected"
 msgstr ""
 
-#: includes/class-acf.php:169
+#: includes/class-acf.php:170
 msgid ""
 "Hey, looks like you have <strong>%s</strong> installed. What do you want to "
 "do with WPUF?"
 msgstr ""
 
-#: includes/class-acf.php:170
+#: includes/class-acf.php:171
 msgid ""
 "It will update compatibility option only, so existing custom fields data "
 "format will not change."
 msgstr ""
 
-#: includes/class-acf.php:171
+#: includes/class-acf.php:172
 msgid ""
 "It will update existing custom fields data to ACF format and update "
 "compatibility option too."
 msgstr ""
 
-#: includes/class-acf.php:174
+#: includes/class-acf.php:175
 msgid "Compatible"
 msgstr ""
 
-#: includes/class-acf.php:175
+#: includes/class-acf.php:176
 msgid "Compatible & Migrate"
 msgstr ""
 
-#: includes/class-acf.php:176
+#: includes/class-acf.php:177
 msgid "No Thanks"
 msgstr ""
 
@@ -4215,7 +4231,7 @@ msgstr ""
 
 #: includes/class-dokan-integration.php:34
 #: includes/class-wc-vendors-integration.php:108
-#: templates/dashboard/dashboard.php:15 wpuf-functions.php:1807
+#: templates/dashboard/dashboard.php:15 wpuf-functions.php:1814
 msgid "Posts"
 msgstr ""
 
@@ -4241,11 +4257,11 @@ msgstr ""
 msgid "Select a post form that will show on the vendor dashboard."
 msgstr ""
 
-#: includes/class-field-manager.php:161
+#: includes/class-field-manager.php:175
 msgid "Custom Fields"
 msgstr ""
 
-#: includes/class-field-manager.php:182
+#: includes/class-field-manager.php:196
 msgid "Others"
 msgstr ""
 
@@ -4335,7 +4351,7 @@ msgid ""
 "Please check your inbox!"
 msgstr ""
 
-#: includes/class-frontend-render-form.php:815
+#: includes/class-frontend-render-form.php:819
 #: includes/free/class-login.php:445
 msgid "Empty reCaptcha Field"
 msgstr ""
@@ -4369,7 +4385,7 @@ msgid "Expire date"
 msgstr ""
 
 #: includes/class-list-table-subscribers.php:137
-#: templates/dashboard/posts.php:148 templates/dashboard.php:237
+#: templates/dashboard/posts.php:149 templates/dashboard.php:237
 msgid "Completed"
 msgstr ""
 
@@ -4413,20 +4429,20 @@ msgstr ""
 msgid "Someone has requested a password reset for the following account:"
 msgstr ""
 
-#: includes/class-login-widget.php:147 includes/free/class-login.php:882
-#: includes/free/class-login.php:963 includes/free/class-registration.php:285
+#: includes/class-login-widget.php:147 includes/free/class-login.php:820
+#: includes/free/class-login.php:901 includes/free/class-registration.php:285
 msgid "Username: %s"
 msgstr ""
 
-#: includes/class-login-widget.php:148 includes/free/class-login.php:964
+#: includes/class-login-widget.php:148 includes/free/class-login.php:902
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 
-#: includes/class-login-widget.php:149 includes/free/class-login.php:965
+#: includes/class-login-widget.php:149 includes/free/class-login.php:903
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: includes/class-login-widget.php:154 includes/free/class-login.php:976
+#: includes/class-login-widget.php:154 includes/free/class-login.php:914
 msgid "[%s] Password Reset"
 msgstr ""
 
@@ -4980,13 +4996,13 @@ msgid "Select Yes if you want to hide the field label in single post."
 msgstr ""
 
 #: includes/fields/class-abstract-fields.php:406
-#: includes/fields/class-field-checkbox.php:82
+#: includes/fields/class-field-checkbox.php:71
 #: includes/fields/class-field-radio.php:79
 msgid "Show in inline list"
 msgstr ""
 
 #: includes/fields/class-abstract-fields.php:416
-#: includes/fields/class-field-checkbox.php:92
+#: includes/fields/class-field-checkbox.php:81
 #: includes/fields/class-field-radio.php:89
 msgid "Show this option in an inline list"
 msgstr ""
@@ -5017,7 +5033,7 @@ msgstr ""
 
 #: includes/fields/class-field-column.php:74
 #: includes/fields/class-field-recaptcha.php:151
-#: includes/fields/class-field-sectionbreak.php:58
+#: includes/fields/class-field-sectionbreak.php:59
 msgid "Title of the section"
 msgstr ""
 
@@ -5125,11 +5141,11 @@ msgstr ""
 msgid "Section Break"
 msgstr ""
 
-#: includes/fields/class-field-sectionbreak.php:66
+#: includes/fields/class-field-sectionbreak.php:67
 msgid "Some details text about the section"
 msgstr ""
 
-#: includes/fields/class-field-sectionbreak.php:83
+#: includes/fields/class-field-sectionbreak.php:84
 msgid "Some description about this section"
 msgstr ""
 
@@ -5309,76 +5325,68 @@ msgstr ""
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: includes/free/class-login.php:754 includes/free/class-login.php:768
-msgid "Invalid key"
-msgstr ""
-
-#: includes/free/class-login.php:760
-msgid "Invalid Login"
-msgstr ""
-
-#: includes/free/class-login.php:793
+#: includes/free/class-login.php:738
 msgid ""
 "<strong>Your account is not active.</strong><br>Please check your email for "
 "activation link. <br><a href=\"%s\">Click here</a> to resend the activation "
 "link"
 msgstr ""
 
-#: includes/free/class-login.php:814 includes/free/class-login.php:839
+#: includes/free/class-login.php:759 includes/free/class-login.php:784
 msgid "Activation URL is not valid"
 msgstr ""
 
-#: includes/free/class-login.php:825
+#: includes/free/class-login.php:770
 msgid "Invalid User activation url"
 msgstr ""
 
-#: includes/free/class-login.php:831
+#: includes/free/class-login.php:776
 msgid "User already verified"
 msgstr ""
 
-#: includes/free/class-login.php:847 includes/free/class-login.php:918
+#: includes/free/class-login.php:792 includes/free/class-login.php:856
 msgid "Your account has been activated"
 msgstr ""
 
-#: includes/free/class-login.php:850
+#: includes/free/class-login.php:795
 msgid ""
 "Your account has been verified , but you can't login until manually "
 "approved your account by an administrator."
 msgstr ""
 
-#: includes/free/class-login.php:880
+#: includes/free/class-login.php:818
 msgid "[%s] Your username and password info"
 msgstr ""
 
-#: includes/free/class-login.php:883
+#: includes/free/class-login.php:821
 msgid "To set your password, visit the following address:"
 msgstr ""
 
-#: includes/free/class-login.php:893
+#: includes/free/class-login.php:831
 msgid "[%s] Account has been activated"
 msgstr ""
 
-#: includes/free/class-login.php:895
+#: includes/free/class-login.php:833
 msgid "Hi %s,"
 msgstr ""
 
-#: includes/free/class-login.php:896
+#: includes/free/class-login.php:834
 msgid "Congrats! Your account has been activated. To login visit the following url:"
 msgstr ""
 
-#: includes/free/class-login.php:898
+#: includes/free/class-login.php:836
 msgid "Thanks"
 msgstr ""
 
-#: includes/free/class-login.php:961
+#: includes/free/class-login.php:899
 msgid "Someone requested that the password be reset for the following account:"
 msgstr ""
 
-#: includes/free/class-login.php:982
+#: includes/free/class-login.php:920
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: includes/free/class-login.php:982
+#: includes/free/class-login.php:920
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
@@ -6045,39 +6053,39 @@ msgstr ""
 msgid "Confirm New Password"
 msgstr ""
 
-#: templates/dashboard/posts.php:56
+#: templates/dashboard/posts.php:57
 msgid "You have created <span>%d</span> %s"
 msgstr ""
 
-#: templates/dashboard/posts.php:117 templates/dashboard.php:159
+#: templates/dashboard/posts.php:118 templates/dashboard.php:159
 msgid "No Image"
 msgstr ""
 
-#: templates/dashboard/posts.php:131 templates/dashboard.php:173
+#: templates/dashboard/posts.php:132 templates/dashboard.php:173
 msgid "Permalink to %s"
 msgstr ""
 
-#: templates/dashboard/posts.php:144 templates/dashboard.php:233
+#: templates/dashboard/posts.php:145 templates/dashboard.php:233
 msgid "Not Applicable"
 msgstr ""
 
-#: templates/dashboard/posts.php:146 templates/dashboard.php:235
+#: templates/dashboard/posts.php:147 templates/dashboard.php:235
 msgid "Pay Now"
 msgstr ""
 
-#: templates/dashboard/posts.php:184 templates/dashboard.php:276
+#: templates/dashboard/posts.php:185 templates/dashboard.php:276
 msgid "Are you sure to delete?"
 msgstr ""
 
-#: templates/dashboard/posts.php:205 templates/dashboard.php:296
+#: templates/dashboard/posts.php:206 templates/dashboard.php:296
 msgid "&laquo;"
 msgstr ""
 
-#: templates/dashboard/posts.php:206 templates/dashboard.php:297
+#: templates/dashboard/posts.php:207 templates/dashboard.php:297
 msgid "&raquo;"
 msgstr ""
 
-#: templates/dashboard/posts.php:229 templates/dashboard.php:319
+#: templates/dashboard/posts.php:230 templates/dashboard.php:319
 msgid "No %s found"
 msgstr ""
 
@@ -6093,8 +6101,8 @@ msgstr ""
 msgid "Subscription Expired!"
 msgstr ""
 
-#: templates/dashboard/subscription.php:61
-msgid "<p><i>To cancel the pack, press the following cancel button.</i></p>"
+#: templates/dashboard/subscription.php:60
+msgid "To cancel the pack, press the following cancel button."
 msgstr ""
 
 #: templates/dashboard.php:4
@@ -6187,7 +6195,7 @@ msgstr ""
 msgid "Private"
 msgstr ""
 
-#: wpuf-functions.php:210 wpuf-functions.php:1825
+#: wpuf-functions.php:210 wpuf-functions.php:1832
 msgid "-- select --"
 msgstr ""
 
@@ -6227,219 +6235,219 @@ msgstr ""
 msgid "Directions »"
 msgstr ""
 
-#: wpuf-functions.php:1808
+#: wpuf-functions.php:1815
 msgid "Edit Profile"
 msgstr ""
 
-#: wpuf-functions.php:1937
+#: wpuf-functions.php:1944
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:1938
+#: wpuf-functions.php:1945
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1939
+#: wpuf-functions.php:1946
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:1940
+#: wpuf-functions.php:1947
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:1941
+#: wpuf-functions.php:1948
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:1942
+#: wpuf-functions.php:1949
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:1943
+#: wpuf-functions.php:1950
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1944
+#: wpuf-functions.php:1951
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:1945
+#: wpuf-functions.php:1952
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:1946
+#: wpuf-functions.php:1953
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:1947
+#: wpuf-functions.php:1954
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:1948
+#: wpuf-functions.php:1955
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:1949
+#: wpuf-functions.php:1956
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1950
+#: wpuf-functions.php:1957
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:1951
+#: wpuf-functions.php:1958
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:1952
+#: wpuf-functions.php:1959
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1953
+#: wpuf-functions.php:1960
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:1954
+#: wpuf-functions.php:1961
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:1955
+#: wpuf-functions.php:1962
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:1956
+#: wpuf-functions.php:1963
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:1957
+#: wpuf-functions.php:1964
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1958
+#: wpuf-functions.php:1965
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1959
+#: wpuf-functions.php:1966
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:1960
+#: wpuf-functions.php:1967
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:1961
+#: wpuf-functions.php:1968
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:1962
+#: wpuf-functions.php:1969
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:1963
+#: wpuf-functions.php:1970
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:1964
+#: wpuf-functions.php:1971
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:1965
+#: wpuf-functions.php:1972
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:1966
+#: wpuf-functions.php:1973
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:1967
+#: wpuf-functions.php:1974
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1968
+#: wpuf-functions.php:1975
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:1969
+#: wpuf-functions.php:1976
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:1970
+#: wpuf-functions.php:1977
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:1971
+#: wpuf-functions.php:1978
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:1972
+#: wpuf-functions.php:1979
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:1973
+#: wpuf-functions.php:1980
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:1974
+#: wpuf-functions.php:1981
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:1975
+#: wpuf-functions.php:1982
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:1976
+#: wpuf-functions.php:1983
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:1977
+#: wpuf-functions.php:1984
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:1978
+#: wpuf-functions.php:1985
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1979
+#: wpuf-functions.php:1986
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:1980
+#: wpuf-functions.php:1987
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:1981
+#: wpuf-functions.php:1988
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:1982
+#: wpuf-functions.php:1989
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:1983
+#: wpuf-functions.php:1990
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:1984
+#: wpuf-functions.php:1991
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:1985
+#: wpuf-functions.php:1992
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:1986
+#: wpuf-functions.php:1993
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:1987
+#: wpuf-functions.php:1994
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:1988
+#: wpuf-functions.php:1995
 msgid "Jordanian dinar"
 msgstr ""
 
-#: wpuf-functions.php:2861
+#: wpuf-functions.php:2868
 msgid "None"
 msgstr ""
 

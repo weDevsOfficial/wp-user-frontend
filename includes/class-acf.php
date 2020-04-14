@@ -244,7 +244,7 @@ class WPUF_ACF_Compatibility {
     /**
      * ACF compatible wpuf field values
      *
-     * @since WPUF_SINCE
+     * @since 3.2.0
      *
      * @param mixed $value
      * @param int   $post_id

@@ -3,9 +3,9 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
-Tested up to: 5.3.2
+Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 3.1.18
+Stable tag: 3.2.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -263,6 +263,19 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.2.0 (14 April, 2020) =
+* **Improvement:** Import forms system
+* **Improvement:** Password reset system
+* **Improvement:** Updated url validation regex to support modern tlds
+* **Fix** Export WPUF forms individually from admin tools page
+* **Fix** Subscription cycle label translation issue
+* **Fix** ACF integration for checkbox fields
+* **Fix** Illegal string offset warning while updating settings
+* **Fix** Conditional logic for Section Break field
+* **Fix** Subscriptions cannot be deleted from backend
+* **Fix** A regression regarding saving checkbox data
+* **Fix** Default value of multi-select fields is not showing
 
 = v3.1.18 (13 March, 2020) =
 * **Improvement:** Hide post edit option when subscription is expired

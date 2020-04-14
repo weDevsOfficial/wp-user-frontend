@@ -227,17 +227,18 @@
                 wrap = '.category-wrap';
 
             $(wrap).on('change', el, function(){
+                var form_id = $( this ).data( 'form-id' );
                 currentLevel = parseInt( $(this).parent().attr('level') );
-                WP_User_Frontend.getChildCats( $(this), 'lvl', currentLevel+1, wrap, 'category');
+                WP_User_Frontend.getChildCats( $(this), currentLevel + 1, 'category', form_id );
             });
         },
 
-        getChildCats: function (dropdown, result_div, level, wrap_div, taxonomy) {
+        getChildCats: function ( dropdown, level, taxonomy, form_id ) {
 
-            cat = $(dropdown).val();
-            results_div = result_div + level;
-            taxonomy = typeof taxonomy !== 'undefined' ? taxonomy : 'category';
-            field_attr = $(dropdown).siblings('span').data('taxonomy');
+            var cat = $(dropdown).val();
+            var container_id = 'wpuf-category-dropdown-lvl-' + level;
+            var taxonomy = typeof taxonomy !== 'undefined' ? taxonomy : 'category';
+            var field_attr = $(dropdown).siblings('span').data('taxonomy');
 
             $.ajax({
                 type: 'post',
@@ -246,7 +247,8 @@
                     action: 'wpuf_get_child_cat',
                     catID: cat,
                     nonce: wpuf_frontend.nonce,
-                    field_attr: field_attr
+                    field_attr: field_attr,
+                    form_id: form_id,
                 },
                 beforeSend: function() {
                     $(dropdown).parent().parent().next('.loading').addClass('wpuf-loading');
@@ -261,9 +263,11 @@
                     });
 
                     if(html != "") {
-                        $(dropdown).parent().addClass('hasChild').parent().append('<div id="'+result_div+level+'" level="'+level+'"></div>');
-                        dropdown.parent().parent().find('#'+results_div).html(html).slideDown('fast');
+                        $(dropdown).parent().addClass('hasChild').parent().append('<div id="'+ container_id +'" level="'+level+'"></div>');
+                        dropdown.parent().parent().find('#' + container_id ).html(html).slideDown('fast');
                     }
+
+                    $( document ).trigger( 'wpuf-ajax-fetched-child-categories', container_id, level, taxonomy );
                 }
             });
         },

@@ -55,10 +55,9 @@
                 $user_id         = get_current_user_id();
                 $payment_gateway = $wpdb->get_var( "SELECT payment_type FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = {$user_id} AND status = 'completed' ORDER BY created DESC" );
 
-                $payment_gateway = strtolower( $payment_gateway );
-
-                echo wp_kses_post( '<br />' );
-                esc_html_e( '<p><i>To cancel the pack, press the following cancel button.</i></p>', 'wp-user-frontend' ); ?>
+                $payment_gateway = strtolower( $payment_gateway ); ?>
+                <br>
+                <p><i><?php esc_html_e( 'To cancel the pack, press the following cancel button.', 'wp-user-frontend' ); ?></i></p>
                 <form action="" method="post" style="text-align: center;">
                     <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
                     <input type="hidden" name="gateway" value="<?php echo esc_attr( $payment_gateway ); ?>">

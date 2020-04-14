@@ -132,7 +132,7 @@ class WPUF_Setup_Wizard {
                 'handler' => '',
             ],
         ];
-        $this->step = isset( $_GET['step'] ) ? sanitize_key( wp_unslash( $_GET['step'] ) ) : current( array_keys( $this->steps ) );
+        $this->step = isset( $_GET['step'] ) ? sanitize_text_field( wp_unslash( $_GET['step'] ) ) : current( array_keys( $this->steps ) );
 
         $this->enqueue_scripts();
 

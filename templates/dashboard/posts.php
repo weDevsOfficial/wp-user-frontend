@@ -8,10 +8,10 @@ $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix
 global $post;
 
 $pagenum = isset( $_GET['pagenum'] ) ? intval( wp_unslash( $_GET['pagenum'] ) ) : 1;
-$action = isset( $_REQUEST['action'] ) ? sanitize_key( wp_unslash( $_REQUEST['action'] ) ) : '';
+$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
 // delete post
 if ( $action == 'del' ) {
-    $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+    $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
     if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf_del' ) ) {
         return ;
@@ -27,6 +27,7 @@ if ( $action == 'del' ) {
         //redirect
         $redirect = add_query_arg( [ 'section' => 'posts', 'msg' => 'deleted'], get_permalink() );
         wp_redirect( $redirect );
+        exit;
     } else {
         echo wp_kses_post( '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wp-user-frontend' ) . '</div>' );
     }

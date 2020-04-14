@@ -34,7 +34,7 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
             <div class="wpuf-fields">
                 <input
                     id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
-                    type="url" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" class="url <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
+                    type="url" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,20}(:[0-9]{1,20})?(\/.*)?$" class="url <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                     data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                     data-type="text"
                     name="<?php echo esc_attr( $field_settings['name'] ); ?>"

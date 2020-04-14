@@ -102,7 +102,7 @@ class WeDevs_Settings_API {
         //register settings sections
         foreach ( $this->settings_sections as $section ) {
             if ( false == get_option( $section['id'] ) ) {
-                add_option( $section['id'] );
+                add_option( $section['id'], array() );
             }
 
             if ( isset($section['desc']) && !empty($section['desc']) ) {

@@ -782,13 +782,7 @@ abstract class WPUF_Field_Contract {
         if ( $form_field['input_type'] == 'taxonomy' ) {
             $cond_inputs['name'] = $form_field['name'] . '_' . $form_field['type'] . '_' . $form_field['id'];
             $condition           = json_encode( $cond_inputs );
-        }
-
-        //for section break
-        if ( $form_field['input_type'] == 'section_break' ) {
-            $cond_inputs['name'] = $form_field['name'] . '_' . $form_field['id'];
-            $condition           = json_encode( $cond_inputs );
-        } ?>
+        }?>
         <script type="text/javascript">
             wpuf_conditional_items.push(<?php echo wp_kses( $condition, [] ); ?>);
         </script>

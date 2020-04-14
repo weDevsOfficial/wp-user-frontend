@@ -169,6 +169,7 @@ class WPUF_Frontend_Dashboard {
             $redirect = apply_filters( 'wpuf_delete_post_redirect', $redirect );
 
             wp_redirect( $redirect );
+            exit;
         } else {
             echo wp_kses_post( '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wp-user-frontend' ) . '</div>' );
         }

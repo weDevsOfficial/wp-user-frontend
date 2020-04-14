@@ -89,6 +89,7 @@ class WPUF_Subscription {
             $this::subscriber_cancel( $user_id, $current_pack['pack_id'] );
 
             wp_redirect( $request_uri );
+            exit;
         }
     }
 
@@ -214,6 +215,9 @@ class WPUF_Subscription {
      */
     public function subscription_script() {
         wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', ['jquery'], false, true );
+        wp_localize_script( 'wpuf-subscriptions', 'wpuf_subs_vars', array(
+            'wpuf_subscription_delete_nonce' => wp_create_nonce('wpuf-subscription-delete-nonce' )
+        ) );
     }
 
     /**
@@ -349,11 +353,11 @@ class WPUF_Subscription {
         update_post_meta( $subscription_id, '_billing_amount', $post_data['billing_amount'] );
         update_post_meta( $subscription_id, '_expiration_number', $post_data['expiration_number'] );
         update_post_meta( $subscription_id, '_expiration_period', $post_data['expiration_period'] );
-        update_post_meta( $subscription_id, '_recurring_pay', $post_data['recurring_pay'] );
+        update_post_meta( $subscription_id, '_recurring_pay', isset( $post_data['recurring_pay'] ) ? $post_data['recurring_pay'] : 'no' );
         update_post_meta( $subscription_id, '_billing_cycle_number', $post_data['billing_cycle_number'] );
         update_post_meta( $subscription_id, '_cycle_period', $post_data['cycle_period'] );
         update_post_meta( $subscription_id, '_billing_limit', $post_data['billing_limit'] );
-        update_post_meta( $subscription_id, '_trial_status', $post_data['trial_status'] );
+        update_post_meta( $subscription_id, '_trial_status', isset( $post_data['trial_status'] ) ? $post_data['trial_status'] : 'no' );
         update_post_meta( $subscription_id, '_trial_duration', $post_data['trial_duration'] );
         update_post_meta( $subscription_id, '_trial_duration_type', $post_data['trial_duration_type'] );
         update_post_meta( $subscription_id, '_post_type_name', $post_data['post_type_name'] );
@@ -814,7 +818,7 @@ class WPUF_Subscription {
      *
      *@return string $labels[$cycle_period]
      */
-    public function get_cycle_label( $cycle_period, $cycle_number ) {
+    public static function get_cycle_label( $cycle_period, $cycle_number ) {
         $labels = [
             'day'   => _n( 'Day', 'Days', $cycle_number, 'wp-user-frontend' ),
             'week'  => _n( 'Week', 'Weeks', $cycle_number, 'wp-user-frontend' ),
@@ -858,7 +862,7 @@ class WPUF_Subscription {
         }
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] == 'yes' ) {
-            $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $pack->meta_value['billing_cycle_number'], $this->get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
+            $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $pack->meta_value['billing_cycle_number'], self::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
             $recurring_des .= !empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', ' . __( 'for', 'wp-user-frontend' ) . ' %s ' . __( 'installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . $recurring_des . '</div>';
         }

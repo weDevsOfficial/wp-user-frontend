@@ -107,9 +107,12 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
     public function taxnomy_select( $terms ) {
         $attr = $this->field_settings;
 
-        $selected           = $terms ? $terms : '';
-        $required           = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
-        $class              = ' wpuf_' . $attr['name'] . '_' . $selected;
+        $selected = $terms ? $terms : '';
+        $dataset  = sprintf(
+            'data-required="%s" data-type="select" data-form-id="%d"',
+            $attr['required'],
+            trim( $this->form_id )
+         );
 
         if ( $this->exclude_type == 'child_of' && !empty( $this->exclude ) ) {
             $this->exclude = $this->exclude[0];
@@ -135,7 +138,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
         $select = wp_dropdown_categories( $tax_args );
 
-        echo str_replace( '<select', '<select ' . $required, $select ) ; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        echo str_replace( '<select', '<select ' . $dataset, $select ) ; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
         $attr = [
             'required'      => $attr['required'],
             'name'          => $attr['name'],

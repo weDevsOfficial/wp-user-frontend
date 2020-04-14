@@ -761,7 +761,11 @@ class WPUF_Frontend_Render_Form {
                     break;
 
                 case 'checkbox':
-                    $meta_key_value[ $value['name'] ] = $value_name[0];
+                    if ( count( $value_name ) > 1 ) {
+                        $meta_key_value[$value['name']] = implode( self::$separator, $value_name );
+                    } else {
+                        $meta_key_value[ $value['name'] ] = $value_name[0];
+                    }
                     break;
 
                 default:
@@ -774,7 +778,7 @@ class WPUF_Frontend_Render_Form {
                         } elseif ( !empty( $acf_compatibility ) && $acf_compatibility == 'yes' ) {
                             $meta_key_value[$value['name']] = $value_name;
                         } else {
-                            $meta_key_value[$value['name']] = implode( $value_name[0] );
+                            $meta_key_value[$value['name']] = implode( self::$separator, $value_name );
                         }
                     } elseif ( !empty( $value_name ) ) {
                         $meta_key_value[$value['name']] = trim( $value_name );

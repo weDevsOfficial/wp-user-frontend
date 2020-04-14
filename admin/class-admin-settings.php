@@ -404,7 +404,7 @@ class WPUF_Admin_Settings {
     /**
      * Enqueue Tools page scripts
      *
-     * @since WPUF_SINCE
+     * @since 3.2.0
      *
      * @todo Move this method to WPUF_Admin_Tools class
      *
@@ -437,7 +437,7 @@ class WPUF_Admin_Settings {
     /**
      * Add json file mime type to upload in WP Media
      *
-     * @since WPUF_SINCE
+     * @since 3.2.0
      *
      * @todo Move this method to WPUF_Admin_Tools class
      *
@@ -454,7 +454,7 @@ class WPUF_Admin_Settings {
     /**
      * Allow json file to upload with async uploader
      *
-     * @since WPUF_SINCE
+     * @since 3.2.0
      *
      * @param array $info
      *
@@ -470,7 +470,7 @@ class WPUF_Admin_Settings {
     /**
      * Enable json file upload via ajax in tools page
      *
-     * @since WPUF_SINCE
+     * @since 3.2.0
      *
      * @todo Move this method to WPUF_Admin_Tools class
      *
@@ -498,7 +498,7 @@ class WPUF_Admin_Settings {
     /**
      * Ajax handler to import WPUF form
      *
-     * @since WPUF_SINCE
+     * @since 3.2.0
      *
      * @todo Move this method to WPUF_Admin_Tools class
      *

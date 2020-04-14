@@ -140,7 +140,7 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
     /**
      * Get field formatted value
      *
-     * @since WPUF_SINCE
+     * @since 3.2.0
      *
      * @param mixed $value
      *

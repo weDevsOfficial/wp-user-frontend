@@ -3365,3 +3365,55 @@ function wpuf_clean( $var ) {
         return is_scalar( $var ) ? sanitize_text_field( wp_unslash( $var ) ) : $var;
     }
 }
+
+/**
+ * Calculate ini directives in bytes
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string|int $val
+ *
+ * @return int
+ */
+function wpuf_ini_get_byte( $val ) {
+    $byte = absint( $val );
+    $char = strtolower( str_replace( $byte, '', $val ) );
+
+    switch( $char ) {
+        case 'g':
+            $byte *= GB_IN_BYTES;
+            break;
+
+        case 'm':
+            $byte *= MB_IN_BYTES;
+            break;
+
+        case 'k':
+            $byte *= KB_IN_BYTES;
+            break;
+    }
+
+    return $byte;
+}
+
+/**
+ * The maximum file size allowed to upload
+ *
+ * To upload large files, `post_max_size` value must be larger than `upload_max_filesize`
+ *
+ * @see https://www.php.net/manual/en/ini.core.php#ini.post-max-size
+ *
+ * @since WPUF_SINCE
+ *
+ * @return string|int
+ */
+function wpuf_max_upload_size() {
+    $post_max_size       = ini_get( 'post_max_size' );
+    $upload_max_filesize = ini_get( 'upload_max_filesize' );
+
+    if ( wpuf_ini_get_byte( $upload_max_filesize ) > wpuf_ini_get_byte( $post_max_size ) ) {
+        return $post_max_size;
+    }
+
+    return $upload_max_filesize;
+}

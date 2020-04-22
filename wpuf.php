@@ -718,12 +718,13 @@ final class WP_User_Frontend {
         ] ) );
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', [
-            'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
-            'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
-            'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
-            'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
-            'ajaxurl'    => admin_url( 'admin-ajax.php' ),
-            'plupload'   => [
+            'confirmMsg'   => __( 'Are you sure?', 'wp-user-frontend' ),
+            'delete_it'    => __( 'Yes, delete it', 'wp-user-frontend' ),
+            'cancel_it'    => __( 'No, cancel it', 'wp-user-frontend' ),
+            'nonce'        => wp_create_nonce( 'wpuf_nonce' ),
+            'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+            'max_filesize' => wpuf_max_upload_size(),
+            'plupload'     => [
                 'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
                 'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
                 'filters'          => [

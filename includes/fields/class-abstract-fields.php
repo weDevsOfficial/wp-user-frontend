@@ -771,7 +771,7 @@ abstract class WPUF_Field_Contract {
 
         if ( $cond_inputs['condition_status'] == 'yes' ) {
             $cond_inputs['type']    = isset( $form_field['input_type'] ) ? $form_field['input_type'] : '';
-            $cond_inputs['name']    = isset( $form_field['name'] ) ? $form_field['name'] : '';
+            $cond_inputs['name']    = isset( $form_field['name'] ) ? $form_field['name'] : $form_field['template'] . '_' . $form_field['id'];
             $cond_inputs['form_id'] = $form_id;
             $condition              = json_encode( $cond_inputs );
         } else {

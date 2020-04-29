@@ -550,6 +550,47 @@ function wpuf_get_user_roles() {
 }
 
 /**
+ * Add custom avatar image size
+ *
+ * @since WPUF_SINCE
+ *
+ * @return void
+ */
+function wpuf_avatar_add_image_size() {
+    $avatar_size   = wpuf_get_option( 'avatar_size', 'wpuf_profile', '100x100' );
+    $avatar_size   = explode( 'x', $avatar_size );
+    $avatar_width  = $avatar_size[0];
+    $avatar_height = $avatar_size[1];
+
+    add_image_size( 'wpuf_avatar_image_size', $avatar_width, $avatar_height, true );
+}
+
+/**
+ * Custom Avatar uploaded by user
+ *
+ * @since WPUF_SINCE
+ *
+ * @param int $user_id
+ *
+ * @return string
+ */
+function wpuf_get_custom_avatar( $user_id ) {
+    $avatar = get_user_meta( $user_id, 'user_avatar', true );
+
+    if ( absint( $avatar ) > 0 ) {
+        wpuf_avatar_add_image_size();
+
+        $avatar_source = wp_get_attachment_image_src( $avatar, 'wpuf_avatar_image_size' );
+
+        if ( $avatar_source ) {
+            $avatar = $avatar_source[0];
+        }
+    }
+
+    return $avatar;
+}
+
+/**
  * User avatar wrapper for custom uploaded avatar
  *
  * @since 2.0
@@ -575,18 +616,17 @@ function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args ) 
         $user = get_user_by( 'email', $id_or_email );
     }
 
-    if ( !$user ) {
+    if ( ! $user ) {
         return $avatar;
     }
 
-    // see if there is a user_avatar meta fields
-    $user_avatar = get_user_meta( $user->ID, 'user_avatar', true );
+    $custom_avatar = wpuf_get_custom_avatar( $user->ID );
 
-    if ( empty( $user_avatar ) ) {
+    if ( empty( $custom_avatar ) ) {
         return $avatar;
     }
 
-    return sprintf( '<img src="%1$s" alt="%2$s" height="%3$s" width="%3$s" class="avatar">', esc_url( $user_avatar ), $alt, $size );
+    return sprintf( '<img src="%1$s" alt="%2$s" height="%3$s" width="%3$s" class="avatar">', esc_url( $custom_avatar ), $alt, $size );
 }
 
 add_filter( 'get_avatar', 'wpuf_get_avatar', 99, 6 );
@@ -3243,7 +3283,7 @@ function wpuf_settings_multiselect( $args ) {
  *
  * @return mixed
  */
-function wpuf_get_custom_avatar( $args, $id_or_email ) {
+function wpuf_custom_avatar_data( $args, $id_or_email ) {
     $user_id = $id_or_email;
 
     if ( $id_or_email instanceof WP_Comment ) {
@@ -3253,16 +3293,16 @@ function wpuf_get_custom_avatar( $args, $id_or_email ) {
     }
 
     if ( $user_id ) {
-        $custom_avatar_url = get_user_meta( $user_id, 'user_avatar', true );
-    }
+        $custom_avatar_url = wpuf_get_custom_avatar( $user_id );
 
-    if ( !empty( $custom_avatar_url ) ) {
-        $args['url'] = $custom_avatar_url;
+        if ( ! empty( $custom_avatar_url ) ) {
+            $args['url'] = $custom_avatar_url;
+        }
     }
 
     return $args;
 }
-add_filter( 'get_avatar_data', 'wpuf_get_custom_avatar', 10, 2 );
+add_filter( 'get_avatar_data', 'wpuf_custom_avatar_data', 10, 2 );
 
 /**
  * Displays Form Schedule Messages

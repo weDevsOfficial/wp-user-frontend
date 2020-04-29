@@ -45,6 +45,18 @@ class WPUF_Upload {
             die( 'error' );
         }
 
+        $field_type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
+
+        /**
+         * Hook fires before begining upload process
+         *
+         * @since WPUF_SINCE
+         *
+         * @param int    $form_id
+         * @param string $field_type
+         */
+        do_action( 'wpuf_upload_file_init', $form_id, $field_type );
+
         // check if guest post enabled for guests
         if ( ! is_user_logged_in() ) {
             $guest_post    = false;
@@ -91,13 +103,35 @@ class WPUF_Upload {
                 $image_size = wpuf_get_option( 'insert_photo_size', 'wpuf_frontend_posting', 'thumbnail' );
                 $image_type = wpuf_get_option( 'insert_photo_type', 'wpuf_frontend_posting', 'link' );
 
+                /**
+                 * Filter upload image size for response
+                 *
+                 * @since WPUF_SINCE
+                 *
+                 * @param string $image_size
+                 * @param int    $form_id
+                 * @param string $field_type
+                 */
+                $image_size = apply_filters( 'wpuf_upload_response_image_size', $image_size, $form_id, $field_type );
+
+                /**
+                 * Filter upload image type for response
+                 *
+                 * @since WPUF_SINCE
+                 *
+                 * @param string $image_size
+                 * @param int    $form_id
+                 * @param string $field_type
+                 */
+                $image_type = apply_filters( 'wpuf_upload_response_image_type', $image_type, $form_id, $field_type );
+
                 if ( $image_type == 'link' ) {
                     $response['html'] = wp_get_attachment_link( $attach['attach_id'], $image_size );
                 } else {
                     $response['html'] = wp_get_attachment_image( $attach['attach_id'], $image_size );
                 }
             } else {
-                $response['html'] = $this->attach_html( $attach['attach_id'] );
+                $response['html'] = self::attach_html( $attach['attach_id'], $field_type, $form_id );
             }
 
             echo wp_kses( $response['html'], [
@@ -124,7 +158,7 @@ class WPUF_Upload {
                 'a'        => [
                     'href'           => [],
                     'class'          => [],
-                    'data-attach_id' => [],
+                    'data-attach-id' => [],
                 ],
                 'span'     => [
                     'class' => []
@@ -134,8 +168,6 @@ class WPUF_Upload {
             echo wp_kses_post( $attach['error'] );
         }
 
-        // $response = array('success' => false, 'message' => $attach['error']);
-        // echo json_encode( $response );
         exit;
     }
 
@@ -180,7 +212,7 @@ class WPUF_Upload {
         return [ 'success' => false, 'error' => $uploaded_file['error'] ];
     }
 
-    public static function attach_html( $attach_id, $type = null ) {
+    public static function attach_html( $attach_id, $type = null, $form_id = null ) {
         if ( ! $type ) {
             $type = isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : 'image';
         }
@@ -192,7 +224,18 @@ class WPUF_Upload {
         }
 
         if ( wp_attachment_is_image( $attach_id ) ) {
-            $image = wp_get_attachment_image_src( $attach_id, 'thumbnail' );
+            /**
+             * Filter upload image size for response
+             *
+             * @since WPUF_SINCE
+             *
+             * @param string $image_size
+             * @param int    $form_id
+             * @param string $field_type
+             */
+            $image_size = apply_filters( 'wpuf_upload_response_image_size', 'thumbnail', $form_id, $type );
+
+            $image = wp_get_attachment_image_src( $attach_id, $image_size );
             $image = $image[0];
         } else {
             $image = wp_mime_type_icon( $attach_id );
@@ -211,7 +254,7 @@ class WPUF_Upload {
 
         $html .= sprintf( '<input type="hidden" name="wpuf_files[%s][]" value="%d">', $type, $attach_id );
         $html .= '<div class="caption">';
-        $html .= sprintf( '<a href="#" class="attachment-delete" data-attach_id="%d"> <img src="%s" /></a>', $attach_id, WPUF_ASSET_URI . '/images/del-img.png' );
+        $html .= sprintf( '<a href="#" class="attachment-delete" data-attach-id="%d"> <img src="%s" /></a>', $attach_id, WPUF_ASSET_URI . '/images/del-img.png' );
         $html .= sprintf( '<span class="wpuf-drag-file"> <img src="%s" /></span>', WPUF_ASSET_URI . '/images/move-img.png' );
         $html .= '</div>';
         $html .= '</li>';
@@ -222,15 +265,28 @@ class WPUF_Upload {
     public function delete_file() {
         check_ajax_referer( 'wpuf_nonce', 'nonce' );
 
-        $attach_id  = isset( $_POST['attach_id'] ) ? intval( wp_unslash( $_POST['attach_id'] ) ) : 0;
-        $attachment = get_post( $attach_id );
+        $post_data = wp_unslash( $_POST );
 
-        //post author or editor role
-        if ( get_current_user_id() == $attachment->post_author || current_user_can( 'delete_private_pages' ) ) {
-            echo 'success';
+        $attachment_id = isset( $post_data['attach_id'] ) ? absint( $post_data['attach_id'] ) : 0;
+
+        if ( empty( $attachment_id ) ) {
+            wp_send_json_error( [ 'message' => __( 'attach_id is required.', 'wp-user-frontend' ) ], 422 );
         }
 
-        exit;
+        $attachment = get_post( $attachment_id );
+
+        // post author or editor role
+        if ( get_current_user_id() == absint( $attachment->post_author ) || current_user_can( 'delete_private_pages' ) ) {
+            $deleted = wp_delete_attachment( $attachment_id, true );
+
+            if ( $deleted ) {
+                wp_send_json_success( [ 'message' => __( 'Attachment deleted successfully.', 'wp-user-frontend' ) ] );
+            }
+
+            wp_send_json_error( [ 'message' => __( 'Could not deleted the attachment', 'wp-user-frontend' ) ], 422 );
+        }
+
+        wp_send_json_error( [ 'message' => __( 'Something went wrong.', 'wp-user-frontend' ) ], 422 );
     }
 
     public function associate_file( $attach_id, $post_id ) {

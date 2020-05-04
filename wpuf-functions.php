@@ -3112,11 +3112,7 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
  * @return void
  */
 function wpuf_ajax_get_states_field() {
-    $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
-
-    if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
-        return ;
-    }
+    check_ajax_referer( 'wpuf-ajax-address' );
 
     $country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
     $cs        = new CountryState();
@@ -3125,8 +3121,7 @@ function wpuf_ajax_get_states_field() {
 
     if ( !empty( $states ) ) {
         $args = [
-            'name'             => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash(
-            $_POST['field_name'] ) ) : '',
+            'name'             => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
             'id'               => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
             'class'            => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
             'options'          => $states,
@@ -3201,8 +3196,8 @@ add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_a
  *
  * @return mixed
  */
-function wpuf_get_user_address() {
-    $user_id        = get_current_user_id();
+function wpuf_get_user_address( $user_id = 0 ) {
+    $user_id        = $user_id ? $user_id : get_current_user_id();
     $address_fields = [];
 
     if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields' ) ) {

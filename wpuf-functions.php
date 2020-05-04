@@ -591,6 +591,21 @@ function wpuf_get_custom_avatar( $user_id ) {
 }
 
 /**
+ * Conditionally ignore using WPUF avatar
+ *
+ * @since WPUF_SINCE
+ *
+ * @return bool
+ */
+function wpuf_use_default_avatar() {
+    if ( has_filter( 'pre_option_show_avatars', '__return_true' ) ) {
+        return true;
+    }
+
+    return apply_filters( 'wpuf_use_default_avatar', '__return_true' );
+}
+
+/**
  * User avatar wrapper for custom uploaded avatar
  *
  * @since 2.0
@@ -604,6 +619,10 @@ function wpuf_get_custom_avatar( $user_id ) {
  * @return string image tag of the user avatar
  */
 function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args ) {
+    if ( wpuf_use_default_avatar() ) {
+        return $avatar;
+    }
+
     if ( is_numeric( $id_or_email ) ) {
         $user = get_user_by( 'id', $id_or_email );
     } elseif ( is_object( $id_or_email ) ) {
@@ -630,6 +649,41 @@ function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args ) 
 }
 
 add_filter( 'get_avatar', 'wpuf_get_avatar', 99, 6 );
+
+/**
+ * Filters custom avatar url
+ *
+ * @param $args
+ * @param $id_or_email
+ *
+ * @return mixed
+ */
+function wpuf_custom_avatar_data( $args, $id_or_email ) {
+    if ( wpuf_use_default_avatar() ) {
+        return $args;
+    }
+
+    $user_id = $id_or_email;
+
+    if ( $id_or_email instanceof WP_Comment ) {
+        $user_id = $id_or_email->user_id;
+    } elseif ( is_string( $id_or_email ) && is_email( $id_or_email ) ) {
+        $user_id = email_exists( $id_or_email );
+    }
+
+    if ( $user_id ) {
+        $custom_avatar_url = wpuf_get_custom_avatar( $user_id );
+
+        if ( ! empty( $custom_avatar_url ) ) {
+            $args['url'] = $custom_avatar_url;
+        }
+    }
+
+    return $args;
+}
+
+add_filter( 'get_avatar_data', 'wpuf_custom_avatar_data', 10, 2 );
+
 
 function wpuf_update_avatar( $user_id, $attachment_id ) {
     $upload_dir   = wp_upload_dir();
@@ -3268,35 +3322,6 @@ function wpuf_settings_multiselect( $args ) {
         ]
     ] );
 }
-
-/**
- * Filters custom avatar url
- *
- * @param $args
- * @param $id_or_email
- *
- * @return mixed
- */
-function wpuf_custom_avatar_data( $args, $id_or_email ) {
-    $user_id = $id_or_email;
-
-    if ( $id_or_email instanceof WP_Comment ) {
-        $user_id = $id_or_email->user_id;
-    } elseif ( is_string( $id_or_email ) && is_email( $id_or_email ) ) {
-        $user_id = email_exists( $id_or_email );
-    }
-
-    if ( $user_id ) {
-        $custom_avatar_url = wpuf_get_custom_avatar( $user_id );
-
-        if ( ! empty( $custom_avatar_url ) ) {
-            $args['url'] = $custom_avatar_url;
-        }
-    }
-
-    return $args;
-}
-add_filter( 'get_avatar_data', 'wpuf_custom_avatar_data', 10, 2 );
 
 /**
  * Displays Form Schedule Messages

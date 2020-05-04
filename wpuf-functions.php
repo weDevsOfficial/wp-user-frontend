@@ -1021,14 +1021,13 @@ function wpuf_show_custom_fields( $content ) {
                     break;
 
                 case 'country_list':
-                    $value = get_post_meta( $post->ID, $attr['name'], true );
-                    $countries = wpuf_get_countries();
+                    $value         = get_post_meta( $post->ID, $attr['name'], true );
+                    $country_state = new CountryState();
+                    $countries     = $country_state->countries();
 
-                    $value = array_filter( $countries, function( $item ) use ( $value ) {
-                        return $item['code'] == $value;
-                    } );
-
-                    $value = $value[0]['name'];
+                    if ( isset( $countries[ $value ] ) ) {
+                        $value = $countries[ $value ];
+                    }
 
                     $html .= '<li>';
 

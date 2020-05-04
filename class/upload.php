@@ -142,8 +142,9 @@ class WPUF_Upload {
                     'class' => []
                 ],
                 'img'      => [
-                    'src' => [],
-                    'alt' => [],
+                    'src'   => [],
+                    'alt'   => [],
+                    'class' => [],
                 ],
                 'input'    => [
                     'type'        => [],
@@ -241,8 +242,18 @@ class WPUF_Upload {
             $image = wp_mime_type_icon( $attach_id );
         }
 
+        /**
+         * Filter uploaded image class names for the reponse
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $class_names
+         */
+        $attachment_class_names = apply_filters( 'wpuf_upload_response_image_class_names', [ 'wpuf-attachment-image' ] );
+        $attachment_class_names = implode( ' ', $attachment_class_names );
+
         $html = '<li class="ui-state-default wpuf-image-wrap thumbnail">';
-        $html .= sprintf( '<div class="attachment-name"><img src="%s" alt="%s" /></div>', $image, esc_attr( $attachment->post_title ) );
+        $html .= sprintf( '<div class="attachment-name"><img src="%s" alt="%s" class="%s" /></div>', $image, esc_attr( $attachment->post_title ), esc_attr( $attachment_class_names ) );
 
         if ( wpuf_get_option( 'image_caption', 'wpuf_frontend_posting', 'off' ) == 'on' ) {
             $html .= '<div class="wpuf-file-input-wrap">';

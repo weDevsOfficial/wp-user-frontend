@@ -3476,3 +3476,16 @@ function wpuf_max_upload_size() {
 
     return $upload_max_filesize;
 }
+
+/**
+ * Validate a boolean variable
+ *
+ * @since WPUF_SINCE
+ *
+ * @param mixed $var
+ *
+ * @return bool
+ */
+function wpuf_validate_boolean( $var ) {
+    return filter_var( $var, FILTER_VALIDATE_BOOLEAN );
+}

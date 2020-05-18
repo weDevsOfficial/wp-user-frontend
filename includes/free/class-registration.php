@@ -21,8 +21,10 @@ class WPUF_Registration {
 
         add_action( 'init', [$this, 'process_registration'] );
         add_action( 'init', [$this, 'wp_registration_page_redirect'] );
+        add_action( 'template_redirect', [ $this, 'registration_page_redirects' ] );
 
         add_filter( 'register_url', [$this, 'get_registration_url'] );
+        add_filter( 'wpuf_registration_redirect', [ $this, 'redirect_to_payment_page' ], 10, 2 );
     }
 
     /**
@@ -151,10 +153,14 @@ class WPUF_Registration {
                 'user' => wp_get_current_user(),
             ] );
         } else {
-            $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'register';
+            $queries = wp_unslash( $_GET );
+
+            array_walk( $queries, function ( &$a ) {
+                $a = sanitize_text_field( $a );
+            } );
 
             $args = [
-                'action_url' => $reg_page,
+                'action_url' => add_query_arg( $queries, $reg_page ),
                 'userrole'   => $roleencoded,
             ];
 
@@ -347,6 +353,40 @@ class WPUF_Registration {
     }
 
     /**
+     * Redirect to subscription page
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function registration_page_redirects() {
+        global $post;
+
+        $registration_page = wpuf_get_option( 'reg_override_page', 'wpuf_profile' );
+
+        if ( $post->ID !== absint( $registration_page ) ) {
+            return;
+        }
+
+        // Choose subscription pack first then register
+        if ( $this->is_activated_subscription_on_registration() ) {
+            $subscription_page_id = wpuf_get_option( 'subscription_page', 'wpuf_payment' );
+
+            if ( empty( $subscription_page_id ) ) {
+                WP_User_Frontend::log( 'subscription-on-registration', __( 'Subscription Page settings not set in admin settings', 'wp-user-frontend' ) );
+                return;
+            }
+
+            if ( isset( $_GET['type'] ) && 'wpuf_sub' === $_GET['type'] && ! empty( $_GET['pack_id'] ) ) {
+                return;
+            }
+
+            wp_safe_redirect( get_permalink( $subscription_page_id ) );
+            exit;
+        }
+    }
+
+    /**
      * Show errors on the form
      *
      * @return void
@@ -382,11 +422,63 @@ class WPUF_Registration {
      * @return string
      */
     public static function get_posted_value( $key ) {
+        $get = wp_unslash( $_GET );
+
         if ( isset( $_REQUEST[$key] ) ) {
             $required_key = sanitize_text_field( wp_unslash( $_REQUEST[$key] ) );
            return $required_key;
         }
 
         return '';
+    }
+
+    /**
+     * Check if subscription need to be selected before registration
+     *
+     * Settings could be found under Payments section in WPUF admin settings.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    public function is_activated_subscription_on_registration() {
+        $enable_payment        = wpuf_get_option( 'enable_payment', 'wpuf_payment' );
+        $register_subscription = wpuf_get_option( 'register_subscription', 'wpuf_payment' );
+
+        if ( wpuf_validate_boolean( $enable_payment ) && wpuf_validate_boolean( $register_subscription ) ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Filter the redirect page url to payment page
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $redirect
+     * @param int    $user
+     *
+     * @return string
+     */
+    public function redirect_to_payment_page( $redirect, $user ) {
+        $get = wp_unslash( $_GET );
+
+        if ( isset( $get['type'] ) && 'wpuf_sub' === $get['type'] && ! empty( $get['pack_id'] ) && $user ) {
+            $payment_page_id = wpuf_get_option( 'payment_page', 'wpuf_payment' );
+            $payment_page    = get_permalink( $payment_page_id );
+
+            if ( $payment_page ) {
+                $redirect = add_query_arg( [
+                    'action'  => 'wpuf_pay',
+                    'user_id' => $user,
+                    'type'    => 'pack',
+                    'pack_id' => $get['pack_id'],
+                ], $payment_page );
+            }
+        }
+
+        return $redirect;
     }
 }

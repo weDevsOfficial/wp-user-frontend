@@ -192,7 +192,7 @@ class WPUF_Upload {
         if ( isset( $uploaded_file['file'] ) ) {
             $file_loc    = $uploaded_file['file'];
             $file_name   = basename( $upload_data['name'] );
-            $upload_hash = md5( $upload_data['name'] );
+            $upload_hash = md5( $upload_data['name'] . $upload_data['size'] );
             $file_type   = wp_check_filetype( $file_name );
 
             $attachment = [
@@ -321,7 +321,7 @@ class WPUF_Upload {
     function duplicate_upload( $file ) {
         global $wpdb;
 
-        $upload_hash = md5( $file['name'] );
+        $upload_hash = md5( $file['name'] . $file['size'] );
 
         $sql   = $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta m JOIN $wpdb->posts p ON p.ID = m.post_id WHERE m.meta_key = 'wpuf_file_hash' AND m.meta_value = %s AND p.post_status != 'trash' LIMIT 1;", $upload_hash );
         $match = $wpdb->get_var( $sql );

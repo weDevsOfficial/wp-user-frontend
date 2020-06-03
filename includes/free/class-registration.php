@@ -364,7 +364,7 @@ class WPUF_Registration {
 
         $registration_page = wpuf_get_option( 'reg_override_page', 'wpuf_profile' );
 
-        if ( $post->ID !== absint( $registration_page ) ) {
+        if ( ! isset( $post->ID ) || $post->ID !== absint( $registration_page ) ) {
             return;
         }
 

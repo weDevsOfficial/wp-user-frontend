@@ -392,6 +392,13 @@ class WPUF_Registration {
      * @return void
      */
     public function show_errors() {
+        /**
+         * Filter the allowed html for registration error notice
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $allowed_html
+         */
         $allowed_html = apply_filters( 'wpuf_registration_errors_allowed_html', [
             'strong' => [],
         ] );

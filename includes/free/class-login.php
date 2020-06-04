@@ -536,7 +536,7 @@ class WPUF_Simple_Login {
             return $redirect;
         }
 
-        return $this->login_redirect();
+        return $link;
     }
 
     /**

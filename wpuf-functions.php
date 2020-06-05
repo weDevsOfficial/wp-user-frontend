@@ -2065,6 +2065,7 @@ function wpuf_get_currencies() {
         [ 'currency' => 'NGN', 'label' => __( 'Nigerian Naira', 'wp-user-frontend' ), 'symbol' => '&#8358;' ],
         [ 'currency' => 'NOK', 'label' => __( 'Norwegian Krone', 'wp-user-frontend' ), 'symbol' => '&#107;&#114;' ],
         [ 'currency' => 'NZD', 'label' => __( 'New Zealand Dollar', 'wp-user-frontend' ), 'symbol' => '&#36;' ],
+        [ 'currency' => 'NAD', 'label' => __( 'Namibian dollar', 'wp-user-frontend' ), 'symbol' => 'N&#36;' ],
         [ 'currency' => 'OMR', 'label' => __( 'Omani Rial', 'wp-user-frontend' ), 'symbol' => 'ر.ع.' ],
         [ 'currency' => 'IRR', 'label' => __( 'Iranian Rial', 'wp-user-frontend' ), 'symbol' => '﷼' ],
         [ 'currency' => 'PKR', 'label' => __( 'Pakistani Rupee', 'wp-user-frontend' ), 'symbol' => 'Rs' ],

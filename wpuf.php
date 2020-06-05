@@ -315,7 +315,6 @@ final class WP_User_Frontend {
         } else {
             require_once WPUF_ROOT . '/class/frontend-dashboard.php';
             require_once WPUF_ROOT . '/includes/free/class-registration.php';
-            require_once WPUF_ROOT . '/includes/free/class-login.php';
         }
 
         // add reCaptcha library if not found
@@ -324,6 +323,7 @@ final class WP_User_Frontend {
             require_once __DIR__ . '/lib/invisible_recaptcha.php';
         }
 
+        require_once WPUF_ROOT . '/includes/free/class-login.php';
         require_once WPUF_ROOT . '/includes/class-frontend-form-post.php';
         require_once WPUF_ROOT . '/includes/class-field-manager.php';
         require_once WPUF_ROOT . '/includes/class-pro-upgrades.php';
@@ -375,10 +375,10 @@ final class WP_User_Frontend {
         } else {
             $this->container['dashboard']       = new WPUF_Frontend_Dashboard();
             $this->container['payment']         = new WPUF_Payment();
-            $this->container['login']           = WPUF_Simple_Login::init();
             $this->container['registration']    = WPUF_Registration::init();
         }
 
+        $this->container['login']                   = WPUF_Simple_Login::init();
         $this->container['fields']                  = new WPUF_Field_Manager();
         $this->container['frontend_form']           = WPUF_Frontend_Form::init();
         $this->container['pro_upgrades']            = new WPUF_Pro_Upgrades();

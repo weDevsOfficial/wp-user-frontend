@@ -677,8 +677,7 @@ class WPUF_Frontend_Render_Form {
             if( isset( $post_data[$value['name']] ) && is_array( $post_data[$value['name']] ) ) {
                 $value_name = isset( $post_data[$value['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $post_data[$value['name']] ) ): '';
             } else {
-                // $value_name = isset( $post_data[$value['name']] ) ? sanitize_text_field( wp_unslash( $post_data[$value['name']] ) ): '';
-                $value_name = isset( $post_data[$value['name']] ) ? wp_unslash( $post_data[$value['name']] ): '';
+                $value_name = isset( $post_data[$value['name']] ) ? sanitize_text_field( wp_unslash( $post_data[$value['name']] ) ): '';
             }
 
             if ( isset( $post_data['wpuf_files'][$value['name']] ) ) {

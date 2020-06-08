@@ -675,9 +675,9 @@ abstract class WPUF_Field_Contract {
 
     public function after_field_print_label() {
         if ( is_admin() ) {
-            echo wp_kses_post( '</td> </tr>' );
+            ?></td></tr><?php
         } else {
-            echo wp_kses_post( '</li>' );
+            ?></li><?php
         }
     }
 

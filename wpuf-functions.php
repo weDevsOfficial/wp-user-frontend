@@ -763,7 +763,12 @@ function wpuf_get_gateways( $context = 'admin' ) {
 /**
  * Show custom fields in post content area
  *
- * @global object $post
+ * @since WPUF_SINCE Introducing `render_field_data` to render field value
+ *                   Rendering field values should be in field classes to follow
+ *                   more OOP style.
+ *
+ * @todo Move the rendering snippets to respective field classes. The default case
+ *       should be placed in the abstract class.
  *
  * @param string $content
  *
@@ -820,6 +825,8 @@ function wpuf_show_custom_fields( $content ) {
         }
 
         foreach ( $meta as $attr ) {
+            $wpuf_field = wpuf()->fields->get_field( $attr['template'] );
+
             if ( !isset( $attr['name'] ) ) {
                 $attr['name'] = $attr['input_type'];
             }
@@ -871,6 +878,11 @@ function wpuf_show_custom_fields( $content ) {
             }
 
             if ( $attr['input_type'] == 'hidden' ) {
+                continue;
+            }
+
+            if ( method_exists( $wpuf_field, 'render_field_data' ) ) {
+                $html .= $wpuf_field->render_field_data( $field_value, $attr );
                 continue;
             }
 
@@ -1054,7 +1066,7 @@ function wpuf_show_custom_fields( $content ) {
                     $link  = '<li>';
 
                     if ( $hide_label == 'no' ) {
-                        $link .= '<label>' . $attr['label'] . '</label>:';
+                        $link .= '<label>' . $attr['label'] . ':</label>';
                     }
 
                     $link .= sprintf( " <a href='%s' target = '%s'>%s</a></li>", $value, $open_in, $value );
@@ -1068,7 +1080,7 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= '<li>';
 
                     if ( $hide_label == 'no' ) {
-                        $html .= '<label>' . $attr['label'] . '</label>:';
+                        $html .= '<label>' . $attr['label'] . ':</label>';
                     }
 
                     $html .= sprintf( ' %s</li>', make_clickable( $value ) );
@@ -1086,7 +1098,7 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= '<li>';
 
                     if ( $hide_label == 'no' ) {
-                        $html .= '<label>' . $attr['label'] . '</label>:';
+                        $html .= '<label>' . $attr['label'] . ':</label>';
                     }
 
                     $html .= sprintf( ' %s</li>', make_clickable( $value ) );
@@ -1107,7 +1119,7 @@ function wpuf_show_custom_fields( $content ) {
                             $html .= '<li>';
 
                             if ( $hide_label == 'no' ) {
-                                $html .= '<label>' . $attr['label'] . '</label>:';
+                                $html .= '<label>' . $attr['label'] . ':</label>';
                             }
 
                             $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
@@ -1120,7 +1132,7 @@ function wpuf_show_custom_fields( $content ) {
                                 $html .= '<li>';
 
                                 if ( $hide_label == 'no' ) {
-                                    $html .= '<label>' . $attr['label'] . '</label>:';
+                                    $html .= '<label>' . $attr['label'] . ':</label>';
                                 }
 
                                 $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
@@ -1133,7 +1145,7 @@ function wpuf_show_custom_fields( $content ) {
                             $html .= '<li>';
 
                             if ( $hide_label == 'no' ) {
-                                $html .= '<label>' . $attr['label'] . '</label>:';
+                                $html .= '<label>' . $attr['label'] . ':</label>';
                             }
 
                             $html .= sprintf( ' %s</li>', make_clickable( $new ) );

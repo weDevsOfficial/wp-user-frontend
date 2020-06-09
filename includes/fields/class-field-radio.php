@@ -51,6 +51,7 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
                                 class="<?php echo esc_attr( 'wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                                 type="radio"
                                 value="<?php echo esc_attr( $value ); ?>"<?php checked( $selected, $value ); ?>
+                                ondblclick="WP_User_Frontend.doUncheckRadioBtn(this)"
                             />
                             <?php echo $option; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </label>
@@ -129,5 +130,39 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
         $val   = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
 
         return isset( $field['options'][$val] ) ? $field['options'][$val] : '';
+    }
+
+    /**
+     * Render radio field data
+     *
+     * @since WPUF_SINCE
+     *
+     * @param mixed $data
+     * @param array $field
+     *
+     * @return string
+     */
+    public function render_field_data( $data, $field ) {
+        $data       = is_array( $data ) ? array_pop( $data ) : $data;
+        $hide_label = isset( $field['hide_field_label'] )
+            ? wpuf_validate_boolean( $field['hide_field_label'] )
+            : false;
+
+        $container_classnames = [ 'wpuf-field-data', 'wpuf-field-data-' . $this->input_type ];
+
+        if ( empty( $field['options'] ) || ! is_array( $field['options'] ) || ! isset( $field['options'][ $data ] ) ) {
+            return;
+        }
+
+        ob_start();
+        ?>
+            <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
+                <?php if ( ! $hide_label ): ?>
+                    <label><?php echo esc_html( $field['label'] ); ?></label>
+                <?php endif; ?>
+                <?php echo esc_html( $field['options'][ $data ] ); ?>
+            </li>
+        <?php
+        return ob_get_clean();
     }
 }

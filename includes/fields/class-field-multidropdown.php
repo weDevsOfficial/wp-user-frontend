@@ -116,4 +116,49 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
 
         return $entry_value;
     }
+
+    /**
+     * Render multiselect field data
+     *
+     * @since WPUF_SINCE
+     *
+     * @param mixed $data
+     * @param array $field
+     *
+     * @return string
+     */
+    public function render_field_data( $data, $field ) {
+        if ( empty( $field['options'] ) || ! is_array( $field['options'] ) ) {
+            return;
+        }
+
+        $data     = is_array( $data ) ? array_pop( $data ) : $data;
+        $data     = explode( '|' , $data );
+        $selected = [];
+
+        foreach ( $data as $item ) {
+            $item = trim( $item );
+
+            if ( isset( $field['options'][ $item ] ) ) {
+                $selected[] = $field['options'][ $item ];
+            }
+        }
+
+        $hide_label = isset( $field['hide_field_label'] )
+            ? wpuf_validate_boolean( $field['hide_field_label'] )
+            : false;
+
+        $container_classnames = [ 'wpuf-field-data', 'wpuf-field-data-' . $this->input_type ];
+
+        ob_start();
+        ?>
+            <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
+                <?php if ( ! $hide_label ): ?>
+                    <label><?php echo esc_html( $field['label'] ); ?></label>
+                <?php endif; ?>
+                <?php echo esc_html( implode( ' | ' , $selected ) ); ?>
+            </li>
+        <?php
+        return ob_get_clean();
+    }
 }

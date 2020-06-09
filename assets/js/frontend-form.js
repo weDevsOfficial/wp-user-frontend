@@ -953,6 +953,10 @@
                     }
                 )
             }
+        },
+
+        doUncheckRadioBtn: function ( el ) {
+            el.checked = false;
         }
     };
 

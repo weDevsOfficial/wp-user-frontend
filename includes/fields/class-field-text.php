@@ -171,7 +171,7 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
                 <?php if ( ! $hide_label ): ?>
                     <label><?php echo esc_html( $field['label'] ); ?></label>
                 <?php endif; ?>
-                <?php echo sanitize_text_field( $data ); ?>
+                <?php echo esc_html( $data ); ?>
             </li>
         <?php
         return ob_get_clean();

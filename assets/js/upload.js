@@ -38,9 +38,7 @@
                 action: 'wpuf_upload_file',
                 form_id: $( '#' + browse_button ).data('form_id')
             },
-            max_file_count : 2,
-            multiple_queues: false,
-            multi_selection: ( ( browse_button == 'wpuf-avatar-pickfiles' || browse_button == 'wpuf-featured_image-pickfiles' ) ? false : true ),
+            multi_selection: false,
             urlstream_upload: true,
             file_data_name: 'wpuf_file',
             max_file_size: max_file_size + 'kb',

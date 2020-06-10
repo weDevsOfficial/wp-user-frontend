@@ -1656,7 +1656,6 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
 ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li textarea {
   width: 100%;
 }
-
 .ac_results {
   z-index: 99999 !important;
   background-color: #fff !important;
@@ -1664,7 +1663,6 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
   position: auto !important;
   width: 390px !important;
 }
-
 .ac_results li {
   border-bottom: 1px solid #ddd;
   margin-left: 0px;

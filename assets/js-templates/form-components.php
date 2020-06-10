@@ -816,7 +816,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-help-text">
-<i class="fa fa-question-circle field-helper-text wpuf-tooltip" data-placement="top" :title="text"></i>
+<i class="fa fa-question-circle field-helper-text wpuf-tooltip" :data-placement="placement" :title="text"></i>
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-text-editor">

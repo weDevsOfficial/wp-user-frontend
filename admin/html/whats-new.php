@@ -1,6 +1,56 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.2.0',
+        'released' => '2020-04-14',
+        'changes'  => [
+            [
+                'title' => __( 'Import forms system', 'wp-user-frontend' ),
+                'type'  => 'Improvement',
+            ],
+            [
+                'title' => __( 'Password reset system', 'wp-user-frontend' ),
+                'type'  => 'Improvement',
+            ],
+            [
+                'title' => __( 'Updated url validation regex to support modern tlds', 'wp-user-frontend' ),
+                'type'  => 'Improvement',
+            ],
+            [
+                'title' => __( 'Export WPUF forms individually from admin tools page', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscription cycle label translation issue', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'ACF integration for checkbox fields', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Illegal string offset warning while updating settings', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Conditional logic for Section Break field', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscriptions cannot be deleted from backend', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'A regression regarding saving checkbox data', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Default value of multi-select fields is not showing', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.1.18',
         'released' => '2020-03-13',
         'changes'  => [
@@ -609,9 +659,11 @@ function _wpuf_changelog_content( $content ) {
                                     <span class="label <?php echo esc_html( strtolower( $change['type'] ) ); ?>"><?php echo esc_html( $change['type'] ); ?></span>
                                 </h4>
 
-                                <div class="description">
-                                    <?php echo wp_kses_post( _wpuf_changelog_content( $change['description'] ) ); ?>
-                                </div>
+                                <?php if ( ! empty( $change['description'] ) ): ?>
+                                    <div class="description">
+                                        <?php echo wp_kses_post( _wpuf_changelog_content( $change['description'] ) ); ?>
+                                    </div>
+                                <?php endif; ?>
                             </li>
                         <?php } ?>
                     </ul>

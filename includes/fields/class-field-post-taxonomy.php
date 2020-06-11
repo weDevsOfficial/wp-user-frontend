@@ -220,7 +220,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         $required = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
 
         $parents      = $this->field_settings['exclude'];
-        $chid_ids     = [];
+        $child_ids     = [];
         $exclude_type = $this->exclude_type;
 
         if ( !empty( $parents ) ) {
@@ -231,7 +231,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
                 ) );
 
                 foreach ( $terms as $term ) {
-                    array_push( $chid_ids, $term->term_id );
+                    array_push( $child_ids, $term->term_id );
                 }
             }
         }
@@ -251,7 +251,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             'echo'             => 0,
             'title_li'         => '',
             'class'            => $this->taxonomy . $this->class,
-            $exclude_type      => ( $this->exclude_type == 'child_of' ) ? $chid_ids : $this->exclude,
+            $exclude_type      => ( $this->exclude_type == 'child_of' ) ? $child_ids : $this->exclude,
             'selected'         => $selected,
         ];
 

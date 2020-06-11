@@ -355,7 +355,7 @@ class WPUF_Registration {
     /**
      * Redirect to subscription page
      *
-     * @since WPUF_SINCE
+     * @since 3.3.0
      *
      * @return void
      */
@@ -395,7 +395,7 @@ class WPUF_Registration {
         /**
          * Filter the allowed html for registration error notice
          *
-         * @since WPUF_SINCE
+         * @since 3.3.0
          *
          * @param array $allowed_html
          */
@@ -449,7 +449,7 @@ class WPUF_Registration {
      *
      * Settings could be found under Payments section in WPUF admin settings.
      *
-     * @since WPUF_SINCE
+     * @since 3.3.0
      *
      * @return bool
      */
@@ -467,7 +467,7 @@ class WPUF_Registration {
     /**
      * Filter the redirect page url to payment page
      *
-     * @since WPUF_SINCE
+     * @since 3.3.0
      *
      * @param string $redirect
      * @param int    $user

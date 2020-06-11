@@ -552,7 +552,7 @@ function wpuf_get_user_roles() {
 /**
  * Add custom avatar image size
  *
- * @since WPUF_SINCE
+ * @since 3.3.0
  *
  * @return void
  */
@@ -568,7 +568,7 @@ function wpuf_avatar_add_image_size() {
 /**
  * Custom Avatar uploaded by user
  *
- * @since WPUF_SINCE
+ * @since 3.3.0
  *
  * @param int $user_id
  *
@@ -593,7 +593,7 @@ function wpuf_get_custom_avatar( $user_id ) {
 /**
  * Conditionally ignore using WPUF avatar
  *
- * @since WPUF_SINCE
+ * @since 3.3.0
  *
  * @return bool
  */
@@ -763,7 +763,7 @@ function wpuf_get_gateways( $context = 'admin' ) {
 /**
  * Show custom fields in post content area
  *
- * @since WPUF_SINCE Introducing `render_field_data` to render field value
+ * @since 3.3.0 Introducing `render_field_data` to render field value
  *                   Rendering field values should be in field classes to follow
  *                   more OOP style.
  *
@@ -3441,7 +3441,7 @@ function wpuf_clean( $var ) {
 /**
  * Calculate ini directives in bytes
  *
- * @since WPUF_SINCE
+ * @since 3.3.0
  *
  * @param string|int $val
  *
@@ -3475,7 +3475,7 @@ function wpuf_ini_get_byte( $val ) {
  *
  * @see https://www.php.net/manual/en/ini.core.php#ini.post-max-size
  *
- * @since WPUF_SINCE
+ * @since 3.3.0
  *
  * @return string|int
  */
@@ -3493,7 +3493,7 @@ function wpuf_max_upload_size() {
 /**
  * Validate a boolean variable
  *
- * @since WPUF_SINCE
+ * @since 3.3.0
  *
  * @param mixed $var
  *

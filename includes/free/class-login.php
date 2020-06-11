@@ -997,7 +997,7 @@ class WPUF_Simple_Login {
      *
      * This hook only works in wp-login.php.
      *
-     * @since WPUF_SINCE
+     * @since 3.3.0
      *
      * @return void
      */

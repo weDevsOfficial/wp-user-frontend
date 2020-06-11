@@ -220,7 +220,7 @@ module.exports = function(grunt) {
     grunt.registerTask( 'default', [ 'makepot', 'uglify' ] );
 
     // file auto generation
-    grunt.registerTask( 'i18n', [ 'addtextdomain', 'makepot' ] );
+    grunt.registerTask( 'i18n', [ 'makepot' ] );
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff

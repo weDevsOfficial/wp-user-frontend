@@ -50,7 +50,7 @@ class WPUF_Upload {
         /**
          * Hook fires before begining upload process
          *
-         * @since WPUF_SINCE
+         * @since 3.3.0
          *
          * @param int    $form_id
          * @param string $field_type
@@ -106,7 +106,7 @@ class WPUF_Upload {
                 /**
                  * Filter upload image size for response
                  *
-                 * @since WPUF_SINCE
+                 * @since 3.3.0
                  *
                  * @param string $image_size
                  * @param int    $form_id
@@ -117,7 +117,7 @@ class WPUF_Upload {
                 /**
                  * Filter upload image type for response
                  *
-                 * @since WPUF_SINCE
+                 * @since 3.3.0
                  *
                  * @param string $image_size
                  * @param int    $form_id
@@ -228,7 +228,7 @@ class WPUF_Upload {
             /**
              * Filter upload image size for response
              *
-             * @since WPUF_SINCE
+             * @since 3.3.0
              *
              * @param string $image_size
              * @param int    $form_id
@@ -245,7 +245,7 @@ class WPUF_Upload {
         /**
          * Filter uploaded image class names for the reponse
          *
-         * @since WPUF_SINCE
+         * @since 3.3.0
          *
          * @param array $class_names
          */

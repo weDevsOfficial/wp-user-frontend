@@ -215,25 +215,44 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
     }
 
     public function tax_select( $post_id = null ) {
-        $attr = $this->field_settings;
-
+        $attr     = $this->field_settings;
         $selected = $this->terms ? $this->terms[0] : '';
-
         $required = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
 
+        $parents      = $this->field_settings['exclude'];
+        $chid_ids     = [];
+        $exclude_type = $this->exclude_type;
+
+        if ( !empty( $parents ) ) {
+            foreach ( $parents as $parent ) {
+                $terms = get_terms( 'category', array(
+                    'hide_empty' => false,
+                    'parent'     => $parent
+                ) );
+
+                foreach ( $terms as $term ) {
+                    array_push( $chid_ids, $term->term_id );
+                }
+            }
+        }
+
+        if ( $this->exclude_type == 'child_of' ) {
+            $exclude_type = 'include';
+        }
+
         $tax_args = [
-            'show_option_none'       => isset( $attr['first'] ) ? $attr['first'] : '--select--',
-            'hierarchical'           => 1,
-            'hide_empty'             => 0,
-            'orderby'                => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
-            'order'                  => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
-            'name'                   => $this->taxonomy,
-            'taxonomy'               => $this->taxonomy,
-            'echo'                   => 0,
-            'title_li'               => '',
-            'class'                  => $this->taxonomy . $this->class,
-            $this->exclude_type      => $this->exclude,
-            'selected'               => $selected,
+            'show_option_none' => isset( $attr['first'] ) ? $attr['first'] : '--select--',
+            'hierarchical'     => 1,
+            'hide_empty'       => 0,
+            'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
+            'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
+            'name'             => $this->taxonomy,
+            'taxonomy'         => $this->taxonomy,
+            'echo'             => 0,
+            'title_li'         => '',
+            'class'            => $this->taxonomy . $this->class,
+            $exclude_type      => ( $this->exclude_type == 'child_of' ) ? $chid_ids : $this->exclude,
+            'selected'         => $selected,
         ];
 
         $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );

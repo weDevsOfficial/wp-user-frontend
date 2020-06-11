@@ -135,7 +135,7 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
     /**
      * Render radio field data
      *
-     * @since WPUF_SINCE
+     * @since 3.3.0
      *
      * @param mixed $data
      * @param array $field

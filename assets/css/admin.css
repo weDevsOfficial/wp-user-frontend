@@ -949,13 +949,18 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
   background: #3778ff;
   border: 1px solid #3778ff;
 }
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.improvement {
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.improvement,
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.enhancement {
   background: #3aaa55;
   border: 1px solid #3aaa a;
 }
 .wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.fix {
   background: #ff4772;
   border: 1px solid #ff4772;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.tweak {
+  background: #f9a825;
+  border: 1px solid #ffa000;
 }
 #wpuf_subs_metabox .inside {
   margin: 0;

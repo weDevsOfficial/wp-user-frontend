@@ -168,7 +168,7 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
     /**
      * Render checkbox field data
      *
-     * @since WPUF_SINCE
+     * @since 3.3.0
      *
      * @param mixed $data
      * @param array $field

@@ -557,10 +557,27 @@ class WPUF_Frontend_Render_Form {
                $taxonomy_name = array_map( 'sanitize_text_field',  wp_unslash( $_POST[$taxonomy['name']] ) );
             }
 
-            if ( isset( $_POST[$taxonomy['name']] ) && !is_array( $_POST[$taxonomy['name']] ) ) {
+            if ( isset( $_POST[$taxonomy['name']] ) && ! is_array( $_POST[$taxonomy['name']] ) ) {
                $taxonomy_name = sanitize_text_field( wp_unslash( $_POST[$taxonomy['name']] ) );
+
+                if ( 'text' === $taxonomy['type'] ) {
+                    $terms = explode( ',', $taxonomy_name );
+                    $terms = array_map( function ( $term_name ) use ( $taxonomy ) {
+                        $term = get_term_by( 'name', $term_name, $taxonomy['name'] );
+
+                        if ( $term instanceof WP_Term  ) {
+                            return $term->term_id;
+                        }
+
+                        return null;
+
+                    }, $terms );
+
+                    $taxonomy_name = array_filter( $terms );
+                }
             }
 
+            // At this point $taxonomy_name should be a single id or array of ids
             if ( isset( $taxonomy_name ) && $taxonomy_name !=0 && $taxonomy_name !=-1  ) {
                 if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
                     $tax = $taxonomy_name;
@@ -570,9 +587,7 @@ class WPUF_Frontend_Render_Form {
                     }
 
                     if ( $taxonomy['type'] == 'text' ) {
-                        $hierarchical = array_map( 'trim', array_map( 'strip_tags', explode( ',', $taxonomy_name ) ) );
-
-                        wp_set_object_terms( $post_id, $hierarchical, $taxonomy['name'] );
+                        wp_set_object_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
 
                         // woocommerce check
                         if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && !empty( $taxonomy_name ) ) {
@@ -662,8 +677,7 @@ class WPUF_Frontend_Render_Form {
             if( isset( $post_data[$value['name']] ) && is_array( $post_data[$value['name']] ) ) {
                 $value_name = isset( $post_data[$value['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $post_data[$value['name']] ) ): '';
             } else {
-                // $value_name = isset( $post_data[$value['name']] ) ? sanitize_text_field( wp_unslash( $post_data[$value['name']] ) ): '';
-                $value_name = isset( $post_data[$value['name']] ) ? wp_unslash( $post_data[$value['name']] ): '';
+                $value_name = isset( $post_data[$value['name']] ) ? sanitize_text_field( wp_unslash( $post_data[$value['name']] ) ): '';
             }
 
             if ( isset( $post_data['wpuf_files'][$value['name']] ) ) {

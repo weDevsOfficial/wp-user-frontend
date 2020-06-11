@@ -126,7 +126,7 @@ class WPUF_Form_Field_reCaptcha extends WPUF_Field_Contract {
             'msg_title'     => __( 'Site key and Secret key', 'wp-user-frontend' ),
             'msg'           => sprintf(
                 __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wp-user-frontend' ),
-                admin_url( 'admin.php?page=wpuf#/settings' ),
+                admin_url( 'admin.php?page=wpuf-settings' ),
                 'https://www.google.com/recaptcha/'
              ),
         ];

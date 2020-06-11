@@ -22,6 +22,7 @@ class WPUF_Form_Field_HTML extends WPUF_Field_Contract {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
+        $field_settings['name'] = isset( $field_settings['name'] ) ? $field_settings['name'] : $this->input_type . '_' . $field_settings['id'];
         ?>
         <li <?php $this->print_list_attributes( $field_settings ); ?>>
 

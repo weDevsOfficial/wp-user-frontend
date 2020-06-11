@@ -86,7 +86,11 @@ class WPUF_Whats_New {
     public function admin_notice() {
         if ( !$this->has_new() ) {
             return;
-        } ?>
+        }
+
+        wp_enqueue_script( 'wp-util' );
+
+        ?>
         <div class="notice notice-success wpuf-whats-new-notice free">
 
             <div class="wpuf-whats-new-icon">

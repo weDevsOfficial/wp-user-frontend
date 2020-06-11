@@ -22,27 +22,34 @@ jQuery(function($){
         return isValid;
     };
 
-    $('#wpuf-payment-gateway').submit(function (e) {
+    $( '#wpuf-payment-gateway' ).submit(function (e) {
         if ( ! window.wpuf_validate_address(e) ) {
             alert( ajax_object.fill_notice );
         }
 
-        $('#wpuf-ajax-address-form').trigger('submit');
+        var billing_address_form = $( '#wpuf-ajax-address-form' );
+
+        if ( billing_address_form.length )  {
+            var inputs = [
+                { id: '#wpuf_biiling_country', name: 'billing_country' },
+                { id: '#wpuf_biiling_state', name: 'billing_state' },
+                { id: '#wpuf_biiling_add_line_1', name: 'billing_add_line1' },
+                { id: '#wpuf_biiling_add_line_2', name: 'billing_add_line2' },
+                { id: '#wpuf_biiling_city', name: 'billing_city' },
+                { id: '#wpuf_biiling_zip_code', name: 'billing_zip' },
+            ];
+
+            inputs.map( function ( input ) {
+                $( '<input type="hidden" name="billing_address[' + input.name + ']" />' )
+                    .appendTo( '#wpuf-payment-gateway' )
+                    .val( $( input.id ).val() );
+            } );
+        }
     });
 
     $('#wpuf-ajax-address-form').submit(function (e) {
         e.preventDefault();
-        var $wpuf_cc_address = jQuery('#wpuf-address-country-state');
-        $.post(ajax_object.ajaxurl, {
-            _wpnonce: $("#_wpnonce").val(),
-            action: 'wpuf_address_ajax_action',
-            billing_country: $wpuf_cc_address.find('#wpuf_biiling_country').val(),
-            billing_state: $wpuf_cc_address.find('#wpuf_biiling_state').val(),
-            billing_add_line1: $wpuf_cc_address.find('#wpuf_biiling_add_line_1').val(),
-            billing_add_line2: $wpuf_cc_address.find('#wpuf_biiling_add_line_2').val(),
-            billing_city: $wpuf_cc_address.find('#wpuf_biiling_city').val(),
-            billing_zip: $wpuf_cc_address.find('#wpuf_biiling_zip_code').val(),
-        });
+        $( '#wpuf-payment-gateway' ).trigger( 'submit' );
     });
 
     $( document.body ).on('change', 'select#wpuf_biiling_country', function() {

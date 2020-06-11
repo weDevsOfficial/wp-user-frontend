@@ -1,10 +1,26 @@
 <div class="panel-field-opt panel-field-opt-text">
-    <label class="clearfix">
+    <div>
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
-        <span class="pull-right">
-            <input type="checkbox" v-model="show_value"> <?php _e( 'Show values', 'wp-user-frontend' ); ?>
-        </span>
-    </label>
+        <ul class="pull-right list-inline field-option-actions">
+            <li>
+                <label>
+                    <input
+                        type="checkbox"
+                        v-model="show_value"
+                    /><?php _e( 'Show values', 'wp-user-frontend' ); ?>
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input
+                        type="checkbox"
+                        v-model="sync_value"
+                    /><?php _e( 'Sync values', 'wp-user-frontend' ); ?>
+                </label>
+                <help-text placement="left" text="<?php _e( 'When enabled, option values will update according to their labels.', 'wp-user-frontend' ); ?>" />
+            </li>
+        </ul>
+    </div>
 
     <ul :class="['option-field-option-chooser', show_value ? 'show-value' : '']">
         <li class="clearfix margin-0 header">

@@ -1,6 +1,146 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.3.0',
+        'released' => '2020-06-11',
+        'changes'  => [
+            [
+                'title' => 'Add Namibian Dollar in currency list',
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => 'Add sync values option for option data fields',
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => 'Allow uploading image that having filesize meets php ini settings',
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => 'Limit the selection of one image at a time',
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => 'Use file name and size to generate hash to prevent duplicant image upload',
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => 'Sanitize text and textarea field data',
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => 'Show label instead of values for radio, checkbox, dropdown and multiselect data',
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => 'Saving custom taxonomies for type text input',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Admin settings link for recaptcha helper text',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Undefined name property for Custom HTML fields',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Delete attachment process',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Missing billing address in invoice PDF',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Showing country field value in frontend post content',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Avatar size display not complying with admin settings size',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Display default avatars on admin settings discussion page',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Redirect to subscription page at registration',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Error notice regarding registration page redirect',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Escaping html in registration errors',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Default login redirect link',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Implementing default WP login page override option',
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => 'Transparent background of autosuggestion dropdown',
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.2.0',
+        'released' => '2020-04-14',
+        'changes'  => [
+            [
+                'title' => __( 'Import forms system', 'wp-user-frontend' ),
+                'type'  => 'Improvement',
+            ],
+            [
+                'title' => __( 'Password reset system', 'wp-user-frontend' ),
+                'type'  => 'Improvement',
+            ],
+            [
+                'title' => __( 'Updated url validation regex to support modern tlds', 'wp-user-frontend' ),
+                'type'  => 'Improvement',
+            ],
+            [
+                'title' => __( 'Export WPUF forms individually from admin tools page', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscription cycle label translation issue', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'ACF integration for checkbox fields', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Illegal string offset warning while updating settings', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Conditional logic for Section Break field', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscriptions cannot be deleted from backend', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'A regression regarding saving checkbox data', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Default value of multi-select fields is not showing', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.1.18',
         'released' => '2020-03-13',
         'changes'  => [
@@ -609,9 +749,11 @@ function _wpuf_changelog_content( $content ) {
                                     <span class="label <?php echo esc_html( strtolower( $change['type'] ) ); ?>"><?php echo esc_html( $change['type'] ); ?></span>
                                 </h4>
 
-                                <div class="description">
-                                    <?php echo wp_kses_post( _wpuf_changelog_content( $change['description'] ) ); ?>
-                                </div>
+                                <?php if ( ! empty( $change['description'] ) ): ?>
+                                    <div class="description">
+                                        <?php echo wp_kses_post( _wpuf_changelog_content( $change['description'] ) ); ?>
+                                    </div>
+                                <?php endif; ?>
                             </li>
                         <?php } ?>
                     </ul>

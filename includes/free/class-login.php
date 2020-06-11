@@ -34,6 +34,7 @@ class WPUF_Simple_Login {
         add_filter( 'register_url', [$this, 'get_registration_url'] );
 
         add_filter( 'login_redirect', [ $this, 'default_login_redirect' ] );
+        add_filter( 'login_form_login', [ $this, 'default_wp_login_override' ] );
 
         add_filter( 'authenticate', [$this, 'successfully_authenticate'], 30, 3 );
     }
@@ -333,8 +334,10 @@ class WPUF_Simple_Login {
      * @return string
      */
     public function login_form() {
+        $getdata = wp_unslash( $_GET );
+
         $login_page = $this->get_login_url();
-        $reset = isset( $_GET['reset'] ) ? sanitize_text_field( wp_unslash( $_GET['reset'] ) ) : '';
+        $reset = isset( $getdata['reset'] ) ? sanitize_text_field( $getdata['reset'] ) : '';
 
         if ( false === $login_page ) {
             return;
@@ -347,10 +350,11 @@ class WPUF_Simple_Login {
                 'user' => wp_get_current_user(),
             ] );
         } else {
-            $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'login';
+            $action = isset( $getdata['action'] ) ? sanitize_text_field( $getdata['action'] ) : 'login';
 
             $args = [
-                'action_url' => $login_page,
+                'action_url'  => $login_page,
+                'redirect_to' => isset( $getdata['redirect_to'] ) ? $getdata['redirect_to'] : '',
             ];
 
             switch ( $action ) {
@@ -377,9 +381,9 @@ class WPUF_Simple_Login {
                     break;
 
                 default:
-                    $checkemail = isset( $_GET['checkemail'] ) ? sanitize_email( wp_unslash( $_GET['checkemail'] ) ) : '';
+                    $checkemail = isset( $getdata['checkemail'] ) ? sanitize_email( $getdata['checkemail'] ) : '';
 
-                    $loggedout = isset( $_GET['loggedout'] ) ? sanitize_text_field( wp_unslash( $_GET['loggedout'] ) ) : '';
+                    $loggedout = isset( $getdata['loggedout'] ) ? sanitize_text_field( $getdata['loggedout'] ) : '';
 
                     if ( $checkemail == 'confirm' ) {
                         $this->messages[] = __( 'Check your e-mail for the confirmation link.', 'wp-user-frontend' );
@@ -505,6 +509,10 @@ class WPUF_Simple_Login {
             return;
         }
 
+        if ( isset( $_REQUEST['redirect_to'] ) ) {
+            return esc_url_raw( wp_unslash( $_REQUEST['redirect_to'] ) );
+        }
+
         $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
 
         if ( 'previous_page' == $redirect_to && !empty( $_POST['redirect_to'] ) ) {
@@ -536,7 +544,7 @@ class WPUF_Simple_Login {
             return $redirect;
         }
 
-        return $this->login_redirect();
+        return $link;
     }
 
     /**
@@ -982,5 +990,41 @@ class WPUF_Simple_Login {
         }
 
         return '';
+    }
+
+    /**
+     * WP default login page override
+     *
+     * This hook only works in wp-login.php.
+     *
+     * @since 3.3.0
+     *
+     * @return void
+     */
+    public function default_wp_login_override() {
+        $override       = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
+        $login_redirect = wpuf_get_option( 'wp_default_login_redirect', 'wpuf_profile', false );
+        $login_page     = wpuf_get_option( 'login_page', 'wpuf_profile', null );
+
+        $login_page_url = get_permalink( $login_page );
+
+        if ( wpuf_validate_boolean( $override ) && wpuf_validate_boolean( $login_redirect ) && ! empty( $login_page_url ) ) {
+            if ( isset( $_REQUEST['redirect_to'] ) ) {
+                $redirect_to = esc_url_raw( wp_unslash( $_REQUEST['redirect_to'] ) );
+            } else {
+                $redirect_to_pg_id = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', null );
+                $redirect_to_pg    = get_permalink( $redirect_to_pg_id );
+                $redirect_to       = $redirect_to_pg ? $redirect_to_pg : home_url();
+            }
+
+            $login_page_url = add_query_arg(
+                'redirect_to',
+                $redirect_to,
+                $login_page_url
+            );
+
+            wp_safe_redirect( $login_page_url );
+            exit;
+        }
     }
 }

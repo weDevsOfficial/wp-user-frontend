@@ -524,6 +524,15 @@ class WPUF_Admin_Settings {
             );
         }
 
+        $filetype = wp_check_filetype( $file, [ 'json' => 'application/json' ] );
+
+        if ( ! isset( $filetype['type'] ) || 'application/json' !== $filetype['type'] ) {
+            wp_send_json_error(
+                new WP_Error( 'wpuf_ajax_import_forms_error', __( 'Provided file is not a JSON file.', 'wp-user-frontend' ) ),
+                WP_Http::UNSUPPORTED_MEDIA_TYPE
+            );
+        }
+
         if ( ! class_exists( 'WPUF_Admin_Tools' ) ) {
             require_once WPUF_ROOT . '/admin/class-tools.php';
         }

@@ -73,7 +73,7 @@
 
         <p class="submit">
             <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_html_e( 'Log In', 'wp-user-frontend' ); ?>" />
-            <input type="hidden" name="redirect_to" value="<?php echo esc_attr( $redirect_to ? $redirect_to : wp_get_referer() ); ?>" />
+            <input type="hidden" name="redirect_to" value="<?php echo esc_attr( $redirect_to ); ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />
             <?php wp_nonce_field( 'wpuf_login_action','wpuf-login-nonce' ); ?>

@@ -393,6 +393,8 @@ class WPUF_Simple_Login {
                         $this->messages[] = __( 'You are now logged out.', 'wp-user-frontend' );
                     }
 
+                    $args['redirect_to'] = $this->get_login_redirect_link( $args['redirect_to'] );
+
                     wpuf_load_template( 'login-form.php', $args );
 
                     break;
@@ -509,21 +511,44 @@ class WPUF_Simple_Login {
             return;
         }
 
-        if ( isset( $_REQUEST['redirect_to'] ) ) {
-            return esc_url_raw( wp_unslash( $_REQUEST['redirect_to'] ) );
+        $redirect_to = isset( $_REQUEST['redirect_to'] ) ? wp_unslash( $_REQUEST['redirect_to'] ) : '';
+
+        return $this->get_login_redirect_link( $redirect_to );
+    }
+
+    /**
+     * Get redirect link after login
+     *
+     * Redirect Scenarios (based on `Login / Registration > Redirect After Login` settings)
+     *
+     * 1. No settings - should redirect to home
+     * 2. Previous Page - should redirect to the page coming from before our login page
+     * 3. Selected specific Page - should redirect to this page
+     * 4. URL has `redirect_to` query param - this is the top priority above all
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $redirect_to Optional $_REQUEST['redirect_to'] link. Must be unslashed before passing.
+     *
+     * @return string
+     */
+    public function get_login_redirect_link( $redirect_to = '' ) {
+        if ( ! empty( $redirect_to ) ) {
+            return esc_url_raw( $redirect_to );
         }
 
-        $redirect_to = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', false );
+        $redirect_after_login = wpuf_get_option( 'redirect_after_login_page', 'wpuf_profile', null );
 
-        if ( 'previous_page' == $redirect_to && !empty( $_POST['redirect_to'] ) ) {
-            $re_to = sanitize_text_field( wp_unslash( $_POST['redirect_to'] ) );
-            return $re_to;
-        }
+        if ( $redirect_after_login ) {
+            if ( 'previous_page' === $redirect_after_login ) {
+                return wp_get_referer();
+            }
 
-        $redirect = get_permalink( $redirect_to );
+            $redirect_page_link = get_permalink( $redirect_after_login );
 
-        if ( !empty( $redirect ) ) {
-            return $redirect;
+            if ( ! empty( $redirect_page_link ) ) {
+                return $redirect_page_link;
+            }
         }
 
         return home_url();

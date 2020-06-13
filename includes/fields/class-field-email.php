@@ -128,6 +128,10 @@ class WPUF_Form_Field_Email extends WPUF_Form_Field_Text {
             ? wpuf_validate_boolean( $field['hide_field_label'] )
             : false;
 
+        if ( empty( $data ) ) {
+            return '';
+        }
+
         $container_classnames = [ 'wpuf-field-data', 'wpuf-field-data-' . $this->input_type ];
 
         ob_start();

@@ -148,6 +148,12 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
             ? wpuf_validate_boolean( $field['hide_field_label'] )
             : false;
 
+        $data = implode( ' | ' , $selected );
+
+        if ( empty( $data ) ) {
+            return '';
+        }
+
         $container_classnames = [ 'wpuf-field-data', 'wpuf-field-data-' . $this->input_type ];
 
         ob_start();
@@ -156,7 +162,7 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
                 <?php if ( ! $hide_label ): ?>
                     <label><?php echo esc_html( $field['label'] ); ?></label>
                 <?php endif; ?>
-                <?php echo esc_html( implode( ' | ' , $selected ) ); ?>
+                <?php echo esc_html( $data ); ?>
             </li>
         <?php
         return ob_get_clean();

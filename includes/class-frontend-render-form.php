@@ -673,8 +673,13 @@ class WPUF_Frontend_Render_Form {
         $multi_repeated = []; //multi repeated fields will in sotre duplicated meta key
 
         foreach ( $meta_vars as $key => $value ) {
-            // $wpuf_files = isset( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
-            if( isset( $post_data[$value['name']] ) && is_array( $post_data[$value['name']] ) ) {
+            $wpuf_field = wpuf()->fields->get_field( $value['template'] );
+            $posted_field_data = isset( $post_data[ $value['name'] ] ) ? $post_data[ $value['name'] ] : null;
+
+            if ( isset( $posted_field_data ) && method_exists( $wpuf_field, 'sanitize_field_data') ) {
+                $meta_key_value[$value['name']] = $wpuf_field->sanitize_field_data( $posted_field_data, $value );
+                continue;
+            } else if( isset( $post_data[$value['name']] ) && is_array( $post_data[$value['name']] ) ) {
                 $value_name = isset( $post_data[$value['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $post_data[$value['name']] ) ): '';
             } else {
                 $value_name = isset( $post_data[$value['name']] ) ? sanitize_text_field( wp_unslash( $post_data[$value['name']] ) ): '';

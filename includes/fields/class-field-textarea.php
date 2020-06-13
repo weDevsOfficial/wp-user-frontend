@@ -179,4 +179,18 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
         <?php
         return ob_get_clean();
     }
+
+    /**
+     * Sanitize field data
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $data
+     * @param array  $field
+     *
+     * @return string
+     */
+    public function sanitize_field_data( $data, $field ) {
+        return sanitize_textarea_field( $data );
+    }
 }

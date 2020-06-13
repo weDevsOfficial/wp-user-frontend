@@ -134,7 +134,7 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
         ?>
             <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
                 <?php if ( ! $hide_label ): ?>
-                    <label><?php echo esc_html( $field['label'] ); ?></label>
+                    <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
                 <?php
                     echo wp_kses( make_clickable( esc_url_raw( $data ) ), [

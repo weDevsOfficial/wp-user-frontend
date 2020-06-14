@@ -602,7 +602,7 @@ function wpuf_use_default_avatar() {
         return true;
     }
 
-    return apply_filters( 'wpuf_use_default_avatar', '__return_true' );
+    return apply_filters( 'wpuf_use_default_avatar', false );
 }
 
 /**

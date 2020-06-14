@@ -214,7 +214,7 @@ $countries = [
         'code' => 'CR',
     ],
     [
-        'name' => 'Cote D"Ivoire',
+        'name' => 'Ivory Coast',
         'code' => 'CI',
     ],
     [

@@ -190,14 +190,34 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
         ];
 
-        if ( isset( $_POST['category'] ) && is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
-            $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : [];
-        } else {
-            $category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
-        }
+        if ( ! empty( $this->form_fields ) ) {
 
-        if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
-            $postarr['post_category'] = is_array( $category ) ? $category : [ $category ];
+            foreach ( $this->form_fields as $field ) {
+
+                if ( $field['template'] == 'taxonomy' ) {
+                    $category_name = $field['name'];
+
+                    if ( isset( $_POST[$category_name] ) && is_array( $_POST[$category_name] ) ) { // WPCS: sanitization ok.
+                        $category = isset( $_POST[$category_name] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[$category_name] ) ) : [];
+                        } else {
+                            $category = isset( $_POST[$category_name] ) ? sanitize_text_field( wp_unslash( $_POST[$category_name] ) ) : '';
+                        }
+
+                        if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
+                            if ( !is_array( $category ) && is_string( $category ) ) {
+                                $category_strings = explode( ',', $category );
+                                $cat_ids          = [];
+
+                                foreach ( $category_strings as $key => $each_cat_string ) {
+                                    $cat_ids[]                = get_cat_ID( trim( $each_cat_string ) );
+                                    $postarr['post_category'] = $cat_ids;
+                                }
+                            } else {
+                                $postarr['post_category'] =$category;
+                            }
+                        }
+                }
+            }
         }
 
         // set default post category if it's not been set yet and if post type supports

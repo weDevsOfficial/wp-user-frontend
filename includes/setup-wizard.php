@@ -171,7 +171,10 @@ class WPUF_Setup_Wizard {
                 global $current_screen;
 
                 if ( empty( $current_screen ) ) {
-                    set_current_screen();
+
+                    if ( function_exists('set_current_screen') ) {
+                        set_current_screen();
+                    }
                 }
 
                 do_action( 'admin_head' );

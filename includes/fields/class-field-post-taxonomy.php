@@ -236,7 +236,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             }
         }
 
-        if ( $this->exclude_type == 'child_of' ) {
+        if ( 'child_of' === $this->exclude_type ) {
             $exclude_type = 'include';
         }
 

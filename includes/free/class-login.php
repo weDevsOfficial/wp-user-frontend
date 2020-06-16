@@ -526,7 +526,7 @@ class WPUF_Simple_Login {
      * 3. Selected specific Page - should redirect to this page
      * 4. URL has `redirect_to` query param - this is the top priority above all
      *
-     * @since WPUF_SINCE
+     * @since 3.3.1
      *
      * @param string $redirect_to Optional $_REQUEST['redirect_to'] link. Must be unslashed before passing.
      *

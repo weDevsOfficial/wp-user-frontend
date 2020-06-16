@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership
 Requires at least: 4.0
 Tested up to: 5.4.2
 Requires PHP: 5.6
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -263,6 +263,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 == Changelog ==
+
+= v3.3.1 (16 June, 2020) =
+* Tweak - Use common names for Ivory Coast, North Korea and Sourth Korea instead of their official names
+* Fix - Condition to use default avatar
+* Fix - Make Email and URL fields clickable
+* Fix - Redirect after user login
+* Fix - Sanitize textarea field data
+* Fix - Missing colon to email, URL, text and textarea labels when renders their data
+* Fix - Prevent showing empty labels for fields that have render_field_data method
 
 = v3.3.0 (11 June, 2020) =
 * Enhancement - Add Namibian Dollar in currency list

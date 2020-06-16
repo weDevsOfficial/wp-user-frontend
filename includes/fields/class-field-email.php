@@ -115,7 +115,7 @@ class WPUF_Form_Field_Email extends WPUF_Form_Field_Text {
     /**
      * Render field data
      *
-     * @since WPUF_SINCE
+     * @since 3.3.1
      *
      * @param mixed $data
      * @param array $field

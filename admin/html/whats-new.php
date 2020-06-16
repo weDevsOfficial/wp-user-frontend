@@ -1,91 +1,125 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.3.1',
+        'released' => '2020-06-16',
+        'changes'  => [
+            [
+                'title' => __( 'Use common names for Ivory Coast, North Korea and Sourth Korea instead of their official names', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => __( 'Fix condition to use default avatar', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Make Email and URL fields clickable', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Fix redirect after user login', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Sanitize textarea field data', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Fix missing colon to email, URL, text and textarea labels when renders their data', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Prevent showing empty labels for fields that have render_field_data method', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.3.0',
         'released' => '2020-06-11',
         'changes'  => [
             [
-                'title' => 'Add Namibian Dollar in currency list',
+                'title' => __( 'Add Namibian Dollar in currency list', 'wp-user-frontend' ),
                 'type'  => 'Enhancement',
             ],
             [
-                'title' => 'Add sync values option for option data fields',
+                'title' => __( 'Add sync values option for option data fields', 'wp-user-frontend' ),
                 'type'  => 'Enhancement',
             ],
             [
-                'title' => 'Allow uploading image that having filesize meets php ini settings',
+                'title' => __( 'Allow uploading image that having filesize meets php ini settings', 'wp-user-frontend' ),
                 'type'  => 'Tweak',
             ],
             [
-                'title' => 'Limit the selection of one image at a time',
+                'title' => __( 'Limit the selection of one image at a time', 'wp-user-frontend' ),
                 'type'  => 'Tweak',
             ],
             [
-                'title' => 'Use file name and size to generate hash to prevent duplicant image upload',
+                'title' => __( 'Use file name and size to generate hash to prevent duplicant image upload', 'wp-user-frontend' ),
                 'type'  => 'Tweak',
             ],
             [
-                'title' => 'Sanitize text and textarea field data',
+                'title' => __( 'Sanitize text and textarea field data', 'wp-user-frontend' ),
                 'type'  => 'Tweak',
             ],
             [
-                'title' => 'Show label instead of values for radio, checkbox, dropdown and multiselect data',
+                'title' => __( 'Show label instead of values for radio, checkbox, dropdown and multiselect data', 'wp-user-frontend' ),
                 'type'  => 'Tweak',
             ],
             [
-                'title' => 'Saving custom taxonomies for type text input',
+                'title' => __( 'Saving custom taxonomies for type text input', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Admin settings link for recaptcha helper text',
+                'title' => __( 'Admin settings link for recaptcha helper text', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Undefined name property for Custom HTML fields',
+                'title' => __( 'Undefined name property for Custom HTML fields', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Delete attachment process',
+                'title' => __( 'Delete attachment process', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Missing billing address in invoice PDF',
+                'title' => __( 'Missing billing address in invoice PDF', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Showing country field value in frontend post content',
+                'title' => __( 'Showing country field value in frontend post content', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Avatar size display not complying with admin settings size',
+                'title' => __( 'Avatar size display not complying with admin settings size', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Display default avatars on admin settings discussion page',
+                'title' => __( 'Display default avatars on admin settings discussion page', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Redirect to subscription page at registration',
+                'title' => __( 'Redirect to subscription page at registration', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Error notice regarding registration page redirect',
+                'title' => __( 'Error notice regarding registration page redirect', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Escaping html in registration errors',
+                'title' => __( 'Escaping html in registration errors', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Default login redirect link',
+                'title' => __( 'Default login redirect link', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Implementing default WP login page override option',
+                'title' => __( 'Implementing default WP login page override option', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
             [
-                'title' => 'Transparent background of autosuggestion dropdown',
+                'title' => __( 'Transparent background of autosuggestion dropdown', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
         ],

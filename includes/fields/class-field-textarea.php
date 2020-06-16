@@ -183,7 +183,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
     /**
      * Sanitize field data
      *
-     * @since WPUF_SINCE
+     * @since 3.3.1
      *
      * @param string $data
      * @param array  $field

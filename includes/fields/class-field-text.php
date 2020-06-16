@@ -163,13 +163,17 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
             ? wpuf_validate_boolean( $field['hide_field_label'] )
             : false;
 
+        if ( empty( $data ) ) {
+            return '';
+        }
+
         $container_classnames = [ 'wpuf-field-data', 'wpuf-field-data-' . $this->input_type ];
 
         ob_start();
         ?>
             <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
                 <?php if ( ! $hide_label ): ?>
-                    <label><?php echo esc_html( $field['label'] ); ?></label>
+                    <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
                 <?php echo esc_html( $data ); ?>
             </li>

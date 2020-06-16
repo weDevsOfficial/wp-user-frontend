@@ -162,17 +162,35 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
             ? wpuf_validate_boolean( $field['hide_field_label'] )
             : false;
 
+        if ( empty( $data ) ) {
+            return '';
+        }
+
         $container_classnames = [ 'wpuf-field-data', 'wpuf-field-data-' . $this->input_type ];
 
         ob_start();
         ?>
             <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
                 <?php if ( ! $hide_label ): ?>
-                    <label><?php echo esc_html( $field['label'] ); ?></label>
+                    <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
                 <?php echo wp_kses_post( wpautop( make_clickable( $data ) ) ); ?>
             </li>
         <?php
         return ob_get_clean();
+    }
+
+    /**
+     * Sanitize field data
+     *
+     * @since 3.3.1
+     *
+     * @param string $data
+     * @param array  $field
+     *
+     * @return string
+     */
+    public function sanitize_field_data( $data, $field ) {
+        return sanitize_textarea_field( $data );
     }
 }

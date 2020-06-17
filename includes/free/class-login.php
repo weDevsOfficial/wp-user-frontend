@@ -220,8 +220,9 @@ class WPUF_Simple_Login {
     public function get_login_url() {
         $page_id = wpuf_get_option( 'login_page', 'wpuf_profile', false );
 
-        if ( !$page_id ) {
-            return false;
+        if ( ! $page_id ) {
+            remove_filter( 'login_url', [ $this, 'filter_login_url' ], 10 );
+            return wp_login_url();
         }
 
         $url = get_permalink( $page_id );

@@ -114,7 +114,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             trim( $this->form_id )
          );
 
-        $exclude  = wpuf_get_excludes( $this->field_settings, $this->exclude_type );
+        $exclude  = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );
 
         $tax_args  = [
             'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
@@ -216,7 +216,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         $selected = $this->terms ? $this->terms[0] : '';
         $required = sprintf( 'data-required="%s" data-type="select"', $attr['required'] );
 
-        $exclude  = wpuf_get_excludes( $this->field_settings, $this->exclude_type );
+        $exclude  = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );
 
         $tax_args = [
             'show_option_none' => isset( $attr['first'] ) ? $attr['first'] : '--select--',
@@ -265,7 +265,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
         $walker   = new WPUF_Walker_Category_Multi();
 
-        $exclude  = wpuf_get_excludes( $this->field_settings, $this->exclude_type );
+        $exclude  = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );
 
         $tax_args = [
             // 'show_option_none' => __( '-- Select --', 'wpuf' ),
@@ -295,7 +295,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         $query_string = '?action=wpuf-ajax-tag-search&tax=' . $attr['name'];
 
         if ( 'child_of' === $this->exclude_type ) {
-            $exclude      = wpuf_get_excludes( $this->field_settings, $this->exclude_type );
+            $exclude      = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );
 
             $query_string .=  '&term_ids=' . implode( ',', $exclude['childs'] );
         }

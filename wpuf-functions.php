@@ -372,7 +372,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $walker = new WPUF_Walker_Category_Checklist();
 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-    $exclude      = wpuf_get_excludes( $attr, $attr['exclude_type'] );
+    $exclude      = wpuf_get_field_settings_excludes( $attr, $attr['exclude_type'] );
 
     $tax          = $attr['name'];
     $current_user = get_current_user_id();
@@ -429,11 +429,16 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 }
 
 /**
- * Get excludes
+ * Get exclude settings for a field type
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array $field_settings
+ * @param string $exclude_type
  *
  * @return array
  */
-function wpuf_get_excludes( $field_settings, $exclude_type ) {
+function wpuf_get_field_settings_excludes( $field_settings, $exclude_type ) {
     $attributes   = $field_settings['exclude'];
     $child_ids    = [];
 
@@ -450,7 +455,7 @@ function wpuf_get_excludes( $field_settings, $exclude_type ) {
         }
     }
 
-    if ( $exclude_type == 'child_of' ) {
+    if ( $exclude_type === 'child_of' ) {
         $exclude_type = 'include';
     }
 

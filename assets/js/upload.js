@@ -174,10 +174,9 @@
             }
 
             var uploaded        = this.UploadedFiles,
-                FileProgress    = up.files.length,
-                imageCount      = $('ul.wpuf-attachment-list > li').length;
+                FileProgress    = up.files.length;
 
-            if ( imageCount >= this.max ) {
+            if ( this.count >= this.max ) {
                 $('#' + this.container).find('.file-selector').hide();
             }
 

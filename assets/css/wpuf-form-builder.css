@@ -631,6 +631,29 @@
   display: block;
   margin-bottom: 3px;
 }
+.wpuf-form-builder-field-options .panel-field-opt .field-option-actions {
+  margin: 0;
+  line-height: 1.2;
+}
+.wpuf-form-builder-field-options .panel-field-opt .field-option-actions li {
+  position: relative;
+  margin: 0;
+}
+.wpuf-form-builder-field-options .panel-field-opt .field-option-actions li:not(:last-child):after {
+  content: "|";
+  position: absolute;
+  top: 0;
+  right: -3px;
+  opacity: .5;
+}
+.wpuf-form-builder-field-options .panel-field-opt .field-option-actions .field-helper-text {
+  position: relative;
+  top: 1px;
+  margin-left: 0;
+}
+.wpuf-form-builder-field-options .panel-field-opt .field-option-actions .tooltip .tooltip-inner {
+  width: 200px;
+}
 .option-field-option-chooser {
   margin: 12px 0 0;
 }

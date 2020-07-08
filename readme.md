@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership  
 **Requires at least:** 4.0  
-**Tested up to:** 5.3.2  
+**Tested up to:** 5.4.2  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.1.18  
+**Stable tag:** 3.3.1  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -263,6 +263,51 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 
 ## Changelog ##
+
+### v3.3.1 (16 June, 2020) ###
+* Tweak - Use common names for Ivory Coast, North Korea and Sourth Korea instead of their official names
+* Fix - Condition to use default avatar
+* Fix - Make Email and URL fields clickable
+* Fix - Redirect after user login
+* Fix - Sanitize textarea field data
+* Fix - Missing colon to email, URL, text and textarea labels when renders their data
+* Fix - Prevent showing empty labels for fields that have render_field_data method
+
+### v3.3.0 (11 June, 2020) ###
+* Enhancement - Add Namibian Dollar in currency list
+* Enhancement - Add sync values option for option data fields
+* Tweak - Allow uploading image that having filesize meets php ini settings
+* Tweak - Limit the selection of one image at a time
+* Tweak - Use file name and size to generate hash to prevent duplicant image upload
+* Tweak - Sanitize text and textarea field data
+* Tweak - Show label instead of values for radio, checkbox, dropdown and multiselect data
+* Fix - Saving custom taxonomies for type text input
+* Fix - Admin settings link for recaptcha helper text
+* Fix - Undefined name property for Custom HTML fields
+* Fix - Delete attachment process
+* Fix - Missing billing address in invoice PDF
+* Fix - Showing country field value in frontend post content
+* Fix - Avatar size display not complying with admin settings size
+* Fix - Display default avatars on admin settings discussion page
+* Fix - Redirect to subscription page at registration
+* Fix - Error notice regarding registration page redirect
+* Fix - Escaping html in registration errors
+* Fix - Default login redirect link
+* Fix - Implementing default WP login page override option
+* Fix - Transparent background of autosuggestion dropdown
+
+### v3.2.0 (14 April, 2020) ###
+* **Improvement:** Import forms system
+* **Improvement:** Password reset system
+* **Improvement:** Updated url validation regex to support modern tlds
+* **Fix** Export WPUF forms individually from admin tools page
+* **Fix** Subscription cycle label translation issue
+* **Fix** ACF integration for checkbox fields
+* **Fix** Illegal string offset warning while updating settings
+* **Fix** Conditional logic for Section Break field
+* **Fix** Subscriptions cannot be deleted from backend
+* **Fix** A regression regarding saving checkbox data
+* **Fix** Default value of multi-select fields is not showing
 
 ### v3.1.18 (13 March, 2020) ###
 * **Improvement:** Hide post edit option when subscription is expired

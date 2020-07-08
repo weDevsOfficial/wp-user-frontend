@@ -39,7 +39,7 @@ class WPUF_Field_Manager {
     /**
      * Get field type class instance
      *
-     * @since WPUF_SINCE
+     * @since 3.2.0
      *
      * @param string $field_type
      *

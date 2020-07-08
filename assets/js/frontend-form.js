@@ -752,7 +752,7 @@
                 multi_selection: false,
                 urlstream_upload: true,
                 file_data_name: 'wpuf_file',
-                max_file_size: '2mb',
+                max_file_size: wpuf_frontend_upload.max_filesize,
                 url: wpuf_frontend_upload.plupload.url,
                 flash_swf_url: wpuf_frontend_upload.flash_swf_url,
                 filters: [{
@@ -959,6 +959,10 @@
                     }
                 )
             }
+        },
+
+        doUncheckRadioBtn: function ( el ) {
+            el.checked = false;
         }
     };
 

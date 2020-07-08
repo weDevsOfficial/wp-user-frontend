@@ -50,6 +50,9 @@ class WPUF_Admin_Settings {
 
         add_action( 'admin_init', [$this, 'handle_tools_action'] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+
+        add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ], 1 );
+        add_action( 'wp_ajax_wpuf_import_forms', [ $this, 'import_forms' ] );
     }
 
     public static function init() {
@@ -199,6 +202,7 @@ class WPUF_Admin_Settings {
     }
 
     public function tools_page() {
+        $this->enqueue_tools_scripts();
         include dirname( __DIR__ ) . '/admin/tools.php';
     }
 
@@ -388,12 +392,159 @@ class WPUF_Admin_Settings {
         }
 
         wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css', false, WPUF_VERSION );
-        wp_enqueue_script( 'wpuf-admin-script', WPUF_ASSET_URI . '/js/wpuf-admin.js', [ 'jquery' ], false, WPUF_VERSION );
+        wp_enqueue_script( 'wpuf-admin-script', WPUF_ASSET_URI . '/js/wpuf-admin.js', [ 'jquery' ], WPUF_VERSION, false );
 
         wp_localize_script( 'wpuf-admin-script', 'wpuf_admin_script', [
             'ajaxurl'               => admin_url( 'admin-ajax.php' ),
             'nonce'                 => wp_create_nonce( 'wpuf_nonce' ),
             'cleared_schedule_lock' => __( 'Post lock has been cleared', 'wp-user-frontend' ),
+        ] );
+    }
+
+    /**
+     * Enqueue Tools page scripts
+     *
+     * @since 3.2.0
+     *
+     * @todo Move this method to WPUF_Admin_Tools class
+     *
+     * @return void
+     */
+    private function enqueue_tools_scripts() {
+        $prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+        wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue' . $prefix . '.js', [], WPUF_VERSION, true );
+
+        add_filter( 'upload_mimes', [ $this, 'add_json_mime_type' ] );
+
+        wp_enqueue_media();
+
+        wp_enqueue_script( 'wpuf-admin-tools', WPUF_ASSET_URI . '/js/wpuf-admin-tools.js', [ 'jquery', 'wpuf-vue' ], WPUF_VERSION, true );
+
+        wp_localize_script( 'wpuf-admin-tools', 'wpuf_admin_tools', [
+            'url' => [
+                'ajax' => admin_url( 'admin-ajax.php' ),
+            ],
+            'nonce' => wp_create_nonce( 'wpuf_admin_tools' ),
+            'i18n' => [
+                'wpuf_import_forms'      => __( 'WPUF Import Forms', 'wp-user-frontend' ),
+                'add_json_file'          => __( 'Add JSON file', 'wp-user-frontend' ),
+                'could_not_import_forms' => __( 'Could not import forms.', 'wp-user-frontend' ),
+            ]
+        ] );
+    }
+
+    /**
+     * Add json file mime type to upload in WP Media
+     *
+     * @since 3.2.0
+     *
+     * @todo Move this method to WPUF_Admin_Tools class
+     *
+     * @param array $mime_types
+     *
+     * @return array
+     */
+    public function add_json_mime_type( $mime_types ) {
+        $mime_types['json'] = 'application/json';
+
+        return $mime_types;
+    }
+
+    /**
+     * Allow json file to upload with async uploader
+     *
+     * @since 3.2.0
+     *
+     * @param array $info
+     *
+     * @return array
+     */
+    public function check_filetype_and_ext( $info ) {
+        $info['ext']  = 'json';
+        $info['type'] = 'application/json';
+
+        return $info;
+    }
+
+    /**
+     * Enable json file upload via ajax in tools page
+     *
+     * @since 3.2.0
+     *
+     * @todo Move this method to WPUF_Admin_Tools class
+     *
+     * @param array $file
+     *
+     * @return array
+     */
+    public function enable_json_upload( $file ) {
+        if (
+            defined( 'DOING_AJAX' )
+            && DOING_AJAX
+            && isset( $_POST['action'] )
+            && 'upload-attachment' === $_POST['action']
+            && isset( $_POST['type'] )
+            && 'wpuf-form-uploader' === $_POST['type']
+        ) {
+            // @see wp_ajax_upload_attachment
+            check_ajax_referer( 'media-form' );
+            add_filter( 'wp_check_filetype_and_ext', [ $this, 'check_filetype_and_ext' ] );
+        }
+
+        return $file;
+    }
+
+    /**
+     * Ajax handler to import WPUF form
+     *
+     * @since 3.2.0
+     *
+     * @todo Move this method to WPUF_Admin_Tools class
+     *
+     * @return void
+     */
+    public function import_forms() {
+        check_ajax_referer( 'wpuf_admin_tools' );
+
+        if ( ! isset( $_POST['file_id'] ) ) {
+            wp_send_json_error(
+                new WP_Error( 'wpuf_ajax_import_forms_error', __( 'Missing file_id param', 'wp-user-frontend' ) ),
+                WP_Http::BAD_REQUEST
+            );
+        }
+
+        $file_id = absint( wp_unslash( $_POST['file_id'] ) );
+        $file    = get_attached_file( $file_id );
+
+        if ( empty( $file ) ) {
+            wp_send_json_error(
+                new WP_Error( 'wpuf_ajax_import_forms_error', __( 'JSON file not found', 'wp-user-frontend' ) ),
+                WP_Http::NOT_FOUND
+            );
+        }
+
+        $filetype = wp_check_filetype( $file, [ 'json' => 'application/json' ] );
+
+        if ( ! isset( $filetype['type'] ) || 'application/json' !== $filetype['type'] ) {
+            wp_send_json_error(
+                new WP_Error( 'wpuf_ajax_import_forms_error', __( 'Provided file is not a JSON file.', 'wp-user-frontend' ) ),
+                WP_Http::UNSUPPORTED_MEDIA_TYPE
+            );
+        }
+
+        if ( ! class_exists( 'WPUF_Admin_Tools' ) ) {
+            require_once WPUF_ROOT . '/admin/class-tools.php';
+        }
+
+        $imported = WPUF_Admin_Tools::import_json_file( $file );
+
+        if ( is_wp_error( $imported ) ) {
+            wp_send_json_error( $imported, WP_Http::UNPROCESSABLE_ENTITY );
+        }
+
+        wp_send_json_success( [
+            'message' => __( 'Forms imported successfully.', 'wp-user-frontend' ),
         ] );
     }
 }

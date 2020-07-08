@@ -372,11 +372,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $walker = new WPUF_Walker_Category_Checklist();
 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-    $exclude      = $attr['exclude'];
-
-    if ( $exclude_type == 'child_of' ) {
-        $exclude = $exclude[0];
-    }
+    $exclude      = wpuf_get_field_settings_excludes( $attr, $exclude_type );
 
     $tax          = $attr['name'];
     $current_user = get_current_user_id();
@@ -400,7 +396,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $tax_args = [
         'taxonomy'    => $tax,
         'hide_empty'  => false,
-        $exclude_type => $exclude,
+        $exclude['type'] => ( $exclude_type == 'child_of' ) ? $exclude['childs'] : $attr['exclude'],
         'orderby'     => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
         'order'       => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
     ];
@@ -430,6 +426,45 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
         ]
     ] );
     echo wp_kses_post( '</ul>' );
+}
+
+/**
+ * Get exclude settings for a field type
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array $field_settings
+ * @param string $exclude_type
+ *
+ * @return array
+ */
+function wpuf_get_field_settings_excludes( $field_settings, $exclude_type ) {
+    $attributes   = $field_settings['exclude'];
+    $child_ids    = [];
+
+    if ( !empty( $attributes ) ) {
+        foreach ( $attributes as $attr ) {
+            $terms = get_terms( 'category', array(
+                'hide_empty' => false,
+                'parent'     => $attr
+            ) );
+
+            foreach ( $terms as $term ) {
+                array_push( $child_ids, $term->term_id );
+            }
+        }
+    }
+
+    if ( $exclude_type === 'child_of' ) {
+        $exclude_type = 'include';
+    }
+
+    $excludes = [
+        'type'   =>  $exclude_type,
+        'childs' =>  $child_ids
+    ];
+
+    return $excludes;
 }
 
 function wpuf_pre( $data ) {
@@ -550,6 +585,62 @@ function wpuf_get_user_roles() {
 }
 
 /**
+ * Add custom avatar image size
+ *
+ * @since 3.3.0
+ *
+ * @return void
+ */
+function wpuf_avatar_add_image_size() {
+    $avatar_size   = wpuf_get_option( 'avatar_size', 'wpuf_profile', '100x100' );
+    $avatar_size   = explode( 'x', $avatar_size );
+    $avatar_width  = $avatar_size[0];
+    $avatar_height = $avatar_size[1];
+
+    add_image_size( 'wpuf_avatar_image_size', $avatar_width, $avatar_height, true );
+}
+
+/**
+ * Custom Avatar uploaded by user
+ *
+ * @since 3.3.0
+ *
+ * @param int $user_id
+ *
+ * @return string
+ */
+function wpuf_get_custom_avatar( $user_id ) {
+    $avatar = get_user_meta( $user_id, 'user_avatar', true );
+
+    if ( absint( $avatar ) > 0 ) {
+        wpuf_avatar_add_image_size();
+
+        $avatar_source = wp_get_attachment_image_src( $avatar, 'wpuf_avatar_image_size' );
+
+        if ( $avatar_source ) {
+            $avatar = $avatar_source[0];
+        }
+    }
+
+    return $avatar;
+}
+
+/**
+ * Conditionally ignore using WPUF avatar
+ *
+ * @since 3.3.0
+ *
+ * @return bool
+ */
+function wpuf_use_default_avatar() {
+    if ( has_filter( 'pre_option_show_avatars', '__return_true' ) ) {
+        return true;
+    }
+
+    return apply_filters( 'wpuf_use_default_avatar', false );
+}
+
+/**
  * User avatar wrapper for custom uploaded avatar
  *
  * @since 2.0
@@ -563,6 +654,10 @@ function wpuf_get_user_roles() {
  * @return string image tag of the user avatar
  */
 function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args ) {
+    if ( wpuf_use_default_avatar() ) {
+        return $avatar;
+    }
+
     if ( is_numeric( $id_or_email ) ) {
         $user = get_user_by( 'id', $id_or_email );
     } elseif ( is_object( $id_or_email ) ) {
@@ -575,21 +670,55 @@ function wpuf_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args ) 
         $user = get_user_by( 'email', $id_or_email );
     }
 
-    if ( !$user ) {
+    if ( ! $user ) {
         return $avatar;
     }
 
-    // see if there is a user_avatar meta fields
-    $user_avatar = get_user_meta( $user->ID, 'user_avatar', true );
+    $custom_avatar = wpuf_get_custom_avatar( $user->ID );
 
-    if ( empty( $user_avatar ) ) {
+    if ( empty( $custom_avatar ) ) {
         return $avatar;
     }
 
-    return sprintf( '<img src="%1$s" alt="%2$s" height="%3$s" width="%3$s" class="avatar">', esc_url( $user_avatar ), $alt, $size );
+    return sprintf( '<img src="%1$s" alt="%2$s" height="%3$s" width="%3$s" class="avatar">', esc_url( $custom_avatar ), $alt, $size );
 }
 
 add_filter( 'get_avatar', 'wpuf_get_avatar', 99, 6 );
+
+/**
+ * Filters custom avatar url
+ *
+ * @param $args
+ * @param $id_or_email
+ *
+ * @return mixed
+ */
+function wpuf_custom_avatar_data( $args, $id_or_email ) {
+    if ( wpuf_use_default_avatar() ) {
+        return $args;
+    }
+
+    $user_id = $id_or_email;
+
+    if ( $id_or_email instanceof WP_Comment ) {
+        $user_id = $id_or_email->user_id;
+    } elseif ( is_string( $id_or_email ) && is_email( $id_or_email ) ) {
+        $user_id = email_exists( $id_or_email );
+    }
+
+    if ( $user_id ) {
+        $custom_avatar_url = wpuf_get_custom_avatar( $user_id );
+
+        if ( ! empty( $custom_avatar_url ) ) {
+            $args['url'] = $custom_avatar_url;
+        }
+    }
+
+    return $args;
+}
+
+add_filter( 'get_avatar_data', 'wpuf_custom_avatar_data', 10, 2 );
+
 
 function wpuf_update_avatar( $user_id, $attachment_id ) {
     $upload_dir   = wp_upload_dir();
@@ -669,7 +798,12 @@ function wpuf_get_gateways( $context = 'admin' ) {
 /**
  * Show custom fields in post content area
  *
- * @global object $post
+ * @since 3.3.0 Introducing `render_field_data` to render field value
+ *                   Rendering field values should be in field classes to follow
+ *                   more OOP style.
+ *
+ * @todo Move the rendering snippets to respective field classes. The default case
+ *       should be placed in the abstract class.
  *
  * @param string $content
  *
@@ -726,6 +860,8 @@ function wpuf_show_custom_fields( $content ) {
         }
 
         foreach ( $meta as $attr ) {
+            $wpuf_field = wpuf()->fields->get_field( $attr['template'] );
+
             if ( !isset( $attr['name'] ) ) {
                 $attr['name'] = $attr['input_type'];
             }
@@ -777,6 +913,11 @@ function wpuf_show_custom_fields( $content ) {
             }
 
             if ( $attr['input_type'] == 'hidden' ) {
+                continue;
+            }
+
+            if ( method_exists( $wpuf_field, 'render_field_data' ) ) {
+                $html .= $wpuf_field->render_field_data( $field_value, $attr );
                 continue;
             }
 
@@ -960,7 +1101,7 @@ function wpuf_show_custom_fields( $content ) {
                     $link  = '<li>';
 
                     if ( $hide_label == 'no' ) {
-                        $link .= '<label>' . $attr['label'] . '</label>:';
+                        $link .= '<label>' . $attr['label'] . ':</label>';
                     }
 
                     $link .= sprintf( " <a href='%s' target = '%s'>%s</a></li>", $value, $open_in, $value );
@@ -974,26 +1115,25 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= '<li>';
 
                     if ( $hide_label == 'no' ) {
-                        $html .= '<label>' . $attr['label'] . '</label>:';
+                        $html .= '<label>' . $attr['label'] . ':</label>';
                     }
 
                     $html .= sprintf( ' %s</li>', make_clickable( $value ) );
                     break;
 
                 case 'country_list':
-                    $value = get_post_meta( $post->ID, $attr['name'], true );
-                    $countries = wpuf_get_countries();
+                    $value         = get_post_meta( $post->ID, $attr['name'], true );
+                    $country_state = new CountryState();
+                    $countries     = $country_state->countries();
 
-                    $value = array_filter( $countries, function( $item ) use ( $value ) {
-                        return $item['code'] == $value;
-                    } );
-
-                    $value = $value[0]['name'];
+                    if ( isset( $countries[ $value ] ) ) {
+                        $value = $countries[ $value ];
+                    }
 
                     $html .= '<li>';
 
                     if ( $hide_label == 'no' ) {
-                        $html .= '<label>' . $attr['label'] . '</label>:';
+                        $html .= '<label>' . $attr['label'] . ':</label>';
                     }
 
                     $html .= sprintf( ' %s</li>', make_clickable( $value ) );
@@ -1014,7 +1154,7 @@ function wpuf_show_custom_fields( $content ) {
                             $html .= '<li>';
 
                             if ( $hide_label == 'no' ) {
-                                $html .= '<label>' . $attr['label'] . '</label>:';
+                                $html .= '<label>' . $attr['label'] . ':</label>';
                             }
 
                             $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
@@ -1027,7 +1167,7 @@ function wpuf_show_custom_fields( $content ) {
                                 $html .= '<li>';
 
                                 if ( $hide_label == 'no' ) {
-                                    $html .= '<label>' . $attr['label'] . '</label>:';
+                                    $html .= '<label>' . $attr['label'] . ':</label>';
                                 }
 
                                 $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
@@ -1040,7 +1180,7 @@ function wpuf_show_custom_fields( $content ) {
                             $html .= '<li>';
 
                             if ( $hide_label == 'no' ) {
-                                $html .= '<label>' . $attr['label'] . '</label>:';
+                                $html .= '<label>' . $attr['label'] . ':</label>';
                             }
 
                             $html .= sprintf( ' %s</li>', make_clickable( $new ) );
@@ -1308,6 +1448,7 @@ function wpufe_ajax_tag_search() {
     global $wpdb;
 
     $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
+    $term_ids = isset( $_GET['term_ids'] ) ? sanitize_text_field( $_GET['term_ids'] ) : '';
     $tax      = get_taxonomy( $taxonomy );
 
     if ( !$tax ) {
@@ -1333,7 +1474,14 @@ function wpufe_ajax_tag_search() {
         wp_die();
     } // require 2 chars for matching
 
-    $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
+
+
+    if ( ! empty( $term_ids ) ) {
+        $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id IN ($term_ids) AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
+    } else {
+        $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
+    }
+
 
     echo esc_html( join( $results, "\n" ) );
     wp_die();
@@ -1972,6 +2120,7 @@ function wpuf_get_currencies() {
         [ 'currency' => 'NGN', 'label' => __( 'Nigerian Naira', 'wp-user-frontend' ), 'symbol' => '&#8358;' ],
         [ 'currency' => 'NOK', 'label' => __( 'Norwegian Krone', 'wp-user-frontend' ), 'symbol' => '&#107;&#114;' ],
         [ 'currency' => 'NZD', 'label' => __( 'New Zealand Dollar', 'wp-user-frontend' ), 'symbol' => '&#36;' ],
+        [ 'currency' => 'NAD', 'label' => __( 'Namibian dollar', 'wp-user-frontend' ), 'symbol' => 'N&#36;' ],
         [ 'currency' => 'OMR', 'label' => __( 'Omani Rial', 'wp-user-frontend' ), 'symbol' => 'ر.ع.' ],
         [ 'currency' => 'IRR', 'label' => __( 'Iranian Rial', 'wp-user-frontend' ), 'symbol' => '﷼' ],
         [ 'currency' => 'PKR', 'label' => __( 'Pakistani Rupee', 'wp-user-frontend' ), 'symbol' => 'Rs' ],
@@ -3072,11 +3221,7 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
  * @return void
  */
 function wpuf_ajax_get_states_field() {
-    $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
-
-    if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
-        return ;
-    }
+    check_ajax_referer( 'wpuf-ajax-address' );
 
     $country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
     $cs        = new CountryState();
@@ -3085,8 +3230,7 @@ function wpuf_ajax_get_states_field() {
 
     if ( !empty( $states ) ) {
         $args = [
-            'name'             => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash(
-            $_POST['field_name'] ) ) : '',
+            'name'             => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
             'id'               => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
             'class'            => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
             'options'          => $states,
@@ -3161,8 +3305,8 @@ add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_a
  *
  * @return mixed
  */
-function wpuf_get_user_address() {
-    $user_id        = get_current_user_id();
+function wpuf_get_user_address( $user_id = 0 ) {
+    $user_id        = $user_id ? $user_id : get_current_user_id();
     $address_fields = [];
 
     if ( metadata_exists( 'user', $user_id, 'wpuf_address_fields' ) ) {
@@ -3234,35 +3378,6 @@ function wpuf_settings_multiselect( $args ) {
         ]
     ] );
 }
-
-/**
- * Filters custom avatar url
- *
- * @param $args
- * @param $id_or_email
- *
- * @return mixed
- */
-function wpuf_get_custom_avatar( $args, $id_or_email ) {
-    $user_id = $id_or_email;
-
-    if ( $id_or_email instanceof WP_Comment ) {
-        $user_id = $id_or_email->user_id;
-    } elseif ( is_string( $id_or_email ) && is_email( $id_or_email ) ) {
-        $user_id = email_exists( $id_or_email );
-    }
-
-    if ( $user_id ) {
-        $custom_avatar_url = get_user_meta( $user_id, 'user_avatar', true );
-    }
-
-    if ( !empty( $custom_avatar_url ) ) {
-        $args['url'] = $custom_avatar_url;
-    }
-
-    return $args;
-}
-add_filter( 'get_avatar_data', 'wpuf_get_custom_avatar', 10, 2 );
 
 /**
  * Displays Form Schedule Messages
@@ -3364,4 +3479,69 @@ function wpuf_clean( $var ) {
     } else {
         return is_scalar( $var ) ? sanitize_text_field( wp_unslash( $var ) ) : $var;
     }
+}
+
+/**
+ * Calculate ini directives in bytes
+ *
+ * @since 3.3.0
+ *
+ * @param string|int $val
+ *
+ * @return int
+ */
+function wpuf_ini_get_byte( $val ) {
+    $byte = absint( $val );
+    $char = strtolower( str_replace( $byte, '', $val ) );
+
+    switch( $char ) {
+        case 'g':
+            $byte *= GB_IN_BYTES;
+            break;
+
+        case 'm':
+            $byte *= MB_IN_BYTES;
+            break;
+
+        case 'k':
+            $byte *= KB_IN_BYTES;
+            break;
+    }
+
+    return $byte;
+}
+
+/**
+ * The maximum file size allowed to upload
+ *
+ * To upload large files, `post_max_size` value must be larger than `upload_max_filesize`
+ *
+ * @see https://www.php.net/manual/en/ini.core.php#ini.post-max-size
+ *
+ * @since 3.3.0
+ *
+ * @return string|int
+ */
+function wpuf_max_upload_size() {
+    $post_max_size       = ini_get( 'post_max_size' );
+    $upload_max_filesize = ini_get( 'upload_max_filesize' );
+
+    if ( wpuf_ini_get_byte( $upload_max_filesize ) > wpuf_ini_get_byte( $post_max_size ) ) {
+        return $post_max_size;
+    }
+
+    return $upload_max_filesize;
+}
+
+/**
+ * Validate a boolean variable
+ *
+ * @since 3.3.0
+ *
+ * @param mixed $var
+ *
+ * @return bool
+ */
+function wpuf_validate_boolean( $var ) {
+    return filter_var( $var, FILTER_VALIDATE_BOOLEAN );
 }

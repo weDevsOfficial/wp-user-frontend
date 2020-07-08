@@ -160,4 +160,38 @@ class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
 
         return $posts;
     }
+
+    /**
+     * Render radio field data
+     *
+     * @since 3.3.0
+     *
+     * @param mixed $data
+     * @param array $field
+     *
+     * @return string
+     */
+    public function render_field_data( $data, $field ) {
+        $data       = is_array( $data ) ? array_pop( $data ) : $data;
+        $hide_label = isset( $field['hide_field_label'] )
+            ? wpuf_validate_boolean( $field['hide_field_label'] )
+            : false;
+
+        $container_classnames = [ 'wpuf-field-data', 'wpuf-field-data-' . $this->input_type ];
+
+        if ( empty( $field['options'] ) || ! is_array( $field['options'] ) || ! isset( $field['options'][ $data ] ) ) {
+            return;
+        }
+
+        ob_start();
+        ?>
+            <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
+                <?php if ( ! $hide_label ): ?>
+                    <label><?php echo esc_html( $field['label'] ); ?></label>
+                <?php endif; ?>
+                <?php echo esc_html( $field['options'][ $data ] ); ?>
+            </li>
+        <?php
+        return ob_get_clean();
+    }
 }

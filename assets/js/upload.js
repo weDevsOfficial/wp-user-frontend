@@ -38,9 +38,7 @@
                 action: 'wpuf_upload_file',
                 form_id: $( '#' + browse_button ).data('form_id')
             },
-            max_file_count : 2,
-            multiple_queues: false,
-            multi_selection: ( ( browse_button == 'wpuf-avatar-pickfiles' || browse_button == 'wpuf-featured_image-pickfiles' ) ? false : true ),
+            multi_selection: false,
             urlstream_upload: true,
             file_data_name: 'wpuf_file',
             max_file_size: max_file_size + 'kb',
@@ -162,7 +160,7 @@
                 $container.append(response.response);
 
                 if ( this.perFileCount > this.max ) {
-                    var attach_id = $('.wpuf-image-wrap:last a.attachment-delete',$container).data('attach_id');
+                    var attach_id = $('.wpuf-image-wrap:last a.attachment-delete',$container).data('attach-id');
                     self.removeExtraAttachment(attach_id);
                     $('.wpuf-image-wrap',$container).last().remove();
                     this.perFileCount--;
@@ -176,10 +174,9 @@
             }
 
             var uploaded        = this.UploadedFiles,
-                FileProgress    = up.files.length,
-                imageCount      = $('ul.wpuf-attachment-list > li').length;
+                FileProgress    = up.files.length;
 
-            if ( imageCount >= this.max ) {
+            if ( this.count >= this.max ) {
                 $('#' + this.container).find('.file-selector').hide();
             }
 
@@ -209,12 +206,12 @@
                 cancelButtonClass: 'btn btn-danger',
             }).then(function () {
                 var data = {
-                    'attach_id' : el.data('attach_id'),
+                    'attach_id' : el.data('attach-id'),
                     'nonce' : wpuf_frontend_upload.nonce,
                     'action' : 'wpuf_file_del'
                 };
                 self.removed_files.push(data);
-                jQuery('#del_attach').val(el.data('attach_id'));
+                jQuery('#del_attach').val(el.data('attach-id'));
                 jQuery.post(wpuf_frontend_upload.ajaxurl, data, function() {
                     self.perFileCount--;
                     el.parent().parent().remove();
@@ -227,8 +224,6 @@
         },
 
         removeExtraAttachment : function( attach_id ) {
-
-
             var self = this;
 
             var data = {

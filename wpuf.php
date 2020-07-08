@@ -3,16 +3,16 @@
 Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
-Author: Tareq Hasan
-Version: 3.1.18
-Author URI: https://tareq.co
+Author: weDevs
+Version: 3.3.1
+Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '3.1.18' );
+define( 'WPUF_VERSION', '3.3.1' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -58,7 +58,7 @@ final class WP_User_Frontend {
      *
      * @var string
      */
-    private $min_php = '5.4.0';
+    private $min_php = '5.6';
 
     /**
      * Fire up the plugin
@@ -315,7 +315,6 @@ final class WP_User_Frontend {
         } else {
             require_once WPUF_ROOT . '/class/frontend-dashboard.php';
             require_once WPUF_ROOT . '/includes/free/class-registration.php';
-            require_once WPUF_ROOT . '/includes/free/class-login.php';
         }
 
         // add reCaptcha library if not found
@@ -324,6 +323,7 @@ final class WP_User_Frontend {
             require_once __DIR__ . '/lib/invisible_recaptcha.php';
         }
 
+        require_once WPUF_ROOT . '/includes/free/class-login.php';
         require_once WPUF_ROOT . '/includes/class-frontend-form-post.php';
         require_once WPUF_ROOT . '/includes/class-field-manager.php';
         require_once WPUF_ROOT . '/includes/class-pro-upgrades.php';
@@ -375,10 +375,10 @@ final class WP_User_Frontend {
         } else {
             $this->container['dashboard']       = new WPUF_Frontend_Dashboard();
             $this->container['payment']         = new WPUF_Payment();
-            $this->container['login']           = WPUF_Simple_Login::init();
             $this->container['registration']    = WPUF_Registration::init();
         }
 
+        $this->container['login']                   = WPUF_Simple_Login::init();
         $this->container['fields']                  = new WPUF_Field_Manager();
         $this->container['frontend_form']           = WPUF_Frontend_Form::init();
         $this->container['pro_upgrades']            = new WPUF_Pro_Upgrades();
@@ -718,12 +718,13 @@ final class WP_User_Frontend {
         ] ) );
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', [
-            'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
-            'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
-            'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
-            'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
-            'ajaxurl'    => admin_url( 'admin-ajax.php' ),
-            'plupload'   => [
+            'confirmMsg'   => __( 'Are you sure?', 'wp-user-frontend' ),
+            'delete_it'    => __( 'Yes, delete it', 'wp-user-frontend' ),
+            'cancel_it'    => __( 'No, cancel it', 'wp-user-frontend' ),
+            'nonce'        => wp_create_nonce( 'wpuf_nonce' ),
+            'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+            'max_filesize' => wpuf_max_upload_size(),
+            'plupload'     => [
                 'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
                 'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
                 'filters'          => [

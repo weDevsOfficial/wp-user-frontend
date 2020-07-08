@@ -390,9 +390,14 @@ class WPUF_Payment {
                 'custom'    => isset( $custom ) ? $custom : '',
             ];
 
-            $address_fields = wpuf_get_user_address();
+            if ( isset( $_POST['billing_address'] ) ) {
+                $billing_address = wp_unslash( $_POST['billing_address'] );
+                $address_fields  = array_map( 'sanitize_text_field', $billing_address );
+            } else {
+                $address_fields = wpuf_get_user_address();
+            }
 
-            if ( !empty( $address_fields ) ) {
+            if ( ! empty( $address_fields ) ) {
                 update_user_meta( $userdata->ID, 'wpuf_address_fields', $address_fields );
             }
 
@@ -439,11 +444,11 @@ class WPUF_Payment {
             $data['tax'] = floatval( $data['cost'] ) - floatval( $data['subtotal'] );
         }
 
-        if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
-            $data['payer_address'] = wpuf_get_user_address();
+        if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) && ! empty( $data['user_id'] ) ) {
+            $data['payer_address'] = wpuf_get_user_address( $data['user_id'] );
         }
 
-        if ( !empty( $data['payer_address'] ) ) {
+        if ( ! empty( $data['payer_address'] ) ) {
             $data['payer_address'] = maybe_serialize( $data['payer_address'] );
         }
 

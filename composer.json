@@ -1,5 +1,5 @@
 {
-  "name": "wp-user-frontend",
+  "name": "wedevs/wp-user-frontend",
   "description": "A Frontend Plugin for WordPress",
   "type": "wordpress-plugin",
   "license": "GPLv2",

@@ -139,14 +139,20 @@ class WPUF_Ajax_Address_Form {
                 break;
         }
 
+        if ( is_user_logged_in() ) {
+            $user_id = get_current_user_id();
+        } else if ( isset( $_GET['user_id'] ) ) {
+            $user_id = absint( $_GET['user_id'] );
+        } else {
+            return;
+        }
+
         if ( $show_address ) {
             ?>
 
             <form class="wpuf-form form-label-above" id="wpuf-ajax-address-form" action="" method="post">
-                <?php
-                wp_nonce_field( 'wpuf-ajax-address' );
-                wp_nonce_field( 'wpuf_address_ajax_action', 'wpuf_save_address_nonce' );
-                ?>
+                <?php wp_nonce_field( 'wpuf-ajax-address' ); ?>
+                <input type="hidden" name="user_id" value="<?php echo esc_attr( $user_id ); ?>">
 
                 <table id="wpuf-address-country-state" class="wp-list-table widefat">
                     <tr>
@@ -285,11 +291,7 @@ class WPUF_Ajax_Address_Form {
      * Ajax Form action
      */
     public function ajax_form_action() {
-        $nonce = isset( $_POST['wpuf_save_address_nonce'] ) ? sanitize_key( wp_unslash( $_POST['wpuf_save_address_nonce'] ) ) : '';
-
-        if ( ! empty( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_address_ajax_action' ) ) {
-            return;
-        }
+        check_ajax_referer( 'wpuf-ajax-address' );
 
         $post_data = wp_unslash( $_POST );
 

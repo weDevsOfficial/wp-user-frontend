@@ -111,4 +111,44 @@ class WPUF_Form_Field_Email extends WPUF_Form_Field_Text {
 
         return array_merge( $defaults, $props );
     }
+
+    /**
+     * Render field data
+     *
+     * @since 3.3.1
+     *
+     * @param mixed $data
+     * @param array $field
+     *
+     * @return string
+     */
+    public function render_field_data( $data, $field ) {
+        $data       = implode( ',' , $data );
+        $hide_label = isset( $field['hide_field_label'] )
+            ? wpuf_validate_boolean( $field['hide_field_label'] )
+            : false;
+
+        if ( empty( $data ) ) {
+            return '';
+        }
+
+        $container_classnames = [ 'wpuf-field-data', 'wpuf-field-data-' . $this->input_type ];
+
+        ob_start();
+        ?>
+            <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
+                <?php if ( ! $hide_label ): ?>
+                    <label><?php echo esc_html( $field['label'] ); ?>:</label>
+                <?php endif; ?>
+                <?php
+                    echo wp_kses( make_clickable( sanitize_email( $data ) ), [
+                        'a' => [
+                            'href' => [],
+                        ],
+                    ] );
+                ?>
+            </li>
+        <?php
+        return ob_get_clean();
+    }
 }

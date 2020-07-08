@@ -21,8 +21,10 @@ class WPUF_Registration {
 
         add_action( 'init', [$this, 'process_registration'] );
         add_action( 'init', [$this, 'wp_registration_page_redirect'] );
+        add_action( 'template_redirect', [ $this, 'registration_page_redirects' ] );
 
         add_filter( 'register_url', [$this, 'get_registration_url'] );
+        add_filter( 'wpuf_registration_redirect', [ $this, 'redirect_to_payment_page' ], 10, 2 );
     }
 
     /**
@@ -117,7 +119,7 @@ class WPUF_Registration {
         $links  = [];
 
         if ( $args['register'] && get_option( 'users_can_register' ) ) {
-            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wp-user-frontend' ) );
+            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), esc_html__( 'Register', 'wp-user-frontend' ) );
         }
 
         return implode( ' | ', $links );
@@ -151,10 +153,14 @@ class WPUF_Registration {
                 'user' => wp_get_current_user(),
             ] );
         } else {
-            $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'register';
+            $queries = wp_unslash( $_GET );
+
+            array_walk( $queries, function ( &$a ) {
+                $a = sanitize_text_field( $a );
+            } );
 
             $args = [
-                'action_url' => $reg_page,
+                'action_url' => add_query_arg( $queries, $reg_page ),
                 'userrole'   => $roleencoded,
             ];
 
@@ -191,55 +197,55 @@ class WPUF_Registration {
             $validation_error = apply_filters( 'wpuf_process_registration_errors', $validation_error, $reg_fname, $reg_lname, $reg_email, $log, $pwd1, $pwd2 );
 
             if ( $validation_error->get_error_code() ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . $validation_error->get_error_message();
+                $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . $validation_error->get_error_message();
 
                 return;
             }
 
             if ( empty( $reg_fname ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'First name is required.', 'wp-user-frontend' );
+                $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'First name is required.', 'wp-user-frontend' );
 
                 return;
             }
 
             if ( empty( $reg_lname ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Last name is required.', 'wp-user-frontend' );
+                $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'Last name is required.', 'wp-user-frontend' );
 
                 return;
             }
 
             if ( empty( $reg_email ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Email is required.', 'wp-user-frontend' );
+                $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'Email is required.', 'wp-user-frontend' );
 
                 return;
             }
 
             if ( empty( $log ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Username is required.', 'wp-user-frontend' );
+                $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'Username is required.', 'wp-user-frontend' );
 
                 return;
             }
 
             if ( empty( $pwd1 ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Password is required.', 'wp-user-frontend' );
+                $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'Password is required.', 'wp-user-frontend' );
 
                 return;
             }
 
             if ( empty( $pwd2 ) ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Confirm Password is required.', 'wp-user-frontend' );
+                $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'Confirm Password is required.', 'wp-user-frontend' );
 
                 return;
             }
 
             if ( $pwd1 != $pwd2 ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Passwords are not same.', 'wp-user-frontend' );
+                $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'Passwords are not same.', 'wp-user-frontend' );
 
                 return;
             }
 
             if ( get_user_by( 'login', $log ) === $log ) {
-                $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user with same username already exists.', 'wp-user-frontend' );
+                $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'A user with same username already exists.', 'wp-user-frontend' );
 
                 return;
             }
@@ -250,7 +256,7 @@ class WPUF_Registration {
                 if ( isset( $user->user_login ) ) {
                     $userdata['user_login']  = $user->user_login;
                 } else {
-                    $this->registration_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
+                    $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'A user could not be found with this email address.', 'wp-user-frontend' );
 
                     return;
                 }
@@ -281,17 +287,17 @@ class WPUF_Registration {
                 $user_email = stripslashes( $wpuf_user->user_email );
                 $blogname   = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 
-                $message = sprintf( __( 'New user registration on your site %s:', 'wp-user-frontend' ), get_option( 'blogname' ) ) . "\r\n\r\n";
-                $message .= sprintf( __( 'Username: %s', 'wp-user-frontend' ), $user_login ) . "\r\n\r\n";
-                $message .= sprintf( __( 'E-mail: %s', 'wp-user-frontend' ), $user_email ) . "\r\n";
+                $message = sprintf( esc_html__( 'New user registration on your site %s:', 'wp-user-frontend' ), get_option( 'blogname' ) ) . "\r\n\r\n";
+                $message .= sprintf( esc_html__( 'Username: %s', 'wp-user-frontend' ), $user_login ) . "\r\n\r\n";
+                $message .= sprintf( esc_html__( 'E-mail: %s', 'wp-user-frontend' ), $user_email ) . "\r\n";
                 $subject = 'New User Registration';
 
                 $subject = apply_filters( 'wpuf_default_reg_admin_mail_subject', $subject );
                 $message = apply_filters( 'wpuf_default_reg_admin_mail_body', $message );
 
-                wp_mail( get_option( 'admin_email' ), sprintf( __( '[%s] %s', 'wp-user-frontend' ), $blogname, $subject ), $message );
+                wp_mail( get_option( 'admin_email' ), sprintf( esc_html__( '[%s] %s', 'wp-user-frontend' ), $blogname, $subject ), $message );
 
-                $message = sprintf( __( 'Hi, %s', 'wp-user-frontend' ), $user_login ) . "\r\n";
+                $message = sprintf( esc_html__( 'Hi, %s', 'wp-user-frontend' ), $user_login ) . "\r\n";
                 $message .= 'Congrats! You are Successfully registered to ' . $blogname . "\r\n\r\n";
                 $message .= 'Thanks';
                 $subject = 'Thank you for registering';
@@ -299,7 +305,7 @@ class WPUF_Registration {
                 $subject = apply_filters( 'wpuf_default_reg_mail_subject', $subject );
                 $message = apply_filters( 'wpuf_default_reg_mail_body', $message );
 
-                wp_mail( $user_email, sprintf( __( '[%s] %s', 'wp-user-frontend' ), $blogname, $subject ), $message );
+                wp_mail( $user_email, sprintf( esc_html__( '[%s] %s', 'wp-user-frontend' ), $blogname, $subject ), $message );
             }
 
             $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
@@ -347,16 +353,62 @@ class WPUF_Registration {
     }
 
     /**
+     * Redirect to subscription page
+     *
+     * @since 3.3.0
+     *
+     * @return void
+     */
+    public function registration_page_redirects() {
+        global $post;
+
+        $registration_page = wpuf_get_option( 'reg_override_page', 'wpuf_profile' );
+
+        if ( ! isset( $post->ID ) || $post->ID !== absint( $registration_page ) ) {
+            return;
+        }
+
+        // Choose subscription pack first then register
+        if ( $this->is_activated_subscription_on_registration() ) {
+            $subscription_page_id = wpuf_get_option( 'subscription_page', 'wpuf_payment' );
+
+            if ( empty( $subscription_page_id ) ) {
+                WP_User_Frontend::log( 'subscription-on-registration', esc_html__( 'Subscription Page settings not set in admin settings', 'wp-user-frontend' ) );
+                return;
+            }
+
+            if ( isset( $_GET['type'] ) && 'wpuf_sub' === $_GET['type'] && ! empty( $_GET['pack_id'] ) ) {
+                return;
+            }
+
+            wp_safe_redirect( get_permalink( $subscription_page_id ) );
+            exit;
+        }
+    }
+
+    /**
      * Show errors on the form
      *
      * @return void
      */
     public function show_errors() {
+        /**
+         * Filter the allowed html for registration error notice
+         *
+         * @since 3.3.0
+         *
+         * @param array $allowed_html
+         */
+        $allowed_html = apply_filters( 'wpuf_registration_errors_allowed_html', [
+            'strong' => [],
+        ] );
+
         if ( $this->registration_errors ) {
             foreach ( $this->registration_errors as $error ) {
-                echo wp_kses_post( '<div class="wpuf-error">' );
-                esc_html_e( $error, 'wp-user-frontend' );
-                echo wp_kses_post( '</div>' );
+                printf(
+                    '<div class="wpuf-error">%s</div>',
+                    wp_kses( $error, $allowed_html )
+                );
             }
         }
     }
@@ -382,11 +434,63 @@ class WPUF_Registration {
      * @return string
      */
     public static function get_posted_value( $key ) {
+        $get = wp_unslash( $_GET );
+
         if ( isset( $_REQUEST[$key] ) ) {
             $required_key = sanitize_text_field( wp_unslash( $_REQUEST[$key] ) );
            return $required_key;
         }
 
         return '';
+    }
+
+    /**
+     * Check if subscription need to be selected before registration
+     *
+     * Settings could be found under Payments section in WPUF admin settings.
+     *
+     * @since 3.3.0
+     *
+     * @return bool
+     */
+    public function is_activated_subscription_on_registration() {
+        $enable_payment        = wpuf_get_option( 'enable_payment', 'wpuf_payment' );
+        $register_subscription = wpuf_get_option( 'register_subscription', 'wpuf_payment' );
+
+        if ( wpuf_validate_boolean( $enable_payment ) && wpuf_validate_boolean( $register_subscription ) ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Filter the redirect page url to payment page
+     *
+     * @since 3.3.0
+     *
+     * @param string $redirect
+     * @param int    $user
+     *
+     * @return string
+     */
+    public function redirect_to_payment_page( $redirect, $user ) {
+        $get = wp_unslash( $_GET );
+
+        if ( isset( $get['type'] ) && 'wpuf_sub' === $get['type'] && ! empty( $get['pack_id'] ) && $user ) {
+            $payment_page_id = wpuf_get_option( 'payment_page', 'wpuf_payment' );
+            $payment_page    = get_permalink( $payment_page_id );
+
+            if ( $payment_page ) {
+                $redirect = add_query_arg( [
+                    'action'  => 'wpuf_pay',
+                    'user_id' => $user,
+                    'type'    => 'pack',
+                    'pack_id' => $get['pack_id'],
+                ], $payment_page );
+            }
+        }
+
+        return $redirect;
     }
 }

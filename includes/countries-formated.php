@@ -214,7 +214,7 @@ $countries = [
         'code' => 'CR',
     ],
     [
-        'name' => 'Cote D"Ivoire',
+        'name' => 'Ivory Coast',
         'code' => 'CI',
     ],
     [
@@ -462,14 +462,6 @@ $countries = [
         'code' => 'KI',
     ],
     [
-        'name' => 'Korea, Democratic People"S Republic of',
-        'code' => 'KP',
-    ],
-    [
-        'name' => 'Korea, Republic of',
-        'code' => 'KR',
-    ],
-    [
         'name' => 'Kuwait',
         'code' => 'KW',
     ],
@@ -654,6 +646,10 @@ $countries = [
         'code' => 'NF',
     ],
     [
+        'name' => 'North Korea',
+        'code' => 'KP',
+    ],
+    [
         'name' => 'Northern Mariana Islands',
         'code' => 'MP',
     ],
@@ -812,6 +808,10 @@ $countries = [
     [
         'name' => 'South Georgia and the South Sandwich Islands',
         'code' => 'GS',
+    ],
+    [
+        'name' => 'South Korea',
+        'code' => 'KR',
     ],
     [
         'name' => 'Spain',

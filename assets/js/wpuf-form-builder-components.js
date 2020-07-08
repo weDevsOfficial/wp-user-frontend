@@ -287,6 +287,7 @@ Vue.component('field-option-data', {
     data: function () {
         return {
             show_value: false,
+            sync_value: true,
             options: [],
             selected: []
         };
@@ -366,7 +367,9 @@ Vue.component('field-option-data', {
         },
 
         set_option_label: function (index, label) {
-            this.options[index].value = label.toLocaleLowerCase().replace( /\s/g, '_' );
+            if (this.sync_value) {
+                this.options[index].value = label.toLocaleLowerCase().replace( /\s/g, '_' );
+            }
         }
     },
 
@@ -1632,11 +1635,19 @@ Vue.component('help-text', {
         text: {
             type: String,
             default: ''
+        },
+
+        placement: {
+            type: String,
+            default: 'top',
+            validator: function (placement) {
+                return ['top', 'right', 'bottom', 'left'].indexOf(placement) >= 0;
+            }
         }
     },
 
     mounted: function () {
-        $(".wpuf-tooltip").tooltip();
+        $(this.$el).tooltip();
     }
 });
 

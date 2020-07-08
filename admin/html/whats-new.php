@@ -1,6 +1,180 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.3.1',
+        'released' => '2020-06-16',
+        'changes'  => [
+            [
+                'title' => __( 'Use common names for Ivory Coast, North Korea and Sourth Korea instead of their official names', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => __( 'Fix condition to use default avatar', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Make Email and URL fields clickable', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Fix redirect after user login', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Sanitize textarea field data', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Fix missing colon to email, URL, text and textarea labels when renders their data', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Prevent showing empty labels for fields that have render_field_data method', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.3.0',
+        'released' => '2020-06-11',
+        'changes'  => [
+            [
+                'title' => __( 'Add Namibian Dollar in currency list', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Add sync values option for option data fields', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Allow uploading image that having filesize meets php ini settings', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => __( 'Limit the selection of one image at a time', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => __( 'Use file name and size to generate hash to prevent duplicant image upload', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => __( 'Sanitize text and textarea field data', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => __( 'Show label instead of values for radio, checkbox, dropdown and multiselect data', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => __( 'Saving custom taxonomies for type text input', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Admin settings link for recaptcha helper text', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Undefined name property for Custom HTML fields', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Delete attachment process', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Missing billing address in invoice PDF', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Showing country field value in frontend post content', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Avatar size display not complying with admin settings size', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Display default avatars on admin settings discussion page', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Redirect to subscription page at registration', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Error notice regarding registration page redirect', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Escaping html in registration errors', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Default login redirect link', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Implementing default WP login page override option', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Transparent background of autosuggestion dropdown', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.2.0',
+        'released' => '2020-04-14',
+        'changes'  => [
+            [
+                'title' => __( 'Import forms system', 'wp-user-frontend' ),
+                'type'  => 'Improvement',
+            ],
+            [
+                'title' => __( 'Password reset system', 'wp-user-frontend' ),
+                'type'  => 'Improvement',
+            ],
+            [
+                'title' => __( 'Updated url validation regex to support modern tlds', 'wp-user-frontend' ),
+                'type'  => 'Improvement',
+            ],
+            [
+                'title' => __( 'Export WPUF forms individually from admin tools page', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscription cycle label translation issue', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'ACF integration for checkbox fields', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Illegal string offset warning while updating settings', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Conditional logic for Section Break field', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscriptions cannot be deleted from backend', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'A regression regarding saving checkbox data', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Default value of multi-select fields is not showing', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.1.18',
         'released' => '2020-03-13',
         'changes'  => [
@@ -609,9 +783,11 @@ function _wpuf_changelog_content( $content ) {
                                     <span class="label <?php echo esc_html( strtolower( $change['type'] ) ); ?>"><?php echo esc_html( $change['type'] ); ?></span>
                                 </h4>
 
-                                <div class="description">
-                                    <?php echo wp_kses_post( _wpuf_changelog_content( $change['description'] ) ); ?>
-                                </div>
+                                <?php if ( ! empty( $change['description'] ) ): ?>
+                                    <div class="description">
+                                        <?php echo wp_kses_post( _wpuf_changelog_content( $change['description'] ) ); ?>
+                                    </div>
+                                <?php endif; ?>
                             </li>
                         <?php } ?>
                     </ul>

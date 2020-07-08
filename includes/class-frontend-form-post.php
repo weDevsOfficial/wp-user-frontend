@@ -1010,6 +1010,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() ) {
             $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
         } elseif ( $is_update ) {
+            //now perform some post related actions
+            do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
+            
             //send mail notification
             if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['edit'] == 'on' ) {
                 $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['edit_body'], $post_author, $post_id );
@@ -1023,10 +1026,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             //now redirect the user
             $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
-
-            //now perform some post related actions
-            do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
         } else {
+            //now perform some post related actions
+            do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
+            
             // send mail notification
             if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['new'] == 'on' ) {
                 $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $post_author, $post_id );
@@ -1040,9 +1043,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             //redirect the user
             $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $this->form_settings );
-
-            //now perform some post related actions
-            do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
         }
 
         return $response;

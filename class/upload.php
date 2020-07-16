@@ -85,8 +85,11 @@ class WPUF_Upload {
         $wpuf_file = isset( $_FILES['wpuf_file'] ) ? $_FILES['wpuf_file'] : []; // WPCS: sanitization ok.
 
         $file_extension = pathinfo( $wpuf_file['name'], PATHINFO_EXTENSION );
+        $hash           = wp_hash( time() );
+        $hash           = substr( $hash, 0, 8 );
+
         $upload = [
-            'name'     => wp_hash( time() ) . '.' . $file_extension,
+            'name' => $wpuf_file['name'] . '-' . $hash . '.' . $file_extension,
             'type'     => $wpuf_file['type'],
             'tmp_name' => $wpuf_file['tmp_name'],
             'error'    => $wpuf_file['error'],

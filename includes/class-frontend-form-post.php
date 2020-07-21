@@ -947,6 +947,14 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
+        if ( isset( $this->form_settings['enable_pay_per_post'] ) && 'true' === $this->form_settings['enable_pay_per_post'] ) {
+            $redirect_to = add_query_arg( [
+                        'action'  => 'wpuf_pay',
+                        'type'    => 'post',
+                        'post_id' => $post_id,
+            ], get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
+        }
+
         $response = [
             'success'      => true,
             'redirect_to'  => $redirect_to,

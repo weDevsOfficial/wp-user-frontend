@@ -307,6 +307,12 @@ class WPUF_Frontend_Render_Form {
             return;
         }
 
+        if ( ! wpuf_user_can_post( $this->form_settings['roles'] ) ) {
+            echo wp_kses_post( '<div class="wpuf-message">' . __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) . '</div>' );
+
+            return;
+        }
+
         if ( $this->form_fields ) { ?>
 
                 <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( $layout == 'layout1' ) ? esc_html( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">

@@ -3545,3 +3545,29 @@ function wpuf_max_upload_size() {
 function wpuf_validate_boolean( $var ) {
     return filter_var( $var, FILTER_VALIDATE_BOOLEAN );
 }
+
+/**
+ * Check user permisson to submit a post
+ *
+ * @param  integer $user_id User id will submit post
+ * @param  array  $roles   Permitted user roles to submit a post
+ * @return bool          If user permitted to submit post
+ */
+function wpuf_user_can_post( array $roles, $user_id = null ) {
+
+    if ( empty( $roles ) ) {
+        return false;
+    }
+
+    $user = wp_get_current_user();
+
+    if ( $user_id ) {
+        $user = get_userdata( $user_id );
+    }
+
+    if ( in_array( $user->roles[0], $roles )  ) {
+        return true;
+    }
+
+    return false;
+}

@@ -273,7 +273,7 @@
                                         <?php
                                         if ( wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
                                             $del_url = add_query_arg( ['action' => 'del', 'pid' => $post->ID] );
-                                            $message = __( 'Are you sure to delete?', 'wp-user-frontend' ); ?>
+                                            $message = __( 'Are you sure you want to delete this post ?', 'wp-user-frontend' ); ?>
                                             <a href="<?php echo esc_url( wp_nonce_url( $del_url, 'wpuf_del' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $message ); ?>');"><span style="color: red;"><?php esc_html_e( 'Delete', 'wp-user-frontend' ); ?></span></a>
                                         <?php
                                         } ?>

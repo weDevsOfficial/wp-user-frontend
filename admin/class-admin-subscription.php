@@ -136,7 +136,7 @@ class WPUF_Admin_Subscription {
             if ( isset( $_POST['post_expiration_settings'] ) ) {
                 $post_expiration_settings = array_map( 'sanitize_text_field', wp_unslash( $_POST['post_expiration_settings'] ) );
 
-                $user_pack['_post_expiration_time'] = post_expiration_settings['expiration_time_value'] . ' ' . post_expiration_settings['expiration_time_type'];
+                $user_pack['_post_expiration_time'] = $post_expiration_settings['expiration_time_value'] . ' ' . $post_expiration_settings['expiration_time_type'];
 
                 echo esc_html( $user_pack['_post_expiration_time'] );
             }

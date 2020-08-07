@@ -53,6 +53,8 @@ class WPUF_Admin_Settings {
 
         add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ], 1 );
         add_action( 'wp_ajax_wpuf_import_forms', [ $this, 'import_forms' ] );
+
+        add_filter( 'upload_mimes', [ $this, 'add_json_mime_type' ] );
     }
 
     public static function init() {
@@ -414,8 +416,6 @@ class WPUF_Admin_Settings {
         $prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
         wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue' . $prefix . '.js', [], WPUF_VERSION, true );
-
-        add_filter( 'upload_mimes', [ $this, 'add_json_mime_type' ] );
 
         wp_enqueue_media();
 

@@ -167,7 +167,15 @@ class WPUF_Setup_Wizard {
             <title><?php esc_html_e( 'WPUF &rsaquo; Setup Wizard', 'wp-user-frontend' ); ?></title>
             <?php wp_print_scripts( 'wpuf-setup' ); ?>
             <?php do_action( 'admin_print_styles' ); ?>
-            <?php do_action( 'admin_head' ); ?>
+            <?php
+                global $current_screen;
+
+                if ( empty( $current_screen ) &&  function_exists('set_current_screen') ) {
+                    set_current_screen();
+                }
+
+                do_action( 'admin_head' );
+            ?>
             <?php do_action( 'wpuf_setup_wizard_styles' ); ?>
             <style type="text/css">
                 .wpuf-setup-steps {

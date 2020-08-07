@@ -89,7 +89,7 @@ class WPUF_Upload {
         $hash           = substr( $hash, 0, 8 );
 
         $upload = [
-            'name' => $wpuf_file['name'] . '-' . $hash . '.' . $file_extension,
+            'name'     => $wpuf_file['name'] . '-' . $hash . '.' . $file_extension,
             'type'     => $wpuf_file['type'],
             'tmp_name' => $wpuf_file['tmp_name'],
             'error'    => $wpuf_file['error'],

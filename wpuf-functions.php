@@ -3547,25 +3547,23 @@ function wpuf_validate_boolean( $var ) {
 }
 
 /**
- * Check user permisson to submit a post
+ * Check user has certain roles
  *
- * @param  integer $user_id User id will submit post
+ * @since WPUF_SINCE
+ *
  * @param  array  $roles   Permitted user roles to submit a post
- * @return bool          If user permitted to submit post
+ * @param  int    $user_id User id will submit post
+ *
+ * @return bool
  */
-function wpuf_user_can_post( array $roles, $user_id = null ) {
-
+function wpuf_user_has_roles( $roles, $user_id = 0 ) {
     if ( empty( $roles ) ) {
         return false;
     }
 
-    $user = wp_get_current_user();
+    $user = $user_id ? get_userdata( $user_id ) : wp_get_current_user();
 
-    if ( $user_id ) {
-        $user = get_userdata( $user_id );
-    }
-
-    if ( in_array( $user->roles[0], $roles )  ) {
+    if ( ! empty( array_intersect( $user->roles, $roles ) ) ) {
         return true;
     }
 

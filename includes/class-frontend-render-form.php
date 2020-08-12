@@ -308,7 +308,10 @@ class WPUF_Frontend_Render_Form {
         }
 
         if ( ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) . '</div>' );
+            ?>
+            <div class="wpuf-message"><?php esc_html_e( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend'  ); ?></div>
+            <?php
+
 
             return;
         }

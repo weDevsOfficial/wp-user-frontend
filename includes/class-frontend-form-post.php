@@ -1074,7 +1074,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         // We'll show edit link only for posts, not page, product or other post types
         if (
-            'post' !== $post->post_type
+            empty( $post->post_type )
+            || 'post' !== $post->post_type
             || ! wpuf_validate_boolean( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) )
             || ! $this->get_frontend_post_edit_link( $post_id )
             || absint( $post->post_author ) !== $wp_user->ID

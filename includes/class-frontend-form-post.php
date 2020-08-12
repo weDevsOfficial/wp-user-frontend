@@ -26,6 +26,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         // form preview
         add_action( 'wp_ajax_wpuf_form_preview', [ $this, 'preview_form' ] );
         $this->set_wp_post_types();
+
+        // enable post edit link for post authors
+        add_filter( 'user_has_cap', [ $this, 'map_capabilities_for_post_authors' ], 10, 4 );
+        add_filter( 'get_edit_post_link', [ $this, 'get_edit_post_link' ], 10, 3 );
     }
 
     /**
@@ -1042,5 +1046,90 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         }
 
         return $response;
+    }
+
+    /**
+     * Enable edit post link for post authors
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array    $allcaps
+     * @param array    $caps
+     * @param array    $args
+     * @param \WP_User $wp_user
+     *
+     * @return array
+    */
+    public function map_capabilities_for_post_authors( $allcaps, $caps, $args, $wp_user ) {
+        if (
+            empty( $args )
+            || count( $args ) < 3
+            || empty( $caps )
+            || 'edit_post' !== $args[0]
+            || isset( $allcaps[ $caps[0] ] )
+        ) {
+            return $allcaps;
+        }
+
+        $post_id = $args[2];
+        $post    = get_post( $post_id );
+
+        // We'll show edit link only for posts, not page, product or other post types
+        if (
+            'post' !== $post->post_type
+            || ! wpuf_validate_boolean( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) )
+            || ! $this->get_frontend_post_edit_link( $post_id )
+            || absint( $post->post_author ) !== $wp_user->ID
+        ) {
+            return $allcaps;
+        }
+
+        $allcaps['edit_published_posts'] = 1;
+
+        return $allcaps;
+    }
+
+    /**
+     * Filter hook for edit post link
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $url
+     * @param int    $post_id
+     *
+     * @return string
+    */
+    public function get_edit_post_link( $url, $post_id ) {
+        if ( ! current_user_can( 'manage_options' ) && current_user_can( 'edit_post', $post_id ) ) {
+            $post = get_post( $post_id );
+
+            if ( absint( $post->post_author ) === get_current_user_id() ) {
+                return $this->get_frontend_post_edit_link( $post_id );
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     * Get post edit link
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $post_id
+     *
+     * @return string
+     */
+    public function get_frontend_post_edit_link( $post_id ) {
+        $edit_page = absint( wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' ) );
+
+        if ( ! $edit_page ) {
+            return '';
+        }
+
+        $url           = add_query_arg( [ 'pid' => $post_id ], get_permalink( $edit_page ) );
+        $edit_page_url = apply_filters( 'wpuf_edit_post_link', $url );
+
+        return wp_nonce_url( $edit_page_url, 'wpuf_edit' );
     }
 }

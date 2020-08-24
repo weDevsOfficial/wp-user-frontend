@@ -30,11 +30,18 @@
                 </label>
             </div>
 
-            <div v-if="!is_failed_to_validate(field.template)" class="control-buttons">
+            <div class="control-buttons">
                 <p>
-                    <i class="fa fa-arrows move"></i>
-                    <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
-                    <i class="fa fa-clone" @click="clone_field(field.id, index)"></i>
+                    <template v-if="!is_failed_to_validate(field.template)">
+                        <i class="fa fa-arrows move"></i>
+                        <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
+                        <i class="fa fa-clone" @click="clone_field(field.id, index)"></i>
+                    </template>
+                    <template v-else>
+                        <i class="fa fa-arrows control-button-disabled"></i>
+                        <i class="fa fa-pencil control-button-disabled"></i>
+                        <i class="fa fa-clone control-button-disabled"></i>
+                    </template>
                     <i class="fa fa-trash-o" @click="delete_field(index)"></i>
                 </p>
             </div>

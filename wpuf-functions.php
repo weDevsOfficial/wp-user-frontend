@@ -431,7 +431,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 /**
  * Get exclude settings for a field type
  *
- * @since WPUF_SINCE
+ * @since 3.4.0
  *
  * @param array $field_settings
  * @param string $exclude_type
@@ -3549,7 +3549,7 @@ function wpuf_validate_boolean( $var ) {
 /**
  * Check user has certain roles
  *
- * @since WPUF_SINCE
+ * @since 3.4.0
  *
  * @param  array  $roles   Permitted user roles to submit a post
  * @param  int    $user_id User id will submit post

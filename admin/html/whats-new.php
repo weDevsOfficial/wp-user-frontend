@@ -1,6 +1,88 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.4.0',
+        'released' => '2020-08-24',
+        'changes'  => [
+            [
+                'title' => __( 'Add post edit link for post authors in single or archive pages', 'wp-user-frontend' ),
+                'type' => 'New',
+            ],
+            [
+                'title' => __( 'Enhance post delete message', 'wp-user-frontend' ),
+                'type' => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Refactor control buttons visibility in form builder', 'wp-user-frontend' ),
+                'type' => 'Tweak',
+            ],
+            [
+                'title' => __( 'Add missing colons after field label', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Post edit map capability condition', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Role based permission for accessing a post form', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Section-break field alignment', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Pay per post doesn\'t work if subscription pack is activated', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Mime type for uploading JSON files', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'File upload with same file name', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Post preview missing fields', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Illigal variable declartion', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Featured image updating issue', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Conflict with Phlox theme', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Textarea custom field data sanitization', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'exclude_type warning in wpuf_category_checklist', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Category field not showing all child categories for selection type child of', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Conflict between image and file upload custom fields', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+            [
+                'title' => __( 'Login url when login page is not set', 'wp-user-frontend' ),
+                'type' => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.3.1',
         'released' => '2020-06-16',
         'changes'  => [

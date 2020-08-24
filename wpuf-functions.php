@@ -372,11 +372,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $walker = new WPUF_Walker_Category_Checklist();
 
     $exclude_type = isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude';
-    $exclude      = $attr['exclude'];
-
-    if ( $exclude_type == 'child_of' ) {
-        $exclude = $exclude[0];
-    }
+    $exclude      = wpuf_get_field_settings_excludes( $attr, $exclude_type );
 
     $tax          = $attr['name'];
     $current_user = get_current_user_id();
@@ -400,7 +396,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     $tax_args = [
         'taxonomy'    => $tax,
         'hide_empty'  => false,
-        $exclude_type => $exclude,
+        $exclude['type'] => ( $exclude_type == 'child_of' ) ? $exclude['childs'] : $attr['exclude'],
         'orderby'     => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
         'order'       => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
     ];
@@ -430,6 +426,45 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
         ]
     ] );
     echo wp_kses_post( '</ul>' );
+}
+
+/**
+ * Get exclude settings for a field type
+ *
+ * @since 3.4.0
+ *
+ * @param array $field_settings
+ * @param string $exclude_type
+ *
+ * @return array
+ */
+function wpuf_get_field_settings_excludes( $field_settings, $exclude_type ) {
+    $attributes   = $field_settings['exclude'];
+    $child_ids    = [];
+
+    if ( !empty( $attributes ) ) {
+        foreach ( $attributes as $attr ) {
+            $terms = get_terms( 'category', array(
+                'hide_empty' => false,
+                'parent'     => $attr
+            ) );
+
+            foreach ( $terms as $term ) {
+                array_push( $child_ids, $term->term_id );
+            }
+        }
+    }
+
+    if ( $exclude_type === 'child_of' ) {
+        $exclude_type = 'include';
+    }
+
+    $excludes = [
+        'type'   =>  $exclude_type,
+        'childs' =>  $child_ids
+    ];
+
+    return $excludes;
 }
 
 function wpuf_pre( $data ) {
@@ -1413,6 +1448,7 @@ function wpufe_ajax_tag_search() {
     global $wpdb;
 
     $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
+    $term_ids = isset( $_GET['term_ids'] ) ? sanitize_text_field( $_GET['term_ids'] ) : '';
     $tax      = get_taxonomy( $taxonomy );
 
     if ( !$tax ) {
@@ -1438,7 +1474,14 @@ function wpufe_ajax_tag_search() {
         wp_die();
     } // require 2 chars for matching
 
-    $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
+
+
+    if ( ! empty( $term_ids ) ) {
+        $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id IN ($term_ids) AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
+    } else {
+        $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
+    }
+
 
     echo esc_html( join( $results, "\n" ) );
     wp_die();
@@ -3501,4 +3544,28 @@ function wpuf_max_upload_size() {
  */
 function wpuf_validate_boolean( $var ) {
     return filter_var( $var, FILTER_VALIDATE_BOOLEAN );
+}
+
+/**
+ * Check user has certain roles
+ *
+ * @since 3.4.0
+ *
+ * @param  array  $roles   Permitted user roles to submit a post
+ * @param  int    $user_id User id will submit post
+ *
+ * @return bool
+ */
+function wpuf_user_has_roles( $roles, $user_id = 0 ) {
+    if ( empty( $roles ) ) {
+        return false;
+    }
+
+    $user = $user_id ? get_userdata( $user_id ) : wp_get_current_user();
+
+    if ( ! empty( array_intersect( $user->roles, $roles ) ) ) {
+        return true;
+    }
+
+    return false;
 }

@@ -70,7 +70,7 @@ class WPUF_Form_Field_Featured_Image extends WPUF_Field_Contract {
                                     'a' => [
                                         'href' => [],
                                         'class' => [],
-                                        'data-attach_id' => [],
+                                        'data-attach-id' => [],
                                     ],
                                     'span' => [
                                         'class' => []

@@ -26,6 +26,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         // form preview
         add_action( 'wp_ajax_wpuf_form_preview', [ $this, 'preview_form' ] );
         $this->set_wp_post_types();
+
+        // enable post edit link for post authors
+        add_filter( 'user_has_cap', [ $this, 'map_capabilities_for_post_authors' ], 10, 4 );
+        add_filter( 'get_edit_post_link', [ $this, 'get_edit_post_link' ], 10, 3 );
     }
 
     /**
@@ -190,14 +194,32 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
         ];
 
-        if ( isset( $_POST['category'] ) && is_array( $_POST['category'] ) ) { // WPCS: sanitization ok.
-            $category = isset( $_POST['category'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['category'] ) ) : [];
-        } else {
-            $category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
-        }
+        if ( ! empty( $this->form_fields ) ) {
+            foreach ( $this->form_fields as $field ) {
+                if ( $field['template'] == 'taxonomy' ) {
+                    $category_name = $field['name'];
 
-        if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
-            $postarr['post_category'] = is_array( $category ) ? $category : [ $category ];
+                    if ( isset( $_POST[ $category_name ] ) && is_array( $_POST[ $category_name ] ) ) { // WPCS: sanitization ok.
+                        $category = isset( $_POST[ $category_name ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $category_name ] ) ) : [];
+                    } else {
+                        $category = isset( $_POST[ $category_name ] ) ? sanitize_text_field( wp_unslash( $_POST[ $category_name ] ) ) : '';
+                    }
+
+                    if ( $category != '' && $category != '0' && $category[0] != '-1' )  {
+                        if ( ! is_array( $category ) && is_string( $category ) ) {
+                            $category_strings = explode( ',', $category );
+                            $cat_ids          = [];
+
+                            foreach ( $category_strings as $key => $each_cat_string ) {
+                                $cat_ids[]                = get_cat_ID( trim( $each_cat_string ) );
+                                $postarr['post_category'] = $cat_ids;
+                            }
+                        } else {
+                            $postarr['post_category'] = $category;
+                        }
+                    }
+                }
+            }
         }
 
         // set default post category if it's not been set yet and if post type supports
@@ -582,9 +604,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             // the user must be logged in already
         } elseif ( isset( $this->form_settings['role_base'] ) && $this->form_settings['role_base'] == 'true' ) {
-            $current_user = wp_get_current_user();
-
-            if ( !in_array( $current_user->roles[0], $this->form_settings['roles'] ) ) {
+            if ( ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) {
                 $this->send_error( __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) );
             }
         } else {
@@ -947,6 +967,14 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
+        if ( isset( $this->form_settings['enable_pay_per_post'] ) && 'true' === $this->form_settings['enable_pay_per_post'] ) {
+            $redirect_to = add_query_arg( [
+                        'action'  => 'wpuf_pay',
+                        'type'    => 'post',
+                        'post_id' => $post_id,
+            ], get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) );
+        }
+
         $response = [
             'success'      => true,
             'redirect_to'  => $redirect_to,
@@ -1016,5 +1044,91 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         }
 
         return $response;
+    }
+
+    /**
+     * Enable edit post link for post authors
+     *
+     * @since 3.4.0
+     *
+     * @param array    $allcaps
+     * @param array    $caps
+     * @param array    $args
+     * @param \WP_User $wp_user
+     *
+     * @return array
+    */
+    public function map_capabilities_for_post_authors( $allcaps, $caps, $args, $wp_user ) {
+        if (
+            empty( $args )
+            || count( $args ) < 3
+            || empty( $caps )
+            || 'edit_post' !== $args[0]
+            || isset( $allcaps[ $caps[0] ] )
+        ) {
+            return $allcaps;
+        }
+
+        $post_id = $args[2];
+        $post    = get_post( $post_id );
+
+        // We'll show edit link only for posts, not page, product or other post types
+        if (
+            empty( $post->post_type )
+            || 'post' !== $post->post_type
+            || ! wpuf_validate_boolean( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) )
+            || ! $this->get_frontend_post_edit_link( $post_id )
+            || absint( $post->post_author ) !== $wp_user->ID
+        ) {
+            return $allcaps;
+        }
+
+        $allcaps['edit_published_posts'] = 1;
+
+        return $allcaps;
+    }
+
+    /**
+     * Filter hook for edit post link
+     *
+     * @since 3.4.0
+     *
+     * @param string $url
+     * @param int    $post_id
+     *
+     * @return string
+    */
+    public function get_edit_post_link( $url, $post_id ) {
+        if ( ! current_user_can( 'manage_options' ) && current_user_can( 'edit_post', $post_id ) ) {
+            $post = get_post( $post_id );
+
+            if ( absint( $post->post_author ) === get_current_user_id() ) {
+                return $this->get_frontend_post_edit_link( $post_id );
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     * Get post edit link
+     *
+     * @since 3.4.0
+     *
+     * @param int $post_id
+     *
+     * @return string
+     */
+    public function get_frontend_post_edit_link( $post_id ) {
+        $edit_page = absint( wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' ) );
+
+        if ( ! $edit_page ) {
+            return '';
+        }
+
+        $url           = add_query_arg( [ 'pid' => $post_id ], get_permalink( $edit_page ) );
+        $edit_page_url = apply_filters( 'wpuf_edit_post_link', $url );
+
+        return wp_nonce_url( $edit_page_url, 'wpuf_edit' );
     }
 }

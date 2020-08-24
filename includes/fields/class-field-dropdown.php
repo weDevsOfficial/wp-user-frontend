@@ -187,7 +187,7 @@ class WPUF_Form_Field_Dropdown extends WPUF_Field_Contract {
         ?>
             <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
                 <?php if ( ! $hide_label ): ?>
-                    <label><?php echo esc_html( $field['label'] ); ?></label>
+                    <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
                 <?php echo esc_html( $field['options'][ $data ] ); ?>
             </li>

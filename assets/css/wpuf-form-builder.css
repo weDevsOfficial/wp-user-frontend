@@ -498,6 +498,10 @@
 #form-preview-stage .field-items .control-buttons i.move {
   cursor: move;
 }
+#form-preview-stage .field-items .control-buttons i.control-button-disabled {
+  opacity: .3;
+  pointer-events: none;
+}
 #form-preview-stage .field-items .control-buttons i:hover {
   background-color: #0073aa;
 }

@@ -1049,7 +1049,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     /**
      * Enable edit post link for post authors
      *
-     * @since WPUF_SINCE
+     * @since 3.4.0
      *
      * @param array    $allcaps
      * @param array    $caps
@@ -1091,7 +1091,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     /**
      * Filter hook for edit post link
      *
-     * @since WPUF_SINCE
+     * @since 3.4.0
      *
      * @param string $url
      * @param int    $post_id
@@ -1113,7 +1113,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     /**
      * Get post edit link
      *
-     * @since WPUF_SINCE
+     * @since 3.4.0
      *
      * @param int $post_id
      *

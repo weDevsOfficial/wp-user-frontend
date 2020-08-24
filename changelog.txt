@@ -1,3 +1,24 @@
+### v3.4.0 (24 August, 2020) ###
+* New - Add post edit link for post authors in single or archive pages
+* Enhancement - Enhance post delete message
+* Tweak - Refactor control buttons visibility in form builder
+* Fix - Add missing colons after field label
+* Fix - Post edit map capability condition
+* Fix - Role based permission for accessing a post form
+* Fix - Section-break field alignment
+* Fix - Pay per post doesn't work if subscription pack is activated
+* Fix - Mime type for uploading JSON files
+* Fix - File upload with same file name
+* Fix - Post preview missing fields
+* Fix - Illigal variable declartion
+* Fix - Featured image updating issue
+* Fix - Conflict with Phlox theme
+* Fix - Textarea custom field data sanitization
+* Fix - exclude_type warning in wpuf_category_checklist
+* Fix - Category field not showing all child categories for selection type child of
+* Fix - Conflict between image and file upload custom fields
+* Fix - Login url when login page is not set
+
 ### v3.3.1 (16 June, 2020) ###
 * Tweak - Use common names for Ivory Coast, North Korea and Sourth Korea instead of their official names
 * Fix - Condition to use default avatar

@@ -578,7 +578,9 @@ class WPUF_Frontend_Render_Form {
                             return $term->term_id;
                         }
 
-                        return null;
+                        $new_term = wp_insert_term( $term_name, $taxonomy['name'] );
+
+                        return $new_term['term_id'];
 
                     }, $terms );
 

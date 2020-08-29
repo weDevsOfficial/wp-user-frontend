@@ -347,6 +347,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             'exclude'           => [],
             'id'                => 0,
             'is_new'            => true,
+            'restriction_type'  => 'character',
         ];
 
         return array_merge( $defaults, $props );

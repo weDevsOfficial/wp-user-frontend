@@ -86,9 +86,10 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                 <?php
                 $this->help_text( $field_settings );
 
-        if ( isset( $field_settings['word_restriction'] ) && $field_settings['word_restriction'] ) {
-            $this->check_word_restriction_func(
-                $field_settings['word_restriction'],
+        if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
+            $this->check_content_restriction_func(
+                $field_settings['content_restriction'],
+                $field_settings['restriction_type'],
                 $field_settings['rich'],
                 $field_settings['name'] . '_' . $form_id
             );
@@ -127,6 +128,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
             'is_new'            => true,
             'show_in_post'      => 'yes',
             'hide_field_label'  => 'no',
+            'restriction_type'  => 'character'
         ];
 
         return array_merge( $defaults, $props );

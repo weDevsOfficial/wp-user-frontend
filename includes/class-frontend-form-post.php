@@ -1099,10 +1099,17 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
      * @return string
     */
     public function get_edit_post_link( $url, $post_id ) {
-        if ( ! current_user_can( 'manage_options' ) && current_user_can( 'edit_post', $post_id ) ) {
-            $post = get_post( $post_id );
+        if (
+            current_user_can( 'edit_post', $post_id )
+            && ! current_user_can( 'administrator' )
+            && ! current_user_can( 'editor' )
+            && ! current_user_can( 'author' )
+            && ! current_user_can( 'contributor' )
+        ) {
+            $post    = get_post( $post_id );
+            $form_id = get_post_meta( $post_id, '_wpuf_form_id', true );
 
-            if ( absint( $post->post_author ) === get_current_user_id() ) {
+            if ( absint( $post->post_author ) === get_current_user_id() && $form_id ) {
                 return $this->get_frontend_post_edit_link( $post_id );
             }
         }

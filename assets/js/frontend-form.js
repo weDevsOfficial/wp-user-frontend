@@ -633,7 +633,7 @@
             var map_required = self.find('[data-required="yes"][name="google_map"]');
             if ( map_required ) {
                 var val = $(map_required).val();
-                if ( val == ',' ) {
+                if ( val == '' ) {
                     error = true;
                     error_type = 'required';
 

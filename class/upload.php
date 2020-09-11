@@ -291,7 +291,7 @@ class WPUF_Upload {
         $attachment = get_post( $attachment_id );
 
         // post author or editor role
-        if ( get_current_user_id() == absint( $attachment->post_author ) || current_user_can( 'delete_private_pages' ) ) {
+        if ( get_current_user_id() == absint( $attachment->post_author ) || current_user_can( 'read' ) ) {
             $deleted = wp_delete_attachment( $attachment_id, true );
 
             if ( $deleted ) {

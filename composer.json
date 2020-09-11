@@ -15,8 +15,11 @@
     "composer/installers": ">=1.4"
   },
   "require-dev": {
-    "automattic/vipwpcs": "dev-master",
-    "dealerdirect/phpcodesniffer-composer-installer": "dev-master"
+    "wp-coding-standards/wpcs": "dev-master",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
+    "tareq1988/wp-php-cs-fixer": "dev-master",
+    "phpcompatibility/phpcompatibility-wp": "dev-master",
+    "phpunit/phpunit": "7.5.9"
   },
   "scripts": {
     "phpcs": [

@@ -27,9 +27,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         add_action( 'wp_ajax_wpuf_form_preview', [ $this, 'preview_form' ] );
         $this->set_wp_post_types();
 
-        // enable post edit link for post authors
-        add_filter( 'user_has_cap', [ $this, 'map_capabilities_for_post_authors' ], 10, 4 );
-        add_filter( 'get_edit_post_link', [ $this, 'get_edit_post_link' ], 10, 3 );
+        // Enable post edit link for post authors in frontend
+        if ( ! is_admin() ) {
+            add_filter( 'user_has_cap', [ $this, 'map_capabilities_for_post_authors' ], 10, 4 );
+            add_filter( 'get_edit_post_link', [ $this, 'get_edit_post_link' ], 10, 3 );
+        }
     }
 
     /**

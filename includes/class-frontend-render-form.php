@@ -574,11 +574,18 @@ class WPUF_Frontend_Render_Form {
                     $terms = array_map( function ( $term_name ) use ( $taxonomy ) {
                         $term = get_term_by( 'name', $term_name, $taxonomy['name'] );
 
-                        if ( $term instanceof WP_Term  ) {
-                            return $term->term_id;
+                        if ( empty( $term_name ) ) {
+                            return null;
                         }
 
-                        return null;
+                        if ( $term instanceof WP_Term  ) {
+                            return $term->term_id;
+
+                        } 
+
+                        $new_term = wp_insert_term( $term_name, $taxonomy['name'] );
+
+                        return $new_term['term_id'];
 
                     }, $terms );
 

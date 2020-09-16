@@ -45,9 +45,9 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
             if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
                 $this->check_content_restriction_func(
                     $field_settings['content_restriction'],
-                    $field_settings['restriction_type'],
                     'no',
-                    $field_settings['name'] . '_' . $form_id
+                    $field_settings['name'] . '_' . $form_id,
+                    $field_settings['restriction_type']
                 );
             }
 
@@ -110,9 +110,9 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
             'name'              => 'post_title',
             'width'             => 'large',
             'size'              => 40,
-            'restriction_type'  => 'character',
             'id'                => 0,
             'is_new'            => true,
+            'restriction_type' => 'character',
         ];
 
         return array_merge( $defaults, $props );

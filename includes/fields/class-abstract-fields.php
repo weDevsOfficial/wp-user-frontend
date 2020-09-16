@@ -877,7 +877,7 @@ abstract class WPUF_Field_Contract {
      *
      * @param $content_limit number of words allowed
      */
-    public function check_content_restriction_func( $content_limit, $limit_type, $rich_text, $field_name ) {
+    public function check_content_restriction_func( $content_limit, $rich_text, $field_name, $limit_type ) {
         // bail out if it is dashboard
         if ( is_admin() ) {
             return;
@@ -885,7 +885,7 @@ abstract class WPUF_Field_Contract {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s", "%s"', esc_attr( $content_limit ), esc_attr( $limit_type ), esc_attr( $field_name ), esc_attr( $rich_text ) ); ?>);
+                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s", "%s"', esc_attr( $content_limit ), esc_attr( $field_name ), esc_attr( $rich_text ), esc_attr( $limit_type ) ); ?>);
                 });
             })(jQuery);
         </script>

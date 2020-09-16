@@ -833,7 +833,7 @@
 
         editorLimit: {
 
-            bind: function(limit, limit_type, field, type) {
+            bind: function(limit, field, type, limit_type) {
                 if ( type === 'no' ) {
                     // it's a textarea
                     $('textarea#' +  field).keydown( function(event) {
@@ -891,7 +891,7 @@
                 onKeyDown: function(ed, event, limit, limit_type) {
 
                     var numWords    = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars,
-                        limit_label = ( 'word' === limit_type ) ? 'Word Limit : ' : 'Character Limit : ';
+                        limit_label        = ( 'word' === limit_type ) ? 'Word Limit : ' : 'Character Limit : ';
 
                     if ( 'word' === limit_type ) {
                         numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words - 1;
@@ -901,7 +901,7 @@
 
                     if ( limit && numWords > limit ) {
                         WP_User_Frontend.editorLimit.blockTyping(event);
-                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend.word_limit );
+                        jQuery('.mce-path-item.mce-last', ed.container).html( WP_User_Frontend.content_limit_message( limit_type ) );
                     }
                 },
 
@@ -925,7 +925,7 @@
                     }
 
                 if ( limit && content.length > limit ) {
-                    self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( wpuf_frontend.word_limit );
+                    self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( WP_User_Frontend.content_limit_message( limit_type ) );
                     WP_User_Frontend.editorLimit.blockTyping(event);
                 } else {
                     self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
@@ -971,6 +971,10 @@
 
         doUncheckRadioBtn: function ( el ) {
             el.checked = false;
+        },
+
+        content_limit_message: function( content_limit_type ) {
+            return ( 'word' === content_limit_type ) ? 'Word limit reached.' : 'Character limit reached.';
         }
     };
 

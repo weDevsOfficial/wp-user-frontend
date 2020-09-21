@@ -362,7 +362,7 @@ class WPUF_Simple_Login {
                 case 'lostpassword':
                     $checkemail = isset( $getdata['checkemail'] ) ? sanitize_text_field( $getdata['checkemail'] ) : '';
 
-                    if ( $checkemail === 'confirm' ) {
+                    if ( 'confirm' === $checkemail ) {
                         $this->messages[] = __( 'Check your e-mail for the confirmation link.', 'wp-user-frontend' );
                     }
 

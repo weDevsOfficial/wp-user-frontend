@@ -374,7 +374,7 @@ abstract class WPUF_Field_Contract {
      *
      * @return array
      */
-    public function get_default_taxonomy_option_setttings( $word_restriction = false, $tax_name ) {
+    public function get_default_taxonomy_option_setttings( $content_restriction = false, $tax_name ) {
         $properties = [
             [
                 'name'      => 'type',
@@ -496,16 +496,34 @@ abstract class WPUF_Field_Contract {
             ],
         ];
 
-        if ( $word_restriction ) {
-            $properties[] = [
-                'name'      => 'word_restriction',
-                'title'     => __( 'Word Restriction', 'wp-user-frontend' ),
-                'type'      => 'text',
-                'section'   => 'advanced',
-                'priority'  => 15,
-                'help_text' => __( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ),
-            ];
+        
+        if ( $content_restriction ) {
+            $properties = array_merge( $properties, [
+                [
+                    'name'      => 'restriction_type',
+                    'title'     => __( 'Content restricted by', 'wp-user-frontend' ),
+                    'type'      => 'radio',
+                    'options'   => [
+                        'character'  => __( 'Character', 'wp-user-frontend' ),
+                        'word'       => __( 'Word', 'wp-user-frontend' ),
+                    ],
+                    'section'   => 'advanced',
+                    'priority'  => 15,
+                    'inline'    => true,
+                    'default'   => 'character',
+                ],
+    
+                [
+                    'name'      => 'content_restriction',
+                    'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
+                    'type'      => 'text',
+                    'section'   => 'advanced',
+                    'priority'  => 16,
+                    'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
+                ],
+            ] );
         }
+        
 
         return apply_filters( 'wpuf-form-builder-common-taxonomy-fields-properties', $properties );
     }
@@ -513,11 +531,11 @@ abstract class WPUF_Field_Contract {
     /**
      * Common properties of a text input field
      *
-     * @param bool $word_restriction
+     * @param bool $content_restriction
      *
      * @return array
      */
-    public static function get_default_text_option_settings( $word_restriction = false ) {
+    public static function get_default_text_option_settings( $content_restriction = false ) {
         $properties = [
             [
                 'name'      => 'placeholder',
@@ -552,15 +570,31 @@ abstract class WPUF_Field_Contract {
             ],
         ];
 
-        if ( $word_restriction ) {
-            $properties[] = [
-                'name'      => 'word_restriction',
-                'title'     => __( 'Word Restriction', 'wp-user-frontend' ),
-                'type'      => 'text',
-                'section'   => 'advanced',
-                'priority'  => 15,
-                'help_text' => __( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ),
-            ];
+        if ( $content_restriction ) {
+            $properties = array_merge( $properties, [
+                [
+                    'name'      => 'restriction_type',
+                    'title'     => __( 'Content restricted by', 'wp-user-frontend' ),
+                    'type'      => 'radio',
+                    'options'   => [
+                        'character' => __( 'Character', 'wp-user-frontend' ),
+                        'word'      => __( 'Word', 'wp-user-frontend' ),
+                    ],
+                    'section'   => 'advanced',
+                    'priority'  => 15,
+                    'inline'    => true,
+                    'default'   => 'character',
+                ],
+    
+                [
+                    'name'      => 'content_restriction',
+                    'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
+                    'type'      => 'text',
+                    'section'   => 'advanced',
+                    'priority'  => 16,
+                    'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
+                ],
+            ] );
         }
 
         return apply_filters( 'wpuf-form-builder-common-text-fields-properties', $properties );
@@ -646,12 +680,26 @@ abstract class WPUF_Field_Contract {
             ],
 
             [
-                'name'      => 'word_restriction',
-                'title'     => __( 'Word Restriction', 'wp-user-frontend' ),
-                'type'      => 'text',
+                'name'      => 'restriction_type',
+                'title'     => __( 'Content restricted by', 'wp-user-frontend' ),
+                'type'      => 'radio',
+                'options'   => [
+                    'character'  => __( 'Character', 'wp-user-frontend' ),
+                    'word'       => __( 'Word', 'wp-user-frontend' ),
+                ],
                 'section'   => 'advanced',
                 'priority'  => 15,
-                'help_text' => __( 'Number of words the author to be restricted in', 'wp-user-frontend' ),
+                'inline'    => true,
+                'default'   => 'character',
+            ],
+
+            [
+                'name'      => 'content_restriction',
+                'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
+                'type'      => 'text',
+                'section'   => 'advanced',
+                'priority'  => 16,
+                'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
             ],
         ];
     }
@@ -811,26 +859,6 @@ abstract class WPUF_Field_Contract {
     }
 
     /**
-     * Function to check word restriction
-     *
-     * @param $word_nums number of words allowed
-     */
-    public function check_word_restriction_func( $word_nums, $rich_text, $field_name ) {
-        // bail out if it is dashboard
-        if ( is_admin() ) {
-            return;
-        } ?>
-        <script type="text/javascript">
-            ;(function($) {
-                $(document).ready( function(){
-                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s"', esc_attr( $word_nums ), esc_attr( $field_name ), esc_attr( $rich_text ) ); ?>);
-                });
-            })(jQuery);
-        </script>
-        <?php
-    }
-
-    /**
      * wpuf_visibility property for all fields
      *
      * @since 2.6
@@ -842,5 +870,25 @@ abstract class WPUF_Field_Contract {
             'selected'         => $default,
             'choices'          => [],
         ];
+    }
+
+    /**
+     * Function to check character or word restriction
+     *
+     * @param $content_limit number of words allowed
+     */
+    public function check_content_restriction_func( $content_limit, $rich_text, $field_name, $limit_type ) {
+        // bail out if it is dashboard
+        if ( is_admin() ) {
+            return;
+        } ?>
+        <script type="text/javascript">
+            ;(function($) {
+                $(document).ready( function(){
+                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s", "%s"', esc_attr( $content_limit ), esc_attr( $field_name ), esc_attr( $rich_text ), esc_attr( $limit_type ) ); ?>);
+                });
+            })(jQuery);
+        </script>
+        <?php
     }
 }

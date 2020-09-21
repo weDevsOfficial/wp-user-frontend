@@ -101,12 +101,13 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
         <?php
         $this->help_text( $field_settings );
 
-        if ( isset( $field_settings['word_restriction'] ) && $field_settings['word_restriction'] ) {
-            $this->check_word_restriction_func(
-            $field_settings['word_restriction'],
-            $field_settings['rich'],
-            $field_settings['name'] . '_' . $form_id
-         );
+        if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
+            $this->check_content_restriction_func(
+                $field_settings['content_restriction'],
+                $field_settings['rich'],
+                $field_settings['name'] . '_' . $form_id,
+                $field_settings['restriction_type']
+            );
         } ?>
         </li>
         <?php
@@ -145,14 +146,15 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
         $defaults = $this->default_attributes();
 
         $props    = [
-            'input_type' => 'textarea',
-            'is_meta'    => 'no',
-            'name'       => 'post_content',
-            'rows'       => 5,
-            'cols'       => 25,
-            'rich'       => 'yes',
-            'id'         => 0,
-            'is_new'     => true,
+            'input_type'       => 'textarea',
+            'is_meta'          => 'no',
+            'name'             => 'post_content',
+            'rows'             => 5,
+            'cols'             => 25,
+            'rich'             => 'yes',
+            'id'               => 0,
+            'is_new'           => true,
+            'restriction_type' => 'character',
         ];
 
         return array_merge( $defaults, $props );

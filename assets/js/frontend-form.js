@@ -890,8 +890,8 @@
 
                 onKeyDown: function(ed, event, limit, limit_type) {
 
-                    var numWords    = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars,
-                        limit_label        = ( 'word' === limit_type ) ? 'Word Limit : ' : 'Character Limit : ';
+                    var numWords    = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars + 1,
+                        limit_label = ( 'word' === limit_type ) ? 'Word Limit : ' : 'Character Limit : ';
 
                     if ( 'word' === limit_type ) {
                         numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words - 1;
@@ -918,13 +918,13 @@
 
             textLimit: function(event, limit, limit_type) {
                 var self = $(this),
-                    content = self.val();
+                    content_length = self.val().length + 1;
 
                     if ( 'word' === limit_type ) {
-                        content = self.val().split(' ');   
+                        content_length = self.val().split(' ').length;   
                     }
 
-                if ( limit && content.length > limit ) {
+                if ( limit && content_length > limit ) {
                     self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( WP_User_Frontend.content_limit_message( limit_type ) );
                     WP_User_Frontend.editorLimit.blockTyping(event);
                 } else {

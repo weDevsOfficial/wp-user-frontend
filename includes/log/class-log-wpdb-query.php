@@ -3,7 +3,7 @@
 /**
  * WPDB query logger
  *
- * @since WPUF_SINCE
+ * @since 3.5.0
  *
  * Log wpdb query using the stop and end methods. Log queries between
  * two points of execution. Start logging with `wpuf()->log->wpdb_query->start( 'some_id ).
@@ -22,7 +22,7 @@ class WPUF_Log_WPDB_Query {
     /**
      * Handle dynamic filter hook for log_query_custom_data tag
      *
-     * @since WPUF_SINCE
+     * @since 3.5.0
      *
      * @param string $name
      * @param array  $arguments
@@ -40,7 +40,7 @@ class WPUF_Log_WPDB_Query {
     /**
      * Store the query log
      *
-     * @since WPUF_SINCE
+     * @since 3.5.0
      *
      * @param string $id
      * @param array  $query_data
@@ -64,7 +64,7 @@ class WPUF_Log_WPDB_Query {
     /**
      * Start logging wpdb query
      *
-     * @since WPUF_SINCE
+     * @since 3.5.0
      *
      * @param string $id
      *
@@ -87,7 +87,7 @@ class WPUF_Log_WPDB_Query {
     /**
      * Stop or finish logging wpdb query
      *
-     * @since WPUF_SINCE
+     * @since 3.5.0
      *
      * @param string $id
      *

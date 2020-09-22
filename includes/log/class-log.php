@@ -12,7 +12,7 @@ class WPUF_Log {
     /**
      * Class constructor
      *
-     * @since WPUF_SINCE
+     * @since 3.5.0
      */
     public function __construct() {
         $this->wpdb_query = new WPUF_Log_WPDB_Query();

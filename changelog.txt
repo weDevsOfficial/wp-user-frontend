@@ -1,3 +1,12 @@
+### v3.5.0 (22 September, 2020) ###
+* New - Add character restriction feature
+* Tweak - Make sure post author edit link works only in frontend
+* Fix - Inconsistency in lost password reset email message
+* Fix - Saving custom taxonomy terms when input type is text
+* Fix - Taxonomy field JS error in builder
+* Fix - Showing WPUF edit link for WP default roles
+* Fix - Upload button unresponsive issue in iOS
+
 ### v3.4.0 (24 August, 2020) ###
 * New - Add post edit link for post authors in single or archive pages
 * Enhancement - Enhance post delete message

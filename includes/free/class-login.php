@@ -360,8 +360,15 @@ class WPUF_Simple_Login {
 
             switch ( $action ) {
                 case 'lostpassword':
+                    $checkemail = isset( $getdata['checkemail'] ) ? sanitize_text_field( $getdata['checkemail'] ) : '';
 
-                    $this->messages[] = __( 'Please enter your username or email address. You will receive a link to create a new password via email.', 'wp-user-frontend' );
+                    if ( 'confirm' === $checkemail ) {
+                        $this->messages[] = __( 'Check your e-mail for the confirmation link.', 'wp-user-frontend' );
+                    }
+
+                    if ( ! $checkemail ) {
+                        $this->messages[] = __( 'Please enter your username or email address. You will receive a link to create a new password via email.', 'wp-user-frontend' );
+                    }
 
                     wpuf_load_template( 'lost-pass-form.php', $args );
                     break;
@@ -382,13 +389,7 @@ class WPUF_Simple_Login {
                     break;
 
                 default:
-                    $checkemail = isset( $getdata['checkemail'] ) ? sanitize_email( $getdata['checkemail'] ) : '';
-
                     $loggedout = isset( $getdata['loggedout'] ) ? sanitize_text_field( $getdata['loggedout'] ) : '';
-
-                    if ( $checkemail == 'confirm' ) {
-                        $this->messages[] = __( 'Check your e-mail for the confirmation link.', 'wp-user-frontend' );
-                    }
 
                     if ( $loggedout == 'true' ) {
                         $this->messages[] = __( 'You are now logged out.', 'wp-user-frontend' );
@@ -612,7 +613,7 @@ class WPUF_Simple_Login {
             wp_verify_nonce( $nonce, 'wpuf_lost_pass' );
 
             if ( $this->retrieve_password() ) {
-                $url = add_query_arg( [ 'checkemail' => 'confirm' ], $this->get_login_url() );
+                $url = add_query_arg( [ 'action' => 'lostpassword', 'checkemail' => 'confirm' ], $this->get_login_url() );
                 wp_redirect( $url );
                 exit;
             }

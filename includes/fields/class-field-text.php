@@ -49,13 +49,13 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
             </div>
 
             <?php
-
-            if ( isset( $field_settings['word_restriction'] ) && $field_settings['word_restriction'] ) {
-                $this->check_word_restriction_func(
-                    $field_settings['word_restriction'],
+            if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
+                $this->check_content_restriction_func(
+                    $field_settings['content_restriction'],
                     'no',
-                    $field_settings['name'] . '_' . $form_id
-                 );
+                    $field_settings['name'] . '_' . $form_id,
+                    $field_settings['restriction_type']
+                );
             }
 
         $mask_option = isset( $field_settings['mask_options'] ) ? $field_settings['mask_options'] : '';
@@ -127,6 +127,7 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
             'is_new'            => true,
             'show_in_post'      => 'yes',
             'hide_field_label'  => 'no',
+            'restriction_type'  =>  'character'
         ];
 
         return array_merge( $defaults, $props );

@@ -86,11 +86,12 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
                 <?php
                 $this->help_text( $field_settings );
 
-        if ( isset( $field_settings['word_restriction'] ) && $field_settings['word_restriction'] ) {
-            $this->check_word_restriction_func(
-                $field_settings['word_restriction'],
+        if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
+            $this->check_content_restriction_func(
+                $field_settings['content_restriction'],
                 $field_settings['rich'],
-                $field_settings['name'] . '_' . $form_id
+                $field_settings['name'] . '_' . $form_id,
+                $field_settings['restriction_type']
             );
         } ?>
         </li>
@@ -126,6 +127,7 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
             'rich'             => 'no',
             'id'               => 0,
             'is_new'           => true,
+            'restriction_type' => 'character',
         ];
 
         return array_merge( $defaults, $props );

@@ -833,22 +833,22 @@
 
         editorLimit: {
 
-            bind: function(limit, field, type) {
+            bind: function(limit, field, type, limit_type) {
                 if ( type === 'no' ) {
                     // it's a textarea
                     $('textarea#' +  field).keydown( function(event) {
-                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit);
+                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit, limit_type);
                     });
 
                     $('input#' +  field).keydown( function(event) {
-                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit);
+                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit, limit_type);
                     });
 
                     $('textarea#' +  field).on('paste', function(event) {
                         var self = $(this);
 
                         setTimeout(function() {
-                            WP_User_Frontend.editorLimit.textLimit.call(self, event, limit);
+                            WP_User_Frontend.editorLimit.textLimit.call(self, event, limit, limit_type);
                         }, 100);
                     });
 
@@ -856,7 +856,7 @@
                         var self = $(this);
 
                         setTimeout(function() {
-                            WP_User_Frontend.editorLimit.textLimit.call(self, event, limit);
+                            WP_User_Frontend.editorLimit.textLimit.call(self, event, limit, limit_type);
                         }, 100);
                     });
 
@@ -864,12 +864,12 @@
                     // it's a rich textarea
                     setTimeout(function () {
                         tinyMCE.get(field).onKeyDown.add(function(ed, event) {
-                            WP_User_Frontend.editorLimit.tinymce.onKeyDown(ed, event, limit);
+                            WP_User_Frontend.editorLimit.tinymce.onKeyDown(ed, event, limit, limit_type);
                         } );
 
                         tinyMCE.get(field).onPaste.add(function(ed, event) {
                             setTimeout(function() {
-                                WP_User_Frontend.editorLimit.tinymce.onPaste(ed, event, limit);
+                                WP_User_Frontend.editorLimit.tinymce.onPaste(ed, event, limit, limit_type);
                             }, 100);
                         });
 
@@ -888,14 +888,20 @@
                     };
                 },
 
-                onKeyDown: function(ed, event, limit) {
-                    var numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words - 1;
+                onKeyDown: function(ed, event, limit, limit_type) {
 
-                    limit ? $('.mce-path-item.mce-last', ed.container).html('Word Limit : '+ numWords +'/'+limit):'';
+                    var numWords    = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars + 1,
+                        limit_label = ( 'word' === limit_type ) ? 'Word Limit : ' : 'Character Limit : ';
+
+                    if ( 'word' === limit_type ) {
+                        numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words - 1;
+                    }
+                    
+                    limit ? $('.mce-path-item.mce-last', ed.container).html( limit_label + numWords +'/'+limit):'';
 
                     if ( limit && numWords > limit ) {
                         WP_User_Frontend.editorLimit.blockTyping(event);
-                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend.word_limit );
+                        jQuery('.mce-path-item.mce-last', ed.container).html( WP_User_Frontend.content_limit_message( limit_type ) );
                     }
                 },
 
@@ -910,12 +916,16 @@
                 }
             },
 
-            textLimit: function(event, limit) {
+            textLimit: function(event, limit, limit_type) {
                 var self = $(this),
-                    content = self.val().split(' ');
+                    content_length = self.val().length + 1;
 
-                if ( limit && content.length > limit ) {
-                    self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( wpuf_frontend.word_limit );
+                    if ( 'word' === limit_type ) {
+                        content_length = self.val().split(' ').length;   
+                    }
+
+                if ( limit && content_length > limit ) {
+                    self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( WP_User_Frontend.content_limit_message( limit_type ) );
                     WP_User_Frontend.editorLimit.blockTyping(event);
                 } else {
                     self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
@@ -923,7 +933,11 @@
 
                 // handle the paste event
                 if ( event.type === 'paste' ) {
-                    self.val( content.slice(0, limit).join( ' ' ) );
+                    self.val( content.substring( 0, limit) );
+
+                    if ( 'word' === limit_type ) {
+                        self.val( content.slice(0, limit).join( ' ' ) );
+                    }
                 }
             },
 
@@ -957,6 +971,10 @@
 
         doUncheckRadioBtn: function ( el ) {
             el.checked = false;
+        },
+
+        content_limit_message: function( content_limit_type ) {
+            return ( 'word' === content_limit_type ) ? 'Word limit reached.' : 'Character limit reached.';
         }
     };
 

@@ -749,10 +749,10 @@
 <script type="text/x-template" id="tmpl-wpuf-form-taxonomy">
 <div class="wpuf-fields">
     <select
+        v-if="'select' === field.type"
         :class="field.name"
         v-html ="get_term_dropdown_options()"
-    >
-    </select>
+    />
 
     <div v-if="'ajax' === field.type" class="category-wrap">
         <div>
@@ -776,11 +776,10 @@
         <div v-if="'yes' === field.show_inline" class="category-wrap">
             <div v-html="get_term_checklist_inline()"></div>
         </div>
-        <div v-else-if="'no' === field.show_inline" class="category-wrap">
+        <div v-else class="category-wrap">
             <div v-html="get_term_checklist()"></div>
         </div>
     </div>
-
 
     <input
         v-if="'text' === field.type"
@@ -790,7 +789,6 @@
         size="40"
         autocomplete="off"
     >
-
     <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>

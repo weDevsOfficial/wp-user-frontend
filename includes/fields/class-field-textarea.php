@@ -70,7 +70,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                     ?>
                     <textarea
                         class="textareafield <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
-                        id="<?php  esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
+                        id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
                         name="<?php echo esc_attr( $field_settings['name'] ); ?>"
                         data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                         data-type="textarea"
@@ -85,12 +85,14 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
 
                 <?php
                 $this->help_text( $field_settings );
-
-        if ( isset( $field_settings['word_restriction'] ) && $field_settings['word_restriction'] ) {
-            $this->check_word_restriction_func(
-                $field_settings['word_restriction'],
-                $field_settings['rich'],
-                $field_settings['name'] . '_' . $form_id
+        error_log(print_r($field_settings, true));
+        
+        if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
+            $this->check_content_restriction_func(
+                $field_settings['content_restriction'],
+                'no',
+                $field_settings['name'] . '_' . $form_id,
+                $field_settings['restriction_type']
             );
         } ?>
 
@@ -127,6 +129,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
             'is_new'            => true,
             'show_in_post'      => 'yes',
             'hide_field_label'  => 'no',
+            'restriction_type'  => 'character'
         ];
 
         return array_merge( $defaults, $props );

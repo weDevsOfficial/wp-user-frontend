@@ -246,6 +246,10 @@ Vue.component('field-multiselect', {
             },
 
             set: function (value) {
+                if ( ! value ) {
+                    value = [];
+                }
+
                 this.$store.commit('update_editing_form_field', {
                     editing_field_id: this.editing_form_field.id,
                     field_name: this.option_field.name,
@@ -1436,9 +1440,10 @@ Vue.component('form-taxonomy', {
 
             // selection type and terms
             if (this.field.exclude_type && this.field.exclude) {
+                var filter_ids = [];
 
-                if ( this.field.exclude.length > 1 ) {
-                    var filter_ids = this.field.exclude.split(',').map(function (id) {
+                if ( this.field.exclude.length > 0 ) {
+                    filter_ids = this.field.exclude.map(function (id) {
                         id = id.trim();
                         id = parseInt(id);
                         return id;
@@ -1538,7 +1543,6 @@ Vue.component('form-taxonomy', {
         get_term_checklist: function () {
             var self      = this,
                 checklist = '';
-
 
             checklist += '<ul class="wpuf-category-checklist">';
 

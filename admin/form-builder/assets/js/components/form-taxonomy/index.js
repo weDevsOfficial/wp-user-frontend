@@ -33,9 +33,10 @@ Vue.component('form-taxonomy', {
 
             // selection type and terms
             if (this.field.exclude_type && this.field.exclude) {
+                var filter_ids = [];
 
-                if ( this.field.exclude.length > 1 ) {
-                    var filter_ids = this.field.exclude.split(',').map(function (id) {
+                if ( this.field.exclude.length > 0 ) {
+                    filter_ids = this.field.exclude.map(function (id) {
                         id = id.trim();
                         id = parseInt(id);
                         return id;
@@ -135,7 +136,6 @@ Vue.component('form-taxonomy', {
         get_term_checklist: function () {
             var self      = this,
                 checklist = '';
-
 
             checklist += '<ul class="wpuf-category-checklist">';
 

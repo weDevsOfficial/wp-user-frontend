@@ -1,7 +1,7 @@
 # WP User Frontend - Membership, Profile, Registration & Post Submission Plugin for WordPress #
 **Contributors:** [tareq1988](https://profiles.wordpress.org/tareq1988), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu), [wedevs](https://profiles.wordpress.org/wedevs)  
 **Donate link:** https://tareq.co/donate/  
-**Tags:** Forms, registration, profile-builder, login, membership  
+**Tags:** Forms, registration, profile-builder, login, membership, frontend post  
 **Requires at least:** 4.0  
 **Tested up to:** 5.5  
 **Requires PHP:** 5.6  
@@ -182,7 +182,7 @@ Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the FREE & P
 Check out the <a href="https://wedevs.com/wp-user-frontend-pro/pricing/">full feature list and pricing plans here.</a> of the Pro version.
 
 ### Checkout Our Other Products ###
-* [weForms - Best Contact Form Plugin](https://wordpress.org/plugins/weforms/)
+* [ReCaptcha Integration for WordPress](https://wordpress.org/plugins/wp-recaptcha-integration/)
 * [WP ERP](https://wperp.com/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+ERP)
 * [Dokan - Multivendor Plugin](https://wedevs.com/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
 * [WP Project Manager](https://wedevs.com/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)

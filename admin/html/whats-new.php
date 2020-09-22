@@ -1,6 +1,40 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.0',
+        'released' => '2020-09-22',
+        'changes'  => [
+            [
+                'title' => __( 'Add character restriction feature', 'wp-user-frontend' ),
+                'type'  => 'New',
+            ],
+            [
+                'title' => __( 'Make sure post author edit link works only in frontend', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => __( 'Inconsistency in lost password reset email message', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Saving custom taxonomy terms when input type is text', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Taxonomy field JS error in builder', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Showing WPUF edit link for WP default roles', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Upload button unresponsive issue in iOS', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],    
+    [
         'version'  => 'Version 3.4.0',
         'released' => '2020-08-24',
         'changes'  => [

@@ -1,7 +1,7 @@
 <?php
 $changelog = [
     [
-        'version'  => 'Version 3.5.0',
+        'version'  => 'Version 3.5.2',
         'released' => '2020-09-22',
         'changes'  => [
             [

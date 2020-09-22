@@ -1,4 +1,7 @@
-### v3.5.0 (22 September, 2020) ###
+= v3.5.1 (22 September, 2020) =
+* Fix - Changelog.txt for wordpress.org
+
+= v3.5.0 (22 September, 2020) =
 * New - Add character restriction feature
 * Tweak - Make sure post author edit link works only in frontend
 * Fix - Inconsistency in lost password reset email message
@@ -7,7 +10,7 @@
 * Fix - Showing WPUF edit link for WP default roles
 * Fix - Upload button unresponsive issue in iOS
 
-### v3.4.0 (24 August, 2020) ###
+= v3.4.0 (24 August, 2020) =
 * New - Add post edit link for post authors in single or archive pages
 * Enhancement - Enhance post delete message
 * Tweak - Refactor control buttons visibility in form builder
@@ -28,7 +31,7 @@
 * Fix - Conflict between image and file upload custom fields
 * Fix - Login url when login page is not set
 
-### v3.3.1 (16 June, 2020) ###
+= v3.3.1 (16 June, 2020) =
 * Tweak - Use common names for Ivory Coast, North Korea and Sourth Korea instead of their official names
 * Fix - Condition to use default avatar
 * Fix - Make Email and URL fields clickable
@@ -37,7 +40,7 @@
 * Fix - Missing colon to email, URL, text and textarea labels when renders their data
 * Fix - Prevent showing empty labels for fields that have render_field_data method
 
-### v3.3.0 (11 June, 2020) ###
+= v3.3.0 (11 June, 2020) =
 * Enhancement - Add Namibian Dollar in currency list
 * Enhancement - Add sync values option for option data fields
 * Tweak - Allow uploading image that having filesize meets php ini settings
@@ -60,7 +63,7 @@
 * Fix - Implementing default WP login page override option
 * Fix - Transparent background of autosuggestion dropdown
 
-### v3.2.0 (14 April, 2020) ###
+= v3.2.0 (14 April, 2020) =
 * **Improvement:** Import forms system
 * **Improvement:** Password reset system
 * **Improvement:** Updated url validation regex to support modern tlds
@@ -73,7 +76,7 @@
 * **Fix** A regression regarding saving checkbox data
 * **Fix** Default value of multi-select fields is not showing
 
-### v3.1.18 (13 March, 2020) ###
+= v3.1.18 (13 March, 2020) =
 * **Improvement:** Hide post edit option when subscription is expired
 * **Improvement:** Check files to prevent duplicity in media upload
 * **Improvement:** Added Jordanian Dinar to currency list
@@ -107,21 +110,21 @@
 * **Fix:** Checkbox data not saving from WPUF Custom Fields metabox
 * **Fix:** Workaround for The Events Calendar venue and organizer fields in metabox
 
-### v3.1.17 (31 January, 2020) ###
+= v3.1.17 (31 January, 2020) =
 * **Fix:** some regressions after phpcs fixes
 
-### v3.1.16 (17 January, 2020) ###
+= v3.1.16 (17 January, 2020) =
 * **Fix:** Photo insert option in content editor
 * **Fix:** Subscription page is not showing the content/package description as formatted content
 * **Fix:** Predefined form is not saving on the WPUF form page's backend area
 * **Fix:** WPUF Custom HTML field is not saving the data
 * **Improve:** Improve Code Quality
 
-### v3.1.15 (14 January, 2020) ###
+= v3.1.15 (14 January, 2020) =
 * **Fix:** update url validation
 * **Tweak:** Added privacy policy info in setup wizard for admin
 
-### v3.1.14 (13 December, 2019) ###
+= v3.1.14 (13 December, 2019) =
 
 * **Fix:** Fixed a warning while in block editor
 * **Fix:** Add better URL validation
@@ -129,7 +132,7 @@
 * **Fix:** Notification Checkbox not working
 * **Fix:** Fixed some Column field issues
 
-### v3.1.13 (18 November, 2019) ###
+= v3.1.13 (18 November, 2019) =
 
 * **New:** Added Arabic translations.
 * **Fix:** Free subscription info was not showing in dashboard.
@@ -138,11 +141,11 @@
 * **Fix:** Guest post hook was not working properly. Closes #704
 * **Fix:** Fixed missing default value for post content rich text editor. Closes #730
 
-### v3.1.12 (17 October, 2019) ###
+= v3.1.12 (17 October, 2019) =
 
 * **Fix:** Nonce not verify on login
 
-### v3.1.11 (02 October, 2019) ###
+= v3.1.11 (02 October, 2019) =
 
 * **Feature:** Option to set which tab shows as active on the account page.
 * **Fix:** Unlock option was unavailable after the post being locked.
@@ -151,12 +154,12 @@
 * **Enhancement:** Add shortcode support to display post information in the Post Expiration Message.
 * **Enhancement:** Add Appsero option checkbox on the setup wizard.
 
-### v3.1.10 (06 September, 2019) ###
+= v3.1.10 (06 September, 2019) =
 
 * **Fix:** Posts were not assigned to the selected default post owner.
 * **Fix:** Google reCaptcha was not working, users could submit the form without reCaptcha validation.
 
-### v3.1.9 (22 July, 2019) ###
+= v3.1.9 (22 July, 2019) =
 
 * **Fix:** call_user_func_array() error while editing or add a new post from admin panel.
 * **Fix:** Address fields on payment page were not checking which fields are optional.
@@ -165,7 +168,7 @@
 * **Fix:** Login page was including registration page link even when user registration was turned off.
 * **Fix:** Notification emails were not respecting the spaces.
 
-### v3.1.8 (26 June, 2019) ###
+= v3.1.8 (26 June, 2019) =
 
 * **Fix:** Multistep form was scrolling to the top of the browser instead of moving to the top of the form when clicking on `Next` or `Previous` button.
 * **Fix:** Uploaded images were not showing in the ACF gallery field.
@@ -173,7 +176,7 @@
 * **Fix:** Added translation functions to the missing strings.
 * **Fix:** Dependency styles error of Gutenblock-editor.css.
 
-### v3.1.7 (31 May, 2019) ###
+= v3.1.7 (31 May, 2019) =
 
 * **Fix:** check for 'button_label' existence before using it.
 * **Fix:** after accepting bank payment, post status was not changing.
@@ -181,7 +184,7 @@
 * **Fix:** fix PHP warning.
 * **Improvement:** added `Select Country` text for billing address country field.
 
-### v3.1.6 (23 May, 2019) ###
+= v3.1.6 (23 May, 2019) =
 
 * **Fix:** URL field empty value was not saving.
 * **Fix:** Custom taxonomy field empty data were not updating.
@@ -189,24 +192,24 @@
 * **Improvement:** Added active class to account page menu items.
 * **Improvement:** Responsive frontend pages.
 
-### v3.1.5 (02 May, 2019) ###
+= v3.1.5 (02 May, 2019) =
 
 * **Fix:** Conflict weDevs insight library with WP Project Manager plugin.
 
-### v3.1.4 (02 May, 2019) ###
+= v3.1.4 (02 May, 2019) =
 
 * **Fix:** Category field data were not being saved when conditional logic is applied to custom taxonomy fields based on category field.
 * **Fix:** While editing the checkbox values from the backend user profile page, the values were not being saved.
 * **Fix:** While editing profile, using the default profile form, the password strength indicator didn't respond.
 * **Fix:** Insights data were not being sent.
 
-### v3.1.3 (15 April, 2019) ###
+= v3.1.3 (15 April, 2019) =
 
 * **Fix:** Required option of checkbox field was not validating on the frontend.
 * **Fix:** Select mulitple options in checkbox field doesn't save the data.
 * **Fix:** Fallback pay per post was not respecting the payment procedure & fallback cost was not correct on the payment page.
 
-### v3.1.2 (01 April, 2019) ###
+= v3.1.2 (01 April, 2019) =
 
 * **Feature:** Added column field: Now, creating multi-column in a single row is super easy with WPUF Column field. Just drag the column field in the builder area, configure columns number, column space and add any fields you want inside that Column field.
 * **Fix:** Unable to render the events on the front-end: On the frontend dashboard, the submitted events were not showing, you will get it fixed in this version.
@@ -216,7 +219,7 @@
 * **Fix:** The args parameter not working with get_avatar filter: The args parameter did not exist with get_avatar filter, which now exists.
 * **Fix:** The item in ajax taxonomy field is not selected: When the taxonomy field type is set to Ajax, the submitted terms were not showing in the backend and frontend which have been fixed.
 
-### v3.1.1 (28 February, 2019) ###
+= v3.1.1 (28 February, 2019) =
 
 * **Fix:** Help text in the Category field were not displaying on the frontend.
 * **Fix:** Category was not editable when editing the post from the frontend.
@@ -226,7 +229,7 @@
 * **Fix:** Checkboxes were not linking/syncing with ACF field.
 * **Fix:** Publish time input option in the Date/Time field, was not working.
 
-### v3.1.0 (31 January, 2019) ###
+= v3.1.0 (31 January, 2019) =
 
 * **Fix:** The Default registration form `[wpuf-registration]` was unable to send the new user registration email.
 * **Fix:** With the latest version of WordPress the Gutenberg block of WP User Frontend were not working. Fixed in this version.
@@ -235,28 +238,28 @@
 * **Fix:** WP User Frontend was unable to install with PHP 5.4 or lower version.
 * **Fix:** When a user uploaded single image for product gallery using WPUF WooCommerce product form, that image was not showing on the frontend.
 
-### v3.0.2 (1 January, 2019) ###
+= v3.0.2 (1 January, 2019) =
 
 * **Feature:** Added post lock feature based on posts and user
 * **Fix:** 'show directions' link doesn't show with the google map on submitted post
 * **Fix:** Subscription pack price not formatting according to the settings
 * **Fix:** Post date is not updating when enable time input option for date field
 
-### v3.0.1 (5 December, 2018) ###
+= v3.0.1 (5 December, 2018) =
 
 * **Fix:** Image is duplicating
 
-### v3.0.0 (4 December, 2018) ###
+= v3.0.0 (4 December, 2018) =
 
 * **New:** Integrated WC Marketplace plugin: vendor can submit post from their frontend dashboard
 * **New:** Integrated WC Vendors plugin: vendor can submit post from their frontend dashboard
 * **Fix:** Post is getting duplicate while updating
 
-### v2.9.4 (20 November, 2018) ###
+= v2.9.4 (20 November, 2018) =
 
 * **Fix:** WooCommerce Gallery images not getting saved
 
-### v2.9.3 (02 November, 2018) ###
+= v2.9.3 (02 November, 2018) =
 
 * **Fix:** NoCaptcha reCaptcha compatibility issue
 * **Fix:** Empty URL field label showing with the post on frontend
@@ -265,18 +268,18 @@
 * **New:** Added SweetAlert pop up box for image delete & subscription cancel confirmaton
 * **Improved:** Showing user display name instead of username on the frontend dashboard
 
-### v2.9.2 (20 September, 2018) ###
+= v2.9.2 (20 September, 2018) =
 
 * **Fix:** Delete & drag icon showing inappropriately
 * **Fix:** Custom fields data not showing on the frontend when different conditional logic apply based on same field with different options
 
-### v2.9.1 (18 August, 2018) ###
+= v2.9.1 (18 August, 2018) =
 
 * **New:** Added custom classes to make two or three columns form
 * **Fix:** If add a field with the 'field visibility' to the admin only, it was fine to the admin. But, the field and the fields below were not showing to the non-admin users. It has been fixed in this version.
 * **Fix:** Duplicated field was not saving on the post form
 
-### v2.9.0 (16 August, 2018) ###
+= v2.9.0 (16 August, 2018) =
 
 * **New:** The Events Calendar Integration Form
 * **New:** Post Submission Facility From Account Page
@@ -285,7 +288,7 @@
 * **Fix:** Draft post gets published after editing without even asking for payment
 * **Fix:** Added Placeholder for Empty Featured Image
 
-### v2.8.10 (17 July, 2018) ###
+= v2.8.10 (17 July, 2018) =
 
 * **New:** Added drag and drop image ordering on image upload field
 * **New:** Added preview option in forms
@@ -300,7 +303,7 @@
 * **Fix:** Separator spacing for multi select and checkbox render view
 * **Fix:** Form id specific posts are not displaying on the dashboard
 
-### v2.8.9 (6 June, 2018) ###
+= v2.8.9 (6 June, 2018) =
 
 * **New:** Added functionality to export and erase WP User Frontend Data.
 * **New:** Added billing address customizer.
@@ -314,7 +317,7 @@
 * **Fix:** Fixed billing amount not showing when assign pack from backend.
 * **Fix:** Fixed some translations issues.
 
-### v2.8.8 (16 May, 2018) ###
+= v2.8.8 (16 May, 2018) =
 
 * **New:** Allow override form input style using theme styling.
 * **Improved:** Nocaptcha recaptcha wasn't working when allow_url_fopen is disabled is fixed.
@@ -331,7 +334,7 @@
 * **Fix:** Fixed some issues in Advanced Custom Fields(Free) compatibility
 * **Fix:** Fixed some translations issues.
 
-### v2.8.7 (09 April, 2018) ###
+= v2.8.7 (09 April, 2018) =
 
 * **New:** Added WP User Frontend Guten Block
 * **New:** Added Advanced Custom Fields(Free) compatibility
@@ -342,7 +345,7 @@
 * **Fix:** Taxonomy Terms not showing for custom post types in front-end dashboard
 * **Fix:** Fixed some issues in billing address
 
-### v2.8.6 (22 March, 2018) ###
+= v2.8.6 (22 March, 2018) =
 
 * **Improved:** Added backward compatibility for WooCommerce product template
 * **Fix:** Some fields were rendered as Array
@@ -357,7 +360,7 @@
 * **Fix:** Date/Time was not following backend format in frontend
 * **Fix:** Login redirect issues with blank page
 
-### v2.8.5 (12 March, 2018) ###
+= v2.8.5 (12 March, 2018) =
 
  * **New:** Enhanced Login Redirect settings to redirect to previous page
  * **Fix:** Form fields help text styles now showing properly
@@ -366,7 +369,7 @@
  * **Improved:** Added version meta for Forms
  * **Improved:** various other code improvements
 
-### v2.8.4 (04 March, 2018) ###
+= v2.8.4 (04 March, 2018) =
 
  * **New:** Dashboard post listing now supports multiple post type within shortcode
  * **New:** Added settings in URL field to view link on new window or same window
@@ -380,7 +383,7 @@
  * **Fix:** TinyMCE styling not working on frontend layouts fixed
  * **Improved:** Updated turkish translation
 
-### v2.8.3 (15 February, 2018) ###
+= v2.8.3 (15 February, 2018) =
 
  * **New:** Admin form builder is now fully responsive.
  * **New:** Added color schemes for creating attractive form layouts.
@@ -392,13 +395,13 @@
  * **Improved:** Show purchase link on notice of post purchase
  * **Improved:** Hide edit link on front-end post listing if editing is disabled
 
-### v2.8.2 (23 January, 2017) ###
+= v2.8.2 (23 January, 2017) =
 
  * **Improved:** Added upgrade function for default category: Upgrader added to upgrade previously set default post category.
  * **New:** Subscription pack cannot be canceled: Fixed recurring subscription pack cannot be canceled from my account page in subscription details section.
  * **Fix:** page installer admin notice logic issue: Fixed page installer admin notice logic problem due to new payment settings default value not set.
 
-### v2.8.1 (14 January, 2017) ###
+= v2.8.1 (14 January, 2017) =
 
  * **New:** Setup Wizard: Setup Wizard added to turn off payment options and install pages.
  * **New:** Multi-select Category: Add multi-select to default category in post form settings.
@@ -409,7 +412,7 @@
  * **Fix:** Default Field Width: Default Field Width set empty. Previously set as medium.
 
 
-### v2.8.0 (6 January, 2017) ###
+= v2.8.0 (6 January, 2017) =
 
  * **New:** Limit Entries: limit how many entries a form will accept and display a custom message when that limit is reached.
  * **New:** Schedule form: Don't accept form submission if the current date is not between the date range of the schedule.
@@ -422,7 +425,7 @@
  * **Fix:** Undefined error: Data processing error on purchasing free subscription pack.
 
 
-### v2.7.0 (12 December, 2017) ###
+= v2.7.0 (12 December, 2017) =
 
  * **New:** Posting integration with Dokan added. Now you can create and edit blog posts from your Dokan dashboard.
  * **New:** Fallback cost for form subscription payment. When a subscribed user reaches post limit before the pack expires, this option will allow user to pay per post and continue making posts until the membership is valid.
@@ -437,13 +440,13 @@
  * **Fix:** Fix Pay Per Post only shows round figure in frontend. #269
 
 
-### v2.6.1 (8 November, 2017) ###
+= v2.6.1 (8 November, 2017) =
 
  * **Fix:** Fixed subscription pack frontend display issue. A small bug was introduced that was preventing displaying the subscription packs correctly.
  * **Fix:** Fix for packs with unlimited post. We had a small mistake in pack post counting and unlimited subscription plan was discarded. This version fixes the issue.
 
 
-### v2.6.0 (6 November, 2017) ###
+= v2.6.0 (6 November, 2017) =
 
  * **New:** When configuring payment settings from wp-admin → User Frontend → Settings → Payments, the payment options were applicable for all post forms with the same behavior. Admin could not configure payment option for each post form individually. In this version, the payment configuration option for individual form has been added. Now the admin can configure payment from wp-admin → User Frontend → Post Forms → Add/Edit a form → Navigate Payment Settings located under Settings tab.
  * **New:** When rendering a form, each field can be shown/hidden based on the type of user roles, subscription pack. This visibility option is located under **Advanced Options** section of each form field and provides a more granular control over which value you want to show and to whom.
@@ -460,7 +463,7 @@
  * **Improved:** Add form preview image in template popup.
  * **Improved:** Improved help texts in settings → general & form settings
 
-### v2.5.7 (18 October, 2017) ###
+= v2.5.7 (18 October, 2017) =
 
  * **New:** Guest post email verification feature added. When turned on, users need to click the activation link on their email before publising the post.
  * **New:** Added Login and Registration shortcode support in the plugin. Now free version users will get the themed login and a simple registration feature.
@@ -472,18 +475,18 @@
  * **Fix:** Product visibility for WooCommerce wasn't working as they migrated to a taxonomy system.
  * **Fix:** PayPal gateway security enforced. When checking the IPN request, few things weren't being done before checking the valid IPN response.
 
-### v2.5.7 (11 September, 2017) ###
+= v2.5.7 (11 September, 2017) =
 
  * [improved] Added background in form builder div, so notices don’t overlap the form builder
  * [improved] Added filter `wpuf_free_loader` for conditional loading pro elements. Added class instance container to access class instances via <code>wpuf()->dashboard</code> like magic methods.
  * [new] Form label display settings added. Now you can place the form element labels at left/right/above/hide, brings more flexibility.
  * [new] New post notification feature brought back in individual form notification settings. You could only change the new post notification email in the PRO version, now you can change it in the free version, as well as disable the email.
 
-### v2.5.6 (28 August, 2017) ###
+= v2.5.6 (28 August, 2017) =
 
  * [fix] Call subscriptions.js file directly from the js directory. Fix #174
 
-### v2.5.5 (26 August, 2017) ###
+= v2.5.5 (26 August, 2017) =
 
  * [new] Added Invisible reCaptcha option
  * [new] Added weForms shortcode on script loading check
@@ -494,7 +497,7 @@
  * [fix] Fatal Error:undefined function wpuf_cf_count_form_entries()
  * [fix] Fix form entries count function name
 
-### v2.5.4 (30 July, 2017) ###
+= v2.5.4 (30 July, 2017) =
 
  * [new] Added WPUF admin menu icon
  + [new] Added Recaptcha field
@@ -530,7 +533,7 @@
  * [fix] Fix undefined index in count
  * [fix] Invalid post type due to class loading hook
 
-### v2.5.3 (8 June, 2017) ###
+= v2.5.3 (8 June, 2017) =
 
  * [improve] Update action name by removing language changing option
  * [improve] Update SweetAlert version
@@ -553,7 +556,7 @@
  * [fix] When site language changed, Add Form/ Edit Form page display nothing
 
 
-### v2.5.2 (27 April, 2017) ###
+= v2.5.2 (27 April, 2017) =
 
  * [improve] Added word limit feature for text field
  * [improve] Added page shortcode insert button in TinyMCE
@@ -583,14 +586,14 @@
  * [fix] "save draft" button not working post saving as pending, conflict with subscription
 
 
-### v2.5.1 (22 March, 2017) ###
+= v2.5.1 (22 March, 2017) =
 
  * [improve] Update vue.js and vuex.js version
  * [improve] Update parent_slug parameter of add_submenu_page function to 'wp-user-frontend'
  * [fix] Admin fields in form edit section reset on clicking 'Save form' button
 
 
-### v2.5 (18 March, 2017) ###
+= v2.5 (18 March, 2017) =
 
  * [new] Brand new form builder added for post form and profile form
  * [new] Added payment status for pay per post
@@ -598,7 +601,7 @@
  * [improve] add and update price formating function
 
 
-### v2.4.4 (22 February, 2017) ###
+= v2.4.4 (22 February, 2017) =
 
  * [fix] Undefined JavaScript error when post is editing in admin
  * [fix] User IP if the script is running in cli
@@ -608,12 +611,12 @@
  * [fix] Recaptcha refresh when validation failed
 
 
-### v2.4.3 (07 February, 2017) ###
+= v2.4.3 (07 February, 2017) =
 
  * [fix] PHP backward compatibility issue
 
 
-### v2.4.2 (05 February, 2017) ###
+= v2.4.2 (05 February, 2017) =
 
  * [new] Shortcodes supported on post notification's every field
  * [fix] Conditional logic on address field
@@ -626,7 +629,7 @@
  * [new] My Account Dashboard `[wpuf_account]`
 
 
-### v2.4.1 (12 January, 2017) ###
+= v2.4.1 (12 January, 2017) =
 
  * [new] Added a function `wpuf_get_countries()`
  * [fix] Enable paynow url on dashboard if a new post is submitted as draft
@@ -645,7 +648,7 @@
  * [fix] `wpuf-ajax-tag-search` priv/nopriv ajax request
 
 
-### v2.4 (26 October, 2016) ###
+= v2.4 (26 October, 2016) =
 
  * [fix] Plupload string translations
  * [fix] Post expiration logic updated
@@ -664,12 +667,12 @@
  * [new] Content restriction added on *pro* version
 
 
-### v2.3.15 (11 August, 2016) ###
+= v2.3.15 (11 August, 2016) =
 
  * [fix] License renewal prompt fix
 
 
-### v2.3.14 (10 August, 2016) ###
+= v2.3.14 (10 August, 2016) =
 
  * [fix] Text domain and translated strings updated
  * [fix] Reloading the profile/registration page after deleting the avatar fixed.
@@ -687,7 +690,7 @@
  * [new] Multiple forms in the same page
 
 
-### v2.3.13 (30 March, 2016) ###
+= v2.3.13 (30 March, 2016) =
 
  * [fix] Paypal user agent changed and issue with paypal transection fixed
  * [new] Multiple images/files can now be uploaded at a time in image and file fields
@@ -695,7 +698,7 @@
  * [fix] Problem with saving form element in php 7.0.0 is fixed
 
 
-### v2.3.12 (8 February, 2016) ###
+= v2.3.12 (8 February, 2016) =
 
  * [new] WooCommerce Product Category and Attributes are now sectionized
  * [new] Error notice can now be translated.
@@ -707,7 +710,7 @@
  * [fix] SSL issue fixed
 
 
-### v2.3.11 (8 February, 2016) ###
+= v2.3.11 (8 February, 2016) =
 
  * [fix] File upload vulnerability fix. Props to: Panagiotis Vagenas
  * [fix] Replaced deprecated user notification function
@@ -717,7 +720,7 @@
  * [new] No-captcha support added
 
 
-### v2.3.10 (5 Ocotber, 2015) ###
+= v2.3.10 (5 Ocotber, 2015) =
 
  * [fix] Custom css is now working
  * [fix] Textdomain added to some text
@@ -729,7 +732,7 @@
  * [fix] Publish post after paypal payment completion
 
 
-### v2.3.9 (13 Sepetember, 2015) ###
+= v2.3.9 (13 Sepetember, 2015) =
 
  * [fix] Newly registered users were having no meta named "wpuf_postlock"
  * [fix] Newly registered users (having no meta named "wpuf_postlock") are now having form in the frontend
@@ -741,7 +744,7 @@
  * [improve] Button style in payment form
 
 
-### v2.3.8 (3rd Sepetember, 2015) ###
+= v2.3.8 (3rd Sepetember, 2015) =
 
  * [fix] Problem with wpuf lock post fixed.
  * [fix] Problem with retyping password disability in the frontend fixed.
@@ -751,7 +754,7 @@
  * [add] RTL support improvement
 
 
-### v2.3.7 (24 August, 2015) ###
+= v2.3.7 (24 August, 2015) =
 
  * [fix] Problem with conditional logic in image upload field fixed.
  * [fix] Transaction log updating issue fixed.
@@ -761,7 +764,7 @@
  * [fix] Problem with 'pay per post' feature fixed
 
 
-### v2.3.6 (13 July, 2015) ###
+= v2.3.6 (13 July, 2015) =
 
  * [fix] Login page bug fixed.
  * [fix] Wordpress native registration page made working.
@@ -772,38 +775,38 @@
  * [fix] Problem with action hook fixed.
 
 
-### v2.3.5 (2 July, 2015) ###
+= v2.3.5 (2 July, 2015) =
 
  * [fix] Ajax taxonomy field bug fixed.
 
 
-### v2.3.4 (June 29, 2015) ###
+= v2.3.4 (June 29, 2015) =
 
  * [fix] Featured image caption was not being updated
 
 
-### v2.3.3 (June 24, 2015) ###
+= v2.3.3 (June 24, 2015) =
 
  * [fix] Post status settings in form, wasn't being updated.
 
 
-### v2.3.2 (June 22, 2015) ###
+= v2.3.2 (June 22, 2015) =
 
  * [fix] Featured image upload fix
  * [new] Image upload field brought back to free
 
 
-### v2.3.1 (June 21, 2015) ###
+= v2.3.1 (June 21, 2015) =
 
  * [fix] Compatibility problem with PHP < 5.2. Accidental PHP array shorthand used.
 
 
-### version 2.3 (June 20, 2015) ###
+= version 2.3 (June 20, 2015) =
 
  * Pro plugin released as free with less features
 
 
-### version 1.3.2 ###
+= version 1.3.2 =
 
  * [improve] post thumbnail image association added
  * [improve] various form styles updated
@@ -814,13 +817,13 @@
  * [fix] dashboard author bio height fix
 
 
-### version 1.3.1 ###
+= version 1.3.1 =
 
  * [fix] `[wpuf_editpost]` typo fix
  * [fix] clean $dashboard_query from corrupting beyond use
 
 
-### version 1.3 ###
+= version 1.3 =
 
  * [fix] PayPal payment user_id issue fixed
  * [fix] Plupload `o is null` error fix
@@ -828,25 +831,25 @@
  * [update] new version of settings api class
 
 
-### version 1.2.3 ###
+= version 1.2.3 =
 
 * [fix] `has_shortcode()` brought back again by renaming as `wpuf_has_shortcode()`
 * [fix] all the labels now have a default text
 
 
-### version 1.2.2 ###
+= version 1.2.2 =
 
 * [fix] shortcode error fix for edit users
 * [fix] plugin css/js url
 * [fix] removed has_shortcode() call
 
 
-### version 1.2.1 ###
+= version 1.2.1 =
 
 * [fix] Performance problem with wp_list_users()
 
 
-### version 1.2 ###
+= version 1.2 =
 
 * [fix] Subscription post publish
 * [fix] Post delete fix in dashboard
@@ -855,7 +858,7 @@
 * [new] Checkbox field in custom field
 
 
-### version 1.1 ###
+= version 1.1 =
 
 * warning for multisite fix
 * allow category bug fix
@@ -865,7 +868,7 @@
 * category dropdown fix
 
 
-### version 1.0 ###
+= version 1.0 =
 
 * Admin panel converted to settings API
 * Ajax featured Image uploader added (using plupload)
@@ -882,7 +885,7 @@
 * Other payment currency added
 
 
-### version 0.7 ###
+= version 0.7 =
 
 * admin ui improved
 * updated new post notification mail template
@@ -894,7 +897,7 @@
 * improved action hooks and filter hooks
 
 
-### version 0.6 ###
+= version 0.6 =
 
 * fixed error on attachment delete
 * added styles on dashboard too
@@ -905,7 +908,7 @@
 * filter hook added on edit post for post args
 
 
-### version 0.5 ###
+= version 0.5 =
 
 * filters on add posting page for blocking the post capa
 * subscription pack id added on user meta upon purchase
@@ -916,13 +919,13 @@
 * filter added on form builder
 
 
-### version 0.4 ###
+= version 0.4 =
 
 * missing custom meta field added on edit post form
 * jQuery validation added on edit post form
 
 
-### version 0.3 ###
+= version 0.3 =
 
 * rich/plain text on/off fixed
 * ajax chained category added on add post form
@@ -931,7 +934,7 @@
 * 404 error fix on add post
 
 
-### version 0.2 ###
+= version 0.2 =
 
 * Admin settings page has been improved
 * Header already sent warning messages has been fixed

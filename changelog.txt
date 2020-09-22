@@ -1,5 +1,5 @@
-= v3.5.1 (22 September, 2020) =
-* Fix - Changelog.txt for wordpress.org
+= v3.5.2 (22 September, 2020) =
+* Fix - Changelog for wordpress.org
 
 = v3.5.0 (22 September, 2020) =
 * New - Add character restriction feature

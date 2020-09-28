@@ -1,7 +1,7 @@
 === WP User Frontend - Membership, Profile, Registration & Post Submission Plugin for WordPress ===
 Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
-Tags: Forms, registration, profile-builder, login, membership, frontend post
+Tags: Forms, registration, profile-builder, login, membership, frontend-post
 Requires at least: 4.0
 Tested up to: 5.5.1
 Requires PHP: 5.6

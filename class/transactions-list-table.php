@@ -84,7 +84,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'all';
 
-        $status_links['all']     = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'all' ], $base_link ), ( $status == 'all' ) ? 'current' : '', __( 'All', 'wp-user-frontend' ), $transactions_count );
+        $status_links['completed']     = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'completed' ], $base_link ), ( $status == 'completed' ) ? 'current' : '', __( 'Completed', 'wp-user-frontend' ), $transactions_count );
         $status_links['pending'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'pending' ], $base_link ), ( $status == 'pending' ) ? 'current' : '', __( 'Pending', 'wp-user-frontend' ), $transactions_pending_count );
 
         return $status_links;

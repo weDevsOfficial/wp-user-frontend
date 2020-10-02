@@ -194,6 +194,7 @@ class WPUF_Paypal {
                 'currency_code' => $data['currency'],
                 'item_number'   => $data['item_number'],
                 'rm'            => 2,
+                'return'        => $return_url,
                 'cancel_return' => $return_url,
                 'notify_url'    => $listener_url,
                 'src'           => 1,

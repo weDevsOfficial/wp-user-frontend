@@ -2941,7 +2941,7 @@ function wpuf_form_posts_count( $form_id ) {
 function get_formatted_mail_body( $message, $subject ) {
     if ( wpuf()->is_pro() && wpuf_pro_is_module_active( 'email-templates/email-templates.php' ) ) {
         $css    = '';
-        $header = apply_filters( 'wpuf_email_header', '' );
+        $header = apply_filters( 'wpuf_email_header', '', $subject );
         $footer = apply_filters( 'wpuf_email_footer', '' );
 
         if ( empty( $header ) ) {

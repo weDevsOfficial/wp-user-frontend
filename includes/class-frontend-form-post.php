@@ -969,8 +969,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         if ( 
             isset( $this->form_settings['enable_pay_per_post'] )
-                && 'true' === $this->form_settings['enable_pay_per_post'] 
-                && ! $is_update 
+            && wpuf_validate_boolean( $this->form_settings['enable_pay_per_post'] )
+            && ! $is_update 
         ) {
             $redirect_to = add_query_arg( [
                         'action'  => 'wpuf_pay',

@@ -748,6 +748,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $post_field_search = [ '%post_title%', '%post_content%', '%post_excerpt%', '%tags%', '%category%',
             '%author%', '%author_email%', '%author_bio%', '%sitename%', '%siteurl%', '%permalink%', '%editlink%', ];
 
+        $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
+        $post_url = sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), get_permalink( $post_id ) );
+        $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $post_id ), admin_url( 'post.php?action=edit&post=' . $post_id ) );
+
         $post_field_replace = [
             $post->post_title,
             $post->post_content,
@@ -758,9 +762,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             $user->user_email,
             ( $user->description ) ? $user->description : 'not available',
             get_bloginfo( 'name' ),
-            home_url(),
-            get_permalink( $post_id ),
-            admin_url( 'post.php?action=edit&post=' . $post_id ),
+            $home_url,
+            $post_url,
+            $post_edit_link,
         ];
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
@@ -772,7 +776,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( $replace ) {
             foreach ( $replace as $index => $meta_key ) {
                 $value     = get_post_meta( $post_id, $meta_key, false );
-                if ( is_array( $value ) ) {
+                
+                if ( isset( $value[0] ) && is_array( $value[0] ) ) {
+                    $new_value = implode( '; ', $value[0] );
+                
+                } else {
                     $new_value = implode( '; ', $value );
                 }
 

@@ -38,6 +38,9 @@ function wpuf_show_post_status( $status ) {
     } elseif ( $status == 'private' ) {
         $title     = __( 'Private', 'wp-user-frontend' );
         $fontcolor = '#bbbbbb';
+    } else {
+        $title     = __( $status, 'wp-user-frontend' );
+        $fontcolor = '#bbbbbb';    
     }
 
     $show_status = '<span style="color:' . $fontcolor . ';">' . $title . '</span>';
@@ -66,6 +69,9 @@ function wpuf_admin_post_status( $status ) {
     } elseif ( $status == 'future' ) {
         $title     = __( 'Scheduled', 'wp-user-frontend' );
         $fontcolor = '#bbbbbb';
+    } else {
+        $title     = __( $status, 'wp-user-frontend' );
+        $fontcolor = '#bbbbbb';    
     }
 
     echo wp_kses_post( '<span style="color:' . $fontcolor . ';">' . $title . '</span>' );

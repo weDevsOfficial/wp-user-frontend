@@ -82,6 +82,7 @@ jQuery(function($){
 
         var $wpuf_cc_address = jQuery('#wpuf-address-country-state');
         var $payment_form = jQuery('#wpuf-payment-gateway');
+        var $address_form = jQuery('#wpuf-ajax-address-form');
 
         var postData = {
             action: 'wpuf_update_billing_address',
@@ -93,6 +94,7 @@ jQuery(function($){
             billing_zip: $wpuf_cc_address.find('#wpuf_biiling_zip_code').val(),
             type: $payment_form.find('#wpuf_type').html(),
             id: $payment_form.find('#wpuf_id').html(),
+            _wpnonce: $address_form.find('#_wpnonce').val(),
         };
 
         var current_ajax_count = ++ajax_tax_count;

@@ -3255,11 +3255,7 @@ add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
  * @return void
  */
 function wpuf_update_billing_address() {
-    $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
-
-    if ( isset( $nonce ) &&  ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
-        return ;
-    }
+    check_ajax_referer( 'wpuf-ajax-address' );
 
     ob_start();
 

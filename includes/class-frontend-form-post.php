@@ -767,6 +767,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             $post_edit_link,
         ];
 
+        if ( class_exists( 'WooCommerce' ) ) {
+            $post_field_search[] = '%product_cat%';
+            $post_field_replace[] = get_the_term_list( $post_id, 'product_cat', '', ', ' );
+        }
+        
         $content = str_replace( $post_field_search, $post_field_replace, $content );
 
         // custom fields

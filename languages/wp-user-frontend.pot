@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.5.2\n"
+"Project-Id-Version: WP User Frontend 3.5.3\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2020-09-22 10:31:32+00:00\n"
+"POT-Creation-Date: 2020-10-21 05:00:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -161,7 +161,7 @@ msgid "Duration"
 msgstr ""
 
 #: admin/class-admin-subscription.php:226
-#: admin/class-admin-subscription.php:596 class/frontend-account.php:255
+#: admin/class-admin-subscription.php:596 class/frontend-account.php:243
 #: class/subscription.php:883 includes/class-user-subscription.php:305
 #: templates/subscriptions/pack-details.php:24
 msgid "Free"
@@ -284,7 +284,7 @@ msgstr ""
 msgid "For each %s %s"
 msgstr ""
 
-#: admin/class-admin-subscription.php:601 class/frontend-account.php:259
+#: admin/class-admin-subscription.php:601 class/frontend-account.php:247
 msgid ", for %s installments"
 msgstr ""
 
@@ -2715,19 +2715,19 @@ msgid ""
 "<a id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Clear Lock</a> Or,"
 msgstr ""
 
-#: admin/posting.php:223
+#: admin/posting.php:233
 msgid "Lock Post Permanently"
 msgstr ""
 
-#: admin/posting.php:228
+#: admin/posting.php:238
 msgid "Lock user from editing this post from the frontend dashboard"
 msgstr ""
 
-#: admin/posting.php:279
+#: admin/posting.php:289
 msgid "WPUF Custom Fields"
 msgstr ""
 
-#: admin/posting.php:331
+#: admin/posting.php:341
 msgid "No custom fields found."
 msgstr ""
 
@@ -3882,7 +3882,7 @@ msgstr ""
 msgid "Label for post submission menu"
 msgstr ""
 
-#: class/frontend-account.php:48 class/frontend-account.php:111
+#: class/frontend-account.php:48 class/frontend-account.php:99
 #: includes/class-wcmp-integration.php:127
 #: includes/class-wcmp-integration.php:144
 msgid "Submit Post"
@@ -3898,59 +3898,59 @@ msgid ""
 "account page."
 msgstr ""
 
-#: class/frontend-account.php:234
+#: class/frontend-account.php:222
 msgid "<p>You have not subscribed to any package yet.</p>"
 msgstr ""
 
-#: class/frontend-account.php:242
+#: class/frontend-account.php:230
 msgid "<p>You may have processed your payment, but the pack is not active yet.</p>"
 msgstr ""
 
-#: class/frontend-account.php:258
+#: class/frontend-account.php:246
 msgid "For each"
 msgstr ""
 
-#: class/frontend-account.php:319
+#: class/frontend-account.php:307
 msgid "Nonce failure"
 msgstr ""
 
-#: class/frontend-account.php:333
+#: class/frontend-account.php:321
 msgid "First Name is a required field."
 msgstr ""
 
-#: class/frontend-account.php:337
+#: class/frontend-account.php:325
 msgid "Last Name is a required field."
 msgstr ""
 
-#: class/frontend-account.php:341
+#: class/frontend-account.php:329
 msgid "Email is a required field."
 msgstr ""
 
-#: class/frontend-account.php:353
+#: class/frontend-account.php:341
 msgid "Please provide a valid email address."
 msgstr ""
 
-#: class/frontend-account.php:355
+#: class/frontend-account.php:343
 msgid "This email address is already registered."
 msgstr ""
 
-#: class/frontend-account.php:361
+#: class/frontend-account.php:349
 msgid "Please fill out all password fields."
 msgstr ""
 
-#: class/frontend-account.php:364
+#: class/frontend-account.php:352
 msgid "Please enter your current password."
 msgstr ""
 
-#: class/frontend-account.php:367
+#: class/frontend-account.php:355
 msgid "Please re-enter your password."
 msgstr ""
 
-#: class/frontend-account.php:370
+#: class/frontend-account.php:358
 msgid "New passwords do not match."
 msgstr ""
 
-#: class/frontend-account.php:373 class/frontend-account.php:384
+#: class/frontend-account.php:361 class/frontend-account.php:372
 msgid "Your current password is incorrect."
 msgstr ""
 
@@ -4548,11 +4548,11 @@ msgstr ""
 msgid "Select a post form that will show on the vendor dashboard."
 msgstr ""
 
-#: includes/class-field-manager.php:183
+#: includes/class-field-manager.php:185
 msgid "Custom Fields"
 msgstr ""
 
-#: includes/class-field-manager.php:204
+#: includes/class-field-manager.php:206
 msgid "Others"
 msgstr ""
 
@@ -4632,12 +4632,12 @@ msgstr ""
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:883
+#: includes/class-frontend-form-post.php:891
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:998
-#: includes/class-frontend-form-post.php:1004
+#: includes/class-frontend-form-post.php:1010
+#: includes/class-frontend-form-post.php:1016
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"

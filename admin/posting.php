@@ -214,7 +214,17 @@ class WPUF_Admin_Posting {
 
         <!-- <input type="hidden" name="wpuf_lock_editing_post_nonce" value="<?php // echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" /> -->
         <?php wp_nonce_field( plugin_basename( __FILE__ ), 'wpuf_lock_editing_post_nonce' ); ?>
-        <p><?php echo wp_kses_post( $msg ); ?></p>
+        <p>
+            <?php 
+                echo wp_kses( $msg, [ 
+                    'a' => [
+                            'href' => [],
+                            'id'   => [],
+                            'data' => [],
+                        ] 
+                    ] ); 
+            ?>
+        </p>
 
         <label>
             <?php if ( !$is_locked ) { ?>

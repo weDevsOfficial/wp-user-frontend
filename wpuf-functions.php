@@ -2941,7 +2941,7 @@ function wpuf_form_posts_count( $form_id ) {
 function get_formatted_mail_body( $message, $subject ) {
     if ( wpuf()->is_pro() && wpuf_pro_is_module_active( 'email-templates/email-templates.php' ) ) {
         $css    = '';
-        $header = apply_filters( 'wpuf_email_header', '' );
+        $header = apply_filters( 'wpuf_email_header', '', $subject );
         $footer = apply_filters( 'wpuf_email_footer', '' );
 
         if ( empty( $header ) ) {
@@ -3255,9 +3255,9 @@ add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
  * @return void
  */
 function wpuf_update_billing_address() {
-    $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+    $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
-    if ( isset( $nonce ) &&  ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
+    if ( ! wp_verify_nonce( $nonce, 'wpuf-ajax-address' ) ) {
         return ;
     }
 

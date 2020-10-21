@@ -748,6 +748,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $post_field_search = [ '%post_title%', '%post_content%', '%post_excerpt%', '%tags%', '%category%',
             '%author%', '%author_email%', '%author_bio%', '%sitename%', '%siteurl%', '%permalink%', '%editlink%', ];
 
+        $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
+        $post_url = sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), get_permalink( $post_id ) );
+        $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $post_id ), admin_url( 'post.php?action=edit&post=' . $post_id ) );
+
         $post_field_replace = [
             $post->post_title,
             $post->post_content,
@@ -758,9 +762,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             $user->user_email,
             ( $user->description ) ? $user->description : 'not available',
             get_bloginfo( 'name' ),
-            home_url(),
-            get_permalink( $post_id ),
-            admin_url( 'post.php?action=edit&post=' . $post_id ),
+            $home_url,
+            $post_url,
+            $post_edit_link,
         ];
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
@@ -772,7 +776,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( $replace ) {
             foreach ( $replace as $index => $meta_key ) {
                 $value     = get_post_meta( $post_id, $meta_key, false );
-                if ( is_array( $value ) ) {
+                
+                if ( isset( $value[0] ) && is_array( $value[0] ) ) {
+                    $new_value = implode( '; ', $value[0] );
+                
+                } else {
                     $new_value = implode( '; ', $value );
                 }
 
@@ -969,7 +977,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
-        if ( isset( $this->form_settings['enable_pay_per_post'] ) && 'true' === $this->form_settings['enable_pay_per_post'] ) {
+        if ( 
+            isset( $this->form_settings['enable_pay_per_post'] )
+            && wpuf_validate_boolean( $this->form_settings['enable_pay_per_post'] )
+            && ! $is_update 
+        ) {
             $redirect_to = add_query_arg( [
                         'action'  => 'wpuf_pay',
                         'type'    => 'post',
@@ -1010,6 +1022,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( $guest_mode == 'true' && $guest_verify == 'true' && !is_user_logged_in() ) {
             $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
         } elseif ( $is_update ) {
+            //now perform some post related actions
+            do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
+            
             //send mail notification
             if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['edit'] == 'on' ) {
                 $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['edit_body'], $post_author, $post_id );
@@ -1023,10 +1038,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             //now redirect the user
             $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
-
-            //now perform some post related actions
-            do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
         } else {
+            //now perform some post related actions
+            do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
+            
             // send mail notification
             if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['new'] == 'on' ) {
                 $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $post_author, $post_id );
@@ -1040,9 +1055,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             //redirect the user
             $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $this->form_settings );
-
-            //now perform some post related actions
-            do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
         }
 
         return $response;

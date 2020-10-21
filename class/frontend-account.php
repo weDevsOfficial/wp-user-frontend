@@ -72,29 +72,17 @@ class WPUF_Frontend_Account {
             'post_status' => 'any',
             'orderby'     => 'DESC',
             'order'       => 'ID',
+            'numberposts' => -1,
         ];
 
-        $query = new WP_Query( $args );
-
+        $posts = get_posts( $args );
         $forms = [];
 
-        if ( $query->have_posts() ) {
-            $i = 0;
-
-            while ( $query->have_posts() ) {
-                $query->the_post();
-
-                $form = $query->posts[ $i ];
-
-                $settings = get_post_meta( get_the_ID(), 'wpuf_form_settings', true );
-
-                $forms[ $form->ID ] = $form->post_title;
-
-                $i++;
+        if ( ! empty( $posts ) ) {
+            foreach( $posts as $post ) {
+                $forms[ $post->ID ] = $post->post_title;
             }
         }
-
-        wp_reset_postdata();
 
         return $forms;
     }

@@ -122,6 +122,7 @@ class WPUF_Field_Manager {
         require_once __DIR__ . '/fields/class-field-hidden.php';
         require_once __DIR__ . '/fields/class-field-image.php';
         require_once __DIR__ . '/fields/class-field-recaptcha.php';
+        require_once __DIR__ . '/fields/class-field-featured-image.php';
 
         $fields = [
             'post_title'          => new WPUF_Form_Field_Post_Title(),
@@ -142,6 +143,7 @@ class WPUF_Field_Manager {
             'custom_hidden_field' => new WPUF_Form_Field_Hidden(),
             'image_upload'        => new WPUF_Form_Field_Image(),
             'recaptcha'           => new WPUF_Form_Field_reCaptcha(),
+            'featured_image'      => new WPUF_Form_Field_Featured_Image(),
         ];
 
         $this->fields = apply_filters( 'wpuf-form-fields', $fields );

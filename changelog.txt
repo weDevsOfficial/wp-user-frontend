@@ -1,3 +1,13 @@
+= v3.5.3 (21 October, 2020) =
+* Fix - Default post form is not showing on the frontend account
+* Fix - Missing featured image field when previewing a post form
+* Fix - Post query loop for post forms
+* Fix - Post edit could not be edited after unlocking post edit
+* Fix - Taxes couldn't count properly when selecting different tax region
+* Fix - Google map field validation doesn't work 
+* Fix - Redirect payment page after post updating
+* Fix - Custom field value and link send as plain text when sending an email for post notification
+
 = v3.5.2 (22 September, 2020) =
 * Fix - Changelog for wordpress.org
 

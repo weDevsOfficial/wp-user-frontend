@@ -30,6 +30,7 @@
 
             <div class="label">
                 <?php _e( 'Label', 'wp-user-frontend' ); ?>
+                <help-text placement="left" text="<?php _e( 'Don\'t use & or other special character for option label', 'wp-user-frontend' ); ?>" />
             </div>
 
             <div v-if="show_value" class="value">

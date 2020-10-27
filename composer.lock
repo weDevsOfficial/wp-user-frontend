@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eba45553d9e09db4b87ccdca39027812",
+    "content-hash": "8bf48aaa4175a0bee39f7b1893def5f5",
     "packages": [
         {
             "name": "composer/installers",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "c462a693445b8f6913e95c2ea774d60cf42f64ec"
+                "reference": "f69761fc0d3f77629d89c1897b84d327188aa27f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/c462a693445b8f6913e95c2ea774d60cf42f64ec",
-                "reference": "c462a693445b8f6913e95c2ea774d60cf42f64ec",
+                "url": "https://api.github.com/repos/composer/installers/zipball/f69761fc0d3f77629d89c1897b84d327188aa27f",
+                "reference": "f69761fc0d3f77629d89c1897b84d327188aa27f",
                 "shasum": ""
             },
             "require": {
@@ -145,35 +145,33 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-05T09:23:41+00:00"
+            "time": "2020-10-16T10:26:25+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
-            "version": "v0.4.4",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dealerdirect/phpcodesniffer-composer-installer.git",
-                "reference": "2e41850d5f7797cbb1af7b030d245b3b24e63a08"
+                "reference": "e8d808670b8f882188368faaf1144448c169c0b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dealerdirect/phpcodesniffer-composer-installer/zipball/2e41850d5f7797cbb1af7b030d245b3b24e63a08",
-                "reference": "2e41850d5f7797cbb1af7b030d245b3b24e63a08",
+                "url": "https://api.github.com/repos/Dealerdirect/phpcodesniffer-composer-installer/zipball/e8d808670b8f882188368faaf1144448c169c0b7",
+                "reference": "e8d808670b8f882188368faaf1144448c169c0b7",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0",
-                "php": "^5.3|^7",
-                "squizlabs/php_codesniffer": "*"
+                "composer-plugin-api": "^1.0 || ^2.0",
+                "php": ">=5.3",
+                "squizlabs/php_codesniffer": "^2 || ^3 || 4.0.x-dev"
             },
             "require-dev": {
                 "composer/composer": "*",
-                "wimg/php-compatibility": "^8.0"
-            },
-            "suggest": {
-                "dealerdirect/qa-tools": "All the PHP QA tools you'll need"
+                "phpcompatibility/php-compatibility": "^9.0",
+                "sensiolabs/security-checker": "^4.1.0"
             },
             "type": "composer-plugin",
             "extra": {
@@ -191,13 +189,13 @@
             "authors": [
                 {
                     "name": "Franck Nijhof",
-                    "email": "f.nijhof@dealerdirect.nl",
-                    "homepage": "http://workingatdealerdirect.eu",
-                    "role": "Developer"
+                    "email": "franck.nijhof@dealerdirect.com",
+                    "homepage": "http://www.frenck.nl",
+                    "role": "Developer / IT Manager"
                 }
             ],
             "description": "PHP_CodeSniffer Standards Composer Installer Plugin",
-            "homepage": "http://workingatdealerdirect.eu",
+            "homepage": "http://www.dealerdirect.com",
             "keywords": [
                 "PHPCodeSniffer",
                 "PHP_CodeSniffer",
@@ -215,7 +213,7 @@
                 "stylecheck",
                 "tests"
             ],
-            "time": "2017-12-06T16:27:17+00:00"
+            "time": "2020-06-25T14:57:39+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -293,12 +291,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "a3409d10079990eeb489c3fead0ac070b5b38895"
+                "reference": "00aba97fc36feabc8d94667eebd5d43959e60008"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/a3409d10079990eeb489c3fead0ac070b5b38895",
-                "reference": "a3409d10079990eeb489c3fead0ac070b5b38895",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/00aba97fc36feabc8d94667eebd5d43959e60008",
+                "reference": "00aba97fc36feabc8d94667eebd5d43959e60008",
                 "shasum": ""
             },
             "require": {
@@ -339,7 +337,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-28T16:31:07+00:00"
+            "time": "2020-10-01T09:35:15+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -710,12 +708,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "e21c0bd532911ec05ebc258e4086ea61c86e0750"
+                "reference": "6a467b8989322d92aa1c8bf2bebcc6e5c2ba55c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/e21c0bd532911ec05ebc258e4086ea61c86e0750",
-                "reference": "e21c0bd532911ec05ebc258e4086ea61c86e0750",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/6a467b8989322d92aa1c8bf2bebcc6e5c2ba55c0",
+                "reference": "6a467b8989322d92aa1c8bf2bebcc6e5c2ba55c0",
                 "shasum": ""
             },
             "require": {
@@ -747,7 +745,7 @@
                 }
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "time": "2020-09-02T21:29:45+00:00"
+            "time": "2020-09-17T18:55:26+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -755,24 +753,24 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "c99da517f9e7b6e6c4067611d804808c34d8cec3"
+                "reference": "8ce87516be71aae9b956f81906aaf0338e0d8a2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/c99da517f9e7b6e6c4067611d804808c34d8cec3",
-                "reference": "c99da517f9e7b6e6c4067611d804808c34d8cec3",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/8ce87516be71aae9b956f81906aaf0338e0d8a2d",
+                "reference": "8ce87516be71aae9b956f81906aaf0338e0d8a2d",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.2",
-                "php": "^7.2",
+                "php": "^7.2 || ~8.0, <8.1",
                 "phpdocumentor/reflection-docblock": "^5.2",
                 "sebastian/comparator": "^3.0 || ^4.0",
                 "sebastian/recursion-context": "^3.0 || ^4.0"
             },
             "require-dev": {
                 "phpspec/phpspec": "^6.0",
-                "phpunit/phpunit": "^8.0"
+                "phpunit/phpunit": "^8.0 || ^9.0 <9.3"
             },
             "type": "library",
             "extra": {
@@ -810,7 +808,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-07-21T10:09:02+00:00"
+            "time": "2020-09-29T09:10:42+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1721,12 +1719,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "b86b6a857798d66c2c6470f6ed6ce2272eadcf17"
+                "reference": "7c01187e14b8e56f2bc358915a466c35b8f84eb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/b86b6a857798d66c2c6470f6ed6ce2272eadcf17",
-                "reference": "b86b6a857798d66c2c6470f6ed6ce2272eadcf17",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/7c01187e14b8e56f2bc358915a466c35b8f84eb8",
+                "reference": "7c01187e14b8e56f2bc358915a466c35b8f84eb8",
                 "shasum": ""
             },
             "require": {
@@ -1764,7 +1762,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-09-09T22:56:01+00:00"
+            "time": "2020-10-26T22:22:45+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -1848,12 +1846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tareq1988/wp-php-cs-fixer.git",
-                "reference": "bb389b8a95422885abe1121b92813b4a9f129e9f"
+                "reference": "56b9c1dd2b979a4ff7a25afa2e1c6b290a5ae876"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tareq1988/wp-php-cs-fixer/zipball/bb389b8a95422885abe1121b92813b4a9f129e9f",
-                "reference": "bb389b8a95422885abe1121b92813b4a9f129e9f",
+                "url": "https://api.github.com/repos/tareq1988/wp-php-cs-fixer/zipball/56b9c1dd2b979a4ff7a25afa2e1c6b290a5ae876",
+                "reference": "56b9c1dd2b979a4ff7a25afa2e1c6b290a5ae876",
                 "shasum": ""
             },
             "type": "library",
@@ -1873,7 +1871,7 @@
                 }
             ],
             "description": "WordPress rules for php-cs-fixer",
-            "time": "2020-05-21T07:06:37+00:00"
+            "time": "2020-09-21T09:47:38+00:00"
         },
         {
             "name": "theseer/tokenizer",

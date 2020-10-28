@@ -1334,16 +1334,16 @@ function wpuf_shortcode_map_post( $meta_key, $post_id = null, $args = [] ) {
 function wpuf_meta_shortcode( $atts ) {
     global $post;
 
-       $attrs = shortcode_atts(
-            [
-				'name'   => '',
-				'type'   => 'normal',
-				'size'   => 'thumbnail',
-				'height' => 250,
-				'width'  => 450,
-				'zoom'   => 12,
-			], $atts
-        );
+    $attrs = shortcode_atts(
+        [
+			'name'   => '',
+			'type'   => 'normal',
+			'size'   => 'thumbnail',
+			'height' => 250,
+			'width'  => 450,
+			'zoom'   => 12,
+		], $atts
+    );
 
     $name   = $attrs['name'];
     $type   = $attrs['type'];

@@ -22,7 +22,7 @@ class WPUF_Payment {
                 'admin_label'    => __( 'PayPal', 'wp-user-frontend' ),
                 'checkout_label' => __( 'PayPal', 'wp-user-frontend' ),
                 'icon'           => apply_filters( 'wpuf_paypal_checkout_icon', WPUF_ASSET_URI . '/images/paypal.png' ),
-             ],
+            ],
             'bank' => [
                 'admin_label'    => __( 'Bank Payment', 'wp-user-frontend' ),
                 'checkout_label' => __( 'Bank Payment', 'wp-user-frontend' ),
@@ -47,7 +47,7 @@ class WPUF_Payment {
 
         foreach ( $all_gateways as $id => $label ) {
             if ( array_key_exists( $id, $active_gateways ) ) {
-                $gateways[$id] = $label;
+                $gateways [ $id ] = $label;
             }
         }
 
@@ -68,31 +68,30 @@ class WPUF_Payment {
         $billing_amount = 0;
         $action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
 
-        if ( $action == 'wpuf_pay' && $pay_page == 0 ) {
+        if ( $action === 'wpuf_pay' && $pay_page === 0 ) {
             esc_html_e( 'Please select your payment page from admin panel', 'wp-user-frontend' );
 
             return;
         }
 
-        if ( $post->ID == $pay_page && $action == 'wpuf_pay' ) {
-            if ( !is_user_logged_in() ) {
-                //return __( 'You are not logged in', 'wpuf' );
-            }
+        if ( $post->ID === $pay_page && $action === 'wpuf_pay' ) {
             $get_type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
-            $type    = ( $get_type == 'post' ) ? 'post' : 'pack';
+            $type    = ( $get_type === 'post' ) ? 'post' : 'pack';
             $post_id = isset( $_REQUEST['post_id'] ) ? intval( wp_unslash( $_REQUEST['post_id'] ) ) : 0;
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
             $is_free = false;
 
             if ( $pack_id ) {
-                $pack_detail    = WPUF_Subscription::get_subscription( $pack_id );
+                $pack_detail = WPUF_Subscription::get_subscription( $pack_id );
 
                 if ( ! $pack_detail ) {
-                    ?> <div class="wpuf-info"><?php echo esc_html( 'No subscription pack found.', 'wp-user-frontend' ); ?></div> <?php 
+                    ?>
+                        <div class="wpuf-info"><?php esc_html_e( 'No subscription pack found.', 'wp-user-frontend' ); ?></div> 
+                    <?php
                     exit;
                 }
 
-                $recurring_pay  = isset( $pack_detail->meta_value['recurring_pay'] ) ? $pack_detail->meta_value['recurring_pay'] : 'no';
+                $recurring_pay = isset( $pack_detail->meta_value['recurring_pay'] ) ? $pack_detail->meta_value['recurring_pay'] : 'no';
 
                 if ( empty( $pack_detail->meta_value['billing_amount'] ) || $pack_detail->meta_value['billing_amount'] <= 0 ) {
                     $is_free = true;
@@ -120,51 +119,57 @@ class WPUF_Payment {
                 $wpuf_subscription = WPUF_Subscription::init();
                 $wpuf_user         = new WPUF_User( $current_user->ID );
 
-                if ( !$wpuf_user->subscription()->used_free_pack( $pack_id ) ) {
+                if ( ! $wpuf_user->subscription()->used_free_pack( $pack_id ) ) {
                     wpuf_get_user( $current_user->ID )->subscription()->add_pack( $pack_id, null, false, 'free' );
                     $wpuf_user->subscription()->add_free_pack( $current_user->ID, $pack_id );
 
                     $message = apply_filters( 'wpuf_fp_activated_msg', __( 'Your free package has been activated. Enjoy!', 'wp-user-frontend' ) );
                 } else {
                     $message = apply_filters( 'wpuf_fp_activated_error', __( 'You already have activated a free package previously.', 'wp-user-frontend' ) );
-                } ?>
+                }
+                ?>
                     <div class="wpuf-info"><?php echo esc_html( $message ); ?></div>
                 <?php
             } else {
                 ?>
-                <?php if ( count( $gateways ) ) {
+                <?php
+                if ( count( $gateways ) ) {
                     ?>
                     <div class="wpuf-payment-page-wrap wpuf-pay-row">
-                        <?php
-                        $pay_page_style = ''; ?>
+                    <?php $pay_page_style = ''; ?>
                         <div class="wpuf-bill-addr-wrap wpuf-pay-col">
-                            <?php if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
-                            $pay_page_style = 'vertical-align:top; margin-left: 20px; display: inline-block;'; ?>
-                                <div class="wpuf-bill-addr-info">
-                                    <h3> <?php esc_html_e( 'Billing Address', 'wp-user-frontend' ); ?> </h3>
-                                    <div class="wpuf-bill_addr-inner">
-                                        <?php
-                                        $add_form = new WPUF_Ajax_Address_Form();
-                                        $add_form->wpuf_ajax_address_form();
-                                        ?>
-                                    </div>
+                        <?php
+                        if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
+                            $pay_page_style = 'vertical-align:top; margin-left: 20px; display: inline-block;';
+                            ?>
+                            <div class="wpuf-bill-addr-info">
+                                <h3> <?php esc_html_e( 'Billing Address', 'wp-user-frontend' ); ?> </h3>
+                                <div class="wpuf-bill_addr-inner">
+                                    <?php
+                                    $add_form = new WPUF_Ajax_Address_Form();
+                                    $add_form->wpuf_ajax_address_form();
+                                    ?>
                                 </div>
+                            </div>
                             <?php
-                        } ?>
+                        }
+                        ?>
                         </div>
                         <div class="wpuf-payment-gateway-wrap" style="<?php echo esc_attr( $pay_page_style ); ?>">
                         <form id="wpuf-payment-gateway" action="" method="POST">
 
-                            <?php if ( $pack_id ) {
-                            $pack         = WPUF_Subscription::init()->get_subscription( $pack_id );
-                            $details_meta = WPUF_Subscription::init()->get_details_meta_value();
-                            $currency     = wpuf_get_currency( 'symbol' );
+                            <?php
+                            if ( $pack_id ) {
+                                $pack         = WPUF_Subscription::init()->get_subscription( $pack_id );
+                                $details_meta = WPUF_Subscription::init()->get_details_meta_value();
+                                $currency     = wpuf_get_currency( 'symbol' );
 
-                            if ( is_user_logged_in() ) {
+                                if ( is_user_logged_in() ) {
+                                    ?>
+                                    <input type="hidden" name="user_id" value="<?php echo esc_attr( $current_user->ID ); ?>">
+                                    <?php
+                                }
                                 ?>
-                                <input type="hidden" name="user_id" value="<?php echo esc_attr( $current_user->ID ); ?>">
-                                <?php
-                            } ?>
 
                                 <div class="wpuf-coupon-info-wrap wpuf-pay-col">
                                     <div class="wpuf-coupon-info">
@@ -196,7 +201,8 @@ class WPUF_Payment {
 
                                                     <div><?php esc_html_e( 'Total', 'wp-user-frontend' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo esc_attr( wpuf_format_price( $billing_amount ) ); ?></strong></span></div>
                                                     <?php
-                                                } ?>
+                                                }
+                                                ?>
                                             </div>
                                         </div>
                                     </div>
@@ -213,39 +219,41 @@ class WPUF_Payment {
                                     </div>
                                     <a href="#" class="wpuf-copon-show"><?php esc_html_e( 'Have a discount code?', 'wp-user-frontend' ); ?></a>
 
-                                    <?php } // coupon?>
+                                    <?php } ?>
                                 </div>
 
-                            <?php
-                        }
+                                <?php
+                            }
 
-                    if ( $post_id ) {
-                        $form              = new WPUF_Form( get_post_meta( $post_id, '_wpuf_form_id', true ) );
-                        $force_pack        = $form->is_enabled_force_pack();
-                        $pay_per_post      = $form->is_enabled_pay_per_post();
-                        $fallback_enabled  = $form->is_enabled_fallback_cost();
-                        $fallback_cost     = (float) $form->get_subs_fallback_cost();
-                        $pay_per_post_cost = (float) $form->get_pay_per_post_cost();
-                        $current_user      = wpuf_get_user();
+                            if ( $post_id ) {
+                                $form              = new WPUF_Form( get_post_meta( $post_id, '_wpuf_form_id', true ) );
+                                $force_pack        = $form->is_enabled_force_pack();
+                                $pay_per_post      = $form->is_enabled_pay_per_post();
+                                $fallback_enabled  = $form->is_enabled_fallback_cost();
+                                $fallback_cost     = (float) $form->get_subs_fallback_cost();
+                                $pay_per_post_cost = (float) $form->get_pay_per_post_cost();
+                                $current_user      = wpuf_get_user();
 
-                        $current_pack = $current_user->subscription()->current_pack();
+                                $current_pack = $current_user->subscription()->current_pack();
 
-                        if ( $force_pack && !is_wp_error( $current_pack ) && $fallback_enabled ) {
-                            $post_cost      = $fallback_cost;
-                            $billing_amount = apply_filters( 'wpuf_payment_amount', $fallback_cost );
-                        } else {
-                            $post_cost      = $pay_per_post_cost;
-                            $billing_amount = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
-                        } ?>
-                                <div id="wpuf_type" style="display: none"><?php echo 'post'; ?></div>
-                                <div id="wpuf_id" style="display: none"><?php echo esc_attr( $post_id ); ?></div>
-                                <div><?php esc_html_e( 'Post cost', 'wp-user-frontend' ); ?>: <strong><span id="wpuf_pay_page_cost"><?php echo esc_attr( wpuf_format_price( $post_cost ) ); ?></strong></span></div>
+                                if ( $force_pack && ! is_wp_error( $current_pack ) && $fallback_enabled ) {
+                                    $post_cost      = $fallback_cost;
+                                    $billing_amount = apply_filters( 'wpuf_payment_amount', $fallback_cost );
+                                } else {
+                                    $post_cost      = $pay_per_post_cost;
+                                    $billing_amount = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
+                                }
+                                ?>
+                                        <div id="wpuf_type" style="display: none"><?php echo 'post'; ?></div>
+                                        <div id="wpuf_id" style="display: none"><?php echo esc_attr( $post_id ); ?></div>
+                                        <div><?php esc_html_e( 'Post cost', 'wp-user-frontend' ); ?>: <strong><span id="wpuf_pay_page_cost"><?php echo esc_attr( wpuf_format_price( $post_cost ) ); ?></strong></span></div>
 
-                                <?php do_action( 'wpuf_before_pack_payment_total' ); ?>
+                                        <?php do_action( 'wpuf_before_pack_payment_total' ); ?>
 
-                                <div><?php esc_html_e( 'Total', 'wp-user-frontend' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo esc_html( wpuf_format_price( $billing_amount ) ); ?></strong></span></div>
-                            <?php
-                    } ?>
+                                        <div><?php esc_html_e( 'Total', 'wp-user-frontend' ); ?>: <strong><span id="wpuf_pay_page_total"><?php echo esc_html( wpuf_format_price( $billing_amount ) ); ?></strong></span></div>
+                                    <?php
+                            }
+                            ?>
                             <?php wp_nonce_field( 'wpuf_payment_gateway' ); ?>
 
                             <?php do_action( 'wpuf_before_payment_gateway' ); ?>
@@ -261,7 +269,7 @@ class WPUF_Payment {
                                                 <?php
                                                 echo esc_html( $gateway['label'] );
 
-                                                if ( !empty( $gateway['icon'] ) ) {
+                                                if ( ! empty( $gateway['icon'] ) ) {
                                                     printf( ' <img src="%s" alt="image">', wp_kses_post( $gateway['icon'] ) );
                                                 }
                                                 ?>
@@ -293,8 +301,9 @@ class WPUF_Payment {
                         </form>
                         </div>
                     </div>
-                <?php
-                } else { ?>
+                    <?php
+                } else {
+                    ?>
                     <?php esc_html_e( 'No Payment gateway found', 'wp-user-frontend' ); ?>
                 <?php } ?>
 
@@ -321,7 +330,7 @@ class WPUF_Payment {
         $action = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '';
         $nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 
-        if ( $action == 'wpuf_pay' && isset( $nonce ) && wp_verify_nonce( $nonce, 'wpuf_payment_gateway' ) ) {
+        if ( $action === 'wpuf_pay' && isset( $nonce ) && wp_verify_nonce( $nonce, 'wpuf_payment_gateway' ) ) {
             $post_id       = isset( $_REQUEST['post_id'] ) ? intval( wp_unslash( $_REQUEST['post_id'] ) ) : 0;
             $pack_id       = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
             $gateway       = isset( $_POST['wpuf_payment_method'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_payment_method'] ) ) : '';
@@ -337,7 +346,7 @@ class WPUF_Payment {
 
                 if ( $user_id ) {
                     $userdata = get_userdata( $user_id );
-                } elseif ( $type == 'post' && !is_user_logged_in() ) {
+                } elseif ( $type === 'post' && ! is_user_logged_in() ) {
                     $post      = get_post( $post_id );
                     $user_id   = $post->post_author;
                     $userdata  = get_userdata( $user_id );
@@ -360,10 +369,10 @@ class WPUF_Payment {
                     $fallback_on   = $form->is_enabled_fallback_cost();
                     $post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-                    if ( $force_pack && $fallback_on && !is_wp_error( $current_pack ) && !$post_count ) {
-                        $amount    = $form->get_subs_fallback_cost();
+                    if ( $force_pack && $fallback_on && ! is_wp_error( $current_pack ) && ! $post_count ) {
+                        $amount = $form->get_subs_fallback_cost();
                     } else {
-                        $amount    = $form->get_pay_per_post_cost();
+                        $amount = $form->get_pay_per_post_cost();
                     }
                     $item_number = $post->ID;
                     $item_name   = $post->post_title;
@@ -391,14 +400,13 @@ class WPUF_Payment {
                     'first_name' => $userdata->first_name,
                     'last_name'  => $userdata->last_name,
                 ],
-                'date'      => date( 'Y-m-d H:i:s' ),
+                'date'      => gmdate( 'Y-m-d H:i:s' ),
                 'post_data' => $_POST,
                 'custom'    => isset( $custom ) ? $custom : '',
             ];
 
             if ( isset( $_POST['billing_address'] ) ) {
-                $billing_address = wp_unslash( $_POST['billing_address'] );
-                $address_fields  = array_map( 'sanitize_text_field', $billing_address );
+                $address_fields  = array_map( 'sanitize_text_field', wp_unslash( $_POST['billing_address'] ) );
             } else {
                 $address_fields = wpuf_get_user_address();
             }
@@ -432,13 +440,15 @@ class WPUF_Payment {
         $user_id = get_current_user_id();
 
         //check if it's already there
-        $sql = $wpdb->prepare( 'SELECT transaction_id
-                FROM ' . $wpdb->prefix . 'wpuf_transaction
-                WHERE transaction_id = %s LIMIT 1', $transaction_id );
+        $sql = $wpdb->prepare(
+            'SELECT transaction_id
+            FROM ' . $wpdb->prefix . 'wpuf_transaction
+            WHERE transaction_id = %s LIMIT 1', $transaction_id
+        );
 
         $result = $wpdb->get_row( $sql );
 
-        if ( $recurring != false ) {
+        if ( $recurring !== false ) {
             $profile_id = $data['profile_id'];
         }
 
@@ -462,16 +472,16 @@ class WPUF_Payment {
             $data['profile_id'] = $profile_id;
         }
 
-        if ( !$result ) {
+        if ( ! $result ) {
             $wpdb->insert( $wpdb->prefix . 'wpuf_transaction', $data );
 
             do_action( 'wpuf_payment_received', $data, $recurring );
         } else {
-            $wpdb->update( $wpdb->prefix . 'wpuf_transaction', $data, ['transaction_id' => $transaction_id] );
+            $wpdb->update( $wpdb->prefix . 'wpuf_transaction', $data, [ 'transaction_id' => $transaction_id ] );
         }
 
         //workaround for subscriptions can't be assigned from user profile regression
-        if ( !did_action( 'wpuf_payment_received' ) ) {
+        if ( ! did_action( 'wpuf_payment_received' ) ) {
             do_action( 'wpuf_payment_received', $data, $recurring );
         }
     }
@@ -483,7 +493,9 @@ class WPUF_Payment {
      */
     public function payment_notify_admin( $info ) {
         $headers = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_bloginfo( 'admin_email' ) . '>' . "\r\n\\";
+        // translators: %s is site title name
         $subject = sprintf( __( '[%s] Payment Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
+        // translators: %s is site title name
         $msg     = sprintf( __( 'New payment received at %s', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
 
         $receiver = get_bloginfo( 'admin_email' );
@@ -501,11 +513,11 @@ class WPUF_Payment {
         $nonce = isset( $_POST['wpuf_payment_cancel'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_payment_cancel'] ) ) : '';
         $action = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '';
 
-        if ( !isset( $_POST['wpuf_payment_cancel_submit'] ) || $action != 'wpuf_cancel_pay' || !wp_verify_nonce( $nonce, '_wpnonce' ) ) {
+        if ( ! isset( $_POST['wpuf_payment_cancel_submit'] ) || $action !== 'wpuf_cancel_pay' || ! wp_verify_nonce( $nonce, '_wpnonce' ) ) {
             return;
         }
 
-        $gateway = isset( $_POST['gateway'] ) ?  sanitize_text_field( wp_unslash( $_POST['gateway'] ) ) : '';
+        $gateway = isset( $_POST['gateway'] ) ? sanitize_text_field( wp_unslash( $_POST['gateway'] ) ) : '';
 
         do_action( "wpuf_cancel_payment_{$gateway}", $_POST );
     }

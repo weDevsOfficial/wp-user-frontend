@@ -86,6 +86,12 @@ class WPUF_Payment {
 
             if ( $pack_id ) {
                 $pack_detail    = WPUF_Subscription::get_subscription( $pack_id );
+
+                if ( ! $pack_detail ) {
+                    ?> <div class="wpuf-info"><?php echo esc_html( 'No subscription pack found.', 'wp-user-frontend' ); ?></div> <?php 
+                    exit;
+                }
+
                 $recurring_pay  = isset( $pack_detail->meta_value['recurring_pay'] ) ? $pack_detail->meta_value['recurring_pay'] : 'no';
 
                 if ( empty( $pack_detail->meta_value['billing_amount'] ) || $pack_detail->meta_value['billing_amount'] <= 0 ) {

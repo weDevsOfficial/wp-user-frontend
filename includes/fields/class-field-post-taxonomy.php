@@ -167,7 +167,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             }
         }
 
-        return $childs[0];
+        return reset($childs);
     }
 
     public function RecursiveCatWrite( $tree ) {

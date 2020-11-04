@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -25,18 +26,18 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
         $has_images         = false;
 
         if ( isset( $post_id ) && $post_id != '0' ) {
-            if ( $this->is_meta( $field_settings ) ) {
-                $images = $this->get_meta( $post_id, $field_settings['name'], $type, false );
+            $images = $this->get_meta( $post_id, $field_settings['name'], $type, false );
 
-                if ( $images ) {
-                    if ( is_serialized( $images[0] ) ) {
-                        $images = maybe_unserialize( $images[0] );
-                    }
-
-                    if ( is_array( $images[0] ) ) {
-                        $images = $images[0];
-                    }
+            if ( $this->is_meta( $field_settings ) && ! empty( $images[0] ) ) {   
+                             
+                if ( is_serialized( $images[0] ) ) {
+                    $images = maybe_unserialize( $images[0] );
                 }
+
+                if ( is_array( $images[0] ) ) {
+                    $images = $images[0];
+                }
+                
                 $has_images         = true;
             }
         }

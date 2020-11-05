@@ -140,14 +140,8 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
                 <?php if ( ! $hide_label ): ?>
                     <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
-                <?php
-                    echo wp_kses( make_clickable( esc_url_raw( $data ) ), [
-                        'a' => [
-                            'href' => [],
-                            'rel'  => []
-                        ],
-                    ] );
-                ?>
+                <a href="<?php echo esc_url_raw( $data ); ?>"
+                   target="<?php echo $field['open_window'] === 'new' ? '_blank' : '' ?>"> <?php echo esc_url_raw( $data ); ?> </a>
             </li>
         <?php
         return ob_get_clean();

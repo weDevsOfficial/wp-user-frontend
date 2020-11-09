@@ -38,7 +38,6 @@
                 action: 'wpuf_upload_file',
                 form_id: $( '#' + browse_button ).data('form_id')
             },
-            multi_selection: false,
             urlstream_upload: true,
             file_data_name: 'wpuf_file',
             max_file_size: max_file_size + 'kb',

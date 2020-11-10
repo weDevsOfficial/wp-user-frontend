@@ -105,11 +105,11 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                             foreach ( $post_statuses as $post_status => $text ) {
                                 ?>
                                 <option value="<?php echo esc_attr( $post_status ); ?>" <?php echo ( $expired_post_status === $post_status ) ? 'selected' : ''; ?> >
-                                                          <?php
-															echo esc_html(
-                                                                $text
-                                                            );
-															?>
+                                    <?php
+                                        echo esc_html(
+                                            $text
+                                        );
+									?>
                                 </option>
 								<?php
                             }
@@ -374,10 +374,9 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                 <select disabled name="">
                     <?php
                     $user_roles = wpuf_get_user_roles();
-
-					foreach ( $user_roles as $role => $label ) {
-						printf( '<option value="%s"%s>%s</option>', esc_attr( $role ), esc_attr( selected( $role_selected, $role, false ) ), esc_attr( $label ) );
-					}
+                    foreach ( $user_roles as $role => $label ) {
+                        printf( '<option value="%s"%s>%s</option>', esc_attr( $role ), esc_attr( selected( $role_selected, $role, false ) ), esc_attr( $label ) );
+                    }
 					?>
                 </select>
             </td>
@@ -426,9 +425,9 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                     <?php
                     $pages = get_posts(
                         [
-							'numberposts' => -1,
-							'post_type' => 'page',
-						]
+                            'numberposts' => -1,
+                            'post_type' => 'page',
+                        ]
                     );
 
                     foreach ( $pages as $page ) {

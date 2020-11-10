@@ -284,13 +284,13 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         echo json_encode(
             [
-				'post_id'        => $post_id,
-				'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
-				'date'           => current_time( 'mysql' ),
-				'post_author'    => get_current_user_id(),
-				'comment_status' => get_option( 'default_comment_status' ),
-				'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
-			]
+                'post_id'        => $post_id,
+                'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
+                'date'           => current_time( 'mysql' ),
+                'post_author'    => get_current_user_id(),
+                'comment_status' => get_option( 'default_comment_status' ),
+                'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
+            ]
         );
 
         exit;
@@ -668,7 +668,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         // set featured image if there's any
 
         // @codingStandardsIgnoreStart
-        $wpuf_files = isset( $_POST['wpuf_files'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_files'] ) ) : [];
+        $wpuf_files = isset( $_POST['wpuf_files'] ) ? $_POST['wpuf_files'] : [];
 
         if ( isset( $wpuf_files['featured_image'] ) ) {
             $attachment_id = $wpuf_files['featured_image'][0];
@@ -676,7 +676,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             wpuf_associate_attachment( $attachment_id, $post_id );
             set_post_thumbnail( $post_id, $attachment_id );
 
-            $file_data = isset( $_POST['wpuf_files_data'][ $attachment_id ] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_files_data'][ $attachment_id ] ) ) : false;
+            $file_data = isset( $_POST['wpuf_files_data'][ $attachment_id ] ) ? $_POST['wpuf_files_data'][ $attachment_id ] : false;
         
         // @codingStandardsIgnoreEnd
             if ( $file_data ) {

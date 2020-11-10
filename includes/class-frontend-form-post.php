@@ -282,16 +282,14 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         wpuf_clear_buffer();
 
-        echo json_encode(
-            [
+        echo json_encode( [
                 'post_id'        => $post_id,
                 'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
                 'date'           => current_time( 'mysql' ),
                 'post_author'    => get_current_user_id(),
                 'comment_status' => get_option( 'default_comment_status' ),
                 'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
-            ]
-        );
+            ] );
 
         exit;
     }
@@ -561,14 +559,12 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
                 if ( $user ) {
                     // $post_author = $user->ID;
-                    wp_send_json(
-                        [
-							'success'     => false,
-							'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
-							'type'        => 'login',
-							'redirect_to' => wp_login_url( get_permalink( $page_id ) ),
-						]
-                    );
+                    wp_send_json( [
+                        'success'     => false,
+                        'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
+                        'type'        => 'login',
+                        'redirect_to' => wp_login_url( get_permalink( $page_id ) ),
+					] );
                 } else {
 
                     // user not found, lets register him
@@ -595,12 +591,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                         }
 
                         // update display name to full name
-                        wp_update_user(
-                            [
-								'ID' => $user_id,
-								'display_name' => $guest_name,
-							]
-                        );
+                        wp_update_user( [
+                            'ID' => $user_id,
+                            'display_name' => $guest_name,
+						] );
 
                         $post_author = $user_id;
                     } else {
@@ -913,7 +907,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 							'action'  => 'wpuf_pay',
 							'type'    => 'post',
 							'post_id' => $post_id,
-						], get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
+                        ], 
+                        get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
                     );
 
                     wp_redirect( $response['redirect_to'] );
@@ -924,12 +919,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 $p_status = get_post_status( $post_id );
 
                 if ( $p_status ) {
-                    wp_update_post(
-                        [
-							'ID'            => $post_id,
-							'post_status'   => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
-						]
-                    );
+                    wp_update_post( [
+                        'ID'          => $post_id,
+                        'post_status' => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
+                    ] );
+                    
                     echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
                 }
             }
@@ -1004,7 +998,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 						'pid'      => $post_id,
 						'_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
 						'msg'      => 'post_updated',
-					], get_permalink( $page_id )
+                    ], 
+                    get_permalink( $page_id )
                 );
             } else {
                 $redirect_to = get_permalink( $post_id );
@@ -1030,7 +1025,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 					'action'  => 'wpuf_pay',
 					'type'    => 'post',
 					'post_id' => $post_id,
-				], get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
+                ], 
+                get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
             );
         }
 

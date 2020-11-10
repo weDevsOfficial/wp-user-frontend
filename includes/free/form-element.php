@@ -106,9 +106,9 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                                 ?>
                                 <option value="<?php echo esc_attr( $post_status ); ?>" <?php echo ( $expired_post_status === $post_status ) ? 'selected' : ''; ?> >
                                     <?php
-                                        echo esc_html(
-                                            $text
-                                        );
+                                    echo esc_html(
+                                        $text
+                                    );
 									?>
                                 </option>
 								<?php
@@ -375,7 +375,12 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
                     <?php
                     $user_roles = wpuf_get_user_roles();
                     foreach ( $user_roles as $role => $label ) {
-                        printf( '<option value="%s"%s>%s</option>', esc_attr( $role ), esc_attr( selected( $role_selected, $role, false ) ), esc_attr( $label ) );
+                        printf( 
+                            '<option value="%s"%s>%s</option>', 
+                            esc_attr( $role ), 
+                            esc_attr( selected( $role_selected, $role, false ) ), 
+                            esc_attr( $label ) 
+                        );
                     }
 					?>
                 </select>
@@ -423,15 +428,18 @@ class WPUF_form_element extends WPUF_Pro_Prompt {
             <td>
                 <select disabled name="">
                     <?php
-                    $pages = get_posts(
-                        [
-                            'numberposts' => -1,
-                            'post_type' => 'page',
-                        ]
-                    );
+                    $pages = get_posts( [
+                        'numberposts' => -1,
+                        'post_type' => 'page',
+                    ]);
 
                     foreach ( $pages as $page ) {
-                        printf( '<option value="%s"%s>%s</option>', esc_attr( $page->ID ), esc_attr( selected( $page_id, $page->ID, false ) ), esc_attr( $page->post_title ) );
+                        printf( 
+                            '<option value="%s"%s>%s</option>', 
+                            esc_attr( $page->ID ), 
+                            esc_attr( selected( $page_id, $page->ID, false ) ), 
+                            esc_attr( $page->post_title ) 
+                        );
                     }
                     ?>
                 </select>

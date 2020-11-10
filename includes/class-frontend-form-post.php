@@ -671,7 +671,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             set_post_thumbnail( $post_id, $attachment_id );
 
             $file_data = isset( $_POST['wpuf_files_data'][ $attachment_id ] ) ? $_POST['wpuf_files_data'][ $attachment_id ] : false;
-        
+
         // @codingStandardsIgnoreEnd
             if ( $file_data ) {
                 $args = [
@@ -739,7 +739,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
                 // @codingStandardsIgnoreStart
                 $file_data = isset( $_POST['wpuf_files_data'][ $attachment_id ] ) ? wp_unslash( $_POST['wpuf_files_data'][ $attachment_id ] ) : false;
-                
+
                 // @codingStandardsIgnoreEnd
                 if ( $file_data ) {
                     $args = [
@@ -762,18 +762,18 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $post = get_post( $post_id );
 
         $post_field_search = [
-			'%post_title%',
-			'%post_content%',
-			'%post_excerpt%',
-			'%tags%',
-			'%category%',
+            '%post_title%',
+            '%post_content%',
+            '%post_excerpt%',
+            '%tags%',
+            '%category%',
             '%author%',
-			'%author_email%',
-			'%author_bio%',
-			'%sitename%',
-			'%siteurl%',
-			'%permalink%',
-			'%editlink%',
+            '%author_email%',
+            '%author_bio%',
+            '%sitename%',
+            '%siteurl%',
+            '%permalink%',
+            '%editlink%',
 		];
 
         $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
@@ -904,10 +904,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                     $response['show_message'] = true;
                     $response['redirect_to']  = add_query_arg(
                         [
-							'action'  => 'wpuf_pay',
-							'type'    => 'post',
-							'post_id' => $post_id,
-                        ], 
+                            'action'  => 'wpuf_pay',
+                            'type'    => 'post',
+                            'post_id' => $post_id,
+                        ],
                         get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
                     );
 
@@ -923,7 +923,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                         'ID'          => $post_id,
                         'post_status' => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
                     ] );
-                    
+
                     echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
                 }
             }
@@ -995,10 +995,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             } elseif ( $this->form_settings['edit_redirect_to'] === 'same' ) {
                 $redirect_to = add_query_arg(
                     [
-						'pid'      => $post_id,
-						'_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
-						'msg'      => 'post_updated',
-                    ], 
+                        'pid'      => $post_id,
+                        '_wpnonce' => wp_create_nonce( 'wpuf_edit' ),
+                        'msg'      => 'post_updated',
+                    ],
                     get_permalink( $page_id )
                 );
             } else {
@@ -1022,10 +1022,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         ) {
             $redirect_to = add_query_arg(
                 [
-					'action'  => 'wpuf_pay',
-					'type'    => 'post',
-					'post_id' => $post_id,
-                ], 
+                    'action'  => 'wpuf_pay',
+                    'type'    => 'post',
+                    'post_id' => $post_id,
+                ],
                 get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
             );
         }

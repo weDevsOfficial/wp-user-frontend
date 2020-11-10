@@ -142,7 +142,7 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
                     <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
                 <a href="<?php echo esc_url_raw( $data ); ?>"
-                    <?php echo ! empty( $field['open_window'] ) && $field['open_window'] === 'new' ? 'target="_blank"' . 'rel="noreferrer noopener"' : ''; ?> > <?php echo esc_url_raw( $data ); ?> </a>
+                    <?php echo ! empty( $field['open_window'] ) && $field['open_window'] === 'new' ? 'target="_blank" rel="noreferrer noopener"' : ''; ?> > <?php echo esc_url_raw( $data ); ?> </a>
             </li>
         <?php
         return ob_get_clean();

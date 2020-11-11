@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership, frontend-post  
 **Requires at least:** 4.0  
-**Tested up to:** 5.5.1  
+**Tested up to:** 5.5.3  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.3  
+**Stable tag:** 3.5.4  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -262,6 +262,18 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 ## Changelog ##
+
+### v3.5.4 (11 November, 2020) ###
+* Fix - Get appropriate user id when role based conditions are present
+* Fix - Show Invalid subscription message if wrong pack id passed
+* Fix - URL field new window not working
+* Fix - Option label not working when & use
+* Fix - Ajax type category not showing on edit
+* Fix - Multiple file image can't select
+* Fix - Subscription pack PayPal Checkout gets "Error: Access Denied"
+* Fix - Conflict image field with acf image field
+* Enhancement - Missing Auckland State for New Zealand country.
+* Enhancement - Added support for WooCommerce product category value replacemen
 
 ### v3.5.3 (21 October, 2020) ###
 * Fix - Default post form is not showing on the frontend account

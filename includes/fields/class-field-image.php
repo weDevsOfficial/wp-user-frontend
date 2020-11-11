@@ -22,22 +22,21 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
-        $has_images         = false;
+        $has_images = false;
 
-        if ( isset( $post_id ) && $post_id != '0' ) {
-            if ( $this->is_meta( $field_settings ) ) {
-                $images = $this->get_meta( $post_id, $field_settings['name'], $type, false );
+        if ( isset( $post_id ) && $post_id !== 0 ) {
+            $images = $this->get_meta( $post_id, $field_settings['name'], $type, false );
 
-                if ( $images ) {
-                    if ( is_serialized( $images[0] ) ) {
-                        $images = maybe_unserialize( $images[0] );
-                    }
-
-                    if ( is_array( $images[0] ) ) {
-                        $images = $images[0];
-                    }
+            if ( $this->is_meta( $field_settings ) && ! empty( $images[0] ) ) {
+                if ( is_serialized( $images[0] ) ) {
+                    $images = maybe_unserialize( $images[0] );
                 }
-                $has_images         = true;
+
+                if ( is_array( $images[0] ) ) {
+                    $images = $images[0];
+                }
+
+                $has_images = true;
             }
         }
 
@@ -60,7 +59,8 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
                                 foreach ( $images as $attach_id ) {
                                     echo WPUF_Upload::attach_html( $attach_id, $field_settings['name'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                 }
-                            } ?>
+                            }
+                            ?>
                         </ul>
                     </div>
                 </div><!-- .container -->
@@ -79,7 +79,8 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
             </script>
 
 
-        <?php $this->after_field_print_label();
+        <?php
+        $this->after_field_print_label();
     }
 
     /**
@@ -88,7 +89,7 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options      = $this->get_default_option_settings( true, ['dynamic', 'width'] ); // exclude dynamic
+        $default_options = $this->get_default_option_settings( true, [ 'dynamic', 'width' ] ); // exclude dynamic
 
         $settings = [
             [
@@ -156,6 +157,6 @@ class WPUF_Form_Field_Image extends WPUF_Field_Contract {
 
         $wpuf_files = isset( $_POST['wpuf_files'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wpuf_files'] ) ) : [];
 
-        return isset( $wpuf_files[$field['name']] ) ? $wpuf_files[$field['name']] : [];
+        return isset( $wpuf_files[ $field['name'] ] ) ? $wpuf_files[ $field['name'] ] : [];
     }
 }

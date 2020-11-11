@@ -1,6 +1,53 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.4',
+        'released' => '2020-11-11',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Get appropriate user id when role based conditions are present', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Show Invalid subscription message if wrong pack id passed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'URL field new window not working', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Option label not working when & use', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Ajax type category not showing on edit', 'wp-user-frontend' ),
+                'type'  => 'Fix'
+            ],
+            [
+                'title' => __( 'Multiple file image can\'t select', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscription pack PayPal Checkout gets "Error: Access Denied"', 'wp-user-frontend' ),
+                'type'  => 'Fix'
+            ],
+            [
+                'title' => __( 'Conflict image field with acf image field', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Missing Auckland State for New Zealand country', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Added support for WooCommerce product category value replacemen', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.2',
         'released' => '2020-09-22',
         'changes'  => [

@@ -127,9 +127,9 @@ class WPUF_Paypal {
         $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
 
         if ( $redirect_page_id ) {
-            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( $redirect_page_id ) );
+            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', untrailingslashit(get_permalink( $redirect_page_id ) ) );
         } else {
-            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) );
+            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', untrailingslashit(get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) ) );
         }
 
         $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];

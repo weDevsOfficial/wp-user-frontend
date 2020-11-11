@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 3.5.3
+Version: 3.5.4
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '3.5.3' );
+define( 'WPUF_VERSION', '3.5.4' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -310,7 +310,7 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/includes/free/admin/shortcode-button.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder-ajax.php';
-            include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
+            // include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
             include_once WPUF_ROOT . '/includes/class-whats-new.php';
             include_once WPUF_ROOT . '/includes/class-acf.php';
             include_once WPUF_ROOT . '/includes/class-privacy.php';

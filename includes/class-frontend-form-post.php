@@ -611,10 +611,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
 
             // the user must be logged in already
-        } elseif ( isset( $this->form_settings['role_base'] ) && $this->form_settings['role_base'] === 'true' ) {
-            if ( ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) {
+        } elseif ( isset( $this->form_settings['role_base'] ) && $this->form_settings['role_base'] == 'true' && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) {
                 $this->send_error( __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) );
-            }
         } else {
             $post_author = get_current_user_id();
         }

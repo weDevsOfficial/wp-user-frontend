@@ -22,7 +22,7 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
-        if ( isset( $post_id ) && $post_id != '0' ) {
+        if ( isset( $post_id ) && $post_id !== '0' ) {
             if ( $this->is_meta( $field_settings ) ) {
                 $value = $this->get_meta( $post_id, $field_settings['name'], $type );
             }
@@ -45,7 +45,8 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
                 <?php $this->help_text( $field_settings ); ?>
             </div>
 
-        <?php $this->after_field_print_label();
+        <?php
+        $this->after_field_print_label();
     }
 
     /**
@@ -57,7 +58,7 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
         $default_options = $this->get_default_option_settings();
         $settings        = $this->get_default_text_option_settings( false ); // word_restriction = false
 
-        $settings[] =  [
+        $settings[] = [
             'name'      => 'open_window',
             'title'     => __( 'Open in : ', 'wp-user-frontend' ),
             'type'      => 'radio',
@@ -95,7 +96,7 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
             'hide_field_label'  => 'no',
         ];
 
-        return  array_merge( $defaults, $props );
+        return array_merge( $defaults, $props );
     }
 
     /**
@@ -108,7 +109,7 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $field = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+        $field = isset( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) : '';
         return esc_url( trim( $field ) );
     }
 
@@ -123,7 +124,7 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
      * @return string
      */
     public function render_field_data( $data, $field ) {
-        $data       = implode( ',' , $data );
+        $data       = implode( ',', $data );
         $hide_label = isset( $field['hide_field_label'] )
             ? wpuf_validate_boolean( $field['hide_field_label'] )
             : false;
@@ -136,18 +137,12 @@ class WPUF_Form_Field_URL extends WPUF_Form_Field_Text {
 
         ob_start();
         ?>
-            <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
-                <?php if ( ! $hide_label ): ?>
+            <li class="<?php echo esc_attr( implode( ' ', $container_classnames ) ); ?>">
+                <?php if ( ! $hide_label ) : ?>
                     <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
-                <?php
-                    echo wp_kses( make_clickable( esc_url_raw( $data ) ), [
-                        'a' => [
-                            'href' => [],
-                            'rel'  => []
-                        ],
-                    ] );
-                ?>
+                <a href="<?php echo esc_url_raw( $data ); ?>"
+                    <?php echo ! empty( $field['open_window'] ) && $field['open_window'] === 'new' ? 'target="_blank" rel="noreferrer noopener"' : ''; ?> > <?php echo esc_url_raw( $data ); ?> </a>
             </li>
         <?php
         return ob_get_clean();

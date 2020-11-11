@@ -7,7 +7,7 @@
                     <input
                         type="checkbox"
                         v-model="show_value"
-                    /><?php _e( 'Show values', 'wp-user-frontend' ); ?>
+                    /><?php esc_attr_e( 'Show values', 'wp-user-frontend' ); ?>
                 </label>
             </li>
             <li>
@@ -15,9 +15,9 @@
                     <input
                         type="checkbox"
                         v-model="sync_value"
-                    /><?php _e( 'Sync values', 'wp-user-frontend' ); ?>
+                    /><?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
                 </label>
-                <help-text placement="left" text="<?php _e( 'When enabled, option values will update according to their labels.', 'wp-user-frontend' ); ?>" />
+                <help-text placement="left" text="<?php esc_attr_e( 'When enabled, option values will update according to their labels.', 'wp-user-frontend' ); ?>" />
             </li>
         </ul>
     </div>
@@ -29,11 +29,12 @@
             <div class="sort-handler">&nbsp;</div>
 
             <div class="label">
-                <?php _e( 'Label', 'wp-user-frontend' ); ?>
+                <?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>
+                <help-text placement="left" text="<?php esc_attr_e( 'Do not use & or other special character for option label', 'wp-user-frontend' ); ?>" />
             </div>
 
             <div v-if="show_value" class="value">
-                <?php _e( 'Value', 'wp-user-frontend' ); ?>
+                <?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>
             </div>
 
             <div class="action-buttons">&nbsp;</div>
@@ -81,5 +82,5 @@
         </li>
     </ul>
 
-    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _e( 'Clear Selection', 'wp-user-frontend' ); ?></a>
+    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php esc_attr_e( 'Clear Selection', 'wp-user-frontend' ); ?></a>
 </div>

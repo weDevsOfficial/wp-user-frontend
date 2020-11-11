@@ -167,8 +167,8 @@ function wpuf_get_post_types( $args = [] ) {
 
     $ignore_post_types = [
         'attachment',
-		'revision',
-		'nav_menu_item',
+        'revision',
+        'nav_menu_item',
     ];
 
     foreach ( $post_types as $key => $val ) {
@@ -210,12 +210,12 @@ function wpuf_get_pages( $post_type = 'page' ) {
     $array = [ '' => __( '-- select --', 'wp-user-frontend' ) ];
     $pages = get_posts(
         [
-			'post_type'              => $post_type,
-			'numberposts'            => - 1,
-			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-		]
+            'post_type'              => $post_type,
+            'numberposts'            => - 1,
+            'no_found_rows'          => true,
+            'update_post_meta_cache' => false,
+            'update_post_term_cache' => false,
+        ]
     );
 
     if ( $pages ) {
@@ -282,9 +282,9 @@ class WPUF_Walker_Category_Multi extends Walker {
      * @var array
      */
     public $db_fields = [
-		'parent' => 'parent',
-		'id' => 'term_id',
-	];
+        'parent' => 'parent',
+        'id' => 'term_id',
+    ];
 
     /**
      * @see Walker::start_el()
@@ -324,9 +324,9 @@ class WPUF_Walker_Category_Checklist extends Walker {
     public $tree_type = 'category';
 
     public $db_fields = [
-		'parent' => 'parent',
-		'id' => 'term_id',
-	]; //TODO: decouple this
+        'parent' => 'parent',
+        'id' => 'term_id',
+    ]; //TODO: decouple this
 
     public function start_lvl( &$output, $depth = 0, $args = [] ) {
         $indent = str_repeat( "\t", $depth );
@@ -416,24 +416,24 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     printf( '<input type="hidden" name="%s" value="0" />', esc_attr( $tax ) );
     echo wp_kses(
         call_user_func_array( [ &$walker, 'walk' ], [ $categories, 0, $args ] ), [
-			'li'    => [
-				'class' => [],
-			],
-			'label' => [
-				'class' => [],
-			],
-			'input' => [
-				'class'   => [],
-				'type'    => [],
-				'value'   => [],
-				'name'    => [],
-				'id'      => [],
-				'checked' => [],
-			],
-			'ul'    => [
-				'class' => [],
-			],
-		]
+            'li'    => [
+                'class' => [],
+            ],
+            'label' => [
+                'class' => [],
+            ],
+            'input' => [
+                'class'   => [],
+                'type'    => [],
+                'value'   => [],
+                'name'    => [],
+                'id'      => [],
+                'checked' => [],
+            ],
+            'ul'    => [
+                'class' => [],
+            ],
+        ]
     );
     echo wp_kses_post( '</ul>' );
 }
@@ -456,8 +456,8 @@ function wpuf_get_field_settings_excludes( $field_settings, $exclude_type ) {
         foreach ( $attributes as $attr ) {
             $terms = get_terms(
                 'category', array(
-					'hide_empty' => false,
-					'parent'     => $attr,
+                    'hide_empty' => false,
+                    'parent'     => $attr,
                 )
             );
 
@@ -505,37 +505,37 @@ function wpuf_get_image_sizes() {
 function wpuf_allowed_extensions() {
     $extesions = [
         'images' => [
-			'ext' => 'jpg,jpeg,gif,png,bmp',
-			'label' => __( 'Images', 'wp-user-frontend' ),
-		],
+            'ext' => 'jpg,jpeg,gif,png,bmp',
+            'label' => __( 'Images', 'wp-user-frontend' ),
+        ],
         'audio'  => [
-			'ext' => 'mp3,wav,ogg,wma,mka,m4a,ra,mid,midi',
-			'label' => __( 'Audio', 'wp-user-frontend' ),
-		],
+            'ext' => 'mp3,wav,ogg,wma,mka,m4a,ra,mid,midi',
+            'label' => __( 'Audio', 'wp-user-frontend' ),
+        ],
         'video'  => [
-			'ext' => 'avi,divx,flv,mov,ogv,mkv,mp4,m4v,divx,mpg,mpeg,mpe',
-			'label' => __( 'Videos', 'wp-user-frontend' ),
-		],
+            'ext' => 'avi,divx,flv,mov,ogv,mkv,mp4,m4v,divx,mpg,mpeg,mpe',
+            'label' => __( 'Videos', 'wp-user-frontend' ),
+        ],
         'pdf'    => [
-			'ext' => 'pdf',
-			'label' => __( 'PDF', 'wp-user-frontend' ),
-		],
+            'ext' => 'pdf',
+            'label' => __( 'PDF', 'wp-user-frontend' ),
+        ],
         'office' => [
-			'ext' => 'doc,ppt,pps,xls,mdb,docx,xlsx,pptx,odt,odp,ods,odg,odc,odb,odf,rtf,txt',
-			'label' => __( 'Office Documents', 'wp-user-frontend' ),
-		],
+            'ext' => 'doc,ppt,pps,xls,mdb,docx,xlsx,pptx,odt,odp,ods,odg,odc,odb,odf,rtf,txt',
+            'label' => __( 'Office Documents', 'wp-user-frontend' ),
+        ],
         'zip'    => [
-			'ext' => 'zip,gz,gzip,rar,7z',
-			'label' => __( 'Zip Archives', 'wp-user-frontend' ),
-		],
+            'ext' => 'zip,gz,gzip,rar,7z',
+            'label' => __( 'Zip Archives', 'wp-user-frontend' ),
+        ],
         'exe'    => [
-			'ext' => 'exe',
-			'label' => __( 'Executable Files', 'wp-user-frontend' ),
-		],
+            'ext' => 'exe',
+            'label' => __( 'Executable Files', 'wp-user-frontend' ),
+        ],
         'csv'    => [
-			'ext' => 'csv',
-			'label' => __( 'CSV', 'wp-user-frontend' ),
-		],
+            'ext' => 'csv',
+            'label' => __( 'CSV', 'wp-user-frontend' ),
+        ],
     ];
 
     return apply_filters( 'wpuf_allowed_extensions', $extesions );
@@ -1049,7 +1049,7 @@ function wpuf_show_custom_fields( $content ) {
                         <div>
                             <a class="btn btn-brand btn-sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=<?php echo esc_attr( $def_lat ); ?>,<?php echo esc_attr( $def_long ); ?>" target="_blank" rel="nofollow external"><?php esc_html_e( 'Directions »', 'wp-user-frontend' ); ?></a>
                         </div>
-						<?php
+                        <?php
                     }
 
                     $html .= ob_get_clean();
@@ -1258,10 +1258,10 @@ function wpuf_shortcode_map( $location, $post_id = null, $args = [], $meta_key =
     }
 
     $default        = [
-		'width' => 450,
-		'height' => 250,
-		'zoom' => 12,
-	];
+        'width' => 450,
+        'height' => 250,
+        'zoom' => 12,
+    ];
     $args           = wp_parse_args( $args, $default );
 
     if ( is_array( $location ) ) {
@@ -1336,13 +1336,13 @@ function wpuf_meta_shortcode( $atts ) {
 
     $attrs = shortcode_atts(
         [
-			'name'   => '',
-			'type'   => 'normal',
-			'size'   => 'thumbnail',
-			'height' => 250,
-			'width'  => 450,
-			'zoom'   => 12,
-		], $atts
+            'name'   => '',
+            'type'   => 'normal',
+            'size'   => 'thumbnail',
+            'height' => 250,
+            'width'  => 450,
+            'zoom'   => 12,
+        ], $atts
     );
 
     $name   = $attrs['name'];
@@ -1383,10 +1383,10 @@ function wpuf_meta_shortcode( $atts ) {
         ob_start();
         wpuf_shortcode_map(
             $name, $post->ID, [
-				'width' => $width,
-				'height' => $height,
-				'zoom' => $zoom,
-			]
+                'width' => $width,
+                'height' => $height,
+                'zoom' => $zoom,
+            ]
         );
 
         return ob_get_clean();
@@ -1675,13 +1675,13 @@ function wpuf_date2mysql( $date, $gmt = 0 ) {
 function wpuf_get_form_fields( $form_id ) {
     $fields = get_children(
         [
-			'post_parent' => $form_id,
-			'post_status' => 'publish',
-			'post_type'   => 'wpuf_input',
-			'numberposts' => '-1',
-			'orderby'     => 'menu_order',
-			'order'       => 'ASC',
-		]
+            'post_parent' => $form_id,
+            'post_status' => 'publish',
+            'post_type'   => 'wpuf_input',
+            'numberposts' => '-1',
+            'orderby'     => 'menu_order',
+            'order'       => 'ASC',
+        ]
     );
 
     $form_fields = [];
@@ -2006,25 +2006,25 @@ function wpuf_get_countries( $type = 'array' ) {
 function wpuf_get_account_sections() {
     $account_sections = [
         [
-			'slug' => 'dashboard',
-			'label' => __( 'Dashboard', 'wp-user-frontend' ),
-		],
+            'slug' => 'dashboard',
+            'label' => __( 'Dashboard', 'wp-user-frontend' ),
+        ],
         [
-			'slug' => 'posts',
-			'label' => __( 'Posts', 'wp-user-frontend' ),
-		],
+            'slug' => 'posts',
+            'label' => __( 'Posts', 'wp-user-frontend' ),
+        ],
         [
-			'slug' => 'edit-profile',
-			'label' => __( 'Edit Profile', 'wp-user-frontend' ),
-		],
+            'slug' => 'edit-profile',
+            'label' => __( 'Edit Profile', 'wp-user-frontend' ),
+        ],
         [
-			'slug' => 'subscription',
-			'label' => __( 'Subscription', 'wp-user-frontend' ),
-		],
+            'slug' => 'subscription',
+            'label' => __( 'Subscription', 'wp-user-frontend' ),
+        ],
         [
-			'slug' => 'billing-address',
-			'label' => __( 'Billing Address', 'wp-user-frontend' ),
-		],
+            'slug' => 'billing-address',
+            'label' => __( 'Billing Address', 'wp-user-frontend' ),
+        ],
     ];
 
     return apply_filters( 'wpuf_account_sections', $account_sections );
@@ -2152,270 +2152,270 @@ function wpuf_get_pending_transactions( $args = [] ) {
 function wpuf_get_currencies() {
     $currencies = [
         [
-			'currency' => 'AED',
-			'label' => __( 'United Arab Emirates Dirham', 'wp-user-frontend' ),
-			'symbol' => 'د.إ',
-		],
+            'currency' => 'AED',
+            'label' => __( 'United Arab Emirates Dirham', 'wp-user-frontend' ),
+            'symbol' => 'د.إ',
+        ],
         [
-			'currency' => 'AUD',
-			'label' => __( 'Australian Dollars', 'wp-user-frontend' ),
-			'symbol' => '&#36;',
-		],
+            'currency' => 'AUD',
+            'label' => __( 'Australian Dollars', 'wp-user-frontend' ),
+            'symbol' => '&#36;',
+        ],
         [
-			'currency' => 'AZD',
-			'label' => __( 'Argentine Peso', 'wp-user-frontend' ),
-			'symbol' => '&#36;',
-		],
+            'currency' => 'AZD',
+            'label' => __( 'Argentine Peso', 'wp-user-frontend' ),
+            'symbol' => '&#36;',
+        ],
         [
-			'currency' => 'BDT',
-			'label' => __( 'Bangladeshi Taka', 'wp-user-frontend' ),
-			'symbol' => '&#2547;',
-		],
+            'currency' => 'BDT',
+            'label' => __( 'Bangladeshi Taka', 'wp-user-frontend' ),
+            'symbol' => '&#2547;',
+        ],
         [
-			'currency' => 'BRL',
-			'label' => __( 'Brazilian Real', 'wp-user-frontend' ),
-			'symbol' => '&#82;&#36;',
-		],
+            'currency' => 'BRL',
+            'label' => __( 'Brazilian Real', 'wp-user-frontend' ),
+            'symbol' => '&#82;&#36;',
+        ],
         [
-			'currency' => 'BGN',
-			'label' => __( 'Bulgarian Lev', 'wp-user-frontend' ),
-			'symbol' => '&#1083;&#1074;.',
-		],
+            'currency' => 'BGN',
+            'label' => __( 'Bulgarian Lev', 'wp-user-frontend' ),
+            'symbol' => '&#1083;&#1074;.',
+        ],
         [
-			'currency' => 'CAD',
-			'label' => __( 'Canadian Dollars', 'wp-user-frontend' ),
-			'symbol' => '&#36;',
-		],
+            'currency' => 'CAD',
+            'label' => __( 'Canadian Dollars', 'wp-user-frontend' ),
+            'symbol' => '&#36;',
+        ],
         [
-			'currency' => 'CLP',
-			'label' => __( 'Chilean Peso', 'wp-user-frontend' ),
-			'symbol' => '&#36;',
-		],
+            'currency' => 'CLP',
+            'label' => __( 'Chilean Peso', 'wp-user-frontend' ),
+            'symbol' => '&#36;',
+        ],
         [
-			'currency' => 'CNY',
-			'label' => __( 'Chinese Yuan', 'wp-user-frontend' ),
-			'symbol' => '&yen;',
-		],
+            'currency' => 'CNY',
+            'label' => __( 'Chinese Yuan', 'wp-user-frontend' ),
+            'symbol' => '&yen;',
+        ],
         [
-			'currency' => 'COP',
-			'label' => __( 'Colombian Peso', 'wp-user-frontend' ),
-			'symbol' => '&#36;',
-		],
+            'currency' => 'COP',
+            'label' => __( 'Colombian Peso', 'wp-user-frontend' ),
+            'symbol' => '&#36;',
+        ],
         [
-			'currency' => 'CZK',
-			'label' => __( 'Czech Koruna', 'wp-user-frontend' ),
-			'symbol' => '&#75;&#269;',
-		],
+            'currency' => 'CZK',
+            'label' => __( 'Czech Koruna', 'wp-user-frontend' ),
+            'symbol' => '&#75;&#269;',
+        ],
         [
-			'currency' => 'DKK',
-			'label' => __( 'Danish Krone', 'wp-user-frontend' ),
-			'symbol' => 'kr.',
-		],
+            'currency' => 'DKK',
+            'label' => __( 'Danish Krone', 'wp-user-frontend' ),
+            'symbol' => 'kr.',
+        ],
         [
-			'currency' => 'DOP',
-			'label' => __( 'Dominican Peso', 'wp-user-frontend' ),
-			'symbol' => 'RD&#36;',
-		],
+            'currency' => 'DOP',
+            'label' => __( 'Dominican Peso', 'wp-user-frontend' ),
+            'symbol' => 'RD&#36;',
+        ],
         [
-			'currency' => 'DZD',
-			'label' => __( 'Algerian Dinar', 'wp-user-frontend' ),
-			'symbol' => 'DA;',
-		],
+            'currency' => 'DZD',
+            'label' => __( 'Algerian Dinar', 'wp-user-frontend' ),
+            'symbol' => 'DA;',
+        ],
         [
-			'currency' => 'EUR',
-			'label' => __( 'Euros', 'wp-user-frontend' ),
-			'symbol' => '&euro;',
-		],
+            'currency' => 'EUR',
+            'label' => __( 'Euros', 'wp-user-frontend' ),
+            'symbol' => '&euro;',
+        ],
         [
-			'currency' => 'HKD',
-			'label' => __( 'Hong Kong Dollar', 'wp-user-frontend' ),
-			'symbol' => '&#36;',
-		],
+            'currency' => 'HKD',
+            'label' => __( 'Hong Kong Dollar', 'wp-user-frontend' ),
+            'symbol' => '&#36;',
+        ],
         [
-			'currency' => 'HRK',
-			'label' => __( 'Croatia kuna', 'wp-user-frontend' ),
-			'symbol' => 'Kn',
-		],
+            'currency' => 'HRK',
+            'label' => __( 'Croatia kuna', 'wp-user-frontend' ),
+            'symbol' => 'Kn',
+        ],
         [
-			'currency' => 'HUF',
-			'label' => __( 'Hungarian Forint', 'wp-user-frontend' ),
-			'symbol' => '&#70;&#116;',
-		],
+            'currency' => 'HUF',
+            'label' => __( 'Hungarian Forint', 'wp-user-frontend' ),
+            'symbol' => '&#70;&#116;',
+        ],
         [
-			'currency' => 'ISK',
-			'label' => __( 'Icelandic krona', 'wp-user-frontend' ),
-			'symbol' => 'Kr.',
-		],
+            'currency' => 'ISK',
+            'label' => __( 'Icelandic krona', 'wp-user-frontend' ),
+            'symbol' => 'Kr.',
+        ],
         [
-			'currency' => 'IDR',
-			'label' => __( 'Indonesia Rupiah', 'wp-user-frontend' ),
-			'symbol' => 'Rp',
-		],
+            'currency' => 'IDR',
+            'label' => __( 'Indonesia Rupiah', 'wp-user-frontend' ),
+            'symbol' => 'Rp',
+        ],
         [
-			'currency' => 'INR',
-			'label' => __( 'Indian Rupee', 'wp-user-frontend' ),
-			'symbol' => '&#8377;',
-		],
+            'currency' => 'INR',
+            'label' => __( 'Indian Rupee', 'wp-user-frontend' ),
+            'symbol' => '&#8377;',
+        ],
         [
-			'currency' => 'NPR',
-			'label' => __( 'Nepali Rupee', 'wp-user-frontend' ),
-			'symbol' => 'Rs.',
-		],
+            'currency' => 'NPR',
+            'label' => __( 'Nepali Rupee', 'wp-user-frontend' ),
+            'symbol' => 'Rs.',
+        ],
         [
-			'currency' => 'ILS',
-			'label' => __( 'Israeli Shekel', 'wp-user-frontend' ),
-			'symbol' => '&#8362;',
-		],
+            'currency' => 'ILS',
+            'label' => __( 'Israeli Shekel', 'wp-user-frontend' ),
+            'symbol' => '&#8362;',
+        ],
         [
-			'currency' => 'JPY',
-			'label' => __( 'Japanese Yen', 'wp-user-frontend' ),
-			'symbol' => '&yen;',
-		],
+            'currency' => 'JPY',
+            'label' => __( 'Japanese Yen', 'wp-user-frontend' ),
+            'symbol' => '&yen;',
+        ],
         [
-			'currency' => 'KIP',
-			'label' => __( 'Lao Kip', 'wp-user-frontend' ),
-			'symbol' => '&#8365;',
-		],
+            'currency' => 'KIP',
+            'label' => __( 'Lao Kip', 'wp-user-frontend' ),
+            'symbol' => '&#8365;',
+        ],
         [
-			'currency' => 'KRW',
-			'label' => __( 'South Korean Won', 'wp-user-frontend' ),
-			'symbol' => '&#8361;',
-		],
+            'currency' => 'KRW',
+            'label' => __( 'South Korean Won', 'wp-user-frontend' ),
+            'symbol' => '&#8361;',
+        ],
         [
-			'currency' => 'MYR',
-			'label' => __( 'Malaysian Ringgits', 'wp-user-frontend' ),
-			'symbol' => '&#82;&#77;',
-		],
+            'currency' => 'MYR',
+            'label' => __( 'Malaysian Ringgits', 'wp-user-frontend' ),
+            'symbol' => '&#82;&#77;',
+        ],
         [
-			'currency' => 'MXN',
-			'label' => __( 'Mexican Peso', 'wp-user-frontend' ),
-			'symbol' => '&#36;',
-		],
+            'currency' => 'MXN',
+            'label' => __( 'Mexican Peso', 'wp-user-frontend' ),
+            'symbol' => '&#36;',
+        ],
         [
-			'currency' => 'NGN',
-			'label' => __( 'Nigerian Naira', 'wp-user-frontend' ),
-			'symbol' => '&#8358;',
-		],
+            'currency' => 'NGN',
+            'label' => __( 'Nigerian Naira', 'wp-user-frontend' ),
+            'symbol' => '&#8358;',
+        ],
         [
-			'currency' => 'NOK',
-			'label' => __( 'Norwegian Krone', 'wp-user-frontend' ),
-			'symbol' => '&#107;&#114;',
-		],
+            'currency' => 'NOK',
+            'label' => __( 'Norwegian Krone', 'wp-user-frontend' ),
+            'symbol' => '&#107;&#114;',
+        ],
         [
-			'currency' => 'NZD',
-			'label' => __( 'New Zealand Dollar', 'wp-user-frontend' ),
-			'symbol' => '&#36;',
-		],
+            'currency' => 'NZD',
+            'label' => __( 'New Zealand Dollar', 'wp-user-frontend' ),
+            'symbol' => '&#36;',
+        ],
         [
-			'currency' => 'NAD',
-			'label' => __( 'Namibian dollar', 'wp-user-frontend' ),
-			'symbol' => 'N&#36;',
-		],
+            'currency' => 'NAD',
+            'label' => __( 'Namibian dollar', 'wp-user-frontend' ),
+            'symbol' => 'N&#36;',
+        ],
         [
-			'currency' => 'OMR',
-			'label' => __( 'Omani Rial', 'wp-user-frontend' ),
-			'symbol' => 'ر.ع.',
-		],
+            'currency' => 'OMR',
+            'label' => __( 'Omani Rial', 'wp-user-frontend' ),
+            'symbol' => 'ر.ع.',
+        ],
         [
-			'currency' => 'IRR',
-			'label' => __( 'Iranian Rial', 'wp-user-frontend' ),
-			'symbol' => '﷼',
-		],
+            'currency' => 'IRR',
+            'label' => __( 'Iranian Rial', 'wp-user-frontend' ),
+            'symbol' => '﷼',
+        ],
         [
-			'currency' => 'PKR',
-			'label' => __( 'Pakistani Rupee', 'wp-user-frontend' ),
-			'symbol' => 'Rs',
-		],
+            'currency' => 'PKR',
+            'label' => __( 'Pakistani Rupee', 'wp-user-frontend' ),
+            'symbol' => 'Rs',
+        ],
         [
-			'currency' => 'PYG',
-			'label' => __( 'Paraguayan Guaraní', 'wp-user-frontend' ),
-			'symbol' => '&#8370;',
-		],
+            'currency' => 'PYG',
+            'label' => __( 'Paraguayan Guaraní', 'wp-user-frontend' ),
+            'symbol' => '&#8370;',
+        ],
         [
-			'currency' => 'PHP',
-			'label' => __( 'Philippine Pesos', 'wp-user-frontend' ),
-			'symbol' => '&#8369;',
-		],
+            'currency' => 'PHP',
+            'label' => __( 'Philippine Pesos', 'wp-user-frontend' ),
+            'symbol' => '&#8369;',
+        ],
         [
-			'currency' => 'PLN',
-			'label' => __( 'Polish Zloty', 'wp-user-frontend' ),
-			'symbol' => '&#122;&#322;',
-		],
+            'currency' => 'PLN',
+            'label' => __( 'Polish Zloty', 'wp-user-frontend' ),
+            'symbol' => '&#122;&#322;',
+        ],
         [
-			'currency' => 'GBP',
-			'label' => __( 'Pounds Sterling', 'wp-user-frontend' ),
-			'symbol' => '&pound;',
-		],
+            'currency' => 'GBP',
+            'label' => __( 'Pounds Sterling', 'wp-user-frontend' ),
+            'symbol' => '&pound;',
+        ],
         [
-			'currency' => 'RON',
-			'label' => __( 'Romanian Leu', 'wp-user-frontend' ),
-			'symbol' => 'lei',
-		],
+            'currency' => 'RON',
+            'label' => __( 'Romanian Leu', 'wp-user-frontend' ),
+            'symbol' => 'lei',
+        ],
         [
-			'currency' => 'RUB',
-			'label' => __( 'Russian Ruble', 'wp-user-frontend' ),
-			'symbol' => '&#1088;&#1091;&#1073;.',
-		],
+            'currency' => 'RUB',
+            'label' => __( 'Russian Ruble', 'wp-user-frontend' ),
+            'symbol' => '&#1088;&#1091;&#1073;.',
+        ],
         [
-			'currency' => 'SR',
-			'label' => __( 'Saudi Riyal', 'wp-user-frontend' ),
-			'symbol' => 'SR',
-		],
+            'currency' => 'SR',
+            'label' => __( 'Saudi Riyal', 'wp-user-frontend' ),
+            'symbol' => 'SR',
+        ],
         [
-			'currency' => 'SGD',
-			'label' => __( 'Singapore Dollar', 'wp-user-frontend' ),
-			'symbol' => '&#36;',
-		],
+            'currency' => 'SGD',
+            'label' => __( 'Singapore Dollar', 'wp-user-frontend' ),
+            'symbol' => '&#36;',
+        ],
         [
-			'currency' => 'ZAR',
-			'label' => __( 'South African rand', 'wp-user-frontend' ),
-			'symbol' => '&#82;',
-		],
+            'currency' => 'ZAR',
+            'label' => __( 'South African rand', 'wp-user-frontend' ),
+            'symbol' => '&#82;',
+        ],
         [
-			'currency' => 'SEK',
-			'label' => __( 'Swedish Krona', 'wp-user-frontend' ),
-			'symbol' => '&#107;&#114;',
-		],
+            'currency' => 'SEK',
+            'label' => __( 'Swedish Krona', 'wp-user-frontend' ),
+            'symbol' => '&#107;&#114;',
+        ],
         [
-			'currency' => 'CHF',
-			'label' => __( 'Swiss Franc', 'wp-user-frontend' ),
-			'symbol' => '&#67;&#72;&#70;',
-		],
+            'currency' => 'CHF',
+            'label' => __( 'Swiss Franc', 'wp-user-frontend' ),
+            'symbol' => '&#67;&#72;&#70;',
+        ],
         [
-			'currency' => 'TWD',
-			'label' => __( 'Taiwan New Dollars', 'wp-user-frontend' ),
-			'symbol' => '&#78;&#84;&#36;',
-		],
+            'currency' => 'TWD',
+            'label' => __( 'Taiwan New Dollars', 'wp-user-frontend' ),
+            'symbol' => '&#78;&#84;&#36;',
+        ],
         [
-			'currency' => 'THB',
-			'label' => __( 'Thai Baht', 'wp-user-frontend' ),
-			'symbol' => '&#3647;',
-		],
+            'currency' => 'THB',
+            'label' => __( 'Thai Baht', 'wp-user-frontend' ),
+            'symbol' => '&#3647;',
+        ],
         [
-			'currency' => 'TRY',
-			'label' => __( 'Turkish Lira', 'wp-user-frontend' ),
-			'symbol' => '&#8378;',
-		],
+            'currency' => 'TRY',
+            'label' => __( 'Turkish Lira', 'wp-user-frontend' ),
+            'symbol' => '&#8378;',
+        ],
         [
-			'currency' => 'USD',
-			'label' => __( 'US Dollar', 'wp-user-frontend' ),
-			'symbol' => '&#36;',
-		],
+            'currency' => 'USD',
+            'label' => __( 'US Dollar', 'wp-user-frontend' ),
+            'symbol' => '&#36;',
+        ],
         [
-			'currency' => 'VND',
-			'label' => __( 'Vietnamese Dong', 'wp-user-frontend' ),
-			'symbol' => '&#8363;',
-		],
+            'currency' => 'VND',
+            'label' => __( 'Vietnamese Dong', 'wp-user-frontend' ),
+            'symbol' => '&#8363;',
+        ],
         [
-			'currency' => 'EGP',
-			'label' => __( 'Egyptian Pound', 'wp-user-frontend' ),
-			'symbol' => 'EGP',
-		],
+            'currency' => 'EGP',
+            'label' => __( 'Egyptian Pound', 'wp-user-frontend' ),
+            'symbol' => 'EGP',
+        ],
         [
-			'currency' => 'JOD',
-			'label' => __( 'Jordanian dinar', 'wp-user-frontend' ),
-			'symbol' => 'د.أ',
-		],
+            'currency' => 'JOD',
+            'label' => __( 'Jordanian dinar', 'wp-user-frontend' ),
+            'symbol' => 'د.أ',
+        ],
     ];
 
     return apply_filters( 'wpuf_currencies', $currencies );
@@ -2541,12 +2541,12 @@ function wpuf_format_price( $price, $formated = true, $args = [] ) {
       $price_args = apply_filters(
             'wpuf_price_args', wp_parse_args(
                 $args, [
-					'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
-					'decimal_separator'  => wpuf_get_price_decimal_separator(),
-					'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
-					'decimals'           => wpuf_get_price_decimals(),
-					'price_format'       => get_wpuf_price_format(),
-				]
+                    'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
+                    'decimal_separator'  => wpuf_get_price_decimal_separator(),
+                    'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
+                    'decimals'           => wpuf_get_price_decimals(),
+                    'price_format'       => get_wpuf_price_format(),
+                ]
             )
         );
 
@@ -2618,9 +2618,9 @@ function wpuf_duplicate_form( $post_id ) {
     // update the post title to remove confusion
     wp_update_post(
         [
-			'ID'         => $form_id,
-			'post_title' => $post->post_title . ' (#' . $form_id . ')',
-		]
+            'ID'         => $form_id,
+            'post_title' => $post->post_title . ' (#' . $form_id . ')',
+        ]
     );
 
     if ( $form_id ) {
@@ -2682,12 +2682,12 @@ function wpuf_insert_form_field( $form_id, $field = [], $field_id = null, $order
 function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpuf_forms', $blank = false ) {
     $form_id = wp_insert_post(
         [
-			'post_title'     => $post_title,
-			'post_type'      => $post_type,
-			'post_status'    => 'publish',
-			'comment_status' => 'closed',
-			'post_content'   => '',
-		]
+            'post_title'     => $post_title,
+            'post_type'      => $post_type,
+            'post_status'    => 'publish',
+            'comment_status' => 'closed',
+            'post_content'   => '',
+        ]
     );
 
     if ( ! $form_id ) {
@@ -2897,7 +2897,7 @@ function wpuf_delete_form( $form_id, $force = true ) {
         [
             'post_parent' => $form_id,
             'post_type'   => 'wpuf_input',
-		]
+        ]
     );
 }
 
@@ -3154,9 +3154,9 @@ function wpuf_set_all_terms_as_allowed() {
                     if ( is_taxonomy_hierarchical( $ct->name ) ) {
                         $tax_terms = get_terms(
                             [
-								'taxonomy'   => $ct->name,
-								'hide_empty' => false,
-							]
+                                'taxonomy'   => $ct->name,
+                                'hide_empty' => false,
+                            ]
                         );
 
                         foreach ( $tax_terms as $tax_term ) {
@@ -3172,9 +3172,9 @@ function wpuf_set_all_terms_as_allowed() {
                     if ( is_taxonomy_hierarchical( $ct->name ) ) {
                         $tax_terms = get_terms(
                             [
-								'taxonomy'   => $ct->name,
-								'hide_empty' => false,
-							]
+                                'taxonomy'   => $ct->name,
+                                'hide_empty' => false,
+                            ]
                         );
 
                         foreach ( $tax_terms as $tax_term ) {
@@ -3500,9 +3500,9 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
 
     $terms = get_terms(
         [
-			'taxonomy'   => $taxonomy,
-			'hide_empty' => false,
-		]
+            'taxonomy'   => $taxonomy,
+            'hide_empty' => false,
+        ]
     );
 
     foreach ( $terms as $key => $term ) {
@@ -3658,18 +3658,18 @@ function wpuf_settings_multiselect( $args ) {
 
     echo wp_kses(
         $html, [
-			'p' => [],
-			'select' => [
-				'multiple' => [],
-				'class'    => [],
-				'name'     => [],
-				'id'       => [],
-			],
-			'option' => [
-				'value' => [],
-				'selected' => [],
-			],
-		]
+            'p' => [],
+            'select' => [
+                'multiple' => [],
+                'class'    => [],
+                'name'     => [],
+                'id'       => [],
+            ],
+            'option' => [
+                'value' => [],
+                'selected' => [],
+            ],
+        ]
     );
 }
 
@@ -3763,9 +3763,9 @@ function wpuf_frontend_post_revision( $post_id, $form_settings ) {
     if ( post_type_supports( $form_settings['post_type'], 'revisions' ) ) {
         $revisions = wp_get_post_revisions(
             $post_id, [
-				'order' => 'ASC',
-				'posts_per_page' => 1,
-			]
+                'order' => 'ASC',
+                'posts_per_page' => 1,
+            ]
         );
         $revision  = current( $revisions );
 

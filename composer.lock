@@ -4,8 +4,50 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bf48aaa4175a0bee39f7b1893def5f5",
+    "content-hash": "2bb5c91e8cedd6a18a1e93aaff9b9c90",
     "packages": [
+        {
+            "name": "appsero/client",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Appsero/client.git",
+                "reference": "07608b10580c877fa0c05e20218cf4cbc8cb8187"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Appsero/client/zipball/07608b10580c877fa0c05e20218cf4cbc8cb8187",
+                "reference": "07608b10580c877fa0c05e20218cf4cbc8cb8187",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Appsero\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tareq Hasan",
+                    "email": "tareq@appsero.com"
+                }
+            ],
+            "description": "Appsero Client",
+            "keywords": [
+                "analytics",
+                "plugin",
+                "theme",
+                "wordpress"
+            ],
+            "time": "2020-11-06T08:16:38+00:00"
+        },
         {
             "name": "composer/installers",
             "version": "dev-master",
@@ -2018,6 +2060,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "appsero/client": 20,
         "wp-coding-standards/wpcs": 20,
         "tareq1988/wp-php-cs-fixer": 20,
         "phpcompatibility/phpcompatibility-wp": 20

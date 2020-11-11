@@ -12,7 +12,8 @@
   "minimum-stability": "dev",
   "require": {
     "php": ">=5.4.0",
-    "composer/installers": ">=1.4"
+    "composer/installers": ">=1.4",
+    "appsero/client": "dev-develop"
   },
   "require-dev": {
     "wp-coding-standards/wpcs": "dev-master",

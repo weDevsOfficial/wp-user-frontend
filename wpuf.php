@@ -310,7 +310,7 @@ final class WP_User_Frontend {
             require_once WPUF_ROOT . '/includes/free/admin/shortcode-button.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
             require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder-ajax.php';
-            include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
+            // include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
             include_once WPUF_ROOT . '/includes/class-whats-new.php';
             include_once WPUF_ROOT . '/includes/class-acf.php';
             include_once WPUF_ROOT . '/includes/class-privacy.php';

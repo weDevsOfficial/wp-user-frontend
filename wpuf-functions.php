@@ -455,7 +455,8 @@ function wpuf_get_field_settings_excludes( $field_settings, $exclude_type ) {
     if ( ! empty( $attributes ) ) {
         foreach ( $attributes as $attr ) {
             $terms = get_terms(
-                'category', array(
+                $field_settings['name'],
+                array(
                     'hide_empty' => false,
                     'parent'     => $attr,
                 )

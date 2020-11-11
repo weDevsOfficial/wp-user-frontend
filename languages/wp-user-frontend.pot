@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.5.3\n"
+"Project-Id-Version: WP User Frontend 3.5.4\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2020-10-21 05:00:56+00:00\n"
+"POT-Creation-Date: 2020-11-11 09:52:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -177,7 +177,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:346
 #: includes/fields/class-abstract-fields.php:409
 #: includes/fields/class-field-checkbox.php:74
-#: includes/fields/class-field-radio.php:83 includes/free/form-element.php:460
+#: includes/fields/class-field-radio.php:83 includes/free/form-element.php:499
 #: wpuf.php:715
 msgid "Yes"
 msgstr ""
@@ -192,7 +192,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:347
 #: includes/fields/class-abstract-fields.php:410
 #: includes/fields/class-field-checkbox.php:75
-#: includes/fields/class-field-radio.php:84 includes/free/form-element.php:461
+#: includes/fields/class-field-radio.php:84 includes/free/form-element.php:500
 #: wpuf.php:716
 msgid "No"
 msgstr ""
@@ -218,16 +218,16 @@ msgid "Expires In:"
 msgstr ""
 
 #: admin/class-admin-subscription.php:412 admin/form.php:227
-#: includes/free/form-element.php:53
+#: includes/free/form-element.php:57
 msgid "Post Expiration"
 msgstr ""
 
-#: admin/class-admin-subscription.php:417 includes/free/form-element.php:57
+#: admin/class-admin-subscription.php:417 includes/free/form-element.php:61
 msgid "Enable Post Expiration"
 msgstr ""
 
 #: admin/class-admin-subscription.php:428
-#: admin/class-admin-subscription.php:691 includes/free/form-element.php:63
+#: admin/class-admin-subscription.php:691 includes/free/form-element.php:67
 msgid "Post Expiration Time"
 msgstr ""
 
@@ -236,7 +236,7 @@ msgstr ""
 msgid "Post Status"
 msgstr ""
 
-#: admin/class-admin-subscription.php:463 includes/free/form-element.php:105
+#: admin/class-admin-subscription.php:463 includes/free/form-element.php:118
 msgid "Status of post after post expiration time is over "
 msgstr ""
 
@@ -256,7 +256,7 @@ msgstr ""
 msgid "Expiration Message"
 msgstr ""
 
-#: admin/class-admin-subscription.php:485 includes/free/form-element.php:124
+#: admin/class-admin-subscription.php:485 includes/free/form-element.php:137
 msgid "You may use: {post_author} {post_url} {blogname} {post_title} {post_status}"
 msgstr ""
 
@@ -328,7 +328,7 @@ msgstr ""
 
 #: admin/class-admin-subscription.php:774
 #: admin/form-builder/class-wpuf-admin-form-builder.php:284
-#: class/payment.php:205 class/subscription.php:787
+#: class/payment.php:217 class/subscription.php:787
 #: includes/class-list-table-subscribers.php:138 lib/appsero/Insights.php:764
 #: templates/dashboard/subscription.php:64
 msgid "Cancel"
@@ -364,7 +364,7 @@ msgstr ""
 
 #: admin/class-tools.php:43 admin/class-tools.php:106
 #: admin/post-forms-list-table.php:43 class/transactions-list-table.php:87
-#: includes/class-list-table-subscribers.php:136 wpuf-functions.php:3016
+#: includes/class-list-table-subscribers.php:136 wpuf-functions.php:3313
 msgid "All"
 msgstr ""
 
@@ -516,12 +516,16 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:36
+#: admin/form-builder/assets/js/components/field-option-data/template.php:33
+msgid "Do not use & or other special character for option label"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:37
 #: admin/template.php:234 admin/template.php:286
 msgid "Value"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:84
+#: admin/form-builder/assets/js/components/field-option-data/template.php:85
 msgid "Clear Selection"
 msgstr ""
 
@@ -541,8 +545,8 @@ msgstr ""
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:6
 #: class/render-form.php:1655
 #: includes/fields/class-field-featured-image.php:122
-#: includes/fields/class-field-image.php:115
-#: includes/fields/class-field-image.php:136
+#: includes/fields/class-field-image.php:116
+#: includes/fields/class-field-image.php:137
 msgid "Select Image"
 msgstr ""
 
@@ -792,8 +796,8 @@ msgstr ""
 msgid "Registration Forms"
 msgstr ""
 
-#: admin/form.php:189 includes/free/form-element.php:204
-#: includes/free/form-element.php:242
+#: admin/form.php:189 includes/free/form-element.php:218
+#: includes/free/form-element.php:256
 msgid "Notification"
 msgstr ""
 
@@ -958,7 +962,7 @@ msgid "No Change"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:31
-#: admin/html/form-settings-post.php:130 includes/free/form-element.php:362
+#: admin/html/form-settings-post.php:130 includes/free/form-element.php:391
 msgid "Redirect To"
 msgstr ""
 
@@ -968,22 +972,22 @@ msgid "Newly created post"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:37
-#: admin/html/form-settings-post.php:136 includes/free/form-element.php:367
+#: admin/html/form-settings-post.php:136 includes/free/form-element.php:396
 msgid "Same Page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:38
-#: admin/html/form-settings-post.php:137 includes/free/form-element.php:368
+#: admin/html/form-settings-post.php:137 includes/free/form-element.php:397
 msgid "To a page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:39
-#: admin/html/form-settings-post.php:138 includes/free/form-element.php:369
+#: admin/html/form-settings-post.php:138 includes/free/form-element.php:398
 msgid "To a custom URL"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:48
-#: admin/html/form-settings-post.php:147 includes/free/form-element.php:377
+#: admin/html/form-settings-post.php:147 includes/free/form-element.php:407
 msgid "After successfull submit, where the page will redirect to"
 msgstr ""
 
@@ -992,12 +996,12 @@ msgid "Post Update Message"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:61
-#: admin/html/form-settings-post.php:160 includes/free/form-element.php:397
+#: admin/html/form-settings-post.php:160 includes/free/form-element.php:427
 msgid "Page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:76
-#: admin/html/form-settings-post.php:175 includes/free/form-element.php:411
+#: admin/html/form-settings-post.php:175 includes/free/form-element.php:450
 msgid "Custom URL"
 msgstr ""
 
@@ -1214,7 +1218,7 @@ msgid "From"
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:141
-#: includes/free/form-element.php:216 includes/free/form-element.php:253
+#: includes/free/form-element.php:230 includes/free/form-element.php:267
 msgid "To"
 msgstr ""
 
@@ -1407,446 +1411,486 @@ msgstr ""
 msgid "Contact Support"
 msgstr ""
 
-#: admin/html/whats-new.php:8
+#: admin/html/whats-new.php:9
+msgid "Get appropriate user id when role based conditions are present"
+msgstr ""
+
+#: admin/html/whats-new.php:13
+msgid "Show Invalid subscription message if wrong pack id passed"
+msgstr ""
+
+#: admin/html/whats-new.php:17
+msgid "URL field new window not working"
+msgstr ""
+
+#: admin/html/whats-new.php:21
+msgid "Option label not working when & use"
+msgstr ""
+
+#: admin/html/whats-new.php:25
+msgid "Ajax type category not showing on edit"
+msgstr ""
+
+#: admin/html/whats-new.php:29
+msgid "Multiple file image can't select"
+msgstr ""
+
+#: admin/html/whats-new.php:33
+msgid "Subscription pack PayPal Checkout gets \"Error: Access Denied\""
+msgstr ""
+
+#: admin/html/whats-new.php:37
+msgid "Conflict image field with acf image field"
+msgstr ""
+
+#: admin/html/whats-new.php:41
+msgid "Missing Auckland State for New Zealand country"
+msgstr ""
+
+#: admin/html/whats-new.php:45
+msgid "Added support for WooCommerce product category value replacemen"
+msgstr ""
+
+#: admin/html/whats-new.php:55
 msgid "Add character restriction feature"
 msgstr ""
 
-#: admin/html/whats-new.php:12
+#: admin/html/whats-new.php:59
 msgid "Make sure post author edit link works only in frontend"
 msgstr ""
 
-#: admin/html/whats-new.php:16
+#: admin/html/whats-new.php:63
 msgid "Inconsistency in lost password reset email message"
 msgstr ""
 
-#: admin/html/whats-new.php:20
+#: admin/html/whats-new.php:67
 msgid "Saving custom taxonomy terms when input type is text"
 msgstr ""
 
-#: admin/html/whats-new.php:24
+#: admin/html/whats-new.php:71
 msgid "Taxonomy field JS error in builder"
 msgstr ""
 
-#: admin/html/whats-new.php:28
+#: admin/html/whats-new.php:75
 msgid "Showing WPUF edit link for WP default roles"
 msgstr ""
 
-#: admin/html/whats-new.php:32
+#: admin/html/whats-new.php:79
 msgid "Upload button unresponsive issue in iOS"
 msgstr ""
 
-#: admin/html/whats-new.php:42
+#: admin/html/whats-new.php:89
 msgid "Add post edit link for post authors in single or archive pages"
 msgstr ""
 
-#: admin/html/whats-new.php:46
+#: admin/html/whats-new.php:93
 msgid "Enhance post delete message"
 msgstr ""
 
-#: admin/html/whats-new.php:50
+#: admin/html/whats-new.php:97
 msgid "Refactor control buttons visibility in form builder"
 msgstr ""
 
-#: admin/html/whats-new.php:54
+#: admin/html/whats-new.php:101
 msgid "Add missing colons after field label"
 msgstr ""
 
-#: admin/html/whats-new.php:58
+#: admin/html/whats-new.php:105
 msgid "Post edit map capability condition"
 msgstr ""
 
-#: admin/html/whats-new.php:62
+#: admin/html/whats-new.php:109
 msgid "Role based permission for accessing a post form"
 msgstr ""
 
-#: admin/html/whats-new.php:66
+#: admin/html/whats-new.php:113
 msgid "Section-break field alignment"
 msgstr ""
 
-#: admin/html/whats-new.php:70
+#: admin/html/whats-new.php:117
 msgid "Pay per post doesn't work if subscription pack is activated"
 msgstr ""
 
-#: admin/html/whats-new.php:74
+#: admin/html/whats-new.php:121
 msgid "Mime type for uploading JSON files"
 msgstr ""
 
-#: admin/html/whats-new.php:78
+#: admin/html/whats-new.php:125
 msgid "File upload with same file name"
 msgstr ""
 
-#: admin/html/whats-new.php:82
+#: admin/html/whats-new.php:129
 msgid "Post preview missing fields"
 msgstr ""
 
-#: admin/html/whats-new.php:86
+#: admin/html/whats-new.php:133
 msgid "Illigal variable declartion"
 msgstr ""
 
-#: admin/html/whats-new.php:90
+#: admin/html/whats-new.php:137
 msgid "Featured image updating issue"
 msgstr ""
 
-#: admin/html/whats-new.php:94
+#: admin/html/whats-new.php:141
 msgid "Conflict with Phlox theme"
 msgstr ""
 
-#: admin/html/whats-new.php:98
+#: admin/html/whats-new.php:145
 msgid "Textarea custom field data sanitization"
 msgstr ""
 
-#: admin/html/whats-new.php:102
+#: admin/html/whats-new.php:149
 msgid "exclude_type warning in wpuf_category_checklist"
 msgstr ""
 
-#: admin/html/whats-new.php:106
+#: admin/html/whats-new.php:153
 msgid "Category field not showing all child categories for selection type child of"
 msgstr ""
 
-#: admin/html/whats-new.php:110
+#: admin/html/whats-new.php:157
 msgid "Conflict between image and file upload custom fields"
 msgstr ""
 
-#: admin/html/whats-new.php:114
+#: admin/html/whats-new.php:161
 msgid "Login url when login page is not set"
 msgstr ""
 
-#: admin/html/whats-new.php:124
+#: admin/html/whats-new.php:171
 msgid ""
 "Use common names for Ivory Coast, North Korea and Sourth Korea instead of "
 "their official names"
 msgstr ""
 
-#: admin/html/whats-new.php:128
+#: admin/html/whats-new.php:175
 msgid "Fix condition to use default avatar"
 msgstr ""
 
-#: admin/html/whats-new.php:132
+#: admin/html/whats-new.php:179
 msgid "Make Email and URL fields clickable"
 msgstr ""
 
-#: admin/html/whats-new.php:136
+#: admin/html/whats-new.php:183
 msgid "Fix redirect after user login"
 msgstr ""
 
-#: admin/html/whats-new.php:140
+#: admin/html/whats-new.php:187
 msgid "Sanitize textarea field data"
 msgstr ""
 
-#: admin/html/whats-new.php:144
+#: admin/html/whats-new.php:191
 msgid ""
 "Fix missing colon to email, URL, text and textarea labels when renders "
 "their data"
 msgstr ""
 
-#: admin/html/whats-new.php:148
+#: admin/html/whats-new.php:195
 msgid "Prevent showing empty labels for fields that have render_field_data method"
 msgstr ""
 
-#: admin/html/whats-new.php:158
+#: admin/html/whats-new.php:205
 msgid "Add Namibian Dollar in currency list"
 msgstr ""
 
-#: admin/html/whats-new.php:162
+#: admin/html/whats-new.php:209
 msgid "Add sync values option for option data fields"
 msgstr ""
 
-#: admin/html/whats-new.php:166
+#: admin/html/whats-new.php:213
 msgid "Allow uploading image that having filesize meets php ini settings"
 msgstr ""
 
-#: admin/html/whats-new.php:170
+#: admin/html/whats-new.php:217
 msgid "Limit the selection of one image at a time"
 msgstr ""
 
-#: admin/html/whats-new.php:174
+#: admin/html/whats-new.php:221
 msgid "Use file name and size to generate hash to prevent duplicant image upload"
 msgstr ""
 
-#: admin/html/whats-new.php:178
+#: admin/html/whats-new.php:225
 msgid "Sanitize text and textarea field data"
 msgstr ""
 
-#: admin/html/whats-new.php:182
+#: admin/html/whats-new.php:229
 msgid ""
 "Show label instead of values for radio, checkbox, dropdown and multiselect "
 "data"
 msgstr ""
 
-#: admin/html/whats-new.php:186
+#: admin/html/whats-new.php:233
 msgid "Saving custom taxonomies for type text input"
 msgstr ""
 
-#: admin/html/whats-new.php:190
+#: admin/html/whats-new.php:237
 msgid "Admin settings link for recaptcha helper text"
 msgstr ""
 
-#: admin/html/whats-new.php:194
+#: admin/html/whats-new.php:241
 msgid "Undefined name property for Custom HTML fields"
 msgstr ""
 
-#: admin/html/whats-new.php:198
+#: admin/html/whats-new.php:245
 msgid "Delete attachment process"
 msgstr ""
 
-#: admin/html/whats-new.php:202
+#: admin/html/whats-new.php:249
 msgid "Missing billing address in invoice PDF"
 msgstr ""
 
-#: admin/html/whats-new.php:206
+#: admin/html/whats-new.php:253
 msgid "Showing country field value in frontend post content"
 msgstr ""
 
-#: admin/html/whats-new.php:210
+#: admin/html/whats-new.php:257
 msgid "Avatar size display not complying with admin settings size"
 msgstr ""
 
-#: admin/html/whats-new.php:214
+#: admin/html/whats-new.php:261
 msgid "Display default avatars on admin settings discussion page"
 msgstr ""
 
-#: admin/html/whats-new.php:218
+#: admin/html/whats-new.php:265
 msgid "Redirect to subscription page at registration"
 msgstr ""
 
-#: admin/html/whats-new.php:222
+#: admin/html/whats-new.php:269
 msgid "Error notice regarding registration page redirect"
 msgstr ""
 
-#: admin/html/whats-new.php:226
+#: admin/html/whats-new.php:273
 msgid "Escaping html in registration errors"
 msgstr ""
 
-#: admin/html/whats-new.php:230
+#: admin/html/whats-new.php:277
 msgid "Default login redirect link"
 msgstr ""
 
-#: admin/html/whats-new.php:234
+#: admin/html/whats-new.php:281
 msgid "Implementing default WP login page override option"
 msgstr ""
 
-#: admin/html/whats-new.php:238
+#: admin/html/whats-new.php:285
 msgid "Transparent background of autosuggestion dropdown"
 msgstr ""
 
-#: admin/html/whats-new.php:248
+#: admin/html/whats-new.php:295
 msgid "Import forms system"
 msgstr ""
 
-#: admin/html/whats-new.php:252
+#: admin/html/whats-new.php:299
 msgid "Password reset system"
 msgstr ""
 
-#: admin/html/whats-new.php:256
+#: admin/html/whats-new.php:303
 msgid "Updated url validation regex to support modern tlds"
 msgstr ""
 
-#: admin/html/whats-new.php:260
+#: admin/html/whats-new.php:307
 msgid "Export WPUF forms individually from admin tools page"
 msgstr ""
 
-#: admin/html/whats-new.php:264
+#: admin/html/whats-new.php:311
 msgid "Subscription cycle label translation issue"
 msgstr ""
 
-#: admin/html/whats-new.php:268
+#: admin/html/whats-new.php:315
 msgid "ACF integration for checkbox fields"
 msgstr ""
 
-#: admin/html/whats-new.php:272
+#: admin/html/whats-new.php:319
 msgid "Illegal string offset warning while updating settings"
 msgstr ""
 
-#: admin/html/whats-new.php:276
+#: admin/html/whats-new.php:323
 msgid "Conditional logic for Section Break field"
 msgstr ""
 
-#: admin/html/whats-new.php:280
+#: admin/html/whats-new.php:327
 msgid "Subscriptions cannot be deleted from backend"
 msgstr ""
 
-#: admin/html/whats-new.php:284
+#: admin/html/whats-new.php:331
 msgid "A regression regarding saving checkbox data"
 msgstr ""
 
-#: admin/html/whats-new.php:288
+#: admin/html/whats-new.php:335
 msgid "Default value of multi-select fields is not showing"
 msgstr ""
 
-#: admin/html/whats-new.php:298
+#: admin/html/whats-new.php:345
 msgid "Hide post edit option when subscription is expired"
 msgstr ""
 
-#: admin/html/whats-new.php:300
+#: admin/html/whats-new.php:347
 msgid "Hide post edit option from users whose subscription pack is expired."
 msgstr ""
 
-#: admin/html/whats-new.php:303
+#: admin/html/whats-new.php:350
 msgid "Check files to prevent duplicity in media upload"
 msgstr ""
 
-#: admin/html/whats-new.php:305
+#: admin/html/whats-new.php:352
 msgid ""
 "A simple measure has been taken to prevent maliciously flooding the site by "
 "uploading same file multiple times. Though this won't work with already "
 "uploaded medias."
 msgstr ""
 
-#: admin/html/whats-new.php:308
+#: admin/html/whats-new.php:355
 msgid "Refactor address fields in Account section"
 msgstr ""
 
-#: admin/html/whats-new.php:310
+#: admin/html/whats-new.php:357
 msgid "Address edit section from Account section has been rewritten to improve UX."
 msgstr ""
 
-#: admin/html/whats-new.php:313
+#: admin/html/whats-new.php:360
 msgid "Update Paypal payment gateway"
 msgstr ""
 
-#: admin/html/whats-new.php:315
+#: admin/html/whats-new.php:362
 msgid "Paypal payment gateway has seen some improvements."
 msgstr ""
 
-#: admin/html/whats-new.php:318
+#: admin/html/whats-new.php:365
 msgid "Default Category selection improvements"
 msgstr ""
 
-#: admin/html/whats-new.php:320
+#: admin/html/whats-new.php:367
 msgid ""
 "An intuitive way of selecting default category of a selected post type has "
 "been introduced."
 msgstr ""
 
-#: admin/html/whats-new.php:323
+#: admin/html/whats-new.php:370
 msgid "Compatibility issue with ACF date time field"
 msgstr ""
 
-#: admin/html/whats-new.php:325
+#: admin/html/whats-new.php:372
 msgid "A Compatibility issue with ACF date time field has been addressed."
 msgstr ""
 
-#: admin/html/whats-new.php:328
+#: admin/html/whats-new.php:375
 msgid "Media title, caption & description not saving"
 msgstr ""
 
-#: admin/html/whats-new.php:330
+#: admin/html/whats-new.php:377
 msgid ""
 "Media title, caption & description were not saving from frontend. They will "
 "now."
 msgstr ""
 
-#: admin/html/whats-new.php:333
+#: admin/html/whats-new.php:380
 msgid ""
 "The Events Calendar venue and organizer fields issue in WPUF Custom Fields "
 "metabox"
 msgstr ""
 
-#: admin/html/whats-new.php:335
+#: admin/html/whats-new.php:382
 msgid ""
 "A workaround has been introduced to save The Events Calendar Venue and "
 "Organizer fields properly from WPUF Custom Fields metabox."
 msgstr ""
 
-#: admin/html/whats-new.php:338
+#: admin/html/whats-new.php:385
 msgid "Checkbox data not saving from WPUF Custom Fields metabox"
 msgstr ""
 
-#: admin/html/whats-new.php:340
+#: admin/html/whats-new.php:387
 msgid ""
 "Checkboxe data from WPUF Custom Fields metabox were not saving. It has been "
 "fixed."
 msgstr ""
 
-#: admin/html/whats-new.php:343
+#: admin/html/whats-new.php:390
 msgid "Multi-column Repeater field data saving issue"
 msgstr ""
 
-#: admin/html/whats-new.php:345
+#: admin/html/whats-new.php:392
 msgid ""
 "Multi-column Repeater field data from a form was not saving. It has been "
 "fixed."
 msgstr ""
 
-#: admin/html/whats-new.php:348
+#: admin/html/whats-new.php:395
 msgid "Multistep form conflict with Elementor"
 msgstr ""
 
-#: admin/html/whats-new.php:350
+#: admin/html/whats-new.php:397
 msgid "Multistep form had a conflict with Elementor. It has been fixed."
 msgstr ""
 
-#: admin/html/whats-new.php:353
+#: admin/html/whats-new.php:400
 msgid "Multiple images showing issue in frontend"
 msgstr ""
 
-#: admin/html/whats-new.php:355
+#: admin/html/whats-new.php:402
 msgid "Multiple images in a post were not showing in frontend. Now they will."
 msgstr ""
 
-#: admin/html/whats-new.php:364
+#: admin/html/whats-new.php:411
 msgid "Nonce not verify on login"
 msgstr ""
 
-#: admin/html/whats-new.php:366
+#: admin/html/whats-new.php:413
 msgid "Return of function wp_verify_nonce() was ignored."
 msgstr ""
 
-#: admin/html/whats-new.php:375
+#: admin/html/whats-new.php:422
 msgid "Option to set which tab shows as active on the account page"
 msgstr ""
 
-#: admin/html/whats-new.php:377
+#: admin/html/whats-new.php:424
 msgid ""
 "Option to set which tab shows as active on the account page. To configure "
 "this setting navigate to wp-admin->User Frontend->Settings->My "
 "Account->Active Tab "
 msgstr ""
 
-#: admin/html/whats-new.php:380
+#: admin/html/whats-new.php:427
 msgid "Unlock option was unavailable after the post being locked"
 msgstr ""
 
-#: admin/html/whats-new.php:382
+#: admin/html/whats-new.php:429
 msgid "Unlock option was unavailable after the post being locked."
 msgstr ""
 
-#: admin/html/whats-new.php:385
+#: admin/html/whats-new.php:432
 msgid "Gutenberg block of WPUF didn't work on bedrock installation"
 msgstr ""
 
-#: admin/html/whats-new.php:387
+#: admin/html/whats-new.php:434
 msgid "Gutenberg block of WPUF didn't work on bedrock installation."
 msgstr ""
 
-#: admin/html/whats-new.php:390
+#: admin/html/whats-new.php:437
 msgid "Sending admin payment received email twice"
 msgstr ""
 
-#: admin/html/whats-new.php:392
+#: admin/html/whats-new.php:439
 msgid ""
 "After processing payment admin & user was receiving payment received email "
 "twice."
 msgstr ""
 
-#: admin/html/whats-new.php:395
+#: admin/html/whats-new.php:442
 msgid ""
 "Add shortcode support to display post information in the Post Expiration "
 "Message"
 msgstr ""
 
-#: admin/html/whats-new.php:397
+#: admin/html/whats-new.php:444
 msgid ""
 "Add shortcode support to display post information in the Post Expiration "
 "Message. You can use: <strong>{post_author} {post_url} {blogname} "
 "{post_title} {post_status}</strong>"
 msgstr ""
 
-#: admin/html/whats-new.php:400
+#: admin/html/whats-new.php:447
 msgid "Add optin on the setup wizard"
 msgstr ""
 
-#: admin/html/whats-new.php:402
+#: admin/html/whats-new.php:449
 msgid ""
 "Added optin on the setup wizard, admin can choose whether he/she wants to "
 "share server environment details (php, mysql, server, WordPress versions), "
@@ -1854,126 +1898,126 @@ msgid ""
 "name and url, admin name and email address. No sensitive data is tracked"
 msgstr ""
 
-#: admin/html/whats-new.php:411
+#: admin/html/whats-new.php:458
 msgid "Post Owner problem"
 msgstr ""
 
-#: admin/html/whats-new.php:413
+#: admin/html/whats-new.php:460
 msgid ""
 "Posts were not assigned to the selected default post owner, this issue has "
 "been fixed."
 msgstr ""
 
-#: admin/html/whats-new.php:416
+#: admin/html/whats-new.php:463
 msgid "Google reCaptcha was not working"
 msgstr ""
 
-#: admin/html/whats-new.php:418
+#: admin/html/whats-new.php:465
 msgid ""
 "Google reCaptcha was not working, users could submit the form without "
 "reCaptcha validation."
 msgstr ""
 
-#: admin/html/whats-new.php:427
+#: admin/html/whats-new.php:474
 msgid "Added column field"
 msgstr ""
 
-#: admin/html/whats-new.php:432
+#: admin/html/whats-new.php:479
 msgid "Unable to render the events on the front-end dashboard"
 msgstr ""
 
-#: admin/html/whats-new.php:434
+#: admin/html/whats-new.php:481
 msgid ""
 "On the frontend dashboard, the submitted events were not showing, you will "
 "get it fixed in this version."
 msgstr ""
 
-#: admin/html/whats-new.php:437
+#: admin/html/whats-new.php:484
 msgid "Page order getting 0(zero) after editing from the frontend"
 msgstr ""
 
-#: admin/html/whats-new.php:439
+#: admin/html/whats-new.php:486
 msgid ""
 "Page order was not saving while editing a post using WPUF form, it has been "
 "fixed."
 msgstr ""
 
-#: admin/html/whats-new.php:442
+#: admin/html/whats-new.php:489
 msgid "Text input field for taxonomies not working"
 msgstr ""
 
-#: admin/html/whats-new.php:444
+#: admin/html/whats-new.php:491
 msgid ""
 "When taxonomy field type is set to `Text Input` then a fatal error was "
 "showing on the frontend, no error with taxonomy field in the latest version."
 msgstr ""
 
-#: admin/html/whats-new.php:447
+#: admin/html/whats-new.php:494
 msgid ""
 "In radio and checkbox field use conditional logic that value does not save "
 "in database"
 msgstr ""
 
-#: admin/html/whats-new.php:449
+#: admin/html/whats-new.php:496
 msgid ""
 "The selected value of radio and checkbox field were not showing while "
 "editing posts from the backend or frontend, you can see the selected value "
 "in this version."
 msgstr ""
 
-#: admin/html/whats-new.php:452
+#: admin/html/whats-new.php:499
 msgid "The args param not working with get_avatar filter"
 msgstr ""
 
-#: admin/html/whats-new.php:454
+#: admin/html/whats-new.php:501
 msgid "The args parameter did not exist with get_avatar filter, which now exists."
 msgstr ""
 
-#: admin/html/whats-new.php:457
+#: admin/html/whats-new.php:504
 msgid "The item in ajax taxonomy field was not selected"
 msgstr ""
 
-#: admin/html/whats-new.php:459
+#: admin/html/whats-new.php:506
 msgid ""
 "When the taxonomy field type is set to Ajax, the submitted terms were not "
 "showing in the backend and frontend which have been fixed."
 msgstr ""
 
-#: admin/html/whats-new.php:468
+#: admin/html/whats-new.php:515
 msgid "Unable to send new user registration email"
 msgstr ""
 
-#: admin/html/whats-new.php:470
+#: admin/html/whats-new.php:517
 msgid ""
 "WP User Frontend default registration form `[wpuf-registration]` was unable "
 "to send the new user registration email."
 msgstr ""
 
-#: admin/html/whats-new.php:473
+#: admin/html/whats-new.php:520
 msgid "WPUF forms block compatibility issue with the latest WP version"
 msgstr ""
 
-#: admin/html/whats-new.php:475
+#: admin/html/whats-new.php:522
 msgid ""
 "With the latest version of WordPress the gutenberg block of WP User "
 "Frontend were not working. In this version, you will get it fixed."
 msgstr ""
 
-#: admin/html/whats-new.php:478
+#: admin/html/whats-new.php:525
 msgid "Page not update where `[wpuf_dashboard]` shortcode exist"
 msgstr ""
 
-#: admin/html/whats-new.php:480
+#: admin/html/whats-new.php:527
 msgid ""
 "While using Gutenberg, the page were not being updated with WPUF shortcode "
 "[wpuf dashboard]"
 msgstr ""
 
-#: admin/html/whats-new.php:483
+#: admin/html/whats-new.php:530
 msgid "Retain default when determining whether to display the admin bar"
 msgstr ""
 
-#: admin/html/whats-new.php:485
+#: admin/html/whats-new.php:532
 msgid ""
 "From the User Frontend Settings, set that Administrator, Editor, Vendor can "
 "see the admin bar. Now, the super admin want, one specific user ( who has "
@@ -1983,11 +2027,11 @@ msgid ""
 "frontend."
 msgstr ""
 
-#: admin/html/whats-new.php:488
+#: admin/html/whats-new.php:535
 msgid "Fatal error when use PHP lower version (5.4 or lower)"
 msgstr ""
 
-#: admin/html/whats-new.php:490
+#: admin/html/whats-new.php:537
 msgid ""
 "It was unable to install WP User Frontend with PHP 5.4 or lower version. "
 "Here is the error details: <br><br><strong>Fatal error: Can't use method "
@@ -1995,42 +2039,42 @@ msgid ""
 "/wp-user-frontend/class/frontend-form-post.php on line 194</strong>"
 msgstr ""
 
-#: admin/html/whats-new.php:493
+#: admin/html/whats-new.php:540
 msgid "Product form was unable to show the single gallery image"
 msgstr ""
 
-#: admin/html/whats-new.php:495
+#: admin/html/whats-new.php:542
 msgid ""
 "When user upload single image for product gallery using WPUF WooCommerce "
 "product form, that image were not showing on the frontend."
 msgstr ""
 
-#: admin/html/whats-new.php:504
+#: admin/html/whats-new.php:551
 msgid "WooCommerce gallery images not getting saved"
 msgstr ""
 
-#: admin/html/whats-new.php:506
+#: admin/html/whats-new.php:553
 msgid ""
 "After releasing version 2.9.3, WooCommerce gallery image field stopped "
 "working. You will get it fixed in this version."
 msgstr ""
 
-#: admin/html/whats-new.php:515
+#: admin/html/whats-new.php:562
 msgid "The Events Calendar Integration Form"
 msgstr ""
 
-#: admin/html/whats-new.php:517
+#: admin/html/whats-new.php:564
 msgid ""
 "Now admin can allow users to create event from the frontend. Currently WPUF "
 "has a one click pre-build event form that has been integrated with The "
 "Events Calendar plugin"
 msgstr ""
 
-#: admin/html/whats-new.php:520
+#: admin/html/whats-new.php:567
 msgid "Post Submission Facility From Account Page"
 msgstr ""
 
-#: admin/html/whats-new.php:522
+#: admin/html/whats-new.php:569
 msgid ""
 "On the frontend account page, added a new menu item named <b>Submit "
 "Post</b>. Now admin can allow users to submit post from their default "
@@ -2039,504 +2083,504 @@ msgid ""
 "you can assign any post form that will use to submit posts."
 msgstr ""
 
-#: admin/html/whats-new.php:525
+#: admin/html/whats-new.php:572
 msgid "Login/Lost Password Link Under Registration Form"
 msgstr ""
 
-#: admin/html/whats-new.php:527
+#: admin/html/whats-new.php:574
 msgid "Added Login/Lost Password link under registration form"
 msgstr ""
 
-#: admin/html/whats-new.php:536
+#: admin/html/whats-new.php:583
 msgid "Added drag and drop image ordering on image upload"
 msgstr ""
 
-#: admin/html/whats-new.php:538
+#: admin/html/whats-new.php:585
 msgid ""
 "Now frontend users can drag & drop the images/files to change the order "
 "while uploading."
 msgstr ""
 
-#: admin/html/whats-new.php:541
+#: admin/html/whats-new.php:588
 msgid "Added reCAPTCHA field in login form"
 msgstr ""
 
-#: admin/html/whats-new.php:543
+#: admin/html/whats-new.php:590
 msgid ""
 "Admin has the option to show reCAPTCHA field in login form. Check the "
 "related settings from <strong>User Frontend > Settings > "
 "Login/Registration</strong>"
 msgstr ""
 
-#: admin/html/whats-new.php:546
+#: admin/html/whats-new.php:593
 msgid "Added preview option in forms"
 msgstr ""
 
-#: admin/html/whats-new.php:548
+#: admin/html/whats-new.php:595
 msgid ""
 "You can see a nice <strong>Preview</strong> button with <strong>Save "
 "Form</strong> button, admin can take a quick look of the form without using "
 "shortcode"
 msgstr ""
 
-#: admin/html/whats-new.php:551
+#: admin/html/whats-new.php:598
 msgid "Fixed hiding “Select Image” button while uploading multiple images."
 msgstr ""
 
-#: admin/html/whats-new.php:553
+#: admin/html/whats-new.php:600
 msgid ""
 "The upload button will not be hidden until the user selects max number of "
 "files "
 msgstr ""
 
-#: admin/html/whats-new.php:556
+#: admin/html/whats-new.php:603
 msgid "Added form limit notice before form submission"
 msgstr ""
 
-#: admin/html/whats-new.php:558
+#: admin/html/whats-new.php:605
 msgid ""
 "Limit notice message was showing after submission, now it is showing when "
 "rendering the form"
 msgstr ""
 
-#: admin/html/whats-new.php:561
+#: admin/html/whats-new.php:608
 msgid "Fixed: default post category not saving"
 msgstr ""
 
-#: admin/html/whats-new.php:563
+#: admin/html/whats-new.php:610
 msgid ""
 "From the form <strong>Settings > Post Settings</strong>, default post "
 "category options were not saving. Now, it's fixed."
 msgstr ""
 
-#: admin/html/whats-new.php:566
+#: admin/html/whats-new.php:613
 msgid ""
 "WPUF dashboard shortcode with form_id attribute was not showing posts "
 "properly"
 msgstr ""
 
-#: admin/html/whats-new.php:568
+#: admin/html/whats-new.php:615
 msgid ""
 "Now you can list posts on the frontend by using <strong>form_id<strong/> "
 "attribute with <strong>[wpuf_dashboard]</strong> shortcode"
 msgstr ""
 
-#: admin/html/whats-new.php:577
+#: admin/html/whats-new.php:624
 msgid "Changed text domain to `wp-user-frontend` from `wpuf`  "
 msgstr ""
 
-#: admin/html/whats-new.php:579
+#: admin/html/whats-new.php:626
 msgid ""
 "If you are using other language than English. Please <b>rename</b> your "
 "<i>.po and .mo </i> files to `wp-user-frontend_` from `wpuf_` <br> This "
 "change was made to support translations from translate.wordpress.org"
 msgstr ""
 
-#: admin/html/whats-new.php:582
+#: admin/html/whats-new.php:629
 msgid "Added WP User Frontend Data export and erase functionality."
 msgstr ""
 
-#: admin/html/whats-new.php:584
+#: admin/html/whats-new.php:631
 msgid "Added functionality to export WP User Frontend Data to comply with GDPR."
 msgstr ""
 
-#: admin/html/whats-new.php:587
+#: admin/html/whats-new.php:634
 msgid "Added billing address customizer."
 msgstr ""
 
-#: admin/html/whats-new.php:589
+#: admin/html/whats-new.php:636
 msgid "Added customizer options for billing address in payment page."
 msgstr ""
 
-#: admin/html/whats-new.php:592
+#: admin/html/whats-new.php:639
 msgid "Make the payment page responsive."
 msgstr ""
 
-#: admin/html/whats-new.php:594
+#: admin/html/whats-new.php:641
 msgid "Some css adjustments are made in payment page to make it responsive."
 msgstr ""
 
-#: admin/html/whats-new.php:597
+#: admin/html/whats-new.php:644
 msgid "Fixed image upload issue in Safari."
 msgstr ""
 
-#: admin/html/whats-new.php:599
+#: admin/html/whats-new.php:646
 msgid "Images were not showing after upload in safari, it is fixed now."
 msgstr ""
 
-#: admin/html/whats-new.php:602
+#: admin/html/whats-new.php:649
 msgid "Post update issue after updating or removing post images."
 msgstr ""
 
-#: admin/html/whats-new.php:604
+#: admin/html/whats-new.php:651
 msgid ""
 "Posts cannot be updated after updating or removing post images, it is fixed "
 "now."
 msgstr ""
 
-#: admin/html/whats-new.php:613
+#: admin/html/whats-new.php:660
 msgid "Allow overriding form input styles using theme styling."
 msgstr ""
 
-#: admin/html/whats-new.php:615
+#: admin/html/whats-new.php:662
 msgid "Overriding form input styles using theme style is now possible."
 msgstr ""
 
-#: admin/html/whats-new.php:618
+#: admin/html/whats-new.php:665
 msgid "Fixed Auto Login after registration."
 msgstr ""
 
-#: admin/html/whats-new.php:620
+#: admin/html/whats-new.php:667
 msgid "Auto Login after registration was not working is fixed now."
 msgstr ""
 
-#: admin/html/whats-new.php:623
+#: admin/html/whats-new.php:670
 msgid "Fixed fallback cost calculation"
 msgstr ""
 
-#: admin/html/whats-new.php:625
+#: admin/html/whats-new.php:672
 msgid "Fallback cost calculation was inaccurate for some cases, it is fixed now."
 msgstr ""
 
-#: admin/html/whats-new.php:628
+#: admin/html/whats-new.php:675
 msgid "Removal of subscription from User Profile gets reverted if updated"
 msgstr ""
 
-#: admin/html/whats-new.php:630
+#: admin/html/whats-new.php:677
 msgid "User subscription deletion gets reverted if updated is fixed."
 msgstr ""
 
-#: admin/html/whats-new.php:633
+#: admin/html/whats-new.php:680
 msgid "Show Free pack users in subscribers list."
 msgstr ""
 
-#: admin/html/whats-new.php:635
+#: admin/html/whats-new.php:682
 msgid "Free pack users were not showing in subscribers list, now they will."
 msgstr ""
 
-#: admin/html/whats-new.php:644
+#: admin/html/whats-new.php:691
 msgid "WP User Frontend Guten Block is added"
 msgstr ""
 
-#: admin/html/whats-new.php:646
+#: admin/html/whats-new.php:693
 msgid ""
 "WPUF Form Block is now available to be used within gutenberg editor with "
 "preview of the form.  "
 msgstr ""
 
-#: admin/html/whats-new.php:649
+#: admin/html/whats-new.php:696
 msgid "Advanced Custom Fields plugin compatibility"
 msgstr ""
 
-#: admin/html/whats-new.php:651
+#: admin/html/whats-new.php:698
 msgid "Now all your ACF fields can be used within WPUF Post forms. "
 msgstr ""
 
-#: admin/html/whats-new.php:654
+#: admin/html/whats-new.php:701
 msgid "Taxonomy Terms not showing for custom post types"
 msgstr ""
 
-#: admin/html/whats-new.php:656
+#: admin/html/whats-new.php:703
 msgid ""
 "Fixed an issue with taxonomy terms not appearing for Custom Post types "
 "within Form Settings and Dashboard Post Listing"
 msgstr ""
 
-#: admin/html/whats-new.php:659
+#: admin/html/whats-new.php:706
 msgid "Various other code optimizations"
 msgstr ""
 
-#: admin/html/whats-new.php:661 admin/html/whats-new.php:718
+#: admin/html/whats-new.php:708 admin/html/whats-new.php:765
 msgid "Code structure organization and optimization for better performance"
 msgstr ""
 
-#: admin/html/whats-new.php:670
+#: admin/html/whats-new.php:717
 msgid "WoooCommerce billing address Sync"
 msgstr ""
 
-#: admin/html/whats-new.php:672
+#: admin/html/whats-new.php:719
 msgid ""
 "If an existing customer has previously set his billing address, that will "
 "be imported into WPUF Billing address "
 msgstr ""
 
-#: admin/html/whats-new.php:675
+#: admin/html/whats-new.php:722
 msgid "Trial subscription message not showing properly"
 msgstr ""
 
-#: admin/html/whats-new.php:677
+#: admin/html/whats-new.php:724
 msgid "Subscriptions with Trial now shows trial notices"
 msgstr ""
 
-#: admin/html/whats-new.php:680
+#: admin/html/whats-new.php:727
 msgid "Reset email Key not working"
 msgstr ""
 
-#: admin/html/whats-new.php:682
+#: admin/html/whats-new.php:729
 msgid "Reset Email key was not working in some cases"
 msgstr ""
 
-#: admin/html/whats-new.php:685
+#: admin/html/whats-new.php:732
 msgid "Post count not showing on the frontend dashboard"
 msgstr ""
 
-#: admin/html/whats-new.php:687
+#: admin/html/whats-new.php:734
 msgid ""
 "Dashboard with multiple post type was not showing post counts properly, is "
 "now fixed and shows count for each post type"
 msgstr ""
 
-#: admin/html/whats-new.php:690
+#: admin/html/whats-new.php:737
 msgid "Login Redirect showing blank page is fixed"
 msgstr ""
 
-#: admin/html/whats-new.php:692
+#: admin/html/whats-new.php:739
 msgid ""
 "If \"Previous Page\" was set for redirection, login redirect was "
 "redirecting to blank page for users who hit login page directly"
 msgstr ""
 
-#: admin/html/whats-new.php:701
+#: admin/html/whats-new.php:748
 msgid "Enhanced Login Redirect to redirect users to previous page"
 msgstr ""
 
-#: admin/html/whats-new.php:703
+#: admin/html/whats-new.php:750
 msgid ""
 "You can choose Previous Page as Login Redirect page settings now to "
 "redirect users to the page from which they went for Login. "
 msgstr ""
 
-#: admin/html/whats-new.php:706
+#: admin/html/whats-new.php:753
 msgid "Email HTML links not Rendreing properly issue is fixed"
 msgstr ""
 
-#: admin/html/whats-new.php:708
+#: admin/html/whats-new.php:755
 msgid ""
 "For some clients emails were not rendering the HTML links properly, this is "
 "now fixed"
 msgstr ""
 
-#: admin/html/whats-new.php:711
+#: admin/html/whats-new.php:758
 msgid "Form Builder : Form Field's Help text styles not showing properly"
 msgstr ""
 
-#: admin/html/whats-new.php:713
+#: admin/html/whats-new.php:760
 msgid "Help texts styling is now fixed and much easier to read and understand"
 msgstr ""
 
-#: admin/html/whats-new.php:716
+#: admin/html/whats-new.php:763
 msgid "Various other code improvements"
 msgstr ""
 
-#: admin/html/whats-new.php:727
+#: admin/html/whats-new.php:774
 msgid "Dashboard Post Listing now supports multiple post types"
 msgstr ""
 
-#: admin/html/whats-new.php:729
+#: admin/html/whats-new.php:776
 msgid ""
 "Now you can show multiple post type in user dashboard using shortcode like "
 "this : <br><b>[wpuf_dashboard post_type=\"post,page,custom_type\"]</b> "
 msgstr ""
 
-#: admin/html/whats-new.php:732
+#: admin/html/whats-new.php:779
 msgid "Added Login Redirect Settings"
 msgstr ""
 
-#: admin/html/whats-new.php:734
+#: admin/html/whats-new.php:781
 msgid ""
 "You can now set a page from <i>WPUF Settings > Login/Registration > "
 "Redirect after Login</i>. When login redirection is active the user will be "
 "redirected to this page after login."
 msgstr ""
 
-#: admin/html/whats-new.php:737
+#: admin/html/whats-new.php:784
 msgid "Image Upload field button text can be changed"
 msgstr ""
 
-#: admin/html/whats-new.php:739
+#: admin/html/whats-new.php:786
 msgid ""
 "The upload button text can now be changed for image upload fields which "
 "defaults to \"Select Image\" if not set. "
 msgstr ""
 
-#: admin/html/whats-new.php:742
+#: admin/html/whats-new.php:789
 msgid "Multi Step Form styles made compatible with more themes"
 msgstr ""
 
-#: admin/html/whats-new.php:744
+#: admin/html/whats-new.php:791
 msgid "Multi Step form can now be styled more easily with other themes "
 msgstr ""
 
-#: admin/html/whats-new.php:747
+#: admin/html/whats-new.php:794
 msgid "Required field condition for google map not working is fixed"
 msgstr ""
 
-#: admin/html/whats-new.php:749
+#: admin/html/whats-new.php:796
 msgid ""
 "If Google Map field was set as required users were able to submit form "
 "without changing the default value."
 msgstr ""
 
-#: admin/html/whats-new.php:758
+#: admin/html/whats-new.php:805
 msgid "Admin form builder is now fully responsive."
 msgstr ""
 
-#: admin/html/whats-new.php:760
+#: admin/html/whats-new.php:807
 msgid ""
 "Now you can edit forms from your mobile devices directly. Our improved "
 "responsive layouts of form builder makes it easy for you to build forms on "
 "the go."
 msgstr ""
 
-#: admin/html/whats-new.php:763
+#: admin/html/whats-new.php:810
 msgid "Added color schemes for creating attractive form layouts."
 msgstr ""
 
-#: admin/html/whats-new.php:765
+#: admin/html/whats-new.php:812
 msgid ""
 "We have added 3 new color schemes for the form layouts which you can choose "
 "from each form's new display settings."
 msgstr ""
 
-#: admin/html/whats-new.php:768
+#: admin/html/whats-new.php:815
 msgid "Restrict Free subscription pack to be enabled multiple times "
 msgstr ""
 
-#: admin/html/whats-new.php:770
+#: admin/html/whats-new.php:817
 msgid ""
 "Free subscription packs now can only be purchased once and the limit "
 "applies properly"
 msgstr ""
 
-#: admin/html/whats-new.php:773
+#: admin/html/whats-new.php:820
 msgid "Various other bug fixes and improvements were made "
 msgstr ""
 
-#: admin/html/whats-new.php:775
+#: admin/html/whats-new.php:822
 msgid "Please see the change log to see full details."
 msgstr ""
 
-#: admin/html/whats-new.php:784
+#: admin/html/whats-new.php:831
 msgid "Added upgrade function for default category"
 msgstr ""
 
-#: admin/html/whats-new.php:786
+#: admin/html/whats-new.php:833
 msgid "Upgrader added to upgrade previously set default post category."
 msgstr ""
 
-#: admin/html/whats-new.php:789
+#: admin/html/whats-new.php:836
 msgid "Subscription pack cannot be canceled"
 msgstr ""
 
-#: admin/html/whats-new.php:791
+#: admin/html/whats-new.php:838
 msgid ""
 "Fixed recurring subscription pack cannot be canceled from my account page "
 "in subscription details section."
 msgstr ""
 
-#: admin/html/whats-new.php:794
+#: admin/html/whats-new.php:841
 msgid "page installer admin notice logic issue"
 msgstr ""
 
-#: admin/html/whats-new.php:796
+#: admin/html/whats-new.php:843
 msgid ""
 "Fixed page installer admin notice logic problem due to new payment settings "
 "default value not set."
 msgstr ""
 
-#: admin/html/whats-new.php:806
+#: admin/html/whats-new.php:853
 msgid "Setup Wizard"
 msgstr ""
 
-#: admin/html/whats-new.php:808
+#: admin/html/whats-new.php:855
 msgid "Setup Wizard added to turn off payment options and install pages."
 msgstr ""
 
-#: admin/html/whats-new.php:812
+#: admin/html/whats-new.php:859
 msgid "Multi-select Category"
 msgstr ""
 
-#: admin/html/whats-new.php:814
+#: admin/html/whats-new.php:861
 msgid "Add multi-select to default category in post form settings."
 msgstr ""
 
-#: admin/html/whats-new.php:818
+#: admin/html/whats-new.php:865
 msgid "Select Text option for Taxonomy"
 msgstr ""
 
-#: admin/html/whats-new.php:820
+#: admin/html/whats-new.php:867
 msgid ""
 "Add Select Text option for taxonomy fields. Now you can add default text "
 "with empty value as first option for Taxonomy dropdown."
 msgstr ""
 
-#: admin/html/whats-new.php:823
+#: admin/html/whats-new.php:870
 msgid "Taxonomy Checkbox Inline"
 msgstr ""
 
-#: admin/html/whats-new.php:825
+#: admin/html/whats-new.php:872
 msgid ""
 "Added checkbox inline option to taxonomy checkbox. You can now display "
 "Taxonomy checkbox fields inline."
 msgstr ""
 
-#: admin/html/whats-new.php:835
+#: admin/html/whats-new.php:882
 msgid "Manage schedule for form submission"
 msgstr ""
 
-#: admin/html/whats-new.php:837
+#: admin/html/whats-new.php:884
 msgid ""
 "Do not accept form submission if the current date is not between the date "
 "range of the schedule."
 msgstr ""
 
-#: admin/html/whats-new.php:841
+#: admin/html/whats-new.php:888
 msgid "Restrict form submission based on the user roles"
 msgstr ""
 
-#: admin/html/whats-new.php:843
+#: admin/html/whats-new.php:890
 msgid ""
 "Restrict form submission based on the user roles. Now you can manage user "
 "role base permission on form submission."
 msgstr ""
 
-#: admin/html/whats-new.php:847
+#: admin/html/whats-new.php:894
 msgid "Limit how many entries a form will accept"
 msgstr ""
 
-#: admin/html/whats-new.php:849
+#: admin/html/whats-new.php:896
 msgid ""
 "Limit how many entries a form will accept and display a custom message when "
 "that limit is reached."
 msgstr ""
 
-#: admin/html/whats-new.php:853
+#: admin/html/whats-new.php:900
 msgid "Show/hide Admin Bar"
 msgstr ""
 
-#: admin/html/whats-new.php:855
+#: admin/html/whats-new.php:902
 msgid "Control the admin bar visibility based on user roles."
 msgstr ""
 
-#: admin/html/whats-new.php:859
+#: admin/html/whats-new.php:906
 msgid "Ajax Login widget"
 msgstr ""
 
-#: admin/html/whats-new.php:861
+#: admin/html/whats-new.php:908
 msgid ""
 "Login user is more simple now with Ajax Login Widget. The simple ajax login "
 "form do not required page loading for login."
 msgstr ""
 
-#: admin/html/whats-new.php:865
+#: admin/html/whats-new.php:912
 msgid "Form submission with Captcha field"
 msgstr ""
 
-#: admin/html/whats-new.php:867
+#: admin/html/whats-new.php:914
 msgid "Form field validation process updated if form submits with captcha field."
 msgstr ""
 
-#: admin/html/whats-new.php:881
+#: admin/html/whats-new.php:928
 msgid "What's New in WPUF?"
 msgstr ""
 
@@ -2559,7 +2603,7 @@ msgid "Congratulations!"
 msgstr ""
 
 #: admin/installer.php:84 admin/settings-options.php:24
-#: includes/free/admin/shortcode-button.php:79 wpuf-functions.php:1961
+#: includes/free/admin/shortcode-button.php:79 wpuf-functions.php:2011
 msgid "Dashboard"
 msgstr ""
 
@@ -2575,7 +2619,7 @@ msgstr ""
 #: admin/installer.php:95 class/subscription.php:381 class/subscription.php:401
 #: class/subscription.php:402 class/subscription.php:403
 #: includes/free/admin/shortcode-button.php:99
-#: templates/dashboard/dashboard.php:19 wpuf-functions.php:1964
+#: templates/dashboard/dashboard.php:19 wpuf-functions.php:2023
 msgid "Subscription"
 msgstr ""
 
@@ -2658,7 +2702,7 @@ msgstr ""
 
 #: admin/post-forms-list-table.php:315 admin/premium.php:39
 #: includes/fields/class-pro-upgrade-fields.php:159
-#: includes/free/form-element.php:28
+#: includes/free/form-element.php:31
 msgid "Shortcode"
 msgstr ""
 
@@ -2768,7 +2812,7 @@ msgid "Advanced Fields"
 msgstr ""
 
 #: admin/premium.php:33 includes/fields/class-pro-upgrade-fields.php:19
-#: includes/free/form-element.php:14
+#: includes/free/form-element.php:16
 msgid "Country List"
 msgstr ""
 
@@ -2785,7 +2829,7 @@ msgid "Google Map"
 msgstr ""
 
 #: admin/premium.php:37 includes/fields/class-pro-upgrade-fields.php:71
-#: includes/free/form-element.php:31
+#: includes/free/form-element.php:34
 msgid "Action Hook"
 msgstr ""
 
@@ -2802,7 +2846,7 @@ msgid "Repeater"
 msgstr ""
 
 #: admin/premium.php:42 includes/fields/class-pro-upgrade-fields.php:49
-#: includes/free/form-element.php:12
+#: includes/free/form-element.php:14
 msgid "File Upload"
 msgstr ""
 
@@ -2835,7 +2879,7 @@ msgid ""
 msgstr ""
 
 #: admin/premium.php:71 admin/premium.php:74 includes/class-pro-upgrades.php:94
-#: includes/free/form-element.php:457
+#: includes/free/form-element.php:496
 msgid "Conditional Logic"
 msgstr ""
 
@@ -3502,13 +3546,13 @@ msgstr ""
 
 #: admin/template-post.php:88 admin/template.php:608
 #: includes/fields/class-field-featured-image.php:116
-#: includes/fields/class-field-image.php:100
+#: includes/fields/class-field-image.php:101
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
 #: admin/template-post.php:99 admin/template.php:619
 #: includes/fields/class-field-featured-image.php:112
-#: includes/fields/class-field-image.php:96
+#: includes/fields/class-field-image.php:97
 msgid "Max. file size"
 msgstr ""
 
@@ -3791,7 +3835,7 @@ msgstr ""
 #: class/upload.php:264 includes/fields/class-field-recaptcha.php:147
 #: includes/fields/class-field-sectionbreak.php:55
 #: templates/dashboard/posts.php:89 templates/dashboard.php:104
-#: wpuf-functions.php:986
+#: wpuf-functions.php:1024
 msgid "Title"
 msgstr ""
 
@@ -3808,15 +3852,15 @@ msgid "Enter the meta value"
 msgstr ""
 
 #: admin/template.php:583 class/upload.php:266
-#: includes/fields/class-field-sectionbreak.php:63 wpuf-functions.php:994
+#: includes/fields/class-field-sectionbreak.php:63 wpuf-functions.php:1032
 msgid "Description"
 msgstr ""
 
-#: admin/template.php:609 includes/fields/class-field-image.php:109
+#: admin/template.php:609 includes/fields/class-field-image.php:110
 msgid "Number of images can be uploaded"
 msgstr ""
 
-#: admin/template.php:624 includes/fields/class-field-image.php:105
+#: admin/template.php:624 includes/fields/class-field-image.php:106
 msgid "Max. files"
 msgstr ""
 
@@ -3982,68 +4026,74 @@ msgstr ""
 msgid "Please select your payment page from admin panel"
 msgstr ""
 
-#: class/payment.php:121
+#: class/payment.php:89
+msgid "No subscription pack found."
+msgstr ""
+
+#: class/payment.php:126
 msgid "Your free package has been activated. Enjoy!"
 msgstr ""
 
-#: class/payment.php:123
+#: class/payment.php:128
 msgid "You already have activated a free package previously."
 msgstr ""
 
-#: class/payment.php:138 includes/class-customizer.php:56
-#: wpuf-functions.php:1965
+#: class/payment.php:146 includes/class-customizer.php:56
+#: wpuf-functions.php:2027
 msgid "Billing Address"
 msgstr ""
 
-#: class/payment.php:167
+#: class/payment.php:178
 msgid "Pricing & Plans"
 msgstr ""
 
-#: class/payment.php:169
+#: class/payment.php:180
 msgid "Change Pack"
 msgstr ""
 
-#: class/payment.php:186
+#: class/payment.php:197
 msgid "Selected Pack "
 msgstr ""
 
-#: class/payment.php:187
+#: class/payment.php:198
 msgid "Pack Price "
 msgstr ""
 
-#: class/payment.php:191 class/payment.php:240 includes/class-privacy.php:338
+#: class/payment.php:202 class/payment.php:253 includes/class-privacy.php:338
 msgid "Total"
 msgstr ""
 
-#: class/payment.php:204
+#: class/payment.php:216
 msgid "Apply Coupon"
 msgstr ""
 
-#: class/payment.php:208
+#: class/payment.php:220
 msgid "Have a discount code?"
 msgstr ""
 
-#: class/payment.php:236
+#: class/payment.php:249
 msgid "Post cost"
 msgstr ""
 
-#: class/payment.php:248
+#: class/payment.php:262
 msgid "Choose Your Payment Method"
 msgstr ""
 
-#: class/payment.php:285
+#: class/payment.php:299
 msgid "Proceed"
 msgstr ""
 
-#: class/payment.php:292
+#: class/payment.php:307
 msgid "No Payment gateway found"
 msgstr ""
 
-#: class/payment.php:480 lib/gateway/bank.php:107
+#: class/payment.php:497 lib/gateway/bank.php:107
+#. translators: %s is site title name
 msgid "[%s] Payment Received"
 msgstr ""
 
-#: class/payment.php:481
+#: class/payment.php:499
+#. translators: %s is site title name
 msgid "New payment received at %s"
 msgstr ""
 
@@ -4077,7 +4127,7 @@ msgstr ""
 #: includes/fields/class-abstract-fields.php:188
 #: includes/fields/class-field-dropdown.php:106
 #: includes/fields/class-field-multidropdown.php:83
-#: includes/fields/class-field-post-taxonomy.php:343
+#: includes/fields/class-field-post-taxonomy.php:353
 msgid "- select -"
 msgstr ""
 
@@ -4170,12 +4220,12 @@ msgstr ""
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1401 includes/fields/class-field-post-taxonomy.php:120
-#: wpuf-functions.php:1749
+#: class/render-form.php:1401 includes/fields/class-field-post-taxonomy.php:127
+#: wpuf-functions.php:1796
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1465 includes/fields/class-field-post-taxonomy.php:65
+#: class/render-form.php:1465 includes/fields/class-field-post-taxonomy.php:66
 msgid "This field is no longer available."
 msgstr ""
 
@@ -4365,7 +4415,7 @@ msgstr ""
 msgid "Trans ID"
 msgstr ""
 
-#: class/transactions-list-table.php:52 includes/free/form-element.php:11
+#: class/transactions-list-table.php:52 includes/free/form-element.php:13
 msgid "Date"
 msgstr ""
 
@@ -4385,7 +4435,7 @@ msgstr ""
 msgid "No transactions found."
 msgstr ""
 
-#: class/upload.php:265 wpuf-functions.php:990
+#: class/upload.php:265 wpuf-functions.php:1028
 msgid "Caption"
 msgstr ""
 
@@ -4522,7 +4572,7 @@ msgstr ""
 
 #: includes/class-dokan-integration.php:34
 #: includes/class-wc-vendors-integration.php:108
-#: templates/dashboard/dashboard.php:15 wpuf-functions.php:1962
+#: templates/dashboard/dashboard.php:15 wpuf-functions.php:2015
 msgid "Posts"
 msgstr ""
 
@@ -4573,52 +4623,52 @@ msgstr ""
 msgid "Post Limit Exceeded for your purchased subscription pack."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:55
+#: includes/class-frontend-form-post.php:57
 msgid "You are not logged in"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:65
-#: includes/class-frontend-form-post.php:95
+#: includes/class-frontend-form-post.php:67
+#: includes/class-frontend-form-post.php:97
 msgid "Invalid post"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:72
+#: includes/class-frontend-form-post.php:74
 msgid "Your edit access for this post has been locked by an administrator."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:76
+#: includes/class-frontend-form-post.php:78
 msgid "Your allocated time for editing this post has been expired."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:84
+#: includes/class-frontend-form-post.php:86
 msgid "Your post edit access has been locked by an administrator."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:89
+#: includes/class-frontend-form-post.php:91
 msgid "Post Editing is disabled"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:100
+#: includes/class-frontend-form-post.php:102
 msgid "You are not allowed to edit"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:111
+#: includes/class-frontend-form-post.php:113
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:123
+#: includes/class-frontend-form-post.php:125
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:530
+#: includes/class-frontend-form-post.php:533
 msgid "Something went wrong"
 msgstr ""
 
-#: includes/class-frontend-form-post.php:551
+#: includes/class-frontend-form-post.php:554
 msgid "Invalid email address."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:561
+#: includes/class-frontend-form-post.php:564
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -4627,17 +4677,17 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:610
+#: includes/class-frontend-form-post.php:615
 #: includes/class-frontend-render-form.php:312
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:891
+#: includes/class-frontend-form-post.php:925
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
-#: includes/class-frontend-form-post.php:1010
-#: includes/class-frontend-form-post.php:1016
+#: includes/class-frontend-form-post.php:1049
+#: includes/class-frontend-form-post.php:1055
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
@@ -4746,7 +4796,7 @@ msgstr ""
 
 #: includes/class-login-widget.php:216 includes/class-login-widget.php:252
 #: includes/free/class-login.php:322 includes/free/class-registration.php:122
-#: includes/free/form-element.php:332
+#: includes/free/form-element.php:355
 msgid "Register"
 msgstr ""
 
@@ -5216,8 +5266,7 @@ msgstr ""
 msgid "What's New?"
 msgstr ""
 
-#: includes/class-whats-new.php:107 lib/class-weforms-upsell.php:76
-#: lib/class-weforms-upsell.php:77
+#: includes/class-whats-new.php:107
 msgid "Dismiss this notice."
 msgstr ""
 
@@ -5362,12 +5411,12 @@ msgid "Email Address"
 msgstr ""
 
 #: includes/fields/class-field-featured-image.php:120
-#: includes/fields/class-field-image.php:113
+#: includes/fields/class-field-image.php:114
 msgid "Button Label"
 msgstr ""
 
 #: includes/fields/class-field-featured-image.php:125
-#: includes/fields/class-field-image.php:118
+#: includes/fields/class-field-image.php:119
 msgid "Enter a label for the Select button"
 msgstr ""
 
@@ -5391,13 +5440,13 @@ msgstr ""
 msgid "HTML Section"
 msgstr ""
 
-#: includes/fields/class-field-image.php:9 includes/free/form-element.php:7
+#: includes/fields/class-field-image.php:9 includes/free/form-element.php:9
 msgid "Image Upload"
 msgstr ""
 
 #: includes/fields/class-field-numeric.php:7
 #: includes/fields/class-pro-upgrade-fields.php:82
-#: includes/free/form-element.php:15
+#: includes/free/form-element.php:17
 msgid "Numeric Field"
 msgstr ""
 
@@ -5414,7 +5463,7 @@ msgid "Radio"
 msgstr ""
 
 #: includes/fields/class-field-recaptcha.php:9
-#: includes/free/form-element.php:29
+#: includes/free/form-element.php:32
 msgid "reCaptcha"
 msgstr ""
 
@@ -5470,24 +5519,24 @@ msgstr ""
 msgid "Website URL"
 msgstr ""
 
-#: includes/fields/class-field-url.php:62
+#: includes/fields/class-field-url.php:63
 msgid "Open in : "
 msgstr ""
 
-#: includes/fields/class-field-url.php:65
+#: includes/fields/class-field-url.php:66
 msgid "Same Window"
 msgstr ""
 
-#: includes/fields/class-field-url.php:66
+#: includes/fields/class-field-url.php:67
 msgid "New Window"
 msgstr ""
 
-#: includes/fields/class-field-url.php:72
+#: includes/fields/class-field-url.php:73
 msgid "Choose whether the link will open in new tab or same window"
 msgstr ""
 
 #: includes/fields/class-pro-upgrade-fields.php:8
-#: includes/free/form-element.php:16
+#: includes/free/form-element.php:18
 msgid "Address Field"
 msgstr ""
 
@@ -5516,17 +5565,17 @@ msgid "Multiple Choice Grid"
 msgstr ""
 
 #: includes/fields/class-pro-upgrade-fields.php:137
-#: includes/free/form-element.php:10
+#: includes/free/form-element.php:12
 msgid "Repeat Field"
 msgstr ""
 
 #: includes/fields/class-pro-upgrade-fields.php:148
-#: includes/free/form-element.php:30
+#: includes/free/form-element.php:33
 msgid "Really Simple Captcha"
 msgstr ""
 
 #: includes/fields/class-pro-upgrade-fields.php:170
-#: includes/free/form-element.php:17
+#: includes/free/form-element.php:19
 msgid "Step Start"
 msgstr ""
 
@@ -5810,7 +5859,7 @@ msgstr ""
 msgid "Password Strength"
 msgstr ""
 
-#: includes/free/edit-profile.php:233 includes/free/form-element.php:333
+#: includes/free/edit-profile.php:233 includes/free/form-element.php:356
 #: templates/dashboard/edit-profile.php:131
 msgid "Update Profile"
 msgstr ""
@@ -5911,119 +5960,119 @@ msgid ""
 "<a href=\"mailto:%s\">webmaster</a> !"
 msgstr ""
 
-#: includes/free/form-element.php:6 includes/free/form-element.php:25
+#: includes/free/form-element.php:8 includes/free/form-element.php:27
 msgid "Click to add to the editor"
 msgstr ""
 
-#: includes/free/form-element.php:13
+#: includes/free/form-element.php:15
 msgid "Google Maps"
 msgstr ""
 
-#: includes/free/form-element.php:32
+#: includes/free/form-element.php:35
 msgid "Term &amp; Conditions"
 msgstr ""
 
-#: includes/free/form-element.php:60
+#: includes/free/form-element.php:64
 msgid "Learn more about Automatic Post Expiration"
 msgstr ""
 
-#: includes/free/form-element.php:116
+#: includes/free/form-element.php:129
 msgid "Send Email to Author After Exceeding Post Expiration Time"
 msgstr ""
 
-#: includes/free/form-element.php:142 includes/free/form-element.php:146
+#: includes/free/form-element.php:155 includes/free/form-element.php:159
 msgid "Enable Multistep"
 msgstr ""
 
-#: includes/free/form-element.php:149
+#: includes/free/form-element.php:162
 msgid "If checked, form will be displayed in frontend in multiple steps"
 msgstr ""
 
-#: includes/free/form-element.php:150
+#: includes/free/form-element.php:163
 msgid " Learn more about Multistep"
 msgstr ""
 
-#: includes/free/form-element.php:154
+#: includes/free/form-element.php:167
 msgid "Multistep Progressbar Type"
 msgstr ""
 
-#: includes/free/form-element.php:164
+#: includes/free/form-element.php:177
 msgid "Choose how you want the progressbar"
 msgstr ""
 
-#: includes/free/form-element.php:193
+#: includes/free/form-element.php:206
 msgid "New post created"
 msgstr ""
 
-#: includes/free/form-element.php:198
+#: includes/free/form-element.php:211
 msgid "A post has been edited"
 msgstr ""
 
-#: includes/free/form-element.php:201
+#: includes/free/form-element.php:215
 msgid "New Post Notification"
 msgstr ""
 
-#: includes/free/form-element.php:209 includes/free/form-element.php:247
+#: includes/free/form-element.php:223 includes/free/form-element.php:261
 msgid "Enable post notification"
 msgstr ""
 
-#: includes/free/form-element.php:212
+#: includes/free/form-element.php:226
 msgid "Learn more about Email Notification"
 msgstr ""
 
-#: includes/free/form-element.php:223 includes/free/form-element.php:258
+#: includes/free/form-element.php:237 includes/free/form-element.php:272
 msgid "Subject"
 msgstr ""
 
-#: includes/free/form-element.php:228 includes/free/form-element.php:263
+#: includes/free/form-element.php:242 includes/free/form-element.php:277
 msgid "Message"
 msgstr ""
 
-#: includes/free/form-element.php:235
+#: includes/free/form-element.php:249
 msgid "Update Post Notification"
 msgstr ""
 
-#: includes/free/form-element.php:271
+#: includes/free/form-element.php:285
 msgid "You may use in to, subject & message:"
 msgstr ""
 
-#: includes/free/form-element.php:291
+#: includes/free/form-element.php:310
 msgid "Toggle All"
 msgstr ""
 
-#: includes/free/form-element.php:295
+#: includes/free/form-element.php:314
 msgid "Click on a form element to add to the editor"
 msgstr ""
 
-#: includes/free/form-element.php:328
+#: includes/free/form-element.php:351
 msgid "Registration successful"
 msgstr ""
 
-#: includes/free/form-element.php:329
+#: includes/free/form-element.php:352
 msgid "Profile updated successfully"
 msgstr ""
 
-#: includes/free/form-element.php:340
+#: includes/free/form-element.php:364
 msgid "Enable Email Verfication"
 msgstr ""
 
-#: includes/free/form-element.php:348
+#: includes/free/form-element.php:372
 msgid "New User Role"
 msgstr ""
 
-#: includes/free/form-element.php:383
+#: includes/free/form-element.php:413
 msgid "Registration success message"
 msgstr ""
 
-#: includes/free/form-element.php:390
+#: includes/free/form-element.php:420
 msgid "Update profile message"
 msgstr ""
 
-#: includes/free/form-element.php:418
+#: includes/free/form-element.php:457
 msgid "Submit Button text"
 msgstr ""
 
-#: includes/free/form-element.php:425
+#: includes/free/form-element.php:464
 msgid "Update Button text"
 msgstr ""
 
@@ -6255,14 +6304,6 @@ msgstr ""
 
 #: lib/appsero/Insights.php:763
 msgid "Submit & Deactivate"
-msgstr ""
-
-#: lib/class-weforms-upsell.php:73
-msgid "Install Now"
-msgstr ""
-
-#: lib/class-weforms-upsell.php:349
-msgid "You don't have permission to install the plugins"
 msgstr ""
 
 #: lib/class.settings-api.php:368
@@ -6515,263 +6556,263 @@ msgstr ""
 msgid "Private"
 msgstr ""
 
-#: wpuf-functions.php:210 wpuf-functions.php:1980
+#: wpuf-functions.php:210 wpuf-functions.php:2043
 msgid "-- select --"
 msgstr ""
 
-#: wpuf-functions.php:495
+#: wpuf-functions.php:510
 msgid "Images"
 msgstr ""
 
-#: wpuf-functions.php:496
+#: wpuf-functions.php:514
 msgid "Audio"
 msgstr ""
 
-#: wpuf-functions.php:497
+#: wpuf-functions.php:518
 msgid "Videos"
 msgstr ""
 
-#: wpuf-functions.php:498
+#: wpuf-functions.php:522
 msgid "PDF"
 msgstr ""
 
-#: wpuf-functions.php:499
+#: wpuf-functions.php:526
 msgid "Office Documents"
 msgstr ""
 
-#: wpuf-functions.php:500
+#: wpuf-functions.php:530
 msgid "Zip Archives"
 msgstr ""
 
-#: wpuf-functions.php:501
+#: wpuf-functions.php:534
 msgid "Executable Files"
 msgstr ""
 
-#: wpuf-functions.php:502
+#: wpuf-functions.php:538
 msgid "CSV"
 msgstr ""
 
-#: wpuf-functions.php:1013
+#: wpuf-functions.php:1051
 msgid "Directions »"
 msgstr ""
 
-#: wpuf-functions.php:1963
+#: wpuf-functions.php:2019
 msgid "Edit Profile"
 msgstr ""
 
-#: wpuf-functions.php:2092
+#: wpuf-functions.php:2157
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:2093
+#: wpuf-functions.php:2162
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2094
+#: wpuf-functions.php:2167
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:2095
+#: wpuf-functions.php:2172
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:2096
+#: wpuf-functions.php:2177
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:2097
+#: wpuf-functions.php:2182
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:2098
+#: wpuf-functions.php:2187
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2099
+#: wpuf-functions.php:2192
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:2100
+#: wpuf-functions.php:2197
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:2101
+#: wpuf-functions.php:2202
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:2102
+#: wpuf-functions.php:2207
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:2103
+#: wpuf-functions.php:2212
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:2104
+#: wpuf-functions.php:2217
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:2105
+#: wpuf-functions.php:2222
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:2106
+#: wpuf-functions.php:2227
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:2107
+#: wpuf-functions.php:2232
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2108
+#: wpuf-functions.php:2237
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:2109
+#: wpuf-functions.php:2242
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:2110
+#: wpuf-functions.php:2247
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:2111
+#: wpuf-functions.php:2252
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:2112
+#: wpuf-functions.php:2257
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2113
+#: wpuf-functions.php:2262
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2114
+#: wpuf-functions.php:2267
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:2115
+#: wpuf-functions.php:2272
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:2116
+#: wpuf-functions.php:2277
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:2117
+#: wpuf-functions.php:2282
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:2118
+#: wpuf-functions.php:2287
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:2119
+#: wpuf-functions.php:2292
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:2120
+#: wpuf-functions.php:2297
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:2121
+#: wpuf-functions.php:2302
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:2122
+#: wpuf-functions.php:2307
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2123
+#: wpuf-functions.php:2312
 msgid "Namibian dollar"
 msgstr ""
 
-#: wpuf-functions.php:2124
+#: wpuf-functions.php:2317
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:2125
+#: wpuf-functions.php:2322
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:2126
+#: wpuf-functions.php:2327
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2127
+#: wpuf-functions.php:2332
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:2128
+#: wpuf-functions.php:2337
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:2129
+#: wpuf-functions.php:2342
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:2130
+#: wpuf-functions.php:2347
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:2131
+#: wpuf-functions.php:2352
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:2132
+#: wpuf-functions.php:2357
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:2133
+#: wpuf-functions.php:2362
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:2134
+#: wpuf-functions.php:2367
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2135
+#: wpuf-functions.php:2372
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:2136
+#: wpuf-functions.php:2377
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:2137
+#: wpuf-functions.php:2382
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:2138
+#: wpuf-functions.php:2387
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2139
+#: wpuf-functions.php:2392
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:2140
+#: wpuf-functions.php:2397
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:2141
+#: wpuf-functions.php:2402
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2142
+#: wpuf-functions.php:2407
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:2143
+#: wpuf-functions.php:2412
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:2144
+#: wpuf-functions.php:2417
 msgid "Jordanian dinar"
 msgstr ""
 
-#: wpuf-functions.php:3017
+#: wpuf-functions.php:3314
 msgid "None"
 msgstr ""
 
@@ -6898,7 +6939,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: wpuf-functions.php:1460
+#: wpuf-functions.php:1518
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

@@ -1,3 +1,15 @@
+= v3.5.4 (11 November, 2020) =
+* Fix - Get appropriate user id when role based conditions are present
+* Fix - Show Invalid subscription message if wrong pack id passed
+* Fix - URL field new window not working
+* Fix - Option label not working when & use
+* Fix - Ajax type category not showing on edit
+* Fix - Multiple file image can't select
+* Fix - Subscription pack PayPal Checkout gets "Error: Access Denied"
+* Fix - Conflict image field with acf image field
+* Enhancement - Missing Auckland State for New Zealand country.
+* Enhancement - Added support for WooCommerce product category value replacemen
+
 = v3.5.3 (21 October, 2020) =
 * Fix - Default post form is not showing on the frontend account
 * Fix - Missing featured image field when previewing a post form

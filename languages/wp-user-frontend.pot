@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.5.4\n"
+"Project-Id-Version: WP User Frontend 3.5.5\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2020-11-11 09:52:23+00:00\n"
+"POT-Creation-Date: 2020-11-12 02:59:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -364,7 +364,7 @@ msgstr ""
 
 #: admin/class-tools.php:43 admin/class-tools.php:106
 #: admin/post-forms-list-table.php:43 class/transactions-list-table.php:87
-#: includes/class-list-table-subscribers.php:136 wpuf-functions.php:3313
+#: includes/class-list-table-subscribers.php:136 wpuf-functions.php:3016
 msgid "All"
 msgstr ""
 
@@ -2603,7 +2603,7 @@ msgid "Congratulations!"
 msgstr ""
 
 #: admin/installer.php:84 admin/settings-options.php:24
-#: includes/free/admin/shortcode-button.php:79 wpuf-functions.php:2011
+#: includes/free/admin/shortcode-button.php:79 wpuf-functions.php:1961
 msgid "Dashboard"
 msgstr ""
 
@@ -2619,7 +2619,7 @@ msgstr ""
 #: admin/installer.php:95 class/subscription.php:381 class/subscription.php:401
 #: class/subscription.php:402 class/subscription.php:403
 #: includes/free/admin/shortcode-button.php:99
-#: templates/dashboard/dashboard.php:19 wpuf-functions.php:2023
+#: templates/dashboard/dashboard.php:19 wpuf-functions.php:1964
 msgid "Subscription"
 msgstr ""
 
@@ -3835,7 +3835,7 @@ msgstr ""
 #: class/upload.php:264 includes/fields/class-field-recaptcha.php:147
 #: includes/fields/class-field-sectionbreak.php:55
 #: templates/dashboard/posts.php:89 templates/dashboard.php:104
-#: wpuf-functions.php:1024
+#: wpuf-functions.php:986
 msgid "Title"
 msgstr ""
 
@@ -3852,7 +3852,7 @@ msgid "Enter the meta value"
 msgstr ""
 
 #: admin/template.php:583 class/upload.php:266
-#: includes/fields/class-field-sectionbreak.php:63 wpuf-functions.php:1032
+#: includes/fields/class-field-sectionbreak.php:63 wpuf-functions.php:994
 msgid "Description"
 msgstr ""
 
@@ -4039,7 +4039,7 @@ msgid "You already have activated a free package previously."
 msgstr ""
 
 #: class/payment.php:146 includes/class-customizer.php:56
-#: wpuf-functions.php:2027
+#: wpuf-functions.php:1965
 msgid "Billing Address"
 msgstr ""
 
@@ -4221,7 +4221,7 @@ msgid "Strength indicator"
 msgstr ""
 
 #: class/render-form.php:1401 includes/fields/class-field-post-taxonomy.php:127
-#: wpuf-functions.php:1796
+#: wpuf-functions.php:1749
 msgid "-- Select --"
 msgstr ""
 
@@ -4435,7 +4435,7 @@ msgstr ""
 msgid "No transactions found."
 msgstr ""
 
-#: class/upload.php:265 wpuf-functions.php:1028
+#: class/upload.php:265 wpuf-functions.php:990
 msgid "Caption"
 msgstr ""
 
@@ -4572,7 +4572,7 @@ msgstr ""
 
 #: includes/class-dokan-integration.php:34
 #: includes/class-wc-vendors-integration.php:108
-#: templates/dashboard/dashboard.php:15 wpuf-functions.php:2015
+#: templates/dashboard/dashboard.php:15 wpuf-functions.php:1962
 msgid "Posts"
 msgstr ""
 
@@ -6556,263 +6556,263 @@ msgstr ""
 msgid "Private"
 msgstr ""
 
-#: wpuf-functions.php:210 wpuf-functions.php:2043
+#: wpuf-functions.php:210 wpuf-functions.php:1980
 msgid "-- select --"
 msgstr ""
 
-#: wpuf-functions.php:510
+#: wpuf-functions.php:495
 msgid "Images"
 msgstr ""
 
-#: wpuf-functions.php:514
+#: wpuf-functions.php:496
 msgid "Audio"
 msgstr ""
 
-#: wpuf-functions.php:518
+#: wpuf-functions.php:497
 msgid "Videos"
 msgstr ""
 
-#: wpuf-functions.php:522
+#: wpuf-functions.php:498
 msgid "PDF"
 msgstr ""
 
-#: wpuf-functions.php:526
+#: wpuf-functions.php:499
 msgid "Office Documents"
 msgstr ""
 
-#: wpuf-functions.php:530
+#: wpuf-functions.php:500
 msgid "Zip Archives"
 msgstr ""
 
-#: wpuf-functions.php:534
+#: wpuf-functions.php:501
 msgid "Executable Files"
 msgstr ""
 
-#: wpuf-functions.php:538
+#: wpuf-functions.php:502
 msgid "CSV"
 msgstr ""
 
-#: wpuf-functions.php:1051
+#: wpuf-functions.php:1013
 msgid "Directions »"
 msgstr ""
 
-#: wpuf-functions.php:2019
+#: wpuf-functions.php:1963
 msgid "Edit Profile"
 msgstr ""
 
-#: wpuf-functions.php:2157
+#: wpuf-functions.php:2092
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:2162
+#: wpuf-functions.php:2093
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2167
+#: wpuf-functions.php:2094
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:2172
+#: wpuf-functions.php:2095
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:2177
+#: wpuf-functions.php:2096
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:2182
+#: wpuf-functions.php:2097
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:2187
+#: wpuf-functions.php:2098
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2192
+#: wpuf-functions.php:2099
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:2197
+#: wpuf-functions.php:2100
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:2202
+#: wpuf-functions.php:2101
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:2207
+#: wpuf-functions.php:2102
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:2212
+#: wpuf-functions.php:2103
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:2217
+#: wpuf-functions.php:2104
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:2222
+#: wpuf-functions.php:2105
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:2227
+#: wpuf-functions.php:2106
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:2232
+#: wpuf-functions.php:2107
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2237
+#: wpuf-functions.php:2108
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:2242
+#: wpuf-functions.php:2109
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:2247
+#: wpuf-functions.php:2110
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:2252
+#: wpuf-functions.php:2111
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:2257
+#: wpuf-functions.php:2112
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2262
+#: wpuf-functions.php:2113
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2267
+#: wpuf-functions.php:2114
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:2272
+#: wpuf-functions.php:2115
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:2277
+#: wpuf-functions.php:2116
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:2282
+#: wpuf-functions.php:2117
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:2287
+#: wpuf-functions.php:2118
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:2292
+#: wpuf-functions.php:2119
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:2297
+#: wpuf-functions.php:2120
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:2302
+#: wpuf-functions.php:2121
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:2307
+#: wpuf-functions.php:2122
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2312
+#: wpuf-functions.php:2123
 msgid "Namibian dollar"
 msgstr ""
 
-#: wpuf-functions.php:2317
+#: wpuf-functions.php:2124
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:2322
+#: wpuf-functions.php:2125
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:2327
+#: wpuf-functions.php:2126
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2332
+#: wpuf-functions.php:2127
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:2337
+#: wpuf-functions.php:2128
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:2342
+#: wpuf-functions.php:2129
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:2347
+#: wpuf-functions.php:2130
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:2352
+#: wpuf-functions.php:2131
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:2357
+#: wpuf-functions.php:2132
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:2362
+#: wpuf-functions.php:2133
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:2367
+#: wpuf-functions.php:2134
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2372
+#: wpuf-functions.php:2135
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:2377
+#: wpuf-functions.php:2136
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:2382
+#: wpuf-functions.php:2137
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:2387
+#: wpuf-functions.php:2138
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2392
+#: wpuf-functions.php:2139
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:2397
+#: wpuf-functions.php:2140
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:2402
+#: wpuf-functions.php:2141
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2407
+#: wpuf-functions.php:2142
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:2412
+#: wpuf-functions.php:2143
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:2417
+#: wpuf-functions.php:2144
 msgid "Jordanian dinar"
 msgstr ""
 
-#: wpuf-functions.php:3314
+#: wpuf-functions.php:3017
 msgid "None"
 msgstr ""
 
@@ -6939,7 +6939,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: wpuf-functions.php:1518
+#: wpuf-functions.php:1460
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

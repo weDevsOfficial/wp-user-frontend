@@ -1573,6 +1573,10 @@ function wpuf_dropdown_helper( $options, $selected = '' ) {
  * @param string $file file name or path to file
  */
 function wpuf_load_template( $file, $args = [] ) {
+    foreach ($args as $arg_key=>$arg_val){
+        $$arg_key=$arg_val;
+    }
+
     $child_theme_dir  = get_stylesheet_directory() . '/wpuf/';
     $parent_theme_dir = get_template_directory() . '/wpuf/';
     $wpuf_dir         = WPUF_ROOT . '/templates/';
@@ -1597,6 +1601,10 @@ function wpuf_load_template( $file, $args = [] ) {
  * @param string $file file name or path to file
  */
 function wpuf_load_pro_template( $file, $args = [] ) {
+    foreach ($args as $arg_key=>$arg_val){
+        $$arg_key=$arg_val;
+    }
+
     if ( wpuf()->is_pro() ) {
         $child_theme_dir    = get_stylesheet_directory() . '/wpuf/';
         $parent_theme_dir   = get_template_directory() . '/wpuf/';

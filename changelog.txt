@@ -1,3 +1,6 @@
+= v3.5.5 (12 November, 2020) =
+* Fix - Dashboard page broken and couldn't render [wpuf_account], [wpuf_sub_pack], [wpuf_dashboard] shortcodes
+
 = v3.5.4 (11 November, 2020) =
 * Fix - Get appropriate user id when role based conditions are present
 * Fix - Show Invalid subscription message if wrong pack id passed

@@ -1744,12 +1744,12 @@ add_action( 'wp_ajax_nopriv_wpuf_get_child_cat', 'wpuf_get_child_cats' );
  * Returns child category dropdown on ajax request
  */
 function wpuf_get_child_cats() {
-    $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+    $nonce = isset( $_REQUEST['nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ) : '';
 
     $parent_cat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
     $field_attr = isset( $_POST['field_attr'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['field_attr'] ) ) : [];
 
-    check_ajax_referer( 'wpuf_nonce' );
+    wp_verify_nonce( $nonce, 'wpuf_nonce' );
 
     $allowed_tags = wp_kses_allowed_html( 'post' );
 

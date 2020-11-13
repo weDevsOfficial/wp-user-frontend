@@ -1,3 +1,8 @@
+= v3.5.6 (13 November, 2020) =
+* Fix - Can't edit post
+* Fix - Show warning if newly created post form doesn't set role base enable
+* Fix - Show warning in dashboard billing address tab
+
 = v3.5.5 (12 November, 2020) =
 * Fix - Dashboard page broken and couldn't render [wpuf_account], [wpuf_sub_pack], [wpuf_dashboard] shortcodes
 

@@ -88,6 +88,11 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                     <?php
                     $states            = $cs->getStates( $selected['country'] );
                     $selected['state'] = ! ( empty( $address_fields['state'] ) ) ? $address_fields['state'] : '';
+                    $add_line_1        = isset( $address_fields['add_line_1'] ) ? esc_attr( $address_fields['add_line_1'] ) : '';
+                    $add_line_2        = isset( $address_fields['add_line_2'] ) ? esc_attr( $address_fields['add_line_2'] ) : '';
+                    $city              = isset( $address_fields['city'] ) ? esc_attr( $address_fields['city'] ) : '';
+                    $zip_code          = isset( $address_fields['zip_code'] ) ? esc_attr( $address_fields['zip_code'] ) : '';
+
                     echo wp_kses( wpuf_select( [
                             'options'          => $states,
                             'name'             => 'wpuf_biiling_state',
@@ -121,7 +126,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                         class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="wpuf_biiling_add_line_1" id="wpuf_biiling_add_line_1"
-                           value="<?php echo esc_attr( $address_fields['add_line_1'] ); ?>"/>
+                           value="<?php echo $add_line_1; ?>"/>
                 </div>
             </li>
 
@@ -129,7 +134,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                 <div class="wpuf-label"><?php esc_html_e( 'Address Line 2 ', 'wp-user-frontend' ); ?></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="wpuf_biiling_add_line_2" id="wpuf_biiling_add_line_2"
-                           value="<?php echo esc_attr( $address_fields['add_line_2'] ); ?>"/>
+                           value="<?php echo $add_line_2; ?>"/>
                 </div>
             </li>
 
@@ -138,7 +143,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                         class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="wpuf_biiling_city" id="wpuf_biiling_city"
-                           value="<?php echo esc_attr( $address_fields['city'] ); ?>"/>
+                           value="<?php echo $city; ?>"/>
                 </div>
             </li>
 
@@ -147,7 +152,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                         class="required">*</span></div>
                 <div class="wpuf-fields">
                     <input type="text" class="input" name="wpuf_biiling_zip_code" id="wpuf_biiling_zip_code"
-                           value="<?php echo esc_attr( $address_fields['zip_code'] ); ?>"/>
+                           value="<?php echo $zip_code; ?>"/>
                 </div>
             </li>
 

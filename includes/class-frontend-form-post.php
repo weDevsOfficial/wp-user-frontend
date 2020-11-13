@@ -98,7 +98,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         }
 
         // has permission?
-        if ( ! current_user_can( 'delete_others_posts' ) && ( $userdata->ID !== $curpost->post_author ) ) {
+        if ( ! current_user_can( 'delete_others_posts' ) && ( $userdata->ID !== (int) $curpost->post_author ) ) {
             return '<div class="wpuf-info">' . __( 'You are not allowed to edit', 'wp-user-frontend' ) . '</div>';
         }
 

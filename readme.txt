@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership, frontend-post
 Requires at least: 4.0
 Tested up to: 5.5.3
 Requires PHP: 5.6
-Stable tag: 3.5.5
+Stable tag: 3.5.6
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -262,6 +262,11 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 == Changelog ==
+
+= v3.5.6 (13 November, 2020) =
+* Fix - Can't edit post
+* Fix - Show warning if newly created post form doesn't set role base enable
+* Fix - Show warning in dashboard billing address tab
 
 = v3.5.5 (12 November, 2020) =
 * Fix - Dashboard page broken and couldn't render [wpuf_account], [wpuf_sub_pack], [wpuf_dashboard] shortcodes

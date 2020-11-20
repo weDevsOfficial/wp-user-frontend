@@ -20,140 +20,50 @@ class WPUF_Admin_Promotion {
      * @return void
      */
     public function promotional_offer() {
-        if ( !current_user_can( 'manage_options' ) ) {
-            return;
-        }
-
         if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
             return;
         }
 
-        // check if it has already been dismissed
-        $offer_key        = 'wpuf_promotional_offer_notice';
-        $offer_start_date = strtotime( '2019-11-20 00:00:01' );
-        $offer_end_date   = strtotime( '2019-12-04 23:59:00' );
-        $hide_notice      = get_option( $offer_key, 'show' );
-
-        if ( 'hide' == $hide_notice ) {
-            return;
+        if ( 
+            strtotime( '2020-11-23 09:00:00' ) < strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) 
+            && strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) < strtotime( '2020-11-23 13:59:00' )
+            ) {
+                $option_name = 'wpuf_2020_early_black_friday';
+                $notice      = __( 'Enjoy Flat 50% OFF on WP User Frontend Pro. Get Your Early Bird Black Friday', 'wp-user-frontend' );
+                $this->generate_notice( $notice, $option_name );
         }
 
-        if ( $offer_start_date < current_time( 'timestamp' ) && current_time( 'timestamp' ) < $offer_end_date ) {
-            ?>
-            <div class="notice notice-success is-dismissible" id="wpuf-bfcm-notice">
-                <div class="logo">
-                    <img src="<?php echo esc_url( WPUF_ASSET_URI ) . '/images/promo-logo.png'; ?>" alt="WPUF">
-                </div>
-                <div class="content">
-                    <p>Biggest Sale of the year on this</p>
-
-                    <h3><span class="highlight-green">Black Friday &amp; </span>Cyber Monday</h3>
-                    <p><span class="highlight-lightgreen">Claim your discount on </span>WP User Frontend <span class="highlight-lightgreen">till 4th December</span></p>
-                </div>
-                <div class="call-to-action">
-                    <a target="_blank" href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_campaign=black_friday_&_cyber_monday&utm_medium=banner&utm_source=plugin_dashboard">
-                        <img src="<?php echo esc_url( WPUF_ASSET_URI ) . '/images/promo-btn.png'; ?>" alt="Btn">
-                    </a>
-                    <p>
-                        <span class="highlight-green2">Coupon: </span>
-                        <span class="coupon-code">BFCM2019</span>
-                    </p>
-                </div>
-            </div>
-
-            <style>
-                #wpuf-bfcm-notice {
-                    font-size: 14px;
-                    border-left: none;
-                    background: #468E4B;
-                    color: #fff;
-                    display: flex
-                }
-
-                #wpuf-bfcm-notice .notice-dismiss:before {
-                    color: #76E5FF;
-                }
-
-                #wpuf-bfcm-notice .notice-dismiss:hover:before {
-                    color: #b71c1c;
-                }
-
-                #wpuf-bfcm-notice .logo {
-                    text-align: center;
-                    text-align: center;
-                    margin: auto 50px;
-                }
-
-                #wpuf-bfcm-notice .logo img {
-                    width: 80%;
-                }
-
-                #wpuf-bfcm-notice .highlight-green {
-                    color: #4FFF67;
-                }
-                #wpuf-bfcm-notice .highlight-green2 {
-                    color: #5AB035;
-                }
-
-                #wpuf-bfcm-notice .highlight-lightgreen {
-                    color: #E0EFE7;
-                }
-
-                #wpuf-bfcm-notice .content {
-                    margin-top: 5px;
-                }
-
-                #wpuf-bfcm-notice .content h3 {
-                    color: #FFF;
-                    margin: 12px 0 5px;
-                    font-weight: normal;
-                    font-size: 30px;
-                }
-
-                #wpuf-bfcm-notice .content p {
-                    margin-top: 12px;
-                    padding: 0;
-                    letter-spacing: .4px;
-                    color: #ffffff;
-                    font-size: 15px;
-                }
-
-                #wpuf-bfcm-notice .call-to-action {
-                    margin-left: 10%;
-                    margin-top: 20px;
-                }
-
-                #wpuf-bfcm-notice .call-to-action a:focus {
-                    box-shadow: none;
-                }
-
-                #wpuf-bfcm-notice .call-to-action p {
-                    font-size: 16px;
-                    color: #fff;
-                    margin-top: 1px;
-                    text-align: center;
-                }
-
-                #wpuf-bfcm-notice .coupon-code {
-                    -moz-user-select: all;
-                    -webkit-user-select: all;
-                    user-select: all;
-                }
-            </style>
-            </style>
-
-            <script type='text/javascript'>
-                jQuery('body').on('click', '#wpuf-bfcm-notice .notice-dismiss', function (e) {
-                    e.preventDefault();
-
-                    wp.ajax.post('wpuf-dismiss-promotional-offer-notice', {
-                        dismissed: true,
-                        _wpnonce: '<?php echo esc_attr ( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
-                    });
-                });
-            </script>
-            <?php
+        if ( 
+            strtotime( '2020-11-23 14:00:00' ) < strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) 
+            && strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) < strtotime( '2020-11-27 23:59:00' )
+            ) {
+                $option_name = 'wpuf_2020_black_friday';
+                $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Black Friday', 'wp-user-frontend' );
+                $this->generate_notice( $notice, $option_name );
         }
+
+        if ( 
+            strtotime( '2020-11-28 00:00:00' ) < strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) 
+            && strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) < strtotime( '2020-12-04 23:59:00' )
+            ) {
+                $option_name = 'wpuf_2020_cyber_monday';
+                $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Cyber Monday', 'wp-user-frontend' );
+                $this->generate_notice( $notice, $option_name );
+        }
+    }
+
+    /**
+     * Convert EST Time zone to UTC timezone
+     *
+     * @param string $date_time
+     * @return string
+     */
+    public function convert_utc_to_est( $date_time ) {
+        $dt = new DateTime($date_time, new DateTimeZone('UTC'));
+
+        $dt->setTimezone(new DateTimeZone('EST'));
+
+        return $dt->format('Y-m-d H:i:s T');
     }
 
     /**
@@ -295,9 +205,49 @@ class WPUF_Admin_Promotion {
         }
 
         if ( !empty( $_POST['dismissed'] ) ) {
-            $offer_key = 'wpuf_promotional_offer_notice';
+            $offer_key = ! empty( $_POST['option_name'] ) ? sanitize_text_field( wp_unslash( $_POST['option_name'] ) ) : '';
             update_option( $offer_key, 'hide' );
         }
+    }
+
+    /**
+     * Show admin notice
+     *
+     * @param string $message
+     * @param string $option_name
+     * 
+     * @return void
+     */
+    public function generate_notice( $message, $option_name ) {
+        $hide_notice = get_option( $option_name, 'no' );
+        error_log(print_r($message, true));
+        
+        if ( 'hide' === $hide_notice ) {
+            return;
+        }        
+        ?>
+        <div class="notice notice-success is-dismissible" id="wpuf-bfcm-notice">
+            <p>
+                <?php echo $message; ?>
+                <a 
+                href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf" 
+                target="_blank">Deals Now</a>
+            </p>
+            <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
+        </div>
+
+        <script type='text/javascript'>
+            jQuery('body').on('click', '#wpuf-bfcm-notice .notice-dismiss', function (e) {
+                e.preventDefault();
+
+                wp.ajax.post('wpuf-dismiss-promotional-offer-notice', {
+                    dismissed: true,
+                    option_name: '<?php echo esc_html( $option_name ); ?>',
+                    _wpnonce: '<?php echo esc_attr ( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
+                });
+            });
+        </script>
+        <?php
     }
 
     /**
@@ -307,7 +257,7 @@ class WPUF_Admin_Promotion {
      *
      * @return void
      **/
-    public function dismiss_review_notice() {
+    public function dismiss_review_notice() { 
         if( empty( $_POST['_wpnonce'] ) ) {
              wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
@@ -316,7 +266,7 @@ class WPUF_Admin_Promotion {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
-        if ( !empty( $_POST['dismissed'] ) ) {
+        if ( ! empty( $_POST['dismissed'] ) ) {
             update_option( 'wpuf_review_notice_dismiss', 'yes' );
         }
     }

@@ -244,7 +244,7 @@ ul.wpuf-form li.field-size-small .wpuf-fields {
 }
 ul.wpuf-form li .wpuf-fields {
   float: left;
-  width: fit-content;
+  width: 70%;
 }
 ul.wpuf-form li .wpuf-fields .wpuf-radio-inline,
 ul.wpuf-form li .wpuf-fields .wpuf-checkbox-inline {

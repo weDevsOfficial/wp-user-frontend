@@ -1,3 +1,7 @@
+= v3.5.7 (21 November, 2020) =
+* Enhancement - Custom html content field's width
+* Enhancement - All states of New Zealand are added
+
 = v3.5.6 (13 November, 2020) =
 * Fix - Can't edit post
 * Fix - Show warning if newly created post form doesn't set role base enable

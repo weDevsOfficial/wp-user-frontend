@@ -1,6 +1,17 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.8',
+        'released' => '2020-11-21',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Updated codebase to fix timezone mismatch', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.7',
         'released' => '2020-11-21',
         'changes'  =>  [

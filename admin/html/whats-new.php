@@ -1,6 +1,21 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.7',
+        'released' => '2020-11-21',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Custom html content field\'s width', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'All states of New Zealand are added', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.4',
         'released' => '2020-11-11',
         'changes'  =>  [

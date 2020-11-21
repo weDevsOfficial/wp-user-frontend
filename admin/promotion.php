@@ -20,18 +20,22 @@ class WPUF_Admin_Promotion {
      * @return void
      */
     public function promotional_offer() {
-        $current_time = $this->convert_utc_to_est( current_time( 'mysql' ) );
-
-       if ( 
-            $current_time > strtotime( '2020-12-04 23:59:00' ) 
-            || $current_time < strtotime( '2020-11-23 09:00:00' ) 
-          ) {
+        if ( ! current_user_can( 'manage_options' ) ) {
             return;
-       }
+        }
+
+        $current_time = $this->convert_utc_to_est();
 
         if ( 
-            strtotime( '2020-11-23 09:00:00' ) < strtotime( $current_time ) 
-            && strtotime( $current_time ) < strtotime( '2020-11-23 13:59:00' )
+            strtotime( $current_time ) > strtotime( '2020-12-04 23:59:00 EST' ) 
+            || strtotime( $current_time ) < strtotime( '2020-11-23 09:00:00 EST' ) 
+          ) {
+            return;
+        }
+
+        if ( 
+            strtotime( '2020-11-23 09:00:00 EST' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2020-11-23 13:59:00 EST' )
             ) {
                 $option_name = 'wpuf_2020_early_black_friday';
                 $notice      = __( 'Enjoy Flat 50% OFF on WP User Frontend Pro. Get Your Early Bird Black Friday', 'wp-user-frontend' );
@@ -39,8 +43,8 @@ class WPUF_Admin_Promotion {
         }
 
         if ( 
-            strtotime( '2020-11-23 14:00:00' ) < strtotime( $current_time ) 
-            && strtotime( $current_time ) < strtotime( '2020-11-27 23:59:00' )
+            strtotime( '2020-11-23 14:00:00 EST' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2020-11-27 23:59:00 EST' )
             ) {
                 $option_name = 'wpuf_2020_black_friday';
                 $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Black Friday', 'wp-user-frontend' );
@@ -48,8 +52,8 @@ class WPUF_Admin_Promotion {
         }
 
         if ( 
-            strtotime( '2020-11-28 00:00:00' ) < strtotime( $current_time ) 
-            && strtotime( $current_time ) < strtotime( '2020-12-04 23:59:00' )
+            strtotime( '2020-11-28 00:00:00 EST' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2020-12-04 23:59:00 EST' )
             ) {
                 $option_name = 'wpuf_2020_cyber_monday';
                 $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Cyber Monday', 'wp-user-frontend' );
@@ -63,9 +67,8 @@ class WPUF_Admin_Promotion {
      * @param string $date_time
      * @return string
      */
-    public function convert_utc_to_est( $date_time ) {
-        $dt = new DateTime($date_time, new DateTimeZone('UTC'));
-
+    public function convert_utc_to_est() {
+        $dt = new DateTime('now', new DateTimeZone('UTC'));
         $dt->setTimezone(new DateTimeZone('EST'));
 
         return $dt->format('Y-m-d H:i:s T');

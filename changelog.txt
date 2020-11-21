@@ -1,3 +1,6 @@
+= v3.5.8 (21 November, 2020) =
+* Fix - Updated codebase to fix timezone mismatch
+
 = v3.5.7 (21 November, 2020) =
 * Enhancement - Custom html content field's width
 * Enhancement - All states of New Zealand are added

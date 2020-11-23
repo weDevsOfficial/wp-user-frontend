@@ -20,13 +20,18 @@ class WPUF_Admin_Promotion {
      * @return void
      */
     public function promotional_offer() {
-        if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+        $current_time = $this->convert_utc_to_est( current_time( 'mysql' ) );
+
+       if ( 
+            $current_time > strtotime( '2020-12-04 23:59:00' ) 
+            || $current_time < strtotime( '2020-11-23 09:00:00' ) 
+          ) {
             return;
-        }
+       }
 
         if ( 
-            strtotime( '2020-11-23 09:00:00' ) < strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) 
-            && strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) < strtotime( '2020-11-23 13:59:00' )
+            strtotime( '2020-11-23 09:00:00' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2020-11-23 13:59:00' )
             ) {
                 $option_name = 'wpuf_2020_early_black_friday';
                 $notice      = __( 'Enjoy Flat 50% OFF on WP User Frontend Pro. Get Your Early Bird Black Friday', 'wp-user-frontend' );
@@ -34,8 +39,8 @@ class WPUF_Admin_Promotion {
         }
 
         if ( 
-            strtotime( '2020-11-23 14:00:00' ) < strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) 
-            && strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) < strtotime( '2020-11-27 23:59:00' )
+            strtotime( '2020-11-23 14:00:00' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2020-11-27 23:59:00' )
             ) {
                 $option_name = 'wpuf_2020_black_friday';
                 $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Black Friday', 'wp-user-frontend' );
@@ -43,8 +48,8 @@ class WPUF_Admin_Promotion {
         }
 
         if ( 
-            strtotime( '2020-11-28 00:00:00' ) < strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) 
-            && strtotime( $this->convert_utc_to_est( current_time( 'mysql' ) ) ) < strtotime( '2020-12-04 23:59:00' )
+            strtotime( '2020-11-28 00:00:00' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2020-12-04 23:59:00' )
             ) {
                 $option_name = 'wpuf_2020_cyber_monday';
                 $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Cyber Monday', 'wp-user-frontend' );
@@ -220,7 +225,6 @@ class WPUF_Admin_Promotion {
      */
     public function generate_notice( $message, $option_name ) {
         $hide_notice = get_option( $option_name, 'no' );
-        error_log(print_r($message, true));
         
         if ( 'hide' === $hide_notice ) {
             return;

@@ -343,8 +343,8 @@ Vue.component('form-column_field', {
                         colTwoWidth = 100 / columnsNumber;
                         colThreeWidth = 0;
                     } else {
-                        colOneWidth = $(columnField).find(".column-1").width();
-                        colTwoWidth = $(columnField).find(".column-2").width();
+                        colOneWidth = 100 / columnsNumber;
+                        colTwoWidth = 0;
                         colThreeWidth = 0;
                     }
 

@@ -461,6 +461,18 @@ function wpuf_settings_fields() {
                 'type'    => 'multicheck',
                 'options' => wpuf_get_gateways(),
             ],
+            [
+                'name'    => 'failed_retry',
+                'label'   => __( 'Retry Failed Payment', 'wp-user-frontend' ),
+                'desc'    => __( 'How many times should retry for failed payment max is 4', 'wp-user-frontend' ),
+                'default'           => '2',
+                'type'              => 'number',
+                'custom_attributes' => [
+                    'min'  => 1,
+                    'max'  => 4,
+                    'step' => 1,
+                ],
+            ],
         ] ),
         'wpuf_mails' => apply_filters( 'wpuf_mail_options', [
             [

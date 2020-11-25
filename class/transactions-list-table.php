@@ -41,6 +41,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
             'id'             => __( 'ID', 'wp-user-frontend' ),
             'status'         => __( 'Status', 'wp-user-frontend' ),
             'user'           => __( 'User', 'wp-user-frontend' ),
+            'subtotal'       => __( 'Subtotal', 'wp-user-frontend' ),
             'cost'           => __( 'Cost', 'wp-user-frontend' ),
             'tax'            => __( 'Tax', 'wp-user-frontend' ),
             'post_id'        => __( 'Post ID', 'wp-user-frontend' ),
@@ -142,6 +143,9 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 $post_author    =  get_the_author_meta( 'nickname', $post_author_id );
 
                 return !empty( $user ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->user_nicename ) : $post_author;
+
+            case 'subtotal':
+                return wpuf_format_price( $item->subtotal );
 
             case 'cost':
                 return wpuf_format_price( $item->cost );

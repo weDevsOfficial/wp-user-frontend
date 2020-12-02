@@ -330,6 +330,7 @@ final class WP_User_Frontend {
         require_once WPUF_ROOT . '/includes/class-field-manager.php';
         require_once WPUF_ROOT . '/includes/class-pro-upgrades.php';
         require_once WPUF_ROOT . '/includes/fields/field-trait.php';
+        require_once WPUF_ROOT . '/includes/class-content-restriction.php';
     }
 
     /**
@@ -350,6 +351,7 @@ final class WP_User_Frontend {
         $this->container['block']                   = new WPUF_Form_Block();
         $this->container['customize']               = new WPUF_Customizer_Options();
         $this->container['log']                     = new WPUF_Log();
+        $this->container['content_restrict']        = new WPUF_Partial_Content();
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();

@@ -3569,3 +3569,46 @@ function wpuf_user_has_roles( $roles, $user_id = 0 ) {
 
     return false;
 }
+
+/**
+ * Restrict partial content
+ *
+ * @since WPUF_SINCE
+ * 
+ * @param string $content
+ * @param array $roles
+ * @param array $subscriptions
+ * 
+ * @return void
+ */
+function wpuf_content_restrict( $content, $roles = null, $subscriptions = null ) {
+
+    if ( current_user_can('manage_options') ) {
+        echo $content;
+        return;
+    }
+
+    $restrict_message = '';
+
+    $current_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
+    $pack_id = ! empty( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : 0;
+
+    if ( ! is_user_logged_in() ) {
+        $restrict_message = __( 'Login required to view this content', 'wp-user-frontend' );  
+    }
+
+    if ( $roles && ! wpuf_user_has_roles( $roles ) && is_user_logged_in() ) {
+        $restrict_message = __( 'You are not permited to view this content', 'wp-user-frontend' );
+    }
+
+    if ( $subscriptions && in_array( $pack_id, $subscriptions ) && is_user_logged_in() ) {
+        $restrict_message = __( 'You are not subcribed for the required pack', 'wp-user-frontend' );
+    }
+
+
+    if ( $restrict_message ) {
+        echo $restrict_message;
+    } else {
+        echo $content;
+    }
+}

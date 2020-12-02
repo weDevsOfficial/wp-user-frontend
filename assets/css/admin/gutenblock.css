@@ -100,3 +100,23 @@
     background-color: #0073aa;
     color: white;
 }
+
+/* Content restriction block */
+.wpuf-content-restriction-block {
+    background: #ddd;
+    padding: 20px;
+    text-align: center;
+    font-size: 19px;
+}
+
+.wpuf-content-restriction-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 15px !important;
+}
+
+.wpuf-content-restriction-sub-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 13px !important;
+}

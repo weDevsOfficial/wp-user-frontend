@@ -7,7 +7,8 @@
 
     var el = element.createElement, // function to create elements
         TextControl = components.TextControl,// text input control
-        InspectorControls = editor.InspectorControls; // sidebar controls
+        InspectorControls = editor.InspectorControls, // sidebar controls
+        InnerBlocks = editor.InnerBlocks;
 
     // register our block
     blocks.registerBlockType( 'wpuf/form', {
@@ -208,6 +209,120 @@
             var returnHTML = '[wpuf_form id=' + parseInt( formID ) + ']';
             return el( 'div', null, returnHTML );
         }
+    } );
+
+    // WPUF Content Restriction Block
+    blocks.registerBlockType( 'wpuf/content-restriction', {
+        title: 'WPUF Content Restriction',
+        icon: 'universal-access-alt',
+        category: 'common',
+ 
+        attributes: {
+            roles: {
+                type: 'array',
+                default: [' '],
+            },
+            subscriptions: {
+                type: 'array',
+                default: [0],
+            },
+        },
+
+        edit: function( props ) {
+            
+            const blcokIcon = el('span', {
+                className: 'dashicons dashicons-hidden'   
+            }, '')
+
+            const blockTitle = el('p', {
+                className: 'wpuf-content-restriction-title'
+            }, [ blcokIcon, 'WPUF Content Restrictions' ])
+
+            const blocSubkTitle = el('p', {
+                className: 'wpuf-content-restriction-sub-title'
+            }, 'Blocks within the Content Restriction block will restricted to viewers with role and subscription pack')
+
+            // Set up the user role settings
+            var availableRoles = [];
+            var newRoles = props.attributes.roles.slice();
+
+            _.each( wpufBlock.roles, function ( name, key ) {
+                availableRoles.push(
+                    el( components.CheckboxControl, {
+                        key: key,
+                        label: name,
+                        value: key,
+                        onChange: function( value ) {
+                            if ( newRoles.indexOf(key) == -1 ) {
+                                newRoles.push( key );
+                            } else {
+                                newRoles.splice(newRoles.indexOf(key), 1)
+                            }
+                            props.setAttributes({ roles: newRoles });
+                        },
+                        checked: props.attributes.roles.indexOf(key) != -1 || 'administrator' === key ? true : false
+                    })
+                )
+            });
+            
+            var roles = el( InspectorControls, {},
+                el(
+                    components.PanelBody, {
+                        title: 'Roles'
+                    },
+                    availableRoles
+                ),
+            );
+
+            // Setup subscriptions settings
+            var availableSubscriptions = [];
+            var newSubscriptions = props.attributes.subscriptions.slice()
+
+            wpufBlock.subscriptions.forEach( subscription => {
+                availableSubscriptions.push(
+                    el( components.CheckboxControl, {
+                        key: subscription.ID,
+                        label: subscription.post_title,
+                        onChange: function( value ) {
+                            if ( newSubscriptions.indexOf(subscription.ID) == -1 ) {
+                                newSubscriptions.push( subscription.ID );
+                            } else {
+                                newSubscriptions.splice(newSubscriptions.indexOf(subscription.ID), 1)
+                            }
+                            props.setAttributes({ subscriptions: newSubscriptions });
+                        },
+                        checked: props.attributes.subscriptions.indexOf(subscription.ID) != -1 ? true : false
+                    })
+                )
+            });
+
+            var subscriptions = el( InspectorControls, {},
+                el(
+                    components.PanelBody, {
+                        'title': 'Subscription',
+                    },
+                    availableSubscriptions
+                )    
+            )
+
+            return [roles, subscriptions, el(
+                'div',
+                { className: 'wpuf-content-restriction-block' },
+               [ blockTitle, blocSubkTitle, el( InnerBlocks ) ]
+            )];
+        },
+ 
+        save: function( props ) {
+            var subscription = props.attributes.subscriptions
+            var roles = props.attributes.roles
+
+            return el(
+                'div',
+                { className: props.className },
+                
+                ['[wpuf_content_restrict roles="'+ roles +'" subscriptions="'+ subscription.toString() +'"]', el( InnerBlocks.Content ), '[/wpuf_content_restrict]']
+            );
+        },
     } );
 
 

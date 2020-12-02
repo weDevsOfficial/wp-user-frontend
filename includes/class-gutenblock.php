@@ -64,12 +64,19 @@ class WPUF_Form_Block {
 
         $block_logo     = WPUF_ASSET_URI . '/images/icon-128x128.png';
         $thumbnail_logo = WPUF_ASSET_URI . '/images/icon-128x128.png';
+        global $wp_roles;
+        $subscriptions = get_posts([
+            'post_type' => 'wpuf_subscription',
+            'post_status'   => 'publish'
+        ]);
 
         wp_localize_script( 'wpuf-forms-block', 'wpufBlock', [
             'forms'          => $forms,
             'siteUrl'        => get_home_url(),
             'block_logo'     => $block_logo,
             'thumbnail_logo' => $thumbnail_logo,
+            'roles'          => $wp_roles->get_names(), 
+            'subscriptions'  => $subscriptions,  
         ] );
         wp_enqueue_style( 'wpuf-forms-block-style' );
         wp_enqueue_style( 'wpuf-forms-block-editor' );

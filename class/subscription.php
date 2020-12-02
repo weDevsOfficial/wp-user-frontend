@@ -68,7 +68,7 @@ class WPUF_Subscription {
         if ( isset( $_POST['wpuf_cancel_subscription'] ) ) {
             $nonce       = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
             $user_id     = isset( $_POST['user_id'] ) ? intval( wp_unslash( $_POST['user_id'] ) ) : 0;
-            $gateway     = isset( $_POST['gateway'] ) ? intval( wp_unslash( $_POST['gateway'] ) ) : 0;
+            $gateway     = isset( $_POST['gateway'] ) ? sanitize_text_field( wp_unslash( $_POST['gateway'] ) ) : 0;
             $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 
 
@@ -80,7 +80,7 @@ class WPUF_Subscription {
 
             $gateway = ( $gateway == 'bank/manual' ) ? 'bank' : $gateway;
 
-            if ( 'bank' == $gateway || 'no' == $current_pack['recurring'] ) {
+            if ( 'bank' == $gateway  ) {
                 $this->update_user_subscription_meta( $user_id, 'Cancel' );
             } else {
                 do_action( "wpuf_cancel_subscription_{$gateway}", $_POST );

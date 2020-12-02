@@ -17,8 +17,8 @@ class WPUF_Partial_Content {
     public function add_shortcode($atts, $content) {
 
         $defaults = [
-            'roles'         => [],
-            'subscriptions' => []
+            'roles'         => '',
+            'subscriptions' => ''
         ];
 
         $atts = shortcode_atts( $defaults, $atts, 'wpuf_content_restrict' );
@@ -28,7 +28,6 @@ class WPUF_Partial_Content {
 
         unset($roles[0]);
         unset($subscriptions[0]);
-
         ob_start();
 
         wpuf_content_restrict( do_shortcode( $content ), $roles, $subscriptions );

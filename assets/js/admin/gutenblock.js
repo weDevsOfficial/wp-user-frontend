@@ -226,6 +226,10 @@
                 type: 'array',
                 default: [0],
             },
+            restrict: {
+                type: 'string',
+                default: 'roles',
+            }
         },
 
         edit: function( props ) {
@@ -264,15 +268,6 @@
                     })
                 )
             });
-            
-            var roles = el( InspectorControls, {},
-                el(
-                    components.PanelBody, {
-                        title: 'Roles'
-                    },
-                    availableRoles
-                ),
-            );
 
             // Setup subscriptions settings
             var availableSubscriptions = [];
@@ -296,16 +291,32 @@
                 )
             });
 
-            var subscriptions = el( InspectorControls, {},
+            // Set restriction type
+            var selected_type = props.attributes.restrict === 'roles' ? availableRoles : availableSubscriptions
+            var restrict_type = el( InspectorControls, {}, 
                 el(
-                    components.PanelBody, {
-                        'title': 'Subscription',
+                    components.PanelBody,
+                    {
+                        title: 'Restriction Type'
                     },
-                    availableSubscriptions
+                    el( components.RadioControl,
+                        {
+                            className: 'wpuf-restrict-type',
+                            options : [
+                                { label: 'Roles', value: 'roles' },
+                                { label: 'Subscriptions', value: 'subscriptions' },
+                            ],
+                            onChange: ( value ) => {
+                                props.setAttributes( { restrict: value } );
+                            },
+                            selected: props.attributes.restrict
+                        }
+                    ),
+                    selected_type
                 )    
-            )
+            );
 
-            return [roles, subscriptions, el(
+            return [ restrict_type, el(
                 'div',
                 { className: 'wpuf-content-restriction-block' },
                [ blockTitle, blocSubkTitle, el( InnerBlocks ) ]
@@ -313,14 +324,20 @@
         },
  
         save: function( props ) {
-            var subscription = props.attributes.subscriptions
-            var roles = props.attributes.roles
+            var subscription = props.attributes.subscriptions,
+                roles = props.attributes.roles,
+                restrict = 'roles="'+ roles.toString() +'"'
+
+                if ('subscriptions' == props.attributes.restrict) {
+                    restrict = 'subscriptions="'+ subscription.toString() +'"'
+                }
+            
 
             return el(
                 'div',
                 { className: props.className },
                 
-                ['[wpuf_content_restrict roles="'+ roles +'" subscriptions="'+ subscription.toString() +'"]', el( InnerBlocks.Content ), '[/wpuf_content_restrict]']
+                ['[wpuf_content_restrict '+ restrict +' ]', el( InnerBlocks.Content ), '[/wpuf_content_restrict]']
             );
         },
     } );

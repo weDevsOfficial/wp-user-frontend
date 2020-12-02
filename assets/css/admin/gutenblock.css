@@ -70,6 +70,7 @@
     width: 95%;
 }
 
+
 #wpuf-filter-input-icon-sidebar {
     font-size: 1.4em;
     top: .35em;
@@ -118,5 +119,13 @@
 .wpuf-content-restriction-sub-title {
     margin: 0 !important;
     padding: 0 !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
 }
+
+.wpuf-restrict-type .components-base-control__field {
+    display: flex;
+}
+
+.wpuf-restrict-type .components-base-control__field .components-radio-control__option {
+    flex: 1 1 0px;
+} 

@@ -66,8 +66,8 @@ class WPUF_Form_Block {
         $thumbnail_logo = WPUF_ASSET_URI . '/images/icon-128x128.png';
         global $wp_roles;
         $subscriptions = get_posts([
-            'post_type' => 'wpuf_subscription',
-            'post_status'   => 'publish'
+            'post_type'   => 'wpuf_subscription',
+            'post_status' => 'publish'
         ]);
 
         wp_localize_script( 'wpuf-forms-block', 'wpufBlock', [

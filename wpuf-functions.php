@@ -3601,7 +3601,7 @@ function wpuf_content_restrict( $content, $roles = null, $subscriptions = null )
         $restrict_message = __( 'You are not permited to view this content', 'wp-user-frontend' );
     }
 
-    if ( $subscriptions && in_array( $pack_id, $subscriptions ) && is_user_logged_in() ) {
+    if ( $subscriptions && ! in_array( $pack_id, $subscriptions ) && is_user_logged_in() ) {
         $restrict_message = __( 'You are not subcribed for the required pack', 'wp-user-frontend' );
     }
 

@@ -109,13 +109,13 @@ class WPUF_Paypal {
             'name'  => 'paypal_api_signature',
             'label' => __( 'PayPal API signature', 'wp-user-frontend' ),
         ];
-        $options[] = [
+       /* $options[] = [
             'name'    => 'paypal_endpoint',
             'label'   => __('PayPal IPN endpoint', 'wp-user-frontend'),
             'default' => home_url( '/action/wpuf_paypal_success', null ),
             'desc'    => __('Set this to your notification IPN listener', 'wp-user-frontend'),
             'class'   => 'disabled'
-        ];
+        ];*/
         return $options;
     }
 
@@ -129,8 +129,7 @@ class WPUF_Paypal {
      */
     public function prepare_to_send( $data ) {
         $user_id          = $data['user_info']['id'];
-//        $listener_url     = add_query_arg( 'action', 'wpuf_paypal_success', home_url( '' ) );
-        $listener_url     = home_url( '/action/wpuf_paypal_success', null );
+        $listener_url     = add_query_arg( 'action', 'wpuf_paypal_success', home_url( '' ) );
         //$listener_url     = 'http://a53d2f68b609.ngrok.io/?action=wpuf_paypal_success';
         $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
 
@@ -271,7 +270,7 @@ class WPUF_Paypal {
      * Check for PayPal IPN Response.
      */
     public function check_response() {
-        if ( ! empty( $_SERVER['REQUEST_URI'] ) && $_SERVER['REQUEST_URI'] == '/action/wpuf_paypal_success' && $this->validateIpn() ) {
+        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'wpuf_paypal_success' && $this->validateIpn() ) {
             do_action( 'wpuf_paypal_ipn_success' );
         }
     }
@@ -304,7 +303,7 @@ class WPUF_Paypal {
 
         $insert_payment = false;
 
-        if ( ! empty( $_SERVER['REQUEST_URI'] ) && $_SERVER['REQUEST_URI'] == '/action/wpuf_paypal_success' ) {
+        if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
             WP_User_Frontend::log( 'paypal-payment-info', print_r( $_POST, true ) );
 
             $postdata     = $_POST;

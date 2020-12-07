@@ -1024,7 +1024,7 @@ class WPUF_Subscription {
         $results = [];
 
         foreach ( $rows as $row ) {
-            if ( ! in_array( $row->user_id, $results, true ) ) {
+            if ( ! in_array( (int) $row->user_id, $results, true ) ) {
                 $results[] = $row->user_id;
             }
         }

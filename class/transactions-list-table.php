@@ -1,6 +1,6 @@
 <?php
 
-if ( !class_exists( 'WP_List_Table' ) ) {
+if ( ! class_exists( 'WP_List_Table' ) ) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
@@ -10,11 +10,13 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
      * Constructor.
      */
     public function __construct() {
-        parent::__construct( [
-            'singular' => __( 'transaction', 'wp-user-frontend' ),
-            'plural'   => __( 'transactions', 'wp-user-frontend' ),
-            'ajax'     => false,
-        ] );
+        parent::__construct(
+            [
+				'singular' => __( 'transaction', 'wp-user-frontend' ),
+				'plural'   => __( 'transactions', 'wp-user-frontend' ),
+				'ajax'     => false,
+			]
+        );
     }
 
     /**
@@ -27,7 +29,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
     public function column_cb( $item ) {
         return sprintf(
             '<input type="checkbox" name="bulk-items[]" value="%s" />', $item->id
-         );
+        );
     }
 
     /**
@@ -85,8 +87,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'all';
 
-        $status_links['all']     = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'all' ], $base_link ), ( $status == 'all' ) ? 'current' : '', __( 'All', 'wp-user-frontend' ), $transactions_count );
-        $status_links['pending'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'pending' ], $base_link ), ( $status == 'pending' ) ? 'current' : '', __( 'Pending', 'wp-user-frontend' ), $transactions_pending_count );
+        $status_links['all']     = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'all' ], $base_link ), ( $status === 'all' ) ? 'current' : '', __( 'All', 'wp-user-frontend' ), $transactions_count );
+        $status_links['pending'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'pending' ], $base_link ), ( $status === 'pending' ) ? 'current' : '', __( 'Pending', 'wp-user-frontend' ), $transactions_pending_count );
 
         return $status_links;
     }
@@ -107,7 +109,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
         $page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
 
-        if ( $status == 'pending' ) {
+        if ( $status === 'pending' ) {
             $accept_nonce = wp_create_nonce( 'wpuf-accept-transaction' );
             $reject_nonce = wp_create_nonce( 'wpuf-reject-transaction' );
 
@@ -135,14 +137,14 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
     public function column_default( $item, $column_name ) {
         switch ( $column_name ) {
             case 'status':
-                return ( $item->status == 'completed' ) ? '<span class="wpuf-status-completed" title="Completed"></span>' : '<span class="wpuf-status-processing" title="Processing"></span>';
+                return ( $item->status === 'completed' ) ? '<span class="wpuf-status-completed" title="Completed"></span>' : '<span class="wpuf-status-processing" title="Processing"></span>';
 
             case 'user':
                 $user           = get_user_by( 'id', $item->user_id );
-                $post_author_id =  get_post_field( 'post_author', $item->post_id );
-                $post_author    =  get_the_author_meta( 'nickname', $post_author_id );
+                $post_author_id = get_post_field( 'post_author', $item->post_id );
+                $post_author    = get_the_author_meta( 'nickname', $post_author_id );
 
-                return !empty( $user ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->user_nicename ) : $post_author;
+                return ! empty( $user ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->user_nicename ) : $post_author;
 
             case 'subtotal':
                 return wpuf_format_price( $item->subtotal );
@@ -154,18 +156,18 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 return wpuf_format_price( $item->tax );
 
             case 'post_id':
-                return !empty( $item->post_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->post_id . '&action=edit' ), $item->post_id ) : '-';
+                return ! empty( $item->post_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->post_id . '&action=edit' ), $item->post_id ) : '-';
 
             case 'pack_id':
-                return !empty( $item->pack_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->pack_id . '&action=edit' ), $item->pack_id ) : '-';
+                return ! empty( $item->pack_id ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . $item->pack_id . '&action=edit' ), $item->pack_id ) : '-';
 
             case 'payer':
-                return !empty( $item->payer_first_name ) ? $item->payer_first_name . ' ' . $item->payer_last_name : '-';
+                return ! empty( $item->payer_first_name ) ? $item->payer_first_name . ' ' . $item->payer_last_name : '-';
 
             case 'created':
-                return !empty( $item->created ) ? date( 'd-m-Y', strtotime( $item->created ) ) : '-';
+                return ! empty( $item->created ) ? gmdate( 'd-m-Y', strtotime( $item->created ) ) : '-';
             default:
-                return !empty( $item->{$column_name} ) ? $item->{$column_name} : '-';
+                return ! empty( $item->{$column_name} ) ? $item->{$column_name} : '-';
                 break;
         }
     }
@@ -187,7 +189,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
     public function get_bulk_actions() {
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
 
-        if ( $status == 'pending' ) {
+        if ( $status === 'pending' ) {
             $actions = [
                 'bulk-accept' => __( 'Accept', 'wp-user-frontend' ),
                 'bulk-reject' => __( 'Reject', 'wp-user-frontend' ),
@@ -212,16 +214,18 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'all';
 
-        if ( $status == 'pending' ) {
+        if ( $status === 'pending' ) {
             $total_items = wpuf_get_pending_transactions( [ 'count' => true ] );
         } else {
             $total_items = wpuf_get_transactions( [ 'count' => true ] );
         }
 
-        $this->set_pagination_args( [
-            'total_items' => $total_items,
-            'per_page'    => $per_page,
-        ] );
+        $this->set_pagination_args(
+            [
+				'total_items' => $total_items,
+				'per_page'    => $per_page,
+			]
+        );
 
         $this->_column_headers = $this->get_column_info();
 
@@ -239,7 +243,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
             $args['order']   = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) );
         }
 
-        if ( $status == 'pending' ) {
+        if ( $status === 'pending' ) {
             $this->items = wpuf_get_pending_transactions( $args );
         } else {
             $this->items = wpuf_get_transactions( $args );
@@ -262,8 +266,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
         $id = isset( $_REQUEST['id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) : '';
 
-        if ( $action == 'delete' || $action2 == 'delete' ) {
-            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-delete-transaction' ) ) {
+        if ( $action === 'delete' || $action2 === 'delete' ) {
+            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-delete-transaction' ) ) {
                 return false;
             }
 
@@ -277,8 +281,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Delete Transactions
-        if ( $action == 'bulk-delete' || $action2 == 'bulk-delete' ) {
-            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
+        if ( $action === 'bulk-delete' || $action2 === 'bulk-delete' ) {
+            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
 
@@ -298,8 +302,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Reject Transaction
-        if ( $action == 'reject' || $action2 == 'reject' ) {
-            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-reject-transaction' ) ) {
+        if ( $action === 'reject' || $action2 === 'reject' ) {
+            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-reject-transaction' ) ) {
                 return false;
             }
 
@@ -316,8 +320,8 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Reject Transactions
-        if ( $action == 'bulk-reject' || $action2 == 'bulk-reject' ) {
-            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
+        if ( $action === 'bulk-reject' || $action2 === 'bulk-reject' ) {
+            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
             $bulk_items = isset( $_REQUEST['bulk-items'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_REQUEST['bulk-items'] ) ) : [];
@@ -339,16 +343,16 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Accept Transaction
-        if ( $action == 'accept' || $action2 == 'accept' ) {
-            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-accept-transaction' ) ) {
+        if ( $action === 'accept' || $action2 === 'accept' ) {
+            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-accept-transaction' ) ) {
                 return false;
             }
 
-            if ( !current_user_can( 'manage_options' ) ) {
+            if ( ! current_user_can( 'manage_options' ) ) {
                 return;
             }
 
-            $id   = isset( $_REQUEST['id'] ) ? intval( wp_unslash( $_REQUEST['id'] ) ) : 0 ;
+            $id   = isset( $_REQUEST['id'] ) ? intval( wp_unslash( $_REQUEST['id'] ) ) : 0;
             $info = get_post_meta( $id, '_data', true );
 
             if ( $info ) {
@@ -409,12 +413,12 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         }
 
         // Bulk Accept Transaction
-        if ( $action == 'bulk-accept' || $action2 == 'bulk-accept' ) {
-            if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
+        if ( $action === 'bulk-accept' || $action2 === 'bulk-accept' ) {
+            if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'bulk-transactions' ) ) {
                 return false;
             }
 
-            if ( !current_user_can( 'manage_options' ) ) {
+            if ( ! current_user_can( 'manage_options' ) ) {
                 return;
             }
 

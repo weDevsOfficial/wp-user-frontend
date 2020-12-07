@@ -334,17 +334,17 @@ Vue.component('form-column_field', {
                         colTwoWidth   = 0,
                         colThreeWidth = 0;
 
-                    if (columnsNumber === 3) {
+                    if (parseInt(columnsNumber) === 3) {
                         colOneWidth = 100 / columnsNumber;
                         colTwoWidth = 100 / columnsNumber;
                         colThreeWidth = 100 / columnsNumber;
-                    } else if (columnsNumber === 2) {
+                    } else if (parseInt(columnsNumber) === 2) {
                         colOneWidth = 100 / columnsNumber;
                         colTwoWidth = 100 / columnsNumber;
                         colThreeWidth = 0;
                     } else {
-                        colOneWidth = $(columnField).find(".column-1").width();
-                        colTwoWidth = $(columnField).find(".column-2").width();
+                        colOneWidth = 100;
+                        colTwoWidth = 0;
                         colThreeWidth = 0;
                     }
 

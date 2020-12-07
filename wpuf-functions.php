@@ -455,7 +455,8 @@ function wpuf_get_field_settings_excludes( $field_settings, $exclude_type ) {
     if ( ! empty( $attributes ) ) {
         foreach ( $attributes as $attr ) {
             $terms = get_terms(
-                'category', array(
+                $field_settings['name'],
+                array(
                     'hide_empty' => false,
                     'parent'     => $attr,
                 )
@@ -1574,7 +1575,9 @@ function wpuf_dropdown_helper( $options, $selected = '' ) {
  */
 function wpuf_load_template( $file, $args = [] ) {
     //phpcs:ignore
-    extract( $args );
+    if ( $args && is_array( $args ) ) {
+        extract( $args );
+    }
 
     $child_theme_dir  = get_stylesheet_directory() . '/wpuf/';
     $parent_theme_dir = get_template_directory() . '/wpuf/';
@@ -1601,7 +1604,9 @@ function wpuf_load_template( $file, $args = [] ) {
  */
 function wpuf_load_pro_template( $file, $args = [] ) {
     //phpcs:ignore
-    extract( $args );
+    if ( $args && is_array( $args ) ) {
+        extract( $args );
+    }
 
     if ( wpuf()->is_pro() ) {
         $child_theme_dir    = get_stylesheet_directory() . '/wpuf/';

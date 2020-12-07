@@ -12,10 +12,10 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
     public function __construct() {
         parent::__construct(
             [
-				'singular' => __( 'transaction', 'wp-user-frontend' ),
-				'plural'   => __( 'transactions', 'wp-user-frontend' ),
-				'ajax'     => false,
-			]
+                'singular' => __( 'transaction', 'wp-user-frontend' ),
+                'plural'   => __( 'transactions', 'wp-user-frontend' ),
+                'ajax'     => false,
+            ]
         );
     }
 
@@ -222,9 +222,9 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         $this->set_pagination_args(
             [
-				'total_items' => $total_items,
-				'per_page'    => $per_page,
-			]
+                'total_items' => $total_items,
+                'per_page'    => $per_page,
+            ]
         );
 
         $this->_column_headers = $this->get_column_info();

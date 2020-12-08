@@ -41,7 +41,7 @@ class WPUF_Subscription {
 
         add_action( 'wpuf_draft_post_after_insert', [ $this, 'reset_user_subscription_data' ], 10, 4 );
 
-        add_filter( 'wpuf_get_subscription_meta', [ $this, 'reset_trial_if_used_once' ] );
+        add_filter( 'wpuf_get_subscription_meta', [ $this, 'reset_trial' ] );
     }
 
     /**
@@ -1247,9 +1247,9 @@ class WPUF_Subscription {
      *
      * @return mixed
      */
-    public function reset_trial_if_used_once( $sub_meta ) {
+    public function reset_trial( $sub_meta ) {
         $used_trial = get_user_meta( get_current_user_id(), '_wpuf_used_trial', true );
-        if ( 'yes' === $used_trial ){
+        if ( 'yes' === $used_trial ) {
             unset( $sub_meta['trial_status'] );
             unset( $sub_meta['trial_duration'] );
             unset( $sub_meta['trial_duration_type'] );

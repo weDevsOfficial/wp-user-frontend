@@ -109,7 +109,13 @@ class WPUF_Paypal {
             'name'  => 'paypal_api_signature',
             'label' => __( 'PayPal API signature', 'wp-user-frontend' ),
         ];
-
+       /* $options[] = [
+            'name'    => 'paypal_endpoint',
+            'label'   => __('PayPal IPN endpoint', 'wp-user-frontend'),
+            'default' => home_url( '/action/wpuf_paypal_success', null ),
+            'desc'    => __('Set this to your notification IPN listener', 'wp-user-frontend'),
+            'class'   => 'disabled'
+        ];*/
         return $options;
     }
 
@@ -123,7 +129,8 @@ class WPUF_Paypal {
      */
     public function prepare_to_send( $data ) {
         $user_id          = $data['user_info']['id'];
-        $listener_url     = add_query_arg( 'action', 'wpuf_paypal_success', home_url( '/' ) );
+        $listener_url     = add_query_arg( 'action', 'wpuf_paypal_success', home_url( '' ) );
+        //$listener_url     = 'http://a53d2f68b609.ngrok.io/?action=wpuf_paypal_success';
         $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
 
         if ( $redirect_page_id ) {
@@ -310,6 +317,10 @@ class WPUF_Paypal {
             $custom    = json_decode( stripcslashes( $postdata['custom'] ) );
             $coupon_id = isset( $custom->coupon_id ) ? $custom->coupon_id : false;
 
+            if ($postdata['period3']) {
+                update_user_meta($custom->user_id, '_wpuf_used_trial', 'yes');
+            }
+
             if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_signup' ) ) {
                 WP_User_Frontend::log( 'paypal-recurring', 'got subscriber with email ' . $postdata['payer_email'] );
 
@@ -384,9 +395,9 @@ class WPUF_Paypal {
             $data = [
                 'user_id'          => (int) $custom->user_id,
                 'status'           => strtolower( $postdata['payment_status'] ),
-                'subtotal'         => (float) $custom->subtotal,
+                'subtotal'         => $postdata['mc_gross'],
                 'tax'              => (float) $custom->tax,
-                'cost'             => $postdata['mc_gross'],
+                'cost'             => (float) $custom->subtotal,
                 'post_id'          => isset( $post_id ) ? $post_id : '',
                 'pack_id'          => isset( $pack_id ) ? $pack_id : '',
                 'payer_first_name' => $postdata['first_name'],
@@ -401,7 +412,7 @@ class WPUF_Paypal {
             WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
 
             $transaction_id = wp_strip_all_tags( $postdata['txn_id'] );
-            
+
             WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
 
             if ( $coupon_id ) {

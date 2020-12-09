@@ -406,7 +406,7 @@ class WPUF_Payment {
             ];
 
             if ( isset( $_POST['billing_address'] ) ) {
-                $address_fields  = array_map( 'sanitize_text_field', wp_unslash( $_POST['billing_address'] ) );
+                $address_fields = array_map( 'sanitize_text_field', wp_unslash( $_POST['billing_address'] ) );
             } else {
                 $address_fields = wpuf_get_user_address();
             }
@@ -496,7 +496,7 @@ class WPUF_Payment {
         // translators: %s is site title name
         $subject = sprintf( __( '[%s] Payment Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
         // translators: %s is site title name
-        $msg     = sprintf( __( 'New payment received at %s', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
+        $msg = sprintf( __( 'New payment received at %s', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
 
         $receiver = get_bloginfo( 'admin_email' );
         wp_mail( $receiver, $subject, $msg, $headers );

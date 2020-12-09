@@ -93,7 +93,7 @@ class WPUF_Paypal {
         $options[] = [
             'name'    => 'gate_instruct_paypal',
             'label'   => __( 'PayPal Instruction', 'wp-user-frontend' ),
-            'type'    => 'textarea',
+            'type'    => 'wysiwyg',
             'default' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account",
         ];
 

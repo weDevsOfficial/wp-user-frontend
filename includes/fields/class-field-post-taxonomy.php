@@ -198,6 +198,9 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
     public function tax_ajax( $post_id = null ) {
         if ( isset( $post_id ) ) {
             $this->terms = wp_get_post_terms( $post_id, $this->taxonomy, [ 'fields' => 'all' ] );
+            asort($this->terms);
+            $first_item = array_shift($this->terms);
+            array_push($this->field_settings['exclude'],$first_item->term_id);
         }
         ?>
 
@@ -212,8 +215,69 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
                 </div>
                 <?php
             } else {
-                $tree = $this->catbuildTree( $this->terms );
-                $this->RecursiveCatWrite( $tree );
+                if ($this->field_settings['type'] === 'ajax' && $this->field_settings['exclude_type']==='child_of'){
+                     $level = 0;
+                    ?>
+                                 <div id="lvl<?php echo esc_attr( $level ); ?>" level="<?php echo esc_attr( $level ); ?>" >
+
+                <?php
+
+                    $attr = $this->field_settings;
+                     $dataset  = sprintf(
+           'data-required="%s" data-type="select" data-form-id="%d"',
+           $attr['required'],
+           trim( $this->form_id )
+       );
+
+                    $tax_args = [
+                'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
+                'hierarchical'     => 1,
+                'hide_empty'       => 0,
+                'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
+                'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
+                'name'             => $this->taxonomy . '[]',
+                'taxonomy'         => $this->taxonomy,
+                'echo'             => 0,
+                'title_li'         => '',
+                'class'            => 'cat-ajax ' . $this->taxonomy . $this->class,
+                'include'          => $this->field_settings['exclude'],
+                'selected'         => $this->field_settings['exclude'][count($this->field_settings['exclude'])-1],
+            ];
+
+                       $select_result = wp_dropdown_categories($tax_args);
+                        echo str_replace( '<select', '<select ' . $dataset, $select_result );
+                         $attr = [
+            'required'      => $attr['required'],
+            'name'          => $attr['name'],
+            'exclude_type' => isset( $attr['exclude_type'] ) ? $attr['exclude_type'] : 'exclude',
+            'exclude'      => $attr['exclude'],
+            'orderby'      => $attr['orderby'],
+            'order'        => $attr['order'],
+        ];
+        $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
+        ?>
+        <span data-taxonomy=<?php echo esc_attr( json_encode( $attr ) ); ?>></span>
+        <?php ?>
+            </div>
+            <?php
+                    foreach ( $this->terms as $term) {
+                            $tax_args = [
+
+                'hide_empty'       => 0,
+                'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
+                'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
+                'name'             => $this->taxonomy . '[]',
+                'taxonomy'         => $this->taxonomy,
+                'title_li'         => '',
+                'class'            => 'cat-ajax ' . $this->taxonomy . $this->class,
+                'include'          =>$term->term_id,
+                'selected'         => $term->term_id,
+            ];
+
+                        wp_dropdown_categories($tax_args);
+                    }
+
+                }
             }
             ?>
         </div>

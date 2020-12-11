@@ -1,6 +1,33 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.9',
+        'released' => '2020-12-11',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Once trial subscription is used, it couldn\'t reset', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscription cancel doesn\'t work', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'The tax rate was not calculated with the total amount', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'The width of the column field was breaking', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Paypal recurring payment', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.8',
         'released' => '2020-11-21',
         'changes'  =>  [

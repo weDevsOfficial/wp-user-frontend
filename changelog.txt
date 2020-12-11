@@ -1,3 +1,10 @@
+= v3.5.9 (11 December, 2020) =
+* Fix - Once trial subscription is used, it couldn't reset
+* Fix - Subscription cancel doesn't work
+* Fix - The tax rate was not calculated with the total amount
+* Fix - The width of the column field was breaking
+* Enhancement - Paypal recurring payment
+
 = v3.5.8 (21 November, 2020) =
 * Fix - Updated codebase to fix timezone mismatch
 

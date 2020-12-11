@@ -52,13 +52,15 @@ Vue.component('form-column_field', {
             handle: '.wpuf-column-field-control-buttons .move',
             scroll: true,
             stop: function( event, ui ) {
-                var data_source = ui.item.context.attributes['data-source'].value;
+                var item        = ui.item[0];
+                var data        = item.dataset;
+                var data_source = data.source;
 
                 if ('panel' === data_source) {
                     var payload = {
                         toIndex: parseInt($(ui.item).index()),
-                        field_template: ui.item.context.attributes['data-form-field'].value,
-                        to_column: $(this).context.parentElement.classList[0]
+                        field_template: data.formField,
+                        to_column: $(this).parent().attr('class').split(' ')[0]
                     };
 
                     self.add_column_inner_field(payload);
@@ -78,9 +80,9 @@ Vue.component('form-column_field', {
 
                 if ( 'column-field-stage' === source) {
                     payload.field_id   = self.field.id;
-                    payload.fromIndex  = parseInt(ui.item.context.attributes['column-field-index'].value);
-                    payload.fromColumn = ui.item.context.attributes['in-column'].value;
-                    payload.toColumn   = ui.item.context.parentElement.parentElement.classList[0];
+                    payload.fromIndex  = parseInt(item.attributes['column-field-index'].value);
+                    payload.fromColumn = item.attributes['in-column'].value;
+                    payload.toColumn   = item.parent().parent().attr('class').split(' ')[0];
 
                     // when drag field one column to another column, sortable event trigger twice and try to swap field twice.
                     // So the following conditions are needed to check and run swap_column_field_elements commit only once
@@ -296,7 +298,7 @@ Vue.component('form-column_field', {
             (function () {
                 var columnElement;
                 var startOffset;
-                var columnField = $(self.$el).context.parentElement;
+                var columnField = $(self.$el).parent();
                 var total_width = parseInt($(columnField).width());
 
                 Array.prototype.forEach.call(
@@ -334,17 +336,17 @@ Vue.component('form-column_field', {
                         colTwoWidth   = 0,
                         colThreeWidth = 0;
 
-                    if (columnsNumber === 3) {
+                    if (parseInt(columnsNumber) === 3) {
                         colOneWidth = 100 / columnsNumber;
                         colTwoWidth = 100 / columnsNumber;
                         colThreeWidth = 100 / columnsNumber;
-                    } else if (columnsNumber === 2) {
+                    } else if (parseInt(columnsNumber) === 2) {
                         colOneWidth = 100 / columnsNumber;
                         colTwoWidth = 100 / columnsNumber;
                         colThreeWidth = 0;
                     } else {
-                        colOneWidth = $(columnField).find(".column-1").width();
-                        colTwoWidth = $(columnField).find(".column-2").width();
+                        colOneWidth = 100;
+                        colTwoWidth = 0;
                         colThreeWidth = 0;
                     }
 

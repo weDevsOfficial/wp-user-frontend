@@ -466,7 +466,7 @@ abstract class WPUF_Field_Contract {
                 'type'      => 'multiselect',
                 'section'   => 'advanced',
                 'priority'  => 27,
-                'help_text' => __( 'Search the terms name.', 'wp-user-frontend' ),
+                'help_text' => __( 'Search the terms name. use ⇦ ⇨ for navigate', 'wp-user-frontend' ),
                 'options'   => wpuf_get_terms( $tax_name ),
             ],
 
@@ -496,7 +496,7 @@ abstract class WPUF_Field_Contract {
             ],
         ];
 
-        
+
         if ( $content_restriction ) {
             $properties = array_merge( $properties, [
                 [
@@ -512,7 +512,7 @@ abstract class WPUF_Field_Contract {
                     'inline'    => true,
                     'default'   => 'character',
                 ],
-    
+
                 [
                     'name'      => 'content_restriction',
                     'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
@@ -523,7 +523,7 @@ abstract class WPUF_Field_Contract {
                 ],
             ] );
         }
-        
+
 
         return apply_filters( 'wpuf-form-builder-common-taxonomy-fields-properties', $properties );
     }
@@ -585,7 +585,7 @@ abstract class WPUF_Field_Contract {
                     'inline'    => true,
                     'default'   => 'character',
                 ],
-    
+
                 [
                     'name'      => 'content_restriction',
                     'title'     => __( 'Content Restriction', 'wp-user-frontend' ),

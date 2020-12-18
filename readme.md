@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 5.6  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.9  
+**Stable tag:** 3.5.10  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -263,7 +263,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
-### v3.5.9 (10 December, 2020) ###
+### v3.5.10 (18 December, 2020) ###
+* Update - Added holiday promotional offer notice
+
+### v3.5.9 (11 December, 2020) ###
 * Fix - Once trial subscription is used, it couldn't reset
 * Fix - Subscription cancel doesn't work
 * Fix - The tax rate was not calculated with the total amount

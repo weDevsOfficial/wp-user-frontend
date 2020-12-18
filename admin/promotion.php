@@ -27,8 +27,8 @@ class WPUF_Admin_Promotion {
         $current_time = $this->convert_utc_to_est();
 
         if ( 
-            strtotime( $current_time ) > strtotime( '2020-12-04 23:59:00 EST' ) 
-            || strtotime( $current_time ) < strtotime( '2020-11-23 09:00:00 EST' ) 
+            strtotime( $current_time ) > strtotime( '2021-01-08 23:59:00 EST' ) 
+            || strtotime( $current_time ) < strtotime( '2020-12-22 09:00:00 EST' ) 
           ) {
             return;
         }
@@ -57,6 +57,15 @@ class WPUF_Admin_Promotion {
             ) {
                 $option_name = 'wpuf_2020_cyber_monday';
                 $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Cyber Monday', 'wp-user-frontend' );
+                $this->generate_notice( $notice, $option_name );
+        }
+
+        if ( 
+            strtotime( '2020-12-22 09:00:00 EST' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2021-01-08 23:59:00 EST' )
+            ) {
+                $option_name = 'wpuf_2020_chrismas';
+                $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your ', 'wp-user-frontend' );
                 $this->generate_notice( $notice, $option_name );
         }
     }
@@ -237,8 +246,8 @@ class WPUF_Admin_Promotion {
             <p>
                 <?php echo $message; ?>
                 <a 
-                href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf" 
-                target="_blank">Deals Now</a>
+                href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf-holidays" 
+                target="_blank">Holiday Deals Now.</a>
             </p>
             <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
         </div>

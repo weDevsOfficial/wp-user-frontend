@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership, frontend-post
 Requires at least: 4.0
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 3.5.9
+Stable tag: 3.5.10
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -262,6 +262,9 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 == Changelog ==
+
+= v3.5.10 (18 December, 2020) =
+* Update - Added holiday promotional offer notice
 
 = v3.5.9 (11 December, 2020) =
 * Fix - Once trial subscription is used, it couldn't reset

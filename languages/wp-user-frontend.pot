@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 3.5.9\n"
+"Project-Id-Version: WP User Frontend 3.5.10\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2020-12-11 06:17:23+00:00\n"
+"POT-Creation-Date: 2020-12-18 11:00:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -569,8 +569,8 @@ msgstr ""
 
 #: admin/form-builder/class-wpuf-admin-form-builder-ajax.php:35
 #: admin/form-builder/class-wpuf-admin-form-builder-ajax.php:82
-#: admin/promotion.php:208 admin/promotion.php:212 admin/promotion.php:269
-#: admin/promotion.php:273
+#: admin/promotion.php:217 admin/promotion.php:221 admin/promotion.php:278
+#: admin/promotion.php:282
 msgid "Unauthorized operation"
 msgstr ""
 
@@ -3070,15 +3070,19 @@ msgstr ""
 msgid "Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Cyber Monday"
 msgstr ""
 
-#: admin/promotion.php:109
+#: admin/promotion.php:68
+msgid "Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your "
+msgstr ""
+
+#: admin/promotion.php:118
 msgid "Sure! I'd love to!"
 msgstr ""
 
-#: admin/promotion.php:110
+#: admin/promotion.php:119
 msgid "I've already left a review"
 msgstr ""
 
-#: admin/promotion.php:111
+#: admin/promotion.php:120
 msgid "Never show again"
 msgstr ""
 

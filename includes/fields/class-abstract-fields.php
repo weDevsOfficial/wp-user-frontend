@@ -94,7 +94,7 @@ abstract class WPUF_Field_Contract {
      * @return bool
      */
     public function is_meta( $field_settings ) {
-        if ( isset( $field_settings['is_meta'] ) && $field_settings['is_meta'] == 'yes' ) {
+        if ( isset( $field_settings['is_meta'] ) && $field_settings['is_meta'] === 'yes' ) {
             return true;
         }
 
@@ -112,11 +112,11 @@ abstract class WPUF_Field_Contract {
      * @return string
      */
     public function get_meta( $object_id, $meta_key, $type = 'post', $single = true ) {
-        if ( !$object_id ) {
+        if ( ! $object_id ) {
             return '';
         }
 
-        if ( $type == 'post' ) {
+        if ( $type === 'post' ) {
             return get_post_meta( $object_id, $meta_key, $single );
         }
 
@@ -139,7 +139,8 @@ abstract class WPUF_Field_Contract {
             'is_full_width' => $this->is_full_width(),
         ];
 
-        if ( $validator = $this->get_validator() ) {
+        $validator = $this->get_validator();
+        if ( $validator ) {
             $settings['validator'] = $validator;
         }
 
@@ -323,43 +324,45 @@ abstract class WPUF_Field_Contract {
             ];
 
             if ( is_wpuf_post_form_builder() ) {
-                $common_properties = array_merge( $common_properties, [
-                    [
-                        'name'      => 'show_in_post',
-                        'title'     => __( 'Show Data in Post', 'wp-user-frontend' ),
-                        'type'      => 'radio',
-                        'options'   => [
-                            'yes'   => __( 'Yes', 'wp-user-frontend' ),
-                            'no'    => __( 'No', 'wp-user-frontend' ),
+                $common_properties = array_merge(
+                    $common_properties, [
+                        [
+                            'name'      => 'show_in_post',
+                            'title'     => __( 'Show Data in Post', 'wp-user-frontend' ),
+                            'type'      => 'radio',
+                            'options'   => [
+                                'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                                'no'    => __( 'No', 'wp-user-frontend' ),
+                            ],
+                            'section'   => 'advanced',
+                            'priority'  => 24,
+                            'default'   => 'yes',
+                            'inline'    => true,
+                            'help_text' => __( 'Select Yes if you want to show the field data in single post.', 'wp-user-frontend' ),
                         ],
-                        'section'   => 'advanced',
-                        'priority'  => 24,
-                        'default'   => 'yes',
-                        'inline'    => true,
-                        'help_text' => __( 'Select Yes if you want to show the field data in single post.', 'wp-user-frontend' ),
-                    ],
-                    [
-                        'name'      => 'hide_field_label',
-                        'title'     => __( 'Hide Field Label in Post', 'wp-user-frontend' ),
-                        'type'      => 'radio',
-                        'options'   => [
-                            'yes'   => __( 'Yes', 'wp-user-frontend' ),
-                            'no'    => __( 'No', 'wp-user-frontend' ),
+                        [
+                            'name'      => 'hide_field_label',
+                            'title'     => __( 'Hide Field Label in Post', 'wp-user-frontend' ),
+                            'type'      => 'radio',
+                            'options'   => [
+                                'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                                'no'    => __( 'No', 'wp-user-frontend' ),
+                            ],
+                            'section'   => 'advanced',
+                            'priority'  => 24,
+                            'default'   => 'no',
+                            'inline'    => true,
+                            'help_text' => __( 'Select Yes if you want to hide the field label in single post.', 'wp-user-frontend' ),
                         ],
-                        'section'   => 'advanced',
-                        'priority'  => 24,
-                        'default'   => 'no',
-                        'inline'    => true,
-                        'help_text' => __( 'Select Yes if you want to hide the field label in single post.', 'wp-user-frontend' ),
-                    ],
-                ] );
+                    ]
+                );
             }
         }
 
         if ( count( $exclude ) ) {
             foreach ( $common_properties as $key => &$option ) {
-                if ( in_array( $option['name'], $exclude ) ) {
-                    unset( $common_properties[$key] );
+                if ( in_array( $option['name'], $exclude, true ) ) {
+                    unset( $common_properties[ $key ] );
                 }
             }
         }
@@ -496,34 +499,34 @@ abstract class WPUF_Field_Contract {
             ],
         ];
 
-
         if ( $content_restriction ) {
-            $properties = array_merge( $properties, [
-                [
-                    'name'      => 'restriction_type',
-                    'title'     => __( 'Content restricted by', 'wp-user-frontend' ),
-                    'type'      => 'radio',
-                    'options'   => [
-                        'character'  => __( 'Character', 'wp-user-frontend' ),
-                        'word'       => __( 'Word', 'wp-user-frontend' ),
+            $properties = array_merge(
+                $properties, [
+                    [
+                        'name'      => 'restriction_type',
+                        'title'     => __( 'Content restricted by', 'wp-user-frontend' ),
+                        'type'      => 'radio',
+                        'options'   => [
+                            'character'  => __( 'Character', 'wp-user-frontend' ),
+                            'word'       => __( 'Word', 'wp-user-frontend' ),
+                        ],
+                        'section'   => 'advanced',
+                        'priority'  => 15,
+                        'inline'    => true,
+                        'default'   => 'character',
                     ],
-                    'section'   => 'advanced',
-                    'priority'  => 15,
-                    'inline'    => true,
-                    'default'   => 'character',
-                ],
 
-                [
-                    'name'      => 'content_restriction',
-                    'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
-                    'type'      => 'text',
-                    'section'   => 'advanced',
-                    'priority'  => 16,
-                    'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
-                ],
-            ] );
+                    [
+                        'name'      => 'content_restriction',
+                        'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
+                        'type'      => 'text',
+                        'section'   => 'advanced',
+                        'priority'  => 16,
+                        'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
+                    ],
+                ]
+            );
         }
-
 
         return apply_filters( 'wpuf-form-builder-common-taxonomy-fields-properties', $properties );
     }
@@ -571,30 +574,32 @@ abstract class WPUF_Field_Contract {
         ];
 
         if ( $content_restriction ) {
-            $properties = array_merge( $properties, [
-                [
-                    'name'      => 'restriction_type',
-                    'title'     => __( 'Content restricted by', 'wp-user-frontend' ),
-                    'type'      => 'radio',
-                    'options'   => [
-                        'character' => __( 'Character', 'wp-user-frontend' ),
-                        'word'      => __( 'Word', 'wp-user-frontend' ),
+            $properties = array_merge(
+                $properties, [
+                    [
+                        'name'      => 'restriction_type',
+                        'title'     => __( 'Content restricted by', 'wp-user-frontend' ),
+                        'type'      => 'radio',
+                        'options'   => [
+                            'character' => __( 'Character', 'wp-user-frontend' ),
+                            'word'      => __( 'Word', 'wp-user-frontend' ),
+                        ],
+                        'section'   => 'advanced',
+                        'priority'  => 15,
+                        'inline'    => true,
+                        'default'   => 'character',
                     ],
-                    'section'   => 'advanced',
-                    'priority'  => 15,
-                    'inline'    => true,
-                    'default'   => 'character',
-                ],
 
-                [
-                    'name'      => 'content_restriction',
-                    'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
-                    'type'      => 'text',
-                    'section'   => 'advanced',
-                    'priority'  => 16,
-                    'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
-                ],
-            ] );
+                    [
+                        'name'      => 'content_restriction',
+                        'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
+                        'type'      => 'text',
+                        'section'   => 'advanced',
+                        'priority'  => 16,
+                        'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
+                    ],
+                ]
+            );
         }
 
         return apply_filters( 'wpuf-form-builder-common-text-fields-properties', $properties );
@@ -717,15 +722,20 @@ abstract class WPUF_Field_Contract {
 
             <li <?php $this->print_list_attributes( $field ); ?>>
 
-            <?php $this->print_label( $field, $form_id );
+            <?php
+            $this->print_label( $field, $form_id );
         }
     }
 
     public function after_field_print_label() {
         if ( is_admin() ) {
-            ?></td></tr><?php
+            ?>
+                </td></tr>
+            <?php
         } else {
-            ?></li><?php
+            ?>
+        </li>
+            <?php
         }
     }
 
@@ -739,9 +749,9 @@ abstract class WPUF_Field_Contract {
 
     public function print_list_attributes( $field ) {
         $label      = isset( $field['label'] ) ? $field['label'] : '';
-        $el_name    = !empty( $field['name'] ) ? $field['name'] : '';
-        $class_name = !empty( $field['css'] ) ? ' ' . $field['css'] : '';
-        $field_size = !empty( $field['width'] ) ? ' field-size-' . $field['width'] : '';
+        $el_name    = ! empty( $field['name'] ) ? $field['name'] : '';
+        $class_name = ! empty( $field['css'] ) ? ' ' . $field['css'] : '';
+        $field_size = ! empty( $field['width'] ) ? ' field-size-' . $field['width'] : '';
 
         printf( 'class="wpuf-el %s%s%s" data-label="%s"', esc_attr( $el_name ), esc_attr( $class_name ), esc_attr( $field_size ), esc_attr( $label ) );
     }
@@ -768,7 +778,7 @@ abstract class WPUF_Field_Contract {
      * @return bool
      */
     public function is_required( $field ) {
-        if ( isset( $field['required'] ) && $field['required'] == 'yes' ) {
+        if ( isset( $field['required'] ) && $field['required'] === 'yes' ) {
             return true;
         }
 
@@ -796,7 +806,8 @@ abstract class WPUF_Field_Contract {
     public function help_text( $field ) {
         if ( empty( $field['help'] ) ) {
             return;
-        } ?>
+        }
+        ?>
         <span class="wpuf-help"><?php echo stripslashes( $field['help'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
         <?php
     }
@@ -810,14 +821,15 @@ abstract class WPUF_Field_Contract {
      * @return void
      */
     public function conditional_logic( $form_field, $form_id ) {
-        if ( !isset( $form_field['wpuf_cond']['condition_status'] ) || $form_field['wpuf_cond']['condition_status'] != 'yes' ) {
+        if ( ! isset( $form_field['wpuf_cond']['condition_status'] ) || $form_field['wpuf_cond']['condition_status']
+            !== 'yes' ) {
             return;
         }
 
         $cond_inputs                     = $form_field['wpuf_cond'];
         $cond_inputs['condition_status'] = isset( $cond_inputs['condition_status'] ) ? $cond_inputs['condition_status'] : '';
 
-        if ( $cond_inputs['condition_status'] == 'yes' ) {
+        if ( $cond_inputs['condition_status'] === 'yes' ) {
             $cond_inputs['type']    = isset( $form_field['input_type'] ) ? $form_field['input_type'] : '';
             $cond_inputs['name']    = isset( $form_field['name'] ) ? $form_field['name'] : $form_field['template'] . '_' . $form_field['id'];
             $cond_inputs['form_id'] = $form_id;
@@ -827,10 +839,11 @@ abstract class WPUF_Field_Contract {
         }
 
         //taxnomy name create unique
-        if ( $form_field['input_type'] == 'taxonomy' ) {
+        if ( $form_field['input_type'] === 'taxonomy' ) {
             $cond_inputs['name'] = $form_field['name'] . '_' . $form_field['type'] . '_' . $form_field['id'];
             $condition           = json_encode( $cond_inputs );
-        }?>
+        }
+        ?>
         <script type="text/javascript">
             wpuf_conditional_items.push(<?php echo wp_kses( $condition, [] ); ?>);
         </script>
@@ -847,18 +860,20 @@ abstract class WPUF_Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $value = !empty( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ): '';
+        $value = ! empty( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) :
+            '';
 
         if ( is_array( $value ) ) {
             $entry_value = implode( WP_User_Frontend::$field_separator, $value );
         } else {
-            $entry_value = trim( $value  );
+            $entry_value = trim( $value );
         }
 
         return $entry_value;
     }
 
     /**
+     * //ignore:phpcs
      * wpuf_visibility property for all fields
      *
      * @since 2.6
@@ -881,7 +896,8 @@ abstract class WPUF_Field_Contract {
         // bail out if it is dashboard
         if ( is_admin() ) {
             return;
-        } ?>
+        }
+        ?>
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){

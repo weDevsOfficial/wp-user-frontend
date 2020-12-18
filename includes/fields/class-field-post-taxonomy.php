@@ -197,14 +197,22 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
     public function tax_ajax( $post_id = null ) {
         if ( isset( $post_id ) ) {
-            $this->terms = wp_get_post_terms( $post_id, $this->taxonomy, ['fields' => 'all'] );
+            $this->terms = wp_get_post_terms( $post_id, $this->taxonomy, [ 'fields' => 'all' ] );
             asort( $this->terms );
             $first_item = array_shift( $this->terms );
             $include = [];
-            foreach ($this->field_settings['exclude'] as $parent) {
-                array_map(function ($term) use (&$include){
-                    $include[]=$term->term_id;
-                },get_terms(['taxonomy'=>$this->field_settings['name'],'parent'=>$parent,'hide_empty'=>false]));
+            foreach ( $this->field_settings['exclude'] as $parent ) {
+                array_map(
+                    function ( $term ) use ( &$include ) {
+                        $include[] = $term->term_id;
+                    }, get_terms(
+                        [
+                            'taxonomy' => $this->field_settings['name'],
+                            'parent' => $parent,
+                            'hide_empty' => false,
+                        ]
+                    )
+                );
             }
             $this->field_settings['exclude'] = $include;
             array_push( $this->field_settings['exclude'], $first_item->term_id );

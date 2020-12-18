@@ -54,7 +54,7 @@ class WPUF_Form {
     public function guest_post() {
         $settings = $this->get_settings();
 
-        if ( isset( $settings['guest_post'] ) && $settings['guest_post'] == 'true' ) {
+        if ( isset( $settings['guest_post'] ) && $settings['guest_post'] === 'true' ) {
             return true;
         }
 
@@ -69,7 +69,7 @@ class WPUF_Form {
     public function is_charging_enabled() {
         $settings = $this->get_settings();
 
-        if ( isset( $settings['payment_options'] ) && $settings['payment_options'] == 'true' ) {
+        if ( isset( $settings['payment_options'] ) && $settings['payment_options'] === 'true' ) {
             return true;
         }
 
@@ -84,7 +84,7 @@ class WPUF_Form {
     public function is_enabled_pay_per_post() {
         $settings = $this->get_settings();
 
-        if ( isset( $settings['enable_pay_per_post'] ) && $settings['enable_pay_per_post'] == 'true' ) {
+        if ( isset( $settings['enable_pay_per_post'] ) && $settings['enable_pay_per_post'] === 'true' ) {
             return true;
         }
 
@@ -99,7 +99,7 @@ class WPUF_Form {
     public function is_enabled_force_pack() {
         $settings = $this->get_settings();
 
-        if ( isset( $settings['force_pack_purchase'] ) && $settings['force_pack_purchase'] == 'true' ) {
+        if ( isset( $settings['force_pack_purchase'] ) && $settings['force_pack_purchase'] === 'true' ) {
             return true;
         }
 
@@ -129,7 +129,7 @@ class WPUF_Form {
     public function is_enabled_fallback_cost() {
         $settings = $this->get_settings();
 
-        if ( isset( $settings['fallback_ppp_enable'] ) && $settings['fallback_ppp_enable'] == 'true' ) {
+        if ( isset( $settings['fallback_ppp_enable'] ) && $settings['fallback_ppp_enable'] === 'true' ) {
             return true;
         }
 
@@ -168,7 +168,7 @@ class WPUF_Form {
         $current_user  = wpuf_get_user();
         $guest_post_enabled = $this->guest_post();
 
-        if ( isset( $this->form_settings['message_restrict'] ) && !$guest_post_enabled && !is_user_logged_in() ) {
+        if ( isset( $this->form_settings['message_restrict'] ) && ! $guest_post_enabled && ! is_user_logged_in() ) {
             $user_can_post = 'no';
             $info          = $this->form_settings['message_restrict'];
         }
@@ -182,15 +182,16 @@ class WPUF_Form {
             $has_post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
             // guest post payment checking
-            if ( !is_user_logged_in() && isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' ) {
+            if ( ! is_user_logged_in() && isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] === 'true' ) {
 
                 //if ( $form->is_charging_enabled() ) {
 
                 if ( $force_pack ) {
                     $user_can_post = 'no';
                     $pack_page     = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
-                    $info          = sprintf( __( 'You need to  <a href="%s">purchase a subscription package</a> to post in this form', 'wp-user-frontend' ), $pack_page ) ;
-                } elseif ( $pay_per_post && !$force_pack ) {
+                    /* translators: %s: Pack page link */
+                    $info          = sprintf( __( 'You need to  <a href="%s">purchase a subscription package</a> to post in this form', 'wp-user-frontend' ), $pack_page );
+                } elseif ( $pay_per_post && ! $force_pack ) {
                     $user_can_post = 'yes';
                     // $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
                     // echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
@@ -207,12 +208,12 @@ class WPUF_Form {
                 if ( $force_pack && is_user_logged_in() ) {
                     $current_pack = $current_user->subscription()->current_pack();
 
-                    if ( !is_wp_error( $current_pack ) ) {
+                    if ( ! is_wp_error( $current_pack ) ) {
                         // user has valid post count
                         if ( $has_post_count ) {
                             $user_can_post = 'yes';
                         } else {
-                            if ( $fallback_enabled && !$has_post_count ) {
+                            if ( $fallback_enabled && ! $has_post_count ) {
                                 $user_can_post = 'yes';
                             } else {
                                 $user_can_post = 'no';
@@ -223,17 +224,17 @@ class WPUF_Form {
                         $user_can_post = 'no';
                         $info          = $current_pack->get_error_message();
                     }
-                } elseif ( $pay_per_post && is_user_logged_in() && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                } elseif ( $pay_per_post && is_user_logged_in() && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
                     $user_can_post = 'yes';
                     // $info = sprintf( __( 'There is a <strong>%s</strong> charge to add a new post.', 'wpuf' ), wpuf_format_price( $pay_per_post_cost ));
                     // echo '<div class="wpuf-info">' . apply_filters( 'wpuf_ppp_notice', $info, $id, $form_settings ) . '</div>';
-                } elseif ( !$pay_per_post && !$current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
+                } elseif ( ! $pay_per_post && ! $current_user->subscription()->has_post_count( $form_settings['post_type'] ) ) {
                     $user_can_post = 'no';
                     $info          = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wp-user-frontend' ) );
                 } else {
                     $user_can_post = 'no';
 
-                    if ( !is_user_logged_in() ) {
+                    if ( ! is_user_logged_in() ) {
                         $info = $form_settings['message_restrict'];
                     } else {
                         $info = sprintf( __( 'Payment type not selected for this form. Please contact admin.', 'wp-user-frontend' ) );
@@ -241,16 +242,17 @@ class WPUF_Form {
                 }
             }
         } else {
-            if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' && !is_user_logged_in() ) {
+            if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] === 'true' && !
+                is_user_logged_in() ) {
                 $user_can_post = 'yes';
             }
         }
 
-        return [$user_can_post, $info];
+        return [ $user_can_post, $info ];
     }
 
     /**
-     * prepare_entries
+     * Prepare_entries
      *
      * @return array
      */
@@ -259,14 +261,14 @@ class WPUF_Form {
         $form_fields  = $this->get_fields();
         $entry_fields = [];
 
-        $ignore_list  = apply_filters( 'wpuf_entry_ignore_list', ['recaptcha'] );
+        $ignore_list = apply_filters( 'wpuf_entry_ignore_list', [ 'recaptcha' ] );
 
         foreach ( $form_fields as $field ) {
-            if ( in_array( $field['template'], $ignore_list ) ) {
+            if ( in_array( $field['template'], $ignore_list, true ) ) {
                 continue;
             }
 
-            if ( !array_key_exists( $field['template'], $fields ) ) {
+            if ( ! array_key_exists( $field['template'], $fields ) ) {
                 continue;
             }
 
@@ -290,21 +292,23 @@ class WPUF_Form {
             return $this->form_fields;
         }
 
-        $fields = get_children( [
-            'post_parent' => $this->id,
-            'post_status' => 'publish',
-            'post_type'   => 'wpuf_input',
-            'numberposts' => '-1',
-            'orderby'     => 'menu_order',
-            'order'       => 'ASC',
-        ] );
+        $fields = get_children(
+            [
+				'post_parent' => $this->id,
+				'post_status' => 'publish',
+				'post_type'   => 'wpuf_input',
+				'numberposts' => '-1',
+				'orderby'     => 'menu_order',
+				'order'       => 'ASC',
+			]
+        );
 
         $form_fields = [];
 
         foreach ( $fields as $key => $content ) {
             $field = maybe_unserialize( $content->post_content );
 
-            if ( empty( $field['template']  ) ) {
+            if ( empty( $field['template'] ) ) {
                 continue;
             }
 
@@ -313,8 +317,8 @@ class WPUF_Form {
             // Add inline property for radio and checkbox fields
             $inline_supported_fields = apply_filters( 'wpuf_inline_supported_fields_list', [ 'radio_field', 'checkbox_field' ] );
 
-            if ( in_array( $field['template'], $inline_supported_fields ) ) {
-                if ( !isset( $field['inline'] ) ) {
+            if ( in_array( $field['template'], $inline_supported_fields, true ) ) {
+                if ( ! isset( $field['inline'] ) ) {
                     $field['inline'] = 'no';
                 }
             }
@@ -322,8 +326,8 @@ class WPUF_Form {
             // Add 'selected' property
             $option_based_fields = apply_filters( 'wpuf_option_based_fields_list', [ 'dropdown_field', 'multiple_select', 'radio_field', 'checkbox_field' ] );
 
-            if ( in_array( $field['template'], $option_based_fields ) ) {
-                if ( !isset( $field['selected'] ) ) {
+            if ( in_array( $field['template'], $option_based_fields, true ) ) {
+                if ( ! isset( $field['selected'] ) ) {
                     if ( 'dropdown_field' === $field['template'] || 'radio_field' === $field['template'] ) {
                         $field['selected'] = '';
                     } else {
@@ -333,7 +337,7 @@ class WPUF_Form {
             }
 
             // Add 'multiple' key for template:repeat
-            if ( 'repeat_field' === $field['template'] && !isset( $field['multiple'] ) ) {
+            if ( 'repeat_field' === $field['template'] && ! isset( $field['multiple'] ) ) {
                 $field['multiple'] = '';
             }
 

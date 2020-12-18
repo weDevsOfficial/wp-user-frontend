@@ -1,3 +1,6 @@
+= v3.5.10 (18 December, 2020) =
+* Update - Added holiday promotional offer notice
+
 = v3.5.9 (11 December, 2020) =
 * Fix - Once trial subscription is used, it couldn't reset
 * Fix - Subscription cancel doesn't work

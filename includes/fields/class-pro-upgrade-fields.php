@@ -190,7 +190,7 @@ class WPUF_Form_Field_Toc extends WPUF_Form_Field_Pro {
 class WPUF_Form_Field_Math_Captcha extends WPUF_Form_Field_Pro {
 
     public function __construct() {
-        $this->name       = __('Math Captcha', 'wpuf-pro');
+        $this->name       = __( 'Math Captcha', 'wp-user-frontend' );
         $this->input_type = 'math_captcha';
         $this->icon       = 'hashtag';
     }
@@ -201,8 +201,8 @@ class WPUF_Form_Field_Math_Captcha extends WPUF_Form_Field_Pro {
  */
 class WPUF_Form_Field_QR_Code extends WPUF_Form_Field_Pro {
 
-    function __construct() {
-        $this->name       = __( 'QR Code', 'wpuf-pro');
+    public function __construct() {
+        $this->name       = __( 'QR Code', 'wp-user-frontend' );
         $this->input_type = 'qr_code';
         $this->icon       = 'address-card-o';
     }

@@ -51,6 +51,8 @@ class WPUF_Pro_Upgrades {
             $fields['shortcode']               = new WPUF_Form_Field_Shortcode();
             $fields['step_start']              = new WPUF_Form_Field_Step();
             $fields['toc']                     = new WPUF_Form_Field_Toc();
+            $fields['math_captcha']            = new WPUF_Form_Field_Math_Captcha();
+            $fields['qr_code']                 = new WPUF_Form_Field_QR_Code();
         }
 
         return $fields;
@@ -77,7 +79,7 @@ class WPUF_Pro_Upgrades {
      */
     public function add_to_others_fields( $fields ) {
         $pro_fields = [
-            'shortcode', 'action_hook', 'toc', 'ratings', 'embed', 'really_simple_captcha',
+            'shortcode', 'action_hook', 'toc', 'ratings', 'embed', 'really_simple_captcha', 'math_captcha', 'qr_code'
         ];
 
         return array_merge( $fields, $pro_fields );

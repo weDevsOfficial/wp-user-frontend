@@ -183,3 +183,27 @@ class WPUF_Form_Field_Toc extends WPUF_Form_Field_Pro {
         $this->icon       = 'file-text';
     }
 }
+
+/**
+ * Math Capctha Class
+ */
+class WPUF_Form_Field_Math_Captcha extends WPUF_Form_Field_Pro {
+
+    public function __construct() {
+        $this->name       = __('Math Captcha', 'wpuf-pro');
+        $this->input_type = 'math_captcha';
+        $this->icon       = 'hashtag';
+    }
+}
+
+/**
+ * QR Code Class
+ */
+class WPUF_Form_Field_QR_Code extends WPUF_Form_Field_Pro {
+
+    function __construct() {
+        $this->name       = __( 'QR Code', 'wpuf-pro');
+        $this->input_type = 'qr_code';
+        $this->icon       = 'address-card-o';
+    }
+}

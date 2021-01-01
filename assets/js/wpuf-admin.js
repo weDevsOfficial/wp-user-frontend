@@ -11,7 +11,6 @@ jQuery(function($) {
         '.pending-user-email',
         '.denied-user-email',
         '.approved-user-email',
-        '.reject-post-email',
         '.approved-post-email'
     ]
     group.forEach(function(header, index) {

@@ -12,7 +12,7 @@ class WPUF_Upgrades {
      *
      * @var array
      */
-    private static $upgrades = array(
+    private static $upgrades = [
         '2.1.9' => 'upgrades/upgrade-2.1.9.php',
         '2.6.0' => 'upgrades/upgrade-2.6.0.php',
         '2.7.0' => 'upgrades/upgrade-2.7.0.php',
@@ -20,7 +20,7 @@ class WPUF_Upgrades {
         '2.8.2' => 'upgrades/upgrade-2.8.2.php',
         '2.8.5' => 'upgrades/upgrade-2.8.5.php',
         '2.9.2' => 'upgrades/upgrade-2.9.2.php',
-    );
+    ];
 
     /**
      * Get the plugin version
@@ -34,12 +34,12 @@ class WPUF_Upgrades {
     /**
      * Check if the plugin needs any update
      *
-     * @return boolean
+     * @return bool
      */
     public function needs_update() {
 
         // may be it's the first install
-        if ( ! $this->get_version() ) {
+        if ( !$this->get_version() ) {
             return false;
         }
         //check if current version is greater then installed version and any update key is available
@@ -55,9 +55,9 @@ class WPUF_Upgrades {
      *
      * @return void
      */
-    function perform_updates() {
+    public function perform_updates() {
         $installed_version = $this->get_version();
-        $path              = trailingslashit( dirname( __FILE__ ) );
+        $path              = trailingslashit( __DIR__ );
 
         foreach ( self::$upgrades as $version => $file ) {
             if ( version_compare( $installed_version, $version, '<' ) ) {

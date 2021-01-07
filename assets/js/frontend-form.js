@@ -165,7 +165,6 @@
             this.change_fieldset(step_number, progressbar_type);
 
             $('fieldset .wpuf-multistep-prev-btn, fieldset .wpuf-multistep-next-btn').click(function(e) {
-
                 // js_obj.formSubmit();
                 if ( $(this).hasClass('wpuf-multistep-next-btn') ) {
                     var result = js_obj.formStepCheck( '', $(this).closest('fieldset') );
@@ -178,12 +177,12 @@
                     o.change_fieldset( --step_number,progressbar_type );
                 }
 
-                var formDiv  = document.querySelector( "form.wpuf-form-add" );
-                var position = formDiv.getBoundingClientRect();
+                var formDiv  = $( "form.wpuf-form-add" );
+                var position = formDiv.offset().top;
 
                 // this changes the scrolling behavior to "smooth"
                 window.scrollTo({
-                    top: position.top,
+                    top: position - 32,
                     behavior: "smooth"
                 });
 
@@ -228,17 +227,18 @@
                 wrap = '.category-wrap';
 
             $(wrap).on('change', el, function(){
+                var form_id = $( this ).data( 'form-id' );
                 currentLevel = parseInt( $(this).parent().attr('level') );
-                WP_User_Frontend.getChildCats( $(this), 'lvl', currentLevel+1, wrap, 'category');
+                WP_User_Frontend.getChildCats( $(this), currentLevel + 1, 'category', form_id );
             });
         },
 
-        getChildCats: function (dropdown, result_div, level, wrap_div, taxonomy) {
+        getChildCats: function ( dropdown, level, taxonomy, form_id ) {
 
-            cat = $(dropdown).val();
-            results_div = result_div + level;
-            taxonomy = typeof taxonomy !== 'undefined' ? taxonomy : 'category';
-            field_attr = $(dropdown).siblings('span').data('taxonomy');
+            var cat = $(dropdown).val();
+            var container_id = 'wpuf-category-dropdown-lvl-' + level;
+            var taxonomy = typeof taxonomy !== 'undefined' ? taxonomy : 'category';
+            var field_attr = $(dropdown).siblings('span').data('taxonomy');
 
             $.ajax({
                 type: 'post',
@@ -247,7 +247,8 @@
                     action: 'wpuf_get_child_cat',
                     catID: cat,
                     nonce: wpuf_frontend.nonce,
-                    field_attr: field_attr
+                    field_attr: field_attr,
+                    form_id: form_id,
                 },
                 beforeSend: function() {
                     $(dropdown).parent().parent().next('.loading').addClass('wpuf-loading');
@@ -262,9 +263,11 @@
                     });
 
                     if(html != "") {
-                        $(dropdown).parent().addClass('hasChild').parent().append('<div id="'+result_div+level+'" level="'+level+'"></div>');
-                        dropdown.parent().parent().find('#'+results_div).html(html).slideDown('fast');
+                        $(dropdown).parent().addClass('hasChild').parent().append('<div id="'+ container_id +'" level="'+level+'"></div>');
+                        dropdown.parent().parent().find('#' + container_id ).html(html).slideDown('fast');
                     }
+
+                    $( document ).trigger( 'wpuf-ajax-fetched-child-categories', container_id, level, taxonomy );
                 }
             });
         },
@@ -630,7 +633,7 @@
             var map_required = self.find('[data-required="yes"][name="google_map"]');
             if ( map_required ) {
                 var val = $(map_required).val();
-                if ( val == ',' ) {
+                if ( val == '' ) {
                     error = true;
                     error_type = 'required';
 
@@ -743,7 +746,7 @@
                 multi_selection: false,
                 urlstream_upload: true,
                 file_data_name: 'wpuf_file',
-                max_file_size: '2mb',
+                max_file_size: wpuf_frontend_upload.max_filesize,
                 url: wpuf_frontend_upload.plupload.url,
                 flash_swf_url: wpuf_frontend_upload.flash_swf_url,
                 filters: [{
@@ -830,22 +833,22 @@
 
         editorLimit: {
 
-            bind: function(limit, field, type) {
+            bind: function(limit, field, type, limit_type) {
                 if ( type === 'no' ) {
                     // it's a textarea
                     $('textarea#' +  field).keydown( function(event) {
-                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit);
+                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit, limit_type);
                     });
 
                     $('input#' +  field).keydown( function(event) {
-                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit);
+                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit, limit_type);
                     });
 
                     $('textarea#' +  field).on('paste', function(event) {
                         var self = $(this);
 
                         setTimeout(function() {
-                            WP_User_Frontend.editorLimit.textLimit.call(self, event, limit);
+                            WP_User_Frontend.editorLimit.textLimit.call(self, event, limit, limit_type);
                         }, 100);
                     });
 
@@ -853,7 +856,7 @@
                         var self = $(this);
 
                         setTimeout(function() {
-                            WP_User_Frontend.editorLimit.textLimit.call(self, event, limit);
+                            WP_User_Frontend.editorLimit.textLimit.call(self, event, limit, limit_type);
                         }, 100);
                     });
 
@@ -861,12 +864,12 @@
                     // it's a rich textarea
                     setTimeout(function () {
                         tinyMCE.get(field).onKeyDown.add(function(ed, event) {
-                            WP_User_Frontend.editorLimit.tinymce.onKeyDown(ed, event, limit);
+                            WP_User_Frontend.editorLimit.tinymce.onKeyDown(ed, event, limit, limit_type);
                         } );
 
                         tinyMCE.get(field).onPaste.add(function(ed, event) {
                             setTimeout(function() {
-                                WP_User_Frontend.editorLimit.tinymce.onPaste(ed, event, limit);
+                                WP_User_Frontend.editorLimit.tinymce.onPaste(ed, event, limit, limit_type);
                             }, 100);
                         });
 
@@ -885,14 +888,20 @@
                     };
                 },
 
-                onKeyDown: function(ed, event, limit) {
-                    var numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words - 1;
+                onKeyDown: function(ed, event, limit, limit_type) {
 
-                    limit ? $('.mce-path-item.mce-last', ed.container).html('Word Limit : '+ numWords +'/'+limit):'';
+                    var numWords    = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars + 1,
+                        limit_label = ( 'word' === limit_type ) ? 'Word Limit : ' : 'Character Limit : ';
+
+                    if ( 'word' === limit_type ) {
+                        numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words - 1;
+                    }
+                    
+                    limit ? $('.mce-path-item.mce-last', ed.container).html( limit_label + numWords +'/'+limit):'';
 
                     if ( limit && numWords > limit ) {
                         WP_User_Frontend.editorLimit.blockTyping(event);
-                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend.word_limit );
+                        jQuery('.mce-path-item.mce-last', ed.container).html( WP_User_Frontend.content_limit_message( limit_type ) );
                     }
                 },
 
@@ -907,12 +916,16 @@
                 }
             },
 
-            textLimit: function(event, limit) {
+            textLimit: function(event, limit, limit_type) {
                 var self = $(this),
-                    content = self.val().split(' ');
+                    content_length = self.val().length + 1;
 
-                if ( limit && content.length > limit ) {
-                    self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( wpuf_frontend.word_limit );
+                    if ( 'word' === limit_type ) {
+                        content_length = self.val().split(' ').length;   
+                    }
+
+                if ( limit && content_length > limit ) {
+                    self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( WP_User_Frontend.content_limit_message( limit_type ) );
                     WP_User_Frontend.editorLimit.blockTyping(event);
                 } else {
                     self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
@@ -920,7 +933,11 @@
 
                 // handle the paste event
                 if ( event.type === 'paste' ) {
-                    self.val( content.slice(0, limit).join( ' ' ) );
+                    self.val( content.substring( 0, limit) );
+
+                    if ( 'word' === limit_type ) {
+                        self.val( content.slice(0, limit).join( ' ' ) );
+                    }
                 }
             },
 
@@ -950,6 +967,14 @@
                     }
                 )
             }
+        },
+
+        doUncheckRadioBtn: function ( el ) {
+            el.checked = false;
+        },
+
+        content_limit_message: function( content_limit_type ) {
+            return ( 'word' === content_limit_type ) ? 'Word limit reached.' : 'Character limit reached.';
         }
     };
 

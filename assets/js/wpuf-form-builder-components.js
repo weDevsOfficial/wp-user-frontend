@@ -4,7 +4,7 @@
 Vue.component('builder-stage', {
     template: '#tmpl-wpuf-builder-stage',
 
-    mixins: wpuf_form_builder_mixins(wpuf_mixins.builder_stage),
+    mixins: wpuf_form_builder_mixins(wpuf_mixins.builder_stage).concat(wpuf_mixins.add_form_field),
 
     computed: {
         form_fields: function () {
@@ -63,34 +63,10 @@ Vue.component('builder-stage', {
                     };
 
                 if ('panel' === source) {
-                    // prepare the payload to add new form element
-                    var field_template  = ui.item[0].dataset.formField,
-                        field           = $.extend(true, {}, self.field_settings[field_template].field_props);
-
-                    // check if these are already inserted
-                    if ( self.isSingleInstance( field_template ) && self.containsField( field_template ) ) {
-                        swal({
-                            title: "Oops...",
-                            text: "You already have this field in the form"
-                        });
-
-                        $(this).find('.button.ui-draggable.ui-draggable-handle').remove();
-                        return;
-                    }
-
-                    // add a random integer id
-                    field.id = self.get_random_id();
-
-                    // add meta key
-                    if ('yes' === field.is_meta && !field.name) {
-                        field.name = field.label.replace(/\W/g, '_').toLowerCase() + '_' + field.id;
-                    }
-
-                    payload.field = field;
-
                     // add new form element
-                    if ( !in_column_field ) {
-                        self.$store.commit('add_form_field_element', payload);
+                    if ( ! in_column_field ) {
+                        var field_template  = ui.item[0].dataset.formField;
+                        self.add_form_field(field_template);
                     }
 
                     // remove button from stage
@@ -270,6 +246,10 @@ Vue.component('field-multiselect', {
             },
 
             set: function (value) {
+                if ( ! value ) {
+                    value = [];
+                }
+
                 this.$store.commit('update_editing_form_field', {
                     editing_field_id: this.editing_form_field.id,
                     field_name: this.option_field.name,
@@ -311,6 +291,7 @@ Vue.component('field-option-data', {
     data: function () {
         return {
             show_value: false,
+            sync_value: true,
             options: [],
             selected: []
         };
@@ -390,7 +371,9 @@ Vue.component('field-option-data', {
         },
 
         set_option_label: function (index, label) {
-            this.options[index].value = label.toLocaleLowerCase().replace( /\s/g, '_' );
+            if (this.sync_value) {
+                this.options[index].value = label.toLocaleLowerCase().replace( /\s/g, '_' );
+            }
         }
     },
 
@@ -831,13 +814,15 @@ Vue.component('form-column_field', {
             handle: '.wpuf-column-field-control-buttons .move',
             scroll: true,
             stop: function( event, ui ) {
-                var data_source = ui.item.context.attributes['data-source'].value;
+                var item        = ui.item[0];
+                var data        = item.dataset;
+                var data_source = data.source;
 
                 if ('panel' === data_source) {
                     var payload = {
                         toIndex: parseInt($(ui.item).index()),
-                        field_template: ui.item.context.attributes['data-form-field'].value,
-                        to_column: $(this).context.parentElement.classList[0]
+                        field_template: data.formField,
+                        to_column: $(this).parent().attr('class').split(' ')[0]
                     };
 
                     self.add_column_inner_field(payload);
@@ -857,9 +842,9 @@ Vue.component('form-column_field', {
 
                 if ( 'column-field-stage' === source) {
                     payload.field_id   = self.field.id;
-                    payload.fromIndex  = parseInt(ui.item.context.attributes['column-field-index'].value);
-                    payload.fromColumn = ui.item.context.attributes['in-column'].value;
-                    payload.toColumn   = ui.item.context.parentElement.parentElement.classList[0];
+                    payload.fromIndex  = parseInt(item.attributes['column-field-index'].value);
+                    payload.fromColumn = item.attributes['in-column'].value;
+                    payload.toColumn   = item.parent().parent().attr('class').split(' ')[0];
 
                     // when drag field one column to another column, sortable event trigger twice and try to swap field twice.
                     // So the following conditions are needed to check and run swap_column_field_elements commit only once
@@ -1075,7 +1060,7 @@ Vue.component('form-column_field', {
             (function () {
                 var columnElement;
                 var startOffset;
-                var columnField = $(self.$el).context.parentElement;
+                var columnField = $(self.$el).parent();
                 var total_width = parseInt($(columnField).width());
 
                 Array.prototype.forEach.call(
@@ -1109,16 +1094,23 @@ Vue.component('form-column_field', {
                 });
 
                 $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields").mouseup(function() {
-                    var columnOneWidth   = $(columnField).find(".column-1").width(),
-                        columnTwoWidth   = $(columnField).find(".column-2").width(),
-                        colOneWidth      = (100*columnOneWidth) / total_width,
-                        colTwoWidth      = 100 - colOneWidth,
-                        colThreeWidth    = 0;
+                    let colOneWidth   = 0,
+                        colTwoWidth   = 0,
+                        colThreeWidth = 0;
 
-                        if (columnsNumber === 3) {
-                            colTwoWidth   = (100*columnTwoWidth) / total_width;
-                            colThreeWidth = 100 - (colOneWidth + colTwoWidth);
-                        }
+                    if (parseInt(columnsNumber) === 3) {
+                        colOneWidth = 100 / columnsNumber;
+                        colTwoWidth = 100 / columnsNumber;
+                        colThreeWidth = 100 / columnsNumber;
+                    } else if (parseInt(columnsNumber) === 2) {
+                        colOneWidth = 100 / columnsNumber;
+                        colTwoWidth = 100 / columnsNumber;
+                        colThreeWidth = 0;
+                    } else {
+                        colOneWidth = 100;
+                        colTwoWidth = 0;
+                        colThreeWidth = 0;
+                    }
 
                     self.field.inner_columns_size['column-1'] = colOneWidth + '%';
                     self.field.inner_columns_size['column-2'] = colTwoWidth + '%';
@@ -1231,7 +1223,7 @@ Vue.component('form-featured_image', {
 Vue.component('form-fields', {
     template: '#tmpl-wpuf-form-fields',
 
-    mixins: wpuf_form_builder_mixins(wpuf_mixins.form_fields),
+    mixins: wpuf_form_builder_mixins(wpuf_mixins.form_fields).concat(wpuf_mixins.add_form_field),
 
     computed: {
         panel_sections: function () {
@@ -1260,42 +1252,6 @@ Vue.component('form-fields', {
     methods: {
         panel_toggle: function (index) {
             this.$store.commit('panel_toggle', index);
-        },
-
-        add_form_field: function (field_template) {
-            var payload = {
-                toIndex: this.$store.state.form_fields.length,
-            };
-
-            // check if these are already inserted
-            if ( this.isSingleInstance( field_template ) && this.containsField( field_template ) ) {
-                swal({
-                    title: "Oops...",
-                    text: "You already have this field in the form"
-                });
-                return;
-            }
-
-            var field = $.extend(true, {}, this.$store.state.field_settings[field_template].field_props);
-
-            field.id = this.get_random_id();
-
-            if (!field.name && field.label) {
-                field.name = field.label.replace(/\W/g, '_').toLowerCase();
-
-                var same_template_fields = this.form_fields.filter(function (form_field) {
-                   return (form_field.template === field.template);
-                });
-
-                if (same_template_fields.length) {
-                    field.name += '_' + same_template_fields.length;
-                }
-            }
-
-            payload.field = field;
-
-            // add new form element
-            this.$store.commit('add_form_field_element', payload);
         },
 
         is_pro_feature: function (field) {
@@ -1486,9 +1442,10 @@ Vue.component('form-taxonomy', {
 
             // selection type and terms
             if (this.field.exclude_type && this.field.exclude) {
+                var filter_ids = [];
 
-                if ( this.field.exclude.length > 1 ) {
-                    var filter_ids = this.field.exclude.split(',').map(function (id) {
+                if ( this.field.exclude.length > 0 ) {
+                    filter_ids = this.field.exclude.map(function (id) {
                         id = id.trim();
                         id = parseInt(id);
                         return id;
@@ -1589,7 +1546,6 @@ Vue.component('form-taxonomy', {
             var self      = this,
                 checklist = '';
 
-
             checklist += '<ul class="wpuf-category-checklist">';
 
             _.each(this.sorted_terms, function (term) {
@@ -1685,18 +1641,26 @@ Vue.component('help-text', {
         text: {
             type: String,
             default: ''
+        },
+
+        placement: {
+            type: String,
+            default: 'top',
+            validator: function (placement) {
+                return ['top', 'right', 'bottom', 'left'].indexOf(placement) >= 0;
+            }
         }
     },
 
     mounted: function () {
-        $(".wpuf-tooltip").tooltip();
+        $(this.$el).tooltip();
     }
 });
 
 Vue.component('text-editor', {
     template: '#tmpl-wpuf-text-editor',
 
-    props: ['rich'],
+    props: ['rich', 'default_text'],
 
     computed: {
         site_url: function () {

@@ -1,13 +1,13 @@
 <div class="wrap">
     <h2>
         <?php
-            _e( 'Post Forms', 'wp-user-frontend' );
+            esc_html_e( 'Post Forms', 'wp-user-frontend' );
 
-            if ( current_user_can( wpuf_admin_role() ) ):
-            ?>
-                <a href="<?php echo $add_new_page_url; ?>" id="new-wpuf-post-form" class="page-title-action add-form"><?php _e( 'Add Form', 'wp-user-frontend' ); ?></a>
+            if ( current_user_can( wpuf_admin_role() ) ) {
+                ?>
+                <a href="<?php echo esc_url( $add_new_page_url ); ?>" id="new-wpuf-post-form" class="page-title-action add-form"><?php esc_html_e( 'Add Form', 'wp-user-frontend' ); ?></a>
             <?php
-            endif;
+            }
         ?>
     </h2>
 
@@ -36,7 +36,7 @@
     <div class="wpuf-footer-help">
         <span class="wpuf-footer-help-content">
             <span class="dashicons dashicons-editor-help"></span>
-            <?php printf( __( 'Learn more about <a href="%s" target="_blank">Frontend Posting</a>', 'wp-user-frontend' ), 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-frontend-posting' ); ?>
+            <?php printf( wp_kses_post( __( 'Learn more about <a href="%s" target="_blank">Frontend Posting</a>', 'wp-user-frontend' ) ), 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-frontend-posting' ); ?>
         </span>
     </div>
 </div>

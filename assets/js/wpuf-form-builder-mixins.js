@@ -1,6 +1,46 @@
 ;(function($) {
 'use strict';
 
+wpuf_mixins.add_form_field = {
+    methods: {
+        add_form_field: function (field_template) {
+            var payload = {
+                toIndex: this.$store.state.form_fields.length,
+            };
+
+            // check if these are already inserted
+            if ( this.isSingleInstance( field_template ) && this.containsField( field_template ) ) {
+                swal({
+                    title: "Oops...",
+                    text: "You already have this field in the form"
+                });
+                return;
+            }
+
+            var field = $.extend(true, {}, this.$store.state.field_settings[field_template].field_props);
+
+            field.id = this.get_random_id();
+
+            if (!field.name && field.label) {
+                field.name = field.label.replace(/\W/g, '_').toLowerCase();
+
+                var same_template_fields = this.form_fields.filter(function (form_field) {
+                   return (form_field.template === field.template);
+                });
+
+                if (same_template_fields.length) {
+                    field.name += '_' + same_template_fields.length;
+                }
+            }
+
+            payload.field = field;
+
+            // add new form element
+            this.$store.commit('add_form_field_element', payload);
+        },
+    },
+};
+
 /**
  * Mixin for form fields like
  * form-text_field, form-field_textarea etc
@@ -111,6 +151,10 @@ Vue.mixin({
                     return true;
                 }
 
+                if (self.$store.state.form_fields[i].name === field_name) {
+                    return true;
+                }
+
                 // check if the single instance field exist in column fields
                 if (self.$store.state.form_fields[i].template === 'column_field') {
                     var innerColumnFields = self.$store.state.form_fields[i].inner_fields;
@@ -135,14 +179,13 @@ Vue.mixin({
         },
 
         isSingleInstance: function(field_name) {
-            var singleInstance = ['post_title', 'post_content', 'post_excerpt', 'featured_image',
-                'user_login', 'first_name', 'last_name', 'nickname', 'user_email', 'user_url',
-                'user_bio', 'password', 'user_avatar', 'taxonomy'];
+            let singleInstance = wpuf_single_objects;
 
-            if ( $.inArray(field_name, singleInstance) >= 0 ) {
-                return true;
+            for( let instance of singleInstance ) {
+                if ( field_name === instance ) {
+                    return true;
+                }
             }
-
             return false;
         }
     }

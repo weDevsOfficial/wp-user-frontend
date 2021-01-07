@@ -6,25 +6,25 @@
  * @return void
  */
 function wpuf_upgrade_2_1_9_form_fields() {
-    $posts = get_posts( array(
-        'post_type'   => array( 'wpuf_forms', 'wpuf_profile' ),
-        'numberposts' => '-1'
-    ) );
+    $posts = get_posts( [
+        'post_type'   => [ 'wpuf_forms', 'wpuf_profile' ],
+        'numberposts' => '-1',
+    ] );
 
     if ( !$posts ) {
         return;
     }
 
-    foreach ($posts as $key => $post) {
+    foreach ( $posts as $key => $post ) {
         $posts_meta = get_post_meta( $post->ID, 'wpuf_form', true );
-        $posts_meta = is_array( $posts_meta ) ? $posts_meta : array();
+        $posts_meta = is_array( $posts_meta ) ? $posts_meta : [];
 
-        foreach ($posts_meta as $key => $post_meta) {
-            $post_meta['wpuf_cond'] = array();
+        foreach ( $posts_meta as $key => $post_meta ) {
+            $post_meta['wpuf_cond'] = [];
 
             // if key empty then replace by its value
-            if ( array_key_exists('options', $post_meta ) ) {
-                foreach ($post_meta['options'] as $key => $value) {
+            if ( array_key_exists( 'options', $post_meta ) ) {
+                foreach ( $post_meta['options'] as $key => $value ) {
                     $post_meta['options'][$value] = $value;
                     unset( $post_meta['options'][$key] );
                 }
@@ -44,7 +44,7 @@ function wpuf_upgrade_2_1_9_form_fields() {
 function wpuf_upgrade_2_1_9_subscription() {
     global $wpdb;
 
-    $table = $wpdb->prefix . 'wpuf_subscription';
+    $table   = $wpdb->prefix . 'wpuf_subscription';
     $results = $wpdb->get_results( "SELECT name, description, count, duration, cost FROM $table" );
 
     if ( !$results ) {
@@ -54,12 +54,12 @@ function wpuf_upgrade_2_1_9_subscription() {
     $post_type = WPUF_Subscription::init()->get_all_post_type();
 
     foreach ( $results as $key => $result ) {
-        $args = array(
+        $args = [
             'post_title'   => $result->name,
             'post_content' => $result->description,
             'post_status'  => 'publish',
-            'post_type'    => 'wpuf_subscription'
-        );
+            'post_type'    => 'wpuf_subscription',
+        ];
 
         $post_ID = wp_insert_post( $args );
 
@@ -68,20 +68,20 @@ function wpuf_upgrade_2_1_9_subscription() {
                 $post_type[$key] = $result->count;
             }
 
-            $post = array(
+            $post = [
                 'cost'           => $result->cost,
                 'duration'       => $result->duration,
                 'recurring_pay'  => 'no',
                 'trial_period'   => '',
-                'post_type_name' =>  $post_type
-            );
+                'post_type_name' => $post_type,
+            ];
 
             wpuf_get_user( $post_ID )->subscription()->update_meta( $post );
         }
     }
 
     $sql = "DROP TABLE IF_EXISTS $table";
-    $wpdb->query($sql);
+    $wpdb->query( $sql );
 }
 
 wpuf_upgrade_2_1_9_form_fields();

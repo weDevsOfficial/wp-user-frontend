@@ -65,7 +65,7 @@
   background-color: #f2dede;
   color: #a94442;
   border: 1px solid #ebccd1;
-  margin: 10px 0 20px 0;
+  margin: 10px 10px 20px;
   padding: 10px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -1655,4 +1655,24 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
 ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="color"],
 ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li textarea {
   width: 100%;
+}
+.ac_results {
+  z-index: 99999 !important;
+  background-color: #fff !important;
+  color: #000;
+  position: auto !important;
+  width: 390px !important;
+}
+.ac_results li {
+  border-bottom: 1px solid #ddd;
+  margin-left: 0px;
+  padding-left: 5px !important;
+  text-decoration: none !important;
+}
+/* Upload Button */
+.wpuf-attachment-upload-filelist {
+  z-index: 1;
+}
+.wpuf-attachment-upload-filelist + .moxie-shim {
+  z-index: 2;
 }

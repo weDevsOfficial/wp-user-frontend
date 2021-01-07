@@ -623,6 +623,11 @@
                 &.move {
                     cursor: move;
                 }
+
+                &.control-button-disabled {
+                    opacity: .3;
+                    pointer-events: none;
+                }
             }
 
             i:hover {
@@ -809,6 +814,37 @@
         .label-title-block {
             display: block;
             margin-bottom: 3px;
+        }
+
+        .field-option-actions {
+            margin: 0;
+            line-height: 1.2;
+
+            li {
+                position: relative;
+                margin: 0;
+
+                &:not(:last-child):after {
+                    content: "|";
+                    position: absolute;
+                    top: 0;
+                    right: -3px;
+                    opacity: .5;
+                }
+            }
+
+            .field-helper-text {
+                position: relative;
+                top: 1px;
+                margin-left: 0;
+            }
+
+            .tooltip {
+
+                .tooltip-inner {
+                    width: 200px;
+                }
+            }
         }
     }
 }

@@ -19,23 +19,23 @@ class WPUF_Form_Manager {
     /**
      * Get forms
      *
-     * @param  array $args
+     * @param array $args
      *
      * @return array
      */
-    public function get_forms( $args = array() ) {
-        $forms_array = array(
-            'forms' => array(),
-            'meta'  => array(
+    public function get_forms( $args = [] ) {
+        $forms_array = [
+            'forms' => [],
+            'meta'  => [
                 'total' => 0,
-                'pages' => 0
-            )
-        );
-        $defaults  = array(
-            'post_type'   => 'wpuf_forms',
-            'post_status' => array( 'publish', 'draft', 'pending' ),
-            'posts_per_page' => -1
-        );
+                'pages' => 0,
+            ],
+        ];
+        $defaults  = [
+            'post_type'      => 'wpuf_forms',
+            'post_status'    => [ 'publish', 'draft', 'pending' ],
+            'posts_per_page' => -1,
+        ];
 
         $args  = wp_parse_args( $args, $defaults );
 
@@ -51,13 +51,15 @@ class WPUF_Form_Manager {
         $forms_array['meta']['total'] = (int) $query->found_posts;
         $forms_array['meta']['pages'] = (int) $query->max_num_pages;
 
+        wp_reset_postdata();
+
         return $forms_array;
     }
 
     /**
      * Get a single form
      *
-     * @param  integer|WP_Post $form
+     * @param int|WP_Post $form
      *
      * @return \WPUF_Form
      */
@@ -68,31 +70,31 @@ class WPUF_Form_Manager {
     /**
      * Create a form
      *
-     * @param  string $form_name
-     * @param  array  $fields
+     * @param string $form_name
+     * @param array  $fields
      *
-     * @return integer|WP_Error
+     * @return int|WP_Error
      */
-    public function create( $form_name, $fields = array() ) {
-        $form_id = wp_insert_post( array(
+    public function create( $form_name, $fields = [] ) {
+        $form_id = wp_insert_post( [
             'post_title'  => $form_name,
             'post_type'   => 'wpuf_forms',
-            'post_status' => 'publish'
-        ) );
+            'post_status' => 'publish',
+        ] );
 
         if ( is_wp_error( $form_id ) ) {
             return $form_id;
         }
 
         if ( $fields ) {
-            foreach ( $fields as $order => $field) {
-                $args = array(
+            foreach ( $fields as $order => $field ) {
+                $args = [
                     'post_type'    => 'wpuf_input',
                     'post_parent'  => $form_id,
                     'post_status'  => 'publish',
                     'post_content' => maybe_serialize( wp_unslash( $field ) ),
-                    'menu_order'   => $order
-                );
+                    'menu_order'   => $order,
+                ];
 
                 wp_insert_post( $args );
             }
@@ -104,8 +106,8 @@ class WPUF_Form_Manager {
     /**
      * Delete a form with it's input fields
      *
-     * @param  integer  $form_id
-     * @param  boolean $force
+     * @param int  $form_id
+     * @param bool $force
      *
      * @return void
      */
@@ -116,11 +118,11 @@ class WPUF_Form_Manager {
 
         // delete form inputs as WP doesn't know the relationship
         $wpdb->delete( $wpdb->posts,
-            array(
+            [
                 'post_parent' => $form_id,
-                'post_type'   => 'wpuf_input'
-            )
-        );
+                'post_type'   => 'wpuf_input',
+            ]
+         );
     }
 
     /**
@@ -130,8 +132,7 @@ class WPUF_Form_Manager {
      *
      * @return int New duplicated form id
      */
-    function duplicate( $_form_id ) {
-
-       return wpuf_duplicate_form( $_form_id ) ;
+    public function duplicate( $_form_id ) {
+        return wpuf_duplicate_form( $_form_id );
     }
 }

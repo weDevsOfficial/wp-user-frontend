@@ -12,5 +12,5 @@
         </div>
     </div>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"/>
 </div>

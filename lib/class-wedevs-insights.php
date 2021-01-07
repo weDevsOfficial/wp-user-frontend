@@ -26,8 +26,10 @@ class WPUF_WeDevs_Insights {
 
         $client = new Appsero\Client( '958afc63-99f8-4b98-b321-fcbc5cf95694', 'WP User Frontend', $file );
 
+        $this->insights = $client->insights();
+
         // Active insights
-        $client->insights()->init();
+        $this->insights->init();
     }
 
 }

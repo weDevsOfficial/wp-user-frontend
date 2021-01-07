@@ -1,6 +1,6 @@
 <div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ) ?>
+        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
     </h4>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
@@ -30,11 +30,18 @@
                 </label>
             </div>
 
-            <div v-if="!is_failed_to_validate(field.template)" class="control-buttons">
+            <div class="control-buttons">
                 <p>
-                    <i class="fa fa-arrows move"></i>
-                    <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
-                    <i class="fa fa-clone" @click="clone_field(field.id, index)"></i>
+                    <template v-if="!is_failed_to_validate(field.template)">
+                        <i class="fa fa-arrows move"></i>
+                        <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
+                        <i class="fa fa-clone" @click="clone_field(field.id, index)"></i>
+                    </template>
+                    <template v-else>
+                        <i class="fa fa-arrows control-button-disabled"></i>
+                        <i class="fa fa-pencil control-button-disabled"></i>
+                        <i class="fa fa-clone control-button-disabled"></i>
+                    </template>
                     <i class="fa fa-trash-o" @click="delete_field(index)"></i>
                 </p>
             </div>
@@ -50,14 +57,14 @@
     </ul><!-- .wpuf-form -->
 
     <div v-if="hidden_fields.length" class="hidden-field-list">
-        <h4><?php _e( 'Hidden Fields', 'wp-user-frontend' ); ?></h4>
+        <h4><?php esc_html_e( 'Hidden Fields', 'wp-user-frontend' ); ?></h4>
 
         <ul class="wpuf-form">
             <li
                 v-for="(field, index) in hidden_fields"
                 :class="['field-items', parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '']"
             >
-                <strong><?php _e('key', 'wp-user-frontend'); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
+                <strong><?php esc_html_e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} | <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
 
                 <div class="control-buttons">
                     <p>

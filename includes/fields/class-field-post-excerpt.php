@@ -2,27 +2,19 @@
 // Post Excerpt Class
 class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
 
-	function __construct() {
+    public function __construct() {
         $this->name       = __( 'Post Excerpt', 'wp-user-frontend' );
         $this->input_type = 'post_excerpt';
         $this->icon       = 'compress';
     }
 
     /**
-     * Render the PostTitle field
-     *
-     * @param  array  $field_settings
-     * @param  integer  $form_id
-     *
-     * @return void
-     */
-    /**
      * Render the Post Excerpt field
      *
-     * @param  array  $field_settings
-     * @param  integer  $form_id
-     * @param  string  $type
-     * @param  integer  $post_id
+     * @param array  $field_settings
+     * @param int    $form_id
+     * @param string $type
+     * @param int    $post_id
      *
      * @return void
      */
@@ -32,21 +24,19 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
         // $value       = $field_settings['default'];
         // $textarea_id = $field_settings['name'] ? $field_settings['name'] . '_' . $form_id : 'textarea_';
 
-        if( isset( $post_id ) ){
+        if ( isset( $post_id ) ) {
             $value = get_post_field( $field_settings['name'], $post_id );
         } else {
             $value       = $field_settings['default'];
         }
 
         $req_class   = ( $field_settings['required'] == 'yes' ) ? 'required' : 'rich-editor';
-        $textarea_id = $field_settings['name'] ? $field_settings['name'] . '_' . $form_id : 'textarea_';
-
-    ?>
+        $textarea_id = $field_settings['name'] ? $field_settings['name'] . '_' . $form_id : 'textarea_'; ?>
         <li <?php $this->print_list_attributes( $field_settings ); ?>>
             <?php $this->print_label( $field_settings, $form_id ); ?>
 
-            <?php if ( in_array( $field_settings['rich'], array( 'yes', 'teeny' ) ) ) { ?>
-                <div class="wpuf-fields wpuf-rich-validation <?php printf( 'wpuf_%s_%s', $field_settings['name'], $form_id ); ?>" data-type="rich" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-id="<?php echo esc_attr( $field_settings['name'] ) . '_' . $form_id; ?>" data-name="<?php echo esc_attr( $field_settings['name'] ); ?>">
+            <?php if ( in_array( $field_settings['rich'], [ 'yes', 'teeny' ] ) ) { ?>
+                <div class="wpuf-fields wpuf-rich-validation <?php printf( 'wpuf_%s_%s', esc_attr( $field_settings['name'] ), esc_attr( $form_id ) ); ?>" data-type="rich" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" data-name="<?php echo esc_attr( $field_settings['name'] ); ?>">
             <?php } else { ?>
                 <div class="wpuf-fields">
             <?php } ?>
@@ -54,58 +44,56 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
                 <?php
 
                 if ( $field_settings['rich'] == 'yes' ) {
-                    $editor_settings = array(
+                    $editor_settings = [
                         // 'textarea_rows' => $field_settings['rows'],
                         'quicktags'     => false,
                         'media_buttons' => false,
                         'editor_class'  => $req_class,
-                        'textarea_name' => $field_settings['name']
-                    );
+                        'textarea_name' => $field_settings['name'],
+                    ];
 
-                    $editor_settings = apply_filters( 'wpuf_textarea_editor_args' , $editor_settings );
+                    $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
                     wp_editor( $value, $textarea_id, $editor_settings );
-
-                } elseif( $field_settings['rich'] == 'teeny' ) {
-
-                    $editor_settings = array(
+                } elseif ( $field_settings['rich'] == 'teeny' ) {
+                    $editor_settings = [
                         'textarea_rows' => $field_settings['rows'],
                         'quicktags'     => false,
                         'media_buttons' => false,
                         'teeny'         => true,
                         'editor_class'  => $req_class,
-                        'textarea_name' => $field_settings['name']
-                    );
+                        'textarea_name' => $field_settings['name'],
+                    ];
 
-                    $editor_settings = apply_filters( 'wpuf_textarea_editor_args' , $editor_settings );
+                    $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
                     wp_editor( $value, $textarea_id, $editor_settings );
-
                 } else {
                     ?>
                     <textarea
-                        class="textareafield <?php echo ' wpuf_'.$field_settings['name'].'_'.$form_id; ?>"
-                        id="<?php echo $field_settings['name'] . '_' . $form_id; ?>"
-                        name="<?php echo $field_settings['name']; ?>"
-                        data-required="<?php echo $field_settings['required'] ?>"
+                        class="textareafield <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
+                        id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
+                        name="<?php echo esc_attr( $field_settings['name'] ); ?>"
+                        data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                         data-type="textarea"
                         placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
-                        rows="<?php echo $field_settings['rows']; ?>"
-                        cols="<?php echo $field_settings['cols']; ?>"
-                    ><?php echo esc_textarea( $value ) ?></textarea>
+                        rows="<?php echo esc_attr( $field_settings['rows'] ); ?>"
+                        cols="<?php echo esc_attr( $field_settings['cols'] ); ?>"
+                    ><?php echo esc_textarea( $value ); ?></textarea>
                     <span class="wpuf-wordlimit-message wpuf-help"></span>
 
-                <?php } ?>
+                <?php
+                } ?>
 
                 <?php
                 $this->help_text( $field_settings );
-                if ( isset( $field_settings['word_restriction'] ) && $field_settings['word_restriction'] ) {
-                    $this->check_word_restriction_func(
-                        $field_settings['word_restriction'],
-                        $field_settings['rich'],
-                        $field_settings['name'] . '_' . $form_id
-                    );
-                }
 
-                ?>
+        if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
+            $this->check_content_restriction_func(
+                $field_settings['content_restriction'],
+                $field_settings['rich'],
+                $field_settings['name'] . '_' . $form_id,
+                $field_settings['restriction_type']
+            );
+        } ?>
         </li>
         <?php
     }
@@ -114,15 +102,12 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
      * Get field options setting
      *
      * @return array
-    */
+     */
     public function get_options_settings() {
-
-        $default_options      = $this->get_default_option_settings(false,array('dynamic'));
-
+        $default_options      = $this->get_default_option_settings( false, ['dynamic'] );
         $default_text_options = $this->get_default_textarea_option_settings();
 
-        return array_merge( $default_options, $default_text_options);
-
+        return array_merge( $default_options, $default_text_options );
     }
 
     /**
@@ -131,10 +116,9 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
      * @return array
      */
     public function get_field_props() {
-
         $defaults = $this->default_attributes();
 
-        $props    = array(
+        $props    = [
             'input_type'       => 'textarea',
             'is_meta'          => 'no',
             'name'             => 'post_excerpt',
@@ -143,11 +127,11 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
             'rich'             => 'no',
             'id'               => 0,
             'is_new'           => true,
-        );
+            'restriction_type' => 'character',
+        ];
 
         return array_merge( $defaults, $props );
     }
-
 
     /**
      * Prepare entry
@@ -156,9 +140,11 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
      *
      * @return mixed
      */
-
     public function prepare_entry( $field ) {
-       return wp_kses_post($_POST[$field['name']]);
-    }
+        check_ajax_referer( 'wpuf_form_add' );
 
+        $field = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+
+        return wp_kses_post( $field );
+    }
 }

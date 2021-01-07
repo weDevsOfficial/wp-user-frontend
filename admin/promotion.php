@@ -6,10 +6,10 @@
 class WPUF_Admin_Promotion {
 
     public function __construct() {
-        add_action( 'admin_notices', array( $this, 'promotional_offer' ) );
-        add_action( 'admin_notices' , array( $this, 'wpuf_review_notice_message' ) );
-        add_action( 'wp_ajax_wpuf-dismiss-promotional-offer-notice', array( $this, 'dismiss_promotional_offer' ) );
-        add_action( 'wp_ajax_wpuf-dismiss-review-notice', array( $this, 'dismiss_review_notice' ) );
+        add_action( 'admin_notices', [ $this, 'promotional_offer' ] );
+        add_action( 'admin_notices', [ $this, 'wpuf_review_notice_message' ] );
+        add_action( 'wp_ajax_wpuf-dismiss-promotional-offer-notice', [ $this, 'dismiss_promotional_offer' ] );
+        add_action( 'wp_ajax_wpuf-dismiss-review-notice', [ $this, 'dismiss_review_notice' ] );
     }
 
     /**
@@ -20,179 +20,77 @@ class WPUF_Admin_Promotion {
      * @return void
      */
     public function promotional_offer() {
-        // Show only to Admins
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
 
-        // 2018-03-26 23:59:00
-        if ( time() > 1543276740 ) {
+        $current_time = $this->convert_utc_to_est();
+
+        if ( 
+            strtotime( $current_time ) > strtotime( '2021-01-08 23:59:00 EST' ) 
+            || strtotime( $current_time ) < strtotime( '2020-12-22 09:00:00 EST' ) 
+          ) {
             return;
         }
 
-        // check if it has already been dismissed
-        $hide_notice = get_option( 'wpuf_promotional_offer_notice', 'no' );
-
-        if ( 'hide' == $hide_notice ) {
-            return;
+        if ( 
+            strtotime( '2020-11-23 09:00:00 EST' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2020-11-23 13:59:00 EST' )
+            ) {
+                $option_name = 'wpuf_2020_early_black_friday';
+                $notice      = __( 'Enjoy Flat 50% OFF on WP User Frontend Pro. Get Your Early Bird Black Friday', 'wp-user-frontend' );
+                $this->generate_notice( $notice, $option_name );
         }
 
-        // $product_text = (  wpuf()->is_pro() ) ? __( 'Pro upgrade and all extensions, ', 'wpuf' ) : __( 'all extensions, ', 'wpuf' );
+        if ( 
+            strtotime( '2020-11-23 14:00:00 EST' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2020-11-27 23:59:00 EST' )
+            ) {
+                $option_name = 'wpuf_2020_black_friday';
+                $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Black Friday', 'wp-user-frontend' );
+                $this->generate_notice( $notice, $option_name );
+        }
 
-        // $offer_msg  = __( '<h2><span class="dashicons dashicons-awards"></span> weDevs 5th Birthday Offer</h2>', 'wpuf' );
-        $offer_msg = __( '<p>
-                                        <strong class="highlight-text" style="font-size: 18px">33&#37; flat discount on all our products</strong><br>
-                                        Save money this holiday season while supercharging your WordPress site with plugins that were made to empower you.
-                                        <br>
-                                        Offer ending soon!
-                                    </p>', 'wp-user-frontend' );
+        if ( 
+            strtotime( '2020-11-28 00:00:00 EST' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2020-12-04 23:59:00 EST' )
+            ) {
+                $option_name = 'wpuf_2020_cyber_monday';
+                $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Cyber Monday', 'wp-user-frontend' );
+                $this->generate_notice( $notice, $option_name );
+        }
 
-        ?>
-            <div class="notice is-dismissible" id="wpuf-promotional-offer-notice">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td class="image-container">
-                                <img src="https://ps.w.org/wp-user-frontend/assets/icon-256x256.png" alt="">
-                            </td>
-                            <td class="message-container">
-                                <?php echo $offer_msg; ?>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <span class="dashicons dashicons-megaphone"></span>
-                <a href="https://wedevs.com/coupons/?utm_campaign=black_friday_cyber_monday&utm_medium=banner&utm_source=inside_plugin" class="button button-primary promo-btn" target="_blank"><?php _e( 'Get the Offer', 'wp-user-frontend' ); ?></a>
-            </div><!-- #wpuf-promotional-offer-notice -->
-
-            <style>
-                #wpuf-promotional-offer-notice {
-                    background-image: url("<?php echo WPUF_ASSET_URI . '/images/promotional-offer/bg.png' ?>");
-                    background-size: cover;
-                    border: 0px;
-                    padding: 0;
-                    opacity: 0;
-                }
-
-                .wrap > #wpuf-promotional-offer-notice {
-                    opacity: 1;
-                }
-
-                #wpuf-promotional-offer-notice table {
-                    border-collapse: collapse;
-                    width: 100%;
-                }
-
-                #wpuf-promotional-offer-notice table td {
-                    padding: 0;
-                }
-
-                #wpuf-promotional-offer-notice table td.image-container {
-                    background-color: #fff;
-                    vertical-align: middle;
-                    width: 95px;
-                }
-
-
-                #wpuf-promotional-offer-notice img {
-                    max-width: 100%;
-                    max-height: 100px;
-                    vertical-align: middle;
-                }
-
-                #wpuf-promotional-offer-notice table td.message-container {
-                    padding: 0 10px;
-                }
-
-                #wpuf-promotional-offer-notice h2{
-                    color: rgba(250, 250, 250, 0.77);
-                    margin-bottom: 10px;
-                    font-weight: normal;
-                    margin: 16px 0 14px;
-                    -webkit-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -moz-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -o-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                }
-
-
-                #wpuf-promotional-offer-notice h2 span {
-                    position: relative;
-                    top: 0;
-                }
-
-                #wpuf-promotional-offer-notice p{
-                    color: rgba(250, 250, 250, 0.77);
-                    font-size: 14px;
-                    margin-bottom: 10px;
-                    -webkit-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -moz-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -o-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                }
-
-                #wpuf-promotional-offer-notice p strong.highlight-text{
-                    color: #fff;
-                }
-
-                #wpuf-promotional-offer-notice p a {
-                    color: #fafafa;
-                }
-
-                #wpuf-promotional-offer-notice .notice-dismiss:before {
-                    color: #fff;
-                }
-
-                #wpuf-promotional-offer-notice span.dashicons-megaphone {
-                    position: absolute;
-                    bottom: 46px;
-                    right: 248px;
-                    color: rgba(253, 253, 253, 0.29);
-                    font-size: 96px;
-                    transform: rotate(-21deg);
-                }
-
-                #wpuf-promotional-offer-notice a.promo-btn{
-                    background: #fff;
-                    border-color: #fafafa #fafafa #fafafa;
-                    box-shadow: 0 1px 0 #fafafa;
-                    color: #4caf4f;
-                    text-decoration: none;
-                    text-shadow: none;
-                    position: absolute;
-                    top: 30px;
-                    right: 26px;
-                    height: 40px;
-                    line-height: 40px;
-                    width: 130px;
-                    text-align: center;
-                    font-weight: 600;
-                }
-
-            </style>
-
-            <script type='text/javascript'>
-                jQuery('body').on('click', '#wpuf-promotional-offer-notice .notice-dismiss', function(e) {
-                    e.preventDefault();
-
-                    wp.ajax.post('wpuf-dismiss-promotional-offer-notice', {
-                        dismissed: true
-                    });
-                });
-            </script>
-        <?php
+        if ( 
+            strtotime( '2020-12-22 09:00:00 EST' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2021-01-08 23:59:00 EST' )
+            ) {
+                $option_name = 'wpuf_2020_chrismas';
+                $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your ', 'wp-user-frontend' );
+                $this->generate_notice( $notice, $option_name );
+        }
     }
 
     /**
+     * Convert EST Time zone to UTC timezone
      *
+     * @param string $date_time
+     * @return string
+     */
+    public function convert_utc_to_est() {
+        $dt = new DateTime('now', new DateTimeZone('UTC'));
+        $dt->setTimezone(new DateTimeZone('EST'));
+
+        return $dt->format('Y-m-d H:i:s T');
+    }
+
+    /**
      * @since 3.1.0
      *
      * @return void
      **/
     public function wpuf_review_notice_message() {
         // Show only to Admins
-        if ( ! current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             return;
         }
 
@@ -207,21 +105,19 @@ class WPUF_Admin_Promotion {
 
         if ( time() - $activation_time < 1296000 ) {
             return;
-        }
-
-        ?>
+        } ?>
             <div id="wpuf-review-notice" class="wpuf-review-notice">
                 <div class="wpuf-review-thumbnail">
-                    <img src="<?php echo WPUF_ASSET_URI . '/images/icon-128x128.png' ?>" alt="">
+                    <img src="<?php echo esc_url( WPUF_ASSET_URI ) . '/images/icon-128x128.png'; ?>" alt="">
                 </div>
                 <div class="wpuf-review-text">
-                        <h3><?php _e( 'Enjoying <strong>WP User Frontend</strong>?', 'wp-user-frontend' ) ?></h3>
-                        <p><?php _e( 'Hope that you had a neat and snappy experience with the tool. Would you please show us a little love by rating us in the <a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><strong>WordPress.org</strong></a>?', 'wp-user-frontend' ) ?></p>
+                        <h3><?php echo wp_kses_post( 'Enjoying WP User Frontend?', 'wp-user-frontend' ); ?></h3>
+                        <p><?php echo wp_kses_post( 'Hope that you had a neat and snappy experience with the tool. Would you please show us a little love by rating us in the <a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><strong>WordPress.org</strong></a>?', 'wp-user-frontend' ); ?></p>
 
                     <ul class="wpuf-review-ul">
-                        <li><a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><span class="dashicons dashicons-external"></span><?php _e( 'Sure! I\'d love to!', 'wp-user-frontend' ) ?></a></li>
-                        <li><a href="#" class="notice-dismiss"><span class="dashicons dashicons-smiley"></span><?php _e( 'I\'ve already left a review', 'wp-user-frontend' ) ?></a></li>
-                        <li><a href="#" class="notice-dismiss"><span class="dashicons dashicons-dismiss"></span><?php _e( 'Never show again', 'wp-user-frontend' ) ?></a></li>
+                        <li><a href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/#new-post" target="_blank"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Sure! I\'d love to!', 'wp-user-frontend' ); ?></a></li>
+                        <li><a href="#" class="notice-dismiss"><span class="dashicons dashicons-smiley"></span><?php esc_html_e( 'I\'ve already left a review', 'wp-user-frontend' ); ?></a></li>
+                        <li><a href="#" class="notice-dismiss"><span class="dashicons dashicons-dismiss"></span><?php esc_html_e( 'Never show again', 'wp-user-frontend' ); ?></a></li>
                      </ul>
                 </div>
             </div>
@@ -301,36 +197,91 @@ class WPUF_Admin_Promotion {
                     jQuery("#wpuf-review-notice").hide();
 
                     wp.ajax.post('wpuf-dismiss-review-notice', {
-                        dismissed: true
+                        dismissed: true,
+                        _wpnonce: '<?php echo esc_attr ( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
                     });
                 });
             </script>
         <?php
-
     }
 
-   /**
-    * Dismiss promotion notice
-    *
-    * @since  2.5
-    *
-    * @return void
-    */
-   public function dismiss_promotional_offer() {
-        if ( ! empty( $_POST['dismissed'] ) ) {
-            $offer_key = 'wpuf_promotional_offer_notice';
+    /**
+     * Dismiss promotion notice
+     *
+     * @since  2.5
+     *
+     * @return void
+     */
+    public function dismiss_promotional_offer() {
+        if( empty( $_POST['_wpnonce'] ) ) {
+             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( !empty( $_POST['dismissed'] ) ) {
+            $offer_key = ! empty( $_POST['option_name'] ) ? sanitize_text_field( wp_unslash( $_POST['option_name'] ) ) : '';
             update_option( $offer_key, 'hide' );
         }
     }
 
     /**
-    * Dismiss review notice
-    *
-    * @since  3.1.0
-    *
-    * @return void
-    **/
-   public function dismiss_review_notice() {
+     * Show admin notice
+     *
+     * @param string $message
+     * @param string $option_name
+     * 
+     * @return void
+     */
+    public function generate_notice( $message, $option_name ) {
+        $hide_notice = get_option( $option_name, 'no' );
+        
+        if ( 'hide' === $hide_notice ) {
+            return;
+        }        
+        ?>
+        <div class="notice notice-success is-dismissible" id="wpuf-bfcm-notice">
+            <p>
+                <?php echo $message; ?>
+                <a 
+                href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf-holidays" 
+                target="_blank">Holiday Deals Now.</a>
+            </p>
+            <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
+        </div>
+
+        <script type='text/javascript'>
+            jQuery('body').on('click', '#wpuf-bfcm-notice .notice-dismiss', function (e) {
+                e.preventDefault();
+
+                wp.ajax.post('wpuf-dismiss-promotional-offer-notice', {
+                    dismissed: true,
+                    option_name: '<?php echo esc_html( $option_name ); ?>',
+                    _wpnonce: '<?php echo esc_attr ( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
+                });
+            });
+        </script>
+        <?php
+    }
+
+    /**
+     * Dismiss review notice
+     *
+     * @since  3.1.0
+     *
+     * @return void
+     **/
+    public function dismiss_review_notice() { 
+        if( empty( $_POST['_wpnonce'] ) ) {
+             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         if ( ! empty( $_POST['dismissed'] ) ) {
             update_option( 'wpuf_review_notice_dismiss', 'yes' );
         }

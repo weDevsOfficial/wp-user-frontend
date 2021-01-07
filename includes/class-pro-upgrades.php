@@ -1,42 +1,40 @@
 <?php
 
-class WPUF_Pro_Upgrades{
+class WPUF_Pro_Upgrades {
 
     /**
      * Initialize
      */
-    function __construct() {
-
-        if ( class_exists( 'WP_User_Frontend_Pro')){
+    public function __construct() {
+        if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
             return;
         }
+
         // form fields
-        add_filter( 'wpuf_field_get_js_settings', array( $this, 'add_conditional_field_prompt' ) );
-        add_filter( 'wpuf-form-fields', array( $this, 'register_pro_fields' ),10, 1 );
+        add_filter( 'wpuf_field_get_js_settings', [ $this, 'add_conditional_field_prompt' ] );
+        add_filter( 'wpuf-form-fields', [ $this, 'register_pro_fields' ], 10, 1 );
         // add_filter( 'wpuf-form-builder-field-settings', array( $this, 'register_pro_fields'), 10, 1 );
-        add_filter( 'wpuf_field_groups_custom', array( $this, 'add_to_custom_fields' ) );
-        add_filter( 'wpuf-form-fields-custom-fields', array( $this, 'add_to_custom_fields' ) );
-        add_filter( 'wpuf_field_groups_others', array( $this, 'add_to_others_fields' ) );
-        add_filter( 'wpuf-form-fields-others-fields', array( $this, 'add_to_others_fields' ) );
+        add_filter( 'wpuf_field_groups_custom', [ $this, 'add_to_custom_fields' ] );
+        add_filter( 'wpuf-form-fields-custom-fields', [ $this, 'add_to_custom_fields' ] );
+        add_filter( 'wpuf_field_groups_others', [ $this, 'add_to_others_fields' ] );
+        add_filter( 'wpuf-form-fields-others-fields', [ $this, 'add_to_others_fields' ] );
     }
 
     /**
      * Register pro fields
      *
-     * @param  array $fields
+     * @param array $fields
      *
      * @return array
      */
     public function register_pro_fields( $fields ) {
-
-        if(!class_exists( 'WPUF_Form_Field_Pro' )){
-            if(class_exists('WPUF_Field_Contract')){
+        if ( !class_exists( 'WPUF_Form_Field_Pro' ) ) {
+            if ( class_exists( 'WPUF_Field_Contract' ) ) {
                 require_once WPUF_ROOT . '/includes/fields/class-field-pro.php';
             }
         }
 
         if ( class_exists( 'WPUF_Form_Field_Pro' ) ) {
-
             require_once WPUF_ROOT . '/includes/fields/class-pro-upgrade-fields.php';
 
             $fields['action_hook']             = new WPUF_Form_Field_Hook();
@@ -53,7 +51,6 @@ class WPUF_Pro_Upgrades{
             $fields['shortcode']               = new WPUF_Form_Field_Shortcode();
             $fields['step_start']              = new WPUF_Form_Field_Step();
             $fields['toc']                     = new WPUF_Form_Field_Toc();
-
         }
 
         return $fields;
@@ -65,11 +62,10 @@ class WPUF_Pro_Upgrades{
      * @param array $fields
      */
     public function add_to_custom_fields( $fields ) {
-
-        $pro_fields = array(
+        $pro_fields = [
             'repeat_field', 'date_field', 'file_upload', 'country_list_field',
-            'numeric_text_field', 'address_field', 'google_map', 'step_start'
-        );
+            'numeric_text_field', 'address_field', 'google_map', 'step_start',
+        ];
 
         return array_merge( $fields, $pro_fields );
     }
@@ -80,11 +76,11 @@ class WPUF_Pro_Upgrades{
      * @param array $fields
      */
     public function add_to_others_fields( $fields ) {
-        $pro_fields = array(
-            'shortcode', 'action_hook', 'toc', 'ratings','embed','really_simple_captcha'
-        );
-        return array_merge( $fields, $pro_fields );
+        $pro_fields = [
+            'shortcode', 'action_hook', 'toc', 'ratings', 'embed', 'really_simple_captcha',
+        ];
 
+        return array_merge( $fields, $pro_fields );
     }
 
     /**
@@ -93,16 +89,15 @@ class WPUF_Pro_Upgrades{
      * @param array $settings
      */
     public function add_conditional_field_prompt( $settings ) {
-
-        $settings['settings'][] = array(
+        $settings['settings'][] = [
             'name'           => 'wpuf_cond',
             'title'          => __( 'Conditional Logic', 'wp-user-frontend' ),
             'type'           => 'option-pro-feature-alert',
             'section'        => 'advanced',
             'priority'       => 30,
             'help_text'      => '',
-            'is_pro_feature' => true
-        );
+            'is_pro_feature' => true,
+        ];
 
         return $settings;
     }

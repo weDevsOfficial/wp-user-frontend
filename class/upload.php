@@ -4,20 +4,18 @@
  * Attachment Uploader class
  *
  * @since 1.0
- * @package wpuf
  */
 class WPUF_Upload {
 
-    function __construct() {
+    public function __construct() {
+        add_action( 'wp_ajax_wpuf_upload_file', [ $this, 'upload_file' ] );
+        add_action( 'wp_ajax_nopriv_wpuf_upload_file', [ $this, 'upload_file' ] );
 
-        add_action( 'wp_ajax_wpuf_upload_file', array($this, 'upload_file') );
-        add_action( 'wp_ajax_nopriv_wpuf_upload_file', array($this, 'upload_file') );
+        add_action( 'wp_ajax_wpuf_file_del', [ $this, 'delete_file' ] );
+        add_action( 'wp_ajax_nopriv_wpuf_file_del', [ $this, 'delete_file' ] );
 
-        add_action( 'wp_ajax_wpuf_file_del', array($this, 'delete_file') );
-        add_action( 'wp_ajax_nopriv_wpuf_file_del', array($this, 'delete_file') );
-
-        add_action( 'wp_ajax_wpuf_insert_image', array( $this, 'insert_image' ) );
-        add_action( 'wp_ajax_nopriv_wpuf_insert_image', array( $this, 'insert_image' ) );
+        add_action( 'wp_ajax_wpuf_insert_image', [ $this, 'insert_image' ] );
+        add_action( 'wp_ajax_nopriv_wpuf_insert_image', [ $this, 'insert_image' ] );
     }
 
     /**
@@ -25,27 +23,42 @@ class WPUF_Upload {
      *
      * @return void
      */
-    function validate_nonce() {
-        $nonce = isset( $_GET['nonce'] ) ? $_GET['nonce'] : '';
+    public function validate_nonce() {
+        $nonce = isset( $_GET['nonce'] ) ? sanitize_key( wp_unslash( $_GET['nonce'] ) ) : '';
 
-        if ( ! wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
-            die( 'error' );
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
+            return;
         }
     }
 
-    function upload_file( $image_only = false ) {
-        $this->validate_nonce();
+    public function upload_file( $image_only = false ) {
+        $nonce = isset( $_REQUEST['nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ) : '';
+
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
+            return;
+        }
 
         // a valid request will have a form ID
-        $form_id = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : false;
+        $form_id = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : false;
 
         if ( ! $form_id ) {
             die( 'error' );
         }
 
+        $field_type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
+
+        /**
+         * Hook fires before begining upload process
+         *
+         * @since 3.3.0
+         *
+         * @param int    $form_id
+         * @param string $field_type
+         */
+        do_action( 'wpuf_upload_file_init', $form_id, $field_type );
+
         // check if guest post enabled for guests
         if ( ! is_user_logged_in() ) {
-
             $guest_post    = false;
             $form_settings = wpuf_get_form_settings( $form_id );
 
@@ -68,44 +81,98 @@ class WPUF_Upload {
             }
         }
 
-        $upload = array(
-            'name'     => $_FILES['wpuf_file']['name'],
-            'type'     => $_FILES['wpuf_file']['type'],
-            'tmp_name' => $_FILES['wpuf_file']['tmp_name'],
-            'error'    => $_FILES['wpuf_file']['error'],
-            'size'     => $_FILES['wpuf_file']['size']
-        );
+        $wpuf_file = isset( $_FILES['wpuf_file'] ) ? $_FILES['wpuf_file'] : []; // WPCS: sanitization ok.
 
-        header('Content-Type: text/html; charset=' . get_option('blog_charset'));
+        $file_name      = pathinfo( $wpuf_file['name'], PATHINFO_FILENAME );
+        $file_extension = pathinfo( $wpuf_file['name'], PATHINFO_EXTENSION );
+        $hash           = wp_hash( time() );
+        $hash           = substr( $hash, 0, 8 );
+
+        $upload = [
+            'name'     => $file_name . '-' . $hash . '.' . $file_extension,
+            'type'     => $wpuf_file['type'],
+            'tmp_name' => $wpuf_file['tmp_name'],
+            'error'    => $wpuf_file['error'],
+            'size'     => $wpuf_file['size'],
+        ];
+
+        header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 
         $attach = $this->handle_upload( $upload );
 
         if ( $attach['success'] ) {
+            $response = [ 'success' => true ];
 
-            $response = array( 'success' => true );
-
-            if ($image_only) {
+            if ( $image_only ) {
                 $image_size = wpuf_get_option( 'insert_photo_size', 'wpuf_frontend_posting', 'thumbnail' );
                 $image_type = wpuf_get_option( 'insert_photo_type', 'wpuf_frontend_posting', 'link' );
+
+                /**
+                 * Filter upload image size for response
+                 *
+                 * @since 3.3.0
+                 *
+                 * @param string $image_size
+                 * @param int    $form_id
+                 * @param string $field_type
+                 */
+                $image_size = apply_filters( 'wpuf_upload_response_image_size', $image_size, $form_id, $field_type );
+
+                /**
+                 * Filter upload image type for response
+                 *
+                 * @since 3.3.0
+                 *
+                 * @param string $image_size
+                 * @param int    $form_id
+                 * @param string $field_type
+                 */
+                $image_type = apply_filters( 'wpuf_upload_response_image_type', $image_type, $form_id, $field_type );
 
                 if ( $image_type == 'link' ) {
                     $response['html'] = wp_get_attachment_link( $attach['attach_id'], $image_size );
                 } else {
                     $response['html'] = wp_get_attachment_image( $attach['attach_id'], $image_size );
                 }
-
             } else {
-                $response['html'] = $this->attach_html( $attach['attach_id'] );
+                $response['html'] = self::attach_html( $attach['attach_id'], $field_type, $form_id );
             }
 
-            echo $response['html'];
+            echo wp_kses( $response['html'], [
+                'li'       => [
+                    'class' => []
+                ],
+                'div'      => [
+                    'class' => []
+                ],
+                'img'      => [
+                    'src'   => [],
+                    'alt'   => [],
+                    'class' => [],
+                ],
+                'input'    => [
+                    'type'        => [],
+                    'name'        => [],
+                    'value'       => [],
+                    'placeholder' => []
+                ],
+                'textarea' => [
+                    'name'        => [],
+                    'placeholder' => []
+                ],
+                'a'        => [
+                    'href'           => [],
+                    'class'          => [],
+                    'data-attach-id' => [],
+                ],
+                'span'     => [
+                    'class' => []
+                ]
+            ] );
         } else {
-            echo $attach['error'];
+            echo wp_kses_post( $attach['error'] );
         }
 
-
-        // $response = array('success' => false, 'message' => $attach['error']);
-        // echo json_encode( $response );
         exit;
     }
 
@@ -113,38 +180,46 @@ class WPUF_Upload {
      * Generic function to upload a file
      *
      * @param string $field_name file input field name
+     *
      * @return bool|int attachment id on success, bool false instead
      */
-    function handle_upload( $upload_data ) {
+    public function handle_upload( $upload_data ) {
+        $check_duplicate = $this->duplicate_upload( $upload_data );
 
-        $uploaded_file = wp_handle_upload( $upload_data, array('test_form' => false) );
+        if ( isset( $check_duplicate['duplicate'] ) && $check_duplicate['duplicate'] ) {
+            return [ 'success' => true, 'attach_id' => $check_duplicate['duplicate'] ];
+        }
+
+        $uploaded_file = wp_handle_upload( $upload_data, [ 'test_form' => false ] );
 
         // If the wp_handle_upload call returned a local path for the image
         if ( isset( $uploaded_file['file'] ) ) {
-            $file_loc = $uploaded_file['file'];
-            $file_name = basename( $upload_data['name'] );
-            $file_type = wp_check_filetype( $file_name );
+            $file_loc    = $uploaded_file['file'];
+            $file_name   = basename( $upload_data['name'] );
+            $upload_hash = md5( $upload_data['name'] . $upload_data['size'] );
+            $file_type   = wp_check_filetype( $file_name );
 
-            $attachment = array(
+            $attachment = [
                 'post_mime_type' => $file_type['type'],
-                'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
-                'post_content' => '',
-                'post_status' => 'inherit'
-            );
+                'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
+                'post_content'   => '',
+                'post_status'    => 'inherit',
+            ];
 
-            $attach_id = wp_insert_attachment( $attachment, $file_loc );
+            $attach_id   = wp_insert_attachment( $attachment, $file_loc );
             $attach_data = wp_generate_attachment_metadata( $attach_id, $file_loc );
             wp_update_attachment_metadata( $attach_id, $attach_data );
+            update_post_meta( $attach_id, 'wpuf_file_hash', $upload_hash );
 
-            return array('success' => true, 'attach_id' => $attach_id);
+            return [ 'success' => true, 'attach_id' => $attach_id ];
         }
 
-        return array('success' => false, 'error' => $uploaded_file['error']);
+        return [ 'success' => false, 'error' => $uploaded_file['error'] ];
     }
 
-    public static function attach_html( $attach_id, $type = NULL ) {
-        if ( !$type ) {
-            $type = isset( $_GET['type'] ) ? $_GET['type'] : 'image';
+    public static function attach_html( $attach_id, $type = null, $form_id = null ) {
+        if ( ! $type ) {
+            $type = isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : 'image';
         }
 
         $attachment = get_post( $attach_id );
@@ -153,15 +228,36 @@ class WPUF_Upload {
             return;
         }
 
-        if (wp_attachment_is_image( $attach_id)) {
-            $image = wp_get_attachment_image_src( $attach_id, 'thumbnail' );
+        if ( wp_attachment_is_image( $attach_id ) ) {
+            /**
+             * Filter upload image size for response
+             *
+             * @since 3.3.0
+             *
+             * @param string $image_size
+             * @param int    $form_id
+             * @param string $field_type
+             */
+            $image_size = apply_filters( 'wpuf_upload_response_image_size', 'thumbnail', $form_id, $type );
+
+            $image = wp_get_attachment_image_src( $attach_id, $image_size );
             $image = $image[0];
         } else {
             $image = wp_mime_type_icon( $attach_id );
         }
 
+        /**
+         * Filter uploaded image class names for the reponse
+         *
+         * @since 3.3.0
+         *
+         * @param array $class_names
+         */
+        $attachment_class_names = apply_filters( 'wpuf_upload_response_image_class_names', [ 'wpuf-attachment-image' ] );
+        $attachment_class_names = implode( ' ', $attachment_class_names );
+
         $html = '<li class="ui-state-default wpuf-image-wrap thumbnail">';
-        $html .= sprintf( '<div class="attachment-name"><img src="%s" alt="%s" /></div>', $image, esc_attr( $attachment->post_title ) );
+        $html .= sprintf( '<div class="attachment-name"><img src="%s" alt="%s" class="%s" /></div>', $image, esc_attr( $attachment->post_title ), esc_attr( $attachment_class_names ) );
 
         if ( wpuf_get_option( 'image_caption', 'wpuf_frontend_posting', 'off' ) == 'on' ) {
             $html .= '<div class="wpuf-file-input-wrap">';
@@ -173,7 +269,7 @@ class WPUF_Upload {
 
         $html .= sprintf( '<input type="hidden" name="wpuf_files[%s][]" value="%d">', $type, $attach_id );
         $html .= '<div class="caption">';
-        $html .= sprintf( '<a href="#" class="attachment-delete" data-attach_id="%d"> <img src="%s" /></a>', $attach_id, WPUF_ASSET_URI . '/images/del-img.png' );
+        $html .= sprintf( '<a href="#" class="attachment-delete" data-attach-id="%d"> <img src="%s" /></a>', $attach_id, WPUF_ASSET_URI . '/images/del-img.png' );
         $html .= sprintf( '<span class="wpuf-drag-file"> <img src="%s" /></span>', WPUF_ASSET_URI . '/images/move-img.png' );
         $html .= '</div>';
         $html .= '</li>';
@@ -181,29 +277,63 @@ class WPUF_Upload {
         return $html;
     }
 
-    function delete_file() {
+    public function delete_file() {
         check_ajax_referer( 'wpuf_nonce', 'nonce' );
 
-        $attach_id = isset( $_POST['attach_id'] ) ? intval( $_POST['attach_id'] ) : 0;
-        $attachment = get_post( $attach_id );
+        $post_data = wp_unslash( $_POST );
 
-        //post author or editor role
-        if ( get_current_user_id() == $attachment->post_author || current_user_can( 'delete_private_pages' ) ) {
-            echo 'success';
+        $attachment_id = isset( $post_data['attach_id'] ) ? absint( $post_data['attach_id'] ) : 0;
+
+        if ( empty( $attachment_id ) ) {
+            wp_send_json_error( [ 'message' => __( 'attach_id is required.', 'wp-user-frontend' ) ], 422 );
         }
 
-        exit;
+        $attachment = get_post( $attachment_id );
+
+        // post author or editor role
+        if ( get_current_user_id() == absint( $attachment->post_author ) || current_user_can( 'delete_private_pages' ) ) {
+            $deleted = wp_delete_attachment( $attachment_id, true );
+
+            if ( $deleted ) {
+                wp_send_json_success( [ 'message' => __( 'Attachment deleted successfully.', 'wp-user-frontend' ) ] );
+            }
+
+            wp_send_json_error( [ 'message' => __( 'Could not deleted the attachment', 'wp-user-frontend' ) ], 422 );
+        }
+
+        wp_send_json_error( [ 'message' => __( 'Something went wrong.', 'wp-user-frontend' ) ], 422 );
     }
 
-    function associate_file( $attach_id, $post_id ) {
-        wp_update_post( array(
-            'ID' => $attach_id,
-            'post_parent' => $post_id
-        ) );
+    public function associate_file( $attach_id, $post_id ) {
+        wp_update_post( [
+            'ID'          => $attach_id,
+            'post_parent' => $post_id,
+        ] );
     }
 
-    function insert_image() {
+    public function insert_image() {
         $this->upload_file( true );
     }
 
+    /**
+     * Check if duplicate file
+     *
+     * @param array $file
+     *
+     * @return mixed
+     */
+    function duplicate_upload( $file ) {
+        global $wpdb;
+
+        $upload_hash = md5( $file['name'] . $file['size'] );
+
+        $sql   = $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta m JOIN $wpdb->posts p ON p.ID = m.post_id WHERE m.meta_key = 'wpuf_file_hash' AND m.meta_value = %s AND p.post_status != 'trash' LIMIT 1;", $upload_hash );
+        $match = $wpdb->get_var( $sql );
+
+        if ( $match ) {
+            $file['duplicate'] = $match;
+        }
+
+        return $file;
+    }
 }

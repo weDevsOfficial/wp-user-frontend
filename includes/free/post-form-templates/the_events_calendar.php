@@ -13,8 +13,8 @@ class WPUF_Post_Form_Template_Events_Calendar extends WPUF_Post_Form_Template {
         $this->title       = __( 'The Events Calendar', 'wp-user-frontend' );
         $this->description = __( 'Form for creating events. The Events Calendar plugin is required.', 'wp-user-frontend' );
         $this->image       = WPUF_ASSET_URI . '/images/templates/post.png';
-        $this->form_fields = array(
-            array(
+        $this->form_fields = [
+            [
                 'input_type'  => 'text',
                 'template'    => 'post_title',
                 'required'    => 'yes',
@@ -26,9 +26,9 @@ class WPUF_Post_Form_Template_Events_Calendar extends WPUF_Post_Form_Template {
                 'placeholder' => __( 'Please enter your event title', 'wp-user-frontend' ),
                 'default'     => '',
                 'size'        => '40',
-                'wpuf_cond'   => $this->conditionals
-            ),
-            array(
+                'wpuf_cond'   => $this->conditionals,
+            ],
+            [
                 'input_type'       => 'textarea',
                 'template'         => 'post_content',
                 'required'         => 'yes',
@@ -44,80 +44,80 @@ class WPUF_Post_Form_Template_Events_Calendar extends WPUF_Post_Form_Template {
                 'rich'             => 'yes',
                 'insert_image'     => 'yes',
                 'word_restriction' => '',
-                'wpuf_cond'        => $this->conditionals
-            ),
-            array(
+                'wpuf_cond'        => $this->conditionals,
+            ],
+            [
                 'input_type' => 'date',
-                'template' => 'date_field',
-                'required' => 'no',
-                'label' => __( 'Event Start', 'wp-user-frontend' ),
-                'name' => '_EventStartDate',
-                'is_meta' => 'yes',
-                'width' => 'large',
-                'format' => 'yy-mm-dd',
-                'time' => 'yes',
-                'css' => 'wpuf_hidden_field',
-                'wpuf_cond' => $this->conditionals
-            ),
-            array(
+                'template'   => 'date_field',
+                'required'   => 'no',
+                'label'      => __( 'Event Start', 'wp-user-frontend' ),
+                'name'       => '_EventStartDate',
+                'is_meta'    => 'yes',
+                'width'      => 'large',
+                'format'     => 'yy-mm-dd',
+                'time'       => 'yes',
+                'css'        => 'wpuf_hidden_field',
+                'wpuf_cond'  => $this->conditionals,
+            ],
+            [
                 'input_type' => 'date',
-                'template' => 'date_field',
-                'required' => 'no',
-                'label' => __( 'Event End', 'wp-user-frontend' ),
-                'name' => '_EventEndDate',
-                'is_meta' => 'yes',
-                'width' => 'large',
-                'format' => 'yy-mm-dd',
-                'time' => 'yes',
-                'css' => 'wpuf_hidden_field',
-                'wpuf_cond' => $this->conditionals
-            ),
-            array(
+                'template'   => 'date_field',
+                'required'   => 'no',
+                'label'      => __( 'Event End', 'wp-user-frontend' ),
+                'name'       => '_EventEndDate',
+                'is_meta'    => 'yes',
+                'width'      => 'large',
+                'format'     => 'yy-mm-dd',
+                'time'       => 'yes',
+                'css'        => 'wpuf_hidden_field',
+                'wpuf_cond'  => $this->conditionals,
+            ],
+            [
                 'input_type' => 'radio',
-                'template' => 'radio_field',
-                'required' => 'no',
-                'label' => __( 'All Day Event', 'wp-user-frontend' ),
-                'name' => '_EventAllDay',
-                'is_meta' => 'yes',
-                'selected' => array() ,
-                'inline' => 'yes',
-                'options' => array(
+                'template'   => 'radio_field',
+                'required'   => 'no',
+                'label'      => __( 'All Day Event', 'wp-user-frontend' ),
+                'name'       => '_EventAllDay',
+                'is_meta'    => 'yes',
+                'selected'   => [],
+                'inline'     => 'yes',
+                'options'    => [
                     'yes' => 'Yes',
-                    'no' => 'No',
-                ),
-                'wpuf_cond' => $this->conditionals
-            ),
-            array(
+                    'no'  => 'No',
+                ],
+                'wpuf_cond' => $this->conditionals,
+            ],
+            [
                 'input_type' => 'url',
-                'template' => 'website_url',
-                'required' => 'no',
-                'label' => __( 'Event Website', 'wp-user-frontend' ),
-                'name' => '_EventURL',
-                'is_meta' => 'yes',
-                'width' => 'large',
-                'size' => 40,
-                'wpuf_cond' => $this->conditionals
-            ),
-            array(
+                'template'   => 'website_url',
+                'required'   => 'no',
+                'label'      => __( 'Event Website', 'wp-user-frontend' ),
+                'name'       => '_EventURL',
+                'is_meta'    => 'yes',
+                'width'      => 'large',
+                'size'       => 40,
+                'wpuf_cond'  => $this->conditionals,
+            ],
+            [
                 'input_type' => 'text',
-                'template' => 'text_field',
-                'required' => 'no',
-                'label' => __( 'Currency Symbol', 'wp-user-frontend' ),
-                'name' => '_EventCurrencySymbol',
-                'is_meta' => 'yes',
-                'size' => 40,
-                'wpuf_cond' => $this->conditionals
-            ),
-            array(
+                'template'   => 'text_field',
+                'required'   => 'no',
+                'label'      => __( 'Currency Symbol', 'wp-user-frontend' ),
+                'name'       => '_EventCurrencySymbol',
+                'is_meta'    => 'yes',
+                'size'       => 40,
+                'wpuf_cond'  => $this->conditionals,
+            ],
+            [
                 'input_type' => 'text',
-                'template' => 'text_field',
-                'required' => 'no',
-                'label' => __( 'Cost', 'wp-user-frontend' ),
-                'name' => '_EventCost',
-                'is_meta' => 'yes',
-                'wpuf_cond' => $this->conditionals
-            ),
-            array(
+                'template'   => 'text_field',
+                'required'   => 'no',
+                'label'      => __( 'Cost', 'wp-user-frontend' ),
+                'name'       => '_EventCost',
+                'is_meta'    => 'yes',
+                'wpuf_cond'  => $this->conditionals,
+            ],
+            [
                 'input_type'   => 'image_upload',
                 'template'     => 'featured_image',
                 'count'        => '1',
@@ -129,9 +129,9 @@ class WPUF_Post_Form_Template_Events_Calendar extends WPUF_Post_Form_Template {
                 'help'         => __( 'Upload the main image of your event', 'wp-user-frontend' ),
                 'css'          => '',
                 'max_size'     => '1024',
-                'wpuf_cond'    => $this->conditionals
-            ),
-            array(
+                'wpuf_cond'    => $this->conditionals,
+            ],
+            [
                 'input_type'  => 'textarea',
                 'template'    => 'post_excerpt',
                 'required'    => 'no',
@@ -145,9 +145,9 @@ class WPUF_Post_Form_Template_Events_Calendar extends WPUF_Post_Form_Template {
                 'placeholder' => '',
                 'default'     => '',
                 'rich'        => 'no',
-                'wpuf_cond'   => $this->conditionals
-            ),
-            array(
+                'wpuf_cond'   => $this->conditionals,
+            ],
+            [
                 'input_type'  => 'text',
                 'template'    => 'post_tags',
                 'required'    => 'no',
@@ -159,11 +159,11 @@ class WPUF_Post_Form_Template_Events_Calendar extends WPUF_Post_Form_Template {
                 'placeholder' => '',
                 'default'     => '',
                 'size'        => '40',
-                'wpuf_cond'   => $this->conditionals
-            ),
-        );
+                'wpuf_cond'   => $this->conditionals,
+            ],
+        ];
 
-        $this->form_settings = array (
+        $this->form_settings = [
             'post_type'                  => 'tribe_events',
             'post_status'                => 'publish',
             'default_cat'                => '-1',
@@ -178,7 +178,7 @@ class WPUF_Post_Form_Template_Events_Calendar extends WPUF_Post_Form_Template {
             'edit_url'                   => '',
             'update_text'                => __( 'Update Event', 'wp-user-frontend' ),
             'form_template'              => __CLASS__,
-            'notification'               => array(
+            'notification'               => [
                 'new'                        => 'on',
                 'new_to'                     => get_option( 'admin_email' ),
                 'new_subject'                => 'New event has been created',
@@ -205,7 +205,7 @@ Short Description: %post_excerpt%
 Author: %author%
 Post URL: %permalink%
 Edit URL: %editlink%',
-                ),
-            );
+                ],
+            ];
     }
 }

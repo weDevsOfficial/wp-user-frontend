@@ -984,8 +984,9 @@ class WPUF_Simple_Login {
      * @return void
      */
     public function show_errors() {
-        if ( $this->login_errors ) {
-            foreach ( $this->login_errors as $error ) {
+        $errors = apply_filters( 'wpuf_login_errors', $this->login_errors );
+        if ( $errors ) {
+            foreach ( $errors as $error ) {
                 echo wp_kses_post( '<div class="wpuf-error">' . __( $error, 'wp-user-frontend' ) . '</div>' );
             }
         }

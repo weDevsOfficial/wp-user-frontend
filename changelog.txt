@@ -1,3 +1,10 @@
+= v3.5.11 (12 January, 2021) =
+* Fix - QR and math captcha added to pro feature list
+* Fix - Tooltip for category navigate
+* Fix - Understandable guest payment notice
+* Fix - Paypal non recurring pack id does not set
+
+
 = v3.5.10 (18 December, 2020) =
 * Update - Added holiday promotional offer notice
 

@@ -1,6 +1,29 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.11',
+        'released' => '2021-01-12',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'QR and math captcha added to pro feature list', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Tooltip for category navigate', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Understandable guest payment notice', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Paypal non recurring pack id does not set', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.9',
         'released' => '2020-12-11',
         'changes'  =>  [

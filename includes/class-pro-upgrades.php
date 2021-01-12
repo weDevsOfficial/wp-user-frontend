@@ -28,7 +28,7 @@ class WPUF_Pro_Upgrades {
      * @return array
      */
     public function register_pro_fields( $fields ) {
-        if ( !class_exists( 'WPUF_Form_Field_Pro' ) ) {
+        if ( ! class_exists( 'WPUF_Form_Field_Pro' ) ) {
             if ( class_exists( 'WPUF_Field_Contract' ) ) {
                 require_once WPUF_ROOT . '/includes/fields/class-field-pro.php';
             }
@@ -51,6 +51,8 @@ class WPUF_Pro_Upgrades {
             $fields['shortcode']               = new WPUF_Form_Field_Shortcode();
             $fields['step_start']              = new WPUF_Form_Field_Step();
             $fields['toc']                     = new WPUF_Form_Field_Toc();
+            $fields['math_captcha']            = new WPUF_Form_Field_Math_Captcha();
+            $fields['qr_code']                 = new WPUF_Form_Field_QR_Code();
         }
 
         return $fields;
@@ -63,8 +65,14 @@ class WPUF_Pro_Upgrades {
      */
     public function add_to_custom_fields( $fields ) {
         $pro_fields = [
-            'repeat_field', 'date_field', 'file_upload', 'country_list_field',
-            'numeric_text_field', 'address_field', 'google_map', 'step_start',
+            'repeat_field',
+            'date_field',
+            'file_upload',
+            'country_list_field',
+            'numeric_text_field',
+            'address_field',
+            'google_map',
+            'step_start',
         ];
 
         return array_merge( $fields, $pro_fields );
@@ -77,7 +85,14 @@ class WPUF_Pro_Upgrades {
      */
     public function add_to_others_fields( $fields ) {
         $pro_fields = [
-            'shortcode', 'action_hook', 'toc', 'ratings', 'embed', 'really_simple_captcha',
+            'shortcode',
+            'action_hook',
+            'toc',
+            'ratings',
+            'embed',
+            'really_simple_captcha',
+            'math_captcha',
+            'qr_code',
         ];
 
         return array_merge( $fields, $pro_fields );

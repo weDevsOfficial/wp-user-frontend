@@ -10,7 +10,8 @@ jQuery(function($) {
         '.admin-new-user-email',
         '.pending-user-email',
         '.denied-user-email',
-        '.approved-user-email'
+        '.approved-user-email',
+        '.approved-post-email'
     ]
     group.forEach(function(header, index) {
         $(header).addClass("heading");

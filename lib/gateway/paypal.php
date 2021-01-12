@@ -308,16 +308,16 @@ class WPUF_Paypal {
 
             $postdata     = $_POST;
             $type         = $postdata['custom'];
-            $item_number  = $postdata['item_number'];
+            $custom       = json_decode( stripcslashes( $postdata['custom'] ) );
+            $item_number  = ! empty( $postdata['item_number'] ) ? $postdata['item_number'] : 0;
             $amount       = $postdata['mc_gross'];
             $is_recurring = false;
-            $post_id      = 0;
-            $pack_id      = 0;
+            $post_id      = $custom->type === 'post' ? $item_number : 0;
+            $pack_id      = $custom->type === 'pack' ? $item_number : 0;
 
-            $custom    = json_decode( stripcslashes( $postdata['custom'] ) );
             $coupon_id = isset( $custom->coupon_id ) ? $custom->coupon_id : false;
 
-            if ($postdata['period3']) {
+            if (! empty( $postdata['period3'] ) ) {
                 update_user_meta($custom->user_id, '_wpuf_used_trial', 'yes');
             }
 

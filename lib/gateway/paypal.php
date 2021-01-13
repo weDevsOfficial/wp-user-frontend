@@ -306,14 +306,15 @@ class WPUF_Paypal {
         if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
             WP_User_Frontend::log( 'paypal-payment-info', print_r( $_POST, true ) );
 
-            $postdata     = $_POST;
-            $type         = $postdata['custom'];
-            $custom       = json_decode( stripcslashes( $postdata['custom'] ) );
-            $item_number  = ! empty( $postdata['item_number'] ) ? $postdata['item_number'] : 0;
-            $amount       = $postdata['mc_gross'];
-            $is_recurring = false;
-            $post_id      = $custom->type === 'post' ? $item_number : 0;
-            $pack_id      = $custom->type === 'pack' ? $item_number : 0;
+            $postdata       = $_POST;
+            $type           = $postdata['custom'];
+            $custom         = json_decode( stripcslashes( $postdata['custom'] ) );
+            $item_number    = ! empty( $postdata['item_number'] ) ? $postdata['item_number'] : 0;
+            $amount         = $postdata['mc_gross'];
+            $is_recurring   = false;
+            $post_id        = $custom->type === 'post' ? $item_number : 0;
+            $pack_id        = $custom->type === 'pack' ? $item_number : 0;
+            $transaction_id = isset( $postdata['txn_id'] ) ? sanitize_text_field( $postdata['txn_id'] ) : '';
 
             $coupon_id = isset( $custom->coupon_id ) ? $custom->coupon_id : false;
 
@@ -327,12 +328,13 @@ class WPUF_Paypal {
                 return;
             }
 
-            if ( isset( $postdata['txn_id'] ) && $this->transaction_exists( $postdata['txn_id'] ) ) {
+            if ( $transaction_id && $this->transaction_exists( $transaction_id ) ) {
                 $wpdb->update( $wpdb->prefix . 'wpuf_transaction',
                     array( 'status' => strtolower( $postdata['payment_status'] ) ),
                     array(
-                        'transaction_id' => $postdata['txn_id']
-                    ) );
+                        'transaction_id' => $transaction_id
+                    )
+                );
             }
 
             // check if recurring payment
@@ -405,13 +407,11 @@ class WPUF_Paypal {
                 'payer_email'      => $postdata['payer_email'],
                 'payment_type'     => 'Paypal',
                 'payer_address'    => isset( $postdata['residence_country'] ) ? $postdata['residence_country'] : null,
-                'transaction_id'   => $postdata['txn_id'],
+                'transaction_id'   => $transaction_id,
                 'created'          => current_time( 'mysql' ),
             ];
 
             WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
-
-            $transaction_id = wp_strip_all_tags( $postdata['txn_id'] );
 
             WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
 
@@ -501,11 +501,9 @@ class WPUF_Paypal {
     public function transaction_exists( $trns_id ) {
         global $wpdb;
 
-        if ( $wpdb->get_var( "SELECT transaction_id FROM `{$wpdb->prefix}wpuf_transaction` WHERE transaction_id='{$trns_id}' LIMIT 0, 1" ) ) {
-            return true;
-        }
+        $query = $wpdb->prepare( "SELECT transaction_id FROM `{$wpdb->prefix}wpuf_transaction` WHERE transaction_id = %s LIMIT 0, 1", $trns_id );
 
-        return false;
+        return $wpdb->get_var( $query ) ? true : false;
     }
 
 }

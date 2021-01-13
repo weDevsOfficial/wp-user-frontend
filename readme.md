@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 5.6  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.11  
+**Stable tag:** 3.5.12  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -263,6 +263,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
+### v3.5.12 (13 January, 2021) ###
+
+ * Fix - Santized PayPal transaction ID for better security
+
 ### v3.5.11 (12 January, 2021) ###
 * Fix - QR and math captcha added to pro feature list
 * Fix - Tooltip for category navigate
@@ -312,7 +316,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * Fix - Post query loop for post forms
 * Fix - Post edit could not be edited after unlocking post edit
 * Fix - Taxes couldn't count properly when selecting different tax region
-* Fix - Google map field validation doesn't work 
+* Fix - Google map field validation doesn't work
 * Fix - Redirect payment page after post updating
 * Fix - Custom field value and link send as plain text when sending an email for post notification
 

@@ -1071,11 +1071,13 @@ function wpuf_show_custom_fields( $content ) {
 
                             $address_html .= '<li>';
 
-                            if ( 'no' === $hide_label ) {
-                                $address_html .= '<label>' . $attr['address'][ $field_key ]['label'] . ': </label> ';
-                            }
+                            if ( ! empty( $value ) ) {
+                                if ( 'no' === $hide_label ) {
+                                    $address_html .= '<label>' . $attr['address'][ $field_key ]['label'] . ': </label> ';
+                                }
 
-                            $address_html .= ' ' . $value . '</li>';
+                                $address_html .= ' ' . $value . '</li>';
+                            }
                         }
                     }
 

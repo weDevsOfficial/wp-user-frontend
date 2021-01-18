@@ -2,7 +2,7 @@ wpuf_mixins.add_form_field = {
     methods: {
         add_form_field: function (field_template) {
             var payload = {
-                toIndex: this.$store.state.form_fields.length,
+                toIndex: this.$store.state.index_to_insert,
             };
 
             // check if these are already inserted

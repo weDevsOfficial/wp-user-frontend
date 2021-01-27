@@ -1069,9 +1069,10 @@ function wpuf_show_custom_fields( $content ) {
                                 }
                             }
 
-                            $address_html .= '<li>';
 
                             if ( ! empty( $value ) ) {
+                                $address_html .= '<li>';
+
                                 if ( 'no' === $hide_label ) {
                                     $address_html .= '<label>' . $attr['address'][ $field_key ]['label'] . ': </label> ';
                                 }

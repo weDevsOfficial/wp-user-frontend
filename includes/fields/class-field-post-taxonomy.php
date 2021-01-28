@@ -201,7 +201,11 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         if ( isset( $post_id ) ) {
             $this->terms = wp_get_post_terms( $post_id, $this->taxonomy, [ 'fields' => 'all' ] );
             asort( $this->terms );
-            $first_item = array_shift( $this->terms );
+
+            if ( count( $this->terms ) > 1 ) {
+                $first_item = array_shift( $this->terms );
+            }
+
             $include = [];
             foreach ( $this->field_settings['exclude'] as $parent ) {
                 array_map(

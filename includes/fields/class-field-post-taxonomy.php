@@ -250,6 +250,8 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
                         trim( $this->form_id )
                     );
 
+                    $child_of = $this->field_settings['exclude'];
+                    $selected = count( $this->terms ) === 1 ? $child_of[ array_search( $this->terms[0]->term_id, $child_of, true ) ] : $child_of[ count( $child_of ) - 1 ];
                     $tax_args = [
                         'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
                         'hierarchical'     => 1,
@@ -262,7 +264,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
                         'title_li'         => '',
                         'class'            => 'cat-ajax ' . $this->taxonomy . $this->class,
                         'include'          => $this->field_settings['exclude'],
-                        'selected'         => $this->field_settings['exclude'][ count( $this->field_settings['exclude'] ) - 1 ],
+                        'selected'         => $selected,
                     ];
 
                       $select_result = wp_dropdown_categories( $tax_args );
@@ -280,33 +282,36 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
            <span data-taxonomy=<?php echo esc_attr( json_encode( $attr ) ); ?>></span>
                                </div>
                     <?php
-                    foreach ( $this->terms as $term ) {
-                        $include = array_map(
-                            function ( $term ) use ( &$include ) {
-                                return $term->term_id;
-                            }, get_terms(
-                                [
-                                    'taxonomy' => $taxonomy,
-                                    'parent' => $term->parent,
-                                    'hide_empty' => false,
-                                ]
-                            )
-                        );
+                    $found = in_array( $this->terms[0]->parent, $this->field_settings['exclude'], true );
+                    if ( count( $this->terms ) > 1 || $found === true ) {
+                        foreach ( $this->terms as $term ) {
+                            $include = array_map(
+                                function ( $term ) use ( &$include ) {
+                                    return $term->term_id;
+                                }, get_terms(
+                                    [
+                                        'taxonomy' => $taxonomy,
+                                        'parent' => $term->parent,
+                                        'hide_empty' => false,
+                                    ]
+                                )
+                            );
 
-                         $tax_args = [
+                             $tax_args = [
 
-                             'hide_empty'       => 0,
-                             'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
-                             'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
-                             'name'             => $this->taxonomy . '[]',
-                             'taxonomy'         => $this->taxonomy,
-                             'title_li'         => '',
-                             'class'            => 'cat-ajax ' . $this->taxonomy . $this->class,
-                             'include'          => $include,
-                             'selected'         => $term->term_id,
-                         ];
+                                 'hide_empty'       => 0,
+                                 'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
+                                 'order'            => isset( $attr['order'] ) ? $attr['order'] : 'ASC',
+                                 'name'             => $this->taxonomy . '[]',
+                                 'taxonomy'         => $this->taxonomy,
+                                 'title_li'         => '',
+                                 'class'            => 'cat-ajax ' . $this->taxonomy . $this->class,
+                                 'include'          => $include,
+                                 'selected'         => $term->term_id,
+                             ];
 
-                           wp_dropdown_categories( $tax_args );
+                               wp_dropdown_categories( $tax_args );
+                        }
                     }
                 }
             }

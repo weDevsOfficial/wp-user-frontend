@@ -43,6 +43,7 @@
             settings: wpuf_form_builder.form_settings,
             current_panel: 'form-fields',
             editing_field_id: 0, // editing form field id
+            show_custom_field_tooltip: true,
         },
 
         mutations: {
@@ -141,6 +142,41 @@
                 // bring newly added element into viewport
                 Vue.nextTick(function () {
                     var el = $('#form-preview-stage .wpuf-form .field-items').eq(payload.toIndex);
+                    if ('yes' == payload.field.is_meta && state.show_custom_field_tooltip) {
+
+                        var image_one  = wpuf_assets_url + '/images/custom-fields/settings-show-custom-fields.png';
+                        var image_two  = wpuf_assets_url + '/images/custom-fields/field-setting-for-showing-data.png';
+                        var html       = '<div class="wpuf-custom-field-instruction">';
+                            html      += '<p style="text-align: center">Please follow the instruction</p>';
+                            html      += '<div class="step-one">';
+                            html      += '<h5>Step One:</h5>';
+                            html      += '<p><strong><code>User Frontend > Settings </code></strong></p>';
+                            html      += '<img src="'+ image_one +'" alt="settings">';
+                            html      += '</div>';
+                            html      += '<div class="step-two">';
+                            html      += '<h5>Step Two:</h5>';
+                            html      += '<p><strong><code>Field Options > Advanced Options </code><strong></p>';
+                            html      += '<img src="' + image_two + '" alt="custom field data">';
+                            html      += '</div>';
+                            html      += '</div>';
+                        swal({
+                            title: "Do you want to show custom field data inside your post ?",
+                            html: html,
+                            showCancelButton: true,
+                            confirmButtonColor: '#d54e21',
+                            confirmButtonText: "Don't show again",
+                            cancelButtonText: 'Okay',
+                            confirmButtonClass: 'btn btn-success',
+                            cancelButtonClass: 'btn btn-danger',
+                            customClass: 'wpuf-custom-field-swal-wide',
+                        }).then((result) => {
+                            if (result) {
+                                state.show_custom_field_tooltip = false;
+                            } else {
+                                
+                            }
+                        } );
+                    }
 
                     if (el && !is_element_in_viewport(el.get(0))) {
                         $('#builder-stage section').scrollTo(el, 800, {offset: -50});

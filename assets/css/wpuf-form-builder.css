@@ -1,6 +1,22 @@
 [v-cloak] {
   display: none;
 }
+.wpuf-custom-field-instruction {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.wpuf-custom-field-instruction img {
+  border: 1px solid #ddd;
+}
+.wpuf-custom-field-instruction strong {
+  margin-bottom: 10px;
+}
+.wpuf-custom-field-swal-wide {
+  width: 642px !important;
+}
 .wpuf-pro-text-alert {
   font-style: italic;
   color: #cccccc;

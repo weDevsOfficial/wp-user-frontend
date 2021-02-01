@@ -147,14 +147,13 @@
                         var image_one  = wpuf_assets_url + '/images/custom-fields/settings-show-custom-fields.png';
                         var image_two  = wpuf_assets_url + '/images/custom-fields/field-setting-for-showing-data.png';
                         var html       = '<div class="wpuf-custom-field-instruction">';
-                            html      += '<p style="text-align: center">Please follow the instruction</p>';
                             html      += '<div class="step-one">';
-                            html      += '<h5>Step One:</h5>';
-                            html      += '<p><strong><code>User Frontend > Settings </code></strong></p>';
+                            html      += '<h5>Please visit :</h5>';
+                            html      += '<p><strong><code>User Frontend > Settings > Frontend Posting </code></strong></p>';
                             html      += '<img src="'+ image_one +'" alt="settings">';
                             html      += '</div>';
                             html      += '<div class="step-two">';
-                            html      += '<h5>Step Two:</h5>';
+                            html      += '<h5>Edit field settings and go advanced options:</h5>';
                             html      += '<p><strong><code>Field Options > Advanced Options </code><strong></p>';
                             html      += '<img src="' + image_two + '" alt="custom field data">';
                             html      += '</div>';

@@ -148,13 +148,11 @@
                         var image_two  = wpuf_assets_url + '/images/custom-fields/field-setting-for-showing-data.png';
                         var html       = '<div class="wpuf-custom-field-instruction">';
                             html      += '<div class="step-one">';
-                            html      += '<h5>Please visit :</h5>';
-                            html      += '<p><strong><code>User Frontend > Settings > Frontend Posting </code></strong></p>';
+                            html      += '<h5>Navigate through<strong><code>WP-admin > WPUF > Settings > Frontend Posting</code></strong>- there you have to check the checkbox: "Show custom field data in the post content area"</h5>';
                             html      += '<img src="'+ image_one +'" alt="settings">';
                             html      += '</div>';
                             html      += '<div class="step-two">';
-                            html      += '<h5>Edit field settings and go advanced options:</h5>';
-                            html      += '<p><strong><code>Field Options > Advanced Options </code><strong></p>';
+                            html      += '<h5><strong>Edit the custom field inside the post form and on the right side you will see "Advanced Options". Expand that, scroll down and you will see "Show data on post" - set this yes.<strong></h5>';
                             html      += '<img src="' + image_two + '" alt="custom field data">';
                             html      += '</div>';
                             html      += '</div>';

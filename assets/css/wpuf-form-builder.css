@@ -10,6 +10,7 @@
 }
 .wpuf-custom-field-instruction img {
   border: 1px solid #ddd;
+  width: 100%;
 }
 .wpuf-custom-field-instruction strong {
   margin-bottom: 10px;

@@ -144,15 +144,15 @@
                     var el = $('#form-preview-stage .wpuf-form .field-items').eq(payload.toIndex);
                     if ('yes' == payload.field.is_meta && state.show_custom_field_tooltip) {
 
-                        var image_one  = wpuf_assets_url + '/images/custom-fields/settings-show-custom-fields.png';
-                        var image_two  = wpuf_assets_url + '/images/custom-fields/field-setting-for-showing-data.png';
+                        var image_one  = wpuf_assets_url + '/images/custom-fields/settings.png';
+                        var image_two  = wpuf_assets_url + '/images/custom-fields/advance.png';
                         var html       = '<div class="wpuf-custom-field-instruction">';
                             html      += '<div class="step-one">';
-                            html      += '<h5>Navigate through<strong><code>WP-admin > WPUF > Settings > Frontend Posting</code></strong>- there you have to check the checkbox: "Show custom field data in the post content area"</h5>';
+                            html      += '<p style="font-weight: 400">Navigate through<strong><code>WP-admin > WPUF > Settings > Frontend Posting</code></strong>- there you have to check the checkbox: "Show custom field data in the post content area"</p>';
                             html      += '<img src="'+ image_one +'" alt="settings">';
                             html      += '</div>';
                             html      += '<div class="step-two">';
-                            html      += '<h5><strong>Edit the custom field inside the post form and on the right side you will see "Advanced Options". Expand that, scroll down and you will see "Show data on post" - set this yes.<strong></h5>';
+                            html      += '<p style="font-weight: 400">Edit the custom field inside the post form and on the right side you will see <strong>"Advanced Options".</strong> Expand that, scroll down and you will see "Show data on post" - set this yes.</p>';
                             html      += '<img src="' + image_two + '" alt="custom field data">';
                             html      += '</div>';
                             html      += '</div>';
@@ -164,8 +164,8 @@
                             confirmButtonText: "Don't show again",
                             cancelButtonText: 'Okay',
                             confirmButtonClass: 'btn btn-success',
-                            cancelButtonClass: 'btn btn-danger',
-                            customClass: 'wpuf-custom-field-swal-wide',
+                            cancelButtonClass: 'btn btn-success',
+                            cancelButtonColor: '#007cba'
                         }).then((result) => {
                             if (result) {
                                 state.show_custom_field_tooltip = false;

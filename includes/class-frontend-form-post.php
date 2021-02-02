@@ -1014,7 +1014,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
-        if ( isset( $this->form_settings['enable_pay_per_post'] )
+        if ( $charging_enabled === 'yes' && isset( $this->form_settings['enable_pay_per_post'] )
             && wpuf_validate_boolean( $this->form_settings['enable_pay_per_post'] )
             && ! $is_update
         ) {

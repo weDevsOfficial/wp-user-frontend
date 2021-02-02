@@ -221,7 +221,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
                 );
             }
             $this->field_settings['exclude'] = $include;
-            if ( $first_item ) {
+            if ( isset( $first_item ) ) {
                 array_push( $this->field_settings['exclude'], $first_item->term_id );
             }
         }

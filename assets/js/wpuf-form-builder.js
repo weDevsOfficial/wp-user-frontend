@@ -43,6 +43,7 @@
             settings: wpuf_form_builder.form_settings,
             current_panel: 'form-fields',
             editing_field_id: 0, // editing form field id
+            index_to_insert: 0,
         },
 
         mutations: {

@@ -64,6 +64,8 @@ Vue.component('builder-stage', {
 
                 if ('panel' === source) {
                     // add new form element
+                    self.$store.state.index_to_insert = parseInt(toIndex);
+
                     if ( ! in_column_field ) {
                         var field_template  = ui.item[0].dataset.formField;
                         self.add_form_field(field_template);

@@ -1,3 +1,8 @@
+= v3.5.12 (05 February, 2021) =
+
+* Fix - Menu position has chenged due to dokan has same menu position
+* Fix - Drag and drop not working properly for new field
+
 = v3.5.11 (12 January, 2021) =
 * Fix - QR and math captcha added to pro feature list
 * Fix - Tooltip for category navigate

@@ -1,6 +1,21 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.13',
+        'released' => '2021-02-05',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Menu position has chenged due to dokan has same menu position', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Drag and drop not working properly for new field', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.11',
         'released' => '2021-01-12',
         'changes'  =>  [

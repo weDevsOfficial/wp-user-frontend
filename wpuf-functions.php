@@ -1069,7 +1069,6 @@ function wpuf_show_custom_fields( $content ) {
                                 }
                             }
 
-
                             if ( ! empty( $value ) ) {
                                 $address_html .= '<li>';
 

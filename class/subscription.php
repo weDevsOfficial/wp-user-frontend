@@ -44,7 +44,7 @@ class WPUF_Subscription {
         add_filter( 'wpuf_get_subscription_meta', [ $this, 'reset_trial' ] );
         //Handle non recurring subscription when expired
         add_action( 'wp', [ $this, 'handle_non_recur_subs' ] );
-        add_action( 'non_recur_subs_daily', [ $this, 'cancel_non_recurrent_subscription' ] );
+        add_action( 'non_recur_subs_daily', [ $this, 'cancel_non_recurring_subscription' ] );
     }
 
     /**
@@ -1280,7 +1280,7 @@ class WPUF_Subscription {
      *
      * @return void
      */
-    public function cancel_non_recurrent_subscription() {
+    public function cancel_non_recurring_subscription() {
         global $wpdb;
 
         $key = '_wpuf_subscription_pack';

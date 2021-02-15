@@ -250,9 +250,11 @@ class WPUF_Registration {
                 return;
             }
 
-            if ( is_email( $log ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {
+            if ( is_email( $log ) ){
                 $user = get_user_by( 'email', $log );
+            }
 
+            if ( $user && apply_filters( 'wpuf_get_username_from_email', true ) ) {
                 if ( isset( $user->user_login ) ) {
                     $userdata['user_login']  = $user->user_login;
                 } else {

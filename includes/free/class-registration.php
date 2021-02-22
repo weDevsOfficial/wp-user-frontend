@@ -17,13 +17,13 @@ class WPUF_Registration {
     public $userrole = '';
 
     public function __construct() {
-        add_shortcode( 'wpuf-registration', [$this, 'registration_form'] );
+        add_shortcode( 'wpuf-registration', [ $this, 'registration_form' ] );
 
-        add_action( 'init', [$this, 'process_registration'] );
-        add_action( 'init', [$this, 'wp_registration_page_redirect'] );
+        add_action( 'init', [ $this, 'process_registration' ] );
+        add_action( 'init', [ $this, 'wp_registration_page_redirect' ] );
         add_action( 'template_redirect', [ $this, 'registration_page_redirects' ] );
 
-        add_filter( 'register_url', [$this, 'get_registration_url'] );
+        add_filter( 'register_url', [ $this, 'get_registration_url' ] );
         add_filter( 'wpuf_registration_redirect', [ $this, 'redirect_to_payment_page' ], 10, 2 );
     }
 
@@ -33,7 +33,7 @@ class WPUF_Registration {
      * @return self
      */
     public static function init() {
-        if ( !self::$_instance ) {
+        if ( ! self::$_instance ) {
             self::$_instance = new self();
         }
 
@@ -76,7 +76,7 @@ class WPUF_Registration {
                     return $root_url;
                 }
 
-                return add_query_arg( ['redirect_to' => urlencode( $redirect_to )], $root_url );
+                return add_query_arg( [ 'redirect_to' => urlencode( $redirect_to ) ], $root_url );
                 break;
         }
     }
@@ -90,11 +90,11 @@ class WPUF_Registration {
         $register_link_override = wpuf_get_option( 'register_link_override', 'wpuf_profile', false );
         $page_id                = wpuf_get_option( 'reg_override_page', 'wpuf_profile', false );
 
-        if ( $register_link_override == 'off' ) {
+        if ( $register_link_override === 'off' ) {
             return $register_url;
         }
 
-        if ( !$page_id ) {
+        if ( ! $page_id ) {
             return false;
         }
 
@@ -132,10 +132,10 @@ class WPUF_Registration {
      */
     public function registration_form( $atts ) {
         $atts = shortcode_atts(
-        [
+            [
                 'role' => '',
             ], $atts
-         );
+        );
         $userrole = $atts['role'];
 
         $roleencoded = wpuf_encryption( $userrole );
@@ -149,15 +149,19 @@ class WPUF_Registration {
         ob_start();
 
         if ( is_user_logged_in() ) {
-            wpuf_load_template( 'logged-in.php', [
-                'user' => wp_get_current_user(),
-            ] );
+            wpuf_load_template(
+                'logged-in.php', [
+                    'user' => wp_get_current_user(),
+                ]
+            );
         } else {
             $queries = wp_unslash( $_GET );
 
-            array_walk( $queries, function ( &$a ) {
-                $a = sanitize_text_field( $a );
-            } );
+            array_walk(
+                $queries, function ( &$a ) {
+                    $a = sanitize_text_field( $a );
+                }
+            );
 
             $args = [
                 'action_url' => add_query_arg( $queries, $reg_page ),
@@ -176,7 +180,7 @@ class WPUF_Registration {
      * @return void
      */
     public function process_registration() {
-        if ( !empty( $_POST['wpuf_registration'] ) && !empty( $_POST['_wpnonce'] ) ) {
+        if ( ! empty( $_POST['wpuf_registration'] ) && ! empty( $_POST['_wpnonce'] ) ) {
             $userdata = [];
 
             if ( isset( $_POST['_wpnonce'] ) ) {
@@ -238,7 +242,7 @@ class WPUF_Registration {
                 return;
             }
 
-            if ( $pwd1 != $pwd2 ) {
+            if ( $pwd1 !== $pwd2 ) {
                 $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'Passwords are not same.', 'wp-user-frontend' );
 
                 return;
@@ -250,18 +254,20 @@ class WPUF_Registration {
                 return;
             }
 
-            if ( is_email( $log ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {
+            if ( is_email( $log ) ) {
                 $user = get_user_by( 'email', $log );
+            }
 
+            if ( $user && apply_filters( 'wpuf_get_username_from_email', true ) ) {
                 if ( isset( $user->user_login ) ) {
-                    $userdata['user_login']  = $user->user_login;
+                    $userdata['user_login'] = $user->user_login;
                 } else {
                     $this->registration_errors[] = '<strong>' . esc_html__( 'Error', 'wp-user-frontend' ) . ':</strong> ' . esc_html__( 'A user could not be found with this email address.', 'wp-user-frontend' );
 
                     return;
                 }
             } else {
-                $userdata['user_login']      = $log;
+                $userdata['user_login'] = $log;
             }
 
             $dec_role = wpuf_decryption( $urhidden );
@@ -287,16 +293,19 @@ class WPUF_Registration {
                 $user_email = stripslashes( $wpuf_user->user_email );
                 $blogname   = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 
+                /* translators: %s: site name */
                 $message = sprintf( esc_html__( 'New user registration on your site %s:', 'wp-user-frontend' ), get_option( 'blogname' ) ) . "\r\n\r\n";
+                /* translators: %s: username */
                 $message .= sprintf( esc_html__( 'Username: %s', 'wp-user-frontend' ), $user_login ) . "\r\n\r\n";
+                /* translators: %s: email */
                 $message .= sprintf( esc_html__( 'E-mail: %s', 'wp-user-frontend' ), $user_email ) . "\r\n";
                 $subject = 'New User Registration';
 
                 $subject = apply_filters( 'wpuf_default_reg_admin_mail_subject', $subject );
                 $message = apply_filters( 'wpuf_default_reg_admin_mail_body', $message );
-
-                wp_mail( get_option( 'admin_email' ), sprintf( esc_html__( '[%s] %s', 'wp-user-frontend' ), $blogname, $subject ), $message );
-
+                /* translators: %s %s: site name subject*/
+                wp_mail( get_option( 'admin_email' ), sprintf( esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ), $blogname, $subject ), $message );
+                /* translators: %s: username */
                 $message = sprintf( esc_html__( 'Hi, %s', 'wp-user-frontend' ), $user_login ) . "\r\n";
                 $message .= 'Congrats! You are Successfully registered to ' . $blogname . "\r\n\r\n";
                 $message .= 'Thanks';
@@ -304,13 +313,13 @@ class WPUF_Registration {
 
                 $subject = apply_filters( 'wpuf_default_reg_mail_subject', $subject );
                 $message = apply_filters( 'wpuf_default_reg_mail_body', $message );
-
-                wp_mail( $user_email, sprintf( esc_html__( '[%s] %s', 'wp-user-frontend' ), $blogname, $subject ), $message );
+                /* translators: %s %s: site name subject*/
+                wp_mail( $user_email, sprintf( esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ), $blogname, $subject ), $message );
             }
 
             $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
 
-            if ( $autologin_after_registration == 'on' ) {
+            if ( $autologin_after_registration === 'on' ) {
                 wp_clear_auth_cookie();
                 wp_set_current_user( $user );
                 wp_set_auth_cookie( $user );
@@ -321,7 +330,7 @@ class WPUF_Registration {
 
                 return;
             } else {
-                if ( !empty( $_POST['redirect_to'] ) ) {
+                if ( ! empty( $_POST['redirect_to'] ) ) {
                     $redirect = sanitize_text_field( wp_unslash( $_POST['redirect_to'] ) );
                 } else {
                     $redirect = $this->get_registration_url() . '?success=yes';
@@ -341,8 +350,8 @@ class WPUF_Registration {
         global $pagenow;
         $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 
-        if ( !is_admin() && $pagenow == 'wp-login.php' && $action == 'register' ) {
-            if ( wpuf_get_option( 'register_link_override', 'wpuf_profile' ) != 'on' ) {
+        if ( ! is_admin() && $pagenow === 'wp-login.php' && $action === 'register' ) {
+            if ( wpuf_get_option( 'register_link_override', 'wpuf_profile' ) !== 'on' ) {
                 return;
             }
 
@@ -399,9 +408,11 @@ class WPUF_Registration {
          *
          * @param array $allowed_html
          */
-        $allowed_html = apply_filters( 'wpuf_registration_errors_allowed_html', [
-            'strong' => [],
-        ] );
+        $allowed_html = apply_filters(
+            'wpuf_registration_errors_allowed_html', [
+                'strong' => [],
+            ]
+        );
 
         if ( $this->registration_errors ) {
             foreach ( $this->registration_errors as $error ) {
@@ -436,9 +447,9 @@ class WPUF_Registration {
     public static function get_posted_value( $key ) {
         $get = wp_unslash( $_GET );
 
-        if ( isset( $_REQUEST[$key] ) ) {
-            $required_key = sanitize_text_field( wp_unslash( $_REQUEST[$key] ) );
-           return $required_key;
+        if ( isset( $_REQUEST[ $key ] ) ) {
+            $required_key = sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) );
+            return $required_key;
         }
 
         return '';
@@ -482,12 +493,14 @@ class WPUF_Registration {
             $payment_page    = get_permalink( $payment_page_id );
 
             if ( $payment_page ) {
-                $redirect = add_query_arg( [
-                    'action'  => 'wpuf_pay',
-                    'user_id' => $user,
-                    'type'    => 'pack',
-                    'pack_id' => $get['pack_id'],
-                ], $payment_page );
+                $redirect = add_query_arg(
+                    [
+                        'action'  => 'wpuf_pay',
+                        'user_id' => $user,
+                        'type'    => 'pack',
+                        'pack_id' => $get['pack_id'],
+                    ], $payment_page
+                );
             }
         }
 

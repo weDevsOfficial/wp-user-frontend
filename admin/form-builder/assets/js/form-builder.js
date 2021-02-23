@@ -111,7 +111,7 @@
                 for (i = 0; i < state.form_fields.length; i++) {
                     // check if the editing field exist in normal fields
                     if (state.form_fields[i].id === parseInt(payload.editing_field_id)) {
-                        if (payload.field_name === 'name') {
+                        if (payload.field_name === 'name'  && payload.editing_field_id < 999999 ) {
                             continue;
                         } else {
                             state.form_fields[i][payload.field_name] = payload.value;

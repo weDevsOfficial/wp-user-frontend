@@ -86,46 +86,47 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     public function admin_reg_forms_page() {
-        ?>
-        <h2><?php esc_html_e( 'Registration Form', 'wp-user-frontend' ); ?></h2>
+        ?> 
+        <div class="wpuf-registration-form-notice">
+            <div class="wpuf-notice wpuf-registration-shortcode-notice" style="padding: 20px;background: #fff;border: 1px solid #ddd;max-width: 360px;">
+                <h3 style="margin: 0;"><?php esc_html_e( 'Registration Form', 'wp-user-frontend' ); ?></h3>
+                <p>
+                    <?php printf( __( 'Use the shortcode %s for a simple and default WordPress registration form.', 'wp-user-frontend' ), '<code>[wpuf-registration]</code>' ); ?>
+                </p>
+                <p>
+                    <a target="_blank" class="button" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/how-to-setup-registrationlogin-page/">
+                        <span class="dashicons dashicons-sos" style="margin-top: 3px;"></span>
+                        <?php esc_html_e( 'Learn How to Setup', 'wp-user-frontend' ); ?>
+                    </a>
+                </p>
+            </div>
+            <div class="wpuf-notice" style="padding: 20px;background: #fff;border: 1px solid #ddd;max-width: 360px;">
+                <h3 style="margin: 0;"><?php esc_html_e( 'Pro Features', 'wp-user-frontend' ); ?></h3>
 
-        <p>
-            <?php esc_html_e( 'Use the shortcode <code>[wpuf-registration]</code> for a simple and default WordPress registration form.', 'wp-user-frontend' ); ?>
-        </p>
+                <p>
+                    <?php echo wp_kses_post( __( 'Registration form builder is a two way form which can be used both for <strong>user registration</strong> and <strong>profile editing</strong>.', 'wp-user-frontend' ) ); ?>
+                </p>
 
-        <p>
-            <a target="_blank" class="button" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/how-to-setup-registrationlogin-page/">
-                <span class="dashicons dashicons-sos" style="margin-top: 3px;"></span>
-                Learn How to Setup
-            </a>
-        </p>
+                <ul class="wpuf-pro-features">
+                    <li>
+                        <span class="dashicons dashicons-yes"></span>
+                        <span class="feature"><?php esc_html_e( 'Registration Form Builder', 'wp-user-frontend' ); ?></span>
+                    </li>
+                    <li>
+                        <span class="dashicons dashicons-yes"></span>
+                        <span class="feature"><?php esc_html_e( 'Profile Form Builder', 'wp-user-frontend' ); ?></span>
+                    </li>
+                    <li>
+                        <span class="dashicons dashicons-yes"></span>
+                        <span class="feature"><?php esc_html_e( 'Register by Subscription Package Purchase', 'wp-user-frontend' ); ?></span>
+                    </li>
+                </ul>
 
-        <div class="wpuf-notice" style="padding: 20px;background: #fff;border: 1px solid #ddd;max-width: 360px;margin: 100px auto 0 auto;">
-            <h3 style="margin: 0;">Pro Features</h3>
-
-            <p>
-                <?php echo wp_kses_post( __( 'Registration form builder is a two way form which can be used both for <strong>user registration</strong> and <strong>profile editing</strong>.', 'wp-user-frontend' ) ); ?>
-            </p>
-
-            <ul class="wpuf-pro-features">
-                <li>
-                    <span class="dashicons dashicons-yes"></span>
-                    <span class="feature">Registration Form Builder</span>
-                </li>
-                <li>
-                    <span class="dashicons dashicons-yes"></span>
-                    <span class="feature">Profile Form Builder</span>
-                </li>
-                <li>
-                    <span class="dashicons dashicons-yes"></span>
-                    <span class="feature">Register by Subscription Package Purchase</span>
-                </li>
-            </ul>
-
-            <p style="margin-top: 30px;">
-                <a href="<?php echo esc_url(self::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
-                <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php esc_html_e( 'Learn More', 'wp-user-frontend' ); ?></a>
-            </p>
+                <p style="margin-top: 30px;">
+                    <a href="<?php echo esc_url(self::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
+                    <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php esc_html_e( 'Learn More', 'wp-user-frontend' ); ?></a>
+                </p>
+            </div>
         </div>
 
         <style type="text/css">

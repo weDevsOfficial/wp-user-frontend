@@ -1020,3 +1020,13 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
 .wpuf-subscription-pack-settings .subscription-nav-content section .form-table td {
   padding: 15px 0;
 }
+.wpuf-registration-form-notice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+.wpuf-registration-shortcode-notice {
+  min-height: 225px;
+  margin: 15px;
+}

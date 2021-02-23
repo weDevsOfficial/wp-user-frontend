@@ -543,7 +543,13 @@ class WPUF_Simple_Login {
 
         if ( $redirect_after_login ) {
             if ( 'previous_page' === $redirect_after_login ) {
-                return wp_get_referer();
+                $prev_url = wp_get_referer();
+                if ($prev_url){
+                    return $prev_url;
+                }
+
+                global $wp;
+                return home_url( add_query_arg( [], $wp->request ) );
             }
 
             $redirect_page_link = get_permalink( $redirect_after_login );

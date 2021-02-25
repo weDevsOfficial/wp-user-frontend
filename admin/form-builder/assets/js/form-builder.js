@@ -138,7 +138,8 @@
             // add new form field element
             add_form_field_element: function (state, payload) {
                 state.form_fields.splice(payload.toIndex, 0, payload.field);
-
+                var sprintf = wp.i18n.sprintf;
+                var __ = wp.i18n.__;
                 // bring newly added element into viewport
                 Vue.nextTick(function () {
                     var el = $('#form-preview-stage .wpuf-form .field-items').eq(payload.toIndex);
@@ -148,16 +149,16 @@
                         var image_two  = wpuf_assets_url + '/images/custom-fields/advance.png';
                         var html       = '<div class="wpuf-custom-field-instruction">';
                             html      += '<div class="step-one">';
-                            html      += '<p style="font-weight: 400">Navigate through<strong><code>WP-admin > WPUF > Settings > Frontend Posting</code></strong>- there you have to check the checkbox: "Show custom field data in the post content area"</p>';
+                            html      += sprintf( '<p style="font-weight: 400">%s<strong><code>%s</code></strong>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
                             html      += '<img src="'+ image_one +'" alt="settings">';
                             html      += '</div>';
                             html      += '<div class="step-two">';
-                            html      += '<p style="font-weight: 400">Edit the custom field inside the post form and on the right side you will see <strong>"Advanced Options".</strong> Expand that, scroll down and you will see "Show data on post" - set this yes.</p>';
+                            html      += sprintf( '<p style="font-weight: 400">%s<strong>%s</strong>%s</p>', __( 'Edit the custom field inside the post form and on the right side you will see', 'wp-user-frontend' ), __( '"Advanced Options".', 'wp-user-frontend' ), __( ' Expand that, scroll down and you will see "Show data on post" - set this yes.', 'wp-user-frontend' ) );
                             html      += '<img src="' + image_two + '" alt="custom field data">';
                             html      += '</div>';
                             html      += '</div>';
                         swal({
-                            title: "Do you want to show custom field data inside your post ?",
+                            title: __( 'Do you want to show custom field data inside your post ?', 'wp-user-frontend' ),
                             html: html,
                             showCancelButton: true,
                             confirmButtonColor: '#d54e21',

@@ -42,6 +42,9 @@ class WPUF_Subscription {
         add_action( 'wpuf_draft_post_after_insert', [ $this, 'reset_user_subscription_data' ], 10, 4 );
 
         add_filter( 'wpuf_get_subscription_meta', [ $this, 'reset_trial' ] );
+        //Handle non recurring subscription when expired
+        add_action( 'wp', [ $this, 'handle_non_recur_subs' ] );
+        add_action( 'non_recur_subs_daily', [ $this, 'cancel_non_recurring_subscription' ] );
     }
 
     /**
@@ -1255,5 +1258,56 @@ class WPUF_Subscription {
             unset( $sub_meta['trial_duration_type'] );
         }
         return $sub_meta;
+    }
+
+    /**
+     * Add daily cron for non recur subscritpion
+     *
+     * @since WPUF_PRO
+     *
+     * @return void
+     */
+    public function handle_non_recur_subs() {
+        if ( ! wp_next_scheduled( 'non_recur_subs_daily' ) ) {
+            wp_schedule_event( time(), 'daily', 'non_recur_subs_daily' );
+        }
+    }
+
+    /**
+     * Cancel non recurring subs if expired
+     *
+     * @since WPUF_PRO
+     *
+     * @return void
+     */
+    public function cancel_non_recurring_subscription() {
+        global $wpdb;
+
+        $key = '_wpuf_subscription_pack';
+
+        $all_subscription = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+        SELECT um.meta_value,um.user_id FROM {$wpdb->usermeta} um
+        LEFT JOIN {$wpdb->users} u ON u.ID = um.user_id
+        WHERE um.meta_key = %s
+    ", $key
+            )
+        );
+
+        $current_time  = current_time( 'mysql' );
+        $non_recurrent = array_filter(
+            $all_subscription, function ( $pack ) use ( $current_time ) {
+                $pack = maybe_unserialize( $pack->meta_value );
+                return $pack['recurring'] === 'no' && $current_time >= $pack['expire'];
+            }
+        );
+
+        foreach ( $non_recurrent as $ns ) {
+            $user_id  = $ns->user_id;
+            $sub_meta = 'cancel';
+
+            self::update_user_subscription_meta( $user_id, $sub_meta );
+        }
     }
 }

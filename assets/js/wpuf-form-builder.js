@@ -44,6 +44,7 @@
             current_panel: 'form-fields',
             editing_field_id: 0, // editing form field id
             show_custom_field_tooltip: true,
+            index_to_insert: 0,
         },
 
         mutations: {

@@ -3880,3 +3880,24 @@ function wpuf_user_has_roles( $roles, $user_id = 0 ) {
 
     return false;
 }
+
+/**
+ * Create a private page for form preview
+ *
+ * @return bool|false|string|WP_Error
+ */
+function get_wpuf_preview_page(){
+    $preview_page_id = get_option('wpuf_preview_page', false);
+
+    if ( $preview_page_id ) {
+        return get_permalink($preview_page_id);
+    }
+
+    $post_id = wp_insert_post([
+        'post_title' => 'wpuf-preview',
+        'post_type' => 'page',
+        'post_status' => 'private',]);
+    update_option('wpuf_preview_page', $post_id);
+
+    return get_permalink(get_option('wpuf_preview_page'));
+}

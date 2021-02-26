@@ -3888,15 +3888,20 @@ function wpuf_user_has_roles( $roles, $user_id = 0 ) {
  */
 function get_wpuf_preview_page(){
     $preview_page_id = get_option('wpuf_preview_page', false);
-    $page_url        = get_post_status( $preview_page_id ) !== 'trash' ? get_permalink( $preview_page_id ) : false;
+
+    if ( $preview_page_id && get_post_status( $preview_page_id ) !== 'private'){
+        wp_update_post(['ID'=>$preview_page_id, 'post_status'=>'private']);
+    }
+
+    $page_url = get_permalink( $preview_page_id );
+
     if ( $page_url ) {
         return $page_url;
     }
 
-    wp_delete_post( $preview_page_id );
     $post_id = wp_insert_post([
-        'post_title' => 'wpuf-preview',
-        'post_type' => 'page',
+        'post_title'  => 'wpuf-preview',
+        'post_type'   => 'page',
         'post_status' => 'private',]);
     update_option('wpuf_preview_page', $post_id);
 

@@ -3,8 +3,11 @@
 @mediaXS: 767px;
 @mediaSM: 991px;
 @mediaMD: 1200px;
-
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;1,300&display=swap');
 /* DivTable.com */
+body {
+    font-family: 'Open Sans', sans-serif !important; 
+}
 .wpufTable{
     display: table;
     width: 100%;
@@ -35,7 +38,7 @@
 }
 
 .wpuf-menu-item.active a{
-    color: #040202;
+    color: #5C5CFB !important;
 }
 
 .clearfix() {
@@ -1367,14 +1370,20 @@ body.rtl{
     }
 }
 .wpuf-dashboard-container {
+    font-family: 'Open Sans', sans-serif !important;
+    max-width: 85rem !important;
     .clearfix();
     .wpuf-dashboard-navigation {
-        width: 30%;
+        width: 20%;
         float: left;
 
         a {
             text-decoration: none;
             box-shadow: none;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
         }
 
         ul {
@@ -1401,8 +1410,12 @@ body.rtl{
     }
 
     .wpuf-dashboard-content {
-        width: 68%;
+        width: 80%;
         float: right;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         @media (max-width: @mediaSM){
             width: 100%;
         }
@@ -1430,25 +1443,34 @@ body.rtl{
     }
     table.items-table {
         min-width: 600px;
+        margin-top: 0px;
+        border: 1.0218px solid #DAE1F5;
+        font-family: 'Open Sans', sans-serif !important;
+        color: #000 !important;
+        font-size: 16px !important;
+        font-weight: 400 !important;
         a {
             text-decoration: none;
             box-shadow: none;
+            color: #000 !important;
         }
-
-        border: 0;
 
         th, td {
             border: 0;
             padding: 10px;
         }
 
+        th {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.07);
+        }
+
         tr {
             text-align: left;
-            outline: 1px solid #f1f1f1;
+            border: 1px solid #DAE1F5;
         }
 
         .items-list-header {
-            background-color: #f1f1f1;
+            // background-color: #f1f1f1;
         }
     }
 
@@ -1492,6 +1514,7 @@ body.rtl{
         table.items-table{
             width: 100%;
             margin-bottom: 40px !important;
+            border: 1.0218px solid #DAE1F5;
         }
     }
 }
@@ -1790,17 +1813,10 @@ ul.wpuf-form .weforms-frontend-field-points{
 
 /* Front End Posts List Tools */
 .wpuf-posts-options{
-   padding: 0 10px;
-   border-right: 1px solid #ccc;
-}
-
-.wpuf-posts-options:first-child{
-   padding-left: 0;
-}
-
-.wpuf-posts-options:last-child{
-   padding-right: 0;
-   border-right: 0;
+    display: inline-block;
+    padding: 7px 7px;
+    border-radius: 100%;
+    // margin: 0px 5px;
 }
 
 /* CSS for custom columns */

@@ -1,6 +1,41 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.14',
+        'released' => '2021-03-08',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Meta key will not change if label update', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Login redirect empty previous url', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Email doesnt set as username', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Post redirection to payment doesn\'t work', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Address field not working when used with conditional logic', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Ajax type category child of not working', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Non recurring subscription did not work', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.13',
         'released' => '2021-02-05',
         'changes'  =>  [

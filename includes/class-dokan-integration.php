@@ -52,7 +52,7 @@ if ( !class_exists( 'WPUF_Dokan_Integration' ) ) {
          */
         public function load_wpuf_posts_template( $query_vars ) {
             if ( isset( $query_vars['posts'] ) ) {
-                require_once WPUF_ROOT . '/templates/dokan/posts.php';
+                wpuf_load_template('dokan/posts.php');
             }
         }
 

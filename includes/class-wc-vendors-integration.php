@@ -119,7 +119,7 @@ if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
             $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 
             if ( $action == 'post-listing' || $action == 'new-post' || $action == 'edit-post' || $action == 'del' ) {
-                require_once WPUF_ROOT . '/templates/wc-vendors/posts.php'; ?>
+                wpuf_load_template('wc-vendors/posts.php'); ?>
             <script type="text/javascript">
                 var WPUFContent = document.querySelector('.wpuf-wc-vendors-submit-post-page');
                 var WCVendorArea = WPUFContent.parentElement;

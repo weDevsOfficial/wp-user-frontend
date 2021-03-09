@@ -109,8 +109,7 @@ if ( !class_exists( 'WPUF_WCMp_Integration' ) ) {
          */
         public function wcmp_vendor_dashboard_submit_post_endpoint() {
             global $WCMp, $wp;
-
-            require_once WPUF_ROOT . '/templates/wc-marketplace/posts.php';
+            wpuf_load_template('wc-marketplace/posts.php');
         }
 
         /**

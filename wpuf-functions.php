@@ -2023,10 +2023,6 @@ function wpuf_get_account_sections() {
             'label' => __( 'Dashboard', 'wp-user-frontend' ),
         ],
         [
-            'slug' => 'posts',
-            'label' => __( 'Posts', 'wp-user-frontend' ),
-        ],
-        [
             'slug' => 'edit-profile',
             'label' => __( 'Edit Profile', 'wp-user-frontend' ),
         ],

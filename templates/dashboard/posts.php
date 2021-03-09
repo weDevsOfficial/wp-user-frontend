@@ -1,6 +1,7 @@
 <?php
 
-$post_type = 'post';
+$post_type = $_GET['section'];
+
 global $userdata;
 
 $userdata = get_userdata( $userdata->ID ); //wp 3.3 fix

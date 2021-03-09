@@ -6,7 +6,6 @@
  * @author Tareq Hasan
  */
 class WPUF_Frontend_Account {
-
     /**
 
      * Class constructor
@@ -14,7 +13,9 @@ class WPUF_Frontend_Account {
     public function __construct() {
         add_shortcode( 'wpuf_account', [ $this, 'shortcode' ] );
         add_action( 'wpuf_account_content_dashboard', [ $this, 'dashboard_section' ], 10, 2 );
-        add_action( 'wpuf_account_content_posts', [ $this, 'posts_section' ], 10, 2 );
+        foreach ( $this->get_allowed_cpt() as $post_type ){
+            add_action( 'wpuf_account_content_'.$post_type, [ $this, 'posts_section' ], 10, 2 );
+        }
         add_action( 'wpuf_account_content_subscription', [ $this, 'subscription_section' ], 10, 2 );
         add_action( 'wpuf_account_content_edit-profile', [ $this, 'edit_profile_section' ], 10, 2 );
         add_action( 'wpuf_account_content_billing-address', [ $this, 'billing_address_section' ], 10, 2 );
@@ -148,6 +149,25 @@ class WPUF_Frontend_Account {
         if ( is_user_logged_in() ) {
             $default_active_tab = wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' );
             $section            = isset( $_REQUEST['section'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['section'] ) ) : $default_active_tab;
+            $allowed_posts      = $this->get_allowed_cpt();
+            if ( '' !== $allowed_posts) {
+                add_filter('wpuf_account_sections', function ($account_sections) use ($allowed_posts) {
+                    foreach ($allowed_posts as $post_type) {
+                        $cpt['slug']  = $post_type;
+                        $cpt['label'] = __(ucfirst($post_type).'s', 'wp-user-frontend');
+                        array_splice($account_sections, 1, 0, [$cpt]);
+                    }
+                    return $account_sections;
+                });
+            }else{
+                add_filter('wpuf_account_sections', function ($account_sections) {
+                        $post['slug']  = 'post';
+                        $post['label'] = __('Posts', 'wp-user-frontend');
+                        array_splice($account_sections, 1, 0, [$post]);
+                    return $account_sections;
+                });
+            }
+
             $sections           = wpuf_get_account_sections();
             $current_section    = [];
 
@@ -373,5 +393,14 @@ class WPUF_Frontend_Account {
         }
 
         wp_send_json_success();
+    }
+
+    /**
+     * Get CPT for shwoing in dashboard area
+     *
+     * @return mixed|string
+     */
+    public function get_allowed_cpt(){
+       return wpuf_get_option('cp_on_acc_page','wpuf_my_account');
     }
 }

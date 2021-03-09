@@ -1,6 +1,6 @@
 <?php
 
-if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
+if ( ! class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
 
     /**
      * WC Vendors Integration Class
@@ -63,7 +63,7 @@ if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
          *
          * @return array $post_forms
          */
-        public function get_post_forms( $post_type='post' ) {
+        public function get_post_forms( $post_type = 'post' ) {
             $post_forms = [];
 
             $args = [
@@ -78,8 +78,8 @@ if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
                 $form_settings  = wpuf_get_form_settings( $form->ID );
                 $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : '';
 
-                if ( $form_post_type == $post_type ) {
-                    $post_forms[$form->ID] = $form->post_title;
+                if ( $form_post_type === $post_type ) {
+                    $post_forms[ $form->ID ] = $form->post_title;
                 }
             }
 
@@ -96,13 +96,15 @@ if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
          * @return array
          */
         public function add_wpuf_posts_page() {
-            $allow_wpuf_post  = get_option( 'allow_wcvendors_wpuf_post', 'no' );
+            $allow_wpuf_post = get_option( 'allow_wcvendors_wpuf_post', 'no' );
 
-            if ( $allow_wpuf_post == 'yes' ) {
+            if ( $allow_wpuf_post === 'yes' ) {
                 $dashboard_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
-                $post_page_url = add_query_arg( [
-                    'action' => 'post-listing',
-                ], $dashboard_url );
+                $post_page_url = add_query_arg(
+                    [
+                        'action' => 'post-listing',
+                    ], $dashboard_url
+                );
 
                 $output  = '<a href="' . $post_page_url . '" class="button">';
                 $output .= __( 'Posts', 'wp-user-frontend' );
@@ -118,8 +120,8 @@ if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
         public function after_dashboard() {
             $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 
-            if ( $action == 'post-listing' || $action == 'new-post' || $action == 'edit-post' || $action == 'del' ) {
-                wpuf_load_template('wc-vendors/posts.php'); ?>
+            if ( $action === 'post-listing' || $action === 'new-post' || $action === 'edit-post' || $action === 'del' ) {
+                wpuf_load_template( 'wc-vendors/posts.php' ); ?>
             <script type="text/javascript">
                 var WPUFContent = document.querySelector('.wpuf-wc-vendors-submit-post-page');
                 var WCVendorArea = WPUFContent.parentElement;
@@ -160,7 +162,7 @@ if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
                     background: #007acc;
                 }
             </style>
-            <?php
+                <?php
             }
         }
 
@@ -199,7 +201,7 @@ if ( !class_exists( 'WPUF_WC_Vendors_Integration' ) ) {
             $role          = (array) $user->roles;
             $selected_form = get_option( 'wcvendors_wpuf_allowed_post_form', '' );
 
-            if ( $role[0] == 'vendor' && $form_id == $selected_form && $form_settings['edit_redirect_to'] == 'same' ) {
+            if ( $role[0] === 'vendor' && $form_id === $selected_form && $form_settings['edit_redirect_to'] === 'same' ) {
                 $post_page_url = get_permalink( get_option( 'wcvendors_vendor_dashboard_page_id' ) );
 
                 $redirect_url = add_query_arg(

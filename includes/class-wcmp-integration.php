@@ -1,6 +1,6 @@
 <?php
 
-if ( !class_exists( 'WPUF_WCMp_Integration' ) ) {
+if ( ! class_exists( 'WPUF_WCMp_Integration' ) ) {
 
     /**
      * WC Marketplace Integration Class
@@ -97,7 +97,7 @@ if ( !class_exists( 'WPUF_WCMp_Integration' ) ) {
          * Update option field data
          */
         public function endpoint_option_fields_sanitize( $new_input, $input ) {
-            if ( isset( $input['wcmp_vendor_submit_post_endpoint'] ) && !empty( $input['wcmp_vendor_submit_post_endpoint'] ) ) {
+            if ( isset( $input['wcmp_vendor_submit_post_endpoint'] ) && ! empty( $input['wcmp_vendor_submit_post_endpoint'] ) ) {
                 $new_input['wcmp_vendor_submit_post_endpoint'] = sanitize_text_field( $input['wcmp_vendor_submit_post_endpoint'] );
             }
 
@@ -108,8 +108,9 @@ if ( !class_exists( 'WPUF_WCMp_Integration' ) ) {
          * Template for vendor submit post page
          */
         public function wcmp_vendor_dashboard_submit_post_endpoint() {
+            //phpcs:ignore
             global $WCMp, $wp;
-            wpuf_load_template('wc-marketplace/posts.php');
+            wpuf_load_template( 'wc-marketplace/posts.php' );
         }
 
         /**
@@ -156,7 +157,7 @@ if ( !class_exists( 'WPUF_WCMp_Integration' ) ) {
          *
          * @return array $post_forms
          */
-        public function get_post_forms( $post_type='post' ) {
+        public function get_post_forms( $post_type = 'post' ) {
             $post_forms = [];
 
             $args = [
@@ -171,8 +172,8 @@ if ( !class_exists( 'WPUF_WCMp_Integration' ) ) {
                 $form_settings  = wpuf_get_form_settings( $form->ID );
                 $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : '';
 
-                if ( $form_post_type == $post_type ) {
-                    $post_forms[$form->ID] = $form->post_title;
+                if ( $form_post_type === $post_type ) {
+                    $post_forms[ $form->ID ] = $form->post_title;
                 }
             }
 
@@ -214,7 +215,7 @@ if ( !class_exists( 'WPUF_WCMp_Integration' ) ) {
             $role          = (array) $user->roles;
             $selected_form = ( get_wcmp_vendor_settings( 'wpuf_post_forms', 'general' ) ) ? get_wcmp_vendor_settings( 'wpuf_post_forms', 'general' ) : '';
 
-            if ( $role[0] == 'dc_vendor' && $form_id == $selected_form && $form_settings['edit_redirect_to'] == 'same' ) {
+            if ( $role[0] === 'dc_vendor' && $form_id === $selected_form && $form_settings['edit_redirect_to'] === 'same' ) {
                 $post_page_url = wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_submit_post_endpoint', 'vendor', 'general', 'submit-post' ) );
 
                 $redirect_url = add_query_arg(

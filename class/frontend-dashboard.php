@@ -34,8 +34,8 @@ class WPUF_Frontend_Dashboard {
      */
     public function shortcode( $atts ) {
         do_action( 'wpuf_dashboard_shortcode_init', $atts );
-
         $attributes =  shortcode_atts( [ 'form_id'=>'off', 'post_type' => 'post', 'category' =>'off', 'featured_image' => 'default', 'meta' => 'off', 'excerpt' =>'off', 'payment_column' => 'on' ], $atts );
+        $attributes = array_merge($attributes,$atts);
         ob_start();
 
         if ( is_user_logged_in() ) {
@@ -91,7 +91,7 @@ class WPUF_Frontend_Dashboard {
                 ],
             ];
         }
-
+        $args            = array_merge($args,$attributes);
         $original_post   = $post;
         $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args, $attributes ) );
         $post_type_obj   = [];

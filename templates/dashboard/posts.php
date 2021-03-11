@@ -118,7 +118,7 @@ $post_type_obj   = get_post_type_object( $post_type );
                                 ?>
                             </td>
                         <?php } ?>
-                        <td>
+                        <td data-label="<?php _e( 'Title: ', 'wp-user-frontend' ); ?>">
                             <?php if ( !$show_link ) { ?>
 
                                 <?php the_title(); ?>
@@ -128,15 +128,18 @@ $post_type_obj   = get_post_type_object( $post_type );
                                 <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
 
                             <?php } ?>
+                            <span class="post-edit-icon">
+                                &#x25BE;
+                            </span>
                         </td>
-                        <td>
+                        <td data-label="<?php _e( 'Status: ', 'wp-user-frontend' ); ?>" class="data-column">
                             <?php wpuf_show_post_status( $post->post_status ); ?>
                         </td>
 
                         <?php do_action( 'wpuf_account_posts_row_col', $args, $post ); ?>
 
                         <?php if ( 'on' == $enable_payment && 'off' != $payment_column ) { ?>
-                            <td>
+                            <td data-label="<?php _e( 'Payment: ', 'wp-user-frontend' ); ?>" class="data-column">
                                 <?php if ( empty( $payment_status ) ) { ?>
                                     <?php esc_html_e( 'Not Applicable', 'wp-user-frontend' ); ?>
                                     <?php } elseif ( $payment_status != 'completed' ) { ?>
@@ -147,7 +150,7 @@ $post_type_obj   = get_post_type_object( $post_type );
                                     </td>
                                 <?php } ?>
 
-                                <td>
+                                <td data-label="<?php _e( 'Options: ', 'wp-user-frontend' ); ?>" class="data-column">
                                     <?php
                                     if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
                                         $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );

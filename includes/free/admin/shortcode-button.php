@@ -104,7 +104,7 @@ class WPUF_Shortcodes_Button {
         $assets_url = WPUF_ASSET_URI;
 
         wp_localize_script( 'wpuf-subscriptions', 'wpuf_shortcodes', apply_filters( 'wpuf_button_shortcodes', $shortcodes ) );
-        wp_localize_script( 'wpuf-subscriptions', 'wpuf_assets_url', $assets_url );
+        wp_localize_script( 'wpuf-subscriptions', 'wpuf_assets_url', [ 'url' => $assets_url ] );
     }
 
     /**

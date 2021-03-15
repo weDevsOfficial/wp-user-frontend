@@ -3,7 +3,7 @@ jQuery(document).ready(function($) {
     tinymce.create('tinymce.plugins.wpuf_button', {
         init : function(editor, url) {
                 var menuItem = [];
-                var ds_img = wpuf_assets_url +'/images/ufp.png';
+                var ds_img = wpuf_assets_url.url +'/images/ufp.png';
                 $.each( wpuf_shortcodes, function( i, val ){
                     var tempObj = {
                             text : val.title,

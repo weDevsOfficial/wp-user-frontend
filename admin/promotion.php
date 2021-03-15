@@ -27,46 +27,12 @@ class WPUF_Admin_Promotion {
         $current_time = $this->convert_utc_to_est();
 
         if ( 
-            strtotime( $current_time ) > strtotime( '2021-01-08 23:59:00 EST' ) 
-            || strtotime( $current_time ) < strtotime( '2020-12-22 09:00:00 EST' ) 
-          ) {
-            return;
-        }
-
-        if ( 
-            strtotime( '2020-11-23 09:00:00 EST' ) < strtotime( $current_time ) 
-            && strtotime( $current_time ) < strtotime( '2020-11-23 13:59:00 EST' )
+            strtotime( '2021-03-15 09:00:00 EST' ) < strtotime( $current_time ) 
+            && strtotime( $current_time ) < strtotime( '2021-03-22 23:59:00 EST' )
             ) {
-                $option_name = 'wpuf_2020_early_black_friday';
-                $notice      = __( 'Enjoy Flat 50% OFF on WP User Frontend Pro. Get Your Early Bird Black Friday', 'wp-user-frontend' );
-                $this->generate_notice( $notice, $option_name );
-        }
-
-        if ( 
-            strtotime( '2020-11-23 14:00:00 EST' ) < strtotime( $current_time ) 
-            && strtotime( $current_time ) < strtotime( '2020-11-27 23:59:00 EST' )
-            ) {
-                $option_name = 'wpuf_2020_black_friday';
-                $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Black Friday', 'wp-user-frontend' );
-                $this->generate_notice( $notice, $option_name );
-        }
-
-        if ( 
-            strtotime( '2020-11-28 00:00:00 EST' ) < strtotime( $current_time ) 
-            && strtotime( $current_time ) < strtotime( '2020-12-04 23:59:00 EST' )
-            ) {
-                $option_name = 'wpuf_2020_cyber_monday';
-                $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your Cyber Monday', 'wp-user-frontend' );
-                $this->generate_notice( $notice, $option_name );
-        }
-
-        if ( 
-            strtotime( '2020-12-22 09:00:00 EST' ) < strtotime( $current_time ) 
-            && strtotime( $current_time ) < strtotime( '2021-01-08 23:59:00 EST' )
-            ) {
-                $option_name = 'wpuf_2020_chrismas';
-                $notice      = __( 'Enjoy Up To 50% OFF on WP User Frontend Pro. Get Your ', 'wp-user-frontend' );
-                $this->generate_notice( $notice, $option_name );
+            $option_name = 'wpuf_2021_wedevs_birthday';
+            $notice      =  sprintf( '<p>%s <a href="%s" target="_blank">%s</a></p>', __( 'It\'s Our Birthday! Enjoy Up To 45% OFF on WP User Frontend Pro', 'wp-user-frontend' ), 'https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf-wedevs-birthday', __( 'Get Now', 'wp-user-frontend' ) );
+            $this->generate_notice( $notice, $option_name );
         }
     }
 
@@ -243,19 +209,14 @@ class WPUF_Admin_Promotion {
         }        
         ?>
         <div class="notice notice-success is-dismissible" id="wpuf-bfcm-notice">
-            <p>
-                <?php echo $message; ?>
-                <a 
-                href="https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf-holidays" 
-                target="_blank">Holiday Deals Now.</a>
-            </p>
+            <?php echo $message; ?>
             <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
         </div>
 
         <script type='text/javascript'>
             jQuery('body').on('click', '#wpuf-bfcm-notice .notice-dismiss', function (e) {
                 e.preventDefault();
-
+                jQuery('#wpuf-bfcm-notice').remove();
                 wp.ajax.post('wpuf-dismiss-promotional-offer-notice', {
                     dismissed: true,
                     option_name: '<?php echo esc_html( $option_name ); ?>',

@@ -3,9 +3,9 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership, frontend-post
 Requires at least: 4.0
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 3.5.14
+Stable tag: 3.5.15
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -262,6 +262,12 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 == Changelog ==
+
+= v3.5.15 (15 March, 2021) =
+
+* Notice - Limited time promotion for weDevs birthday
+* Fix - Overflow footer on form builder page
+* Fix - WordPress 5.7 compatibility
 
 = v3.5.14 (08 March, 2021) =
 

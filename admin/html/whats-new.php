@@ -1,6 +1,25 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.15',
+        'released' => '2021-03-15',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Overflow footer on form builder page', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'WordPress 5.7 compatibility', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Limited time promotion for weDevs birthday', 'wp-user-frontend' ),
+                'type'  => 'Notice',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.14',
         'released' => '2021-03-08',
         'changes'  =>  [

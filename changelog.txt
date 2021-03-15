@@ -1,3 +1,9 @@
+= v3.5.15 (15 March, 2021) =
+
+* Notice - Limited time promotion for weDevs birthday
+* Fix - Overflow footer on form builder page
+* Fix - WordPress 5.7 compatibility
+
 = v3.5.14 (08 March, 2021) =
 
 * Fix - Meta key will not change if label update

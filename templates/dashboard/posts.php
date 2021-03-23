@@ -119,13 +119,13 @@ $post_type_obj   = get_post_type_object( $post_type );
                             </td>
                         <?php } ?>
                         <td data-label="<?php _e( 'Title: ', 'wp-user-frontend' ); ?>">
-                            <?php if ( !$show_link ) { ?>
+                            <?php if ( ! $show_link ) { ?>
 
-                                <?php the_title(); ?>
+                                <?php echo wp_trim_words( get_the_title(), 5 ); ?>
 
                             <?php } else { ?>
 
-                                <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
+                                <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo wp_trim_words( get_the_title(), 5 ); ?></a>
 
                             <?php } ?>
                             <span class="post-edit-icon">

@@ -884,6 +884,28 @@ class WPUF_Simple_Login {
 
             wp_mail( $user_email, $subject, $message );
         }
+
+        $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
+        $pack_id                      = ! empty( $_GET['pack_id'] ) ? $_GET['pack_id'] : '';
+
+        if ( $autologin_after_registration === 'on'
+            && $pack_id !== null && is_integer( (int) $pack_id ) ) {
+            wp_set_current_user( $user_id );
+            wp_set_auth_cookie( $user_id );
+        }
+
+        if ( $pack_id ) {
+            wp_safe_redirect(
+                add_query_arg(
+                    [
+                        'action' => 'wpuf_pay',
+                        'type' => 'pack',
+                        'pack_id' => $pack_id,
+                    ], home_url() . '/payment'
+                )
+            );
+        }
+
         add_filter( 'redirect_canonical', '__return_false' );
         do_action( 'wpuf_user_activated', $user_id );
     }

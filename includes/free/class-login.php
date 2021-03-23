@@ -75,7 +75,7 @@ class WPUF_Simple_Login {
     public function add_custom_fields() {
         $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
 
-        if ( $recaptcha == 'on' ) {
+        if ( $recaptcha === 'on' ) {
             echo wp_kses(
                 recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ), [
                     'div' => [
@@ -117,10 +117,7 @@ class WPUF_Simple_Login {
      * @since 2.9.0
      */
     public function login_form_scripts() {
-        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( 'wp_login_nonce' ) ) {
-        }
-
-        $post_data = wp_unslash( $_POST );
+        $post_data = wp_unslash( $_REQUEST );
 
         if ( isset( $post_data['wpuf_login'] ) ) {
             return;
@@ -128,7 +125,7 @@ class WPUF_Simple_Login {
 
         $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
 
-        if ( $recaptcha == 'on' ) { ?>
+        if ( $recaptcha === 'on' ) { ?>
             <style type="text/css">
                 body #login {
                     width: 350px;
@@ -148,18 +145,15 @@ class WPUF_Simple_Login {
      * @since 2.9.0
      */
     public function validate_custom_fields( $user, $password ) {
-        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( 'wp_login_nonce' ) ) {
-        }
-
-        if ( isset( $_POST['wpuf_login'] ) ) {
+        if ( isset( $_REQUEST['wpuf_login'] ) ) {
             return $user;
         }
 
         $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
 
-        if ( $recaptcha == 'on' ) {
-            if ( isset( $_POST['g-recaptcha-response'] ) ) {
-                if ( empty( $_POST['g-recaptcha-response'] ) ) {
+        if ( $recaptcha === 'on' ) {
+            if ( isset( $_REQUEST['g-recaptcha-response'] ) ) {
+                if ( empty( $_REQUEST['g-recaptcha-response'] ) ) {
                     $user = new WP_Error( 'WPUFLoginCaptchaError', 'Empty reCaptcha Field.' );
                 } else {
                     $no_captcha        = 1;
@@ -239,7 +233,7 @@ class WPUF_Simple_Login {
         $page_id                = wpuf_get_option( 'reg_override_page', 'wpuf_profile', false );
         $wp_reg_url             = site_url( 'wp-login.php?action=register', 'login' );
 
-        if ( $register_link_override == 'off' || ! $page_id ) {
+        if ( $register_link_override === 'off' || ! $page_id ) {
             return $wp_reg_url;
         }
 
@@ -376,7 +370,8 @@ class WPUF_Simple_Login {
 
                 case 'rp':
                 case 'resetpass':
-                    if ( $reset == 'true' ) {
+                    if ( $reset === 'true' ) {
+                        /* translators: %s: login url */
                         printf( '<div class="wpuf-message">' . esc_html( __( 'Your password has been reset. %s', 'wp-user-frontend' ) ) . '</div>', sprintf( '<a href="%s">%s</a>', esc_attr( $this->get_action_url( 'login' ) ), esc_html( __( 'Log In', 'wp-user-frontend' ) ) ) );
 
                         return;
@@ -391,7 +386,7 @@ class WPUF_Simple_Login {
                 default:
                     $loggedout = isset( $getdata['loggedout'] ) ? sanitize_text_field( $getdata['loggedout'] ) : '';
 
-                    if ( $loggedout == 'true' ) {
+                    if ( $loggedout === 'true' ) {
                         $this->messages[] = __( 'You are now logged out.', 'wp-user-frontend' );
                     }
 
@@ -512,8 +507,7 @@ class WPUF_Simple_Login {
             return;
         }
 
-        $redirect_to = isset( $_REQUEST['redirect_to'] ) ? wp_unslash( $_REQUEST['redirect_to'] ) : '';
-
+        $redirect_to = isset( $_REQUEST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_REQUEST['redirect_to'] ) ) : '';
         return $this->get_login_redirect_link( $redirect_to );
     }
 
@@ -572,7 +566,7 @@ class WPUF_Simple_Login {
 
         $link = get_permalink( $redirect_to );
 
-        if ( $override != 'on' || 'previous_page' == $redirect_to || empty( $link ) ) {
+        if ( $override !== 'on' || 'previous_page' === $redirect_to || empty( $link ) ) {
             return $redirect;
         }
 
@@ -587,7 +581,7 @@ class WPUF_Simple_Login {
     public function process_logout() {
         $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 
-        if ( $action == 'logout' ) {
+        if ( $action === 'logout' ) {
             if ( ! $this->is_override_enabled() ) {
                 return;
             }
@@ -778,6 +772,7 @@ class WPUF_Simple_Login {
                 $wpuf_user   = new WPUF_User( $user->ID );
 
                 if ( ! $wpuf_user->is_verified() ) {
+                    /* translators: %s: activation link */
                     $error->add( 'acitve_user', sprintf( __( '<strong>Your account is not active.</strong><br>Please check your email for activation link. <br><a href="%s">Click here</a> to resend the activation link', 'wp-user-frontend' ), $resend_link ) );
 
                     return $error;
@@ -823,7 +818,7 @@ class WPUF_Simple_Login {
 
         $activation_key = isset( $_GET['wpuf_registration_activation'] ) ? sanitize_text_field( wp_unslash( $_GET['wpuf_registration_activation'] ) ) : '';
 
-        if ( $user->get_activation_key() != $activation_key ) {
+        if ( $user->get_activation_key() !== $activation_key ) {
             wpuf()->login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
 
             return;
@@ -834,7 +829,7 @@ class WPUF_Simple_Login {
 
         $message = __( 'Your account has been activated', 'wp-user-frontend' );
 
-        if ( $wpuf_user_status != 'approved' ) {
+        if ( $wpuf_user_status !== 'approved' ) {
             $message = __( "Your account has been verified , but you can't login until manually approved your account by an administrator.", 'wp-user-frontend' );
         }
 
@@ -857,9 +852,9 @@ class WPUF_Simple_Login {
             if ( is_wp_error( $key ) ) {
                 return;
             }
-
+            /* translators: %s: blogname */
             $subject = sprintf( __( '[%s] Your username and password info', 'wp-user-frontend' ), $blogname );
-
+            /* translators: %s: username */
             $message  = sprintf( __( 'Username: %s', 'wp-user-frontend' ), $the_user->user_login ) . "\r\n\r\n";
             $message .= __( 'To set your password, visit the following address:', 'wp-user-frontend' ) . "\r\n\r\n";
             $message .= network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $the_user->user_login ), 'login' ) . "\r\n\r\n";
@@ -871,8 +866,9 @@ class WPUF_Simple_Login {
 
             wp_mail( $user_email, $subject, $message );
         } else {
+            /* translators: %s: blogname */
             $subject = sprintf( __( '[%s] Account has been activated', 'wp-user-frontend' ), $blogname );
-
+            /* translators: %s: username */
             $message  = sprintf( __( 'Hi %s,', 'wp-user-frontend' ), $the_user->user_login ) . "\r\n\r\n";
             $message .= __( 'Congrats! Your account has been activated. To login visit the following url:', 'wp-user-frontend' ) . "\r\n\r\n";
             $message .= wp_login_url() . "\r\n\r\n";
@@ -886,7 +882,7 @@ class WPUF_Simple_Login {
         }
 
         $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
-        $pack_id                      = ! empty( $_GET['pack_id'] ) ? $_GET['pack_id'] : '';
+        $pack_id                      = ! empty( $_GET['pack_id'] ) ? sanitize_key( wp_unslash( $_GET['pack_id'] ) ) : '';
 
         if ( $autologin_after_registration === 'on'
             && $pack_id !== null && is_integer( (int) $pack_id ) ) {
@@ -904,6 +900,7 @@ class WPUF_Simple_Login {
                     ], home_url() . '/payment'
                 )
             );
+            exit();
         }
 
         add_filter( 'redirect_canonical', '__return_false' );
@@ -924,8 +921,8 @@ class WPUF_Simple_Login {
     public function wp_login_page_redirect() {
         global $pagenow;
 
-        if ( ! is_admin() && $pagenow == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] == 'register' ) {
-            if ( wpuf_get_option( 'register_link_override', 'wpuf_profile' ) != 'on' ) {
+        if ( ! is_admin() && $pagenow === 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'register' ) {
+            if ( wpuf_get_option( 'register_link_override', 'wpuf_profile' ) !== 'on' ) {
                 return;
             }
 
@@ -969,6 +966,7 @@ class WPUF_Simple_Login {
 
         $message = __( 'Someone requested that the password be reset for the following account:', 'wp-user-frontend' ) . "\r\n\r\n";
         $message .= network_home_url( '/' ) . "\r\n\r\n";
+        /* translators: %s: username */
         $message .= sprintf( __( 'Username: %s', 'wp-user-frontend' ), $user_login ) . "\r\n\r\n";
         $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.', 'wp-user-frontend' ) . "\r\n\r\n";
         $message .= __( 'To reset your password, visit the following address:', 'wp-user-frontend' ) . "\r\n\r\n";
@@ -981,7 +979,7 @@ class WPUF_Simple_Login {
         }
 
         $user_data = get_user_by( 'login', $user_login );
-
+        /* translators: %s: blogname */
         $title   = sprintf( __( '[%s] Password Reset', 'wp-user-frontend' ), $blogname );
         $title   = apply_filters( 'retrieve_password_title', $title );
 
@@ -1023,6 +1021,7 @@ class WPUF_Simple_Login {
         $errors = apply_filters( 'wpuf_login_errors', $this->login_errors );
         if ( $errors ) {
             foreach ( $errors as $error ) {
+                //phpcs:disable
                 echo wp_kses_post( '<div class="wpuf-error">' . __( $error, 'wp-user-frontend' ) . '</div>' );
             }
         }

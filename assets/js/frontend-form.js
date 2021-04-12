@@ -631,15 +631,15 @@
 
             //check Google Map is required
             var map_required = self.find('[data-required="yes"][name^="google_map"]');
-            if ( map_required ) {
-                var val = $(map_required).val();
+            $.each(map_required, function(index, map){
+                var val = $(map).val();
                 if ( val == '' ) {
                     error = true;
                     error_type = 'required';
 
                     WP_User_Frontend.markError( map_required,  error_type );
                 }
-            }
+            });
 
             // if already some error found, bail out
             if (error) {

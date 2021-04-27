@@ -3882,3 +3882,22 @@ function wpuf_user_has_roles( $roles, $user_id = 0 ) {
 
     return false;
 }
+
+/**
+ * Sanitize nested text field
+ *
+ * @param $arr
+ *
+ * @return array
+ */
+function wpuf_recursive_sanitize_text_field($arr){
+    foreach ($arr as $key => &$value) {
+        if (is_array($value)) {
+            $value = wpuf_recursive_sanitize_text_field($value);
+        } else {
+            $value = sanitize_text_field($value);
+        }
+    }
+
+    return $arr;
+}

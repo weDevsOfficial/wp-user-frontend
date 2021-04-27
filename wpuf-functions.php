@@ -2269,7 +2269,7 @@ function wpuf_get_currencies() {
             'currency' => 'MUR',
             'label' => __( 'Mauritian Rupee', 'wp-user-frontend' ),
             'symbol' => '&#8377;',
-        ],        
+        ],
         [
             'currency' => 'NPR',
             'label' => __( 'Nepali Rupee', 'wp-user-frontend' ),
@@ -3922,4 +3922,23 @@ function get_wpuf_preview_page() {
     update_option( 'wpuf_preview_page', $post_id );
 
     return get_permalink( get_option( 'wpuf_preview_page' ) );
+}
+
+/**
+ * Sanitize nested text field
+ *
+ * @param $arr
+ *
+ * @return array
+ */
+function wpuf_recursive_sanitize_text_field($arr){
+    foreach ($arr as $key => &$value) {
+        if (is_array($value)) {
+            $value = wpuf_recursive_sanitize_text_field($value);
+        } else {
+            $value = sanitize_text_field($value);
+        }
+    }
+
+    return $arr;
 }

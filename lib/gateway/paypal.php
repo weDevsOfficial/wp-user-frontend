@@ -131,6 +131,7 @@ class WPUF_Paypal {
         $user_id          = $data['user_info']['id'];
         $listener_url     = add_query_arg( 'action', 'wpuf_paypal_success', home_url( '' ) );
         //$listener_url     = 'http://a53d2f68b609.ngrok.io/?action=wpuf_paypal_success';
+        //$listener_url     = 'https://wpuf.sharedwithexpose.com/?action=wpuf_paypal_success';
         $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
 
         if ( $redirect_page_id ) {
@@ -213,6 +214,7 @@ class WPUF_Paypal {
             if ( $data['custom']['trial_status'] == 'yes' ) {
                 $paypal_args['p1'] = $data['custom']['trial_duration'];
                 $paypal_args['t1'] = $trial_period;
+                $paypal_args['a1'] = 0;
             }
         } else {
             $paypal_args = [
@@ -237,7 +239,6 @@ class WPUF_Paypal {
                 'notify_url'    => $listener_url,
             ];
         }
-
         $this->set_mode();
 
         /**

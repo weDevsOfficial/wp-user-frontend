@@ -637,7 +637,7 @@
                     error = true;
                     error_type = 'required';
 
-                    WP_User_Frontend.markError( map_required,  error_type );
+                    WP_User_Frontend.markError( map,  error_type );
                 }
             });
 

@@ -29,9 +29,9 @@ This WordPress Profile Plugin allows registered users to edit their profile usin
 
 Admins can manage users from frontend as well as configure from backend those who can access the dashboard.
 
-<strong>Files & attachments</strong>
+<strong>Featured image & image</strong>
 
-Users can upload attachments from the frontend. Users can also upload post featured image. Image upload on post content area
+Users can upload image from the frontend. Users can also upload post featured image. Image upload on post content area
 
 <strong>Drag-n-drop form builder</strong>
 
@@ -148,6 +148,7 @@ Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the FREE & P
 * Assign new roles to forms
 * Captcha support
 * Update user profile information from frontend
+* Files & attachments upload
 * Avatar upload
 * User profiles in backend
 * Exclusive contents

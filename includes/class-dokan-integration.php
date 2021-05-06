@@ -1,6 +1,6 @@
 <?php
 
-if ( !class_exists( 'WPUF_Dokan_Integration' ) ) {
+if ( ! class_exists( 'WPUF_Dokan_Integration' ) ) {
 
     /**
      * WPUF Dokan Integration Class
@@ -10,7 +10,7 @@ if ( !class_exists( 'WPUF_Dokan_Integration' ) ) {
     class WPUF_Dokan_Integration {
 
         public function __construct() {
-            add_filter( 'dokan_get_dashboard_nav', [$this, 'add_wpuf_posts_page' ] );
+            add_filter( 'dokan_get_dashboard_nav', [ $this, 'add_wpuf_posts_page' ] );
             add_action( 'dokan_load_custom_template', [ $this, 'load_wpuf_posts_template' ] );
             add_filter( 'dokan_query_var_filter', [ $this, 'register_wpuf_posts_queryvar' ] );
             add_filter( 'dokan_settings_fields', [ $this, 'dokan_wpuf_settings' ] );
@@ -27,9 +27,9 @@ if ( !class_exists( 'WPUF_Dokan_Integration' ) ) {
          * @return array
          */
         public function add_wpuf_posts_page( $urls ) {
-            $access   	   = dokan_get_option( 'allow_wpuf_post', 'dokan_general' );
+            $access = dokan_get_option( 'allow_wpuf_post', 'dokan_general' );
 
-            if ( $access == 'on' ) {
+            if ( $access === 'on' ) {
                 $urls['posts'] = [
                     'title' => __( 'Posts', 'wp-user-frontend' ),
                     'icon'  => '<i class="fa fa-wordpress"></i>',
@@ -52,7 +52,7 @@ if ( !class_exists( 'WPUF_Dokan_Integration' ) ) {
          */
         public function load_wpuf_posts_template( $query_vars ) {
             if ( isset( $query_vars['posts'] ) ) {
-                require_once WPUF_ROOT . '/templates/dokan/posts.php';
+                wpuf_load_template( 'dokan/posts.php' );
             }
         }
 
@@ -110,7 +110,7 @@ if ( !class_exists( 'WPUF_Dokan_Integration' ) ) {
          *
          * @return array $post_forms
          */
-        public function get_post_forms( $post_type='post' ) {
+        public function get_post_forms( $post_type = 'post' ) {
             $post_forms = [];
 
             $args = [
@@ -122,11 +122,11 @@ if ( !class_exists( 'WPUF_Dokan_Integration' ) ) {
             $form_posts = get_posts( $args );
 
             foreach ( $form_posts as $form ) {
-                $form_settings 	= wpuf_get_form_settings( $form->ID );
+                $form_settings  = wpuf_get_form_settings( $form->ID );
                 $form_post_type = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : '';
 
-                if ( $form_post_type == $post_type ) {
-                    $post_forms[$form->ID] = $form->post_title;
+                if ( $form_post_type === $post_type ) {
+                    $post_forms[ $form->ID ] = $form->post_title;
                 }
             }
 

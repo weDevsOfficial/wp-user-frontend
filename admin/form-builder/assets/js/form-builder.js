@@ -43,6 +43,7 @@
             settings: wpuf_form_builder.form_settings,
             current_panel: 'form-fields',
             editing_field_id: 0, // editing form field id
+            show_custom_field_tooltip: true,
             index_to_insert: 0,
         },
 
@@ -143,10 +144,43 @@
             // add new form field element
             add_form_field_element: function (state, payload) {
                 state.form_fields.splice(payload.toIndex, 0, payload.field);
-
+                var sprintf = wp.i18n.sprintf;
+                var __ = wp.i18n.__;
                 // bring newly added element into viewport
                 Vue.nextTick(function () {
                     var el = $('#form-preview-stage .wpuf-form .field-items').eq(payload.toIndex);
+                    if ('yes' == payload.field.is_meta && state.show_custom_field_tooltip) {
+
+                        var image_one  = wpuf_assets_url + '/images/custom-fields/settings.png';
+                        var image_two  = wpuf_assets_url + '/images/custom-fields/advance.png';
+                        var html       = '<div class="wpuf-custom-field-instruction">';
+                            html      += '<div class="step-one">';
+                            html      += sprintf( '<p style="font-weight: 400">%s<strong><code>%s</code></strong>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
+                            html      += '<img src="'+ image_one +'" alt="settings">';
+                            html      += '</div>';
+                            html      += '<div class="step-two">';
+                            html      += sprintf( '<p style="font-weight: 400">%s<strong>%s</strong>%s</p>', __( 'Edit the custom field inside the post form and on the right side you will see', 'wp-user-frontend' ), __( '"Advanced Options".', 'wp-user-frontend' ), __( ' Expand that, scroll down and you will see "Show data on post" - set this yes.', 'wp-user-frontend' ) );
+                            html      += '<img src="' + image_two + '" alt="custom field data">';
+                            html      += '</div>';
+                            html      += '</div>';
+                        swal({
+                            title: __( 'Do you want to show custom field data inside your post ?', 'wp-user-frontend' ),
+                            html: html,
+                            showCancelButton: true,
+                            confirmButtonColor: '#d54e21',
+                            confirmButtonText: "Don't show again",
+                            cancelButtonText: 'Okay',
+                            confirmButtonClass: 'btn btn-success',
+                            cancelButtonClass: 'btn btn-success',
+                            cancelButtonColor: '#007cba'
+                        }).then((result) => {
+                            if (result) {
+                                state.show_custom_field_tooltip = false;
+                            } else {
+                                
+                            }
+                        } );
+                    }
 
                     if (el && !is_element_in_viewport(el.get(0))) {
                         $('#builder-stage section').scrollTo(el, 800, {offset: -50});

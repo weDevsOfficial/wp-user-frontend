@@ -2415,6 +2415,11 @@ function wpuf_get_currencies() {
             'symbol' => '&#8378;',
         ],
         [
+            'currency' => 'TTD',
+            'label' => __( 'Trinidad and Tobago Dollar', 'wp-user-frontend' ),
+            'symbol' => '&#84;&#84;&#36;',
+        ],
+        [
             'currency' => 'USD',
             'label' => __( 'US Dollar', 'wp-user-frontend' ),
             'symbol' => '&#36;',

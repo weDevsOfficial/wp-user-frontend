@@ -1,3 +1,11 @@
+= v3.5.16 (08 May, 2021) =
+
+* Update - Added Mauritian Rupee for currency
+* Update - Added eid promotional offer notice
+* Fix - Multiple google map validation for same form
+* Fix - Various issues on verification, autologin payments & address field
+* Fix - Docs update for file & attachments feature which is pro only
+
 = v3.5.15 (15 March, 2021) =
 
 * Notice - Limited time promotion for weDevs birthday
@@ -69,7 +77,7 @@
 * Fix - Post query loop for post forms
 * Fix - Post edit could not be edited after unlocking post edit
 * Fix - Taxes couldn't count properly when selecting different tax region
-* Fix - Google map field validation doesn't work 
+* Fix - Google map field validation doesn't work
 * Fix - Redirect payment page after post updating
 * Fix - Custom field value and link send as plain text when sending an email for post notification
 

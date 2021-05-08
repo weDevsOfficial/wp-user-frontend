@@ -2267,8 +2267,13 @@ function wpuf_get_currencies() {
         [
             'currency' => 'INR',
             'label' => __( 'Indian Rupee', 'wp-user-frontend' ),
-            'symbol' => '&#8377;',
+            'symbol' => 'Rs',
         ],
+        [
+            'currency' => 'MUR',
+            'label' => __( 'Mauritian Rupee', 'wp-user-frontend' ),
+            'symbol' => '&#8377;',
+        ],        
         [
             'currency' => 'NPR',
             'label' => __( 'Nepali Rupee', 'wp-user-frontend' ),

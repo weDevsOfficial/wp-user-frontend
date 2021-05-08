@@ -630,16 +630,16 @@
             });
 
             //check Google Map is required
-            var map_required = self.find('[data-required="yes"][name="google_map"]');
-            if ( map_required ) {
-                var val = $(map_required).val();
+            var map_required = self.find('[data-required="yes"][name^="google_map"]');
+            $.each(map_required, function(index, map){
+                var val = $(map).val();
                 if ( val == '' ) {
                     error = true;
                     error_type = 'required';
 
-                    WP_User_Frontend.markError( map_required,  error_type );
+                    WP_User_Frontend.markError( map,  error_type );
                 }
-            }
+            });
 
             // if already some error found, bail out
             if (error) {
@@ -896,7 +896,7 @@
                     if ( 'word' === limit_type ) {
                         numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words - 1;
                     }
-                    
+
                     limit ? $('.mce-path-item.mce-last', ed.container).html( limit_label + numWords +'/'+limit):'';
 
                     if ( limit && numWords > limit ) {
@@ -921,7 +921,7 @@
                     content_length = self.val().length + 1;
 
                     if ( 'word' === limit_type ) {
-                        content_length = self.val().split(' ').length;   
+                        content_length = self.val().split(' ').length;
                     }
 
                 if ( limit && content_length > limit ) {

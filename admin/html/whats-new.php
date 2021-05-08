@@ -1,5 +1,32 @@
 <?php
 $changelog = [
+     [
+        'version'  => 'Version 3.5.16',
+        'released' => '2021-05-08',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Added Mauritian Rupee for currency', 'wp-user-frontend' ),
+                'type'  => 'Update',
+            ],
+            [
+                'title' => __( 'Added eid promotional offer notice', 'wp-user-frontend' ),
+                'type'  => 'Update',
+            ],
+            [
+                'title' => __( 'Multiple google map validation for same form', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Various issues on verification, autologin payments & address field', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Docs update for file & attachments feature which is pro only', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
     [
         'version'  => 'Version 3.5.15',
         'released' => '2021-03-15',
@@ -225,7 +252,7 @@ $changelog = [
                 'type'  => 'Fix',
             ],
         ],
-    ],    
+    ],
     [
         'version'  => 'Version 3.4.0',
         'released' => '2020-08-24',

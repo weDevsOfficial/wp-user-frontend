@@ -435,6 +435,6 @@ class WPUF_Frontend_Account {
      * @return mixed|string
      */
     public function get_allowed_cpt() {
-        return wpuf_get_option( 'cp_on_acc_page', 'wpuf_my_account' );
+        return wpuf_get_option( 'cp_on_acc_page', 'wpuf_my_account', [ 'post' ] );
     }
 }

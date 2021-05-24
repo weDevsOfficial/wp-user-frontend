@@ -3886,11 +3886,16 @@ function wpuf_user_has_roles( $roles, $user_id = 0 ) {
  *
  * @return bool|false|string|WP_Error
  */
-function get_wpuf_preview_page(){
-    $preview_page_id = get_option('wpuf_preview_page', false);
+function get_wpuf_preview_page() {
+    $preview_page_id = get_option( 'wpuf_preview_page', false );
 
-    if ( $preview_page_id && get_post_status( $preview_page_id ) !== 'private'){
-        wp_update_post(['ID'=>$preview_page_id, 'post_status'=>'private']);
+    if ( $preview_page_id && get_post_status( $preview_page_id ) !== 'private' ) {
+        wp_update_post(
+            [
+                'ID' => $preview_page_id,
+                'post_status' => 'private',
+            ]
+        );
     }
 
     $page_url = get_permalink( $preview_page_id );
@@ -3899,11 +3904,14 @@ function get_wpuf_preview_page(){
         return $page_url;
     }
 
-    $post_id = wp_insert_post([
-        'post_title'  => 'wpuf-preview',
-        'post_type'   => 'page',
-        'post_status' => 'private',]);
-    update_option('wpuf_preview_page', $post_id);
+    $post_id = wp_insert_post(
+        [
+            'post_title'  => 'wpuf-preview',
+            'post_type'   => 'page',
+            'post_status' => 'private',
+        ]
+    );
+    update_option( 'wpuf_preview_page', $post_id );
 
-    return get_permalink(get_option('wpuf_preview_page'));
+    return get_permalink( get_option( 'wpuf_preview_page' ) );
 }

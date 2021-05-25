@@ -102,6 +102,26 @@ class WPUF_Frontend_Dashboard {
                 ],
             ];
         }
+
+        if ( isset( $attributes['category__in'] ) ) {
+            $attributes['category__in'] = get_terms(
+                [
+                    'name'     => explode( ',', $attributes['category__in'] ),
+                    'taxonomy' => [ 'category', 'product_cat' ],
+                    'fields'   => 'ids',
+                ]
+            );
+        }
+
+        if ( isset( $atts['author__in'] ) ) {
+            $attributes['author__in'] = get_users(
+                [
+                    'nicename__in'     => explode( ',', $atts['author__in'] ),
+                    'fields'           => 'ids',
+                ]
+            );
+        }
+
         $args            = array_merge( $args, $attributes );
         $original_post   = $post;
         $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args, $attributes ) );

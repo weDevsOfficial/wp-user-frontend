@@ -33,6 +33,9 @@ class WPUF_Frontend_Dashboard {
      * @since 0.1
      */
     public function shortcode( $atts ) {
+        if ( empty( $atts ) ){
+            $atts = [];
+        }
         do_action( 'wpuf_dashboard_shortcode_init', $atts );
         $attributes = shortcode_atts(
             [

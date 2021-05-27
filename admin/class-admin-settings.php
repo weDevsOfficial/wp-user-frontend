@@ -20,7 +20,7 @@ class WPUF_Admin_Settings {
     private static $_instance;
 
     /**
-     * public instance of this class
+     * Public instance of this class
      *
      * @var \self
      */
@@ -85,7 +85,7 @@ class WPUF_Admin_Settings {
         $capability = wpuf_admin_role();
 
         // Translation issue: Hook name change due to translate menu title
-        $this->menu_pages[] = add_menu_page( __( 'WP User Frontend', 'wp-user-frontend' ), __( 'User Frontend', '' ), $capability, 'wp-user-frontend', [ $this, 'wpuf_post_forms_page' ], 'data:image/svg+xml;base64,' . base64_encode( '<svg width="83px" height="76px" viewBox="0 0 83 76" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="wpuf-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="ufp" fill-rule="nonzero" fill="#9EA3A8"><path d="M49.38,51.88 C49.503348,56.4604553 45.8999295,60.2784694 41.32,60.42 C36.7400705,60.2784694 33.136652,56.4604553 33.26,51.88 L33.26,40.23 L19,40.23 L19,51.88 C19,64.77 29,75.25 41.36,75.26 L41.36,75.26 C47.3622079,75.2559227 53.0954073,72.7693647 57.2,68.39 C61.4213559,63.9375842 63.7575868,58.0253435 63.72,51.89 L63.72,40.23 L49.38,40.23 L49.38,51.88 Z" id="Shape"></path><polygon id="Shape" points="32.96 0.59 0 0.59 3.77 16.68 32.96 16.68"></polygon><path d="M68,0 L49.75,0 L49.75,16.1 L68,16.1 C68.74,16.1 69.39,17.1 69.39,18.24 C69.39,19.38 68.74,20.38 68,20.38 L49.75,20.38 L49.75,36.5 L68,36.5 C76,36.5 82.5,28.31 82.5,18.25 C82.5,8.19 76,0 68,0 Z" id="Shape"></path><polygon id="Shape" points="32.96 20.41 5.31 20.41 9.07 36.5 32.96 36.5"></polygon></g></g></svg>' ), '54.2' );
+        $this->menu_pages[] = add_menu_page( __( 'WP User Frontend', 'wp-user-frontend' ), __( 'User Frontend', 'wp-user-frontend' ), $capability, 'wp-user-frontend', [ $this, 'wpuf_post_forms_page' ], 'data:image/svg+xml;base64,' . base64_encode( '<svg width="83px" height="76px" viewBox="0 0 83 76" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="wpuf-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="ufp" fill-rule="nonzero" fill="#9EA3A8"><path d="M49.38,51.88 C49.503348,56.4604553 45.8999295,60.2784694 41.32,60.42 C36.7400705,60.2784694 33.136652,56.4604553 33.26,51.88 L33.26,40.23 L19,40.23 L19,51.88 C19,64.77 29,75.25 41.36,75.26 L41.36,75.26 C47.3622079,75.2559227 53.0954073,72.7693647 57.2,68.39 C61.4213559,63.9375842 63.7575868,58.0253435 63.72,51.89 L63.72,40.23 L49.38,40.23 L49.38,51.88 Z" id="Shape"></path><polygon id="Shape" points="32.96 0.59 0 0.59 3.77 16.68 32.96 16.68"></polygon><path d="M68,0 L49.75,0 L49.75,16.1 L68,16.1 C68.74,16.1 69.39,17.1 69.39,18.24 C69.39,19.38 68.74,20.38 68,20.38 L49.75,20.38 L49.75,36.5 L68,36.5 C76,36.5 82.5,28.31 82.5,18.25 C82.5,8.19 76,0 68,0 Z" id="Shape"></path><polygon id="Shape" points="32.96 20.41 5.31 20.41 9.07 36.5 32.96 36.5"></polygon></g></g></svg>' ), '54.2' );
 
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Post Forms', 'wp-user-frontend' ), __( 'Post Forms', 'wp-user-frontend' ), $capability, 'wpuf-post-forms', [ $this, 'wpuf_post_forms_page' ] );
         remove_submenu_page( 'wp-user-frontend', 'wp-user-frontend' );
@@ -95,13 +95,13 @@ class WPUF_Admin_Settings {
          */
         do_action( 'wpuf_admin_menu_top' );
 
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Subscriptions', 'wp-user-frontend' ), __( 'Subscriptions', 'wp-user-frontend' ), $capability, 'edit.php?post_type=wpuf_subscription' );
         }
 
         do_action( 'wpuf_admin_menu' );
 
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             $transactions_page = add_submenu_page( 'wp-user-frontend', __( 'Transactions', 'wp-user-frontend' ), __( 'Transactions', 'wp-user-frontend' ), $capability, 'wpuf_transaction', [ $this, 'transactions_page' ] );
         }
 
@@ -115,7 +115,8 @@ class WPUF_Admin_Settings {
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wp-user-frontend' ), __( '<span style="color:#f18500">Help</span>', 'wp-user-frontend' ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wp-user-frontend' ), __( 'Settings', 'wp-user-frontend' ), $capability, 'wpuf-settings', [ $this, 'plugin_page' ] );
 
-        $this->menu_pages[]                                       = add_submenu_page( 'edit.php?post_type=wpuf_subscription', __( 'Subscribers', 'wp-user-frontend' ), __( 'Subscribers', 'wp-user-frontend' ), $capability, 'wpuf_subscribers', [ $this, 'subscribers_page' ] );
+        $this->menu_pages[] = add_submenu_page( 'edit.php?post_type=wpuf_subscription', __( 'Subscribers', 'wp-user-frontend' ), __( 'Subscribers', 'wp-user-frontend' ), $capability, 'wpuf_subscribers', [ $this, 'subscribers_page' ] );
+        //phpcs:ignore
         $_registered_pages['user-frontend_page_wpuf_subscribers'] = true; // hack to work the nested subscribers page
 
         // manually add subsription page
@@ -123,7 +124,7 @@ class WPUF_Admin_Settings {
         $this->menu_pages[] = 'wpuf_subscribers';
         $this->menu_pages[] = 'user-frontend_page_wpuf_transaction';
 
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             add_action( "load-$transactions_page", [ $this, 'transactions_screen_option' ] );
             // add_action( "load-wpuf_subscribers", array( $this, 'subscribers_screen_option' ) );
         }
@@ -267,7 +268,7 @@ class WPUF_Admin_Settings {
      * @return bool
      */
     public function is_admin_menu_page( $screen ) {
-        if ( $screen && in_array( $screen->id, $this->menu_pages ) ) {
+        if ( $screen && in_array( $screen->id, $this->menu_pages, true ) ) {
             return true;
         }
 
@@ -275,7 +276,7 @@ class WPUF_Admin_Settings {
     }
 
     /**
-     * highlight the proper top level menu
+     * Highlight the proper top level menu
      *
      * @see http://wordpress.org/support/topic/moving-taxonomy-ui-to-another-main-menu?replies=5#post-2432769
      *
@@ -290,11 +291,11 @@ class WPUF_Admin_Settings {
 
         $post_types = [ 'wpuf_forms', 'wpuf_profile', 'wpuf_subscription', 'wpuf_coupon' ];
 
-        if ( in_array( $current_screen->post_type, $post_types ) ) {
+        if ( in_array( $current_screen->post_type, $post_types, true ) ) {
             $parent_file = 'wp-user-frontend';
         }
 
-        if ( 'wpuf_subscription' == $current_screen->post_type && $current_screen->base == 'admin_page_the-slug' ) {
+        if ( 'wpuf_subscription' === $current_screen->post_type && $current_screen->base === 'admin_page_the-slug' ) {
             $parent_file = 'wp-user-frontend';
         }
 
@@ -313,7 +314,7 @@ class WPUF_Admin_Settings {
     public function fix_submenu_file( $submenu_file ) {
         $current_screen = get_current_screen();
 
-        if ( 'wpuf_subscription' == $current_screen->post_type && $current_screen->base == 'admin_page_wpuf_subscribers' ) {
+        if ( 'wpuf_subscription' === $current_screen->post_type && $current_screen->base === 'admin_page_wpuf_subscribers' ) {
             $submenu_file = 'edit.php?post_type=wpuf_subscription';
         }
 
@@ -438,7 +439,7 @@ class WPUF_Admin_Settings {
      * @return void
      */
     public function enqueue_styles() {
-        if ( ! $this->is_admin_menu_page( get_current_screen() ) && get_current_screen()->parent_base == 'edit' ) {
+        if ( ! $this->is_admin_menu_page( get_current_screen() ) && get_current_screen()->parent_base === 'edit' ) {
             return;
         }
 

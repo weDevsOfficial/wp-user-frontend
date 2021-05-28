@@ -300,6 +300,13 @@ function wpuf_settings_fields() {
                     'options' => $pages,
                 ],
                 [
+                    'name'    => 'cp_on_acc_page',
+                    'label'   => __( 'Select Custom Post For Account Page', 'wp-user-frontend' ),
+                    'desc'    => __( 'Select the post types you want to show on user dashboard.', 'wp-user-frontend' ),
+                    'callback' => 'wpuf_settings_multiselect',
+                    'options' => $post_types,
+                ],
+                [
                     'name'    => 'account_page_active_tab',
                     'label'   => __( 'Active Tab', 'wp-user-frontend' ),
                     'desc'    => __( 'Which tab should be set as active by default when opening the account page', 'wp-user-frontend' ),

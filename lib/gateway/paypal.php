@@ -39,6 +39,7 @@ class WPUF_Paypal {
      * @return void
      */
     public function recurring_change_status( $user_id, $status ) {
+        $user_id           = ! empty( $user_id ) ? $user_id : get_current_user_id();
         $sub_info          = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
         $api_username      = wpuf_get_option( 'paypal_api_username', 'wpuf_payment' );
         $api_password      = wpuf_get_option( 'paypal_api_password', 'wpuf_payment' );
@@ -46,32 +47,68 @@ class WPUF_Paypal {
         $profile_id        = isset( $sub_info['profile_id'] ) ? $sub_info['profile_id'] : '';
         $new_status        = $status;
         $new_status_string = $status;
-
         $this->set_mode();
-
         $args = [
             'USER'      => $api_username,
             'PWD'       => $api_password,
             'SIGNATURE' => $api_signature,
             'VERSION'   => '76.0',
-            'METHOD'    => 'ManageRecurringPaymentsProfileStatus',
-            'PROFILEID' => $profile_id,
-            'ACTION'    => ucfirst( $new_status ),
-            'NOTE'      => sprintf( __( 'Subscription %s at %s', 'wp-user-frontend' ), $new_status_string, get_bloginfo( 'name' ) ),
         ];
 
-        // Send back post vars to paypal
         $params = [
-            'body'       => $args,
             'sslverify'  => true,
             'timeout'    => 30,
             'user-agent' => 'WP User Frontend Pro/' . WPUF_VERSION,
         ];
 
+        if ( empty( $profile_id ) ) {
+            global $wpdb;
+            $sql = $wpdb->prepare(
+                'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
+            WHERE user_id = %d AND payment_type = %s Order by created desc limit 1', $user_id, 'Paypal'
+            );
+
+            $result         = $wpdb->get_row( $sql );
+            $transaction_id = $result ? $result->transaction_id : 0;
+
+            $args_profile = array_merge(
+                $args, [
+                    'METHOD'    => 'GetTransactionDetails',
+                    'TRANSACTIONID' => $transaction_id,
+                ]
+            );
+
+            $params_profile = array_merge(
+                $params, [
+                    'body'       => $args_profile,
+                ]
+            );
+
+            $response = wp_remote_post( $this->gateway_cancel_url, $params_profile );
+            parse_str( $response['body'], $parsed_response );
+
+            $profile_id = ! empty( $parsed_response['SUBSCRIPTIONID'] ) ? $parsed_response['SUBSCRIPTIONID'] : 0;
+        }
+
+        $args = array_merge(
+            $args, [
+                'METHOD'    => 'ManageRecurringPaymentsProfileStatus',
+                'PROFILEID' => $profile_id,
+                'ACTION'    => ucfirst( $new_status ),
+                'NOTE'      => sprintf( __( 'Subscription %1$s at %2$s', 'wp-user-frontend' ), $new_status_string, get_bloginfo( 'name' ) ),
+            ]
+        );
+
+        // Send back post vars to paypal
+        $params = array_merge(
+            $params, [
+                'body'       => $args,
+            ]
+        );
+
         $response = wp_remote_post( $this->gateway_cancel_url, $params );
 
         parse_str( $response['body'], $parsed_response );
-
         if ( strtolower( $parsed_response['ACK'] ) == 'success' ) {
             $this->subscription_cancel( $user_id );
         }
@@ -109,13 +146,13 @@ class WPUF_Paypal {
             'name'  => 'paypal_api_signature',
             'label' => __( 'PayPal API signature', 'wp-user-frontend' ),
         ];
-       /* $options[] = [
-            'name'    => 'paypal_endpoint',
-            'label'   => __('PayPal IPN endpoint', 'wp-user-frontend'),
-            'default' => home_url( '/action/wpuf_paypal_success', null ),
-            'desc'    => __('Set this to your notification IPN listener', 'wp-user-frontend'),
-            'class'   => 'disabled'
-        ];*/
+        /* $options[] = [
+             'name'    => 'paypal_endpoint',
+             'label'   => __('PayPal IPN endpoint', 'wp-user-frontend'),
+             'default' => home_url( '/action/wpuf_paypal_success', null ),
+             'desc'    => __('Set this to your notification IPN listener', 'wp-user-frontend'),
+             'class'   => 'disabled'
+         ];*/
         return $options;
     }
 
@@ -125,7 +162,6 @@ class WPUF_Paypal {
      * @param array $data payment info
      *
      * @since 0.8
-     *
      */
     public function prepare_to_send( $data ) {
         $user_id          = $data['user_info']['id'];
@@ -135,9 +171,9 @@ class WPUF_Paypal {
         $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
 
         if ( $redirect_page_id ) {
-            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', untrailingslashit(get_permalink( $redirect_page_id ) ) );
+            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', untrailingslashit( get_permalink( $redirect_page_id ) ) );
         } else {
-            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', untrailingslashit(get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) ) );
+            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', untrailingslashit( get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) ) );
         }
 
         $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
@@ -189,14 +225,16 @@ class WPUF_Paypal {
                 'p3'            => ! empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number'] : '0',
                 't3'            => $period,
                 'item_name'     => $data['custom']['post_title'],
-                'custom'        => json_encode( [
-                    'billing_amount' => $billing_amount,
-                    'type'           => $data['type'],
-                    'user_id'        => $user_id,
-                    'coupon_id'      => $coupon_id,
-                    'subtotal'       => $data['subtotal'],
-                    'tax'            => $data['tax']
-                ] ),
+                'custom'        => json_encode(
+                    [
+                        'billing_amount' => $billing_amount,
+                        'type'           => $data['type'],
+                        'user_id'        => $user_id,
+                        'coupon_id'      => $coupon_id,
+                        'subtotal'       => $data['subtotal'],
+                        'tax'            => $data['tax'],
+                    ]
+                ),
                 'shipping'      => 0,
                 'no_note'       => 1,
                 'currency_code' => $data['currency'],
@@ -208,7 +246,7 @@ class WPUF_Paypal {
                 'src'           => 1,
                 'sra'           => 1,
                 'srt'           => intval( $data['custom']['billing_limit'] ),
-                'recurring'     => 1
+                'recurring'     => 1,
             ];
 
             if ( $data['custom']['trial_status'] == 'yes' ) {
@@ -229,12 +267,15 @@ class WPUF_Paypal {
                 'item_number'   => $data['item_number'],
                 'charset'       => 'UTF-8',
                 'rm'            => '2',
-                'custom'        => json_encode( [ 'type'      => $data['type'],
-                                                  'user_id'   => $user_id,
-                                                  'coupon_id' => $coupon_id,
-                                                  'subtotal'  => $data['subtotal'],
-                                                  'tax'       => $data['tax']
-                ] ),
+                'custom'        => json_encode(
+                    [
+                        'type'      => $data['type'],
+                        'user_id'   => $user_id,
+                        'coupon_id' => $coupon_id,
+                        'subtotal'  => $data['subtotal'],
+                        'tax'       => $data['tax'],
+                    ]
+                ),
                 'return'        => $return_url,
                 'notify_url'    => $listener_url,
             ];
@@ -319,8 +360,8 @@ class WPUF_Paypal {
 
             $coupon_id = isset( $custom->coupon_id ) ? $custom->coupon_id : false;
 
-            if (! empty( $postdata['period3'] ) ) {
-                update_user_meta($custom->user_id, '_wpuf_used_trial', 'yes');
+            if ( ! empty( $postdata['period3'] ) ) {
+                update_user_meta( $custom->user_id, '_wpuf_used_trial', 'yes' );
             }
 
             if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_signup' ) ) {
@@ -330,10 +371,11 @@ class WPUF_Paypal {
             }
 
             if ( $transaction_id && $this->transaction_exists( $transaction_id ) ) {
-                $wpdb->update( $wpdb->prefix . 'wpuf_transaction',
+                $wpdb->update(
+                    $wpdb->prefix . 'wpuf_transaction',
                     array( 'status' => strtolower( $postdata['payment_status'] ) ),
                     array(
-                        'transaction_id' => $transaction_id
+                        'transaction_id' => $transaction_id,
                     )
                 );
             }
@@ -424,9 +466,9 @@ class WPUF_Paypal {
                 update_post_meta( $coupon_id, '_coupon_used', $new_use );
             }
 
-            if ( isset( $postdata['profile_id'] ) ) {
+            if ( isset( $postdata['subscr_id'] ) ) {
                 $umeta = get_user_meta( $custom->user_id, '_wpuf_subscription_pack', true );
-                $umeta['profile_id'] = $postdata['profile_id'];
+                $umeta['profile_id'] = $postdata['subscr_id'];
                 update_user_meta( $custom->user_id, '_wpuf_subscription_pack', $umeta );
             }
 

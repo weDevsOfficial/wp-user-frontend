@@ -201,6 +201,24 @@
                 var clone = $.extend(true, {}, field),
                     index = parseInt(payload.index) + 1;
 
+                let column_field = state.form_fields.find(function (field) {
+                    return field.id === payload.field_id && field.input_type === 'column_field';
+                });
+
+                if (column_field){
+                    let columns = ['column-1','column-2','column-3'];
+                    columns.forEach(function (column) {
+                        let inner_field = clone.inner_fields[column];
+                        if(inner_field.length){
+                            inner_field.forEach(function (field) {
+                                field.id     = Math.floor(Math.random() * (9999999999 - 999999 + 1)) + 999999;
+                                field.name   = field.name + '_copy';
+                                field.is_new = true;
+                            });
+                        }
+                    });
+                }
+
                 clone.id     = payload.new_id;
                 clone.name   = clone.name + '_copy';
                 clone.is_new = true;

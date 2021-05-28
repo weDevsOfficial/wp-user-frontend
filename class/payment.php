@@ -68,6 +68,13 @@ class WPUF_Payment {
         $billing_amount = 0;
         $action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
 
+        if ( ! is_user_logged_in() && $action === 'wpuf_pay' ) {
+            /* translators: %s: login url */
+            printf( esc_html( __( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ) ), wp_loginout( '', false ) );
+
+            return;
+        }
+
         if ( $action === 'wpuf_pay' && $pay_page === 0 ) {
             esc_html_e( 'Please select your payment page from admin panel', 'wp-user-frontend' );
 
@@ -86,7 +93,7 @@ class WPUF_Payment {
 
                 if ( ! $pack_detail ) {
                     ?>
-                        <div class="wpuf-info"><?php esc_html_e( 'No subscription pack found.', 'wp-user-frontend' ); ?></div> 
+                        <div class="wpuf-info"><?php esc_html_e( 'No subscription pack found.', 'wp-user-frontend' ); ?></div>
                     <?php
                     return;
                 }
@@ -406,7 +413,7 @@ class WPUF_Payment {
             ];
 
             if ( isset( $_POST['billing_address'] ) ) {
-                $address_fields  = array_map( 'sanitize_text_field', wp_unslash( $_POST['billing_address'] ) );
+                $address_fields = array_map( 'sanitize_text_field', wp_unslash( $_POST['billing_address'] ) );
             } else {
                 $address_fields = wpuf_get_user_address();
             }
@@ -496,7 +503,7 @@ class WPUF_Payment {
         // translators: %s is site title name
         $subject = sprintf( __( '[%s] Payment Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
         // translators: %s is site title name
-        $msg     = sprintf( __( 'New payment received at %s', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
+        $msg = sprintf( __( 'New payment received at %s', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
 
         $receiver = get_bloginfo( 'admin_email' );
         wp_mail( $receiver, $subject, $msg, $headers );

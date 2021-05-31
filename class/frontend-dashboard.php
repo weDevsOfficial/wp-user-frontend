@@ -33,7 +33,7 @@ class WPUF_Frontend_Dashboard {
      * @since 0.1
      */
     public function shortcode( $atts ) {
-        if ( empty( $atts ) ){
+        if ( empty( $atts ) ) {
             $atts = [];
         }
         do_action( 'wpuf_dashboard_shortcode_init', $atts );
@@ -107,13 +107,18 @@ class WPUF_Frontend_Dashboard {
         }
 
         if ( isset( $attributes['category__in'] ) ) {
-            $attributes['category__in'] = get_terms(
-                [
-                    'name'     => explode( ',', $attributes['category__in'] ),
-                    'taxonomy' => [ 'category', 'product_cat' ],
-                    'fields'   => 'ids',
-                ]
-            );
+            $taxonomy = [ 'category' ];
+
+            if ( class_exists( 'WooCommerce' ) ) {
+                $taxonomy[] = 'product_cat';
+            }
+                $attributes['category__in'] = get_terms(
+                    [
+                        'name'     => explode( ',', $attributes['category__in'] ),
+                        'taxonomy' => $taxonomy,
+                        'fields'   => 'ids',
+                    ]
+                );
         }
 
         if ( isset( $atts['author__in'] ) ) {

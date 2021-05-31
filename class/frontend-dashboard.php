@@ -121,7 +121,7 @@ class WPUF_Frontend_Dashboard {
                 );
         }
 
-        if ( isset( $atts['author__in'] ) ) {
+        if ( isset( $attributes['author__in'] ) ) {
             $attributes['author__in'] = get_users(
                 [
                     'nicename__in'     => explode( ',', $atts['author__in'] ),

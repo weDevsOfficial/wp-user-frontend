@@ -1,17 +1,3 @@
-@font-face {
-  font-family: 'Open Sans';
-  font-style: italic;
-  font-weight: 300;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/opensans/v18/memnYaGs126MiZpBA-UFUKWyV-hs.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 300;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/opensans/v18/mem5YaGs126MiZpBA-UN_r8-VQ.ttf) format('truetype');
-}
 /* DivTable.com */
 body {
   font-family: 'Open Sans', sans-serif !important;
@@ -1677,6 +1663,16 @@ body .wpuf-posts-options {
   display: inline-block;
   padding: 7px 7px;
   border-radius: 100%;
+}
+body .wpuf-posts-edit:hover {
+  background-color: #5C5CFB;
+}
+body .wpuf-posts-delete:hover {
+  background-color: #FF5B5B;
+}
+body .wpuf-posts-edit svg:hover path,
+body .wpuf-posts-delete svg:hover path {
+  fill: #fff;
 }
 body .wpuf-col-half,
 body .wpuf-col-half-last {

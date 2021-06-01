@@ -128,9 +128,10 @@ class WPUF_Frontend_Dashboard {
                     'fields'           => 'ids',
                 ]
             );
+            unset( $args['author'] );
         }
 
-        $args            = array_merge( $args, $attributes );
+        $args = array_merge( $args, $attributes );
         $original_post   = $post;
         $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args, $attributes ) );
         $post_type_obj   = [];

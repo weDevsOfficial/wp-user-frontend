@@ -35,8 +35,31 @@ if ( $action == 'del' ) {
 
 // show delete success message
 $msg = isset( $_GET['msg'] ) ? sanitize_text_field( wp_unslash( $_GET['msg'] ) ) : '';
-if ( $msg == 'deleted' ) {
-    echo wp_kses_post( '<div class="success">' . __( 'Post Deleted', 'wp-user-frontend' ) . '</div>' );
+if ( $msg == 'deleted' ) {?>
+    <div id="wpuf-delete-msg">
+        <p><?php esc_attr_e( 'Item Deleted successfully !', 'wp-user-frontend' ); ?></p>
+        <span class="dashicons-before dashicons-dismiss"></span>
+    </div>
+    <script>
+        (function ($) {
+            var delete_div = $("#wpuf-delete-msg");
+            if ((location.search.split('msg' + '=')[1] || '').split('&')[0]==='deleted'){
+                delete_div.css({display:'flex'});
+                if (delete_div.is(':visible')){
+                    setTimeout(function (e) {
+                        delete_div.css({display:'none'});
+                    },5000)
+                }
+            }
+
+            $("#wpuf-delete-msg span").on('click',function (e) {
+                delete_div.toggle('slow',function () {
+                    delete_div.css({display:'none'});
+                });
+            })
+        })(jQuery);
+    </script>
+<?php
 }
 
 $args = [

@@ -147,7 +147,7 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
                 return ! empty( $user ) ? sprintf( '<a href="%s">%s</a>', admin_url( 'user-edit.php?user_id=' . $item->user_id ), $user->user_nicename ) : $post_author;
 
             case 'subtotal':
-                return wpuf_format_price( $item->subtotal );
+                return wpuf_format_price( ! empty( $item->subtotal ) ? $item->subtotal : $item->cost );
 
             case 'cost':
                 return wpuf_format_price( $item->cost );

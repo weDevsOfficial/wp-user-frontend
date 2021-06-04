@@ -29,6 +29,23 @@
             $('form#post').on('submit', this.adminPostSubmit);
             // $( '.wpuf-form').on('keyup', '#pass1', this.check_pass_strength );
 
+            if ( window.matchMedia('(max-width: 600px)').matches ) {
+
+                // Post toggle
+                $('table.items-table tr td .post-edit-icon').click( function( e ) {
+                    e.preventDefault();
+                    $(this).parents('tr').find('.data-column').toggleClass('flex-column'); 
+                    $(this).toggleClass('toggle-icon');
+                });
+
+                // Account page toggle mobile menu
+                $('.wpuf-dashboard-navigation ul li:first-child').after().click( function(e) {
+                    e.preventDefault();
+
+                    $('.wpuf-dashboard-navigation ul li').not(':first').toggle();
+                } );
+            }
+
             // refresh pluploads on each step change (multistep form)
             $('.wpuf-form').on('step-change-fieldset', function(event, number, step) {
                 if ( wpuf_plupload_items.length ) {

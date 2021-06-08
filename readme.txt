@@ -55,7 +55,7 @@ Enable certain user roles to make posts, create unauthorized message you want to
 
 <strong>Submit and update anything from Frontend</strong>
 
-Users can upload files, fill out forms, even entry data with multiple choice menus. Allow users to update their posts from the frontend.
+Users can upload images, fill out forms, even entry data with multiple choice menus. Allow users to update their posts from the frontend.
 
 <strong>Build customized forms with custom post types</strong>
 

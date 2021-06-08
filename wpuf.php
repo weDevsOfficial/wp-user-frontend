@@ -780,10 +780,10 @@ final class WP_User_Frontend {
         }
 
         $roles        = wpuf_get_option( 'show_admin_bar', 'wpuf_general', [ 'administrator', 'editor', 'author', 'contributor', 'subscriber' ] );
-        $roles        = $roles ? $roles : [];
+        $roles        = $roles && is_string($roles) ? [strtolower($roles)] : $roles;
         $current_user = wp_get_current_user();
 
-        if ( isset( $current_user->roles[0] ) ) {
+        if ( ! empty( $current_user->roles ) && ! empty( $current_user->roles[0] ) ) {
             if ( !in_array( $current_user->roles[0], $roles ) ) {
                 return false;
             }

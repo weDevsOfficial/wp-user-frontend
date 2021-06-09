@@ -34,7 +34,7 @@
                 // Post toggle
                 $('table.items-table tr td .post-edit-icon').click( function( e ) {
                     e.preventDefault();
-                    $(this).parents('tr').find('.data-column').toggleClass('flex-column'); 
+                    $(this).parents('tr').find('.data-column').toggleClass('flex-column');
                     $(this).toggleClass('toggle-icon');
                 });
 
@@ -647,7 +647,7 @@
             });
 
             //check Google Map is required
-            var map_required = self.find('[data-required="yes"][name^="google_map"]');
+            var map_required = self.find('[data-required="yes"]').parents('.wpuf-form-google-map-container');
             $.each(map_required, function(index, map){
                 var val = $(map).val();
                 if ( val == '' ) {

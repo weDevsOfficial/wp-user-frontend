@@ -19,14 +19,15 @@ if ( $action == 'del' ) {
     }
 
     //check, if the requested user is the post author
-    $pid = isset( $_REQUEST['pid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['pid'] ) ) : '';
+    $pid  = isset( $_REQUEST['pid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['pid'] ) ) : '';
+    $type = isset( $_REQUEST['section'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['section'] ) ) : '';
     $maybe_delete = get_post( $pid );
 
     if ( ( $maybe_delete->post_author == $userdata->ID ) || current_user_can( 'delete_others_pages' ) ) {
         wp_delete_post( $pid );
 
         //redirect
-        $redirect = add_query_arg( [ 'section' => 'posts', 'msg' => 'deleted'], get_permalink() );
+        $redirect = add_query_arg( [ 'section' => $type, 'msg' => 'deleted'], get_permalink() );
         wp_redirect( $redirect );
         exit;
     } else {

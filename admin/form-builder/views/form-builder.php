@@ -12,7 +12,7 @@
             <?php do_action( "wpuf-form-builder-tabs-{$form_type}" ); ?>
 
             <span class="pull-right">
-                <a :href="'<?php echo esc_url( site_url( '/' ) ); ?>?wpuf_preview=1&form_id=' + post.ID" target="_blank" class="button"><span class="dashicons dashicons-visibility" style="padding-top: 3px;"></span> <?php esc_html_e( 'Preview', 'wp-user-frontend' ); ?></a>
+                <a :href="'<?php echo get_wpuf_preview_page(); ?>?wpuf_preview=1&form_id=' + post.ID" target="_blank" class="button"><span class="dashicons dashicons-visibility" style="padding-top: 3px;"></span> <?php esc_html_e( 'Preview', 'wp-user-frontend' ); ?></a>
 
                 <button v-if="!is_form_saving" type="button" class="button button-primary" @click="save_form_builder">
                     <?php esc_html_e( 'Save Form', 'wp-user-frontend' ); ?>
@@ -41,23 +41,24 @@
                         <?php
                             $form_id = isset( $_GET['id'] ) ? intval( wp_unslash( $_GET['id'] ) ) : 0;
 
-                            if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
-                                foreach ( $shortcodes as $shortcode ) {
-                                    printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> %s: #{{ post.ID }}</span>", sprintf( esc_html( __( 'Click to copy %s shortcode', 'wp-user-frontend' ) ), esc_attr( $shortcode['type'] ) ), sprintf( '[%s type="%s" id="%s"]', esc_attr( $shortcode['name'] ), esc_attr( $shortcode['type'] ), esc_attr( $form_id ) ), esc_attr( ucwords( $shortcode['type'] ) ), esc_attr( $shortcode['type'] ) );
-                                }
-                            } else {
-                                printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> #{{ post.ID }}</span>", esc_html( __( 'Click to copy shortcode', 'wp-user-frontend' ) ), '[' . esc_attr( $shortcodes[0]['name'] ) . ' id="' . esc_attr( $form_id ) . '"]' );
+                        if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
+                            foreach ( $shortcodes as $shortcode ) {
+                                /* translators: %s: form id */
+                                printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> %s: #{{ post.ID }}</span>", sprintf( esc_html( __( 'Click to copy %s shortcode', 'wp-user-frontend' ) ), esc_attr( $shortcode['type'] ) ), sprintf( '[%s type="%s" id="%s"]', esc_attr( $shortcode['name'] ), esc_attr( $shortcode['type'] ), esc_attr( $form_id ) ), esc_attr( ucwords( $shortcode['type'] ) ), esc_attr( $shortcode['type'] ) );
                             }
+                        } else {
+                            printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> #{{ post.ID }}</span>", esc_html( __( 'Click to copy shortcode', 'wp-user-frontend' ) ), '[' . esc_attr( $shortcodes[0]['name'] ) . ' id="' . esc_attr( $form_id ) . '"]' );
+                        }
                         ?>
                     </header>
 
                     <ul v-if="is_form_switcher" class="form-switcher-content">
                         <?php
-                            foreach ( $forms as $form ) {
-                                ?>
-                                <li><a class="<?php echo ( $form->ID == $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>"><?php echo esc_html( $form->post_title ); ?></a></li>
-                        <?php
-                            }
+                        foreach ( $forms as $form ) {
+                            ?>
+                                <li><a class="<?php echo ( (int) $form->ID === $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>"><?php echo esc_html( $form->post_title ); ?></a></li>
+                            <?php
+                        }
                         ?>
                     </ul>
 
@@ -108,7 +109,7 @@
             <?php do_action( "wpuf-form-builder-tab-contents-{$form_type}" ); ?>
         </div>
 
-        <?php if ( !empty( $form_settings_key ) ) { ?>
+        <?php if ( ! empty( $form_settings_key ) ) { ?>
             <input type="hidden" name="form_settings_key" value="<?php echo esc_attr( $form_settings_key ); ?>">
         <?php } ?>
 

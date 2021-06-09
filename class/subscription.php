@@ -647,6 +647,11 @@ class WPUF_Subscription {
             }
 
             wpuf_get_user( $info['user_id'] )->subscription()->add_pack( $info['pack_id'], $profile_id, $recurring, $info['status'] );
+
+            if ( false === $recurring ) {
+                update_user_meta( $profile_id, 'wpuf_pre_sub_exp', '' );
+                update_user_meta( $profile_id, 'wpuf_post_sub_exp', '' );
+            }
         }
     }
 

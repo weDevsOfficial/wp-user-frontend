@@ -3,9 +3,10 @@
 @mediaXS: 767px;
 @mediaSM: 991px;
 @mediaMD: 1200px;
-
 /* DivTable.com */
-#wpfooter { 
+body {
+    font-family: 'Open Sans', sans-serif !important;
+#wpfooter {
     position: fixed  !important
 }
 .wpufTable{
@@ -38,7 +39,7 @@
 }
 
 .wpuf-menu-item.active a{
-    color: #040202;
+    color: #5C5CFB !important;
 }
 
 .clearfix() {
@@ -1370,14 +1371,20 @@ body.rtl{
     }
 }
 .wpuf-dashboard-container {
+    font-family: 'Open Sans', sans-serif !important;
+    max-width: 85rem !important;
     .clearfix();
     .wpuf-dashboard-navigation {
-        width: 30%;
+        width: 20%;
         float: left;
 
         a {
             text-decoration: none;
             box-shadow: none;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
         }
 
         ul {
@@ -1404,8 +1411,12 @@ body.rtl{
     }
 
     .wpuf-dashboard-content {
-        width: 68%;
+        width: 80%;
         float: right;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         @media (max-width: @mediaSM){
             width: 100%;
         }
@@ -1432,28 +1443,129 @@ body.rtl{
         overflow-y: auto;
     }
     table.items-table {
-        min-width: 600px;
+        width: 100%;
+        margin-top: 0px;
+        border: 1.0218px solid #DAE1F5;
+        font-family: 'Open Sans', sans-serif !important;
+        color: #000 !important;
+        font-size: 16px !important;
+        font-weight: 400 !important;
         a {
             text-decoration: none;
             box-shadow: none;
+            color: #000 !important;
         }
-
-        border: 0;
 
         th, td {
             border: 0;
             padding: 10px;
         }
 
+        th {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.07);
+        }
+
         tr {
             text-align: left;
-            outline: 1px solid #f1f1f1;
+            border: 1px solid #DAE1F5;
+        }
+
+        .post-edit-icon {
+            display: none;
         }
 
         .items-list-header {
-            background-color: #f1f1f1;
+            // background-color: #f1f1f1;
         }
     }
+    /*Responsive css for post table*/
+    @media screen and (max-width: 600px) {
+        table.items-table {
+            border: 0px;
+            thead {
+                display: none;
+            }
+
+            tr {
+                display: block;
+                border: 1.0218px solid #DAE1F5;
+                border-bottom:0;
+                border-left: 0px;
+                border-right: 0px;
+            }
+
+            td {
+                display: block;
+            }
+
+            td:before {
+                content: attr(data-label);
+                margin-right: 20px;
+                font-weight: bold !important;
+                flex-basis: 75px;
+            }
+
+            tr td {
+                display: none;
+            }
+
+            tr td:first-child {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+            }
+            .post-edit-icon {
+                display: block;
+                color: #fff;
+                background-color: #B7C4E7;
+                padding: 4px 10px;
+                cursor: pointer;
+                border-radius: 100%;
+            }
+
+            .flex-column {
+                display: flex;
+            }
+
+            .toggle-icon {
+                background-color: #5C5CFB;
+            }
+        }
+
+        .wpuf-dashboard-navigation {
+            ul {
+                display: flex;
+                flex-direction: column;
+                background: #FFFFFF;
+                border: 1px solid #E4E6EB;
+                box-sizing: border-box;
+                box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.07);
+
+                li:first-child {
+                    background: #FFFFFF;
+                    border-bottom: 1px solid #E4E6EB;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                li:first-child::after {
+                    content: '\25BE';
+                    cursor: pointer;
+                    // background: #FFFFFF;
+                    // border-bottom: 1px solid #E4E6EB;
+                    // display: block;
+                }
+
+                li {
+                    margin: 0 !important;
+                    padding: 10px;
+                    display: none;
+                }
+            }
+        }
+    }
+
 
     .wpuf-update-profile-form {
         ul.wpuf-form {
@@ -1495,6 +1607,7 @@ body.rtl{
         table.items-table{
             width: 100%;
             margin-bottom: 40px !important;
+            border: 1.0218px solid #DAE1F5;
         }
     }
 }
@@ -1793,19 +1906,20 @@ ul.wpuf-form .weforms-frontend-field-points{
 
 /* Front End Posts List Tools */
 .wpuf-posts-options{
-   padding: 0 10px;
-   border-right: 1px solid #ccc;
+    display: inline-block;
+    padding: 7px 7px;
+    border-radius: 100%;
+    // margin: 0px 5px;
 }
-
-.wpuf-posts-options:first-child{
-   padding-left: 0;
+.wpuf-posts-edit:hover{
+    background-color: #5C5CFB;
 }
-
-.wpuf-posts-options:last-child{
-   padding-right: 0;
-   border-right: 0;
-}
-
+.wpuf-posts-delete:hover{
+    background-color: #FF5B5B;
+} .wpuf-posts-edit svg:hover path,
+    .wpuf-posts-delete svg:hover path{
+        fill: #fff;
+    }
 /* CSS for custom columns */
 .wpuf-col-half,
 .wpuf-col-half-last {
@@ -1949,4 +2063,25 @@ ul.wpuf-form{
 
 .wpuf-attachment-upload-filelist + .moxie-shim {
     z-index: 2;
+}
+}
+#wpuf-delete-msg{
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    width: 100%;
+    font-weight: bold;
+    margin: 5px 15px 15px;
+    padding: 5px 15px 5px;
+    background: #f1f1f1;
+    text-align: center;
+    max-height: 50px;
+    border:1px solid #DAE1F5
+}
+#wpuf-delete-msg p{
+    margin: .5em 0;padding: 2px;
+}
+#wpuf-delete-msg span{
+    margin-top: 10px;cursor: pointer
 }

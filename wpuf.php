@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 3.5.16
+Version: 3.5.17
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '3.5.16' );
+define( 'WPUF_VERSION', '3.5.17' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -700,7 +700,6 @@ final class WP_User_Frontend {
         wp_enqueue_script( 'suggest' );
         wp_enqueue_script( 'jquery-ui-slider' );
         wp_enqueue_script( 'plupload-handlers' );
-        wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', [ 'jquery-ui-datepicker' ] );
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ] );
         wp_enqueue_script( 'wpuf-form' );
         wp_enqueue_script( 'wpuf-subscriptions' );
@@ -781,10 +780,10 @@ final class WP_User_Frontend {
         }
 
         $roles        = wpuf_get_option( 'show_admin_bar', 'wpuf_general', [ 'administrator', 'editor', 'author', 'contributor', 'subscriber' ] );
-        $roles        = $roles ? $roles : [];
+        $roles        = $roles && is_string($roles) ? [strtolower($roles)] : $roles;
         $current_user = wp_get_current_user();
 
-        if ( isset( $current_user->roles[0] ) ) {
+        if ( ! empty( $current_user->roles ) && ! empty( $current_user->roles[0] ) ) {
             if ( !in_array( $current_user->roles[0], $roles ) ) {
                 return false;
             }

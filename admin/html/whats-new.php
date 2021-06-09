@@ -1,5 +1,61 @@
 <?php
 $changelog = [
+    [
+        'version'  => 'Version 3.5.17',
+        'released' => '2021-06-08',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Preview page added for post form and registration form', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Post types menu on account page added', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Dashboard shortcode attributes enhanced', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Account page post type list new design', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Payment page restricted from direct unauthenticated access', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Timepicker conflict with dokan handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Trial inconsistency with paypal fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscription does not cancel with paypal due to profile missing id', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscription email notification inconsistency fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Various issues on payment page for non-logged in user handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Column inner field cloning inconsistency fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Popup z-index changed due to other plugin z-index', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            ],
+
+        ],
      [
         'version'  => 'Version 3.5.16',
         'released' => '2021-05-08',

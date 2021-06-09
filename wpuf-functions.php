@@ -2023,10 +2023,6 @@ function wpuf_get_account_sections() {
             'label' => __( 'Dashboard', 'wp-user-frontend' ),
         ],
         [
-            'slug' => 'posts',
-            'label' => __( 'Posts', 'wp-user-frontend' ),
-        ],
-        [
             'slug' => 'edit-profile',
             'label' => __( 'Edit Profile', 'wp-user-frontend' ),
         ],
@@ -2273,7 +2269,7 @@ function wpuf_get_currencies() {
             'currency' => 'MUR',
             'label' => __( 'Mauritian Rupee', 'wp-user-frontend' ),
             'symbol' => '&#8377;',
-        ],        
+        ],
         [
             'currency' => 'NPR',
             'label' => __( 'Nepali Rupee', 'wp-user-frontend' ),
@@ -2413,6 +2409,11 @@ function wpuf_get_currencies() {
             'currency' => 'TRY',
             'label' => __( 'Turkish Lira', 'wp-user-frontend' ),
             'symbol' => '&#8378;',
+        ],
+        [
+            'currency' => 'TTD',
+            'label' => __( 'Trinidad and Tobago Dollar', 'wp-user-frontend' ),
+            'symbol' => '&#84;&#84;&#36;',
         ],
         [
             'currency' => 'USD',
@@ -3886,4 +3887,59 @@ function wpuf_user_has_roles( $roles, $user_id = 0 ) {
     }
 
     return false;
+}
+
+/**
+ * Create a private page for form preview
+ *
+ * @return bool|false|string|WP_Error
+ */
+function get_wpuf_preview_page() {
+    $page_url        = '';
+    $preview_page_id = get_option( 'wpuf_preview_page', false );
+
+    if ( $preview_page_id && get_post_status( $preview_page_id ) !== 'private' ) {
+        wp_update_post(
+            [
+                'ID' => $preview_page_id,
+                'post_status' => 'private',
+            ]
+        );
+        $page_url = get_permalink( $preview_page_id );
+    }
+
+
+    if ( $page_url ) {
+        return $page_url;
+    }
+
+    $post_id = wp_insert_post(
+        [
+            'post_title'  => 'wpuf-preview',
+            'post_type'   => 'page',
+            'post_status' => 'private',
+        ]
+    );
+    update_option( 'wpuf_preview_page', $post_id );
+
+    return get_permalink( get_option( 'wpuf_preview_page' ) );
+}
+
+/**
+ * Sanitize nested text field
+ *
+ * @param $arr
+ *
+ * @return array
+ */
+function wpuf_recursive_sanitize_text_field($arr){
+    foreach ($arr as $key => &$value) {
+        if (is_array($value)) {
+            $value = wpuf_recursive_sanitize_text_field($value);
+        } else {
+            $value = sanitize_text_field($value);
+        }
+    }
+
+    return $arr;
 }

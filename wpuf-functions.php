@@ -3895,6 +3895,7 @@ function wpuf_user_has_roles( $roles, $user_id = 0 ) {
  * @return bool|false|string|WP_Error
  */
 function get_wpuf_preview_page() {
+    $page_url        = '';
     $preview_page_id = get_option( 'wpuf_preview_page', false );
 
     if ( $preview_page_id && get_post_status( $preview_page_id ) !== 'private' ) {
@@ -3904,9 +3905,9 @@ function get_wpuf_preview_page() {
                 'post_status' => 'private',
             ]
         );
+        $page_url = get_permalink( $preview_page_id );
     }
 
-    $page_url = get_permalink( $preview_page_id );
 
     if ( $page_url ) {
         return $page_url;

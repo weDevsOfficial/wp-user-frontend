@@ -167,6 +167,7 @@ class WPUF_Admin_Settings {
                 document.addEventListener('DOMContentLoaded',function () {
                     var tabs    = document.querySelector('.wpuf-settings-wrap').querySelectorAll('h2 a');
                     var content = document.querySelector('.wpuf-settings-wrap .metabox-holder').querySelectorAll(':scope > div');
+                    var close   = document.querySelector('#wpuf-search-section span');
 
                     var search_input = document.querySelector('#wpuf-settings-search');
 
@@ -175,6 +176,7 @@ class WPUF_Admin_Settings {
                         var value_tab  = [];
 
                         if (search_value.length) {
+                            close.style.display = 'flex'
                             content.forEach(function (row, index) {
                                 var content_id = row.getAttribute('id');
                                 var tab_id     = content_id + '-tab';
@@ -186,6 +188,14 @@ class WPUF_Admin_Settings {
 
                             if ( value_tab.length ){
                                 document.getElementById(value_tab[0]).click();
+                                var rows = document.getElementById(value_tab[0].replace('-tab','')).querySelectorAll('tr')
+                                rows.forEach(function (row) {
+                                       if ( row.querySelector('label').innerText.toLowerCase().includes( search_value ) !== true ){
+                                           row.style.display = 'none';
+                                       }else{
+                                           row.style.display = 'block';
+                                       }
+                                })
                             }
 
                             tabs.forEach(function (tab) {
@@ -198,15 +208,29 @@ class WPUF_Admin_Settings {
                             })
 
                         }else {
-                            content.forEach(function (row, index) {
-                                var content_id = row.getAttribute('id');
-                                var tab_id     = content_id + '-tab';
-                                document.getElementById(content_id).style.display = '';
-                                document.getElementById(tab_id).style.display = '';
-                                document.getElementById('wpuf_general-tab').click();
-                            })
+                            wpuf_search_reset();
                         }
                     })
+
+                    close.addEventListener('click',function (event) {
+                        wpuf_search_reset();
+                        search_input.value = '';
+                        close.style.display = 'none';
+                    })
+
+                    function wpuf_search_reset() {
+                        content.forEach(function (row, index) {
+                            var content_id = row.getAttribute('id');
+                            var tab_id     = content_id + '-tab';
+                            document.getElementById(content_id).style.display = '';
+                            document.getElementById(tab_id).style.display = '';
+                            document.getElementById('wpuf_general-tab').click();
+                        })
+                        document.querySelector('.wpuf-settings-wrap .metabox-holder').querySelectorAll('tr').forEach(function (row) {
+                                row.style.display = '';
+                        });
+
+                    }
                 });
             </script>
         </div>

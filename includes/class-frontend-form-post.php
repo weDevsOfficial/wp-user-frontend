@@ -1086,9 +1086,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             //now redirect the user
             $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
         } else {
-            //now perform some post related actions
-            do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
-
             // send mail notification
             if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['new'] === 'on' ) {
                 $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $post_author, $post_id );
@@ -1102,6 +1099,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             //redirect the user
             $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $this->form_settings );
+            //now perform some post related actions. it should done after other action.either count related problem emerge
+            do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
+
         }
 
         return $response;

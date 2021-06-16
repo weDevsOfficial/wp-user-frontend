@@ -307,10 +307,10 @@ class WPUF_Frontend_Render_Form {
             return;
         }
 
-        if ( 
-                isset( $this->form_settings['role_base'] ) 
-                && wpuf_validate_boolean( $this->form_settings['role_base'] ) 
-                && ! wpuf_user_has_roles( $this->form_settings['roles'] ) 
+        if (
+                isset( $this->form_settings['role_base'] )
+                && wpuf_validate_boolean( $this->form_settings['role_base'] )
+                && ! wpuf_user_has_roles( $this->form_settings['roles'] )
             ) {
             ?>
             <div class="wpuf-message"><?php esc_html_e( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend'  ); ?></div>
@@ -585,7 +585,7 @@ class WPUF_Frontend_Render_Form {
                         if ( $term instanceof WP_Term  ) {
                             return $term->term_id;
 
-                        } 
+                        }
 
                         $new_term = wp_insert_term( $term_name, $taxonomy['name'] );
 
@@ -793,9 +793,13 @@ class WPUF_Frontend_Render_Form {
                     $data           = [];
                     $map_field_data = $value_name;
 
-                    if ( !empty( $map_field_data ) ) {
-                        list( $data['address'], $data['lat'], $data['lng'] ) = explode( ' || ', $map_field_data );
-                        $meta_key_value[$value['name']]                      = $data;
+                    if ( ! empty( $map_field_data ) ) {
+                        if (stripos( $map_field_data, '||' ) !== false ){
+                            list( $data['address'], $data['lat'], $data['lng'] ) = explode( ' || ', $map_field_data );
+                            $meta_key_value[$value['name']]  = $data;
+                        }else{
+                            $meta_key_value[$value['name']]  = json_decode( $map_field_data, true );
+                        }
                     }
                     break;
 

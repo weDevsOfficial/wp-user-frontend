@@ -1475,6 +1475,9 @@ body .wpuf-form-google-map-container input[type="text"].wpuf-google-map-search {
 body .wpuf-form-google-map-container.hide-search-box .gm-style input[type="text"].wpuf-google-map-search {
   display: none;
 }
+body .wpuf-form-google-map-container.show-search-box .gm-style input[type="text"].wpuf-google-map-search {
+  display: block;
+}
 body .dokan-dashboard-content.dokan-wpuf-dashboard h2.page-head {
   display: none;
 }

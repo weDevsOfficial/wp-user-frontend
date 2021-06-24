@@ -3896,9 +3896,22 @@ function wpuf_user_has_roles( $roles, $user_id = 0 ) {
  */
 function get_wpuf_preview_page() {
     $page_url        = '';
+    $post_status     = '';
     $preview_page_id = get_option( 'wpuf_preview_page', false );
 
-    if ( $preview_page_id && get_post_status( $preview_page_id ) !== 'private' ) {
+    if ( isset( $preview_page_id ) ){
+        $page_url    = get_permalink( $preview_page_id );
+    }
+
+    if ( isset( $page_url ) ){
+        $post_status = get_post_status( $preview_page_id );
+    }
+
+    if ( $page_url && $post_status === 'private' ) {
+        return $page_url;
+    }
+
+    if ( $post_status !== 'private' ) {
         wp_update_post(
             [
                 'ID' => $preview_page_id,

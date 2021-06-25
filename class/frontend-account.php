@@ -183,6 +183,16 @@ class WPUF_Frontend_Account {
                 );
             }
 
+            add_filter(
+                'wpuf_account_sections', function ( $sections ) {
+                    $sections_new = [];
+                    foreach ( $sections as $key => $section ) {
+                        $sections_new[ $section['slug'] ] = $section;
+                    }
+                    return $sections_new;
+                }, 99
+            );
+
             $sections           = wpuf_get_account_sections();
             $current_section    = [];
 

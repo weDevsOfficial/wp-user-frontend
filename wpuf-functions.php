@@ -2036,6 +2036,22 @@ function wpuf_get_account_sections() {
         ],
     ];
 
+    $post_types    = wpuf_get_option( 'cp_on_acc_page', 'wpuf_my_account', [ 'post' ] );
+    $cpt_section   = [];
+
+    if ( is_array( $post_types ) && $post_types ) {
+        foreach ( $post_types as $post_type ) {
+            $post_type_object = get_post_type_object( $post_type );
+
+            $cpt_section[] = [
+                'slug' => $post_type,
+                'label' => $post_type_object->label
+            ];
+        }
+    }
+
+    array_splice( $account_sections, 1, 0,  $cpt_section  );
+
     return apply_filters( 'wpuf_account_sections', $account_sections );
 }
 

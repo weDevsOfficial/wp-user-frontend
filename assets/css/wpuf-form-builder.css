@@ -1,6 +1,24 @@
 [v-cloak] {
   display: none;
 }
+.wpuf-custom-field-instruction {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.wpuf-custom-field-instruction img {
+  border: 1px solid #ddd;
+  width: 100%;
+}
+.wpuf-custom-field-instruction strong {
+  margin-bottom: 10px;
+}
+.wpuf-custom-field-swal-wide {
+  width: 670px !important;
+  padding: 35px !important;
+}
 .wpuf-pro-text-alert {
   font-style: italic;
   color: #cccccc;
@@ -498,6 +516,10 @@
 #form-preview-stage .field-items .control-buttons i.move {
   cursor: move;
 }
+#form-preview-stage .field-items .control-buttons i.control-button-disabled {
+  opacity: .3;
+  pointer-events: none;
+}
 #form-preview-stage .field-items .control-buttons i:hover {
   background-color: #0073aa;
 }
@@ -604,6 +626,7 @@
   margin-left: 6px;
 }
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="text"],
+.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="range"],
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="number"] {
   display: block;
   width: 100%;
@@ -629,6 +652,29 @@
 .wpuf-form-builder-field-options .panel-field-opt .label-title-block {
   display: block;
   margin-bottom: 3px;
+}
+.wpuf-form-builder-field-options .panel-field-opt .field-option-actions {
+  margin: 0;
+  line-height: 1.2;
+}
+.wpuf-form-builder-field-options .panel-field-opt .field-option-actions li {
+  position: relative;
+  margin: 0;
+}
+.wpuf-form-builder-field-options .panel-field-opt .field-option-actions li:not(:last-child):after {
+  content: "|";
+  position: absolute;
+  top: 0;
+  right: -3px;
+  opacity: .5;
+}
+.wpuf-form-builder-field-options .panel-field-opt .field-option-actions .field-helper-text {
+  position: relative;
+  top: 1px;
+  margin-left: 0;
+}
+.wpuf-form-builder-field-options .panel-field-opt .field-option-actions .tooltip .tooltip-inner {
+  width: 200px;
 }
 .option-field-option-chooser {
   margin: 12px 0 0;
@@ -785,7 +831,8 @@ ul.wpuf-form li .wpuf-password-field:after {
   display: table;
 }
 .wpuf-recaptcha-placeholder {
-  width: 304px;
+  width: 100%;
+  max-width: 304px;
 }
 .wpuf-merge-tag-wrap .merge-tag-link {
   position: absolute;

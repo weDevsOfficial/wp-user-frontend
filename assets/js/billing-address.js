@@ -1,23 +1,64 @@
+
 jQuery(function($){
 
-    $('#wpuf-payment-gateway').submit(function (e) {
-        wpuf_validate_address(e);
+    window.wpuf_validate_address = function(e) {
+        var country = $("td.bill_required").find('.wpuf_biiling_country, .input');
+        var state   = $("td.bill_required").find('.wpuf_biiling_state, .input');
+        var add_1   = $("#wpuf_biiling_add_line_1");
+        var add_2   = $("#wpuf_biiling_add_line_2");
+        var city    = $("#wpuf_biiling_city");
+        var zip     = $("#wpuf_biiling_zip_code");
+        var isValid = true;
+
+        if ( ( country.val() === '' || state.val() === '' ) ||
+            ( add_1.hasClass('bill_required') && add_1.val() === "" ) ||
+            ( add_2.hasClass('bill_required') && add_2.val() === "" ) ||
+            ( city.hasClass('bill_required') && city.val() === "" ) ||
+            ( zip.hasClass('bill_required') && zip.val() === "" ) )
+        {
+            e.preventDefault();
+            isValid = false;
+        }
+        return isValid;
+    };
+
+    $( '#wpuf-payment-gateway' ).submit(function (e) {
+        if ( ! window.wpuf_validate_address(e) ) {
+            alert( ajax_object.fill_notice );
+        }
+
+        var billing_address_form = $( '#wpuf-ajax-address-form' );
+
+        if ( billing_address_form.length )  {
+            var inputs = [
+                { id: '#wpuf_biiling_country', name: 'billing_country' },
+                { id: '#wpuf_biiling_state', name: 'billing_state' },
+                { id: '#wpuf_biiling_add_line_1', name: 'billing_add_line1' },
+                { id: '#wpuf_biiling_add_line_2', name: 'billing_add_line2' },
+                { id: '#wpuf_biiling_city', name: 'billing_city' },
+                { id: '#wpuf_biiling_zip_code', name: 'billing_zip' },
+            ];
+
+            inputs.map( function ( input ) {
+                $( '<input type="hidden" name="billing_address[' + input.name + ']" />' )
+                    .appendTo( '#wpuf-payment-gateway' )
+                    .val( $( input.id ).val() );
+            } );
+        }
     });
 
     $('#wpuf-ajax-address-form').submit(function (e) {
         e.preventDefault();
-        $.post(ajax_object.ajaxurl, {
-            action: 'wpuf_address_ajax_action',
-            data: $('#wpuf-ajax-address-form').serialize(),
-        });
+        $( '#wpuf-payment-gateway' ).trigger( 'submit' );
     });
 
     $( document.body ).on('change', 'select#wpuf_biiling_country', function() {
         var $this = $(this), $tr = $this.closest('tr');
         var data = {
-            action: 'wpuf_get_shop_states',
+            action: 'wpuf-ajax-address',
             country: $(this).val(),
             field_name: $("#wpuf_biiling_state").attr("name"),
+            _wpnonce: $("#_wpnonce").val()
         };
         $.post(ajax_object.ajaxurl, data, function (response) {
             if( 'nostates' == response ) {
@@ -37,26 +78,11 @@ jQuery(function($){
 
     var ajax_tax_count = 0;
 
-    function wpuf_validate_address(e) {
-        var country = $("td.bill_required").find('.wpuf_biiling_country, .input');
-        var state   = $("td.bill_required").find('.wpuf_biiling_state, .input');
-        var add_1   = $("#wpuf_biiling_add_line_1");
-        var add_2   = $("#wpuf_biiling_add_line_2");
-        var city    = $("#wpuf_biiling_city");
-        var zip     = $("#wpuf_biiling_zip_code");
-
-        if ( ( country.val() === '' || state.val() === '' ) || ( add_1.hasClass('bill_required') && add_1.val() === "" ) ||
-            ( add_1.hasClass('bill_required') && add_1.val() === "" ) || ( add_2.hasClass('bill_required') && add_2.val() === "" ) ||
-            ( city.hasClass('bill_required') && city.val() === "" ) || ( zip.hasClass('bill_required') && zip.val() === "" ) ) {
-            alert( ajax_object.fill_notice );
-            e.preventDefault();
-        }
-    }
-
     function wpuf_calculate_tax() {
 
         var $wpuf_cc_address = jQuery('#wpuf-address-country-state');
         var $payment_form = jQuery('#wpuf-payment-gateway');
+        var $address_form = jQuery('#wpuf-ajax-address-form');
 
         var postData = {
             action: 'wpuf_update_billing_address',
@@ -68,6 +94,7 @@ jQuery(function($){
             billing_zip: $wpuf_cc_address.find('#wpuf_biiling_zip_code').val(),
             type: $payment_form.find('#wpuf_type').html(),
             id: $payment_form.find('#wpuf_id').html(),
+            _wpnonce: $address_form.find('#_wpnonce').val(),
         };
 
         var current_ajax_count = ++ajax_tax_count;

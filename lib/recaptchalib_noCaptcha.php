@@ -160,7 +160,7 @@ class WPUF_ReCaptcha
             $recaptchaResponse->success = true;
         } else {
             $recaptchaResponse->success = false;
-            $recaptchaResponse->errorCodes = $answers [error-codes];
+            $recaptchaResponse->errorCodes = $answers ['error-codes'];
         }
 
         return $recaptchaResponse;

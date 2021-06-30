@@ -511,6 +511,135 @@ div#form-preview ul.wpuf-form li.wpuf_hidden_field {
   display: block;
   opacity: 0.3;
 }
+ul.wpuf-form .wpuf-field-columns {
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .wpuf-column-inner-fields {
+  width: 100%;
+  float: left;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .wpuf-column-inner-fields:nth-child(1) {
+  padding-right: 0!important;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .column-1 .ui-resizable-handle {
+  display: none !important;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .column-2.wpuf-column-inner-fields,
+ul.wpuf-form .wpuf-field-columns.has-columns-1 .wpuf-column .column-3.wpuf-column-inner-fields {
+  display: none;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .wpuf-column-inner-fields {
+  width: 50%;
+  float: left;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .wpuf-column-inner-fields:nth-child(2) {
+  padding-right: 0!important;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .column-2 .ui-resizable-handle {
+  display: none !important;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-2 .wpuf-column .column-3.wpuf-column-inner-fields {
+  display: none;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-3 .wpuf-column .wpuf-column-inner-fields {
+  width: 33.33%;
+  float: left;
+}
+ul.wpuf-form .wpuf-field-columns.has-columns-3 .wpuf-column .wpuf-column-inner-fields:nth-child(3) {
+  padding-right: 0!important;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns {
+  margin-left: 0;
+  margin-right: 0;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column {
+  padding: 0;
+  border: 0;
+  float: none;
+  width: 100%;
+  display: flex;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields {
+  padding: 0 5px 0 0;
+  position: relative;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list {
+  border: 1px dashed #ffb900;
+  background: rgba(255, 185, 0, 0.08);
+  margin: 0;
+  padding: 0 0 50px 0;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items {
+  background: #fff;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items.current-editing {
+  background-color: rgba(255, 185, 0, 0.15);
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items:last-child {
+  margin-bottom: 0;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items:hover .wpuf-column-field-control-buttons {
+  display: block;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items .wpuf-column-field-control-buttons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: none;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  text-align: center;
+  background: rgba(255, 185, 0, 0.08);
+  border: 1px dashed #ffb900;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items .wpuf-column-field-control-buttons p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -10px 0 0 -43px;
+  line-height: 1;
+  color: #eee;
+  background-color: #23282d;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items .wpuf-column-field-control-buttons i {
+  cursor: pointer;
+  padding: 5px;
+  font-size: 10px;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items .wpuf-column-field-control-buttons i:hover {
+  background-color: #0073aa;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items .wpuf-column-field-control-buttons i.move {
+  cursor: move;
+}
+ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields .drop-message {
+  text-align: center;
+  border: 1px dashed #ffb900;
+  border-top: 0;
+  background: rgba(255, 185, 0, 0.08);
+  margin: 0;
+  padding: 15px 0;
+}
+#form-preview-stage .field-items .wpuf-field-columns + div.control-buttons {
+  top: 10px;
+  z-index: 10;
+  height: auto;
+  margin: 0;
+  background: transparent;
+  border: 0;
+}
+.wpuf-setup-menu-link {
+  display: none;
+}
+.wpuf-xmp-tag {
+  display: inline;
+}
 .wpuf-help-tabbed {
   display: flex;
   width: 100%;
@@ -787,7 +916,7 @@ div#form-preview ul.wpuf-form li.wpuf_hidden_field {
   font-size: 14px;
 }
 .wpuf-whats-new .wedevs-changelog .wedevs-changelog-history li {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 .wpuf-whats-new .wedevs-changelog .wedevs-changelog-history h4 {
   margin: 0 0 10px 0;
@@ -820,13 +949,18 @@ div#form-preview ul.wpuf-form li.wpuf_hidden_field {
   background: #3778ff;
   border: 1px solid #3778ff;
 }
-.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.improvement {
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.improvement,
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.enhancement {
   background: #3aaa55;
   border: 1px solid #3aaa a;
 }
 .wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.fix {
   background: #ff4772;
   border: 1px solid #ff4772;
+}
+.wpuf-whats-new .wedevs-changelog .wedevs-changelog-history span.label.tweak {
+  background: #f9a825;
+  border: 1px solid #ffa000;
 }
 #wpuf_subs_metabox .inside {
   margin: 0;

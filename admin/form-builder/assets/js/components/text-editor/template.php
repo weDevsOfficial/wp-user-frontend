@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="mce-edit-area mce-container mce-panel mce-stack-layout-item" style="border-width: 1px 0px 0px;">
-                        <div style="width: 100%; height: 150px; display: block;"></div><!-- iframe replacement div -->
+                        <div style="width: 100%; height: 150px; display: block;">{{default_text}}</div><!-- iframe replacement div -->
                     </div>
                     <div class="mce-statusbar mce-container mce-panel mce-stack-layout-item" style="border-width: 1px 0px 0px;">
                         <div class="mce-container-body mce-flow-layout">

@@ -1,0 +1,16 @@
+{
+  "exclude": [
+    "README.md",
+    "appsero.json",
+    "composer.json",
+    "composer.lock",
+    "package.json",
+    "package-lock.json",
+    ".gitignore",
+    "phpcs.xml.dist",
+    ".editorconfig",
+    "plugin-deploy.sh",
+    "node_modules",
+    "Gruntfile.js"
+  ]
+}

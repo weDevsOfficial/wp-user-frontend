@@ -434,16 +434,16 @@
 				</div>
 
 				<div class="logo">
-					<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/wpuf-logo.png" alt="WP User Frontend Pro">
+					<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/wpuf-logo.png" alt="WP User Frontend Pro">
 				</div>
 			</div>
 			<div class="video-block" id="wpuf-welcome-prompt">
 				<a href="#" class="play-video learn-more" title="Watch how to create your first form" data-tube="NJvjy9WFyAM">
-					<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/welcome-video.png" alt="Watch how to create your first form" class="video-thumbnail">
+					<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/welcome-video.png" alt="Watch how to create your first form" class="video-thumbnail">
 				</a>
 				<div class="action-block">
-					<a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" class="wpuf-btn primary"><?php _e( 'Create Your First Form', 'wp-user-frontend' ); ?></a>
-					<a href="<?php echo admin_url( 'admin.php?page=wpuf-support' ); ?>" class="wpuf-btn default"><?php _e( 'Read the Full Guide', 'wp-user-frontend' ); ?></a>
+					<a href="<?php echo esc_url_raw( admin_url( 'admin.php?page=wpuf-post-forms' ) ); ?>" class="wpuf-btn primary"><?php esc_html_e( 'Create Your First Form', 'wp-user-frontend' ); ?></a>
+					<a href="<?php echo esc_url_raw( admin_url( 'admin.php?page=wpuf-support' ) ); ?>" class="wpuf-btn default"><?php esc_html_e( 'Read the Full Guide', 'wp-user-frontend' ); ?></a>
 				</div>
 			</div>
 			<div class="wpuf-welcome-modal" id="wpuf-welcome-modal">
@@ -464,81 +464,81 @@
 
 			<div class="section">
 				<div class="features-block">
-					<h2><img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/frontend-posting.png" alt="Frontend Posting"> Frontend Posting</h2>
+					<h2><img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/frontend-posting.png" alt="Frontend Posting"> Frontend Posting</h2>
 
 					<div class="features-list">
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Form-Builder.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Form-Builder.svg">
 							<h5>Post Form Builder</h5>
 							<p><a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/" target="_blank">Design your forms</a> with drag & Drop builder with live preview</p>
 						</div>
 
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Support.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Support.svg">
 							<h5>Custom Field Support</h5>
 							<p>Build exclusive submission forms with <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-elements/" target="_blank">30+ custom field types</a>.</p>
 						</div>
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Post-Taxonomies.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Post-Taxonomies.svg">
 							<h5>Post Types & Taxonomies</h5>
 							<p>Unleash your creativity with <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/" target="_blank">custom post types</a> & taxonomies</p>
 						</div>
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Guest-Posting.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Guest-Posting.svg">
 							<h5>Guest Posting</h5>
 							<p>Allow your guests to post from the frontend with full capabilities. <a href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/" target="_blank">Learn more</a>.</p>
 						</div>
 					</div>
 				</div>
 				<div class="features-block">
-					<h2><img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Profile-Builder.png" alt="Frontend Posting"> Registration &amp; Profile Builder</h2>
+					<h2><img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Profile-Builder.png" alt="Frontend Posting"> Registration &amp; Profile Builder</h2>
 
 					<div class="features-list">
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Registration-form.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Registration-form.svg">
 							<h5>Registration form builder</h5>
 							<p>Create <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/registration-forms/" target="_blank">frontend registration forms</a> with powerful builder using shortcodes.</p>
 						</div>
 
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Profile-Builder.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Profile-Builder.svg">
 							<h5>User Profile Builder</h5>
 							<p>Use shortcodes to publish frontend profile page and <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/wordpress-edit-user-profile-from-front-end/" target="_blank">profile edit</a> page.</p>
 						</div>
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/My-Account.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/My-Account.svg">
 							<h5>My Account on Frontend</h5>
 							<p>Use shortcodes to generate frontend <a href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/" target="_blank">my account</a> pages.</p>
 						</div>
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Create-Database.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Create-Database.svg">
 							<h5>Login Page</h5>
 							<p>Create themed login and registration page for a unified user experience for the user.</p>
 						</div>
 					</div>
 				</div>
 				<div class="features-block">
-					<h2><img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Subscriptions.png" alt="Subscriptions"> Subscriptions</h2>
+					<h2><img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Subscriptions.png" alt="Subscriptions"> Subscriptions</h2>
 
 					<div class="features-list">
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/User.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/User.svg">
 							<h5>Charge User for Posting</h5>
 							<p><a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/" target="_blank">Accept payments</a> from multiple gateways for post submissions</p>
 						</div>
 
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/pay-per-post.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/pay-per-post.svg">
 							<h5>Pay-per-post on Forms</h5>
 							<p>Earn from <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/" target="_blank">each guest post</a> with different subscription packs</p>
 						</div>
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Content-Locking.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Content-Locking.svg">
 							<h5>Content Locking</h5>
 							<p><a href="https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/" target="_blank">Lock high value &amp; quality contents</a> for your subscribed users</p>
 						</div>
 						<div class="feature-block">
-							<img src="<?php echo WPUF_ASSET_URI; ?>/images/welcome/Subscription-Signup.svg">
+							<img src="<?php echo esc_url( WPUF_ASSET_URI ); ?>/images/welcome/Subscription-Signup.svg">
 							<h5>Subscription Signup</h5>
 							<p>Build a membership site where users can <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/paid-membership-registration/" target="_blank">signup with a subscription plan</a>.</p>
 						</div>
@@ -583,8 +583,8 @@
 
 		<div class="footer">
 			<div class="action-block">
-				<a href="<?php echo admin_url( 'admin.php?page=wpuf-post-forms' ); ?>" class="wpuf-btn primary"><?php _e( 'Create Your First Form', 'wp-user-frontend' ); ?></a>
-				<a href="<?php echo admin_url( 'admin.php?page=wpuf-support' ); ?>" class="wpuf-btn default"><?php _e( 'Read the Full Guide', 'wp-user-frontend' ); ?></a>
+				<a href="<?php echo esc_url_raw( admin_url( 'admin.php?page=wpuf-post-forms' ) ); ?>" class="wpuf-btn primary"><?php esc_html_e( 'Create Your First Form', 'wp-user-frontend' ); ?></a>
+				<a href="<?php echo esc_url_raw( admin_url( 'admin.php?page=wpuf-support' ) ); ?>" class="wpuf-btn default"><?php esc_html_e( 'Read the Full Guide', 'wp-user-frontend' ); ?></a>
 			</div>
 		</div><!-- /.footer -->
 

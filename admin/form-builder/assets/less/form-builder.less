@@ -23,6 +23,27 @@
 
 // Style pro alerts
 // --------------------------------------------------
+.wpuf-custom-field-instruction {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+
+    img {
+        border: 1px solid #ddd;
+        width: 100%;
+    }
+    strong {
+        margin-bottom: 10px;
+    }
+}
+
+.wpuf-custom-field-swal-wide{
+    width:670px !important;
+    padding: 35px !important;
+}
+
 .wpuf-pro-text-alert {
     font-style: italic;
     color: @borderColor;
@@ -623,6 +644,11 @@
                 &.move {
                     cursor: move;
                 }
+
+                &.control-button-disabled {
+                    opacity: .3;
+                    pointer-events: none;
+                }
             }
 
             i:hover {
@@ -770,6 +796,7 @@
         &.panel-field-opt-text {
 
             input[type="text"],
+            input[type="range"],
             input[type="number"] {
                 display: block;
                 width: 100%;
@@ -808,6 +835,37 @@
         .label-title-block {
             display: block;
             margin-bottom: 3px;
+        }
+
+        .field-option-actions {
+            margin: 0;
+            line-height: 1.2;
+
+            li {
+                position: relative;
+                margin: 0;
+
+                &:not(:last-child):after {
+                    content: "|";
+                    position: absolute;
+                    top: 0;
+                    right: -3px;
+                    opacity: .5;
+                }
+            }
+
+            .field-helper-text {
+                position: relative;
+                top: 1px;
+                margin-left: 0;
+            }
+
+            .tooltip {
+
+                .tooltip-inner {
+                    width: 200px;
+                }
+            }
         }
     }
 }
@@ -1020,7 +1078,8 @@ ul.wpuf-form li .wpuf-password-field:after {
 // Recaptcha
 // --------------------------------------------------
 .wpuf-recaptcha-placeholder {
-    width: 304px;
+    width: 100%;
+    max-width: 304px;
 }
 
 // Merge Tags

@@ -12,6 +12,10 @@ Vue.component('field-multiselect', {
             },
 
             set: function (value) {
+                if ( ! value ) {
+                    value = [];
+                }
+
                 this.$store.commit('update_editing_form_field', {
                     editing_field_id: this.editing_form_field.id,
                     field_name: this.option_field.name,

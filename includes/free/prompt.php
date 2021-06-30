@@ -2,13 +2,11 @@
 
 /**
  * Free to Pro prompter class
- *
- * @package WPUF
  */
 class WPUF_Pro_Prompt {
 
     public static function get_pro_prompt() {
-        echo '<h3 class="wpuf-pro-text-alert">' . self::get_pro_prompt_text() . '</h3>';
+        echo wp_kses_post( '<h3 class="wpuf-pro-text-alert">' . self::get_pro_prompt_text() . '</h3>' );
     }
 
     public static function get_pro_url() {

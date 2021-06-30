@@ -6,36 +6,35 @@
  * @return void
  */
 function wpuf_upgrade_2_6_field_options() {
-
     $show_custom  = wpuf_get_option( 'cf_show_front', 'wpuf_general', 'no' );
 
-    $input_fields = get_posts( array(
-        'post_type'   => array( 'wpuf_input' ),
-        'numberposts' => '-1'
-    ) );
+    $input_fields = get_posts( [
+        'post_type'   => [ 'wpuf_input' ],
+        'numberposts' => '-1',
+    ] );
 
     if ( !$input_fields ) {
         return;
     }
 
-    foreach ($input_fields as $key => $field) {
-        $settings = maybe_unserialize($field->post_content);
+    foreach ( $input_fields as $key => $field ) {
+        $settings = maybe_unserialize( $field->post_content );
 
-        if ( isset($settings['is_meta'] ) && $settings['is_meta'] == 'yes' ) {
+        if ( isset( $settings['is_meta'] ) && $settings['is_meta'] == 'yes' ) {
             $settings['show_in_post'] = $show_custom;
         }
 
-        wp_update_post( array(
-            'ID' => $field->ID,
+        wp_update_post( [
+            'ID'           => $field->ID,
             'post_status'  => 'publish',
-            'post_content' => maybe_serialize( $settings )
-        ) );
+            'post_content' => maybe_serialize( $settings ),
+        ] );
     }
-
 }
 
 /**
  * create table
+ *
  * @return void
  */
 function wpuf_upgrade_2_6_create_subscribers_table() {
@@ -60,18 +59,21 @@ function wpuf_upgrade_2_6_create_subscribers_table() {
 
 /**
  * insert table data
+ *
  * @return void
  */
 function wpuf_upgrade_2_6_insert_subscribers() {
     global $wpdb;
     $users = WPUF_Subscription::init()->subscription_pack_users();
-    foreach ($users as $user) {
+
+    foreach ( $users as $user ) {
         $sub_data               = get_user_meta( $user->data->ID, '_wpuf_subscription_pack', true );
-        $sql = $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "wpuf_transaction
-        WHERE user_id = %d AND pack_id = %d LIMIT 1", $user->data->ID, $sub_data['pack_id'] );
+        $sql                    = $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_transaction
+        WHERE user_id = %d AND pack_id = %d LIMIT 1', $user->data->ID, $sub_data['pack_id'] );
         $result = $wpdb->get_row( $sql );
+
         if ( $result ) {
-            $table_data = array(
+            $table_data = [
                 'user_id'               => $user->data->ID,
                 'name'                  => $user->data->display_name,
                 'subscribtion_id'       => $sub_data['pack_id'],
@@ -80,24 +82,23 @@ function wpuf_upgrade_2_6_insert_subscribers() {
                 'transaction_id'        => is_null( $result->transaction_id ) ? 'NA' : $result->transaction_id,
                 'starts_from'           => is_null( $result->created ) ? 'NA' : $result->created,
                 'expire'                => $sub_data['expire'] == '' ? 'recurring' : $sub_data['expire'],
-            );
+            ];
             $wpdb->insert( $wpdb->prefix . 'wpuf_subscribers', $table_data );
         }
     }
 }
 
 function wpuf_upgrade_2_6_payment_settings_migration() {
-    $args = array(
+    $args = [
         'post_type'     => 'wpuf_forms',
         'post_status'   => 'publish',
-    );
+    ];
 
-    $allforms = get_posts($args);
+    $allforms = get_posts( $args );
 
     if ( $allforms ) {
-        foreach ($allforms as $form) {
-
-            $form_settings = wpuf_get_form_settings( $form->ID );
+        foreach ( $allforms as $form ) {
+            $form_settings  = wpuf_get_form_settings( $form->ID );
             $charge_posting = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
 
             if ( 'yes' == $charge_posting ) {
@@ -125,7 +126,6 @@ function wpuf_upgrade_2_6_payment_settings_migration() {
             update_post_meta( $form->ID, 'wpuf_form_settings', $form_settings );
         }
     }
-
 }
 
 wpuf_upgrade_2_6_field_options();

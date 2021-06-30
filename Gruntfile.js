@@ -33,7 +33,7 @@ module.exports = function(grunt) {
         },
 
         wp_readme_to_markdown: {
-            your_target: {
+            wpuf: {
                 files: {
                     'readme.md': 'readme.txt'
                 }
@@ -136,7 +136,15 @@ module.exports = function(grunt) {
                     '!**/package.json',
                     '!**/readme.md',
                     '!**/docs.md',
-                    '!**/*~'
+                    '!**/*~',
+                    '!vendor/**',
+                    '!**/log.txt',
+                    '!**/package-lock.json',
+                    '!**/appsero.json',
+                    '!**/composer.json',
+                    '!**/composer.lock',
+                    '!**/phpcs-report.txt',
+                    '!**/phpcs.xml.dist'
                 ],
                 dest: 'build/'
             }
@@ -209,13 +217,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-notify' );
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
 
-    grunt.registerTask( 'default', [ 'makepot', 'uglify' ] );
+    grunt.registerTask( 'default', [ 'less', 'concat' ] );
 
     // file auto generation
-    grunt.registerTask( 'i18n', [ 'addtextdomain', 'makepot' ] );
+    grunt.registerTask( 'i18n', [ 'makepot' ] );
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff
-    grunt.registerTask( 'release', [ 'i18n', 'readme' ] );
+    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme' ] );
     grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
 };

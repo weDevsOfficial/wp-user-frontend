@@ -7,9 +7,9 @@
  */
 class WPUF_Admin_Welcome {
 
-    function __construct() {
-        add_action( 'admin_menu', array( $this, 'register_menu'  ) );
-        add_action( 'admin_head', array( $this, 'hide_menu' ) );
+    public function __construct() {
+        add_action( 'admin_menu', [ $this, 'register_menu'  ] );
+        add_action( 'admin_head', [ $this, 'hide_menu' ] );
         // add_action( 'admin_init', array( $this, 'redirect_to_page' ), 9999 );
     }
 
@@ -19,7 +19,7 @@ class WPUF_Admin_Welcome {
      * @return void
      */
     public function register_menu() {
-        add_dashboard_page( __( 'Welcome to WP User Frontend', 'wp-user-frontend' ), __( 'Welcome to WP User Frontend', 'wp-user-frontend' ), 'manage_options', 'wpuf-welcome', array( $this, 'welcome_page' ) );
+        add_dashboard_page( __( 'Welcome to WP User Frontend', 'wp-user-frontend' ), __( 'Welcome to WP User Frontend', 'wp-user-frontend' ), 'manage_options', 'wpuf-welcome', [ $this, 'welcome_page' ] );
     }
 
     /**
@@ -37,7 +37,7 @@ class WPUF_Admin_Welcome {
      * @return void
      */
     public function redirect_to_page() {
-        if ( ! get_transient( 'wpuf_activation_redirect' ) ) {
+        if ( !get_transient( 'wpuf_activation_redirect' ) ) {
             return;
         }
 

@@ -12,6 +12,7 @@ Vue.component('field-option-data', {
     data: function () {
         return {
             show_value: false,
+            sync_value: true,
             options: [],
             selected: []
         };
@@ -91,7 +92,9 @@ Vue.component('field-option-data', {
         },
 
         set_option_label: function (index, label) {
-            this.options[index].value = label.toLocaleLowerCase().replace( /\s/g, '_' );
+            if (this.sync_value) {
+                this.options[index].value = label.toLocaleLowerCase().replace( /\s/g, '_' );
+            }
         }
     },
 

@@ -3,12 +3,10 @@
 /* CountryState class */
 
 class CountryState {
-
     /**
-    An array of countries, iso_2_code, iso_3_code, iso_num_code, iso_something code :-), states/counties, international dial code.
-    It can be used to quickly generate web forms.  You can do a split on the counties/states string.
-
-    */
+     * An array of countries, iso_2_code, iso_3_code, iso_num_code, iso_something code :-), states/counties, international dial code.
+     * It can be used to quickly generate web forms.  You can do a split on the counties/states string.
+     */
     private $sorted_countries = [
         ['Afghanistan', 'AF', 'AFG', '004', 'ISO 3166-2:AF', 'Badakhshan|Badghis|Baghlan|Balkh|Bamian|Farah|Faryab|Ghazni|Ghowr|Helmand|Herat|Jowzjan|Kabol|Kandahar|Kapisa|Konar|Kondoz|Laghman|Lowgar|Nangarhar|Nimruz|Oruzgan|Paktia|Paktika|Parvan|Samangan|Sar-e Pol|Takhar|Vardak|Zabol', '93'],
         ['Aland Islands', 'AX', 'ALA', '248', 'ISO 3166-2:AX', 'Aland Islands', ''],
@@ -64,7 +62,7 @@ class CountryState {
         ['Congo the Democratic Republic of the', 'CD', 'COD', '180', 'ISO 3166-2:CD', 'Bandundu|Bas-Congo|Equateur|Kasai-Occidental|Kasai-Oriental|Katanga|Kinshasa|Maniema|Nord-Kivu|Orientale|Sud-Kivu', '243'],
         ['Cook Islands', 'CK', 'COK', '184', 'ISO 3166-2:CK', 'Aitutaki|Atiu|Avarua|Mangaia|Manihiki|Manuae|Mauke|Mitiaro|Nassau Island|Palmerston|Penrhyn|Pukapuka|Rakahanga|Rarotonga|Suwarrow|Takutea', '682'],
         ['Costa Rica', 'CR', 'CRI', '188', 'ISO 3166-2:CR', 'Alajuela|Cartago|Guanacaste|Heredia|Limon|Puntarenas|San Jose', '506'],
-        ["Cote d'Ivoire", 'CI', 'CIV', '384', 'ISO 3166-2:CI', "Abengourou|Abidjan|Aboisso|Adiake'|Adzope|Agboville|Agnibilekrou|Ale'pe'|Bangolo|Beoumi|Biankouma|Bocanda|Bondoukou|Bongouanou|Bouafle|Bouake|Bouna|Boundiali|Dabakala|Dabon|Daloa|Danane|Daoukro|Dimbokro|Divo|Duekoue|Ferkessedougou|Gagnoa|Grand Bassam|Grand-Lahou|Guiglo|Issia|Jacqueville|Katiola|Korhogo|Lakota|Man|Mankono|Mbahiakro|Odienne|Oume|Sakassou|San-Pedro|Sassandra|Seguela|Sinfra|Soubre|Tabou|Tanda|Tiassale|Tiebissou|Tingrela|Touba|Toulepleu|Toumodi|Vavoua|Yamoussoukro|Zuenoula", '225'],
+        ["Ivory Coast", 'CI', 'CIV', '384', 'ISO 3166-2:CI', "Abengourou|Abidjan|Aboisso|Adiake'|Adzope|Agboville|Agnibilekrou|Ale'pe'|Bangolo|Beoumi|Biankouma|Bocanda|Bondoukou|Bongouanou|Bouafle|Bouake|Bouna|Boundiali|Dabakala|Dabon|Daloa|Danane|Daoukro|Dimbokro|Divo|Duekoue|Ferkessedougou|Gagnoa|Grand Bassam|Grand-Lahou|Guiglo|Issia|Jacqueville|Katiola|Korhogo|Lakota|Man|Mankono|Mbahiakro|Odienne|Oume|Sakassou|San-Pedro|Sassandra|Seguela|Sinfra|Soubre|Tabou|Tanda|Tiassale|Tiebissou|Tingrela|Touba|Toulepleu|Toumodi|Vavoua|Yamoussoukro|Zuenoula", '225'],
         ['Croatia', 'HR', 'HRV', '191', 'ISO 3166-2:HR', 'Bjelovarsko-Bilogorska Zupanija|Brodsko-Posavska Zupanija|Dubrovacko-Neretvanska Zupanija|Istarska Zupanija|Karlovacka Zupanija|Koprivnicko-Krizevacka Zupanija|Krapinsko-Zagorska Zupanija|Licko-Senjska Zupanija|Medimurska Zupanija|Osjecko-Baranjska Zupanija|Pozesko-Slavonska Zupanija|Primorsko-Goranska Zupanija|Sibensko-Kninska Zupanija|Sisacko-Moslavacka Zupanija|Splitsko-Dalmatinska Zupanija|Varazdinska Zupanija|Viroviticko-Podravska Zupanija|Vukovarsko-Srijemska Zupanija|Zadarska Zupanija|Zagreb|Zagrebacka Zupanija', '385'],
         ['Cuba', 'CU', 'CUB', '192', 'ISO 3166-2:CU', 'Camaguey|Ciego de Avila|Cienfuegos|Ciudad de La Habana|Granma|Guantanamo|Holguin|Isla de la Juventud|La Habana|Las Tunas|Matanzas|Pinar del Rio|Sancti Spiritus|Santiago de Cuba|Villa Clara', '53'],
         ['Curacao', 'CW', 'CUW', '531', 'ISO 3166-2:CW', 'Curacao', ''],
@@ -127,8 +125,6 @@ class CountryState {
         ['Kazakhstan', 'KZ', 'KAZ', '398', 'ISO 3166-2:KZ', 'Almaty|Aqmola|Aqtobe|Astana|Atyrau|Batys Qazaqstan|Bayqongyr|Mangghystau|Ongtustik Qazaqstan|Pavlodar|Qaraghandy|Qostanay|Qyzylorda|Shyghys Qazaqstan|Soltustik Qazaqstan|Zhambyl', '7'],
         ['Kenya', 'KE', 'KEN', '404', 'ISO 3166-2:KE', 'Central|Coast|Eastern|Nairobi Area|North Eastern|Nyanza|Rift Valley|Western', '254'],
         ['Kiribati', 'KI', 'KIR', '296', 'ISO 3166-2:KI', 'Abaiang|Abemama|Aranuka|Arorae|Banaba|Banaba|Beru|Butaritari|Central Gilberts|Gilbert Islands|Kanton|Kiritimati|Kuria|Line Islands|Line Islands|Maiana|Makin|Marakei|Nikunau|Nonouti|Northern Gilberts|Onotoa|Phoenix Islands|Southern Gilberts|Tabiteuea|Tabuaeran|Tamana|Tarawa|Tarawa|Teraina', '686'],
-        ["Korea, Democratic People's Republic of", 'KP', 'PRK', '408', 'ISO 3166-2:KP', "Chagang-do [Chagang Province]|Hamgyong-bukto [North Hamgyong Province]|Hamgyong-namdo [South Hamgyong Province]|Hwanghae-bukto [North Hwanghae Province]|Hwanghae-namdo [South Hwanghae Province]|Kaesong-si [Kaesong City]|Kangwon-do [Kangwon Province]|Namp'o-si [Namp'o City]|P'yongan-bukto [North P'yongan Province]|P'yongan-namdo [South P'yongan Province]|P'yongyang-si [P'yongyang City]|Yanggang-do [Yanggang Province]", '850'],
-        ['Korea, Republic of', 'KR', 'KOR', '410', 'ISO 3166-2:KR', "Ch'ungch'ong-bukto|Ch'ungch'ong-namdo|Cheju-do|Cholla-bukto|Cholla-namdo|Inch'on-gwangyoksi|Kangwon-do|Kwangju-gwangyoksi|Kyonggi-do|Kyongsang-bukto|Kyongsang-namdo|Pusan-gwangyoksi|Soul-t'ukpyolsi|Taegu-gwangyoksi|Taejon-gwangyoksi|Ulsan-gwangyoksi", '82'],
         ['Kuwait', 'KW', 'KWT', '414', 'ISO 3166-2:KW', "Al 'Asimah|Al Ahmadi|Al Farwaniyah|Al Jahra'|Hawalli", '965'],
         ['Kyrgyzstan', 'KG', 'KGZ', '417', 'ISO 3166-2:KG', 'Batken Oblasty|Bishkek Shaary|Chuy Oblasty [Bishkek]|Jalal-Abad Oblasty|Naryn Oblasty|Osh Oblasty|Talas Oblasty|Ysyk-Kol Oblasty [Karakol]', '996'],
         ["Lao People's Democratic Republic", 'LA', 'LAO', '418', 'ISO 3166-2:LA', 'Attapu|Bokeo|Bolikhamxai|Champasak|Houaphan|Khammouan|Louangnamtha|Louangphabang|Oudomxai|Phongsali|Salavan|Savannakhet|Viangchan|Viangchan|Xaignabouli|Xaisomboun|Xekong|Xiangkhoang', '856'],
@@ -168,12 +164,13 @@ class CountryState {
         ['Nepal', 'NP', 'NPL', '524', 'ISO 3166-2:NP', 'Bagmati|Bheri|Dhawalagiri|Gandaki|Janakpur|Karnali|Kosi|Lumbini|Mahakali|Mechi|Narayani|Rapti|Sagarmatha|Seti', '977'],
         ['Netherlands', 'NL', 'NLD', '528', 'ISO 3166-2:NL', 'Drenthe|Flevoland|Friesland|Gelderland|Groningen|Limburg|Noord-Brabant|Noord-Holland|Overijssel|Utrecht|Zeeland|Zuid-Holland', '31'],
         ['New Caledonia', 'NC', 'NCL', '540', 'ISO 3166-2:NC', 'Iles Loyaute|Nord|Sud', '687'],
-        ['New Zealand', 'NZ', 'NZL', '554', 'ISO 3166-2:NZ', "Akaroa|Amuri|Ashburton|Bay of Islands|Bruce|Buller|Chatham Islands|Cheviot|Clifton|Clutha|Cook|Dannevirke|Egmont|Eketahuna|Ellesmere|Eltham|Eyre|Featherston|Franklin|Golden Bay|Great Barrier Island|Grey|Hauraki Plains|Hawera|Hawke's Bay|Heathcote|Hikurangi|Hobson|Hokianga|Horowhenua|Hurunui|Hutt|Inangahua|Inglewood|Kaikoura|Kairanga|Kiwitea|Lake|Mackenzie|Malvern|Manaia|Manawatu|Mangonui|Maniototo|Marlborough|Masterton|Matamata|Mount Herbert|Ohinemuri|Opotiki|Oroua|Otamatea|Otorohanga|Oxford|Pahiatua|Paparua|Patea|Piako|Pohangina|Raglan|Rangiora|Rangitikei|Rodney|Rotorua|Runanga|Saint Kilda|Silverpeaks|Southland|Stewart Island|Stratford|Strathallan|Taranaki|Taumarunui|Taupo|Tauranga|Thames-Coromandel|Tuapeka|Vincent|Waiapu|Waiheke|Waihemo|Waikato|Waikohu|Waimairi|Waimarino|Waimate|Waimate West|Waimea|Waipa|Waipawa|Waipukurau|Wairarapa South|Wairewa|Wairoa|Waitaki|Waitomo|Waitotara|Wallace|Wanganui|Waverley|Westland|Whakatane|Whangarei|Whangaroa|Woodville", '64'],
+        ['New Zealand', 'NZ', 'NZL', '554', 'ISO 3166-2:NZ', "Ahipara|Ahititi|Ahuroa|Aka Aka|Akaroa|Ākitio|Albany|Albert Town|Albury|Alexandra|Allanton|Amuri|Amberley|Anakiwa|Aramoana|Aranga|Arapohue|Arrowtown|Arundel|Ashburton|Ashhurst|Ashley|Auckland|Auroa|Awanui|Balclutha|Balfour|Barrhill|Barrytown|Bay of Islands|Beachlands|Beaumont|Bell Block|Benhar|Bideford|Blackball|Blenheim|Bluff|Brighton|Brightwater|Broadwood|Bulls|Bunnythorpe|Burnt Hill|Cambridge|Canvastown|Carterton|Charlton|Chatton|Cheviot|Christchurch|Clarksville|Clarkville|Clevedon|Clinton|Clive|Clyde|Coatesville|Collingwood|Colville|Cooks Beach|Coopers Creek|Coroglen|Coromandel|Cromwell|Culverden|Cust|Dairy Flat|Dannevirke|Darfield|Dargaville|Dipton|Dobson|Doyleston|Drury|Dunedin|Duntroon|Eastbourne|Edendale|Edgecumbe|Egmont Village|Eketāhuna|Eltham|Ettrick|Eyrewell Forest|Fairhall|Fairlie|Fairfax|Featherston|Feilding|Fencourt|Fernside|Flaxmere|Flaxton|Fox Glacier|Foxton|Foxton Beach|Frankton Otago|Frankton Waikato|Franz Josef Waiau|Geraldine|Gisborne|Glen Massey|Glenorchy|Glentui|Gordonton|Gore|Granity|Greymouth|Greytown|Grovetown|Gummies Bush|Haast|Hakataramea|Halcombe|Hamilton|Hampden|Hanmer Springs|Hari Hari|Harrisville|Haruru|Hastings|Haumoana|Haupiri|Havelock|Havelock North|Hāwera|Helensville|Henley|Herbert|Herekino|Hikuai|Hikurangi|Hikutaia|Hinuera|i|Hunterville|Huntly|Hurleyville|Inangahua JunctionInglewood|Invercargill|Jack's Point|Jacobs River|Kaeo|Kaiapoi|Kaihu|Kaikohe|Kaikōura|Kaimata|Kaingaroa|Kaipara Flats|Kairaki|Kaitaia|Kaitangata|Kaiwaka|Kakanui|Kakaramea|Kaniere|Kapiro|Kaponga|Karamea|Karetu|Karitane|Katikati|Kauaeranga|Kaukapakapa|Kauri|Kawakawa|Kawerau|Kennedy Bay|Kerikeri|Kihikihi|Kingston|Kinloch|Kiripaka|Kirwee|Kohukohu|Koitiata|Kokatahi|Kokopu|Koromiko|Kumara|Kumeū|Kurow|Lake Hāwea|Lake Tekapo|Lauriston|Lawrence|Leeston|Leigh|Lepperton|Levin|Lincoln|Linkwater|Little River|Loburn|Lower Hutt|Luggate|Lumsden|Lyttelton|Makahu|Mamaku|Manaia Coromandel|Manaia Taranaki|Manakau|Manapouri|Mangakino|Mangamuka|Mangatangi|Mangatoki|Mangawhai|Maniaiti Benneydale|Manukau|Manurewa|Manutahi|Mapua|Maraetai|Mārahau|Marco|Maromaku|Marsden Bay|Martinborough|Marton|Maruia|Masterton|Matakana|Matakohe|Matamata|Matapu|Matarangi|Matarau|Matatā|Mataura|Matihetihe|Maungakaramea|Maungatapere|Maungaturoto|Mayfield|Meremere|Methven|Middlemarch|Midhirst|Millers Flat|ilton|Mimi|Minginui|Moana|Moawhango|Moenui|Moeraki|Moerewa|Mokau|Mokoia|Morrinsville|Mosgiel|Mossburn|MotatauMotueka|Mount Maunganui|Mount Somers|Murchison|Murupara|Napier|Naseby|National Park|Nelson|New Brighton|New Plymouth|Ngaere|Ngamatapouri|Ngapara|Ngāruawāhia|Ngataki|Ngatea|Ngongotahā|Ngunguru|Nightcaps|Norfolk|Normanby|Norsewood|Ōakura|Oamaru|Oban|Ōhaeawai|Ohakune|Ohangai|Ōhaupō|Ohoka|Ōhope|Ōhura|Ōkaihau|Ōkato|Ōkiwi Bay|Okuku|Omanaia|Omarama|Omata|Omokoroa|Onewhero|Opononi|Ōpōtiki|Opua|Ōpunake|Oratia|Orewa|Oromahoe|Oruaiti|Otaika|Ōtaki|Otakou|Otautau|Otiria|Otorohanga|Ōwhango|Owaka|Oxford|Paekākāriki|Paeroa|Pahiatua|Paihia|Pakaraka|Pakiri|Pakotai|Palmerston|Palmerston North|Pamapuria|Panguru|Papakura|Papamoa|Paparoa|Paparore|Papatoetoe|Parakai|Paraparaumu|Paremoremo|Pareora|Paroa|Parua Bay|Patea|Patumahoe|Pauanui|Pāuatahanui|Pegasus|Peka Peka|Pembroke|Peria|Petone|Picton|Piopio|Pipiwai|Pirinoa|Pirongia|Pleasant Point|Plimmerton|Pōkeno|Porirua|Poroti|Port Chalmers|Portland|Portobello|Pukekohe|Pukepoto|Pkerimu|Pukerua Bay|Puketona|Pukeuri|Punakaiki|Purua|Putāruru|Putorino|Queenstown|Raetihi|Raglan|Rahotu|Rai Valley|RakaiaRamarama|Ranfurly|Rangiora|Rapaura|Ratapiko|Raumati Beach|Raumati South|Rawene|Rawhitiroa|Reefton|Renwick|Reporoa|Richmond|Riverhead|Riverlands|Riversdale|Riversdale Beach|Riverton|Riwaka|Rolleston|Ross|Rotorua|Roxburgh|Ruakākā|Ruatoria|Ruawai|Runanga|Russell|Saint Andrews|Saint Arnaud|Saint Bathans|Sanson|Seacliff|Seddon|Seddonville|Sefton|Shannon|Sheffield|Silverdale|Snells Beach|Spring Creek|Springfield|Springston|Stirling|Stratford|Swannanoa|Taharoa|Taieri Mouth|Taihape|Taipa-Mangonui|Tairua|Tākaka|Tangiteroria|Tangowahine|Tapanui|Tapawera|Tapora|Tapu|Taradale|Tauhoa|Taumarunui|Taupaki|Taupō|Tauranga|Tauraroa|Tautoro|Te Anau|Te Arai|Te Aroha|Te Awamutu|Te Awanga|Te Hāpua|Te Horo|Te Kao|Te Kauwhata|Te Kōpuru|Te Kuiti|Te Poi|Te Puke|Te Puru|Te Rahu|Te Rerenga|Temuka|Thames|Tikorang|Timaru|Tinopai|Tinwald|Tīrau|Titoki|Tokanui Southland|Tokanui Waikato|Tokarahi|Toko|Tokomaru|Tokoroa|Tolaga Bay|Tomarata|Towai|Tuahiwi|Tuai|Tuakau|Tuamarina|Tuatapere|Tūrangi|Turua|Twizel|Umawera|Upper Hutt|Upper Moutere|Urenui|Uruti|View Hill|Waddington|Waharoa|Waiau Pa|Waiharara|Waiheke Island|Waihi|Waihi Beach|Waihola|Waikaia|Waikaka|Waikanae|Waikawa Marlborough|Waikawa Southland|Waikouaiti|Waikuku|Waikuku Beach|Waima|Waimangaroa|WaimateWaimate North|Waimauku|Wainui|Wainuiomata|Waioneke|Waiotira|Waiouru|Waipango|Waipawa|Waipukurau|Wairakei|Wairau Valley|Wairio|Wairoa|Waitahuna|Waitara|Waitaria Bay|Waitati|Waitoa|Waitoki|Waitomo|Waitoriki|Waitotara|Waiuku|Waiwera|Wakefield|Wallacetown|Walton|Wanaka|Ward|Wardville|Warkworth|Warrington|Waverley|Wellington|Wellsford|Weston|Westport|Whakamaru|Whakatāne|Whananaki|Whangamatā|Whangamōmona|Whanganui|Whangaparāoa|Whangārei|Whangārei Heads|Whangaruru|Whataroa|Whatuwhiwhi|Whenuakite|Whenuakura|Whiritoa|Whitby|Whitford|Whitianga|Willowby|Wimbledon|Winchester|Windsor|Windwhistle|Winscombe|Winton|Woodend|Woodend Beach|Woodhill|Woodville|Wyndham", '64'],
         ['Nicaragua', 'NI', 'NIC', '558', 'ISO 3166-2:NI', 'Atlantico Norte|Atlantico Sur|Boaco|Carazo|Chinandega|Chontales|Esteli|Granada|Jinotega|Leon|Madriz|Managua|Masaya|Matagalpa|Nueva Segovia|Rio San Juan|Rivas', '505'],
         ['Niger', 'NE', 'NER', '562', 'ISO 3166-2:NE', 'Agadez|Diffa|Dosso|Maradi|Niamey|Tahoua|Tillaberi|Zinder', '227'],
         ['Nigeria', 'NG', 'NGA', '566', 'ISO 3166-2:NG', 'Abia|Abuja Federal Capital Territory|Adamawa|Akwa Ibom|Anambra|Bauchi|Bayelsa|Benue|Borno|Cross River|Delta|Ebonyi|Edo|Ekiti|Enugu|Gombe|Imo|Jigawa|Kaduna|Kano|Katsina|Kebbi|Kogi|Kwara|Lagos|Nassarawa|Niger|Ogun|Ondo|Osun|Oyo|Plateau|Rivers|Sokoto|Taraba|Yobe|Zamfara', '234'],
         ['Niue', 'NU', 'NIU', '570', 'ISO 3166-2:NU', 'Niue', '683'],
         ['Norfolk Island', 'NF', 'NFK', '574', 'ISO 3166-2:NF', 'Norfolk Island', ''],
+        ["North Korea", 'KP', 'PRK', '408', 'ISO 3166-2:KP', "Chagang-do [Chagang Province]|Hamgyong-bukto [North Hamgyong Province]|Hamgyong-namdo [South Hamgyong Province]|Hwanghae-bukto [North Hwanghae Province]|Hwanghae-namdo [South Hwanghae Province]|Kaesong-si [Kaesong City]|Kangwon-do [Kangwon Province]|Namp'o-si [Namp'o City]|P'yongan-bukto [North P'yongan Province]|P'yongan-namdo [South P'yongan Province]|P'yongyang-si [P'yongyang City]|Yanggang-do [Yanggang Province]", '850'],
         ['Northern Mariana Islands', 'MP', 'MNP', '580', 'ISO 3166-2:MP', 'Northern Islands|Rota|Saipan|Tinian', '1 670'],
         ['Norway', 'NO', 'NOR', '578', 'ISO 3166-2:NO', 'Akershus|Aust-Agder|Buskerud|Finnmark|Hedmark|Hordaland|More og Romsdal|Nord-Trondelag|Nordland|Oppland|Oslo|Ostfold|Rogaland|Sogn og Fjordane|Sor-Trondelag|Telemark|Troms|Vest-Agder|Vestfold', '47'],
         ['Oman', 'OM', 'OMN', '512', 'ISO 3166-2:OM', 'Ad Dakhiliyah|Al Batinah|Al Wusta|Ash Sharqiyah|Az Zahirah|Masqat|Musandam|Zufar', '968'],
@@ -217,6 +214,7 @@ class CountryState {
         ['Somalia', 'SO', 'SOM', '706', 'ISO 3166-2:SO', 'Awdal|Bakool|Banaadir|Bari|Bay|Galguduud|Gedo|Hiiraan|Jubbada Dhexe|Jubbada Hoose|Mudug|Nugaal|Sanaag|Shabeellaha Dhexe|Shabeellaha Hoose|Sool|Togdheer|Woqooyi Galbeed', '252'],
         ['South Africa', 'ZA', 'ZAF', '710', 'ISO 3166-2:ZA', 'Eastern Cape|Free State|Gauteng|KwaZulu-Natal|Limpopo|Mpumalanga|North West|Northern Cape|Western Cape', '27'],
         ['SGSSI', 'GS', 'SGS', '239', 'ISO 3166-2:GS', 'Bird Island|Bristol Island|Clerke Rocks|Montagu Island|Saunders Island|South Georgia|Southern Thule|Traversay Islands', ''],
+        ['South Korea', 'KR', 'KOR', '410', 'ISO 3166-2:KR', "Ch'ungch'ong-bukto|Ch'ungch'ong-namdo|Cheju-do|Cholla-bukto|Cholla-namdo|Inch'on-gwangyoksi|Kangwon-do|Kwangju-gwangyoksi|Kyonggi-do|Kyongsang-bukto|Kyongsang-namdo|Pusan-gwangyoksi|Soul-t'ukpyolsi|Taegu-gwangyoksi|Taejon-gwangyoksi|Ulsan-gwangyoksi", '82'],
         ['South Sudan', 'SS', 'SSD', '728', 'ISO 3166-2:SS', 'South Sudan', ''],
         ['Spain', 'ES', 'ESP', '724', 'ISO 3166-2:ES', 'Albacete|Alicante|Almer\xeda|Asturias|Badajoz|Balearic Islands|Barcelona|Biscay|Burgos|Cantabria|Castell\xf3n|Ciudad Real|Cuenca|C\xe1ceres|C\xe1diz|C\xf3rdoba|Gerona|Granada|Guadalajara|Guip\xfazcoa|Huelva|Huesca|Ja\xe9n|La Coru\xf1a|La Rioja|Las Palmas|Le\xf3n|Lugo|L\xe9rida|Madrid|Murcia|M\xe1laga|Navarre|Orense|Palencia|Pontevedra|Salamanca|Santa Cruz|Segovia|Sevilla|Soria|Tarragona|Teruel|Toledo|Valencia|Valladolid|Zamora|Zaragoza|\xc1lava|\xc1vila', '34'],
         ['Sri Lanka', 'LK', 'LKA', '144', 'ISO 3166-2:LK', 'Central|Eastern|North Central|North Eastern|North Western|Northern|Sabaragamuwa|Southern|Uva|Western', '94'],
@@ -258,95 +256,108 @@ class CountryState {
         ['Western Sahara', 'EH', 'ESH', '732', 'ISO 3166-2:EH', 'Western Sahara', '-'],
         ['Yemen', 'YE', 'YEM', '887', 'ISO 3166-2:YE', "'Adan|'Ataq|Abyan|Al Bayda'|Al Hudaydah|Al Jawf|Al Mahrah|Al Mahwit|Dhamar|Hadhramawt|Hajjah|Ibb|Lahij|Ma'rib|Sa'dah|San'a'|Ta'izz", '967'],
         ['Zambia', 'ZM', 'ZMB', '894', 'ISO 3166-2:ZM', 'Central|Copperbelt|Eastern|Luapula|Lusaka|North-Western|Northern|Southern|Western', '260'],
-        ['Zimbabwe', 'ZW', 'ZWE', '716', 'ISO 3166-2:ZW', 'Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Mashonaland West|Masvingo|Matabeleland North|Matabeleland South|Midlands', '263']
+        ['Zimbabwe', 'ZW', 'ZWE', '716', 'ISO 3166-2:ZW', 'Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Mashonaland West|Masvingo|Matabeleland North|Matabeleland South|Midlands', '263'],
     ];
 
+    // returns a list of all countries
+    public function countries() {
+        $list  = [];
+        $list2 = [];
 
-    # returns a list of all countries
-    public function countries(){
-        $list = array(); $list2 = array();
-        foreach($this->sorted_countries as $rarray){
-            array_push($list, $rarray[0]);
-            array_push($list2, $rarray[1]);
+        foreach ( $this->sorted_countries as $rarray ) {
+            array_push( $list, $rarray[0] );
+            array_push( $list2, $rarray[1] );
         }
 
-        return array_combine( $list2, $list) ;
+        return array_combine( $list2, $list );
     }
 
-    # returns a list of all states
-    public function states(){
-        $list = array();
-        foreach($this->sorted_countries as $rarray){
-            $t = explode("|", $rarray[5]);
-            foreach($t as $m){
-                array_push($list, $m);
+    // returns a list of all states
+    public function states() {
+        $list = [];
+
+        foreach ( $this->sorted_countries as $rarray ) {
+            $t = explode( '|', $rarray[5] );
+
+            foreach ( $t as $m ) {
+                array_push( $list, $m );
             }
         }
-        sort($list);
+        sort( $list );
+
         return $list;
     }
 
-    # getStates accepts a name, iso_2_code, iso_3_code, iso_num_code or iso_something_code of a country
-    public function getStates($country = null){
-        if(!empty($country) && (is_string($country) || is_numeric($country))){
-            $list = array(); $list2 = array();
-            $country = strtoupper($country);
-            foreach($this->sorted_countries as $rarray){
-                if((is_string($country) && ((strlen($country) > 3 && strtolower($rarray[0]) == strtolower($country)) || (strlen($country) == 2 && strtoupper($rarray[1]) == $country) || (strlen($country) == 3 && strtoupper($rarray[2]) == $country) || (strlen($country) > 3 && strtoupper(str_replace(" ", "", $rarray[4])) == str_replace(" ", "", $country)))) || (is_numeric($country) && $rarray[3] == $country)){
-                    $t = explode("|", $rarray[5]);
-                    for($i=0; $i<sizeof($t); $i++){
-                        array_push($list, $t[$i]);
-                        $string = str_replace(' ', '', $t[$i]);
-                        array_push($list2, strtolower($string));
+    // getStates accepts a name, iso_2_code, iso_3_code, iso_num_code or iso_something_code of a country
+    public function getStates( $country = null ) {
+        if ( !empty( $country ) && ( is_string( $country ) || is_numeric( $country ) ) ) {
+            $list    = [];
+            $list2   = [];
+            $country = strtoupper( $country );
+
+            foreach ( $this->sorted_countries as $rarray ) {
+                if ( ( is_string( $country ) && ( ( strlen( $country ) > 3 && strtolower( $rarray[0] ) == strtolower( $country ) ) || ( strlen( $country ) == 2 && strtoupper( $rarray[1] ) == $country ) || ( strlen( $country ) == 3 && strtoupper( $rarray[2] ) == $country ) || ( strlen( $country ) > 3 && strtoupper( str_replace( ' ', '', $rarray[4] ) ) == str_replace( ' ', '', $country ) ) ) ) || ( is_numeric( $country ) && $rarray[3] == $country ) ) {
+                    $t = explode( '|', $rarray[5] );
+
+                    for ( $i=0; $i < sizeof( $t ); $i++ ) {
+                        array_push( $list, $t[$i] );
+                        $string = str_replace( ' ', '', $t[$i] );
+                        array_push( $list2, strtolower( $string ) );
                     }
                 }
             }
-            return array_combine( $list2, $list) ;
+
+            return array_combine( $list2, $list );
         } else {
-            return array();
+            return [];
         }
     }
 
-    # getCountry accepts a name, iso_2_code, iso_3_code, iso_num_code or iso_something_code of a country
-    public function getCountry($country = null){
-        if(!empty($country) && (is_string($country) || is_numeric($country))){
-            $list = array();
-            $country = strtoupper($country);
-            foreach($this->sorted_countries as $rarray){
-                if((is_string($country) && ((strlen($country) > 3 && strtolower($rarray[0]) == strtolower($country)) || (strlen($country) == 2 && strtoupper($rarray[1]) == $country) || (strlen($country) == 3 && strtoupper($rarray[2]) == $country) || (strlen($country) > 3 && strtoupper(str_replace(" ", "", $rarray[4])) == str_replace(" ", "", $country)))) || (is_numeric($country) && $rarray[3] == $country)){
-                    $last = sizeof($rarray) - 1;
-                    $list = array_combine(array("name", "iso2", "iso3", "iso_num", "something_code", "dial_code", "states"), array($rarray[0], $rarray[1], $rarray[2], $rarray[3], $rarray[4], $rarray[$last], $this->getStates($rarray[1])));
+    // getCountry accepts a name, iso_2_code, iso_3_code, iso_num_code or iso_something_code of a country
+    public function getCountry( $country = null ) {
+        if ( !empty( $country ) && ( is_string( $country ) || is_numeric( $country ) ) ) {
+            $list    = [];
+            $country = strtoupper( $country );
+
+            foreach ( $this->sorted_countries as $rarray ) {
+                if ( ( is_string( $country ) && ( ( strlen( $country ) > 3 && strtolower( $rarray[0] ) == strtolower( $country ) ) || ( strlen( $country ) == 2 && strtoupper( $rarray[1] ) == $country ) || ( strlen( $country ) == 3 && strtoupper( $rarray[2] ) == $country ) || ( strlen( $country ) > 3 && strtoupper( str_replace( ' ', '', $rarray[4] ) ) == str_replace( ' ', '', $country ) ) ) ) || ( is_numeric( $country ) && $rarray[3] == $country ) ) {
+                    $last = sizeof( $rarray ) - 1;
+                    $list = array_combine( ['name', 'iso2', 'iso3', 'iso_num', 'something_code', 'dial_code', 'states'], [$rarray[0], $rarray[1], $rarray[2], $rarray[3], $rarray[4], $rarray[$last], $this->getStates( $rarray[1] )] );
                 }
             }
-            sort($list);
+            sort( $list );
+
             return $list;
         } else {
-            return array();
+            return [];
         }
     }
 
-    # findState accepts only name of state
-    public function findState($state = null){
-        if(!empty($state) && is_string($state)){
-            $list = array();
-            $state = strtolower($state);
-            foreach($this->sorted_countries as $rarray){
-                if(preg_match("@\b{$state}\b@", strtolower($rarray[5]))){
+    // findState accepts only name of state
+    public function findState( $state = null ) {
+        if ( !empty( $state ) && is_string( $state ) ) {
+            $list  = [];
+            $state = strtolower( $state );
+
+            foreach ( $this->sorted_countries as $rarray ) {
+                if ( preg_match( "@\b{$state}\b@", strtolower( $rarray[5] ) ) ) {
                     //array_push($list, $rarray[0]);
-                    $last = sizeof($rarray) - 1;
-                    array_push($list, array_combine(array("country", "iso2", "iso3", "iso_num", "something_code", "dial_code"), array($rarray[0], $rarray[1], $rarray[2], $rarray[3], $rarray[4], $rarray[$last])));
+                    $last = sizeof( $rarray ) - 1;
+                    array_push( $list, array_combine( ['country', 'iso2', 'iso3', 'iso_num', 'something_code', 'dial_code'], [$rarray[0], $rarray[1], $rarray[2], $rarray[3], $rarray[4], $rarray[$last]] ) );
                 }
             }
-            sort($list);
+            sort( $list );
+
             return $list;
         } else {
-            return array();
+            return [];
         }
     }
 
-    public function getStateName( $state , $country ){
+    public function getStateName( $state, $country ) {
         $states = $this->getStates( $country );
-        foreach ($states as $key => $value) {
+
+        foreach ( $states as $key => $value ) {
             if ( $key == $state || $value == $state ) {
                 return $value;
             }
@@ -354,15 +365,17 @@ class CountryState {
     }
 
     public function isCountry( $state ) {
-        $state = $this->getCountry($state);
-        if ( !empty($state) ) {
+        $state = $this->getCountry( $state );
+
+        if ( !empty( $state ) ) {
             return true;
         }
+
         return false;
     }
 
     public function getCountryCode( $country = null ) {
-        foreach($this->sorted_countries as $rarray){
+        foreach ( $this->sorted_countries as $rarray ) {
             if ( $country == $rarray[0] ) {
                 return $rarray[1];
             }

@@ -1,7 +1,7 @@
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
-<div id="form-preview-stage">
+<div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ) ?>
+        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
     </h4>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
@@ -31,11 +31,18 @@
                 </label>
             </div>
 
-            <div v-if="!is_failed_to_validate(field.template)" class="control-buttons">
+            <div class="control-buttons">
                 <p>
-                    <i class="fa fa-arrows move"></i>
-                    <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
-                    <i class="fa fa-clone" @click="clone_field(field.id, index)"></i>
+                    <template v-if="!is_failed_to_validate(field.template)">
+                        <i class="fa fa-arrows move"></i>
+                        <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
+                        <i class="fa fa-clone" @click="clone_field(field.id, index)"></i>
+                    </template>
+                    <template v-else>
+                        <i class="fa fa-arrows control-button-disabled"></i>
+                        <i class="fa fa-pencil control-button-disabled"></i>
+                        <i class="fa fa-clone control-button-disabled"></i>
+                    </template>
                     <i class="fa fa-trash-o" @click="delete_field(index)"></i>
                 </p>
             </div>
@@ -51,14 +58,14 @@
     </ul><!-- .wpuf-form -->
 
     <div v-if="hidden_fields.length" class="hidden-field-list">
-        <h4><?php _e( 'Hidden Fields', 'wp-user-frontend' ); ?></h4>
+        <h4><?php esc_html_e( 'Hidden Fields', 'wp-user-frontend' ); ?></h4>
 
         <ul class="wpuf-form">
             <li
                 v-for="(field, index) in hidden_fields"
                 :class="['field-items', parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '']"
             >
-                <strong><?php _e('key', 'wp-user-frontend'); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
+                <strong><?php esc_html_e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} | <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
 
                 <div class="control-buttons">
                     <p>
@@ -112,12 +119,28 @@
 
 <script type="text/x-template" id="tmpl-wpuf-field-option-data">
 <div class="panel-field-opt panel-field-opt-text">
-    <label class="clearfix">
+    <div>
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
-        <span class="pull-right">
-            <input type="checkbox" v-model="show_value"> <?php _e( 'Show values', 'wp-user-frontend' ); ?>
-        </span>
-    </label>
+        <ul class="pull-right list-inline field-option-actions">
+            <li>
+                <label>
+                    <input
+                        type="checkbox"
+                        v-model="show_value"
+                    /><?php esc_attr_e( 'Show values', 'wp-user-frontend' ); ?>
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input
+                        type="checkbox"
+                        v-model="sync_value"
+                    /><?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
+                </label>
+                <help-text placement="left" text="<?php esc_attr_e( 'When enabled, option values will update according to their labels.', 'wp-user-frontend' ); ?>" />
+            </li>
+        </ul>
+    </div>
 
     <ul :class="['option-field-option-chooser', show_value ? 'show-value' : '']">
         <li class="clearfix margin-0 header">
@@ -126,11 +149,12 @@
             <div class="sort-handler">&nbsp;</div>
 
             <div class="label">
-                <?php _e( 'Label', 'wp-user-frontend' ); ?>
+                <?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>
+                <help-text placement="left" text="<?php esc_attr_e( 'Do not use & or other special character for option label', 'wp-user-frontend' ); ?>" />
             </div>
 
             <div v-if="show_value" class="value">
-                <?php _e( 'Value', 'wp-user-frontend' ) ?>
+                <?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>
             </div>
 
             <div class="action-buttons">&nbsp;</div>
@@ -178,7 +202,7 @@
         </li>
     </ul>
 
-    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _e( 'Clear Selection', 'wp-user-frontend' ); ?></a>
+    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php esc_attr_e( 'Clear Selection', 'wp-user-frontend' ); ?></a>
 </div>
 </script>
 
@@ -236,6 +260,8 @@
                 </div>
             </transition>
         </div>
+
+        <?php do_action( 'wpuf_builder_field_options' ); ?>
     </div>
 
 </div>
@@ -254,6 +280,21 @@
             </label>
         </li>
     </ul>
+</div>
+</script>
+
+<script type="text/x-template" id="tmpl-wpuf-field-range">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-text">
+    <label>
+        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+        {{ option_field.min_column }}
+        <input
+            type="range"
+            v-model="value"
+            v-bind:min="minColumn"
+            v-bind:max="maxColumn"
+        >
+    </label>
 </div>
 </script>
 
@@ -332,44 +373,42 @@
 
     <div v-if="'logged_in' === selected" class="condiotional-logic-container">
 
-    	<?php $roles = get_editable_roles() ?>
+    	<?php $roles = get_editable_roles(); ?>
 
     	<ul>
 			<?php
-				foreach ($roles as $role => $value) {
+                foreach ( $roles as $role => $value ) {
+                    $role_name = $value['name'];
 
-					$role_name = $value['name'];
+                    $output  = '<li>';
+                    $output .= "<label><input type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
+                    $output .= '</li>';
 
-					$output  = "<li>";
-					$output .= "<label><input type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
-					$output .= "</li>";
-
-					echo $output;
-
-				}
-			?>
+                    echo $output;
+                }
+            ?>
 	    </ul>
     </div>
 
     <div v-if="'subscribed_users' === selected" class="condiotional-logic-container">
-    	
+
     	<ul>
     		<?php
 
-                $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+                if ( class_exists( 'WPUF_Subscription' ) ) {
+                    $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
 
-                if ( $subscriptions ) {
-                    foreach ($subscriptions as $pack) {
+                    if ( $subscriptions ) {
+                        foreach ( $subscriptions as $pack ) {
+                            $output  = '<li>';
+                            $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
+                            $output .= '</li>';
 
-                        $output  = "<li>";
-                        $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
-                        $output .= "</li>";
-
-                        echo $output;
-
+                            echo $output;
+                        }
+                    } else {
+                        _e( 'No subscription plan found.', 'wp-user-frontend' );
                     }
-                } else {
-                    _e( 'No subscription plan found.', 'wp-user-frontend' );
                 }
             ?>
     	</ul>
@@ -392,9 +431,58 @@
         </li>
     </ul>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
+
+<script type="text/x-template" id="tmpl-wpuf-form-column_field">
+<div v-bind:class="['wpuf-field-columns', 'has-columns-'+field.columns]">
+    <div class="wpuf-column-field-inner-columns">
+        <div class="wpuf-column">
+            <!-- don't change column class names -->
+            <div v-for="column in columnClasses" :class="[column, 'items-of-column-'+field.columns, 'wpuf-column-inner-fields']" :style="{ width: field.inner_columns_size[column], paddingRight: field.column_space+'px'}">
+                <ul class="wpuf-column-fields-sortable-list">
+                    <li
+                        v-for="(field, index) in column_fields[column]"
+                        :key="field.id"
+                        :class="[
+                            'column-field-items', 'wpuf-el', field.name, field.css, 'form-field-' + field.template,
+                            field.width ? 'field-size-' + field.width : '',
+                            parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : ''
+                        ]"
+                        :column-field-index="index"
+                        :in-column="column"
+                        data-source="column-field-stage"
+                    >
+                        <div v-if="!is_full_width(field.template)" class="wpuf-label wpuf-column-field-label">
+                            <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
+                                {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
+                            </label>
+                        </div>
+
+                        <component v-if="is_template_available(field)" :is="'form-' + field.template" :field="field"></component>
+
+                        <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
+                            <label class="wpuf-pro-text-alert">
+                                <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                            </label>
+                        </div>
+
+                        <div class="wpuf-column-field-control-buttons">
+                            <p>
+                                <i class="fa fa-arrows move"></i>
+                                <i class="fa fa-pencil" @click="open_column_field_settings(field, index, column)"></i>
+                                <i class="fa fa-clone" @click="clone_column_field(field, index, column)"></i>
+                                <i class="fa fa-trash-o" @click="delete_column_field(index, column)"></i>
+                            </p>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div></script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-custom_hidden_field">
 <div class="wpuf-fields">
@@ -405,7 +493,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -428,7 +516,7 @@
         >{{ label }}</option>
     </select>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"> </span>
 </div>
 </script>
 
@@ -441,7 +529,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -460,7 +548,7 @@
         </div>
     </div>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -531,7 +619,7 @@
         </div>
     </div>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"/>
 </div>
 </script>
 
@@ -551,7 +639,7 @@
         >{{ label }}</option>
     </select>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"></span>
 </div>
 </script>
 
@@ -568,13 +656,14 @@
         v-if="'no' === field.rich"
         :class="class_names('textareafield')"
         :placeholder="field.placeholder"
+        :default_text="field.default"
         :rows="field.rows"
         :cols="field.cols"
     >{{ field.default }}</textarea>
 
-    <text-editor v-if="'no' !== field.rich" :rich="field.rich"></text-editor>
+    <text-editor v-if="'no' !== field.rich" :rich="field.rich" :default_text="field.default"></text-editor>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -586,7 +675,7 @@
         :rows="field.rows"
         :cols="field.cols"
     >{{ field.default }}</textarea>
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" ></span>
 </div>
 </script>
 
@@ -600,7 +689,7 @@
         :size="field.size"
     >
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -613,7 +702,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -632,7 +721,7 @@
         </li>
     </ul>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"/>
 </div>
 </script>
 
@@ -644,8 +733,9 @@
 
     <template v-else>
     	<div v-if="'invisible_recaptcha' != field.recaptcha_type">
-        	<img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ?>" alt="">
+        	<img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png'; ?>" alt="">
         </div>
+        <div v-else><p><?php _e( 'Invisible reCaptcha', 'wp-user-frontend' ); ?></p></div>
     </template>
 </div>
 </script>
@@ -660,10 +750,10 @@
 <script type="text/x-template" id="tmpl-wpuf-form-taxonomy">
 <div class="wpuf-fields">
     <select
+        v-if="'select' === field.type"
         :class="field.name"
         v-html ="get_term_dropdown_options()"
-    >
-    </select>
+    />
 
     <div v-if="'ajax' === field.type" class="category-wrap">
         <div>
@@ -687,11 +777,10 @@
         <div v-if="'yes' === field.show_inline" class="category-wrap">
             <div v-html="get_term_checklist_inline()"></div>
         </div>
-        <div v-else-if="'no' === field.show_inline" class="category-wrap">
+        <div v-else class="category-wrap">
             <div v-html="get_term_checklist()"></div>
         </div>
     </div>
-    
 
     <input
         v-if="'text' === field.type"
@@ -701,8 +790,7 @@
         size="40"
         autocomplete="off"
     >
-
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -715,7 +803,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -725,13 +813,14 @@
         v-if="'no' === field.rich"
         :class="class_names('textareafield')"
         :placeholder="field.placeholder"
+        :deault="field.default"
         :rows="field.rows"
         :cols="field.cols"
     >{{ field.default }}</textarea>
 
-    <text-editor v-if="'no' !== field.rich" :rich="field.rich"></text-editor>
+    <text-editor v-if="'no' !== field.rich" :default_text="field.default" :rich="field.rich"></text-editor>
 
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
 </div>
 </script>
 
@@ -744,12 +833,12 @@
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help">{{ field.help }}</span>
+    <span v-if="field.help" class="wpuf-help" v-html="field.help"/>
 </div>
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-help-text">
-<i class="fa fa-question-circle field-helper-text wpuf-tooltip" data-placement="top" :title="text"></i>
+<i class="fa fa-question-circle field-helper-text wpuf-tooltip" :data-placement="placement" :title="text"></i>
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-text-editor">
@@ -808,7 +897,7 @@
                         </div>
                     </div>
                     <div class="mce-edit-area mce-container mce-panel mce-stack-layout-item" style="border-width: 1px 0px 0px;">
-                        <div style="width: 100%; height: 150px; display: block;"></div><!-- iframe replacement div -->
+                        <div style="width: 100%; height: 150px; display: block;">{{default_text}}</div><!-- iframe replacement div -->
                     </div>
                     <div class="mce-statusbar mce-container mce-panel mce-stack-layout-item" style="border-width: 1px 0px 0px;">
                         <div class="mce-container-body mce-flow-layout">

@@ -170,7 +170,7 @@ class WPUF_Upload {
                 ]
             ] );
         } else {
-            echo wp_kses_post( $attach['error'] );
+            wp_send_json_error($attach['error'],200);
         }
 
         exit;

@@ -2052,7 +2052,14 @@ function wpuf_get_account_sections() {
 
     array_splice( $account_sections, 1, 0,  $cpt_section  );
 
-    return apply_filters( 'wpuf_account_sections', $account_sections );
+    //map slug as key, thus user can modify i.e label
+    $sections = [];
+    foreach ( $account_sections as $key => $section ) {
+        $section['label'] = __( $section['label'], 'wp-user-frontend' );
+        $sections[ $section['slug'] ] = $section;
+    }
+
+    return apply_filters( 'wpuf_account_sections', $sections );
 }
 
 /**

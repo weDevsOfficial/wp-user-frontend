@@ -2017,26 +2017,31 @@ function wpuf_get_countries( $type = 'array' ) {
  * @return array
  */
 function wpuf_get_account_sections() {
-    $account_sections = [
-        [
-            'slug' => 'dashboard',
-            'label' => __( 'Dashboard', 'wp-user-frontend' ),
-        ],
-        [
-            'slug' => 'edit-profile',
-            'label' => __( 'Edit Profile', 'wp-user-frontend' ),
-        ],
-        [
-            'slug' => 'subscription',
-            'label' => __( 'Subscription', 'wp-user-frontend' ),
-        ],
-        [
-            'slug' => 'billing-address',
-            'label' => __( 'Billing Address', 'wp-user-frontend' ),
-        ],
+    $sections = [
+        'edit-profile'    => __( 'Edit Profile', 'wp-user-frontend' ),
+        'subscription'    => __( 'Subscription', 'wp-user-frontend' ),
+        'billing-address' => __( 'Billing Address', 'wp-user-frontend' ),
     ];
 
-    return apply_filters( 'wpuf_account_sections', $account_sections );
+    $post_types   = wpuf_get_option( 'cp_on_acc_page', 'wpuf_my_account', [ 'post' ] );
+    $cpt_sections = [];
+
+    if ( is_array( $post_types ) && $post_types ) {
+        foreach ( $post_types as $post_type ) {
+            $post_type_object = get_post_type_object( $post_type );
+
+            $cpt_sections[ $post_type ] = $post_type_object->label;
+        }
+    }
+
+    $sections = array_merge(
+        // dashboard should be the first item
+        [ 'dashboard' => __( 'Dashboard', 'wp-user-frontend' ) ],
+        $cpt_sections,
+        $sections,
+    );
+
+    return apply_filters( 'wpuf_account_sections', $sections );
 }
 
 /**
@@ -2051,8 +2056,8 @@ function wpuf_get_account_sections_list( $post_type = 'page' ) {
     $array    = [ '' => __( '-- select --', 'wp-user-frontend' ) ];
 
     if ( $sections ) {
-        foreach ( $sections as $section ) {
-            $array[ $section['slug'] ] = esc_attr( $section['label'] );
+        foreach ( $sections as $section => $label ) {
+            $array[ $section ] = esc_attr( $label );
         }
     }
 

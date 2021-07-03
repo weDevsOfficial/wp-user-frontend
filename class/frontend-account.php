@@ -106,10 +106,7 @@ class WPUF_Frontend_Account {
         if ( $allow_post_submission === 'on' ) {
             $sections = array_merge(
                 $sections, [
-                    [
-                        'slug' => 'submit-post',
-                        'label' => $submission_label,
-                    ],
+                    'submit-post' =>  $submission_label,
                 ]
             );
         }
@@ -163,9 +160,9 @@ class WPUF_Frontend_Account {
             $sections           = wpuf_get_account_sections();
             $current_section    = [];
 
-            foreach ( $sections as $account_section ) {
-                if ( $section === $account_section['slug'] ) {
-                    $current_section = $account_section;
+            foreach ( $sections as $slug => $label ) {
+                if ( $section === $slug ) {
+                    $current_section = $slug;
                     break;
                 }
             }

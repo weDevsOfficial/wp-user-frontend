@@ -20,13 +20,19 @@
     $count      = 1;
     $total_tabs = count( $tabs );
 
-    foreach ( $tabs as $key => $tab ) {
+    foreach ( $tabs as $section => $label ) {
+        // backward compatibility
+        if ( is_array( $label ) ) {
+            $section = $label['slug'];
+            $label   = $label['label'];
+        }
+
         if ( $total_tabs == $count ) {
-            $links .= ' <a href="' . esc_url( add_query_arg( [ 'section' => $tab['slug'] ], get_permalink() ) ) . '">' . $tab['label'] . '</a>';
+            $links .= ' <a href="' . esc_url( add_query_arg( [ 'section' => $section ], get_permalink() ) ) . '">' . $label . '</a>';
             continue;
         }
 
-        $links .= '<a href="' . esc_url( add_query_arg( [ 'section' => $tab['slug'] ], get_permalink() ) ) . '">' . $tab['label'] . '</a>, ';
+        $links .= '<a href="' . esc_url( add_query_arg( [ 'section' => $section ], get_permalink() ) ) . '">' . $label . '</a>, ';
         $count++;
     }
 

@@ -145,14 +145,18 @@
         },
 
         uploaded: function (up, file, response) {
-            // var res = $.parseJSON(response.response);
+            try {
+                var res = $.parseJSON(response.response);
+            }catch (e) {
+                var text = true;
+            }
+
             var self = this;
 
             $('#' + file.id + " b").html("100%");
             $('#' + file.id).remove();
 
-            if(response.response !== 'error') {
-
+            if( text ) {
                 this.perFileCount++;
                 this.UploadedFiles++;
                 var $container = $('#' + this.container).find('.wpuf-attachment-list');
@@ -166,10 +170,12 @@
                 }
 
             } else {
-                alert(response.error);
+                alert(res.data.replace( /(<([^>]+)>)/ig, ''));
 
+                up.files.pop();
                 this.count -= 1;
                 this.showHide();
+
             }
 
             var uploaded        = this.UploadedFiles,

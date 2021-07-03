@@ -138,39 +138,41 @@ class WPUF_Upload {
                 $response['html'] = self::attach_html( $attach['attach_id'], $field_type, $form_id );
             }
 
-            echo wp_kses( $response['html'], [
-                'li'       => [
-                    'class' => []
-                ],
-                'div'      => [
-                    'class' => []
-                ],
-                'img'      => [
-                    'src'   => [],
-                    'alt'   => [],
-                    'class' => [],
-                ],
-                'input'    => [
-                    'type'        => [],
-                    'name'        => [],
-                    'value'       => [],
-                    'placeholder' => []
-                ],
-                'textarea' => [
-                    'name'        => [],
-                    'placeholder' => []
-                ],
-                'a'        => [
-                    'href'           => [],
-                    'class'          => [],
-                    'data-attach-id' => [],
-                ],
-                'span'     => [
-                    'class' => []
+            echo wp_kses(
+                $response['html'], [
+                    'li'       => [
+                        'class' => [],
+                    ],
+                    'div'      => [
+                        'class' => [],
+                    ],
+                    'img'      => [
+                        'src'   => [],
+                        'alt'   => [],
+                        'class' => [],
+                    ],
+                    'input'    => [
+                        'type'        => [],
+                        'name'        => [],
+                        'value'       => [],
+                        'placeholder' => [],
+                    ],
+                    'textarea' => [
+                        'name'        => [],
+                        'placeholder' => [],
+                    ],
+                    'a'        => [
+                        'href'           => [],
+                        'class'          => [],
+                        'data-attach-id' => [],
+                    ],
+                    'span'     => [
+                        'class' => [],
+                    ],
                 ]
-            ] );
+            );
         } else {
-            echo wp_kses_post( $attach['error'] );
+            wp_send_json_error( $attach['error'], 200 );
         }
 
         exit;
@@ -187,7 +189,10 @@ class WPUF_Upload {
         $check_duplicate = $this->duplicate_upload( $upload_data );
 
         if ( isset( $check_duplicate['duplicate'] ) && $check_duplicate['duplicate'] ) {
-            return [ 'success' => true, 'attach_id' => $check_duplicate['duplicate'] ];
+            return [
+                'success' => true,
+                'attach_id' => $check_duplicate['duplicate'],
+            ];
         }
 
         $uploaded_file = wp_handle_upload( $upload_data, [ 'test_form' => false ] );
@@ -211,10 +216,16 @@ class WPUF_Upload {
             wp_update_attachment_metadata( $attach_id, $attach_data );
             update_post_meta( $attach_id, 'wpuf_file_hash', $upload_hash );
 
-            return [ 'success' => true, 'attach_id' => $attach_id ];
+            return [
+                'success' => true,
+                'attach_id' => $attach_id,
+            ];
         }
 
-        return [ 'success' => false, 'error' => $uploaded_file['error'] ];
+        return [
+            'success' => false,
+            'error' => $uploaded_file['error'],
+        ];
     }
 
     public static function attach_html( $attach_id, $type = null, $form_id = null ) {
@@ -305,10 +316,12 @@ class WPUF_Upload {
     }
 
     public function associate_file( $attach_id, $post_id ) {
-        wp_update_post( [
-            'ID'          => $attach_id,
-            'post_parent' => $post_id,
-        ] );
+        wp_update_post(
+            [
+                'ID'          => $attach_id,
+                'post_parent' => $post_id,
+            ]
+        );
     }
 
     public function insert_image() {

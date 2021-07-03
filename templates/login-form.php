@@ -11,7 +11,7 @@
     $message = apply_filters( 'login_message', '' );
 
     if ( !empty( $message ) ) {
-        echo esc_html( $message ) . "\n";
+        echo $message . "\n";
     }
     ?>
 

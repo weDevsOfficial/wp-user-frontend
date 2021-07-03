@@ -207,7 +207,7 @@ function wpuf_list_users() {
  * @return string HTML content, if not displaying
  */
 function wpuf_get_pages( $post_type = 'page' ) {
-    $array = [ '' => __( '-- select --', 'wp-user-frontend' ) ];
+    $array = [ '' => __( '&mdash; Select &mdash;', 'wp-user-frontend' ) ];
     $pages = get_posts(
         [
             'post_type'              => $post_type,
@@ -1805,7 +1805,7 @@ function taxnomy_select( $terms, $attr ) {
     }
 
     $tax_args = [
-        'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
+        'show_option_none' => __( '&mdash; Select &mdash;', 'wp-user-frontend' ),
         'hierarchical'     => 1,
         'hide_empty'       => 0,
         'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
@@ -2053,7 +2053,7 @@ function wpuf_get_account_sections() {
  */
 function wpuf_get_account_sections_list( $post_type = 'page' ) {
     $sections = wpuf_get_account_sections();
-    $array    = [ '' => __( '-- select --', 'wp-user-frontend' ) ];
+    $array    = [ '' => __( '&mdash; Select &mdash;', 'wp-user-frontend' ) ];
 
     if ( $sections ) {
         foreach ( $sections as $section => $label ) {

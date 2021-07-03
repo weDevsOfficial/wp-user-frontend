@@ -569,7 +569,7 @@ function wpuf_settings_field_profile( $form ) {
                 <th scrope="row"><?php echo esc_attr( $name ); ?></th>
                 <td>
                     <select name="wpuf_profile[roles][<?php echo esc_attr( $role ); ?>]">
-                        <option value=""><?php esc_html_e( ' - select - ', 'wp-user-frontend' ); ?></option>
+                        <option value=""><?php esc_html_e( '&mdash; Select &mdash;', 'wp-user-frontend' ); ?></option>
                         <?php foreach ( $forms as $form ) { ?>
                             <option value="<?php echo esc_attr( $form->ID ); ?>"<?php selected( $current, $form->ID ); ?>><?php echo esc_html( $form->post_title ); ?></option>
                         <?php } ?>

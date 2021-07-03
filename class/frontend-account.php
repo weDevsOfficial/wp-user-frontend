@@ -160,29 +160,6 @@ class WPUF_Frontend_Account {
         if ( is_user_logged_in() ) {
             $default_active_tab = wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' );
             $section            = isset( $_REQUEST['section'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['section'] ) ) : $default_active_tab;
-            $allowed_posts      = $this->get_allowed_cpt();
-            if ( '' !== $allowed_posts ) {
-                add_filter(
-                    'wpuf_account_sections', function ( $account_sections ) use ( $allowed_posts ) {
-                        foreach ( $allowed_posts as $post_type ) {
-                            $cpt['slug']  = $post_type;
-                            $cpt['label'] = ucfirst( $post_type ) . 's';
-                            array_splice( $account_sections, 1, 0, [ $cpt ] );
-                        }
-                        return $account_sections;
-                    }
-                );
-            } else {
-                add_filter(
-                    'wpuf_account_sections', function ( $account_sections ) {
-                        $post['slug']  = 'post';
-                        $post['label'] = __( 'Posts', 'wp-user-frontend' );
-                        array_splice( $account_sections, 1, 0, [ $post ] );
-                        return $account_sections;
-                    }
-                );
-            }
-
             $sections           = wpuf_get_account_sections();
             $current_section    = [];
 

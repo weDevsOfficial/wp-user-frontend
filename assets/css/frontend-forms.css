@@ -1,6 +1,6 @@
 /* DivTable.com */
 body {
-  font-family: 'Open Sans', sans-serif !important;
+  font-family: 'Open Sans', sans-serif;
   /* css for timepicker */
   /** author info **/
   /** jQuery Suggest **/
@@ -1218,7 +1218,7 @@ body .wpuf-form .required {
   border: 0;
 }
 body .wpuf-dashboard-container {
-  font-family: 'Open Sans', sans-serif !important;
+  font-family: 'Open Sans', sans-serif;
   max-width: 85rem !important;
   /*Responsive css for post table*/
 }

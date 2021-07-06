@@ -1249,7 +1249,7 @@ class WPUF_Subscription {
     /**
      * Reset trials data if used once
      *
-     * @since WPUF_PRO
+     * @since 3.5.14
      *
      * @param $sub_meta
      *
@@ -1268,7 +1268,7 @@ class WPUF_Subscription {
     /**
      * Add daily cron for non recur subscritpion
      *
-     * @since WPUF_PRO
+     * @since 3.5.14
      *
      * @return void
      */
@@ -1281,7 +1281,7 @@ class WPUF_Subscription {
     /**
      * Cancel non recurring subs if expired
      *
-     * @since WPUF_PRO
+     * @since 3.5.14
      *
      * @return void
      */

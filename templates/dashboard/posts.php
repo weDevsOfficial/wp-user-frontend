@@ -31,7 +31,7 @@ if ( $action == 'del' ) {
         wp_redirect( $redirect );
         exit;
     } else {
-        echo wp_kses_post( '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wp-user-frontend' ) . '</div>' );
+        echo wp_kses_post( '<div class="error">' . __( 'You are not the post author. Cheating huh!', 'wp-user-frontend' ) . '</div>' );
     }
 }
 
@@ -129,7 +129,7 @@ $post_type_obj   = get_post_type_object( $post_type );
                     $payment_status   = get_post_meta( $post->ID, '_wpuf_payment_status', true ); ?>
                     <tr>
                         <?php if ( 'on' == $featured_img ) { ?>
-                            <td>
+                            <td data-label="<?php esc_attr_e( 'Featured Image: ', 'wp-user-frontend' ); ?>">
                                 <?php
                                 echo $show_link ? wp_kses_post( '<a href="' . get_permalink( $post->ID ) . '">' ) : '';
 
@@ -141,9 +141,12 @@ $post_type_obj   = get_post_type_object( $post_type );
 
                                 echo $show_link ? '</a>' : '';
                                 ?>
+                                <span class="post-edit-icon">
+                                    &#x25BE;
+                                </span>
                             </td>
                         <?php } ?>
-                        <td data-label="<?php esc_attr_e( 'Title: ', 'wp-user-frontend' ); ?>">
+                        <td data-label="<?php esc_attr_e( 'Title: ', 'wp-user-frontend' ); ?>" class="<?php echo 'on' === $featured_img ? 'data-column' : '' ; ?>">
                             <?php if ( ! $show_link ) { ?>
 
                                 <?php echo wp_trim_words( get_the_title(), 5 ); ?>
@@ -153,9 +156,11 @@ $post_type_obj   = get_post_type_object( $post_type );
                                 <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo wp_trim_words( get_the_title(), 5 ); ?></a>
 
                             <?php } ?>
-                            <span class="post-edit-icon">
-                                &#x25BE;
-                            </span>
+                            <?php if ( 'on' !== $featured_img ){?>
+                                <span class="post-edit-icon">
+                                    &#x25BE;
+                                </span>
+                            <?php }?>
                         </td>
                         <td data-label="<?php esc_attr_e( 'Status: ', 'wp-user-frontend' ); ?>" class="data-column">
                             <?php wpuf_show_post_status( $post->post_status ); ?>

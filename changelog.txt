@@ -1,3 +1,16 @@
+= v3.5.18 (06 Jul, 2021) =
+
+* Enhancement - Google Map field enhanced along with acf google map
+* Enhancement - Filter added for dashboard account menu
+* Fix - Fallback Pay Per Post inconsistency handled
+* Fix - Google map search field not showing
+* Fix - Form preview page inconsistency with builder
+* Fix - Category not showing as hierarchy
+* Fix - TOC field rendering issue with registration form
+* Fix - Custom plupload filter inconsistency with file upload handled
+* Fix - Guest Pay Per Post inconsistency handled
+* Fix - Responsive and font issue handled
+
 = v3.5.17 (08 Jun, 2021) =
 
 * Enhancement - Preview page added for post form and registration form

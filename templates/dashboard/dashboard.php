@@ -10,21 +10,7 @@
 
 <p><?php
 
-    $tabs = apply_filters( 'wpuf_my_account_tab_links', [
-            'posts'  => [
-                'label' => __( 'Posts', 'wp-user-frontend' ),
-                'url'   => esc_url( add_query_arg( [ 'section' => 'posts' ], get_permalink() ) ),
-            ],
-            'subscription'  => [
-                'label' => __( 'Subscription', 'wp-user-frontend' ),
-                'url'   => esc_url( add_query_arg( [ 'section' => 'subscription' ], get_permalink() ) ),
-            ],
-            'edit-profile'  => [
-                'label' => __( 'edit your password and profile', 'wp-user-frontend' ),
-                'url'   => esc_url( add_query_arg( [ 'section' => 'edit-profile' ], get_permalink() ) ),
-            ],
-        ]
-     );
+    $tabs = apply_filters( 'wpuf_my_account_tab_links', wpuf_get_account_sections() );
 
     if ( 'off' == wpuf_get_option( 'show_subscriptions', 'wpuf_my_account', 'on' ) ) {
         unset( $tabs['subscription'] );
@@ -34,13 +20,19 @@
     $count      = 1;
     $total_tabs = count( $tabs );
 
-    foreach ( $tabs as $key => $tab ) {
+    foreach ( $tabs as $section => $label ) {
+        // backward compatibility
+        if ( is_array( $label ) ) {
+            $section = $label['slug'];
+            $label   = $label['label'];
+        }
+
         if ( $total_tabs == $count ) {
-            $links .= ' <a href="' . $tab['url'] . '">' . $tab['label'] . '</a>';
+            $links .= ' <a href="' . esc_url( add_query_arg( [ 'section' => $section ], get_permalink() ) ) . '">' . $label . '</a>';
             continue;
         }
 
-        $links .= '<a href="' . $tab['url'] . '">' . $tab['label'] . '</a>, ';
+        $links .= '<a href="' . esc_url( add_query_arg( [ 'section' => $section ], get_permalink() ) ) . '">' . $label . '</a>, ';
         $count++;
     }
 

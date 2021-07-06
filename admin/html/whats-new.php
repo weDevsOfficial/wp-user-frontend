@@ -1,6 +1,53 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.18',
+        'released' => '2021-07-06',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Google Map field enhanced along with acf google map', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Filter added for dashboard account menu', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Fallback Pay Per Post inconsistency handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Google map search field not showing', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Form preview page inconsistency with builder', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Category not showing as hierarchy', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'TOC field randering issue with registration form', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Custom plupload filter inconsistency with file upload handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Guest Pay Per Post inconsistency handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Responsive and font issue handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.17',
         'released' => '2021-06-08',
         'changes'  =>  [

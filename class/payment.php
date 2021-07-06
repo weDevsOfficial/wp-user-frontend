@@ -66,9 +66,12 @@ class WPUF_Payment {
 
         $pay_page       = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
         $billing_amount = 0;
-        $action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
 
-        if ( ! is_user_logged_in() && $action === 'wpuf_pay' ) {
+        $action   = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
+        $get_type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
+        $type     = ( $get_type === 'post' ) ? 'post' : 'pack';
+
+        if ( ! is_user_logged_in() && $action === 'wpuf_pay' && $type !== 'post' ) {
             /* translators: %s: login url */
             printf( esc_html( __( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ) ), wp_loginout( '', false ) );
 
@@ -82,8 +85,6 @@ class WPUF_Payment {
         }
 
         if ( $post->ID === $pay_page && $action === 'wpuf_pay' ) {
-            $get_type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
-            $type    = ( $get_type === 'post' ) ? 'post' : 'pack';
             $post_id = isset( $_REQUEST['post_id'] ) ? intval( wp_unslash( $_REQUEST['post_id'] ) ) : 0;
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
             $is_free = false;
@@ -146,7 +147,7 @@ class WPUF_Payment {
                     <?php $pay_page_style = ''; ?>
                         <div class="wpuf-bill-addr-wrap wpuf-pay-col">
                         <?php
-                        if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) ) {
+                        if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) && is_user_logged_in() ) {
                             $pay_page_style = 'vertical-align:top; margin-left: 20px; display: inline-block;';
                             ?>
                             <div class="wpuf-bill-addr-info">

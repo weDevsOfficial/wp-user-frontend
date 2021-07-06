@@ -238,7 +238,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
                 </div>
                 <?php
             } else {
-                if ( $this->field_settings['type'] === 'ajax' && $this->field_settings['exclude_type'] === 'child_of' ) {
+                if ( $this->field_settings['type'] === 'ajax' ) {
                     $level = 0;
                     ?>
                                 <div id="lvl<?php echo esc_attr( $level ); ?>" level="<?php echo esc_attr( $level ); ?>" >
@@ -253,7 +253,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
                     );
 
                     $child_of = $this->field_settings['exclude'];
-                    $selected = count( $this->terms ) === 1 ? $child_of[ array_search( $this->terms[0]->term_id, $child_of, true ) ] : $child_of[ count( $child_of ) - 1 ];
+                    $selected = count( $this->terms ) !== 1 ? $child_of[ array_search( $this->terms[0]->term_id, $child_of, true ) ] : $child_of[ count( $child_of ) - 1 ];
                     $tax_args = [
                         'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
                         'hierarchical'     => 1,

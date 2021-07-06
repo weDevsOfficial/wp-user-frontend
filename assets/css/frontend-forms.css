@@ -1,6 +1,6 @@
 /* DivTable.com */
 body {
-  font-family: 'Open Sans', sans-serif !important;
+  font-family: 'Open Sans', sans-serif;
   /* css for timepicker */
   /** author info **/
   /** jQuery Suggest **/
@@ -1218,7 +1218,7 @@ body .wpuf-form .required {
   border: 0;
 }
 body .wpuf-dashboard-container {
-  font-family: 'Open Sans', sans-serif !important;
+  font-family: 'Open Sans', sans-serif;
   max-width: 85rem !important;
   /*Responsive css for post table*/
 }
@@ -1474,6 +1474,9 @@ body .wpuf-form-google-map-container input[type="text"].wpuf-google-map-search {
 }
 body .wpuf-form-google-map-container.hide-search-box .gm-style input[type="text"].wpuf-google-map-search {
   display: none;
+}
+body .wpuf-form-google-map-container.show-search-box .gm-style input[type="text"].wpuf-google-map-search {
+  display: block;
 }
 body .dokan-dashboard-content.dokan-wpuf-dashboard h2.page-head {
   display: none;
@@ -1800,4 +1803,7 @@ body .wpuf-attachment-upload-filelist + .moxie-shim {
 #wpuf-delete-msg span {
   margin-top: 10px;
   cursor: pointer;
+}
+.wpuf-el.terms_and_conditions label > input[type=checkbox] {
+  width: 0 !important;
 }

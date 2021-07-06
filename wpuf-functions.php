@@ -207,7 +207,7 @@ function wpuf_list_users() {
  * @return string HTML content, if not displaying
  */
 function wpuf_get_pages( $post_type = 'page' ) {
-    $array = [ '' => __( '-- select --', 'wp-user-frontend' ) ];
+    $array = [ '' => __( '&mdash; Select &mdash;', 'wp-user-frontend' ) ];
     $pages = get_posts(
         [
             'post_type'              => $post_type,
@@ -1805,7 +1805,7 @@ function taxnomy_select( $terms, $attr ) {
     }
 
     $tax_args = [
-        'show_option_none' => __( '-- Select --', 'wp-user-frontend' ),
+        'show_option_none' => __( '&mdash; Select &mdash;', 'wp-user-frontend' ),
         'hierarchical'     => 1,
         'hide_empty'       => 0,
         'orderby'          => isset( $attr['orderby'] ) ? $attr['orderby'] : 'name',
@@ -2017,26 +2017,31 @@ function wpuf_get_countries( $type = 'array' ) {
  * @return array
  */
 function wpuf_get_account_sections() {
-    $account_sections = [
-        [
-            'slug' => 'dashboard',
-            'label' => __( 'Dashboard', 'wp-user-frontend' ),
-        ],
-        [
-            'slug' => 'edit-profile',
-            'label' => __( 'Edit Profile', 'wp-user-frontend' ),
-        ],
-        [
-            'slug' => 'subscription',
-            'label' => __( 'Subscription', 'wp-user-frontend' ),
-        ],
-        [
-            'slug' => 'billing-address',
-            'label' => __( 'Billing Address', 'wp-user-frontend' ),
-        ],
+    $sections = [
+        'edit-profile'    => __( 'Edit Profile', 'wp-user-frontend' ),
+        'subscription'    => __( 'Subscription', 'wp-user-frontend' ),
+        'billing-address' => __( 'Billing Address', 'wp-user-frontend' ),
     ];
 
-    return apply_filters( 'wpuf_account_sections', $account_sections );
+    $post_types   = wpuf_get_option( 'cp_on_acc_page', 'wpuf_my_account', [ 'post' ] );
+    $cpt_sections = [];
+
+    if ( is_array( $post_types ) && $post_types ) {
+        foreach ( $post_types as $post_type ) {
+            $post_type_object = get_post_type_object( $post_type );
+
+            $cpt_sections[ $post_type ] = $post_type_object->label;
+        }
+    }
+
+    $sections = array_merge(
+        // dashboard should be the first item
+        [ 'dashboard' => __( 'Dashboard', 'wp-user-frontend' ) ],
+        $cpt_sections,
+        $sections
+    );
+
+    return apply_filters( 'wpuf_account_sections', $sections );
 }
 
 /**
@@ -2048,11 +2053,11 @@ function wpuf_get_account_sections() {
  */
 function wpuf_get_account_sections_list( $post_type = 'page' ) {
     $sections = wpuf_get_account_sections();
-    $array    = [ '' => __( '-- select --', 'wp-user-frontend' ) ];
+    $array    = [ '' => __( '&mdash; Select &mdash;', 'wp-user-frontend' ) ];
 
     if ( $sections ) {
-        foreach ( $sections as $section ) {
-            $array[ $section['slug'] ] = esc_attr( $section['label'] );
+        foreach ( $sections as $section => $label ) {
+            $array[ $section ] = esc_attr( $label );
         }
     }
 
@@ -3896,9 +3901,22 @@ function wpuf_user_has_roles( $roles, $user_id = 0 ) {
  */
 function get_wpuf_preview_page() {
     $page_url        = '';
+    $post_status     = '';
     $preview_page_id = get_option( 'wpuf_preview_page', false );
 
-    if ( $preview_page_id && get_post_status( $preview_page_id ) !== 'private' ) {
+    if ( isset( $preview_page_id ) ){
+        $page_url    = get_permalink( $preview_page_id );
+    }
+
+    if ( isset( $page_url ) ){
+        $post_status = get_post_status( $preview_page_id );
+    }
+
+    if ( $page_url && $post_status === 'private' ) {
+        return $page_url;
+    }
+
+    if ( $post_status !== 'private' ) {
         wp_update_post(
             [
                 'ID' => $preview_page_id,

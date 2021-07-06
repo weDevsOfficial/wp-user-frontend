@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership, frontend-post  
 **Requires at least:** 4.0  
-**Tested up to:** 5.7  
+**Tested up to:** 5.7.2  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.17  
+**Stable tag:** 3.5.18  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -263,6 +263,41 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 ## Changelog ##
+
+### v3.5.18 (06 Jul, 2021) ###
+
+* Enhancement - Google Map field enhanced along with acf google map
+* Enhancement - Filter added for dashboard account menu
+* Fix - Fallback Pay Per Post inconsistency handled
+* Fix - Google map search field not showing
+* Fix - Form preview page inconsistency with builder
+* Fix - Category not showing as hierarchy
+* Fix - TOC field randering issue with registration form
+* Fix - Custom plupload filter inconsistency with file upload handled
+* Fix - Guest Pay Per Post inconsistency handled
+
+### v3.5.17 (08 Jun, 2021) ###
+
+* Enhancement - Preview page added for post form and registration form
+* Enhancement - Post types menu on account page added
+* Enhancement - Dashboard shortcode attributes enhanced
+* Enhancement - Account page post type list new design
+* Fix - Payment page restricted from direct unauthenticated access
+* Fix - Timepicker conflict with dokan handled
+* Fix - Trial inconsistency with paypal fixed
+* Fix - Subscription does not cancel with paypal due to profile missing id
+* Fix - Subscription email notification inconsistency fixed
+* Fix - Various issues on payment page for non-logged in user handled
+* Fix - Column inner field cloning inconsistency fixed
+* Fix - Popup z-index changed due to other plugin z-index
+
+### v3.5.16 (08 May, 2021) ###
+
+* Update - Added Mauritian Rupee for currency
+* Update - Added eid promotional offer notice
+* Fix - Multiple google map validation for same form
+* Fix - Various issues on verification, autologin payments & address field
+* Fix - Docs update for file & attachments feature which is pro only
 
 ### v3.5.15 (15 March, 2021) ###
 

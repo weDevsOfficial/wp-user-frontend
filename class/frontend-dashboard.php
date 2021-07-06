@@ -203,7 +203,7 @@ class WPUF_Frontend_Dashboard {
         //check, if the requested user is the post author
         $maybe_delete = get_post( $pid );
 
-        if ( ( $maybe_delete->post_author === $userdata->ID ) || current_user_can( 'delete_others_pages' ) ) {
+        if ( ( $maybe_delete->post_author == $userdata->ID ) || current_user_can( 'delete_others_pages' ) ) {
             wp_trash_post( $pid );
 
             //redirect
@@ -214,7 +214,7 @@ class WPUF_Frontend_Dashboard {
             wp_redirect( $redirect );
             exit;
         } else {
-            echo wp_kses_post( '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wp-user-frontend' ) . '</div>' );
+            echo wp_kses_post( '<div class="error">' . __( 'You are not the post author. Cheating huh!', 'wp-user-frontend' ) . '</div>' );
         }
     }
 }

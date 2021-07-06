@@ -2038,7 +2038,7 @@ function wpuf_get_account_sections() {
         // dashboard should be the first item
         [ 'dashboard' => __( 'Dashboard', 'wp-user-frontend' ) ],
         $cpt_sections,
-        $sections,
+        $sections
     );
 
     return apply_filters( 'wpuf_account_sections', $sections );

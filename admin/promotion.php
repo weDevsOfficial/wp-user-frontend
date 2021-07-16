@@ -27,11 +27,11 @@ class WPUF_Admin_Promotion {
         $current_time = $this->convert_utc_to_est();
 
         if (
-            strtotime( '2021-05-11 09:00:00 EST' ) < strtotime( $current_time )
-            && strtotime( $current_time ) < strtotime( '2021-05-24 23:00:00 EST' )
+            strtotime( '2021-07-16 09:00:00 EST' ) < strtotime( $current_time )
+            && strtotime( $current_time ) < strtotime( '2021-07-26 23:00:00 EST' )
             ) {
-            $option_name = 'wpuf_2021_eid_offer';
-            $notice      = sprintf( '<p>%s <a href="%s" target="_blank">%s</a></p>', __( 'Eid Mubarak! Stay Safe & Spread Happiness. Enjoy Up To 45% OFF on WP User Frontend Pro', 'wp-user-frontend' ), 'https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf-eidoffer2021', __( 'Get Now', 'wp-user-frontend' ) );
+            $option_name = 'wpuf_2021_summer_offer';
+            $notice      = sprintf( '<p>%s <a href="%s" target="_blank">%s</a></p>', __( 'Summer Sale! Chill out with weDevs. Enjoy Up To 40% OFF on WP User Frontend Pro', 'wp-user-frontend' ), 'https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf-summer-sale2021', __( 'Get Now', 'wp-user-frontend' ) );
             $this->generate_notice( $notice, $option_name );
         }
     }

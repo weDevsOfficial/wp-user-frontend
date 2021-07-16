@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership, frontend-post  
 **Requires at least:** 4.0  
-**Tested up to:** 5.7.2  
+**Tested up to:** 5.8  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.18  
+**Stable tag:** 3.5.19  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -263,6 +263,11 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 ## Changelog ##
+
+### v3.5.18 (16 Jul, 2021) ###
+
+ * Enhancement - Updated compatibility with WordPress 5.8
+ * Enhancement - Promotional campaign
 
 ### v3.5.18 (06 Jul, 2021) ###
 

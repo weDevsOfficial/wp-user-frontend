@@ -52,6 +52,14 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                 <label class="wpuf-fields wpuf-label"><?php esc_html_e( 'Country', 'wp-user-frontend' ); ?><span
                         class="required">*</span></label>
                 <?php
+                //Inconsistency with keys, remap keys, Back compat with keys
+                if ( array_key_exists('billing_country', $address_fields ) ){
+                    foreach ( $address_fields as $key => $val ) {
+                        unset( $address_fields[$key] );
+                        $address_fields[str_replace('billing_','',$key)] = $val;
+                    }
+                }
+
                 $selected['country'] = ! ( empty( $address_fields['country'] ) ) ? $address_fields['country'] : 'US';
 
                 echo wp_kses( wpuf_select( [

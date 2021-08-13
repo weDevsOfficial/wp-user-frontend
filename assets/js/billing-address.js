@@ -72,7 +72,7 @@ jQuery(function($){
         });
     });
 
-    $(document.body).on('change', 'select#wpuf_biiling_state', function () {
+    $(document.body).on('change', 'form#wpuf-ajax-address-form', function () {
         wpuf_calculate_tax();
     });
 

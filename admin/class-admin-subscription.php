@@ -421,25 +421,19 @@ class WPUF_Admin_Subscription {
                             <tr class="wpuf-metabox-post_expiration wpuf_subscription_expiration_field">
                                 <?php
                                 $timeType_array = [
-                                    'year'  => 100,
-                                    'month' => 12,
-                                    'day'   => 30,
-                                ]; ?>
+                                    'year',
+                                    'month',
+                                    'day'
+                                ];
+                                ?>
                                 <th class="wpuf-post-exp-time"> <?php esc_html_e( 'Post Expiration Time', 'wp-user-frontend' ); ?> </th>
                                 <td class="wpuf-post-exp-time">
-                                    <select name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value">
-                                        <?php
-                                        for ( $i = 1; $i <= $timeType_array[$time_type]; $i++ ) {
-                                            ?>
-                                            <option value="<?php echo esc_attr( $i ); ?>" <?php echo $i == $time_value ? 'selected' : ''; ?>><?php echo esc_attr( $i ); ?></option>
-                                        <?php
-                                        } ?>
-                                    </select>
+                                    <input type="number" name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value" value="<?php echo $time_value; ?>" id="wpuf-expiration_time_value" min="1">
                                     <select name="post_expiration_settings[expiration_time_type]" id="wpuf-expiration_time_type">
                                         <?php
-                                        foreach ( $timeType_array as $each_time_type=>$each_time_type_val ) {
+                                        foreach ( $timeType_array as $each_time_type ) {
                                             ?>
-                                            <option value="<?php echo esc_attr( $each_time_type ); ?>" <?php echo $each_time_type == $time_type ? 'selected' : ''; ?>><?php echo esc_html( ucfirst( $each_time_type ) ); ?></option>
+                                            <option value="<?php echo esc_attr( $each_time_type ); ?>" <?php echo $each_time_type == $time_type ? 'selected' : ''; ?>><?php echo esc_html( ucfirst( $each_time_type ). '(s)' ); ?></option>
                                         <?php
                                         } ?>
                                     </select>

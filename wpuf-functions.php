@@ -3961,3 +3961,31 @@ function wpuf_recursive_sanitize_text_field($arr){
 
     return $arr;
 }
+
+/**
+ * Determine page after payment success
+ *
+ * @since WPUF_PRO
+ *
+ * @param $data
+ *
+ * @return bool|false|string|WP_Error
+ */
+function wpuf_payment_success_page( $data ){
+    $gateway          = ! empty( $data['wpuf_payment_method'] ) ? $data['wpuf_payment_method'] : '';
+    $success_query    = "wpuf_${gateway}_success";
+    $redirect_page    = '';
+    $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
+    if ( 'post' === $data['type'] ){
+        $form_id           = get_post_meta( $data['post_id'], '_wpuf_form_id' );
+        $form_settings     = wpuf_get_form_settings( $form_id );
+        $ppp_success_page  = ! empty( $form_settings['ppp_payment_success_page'] ) ? $form_settings['ppp_payment_success_page'] : '';
+        $redirect_page_id  = $ppp_success_page ? $ppp_success_page : $redirect_page_id;
+    }
+
+    $redirect_page = $redirect_page_id ? add_query_arg( 'action', $success_query,  untrailingslashit( get_permalink( $redirect_page_id ) ) ) : add_query_arg( 'action', $success_query, untrailingslashit( get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) ) );
+   //for bank
+    $redirect_page =  ! empty( $data['wpuf_payment_method'] ) && 'bank' === $data['wpuf_payment_method'] ? get_permalink( wpuf_get_option( 'bank_success', 'wpuf_payment' ) ) : $redirect_page;
+
+    return $redirect_page;
+}

@@ -71,7 +71,7 @@ class WPUF_Gateway_Bank {
 
         do_action( 'wpuf_gateway_bank_order_submit', $data, $order_id );
 
-        $success = get_permalink( wpuf_get_option( 'bank_success', 'wpuf_payment' ) );
+        $success = wpuf_payment_success_page( $data );
         wp_redirect( $success );
         exit;
     }

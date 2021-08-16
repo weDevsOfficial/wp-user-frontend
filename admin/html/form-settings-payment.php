@@ -10,6 +10,7 @@ $force_pack_purchase   = isset( $form_settings['force_pack_purchase'] ) ? $form_
 $pay_per_post_cost     = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 2;
 $fallback_ppp_enable   = isset( $form_settings['fallback_ppp_enable'] ) ? $form_settings['fallback_ppp_enable'] : 'false';
 $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_settings['fallback_ppp_cost'] : 1;
+$ppp_success_page      = isset( $form_settings['ppp_payment_success_page'] ) ? $form_settings['ppp_payment_success_page'] : '';
 
 ?>
     <table class="form-table">
@@ -81,6 +82,23 @@ $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_se
                     <input type="number" name="wpuf_settings[pay_per_post_cost]" value="<?php echo esc_attr( $pay_per_post_cost ); ?>" />
                 </label>
                 <p class="description"><?php esc_html_e( 'Amount to be charged per post', 'wp-user-frontend' ); ?></p>
+            </td>
+        </tr>
+        <tr class="show-if-payment show-if-pay-per-post">
+            <th>&mdash; &mdash; <?php esc_html_e( 'Payment Success Page', 'wp-user-frontend' ); ?></th>
+            <td>
+                <label>
+                    <select name="wpuf_settings[ppp_payment_success_page]" >
+                        <?php
+                        foreach ( wpuf_get_pages() as $page_id => $page_name ) {
+                            ?>
+                            <option value="<?php echo $page_id; ?>" <?php echo $page_id === (int) $ppp_success_page ? 'selected' : ''; ?> ><?php echo $page_name; ?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </label>
+                <p class="description"><?php esc_html_e( 'Page will show after successful payment', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
         <?php do_action( 'wpuf_form_setting_payment', $form_settings, $post ); ?>

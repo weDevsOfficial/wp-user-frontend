@@ -883,15 +883,16 @@ class WPUF_Frontend_Render_Form {
     /**
      * Render a checkbox for enabling feature item
      */
-    public function render_featured_field( $post_id = null ){
-        $user_sub = WPUF_Subscription::get_user_pack(get_current_user_id());
+    public function render_featured_field( $post_id = null ) {
+        $user_sub = WPUF_Subscription::get_user_pack( get_current_user_id() );
         $is_featured = false;
-        if ( $post_id ){
+        if ( $post_id ) {
             $stickies = get_option( 'sticky_posts' );
             $is_featured   = in_array( intval( $post_id ), $stickies, true );
         }
 
-        if ( ! empty( $user_sub['total_feature_item'] ) || $is_featured ) { ?>
+        if ( ! empty( $user_sub['total_feature_item'] ) || $is_featured ) {
+            ?>
             <li class="wpuf-el field-size-large" data-label="Is featured">
                 <div class="wpuf-label">
                     <label for="wpuf_is_featured">Is featured</label>
@@ -916,6 +917,7 @@ class WPUF_Frontend_Render_Form {
                     })
                 })(jQuery)
             </script>
-        <?php }
+            <?php
+        }
     }
 }

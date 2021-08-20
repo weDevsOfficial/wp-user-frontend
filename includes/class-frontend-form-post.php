@@ -940,7 +940,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         // if user has a subscription pack
         $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
-
+        $wpuf_user               = wpuf_get_user();
+        $user_subscription       = new WPUF_User_Subscription( $wpuf_user );
         if ( ! empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['_enable_post_expiration'] )
             && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) >= time() ) {
             $expire_date = gmdate( 'Y-m-d', strtotime( '+' . $user_wpuf_subscription_pack['_post_expiration_time'] ) );
@@ -950,8 +951,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
             // if mail active
             if ( isset( $user_wpuf_subscription_pack['_enable_mail_after_expired'] ) && $user_wpuf_subscription_pack['_enable_mail_after_expired'] === 'on' ) {
-                $wpuf_user               = wpuf_get_user();
-                $user_subscription       = new WPUF_User_Subscription( $wpuf_user );
                 $post_expiration_message = $user_subscription->get_subscription_exp_msg( $user_wpuf_subscription_pack['pack_id'] );
                 update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
             }
@@ -983,6 +982,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 }
             }
         }
+
+        //Handle featured item when edit
+        $sub_meta = $user_subscription->handle_featured_item( $post_id, $user_wpuf_subscription_pack );
+        $user_subscription->update_meta( $sub_meta );
     }
 
     public function send_mail_for_guest( $charging_enabled, $post_id, $form_id, $is_update, $post_author, $meta_vars ) {

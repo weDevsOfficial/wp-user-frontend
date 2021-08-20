@@ -323,7 +323,8 @@ class WPUF_Admin_Subscription {
 
         $expired_post_status          = isset( $sub_meta['_expired_post_status'] ) ? $sub_meta['_expired_post_status'] : '';
         $is_enable_mail_after_expired = isset( $sub_meta['_enable_mail_after_expired'] ) && $sub_meta['_enable_mail_after_expired'] == 'on' ? 'checked' : '';
-        $post_expiration_message      = isset( $sub_meta['_post_expiration_message'] ) ? $sub_meta['_post_expiration_message'] : ''; ?>
+        $post_expiration_message      = isset( $sub_meta['_post_expiration_message'] ) ? $sub_meta['_post_expiration_message'] : '';
+        $featured_item                = ! empty( $sub_meta['_total_feature_item'] ) ? $sub_meta['_total_feature_item'] : 0; ?>
 
         <div class="wpuf-subscription-pack-settings">
             <nav class="subscription-nav-tab">
@@ -379,6 +380,12 @@ class WPUF_Admin_Subscription {
                 <section id="wpuf-post-restriction">
                     <table class="form-table">
                         <tbody>
+                        <tr>
+                            <th><label for="wpuf-sticky-item">Number of featured item</label></th>
+                            <td>
+                                <input type="text" size="20" style="" id="wpuf-sticky-item" value="<?php echo intval( $featured_item ); ?>" name="total_feature_item" />
+                            </td>
+                        </tr>
                             <?php
                                 echo wp_kses( $this->get_post_types( $sub_meta['post_type_name'] ),
                                     [
@@ -641,7 +648,12 @@ class WPUF_Admin_Subscription {
                         <h4><?php esc_html_e( 'Remaining Posting Count', 'wp-user-frontend' ); ?></h4>
 
                         <table class="form-table">
-
+                            <?php if ( ! empty( $user_sub['total_feature_item'] ) ) { ?>
+                            <tr>
+                                <th><label>Number of featured item</label></th>
+                                <td><input type="text" value="<?php echo esc_attr( $user_sub['total_feature_item'] ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
+                            </tr>
+                            <?php } ?>
                             <?php foreach ( $user_sub['posts'] as $key => $value ) {
                     $post_type_object = get_post_type_object( $key );
 

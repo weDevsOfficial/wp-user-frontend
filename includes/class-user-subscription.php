@@ -174,6 +174,7 @@ class WPUF_User_Subscription {
             $user_meta = [
                 'pack_id' => $pack_id,
                 'posts'   => $subscription->meta_value['post_type_name'],
+                'total_feature_item' => $subscription->meta_value['_total_feature_item'],
                 'status'  => $status,
             ];
 
@@ -401,8 +402,11 @@ class WPUF_User_Subscription {
         if ( $wpuf_post_status != 'published' && $wpuf_post_status != 'new_draft' ) {
             if ( $count > 0 ) {
                 $sub_info['posts'][$post_type] = $count - 1;
-                $this->update_meta( $sub_info );
             }
+
+            $sub_info = $this->handle_featured_item( $post_id, $sub_info );
+
+            $this->update_meta( $sub_info );
 
             update_post_meta( $post_id, 'wpuf_post_status', 'new_draft' );
         }
@@ -500,4 +504,31 @@ class WPUF_User_Subscription {
 
         return $exp_message;
     }
+
+   /**
+    * Handle feature item count for add, edit
+    *
+    * @param $post_id
+    * @param $sub_info
+    *
+    * @return array
+    */
+    public function handle_featured_item( $post_id, $sub_info ){
+        $featured_count = ! empty( $sub_info['total_feature_item'] ) ? intval( $sub_info['total_feature_item'] ) : 0;
+        $stickies       = get_option( 'sticky_posts' );
+        $is_featured    = in_array( intval( $post_id ), $stickies, true );
+
+        if ( $featured_count > 0 && array_key_exists( 'is_featured_item', $_POST ) && ! $is_featured ) {
+                stick_post( $post_id );
+                $sub_info['total_feature_item'] = $featured_count - 1;
+        }
+
+        if ( $featured_count > 0 && ! array_key_exists( 'is_featured_item', $_POST ) &&  $is_featured ) {
+                $sub_info['total_feature_item'] = $featured_count + 1;
+                unstick_post( $post_id );
+        }
+
+        return $sub_info;
+    }
+
 }

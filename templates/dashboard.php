@@ -142,11 +142,14 @@
                 <tbody>
                     <?php
                     global $post;
-
+                    $stickies      = get_option( 'sticky_posts' );
                     while ( $dashboard_query->have_posts() ) {
                         $dashboard_query->the_post();
                         $show_link        = !in_array( $post->post_status, ['draft', 'future', 'pending'] );
-                        $payment_status   = get_post_meta( $post->ID, '_wpuf_payment_status', true ); ?>
+                        $payment_status   = get_post_meta( $post->ID, '_wpuf_payment_status', true );
+                        $is_featured      = in_array( intval( $post->ID ), $stickies, true ) ? ' - Featured '. ucfirst( $post_type ) : '';
+                        $title            = wp_trim_words( get_the_title(), 5 ) . $is_featured;
+                        ?>
                         <tr>
                             <?php if ( ( ( 'on' == $featured_img || 'on' == $featured_image ) || ( 'off' == $featured_img && 'on' == $featured_image ) || ( 'on' == $featured_img && 'default' == $featured_image ) ) && !( 'on' == $featured_img && 'off' == $featured_image ) ) { ?>
                                 <td>
@@ -166,11 +169,11 @@
                             <td>
                                 <?php if ( !$show_link ) { ?>
 
-                                    <?php the_title(); ?>
+                                    <?php echo $title; ?>
 
                                 <?php } else { ?>
 
-                                    <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
+                                    <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo $title; ?></a>
 
                                 <?php } ?>
                             </td>

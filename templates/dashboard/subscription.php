@@ -12,7 +12,10 @@
             <strong><?php esc_html_e( 'Subscription Status: ', 'wp-user-frontend' ); ?></strong>
             <?php esc_html_e( 'Subscription Expired!', 'wp-user-frontend' ); ?>
         </div>
-        <?php } else { ?>
+        <?php } else {
+             if ( ! empty( $user_sub['total_feature_item'] ) ) { ?>
+                <div><strong><?php esc_html_e( 'Number of featured item: ', 'wp-user-frontend' ); ?></strong><?php echo $user_sub['total_feature_item']; ?></div>
+            <?php } ?>
             <div>
                 <strong><?php esc_html_e( 'Remaining post: ', 'wp-user-frontend' ); ?></strong>
                 <?php

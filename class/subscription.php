@@ -298,6 +298,7 @@ class WPUF_Subscription {
         $meta['_expired_post_status']       = get_post_meta( $subscription_id, '_expired_post_status', true );
         $meta['_enable_mail_after_expired'] = get_post_meta( $subscription_id, '_enable_mail_after_expired', true );
         $meta['_post_expiration_message']   = get_post_meta( $subscription_id, '_post_expiration_message', true );
+        $meta['_total_feature_item']        = get_post_meta( $subscription_id, '_total_feature_item', true );
 
         $meta = apply_filters( 'wpuf_get_subscription_meta', $meta, $subscription_id );
 
@@ -390,6 +391,7 @@ class WPUF_Subscription {
         update_post_meta( $subscription_id, '_expired_post_status', ( isset( $post_data['post_expiration_settings']['expired_post_status'] ) ? $post_data['post_expiration_settings']['expired_post_status'] : '' ) );
         update_post_meta( $subscription_id, '_enable_mail_after_expired', ( isset( $post_data['post_expiration_settings']['enable_mail_after_expired'] ) ? $post_data['post_expiration_settings']['enable_mail_after_expired'] : '' ) );
         update_post_meta( $subscription_id, '_post_expiration_message', ( isset( $post_data['post_expiration_settings']['post_expiration_message'] ) ? $post_data['post_expiration_settings']['post_expiration_message'] : '' ) );
+        update_post_meta( $subscription_id, '_total_feature_item', ( isset( $post_data['total_feature_item'] ) ? $post_data['total_feature_item'] : '' ) );
         do_action( 'wpuf_update_subscription_pack', $subscription_id, $post_data );
     }
 
@@ -523,6 +525,7 @@ class WPUF_Subscription {
             $post_type   = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
             $count       = isset( $sub_info['posts'][ $post_type ] ) ? intval( $sub_info['posts'][ $post_type ] ) : 0;
             $post_status = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
+            $featured_count = ! empty( $sub_info['total_feature_item'] ) ? intval( $sub_info['total_feature_item'] ) : 0;
 
             $old_status = $post->post_status;
             wp_transition_post_status( $post_status, $old_status, $post );
@@ -533,8 +536,11 @@ class WPUF_Subscription {
             if ( $wpuf_post_status !== 'new_draft' ) {
                 if ( $count > 0 ) {
                     $sub_info['posts'][ $post_type ] = $count - 1;
-                    $this->update_user_subscription_meta( $userdata->ID, $sub_info );
                 }
+
+                $user_subscription = new WPUF_User_Subscription( $current_user );
+                $sub_info          = $user_subscription->handle_featured_item( $post_id, $sub_info );
+                $this->update_user_subscription_meta( $userdata->ID, $sub_info );
             }
 
             //meta added to make post have flag if post is published

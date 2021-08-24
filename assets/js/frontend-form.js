@@ -991,7 +991,7 @@
         },
 
         content_limit_message: function( content_limit_type ) {
-            return ( 'word' === content_limit_type ) ? 'Word limit reached.' : 'Character limit reached.';
+            return ( 'word' === content_limit_type ) ? wpuf_frontend.word_limit : wpuf_frontend.char_limit ;
         }
     };
 

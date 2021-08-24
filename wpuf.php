@@ -280,6 +280,7 @@ final class WP_User_Frontend {
         include_once WPUF_ROOT . '/includes/class-customizer.php';
         include_once WPUF_ROOT . '/includes/log/class-log.php';
         include_once WPUF_ROOT . '/includes/log/class-log-wpdb-query.php';
+//        include_once WPUF_ROOT . '/includes/class-user-prorate.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
@@ -713,6 +714,7 @@ final class WP_User_Frontend {
             'cancelSubMsg'  => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
             'delete_it'     => __( 'Yes', 'wp-user-frontend' ),
             'cancel_it'     => __( 'No', 'wp-user-frontend' ),
+            'char_limit'    => __( 'Character limit reached', 'wp-user-frontend' ),
         ] ) );
 
         wp_localize_script( 'wpuf-subscriptions', 'wpuf_subscription', apply_filters( 'wpuf_subscription_js_data', [

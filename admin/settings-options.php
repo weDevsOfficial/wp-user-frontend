@@ -502,6 +502,14 @@ function wpuf_settings_fields() {
                     'class'   => 'guest-email-setting',
                 ],
                 [
+                    'name'     => 'enable_guest_email_notification',
+                    'class'    => 'guest-email-setting-option',
+                    'label'    => __( 'Guest Email Notification', 'wp-user-frontend' ),
+                    'desc'     => __( 'Enable Guest Email Notification .', 'wp-user-frontend' ),
+                    'default'  => 'on',
+                    'type'     => 'checkbox',
+                ],
+                [
                     'name'    => 'guest_email_subject',
                     'label'   => __( 'Guest mail subject', 'wp-user-frontend' ),
                     'desc'    => __( 'This sets the subject of the emails sent to guest users', 'wp-user-frontend' ),

@@ -3063,6 +3063,10 @@ function wpuf_decryption( $id ) {
  * @return void
  */
 function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_enabled, $flag ) {
+    if ( 'on' !== wpuf_get_option( 'enable_guest_email_notification', 'wpuf_mails', 'on' ) ) {
+        return;
+    }
+
     $noce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
     if ( isset( $nonce ) && ! wp_verify_nonce( $noce, 'wpuf_edit' ) ) {

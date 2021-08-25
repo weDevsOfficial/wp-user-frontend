@@ -16,6 +16,7 @@ class WPUF_ACF_Compatibility {
         add_action( 'wp_ajax_wpuf_compatibility_' . $this->id, [ $this, 'maybe_compatible' ] );
         add_action( 'wp_ajax_wpuf_migrate_' . $this->id, [ $this, 'migrate_cf_data' ] );
         add_filter( 'acf/load_value', [ $this, 'load_compatible_value' ], 10, 3 );
+        add_action( 'wpuf_add_post_after_insert', [ $this, 'update_acf_field_meta' ], 10, 4);
     }
 
     /**
@@ -263,5 +264,39 @@ class WPUF_ACF_Compatibility {
         }
 
         return $value;
+    }
+
+    /**
+     * Update acf post meta
+     *
+     * @since WPUF
+     *
+     * @param $post_id
+     * @param $form_id
+     * @param $form_settings
+     * @param $meta_vars
+     */
+    public function update_acf_field_meta( $post_id, $form_id, $form_settings, $meta_vars ){
+        $groups = acf_get_field_groups(['post_type' => $form_settings['post_type']]);
+        $existing_meta = get_post_meta( $post_id );
+
+        foreach ( acf_get_fields( $groups ) as $group) {
+            $meta_key = '_'.$group['name'];
+            $name =  $group['name'];
+
+            if ( 'repeater' === $group['type'] ){
+                $meta_key = 'repeater';
+            }
+
+            //check key also in meta vars
+            $meta_keys = array_map( function ($meta_var){
+                return $meta_var['name'];
+            },$meta_vars);
+
+            if( ! array_key_exists( $meta_key, $existing_meta ) && in_array( $name, $meta_keys, true )){
+                update_post_meta( $post_id, $meta_key, $group['key']);
+            }
+        }
+
     }
 }

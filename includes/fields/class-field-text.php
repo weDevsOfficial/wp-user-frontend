@@ -59,10 +59,10 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
                 );
             }
 
-        $mask_option = isset( $field_settings['mask_options'] ) ? $field_settings['mask_options'] : '';
+            $mask_option = isset( $field_settings['mask_options'] ) ? $field_settings['mask_options'] : '';
 
-        if ( $mask_option ) {
-            ?>
+            if ( $mask_option ) {
+                ?>
                 <script>
                     jQuery(document).ready(function($) {
                         var text_field = $( "input[name*=<?php echo esc_attr( $field_settings['name'] ); ?>]" );
@@ -88,12 +88,14 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
                     });
                 </script>
 
-            <?php
-        } ?>
+                <?php
+            }
+            ?>
 
         </li>
 
-        <?php $this->after_field_print_label();
+        <?php
+        $this->after_field_print_label();
     }
 
     /**
@@ -102,7 +104,7 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options      = $this->get_default_option_settings();
+        $default_options = $this->get_default_option_settings();
 
         $default_text_options = $this->get_default_text_option_settings( true );
 
@@ -119,7 +121,7 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
 
-        $props    = [
+        $props = [
             'input_type'        => 'text',
             'label'             => __( 'Text', 'wp-user-frontend' ),
             'is_meta'           => 'yes',
@@ -128,7 +130,7 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
             'is_new'            => true,
             'show_in_post'      => 'yes',
             'hide_field_label'  => 'no',
-            'restriction_type'  =>  'character'
+            'restriction_type'  => 'character',
         ];
 
         return array_merge( $defaults, $props );
@@ -144,7 +146,7 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $value = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+        $value = isset( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) : '';
         // return sanitize_text_field( trim( $_POST[$field['name']] ) );
         return $value;
     }
@@ -160,7 +162,7 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
      * @return string
      */
     public function render_field_data( $data, $field ) {
-        $data      = implode( ',' , $data );
+        $data      = implode( ',', $data );
         $hide_label = isset( $field['hide_field_label'] )
             ? wpuf_validate_boolean( $field['hide_field_label'] )
             : false;
@@ -173,8 +175,8 @@ class WPUF_Form_Field_Text extends WPUF_Field_Contract {
 
         ob_start();
         ?>
-            <li class="<?php echo esc_attr( implode( ' ' , $container_classnames ) );  ?>">
-                <?php if ( ! $hide_label ): ?>
+            <li class="<?php echo esc_attr( implode( ' ', $container_classnames ) ); ?>">
+                <?php if ( ! $hide_label ) : ?>
                     <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
                 <?php echo esc_html( $data ); ?>

@@ -32,46 +32,44 @@ abstract class WPUF_Field_Contract {
     /**
      * @return array[]
      */
-    public static function common_field()
-    {
-        return [
-            [
-                'name' => 'restriction_to',
-                'title' => __('Content restricted type', 'wp-user-frontend'),
-                'type' => 'radio',
-                'options' => [
-                    'min' => __('Minimun', 'wp-user-frontend'),
-                    'max' => __('Maximum', 'wp-user-frontend'),
-                ],
-                'section' => 'advanced',
-                'priority' => 15,
-                'inline' => true,
-                'default' => 'max',
+    public static function common_field() {         return [
+        [
+            'name' => 'restriction_to',
+            'title' => __( 'Content restricted type', 'wp-user-frontend' ),
+            'type' => 'radio',
+            'options' => [
+                'min' => __( 'Minimun', 'wp-user-frontend' ),
+                'max' => __( 'Maximum', 'wp-user-frontend' ),
             ],
+            'section' => 'advanced',
+            'priority' => 15,
+            'inline' => true,
+            'default' => 'max',
+        ],
 
-            [
-                'name' => 'restriction_type',
-                'title' => __('Content restricted by', 'wp-user-frontend'),
-                'type' => 'radio',
-                'options' => [
-                    'character' => __('Character', 'wp-user-frontend'),
-                    'word' => __('Word', 'wp-user-frontend'),
-                ],
-                'section' => 'advanced',
-                'priority' => 15,
-                'inline' => true,
-                'default' => 'character',
+        [
+            'name' => 'restriction_type',
+            'title' => __( 'Content restricted by', 'wp-user-frontend' ),
+            'type' => 'radio',
+            'options' => [
+                'character' => __( 'Character', 'wp-user-frontend' ),
+                'word' => __( 'Word', 'wp-user-frontend' ),
             ],
+            'section' => 'advanced',
+            'priority' => 15,
+            'inline' => true,
+            'default' => 'character',
+        ],
 
-            [
-                'name' => 'content_restriction',
-                'title' => __('Content Restriction', 'wp-user-frontend'),
-                'type' => 'text',
-                'section' => 'advanced',
-                'priority' => 16,
-                'help_text' => __('Number of characters or words the author to be restricted in', 'wp-user-frontend'),
-            ],
-        ];
+        [
+            'name' => 'content_restriction',
+            'title' => __( 'Content Restriction', 'wp-user-frontend' ),
+            'type' => 'text',
+            'section' => 'advanced',
+            'priority' => 16,
+            'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
+        ],
+    ];
     }
 
     /**
@@ -873,7 +871,7 @@ abstract class WPUF_Field_Contract {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s", "%s", "%s"', esc_attr( $content_limit ), esc_attr( $field_name ), esc_attr( $rich_text ), esc_attr( $limit_type ) , esc_attr( $limit_to ) ); ?>);
+                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s", "%s", "%s"', esc_attr( $content_limit ), esc_attr( $field_name ), esc_attr( $rich_text ), esc_attr( $limit_type ), esc_attr( $limit_to ) ); ?>);
                 });
             })(jQuery);
         </script>

@@ -106,7 +106,8 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
                 $field_settings['content_restriction'],
                 $field_settings['rich'],
                 $field_settings['name'] . '_' . $form_id,
-                $field_settings['restriction_type']
+                $field_settings['restriction_type'],
+                $field_settings['restriction_to']
             );
         } ?>
         </li>

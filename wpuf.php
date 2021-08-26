@@ -64,7 +64,7 @@ final class WP_User_Frontend {
      * Fire up the plugin
      */
     public function __construct() {
-        if ( !$this->is_supported_php() ) {
+        if ( ! $this->is_supported_php() ) {
             add_action( 'admin_notices', [ $this, 'php_version_notice' ] );
 
             return;
@@ -100,7 +100,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function php_version_notice() {
-        if ( $this->is_supported_php() || !current_user_can( 'manage_options' ) ) {
+        if ( $this->is_supported_php() || ! current_user_can( 'manage_options' ) ) {
             return;
         }
 
@@ -226,7 +226,7 @@ final class WP_User_Frontend {
             $message        = str_replace( $search, $replace, $message );
             $message        = get_formatted_mail_body( $message, $mail_subject );
 
-            if ( !empty( $message ) ) {
+            if ( ! empty( $message ) ) {
                 wp_mail( get_the_author_meta( 'user_email', $each_post->post_author ), $mail_subject, $message );
             }
         }
@@ -240,7 +240,7 @@ final class WP_User_Frontend {
      * @return \self
      */
     public static function init() {
-        if ( !self::$_instance ) {
+        if ( ! self::$_instance ) {
             self::$_instance = new WP_User_Frontend();
         }
 
@@ -280,6 +280,7 @@ final class WP_User_Frontend {
         include_once WPUF_ROOT . '/includes/class-customizer.php';
         include_once WPUF_ROOT . '/includes/log/class-log.php';
         include_once WPUF_ROOT . '/includes/log/class-log-wpdb-query.php';
+        //        include_once WPUF_ROOT . '/includes/class-user-prorate.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
@@ -320,7 +321,7 @@ final class WP_User_Frontend {
         }
 
         // add reCaptcha library if not found
-        if ( !function_exists( 'recaptcha_get_html' ) ) {
+        if ( ! function_exists( 'recaptcha_get_html' ) ) {
             require_once __DIR__ . '/lib/recaptchalib.php';
             require_once __DIR__ . '/lib/invisible_recaptcha.php';
         }
@@ -352,15 +353,15 @@ final class WP_User_Frontend {
         $this->container['log']                     = new WPUF_Log();
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
-            $this->container['dokan_integration']   = new WPUF_Dokan_Integration();
+            $this->container['dokan_integration'] = new WPUF_Dokan_Integration();
         }
 
         if ( class_exists( 'WCMp' ) ) {
-            $this->container['wcmp_integration']    = new WPUF_WCMp_Integration();
+            $this->container['wcmp_integration'] = new WPUF_WCMp_Integration();
         }
 
         if ( class_exists( 'WC_Vendors' ) ) {
-            $this->container['WCV_Integration']     = new WPUF_WC_Vendors_Integration();
+            $this->container['WCV_Integration'] = new WPUF_WC_Vendors_Integration();
         }
 
         if ( is_admin() ) {
@@ -407,7 +408,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function plugin_upgrades() {
-        if ( !is_admin() && !current_user_can( 'manage_options' ) ) {
+        if ( ! is_admin() && ! current_user_can( 'manage_options' ) ) {
             return;
         }
 
@@ -435,7 +436,7 @@ final class WP_User_Frontend {
 
         if ( $has_pro ) {
             $this->is_pro = true;
-            add_action( 'admin_notices', [ $this, 'wpuf_latest_pro_activation_notice'] );
+            add_action( 'admin_notices', [ $this, 'wpuf_latest_pro_activation_notice' ] );
         } else {
             include __DIR__ . '/includes/free/loader.php';
 
@@ -449,14 +450,17 @@ final class WP_User_Frontend {
      * @return void
      */
     public function wpuf_latest_pro_activation_notice() {
-        if ( !version_compare( WPUF_PRO_VERSION, '3.1.0', '<' ) ) {
+        if ( ! version_compare( WPUF_PRO_VERSION, '3.1.0', '<' ) ) {
             return;
         }
 
-        $offer_msg = __( '<p style="font-size: 13px">
+        $offer_msg = __(
+            '<p style="font-size: 13px">
                             <strong class="highlight-text" style="font-size: 18px; display:block; margin-bottom:8px"> UPDATE REQUIRED </strong>
                             WP User Frontend Pro is not working because you are using an old version of WP User Frontend Pro. Please update <strong>WPUF Pro</strong> to >= <strong>v3.1.0</strong> to work with the latest version of WP User Frontend
-                        </p>', 'wp-user-frontend' ); ?>
+                        </p>', 'wp-user-frontend'
+        );
+        ?>
             <div class="notice is-dismissible" id="wpuf-update-offer-notice">
                 <table>
                     <tbody>
@@ -621,7 +625,7 @@ final class WP_User_Frontend {
 
         $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
 
-        if ( !empty( $api_key ) && $load_gmap ) {
+        if ( ! empty( $api_key ) && $load_gmap ) {
             wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key, [], null );
         }
 
@@ -651,7 +655,7 @@ final class WP_User_Frontend {
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {
             $this->plugin_scripts();
-        } elseif ( wpuf_has_shortcode( 'wpuf-login' ) || wpuf_has_shortcode( 'wpuf-registration' ) || wpuf_has_shortcode( 'wpuf-meta' ) || wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_sub_pack' ) || ( isset( $post->ID  ) && ( $pay_page == $post->ID ) ) || isset( $_GET['wpuf_preview'] ) || class_exists('\Elementor\Plugin')) {
+        } elseif ( wpuf_has_shortcode( 'wpuf-login' ) || wpuf_has_shortcode( 'wpuf-registration' ) || wpuf_has_shortcode( 'wpuf-meta' ) || wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_sub_pack' ) || ( isset( $post->ID ) && ( $pay_page == $post->ID ) ) || isset( $_GET['wpuf_preview'] ) || class_exists( '\Elementor\Plugin' ) ) {
             $this->plugin_scripts();
         }
     }
@@ -662,7 +666,7 @@ final class WP_User_Frontend {
     public function add_custom_css() {
         global $post;
 
-        if ( !is_a( $post, 'WP_Post' ) ) {
+        if ( ! is_a( $post, 'WP_Post' ) ) {
             return;
         }
 
@@ -705,43 +709,56 @@ final class WP_User_Frontend {
         wp_enqueue_script( 'wpuf-subscriptions' );
         wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', [], WPUF_VERSION );
 
-        wp_localize_script( 'wpuf-form', 'wpuf_frontend', apply_filters( 'wpuf_frontend_js_data', [
-            'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-            'error_message' => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
-            'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
-            'word_limit'    => __( 'Word limit reached', 'wp-user-frontend' ),
-            'cancelSubMsg'  => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
-            'delete_it'     => __( 'Yes', 'wp-user-frontend' ),
-            'cancel_it'     => __( 'No', 'wp-user-frontend' ),
-        ] ) );
+        wp_localize_script(
+            'wpuf-form', 'wpuf_frontend', apply_filters(
+                'wpuf_frontend_js_data', [
+                    'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+                    'error_message' => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
+                    'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
+                    'cancelSubMsg'  => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
+                    'delete_it'     => __( 'Yes', 'wp-user-frontend' ),
+                    'cancel_it'     => __( 'No', 'wp-user-frontend' ),
+                    'char_max'      => __( 'Character limit reached', 'wp-user-frontend' ),
+                    'char_min'      => __( 'Minimum character required ', 'wp-user-frontend' ),
+                    'word_max'      => __( 'Word limit reached', 'wp-user-frontend' ),
+                    'word_min'      => __( 'Minimum word required ', 'wp-user-frontend' ),
+                ]
+            )
+        );
 
-        wp_localize_script( 'wpuf-subscriptions', 'wpuf_subscription', apply_filters( 'wpuf_subscription_js_data', [
-            'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wp-user-frontend' ),
-        ] ) );
+        wp_localize_script(
+            'wpuf-subscriptions', 'wpuf_subscription', apply_filters(
+                'wpuf_subscription_js_data', [
+                    'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wp-user-frontend' ),
+                ]
+            )
+        );
 
-        wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', [
-            'confirmMsg'   => __( 'Are you sure?', 'wp-user-frontend' ),
-            'delete_it'    => __( 'Yes, delete it', 'wp-user-frontend' ),
-            'cancel_it'    => __( 'No, cancel it', 'wp-user-frontend' ),
-            'nonce'        => wp_create_nonce( 'wpuf_nonce' ),
-            'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-            'max_filesize' => wpuf_max_upload_size(),
-            'plupload'     => [
-                'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
-                'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
-                'filters'          => [
-                    [
-                        'title'      => __( 'Allowed Files', 'wp-user-frontend' ),
-                        'extensions' => '*',
+        wp_localize_script(
+            'wpuf-upload', 'wpuf_frontend_upload', [
+                'confirmMsg'   => __( 'Are you sure?', 'wp-user-frontend' ),
+                'delete_it'    => __( 'Yes, delete it', 'wp-user-frontend' ),
+                'cancel_it'    => __( 'No, cancel it', 'wp-user-frontend' ),
+                'nonce'        => wp_create_nonce( 'wpuf_nonce' ),
+                'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+                'max_filesize' => wpuf_max_upload_size(),
+                'plupload'     => [
+                    'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
+                    'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
+                    'filters'          => [
+                        [
+                            'title'      => __( 'Allowed Files', 'wp-user-frontend' ),
+                            'extensions' => '*',
+                        ],
                     ],
+                    'multipart'        => true,
+                    'urlstream_upload' => true,
+                    'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
+                    'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
+                    'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' ),
                 ],
-                'multipart'        => true,
-                'urlstream_upload' => true,
-                'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
-                'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
-                'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' ),
-            ],
-        ] );
+            ]
+        );
     }
 
     /**
@@ -760,7 +777,7 @@ final class WP_User_Frontend {
         $access_level = wpuf_get_option( 'admin_access', 'wpuf_general', 'read' );
         $valid_pages  = [ 'admin-ajax.php', 'admin-post.php', 'async-upload.php', 'media-upload.php' ];
 
-        if ( !current_user_can( $access_level ) && !in_array( $pagenow, $valid_pages ) ) {
+        if ( ! current_user_can( $access_level ) && ! in_array( $pagenow, $valid_pages ) ) {
             // wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
             wp_redirect( home_url() );
             exit;
@@ -775,16 +792,16 @@ final class WP_User_Frontend {
      * @return void
      */
     public function show_admin_bar( $val ) {
-        if ( !is_user_logged_in() ) {
+        if ( ! is_user_logged_in() ) {
             return false;
         }
 
         $roles        = wpuf_get_option( 'show_admin_bar', 'wpuf_general', [ 'administrator', 'editor', 'author', 'contributor', 'subscriber' ] );
-        $roles        = $roles && is_string($roles) ? [strtolower($roles)] : $roles;
+        $roles        = $roles && is_string( $roles ) ? [ strtolower( $roles ) ] : $roles;
         $current_user = wp_get_current_user();
 
         if ( ! empty( $current_user->roles ) && ! empty( $current_user->roles[0] ) ) {
-            if ( !in_array( $current_user->roles[0], $roles ) ) {
+            if ( ! in_array( $current_user->roles[0], $roles ) ) {
                 return false;
             }
         }
@@ -837,7 +854,7 @@ final class WP_User_Frontend {
      * @return array
      */
     public function plugin_action_links( $links ) {
-        if ( !$this->is_pro() ) {
+        if ( ! $this->is_pro() ) {
             $links[] = '<a href="' . WPUF_Pro_Prompt::get_pro_url() . '" target="_blank" style="color: red;">Get PRO</a>';
         }
 
@@ -882,7 +899,7 @@ final class WP_User_Frontend {
     public function install_weforms() {
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( isset( $nonce ) && !wp_verify_nonce( $nonce, 'wpuf-weforms-installer-nonce' ) ) {
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-weforms-installer-nonce' ) ) {
             wp_send_json_error( __( 'Error: Nonce verification failed', 'wp-user-frontend' ) );
         }
 
@@ -895,12 +912,14 @@ final class WP_User_Frontend {
         }
 
         $plugin = 'weforms';
-        $api    = plugins_api( 'plugin_information', [
-            'slug'   => $plugin,
-            'fields' => [
-                'sections' => false,
-            ],
-        ] );
+        $api    = plugins_api(
+            'plugin_information', [
+                'slug'   => $plugin,
+                'fields' => [
+                    'sections' => false,
+                ],
+            ]
+        );
 
         $upgrader = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
         $result   = $upgrader->install( $api->download_link );

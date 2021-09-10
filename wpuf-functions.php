@@ -2766,7 +2766,7 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
             'guest_details'       => 'true',
             'name_label'          => 'Name',
             'email_label'         => 'Email',
-            'message_restrict'    => 'This page is restricted. Please Log in / Register to view this page.',
+            'message_restrict'    => 'This page is restricted. Please %login% / %register% to view this page.',
             'redirect_to'         => 'post',
             'message'             => 'Post saved',
             'page_id'             => '',

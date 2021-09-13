@@ -115,6 +115,7 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
             'id'                => 0,
             'is_new'            => true,
             'restriction_type' => 'character',
+            'restriction_to'   => 'max',
         ];
 
         return array_merge( $defaults, $props );

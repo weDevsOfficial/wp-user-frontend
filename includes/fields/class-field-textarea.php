@@ -134,6 +134,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
             'show_in_post'      => 'yes',
             'hide_field_label'  => 'no',
             'restriction_type'  => 'character',
+             'restriction_to'   => 'max',
         ];
 
         return array_merge( $defaults, $props );

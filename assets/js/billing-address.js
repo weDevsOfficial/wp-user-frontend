@@ -72,6 +72,10 @@ jQuery(function($){
         });
     });
 
+    $(document).ready( function () {
+        wpuf_calculate_tax();
+    });
+
     $(document.body).on('change', 'form#wpuf-ajax-address-form', function () {
         wpuf_calculate_tax();
     });

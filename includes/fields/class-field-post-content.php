@@ -25,7 +25,7 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
         if ( isset( $post_id ) ) {
             $value = get_post_field( $field_settings['name'], $post_id );
         } else {
-            $value       = $field_settings['default'];
+            $value = $field_settings['default'];
         }
 
         $req_class   = ( $field_settings['required'] == 'yes' ) ? 'required' : 'rich-editor';
@@ -41,11 +41,12 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
 
                 <?php
 
-            if ( isset( $field_settings['insert_image'] ) && $field_settings['insert_image'] == 'yes' ) { ?>
+                if ( isset( $field_settings['insert_image'] ) && $field_settings['insert_image'] == 'yes' ) {
+                    ?>
                 <div id="wpuf-insert-image-container">
-                    <a class="wpuf-button wpuf-insert-image" id="wpuf-insert-image_<?php echo esc_attr($form_id ); ?>" href="#" data-form_id="<?php echo esc_attr( $form_id ); ?>">
+                    <a class="wpuf-button wpuf-insert-image" id="wpuf-insert-image_<?php echo esc_attr( $form_id ); ?>" href="#" data-form_id="<?php echo esc_attr( $form_id ); ?>">
                         <span class="wpuf-media-icon"></span>
-                        <?php esc_html_e( 'Insert Photo', 'wp-user-frontend' ); ?>
+                            <?php esc_html_e( 'Insert Photo', 'wp-user-frontend' ); ?>
                     </a>
                 </div>
 
@@ -56,33 +57,34 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
                         });
                     })(jQuery);
                 </script>
-            <?php }
+                    <?php
+                }
 
-        if ( $field_settings['rich'] == 'yes' ) {
-            $editor_settings = [
-                // 'textarea_rows' => $field_settings['rows'],
-                'quicktags'     => false,
-                'media_buttons' => false,
-                'editor_class'  => $req_class,
-                'textarea_name' => $field_settings['name'],
-            ];
+                if ( $field_settings['rich'] == 'yes' ) {
+                    $editor_settings = [
+                        // 'textarea_rows' => $field_settings['rows'],
+                        'quicktags'     => false,
+                        'media_buttons' => false,
+                        'editor_class'  => $req_class,
+                        'textarea_name' => $field_settings['name'],
+                    ];
 
-            $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
-            wp_editor( $value, $textarea_id, $editor_settings );
-        } elseif ( $field_settings['rich'] == 'teeny' ) {
-            $editor_settings = [
-                'textarea_rows' => $field_settings['rows'],
-                'quicktags'     => false,
-                'media_buttons' => false,
-                'teeny'         => true,
-                'editor_class'  => $req_class,
-                'textarea_name' => $field_settings['name'],
-            ];
+                    $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
+                    wp_editor( $value, $textarea_id, $editor_settings );
+                } elseif ( $field_settings['rich'] == 'teeny' ) {
+                    $editor_settings = [
+                        'textarea_rows' => $field_settings['rows'],
+                        'quicktags'     => false,
+                        'media_buttons' => false,
+                        'teeny'         => true,
+                        'editor_class'  => $req_class,
+                        'textarea_name' => $field_settings['name'],
+                    ];
 
-            $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
-            wp_editor( $value, $textarea_id, $editor_settings );
-        } else {
-            ?>
+                    $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
+                    wp_editor( $value, $textarea_id, $editor_settings );
+                } else {
+                    ?>
             <textarea
                 class="textareafield <?php echo ' wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>"
                 id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>"
@@ -95,8 +97,9 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
             ><?php echo esc_textarea( $value ); ?></textarea>
             <span class="wpuf-wordlimit-message wpuf-help"></span>
 
-            <?php
-        } ?>
+                    <?php
+                }
+                ?>
 
         <?php
         $this->help_text( $field_settings );
@@ -106,9 +109,11 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
                 $field_settings['content_restriction'],
                 $field_settings['rich'],
                 $field_settings['name'] . '_' . $form_id,
-                $field_settings['restriction_type']
+                $field_settings['restriction_type'],
+                $field_settings['restriction_to']
             );
-        } ?>
+        }
+        ?>
         </li>
         <?php
     }
@@ -119,7 +124,7 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options      = $this->get_default_option_settings( false, ['dynamic'] );
+        $default_options      = $this->get_default_option_settings( false, [ 'dynamic' ] );
         $default_text_options = $this->get_default_textarea_option_settings();
 
         $settings = [
@@ -145,7 +150,7 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
 
-        $props    = [
+        $props = [
             'input_type'       => 'textarea',
             'is_meta'          => 'no',
             'name'             => 'post_content',
@@ -155,6 +160,7 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
             'id'               => 0,
             'is_new'           => true,
             'restriction_type' => 'character',
+            'restriction_to'   => 'max',
         ];
 
         return array_merge( $defaults, $props );
@@ -170,7 +176,7 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $field = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+        $field = isset( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) : '';
 
         return trim( $field );
     }

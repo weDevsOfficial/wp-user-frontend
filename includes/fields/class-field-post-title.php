@@ -30,7 +30,7 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
                     class="textfield <?php echo esc_attr( 'wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                     id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
                     type="text"
-                    data-duplicate="<?php // echo $field_settings['duplicate'] ? $field_settings['duplicate'] : 'no';?>"
+                    data-duplicate="<?php // echo $field_settings['duplicate'] ? $field_settings['duplicate'] : 'no'; ?>"
                     data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                     data-type="text" name="<?php echo esc_attr( $field_settings['name'] ); ?>"
                     placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
@@ -47,14 +47,15 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
                     $field_settings['content_restriction'],
                     'no',
                     $field_settings['name'] . '_' . $form_id,
-                    $field_settings['restriction_type']
+                    $field_settings['restriction_type'],
+                    $field_settings['restriction_to']
                 );
             }
 
-        $mask_option = isset( $field_settings['mask_options'] ) ? $field_settings['mask_options'] : '';
+            $mask_option = isset( $field_settings['mask_options'] ) ? $field_settings['mask_options'] : '';
 
-        if ( $mask_option ) {
-            ?>
+            if ( $mask_option ) {
+                ?>
                 <script>
                     jQuery(document).ready(function($) {
                         var text_field = $( "input[name*=<?php echo esc_attr( $field_settings['name'] ); ?>]" );
@@ -79,8 +80,9 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
                         }
                     });
                 </script>
-            <?php
-        } ?>
+                <?php
+            }
+            ?>
         </li>
         <?php
     }
@@ -91,7 +93,7 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options      = $this->get_default_option_settings( false, ['dynamic'] );
+        $default_options      = $this->get_default_option_settings( false, [ 'dynamic' ] );
         $default_text_options = $this->get_default_text_option_settings( true );
 
         return array_merge( $default_options, $default_text_options );
@@ -113,6 +115,7 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
             'id'                => 0,
             'is_new'            => true,
             'restriction_type' => 'character',
+            'restriction_to'   => 'max',
         ];
 
         return array_merge( $defaults, $props );
@@ -128,7 +131,7 @@ class WPUF_Form_Field_Post_Title extends WPUF_Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $field = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+        $field = isset( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) : '';
         return $field;
     }
 }

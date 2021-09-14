@@ -32,44 +32,45 @@ abstract class WPUF_Field_Contract {
     /**
      * @return array[]
      */
-    public static function common_field() {         return [
-        [
-            'name' => 'restriction_to',
-            'title' => __( 'Content restricted type', 'wp-user-frontend' ),
-            'type' => 'radio',
-            'options' => [
-                'min' => __( 'Minimun', 'wp-user-frontend' ),
-                'max' => __( 'Maximum', 'wp-user-frontend' ),
+    public static function common_field() {
+        return [
+            [
+                'name' => 'restriction_to',
+                'title' => __( 'Content restricted type', 'wp-user-frontend' ),
+                'type' => 'radio',
+                'options' => [
+                    'min' => __( 'Minimun', 'wp-user-frontend' ),
+                    'max' => __( 'Maximum', 'wp-user-frontend' ),
+                ],
+                'section' => 'advanced',
+                'priority' => 15,
+                'inline' => true,
+                'default' => 'max',
             ],
-            'section' => 'advanced',
-            'priority' => 15,
-            'inline' => true,
-            'default' => 'max',
-        ],
 
-        [
-            'name' => 'restriction_type',
-            'title' => __( 'Content restricted by', 'wp-user-frontend' ),
-            'type' => 'radio',
-            'options' => [
-                'character' => __( 'Character', 'wp-user-frontend' ),
-                'word' => __( 'Word', 'wp-user-frontend' ),
+            [
+                'name' => 'restriction_type',
+                'title' => __( 'Content restricted by', 'wp-user-frontend' ),
+                'type' => 'radio',
+                'options' => [
+                    'character' => __( 'Character', 'wp-user-frontend' ),
+                    'word' => __( 'Word', 'wp-user-frontend' ),
+                ],
+                'section' => 'advanced',
+                'priority' => 15,
+                'inline' => true,
+                'default' => 'character',
             ],
-            'section' => 'advanced',
-            'priority' => 15,
-            'inline' => true,
-            'default' => 'character',
-        ],
 
-        [
-            'name' => 'content_restriction',
-            'title' => __( 'Content Restriction', 'wp-user-frontend' ),
-            'type' => 'text',
-            'section' => 'advanced',
-            'priority' => 16,
-            'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
-        ],
-    ];
+            [
+                'name' => 'content_restriction',
+                'title' => __( 'Content Restriction', 'wp-user-frontend' ),
+                'type' => 'text',
+                'section' => 'advanced',
+                'priority' => 16,
+                'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
+            ],
+        ];
     }
 
     /**

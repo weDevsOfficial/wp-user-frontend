@@ -371,10 +371,11 @@ class WPUF_Simple_Login {
                 case 'rp':
                 case 'resetpass':
                     if ( $reset === 'true' ) {
-                        /* translators: %s: login url */
-                        printf( '<div class="wpuf-message">' . esc_html( __( 'Your password has been reset. %s', 'wp-user-frontend' ) ) . '</div>', sprintf( '<a href="%s">%s</a>', esc_attr( $this->get_action_url( 'login' ) ), esc_html( __( 'Log In', 'wp-user-frontend' ) ) ) );
+                        $this->messages[] = __( 'Your password has been reset successfully', 'wp-user-frontend' );
 
-                        return;
+                        wpuf_load_template( 'login-form.php', $args );
+
+                        break;
                     } else {
                         $this->messages[] = __( 'Enter your new password below.', 'wp-user-frontend' );
 

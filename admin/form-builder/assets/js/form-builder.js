@@ -672,10 +672,9 @@
             if ( $(this).is(':checked') ) {
                 table.find('tr.show-if-payment').show();
                 table.find('tr.show-if-force-pack').hide();
-
             } else {
                 table.find('tr.show-if-payment').hide();
-
+                table.find('input[type=checkbox]').removeAttr('checked');
             }
         },
 

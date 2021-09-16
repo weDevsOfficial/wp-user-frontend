@@ -269,7 +269,7 @@ class WPUF_ACF_Compatibility {
     /**
      * Update acf post meta
      *
-     * @since WPUF
+     * @since 3.5.20
      *
      * @param $post_id
      * @param $form_id
@@ -277,6 +277,10 @@ class WPUF_ACF_Compatibility {
      * @param $meta_vars
      */
     public function update_acf_field_meta( $post_id, $form_id, $form_settings, $meta_vars ) {
+        if ( ! $this->plugin_exists() ){
+            return;
+        }
+
         $groups = acf_get_field_groups( [ 'post_type' => $form_settings['post_type'] ] );
         $existing_meta = get_post_meta( $post_id );
 

@@ -186,9 +186,9 @@
             }
 
             if ( FileProgress === uploaded ) {
-                // if ( typeof grecaptcha !== 'undefined' && !grecaptcha.getResponse().length ) {
-                //     return;
-                // }
+                if ( typeof grecaptcha !== 'undefined' && !grecaptcha.getResponse().length ) {
+                    return;
+                }
 
                 $(".wpuf-submit-button").removeAttr("disabled");
             }

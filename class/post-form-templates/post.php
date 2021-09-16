@@ -124,7 +124,7 @@ class WPUF_Post_Form_Template_Post extends WPUF_Post_Form_Template {
                 'post_status'                => 'publish',
                 'default_cat'                => '-1',
                 'guest_post'                 => 'false',
-                'message_restrict'           => __( 'This page is restricted. Please Log in / Register to view this page.', 'wp-user-frontend' ),
+                'message_restrict'           => __( 'This page is restricted. Please %login% / %register% to view this page.', 'wp-user-frontend' ),
                 'redirect_to'                => 'post',
                 'comment_status'             => 'open',
                 'submit_text'                => __( 'Create Post', 'wp-user-frontend' ),

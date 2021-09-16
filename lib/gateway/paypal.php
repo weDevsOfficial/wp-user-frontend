@@ -168,13 +168,9 @@ class WPUF_Paypal {
         $listener_url     = add_query_arg( 'action', 'wpuf_paypal_success', home_url( '' ) );
         //$listener_url     = 'http://a53d2f68b609.ngrok.io/?action=wpuf_paypal_success';
         //$listener_url     = 'https://wpuf.sharedwithexpose.com/?action=wpuf_paypal_success';
-        $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
+        $return_url       = wpuf_payment_success_page( $data );
 
-        if ( $redirect_page_id ) {
-            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', untrailingslashit( get_permalink( $redirect_page_id ) ) );
-        } else {
-            $return_url = add_query_arg( 'action', 'wpuf_paypal_success', untrailingslashit( get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) ) );
-        }
+
 
         $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
 

@@ -27,7 +27,7 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
         if ( isset( $post_id ) ) {
             $value = get_post_field( $field_settings['name'], $post_id );
         } else {
-            $value       = $field_settings['default'];
+            $value = $field_settings['default'];
         }
 
         $req_class   = ( $field_settings['required'] == 'yes' ) ? 'required' : 'rich-editor';
@@ -80,20 +80,23 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
                     ><?php echo esc_textarea( $value ); ?></textarea>
                     <span class="wpuf-wordlimit-message wpuf-help"></span>
 
-                <?php
-                } ?>
+                    <?php
+                }
+                ?>
 
                 <?php
                 $this->help_text( $field_settings );
 
-        if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
-            $this->check_content_restriction_func(
-                $field_settings['content_restriction'],
-                $field_settings['rich'],
-                $field_settings['name'] . '_' . $form_id,
-                $field_settings['restriction_type']
-            );
-        } ?>
+                if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
+                    $this->check_content_restriction_func(
+                        $field_settings['content_restriction'],
+                        $field_settings['rich'],
+                        $field_settings['name'] . '_' . $form_id,
+                        $field_settings['restriction_type'],
+                        $field_settings['restriction_to']
+                    );
+                }
+                ?>
         </li>
         <?php
     }
@@ -104,7 +107,7 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options      = $this->get_default_option_settings( false, ['dynamic'] );
+        $default_options      = $this->get_default_option_settings( false, [ 'dynamic' ] );
         $default_text_options = $this->get_default_textarea_option_settings();
 
         return array_merge( $default_options, $default_text_options );
@@ -118,7 +121,7 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
     public function get_field_props() {
         $defaults = $this->default_attributes();
 
-        $props    = [
+        $props = [
             'input_type'       => 'textarea',
             'is_meta'          => 'no',
             'name'             => 'post_excerpt',
@@ -128,6 +131,7 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
             'id'               => 0,
             'is_new'           => true,
             'restriction_type' => 'character',
+            'restriction_to'   => 'max',
         ];
 
         return array_merge( $defaults, $props );
@@ -143,7 +147,7 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $field = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+        $field = isset( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) : '';
 
         return wp_kses_post( $field );
     }

@@ -3908,11 +3908,11 @@ function get_wpuf_preview_page() {
     $post_status     = '';
     $preview_page_id = get_option( 'wpuf_preview_page', false );
 
-    if ( isset( $preview_page_id ) ){
+    if ( $preview_page_id ){
         $page_url    = get_permalink( $preview_page_id );
     }
 
-    if ( isset( $page_url ) ){
+    if ( $page_url ){
         $post_status = get_post_status( $preview_page_id );
     }
 
@@ -3920,7 +3920,7 @@ function get_wpuf_preview_page() {
         return $page_url;
     }
 
-    if ( $post_status !== 'private' ) {
+    if ( $post_status && $post_status !== 'private' ) {
         wp_update_post(
             [
                 'ID' => $preview_page_id,

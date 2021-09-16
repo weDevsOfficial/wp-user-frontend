@@ -1002,7 +1002,7 @@
             el.checked = false;
         },
 
-        content_limit_message: function( field, content_limit_type, limit_to = null, limit ) {
+        content_limit_message: function( field, content_limit_type, limit_to, limit ) {
             WP_User_Frontend.markError( field, 'limit' );
 
             if ( 'word' === content_limit_type ){

@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 5.8  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.19  
+**Stable tag:** 3.5.20  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -264,7 +264,24 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ## Changelog ##
 
-### v3.5.18 (16 Jul, 2021) ###
+### v3.5.20 (16 Sep, 2021) ###
+
+* Enhancement - Content restriction for minimum, maximum value enhanced
+* Enhancement - New option for redirection after pay per post payment in form setting
+* Enhancement - Controller added for various email notification
+* Enhancement - Placeholder added for unauth message option
+* Update - Subscription Post expiration option change to input field
+* Fix - Content restriction message translatable
+* Fix - ACF integration inconsistency handled
+* Fix - Enable payment checkbox handled for child option
+* Fix - Broken asset link handled for custom field popup
+* Fix - Rollback inconsistency for CPT handled
+* Fix - Login form loaded after resetting password
+* Fix - Billing address inconsistency handled
+* Fix - Form duplication on creation handled
+* Fix - Field Dragging inconsistency fixed
+
+### v3.5.19 (16 Jul, 2021) ###
 
  * Enhancement - Updated compatibility with WordPress 5.8
  * Enhancement - Promotional campaign

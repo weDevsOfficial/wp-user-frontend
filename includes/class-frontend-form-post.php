@@ -265,11 +265,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 }
             }
 
-            // if pay per post is enabled then update payment status as pending
-            if ( $pay_per_post ) {
-                update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
-            }
-
             if ( ! empty( $taxonomy_vars ) ) {
                 $this->set_custom_taxonomy( $post_id, $taxonomy_vars );
             } else {

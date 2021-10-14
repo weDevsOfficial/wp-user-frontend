@@ -535,6 +535,13 @@
                 self.is_form_saving = true;
                 self.set_current_panel('form-fields');
 
+                var form_id = $('#wpuf-form-builder [name="wpuf_form_id"]').val();
+
+                if ( typeof tinyMCE !== 'undefined' ) {
+                    $('textarea[name="wpuf_settings[notification][verification_body]"]').val(tinyMCE.get('wpuf_verification_body_' + form_id).getContent());
+                    $('textarea[name="wpuf_settings[notification][welcome_email_body]"]').val(tinyMCE.get('wpuf_welcome_email_body_' + form_id).getContent());
+                }
+
                 wp.ajax.send('wpuf_form_builder_save_form', {
                     data: {
                         form_data: $('#wpuf-form-builder').serialize(),

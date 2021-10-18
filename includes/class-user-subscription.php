@@ -175,6 +175,7 @@ class WPUF_User_Subscription {
                 'pack_id' => $pack_id,
                 'posts'   => $subscription->meta_value['post_type_name'],
                 'total_feature_item' => $subscription->meta_value['_total_feature_item'],
+                'remove_feature_item' => $subscription->meta_value['_remove_feature_item'],
                 'status'  => $status,
             ];
 

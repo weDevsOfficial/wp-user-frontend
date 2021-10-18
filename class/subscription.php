@@ -299,6 +299,7 @@ class WPUF_Subscription {
         $meta['_enable_mail_after_expired'] = get_post_meta( $subscription_id, '_enable_mail_after_expired', true );
         $meta['_post_expiration_message']   = get_post_meta( $subscription_id, '_post_expiration_message', true );
         $meta['_total_feature_item']        = get_post_meta( $subscription_id, '_total_feature_item', true );
+        $meta['_remove_feature_item']       = get_post_meta( $subscription_id, '_remove_feature_item', true );
 
         $meta = apply_filters( 'wpuf_get_subscription_meta', $meta, $subscription_id );
 
@@ -392,6 +393,7 @@ class WPUF_Subscription {
         update_post_meta( $subscription_id, '_enable_mail_after_expired', ( isset( $post_data['post_expiration_settings']['enable_mail_after_expired'] ) ? $post_data['post_expiration_settings']['enable_mail_after_expired'] : '' ) );
         update_post_meta( $subscription_id, '_post_expiration_message', ( isset( $post_data['post_expiration_settings']['post_expiration_message'] ) ? $post_data['post_expiration_settings']['post_expiration_message'] : '' ) );
         update_post_meta( $subscription_id, '_total_feature_item', ( isset( $post_data['total_feature_item'] ) ? $post_data['total_feature_item'] : '' ) );
+        update_post_meta( $subscription_id, '_remove_feature_item', ( isset( $post_data['remove_feature_item'] ) ? $post_data['remove_feature_item'] : '' ) );
         do_action( 'wpuf_update_subscription_pack', $subscription_id, $post_data );
     }
 
@@ -1314,11 +1316,31 @@ class WPUF_Subscription {
             }
         );
 
+        $remove_feature_item_by_author = [];
+
         foreach ( $non_recurrent as $ns ) {
             $user_id  = $ns->user_id;
             $sub_meta = 'cancel';
 
             self::update_user_subscription_meta( $user_id, $sub_meta );
+            // remove feature item if sub expire
+            if ( $ns->remove_feature_item && 'on' === $ns->remove_feature_item ) {
+                array_push( $remove_feature_item_by_author, $user_id );
+            }
+        }
+
+        if ( ! empty( $remove_feature_item_by_author ) ) {
+            $stickies = get_option( 'sticky_posts' );
+            foreach ( get_posts(
+                [
+                    'author__in' => $remove_feature_item_by_author,
+                    'numberposts' => -1,
+                ]
+            ) as $post ) {
+                if ( in_array( $post->ID, $stickies, true ) ) {
+                    unstick_post( $post->ID );
+                }
+            }
         }
     }
 }

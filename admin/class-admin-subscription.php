@@ -327,6 +327,7 @@ class WPUF_Admin_Subscription {
         $is_enable_mail_after_expired = isset( $sub_meta['_enable_mail_after_expired'] ) && $sub_meta['_enable_mail_after_expired'] == 'on' ? 'checked' : '';
         $post_expiration_message      = isset( $sub_meta['_post_expiration_message'] ) ? $sub_meta['_post_expiration_message'] : '';
         $featured_item                = ! empty( $sub_meta['_total_feature_item'] ) ? $sub_meta['_total_feature_item'] : 0;
+        $remove_featured_item         = ! empty( $sub_meta['_remove_feature_item'] ) ? $sub_meta['_remove_feature_item'] : 0;
         ?>
 
         <div class="wpuf-subscription-pack-settings">
@@ -387,6 +388,17 @@ class WPUF_Admin_Subscription {
                             <th><label for="wpuf-sticky-item">Number of featured item</label></th>
                             <td>
                                 <input type="text" size="20" style="" id="wpuf-sticky-item" value="<?php echo intval( $featured_item ); ?>" name="total_feature_item" />
+                                <br>
+                                <span class="description"><?php esc_html_e( 'How many item user can set as featured, including all post types', 'wp-user-frontend' ); ?></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="wpuf-sticky-item">Remove feature item on sub expiry</label></th>
+                            <td>
+                                <label for="">
+                                    <input type="checkbox"  value="on" <?php echo esc_attr( 'on' === $remove_featured_item ? 'checked' : '' ); ?> name="remove_feature_item" />
+                                    <?php esc_html_e( 'Featured item will remove if subscription expired', 'wp-user-frontend' ); ?>
+                                </label>
                             </td>
                         </tr>
                             <?php

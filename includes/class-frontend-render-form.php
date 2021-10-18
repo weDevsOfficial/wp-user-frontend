@@ -900,7 +900,8 @@ class WPUF_Frontend_Render_Form {
                 <div >
                     <label >
                         <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                        Remaining <span id="remaining-feature-item"> <?php echo $user_sub['total_feature_item']; ?></span>
+                         <span class="wpuf-message-box"> <?php esc_attr_e( 'Remaining', 'wp-user-frontend' ); ?></span>
+                         <span id="remaining-feature-item"> <?php echo $user_sub['total_feature_item']; ?></span>
                     </label>
                 </div>
             </li>

@@ -503,47 +503,6 @@ function wpuf_get_image_sizes() {
     return $image_sizes;
 }
 
-/**
- * Get an array of available image sizes with height and weight
- *
- * @since WPUF
- *
- * @param $size     string      size of the image. thumbnail, medium, large etc.
- *
- * @return array                single image size returned if parameter size is passed
- *                              full array of all the sizes will return otherwise
- */
-function wpuf_get_image_sizes_array( $size = '' ) {
-    $additional_image_sizes   = wp_get_additional_image_sizes();
-    $intermediate_image_sizes = get_intermediate_image_sizes();
-    $sizes = [];
-
-    // Create the full array with sizes and crop info
-    foreach ( $intermediate_image_sizes as $_size ) {
-        if ( in_array( $_size, [ 'thumbnail', 'medium', 'large', 'medium_large' ], true ) ) {
-            $sizes[ $_size ]['width']  = get_option( $_size . '_size_w' );
-            $sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
-            $sizes[ $_size ]['crop']   = (bool) get_option( $_size . '_crop' );
-        } elseif ( isset( $additional_image_sizes[ $_size ] ) ) {
-            $sizes[ $_size ] = [
-                'width'  => $additional_image_sizes[ $_size ]['width'],
-                'height' => $additional_image_sizes[ $_size ]['height'],
-                'crop'   => $additional_image_sizes[ $_size ]['crop'],
-            ];
-        }
-    }
-
-    // Get only 1 size if found
-    if ( $size ) {
-        if ( isset( $sizes[ $size ] ) ) {
-            return $sizes[ $size ];
-        } else {
-            return false;
-        }
-    }
-    return $sizes;
-}
-
 function wpuf_allowed_extensions() {
     $extesions = [
         'images' => [
@@ -1642,11 +1601,10 @@ function wpuf_load_template( $file, $args = [] ) {
  * lods from pro plugin folder
  *
  * @since 3.1.11
- * @since WPUF_PRO function moved to pro
  *
  * @param string $file file name or path to file
  */
-/*function wpuf_load_pro_template( $file, $args = [] ) {
+function wpuf_load_pro_template( $file, $args = [] ) {
     //phpcs:ignore
     if ( $args && is_array( $args ) ) {
         extract( $args );
@@ -1665,7 +1623,7 @@ function wpuf_load_template( $file, $args = [] ) {
             include $wpuf_pro_dir . $file;
         }
     }
-}*/
+}
 
 /**
  * Helper function for formatting date field
@@ -2077,7 +2035,7 @@ function wpuf_get_account_sections() {
     }
 
     $sections = array_merge(
-    // dashboard should be the first item
+        // dashboard should be the first item
         [ 'dashboard' => __( 'Dashboard', 'wp-user-frontend' ) ],
         $cpt_sections,
         $sections
@@ -2604,17 +2562,17 @@ function wpuf_trim_zeros( $price ) {
  */
 function wpuf_format_price( $price, $formated = true, $args = [] ) {
 
-    $price_args = apply_filters(
-        'wpuf_price_args', wp_parse_args(
-            $args, [
-                'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
-                'decimal_separator'  => wpuf_get_price_decimal_separator(),
-                'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
-                'decimals'           => wpuf_get_price_decimals(),
-                'price_format'       => get_wpuf_price_format(),
-            ]
-        )
-    );
+      $price_args = apply_filters(
+            'wpuf_price_args', wp_parse_args(
+                $args, [
+                    'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
+                    'decimal_separator'  => wpuf_get_price_decimal_separator(),
+                    'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
+                    'decimals'           => wpuf_get_price_decimals(),
+                    'price_format'       => get_wpuf_price_format(),
+                ]
+            )
+        );
 
     $currency = $price_args['currency'];
     $decimal_separator = $price_args['decimal_separator'];
@@ -3603,27 +3561,9 @@ function wpuf_ajax_get_states_field() {
             'options'          => $states,
             'show_option_all'  => false,
             'show_option_none' => false,
-            'data'             => [ 'required' => 'yes', 'type' => 'select' ],
         ];
 
-        $allowed_html = [
-            'select' => [
-                'class'            => [],
-                'name'             => [],
-                'id'               => [],
-                'data-placeholder' => [],
-                'data-required'    => [],
-                'data-type'        => [],
-            ],
-            'option' => [
-                'value'    => [],
-                'class'    => [],
-                'id'       => [],
-                'selected' => []
-            ],
-        ];
-
-        $response = wp_kses( wpuf_select( $args ), $allowed_html );
+        $response = wpuf_select( $args );
     } else {
         $response = 'nostates';
     }
@@ -3788,11 +3728,11 @@ function wpuf_show_form_schedule_message( $form_id ) {
             echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>' );
         }
         ?>
-        <script>
-            jQuery( function($) {
-                $(".wpuf-submit-button").attr("disabled", "disabled");
-            });
-        </script>
+            <script>
+                jQuery( function($) {
+                    $(".wpuf-submit-button").attr("disabled", "disabled");
+                });
+            </script>
         <?php
         return;
     }
@@ -4053,6 +3993,35 @@ function wpuf_payment_success_page( $data ){
     $redirect_page =  ! empty( $data['wpuf_payment_method'] ) && 'bank' === $data['wpuf_payment_method'] ? get_permalink( wpuf_get_option( 'bank_success', 'wpuf_payment' ) ) : $redirect_page;
 
     return $redirect_page;
+}
+
+/**
+ * Editor toolbar primary button list
+ *
+ * @param string $type
+ *
+ * @return array
+ */
+function wpuf_get_editor_buttons( ){
+    return [
+        'formatselect',
+        'wp_more',
+        'spellchecker',
+        'bold',
+        'italic',
+        'bullist',
+        'numlist',
+        'blockquote',
+        'alignleft',
+        'aligncenter',
+        'alignright',
+        'link',
+        'underline',
+        'strikethrough',
+        'undo',
+        'redo',
+        'fullscreen',
+    ];
 }
 
 /**

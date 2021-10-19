@@ -36,7 +36,11 @@ wpuf_mixins.option_field_mixin = {
                 var required_dep_value  = this.option_field.dependencies[ deps[i] ],
                     editing_field_value = this.editing_form_field[ deps[i] ];
 
-                if (required_dep_value !== editing_field_value) {
+                if ( required_dep_value instanceof Array && required_dep_value.includes( editing_field_value ) ) {
+                    return true;
+                }
+
+                if ( required_dep_value !== editing_field_value ) {
                     return false;
                 }
             }

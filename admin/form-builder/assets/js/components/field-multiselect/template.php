@@ -1,4 +1,4 @@
-<div class="panel-field-opt panel-field-opt-select">
+<div class="panel-field-opt panel-field-opt-select" v-show="met_dependencies">
     <label v-if="option_field.title">
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </label>

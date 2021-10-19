@@ -42,6 +42,19 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
             <?php } ?>
 
                  <?php
+                    $tinymce_settings = [];
+
+                    if ( ! empty( $field_settings['text_editor_control'] ) ) {
+                        $exclude_button = $field_settings['text_editor_control'];
+
+                            $tinymce_settings['toolbar1'] = implode(
+                                ',', array_filter(
+                                    wpuf_get_editor_buttons(), function ( $key ) use ( $exclude_button ) {
+                                        return ! in_array( $key, $exclude_button, true );
+                                    }, ARRAY_FILTER_USE_KEY
+                                )
+                            );
+                    }
 
                     if ( $field_settings['rich'] == 'yes' ) {
                           $editor_settings = [
@@ -50,6 +63,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                               'media_buttons' => false,
                               'editor_class'  => $req_class,
                               'textarea_name' => $field_settings['name'],
+                              'tinymce'       => $tinymce_settings,
                           ];
 
                           $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
@@ -62,6 +76,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                              'teeny'         => true,
                              'editor_class'  => $req_class,
                              'textarea_name' => $field_settings['name'],
+                             'tinymce'       => $tinymce_settings,
                          ];
 
                          $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
@@ -132,7 +147,8 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
             'show_in_post'      => 'yes',
             'hide_field_label'  => 'no',
             'restriction_type'  => 'character',
-             'restriction_to'   => 'max',
+            'restriction_to'   => 'max',
+            'text_editor_control' => [],
         ];
 
         return array_merge( $defaults, $props );

@@ -401,7 +401,7 @@
             e.preventDefault();
 
             var form = $(this),
-                submitButton = form.find('input[type=submit]')
+                submitButton = form.find('input[type=submit]'),
                 form_data = WP_User_Frontend.validateForm(form);
 
             if (form_data) {
@@ -476,7 +476,7 @@
             var temp,
                 temp_val    = '',
                 error       = false,
-                error_items = [];
+                error_items = [],
                 error_type  = '';
 
             // remove all initial errors if any
@@ -488,8 +488,6 @@
 
             required.each(function(i, item) {
                 // temp_val = $.trim($(item).val());
-
-                // console.log( $(item).data('type') );
                 var data_type = $(item).data('type')
                     val = '';
 
@@ -703,18 +701,23 @@
         },
 
         markError: function(item, error_type) {
-
             var error_string = '';
             $(item).closest('li').addClass('has-error');
 
             if ( error_type ) {
-                error_string = $(item).closest('li').data('label');
+                error_string = '';
+                address_field_label = $(item).data('label');
+                if ( address_field_label ) {
+                    error_string = address_field_label;
+                } else {
+                    error_string = $(item).closest('li').data('label');
+                }
                 switch ( error_type ) {
                     case 'required' :
                         error_string = error_string + ' ' + error_str_obj[error_type];
                         break;
                     case 'mismatch' :
-                        error_string = error_string + ' ' +error_str_obj[error_type];
+                        error_string = error_string + ' ' + error_str_obj[error_type];
                         break;
                     case 'validation' :
                         error_string = error_string + ' ' + error_str_obj[error_type];

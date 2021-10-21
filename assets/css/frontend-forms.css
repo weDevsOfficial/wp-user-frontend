@@ -228,8 +228,9 @@ body ul.wpuf-form li:after {
   content: "";
   display: table;
 }
-body ul.wpuf-form li.has-error {
-  background: #FFE4E4;
+.has-error {
+    background: #FFE4E4;
+    padding: 10px;
 }
 body ul.wpuf-form li .wp-editor-wrap {
   border: 1px solid #eee;

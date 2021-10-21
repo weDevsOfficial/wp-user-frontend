@@ -751,7 +751,7 @@
                 if ( $(item).prev().prop('nodeName') === 'DIV' ) {
                     $(item).append('<div class="wpuf-error-msg">'+ error_string +'</div>')
                 } else {
-                    // if input type is radio, add the div after current item
+                    // if input type is not radio, add the div after current item
                     $(item).after('<div class="wpuf-error-msg">'+ error_string +'</div>')
                 }
             }

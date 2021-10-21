@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership, frontend-post  
 **Requires at least:** 4.0  
-**Tested up to:** 5.8  
+**Tested up to:** 5.8.1  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.20  
+**Stable tag:** 3.5.21  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -263,6 +263,12 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 ## Changelog ##
+### v3.5.21 (21 Oct, 2021) ###
+
+* Fix - reCaptcha issue with other plugin handled
+* Fix - Multiple post type for wpuf dashboard not working fixed
+* Fix - Billing address ajax request issue handled
+* Update - Halloween promotion notice added
 
 ### v3.5.20 (16 Sep, 2021) ###
 

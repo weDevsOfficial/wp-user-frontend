@@ -1,6 +1,29 @@
 <?php
 $changelog = [
      [
+        'version'  => 'Version 3.5.21',
+        'released' => '2021-10-21',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'reCaptcha issue with other plugin handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Multiple post type for wpuf dashboard not working fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Billing address ajax request issue handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Halloween promotion notice added', 'wp-user-frontend' ),
+                'type'  => 'Update',
+            ],
+        ],
+    ],
+     [
         'version'  => 'Version 3.5.20',
         'released' => '2021-09-16',
         'changes'  =>  [

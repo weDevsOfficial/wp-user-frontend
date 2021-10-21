@@ -90,6 +90,14 @@
         },
 
         warningOnExit: function () {
+            $('input[name="submit"]').on('click', function () {
+                if ('Create Post' === $(this).val()) {
+                    window.onbeforeunload = null;
+                }
+
+                return;
+            });
+
             $('.wpuf-form-add').on( 'change', function(){
                 $('.wpuf-form-add input, .wpuf-form-add select, .wpuf-form-add textarea').each(function (index) {
                     if ( 'hidden' !== $(this).attr('type') || 'submit' !== $(this).attr('type') || -1 !== $(this).val() ){

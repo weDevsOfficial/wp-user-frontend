@@ -507,7 +507,7 @@
 
             required.each(function(i, item) {
                 // temp_val = $.trim($(item).val());
-                var data_type = $(item).data('type')
+                var data_type = $(item).data('type'),
                     val = '';
 
                 switch(data_type) {
@@ -721,7 +721,7 @@
 
         markError: function(item, error_type) {
             var error_string = '';
-            $(item).closest('li').addClass('has-error');
+            $(item).closest('div').addClass('has-error');
 
             if ( error_type ) {
                 error_string = '';
@@ -746,7 +746,14 @@
                         break
                 }
                 $(item).siblings('.wpuf-error-msg').remove();
-                $(item).after('<div class="wpuf-error-msg">'+ error_string +'</div>')
+
+                // if input type is radio, append the error message for design issue
+                if ( $(item).prev().prop('nodeName') === 'DIV' ) {
+                    $(item).append('<div class="wpuf-error-msg">'+ error_string +'</div>')
+                } else {
+                    // if input type is radio, add the div after current item
+                    $(item).after('<div class="wpuf-error-msg">'+ error_string +'</div>')
+                }
             }
 
             $(item).focus();

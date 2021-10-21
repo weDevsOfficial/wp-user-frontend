@@ -4,9 +4,16 @@
 wpuf_mixins.add_form_field = {
     methods: {
         add_form_field: function (field_template) {
-            var payload = {
-                toIndex: this.$store.state.index_to_insert === 0 ? this.$store.state.form_fields.length : this.$store.state.index_to_insert,
-            };
+            var payload = {};
+            var event_type = event.type;
+
+            if( 'click' === event_type ){
+                payload.toIndex = this.$store.state.index_to_insert === 0 ? this.$store.state.form_fields.length : this.$store.state.index_to_insert;
+            }
+
+            if ( 'mouseup' === event_type ){
+                payload.toIndex = this.$store.state.index_to_insert === 0 ? 0 : this.$store.state.index_to_insert;
+            }
 
             this.$store.state.index_to_insert = 0;
 

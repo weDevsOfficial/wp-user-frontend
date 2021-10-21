@@ -30,6 +30,50 @@ abstract class WPUF_Field_Contract {
     protected $icon = 'header';
 
     /**
+     * @return array[]
+     */
+    public static function common_field() {
+        return [
+            [
+                'name' => 'restriction_to',
+                'title' => __( 'Content restricted type', 'wp-user-frontend' ),
+                'type' => 'radio',
+                'options' => [
+                    'min' => __( 'Minimun', 'wp-user-frontend' ),
+                    'max' => __( 'Maximum', 'wp-user-frontend' ),
+                ],
+                'section' => 'advanced',
+                'priority' => 15,
+                'inline' => true,
+                'default' => 'max',
+            ],
+
+            [
+                'name' => 'restriction_type',
+                'title' => __( 'Content restricted by', 'wp-user-frontend' ),
+                'type' => 'radio',
+                'options' => [
+                    'character' => __( 'Character', 'wp-user-frontend' ),
+                    'word' => __( 'Word', 'wp-user-frontend' ),
+                ],
+                'section' => 'advanced',
+                'priority' => 15,
+                'inline' => true,
+                'default' => 'character',
+            ],
+
+            [
+                'name' => 'content_restriction',
+                'title' => __( 'Content Restriction', 'wp-user-frontend' ),
+                'type' => 'text',
+                'section' => 'advanced',
+                'priority' => 16,
+                'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
+            ],
+        ];
+    }
+
+    /**
      * Get the name of the field
      *
      * @return string
@@ -500,32 +544,7 @@ abstract class WPUF_Field_Contract {
         ];
 
         if ( $content_restriction ) {
-            $properties = array_merge(
-                $properties, [
-                    [
-                        'name'      => 'restriction_type',
-                        'title'     => __( 'Content restricted by', 'wp-user-frontend' ),
-                        'type'      => 'radio',
-                        'options'   => [
-                            'character'  => __( 'Character', 'wp-user-frontend' ),
-                            'word'       => __( 'Word', 'wp-user-frontend' ),
-                        ],
-                        'section'   => 'advanced',
-                        'priority'  => 15,
-                        'inline'    => true,
-                        'default'   => 'character',
-                    ],
-
-                    [
-                        'name'      => 'content_restriction',
-                        'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
-                        'type'      => 'text',
-                        'section'   => 'advanced',
-                        'priority'  => 16,
-                        'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
-                    ],
-                ]
-            );
+            $properties = array_merge( $properties, self::common_field() );
         }
 
         return apply_filters( 'wpuf-form-builder-common-taxonomy-fields-properties', $properties );
@@ -574,32 +593,7 @@ abstract class WPUF_Field_Contract {
         ];
 
         if ( $content_restriction ) {
-            $properties = array_merge(
-                $properties, [
-                    [
-                        'name'      => 'restriction_type',
-                        'title'     => __( 'Content restricted by', 'wp-user-frontend' ),
-                        'type'      => 'radio',
-                        'options'   => [
-                            'character' => __( 'Character', 'wp-user-frontend' ),
-                            'word'      => __( 'Word', 'wp-user-frontend' ),
-                        ],
-                        'section'   => 'advanced',
-                        'priority'  => 15,
-                        'inline'    => true,
-                        'default'   => 'character',
-                    ],
-
-                    [
-                        'name'      => 'content_restriction',
-                        'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
-                        'type'      => 'text',
-                        'section'   => 'advanced',
-                        'priority'  => 16,
-                        'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
-                    ],
-                ]
-            );
+            $properties = array_merge( $properties, self::common_field() );
         }
 
         return apply_filters( 'wpuf-form-builder-common-text-fields-properties', $properties );
@@ -630,7 +624,7 @@ abstract class WPUF_Field_Contract {
      * @return array
      */
     public function get_default_textarea_option_settings() {
-        return [
+        return self::common_field() + [
             [
                 'name'      => 'rows',
                 'title'     => __( 'Rows', 'wp-user-frontend' ),
@@ -682,29 +676,6 @@ abstract class WPUF_Field_Contract {
                 'section'   => 'advanced',
                 'priority'  => 14,
                 'default'   => 'no',
-            ],
-
-            [
-                'name'      => 'restriction_type',
-                'title'     => __( 'Content restricted by', 'wp-user-frontend' ),
-                'type'      => 'radio',
-                'options'   => [
-                    'character'  => __( 'Character', 'wp-user-frontend' ),
-                    'word'       => __( 'Word', 'wp-user-frontend' ),
-                ],
-                'section'   => 'advanced',
-                'priority'  => 15,
-                'inline'    => true,
-                'default'   => 'character',
-            ],
-
-            [
-                'name'      => 'content_restriction',
-                'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
-                'type'      => 'text',
-                'section'   => 'advanced',
-                'priority'  => 16,
-                'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
             ],
         ];
     }
@@ -892,7 +863,7 @@ abstract class WPUF_Field_Contract {
      *
      * @param $content_limit number of words allowed
      */
-    public function check_content_restriction_func( $content_limit, $rich_text, $field_name, $limit_type ) {
+    public function check_content_restriction_func( $content_limit, $rich_text, $field_name, $limit_type, $limit_to = null ) {
         // bail out if it is dashboard
         if ( is_admin() ) {
             return;
@@ -901,7 +872,7 @@ abstract class WPUF_Field_Contract {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s", "%s"', esc_attr( $content_limit ), esc_attr( $field_name ), esc_attr( $rich_text ), esc_attr( $limit_type ) ); ?>);
+                    WP_User_Frontend.editorLimit.bind(<?php printf( '%d, "%s", "%s", "%s", "%s"', esc_attr( $content_limit ), esc_attr( $field_name ), esc_attr( $rich_text ), esc_attr( $limit_type ), esc_attr( $limit_to ) ); ?>);
                 });
             })(jQuery);
         </script>

@@ -24,7 +24,7 @@ if ( $action == 'del' ) {
     $maybe_delete = get_post( $pid );
 
     if ( ( $maybe_delete->post_author == $userdata->ID ) || current_user_can( 'delete_others_pages' ) ) {
-        wp_delete_post( $pid );
+        wp_trash_post( $pid );
 
         //redirect
         $redirect = add_query_arg( [ 'section' => $type, 'msg' => 'deleted'], get_permalink() );
@@ -227,7 +227,7 @@ $post_type_obj   = get_post_type_object( $post_type );
                         ?>
 
                     </tbody>
-                </table>
+            </table>
             </div>
 
             <div class="wpuf-pagination">

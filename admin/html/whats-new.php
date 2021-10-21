@@ -1,5 +1,68 @@
 <?php
 $changelog = [
+     [
+        'version'  => 'Version 3.5.20',
+        'released' => '2021-09-16',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Content restriction for minimum, maximum value enhanced', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'New option for redirection after pay per post payment in form setting', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Controller added for various email notification', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Placeholder added for unauth message option', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Subscription Post expiration option change to input field', 'wp-user-frontend' ),
+                'type'  => 'Update',
+            ],
+            [
+                'title' => __( 'Content restriction message translatable', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'ACF integration inconsistency handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Enable payment checkbox handled for child option', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Broken asset link handled for custom field popup', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Rollback inconsistency for CPT handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Login form loaded after resetting password', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Billing address inconsistency handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Form duplication on creation handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Field Dragging inconsistency fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
     [
         'version'  => 'Version 3.5.18',
         'released' => '2021-07-06',

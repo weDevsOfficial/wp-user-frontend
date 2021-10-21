@@ -5,9 +5,9 @@
  */
 class WPUF_ACF_Compatibility {
 
-    public $id      = 'acf';
+    public $id = 'acf';
 
-    public $title   = 'Advanced Custom Fields';
+    public $title = 'Advanced Custom Fields';
 
     public function __construct() {
         add_action( 'admin_notices', [ $this, 'maybe_show_notice' ] );
@@ -16,6 +16,7 @@ class WPUF_ACF_Compatibility {
         add_action( 'wp_ajax_wpuf_compatibility_' . $this->id, [ $this, 'maybe_compatible' ] );
         add_action( 'wp_ajax_wpuf_migrate_' . $this->id, [ $this, 'migrate_cf_data' ] );
         add_filter( 'acf/load_value', [ $this, 'load_compatible_value' ], 10, 3 );
+        add_action( 'wpuf_add_post_after_insert', [ $this, 'update_acf_field_meta' ], 10, 4 );
     }
 
     /**
@@ -82,7 +83,7 @@ class WPUF_ACF_Compatibility {
     public function migrate_cf_data() {
         $forms = $this->get_post_forms();
 
-        if ( !empty( $forms ) ) {
+        if ( ! empty( $forms ) ) {
             foreach ( $forms as $form ) {
                 $form_id        = $form->ID;
                 $form_vars      = wpuf_get_form_fields( $form_id );
@@ -102,13 +103,13 @@ class WPUF_ACF_Compatibility {
                         ];
                         $posts = get_posts( $args );
 
-                        if ( !empty( $posts ) ) {
+                        if ( ! empty( $posts ) ) {
                             foreach ( $posts as $post ) {
                                 $post_id    = $post->ID;
                                 $separator  = '| ';
                                 $meta_value = get_post_meta( $post_id, $meta_key );
 
-                                if ( !empty( $meta_value ) ) {
+                                if ( ! empty( $meta_value ) ) {
                                     $new_value = explode( $separator, $meta_value[0] );
                                     $new_value = maybe_serialize( $new_value );
 
@@ -122,7 +123,7 @@ class WPUF_ACF_Compatibility {
         }
 
         update_option( 'wpuf_migrate_' . $this->id, 'yes' );
-        wpuf_update_option(  'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
+        wpuf_update_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
 
         wp_send_json_success();
     }
@@ -158,11 +159,11 @@ class WPUF_ACF_Compatibility {
      * @return void
      */
     public function maybe_show_notice() {
-        if ( !$this->plugin_exists() ) {
+        if ( ! $this->plugin_exists() ) {
             return;
         }
 
-        if ( $this->is_dismissed() || $this->is_compatible() || $this->is_migrated() || !current_user_can( 'manage_options' ) ) {
+        if ( $this->is_dismissed() || $this->is_compatible() || $this->is_migrated() || ! current_user_can( 'manage_options' ) ) {
             return;
         } ?>
         <div class="notice notice-info">
@@ -263,5 +264,44 @@ class WPUF_ACF_Compatibility {
         }
 
         return $value;
+    }
+
+    /**
+     * Update acf post meta
+     *
+     * @since 3.5.20
+     *
+     * @param $post_id
+     * @param $form_id
+     * @param $form_settings
+     * @param $meta_vars
+     */
+    public function update_acf_field_meta( $post_id, $form_id, $form_settings, $meta_vars ) {
+        if ( ! $this->plugin_exists() ){
+            return;
+        }
+
+        $groups = acf_get_field_groups( [ 'post_type' => $form_settings['post_type'] ] );
+        $existing_meta = get_post_meta( $post_id );
+
+        foreach ( acf_get_fields( $groups ) as $group ) {
+            $meta_key = '_' . $group['name'];
+            $name = $group['name'];
+
+            if ( 'repeater' === $group['type'] ) {
+                $meta_key = 'repeater';
+            }
+
+            //check key also in meta vars
+            $meta_keys = array_map(
+                function ( $meta_var ) {
+                    return $meta_var['name'];
+                }, $meta_vars
+            );
+
+            if ( ! array_key_exists( $meta_key, $existing_meta ) && in_array( $name, $meta_keys, true ) ) {
+                update_post_meta( $post_id, $meta_key, $group['key'] );
+            }
+        }
     }
 }

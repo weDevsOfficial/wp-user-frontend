@@ -3,24 +3,24 @@ global $post;
 
 $form_settings = wpuf_get_form_settings( $post->ID );
 
-$guest_post             = !empty( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
-$role_base              = !empty( $form_settings['role_base'] ) ? $form_settings['role_base'] : 'false';
-$roles                  = !empty( $form_settings['roles'] ) ? $form_settings['roles'] : [ 'administrator' ];
-$guest_details          = !empty( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
-$guest_email_verify     = !empty( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false';
-$name_label             = !empty( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wp-user-frontend' );
-$email_label            = !empty( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email', 'wp-user-frontend' );
-$message_restrict       = !empty( $form_settings['message_restrict'] ) ? $form_settings['message_restrict'] : $restrict_message;
+$guest_post             = ! empty( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
+$role_base              = ! empty( $form_settings['role_base'] ) ? $form_settings['role_base'] : 'false';
+$roles                  = ! empty( $form_settings['roles'] ) ? $form_settings['roles'] : [ 'administrator' ];
+$guest_details          = ! empty( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
+$guest_email_verify     = ! empty( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false';
+$name_label             = ! empty( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wp-user-frontend' );
+$email_label            = ! empty( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email', 'wp-user-frontend' );
+$message_restrict       = ! empty( $form_settings['message_restrict'] ) ? $form_settings['message_restrict'] : $restrict_message;
 
-$schedule_form          = !empty( $form_settings['schedule_form'] ) ? $form_settings['schedule_form'] : 'false';
-$schedule_start         = !empty( $form_settings['schedule_start'] ) ? $form_settings['schedule_start'] : '';
-$schedule_end           = !empty( $form_settings['schedule_end'] ) ? $form_settings['schedule_end'] : '';
-$form_pending_message   = !empty( $form_settings['form_pending_message'] ) ? $form_settings['form_pending_message'] : 'Form submission not started.';
-$form_expired_message   = !empty( $form_settings['form_expired_message'] ) ? $form_settings['form_expired_message'] : 'Submission date expired.';
+$schedule_form          = ! empty( $form_settings['schedule_form'] ) ? $form_settings['schedule_form'] : 'false';
+$schedule_start         = ! empty( $form_settings['schedule_start'] ) ? $form_settings['schedule_start'] : '';
+$schedule_end           = ! empty( $form_settings['schedule_end'] ) ? $form_settings['schedule_end'] : '';
+$form_pending_message   = ! empty( $form_settings['form_pending_message'] ) ? $form_settings['form_pending_message'] : 'Form submission not started.';
+$form_expired_message   = ! empty( $form_settings['form_expired_message'] ) ? $form_settings['form_expired_message'] : 'Submission date expired.';
 
-$limit_entries   = !empty( $form_settings['limit_entries'] ) ? $form_settings['limit_entries'] : 'false';
-$limit_number    = !empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 100;
-$limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['limit_message'] : 'Form submission limit exceeded';
+$limit_entries   = ! empty( $form_settings['limit_entries'] ) ? $form_settings['limit_entries'] : 'false';
+$limit_number    = ! empty( $form_settings['limit_number'] ) ? $form_settings['limit_number'] : 100;
+$limit_message   = ! empty( $form_settings['limit_message'] ) ? $form_settings['limit_message'] : 'Form submission limit exceeded';
 ?>
     <table class="form-table">
 
@@ -96,12 +96,15 @@ $limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['l
             <th>&mdash; &mdash; <?php esc_html_e( 'Roles', 'wp-user-frontend' ); ?></th>
             <td>
                 <?php
-                foreach ( wpuf_get_user_roles() as $key => $role ) { ?>
+                foreach ( wpuf_get_user_roles() as $key => $role ) {
+                    ?>
                     <label>
                         <input type="checkbox" name="wpuf_settings[roles][]" value="<?php echo esc_attr( $key ); ?>"
-                        <?php echo in_array( $key, $roles ) || 'administrator' == $key ? 'checked="checked"' : '';
+                        <?php
+                        echo in_array( $key, $roles ) || 'administrator' == $key ? 'checked="checked"' : '';
                         echo 'administrator' == $key ? 'disabled' : '';
-                        ?> />
+                        ?>
+                         />
                         <?php echo esc_html( $role ); ?>
                     </label><br>
                 <?php } ?>
@@ -113,8 +116,8 @@ $limit_message   = !empty( $form_settings['limit_message'] ) ? $form_settings['l
         <tr class="show-if-not-guest">
             <th>&mdash; <?php esc_html_e( 'Unauthorized Message', 'wp-user-frontend' ); ?></th>
             <td>
-                <textarea rows="3" cols="40" name="wpuf_settings[message_restrict]"><?php echo esc_textarea( $message_restrict ); ?></textarea>
-                <p class="description"><?php esc_html_e( 'Not logged in users will see this message', 'wp-user-frontend' ); ?></p>
+                <textarea rows="6" cols="45" name="wpuf_settings[message_restrict]"><?php echo esc_textarea( $message_restrict ); ?></textarea>
+                <p class="description"><?php esc_html_e( 'Not logged in users will see this message. You may use %login%, %register% for link', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
 

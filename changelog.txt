@@ -1,3 +1,10 @@
+= v3.5.21 (21 Oct, 2021) =
+
+* Fix - reCaptcha issue with other plugin handled
+* Fix - Multiple post type for wpuf dashboard not working fixed
+* Fix - Billing address ajax request issue handled
+* Update - Halloween promotion notice added
+
 = v3.5.20 (16 Sep, 2021) =
 
 * Enhancement - Content restriction for minimum, maximum value enhanced

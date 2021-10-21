@@ -88,6 +88,7 @@ class WPUF_Frontend_Dashboard {
             echo wp_kses_post( '<div class="success">' . __( 'Post Deleted', 'wp-user-frontend' ) . '</div>' );
         }
         $post_type  = explode( ',', $post_type );
+        unset( $attributes['post_type'] );
         $args       = [
             'author'         => get_current_user_id(),
             'post_status'    => [ 'draft', 'future', 'pending', 'publish', 'private' ],

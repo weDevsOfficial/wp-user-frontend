@@ -426,6 +426,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             } else {
                 $postarr['post_status'] = $this->form_settings['edit_post_status'];
             }
+            // handle for falback ppp
+            if ( 'pending' === get_post_meta( $post_id, '_wpuf_payment_status', true ) ) {
+                $postarr['post_status'] = 'pending';
+            }
         } else {
             if ( isset( $this->form_settings['comment_status'] ) ) {
                 $postarr['comment_status'] = $this->form_settings['comment_status'];

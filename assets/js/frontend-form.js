@@ -91,10 +91,7 @@
 
         warningOnExit: function () {
             $('input[name="submit"]').on('click', function () {
-                if ('Create Post' === $(this).val()) {
-                    window.onbeforeunload = null;
-                }
-
+                window.onbeforeunload = null;
                 return;
             });
 

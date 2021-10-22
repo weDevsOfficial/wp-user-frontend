@@ -173,7 +173,7 @@ class WPUF_Admin_Settings {
                     var search_input = document.querySelector('#wpuf-settings-search');
 
                     search_input.addEventListener('keyup', function (e) {
-                        var search_value = e.target.value;
+                        var search_value = e.target.value.toLowerCase();
                         var value_tab  = [];
 
                         if ( search_value.length ) {

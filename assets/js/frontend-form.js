@@ -85,6 +85,25 @@
                     $('#wpuf_cancel_subscription').submit();
                 });
             });
+
+            this.warningOnExit();
+        },
+
+        warningOnExit: function () {
+            $('input[name="submit"]').on('click', function () {
+                window.onbeforeunload = null;
+                return;
+            });
+
+            $('.wpuf-form-add').on( 'change', function(){
+                $('.wpuf-form-add input, .wpuf-form-add select, .wpuf-form-add textarea').each(function (index) {
+                    if ( 'hidden' !== $(this).attr('type') || 'submit' !== $(this).attr('type') || -1 !== $(this).val() ){
+                         window.onbeforeunload = function () {
+                            return 'you have changes';//changing  return values doesnt have any impact due to security
+                        }
+                    }
+                })
+            });
         },
 
         check_pass_strength : function() {
@@ -1107,5 +1126,4 @@
         // Set name attribute for google map search field
         $(".wpuf-form-add #wpuf-map-add-location").attr("name", "find_address");
     });
-
 })(jQuery, window);

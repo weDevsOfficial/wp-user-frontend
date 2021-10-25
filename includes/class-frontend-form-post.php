@@ -265,11 +265,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 }
             }
 
-            // if pay per post is enabled then update payment status as pending
-            if ( $pay_per_post ) {
-                update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
-            }
-
             if ( ! empty( $taxonomy_vars ) ) {
                 $this->set_custom_taxonomy( $post_id, $taxonomy_vars );
             } else {
@@ -430,6 +425,10 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 $postarr['post_status'] = get_post_field( 'post_status', $post_id );
             } else {
                 $postarr['post_status'] = $this->form_settings['edit_post_status'];
+            }
+            // handle for falback ppp
+            if ( 'pending' === get_post_meta( $post_id, '_wpuf_payment_status', true ) ) {
+                $postarr['post_status'] = 'pending';
             }
         } else {
             if ( isset( $this->form_settings['comment_status'] ) ) {

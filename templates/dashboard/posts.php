@@ -127,7 +127,7 @@ $post_type_obj   = get_post_type_object( $post_type );
                     $dashboard_query->the_post();
                     $show_link        = !in_array( $post->post_status, ['draft', 'future', 'pending'] );
                     $payment_status   = get_post_meta( $post->ID, '_wpuf_payment_status', true );
-                    $is_featured      = in_array( intval( $post->ID ), $stickies, true ) ? ' - Featured '. ucfirst( $post_type ) : '';
+                    $is_featured      = in_array( intval( $post->ID ), $stickies, true ) ? ' - ' . esc_html_e( 'Featured', 'wp-user-frontend' ) . ucfirst( $post_type ) : '';
                     $title            = wp_trim_words( get_the_title(), 5 ) . $is_featured;
                     ?>
                     <tr>

@@ -902,25 +902,24 @@ class WPUF_Frontend_Render_Form {
             ?>
             <li class="wpuf-el field-size-large" data-label="Is featured">
                 <div class="wpuf-label">
-                    <label for="wpuf_is_featured">Is featured</label>
+                    <label for="wpuf_is_featured"><?php esc_html_e( 'Featured', 'wp-user-frontend' ); ?></label>
                 </div>
                 <div >
                     <label >
-                        <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                         <span class="wpuf-message-box"> <?php esc_attr_e( 'Remaining', 'wp-user-frontend' ); ?></span>
-                         <span id="remaining-feature-item"> <?php echo $user_sub['total_feature_item']; ?></span>
+                         <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
+                         <span class="wpuf-message-box" id="remaining-feature-item"> <?php esc_attr_e( "Mark the {$this->form_settings['post_type']} as featured ( remaining {$user_sub['total_feature_item']} )", 'wp-user-frontend' ); ?></span>
                     </label>
                 </div>
             </li>
             <script>
                 (function ($) {
-                    $('.wpuf_is_featured').on('change',function(e){
-                        var counter = $('#remaining-feature-item');
-                        var count = parseInt(counter.text());
-                        if( $(this).is(':checked') ){
-                            counter.text(count-1);
-                        }else{
-                            counter.text(count+1);
+                    $('.wpuf_is_featured').on('change', function (e) {
+                        var counter = $('.wpuf-message-box');
+                        var count = parseInt( counter.text().match(/\d+/) );
+                        if ($(this).is(':checked')) {
+                            counter.text( counter.text().replace( /\d+/, count - 1 ) );
+                        } else {
+                            counter.text( counter.text().replace( /\d+/, count + 1 ) );
                         }
                     })
                 })(jQuery)

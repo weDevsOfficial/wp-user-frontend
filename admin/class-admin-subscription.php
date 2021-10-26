@@ -385,19 +385,19 @@ class WPUF_Admin_Subscription {
                     <table class="form-table">
                         <tbody>
                         <tr>
-                            <th><label for="wpuf-sticky-item">Number of featured item</label></th>
+                            <th><label for="wpuf-sticky-item"><?php esc_html_e( 'Number of featured item', 'wp-user-frontend' ); ?></label></th>
                             <td>
                                 <input type="text" size="20" style="" id="wpuf-sticky-item" value="<?php echo intval( $featured_item ); ?>" name="total_feature_item" />
                                 <br>
-                                <span class="description"><?php esc_html_e( 'How many item user can set as featured, including all post types', 'wp-user-frontend' ); ?></span>
+                                <span class="description"><?php esc_html_e( 'How many items a user can set as featured, including all post types', 'wp-user-frontend' ); ?></span>
                             </td>
                         </tr>
                         <tr>
-                            <th><label for="wpuf-sticky-item">Remove feature item on sub expiry</label></th>
+                            <th><label for="wpuf-sticky-item"><?php esc_html_e( 'Remove featured item on subscription expiry', 'wp-user-frontend' ); ?></label></th>
                             <td>
                                 <label for="">
                                     <input type="checkbox"  value="on" <?php echo esc_attr( 'on' === $remove_featured_item ? 'checked' : '' ); ?> name="remove_feature_item" />
-                                    <?php esc_html_e( 'Featured item will remove if subscription expired', 'wp-user-frontend' ); ?>
+                                    <?php esc_html_e( 'The featured item will be removed if the subscription expires', 'wp-user-frontend' ); ?>
                                 </label>
                             </td>
                         </tr>
@@ -666,7 +666,7 @@ class WPUF_Admin_Subscription {
                         <table class="form-table">
                             <?php if ( ! empty( $user_sub['total_feature_item'] ) ) { ?>
                             <tr>
-                                <th><label>Number of featured item</label></th>
+                                <th><label><?php esc_html_e( 'Number of featured item', 'wp-user-frontend' ); ?></label></th>
                                 <td><input type="text" value="<?php echo esc_attr( $user_sub['total_feature_item'] ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
                             </tr>
                             <?php } ?>

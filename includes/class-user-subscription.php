@@ -527,13 +527,13 @@ class WPUF_User_Subscription {
         $is_featured    = in_array( intval( $post_id ), $stickies, true );
 
         if ( $featured_count > 0 && array_key_exists( 'is_featured_item', $_POST ) && ! $is_featured ) {
-                stick_post( $post_id );
-                $sub_info['total_feature_item'] = $featured_count - 1;
+            stick_post( $post_id );
+            $sub_info['total_feature_item'] = $featured_count - 1;
         }
 
         if ( $featured_count > 0 && ! array_key_exists( 'is_featured_item', $_POST ) && $is_featured ) {
-                $sub_info['total_feature_item'] = $featured_count + 1;
-                unstick_post( $post_id );
+            $sub_info['total_feature_item'] = $featured_count + 1;
+            unstick_post( $post_id );
         }
 
         return $sub_info;

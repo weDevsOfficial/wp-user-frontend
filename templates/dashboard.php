@@ -43,7 +43,7 @@
             $meta_key[] = trim( $mkey );
         }
     }
-    
+
     if ( $dashboard_query->have_posts() ) {
         $args = [
             'post_status' => 'publish',
@@ -93,7 +93,7 @@
         }
     ?>
 
-    <?php include WPUF_ROOT . '/templates/template-parts/products-list.php'; ?>
+    <?php include WPUF_ROOT . '/templates/dashboard/list.php'; ?>
         <div class="wpuf-pagination">
             <?php
                 $pagination = paginate_links( [

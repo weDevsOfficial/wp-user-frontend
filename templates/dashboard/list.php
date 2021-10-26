@@ -1,5 +1,5 @@
 <div class="items-table-container">
-    <table class="items-table <?php echo esc_attr( $post_type ); ?>" cellpadding="0" cellspacing="0">
+    <table class="items-table testing <?php echo esc_attr( $post_type ); ?>">
         <thead>
             <tr class="items-list-header">
                 <?php
@@ -105,7 +105,7 @@
                                 if ( $show_edit ) {
                                 ?>
                                 <a class="wpuf-posts-options wpuf-posts-edit" href="<?php echo esc_url( wp_nonce_url( $url, 'wpuf_edit' ) ); ?>">
-                                    <img src="<?php echo WPUF_ASSET_URI . '/images/trash.svg'; ?>" alt="Edit">
+                                    <img src="<?php echo WPUF_ASSET_URI . '/images/edit.svg'; ?>" alt="Edit">
                                 </a>
                                 <?php
                                 }

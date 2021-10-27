@@ -1,5 +1,5 @@
 <div class="items-table-container">
-    <table class="items-table testing <?php echo esc_attr( $post_type ); ?>">
+    <table class="items-table <?php echo esc_attr( $post_type ); ?>">
         <thead>
             <tr class="items-list-header">
                 <?php
@@ -67,19 +67,23 @@
                     <?php wpuf_show_post_status( $post->post_status ); ?>
                 </td>
 
-                <?php do_action( 'wpuf_account_posts_row_col', $args, $post ); ?>
+                <?php
+                do_action( 'wpuf_account_posts_row_col', $args, $post );
 
-                <?php if ( 'on' === $enable_payment && 'off' != $payment_column ) { ?>
-                    <td data-label="<?php esc_attr_e( 'Payment: ', 'wp-user-frontend' ); ?>" class="data-column">
-                        <?php if ( empty( $payment_status ) ) { ?>
-                            <?php esc_html_e( 'Not Applicable', 'wp-user-frontend' ); ?>
-                            <?php } elseif ( $payment_status != 'completed' ) { ?>
-                                <a href="<?php echo esc_attr( trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Pay Now', 'wp-user-frontend' ); ?></a>
-                                <?php } elseif ( 'completed' === $payment_status ) { ?>
-                                    <?php esc_html_e( 'Completed', 'wp-user-frontend' ); ?>
-                                <?php } ?>
-                            </td>
-                        <?php } ?>
+                if ( 'on' === $enable_payment && 'off' != $payment_column ) {
+                    echo '<td data-label="' . esc_attr( 'Payment: ' ) . '" class="data-column">';
+
+                    if ( empty( $payment_status ) ) {
+                        esc_html_e( 'Not Applicable', 'wp-user-frontend' );
+                    } elseif ( $payment_status !== 'completed' ) {
+                        echo '<a href="' . esc_attr( trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ) ) . '?action=wpuf_pay&type=post&post_id=' . esc_attr( $post->ID ) . '">' . esc_html__( 'Pay Now', 'wp-user-frontend' ) . '</a>';
+                    } elseif ( 'completed' === $payment_status ) {
+                        esc_html_e( 'Completed', 'wp-user-frontend' );
+                    }
+
+                    echo '</td>';
+                }
+                ?>
 
                         <td data-label="<?php esc_attr_e( 'Options: ', 'wp-user-frontend' ); ?>" class="data-column">
                             <?php

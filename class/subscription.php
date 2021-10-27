@@ -579,12 +579,15 @@ class WPUF_Subscription {
         }
         //phpcs:ignore
         $userdata = get_userdata( get_current_user_id() );
+        $order_id = uniqid( rand( 10, 1000 ), false );
 
         if ( self::has_user_error( $form_settings ) ) {
-            //there is some error and it needs payment
-            //add a uniqid to track the post easily
-            $order_id = uniqid( rand( 10, 1000 ), false );
             update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
+        }
+
+        if ( $form->is_enabled_pay_per_post() || ( $form->is_enabled_force_pack() && $form->is_enabled_fallback_cost() && ! wpuf_get_user()->subscription()->has_post_count( $form_settings['post_type'] ) ) ) {
+            update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
+            update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
         }
     }
 

@@ -1396,6 +1396,9 @@ body .wpuf-dashboard-container table.items-table .post-edit-icon {
     padding: 10px;
     display: none;
   }
+  .wpuf-posts-options {
+    padding: 8px 10px 5px !important;
+  }
 }
 body .wpuf-dashboard-container .wpuf-update-profile-form ul.wpuf-form {
   margin: 0 -15px !important;
@@ -1662,10 +1665,9 @@ body .dokan-dashboard .dokan-dashboard-content ul li.wpuf-submit {
   padding: 10px;
   padding-left: 0;
 }
-body .wpuf-posts-options {
-  display: inline-block;
-  padding: 7px 7px;
-  border-radius: 100%;
+.wpuf-posts-options {
+  padding: 10px 10px 8px;
+  border-radius: 50%;
 }
 body .wpuf-posts-edit:hover {
   background-color: #5C5CFB;

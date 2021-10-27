@@ -1335,7 +1335,7 @@ class WPUF_Subscription {
 
             foreach ( get_posts(
                 [
-                    'author__in' => $remove_feature_item_by_author,
+                    'author__in'  => $remove_feature_item_by_author,
                     'numberposts' => -1,
                     'post_status' => [ 'draft', 'pending', 'private', 'publish' ],
                 ]

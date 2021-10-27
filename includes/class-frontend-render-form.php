@@ -366,6 +366,8 @@ class WPUF_Frontend_Render_Form {
                         $this->guest_fields( $this->form_settings );
                     }
 
+                        $this->render_featured_field( $post_id );
+
                         wpuf()->fields->render_fields( $this->form_fields, $form_id, $atts, $type = 'post', $post_id );
 
                         $this->submit_button( $form_id, $this->form_settings, $post_id );
@@ -882,6 +884,47 @@ class WPUF_Frontend_Render_Form {
                 }
             }
             $this->validate_re_captcha( $no_captcha, $invisible_captcha );
+        }
+    }
+
+    /**
+     * Render a checkbox for enabling feature item
+     */
+    public function render_featured_field( $post_id = null ) {
+        $user_sub = WPUF_Subscription::get_user_pack( get_current_user_id() );
+        $is_featured = false;
+        if ( $post_id ) {
+            $stickies = get_option( 'sticky_posts' );
+            $is_featured   = in_array( intval( $post_id ), $stickies, true );
+        }
+
+        if ( ! empty( $user_sub['total_feature_item'] ) || $is_featured ) {
+            ?>
+            <li class="wpuf-el field-size-large" data-label="Is featured">
+                <div class="wpuf-label">
+                    <label for="wpuf_is_featured"><?php esc_html_e( 'Featured', 'wp-user-frontend' ); ?></label>
+                </div>
+                <div >
+                    <label >
+                         <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
+                         <span class="wpuf-message-box" id="remaining-feature-item"> <?php sprintf( __( 'Mark the %s as featured (remaining %d)', 'wp-user-frontend' ), $this->form_settings['post_type'], $user_sub['total_feature_item'] ); ?></span>
+                    </label>
+                </div>
+            </li>
+            <script>
+                (function ($) {
+                    $('.wpuf_is_featured').on('change', function (e) {
+                        var counter = $('.wpuf-message-box');
+                        var count = parseInt( counter.text().match(/\d+/) );
+                        if ($(this).is(':checked')) {
+                            counter.text( counter.text().replace( /\d+/, count - 1 ) );
+                        } else {
+                            counter.text( counter.text().replace( /\d+/, count + 1 ) );
+                        }
+                    })
+                })(jQuery)
+            </script>
+            <?php
         }
     }
 }

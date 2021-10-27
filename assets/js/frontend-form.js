@@ -407,7 +407,7 @@
 
         formStepCheck : function(e,fieldset) {
             var form = fieldset,
-                submitButton = form.find('input[type=submit]');
+                submitButton = form.find('input[type=submit]'),
                 form_data = WP_User_Frontend.validateForm(form);
 
                 if ( form_data == false ) {
@@ -495,7 +495,7 @@
             var temp,
                 temp_val    = '',
                 error       = false,
-                error_items = [];
+                error_items = [],
                 error_type  = '';
 
             // remove all initial errors if any
@@ -509,7 +509,7 @@
                 // temp_val = $.trim($(item).val());
 
                 // console.log( $(item).data('type') );
-                var data_type = $(item).data('type')
+                var data_type = $(item).data('type'),
                     val = '';
 
                 switch(data_type) {
@@ -722,18 +722,22 @@
         },
 
         markError: function(item, error_type) {
-
-            var error_string = '';
-            $(item).closest('li').addClass('has-error');
+            $(item).closest('div').addClass('has-error');
 
             if ( error_type ) {
-                error_string = $(item).closest('li').data('label');
+                var error_string = '';
+                var address_field_label = $(item).data('label');
+                if ( address_field_label ) {
+                    error_string = address_field_label;
+                } else {
+                    error_string = $(item).closest('li').data('label');
+                }
                 switch ( error_type ) {
                     case 'required' :
                         error_string = error_string + ' ' + error_str_obj[error_type];
                         break;
                     case 'mismatch' :
-                        error_string = error_string + ' ' +error_str_obj[error_type];
+                        error_string = error_string + ' ' + error_str_obj[error_type];
                         break;
                     case 'validation' :
                         error_string = error_string + ' ' + error_str_obj[error_type];
@@ -743,7 +747,14 @@
                         break
                 }
                 $(item).siblings('.wpuf-error-msg').remove();
-                $(item).after('<div class="wpuf-error-msg">'+ error_string +'</div>')
+
+                // if input type is radio, append the error message for design issue
+                if ( $(item).prev().prop('nodeName') === 'DIV' ) {
+                    $(item).append('<div class="wpuf-error-msg">'+ error_string +'</div>')
+                } else {
+                    // if input type is not radio, add the div after current item
+                    $(item).after('<div class="wpuf-error-msg">'+ error_string +'</div>')
+                }
             }
 
             $(item).focus();

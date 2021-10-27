@@ -163,7 +163,7 @@
                             html      += '<img src="' + image_two + '" alt="custom field data">';
                             html      += '</div>';
                             html      += '</div>';
-                        swal({
+                        new swal({
                             title: __( 'Do you want to show custom field data inside your post ?', 'wp-user-frontend' ),
                             html: html,
                             showCancelButton: true,

@@ -1336,15 +1336,18 @@ class WPUF_Subscription {
         if ( ! empty( $remove_feature_item_by_author ) ) {
             $stickies = get_option( 'sticky_posts' );
 
-            foreach ( get_posts(
+            $post_ids = get_posts(
                 [
                     'author__in'  => $remove_feature_item_by_author,
                     'numberposts' => -1,
                     'post_status' => [ 'draft', 'pending', 'private', 'publish' ],
+                    'fields'      => 'ids',
                 ]
-            ) as $post ) {
-                if ( in_array( $post->ID, $stickies, true ) ) {
-                    unstick_post( $post->ID );
+            );
+
+            foreach ( $post_ids as $post_id ) {
+                if ( in_array( $post_id, $stickies, true ) ) {
+                    unstick_post( $post_id );
                 }
             }
         }

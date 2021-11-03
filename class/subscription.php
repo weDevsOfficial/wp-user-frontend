@@ -1321,20 +1321,23 @@ class WPUF_Subscription {
         foreach ( $non_recurrent as $ns ) {
             $user_id  = $ns->user_id;
             $sub_meta = 'cancel';
+            $meta     = maybe_unserialize( $ns->meta_value );
 
             self::update_user_subscription_meta( $user_id, $sub_meta );
             // remove feature item if sub expire
-            if ( $ns->remove_feature_item && 'on' === $ns->remove_feature_item ) {
+            if ( ! empty( $meta['remove_feature_item'] ) && 'on' === $meta['remove_feature_item'] ) {
                 array_push( $remove_feature_item_by_author, $user_id );
             }
         }
 
         if ( ! empty( $remove_feature_item_by_author ) ) {
             $stickies = get_option( 'sticky_posts' );
+
             foreach ( get_posts(
                 [
                     'author__in' => $remove_feature_item_by_author,
                     'numberposts' => -1,
+                    'post_status' => [ 'draft', 'pending', 'private', 'publish' ],
                 ]
             ) as $post ) {
                 if ( in_array( $post->ID, $stickies, true ) ) {

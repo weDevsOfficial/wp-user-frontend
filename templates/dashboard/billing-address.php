@@ -40,7 +40,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
 }
 ?>
 
-<form class="wpuf-form form-label-above" action="" method="post">
+<form class="wpuf-form form-label-above" action="" method="post" id="wpuf-payment-gateway">
     <div class="wpuf-fields">
         <?php
         wp_nonce_field( 'wpuf-ajax-address' );
@@ -48,7 +48,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
         ?>
         <ul class="wpuf-form form-label-above">
 
-            <li>
+            <li class="wpuf-el" data-label="<?php esc_attr_e( 'Country', 'wp-user-frontend' ); ?>">
                 <label class="wpuf-fields wpuf-label"><?php esc_html_e( 'Country', 'wp-user-frontend' ); ?><span
                         class="required">*</span></label>
                 <?php
@@ -72,13 +72,16 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                         'class'            => 'wpuf_biiling_country',
                         'chosen'           => false,
                         'placeholder'      => __( 'Choose a country', 'wp-user-frontend' ),
+                        'data'             => [ 'required' => 'yes', 'type' => 'select' ],
                     ]
                 ), [
                     'select' => [
                         'class'            => [],
                         'name'             => [],
                         'id'               => [],
-                        'data-placeholder' => []
+                        'data-placeholder' => [],
+                        'data-required'    => [],
+                        'data-type'        => [],
                     ],
                     'option' => [
                         'value'    => [],
@@ -89,7 +92,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                 ] ); ?>
             </li>
 
-            <li>
+            <li class="wpuf-el" data-label="<?php esc_attr_e( 'State/Province/Region', 'wp-user-frontend' ); ?>">
                 <div class="wpuf-label"><?php esc_html_e( 'State/Province/Region', 'wp-user-frontend' ); ?> <span
                         class="required">*</span></div>
                 <div class="wpuf-fields">
@@ -111,13 +114,16 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                             'class'            => 'wpuf_biiling_state',
                             'chosen'           => false,
                             'placeholder'      => __( 'Choose a state', 'wp-user-frontend' ),
+                            'data'             => [ 'required' => 'yes', 'type' => 'select' ],
                         ]
                     ), [
                         'select' => [
                             'class'            => [],
                             'name'             => [],
                             'id'               => [],
-                            'data-placeholder' => []
+                            'data-placeholder' => [],
+                            'data-required'    => [],
+                            'data-type'        => [],
                         ],
                         'option' => [
                             'value'    => [],
@@ -129,38 +135,35 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                 </div>
             </li>
 
-            <li>
+            <li class="wpuf-el" data-label="<?php esc_attr_e( 'Address Line 1', 'wp-user-frontend' ); ?>">
                 <div class="wpuf-label"><?php esc_html_e( 'Address Line 1 ', 'wp-user-frontend' ); ?><span
                         class="required">*</span></div>
                 <div class="wpuf-fields">
-                    <input type="text" class="input" name="wpuf_biiling_add_line_1" id="wpuf_biiling_add_line_1"
-                           value="<?php echo $add_line_1; ?>"/>
+                    <input data-required="yes" data-type="text" type="text" class="input" name="wpuf_biiling_add_line_1" id="wpuf_biiling_add_line_1" value="<?php echo $add_line_1; ?>"/>
                 </div>
             </li>
 
-            <li>
+            <li class="wpuf-el" data-label="<?php esc_attr_e( 'Address Line 2', 'wp-user-frontend' ); ?>">
                 <div class="wpuf-label"><?php esc_html_e( 'Address Line 2 ', 'wp-user-frontend' ); ?></div>
                 <div class="wpuf-fields">
-                    <input type="text" class="input" name="wpuf_biiling_add_line_2" id="wpuf_biiling_add_line_2"
-                           value="<?php echo $add_line_2; ?>"/>
+                    <input data-required="no" type="text" class="input" name="wpuf_biiling_add_line_2" id="wpuf_biiling_add_line_2" data-type="text" value="<?php echo $add_line_2; ?>"/>
                 </div>
             </li>
 
-            <li>
+            <li class="wpuf-el" data-label="<?php esc_attr_e( 'City', 'wp-user-frontend' ); ?>">
                 <div class="wpuf-label"><?php esc_html_e( 'City', 'wp-user-frontend' ); ?> <span
                         class="required">*</span></div>
                 <div class="wpuf-fields">
-                    <input type="text" class="input" name="wpuf_biiling_city" id="wpuf_biiling_city"
-                           value="<?php echo $city; ?>"/>
+                    <input data-required="yes" type="text" class="input" name="wpuf_biiling_city" id="wpuf_biiling_city" data-type="text" value="<?php echo $city; ?>"/>
                 </div>
             </li>
 
-            <li>
-                <div class="wpuf-label"><?php esc_html_e( 'Postal/ZIP Code', 'wp-user-frontend' ); ?> <span
+            <li class="wpuf-el" data-label="<?php esc_attr_e( 'Postal/ZIP Code', 'wp-user-frontend' ); ?>">
+                <div class="wpuf-label">
+                    <?php esc_html_e( 'Postal/ZIP Code', 'wp-user-frontend' ); ?> <span
                         class="required">*</span></div>
                 <div class="wpuf-fields">
-                    <input type="text" class="input" name="wpuf_biiling_zip_code" id="wpuf_biiling_zip_code"
-                           value="<?php echo $zip_code; ?>"/>
+                    <input data-required="yes" type="text" class="input" name="wpuf_biiling_zip_code" id="wpuf_biiling_zip_code" data-type="text" value="<?php echo $zip_code; ?>"/>
                 </div>
             </li>
 

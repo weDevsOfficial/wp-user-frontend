@@ -1,4 +1,3 @@
-
 jQuery(function($){
 
     window.wpuf_validate_address = function(e) {
@@ -16,15 +15,16 @@ jQuery(function($){
             ( city.hasClass('bill_required') && city.val() === "" ) ||
             ( zip.hasClass('bill_required') && zip.val() === "" ) )
         {
-            e.preventDefault();
             isValid = false;
         }
         return isValid;
     };
 
     $( '#wpuf-payment-gateway' ).submit(function (e) {
-        if ( ! window.wpuf_validate_address(e) ) {
-            alert( ajax_object.fill_notice );
+        let form_data = WP_User_Frontend.validateForm($(this));
+
+        if (!form_data) {
+            e.preventDefault();
         }
 
         var billing_address_form = $( '#wpuf-ajax-address-form' );
@@ -87,6 +87,10 @@ jQuery(function($){
         var $wpuf_cc_address = jQuery('#wpuf-address-country-state');
         var $payment_form = jQuery('#wpuf-payment-gateway');
         var $address_form = jQuery('#wpuf-ajax-address-form');
+
+        if ( ! $address_form.length ) {
+            return;
+        }
 
         var postData = {
             action: 'wpuf_update_billing_address',

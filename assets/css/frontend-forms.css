@@ -15,6 +15,10 @@ body {
 body #wpfooter {
   position: fixed !important;
 }
+body .has-error {
+  background: #FFE4E4;
+  padding: 10px;
+}
 body .wpufTable {
   display: table;
   width: 100%;
@@ -1396,9 +1400,6 @@ body .wpuf-dashboard-container table.items-table .post-edit-icon {
     padding: 10px;
     display: none;
   }
-  .wpuf-posts-options {
-    padding: 8px 10px 5px !important;
-  }
 }
 body .wpuf-dashboard-container .wpuf-update-profile-form ul.wpuf-form {
   margin: 0 -15px !important;
@@ -1665,8 +1666,10 @@ body .dokan-dashboard .dokan-dashboard-content ul li.wpuf-submit {
   padding: 10px;
   padding-left: 0;
 }
-.wpuf-posts-options {
-  padding: 10px 10px 8px;
+body .wpuf-posts-edit,
+body .wpuf-posts-delete {
+  float: left;
+  padding: 10px;
   border-radius: 50%;
 }
 body .wpuf-posts-edit:hover {

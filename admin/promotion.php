@@ -23,15 +23,19 @@ class WPUF_Admin_Promotion {
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
+        // Showing only for Uf menu
+        if ( 'wp-user-frontend' !== get_admin_page_parent() ){
+            return;
+        }
 
         $current_time = $this->convert_utc_to_est();
 
         if (
-            strtotime( '2021-10-21 09:00:00 EST' ) < strtotime( $current_time )
-            && strtotime( $current_time ) < strtotime( '2021-10-31 9:00:00 EST' )
+            strtotime( '2021-11-19 09:00:00 EST' ) < strtotime( $current_time )
+            && strtotime( $current_time ) < strtotime( '2021-11-30 11:00:00 EST' )
             ) {
-            $option_name = 'wpuf_2021_summer_offer';
-            $notice      = sprintf( '<p>%s <a href="%s" target="_blank">%s</a></p>', __( 'Get Yourself a Spooky Delight ! Get Up To 40% OFF on WP User Frontend Pro.', 'wp-user-frontend' ), 'https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf-halloween20212021', __( 'Get Now', 'wp-user-frontend' ) );
+            $option_name = 'wpuf-bfcm2021';
+            $notice      = sprintf( '<p>%s <a href="%s" target="_blank">%s</a></p>', __( 'Irresistible Black Friday & Cyber Monday Deals. Enjoy Up To 50% OFF on WP User Frontend Pro.', 'wp-user-frontend' ), 'https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf-bfcm2021', __( 'Get Now', 'wp-user-frontend' ) );
             $this->generate_notice( $notice, $option_name );
         }
     }

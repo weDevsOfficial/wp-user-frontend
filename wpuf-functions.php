@@ -2035,7 +2035,7 @@ function wpuf_get_account_sections() {
     }
 
     $sections = array_merge(
-        // dashboard should be the first item
+    // dashboard should be the first item
         [ 'dashboard' => __( 'Dashboard', 'wp-user-frontend' ) ],
         $cpt_sections,
         $sections
@@ -2562,17 +2562,17 @@ function wpuf_trim_zeros( $price ) {
  */
 function wpuf_format_price( $price, $formated = true, $args = [] ) {
 
-      $price_args = apply_filters(
-            'wpuf_price_args', wp_parse_args(
-                $args, [
-                    'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
-                    'decimal_separator'  => wpuf_get_price_decimal_separator(),
-                    'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
-                    'decimals'           => wpuf_get_price_decimals(),
-                    'price_format'       => get_wpuf_price_format(),
-                ]
-            )
-        );
+    $price_args = apply_filters(
+        'wpuf_price_args', wp_parse_args(
+            $args, [
+                'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
+                'decimal_separator'  => wpuf_get_price_decimal_separator(),
+                'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
+                'decimals'           => wpuf_get_price_decimals(),
+                'price_format'       => get_wpuf_price_format(),
+            ]
+        )
+    );
 
     $currency = $price_args['currency'];
     $decimal_separator = $price_args['decimal_separator'];
@@ -3561,9 +3561,27 @@ function wpuf_ajax_get_states_field() {
             'options'          => $states,
             'show_option_all'  => false,
             'show_option_none' => false,
+            'data'             => [ 'required' => 'yes', 'type' => 'select' ],
         ];
 
-        $response = wpuf_select( $args );
+        $allowed_html = [
+            'select' => [
+                'class'            => [],
+                'name'             => [],
+                'id'               => [],
+                'data-placeholder' => [],
+                'data-required'    => [],
+                'data-type'        => [],
+            ],
+            'option' => [
+                'value'    => [],
+                'class'    => [],
+                'id'       => [],
+                'selected' => []
+            ],
+        ];
+
+        $response = wp_kses( wpuf_select( $args ), $allowed_html );
     } else {
         $response = 'nostates';
     }
@@ -3728,11 +3746,11 @@ function wpuf_show_form_schedule_message( $form_id ) {
             echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>' );
         }
         ?>
-            <script>
-                jQuery( function($) {
-                    $(".wpuf-submit-button").attr("disabled", "disabled");
-                });
-            </script>
+        <script>
+            jQuery( function($) {
+                $(".wpuf-submit-button").attr("disabled", "disabled");
+            });
+        </script>
         <?php
         return;
     }

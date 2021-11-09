@@ -15,6 +15,10 @@ body {
 body #wpfooter {
   position: fixed !important;
 }
+body .has-error {
+  background: #FFE4E4;
+  padding: 10px;
+}
 body .wpufTable {
   display: table;
   width: 100%;
@@ -1662,10 +1666,11 @@ body .dokan-dashboard .dokan-dashboard-content ul li.wpuf-submit {
   padding: 10px;
   padding-left: 0;
 }
-body .wpuf-posts-options {
-  display: inline-block;
-  padding: 7px 7px;
-  border-radius: 100%;
+body .wpuf-posts-edit,
+body .wpuf-posts-delete {
+  float: left;
+  padding: 10px;
+  border-radius: 50%;
 }
 body .wpuf-posts-edit:hover {
   background-color: #5C5CFB;

@@ -9,6 +9,10 @@ body {
 #wpfooter {
     position: fixed  !important
 }
+.has-error {
+    background: #FFE4E4;
+    padding: 10px;
+}
 .wpufTable{
     display: table;
     width: 100%;
@@ -1911,12 +1915,13 @@ ul.wpuf-form .weforms-frontend-field-points{
 }
 
 /* Front End Posts List Tools */
-.wpuf-posts-options{
-    display: inline-block;
-    padding: 7px 7px;
-    border-radius: 100%;
-    // margin: 0px 5px;
+.wpuf-posts-edit,
+.wpuf-posts-delete {
+    float: left;
+    padding: 10px;
+    border-radius: 50%;
 }
+
 .wpuf-posts-edit:hover{
     background-color: #5C5CFB;
 }

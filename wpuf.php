@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 3.5.21
+Version: 3.5.22
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '3.5.21' );
+define( 'WPUF_VERSION', '3.5.22' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -172,7 +172,9 @@ final class WP_User_Frontend {
      * @since 2.2.7
      */
     public static function set_schedule_events() {
-        wp_schedule_event( time(), 'daily', 'wpuf_remove_expired_post_hook' );
+        if ( ! wp_next_scheduled( 'wpuf_remove_expired_post_hook' ) ) {
+            wp_schedule_event(time(), 'daily', 'wpuf_remove_expired_post_hook');
+        }
     }
 
     /**
@@ -345,6 +347,7 @@ final class WP_User_Frontend {
 
         $this->container['subscription']            = WPUF_Subscription::init();
         $this->container['account']                 = new WPUF_Frontend_Account();
+        $this->container['billing_address']         = new WPUF_Ajax_Address_Form();
         $this->container['forms']                   = new WPUF_Form_Manager();
         $this->container['preview']                 = new WPUF_Form_Preview();
         $this->container['block']                   = new WPUF_Form_Block();
@@ -426,12 +429,7 @@ final class WP_User_Frontend {
      * @since 2.5.4
      */
     public function wpuf_loader() {
-        $is_expired = wpuf_is_license_expired();
         $has_pro    = class_exists( 'WP_User_Frontend_Pro' );
-
-        if ( $has_pro && $is_expired ) {
-            add_action( 'admin_notices', [ $this, 'license_expired' ] );
-        }
 
         if ( $has_pro ) {
             $this->is_pro = true;

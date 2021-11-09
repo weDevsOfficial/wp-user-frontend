@@ -640,6 +640,32 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
 .wpuf-xmp-tag {
   display: inline;
 }
+#wpuf-search-section {
+  display: flex;
+  position: relative;
+  align-items: center;
+  color: red;
+  cursor: pointer;
+  justify-content: space-between;
+  border-bottom: 1px solid #c8d7e1;
+  height: 46px;
+}
+#wpuf-settings-search {
+  width: 100%;
+  height: 100%;
+  background: #f1f1f1;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  line-height: 20px;
+  font-weight: 400;
+  padding: 0 15px;
+}
+#wpuf-search-section .dashicons-no-alt {
+  display: none;
+  position: absolute;
+  right: 5px;
+}
 .wpuf-help-tabbed {
   display: flex;
   width: 100%;

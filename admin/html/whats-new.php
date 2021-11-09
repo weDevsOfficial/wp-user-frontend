@@ -1,5 +1,52 @@
 <?php
 $changelog = [
+    [
+        'version'  => 'Version 3.5.22',
+        'released' => '2021-10-28',
+        'changes'  =>  [
+
+            [
+                'title' => __( 'Featured item for subscriber', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Warning added for unsaved form data on frontend', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Settings page search implemented', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Editor added for registration form email template', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Fallback pay per post not working with when draft enabled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'User Dashboard responsive issues fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Showing wrong license expire message handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Remove expire cron handled for once daily', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Billing address validation handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Promotion notice restricted for WPUF menu', 'wp-user-frontend' ),
+                'type'  => 'Update',
+            ],
+        ],
+    ],
      [
         'version'  => 'Version 3.5.21',
         'released' => '2021-10-21',

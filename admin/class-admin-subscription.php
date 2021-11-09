@@ -326,6 +326,8 @@ class WPUF_Admin_Subscription {
         $expired_post_status          = isset( $sub_meta['_expired_post_status'] ) ? $sub_meta['_expired_post_status'] : '';
         $is_enable_mail_after_expired = isset( $sub_meta['_enable_mail_after_expired'] ) && $sub_meta['_enable_mail_after_expired'] == 'on' ? 'checked' : '';
         $post_expiration_message      = isset( $sub_meta['_post_expiration_message'] ) ? $sub_meta['_post_expiration_message'] : '';
+        $featured_item                = ! empty( $sub_meta['_total_feature_item'] ) ? $sub_meta['_total_feature_item'] : 0;
+        $remove_featured_item         = ! empty( $sub_meta['_remove_feature_item'] ) ? $sub_meta['_remove_feature_item'] : 0;
         ?>
 
         <div class="wpuf-subscription-pack-settings">
@@ -382,6 +384,23 @@ class WPUF_Admin_Subscription {
                 <section id="wpuf-post-restriction">
                     <table class="form-table">
                         <tbody>
+                        <tr>
+                            <th><label for="wpuf-sticky-item"><?php esc_html_e( 'Number of featured item', 'wp-user-frontend' ); ?></label></th>
+                            <td>
+                                <input type="text" size="20" style="" id="wpuf-sticky-item" value="<?php echo intval( $featured_item ); ?>" name="total_feature_item" />
+                                <br>
+                                <span class="description"><?php esc_html_e( 'How many items a user can set as featured, including all post types', 'wp-user-frontend' ); ?></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="wpuf-sticky-item"><?php esc_html_e( 'Remove featured item on subscription expiry', 'wp-user-frontend' ); ?></label></th>
+                            <td>
+                                <label for="">
+                                    <input type="checkbox"  value="on" <?php echo esc_attr( 'on' === $remove_featured_item ? 'checked' : '' ); ?> name="remove_feature_item" />
+                                    <?php esc_html_e( 'The featured item will be removed if the subscription expires', 'wp-user-frontend' ); ?>
+                                </label>
+                            </td>
+                        </tr>
                             <?php
                                 echo wp_kses(
                                     $this->get_post_types( $sub_meta['post_type_name'] ),
@@ -645,7 +664,12 @@ class WPUF_Admin_Subscription {
                         <h4><?php esc_html_e( 'Remaining Posting Count', 'wp-user-frontend' ); ?></h4>
 
                         <table class="form-table">
-
+                            <?php if ( ! empty( $user_sub['total_feature_item'] ) ) { ?>
+                            <tr>
+                                <th><label><?php esc_html_e( 'Number of featured item', 'wp-user-frontend' ); ?></label></th>
+                                <td><input type="text" value="<?php echo esc_attr( $user_sub['total_feature_item'] ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
+                            </tr>
+                            <?php } ?>
                             <?php
                             foreach ( $user_sub['posts'] as $key => $value ) {
                                 $post_type_object = get_post_type_object( $key );

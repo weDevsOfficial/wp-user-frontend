@@ -44,87 +44,93 @@ class WPUF_Admin_Form {
     public function register_post_type() {
         $capability = wpuf_admin_role();
 
-        register_post_type( 'wpuf_forms', [
-            'label'           => __( 'Forms', 'wp-user-frontend' ),
-            'public'          => false,
-            'show_ui'         => false,
-            'show_in_menu'    => false, //false,
-            'capability_type' => 'post',
-            'hierarchical'    => false,
-            'query_var'       => false,
-            'supports'        => ['title'],
-            'capabilities'    => [
-                'publish_posts'       => $capability,
-                'edit_posts'          => $capability,
-                'edit_others_posts'   => $capability,
-                'delete_posts'        => $capability,
-                'delete_others_posts' => $capability,
-                'read_private_posts'  => $capability,
-                'edit_post'           => $capability,
-                'delete_post'         => $capability,
-                'read_post'           => $capability,
-            ],
-            'labels' => [
-                'name'               => __( 'Forms', 'wp-user-frontend' ),
-                'singular_name'      => __( 'Form', 'wp-user-frontend' ),
-                'menu_name'          => __( 'Forms', 'wp-user-frontend' ),
-                'add_new'            => __( 'Add Form', 'wp-user-frontend' ),
-                'add_new_item'       => __( 'Add New Form', 'wp-user-frontend' ),
-                'edit'               => __( 'Edit', 'wp-user-frontend' ),
-                'edit_item'          => __( 'Edit Form', 'wp-user-frontend' ),
-                'new_item'           => __( 'New Form', 'wp-user-frontend' ),
-                'view'               => __( 'View Form', 'wp-user-frontend' ),
-                'view_item'          => __( 'View Form', 'wp-user-frontend' ),
-                'search_items'       => __( 'Search Form', 'wp-user-frontend' ),
-                'not_found'          => __( 'No Form Found', 'wp-user-frontend' ),
-                'not_found_in_trash' => __( 'No Form Found in Trash', 'wp-user-frontend' ),
-                'parent'             => __( 'Parent Form', 'wp-user-frontend' ),
-            ],
-        ] );
+        register_post_type(
+            'wpuf_forms', [
+                'label'           => __( 'Forms', 'wp-user-frontend' ),
+                'public'          => false,
+                'show_ui'         => false,
+                'show_in_menu'    => false, //false,
+                'capability_type' => 'post',
+                'hierarchical'    => false,
+                'query_var'       => false,
+                'supports'        => [ 'title' ],
+                'capabilities'    => [
+                    'publish_posts'       => $capability,
+                    'edit_posts'          => $capability,
+                    'edit_others_posts'   => $capability,
+                    'delete_posts'        => $capability,
+                    'delete_others_posts' => $capability,
+                    'read_private_posts'  => $capability,
+                    'edit_post'           => $capability,
+                    'delete_post'         => $capability,
+                    'read_post'           => $capability,
+                ],
+                'labels' => [
+                    'name'               => __( 'Forms', 'wp-user-frontend' ),
+                    'singular_name'      => __( 'Form', 'wp-user-frontend' ),
+                    'menu_name'          => __( 'Forms', 'wp-user-frontend' ),
+                    'add_new'            => __( 'Add Form', 'wp-user-frontend' ),
+                    'add_new_item'       => __( 'Add New Form', 'wp-user-frontend' ),
+                    'edit'               => __( 'Edit', 'wp-user-frontend' ),
+                    'edit_item'          => __( 'Edit Form', 'wp-user-frontend' ),
+                    'new_item'           => __( 'New Form', 'wp-user-frontend' ),
+                    'view'               => __( 'View Form', 'wp-user-frontend' ),
+                    'view_item'          => __( 'View Form', 'wp-user-frontend' ),
+                    'search_items'       => __( 'Search Form', 'wp-user-frontend' ),
+                    'not_found'          => __( 'No Form Found', 'wp-user-frontend' ),
+                    'not_found_in_trash' => __( 'No Form Found in Trash', 'wp-user-frontend' ),
+                    'parent'             => __( 'Parent Form', 'wp-user-frontend' ),
+                ],
+            ]
+        );
 
-        register_post_type( 'wpuf_profile', [
-            'label'           => __( 'Registraton Forms', 'wp-user-frontend' ),
-            'public'          => false,
-            'show_ui'         => false,
-            'show_in_menu'    => false,
-            'capability_type' => 'post',
-            'hierarchical'    => false,
-            'query_var'       => false,
-            'supports'        => ['title'],
-            'capabilities'    => [
-                'publish_posts'       => $capability,
-                'edit_posts'          => $capability,
-                'edit_others_posts'   => $capability,
-                'delete_posts'        => $capability,
-                'delete_others_posts' => $capability,
-                'read_private_posts'  => $capability,
-                'edit_post'           => $capability,
-                'delete_post'         => $capability,
-                'read_post'           => $capability,
-            ],
-            'labels' => [
-                'name'               => __( 'Forms', 'wp-user-frontend' ),
-                'singular_name'      => __( 'Form', 'wp-user-frontend' ),
-                'menu_name'          => __( 'Registration Forms', 'wp-user-frontend' ),
-                'add_new'            => __( 'Add Form', 'wp-user-frontend' ),
-                'add_new_item'       => __( 'Add New Form', 'wp-user-frontend' ),
-                'edit'               => __( 'Edit', 'wp-user-frontend' ),
-                'edit_item'          => __( 'Edit Form', 'wp-user-frontend' ),
-                'new_item'           => __( 'New Form', 'wp-user-frontend' ),
-                'view'               => __( 'View Form', 'wp-user-frontend' ),
-                'view_item'          => __( 'View Form', 'wp-user-frontend' ),
-                'search_items'       => __( 'Search Form', 'wp-user-frontend' ),
-                'not_found'          => __( 'No Form Found', 'wp-user-frontend' ),
-                'not_found_in_trash' => __( 'No Form Found in Trash', 'wp-user-frontend' ),
-                'parent'             => __( 'Parent Form', 'wp-user-frontend' ),
-            ],
-        ] );
+        register_post_type(
+            'wpuf_profile', [
+                'label'           => __( 'Registraton Forms', 'wp-user-frontend' ),
+                'public'          => false,
+                'show_ui'         => false,
+                'show_in_menu'    => false,
+                'capability_type' => 'post',
+                'hierarchical'    => false,
+                'query_var'       => false,
+                'supports'        => [ 'title' ],
+                'capabilities'    => [
+                    'publish_posts'       => $capability,
+                    'edit_posts'          => $capability,
+                    'edit_others_posts'   => $capability,
+                    'delete_posts'        => $capability,
+                    'delete_others_posts' => $capability,
+                    'read_private_posts'  => $capability,
+                    'edit_post'           => $capability,
+                    'delete_post'         => $capability,
+                    'read_post'           => $capability,
+                ],
+                'labels' => [
+                    'name'               => __( 'Forms', 'wp-user-frontend' ),
+                    'singular_name'      => __( 'Form', 'wp-user-frontend' ),
+                    'menu_name'          => __( 'Registration Forms', 'wp-user-frontend' ),
+                    'add_new'            => __( 'Add Form', 'wp-user-frontend' ),
+                    'add_new_item'       => __( 'Add New Form', 'wp-user-frontend' ),
+                    'edit'               => __( 'Edit', 'wp-user-frontend' ),
+                    'edit_item'          => __( 'Edit Form', 'wp-user-frontend' ),
+                    'new_item'           => __( 'New Form', 'wp-user-frontend' ),
+                    'view'               => __( 'View Form', 'wp-user-frontend' ),
+                    'view_item'          => __( 'View Form', 'wp-user-frontend' ),
+                    'search_items'       => __( 'Search Form', 'wp-user-frontend' ),
+                    'not_found'          => __( 'No Form Found', 'wp-user-frontend' ),
+                    'not_found_in_trash' => __( 'No Form Found in Trash', 'wp-user-frontend' ),
+                    'parent'             => __( 'Parent Form', 'wp-user-frontend' ),
+                ],
+            ]
+        );
 
-        register_post_type( 'wpuf_input', [
-            'public'          => false,
-            'show_ui'         => false,
-            'show_in_menu'    => false,
-        ] );
+        register_post_type(
+            'wpuf_input', [
+                'public'          => false,
+                'show_ui'         => false,
+                'show_in_menu'    => false,
+            ]
+        );
     }
 
     /**
@@ -135,7 +141,7 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function post_forms_builder_init() {
-        if ( !isset( $_GET['action'] ) ) {
+        if ( ! isset( $_GET['action'] ) ) {
             return;
         }
 
@@ -145,7 +151,7 @@ class WPUF_Admin_Form {
             wp_redirect( $add_new_page_url );
         }
 
-        if ( ( 'edit' === $_GET['action'] ) && !empty( $_GET['id'] ) ) {
+        if ( ( 'edit' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
             add_action( 'wpuf-form-builder-tabs-post', [ $this, 'add_primary_tabs' ] );
             add_action( 'wpuf-form-builder-tab-contents-post', [ $this, 'add_primary_tab_contents' ] );
             add_action( 'wpuf-form-builder-settings-tabs-post', [ $this, 'add_settings_tabs' ] );
@@ -243,7 +249,8 @@ class WPUF_Admin_Form {
     public function add_settings_tab_contents() {
         global $post;
 
-        $form_settings = wpuf_get_form_settings( $post->ID ); ?>
+        $form_settings = wpuf_get_form_settings( $post->ID );
+        ?>
 
             <div id="wpuf-metabox-settings" class="group">
                 <?php include_once __DIR__ . '/html/form-settings-post.php'; ?>
@@ -286,7 +293,7 @@ class WPUF_Admin_Form {
     public function subscription_dropdown( $selected = null ) {
         $subscriptions = WPUF_Subscription::init()->get_subscriptions();
 
-        if ( !$subscriptions ) {
+        if ( ! $subscriptions ) {
             printf( '<option>%s</option>', esc_html( __( '- Select -', 'wp-user-frontend' ) ) );
 
             return;
@@ -320,9 +327,14 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function add_post_field_section() {
-        $post_fields = apply_filters( 'wpuf-form-builder-wp_forms-fields-section-post-fields', [
-            'post_title', 'post_content', 'post_excerpt', 'featured_image',
-        ] );
+        $post_fields = apply_filters(
+            'wpuf-form-builder-wp_forms-fields-section-post-fields', [
+                'post_title',
+                'post_content',
+                'post_excerpt',
+                'featured_image',
+            ]
+        );
 
         return [
             [
@@ -353,7 +365,7 @@ class WPUF_Admin_Form {
             [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ],
             WPUF_VERSION,
             true
-         );
+        );
     }
 
     /**
@@ -451,9 +463,11 @@ class WPUF_Admin_Form {
 
         $wpuf_post_types = wpuf_get_post_types( $args );
 
-        $ignore_taxonomies = apply_filters( 'wpuf-ignore-taxonomies', [
-            'post_format',
-        ] );
+        $ignore_taxonomies = apply_filters(
+            'wpuf-ignore-taxonomies', [
+                'post_format',
+            ]
+        );
 
         foreach ( $wpuf_post_types as $post_type ) {
             $this->wp_post_types[ $post_type ] = [];
@@ -461,16 +475,18 @@ class WPUF_Admin_Form {
             $taxonomies = get_object_taxonomies( $post_type, 'object' );
 
             foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                if ( !in_array( $tax_name, $ignore_taxonomies ) ) {
+                if ( ! in_array( $tax_name, $ignore_taxonomies ) ) {
                     $this->wp_post_types[ $post_type ][ $tax_name ] = [
                         'title'         => $taxonomy->label,
                         'hierarchical'  => $taxonomy->hierarchical,
                     ];
 
-                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = get_terms( [
-                        'taxonomy'   => $tax_name,
-                        'hide_empty' => false,
-                    ] );
+                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = get_terms(
+                        [
+                            'taxonomy'   => $tax_name,
+                            'hide_empty' => false,
+                        ]
+                    );
                 }
             }
         }
@@ -487,9 +503,11 @@ class WPUF_Admin_Form {
      */
     public function add_to_localize_script( $data ) {
         $data = $this->unset_conditional( $data );
-        return array_merge( $data, [
-            'wp_post_types'     => $this->wp_post_types,
-        ] );
+        return array_merge(
+            $data, [
+                'wp_post_types'     => $this->wp_post_types,
+            ]
+        );
     }
 
     /**
@@ -518,7 +536,7 @@ class WPUF_Admin_Form {
             $taxonomy_templates = [];
 
             foreach ( $this->wp_post_types as $post_type => $taxonomies ) {
-                if ( !empty( $taxonomies ) ) {
+                if ( ! empty( $taxonomies ) ) {
                     foreach ( $taxonomies as $tax_name => $taxonomy ) {
                         if ( 'post_tag' === $tax_name ) {
                             $taxonomy_templates['post_tag'] = new WPUF_Form_Field_Post_Tags();
@@ -546,9 +564,11 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function i18n( $i18n ) {
-        return array_merge( $i18n, [
-            'any_of_three_needed' => __( 'Post Forms must have either Post Title, Post Body or Excerpt field', 'wp-user-frontend' ),
-        ] );
+        return array_merge(
+            $i18n, [
+                'any_of_three_needed' => __( 'Post Forms must have either Post Title, Post Body or Excerpt field', 'wp-user-frontend' ),
+            ]
+        );
     }
 
     /**
@@ -558,21 +578,24 @@ class WPUF_Admin_Form {
      *
      * @return array
      */
-    private function unset_conditional( $settings ){
-        $remove_cond_field = ['action_hook','step_start'];
+    private function unset_conditional( $settings ) {
+        $remove_cond_field = [ 'action_hook', 'step_start' ];
 
-        $field_settings = array_map(function ($field) use ($remove_cond_field){
-            if( in_array($field['template'], $remove_cond_field, true)){
-                $index = array_filter($field['settings'],function ($settings){
-                    return $settings['name'] === 'wpuf_cond';
-                });
+        $field_settings = array_map(
+            function ( $field ) use ( $remove_cond_field ) {
+                if ( in_array( $field['template'], $remove_cond_field, true ) ) {
+                    $index = array_filter(
+                        $field['settings'], function ( $settings ) {
+                            return $settings['name'] === 'wpuf_cond';
+                        }
+                    );
 
-                unset($field['settings'][array_keys($index)[0]]);
-            }
+                    unset( $field['settings'][ array_keys( $index )[0] ] );
+                }
 
-            return $field;
-
-        },$settings['field_settings']);
+                return $field;
+            }, $settings['field_settings']
+        );
 
         $settings['field_settings'] = $field_settings;
 

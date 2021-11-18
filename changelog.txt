@@ -1,4 +1,4 @@
-= v3.5.23 (18 Nov, 2021) =
+= v3.5.25 (18 Nov, 2021) =
 
 * Fix - Security Vulnerability fixed
 

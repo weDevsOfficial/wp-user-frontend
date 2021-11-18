@@ -1,6 +1,7 @@
 <?php
 $changelog = [
-    'version'  => 'Version 3.5.23',
+    [
+    'version'  => 'Version 3.5.25',
     'released' => '2021-11-18',
     'changes'  =>  [
 
@@ -8,6 +9,8 @@ $changelog = [
             'title' => __( 'Security Vulnerability fixed', 'wp-user-frontend' ),
             'type'  => 'Fix',
         ],
+      ],
+    ],
      [
         'version'  => 'Version 3.5.22',
         'released' => '2021-10-28',

@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership, frontend-post
 Requires at least: 4.0
 Tested up to: 5.8.1
 Requires PHP: 5.6
-Stable tag: 3.5.22
+Stable tag: 3.5.23
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -263,6 +263,10 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 == Changelog ==
+= v3.5.23 (18 Nov, 2021) =
+
+* Fix - Security Vulnerability fixed
+
 = v3.5.22 (28 Oct, 2021) =
 
 * Enhancement - Settings page search implemented

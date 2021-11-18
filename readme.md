@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 5.8.1  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.21  
+**Stable tag:** 3.5.23  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -263,6 +263,23 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 ## Changelog ##
+### v3.5.23 (18 Nov, 2021) ###
+
+* Fix - Security Vulnerability fixed
+
+### v3.5.22 (28 Oct, 2021) ###
+
+* Enhancement - Settings page search implemented
+* Enhancement - Featured item for subscriber
+* Enhancement - Warning added for unsaved form data on frontend
+* Enhancement - Editor added for registration form email template
+* Fix - Fallback pay per post not working with when draft enabled
+* Fix - User Dashboard responsive issues fixed
+* Fix - Showing wrong license expire message handled
+* Fix - Remove expire cron handled for once daily
+* Fix - Billing address validation handled
+* Update - Promotion notice restricted for WPUF menu
+
 ### v3.5.21 (21 Oct, 2021) ###
 
 * Fix - reCaptcha issue with other plugin handled

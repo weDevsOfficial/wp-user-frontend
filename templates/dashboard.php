@@ -103,7 +103,7 @@
         $post_data['subs_expired']      = $subs_expired;
     ?>
 
-    <?php wpuf_load_template('dashboard/list.php', $post_data ); ?>
+    <?php wpuf_load_template( 'dashboard/list.php', $post_data ); ?>
         <div class="wpuf-pagination">
             <?php
                 $pagination = paginate_links( [

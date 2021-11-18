@@ -1,3 +1,7 @@
+= v3.5.23 (18 Nov, 2021) =
+
+* Fix - Security Vulnerability fixed
+
 = v3.5.22 (28 Oct, 2021) =
 
 * Enhancement - Settings page search implemented

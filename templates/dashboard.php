@@ -35,6 +35,7 @@
     $meta_name  = [];
     $meta_id    = [];
     $meta_key   = [];
+    $post_data  = [];
 
     if ( !empty( $meta ) ) {
         $arr =  explode( ',', $meta );
@@ -91,9 +92,18 @@
         } else {
             $subs_expired = false;
         }
+
+        $post_data['post_type']         = $post_type;
+        $post_data['featured_img']      = $featured_img;
+        $post_data['featured_img_size'] = $featured_img_size;
+        $post_data['enable_payment']    = $enable_payment;
+        $post_data['payment_column']    = $payment_column;
+        $post_data['args']              = $args;
+        $post_data['dashboard_query']   = $dashboard_query;
+        $post_data['subs_expired']      = $subs_expired;
     ?>
 
-    <?php include WPUF_ROOT . '/templates/dashboard/list.php'; ?>
+    <?php wpuf_load_template('dashboard/list.php', $post_data ); ?>
         <div class="wpuf-pagination">
             <?php
                 $pagination = paginate_links( [

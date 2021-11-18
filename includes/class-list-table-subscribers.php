@@ -174,7 +174,7 @@ class WPUF_List_Table_Subscribers extends WP_List_Table {
 
 
         $sql = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
-        $sql .= isset( $_REQUEST['post_ID'] ) ? ' WHERE subscribtion_id = ' . sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) )  : '';
+        $sql .= isset( $_REQUEST['post_ID'] ) ? ' WHERE subscribtion_id = ' . intval( sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) ): '';
 
         $sql .= isset( $_REQUEST['status'] ) ? ' AND subscribtion_status = "' . sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) . '"' : '';
 

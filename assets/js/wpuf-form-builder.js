@@ -430,6 +430,18 @@
 
             settings: function() {
                 return this.$store.state.settings;
+            },
+
+            meta_field_key: function () {
+                let meta_key = [];
+
+                this.$store.state.form_fields.forEach(function (field) {
+                    if( 'yes' === field.is_meta ){
+                        meta_key.push(field.name);
+                    }
+                });
+
+                return meta_key.map(function(name) { return '{' + name +'}' }).join( );
             }
         },
 

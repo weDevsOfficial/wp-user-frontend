@@ -4002,26 +4002,35 @@ function wpuf_payment_success_page( $data ){
  *
  * @return array
  */
-function wpuf_get_editor_buttons( ){
-    return [
-        'formatselect',
-        'wp_more',
-        'spellchecker',
-        'bold',
-        'italic',
-        'bullist',
-        'numlist',
-        'blockquote',
-        'alignleft',
-        'aligncenter',
-        'alignright',
-        'link',
-        'underline',
-        'strikethrough',
-        'undo',
-        'redo',
-        'fullscreen',
+function wpuf_get_editor_buttons( $type = 'rich' ){
+    $common = [
+        'bold'        => 'bold',
+        'italic'      => 'italic',
+        'bullist'     => 'bullist',
+        'numlist'     => 'numlist',
+        'blockquote'  => 'blockquote',
+        'alignleft'   => 'alignleft',
+        'aligncenter' => 'aligncenter',
+        'alignright'  => 'alignright',
+        'link'        => 'link',
     ];
+
+    $rich = [
+        'formatselect' => 'formatselect',
+        'wp_more'      => 'wp_more',
+        'spellchecker' => 'spellchecker',
+    ];
+
+    $teeny = [
+        'underline'     => 'underline',
+        'strikethrough' => 'strikethrough',
+        'undo'          => 'undo',
+        'redo'          => 'redo',
+        'fullscreen'    => 'fullscreen',
+    ];
+
+    return 'rich' === $type || 'yes' === $type ? array_merge( $rich, $common ) : array_merge( $common, $teeny );
+
 }
 
 /**

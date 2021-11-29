@@ -49,7 +49,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
 
                             $tinymce_settings['toolbar1'] = implode(
                                 ',', array_filter(
-                                    wpuf_get_editor_buttons(), function ( $key ) use ( $exclude_button ) {
+                                    wpuf_get_editor_buttons( $field_settings['rich'] ), function ( $key ) use ( $exclude_button ) {
                                         return ! in_array( $key, $exclude_button, true );
                                     }, ARRAY_FILTER_USE_KEY
                                 )

@@ -82,13 +82,33 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         $status_links = [];
         $base_link    = admin_url( 'admin.php?page=wpuf_transaction' );
 
-        $transactions_count         = wpuf_get_transactions( [ 'count' => true ] );
+        $transactions_completed_count = wpuf_get_completed_transactions( [ 'count' => true ] );
         $transactions_pending_count = wpuf_get_pending_transactions( [ 'count' => true ] );
+        $transactions_total_count = $transactions_completed_count + $transactions_pending_count;
 
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'all';
 
-        $status_links['all']     = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'all' ], $base_link ), ( $status === 'all' ) ? 'current' : '', __( 'All', 'wp-user-frontend' ), $transactions_count );
-        $status_links['pending'] = sprintf( '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>', add_query_arg( [ 'status' => 'pending' ], $base_link ), ( $status === 'pending' ) ? 'current' : '', __( 'Pending', 'wp-user-frontend' ), $transactions_pending_count );
+        $status_links['all'] = sprintf(
+            '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>',
+            add_query_arg( [ 'status' => 'all' ], $base_link ),
+            ( 'all' === $status ) ? 'current' : '',
+            __( 'All', 'wp-user-frontend' ),
+            $transactions_total_count
+        );
+        $status_links['completed'] = sprintf(
+            '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>',
+            add_query_arg( [ 'status' => 'completed' ], $base_link ),
+            ( 'completed' === $status ) ? 'current' : '',
+            __( 'Completed', 'wp-user-frontend' ),
+            $transactions_completed_count
+        );
+        $status_links['pending'] = sprintf(
+            '<a href="%s" class="%s">%s <span class="count">(%s)</span></a>',
+            add_query_arg( [ 'status' => 'pending' ], $base_link ),
+            ( 'pending' === $status ) ? 'current' : '',
+            __( 'Pending', 'wp-user-frontend' ),
+            $transactions_pending_count
+        );
 
         return $status_links;
     }
@@ -214,10 +234,12 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
 
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'all';
 
-        if ( $status === 'pending' ) {
+        if ( 'pending' === $status ) {
             $total_items = wpuf_get_pending_transactions( [ 'count' => true ] );
+        } elseif ( 'completed' === $status ) {
+            $total_items = wpuf_get_completed_transactions( [ 'count' => true ] );
         } else {
-            $total_items = wpuf_get_transactions( [ 'count' => true ] );
+            $total_items = wpuf_get_all_transactions( [ 'count' => true ] );
         }
 
         $this->set_pagination_args(
@@ -243,10 +265,12 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
             $args['order']   = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) );
         }
 
-        if ( $status === 'pending' ) {
+        if ( 'pending' === $status ) {
             $this->items = wpuf_get_pending_transactions( $args );
+        } elseif ( 'completed' === $status ) {
+            $this->items = wpuf_get_completed_transactions( $args );
         } else {
-            $this->items = wpuf_get_transactions( $args );
+            $this->items = wpuf_get_all_transactions( $args );
         }
     }
 

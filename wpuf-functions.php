@@ -2159,7 +2159,7 @@ function wpuf_get_pending_transactions( $args = [] ) {
 /**
  * Get all pending and completed transactions
  *
- * @since 3.5.26
+ * @since WPUF
  *
  * @param $args
  *
@@ -2177,6 +2177,9 @@ function wpuf_get_all_transactions( $args = [] ) {
         'count'   => false,
     ];
 
+    $orderby_keys = ['id', 'status', 'created'];
+    $order_keys = ['asc', 'desc'];
+
     $args = wp_parse_args( $args, $defaults );
 
     if ( $args['count'] ) {
@@ -2190,15 +2193,23 @@ function wpuf_get_all_transactions( $args = [] ) {
         );
     }
 
+    $orderby       = in_array( $args['orderby'], $orderby_keys ) ? $args['orderby'] : 'id';
+    $sorting_order = in_array( $args['order'], $order_keys ) ? $args['order'] : 'DESC';
+    $offset        = ( int ) sanitize_key( $args['offset'] );
+    $number        = ( int ) sanitize_key( $args['number'] );
+
     // get all the completed transaction from transaction table
     // and pending transaction from post table
     $transactions = $wpdb->get_results(
+        $wpdb->prepare(
             "(SELECT id, user_id, status, tax, cost, post_id, pack_id, payer_first_name, payer_last_name, payer_email, payment_type, transaction_id, created FROM {$transaction_table})
             UNION ALL
             (SELECT ID AS id, post_author AS user_id, null AS status, null AS tax, null AS cost, ID as post_id, null AS pack_id, null AS payer_first_name, null AS payer_last_name, null AS payer_email, null AS payment_type, 0 AS transaction_id, post_date AS created FROM {$wpdb->posts}
-            WHERE post_type = 'wpuf_order')
-            ORDER BY `{$args['orderby']}` {$args['order']}
-			LIMIT {$args['offset']}, {$args['number']}"
+            WHERE post_type = %s)
+            ORDER BY {$orderby} {$sorting_order}
+            LIMIT %d, %d",
+            'wpuf_order', $offset, $number
+        )
     );
 
     if ( ! $transactions ) {

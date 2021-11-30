@@ -324,7 +324,7 @@
         removeField: function() {
             //check if it's the only item
             var $parent = $(this).closest('tr');
-            var items = $parent.siblings().andSelf().length;
+            var items = $parent.siblings().addBack().length;
 
             if( items > 1 ) {
                 $parent.remove();

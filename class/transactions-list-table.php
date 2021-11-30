@@ -126,10 +126,9 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
         $delete_nonce = wp_create_nonce( 'wpuf-delete-transaction' );
         $title        = '<strong>#' . $id . '</strong>';
 
-        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
         $page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
 
-        if ( $status === 'pending' ) {
+        if ( 'pending' === $item->status ) {
             $accept_nonce = wp_create_nonce( 'wpuf-accept-transaction' );
             $reject_nonce = wp_create_nonce( 'wpuf-reject-transaction' );
 
@@ -208,16 +207,20 @@ class WPUF_Transactions_List_Table extends WP_List_Table {
      */
     public function get_bulk_actions() {
         $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
+        $completed_action = [
+            'bulk-delete' => __( 'Delete', 'wp-user-frontend' ),
+        ];
+        $pending_action = [
+            'bulk-accept' => __( 'Accept', 'wp-user-frontend' ),
+            'bulk-reject' => __( 'Reject', 'wp-user-frontend' ),
+        ];
 
-        if ( $status === 'pending' ) {
-            $actions = [
-                'bulk-accept' => __( 'Accept', 'wp-user-frontend' ),
-                'bulk-reject' => __( 'Reject', 'wp-user-frontend' ),
-            ];
+        if ( 'pending' === $status ) {
+            $actions = $pending_action;
+        } elseif ( 'completed' === $status ) {
+            $actions = $completed_action;
         } else {
-            $actions = [
-                'bulk-delete' => __( 'Delete', 'wp-user-frontend' ),
-            ];
+            $actions = array_merge( $completed_action, $pending_action );
         }
 
         return $actions;

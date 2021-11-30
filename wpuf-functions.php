@@ -2190,6 +2190,8 @@ function wpuf_get_all_transactions( $args = [] ) {
         );
     }
 
+    // get all the completed transaction from transaction table
+    // and pending transaction from post table
     $transactions = $wpdb->get_results(
             "(SELECT id, user_id, status, tax, cost, post_id, pack_id, payer_first_name, payer_last_name, payer_email, payment_type, transaction_id, created FROM {$transaction_table})
             UNION ALL
@@ -2208,12 +2210,14 @@ function wpuf_get_all_transactions( $args = [] ) {
             continue;
         }
 
+        // get metadata for pending transactions
         $info = get_post_meta( $transaction->id, '_data', true );
         $payment_method = isset( $info['post_data']['wpuf_payment_method'] ) ? $info['post_data']['wpuf_payment_method'] : '';
 
         $type = isset( $info['type'] ) ? $info['type'] : '';
         $item_number = isset( $info['item_number'] ) ? $info['item_number'] : 0;
 
+        // attach data to pending transactions
         $transaction->user_id          = isset( $info['user_info']['id'] ) ? $info['user_info']['id'] : 0;
         $transaction->status           = 'pending';
         $transaction->cost             = isset( $info['price'] ) ? $info['price'] : 0;

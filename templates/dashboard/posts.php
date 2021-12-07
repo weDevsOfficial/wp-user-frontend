@@ -87,16 +87,6 @@ $post_type_obj   = get_post_type_object( $post_type );
     $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
     $payment_column    = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' );
     $enable_payment    = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
-    $current_user      = wpuf_get_user();
-    $user_subscription = new WPUF_User_Subscription( $current_user );
-    $user_sub          = $user_subscription->current_pack();
-    $sub_id            = $current_user->subscription()->current_pack_id();
-
-    if ( $sub_id ) {
-        $subs_expired = $user_subscription->expired();
-    } else {
-        $subs_expired = false;
-    }
     ?>
     <div class="items-table-container">
         <table class="items-table <?php echo esc_attr( $post_type ); ?>" cellpadding="0" cellspacing="0">
@@ -185,31 +175,14 @@ $post_type_obj   = get_post_type_object( $post_type );
 
                                 <td data-label="<?php esc_attr_e( 'Options: ', 'wp-user-frontend' ); ?>" class="data-column">
                                     <?php
-                                    if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
-                                        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
-                                        $edit_page            = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
-                                        $url                  = add_query_arg( ['pid' => $post->ID], get_permalink( $edit_page ) );
-
-                                        $show_edit = true;
-
-                                        if ( $post->post_status == 'pending' && $disable_pending_edit == 'on' ) {
-                                            $show_edit  = false;
-                                        }
-
-                                        if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( !empty( $payment_status ) && $payment_status != 'completed' ) ) {
-                                            $show_edit  = false;
-                                        }
-
-                                        if ( $subs_expired ) {
-                                            $show_edit  = false;
-                                        }
-
-                                        if ( $show_edit ) {
+                                        if ( wpuf_is_post_editable( $post ) ) {
+                                            $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
+                                            $url = add_query_arg( [ 'pid' => $post->ID ], get_permalink( $edit_page ) );
                                             ?>
                                             <a class="wpuf-posts-options wpuf-posts-edit" href="<?php echo esc_url( wp_nonce_url( $url, 'wpuf_edit' ) ); ?>"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.2175 0.232507L14.0736 2.08857C14.3836 2.39858 14.3836 2.90335 14.0736 3.21336L12.6189 4.66802L9.63808 1.68716L11.0927 0.232507C11.4027 -0.0775022 11.9075 -0.0775022 12.2175 0.232507ZM0 14.3061V11.3253L8.7955 2.52974L11.7764 5.5106L2.98086 14.3061H0Z" fill="#B7C4E7"/></svg></a>
                                             <?php
                                         }
-                                    } ?>
+                                     ?>
 
                                     <?php
                                     if ( wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) == 'yes' ) {

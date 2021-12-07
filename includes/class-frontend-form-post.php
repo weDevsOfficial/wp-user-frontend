@@ -120,8 +120,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $this->form_settings = $form->get_settings();
 
         $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
+        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
 
-        if ( $curpost->post_status === 'pending' && $disable_pending_edit === 'on' ) {
+        if ( ( 'pending' === $curpost->post_status && 'on' === $disable_pending_edit ) || ( 'publish' === $curpost->post_status && 'off' !==  $disable_publish_edit ) ) {
             return '<div class="wpuf-info">' . __( 'You can\'t edit a post while in pending mode.', 'wp-user-frontend' );
         }
 

@@ -11,7 +11,8 @@ jQuery(function($) {
         '.pending-user-email',
         '.denied-user-email',
         '.approved-user-email',
-        '.approved-post-email'
+        '.approved-post-email',
+        '.account-activated-user-email'
     ]
     group.forEach(function(header, index) {
         $(header).addClass("heading");

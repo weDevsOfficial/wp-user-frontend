@@ -2134,6 +2134,10 @@ function wpuf_get_pending_transactions( $args = [] ) {
     foreach ( $transactions as $transaction ) {
         $info = get_post_meta( $transaction->ID, '_data', true );
 
+        if ( ! $info ) {
+            continue;
+        }
+
         $items[] = (object) [
             'id'               => $transaction->ID,
             'user_id'          => $info['user_info']['id'],

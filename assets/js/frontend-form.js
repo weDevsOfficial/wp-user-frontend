@@ -668,7 +668,7 @@
             //check Google Map is required
             var map_required = self.find('[data-required="yes"]').parents('.wpuf-form-google-map-container');
             $.each(map_required, function(index, map){
-                var val = $(map).val();
+                var val = $(map).find('[id^="wpuf-map"]').val();
                 if ( val == '' ) {
                     error = true;
                     error_type = 'required';

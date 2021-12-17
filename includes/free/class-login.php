@@ -1091,21 +1091,22 @@ class WPUF_Simple_Login {
         $to         = $user_email;
         $login_url  = wp_login_url();
 
-        /* translators: %s: blogname */
-        $subject = sprintf( __( '[%s] Account has been activated', 'wp-user-frontend' ), $blogname );
-        /* translators: %s: username */
-        $message  = sprintf( __( 'Hi %s,', 'wp-user-frontend' ), $user->user_login ) . "\r\n\r\n";
-        $message .= __( 'Congrats! Your account has been activated. To login visit the following url:', 'wp-user-frontend' ) . "\r\n\r\n";
-        $message .= $login_url . "\r\n\r\n";
-        $message .= __( 'Thanks', 'wp-user-frontend' );
-
         if ( wpuf()->is_pro() && wpuf_pro_is_module_active( 'email-templates/email-templates.php' ) && wpuf_get_option( 'account_activated_user_email_notification', 'wpuf_mails', 'on' ) ) {
             $subject = wpuf_get_option( 'account_activated_user_email_subject', 'wpuf_mails' );
             $message = wpuf_get_option( 'account_activated_user_email_body', 'wpuf_mails' );
             $message = self::prepare_mail_body( $message, $user, $blogname );
+        } else {
+            /* translators: %s: blogname */
+            $subject = sprintf( __( '[%s] Account has been activated', 'wp-user-frontend' ), $blogname );
+            /* translators: %s: username */
+            $message  = sprintf( __( 'Hi %s,', 'wp-user-frontend' ), $user->user_login ) . "\r\n\r\n";
+            $message .= __( 'Congrats! Your account has been activated. To login visit the following url:', 'wp-user-frontend' ) . "\r\n\r\n";
+            $message .= $login_url . "\r\n\r\n";
+            $message .= __( 'Thanks', 'wp-user-frontend' );
         }
 
         $message = get_formatted_mail_body( $message, $subject );
+
         $headers = array( 'Content-Type: text/html; charset=UTF-8' );
 
         $subject  = apply_filters( 'wpuf_mail_after_confirmation_subject', $subject );
@@ -1128,9 +1129,9 @@ class WPUF_Simple_Login {
 
         $user_field_replace = [
             '<a href="' . wp_login_url() . '">' . __( ' Login ', 'wp-user-frontend' ) . '</a>',
-            $user->user_login,
-            $user->user_email,
-            $user->display_name,
+            $user->data->user_login,
+            $user->data->user_email,
+            $user->data->display_name,
             $blogname,
         ];
 

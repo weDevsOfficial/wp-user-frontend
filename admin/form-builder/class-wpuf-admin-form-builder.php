@@ -168,6 +168,8 @@ class WPUF_Admin_Form_Builder {
             'nonce'             => wp_create_nonce( 'form-builder-setting-nonce' )
         ] );
 
+        $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
+
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
 
         // mixins

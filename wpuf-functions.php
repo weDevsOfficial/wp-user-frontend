@@ -4189,3 +4189,34 @@ function wpuf_pagination( $total_items, $per_page ) {
         return '<div class="wpuf-pagination">' . $page_links . '</div>';
     }
 }
+
+/**
+ * Remove conditional from form builder for selected fields
+ *
+ * @param $settings
+ *
+ * @return array
+ */
+function wpuf_unset_conditional( $settings ) {
+    $remove_cond_field = [ 'action_hook', 'step_start' ];
+
+    $field_settings = array_map(
+        function ( $field ) use ( $remove_cond_field ) {
+            if ( in_array( $field['template'], $remove_cond_field, true ) ) {
+                $index = array_filter(
+                    $field['settings'], function ( $settings ) {
+                        return $settings['name'] === 'wpuf_cond';
+                    }
+                );
+
+                unset( $field['settings'][ array_keys( $index )[0] ] );
+            }
+
+            return $field;
+        }, $settings['field_settings']
+    );
+
+    $settings['field_settings'] = $field_settings;
+
+    return $settings;
+}

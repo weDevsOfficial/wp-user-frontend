@@ -55,6 +55,8 @@ class WPUF_Admin_Assets {
             'recaptcha_secret'  => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
         ] );
 
+        $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
+
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
 
         // mixins

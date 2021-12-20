@@ -502,7 +502,6 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function add_to_localize_script( $data ) {
-        $data = $this->unset_conditional( $data );
         return array_merge(
             $data, [
                 'wp_post_types'     => $this->wp_post_types,
@@ -569,36 +568,5 @@ class WPUF_Admin_Form {
                 'any_of_three_needed' => __( 'Post Forms must have either Post Title, Post Body or Excerpt field', 'wp-user-frontend' ),
             ]
         );
-    }
-
-    /**
-     * Remove conditional from from bulder for selected fields
-     *
-     * @param $settings
-     *
-     * @return array
-     */
-    private function unset_conditional( $settings ) {
-        $remove_cond_field = [ 'action_hook', 'step_start' ];
-
-        $field_settings = array_map(
-            function ( $field ) use ( $remove_cond_field ) {
-                if ( in_array( $field['template'], $remove_cond_field, true ) ) {
-                    $index = array_filter(
-                        $field['settings'], function ( $settings ) {
-                            return $settings['name'] === 'wpuf_cond';
-                        }
-                    );
-
-                    unset( $field['settings'][ array_keys( $index )[0] ] );
-                }
-
-                return $field;
-            }, $settings['field_settings']
-        );
-
-        $settings['field_settings'] = $field_settings;
-
-        return $settings;
     }
 }

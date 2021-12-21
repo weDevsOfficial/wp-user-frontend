@@ -4034,6 +4034,31 @@ function wpuf_get_editor_buttons( $type = 'rich' ){
 }
 
 /**
+ * Filter editor buttons
+ *
+ * @param $field_settings
+ *
+ * @return array
+ */
+function wpuf_filter_editor_toolbar( $field_settings ){
+    $tinymce_settings = [];
+
+    if ( ! empty( $field_settings['text_editor_control'] ) ) {
+        $exclude_button = $field_settings['text_editor_control'];
+
+        $tinymce_settings['toolbar1'] = implode(
+            ',', array_filter(
+                wpuf_get_editor_buttons( $field_settings['rich'] ), function ( $key ) use ( $exclude_button ) {
+                return ! in_array( $key, $exclude_button, true );
+            }, ARRAY_FILTER_USE_KEY
+            )
+        );
+    }
+
+    return $tinymce_settings;
+}
+
+/**
  * Retrieves paginated links for queried pages
  * uses WordPress paginate_links() function for the final output
  *

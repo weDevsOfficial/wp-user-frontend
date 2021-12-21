@@ -60,7 +60,9 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
                     <?php
                 }
 
-                if ( $field_settings['rich'] == 'yes' ) {
+                $tinymce_settings = wpuf_filter_editor_toolbar( $field_settings );
+
+                if ( $field_settings['rich'] === 'yes' ) {
                     $editor_settings = [
                         // 'textarea_rows' => $field_settings['rows'],
                         'quicktags'     => false,
@@ -69,9 +71,13 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
                         'textarea_name' => $field_settings['name'],
                     ];
 
+                    if ( ! empty( $tinymce_settings ) ) {
+                        $editor_settings['tinymce'] = $tinymce_settings;
+                    }
+
                     $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
                     wp_editor( $value, $textarea_id, $editor_settings );
-                } elseif ( $field_settings['rich'] == 'teeny' ) {
+                } elseif ( $field_settings['rich'] === 'teeny' ) {
                     $editor_settings = [
                         'textarea_rows' => $field_settings['rows'],
                         'quicktags'     => false,
@@ -80,6 +86,10 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
                         'editor_class'  => $req_class,
                         'textarea_name' => $field_settings['name'],
                     ];
+
+                    if ( ! empty( $tinymce_settings ) ) {
+                        $editor_settings['tinymce'] = $tinymce_settings;
+                    }
 
                     $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
                     wp_editor( $value, $textarea_id, $editor_settings );

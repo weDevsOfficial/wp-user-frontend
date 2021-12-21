@@ -2138,12 +2138,16 @@ function wpuf_get_pending_transactions( $args = [] ) {
             continue;
         }
 
+        $tax      = ! empty( $info['tax'] ) ? $info['tax'] : 0;
+        $subtotal = ! empty( $info['cost'] ) ? $info['cost'] : $info['price'];
+
         $items[] = (object) [
             'id'               => $transaction->ID,
             'user_id'          => $info['user_info']['id'],
             'status'           => 'pending',
-            'cost'             => $info['price'],
-            'tax'              => isset( $info['tax'] ) ? $info['tax'] : 0,
+            'subtotal'         => $subtotal,
+            'cost'             => $subtotal - $tax,
+            'tax'              => $tax,
             'post_id'          => ( $info['type'] === 'post' ) ? $info['item_number'] : 0,
             'pack_id'          => ( $info['type'] === 'pack' ) ? $info['item_number'] : 0,
             'payer_first_name' => $info['user_info']['first_name'],

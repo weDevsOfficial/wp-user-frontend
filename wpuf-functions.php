@@ -4055,7 +4055,7 @@ function wpuf_filter_editor_toolbar( $field_settings ){
         );
     }
 
-    return $tinymce_settings;
+    return ! empty( $tinymce_settings['toolbar1'] ) ? $tinymce_settings : [];
 }
 
 /**

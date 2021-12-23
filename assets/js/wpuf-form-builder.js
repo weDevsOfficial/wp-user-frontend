@@ -143,10 +143,12 @@
 
             // add new form field element
             add_form_field_element: function (state, payload) {
+
                 state.form_fields.splice(payload.toIndex, 0, payload.field);
                 var sprintf = wp.i18n.sprintf;
                 var __ = wp.i18n.__;
-                // bring newly added element into viewport
+                // bring newly added element into viewport, do not show for reg form
+                if ( window.location.search.substring(1).split('&').includes('page=wpuf-profile-forms') ) return;
                 Vue.nextTick(function () {
                     var el = $('#form-preview-stage .wpuf-form .field-items').eq(payload.toIndex);
                     if ('yes' == payload.field.is_meta && state.show_custom_field_tooltip) {

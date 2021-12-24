@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership, frontend-post  
 **Requires at least:** 4.0  
-**Tested up to:** 5.8.1  
+**Tested up to:** 5.8.2  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.25  
+**Stable tag:** 3.5.26  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 

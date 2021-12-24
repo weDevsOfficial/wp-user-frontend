@@ -149,7 +149,7 @@ class WPUF_Admin_Subscription {
                 foreach ( $user_pack['posts'] as $type => $value ) {
                     $user_pack['posts'][ $type ] = isset( $_POST[ $type ] ) ? sanitize_text_field( wp_unslash( $_POST[ $type ] ) ) : 0;
                 }
-                $user_pack['expire'] = isset( $_POST['expire'] ) ? wpuf_date2mysql( sanitize_text_field( wp_unslash( $_POST['expire'] ) ) ) : $user_pack['expire'];
+                $user_pack['expire'] = isset( $_POST['expire'] ) && 'Unlimited' !== $_POST['expire'] ? wpuf_date2mysql( sanitize_text_field( wp_unslash( $_POST['expire'] ) ) ) : $user_pack['expire'];
             }
             wpuf_get_user( $user_id )->subscription()->update_meta( $user_pack );
         } else {

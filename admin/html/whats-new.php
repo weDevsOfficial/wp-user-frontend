@@ -1,6 +1,17 @@
 <?php
 $changelog = [
     [
+    'version'  => 'Version 3.5.26',
+    'released' => '2021-12-24',
+    'changes'  =>  [
+
+        [
+            'title' => __( 'Promotion notice enhanced through api', 'wp-user-frontend' ),
+            'type'  => 'Enhancement',
+        ],
+      ],
+    ],
+    [
     'version'  => 'Version 3.5.25',
     'released' => '2021-11-18',
     'changes'  =>  [

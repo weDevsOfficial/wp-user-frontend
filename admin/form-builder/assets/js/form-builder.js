@@ -539,7 +539,7 @@
 
                 var form_id = $('#wpuf-form-builder [name="wpuf_form_id"]').val();
 
-                if ( typeof tinyMCE !== 'undefined' ) {
+                if ( typeof tinyMCE !== 'undefined' && window.location.search.substring(1).split('&').includes('page=wpuf-profile-forms') ) {
                     $('textarea[name="wpuf_settings[notification][verification_body]"]').val(tinyMCE.get('wpuf_verification_body_' + form_id).getContent());
                     $('textarea[name="wpuf_settings[notification][welcome_email_body]"]').val(tinyMCE.get('wpuf_welcome_email_body_' + form_id).getContent());
                 }

@@ -90,7 +90,7 @@
         },
 
         warningOnExit: function () {
-            $('input[name="submit"]').on('click', function () {
+            $('input[name="submit"], #wpuf-post-draft').on('click', function () {
                 window.onbeforeunload = null;
                 return;
             });

@@ -4,6 +4,7 @@
  * Promotional offer class
  */
 class WPUF_Admin_Promotion {
+    const PROMO_KEY = 'wpuf_promo_notices';
 
     public function __construct() {
         add_action( 'admin_notices', [ $this, 'promotional_offer' ] );
@@ -24,18 +25,44 @@ class WPUF_Admin_Promotion {
             return;
         }
         // Showing only for Uf menu
-        if ( 'wp-user-frontend' !== get_admin_page_parent() ){
+        if ( 'wp-user-frontend' !== get_admin_page_parent() ) {
             return;
         }
+
+        $promos = get_transient( self::PROMO_KEY );
+
+        if ( false === $promos ) {
+            $promo_notice_url = 'https://raw.githubusercontent.com/weDevsOfficial/wp-user-frontend/develop/assets/js/promotion.json';
+            $response         = wp_remote_get( $promo_notice_url, array( 'timeout' => 15 ) );
+            $promos           = wp_remote_retrieve_body( $response );
+
+            if ( is_wp_error( $response ) || $response['response']['code'] !== 200 ) {
+                $promos = '[]';
+            }
+
+            set_transient( self::PROMO_KEY, $promos, DAY_IN_SECONDS );
+        }
+
+        $promos = json_decode( $promos, true );
+
+        if ( empty( $promos ) || ! is_array( $promos ) ) {
+            return;
+        }
+
+        $option_name = $promos['key'];
+        $start_date  = $promos['start_date'];
+        $end_date    = $promos['end_date'];
+        $content     = $promos['content'] . '.' . $promos['title'];
+        $action_url  = $promos['action_url'];
+        $action_title = $promos['action_title'];
 
         $current_time = $this->convert_utc_to_est();
 
         if (
-            strtotime( '2021-11-19 09:00:00 EST' ) < strtotime( $current_time )
-            && strtotime( $current_time ) < strtotime( '2021-11-30 11:00:00 EST' )
+            strtotime( $start_date ) < strtotime( $current_time )
+            && strtotime( $current_time ) < strtotime( $end_date )
             ) {
-            $option_name = 'wpuf-bfcm2021';
-            $notice      = sprintf( '<p>%s <a href="%s" target="_blank">%s</a></p>', __( 'Irresistible Black Friday & Cyber Monday Deals. Enjoy Up To 50% OFF on WP User Frontend Pro.', 'wp-user-frontend' ), 'https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wordpress-wpuf-bfcm2021', __( 'Get Now', 'wp-user-frontend' ) );
+            $notice = sprintf( '<p>%s <a href="%s" target="_blank">%s</a></p>', __( $content, 'wp-user-frontend' ), $action_url, __( $action_title, 'wp-user-frontend' ) );
             $this->generate_notice( $notice, $option_name );
         }
     }

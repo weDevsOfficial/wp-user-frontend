@@ -503,6 +503,47 @@ function wpuf_get_image_sizes() {
     return $image_sizes;
 }
 
+/**
+ * Get an array of available image sizes with height and weight
+ *
+ * @since WPUF
+ *
+ * @param $size     string      size of the image. thumbnail, medium, large etc.
+ *
+ * @return array                single image size returned if parameter size is passed
+ *                              full array of all the sizes will return otherwise
+ */
+function wpuf_get_image_sizes_array( $size = '' ) {
+    $additional_image_sizes   = wp_get_additional_image_sizes();
+    $intermediate_image_sizes = get_intermediate_image_sizes();
+    $sizes = [];
+
+    // Create the full array with sizes and crop info
+    foreach ( $intermediate_image_sizes as $_size ) {
+        if ( in_array( $_size, [ 'thumbnail', 'medium', 'large', 'medium_large' ], true ) ) {
+            $sizes[ $_size ]['width']  = get_option( $_size . '_size_w' );
+            $sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
+            $sizes[ $_size ]['crop']   = (bool) get_option( $_size . '_crop' );
+        } elseif ( isset( $additional_image_sizes[ $_size ] ) ) {
+            $sizes[ $_size ] = [
+                'width'  => $additional_image_sizes[ $_size ]['width'],
+                'height' => $additional_image_sizes[ $_size ]['height'],
+                'crop'   => $additional_image_sizes[ $_size ]['crop'],
+            ];
+        }
+    }
+
+    // Get only 1 size if found
+    if ( $size ) {
+        if ( isset( $sizes[ $size ] ) ) {
+            return $sizes[ $size ];
+        } else {
+            return false;
+        }
+    }
+    return $sizes;
+}
+
 function wpuf_allowed_extensions() {
     $extesions = [
         'images' => [
@@ -1601,10 +1642,11 @@ function wpuf_load_template( $file, $args = [] ) {
  * lods from pro plugin folder
  *
  * @since 3.1.11
+ * @since WPUF_PRO function moved to pro
  *
  * @param string $file file name or path to file
  */
-function wpuf_load_pro_template( $file, $args = [] ) {
+/*function wpuf_load_pro_template( $file, $args = [] ) {
     //phpcs:ignore
     if ( $args && is_array( $args ) ) {
         extract( $args );
@@ -1623,7 +1665,7 @@ function wpuf_load_pro_template( $file, $args = [] ) {
             include $wpuf_pro_dir . $file;
         }
     }
-}
+}*/
 
 /**
  * Helper function for formatting date field
@@ -4011,4 +4053,38 @@ function wpuf_payment_success_page( $data ){
     $redirect_page =  ! empty( $data['wpuf_payment_method'] ) && 'bank' === $data['wpuf_payment_method'] ? get_permalink( wpuf_get_option( 'bank_success', 'wpuf_payment' ) ) : $redirect_page;
 
     return $redirect_page;
+}
+
+/**
+ * Retrieves paginated links for queried pages
+ * uses WordPress paginate_links() function for the final output
+ *
+ * @since WPUF_PRO
+ *
+ * @param int $total_items
+ * @param int $per_page
+ *
+ * @return void
+ */
+function wpuf_pagination( $total_items, $per_page ) {
+    $pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
+    $num_of_pages = ceil( $total_items / $per_page );
+    $page_links = paginate_links(
+        [
+            'base'      => add_query_arg( 'pagenum', '%#%' ),
+            'format'    => '',
+            'prev_text' => '<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.248874 7.05115L7.19193 0.244361C7.35252 0.086801 7.56688 0 7.79545 0C8.02403 0 8.23839 0.086801 8.39898 0.244361L8.91029 0.745519C9.243 1.07208 9.243 1.60283 8.91029 1.9289L3.08003 7.64483L8.91675 13.3671C9.07734 13.5247 9.166 13.7347 9.166 13.9587C9.166 14.1829 9.07734 14.3929 8.91675 14.5506L8.40545 15.0517C8.24474 15.2092 8.0305 15.296 7.80192 15.296C7.57335 15.296 7.35898 15.2092 7.1984 15.0517L0.248874 8.23864C0.0879093 8.08058 -0.000500916 7.86955 2.13498e-06 7.64521C-0.000500916 7.42 0.0879093 7.20909 0.248874 7.05115Z" fill="#545D7A"/>
+            </svg>',
+            'next_text' => '<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.97963 7.05115L2.03657 0.244361C1.87599 0.086801 1.66162 0 1.43305 0C1.20448 0 0.99011 0.086801 0.829525 0.244361L0.318217 0.745519C-0.0144943 1.07208 -0.0144943 1.60283 0.318217 1.9289L6.14847 7.64483L0.311748 13.3671C0.151164 13.5247 0.0625 13.7347 0.0625 13.9587C0.0625 14.1829 0.151164 14.3929 0.311748 14.5506L0.823056 15.0517C0.983767 15.2092 1.19801 15.296 1.42658 15.296C1.65515 15.296 1.86952 15.2092 2.0301 15.0517L8.97963 8.23864C9.14059 8.08058 9.229 7.86955 9.2285 7.64521C9.229 7.42 9.14059 7.20909 8.97963 7.05115Z" fill="#545D7A"/>
+            </svg>',
+            'total'     => $num_of_pages,
+            'current'   => $pagenum,
+        ]
+    );
+
+    if ( $page_links ) {
+        return '<div class="wpuf-pagination">' . $page_links . '</div>';
+    }
 }

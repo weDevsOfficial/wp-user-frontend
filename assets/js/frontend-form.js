@@ -507,7 +507,6 @@
 
             required.each(function(i, item) {
                 // temp_val = $.trim($(item).val());
-
                 // console.log( $(item).data('type') );
                 var data_type = $(item).data('type'),
                     val = '';
@@ -527,7 +526,6 @@
 
                     case 'textarea':
                     case 'text':
-
                         val = $.trim( $(item).val() );
 
                         if ( val === '') {
@@ -666,10 +664,10 @@
             });
 
             //check Google Map is required
-            var map_required = self.find('[data-required="yes"]').parents('.wpuf-form-google-map-container');
+            var map_required = self.find('[data-required="yes"]').parents('.wpuf-form-google-map-container:visible');
             $.each(map_required, function(index, map){
-                var val = $(map).val();
-                if ( val == '' ) {
+                var val = $(map).find('input[id^="wpuf-map"]').val();
+                if ( val == '' || JSON.parse(val) == null) {
                     error = true;
                     error_type = 'required';
 

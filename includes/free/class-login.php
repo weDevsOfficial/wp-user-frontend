@@ -867,7 +867,7 @@ class WPUF_Simple_Login {
 
             wp_mail( $user_email, $subject, $message );
         } else {
-            $this->send_activated_email( $the_user );
+            $this->send_email_after_activation( $the_user );
         }
 
         $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
@@ -1085,16 +1085,14 @@ class WPUF_Simple_Login {
      *
      * @param $user
      */
-    private function send_activated_email( $user ) {
+    private function send_email_after_activation( $user ) {
         $blogname   = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-        $user_email = $user->user_email;
-        $to         = $user_email;
         $login_url  = wp_login_url();
 
         if ( wpuf()->is_pro() && wpuf_pro_is_module_active( 'email-templates/email-templates.php' ) && wpuf_get_option( 'account_activated_user_email_notification', 'wpuf_mails', 'on' ) ) {
             $subject = wpuf_get_option( 'account_activated_user_email_subject', 'wpuf_mails' );
             $message = wpuf_get_option( 'account_activated_user_email_body', 'wpuf_mails' );
-            $message = self::prepare_mail_body( $message, $user, $blogname );
+            $message = $this->prepare_mail_body( $message, $user, $blogname );
         } else {
             /* translators: %s: blogname */
             $subject = sprintf( __( '[%s] Account has been activated', 'wp-user-frontend' ), $blogname );
@@ -1112,7 +1110,7 @@ class WPUF_Simple_Login {
         $subject  = apply_filters( 'wpuf_mail_after_confirmation_subject', $subject );
         $message  = apply_filters( 'wpuf_mail_after_confirmation_body', $message );
 
-        wp_mail( $to, $subject, $message, $headers );
+        wp_mail( $user->user_email, $subject, $message, $headers );
     }
 
     /**
@@ -1124,7 +1122,7 @@ class WPUF_Simple_Login {
      *
      * @return string|string[]
      */
-    private static function prepare_mail_body( $message, $user, $blogname ) {
+    private function prepare_mail_body( $message, $user, $blogname ) {
         $user_field_search = [ '{login_url}', '{username}', '{user_email}', '{display_name}', '{blog_name}' ];
 
         $user_field_replace = [

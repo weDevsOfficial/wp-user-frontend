@@ -4050,7 +4050,7 @@ function wpuf_wp_timezone() {
  *
  * @return string
  */
-function wpuf_wp_timezone_string() {
+function wpuf_timezone_string() {
     if ( function_exists( 'wp_timezone_string' ) ) {
         return wp_timezone_string();
     }

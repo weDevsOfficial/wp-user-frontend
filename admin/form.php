@@ -31,7 +31,9 @@ class WPUF_Admin_Form {
      */
     public function __construct() {
         add_action( 'init', [$this, 'register_post_type'] );
-        add_action( 'load-user-frontend_page_wpuf-post-forms', [ $this, 'post_forms_builder_init' ] );
+
+        $label = strtolower( preg_replace( '/\s/', '-$1', __( 'User Frontend', 'wp-user-frontend' ) ) );
+        add_action( "load-${label}_page_wpuf-post-forms", [ $this, 'post_forms_builder_init' ] );
     }
 
     /**

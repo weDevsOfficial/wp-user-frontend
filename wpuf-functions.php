@@ -4163,7 +4163,7 @@ function wpuf_filter_editor_toolbar( $field_settings ){
  * @param $address_fields
  * @return array
  */
-function wpuf_billing_address_remap( $address_fields ) {
+function wpuf_get_address( $address_fields ) {
     if ( array_key_exists( 'billing_country', $address_fields ) ) {
         foreach ( $address_fields as $key => $val ) {
             unset( $address_fields[$key] );

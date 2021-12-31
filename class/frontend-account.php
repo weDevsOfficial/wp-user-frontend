@@ -421,6 +421,10 @@ class WPUF_Frontend_Account {
      * @return void
      */
     public function process_user_for_previewing_post( $query ) {
+        if ( current_user_can( 'edit_posts' ) ) {
+            return;
+        }
+
         if ( ! $query->is_main_query() && ! $query->is_preview && ! $query->get( 'p' ) ) {
             return;
         }

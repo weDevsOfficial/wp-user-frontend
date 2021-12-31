@@ -10,8 +10,6 @@ class WPUF_Form_Block {
      */
     public function __construct() {
         //Enqueue the Dashicons script as they are not loading
-        //when wpuf_form shortcode exists in admin pages.
-        add_action( 'admin_enqueue_scripts', [ $this, 'load_dashicons' ] );
         // wait for Gutenberg to enqueue it's block assets
         add_action( 'enqueue_block_editor_assets', [ $this, 'wpuf_form_block' ], 10 );
         // load the preview information and form
@@ -25,22 +23,24 @@ class WPUF_Form_Block {
     }
 
     public function wpuf_form_block() {
+        $this->load_dashicons();
+
         $js_dir  = WPUF_ASSET_URI . '/js/admin/';
         $css_dir = WPUF_ASSET_URI . '/css/admin/';
 
         // Once we have Gutenberg block javascript, we can enqueue our assets
-        wp_register_script( 
+        wp_register_script(
             'wpuf-forms-block',
             $js_dir . 'gutenblock.js',
             [ 'wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-element', 'underscore' ]
          );
 
-        wp_register_style( 
+        wp_register_style(
             'wpuf-forms-block-style',
             $css_dir . 'gutenblock.css',
             [ 'wp-edit-blocks' ]
          );
-        wp_register_style( 
+        wp_register_style(
             'wpuf-forms-block-editor',
             $css_dir . 'gutenblock-editor.css',
             [ 'wp-edit-blocks', 'wpuf-forms-block-style' ]
@@ -106,7 +106,7 @@ class WPUF_Form_Block {
             <?php
 
             // register our script to target the form iFrame in page builder
-            wp_register_script( 
+            wp_register_script(
                 'wpuf-block-setup',
                 $js_dir . 'blockFrameSetup.js',
                 [ 'underscore', 'jquery' ]

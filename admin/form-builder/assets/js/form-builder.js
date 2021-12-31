@@ -143,10 +143,12 @@
 
             // add new form field element
             add_form_field_element: function (state, payload) {
+
                 state.form_fields.splice(payload.toIndex, 0, payload.field);
                 var sprintf = wp.i18n.sprintf;
                 var __ = wp.i18n.__;
-                // bring newly added element into viewport
+                // bring newly added element into viewport, do not show for reg form
+                if ( window.location.search.substring(1).split('&').includes('page=wpuf-profile-forms') ) return;
                 Vue.nextTick(function () {
                     var el = $('#form-preview-stage .wpuf-form .field-items').eq(payload.toIndex);
                     if ('yes' == payload.field.is_meta && state.show_custom_field_tooltip) {
@@ -537,7 +539,7 @@
 
                 var form_id = $('#wpuf-form-builder [name="wpuf_form_id"]').val();
 
-                if ( typeof tinyMCE !== 'undefined' ) {
+                if ( typeof tinyMCE !== 'undefined' && window.location.search.substring(1).split('&').includes('page=wpuf-profile-forms') ) {
                     $('textarea[name="wpuf_settings[notification][verification_body]"]').val(tinyMCE.get('wpuf_verification_body_' + form_id).getContent());
                     $('textarea[name="wpuf_settings[notification][welcome_email_body]"]').val(tinyMCE.get('wpuf_welcome_email_body_' + form_id).getContent());
                 }

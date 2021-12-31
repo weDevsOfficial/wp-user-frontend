@@ -1,5 +1,9 @@
 = v3.5.25 (18 Nov, 2021) =
 
+* Enhancement - Promotion notice enhanced through api
+
+= v3.5.25 (18 Nov, 2021) =
+
 * Fix - Security Vulnerability fixed
 
 = v3.5.22 (28 Oct, 2021) =

@@ -377,7 +377,7 @@ class WPUF_Subscription {
         }
 
         update_post_meta( $subscription_id, '_billing_amount', $post_data['billing_amount'] );
-        update_post_meta( $subscription_id, '_expiration_number', $post_data['expiration_number'] );
+        update_post_meta( $subscription_id, '_expiration_number', in_array( 'expiration_number', $post_data, true ) && ! empty( $post_data['expiration_number'] ) ? $post_data['expiration_number'] : '' );
         update_post_meta( $subscription_id, '_expiration_period', $post_data['expiration_period'] );
         update_post_meta( $subscription_id, '_recurring_pay', isset( $post_data['recurring_pay'] ) ? $post_data['recurring_pay'] : 'no' );
         update_post_meta( $subscription_id, '_billing_cycle_number', $post_data['billing_cycle_number'] );
@@ -674,7 +674,7 @@ class WPUF_Subscription {
      * @param int $user_id
      * @param int $pack_id subscription pack id
      */
-    public function new_subscription( $user_id, $pack_id, $profile_id = null, $recurring, $status = null ) {
+    public function new_subscription( $user_id, $pack_id, $profile_id, $recurring, $status = null ) {
         // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, $profile_id = null, $recurring, $status = null );' );
 
         wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, $profile_id = null, $recurring, $status = null );

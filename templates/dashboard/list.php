@@ -1,5 +1,5 @@
 <div class="items-table-container">
-    <table class="items-table <?php echo esc_attr( $post_type ); ?>">
+    <table class="items-table <?php echo implode( ' ', array_map('esc_attr', $post_type ) ); ?>">
         <thead>
             <tr class="items-list-header">
                 <?php

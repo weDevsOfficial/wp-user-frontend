@@ -89,7 +89,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                     if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
                                 $this->check_content_restriction_func(
                                     $field_settings['content_restriction'],
-                                    $field_settings['rich'] ? 'yes' : 'no',
+                                    ! empty( $field_settings['rich'] ) ? $field_settings['rich'] : 'no',
                                     $field_settings['name'] . '_' . $form_id,
                                     $field_settings['restriction_type'],
                                     $field_settings['restriction_to']

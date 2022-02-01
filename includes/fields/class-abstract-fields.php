@@ -367,6 +367,18 @@ abstract class WPUF_Field_Contract {
                 'help_text' => __( 'Name of the meta key this field will save to', 'wp-user-frontend' ),
             ];
 
+            $common_properties[] = [
+                'name'      => 'read_only',
+                'title'     => __( 'Read Only', 'wp-user-frontend' ),
+                'type'      => 'checkbox',
+                'options'       => [
+                    'yes'   => __( 'Make this field read only ', 'wp-user-frontend' ),
+                ],
+                'section'   => 'basic',
+                'priority'  => 21,
+                'help_text' => __( 'Read only', 'wp-user-frontend' ),
+            ];
+
             if ( is_wpuf_post_form_builder() ) {
                 $common_properties = array_merge(
                     $common_properties, [
@@ -723,8 +735,9 @@ abstract class WPUF_Field_Contract {
         $el_name    = ! empty( $field['name'] ) ? $field['name'] : '';
         $class_name = ! empty( $field['css'] ) ? ' ' . $field['css'] : '';
         $field_size = ! empty( $field['width'] ) ? ' field-size-' . $field['width'] : '';
+        $read_only  = ! empty( $field['read_only'] ) ? ' read-only ' : '';
 
-        printf( 'class="wpuf-el %s%s%s" data-label="%s"', esc_attr( $el_name ), esc_attr( $class_name ), esc_attr( $field_size ), esc_attr( $label ) );
+        printf( 'class="wpuf-el %s%s%s%s" data-label="%s"', esc_attr( $el_name ), esc_attr( $class_name ), esc_attr( $field_size ), esc_attr( $read_only ), esc_attr( $label ) );
     }
 
     /**

@@ -87,6 +87,7 @@
             });
 
             this.warningOnExit();
+            this.handleReadOnly();
         },
 
         warningOnExit: function () {
@@ -103,6 +104,14 @@
                         }
                     }
                 })
+            });
+        },
+
+        handleReadOnly: function(){
+            $('.wpuf-form > .read-only').each( function () {
+                $('input, select, textarea', this).each( function () {
+                     $(this).attr( 'disabled', true );
+                 }) ;
             });
         },
 

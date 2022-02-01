@@ -113,6 +113,14 @@
                 for (i = 0; i < state.form_fields.length; i++) {
                     // check if the editing field exist in normal fields
                     if (state.form_fields[i].id === parseInt(payload.editing_field_id)) {
+                        if ( 'read_only' === payload.field_name && payload.value ) {
+                            state.form_fields[i]['required'] = 'no';
+                        }
+
+                        if ( 'required' === payload.field_name && 'yes' === payload.value ) {
+                            state.form_fields[i]['read_only'] = false;
+                        }
+
                         if (payload.field_name === 'name'  && ! state.form_fields[i].hasOwnProperty('is_new') ) {
                             continue;
                         } else {

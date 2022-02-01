@@ -815,7 +815,7 @@ class WPUF_Frontend_Render_Form {
                     break;
 
                 case 'checkbox':
-                    if ( count( $value_name ) > 1 ) {
+                    if ( is_array( $value_name ) && count( $value_name ) > 1 ) {
                         $meta_key_value[ $value['name'] ] = implode( self::$separator, $value_name );
                     } else {
                         $meta_key_value[ $value['name'] ] = $value_name[0];

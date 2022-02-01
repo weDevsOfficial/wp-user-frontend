@@ -689,6 +689,18 @@ abstract class WPUF_Field_Contract {
                 'priority'  => 14,
                 'default'   => 'no',
             ],
+            [
+                'name'      => 'text_editor_control',
+                'title'     => __( 'Select buttons to exclude', 'wp-user-frontend' ),
+                'type'      => 'multiselect',
+                'section'   => 'advanced',
+                'priority'  => 14.5,
+                'dependencies' => [
+                    'rich' => [ 'yes', 'teeny' ],
+                ],
+                'help_text' => __( 'Select button for exclude from frontend. Search button name. use ⇦ ⇨ for navigate', 'wp-user-frontend' ),
+                'options'   => wpuf_get_editor_buttons(),
+            ],
         ];
     }
 

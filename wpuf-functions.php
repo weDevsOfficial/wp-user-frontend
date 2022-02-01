@@ -2106,13 +2106,13 @@ function wpuf_get_account_sections_list( $post_type = 'page' ) {
     return $array;
 }
 /**
- * Get all transactions
+ * Get all completed transactions
  *
  * @since 2.4.2
  *
  * @return array
  */
-function wpuf_get_transactions( $args = [] ) {
+function wpuf_get_completed_transactions( $args = [] ) {
     global $wpdb;
 
     $defaults = [
@@ -2204,6 +2204,96 @@ function wpuf_get_pending_transactions( $args = [] ) {
     wp_reset_postdata();
 
     return $items;
+}
+
+/**
+ * Get all pending and completed transactions
+ *
+ * @since WPUF
+ *
+ * @param $args
+ *
+ * @return array
+ */
+function wpuf_get_all_transactions( $args = [] ) {
+    global $wpdb;
+    $transaction_table = $wpdb->prefix . 'wpuf_transaction';
+
+    $defaults = [
+        'number'  => 20,
+        'offset'  => 0,
+        'orderby' => 'id',
+        'order'   => 'DESC',
+        'count'   => false,
+    ];
+
+    $orderby_keys = ['id', 'status', 'created'];
+    $order_keys = ['asc', 'desc'];
+
+    $args = wp_parse_args( $args, $defaults );
+
+    if ( $args['count'] ) {
+        return ( int ) $wpdb->get_var(
+            "SELECT SUM(AllCount)
+            FROM ((SELECT COUNT(*) AS AllCount FROM {$transaction_table})
+            UNION ALL
+                (SELECT COUNT(*) AS AllCount FROM {$wpdb->posts}
+                    WHERE post_type = 'wpuf_order'
+                    AND post_status IN('pending', 'publish'))) AS post_table"
+        );
+    }
+
+    $orderby       = in_array( $args['orderby'], $orderby_keys ) ? $args['orderby'] : 'id';
+    $sorting_order = in_array( $args['order'], $order_keys ) ? $args['order'] : 'DESC';
+    $offset        = ( int ) sanitize_key( $args['offset'] );
+    $number        = ( int ) sanitize_key( $args['number'] );
+
+    // get all the completed transaction from transaction table
+    // and pending transaction from post table
+    $transactions = $wpdb->get_results(
+        $wpdb->prepare(
+            "(SELECT id, user_id, status, tax, cost, post_id, pack_id, payer_first_name, payer_last_name, payer_email, payment_type, transaction_id, created FROM {$transaction_table})
+            UNION ALL
+            (SELECT ID AS id, post_author AS user_id, null AS status, null AS tax, null AS cost, ID as post_id, null AS pack_id, null AS payer_first_name, null AS payer_last_name, null AS payer_email, null AS payment_type, 0 AS transaction_id, post_date AS created FROM {$wpdb->posts}
+            WHERE post_type = %s)
+            ORDER BY {$orderby} {$sorting_order}
+            LIMIT %d, %d",
+            'wpuf_order', $offset, $number
+        )
+    );
+
+    if ( ! $transactions ) {
+        return;
+    }
+
+    foreach ( $transactions as $transaction ) {
+        if ( $transaction->status ) {
+            continue;
+        }
+
+        // get metadata for pending transactions
+        $info = get_post_meta( $transaction->id, '_data', true );
+        $payment_method = isset( $info['post_data']['wpuf_payment_method'] ) ? $info['post_data']['wpuf_payment_method'] : '';
+
+        $type = isset( $info['type'] ) ? $info['type'] : '';
+        $item_number = isset( $info['item_number'] ) ? $info['item_number'] : 0;
+
+        // attach data to pending transactions
+        $transaction->user_id          = isset( $info['user_info']['id'] ) ? $info['user_info']['id'] : 0;
+        $transaction->status           = 'pending';
+        $transaction->cost             = isset( $info['price'] ) ? $info['price'] : 0;
+        $transaction->tax              = isset( $info['tax'] ) ? $info['tax'] : 0;
+        $transaction->post_id          = ( 'post' === $type ) ? $item_number : 0;
+        $transaction->pack_id          = ( 'pack' === $type ) ? $item_number : 0;
+        $transaction->payer_first_name = isset( $info['user_info']['first_name'] ) ? $info['user_info']['first_name'] : '';
+        $transaction->payer_last_name  = isset( $info['user_info']['last_name'] ) ? $info['user_info']['last_name'] : '';
+        $transaction->payer_email      = isset( $info['user_info']['email'] ) ? $info['user_info']['email'] : '';
+        $transaction->payment_type     = ( 'bank' === $payment_method ) ? 'Bank/Manual' : ucwords( $payment_method );
+        $transaction->transaction_id   = 0;
+        $transaction->created          = isset( $info['date'] ) ? $info['date'] : '';
+    }
+
+    return $transactions;
 }
 
 /**

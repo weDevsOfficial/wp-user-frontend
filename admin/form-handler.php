@@ -68,8 +68,8 @@ class WPUF_Admin_Form_Handler {
 
             switch ( $action ) {
                 case 'post_form_search':
-                    $redirect = remove_query_arg( [ 'post_form_search' ], $remove_query_args );
-
+                    $remove_query_args[] = 'post_form_search';
+                    $redirect = remove_query_arg( $remove_query_args, $_SERVER['REQUEST_URI'] );
                     break;
 
                 case 'trash':
@@ -201,7 +201,8 @@ class WPUF_Admin_Form_Handler {
 
             switch ( $action ) {
                 case 'profile_form_search':
-                    $redirect = remove_query_arg( [ 'profile_form_search' ], $redirect );
+                    $remove_query_args[] = 'profile_form_search';
+                    $redirect = remove_query_arg( $remove_query_args, $_SERVER['REQUEST_URI'] );
 
                     break;
 

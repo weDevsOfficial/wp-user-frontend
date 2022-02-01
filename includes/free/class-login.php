@@ -419,7 +419,7 @@ class WPUF_Simple_Login {
                 return;
             }
 
-            $log = isset( $_POST['log'] ) ? trim( $_POST['log'] ) : '';
+            $log = isset( $_POST['log'] ) ? esc_attr( wp_unslash( $_POST['log'] ) ) : '';
             $pwd = isset( $_POST['pwd'] ) ? trim( $_POST['pwd'] ) : '';
             // $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 

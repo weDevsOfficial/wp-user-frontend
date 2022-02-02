@@ -244,7 +244,7 @@ function wpuf_settings_fields() {
                 ],
                 [
                     'name'    => 'disable_publish_edit',
-                    'label'   => __( 'Publish Post Edit', 'wp-user-frontend' ),
+                    'label'   => __( 'Editing Published Post', 'wp-user-frontend' ),
                     'desc'    => __( 'Disable post editing while post in "publish" status', 'wp-user-frontend' ),
                     'type'    => 'checkbox',
                     'default' => 'off',

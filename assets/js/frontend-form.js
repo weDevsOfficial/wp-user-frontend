@@ -511,6 +511,42 @@
             WP_User_Frontend.removeErrors(self);
             WP_User_Frontend.removeErrorNotice(self);
 
+            /* ======== Validation ======== */
+            var visibleFields = self.find('input[type="url"]:visible, input[type="email"]:visible');
+
+            visibleFields.each(function(i, item) {
+                var input_type = $(item).attr('type');
+                var val = '';
+
+                switch (input_type) {
+                    case 'url':
+                        val = $.trim( $(item).val() );
+
+                        if ( val !== '' ) {
+                            if( ! WP_User_Frontend.isValidURL( val ) ) {
+                                error = true;
+                                error_type = 'validation';
+
+                                WP_User_Frontend.markError( item,  error_type );
+                            }
+                        }
+                        break;
+
+                    case 'email':
+                        val = $(item).val();
+
+                        if ( val !== '' ) {
+                            if( ! WP_User_Frontend.isValidEmail( val ) ) {
+                                error = true;
+                                error_type = 'validation';
+
+                                WP_User_Frontend.markError( item,  error_type );
+                            }
+                        }
+                        break;
+                }
+            });
+
             // ===== Validate: Text and Textarea ========
             var required = self.find('[data-required="yes"]:visible');
 

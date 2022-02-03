@@ -419,8 +419,8 @@ class WPUF_Simple_Login {
                 return;
             }
 
-            $log = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
-            $pwd = isset( $_POST['pwd'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd'] ) ) : '';
+            $log = isset( $_POST['log'] ) ? esc_attr( wp_unslash( $_POST['log'] ) ) : '';
+            $pwd = isset( $_POST['pwd'] ) ? trim( $_POST['pwd'] ) : '';
             // $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 
             $validation_error = new WP_Error();
@@ -483,6 +483,14 @@ class WPUF_Simple_Login {
 
             $secure_cookie = is_ssl() ? true : false;
             $user          = wp_signon( apply_filters( 'wpuf_login_credentials', $creds ), $secure_cookie );
+
+            //try with old implementation, which is wrong but we must support that
+            if ( is_wp_error( $user ) ) {
+                $creds['user_login']    = sanitize_text_field( wp_unslash( $_POST['log'] ) );
+                $creds['user_password'] = sanitize_text_field( wp_unslash( $_POST['pwd'] ) );
+
+                $user = wp_signon( apply_filters( 'wpuf_login_credentials', $creds ), $secure_cookie );
+            }
 
             if ( is_wp_error( $user ) ) {
                 $this->login_errors[] = $user->get_error_message();

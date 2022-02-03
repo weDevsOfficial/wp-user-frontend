@@ -867,7 +867,7 @@ class WPUF_Simple_Login {
 
             wp_mail( $user_email, $subject, $message );
         } else {
-            $this->send_email_after_activation( $the_user );
+            $this->send_activation_email( $the_user );
         }
 
         $autologin_after_registration = wpuf_get_option( 'autologin_after_registration', 'wpuf_profile', 'on' );
@@ -1085,7 +1085,7 @@ class WPUF_Simple_Login {
      *
      * @param $user
      */
-    private function send_email_after_activation( $user ) {
+    private function send_activation_email( $user ) {
         $blogname   = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
         $login_url  = wp_login_url();
 

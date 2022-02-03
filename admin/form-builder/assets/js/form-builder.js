@@ -436,7 +436,7 @@
                 let meta_key = [];
 
                 this.$store.state.form_fields.forEach(function (field) {
-                    if( 'yes' === field.is_meta ) {
+                    if ( 'yes' === field.is_meta ) {
                         meta_key.push(field.name);
                     }
                 });

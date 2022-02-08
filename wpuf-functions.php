@@ -4161,9 +4161,10 @@ function wpuf_filter_editor_toolbar( $field_settings ){
  *  Inconsistency with keys, remap keys, Back compat with keys
  *
  * @param $address_fields
+ *
  * @return array
  */
-function wpuf_get_address( $address_fields ) {
+function wpuf_map_address_fields( $address_fields ) {
     if ( array_key_exists( 'billing_country', $address_fields ) ) {
         foreach ( $address_fields as $key => $val ) {
             unset( $address_fields[$key] );

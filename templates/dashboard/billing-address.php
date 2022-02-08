@@ -53,7 +53,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                         class="required">*</span></label>
                 <?php
 
-                $address_fields = wpuf_get_address( $address_fields );
+                $address_fields = wpuf_map_address_fields( $address_fields );
 
                 $selected['country'] = ! ( empty( $address_fields['country'] ) ) ? $address_fields['country'] : 'US';
 

@@ -4239,3 +4239,47 @@ function wpuf_unset_conditional( $settings ) {
 
     return $settings;
 }
+
+/**
+ * Check if current post is editable
+ *
+ * @param $post
+ *
+ * @since WPUF
+ *
+ * @return bool
+ */
+function wpuf_is_post_editable( $post ) {
+    $show_edit = false;
+
+    $current_user      = wpuf_get_user();
+    $user_subscription = new WPUF_User_Subscription( $current_user );
+    $user_sub          = $user_subscription->current_pack();
+    $sub_id            = $current_user->subscription()->current_pack_id();
+
+    if ( $sub_id ) {
+        $subs_expired = $user_subscription->expired();
+    } else {
+        $subs_expired = false;
+    }
+
+    if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
+        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
+        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
+
+        $show_edit = true;
+        if ( ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) || ( 'publish' === $post->post_status && 'off' !==  $disable_publish_edit ) ) {
+            $show_edit = false;
+        }
+
+        if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( ! empty( $payment_status ) && $payment_status != 'completed' ) ) {
+            $show_edit = false;
+        }
+
+        if ( $subs_expired ) {
+            $show_edit = false;
+        }
+    }
+
+    return $show_edit;
+}

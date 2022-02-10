@@ -1601,10 +1601,11 @@ function wpuf_load_template( $file, $args = [] ) {
  * lods from pro plugin folder
  *
  * @since 3.1.11
+ * @since WPUF_PRO function moved to pro
  *
  * @param string $file file name or path to file
  */
-function wpuf_load_pro_template( $file, $args = [] ) {
+/*function wpuf_load_pro_template( $file, $args = [] ) {
     //phpcs:ignore
     if ( $args && is_array( $args ) ) {
         extract( $args );
@@ -1623,7 +1624,7 @@ function wpuf_load_pro_template( $file, $args = [] ) {
             include $wpuf_pro_dir . $file;
         }
     }
-}
+}*/
 
 /**
  * Helper function for formatting date field
@@ -4154,6 +4155,24 @@ function wpuf_filter_editor_toolbar( $field_settings ){
     }
 
     return ! empty( $tinymce_settings['toolbar1'] ) ? $tinymce_settings : [];
+}
+
+/**
+ *  Inconsistency with keys, remap keys, Back compat with keys
+ *
+ * @param $address_fields
+ *
+ * @return array
+ */
+function wpuf_map_address_fields( $address_fields ) {
+    if ( array_key_exists( 'billing_country', $address_fields ) ) {
+        foreach ( $address_fields as $key => $val ) {
+            unset( $address_fields[$key] );
+            $address_fields[str_replace( ['billing_', 'line1', 'line2', 'zip'], ['', 'line_1', 'line_2', 'zip_code'], $key ) ] = $val;
+        }
+    }
+
+    return $address_fields;
 }
 
 /**

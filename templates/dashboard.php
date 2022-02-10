@@ -35,7 +35,7 @@
     $meta_name  = [];
     $meta_id    = [];
     $meta_key   = [];
-    $post_data  = [];
+    $template_args  = [];
 
     if ( !empty( $meta ) ) {
         $arr =  explode( ',', $meta );
@@ -93,17 +93,17 @@
             $subs_expired = false;
         }
 
-        $post_data['post_type']         = $post_type;
-        $post_data['featured_img']      = $featured_img;
-        $post_data['featured_img_size'] = $featured_img_size;
-        $post_data['enable_payment']    = $enable_payment;
-        $post_data['payment_column']    = $payment_column;
-        $post_data['args']              = $args;
-        $post_data['dashboard_query']   = $dashboard_query;
-        $post_data['subs_expired']      = $subs_expired;
+        $template_args['post_type']         = $post_type;
+        $template_args['featured_img']      = $featured_img;
+        $template_args['featured_img_size'] = $featured_img_size;
+        $template_args['enable_payment']    = $enable_payment;
+        $template_args['payment_column']    = $payment_column;
+        $template_args['args']              = $args;
+        $template_args['dashboard_query']   = $dashboard_query;
+        $template_args['subs_expired']      = $subs_expired;
     ?>
 
-    <?php wpuf_load_template( 'dashboard/list.php', $post_data ); ?>
+    <?php wpuf_load_template( 'dashboard/list.php', $template_args ); ?>
         <div class="wpuf-pagination">
             <?php
                 $pagination = paginate_links( [

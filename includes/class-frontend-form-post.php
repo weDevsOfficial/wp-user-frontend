@@ -325,22 +325,22 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             // if restriction by character count
             if ( 'character' === $restriction_type && 'min' === $restriction_to ) {
                 if ( strlen( $current_data ) > 0 && strlen( $current_data ) < $restricted_num ) {
-                    $this->send_error( 'Minimum ' . $restricted_num . ' character required for ' . $label );
+                    $this->send_error( __( 'Minimum ', 'wp-user-frontend' ) . $restricted_num . __( ' character required for ', 'wp-user-frontend' ) . $label );
                 }
             } elseif ( 'character' === $restriction_type && 'max' === $restriction_to ) {
                 if ( strlen( $current_data ) > 0 && strlen( $current_data ) > $restricted_num ) {
-                    $this->send_error( 'Maximum ' . $restricted_num . ' character allowed for ' . $label );
+                    $this->send_error( __( 'Maximum ', 'wp-user-frontend' ) . $restricted_num . __( ' character allowed for ', 'wp-user-frontend' ) . $label );
                 }
             }
 
             // if restriction by word count
             if ( 'word' === $restriction_type && 'min' === $restriction_to ) {
                 if ( str_word_count( $current_data ) > 0 && str_word_count( $current_data ) < $restricted_num ) {
-                    $this->send_error( 'Minimum ' . $restricted_num . ' word required for ' . $label );
+                    $this->send_error( __( 'Minimum ', 'wp-user-frontend' ) . $restricted_num . __( ' word required for ', 'wp-user-frontend' ) . $label );
                 }
             } elseif ( 'word' === $restriction_type && 'max' === $restriction_to ) {
                 if ( str_word_count( $current_data ) > 0 && str_word_count( $current_data ) > $restricted_num ) {
-                    $this->send_error( 'Maximum ' . $restricted_num . ' word allowed for ' . $label );
+                    $this->send_error( __( 'Maximum ', 'wp-user-frontend' ) . $restricted_num . __( ' word allowed for ', 'wp-user-frontend' ) . $label );
                 }
             }
         }

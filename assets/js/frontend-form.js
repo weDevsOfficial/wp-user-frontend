@@ -511,6 +511,19 @@
             WP_User_Frontend.removeErrors(self);
             WP_User_Frontend.removeErrorNotice(self);
 
+            /* ======== Validate: Phone field ======== */
+            var phoneFields = self.find('input[type="text"].wpuf_telephone:visible');
+
+            phoneFields.each(function(i, item) {
+                // Get iti instance
+                var iti = window.intlTelInputGlobals.getInstance($(this)[0]);
+                if ( '' !== iti.getNumber() && ! iti.isValidNumber() ) {
+                    error = true;
+                    error_type = 'validation';
+                    WP_User_Frontend.markError(item, error_type);
+                }
+            });
+
             // ===== Validate: Text and Textarea ========
             var required = self.find('[data-required="yes"]:visible');
 
@@ -756,7 +769,7 @@
                 $(item).siblings('.wpuf-error-msg').remove();
 
                 // if input type is radio, append the error message for design issue
-                if ( $(item).prev().prop('nodeName') === 'DIV' ) {
+                if ( $(item).prev().prop('nodeName') === 'DIV' && ! $(item).hasClass('wpuf_telephone') ) {
                     $(item).append('<div class="wpuf-error-msg">'+ error_string +'</div>')
                 } else {
                     // if input type is not radio, add the div after current item

@@ -22,7 +22,7 @@
                             }
                         }
 
-                        $default_active_tab = wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' );
+                        $default_active_tab = apply_filters( 'account_page_active_tab', wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' ) );
                         $active_tab         = false;
 
                         if ( ( isset( $_GET['section'] ) && $_GET['section'] == $section ) || ( !isset( $_GET['section'] ) && $default_active_tab == $section ) ) {

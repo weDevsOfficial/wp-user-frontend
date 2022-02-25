@@ -155,7 +155,7 @@ class WPUF_Frontend_Account {
         ob_start();
 
         if ( is_user_logged_in() ) {
-            $default_active_tab = wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' );
+            $default_active_tab = apply_filters( 'account_page_active_tab', wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' ) );
             $section            = isset( $_REQUEST['section'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['section'] ) ) : $default_active_tab;
             $sections           = wpuf_get_account_sections();
             $current_section    = [];

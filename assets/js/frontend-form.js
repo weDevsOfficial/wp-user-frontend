@@ -512,7 +512,7 @@
             WP_User_Frontend.removeErrorNotice(self);
 
             /* ======== Validate: Phone field ======== */
-            var phoneFields = self.find('input[type="text"].wpuf_telephone:visible');
+            var phoneFields = self.find('input[type="text"].wpuf_telephone[data-show-list="yes"]:visible');
 
             phoneFields.each(function(i, item) {
                 // Get iti instance
@@ -521,6 +521,10 @@
                     error = true;
                     error_type = 'validation';
                     WP_User_Frontend.markError(item, error_type);
+                } else {
+                    var name = $(item).attr('name');
+                    var value = iti.getNumber();
+                    $('<input>').attr('type', 'hidden').attr('name', name).attr('value', value).appendTo(self);     // append the full mobile number with country code. it will replace the user input (without country code)
                 }
             });
 

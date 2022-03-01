@@ -1601,10 +1601,11 @@ function wpuf_load_template( $file, $args = [] ) {
  * lods from pro plugin folder
  *
  * @since 3.1.11
+ * @since WPUF_PRO function moved to pro
  *
  * @param string $file file name or path to file
  */
-function wpuf_load_pro_template( $file, $args = [] ) {
+/*function wpuf_load_pro_template( $file, $args = [] ) {
     //phpcs:ignore
     if ( $args && is_array( $args ) ) {
         extract( $args );
@@ -1623,7 +1624,7 @@ function wpuf_load_pro_template( $file, $args = [] ) {
             include $wpuf_pro_dir . $file;
         }
     }
-}
+}*/
 
 /**
  * Helper function for formatting date field
@@ -4094,6 +4095,66 @@ function wpuf_payment_success_page( $data ){
 }
 
 /**
+ * Function current_datetime() compatibility for wp version < 5.3
+ *
+ * @since WPUF
+ *
+ * @return DateTimeImmutable
+ */
+function wpuf_current_datetime() {
+    if ( function_exists( 'current_datetime' ) ) {
+        return current_datetime();
+    }
+
+    return new DateTimeImmutable( 'now', wpuf_wp_timezone() );
+}
+
+/**
+ * Function wp_timezone() compatibility for wp version < 5.3
+ *
+ * @since WPUF
+ *
+ * @return DateTimeZone
+ */
+function wpuf_wp_timezone() {
+    if ( function_exists( 'wp_timezone' ) ) {
+        return wp_timezone();
+    }
+
+    return new DateTimeZone( wpuf_wp_timezone_string() );
+}
+
+/**
+ * Function wp_timezone_string() compatibility for wp version < 5.3
+ *
+ * @since WPUF
+ *
+ * @return string
+ */
+function wpuf_timezone_string() {
+    if ( function_exists( 'wp_timezone_string' ) ) {
+        return wp_timezone_string();
+    }
+
+    $timezone_string = get_option( 'timezone_string' );
+
+    if ( $timezone_string ) {
+        return $timezone_string;
+    }
+
+    $offset  = (float) get_option( 'gmt_offset' );
+    $hours   = (int) $offset;
+    $minutes = ( $offset - $hours );
+
+    $sign      = ( $offset < 0 ) ? '-' : '+';
+    $abs_hour  = abs( $hours );
+    $abs_mins  = abs( $minutes * 60 );
+    $tz_offset = sprintf( '%s%02d:%02d', $sign, $abs_hour, $abs_mins );
+
+    return $tz_offset;
+}
+
+/*
  * Editor toolbar primary button list
  *
  * @param string $type
@@ -4157,6 +4218,24 @@ function wpuf_filter_editor_toolbar( $field_settings ){
 }
 
 /**
+ *  Inconsistency with keys, remap keys, Back compat with keys
+ *
+ * @param $address_fields
+ *
+ * @return array
+ */
+function wpuf_map_address_fields( $address_fields ) {
+    if ( array_key_exists( 'billing_country', $address_fields ) ) {
+        foreach ( $address_fields as $key => $val ) {
+            unset( $address_fields[$key] );
+            $address_fields[str_replace( ['billing_', 'line1', 'line2', 'zip'], ['', 'line_1', 'line_2', 'zip_code'], $key ) ] = $val;
+        }
+    }
+
+    return $address_fields;
+}
+
+/**
  * Retrieves paginated links for queried pages
  * uses WordPress paginate_links() function for the final output
  *
@@ -4188,4 +4267,79 @@ function wpuf_pagination( $total_items, $per_page ) {
     if ( $page_links ) {
         return '<div class="wpuf-pagination">' . $page_links . '</div>';
     }
+}
+
+/**
+ * Remove conditional from form builder for selected fields
+ *
+ * @param $settings
+ *
+ * @return array
+ */
+function wpuf_unset_conditional( $settings ) {
+    $remove_cond_field = [ 'action_hook', 'step_start' ];
+
+    $field_settings = array_map(
+        function ( $field ) use ( $remove_cond_field ) {
+            if ( in_array( $field['template'], $remove_cond_field, true ) ) {
+                $index = array_filter(
+                    $field['settings'], function ( $settings ) {
+                        return $settings['name'] === 'wpuf_cond';
+                    }
+                );
+
+                unset( $field['settings'][ array_keys( $index )[0] ] );
+            }
+
+            return $field;
+        }, $settings['field_settings']
+    );
+
+    $settings['field_settings'] = $field_settings;
+
+    return $settings;
+}
+
+/**
+ * Check if current post is editable
+ *
+ * @param $post
+ *
+ * @since WPUF
+ *
+ * @return bool
+ */
+function wpuf_is_post_editable( $post ) {
+    $show_edit = false;
+
+    $current_user      = wpuf_get_user();
+    $user_subscription = new WPUF_User_Subscription( $current_user );
+    $user_sub          = $user_subscription->current_pack();
+    $sub_id            = $current_user->subscription()->current_pack_id();
+
+    if ( $sub_id ) {
+        $subs_expired = $user_subscription->expired();
+    } else {
+        $subs_expired = false;
+    }
+
+    if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
+        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
+        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
+
+        $show_edit = true;
+        if ( ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) || ( 'publish' === $post->post_status && 'off' !==  $disable_publish_edit ) ) {
+            $show_edit = false;
+        }
+
+        if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( ! empty( $payment_status ) && $payment_status != 'completed' ) ) {
+            $show_edit = false;
+        }
+
+        if ( $subs_expired ) {
+            $show_edit = false;
+        }
+    }
+
+    return $show_edit;
 }

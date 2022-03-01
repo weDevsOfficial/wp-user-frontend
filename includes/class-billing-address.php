@@ -169,6 +169,7 @@ class WPUF_Ajax_Address_Form {
                             $states    = [];
                             $selected  = [];
                             $base_addr = get_option( 'wpuf_base_country_state', false );
+                            $address_fields = wpuf_map_address_fields( $address_fields );
 
                             $selected['country'] = ! ( empty( $address_fields['country'] ) ) ? $address_fields['country'] : $base_addr['country'];
 

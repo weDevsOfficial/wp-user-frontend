@@ -1018,11 +1018,11 @@
                     if ( limit && numWords > limit && 'max' === limit_to ) {
                         WP_User_Frontend.editorLimit.blockTyping(event);
                         WP_User_Frontend.markError( field, 'limit' );
-                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + ' ' + numWords +'/'+ limit );
-                    }else if ( limit && numWords < limit && 'min' === limit_to ) {
+                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + ' ' + numWords + '/' + limit );
+                    } else if ( limit && numWords < limit && 'min' === limit_to ) {
                         WP_User_Frontend.markError( field, 'limit' );
-                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + ' ' + numWords +'/'+ limit );
-                    }else {
+                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + ' ' + numWords + '/' + limit );
+                    } else {
                         field.removeClass('has-error')
                         jQuery('.mce-path-item.mce-last', ed.container).html('');
                     }

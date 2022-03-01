@@ -325,11 +325,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             // if restriction by character count
             if ( 'character' === $restriction_type && 'min' === $restriction_to ) {
                 if ( strlen( $current_data ) > 0 && strlen( $current_data ) < $restricted_num ) {
-                    $this->send_error( __( 'Minimum ', 'wp-user-frontend' ) . $restricted_num . __( ' character required for ', 'wp-user-frontend' ) . $label );
+                    $this->send_error( sprintf( __( 'Minimum %d character is required for %s', 'wp-user-frontend' ), $restricted_num, $label ) );
                 }
             } elseif ( 'character' === $restriction_type && 'max' === $restriction_to ) {
                 if ( strlen( $current_data ) > 0 && strlen( $current_data ) > $restricted_num ) {
-                    $this->send_error( __( 'Maximum ', 'wp-user-frontend' ) . $restricted_num . __( ' character allowed for ', 'wp-user-frontend' ) . $label );
+                    $this->send_error( sprintf( __( 'Maximum %d character is allowed for %s', 'wp-user-frontend' ), $restricted_num, $label ) );
                 }
             }
 

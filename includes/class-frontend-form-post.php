@@ -314,6 +314,42 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $guest_verify          = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : 'false';
         $attachments_to_delete = isset( $_POST['delete_attachments'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['delete_attachments'] ) ) : [];
 
+        // check each form field for content restriction
+        foreach ( $this->form_fields as $single_field ) {
+            if ( empty( $single_field['content_restriction'] ) ) {
+                continue;
+            }
+
+            $restricted_num = $single_field['content_restriction'];
+            $restriction_to = ! empty( $single_field['restriction_to'] ) ? $single_field['restriction_to'] : 'min';
+            $restriction_type = ! empty( $single_field['restriction_type'] ) ? $single_field['restriction_type'] : 'word';
+
+            $current_data = ! empty( $_POST[ $single_field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $single_field['name'] ] ) ) : '';
+            $label = ! empty( $single_field['label'] ) ? $single_field['label'] : '';
+
+            // if restriction by character count
+            if ( 'character' === $restriction_type && 'min' === $restriction_to ) {
+                if ( strlen( $current_data ) > 0 && strlen( $current_data ) < $restricted_num ) {
+                    $this->send_error( sprintf( __( 'Minimum %d character is required for %s', 'wp-user-frontend' ), $restricted_num, $label ) );
+                }
+            } elseif ( 'character' === $restriction_type && 'max' === $restriction_to ) {
+                if ( strlen( $current_data ) > 0 && strlen( $current_data ) > $restricted_num ) {
+                    $this->send_error( sprintf( __( 'Maximum %d character is allowed for %s', 'wp-user-frontend' ), $restricted_num, $label ) );
+                }
+            }
+
+            // if restriction by word count
+            if ( 'word' === $restriction_type && 'min' === $restriction_to ) {
+                if ( str_word_count( $current_data ) > 0 && str_word_count( $current_data ) < $restricted_num ) {
+                    $this->send_error( sprintf( __( 'Minimum %d word is required for %s', 'wp-user-frontend' ), $restricted_num, $label ) );
+                }
+            } elseif ( 'word' === $restriction_type && 'max' === $restriction_to ) {
+                if ( str_word_count( $current_data ) > 0 && str_word_count( $current_data ) > $restricted_num ) {
+                    $this->send_error( sprintf( __( 'Maximum %d word is allowed for %s', 'wp-user-frontend' ), $restricted_num, $label ) );
+                }
+            }
+        }
+
         foreach ( $attachments_to_delete as $attach_id ) {
             wp_delete_attachment( $attach_id, true );
         }

@@ -979,7 +979,7 @@
                         jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + ' ' + numWords +'/'+ limit );
                     }
                     return true;
-                }else if ( (numWords < limit) && ('min' === limit_to) && numWords > 1 ) {
+                } else if ( (numWords < limit) && ('min' === limit_to) && numWords > 1 ) {
                     WP_User_Frontend.markError( field, 'limit' );
 
                     if (isTinymce) {

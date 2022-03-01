@@ -1,5 +1,5 @@
 <div class="items-table-container">
-    <table class="items-table <?php echo esc_attr( $post_type ); ?>">
+    <table class="items-table <?php echo implode( ' ', array_map('esc_attr', $post_type ) ); ?>">
         <thead>
             <tr class="items-list-header">
                 <?php
@@ -87,33 +87,16 @@
 
                         <td data-label="<?php esc_attr_e( 'Options: ', 'wp-user-frontend' ); ?>" class="data-column">
                             <?php
-                            if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
-                                $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
-                                $edit_page            = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
-                                $url                  = add_query_arg( ['pid' => $post->ID], get_permalink( $edit_page ) );
-
-                                $show_edit = true;
-
-                                if ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) {
-                                    $show_edit  = false;
-                                }
-
-                                if ( ( 'draft' === $post->post_status || 'pending' === $post->post_status ) && ( ! empty( $payment_status ) && 'completed' === $payment_status ) ) {
-                                    $show_edit  = false;
-                                }
-
-                                if ( $subs_expired ) {
-                                    $show_edit  = false;
-                                }
-
-                                if ( $show_edit ) {
+                            if ( wpuf_is_post_editable( $post ) ) {
+                                $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
+                                $url = add_query_arg( [ 'pid' => $post->ID ], get_permalink( $edit_page ) );
                                 ?>
                                 <a class="wpuf-posts-options wpuf-posts-edit" href="<?php echo esc_url( wp_nonce_url( $url, 'wpuf_edit' ) ); ?>">
                                     <img src="<?php echo WPUF_ASSET_URI . '/images/edit.svg'; ?>" alt="Edit">
                                 </a>
                                 <?php
                                 }
-                            } ?>
+                             ?>
 
                             <?php
                             if ( 'yes' === wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) ) {

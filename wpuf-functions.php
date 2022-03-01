@@ -503,47 +503,6 @@ function wpuf_get_image_sizes() {
     return $image_sizes;
 }
 
-/**
- * Get an array of available image sizes with height and weight
- *
- * @since WPUF
- *
- * @param $size     string      size of the image. thumbnail, medium, large etc.
- *
- * @return array                single image size returned if parameter size is passed
- *                              full array of all the sizes will return otherwise
- */
-function wpuf_get_image_sizes_array( $size = '' ) {
-    $additional_image_sizes   = wp_get_additional_image_sizes();
-    $intermediate_image_sizes = get_intermediate_image_sizes();
-    $sizes = [];
-
-    // Create the full array with sizes and crop info
-    foreach ( $intermediate_image_sizes as $_size ) {
-        if ( in_array( $_size, [ 'thumbnail', 'medium', 'large', 'medium_large' ], true ) ) {
-            $sizes[ $_size ]['width']  = get_option( $_size . '_size_w' );
-            $sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
-            $sizes[ $_size ]['crop']   = (bool) get_option( $_size . '_crop' );
-        } elseif ( isset( $additional_image_sizes[ $_size ] ) ) {
-            $sizes[ $_size ] = [
-                'width'  => $additional_image_sizes[ $_size ]['width'],
-                'height' => $additional_image_sizes[ $_size ]['height'],
-                'crop'   => $additional_image_sizes[ $_size ]['crop'],
-            ];
-        }
-    }
-
-    // Get only 1 size if found
-    if ( $size ) {
-        if ( isset( $sizes[ $size ] ) ) {
-            return $sizes[ $size ];
-        } else {
-            return false;
-        }
-    }
-    return $sizes;
-}
-
 function wpuf_allowed_extensions() {
     $extesions = [
         'images' => [
@@ -2077,7 +2036,7 @@ function wpuf_get_account_sections() {
     }
 
     $sections = array_merge(
-    // dashboard should be the first item
+        // dashboard should be the first item
         [ 'dashboard' => __( 'Dashboard', 'wp-user-frontend' ) ],
         $cpt_sections,
         $sections
@@ -2106,13 +2065,13 @@ function wpuf_get_account_sections_list( $post_type = 'page' ) {
     return $array;
 }
 /**
- * Get all transactions
+ * Get all completed transactions
  *
  * @since 2.4.2
  *
  * @return array
  */
-function wpuf_get_transactions( $args = [] ) {
+function wpuf_get_completed_transactions( $args = [] ) {
     global $wpdb;
 
     $defaults = [
@@ -2176,12 +2135,20 @@ function wpuf_get_pending_transactions( $args = [] ) {
     foreach ( $transactions as $transaction ) {
         $info = get_post_meta( $transaction->ID, '_data', true );
 
+        if ( ! $info ) {
+            continue;
+        }
+
+        $tax      = ! empty( $info['tax'] ) ? $info['tax'] : 0;
+        $subtotal = ! empty( $info['cost'] ) ? $info['cost'] : $info['price'];
+
         $items[] = (object) [
             'id'               => $transaction->ID,
             'user_id'          => $info['user_info']['id'],
             'status'           => 'pending',
-            'cost'             => $info['price'],
-            'tax'              => isset( $info['tax'] ) ? $info['tax'] : 0,
+            'subtotal'         => $subtotal,
+            'cost'             => $subtotal - $tax,
+            'tax'              => $tax,
             'post_id'          => ( $info['type'] === 'post' ) ? $info['item_number'] : 0,
             'pack_id'          => ( $info['type'] === 'pack' ) ? $info['item_number'] : 0,
             'payer_first_name' => $info['user_info']['first_name'],
@@ -2196,6 +2163,96 @@ function wpuf_get_pending_transactions( $args = [] ) {
     wp_reset_postdata();
 
     return $items;
+}
+
+/**
+ * Get all pending and completed transactions
+ *
+ * @since WPUF
+ *
+ * @param $args
+ *
+ * @return array
+ */
+function wpuf_get_all_transactions( $args = [] ) {
+    global $wpdb;
+    $transaction_table = $wpdb->prefix . 'wpuf_transaction';
+
+    $defaults = [
+        'number'  => 20,
+        'offset'  => 0,
+        'orderby' => 'id',
+        'order'   => 'DESC',
+        'count'   => false,
+    ];
+
+    $orderby_keys = ['id', 'status', 'created'];
+    $order_keys = ['asc', 'desc'];
+
+    $args = wp_parse_args( $args, $defaults );
+
+    if ( $args['count'] ) {
+        return ( int ) $wpdb->get_var(
+            "SELECT SUM(AllCount)
+            FROM ((SELECT COUNT(*) AS AllCount FROM {$transaction_table})
+            UNION ALL
+                (SELECT COUNT(*) AS AllCount FROM {$wpdb->posts}
+                    WHERE post_type = 'wpuf_order'
+                    AND post_status IN('pending', 'publish'))) AS post_table"
+        );
+    }
+
+    $orderby       = in_array( $args['orderby'], $orderby_keys ) ? $args['orderby'] : 'id';
+    $sorting_order = in_array( $args['order'], $order_keys ) ? $args['order'] : 'DESC';
+    $offset        = ( int ) sanitize_key( $args['offset'] );
+    $number        = ( int ) sanitize_key( $args['number'] );
+
+    // get all the completed transaction from transaction table
+    // and pending transaction from post table
+    $transactions = $wpdb->get_results(
+        $wpdb->prepare(
+            "(SELECT id, user_id, status, tax, cost, post_id, pack_id, payer_first_name, payer_last_name, payer_email, payment_type, transaction_id, created FROM {$transaction_table})
+            UNION ALL
+            (SELECT ID AS id, post_author AS user_id, null AS status, null AS tax, null AS cost, ID as post_id, null AS pack_id, null AS payer_first_name, null AS payer_last_name, null AS payer_email, null AS payment_type, 0 AS transaction_id, post_date AS created FROM {$wpdb->posts}
+            WHERE post_type = %s)
+            ORDER BY {$orderby} {$sorting_order}
+            LIMIT %d, %d",
+            'wpuf_order', $offset, $number
+        )
+    );
+
+    if ( ! $transactions ) {
+        return;
+    }
+
+    foreach ( $transactions as $transaction ) {
+        if ( $transaction->status ) {
+            continue;
+        }
+
+        // get metadata for pending transactions
+        $info = get_post_meta( $transaction->id, '_data', true );
+        $payment_method = isset( $info['post_data']['wpuf_payment_method'] ) ? $info['post_data']['wpuf_payment_method'] : '';
+
+        $type = isset( $info['type'] ) ? $info['type'] : '';
+        $item_number = isset( $info['item_number'] ) ? $info['item_number'] : 0;
+
+        // attach data to pending transactions
+        $transaction->user_id          = isset( $info['user_info']['id'] ) ? $info['user_info']['id'] : 0;
+        $transaction->status           = 'pending';
+        $transaction->cost             = isset( $info['price'] ) ? $info['price'] : 0;
+        $transaction->tax              = isset( $info['tax'] ) ? $info['tax'] : 0;
+        $transaction->post_id          = ( 'post' === $type ) ? $item_number : 0;
+        $transaction->pack_id          = ( 'pack' === $type ) ? $item_number : 0;
+        $transaction->payer_first_name = isset( $info['user_info']['first_name'] ) ? $info['user_info']['first_name'] : '';
+        $transaction->payer_last_name  = isset( $info['user_info']['last_name'] ) ? $info['user_info']['last_name'] : '';
+        $transaction->payer_email      = isset( $info['user_info']['email'] ) ? $info['user_info']['email'] : '';
+        $transaction->payment_type     = ( 'bank' === $payment_method ) ? 'Bank/Manual' : ucwords( $payment_method );
+        $transaction->transaction_id   = 0;
+        $transaction->created          = isset( $info['date'] ) ? $info['date'] : '';
+    }
+
+    return $transactions;
 }
 
 /**
@@ -2604,17 +2661,17 @@ function wpuf_trim_zeros( $price ) {
  */
 function wpuf_format_price( $price, $formated = true, $args = [] ) {
 
-    $price_args = apply_filters(
-        'wpuf_price_args', wp_parse_args(
-            $args, [
-                'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
-                'decimal_separator'  => wpuf_get_price_decimal_separator(),
-                'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
-                'decimals'           => wpuf_get_price_decimals(),
-                'price_format'       => get_wpuf_price_format(),
-            ]
-        )
-    );
+      $price_args = apply_filters(
+            'wpuf_price_args', wp_parse_args(
+                $args, [
+                    'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
+                    'decimal_separator'  => wpuf_get_price_decimal_separator(),
+                    'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
+                    'decimals'           => wpuf_get_price_decimals(),
+                    'price_format'       => get_wpuf_price_format(),
+                ]
+            )
+        );
 
     $currency = $price_args['currency'];
     $decimal_separator = $price_args['decimal_separator'];
@@ -3603,27 +3660,9 @@ function wpuf_ajax_get_states_field() {
             'options'          => $states,
             'show_option_all'  => false,
             'show_option_none' => false,
-            'data'             => [ 'required' => 'yes', 'type' => 'select' ],
         ];
 
-        $allowed_html = [
-            'select' => [
-                'class'            => [],
-                'name'             => [],
-                'id'               => [],
-                'data-placeholder' => [],
-                'data-required'    => [],
-                'data-type'        => [],
-            ],
-            'option' => [
-                'value'    => [],
-                'class'    => [],
-                'id'       => [],
-                'selected' => []
-            ],
-        ];
-
-        $response = wp_kses( wpuf_select( $args ), $allowed_html );
+        $response = wpuf_select( $args );
     } else {
         $response = 'nostates';
     }
@@ -3788,11 +3827,11 @@ function wpuf_show_form_schedule_message( $form_id ) {
             echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>' );
         }
         ?>
-        <script>
-            jQuery( function($) {
-                $(".wpuf-submit-button").attr("disabled", "disabled");
-            });
-        </script>
+            <script>
+                jQuery( function($) {
+                    $(".wpuf-submit-button").attr("disabled", "disabled");
+                });
+            </script>
         <?php
         return;
     }
@@ -4116,6 +4155,87 @@ function wpuf_timezone_string() {
 }
 
 /*
+ * Editor toolbar primary button list
+ *
+ * @param string $type
+ *
+ * @return array
+ */
+function wpuf_get_editor_buttons( $type = 'rich' ){
+    $common = [
+        'bold'        => 'bold',
+        'italic'      => 'italic',
+        'bullist'     => 'bullist',
+        'numlist'     => 'numlist',
+        'blockquote'  => 'blockquote',
+        'alignleft'   => 'alignleft',
+        'aligncenter' => 'aligncenter',
+        'alignright'  => 'alignright',
+        'link'        => 'link',
+    ];
+
+    $rich = [
+        'formatselect' => 'formatselect',
+        'wp_more'      => 'wp_more',
+        'spellchecker' => 'spellchecker',
+    ];
+
+    $teeny = [
+        'underline'     => 'underline',
+        'strikethrough' => 'strikethrough',
+        'undo'          => 'undo',
+        'redo'          => 'redo',
+        'fullscreen'    => 'fullscreen',
+    ];
+
+    return 'rich' === $type || 'yes' === $type ? array_merge( $rich, $common ) : array_merge( $common, $teeny );
+
+}
+
+/**
+ * Filter editor buttons
+ *
+ * @param $field_settings
+ *
+ * @return array
+ */
+function wpuf_filter_editor_toolbar( $field_settings ){
+    $tinymce_settings = [];
+
+    if ( ! empty( $field_settings['text_editor_control'] ) ) {
+        $exclude_button = $field_settings['text_editor_control'];
+
+        $tinymce_settings['toolbar1'] = implode(
+            ',', array_filter(
+                wpuf_get_editor_buttons( $field_settings['rich'] ), function ( $key ) use ( $exclude_button ) {
+                return ! in_array( $key, $exclude_button, true );
+            }, ARRAY_FILTER_USE_KEY
+            )
+        );
+    }
+
+    return ! empty( $tinymce_settings['toolbar1'] ) ? $tinymce_settings : [];
+}
+
+/**
+ *  Inconsistency with keys, remap keys, Back compat with keys
+ *
+ * @param $address_fields
+ *
+ * @return array
+ */
+function wpuf_map_address_fields( $address_fields ) {
+    if ( array_key_exists( 'billing_country', $address_fields ) ) {
+        foreach ( $address_fields as $key => $val ) {
+            unset( $address_fields[$key] );
+            $address_fields[str_replace( ['billing_', 'line1', 'line2', 'zip'], ['', 'line_1', 'line_2', 'zip_code'], $key ) ] = $val;
+        }
+    }
+
+    return $address_fields;
+}
+
+/**
  * Retrieves paginated links for queried pages
  * uses WordPress paginate_links() function for the final output
  *
@@ -4147,4 +4267,79 @@ function wpuf_pagination( $total_items, $per_page ) {
     if ( $page_links ) {
         return '<div class="wpuf-pagination">' . $page_links . '</div>';
     }
+}
+
+/**
+ * Remove conditional from form builder for selected fields
+ *
+ * @param $settings
+ *
+ * @return array
+ */
+function wpuf_unset_conditional( $settings ) {
+    $remove_cond_field = [ 'action_hook', 'step_start' ];
+
+    $field_settings = array_map(
+        function ( $field ) use ( $remove_cond_field ) {
+            if ( in_array( $field['template'], $remove_cond_field, true ) ) {
+                $index = array_filter(
+                    $field['settings'], function ( $settings ) {
+                        return $settings['name'] === 'wpuf_cond';
+                    }
+                );
+
+                unset( $field['settings'][ array_keys( $index )[0] ] );
+            }
+
+            return $field;
+        }, $settings['field_settings']
+    );
+
+    $settings['field_settings'] = $field_settings;
+
+    return $settings;
+}
+
+/**
+ * Check if current post is editable
+ *
+ * @param $post
+ *
+ * @since WPUF
+ *
+ * @return bool
+ */
+function wpuf_is_post_editable( $post ) {
+    $show_edit = false;
+
+    $current_user      = wpuf_get_user();
+    $user_subscription = new WPUF_User_Subscription( $current_user );
+    $user_sub          = $user_subscription->current_pack();
+    $sub_id            = $current_user->subscription()->current_pack_id();
+
+    if ( $sub_id ) {
+        $subs_expired = $user_subscription->expired();
+    } else {
+        $subs_expired = false;
+    }
+
+    if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
+        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
+        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
+
+        $show_edit = true;
+        if ( ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) || ( 'publish' === $post->post_status && 'off' !==  $disable_publish_edit ) ) {
+            $show_edit = false;
+        }
+
+        if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( ! empty( $payment_status ) && $payment_status != 'completed' ) ) {
+            $show_edit = false;
+        }
+
+        if ( $subs_expired ) {
+            $show_edit = false;
+        }
+    }
+
+    return $show_edit;
 }

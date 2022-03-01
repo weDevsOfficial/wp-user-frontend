@@ -3,9 +3,11 @@
 class WPUF_Admin_Form_Handler {
 
     public function __construct() {
+        // translate the hook so that it will match the menu title
+        $label = strtolower( preg_replace( '/\s/', '-$1', __( 'User Frontend', 'wp-user-frontend' ) ) );
         // post forms list table
-        add_action( 'load-user-frontend_page_wpuf-post-forms', [ $this, 'post_forms_actions' ] );
-        add_action( 'load-user-frontend_page_wpuf-profile-forms', [ $this, 'profile_forms_actions' ] );
+        add_action( "load-${label}_page_wpuf-post-forms", [ $this, 'post_forms_actions' ] );
+        add_action( "load-${label}_page_wpuf-profile-forms", [ $this, 'profile_forms_actions' ] );
         add_action( 'admin_notices', [ $this, 'admin_notices' ] );
         add_action( 'removable_query_args', [ $this, 'removable_query_args' ] );
     }
@@ -68,8 +70,8 @@ class WPUF_Admin_Form_Handler {
 
             switch ( $action ) {
                 case 'post_form_search':
-                    $redirect = remove_query_arg( [ 'post_form_search' ], $remove_query_args );
-
+                    $remove_query_args[] = 'post_form_search';
+                    $redirect = remove_query_arg( $remove_query_args, $_SERVER['REQUEST_URI'] );
                     break;
 
                 case 'trash':
@@ -201,7 +203,8 @@ class WPUF_Admin_Form_Handler {
 
             switch ( $action ) {
                 case 'profile_form_search':
-                    $redirect = remove_query_arg( [ 'profile_form_search' ], $redirect );
+                    $remove_query_args[] = 'profile_form_search';
+                    $redirect = remove_query_arg( $remove_query_args, $_SERVER['REQUEST_URI'] );
 
                     break;
 

@@ -41,33 +41,27 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                 <div class="wpuf-fields">
             <?php } ?>
 
-                 <?php
+                <?php
+                    $tinymce_settings = wpuf_filter_editor_toolbar( $field_settings );
 
-                    if ( $field_settings['rich'] == 'yes' ) {
-                          $editor_settings = [
-                              'textarea_rows' => $field_settings['rows'],
-                              'quicktags'     => false,
-                              'media_buttons' => false,
-                              'editor_class'  => $req_class,
-                              'textarea_name' => $field_settings['name'],
-                          ];
+                if ( ( $field_settings['rich'] === 'teeny' || $field_settings['rich'] === 'yes' ) && ! empty( $tinymce_settings ) ) {
+                    $editor_settings = [
+                        'textarea_rows' => $field_settings['rows'],
+                        'quicktags'     => false,
+                        'media_buttons' => false,
+                        'editor_class'  => $req_class,
+                        'textarea_name' => $field_settings['name'],
+                        'tinymce'       => $tinymce_settings,
+                    ];
 
-                          $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
-                          wp_editor( $value, $textarea_id, $editor_settings );
-                    } elseif ( $field_settings['rich'] == 'teeny' ) {
-                         $editor_settings = [
-                             'textarea_rows' => $field_settings['rows'],
-                             'quicktags'     => false,
-                             'media_buttons' => false,
-                             'teeny'         => true,
-                             'editor_class'  => $req_class,
-                             'textarea_name' => $field_settings['name'],
-                         ];
+                    if ( $field_settings['rich'] === 'teeny' ) {
+                        $editor_settings['teeny'] = true;
+                    }
 
-                         $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
-                         wp_editor( $value, $textarea_id, $editor_settings );
-                    } else {
-                        ?>
+                    $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
+                    wp_editor( $value, $textarea_id, $editor_settings );
+                } else {
+                    ?>
                     <textarea
                         class="textareafield <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                         id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
@@ -81,8 +75,8 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                     <span class="wpuf-wordlimit-message wpuf-help"></span>
 
                         <?php
-                    }
-                    ?>
+                }
+                ?>
 
                  <?php
                     $this->help_text( $field_settings );
@@ -132,7 +126,8 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
             'show_in_post'      => 'yes',
             'hide_field_label'  => 'no',
             'restriction_type'  => 'character',
-             'restriction_to'   => 'max',
+            'restriction_to'   => 'max',
+            'text_editor_control' => [],
         ];
 
         return array_merge( $defaults, $props );

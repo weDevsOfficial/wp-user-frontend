@@ -336,11 +336,11 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             // if restriction by word count
             if ( 'word' === $restriction_type && 'min' === $restriction_to ) {
                 if ( str_word_count( $current_data ) > 0 && str_word_count( $current_data ) < $restricted_num ) {
-                    $this->send_error( __( 'Minimum ', 'wp-user-frontend' ) . $restricted_num . __( ' word required for ', 'wp-user-frontend' ) . $label );
+                    $this->send_error( sprintf( __( 'Minimum %d word is required for %s', 'wp-user-frontend' ), $restricted_num, $label ) );
                 }
             } elseif ( 'word' === $restriction_type && 'max' === $restriction_to ) {
                 if ( str_word_count( $current_data ) > 0 && str_word_count( $current_data ) > $restricted_num ) {
-                    $this->send_error( __( 'Maximum ', 'wp-user-frontend' ) . $restricted_num . __( ' word allowed for ', 'wp-user-frontend' ) . $label );
+                    $this->send_error( sprintf( __( 'Maximum %d word is allowed for %s', 'wp-user-frontend' ), $restricted_num, $label ) );
                 }
             }
         }

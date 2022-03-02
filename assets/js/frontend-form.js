@@ -524,8 +524,9 @@
                 } else {
                     var name = $(item).attr('name');
                     var value = iti.getNumber();
-                    $('<input>').attr('type', 'hidden').attr('name', name).attr('value', value).appendTo(self);     // append the full mobile number with country code. it will replace the user input (without country code)
+                    $('<input>').attr('type', 'hidden').attr('name', name).attr('value', value).appendTo(self);     // append the mobile number with country code
                 }
+            });
 
             var visibleTextFields = self.find('.wpuf-el:visible input[type=text], .wpuf-el:visible textarea');
 
@@ -975,7 +976,12 @@
                     ed.focus();
                 }
 
-                var data = $(field).closest('li.wpuf-el').find('script').html().match(/(?:bind\()(.*?(?=\)))/)[1].replace(/['"]/g, '').split(',');
+                var data = '';
+
+                if ( $(field).closest('li.wpuf-el').find('script').html() ) {
+                    var fieldScript = $(field).closest('li.wpuf-el').find('script').html();
+                    data = fieldScript.match(/(?:bind\()(.*?(?=\)))/) ? fieldScript.match(/(?:bind\()(.*?(?=\)))/)[1].replace(/['"]/g, '').split(',') : '';
+                }
 
                 var limit = (typeof(data[0]) !== "undefined" && data[0] !== null) ? parseInt(data[0]) : 0;
                 var fieldId = (typeof(data[1]) !== "undefined" && data[1] !== null) ? (data[1]).trim() : '';

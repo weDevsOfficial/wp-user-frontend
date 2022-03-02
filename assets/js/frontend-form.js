@@ -528,6 +528,14 @@
                 }
             });
 
+            // if already some error found, bail out
+            if (error) {
+                // add error notice
+                WP_User_Frontend.addErrorNotice(self,'end');
+
+                return false;
+            }
+
             var visibleTextFields = self.find('.wpuf-el:visible input[type=text], .wpuf-el:visible textarea');
 
             /* ===== Validate: Content limit restriction ======== */

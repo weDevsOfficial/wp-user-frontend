@@ -358,6 +358,15 @@ class WPUF_Admin_Settings {
      * @return void
      */
     public function handle_tools_action() {
+        $section_id = 'wpuf_uninstall';
+
+        register_setting( $section_id, $section_id );
+
+        add_settings_section( $section_id, __( 'Uninstall Settings', 'wp-user-frontend' ), [ $this, 'uninstall_section_callback' ], 'wpuf_tools' );
+
+        add_settings_field( 'wpuf_uninstall["delete_settings_field"]', __( 'Delete Plugin Settings on Uninstall', 'wp-user-frontend' ), [ $this, 'delete_settings_markup' ], 'wpuf_tools', $section_id );
+        add_settings_field( 'wpuf_uninstall["delete_database_field"]', __( 'Delete Database Tables on Uninstall', 'wp-user-frontend' ), [ $this, 'delete_database_markup' ], 'wpuf_tools', $section_id );
+
         if ( ! isset( $_GET['wpuf_action'] ) ) {
             return;
         }
@@ -413,6 +422,34 @@ class WPUF_Admin_Settings {
 
         wp_redirect( add_query_arg( [ 'msg' => $message ], admin_url( 'admin.php?page=wpuf_tools&action=tools' ) ) );
         exit;
+    }
+
+    public function delete_settings_markup() {
+        ?>
+        <label class="switch">
+            <input type="checkbox" id="wpuf_uninstall[delete_settings_field]" name="wpuf_uninstall[delete_settings_field]">
+            <span class="slider round"></span>
+        </label>
+        <?php
+    }
+
+    public function delete_database_markup() {
+        ?>
+        <label class="switch">
+            <input type="checkbox" id="wpuf_uninstall[delete_database_field]" name="wpuf_uninstall[delete_database_field]">
+            <span class="slider round"></span>
+        </label>
+        <?php
+    }
+
+    public function uninstall_section_callback( $args ) {
+        ?>
+        <strong>
+            <p>
+                <span class="danger"><?php esc_html_e( 'Caution:', 'wp-user-frontend' ); ?></span><?php esc_html_e( ' This settings will delete all User Frontend plugin settings and database tables.', 'wp-user-frontend' ); ?>
+            </p>
+        </strong>
+        <?php
     }
 
     /**

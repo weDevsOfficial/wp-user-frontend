@@ -322,6 +322,66 @@ class WPUF_Admin_Tools {
 
         <?php } ?>
 
+        <style>
+            .danger {
+                color: #BB0000;
+            }
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 47px;
+                height: 20px;
+            }
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 15px;
+                width: 15px;
+                left: 3px;
+                bottom: 3px;
+                background-color: #FFF;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+            input:checked + .slider {
+                background-color: #2196F3;
+            }
+            input:focus + .slider {
+                box-shadow: 0 0 1px #2196F3;
+            }
+            input:checked + .slider:before {
+                -webkit-transform: translateX(26px);
+                -ms-transform: translateX(26px);
+                transform: translateX(26px);
+            }
+            /* Rounded sliders */
+            .slider.round {
+                border-radius: 34px;
+            }
+            .slider.round:before {
+                border-radius: 50%;
+            }
+            .form-table th {
+                width: 250px;
+            }
+        </style>
+
         <div class="metabox-holder">
             <div class="postbox">
                 <h3><?php esc_html_e( 'Page Installation', 'wp-user-frontend' ); ?></h3>
@@ -361,6 +421,18 @@ class WPUF_Admin_Tools {
                     <p><?php esc_html_e( 'This tool will delete all the transactions from the transaction table.', 'wp-user-frontend' ); ?></p>
 
                     <a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'clear_transaction' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $confirmation_message ); ?>');"><?php esc_html_e( 'Delete Transactions', 'wp-user-frontend' ); ?></a>
+                </div>
+            </div>
+
+            <div class="postbox">
+                <div class="inside">
+                    <form method="POST" action="options.php">
+                        <?php
+                        settings_fields( 'wpuf_uninstall' );
+                        do_settings_sections( 'wpuf_tools' );
+                        submit_button();
+                        ?>
+                    </form>
                 </div>
             </div>
         </div>

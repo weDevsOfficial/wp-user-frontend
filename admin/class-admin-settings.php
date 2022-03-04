@@ -35,6 +35,13 @@ class WPUF_Admin_Settings {
      */
     private $menu_pages = [];
 
+    /**
+     * The settings upon plugin uninstallation
+     *
+     * @var array
+     */
+    private $uninstall_settings = [];
+
     public function __construct() {
         if ( ! class_exists( 'WeDevs_Settings_API' ) ) {
             require_once dirname( __DIR__ ) . '/lib/class.settings-api.php';
@@ -367,6 +374,8 @@ class WPUF_Admin_Settings {
         add_settings_field( 'wpuf_uninstall["delete_settings_field"]', __( 'Delete Plugin Settings on Uninstall', 'wp-user-frontend' ), [ $this, 'delete_settings_markup' ], 'wpuf_tools', $section_id );
         add_settings_field( 'wpuf_uninstall["delete_database_field"]', __( 'Delete Database Tables on Uninstall', 'wp-user-frontend' ), [ $this, 'delete_database_markup' ], 'wpuf_tools', $section_id );
 
+        $this->uninstall_settings = get_option( $section_id );
+
         if ( ! isset( $_GET['wpuf_action'] ) ) {
             return;
         }
@@ -425,18 +434,20 @@ class WPUF_Admin_Settings {
     }
 
     public function delete_settings_markup() {
+        $value = ! empty( $this->uninstall_settings['delete_settings_field'] ) ? $this->uninstall_settings['delete_settings_field'] : 'off';
         ?>
         <label class="switch">
-            <input type="checkbox" id="wpuf_uninstall[delete_settings_field]" name="wpuf_uninstall[delete_settings_field]">
+            <input type="checkbox" id="wpuf_uninstall[delete_settings_field]" name="wpuf_uninstall[delete_settings_field]" <?php checked( $value, 'on' ); ?>>
             <span class="slider round"></span>
         </label>
         <?php
     }
 
     public function delete_database_markup() {
+        $value = ! empty( $this->uninstall_settings['delete_database_field'] ) ? $this->uninstall_settings['delete_database_field'] : 'off';
         ?>
         <label class="switch">
-            <input type="checkbox" id="wpuf_uninstall[delete_database_field]" name="wpuf_uninstall[delete_database_field]">
+            <input type="checkbox" id="wpuf_uninstall[delete_database_field]" name="wpuf_uninstall[delete_database_field]" <?php checked( $value, 'on' ); ?>>
             <span class="slider round"></span>
         </label>
         <?php

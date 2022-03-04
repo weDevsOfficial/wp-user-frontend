@@ -614,6 +614,11 @@ class WPUF_Simple_Login {
             return;
         }
 
+        // request coming from ajax call, example: sidebar widget
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+            return;
+        }
+
         // process lost password form
         if ( isset( $_POST['user_login'] ) && isset( $_POST['_wpnonce'] ) ) {
             $nonce = sanitize_key( wp_unslash( $_POST['_wpnonce'] ) );

@@ -511,32 +511,22 @@
             WP_User_Frontend.removeErrors(self);
             WP_User_Frontend.removeErrorNotice(self);
 
-            var visibleTextFields = self.find('.wpuf-el:visible input[type=text], .wpuf-el:visible textarea');
+            var visibleFields = self.find('input:visible');
 
-            /* ===== Validate: Content limit restriction ======== */
-            visibleTextFields.each(function(i, item) {
-                error = WP_User_Frontend.editorLimit.checkRestrictionError(item);
-                return ! error;
-            });
-
-            // ===== Validate: Text and Textarea ========
-            var required = self.find('[data-required="yes"]:visible');
-
-            required.each(function(i, item) {
-                // temp_val = $.trim($(item).val());
-                // console.log( $(item).data('type') );
-                var data_type = $(item).data('type'),
-                    val = '';
+            visibleFields.each(function(i, item) {
+                var input_type = $(item).attr('type');
+                var data_type = $(item).data('type');
+                var required = $(item).data('required');
+                var val = '';
 
                 switch(data_type) {
                     case 'rich':
                         var name = $(item).data('id')
                         val = $.trim( tinyMCE.get(name).getContent() );
 
-                        if ( val === '') {
+                        if (required === 'yes' && val === '') {
                             error = true;
 
-                            // make it warn collor
                             WP_User_Frontend.markError(item);
                         }
                         break;
@@ -545,13 +535,24 @@
                     case 'text':
                         val = $.trim( $(item).val() );
 
-                        if ( val === '') {
+                        if (required === 'yes' && val === '') {
                             error = true;
                             error_type = 'required';
 
-                            // make it warn collor
                             WP_User_Frontend.markError( item, error_type );
+                        } else if (input_type === 'url' && val !== '') {
+                            if( ! WP_User_Frontend.isValidURL( val ) ) {
+                                error = true;
+                                error_type = 'validation';
+
+                                WP_User_Frontend.markError( item,  error_type );
+                            }
                         }
+
+                        // check for content restriction
+                        error = WP_User_Frontend.editorLimit.checkRestrictionError(item);
+                        return ! error;
+
                         break;
 
                     case 'password':
@@ -560,11 +561,10 @@
 
                         val = $.trim( $(item).val() );
 
-                        if ( val === '') {
+                        if (required === 'yes' && val === '') {
                             error = true;
                             error_type = 'required';
 
-                            // make it warn collor
                             WP_User_Frontend.markError( item, error_type );
                         }
 
@@ -578,18 +578,15 @@
                                 WP_User_Frontend.markError( repeatItem, error_type );
                             }
                         }
-
                         break;
 
                     case 'select':
                         val = $(item).val();
 
-                        // console.log(val);
-                        if ( !val || val === '-1' ) {
+                        if (required === 'yes' && !val || val === '-1' ) {
                             error = true;
                             error_type = 'required';
 
-                            // make it warn collor
                             WP_User_Frontend.markError( item, error_type );
                         }
                         break;
@@ -597,11 +594,10 @@
                     case 'multiselect':
                         val = $(item).val();
 
-                        if ( val === null || val.length === 0 ) {
+                        if (required === 'yes' && val === null || val.length === 0 ) {
                             error = true;
                             error_type = 'required';
 
-                            // make it warn collor
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
@@ -609,11 +605,10 @@
                     case 'tax-checkbox':
                         var length = $(item).children().find('input:checked').length;
 
-                        if ( !length ) {
+                        if (required === 'yes' && !length) {
                             error = true;
                             error_type = 'required';
 
-                            // make it warn collor
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
@@ -621,11 +616,10 @@
                     case 'radio':
                         var length = $(item).find('input:checked').length;
 
-                        if ( !length ) {
+                        if (required === 'yes' && !length) {
                             error = true;
                             error_type = 'required';
 
-                            // make it warn collor
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
@@ -633,7 +627,7 @@
                     case 'file':
                         var length = $(item).find('ul').children().length;
 
-                        if ( !length ) {
+                        if (required === 'yes' && !length ) {
                             error = true;
                             error_type = 'required';
 
@@ -643,9 +637,9 @@
                         break;
 
                     case 'email':
-                        var val = $(item).val();
+                        val = $(item).val();
 
-                        if ( val !== '' ) {
+                        if (val !== '') {
                             //run the validation
                             if( !WP_User_Frontend.isValidEmail( val ) ) {
                                 error = true;
@@ -653,7 +647,7 @@
 
                                 WP_User_Frontend.markError( item,  error_type );
                             }
-                        } else if( val === '' ) {
+                        } else if (required === 'yes' && val === '' ) {
                             error = true;
                             error_type = 'required';
 
@@ -661,11 +655,10 @@
                         }
                         break;
 
-
                     case 'url':
                         var val = $(item).val();
 
-                        if ( val !== '' ) {
+                        if (val !== '') {
                             //run the validation
                             if( !WP_User_Frontend.isValidURL( val ) ) {
                                 error = true;
@@ -673,23 +666,30 @@
 
                                 WP_User_Frontend.markError( item,  error_type );
                             }
+                        } else if (required === 'yes' && val === '' ) {
+                            error = true;
+                            error_type = 'required';
+
+                            WP_User_Frontend.markError( item,  error_type );
+                        }
+                        break;
+
+                    default:    // radio fields, Google map etc.
+                        // if this is a Google map
+                        if ( $(item).attr('id') && $(item).attr('id').startsWith('wpuf-map') ) {
+                            var mapContainer = $(item).parents('.wpuf-form-google-map-container');
+                            val = $(mapContainer).find('input[id^="wpuf-map"]').val();  // needs to grab from parent to get all the data
+                            if ( val == '' || JSON.parse(val) == null) {
+                                error = true;
+                                error_type = 'required';
+
+                                var mapContainer = $(item).parents('.wpuf-form-google-map-container');
+                                WP_User_Frontend.markError( mapContainer,  error_type );
+                            }
                         }
                         break;
 
                 };
-
-            });
-
-            //check Google Map is required
-            var map_required = self.find('[data-required="yes"]').parents('.wpuf-form-google-map-container:visible');
-            $.each(map_required, function(index, map){
-                var val = $(map).find('input[id^="wpuf-map"]').val();
-                if ( val == '' || JSON.parse(val) == null) {
-                    error = true;
-                    error_type = 'required';
-
-                    WP_User_Frontend.markError( map,  error_type );
-                }
             });
 
             // if already some error found, bail out
@@ -786,7 +786,7 @@
         },
 
         isValidURL: function(url) {
-            var urlregex = new RegExp("^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.|http:\/\/|https:\/\/){1}([0-9A-Za-z]+\.)");
+            var urlregex = new RegExp("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/){1}[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,20}(:[0-9]{1,20})?(\\/.*)?$");
             return urlregex.test(url);
         },
 

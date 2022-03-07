@@ -552,6 +552,7 @@
                             if ( '' !== iti.getNumber() && ! iti.isValidNumber() ) {
                                 error = true;
                                 error_type = 'validation';
+                                WP_User_Frontend.markError( item, error_type );
 
                                 break;
                             }

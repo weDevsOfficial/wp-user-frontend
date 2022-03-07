@@ -499,12 +499,15 @@
             }
         },
 
+        isTelephoneField: function( item ) {
+            return ( $(item).hasClass('wpuf_telephone') && $(item).data('show-list') === 'yes' );
+        },
+
         validateForm: function( self ) {
 
             var temp,
                 temp_val    = '',
                 error       = false,
-                error_items = [],
                 error_type  = '';
 
             // remove all initial errors if any
@@ -513,7 +516,7 @@
 
             var visibleFields = self.find('input:visible');
 
-            visibleFields.each(function(i, item) {
+            visibleFields.each( function( i, item ) {
                 var input_type = $(item).attr('type');
                 var data_type = $(item).data('type');
                 var required = $(item).data('required');
@@ -524,48 +527,66 @@
                         var name = $(item).data('id')
                         val = $.trim( tinyMCE.get(name).getContent() );
 
-                        if (required === 'yes' && val === '') {
+                        if ( required === 'yes' && val === '' ) {
                             error = true;
-
+                            error_type = 'required';
                             WP_User_Frontend.markError(item);
                         }
                         break;
-
                     case 'textarea':
                     case 'text':
                         val = $.trim( $(item).val() );
 
-                        if (required === 'yes' && val === '') {
+                        if ( required === 'yes' && val === '' ) {
                             error = true;
                             error_type = 'required';
 
                             WP_User_Frontend.markError( item, error_type );
-                        } else if (input_type === 'url' && val !== '') {
-                            if( ! WP_User_Frontend.isValidURL( val ) ) {
+
+                            break;
+                        }
+
+                        if ( WP_User_Frontend.isTelephoneField( item ) ) {
+                            // Get intlTelInput instance
+                            var iti = window.intlTelInputGlobals.getInstance( item );
+                            if ( '' !== iti.getNumber() && ! iti.isValidNumber() ) {
                                 error = true;
                                 error_type = 'validation';
+                                WP_User_Frontend.markError( item, error_type );
 
-                                WP_User_Frontend.markError( item,  error_type );
+                                break;
                             }
+
+                            var name = $(item).attr('name');
+                            var value = iti.getNumber();
+                            $('<input>').attr('type', 'hidden').attr('name', name).attr('value', value).appendTo(self);     // append the mobile number with country code
+
+                            break;
+                        }
+
+                        if ( input_type === 'url' && val !== '' && ! WP_User_Frontend.isValidURL( val ) ) {
+                            error = true;
+                            error_type = 'validation';
+                            WP_User_Frontend.markError( item,  error_type );
+
+                            break;
                         }
 
                         // check for content restriction
                         error = WP_User_Frontend.editorLimit.checkRestrictionError(item);
-                        return ! error;
-
                         break;
-
                     case 'password':
                     case 'confirm_password':
                         var hasRepeat = $(item).data('repeat');
 
                         val = $.trim( $(item).val() );
 
-                        if (required === 'yes' && val === '') {
+                        if ( required === 'yes' && val === '' ) {
                             error = true;
                             error_type = 'required';
-
                             WP_User_Frontend.markError( item, error_type );
+
+                            break;
                         }
 
                         if ( hasRepeat ) {
@@ -579,55 +600,47 @@
                             }
                         }
                         break;
-
                     case 'select':
                         val = $(item).val();
 
-                        if (required === 'yes' && !val || val === '-1' ) {
+                        if ( required === 'yes' && ! val || val === '-1' ) {
                             error = true;
                             error_type = 'required';
 
                             WP_User_Frontend.markError( item, error_type );
                         }
                         break;
-
                     case 'multiselect':
                         val = $(item).val();
 
-                        if (required === 'yes' && val === null || val.length === 0 ) {
+                        if ( required === 'yes' && val === null || val.length === 0 ) {
                             error = true;
                             error_type = 'required';
-
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
-
                     case 'tax-checkbox':
                         var length = $(item).children().find('input:checked').length;
 
-                        if (required === 'yes' && !length) {
+                        if ( required === 'yes' && ! length ) {
                             error = true;
                             error_type = 'required';
-
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
-
                     case 'radio':
                         var length = $(item).find('input:checked').length;
 
-                        if (required === 'yes' && !length) {
+                        if ( required === 'yes' && ! length ) {
                             error = true;
                             error_type = 'required';
-
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
-
                     case 'file':
                         var length = $(item).find('ul').children().length;
 
-                        if (required === 'yes' && !length ) {
+                        if ( required === 'yes' && ! length ) {
                             error = true;
                             error_type = 'required';
 
@@ -635,45 +648,40 @@
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
-
                     case 'email':
                         val = $(item).val();
 
-                        if (val !== '') {
-                            //run the validation
-                            if( !WP_User_Frontend.isValidEmail( val ) ) {
-                                error = true;
-                                error_type = 'validation';
-
-                                WP_User_Frontend.markError( item,  error_type );
-                            }
-                        } else if (required === 'yes' && val === '' ) {
+                        if ( required === 'yes' && val === '' ) {
                             error = true;
                             error_type = 'required';
+                            WP_User_Frontend.markError( item,  error_type );
 
+                            break;
+                        }
+
+                        if ( val !== '' && ! WP_User_Frontend.isValidEmail( val ) ) {
+                            error = true;
+                            error_type = 'validation';
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
-
                     case 'url':
                         var val = $(item).val();
 
-                        if (val !== '') {
-                            //run the validation
-                            if( !WP_User_Frontend.isValidURL( val ) ) {
-                                error = true;
-                                error_type = 'validation';
-
-                                WP_User_Frontend.markError( item,  error_type );
-                            }
-                        } else if (required === 'yes' && val === '' ) {
+                        if ( required === 'yes' && val === '' ) {
                             error = true;
                             error_type = 'required';
+                            WP_User_Frontend.markError( item,  error_type );
 
+                            break;
+                        }
+
+                        if ( val !== '' && ! WP_User_Frontend.isValidURL( val ) ) {
+                            error = true;
+                            error_type = 'validation';
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
-
                     default:    // radio fields, Google map etc.
                         // if this is a Google map
                         if ( $(item).attr('id') && $(item).attr('id').startsWith('wpuf-map') ) {
@@ -682,23 +690,50 @@
                             if ( val == '' || JSON.parse(val) == null) {
                                 error = true;
                                 error_type = 'required';
-
-                                var mapContainer = $(item).parents('.wpuf-form-google-map-container');
                                 WP_User_Frontend.markError( mapContainer,  error_type );
                             }
                         }
                         break;
 
-                };
+                }
+
+                // if error found, bail out
+                if ( error ) {
+                    WP_User_Frontend.markError(item, error_type);
+                    WP_User_Frontend.addErrorNotice(self,'end');
+
+                    return false;
+                }
             });
 
-            // if already some error found, bail out
+            // Fields that are conditionally hidden
+            var conditionallyHiddenFields = self.find('input:hidden');
+
+            conditionallyHiddenFields.each( function( i, item ) {
+                var input_type = $(item).attr('type');
+
+                switch ( input_type ) {
+                    case 'url':
+                    case 'email':
+                        // removing conditionally hidden fields value
+                        // so that default HTML validation don't restrict those fields
+                        $(item).val('');
+                }
+            });
+
+            if ( error ) {
+                WP_User_Frontend.addErrorNotice(self,'end');
+
+                return false;
+            }
+
+            /*// if already some error found, bail out
             if (error) {
                 // add error notice
                 WP_User_Frontend.addErrorNotice(self,'end');
 
                 return false;
-            }
+            }*/
 
             var form_data = self.serialize(),
                 rich_texts = [];
@@ -764,7 +799,7 @@
                 $(item).siblings('.wpuf-error-msg').remove();
 
                 // if input type is radio, append the error message for design issue
-                if ( $(item).prev().prop('nodeName') === 'DIV' ) {
+                if ( $(item).prev().prop('nodeName') === 'DIV' && ! $(item).hasClass('wpuf_telephone') ) {
                     $(item).append('<div class="wpuf-error-msg">'+ error_string +'</div>')
                 } else {
                     // if input type is not radio, add the div after current item
@@ -959,7 +994,15 @@
                     ed.focus();
                 }
 
-                var data = $(field).closest('li.wpuf-el').find('script').html().match(/(?:bind\()(.*?(?=\)))/)[1].replace(/['"]/g, '').split(',');
+                var data = '';
+
+                // For content restriction, we are passing the information below the fields inside a <script> tag
+                // For example: the field type, restriction type(word or character), min/max allowed etc.
+                // Extracting required data from the script tag
+                if ( $(field).closest('li.wpuf-el').find('script').html() ) {
+                    var fieldScript = $(field).closest('li.wpuf-el').find('script').html();
+                    data = fieldScript.match(/(?:bind\()(.*?(?=\)))/) ? fieldScript.match(/(?:bind\()(.*?(?=\)))/)[1].replace(/['"]/g, '').split(',') : '';
+                }
 
                 var limit = (typeof(data[0]) !== "undefined" && data[0] !== null) ? parseInt(data[0]) : 0;
                 var fieldId = (typeof(data[1]) !== "undefined" && data[1] !== null) ? (data[1]).trim() : '';

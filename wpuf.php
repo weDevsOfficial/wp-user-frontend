@@ -601,6 +601,41 @@ final class WP_User_Frontend {
      */
     public static function uninstall() {
         wp_clear_scheduled_hook( 'wpuf_remove_expired_post_hook' );
+
+        $uninstall_settings = get_option( 'wpuf_uninstall' );
+
+        if ( ! empty( $uninstall_settings['delete_settings'] ) ) {
+            $setting_sections = [
+                'wpuf_general',
+                'wpuf_frontend_posting',
+                'wpuf_dashboard',
+                'wpuf_my_account',
+                'wpuf_profile',
+                'wpuf_payment',
+                'wpuf_mails',
+                'wpuf_privacy',
+                '_wpuf_page_created',
+            ];
+
+            foreach ( $setting_sections as $section ) {
+                delete_option( $section );
+            }
+        }
+
+        if ( ! empty( $uninstall_settings['delete_database'] ) ) {
+            global $wpdb;
+
+            $tables = [
+                'wpuf_transaction',
+                'wpuf_subscribers',
+            ];
+
+            // delete all tables
+            foreach ( $tables as $table ) {
+                $table_name = $wpdb->prefix . $table;
+                $wpdb->query( 'DROP TABLE IF EXISTS ' . $table_name );
+            }
+        }
     }
 
     /**

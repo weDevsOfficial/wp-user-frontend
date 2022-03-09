@@ -56,6 +56,7 @@ class WPUF_Admin_Settings {
         add_filter( 'submenu_file', [ $this, 'fix_submenu_file' ] );
 
         add_action( 'admin_init', [ $this, 'handle_tools_action' ] );
+        add_action( 'admin_init', [ $this, 'uninstall_section' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 
         add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ], 1 );
@@ -360,22 +361,92 @@ class WPUF_Admin_Settings {
     }
 
     /**
+     * The uninstall settings section for User Frontend > Tools
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
+    public function uninstall_section() {
+        $section_id = 'wpuf_uninstall';
+
+        $uninstall_fields = apply_filters(
+            'wpuf_uninstall_settings', [
+                [
+                    'id'       => 'delete_settings',
+                    'label'    => __( 'Delete Plugin Settings on Uninstall', 'wp-user-frontend' ),
+                    'callback' => 'delete_settings_markup',
+                ],
+                [
+                    'id'       => 'delete_database',
+                    'label'    => __( 'Delete Database Tables on Uninstall', 'wp-user-frontend' ),
+                    'callback' => 'delete_database_markup',
+                ],
+            ]
+        );
+
+        // registering the section
+        register_setting( $section_id, $section_id, [ $this, 'sanitize_dropdown' ] );
+
+        // adding the section
+        add_settings_section( $section_id, __( 'Uninstall Settings', 'wp-user-frontend' ), [ $this, 'uninstall_section_callback' ], 'wpuf_tools' );
+
+        foreach ( $uninstall_fields as $field ) {
+            $field_id = $field['id'];
+            $field_label = $field['label'];
+
+            $args = [
+                'id'        => $field_id,
+                'class'     => ! empty( $field['class'] ) ? $field['class'] : '',
+                'label_for' => "{$section_id}[{$field['id']}]",
+                'desc'      => ! empty( $field['desc'] ) ? $field['desc'] : '',
+                'name'      => $field_label,
+                'section'   => $section_id,
+                'size'      => ! empty( $field['size'] ) ? $field['size'] : null,
+                'options'   => ! empty( $field['options'] ) ? $field['options'] : '',
+                'type'      => ! empty( $field['type'] ) ? $field['type'] : '',
+            ];
+
+            add_settings_field( $section_id . '["' . $field_id . '"]', $field_label, [ $this, $field['callback'] ], 'wpuf_tools', $section_id, $args );
+        }
+
+        $this->uninstall_settings = get_option( $section_id );
+    }
+
+    /**
+     * Sanitize callback for yes/no dropdown
+     *
+     * @since WPUF
+     *
+     * @return array
+     */
+    public function sanitize_dropdown( $input ) {
+        if ( ! $input ) {
+            return $input;
+        }
+
+        $options = [ 'delete_settings', 'delete_database' ];
+
+        // Create our array for storing the validated options
+        $output = [];
+
+        // Loop through each of the incoming options
+        foreach ( $input as $key => $value ) {
+            // Check to see if the current option has a value. If so, process it.
+            if ( in_array( $key, $options, true ) && 'on' === $value ) {
+                $output[ $key ] = $value;
+            }
+        }
+
+        return $output;
+    }
+
+    /**
      * Hanlde tools page action
      *
      * @return void
      */
     public function handle_tools_action() {
-        $section_id = 'wpuf_uninstall';
-
-        register_setting( $section_id, $section_id );
-
-        add_settings_section( $section_id, __( 'Uninstall Settings', 'wp-user-frontend' ), [ $this, 'uninstall_section_callback' ], 'wpuf_tools' );
-
-        add_settings_field( 'wpuf_uninstall["delete_settings_field"]', __( 'Delete Plugin Settings on Uninstall', 'wp-user-frontend' ), [ $this, 'delete_settings_markup' ], 'wpuf_tools', $section_id );
-        add_settings_field( 'wpuf_uninstall["delete_database_field"]', __( 'Delete Database Tables on Uninstall', 'wp-user-frontend' ), [ $this, 'delete_database_markup' ], 'wpuf_tools', $section_id );
-
-        $this->uninstall_settings = get_option( $section_id );
-
         if ( ! isset( $_GET['wpuf_action'] ) ) {
             return;
         }
@@ -433,26 +504,49 @@ class WPUF_Admin_Settings {
         exit;
     }
 
+    /**
+     * Delete settings checkbox HTML markup
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
     public function delete_settings_markup() {
-        $value = ! empty( $this->uninstall_settings['delete_settings_field'] ) ? $this->uninstall_settings['delete_settings_field'] : 'off';
+        $value = ! empty( $this->uninstall_settings['delete_settings'] ) ? $this->uninstall_settings['delete_settings'] : 'off';
         ?>
         <label class="switch">
-            <input type="checkbox" id="wpuf_uninstall[delete_settings_field]" name="wpuf_uninstall[delete_settings_field]" <?php checked( $value, 'on' ); ?>>
+            <input type="checkbox" id="wpuf_uninstall[delete_settings]" name="wpuf_uninstall[delete_settings]" <?php checked( $value, 'on' ); ?>>
             <span class="slider round"></span>
         </label>
         <?php
     }
 
+    /**
+     * Delete database checkbox HTML markup
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
     public function delete_database_markup() {
-        $value = ! empty( $this->uninstall_settings['delete_database_field'] ) ? $this->uninstall_settings['delete_database_field'] : 'off';
+        $value = ! empty( $this->uninstall_settings['delete_database'] ) ? $this->uninstall_settings['delete_database'] : 'off';
         ?>
         <label class="switch">
-            <input type="checkbox" id="wpuf_uninstall[delete_database_field]" name="wpuf_uninstall[delete_database_field]" <?php checked( $value, 'on' ); ?>>
+            <input type="checkbox" id="wpuf_uninstall[delete_database]" name="wpuf_uninstall[delete_database]" <?php checked( $value, 'on' ); ?>>
             <span class="slider round"></span>
         </label>
         <?php
     }
 
+    /**
+     * The HTML section for User Frontend > Tools > Uninstall Settings
+     *
+     * @since WPUF
+     *
+     * @param $args
+     *
+     * @return void
+     */
     public function uninstall_section_callback( $args ) {
         ?>
         <strong>

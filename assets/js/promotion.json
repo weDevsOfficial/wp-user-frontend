@@ -1,9 +1,9 @@
 {
-  "key": "wpuf-superbowl2022",
-  "start_date": "2022-02-07 11:00:00 EST",
-  "end_date": "2022-02-15 23:00:00 EST",
-  "title": "Super Bowl Sale",
-  "content": "Super Bowl Sale. Touchdown with Up To 35% OFF on WP User Frontend Pro.",
-  "action_url": "https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=dashboard&utm_source=wordpress-wpuf-superbowl2022",
-  "action_title": "Join the Huddle"
+  "key": "wpuf-ninth-anniversary",
+  "start_date": "2022-03-15 9:00:00 EST",
+  "end_date": "2022-03-31 23:00:00 EST",
+  "title": "9 Years of Innovation & Success",
+  "content": "Celebrate with Up To 45% OFF on WP User Frontend Pro",
+  "action_url": "https://wedevs.com/wp-user-frontend-pro/pricing?utm_medium=text&utm_source=wpdasboard-ninth-anniversary",
+  "action_title": "Get Now"
 }

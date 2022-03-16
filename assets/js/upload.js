@@ -186,7 +186,7 @@
             }
 
             if ( FileProgress === uploaded ) {
-                if ( typeof grecaptcha !== 'undefined' && $('#g-recaptcha-response').length ) {
+                if ( typeof grecaptcha !== 'undefined' && $('.wpuf-form-add #g-recaptcha-response').length ) {
                     if ( !grecaptcha.getResponse().length ){
                         return;
                     }

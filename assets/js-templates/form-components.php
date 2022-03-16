@@ -268,7 +268,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-radio">
-<div class="panel-field-opt panel-field-opt-radio">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-radio">
     <label v-if="option_field.title">
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </label>

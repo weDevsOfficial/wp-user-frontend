@@ -560,6 +560,12 @@
                 var form_id = $('#wpuf-form-builder [name="wpuf_form_id"]').val();
 
                 if ( typeof tinyMCE !== 'undefined' && window.location.search.substring(1).split('&').includes('page=wpuf-profile-forms') ) {
+                    var parentWrap = $('#wp-wpuf_verification_body_' + form_id + '-wrap');
+                    if ( ! parentWrap.hasClass('tmce-active') ) {
+                        $('#wpuf_verification_body_' + form_id + '-tmce').click();  // bring user to the visual editor
+                        $('#wpuf_welcome_email_body_' + form_id + '-tmce').click();
+                    }
+
                     $('textarea[name="wpuf_settings[notification][verification_body]"]').val(tinyMCE.get('wpuf_verification_body_' + form_id).getContent());
                     $('textarea[name="wpuf_settings[notification][welcome_email_body]"]').val(tinyMCE.get('wpuf_welcome_email_body_' + form_id).getContent());
                 }

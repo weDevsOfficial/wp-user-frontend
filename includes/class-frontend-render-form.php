@@ -306,14 +306,7 @@ class WPUF_Frontend_Render_Form {
         }
 
         if ( ! is_user_logged_in() && $this->form_settings['guest_post'] !== 'true' ) {
-            $login         = wpuf()->login->get_login_url();
-            $register      = wpuf()->login->get_registration_url();
-            $replace       = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
-            $placeholders  = [ '%login%', '%register%' ];
-
-            $restrict_message = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
-
-            echo wp_kses_post( '<div class="wpuf-message">' . $restrict_message . '</div>' );
+            echo wp_kses_post( '<div class="wpuf-message">' . $this->form_settings['message_restrict'] . '</div>' );
 
             return;
         }
@@ -815,7 +808,7 @@ class WPUF_Frontend_Render_Form {
                     break;
 
                 case 'checkbox':
-                    if ( is_array( $value_name ) && count( $value_name ) > 1 ) {
+                    if ( is_array( $value_name ) && ! empty( $value_name ) ) {
                         $meta_key_value[ $value['name'] ] = implode( self::$separator, $value_name );
                     } else {
                         $meta_key_value[ $value['name'] ] = $value_name[0];

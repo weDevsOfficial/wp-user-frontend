@@ -1508,7 +1508,7 @@ function wpufe_ajax_tag_search() {
     global $wpdb;
 
     $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
-    $term_ids = isset( $_GET['term_ids'] ) ? sanitize_text_field( wp_unslash( $_GET['term_ids'] ) ) : '';
+    $term_ids = ! empty( $_GET['term_ids'] ) ? sanitize_key( wp_unslash( $_GET['term_ids'] ) ) : '';
     $tax      = get_taxonomy( $taxonomy );
 
     if ( ! $tax ) {
@@ -1540,7 +1540,7 @@ function wpufe_ajax_tag_search() {
     } else {
         $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
     }
-    echo esc_html( join( $results, "\n" ) );
+    echo esc_html( join( "\n", $results ) );
     wp_die();
 }
 
@@ -1601,7 +1601,7 @@ function wpuf_load_template( $file, $args = [] ) {
  * lods from pro plugin folder
  *
  * @since 3.1.11
- * @since WPUF_PRO function moved to pro
+ * @since 3.5.27_PRO function moved to pro
  *
  * @param string $file file name or path to file
  */
@@ -2168,7 +2168,7 @@ function wpuf_get_pending_transactions( $args = [] ) {
 /**
  * Get all pending and completed transactions
  *
- * @since WPUF
+ * @since 3.5.27
  *
  * @param $args
  *
@@ -4068,7 +4068,7 @@ function wpuf_recursive_sanitize_text_field($arr){
 /**
  * Determine page after payment success
  *
- * @since WPUF_PRO
+ * @since 3.5.27_PRO
  *
  * @param $data
  *
@@ -4097,7 +4097,7 @@ function wpuf_payment_success_page( $data ){
 /**
  * Function current_datetime() compatibility for wp version < 5.3
  *
- * @since WPUF
+ * @since 3.5.27
  *
  * @return DateTimeImmutable
  */
@@ -4112,7 +4112,7 @@ function wpuf_current_datetime() {
 /**
  * Function wp_timezone() compatibility for wp version < 5.3
  *
- * @since WPUF
+ * @since 3.5.27
  *
  * @return DateTimeZone
  */
@@ -4127,7 +4127,7 @@ function wpuf_wp_timezone() {
 /**
  * Function wp_timezone_string() compatibility for wp version < 5.3
  *
- * @since WPUF
+ * @since 3.5.27
  *
  * @return string
  */
@@ -4239,7 +4239,7 @@ function wpuf_map_address_fields( $address_fields ) {
  * Retrieves paginated links for queried pages
  * uses WordPress paginate_links() function for the final output
  *
- * @since WPUF_PRO
+ * @since 3.5.27_PRO
  *
  * @param int $total_items
  * @param int $per_page
@@ -4309,7 +4309,7 @@ function wpuf_unset_conditional( $settings ) {
  *
  * @param $post
  *
- * @since WPUF
+ * @since 3.5.27
  *
  * @return bool
  */
@@ -4346,4 +4346,45 @@ function wpuf_is_post_editable( $post ) {
     }
 
     return $show_edit;
+}
+
+/**
+ * Get an array of available image sizes with height and weight
+ *
+ * @since 3.5.27
+ *
+ * @param $size     string      size of the image. thumbnail, medium, large etc.
+ *
+ * @return array                single image size returned if parameter size is passed
+ *                              full array of all the sizes will return otherwise
+ */
+function wpuf_get_image_sizes_array( $size = '' ) {
+    $additional_image_sizes   = wp_get_additional_image_sizes();
+    $intermediate_image_sizes = get_intermediate_image_sizes();
+    $sizes = [];
+
+    // Create the full array with sizes and crop info
+    foreach ( $intermediate_image_sizes as $_size ) {
+        if ( in_array( $_size, [ 'thumbnail', 'medium', 'large', 'medium_large' ], true ) ) {
+            $sizes[ $_size ]['width']  = get_option( $_size . '_size_w' );
+            $sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
+            $sizes[ $_size ]['crop']   = (bool) get_option( $_size . '_crop' );
+        } elseif ( isset( $additional_image_sizes[ $_size ] ) ) {
+            $sizes[ $_size ] = [
+                'width'  => $additional_image_sizes[ $_size ]['width'],
+                'height' => $additional_image_sizes[ $_size ]['height'],
+                'crop'   => $additional_image_sizes[ $_size ]['crop'],
+            ];
+        }
+    }
+
+    // Get only 1 size if found
+    if ( $size ) {
+        if ( isset( $sizes[ $size ] ) ) {
+            return $sizes[ $size ];
+        } else {
+            return false;
+        }
+    }
+    return $sizes;
 }

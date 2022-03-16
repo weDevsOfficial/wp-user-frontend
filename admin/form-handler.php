@@ -3,11 +3,9 @@
 class WPUF_Admin_Form_Handler {
 
     public function __construct() {
-        // translate the hook so that it will match the menu title
-        $label = strtolower( preg_replace( '/\s/', '-$1', __( 'User Frontend', 'wp-user-frontend' ) ) );
         // post forms list table
-        add_action( "load-${label}_page_wpuf-post-forms", [ $this, 'post_forms_actions' ] );
-        add_action( "load-${label}_page_wpuf-profile-forms", [ $this, 'profile_forms_actions' ] );
+        add_action( "wpuf_load_post_forms", [ $this, 'post_forms_actions' ] );
+        add_action( "wpuf_load_profile_forms", [ $this, 'profile_forms_actions' ] );
         add_action( 'admin_notices', [ $this, 'admin_notices' ] );
         add_action( 'removable_query_args', [ $this, 'removable_query_args' ] );
     }

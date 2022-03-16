@@ -684,6 +684,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $form                         = new WPUF_Form( $id );
         $this->form_fields            = $form->get_fields();
         $this->form_settings          = $form->get_settings();
+        $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
         list( $user_can_post, $info ) = $form->is_submission_open( $form, $this->form_settings );
         $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
         $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
@@ -1122,8 +1123,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 $subject   = $this->prepare_mail_body( $this->form_settings['notification']['edit_subject'], $post_author, $post_id );
                 $subject   = wp_strip_all_tags( $subject );
                 $mail_body = get_formatted_mail_body( $mail_body, $subject );
+                $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 
-                wp_mail( $to, $subject, $mail_body );
+                wp_mail( $to, $subject, $mail_body, $headers );
             }
 
             //now redirect the user
@@ -1136,8 +1138,9 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 $subject   = $this->prepare_mail_body( $this->form_settings['notification']['new_subject'], $post_author, $post_id );
                 $subject   = wp_strip_all_tags( $subject );
                 $mail_body = get_formatted_mail_body( $mail_body, $subject );
+                $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 
-                wp_mail( $to, $subject, $mail_body );
+                wp_mail( $to, $subject, $mail_body, $headers );
             }
 
             //redirect the user
@@ -1241,5 +1244,19 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $edit_page_url = apply_filters( 'wpuf_edit_post_link', $url );
 
         return wp_nonce_url( $edit_page_url, 'wpuf_edit' );
+    }
+
+    /**
+     * Generate login registartion link for unauth message
+     */
+    private function generate_auth_link() {
+        if ( ! is_user_logged_in() && $this->form_settings['guest_post'] !== 'true' ) {
+            $login        = wpuf()->login->get_login_url();
+            $register     = wpuf()->login->get_registration_url();
+            $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
+            $placeholders = [ '%login%', '%register%' ];
+
+            $this->form_settings['message_restrict'] = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
+        }
     }
 }

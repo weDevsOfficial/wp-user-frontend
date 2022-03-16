@@ -1,31 +1,145 @@
 <?php
 $changelog = [
     [
-    'version'  => 'Version 3.5.26',
-    'released' => '2021-12-24',
-    'changes'  =>  [
-
-        [
-            'title' => __( 'Promotion notice enhanced through api', 'wp-user-frontend' ),
-            'type'  => 'Enhancement',
+        'version'  => 'Version 3.5.27',
+        'released' => '2022-03-09',
+        'changes'  => [
+            [
+                'title' => __( 'Email template enhanced for after activation', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Read only option for custom field', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Editor toolbar exclude option enhanced', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Preview option enhanced  for user profile', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Meta key enhanced for user email notification', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Global option for disable post edit on account', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Filter for conditional logic for fields added', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'PHP 8 compatibility handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Address / Billing address inconsistency handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Content restriction several issue fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Tax calculation properly handled for all areas', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Validation added for invalid email and URL formats', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Special character password handled for login', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Reset password handled for sidebar widget', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Required google map issues handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Translation related issue handled for admin menu', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Label & query enhanced for transaction table', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Template override for child theme fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Custom field modal handled for registration form', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Redundant CSS issues handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Address field inconsistency fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Plugin page spin loading issue handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Warning on exit for draft post fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Unlimited expire on admin user profile handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'No value checkbox issue handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Tag search security Vulnerability handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Multi dropdown field error handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
         ],
-      ],
     ],
     [
-    'version'  => 'Version 3.5.25',
-    'released' => '2021-11-18',
-    'changes'  =>  [
+        'version'  => 'Version 3.5.26',
+        'released' => '2021-12-24',
+        'changes'  => [
 
-        [
-            'title' => __( 'Security Vulnerability fixed', 'wp-user-frontend' ),
-            'type'  => 'Fix',
+            [
+                'title' => __( 'Promotion notice enhanced through api', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
         ],
-      ],
     ],
-     [
+    [
+        'version'  => 'Version 3.5.25',
+        'released' => '2021-11-18',
+        'changes'  => [
+
+            [
+                'title' => __( 'Security Vulnerability fixed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.22',
         'released' => '2021-10-28',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Featured item for subscriber', 'wp-user-frontend' ),
@@ -69,10 +183,10 @@ $changelog = [
             ],
         ],
     ],
-     [
+    [
         'version'  => 'Version 3.5.21',
         'released' => '2021-10-21',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'reCaptcha issue with other plugin handled', 'wp-user-frontend' ),
@@ -92,10 +206,10 @@ $changelog = [
             ],
         ],
     ],
-     [
+    [
         'version'  => 'Version 3.5.20',
         'released' => '2021-09-16',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Content restriction for minimum, maximum value enhanced', 'wp-user-frontend' ),
@@ -158,7 +272,7 @@ $changelog = [
     [
         'version'  => 'Version 3.5.18',
         'released' => '2021-07-06',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Google Map field enhanced along with acf google map', 'wp-user-frontend' ),
@@ -205,7 +319,7 @@ $changelog = [
     [
         'version'  => 'Version 3.5.17',
         'released' => '2021-06-08',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Preview page added for post form and registration form', 'wp-user-frontend' ),
@@ -255,13 +369,13 @@ $changelog = [
                 'title' => __( 'Popup z-index changed due to other plugin z-index', 'wp-user-frontend' ),
                 'type'  => 'Fix',
             ],
-            ],
-
         ],
-     [
+
+    ],
+    [
         'version'  => 'Version 3.5.16',
         'released' => '2021-05-08',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Added Mauritian Rupee for currency', 'wp-user-frontend' ),
@@ -288,7 +402,7 @@ $changelog = [
     [
         'version'  => 'Version 3.5.15',
         'released' => '2021-03-15',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Overflow footer on form builder page', 'wp-user-frontend' ),
@@ -307,7 +421,7 @@ $changelog = [
     [
         'version'  => 'Version 3.5.14',
         'released' => '2021-03-08',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Meta key will not change if label update', 'wp-user-frontend' ),
@@ -342,7 +456,7 @@ $changelog = [
     [
         'version'  => 'Version 3.5.13',
         'released' => '2021-02-05',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Menu position has chenged due to dokan has same menu position', 'wp-user-frontend' ),
@@ -357,7 +471,7 @@ $changelog = [
     [
         'version'  => 'Version 3.5.11',
         'released' => '2021-01-12',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'QR and math captcha added to pro feature list', 'wp-user-frontend' ),
@@ -380,7 +494,7 @@ $changelog = [
     [
         'version'  => 'Version 3.5.9',
         'released' => '2020-12-11',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Once trial subscription is used, it couldn\'t reset', 'wp-user-frontend' ),
@@ -407,7 +521,7 @@ $changelog = [
     [
         'version'  => 'Version 3.5.8',
         'released' => '2020-11-21',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Updated codebase to fix timezone mismatch', 'wp-user-frontend' ),
@@ -418,7 +532,7 @@ $changelog = [
     [
         'version'  => 'Version 3.5.7',
         'released' => '2020-11-21',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Custom html content field\'s width', 'wp-user-frontend' ),
@@ -433,7 +547,7 @@ $changelog = [
     [
         'version'  => 'Version 3.5.4',
         'released' => '2020-11-11',
-        'changes'  =>  [
+        'changes'  => [
 
             [
                 'title' => __( 'Get appropriate user id when role based conditions are present', 'wp-user-frontend' ),
@@ -453,7 +567,7 @@ $changelog = [
             ],
             [
                 'title' => __( 'Ajax type category not showing on edit', 'wp-user-frontend' ),
-                'type'  => 'Fix'
+                'type'  => 'Fix',
             ],
             [
                 'title' => __( 'Multiple file image can\'t select', 'wp-user-frontend' ),
@@ -461,7 +575,7 @@ $changelog = [
             ],
             [
                 'title' => __( 'Subscription pack PayPal Checkout gets "Error: Access Denied"', 'wp-user-frontend' ),
-                'type'  => 'Fix'
+                'type'  => 'Fix',
             ],
             [
                 'title' => __( 'Conflict image field with acf image field', 'wp-user-frontend' ),
@@ -830,7 +944,7 @@ $changelog = [
                 'title'       => __( 'Multiple images showing issue in frontend', 'wp-user-frontend' ),
                 'type'        => 'Fix',
                 'description' => __( 'Multiple images in a post were not showing in frontend. Now they will.', 'wp-user-frontend' ),
-            ]
+            ],
         ],
     ],
     [
@@ -1376,7 +1490,7 @@ function _wpuf_changelog_content( $content ) {
                                     <span class="label <?php echo esc_html( strtolower( $change['type'] ) ); ?>"><?php echo esc_html( $change['type'] ); ?></span>
                                 </h4>
 
-                                <?php if ( ! empty( $change['description'] ) ): ?>
+                                <?php if ( ! empty( $change['description'] ) ) : ?>
                                     <div class="description">
                                         <?php echo wp_kses_post( _wpuf_changelog_content( $change['description'] ) ); ?>
                                     </div>

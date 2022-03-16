@@ -270,6 +270,8 @@ class WPUF_Frontend_Account {
             $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
         }
 
+        ob_start();
+
         wpuf_load_template(
             'dashboard/subscription.php',
             [
@@ -282,6 +284,8 @@ class WPUF_Frontend_Account {
                 'recurring_des'   => $recurring_des,
             ]
         );
+
+        ob_end_flush();
     }
 
     /**
@@ -416,7 +420,7 @@ class WPUF_Frontend_Account {
     /**
      * Check if the user is the post author and give permission for previewing
      *
-     * @since WPUF
+     * @since 3.5.27
      *
      * @return void
      */
@@ -441,7 +445,7 @@ class WPUF_Frontend_Account {
      * Add a temporary edit_posts capability to the current user
      * for previewing post
      *
-     * @since WPUF
+     * @since 3.5.27
      *
      * @param $all_caps
      *

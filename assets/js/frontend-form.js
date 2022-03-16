@@ -99,7 +99,7 @@
             $('.wpuf-form-add').on( 'change', function(){
                 $('.wpuf-form-add input, .wpuf-form-add select, .wpuf-form-add textarea').each(function (index) {
                     if ( 'hidden' !== $(this).attr('type') || 'submit' !== $(this).attr('type') || -1 !== $(this).val() ){
-                         window.onbeforeunload = function () {
+                        window.onbeforeunload = function () {
                             return 'you have changes';//changing  return values doesnt have any impact due to security
                         }
                     }
@@ -108,10 +108,10 @@
         },
 
         handleReadOnly: function(){
-            $('.wpuf-form > .read-only').each( function () {
+            $('.wpuf-form .read-only').each( function () {
                 $('input, select, textarea', this).each( function () {
-                     $(this).attr( 'disabled', true );
-                 }) ;
+                    $(this).attr( 'disabled', true );
+                }) ;
             });
         },
 
@@ -253,7 +253,7 @@
             $('.wpuf-ms-bar-active').addClass('active-step');
 
             var legend = $('fieldset.wpuf-multistep-fieldset').eq(step_number).find('legend').text();
-                legend = $.trim( legend );
+            legend = $.trim( legend );
 
             if ( progressbar_type == 'progressive' && $('.wpuf-form .wpuf-multistep-fieldset').length != 0 ) {
                 var progress_percent = ( step_number + 1 ) * 100 / $('fieldset.wpuf-multistep-fieldset').length ;
@@ -360,7 +360,7 @@
                 post_id = form.find('input[type="hidden"][name="post_id"]').val();
 
             var rich_texts = [],
-                    val;
+                val;
 
             // grab rich texts from tinyMCE
             $('.wpuf-rich-validation').each(function (index, item) {
@@ -381,9 +381,9 @@
                 // console.log(res, post_id);
                 if ( typeof post_id === 'undefined') {
                     var html = '<input type="hidden" name="post_id" value="' + res.post_id +'">';
-                        html += '<input type="hidden" name="post_date" value="' + res.date +'">';
-                        html += '<input type="hidden" name="post_author" value="' + res.post_author +'">';
-                        html += '<input type="hidden" name="comment_status" value="' + res.comment_status +'">';
+                    html += '<input type="hidden" name="post_date" value="' + res.date +'">';
+                    html += '<input type="hidden" name="post_author" value="' + res.post_author +'">';
+                    html += '<input type="hidden" name="comment_status" value="' + res.comment_status +'">';
 
                     form.append( html );
                 }
@@ -419,10 +419,10 @@
                 submitButton = form.find('input[type=submit]'),
                 form_data = WP_User_Frontend.validateForm(form);
 
-                if ( form_data == false ) {
-                    WP_User_Frontend.addErrorNotice( self, 'bottom' );
-                }
-                return form_data;
+            if ( form_data == false ) {
+                WP_User_Frontend.addErrorNotice( self, 'bottom' );
+            }
+            return form_data;
         },
 
         formSubmit: function(e) {
@@ -430,7 +430,7 @@
 
             var form = $(this),
                 submitButton = form.find('input[type=submit]')
-                form_data = WP_User_Frontend.validateForm(form);
+            form_data = WP_User_Frontend.validateForm(form);
 
             if (form_data) {
 
@@ -508,13 +508,14 @@
             var temp,
                 temp_val    = '',
                 error       = false,
-                error_type  = '';
+                error_type  = '',
+                rich_texts = [];
 
             // remove all initial errors if any
             WP_User_Frontend.removeErrors(self);
             WP_User_Frontend.removeErrorNotice(self);
 
-            var visibleFields = self.find('input:visible');
+            var visibleFields = self.find('input:visible, textarea:visible, select:visible, .wpuf-rich-validation');
 
             visibleFields.each( function( i, item ) {
                 var input_type = $(item).attr('type');
@@ -525,13 +526,20 @@
                 switch(data_type) {
                     case 'rich':
                         var name = $(item).data('id')
-                        val = $.trim( tinyMCE.get(name).getContent() );
+                        // val = $.trim( tinyMCE.get(name).getContent() );
+                        var item      = $(item);
+                        var editor_id = item.data('id');
+                        var item_name = item.data('name');
+                        val           = $.trim( tinyMCE.get(editor_id).getContent() );
 
                         if ( required === 'yes' && val === '' ) {
                             error = true;
                             error_type = 'required';
                             WP_User_Frontend.markError(item);
                         }
+
+                        rich_texts.push(item_name + '=' + encodeURIComponent( val ) );
+
                         break;
                     case 'textarea':
                     case 'text':
@@ -603,7 +611,7 @@
                     case 'select':
                         val = $(item).val();
 
-                        if ( required === 'yes' && ! val || val === '-1' ) {
+                        if ( required === 'yes' && val == '-1' ) {
                             error = true;
                             error_type = 'required';
 
@@ -613,7 +621,7 @@
                     case 'multiselect':
                         val = $(item).val();
 
-                        if ( required === 'yes' && val === null || val.length === 0 ) {
+                        if ( required === 'yes' && val.length === 0 ) {
                             error = true;
                             error_type = 'required';
                             WP_User_Frontend.markError( item,  error_type );
@@ -686,8 +694,11 @@
                         // if this is a Google map
                         if ( $(item).attr('id') && $(item).attr('id').startsWith('wpuf-map') ) {
                             var mapContainer = $(item).parents('.wpuf-form-google-map-container');
-                            val = $(mapContainer).find('input[id^="wpuf-map"]').val();  // needs to grab from parent to get all the data
-                            if ( val == '' || JSON.parse(val) == null) {
+                            map_field = $(mapContainer).find('input[id^="wpuf-map-lat"]');
+                            required = $(map_field).data('required');
+                            val = $(map_field).val(); // needs to grab from parent to get all the data
+
+                            if ( required == 'yes' && val == '' ) {
                                 error = true;
                                 error_type = 'required';
                                 WP_User_Frontend.markError( mapContainer,  error_type );
@@ -700,14 +711,14 @@
                 // if error found, bail out
                 if ( error ) {
                     WP_User_Frontend.markError(item, error_type);
-                    WP_User_Frontend.addErrorNotice(self,'end');
+                    // WP_User_Frontend.addErrorNotice(self,'end');
 
                     return false;
                 }
             });
 
             // Fields that are conditionally hidden
-            var conditionallyHiddenFields = self.find('input:hidden');
+            var conditionallyHiddenFields = self.find('li.wpuf-el[style*="display: none"] input');
 
             conditionallyHiddenFields.each( function( i, item ) {
                 var input_type = $(item).attr('type');
@@ -735,18 +746,7 @@
                 return false;
             }*/
 
-            var form_data = self.serialize(),
-                rich_texts = [];
-
-            // grab rich texts from tinyMCE
-            $('.wpuf-rich-validation', self).each(function (index, item) {
-                var item      = $(item);
-                var editor_id = item.data('id');
-                var item_name = item.data('name');
-                var val       = $.trim( tinyMCE.get(editor_id).getContent() );
-
-                rich_texts.push(item_name + '=' + encodeURIComponent( val ) );
-            });
+            var form_data = self.serialize();
 
             // append them to the form var
             form_data = form_data + '&' + rich_texts.join('&');
@@ -981,20 +981,56 @@
                 }
             },
 
+            checkTinyMCERestriction: function(field, data, ed) {
+                var numWords = 0;
+
+                var limit = (typeof(data[0]) !== "undefined" && data[0] !== null) ? parseInt(data[0]) : 0;
+                var fieldId = (typeof(data[1]) !== "undefined" && data[1] !== null) ? (data[1]).trim() : '';
+                var fieldType = (typeof(data[2]) !== "undefined" && data[2] !== null) ? (data[2]).trim() : '';
+                var limit_type = (typeof(data[3]) !== "undefined" && data[3] !== null) ? (data[3]).trim() : '';
+                var limit_to = (typeof(data[4]) !== "undefined" && data[4] !== null) ? (data[4]).trim() : '';
+                var limit_label = ( 'word' === limit_type ) ? 'Word Limit : ' : 'Character Limit : ';
+
+                if ( 'word' === limit_type ) {
+                    numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words;
+                } else {
+                    numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars + 1;
+                }
+
+                var errorMessage = wpuf_frontend['word_'+limit_to ] + ' ' + limit;
+
+                if ( (numWords > 1) && (numWords > limit) && ('max' === limit_to) ) {
+                    WP_User_Frontend.markError( field, 'limit' );
+                    jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + ' ' + numWords +'/'+ limit );
+
+                    return true;
+                } else if ( (numWords < limit) && ('min' === limit_to) && numWords > 1 ) {
+                    WP_User_Frontend.markError( field, 'limit' );
+                    jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + ' ' + numWords +'/'+ limit );
+
+                    return true;
+                } else {
+                    if ($(field).hasClass('has-error')) {
+                        $(field).removeClass('has-error');
+                    }
+
+                    return false;
+                }
+            },
+
             checkRestrictionError: function(field) {
                 var fieldId = $(field).attr('id');
                 var isTinymce = false;
                 var ed = null;
                 var numWords = 0;
+                var data = '';
 
-                if ( tinyMCE.get(fieldId) !== null ) {
+                if ( typeof tinyMCE !== 'undefined' && tinyMCE.get(fieldId) !== null ) {
                     isTinymce = true;
                     ed = tinyMCE.get(fieldId);
 
                     ed.focus();
                 }
-
-                var data = '';
 
                 // For content restriction, we are passing the information below the fields inside a <script> tag
                 // For example: the field type, restriction type(word or character), min/max allowed etc.
@@ -1004,39 +1040,28 @@
                     data = fieldScript.match(/(?:bind\()(.*?(?=\)))/) ? fieldScript.match(/(?:bind\()(.*?(?=\)))/)[1].replace(/['"]/g, '').split(',') : '';
                 }
 
+                if ( isTinymce ) {
+                    return WP_User_Frontend.editorLimit.checkTinyMCERestriction(field, data, ed);
+                }
+
                 var limit = (typeof(data[0]) !== "undefined" && data[0] !== null) ? parseInt(data[0]) : 0;
                 var fieldId = (typeof(data[1]) !== "undefined" && data[1] !== null) ? (data[1]).trim() : '';
                 var fieldType = (typeof(data[2]) !== "undefined" && data[2] !== null) ? (data[2]).trim() : '';
                 var limit_type = (typeof(data[3]) !== "undefined" && data[3] !== null) ? (data[3]).trim() : '';
                 var limit_to = (typeof(data[4]) !== "undefined" && data[4] !== null) ? (data[4]).trim() : '';
-
                 var limit_label = ( 'word' === limit_type ) ? 'Word Limit : ' : 'Character Limit : ';
 
-                if ( ! isTinymce ) {
-                    numWords = $(field).val().length;
-                } else {
-                    if ( 'word' === limit_type ) {
-                        numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words;
-                    } else {
-                        numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars + 1;
-                    }
-                }
+                numWords = $(field).val().length;
 
                 var errorMessage = wpuf_frontend['word_'+limit_to ] + ' ' + limit;
 
                 if ( (numWords > 1) && (numWords > limit) && ('max' === limit_to) ) {
                     WP_User_Frontend.markError( field, 'limit' );
 
-                    if (isTinymce) {
-                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + ' ' + numWords +'/'+ limit );
-                    }
                     return true;
                 } else if ( (numWords < limit) && ('min' === limit_to) && numWords > 1 ) {
                     WP_User_Frontend.markError( field, 'limit' );
 
-                    if (isTinymce) {
-                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + ' ' + numWords +'/'+ limit );
-                    }
                     return true;
                 } else {
                     if ($(field).hasClass('has-error')) {
@@ -1095,9 +1120,9 @@
                 var self = $(this),
                     content_length = self.val().length + 1;
 
-                    if ( 'word' === limit_type ) {
-                        content_length = self.val().split(' ').length;
-                    }
+                if ( 'word' === limit_type ) {
+                    content_length = self.val().split(' ').length;
+                }
                 if ( limit && content_length > limit && 'max' === limit_to ) {
                     WP_User_Frontend.content_limit_message( self, limit_type, limit_to, limit );
                     WP_User_Frontend.editorLimit.blockTyping(event);
@@ -1210,12 +1235,12 @@
 
             // Allow: backspace, delete, tab, escape, enter and .
             if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 91, 109, 110, 173, 189, 190]) !== -1 ||
-                 // Allow: Ctrl+A
+                // Allow: Ctrl+A
                 (e.keyCode == 65 && e.ctrlKey === true) ||
-                 // Allow: home, end, left, right
+                // Allow: home, end, left, right
                 (e.keyCode >= 35 && e.keyCode <= 39)) {
-                     // let it happen, don't do anything
-                    return;
+                // let it happen, don't do anything
+                return;
             }
 
             if ((e.shiftKey || (e.keyCode < 65 || e.keyCode > 90) && (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105) ) {
@@ -1229,11 +1254,11 @@
 
         $('.wpuf-form-add input[name="shopurl"]').on('focusout', function() {
             var self = $(this),
-            data = {
-                action : 'shop_url',
-                url_slug : self.val(),
-                _nonce : dokan.nonce,
-            };
+                data = {
+                    action : 'shop_url',
+                    url_slug : self.val(),
+                    _nonce : dokan.nonce,
+                };
 
             if ( self.val() === '' ) {
                 return;

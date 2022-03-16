@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership, frontend-post  
 **Requires at least:** 4.0  
-**Tested up to:** 5.8.2  
+**Tested up to:** 5.9.2  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.26  
+**Stable tag:** 3.5.27  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -261,6 +261,36 @@ Please check if you've specified the max upload size on setting
 This page is for the purpose of editing posts. You shouldn't access this page directly.
 First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
+
+### v3.5.27 (15 Mar, 2022) ###
+
+* Enhancement - Email template enhanced for after activation
+* Enhancement - Read only option for custom field
+* Enhancement - Editor toolbar exclude option enhanced
+* Enhancement - Preview option enhanced  for user profile
+* Enhancement - Meta key enhanced for user email notification
+* Enhancement - Global option for disable post edit on account
+* Enhancement - Filter for conditional logic for fields added
+* Fix - PHP 8 compatibility handled
+* Fix - Address / Billing address inconsistency handled
+* Fix - Content restriction several issue fixed
+* Fix - Tax calculation properly handled for all areas
+* Fix - Validation added for invalid email and URL formats
+* Fix - Special character password handled for login
+* Fix - Reset password handled for sidebar widget
+* Fix - Required google map issues handled
+* Fix - Translation related issue handled for admin menu
+* Fix - Label & query enhanced for transaction table
+* Fix - Template override for child theme fixed
+* Fix - Custom field modal handled for registration form
+* Fix - Redundant CSS issues handled
+* Fix - Address field inconsistency fixed
+* Fix - Plugin page spin loading issue handled
+* Fix - Warning on exit for draft post fixed
+* Fix - Unlimited expire on admin user profile handled
+* Fix - No value checkbox issue handled
+* Fix - Tag search security Vulnerability handled
+* Fix - Multi dropdown field error handled
 
 ## Changelog ##
 ### v3.5.23 (18 Nov, 2021) ###

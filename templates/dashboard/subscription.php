@@ -20,23 +20,24 @@
                 <strong><?php esc_html_e( 'Remaining post: ', 'wp-user-frontend' ); ?></strong>
                 <?php
                 $i = 0;
+                if ( ! empty( $user_sub['posts'] ) ) {
+                    foreach ( $user_sub['posts'] as $key => $value ) {
+                        $value = intval( $value );
 
-                foreach ( $user_sub['posts'] as $key => $value ) {
-                    $value = intval( $value );
+                        if ( $value === 0 ) {
+                            continue;
+                        }
 
-                    if ( $value === 0 ) {
-                        continue;
+                        $post_type_obj = get_post_type_object( $key );
+
+                        if ( ! $post_type_obj ) {
+                            continue;
+                        }
+                        $value = ( $value == '-1' ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value; ?>
+                        <div><?php echo esc_html( $post_type_obj->labels->name ) . ': ' . esc_html( $value ); ?></div>
+                        <?php
+                        $i ++;
                     }
-
-                    $post_type_obj = get_post_type_object( $key );
-
-                    if ( ! $post_type_obj ) {
-                        continue;
-                    }
-                    $value = ( $value == '-1' ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value; ?>
-                    <div><?php echo esc_html( $post_type_obj->labels->name ) . ': ' . esc_html( $value ); ?></div>
-                    <?php
-                    $i ++;
                 }
                 echo $i ? '' : esc_attr( $i );
                 ?>

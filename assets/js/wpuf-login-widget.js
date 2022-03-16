@@ -58,6 +58,7 @@ jQuery( function($) {
         })
         .done( function( response, textStatus, jqXHR ) {
             $('.wpuf-ajax-reset-password-form .wpuf-ajax-message p').html(response.data.message);
+            $('.wpuf-ajax-reset-password-form .wpuf-ajax-message').addClass('wpuf-message');
         } )
         .fail( function( jqXHR, textStatus, errorThrown ) {
             console.log( 'AJAX failed', errorThrown );

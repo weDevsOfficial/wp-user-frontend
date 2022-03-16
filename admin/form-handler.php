@@ -4,8 +4,8 @@ class WPUF_Admin_Form_Handler {
 
     public function __construct() {
         // post forms list table
-        add_action( 'load-user-frontend_page_wpuf-post-forms', [ $this, 'post_forms_actions' ] );
-        add_action( 'load-user-frontend_page_wpuf-profile-forms', [ $this, 'profile_forms_actions' ] );
+        add_action( "wpuf_load_post_forms", [ $this, 'post_forms_actions' ] );
+        add_action( "wpuf_load_profile_forms", [ $this, 'profile_forms_actions' ] );
         add_action( 'admin_notices', [ $this, 'admin_notices' ] );
         add_action( 'removable_query_args', [ $this, 'removable_query_args' ] );
     }
@@ -68,8 +68,8 @@ class WPUF_Admin_Form_Handler {
 
             switch ( $action ) {
                 case 'post_form_search':
-                    $redirect = remove_query_arg( [ 'post_form_search' ], $remove_query_args );
-
+                    $remove_query_args[] = 'post_form_search';
+                    $redirect = remove_query_arg( $remove_query_args, $_SERVER['REQUEST_URI'] );
                     break;
 
                 case 'trash':
@@ -201,7 +201,8 @@ class WPUF_Admin_Form_Handler {
 
             switch ( $action ) {
                 case 'profile_form_search':
-                    $redirect = remove_query_arg( [ 'profile_form_search' ], $redirect );
+                    $remove_query_args[] = 'profile_form_search';
+                    $redirect = remove_query_arg( $remove_query_args, $_SERVER['REQUEST_URI'] );
 
                     break;
 

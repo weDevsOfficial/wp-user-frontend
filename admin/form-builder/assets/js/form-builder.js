@@ -113,6 +113,14 @@
                 for (i = 0; i < state.form_fields.length; i++) {
                     // check if the editing field exist in normal fields
                     if (state.form_fields[i].id === parseInt(payload.editing_field_id)) {
+                        if ( 'read_only' === payload.field_name && payload.value ) {
+                            state.form_fields[i]['required'] = 'no';
+                        }
+
+                        if ( 'required' === payload.field_name && 'yes' === payload.value ) {
+                            state.form_fields[i]['read_only'] = false;
+                        }
+
                         if (payload.field_name === 'name'  && ! state.form_fields[i].hasOwnProperty('is_new') ) {
                             continue;
                         } else {
@@ -432,6 +440,18 @@
 
             settings: function() {
                 return this.$store.state.settings;
+            },
+
+            meta_field_key: function () {
+                let meta_key = [];
+
+                this.$store.state.form_fields.forEach(function (field) {
+                    if ( 'yes' === field.is_meta ) {
+                        meta_key.push(field.name);
+                    }
+                });
+
+                return meta_key.map(function(name) { return '{' + name +'}' }).join( );
             }
         },
 
@@ -540,6 +560,12 @@
                 var form_id = $('#wpuf-form-builder [name="wpuf_form_id"]').val();
 
                 if ( typeof tinyMCE !== 'undefined' && window.location.search.substring(1).split('&').includes('page=wpuf-profile-forms') ) {
+                    var parentWrap = $('#wp-wpuf_verification_body_' + form_id + '-wrap');
+                    if ( ! parentWrap.hasClass('tmce-active') ) {
+                        $('#wpuf_verification_body_' + form_id + '-tmce').click();  // bring user to the visual editor
+                        $('#wpuf_welcome_email_body_' + form_id + '-tmce').click();
+                    }
+
                     $('textarea[name="wpuf_settings[notification][verification_body]"]').val(tinyMCE.get('wpuf_verification_body_' + form_id).getContent());
                     $('textarea[name="wpuf_settings[notification][welcome_email_body]"]').val(tinyMCE.get('wpuf_welcome_email_body_' + form_id).getContent());
                 }

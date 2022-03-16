@@ -243,6 +243,13 @@ function wpuf_settings_fields() {
                     'default' => 'on',
                 ],
                 [
+                    'name'    => 'disable_publish_edit',
+                    'label'   => __( 'Editing Published Post', 'wp-user-frontend' ),
+                    'desc'    => __( 'Disable post editing while post in "publish" status', 'wp-user-frontend' ),
+                    'type'    => 'checkbox',
+                    'default' => 'off',
+                ],
+                [
                     'name'    => 'per_page',
                     'label'   => __( 'Posts per page', 'wp-user-frontend' ),
                     'desc'    => __( 'How many posts will be listed in a page', 'wp-user-frontend' ),

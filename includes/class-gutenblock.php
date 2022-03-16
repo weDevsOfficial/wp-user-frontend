@@ -32,18 +32,21 @@ class WPUF_Form_Block {
         wp_register_script(
             'wpuf-forms-block',
             $js_dir . 'gutenblock.js',
-            [ 'wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-element', 'underscore' ]
+            [ 'wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-element', 'underscore' ],
+            WPUF_VERSION
          );
 
         wp_register_style(
             'wpuf-forms-block-style',
             $css_dir . 'gutenblock.css',
-            [ 'wp-edit-blocks' ]
+            [ 'wp-edit-blocks' ],
+            WPUF_VERSION
          );
         wp_register_style(
             'wpuf-forms-block-editor',
             $css_dir . 'gutenblock-editor.css',
-            [ 'wp-edit-blocks', 'wpuf-forms-block-style' ]
+            [ 'wp-edit-blocks', 'wpuf-forms-block-style' ],
+            WPUF_VERSION
          );
 
         /*

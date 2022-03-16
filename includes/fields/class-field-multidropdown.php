@@ -133,7 +133,7 @@ class WPUF_Form_Field_MultiDropdown extends WPUF_Form_Field_Dropdown {
         }
 
         $data     = is_array( $data ) ? array_pop( $data ) : $data;
-        $data     = explode( '|' , $data );
+        $data     = is_string( $data ) ? explode( '|', $data ) : $data;
         $selected = [];
 
         foreach ( $data as $item ) {

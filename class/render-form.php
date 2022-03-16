@@ -493,7 +493,10 @@ class WPUF_Render_Form {
      * @param int|null $post_id
      * @param string   $type      type of the form. post or user
      */
-    public function render_items( $form_vars, $post_id, $type = 'post', $form_id, $form_settings, $cond_inputs = [] ) {
+    public function render_items( $form_vars, $post_id, $type, $form_id, $form_settings, $cond_inputs = [] ) {
+        if ( ! $type ) {
+            $type = 'post';
+        }
         $edit_ignore   = [ 'really_simple_captcha' ];
         $hidden_fields = []; ?>
         <script type="text/javascript">
@@ -1119,7 +1122,10 @@ class WPUF_Render_Form {
      * @param bool     $multiselect
      * @param int|null $post_id
      */
-    public function select( $attr, $multiselect = false, $post_id, $type, $form_id = null ) {
+    public function select( $attr, $multiselect, $post_id, $type, $form_id = null ) {
+        if ( ! $multiselect ) {
+            $multiselect = false;
+        }
         if ( $post_id ) {
             $selected = $this->get_meta( $post_id, $attr['name'], $type );
 
@@ -1271,7 +1277,10 @@ class WPUF_Render_Form {
      * @param array    $attr
      * @param int|null $post_id
      */
-    public function email( $attr, $post_id, $type = 'post', $form_id ) {
+    public function email( $attr, $post_id, $type, $form_id ) {
+        if ( ! $type ) {
+            $type = 'post';
+        }
         if ( $post_id ) {
             if ( $this->is_meta( $attr ) ) {
                 $value = $this->get_meta( $post_id, $attr['name'], $type, true );

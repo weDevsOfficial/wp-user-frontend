@@ -846,7 +846,7 @@ Vue.component('form-column_field', {
                     payload.field_id   = self.field.id;
                     payload.fromIndex  = parseInt(item.attributes['column-field-index'].value);
                     payload.fromColumn = item.attributes['in-column'].value;
-                    payload.toColumn   = item.parent().parent().attr('class').split(' ')[0];
+                    payload.toColumn   = $(item).parent().parent().attr('class').split(' ')[0];
 
                     // when drag field one column to another column, sortable event trigger twice and try to swap field twice.
                     // So the following conditions are needed to check and run swap_column_field_elements commit only once

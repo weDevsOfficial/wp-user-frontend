@@ -3405,15 +3405,15 @@ function get_formatted_mail_body( $message, $subject ) {
         }
 
         try {
-
             // apply CSS styles inline for picky email clients
             $emogrifier = new Emogrifier( $content, $css );
-            $content    = $emogrifier->emogrify();
+            $emogrifier->enableCssToHtmlMapping();
+
+            return $emogrifier->emogrify();
         } catch ( Exception $e ) {
             echo esc_html( $e->getMessage() );
         }
 
-        return $content;
     }
 
     return $message;

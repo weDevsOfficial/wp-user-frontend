@@ -611,7 +611,7 @@
                         }
 
                         if ( strength ) {
-                            let strengthMeter = wp.passwordStrength.meter(val, wp.passwordStrength.userInputDisallowedList());
+                            var strengthMeter = wp.passwordStrength.meter(val, wp.passwordStrength.userInputDisallowedList());
 
                             if (strength === 'weak' && strengthMeter < 2) {
                                 error = true;

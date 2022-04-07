@@ -515,7 +515,7 @@
             WP_User_Frontend.removeErrors(self);
             WP_User_Frontend.removeErrorNotice(self);
 
-            var visibleFields = self.find('input:visible, textarea:visible, select:visible, .wpuf-rich-validation');
+            var visibleFields = self.find('input:visible, textarea:visible, select:visible, .wpuf-rich-validation:visible');
 
             visibleFields.each( function( i, item ) {
                 var input_type = $(item).attr('type');
@@ -651,10 +651,11 @@
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
+                    case 'checkbox':
                     case 'tax-checkbox':
-                        var length = $(item).children().find('input:checked').length;
+                        var isChecked = $(item).prop('checked');
 
-                        if ( required === 'yes' && ! length ) {
+                        if ( required === 'yes' && ! isChecked ) {
                             error = true;
                             error_type = 'required';
                             WP_User_Frontend.markError( item,  error_type );

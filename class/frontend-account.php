@@ -23,6 +23,7 @@ class WPUF_Frontend_Account {
         add_filter( 'wpuf_options_wpuf_my_account', [ $this, 'add_settings_options' ] );
         add_filter( 'wpuf_account_sections', [ $this, 'add_account_sections' ] );
         add_action( 'wpuf_account_content_submit-post', [ $this, 'submit_post_section' ], 10, 2 );
+        add_action( 'pre_get_posts', [ $this, 'process_user_for_previewing_post' ] );
     }
 
     /**
@@ -269,6 +270,8 @@ class WPUF_Frontend_Account {
             $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
         }
 
+        ob_start();
+
         wpuf_load_template(
             'dashboard/subscription.php',
             [
@@ -281,6 +284,8 @@ class WPUF_Frontend_Account {
                 'recurring_des'   => $recurring_des,
             ]
         );
+
+        ob_end_flush();
     }
 
     /**
@@ -410,5 +415,45 @@ class WPUF_Frontend_Account {
      */
     public function get_allowed_cpt() {
         return wpuf_get_option( 'cp_on_acc_page', 'wpuf_my_account', [ 'post' ] );
+    }
+
+    /**
+     * Check if the user is the post author and give permission for previewing
+     *
+     * @since 3.5.27
+     *
+     * @return void
+     */
+    public function process_user_for_previewing_post( $query ) {
+        if ( current_user_can( 'edit_posts' ) ) {
+            return;
+        }
+
+        if ( ! $query->is_main_query() && ! $query->is_preview && ! $query->get( 'p' ) ) {
+            return;
+        }
+
+        $current_user_id = get_current_user_id();
+        $current_post_id = absint( $query->get( 'p' ) );
+
+        if ( $current_user_id === absint( get_post_field( 'post_author', $current_post_id ) ) ) {
+            add_filter( 'user_has_cap', [ $this, 'add_temporary_capability' ], 10, 3 );
+        }
+    }
+
+    /**
+     * Add a temporary edit_posts capability to the current user
+     * for previewing post
+     *
+     * @since 3.5.27
+     *
+     * @param $all_caps
+     *
+     * @return array
+     */
+    public function add_temporary_capability( $all_caps ) {
+        $all_caps['edit_posts'] = true;
+
+        return $all_caps;
     }
 }

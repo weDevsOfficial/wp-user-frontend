@@ -156,7 +156,23 @@ $post_type_obj   = get_post_type_object( $post_type );
                             <?php }?>
                         </td>
                         <td data-label="<?php esc_attr_e( 'Status: ', 'wp-user-frontend' ); ?>" class="data-column">
-                            <?php wpuf_show_post_status( $post->post_status ); ?>
+                            <?php
+                            $current_post_status = $post->post_status;
+                            if ( 'publish' === $current_post_status ) {
+                                $link_text = esc_html( 'View', 'wp-user-frontend' );
+                                $the_link  = get_permalink();
+                            } else {
+                                $link_text = esc_html( 'Preview', 'wp-user-frontend' );
+                                $the_link  = get_preview_post_link();
+                            }
+                            wpuf_show_post_status( $current_post_status );
+                            echo apply_filters( 'wpuf_preview_link_separator', ' | ');
+                            printf(
+                                '<a href="%s" target="_blank">%s</a>',
+                                $the_link,
+                                $link_text
+                            );
+                            ?>
                         </td>
 
                         <?php do_action( 'wpuf_account_posts_row_col', $args, $post ); ?>

@@ -1508,7 +1508,7 @@ function wpufe_ajax_tag_search() {
     global $wpdb;
 
     $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
-    $term_ids = isset( $_GET['term_ids'] ) ? sanitize_text_field( wp_unslash( $_GET['term_ids'] ) ) : '';
+    $term_ids = ! empty( $_GET['term_ids'] ) ? sanitize_key( wp_unslash( $_GET['term_ids'] ) ) : '';
     $tax      = get_taxonomy( $taxonomy );
 
     if ( ! $tax ) {
@@ -1540,7 +1540,7 @@ function wpufe_ajax_tag_search() {
     } else {
         $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
     }
-    echo esc_html( join( $results, "\n" ) );
+    echo esc_html( join( "\n", $results ) );
     wp_die();
 }
 
@@ -1601,7 +1601,7 @@ function wpuf_load_template( $file, $args = [] ) {
  * lods from pro plugin folder
  *
  * @since 3.1.11
- * @since WPUF_PRO function moved to pro
+ * @since 3.5.27_PRO function moved to pro
  *
  * @param string $file file name or path to file
  */
@@ -2168,7 +2168,7 @@ function wpuf_get_pending_transactions( $args = [] ) {
 /**
  * Get all pending and completed transactions
  *
- * @since WPUF
+ * @since 3.5.27
  *
  * @param $args
  *
@@ -4068,7 +4068,7 @@ function wpuf_recursive_sanitize_text_field($arr){
 /**
  * Determine page after payment success
  *
- * @since WPUF_PRO
+ * @since 3.5.27_PRO
  *
  * @param $data
  *
@@ -4095,6 +4095,66 @@ function wpuf_payment_success_page( $data ){
 }
 
 /**
+ * Function current_datetime() compatibility for wp version < 5.3
+ *
+ * @since 3.5.27
+ *
+ * @return DateTimeImmutable
+ */
+function wpuf_current_datetime() {
+    if ( function_exists( 'current_datetime' ) ) {
+        return current_datetime();
+    }
+
+    return new DateTimeImmutable( 'now', wpuf_wp_timezone() );
+}
+
+/**
+ * Function wp_timezone() compatibility for wp version < 5.3
+ *
+ * @since 3.5.27
+ *
+ * @return DateTimeZone
+ */
+function wpuf_wp_timezone() {
+    if ( function_exists( 'wp_timezone' ) ) {
+        return wp_timezone();
+    }
+
+    return new DateTimeZone( wpuf_wp_timezone_string() );
+}
+
+/**
+ * Function wp_timezone_string() compatibility for wp version < 5.3
+ *
+ * @since 3.5.27
+ *
+ * @return string
+ */
+function wpuf_timezone_string() {
+    if ( function_exists( 'wp_timezone_string' ) ) {
+        return wp_timezone_string();
+    }
+
+    $timezone_string = get_option( 'timezone_string' );
+
+    if ( $timezone_string ) {
+        return $timezone_string;
+    }
+
+    $offset  = (float) get_option( 'gmt_offset' );
+    $hours   = (int) $offset;
+    $minutes = ( $offset - $hours );
+
+    $sign      = ( $offset < 0 ) ? '-' : '+';
+    $abs_hour  = abs( $hours );
+    $abs_mins  = abs( $minutes * 60 );
+    $tz_offset = sprintf( '%s%02d:%02d', $sign, $abs_hour, $abs_mins );
+
+    return $tz_offset;
+}
+
+/*
  * Editor toolbar primary button list
  *
  * @param string $type
@@ -4179,30 +4239,34 @@ function wpuf_map_address_fields( $address_fields ) {
  * Retrieves paginated links for queried pages
  * uses WordPress paginate_links() function for the final output
  *
- * @since WPUF_PRO
+ * @since 3.5.27_PRO
  *
  * @param int $total_items
  * @param int $per_page
+ * @param array $pagination_args
  *
- * @return void
+ * @return string
  */
-function wpuf_pagination( $total_items, $per_page ) {
+function wpuf_pagination( $total_items, $per_page, $pagination_args = [] ) {
     $pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
     $num_of_pages = ceil( $total_items / $per_page );
-    $page_links = paginate_links(
-        [
-            'base'      => add_query_arg( 'pagenum', '%#%' ),
-            'format'    => '',
-            'prev_text' => '<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+    $defaults = [
+        'base'      => add_query_arg( 'pagenum', '%#%' ),
+        'format'    => '',
+        'prev_text' => '<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M0.248874 7.05115L7.19193 0.244361C7.35252 0.086801 7.56688 0 7.79545 0C8.02403 0 8.23839 0.086801 8.39898 0.244361L8.91029 0.745519C9.243 1.07208 9.243 1.60283 8.91029 1.9289L3.08003 7.64483L8.91675 13.3671C9.07734 13.5247 9.166 13.7347 9.166 13.9587C9.166 14.1829 9.07734 14.3929 8.91675 14.5506L8.40545 15.0517C8.24474 15.2092 8.0305 15.296 7.80192 15.296C7.57335 15.296 7.35898 15.2092 7.1984 15.0517L0.248874 8.23864C0.0879093 8.08058 -0.000500916 7.86955 2.13498e-06 7.64521C-0.000500916 7.42 0.0879093 7.20909 0.248874 7.05115Z" fill="#545D7A"/>
             </svg>',
-            'next_text' => '<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        'next_text' => '<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M8.97963 7.05115L2.03657 0.244361C1.87599 0.086801 1.66162 0 1.43305 0C1.20448 0 0.99011 0.086801 0.829525 0.244361L0.318217 0.745519C-0.0144943 1.07208 -0.0144943 1.60283 0.318217 1.9289L6.14847 7.64483L0.311748 13.3671C0.151164 13.5247 0.0625 13.7347 0.0625 13.9587C0.0625 14.1829 0.151164 14.3929 0.311748 14.5506L0.823056 15.0517C0.983767 15.2092 1.19801 15.296 1.42658 15.296C1.65515 15.296 1.86952 15.2092 2.0301 15.0517L8.97963 8.23864C9.14059 8.08058 9.229 7.86955 9.2285 7.64521C9.229 7.42 9.14059 7.20909 8.97963 7.05115Z" fill="#545D7A"/>
             </svg>',
-            'total'     => $num_of_pages,
-            'current'   => $pagenum,
-        ]
-    );
+        'total'     => $num_of_pages,
+        'current'   => $pagenum,
+    ];
+
+    $args = wp_parse_args( $pagination_args, $defaults );
+
+    $page_links = paginate_links( $args );
 
     if ( $page_links ) {
         return '<div class="wpuf-pagination">' . $page_links . '</div>';
@@ -4245,7 +4309,7 @@ function wpuf_unset_conditional( $settings ) {
  *
  * @param $post
  *
- * @since WPUF
+ * @since 3.5.27
  *
  * @return bool
  */
@@ -4282,4 +4346,45 @@ function wpuf_is_post_editable( $post ) {
     }
 
     return $show_edit;
+}
+
+/**
+ * Get an array of available image sizes with height and weight
+ *
+ * @since 3.5.27
+ *
+ * @param $size     string      size of the image. thumbnail, medium, large etc.
+ *
+ * @return array                single image size returned if parameter size is passed
+ *                              full array of all the sizes will return otherwise
+ */
+function wpuf_get_image_sizes_array( $size = '' ) {
+    $additional_image_sizes   = wp_get_additional_image_sizes();
+    $intermediate_image_sizes = get_intermediate_image_sizes();
+    $sizes = [];
+
+    // Create the full array with sizes and crop info
+    foreach ( $intermediate_image_sizes as $_size ) {
+        if ( in_array( $_size, [ 'thumbnail', 'medium', 'large', 'medium_large' ], true ) ) {
+            $sizes[ $_size ]['width']  = get_option( $_size . '_size_w' );
+            $sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
+            $sizes[ $_size ]['crop']   = (bool) get_option( $_size . '_crop' );
+        } elseif ( isset( $additional_image_sizes[ $_size ] ) ) {
+            $sizes[ $_size ] = [
+                'width'  => $additional_image_sizes[ $_size ]['width'],
+                'height' => $additional_image_sizes[ $_size ]['height'],
+                'crop'   => $additional_image_sizes[ $_size ]['crop'],
+            ];
+        }
+    }
+
+    // Get only 1 size if found
+    if ( $size ) {
+        if ( isset( $sizes[ $size ] ) ) {
+            return $sizes[ $size ];
+        } else {
+            return false;
+        }
+    }
+    return $sizes;
 }

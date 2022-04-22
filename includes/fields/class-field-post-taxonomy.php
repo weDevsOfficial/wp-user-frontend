@@ -433,7 +433,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
      */
     public function get_options_settings() {
         $default_options      = $this->get_default_option_settings( false, [ 'dynamic' ] );
-        $default_text_options = $this->get_default_taxonomy_option_setttings( false, $this->tax_name );
+        $default_text_options = $this->get_default_taxonomy_option_setttings( $this->tax_name, false );
 
         return array_merge( $default_options, $default_text_options );
     }

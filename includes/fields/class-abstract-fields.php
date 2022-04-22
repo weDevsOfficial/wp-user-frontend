@@ -433,7 +433,7 @@ abstract class WPUF_Field_Contract {
      *
      * @return array
      */
-    public function get_default_taxonomy_option_setttings( $content_restriction = false, $tax_name ) {
+    public function get_default_taxonomy_option_setttings( $tax_name, $content_restriction = false ) {
         $properties = [
             [
                 'name'      => 'type',

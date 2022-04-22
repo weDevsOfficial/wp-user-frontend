@@ -165,7 +165,10 @@ class WPUF_User_Subscription {
      *
      * @param int $pack_id
      */
-    public function add_pack( $pack_id, $profile_id = null, $recurring, $status = null ) {
+    public function add_pack( $pack_id, $profile_id, $recurring, $status = null ) {
+        if ( ! $profile_id ) {
+            $profile_id = null;
+        }
         global $wpdb;
         $result       = '';
         $subscription = WPUF_Subscription::init()->get_subscription( $pack_id );

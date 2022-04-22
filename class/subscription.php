@@ -377,7 +377,7 @@ class WPUF_Subscription {
         }
 
         update_post_meta( $subscription_id, '_billing_amount', $post_data['billing_amount'] );
-        update_post_meta( $subscription_id, '_expiration_number', in_array( 'expiration_number', $post_data, true ) && ! empty( $post_data['expiration_number'] ) ? $post_data['expiration_number'] : '' );
+        update_post_meta( $subscription_id, '_expiration_number', array_key_exists( 'expiration_number', $post_data ) && ! empty( $post_data['expiration_number'] ) ? $post_data['expiration_number'] : '' );
         update_post_meta( $subscription_id, '_expiration_period', $post_data['expiration_period'] );
         update_post_meta( $subscription_id, '_recurring_pay', isset( $post_data['recurring_pay'] ) ? $post_data['recurring_pay'] : 'no' );
         update_post_meta( $subscription_id, '_billing_cycle_number', $post_data['billing_cycle_number'] );
@@ -1310,6 +1310,10 @@ class WPUF_Subscription {
     ", $key
             )
         );
+
+        if ( empty( $all_subscription ) ) {
+            return;
+        }
 
         $current_time  = current_time( 'mysql' );
         $non_recurrent = array_filter(

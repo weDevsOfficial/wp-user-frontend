@@ -44,15 +44,18 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                 <?php
                     $tinymce_settings = wpuf_filter_editor_toolbar( $field_settings );
 
-                if ( ( $field_settings['rich'] === 'teeny' || $field_settings['rich'] === 'yes' ) && ! empty( $tinymce_settings ) ) {
+                if ( ( $field_settings['rich'] === 'teeny' || $field_settings['rich'] === 'yes' ) ) {
                     $editor_settings = [
                         'textarea_rows' => $field_settings['rows'],
                         'quicktags'     => false,
                         'media_buttons' => false,
                         'editor_class'  => $req_class,
                         'textarea_name' => $field_settings['name'],
-                        'tinymce'       => $tinymce_settings,
                     ];
+
+                    if ( ! empty( $tinymce_settings ) ) {
+                        $editor_settings['tinymce'] = $tinymce_settings;
+                    }
 
                     if ( $field_settings['rich'] === 'teeny' ) {
                         $editor_settings['teeny'] = true;
@@ -83,7 +86,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                     if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {
                                 $this->check_content_restriction_func(
                                     $field_settings['content_restriction'],
-                                    $field_settings['rich'] ? 'yes' : 'no',
+                                    ! empty( $field_settings['rich'] ) ? $field_settings['rich'] : 'no',
                                     $field_settings['name'] . '_' . $form_id,
                                     $field_settings['restriction_type'],
                                     $field_settings['restriction_to']

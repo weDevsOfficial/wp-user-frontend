@@ -601,39 +601,70 @@ final class WP_User_Frontend {
      */
     public static function uninstall() {
         wp_clear_scheduled_hook( 'wpuf_remove_expired_post_hook' );
-
         $uninstall_settings = get_option( 'wpuf_uninstall' );
 
-        if ( ! empty( $uninstall_settings['delete_settings'] ) ) {
-            $setting_sections = [
-                'wpuf_general',
-                'wpuf_frontend_posting',
-                'wpuf_dashboard',
-                'wpuf_my_account',
-                'wpuf_profile',
-                'wpuf_payment',
-                'wpuf_mails',
-                'wpuf_privacy',
-                '_wpuf_page_created',
-            ];
+        global $wpdb;
 
-            foreach ( $setting_sections as $section ) {
-                delete_option( $section );
-            }
+        if ( ! empty( $uninstall_settings['delete_settings'] ) ) {
+            $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%wpuf_%'" );
         }
 
         if ( ! empty( $uninstall_settings['delete_database'] ) ) {
-            global $wpdb;
-
             $tables = [
                 'wpuf_transaction',
                 'wpuf_subscribers',
+                'wpuf_message',
+                'wpuf_activity',
             ];
 
             // delete all tables
             foreach ( $tables as $table ) {
                 $table_name = $wpdb->prefix . $table;
                 $wpdb->query( 'DROP TABLE IF EXISTS ' . $table_name );
+            }
+        }
+
+        if ( ! empty( $uninstall_settings['delete_forms'] ) ) {
+            $post_types = [ 'wpuf_forms', 'wpuf_profile', 'wpuf_input', 'wpuf_subscription', 'wpuf_coupon' ];
+
+            // get all wpuf related posts
+            $query = new WP_Query(
+                [
+                    'post_type'      => $post_types,
+                    'posts_per_page' => -1,
+                    'post_status'    => [ 'publish', 'draft', 'pending', 'trash' ],
+                ]
+            );
+
+            $posts = $query->get_posts();
+
+            if ( $posts ) {
+                foreach ( $posts as $item ) {
+                    wp_delete_post( $item->ID, true );
+                }
+            }
+
+            wp_reset_postdata();
+
+            $wpdb->query( "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE '%wpuf_%'" );
+        }
+
+        if ( ! empty( $uninstall_settings['delete_pages'] ) ) {
+            $all_pages = wpuf_get_pages();
+
+            // remove the very first item because this is not a page
+            if ( ! empty( $all_pages ) && in_array( '', array_keys( $all_pages ), true ) ) {
+                unset( $all_pages[''] );
+            }
+
+            foreach ( $all_pages as $page_id => $page ) {
+                $post_to_check = get_post( $page_id );
+
+                if ( $post_to_check ) {
+                    if ( stripos( $post_to_check->post_content, '[wpuf-' ) !== false || stripos( $post_to_check->post_content, '[wpuf_' ) !== false ) {
+                        wp_delete_post( $page_id, true );
+                    }
+                }
             }
         }
     }

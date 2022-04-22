@@ -393,6 +393,16 @@ class WPUF_Admin_Settings {
                     'label'    => __( 'Delete Database Tables on Uninstall', 'wp-user-frontend' ),
                     'callback' => 'delete_database_markup',
                 ],
+                [
+                    'id'       => 'delete_forms',
+                    'label'    => __( 'Delete WPUF Forms on Uninstall', 'wp-user-frontend' ),
+                    'callback' => 'delete_forms_markup',
+                ],
+                [
+                    'id'       => 'delete_pages',
+                    'label'    => __( 'Delete WPUF Pages on Uninstall', 'wp-user-frontend' ),
+                    'callback' => 'delete_pages_markup',
+                ],
             ]
         );
 
@@ -436,7 +446,7 @@ class WPUF_Admin_Settings {
             return $input;
         }
 
-        $options = [ 'delete_settings', 'delete_database' ];
+        $options = [ 'delete_settings', 'delete_database', 'delete_forms', 'delete_pages' ];
 
         // Create our array for storing the validated options
         $output = [];
@@ -544,6 +554,40 @@ class WPUF_Admin_Settings {
         ?>
         <label class="switch">
             <input type="checkbox" id="wpuf_uninstall[delete_database]" name="wpuf_uninstall[delete_database]" <?php checked( $value, 'on' ); ?>>
+            <span class="slider round"></span>
+        </label>
+        <?php
+    }
+
+    /**
+     * Delete WPUF forms checkbox HTML markup
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
+    public function delete_forms_markup() {
+        $value = ! empty( $this->uninstall_settings['delete_forms'] ) ? $this->uninstall_settings['delete_forms'] : 'off';
+        ?>
+        <label class="switch">
+            <input type="checkbox" id="wpuf_uninstall[delete_forms]" name="wpuf_uninstall[delete_forms]" <?php checked( $value, 'on' ); ?>>
+            <span class="slider round"></span>
+        </label>
+        <?php
+    }
+
+    /**
+     * Delete WPUF pages checkbox HTML markup
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
+    public function delete_pages_markup() {
+        $value = ! empty( $this->uninstall_settings['delete_pages'] ) ? $this->uninstall_settings['delete_pages'] : 'off';
+        ?>
+        <label class="switch">
+            <input type="checkbox" id="wpuf_uninstall[delete_pages]" name="wpuf_uninstall[delete_pages]" <?php checked( $value, 'on' ); ?>>
             <span class="slider round"></span>
         </label>
         <?php

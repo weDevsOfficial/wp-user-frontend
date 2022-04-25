@@ -190,7 +190,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $this->form_fields   = $form->get_fields();
         $pay_per_post        = $form->is_enabled_pay_per_post();
 
-        list( $post_vars, $taxonomy_vars, $meta_vars ) = $this->get_input_fields( $this->form_fields );
+        [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         $entry_fields = $form->prepare_entries();
         $allowed_tags = wp_kses_allowed_html( 'post' );
@@ -251,6 +251,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             $postarr['ID']             = intval( wp_unslash( $_POST['post_id'] ) );
             $postarr['comment_status'] = 'open';
         }
+
+        $postarr = $this->adjust_thumbnail_id( $postarr );
 
         $post_id = wp_insert_post( $postarr );
 
@@ -354,7 +356,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             wp_delete_attachment( $attach_id, true );
         }
 
-        list( $post_vars, $taxonomy_vars, $meta_vars ) = $this->get_input_fields( $this->form_fields );
+        [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         if ( ! isset( $_POST['post_id'] ) ) {
             $has_limit = ( isset( $this->form_settings['limit_entries'] ) && $this->form_settings['limit_entries'] === 'true' ) ? true : false;
@@ -510,6 +512,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         } else {
             $postarr = apply_filters( 'wpuf_add_post_args', $postarr, $form_id, $this->form_settings, $this->form_fields );
         }
+
+        $postarr = $this->adjust_thumbnail_id( $postarr );
 
         $post_id = wp_insert_post( $postarr, $wp_error = false );
 
@@ -685,7 +689,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $this->form_fields            = $form->get_fields();
         $this->form_settings          = $form->get_settings();
         $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
-        list( $user_can_post, $info ) = $form->is_submission_open( $form, $this->form_settings );
+        [ $user_can_post, $info ] = $form->is_submission_open( $form, $this->form_settings );
         $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
         $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
 
@@ -703,7 +707,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     public static function update_post_meta( $meta_vars, $post_id ) {
         // check_ajax_referer( 'wpuf_form_add' );
         // prepare the meta vars
-        list( $meta_key_value, $multi_repeated, $files ) = self::prepare_meta_fields( $meta_vars );
+        [ $meta_key_value, $multi_repeated, $files ] = self::prepare_meta_fields( $meta_vars );
         // set featured image if there's any
 
         // @codingStandardsIgnoreStart
@@ -849,7 +853,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         // custom fields
         preg_match_all( '/%custom_([\w-]*)\b%/', $content, $matches );
-        list( $search, $replace ) = $matches;
+        [ $search, $replace ] = $matches;
 
         if ( $replace ) {
             foreach ( $replace as $index => $meta_key ) {
@@ -1258,5 +1262,23 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             $this->form_settings['message_restrict'] = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
         }
+    }
+
+    /**
+     * Adjust thumbnail image id if given
+     *
+     * @param $postarr
+     *
+     * @return array
+     */
+    private function adjust_thumbnail_id( $postarr ) {
+        $wpuf_files = ! empty( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
+
+        if ( ! empty( $wpuf_files['featured_image'] ) ) {
+            $attachment_id            = reset( $wpuf_files['featured_image'] );
+            $postarr['_thumbnail_id'] = $attachment_id;
+        }
+
+        return $postarr;
     }
 }

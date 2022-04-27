@@ -385,22 +385,22 @@ class WPUF_Admin_Settings {
             'wpuf_uninstall_settings', [
                 [
                     'id'       => 'delete_settings',
-                    'label'    => __( 'Delete Plugin Settings on plugin delete', 'wp-user-frontend' ),
+                    'label'    => __( 'Delete Plugin Settings', 'wp-user-frontend' ),
                     'callback' => 'delete_settings_markup',
                 ],
                 [
                     'id'       => 'delete_database',
-                    'label'    => __( 'Delete Database Tables on plugin delete', 'wp-user-frontend' ),
+                    'label'    => __( 'Delete Database Tables', 'wp-user-frontend' ),
                     'callback' => 'delete_database_markup',
                 ],
                 [
                     'id'       => 'delete_forms',
-                    'label'    => __( 'Delete WPUF Forms on plugin delete', 'wp-user-frontend' ),
+                    'label'    => __( 'Delete WPUF Forms', 'wp-user-frontend' ),
                     'callback' => 'delete_forms_markup',
                 ],
                 [
                     'id'       => 'delete_pages',
-                    'label'    => __( 'Delete WPUF Pages on plugin delete', 'wp-user-frontend' ),
+                    'label'    => __( 'Delete WPUF Pages', 'wp-user-frontend' ),
                     'callback' => 'delete_pages_markup',
                 ],
             ]
@@ -606,7 +606,7 @@ class WPUF_Admin_Settings {
         ?>
         <p style="background: #EF4444; color: #FFF; padding: 10px; font-size: 1.2em">
             <strong><?php esc_html_e( 'Caution:', 'wp-user-frontend' ); ?></strong>
-            <?php esc_html_e( ' Check this to remove WP User Frontend related data and table from the database upon deleting the plugin. When you delete the WP User Frontend version, it will also delete all the data related to WP User Frontend Pro as well. This won\'t happen when the plugins are deactivated.', 'wp-user-frontend' ); ?>
+            <?php esc_html_e( ' Check this to remove WP User Frontend related data and table from the database upon deleting the plugin. When you delete the WP User Frontend free version, it will also remove all the data related to WP User Frontend Pro as well. This won\'t happen when the plugins are deactivated.', 'wp-user-frontend' ); ?>
         </p>
         <?php
     }

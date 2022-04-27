@@ -317,6 +317,7 @@ final class WP_User_Frontend {
             include_once WPUF_ROOT . '/includes/class-whats-new.php';
             include_once WPUF_ROOT . '/includes/class-acf.php';
             include_once WPUF_ROOT . '/includes/class-privacy.php';
+            include_once WPUF_ROOT . '/admin/dashboard-metabox.php';
         } else {
             require_once WPUF_ROOT . '/class/frontend-dashboard.php';
             require_once WPUF_ROOT . '/includes/free/class-registration.php';
@@ -354,9 +355,9 @@ final class WP_User_Frontend {
         $this->container['customize']               = new WPUF_Customizer_Options();
         $this->container['log']                     = new WPUF_Log();
 
-        add_action( 'dokan_loaded', function () {
+        if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();
-        } );
+        }
 
         if ( class_exists( 'WCMp' ) ) {
             $this->container['wcmp_integration'] = new WPUF_WCMp_Integration();
@@ -378,6 +379,7 @@ final class WP_User_Frontend {
             $this->container['whats_new']          = new WPUF_Whats_New();
             $this->container['wpuf_acf']           = new WPUF_ACF_Compatibility();
             $this->container['privacy']            = new WPUF_Privacy();
+            $this->container['dashboard_mb']       = new Dashboard_Metabox();
         } else {
             $this->container['dashboard']       = new WPUF_Frontend_Dashboard();
             $this->container['payment']         = new WPUF_Payment();

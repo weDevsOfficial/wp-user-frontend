@@ -21,10 +21,6 @@ class WPUF_Uninstaller {
         global $wpdb;
         $uninstall_settings = get_option( 'wpuf_uninstall' );
 
-        if ( ! empty( $uninstall_settings['delete_settings'] ) ) {
-            $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%wpuf_%'" );
-        }
-
         if ( ! empty( $uninstall_settings['delete_database'] ) ) {
             $this->drop_tables();
         }
@@ -34,32 +30,15 @@ class WPUF_Uninstaller {
         }
 
         if ( ! empty( $uninstall_settings['delete_pages'] ) ) {
-            $this->delete_pages();
+            $wpdb->query( "DELETE FROM {$wpdb->posts} WHERE post_type = 'page' AND post_content LIKE '[wpuf%'" );
+        }
+
+        if ( ! empty( $uninstall_settings['delete_settings'] ) ) {
+            $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%wpuf_%'" );
         }
 
         // Clear any cached data that has been removed.
         wp_cache_flush();
-    }
-
-    /**
-     * Delete all WPUF pages
-     *
-     * @since WPUF
-     *
-     * @return void
-     */
-    private function delete_pages() {
-        $all_pages = $this->get_all_page_ids();
-
-        foreach ( $all_pages as $page_id => $page ) {
-            $post_to_check = get_post( $page_id );
-
-            if ( $post_to_check ) {
-                if ( stripos( $post_to_check->post_content, '[wpuf-' ) !== false || stripos( $post_to_check->post_content, '[wpuf_' ) !== false ) {
-                    wp_delete_post( $page_id, true );
-                }
-            }
-        }
     }
 
     /**

@@ -604,7 +604,7 @@ class WPUF_Admin_Settings {
      */
     public function uninstall_section_callback( $args ) {
         ?>
-        <p style="background: #EF4444; color: #FFF; padding: 10px; font-size: 1.2em">
+        <p style="background: #EF4444; color: #FFF; padding: 10px; font-size: 1.1em">
             <strong><?php esc_html_e( 'Caution:', 'wp-user-frontend' ); ?></strong>
             <?php esc_html_e( ' Check this to remove WP User Frontend related data and table from the database upon deleting the plugin. When you delete the WP User Frontend free version, it will also remove all the data related to WP User Frontend Pro as well. This won\'t happen when the plugins are deactivated.', 'wp-user-frontend' ); ?>
         </p>

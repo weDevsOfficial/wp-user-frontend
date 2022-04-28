@@ -37,6 +37,9 @@ class WPUF_Uninstaller {
             $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%wpuf_%'" );
         }
 
+        // reset Tools > Uninstall Settings anyway upon plugin deletion
+        delete_option( 'wpuf_uninstall' );
+
         // Clear any cached data that has been removed.
         wp_cache_flush();
     }

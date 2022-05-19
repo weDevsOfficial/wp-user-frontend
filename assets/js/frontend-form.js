@@ -746,7 +746,9 @@
                 return false;
             }*/
 
+            var disable_fields = self.find(":disabled").removeAttr("disabled");
             var form_data = self.serialize();
+            disable_fields.attr("disabled", "disabled");
 
             // append them to the form var
             form_data = form_data + '&' + rich_texts.join('&');

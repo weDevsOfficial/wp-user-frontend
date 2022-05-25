@@ -83,9 +83,9 @@ $post_type_obj   = get_post_type_object( $post_type );
 <?php if ( $dashboard_query->have_posts() ) { ?>
 
     <?php
-    $featured_img      = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
+    $featured_img      = apply_filters( 'wpuf_show_ft_image', wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' ) );
     $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
-    $payment_column    = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' );
+    $payment_column    = apply_filters( 'wpuf_show_payment_column', wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' ) );
     $enable_payment    = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
     ?>
     <div class="items-table-container">

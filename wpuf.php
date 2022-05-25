@@ -383,7 +383,7 @@ final class WP_User_Frontend {
             $this->container['registration']    = WPUF_Registration::init();
         }
 
-        $this->container['dashboard']       = new WPUF_Frontend_Dashboard();
+        $this->container['dashboard']               = new WPUF_Frontend_Dashboard();
         $this->container['login']                   = WPUF_Simple_Login::init();
         $this->container['fields']                  = new WPUF_Field_Manager();
         $this->container['frontend_form']           = WPUF_Frontend_Form::init();

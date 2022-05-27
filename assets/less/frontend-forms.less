@@ -1213,16 +1213,33 @@ table.wpuf-table {
         display: block;
     }
 
-    .wpuf-multistep-prev-btn,
-    .wpuf-multistep-next-btn {
+    button.wpuf-multistep-next-btn.btn.btn-primary {
         position: absolute;
-        bottom: 5px;
+        bottom: 0;
+        right: 0;
     }
-    .wpuf-multistep-prev-btn {
-        left: 10px;
+
+    button.wpuf-multistep-prev-btn.btn.btn-primary {
+        position: absolute;
+        bottom: 0;
+        left: 0;
     }
-    .wpuf-multistep-next-btn {
-        right: 10px;
+
+    a#wpuf-post-draft {
+        position: absolute;
+        bottom: -2px;
+        right: -6em;
+    }
+
+    span.wpuf-draft-saved {
+        position: absolute;
+        bottom: -2px;
+        right: -13em;
+    }
+    span.wpuf-loading {
+        position: absolute;
+        bottom: 8px;
+        right: -9em;
     }
 }
 

@@ -69,7 +69,7 @@
             $( ':submit[name="wpuf_user_subscription_cancel"]').click(function(e){
                 e.preventDefault();
 
-                swal({
+                new swal({
                     text: wpuf_frontend.cancelSubMsg,
                     type: 'warning',
                     showCancelButton: true,
@@ -129,7 +129,7 @@
 
             if ( typeof wp.passwordStrength != 'undefined' ) {
 
-                strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputBlacklist(), pass1 );
+                strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputDisallowedList(), pass1 );
 
                 switch ( strength ) {
                     case 2:
@@ -479,7 +479,7 @@
                                 grecaptcha.reset();
                             }
 
-                            swal({
+                            new swal({
                                 html: res.error,
                                 type: 'warning',
                                 showCancelButton: false,
@@ -588,6 +588,7 @@
                     case 'confirm_password':
                         var hasRepeat = $(item).data('repeat');
                         var strength = $(item).data('strength');
+                        var min_length = $(item).data('minimum-length');
 
                         val = $.trim( $(item).val() );
 
@@ -595,6 +596,15 @@
                             error = true;
                             error_type = 'required';
                             WP_User_Frontend.markError( item, error_type );
+
+                            break;
+                        }
+
+                        if ( val.length < min_length ) {
+                            error = true;
+                            error_type = 'custom';
+                            error_message = 'Minimum ' + min_length + ' character is required';
+                            WP_User_Frontend.markError(item, error_type, error_message);
 
                             break;
                         }
@@ -607,6 +617,8 @@
                                 error_type = 'mismatch';
 
                                 WP_User_Frontend.markError( repeatItem, error_type );
+
+                                break;
                             }
                         }
 

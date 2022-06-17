@@ -290,6 +290,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 'post_author'    => get_current_user_id(),
                 'comment_status' => get_option( 'default_comment_status' ),
                 'url'            => add_query_arg( 'preview', 'true', get_permalink( $post_id ) ),
+                'message'        => __( 'Post Saved', 'wp-user-frontend' ),
             ]
         );
 

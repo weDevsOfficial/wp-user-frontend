@@ -3,9 +3,9 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** Forms, registration, profile-builder, login, membership, frontend-post  
 **Requires at least:** 4.0  
-**Tested up to:** 5.9.2  
+**Tested up to:** 6.0  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.5.27  
+**Stable tag:** 3.5.28  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -262,6 +262,12 @@ This page is for the purpose of editing posts. You shouldn't access this page di
 First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
+## Changelog ##
+### v3.5.28 (17 Jun, 2022) ###
+
+* Tweak - Updated compatibility with the latest version of WordPress 6.0
+* Tweak - Improved some backend implementations
+
 ### v3.5.27 (15 Mar, 2022) ###
 
 * Enhancement - Email template enhanced for after activation
@@ -292,7 +298,6 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 * Fix - Tag search security Vulnerability handled
 * Fix - Multi dropdown field error handled
 
-## Changelog ##
 ### v3.5.23 (18 Nov, 2021) ###
 
 * Fix - Security Vulnerability fixed

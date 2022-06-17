@@ -1,6 +1,20 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.28',
+        'released' => '2022-08-17',
+        'changes'  => [
+            [
+                'title' => __( 'Updated compatibility with the latest version of WordPress 6.0', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => __( 'Improved some backend implementations', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.27',
         'released' => '2022-03-09',
         'changes'  => [

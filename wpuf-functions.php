@@ -3369,11 +3369,9 @@ function get_formatted_mail_body( $message, $subject ) {
 
         if ( empty( $header ) ) {
             ob_start();
-
-            wpuf_load_pro_template(
-                'email/header.php',
-                [ 'subject' => $subject ]
-            );
+            if ( function_exists( 'wpuf_load_pro_template' ) ) {
+                wpuf_load_pro_template( 'email/header.php', [ 'subject' => $subject ] );
+            }
 
             $header = ob_get_clean();
         }
@@ -3381,20 +3379,18 @@ function get_formatted_mail_body( $message, $subject ) {
         if ( empty( $footer ) ) {
             ob_start();
 
-            wpuf_load_pro_template(
-                'email/footer.php',
-                []
-            );
+            if ( function_exists( 'wpuf_load_pro_template' ) ) {
+                wpuf_load_pro_template( 'email/footer.php', [] );
+            }
 
             $footer = ob_get_clean();
         }
 
         ob_start();
 
-        wpuf_load_pro_template(
-            'email/style.php',
-            []
-        );
+        if ( function_exists( 'wpuf_load_pro_template' ) ) {
+            wpuf_load_pro_template( 'email/style.php', [] );
+        }
 
         $css = apply_filters( 'wpuf_email_style', ob_get_clean() );
 
@@ -3851,7 +3847,7 @@ function wpuf_show_form_limit_message( $form_id ) {
     $post_to_check  = get_post( get_the_ID() );
     $is_edit_page   = false;
 
-    if ( stripos( $post_to_check->post_content, '[wpuf_edit' ) !== false ) {
+    if ( $post_to_check && stripos( $post_to_check->post_content, '[wpuf_edit' ) !== false ) {
         $is_edit_page = true;
     }
 

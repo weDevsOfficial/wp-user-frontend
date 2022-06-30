@@ -43,7 +43,7 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
                     <label <?php echo esc_attr( $field_settings['inline'] ) == 'yes' ? 'class="wpuf-checkbox-inline"' : 'class="wpuf-checkbox-block"'; ?>>
                         <input
                             type="checkbox"
-                            class="<?php echo 'wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>"
+                            class="<?php echo esc_attr( sprintf( 'wpuf_%s_%d', $field_settings['name'], $form_id ) ); ?>"
                             name="<?php echo esc_attr( $field_settings['name'] ); ?>[]"
                             value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?>
                             data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"

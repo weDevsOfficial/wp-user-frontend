@@ -4,8 +4,8 @@ class WPUF_Admin_Form_Handler {
 
     public function __construct() {
         // post forms list table
-        add_action( "wpuf_load_post_forms", [ $this, 'post_forms_actions' ] );
-        add_action( "wpuf_load_profile_forms", [ $this, 'profile_forms_actions' ] );
+        add_action( 'wpuf_load_post_forms', [ $this, 'post_forms_actions' ] );
+        add_action( 'wpuf_load_profile_forms', [ $this, 'profile_forms_actions' ] );
         add_action( 'admin_notices', [ $this, 'admin_notices' ] );
         add_action( 'removable_query_args', [ $this, 'removable_query_args' ] );
     }

@@ -137,6 +137,11 @@ class WPUF_Admin_Settings {
      * Fire when post form submenu registered
      */
     public function post_form_menu_action() {
+        /**
+         * Fires before a single post form page is loaded
+         *
+         * @since 3.5.27
+         */
         do_action( 'wpuf_load_post_forms' );
     }
 

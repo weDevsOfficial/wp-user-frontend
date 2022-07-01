@@ -769,8 +769,10 @@
             });
 
             if ( errors.length ) {
-                for (var err of errors) {
-                    WP_User_Frontend.markError( err.container, err.error_type );
+                var i;
+                var length = errors.length;
+                for ( i = 0; i < length; i++ ) {
+                    WP_User_Frontend.markError( errors[i].container, errors[i].error_type );
                 }
 
                 WP_User_Frontend.addErrorNotice( self,'end' );

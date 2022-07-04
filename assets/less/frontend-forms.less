@@ -552,7 +552,7 @@ ul.wpuf-form {
                 }
             }
 
-            table.wpuf-repeatable-field {
+            .wpuf-repeatable-field {
                 border-collapse: collapse;
 
                 & * {
@@ -2049,6 +2049,38 @@ ul.wpuf-form{
                 }
             }
         }
+    }
+    .wpuf-repeatable-field{
+        display: flex;
+
+        &.has-columns-1{
+            .wpuf-column{
+                .wpuf-column-inner-fields{
+                    width: 90%;
+                }
+            }
+        }
+
+        &.has-columns-2{
+            .wpuf-column{
+                .wpuf-column-inner-fields{
+                    width: 45%;
+                }
+            }
+        }
+
+        &.has-columns-3{
+            .wpuf-column{
+                .wpuf-column-inner-fields{
+                    width: 30%;
+                }
+            }
+        }
+
+        .wpuf-column-field-inner-columns{
+            width: 90%;
+        }
+
     }
 }
 

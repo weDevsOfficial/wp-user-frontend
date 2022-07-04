@@ -28,7 +28,7 @@
                     }
 
                     // check in column field
-                    if (form_field.template === 'column_field' ) {
+                    if (form_field.template.match(/^(column|repeat)_field$/)) {
                         var innerColumnFields = form_field.inner_fields;
 
                         for (const columnFields in innerColumnFields) {

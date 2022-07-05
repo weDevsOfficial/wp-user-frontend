@@ -1728,8 +1728,32 @@ function wpuf_get_form_fields( $form_id ) {
         }
 
         // Add 'multiple' key for input_type:repeat
-        if ( 'repeat' === $field['input_type'] && ! isset( $field['multiple'] ) ) {
-            $field['multiple'] = '';
+        if ( 'repeat' === $field['input_type'] ) {
+            if ( ! isset( $field['multiple'] ) ) {
+                $field['multiple'] = '';
+            }
+
+            // if old repeat field format
+            if ( empty( $field['inner_fields'] ) ) {
+                $field['template'] = 'text_field';
+
+                $field['inner_fields']['column-1'] = [ $field ];
+                $field['inner_fields']['column-2'] = [];
+                $field['inner_fields']['column-3'] = [];
+
+                $field['template']     = 'repeat_field';
+                $field['columns']      = 1;
+                $field['min_column']   = 1;
+                $field['max_column']   = 3;
+                $field['column_space'] = 5;
+            }
+
+            // if old repeat field format
+            if ( empty( $field['inner_columns_size'] ) ) {
+                $field['inner_columns_size']['column-1'] = '100%';
+                $field['inner_columns_size']['column-2'] = '100%';
+                $field['inner_columns_size']['column-3'] = '100%';
+            }
         }
 
         if ( 'recaptcha' === $field['input_type'] ) {

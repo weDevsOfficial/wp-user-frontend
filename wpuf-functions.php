@@ -1735,17 +1735,26 @@ function wpuf_get_form_fields( $form_id ) {
 
             // if old repeat field format
             if ( empty( $field['inner_fields'] ) ) {
+                $old_id            = $field['id'];
+                $old_meta          = $field['name'];
+                $old_label         = $field['label'];
                 $field['template'] = 'text_field';
 
+                // set the new compatible values
+                $field['id'] = wpuf_form_field_id_generator();
+                $field['label'] = '';
                 $field['inner_fields']['column-1'] = [ $field ];
                 $field['inner_fields']['column-2'] = [];
                 $field['inner_fields']['column-3'] = [];
-
                 $field['template']     = 'repeat_field';
                 $field['columns']      = 1;
                 $field['min_column']   = 1;
                 $field['max_column']   = 3;
                 $field['column_space'] = 5;
+
+                $field['id']    = $old_id;
+                $field['label'] = $old_label;
+                $field['label'] = $old_label;
             }
 
             // if old repeat field format
@@ -1769,6 +1778,18 @@ function wpuf_get_form_fields( $form_id ) {
 
 add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );
 add_action( 'wp_ajax_nopriv_wpuf_get_child_cat', 'wpuf_get_child_cats' );
+
+/*
+ * Generates a random integer for WPUF form field id
+ * like wpuf-form-builder-mixins.js
+ *
+ * @since WPUF
+ *
+ * @return int
+ */
+function wpuf_form_field_id_generator( $min = 999999, $max = 9999000001 ) {
+    return rand( $min, $max );
+}
 
 /**
  * Returns child category dropdown on ajax request

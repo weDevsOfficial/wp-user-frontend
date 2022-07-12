@@ -4384,3 +4384,47 @@ function wpuf_get_image_sizes_array( $size = '' ) {
     }
     return $sizes;
 }
+
+/**
+ * Helper function for logging in wp-content/uploads/wpuf-logs/ directory
+ *
+ * Description of levels:
+ * 'emergency': System is unusable.
+ * 'alert': Action must be taken immediately.
+ * 'critical': Critical conditions.
+ * 'error': Error conditions.
+ * 'warning': Warning conditions.
+ * 'notice': Normal but significant condition.
+ * 'info': Informational messages.
+ * 'debug': Debug-level messages.
+ *
+ * @since WPUF
+ *
+ * @param $message string               The message to log
+ * @param $level   string               The log level. Default INFO
+ * @param $log_file string|resource     Optional parameter to pass the log file.
+ *                                      Log will be written in this file instead of the default log file.
+ *
+ * @return bool
+ */
+function wpuf_log( $message, $level = 'info', $log_file = null ) {
+    $logger = new WPUF_File_Logger( $level, $log_file );
+
+    return $logger->log( $message, $level, $log_file );
+}
+
+/**
+ * Trigger logging cleanup using the logging class.
+ *
+ * @since WPUF
+ *
+ * @return void
+ */
+function wpuf_cleanup_logs() {
+    $logger = new WPUF_File_Logger();
+
+    if ( is_callable( [ $logger, 'clear_expired_logs' ] ) ) {
+        $logger->clear_expired_logs();
+    }
+}
+add_action( 'wpuf_cleanup_logs', 'wpuf_cleanup_logs' );

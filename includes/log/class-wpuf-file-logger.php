@@ -269,6 +269,10 @@ class WPUF_File_Logger {
         // create the log directory if not exists
         if ( ! is_dir( $this->log_directory ) ) {
             wp_mkdir_p( $this->log_directory );
+            $index_file = $this->log_directory . '/index.php';
+            // create a blank index file
+            $index_file = @fopen( $index_file, 'a' ); // @codingStandardsIgnoreLine.
+            fclose( $index_file ); // @codingStandardsIgnoreLine.
         }
 
         // open or create the logfile

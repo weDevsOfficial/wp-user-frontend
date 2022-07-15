@@ -4408,7 +4408,12 @@ function wpuf_get_image_sizes_array( $size = '' ) {
  * @return bool
  */
 function wpuf_log( $message, $level = 'info', $log_file = null ) {
-    $logger = new WPUF_File_Logger( $level, $log_file );
+    // if in debug mode, no need to log
+    if ( defined( WP_DEBUG ) && WP_DEBUG ) {
+        return false;
+    }
+
+    $logger = WPUF_File_Logger::instance();
 
     return $logger->log( $message, $level, $log_file );
 }

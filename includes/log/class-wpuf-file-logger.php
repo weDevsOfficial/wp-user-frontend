@@ -15,6 +15,14 @@ defined( 'ABSPATH' ) || exit;
 class WPUF_File_Logger {
 
     /**
+     * The single instance of the class.
+     *
+     * @var WPUF_File_Logger
+     * @since WPUF
+     */
+    protected static $_instance = null;
+
+    /**
      * Default log format
      */
     const DEFAULT_LOG_FORMAT = "[%datetime%] %level%: %message%\n";
@@ -114,24 +122,26 @@ class WPUF_File_Logger {
      *
      * @return void
      */
-    public function __construct( $level = null, $file = null ) {
-        if ( null !== $level ) {
-            $this->level = $level;
-        } else {
-            $this->level = self::INFO;
-        }
-
-        if ( null !== $file ) {
-            $this->file = $file;
-        } else {
-            $this->file = $this->get_log_file_name();
-        }
-
-        $upload_dir = wp_get_upload_dir();
-
+    public function __construct() {
+        $upload_dir          = wp_get_upload_dir();
         $this->log_directory = apply_filters( 'wpuf_log_directory', $upload_dir['basedir'] . '/wpuf-logs' );
 
-        add_action( 'plugins_loaded', [ $this, 'write_cached_logs' ] );
+        add_action( 'init', [ $this, 'write_cached_logs' ] );
+    }
+
+    /**
+     * Main WPUF_File_Logger Instance.
+     * Ensures only one instance of this class is loaded or can be loaded.
+     *
+     * @since WPUF
+     *
+     * @return WPUF_File_Logger - Main instance.
+     */
+    public static function instance() {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
     }
 
     /**
@@ -144,10 +154,10 @@ class WPUF_File_Logger {
      */
     public function get_log_file_name() {
         if ( function_exists( 'wp_hash' ) ) {
-            $date_suffix = date( 'Y-M-d', time() );
-            $hash_suffix = wp_hash( $this->level );
-
-            $log_file_name = apply_filters( 'wpuf_log_file_name', sanitize_file_name( implode( '-', [ $this->level, $date_suffix, $hash_suffix ] ) . '.log' ) );
+            $date_suffix    = date( 'Y-m-d', time() );
+            $hash_suffix    = wp_hash( $this->level );
+            $sanitized_name = sanitize_file_name( implode( '-', [ $this->level, $date_suffix, $hash_suffix ] ) . '.log' );
+            $log_file_name  = apply_filters( 'wpuf_log_file_name', $sanitized_name );
             return $log_file_name;
         } else {
             _doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'wp-user-frontend' ), WPUF_VERSION );
@@ -168,10 +178,15 @@ class WPUF_File_Logger {
      * @return bool
      */
     public function log( $message, $level = self::INFO, $log_file = null ) {
+        $this->level = $level;
+
         if ( null !== $log_file ) {
             $this->file = $log_file;
-            $this->open();
+        } else {
+            $this->file = $this->get_log_file_name();
         }
+
+        $this->open();
 
         $message = $this->format_message(
             [

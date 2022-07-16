@@ -160,7 +160,7 @@ class WPUF_File_Logger {
             $log_file_name  = apply_filters( 'wpuf_log_file_name', $sanitized_name );
             return $log_file_name;
         } else {
-            _doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'wp-user-frontend' ), WPUF_VERSION );
+            _doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'wp-user-frontend' ), '3.5.29' );
             return false;
         }
     }

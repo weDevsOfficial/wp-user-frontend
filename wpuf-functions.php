@@ -4408,6 +4408,12 @@ function wpuf_get_image_sizes_array( $size = '' ) {
  * @return bool
  */
 function wpuf_log( $message, $level = 'info', $log_file = null ) {
+    // return if function called early
+    if ( ! function_exists( 'wp_hash' ) ) {
+        _doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'wp-user-frontend' ), '3.5.29' );
+        return false;
+    }
+
     // if in debug mode, no need to log
     if ( defined( WP_DEBUG ) && WP_DEBUG ) {
         return false;

@@ -711,7 +711,7 @@ abstract class WPUF_Field_Contract {
      * @param int   $form_id
      */
     public function field_print_label( $field, $form_id = 0 ) {
-        if ( is_admin() ) { ?>
+        if ( is_admin() && ! \Elementor\Plugin::$instance->editor->is_edit_mode() ) { ?>
             <tr> <th><strong> <?php echo wp_kses_post( $field['label'] . $this->required_mark( $field ) ); ?> </strong></th> <td>
         <?php } else { ?>
 

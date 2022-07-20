@@ -33,7 +33,7 @@ Vue.component('field-options', {
                     return self.$store.state.form_fields[i];
                 }
 
-                // check if the editing field belong to column field
+                // check if the editing field belong to column field or repeat field
                 if (self.$store.state.form_fields[i].template.match(/^(column|repeat)_field$/)) {
                     var innerColumnFields = self.$store.state.form_fields[i].inner_fields;
 

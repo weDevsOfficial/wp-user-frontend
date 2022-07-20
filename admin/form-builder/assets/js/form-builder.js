@@ -129,8 +129,8 @@
 
                     }
 
-                    // check if the editing field belong to a column field
-                    if (state.form_fields[i].template === 'column_field') {
+                    // check if the editing field belong to a column field or repeat field
+                    if (state.form_fields[i].template.match(/^(column|repeat)_field$/)) {
                         var innerColumnFields = state.form_fields[i].inner_fields;
 
                         for (const columnFields in innerColumnFields) {

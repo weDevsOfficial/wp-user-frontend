@@ -734,38 +734,26 @@ class WPUF_Frontend_Render_Form {
                     break;
 
                 case 'repeat':
-                    $repeater_value = wp_unslash( $_POST[ $value['name'] ] ); // WPCS: sanitization ok.
+                    // loop for each columns. we have 3 columns for repeated fields
+                    for ( $i = 1; $i <= 3; $i++ ) {
+                        $index = 0;
+                        if ( ! empty( $value['inner_fields'] ) && ! empty( $value['inner_fields'][ 'column-' . $i ] ) ) {
+                            foreach ( $value['inner_fields'][ 'column-' . $i ] as $column_value ) {
+                                $meta_key      = ! empty( $column_value['name'] ) ? $column_value['name'] : '';
+                                $formatted_key = $value['name'] . '_' . $index . '_' . $meta_key;
 
-                    // if it is a multi column repeat field
-                    if ( isset( $value['multiple'] ) && $value['multiple'] == 'true' ) {
+                                if ( '' !== $meta_key ) {
+                                    while ( isset( $_POST[ $formatted_key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+                                        if ( ! empty( $_POST[ $formatted_key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+                                            $meta_key_value[ $formatted_key ] = wp_unslash( $_POST[ $formatted_key ] );
+                                        }
 
-                        // if there's any items in the array, process it
-                        if ( $repeater_value ) {
-                            $ref_arr = array();
-                            $cols    = count( $value['columns'] );
-                            $first   = array_shift( array_values( $repeater_value ) ); //first element
-                            $rows    = count( $first );
-
-                            // loop through columns
-                            for ( $i = 0; $i < $rows; $i++ ) {
-
-                                // loop through the rows and store in a temp array
-                                $temp = array();
-                                for ( $j = 0; $j < $cols; $j++ ) {
-                                    $temp[] = $repeater_value[ $j ][ $i ];
+                                        $index++;
+                                        $formatted_key = $value['name'] . '_' . $index . '_' . $meta_key;
+                                    }
                                 }
-
-                                // store all fields in a row with self::$separator separated
-                                $ref_arr[] = implode( self::$separator, $temp );
-                            }
-
-                            // now, if we found anything in $ref_arr, store to $multi_repeated
-                            if ( $ref_arr ) {
-                                $multi_repeated[ $value['name'] ] = array_slice( $ref_arr, 0, $rows );
                             }
                         }
-                    } else {
-                        $meta_key_value[ $value['name'] ] = implode( self::$separator, $repeater_value );
                     }
 
                     break;

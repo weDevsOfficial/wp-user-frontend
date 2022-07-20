@@ -743,8 +743,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             delete_post_meta( $post_id, $repeat_key );
 
             // now add them
-            foreach ( $repeat_value as $repeat_field ) {
-                add_post_meta( $post_id, $repeat_key, $repeat_field );
+            foreach ( $repeat_value as $key => $repeat_field ) {
+                add_post_meta( $post_id, $key, $repeat_field );
             }
         }
 

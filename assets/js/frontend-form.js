@@ -361,15 +361,19 @@
         removeRepeatField: function () {
             //check if it's the only item
             var parent = $( this ).closest( '.wpuf-column-field-inner-columns.column-repeat' );
-            var items = parent.siblings().addBack().length;
+            var allItems = parent.siblings().addBack();
+            var itemsLength = allItems.length;
 
-            var row_parent = $( this ).parents( '.wpuf-field-columns' );
+            var fieldIndex = $( allItems ).index( $( this ).closest( '.wpuf-column-field-inner-columns.column-repeat' ) );
 
-            if( items > 1 ) {
+            if ( itemsLength > 1 ) {
                 parent.remove();
             }
 
-            WP_User_Frontend.calculateFieldsName( row_parent );
+            // calculate only if the removed item is not the last item
+            if ( fieldIndex + 1 !== itemsLength ) {
+                WP_User_Frontend.calculateFieldsName( parent );
+            }
         },
 
         calculateFieldsName: function( parentItem ) {
@@ -379,17 +383,17 @@
             var field_classes = [];
             var fields_selector = '.wpuf-column input, .wpuf-column textarea, .wpuf-column select, .wpuf-column .wpuf-rich-validation';
 
-            $(field_rows[0]).find(fields_selector).each(function (i, item) {
-                field_names.push($(item).attr('name').split('_0_'));
-                field_ids.push($(item).attr('id').split('_0_'));
-                field_classes.push($(item).attr('class').split('_0_'));
+            $( field_rows[0] ).find( fields_selector ).each( function ( i, item ) {
+                field_names.push( $( item ).attr( 'name' ).split( '_0_' ) );
+                field_ids.push( $( item ).attr( 'id' ).split( '_0_' ) );
+                field_classes.push( $( item ).attr( 'class' ).split( '_0_' ) );
             });
 
-            field_rows.each(function(i, row){
-                $(row).find(fields_selector).each(function(y, field) {
-                    $(field).attr('name', field_names[y][0]+'_'+i+'_'+field_names[y][1]);
-                    $(field).attr('id', field_ids[y][0]+'_'+i+'_'+field_ids[y][1]);
-                    $(field).attr('class', field_classes[y][0]+'_'+i+'_'+field_classes[y][1]);
+            field_rows.each( function( i, row ) {
+                $( row ).find( fields_selector ).each( function( y, field ) {
+                    $( field ).attr( 'name', field_names[y][0] + '_' + i + '_' + field_names[y][1] );
+                    $( field ).attr( 'id', field_ids[y][0] + '_' + i + '_' + field_ids[y][1] );
+                    $( field ).attr( 'class', field_classes[y][0] + '_' + i + '_' + field_classes[y][1] );
                 });
             });
         },

@@ -704,7 +704,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     public static function update_post_meta( $meta_vars, $post_id ) {
         // check_ajax_referer( 'wpuf_form_add' );
         // prepare the meta vars
-        list( $meta_key_value, $multi_repeated, $files ) = self::prepare_meta_fields( $meta_vars );
+        list( $meta_key_value, $repeat_fields, $files ) = self::prepare_meta_fields( $meta_vars );
         // set featured image if there's any
 
         // @codingStandardsIgnoreStart
@@ -732,20 +732,45 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
+        // delete previous repeat values
+        if ( ! empty( $repeat_fields ) ) {
+            $row_num   = get_post_meta( $post_id, $repeat_fields['repeat_meta'], true );
+
+            if ( $row_num ) {
+                $sub_fields = ! empty( $repeat_fields['sub_fields'] ) ? $repeat_fields['sub_fields'] : [];
+                for ( $i = 0; $i <= $row_num; $i++ ) {
+                    foreach ( $sub_fields as $value ) {
+                        $field_meta = $repeat_fields['repeat_meta'] . '_' . $i . '_' . $value;
+                        delete_post_meta( $post_id, $field_meta );
+                        delete_post_meta( $post_id, '_' . $field_meta );
+                    }
+                }
+            }
+        }
+
+        // insert acf compatible data
+        if ( ! empty( $repeat_fields ) ) {
+            if ( ! empty( $meta_key_value[ $repeat_fields['repeat_meta'] ] ) ) {
+                $row_number = $meta_key_value[ $repeat_fields['repeat_meta'] ];
+
+                if ( ! empty( $row_number ) ) {
+                    $sub_fields = ! empty( $repeat_fields['sub_fields'] ) ? $repeat_fields['sub_fields'] : [];
+
+                    for ( $i = 0; $i < $row_num; $i++ ) {
+                        foreach ( $sub_fields as $value ) {
+                            $field_meta = $repeat_fields['repeat_meta'] . '_' . $i . '_' . $value;
+                            update_post_meta( $post_id, '_' . $field_meta, uniqid( 'field_' ) );
+                        }
+                    }
+                }
+            }
+        }
+
+
+
         // save all custom fields
         foreach ( $meta_key_value as $meta_key => $meta_value ) {
             update_post_meta( $post_id, $meta_key, $meta_value );
-        }
-
-        // save any multicolumn repeatable fields
-        foreach ( $multi_repeated as $repeat_key => $repeat_value ) {
-            // first, delete any previous repeatable fields
-            delete_post_meta( $post_id, $repeat_key );
-
-            // now add them
-            foreach ( $repeat_value as $key => $repeat_field ) {
-                add_post_meta( $post_id, $key, $repeat_field );
-            }
         }
 
         // save any files attached

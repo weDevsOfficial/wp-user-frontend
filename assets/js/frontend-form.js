@@ -356,6 +356,7 @@
             div.after( clone );
 
             WP_User_Frontend.calculateFieldsName( $( this ).parents( '.wpuf-field-columns' ) );
+            WP_User_Frontend.setRowNumber( $( this ).closest( '.wpuf-field-columns' ) );
         },
 
         removeRepeatField: function () {
@@ -367,6 +368,7 @@
             var fieldIndex = $( allItems ).index( $( this ).closest( '.wpuf-column-field-inner-columns.column-repeat' ) );
 
             if ( itemsLength > 1 ) {
+                WP_User_Frontend.setRowNumber( $( parent ).closest( '.wpuf-field-columns' ), itemsLength - 1 );
                 parent.remove();
             }
 
@@ -374,6 +376,14 @@
             if ( fieldIndex + 1 !== itemsLength ) {
                 WP_User_Frontend.calculateFieldsName( parent );
             }
+        },
+
+        setRowNumber: function ( parent, length ) {
+            if ( ! length ) {
+                length = $( parent ).children().length;
+            }
+
+            $( parent ).parent( '.wpuf-fields' ).find( 'input.repeat_row_numbers' ).val( length );
         },
 
         calculateFieldsName: function( parentItem ) {

@@ -277,60 +277,16 @@ class WPUF_ACF_Compatibility {
      * @param $meta_vars
      */
     public function update_acf_field_meta( $post_id, $form_id, $form_settings, $meta_vars ) {
-        if ( ! $this->plugin_exists() ) {
+        if ( ! $this->plugin_exists() ){
             return;
         }
 
         $groups = acf_get_field_groups( [ 'post_type' => $form_settings['post_type'] ] );
         $existing_meta = get_post_meta( $post_id );
 
-        $repeat_field_metas = [];
-
-        foreach ( $meta_vars as $value ) {
-            // if this is a repeat field
-            if ( 'repeat_field' === $value['template'] && ! empty( $value['inner_fields'] ) ) {
-                $field_count = 0;
-                // loop for each columns. we have 3 columns for repeated fields
-                for ( $i = 1; $i <= 3; $i++ ) {
-                    if ( ! empty( $value['inner_fields'][ 'column-' . $i ] ) ) {
-                        foreach ( $value['inner_fields'][ 'column-' . $i ] as $column_value ) {
-                            // get the meta key for the current inner field
-                            $meta_key = ! empty( $column_value['name'] ) ? $column_value['name'] : '';
-                            if ( '' !== $meta_key ) {
-                                // get the inner field value by matching the meta key
-                                $inner_field_values = ! empty( $_POST[ $meta_key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $meta_key ] ) ) : []; // phpcs:ignore WordPress.Security.NonceVerification
-                                foreach ( $inner_field_values as $index => $inner_value ) {
-                                    $field_key                       = '_' . $value['name'] . '_' . $index . '_' . $meta_key;
-                                    $repeat_field_metas[ $index ][ $meta_key ] = $field_key;
-                                }
-                            }
-
-                            $field_count++;
-                        }
-                    }
-                }
-
-                update_post_meta( $post_id, $value['name'], $field_count );
-                // save repeat field data as ACF format
-                update_post_meta( $post_id, '_' . $value['name'], uniqid( 'field_' ) );
-            }
-        }
-
-        $acf_repeat_fields = [];
         foreach ( acf_get_fields( $groups ) as $group ) {
             $meta_key = '_' . $group['name'];
             $name = $group['name'];
-
-            if ( 'repeater' === $group['type'] ) {
-                $meta_key = 'repeater';
-
-                if ( ! empty( $group['sub_fields'] ) ) {
-                    foreach ( $group['sub_fields'] as $sub_field ) {
-                        $meta_key                       = ! empty( $sub_field['name'] ) ? $sub_field['name'] : '';
-                        $acf_repeat_fields[ $meta_key ] = ! empty( $sub_field['key'] ) ? $sub_field['key'] : '';
-                    }
-                }
-            }
 
             //check key also in meta vars
             $meta_keys = array_map(
@@ -341,15 +297,6 @@ class WPUF_ACF_Compatibility {
 
             if ( ! array_key_exists( $meta_key, $existing_meta ) && in_array( $name, $meta_keys, true ) ) {
                 update_post_meta( $post_id, $meta_key, $group['key'] );
-            }
-        }
-
-        foreach ( $repeat_field_metas as $fields ) {
-            foreach ( $fields as $key => $field ) {
-                $acf_id = ! empty( $acf_repeat_fields[ $key ] ) ? $acf_repeat_fields[ $key ] : '';
-                if ( '' !== $acf_id ) {
-                    update_post_meta( $post_id, $field, $acf_id );
-                }
             }
         }
     }

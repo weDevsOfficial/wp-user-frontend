@@ -699,7 +699,7 @@ class WPUF_Frontend_Render_Form {
         $post_data = wp_unslash( $_POST ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
         $files          = [];
         $meta_key_value = [];
-        $multi_repeated = []; //multi repeated fields will in sotre duplicated meta key
+        $repeat_fields  = []; // repeat field and sub-fields data
 
         foreach ( $meta_vars as $key => $value ) {
             $wpuf_field = wpuf()->fields->get_field( $value['template'] );
@@ -734,20 +734,20 @@ class WPUF_Frontend_Render_Form {
                     break;
 
                 case 'repeat':
+                    $row_count_key = $value['name'] . '_row_num';
+                    $row_number    = ! empty( $_POST[ $row_count_key ] ) ? absint( wp_unslash( $_POST[ $row_count_key ] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification
+
                     // loop for each columns. we have 3 columns for repeated fields
                     for ( $i = 1; $i <= 3; $i++ ) {
-                        $index = 0;
                         if ( ! empty( $value['inner_fields'] ) && ! empty( $value['inner_fields'][ 'column-' . $i ] ) ) {
                             foreach ( $value['inner_fields'][ 'column-' . $i ] as $column_value ) {
+                                $index         = 0;
                                 $meta_key      = ! empty( $column_value['name'] ) ? $column_value['name'] : '';
                                 $formatted_key = $value['name'] . '_' . $index . '_' . $meta_key;
-
                                 if ( '' !== $meta_key ) {
+                                    $repeat_fields['sub_fields'][] = $meta_key;
                                     while ( isset( $_POST[ $formatted_key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-                                        if ( ! empty( $_POST[ $formatted_key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-                                            $meta_key_value[ $formatted_key ] = wp_unslash( $_POST[ $formatted_key ] );
-                                        }
-
+                                        $meta_key_value[ $formatted_key ] = wp_unslash( $_POST[ $formatted_key ] );
                                         $index++;
                                         $formatted_key = $value['name'] . '_' . $index . '_' . $meta_key;
                                     }
@@ -755,6 +755,8 @@ class WPUF_Frontend_Render_Form {
                             }
                         }
                     }
+                    $meta_key_value[ $value['name'] ] = $row_number;
+                    $repeat_fields['repeat_meta']     = $value['name'];
 
                     break;
 
@@ -824,7 +826,7 @@ class WPUF_Frontend_Render_Form {
                     break;
             }
         } //end foreach
-        return [ $meta_key_value, $multi_repeated, $files ];
+        return [ $meta_key_value, $repeat_fields, $files ];
     }
 
     /**

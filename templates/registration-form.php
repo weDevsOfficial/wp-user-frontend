@@ -73,7 +73,6 @@
 
             <li class="wpuf-submit">
                 <input type="submit" name="wp-submit" id="wp-submit" value="<?php echo esc_attr( 'Register', 'wp-user-frontend' ); ?>" />
-                <input type="hidden" name="urhidden" value=" <?php echo esc_attr( $userrole ); ?>" />
                 <input type="hidden" name="redirect_to" value="<?php echo esc_attr( wpuf()->registration->get_posted_value( 'redirect_to' ) ); ?>" />
                 <input type="hidden" name="wpuf_registration" value="true" />
                 <input type="hidden" name="action" value="registration" />

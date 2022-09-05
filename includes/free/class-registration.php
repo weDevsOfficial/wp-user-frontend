@@ -131,15 +131,6 @@ class WPUF_Registration {
      * @return string
      */
     public function registration_form( $atts ) {
-        $atts = shortcode_atts(
-            [
-                'role' => '',
-            ], $atts
-        );
-        $userrole = $atts['role'];
-
-        $roleencoded = wpuf_encryption( $userrole );
-
         $reg_page = $this->get_registration_url();
 
         if ( false === $reg_page ) {
@@ -165,7 +156,6 @@ class WPUF_Registration {
 
             $args = [
                 'action_url' => add_query_arg( $queries, $reg_page ),
-                'userrole'   => $roleencoded,
             ];
 
             wpuf_load_template( 'registration-form.php', $args );
@@ -196,7 +186,6 @@ class WPUF_Registration {
             $pwd1      = isset( $_POST['pwd1'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd1'] ) ) : '';
             $pwd2      = isset( $_POST['pwd2'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd2'] ) ) : '';
             $log       = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
-            $urhidden  = isset( $_POST['urhidden'] ) ? sanitize_text_field( wp_unslash( $_POST['urhidden'] ) ) : '';
 
             $validation_error = apply_filters( 'wpuf_process_registration_errors', $validation_error, $reg_fname, $reg_lname, $reg_email, $log, $pwd1, $pwd2 );
 
@@ -270,16 +259,10 @@ class WPUF_Registration {
                 $userdata['user_login'] = $log;
             }
 
-            $dec_role = wpuf_decryption( $urhidden );
-
             $userdata['first_name'] = $reg_fname;
             $userdata['last_name']  = $reg_lname;
             $userdata['user_email'] = $reg_email;
             $userdata['user_pass']  = $pwd1;
-
-            if ( get_role( $dec_role ) ) {
-                $userdata['role'] = $dec_role;
-            }
 
             $user = wp_insert_user( $userdata );
 

@@ -3114,10 +3114,12 @@ add_filter( 'display_post_states', 'wpuf_admin_page_states', 10, 2 );
  * Encryption function for various usage
  *
  * @since 2.5.8
+ * @since WPUF param $nonce added
  *
  * @param string $id
+ * @param string $nonce
  *
- * @return string $encoded_id
+ * @return string|bool encoded string or false if encryption failed
  */
 function wpuf_encryption( $id, $nonce = null ) {
     $auth_keys = WPUF_Encryption_Helper::get_encryption_auth_keys();
@@ -3126,7 +3128,7 @@ function wpuf_encryption( $id, $nonce = null ) {
 
     if ( function_exists( 'sodium_crypto_secretbox' ) ) {
         try {
-            return sodium_crypto_secretbox( $id, $secret_iv, $secret_key );
+            return base64_encode( sodium_crypto_secretbox( $id, $secret_iv, $secret_key ) );
         } catch ( Exception $e ) {
             delete_option( 'wpuf_auth_keys' );
             return false;
@@ -3143,8 +3145,10 @@ function wpuf_encryption( $id, $nonce = null ) {
  * Decryption function for various usage
  *
  * @since 2.5.8
+ * @since WPUF param $nonce added
  *
  * @param string $id
+ * @param string $nonce
  *
  * @return string|bool decrypted string or false if decryption failed
  */
@@ -3161,7 +3165,7 @@ function wpuf_decryption( $id, $nonce = null ) {
     // should we use sodium_crypto_secretbox_open
     if ( function_exists( 'sodium_crypto_secretbox_open') ) {
         try {
-            return sodium_crypto_secretbox_open( $id, $secret_iv, $secret_key );
+            return sodium_crypto_secretbox_open( base64_decode( $id ), $secret_iv, $secret_key );
         } catch ( Exception $e ) {
             delete_option( 'wpuf_auth_keys' );
             return false;

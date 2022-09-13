@@ -139,7 +139,7 @@ class WPUF_Registration {
         $userrole = $atts['role'];
 
         $user_nonce  = base64_encode( random_bytes( WPUF_Encryption_Helper::get_encryption_nonce_length() ) );
-        $roleencoded = base64_encode( wpuf_encryption( $userrole, $user_nonce ) );
+        $roleencoded = wpuf_encryption( $userrole, $user_nonce );
 
         $reg_page = $this->get_registration_url();
 
@@ -274,8 +274,7 @@ class WPUF_Registration {
                 $userdata['user_login'] = $log;
             }
 
-            $dec_role = base64_decode( wpuf_decryption( $urhidden, $user_nonce ) );
-
+            $dec_role               = wpuf_decryption( $urhidden, $user_nonce );
             $userdata['first_name'] = $reg_fname;
             $userdata['last_name']  = $reg_lname;
             $userdata['user_email'] = $reg_email;

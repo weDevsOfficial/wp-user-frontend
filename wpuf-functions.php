@@ -3122,7 +3122,7 @@ add_filter( 'display_post_states', 'wpuf_admin_page_states', 10, 2 );
  * @return string|bool encoded string or false if encryption failed
  */
 function wpuf_encryption( $id, $nonce = null ) {
-    $auth_keys = WPUF_Encryption_Helper::get_encryption_auth_keys();
+    $auth_keys  = WPUF_Encryption_Helper::get_encryption_auth_keys();
     $secret_key = $auth_keys['auth_key'];
     $secret_iv  = ! empty( $nonce ) ? base64_decode( $nonce ) : $auth_keys['auth_salt'];
 
@@ -3136,7 +3136,7 @@ function wpuf_encryption( $id, $nonce = null ) {
     }
 
     $ciphertext_raw = openssl_encrypt( $id, WPUF_Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
-    $hmac = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+    $hmac           = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
 
     return base64_encode( $secret_iv.$hmac.$ciphertext_raw );
 }

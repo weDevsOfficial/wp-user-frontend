@@ -58,18 +58,18 @@ class WPUF_Encryption_Helper {
         if ( empty( $auth_keys['auth_key'] ) || empty( $auth_keys['auth_salt'] ) ) {
             // check for saved key
             $key                   = random_bytes( self::get_encryption_key_length() );
-            $auth_keys['auth_key'] = base64_encode( $key );
+            $auth_keys['auth_key'] = base64_encode( $key );    // phpcs:ignore
 
             // check for saved nonce
             $nonce                  = random_bytes( self::get_encryption_nonce_length() );
-            $auth_keys['auth_salt'] = base64_encode( $nonce );
+            $auth_keys['auth_salt'] = base64_encode( $nonce );    // phpcs:ignore
 
             update_option( 'wpuf_auth_keys', $auth_keys );
         }
 
         return [
-            'auth_key'  => base64_decode( $auth_keys['auth_key'] ),
-            'auth_salt' => base64_decode( $auth_keys['auth_salt'] ),
+            'auth_key'  => base64_decode( $auth_keys['auth_key'] ),    // phpcs:ignore
+            'auth_salt' => base64_decode( $auth_keys['auth_salt'] ),    // phpcs:ignore
         ];
     }
 }

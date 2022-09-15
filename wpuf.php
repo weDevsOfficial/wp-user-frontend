@@ -255,6 +255,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function includes() {
+        require_once __DIR__ . '/class/encryption-helper.php';
         require_once __DIR__ . '/wpuf-functions.php';
         require_once __DIR__ . '/lib/gateway/paypal.php';
         require_once __DIR__ . '/lib/gateway/bank.php';

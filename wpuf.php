@@ -283,6 +283,7 @@ final class WP_User_Frontend {
         include_once WPUF_ROOT . '/includes/class-customizer.php';
         include_once WPUF_ROOT . '/includes/log/class-log.php';
         include_once WPUF_ROOT . '/includes/log/class-log-wpdb-query.php';
+        include_once WPUF_ROOT . '/includes/log/class-wpuf-file-logger.php';
         //        include_once WPUF_ROOT . '/includes/class-user-prorate.php';
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
@@ -602,6 +603,7 @@ final class WP_User_Frontend {
      */
     public static function uninstall() {
         wp_clear_scheduled_hook( 'wpuf_remove_expired_post_hook' );
+        wp_clear_scheduled_hook( 'wpuf_cleanup_logs' );
     }
 
     /**

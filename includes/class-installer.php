@@ -98,8 +98,14 @@ class WPUF_Installer {
      * Schedules the post expiry event
      *
      * @since 2.2.7
+     * @since WPUF wpuf_cleanup_logs added
      */
     public function schedule_events() {
         wp_schedule_event( time(), 'daily', 'wpuf_remove_expired_post_hook' );
+
+        // check existence before scheduling a new event
+        if ( ! wp_next_scheduled( 'wpuf_cleanup_logs' ) ) {
+            wp_schedule_event( time() + ( 3 * HOUR_IN_SECONDS ), 'daily', 'wpuf_cleanup_logs' );
+        }
     }
 }

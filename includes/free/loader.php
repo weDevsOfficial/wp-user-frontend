@@ -40,6 +40,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         // post form templates
         add_action( 'wpuf_get_post_form_templates', [$this, 'post_form_templates'] );
+        add_action( 'wpuf_get_pro_form_previews', [$this, 'pro_form_previews'] );
     }
 
     public function includes() {
@@ -86,7 +87,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     public function admin_reg_forms_page() {
-        ?> 
+        ?>
         <div class="wpuf-registration-form-notice">
             <div class="wpuf-notice wpuf-registration-shortcode-notice" style="padding: 20px;background: #fff;border: 1px solid #ddd;max-width: 360px;">
                 <h3 style="margin: 0;"><?php esc_html_e( 'Registration Form', 'wp-user-frontend' ); ?></h3>
@@ -274,6 +275,23 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         $integrations['WPUF_Post_Form_Template_WooCommerce']        = new WPUF_Post_Form_Template_WooCommerce();
         $integrations['WPUF_Post_Form_Template_Events_Calendar']    = new WPUF_Post_Form_Template_Events_Calendar();
+
+        return $integrations;
+    }
+
+    /**
+     * Pro form templates for previewing
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $integrations
+     *
+     * @return array
+     */
+    public function pro_form_previews( $integrations ) {
+        include_once __DIR__ . '/post-form-templates/easy_digital_download.php';
+
+        $integrations['WPUF_Pro_Form_Preview_EDD'] = new WPUF_Pro_Form_Preview_EDD();
 
         return $integrations;
     }

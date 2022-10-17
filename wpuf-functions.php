@@ -1992,6 +1992,26 @@ function wpuf_get_post_form_templates() {
 }
 
 /**
+ * Get the pro form templates list
+ *
+ * @since WPUF_SINCE
+ *
+ * @return mixed|null
+ */
+function wpuf_get_pro_form_previews() {
+    $template_names = [];
+
+    /**
+     * Filter pro post form templates to preview
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $template_names
+     */
+    return apply_filters( 'wpuf_get_pro_form_previews', $template_names );
+}
+
+/**
  * Get countries
  *
  * @since 2.4.1

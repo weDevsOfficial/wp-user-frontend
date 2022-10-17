@@ -958,7 +958,7 @@ ul.wpuf-form li .wpuf-password-field:after {
   text-align: center;
   min-height: 280px;
   width: 220px;
-  border: 0px;
+  border: 0;
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
   border-radius: 3px;
@@ -1103,6 +1103,30 @@ ul.wpuf-form li .wpuf-password-field:after {
 }
 .wpuf-form-template-modal-backdrop.show {
   display: block;
+}
+.wpuf-form-template-modal .is-pro-template h3 {
+    position: relative;
+}
+.wpuf-form-template-modal .is-pro-template h3:before {
+    position: absolute;
+    content: "";
+    width: 20px;
+    height: 15px;
+    background: url("http://wpuf.test/wp-content/plugins/wp-user-frontend/assets/images/templates/crown.svg") no-repeat;
+    right: 13px;
+}
+.wpuf-form-template-modal .content ul li a.wpuf-button.button-upgrade-to-pro {
+    padding: 10px 15px;
+    background: #ff9000;
+    color: #fff;
+    min-height: auto;
+    border-radius: 5px;
+}
+span.pro-icon svg {
+    height: 1em;
+}
+span.pro-icon svg path {
+    fill: #fff;
 }
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {

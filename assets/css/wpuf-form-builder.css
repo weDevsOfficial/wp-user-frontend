@@ -1104,16 +1104,9 @@ ul.wpuf-form li .wpuf-password-field:after {
 .wpuf-form-template-modal-backdrop.show {
   display: block;
 }
-.wpuf-form-template-modal .is-pro-template h3 {
-    position: relative;
-}
-.wpuf-form-template-modal .is-pro-template h3:before {
-    position: absolute;
-    content: "";
-    width: 20px;
-    height: 15px;
-    background: url("http://wpuf.test/wp-content/plugins/wp-user-frontend/assets/images/templates/crown.svg") no-repeat;
-    right: 13px;
+.is-pro-template h3 {
+    display: flex;
+    justify-content: space-between;
 }
 .wpuf-form-template-modal .content ul li a.wpuf-button.button-upgrade-to-pro {
     padding: 10px 15px;

@@ -321,6 +321,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      */
     public function load_modules_scripts() {
         wp_enqueue_style( 'wpuf-pro-modules', WPUF_ASSET_URI . '/css/admin/wpuf-module.css', false, WPUF_VERSION );
+        wp_enqueue_script( 'wpuf_pro_admin', WPUF_ASSET_URI . '/js/admin/wpuf-module.js', [ 'jquery', 'jquery-blockui' ], WPUF_VERSION, true );
     }
 
     /**
@@ -465,12 +466,97 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      * @return void
      */
     public function modules_page_contents( $modules ) {
+        $diamond_icon = WPUF_ROOT . '/assets/images/diamond.svg';
+        $check_icon   = WPUF_ROOT . '/assets/images/check.svg';
+        $crown_icon   = WPUF_ROOT . '/assets/images/crown.svg';
+        $close_icon   = WPUF_ROOT . '/assets/images/x.svg';
         ?>
-        <div class="wrap weforms-modules">
+        <div id="wpuf-upgrade-popup" class="wpuf-popup-window">
+            <div class="modal-window">
+                <div class="content-area">
+                    <div class="popup-close-button">
+                        <?php if ( file_exists( $close_icon ) ) {
+                            echo file_get_contents( $close_icon );
+                        } ?>
+                    </div>
+                    <div class="popup-diamond">
+                        <?php
+                        if ( file_exists( $diamond_icon ) ) {
+                            echo file_get_contents( $diamond_icon );
+                        }
+                        ?>
+                    </div>
+                    <div class="wpuf-popup-header">
+                        <h2 class="font-orange header-one">Upgrade to</h2>
+                        <h2 class="header-two">WP User Frontend <span class="font-bold">Pro</span></h2>
+                        <h2 class="header-three font-gray">to experience even more Powerful<br>features 🎉</h2>
+                    </div>
+                    <div class="wpuf-popup-list-area">
+                        <div class="single-checklist">
+                            <div class="check-icon">
+                                <?php
+                                if ( file_exists( $check_icon ) ) {
+                                    echo file_get_contents( $check_icon );
+                                }
+                                ?>
+                            </div>
+                            <div class="check-list">
+                                <p>Get custom <span class="bold font-black">Post Type</span> and <span class="bold font-black">Taxonomy</span> support with subscription-based <span class="bold font-black">restrictions</span> for post submission.</p>
+                            </div>
+                        </div>
+                        <div class="single-checklist">
+                            <div class="check-icon">
+                                <?php
+                                if ( file_exists( $check_icon ) ) {
+                                    echo file_get_contents( $check_icon );
+                                }
+                                ?>
+                            </div>
+                            <div class="check-list">
+                                <p>Enable <span class="bold font-black">conditional logic</span> and <span class="bold font-black">multi-step</span> functionalities on your forms.</p>
+                            </div>
+                        </div>
+                        <div class="single-checklist">
+                            <div class="check-icon">
+                                <?php
+                                if ( file_exists( $check_icon ) ) {
+                                    echo file_get_contents( $check_icon );
+                                }
+                                ?>
+                            </div>
+                            <div class="check-list">
+                                <p>Show or hide <span class="bold font-black">menus, pages,</span> and <span class="bold font-black">content</span> based on user roles or login status of a user.</p>
+                            </div>
+                        </div>
+                        <div class="single-checklist">
+                            <div class="check-icon">
+                                <?php
+                                if ( file_exists( $check_icon ) ) {
+                                    echo file_get_contents( $check_icon );
+                                }
+                                ?>
+                            </div>
+                            <div class="check-list">
+                                <p><span class="bold font-black">20+ Premium Modules</span> (Social Login, User Directory, User Activity, Stripe, MailChimp, Private Messaging, Zapier, & more)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="<?php echo WPUF_Pro_Prompt::get_pro_url(); ?>"
+                       target="_blank"
+                       class="wpuf-button button-upgrade-to-pro">
+                        <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
+                        <?php if ( file_exists( $crown_icon ) ) {
+                            printf( '<span class="pro-icon"> %s</span>', file_get_contents( $crown_icon ) );
+                        } ?>
+                    </a>
+                </div>
+                <div class="slider-area"></div>
+            </div>
+        </div>
+        <div class="wrap wpuf-modules">
             <h1><?php esc_attr_e( 'Modules', 'wpuf-pro' ); ?></h1>
             <div class="wp-list-table widefat wpuf-modules">
                 <?php if ( $modules ) {
-                    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
                     foreach ( $modules as $slug => $module ) {
                         ?>
                         <div class="plugin-card">
@@ -501,8 +587,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                                 </div>
                             </div>
                             <div class="form-create-overlay">
-                                <a href="<?php echo esc_url( WPUF_Pro_Prompt::get_pro_url() ); ?>"
-                                    target="_blank"
+                                <a href="#wpuf-upgrade-popup"
                                     class="wpuf-button button-upgrade-to-pro">
                                     <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
                                     <?php if ( file_exists( $crown_icon ) ) {
@@ -517,6 +602,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                 ?>
             </div>
         </div>
+        <div class="clear"></div>
 <?php
     }
 }

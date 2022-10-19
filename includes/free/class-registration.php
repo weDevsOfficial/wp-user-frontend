@@ -21,6 +21,10 @@ class WPUF_Registration {
 
         add_action( 'init', [ $this, 'process_registration' ] );
         add_action( 'init', [ $this, 'wp_registration_page_redirect' ] );
+        add_action( 'registration_form', [ $this, 'add_custom_fields' ] );
+        add_action( 'registration_enqueue_scripts', [ $this, 'registration_form_scripts' ] );
+        add_filter( 'wp_authenticate_user', [ $this, 'validate_custom_fields' ], 10, 2 );
+
         add_action( 'template_redirect', [ $this, 'registration_page_redirects' ] );
 
         add_filter( 'register_url', [ $this, 'get_registration_url' ] );
@@ -53,6 +57,106 @@ class WPUF_Registration {
         }
 
         return true;
+    }
+
+    /**
+     * Add custom fields to WordPress default registration form
+     *
+     * @since 2.9.0
+     */
+    public function add_custom_fields() {
+        $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
+
+        if ( $recaptcha === 'on' ) {
+            echo wp_kses(
+                recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ), [
+                    'div' => [
+                        'class' => [],
+                        'data-sitekey' => [],
+                    ],
+
+                    'script' => [
+                        'src' => [],
+                    ],
+
+                    'noscript' => [],
+
+                    'iframe' => [
+                        'src' => [],
+                        'height' => [],
+                        'width' => [],
+                        'frameborder' => [],
+                    ],
+                    'br' => [],
+                    'textarea' => [
+                        'name' => [],
+                        'rows' => [],
+                        'cols' => [],
+                    ],
+                    'input' => [
+                        'type'   => [],
+                        'value' => [],
+                        'name'   => [],
+                    ],
+                ]
+            );
+        }
+    }
+
+    /**
+     * Add custom scripts to WordPress default registration form
+     *
+     * @since 2.9.0
+     */
+    public function registration_form_scripts() {
+        $post_data = wp_unslash( $_REQUEST );
+
+        if ( isset( $post_data['wpuf_registration'] ) ) {
+            return;
+        }
+
+        $recaptcha = wpuf_get_option( 'registration_form_recaptcha', 'wpuf_profile', 'off' );
+
+        if ( $recaptcha === 'on' ) { ?>
+            <style type="text/css">
+                body #registration {
+                    width: 350px;
+                }
+
+                body .g-recaptcha {
+                    margin: 15px 0px 30px 0;
+                }
+            </style>
+            <?php
+        }
+    }
+
+    /**
+     * Validate custom fields of WordPress default registration form
+     *
+     * @since 2.9.0
+     */
+    public function validate_custom_fields( $user, $password ) {
+        if ( isset( $_REQUEST['wpuf_registration'] ) ) {
+            return $user;
+        }
+
+        $recaptcha = wpuf_get_option( 'registration_form_recaptcha', 'wpuf_profile', 'off' );
+
+        if ( $recaptcha === 'on' ) {
+            if ( isset( $_REQUEST['g-recaptcha-response'] ) ) {
+                if ( empty( $_REQUEST['g-recaptcha-response'] ) ) {
+                    $user = new WP_Error( 'WPUFRegistrationCaptchaError', 'Empty reCaptcha Field.' );
+                } else {
+                    $no_captcha        = 1;
+                    $invisible_captcha = 0;
+
+                    WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+                }
+            }
+        }
+
+        return $user;
     }
 
     /**
@@ -193,13 +297,13 @@ class WPUF_Registration {
 
             $validation_error = new WP_Error();
 
-            $reg_fname  = isset( $_POST['reg_fname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_fname'] ) ) : '';
-            $reg_lname  = isset( $_POST['reg_lname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_lname'] ) ) : '';
-            $reg_email  = isset( $_POST['reg_email'] ) ? sanitize_email( wp_unslash( $_POST['reg_email'] ) ) : '';
-            $pwd1       = isset( $_POST['pwd1'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd1'] ) ) : '';
-            $pwd2       = isset( $_POST['pwd2'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd2'] ) ) : '';
-            $log        = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
-            $urhidden   = isset( $_POST['urhidden'] ) ? sanitize_text_field( wp_unslash( $_POST['urhidden'] ) ) : '';
+            $reg_fname = isset( $_POST['reg_fname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_fname'] ) ) : '';
+            $reg_lname = isset( $_POST['reg_lname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_lname'] ) ) : '';
+            $reg_email = isset( $_POST['reg_email'] ) ? sanitize_email( wp_unslash( $_POST['reg_email'] ) ) : '';
+            $pwd1      = isset( $_POST['pwd1'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd1'] ) ) : '';
+            $pwd2      = isset( $_POST['pwd2'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd2'] ) ) : '';
+            $log       = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
+            $urhidden  = isset( $_POST['urhidden'] ) ? sanitize_text_field( wp_unslash( $_POST['urhidden'] ) ) : '';
             $user_nonce = isset( $_POST['user_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['user_nonce'] ) ) : '';
 
             $validation_error = apply_filters( 'wpuf_process_registration_errors', $validation_error, $reg_fname, $reg_lname, $reg_email, $log, $pwd1, $pwd2 );
@@ -260,6 +364,17 @@ class WPUF_Registration {
 
             if ( is_email( $log ) ) {
                 $user = get_user_by( 'email', $log );
+            }
+
+            if ( isset( $_POST['g-recaptcha-response'] ) ) {
+                if ( empty( $_POST['g-recaptcha-response'] ) ) {
+                    $this->registration_errors[] = __( 'Empty reCaptcha Field', 'wp-user-frontend' );
+                    return;
+                } else {
+                    $no_captcha = 1;
+                    $invisible_captcha = 0;
+                    WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+                }
             }
 
             if ( $user && apply_filters( 'wpuf_get_username_from_email', true ) ) {

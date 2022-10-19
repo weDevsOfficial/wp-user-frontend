@@ -71,9 +71,47 @@
                 </div>
             </li>
 
+            <?php $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' ); ?>
+            <?php if ( $recaptcha == 'on' ) { ?>
+                <li style="margin-bottom: 1.5rem">
+                    <div class="wpuf-fields">
+                        <?php echo wp_kses( recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ),[
+                            'div' => [
+                                'class' => [],
+                                'data-sitekey' => [],
+                            ],
+
+                            'script' => [
+                                'src' => []
+                            ],
+
+                            'noscript' => [],
+
+                            'iframe' => [
+                                'src' => [],
+                                'height' => [],
+                                'width' => [],
+                                'frameborder' => [],
+                            ],
+                            'br' => [],
+                            'textarea' => [
+                                'name' => [],
+                                'rows' => [],
+                                'cols' => [],
+                            ],
+                            'input' => [
+                                'type'   => [],
+                                'value' => [],
+                                'name'   => [],
+                            ]
+                        ] ); ?>
+                    </div>
+                </li>
+            <?php } ?>
+
             <li class="wpuf-submit">
                 <input type="submit" name="wp-submit" id="wp-submit" value="<?php echo esc_attr( 'Register', 'wp-user-frontend' ); ?>" />
-                <input type="hidden" name="urhidden" value="<?php echo esc_attr( $userrole ); ?>" />
+                <input type="hidden" name="urhidden" value="<?php echo esc_attr( $userrole ); ?>" />	
                 <input type="hidden" name="user_nonce" value="<?php echo esc_attr( $user_nonce ); ?>" />
                 <input type="hidden" name="redirect_to" value="<?php echo esc_attr( wpuf()->registration->get_posted_value( 'redirect_to' ) ); ?>" />
                 <input type="hidden" name="wpuf_registration" value="true" />

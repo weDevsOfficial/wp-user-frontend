@@ -7,11 +7,7 @@
         $( '.wpuf-popup-window' ).removeClass( 'state-show' );
     } );
 
-    $('.wpuf-popup-window').click( function( event ) {
-        if ( ! $(event.target).is( '.modal-window' ) ) {
-            $( '.wpuf-popup-window' ).removeClass( 'state-show' );
-        }
-    } );
-
-
+    $(window).on('load', function() {
+        swiffyslider.initSlider(document.getElementById('wpuf-slider'));
+    });
 })(jQuery);

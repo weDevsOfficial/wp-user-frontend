@@ -566,10 +566,15 @@ function wpuf_settings_field_profile( $form ) {
             'post_type'   => 'wpuf_profile',
         ]
     );
+    $crown_icon = '';
+    $class      = '';
 
     $val = get_option( 'wpuf_profile', [] );
 
-    if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
+    if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+        $crown_icon = ' ' . file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' );
+        $class = 'class="pro-preview"';
+    }
         ?>
 
     <p style="padding-left: 10px; font-style: italic; font-size: 13px;">
@@ -580,8 +585,8 @@ function wpuf_settings_field_profile( $form ) {
         foreach ( $user_roles as $role => $name ) {
             $current = isset( $val['roles'][ $role ] ) ? $val['roles'][ $role ] : '';
             ?>
-            <tr valign="top">
-                <th scrope="row"><?php echo esc_attr( $name ); ?></th>
+            <tr valign="top" <?php echo $class; ?>>
+                <th scrope="row"><?php echo esc_attr( $name ) . $crown_icon; ?></th>
                 <td>
                     <select name="wpuf_profile[roles][<?php echo esc_attr( $role ); ?>]">
                         <option value=""><?php esc_html_e( '&mdash; Select &mdash;', 'wp-user-frontend' ); ?></option>
@@ -589,6 +594,11 @@ function wpuf_settings_field_profile( $form ) {
                             <option value="<?php echo esc_attr( $form->ID ); ?>"<?php selected( $current, $form->ID ); ?>><?php echo esc_html( $form->post_title ); ?></option>
                         <?php } ?>
                     </select>
+                    <?php
+                    if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+                        echo wpuf_get_pro_preview_html();
+                    }
+                    ?>
                 </td>
             </tr>
             <?php
@@ -596,7 +606,6 @@ function wpuf_settings_field_profile( $form ) {
         ?>
     </table>
         <?php
-    }
 }
 
 add_action( 'wsa_form_bottom_wpuf_profile', 'wpuf_settings_field_profile' );

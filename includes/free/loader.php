@@ -36,7 +36,8 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         // plugin settings
         add_action( 'admin_footer', [$this, 'remove_login_from_settings'] );
-        add_filter( 'wpuf_settings_fields', [$this, 'settings_login_prompt'] );
+        // add_filter( 'wpuf_settings_fields', [$this, 'settings_login_prompt'] );
+        add_filter( 'wpuf_settings_fields', [$this, 'pro_settings'] );
 
         // post form templates
         add_action( 'wpuf_get_post_form_templates', [$this, 'post_form_templates'] );
@@ -193,6 +194,94 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         // array_unshift( $fields['wpuf_profile'], $new_field );
 
         return $fields;
+    }
+
+    public function pro_settings( $settings_fields ) {
+        $crown_icon = file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' );
+
+        $settings_fields['wpuf_general'][] = [
+            'name'           => 'comments_per_page',
+            'label'          => __( 'Comments Per Page ', 'wp-user-frontend' ) . $crown_icon,
+            'desc'           => __( 'Show how many comments per page in comments add-on', 'wp-user-frontend' ),
+            'type'           => 'number',
+            'default'        => '20',
+            'class'          => 'pro-preview',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_general'][] = [
+            'name'           => 'ipstack_key',
+            'label'          => __( 'Ipstack API Key ', 'wp-user-frontend' ) . $crown_icon,
+            'desc'           => __( '<a target="_blank" href="https://ipstack.com/dashboard">Register here</a> to get your free ipstack api key',
+                                    'wp-user-frontend' ),
+            'class'          => 'pro-preview',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_general'][] = [
+            'name'           => 'gmap_api_key',
+            'label'          => __( 'Google Map API ', 'wp-user-frontend' ) . $crown_icon,
+            'desc'           => __( '<a target="_blank" href="https://developers.google.com/maps/documentation/javascript">API</a> key is needed to render Google Maps',
+                                    'wp-user-frontend' ),
+            'class'          => 'pro-preview',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_my_account'][] = [
+            'name'           => 'show_edit_profile_menu',
+            'label'          => __( 'Edit Profile ', 'wp-user-frontend' ) . $crown_icon,
+            'desc'           => __( 'Allow user to update their profile information from the account page',
+                                    'wp-user-frontend' ),
+            'type'           => 'checkbox',
+            'default'        => 'on',
+            'class'          => 'pro-preview',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_my_account'][] = [
+            'name'           => 'edit_profile_form',
+            'label'          => __( 'Profile Form ', 'wp-user-frontend' ) . $crown_icon,
+            'desc'           => __( 'User will use this form to update their information from the account page,',
+                                    'wp-user-frontend' ),
+            'type'           => 'select',
+            'options'        => [ 'Default Form' ],
+            'class'          => 'pro-preview',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_profile'][] = [
+            'name'           => 'avatar_size',
+            'label'          => __( 'Avatar Size ', 'wp-user-frontend' ) . $crown_icon,
+            'desc'           => __( 'Avatar size to crop when upload using the registration/profile form.(e.g:100x100)',
+                                    'wpuf' ),
+            'type'           => 'text',
+            'default'        => '100x100',
+            'class'          => 'pro-preview',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_profile'][] = [
+            'name'     => 'pending_user_message',
+            'label'    => __( 'Pending User Message ', 'wp-user-frontend' ) . $crown_icon,
+            'desc'     => __( 'Pending user will see this message when try to log in.', 'wpuf-pro' ),
+            'default'  => __( '<strong>ERROR:</strong> Your account has to be approved by an administrator before you can login.', 'wpuf-pro' ),
+            'type'     => 'textarea',
+            'class'          => 'pro-preview',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_profile'][] = [
+            'name'           => 'denied_user_message',
+            'label'          => __( 'Denied User Message ', 'wp-user-frontend' ) . $crown_icon,
+            'desc'           => __( 'Denied user will see this message when try to log in.', 'wpuf-pro' ),
+            'default'        => __( '<strong>ERROR:</strong> Your account has been denied by an administrator, please contact admin to approve your account.',
+                                    'wpuf-pro' ),
+            'type'           => 'textarea',
+            'class'          => 'pro-preview',
+            'is_pro_preview' => true,
+        ];
+
+        return $settings_fields;
     }
 
     /**
@@ -606,7 +695,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             </div>
         </div>
         <div class="wrap wpuf-modules">
-            <h1><?php esc_attr_e( 'Modules', 'wpuf-pro' ); ?></h1>
+            <h1><?php esc_attr_e( 'Modules', 'wp-user-frontend' ); ?></h1>
             <div class="wp-list-table widefat wpuf-modules">
                 <?php if ( $modules ) {
                     foreach ( $modules as $slug => $module ) {

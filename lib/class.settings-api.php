@@ -139,6 +139,7 @@ class WeDevs_Settings_API {
                     'min'               => isset( $option['min'] ) ? $option['min'] : '',
                     'max'               => isset( $option['max'] ) ? $option['max'] : '',
                     'step'              => isset( $option['step'] ) ? $option['step'] : '',
+                    'is_pro_preview'    => ! empty( $option['is_pro_preview'] ) ? $option['is_pro_preview'] : false,
                 );
 
                 add_settings_field( $section . '[' . $option['name'] . ']', $option['label'], (isset($option['callback']) ? $option['callback'] : array($this, 'callback_' . $type )), $section, $section, $args );
@@ -181,6 +182,10 @@ class WeDevs_Settings_API {
         $html        = sprintf( '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s/>', $type, $size, $args['section'], $args['id'], $value, $placeholder );
         $html       .= $this->get_field_description( $args );
 
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
+
         echo $html;
     }
 
@@ -210,6 +215,10 @@ class WeDevs_Settings_API {
         $html        = sprintf( '<input type="%1$s" class="%2$s-number" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s%7$s%8$s%9$s/>', $type, $size, $args['section'], $args['id'], $value, $placeholder, $min, $max, $step );
         $html       .= $this->get_field_description( $args );
 
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
+
         echo $html;
     }
 
@@ -228,6 +237,10 @@ class WeDevs_Settings_API {
         $html  .= sprintf( '<input type="checkbox" class="checkbox" id="wpuf-%1$s[%2$s]" name="%1$s[%2$s]" value="on" %3$s />', $args['section'], $args['id'], checked( $value, 'on', false ) );
         $html  .= sprintf( '%1$s</label>', $args['desc'] );
         $html  .= '</fieldset>';
+
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
 
         echo $html;
     }
@@ -253,6 +266,10 @@ class WeDevs_Settings_API {
         $html .= $this->get_field_description( $args );
         $html .= '</fieldset>';
 
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
+
         echo $html;
     }
 
@@ -275,6 +292,10 @@ class WeDevs_Settings_API {
         $html .= $this->get_field_description( $args );
         $html .= '</fieldset>';
 
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
+
         echo $html;
     }
 
@@ -296,6 +317,10 @@ class WeDevs_Settings_API {
         $html .= sprintf( '</select>' );
         $html .= $this->get_field_description( $args );
 
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
+
         echo $html;
     }
 
@@ -312,6 +337,10 @@ class WeDevs_Settings_API {
 
         $html        = sprintf( '<textarea rows="5" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]"%4$s>%5$s</textarea>', $size, $args['section'], $args['id'], $placeholder, $value );
         $html        .= $this->get_field_description( $args );
+
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
 
         echo $html;
     }
@@ -372,6 +401,10 @@ class WeDevs_Settings_API {
         $html  .= '<input type="button" class="button wpsa-browse" value="' . $label . '" />';
         $html  .= $this->get_field_description( $args );
 
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
+
         echo $html;
     }
 
@@ -388,6 +421,10 @@ class WeDevs_Settings_API {
         $html  = sprintf( '<input type="password" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $size, $args['section'], $args['id'], $value );
         $html  .= $this->get_field_description( $args );
 
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
+
         echo $html;
     }
 
@@ -403,6 +440,10 @@ class WeDevs_Settings_API {
 
         $html  = sprintf( '<input type="text" class="%1$s-text wp-color-picker-field" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s" data-default-color="%5$s" />', $size, $args['section'], $args['id'], $value, $args['std'] );
         $html  .= $this->get_field_description( $args );
+
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
 
         echo $html;
     }

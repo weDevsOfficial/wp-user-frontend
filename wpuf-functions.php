@@ -4440,3 +4440,18 @@ function wpuf_get_image_sizes_array( $size = '' ) {
     }
     return $sizes;
 }
+
+/**
+ * The HTML preview part when hovering over a pro settings field
+ *
+ * @since WPUF_SINCE
+ *
+ * @return string
+ */
+function wpuf_get_pro_preview_html() {
+    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+    return sprintf( '<div class="pro-field-overlay">
+                        <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon"> %4$s</span></a>
+                    </div>', esc_url( WPUF_Pro_Prompt::get_pro_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+                    file_get_contents( $crown_icon ) );
+}

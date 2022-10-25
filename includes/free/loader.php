@@ -42,6 +42,9 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         // post form templates
         add_action( 'wpuf_get_post_form_templates', [$this, 'post_form_templates'] );
         add_action( 'wpuf_get_pro_form_previews', [$this, 'pro_form_previews'] );
+
+        // payment gateway added for previewing
+        add_filter( 'wpuf_payment_gateways', [ $this, 'wpuf_payment_gateways' ] );
     }
 
     public function includes() {
@@ -196,12 +199,22 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         return $fields;
     }
 
+    /**
+     * The pro settings preview on the free version
+     *
+     * @since WPUF_SINCE
+     *
+     * @param $settings_fields
+     *
+     * @return array
+     */
     public function pro_settings( $settings_fields ) {
+        $crown_icon_path = WPUF_ROOT . '/assets/images/crown.svg';
         $crown_icon = file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' );
 
         $settings_fields['wpuf_general'][] = [
             'name'           => 'comments_per_page',
-            'label'          => __( 'Comments Per Page ', 'wp-user-frontend' ) . $crown_icon,
+            'label'          => __( 'Comments Per Page', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( 'Show how many comments per page in comments add-on', 'wp-user-frontend' ),
             'type'           => 'number',
             'default'        => '20',
@@ -211,7 +224,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         $settings_fields['wpuf_general'][] = [
             'name'           => 'ipstack_key',
-            'label'          => __( 'Ipstack API Key ', 'wp-user-frontend' ) . $crown_icon,
+            'label'          => __( 'Ipstack API Key', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( '<a target="_blank" href="https://ipstack.com/dashboard">Register here</a> to get your free ipstack api key',
                                     'wp-user-frontend' ),
             'class'          => 'pro-preview',
@@ -220,7 +233,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         $settings_fields['wpuf_general'][] = [
             'name'           => 'gmap_api_key',
-            'label'          => __( 'Google Map API ', 'wp-user-frontend' ) . $crown_icon,
+            'label'          => __( 'Google Map API', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( '<a target="_blank" href="https://developers.google.com/maps/documentation/javascript">API</a> key is needed to render Google Maps',
                                     'wp-user-frontend' ),
             'class'          => 'pro-preview',
@@ -229,7 +242,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         $settings_fields['wpuf_my_account'][] = [
             'name'           => 'show_edit_profile_menu',
-            'label'          => __( 'Edit Profile ', 'wp-user-frontend' ) . $crown_icon,
+            'label'          => __( 'Edit Profile', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( 'Allow user to update their profile information from the account page',
                                     'wp-user-frontend' ),
             'type'           => 'checkbox',
@@ -240,7 +253,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         $settings_fields['wpuf_my_account'][] = [
             'name'           => 'edit_profile_form',
-            'label'          => __( 'Profile Form ', 'wp-user-frontend' ) . $crown_icon,
+            'label'          => __( 'Profile Form', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( 'User will use this form to update their information from the account page,',
                                     'wp-user-frontend' ),
             'type'           => 'select',
@@ -251,7 +264,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         $settings_fields['wpuf_profile'][] = [
             'name'           => 'avatar_size',
-            'label'          => __( 'Avatar Size ', 'wp-user-frontend' ) . $crown_icon,
+            'label'          => __( 'Avatar Size', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( 'Avatar size to crop when upload using the registration/profile form.(e.g:100x100)',
                                     'wpuf' ),
             'type'           => 'text',
@@ -261,23 +274,102 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         ];
 
         $settings_fields['wpuf_profile'][] = [
-            'name'     => 'pending_user_message',
-            'label'    => __( 'Pending User Message ', 'wp-user-frontend' ) . $crown_icon,
-            'desc'     => __( 'Pending user will see this message when try to log in.', 'wpuf-pro' ),
-            'default'  => __( '<strong>ERROR:</strong> Your account has to be approved by an administrator before you can login.', 'wpuf-pro' ),
-            'type'     => 'textarea',
+            'name'           => 'pending_user_message',
+            'label'          => __( 'Pending User Message',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'desc'           => __( 'Pending user will see this message when try to log in.', 'wp-user-frontend' ),
+            'default'        => __( '<strong>ERROR:</strong> Your account has to be approved by an administrator before you can login.',
+                                    'wp-user-frontend' ),
+            'type'           => 'textarea',
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
 
         $settings_fields['wpuf_profile'][] = [
             'name'           => 'denied_user_message',
-            'label'          => __( 'Denied User Message ', 'wp-user-frontend' ) . $crown_icon,
-            'desc'           => __( 'Denied user will see this message when try to log in.', 'wpuf-pro' ),
+            'label'          => __( 'Denied User Message', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'desc'           => __( 'Denied user will see this message when try to log in.', 'wp-user-frontend' ),
             'default'        => __( '<strong>ERROR:</strong> Your account has been denied by an administrator, please contact admin to approve your account.',
-                                    'wpuf-pro' ),
+                                    'wp-user-frontend' ),
             'type'           => 'textarea',
             'class'          => 'pro-preview',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_mails'][] = [
+            'name'    => 'subscription_setting',
+            'label'   => __( '<span class="dashicons dashicons-money"></span> Subscription', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'    => 'html',
+            'class'   => 'subscription-setting pro-preview-html',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_mails'][] = [
+            'name'           => 'email_setting',
+            'label'          => __( '<span class="dashicons dashicons-admin-generic"></span> Template Settings',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'           => 'html',
+            'class'          => 'email-setting pro-preview-html',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_mails'][] = [
+            'name'           => 'reset_email_setting',
+            'label'          => __( '<span class="dashicons dashicons-unlock"></span> Reset Email',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'           => 'html',
+            'class'          => 'reset-email-setting pro-preview-html',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_mails'][] = [
+            'name'           => 'confirmation_email_setting',
+            'label'          => __( '<span class="dashicons dashicons-email-alt"></span> Resend Confirmation Email',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'           => 'html',
+            'class'          => 'confirmation-email-setting pro-preview-html',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_mails'][] = [
+            'name'    => 'pending_user_email',
+            'label'   => __( '<span class="dashicons dashicons-groups"></span> Pending User Email', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'    => 'html',
+            'class'   => 'pending-user-email pro-preview-html',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_mails'][] = [
+            'name'    => 'denied_user_email',
+            'label'   => __( '<span class="dashicons dashicons-dismiss"></span> Denied User Email', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'    => 'html',
+            'class'   => 'denied-user-email pro-preview-html',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_mails'][] = [
+            'name'    => 'approved_user_email',
+            'label'   => __( '<span class="dashicons dashicons-smiley"></span> Approved User Email', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'    => 'html',
+            'class'   => 'approved-user-email pro-preview-html',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_mails'][] = [
+            'name'           => 'account_activated_user_email',
+            'label'          => __( '<span class="dashicons dashicons-smiley"></span> Account Activated Email',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'           => 'html',
+            'class'          => 'account-activated-user-email pro-preview-html',
+            'is_pro_preview' => true,
+        ];
+
+        $settings_fields['wpuf_mails'][] = [
+            'name'           => 'approved_post_email',
+            'label'          => __( '<span class="dashicons dashicons-saved"></span> Approved Post Email',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'           => 'html',
+            'class'          => 'approved-post-email pro-preview-html',
             'is_pro_preview' => true,
         ];
 
@@ -744,5 +836,31 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             </div>
         </div>
 <?php
+    }
+
+    /**
+     * payment gateways for previewing in the free version
+     *
+     * @since WPUF_SINCE
+     *
+     * @param $gateways
+     *
+     * @return void
+     */
+    public function wpuf_payment_gateways( $gateways ) {
+        $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+        $crown      = '';
+
+        if ( file_exists( $crown_icon ) ) {
+            $crown = sprintf( '<span class="pro-icon-title"> %s</span>', file_get_contents( $crown_icon ) );
+        }
+
+        $gateways['stripe'] = [
+            'admin_label'    => __( 'Credit Card ' . $crown, 'wp-user-frontend' ),
+            'checkout_label' => __( 'Credit Card', 'wp-user-frontend' ),
+            'label_class'    => 'pro-preview',
+        ];
+
+        return $gateways;
     }
 }

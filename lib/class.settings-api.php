@@ -352,7 +352,13 @@ class WeDevs_Settings_API {
      * @return string
      */
     function callback_html( $args ) {
-        echo $this->get_field_description( $args );
+        $html = $this->get_field_description( $args );
+
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
+
+        echo $html;
     }
 
     /**

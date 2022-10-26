@@ -559,8 +559,10 @@ class WeDevs_Settings_API {
     function show_forms() {
         ?>
         <div class="metabox-holder">
-            <?php foreach ( $this->settings_sections as $form ) { ?>
-                <div id="<?php echo $form['id']; ?>" class="group" style="display: none;">
+            <?php foreach ( $this->settings_sections as $form ) {
+                $class = ! empty( $form['class'] ) ? esc_attr( $form['class'] ) : '';
+                ?>
+                <div id="<?php echo $form['id']; ?>" class="group <?php echo $class; ?>" style="display: none;">
                     <form method="post" action="options.php">
                         <?php
                         do_action( 'wsa_form_top_' . $form['id'], $form );
@@ -575,7 +577,12 @@ class WeDevs_Settings_API {
                         <?php endif; ?>
                     </form>
                 </div>
-            <?php } ?>
+            <?php
+            }
+            if ( ! wpuf()->is_pro() ) {
+                echo wpuf_get_pro_preview_html();
+            }
+            ?>
         </div>
         <?php
         $this->script();

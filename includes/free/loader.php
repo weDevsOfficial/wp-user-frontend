@@ -36,9 +36,8 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         // plugin settings
         add_action( 'admin_footer', [$this, 'remove_login_from_settings'] );
-        // add_filter( 'wpuf_settings_fields', [$this, 'settings_login_prompt'] );
-        add_filter( 'wpuf_settings_fields', [$this, 'pro_settings'] );
-
+        add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );
+        add_filter( 'wpuf_settings_fields', [ $this, 'pro_settings' ] );
         // post form templates
         add_action( 'wpuf_get_post_form_templates', [$this, 'post_form_templates'] );
         add_action( 'wpuf_get_pro_form_previews', [$this, 'pro_form_previews'] );
@@ -208,41 +207,99 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      *
      * @return array
      */
+    public function pro_sections( $sections ) {
+        $crown_icon_path = WPUF_ROOT . '/assets/images/crown.svg';
+        $new_sections    = [
+            [
+                'id'             => 'wpuf_sms',
+                'title'          => __( 'SMS', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+                'icon'           => 'dashicons-format-status',
+                'class'          => 'pro-preview-html',
+                'is_pro_preview' => true,
+            ],
+            [
+                'id'             => 'wpuf_social_api',
+                'title'          => __( 'Social Login', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+                'icon'           => 'dashicons-share',
+                'class'          => 'pro-preview-html',
+                'is_pro_preview' => true,
+            ],
+            [
+                'id'             => 'user_directory',
+                'title'          => __( 'User Directory', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+                'icon'           => 'dashicons-list-view',
+                'class'          => 'pro-preview-html',
+                'is_pro_preview' => true,
+            ],
+            [
+                'id'             => 'wpuf_payment_invoices',
+                'title'          => __( 'Invoices', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+                'icon'           => 'dashicons-media-spreadsheet',
+                'class'          => 'pro-preview-html',
+                'is_pro_preview' => true,
+            ],
+            [
+                'id'             => 'wpuf_payment_tax',
+                'title'          => __( 'Tax', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+                'icon'           => 'dashicons-media-text',
+                'class'          => 'pro-preview-html',
+                'is_pro_preview' => true,
+            ],
+            [
+                'id'             => 'wpuf_content_restriction',
+                'title'          => __( 'Content Filtering', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+                'icon'           => 'dashicons-admin-network',
+                'class'          => 'pro-preview-html',
+                'is_pro_preview' => true,
+            ]
+        ];
+
+        return array_merge( $sections, $new_sections );
+    }
+
+    /**
+     * The pro settings preview on the free version
+     *
+     * @since WPUF_SINCE
+     *
+     * @param $settings_fields
+     *
+     * @return array
+     */
     public function pro_settings( $settings_fields ) {
         $crown_icon_path = WPUF_ROOT . '/assets/images/crown.svg';
-        $crown_icon = file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' );
-
         $settings_fields['wpuf_general'][] = [
             'name'           => 'comments_per_page',
-            'label'          => __( 'Comments Per Page', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'label'          => __( 'Comments Per Page',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( 'Show how many comments per page in comments add-on', 'wp-user-frontend' ),
             'type'           => 'number',
             'default'        => '20',
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_general'][] = [
             'name'           => 'ipstack_key',
-            'label'          => __( 'Ipstack API Key', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'label'          => __( 'Ipstack API Key',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( '<a target="_blank" href="https://ipstack.com/dashboard">Register here</a> to get your free ipstack api key',
                                     'wp-user-frontend' ),
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_general'][] = [
             'name'           => 'gmap_api_key',
-            'label'          => __( 'Google Map API', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'label'          => __( 'Google Map API',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( '<a target="_blank" href="https://developers.google.com/maps/documentation/javascript">API</a> key is needed to render Google Maps',
                                     'wp-user-frontend' ),
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_my_account'][] = [
             'name'           => 'show_edit_profile_menu',
-            'label'          => __( 'Edit Profile', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'label'          => __( 'Edit Profile',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( 'Allow user to update their profile information from the account page',
                                     'wp-user-frontend' ),
             'type'           => 'checkbox',
@@ -250,10 +307,10 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_my_account'][] = [
             'name'           => 'edit_profile_form',
-            'label'          => __( 'Profile Form', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'label'          => __( 'Profile Form',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( 'User will use this form to update their information from the account page,',
                                     'wp-user-frontend' ),
             'type'           => 'select',
@@ -261,10 +318,10 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_profile'][] = [
             'name'           => 'avatar_size',
-            'label'          => __( 'Avatar Size', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'label'          => __( 'Avatar Size',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( 'Avatar size to crop when upload using the registration/profile form.(e.g:100x100)',
                                     'wpuf' ),
             'type'           => 'text',
@@ -272,7 +329,6 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_profile'][] = [
             'name'           => 'pending_user_message',
             'label'          => __( 'Pending User Message',
@@ -284,10 +340,10 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_profile'][] = [
             'name'           => 'denied_user_message',
-            'label'          => __( 'Denied User Message', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'label'          => __( 'Denied User Message',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( 'Denied user will see this message when try to log in.', 'wp-user-frontend' ),
             'default'        => __( '<strong>ERROR:</strong> Your account has been denied by an administrator, please contact admin to approve your account.',
                                     'wp-user-frontend' ),
@@ -295,15 +351,14 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_mails'][] = [
-            'name'    => 'subscription_setting',
-            'label'   => __( '<span class="dashicons dashicons-money"></span> Subscription', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
-            'type'    => 'html',
-            'class'   => 'subscription-setting pro-preview-html',
+            'name'           => 'subscription_setting',
+            'label'          => __( '<span class="dashicons dashicons-money"></span> Subscription',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'           => 'html',
+            'class'          => 'subscription-setting pro-preview-html',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_mails'][] = [
             'name'           => 'email_setting',
             'label'          => __( '<span class="dashicons dashicons-admin-generic"></span> Template Settings',
@@ -312,7 +367,6 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'class'          => 'email-setting pro-preview-html',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_mails'][] = [
             'name'           => 'reset_email_setting',
             'label'          => __( '<span class="dashicons dashicons-unlock"></span> Reset Email',
@@ -321,7 +375,6 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'class'          => 'reset-email-setting pro-preview-html',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_mails'][] = [
             'name'           => 'confirmation_email_setting',
             'label'          => __( '<span class="dashicons dashicons-email-alt"></span> Resend Confirmation Email',
@@ -330,31 +383,30 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'class'          => 'confirmation-email-setting pro-preview-html',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_mails'][] = [
-            'name'    => 'pending_user_email',
-            'label'   => __( '<span class="dashicons dashicons-groups"></span> Pending User Email', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
-            'type'    => 'html',
-            'class'   => 'pending-user-email pro-preview-html',
+            'name'           => 'pending_user_email',
+            'label'          => __( '<span class="dashicons dashicons-groups"></span> Pending User Email',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'           => 'html',
+            'class'          => 'pending-user-email pro-preview-html',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_mails'][] = [
-            'name'    => 'denied_user_email',
-            'label'   => __( '<span class="dashicons dashicons-dismiss"></span> Denied User Email', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
-            'type'    => 'html',
-            'class'   => 'denied-user-email pro-preview-html',
+            'name'           => 'denied_user_email',
+            'label'          => __( '<span class="dashicons dashicons-dismiss"></span> Denied User Email',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'           => 'html',
+            'class'          => 'denied-user-email pro-preview-html',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_mails'][] = [
-            'name'    => 'approved_user_email',
-            'label'   => __( '<span class="dashicons dashicons-smiley"></span> Approved User Email', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
-            'type'    => 'html',
-            'class'   => 'approved-user-email pro-preview-html',
+            'name'           => 'approved_user_email',
+            'label'          => __( '<span class="dashicons dashicons-smiley"></span> Approved User Email',
+                                    'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+            'type'           => 'html',
+            'class'          => 'approved-user-email pro-preview-html',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_mails'][] = [
             'name'           => 'account_activated_user_email',
             'label'          => __( '<span class="dashicons dashicons-smiley"></span> Account Activated Email',
@@ -363,7 +415,6 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'class'          => 'account-activated-user-email pro-preview-html',
             'is_pro_preview' => true,
         ];
-
         $settings_fields['wpuf_mails'][] = [
             'name'           => 'approved_post_email',
             'label'          => __( '<span class="dashicons dashicons-saved"></span> Approved Post Email',
@@ -371,6 +422,375 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'type'           => 'html',
             'class'          => 'approved-post-email pro-preview-html',
             'is_pro_preview' => true,
+        ];
+        $settings_fields['wpuf_sms'] = [
+            [
+                'name'  => 'clickatell_name',
+                'label' => __( 'Clickatell name', 'wp-user-frontend' ),
+                'desc'  => __( 'Clickatell name', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            [
+                'name'  => 'clickatell_password',
+                'label' => __( 'Clickatell Password', 'wp-user-frontend' ),
+                'desc'  => __( 'Clickatell Password', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            [
+                'name'  => 'clickatell_api',
+                'label' => __( 'Clickatell api', 'wp-user-frontend' ),
+                'desc'  => __( 'Clickatell api', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            [
+                'name'  => 'smsglobal_name',
+                'label' => __( 'SMSGlobal Name', 'wp-user-frontend' ),
+                'desc'  => __( 'SMSGlobal Name', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            [
+                'name'  => 'smsglobal_password',
+                'label' => __( 'SMSGlobal Passord', 'wp-user-frontend' ),
+                'desc'  => __( 'SMSGlobal Passord', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            [
+                'name'  => 'nexmo_api',
+                'label' => __( 'Nexmo API', 'wp-user-frontend' ),
+                'desc'  => __( 'Nexmo API', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            [
+                'name'  => 'nexmo_api_Secret',
+                'label' => __( 'Nexmo API Secret', 'wp-user-frontend' ),
+                'desc'  => __( 'Nexmo API Secret', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            [
+                'name'  => 'twillo_number',
+                'label' => __( 'Twillo From Number', 'wp-user-frontend' ),
+                'desc'  => __( 'Twillo From Number', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            [
+                'name'  => 'twillo_sid',
+                'label' => __( 'Twillo Account SID', 'wp-user-frontend' ),
+                'desc'  => __( 'Twillo Account SID', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            [
+                'name'  => 'twillo_token',
+                'label' => __( 'Twillo Authro Token', 'wp-user-frontend' ),
+                'desc'  => __( 'Twillo Authro Token', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+        ];
+        $settings_fields['wpuf_social_api'] = [
+            'enabled'              => [
+                'name'  => 'enabled',
+                'label' => __( 'Enable Social Login', 'wp-user-frontend' ),
+                'type'  => 'checkbox',
+                'desc'  => __( 'Enabling this will add Social Icons under registration form to allow users to login or register using Social Profiles',
+                               'wp-user-frontend' ),
+            ],
+            'facebook_app_label'   => [
+                'name'  => 'fb_app_label',
+                'label' => __( 'Facebook App Settings', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'desc'  => '<a target="_blank" href="https://developers.facebook.com/apps/">' . __( 'Create an App',
+                                                                                                    'wp-user-frontend' ) . '</a>' . __( 'if you don\'t have one and fill App ID and App Secret below. ',
+                                                                                                                                'wp-user-frontend' ),
+            ],
+            'facebook_app_url'     => [
+                'name'  => 'fb_app_url',
+                'label' => __( 'Redirect URI', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'desc'  => "<input class='regular-text' type='text' disabled value=''>",
+            ],
+            'facebook_app_id'      => [
+                'name'  => 'fb_app_id',
+                'label' => __( 'App Id', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            'facebook_app_secret'  => [
+                'name'  => 'fb_app_secret',
+                'label' => __( 'App Secret', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            'twitter_app_label'    => [
+                'name'  => 'twitter_app_label',
+                'label' => __( 'Twitter App Settings', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'desc'  => '<a target="_blank" href="https://apps.twitter.com/">' . __( 'Create an App',
+                                                                                        'wp-user-frontend' ) . '</a>' . __( 'if you don\'t have one and fill Consumer key and Consumer Secret below.',
+                                                                                                                    'wp-user-frontend' ),
+            ],
+            'twitter_app_url'      => [
+                'name'  => 'twitter_app_url',
+                'label' => __( 'Callback URL', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'desc'  => "<input class='regular-text' type='text' disabled value=''>",
+            ],
+            'twitter_app_id'       => [
+                'name'  => 'twitter_app_id',
+                'label' => __( 'Consumer Key', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            'twitter_app_secret'   => [
+                'name'  => 'twitter_app_secret',
+                'label' => __( 'Consumer Secret', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            'google_app_label'     => [
+                'name'  => 'google_app_label',
+                'label' => __( 'Google App Settings', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'desc'  => '<a target="_blank" href="https://console.developers.google.com/project">' . __( 'Create an App',
+                                                                                                            'wp-user-frontend' ) . '</a>' . __( ' if you don\'t have one and fill Client ID and Client Secret below.',
+                                                                                                                                        'wp-user-frontend' ),
+            ],
+            'google_app_url'       => [
+                'name'  => 'google_app_url',
+                'label' => __( 'Redirect URI', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'desc'  => "<input class='regular-text' type='text' disabled value=''>",
+            ],
+            'google_app_id'        => [
+                'name'  => 'google_app_id',
+                'label' => __( 'Client ID', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            'google_app_secret'    => [
+                'name'  => 'google_app_secret',
+                'label' => __( 'Client secret', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            'linkedin_app_label'   => [
+                'name'  => 'linkedin_app_label',
+                'label' => __( 'Linkedin App Settings', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'desc'  => '<a target="_blank" href="https://www.linkedin.com/developer/apps">' . __( 'Create an App',
+                                                                                                      'wp-user-frontend' ) . '</a>' . __( ' if you don\'t have one and fill Client ID and Client Secret below.',
+                                                                                                                                  'wp-user-frontend' ),
+            ],
+            'linkedin_app_url'     => [
+                'name'  => 'linkedin_app_url',
+                'label' => __( 'Redirect URL', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'desc'  => "<input class='regular-text' type='text' disabled value=''>",
+            ],
+            'linkedin_app_id'      => [
+                'name'  => 'linkedin_app_id',
+                'label' => __( 'Client ID', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            'linkedin_app_secret'  => [
+                'name'  => 'linkedin_app_secret',
+                'label' => __( 'Client Secret', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            'instagram_app_label'  => [
+                'name'  => 'instagram_app_label',
+                'label' => __( 'Instagram App Settings', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'desc'  => '<a target="_blank" href="https://www.instagram.com/developer/">' . __( 'Create an App',
+                                                                                                   'wp-user-frontend' ) . '</a>' . __( ' if you don\'t have one and fill Client ID and Client Secret below.',
+                                                                                                                               'wp-user-frontend' ),
+            ],
+            'instagram_app_url'    => [
+                'name'  => 'instagram_app_url',
+                'label' => __( 'Redirect URI', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'desc'  => "<input class='regular-text' type='text' disabled value=''>",
+            ],
+            'instagram_app_id'     => [
+                'name'  => 'instagram_app_id',
+                'label' => __( 'Client ID', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+            'instagram_app_secret' => [
+                'name'  => 'instagram_app_secret',
+                'label' => __( 'Client Secret', 'wp-user-frontend' ),
+                'type'  => 'text',
+            ],
+        ];
+        $settings_fields['user_directory'] = [
+            [
+                'name'    => 'pro_img_size',
+                'label'   => __( 'Profile Gallery Image Size ', 'wpuf-userlisting' ),
+                'desc'    => __( 'Set the image size of picture gallery in frontend', 'wpuf-userlisting' ),
+                'type'    => 'select',
+                'options' => wpuf_get_image_sizes(),
+            ],
+            [
+                'name'    => 'avatar_size',
+                'label'   => __( 'Avatar Size ', 'wpuf-userlisting' ),
+                'desc'    => __( 'Set the image size of profile picture in frontend', 'wpuf-userlisting' ),
+                'type'    => 'select',
+                'options' => [ '32'  => '32 x 32', ],
+            ],
+            [
+                'name'    => 'profile_header_template',
+                'label'   => __( 'Profile Header Template', 'wp-user-frontend' ),
+                'type'    => 'radio',
+                'default' => 'layout',
+                'options' => [
+                    'layout'  => '<img class="profile-header" src="' . WPUF_ASSET_URI . '/images/profile-header-template-1.jpg' . '" />',
+                    'layout1' => '<img class="profile-header" src="' . WPUF_ASSET_URI . '/images/profile-header-template-2.jpg' . '" />',
+                    'layout2' => '<img class="profile-header" src="' . WPUF_ASSET_URI . '/images/profile-header-template-3.jpg' . '" />',
+                ],
+            ],
+            [
+                'name'    => 'user_listing_template',
+                'label'   => __( 'User Listing Template', 'wp-user-frontend' ),
+                'type'    => 'radio',
+                'default' => 'list',
+                'options' => [
+                    'list'  => '<img class="user-listing" src="' . WPUF_ASSET_URI . '/images/user-listing-template-1.jpg' . '" />',
+                    'list1' => '<img class="user-listing" src="' . WPUF_ASSET_URI . '/images/user-listing-template-2.jpg' . '" />',
+                    'list2' => '<img class="user-listing" src="' . WPUF_ASSET_URI . '/images/user-listing-template-3.jpg' . '" />',
+                    'list3' => '<img class="user-listing" src="' . WPUF_ASSET_URI . '/images/user-listing-template-4.jpg' . '" />',
+                    'list4' => '<img class="user-listing" src="' . WPUF_ASSET_URI . '/images/user-listing-template-5.jpg' . '" />',
+                    'list5' => '<img class="user-listing" src="' . WPUF_ASSET_URI . '/images/user-listing-template-6.jpg' . '" />',
+                ],
+            ],
+        ];
+        $settings_fields['wpuf_payment_invoices'] = [
+            [
+                'name'    => 'enable_invoices',
+                'label'   => __( 'Enable Invoices', 'wp-user-frontend' ),
+                'desc'    => __( 'Enable sending invoices for completed payments', 'wp-user-frontend' ),
+                'type'    => 'checkbox', 'default' => 'on',
+            ],
+            [
+                'name'    => 'show_invoices',
+                'label'   => __( 'Show Invoices', 'wp-user-frontend' ),
+                'desc'    => __( 'Show Invoices option where <code>[wpuf_account]</code> is located', 'wp-user-frontend' ),
+                'type'    => 'checkbox', 'default' => 'on',
+            ],
+            [
+                'name'     => 'set_logo',
+                'label'    => __( 'Set Invoice Logo', 'wp-user-frontend' ),
+                'desc'     => __( 'This sets the company Logo to be used in Invoice', 'wp-user-frontend' ),
+                'type'     => 'file', 'default'  => false,
+            ],
+            [
+                'name'     => 'set_color',
+                'label'    => __( 'Set Invoice Color', 'wp-user-frontend' ),
+                'desc'     => __( 'Set color code to be used in invoice', 'wp-user-frontend' ),
+                'type'     => 'text', 'default'  => '#e435226',
+            ],
+            [
+                'name'       => 'set_from_address',
+                'label'    => __( 'From Address', 'wp-user-frontend' ),
+                'desc'     => __( 'This sets the provider information of the Invoice. Note: use the <xmp class="wpuf-xmp-tag"><br></xmp> tag to enter line breaks.', 'wp-user-frontend' ),
+                'type'     => 'textarea',
+            ],
+            [
+                'name'       => 'set_title',
+                'label'    => __( 'Invoice Title', 'wp-user-frontend' ),
+                'desc'     => __( 'This sets the payment information title of the Invoice', 'wp-user-frontend' ),
+                'type'     => 'text',
+            ],
+            [
+                'name'       => 'set_paragraph',
+                'label'    => __( 'Invoice Paragraph', 'wp-user-frontend' ),
+                'desc'     => __( 'This sets the payment information paragraph of the Invoice', 'wp-user-frontend' ),
+                'type'     => 'textarea',
+            ],
+            [
+                'name'       => 'set_footernote',
+                'label'    => __( 'Invoice Footer', 'wp-user-frontend' ),
+                'desc'     => __( 'This sets the footer of the Invoice', 'wp-user-frontend' ),
+                'type'     => 'text',
+            ],
+            [
+                'name'       => 'set_filename',
+                'label'    => __( 'Invoice Filename Prefix', 'wp-user-frontend' ),
+                'desc'     => __( 'This sets the filename prefix of the Invoice', 'wp-user-frontend' ),
+                'type'     => 'text',
+            ],
+            [
+                'name'       => 'set_mail_sub',
+                'label'    => __( 'Set Invoice Mail Subject', 'wp-user-frontend' ),
+                'desc'     => __( 'This sets the mail subject of the Invoice', 'wp-user-frontend' ),
+                'type'     => 'text',
+            ],
+            [
+                'name'       => 'set_mail_body',
+                'label'    => __( 'Set Invoice Mail Body', 'wp-user-frontend' ),
+                'desc'     => __( 'This sets the mail body of the Invoice', 'wp-user-frontend' ),
+                'type'     => 'textarea',
+            ],
+        ];
+        $settings_fields['wpuf_payment_tax'] = [
+            array(
+                'name'    => 'tax_help',
+                'label'   => __( 'Need help?', 'wp-user-frontend' ),
+                'desc'    => sprintf( __( 'Visit the <a href="%s" target="_blank">Tax setup documentation</a> for guidance on how to setup tax.', 'wp-user-frontend' ), 'https://wedevs.com/docs/wp-user-frontend-pro/settings/tax/' ),
+                'callback'    => 'wpuf_descriptive_text',
+            ),
+            array(
+                'name'    => 'enable_tax',
+                'label'   => __( 'Enable Tax', 'wp-user-frontend' ),
+                'desc'    => __( 'Enable tax on payments', 'wp-user-frontend' ),
+                'type'    => 'checkbox',
+                'default' => 'on',
+            ),
+            array(
+                'name'    => 'wpuf_base_country_state',
+                'label'   => '<strong>' . __( 'Base Country and State', 'wp-user-frontend' ) . '</strong>',
+                'desc'    => __( 'Select your base country and state', 'wp-user-frontend' ),
+            ),
+            array(
+                'name'    => 'wpuf_tax_rates',
+                'label'   => '<strong>' . __( 'Tax Rates', 'wp-user-frontend' ) . '</strong>',
+                'desc'    => __( 'Add tax rates for specific regions. Enter a percentage, such as 5 for 5%', 'wp-user-frontend' ),
+            ),
+            array(
+                'name'    => 'fallback_tax_rate',
+                'label'   => '<strong>' . __( 'Fallback Tax Rate', 'wp-user-frontend' ) . '</strong>',
+                'desc'    => __( 'Customers not in a specific rate will be charged this tax rate. Enter a percentage, such as 5 for 5%', 'wp-user-frontend' ),
+                'type'    => 'number',
+                'default' => 0,
+            ),
+            array(
+                'name'    => 'prices_include_tax',
+                'label'   => __( 'Show prices with tax', 'wp-user-frontend' ),
+                'desc'    => __( 'If frontend prices will include tax or not', 'wp-user-frontend' ),
+                'type'    => 'radio',
+                'default' => 'yes',
+                'options' => array(
+                    'yes' => __( 'Show prices with tax', 'wp-user-frontend' ),
+                    'no'  => __( 'Show prices without tax', 'wp-user-frontend' ),
+                ),
+            ),
+        ];
+        $settings_fields['wpuf_content_restriction'] = [
+            array(
+                'name'    => 'enable_content_filtering',
+                'label'   => __( 'Enable Content Filtering', 'wp-user-frontend' ),
+                'desc'    => __( 'Enable Content Filtering in frontend', 'wp-user-frontend' ),
+                'type'    => 'checkbox',
+                'default' => 'off',
+            ),
+            array(
+                'name'     => 'keyword_dictionary',
+                'label'    => __( 'Keyword Dictionary', 'wp-user-frontend' ),
+                'desc'     => __( 'Enter Keywords to Remove. Separate keywords with commas.', 'wp-user-frontend' ),
+                'type'     => 'textarea',
+            ),
+            array(
+                'name'     => 'filter_contents',
+                'label'    => __( 'Filter main content', 'wp-user-frontend' ),
+                'desc'     => __( 'Choose which content to filter.', 'wp-user-frontend' ),
+                'type'     => 'multicheck',
+                'options'  => array(
+                    'post_title'   => __( 'Post Titles', 'wp-user-frontend' ),
+                    'post_content' => __( 'Post Content', 'wp-user-frontend' ),
+                ),
+                'default'  => array( 'post_content', 'post_title' ),
+            ),
         ];
 
         return $settings_fields;

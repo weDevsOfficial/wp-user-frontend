@@ -1145,7 +1145,7 @@ img.user-listing:hover, input[type=radio]:checked + img.user-listing, img.user-l
 h3.tooltip-header {
     color: #fff;
 }
-span.tooltip-check svg path {
+.wpuf-pro-field-tooltip ul li span.tooltip-check svg path {
     fill: #139F84;
 }
 .wpuf-pro-field-tooltip ul {

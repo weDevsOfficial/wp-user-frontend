@@ -1090,18 +1090,18 @@ a.wpuf-button.button-upgrade-to-pro {
     color: #fff;
     min-height: auto;
     border-radius: 5px;
+    text-decoration: none;
 }
 .pro-field-overlay a.wpuf-button.button-upgrade-to-pro {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    text-decoration: none;
 }
 span.pro-icon svg {
     height: 1em;
 }
-span.pro-icon svg path {
+span.pro-icon.icon-white svg path {
     fill: #fff;
 }
 label span.pro-icon svg path {
@@ -1125,4 +1125,73 @@ img.profile-header:hover, input[type=radio]:checked + img.profile-header, img.pr
 img.user-listing:hover, input[type=radio]:checked + img.user-listing, img.user-listing.active {
     -webkit-filter: grayscale(0%) opacity(1) drop-shadow(8px 8px 5px #ccc); /* Safari 6.0 - 9.0 */
     filter: grayscale(0%) opacity(1) drop-shadow(8px 8px 5px #ccc);
+}
+.wpuf-pro-field-tooltip {
+    background: #000;
+    width: max-content;
+    padding: 25px 50px 20px 20px;
+    border-radius: 5px;
+    color: #fff;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    box-sizing: border-box;
+    z-index: 99999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.8s;
+}
+h3.tooltip-header {
+    color: #fff;
+}
+span.tooltip-check svg path {
+    fill: #139F84;
+}
+.wpuf-pro-field-tooltip ul {
+    margin-bottom: 30px;
+}
+.wpuf-pro-field-tooltip ul li {
+    font-size: 1.2em;
+    line-height: 1.5em;
+    font-weight: 400;
+}
+span.tooltip-check {
+    margin-right: 10px;
+}
+.wpuf-pro-field-tooltip .pro-link {
+    display: flex;
+    justify-content: center;
+}
+.wpuf-pro-field-tooltip i {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -12px;
+    width: 24px;
+    height: 12px;
+    overflow: hidden;
+}
+.wpuf-pro-field-tooltip i::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background-color: #000;
+}
+span.pro-icon,
+span.pro-icon-title {
+    position: relative;
+    padding-top: 10px;
+}
+span.pro-icon-title:hover .wpuf-pro-field-tooltip {
+    display: block;
+    opacity: 1;
+}
+
+span.pro-icon:hover .wpuf-pro-field-tooltip {
+    display: block;
+    opacity: 1;
 }

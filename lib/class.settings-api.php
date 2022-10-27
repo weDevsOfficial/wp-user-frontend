@@ -581,6 +581,7 @@ class WeDevs_Settings_API {
             }
             if ( ! wpuf()->is_pro() ) {
                 echo wpuf_get_pro_preview_html();
+                echo wpuf_get_pro_preview_tooltip();
             }
             ?>
         </div>
@@ -663,7 +664,17 @@ class WeDevs_Settings_API {
                     // Finally, open the modal
                     file_frame.open();
                 });
-        });
+
+                // show tooltips on crown icons
+                $('th span.pro-icon, td label span.pro-icon-title').on('mouseover', function() {
+                    let tooltip = $('.wpuf-pro-field-tooltip');
+
+                    tooltip.appendTo(this);
+                });
+
+                // disable the pro preview checkboxes
+                $('span.pro-icon-title').siblings('input[type="checkbox"]').prop('disabled', true);
+            });
         </script>
 
         <style type="text/css">

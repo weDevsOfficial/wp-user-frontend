@@ -572,7 +572,7 @@ function wpuf_settings_field_profile( $form ) {
     $val = get_option( 'wpuf_profile', [] );
 
     if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
-        $crown_icon = ' ' . file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' );
+        $crown_icon = sprintf( '<span class="pro-icon"> %s</span>', file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' ) );
         $class = 'class="pro-preview"';
     }
         ?>

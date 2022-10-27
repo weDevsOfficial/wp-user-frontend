@@ -1181,8 +1181,8 @@ span.tooltip-check {
     transform: translate(-50%, -50%) rotate(45deg);
     background-color: #000;
 }
-span.pro-icon,
-span.pro-icon-title {
+tr.pro-preview span.pro-icon,
+tr span.pro-icon-title {
     position: relative;
     padding-top: 10px;
 }

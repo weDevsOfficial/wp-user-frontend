@@ -57,4 +57,11 @@ jQuery(function($) {
         });
         $(this).closest("p").hide();
     });
+
+    // show tooltips on crown icons
+    $('th span.pro-icon, td label span.pro-icon-title, th label span.pro-icon-title').on('mouseover', function() {
+        let tooltip = $('.wpuf-pro-field-tooltip');
+
+        tooltip.appendTo(this);
+    });
 });

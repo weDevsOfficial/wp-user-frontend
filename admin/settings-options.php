@@ -568,12 +568,14 @@ function wpuf_settings_field_profile( $form ) {
     );
     $crown_icon = '';
     $class      = '';
+    $disabled   = '';
 
     $val = get_option( 'wpuf_profile', [] );
 
     if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
         $crown_icon = sprintf( '<span class="pro-icon"> %s</span>', file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' ) );
-        $class = 'class="pro-preview"';
+        $class      = 'class="pro-preview"';
+        $disabled   = 'disabled';
     }
         ?>
 
@@ -588,7 +590,7 @@ function wpuf_settings_field_profile( $form ) {
             <tr valign="top" <?php echo $class; ?>>
                 <th scrope="row"><?php echo esc_attr( $name ) . $crown_icon; ?></th>
                 <td>
-                    <select name="wpuf_profile[roles][<?php echo esc_attr( $role ); ?>]" class="regular" style="min-width: 300px;">
+                    <select name="wpuf_profile[roles][<?php echo esc_attr( $role ); ?>]" class="regular" style="min-width: 300px;" <?php echo esc_attr( $disabled ); ?>>
                         <option value=""><?php esc_html_e( '&mdash; Select &mdash;', 'wp-user-frontend' ); ?></option>
                         <?php
                         if ( class_exists( 'WP_User_Frontend_Pro' ) ) {

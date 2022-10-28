@@ -1002,7 +1002,7 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
 }
 .wpuf-subscription-pack-settings nav {
   background-color: #f1f1f1;
-  min-width: 200px;
+  min-width: max-content;
   border-right: 1px solid #e5e5e5;
 }
 .wpuf-subscription-pack-settings nav ul,

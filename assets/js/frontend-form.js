@@ -390,7 +390,7 @@
 
                 self.next('span.wpuf-loading').remove();
 
-                self.after('<span class="wpuf-draft-saved">&nbsp; Post Saved</span>');
+                self.after('<span class="wpuf-draft-saved">&nbsp; ' + res.message + '</span>');
                 $('.wpuf-draft-saved').delay(2500).fadeOut('fast', function(){
                     $(this).remove();
                 });
@@ -1185,6 +1185,7 @@
             textLimit: function(event, limit, limit_type, limit_to ) {
                 var self = $(this),
                     content_length = self.val().length + 1;
+                var content = self.val();
 
                 if ( 'word' === limit_type ) {
                     content_length = self.val().split(' ').length;

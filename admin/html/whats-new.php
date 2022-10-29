@@ -1,6 +1,16 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.5.29',
+        'released' => '2022-09-15',
+        'changes'  => [
+            [
+                'title' => __( 'Short-code encryption updated for registration page', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.28',
         'released' => '2022-08-17',
         'changes'  => [

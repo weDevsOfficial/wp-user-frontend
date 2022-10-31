@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 3.5.28\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2022-06-17 13:53:21+00:00\n"
+"POT-Creation-Date: 2022-10-31 04:45:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1052,7 +1052,7 @@ msgstr ""
 msgid "After how many hours user will be locked from editing the submitted post."
 msgstr ""
 
-#: admin/html/form-settings-post.php:7 class/post-form-templates/post.php:127
+#: admin/html/form-settings-post.php:7 class/post-form-templates/post.php:130
 msgid "This page is restricted. Please %login% / %register% to view this page."
 msgstr ""
 
@@ -4639,49 +4639,49 @@ msgstr ""
 msgid "Write the full description of your Post"
 msgstr ""
 
-#: class/post-form-templates/post.php:77 class/post-form-templates/post.php:78
+#: class/post-form-templates/post.php:78 class/post-form-templates/post.php:79
 #: includes/fields/class-field-featured-image.php:9
 #: includes/fields/class-field-featured-image.php:142
-#: includes/free/post-form-templates/the_events_calendar.php:125
 #: includes/free/post-form-templates/the_events_calendar.php:126
+#: includes/free/post-form-templates/the_events_calendar.php:127
 #: templates/dashboard/list.php:7 templates/dashboard/posts.php:97
 msgid "Featured Image"
 msgstr ""
 
-#: class/post-form-templates/post.php:81
+#: class/post-form-templates/post.php:82
 msgid "Upload the main image of your post"
 msgstr ""
 
-#: class/post-form-templates/post.php:91
-#: includes/free/post-form-templates/the_events_calendar.php:138
+#: class/post-form-templates/post.php:92
+#: includes/free/post-form-templates/the_events_calendar.php:139
 msgid "Excerpt"
 msgstr ""
 
-#: class/post-form-templates/post.php:94
+#: class/post-form-templates/post.php:95
 msgid "Provide a short description of this post (optional)"
 msgstr ""
 
-#: class/post-form-templates/post.php:109
+#: class/post-form-templates/post.php:112
 #: includes/fields/class-field-post-tags.php:6
 msgid "Tags"
 msgstr ""
 
-#: class/post-form-templates/post.php:112
-#: includes/free/post-form-templates/the_events_calendar.php:157
+#: class/post-form-templates/post.php:115
+#: includes/free/post-form-templates/the_events_calendar.php:160
 msgid "Separate tags with commas."
 msgstr ""
 
-#: class/post-form-templates/post.php:130
+#: class/post-form-templates/post.php:133
 msgid "Create Post"
 msgstr ""
 
-#: class/post-form-templates/post.php:144
+#: class/post-form-templates/post.php:147
 msgid ""
 "Post has been updated successfully. <a target=\"_blank\" "
 "href=\"%link%\">View post</a>"
 msgstr ""
 
-#: class/post-form-templates/post.php:146
+#: class/post-form-templates/post.php:149
 msgid "Update Post"
 msgstr ""
 
@@ -4891,7 +4891,7 @@ msgid "Subtotal"
 msgstr ""
 
 #: class/transactions-list-table.php:47
-#: includes/free/post-form-templates/the_events_calendar.php:115
+#: includes/free/post-form-templates/the_events_calendar.php:116
 msgid "Cost"
 msgstr ""
 
@@ -6744,53 +6744,53 @@ msgstr ""
 msgid "Write the full description of your event"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:53
+#: includes/free/post-form-templates/the_events_calendar.php:54
 msgid "Event Start"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:66
+#: includes/free/post-form-templates/the_events_calendar.php:67
 msgid "Event End"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:79
+#: includes/free/post-form-templates/the_events_calendar.php:80
 msgid "All Day Event"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:94
+#: includes/free/post-form-templates/the_events_calendar.php:95
 msgid "Event Website"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:105
+#: includes/free/post-form-templates/the_events_calendar.php:106
 msgid "Currency Symbol"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:129
+#: includes/free/post-form-templates/the_events_calendar.php:130
 msgid "Upload the main image of your event"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:141
+#: includes/free/post-form-templates/the_events_calendar.php:142
 msgid "Provide a short description of this event (optional)"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:154
+#: includes/free/post-form-templates/the_events_calendar.php:157
 msgid "Event Tags"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:171
+#: includes/free/post-form-templates/the_events_calendar.php:174
 msgid "This page is restricted. Please Log in / Register to view this page."
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:174
+#: includes/free/post-form-templates/the_events_calendar.php:177
 msgid "Create Event"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:177
+#: includes/free/post-form-templates/the_events_calendar.php:180
 msgid ""
 "Event has been updated successfully. <a target=\"_blank\" "
 "href=\"%link%\">View event</a>"
 msgstr ""
 
-#: includes/free/post-form-templates/the_events_calendar.php:179
+#: includes/free/post-form-templates/the_events_calendar.php:182
 msgid "Update Event"
 msgstr ""
 

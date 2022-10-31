@@ -12,7 +12,7 @@ Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '3.5.28' );
+define( 'WPUF_VERSION', '3.5.29' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -416,11 +416,7 @@ final class WP_User_Frontend {
 
         require_once WPUF_ROOT . '/includes/class-upgrades.php';
 
-        $upgrader = new WPUF_Upgrades();
-
-        if ( $upgrader->needs_update() ) {
-            $upgrader->perform_updates();
-        }
+        $this->container['upgrades'] = new WPUF_Upgrades();
     }
 
     /**

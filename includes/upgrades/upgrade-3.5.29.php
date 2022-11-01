@@ -18,12 +18,12 @@ function wpuf_upgrade_3_5_29_migration() {
 
         $content = maybe_unserialize( $field->post_content );
 
-        if ( ! empty( $content['input_type'] ) && 'textarea' === $content['input_type'] ) {
+        if ( ! empty( $content['input_type'] ) && 'textarea' === $content['input_type'] && ! isset( $content['text_editor_control'] ) ) {
             $content['text_editor_control'] = [];
 
-            $field->post_content = $content;
+            $field->post_content = maybe_serialize( $content );
 
-            // wpuf_update_post( $field );
+            wp_update_post( $field );
         }
     }
 }

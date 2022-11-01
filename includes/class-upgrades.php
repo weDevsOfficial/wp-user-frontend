@@ -83,11 +83,11 @@ class WPUF_Upgrades {
         foreach ( self::$upgrades as $version => $file ) {
             if ( version_compare( $installed_version, $version, '<' ) ) {
                 include $path . $file;
-                // update_option( 'wpuf_version', $version );
+                update_option( 'wpuf_version', $version );
             }
         }
 
-        // update_option( 'wpuf_version', WPUF_VERSION );
+        update_option( 'wpuf_version', WPUF_VERSION );
     }
 
     /**

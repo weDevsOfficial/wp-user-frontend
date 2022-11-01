@@ -138,7 +138,8 @@ class WPUF_Registration {
         );
         $userrole = $atts['role'];
 
-        $roleencoded = wpuf_encryption( $userrole );
+        $user_nonce  = base64_encode( random_bytes( WPUF_Encryption_Helper::get_encryption_nonce_length() ) );
+        $roleencoded = wpuf_encryption( $userrole, $user_nonce );
 
         $reg_page = $this->get_registration_url();
 
@@ -166,6 +167,7 @@ class WPUF_Registration {
             $args = [
                 'action_url' => add_query_arg( $queries, $reg_page ),
                 'userrole'   => $roleencoded,
+                'user_nonce' => $user_nonce,
             ];
 
             wpuf_load_template( 'registration-form.php', $args );
@@ -182,6 +184,7 @@ class WPUF_Registration {
     public function process_registration() {
         if ( ! empty( $_POST['wpuf_registration'] ) && ! empty( $_POST['_wpnonce'] ) ) {
             $userdata = [];
+            $user     = '';
 
             if ( isset( $_POST['_wpnonce'] ) ) {
                 $nonce = sanitize_key( wp_unslash( $_POST['_wpnonce'] ) );
@@ -190,13 +193,14 @@ class WPUF_Registration {
 
             $validation_error = new WP_Error();
 
-            $reg_fname = isset( $_POST['reg_fname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_fname'] ) ) : '';
-            $reg_lname = isset( $_POST['reg_lname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_lname'] ) ) : '';
-            $reg_email = isset( $_POST['reg_email'] ) ? sanitize_email( wp_unslash( $_POST['reg_email'] ) ) : '';
-            $pwd1      = isset( $_POST['pwd1'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd1'] ) ) : '';
-            $pwd2      = isset( $_POST['pwd2'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd2'] ) ) : '';
-            $log       = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
-            $urhidden  = isset( $_POST['urhidden'] ) ? sanitize_text_field( wp_unslash( $_POST['urhidden'] ) ) : '';
+            $reg_fname  = isset( $_POST['reg_fname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_fname'] ) ) : '';
+            $reg_lname  = isset( $_POST['reg_lname'] ) ? sanitize_text_field( wp_unslash( $_POST['reg_lname'] ) ) : '';
+            $reg_email  = isset( $_POST['reg_email'] ) ? sanitize_email( wp_unslash( $_POST['reg_email'] ) ) : '';
+            $pwd1       = isset( $_POST['pwd1'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd1'] ) ) : '';
+            $pwd2       = isset( $_POST['pwd2'] ) ? sanitize_text_field( wp_unslash( $_POST['pwd2'] ) ) : '';
+            $log        = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
+            $urhidden   = isset( $_POST['urhidden'] ) ? sanitize_text_field( wp_unslash( $_POST['urhidden'] ) ) : '';
+            $user_nonce = isset( $_POST['user_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['user_nonce'] ) ) : '';
 
             $validation_error = apply_filters( 'wpuf_process_registration_errors', $validation_error, $reg_fname, $reg_lname, $reg_email, $log, $pwd1, $pwd2 );
 
@@ -270,15 +274,14 @@ class WPUF_Registration {
                 $userdata['user_login'] = $log;
             }
 
-            $dec_role = wpuf_decryption( $urhidden );
-
+            $dec_role               = wpuf_decryption( $urhidden, $user_nonce );
             $userdata['first_name'] = $reg_fname;
             $userdata['last_name']  = $reg_lname;
             $userdata['user_email'] = $reg_email;
             $userdata['user_pass']  = $pwd1;
 
             if ( get_role( $dec_role ) ) {
-                $userdata['role'] = $dec_role;
+                $userdata['role'] = empty( $dec_role ) || 'administrator' === $dec_role ? get_option( 'default_role' ) : $dec_role;
             }
 
             $user = wp_insert_user( $userdata );

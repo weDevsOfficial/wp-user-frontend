@@ -96,7 +96,7 @@
                             } ?>
 
                             <div class="form-create-overlay">
-                                <a href="<?php echo esc_url( WPUF_Pro_Prompt::get_pro_url() ); ?>"
+                                <a href="<?php echo esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>"
                                    target="_blank"
                                    class="wpuf-button button-upgrade-to-pro"
                                    title="<?php echo esc_attr( $template->get_title() ); ?>" >

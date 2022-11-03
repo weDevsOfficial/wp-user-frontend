@@ -4453,7 +4453,7 @@ function wpuf_get_pro_preview_html() {
     $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
     return sprintf( '<div class="pro-field-overlay">
                         <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a>
-                    </div>', esc_url( WPUF_Pro_Prompt::get_pro_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+                    </div>', esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
                     file_get_contents( $crown_icon ) );
 }
 
@@ -4488,7 +4488,7 @@ function wpuf_get_pro_preview_tooltip() {
 
     $html .= '</ul>';
     $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a></div>',
-              esc_url( WPUF_Pro_Prompt::get_pro_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+              esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
                       file_get_contents( $crown_icon ) );
 
     $html .= '<i></i>';

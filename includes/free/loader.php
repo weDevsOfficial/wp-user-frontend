@@ -989,7 +989,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      */
     public function load_modules_scripts() {
         wp_enqueue_style( 'wpuf-pro-modules', WPUF_ASSET_URI . '/css/admin/wpuf-module.css', false, WPUF_VERSION );
-        wp_enqueue_script( 'wpuf_pro_admin', WPUF_ASSET_URI . '/js/admin/wpuf-module.js', [ 'jquery', 'jquery-blockui' ], WPUF_VERSION, true );
+        wp_enqueue_script( 'wpuf_pro_admin', WPUF_ASSET_URI . '/js/admin/wpuf-module.js', [ 'jquery' ], WPUF_VERSION, true );
     }
 
     /**
@@ -997,7 +997,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      *
      * @since WPUF_SINCE
      *
-     * @return string[][]
+     * @return string[]
      */
     public function pro_modules_info() {
         return [
@@ -1134,10 +1134,10 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      * @return void
      */
     public function modules_page_contents( $modules ) {
-        $diamond_icon = WPUF_ROOT . '/assets/images/diamond.svg';
-        $check_icon   = WPUF_ROOT . '/assets/images/check.svg';
-        $crown_icon   = WPUF_ROOT . '/assets/images/crown.svg';
-        $close_icon   = WPUF_ROOT . '/assets/images/x.svg';
+        $diamond_icon = file_exists( WPUF_ROOT . '/assets/images/diamond.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/diamond.svg' ) : '';
+        $check_icon   = file_exists( WPUF_ROOT . '/assets/images/check.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/check.svg' ) : '';
+        $crown_icon   = file_exists( WPUF_ROOT . '/assets/images/crown.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' ) : '';
+        $close_icon   = file_exists( WPUF_ROOT . '/assets/images/x.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/x.svg' ) : '';
         $suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
         wp_enqueue_style( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.css', false, '1.6.0' );
@@ -1149,16 +1149,10 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                 <div class="modal-window-inner">
                     <div class="content-area">
                         <div class="popup-close-button">
-                            <?php if ( file_exists( $close_icon ) ) {
-                                echo file_get_contents( $close_icon );
-                            } ?>
+                            <?php echo $close_icon; ?>
                         </div>
                         <div class="popup-diamond">
-                            <?php
-                            if ( file_exists( $diamond_icon ) ) {
-                                echo file_get_contents( $diamond_icon );
-                            }
-                            ?>
+                            <?php echo $diamond_icon; ?>
                         </div>
                         <div class="wpuf-popup-header">
                             <h2 class="font-orange header-one">Upgrade to</h2>
@@ -1168,11 +1162,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                         <div class="wpuf-popup-list-area">
                             <div class="single-checklist">
                                 <div class="check-icon">
-                                    <?php
-                                    if ( file_exists( $check_icon ) ) {
-                                        echo file_get_contents( $check_icon );
-                                    }
-                                    ?>
+                                    <?php echo $check_icon; ?>
                                 </div>
                                 <div class="check-list">
                                     <p>Get custom <span class="bold font-black">Post Type</span> and <span class="bold font-black">Taxonomy</span> support with
@@ -1181,11 +1171,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                             </div>
                             <div class="single-checklist">
                                 <div class="check-icon">
-                                    <?php
-                                    if ( file_exists( $check_icon ) ) {
-                                        echo file_get_contents( $check_icon );
-                                    }
-                                    ?>
+                                    <?php echo $check_icon; ?>
                                 </div>
                                 <div class="check-list">
                                     <p>Enable <span class="bold font-black">conditional logic</span> and <span class="bold font-black">multi-step</span><br> functionalities on your forms.</p>
@@ -1193,11 +1179,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                             </div>
                             <div class="single-checklist">
                                 <div class="check-icon">
-                                    <?php
-                                    if ( file_exists( $check_icon ) ) {
-                                        echo file_get_contents( $check_icon );
-                                    }
-                                    ?>
+                                    <?php echo $check_icon; ?>
                                 </div>
                                 <div class="check-list">
                                     <p>Show or hide <span class="bold font-black">menus, pages,</span> and <span class="bold font-black">content</span> based on<br> user roles or login status of a user.</p>
@@ -1205,24 +1187,18 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                             </div>
                             <div class="single-checklist">
                                 <div class="check-icon">
-                                    <?php
-                                    if ( file_exists( $check_icon ) ) {
-                                        echo file_get_contents( $check_icon );
-                                    }
-                                    ?>
+                                    <?php echo $check_icon; ?>
                                 </div>
                                 <div class="check-list">
                                     <p><span class="bold font-black">20+ Premium Modules</span> (Social Login, User<br> Directory, User Activity, Stripe, MailChimp, Private<br> Messaging, Zapier, & more)</p>
                                 </div>
                             </div>
                         </div>
-                        <a href="<?php echo WPUF_Pro_Prompt::get_pro_url(); ?>"
+                        <a href="<?php echo self::get_upgrade_to_pro_popup_url(); ?>"
                            target="_blank"
                            class="wpuf-button button-upgrade-to-pro">
                             <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
-                            <?php if ( file_exists( $crown_icon ) ) {
-                                printf( '<span class="pro-icon"> %s</span>', file_get_contents( $crown_icon ) );
-                            } ?>
+                            <?php printf( '<span class="pro-icon"> %s</span>', $crown_icon );  ?>
                         </a>
                     </div>
                     <div class="slider-area">
@@ -1248,25 +1224,13 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                 <div class="modal-footer">
                     <div class="footer-feature">
                         <p>
-                            <?php
-                            if ( file_exists( $check_icon ) ) {
-                                echo file_get_contents( $check_icon );
-                            }
-                            ?> Industry leading 24x7 support
+                            <?php echo $check_icon; ?> Industry leading 24x7 support
                         </p>
                         <p>
-                            <?php
-                            if ( file_exists( $check_icon ) ) {
-                                echo file_get_contents( $check_icon );
-                            }
-                            ?> 14 days no questions asked refund policy
+                            <?php echo $check_icon; ?> 14 days no questions asked refund policy
                         </p>
                         <p>
-                            <?php
-                            if ( file_exists( $check_icon ) ) {
-                                echo file_get_contents( $check_icon ) . esc_html( '  Secured payment' );
-                            }
-                            ?>
+                            <?php echo $check_icon; ?> Secured payment
                         </p>
 
                     </div>
@@ -1306,20 +1270,18 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                                     </p>
                                 </div>
                             </div>
-                            <div class="form-create-overlay">
-                                <a href="#wpuf-upgrade-popup"
-                                    class="wpuf-button button-upgrade-to-pro">
-                                    <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
-                                    <?php if ( file_exists( $crown_icon ) ) {
-                                        printf( '<span class="pro-icon"> %s</span>', file_get_contents( $crown_icon ) );
-                                    } ?>
-                                </a>
-                            </div>
                         </div>
                         <?php
                     }
                 }
                 ?>
+            </div>
+            <div class="form-create-overlay">
+                <a href="#wpuf-upgrade-popup"
+                   class="wpuf-button button-upgrade-to-pro">
+                    <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
+                    <?php printf( '<span class="pro-icon"> %s</span>', $crown_icon ); ?>
+                </a>
             </div>
         </div>
 <?php

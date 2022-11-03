@@ -1,6 +1,6 @@
 <?php
 
-function wpuf_upgrade_3_5_29_migration() {
+function wpuf_upgrade_3_5_30_migration() {
     $args = [
         'post_type' => 'wpuf_input',
     ];
@@ -28,4 +28,4 @@ function wpuf_upgrade_3_5_29_migration() {
     }
 }
 
-wpuf_upgrade_3_5_29_migration();
+wpuf_upgrade_3_5_30_migration();

@@ -1,8 +1,9 @@
 <?php
 
-function wpuf_upgrade_3_5_30_migration() {
+function wpuf_upgrade_3_6_0_migration() {
     $args = [
-        'post_type' => 'wpuf_input',
+        'post_type'   => 'wpuf_input',
+        'numberposts' => -1,
     ];
 
     $input_fields = get_posts( $args );
@@ -28,4 +29,4 @@ function wpuf_upgrade_3_5_30_migration() {
     }
 }
 
-wpuf_upgrade_3_5_30_migration();
+wpuf_upgrade_3_6_0_migration();

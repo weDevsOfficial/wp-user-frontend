@@ -45,7 +45,7 @@
             <?php
             if ( $user_sub['recurring'] != 'yes' ) {
                 if ( !empty( $user_sub['expire'] ) ) {
-                    $expiry_date =  ( $user_sub['expire'] == 'unlimited' ) ? ucfirst( 'unlimited' ) : wpuf_get_date( wpuf_date2mysql( $user_sub['expire'] ) ); ?>
+                    $expiry_date =  ( 'unlimited' === $user_sub['expire'] ) ? __( 'Unlimited', 'wp-user-frontend' ) : wpuf_get_date( wpuf_date2mysql( $user_sub['expire'] ) ); ?>
                     <div class="wpuf-expire">
                         <strong><?php echo esc_html__( 'Expire date:', 'wp-user-frontend' ); ?></strong> <?php echo esc_html( $expiry_date ); ?>
                     </div>

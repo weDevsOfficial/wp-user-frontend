@@ -3114,42 +3114,78 @@ add_filter( 'display_post_states', 'wpuf_admin_page_states', 10, 2 );
  * Encryption function for various usage
  *
  * @since 2.5.8
+ * @since WPUF param $nonce added
  *
  * @param string $id
+ * @param string $nonce
  *
- * @return string $encoded_id
+ * @return string|bool encoded string or false if encryption failed
  */
-function wpuf_encryption( $id ) {
-    $secret_key     = AUTH_KEY;
-    $secret_iv      = AUTH_SALT;
+function wpuf_encryption( $id, $nonce = null ) {
+    $auth_keys  = WPUF_Encryption_Helper::get_encryption_auth_keys();
+    $secret_key = $auth_keys['auth_key'];
+    $secret_iv  = ! empty( $nonce ) ? base64_decode( $nonce ) : $auth_keys['auth_salt'];
 
-    $encrypt_method = 'AES-256-CBC';
-    $key            = hash( 'sha256', $secret_key );
-    $iv             = substr( hash( 'sha256', $secret_iv ), 0, 16 );
-    $encoded_id     = base64_encode( openssl_encrypt( $id, $encrypt_method, $key, 0, $iv ) );
+    if ( function_exists( 'sodium_crypto_secretbox' ) ) {
+        try {
+            return base64_encode( sodium_crypto_secretbox( $id, $secret_iv, $secret_key ) );
+        } catch ( Exception $e ) {
+            delete_option( 'wpuf_auth_keys' );
+            return false;
+        }
+    }
 
-    return $encoded_id;
+    $ciphertext_raw = openssl_encrypt( $id, WPUF_Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
+    $hmac           = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+
+    return base64_encode( $secret_iv.$hmac.$ciphertext_raw );
 }
 
 /**
  * Decryption function for various usage
  *
  * @since 2.5.8
+ * @since WPUF param $nonce added
  *
  * @param string $id
+ * @param string $nonce
  *
- * @return string $encoded_id
+ * @return string|bool decrypted string or false if decryption failed
  */
-function wpuf_decryption( $id ) {
-    $secret_key     = AUTH_KEY;
-    $secret_iv      = AUTH_SALT;
+function wpuf_decryption( $id, $nonce = null ) {
+    // get auth keys
+    $auth_keys = WPUF_Encryption_Helper::get_encryption_auth_keys();
+    if ( empty( $auth_keys ) ) {
+        return false;
+    }
 
-    $encrypt_method = 'AES-256-CBC';
-    $key            = hash( 'sha256', $secret_key );
-    $iv             = substr( hash( 'sha256', $secret_iv ), 0, 16 );
-    $decoded_id     = openssl_decrypt( base64_decode( $id ), $encrypt_method, $key, 0, $iv );
+    $secret_key = $auth_keys['auth_key'];
+    $secret_iv  = ! empty( $nonce ) ? base64_decode( $nonce ) : $auth_keys['auth_salt'];
 
-    return $decoded_id;
+    // should we use sodium_crypto_secretbox_open
+    if ( function_exists( 'sodium_crypto_secretbox_open') ) {
+        try {
+            return sodium_crypto_secretbox_open( base64_decode( $id ), $secret_iv, $secret_key );
+        } catch ( Exception $e ) {
+            delete_option( 'wpuf_auth_keys' );
+            return false;
+        }
+    }
+
+    $c              = base64_decode( $id );
+    $ivlen          = WPUF_Encryption_Helper::get_encryption_nonce_length();
+    $secret_iv      = substr( $c, 0, $ivlen );
+    $hmac           = substr( $c, $ivlen, 32 );
+    $ciphertext_raw = substr( $c, $ivlen + 32 );
+    $original_text  = openssl_decrypt( $ciphertext_raw, WPUF_Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
+    $calcmac        = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+
+    // timing attack safe comparison
+    if ( hash_equals( $hmac, $calcmac ) ) {
+        return $original_text;
+    }
+
+    return false;
 }
 
 /**
@@ -3369,11 +3405,9 @@ function get_formatted_mail_body( $message, $subject ) {
 
         if ( empty( $header ) ) {
             ob_start();
-
-            wpuf_load_pro_template(
-                'email/header.php',
-                [ 'subject' => $subject ]
-            );
+            if ( function_exists( 'wpuf_load_pro_template' ) ) {
+                wpuf_load_pro_template( 'email/header.php', [ 'subject' => $subject ] );
+            }
 
             $header = ob_get_clean();
         }
@@ -3381,20 +3415,18 @@ function get_formatted_mail_body( $message, $subject ) {
         if ( empty( $footer ) ) {
             ob_start();
 
-            wpuf_load_pro_template(
-                'email/footer.php',
-                []
-            );
+            if ( function_exists( 'wpuf_load_pro_template' ) ) {
+                wpuf_load_pro_template( 'email/footer.php', [] );
+            }
 
             $footer = ob_get_clean();
         }
 
         ob_start();
 
-        wpuf_load_pro_template(
-            'email/style.php',
-            []
-        );
+        if ( function_exists( 'wpuf_load_pro_template' ) ) {
+            wpuf_load_pro_template( 'email/style.php', [] );
+        }
 
         $css = apply_filters( 'wpuf_email_style', ob_get_clean() );
 
@@ -3405,15 +3437,15 @@ function get_formatted_mail_body( $message, $subject ) {
         }
 
         try {
-
             // apply CSS styles inline for picky email clients
             $emogrifier = new Emogrifier( $content, $css );
-            $content    = $emogrifier->emogrify();
+            $emogrifier->enableCssToHtmlMapping();
+
+            return $emogrifier->emogrify();
         } catch ( Exception $e ) {
             echo esc_html( $e->getMessage() );
         }
 
-        return $content;
     }
 
     return $message;
@@ -3851,7 +3883,7 @@ function wpuf_show_form_limit_message( $form_id ) {
     $post_to_check  = get_post( get_the_ID() );
     $is_edit_page   = false;
 
-    if ( stripos( $post_to_check->post_content, '[wpuf_edit' ) !== false ) {
+    if ( $post_to_check && stripos( $post_to_check->post_content, '[wpuf_edit' ) !== false ) {
         $is_edit_page = true;
     }
 

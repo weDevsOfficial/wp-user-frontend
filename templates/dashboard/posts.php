@@ -159,14 +159,14 @@ $post_type_obj   = get_post_type_object( $post_type );
                             <?php
                             $current_post_status = $post->post_status;
                             if ( 'publish' === $current_post_status ) {
-                                $link_text = esc_html( 'View', 'wp-user-frontend' );
+                                $link_text = esc_html__( 'View', 'wp-user-frontend' );
                                 $the_link  = get_permalink();
                             } else {
-                                $link_text = esc_html( 'Preview', 'wp-user-frontend' );
+                                $link_text = esc_html__( 'Preview', 'wp-user-frontend' );
                                 $the_link  = get_preview_post_link();
                             }
                             wpuf_show_post_status( $current_post_status );
-                            echo apply_filters( 'wpuf_preview_link_separator', ' | ');
+                            echo apply_filters( 'wpuf_preview_link_separator', '&nbsp;|&nbsp;' );
                             printf(
                                 '<a href="%s" target="_blank">%s</a>',
                                 $the_link,

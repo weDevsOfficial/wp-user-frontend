@@ -106,7 +106,7 @@ Vue.component('field-option-data', {
                     i = 0;
 
                 for (i = 0; i < new_opts.length; i++) {
-                    options[new_opts[i].value] = new_opts[i].label;
+                    options[ 'p_' + new_opts[i].value] = new_opts[i].label; // p_ is needed for maintain key order
                 }
 
                 this.update_value('options', options);

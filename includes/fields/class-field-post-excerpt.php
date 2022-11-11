@@ -122,16 +122,17 @@ class WPUF_Form_Field_Post_Excerpt extends WPUF_Field_Contract {
         $defaults = $this->default_attributes();
 
         $props = [
-            'input_type'       => 'textarea',
-            'is_meta'          => 'no',
-            'name'             => 'post_excerpt',
-            'rows'             => 5,
-            'cols'             => 25,
-            'rich'             => 'no',
-            'id'               => 0,
-            'is_new'           => true,
-            'restriction_type' => 'character',
-            'restriction_to'   => 'max',
+            'input_type'          => 'textarea',
+            'is_meta'             => 'no',
+            'name'                => 'post_excerpt',
+            'rows'                => 5,
+            'cols'                => 25,
+            'rich'                => 'no',
+            'id'                  => 0,
+            'is_new'              => true,
+            'restriction_type'    => 'character',
+            'restriction_to'      => 'max',
+            'text_editor_control' => [],
         ];
 
         return array_merge( $defaults, $props );

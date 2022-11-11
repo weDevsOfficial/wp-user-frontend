@@ -1202,7 +1202,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                         </a>
                     </div>
                     <div class="slider-area">
-                        <div class="wpuf-slider slider-indicators-outside slider-indicators-round slider-nav-mousedrag" id="wpuf-slider">
+                        <div class="wpuf-slider slider-indicators-outside slider-indicators-round slider-nav-mousedrag slider-nav-autoplay slider-nav-autopause"" id="wpuf-slider">
                             <div class="swiffy-slider">
                                 <ul class="slider-container">
                                     <li><img src="<?php echo WPUF_ASSET_URI . '/images/woocommerce-form-template.png'; ?>"></li>

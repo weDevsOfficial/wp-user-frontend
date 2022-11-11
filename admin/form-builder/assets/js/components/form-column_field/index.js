@@ -181,7 +181,7 @@ Vue.component('form-column_field', {
             };
 
             if (this.isAllowedInClolumnField(data.field_template)) {
-                swal({
+                new swal({
                     title: "Oops...",
                     text: "You cannot add this field as inner column field"
                 });
@@ -190,7 +190,7 @@ Vue.component('form-column_field', {
 
             // check if these are already inserted
             if ( this.isSingleInstance( data.field_template ) && this.containsField( data.field_template ) ) {
-                swal({
+                new swal({
                     title: "Oops...",
                     text: "You already have this field in the form"
                 });
@@ -258,7 +258,7 @@ Vue.component('form-column_field', {
 
             // check if the field is allowed to duplicate
             if ( self.isSingleInstance( field.template ) ) {
-                swal({
+                new swal({
                     title: "Oops...",
                     text: "You already have this field in the form"
                 });
@@ -276,7 +276,7 @@ Vue.component('form-column_field', {
                     fromColumn: fromColumn
                 };
 
-            swal({
+            (new swal({
                 text: self.i18n.delete_field_warn_msg,
                 type: 'warning',
                 showCancelButton: true,
@@ -285,10 +285,10 @@ Vue.component('form-column_field', {
                 cancelButtonText: self.i18n.no_cancel_it,
                 confirmButtonClass: 'btn btn-success',
                 cancelButtonClass: 'btn btn-danger',
-            }).then(function () {
-                self.$store.commit('delete_column_field_element', payload);
-            }, function() {
-
+            })).then((result) => {
+                if (result.isConfirmed) {
+                    self.$store.commit('delete_form_field_element', index);
+                }
             });
         },
 

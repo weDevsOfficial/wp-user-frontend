@@ -69,7 +69,7 @@
             $( ':submit[name="wpuf_user_subscription_cancel"]').click(function(e){
                 e.preventDefault();
 
-                swal({
+                new swal({
                     text: wpuf_frontend.cancelSubMsg,
                     type: 'warning',
                     showCancelButton: true,
@@ -479,7 +479,7 @@
                                 grecaptcha.reset();
                             }
 
-                            swal({
+                            new swal({
                                 html: res.error,
                                 type: 'warning',
                                 showCancelButton: false,

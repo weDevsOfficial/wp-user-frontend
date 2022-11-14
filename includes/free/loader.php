@@ -1157,7 +1157,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                         <div class="wpuf-popup-header">
                             <h2 class="font-orange header-one">Upgrade to</h2>
                             <h2 class="header-two">WP User Frontend <span class="font-bold">Pro</span></h2>
-                            <h2 class="header-three font-gray">to experience even more Powerful<br>features 🎉</h2>
+                            <h2 class="header-three font-gray">to experience even more powerful<br>features 🎉</h2>
                         </div>
                         <div class="wpuf-popup-list-area">
                             <div class="single-checklist">

@@ -1086,6 +1086,9 @@ ul.wpuf-form li .wpuf-password-field:after {
   min-height: auto;
   border-radius: 5px;
 }
+.wpuf-form-template-modal .content ul li a.wpuf-button.button-upgrade-to-pro:hover {
+  background: #d07805;
+}
 .wpuf-form-template-modal footer {
   position: absolute;
   left: 0;

@@ -185,6 +185,8 @@ span.pro-icon svg path {
     background: rgba(0, 0, 0, .5);
     width: 100%;
     height: 100%;
+    top: 0;
+    left: 0;
 }
 
 .wpuf-popup-window.state-show {
@@ -296,7 +298,7 @@ ul.slider-container li img {
 }
 
 .footer-feature p svg {
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .footer-feature p svg path {

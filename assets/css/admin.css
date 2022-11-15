@@ -689,6 +689,9 @@ a.wpuf-button.button-upgrade-to-pro {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+a.wpuf-button.button-upgrade-to-pro:hover {
+  background: #d07805;
+}
 span.pro-icon svg {
   height: 1em;
 }
@@ -760,6 +763,7 @@ span.tooltip-check {
 .wpuf-pro-field-tooltip .pro-link {
   display: flex;
   justify-content: center;
+  margin-left: 25px;
 }
 .wpuf-pro-field-tooltip i {
   position: absolute;

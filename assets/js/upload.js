@@ -202,7 +202,7 @@
             var self = this,
             el = $(e.currentTarget);
 
-            swal({
+            new swal({
                 text: wpuf_frontend_upload.confirmMsg,
                 type: 'warning',
                 showCancelButton: true,

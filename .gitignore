@@ -12,4 +12,5 @@ secret.json
 log.txt
 npm-debug.log
 vendor
+!assets/vendor
 phpcs-report.txt

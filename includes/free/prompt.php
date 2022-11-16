@@ -16,4 +16,15 @@ class WPUF_Pro_Prompt {
     public static function get_pro_prompt_text() {
         return sprintf( 'Available in <a href="%s" target="_blank">Pro Version</a>', self::get_pro_url() );
     }
+
+    /**
+     * Get the upgrade to pro url from the PRO Prompts
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    public static function get_upgrade_to_pro_popup_url() {
+        return esc_url( 'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpdashboard&utm_medium=popup' );
+    }
 }

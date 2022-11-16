@@ -129,7 +129,7 @@
 
             if ( typeof wp.passwordStrength != 'undefined' ) {
 
-                strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputBlacklist(), pass1 );
+                strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputDisallowedList(), pass1 );
 
                 switch ( strength ) {
                     case 2:
@@ -515,13 +515,14 @@
             WP_User_Frontend.removeErrors(self);
             WP_User_Frontend.removeErrorNotice(self);
 
-            var visibleFields = self.find('input:visible, textarea:visible, select:visible, .wpuf-rich-validation');
+            var visibleFields = self.find('input:visible, textarea:visible, select:visible, .wpuf-rich-validation:visible');
 
             visibleFields.each( function( i, item ) {
                 var input_type = $(item).attr('type');
                 var data_type = $(item).data('type');
                 var required = $(item).data('required');
                 var val = '';
+                var error_message = '';
 
                 switch(data_type) {
                     case 'rich':
@@ -586,6 +587,8 @@
                     case 'password':
                     case 'confirm_password':
                         var hasRepeat = $(item).data('repeat');
+                        var strength = $(item).data('strength');
+                        var min_length = $(item).data('minimum-length');
 
                         val = $.trim( $(item).val() );
 
@@ -597,15 +600,48 @@
                             break;
                         }
 
+                        if ( val.length < min_length ) {
+                            error = true;
+                            error_type = 'custom';
+                            error_message = 'Minimum ' + min_length + ' character is required';
+                            WP_User_Frontend.markError(item, error_type, error_message);
+
+                            break;
+                        }
+
                         if ( hasRepeat ) {
-                            var repeatItem = $('[data-type="confirm_password"]').eq(0);;
+                            var repeatItem = $('[data-type="confirm_password"]').eq(0);
 
                             if ( repeatItem.val() != val ) {
                                 error = true;
                                 error_type = 'mismatch';
 
                                 WP_User_Frontend.markError( repeatItem, error_type );
+
+                                break;
                             }
+                        }
+
+                        if ( strength ) {
+                            var strengthMeter = wp.passwordStrength.meter(val, wp.passwordStrength.userInputDisallowedList());
+
+                            if (strength === 'weak' && strengthMeter < 2) {
+                                error = true;
+                                error_type = 'custom';
+                                error_message = 'Password minimum strength should be weak';
+                            } else if (strength === 'medium' && strengthMeter < 3) {
+                                error = true;
+                                error_type = 'custom';
+                                error_message = 'Password minimum strength should be medium';
+                            } else if (strength === 'strong' && strengthMeter < 4) {
+                                error = true;
+                                error_type = 'custom';
+                                error_message = 'Password strength should be strong';
+                            }
+                        }
+
+                        if ( error ) {
+                            WP_User_Frontend.markError( item, error_type, error_message );
                         }
                         break;
                     case 'select':
@@ -627,10 +663,11 @@
                             WP_User_Frontend.markError( item,  error_type );
                         }
                         break;
+                    case 'checkbox':
                     case 'tax-checkbox':
-                        var length = $(item).children().find('input:checked').length;
+                        var isChecked = $(item).prop('checked');
 
-                        if ( required === 'yes' && ! length ) {
+                        if ( required === 'yes' && ! isChecked ) {
                             error = true;
                             error_type = 'required';
                             WP_User_Frontend.markError( item,  error_type );
@@ -704,13 +741,39 @@
                                 WP_User_Frontend.markError( mapContainer,  error_type );
                             }
                         }
+
+                        // if this is a file upload field
+                        if ( $(item).attr('type') && $(item).attr('type') === 'file' ) {
+                            var container = $(item).parent().siblings('.wpuf-attachment-upload-filelist');
+                            required = $(container).data('required');
+                            length = $(container).find('ul').children().length;
+
+                            if ( required == 'yes' && ! length ) {
+                                error = true;
+                                error_type = 'required';
+                                WP_User_Frontend.markError( container,  error_type );
+                            }
+                        }
+
+                        // if this is a radio field
+                        if ( $(item).attr('type') && $(item).attr('type') === 'radio' ) {
+                            var container = $(item).parents('.wpuf-fields');
+                            required = $(container).data('required');
+                            length = $(container).find('input:checked').length;
+
+                            if ( required == 'yes' && ! length ) {
+                                error = true;
+                                error_type = 'required';
+                                WP_User_Frontend.markError( container,  error_type );
+                            }
+                        }
                         break;
 
                 }
 
                 // if error found, bail out
                 if ( error ) {
-                    WP_User_Frontend.markError(item, error_type);
+                    WP_User_Frontend.markError(item, error_type, error_message);
                     // WP_User_Frontend.addErrorNotice(self,'end');
 
                     return false;
@@ -771,7 +834,7 @@
             $(form).find('.wpuf-errors').remove();
         },
 
-        markError: function(item, error_type) {
+        markError: function(item, error_type, error_message) {
             $(item).closest('div').addClass('has-error');
 
             if ( error_type ) {
@@ -791,10 +854,13 @@
                         break;
                     case 'validation' :
                         error_string = error_string + ' ' + error_str_obj[error_type];
-                        break
+                        break;
                     case 'limit':
                         error_string = '';
-                        break
+                        break;
+                    case 'custom' :
+                        error_string = error_message;
+                        break;
                 }
                 $(item).siblings('.wpuf-error-msg').remove();
 

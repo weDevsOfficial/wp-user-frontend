@@ -668,7 +668,7 @@ class WPUF_Admin_Subscription {
                             <?php if ( ! empty( $user_sub['total_feature_item'] ) ) { ?>
                             <tr>
                                 <th><label><?php esc_html_e( 'Number of featured item', 'wp-user-frontend' ); ?></label></th>
-                                <td><input type="text" value="<?php echo esc_attr( $user_sub['total_feature_item'] ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
+                                <td><input disabled type="text" value="<?php echo esc_attr( $user_sub['total_feature_item'] ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
                             </tr>
                             <?php } ?>
                             <?php
@@ -680,7 +680,7 @@ class WPUF_Admin_Subscription {
                                         ?>
                                         <tr>
                                             <th><label><?php echo esc_html( $post_type_object->labels->name ); ?></label></th>
-                                            <td><input type="text" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
+                                            <td><input disabled type="text" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
                                         </tr>
                                         <?php
                                     }
@@ -701,7 +701,7 @@ class WPUF_Admin_Subscription {
                                     ?>
                                     <tr>
                                         <th><label><?php esc_html_e( 'Expire date:', 'wp-user-frontend' ); ?></label></th>
-                                        <td><input type="text" class="wpuf-date-picker" name="expire" value="<?php echo esc_html( $expire ); ?>"></td>
+                                        <td><input disabled type="text" class="wpuf-date-picker" name="expire" value="<?php echo esc_html( $expire ); ?>"></td>
                                     </tr>
                                     <?php
                                 }
@@ -714,7 +714,7 @@ class WPUF_Admin_Subscription {
                             ?>
                             <tr>
                                 <th><label><?php esc_html_e( 'Post Expiration Enabled', 'wp-user-frontend' ); ?></label></th>
-                                <td><input type="checkbox" class="wpuf-post-exp-enabled" name="is_post_expiration_enabled" value="on" <?php echo esc_attr( $is_post_exp_selected ); ?>></td>
+                                <td><input disabled type="checkbox" class="wpuf-post-exp-enabled" name="is_post_expiration_enabled" value="on" <?php echo esc_attr( $is_post_exp_selected ); ?>></td>
                             </tr>
                             <tr class="wpuf-post-exp-time">
                                 <?php
@@ -726,7 +726,7 @@ class WPUF_Admin_Subscription {
                                 ?>
                                 <th><?php esc_html_e( 'Post Expiration Time', 'wp-user-frontend' ); ?></th>
                                 <td>
-                                    <select name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value">
+                                    <select disabled name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value">
                                         <?php
                                         for ( $i = 1; $i <= $timeType_array[ $time_type ]; $i++ ) {
                                             ?>
@@ -735,7 +735,7 @@ class WPUF_Admin_Subscription {
                                         }
                                         ?>
                                     </select>
-                                    <select name="post_expiration_settings[expiration_time_type]" id="wpuf-expiration_time_type">
+                                    <select disabled name="post_expiration_settings[expiration_time_type]" id="wpuf-expiration_time_type">
                                         <?php
                                         foreach ( $timeType_array as $each_time_type => $each_time_type_val ) {
                                             ?>

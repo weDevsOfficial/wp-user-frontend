@@ -44,7 +44,7 @@ jQuery(function($) {
                 'post_id'   : post_id
             },
             success:function(data) {
-                swal({
+                new swal({
                     type: 'success',
                     title: wpuf_admin_script.cleared_schedule_lock,
                     showConfirmButton: false,

@@ -80,7 +80,7 @@ jQuery(function($) {
             $( '.wpuf-pro-field-tooltip' ).css( 'top', '0' );
         } else if ( spaceTop < tooltipHeight && spaceRight > tooltipWidth ) {
             $( '.wpuf-pro-field-tooltip i' ).css( 'left', '-5px' );
-            $( '.wpuf-pro-field-tooltip i' ).css( 'top', '15px' );
+            $( '.wpuf-pro-field-tooltip i' ).css( 'top', '22px' );
             $( '.wpuf-pro-field-tooltip i' ).css( 'transform', 'rotate(90deg)' );
             $( '.wpuf-pro-field-tooltip' ).css( 'left', '185px' );
             $( '.wpuf-pro-field-tooltip' ).css( 'top', '310px' );

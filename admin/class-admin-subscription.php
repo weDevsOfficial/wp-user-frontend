@@ -328,6 +328,7 @@ class WPUF_Admin_Subscription {
         $post_expiration_message      = isset( $sub_meta['_post_expiration_message'] ) ? $sub_meta['_post_expiration_message'] : '';
         $featured_item                = ! empty( $sub_meta['_total_feature_item'] ) ? $sub_meta['_total_feature_item'] : 0;
         $remove_featured_item         = ! empty( $sub_meta['_remove_feature_item'] ) ? $sub_meta['_remove_feature_item'] : 0;
+        $billing_amount               = ! empty( $sub_meta['billing_amount'] ) ? esc_attr( $sub_meta['billing_amount'] ) : 0;
         ?>
 
         <div class="wpuf-subscription-pack-settings">
@@ -361,7 +362,7 @@ class WPUF_Admin_Subscription {
                                 <span class="wpuf-billing-cycle wpuf-recurring-child" style="display: <?php echo esc_attr( $hidden_recurring_class ); ?>;"><?php esc_html_e( 'Billing amount each cycle:', 'wp-user-frontend' ); ?></span></label></th>
                             <td>
                                 <?php echo esc_attr( wpuf_get_currency( 'symbol' ) ); ?>
-                                <input type="text" size="20" style="" id="wpuf-billing-amount" value="<?php echo esc_attr( $sub_meta['billing_amount'] ); ?>" name="billing_amount" />
+                                <input type="text" size="20" style="" id="wpuf-billing-amount" value="<?php echo $billing_amount; ?>" name="billing_amount" />
                                 <div><span class="description"></span></div>
                             </td>
                         </tr>
@@ -671,16 +672,18 @@ class WPUF_Admin_Subscription {
                             </tr>
                             <?php } ?>
                             <?php
-                            foreach ( $user_sub['posts'] as $key => $value ) {
-                                $post_type_object = get_post_type_object( $key );
+                            if ( $user_sub['posts'] ) {
+                                foreach ( $user_sub['posts'] as $key => $value ) {
+                                    $post_type_object = get_post_type_object( $key );
 
-                                if ( $post_type_object ) {
-                                    ?>
-                                     <tr>
-                                         <th><label><?php echo esc_html( $post_type_object->labels->name ); ?></label></th>
-                                         <td><input type="text" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
-                                     </tr>
-                                    <?php
+                                    if ( $post_type_object ) {
+                                        ?>
+                                        <tr>
+                                            <th><label><?php echo esc_html( $post_type_object->labels->name ); ?></label></th>
+                                            <td><input type="text" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
+                                        </tr>
+                                        <?php
+                                    }
                                 }
                             }
                             ?>

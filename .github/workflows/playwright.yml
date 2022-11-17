@@ -1,0 +1,86 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [ develop, automation/wpuf-e2ev2 ]
+  # pull_request:
+  #   branches: [ main, master ]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest    
+    
+    #Cloning WPUF-Lite + WPUF-PRO
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+      
+      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2.3.4
+        with:
+          ref: 'automation/wpuf-e2ev2'
+
+      - name: Clone WPUF-pro
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2.3.4
+        with:
+          repository: weDevsOfficial/wpuf-pro
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: 'plugins/wpuf-pro'
+          ref: 'develop'
+
+      - name: Composer install and build (WPUF-lite)
+        run: |
+            composer install
+            composer update
+            composer dump-autoload -o
+            
+      - name: Npm install and build (WPUF-lite)
+        run: |
+            npm i
+            grunt release
+            
+      - name: Composer install and build (WPUF-pro)
+        run: |
+            cd plugins/wpuf-pro
+            composer install
+            composer update
+            composer dump-autoload -o
+            
+      - name: Npm install and build (WPUF-pro)
+        run: |
+            cd plugins/wpuf-pro
+            npm i
+            grunt default
+
+
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Setup WordPress 
+        run: npm run wp-env start
+
+
+      - name: Run Playwright tests
+        run: |
+            cd tests
+            npx playwright test
+
+        env:
+          CI: true
+          ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          BASE_URL: ${{ secrets.BASE_URL}}
+          NEW_POST_BLANK_NAME: ${{ secrets.NEW_POST_BLANK_NAME }}
+
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+
+
+      

@@ -52,6 +52,8 @@ jobs:
         run: |
             cd plugins/wpuf-pro
             ls
+            composer config allow-plugins.composer/installers true
+            composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
             composer install
             composer update
             composer dump-autoload -o

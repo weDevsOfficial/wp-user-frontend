@@ -832,7 +832,9 @@
                 }
             });
 
+            var disable_fields = self.find(":disabled").removeAttr("disabled");
             var formData = self.serialize();
+            disable_fields.attr("disabled", "disabled");
 
             // append them to the form var
             formData = formData + '&' + richTexts.join( '&' );

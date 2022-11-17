@@ -958,7 +958,7 @@ ul.wpuf-form li .wpuf-password-field:after {
   text-align: center;
   min-height: 280px;
   width: 220px;
-  border: 0px;
+  border: 0;
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
   border-radius: 3px;
@@ -1078,6 +1078,16 @@ ul.wpuf-form li .wpuf-password-field:after {
   margin: 0 auto;
   width: auto;
   height: auto;
+}
+.wpuf-form-template-modal .content ul li a.wpuf-button.button-upgrade-to-pro {
+  padding: 10px 15px;
+  background: #ff9000;
+  color: #fff;
+  min-height: auto;
+  border-radius: 5px;
+}
+.wpuf-form-template-modal .content ul li a.wpuf-button.button-upgrade-to-pro:hover {
+  background: #d07805;
 }
 .wpuf-form-template-modal footer {
   position: absolute;
@@ -1321,6 +1331,12 @@ ul.wpuf-form li .wpuf-password-field:after {
   width: 100%;
   padding: 10px;
   display: none;
+}
+span.pro-icon svg {
+  height: 1em;
+}
+span.pro-icon svg path {
+  fill: #fff;
 }
 @media (min-width: 768px) and (max-width: 991px) {
   #wpuf-form-builder {

@@ -65,8 +65,8 @@ class WPUF_Admin_Posting {
             }
         }
 
-        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css', [], WPUF_VERSION );
-        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', [], WPUF_VERSION, true );
+        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css', [], '11.4.30' );
+        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', [], '11.4.30', true );
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', ['jquery', 'plupload-handlers'] );
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', [
             'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
@@ -215,14 +215,14 @@ class WPUF_Admin_Posting {
         <!-- <input type="hidden" name="wpuf_lock_editing_post_nonce" value="<?php // echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" /> -->
         <?php wp_nonce_field( plugin_basename( __FILE__ ), 'wpuf_lock_editing_post_nonce' ); ?>
         <p>
-            <?php 
-                echo wp_kses( $msg, [ 
+            <?php
+                echo wp_kses( $msg, [
                     'a' => [
                             'href' => [],
                             'id'   => [],
                             'data' => [],
-                        ] 
-                    ] ); 
+                        ]
+                    ] );
             ?>
         </p>
 
@@ -327,9 +327,14 @@ class WPUF_Admin_Posting {
          * you can override that by using the following filter.
          */
         $hide_with_acf = class_exists( 'acf' ) ? apply_filters( 'wpuf_hide_meta_when_acf_active', true ) : false;
+        $acf_enable    = wpuf_get_option( 'wpuf_compatibility_acf', 'wpuf_general', 'yes' );
+
+        if ( 'yes' === $acf_enable && $hide_with_acf ) {
+            $hide_with_acf = false;
+        }
 
         // hide the metabox itself if no form ID is set
-        if ( !$form_id || $hide_with_acf ) {
+        if ( ! $form_id || $hide_with_acf ) {
             $this->hide_form();
 
             return;

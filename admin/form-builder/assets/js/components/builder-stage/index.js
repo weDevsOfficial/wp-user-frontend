@@ -101,7 +101,7 @@ Vue.component('builder-stage', {
 
             // check if these are already inserted
             if ( this.isSingleInstance( field.template ) && this.containsField( field.template ) ) {
-                swal({
+                new swal({
                     title: "Oops...",
                     text: "You already have this field in the form"
                 });
@@ -114,7 +114,7 @@ Vue.component('builder-stage', {
         delete_field: function(index) {
             var self = this;
 
-            swal({
+            (new swal({
                 text: self.i18n.delete_field_warn_msg,
                 type: 'warning',
                 showCancelButton: true,
@@ -123,10 +123,10 @@ Vue.component('builder-stage', {
                 cancelButtonText: self.i18n.no_cancel_it,
                 confirmButtonClass: 'btn btn-success',
                 cancelButtonClass: 'btn btn-danger',
-            }).then(function () {
-                self.$store.commit('delete_form_field_element', index);
-            }, function() {
-
+            })).then((result) => {
+                if (result.isConfirmed) {
+                    self.$store.commit('delete_form_field_element', index);
+                }
             });
         },
 

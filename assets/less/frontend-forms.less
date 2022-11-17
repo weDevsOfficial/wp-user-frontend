@@ -212,6 +212,11 @@ body {
                 }
             }
 
+            .wpuf-fields-inline {
+                display: flex;
+                justify-content: space-between;
+            }
+
             .wpuf-submit{
 
                 input[type=submit] {
@@ -1041,10 +1046,6 @@ ul.wpuf_packs {
     }
 }
 
-.password[type="text"]{
-  display: none;
-}
-
 table.wpuf-table {
     border: 1px solid #E7E7E7;
     margin: 0 0px 10px 0;
@@ -1213,16 +1214,33 @@ table.wpuf-table {
         display: block;
     }
 
-    .wpuf-multistep-prev-btn,
-    .wpuf-multistep-next-btn {
+    button.wpuf-multistep-next-btn.btn.btn-primary {
         position: absolute;
-        bottom: 5px;
+        bottom: 0;
+        right: 0;
     }
-    .wpuf-multistep-prev-btn {
-        left: 10px;
+
+    button.wpuf-multistep-prev-btn.btn.btn-primary {
+        position: absolute;
+        bottom: 0;
+        left: 0;
     }
-    .wpuf-multistep-next-btn {
-        right: 10px;
+
+    a#wpuf-post-draft {
+        position: absolute;
+        bottom: 0;
+        right: ~"calc(50% - 35px)";
+    }
+
+    span.wpuf-draft-saved {
+        position: absolute;
+        bottom: 0;
+        right: ~"calc(50% - 150px)";
+    }
+    span.wpuf-loading {
+        position: absolute;
+        bottom: 8px;
+        right: ~"calc(50% - 60px)";
     }
 }
 

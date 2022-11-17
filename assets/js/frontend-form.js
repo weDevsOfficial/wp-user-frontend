@@ -129,7 +129,7 @@
 
             if ( typeof wp.passwordStrength != 'undefined' ) {
 
-                strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputBlacklist(), pass1 );
+                strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputDisallowedList(), pass1 );
 
                 switch ( strength ) {
                     case 2:
@@ -620,6 +620,8 @@
                     case 'password':
                     case 'confirm_password':
                         var hasRepeat = $(item).data('repeat');
+                        var strength = $(item).data('strength');
+                        var min_length = $(item).data('minimum-length');
 
                         val = $.trim( $(item).val() );
 
@@ -628,6 +630,15 @@
                                 error_type: 'required',
                                 container: item
                             });
+
+                            break;
+                        }
+
+                        if ( val.length < min_length ) {
+                            error = true;
+                            error_type = 'custom';
+                            error_message = 'Minimum ' + min_length + ' character is required';
+                            WP_User_Frontend.markError(item, error_type, error_message);
 
                             break;
                         }
@@ -642,6 +653,31 @@
                                 });
                             }
                         }
+
+                        if ( strength ) {
+                            var strengthMeter = wp.passwordStrength.meter(val, wp.passwordStrength.userInputDisallowedList());
+
+                            if (strength === 'weak' && strengthMeter < 2) {
+                                errors.push({
+                                    type: 'custom',
+                                    container: item,
+                                    message: 'Password minimum strength should be weak'
+                                });
+                            } else if (strength === 'medium' && strengthMeter < 3) {
+                                errors.push({
+                                    type: 'custom',
+                                    container: item,
+                                    message: 'Password minimum strength should be medium'
+                                });
+                            } else if (strength === 'strong' && strengthMeter < 4) {
+                                errors.push({
+                                    type: 'custom',
+                                    container: item,
+                                    message: 'Password strength should be strong'
+                                });
+                            }
+                        }
+
                         break;
                     case 'select':
                         val = $(item).val();
@@ -821,13 +857,8 @@
             $(form).find('.wpuf-errors').remove();
         },
 
-        markError: function(item, error_type) {
-            // for address fields
-            if ( $( item ).closest(  '.wpuf-fields.wpuf-fields-address' ).length ) {
-                $( item ).closest( 'div.wpuf-sub-fields' ).addClass('has-error');
-            } else {
-                $( item ).closest( 'div.wpuf-fields' ).addClass( 'has-error' );
-            }
+        markError: function(item, error_type, error_message) {
+            $(item).closest('div').addClass('has-error');
 
             if ( ! error_type ) {
                 return;
@@ -854,6 +885,32 @@
                     error_string = '';
                     break;
             }
+            if ( error_type ) {
+                var error_string = '';
+                var address_field_label = $(item).data('label');
+                if ( address_field_label ) {
+                    error_string = address_field_label;
+                } else {
+                    error_string = $(item).closest('li').data('label');
+                }
+                switch ( error_type ) {
+                    case 'required' :
+                        error_string = error_string + ' ' + error_str_obj[error_type];
+                        break;
+                    case 'mismatch' :
+                        error_string = error_string + ' ' + error_str_obj[error_type];
+                        break;
+                    case 'validation' :
+                        error_string = error_string + ' ' + error_str_obj[error_type];
+                        break;
+                    case 'limit':
+                        error_string = '';
+                        break;
+                    case 'custom' :
+                        error_string = error_message;
+                        break;
+                }
+                $(item).siblings('.wpuf-error-msg').remove();
 
             // for address fields
             if ( $( item ).closest( '.wpuf-fields.wpuf-fields-address' ).length ) {

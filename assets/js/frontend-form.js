@@ -884,33 +884,11 @@
                 case 'limit':
                     error_string = '';
                     break;
+                case 'custom' :
+                    error_string = error_message;
+                    break;
             }
-            if ( error_type ) {
-                var error_string = '';
-                var address_field_label = $(item).data('label');
-                if ( address_field_label ) {
-                    error_string = address_field_label;
-                } else {
-                    error_string = $(item).closest('li').data('label');
-                }
-                switch ( error_type ) {
-                    case 'required' :
-                        error_string = error_string + ' ' + error_str_obj[error_type];
-                        break;
-                    case 'mismatch' :
-                        error_string = error_string + ' ' + error_str_obj[error_type];
-                        break;
-                    case 'validation' :
-                        error_string = error_string + ' ' + error_str_obj[error_type];
-                        break;
-                    case 'limit':
-                        error_string = '';
-                        break;
-                    case 'custom' :
-                        error_string = error_message;
-                        break;
-                }
-                $(item).siblings('.wpuf-error-msg').remove();
+            $(item).siblings('.wpuf-error-msg').remove();
 
             // for address fields
             if ( $( item ).closest( '.wpuf-fields.wpuf-fields-address' ).length ) {

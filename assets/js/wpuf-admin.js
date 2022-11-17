@@ -44,7 +44,7 @@ jQuery(function($) {
                 'post_id'   : post_id
             },
             success:function(data) {
-                swal({
+                new swal({
                     type: 'success',
                     title: wpuf_admin_script.cleared_schedule_lock,
                     showConfirmButton: false,
@@ -56,5 +56,42 @@ jQuery(function($) {
             }
         });
         $(this).closest("p").hide();
+    });
+
+    // show tooltips on crown icons
+    $('th span.pro-icon, td label span.pro-icon-title, th label span.pro-icon-title').on('mouseover', function() {
+        let tooltip = $( '.wpuf-pro-field-tooltip' );
+        let windowWidth = $( window ).width();
+        let windowHeight = $( window ).height();
+        let iconBounding = $( this )[0].getBoundingClientRect();
+        let spaceTop = iconBounding.y;
+        let iconBoundingRight = iconBounding.right;
+        let iconBoundingBottom = iconBounding.bottom;
+        let spaceRight = windowWidth - iconBoundingRight;
+        let spaceBottom = windowHeight - iconBoundingBottom;
+        let tooltipHeight = tooltip.outerHeight();
+        let tooltipWidth = tooltip.outerWidth();
+
+        if ( spaceTop > tooltipHeight ) {
+            $( '.wpuf-pro-field-tooltip i' ).css( 'left', '50%' );
+            $( '.wpuf-pro-field-tooltip i' ).css( 'top', '100%' );
+            $( '.wpuf-pro-field-tooltip i' ).css( 'transform', 'initial' );
+            $( '.wpuf-pro-field-tooltip' ).css( 'left', '50%' );
+            $( '.wpuf-pro-field-tooltip' ).css( 'top', '0' );
+        } else if ( spaceTop < tooltipHeight && spaceRight > tooltipWidth ) {
+            $( '.wpuf-pro-field-tooltip i' ).css( 'left', '-5px' );
+            $( '.wpuf-pro-field-tooltip i' ).css( 'top', '22px' );
+            $( '.wpuf-pro-field-tooltip i' ).css( 'transform', 'rotate(90deg)' );
+            $( '.wpuf-pro-field-tooltip' ).css( 'left', '185px' );
+            $( '.wpuf-pro-field-tooltip' ).css( 'top', '310px' );
+        } else if ( spaceBottom > tooltipHeight ) {
+            $( '.wpuf-pro-field-tooltip' ).css( 'left', '10px' );
+            $( '.wpuf-pro-field-tooltip' ).css( 'top', '360px' );
+            $( '.wpuf-pro-field-tooltip i' ).css( 'top', '-10px' );
+            $( '.wpuf-pro-field-tooltip i' ).css( 'left', '150px' );
+            $( '.wpuf-pro-field-tooltip i' ).css( 'transform', 'rotate(180deg)' );
+        }
+
+        tooltip.appendTo( this );
     });
 });

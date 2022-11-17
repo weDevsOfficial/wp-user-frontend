@@ -824,8 +824,9 @@ function wpuf_get_gateways( $context = 'admin' ) {
             $return[ $id ] = $gate['admin_label'];
         } else {
             $return[ $id ] = [
-                'label' => $gate['checkout_label'],
-                'icon'  => isset( $gate['icon'] ) ? $gate['icon'] : '',
+                'label'          => $gate['checkout_label'],
+                'icon'           => isset( $gate['icon'] ) ? $gate['icon'] : '',
+                'is_pro_preview' => ! empty( $gate['is_pro_preview'] ) ? esc_attr( $gate['is_pro_preview'] ) : false,
             ];
         }
     }
@@ -1989,6 +1990,26 @@ function wpuf_get_post_form_templates() {
     $integrations['WPUF_Post_Form_Template_Post'] = new WPUF_Post_Form_Template_Post();
 
     return apply_filters( 'wpuf_get_post_form_templates', $integrations );
+}
+
+/**
+ * Get the pro form templates list
+ *
+ * @since WPUF_SINCE
+ *
+ * @return mixed|null
+ */
+function wpuf_get_pro_form_previews() {
+    $template_names = [];
+
+    /**
+     * Filter pro post form templates to preview
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $template_names
+     */
+    return apply_filters( 'wpuf_get_pro_form_previews', $template_names );
 }
 
 /**
@@ -4419,4 +4440,59 @@ function wpuf_get_image_sizes_array( $size = '' ) {
         }
     }
     return $sizes;
+}
+
+/**
+ * The HTML preview part when hovering over a pro settings field
+ *
+ * @since WPUF_SINCE
+ *
+ * @return string
+ */
+function wpuf_get_pro_preview_html() {
+    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+    return sprintf( '<div class="pro-field-overlay">
+                        <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a>
+                    </div>', esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+                    file_get_contents( $crown_icon ) );
+}
+
+/**
+ * The HTML tooltip when hovering over a pro settings field
+ *
+ * @since WPUF_SINCE
+ *
+ * @return string
+ */
+function wpuf_get_pro_preview_tooltip() {
+    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+    $check_icon = WPUF_ROOT . '/assets/images/check.svg';
+    $features = [
+        '24/7 Priority Support',
+        '20+ Premium Modules',
+        'User Activity and Reports',
+        'Private Messaging Option',
+        'License for 20 websites',
+    ];
+    $html = '<div class="wpuf-pro-field-tooltip">';
+    $html .= '<h3 class="tooltip-header">Available in Pro. Also enjoy:</h3>';
+    $html .= '<ul>';
+
+    foreach ( $features as $feature ) {
+        $html .= sprintf(
+            '<li><span class="tooltip-check">%1$s</span> %2$s</li>',
+            file_get_contents( $check_icon ),
+            esc_html( $feature )
+        );
+    }
+
+    $html .= '</ul>';
+    $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a></div>',
+              esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+                      file_get_contents( $crown_icon ) );
+
+    $html .= '<i></i>';
+    $html .= '</div>';
+
+    return $html;
 }

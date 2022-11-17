@@ -62,7 +62,7 @@ class Dashboard_Metabox {
                     $articles = $this->fetch_articles();
                     foreach ( $articles as $article ) {
                         ?>
-                        <li><a href="<?php echo $article['href']; ?>"><?php echo $article['title']; ?></a></li>
+                        <li><a href="<?php echo esc_url( $article['href'] ); ?>" target="_blank"><?php echo $article['title']; ?></a></li>
                     <?php }; ?>
                 </ul>
             </div>
@@ -94,7 +94,7 @@ class Dashboard_Metabox {
             return $article_list;
         }
 
-        $response = wp_remote_get( self::URL );
+        $response = wp_remote_get( esc_url( self::URL ) );
 
         if ( is_wp_error( $response ) ) {
             return [];
@@ -115,7 +115,7 @@ class Dashboard_Metabox {
         }
 
         $url          = parse_url( self::URL );
-        $domain       = $url['scheme'] . '//' . $url['host'];
+        $domain       = $url['scheme'] . '://' . $url['host'];
         $article_list = [];
         $count        = 0;
 

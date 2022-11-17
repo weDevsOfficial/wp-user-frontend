@@ -60,24 +60,31 @@ jobs:
             
       - name: Npm install and build (WPUF-pro)
         run: |
-            cd plugins/wpuf-pro
-            npm i
-            grunt default
+          cd plugins/wpuf-pro
+          npm i
+          grunt default
 
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd tests  
+          npm ci
+          
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: |
+          cd tests 
+          npx playwright install --with-deps
 
       - name: Setup WordPress 
-        run: npm run wp-env start
+        run: |
+          cd tests 
+          npm run wp-env start
 
 
       - name: Run Playwright tests
         run: |
-            cd tests
-            npx playwright test
+          cd tests
+            npx playwright test 
 
         env:
           CI: true

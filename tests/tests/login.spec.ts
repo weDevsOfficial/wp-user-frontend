@@ -44,6 +44,13 @@ test.describe('TEST :-->', () => {
 
 
 //Add_Post > BLANK_Form > 0003
+    test('000000: Create New > Using BLANK Template', async ({ request }) => {
+        let response = await request.get('http://localhost:8889/wp-json/wp/v2/plugins?status=active')
+        let responseBody = await response.json()
+        console.log(responseBody)
+
+    }),
+
     test('0003: Create New > Using BLANK Template', async ({ page }) => {
         //const homePage = new HomePage(page);
         const loginPage = new LoginPage(page);

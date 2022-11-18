@@ -37,7 +37,6 @@ jobs:
 
       - name: Composer install and build (WPUF-lite)
         run: |
-            ls
             composer install
             composer update
             composer dump-autoload -o
@@ -51,7 +50,6 @@ jobs:
       - name: Composer install and build (WPUF-pro)
         run: |
             cd plugins/wpuf-pro
-            ls
             composer config allow-plugins.composer/installers true
             composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
             composer install
@@ -85,6 +83,7 @@ jobs:
         run: |
           cd tests
             npx playwright test --project=chromium
+            ls
             
 
         env:

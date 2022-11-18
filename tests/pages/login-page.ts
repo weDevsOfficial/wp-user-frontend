@@ -24,17 +24,33 @@ export class LoginPage {
         await expect(DashboardLanded).toBeTruthy;
         console.log("0: " + DashboardLanded);
 
-
         
-        const CheckPluginMenu = await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
-        console.log("1: " + CheckPluginMenu);
-        // await expect(SelectorsPage.login.clickWPUFSidebar).toBeTruthy();  //Assertion
-        
-        //await (await this.page.waitForSelector(SelectorsPage.login.clickWPUFSidebar)).click;  //TODO: Change this
-        await this.page.click(SelectorsPage.login.clickWPUFSidebar);
-        await this.page.waitForLoadState('domcontentloaded');
+        const CheckPlugin_In_Menu = await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
+        if (CheckPlugin_In_Menu == false) {
+            await this.page.isVisible('//li[@id="menu-plugins"]');
+            await this.page.click('//li[@id="menu-plugins"]');
+                //Activate Plugin
+                const ActivateWPUF = await this.page.isVisible('//a[@aria-label="Activate WP User Frontend"]');
+                const ActivateWPUF_Pro = await this.page.isVisible('//a[@id="activate-wpuf-pro"]');
+                if ( ActivateWPUF == true && ActivateWPUF_Pro== true) {
+                    await this.page.click('//a[@aria-label="Activate WP User Frontend"]');
+                    await this.page.click('//a[@id="activate-wpuf-pro"]');
 
-       //ASSERTION > Check if-VALID
+                    await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
+                    await this.page.click(SelectorsPage.login.clickWPUFSidebar);
+                }
+                else {
+                    await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
+                    await this.page.click(SelectorsPage.login.clickWPUFSidebar);
+                }
+        }
+
+        else {
+            console.log("1: " + CheckPlugin_In_Menu);
+            await this.page.click(SelectorsPage.login.clickWPUFSidebar);
+            await this.page.waitForLoadState('domcontentloaded');
+
+            //ASSERTION > Check if-VALID
             const availableText = await this.page.isVisible(SelectorsPage.createPostForm.clickPostFormMenuOption);
             console.log("2: " + availableText);
             if (availableText == true) {    
@@ -43,7 +59,8 @@ export class LoginPage {
                 await expect(checkText).toContain("Add Form");
             }
 
-        console.log("4: " + "Login Done"); //TODO: Fix this
+            console.log("4: " + "Login Done"); //TODO: Fix this
+        }
     }
 
 

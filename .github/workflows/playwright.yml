@@ -71,7 +71,8 @@ jobs:
       - name: Install Playwright Browsers
         run: |
           cd tests 
-          npx playwright install --with-deps
+          npx playwright install chromium
+
 
       - name: Setup WordPress 
         run: |

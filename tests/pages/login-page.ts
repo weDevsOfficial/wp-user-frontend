@@ -1,6 +1,5 @@
-import { expect, Page } from '@playwright/test';
-
 require('dotenv').config();
+import { expect, Page } from '@playwright/test';
 import { SelectorsPage } from './selectors';
 
 
@@ -11,10 +10,10 @@ export class LoginPage {
         this.page = page;
     }
 
-    async login(url, email, password) {
+    async login(email, password) {
         
-        await this.page.goto(url, { waitUntil: 'networkidle' });  //TODO: User BASE_URL
-        //await this.page.goto(url, { waitUntil: 'networkidle' });
+        await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });  //TODO: User BASE_URL
+        //await this.page.goto('BASEURL', { waitUntil: 'networkidle' });
         await this.page.fill(SelectorsPage.login.loginEmailField, email);
         await this.page.fill(SelectorsPage.login.loginPasswordField, password);
         await this.page.click(SelectorsPage.login.loginButton);

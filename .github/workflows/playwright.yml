@@ -84,7 +84,8 @@ jobs:
       - name: Run Playwright tests
         run: |
           cd tests
-            npx playwright test 
+            npx playwright test --project=chromium --headed  
+            
 
         env:
           CI: true

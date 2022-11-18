@@ -50,7 +50,7 @@ test.describe('TEST :-->', () => {
         const postForms = new PostForms(page);
         
        // await homePage.open();
-        await loginPage.login(process.env.BASE_URL, process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+        await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         await postForms.createNewPostBlankForm(process.env.NEW_POST_BLANK_NAME);  //TODO: User if/else for Div loading
          //TODO: Add assertion
      });

@@ -27,13 +27,13 @@ jobs:
           node-version: '14.x'
       
 
-      - name: Clone WPUF-pro
-        uses: actions/checkout@v2.5.0 # v2.3.4
-        with:
-          repository: weDevsOfficial/wpuf-pro
-          token: ${{ secrets.ACCESS_TOKEN }}
-          path: 'plugins/wpuf-pro'
-          ref: 'develop'
+      # - name: Clone WPUF-pro
+      #   uses: actions/checkout@v2.5.0 # v2.3.4
+      #   with:
+      #     repository: weDevsOfficial/wpuf-pro
+      #     token: ${{ secrets.ACCESS_TOKEN }}
+      #     path: 'plugins/wpuf-pro'
+      #     ref: 'develop'
 
       - name: Composer install and build (WPUF-lite)
         run: |
@@ -47,20 +47,20 @@ jobs:
             grunt release
             
 
-      - name: Composer install and build (WPUF-pro)
-        run: |
-            cd plugins/wpuf-pro
-            composer config allow-plugins.composer/installers true
-            composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-            composer install
-            composer update
-            composer dump-autoload -o
+      # - name: Composer install and build (WPUF-pro)
+      #   run: |
+      #       cd plugins/wpuf-pro
+      #       composer config allow-plugins.composer/installers true
+      #       composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+      #       composer install
+      #       composer update
+      #       composer dump-autoload -o
             
-      - name: Npm install and build (WPUF-pro)
-        run: |
-          cd plugins/wpuf-pro
-          npm i
-          grunt default
+      # - name: Npm install and build (WPUF-pro)
+      #   run: |
+      #     cd plugins/wpuf-pro
+      #     npm i
+      #     grunt default
 
 
       - name: Install dependencies
@@ -68,10 +68,10 @@ jobs:
           cd tests  
           npm ci
           
-      - name: Install Playwright Browsers
-        run: |
-          cd tests 
-          npx playwright install chromium
+      # - name: Install Playwright Browsers
+      #   run: |
+      #     cd tests 
+      #     npx playwright install chromium
 
 
       - name: Setup WordPress 
@@ -80,28 +80,28 @@ jobs:
           npm run wp-env start
 
 
-      - name: Run Playwright tests
-        run: |
-          cd tests
-            npx playwright test --project=chromium
-            ls
+      # - name: Run Playwright tests
+      #   run: |
+      #     cd tests
+      #       npx playwright test --project=chromium
+      #       ls
             
 
-        env:
-          CI: false
-          ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-          BASE_URL: ${{ secrets.BASE_URL}}
-          NEW_POST_BLANK_NAME: ${{ secrets.NEW_POST_BLANK_NAME }}
+      #   env:
+      #     CI: false
+      #     ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+      #     ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      #     BASE_URL: ${{ secrets.BASE_URL}}
+      #     NEW_POST_BLANK_NAME: ${{ secrets.NEW_POST_BLANK_NAME }}
 
 
-      - name: Archive playwright artifacts (screenshots, HTML snapshots)
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: tests/playwright-report
-          retention-days: 30
+      # - name: Archive playwright artifacts (screenshots, HTML snapshots)
+      #   uses: actions/upload-artifact@v3
+      #   if: always()
+      #   with:
+      #     name: playwright-report
+      #     path: tests/playwright-report
+      #     retention-days: 30
 
 
 

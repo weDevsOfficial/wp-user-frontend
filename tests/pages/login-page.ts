@@ -14,26 +14,26 @@ export class LoginPage {
     async login(url, email, password) {
         
         await this.page.goto(url, { waitUntil: 'networkidle' });  //TODO: User BASE_URL
-        //await this.page.goto('https://ratul.ajaira.website/wp-admin/', { waitUntil: 'networkidle' });
+        //await this.page.goto(url, { waitUntil: 'networkidle' });
         await this.page.fill(SelectorsPage.login.loginEmailField, email);
         await this.page.fill(SelectorsPage.login.loginPasswordField, password);
         await this.page.click(SelectorsPage.login.loginButton);
 
        //Validate LOGIN
+        await this.page.waitForLoadState('domcontentloaded');
         const DashboardLanded = await this.page.isVisible(SelectorsPage.login.logingSuccessDashboard);
         await expect(DashboardLanded).toBeTruthy;
-        await this.page.waitForLoadState('domcontentloaded')
-        console.log("0: " + DashboardLanded)
+        console.log("0: " + DashboardLanded);
 
 
         
         const CheckPluginMenu = await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
-        console.log("1: " + CheckPluginMenu)
+        console.log("1: " + CheckPluginMenu);
         // await expect(SelectorsPage.login.clickWPUFSidebar).toBeTruthy();  //Assertion
         
         //await (await this.page.waitForSelector(SelectorsPage.login.clickWPUFSidebar)).click;  //TODO: Change this
         await this.page.click(SelectorsPage.login.clickWPUFSidebar);
-        await this.page.waitForLoadState('domcontentloaded')
+        await this.page.waitForLoadState('domcontentloaded');
 
        //ASSERTION > Check if-VALID
             const availableText = await this.page.isVisible(SelectorsPage.createPostForm.clickPostFormMenuOption);

@@ -1,4 +1,4 @@
-=== WP User Frontend - Membership, Profile, Registration & Post Submission Plugin for WordPress ===
+=== WP User Frontend - Registration, User Profile, Membership, Content Restriction, User Directory, and Frontend Post Submission Plugin ===
 Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership, frontend-post
@@ -9,101 +9,101 @@ Stable tag: 3.5.29
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Frontend post submission, guest post, membership, login, registration and profile builder. The best frontend plugin for WordPress.
+Get frontend post, content access & restriction, user login & registration, subscription & membership, form builder, user directory & profile builder for your website.
 
 == Description ==
 
-WP User Frontend is one of the best frontend builder plugin for WordPress. It includes frontend dashboard, frontend editor & publishing, and frontend uploader for WordPress user profile, post submissions, and memberships.
+WP User Frontend makes the frontend better for you! It includes frontend dashboard, frontend editor, publishing, and uploader for WordPress user profile, post submissions, and memberships.
 
 <strong>FREE FEATURES</strong>
 
 <strong>#1 Frontend Post Submission, Membership, Profile Builder & WordPress Editor Plugin</strong>
 
-Unlimited post type form creation. The forms give users the ability to create new posts, edit their profile all from the site frontend, so that the user does not need to enter the backend admin panel to do action.
+Unlimited post-type form creation. The forms give users the ability to create new posts and edit their profile all from the site frontend, so that the user does not need to enter the backend admin panel to do action.
 
 <strong>Update Profile from the Frontend</strong>
 
 This WordPress Profile Plugin allows registered users to edit their profile using default fields from frontend without having backend access. Unlimited fields can be added using PRO.
 
-<strong>Flexibility for admins</strong>
+<strong>Flexibility for Admins</strong>
 
-Admins can manage users from frontend as well as configure from backend those who can access the dashboard.
+Admins can manage users from the frontend as well as configure from the backend who can access the dashboard.
 
-<strong>Featured image & image</strong>
+<strong>Featured Image & Image Upload</strong>
 
-Users can upload image from the frontend. Users can also upload post featured image. Image upload on post content area
+Users can upload images from the frontend. They can also upload featured image for a post using the Image Upload option on the post content area.
 
-<strong>Drag-n-drop form builder</strong>
+<strong>Drag-and-drop Form Builder</strong>
 
-Easily fill your form with fields using drag-n-drops and real-time preview that updates as you make changes. You can see how your form will look like eventually from the dashboard!
+Quickly build your form with necessary fields using drag-and-drops and real-time preview that updates as you make changes. You can also see how your form will look like eventually from the dashboard!
 
-<strong>Publish your WPUF forms using Gutenberg</strong>
+<strong>Publish Your WPUF Forms Using Gutenberg</strong>
 
-Easily add your published forms in Gutenberg editor with the WPUF block. When users want to publish forms on a page, they can simply select it from the drop-down included in the dedicated WPUF block for Gutenberg. The entire form automatically renders within the editor as well as on page. It’s much easier than manually copying and pasting shortcodes! Saves you a ton of time and clicks. But you can also do it the old style using the shortcodes block.
+Easily add your published forms in the Gutenberg editor with the WPUF block. When users want to publish a form on a page, they can simply select it from the drop-down included in the dedicated WPUF block for Gutenberg. The entire form automatically renders within the editor as well as on the page. It’s much easier than manually copying and pasting shortcodes! Saves you a ton of time and clicks. But you can also do it the old style using the shortcodes block.
 
-<strong>Use anywhere easily with shortcodes</strong>
+<strong>Use Forms Anywhere Easily with Shortcodes</strong>
 
 All of the forms get an unique shortcode which you can paste on any page and the form will generate without breaking the style of your theme.
 
 <strong>WordPress Guest Post Submission</strong>
 
-Enable guests to post from your site frontend without registering with WP User Frontend, the WordPress User Registration Plugin. Choose to require name and email address to automatically register and allow them to comment on their posts. Allow email verification for guests.
+Enable guests to post from your site frontend without registering with WP User Frontend, the WordPress User Registration plugin. Choose to require name and email address to automatically register and allow them to comment on their posts. Allow email verification for guests.
 
-<strong>Role Base Support</strong>
+<strong>Role Based Access Control</strong>
 
-Enable certain user roles to make posts, create unauthorized message you want to show.
+Enable certain user roles to make posts, while restricting others. Create the unauthorized message you want to show for the restricted users.
 
-<strong>Submit and update anything from Frontend</strong>
+<strong>Submit and Update Anything from Frontend</strong>
 
-Users can upload images, fill out forms, even entry data with multiple choice menus. Allow users to update their posts from the frontend.
+Users can upload images, fill out forms, even enter data with multiple choice menus. Allow users to update their posts from the front end.
 
-<strong>Build customized forms with custom post types</strong>
+<strong>Build Customized Forms with Custom Post Types</strong>
 
-Taking the advantage of custom post types will allow you to work on any platform. WP User Frontend is WooCommerce supported, so you can also create products using our forms.
+Taking the advantage of custom post types will allow you to work on any platform. WP User Frontend is WooCommerce supported, so you can also create products for your WooCommerce site using our forms.
 
-<strong>Set post status, post message, update post button text</strong>
+<strong>Set Post Status, Post Message, Update Post Button text</strong>
 
-Assign separate default status for a new and edit post, the message you want to show to users after form submission, and change the text of submit buttons as you like.
+Assign separate default statuses for new posts or edited posts. Set the message you want to show to users after form submission, and change the text of submit buttons as you like.
 
-<strong>Custom Redirection after login and submission</strong>
+<strong>Custom Redirection After Login and Submission</strong>
 
-Redirect users to another page after logging in, form submission or edit form submission.
+Redirect users to another page after logging in, form submission, or editing form submission.
 
-<strong>Earn with subscription based posting</strong>
+<strong>Earn with Subscription Based Posting</strong>
 
-Create subscription packs to take “Pay Per Post” payments. Submissions posted via these subscriptions have duration and posting limits.
+Create subscription packs to earn through “Pay Per Post” payments. Submissions posted via these subscriptions have duration and posting limits.
 
-<strong>Schedule forms & restrict entries</strong>
+<strong>Schedule Forms & Restrict Entries</strong>
 
-Choose to keep your form active for certain dates. Set a message when form expires. And limit entries to as many as required. The PRO version also allows setting up post expiration.
+Choose to keep your form active for certain dates. Set a message when the form expires. And limit entries to as many as required. The PRO version also allows setting up post expiration.
 
-<strong>Get reminded with emails</strong>
+<strong>Get Reminded with Emails</strong>
 
-Trigger emails on multiple events like new form submission, guest posts, publish notification and new subscriptions. With PRO, more email notifications can be set up.
+Trigger emails on multiple events like new form submissions, guest posts, publish notifications, and new subscriptions. More email notifications can be set up with the PRO version.
 
 <strong>Integrate with Advanced Custom Fields (ACF)</strong>
 
-Connect form fields with ACF fields to view user submissions in ACF format from dashboard. Allow users to edit fields from frontend.
+Connect form fields with ACF fields to view user submissions in ACF format from your dashboard. Allow users to edit fields from front end.
 
-<strong>Create subscription packs, pay-per-posts & receive payments from users</strong>
+<strong>Create Subscription Packs, Pay-per-posts, & Receive Payments from Users</strong>
 
 Create and subscribe users to membership packs, allow pay per post, force subscription package purchase, and set fallback pay per post charges with this WordPress Membership Plugin.
 
-<strong>Manage Transactions</strong>
+<strong>Manage Transactions and Membership</strong>
 
-Approve or make pending membership requests. View all details from a single screen.
+Approve or keep membership requests pending – you’re in complete control. View all details from a single screen.
 
-<strong>Manage or Import/Export forms</strong>
+<strong>Manage and Import/Export Forms Easily</strong>
 
-Install required WPUF pages in a click, delete post forms, registration forms or subscriptions in one go. Import forms from other places and export forms as JSON.
+Install required WPUF pages in a click, delete post forms, registration forms, or subscriptions in one go. Import forms from other places and export forms as JSON.
 
-<strong>Custom Login/Registration Form</strong>
+<strong>Custom Login & Registration Form</strong>
 
-This WordPress Registration Form Plugin also allows to build registration form using default forms. With PRO, more fields can be added.
+This WordPress Registration Form Plugin also allows you to build registration forms using default templates. More fields can be added with PRO.
 
 <strong>Display Custom Fields Data in Post</strong>
 
-Custom fields data are viewable to visitors on frontend on single post pages. Admins can disable this feature also.
+Custom field data are viewable to visitors on frontend on single post pages. Admins can also disable this if they don’t want to display custom fields to everyone.
 
 = How to download and install WPUF FREE =
 
@@ -127,35 +127,32 @@ Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the FREE & P
 <strong>WP User Frontend PRO – Premium Features</strong>
 
 * 20+ Modules [BuddyPress, Paid Memberships Pro, Social Login, User Directory, User Activity, Stripe, MailChimp, Private Messaging, HTML Email Templates & more]
-* Content restriction
-* Menu restriction
-* Post expiration facility
-* Conditional logic
-* Profile form builder
-* 18 custom fields
-* Custom taxonomy support
-* Post update notification
-* Multistep forms
-* Payment invoice
-* Coupons
-* Different profile edit forms for different user roles
-* Profile fields are also generated on the backend
-* Custom taxonomies
-* Taxonomy restriction
-* Form layouts and form templates
-* WooCommerce support
-* Registration form builder
-* Assign new roles to forms
-* Captcha support
-* Update user profile information from frontend
-* Files & attachments upload
-* Avatar upload
-* User profiles in backend
-* Exclusive contents
-* Frontend Customizer
-* More email notification options
-* Tax in payments
-* Vendor registration template for Dokan, WC Marketplace, WC Vendors
+* Content restriction: Restrict or lock your exclusive content or pages or just a specific part of a content, based on registration, user roles, or subscriptions.
+* Menu restriction: Lock or hide your website's menu links for certain users based on user roles, registration, or subscriptions.
+* Post expiration facility: Automatically take down published posts on your sites after a given time based on subscription packs or specific forms. 
+* Conditional logic: Use conditional logic in your forms to show or hide fields, sections, and pages based on user selections.
+* Profile form builder: Build your own custom profile form with as many fields you need.
+* 20+ custom fields: Utilize fields like Text, Text Area, Dropdown, Multi Select, Hidden, Repeat, Phone, Time, Google Maps, and a lot more to customize your forms according to your requirements.
+* Custom taxonomy support: Use custom taxonomies for WooCommerce products. Use them as drop-down, multi-select, or check-box lists.
+* Post update notification: Get notified through email when an author updates a new post. Make the notification email dynamic using shortcodes.
+* Multistep forms: Break down a form in multi steps easily from its settings.
+* Payment invoice: For every successful transaction, an invoice is generated and emailed to the user. You can customize several fields of the invoice.
+* Coupons: Create and manage coupons for your Subscription Packs.
+* Personalized forms: Create different registration and profile edit forms for different user roles.
+* User profiles in backend: The custom elements you create in Profile Forms are generated in the admin profile area too.
+* Taxonomy restriction: Restrict users to post on a taxonomy/category based on subscription packs.
+* Form layouts and form templates: Quickly create forms from pre-defined templates. Drag-and-drop fields to customize it further. Vendor registration templates are available for Dokan, WC Marketplace, and WC Vendors.
+* WooCommerce support: Create a frontend interface to post and manage products of your WooCommerce powered site.
+* Registration form builder: Use templates or build with your own set of registration elements to register users on your site.
+* Assign new roles to forms: Create different registration forms for different user roles. New users will be assigned the role according to the form they used.
+* Captcha support: Prevent bots and spam attacks using Google reCAPTCHA or Really Simple CAPTCHA.
+* Update user profile information from frontend: No need to go to the backend to update your profile, do it from frontend.
+* Files & attachments upload: Let users upload files and attachments or embed playable audio & video files using Post Forms.
+* Avatar upload: Let users upload profile pictures. It supports Gravatar and locally uploaded avatars work side by side.
+* Frontend Customizer: Allows admins to customize colors and labels for some important frontend elements and features of WPUF. 
+* More email notification options: Configure email notifications for the important events.
+* Tax in payments: Apply custom country and state-wise tax rates to: Pay Per Post Forms and
+Subscription Packs.
 
 <strong>Premium Modules</strong>
 

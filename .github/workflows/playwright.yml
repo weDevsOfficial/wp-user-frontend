@@ -68,10 +68,10 @@ jobs:
           cd tests  
           npm ci
           
-      # - name: Install Playwright Browsers
-      #   run: |
-      #     cd tests 
-      #     npx playwright install chromium
+      - name: Install Playwright Browsers
+        run: |
+          cd tests 
+          npx playwright install chromium
 
 
       - name: Setup WordPress 

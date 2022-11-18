@@ -17,7 +17,7 @@ jobs:
         with:
           php-version: "7.3"
             
-      - uses: actions/checkout@2.5 # v2.3.4
+      - uses: actions/checkout@v2.5.0 # v2.3.4
         with:
           ref: 'automation/wpuf-e2ev2'
 
@@ -28,7 +28,7 @@ jobs:
       
 
       - name: Clone WPUF-pro
-        uses: actions/checkout@2.5 # v2.3.4
+        uses: actions/checkout@v2.5.0 # v2.3.4
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}

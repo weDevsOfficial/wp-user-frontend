@@ -17,11 +17,13 @@ export class LoginPage {
         await this.page.fill(SelectorsPage.login.loginEmailField, email);
         await this.page.fill(SelectorsPage.login.loginPasswordField, password);
         await this.page.click(SelectorsPage.login.loginButton);
-        //await this.page.goto('http://localhost:8889/wp-admin/index.php?page=wpuf-setup', { waitUntil: 'networkidle' }); 
+        console.log("First Step: Login Done");
+        await this.page.goto('http://localhost:8889/wp-admin/index.php?page=wpuf-setup', { waitUntil: 'networkidle' }); 
         const WPUFSetup = await this.page.isVisible(SelectorsPage.login.clickWPUFSetupSkip);
                 if (WPUFSetup == true) {
                     await this.page.click(SelectorsPage.login.clickWPUFSetupSkip);
                 }
+        console.log("Second Step: Skip > " + WPUFSetup);
 
        //Validate LOGIN
         await this.page.waitForLoadState('domcontentloaded');

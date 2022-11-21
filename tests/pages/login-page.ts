@@ -1,5 +1,5 @@
 require('dotenv').config();
-import { expect, Page } from '@playwright/test';
+import { expect, Page, selectors } from '@playwright/test';
 import { SelectorsPage } from './selectors';
 
 
@@ -17,6 +17,11 @@ export class LoginPage {
         await this.page.fill(SelectorsPage.login.loginEmailField, email);
         await this.page.fill(SelectorsPage.login.loginPasswordField, password);
         await this.page.click(SelectorsPage.login.loginButton);
+        //await this.page.goto('http://localhost:8889/wp-admin/index.php?page=wpuf-setup', { waitUntil: 'networkidle' }); 
+        const WPUFSetup = await this.page.isVisible(SelectorsPage.login.clickWPUFSetupSkip);
+                if (WPUFSetup == true) {
+                    await this.page.click(SelectorsPage.login.clickWPUFSetupSkip);
+                }
 
        //Validate LOGIN
         await this.page.waitForLoadState('domcontentloaded');

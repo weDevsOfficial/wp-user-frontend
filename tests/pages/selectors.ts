@@ -12,6 +12,8 @@ export const SelectorsPage = {
         logingSuccessDashboard: '//div[text()="Dashboard"]',
         //clickWPUFSidebar: '//div[text()="User Frontend"]/.',
         clickWPUFSidebar: '#toplevel_page_wp-user-frontend > a',
+        //WPUF Setup Skip
+        clickWPUFSetupSkip: '//a[@class="button button-large" and contains(text(), "Not right now")]',
        
 
         //WPUF > Pages > Navigation

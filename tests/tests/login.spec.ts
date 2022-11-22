@@ -69,6 +69,7 @@ test.describe('TEST :-->', () => {
        // await homePage.open();
         await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         await registrationForms.createNewRegistrationBlankForm(process.env.NEW_REGISTRATION_BLANK_FORMNAME);
+
     });
 
 

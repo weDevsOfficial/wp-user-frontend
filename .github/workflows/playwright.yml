@@ -92,7 +92,9 @@ jobs:
           ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
           BASE_URL: ${{ secrets.BASE_URL}}
-          NEW_POST_BLANK_NAME: ${{ secrets.NEW_POST_BLANK_NAME }}
+          NEW_POST_BLANK_FORMNAME: ${{ secrets.NEW_POST_BLANK_NAME }}
+          NEW_POST_BLANKFORM_FRONTEND_POST_TITLE: ${{ secrets.NEW_POST_BLANKFORM_FRONTEND_POST_TITLE }}
+          NEW_REGISTRATION_BLANK_FORMNAME: ${{ secrets.NEW_REGISTRATION_BLANK_FORMNAME }} 
 
 
       - name: Archive playwright artifacts (screenshots, HTML snapshots)

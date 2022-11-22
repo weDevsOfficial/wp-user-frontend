@@ -37,7 +37,6 @@ export class PostFormsFrontEnd {
             await this.page.fill(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockSearch, 'Shortcode')
             await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockClickShortcode);
 
-
         // //Click on New Page > From Pages
         // await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickFormsPageFrontEndEdit);
         // await this.page.waitForLoadState('networkidle');

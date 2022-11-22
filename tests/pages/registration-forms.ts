@@ -32,9 +32,9 @@ export class RegistrationForms {
         await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm);   
 
         //Enter_Name
+        //await this.page.waitForLoadState('domcontentloaded');
         await this.page.click(SelectorsPage.createRegistrationForm.editNewFormName); 
-        await this.page.waitForLoadState('domcontentloaded');
-        await this.page.type(SelectorsPage.createRegistrationForm.enterNewFormName, newRegistrationName);   
+        await this.page.fill(SelectorsPage.createRegistrationForm.enterNewFormName, newRegistrationName);   
         await this.page.click(SelectorsPage.createRegistrationForm.confirmNewNameTickButton);  
         
 

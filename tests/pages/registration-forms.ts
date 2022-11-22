@@ -16,12 +16,13 @@ export class RegistrationForms {
     }
 
 
-//1.0: FrontEND_Check_Blank_Form
+//4.0: FrontEND_Check_Blank_Form
     async createNewRegistrationBlankForm(newRegistrationName) {
+        console.log("0004 > Running REGISTRATION FORM Create");
         //Create_New_Post_Form
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistrationFormMenuOption);
         //Start
-        console.log("003: START > Create New REGISTRATION Form");                        //TODO: Make a COMMON FUNCTION
+        console.log("4.0: START > Create New REGISTRATION Form");                        //TODO: Make a COMMON FUNCTION
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm); 
   
         //Click_Blank_Form
@@ -57,7 +58,7 @@ export class RegistrationForms {
             //br-start
             var textBlockAddPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             if (textBlockAddPopUp) {
-                console.log('Click TextBlock PopUp > "Dont show again" Button1')
+                console.log("4.1: Click TextBlock PopUp > 'Dont show again' Button1")
                 await this.page.click(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             } 
             //br-end
@@ -83,7 +84,7 @@ export class RegistrationForms {
             //br-start
             var googleMapBlockPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             if (googleMapBlockPopUp) {
-                console.log('Click GoogleMap PopUP > "OK1')
+                console.log("4.2: Click GoogleMap PopUP > 'OK1'")
                 await this.page.click(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             } 
             //br-end
@@ -91,7 +92,7 @@ export class RegistrationForms {
             //br-start
             var stepStartBlockAddPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             if (stepStartBlockAddPopUp) {
-                console.log('Click StepStart POPUP > "Dont show again" Button2')
+                console.log('4.3: Click StepStart POPUP > "Dont show again" Button2')
                 await this.page.click(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             } 
             //br-end
@@ -106,7 +107,7 @@ export class RegistrationForms {
             //br-start
             var reCaptchaBlockPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             if (reCaptchaBlockPopUp) {
-            console.log('Click reCaptcha PopUP > "OK2')
+            console.log('4.4: Click reCaptcha PopUP > "OK2')
             await this.page.click(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             } 
             //br-end
@@ -118,7 +119,7 @@ export class RegistrationForms {
             //br-start
             var reallySimpleCaptchaPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             if (reallySimpleCaptchaPopUp) {
-                console.log('Click reCaptcha PopUP > "OK3')
+                console.log('4.5: Click reCaptcha PopUP > "OK3')
                 await this.page.click(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             } 
             //br-end
@@ -132,24 +133,24 @@ export class RegistrationForms {
 
         //Finish
         await this.page.click(SelectorsPage.createPostForm.saveFormButton);
-        console.log("003: END > Create New REGISTRATION Form")
+        console.log("4.6: END > Create New REGISTRATION Form")
 
         //Return HOME
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistrationFormMenuOption);
         await this.page.waitForLoadState('domcontentloaded')
         //ASSERTION > Check if-VALID
         const checkNew_RegistrationForm_CreatedValid = await this.page.isVisible(SelectorsPage.createRegistrationForm.clickRegistrationFormMenuOption);
-        console.log(checkNew_RegistrationForm_CreatedValid) //Check STATUS
+        console.log("4.7: " + checkNew_RegistrationForm_CreatedValid) //Check STATUS
             if (checkNew_RegistrationForm_CreatedValid == true) {  
                 const checkNewFormCreated = await this.page.innerText(SelectorsPage.login.postFormsPageFormTitleCheck);
-                console.log("Text is -> " + checkNewFormCreated)
+                console.log("4.8 Text is -> " + checkNewFormCreated)
                 await expect(checkNewFormCreated).toContain(process.env.NEW_REGISTRAION_BLOG_NAME);
-                console.log("004: Validation PASSED");
+                console.log("4.9: Validation PASSED");
 
             }
             else {
                 await this.page.pause();
-                console.log("004.1: Validation FAILED");
+                console.log("4.10: Validation FAILED");
 
             }
 

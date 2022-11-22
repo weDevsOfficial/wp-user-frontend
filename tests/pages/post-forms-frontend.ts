@@ -16,13 +16,14 @@ export class PostFormsFrontEnd {
     }
 
 
-//1.0: FrontEND_Check_Blank_Form
+//3.0: FrontEND_Check_Blank_Form
     async checkNewPostBlankFormFrontEnd(newPostTitleName) {
+        console.log("0003 > Running FRONT-END Check > POST FORM");
         await this.page.click(SelectorsPage.createPostForm.clickPostFormMenuOption);
 
         //Copy_Shortcode
         const storeShortCode = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.clickShortCode);
-        console.log(storeShortCode);
+        console.log("3.0" + storeShortCode);
 
         //Go To Pages
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickLeftNavPages);
@@ -32,7 +33,6 @@ export class PostFormsFrontEnd {
         //Wait for ShortCode Block
         const WaitforShortcodeBlock = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.shortCodeBlock)
         await expect(WaitforShortcodeBlock).toEqual("Shortcode");
-        //console.log(WaitforShortcodeBlock);
         //Edit Shortcode
         //await this.page.waitForNavigation();
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock);
@@ -46,14 +46,14 @@ export class PostFormsFrontEnd {
         //Update Edited Page
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickEditFormsPageUpdate);
         await this.page.waitForLoadState('domcontentloaded')
-        console.log("Updating Page Done")
+        console.log("3.1: Updating Page Done")
 
         //Go to Dashboard > Visist Site > FRONT-END
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickReturnToDashboard);
         //FRONT-END Click
         await this.page.hover(SelectorsPage.frontEndCheckBlankForm.hoverSiteName);
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickVisitSite);
-        console.log("Site Visited")
+        console.log("3.2: Site Visited")
             
         
         //FRONT-END Post Form Page
@@ -61,11 +61,11 @@ export class PostFormsFrontEnd {
         const FrontEndPostPage = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.frontEndclickPostFormPage);
         await expect(FrontEndPostPage).toEqual("Post Form Page");
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.frontEndclickPostFormPage);
-        console.log("> Clicked on Page > VISITED")
+        console.log("3.3: Clicked on Page > VISITED")
         
 
         //Check BLANK FORM Items
-        console.log("Started > Blank Form Item Check")
+        console.log("3.4: Started > Blank Form Item Check")
         //1.0
         await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.frontEndPostTitle);
         await this.page.fill(SelectorsPage.frontEndCheckBlankForm.frontEndPostTitle, newPostTitleName);
@@ -165,7 +165,7 @@ export class PostFormsFrontEnd {
         //SUBMIT
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.frontEndSubmitForm);
         await this.page.waitForLoadState('domcontentloaded')
-        console.log("Ended > Blank Form Item Check")
+        console.log("3.5: Ended > Blank Form Item Check")
 
 
         //VALIDATE Form Submission
@@ -176,7 +176,7 @@ export class PostFormsFrontEnd {
         //Check ITEM
         const ValidateFormSubmitted = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.frontEndValiteFormSubmitted);
             await expect(ValidateFormSubmitted).toContain(newPostTitleName);
-            console.log("Form Submission: VALIDATED");
+            console.log("3.6: Form Submission: VALIDATED");
 
         }
 

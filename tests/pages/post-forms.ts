@@ -15,12 +15,13 @@ export class PostForms {
         this.page = page;
     }
 
-//1.0: CREATE_NEW_BLANK_FORM
+//2.0: CREATE_NEW_BLANK_FORM
     async createNewPostBlankForm(newPostName) {
+        console.log("0002 > Running POST FORM Create");
         //Create_New_Post_Form
         await this.page.click(SelectorsPage.createPostForm.clickPostFormMenuOption);
         //Start
-        console.log("003: START > Create New BLANK Form");                        //TODO: Make a COMMON FUNCTION
+        console.log("2.0: START > Create New BLANK Form");                        //TODO: Make a COMMON FUNCTION
         await this.page.click(SelectorsPage.createPostForm.clickPostAddForm); 
   
         //Click_Blank_Form
@@ -52,7 +53,7 @@ export class PostForms {
             //br-start
             var textBlockAddPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             if (textBlockAddPopUp) {
-                console.log('Click TextBlock PopUp > "Dont show again" Button1')
+                console.log("2.1: Click TextBlock PopUp > 'Dont show again' Button1")
                 await this.page.click(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             } 
             //br-end
@@ -78,7 +79,7 @@ export class PostForms {
             //br-start
             var googleMapBlockPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             if (googleMapBlockPopUp) {
-                console.log('Click GoogleMap PopUP > "OK1')
+                console.log("2.2: Click GoogleMap PopUP > 'OK1'")
                 await this.page.click(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             } 
             //br-end
@@ -86,7 +87,7 @@ export class PostForms {
             //br-start
             var stepStartBlockAddPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             if (stepStartBlockAddPopUp) {
-                console.log('Click StepStart POPUP > "Dont show again" Button2')
+                console.log("2.3: Click StepStart POPUP > 'Dont show again' Button2")
                 await this.page.click(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             } 
             //br-end
@@ -103,7 +104,7 @@ export class PostForms {
             //br-start
             var reCaptchaBlockPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             if (reCaptchaBlockPopUp) {
-                console.log('Click reCaptcha PopUP > "OK2')
+                console.log("2.4: Click reCaptcha PopUP > 'OK2'")
                 await this.page.click(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             } 
             //br-end
@@ -115,7 +116,7 @@ export class PostForms {
             //br-start
             var reallySimpleCaptchaPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             if (reallySimpleCaptchaPopUp) {
-                console.log('Click reCaptcha PopUP > "OK3')
+                console.log("2.5: Click reCaptcha PopUP > 'OK3'")
                 await this.page.click(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             } 
             //br-end
@@ -127,66 +128,27 @@ export class PostForms {
         
         //Finish
         await this.page.click(SelectorsPage.createPostForm.saveFormButton);
-        console.log("003: END > Create New BLANK Form")
+        console.log("2.6: END > Create New BLANK Form")
 
         //Return HOME
         await this.page.click(SelectorsPage.createPostForm.clickPostFormMenuOption);
         await this.page.waitForLoadState('domcontentloaded')
         //ASSERTION > Check if-VALID
         const checkNew_BlankForm_CreatedValid = await this.page.isVisible(SelectorsPage.login.wpufPostForm_CheckAddButton);
-        console.log(checkNew_BlankForm_CreatedValid) //Check STATUS
+        console.log("2.7: " + checkNew_BlankForm_CreatedValid) //Check STATUS
         if (checkNew_BlankForm_CreatedValid == true) {  
             const checkNewFormCreated = await this.page.innerText(SelectorsPage.login.postFormsPageFormTitleCheck);
-            console.log("Text is -> " + checkNewFormCreated)
+            console.log("2.8: Text is -> " + checkNewFormCreated)
             await expect(checkNewFormCreated).toContain(process.env.NEW_POST_BLANK_NAME);
         
         }
 
-        console.log("004: Testing Check");
+        console.log("2.9: Testing Check");
 
     }
 
 
 
-//2.0: CREATE_BLOG_FORM
-//     async createNewBlogPost(newPostName) {
-//         //Create_New_Blog_Post
-//         await this.page.click(SelectorsPage.createPostForm.clickPostFormMenuOption);
-//         await this.page.waitForLoadState('domcontentloaded')
-//         await this.page.click(SelectorsPage.createPostForm.clickPostFormMenuOption);
-
-//         //Enter_Name
-//         // await this.page.click(SelectorsPage.createPostForm.editNewFormName); 
-//         // await this.page.fill(SelectorsPage.createPostForm.enterNewFormName, newPostName);    
-//         // await this.page.click(SelectorsPage.createPostForm.confirmNewNameTickButton);   
-
-
-//         //Start
-//         console.log("003: START > Create New Form");                        //TODO: Make a COMMON FUNCTION
-//         await this.page.click(SelectorsPage.createPostForm.clickAddForm);   
-//         //Click_Blog_Form
-//         await this.page.hover(SelectorsPage.createBlogForm.hoverBlogForm);   
-//         await this.page.click(SelectorsPage.createBlogForm.clickBlogForm);
-
-//         //Check_Post_Title
-//         console.log("Check Post Title");                        //TODO: Make a COMMON FUNCTION
-//         const postTitleBlock = await this.page.isVisible(SelectorsPage.createPostForm.postTitleBlock);
-//         console.log(postTitleBlock); //Check Status
-//             if (postTitleBlock == true) {    
-//                 const postTitleBlockCheck = await this.page.innerText(SelectorsPage.createPostForm.postTitleBlock);
-//                 console.log(postTitleBlockCheck);
-//                 await expect(postTitleBlockCheck).toContain("Post Title");
-//             }
-
-        
-
-//     }
-
-
-// //3.0: EDIT
-//     async editPostForm(editPostForm: string) {
-
-//     }
 
 
 

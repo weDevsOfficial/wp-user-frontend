@@ -201,7 +201,7 @@ export const SelectorsPage = {
 
         //Enter_NAME
         editNewFormName: '//span[text()="Sample Registration Form"]',
-        enterNewFormName: '//header[@class="clearfix"]//input',  //TODO: Catch with Child
+        enterNewFormName: '//header[@class="clearfix"]//span//input',  //TODO: Catch with Child
         confirmNewNameTickButton: '//header[@class="clearfix"]//button',
 
         //Post_Fields

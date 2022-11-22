@@ -29,10 +29,14 @@ export class PostFormsFrontEnd {
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickLeftNavPages);
 
         //Add New Page
+        await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.clickAddNewPageButton);
+        await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickAddNewPageButton);
+        //Add New Page > Add Title
+        await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);
         await this.page.fill(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle, 'New: Post Form Page');
-        //Add Shortcode in New Page
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockIcon);
+        //Add New Page > Add Shortcode
+            await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockIcon);
             await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockSearch)
             await this.page.fill(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockSearch, 'Shortcode')
             await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockClickShortcode);

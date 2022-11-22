@@ -121,8 +121,10 @@ export const SelectorsPage = {
         //Click Pages
         clickLeftNavPages: '//li[@id="menu-pages"]',
             //Add New Page
+            clickAddNewPageButton: '.page-title-action',
+            //Add New Page > Add Title
             newPageAddTitle: '//h1[@aria-label="Add title"]',
-            //Add Shortcode in New Page
+            //Add New Page > Add Shortcode
             newPageAddBlockIcon: '//button[@aria-label="Add block"]',
             newPageAddBlockSearch: '.components-search-control__input',
             newPageAddBlockClickShortcode: '//button[@role="option"]',

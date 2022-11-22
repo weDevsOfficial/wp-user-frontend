@@ -47,29 +47,29 @@ test.describe('TEST :-->', () => {
 // //TODO: UNDO
 //Check_FRONT_END > BLANK_POST_Form-3.0
 
-    test('0003: Check Front-End for BLANK Template', async ({ page }) => {
-        //const homePage = new HomePage(page);
-        const loginPage = new LoginPage(page);
-        const postFormsFrontEnd = new PostFormsFrontEnd(page);
+    // test('0003: Check Front-End for BLANK Template', async ({ page }) => {
+    //     //const homePage = new HomePage(page);
+    //     const loginPage = new LoginPage(page);
+    //     const postFormsFrontEnd = new PostFormsFrontEnd(page);
         
-    // await homePage.open();
-        await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
-        await postFormsFrontEnd.checkNewPostBlankFormFrontEnd(process.env.NEW_POSTFORM_BLANK_FRONTEND_POST_TITLE); 
-        //TODO: Add assertion
-    });
+    // // await homePage.open();
+    //     await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+    //     await postFormsFrontEnd.checkNewPostBlankFormFrontEnd(process.env.NEW_POSTFORM_BLANK_FRONTEND_POST_TITLE); 
+    //     //TODO: Add assertion
+    // });
 
 
 
 //Add_Registration > BLANK_Form-4.0
 
-    // test('0004: Create New > BLOG FORM', async ({ page }) => {
-    //     const loginPage = new LoginPage(page);
-    //     const registrationForms = new RegistrationForms(page);
+    test('0004: Create New > BLOG FORM', async ({ page }) => {
+        const loginPage = new LoginPage(page);
+        const registrationForms = new RegistrationForms(page);
         
-    //    // await homePage.open();
-    //     await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
-    //     await registrationForms.createNewRegistrationBlankForm(process.env.NEW_REGISTRAION_BLOG_NAME);
-    // });
+       // await homePage.open();
+        await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+        await registrationForms.createNewRegistrationBlankForm(process.env.NEW_REGISTRAION_BLOG_NAME);
+    });
 
 
 

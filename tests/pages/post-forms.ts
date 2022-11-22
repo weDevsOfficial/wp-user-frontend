@@ -139,7 +139,7 @@ export class PostForms {
         if (checkNew_BlankForm_CreatedValid == true) {  
             const checkNewFormCreated = await this.page.innerText(SelectorsPage.login.postFormsPageFormTitleCheck);
             console.log("2.8: Text is -> " + checkNewFormCreated)
-            await expect(checkNewFormCreated).toContain(process.env.NEW_POST_BLANK_NAME);
+            await expect(checkNewFormCreated).toContain(process.env.NEW_POST_BLANK_FORMNAME);
         
         }
 

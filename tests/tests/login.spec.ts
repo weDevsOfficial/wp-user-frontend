@@ -39,7 +39,7 @@ test.describe('TEST :-->', () => {
         
     //    // await homePage.open();
     //     await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
-    //     await postForms.createNewPostBlankForm(process.env.NEW_POST_BLANK_NAME);  //TODO: User if/else for Div loading
+    //     await postForms.createNewPostBlankForm(process.env.NEW_POST_BLANK_FORMNAME);  //TODO: User if/else for Div loading
     //      //TODO: Add assertion
     //  });
 
@@ -54,7 +54,7 @@ test.describe('TEST :-->', () => {
         
     // // await homePage.open();
     //     await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
-    //     await postFormsFrontEnd.checkNewPostBlankFormFrontEnd(process.env.NEW_POSTFORM_BLANK_FRONTEND_POST_TITLE); 
+    //     await postFormsFrontEnd.checkNewPostBlankFormFrontEnd(process.env.NEW_POST_BLANKFORM_FRONTEND_POST_TITLE); 
     //     //TODO: Add assertion
     // });
 
@@ -68,7 +68,7 @@ test.describe('TEST :-->', () => {
         
        // await homePage.open();
         await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
-        await registrationForms.createNewRegistrationBlankForm(process.env.NEW_REGISTRAION_BLOG_NAME);
+        await registrationForms.createNewRegistrationBlankForm(process.env.NEW_REGISTRAION_BLANK_FORMNAME);
     });
 
 

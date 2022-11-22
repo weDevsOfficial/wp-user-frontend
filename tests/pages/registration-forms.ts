@@ -144,7 +144,7 @@ export class RegistrationForms {
             if (checkNew_RegistrationForm_CreatedValid == true) {  
                 const checkNewFormCreated = await this.page.innerText(SelectorsPage.login.postFormsPageFormTitleCheck);
                 console.log("4.8 Text is -> " + checkNewFormCreated)
-                await expect(checkNewFormCreated).toContain(process.env.NEW_REGISTRAION_BLOG_NAME);
+                await expect(checkNewFormCreated).toContain(process.env.NEW_REGISTRATION_BLANK_FORMNAME);
                 console.log("4.9: Validation PASSED");
 
             }

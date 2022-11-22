@@ -32,20 +32,21 @@ test.describe('TEST :-->', () => {
 
 //Add_Post > BLANK_Form-2.0
 
-    test('0002: Create New > Using BLANK Template', async ({ page }) => {
-        //const homePage = new HomePage(page);
-        const loginPage = new LoginPage(page);
-        const postForms = new PostForms(page);
+    // test('0002: Create New > Using BLANK Template', async ({ page }) => {
+    //     //const homePage = new HomePage(page);
+    //     const loginPage = new LoginPage(page);
+    //     const postForms = new PostForms(page);
         
-       // await homePage.open();
-        await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
-        await postForms.createNewPostBlankForm(process.env.NEW_POST_BLANK_NAME);  //TODO: User if/else for Div loading
-         //TODO: Add assertion
-     });
+    //    // await homePage.open();
+    //     await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+    //     await postForms.createNewPostBlankForm(process.env.NEW_POST_BLANK_NAME);  //TODO: User if/else for Div loading
+    //      //TODO: Add assertion
+    //  });
 
 
 // //TODO: UNDO
 //Check_FRONT_END > BLANK_POST_Form-3.0
+
     test('0003: Check Front-End for BLANK Template', async ({ page }) => {
         //const homePage = new HomePage(page);
         const loginPage = new LoginPage(page);
@@ -58,15 +59,17 @@ test.describe('TEST :-->', () => {
     });
 
 
+
 //Add_Registration > BLANK_Form-4.0
-    test('0004: Create New > BLOG FORM', async ({ page }) => {
-        const loginPage = new LoginPage(page);
-        const registrationForms = new RegistrationForms(page);
+
+    // test('0004: Create New > BLOG FORM', async ({ page }) => {
+    //     const loginPage = new LoginPage(page);
+    //     const registrationForms = new RegistrationForms(page);
         
-       // await homePage.open();
-        await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
-        await registrationForms.createNewRegistrationBlankForm(process.env.NEW_REGISTRAION_BLOG_NAME);
-    });
+    //    // await homePage.open();
+    //     await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+    //     await registrationForms.createNewRegistrationBlankForm(process.env.NEW_REGISTRAION_BLOG_NAME);
+    // });
 
 
 

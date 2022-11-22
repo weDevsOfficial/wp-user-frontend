@@ -120,6 +120,14 @@ export const SelectorsPage = {
 
         //Click Pages
         clickLeftNavPages: '//li[@id="menu-pages"]',
+            //Add New Page
+            newPageAddTitle: '//h1[@aria-label="Add title"]',
+            //Add Shortcode in New Page
+            newPageAddBlockIcon: '//button[@aria-label="Add block"]',
+            newPageAddBlockSearch: '.components-search-control__input',
+            newPageAddBlockClickShortcode: '//button[@role="option"]',
+
+        //Click on New Page > From Pages
         clickFormsPageFrontEndEdit: '//a[contains (text(),"Post Form Page")]',
 
             //Edit Shortcode

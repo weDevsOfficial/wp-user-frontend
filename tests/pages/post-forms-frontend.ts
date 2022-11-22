@@ -27,8 +27,20 @@ export class PostFormsFrontEnd {
 
         //Go To Pages
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickLeftNavPages);
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickFormsPageFrontEndEdit);
-        await this.page.waitForLoadState('networkidle');
+
+        //Add New Page
+        await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);
+        await this.page.fill(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle, 'New: Post Form Page');
+        //Add Shortcode in New Page
+        await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockIcon);
+            await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockSearch)
+            await this.page.fill(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockSearch, 'Shortcode')
+            await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockClickShortcode);
+
+
+        // //Click on New Page > From Pages
+        // await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickFormsPageFrontEndEdit);
+        // await this.page.waitForLoadState('networkidle');
 
         //Wait for ShortCode Block
         const WaitforShortcodeBlock = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.shortCodeBlock)

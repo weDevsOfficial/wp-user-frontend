@@ -201,8 +201,8 @@ export const SelectorsPage = {
 
         //Enter_NAME
         editNewFormName: '//span[text()="Sample Registration Form"]',
-        enterNewFormName: '//header[@class="clearfix"]/span/input',  //TODO: Catch with Child
-        confirmNewNameTickButton: '//button[@class="button button-small"]',
+        enterNewFormName: '//header[@class="clearfix"]//input',  //TODO: Catch with Child
+        confirmNewNameTickButton: '//header[@class="clearfix"]//button',
 
         //Post_Fields
         profileFieldUsername: '//li[@data-form-field="user_login"]',

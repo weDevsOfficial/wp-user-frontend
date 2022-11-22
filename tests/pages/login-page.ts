@@ -11,7 +11,7 @@ export class LoginPage {
     }
 
     async login(email, password) {
-        
+        console.log("0001: Running Login Done");
         await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });  //TODO: User BASE_URL
         
         const EmailCheck = await this.page.isVisible(SelectorsPage.login.loginEmailField);
@@ -71,11 +71,11 @@ export class LoginPage {
             console.log("1.4: Click WPUF in Menu");
             if (availableText == true) {    
                 const checkText = await this.page.innerText(SelectorsPage.login.wpufPostForm_CheckAddButton);
-                console.log("3: " + "Text is > " + checkText);
+                console.log("1.5: " + "Text is > " + checkText);
                 await expect(checkText).toContain("Add Form");
             }
 
-            console.log("1.5: Login Done"); //TODO: Fix this
+            console.log("1.6: Login Done"); //TODO: Fix this
         }
     }
 

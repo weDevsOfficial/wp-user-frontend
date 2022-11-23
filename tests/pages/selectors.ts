@@ -123,6 +123,10 @@ export const SelectorsPage = {
             //Add New Page
             clickAddNewPageButton: '.page-title-action',
             //Add New Page > Add Title
+            newPageBlockEditorPopup1: '.components-guide__page', 
+            newPageBlockEditorPopup2: '.components-guide__container',
+            newPageBlockEditorPopupClose: '//button[@aria-label="Close dialog"]',
+
             newPageAddTitle: '//h1[@aria-label="Add title"]',
             //Add New Page > Add Shortcode
             newPageAddBlockIcon: '//button[@aria-label="Add block"]',

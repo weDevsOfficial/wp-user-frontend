@@ -205,7 +205,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     /**
      * The pro settings preview on the free version
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @param $settings_fields
      *
@@ -264,7 +264,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     /**
      * The pro settings preview on the free version
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @param $settings_fields
      *
@@ -954,7 +954,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     /**
      * Pro form templates for previewing
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @param array $integrations
      *
@@ -971,7 +971,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     /**
      * A preview page to show the Pro Modules of WPUF
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @return void
      */
@@ -983,7 +983,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     /**
      * Load required style and js for Modules page
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @return void
      */
@@ -995,7 +995,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     /**
      * Get the info of the pro modules as an array
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @return string[]
      */
@@ -1127,7 +1127,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     /**
      * The content of the module page
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @param array $modules
      *
@@ -1290,7 +1290,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     /**
      * payment gateways for previewing in the free version
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @param $gateways
      *
@@ -1316,7 +1316,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     /**
      * The subscription tabs from User Frontend > Subscription > Add/Edit Subscription
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @return void
      */
@@ -1334,7 +1334,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     /**
      * The subscription tab contents from User Frontend > Subscription > Add/Edit Subscription
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @return void
      */

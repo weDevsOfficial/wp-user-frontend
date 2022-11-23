@@ -20,7 +20,7 @@ class WPUF_Pro_Prompt {
     /**
      * Get the upgrade to pro url from the PRO Prompts
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @return string
      */

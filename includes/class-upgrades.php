@@ -26,7 +26,7 @@ class WPUF_Upgrades {
     /**
      * The class constructor
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @return void
      */
@@ -93,7 +93,7 @@ class WPUF_Upgrades {
     /**
      * Show upgrade notice.
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @return void
      */

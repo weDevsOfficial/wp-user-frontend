@@ -34,6 +34,7 @@ export class PostFormsFrontEnd {
         //Add New Page > Add Title
         const BlockEditorPopup = await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopup1);
         if (BlockEditorPopup == true){
+            await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
             await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
         }
         await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);

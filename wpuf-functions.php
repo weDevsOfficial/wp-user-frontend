@@ -1995,7 +1995,7 @@ function wpuf_get_post_form_templates() {
 /**
  * Get the pro form templates list
  *
- * @since WPUF_SINCE
+ * @since 3.6.0
  *
  * @return mixed|null
  */
@@ -2005,7 +2005,7 @@ function wpuf_get_pro_form_previews() {
     /**
      * Filter pro post form templates to preview
      *
-     * @since WPUF_SINCE
+     * @since 3.6.0
      *
      * @param array $template_names
      */
@@ -4445,7 +4445,7 @@ function wpuf_get_image_sizes_array( $size = '' ) {
 /**
  * The HTML preview part when hovering over a pro settings field
  *
- * @since WPUF_SINCE
+ * @since 3.6.0
  *
  * @return string
  */
@@ -4460,7 +4460,7 @@ function wpuf_get_pro_preview_html() {
 /**
  * The HTML tooltip when hovering over a pro settings field
  *
- * @since WPUF_SINCE
+ * @since 3.6.0
  *
  * @return string
  */

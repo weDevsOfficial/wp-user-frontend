@@ -1,6 +1,40 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.0',
+        'released' => '2022-11-23',
+        'changes'  => [
+            [
+                'title' => __( 'Admin dashboard news and update meta-box added', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Upgrade prompts design', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Email style handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'text-area type selection(Normal, Rich text-area, Teeny Rich text-area) bug in field options', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Frontend form validation', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Default value not saving for radio, dropdown, checkbox', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'sweetalert2 version', 'wp-user-frontend' ),
+                'type'  => 'Update',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.29',
         'released' => '2022-09-15',
         'changes'  => [

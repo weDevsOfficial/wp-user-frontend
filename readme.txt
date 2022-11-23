@@ -3,9 +3,9 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: Forms, registration, profile-builder, login, membership, frontend-post
 Requires at least: 4.0
-Tested up to: 6.0.2
+Tested up to: 6.1.1
 Requires PHP: 5.6
-Stable tag: 3.5.29
+Stable tag: 3.6.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -129,7 +129,7 @@ Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the FREE & P
 * 20+ Modules [BuddyPress, Paid Memberships Pro, Social Login, User Directory, User Activity, Stripe, MailChimp, Private Messaging, HTML Email Templates & more]
 * Content restriction: Restrict or lock your exclusive content or pages or just a specific part of a content, based on registration, user roles, or subscriptions.
 * Menu restriction: Lock or hide your website's menu links for certain users based on user roles, registration, or subscriptions.
-* Post expiration facility: Automatically take down published posts on your sites after a given time based on subscription packs or specific forms. 
+* Post expiration facility: Automatically take down published posts on your sites after a given time based on subscription packs or specific forms.
 * Conditional logic: Use conditional logic in your forms to show or hide fields, sections, and pages based on user selections.
 * Profile form builder: Build your own custom profile form with as many fields you need.
 * 20+ custom fields: Utilize fields like Text, Text Area, Dropdown, Multi Select, Hidden, Repeat, Phone, Time, Google Maps, and a lot more to customize your forms according to your requirements.
@@ -149,7 +149,7 @@ Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the FREE & P
 * Update user profile information from frontend: No need to go to the backend to update your profile, do it from frontend.
 * Files & attachments upload: Let users upload files and attachments or embed playable audio & video files using Post Forms.
 * Avatar upload: Let users upload profile pictures. It supports Gravatar and locally uploaded avatars work side by side.
-* Frontend Customizer: Allows admins to customize colors and labels for some important frontend elements and features of WPUF. 
+* Frontend Customizer: Allows admins to customize colors and labels for some important frontend elements and features of WPUF.
 * More email notification options: Configure email notifications for the important events.
 * Tax in payments: Apply custom country and state-wise tax rates to: Pay Per Post Forms and
 Subscription Packs.
@@ -260,6 +260,18 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 == Changelog ==
+= v3.6.0 (23 Nov, 2022) =
+
+* Enhancement - Admin dashboard news and update meta-box added
+* Enhancement - Upgrade prompts design
+
+* Fix - Email style handled
+* Fix - text-area type selection(Normal, Rich text-area, Teeny Rich text-area) bug in field options
+* Fix - Frontend form validation
+* Fix - Default value not saving for radio, dropdown, checkbox
+
+* Update - sweetalert2 version
+
 v3.5.29 (15 Sep, 2022) =
 
 * Enhancement - Short-code encryption updated for registration page

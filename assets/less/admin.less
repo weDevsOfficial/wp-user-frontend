@@ -182,8 +182,8 @@ span {
         a.nav-tab {
             float: none;
             display: flex;
+            -webkit-align-items: center;
             align-items: center;
-            margin: 0;
             border: none;
             padding: 14px;
             border-bottom: 1px solid #c8d7e1;
@@ -192,7 +192,7 @@ span {
             border-right: 1px solid #c8d7e1;
             color: #444;
             text-decoration: none;
-            margin-right: -1px;
+            margin: 0 -1px 0 0;
             background-color: #f1f1f1;
 
             &.nav-tab-active {
@@ -846,6 +846,7 @@ tr.pro-preview td {
 }
 tr.pro-preview td:hover .pro-field-overlay,
 .pro-preview-html:hover .pro-field-overlay {
+    -webkit-opacity: 1;
     opacity: 1;
     display: block;
 }
@@ -882,6 +883,7 @@ a.wpuf-button.button-upgrade-to-pro {
     position: absolute;
     top: 50%;
     left: 50%;
+    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
 a.wpuf-button.button-upgrade-to-pro:hover {
@@ -924,11 +926,15 @@ img.user-listing:hover, input[type=radio]:checked + img.user-listing, img.user-l
     position: absolute;
     top: 0;
     left: 50%;
+    -webkit-transform: translate(-50%, -100%);
     transform: translate(-50%, -100%);
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     z-index: 99999;
     display: none;
+    -webkit-opacity: 0;
     opacity: 0;
+    -webkit-transition: opacity 0.8s;
     transition: opacity 0.8s;
 }
 h3.tooltip-header {
@@ -950,6 +956,7 @@ span.tooltip-check {
 }
 .wpuf-pro-field-tooltip .pro-link {
     display: flex;
+    -webkit-justify-content: center;
     justify-content: center;
     margin-left: 25px;
 }
@@ -968,6 +975,7 @@ span.tooltip-check {
     width: 12px;
     height: 12px;
     left: 50%;
+    -webkit-transform: translate(-50%, -50%) rotate(45deg);
     transform: translate(-50%, -50%) rotate(45deg);
     background-color: #000;
 }
@@ -976,13 +984,24 @@ tr span.pro-icon-title {
     position: relative;
     padding-top: 10px;
 }
+
+a span.pro-icon-title {
+    position: relative;
+}
+
+a span.pro-icon-title wpuf-pro-field-tooltip {
+    left: 185px;
+}
+
 span.pro-icon-title:hover .wpuf-pro-field-tooltip {
     display: block;
+    -webkit-opacity: 1;
     opacity: 1;
 }
 
 span.pro-icon:hover .wpuf-pro-field-tooltip {
     display: block;
+    -webkit-opacity: 1;
     opacity: 1;
 }
 

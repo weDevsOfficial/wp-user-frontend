@@ -189,6 +189,11 @@ body #form-preview-stage.wpuf-style ul.wpuf-form .wpuf-fields select[multiple],
 body .wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields select[multiple] {
   height: auto;
 }
+body #form-preview-stage.wpuf-style ul.wpuf-form .wpuf-fields-inline,
+body .wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields-inline {
+  display: flex;
+  justify-content: space-between;
+}
 body #form-preview-stage.wpuf-style ul.wpuf-form .wpuf-submit input[type=submit],
 body .wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-submit input[type=submit] {
   font-size: 16px;
@@ -945,9 +950,6 @@ body .pass-strength-result.strong {
   background-color: #c3ff88;
   border-color: #8dff1c !important;
 }
-body .password[type="text"] {
-  display: none;
-}
 body table.wpuf-table {
   border: 1px solid #E7E7E7;
   margin: 0 0px 10px 0;
@@ -1096,16 +1098,30 @@ body fieldset.wpuf-multistep-fieldset {
 body fieldset.wpuf-multistep-fieldset.field-active {
   display: block;
 }
-body fieldset.wpuf-multistep-fieldset .wpuf-multistep-prev-btn,
-body fieldset.wpuf-multistep-fieldset .wpuf-multistep-next-btn {
+body fieldset.wpuf-multistep-fieldset button.wpuf-multistep-next-btn.btn.btn-primary {
   position: absolute;
-  bottom: 5px;
+  bottom: 0;
+  right: 0;
 }
-body fieldset.wpuf-multistep-fieldset .wpuf-multistep-prev-btn {
-  left: 10px;
+body fieldset.wpuf-multistep-fieldset button.wpuf-multistep-prev-btn.btn.btn-primary {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
-body fieldset.wpuf-multistep-fieldset .wpuf-multistep-next-btn {
-  right: 10px;
+body fieldset.wpuf-multistep-fieldset a#wpuf-post-draft {
+  position: absolute;
+  bottom: 0;
+  right: calc(50% - 35px);
+}
+body fieldset.wpuf-multistep-fieldset span.wpuf-draft-saved {
+  position: absolute;
+  bottom: 0;
+  right: calc(50% - 150px);
+}
+body fieldset.wpuf-multistep-fieldset span.wpuf-loading {
+  position: absolute;
+  bottom: 8px;
+  right: calc(50% - 60px);
 }
 body .wpuf-multistep-progressbar {
   overflow: hidden;

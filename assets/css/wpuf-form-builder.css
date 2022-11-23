@@ -1066,6 +1066,10 @@ ul.wpuf-form li .wpuf-password-field:after {
 .wpuf-form-template-modal .content ul li.template-inactive .description {
   color: #ddd;
 }
+.wpuf-form-template-modal .content ul li.template-inactive h3 {
+  display: flex;
+  justify-content: space-between;
+}
 .wpuf-form-template-modal .content ul li.blank-form {
   text-align: center;
 }

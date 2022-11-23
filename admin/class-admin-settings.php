@@ -90,7 +90,7 @@ class WPUF_Admin_Settings {
         $this->menu_pages[] = $post_form_submenu;
 
         add_action( "load-$post_form_submenu", [ $this, 'post_form_menu_action' ] );
-	
+
 	remove_submenu_page( 'wp-user-frontend', 'wp-user-frontend' );
 
         /*

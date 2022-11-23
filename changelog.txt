@@ -1,3 +1,15 @@
+= v3.6.0 (23 Nov, 2022) =
+
+* Enhancement - Admin dashboard news and update meta-box added
+* Enhancement - Upgrade prompts design
+
+* Fix - Email style handled
+* Fix - text-area type selection(Normal, Rich text-area, Teeny Rich text-area) bug in field options
+* Fix - Frontend form validation
+* Fix - Default value not saving for radio, dropdown, checkbox
+
+* Update - sweetalert2 version
+
 v3.5.29 (15 Sep, 2022) =
 
 * Enhancement - Short-code encryption updated for registration page

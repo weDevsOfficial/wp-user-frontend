@@ -50,7 +50,7 @@ class Dashboard_Metabox {
                 <img src="<?php echo self::BANNER; ?>" alt="Rating Banner">
                 <p>
                     Could you please take a moment and <a
-                        href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/?filter=5">share your
+                        href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/?filter=5" target="_blank">share your
                         opinion</a> on WP.org? It would motivate us a lot and help other users get decisive while
                     choosing WP User Frontend. Thanks in advance.
                 </p>

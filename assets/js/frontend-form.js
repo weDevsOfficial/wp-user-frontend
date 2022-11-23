@@ -511,6 +511,7 @@
             WP_User_Frontend.removeErrors( self );
             WP_User_Frontend.removeErrorNotice( self );
 
+            // get all the visible fields
             var visibleFields = self.find( 'input:visible, textarea:visible, select:visible, div.br-widget:visible, .wpuf-rich-validation:visible, div.wpuf-attachment-upload-filelist:visible' );
 
             visibleFields.each( function( i, item ) {
@@ -520,14 +521,13 @@
 
                 switch( dataType ) {
                     case 'rich':
-                        var name = $( item ).data( 'id' );
                         var editor_id = $( item ).data( 'id' );
                         var item_name = $( item ).data( 'name' );
                         val = $.trim( tinyMCE.get( editor_id ).getContent() );
 
                         if ( required === 'yes' && val === '' ) {
                             errors.push({
-                                error_type: 'required',
+                                type: 'required',
                                 container: item
                             });
                         }
@@ -536,7 +536,7 @@
 
                         if ( isRestrictionFailed ) {
                             errors.push({
-                                error_type: 'limit',
+                                type: 'limit',
                                 container: item
                             });
 
@@ -552,7 +552,7 @@
 
                         if ( required === 'yes' && val === '' ) {
                             errors.push({
-                                error_type: 'required',
+                                type: 'required',
                                 container: item
                             });
 
@@ -563,7 +563,7 @@
 
                         if ( isRestrictionFailed ) {
                             errors.push({
-                                error_type: 'limit',
+                                type: 'limit',
                                 container: item
                             });
 
@@ -575,7 +575,7 @@
                             var iti = window.intlTelInputGlobals.getInstance( item );
                             if ( '' !== iti.getNumber() && ! iti.isValidNumber() ) {
                                 errors.push({
-                                    error_type: 'validation',
+                                    type: 'validation',
                                     container: item
                                 });
 
@@ -601,7 +601,7 @@
 
                         if ( required === 'yes' && val === '' ) {
                             errors.push({
-                                error_type: 'required',
+                                type: 'required',
                                 container: item
                             });
 
@@ -610,7 +610,7 @@
 
                         if ( val !== '' && ! WP_User_Frontend.isValidURL( val ) ) {
                             errors.push({
-                                error_type: 'validation',
+                                type: 'validation',
                                 container: item
                             });
 
@@ -627,7 +627,7 @@
 
                         if ( required === 'yes' && val === '' ) {
                             errors.push({
-                                error_type: 'required',
+                                type: 'required',
                                 container: item
                             });
 
@@ -635,10 +635,11 @@
                         }
 
                         if ( val.length < min_length ) {
-                            error = true;
-                            error_type = 'custom';
-                            error_message = 'Minimum ' + min_length + ' character is required';
-                            WP_User_Frontend.markError(item, error_type, error_message);
+                            errors.push({
+                                type: 'custom',
+                                container: item,
+                                message: 'Minimum ' + min_length + ' character is required'
+                            });
 
                             break;
                         }
@@ -684,7 +685,7 @@
 
                         if ( required === 'yes' && val === '-1' ) {
                             errors.push({
-                                error_type: 'required',
+                                type: 'required',
                                 container: item
                             });
                         }
@@ -694,7 +695,7 @@
 
                         if ( required === 'yes' && val.length === 0 ) {
                             errors.push({
-                                error_type: 'required',
+                                type: 'required',
                                 container: item
                             });
                         }
@@ -704,7 +705,7 @@
 
                         if ( required === 'yes' && ! length ) {
                             errors.push({
-                                error_type: 'required',
+                                type: 'required',
                                 container: item
                             });
                         }
@@ -716,19 +717,19 @@
 
                         if ( required === 'yes' && ! length ) {
                             errors.push({
-                                error_type: 'required',
+                                type: 'required',
                                 container: item
                             });
                         }
 
                         break;
                     case 'file':
-                        var length = $(item).find('ul').children().length;
+                        var length = $( item ).find('ul').children().length;
 
                         if ( required === 'yes' && ! length ) {
                             errors.push({
-                                error_type: 'required',
-                                container: item
+                                type: 'required',
+                                container: $( item ).closest( '.wpuf-fields' )
                             });
                         }
                         break;
@@ -737,7 +738,7 @@
 
                         if ( required === 'yes' && val === '' ) {
                             errors.push({
-                                error_type: 'required',
+                                type: 'required',
                                 container: item
                             });
 
@@ -746,7 +747,7 @@
 
                         if ( val !== '' && ! WP_User_Frontend.isValidEmail( val ) ) {
                             errors.push({
-                                error_type: 'validation',
+                                type: 'validation',
                                 container: item
                             });
                         }
@@ -756,7 +757,7 @@
 
                         if ( required === 'yes' && val === '' ) {
                             errors.push({
-                                error_type: 'validation',
+                                type: 'validation',
                                 container: item
                             });
 
@@ -765,14 +766,13 @@
 
                         if ( val !== '' && ! WP_User_Frontend.isValidURL( val ) ) {
                             errors.push({
-                                error_type: 'validation',
+                                type: 'validation',
                                 container: item
                             });
                         }
                         break;
                     default:    // Google map etc.
                         // if this is a Google map
-                        // if google map field
                         if ( $( item ).attr( 'id' ) && $( item ).attr( 'id' ).startsWith( 'wpuf-map' ) ) {
                             var mapContainer = $( item ).parents( '.wpuf-form-google-map-container' );
                             mapField = $( mapContainer ).find( 'input[id^="wpuf-map-lat"]' );
@@ -781,7 +781,7 @@
 
                             if ( required === 'yes' && val === '' ) {
                                 errors.push({
-                                    error_type: 'required',
+                                    type: 'required',
                                     container: mapContainer
                                 });
                             }
@@ -795,7 +795,7 @@
 
                             if ( required === 'yes' && ! length ) {
                                 errors.push({
-                                    error_type: 'required',
+                                    type: 'required',
                                     container: item
                                 });
                             }
@@ -808,7 +808,7 @@
                 var i;
                 var length = errors.length;
                 for ( i = 0; i < length; i++ ) {
-                    WP_User_Frontend.markError( errors[i].container, errors[i].error_type );
+                    WP_User_Frontend.markError( errors[i].container, errors[i].type, errors[i].message );
                 }
 
                 WP_User_Frontend.addErrorNotice( self,'end' );

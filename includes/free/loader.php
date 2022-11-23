@@ -40,7 +40,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         add_filter( 'wpuf_settings_fields', [ $this, 'pro_settings' ] );
         // post form templates
         add_action( 'wpuf_get_post_form_templates', [$this, 'post_form_templates'] );
-        add_action( 'wpuf_get_pro_form_previews', [$this, 'pro_form_previews'] );
+        add_filter( 'wpuf_get_pro_form_previews', [$this, 'pro_form_previews'] );
 
         // payment gateway added for previewing
         add_filter( 'wpuf_payment_gateways', [ $this, 'wpuf_payment_gateways' ] );
@@ -1142,7 +1142,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         wp_enqueue_style( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.css', false, '1.6.0' );
         wp_enqueue_script( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.js', [ 'jquery' ], '1.6.0', true );
-        wp_enqueue_script( 'swiffy-slider-extention', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider-extensions.min' . $suffix . '.js', [ 'jquery' ], '1.6.0', true );
+        wp_enqueue_script( 'swiffy-slider-extention', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider-extensions' . $suffix . '.js', [ 'jquery' ], '1.6.0', true );
         ?>
         <div id="wpuf-upgrade-popup" class="wpuf-popup-window">
             <div class="modal-window">

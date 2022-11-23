@@ -75,6 +75,7 @@
 }
 
 .wpuf-toggle-switch input:focus + .slider {
+    -webkit-box-shadow: 0 0 1px #2196F3;
     box-shadow: 0 0 1px #2196F3;
 }
 
@@ -93,13 +94,9 @@
     border-radius: 50%;
 }
 
-/*.wpuf-modules {*/
-/*    margin-top: 15px;*/
-/*    overflow: hidden;*/
-/*}*/
-
 .wpuf-modules .plugin-card {
     border: 1px solid #e5e5e5;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
     position: relative;
 }
@@ -141,10 +138,12 @@
 }
 
 .plugin-card:hover .form-create-overlay {
+    -webkit-opacity: 1;
     opacity: 1;
     z-index: 1;
 }
 .form-create-overlay {
+    -webkit-opacity: 0;
     opacity: 0;
     position: absolute;
     width: 100%;
@@ -167,6 +166,7 @@ a.wpuf-button.button-upgrade-to-pro {
     position: absolute;
     top: 50%;
     left: 50%;
+    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
 
@@ -203,17 +203,23 @@ ul.slider-container li img {
     line-height: initial;
     background: #fff;
     padding: 50px 80px 30px;
+    -webkit-border-radius: 5px;
     border-radius: 5px;
     width: 55%;
     top: 50%;
     left: 50%;
+    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
 
 .modal-window-inner {
+    /*display: -webkit-box;*/
     display: grid;
+    -webkit-grid-auto-flow: column;
     grid-auto-flow: column;
+    -webkit-grid-auto-columns: 1fr;
     grid-auto-columns: 1fr;
+    -webkit-align-items: end;
     align-items: end;
     margin: 0 auto;
 }
@@ -225,18 +231,21 @@ ul.slider-container li img {
     top: 10px;
     right: 10px;
     padding: 10px;
+    -webkit-opacity: .4;
     opacity: .4;
     -webkit-transition: .4s;
     transition: .4s;
 }
 
 .popup-close-button:hover {
+    -webkit-opacity: 1;
     opacity: 1;
 }
 
 .popup-diamond svg {
     background: linear-gradient(220.03deg, #FFF3DD 39.57%, #FFE3AD 97.5%);
     padding: 6px;
+    -webkit-border-radius: 5px;
     border-radius: 5px;
 }
 
@@ -263,6 +272,7 @@ ul.slider-container li img {
 .check-icon svg {
     background: #139F84;
     padding: 11px 10px;
+    -webkit-border-radius: 20px;
     border-radius: 20px;
 }
 
@@ -273,6 +283,13 @@ ul.slider-container li img {
 
 .slider-area {
     margin-left: 30px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.slider-nav-mousedrag .slider-container {
+    overflow: hidden;
+    max-width: fit-content;
 }
 
 .slider-area .single-slider img {
@@ -284,10 +301,12 @@ ul.slider-container li img {
 }
 
 .slider-indicators button {
+    -webkit-filter: invert(94%) sepia(8%) saturate(249%) hue-rotate(178deg) brightness(99%) contrast(84%);
     filter: invert(94%) sepia(8%) saturate(249%) hue-rotate(178deg) brightness(99%) contrast(84%);
 }
 
 .slider-indicators button.active {
+    -webkit-filter: invert(62%) sepia(30%) saturate(1208%) hue-rotate(119deg) brightness(92%) contrast(80%);
     filter: invert(62%) sepia(30%) saturate(1208%) hue-rotate(119deg) brightness(92%) contrast(80%);
 }
 

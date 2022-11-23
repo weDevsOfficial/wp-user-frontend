@@ -58,8 +58,13 @@ jQuery(function($) {
         $(this).closest("p").hide();
     });
 
+    // override settings tab preventDefault action on lib/class.settings-api.php for tooltip link
+    $('.button-upgrade-to-pro').click(function(e) {
+        e.stopPropagation();
+    });
+
     // show tooltips on crown icons
-    $('th span.pro-icon, td label span.pro-icon-title, th label span.pro-icon-title').on('mouseover', function() {
+    $('th span.pro-icon, td label span.pro-icon-title, th label span.pro-icon-title, a span.pro-icon-title').on('mouseover', function() {
         let tooltip = $( '.wpuf-pro-field-tooltip' );
         let windowWidth = $( window ).width();
         let windowHeight = $( window ).height();
@@ -84,6 +89,8 @@ jQuery(function($) {
             $( '.wpuf-pro-field-tooltip i' ).css( 'transform', 'rotate(90deg)' );
             $( '.wpuf-pro-field-tooltip' ).css( 'left', '185px' );
             $( '.wpuf-pro-field-tooltip' ).css( 'top', '310px' );
+            $( 'a span.pro-icon-title .wpuf-pro-field-tooltip' ).css( 'left', '170px' );
+            $( 'a span.pro-icon-title .wpuf-pro-field-tooltip i' ).css( 'top', '15px' );
         } else if ( spaceBottom > tooltipHeight ) {
             $( '.wpuf-pro-field-tooltip' ).css( 'left', '10px' );
             $( '.wpuf-pro-field-tooltip' ).css( 'top', '360px' );

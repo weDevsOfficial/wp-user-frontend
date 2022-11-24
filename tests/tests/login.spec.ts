@@ -53,7 +53,7 @@ test.describe('TEST :-->', () => {
         const postFormsFrontEnd = new PostFormsFrontEnd(page);
         
     // await homePage.open();
-        await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+        await loginPage.login2(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         await postFormsFrontEnd.checkNewPostBlankFormFrontEnd(process.env.NEW_POST_BLANKFORM_FRONTEND_POST_TITLE); 
         //TODO: Add assertion
     });

@@ -139,7 +139,8 @@ export const SelectorsPage = {
 
             //Edit Shortcode
             shortCodeBlock: '//label[text()="Shortcode"]',
-            editShortCodeBlock: '#blocks-shortcode-input-1',
+            //editShortCodeBlock: '#blocks-shortcode-input-1',
+            editShortCodeBlock: '//textarea[@class="block-editor-plain-text blocks-shortcode__textarea"]',
         //Save
         clickEditFormsPageUpdate: '//button[text()="Update"]',
 

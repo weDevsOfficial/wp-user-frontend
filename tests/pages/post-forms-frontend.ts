@@ -32,19 +32,20 @@ export class PostFormsFrontEnd {
         await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.clickAddNewPageButton);
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickAddNewPageButton);
         //Add New Page > Add Title
+        await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
 
-        const BlockEditorPopup = await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopup1);
-        if (BlockEditorPopup == true){
-            console.log("3.1: PopUp Editor Box Appeared");
+        // const BlockEditorPopup = await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopup1);
+        // if (BlockEditorPopup == true){
+        //     console.log("3.1: PopUp Editor Box Appeared");
 
-            // await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
-            // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
-            await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
-            await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
-            await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
-            await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
+        //     // await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
+        //     // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
+        //     // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
+        //     // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
+        //     // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
+        //     // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
 
-        }
+        // }
         //Add Content
         await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);

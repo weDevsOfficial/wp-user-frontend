@@ -32,7 +32,9 @@ export class PostFormsFrontEnd {
         await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.clickAddNewPageButton);
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickAddNewPageButton);
         //Add New Page > Add Title
+        console.log("3.0.1: HERE 111");
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
+        console.log("3.0.1: HERE 222");
 
         // const BlockEditorPopup = await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopup1);
         // if (BlockEditorPopup == true){
@@ -48,6 +50,8 @@ export class PostFormsFrontEnd {
         // }
         //Add Content
         await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);
+        console.log("3.0.1: HERE 333");
+
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);
         await this.page.fill(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle, 'New: Post Form Page');
         //Add New Page > Add Shortcode

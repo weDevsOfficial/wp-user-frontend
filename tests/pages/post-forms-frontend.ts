@@ -52,7 +52,7 @@ export class PostFormsFrontEnd {
         await this.page.waitForLoadState('domcontentloaded')            
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock);
         await this.page.waitForSelector(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock);
-        await this.page.fill(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock, "");
+        //await this.page.fill(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock, "");
         await this.page.fill(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock, storeShortCode);
         const CheckExpectedShortcodeBlock = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock);
         await expect(CheckExpectedShortcodeBlock).toEqual(storeShortCode);

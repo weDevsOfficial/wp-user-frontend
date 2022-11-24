@@ -32,25 +32,10 @@ export class PostFormsFrontEnd {
         await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.clickAddNewPageButton);
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickAddNewPageButton);
         //Add New Page > Add Title
-        console.log("3.0.1: HERE 111");
+        //Close Popup
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
-        console.log("3.0.1: HERE 222");
-
-        // const BlockEditorPopup = await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopup1);
-        // if (BlockEditorPopup == true){
-        //     console.log("3.1: PopUp Editor Box Appeared");
-
-        //     // await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
-        //     // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
-        //     // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
-        //     // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
-        //     // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
-        //     // await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupNextButton);
-
-        // }
         //Add Content
         await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);
-        console.log("3.0.1: HERE 333");
 
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);
         await this.page.fill(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle, 'New: Post Form Page');
@@ -60,15 +45,11 @@ export class PostFormsFrontEnd {
             await this.page.fill(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockSearch, 'Shortcode')
             await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockClickShortcode);
 
-        // //Click on New Page > From Pages
-        // await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickFormsPageFrontEndEdit);
-        // await this.page.waitForLoadState('networkidle');
-
         //Wait for ShortCode Block
         const WaitforShortcodeBlock = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.shortCodeBlock)
         await expect(WaitforShortcodeBlock).toEqual("Shortcode");
         //Edit Shortcode
-        //await this.page.waitForNavigation();
+        await this.page.waitForLoadState('domcontentloaded')            
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock);
         await this.page.waitForSelector(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock);
         await this.page.fill(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock, "");

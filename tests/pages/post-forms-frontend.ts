@@ -50,11 +50,11 @@ export class PostFormsFrontEnd {
         await expect(WaitforShortcodeBlock).toEqual("Shortcode");
         //Edit Shortcode
         await this.page.waitForLoadState('domcontentloaded')            
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock);
-        await this.page.waitForSelector(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock);
-        //await this.page.fill(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock, "");
-        await this.page.fill(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock, storeShortCode);
-        const CheckExpectedShortcodeBlock = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock);
+        await this.page.click(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock2);
+        await this.page.waitForSelector(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock2);
+        await this.page.fill(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock1, "");
+        await this.page.fill(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock1, storeShortCode);
+        const CheckExpectedShortcodeBlock = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock1);
         await expect(CheckExpectedShortcodeBlock).toEqual(storeShortCode);
         await this.page.waitForLoadState('domcontentloaded')            
 

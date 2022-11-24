@@ -126,6 +126,7 @@ export const SelectorsPage = {
             newPageBlockEditorPopup1: '.components-modal__content', 
             newPageBlockEditorPopup2: '.components-guide__container',
             newPageBlockEditorPopupClose: '//button[@aria-label="Close dialog"]',
+            newPageBlockEditorPopupNextButton: '//button[text()="Next"]',
 
             newPageAddTitle: '//h1[@aria-label="Add title"]',
             //Add New Page > Add Shortcode

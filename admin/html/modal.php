@@ -73,7 +73,46 @@
                         </li>
 
                     <?php
-                    } ?>
+                    }
+
+                    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+                    foreach ( $pro_templates as $template ) {
+                        $class = 'template-inactive is-pro-template';
+                        $image = $template->get_image();
+                        $title = $template->get_title();
+                         ?>
+
+                        <li class="<?php echo esc_attr( $class ); ?>">
+                            <h3>
+                                <?php
+                                    echo esc_html( $title );
+                                    if ( file_exists( $crown_icon ) ) {
+                                        printf( '<span class="pro-icon-title"> %s</span>', file_get_contents( $crown_icon ) );
+                                    }
+                                ?>
+                            </h3>
+                            <?php if ( $image ) {
+                                printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
+                            } ?>
+
+                            <div class="form-create-overlay">
+                                <a href="<?php echo esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>"
+                                   target="_blank"
+                                   class="wpuf-button button-upgrade-to-pro"
+                                   title="<?php echo esc_attr( $template->get_title() ); ?>" >
+                                    <?php
+                                        esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' );
+                                        if ( file_exists( $crown_icon ) ) {
+                                            printf( '<span class="pro-icon"> %s</span>', file_get_contents( $crown_icon ) );
+                                        }
+                                    ?>
+                                </a>
+                            </div>
+                        </li>
+
+                        <?php
+                    }
+                    ?>
                 </ul>
             </div>
         </div>

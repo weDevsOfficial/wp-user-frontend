@@ -71,6 +71,7 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                         name="<?php echo esc_attr( $field_settings['name'] ); ?>"
                         data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                         data-type="textarea"
+                        data-id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
                         placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
                         rows="<?php echo esc_attr( $field_settings['rows'] ); ?>"
                         cols="<?php echo esc_attr( $field_settings['cols'] ); ?>"

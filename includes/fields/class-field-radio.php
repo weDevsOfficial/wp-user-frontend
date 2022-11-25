@@ -38,7 +38,7 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
 
         do_action( 'WPUF_radio_field_after_label', $field_settings ); ?>
 
-            <div class="wpuf-fields" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-type="radio">
+            <div class="wpuf-fields">
 
                 <?php
                 if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
@@ -50,6 +50,8 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
                                 name="<?php echo esc_attr( $field_settings['name'] ); ?>"
                                 class="<?php echo esc_attr( 'wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                                 type="radio"
+                                data-type="radio"
+                                data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                                 value="<?php echo esc_attr( $value ); ?>"<?php checked( $selected, $value ); ?>
                                 ondblclick="WP_User_Frontend.doUncheckRadioBtn(this)"
                             />

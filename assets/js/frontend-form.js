@@ -1225,12 +1225,15 @@
                     }
                 },
 
-                onPaste: function(ed, event, limit) {
-                    var editorContent = ed.getContent().split(' ').slice(0, limit).join(' ');
+                onPaste: function(ed, event, limit, limit_type) {
+                    var editorContent = ed.getContent();
 
                     // Let TinyMCE do the heavy lifting for inserting that content into the editor.
-                    // ed.insertContent(content); //ed.execCommand('mceInsertContent', false, content);
-                    ed.setContent(editorContent);
+                    if ( 'word' === limit_type ) {
+                        ed.setContent( editorContent.split( ' ', limit ).join( ' ' ) );
+                    } else {
+                        ed.setContent( editorContent.slice(0, limit) );
+                    }
 
                     WP_User_Frontend.editorLimit.make_media_embed_code(editorContent, ed);
                 }
@@ -1261,10 +1264,12 @@
 
                 // handle the paste event
                 if ( event.type === 'paste' ) {
-                    self.val( content.substring( 0, limit) );
-
                     if ( 'word' === limit_type ) {
-                        self.val( content.slice(0, limit).join( ' ' ) );
+                        self.val( content.split( ' ', limit ).join( ' ' ) );
+                        self.closest('.wpuf-fields').removeClass('has-error');
+                    } else {
+                        self.val( content.slice( 0, limit ) );
+                        self.closest('.wpuf-fields').removeClass('has-error');
                     }
                 }
             },
@@ -1290,7 +1295,6 @@
                         content: content
                     },
                     function(data){
-                        // console.log(data);
                         editor.setContent(editor.getContent() + editor.setContent(data));
                     }
                 )

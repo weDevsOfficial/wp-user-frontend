@@ -69,15 +69,17 @@
             $( ':submit[name="wpuf_user_subscription_cancel"]').click(function(e){
                 e.preventDefault();
 
-                new swal({
+                Swal.fire({
                     text: wpuf_frontend.cancelSubMsg,
-                    type: 'warning',
+                    icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d54e21',
                     confirmButtonText: wpuf_frontend.delete_it,
                     cancelButtonText: wpuf_frontend.cancel_it,
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    }
                 }).then(function ( isConfirmed ) {
                     if ( !isConfirmed ) {
                         return false;
@@ -479,13 +481,15 @@
                                 grecaptcha.reset();
                             }
 
-                            new swal({
+                            Swal.fire({
                                 html: res.error,
-                                type: 'warning',
+                                icon: 'warning',
                                 showCancelButton: false,
                                 confirmButtonColor: '#d54e21',
                                 confirmButtonText: 'OK',
-                                cancelButtonClass: 'btn btn-danger',
+                                customClass: {
+                                    cancelButton: 'btn btn-danger',
+                                }
                             });
 
                         }

@@ -173,18 +173,20 @@
                             html      += '<img src="' + image_two + '" alt="custom field data">';
                             html      += '</div>';
                             html      += '</div>';
-                        new swal({
+                        Swal.fire({
                             title: __( 'Do you want to show custom field data inside your post ?', 'wp-user-frontend' ),
                             html: html,
                             showCancelButton: true,
                             confirmButtonColor: '#d54e21',
                             confirmButtonText: "Don't show again",
                             cancelButtonText: 'Okay',
-                            confirmButtonClass: 'btn btn-success',
-                            cancelButtonClass: 'btn btn-success',
+                            customClass: {
+                                confirmButton: 'btn btn-success',
+                                cancelButton: 'btn btn-success',
+                            },
                             cancelButtonColor: '#007cba'
                         }).then((result) => {
-                            if (result) {
+                            if (result.isConfirmed) {
                                 state.show_custom_field_tooltip = false;
                             } else {
 

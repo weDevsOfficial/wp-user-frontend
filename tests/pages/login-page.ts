@@ -94,7 +94,7 @@ export class LoginPage {
     //Log without the WPUF Setup page
     async login2(email, password) {
         console.log("0001.2: Running Login Done");
-        await this.page.goto('https://ratul.ajaira.website/wp-admin/', { waitUntil: 'networkidle' });  //TODO: User BASE_URL
+        await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });  //TODO: User BASE_URL
         
         const EmailCheck = await this.page.isVisible(SelectorsPage.login.loginEmailField);
         await expect(EmailCheck).toBeTruthy();

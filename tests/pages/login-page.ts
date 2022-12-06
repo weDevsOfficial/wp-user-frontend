@@ -96,17 +96,17 @@ export class LoginPage {
         console.log("0001.2: Running Login Done");
         await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });  //TODO: User BASE_URL
         
-        const EmailCheck = await this.page.isVisible(SelectorsPage.login.loginEmailField);
+        const EmailCheck = await this.page.isVisible(SelectorsPage.login.loginEmailField2);
         await expect(EmailCheck).toBeTruthy();
-        await this.page.fill(SelectorsPage.login.loginEmailField, email);
+        await this.page.fill(SelectorsPage.login.loginEmailField2, email);
 
-        const PasswordCheck = await this.page.isVisible(SelectorsPage.login.loginPasswordField);
+        const PasswordCheck = await this.page.isVisible(SelectorsPage.login.loginPasswordField2);
         await expect(PasswordCheck).toBeTruthy();
-        await this.page.fill(SelectorsPage.login.loginPasswordField, password);
+        await this.page.fill(SelectorsPage.login.loginPasswordField2, password);
 
-        const LoginButtonCheck = await this.page.isVisible(SelectorsPage.login.loginButton);
+        const LoginButtonCheck = await this.page.isVisible(SelectorsPage.login.loginButton2);
         await expect(LoginButtonCheck).toBeTruthy();
-        await this.page.click(SelectorsPage.login.loginButton);
+        await this.page.click(SelectorsPage.login.loginButton2);
 
         //await this.page.click(SelectorsPage.login.adminDashboard);
 

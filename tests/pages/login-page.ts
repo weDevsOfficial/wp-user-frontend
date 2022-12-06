@@ -15,16 +15,28 @@ export class LoginPage {
         await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });  //TODO: User BASE_URL
         
         const EmailCheck = await this.page.isVisible(SelectorsPage.login.loginEmailField);
-        await expect(EmailCheck).toBeTruthy();
-        await this.page.fill(SelectorsPage.login.loginEmailField, email);
+        if (EmailCheck == true) {
+            await this.page.fill(SelectorsPage.login.loginEmailField, email);
 
-        const PasswordCheck = await this.page.isVisible(SelectorsPage.login.loginPasswordField);
-        await expect(PasswordCheck).toBeTruthy();
-        await this.page.fill(SelectorsPage.login.loginPasswordField, password);
+            const PasswordCheck = await this.page.isVisible(SelectorsPage.login.loginPasswordField);
+            await expect(PasswordCheck).toBeTruthy();
+            await this.page.fill(SelectorsPage.login.loginPasswordField, password);
 
-        const LoginButtonCheck = await this.page.isVisible(SelectorsPage.login.loginButton);
-        await expect(LoginButtonCheck).toBeTruthy();
-        await this.page.click(SelectorsPage.login.loginButton);
+            const LoginButtonCheck = await this.page.isVisible(SelectorsPage.login.loginButton);
+            await expect(LoginButtonCheck).toBeTruthy();
+            await this.page.click(SelectorsPage.login.loginButton);
+        }
+        else {
+            await this.page.fill(SelectorsPage.login.loginEmailField2, email);
+
+            const PasswordCheck = await this.page.isVisible(SelectorsPage.login.loginPasswordField2);
+            await expect(PasswordCheck).toBeTruthy();
+            await this.page.fill(SelectorsPage.login.loginPasswordField2, password);
+
+            const LoginButtonCheck = await this.page.isVisible(SelectorsPage.login.loginButton2);
+            await expect(LoginButtonCheck).toBeTruthy();
+            await this.page.click(SelectorsPage.login.loginButton2);
+        }
 
         console.log("1.0: Login Done");
         //WPUF Setup
@@ -84,31 +96,45 @@ export class LoginPage {
 
         //Change Settings
         await this.page.click('//a[contains(text(), "Settings")]');
+            await this.page.waitForLoadState('domcontentloaded');
         await this.page.click('#wpuf_profile-tab');
         await this.page.selectOption('//select[@id="wpuf_profile[login_page]"]', {label: '— Select —'});
         console.log("1.7: Settings Changed > to always Admin");
-
     }
 
 
+
+    //LOGIN - 2
     //Log without the WPUF Setup page
     async login2(email, password) {
         console.log("0001.2: Running Login Done");
         await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });  //TODO: User BASE_URL
         
-        const EmailCheck = await this.page.isVisible(SelectorsPage.login.loginEmailField2);
-        await expect(EmailCheck).toBeTruthy();
-        await this.page.fill(SelectorsPage.login.loginEmailField2, email);
+        const EmailCheck = await this.page.isVisible(SelectorsPage.login.loginEmailField);
+        if (EmailCheck == true) {
+            await this.page.fill(SelectorsPage.login.loginEmailField, email);
 
-        const PasswordCheck = await this.page.isVisible(SelectorsPage.login.loginPasswordField2);
-        await expect(PasswordCheck).toBeTruthy();
-        await this.page.fill(SelectorsPage.login.loginPasswordField2, password);
+            const PasswordCheck = await this.page.isVisible(SelectorsPage.login.loginPasswordField);
+            await expect(PasswordCheck).toBeTruthy();
+            await this.page.fill(SelectorsPage.login.loginPasswordField, password);
 
-        const LoginButtonCheck = await this.page.isVisible(SelectorsPage.login.loginButton2);
-        await expect(LoginButtonCheck).toBeTruthy();
-        await this.page.click(SelectorsPage.login.loginButton2);
+            const LoginButtonCheck = await this.page.isVisible(SelectorsPage.login.loginButton);
+            await expect(LoginButtonCheck).toBeTruthy();
+            await this.page.click(SelectorsPage.login.loginButton);
+        }
+        else {
+            await this.page.fill(SelectorsPage.login.loginEmailField2, email);
 
-        await this.page.click(SelectorsPage.login.adminDashboard);
+            const PasswordCheck = await this.page.isVisible(SelectorsPage.login.loginPasswordField2);
+            await expect(PasswordCheck).toBeTruthy();
+            await this.page.fill(SelectorsPage.login.loginPasswordField2, password);
+
+            const LoginButtonCheck = await this.page.isVisible(SelectorsPage.login.loginButton2);
+            await expect(LoginButtonCheck).toBeTruthy();
+            await this.page.click(SelectorsPage.login.loginButton2);
+        }
+
+        //await this.page.click(SelectorsPage.login.adminDashboard);
 
 
        //Validate LOGIN

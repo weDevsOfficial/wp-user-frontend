@@ -81,13 +81,20 @@ export class LoginPage {
 
             console.log("1.6: Login Done"); //TODO: Fix this
         }
+
+        //Change Settings
+        await this.page.click('//a[contains(text(), "Settings")]');
+        await this.page.click('#wpuf_profile-tab');
+        await this.page.selectOption('//select[@id="wpuf_profile[login_page]"]', {label: '— Select —'});
+        console.log("1.7: Settings Changed > to always Admin");
+
     }
 
 
     //Log without the WPUF Setup page
     async login2(email, password) {
         console.log("0001.2: Running Login Done");
-        await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });  //TODO: User BASE_URL
+        await this.page.goto('https://ratul.ajaira.website/wp-admin/', { waitUntil: 'networkidle' });  //TODO: User BASE_URL
         
         const EmailCheck = await this.page.isVisible(SelectorsPage.login.loginEmailField);
         await expect(EmailCheck).toBeTruthy();
@@ -100,6 +107,8 @@ export class LoginPage {
         const LoginButtonCheck = await this.page.isVisible(SelectorsPage.login.loginButton);
         await expect(LoginButtonCheck).toBeTruthy();
         await this.page.click(SelectorsPage.login.loginButton);
+
+        //await this.page.click(SelectorsPage.login.adminDashboard);
 
 
        //Validate LOGIN

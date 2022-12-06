@@ -4,9 +4,16 @@ export const SelectorsPage = {
 
     //0001
         login:{
+            //Login-1
             loginEmailField: '//input[@id="user_login"]',
             loginPasswordField: '//input[@id="user_pass"]',
             loginButton: '//input[@id="wp-submit"]',
+            //Login-2
+            loginEmailField2: '//input[@id="wpuf-user_login"]',
+            loginPasswordField2: '//input[@id="wpuf-user_pass"]',
+            loginButton2: '///input[@type="submit"]',
+                //Admin BackEnd
+                adminDashboard:'//li[@id="wp-admin-bar-site-name"]/a[1]',
     
             //Validate LOGIN
             logingSuccessDashboard: '//div[text()="Dashboard"]',

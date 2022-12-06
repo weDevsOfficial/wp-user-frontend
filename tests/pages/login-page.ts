@@ -27,12 +27,16 @@ export class LoginPage {
         await this.page.click(SelectorsPage.login.loginButton);
 
         console.log("1.0: Login Done");
+        //WPUF Setup
         await this.page.goto('http://localhost:8889/wp-admin/index.php?page=wpuf-setup', { waitUntil: 'networkidle' }); 
         const WPUFSetup = await this.page.isVisible(SelectorsPage.login.clickWPUFSetupSkip);
                 if (WPUFSetup == true) {
-                    await this.page.click(SelectorsPage.login.clickWPUFSetupSkip);
+                    //await this.page.click(SelectorsPage.login.clickWPUFSetupSkip);
+                    await this.page.click(SelectorsPage.login.clickWPUFSetupLetsGo);
+                    await this.page.click(SelectorsPage.login.clickWPUFSetupContinue);
+                    await this.page.click(SelectorsPage.login.clickWPUFSetupEnd);
                 }
-        console.log("1.1: Skip WPUF Setup >");
+        console.log("1.1: Setup WPUF Complete");
 
        //Validate LOGIN
         await this.page.waitForLoadState('domcontentloaded');
@@ -43,14 +47,14 @@ export class LoginPage {
         
         const CheckPlugin_In_Menu = await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
         if (CheckPlugin_In_Menu == false) {
-            await this.page.isVisible('//li[@id="menu-plugins"]');
-            await this.page.click('//li[@id="menu-plugins"]');
+            await this.page.isVisible(SelectorsPage.login.clickPluginsSidebar);
+            await this.page.click(SelectorsPage.login.clickPluginsSidebar);
                 //Activate Plugin
-                const ActivateWPUF = await this.page.isVisible('//a[@aria-label="Activate WP User Frontend"]');
-                const ActivateWPUF_Pro = await this.page.isVisible('//a[@id="activate-wpuf-pro"]');
+                const ActivateWPUF = await this.page.isVisible(SelectorsPage.login.clickWPUF_LitePlugin);
+                const ActivateWPUF_Pro = await this.page.isVisible(SelectorsPage.login.clickWPUF_ProPlugin);
                 if ( ActivateWPUF == true && ActivateWPUF_Pro== true) {
-                    await this.page.click('//a[@aria-label="Activate WP User Frontend"]');
-                    await this.page.click('//a[@id="activate-wpuf-pro"]');
+                    await this.page.click(SelectorsPage.login.clickWPUF_LitePlugin);
+                    await this.page.click(SelectorsPage.login.clickWPUF_ProPlugin);
 
                     await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
                     await this.page.click(SelectorsPage.login.clickWPUFSidebar);
@@ -79,6 +83,8 @@ export class LoginPage {
         }
     }
 
+
+    //Log without the WPUF Setup page
     async login2(email, password) {
         console.log("0001.2: Running Login Done");
         await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });  //TODO: User BASE_URL
@@ -105,14 +111,14 @@ export class LoginPage {
         
         const CheckPlugin_In_Menu = await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
         if (CheckPlugin_In_Menu == false) {
-            await this.page.isVisible('//li[@id="menu-plugins"]');
-            await this.page.click('//li[@id="menu-plugins"]');
+            await this.page.isVisible(SelectorsPage.login.clickPluginsSidebar);
+            await this.page.click(SelectorsPage.login.clickPluginsSidebar);
                 //Activate Plugin
-                const ActivateWPUF = await this.page.isVisible('//a[@aria-label="Activate WP User Frontend"]');
-                const ActivateWPUF_Pro = await this.page.isVisible('//a[@id="activate-wpuf-pro"]');
+                const ActivateWPUF = await this.page.isVisible(SelectorsPage.login.clickWPUF_LitePlugin);
+                const ActivateWPUF_Pro = await this.page.isVisible(SelectorsPage.login.clickWPUF_ProPlugin);
                 if ( ActivateWPUF == true && ActivateWPUF_Pro== true) {
-                    await this.page.click('//a[@aria-label="Activate WP User Frontend"]');
-                    await this.page.click('//a[@id="activate-wpuf-pro"]');
+                    await this.page.click(SelectorsPage.login.clickWPUF_LitePlugin);
+                    await this.page.click(SelectorsPage.login.clickWPUF_ProPlugin);
 
                     await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
                     await this.page.click(SelectorsPage.login.clickWPUFSidebar);

@@ -2,10 +2,6 @@ require('dotenv').config();
 
 import { expect, Page } from '@playwright/test';
 import { SelectorsPage } from './selectors';
-
-
-//import { TestData } from '../tests/testdata';
-
  
 
 export class PostFormsFrontEnd {
@@ -21,47 +17,38 @@ export class PostFormsFrontEnd {
         console.log("0003 > Running FRONT-END Check > POST FORM");
         await this.page.click(SelectorsPage.createPostForm.clickPostFormMenuOption);
 
-        //Copy_Shortcode
-        const storeShortCode = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.clickShortCode);
-        console.log("3.0: Shortcode is > " + storeShortCode);
+        //Validate Post Form Created
+        await this.page.waitForLoadState('domcontentloaded');
+        //ASSERTION > Check if-VALID
+        const checkNew_BlankForm_CreatedValid = await this.page.isVisible(SelectorsPage.login.wpufPostForm_CheckAddButton);
+        console.log("2.7: " + checkNew_BlankForm_CreatedValid) //Check STATUS
+        if (checkNew_BlankForm_CreatedValid == true) {  
+            const checkNewFormCreated = await this.page.innerText(SelectorsPage.login.postFormsPageFormTitleCheck);
+            console.log("2.8: Text is -> " + checkNewFormCreated)
+            await expect(checkNewFormCreated).toContain(process.env.NEW_POST_BLANK_FORMNAME);
+        }
+        const StorePostFormName = await this.page.innerText(SelectorsPage.login.postFormsPageFormTitleCheck);
+        
+        //Go to Settings
+        await this.page.isVisible('//a[contains(text(), "Settings")]');
+        await this.page.click('//a[contains(text(), "Settings")]');
+        console.log("2.9: Settings Page Visited");
 
-        //Go To Pages
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickLeftNavPages);
+        //Go to Front-End Posting
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.isVisible('//a[@id="wpuf_frontend_posting-tab"]');
+        await this.page.click('//a[@id="wpuf_frontend_posting-tab"]');
+        console.log("3.0: FrontEnd Posting Selected < Settings");
 
-        //Add New Page
-        await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.clickAddNewPageButton);
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickAddNewPageButton);
-        //Add New Page > Add Title
-        //Close Popup
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageBlockEditorPopupClose);
-        //Add Content
-        await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);
-
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle);
-        await this.page.fill(SelectorsPage.frontEndCheckBlankForm.newPageAddTitle, 'New: Post Form Page');
-        //Add New Page > Add Shortcode
-            await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockIcon);
-            await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockSearch)
-            await this.page.fill(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockSearch, 'Shortcode')
-            await this.page.click(SelectorsPage.frontEndCheckBlankForm.newPageAddBlockClickShortcode);
-
-        //Wait for ShortCode Block
-        const WaitforShortcodeBlock = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.shortCodeBlock)
-        await expect(WaitforShortcodeBlock).toEqual("Shortcode");
-        //Edit Shortcode
-        await this.page.waitForLoadState('domcontentloaded')            
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock2);
-        await this.page.waitForSelector(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock2);
-        await this.page.fill(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock2, "");
-        await this.page.fill(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock1, storeShortCode);
-        const CheckExpectedShortcodeBlock = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.editShortCodeBlock1);
-        await expect(CheckExpectedShortcodeBlock).toEqual(storeShortCode);
-        await this.page.waitForLoadState('domcontentloaded')            
-
-        //Update Edited Page
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickEditFormsPageUpdate);
-        await this.page.waitForLoadState('domcontentloaded')
-        console.log("3.2: Updating Page Done")
+        //Dropdown check
+        await this.page.isVisible('//select[@id="wpuf_frontend_posting[default_post_form]"]');
+        //Select > Dropdown
+        await this.page.selectOption('//select[@id="wpuf_frontend_posting[default_post_form]"]', {label: StorePostFormName});
+        const CheckPostFormSelected = await this.page.innerText('//select[@id="wpuf_frontend_posting[default_post_form]"]');
+        console.log("3.1: Selected Value from Dropdown");
+        //Click Save
+        await this.page.click("(//p[@class='submit']//input)[2]");
+        console.log("3.2: Save FrontEnd Posting");
 
         //Go to Dashboard > Visist Site > FRONT-END
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickReturnToDashboard);

@@ -53,7 +53,7 @@ export class PostForms {
             //br-start
             var textBlockAddPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             if (textBlockAddPopUp) {
-                console.log("2.1: Click TextBlock PopUp > 'Dont show again' Button1")
+                console.log("2.1: Click TextBlock PopUp > 'Dont show again' Button1");
                 await this.page.click(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             } 
             //br-end
@@ -79,7 +79,7 @@ export class PostForms {
             //br-start
             var googleMapBlockPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             if (googleMapBlockPopUp) {
-                console.log("2.2: Click GoogleMap PopUP > 'OK1'")
+                console.log("2.2: Click GoogleMap PopUP > 'OK1'");
                 await this.page.click(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             } 
             //br-end
@@ -87,7 +87,7 @@ export class PostForms {
             //br-start
             var stepStartBlockAddPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             if (stepStartBlockAddPopUp) {
-                console.log("2.3: Click StepStart POPUP > 'Dont show again' Button2")
+                console.log("2.3: Click StepStart POPUP > 'Dont show again' Button2");
                 await this.page.click(SelectorsPage.createPostForm.prompt1PopUpModalClose);
             } 
             //br-end
@@ -104,7 +104,7 @@ export class PostForms {
             //br-start
             var reCaptchaBlockPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             if (reCaptchaBlockPopUp) {
-                console.log("2.4: Click reCaptcha PopUP > 'OK2'")
+                console.log("2.4: Click reCaptcha PopUP > 'OK2'");
                 await this.page.click(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             } 
             //br-end
@@ -116,7 +116,7 @@ export class PostForms {
             //br-start
             var reallySimpleCaptchaPopUp = await this.page.isVisible(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             if (reallySimpleCaptchaPopUp) {
-                console.log("2.5: Click reCaptcha PopUP > 'OK3'")
+                console.log("2.5: Click reCaptcha PopUP > 'OK3'");
                 await this.page.click(SelectorsPage.createPostForm.prompt2PopUpModalOk);
             } 
             //br-end
@@ -128,11 +128,11 @@ export class PostForms {
         
         //Finish
         await this.page.click(SelectorsPage.createPostForm.saveFormButton);
-        console.log("2.6: END > Create New BLANK Form")
+        console.log("2.6: END > Create New BLANK Form");
 
         //Return HOME
         await this.page.click(SelectorsPage.createPostForm.clickPostFormMenuOption);
-        await this.page.waitForLoadState('domcontentloaded')
+        await this.page.waitForLoadState('domcontentloaded');
         //ASSERTION > Check if-VALID
         const checkNew_BlankForm_CreatedValid = await this.page.isVisible(SelectorsPage.login.wpufPostForm_CheckAddButton);
         console.log("2.7: " + checkNew_BlankForm_CreatedValid) //Check STATUS

@@ -11,7 +11,7 @@ export const SelectorsPage = {
             //Login-2
             loginEmailField2: '//input[@id="wpuf-user_login"]',
             loginPasswordField2: '//input[@id="wpuf-user_pass"]',
-            loginButton2: '///input[@type="submit"]',
+            loginButton2: '//input[@type="submit"]',
                 //Admin BackEnd
                 adminDashboard:'//li[@id="wp-admin-bar-site-name"]/a[1]',
     

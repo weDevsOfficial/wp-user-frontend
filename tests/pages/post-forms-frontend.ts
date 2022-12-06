@@ -50,30 +50,32 @@ export class PostFormsFrontEnd {
         await this.page.click("(//p[@class='submit']//input)[2]");
         console.log("3.2: Save FrontEnd Posting");
 
+
         //Go to Dashboard > Visist Site > FRONT-END
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickReturnToDashboard);
+        //await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickReturnToDashboard);
         //FRONT-END Click
         await this.page.hover(SelectorsPage.frontEndCheckBlankForm.hoverSiteName);
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.clickVisitSite);
-        console.log("3.3: Site Visited")
+        console.log("3.3: Site Visited");
             
         
         //FRONT-END Post Form Page
-        await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.frontEndclickPostFormPage);
-        const FrontEndPostPage = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.frontEndclickPostFormPage);
-        await expect(FrontEndPostPage).toEqual("Post Form Page");
-        await this.page.click(SelectorsPage.frontEndCheckBlankForm.frontEndclickPostFormPage);
-        console.log("3.4: Clicked on Page > VISITED")
+        await expect(this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.frontEndClickAccount)).toBeTruthy();
+        await this.page.click(SelectorsPage.frontEndCheckBlankForm.frontEndClickAccount);
+        await expect(this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.frontEndClickSubmitPost)).toBeTruthy();
+        await this.page.click(SelectorsPage.frontEndCheckBlankForm.frontEndClickSubmitPost);
+        await this.page.waitForLoadState('domcontentloaded');
+        console.log("3.4: Clicked on Account Page");
         
 
         //Check BLANK FORM Items
-        console.log("3.5: Started > Blank Form Item Check")
+        console.log("3.5: Started > Blank Form Item Check");
         //1.0
         await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.frontEndPostTitle);
         await this.page.fill(SelectorsPage.frontEndCheckBlankForm.frontEndPostTitle, newPostTitleName);
         //2.0
-        const CheckPostContentBlock = await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.frontEndPostContent);
-        await expect(CheckPostContentBlock).toBeTruthy();
+        // const CheckPostContentBlock = await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.frontEndPostContent);
+        // await expect(CheckPostContentBlock).toBeTruthy();
         //const IFramePostContent = 
         await this.page.frameLocator(SelectorsPage.frontEndCheckBlankForm.frontEndPostContent)
             .locator(SelectorsPage.frontEndCheckBlankForm.frontEndPostContentfill).fill("Test > Post Content");
@@ -171,12 +173,11 @@ export class PostFormsFrontEnd {
 
 
         //VALIDATE Form Submission
-        await this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.frontEndClickHomePage);
-        const FrontEndHomePage = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.frontEndClickHomePage);
-            await expect(FrontEndHomePage).toEqual("Home");
+        await expect(this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.frontEndClickPost)).toBeTruthy();
+        await this.page.click(SelectorsPage.frontEndCheckBlankForm.frontEndClickPost);
 
         //Check ITEM
-        const ValidateFormSubmitted = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.frontEndValiteFormSubmitted);
+        const ValidateFormSubmitted = await this.page.innerText(SelectorsPage.frontEndCheckBlankForm.frontEndPostTableItem1);
             await expect(ValidateFormSubmitted).toContain(newPostTitleName);
             console.log("3.7: Form Submission: VALIDATED");
 

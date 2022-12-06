@@ -162,7 +162,8 @@ export const SelectorsPage = {
                 clickVisitSite: '//li[@id="wp-admin-bar-view-site"]//a[1]',
     
                     //FRONT-END
-                    frontEndclickPostFormPage: '//a[contains(text(), "WPUF-PostForm")]',
+                    frontEndClickAccount: '//a[contains(text(),"Account")]',
+                    frontEndClickSubmitPost: '//li[@class="wpuf-menu-item submit-post"]//a[1]',
                         //Locators > BLANK Form ITEMS
                         frontEndPostTitle: '//input[@name="post_title"]',
                         frontEndPostContent: '//div[contains(@class,"mce-edit-area mce-container")]//iframe[1]',
@@ -207,9 +208,12 @@ export const SelectorsPage = {
                         //SUBMIT FORM
                         frontEndSubmitForm: '//input[@value="Submit"]',
     
-                        //VALIDATE FORM SUBMISSION
-                        frontEndClickHomePage: '//h1[@class="wp-block-site-title"]//a[1]',
-                        frontEndValiteFormSubmitted: '(//h2[@class="alpha entry-title"]//a)[1]',
+                    //VALIDATE FORM SUBMISSION
+                    frontEndClickHomePage: '//h1[@class="wp-block-site-title"]//a[1]',
+                    frontEndValiteFormSubmitted: '//h2[@class="wp-block-post-title"])[1]',
+    
+                    frontEndClickPost: '//li[@class="wpuf-menu-item post"]//a[1]',
+                    frontEndPostTableItem1: '(//td[@data-label="Title: "]//a)[1]',
     
         },
     

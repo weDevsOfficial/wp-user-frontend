@@ -108,7 +108,7 @@ export class LoginPage {
         await expect(LoginButtonCheck).toBeTruthy();
         await this.page.click(SelectorsPage.login.loginButton2);
 
-        //await this.page.click(SelectorsPage.login.adminDashboard);
+        await this.page.click(SelectorsPage.login.adminDashboard);
 
 
        //Validate LOGIN

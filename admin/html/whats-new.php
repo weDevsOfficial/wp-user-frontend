@@ -1,6 +1,64 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.0',
+        'released' => '2022-11-23',
+        'changes'  => [
+            [
+                'title' => __( 'Admin dashboard news and update meta-box added', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Upgrade prompts design', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Email style handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'text-area type selection(Normal, Rich text-area, Teeny Rich text-area) bug in field options', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Frontend form validation', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Default value not saving for radio, dropdown, checkbox', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'sweetalert2 version', 'wp-user-frontend' ),
+                'type'  => 'Update',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.5.29',
+        'released' => '2022-09-15',
+        'changes'  => [
+            [
+                'title' => __( 'Short-code encryption updated for registration page', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.5.28',
+        'released' => '2022-08-17',
+        'changes'  => [
+            [
+                'title' => __( 'Updated compatibility with the latest version of WordPress 6.0', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+            [
+                'title' => __( 'Improved some backend implementations', 'wp-user-frontend' ),
+                'type'  => 'Tweak',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.27',
         'released' => '2022-03-09',
         'changes'  => [

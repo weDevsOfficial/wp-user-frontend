@@ -71,7 +71,7 @@ class WPUF_Assets {
 
         wp_register_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue' . $prefix . '.js', [], WPUF_VERSION, true );
         wp_register_script( 'wpuf-vuex', WPUF_ASSET_URI . '/vendor/vuex/vuex' . $prefix . '.js', [ 'wpuf-vue' ], WPUF_VERSION, true );
-        wp_register_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', [], WPUF_VERSION, true );
+        wp_register_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', [], '11.4.30', true );
         wp_register_script( 'wpuf-jquery-scrollTo', WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo' . $prefix . '.js', [ 'jquery' ], WPUF_VERSION, true );
         wp_register_script( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize' . $prefix . '.js', [ 'jquery' ], WPUF_VERSION, true );
         wp_register_script( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr' . $prefix . '.js', [], WPUF_VERSION, true );
@@ -87,5 +87,6 @@ class WPUF_Assets {
     public function register_styles() {
         wp_register_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
         wp_register_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
+        wp_register_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css', [], '11.4.30' );
     }
 }

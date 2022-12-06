@@ -42,7 +42,7 @@ Vue.component('form-fields', {
         alert_pro_feature: function (field) {
             var title = this.field_settings[field].title;
 
-            swal({
+            new swal({
                 title: '<i class="fa fa-lock"></i> ' + title + ' <br>' + this.i18n.is_a_pro_feature,
                 text: this.i18n.pro_feature_msg,
                 type: '',

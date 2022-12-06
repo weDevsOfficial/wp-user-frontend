@@ -671,16 +671,18 @@ class WPUF_Admin_Subscription {
                             </tr>
                             <?php } ?>
                             <?php
-                            foreach ( $user_sub['posts'] as $key => $value ) {
-                                $post_type_object = get_post_type_object( $key );
+                            if ( ! empty( $user_sub['posts'] ) ) {
+                                foreach ( $user_sub['posts'] as $key => $value ) {
+                                    $post_type_object = get_post_type_object( $key );
 
-                                if ( $post_type_object ) {
-                                    ?>
-                                     <tr>
-                                         <th><label><?php echo esc_html( $post_type_object->labels->name ); ?></label></th>
-                                         <td><input type="text" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
-                                     </tr>
-                                    <?php
+                                    if ( $post_type_object ) {
+                                        ?>
+                                         <tr>
+                                             <th><label><?php echo esc_html( $post_type_object->labels->name ); ?></label></th>
+                                             <td><input type="text" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
+                                         </tr>
+                                        <?php
+                                    }
                                 }
                             }
                             ?>

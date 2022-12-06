@@ -712,7 +712,7 @@ abstract class WPUF_Field_Contract {
      */
     public function field_print_label( $field, $form_id = 0 ) {
         if ( is_admin() ) { ?>
-            <tr> <th><strong> <?php echo wp_kses_post( $field['label'] . $this->required_mark( $field ) ); ?> </strong></th> <td>
+            <tr <?php $this->print_list_attributes( $field ); ?>> <th><strong> <?php echo wp_kses_post( $field['label'] . $this->required_mark( $field ) ); ?> </strong></th> <td>
         <?php } else { ?>
 
             <li <?php $this->print_list_attributes( $field ); ?>>

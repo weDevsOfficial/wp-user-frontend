@@ -22,9 +22,9 @@ export class RegistrationForms {
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm);
   
         //Click_Blank_Form
-        await this.page.isVisible(SelectorsPage.createRegistrationForm.hoverBlankForm);   
-        await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
-        await this.page.isVisible(SelectorsPage.createRegistrationForm.clickBlankForm);   
+        // await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
+        // await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
+        await this.page.waitForSelector(SelectorsPage.createRegistrationForm.clickBlankForm);   
         await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm); 
 
         //Enter_Name

@@ -220,7 +220,7 @@ export const SelectorsPage = {
                     frontEndValiteFormSubmitted: '//h2[@class="wp-block-post-title"])[1]',
     
                     frontEndClickPost: '//li[@class="wpuf-menu-item post"]//a[1]',
-                    frontEndPostTableItem1: '//td[@data-label="Title: "]//a)[1]',
+                    frontEndPostTableItem1: '(//td[@data-label="Title: "]//a)[1]',
     
         },
     

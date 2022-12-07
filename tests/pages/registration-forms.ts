@@ -23,9 +23,11 @@ export class RegistrationForms {
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistrationFormMenuOption);
         //Start
         console.log("4.0: START > Create New REGISTRATION Form");                        //TODO: Make a COMMON FUNCTION
+        await this.page.waitForLoadState('domcontentloaded')
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm); 
   
         //Click_Blank_Form
+        await this.page.waitForLoadState('domcontentloaded')
         await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
         await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
         await this.page.waitForSelector(SelectorsPage.createRegistrationForm.clickBlankForm);   
@@ -33,6 +35,7 @@ export class RegistrationForms {
 
         //Enter_Name
         //await this.page.waitForLoadState('domcontentloaded');
+        await this.page.waitForLoadState('domcontentloaded')
         await this.page.click(SelectorsPage.createRegistrationForm.editNewFormName); 
         await this.page.fill(SelectorsPage.createRegistrationForm.enterNewFormName, newRegistrationName);   
         await this.page.click(SelectorsPage.createRegistrationForm.confirmNewNameTickButton);  
@@ -41,6 +44,7 @@ export class RegistrationForms {
 
         //ACTION_Start
         //Post_Fields
+        await this.page.waitForLoadState('domcontentloaded')
         await this.page.click(SelectorsPage.createRegistrationForm.profileFieldUsername);
         await this.page.click(SelectorsPage.createRegistrationForm.profileFieldFirstName);
         await this.page.click(SelectorsPage.createRegistrationForm.profileFieldLastName);

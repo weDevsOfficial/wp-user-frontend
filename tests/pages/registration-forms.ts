@@ -20,10 +20,13 @@ export class RegistrationForms {
         //Start
         console.log("4.0: START > Create New REGISTRATION Form");                        //TODO: Make a COMMON FUNCTION
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm);
+        await this.page.waitForLoadState('domcontentloaded');
   
         //Click_Blank_Form
-        // await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
-        // await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
+        await this.page.waitForSelector('//div[@class="wpuf-form-template-modal"]');
+        //Templates 
+        await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
+        await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
         await this.page.waitForSelector(SelectorsPage.createRegistrationForm.clickBlankForm);   
         await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm); 
 

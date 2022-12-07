@@ -20,6 +20,7 @@ export class RegistrationForms {
         //Start
         console.log("4.0: START > Create New REGISTRATION Form");                        //TODO: Make a COMMON FUNCTION
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm);
+        await this.page.pause();
   
         //Click_Blank_Form
         await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   

@@ -59,7 +59,7 @@ export class LoginPage {
         
         const CheckPlugin_In_Menu = await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
         if (CheckPlugin_In_Menu == false) {
-            await this.page.isVisible(SelectorsPage.login.clickPluginsSidebar);
+            await expect(this.page.isVisible(SelectorsPage.login.clickPluginsSidebar)).toBeTruthy();
             await this.page.click(SelectorsPage.login.clickPluginsSidebar);
                 //Activate Plugin
                 const ActivateWPUF = await this.page.isVisible(SelectorsPage.login.clickWPUF_LitePlugin);
@@ -146,7 +146,7 @@ export class LoginPage {
         
         const CheckPlugin_In_Menu = await this.page.isVisible(SelectorsPage.login.clickWPUFSidebar);
         if (CheckPlugin_In_Menu == false) {
-            await this.page.isVisible(SelectorsPage.login.clickPluginsSidebar);
+            await expect(this.page.isVisible(SelectorsPage.login.clickPluginsSidebar)).toBeTruthy();
             await this.page.click(SelectorsPage.login.clickPluginsSidebar);
                 //Activate Plugin
                 const ActivateWPUF = await this.page.isVisible(SelectorsPage.login.clickWPUF_LitePlugin);

@@ -28,9 +28,9 @@ export class RegistrationForms {
         await this.page.waitForLoadState('domcontentloaded');
   
         //Click_Blank_Form
-        await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
+        await expect(this.page.isVisible(SelectorsPage.createRegistrationForm.hoverBlankForm)).toBeTruthy();   
         await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
-        await this.page.waitForSelector(SelectorsPage.createRegistrationForm.clickBlankForm);   
+        await await expect(this.page.isVisible(SelectorsPage.createRegistrationForm.clickBlankForm)).toBeTruthy();   
         await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm);   
 
         //Enter_Name

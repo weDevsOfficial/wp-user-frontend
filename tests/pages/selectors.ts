@@ -233,7 +233,7 @@ export const SelectorsPage = {
     
             //Start
             clickRegistraionAddForm: '#new-wpuf-profile-form',
-            hoverBlankForm: '.blank-form',
+            hoverBlankForm: '//li[@class="blank-form"]',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
     
             //Enter_NAME

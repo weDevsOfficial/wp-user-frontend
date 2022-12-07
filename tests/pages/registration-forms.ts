@@ -2,10 +2,6 @@ require('dotenv').config();
 
 import { expect, Page } from '@playwright/test';
 import { SelectorsPage } from './selectors';
-
-
-//import { TestData } from '../tests/testdata';
-
  
 
 export class RegistrationForms {

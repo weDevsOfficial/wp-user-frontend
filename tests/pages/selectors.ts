@@ -232,7 +232,7 @@ export const SelectorsPage = {
             clickRegistrationFormMenuOption: '//a[contains(text(), "Registration Forms")]',
     
             //Start
-            clickRegistraionAddForm: '#new-wpuf-profile-form',
+            clickRegistraionAddForm: '//a[@id="new-wpuf-profile-form" and contains(text(), "Add Form")]',
             hoverBlankForm: '.blank-form',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
     

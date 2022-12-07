@@ -21,25 +21,23 @@ export class RegistrationForms {
         console.log("0004 > Running REGISTRATION FORM Create");
         //Create_New_Post_Form
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistrationFormMenuOption);
+        await this.page.waitForLoadState('domcontentloaded');
         //Start
         console.log("4.0: START > Create New REGISTRATION Form");                        //TODO: Make a COMMON FUNCTION
-        await this.page.waitForLoadState('domcontentloaded')
-        await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm); 
+        await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm);
+        await this.page.waitForLoadState('domcontentloaded');
   
         //Click_Blank_Form
-        await this.page.waitForLoadState('domcontentloaded')
         await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
         await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
         await this.page.waitForSelector(SelectorsPage.createRegistrationForm.clickBlankForm);   
         await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm);   
 
         //Enter_Name
-        //await this.page.waitForLoadState('domcontentloaded');
-        await this.page.waitForLoadState('domcontentloaded')
+        await this.page.waitForLoadState('domcontentloaded');
         await this.page.click(SelectorsPage.createRegistrationForm.editNewFormName); 
         await this.page.fill(SelectorsPage.createRegistrationForm.enterNewFormName, newRegistrationName);   
         await this.page.click(SelectorsPage.createRegistrationForm.confirmNewNameTickButton);  
-        
 
 
         //ACTION_Start

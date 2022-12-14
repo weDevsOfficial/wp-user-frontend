@@ -203,7 +203,7 @@ ul.slider-container li img {
     padding: 50px 80px 30px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    width: 55%;
+    width: 50%;
     top: 50%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
@@ -357,5 +357,9 @@ ul.slider-container li img {
 
     .modal-window p {
         margin-bottom: 0;
+    }
+
+    .modal-window {
+        width: 70%;
     }
 }

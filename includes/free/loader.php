@@ -307,7 +307,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'desc'           => __( 'Allow user to update their profile information from the account page',
                                     'wp-user-frontend' ),
             'type'           => 'checkbox',
-            'default'        => 'on',
+            'default'        => 'off',
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
@@ -997,7 +997,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      *
      * @since 3.6.0
      *
-     * @return string[]
+     * @return string[][]
      */
     public function pro_modules_info() {
         return [

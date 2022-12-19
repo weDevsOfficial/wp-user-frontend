@@ -202,15 +202,17 @@
             var self = this,
             el = $(e.currentTarget);
 
-            new swal({
+            Swal.fire({
                 text: wpuf_frontend_upload.confirmMsg,
-                type: 'warning',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d54e21',
                 confirmButtonText: wpuf_frontend_upload.delete_it,
                 cancelButtonText: wpuf_frontend_upload.cancel_it,
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger',
+                }
             }).then(function () {
                 var data = {
                     'attach_id' : el.data('attach-id'),

@@ -95,8 +95,9 @@ export class LoginPage {
         }
 
         //Change Settings
-        await this.page.click('//a[contains(text(), "Settings")]');
-            await this.page.waitForLoadState('domcontentloaded');
+        await this.page.click('//a[@href="admin.php?page=wpuf-settings"]');
+        await expect (await this.page.isVisible('//a[@href="#wpuf_profile"]')).toBeTruthy();
+        await this.page.click('//input[@value="Save Changes"]');
         await this.page.click('#wpuf_profile-tab');
         await this.page.selectOption('//select[@id="wpuf_profile[login_page]"]', {label: '— Select —'});
         console.log("1.7: Settings Changed > to always Admin");

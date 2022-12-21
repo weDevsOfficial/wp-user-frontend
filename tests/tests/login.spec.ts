@@ -20,13 +20,13 @@ import { Practice } from '../pages/test';
 test.describe('TEST :-->', () => {
 
 //LOGIN-1.0
-    // test('0001: Admin > LOGIN', async ({ page }) => {
-    //     //const homePage = new HomePage(page);
-    //     const loginPage = new LoginPage(page);
+    test('0001: Admin > LOGIN', async ({ page }) => {
+        //const homePage = new HomePage(page);
+        const loginPage = new LoginPage(page);
         
-    //     //await homePage.open();
-    //     await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
-    // });
+        //await homePage.open();
+        await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+    });
 
 
 
@@ -62,15 +62,15 @@ test.describe('TEST :-->', () => {
 
 //Add_Registration > BLANK_Form-4.0
 
-    test('0004: Create New > Registration FORM - BLANK Template', async ({ page }) => {
-        const loginPage = new LoginPage(page);
-        const registrationForms = new RegistrationForms(page);
+    // test('0004: Create New > Registration FORM - BLANK Template', async ({ page }) => {
+    //     const loginPage = new LoginPage(page);
+    //     const registrationForms = new RegistrationForms(page);
         
-       // await homePage.open();
-        await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
-        await registrationForms.createNewRegistrationBlankForm(process.env.NEW_REGISTRATION_BLANK_FORMNAME);
+    //    // await homePage.open();
+    //     await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+    //     await registrationForms.createNewRegistrationBlankForm(process.env.NEW_REGISTRATION_BLANK_FORMNAME);
 
-    });
+    // });
 
 
 

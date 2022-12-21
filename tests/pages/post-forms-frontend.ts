@@ -173,6 +173,7 @@ export class PostFormsFrontEnd {
 
 
         //VALIDATE Form Submission
+        await this.page.click(SelectorsPage.frontEndCheckBlankForm.frontEndClickAccount);
         await expect(this.page.isVisible(SelectorsPage.frontEndCheckBlankForm.frontEndClickPost)).toBeTruthy();
         await this.page.click(SelectorsPage.frontEndCheckBlankForm.frontEndClickPost);
 

@@ -37,8 +37,8 @@ jobs:
 
       - name: Composer install and build (WPUF-lite)
         run: |
-            composer install
             composer update
+            composer install
             composer dump-autoload -o
             
       - name: Npm install and build (WPUF-lite)

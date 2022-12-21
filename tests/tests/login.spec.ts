@@ -9,6 +9,8 @@ import { LogoutPage } from '../pages/logout-page';
 import { PostForms } from '../pages/post-forms';
 import { PostFormsFrontEnd } from '../pages/post-forms-frontend';
 import { RegistrationForms } from '../pages/registration-forms';
+import { EditPostForms } from '../pages/edit-post-forms';
+
 
 import { Practice } from '../pages/test';
 
@@ -71,6 +73,33 @@ test.describe('TEST :-->', () => {
         await registrationForms.createNewRegistrationBlankForm(process.env.NEW_REGISTRATION_BLANK_FORMNAME);
 
     });
+
+
+
+
+//Edit Blank Form-5.0 > 5.1 - 5.3
+
+    // test('0005.1: Edit Post Blank Form > Check Post Fields', async ({ page }) => {
+    //     const loginPage = new LoginPage(page);
+    //     const editPostFormsCheckPostFields = new EditPostForms(page);
+        
+    // // await homePage.open();
+    //     await loginPage.login2(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+    //     await editPostFormsCheckPostFields.edit_PostBlankForm_PostFields();
+
+    // });
+
+
+    // test('0005.1: Edit Post Blank Form > Check Taxonomies', async ({ page }) => {
+    //     const loginPage = new LoginPage(page);
+    //     const editPostFormsCheckPostFields = new EditPostForms(page);
+        
+    //    // await homePage.open();
+    //     await loginPage.login2(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+    //     await editPostFormsCheckPostFields.edit_PostBlankForm_Taxonomies();
+
+    // });
+
 
 
 

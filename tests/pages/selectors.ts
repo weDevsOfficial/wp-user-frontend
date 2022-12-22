@@ -262,10 +262,27 @@ export const SelectorsPage = {
         },
     
     //0006
-        editPostForm: {
+    editPostForm: {
+        //List Item Selection
+        postFormListItem1:'(//a[@class="row-title"])[1]',
+
+        //Edit Post Fields
+        editPost_PostTitle_Hover: '(//li[contains(@class,"field-items wpuf-el")])[1]', 
+        editPost_PostTitle_EditButton: '(//i[@class="fa fa-pencil"])[1]',
+            //Post Title
+            editPost_PostTitle_InputLabel: '(//i[contains(@class,"fa fa-question-circle")]/following-sibling::input)[1]',
+            editPost_PostTitle_InputHelpText: '(//i[contains(@class,"fa fa-question-circle")]/following-sibling::input)[2]',
+    
     
         }
-        
+    
+
+
+
+
+
+
     };
+        
     
     

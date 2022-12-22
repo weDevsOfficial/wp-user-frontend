@@ -31,6 +31,9 @@ export class RegistrationForms {
         await this.page.waitForSelector(SelectorsPage.createRegistrationForm.clickBlankForm);   
         await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm); 
 
+        //await this.page.waitForSelector('//a[contains(text(),"Form Editor")]');
+        await this.page.isVisible('//a[contains(text(),"Form Editor")]');
+        
         //Enter_Name
         await this.page.click(SelectorsPage.createRegistrationForm.editNewFormName); 
         await this.page.fill(SelectorsPage.createRegistrationForm.enterNewFormName, newRegistrationName);   

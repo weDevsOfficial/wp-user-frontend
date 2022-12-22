@@ -80,11 +80,13 @@ test.describe('TEST :-->', () => {
 //Edit Blank Form-5.0 > 5.1 - 5.3
 
     // test('0005.1: Edit Post Blank Form > Check Post Fields', async ({ page }) => {
-    //     const loginPages = new LoginPage(page);
+    //     const loginPage = new LoginPage(page);
+    //     const postForms = new PostForms(page);
     //     const editPostFormsCheckPostFields = new EditPostForms(page);
         
     // // await homePage.open();
-    //     await loginPage.login2(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+    //     await loginPage.login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+    //     await postForms.createNewPostBlankForm(process.env.NEW_POST_BLANK_FORMNAME);  //TODO: User if/else for Div loading
     //     await editPostFormsCheckPostFields.edit_PostBlankForm_PostFields();
 
     // });

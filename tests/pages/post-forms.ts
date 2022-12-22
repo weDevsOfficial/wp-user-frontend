@@ -127,6 +127,7 @@ export class PostForms {
         await this.page.click(SelectorsPage.createPostForm.checkMultiStepOption);
         
         //Finish
+        expect(await this.page.isVisible(SelectorsPage.createPostForm.saveFormButton)).toBeTruthy();
         await this.page.click(SelectorsPage.createPostForm.saveFormButton);
         console.log("2.6: END > Create New BLANK Form");
 

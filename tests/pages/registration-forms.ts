@@ -17,12 +17,10 @@ export class RegistrationForms {
         console.log("0004 > Running REGISTRATION FORM Create");
         //Create_New_Post_Form
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistrationFormMenuOption);
-        await expect(await this.page.isVisible(SelectorsPage.createRegistrationForm.validateRegistrationFormPageName)).toBeTruthy();
         //Start
         console.log("4.0: START > Create New REGISTRATION Form");                        //TODO: Make a COMMON FUNCTION
         await expect(this.page.isVisible(SelectorsPage.createRegistrationForm.clickRegistraionAddForm)).toBeTruthy();
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm);
-        await this.page.waitForLoadState('domcontentloaded');
   
         //Click_Blank_Form
         //Templates 
@@ -33,7 +31,7 @@ export class RegistrationForms {
 
         //await this.page.waitForSelector('//a[contains(text(),"Form Editor")]');
         await this.page.isVisible('//a[contains(text(),"Form Editor")]');
-        
+
         //Enter_Name
         await this.page.click(SelectorsPage.createRegistrationForm.editNewFormName); 
         await this.page.fill(SelectorsPage.createRegistrationForm.enterNewFormName, newRegistrationName);   

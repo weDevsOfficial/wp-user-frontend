@@ -23,7 +23,7 @@ export class RegistrationForms {
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistrationFormMenuOption);
         //Start
         console.log("4.0: START > Create New REGISTRATION Form");   
-        await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm);
+        await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm, { timeout: 10000 });
   
         //Click_Blank_Form
         //Templates 

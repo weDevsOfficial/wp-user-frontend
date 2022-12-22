@@ -235,7 +235,8 @@ export const SelectorsPage = {
             validateRegistrationFormPageName: '//h2[contains(text(), "Profile Forms")]',
     
             //Start
-            clickRegistraionAddForm: '//a[@id="new-wpuf-profile-form" and contains(text(), "Add Form")]',
+            //clickRegistraionAddForm: '//a[@id="new-wpuf-profile-form" and contains(text(), "Add Form")]',
+            clickRegistraionAddForm: '#new-wpuf-profile-form',
             hoverBlankForm: '.blank-form',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
     

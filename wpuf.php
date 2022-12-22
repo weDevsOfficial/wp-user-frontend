@@ -708,16 +708,25 @@ final class WP_User_Frontend {
         wp_localize_script(
             'wpuf-form', 'wpuf_frontend', apply_filters(
                 'wpuf_frontend_js_data', [
-                    'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-                    'error_message' => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
-                    'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
-                    'cancelSubMsg'  => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
-                    'delete_it'     => __( 'Yes', 'wp-user-frontend' ),
-                    'cancel_it'     => __( 'No', 'wp-user-frontend' ),
-                    'char_max'      => __( 'Character limit reached', 'wp-user-frontend' ),
-                    'char_min'      => __( 'Minimum character required ', 'wp-user-frontend' ),
-                    'word_max'      => __( 'Word limit reached', 'wp-user-frontend' ),
-                    'word_min'      => __( 'Minimum word required ', 'wp-user-frontend' ),
+                    'ajaxurl'          => admin_url( 'admin-ajax.php' ),
+                    'error_message'    => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
+                    'nonce'            => wp_create_nonce( 'wpuf_nonce' ),
+                    'cancelSubMsg'     => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
+                    'delete_it'        => __( 'Yes', 'wp-user-frontend' ),
+                    'cancel_it'        => __( 'No', 'wp-user-frontend' ),
+                    'word_max_title'   => __( 'Maximum word limit reached. Please shorten your texts.', 'wp-user-frontend' ),
+                    'word_max_details' => __( 'This field supports a maximum of %number% words, and the limit is reached. Remove a few words to reach the acceptable limit of the field.',
+                                              'wp-user-frontend' ),
+                    'word_min_title'   => __( 'Minimum word required.', 'wp-user-frontend' ),
+                    'word_min_details' => __( 'This field requires minimum %number% words. Please add some more text.',
+                                              'wp-user-frontend' ),
+                    'char_max_title'   => __( 'Maximum character limit reached. Please shorten your texts.',
+                                              'wp-user-frontend' ),
+                    'char_max_details' => __( 'This field supports a maximum of %number% characters, and the limit is reached. Remove a few characters to reach the acceptable limit of the field.',
+                                              'wp-user-frontend' ),
+                    'char_min_title'   => __( 'Minimum character required.', 'wp-user-frontend' ),
+                    'char_min_details' => __( 'This field requires minimum %number% characters. Please add some more character.',
+                                              'wp-user-frontend' ),
                 ]
             )
         );

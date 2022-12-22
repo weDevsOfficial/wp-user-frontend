@@ -80,7 +80,7 @@ test.describe('TEST :-->', () => {
 //Edit Blank Form-5.0 > 5.1 - 5.3
 
     // test('0005.1: Edit Post Blank Form > Check Post Fields', async ({ page }) => {
-    //     const loginPage = new LoginPage(page);
+    //     const loginPages = new LoginPage(page);
     //     const editPostFormsCheckPostFields = new EditPostForms(page);
         
     // // await homePage.open();

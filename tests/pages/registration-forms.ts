@@ -26,9 +26,9 @@ export class RegistrationForms {
   
         //Click_Blank_Form
         //Templates 
-        await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
+        await this.page.isVisible(SelectorsPage.createRegistrationForm.hoverBlankForm);   
         await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
-        await this.page.waitForSelector(SelectorsPage.createRegistrationForm.clickBlankForm);   
+        await this.page.isVisible(SelectorsPage.createRegistrationForm.clickBlankForm);   
         await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm); 
 
         //await this.page.waitForSelector('//a[contains(text(),"Form Editor")]');

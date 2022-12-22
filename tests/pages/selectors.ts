@@ -228,10 +228,11 @@ export const SelectorsPage = {
     
     //0005
         createRegistrationForm: {
-            //Profile_Name
-            validateRegistrationFormPageName: '//h2[contains(text(), "Profile Forms")]',
             //Create_New_Post_Form
             clickRegistrationFormMenuOption: '//a[contains(text(), "Registration Forms")]',
+
+            //Profile_Name
+            validateRegistrationFormPageName: '//h2[contains(text(), "Profile Forms")]',
     
             //Start
             clickRegistraionAddForm: '//a[@id="new-wpuf-profile-form" and contains(text(), "Add Form")]',

@@ -19,6 +19,7 @@ export class RegistrationForms {
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistrationFormMenuOption);
         //Start
         console.log("4.0: START > Create New REGISTRATION Form");                        //TODO: Make a COMMON FUNCTION
+        await expect(await this.page.isVisible(SelectorsPage.createRegistrationForm.validateRegistrationFormPageName)).toBeTruthy();
         await expect(this.page.isVisible(SelectorsPage.createRegistrationForm.clickRegistraionAddForm)).toBeTruthy();
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm);
         await this.page.waitForLoadState('domcontentloaded');
@@ -133,6 +134,7 @@ export class RegistrationForms {
 
 
         //Finish
+        await expect(this.page.isVisible(SelectorsPage.createPostForm.saveFormButton)).toBeTruthy();
         await this.page.click(SelectorsPage.createPostForm.saveFormButton);
         console.log("4.6: END > Create New REGISTRATION Form")
 

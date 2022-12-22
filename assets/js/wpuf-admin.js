@@ -83,6 +83,7 @@ jQuery(function($) {
             $( '.wpuf-pro-field-tooltip i' ).css( 'transform', 'initial' );
             $( '.wpuf-pro-field-tooltip' ).css( 'left', '50%' );
             $( '.wpuf-pro-field-tooltip' ).css( 'top', '0' );
+            $( 'nav.subscription-nav-tab .wpuf-pro-field-tooltip' ).css( 'top', '-1em' );
         } else if ( spaceTop < tooltipHeight && spaceRight > tooltipWidth ) {
             $( '.wpuf-pro-field-tooltip i' ).css( 'left', '-5px' );
             $( '.wpuf-pro-field-tooltip i' ).css( 'top', '22px' );
@@ -91,12 +92,16 @@ jQuery(function($) {
             $( '.wpuf-pro-field-tooltip' ).css( 'top', '310px' );
             $( 'a span.pro-icon-title .wpuf-pro-field-tooltip' ).css( 'left', '170px' );
             $( 'a span.pro-icon-title .wpuf-pro-field-tooltip i' ).css( 'top', '15px' );
+            $( 'nav.subscription-nav-tab .wpuf-pro-field-tooltip' ).css( 'left', '175px' );
+            $( 'nav.subscription-nav-tab .wpuf-pro-field-tooltip' ).css( 'top', '295px' );
         } else if ( spaceBottom > tooltipHeight ) {
             $( '.wpuf-pro-field-tooltip' ).css( 'left', '10px' );
             $( '.wpuf-pro-field-tooltip' ).css( 'top', '360px' );
             $( '.wpuf-pro-field-tooltip i' ).css( 'top', '-10px' );
             $( '.wpuf-pro-field-tooltip i' ).css( 'left', '150px' );
             $( '.wpuf-pro-field-tooltip i' ).css( 'transform', 'rotate(180deg)' );
+            $( 'nav.subscription-nav-tab .wpuf-pro-field-tooltip' ).css( 'left', '0' );
+            $( 'nav.subscription-nav-tab .wpuf-pro-field-tooltip' ).css( 'top', '0' );
         }
 
         tooltip.appendTo( this );

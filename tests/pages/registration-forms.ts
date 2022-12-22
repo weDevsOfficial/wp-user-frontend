@@ -23,30 +23,14 @@ export class RegistrationForms {
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistrationFormMenuOption);
         //Start
         console.log("4.0: START > Create New REGISTRATION Form");   
-        await this.page.click('(//a[@class="current"])[2]');      
-        console.log("Here 1");   
-              
-        await expect(this.page.isVisible(SelectorsPage.createRegistrationForm.clickRegistraionAddForm)).toBeTruthy();
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm);
-        console.log("Here 2");   
-
-        await this.page.waitForLoadState('domcontentloaded');
   
         //Click_Blank_Form
         //Templates 
-        await expect(this.page.isVisible(SelectorsPage.createRegistrationForm.hoverBlankForm)).toBeTruthy();   
+        await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
         await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
-        console.log("Here 3");   
-
-        await expect(this.page.isVisible(SelectorsPage.createRegistrationForm.clickBlankForm)).toBeTruthy();   
+        await this.page.waitForSelector(SelectorsPage.createRegistrationForm.clickBlankForm);   
         await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm);
-        console.log("Here 4");   
- 
-
-        //await this.page.waitForSelector('//a[contains(text(),"Form Editor")]');
-        await this.page.isVisible('//a[contains(text(),"Form Editor")]');
-
-
         //Enter_Name
         await this.page.waitForLoadState('domcontentloaded');
         await this.page.click(SelectorsPage.createRegistrationForm.editNewFormName); 

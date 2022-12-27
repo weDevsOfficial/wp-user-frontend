@@ -1221,3 +1221,9 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
 .wpuf-subscription-pack-settings .subscription-nav-content section .form-table td {
   padding: 15px 0;
 }
+
+@media only screen and (max-width: 1399px) {
+    a.wpuf-button.button-upgrade-to-pro {
+        padding: 10px;
+    }
+}

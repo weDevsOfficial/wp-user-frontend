@@ -307,7 +307,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
             'desc'           => __( 'Allow user to update their profile information from the account page',
                                     'wp-user-frontend' ),
             'type'           => 'checkbox',
-            'default'        => 'on',
+            'default'        => 'off',
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
@@ -997,7 +997,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      *
      * @since 3.6.0
      *
-     * @return string[]
+     * @return string[][]
      */
     public function pro_modules_info() {
         return [
@@ -1157,7 +1157,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                         <div class="wpuf-popup-header">
                             <h2 class="font-orange header-one">Upgrade to</h2>
                             <h2 class="header-two">WP User Frontend <span class="font-bold">Pro</span></h2>
-                            <h2 class="header-three font-gray">to experience even more powerful<br>features 🎉</h2>
+                            <h2 class="header-three font-gray">to experience even more powerful<span class="line-break"></span>features 🎉</h2>
                         </div>
                         <div class="wpuf-popup-list-area">
                             <div class="single-checklist">
@@ -1166,7 +1166,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                                 </div>
                                 <div class="check-list">
                                     <p>Get custom <span class="bold font-black">Post Type</span> and <span class="bold font-black">Taxonomy</span> support with
-                                        <br> subscription-based <span class="bold font-black">restrictions</span> for post <br> submission.</p>
+                                        <span class="line-break"></span> subscription-based <span class="bold font-black">restrictions</span> for post <span class="line-break"></span> submission.</p>
                                 </div>
                             </div>
                             <div class="single-checklist">
@@ -1174,7 +1174,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                                     <?php echo $check_icon; ?>
                                 </div>
                                 <div class="check-list">
-                                    <p>Enable <span class="bold font-black">conditional logic</span> and <span class="bold font-black">multi-step</span><br> functionalities on your forms.</p>
+                                    <p>Enable <span class="bold font-black">conditional logic</span> and <span class="bold font-black">multi-step</span><span class="line-break"></span> functionalities on your forms.</p>
                                 </div>
                             </div>
                             <div class="single-checklist">
@@ -1182,7 +1182,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                                     <?php echo $check_icon; ?>
                                 </div>
                                 <div class="check-list">
-                                    <p>Show or hide <span class="bold font-black">menus, pages,</span> and <span class="bold font-black">content</span> based on<br> user roles or login status of a user.</p>
+                                    <p>Show or hide <span class="bold font-black">menus, pages,</span> and <span class="bold font-black">content</span> based on<span class="line-break"></span> user roles or login status of a user.</p>
                                 </div>
                             </div>
                             <div class="single-checklist">
@@ -1190,7 +1190,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                                     <?php echo $check_icon; ?>
                                 </div>
                                 <div class="check-list">
-                                    <p><span class="bold font-black">20+ Premium Modules</span> (Social Login, User<br> Directory, User Activity, Stripe, MailChimp, Private<br> Messaging, Zapier, & more)</p>
+                                    <p><span class="bold font-black">20+ Premium Modules</span> (Social Login, User<span class="line-break"></span> Directory, User Activity, Stripe, MailChimp, Private<span class="line-break"></span> Messaging, Zapier, & more)</p>
                                 </div>
                             </div>
                         </div>

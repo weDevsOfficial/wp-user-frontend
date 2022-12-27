@@ -1186,11 +1186,11 @@
             tinymce: {
 
                 getStats: function(ed) {
-                    var body = ed.getBody(), text = tinymce.trim(body.innerText || body.textContent);
+                    var text = ed.getContent({format: 'text'});
 
                     return {
                         chars: text.length,
-                        words: text.split(/[\w\u2019\'-]+/).length - 1  // -1 to remove counting of blank or empty string
+                        words: text.split(' ').length
                     };
                 },
 
@@ -1202,27 +1202,24 @@
                         field.removeClass('has-error');
                     }
 
-                    var numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars;
-                    var limit_label = '';
+                    var numChars = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars;
 
                     // if the fields is empty, no need to check for char/word limit
-                    if ( ! numWords ) {
+                    if ( ! numChars ) {
                         field.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
+
                         return;
                     }
 
                     if ( 'word' === limit_type ) {
-                        numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words;
-                        limit_label = 'word_' + limit_to;
-                    } else {
-                        numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars;
-                        limit_label = 'char_' + limit_to;
+                        numChars = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words;
                     }
 
-                    if ( limit && numWords > limit && 'max' === limit_to ) {
+
+                    if ( limit && numChars > limit && 'max' === limit_to ) {
                         WP_User_Frontend.markError( field, 'limit' );
                         WP_User_Frontend.contentLimitMessage( $(field), limit_type, limit_to, limit );
-                    } else if ( limit && numWords < limit && 'min' === limit_to ) {
+                    } else if ( limit && numChars < limit && 'min' === limit_to ) {
                         WP_User_Frontend.markError( field, 'limit' );
                         WP_User_Frontend.contentLimitMessage( $(field), limit_type, limit_to, limit );
                     } else {

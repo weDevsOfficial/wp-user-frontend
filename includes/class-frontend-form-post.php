@@ -162,7 +162,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $nonce = isset( $_GET['nonce'] ) ? sanitize_key( wp_unslash( $_GET['nonce'] ) ) : '';
 
         if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
-            return;
+            exit;
         }
 
         $content = isset( $_POST['content'] ) ? sanitize_text_field( wp_unslash( $_POST['content'] ) ) : '';

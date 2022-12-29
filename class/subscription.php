@@ -376,13 +376,18 @@ class WPUF_Subscription {
 //            return;
 //        }
 
-        $expiration_time    = '';
-        $enable_post_expir  = '';
-        $expire_post_status = '';
-        $post_expire_msg    = '';
-        $billing_amount     = isset( $post_data['billing_amount'] ) ? absint( $post_data['billing_amount'] ) : 0;
-        $mail_after_expire  = isset( $post_data['post_expiration_settings'] ) && isset( $post_data['post_expiration_settings']['enable_mail_after_expired'] ) ? $post_data['post_expiration_settings']['enable_mail_after_expired'] : '';
-        $expiration_number  = array_key_exists( 'expiration_number', $post_data ) && ! empty( $post_data['expiration_number'] ) ? absint( $post_data['expiration_number'] ) : '';
+        $expiration_time      = '';
+        $enable_post_expir    = '';
+        $expire_post_status   = '';
+        $post_expire_msg      = '';
+        $billing_amount       = isset( $post_data['billing_amount'] ) ? absint( $post_data['billing_amount'] ) : 0;
+        $mail_after_expire    = isset( $post_data['post_expiration_settings'] ) && isset( $post_data['post_expiration_settings']['enable_mail_after_expired'] ) ? $post_data['post_expiration_settings']['enable_mail_after_expired'] : '';
+        $expiration_number    = ! empty( $post_data['expiration_number'] ) ? absint( $post_data['expiration_number'] ) : '';
+        $billing_cycle_number = ! empty( $post_data['billing_cycle_number'] ) ? sanitize_text_field( wp_unslash( $post_data['billing_cycle_number'] ) ) : 0;
+        $cycle_period         = ! empty( $post_data['cycle_period'] ) ? sanitize_text_field( wp_unslash( $post_data['cycle_period'] ) ) : '';
+        $billing_limit        = ! empty( $post_data['billing_limit'] ) ? sanitize_text_field( wp_unslash( $post_data['billing_limit'] ) ) : '';
+        $trial_duration       = ! empty( $post_data['trial_duration'] ) ? sanitize_text_field( wp_unslash( $post_data['trial_duration'] ) ) : '';
+        $trial_duration_type  = ! empty( $post_data['trial_duration_type'] ) ? sanitize_text_field( wp_unslash( $post_data['trial_duration_type'] ) ) : '';
 
         if ( isset( $post_data['post_expiration_settings'] ) ) {
             if ( isset( $post_data['post_expiration_settings']['expiration_time_value'] ) && isset( $post_data['post_expiration_settings']['expiration_time_type'] ) ) {
@@ -406,13 +411,13 @@ class WPUF_Subscription {
         update_post_meta( $subscription_id, '_expiration_number', $expiration_number );
         update_post_meta( $subscription_id, '_expiration_period', sanitize_text_field( wp_unslash( $post_data['expiration_period'] ) ) );
         update_post_meta( $subscription_id, '_recurring_pay', isset( $post_data['recurring_pay'] ) ? sanitize_text_field( wp_unslash( $post_data['recurring_pay'] ) ) : 'no' );
-        update_post_meta( $subscription_id, '_billing_cycle_number', sanitize_text_field( wp_unslash( $post_data['billing_cycle_number'] ) ) );
-        update_post_meta( $subscription_id, '_cycle_period', sanitize_text_field( wp_unslash( $post_data['cycle_period'] ) ) );
-        update_post_meta( $subscription_id, '_billing_limit', sanitize_text_field( wp_unslash( $post_data['billing_limit'] ) ) );
+        update_post_meta( $subscription_id, '_billing_cycle_number', $billing_cycle_number );
+        update_post_meta( $subscription_id, '_cycle_period', $cycle_period );
+        update_post_meta( $subscription_id, '_billing_limit', $billing_limit );
         update_post_meta( $subscription_id, '_trial_status', isset( $post_data['trial_status'] ) ? sanitize_text_field( wp_unslash( $post_data['trial_status'] ) ) : 'no' );
-        update_post_meta( $subscription_id, '_trial_duration', sanitize_text_field( wp_unslash( $post_data['trial_duration'] ) ) );
-        update_post_meta( $subscription_id, '_trial_duration_type', sanitize_text_field( wp_unslash( $post_data['trial_duration_type'] ) ) );
-        update_post_meta( $subscription_id, '_post_type_name', sanitize_text_field( wp_unslash( $post_data['post_type_name'] ) ) );
+        update_post_meta( $subscription_id, '_trial_duration', $trial_duration );
+        update_post_meta( $subscription_id, '_trial_duration_type', $trial_duration_type );
+        update_post_meta( $subscription_id, '_post_type_name', array_map( 'sanitize_text_field', $post_data['post_type_name'] ) );
         update_post_meta( $subscription_id, '_enable_post_expiration', $enable_post_expir );
         update_post_meta( $subscription_id, '_post_expiration_time', $expiration_time );
         update_post_meta( $subscription_id, '_expired_post_status', $expire_post_status );

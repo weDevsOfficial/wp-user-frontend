@@ -29,7 +29,7 @@
             $('.wpuf-metabox-post_expiration').on('change','select#wpuf-expiration_time_type',this.setTimeExpiration);
 
             // warn the user before updating the package
-            $( '#post' ).submit( function( event ) {
+            $( 'body.post-type-wpuf_subscription #post' ).submit( function( event ) {
                 event.preventDefault();
                 if ( document.activeElement.value === 'Update' ) {
                     Swal.fire({

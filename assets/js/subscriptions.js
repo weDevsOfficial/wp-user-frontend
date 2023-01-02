@@ -30,8 +30,8 @@
 
             // warn the user before updating the package
             $( 'body.post-type-wpuf_subscription #post' ).submit( function( event ) {
-                event.preventDefault();
                 if ( document.activeElement.value === 'Update' ) {
+                    event.preventDefault();
                     Swal.fire({
                         title: 'Are you sure to update the Subscription?',
                         text: 'The changes you made for this subscription will be applied only to the new subscribers.',

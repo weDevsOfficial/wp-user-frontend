@@ -34,7 +34,7 @@
                     event.preventDefault();
                     Swal.fire({
                         title: 'Are you sure to update the Subscription?',
-                        text: 'The changes you made for this subscription will be applied only to the new subscribers.',
+                        text: 'The changes you made will be applied only to the new subscriptions and pending recurring payments.',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',

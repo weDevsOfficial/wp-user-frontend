@@ -3135,7 +3135,7 @@ add_filter( 'display_post_states', 'wpuf_admin_page_states', 10, 2 );
  * Encryption function for various usage
  *
  * @since 2.5.8
- * @since WPUF param $nonce added
+ * @since 2.5.29 param $nonce added
  *
  * @param string $id
  * @param string $nonce
@@ -3166,7 +3166,7 @@ function wpuf_encryption( $id, $nonce = null ) {
  * Decryption function for various usage
  *
  * @since 2.5.8
- * @since WPUF param $nonce added
+ * @since 2.5.29 param $nonce added
  *
  * @param string $id
  * @param string $nonce

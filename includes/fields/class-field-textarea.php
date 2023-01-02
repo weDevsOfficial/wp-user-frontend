@@ -76,12 +76,11 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
                         rows="<?php echo esc_attr( $field_settings['rows'] ); ?>"
                         cols="<?php echo esc_attr( $field_settings['cols'] ); ?>"
                     ><?php echo esc_textarea( $value ); ?></textarea>
-                    <span class="wpuf-wordlimit-message wpuf-help"></span>
 
                         <?php
                 }
                 ?>
-
+                <span class="wpuf-wordlimit-message"></span>
                  <?php
                     $this->help_text( $field_settings );
                     if ( isset( $field_settings['content_restriction'] ) && $field_settings['content_restriction'] ) {

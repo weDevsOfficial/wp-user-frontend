@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 3.6.0
+Version: 3.6.1
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '3.6.0' );
+define( 'WPUF_VERSION', '3.6.1' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -692,7 +692,7 @@ final class WP_User_Frontend {
     public function plugin_scripts() {
         wp_enqueue_style( 'wpuf-css' );
         wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
-        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css', [], '11.4.30' );
+        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css', [], '11.4.19' );
 
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'jquery-ui-datepicker' );
@@ -703,21 +703,30 @@ final class WP_User_Frontend {
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ] );
         wp_enqueue_script( 'wpuf-form' );
         wp_enqueue_script( 'wpuf-subscriptions' );
-        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', [], '11.4.30' );
+        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.js', [], '11.4.19' );
 
         wp_localize_script(
             'wpuf-form', 'wpuf_frontend', apply_filters(
                 'wpuf_frontend_js_data', [
-                    'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-                    'error_message' => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
-                    'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
-                    'cancelSubMsg'  => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
-                    'delete_it'     => __( 'Yes', 'wp-user-frontend' ),
-                    'cancel_it'     => __( 'No', 'wp-user-frontend' ),
-                    'char_max'      => __( 'Character limit reached', 'wp-user-frontend' ),
-                    'char_min'      => __( 'Minimum character required ', 'wp-user-frontend' ),
-                    'word_max'      => __( 'Word limit reached', 'wp-user-frontend' ),
-                    'word_min'      => __( 'Minimum word required ', 'wp-user-frontend' ),
+                    'ajaxurl'          => admin_url( 'admin-ajax.php' ),
+                    'error_message'    => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
+                    'nonce'            => wp_create_nonce( 'wpuf_nonce' ),
+                    'cancelSubMsg'     => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
+                    'delete_it'        => __( 'Yes', 'wp-user-frontend' ),
+                    'cancel_it'        => __( 'No', 'wp-user-frontend' ),
+                    'word_max_title'   => __( 'Maximum word limit reached. Please shorten your texts.', 'wp-user-frontend' ),
+                    'word_max_details' => __( 'This field supports a maximum of %number% words, and the limit is reached. Remove a few words to reach the acceptable limit of the field.',
+                                              'wp-user-frontend' ),
+                    'word_min_title'   => __( 'Minimum word required.', 'wp-user-frontend' ),
+                    'word_min_details' => __( 'This field requires minimum %number% words. Please add some more text.',
+                                              'wp-user-frontend' ),
+                    'char_max_title'   => __( 'Maximum character limit reached. Please shorten your texts.',
+                                              'wp-user-frontend' ),
+                    'char_max_details' => __( 'This field supports a maximum of %number% characters, and the limit is reached. Remove a few characters to reach the acceptable limit of the field.',
+                                              'wp-user-frontend' ),
+                    'char_min_title'   => __( 'Minimum character required.', 'wp-user-frontend' ),
+                    'char_min_details' => __( 'This field requires minimum %number% characters. Please add some more character.',
+                                              'wp-user-frontend' ),
                 ]
             )
         );

@@ -8,7 +8,7 @@ class WPUF_Encryption_Helper {
     /**
      * Get the Advanced Encryption Standard we are using
      *
-     * @since WPUF
+     * @since 3.5.29
      *
      * @return string
      */
@@ -21,7 +21,7 @@ class WPUF_Encryption_Helper {
      * Returns 24 If PHP version is 7.2 or above.
      * For PHP version below 7.2 it will send the length as per the encryption method.
      *
-     * @since WPUF
+     * @since 3.5.29
      *
      * @return int|bool
      */
@@ -32,7 +32,7 @@ class WPUF_Encryption_Helper {
     /**
      * Get the encryption key length. Defaults to 32
      *
-     * @since WPUF
+     * @since 3.5.29
      *
      * @return int
      */
@@ -43,7 +43,7 @@ class WPUF_Encryption_Helper {
     /**
      * Get the base64 encoded auth keys
      *
-     * @since WPUF
+     * @since 3.5.29
      *
      * @return array
      * @throws Exception

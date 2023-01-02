@@ -1,3 +1,6 @@
+h2.swal2-title {
+  line-height: 1.2em;
+}
 .wpuf-admin fieldset {
   border: 1px solid #E3E3E3;
   margin: 20px 0 0px 0;
@@ -676,6 +679,7 @@ tr.pro-preview-html th {
 .pro-field-overlay:hover {
   display: block;
 }
+.wpuf-subscription-pack-settings nav .tab-current a.wpuf-button.button-upgrade-to-pro,
 a.wpuf-button.button-upgrade-to-pro {
   padding: 10px 15px;
   background: #ff9000;
@@ -683,6 +687,7 @@ a.wpuf-button.button-upgrade-to-pro {
   min-height: auto;
   border-radius: 5px;
   text-decoration: none;
+  border: none;
 }
 .pro-field-overlay a.wpuf-button.button-upgrade-to-pro {
   position: absolute;
@@ -691,6 +696,7 @@ a.wpuf-button.button-upgrade-to-pro {
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+.wpuf-subscription-pack-settings nav .tab-current a.wpuf-button.button-upgrade-to-pro:hover,
 a.wpuf-button.button-upgrade-to-pro:hover {
   background: #d07805;
 }
@@ -729,6 +735,7 @@ img.user-listing.active {
   /* Safari 6.0 - 9.0 */
   filter: grayscale(0%) opacity(1) drop-shadow(8px 8px 5px #ccc);
 }
+.wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip,
 .wpuf-pro-field-tooltip {
   background: #000;
   width: max-content;
@@ -752,26 +759,32 @@ img.user-listing.active {
 h3.tooltip-header {
   color: #fff;
 }
+.wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip ul li span.tooltip-check svg path,
 .wpuf-pro-field-tooltip ul li span.tooltip-check svg path {
   fill: #139F84;
 }
+.wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip ul,
 .wpuf-pro-field-tooltip ul {
   margin-bottom: 30px;
 }
+.wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip ul li,
 .wpuf-pro-field-tooltip ul li {
   font-size: 1.2em;
   line-height: 1.5em;
   font-weight: 400;
+  margin-bottom: 6px;
 }
 span.tooltip-check {
   margin-right: 10px;
 }
+.wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip .pro-link,
 .wpuf-pro-field-tooltip .pro-link {
   display: flex;
   -webkit-justify-content: center;
   justify-content: center;
   margin-left: 25px;
 }
+.wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip i,
 .wpuf-pro-field-tooltip i {
   position: absolute;
   top: 100%;
@@ -781,6 +794,7 @@ span.tooltip-check {
   height: 12px;
   overflow: hidden;
 }
+.wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip i::after,
 .wpuf-pro-field-tooltip i::after {
   content: '';
   position: absolute;
@@ -791,6 +805,12 @@ span.tooltip-check {
   transform: translate(-50%, -50%) rotate(45deg);
   background-color: #000;
 }
+tr.pro-preview.wpuf-subscription-recurring {
+  position: relative;
+}
+tr.pro-preview.wpuf-subscription-recurring td {
+  position: initial;
+}
 tr.pro-preview span.pro-icon,
 tr span.pro-icon-title {
   position: relative;
@@ -799,7 +819,7 @@ tr span.pro-icon-title {
 a span.pro-icon-title {
   position: relative;
 }
-a span.pro-icon-title wpuf-pro-field-tooltip {
+a span.pro-icon-title .wpuf-pro-field-tooltip {
   left: 185px;
 }
 span.pro-icon-title:hover .wpuf-pro-field-tooltip {
@@ -840,6 +860,11 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
   display: none;
   position: absolute;
   right: 5px;
+}
+@media only screen and (max-width: 1399px) {
+  a.wpuf-button.button-upgrade-to-pro {
+    padding: 10px;
+  }
 }
 .wpuf-help-tabbed {
   display: flex;

@@ -489,7 +489,7 @@ class WPUF_Admin_Subscription {
                                 </th>
                                 <td>
                                     <label>
-                                        <input disabled type="checkbox" name="post_expiration_settings[enable_mail_after_expired]" value="on" <?php echo esc_attr( $is_enable_mail_after_expired ); ?> />
+                                        <input type="checkbox" name="post_expiration_settings[enable_mail_after_expired]" value="on" <?php echo esc_attr( $is_enable_mail_after_expired ); ?> />
                                         <?php esc_html_e( 'Send Expiration Email to Post Author', 'wp-user-frontend' ); ?>
                                     </label>
 

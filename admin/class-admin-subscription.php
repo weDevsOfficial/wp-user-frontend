@@ -489,7 +489,7 @@ class WPUF_Admin_Subscription {
                                 </th>
                                 <td>
                                     <label>
-                                        <input type="checkbox" name="post_expiration_settings[enable_mail_after_expired]" value="on" <?php echo esc_attr( $is_enable_mail_after_expired ); ?> />
+                                        <input disabled type="checkbox" name="post_expiration_settings[enable_mail_after_expired]" value="on" <?php echo esc_attr( $is_enable_mail_after_expired ); ?> />
                                         <?php esc_html_e( 'Send Expiration Email to Post Author', 'wp-user-frontend' ); ?>
                                     </label>
 
@@ -668,7 +668,7 @@ class WPUF_Admin_Subscription {
                             <?php if ( ! empty( $user_sub['total_feature_item'] ) ) { ?>
                             <tr>
                                 <th><label><?php esc_html_e( 'Number of featured item', 'wp-user-frontend' ); ?></label></th>
-                                <td><input type="text" value="<?php echo esc_attr( $user_sub['total_feature_item'] ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
+                                <td><?php echo esc_attr( $user_sub['total_feature_item'] ); ?></td>
                             </tr>
                             <?php } ?>
                             <?php

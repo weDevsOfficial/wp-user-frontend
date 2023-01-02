@@ -28,6 +28,26 @@
             //this.setTimeExpiration('select#wpuf-expiration_time_type');
             $('.wpuf-metabox-post_expiration').on('change','select#wpuf-expiration_time_type',this.setTimeExpiration);
 
+            // warn the user before updating the package
+            $( '#post' ).submit( function( event ) {
+                event.preventDefault();
+                if ( document.activeElement.value === 'Update' ) {
+                    Swal.fire({
+                        title: 'Are you sure to update the Subscription?',
+                        text: 'The changes you made for this subscription will be applied only to the new subscribers.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Update'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $( this ).unbind('submit').submit()
+                        }
+                    })
+                }
+            } );
+
 		},
 
         packAlert : function () {

@@ -33,7 +33,7 @@
                 if ( document.activeElement.value === 'Update' ) {
                     event.preventDefault();
                     Swal.fire({
-                        title: 'Are you sure to update the Subscription?',
+                        title: 'Are you sure to update the subscription?',
                         text: 'The changes you made will be applied only to the new subscriptions and pending recurring payments.',
                         icon: 'warning',
                         showCancelButton: true,

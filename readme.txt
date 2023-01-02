@@ -5,7 +5,7 @@ Tags: Forms, registration, profile-builder, login, membership, frontend-post
 Requires at least: 4.0
 Tested up to: 6.1.1
 Requires PHP: 5.6
-Stable tag: 3.6.0
+Stable tag: 3.6.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -260,6 +260,17 @@ First you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 == Changelog ==
+= v3.6.1 (2 Jan, 2023) =
+
+* Enhancement - Add responsiveness to the upgrade-to-pro popup widget
+* Enhancement - Update Appsero SDK to the latest version
+* Enhancement - warning before updating a subscription package
+
+* Fix - Subscription shouldn't be editable from user's profile
+* Fix - Text field append '0' when character exceeds content restriction limit
+* Fix - Fields within column doesn't behave as expected in forms
+* Fix - Change sweetalert2 to v11.4.19 to remove anti-war message
+
 = v3.6.0 (23 Nov, 2022) =
 
 * Enhancement - Admin dashboard news and update meta-box added

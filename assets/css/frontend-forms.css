@@ -351,7 +351,8 @@ body ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap.format-first-middle-last
   float: right;
   width: 37%;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help {
+body ul.wpuf-form li .wpuf-fields .wpuf-help,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message {
   color: #666;
   margin: 2px 0 5px 0;
   font-size: 12px;
@@ -359,14 +360,18 @@ body ul.wpuf-form li .wpuf-fields .wpuf-help {
   font-family: sans-serif;
   display: block;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help .text-danger {
+body ul.wpuf-form li .wpuf-fields .wpuf-help .text-danger,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message .text-danger {
   color: red;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help .text-success {
+body ul.wpuf-form li .wpuf-fields .wpuf-help .text-success,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message .text-success {
   color: green;
 }
 body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart,
-body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart-mgs {
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message #url-alart,
+body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart-mgs,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message #url-alart-mgs {
   font-style: normal;
   font-size: 16px;
 }
@@ -1663,6 +1668,9 @@ body .weforms-quiz-feedback .wrong-answer .wpuf-fields label.checked {
 }
 body ul.wpuf-form .wpuf-el {
   position: relative;
+}
+body form.wpuf-form-add ul.wpuf-form .wpuf-el {
+  display: flex;
 }
 body ul.wpuf-form .weforms-frontend-field-points {
   position: absolute;

@@ -1,6 +1,40 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.1',
+        'released' => '2023-01-02',
+        'changes'  => [
+            [
+                'title' => __( 'Add responsiveness to the upgrade-to-pro popup widget', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Update Appsero SDK to the latest version', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'warning before updating a subscription package', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Subscription shouldn\'t be editable from user\'s profile', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Text field append \'0\' when character exceeds content restriction limit', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Fields within column doesn\'t behave as expected in forms', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Change sweetalert2 to v11.4.19 to remove anti-war message', 'wp-user-frontend' ),
+                'type'  => 'Update',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.6.0',
         'released' => '2022-11-23',
         'changes'  => [

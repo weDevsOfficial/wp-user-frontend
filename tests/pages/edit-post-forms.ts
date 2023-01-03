@@ -38,8 +38,6 @@ export class EditPostForms {
             //Required Field
             await this.page.click(SelectorsPage.editPostForm.editPost_PostTitle_InputHelpText);
             console.log("5.0: Post Title > Input Help Text");
-
-            //Button Label
             
 
             

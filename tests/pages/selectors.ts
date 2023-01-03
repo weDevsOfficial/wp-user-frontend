@@ -237,7 +237,8 @@ export const SelectorsPage = {
             //Start
             //clickRegistraionAddForm: '//a[@id="new-wpuf-profile-form" and contains(text(), "Add Form")]',
             clickRegistraionAddForm: '#new-wpuf-profile-form',
-            hoverBlankForm: '.blank-form',
+            //hoverBlankForm: '.blank-form',
+            hoverBlankForm: '(//div[@class="form-create-overlay"])[1]/..',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
     
             //Enter_NAME

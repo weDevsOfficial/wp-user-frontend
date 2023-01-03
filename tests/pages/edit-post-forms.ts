@@ -28,12 +28,19 @@ export class EditPostForms {
         //Edit > Post Title
         await this.page.hover(SelectorsPage.editPostForm.editPost_PostTitle_Hover);
         await this.page.click(SelectorsPage.editPostForm.editPost_PostTitle_EditButton);
-            //Post Title - Input Label
-            await this.page.fill(SelectorsPage.editPostForm.editPost_PostTitle_InputLabel, "Post Title - Test001");
+            //Input Label
+            await this.page.fill(SelectorsPage.editPostForm.editPost_PostTitle_InputLabel, "Post Label - Test001");
             console.log("5.0: Post Title > Input Label");
-            //Post Title - Input Help Text
-            await this.page.fill(SelectorsPage.editPostForm.editPost_PostTitle_InputHelpText, "Post Title - Test001");
+            //Input Help Text
+            await this.page.fill(SelectorsPage.editPostForm.editPost_PostTitle_InputHelpText, "Post Help Text - Test001");
             console.log("5.0: Post Title > Input Help Text");
+            
+            //Required Field
+            await this.page.click(SelectorsPage.editPostForm.editPost_PostTitle_InputHelpText);
+            console.log("5.0: Post Title > Input Help Text");
+
+            //Button Label
+            
 
             
         //Advanced Settings
@@ -45,10 +52,24 @@ export class EditPostForms {
     //5.2: Edit_Taxonomies
     async edit_PostBlankForm_Taxonomies() {
         
+    }
+
+    //5.3: Edit_Taxonomies
+    async edit_PostBlankForm_Custom_Fields() {
+        
+        
+    }
+
+    //5.4: Edit_Taxonomies
+    async edit_PostBlankForm_Others() {
+        
         
     }
 
 
+    async FieldOptionFunction() {
+
+    }
 
 
 }

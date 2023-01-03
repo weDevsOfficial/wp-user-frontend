@@ -24,6 +24,7 @@ export class RegistrationForms {
         //Start
         console.log("4.0: START > Create New REGISTRATION Form");   
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm);
+        await expect(this.page.isVisible('//header[@class="modal-header"]//a[1]')).toBeTruthy();
         
 
         //TODO: Insert forced wait

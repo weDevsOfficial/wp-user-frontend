@@ -271,9 +271,27 @@ export const SelectorsPage = {
         postFormListItem1:'(//a[@class="row-title"])[1]',
 
         //Edit Post Fields
+        //Post Title
         editPost_PostTitle_Hover: '(//li[contains(@class,"field-items wpuf-el")])[1]', 
         editPost_PostTitle_EditButton: '(//i[@class="fa fa-pencil"])[1]',
-            //Post Title
+        //Post Content
+        editPost_PostContent_Hover: '(//li[contains(@class,"field-items wpuf-el")])[2]', 
+        editPost_PostContent_EditButton: '(//i[@class="fa fa-pencil"])[2]',
+        //Post Excerpt
+        editPost_PostExcerpt_Hover: '(//li[contains(@class,"field-items wpuf-el")])[3]', 
+        editPost_PostExcerpt_EditButton: '(//i[@class="fa fa-pencil"])[3]',
+        //Featured Image
+        editPost_FeaturedImage_Hover: '(//li[contains(@class,"field-items wpuf-el")])[4]', 
+        editPost_FeaturedImage_EditButton: '(//i[@class="fa fa-pencil"])[4]',
+
+
+
+        /**
+         * 
+         *
+         * Function1 - Common for All
+         *  
+         */
             editPost_PostTitle_InputLabel: '(//i[contains(@class,"fa fa-question-circle")]/following-sibling::input)[1]',
             editPost_PostTitle_InputHelpText: '(//i[contains(@class,"fa fa-question-circle")]/following-sibling::input)[2]',
     

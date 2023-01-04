@@ -30,8 +30,8 @@ export class RegistrationForms {
         //TODO: Insert forced wait
         //Click_Blank_Form
         //Templates 
-        await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
-        await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
+        // await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
+        // await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
         await this.page.waitForSelector(SelectorsPage.createRegistrationForm.clickBlankForm);   
         await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm);
         //Enter_Name

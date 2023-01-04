@@ -22,18 +22,22 @@ export class RegistrationForms {
         //Create_New_Post_Form
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistrationFormMenuOption);
         //Start
-        console.log("4.0: START > Create New REGISTRATION Form");   
+        console.log("4.0: START > Create New REGISTRATION Form");                        
+        await expect(this.page.isVisible(SelectorsPage.createRegistrationForm.clickRegistraionAddForm)).toBeTruthy();
         await this.page.click(SelectorsPage.createRegistrationForm.clickRegistraionAddForm);
-        await expect(this.page.isVisible('//header[@class="modal-header"]//a[1]')).toBeTruthy();
-        
-
-        //TODO: Insert forced wait
+        await this.page.waitForLoadState('domcontentloaded');
+  
         //Click_Blank_Form
         //Templates 
-        // await this.page.waitForSelector(SelectorsPage.createRegistrationForm.hoverBlankForm);   
-        // await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
-        await this.page.waitForSelector(SelectorsPage.createRegistrationForm.clickBlankForm);   
-        await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm);
+        await expect(this.page.isVisible(SelectorsPage.createRegistrationForm.hoverBlankForm)).toBeTruthy();   
+        await this.page.hover(SelectorsPage.createRegistrationForm.hoverBlankForm);   
+        await expect(this.page.isVisible(SelectorsPage.createRegistrationForm.clickBlankForm)).toBeTruthy();   
+        await this.page.click(SelectorsPage.createRegistrationForm.clickBlankForm); 
+
+        //await this.page.waitForSelector('//a[contains(text(),"Form Editor")]');
+        await this.page.isVisible('//a[contains(text(),"Form Editor")]');
+
+
         //Enter_Name
         await this.page.waitForLoadState('domcontentloaded');
         await this.page.click(SelectorsPage.createRegistrationForm.editNewFormName); 

@@ -119,7 +119,7 @@ jobs:
         if: always() # We want this to always run, even if test fail prior to this step running
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: tests/playwright-report # This is where index.html will be output
           keep_files: true # Set this to true to make sure we don't wipe out the other content in GitHub Pages
           user_name: "github-actions[bot]" # This will be the username that gets stamped in the repo commit
@@ -130,12 +130,12 @@ jobs:
         run: |
           echo "url is https://$GITHUB_REPOSITORY_OWNER.github.io/${GITHUB_REPOSITORY#*/}"
 
-      - name: Convert E2E Report to Coverage Report
-        run : |
-          npm install playwright-e2e-coverage-report
-          wget https://raw.githubusercontent.com/MandarDevarshi/playwright-e2e-coverage-report/master/scripts/reportConverter.js	
-          chmod u+x reportConverter.js
-          node ./reportConverter.js
+      # - name: Convert E2E Report to Coverage Report
+      #   run : |
+      #     npm install playwright-e2e-coverage-report
+      #     wget https://raw.githubusercontent.com/MandarDevarshi/playwright-e2e-coverage-report/master/scripts/reportConverter.js	
+      #     chmod u+x reportConverter.js
+      #     node ./reportConverter.js
 
 
 

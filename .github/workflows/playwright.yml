@@ -130,6 +130,13 @@ jobs:
         run: |
           echo "url is https://$GITHUB_REPOSITORY_OWNER.github.io/${GITHUB_REPOSITORY#*/}"
 
+      - name: Convert E2E Report to Coverage Report
+        run : |
+          npm install playwright-e2e-coverage-report
+          wget https://raw.githubusercontent.com/MandarDevarshi/playwright-e2e-coverage-report/master/scripts/reportConverter.js	
+          chmod u+x reportConverter.js
+          node ./reportConverter.js
+
 
 
 

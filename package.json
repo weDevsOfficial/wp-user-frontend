@@ -18,7 +18,7 @@
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-less": "^1.4.0",
     "grunt-contrib-uglify": "^2.0.0",
-    "grunt-contrib-watch": "^1.0.0",
+    "grunt-contrib-watch": "^1.1.0",
     "grunt-notify": "^0.4.5",
     "grunt-phplint": "0.0.8",
     "grunt-ssh": "^0.12.9",

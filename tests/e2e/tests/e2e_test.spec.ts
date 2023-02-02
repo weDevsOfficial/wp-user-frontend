@@ -1,6 +1,7 @@
 require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
 import { BasicLoginPage } from '../pages/01_Basic/basicLogin';
+import { BasicLogoutPage } from '../pages/01_Basic/basicLogout';
 import { PostForms_Create } from '../pages/02_PostForms/postForms_Create';
 import { RegistrationForms_Create } from '../pages/03_RegistrationForms/registrationForms_Create';
 
@@ -48,6 +49,7 @@ test.describe('TEST :-->', () => {
      * @Test_004 : Admin is checking Plugin Status...
      * @Test_005 : Here, Admin is visiting WPUF Page
      * @Test_006 : Admin is changing WPUF Settings...
+     * @Test_007 : Admin is able to Log out succesfully...
      * 
      * 
      *  
@@ -87,10 +89,11 @@ test.describe('TEST :-->', () => {
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
 
+    test('007 Here, Admin is able to Log out succesfully', async ({page}) => {
+        const basicLogoutPage = new BasicLogoutPage(page);
 
-
-
-
+        await basicLogoutPage.logOut();
+    })
 
 
 
@@ -100,12 +103,12 @@ test.describe('TEST :-->', () => {
      * 
      * 
      * @Test_Scenario : [Post-Forms]
-     * @Test007 : Admin is creating Blank Form with > PostFields... [Mandatory]
-     * @Test008 : Admin is creating Blank Form with > PF + Taxonomies...
-     * @Test009 : Admin is creating Blank Form with > PF + CustomFields...
-     * @Test0010 : Admin is creating Blank Form with > PF + Others...
-     * @Test0011 : Admin is creating Blank Form with all Fields...
-     * @Test0012 : Admin is creating a Preset Post Form...
+     * @Test008 : Admin is creating Blank Form with > PostFields... [Mandatory]
+     * @Test009 : Admin is creating Blank Form with > PF + Taxonomies...
+     * @Test0010 : Admin is creating Blank Form with > PF + CustomFields...
+     * @Test0011 : Admin is creating Blank Form with > PF + Others...
+     * @Test0012 : Admin is creating Blank Form with all Fields...
+     * @Test0013 : Admin is creating a Preset Post Form...
      * 
      * 
      *  
@@ -266,9 +269,9 @@ test.describe('TEST :-->', () => {
      * 
      * 
      * @Test_Scenario : [Reg-Forms]
-     * @Test0013 : Admin is creating Blank Form with > PostFields... [Mandatory]
-     * @Test0014 : Admin is creating Blank Form with > PF + Taxonomies...
-     * @Test0015 : Admin is creating Blank Form with > PF + CustomFields...
+     * @Test0014 : Admin is creating Blank Form with > PostFields... [Mandatory]
+     * @Test0015 : Admin is creating Blank Form with > PF + Taxonomies...
+     * @Test0016 : Admin is creating Blank Form with > PF + CustomFields...
      * 
      * 
      *  

@@ -11,8 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "@playwright/test": "^1.28.0",
-    "@types/node": "^18.11.18"
+    "@playwright/test": "^1.28.0"
   },
   "dependencies": {
     "@wordpress/env": "^4.4.0",

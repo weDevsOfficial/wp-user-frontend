@@ -1,5 +1,3 @@
-# Automation-WPUF-Project1
-# WPUF_Project1
 # WP User FrontEnd E2E Tests (Playwright)
 
 Automated e2e tests for WPUF plugin for Lite & Pro Version.

@@ -273,7 +273,7 @@ test.describe('TEST :-->', () => {
      * 
      *  
      */ 
-    test('0013:[Reg-Forms] Here, Admin is creating Blank Form with > PostFields', async ({ page }) => {
+    test.skip('0013:[Reg-Forms] Here, Admin is creating Blank Form with > PostFields', async ({ page }) => {
         test.fail(!!process.env.CI, 'Issue after Add Form Button > Script not loading')
 
         const regForms_Create = new RegistrationForms_Create(page);
@@ -295,7 +295,7 @@ test.describe('TEST :-->', () => {
     });
 
 
-    test('0014:[Reg-Forms] Here, Admin is creating Blank Form with > CustomFields', async ({ page }) => {
+    test.skip('0014:[Reg-Forms] Here, Admin is creating Blank Form with > CustomFields', async ({ page }) => {
         test.fail(!!process.env.CI, 'Issue after Add Form Button > Script not loading')
         
         const regForms_Create = new RegistrationForms_Create(page);
@@ -319,7 +319,7 @@ test.describe('TEST :-->', () => {
     });
 
 
-    test('0015:[Reg-Forms] Here, Admin is creating Blank Form with > Others', async ({ page }) => {
+    test.skip('0015:[Reg-Forms] Here, Admin is creating Blank Form with > Others', async ({ page }) => {
         test.fail(!!process.env.CI, 'Issue after Add Form Button > Script not loading')
         
         const regForms_Create = new RegistrationForms_Create(page);

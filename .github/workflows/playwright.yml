@@ -1,7 +1,7 @@
 name: Playwright tests/e2e
 on:
   push:
-    branches: [ develop, automation/wpuf-e2ev3 ]
+    branches: [ develop, automation/wpuf-e2e-pw ]
   # pull_request:
   #   branches: [ develop ]
 jobs:

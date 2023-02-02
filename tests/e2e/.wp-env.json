@@ -6,9 +6,8 @@
     "WP_DEBUG_DISPLAY": "true",
 
     "plugins": [
-        "../"
-    ]
+        "../../",
+        "../../plugins/wpuf-pro"
+      ]
 
-
-
-}
+  }

@@ -27,13 +27,13 @@ jobs:
           node-version: '14.x'
       
 
-      # - name: Clone WPUF-pro
-      #   uses: actions/checkout@v2.5.0 # v2.3.4
-      #   with:
-      #     repository: weDevsOfficial/wpuf-pro
-      #     token: ${{ secrets.ACCESS_TOKEN }}
-      #     path: 'plugins/wpuf-pro'
-      #     ref: 'develop'
+      - name: Clone WPUF-pro
+        uses: actions/checkout@v2.5.0 # v2.3.4
+        with:
+          repository: weDevsOfficial/wpuf-pro
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: 'plugins/wpuf-pro'
+          ref: 'develop'
 
       - name: Composer install and build (WPUF-lite)
         run: |
@@ -47,20 +47,20 @@ jobs:
             grunt release
             
 
-      # - name: Composer install and build (WPUF-pro)
-      #   run: |
-      #       cd plugins/wpuf-pro
-      #       composer config allow-plugins.composer/installers true
-      #       composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-      #       composer update
-      #       composer install
-      #       composer dump-autoload -o
+      - name: Composer install and build (WPUF-pro)
+        run: |
+            cd plugins/wpuf-pro
+            composer config allow-plugins.composer/installers true
+            composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+            composer update
+            composer install
+            composer dump-autoload -o
             
-      # - name: Npm install and build (WPUF-pro)
-      #   run: |
-      #     cd plugins/wpuf-pro
-      #     npm i
-      #     grunt default
+      - name: Npm install and build (WPUF-pro)
+        run: |
+          cd plugins/wpuf-pro
+          npm i
+          grunt default
 
 
       - name: Install dependencies

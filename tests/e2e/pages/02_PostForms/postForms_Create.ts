@@ -1,0 +1,379 @@
+require('dotenv').config();
+
+import { expect, Page } from '@playwright/test';
+import { Selectors_PF_Create } from './selectors_PF_Create';
+
+
+//import { TestData } from '../tests/testdata';
+
+ 
+
+export class PostForms_Create {
+    readonly page: Page;
+
+    constructor(page: Page) {
+        this.page = page;
+    }
+
+
+
+    /**
+     * 
+     * 
+     * @BlankForm Admin creates a new Blank Post Form 
+     * @PresetForm Admin creates a new Preset Post Form
+     * 
+     * 
+     * 
+     */
+    //BlankForm
+    async create_BlankForm_PF(newPostName) {
+        //Visit Post Form Page
+        await this.page.goto('http://localhost:8889/wp-admin/admin.php?page=wpuf-post-forms');
+
+        //Create_New_Post_Form
+        await this.page.click(Selectors_PF_Create.create_BlankForm_PF.clickPostFormMenuOption);
+        //Start
+        await this.page.click(Selectors_PF_Create.create_BlankForm_PF.clickPostAddForm); 
+  
+        //Click_Blank_Form
+        //Templates 
+        await this.page.waitForSelector(Selectors_PF_Create.create_BlankForm_PF.hover_Blank_Form);   
+        await this.page.hover(Selectors_PF_Create.create_BlankForm_PF.hover_Blank_Form);   
+        await this.page.waitForSelector(Selectors_PF_Create.create_BlankForm_PF.click_Blank_Form);   
+        await this.page.click(Selectors_PF_Create.create_BlankForm_PF.click_Blank_Form);   
+
+        //Enter_Name
+        await this.page.click(Selectors_PF_Create.create_BlankForm_PF.editNewFormName); 
+        await this.page.fill(Selectors_PF_Create.create_BlankForm_PF.enterNewFormName, newPostName);   
+        await this.page.click(Selectors_PF_Create.create_BlankForm_PF.confirmNewNameTickButton);  
+    };
+
+
+    //PresetForm
+    async create_Preset_PF(newPostName) {
+        //Visit Post Form Page
+        await this.page.goto('http://localhost:8889/wp-admin/admin.php?page=wpuf-post-forms');
+
+        //Create_New_Post_Form
+        await this.page.click(Selectors_PF_Create.create_BlankForm_PF.clickPostFormMenuOption);
+        //Start
+        await this.page.click(Selectors_PF_Create.create_BlankForm_PF.clickPostAddForm); 
+
+        //Click_Blank_Form
+        //Templates 
+        //await this.page.waitForSelector(Selectors_PF_Create.create_Preset_PR.hover_Preset_Form);   
+        await this.page.hover(Selectors_PF_Create.create_Preset_PR.hover_Preset_Form);   
+        //await this.page.waitForSelector(Selectors_PF_Create.create_Preset_PR.click_Preset_Form);   
+        await this.page.click(Selectors_PF_Create.create_Preset_PR.click_Preset_Form);   
+
+        //Enter_Name
+        await this.page.click(Selectors_PF_Create.create_Preset_PR.editNewFormName); 
+        await this.page.fill(Selectors_PF_Create.create_BlankForm_PF.enterNewFormName, newPostName);   
+        await this.page.click(Selectors_PF_Create.create_BlankForm_PF.confirmNewNameTickButton); 
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 
+     * 
+     * @Action1 Admin adds Post Fields to Form
+     * @Action2 Admin adds Taxonomies to Form
+     * @Action3 Admin adds Custom Fields to Form
+     * @Action4 Admin adds Others to Form
+     * @Action5 Admin saves Form Creation
+     * 
+     * 
+     */
+/********************* PostFields *********************/
+    //PostFields
+    async add_PostFields_PF() {
+        //Post_Fields
+        await this.page.click(Selectors_PF_Create.add_PostFields_PF.postTitleBlock);
+        await this.page.click(Selectors_PF_Create.add_PostFields_PF.postContentBlock);
+        await this.page.click(Selectors_PF_Create.add_PostFields_PF.postExcerptBlock);
+        await this.page.click(Selectors_PF_Create.add_PostFields_PF.featuredImageBlock);
+
+        await this.page.waitForLoadState('domcontentloaded');
+    };
+
+    //Validate > PostFields
+    async validate_PostFields_PF() {
+        //Validate
+        //Post Title
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_PostFields_PF.val_PostTitle)).toBeTruthy();
+        //Post Description
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_PostFields_PF.val_PostContent)).toBeTruthy();
+        //Excerpt
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_PostFields_PF.val_Excerpt)).toBeTruthy();
+        //Featured Image
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_PostFields_PF.val_FeaturedImage)).toBeTruthy();
+        
+    };
+
+
+
+/********************* Taxonomies *********************/
+    //Taxonomies
+    async add_Taxonomies_PF() {
+        //Taxonomies
+        await this.page.click(Selectors_PF_Create.add_Taxonomies_PF.categoryBlock);
+        await this.page.click(Selectors_PF_Create.add_Taxonomies_PF.tagsBlock);
+
+        await this.page.waitForLoadState('domcontentloaded');
+    };
+
+    //Validate > Taxonomies
+    async validate_Taxonomies_PF() {
+        //Validate
+        //Category
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Taxonomies_PF.val_Category)).toBeTruthy();
+        //Tags
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Taxonomies_PF.val_Tags)).toBeTruthy();
+    };
+
+    async validate_Taxonomies_Preset_PF() {
+        //Validate
+        //Category
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Taxonomies_Preset_PF.val_Category)).toBeTruthy();
+        //Tags
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Taxonomies_Preset_PF.val_Tags)).toBeTruthy();
+    };
+
+
+/********************* CustomFields *********************/
+    //CustomFields
+    async add_CustomFields_PF() {
+        //Custom_Fields
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsText);
+            if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose)) {
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose);
+            }         
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsTextarea);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsDropdown);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsMultiSelect);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsRadio);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsCheckBox);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsWebsiteUrl);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsEmailAddress);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsHiddenField);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsImageUpload);
+        //From_PRO
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsRepeatField);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsDateTime);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsTimeField);     
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsFileUpload);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsCountryList);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsNumericField);
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsPhoneField);   
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsAddressField);
+        
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsGoogleMaps);
+            if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk)) {
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk);
+            } 
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsStepStart);
+            if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose)) {
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose);
+            } 
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsEmbed);
+
+        await this.page.waitForLoadState('domcontentloaded');
+    };
+
+    //Validate > CustomFields
+    async validate_CustomFields_PF() {
+        //Validate
+        //Text
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_Text)).toBeTruthy();
+        //Textarea
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_Textarea)).toBeTruthy();
+        //Dropdown
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_Dropdown)).toBeTruthy();
+        //MultiSelect
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_MultiSelect)).toBeTruthy();
+        //Radio
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_Radio)).toBeTruthy();
+        //CheckBox
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_CheckBox)).toBeTruthy();
+        //WebsiteUrl
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_WebsiteUrl)).toBeTruthy();
+        //EmailAddress
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_EmailAddress)).toBeTruthy();
+        //HiddenField
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_HiddenField)).toBeTruthy();
+        //ImageUpload
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_ImageUpload)).toBeTruthy();
+        
+        //RepeatField
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_RepeatField)).toBeTruthy();
+        //DateTime
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_DateTime)).toBeTruthy();
+        //TimeField
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_TimeField)).toBeTruthy();
+        //FileUpload
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_FileUpload)).toBeTruthy();
+        //CountryList
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_CountryList)).toBeTruthy();
+        //NumericField
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_NumericField)).toBeTruthy();
+        //PhoneField
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_PhoneField)).toBeTruthy();
+        //AddressField
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_AddressField)).toBeTruthy();
+        
+        //GoogleMaps        //TODO: Setup required
+            // if(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_GoogleMaps) == true){
+            //     await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_GoogleMaps)).toBeTruthy();
+            // }
+
+        //StepStart
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_StepStart)).toBeTruthy();
+        //Embed
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_Embed)).toBeTruthy();
+
+    
+    };
+
+
+/********************* Others *********************/
+    //Others
+    async add_Others_PF() {
+        //Others
+        await this.page.click(Selectors_PF_Create.add_Others_PF.othersColumns);
+        await this.page.click(Selectors_PF_Create.add_Others_PF.othersSectionBreak);
+        await this.page.click(Selectors_PF_Create.add_Others_PF.othersCustomHTML);
+        //From_PRO
+        //await this.page.click(Selectors_PF_Create.createPostForm.qrCode);            
+        await this.page.click(Selectors_PF_Create.add_Others_PF.othersReCaptcha);
+            if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk)) {
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk);
+            } 
+        await this.page.click(Selectors_PF_Create.add_Others_PF.othersShortCode);
+            if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose)) {
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose);
+            } 
+        await this.page.click(Selectors_PF_Create.add_Others_PF.othersActionHook);
+        await this.page.click(Selectors_PF_Create.add_Others_PF.othersTermsAndConditions);
+        await this.page.click(Selectors_PF_Create.add_Others_PF.othersRatings);
+        await this.page.click(Selectors_PF_Create.add_Others_PF.othersReallySimpleCaptcha);
+            if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk)) {
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk);
+            } 
+        await this.page.click(Selectors_PF_Create.add_Others_PF.othersMathCaptcha);
+        await this.page.waitForLoadState('domcontentloaded');
+
+    };
+
+    //Settings > MultiStep Check
+    async set_MultiStep_Settings_PF() {
+        await this.page.waitForLoadState('domcontentloaded');
+        //Add Multi-Step-Check
+        await this.page.click(Selectors_PF_Create.add_Others_PF.formEditorSettings);
+        await this.page.click(Selectors_PF_Create.add_Others_PF.checkMultiStepOption);
+        expect(await this.page.isChecked(Selectors_PF_Create.add_Others_PF.checkMultiStepOption)).toBeTruthy();
+
+        await this.page.waitForLoadState('domcontentloaded');
+    };
+
+
+    //Validate > Others
+    async validate_Others_PF() {
+        //Validate
+        //Columns
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Columns)).toBeTruthy();
+        //SectionBreak
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_SectionBreak)).toBeTruthy();
+        //CustomHTML
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_CustomHTML)).toBeTruthy();
+        
+        //ReCaptcha
+            //Not visible
+        //Shortcode
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Shortcode)).toBeTruthy();
+        //ActionHook
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_ActionHook)).toBeTruthy();
+        //TermsAndConditions
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_TermsAndConditions)).toBeTruthy();
+        //Ratings
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Ratings)).toBeTruthy();
+        //ReallySimpletCaptcha
+            //Not visible
+        //MathCaptcha
+        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_MathCaptcha)).toBeTruthy();
+        
+    };
+
+
+
+
+/********************* SaveForm *********************/
+    //SaveForm
+    async save_Form_PF(validateNewPostName_PF) {
+        //Finish
+        await this.page.waitForLoadState('domcontentloaded');
+            const checkNewFormName_PF = await this.page.innerText(Selectors_PF_Create.save_Form_PF.formName_ReCheck);
+            await expect(checkNewFormName_PF).toContain(validateNewPostName_PF);
+        expect(await this.page.isVisible(Selectors_PF_Create.save_Form_PF.saveFormButton)).toBeTruthy();
+        await this.page.click(Selectors_PF_Create.save_Form_PF.saveFormButton);
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 
+     * 
+     * @Here Admin checks if Created form is displayed in Post Form Table/Page/List
+     * 
+     * 
+     */
+
+    async validate_BlankForm_Created_PF(validateNewPostName_PF) {
+        //Return HOME
+        await this.page.click(Selectors_PF_Create.create_BlankForm_PF.clickPostFormMenuOption);
+        await this.page.waitForLoadState('domcontentloaded');
+        
+        //ASSERTION > Check if-VALID
+        const checkNew_BlankForm_CreatedValid_PF = await this.page.isVisible(Selectors_PF_Create.navigate_PF_Page.checkAddButton_PF);
+        if (checkNew_BlankForm_CreatedValid_PF == true) {  
+            const checkNewFormCreated_PF = await this.page.innerText(Selectors_PF_Create.navigate_PF_Page.postFormsPageFormTitleCheck_PF);
+            await expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
+            console.log(checkNewFormCreated_PF);
+            console.log(validateNewPostName_PF);
+        }
+    };
+
+
+
+
+
+
+}

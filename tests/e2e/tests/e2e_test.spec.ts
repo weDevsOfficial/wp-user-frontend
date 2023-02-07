@@ -92,8 +92,8 @@ test.describe('TEST :-->', () => {
     test('007 Here, Admin is able to Log out succesfully', async ({page}) => {
         const basicLogoutPage = new BasicLogoutPage(page);
         const basicLogin = new BasicLoginPage(page);
-        
-        await basicLogin.validateBasicLogin();
+
+        await basicLogin.basiclogin(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         await basicLogoutPage.logOut();
     })
 

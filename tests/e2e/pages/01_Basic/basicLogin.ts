@@ -59,6 +59,7 @@ export class BasicLoginPage {
         //Store Cookie State
         await this.page.context().storageState({ path: 'state.json' });
         
+        //Redirection to WPUF Home Page
         await this.pluginVisit();
     };
 

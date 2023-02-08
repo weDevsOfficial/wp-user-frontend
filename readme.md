@@ -1,11 +1,11 @@
 # WP User Frontend - Registration, User Profile, Membership, Content Restriction, User Directory, and Frontend Post Submission Plugin #
 **Contributors:** [tareq1988](https://profiles.wordpress.org/tareq1988), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu), [wedevs](https://profiles.wordpress.org/wedevs)  
 **Donate link:** https://tareq.co/donate/  
-**Tags:** Forms, registration, profile-builder, login, membership, frontend-post  
+**Tags:** frontend post, content restriction, registration, user profile, membership, login, forms, user directory, profile builder  
 **Requires at least:** 4.0  
 **Tested up to:** 6.1.1  
+**Stable tag:** 3.6.2  
 **Requires PHP:** 5.6  
-**Stable tag:** 3.6.1  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -126,32 +126,32 @@ Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the FREE & P
 
 <strong>WP User Frontend PRO – Premium Features</strong>
 
-* 20+ Modules [BuddyPress, Paid Memberships Pro, Social Login, User Directory, User Activity, Stripe, MailChimp, Private Messaging, HTML Email Templates & more]
-* Content restriction: Restrict or lock your exclusive content or pages or just a specific part of a content, based on registration, user roles, or subscriptions.
-* Menu restriction: Lock or hide your website's menu links for certain users based on user roles, registration, or subscriptions.
-* Post expiration facility: Automatically take down published posts on your sites after a given time based on subscription packs or specific forms.
-* Conditional logic: Use conditional logic in your forms to show or hide fields, sections, and pages based on user selections.
-* Profile form builder: Build your own custom profile form with as many fields you need.
-* 20+ custom fields: Utilize fields like Text, Text Area, Dropdown, Multi Select, Hidden, Repeat, Phone, Time, Google Maps, and a lot more to customize your forms according to your requirements.
-* Custom taxonomy support: Use custom taxonomies for WooCommerce products. Use them as drop-down, multi-select, or check-box lists.
-* Post update notification: Get notified through email when an author updates a new post. Make the notification email dynamic using shortcodes.
-* Multistep forms: Break down a form in multi steps easily from its settings.
-* Payment invoice: For every successful transaction, an invoice is generated and emailed to the user. You can customize several fields of the invoice.
-* Coupons: Create and manage coupons for your Subscription Packs.
-* Personalized forms: Create different registration and profile edit forms for different user roles.
-* User profiles in backend: The custom elements you create in Profile Forms are generated in the admin profile area too.
-* Taxonomy restriction: Restrict users to post on a taxonomy/category based on subscription packs.
-* Form layouts and form templates: Quickly create forms from pre-defined templates. Drag-and-drop fields to customize it further. Vendor registration templates are available for Dokan, WC Marketplace, and WC Vendors.
-* WooCommerce support: Create a frontend interface to post and manage products of your WooCommerce powered site.
-* Registration form builder: Use templates or build with your own set of registration elements to register users on your site.
-* Assign new roles to forms: Create different registration forms for different user roles. New users will be assigned the role according to the form they used.
-* Captcha support: Prevent bots and spam attacks using Google reCAPTCHA or Really Simple CAPTCHA.
-* Update user profile information from frontend: No need to go to the backend to update your profile, do it from frontend.
-* Files & attachments upload: Let users upload files and attachments or embed playable audio & video files using Post Forms.
-* Avatar upload: Let users upload profile pictures. It supports Gravatar and locally uploaded avatars work side by side.
-* Frontend Customizer: Allows admins to customize colors and labels for some important frontend elements and features of WPUF.
-* More email notification options: Configure email notifications for the important events.
-* Tax in payments: Apply custom country and state-wise tax rates to: Pay Per Post Forms and
+* **20+ Modules** [BuddyPress, Paid Memberships Pro, Social Login, User Directory, User Activity, Stripe, MailChimp, Private Messaging, HTML Email Templates & more]
+* **Content restriction:** Restrict or lock your exclusive content or pages or just a specific part of a content, based on registration, user roles, or subscriptions.
+* **Menu restriction:** Lock or hide your website's menu links for certain users based on user roles, registration, or subscriptions.
+* **Post expiration facility:** Automatically take down published posts on your sites after a given time based on subscription packs or specific forms.
+* **Conditional logic:** Use conditional logic in your forms to show or hide fields, sections, and pages based on user selections.
+* **Profile form builder:** Build your own custom profile form with as many fields you need.
+* **20+ custom fields:** Utilize fields like Text, Text Area, Dropdown, Multi Select, Hidden, Repeat, Phone, Time, Google Maps, and a lot more to customize your forms according to your requirements.
+* **Custom taxonomy support:** Use custom taxonomies for WooCommerce products. Use them as drop-down, multi-select, or check-box lists.
+* **Post update notification:** Get notified through email when an author updates a new post. Make the notification email dynamic using shortcodes.
+* **Multistep forms:** Break down a form in multi steps easily from its settings.
+* **Payment invoice:** For every successful transaction, an invoice is generated and emailed to the user. You can customize several fields of the invoice.
+* **Coupons:** Create and manage coupons for your Subscription Packs.
+* **Personalized forms:** Create different registration and profile edit forms for different user roles.
+* **User profiles in backend:** The custom elements you create in Profile Forms are generated in the admin profile area too.
+* **Taxonomy restriction:** Restrict users to post on a taxonomy/category based on subscription packs.
+* **Form layouts and form templates:** Quickly create forms from pre-defined templates. Drag-and-drop fields to customize it further. Vendor registration templates are available for Dokan, WC Marketplace, and WC Vendors.
+* **WooCommerce support:** Create a frontend interface to post and manage products of your WooCommerce powered site.
+* **Registration form builder:** Use templates or build with your own set of registration elements to register users on your site.
+* **Assign new roles to forms:** Create different registration forms for different user roles. New users will be assigned the role according to the form they used.
+* **CAPTCHA support:** Prevent bots and spam attacks using Google reCAPTCHA or Really Simple CAPTCHA.
+* **Update user profile information from frontend:** No need to go to the backend to update your profile, do it from frontend.
+* **Files & attachments upload:** Let users upload files and attachments or embed playable audio & video files using Post Forms.
+* **Avatar upload:** Let users upload profile pictures. It supports Gravatar and locally uploaded avatars work side by side.
+* **Frontend Customizer:** Allows admins to customize colors and labels for some important frontend elements and features of WPUF.
+* **More email notification options:** Configure email notifications for the important events.
+* **Tax in payments:** Apply custom country and state-wise tax rates to: Pay Per Post Forms and
 Subscription Packs.
 
 <strong>Premium Modules</strong>
@@ -213,6 +213,39 @@ After having installed the plugin:
 ### Video ###
 [youtube https://www.youtube.com/watch?v=rzxdIN8ZMYc]
 
+## Frequently Asked Questions ##
+
+### Can I create new posts from frontend ###
+
+Yes
+
+### Can I Edit my posts from frontend ###
+
+Yes
+
+### Can I delete my posts from frontend ###
+
+Yes
+
+### Can I upload photo/image/video ###
+
+Yes
+
+### I am having problem with uploading files ###
+
+Please check if you've specified the max upload size on setting
+
+### Why "Edit Post" page shows "invalid post id"? ###
+
+This page is for the purpose of editing posts. You shouldn't access this page directly.
+First you need to go to the dashboard, then when you click "edit", you'll be
+redirected to the edit page with that post id. Then you'll see the edit post form.
+
+###  ###
+
+
+
+
 ## Screenshots ##
 
 1. Create Forms with Powerful Builders
@@ -234,32 +267,11 @@ After having installed the plugin:
 17. Login, Restriction, Frontend Security
 18. Set Payment Related Options
 
-## Frequently Asked Questions ##
-
-### Can I create new posts from frontend ###
-
-Yes
-
-### Can I Edit my posts from frontend ###
-
-Yes
-
-### Can I delete my posts from frontend ###
-
-Yes
-
-### Can I upload photo/image/video ###
-Yes
-
-### I am having problem with uploading files ###
-Please check if you've specified the max upload size on setting
-
-### Why "Edit Post" page shows "invalid post id"? ###
-This page is for the purpose of editing posts. You shouldn't access this page directly.
-First you need to go to the dashboard, then when you click "edit", you'll be
-redirected to the edit page with that post id. Then you'll see the edit post form.
-
 ## Changelog ##
+### v3.6.2 (8 Feb, 2023) ###
+
+* Fix - Post submission for the Dokan Vendors
+
 ### v3.6.1 (2 Jan, 2023) ###
 
 * Enhancement - Add responsiveness to the upgrade-to-pro popup widget

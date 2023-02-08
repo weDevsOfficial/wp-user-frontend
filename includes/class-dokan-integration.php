@@ -32,7 +32,7 @@ if ( ! class_exists( 'WPUF_Dokan_Integration' ) ) {
             if ( $access === 'on' ) {
                 $urls['posts'] = [
                     'title' => __( 'Posts', 'wp-user-frontend' ),
-                    'icon'  => '<i class="fa fa-wordpress"></i>',
+                    'icon'  => '<i class="fab fa-wordpress"></i>',
                     'url'   => dokan_get_navigation_url( 'posts' ),
                     'pos'   => 56,
                 ];
@@ -85,7 +85,7 @@ if ( ! class_exists( 'WPUF_Dokan_Integration' ) ) {
                 'name'    => 'allow_wpuf_post',
                 'label'   => __( 'Allow Post', 'wp-user-frontend' ),
                 'desc'    => __( 'Allow Vendors to submit post from dashboard area', 'wp-user-frontend' ),
-                'type'    => 'checkbox',
+                'type'    => 'switcher',
                 'default' => 'off',
             ];
 

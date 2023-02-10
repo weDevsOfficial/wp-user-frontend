@@ -665,7 +665,7 @@ final class WP_User_Frontend {
                    || ( isset( $post->ID ) && ( $pay_page == $post->ID ) )
                    || isset( $_GET['wpuf_preview'] )
                    || class_exists( '\Elementor\Plugin' )
-                   || ( dokan_is_seller_dashboard() && isset( $wp->query_vars['posts'] ) ) ) {
+                   || ( class_exists( 'WeDevs_Dokan' ) && dokan_is_seller_dashboard() && ! empty( $wp->query_vars['posts'] ) ) ) {
             $this->plugin_scripts();
         }
     }

@@ -1,6 +1,20 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.3',
+        'released' => '2023-02-13',
+        'changes'  => [
+            [
+                'title' => __( 'Error if Dokan not installed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Style conflict with LearnPress', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.6.2',
         'released' => '2023-02-08',
         'changes'  => [

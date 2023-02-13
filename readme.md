@@ -4,7 +4,7 @@
 **Tags:** frontend post, content restriction, registration, user profile, membership, login, forms, user directory, profile builder  
 **Requires at least:** 4.0  
 **Tested up to:** 6.1.1  
-**Stable tag:** 3.6.2  
+**Stable tag:** 3.6.3  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -268,6 +268,11 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 ## Changelog ##
+### v3.6.3 (13 Feb, 2023) ###
+
+* Fix - Error if Dokan not installed
+* Fix - Style conflict with LearnPress
+
 ### v3.6.2 (8 Feb, 2023) ###
 
 * Fix - Post submission for the Dokan Vendors
@@ -295,7 +300,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 * Update - sweetalert2 version
 
-v3.5.29 (15 Sep, 2022) =
+### v3.5.29 (15 Sep, 2022) ###
 
 * Enhancement - Short-code encryption updated for registration page
 

@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 3.6.1
+Version: 3.6.3
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '3.6.1' );
+define( 'WPUF_VERSION', '3.6.3' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -649,9 +649,23 @@ final class WP_User_Frontend {
 
         wp_register_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', [ 'jquery' ], false, true );
 
+        global $wp;
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {
             $this->plugin_scripts();
-        } elseif ( wpuf_has_shortcode( 'wpuf-login' ) || wpuf_has_shortcode( 'wpuf-registration' ) || wpuf_has_shortcode( 'wpuf-meta' ) || wpuf_has_shortcode( 'wpuf_form' ) || wpuf_has_shortcode( 'wpuf_edit' ) || wpuf_has_shortcode( 'wpuf_profile' ) || wpuf_has_shortcode( 'wpuf_dashboard' ) || wpuf_has_shortcode( 'weforms' ) || wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_sub_pack' ) || ( isset( $post->ID ) && ( $pay_page == $post->ID ) ) || isset( $_GET['wpuf_preview'] ) || class_exists( '\Elementor\Plugin' ) ) {
+        } elseif ( wpuf_has_shortcode( 'wpuf-login' )
+                   || wpuf_has_shortcode( 'wpuf-registration' )
+                   || wpuf_has_shortcode( 'wpuf-meta' )
+                   || wpuf_has_shortcode( 'wpuf_form' )
+                   || wpuf_has_shortcode( 'wpuf_edit' )
+                   || wpuf_has_shortcode( 'wpuf_profile' )
+                   || wpuf_has_shortcode( 'wpuf_dashboard' )
+                   || wpuf_has_shortcode( 'weforms' )
+                   || wpuf_has_shortcode( 'wpuf_account' )
+                   || wpuf_has_shortcode( 'wpuf_sub_pack' )
+                   || ( isset( $post->ID ) && ( $pay_page == $post->ID ) )
+                   || isset( $_GET['wpuf_preview'] )
+                   || class_exists( '\Elementor\Plugin' )
+                   || ( class_exists( 'WeDevs_Dokan' ) && dokan_is_seller_dashboard() && ! empty( $wp->query_vars['posts'] ) ) ) {
             $this->plugin_scripts();
         }
     }

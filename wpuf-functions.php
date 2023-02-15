@@ -1702,9 +1702,10 @@ function wpuf_get_form_fields( $form_id ) {
     $form_fields = [];
 
     foreach ( $fields as $key => $content ) {
-        $field = maybe_unserialize( $content->post_content );
+        $field = (array) maybe_unserialize( $content->post_content );
 
         $field['id'] = $content->ID;
+        $field['input_type'] = isset( $field['input_type'] ) ? $field['input_type'] : '';
 
         // Add inline property for radio and checkbox fields
         $inline_supported_fields = [ 'radio', 'checkbox' ];

@@ -1,3 +1,12 @@
+= v3.6.3 (13 Feb, 2023) =
+
+* Fix - Error if Dokan not installed
+* Fix - Style conflict with LearnPress
+
+= v3.6.2 (8 Feb, 2023) =
+
+* Fix - Post submission for the Dokan Vendors
+
 = v3.6.1 (2 Jan, 2023) =
 
 * Enhancement - Add responsiveness to the upgrade-to-pro popup widget

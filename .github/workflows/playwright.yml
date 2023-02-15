@@ -4,6 +4,11 @@ on:
     branches: [ develop, automation/wpuf-e2e-pw ]
   pull_request:
     branches: [ develop ]
+
+
+
+
+
 jobs:
   test:
     timeout-minutes: 60
@@ -18,8 +23,8 @@ jobs:
           php-version: "7.3"
             
       - uses: actions/checkout@v3
-        with:
-          ref: 'automation/wpuf-e2e-pw'
+        # with:
+        #   ref: 'automation/wpuf-e2e-pw'
 
      
       - uses: actions/setup-node@v3

@@ -13,22 +13,22 @@ jobs:
     steps:
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@v3
         with:
           php-version: "7.3"
             
-      - uses: actions/checkout@v2.5.0 # v2.3.4
+      - uses: actions/checkout@v3
         with:
           ref: 'automation/wpuf-e2e-pw'
 
      
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '14.x'
       
 
       - name: Clone WPUF-pro
-        uses: actions/checkout@v2.5.0 # v2.3.4
+        uses: actions/checkout@v3
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}

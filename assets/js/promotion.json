@@ -1,9 +1,9 @@
 {
-  "key": "wpdashboard-halloween-2022",
-  "start_date": "2022-10-27 8:00:00 EST",
-  "end_date": "2022-11-04 01:59:00 EST",
-  "title": "Deals too good to turn down.",
-  "content": "Get up to 40% OFF WP User Frontend this Halloween!",
-  "action_url": "https://wedevs.com/wp-user-frontend-pro/pricing/",
+  "key": "wedevs-10-anniversary",
+  "start_date": "2023-03-16 08:00:01 EST",
+  "end_date": "2023-03-31 07:00:00 EST",
+  "title": "A Decade in WordPress.",
+  "content": "Save up to 40% on the Pro plans and perform wonders with WP User Frontend!",
+  "action_url": "https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpdashboard&utm_medium=banner&utm_campaign=wedevs_10_anniversary",
   "action_title": "Get Now"
 }

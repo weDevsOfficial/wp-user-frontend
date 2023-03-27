@@ -341,7 +341,7 @@ class WPUF_Payment {
         if ( $action === 'wpuf_pay' && isset( $nonce ) && wp_verify_nonce( $nonce, 'wpuf_payment_gateway' ) ) {
             $post_id       = isset( $_REQUEST['post_id'] ) ? intval( wp_unslash( $_REQUEST['post_id'] ) ) : 0;
             $pack_id       = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
-            $gateway       = isset( $_POST['wpuf_payment_method'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_payment_method'] ) ) : '';
+            $gateway       = isset( $_REQUEST['wpuf_payment_method'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['wpuf_payment_method'] ) ) : '';
             $type          = isset( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : '';
             $current_user  = wpuf_get_user();
             $current_pack  = $current_user->subscription()->current_pack();
@@ -411,6 +411,7 @@ class WPUF_Payment {
                 'date'      => gmdate( 'Y-m-d H:i:s' ),
                 'post_data' => $_POST,
                 'custom'    => isset( $custom ) ? $custom : '',
+                'wpuf_payment_method' => $gateway,
             ];
 
             if ( isset( $_POST['billing_address'] ) ) {

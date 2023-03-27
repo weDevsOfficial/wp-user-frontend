@@ -397,20 +397,20 @@ class WPUF_Payment {
             }
 
             $payment_vars = [
-                'currency'    => wpuf_get_option( 'currency', 'wpuf_payment' ),
-                'price'       => $amount,
-                'item_number' => $item_number,
-                'item_name'   => $item_name,
-                'type'        => $type,
-                'user_info'   => [
+                'currency'            => wpuf_get_option( 'currency', 'wpuf_payment' ),
+                'price'               => $amount,
+                'item_number'         => $item_number,
+                'item_name'           => $item_name,
+                'type'                => $type,
+                'user_info'           => [
                     'id'         => $userdata->ID,
                     'email'      => $userdata->user_email,
                     'first_name' => $userdata->first_name,
                     'last_name'  => $userdata->last_name,
                 ],
-                'date'      => gmdate( 'Y-m-d H:i:s' ),
-                'post_data' => $_POST,
-                'custom'    => isset( $custom ) ? $custom : '',
+                'date'                => gmdate( 'Y-m-d H:i:s' ),
+                'post_data'           => $_POST,
+                'custom'              => isset( $custom ) ? $custom : '',
                 'wpuf_payment_method' => $gateway,
             ];
 

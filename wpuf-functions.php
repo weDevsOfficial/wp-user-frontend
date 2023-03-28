@@ -364,13 +364,13 @@ class WPUF_Walker_Category_Checklist extends Walker {
         }
 
         $class = isset( $args['class'] ) ? $args['class'] : '';
+        $category_name = esc_html( apply_filters( 'the_category', $category->name ) );
 
 	    $output .= sprintf(
-		    '<li class="%s" id="%s-%s"><label class="selectit"><input class="%s" value="%s" type="checkbox" data-type="checkbox" name="%s[]" id="in-"%s-%s" %s "%s" "%s" /> %s</label>',
-		    $inline_class, $taxonomy, $category->term_id, $class, $category->term_id, $name, $taxonomy,$category->term_id,
+		    '<li class="%s" id="%s-%s" data-label="%s"><label class="selectit"><input class="%s" value="%s" type="checkbox" data-type="checkbox" name="%s[]" id="in-"%s-%s" %s "%s" "%s" /> %s</label>',
+		    $inline_class, $taxonomy, $category->term_id, $args['label'], $class, $category->term_id, $name, $taxonomy,$category->term_id,
             checked( in_array( $category->term_id, $args['selected_cats'], true ), true, false ),
-            disabled( empty( $args['disabled'] ), false, false ), $required,
-            esc_html( apply_filters( 'the_category', $category->name ) )
+            disabled( empty( $args['disabled'] ), false, false ), $required, $category_name
 	    );
     }
 
@@ -413,6 +413,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
 	$args['show_inline'] = $attr['show_inline'];
 	$args['class']       = $class;
 	$args['required']    = ! empty( $attr['required'] ) ? $attr['required'] : 'no';
+	$args['label']       = ! empty( $attr['label'] ) ? $attr['label'] : '';
 
     $tax_args = [
         'taxonomy'    => $tax,
@@ -430,7 +431,9 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     echo wp_kses(
         call_user_func_array( [ &$walker, 'walk' ], [ $categories, 0, $args ] ), [
             'li'    => [
-                'class' => [],
+	            'class'      => [],
+	            'id'         => [],
+	            'data-label' => [],
             ],
             'label' => [
                 'class' => [],

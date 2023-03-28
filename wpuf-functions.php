@@ -341,6 +341,12 @@ class WPUF_Walker_Category_Checklist extends Walker {
     public function start_el( &$output, $category, $depth = 0, $args = [], $current_object_id = 0 ) {
         $taxonomy = $args['taxonomy'];
 
+        $required = '';
+
+        if ( ! empty( $args['required'] ) && 'yes' === $args['required'] ) {
+            $required = ' data-required="yes" ';
+        }
+
         if ( empty( $taxonomy ) ) {
             $taxonomy = 'category';
         }
@@ -358,7 +364,14 @@ class WPUF_Walker_Category_Checklist extends Walker {
         }
 
         $class = isset( $args['class'] ) ? $args['class'] : '';
-        $output .= "\n<li class='" . $inline_class . "' id='{$taxonomy}-{$category->term_id}'>" . '<label class="selectit"><input class="' . $class . '" value="' . $category->term_id . '" type="checkbox" name="' . $name . '[]" id="in-' . $taxonomy . '-' . $category->term_id . '"' . checked( in_array( $category->term_id, $args['selected_cats'], true ), true, false ) . disabled( empty( $args['disabled'] ), false, false ) . ' /> ' . esc_html( apply_filters( 'the_category', $category->name ) ) . '</label>';
+
+	    $output .= sprintf(
+		    '<li class="%s" id="%s-%s"><label class="selectit"><input class="%s" value="%s" type="checkbox" data-type="checkbox" name="%s[]" id="in-"%s-%s" %s "%s" "%s" /> %s</label>',
+		    $inline_class, $taxonomy, $category->term_id, $class, $category->term_id, $name, $taxonomy,$category->term_id,
+            checked( in_array( $category->term_id, $args['selected_cats'], true ), true, false ),
+            disabled( empty( $args['disabled'] ), false, false ), $required,
+            esc_html( apply_filters( 'the_category', $category->name ) )
+	    );
     }
 
     public function end_el( &$output, $category, $depth = 0, $args = [] ) {
@@ -397,9 +410,9 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
         $args['selected_cats'] = [];
     }
 
-    $args['show_inline'] = $attr['show_inline'];
-
-    $args['class'] = $class;
+	$args['show_inline'] = $attr['show_inline'];
+	$args['class']       = $class;
+	$args['required']    = ! empty( $attr['required'] ) ? $attr['required'] : 'no';
 
     $tax_args = [
         'taxonomy'    => $tax,
@@ -423,12 +436,14 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
                 'class' => [],
             ],
             'input' => [
-                'class'   => [],
-                'type'    => [],
-                'value'   => [],
-                'name'    => [],
-                'id'      => [],
-                'checked' => [],
+	            'class'         => [],
+	            'type'          => [],
+	            'value'         => [],
+	            'name'          => [],
+	            'id'            => [],
+	            'checked'       => [],
+	            'data-required' => [],
+	            'data-type'     => [],
             ],
             'ul'    => [
                 'class' => [],

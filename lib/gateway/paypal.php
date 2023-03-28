@@ -170,8 +170,6 @@ class WPUF_Paypal {
         //$listener_url     = 'https://wpuf.sharedwithexpose.com/?action=wpuf_paypal_success';
         $return_url       = wpuf_payment_success_page( $data );
 
-
-
         $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
 
         if ( isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) ) {
@@ -522,7 +520,7 @@ class WPUF_Paypal {
         WP_User_Frontend::log( 'paypal', 'IPN Response: ' . print_r( $response, true ) );
 
         // check to see if the request was valid
-        if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && strstr( $response['body'], 'VERIFIED' ) ) {
+        if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
             WP_User_Frontend::log( 'paypal', 'Received valid response from PayPal' );
 
             return true;

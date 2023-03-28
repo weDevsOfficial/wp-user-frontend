@@ -410,7 +410,7 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
         $args['selected_cats'] = [];
     }
 
-	$args['show_inline'] = $attr['show_inline'];
+  $args['show_inline'] = ! empty( $attr['show_inline'] ) ? $attr['show_inline'] : '';
 	$args['class']       = $class;
 	$args['required']    = ! empty( $attr['required'] ) ? $attr['required'] : 'no';
 	$args['label']       = ! empty( $attr['label'] ) ? $attr['label'] : '';

@@ -262,7 +262,12 @@ ul.wpuf-form {
             border: 1px solid @borderColor;
         }
 
-        &.wpuf_hidden_field {
+        &wpuf-el {
+            position: relative;
+            display: flex;
+        }
+
+        &.wpuf_hidden_field.wpuf-el {
             display: none;
         }
 
@@ -1902,14 +1907,6 @@ ul.wpuf-form .ui-state-default.wpuf-image-wrap .caption span:hover{
   background: #FFE4E4;
   color: red;
   padding: 6px 0;
-}
-
-ul.wpuf-form .wpuf-el{
-  position: relative;
-}
-
-form.wpuf-form-add ul.wpuf-form.form-label-left .wpuf-el{
-  display: flex;
 }
 
 ul.wpuf-form .weforms-frontend-field-points{

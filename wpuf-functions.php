@@ -4150,7 +4150,15 @@ function wpuf_payment_success_page( $data ){
     $gateway          = ! empty( $data['wpuf_payment_method'] ) ? $data['wpuf_payment_method'] : '';
     $success_query    = "wpuf_${gateway}_success";
     $redirect_page    = '';
-    $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
+    $redirect_page_id = 0;
+    $payment_method   = ! empty( $data['post_data']['wpuf_payment_method'] ) ? $data['post_data']['wpuf_payment_method'] : '';
+
+    if ( 'bank' === $payment_method ) {
+        $redirect_page_id = wpuf_get_option( 'bank_success', 'wpuf_payment' );
+    } else {
+        $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
+    }
+
     if ( 'post' === $data['type'] ){
         $post_id           = array_key_exists( 'item_number', $data ) && ! empty( $data['item_number'] ) ? $data['item_number'] : $_GET['post_id'];
         $form_id           = get_post_meta( $post_id, '_wpuf_form_id', true );

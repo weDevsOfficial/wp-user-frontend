@@ -242,7 +242,11 @@ body ul.wpuf-form li.has-error {
 body ul.wpuf-form li .wp-editor-wrap {
   border: 1px solid #eee;
 }
-body ul.wpuf-form li.wpuf_hidden_field {
+body ul.wpuf-form liwpuf-el {
+  position: relative;
+  display: flex;
+}
+body ul.wpuf-form li.wpuf_hidden_field.wpuf-el {
   display: none;
 }
 body ul.wpuf-form li .wpuf-label {
@@ -1660,12 +1664,6 @@ body .weforms-quiz-feedback .wrong-answer .wpuf-fields label.checked {
   background: #FFE4E4;
   color: red;
   padding: 6px 0;
-}
-body ul.wpuf-form .wpuf-el {
-  position: relative;
-}
-body form.wpuf-form-add ul.wpuf-form.form-label-left .wpuf-el {
-  display: flex;
 }
 body ul.wpuf-form .weforms-frontend-field-points {
   position: absolute;

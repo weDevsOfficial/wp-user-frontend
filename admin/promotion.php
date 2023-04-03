@@ -32,7 +32,7 @@ class WPUF_Admin_Promotion {
         $promos = get_transient( self::PROMO_KEY );
 
         if ( false === $promos ) {
-            $promo_notice_url = 'https://raw.githubusercontent.com/weDevsOfficial/wp-user-frontend/develop/assets/js/promotion.json';
+            $promo_notice_url = 'https://raw.githubusercontent.com/weDevsOfficial/wpuf-util/master/promotion.json';
             $response         = wp_remote_get( $promo_notice_url, array( 'timeout' => 15 ) );
             $promos           = wp_remote_retrieve_body( $response );
 

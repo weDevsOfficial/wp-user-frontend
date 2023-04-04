@@ -70,8 +70,6 @@ test.describe('TEST :-->', () => {
     test('007:[Login] Here, Admin is changing WPUF Settings', async ({ page }) => {
         const basicLogin = new BasicLoginPage(page);
         await basicLogin.change_WPUF_Settings();
-
-        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
 
     test('008 Here, Admin is able to Log out succesfully', async ({page}) => {

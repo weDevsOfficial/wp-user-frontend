@@ -28,7 +28,7 @@ class WPUF_Admin_Form_Template {
     /**
      * Deregister conflicting JS and CSS files of other plugins
      *
-     * @since WPUF_SINCE
+     * @since 3.6.4
      *
      * @return void
      */

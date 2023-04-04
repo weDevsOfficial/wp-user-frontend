@@ -111,17 +111,17 @@ test.describe('TEST :-->', () => {
      * 
      * 
      * @Test_Scenario : [Post-Forms]
-     * @Test008 : Admin is creating Blank Form with > PostFields... [Mandatory]
-     * @Test009 : Admin is creating Blank Form with > PF + Taxonomies...
-     * @Test0010 : Admin is creating Blank Form with > PF + CustomFields...
-     * @Test0011 : Admin is creating Blank Form with > PF + Others...
-     * @Test0012 : Admin is creating Blank Form with all Fields...
-     * @Test0013 : Admin is creating a Preset Post Form...
+     * @Test009 : Admin is creating Blank Form with > PostFields... [Mandatory]
+     * @Test0010 : Admin is creating Blank Form with > PF + Taxonomies...
+     * @Test0011 : Admin is creating Blank Form with > PF + CustomFields...
+     * @Test0012 : Admin is creating Blank Form with > PF + Others...
+     * @Test0013 : Admin is creating Blank Form with all Fields...
+     * @Test0014 : Admin is creating a Preset Post Form...
      * 
      * 
      *  
      */ 
-    test('008:[Post-Forms] Here, Admin is creating Blank Form with > PostFields', async ({ page }) => {
+    test('009:[Post-Forms] Here, Admin is creating Blank Form with > PostFields', async ({ page }) => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
@@ -142,7 +142,7 @@ test.describe('TEST :-->', () => {
     });
 
 
-    test('008:[Post-Forms] Admin is creating Blank Form with > Taxonomies', async ({ page }) => {
+    test('0010:[Post-Forms] Admin is creating Blank Form with > Taxonomies', async ({ page }) => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
@@ -165,7 +165,7 @@ test.describe('TEST :-->', () => {
     });
 
 
-    test('0010:[Post-Forms] Here, Admin is creating Blank Form with > CustomFields', async ({ page }) => {
+    test('0011:[Post-Forms] Here, Admin is creating Blank Form with > CustomFields', async ({ page }) => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
@@ -188,7 +188,7 @@ test.describe('TEST :-->', () => {
     });
 
 
-    test('0011:[Post-Forms] Here, Admin is creating Blank Form with > Others', async ({ page }) => {
+    test('0012:[Post-Forms] Here, Admin is creating Blank Form with > Others', async ({ page }) => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
@@ -212,7 +212,7 @@ test.describe('TEST :-->', () => {
     });
 
 
-    test('0012:[Post-Forms] Here, Admin is creating a Blank Post Form with all Fields', async ({page}) => {
+    test('0013:[Post-Forms] Here, Admin is creating a Blank Post Form with all Fields', async ({page}) => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
@@ -244,7 +244,7 @@ test.describe('TEST :-->', () => {
     });
 
 
-    test('0013:[Post-Forms] Here, Admin is creating a Preset Post Form', async ({page}) => {
+    test('0014:[Post-Forms] Here, Admin is creating a Preset Post Form', async ({page}) => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
@@ -277,14 +277,14 @@ test.describe('TEST :-->', () => {
      * 
      * 
      * @Test_Scenario : [Reg-Forms]
-     * @Test0014 : Admin is creating Blank Form with > PostFields... [Mandatory]
-     * @Test0015 : Admin is creating Blank Form with > PF + Taxonomies...
-     * @Test0016 : Admin is creating Blank Form with > PF + CustomFields...
+     * @Test0015 : Admin is creating Blank Form with > PostFields... [Mandatory]
+     * @Test0016 : Admin is creating Blank Form with > PF + Taxonomies...
+     * @Test0017 : Admin is creating Blank Form with > PF + CustomFields...
      * 
      * 
      *  
      */ 
-    test.skip('0014:[Reg-Forms] Here, Admin is creating Blank Form with > PostFields', async ({ page }) => {
+    test.skip('0015:[Reg-Forms] Here, Admin is creating Blank Form with > PostFields', async ({ page }) => {
         test.fail(!!process.env.CI, 'Issue after Add Form Button > Script not loading')
 
         const regForms_Create = new RegistrationForms_Create(page);
@@ -306,7 +306,7 @@ test.describe('TEST :-->', () => {
     });
 
 
-    test.skip('0015:[Reg-Forms] Here, Admin is creating Blank Form with > CustomFields', async ({ page }) => {
+    test.skip('0016:[Reg-Forms] Here, Admin is creating Blank Form with > CustomFields', async ({ page }) => {
         test.fail(!!process.env.CI, 'Issue after Add Form Button > Script not loading')
         
         const regForms_Create = new RegistrationForms_Create(page);
@@ -330,7 +330,7 @@ test.describe('TEST :-->', () => {
     });
 
 
-    test.skip('0016:[Reg-Forms] Here, Admin is creating Blank Form with > Others', async ({ page }) => {
+    test.skip('0017:[Reg-Forms] Here, Admin is creating Blank Form with > Others', async ({ page }) => {
         test.fail(!!process.env.CI, 'Issue after Add Form Button > Script not loading')
         
         const regForms_Create = new RegistrationForms_Create(page);

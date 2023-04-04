@@ -1,3 +1,10 @@
+= v3.6.4 (4 Apr, 2023) =
+
+* Fix - Post submission for dokan vendors
+* Fix - Paypal transaction not showing
+* Fix - Predefined category field not working
+* Fix - Field visibility not working
+
 = v3.6.3 (13 Feb, 2023) =
 
 * Fix - Error if Dokan not installed

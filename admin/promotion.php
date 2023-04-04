@@ -32,7 +32,7 @@ class WPUF_Admin_Promotion {
         $promos = get_transient( self::PROMO_KEY );
 
         if ( false === $promos ) {
-            $promo_notice_url = 'https://raw.githubusercontent.com/weDevsOfficial/wp-user-frontend/develop/assets/js/promotion.json';
+            $promo_notice_url = 'https://raw.githubusercontent.com/weDevsOfficial/wpuf-util/master/promotion.json';
             $response         = wp_remote_get( $promo_notice_url, array( 'timeout' => 15 ) );
             $promos           = wp_remote_retrieve_body( $response );
 
@@ -62,8 +62,7 @@ class WPUF_Admin_Promotion {
             strtotime( $start_date ) < strtotime( $current_time )
             && strtotime( $current_time ) < strtotime( $end_date )
             ) {
-            $notice = sprintf( '<p>%s <a href="%s" target="_blank">%s</a></p>', __( $content, 'wp-user-frontend' ), $action_url, __( $action_title, 'wp-user-frontend' ) );
-            $this->generate_notice( $notice, $option_name );
+            $this->generate_notice( $promos );
         }
     }
 
@@ -227,32 +226,47 @@ class WPUF_Admin_Promotion {
     /**
      * Show admin notice
      *
-     * @param string $message
-     * @param string $option_name
+     * @since WPUF @param $message and @param $option_name replaced with $args
      *
      * @return void
      */
-    public function generate_notice( $message, $option_name ) {
-        $hide_notice = get_option( $option_name, 'no' );
+    public function generate_notice( $args ) {
+        $option_name  = ! empty( $args['key'] ) ? $args['key'] : '';
+        $content      = ! empty( $args['content'] ) ? $args['content'] : '';
+        $title        = ! empty( $args['title'] ) ? $args['title'] : '';
+        $action_url   = ! empty( $args['action_url'] ) ? $args['action_url'] : '';
+        $action_title = ! empty( $args['action_title'] ) ? $args['action_title'] : '';
+        $hide_notice  = get_option( $option_name, 'no' );
 
         if ( 'hide' === $hide_notice ) {
             return;
         }
         ?>
-        <div class="notice notice-success wpuf-whats-new-notice" id="wpuf-bfcm-notice">
-
-            <div class="wpuf-whats-new-icon">
+        <div class="notice notice-success wpuf-notice" id="wpuf-bfcm-notice">
+            <div class="wpuf-logo-wrapper">
                 <img src="<?php echo WPUF_ASSET_URI . '/images/icon-128x128.png'; ?>" alt="WPUF Icon">
             </div>
-
-            <div class="wpuf-whats-new-text">
-                <p><strong><?php echo $message; ?></strong></p>
+            <div class="wpuf-notice-content-wrapper">
+                <h3><?php echo esc_html( $title ); ?></h3>
+                <p><b><?php echo esc_html( $content ); ?></b></p>
+                <a href="<?php echo esc_url_raw( $action_url ); ?>" class="button button-primary"><?php echo esc_html( $action_title ); ?></a>
             </div>
-
-            <div class="wpuf-whats-new-actions">
-                <button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php esc_attr_e( 'Dismiss this notice.', 'wp-user-frontend' ); ?></span></button>
-            </div>
+            <button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php esc_attr_e( 'Dismiss this notice.', 'wp-user-frontend' ); ?></span></button>
         </div>
+        <style>
+            .wpuf-notice {
+                position: relative;
+                display: flex;
+                padding: 0;
+            }
+            .wpuf-logo-wrapper {
+                display: flex;
+                margin-right: 20px;
+            }
+            .wpuf-notice-content-wrapper h3 {
+                margin-bottom: 0.5em;
+            }
+        </style>
 
         <script type='text/javascript'>
             jQuery('body').on('click', '#wpuf-bfcm-notice .notice-dismiss', function (e) {

@@ -1,6 +1,28 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.4',
+        'released' => '2023-04-04',
+        'changes'  => [
+            [
+                'title' => __( 'Post submission for dokan vendors', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Paypal transaction not showing', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Predefined category field not working', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Field visibility not working', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.6.3',
         'released' => '2023-02-13',
         'changes'  => [

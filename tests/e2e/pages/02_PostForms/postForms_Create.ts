@@ -177,27 +177,47 @@ export class PostForms_Create {
         await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsEmailAddress);
         await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsHiddenField);
         await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsImageUpload);
-        //From_PRO
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsRepeatField);
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsDateTime);
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsTimeField);     
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsFileUpload);
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsCountryList);
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsNumericField);
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsPhoneField);   
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsAddressField);
         
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsGoogleMaps);
-            if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk)) {
-                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk);
-            } 
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsStepStart);
-            if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose)) {
-                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose);
-            } 
-        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsEmbed);
+        //From_PRO
+        //RepeatField
+        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsRepeatField);
+        const Check_Pro_Pop_UP = await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.check_Pro_Pop_UP);
+            if (Check_Pro_Pop_UP === true) {
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.check_Pro_Pop_UP);
+                console.log("WPUF Pro is requred...")
+            }
+            else {
+                //DateTime
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsDateTime);
+                //TimeField
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsTimeField);
+                //FileUpload    
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsFileUpload);
+                //CountryList
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsCountryList);
+                //NumericField
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsNumericField);
+                //PhoneField
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsPhoneField); 
+                //AddressField  
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsAddressField);
+                //GoogleMaps
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsGoogleMaps);
+                    if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk)) {
+                        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk);
+                    } 
+                //StepStart
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsStepStart);
+                    if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose)) {
+                        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose);
+                    }
+                //Embed
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsEmbed); //TODO: This is an Error as position changes in Lite and Pro
 
-        await this.page.waitForLoadState('domcontentloaded');
+                await this.page.waitForLoadState('domcontentloaded');
+
+            }
+        
     };
 
     //Validate > CustomFields
@@ -224,33 +244,40 @@ export class PostForms_Create {
         //ImageUpload
         await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_ImageUpload)).toBeTruthy();
         
+        //From PRO
         //RepeatField
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_RepeatField)).toBeTruthy();
-        //DateTime
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_DateTime)).toBeTruthy();
-        //TimeField
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_TimeField)).toBeTruthy();
-        //FileUpload
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_FileUpload)).toBeTruthy();
-        //CountryList
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_CountryList)).toBeTruthy();
-        //NumericField
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_NumericField)).toBeTruthy();
-        //PhoneField
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_PhoneField)).toBeTruthy();
-        //AddressField
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_AddressField)).toBeTruthy();
+        const Pro_CustomFields_PF = await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_RepeatField);
+        if (Pro_CustomFields_PF === true) {
+            //RepeatField
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_RepeatField)).toBeTruthy();
+            //DateTime
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_DateTime)).toBeTruthy();
+            //TimeField
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_TimeField)).toBeTruthy();
+            //FileUpload
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_FileUpload)).toBeTruthy();
+            //CountryList
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_CountryList)).toBeTruthy();
+            //NumericField
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_NumericField)).toBeTruthy();
+            //PhoneField
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_PhoneField)).toBeTruthy();
+            //AddressField
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_AddressField)).toBeTruthy();
+            
+            //GoogleMaps        //TODO: Setup required
+                // if(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_GoogleMaps) == true){
+                //     await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_GoogleMaps)).toBeTruthy();
+                // }
+
+            //StepStart
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_StepStart)).toBeTruthy();
+            //Embed
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_Embed)).toBeTruthy();
+
+        }
         
-        //GoogleMaps        //TODO: Setup required
-            // if(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_GoogleMaps) == true){
-            //     await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_GoogleMaps)).toBeTruthy();
-            // }
-
-        //StepStart
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_StepStart)).toBeTruthy();
-        //Embed
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_Embed)).toBeTruthy();
-
+        
     
     };
 
@@ -262,39 +289,42 @@ export class PostForms_Create {
         await this.page.click(Selectors_PF_Create.add_Others_PF.othersColumns);
         await this.page.click(Selectors_PF_Create.add_Others_PF.othersSectionBreak);
         await this.page.click(Selectors_PF_Create.add_Others_PF.othersCustomHTML);
-        //From_PRO
-        //await this.page.click(Selectors_PF_Create.createPostForm.qrCode);            
         await this.page.click(Selectors_PF_Create.add_Others_PF.othersReCaptcha);
             if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk)) {
                 await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk);
             } 
+
+
+        //From_PRO
         await this.page.click(Selectors_PF_Create.add_Others_PF.othersShortCode);
-            if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose)) {
-                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose);
-            } 
-        await this.page.click(Selectors_PF_Create.add_Others_PF.othersActionHook);
-        await this.page.click(Selectors_PF_Create.add_Others_PF.othersTermsAndConditions);
-        await this.page.click(Selectors_PF_Create.add_Others_PF.othersRatings);
-        await this.page.click(Selectors_PF_Create.add_Others_PF.othersReallySimpleCaptcha);
-            if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk)) {
-                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk);
-            } 
-        await this.page.click(Selectors_PF_Create.add_Others_PF.othersMathCaptcha);
-        await this.page.waitForLoadState('domcontentloaded');
+        const Check_Pro_Pop_UP = await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.check_Pro_Pop_UP);
+            if (Check_Pro_Pop_UP === true) {
+                await this.page.click(Selectors_PF_Create.add_CustomFields_PF.check_Pro_Pop_UP);
+                console.log("WPUF Pro is requred...")
+            }
+
+            else {
+                //ShortCode
+                if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose)) {
+                    await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt1PopUpModalClose);
+                } 
+                //ActionHook
+                await this.page.click(Selectors_PF_Create.add_Others_PF.othersActionHook);
+                //TermsAndConditions
+                await this.page.click(Selectors_PF_Create.add_Others_PF.othersTermsAndConditions);
+                //Ratings
+                await this.page.click(Selectors_PF_Create.add_Others_PF.othersRatings);
+                //ReallySimpleCaptcha
+                await this.page.click(Selectors_PF_Create.add_Others_PF.othersReallySimpleCaptcha);
+                    if (await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk)) {
+                        await this.page.click(Selectors_PF_Create.add_CustomFields_PF.prompt2PopUpModalOk);
+                    } 
+                //MathCaptcha
+                await this.page.click(Selectors_PF_Create.add_Others_PF.othersMathCaptcha);
+                await this.page.waitForLoadState('domcontentloaded');
+            }
 
     };
-
-    //Settings > MultiStep Check
-    async set_MultiStep_Settings_PF() {
-        await this.page.waitForLoadState('domcontentloaded');
-        //Add Multi-Step-Check
-        await this.page.click(Selectors_PF_Create.add_Others_PF.formEditorSettings);
-        await this.page.click(Selectors_PF_Create.add_Others_PF.checkMultiStepOption);
-        expect(await this.page.isChecked(Selectors_PF_Create.add_Others_PF.checkMultiStepOption)).toBeTruthy();
-
-        await this.page.waitForLoadState('domcontentloaded');
-    };
-
 
     //Validate > Others
     async validate_Others_PF() {
@@ -306,23 +336,45 @@ export class PostForms_Create {
         //CustomHTML
         await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_CustomHTML)).toBeTruthy();
         
+        //From PRO
         //ReCaptcha
             //Not visible
         //Shortcode
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Shortcode)).toBeTruthy();
-        //ActionHook
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_ActionHook)).toBeTruthy();
-        //TermsAndConditions
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_TermsAndConditions)).toBeTruthy();
-        //Ratings
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Ratings)).toBeTruthy();
-        //ReallySimpletCaptcha
-            //Not visible
-        //MathCaptcha
-        await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_MathCaptcha)).toBeTruthy();
-        
+        const Pro_Others_PF = await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Shortcode);
+        if (Pro_Others_PF === true) {
+            //Shortcode
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Shortcode)).toBeTruthy();
+            //ActionHook
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_ActionHook)).toBeTruthy();
+            //TermsAndConditions
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_TermsAndConditions)).toBeTruthy();
+            //Ratings
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Ratings)).toBeTruthy();
+            //ReallySimpletCaptcha
+                //Not visible
+            //MathCaptcha
+            await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_MathCaptcha)).toBeTruthy();
+        }
     };
 
+
+    //Settings > MultiStep Check
+    async set_MultiStep_Settings_PF() {
+        await this.page.waitForLoadState('domcontentloaded');
+        //Add Multi-Step-Check
+        await this.page.click(Selectors_PF_Create.add_Others_PF.formEditorSettings);
+        const Pro_Text_Alert_In_Settings = await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.pro_Text_Alert_In_Settings);
+            if (Pro_Text_Alert_In_Settings === true) {  
+                console.log("WPUF Pro is requred...");
+            }
+            else {
+                await this.page.click(Selectors_PF_Create.add_Others_PF.checkMultiStepOption);
+                expect(await this.page.isChecked(Selectors_PF_Create.add_Others_PF.checkMultiStepOption)).toBeTruthy();
+            }
+        
+
+        await this.page.waitForLoadState('domcontentloaded');
+    };
 
 
 

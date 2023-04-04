@@ -46,10 +46,11 @@ test.describe('TEST :-->', () => {
      * @Test_001 : Admin is logging in...
      * @Test_002 : Admin is skipping WPUF setup...
      * @Test_003 : Admin is checking Dashboard page reached...
-     * @Test_004 : Admin is checking Plugin Status...
-     * @Test_005 : Here, Admin is visiting WPUF Page
-     * @Test_006 : Admin is changing WPUF Settings...
-     * @Test_007 : Admin is able to Log out succesfully...
+     * @Test_004 : Here, Admin is checking Plugin Status - Lite Activation...
+     * @Test_005 : Here, Admin is checking Plugin Status - Pro Activation
+     * @Test_006 : Here, Admin is visiting WPUF Page
+     * @Test_007 : Admin is changing WPUF Settings...
+     * @Test_008 : Admin is able to Log out succesfully...
      * 
      * 
      *  
@@ -72,24 +73,29 @@ test.describe('TEST :-->', () => {
         await basicLogin.validateBasicLogin();
     });
 
-    test('004:[Login] Here, Admin is checking Plugin Status + activating Plugin if found deactivated', async ({ page }) => {
+    test('004:[Login] Here, Admin is checking Plugin Status - Lite Activation', async ({ page }) => {
         const basicLogin = new BasicLoginPage(page);
-        await basicLogin.pluginStatusCheck();
+        await basicLogin.pluginStatusCheck_Lite_Activate();
     });
 
-    test('005:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
+    test.skip('005:[Login] Here, Admin is checking Plugin Status - Pro Activation', async ({ page }) => {
+        const basicLogin = new BasicLoginPage(page);
+        await basicLogin.pluginStatusCheck_Pro_Activate();
+    });
+
+    test('006:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
         const basicLogin = new BasicLoginPage(page);
         await basicLogin.pluginVisit();
     });
 
-    test('006:[Login] Here, Admin is changing WPUF Settings', async ({ page }) => {
+    test('007:[Login] Here, Admin is changing WPUF Settings', async ({ page }) => {
         const basicLogin = new BasicLoginPage(page);
         await basicLogin.change_WPUF_Settings();
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
 
-    test('007 Here, Admin is able to Log out succesfully', async ({page}) => {
+    test('008 Here, Admin is able to Log out succesfully', async ({page}) => {
         const basicLogoutPage = new BasicLogoutPage(page);
         const basicLogin = new BasicLoginPage(page);
 

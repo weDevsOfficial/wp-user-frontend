@@ -111,13 +111,22 @@ export class BasicLoginPage {
      * 
      *  
      */
-    async pluginStatusCheck() {
+    async pluginStatusCheck_Lite_Activate() {
         await this.page.goto('http://localhost:8889/wp-admin/');
         
-        //Plugin Status Check
+        //Activate Lite
         await this.activate_WPUF_Lite();
+    };
+
+
+    async pluginStatusCheck_Pro_Activate() {
+        await this.page.goto('http://localhost:8889/wp-admin/');
+        
+        //Activate Pro
         await this.activate_WPUF_Pro();
     };
+
+
 
     async pluginVisit() {
         await this.page.goto('http://localhost:8889/wp-admin/');

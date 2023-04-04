@@ -118,6 +118,10 @@ export const Selectors_PF_Create = {
         prompt1PopUpModalClose: "//button[contains(@class,'swal2-confirm btn')]",
         //prompt2
         prompt2PopUpModalOk:'//button[contains(@class,"swal2-confirm swal2-styled")]',
+        //Pro Check Pop Up
+        check_Pro_Pop_UP: '//button[text()="Get the Pro version"]',
+        //Pro Text Alert in Settings
+        pro_Text_Alert_In_Settings: '(//h3[@class="wpuf-pro-text-alert"])[1]'
     },
 
     validate_CustomFields_PF: {
@@ -153,10 +157,14 @@ export const Selectors_PF_Create = {
         othersColumns: '//li[@data-form-field="column_field"]',
         othersSectionBreak: '//li[@data-form-field="section_break"]',
         othersCustomHTML: '//li[@data-form-field="custom_html"]',
-        
-        //From___PRO
         othersQrCode: '//li[@data-form-field="qr_code"]', 
         othersReCaptcha: '//li[@data-form-field="recaptcha"]',
+        
+        
+        //From___PRO
+        //Pro Check Pop Up
+        //check_Pro_Pop_UP: '//button[text()="Get the Pro version"]',
+        //Pro Field Options
         othersShortCode: '//li[@data-form-field="shortcode"]',
         othersActionHook: '//li[@data-form-field="action_hook"]',
         othersTermsAndConditions: '//li[@data-form-field="toc"]',

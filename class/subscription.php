@@ -1350,7 +1350,7 @@ class WPUF_Subscription {
         $non_recurrent = array_filter(
             $all_subscription, function ( $pack ) use ( $current_time ) {
                 $pack = maybe_unserialize( $pack->meta_value );
-                return $pack['recurring'] === 'no' && $current_time >= $pack['expire'];
+                return ! empty( $pack['recurring'] ) && $pack['recurring'] === 'no' && $current_time >= $pack['expire'];
             }
         );
 

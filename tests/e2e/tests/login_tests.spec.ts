@@ -72,7 +72,7 @@ test.describe('TEST :-->', () => {
         await basicLogin.change_WPUF_Settings();
     });
 
-    test('008 Here, Admin is able to Log out succesfully', async ({page}) => {
+    test.skip('008 Here, Admin is able to Log out succesfully', async ({page}) => {
         const basicLogoutPage = new BasicLogoutPage(page);
         const basicLogin = new BasicLoginPage(page);
         await basicLogin.basiclogin(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);

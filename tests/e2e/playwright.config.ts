@@ -50,7 +50,7 @@ const config: PlaywrightTestConfig = {
     // Artifacts
     screenshot: 'only-on-failure',
 
-    video: 'off',
+    video: 'on',
 
     //SlowMo
     launchOptions: {

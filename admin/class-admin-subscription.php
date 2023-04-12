@@ -551,7 +551,7 @@ class WPUF_Admin_Subscription {
             return;
         }
 
-        wp_enqueue_script( 'wpuf-admin-profile-subs', WPUF_ASSET_URI . '/js/admin-profile-subs.js', [ 'jquery' ] );
+        // wp_enqueue_script( 'wpuf-admin-profile-subs', WPUF_ASSET_URI . '/js/admin-profile-subs.js', [ 'jquery' ] );
     }
 
     /**

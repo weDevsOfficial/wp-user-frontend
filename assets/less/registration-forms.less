@@ -1,4 +1,10 @@
 .wpuf-registration-page-area {
+    .button.focus, .button:focus, .button-secondary:focus {
+        border: none;
+        color: #fff;
+        box-shadow: none;
+    }
+
     .green {
         background: #36c16a;
     }
@@ -192,6 +198,53 @@
         .button-learn-more:hover {
             border: 1px solid;
             background: #f7f7f7;
+        }
+    }
+}
+
+@media only screen and (max-width: 1023px) {
+    .wpuf-registration-page-area {
+        span.line-break:after {
+            white-space: unset;
+            content: " ";
+        }
+
+        .flex {
+            display: block;
+        }
+
+        .position-relative {
+            position: initial;
+        }
+
+        .wpuf-box .wpuf-box-inner .wpuf-shortcode-area {
+            margin-top: 2em;
+        }
+
+        .position-absolute {
+            position: initial;
+            margin-top: 2em;
+        }
+
+        .wpuf-box .wpuf-box-inner:nth-child(2) img {
+            margin-top: 2em;
+            display: none;
+        }
+
+        .wpuf-box .grid {
+            grid-gap: 5px;
+        }
+
+        .wpuf-box .heading .crown-icon.pro-icon {
+            width: 75px;
+        }
+    }
+}
+
+@media only screen and (max-width: 1279px) {
+    .wpuf-registration-page-area {
+        .wpuf-box .grid {
+            grid-gap: 5px;
         }
     }
 }

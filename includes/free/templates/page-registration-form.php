@@ -97,7 +97,7 @@ $email_integrations = [
             </p>
             <div class="wpuf-shortcode-area">
                 <code>[wpuf-registration]</code>
-                <button class="button button-dark"><?php esc_html_e( 'Copy', 'wp-user-frontend' ); ?></button>
+                <button class="button button-dark button-copy"><?php esc_html_e( 'Copy', 'wp-user-frontend' ); ?></button>
             </div>
             <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/how-to-setup-registrationlogin-page/" target="_blank" class="button-primary position-absolute how-to-setup">
                 <?php esc_html_e( 'How to setup →', 'wp-user-frontend' ); ?>

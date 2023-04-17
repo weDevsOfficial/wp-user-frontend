@@ -20,6 +20,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         add_action( 'wp_ajax_nopriv_make_media_embed_code', [ $this, 'make_media_embed_code' ] );
         // // guest post hook
         add_action( 'init', [ $this, 'publish_guest_post' ] );
+        // notification and other tasks after the guest verified the email
+        add_action( 'wpuf_guest_post_email_verified', [ $this, 'send_mail_to_admin_after_guest_mail_verified' ] );
         // draft
         add_action( 'wp_ajax_wpuf_draft_post', [ $this, 'draft_post' ] );
         add_action( 'wp_ajax_nopriv_wpuf_draft_post', [ $this, 'draft_post' ] );
@@ -934,48 +936,50 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $pid      = isset( $_GET['p_id'] ) ? sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) : '';
         $fid      = isset( $_GET['f_id'] ) ? sanitize_text_field( wp_unslash( $_GET['f_id'] ) ) : '';
 
-        if ( $post_msg === 'verified' ) {
-            $response       = [];
-            $post_id        = wpuf_decryption( $pid );
-            $form_id        = wpuf_decryption( $fid );
-            $form_settings  = wpuf_get_form_settings( $form_id );
-            $post_author_id = get_post_field( 'post_author', $post_id );
-            $payment_status = new WPUF_Subscription();
-            $form           = new WPUF_Form( $form_id );
-            $pay_per_post   = $form->is_enabled_pay_per_post();
-            $force_pack     = $form->is_enabled_force_pack();
+        if ( $post_msg !== 'verified' ) {
+            return;
+        }
 
-            if ( $form->is_charging_enabled() && $pay_per_post ) {
-                if ( ( $payment_status->get_payment_status( $post_id ) ) === 'pending' ) {
-                    $response['show_message'] = true;
-                    $response['redirect_to']  = add_query_arg(
-                        [
-                            'action'  => 'wpuf_pay',
-                            'type'    => 'post',
-                            'post_id' => $post_id,
-                        ],
-                        get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
-                    );
+        $response       = [];
+        $post_id        = wpuf_decryption( $pid );
+        $form_id        = wpuf_decryption( $fid );
+        $form_settings  = wpuf_get_form_settings( $form_id );
+        $payment_status = new WPUF_Subscription();
+        $form           = new WPUF_Form( $form_id );
+        $pay_per_post   = $form->is_enabled_pay_per_post();
 
-                    wp_redirect( $response['redirect_to'] );
-                    wpuf_clear_buffer();
-                    wp_send_json( $response );
-                }
-            } else {
-                $p_status = get_post_status( $post_id );
+        if ( $form->is_charging_enabled() && $pay_per_post ) {
+            if ( ( $payment_status->get_payment_status( $post_id ) ) === 'pending' ) {
+                $response['show_message'] = true;
+                $response['redirect_to']  = add_query_arg(
+                    [
+                        'action'  => 'wpuf_pay',
+                        'type'    => 'post',
+                        'post_id' => $post_id,
+                    ],
+                    get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
+                );
 
-                if ( $p_status ) {
-                    wp_update_post(
-                        [
-                            'ID'          => $post_id,
-                            'post_status' => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
-                        ]
-                    );
+                wp_redirect( $response['redirect_to'] );
+                wpuf_clear_buffer();
+                wp_send_json( $response );
+            }
+        } else {
+            $p_status = get_post_status( $post_id );
 
-                    echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
-                }
+            if ( $p_status ) {
+                wp_update_post(
+                    [
+                        'ID'          => $post_id,
+                        'post_status' => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
+                    ]
+                );
+
+                echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
             }
         }
+
+        do_action( 'wpuf_guest_post_email_verified', $post_id );
     }
 
     public function wpuf_user_subscription_pack( $form_settings, $post_id = null ) {
@@ -1259,5 +1263,51 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             $this->form_settings['message_restrict'] = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
         }
+    }
+
+    /**
+     * Send a notification mail after a guest verified his/her email
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
+    public function send_mail_to_admin_after_guest_mail_verified() {
+        $post_id = ! empty( $_GET['p_id'] ) ? wpuf_decryption( sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) ) : 0;
+        $form_id = ! empty( $_GET['f_id'] ) ? wpuf_decryption( sanitize_text_field( wp_unslash( $_GET['f_id'] ) ) ) : 0;
+
+        if ( empty( $post_id ) || empty( $form_id ) ) {
+            return;
+        }
+
+        $form = new WPUF_Form( $form_id );
+
+        if ( empty( $form->data ) ) {
+            return;
+        }
+
+        $this->form_fields   = $form->get_fields();
+        $this->form_settings = $form->get_settings();
+
+        $author_id = get_post_field( 'post_author', $post_id );
+
+        $is_email_varified = get_user_meta( $author_id, 'wpuf_guest_email_verified', true );
+
+        // if user email already verified, no need to check again.
+        // It will prevent mail flooding by clicking on the same link
+        if ( $is_email_varified ) {
+            return;
+        }
+
+        $mail_body   = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $author_id, $post_id );
+        $to          = $this->prepare_mail_body( $this->form_settings['notification']['new_to'], $author_id, $post_id );
+        $subject     = $this->prepare_mail_body( $this->form_settings['notification']['new_subject'], $author_id, $post_id );
+        $subject     = wp_strip_all_tags( $subject );
+        $mail_body   = get_formatted_mail_body( $mail_body, $subject );
+        $headers     = [ 'Content-Type: text/html; charset=UTF-8' ];
+
+        // update the information for future to check if the email is already verified
+        update_user_meta( $author_id, 'wpuf_guest_email_verified', 1 );
+        wp_mail( $to, $subject, $mail_body, $headers );
     }
 }

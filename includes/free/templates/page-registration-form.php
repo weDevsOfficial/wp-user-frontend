@@ -59,7 +59,7 @@ $email_integrations = [
     ],
     [
         'icon' => 'icon-mailpoet.svg',
-        'title' => sprintf( esc_html__( 'Mailpoet Support', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
+        'title' => sprintf( esc_html__( 'Mailpoet %s Support', 'wp-user-frontend' ), '<span class="line-break-tablet"></span>' ),
     ],
     [
         'icon' => 'icon-mailpoet3.svg',

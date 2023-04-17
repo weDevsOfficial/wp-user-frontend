@@ -161,6 +161,11 @@
   border: 1px solid;
   background: #f7f7f7;
 }
+@media only screen and (max-width: 1279px) {
+  .wpuf-registration-page-area .wpuf-box .grid {
+    grid-gap: 5px;
+  }
+}
 @media only screen and (max-width: 1023px) {
   .wpuf-registration-page-area span.line-break:after {
     white-space: unset;
@@ -190,8 +195,12 @@
     width: 75px;
   }
 }
-@media only screen and (max-width: 1279px) {
-  .wpuf-registration-page-area .wpuf-box .grid {
-    grid-gap: 5px;
+@media only screen and (max-width: 881px) {
+  .wpuf-registration-page-area span.line-break-tablet:after {
+    content: "\a";
+    white-space: pre;
+  }
+  .wpuf-registration-page-area .single-pro-feature {
+    text-align: center;
   }
 }

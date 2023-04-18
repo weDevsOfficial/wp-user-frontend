@@ -39,7 +39,7 @@ test.describe('TEST :-->', () => {
     
     test('001:[Login] Here, Admin is logging into Admin-Dashboard', async ({ page }) => {
         const basicLogin = new BasicLoginPage(page);
-        await basicLogin.basiclogin(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+        await basicLogin.basiclogin('admin', 'password');
     });
 
     test('002:[Login] Here, Admin is skipping WPUF setup', async ({ page }) => {
@@ -75,7 +75,7 @@ test.describe('TEST :-->', () => {
     test.skip('008 Here, Admin is able to Log out succesfully', async ({page}) => {
         const basicLogoutPage = new BasicLogoutPage(page);
         const basicLogin = new BasicLoginPage(page);
-        await basicLogin.basiclogin(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+        await basicLogin.basiclogin('admin', 'password');
         await basicLogoutPage.logOut();
     })
 

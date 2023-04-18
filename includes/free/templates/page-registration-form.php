@@ -76,13 +76,13 @@ $email_integrations = [
         <div class="wpuf-menu-area">
             <ul>
                 <li>
-                    <a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/">
+                    <a target="_blank" rel="noopener noreferrer" href="https://wedevs.com/docs/wp-user-frontend-pro/">
                         <img src="<?php echo WPUF_ASSET_URI . '/images/doc.svg' ?>" alt="">
                         <?php esc_html_e( 'Docs', 'wp-user-frontend' ); ?>
                     </a>
                 </li>
                 <li>
-                    <a class="button button-primary" target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/changelog/">
+                    <a class="button button-primary" target="_blank" rel="noopener noreferrer" href="https://wedevs.com/docs/wp-user-frontend-pro/changelog/">
                         <?php esc_html_e( 'What\'s New?', 'wp-user-frontend' ); ?>
                     </a>
                 </li>
@@ -99,7 +99,7 @@ $email_integrations = [
                 <code>[wpuf-registration]</code>
                 <button class="button button-dark button-copy"><?php esc_html_e( 'Copy', 'wp-user-frontend' ); ?></button>
             </div>
-            <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/how-to-setup-registrationlogin-page/" target="_blank" class="button-primary position-absolute how-to-setup">
+            <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/how-to-setup-registrationlogin-page/" target="_blank" rel="noopener noreferrer" class="button-primary position-absolute how-to-setup">
                 <?php esc_html_e( 'How to setup →', 'wp-user-frontend' ); ?>
             </a>
         </div>
@@ -145,11 +145,12 @@ $email_integrations = [
         <div class="footer-links">
             <ul>
                 <li>
-                    <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button-learn-more"><?php esc_html_e( 'Learn More →', 'wp-user-frontend' ); ?></a>
+                    <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" rel="noopener noreferrer" class="button-learn-more"><?php esc_html_e( 'Learn More →', 'wp-user-frontend' ); ?></a>
                 </li>
                 <li>
                     <a href="<?php echo esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>"
                        target="_blank"
+                       rel="noopener noreferrer"
                        class="wpuf-button button-upgrade-to-pro">
                         <?php
                         esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' );

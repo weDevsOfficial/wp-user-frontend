@@ -70,7 +70,7 @@ abstract class WPUF_Post_Form_Template {
      *
      * @since WPUF_SINCE
      *
-     * @var array
+     * @var string
      */
     const TIB_DATETIME_FORMAT = 'Y-m-d H:i:s';
 

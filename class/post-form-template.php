@@ -65,6 +65,15 @@ abstract class WPUF_Post_Form_Template {
      */
     protected $form_notifications;
 
+    /**
+     * The datetime format for The Event Calender
+     *
+     * @since WPUF_SINCE
+     *
+     * @var array
+     */
+    const TIB_DATETIME_FORMAT = 'Y-m-d H:i:s';
+
     public function __construct() {
         $this->conditionals = [
             'condition_status' => 'no',
@@ -141,6 +150,46 @@ abstract class WPUF_Post_Form_Template {
      * @return void
      */
     public function after_insert( $post_id, $form_id, $form_settings ) {
+        // we can return form here if it is not a 'The Event Calender' event
+        if ( empty( $form_settings['post_type'] ) || 'tribe_events' !== $form_settings['post_type'] ) {
+            return;
+        }
+
+        $tribe_api = WP_PLUGIN_DIR . '/the-events-calendar/src/Tribe/API.php';
+
+        if ( ! file_exists( $tribe_api ) ) {
+            return;
+        }
+
+        $event_data = [
+            'EventAllDay'    => ! empty( $post_data['_EventAllDay'] ) ? $post_data['_EventAllDay'] : 'yes',
+            'EventStartDate' => ! empty( $post_data['_EventStartDate'] ) ? $post_data['_EventStartDate'] : wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT ),
+            'EventEndDate'   => ! empty( $post_data['_EventEndDate'] ) ? $post_data['_EventEndDate'] : wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT ),
+        ];
+
+        require_once $tribe_api;
+
+        /**
+         * Opportunity to change 'The Event Calendar' metadata just before WPUF is saving it to DB
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $event_data The event metadata
+         * @param int $post_id The post id, in other words, The Event
+         *
+         */
+        $event_data = apply_filters( 'wpuf_tib_event_meta', $event_data, $post_id );
+        Tribe__Events__API::saveEventMeta( $post_id, $event_data );
+
+        /**
+         * Hook fired just after WPUF is saved 'The Event Calender' metadata to the DB
+         *
+         * @since WPUF_SINCE
+         *
+         * @param int $post_id The post_id, in other words, the event_id
+         *
+         */
+        do_action( 'wpuf_tib_after_saving_event_meta', $post_id );
     }
 
     /**

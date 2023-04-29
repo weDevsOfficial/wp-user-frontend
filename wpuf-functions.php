@@ -1866,7 +1866,7 @@ function taxnomy_select( $terms, $attr ) {
 /**
  * Returns form setting value
  *
- * @param init   $form_id
+ * @param int   $form_id
  * @param boolen $status
  *
  * @return array

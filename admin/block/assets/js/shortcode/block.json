@@ -1,0 +1,64 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "wpuf/shortcode",
+	"version": "0.1.0",
+	"title": "WPUF Shortcode",
+	"category": "widgets",
+	"icon": "shortcode",
+  	"attributes": {
+	  "selectedShortCode": {
+		"type": "string",
+		"default": ""
+	  },
+	  "post_type" : {
+		"type": "array",
+		"default": []
+	  },
+	  "featured_image" : {
+		"type": "boolean",
+		"default": false
+	  },
+	  "category" : {
+		"type": "boolean",
+		"default": false
+	  },
+	  "meta" : {
+		"type": "array",
+		"default": []
+	  },
+	  "excerpt" : {
+		"type": "boolean",
+		"default": false
+	  },
+	  "payment_column" : {
+		"type": "boolean",
+		"default": true
+	  },
+	  "form_id" : {
+		"type": "number",
+		"default": 0
+	  },
+	  "id" : {
+		"type": "number",
+		"default": 0
+	  },
+	  "per_page" : {
+		"type": "number",
+		"default": 10
+	  },
+	  "roles_exclude" : {
+		"type": "array",
+		"default": []
+	  },
+	  "roles_include" : {
+		"type": "array",
+		"default": []
+	  }
+	},
+	"description": "WPUF Shortcode | Select & Choose attributes ",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "shortcode"
+}

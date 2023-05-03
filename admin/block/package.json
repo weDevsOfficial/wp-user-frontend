@@ -1,0 +1,24 @@
+{
+	"name": "shortcode",
+	"version": "0.1.0",
+	"description": "Shortcode Block for WPUF",
+	"author": "weDevs",
+	"license": "GPL",
+	"main": "dist/index.js",
+	"scripts": {
+		"start": "wp-scripts start ./assets/js/blocks.js",
+		"build": "wp-scripts build ./assets/js/blocks.js --output-path=dist",
+		"format": "wp-scripts format",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip"
+	},
+	"devDependencies": {
+		"@wordpress/block-editor": "^8.3.1",
+		"@wordpress/components": "^19.6.1",
+		"@wordpress/element": "^4.2.1",
+		"@wordpress/scripts": "^22.2.1"
+	},
+	"dependencies": {
+		"react-select": "^5.2.2"
+	}
+}

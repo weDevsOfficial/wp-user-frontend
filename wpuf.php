@@ -283,7 +283,8 @@ final class WP_User_Frontend {
         include_once WPUF_ROOT . '/includes/class-customizer.php';
         include_once WPUF_ROOT . '/includes/log/class-log.php';
         include_once WPUF_ROOT . '/includes/log/class-log-wpdb-query.php';
-        //        include_once WPUF_ROOT . '/includes/class-user-prorate.php';
+        include_once WPUF_ROOT . '/admin/block/block.php';
+
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
@@ -355,6 +356,7 @@ final class WP_User_Frontend {
         $this->container['block']                   = new WPUF_Form_Block();
         $this->container['customize']               = new WPUF_Customizer_Options();
         $this->container['log']                     = new WPUF_Log();
+        $this->container['block_integration']       = new Block_Integration();
 
         if ( class_exists( 'WeDevs_Dokan' ) ) {
             $this->container['dokan_integration']   = new WPUF_Dokan_Integration();

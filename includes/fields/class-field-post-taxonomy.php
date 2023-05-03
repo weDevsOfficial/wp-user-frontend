@@ -17,7 +17,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
     public function __construct( $tax_name, $taxonomy, $post_id = null, $user_id = null ) {
         //phpcs:ignore
-        $this->name       = __( $tax_name, 'wp-user-frontend' );
+        $this->name       = __( ucfirst( $tax_name ), 'wp-user-frontend' );
         $this->input_type = 'taxonomy';
         $this->tax_name   = $tax_name;
         // $this->taxonomy=$taxonomy;
@@ -194,7 +194,6 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             }
         }
     }
-
 
     public function tax_ajax( $post_id = null ) {
         $taxonomy = $this->field_settings['name'];
@@ -447,7 +446,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         $defaults = $this->default_attributes();
         $props    = [
             'input_type'        => 'taxonomy',
-            'label'             => $this->tax_name,
+            'label'             => ucfirst( $this->tax_name ),
             'name'              => $this->tax_name,
             'is_meta'           => 'no',
             'width'             => 'small',

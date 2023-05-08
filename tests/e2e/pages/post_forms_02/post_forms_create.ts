@@ -29,8 +29,11 @@ export class PostForms_Create {
     //BlankForm
     async create_BlankForm_PF(newPostName) {
         //Visit Post Form Page
-        await this.page.goto('http://localhost:8889/wp-admin/admin.php?page=wpuf-post-forms');
-
+        const site_url = String(process.env.BASE_URL);
+        const wpuf_post_form_page = site_url + 'admin.php?page=wpuf-post-forms';
+        
+        await this.page.goto(wpuf_post_form_page, { waitUntil: 'networkidle' }); 
+        
         //Create_New_Post_Form
         await this.page.click(Selectors_PF_Create.create_BlankForm_PF.clickPostFormMenuOption);
         //Start
@@ -53,7 +56,10 @@ export class PostForms_Create {
     //PresetForm
     async create_Preset_PF(newPostName) {
         //Visit Post Form Page
-        await this.page.goto('http://localhost:8889/wp-admin/admin.php?page=wpuf-post-forms');
+        const site_url = String(process.env.BASE_URL);
+        const wpuf_post_form_page = site_url + 'admin.php?page=wpuf-post-forms';
+        
+        await this.page.goto(wpuf_post_form_page, { waitUntil: 'networkidle' }); 
 
         //Create_New_Post_Form
         await this.page.click(Selectors_PF_Create.create_BlankForm_PF.clickPostFormMenuOption);

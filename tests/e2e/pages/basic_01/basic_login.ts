@@ -26,9 +26,10 @@ export class BasicLoginPage {
     async basiclogin(email, password) {
         const AdminEmail = email;
         const AdminPassword = password;
+        const site_url = String(process.env.BASE_URL);
 
-
-        await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });
+        await this.page.goto(site_url, { waitUntil: 'networkidle' });
+        
         const Email_State_Check = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginEmailField);
             //if in BackEnd or FrontEnd
             if (Email_State_Check == true) {
@@ -45,8 +46,9 @@ export class BasicLoginPage {
     async basiclogin2(email, password) {
         const AdminEmail = email;
         const AdminPassword = password;
-        
-        await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });
+        const site_url = String(process.env.BASE_URL);
+
+        await this.page.goto(site_url, { waitUntil: 'networkidle' });
         const Email_State_Check = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginEmailField);
             //if in BackEnd or FrontEnd
             if (Email_State_Check == true) {
@@ -75,7 +77,10 @@ export class BasicLoginPage {
      */
     async wpufSetup() {
         //WPUF Setup
-        await this.page.goto('http://localhost:8889/wp-admin/index.php?page=wpuf-setup', { waitUntil: 'networkidle' }); 
+        const site_url = String(process.env.BASE_URL);
+        const wpuf_setup_page = site_url + 'index.php?page=wpuf-setup';
+        
+        await this.page.goto(wpuf_setup_page, { waitUntil: 'networkidle' }); 
         const WPUFSetup = await this.page.isVisible(Selectors_LoginPage.wpufSetup.clickWPUFSetupSkip);
             if (WPUFSetup == true) {
                 //await this.page.click(SelectorsPage.login.clickWPUFSetupSkip);
@@ -95,8 +100,9 @@ export class BasicLoginPage {
      *  
      */
     async validateBasicLogin() {
+        const site_url = String(process.env.BASE_URL);
 
-        await this.page.goto('http://localhost:8889/wp-admin/');
+        await this.page.goto(site_url, { waitUntil: 'networkidle' });
         //Validate LOGIN
         await this.page.waitForLoadState('domcontentloaded');
         const DashboardLanded = await this.page.isVisible(Selectors_LoginPage.validateBasicLogin.logingSuccessDashboard);
@@ -113,7 +119,9 @@ export class BasicLoginPage {
      *  
      */
     async pluginStatusCheck_Lite_Activate() {
-        await this.page.goto('http://localhost:8889/wp-admin/');
+        const site_url = String(process.env.BASE_URL);
+
+        await this.page.goto(site_url, { waitUntil: 'networkidle' });
         
         //Activate Lite
         await this.activate_WPUF_Lite();
@@ -121,7 +129,9 @@ export class BasicLoginPage {
 
 
     async pluginStatusCheck_Pro_Activate() {
-        await this.page.goto('http://localhost:8889/wp-admin/');
+        const site_url = String(process.env.BASE_URL);
+
+        await this.page.goto(site_url, { waitUntil: 'networkidle' });
         
         //Activate Pro
         await this.activate_WPUF_Pro();
@@ -130,7 +140,9 @@ export class BasicLoginPage {
 
 
     async pluginVisit() {
-        await this.page.goto('http://localhost:8889/wp-admin/');
+        const site_url = String(process.env.BASE_URL);
+
+        await this.page.goto(site_url, { waitUntil: 'networkidle' });
         await this.page.click(Selectors_LoginPage.basicNavigation.clickWPUFSidebar);
         await this.page.waitForLoadState('domcontentloaded');
 
@@ -146,7 +158,11 @@ export class BasicLoginPage {
 
     //Plugin Activation Check
     async activate_WPUF_Lite() {
-        await this.page.goto('http://localhost:8889/wp-admin/plugins.php');
+        const site_url = String(process.env.BASE_URL);
+        const plugins_page = site_url + 'plugins.php';
+
+        await this.page.goto(plugins_page, { waitUntil: 'networkidle' });
+        //Activate Plugin
         const ActivateWPUF = await this.page.isVisible(Selectors_LoginPage.pluginStatusCheck.clickWPUF_LitePlugin);
 
             if ( ActivateWPUF == true) {
@@ -164,7 +180,10 @@ export class BasicLoginPage {
     };
 
     async activate_WPUF_Pro() {
-        await this.page.goto('http://localhost:8889/wp-admin/plugins.php');
+        const site_url = String(process.env.BASE_URL);
+        const plugins_page = site_url + 'plugins.php';
+
+        await this.page.goto(plugins_page, { waitUntil: 'networkidle' });
         //Activate Plugin
         const ActivateWPUF_Pro = await this.page.isVisible(Selectors_LoginPage.pluginStatusCheck.clickWPUF_ProPlugin);
         
@@ -193,7 +212,10 @@ export class BasicLoginPage {
       *  
       */
     async change_WPUF_Settings() {
-        await this.page.goto('http://localhost:8889/wp-admin/admin.php?page=wpuf-post-forms');
+        const site_url = String(process.env.BASE_URL);
+        const wpuf_post_form_page = site_url + 'admin.php?page=wpuf-post-forms';
+
+        await this.page.goto(wpuf_post_form_page, { waitUntil: 'networkidle' });
         //Change Settings
         await this.page.click(Selectors_LoginPage.wpuf_SettingsPage.settingsTab);
         await expect (await this.page.isVisible(Selectors_LoginPage.wpuf_SettingsPage.settingsTab_Profile1)).toBeTruthy();

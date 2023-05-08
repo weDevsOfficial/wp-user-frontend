@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { Selectors_LogoutPage } from './selectors_Logout';
+import { Selectors_LogoutPage } from './selectors_logout';
 
 export class BasicLogoutPage {
     readonly page: Page;

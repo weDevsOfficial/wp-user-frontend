@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 import { expect, Page } from '@playwright/test';
-import { Selectors_PF_Create } from './selectors_PF_Create';
+import { Selectors_PF_Create } from './selectors_pf_create';
 
 
 //import { TestData } from '../tests/testdata';

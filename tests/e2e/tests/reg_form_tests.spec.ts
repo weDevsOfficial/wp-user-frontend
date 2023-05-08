@@ -1,9 +1,9 @@
 require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
-import { BasicLoginPage } from '../pages/01_Basic/basicLogin';
-import { BasicLogoutPage } from '../pages/01_Basic/basicLogout';
-import { PostForms_Create } from '../pages/02_PostForms/postForms_Create';
-import { RegistrationForms_Create } from '../pages/03_RegistrationForms/registrationForms_Create';
+import { BasicLoginPage } from '../pages/basic_01/basic_login';
+import { BasicLogoutPage } from '../pages/basic_01/basic_logout';
+import { PostForms_Create } from '../pages/post_forms_02/post_forms_create';
+import { RegistrationForms_Create } from '../pages/registration_forms_03/registration_forms_create';
 
 import { faker } from '@faker-js/faker';
 import * as fs from "fs"; //Clear Cookie

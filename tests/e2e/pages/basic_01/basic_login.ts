@@ -1,6 +1,6 @@
 require('dotenv').config();
 import { expect, Page, selectors } from '@playwright/test';
-import { Selectors_LoginPage } from './selectors_Login';
+import { Selectors_LoginPage } from './selectors_login';
 
 
 export class BasicLoginPage {

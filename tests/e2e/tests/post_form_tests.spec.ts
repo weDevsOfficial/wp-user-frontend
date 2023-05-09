@@ -16,10 +16,10 @@ fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 
 //Faker
 //Post-Forms-Faker
-const pf_postName1 = faker.lorem.word();
-const pf_postName2 = faker.lorem.word();
-const pf_postName3 = faker.lorem.word();
-const pf_postName4 = faker.lorem.word();
+const pf_postName1 = faker.lorem.sentence(2);
+const pf_postName2 = faker.lorem.sentence(2);
+const pf_postName3 = faker.lorem.sentence(2);
+const pf_postName4 = faker.lorem.sentence(2);
 
 
 

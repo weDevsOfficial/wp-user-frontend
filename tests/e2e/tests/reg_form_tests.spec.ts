@@ -15,10 +15,10 @@ import * as fs from "fs"; //Clear Cookie
 
 //Faker
 //Registration-Forms-Faker
-const rf_postName1 = faker.lorem.word();
-const rf_postName2 = faker.lorem.word();
-const rf_postName3 = faker.lorem.word();
-const rf_postName4 = faker.lorem.word();
+const rf_postName1 = faker.lorem.sentence(2);
+const rf_postName2 = faker.lorem.sentence(2);
+const rf_postName3 = faker.lorem.sentence(2);
+const rf_postName4 = faker.lorem.sentence(2);
 
 
 

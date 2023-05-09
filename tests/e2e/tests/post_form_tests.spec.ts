@@ -10,7 +10,7 @@ import * as fs from "fs"; //Clear Cookie
 
 
 
-
+fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 
 
 
@@ -20,9 +20,6 @@ const PF_postName1 = faker.lorem.word();
 const PF_postName2 = faker.lorem.word();
 const PF_postName3 = faker.lorem.word();
 const PF_postName4 = faker.lorem.word();
-
-
-
 
 
 

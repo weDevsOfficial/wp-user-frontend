@@ -23,7 +23,7 @@ export class BasicLoginPage {
      * 
      *  
      */
-    async basiclogin(email, password) {
+    async basic_login(email, password) {
         const AdminEmail = email;
         const AdminPassword = password;
         const site_url = String(process.env.BASE_URL);
@@ -43,7 +43,7 @@ export class BasicLoginPage {
         await this.page.context().storageState({ path: 'state.json' });
     };
 
-    async basiclogin2(email, password) {
+    async basic_login_plugin_visit(email, password) {
         const AdminEmail = email;
         const AdminPassword = password;
         const site_url = String(process.env.BASE_URL);

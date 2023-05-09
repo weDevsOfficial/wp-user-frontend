@@ -53,7 +53,7 @@ test.describe('TEST :-->', () => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
-        await basicLogin.basiclogin2('admin', 'password');
+        await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
         await regForms_Create.create_BlankForm_RF(RF_postName1);
@@ -75,7 +75,7 @@ test.describe('TEST :-->', () => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
-        await basicLogin.basiclogin2('admin', 'password');
+        await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
         await regForms_Create.create_BlankForm_RF(RF_postName2);
@@ -99,7 +99,7 @@ test.describe('TEST :-->', () => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
-        await basicLogin.basiclogin2('admin', 'password');
+        await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
         await regForms_Create.create_BlankForm_RF(RF_postName3);

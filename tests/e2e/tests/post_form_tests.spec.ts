@@ -52,7 +52,7 @@ test.describe('TEST :-->', () => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
-        await basicLogin.basiclogin2('admin', 'password');
+        await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
         await postForms_Create.create_BlankForm_PF(PF_postName1);
@@ -73,7 +73,7 @@ test.describe('TEST :-->', () => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
-        await basicLogin.basiclogin2('admin', 'password');
+        await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
         await postForms_Create.create_BlankForm_PF(PF_postName2);
@@ -96,7 +96,7 @@ test.describe('TEST :-->', () => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
-        await basicLogin.basiclogin2('admin', 'password');
+        await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
         await postForms_Create.create_BlankForm_PF(PF_postName3);
@@ -119,7 +119,7 @@ test.describe('TEST :-->', () => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
-        await basicLogin.basiclogin2('admin', 'password');
+        await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
         await postForms_Create.create_BlankForm_PF(PF_postName4);
@@ -143,7 +143,7 @@ test.describe('TEST :-->', () => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
-        await basicLogin.basiclogin2('admin', 'password');
+        await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
         await postForms_Create.create_BlankForm_PF(PF_postName1);
@@ -175,7 +175,7 @@ test.describe('TEST :-->', () => {
         const postForms_Create = new PostForms_Create(page);
         const basicLogin = new BasicLoginPage(page);
 
-        await basicLogin.basiclogin2('admin', 'password');
+        await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Preset Form
         await postForms_Create.create_Preset_PF(PF_postName1);

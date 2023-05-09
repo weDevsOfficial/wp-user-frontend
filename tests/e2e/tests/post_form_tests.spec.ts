@@ -16,10 +16,10 @@ fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 
 //Faker
 //Post-Forms-Faker
-const PF_postName1 = faker.lorem.word();
-const PF_postName2 = faker.lorem.word();
-const PF_postName3 = faker.lorem.word();
-const PF_postName4 = faker.lorem.word();
+const pf_postName1 = faker.lorem.word();
+const pf_postName2 = faker.lorem.word();
+const pf_postName3 = faker.lorem.word();
+const pf_postName4 = faker.lorem.word();
 
 
 
@@ -52,15 +52,15 @@ test.describe('TEST :-->', () => {
         await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
-        await postForms_Create.create_BlankForm_PF(PF_postName1);
+        await postForms_Create.create_BlankForm_PF(pf_postName1);
         //PostFields + Validate
         await postForms_Create.add_PostFields_PF();
         await postForms_Create.validate_PostFields_PF();
 
         //Save
-        await postForms_Create.save_Form_PF(PF_postName1);
+        await postForms_Create.save_Form_PF(pf_postName1);
         //Validate
-        await postForms_Create.validate_BlankForm_Created_PF(PF_postName1);
+        await postForms_Create.validate_BlankForm_Created_PF(pf_postName1);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
@@ -73,7 +73,7 @@ test.describe('TEST :-->', () => {
         await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
-        await postForms_Create.create_BlankForm_PF(PF_postName2);
+        await postForms_Create.create_BlankForm_PF(pf_postName2);
         //PostFields
         await postForms_Create.add_PostFields_PF();
         //Taxonomies + Validate
@@ -81,9 +81,9 @@ test.describe('TEST :-->', () => {
         await postForms_Create.validate_Taxonomies_PF();
 
         //Save
-        await postForms_Create.save_Form_PF(PF_postName2);
+        await postForms_Create.save_Form_PF(pf_postName2);
         //Validate
-        await postForms_Create.validate_BlankForm_Created_PF(PF_postName2);
+        await postForms_Create.validate_BlankForm_Created_PF(pf_postName2);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
@@ -96,7 +96,7 @@ test.describe('TEST :-->', () => {
         await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
-        await postForms_Create.create_BlankForm_PF(PF_postName3);
+        await postForms_Create.create_BlankForm_PF(pf_postName3);
         //PostFields
         await postForms_Create.add_PostFields_PF();
         //CustomFields + Validate
@@ -104,9 +104,9 @@ test.describe('TEST :-->', () => {
         await postForms_Create.validate_CustomFields_PF();
 
         //Save
-        await postForms_Create.save_Form_PF(PF_postName3);
+        await postForms_Create.save_Form_PF(pf_postName3);
         //Validate
-        await postForms_Create.validate_BlankForm_Created_PF(PF_postName3);
+        await postForms_Create.validate_BlankForm_Created_PF(pf_postName3);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
@@ -119,7 +119,7 @@ test.describe('TEST :-->', () => {
         await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
-        await postForms_Create.create_BlankForm_PF(PF_postName4);
+        await postForms_Create.create_BlankForm_PF(pf_postName4);
         //PostFields
         await postForms_Create.add_PostFields_PF();
         //Others + Validate
@@ -128,9 +128,9 @@ test.describe('TEST :-->', () => {
         await postForms_Create.set_MultiStep_Settings_PF();
 
         //Save
-        await postForms_Create.save_Form_PF(PF_postName4);
+        await postForms_Create.save_Form_PF(pf_postName4);
         //Validate
-        await postForms_Create.validate_BlankForm_Created_PF(PF_postName4);
+        await postForms_Create.validate_BlankForm_Created_PF(pf_postName4);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
@@ -143,7 +143,7 @@ test.describe('TEST :-->', () => {
         await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
-        await postForms_Create.create_BlankForm_PF(PF_postName1);
+        await postForms_Create.create_BlankForm_PF(pf_postName1);
         //PostFields + Validate
         await postForms_Create.add_PostFields_PF();
         await postForms_Create.validate_PostFields_PF();
@@ -159,9 +159,9 @@ test.describe('TEST :-->', () => {
         await postForms_Create.set_MultiStep_Settings_PF();
 
         //Save
-        await postForms_Create.save_Form_PF(PF_postName1);
+        await postForms_Create.save_Form_PF(pf_postName1);
         //Validate
-        await postForms_Create.validate_BlankForm_Created_PF(PF_postName1);
+        await postForms_Create.validate_BlankForm_Created_PF(pf_postName1);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 
@@ -175,15 +175,15 @@ test.describe('TEST :-->', () => {
         await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Preset Form
-        await postForms_Create.create_Preset_PF(PF_postName1);
+        await postForms_Create.create_Preset_PF(pf_postName1);
         //Validate
         await postForms_Create.validate_PostFields_PF();
         await postForms_Create.validate_Taxonomies_Preset_PF();
 
         //Save
-        await postForms_Create.save_Form_PF(PF_postName1);
+        await postForms_Create.save_Form_PF(pf_postName1);
         //Validate
-        await postForms_Create.validate_BlankForm_Created_PF(PF_postName1);
+        await postForms_Create.validate_BlankForm_Created_PF(pf_postName1);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });

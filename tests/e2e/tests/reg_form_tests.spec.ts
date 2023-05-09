@@ -15,10 +15,10 @@ import * as fs from "fs"; //Clear Cookie
 
 //Faker
 //Registration-Forms-Faker
-const RF_postName1 = faker.lorem.word();
-const RF_postName2 = faker.lorem.word();
-const RF_postName3 = faker.lorem.word();
-const RF_postName4 = faker.lorem.word();
+const rf_postName1 = faker.lorem.word();
+const rf_postName2 = faker.lorem.word();
+const rf_postName3 = faker.lorem.word();
+const rf_postName4 = faker.lorem.word();
 
 
 
@@ -56,13 +56,13 @@ test.describe('TEST :-->', () => {
         await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
-        await regForms_Create.create_BlankForm_RF(RF_postName1);
+        await regForms_Create.create_BlankForm_RF(rf_postName1);
         //PostFields
         await regForms_Create.add_ProfileFields_RF();
         //Save
-        await postForms_Create.save_Form_PF(RF_postName1);
+        await postForms_Create.save_Form_PF(rf_postName1);
         //Validate
-        await regForms_Create.validate_BlankForm_Created_RF(RF_postName1);
+        await regForms_Create.validate_BlankForm_Created_RF(rf_postName1);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
@@ -78,15 +78,15 @@ test.describe('TEST :-->', () => {
         await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
-        await regForms_Create.create_BlankForm_RF(RF_postName2);
+        await regForms_Create.create_BlankForm_RF(rf_postName2);
         //PostFields
         await regForms_Create.add_ProfileFields_RF();
         //CustomFields
         await postForms_Create.add_CustomFields_PF();
         //Save
-        await postForms_Create.save_Form_PF(RF_postName2);
+        await postForms_Create.save_Form_PF(rf_postName2);
         //Validate
-        await regForms_Create.validate_BlankForm_Created_RF(RF_postName2);
+        await regForms_Create.validate_BlankForm_Created_RF(rf_postName2);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
@@ -102,15 +102,15 @@ test.describe('TEST :-->', () => {
         await basicLogin.basic_login_plugin_visit(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
         
         //Post Blank Form
-        await regForms_Create.create_BlankForm_RF(RF_postName3);
+        await regForms_Create.create_BlankForm_RF(rf_postName3);
         //PostFields
         await regForms_Create.add_ProfileFields_RF();
         //Others
         await postForms_Create.add_Others_PF();
         //Save
-        await postForms_Create.save_Form_PF(RF_postName3);
+        await postForms_Create.save_Form_PF(rf_postName3);
         //Validate
-        await regForms_Create.validate_BlankForm_Created_RF(RF_postName3);
+        await regForms_Create.validate_BlankForm_Created_RF(rf_postName3);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });

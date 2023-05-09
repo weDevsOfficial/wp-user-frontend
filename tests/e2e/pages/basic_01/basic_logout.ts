@@ -1,3 +1,4 @@
+require('dotenv').config();
 import type { Page } from '@playwright/test';
 import { Selectors_LogoutPage } from './selectors_logout';
 
@@ -9,7 +10,9 @@ export class BasicLogoutPage {
     }
 
     async logOut() {
-        await this.page.goto('http://localhost:8889/wp-admin/', { waitUntil: 'networkidle' });
+        const site_url = String(process.env.BASE_URL);
+
+        await this.page.goto(site_url, { waitUntil: 'networkidle' });
         
         await this.page.hover(Selectors_LogoutPage.basicLogout.logoutHoverUsername);
         await this.page.click(Selectors_LogoutPage.basicLogout.logoutButton);

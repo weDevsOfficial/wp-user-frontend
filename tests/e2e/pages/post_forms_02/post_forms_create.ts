@@ -187,8 +187,8 @@ export class PostForms_Create {
         //From_PRO
         //RepeatField
         await this.page.click(Selectors_PF_Create.add_CustomFields_PF.customFieldsRepeatField);
-        const Check_Pro_Pop_UP = await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.check_Pro_Pop_UP);
-            if (Check_Pro_Pop_UP === true) {
+        const check_Pro_Popup = await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.check_Pro_Pop_UP);
+            if (check_Pro_Popup === true) {
                 await this.page.click(Selectors_PF_Create.add_CustomFields_PF.check_Pro_Pop_UP);
                 console.log("WPUF Pro is requred...")
             }
@@ -252,8 +252,8 @@ export class PostForms_Create {
         
         //From PRO
         //RepeatField
-        const Pro_CustomFields_PF = await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_RepeatField);
-        if (Pro_CustomFields_PF === true) {
+        const pro_CustomFields_PF = await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_RepeatField);
+        if (pro_CustomFields_PF === true) {
             //RepeatField
             await expect(await this.page.isVisible(Selectors_PF_Create.validate_CustomFields_PF.val_RepeatField)).toBeTruthy();
             //DateTime
@@ -303,8 +303,8 @@ export class PostForms_Create {
 
         //From_PRO
         await this.page.click(Selectors_PF_Create.add_Others_PF.othersShortCode);
-        const Check_Pro_Pop_UP = await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.check_Pro_Pop_UP);
-            if (Check_Pro_Pop_UP === true) {
+        const check_Pro_Popup = await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.check_Pro_Pop_UP);
+            if (check_Pro_Popup === true) {
                 await this.page.click(Selectors_PF_Create.add_CustomFields_PF.check_Pro_Pop_UP);
                 console.log("WPUF Pro is requred...")
             }
@@ -346,8 +346,8 @@ export class PostForms_Create {
         //ReCaptcha
             //Not visible
         //Shortcode
-        const Pro_Others_PF = await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Shortcode);
-        if (Pro_Others_PF === true) {
+        const pro_Others_PF = await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Shortcode);
+        if (pro_Others_PF === true) {
             //Shortcode
             await expect(await this.page.isVisible(Selectors_PF_Create.validate_Others_PF.val_Shortcode)).toBeTruthy();
             //ActionHook
@@ -369,8 +369,8 @@ export class PostForms_Create {
         await this.page.waitForLoadState('domcontentloaded');
         //Add Multi-Step-Check
         await this.page.click(Selectors_PF_Create.add_Others_PF.formEditorSettings);
-        const Pro_Text_Alert_In_Settings = await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.pro_Text_Alert_In_Settings);
-            if (Pro_Text_Alert_In_Settings === true) {  
+        const pro_Text_Alert_In_Settings = await this.page.isVisible(Selectors_PF_Create.add_CustomFields_PF.pro_Text_Alert_In_Settings);
+            if (pro_Text_Alert_In_Settings === true) {  
                 console.log("WPUF Pro is requred...");
             }
             else {

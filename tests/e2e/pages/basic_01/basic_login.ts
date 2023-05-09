@@ -24,19 +24,19 @@ export class BasicLoginPage {
      *  
      */
     async basic_login(email, password) {
-        const AdminEmail = email;
-        const AdminPassword = password;
+        const adminEmail = email;
+        const adminPassword = password;
         const site_url = String(process.env.BASE_URL);
 
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
         
-        const Email_State_Check = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginEmailField);
+        const emailStateCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginEmailField);
             //if in BackEnd or FrontEnd
-            if (Email_State_Check == true) {
-                await this.backend_Login(AdminEmail, AdminPassword);
+            if (emailStateCheck == true) {
+                await this.backend_Login(adminEmail, adminPassword);
             }
             else {
-                await this.frontend_Login(AdminEmail, AdminPassword);
+                await this.frontend_Login(adminEmail, adminPassword);
             }
         
         //Store Cookie State
@@ -44,18 +44,18 @@ export class BasicLoginPage {
     };
 
     async basic_login_plugin_visit(email, password) {
-        const AdminEmail = email;
-        const AdminPassword = password;
+        const adminEmail = email;
+        const adminPassword = password;
         const site_url = String(process.env.BASE_URL);
 
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
-        const Email_State_Check = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginEmailField);
+        const emailStateCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginEmailField);
             //if in BackEnd or FrontEnd
-            if (Email_State_Check == true) {
-                await this.backend_Login(AdminEmail, AdminPassword);
+            if (emailStateCheck == true) {
+                await this.backend_Login(adminEmail, adminPassword);
             }
             else {
-                await this.frontend_Login(AdminEmail, AdminPassword);
+                await this.frontend_Login(adminEmail, adminPassword);
             }
 
             
@@ -81,8 +81,8 @@ export class BasicLoginPage {
         const wpuf_setup_page = site_url + 'index.php?page=wpuf-setup';
         
         await this.page.goto(wpuf_setup_page, { waitUntil: 'networkidle' }); 
-        const WPUFSetup = await this.page.isVisible(Selectors_LoginPage.wpufSetup.clickWPUFSetupSkip);
-            if (WPUFSetup == true) {
+        const wpuf_Setup = await this.page.isVisible(Selectors_LoginPage.wpufSetup.clickWPUFSetupSkip);
+            if (wpuf_Setup == true) {
                 //await this.page.click(SelectorsPage.login.clickWPUFSetupSkip);
                 await this.page.click(Selectors_LoginPage.wpufSetup.clickWPUFSetupLetsGo);
                 await this.page.click(Selectors_LoginPage.wpufSetup.clickWPUFSetupContinue);
@@ -105,8 +105,8 @@ export class BasicLoginPage {
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
         //Validate LOGIN
         await this.page.waitForLoadState('domcontentloaded');
-        const DashboardLanded = await this.page.isVisible(Selectors_LoginPage.validateBasicLogin.logingSuccessDashboard);
-        await expect(DashboardLanded).toBeTruthy;    
+        const dashboard_Landed = await this.page.isVisible(Selectors_LoginPage.validateBasicLogin.logingSuccessDashboard);
+        await expect(dashboard_Landed).toBeTruthy;    
     };
 
 
@@ -163,9 +163,9 @@ export class BasicLoginPage {
 
         await this.page.goto(plugins_page, { waitUntil: 'networkidle' });
         //Activate Plugin
-        const ActivateWPUF = await this.page.isVisible(Selectors_LoginPage.pluginStatusCheck.clickWPUF_LitePlugin);
+        const activate_WPUF_Lite = await this.page.isVisible(Selectors_LoginPage.pluginStatusCheck.clickWPUF_LitePlugin);
 
-            if ( ActivateWPUF == true) {
+            if ( activate_WPUF_Lite == true) {
                 //Plugins were DeActive
                 await this.page.click(Selectors_LoginPage.pluginStatusCheck.clickWPUF_LitePlugin);
     
@@ -185,9 +185,9 @@ export class BasicLoginPage {
 
         await this.page.goto(plugins_page, { waitUntil: 'networkidle' });
         //Activate Plugin
-        const ActivateWPUF_Pro = await this.page.isVisible(Selectors_LoginPage.pluginStatusCheck.clickWPUF_ProPlugin);
+        const activate_WPUF_Pro = await this.page.isVisible(Selectors_LoginPage.pluginStatusCheck.clickWPUF_ProPlugin);
         
-            if ( ActivateWPUF_Pro== true) {
+            if ( activate_WPUF_Pro== true) {
                 //Plugins were DeActive
                 await this.page.click(Selectors_LoginPage.pluginStatusCheck.clickWPUF_ProPlugin);
     
@@ -238,24 +238,24 @@ export class BasicLoginPage {
     async backend_Login(email, password) {
         await this.page.fill(Selectors_LoginPage.basicLogin.loginEmailField, email);
 
-        const PasswordCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginPasswordField);
-        await expect(PasswordCheck).toBeTruthy();
+        const passwordCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginPasswordField);
+        await expect(passwordCheck).toBeTruthy();
         await this.page.fill(Selectors_LoginPage.basicLogin.loginPasswordField, password);
 
-        const LoginButtonCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginButton);
-        await expect(LoginButtonCheck).toBeTruthy();
+        const loginButtonCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginButton);
+        await expect(loginButtonCheck).toBeTruthy();
         await this.page.click(Selectors_LoginPage.basicLogin.loginButton);
     }
 
     async frontend_Login(email, password) {
         await this.page.fill(Selectors_LoginPage.basicLogin.loginEmailField2, email);
 
-        const PasswordCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginPasswordField2);
-        await expect(PasswordCheck).toBeTruthy();
+        const passwordCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginPasswordField2);
+        await expect(passwordCheck).toBeTruthy();
         await this.page.fill(Selectors_LoginPage.basicLogin.loginPasswordField2, password);
 
-        const LoginButtonCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginButton2);
-        await expect(LoginButtonCheck).toBeTruthy();
+        const loginButtonCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginButton2);
+        await expect(loginButtonCheck).toBeTruthy();
         await this.page.click(Selectors_LoginPage.basicLogin.loginButton2);
     }
 

@@ -26,8 +26,6 @@ const rf_postName4 = faker.lorem.sentence(2);
 
 
 
-
-
 export default function Registration_Form_Tests() {
 
 

@@ -48,23 +48,7 @@ jobs:
         run: |
             npm i
             grunt release
-            
-
-      # - name: Composer install and build (WPUF-pro)
-      #   run: |
-      #       cd plugins/wpuf-pro
-      #       composer config allow-plugins.composer/installers true
-      #       composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-      #       composer update
-      #       composer install
-      #       composer dump-autoload -o
-            
-      # - name: Npm install and build (WPUF-pro)
-      #   run: |
-      #     cd plugins/wpuf-pro
-      #     npm i
-      #     grunt default
-
+          
     
 
       - name: Install dependencies

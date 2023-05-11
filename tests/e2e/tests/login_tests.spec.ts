@@ -28,10 +28,9 @@ test.describe('TEST :-->', () => {
      * @Test_002 : Admin is skipping WPUF setup...
      * @Test_003 : Admin is checking Dashboard page reached...
      * @Test_004 : Here, Admin is checking Plugin Status - Lite Activation...
-     * @Test_005 : Here, Admin is checking Plugin Status - Pro Activation
-     * @Test_006 : Here, Admin is visiting WPUF Page
-     * @Test_007 : Admin is changing WPUF Settings...
-     * @Test_008 : Admin is able to Log out succesfully...
+     * @Test_005 : Here, Admin is visiting WPUF Page
+     * @Test_006 : Admin is changing WPUF Settings...
+     * @Test_007 : Admin is able to Log out succesfully...
      * 
      * 
      *  
@@ -60,22 +59,18 @@ test.describe('TEST :-->', () => {
         await basicLogin.pluginStatusCheck_Lite_Activate();
     });
 
-    test.skip('005:[Login] Here, Admin is checking Plugin Status - Pro Activation', async ({ page }) => {
-        const basicLogin = new BasicLoginPage(page);
-        await basicLogin.pluginStatusCheck_Pro_Activate();
-    });
 
-    test('006:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
+    test('005:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
         const basicLogin = new BasicLoginPage(page);
         await basicLogin.pluginVisit();
     });
 
-    test('007:[Login] Here, Admin is changing WPUF Settings', async ({ page }) => {
+    test('006:[Login] Here, Admin is changing WPUF Settings', async ({ page }) => {
         const basicLogin = new BasicLoginPage(page);
         await basicLogin.change_WPUF_Settings();
     });
 
-    test('008 Here, Admin is able to Log out succesfully', async ({page}) => {
+    test('007 Here, Admin is able to Log out succesfully', async ({page}) => {
         const basicLogoutPage = new BasicLogoutPage(page);
         const basicLogin = new BasicLoginPage(page);
         await basicLogin.basic_login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
@@ -83,7 +78,7 @@ test.describe('TEST :-->', () => {
     })
 
 
-    
+
 
 });
 

@@ -399,11 +399,15 @@ class WPUF_Frontend_Account {
             $user->user_pass = $pass1;
         }
 
+        do_action('wpuf_before_update_profile', $user, $_POST);
+
         $result = wp_update_user( $user );
 
         if ( is_wp_error( $result ) ) {
             wp_send_json_error( __( 'Your current password is incorrect.', 'wp-user-frontend' ) );
         }
+
+        do_action('wpuf_after_update_profile', $result);
 
         wp_send_json_success();
     }

@@ -30,13 +30,6 @@ jobs:
           node-version: '14.x'
       
 
-      # - name: Clone WPUF-pro
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: weDevsOfficial/wpuf-pro
-      #     token: ${{ secrets.ACCESS_TOKEN }}
-      #     path: 'plugins/wpuf-pro'
-      #     ref: 'develop'
 
       - name: Composer install and build (WPUF-lite)
         run: |

@@ -41,7 +41,7 @@ test.describe('TEST :-->', () => {
 
 
 
-        await basicLogin.basic_login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+        await basicLogin.basic_login(process.env.QA_ADMIN_USERNAME, process.env.QA_ADMIN_PASSWORD);
     });
 
     test('002:[Login] Here, Admin is skipping WPUF setup', async ({ page }) => {
@@ -73,7 +73,7 @@ test.describe('TEST :-->', () => {
     test('007 Here, Admin is able to Log out succesfully', async ({page}) => {
         const basicLogoutPage = new BasicLogoutPage(page);
         const basicLogin = new BasicLoginPage(page);
-        await basicLogin.basic_login(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+        await basicLogin.basic_login(process.env.QA_ADMIN_USERNAME, process.env.QA_ADMIN_PASSWORD);
         await basicLogoutPage.logOut();
     })
 

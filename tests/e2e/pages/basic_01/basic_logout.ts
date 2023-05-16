@@ -10,7 +10,7 @@ export class BasicLogoutPage {
     }
 
     async logOut() {
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
 
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
         

@@ -29,7 +29,7 @@ export class PostForms_Create {
     //BlankForm
     async create_BlankForm_PF(newPostName) {
         //Visit Post Form Page
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
         const wpuf_post_form_page = site_url + 'admin.php?page=wpuf-post-forms';
         
         await this.page.goto(wpuf_post_form_page, { waitUntil: 'networkidle' }); 
@@ -56,7 +56,7 @@ export class PostForms_Create {
     //PresetForm
     async create_Preset_PF(newPostName) {
         //Visit Post Form Page
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
         const wpuf_post_form_page = site_url + 'admin.php?page=wpuf-post-forms';
         
         await this.page.goto(wpuf_post_form_page, { waitUntil: 'networkidle' }); 

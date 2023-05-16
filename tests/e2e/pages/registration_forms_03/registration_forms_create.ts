@@ -27,7 +27,7 @@ export class RegistrationForms_Create {
     //BlankForm
     async create_BlankForm_RF(newRegistrationName) {
         //Visit Post Form Page
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
         const wpuf_reg_form_page = site_url + 'admin.php?page=wpuf-profile-forms';
         
         await this.page.goto(wpuf_reg_form_page, { waitUntil: 'networkidle' }); 

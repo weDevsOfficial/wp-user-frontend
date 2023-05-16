@@ -26,7 +26,7 @@ export class BasicLoginPage {
     async basic_login(email, password) {
         const adminEmail = email;
         const adminPassword = password;
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
 
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
         
@@ -46,7 +46,7 @@ export class BasicLoginPage {
     async basic_login_plugin_visit(email, password) {
         const adminEmail = email;
         const adminPassword = password;
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
 
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
         const emailStateCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginEmailField);
@@ -77,7 +77,7 @@ export class BasicLoginPage {
      */
     async wpufSetup() {
         //WPUF Setup
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
         const wpuf_setup_page = site_url + 'index.php?page=wpuf-setup';
         
         await this.page.goto(wpuf_setup_page, { waitUntil: 'networkidle' }); 
@@ -100,7 +100,7 @@ export class BasicLoginPage {
      *  
      */
     async validateBasicLogin() {
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
 
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
         //Validate LOGIN
@@ -119,7 +119,7 @@ export class BasicLoginPage {
      *  
      */
     async pluginStatusCheck_Lite_Activate() {
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
 
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
         
@@ -129,7 +129,7 @@ export class BasicLoginPage {
 
 
     async pluginStatusCheck_Pro_Activate() {
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
 
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
         
@@ -140,7 +140,7 @@ export class BasicLoginPage {
 
 
     async pluginVisit() {
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
 
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
         await this.page.click(Selectors_LoginPage.basicNavigation.clickWPUFSidebar);
@@ -158,7 +158,7 @@ export class BasicLoginPage {
 
     //Plugin Activation Check
     async activate_WPUF_Lite() {
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
         const plugins_page = site_url + 'plugins.php';
 
         await this.page.goto(plugins_page, { waitUntil: 'networkidle' });
@@ -180,7 +180,7 @@ export class BasicLoginPage {
     };
 
     async activate_WPUF_Pro() {
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
         const plugins_page = site_url + 'plugins.php';
 
         await this.page.goto(plugins_page, { waitUntil: 'networkidle' });
@@ -212,7 +212,7 @@ export class BasicLoginPage {
       *  
       */
     async change_WPUF_Settings() {
-        const site_url = String(process.env.BASE_URL);
+        const site_url = String(process.env.QA_BASE_URL);
         const wpuf_post_form_page = site_url + 'admin.php?page=wpuf-post-forms';
 
         await this.page.goto(wpuf_post_form_page, { waitUntil: 'networkidle' });

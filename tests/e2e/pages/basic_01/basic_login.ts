@@ -28,6 +28,7 @@ export class BasicLoginPage {
         const adminPassword = password;
         const site_url = String(process.env.QA_BASE_URL);
 
+        console.log(site_url);
         await this.page.goto(site_url, { waitUntil: 'networkidle' });
         
         const emailStateCheck = await this.page.isVisible(Selectors_LoginPage.basicLogin.loginEmailField);

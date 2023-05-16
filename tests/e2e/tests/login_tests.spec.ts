@@ -39,8 +39,7 @@ test.describe('TEST :-->', () => {
     test('001:[Login] Here, Admin is logging into Admin-Dashboard', async ({ page }) => {
         const basicLogin = new BasicLoginPage(page);
 
-
-
+        console.log(process.env.QA_ADMIN_USERNAME, process.env.QA_ADMIN_PASSWORD);
         await basicLogin.basic_login(process.env.QA_ADMIN_USERNAME, process.env.QA_ADMIN_PASSWORD);
     });
 

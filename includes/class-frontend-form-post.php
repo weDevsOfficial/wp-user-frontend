@@ -315,6 +315,28 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $guest_verify          = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : 'false';
         $attachments_to_delete = isset( $_POST['delete_attachments'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['delete_attachments'] ) ) : [];
 
+
+        // validation for The Events Calendar
+        if ( 'tribe_events' === $this->form_settings['post_type'] ) {
+            $start_date = ! empty( $_POST['_EventStartDate'] ) ? sanitize_text_field( wp_unslash( $_POST['_EventStartDate'] ) ) : '';
+            $end_date   = ! empty( $_POST['_EventEndDate'] ) ? sanitize_text_field( wp_unslash( $_POST['_EventEndDate'] ) ) : '';
+
+            if ( empty( $start_date ) || empty( $end_date ) ) {
+                return;
+            }
+            try {
+                $origin   = new DateTimeImmutable( $start_date );
+                $target   = new DateTimeImmutable( $end_date );
+                $interval = $origin->diff( $target );
+
+                if ( $interval->invert ) {
+                    $this->send_error( __( 'Event end date should be after event start date', 'wp-user-frontend' ) );
+                }
+            } catch ( Exception $ex ) {
+                $this->send_error( __( 'Error processing event date', 'wp-user-frontend' ) );
+            }
+        }
+
         // check each form field for content restriction
         foreach ( $this->form_fields as $single_field ) {
             if ( empty( $single_field['content_restriction'] ) ) {

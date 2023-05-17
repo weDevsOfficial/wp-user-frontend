@@ -150,44 +150,80 @@ abstract class WPUF_Post_Form_Template {
      * @return void
      */
     public function after_insert( $post_id, $form_id, $form_settings ) {
-        // we can return form here if it is not a 'The Event Calender' event
-        if ( empty( $form_settings['post_type'] ) || 'tribe_events' !== $form_settings['post_type'] ) {
-            return;
-        }
+        // we can return form here if it is not a 'The Event Calendar' event
+        if ( class_exists( 'Tribe__Events__Main' ) && version_compare( Tribe__Events__Main::VERSION, 6, '<' ) ) {
+            $timezone       = get_option( 'timezone_string', 'UTC+0' );
+            $start_date     = wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT );
+            $end_date       = wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT );
+            $start_date_utc = wpuf_current_datetime()->setTimezone( $timezone )->format( self::TIB_DATETIME_FORMAT );
+            $end_date_utc   = wpuf_current_datetime()->setTimezone( $timezone )->format( self::TIB_DATETIME_FORMAT );
 
-        $tribe_api = WP_PLUGIN_DIR . '/the-events-calendar/src/Tribe/API.php';
+            $meta_to_update = [];
+            $meta_to_delete = [];
 
-        if ( ! file_exists( $tribe_api ) ) {
-            return;
+            if ( 'yes' === $post_data['_EventAllDay'] ) {
+                $p1d            = new DateInterval( 'PT23H59M59S' );
+                $new_start_date = $start_date;
+                $new_end_date   = $end_date;
+
+                $meta_to_update['_EventAllDay']       = $post_data['_EventAllDay'];
+                $meta_to_update['_EventStartDate']    = $new_start_date;
+                $meta_to_update['_EventEndDate']      = $new_end_date;
+                $meta_to_update['_EventStartDateUTC'] = $start_date_utc;
+                $meta_to_update['_EventEndDateUTC']   = $end_date_utc;
+            } else {
+                $meta_to_delete[]                     = '_EventAllDay';
+                $meta_to_update['_EventStartDate']    = $start_date;
+                $meta_to_update['_EventEndDate']      = $end_date;
+                $meta_to_update['_EventStartDateUTC'] = $start_date_utc;
+                $meta_to_update['_EventEndDateUTC']   = $end_date_utc;
+                $meta_to_update['_EventDuration']     = 32400;
+            }
+
+            foreach ( $meta_to_update as $meta_key => $meta_value ) {
+                update_post_meta( $post_id, $meta_key, $meta_value );
+            }
+
+            foreach ( $meta_to_delete as $meta_key ) {
+                delete_post_meta( $post_id, $meta_key );
+            }
         }
 
         $event_data = [
             'EventAllDay'    => ! empty( $post_data['_EventAllDay'] ) ? $post_data['_EventAllDay'] : 'yes',
             'EventStartDate' => ! empty( $post_data['_EventStartDate'] ) ? $post_data['_EventStartDate'] : wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT ),
             'EventEndDate'   => ! empty( $post_data['_EventEndDate'] ) ? $post_data['_EventEndDate'] : wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT ),
+            'EventTimezone'  => ! empty( $post_data['_EventTimeZone'] ) ? $post_data['_EventTimeZone'] : get_option( 'timezone_string', 'UTC+0' ),
         ];
+
+        if ( 'no' === $event_data['EventAllDay'] ) {
+            $event_data = [
+                'EventStartTime' => wpuf_current_datetime()->modify( $event_data['EventStartDate'] )->format( 'h:ia' ),
+                'EventEndTime'   => wpuf_current_datetime()->modify( $event_data['EventEndDate'] )->format( 'h:ia' ),
+            ];
+        }
+
+        $tribe_api = WP_PLUGIN_DIR . '/the-events-calendar/src/Tribe/API.php';
 
         require_once $tribe_api;
 
         /**
          * Opportunity to change 'The Event Calendar' metadata just before WPUF is saving it to DB
          *
-         * @since WPUF_SINCE
+         * @since WPUFPRO_SINCE
          *
          * @param array $event_data The event metadata
          * @param int $post_id The post id, in other words, The Event
-         *
          */
         $event_data = apply_filters( 'wpuf_tib_event_meta', $event_data, $post_id );
         Tribe__Events__API::saveEventMeta( $post_id, $event_data );
 
         /**
-         * Hook fired just after WPUF is saved 'The Event Calender' metadata to the DB
+         * Hook fired just after WPUF is saved 'The Event Calendar' metadata to the DB
          *
-         * @since WPUF_SINCE
+         * @since WPUFPRO_SINCE
          *
          * @param int $post_id The post_id, in other words, the event_id
-         *
          */
         do_action( 'wpuf_tib_after_saving_event_meta', $post_id );
     }

@@ -22,6 +22,14 @@
     "phpcompatibility/phpcompatibility-wp": "dev-master",
     "phpunit/phpunit": "7.5.9"
   },
+  "autoload": {
+    "psr-4": {
+      "Wp\\User\\Frontend\\": "includes/"
+    },
+    "files": [
+      "wpuf-functions.php"
+    ]
+  },
   "scripts": {
     "phpcs": [
       "phpcs -p -s"

@@ -71,7 +71,13 @@ class WPUF_Admin_Form_Template {
             return;
         }
 
-        wp_enqueue_style( 'wpuf-formbuilder', WPUF_ASSET_URI . '/css/wpuf-form-builder.css' );
+        $form_builder_css_deps = wpuf()->assets->form_builder_css_deps;
+
+        foreach ( $form_builder_css_deps as $deps ) {
+            wp_enqueue_style( $deps );
+        }
+
+        wp_enqueue_style( 'wpuf-form-builder' );
     }
 
     /**

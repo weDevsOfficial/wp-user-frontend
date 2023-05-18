@@ -237,7 +237,7 @@ class WPUF_Subscription {
      * @since 2.2
      */
     public function subscription_script() {
-        wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', [ 'jquery' ], WPUF_VERSION, true );
+        // wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', [ 'jquery' ], WPUF_VERSION, true );
         wp_localize_script(
             'wpuf-subscriptions', 'wpuf_subs_vars', array(
                 'wpuf_subscription_delete_nonce' => wp_create_nonce( 'wpuf-subscription-delete-nonce' ),

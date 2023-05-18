@@ -49,7 +49,7 @@ class WPUF_Admin_Settings {
         add_filter( 'submenu_file', [ $this, 'fix_submenu_file' ] );
 
         add_action( 'admin_init', [ $this, 'handle_tools_action' ] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+        // add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 
         add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ], 1 );
         add_action( 'wp_ajax_wpuf_import_forms', [ $this, 'import_forms' ] );
@@ -485,8 +485,8 @@ class WPUF_Admin_Settings {
             return;
         }
 
-        wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css', false, WPUF_VERSION );
-        wp_enqueue_script( 'wpuf-admin-script', WPUF_ASSET_URI . '/js/wpuf-admin.js', [ 'jquery' ], WPUF_VERSION, false );
+        // wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css', false, WPUF_VERSION );
+        // wp_enqueue_script( 'wpuf-admin-script', WPUF_ASSET_URI . '/js/wpuf-admin.js', [ 'jquery' ], WPUF_VERSION, false );
 
         wp_localize_script(
             'wpuf-admin-script', 'wpuf_admin_script', [

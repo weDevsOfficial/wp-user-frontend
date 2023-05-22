@@ -1216,7 +1216,7 @@ $changelog = [
             [
                 'title'       => __( 'Fatal error when use PHP lower version (5.4 or lower)', 'wp-user-frontend' ),
                 'type'        => 'Fix',
-                'description' => __( "It was unable to install WP User Frontend with PHP 5.4 or lower version. Here is the error details: <br><br><strong>Fatal error: Can't use method return value in write context in /wp-user-frontend/class/frontend-form-post.php on line 194</strong>", 'wp-user-frontend' ),
+                'description' => __( "It was unable to install WP User Frontend with PHP 5.4 or lower version. Here is the error details: <br><br><strong>Fatal error: Can't use method return value in write context in /wp-user-frontend/class/frontend-form-WPUF_Post_Form_Template_Post.php on line 194</strong>", 'wp-user-frontend' ),
             ],
             [
                 'title'       => __( 'Product form was unable to show the single gallery image', 'wp-user-frontend' ),

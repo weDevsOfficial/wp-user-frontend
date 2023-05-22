@@ -76,35 +76,35 @@ class Assets {
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout5.css',
             ],
             'jquery-ui'      => [
-                'src' => WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css',
+                'src'     => WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css',
                 'version' => '1.9.1',
             ],
             'sweetalert2'    => [
-                'src' => WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css',
+                'src'     => WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css',
                 'version' => '11.4.19',
             ],
             'font-awesome'   => [
-                'src' => WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css',
+                'src'     => WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css',
                 'version' => '4.7.0',
             ],
             'selectize'      => [
-                'src' => WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css',
+                'src'     => WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css',
                 'version' => '0.12.4',
             ],
             'toastr'         => [
-                'src' => WPUF_ASSET_URI . '/vendor/toastr/toastr.min.css',
+                'src'     => WPUF_ASSET_URI . '/vendor/toastr/toastr.min.css',
                 'version' => '2.1.3',
             ],
             'tooltip'        => [
-                'src' => WPUF_ASSET_URI . '/vendor/tooltip/tooltip.css',
+                'src'     => WPUF_ASSET_URI . '/vendor/tooltip/tooltip.css',
                 'version' => '3.3.7',
             ],
             'form-builder'   => [
                 'src'  => WPUF_ASSET_URI . '/css/wpuf-form-builder.css',
                 'deps' => $this->form_builder_css_deps,
             ],
-            'admin'   => [
-                'src'  => WPUF_ASSET_URI . '/css/admin.css',
+            'admin'          => [
+                'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
         ];
 
@@ -132,7 +132,7 @@ class Assets {
 //         * Data required for building the form
 //         */
 //        require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
-//        require_once WPUF_ROOT . '/includes/free/prompt.php';
+//        require_once WPUF_ROOT . '/includes/Free/WPUF_Pro_Prompt.php';
 //        $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', [
 //            'post'              => $post,
 //            'form_fields'       => wpuf_get_form_fields( $post->ID ),
@@ -157,67 +157,78 @@ class Assets {
             'vue'                     => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vue/vue' . $this->suffix . '.js',
                 'in_footer' => true,
-                'version' => '2.2.4',
+                'version'   => '2.2.4',
             ],
             'vuex'                    => [
-                'src'       => WPUF_ASSET_URI . '/vendor/vue/vuex' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/vendor/vuex/vuex' . $this->suffix . '.js',
                 'in_footer' => true,
-                'version' => '2.2.1',
+                'version'   => '2.2.1',
             ],
             'sweetalert2'             => [
-                'src'       => WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.js' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2' . $this->suffix . '.js',
                 'in_footer' => true,
-                'version' => '11.4.19',
+                'version'   => '11.4.19',
             ],
             'jquery-scrollTo'         => [
                 'src'       => WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo' . $this->suffix . '.js',
                 'in_footer' => true,
                 'deps'      => [ 'jquery' ],
-                'version'      => '11.4.19',
+                'version'   => '11.4.19',
             ],
             'selectize'               => [
                 'src'       => WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize' . $this->suffix . '.js',
                 'in_footer' => true,
                 'deps'      => [ 'jquery' ],
-                'version'      => '0.12.4',
+                'version'   => '0.12.4',
             ],
             'toastr'                  => [
                 'src'       => WPUF_ASSET_URI . '/vendor/toastr/toastr' . $this->suffix . '.js',
                 'in_footer' => true,
-                'version' => '2.1.3',
+                'version'   => '2.1.3',
             ],
             'clipboard'               => [
                 'src'       => WPUF_ASSET_URI . '/vendor/clipboard/clipboard' . $this->suffix . '.js',
                 'in_footer' => true,
-                'version' => '1.6.0',
+                'version'   => '1.6.0',
             ],
             'tooltip'                 => [
                 'src'       => WPUF_ASSET_URI . '/vendor/tooltip/tooltip' . $this->suffix . '.js',
                 'in_footer' => true,
-                'version' => '3.3.7',
+                'version'   => '3.3.7',
             ],
             'form-builder-mixins'     => [
-                'src'       => WPUF_ASSET_URI . 'js/wpuf-form-builder-mixins.js' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins' . $this->suffix . '.js',
                 'deps'      => $form_builder_js_deps,
                 'in_footer' => true,
             ],
             'form-builder-components' => [
-                'src'       => WPUF_ASSET_URI . 'js/wpuf-form-builder-components.js' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-components' . $this->suffix . '.js',
                 'deps'      => [ 'wpuf-form-builder-mixins' ],
                 'in_footer' => true,
             ],
             'form-builder'            => [
-                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder.js' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder' . $this->suffix . '.js',
                 'deps'      => [ 'wpuf-form-builder-components' ],
                 'in_footer' => true,
             ],
             'admin'                   => [
-                'src'  => WPUF_ASSET_URI . '/js/wpuf-admin.js' . $this->suffix . '.js',
+                'src'  => WPUF_ASSET_URI . '/js/wpuf-admin' . $this->suffix . '.js',
                 'deps' => [ 'jquery' ],
             ],
-            'subscriptions'                   => [
-                'src'  => WPUF_ASSET_URI . '/js/subscriptions.js' . $this->suffix . '.js',
-                'deps' => [ 'jquery' ],
+            'subscriptions'           => [
+                'src'       => WPUF_ASSET_URI . '/js/subscriptions' . $this->suffix . '.js',
+                'deps'      => [ 'jquery' ],
+                'in_footer' => true,
+            ],
+            'timepicker'              => [
+                'src'       => WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js',
+                'deps'      => [ 'jquery-ui-datepicker' ],
+                'version'   => '1.2',
+                'in_footer' => true,
+            ],
+            'form-builder-wpuf-forms' => [
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',
+                'deps'      => [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ],
                 'in_footer' => true,
             ],
         ];

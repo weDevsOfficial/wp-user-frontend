@@ -2601,7 +2601,7 @@ msgid ""
 "It was unable to install WP User Frontend with PHP 5.4 or lower version. "
 "Here is the error details: <br><br><strong>Fatal error: Can't use method "
 "return value in write context in "
-"/wp-user-frontend/class/frontend-form-post.php on line 194</strong>"
+"/wp-user-frontend/class/frontend-form-WPUF_Post_Form_Template_Post.php on line 194</strong>"
 msgstr ""
 
 #: admin/html/whats-new.php:1222
@@ -4632,11 +4632,11 @@ msgid "No subscription pack found."
 msgstr ""
 
 #: class/payment.php:134
-msgid "Your free package has been activated. Enjoy!"
+msgid "Your Free package has been activated. Enjoy!"
 msgstr ""
 
 #: class/payment.php:136
-msgid "You already have activated a free package previously."
+msgid "You already have activated a Free package previously."
 msgstr ""
 
 #: class/payment.php:154 includes/class-customizer.php:56
@@ -6859,7 +6859,7 @@ msgstr ""
 #: includes/free/loader.php:289
 msgid ""
 "<a target=\"_blank\" href=\"https://ipstack.com/dashboard\">Register "
-"here</a> to get your free ipstack api key"
+"here</a> to get your Free ipstack api key"
 msgstr ""
 
 #: includes/free/loader.php:296

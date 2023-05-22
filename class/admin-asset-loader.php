@@ -42,7 +42,7 @@ class WPUF_Admin_Assets {
          * Data required for building the form
          */
         require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
-        require_once WPUF_ROOT . '/includes/free/prompt.php';
+        require_once WPUF_ROOT . '/includes/Free/WPUF_Pro_Prompt.php';
 
         $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', [
             'post'              => $post,

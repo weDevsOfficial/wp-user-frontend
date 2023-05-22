@@ -128,12 +128,12 @@ class WPUF_Payment {
                 $wpuf_user         = new WPUF_User( $current_user->ID );
 
                 if ( ! $wpuf_user->subscription()->used_free_pack( $pack_id ) ) {
-                    wpuf_get_user( $current_user->ID )->subscription()->add_pack( $pack_id, null, false, 'free' );
+                    wpuf_get_user( $current_user->ID )->subscription()->add_pack( $pack_id, null, false, 'Free' );
                     $wpuf_user->subscription()->add_free_pack( $current_user->ID, $pack_id );
 
-                    $message = apply_filters( 'wpuf_fp_activated_msg', __( 'Your free package has been activated. Enjoy!', 'wp-user-frontend' ) );
+                    $message = apply_filters( 'wpuf_fp_activated_msg', __( 'Your Free package has been activated. Enjoy!', 'wp-user-frontend' ) );
                 } else {
-                    $message = apply_filters( 'wpuf_fp_activated_error', __( 'You already have activated a free package previously.', 'wp-user-frontend' ) );
+                    $message = apply_filters( 'wpuf_fp_activated_error', __( 'You already have activated a Free package previously.', 'wp-user-frontend' ) );
                 }
                 ?>
                     <div class="wpuf-info"><?php echo esc_html( $message ); ?></div>

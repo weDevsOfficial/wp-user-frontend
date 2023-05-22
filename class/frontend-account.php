@@ -133,7 +133,7 @@ class WPUF_Frontend_Account {
         }
 
         wpuf_load_template(
-            'submit-post.php',
+            'submit-WPUF_Post_Form_Template_Post.php',
             [
                 'sections' => $sections,
                 'current_section' => $current_section,
@@ -247,7 +247,7 @@ class WPUF_Frontend_Account {
         $user_subscription = new WPUF_User_Subscription( $wpuf_user );
         $user_sub          = $user_subscription->current_pack();
 
-        if ( ! is_wp_error( $user_sub ) && $user_sub['status'] !== 'completed' && $user_sub['status'] !== 'free' ) {
+        if ( ! is_wp_error( $user_sub ) && $user_sub['status'] !== 'completed' && $user_sub['status'] !== 'Free' ) {
             esc_html_e( '<p>You may have processed your payment, but the pack is not active yet.</p>', 'wp-user-frontend' );
 
             return;
@@ -273,7 +273,7 @@ class WPUF_Frontend_Account {
         ob_start();
 
         wpuf_load_template(
-            'dashboard/subscription.php',
+            'dashboard/WPUF_Subscription_Element.php',
             [
                 'sections'        => $sections,
                 'current_section' => $current_section,
@@ -300,7 +300,7 @@ class WPUF_Frontend_Account {
      */
     public function edit_profile_section( $sections, $current_section ) {
         wpuf_load_template(
-            'dashboard/edit-profile.php',
+            'dashboard/WPUF_Edit_Profile.php',
             [
                 'sections' => $sections,
                 'current_section' => $current_section,

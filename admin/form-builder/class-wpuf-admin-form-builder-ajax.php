@@ -1,4 +1,7 @@
 <?php
+
+use Wp\User\Frontend\Admin\WPUF_Admin_Form_Builder;
+
 /**
  * Ajax handlers
  */

@@ -2003,10 +2003,10 @@ function wpuf_is_license_expired() {
  * @return array
  */
 function wpuf_get_post_form_templates() {
-    require_once WPUF_ROOT . '/class/post-form-templates/post.php';
+    require_once WPUF_ROOT . '/includes/Admin/PostFormTemplates/WPUF_Post_Form_Template_Post.php';
 
     $integrations                                 = [];
-    $integrations['WPUF_Post_Form_Template_Post'] = new WPUF_Post_Form_Template_Post();
+    $integrations['WPUF_Post_Form_Template_Post'] = new Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Post_Form_Template_Post();
 
     return apply_filters( 'wpuf_get_post_form_templates', $integrations );
 }

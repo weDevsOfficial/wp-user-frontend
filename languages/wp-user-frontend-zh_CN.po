@@ -1768,11 +1768,11 @@ msgid "Please select your payment page from admin panel"
 msgstr "请从管理面板选择付款页面"
 
 #: ../class/payment.php:117
-msgid "Your free package has been activated. Enjoy!"
+msgid "Your Free package has been activated. Enjoy!"
 msgstr "你的免费套餐已经激活。"
 
 #: ../class/payment.php:119
-msgid "You already have activated a free package previously."
+msgid "You already have activated a Free package previously."
 msgstr "你之前已经激活一个免费套餐。"
 
 #: ../class/payment.php:143
@@ -3112,7 +3112,7 @@ msgstr "请修正错误以继续进行"
 #~ msgid "Post Left:"
 #~ msgstr "文章剩余："
 
-#~ msgid "You can only buy the free pack once. Proceed?"
+#~ msgid "You can only buy the Free pack once. Proceed?"
 #~ msgstr "你可以购买一次免费包，继续？"
 
 #~ msgid "Click here to complete the payment on %s"

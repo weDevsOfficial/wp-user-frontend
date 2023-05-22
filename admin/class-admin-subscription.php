@@ -33,7 +33,7 @@ class WPUF_Admin_Subscription {
         // new subscription metabox hooks
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
         add_action( 'admin_print_styles-post-new.php', [ $this, 'enqueue_scripts' ] );
-        add_action( 'admin_print_styles-post.php', [ $this, 'enqueue_scripts' ] );
+        add_action( 'admin_print_styles-WPUF_Post_Form_Template_Post.php', [ $this, 'enqueue_scripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_profile_script' ] );
     }
 

@@ -257,7 +257,7 @@ class WPUF_User_Subscription {
     }
 
     /**
-     * Determine if the user has used a free pack before
+     * Determine if the user has used a Free pack before
      *
      * @param int $pack_id
      *
@@ -278,7 +278,7 @@ class WPUF_User_Subscription {
     }
 
     /**
-     * Add a free used pack to the user account
+     * Add a Free used pack to the user account
      *
      * @param int $pack_id
      */
@@ -478,7 +478,7 @@ class WPUF_User_Subscription {
     }
 
     /**
-     * Checks if a pack is free
+     * Checks if a pack is Free
      *
      * @since 2.8.0
      *

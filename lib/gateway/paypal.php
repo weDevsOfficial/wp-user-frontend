@@ -185,7 +185,7 @@ class WPUF_Paypal {
         $data['tax']      = $billing_amount - $data['subtotal'];
 
         if ( $billing_amount == 0 ) {
-            wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], $profile_id = null, false, 'free' );
+            wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], $profile_id = null, false, 'Free' );
             wp_redirect( $return_url );
             exit();
         }

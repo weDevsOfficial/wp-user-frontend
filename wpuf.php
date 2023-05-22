@@ -22,6 +22,7 @@ define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
 define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
+define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 
 /**
  * Main bootstrap class for WP User Frontend
@@ -80,7 +81,7 @@ final class WP_User_Frontend {
         register_activation_hook( __FILE__, [ $this, 'install' ] );
         register_deactivation_hook( __FILE__, [ $this, 'uninstall' ] );
 
-        $this->includes();
+        // $this->includes();
         $this->init_hooks();
 
         do_action( 'wpuf_loaded' );
@@ -133,9 +134,9 @@ final class WP_User_Frontend {
 
         add_action( 'init', [ $this, 'load_textdomain' ] );
 
-        add_action( 'admin_init', [ $this, 'block_admin_access' ] );
+        // add_action( 'admin_init', [ $this, 'block_admin_access' ] );
 
-        add_filter( 'show_admin_bar', [ $this, 'show_admin_bar' ] );
+        // add_filter( 'show_admin_bar', [ $this, 'show_admin_bar' ] );
 
         // enqueue plugin scripts, don't remove priority.
         // If remove or set priority under 1000 then registered styles will not load on WC Marketplace vendor dashboard.
@@ -146,11 +147,11 @@ final class WP_User_Frontend {
         add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), [ $this, 'plugin_action_links' ] );
 
         // add custom css
-        add_action( 'wp_head', [ $this, 'add_custom_css' ] );
+        // add_action( 'wp_head', [ $this, 'add_custom_css' ] );
 
         // set schedule event
-        add_action( 'wpuf_remove_expired_post_hook', [ $this, 'action_to_remove_exipred_post' ] );
-        add_action( 'wp_ajax_wpuf_weforms_install', [ $this, 'install_weforms' ] );
+//        add_action( 'wpuf_remove_expired_post_hook', [ $this, 'action_to_remove_exipred_post' ] );
+//        add_action( 'wp_ajax_wpuf_weforms_install', [ $this, 'install_weforms' ] );
 
         // Insight class instentiate
         // $this->container['tracker'] = new WPUF_WeDevs_Insights( __FILE__ );
@@ -268,18 +269,18 @@ final class WP_User_Frontend {
 //        require_once __DIR__ . '/lib/gateway/bank.php';
 //        require_once __DIR__ . '/lib/class-wedevs-insights.php';
 //
-//        require_once WPUF_ROOT . '/includes/class-frontend-render-form.php';
+//        require_once WPUF_ROOT . '/includes/class-frontend-render-WPUF_Admin_Form_Free.php';
 //        require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
 //
 //        // global classes/functions
 //        require_once WPUF_ROOT . '/class/upload.php';
-//        require_once WPUF_ROOT . '/admin/form-template.php';
-//        require_once WPUF_ROOT . '/class/post-form-template.php';
-//        require_once WPUF_ROOT . '/class/subscription.php';
-//        require_once WPUF_ROOT . '/class/render-form.php';
+//        require_once WPUF_ROOT . '/admin/WPUF_Admin_Form_Template.php';
+//        require_once WPUF_ROOT . '/class/post-WPUF_Admin_Form_Template.php';
+//        require_once WPUF_ROOT . '/class/WPUF_Subscription_Element.php';
+//        require_once WPUF_ROOT . '/class/render-WPUF_Admin_Form_Free.php';
 //        require_once WPUF_ROOT . '/class/payment.php';
 //        require_once WPUF_ROOT . '/class/frontend-account.php';
-//        require_once WPUF_ROOT . '/includes/class-form.php';
+//        require_once WPUF_ROOT . '/includes/class-WPUF_Admin_Form_Free.php';
 //        require_once WPUF_ROOT . '/includes/class-form-manager.php';
 //        require_once WPUF_ROOT . '/includes/class-login-widget.php';
 //        require_once WPUF_ROOT . '/includes/setup-wizard.php';
@@ -305,20 +306,20 @@ final class WP_User_Frontend {
 //        }
 //
 //        require_once WPUF_ROOT . '/includes/class-user.php';
-//        require_once WPUF_ROOT . '/includes/class-user-subscription.php';
+//        require_once WPUF_ROOT . '/includes/class-user-WPUF_Subscription_Element.php';
 //
 //        if ( is_admin() ) {
 //            require_once WPUF_ROOT . '/admin/settings-options.php';
 //            require_once WPUF_ROOT . '/admin/class-admin-settings.php';
 //            require_once WPUF_ROOT . '/admin/form-handler.php';
-//            require_once WPUF_ROOT . '/admin/form.php';
+//            require_once WPUF_ROOT . '/admin/WPUF_Admin_Form_Free.php';
 //            require_once WPUF_ROOT . '/admin/posting.php';
-//            require_once WPUF_ROOT . '/admin/class-admin-subscription.php';
+//            require_once WPUF_ROOT . '/admin/class-admin-WPUF_Subscription_Element.php';
 //            require_once WPUF_ROOT . '/admin/installer.php';
 //            require_once WPUF_ROOT . '/admin/class-admin-welcome.php';
 //            require_once WPUF_ROOT . '/admin/promotion.php';
-//            require_once WPUF_ROOT . '/admin/post-forms-list-table.php';
-//            require_once WPUF_ROOT . '/includes/free/admin/shortcode-button.php';
+//            require_once WPUF_ROOT . '/admin/WPUF_Admin_Post_Forms_List_Table.php';
+//            require_once WPUF_ROOT . '/includes/Free/admin/shortcode-button.php';
 //            require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
 //            require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder-ajax.php';
 //            // include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
@@ -328,7 +329,7 @@ final class WP_User_Frontend {
 //            include_once WPUF_ROOT . '/admin/dashboard-metabox.php';
 //        } else {
 //            require_once WPUF_ROOT . '/class/frontend-dashboard.php';
-//            require_once WPUF_ROOT . '/includes/free/class-registration.php';
+//            require_once WPUF_ROOT . '/includes/Free/class-registration.php';
 //        }
 //
 //        // add reCaptcha library if not found
@@ -337,12 +338,16 @@ final class WP_User_Frontend {
 //            require_once __DIR__ . '/lib/invisible_recaptcha.php';
 //        }
 //
-//        require_once WPUF_ROOT . '/includes/free/class-login.php';
-//        require_once WPUF_ROOT . '/includes/class-frontend-form-post.php';
+//        require_once WPUF_ROOT . '/includes/Free/class-login.php';
+//        require_once WPUF_ROOT . '/includes/class-frontend-form-WPUF_Post_Form_Template_Post.php';
 //        require_once WPUF_ROOT . '/includes/class-field-manager.php';
 //        require_once WPUF_ROOT . '/includes/class-pro-upgrades.php';
 //        require_once WPUF_ROOT . '/includes/fields/field-trait.php';
-        require_once WPUF_ROOT . '/includes/Assets.php';
+//          require_once WPUF_ROOT . '/includes/Assets.php';
+
+//        if ( is_admin() ) {
+//            require_once WPUF_ROOT . '/admin/WPUF_Admin_Post_Forms_List_Table.php';
+//        }
     }
 
     /**
@@ -371,11 +376,10 @@ final class WP_User_Frontend {
 //        }
 
         if ( is_admin() ) {
-            $this->container['admin']              = new Wp\User\Frontend\Admin();
-//            $this->container['settings']           = WPUF_Admin_Settings::init();
-//            $this->container['form_template']      = new WPUF_Admin_Form_Template();
+            $this->container['admin']         = new Wp\User\Frontend\Admin();
+            //            $this->container['settings']           = WPUF_Admin_Settings::init();
 //            $this->container['form_handler']       = new WPUF_Admin_Form_Handler();
-//            $this->container['admin_form']         = new WPUF_Admin_Form();
+//
 //            $this->container['admin_posting']      = WPUF_Admin_Posting::init();
 //            $this->container['admin_subscription'] = new WPUF_Admin_Subscription();
 //            $this->container['admin_installer']    = new WPUF_Admin_Installer();
@@ -433,7 +437,7 @@ final class WP_User_Frontend {
     }
 
     /**
-     * Load wpuf free class if not pro
+     * Load wpuf Free class if not pro
      *
      * @since 2.5.4
      */
@@ -444,9 +448,9 @@ final class WP_User_Frontend {
             $this->is_pro = true;
             add_action( 'admin_notices', [ $this, 'wpuf_latest_pro_activation_notice' ] );
         } else {
-            include __DIR__ . '/includes/free/loader.php';
+            // include __DIR__ . '/includes/Free/WPUF_Free_Loader.php';
 
-            $this->container['free_loader'] = new WPUF_Free_Loader();
+            $this->container['free_loader'] = new Wp\User\Frontend\Free\WPUF_Free_Loader();
         }
     }
 
@@ -659,7 +663,7 @@ final class WP_User_Frontend {
         }
 
         $access_level = wpuf_get_option( 'admin_access', 'wpuf_general', 'read' );
-        $valid_pages  = [ 'admin-ajax.php', 'admin-post.php', 'async-upload.php', 'media-upload.php' ];
+        $valid_pages  = [ 'admin-ajax.php', 'admin-WPUF_Post_Form_Template_Post.php', 'async-upload.php', 'media-upload.php' ];
 
         if ( ! current_user_can( $access_level ) && ! in_array( $pagenow, $valid_pages ) ) {
             // wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );

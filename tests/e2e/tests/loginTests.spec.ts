@@ -1,11 +1,9 @@
 require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
-import { BasicLoginPage } from '../pages/basic_01/basic_login';
-import { BasicLogoutPage } from '../pages/basic_01/basic_logout';
-import { PostForms_Create } from '../pages/post_forms_02/post_forms_create';
-import { RegistrationForms_Create } from '../pages/registration_forms_03/registration_forms_create';
+import { basicLoginPage } from '../pages/basic_01/basicLogin';
+import { basicLogoutPage } from '../pages/basic_01/basicLogout';
+import { testData } from '../utils/testData'
 
-import { faker } from '@faker-js/faker';
 import * as fs from "fs"; //Clear Cookie
 
 
@@ -37,43 +35,41 @@ test.describe('TEST :-->', () => {
      */ 
     
     test('001:[Login] Here, Admin is logging into Admin-Dashboard', async ({ page }) => {
-        const basicLogin = new BasicLoginPage(page);
+        const BasicLogin = new basicLoginPage(page);
 
-        console.log(process.env.QA_ADMIN_USERNAME, process.env.QA_ADMIN_PASSWORD);
-        await basicLogin.basic_login(process.env.QA_ADMIN_USERNAME, process.env.QA_ADMIN_PASSWORD);
+        console.log(testData.users.adminUsername, testData.users.adminPassword);
+        await BasicLogin.basic_login(testData.users.adminUsername, testData.users.adminPassword);
     });
 
     test('002:[Login] Here, Admin is skipping WPUF setup', async ({ page }) => {
-        const basicLogin = new BasicLoginPage(page);
-        await basicLogin.wpufSetup();
+        const BasicLogin = new basicLoginPage(page);
+        await BasicLogin.wpufSetup();
     });
 
     test('003:[Login] Here, Admin is checking Dashboard page reached', async ({ page }) => {
-        const basicLogin = new BasicLoginPage(page);
-        await basicLogin.validateBasicLogin();
+        const BasicLogin = new basicLoginPage(page);
+        await BasicLogin.validateBasicLogin();
     });
 
     test('004:[Login] Here, Admin is checking Plugin Status - Lite Activation', async ({ page }) => {
-        const basicLogin = new BasicLoginPage(page);
-        await basicLogin.pluginStatusCheck_Lite_Activate();
+        const BasicLogin = new basicLoginPage(page);
+        await BasicLogin.pluginStatusCheck_Lite_Activate();
     });
 
 
     test('005:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
-        const basicLogin = new BasicLoginPage(page);
-        await basicLogin.pluginVisit();
+        const BasicLogin = new basicLoginPage(page);
+        await BasicLogin.pluginVisit();
     });
 
     test('006:[Login] Here, Admin is changing WPUF Settings', async ({ page }) => {
-        const basicLogin = new BasicLoginPage(page);
-        await basicLogin.change_WPUF_Settings();
+        const BasicLogin = new basicLoginPage(page);
+        await BasicLogin.change_WPUF_Settings();
     });
 
     test('007 Here, Admin is able to Log out succesfully', async ({page}) => {
-        const basicLogoutPage = new BasicLogoutPage(page);
-        const basicLogin = new BasicLoginPage(page);
-        await basicLogin.basic_login(process.env.QA_ADMIN_USERNAME, process.env.QA_ADMIN_PASSWORD);
-        await basicLogoutPage.logOut();
+        const BasicLogout = new basicLogoutPage(page);
+        await BasicLogout.logOut();
     })
 
 

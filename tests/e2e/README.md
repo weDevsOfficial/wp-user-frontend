@@ -4,16 +4,16 @@ Automated e2e tests for WPUF plugin for Lite & Pro Version.
 
 ## Table of contents
 
--   [Pre-requisites](#pre-requisites) 
-    - [Install Node.js](#install-node.js) 
-    - [Install NVM](#install-nvm) 
-    - [Install Docker](#install-docker)  
+- [Pre-requisites](#pre-requisites)
+
+  - [Install Node.js](#install-node.js)
+  - [Install NVM](#install-nvm)
+  - [Install Docker](#install-docker)
     &nbsp;
--   [Running tests](#running-tests)
+- [Running tests](#running-tests)
 
-    -   [Prep work for running tests](#prep-work-for-running-tests)
-    -   [How to run tests](#how-to-run-tests)
-
+  - [Prep work for running tests](#prep-work-for-running-tests)
+  - [How to run tests](#how-to-run-tests)
 
 ## Pre-requisites
 
@@ -49,20 +49,20 @@ Running all tests
 
 Running a specific test file
 
-    npx playwright test e2e_test.spec.ts
-    
+    npx playwright test e2eMain.spec.ts
+
 Running a specific test file in headed form
 
     npx playwright test --headed
-    
+
 Run all tests against a specific project
 
     npx playwright test --project=chromium
 
-View report  
+View report
 
     npx playwright show-report
-    
+
 Run in debug mode with [Playwright Inspector](https://playwright.dev/docs/debug)
 
     npx playwright test --debug

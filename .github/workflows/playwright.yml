@@ -41,8 +41,8 @@ jobs:
         run: |
             npm i
             grunt release
-          
-    
+            
+
 
       - name: Install dependencies
         run: |
@@ -69,10 +69,10 @@ jobs:
             
 
         env:
+          BASE_URL: ${{ secrets.QA_BASE_URL}}
           CI: true
-          QA_ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
-          QA_ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
-          QA_BASE_URL: ${{ secrets.QA_BASE_URL}}
+          ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
+          ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
           
 
       
@@ -85,7 +85,7 @@ jobs:
           include_passed: true,
           # check_retries: true,
           # detailed_summary: true,
-          
+      
       #######--- Remove Later ---#######
 
 
@@ -117,3 +117,6 @@ jobs:
       
 
 
+
+
+      

@@ -330,9 +330,9 @@ export const selectors = {
 
 
 
-/*************************************/
+/*********************************************/
 /******* Registration Forms Selectors *******/
-/***********************************/
+/*******************************************/
 
     registrationForms: {
         /**@Here Locators creating Navigating Post Forms Page
@@ -392,6 +392,8 @@ export const selectors = {
         },
     
 
-    }
+    },
+
+
 
 };

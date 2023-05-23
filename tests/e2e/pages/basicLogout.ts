@@ -1,7 +1,7 @@
 require('dotenv').config();
 import type { Page } from '@playwright/test';
 import { selectors } from './selectors';
-import { testData } from '../../utils/testData'
+import { testData } from '../utils/testData'
 
 export class basicLogoutPage {
     readonly page: Page;

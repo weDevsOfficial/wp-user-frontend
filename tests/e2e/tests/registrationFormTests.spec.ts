@@ -1,8 +1,8 @@
 require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
-import { basicLoginPage } from '../pages/basic_01/basicLogin';
-import { postFormsCreate } from '../pages/basic_01/postFormsCreate';
-import { registrationFormsCreate } from '../pages/basic_01/registrationFormsCreate';
+import { basicLoginPage } from '../pages/basicLogin';
+import { postFormsCreate } from '../pages/postFormsCreate';
+import { registrationFormsCreate } from '../pages/registrationFormsCreate';
 import { testData } from '../utils/testData';
 
 import * as fs from "fs"; //Clear Cookie

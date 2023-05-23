@@ -1,7 +1,7 @@
 require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
-import { basicLoginPage } from '../pages/basic_01/basicLogin';
-import { postFormsCreate } from '../pages/basic_01/postFormsCreate';
+import { basicLoginPage } from '../pages/basicLogin';
+import { postFormsCreate } from '../pages/postFormsCreate';
 import { testData } from '../utils/testData';
 
 import * as fs from "fs"; //Clear Cookie
@@ -132,7 +132,7 @@ test.describe('TEST :-->', () => {
         await BasicLogin.basic_login_plugin_visit(testData.users.adminUsername, testData.users.adminPassword);
         
         //Post Blank Form
-        await PostFormsCreate.create_BlankForm_PF(testData.postForms.pf_postName3);
+        await PostFormsCreate.create_BlankForm_PF(testData.postForms.pf_postName1);
         //PostFields + Validate
         await PostFormsCreate.add_PostFields_PF();
         await PostFormsCreate.validate_PostFields_PF();

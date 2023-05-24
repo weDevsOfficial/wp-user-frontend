@@ -106,6 +106,18 @@ class Assets {
             'admin'          => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
+            'registration-forms'          => [
+                'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
+            ],
+            'module'          => [
+                'src' => WPUF_ASSET_URI . '/css/admin/wpuf-forms.css',
+            ],
+            'swiffy-slider'          => [
+                'src' => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $this->suffix . '.css',
+                'version' => '1.6.0',
+            ],
+
+            // wp_enqueue_style( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.css', false, '1.6.0' );
         ];
 
         return apply_filters( 'wpuf_styles_to_register', $styles );
@@ -154,82 +166,112 @@ class Assets {
 //        ];
 //        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
         $scripts = [
-            'vue'                     => [
+            'vue'                      => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vue/vue' . $this->suffix . '.js',
                 'in_footer' => true,
                 'version'   => '2.2.4',
             ],
-            'vuex'                    => [
+            'vuex'                     => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vuex/vuex' . $this->suffix . '.js',
                 'in_footer' => true,
                 'version'   => '2.2.1',
             ],
-            'sweetalert2'             => [
+            'sweetalert2'              => [
                 'src'       => WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2' . $this->suffix . '.js',
                 'in_footer' => true,
                 'version'   => '11.4.19',
             ],
-            'jquery-scrollTo'         => [
+            'jquery-scrollTo'          => [
                 'src'       => WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo' . $this->suffix . '.js',
                 'in_footer' => true,
                 'deps'      => [ 'jquery' ],
                 'version'   => '11.4.19',
             ],
-            'selectize'               => [
+            'selectize'                => [
                 'src'       => WPUF_ASSET_URI . '/vendor/selectize/js/standalone/selectize' . $this->suffix . '.js',
                 'in_footer' => true,
                 'deps'      => [ 'jquery' ],
                 'version'   => '0.12.4',
             ],
-            'toastr'                  => [
+            'toastr'                   => [
                 'src'       => WPUF_ASSET_URI . '/vendor/toastr/toastr' . $this->suffix . '.js',
                 'in_footer' => true,
                 'version'   => '2.1.3',
             ],
-            'clipboard'               => [
+            'clipboard'                => [
                 'src'       => WPUF_ASSET_URI . '/vendor/clipboard/clipboard' . $this->suffix . '.js',
                 'in_footer' => true,
                 'version'   => '1.6.0',
             ],
-            'tooltip'                 => [
+            'tooltip'                  => [
                 'src'       => WPUF_ASSET_URI . '/vendor/tooltip/tooltip' . $this->suffix . '.js',
                 'in_footer' => true,
                 'version'   => '3.3.7',
             ],
-            'form-builder-mixins'     => [
+            'form-builder-mixins'      => [
                 'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins' . $this->suffix . '.js',
                 'deps'      => $form_builder_js_deps,
                 'in_footer' => true,
             ],
-            'form-builder-components' => [
+            'form-builder-components'  => [
                 'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-components' . $this->suffix . '.js',
                 'deps'      => [ 'wpuf-form-builder-mixins' ],
                 'in_footer' => true,
             ],
-            'form-builder'            => [
+            'form-builder'             => [
                 'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder' . $this->suffix . '.js',
                 'deps'      => [ 'wpuf-form-builder-components' ],
                 'in_footer' => true,
             ],
-            'admin'                   => [
+            'admin'                    => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-admin' . $this->suffix . '.js',
                 'deps' => [ 'jquery' ],
             ],
-            'subscriptions'           => [
+            'subscriptions'            => [
                 'src'       => WPUF_ASSET_URI . '/js/subscriptions' . $this->suffix . '.js',
                 'deps'      => [ 'jquery' ],
                 'in_footer' => true,
             ],
-            'timepicker'              => [
+            'timepicker'               => [
                 'src'       => WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js',
                 'deps'      => [ 'jquery-ui-datepicker' ],
                 'version'   => '1.2',
                 'in_footer' => true,
             ],
-            'form-builder-wpuf-forms' => [
+            'form-builder-wpuf-forms'  => [
                 'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',
                 'deps'      => [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ],
                 'in_footer' => true,
+            ],
+            'registration-forms'       => [
+                'src'       => WPUF_ASSET_URI . '/js/registration-forms.js',
+                'deps'      => [ 'jquery' ],
+                'in_footer' => true,
+            ],
+            'pro-admin'                => [
+                'src'       => WPUF_ASSET_URI . '/js/admin/wpuf-module.js',
+                'deps'      => [ 'jquery' ],
+                'in_footer' => true,
+            ],
+            'swiffy-slider'            => [
+                'src'       => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.js',
+                'deps'      => [ 'jquery' ],
+                'version'   => '1.6.0',
+                'in_footer' => true,
+            ],
+            'swiffy-slider-extentions' => [
+                'src'       => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider-extentions' . $this->suffix . '.js',
+                'deps'      => [ 'jquery' ],
+                'version'   => '1.6.0',
+                'in_footer' => true,
+            ],
+            'shortcode'                => [
+                'src'  => WPUF_ASSET_URI . '/js/admin-shortcode.js',
+                'deps' => [ 'jquery' ],
+            ],
+            'billing-address'          => [
+                'src'  => WPUF_ASSET_URI . '/js/billing-address.js',
+                'deps' => [ 'jquery' ],
             ],
         ];
 

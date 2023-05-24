@@ -89,7 +89,7 @@ class WPUF_Admin_Settings {
         $post_form_submenu  = add_submenu_page('wp-user-frontend', __('Post Forms', 'wp-user-frontend'), __('Post Forms', 'wp-user-frontend'), $capability, 'wpuf-post-forms', [$this, 'wpuf_post_forms_page']);
         $this->menu_pages[] = $post_form_submenu;
 
-        add_action( "load-$post_form_submenu", [ $this, 'post_form_menu_action' ] );
+        // add_action( "load-$post_form_submenu", [ $this, 'post_form_menu_action' ] );
 
 	remove_submenu_page( 'wp-user-frontend', 'wp-user-frontend' );
 
@@ -137,7 +137,7 @@ class WPUF_Admin_Settings {
      * Fire when post form submenu registered
      */
     public function post_form_menu_action() {
-        do_action('wpuf_load_post_forms');
+        // do_action('wpuf_load_post_forms');
     }
 
     /**
@@ -509,11 +509,11 @@ class WPUF_Admin_Settings {
     private function enqueue_tools_scripts() {
         $prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-        wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue' . $prefix . '.js', [], WPUF_VERSION, true );
+        // wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue' . $prefix . '.js', [], WPUF_VERSION, true );
 
         wp_enqueue_media();
 
-        wp_enqueue_script( 'wpuf-admin-tools', WPUF_ASSET_URI . '/js/wpuf-admin-tools.js', [ 'jquery', 'wpuf-vue' ], WPUF_VERSION, true );
+        // wp_enqueue_script( 'wpuf-admin-tools', WPUF_ASSET_URI . '/js/wpuf-admin-tools.js', [ 'jquery', 'wpuf-vue' ], WPUF_VERSION, true );
 
         wp_localize_script(
             'wpuf-admin-tools', 'wpuf_admin_tools', [

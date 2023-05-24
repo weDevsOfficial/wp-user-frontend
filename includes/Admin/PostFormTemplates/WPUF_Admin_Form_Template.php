@@ -12,12 +12,11 @@ namespace Wp\User\Frontend\Admin\PostFormTemplates;
 class WPUF_Admin_Form_Template {
 
     public function __construct() {
-        add_action( 'admin_enqueue_scripts', [$this, 'enqueue_scripts'] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'deregister_scripts' ], 99 );
 
         // post form templates
         add_action( 'admin_footer', [ $this, 'render_post_form_templates' ] );
-        add_filter( 'admin_action_wpuf_post_form_template', [ $this, 'create_post_form_from_template' ] );
 
         // form settings
         add_action( 'wpuf_form_setting', [ $this, 'post_form_settings' ], 8, 2 );
@@ -37,9 +36,7 @@ class WPUF_Admin_Form_Template {
     public function deregister_scripts() {
         global $wp_styles;
 
-        $current_screen = get_current_screen();
-
-        if ( ! in_array( $current_screen->id, [ 'user-frontend_page_wpuf-post-forms' ] ) ) {
+        if ( ! $this->should_display() ) {
             return;
         }
 
@@ -59,17 +56,23 @@ class WPUF_Admin_Form_Template {
      * @return bool
      */
     public function should_display() {
-        $current_screen = get_current_screen();
+        $current_screen    = get_current_screen();
+        $all_submenu_hooks = wpuf()->menu->get_all_submenu_hooks();
+        $wpuf_pages        = [
+            'post_forms',
+        ];
 
-        if ( in_array( $current_screen->id, [ 'user-frontend_page_wpuf-post-forms' ] ) ) {
-            return true;
+        foreach ( $wpuf_pages as $page ) {
+            if ( ! array_key_exists( $page, $all_submenu_hooks ) ) {
+                return false;
+            }
         }
 
-        return false;
+        return $current_screen->id === $all_submenu_hooks['post_forms'];
     }
 
     public function enqueue_scripts() {
-        if ( !$this->should_display() ) {
+        if ( ! $this->should_display() ) {
             return;
         }
 
@@ -121,7 +124,7 @@ class WPUF_Admin_Form_Template {
 
         $template_object = $registry[ $template ];
 
-        if ( !is_a( $template_object, 'WPUF_Post_Form_Template' ) ) {
+        if ( ! is_a( $template_object, 'Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Post_Form_Template' ) ) {
             return false;
         }
 
@@ -136,7 +139,11 @@ class WPUF_Admin_Form_Template {
      * @return void
      */
     public function create_post_form_from_template() {
-        check_admin_referer( 'wpuf_create_from_template' );
+        $result = check_admin_referer( 'wpuf_create_from_template' );
+
+        if ( ! $result ) {
+            return;
+        }
 
         $template_name = isset( $_GET['template'] ) ? sanitize_text_field( wp_unslash( $_GET['template'] ) ) : '';
 

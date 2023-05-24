@@ -35,7 +35,7 @@ class WPUF_Shortcodes_Button {
             return;
         }
 
-        wp_enqueue_script( 'wpuf-shortcode', WPUF_ASSET_URI . '/js/admin-shortcode.js', ['jquery'] );
+        // wp_enqueue_script( 'wpuf-shortcode', WPUF_ASSET_URI . '/js/admin-shortcode.js', ['jquery'] );
     }
 
     /**

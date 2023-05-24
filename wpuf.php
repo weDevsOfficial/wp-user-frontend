@@ -171,7 +171,11 @@ final class WP_User_Frontend {
             return $this->container[ $prop ];
         }
 
-        return $this->{$prop};
+        if ( property_exists( $this, $prop ) ) {
+            return $this->{$prop};
+        }
+
+        return false;
     }
 
     /**

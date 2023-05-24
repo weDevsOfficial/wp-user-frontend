@@ -1270,7 +1270,7 @@ Vue.component('form-fields', {
             Swal.fire({
                 title: '<i class="fa fa-lock"></i> ' + title + ' <br>' + this.i18n.is_a_pro_feature,
                 text: this.i18n.pro_feature_msg,
-                icon: '',
+                icon: 'info',
                 showCancelButton: true,
                 cancelButtonText: this.i18n.close,
                 confirmButtonColor: '#46b450',

@@ -113,6 +113,8 @@ class WPUF_Admin_Form_Builder {
         wp_enqueue_script( 'wpuf-tooltip' );
         wp_enqueue_script( 'wpuf-timepicker' );
         wp_enqueue_script( 'wpuf-admin' );
+        wp_enqueue_script( 'zxcvbn' );
+        wp_enqueue_script( 'password-strength-meter' );
         // wp_enqueue_script( 'wpuf-subscriptions' );
         $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', [
             'jquery',

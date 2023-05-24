@@ -53,8 +53,8 @@ class WPUF_Setup_Wizard {
             'ajax_url'                  => admin_url( 'admin-ajax.php' ),
         ] );
 
-        wp_enqueue_style( 'wpuf_admin_styles', WPUF_ASSET_URI . '/css/admin/admin.css', [] );
-        wp_enqueue_style( 'wpuf-setup', WPUF_ASSET_URI . '/css/admin/wpuf-setup.css', [ 'dashicons', 'install' ] );
+        // wp_enqueue_style( 'wpuf_admin_styles', WPUF_ASSET_URI . '/css/admin/admin.css', [] );
+        // wp_enqueue_style( 'wpuf-setup', WPUF_ASSET_URI . '/css/admin/wpuf-setup.css', [ 'dashicons', 'install' ] );
 
         wp_register_script( 'wpuf-setup', WPUF_ASSET_URI . '/js/admin/wpuf-setup' . $suffix . '.js', [ 'jquery', 'wpuf-enhanced-select', 'jquery-blockui' ] );
         wp_localize_script( 'wpuf-setup', 'wpuf_setup_params', [] );

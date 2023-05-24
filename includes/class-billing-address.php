@@ -30,7 +30,7 @@ class WPUF_Ajax_Address_Form {
      * Load billing scripts
      */
     public function plugin_scripts() {
-        wp_enqueue_script( 'wpuf-ajax-script', plugins_url( 'assets/js/billing-address.js', __DIR__ ), [ 'jquery' ], false );
+        // wp_enqueue_script( 'wpuf-ajax-script', plugins_url( 'assets/js/billing-address.js', __DIR__ ), [ 'jquery' ], false );
         wp_localize_script( 'wpuf-ajax-script', 'ajax_object', [ 'ajaxurl'     => admin_url( 'admin-ajax.php' ),
                                                                  'fill_notice' => __( 'Some Required Fields are not filled!', 'wp-user-frontend' )
         ] );

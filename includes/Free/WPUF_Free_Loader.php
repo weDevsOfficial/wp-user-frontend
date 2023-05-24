@@ -106,8 +106,8 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     public function admin_reg_forms_page() {
         $file_location = __DIR__ . '/templates/page-registration-form.php';
 
-        wp_enqueue_style( 'wpuf-registration-forms', WPUF_ASSET_URI . '/css/registration-forms.css', [], WPUF_VERSION );
-        wp_enqueue_script( 'wpuf-registration-forms', WPUF_ASSET_URI . '/js/registration-forms.js', [ 'jquery' ], WPUF_VERSION );
+        // wp_enqueue_style( 'wpuf-registration-forms', WPUF_ASSET_URI . '/css/registration-forms.css', [], WPUF_VERSION );
+        // wp_enqueue_script( 'wpuf-registration-forms', WPUF_ASSET_URI . '/js/registration-forms.js', [ 'jquery' ], WPUF_VERSION );
 
         if ( file_exists( $file_location ) ) {
             include $file_location;
@@ -949,8 +949,8 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      * @return void
      */
     public function load_modules_scripts() {
-        wp_enqueue_style( 'wpuf-pro-modules', WPUF_ASSET_URI . '/css/admin/wpuf-module.css', false, WPUF_VERSION );
-        wp_enqueue_script( 'wpuf_pro_admin', WPUF_ASSET_URI . '/js/admin/wpuf-module.js', [ 'jquery' ], WPUF_VERSION, true );
+        // wp_enqueue_style( 'wpuf-pro-modules', WPUF_ASSET_URI . '/css/admin/wpuf-module.css', false, WPUF_VERSION );
+        // wp_enqueue_script( 'wpuf_pro_admin', WPUF_ASSET_URI . '/js/admin/wpuf-module.js', [ 'jquery' ], WPUF_VERSION, true );
     }
 
     /**
@@ -1101,9 +1101,9 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         $close_icon   = file_exists( WPUF_ROOT . '/assets/images/x.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/x.svg' ) : '';
         $suffix       = '.min';
 
-        wp_enqueue_style( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.css', false, '1.6.0' );
-        wp_enqueue_script( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.js', [ 'jquery' ], '1.6.0', true );
-        wp_enqueue_script( 'swiffy-slider-extention', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider-extensions' . $suffix . '.js', [ 'jquery' ], '1.6.0', true );
+        // wp_enqueue_style( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.css', false, '1.6.0' );
+        // wp_enqueue_script( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.js', [ 'jquery' ], '1.6.0', true );
+        // wp_enqueue_script( 'swiffy-slider-extention', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider-extensions' . $suffix . '.js', [ 'jquery' ], '1.6.0', true );
         ?>
         <div id="wpuf-upgrade-popup" class="wpuf-popup-window">
             <div class="modal-window">

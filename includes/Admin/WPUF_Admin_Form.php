@@ -40,25 +40,7 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function __construct() {
-        // wp_register_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
-//        wp_register_style( 'wpuf-font-awesome', WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css', [], WPUF_VERSION );
-//        wp_register_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css', [], '11.4.19' );
-//        wp_register_style( 'wpuf-selectize', WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css', [], WPUF_VERSION );
-//        wp_register_style( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.min.css', [], WPUF_VERSION );
-//        wp_register_style( 'wpuf-tooltip', WPUF_ASSET_URI . '/vendor/tooltip/tooltip.css', [], WPUF_VERSION );
-//
-//        $form_builder_css_deps = apply_filters( 'wpuf-form-builder-css-deps', [
-//            'wpuf-css', 'wpuf-font-awesome', 'wpuf-sweetalert2', 'wpuf-selectize', 'wpuf-toastr', 'wpuf-tooltip',
-//        ] );
-//
-//        wp_register_style( 'wpuf-form-builder', WPUF_ASSET_URI . '/css/wpuf-form-builder.css', $form_builder_css_deps, WPUF_VERSION );
-//        add_action( 'init', [ $this, 'register_post_type' ] );
-//        $label = strtolower( preg_replace( '/\s/', '-$1', __( 'User Frontend', 'wp-user-frontend' ) ) );
-        $submenu_hooks = wpuf()->menu->get_all_submenu_hooks();
-
-        if ( ! empty( $submenu_hooks['post_forms'] ) ) {
-            add_action( 'load-' . $submenu_hooks['post_forms'], [ $this, 'post_forms_builder_init' ] );
-        }
+        $this->post_forms_builder_init();
 
         wpuf()->add_to_container( 'fields', new WPUF_Field_Manager() );
     }
@@ -177,7 +159,7 @@ class WPUF_Admin_Form {
             add_action( 'wpuf-form-builder-settings-tabs-post', [ $this, 'add_settings_tabs' ] );
             add_action( 'wpuf-form-builder-settings-tab-contents-post', [ $this, 'add_settings_tab_contents' ] );
             add_filter( 'wpuf-form-fields-section-before', [ $this, 'add_post_field_section' ] );
-            add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
+
             add_action( 'wpuf-form-builder-js-deps', [ $this, 'js_dependencies' ] );
             add_filter( 'wpuf-form-builder-js-root-mixins', [ $this, 'js_root_mixins' ] );
             add_filter( 'wpuf-form-builder-js-builder-stage-mixins', [ $this, 'js_builder_stage_mixins' ] );
@@ -186,12 +168,14 @@ class WPUF_Admin_Form {
             add_action( 'wpuf-form-builder-localize-script', [ $this, 'add_to_localize_script' ] );
             add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
             add_filter( 'wpuf-form-builder-i18n', [ $this, 'i18n' ] );
+
             do_action( 'wpuf-form-builder-init-type-wpuf_forms' );
+
             $this->set_wp_post_types();
             $settings = [
                 'form_type'         => 'post',
                 'post_type'         => 'wpuf_forms',
-                'post_id'           => isset( $_GET['id'] ) ? intval( wp_unslash( $_GET['id'] ) ) : '',
+                'post_id'           => ! empty( $_GET['id'] ) ? intval( wp_unslash( $_GET['id'] ) ) : '',
                 'form_settings_key' => $this->form_settings_key,
                 'shortcodes'        => [ [ 'name' => 'wpuf_form' ] ],
             ];
@@ -376,8 +360,8 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function admin_enqueue_scripts() {
-//        wp_register_script( 'wpuf-form-builder-wpuf-forms', WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',
-//                            [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ], WPUF_VERSION, true );
+        /*wp_register_script( 'wpuf-form-builder-wpuf-forms', WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',
+                            [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ], WPUF_VERSION, true );*/
     }
 
     /**
@@ -519,18 +503,14 @@ class WPUF_Admin_Form {
      * @return array
      */
     public function add_field_settings( $field_settings ) {
-        if ( class_exists( 'WPUF_Field_Contract' ) ) {
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-title.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-content.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-tags.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-excerpt.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-taxonomy.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-featured-image.php';
+        if ( class_exists( 'Wp\User\Frontend\Fields\WPUF_Field_Contract' ) ) {
             $field_settings['post_title']     = new WPUF_Form_Field_Post_Title();
             $field_settings['post_content']   = new WPUF_Form_Field_Post_Content();
             $field_settings['post_excerpt']   = new WPUF_Form_Field_Post_Excerpt();
             $field_settings['featured_image'] = new WPUF_Form_Field_Featured_Image();
+
             $taxonomy_templates = [];
+
             foreach ( $this->wp_post_types as $post_type => $taxonomies ) {
                 if ( ! empty( $taxonomies ) ) {
                     foreach ( $taxonomies as $tax_name => $taxonomy ) {

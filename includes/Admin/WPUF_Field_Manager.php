@@ -84,14 +84,14 @@ class WPUF_Field_Manager{
      */
     public function add_field_settings( $field_settings ) {
         if ( class_exists( 'Wp\User\Frontend\Fields\WPUF_Field_Contract' ) ) {
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-title.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-content.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-tags.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-excerpt.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-taxonomy.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-featured-image.php';
+//            require_once WPUF_ROOT . '/includes/fields/class-field-post-title.php';
+//            require_once WPUF_ROOT . '/includes/fields/class-field-post-content.php';
+//            require_once WPUF_ROOT . '/includes/fields/class-field-post-tags.php';
+//            require_once WPUF_ROOT . '/includes/fields/class-field-post-excerpt.php';
+//            require_once WPUF_ROOT . '/includes/fields/class-field-post-taxonomy.php';
+//            require_once WPUF_ROOT . '/includes/fields/class-field-featured-image.php';
             $field_settings['post_title']     = new WPUF_Form_Field_Post_Title();
-            $field_settings['post_content']   = new WPUF_Form_Field_Post_Content();
+            $field_settings['post_contt']   = new WPUF_Form_Field_Post_Content();
             $field_settings['post_excerpt']   = new WPUF_Form_Field_Post_Excerpt();
             $field_settings['featured_image'] = new WPUF_Form_Field_Featured_Image();
             $taxonomy_templates = [];

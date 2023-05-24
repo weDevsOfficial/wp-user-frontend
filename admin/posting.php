@@ -53,15 +53,17 @@ class WPUF_Admin_Posting {
         } else {
             add_action( 'admin_head', 'wpuf_hide_google_map_button' );
 
-            function wpuf_hide_google_map_button() {
-                echo wp_kses( "<style>
+            if ( ! function_exists( 'wpuf_hide_google_map_button' ) ) {
+                function wpuf_hide_google_map_button() {
+                    echo wp_kses( "<style>
                 button.button[data-name='custom_map'] {
                     display: none;
                 }
               </style>", [
-                    'style' =>  [],
-                    'button'    =>  []
-                ] );
+                        'style' =>  [],
+                        'button'    =>  []
+                    ] );
+                }
             }
         }
 

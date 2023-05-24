@@ -6,15 +6,17 @@ use Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Post_Form_Template_WooCommerce
 use Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Pro_Form_Preview_EDD;
 use Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Post_Form_Template_Events_Calendar;
 
-// require_once WPUF_INCLUDES . '/Free/WPUF_Pro_Prompt.php';
-
 class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
     public $edit_profile = null;
 
     public function __construct() {
         // $this->includes();
-        $this->instantiate();
+        // $this->instantiate();
+
+        // admin menu
+        add_action( 'wpuf_admin_menu_top', [ $this, 'admin_menu_top' ] );
+        // add_action( 'wpuf_admin_menu', [ $this, 'admin_menu' ] );
 
         add_action( 'add_meta_boxes_wpuf_forms', [$this, 'add_meta_box_post'], 99 );
 
@@ -36,10 +38,6 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         add_action( 'wpuf_coupon_settings_form', [$this, 'wpuf_coupon_settings_form_runner'], 10, 1 );
         add_action( 'wpuf_check_save_permission', [$this, 'wpuf_check_save_permission_runner'], 10, 2 );
 
-        // admin menu
-        add_action( 'wpuf_admin_menu_top', [$this, 'admin_menu_top'] );
-        add_action( 'wpuf_admin_menu', [$this, 'admin_menu'] );
-
         // plugin settings
         add_action( 'admin_footer', [$this, 'remove_login_from_settings'] );
         add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );
@@ -54,16 +52,6 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         // navigation tabs added for previewing in Subscription > Add/Edit Subscription
         add_action( 'wpuf_admin_subs_nav_tab', [ $this, 'subscription_tabs' ] );
         add_action( 'wpuf_admin_subs_nav_content', [ $this, 'subscription_tab_contents' ]);
-    }
-
-    public function includes() {
-
-        //class files to include pro elements
-        require_once __DIR__ . '/WPUF_Admin_Form_Free.php';
-        require_once __DIR__ . '/WPUF_Form_Element.php';
-        require_once __DIR__ . '/WPUF_Subscription_Element.php';
-        require_once __DIR__ . '/WPUF_Edit_Profile.php';
-        require_once __DIR__ . '/edit-user.php';
     }
 
     public function instantiate() {
@@ -87,13 +75,36 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     public function admin_menu_top() {
-        $capability = wpuf_admin_role();
-        $parent_slug = 'wp-user-frontend';
+        $capability  = wpuf_admin_role();
 
-        add_submenu_page( $parent_slug, __( 'Registration Forms', 'wp-user-frontend' ), __( 'Registration Forms', 'wp-user-frontend' ), $capability, 'wpuf-profile-forms', [ $this, 'admin_reg_forms_page' ] );
-        $modules = add_submenu_page( $parent_slug, __( 'Modules', 'wp-user-frontend' ), __( 'Modules', 'wp-user-frontend' ), $capability, 'wpuf-modules', [ $this, 'modules_preview_page' ] );
-        add_action( 'wpuf_modules_page_contents', [ $this, 'load_modules_scripts' ] );
-        add_action( 'wpuf_modules_page_contents', [ $this, 'modules_page_contents' ] );
+        $reg_forms_hook = add_submenu_page( wpuf()->menu->parent_slug, __( 'Registration Forms', 'wp-user-frontend' ), __( 'Registration Forms', 'wp-user-frontend' ), $capability, 'wpuf-profile-forms', [ $this, 'admin_reg_forms_page' ] );
+        // $modules = add_submenu_page( $parent_slug, __( 'Modules', 'wp-user-frontend' ), __( 'Modules', 'wp-user-frontend' ), $capability, 'wpuf-modules', [ $this, 'modules_preview_page' ] );
+
+        // add this menu to all menu hooks
+        wpuf()->menu->add_submenu_hooks( 'registration_forms', $reg_forms_hook );
+
+        add_action( "load-$reg_forms_hook", [ $this, 'reg_form_menu_action' ] );
+
+        // add_action( 'wpuf_modules_page_contents', [ $this, 'load_modules_scripts' ] );
+        // add_action( 'wpuf_modules_page_contents', [ $this, 'modules_page_contents' ] );
+    }
+
+    /**
+     * The action to run just after the menu is created
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function reg_form_menu_action() {
+        wp_enqueue_style( 'wpuf-admin' );
+        wp_enqueue_style( 'wpuf-registration-forms' );
+        wp_enqueue_script( 'wpuf-registration-forms' );
+        /**
+         * Backdoor for calling the menu hook.
+         * This hook won't get translated even the site language is changed
+         */
+        do_action( 'wpuf_load_registration_forms' );
     }
 
     public function admin_menu() {

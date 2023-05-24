@@ -25,10 +25,7 @@
   "autoload": {
     "psr-4": {
       "Wp\\User\\Frontend\\": "includes/"
-    },
-    "files": [
-      "wpuf-functions.php"
-    ]
+    }
   },
   "scripts": {
     "phpcs": [

@@ -77,26 +77,25 @@ class WPUF_Admin_Form_Builder {
      */
     public function admin_enqueue_scripts() {
         global $post;
-        /*
-         * CSS
-         */
-        // wp_enqueue_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
         wp_enqueue_style( 'wpuf-font-awesome' );
         wp_enqueue_style( 'wpuf-sweetalert2' );
         wp_enqueue_style( 'wpuf-selectize' );
         wp_enqueue_style( 'wpuf-toastr' );
         wp_enqueue_style( 'wpuf-tooltip' );
-        $form_builder_css_deps = apply_filters( 'wpuf-form-builder-css-deps', [
-            'wpuf-css',
-            'wpuf-font-awesome',
-            'wpuf-sweetalert2',
-            'wpuf-selectize',
-            'wpuf-toastr',
-            'wpuf-tooltip',
-        ] );
+        $form_builder_css_deps = apply_filters(
+            'wpuf_form_builder_css_deps',
+            [
+                'wpuf-css',
+                'wpuf-font-awesome',
+                'wpuf-sweetalert2',
+                'wpuf-selectize',
+                'wpuf-toastr',
+                'wpuf-tooltip',
+            ]
+        );
         wp_enqueue_style( 'wpuf-jquery-ui' );
         wp_enqueue_style( 'wp-color-picker' );
-        do_action( 'wpuf-form-builder-enqueue-style' );
+        do_action( 'wpuf_form_builder_enqueue_style' );
         /**
          * JavaScript
          */
@@ -116,22 +115,25 @@ class WPUF_Admin_Form_Builder {
         wp_enqueue_script( 'zxcvbn' );
         wp_enqueue_script( 'password-strength-meter' );
         // wp_enqueue_script( 'wpuf-subscriptions' );
-        $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', [
-            'jquery',
-            'jquery-ui-sortable',
-            'jquery-ui-draggable',
-            'jquery-ui-droppable',
-            'jquery-ui-resizable',
-            'underscore',
-            'wpuf-vue',
-            'wpuf-vuex',
-            'wpuf-sweetalert2',
-            'wpuf-jquery-scrollTo',
-            'wpuf-selectize',
-            'wpuf-toastr',
-            'wpuf-clipboard',
-            'wpuf-tooltip',
-        ] );
+        $form_builder_js_deps = apply_filters(
+            'wpuf-form-builder-js-deps',
+            [
+                'jquery',
+                'jquery-ui-sortable',
+                'jquery-ui-draggable',
+                'jquery-ui-droppable',
+                'jquery-ui-resizable',
+                'underscore',
+                'wpuf-vue',
+                'wpuf-vuex',
+                'wpuf-sweetalert2',
+                'wpuf-jquery-scrollTo',
+                'wpuf-selectize',
+                'wpuf-toastr',
+                'wpuf-clipboard',
+                'wpuf-tooltip',
+            ]
+        );
         $single_objects = [
             'post_title',
             'post_content',
@@ -187,6 +189,7 @@ class WPUF_Admin_Form_Builder {
                                    'ajaxurl'               => admin_url( 'admin-ajax.php' ),
                                    'nonce'                 => wp_create_nonce( 'wpuf_nonce' ),
                                    'cleared_schedule_lock' => __( 'Post lock has been cleared', 'wp-user-frontend' ),
+                                   'asset_url' => WPUF_ASSET_URI,
                                ]
         );
         // mixins
@@ -277,7 +280,7 @@ class WPUF_Admin_Form_Builder {
         $post_type         = $this->settings['post_type'];
         $form_settings_key = $this->settings['form_settings_key'];
         $shortcodes        = $this->settings['shortcodes'];
-        $forms = get_posts( [ 'post_type' => $post_type, 'post_status' => 'any' ] );
+        $forms             = get_posts( [ 'post_type' => $post_type, 'post_status' => 'any' ] );
         include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
     }
 

@@ -22,14 +22,13 @@ use Wp\User\Frontend\Fields\WPUF_Form_Field_SectionBreak;
 use Wp\User\Frontend\Fields\WPUF_Form_Field_Text;
 use Wp\User\Frontend\Fields\WPUF_Form_Field_Textarea;
 use Wp\User\Frontend\Fields\WPUF_Form_Field_URL;
-use WPUF_Subscription;
 
 /**
  * Form field manager class
  *
  * @since 1.1.0
  */
-class WPUF_Field_Manager{
+class WPUF_Field_Manager {
 
     /**
      * The fields
@@ -91,7 +90,7 @@ class WPUF_Field_Manager{
 //            require_once WPUF_ROOT . '/includes/fields/class-field-post-taxonomy.php';
 //            require_once WPUF_ROOT . '/includes/fields/class-field-featured-image.php';
             $field_settings['post_title']     = new WPUF_Form_Field_Post_Title();
-            $field_settings['post_contt']   = new WPUF_Form_Field_Post_Content();
+            $field_settings['post_content']   = new WPUF_Form_Field_Post_Content();
             $field_settings['post_excerpt']   = new WPUF_Form_Field_Post_Excerpt();
             $field_settings['featured_image'] = new WPUF_Form_Field_Featured_Image();
             $taxonomy_templates = [];

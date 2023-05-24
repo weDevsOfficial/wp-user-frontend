@@ -74,32 +74,35 @@ class WPUF_Shortcodes_Button {
      * @since 2.5.2
      */
     public function localize_shortcodes() {
-        $shortcodes = apply_filters( 'wpuf_page_shortcodes', [
-            'wpuf-dashboard'=> [
-                'title'   => __( 'Dashboard', 'wp-user-frontend' ),
-                'content' => '[wpuf_dashboard]',
-            ],
-            'wpuf-account'  => [
-                'title'   => __( 'Account', 'wp-user-frontend' ),
-                'content' => '[wpuf_account]',
-            ],
-            'wpuf-edit'     => [
-                'title'   => __( 'Edit', 'wp-user-frontend' ),
-                'content' => '[wpuf_edit]',
-            ],
-            'wpuf-login'    => [
-                'title'   => __( 'Login', 'wp-user-frontend' ),
-                'content' => '[wpuf-login]',
-            ],
-            'wpuf-registration'    => [
-                'title'   => __( 'Registration', 'wp-user-frontend' ),
-                'content' => '[wpuf-registration]',
-            ],
-            'wpuf-sub-pack' => [
-                'title'   => __( 'Subscription', 'wp-user-frontend' ),
-                'content' => '[wpuf_sub_pack]',
-            ],
-        ] );
+        $shortcodes = apply_filters(
+            'wpuf_page_shortcodes',
+            [
+                'wpuf-dashboard'    => [
+                    'title'   => __( 'Dashboard', 'wp-user-frontend' ),
+                    'content' => '[wpuf_dashboard]',
+                ],
+                'wpuf-account'      => [
+                    'title'   => __( 'Account', 'wp-user-frontend' ),
+                    'content' => '[wpuf_account]',
+                ],
+                'wpuf-edit'         => [
+                    'title'   => __( 'Edit', 'wp-user-frontend' ),
+                    'content' => '[wpuf_edit]',
+                ],
+                'wpuf-login'        => [
+                    'title'   => __( 'Login', 'wp-user-frontend' ),
+                    'content' => '[wpuf-login]',
+                ],
+                'wpuf-registration' => [
+                    'title'   => __( 'Registration', 'wp-user-frontend' ),
+                    'content' => '[wpuf-registration]',
+                ],
+                'wpuf-sub-pack'     => [
+                    'title'   => __( 'Subscription', 'wp-user-frontend' ),
+                    'content' => '[wpuf_sub_pack]',
+                ],
+            ]
+        );
 
         $assets_url = WPUF_ASSET_URI;
 

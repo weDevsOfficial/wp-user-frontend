@@ -51,7 +51,7 @@ class WPUF_Admin_Form_Template {
     }
 
     /**
-     * Should a form displayed or sciprt enqueued?
+     * Should a form displayed or script enqueued?
      *
      * @return bool
      */
@@ -91,7 +91,7 @@ class WPUF_Admin_Form_Template {
      * @return void
      */
     public function render_post_form_templates() {
-        if ( !$this->should_display() ) {
+        if ( ! $this->should_display() ) {
             return;
         }
 
@@ -101,7 +101,7 @@ class WPUF_Admin_Form_Template {
         $action_name    = 'wpuf_post_form_template';
         $footer_help    = sprintf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wp-user-frontend' ), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' );
 
-        if ( !$registry ) {
+        if ( ! $registry ) {
             return;
         }
 
@@ -118,7 +118,7 @@ class WPUF_Admin_Form_Template {
     public function get_template_object( $template ) {
         $registry = wpuf_get_post_form_templates();
 
-        if ( !array_key_exists( $template, $registry ) ) {
+        if ( ! array_key_exists( $template, $registry ) ) {
             return false;
         }
 
@@ -147,7 +147,7 @@ class WPUF_Admin_Form_Template {
 
         $template_name = isset( $_GET['template'] ) ? sanitize_text_field( wp_unslash( $_GET['template'] ) ) : '';
 
-        if ( !$template_name ) {
+        if ( ! $template_name ) {
             return;
         }
 
@@ -178,21 +178,24 @@ class WPUF_Admin_Form_Template {
 
         $form_fields = $template_object->get_form_fields();
 
-        if ( !$form_fields ) {
+        if ( ! $form_fields ) {
             return;
         }
 
         foreach ( $form_fields as $menu_order => $field ) {
-            wp_insert_post( [
-                'post_type'    => 'wpuf_input',
-                'post_status'  => 'publish',
-                'post_content' => maybe_serialize( $field ),
-                'post_parent'  => $form_id,
-                'menu_order'   => $menu_order,
-            ] );
+            wp_insert_post(
+                [
+                    'post_type'    => 'wpuf_input',
+                    'post_status'  => 'publish',
+                    'post_content' => maybe_serialize( $field ),
+                    'post_parent'  => $form_id,
+                    'menu_order'   => $menu_order,
+                ]
+            );
         }
 
-        wp_redirect( admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $form_id ) );
+        wp_safe_redirect( admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $form_id ) );
+
         exit;
     }
 
@@ -217,7 +220,8 @@ class WPUF_Admin_Form_Template {
                         foreach ( $registry as $key => $template ) {
                             printf( '<option value="%s"%s>%s</option>' . "\n", esc_attr( $key ), esc_attr( selected( $selected, $key, false ) ), esc_html( $template->get_title() ) );
                         }
-                    } ?>
+                    }
+                    ?>
                 </select>
                 <p class="description"><?php esc_html_e( 'If selected a form template, it will try to execute that integration options when new post created and updated.', 'wp-user-frontend' ); ?></p>
             </td>
@@ -237,7 +241,7 @@ class WPUF_Admin_Form_Template {
     public function post_form_submission( $post_id, $form_id, $form_settings ) {
         $template = isset( $form_settings['form_template'] ) ? $form_settings['form_template'] : '';
 
-        if ( !$template ) {
+        if ( ! $template ) {
             return;
         }
 
@@ -249,9 +253,9 @@ class WPUF_Admin_Form_Template {
 
         $current_action = current_action();
 
-        if ( $current_action == 'wpuf_add_post_after_insert' ) {
+        if ( 'wpuf_add_post_after_insert' === $current_action ) {
             $template_object->after_insert( $post_id, $form_id, $form_settings );
-        } elseif ( $current_action == 'wpuf_edit_post_after_update' ) {
+        } elseif ( 'wpuf_edit_post_after_update' === $current_action ) {
             $template_object->after_update( $post_id, $form_id, $form_settings );
         }
     }

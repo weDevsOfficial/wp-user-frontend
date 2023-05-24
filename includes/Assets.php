@@ -2,27 +2,52 @@
 
 namespace Wp\User\Frontend;
 
+/**
+ * The assets handler for WPUF. All the styles and scripts should register from here first.
+ * Then we will enqueue them from the related pages.
+ *
+ * @since WPUF_SINCE
+ */
+
 class Assets {
+
+    /**
+     * Suffix for the scripts. add `.min` if we are in production
+     *
+     * @var string
+     */
     private $suffix;
     // private $scheme;
+
+    /**
+     * The css dependencies list for form builder
+     * @var array|mixed|null
+     */
     public $form_builder_css_deps = [];
 
     public function __construct() {
         $this->suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         // $this->scheme = is_ssl() ? 'https' : 'http';
 
-        $this->form_builder_css_deps = apply_filters( 'wpuf-form-builder-css-deps', [
-            'wpuf-frontend-forms',
-            'wpuf-font-awesome',
-            'wpuf-sweetalert2',
-            'wpuf-selectize',
-            'wpuf-toastr',
-            'wpuf-tooltip',
-        ] );
+        $this->form_builder_css_deps = apply_filters(
+            'wpuf_form_builder_css_deps', [
+				'wpuf-frontend-forms',
+				'wpuf-font-awesome',
+				'wpuf-sweetalert2',
+				'wpuf-selectize',
+				'wpuf-toastr',
+				'wpuf-tooltip',
+			]
+        );
 
         add_action( 'init', [ $this, 'register_all_scripts' ] );
     }
 
+    /**
+     * Register all the css and js from here
+     *
+     * @return void
+     */
     public function register_all_scripts() {
         $styles  = $this->get_styles();
         $scripts = $this->get_scripts();
@@ -35,6 +60,11 @@ class Assets {
         do_action( 'wpuf_after_register_scripts', $scripts, $styles );
     }
 
+    /**
+     * Register the CSS from here. Need to define the JS first from get_styles()
+     *
+     * @return void
+     */
     public function register_styles( $styles ) {
         foreach ( $styles as $handle => $style ) {
             $deps    = ! empty( $style['deps'] ) ? $style['deps'] : [];
@@ -45,6 +75,11 @@ class Assets {
         }
     }
 
+    /**
+     * Register the JS from here. Need to define the JS first from get_scripts()
+     *
+     * @return void
+     */
     public function register_scripts( $scripts ) {
         foreach ( $scripts as $handle => $script ) {
             $deps      = isset( $script['deps'] ) ? $script['deps'] : [];
@@ -55,6 +90,11 @@ class Assets {
         }
     }
 
+    /**
+     * Returns the list of styles
+     *
+     * @return mixed|null
+     */
     public function get_styles() {
         $styles = [
             'frontend-forms' => [
@@ -116,55 +156,60 @@ class Assets {
                 'src' => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $this->suffix . '.css',
                 'version' => '1.6.0',
             ],
-
-            // wp_enqueue_style( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.css', false, '1.6.0' );
         ];
 
         return apply_filters( 'wpuf_styles_to_register', $styles );
     }
 
+    /**
+     * Returns the list of JS
+     *
+     * @return mixed|null
+     */
     public function get_scripts() {
-//        global $post;
-        $form_builder_js_deps = apply_filters( 'wpuf-form-builder-js-deps', [
-            'jquery',
-            'jquery-ui-sortable',
-            'jquery-ui-draggable',
-            'jquery-ui-droppable',
-            'underscore',
-            'wpuf-vue',
-            'wpuf-vuex',
-            'wpuf-sweetalert2',
-            'wpuf-jquery-scrollTo',
-            'wpuf-selectize',
-            'wpuf-toastr',
-            'wpuf-clipboard',
-            'wpuf-tooltip',
-        ] );
-//        /*
-//         * Data required for building the form
-//         */
-//        require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
-//        require_once WPUF_ROOT . '/includes/Free/WPUF_Pro_Prompt.php';
-//        $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', [
-//            'post'              => $post,
-//            'form_fields'       => wpuf_get_form_fields( $post->ID ),
-//            'field_settings'    => wpuf()->fields->get_js_settings(),
-//            'notifications'     => wpuf_get_form_notifications( $post->ID ),
-//            'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
-//            'site_url'          => site_url( '/' ),
-//            'recaptcha_site'    => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
-//            'recaptcha_secret'  => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
-//        ] );
-//        $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
-//        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
-//        // mixins
-//        $wpuf_mixins = [
-//            'root'           => apply_filters( 'wpuf-form-builder-js-root-mixins', [] ),
-//            'builder_stage'  => apply_filters( 'wpuf-form-builder-js-builder-stage-mixins', [] ),
-//            'form_fields'    => apply_filters( 'wpuf-form-builder-js-form-fields-mixins', [] ),
-//            'field_options'  => apply_filters( 'wpuf-form-builder-js-field-options-mixins', [] ),
-//        ];
-//        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
+		//        global $post;
+        $form_builder_js_deps = apply_filters(
+            'wpuf-form-builder-js-deps', [
+				'jquery',
+				'jquery-ui-sortable',
+				'jquery-ui-draggable',
+				'jquery-ui-droppable',
+				'underscore',
+				'wpuf-vue',
+				'wpuf-vuex',
+				'wpuf-sweetalert2',
+				'wpuf-jquery-scrollTo',
+				'wpuf-selectize',
+				'wpuf-toastr',
+				'wpuf-clipboard',
+				'wpuf-tooltip',
+			]
+        );
+		//        /*
+		//         * Data required for building the form
+		//         */
+		//        require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
+		//        require_once WPUF_ROOT . '/includes/Free/WPUF_Pro_Prompt.php';
+		//        $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', [
+		//            'post'              => $post,
+		//            'form_fields'       => wpuf_get_form_fields( $post->ID ),
+		//            'field_settings'    => wpuf()->fields->get_js_settings(),
+		//            'notifications'     => wpuf_get_form_notifications( $post->ID ),
+		//            'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
+		//            'site_url'          => site_url( '/' ),
+		//            'recaptcha_site'    => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
+		//            'recaptcha_secret'  => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
+		//        ] );
+		//        $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
+		//        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
+		//        // mixins
+		//        $wpuf_mixins = [
+		//            'root'           => apply_filters( 'wpuf-form-builder-js-root-mixins', [] ),
+		//            'builder_stage'  => apply_filters( 'wpuf-form-builder-js-builder-stage-mixins', [] ),
+		//            'form_fields'    => apply_filters( 'wpuf-form-builder-js-form-fields-mixins', [] ),
+		//            'field_options'  => apply_filters( 'wpuf-form-builder-js-field-options-mixins', [] ),
+		//        ];
+		//        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
         $scripts = [
             'vue'                      => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vue/vue' . $this->suffix . '.js',

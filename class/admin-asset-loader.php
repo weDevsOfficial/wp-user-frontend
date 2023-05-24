@@ -83,7 +83,7 @@ class WPUF_Admin_Assets {
         wp_register_style( 'wpuf-toastr', WPUF_ASSET_URI . '/vendor/toastr/toastr.min.css', [], WPUF_VERSION );
         wp_register_style( 'wpuf-tooltip', WPUF_ASSET_URI . '/vendor/tooltip/tooltip.css', [], WPUF_VERSION );
 
-        $form_builder_css_deps = apply_filters( 'wpuf-form-builder-css-deps', [
+        $form_builder_css_deps = apply_filters( 'wpuf_form_builder_css_deps', [
             'wpuf-css', 'wpuf-font-awesome', 'wpuf-sweetalert2', 'wpuf-selectize', 'wpuf-toastr', 'wpuf-tooltip',
         ] );
 

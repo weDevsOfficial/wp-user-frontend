@@ -40,7 +40,7 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function __construct() {
-        $this->post_forms_builder_init();
+        add_action( 'wpuf_load_post_forms', [ $this, 'post_forms_builder_init' ] );
 
         wpuf()->add_to_container( 'fields', new WPUF_Field_Manager() );
     }
@@ -144,7 +144,7 @@ class WPUF_Admin_Form {
      * @return void
      */
     public function post_forms_builder_init() {
-        if ( ! isset( $_GET['action'] ) ) {
+        if ( empty( $_GET['action'] ) ) {
             return;
         }
         if ( 'add-new' === $_GET['action'] && empty( $_GET['id'] ) ) {
@@ -166,6 +166,7 @@ class WPUF_Admin_Form {
             add_filter( 'wpuf-form-builder-js-field-options-mixins', [ $this, 'js_field_options_mixins' ] );
             add_action( 'wpuf-form-builder-template-builder-stage-submit-area', [ $this, 'add_form_submit_area' ] );
             add_action( 'wpuf-form-builder-localize-script', [ $this, 'add_to_localize_script' ] );
+            // todo:
             add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
             add_filter( 'wpuf-form-builder-i18n', [ $this, 'i18n' ] );
 
@@ -183,6 +184,43 @@ class WPUF_Admin_Form {
 
             wpuf()->add_to_container( 'form_builder', $form_builder );
         }
+    }
+
+    /**
+     * Add field settings
+     *
+     * @since 2.5
+     *
+     * @param array $field_settings
+     *
+     * @return array
+     */
+    public function add_field_settings( $field_settings ) {
+        if ( class_exists( 'Wp\User\Frontend\Fields\WPUF_Field_Contract' ) ) {
+            $field_settings['post_title']     = new WPUF_Form_Field_Post_Title();
+            $field_settings['post_content']   = new WPUF_Form_Field_Post_Content();
+            $field_settings['post_excerpt']   = new WPUF_Form_Field_Post_Excerpt();
+            $field_settings['featured_image'] = new WPUF_Form_Field_Featured_Image();
+
+            $taxonomy_templates = [];
+
+            foreach ( $this->wp_post_types as $post_type => $taxonomies ) {
+                if ( ! empty( $taxonomies ) ) {
+                    foreach ( $taxonomies as $tax_name => $taxonomy ) {
+                        if ( 'post_tag' === $tax_name ) {
+                            $taxonomy_templates['post_tag'] = new WPUF_Form_Field_Post_Tags();
+                        } else {
+                            $taxonomy_templates[ $tax_name ] = new WPUF_Form_Field_Post_Taxonomy( $tax_name, $taxonomy );
+                            // $taxonomy_templates[ 'taxonomy' ] = new WPUF_Form_Field_Post_Taxonomy($tax_name, $taxonomy);
+                        }
+                    }
+                }
+            }
+
+            $field_settings = array_merge( $field_settings, $taxonomy_templates );
+        }
+
+        return $field_settings;
     }
 
     /**
@@ -491,43 +529,6 @@ class WPUF_Admin_Form {
         return array_merge( $data, [
             'wp_post_types' => $this->wp_post_types,
         ] );
-    }
-
-    /**
-     * Add field settings
-     *
-     * @since 2.5
-     *
-     * @param array $field_settings
-     *
-     * @return array
-     */
-    public function add_field_settings( $field_settings ) {
-        if ( class_exists( 'Wp\User\Frontend\Fields\WPUF_Field_Contract' ) ) {
-            $field_settings['post_title']     = new WPUF_Form_Field_Post_Title();
-            $field_settings['post_content']   = new WPUF_Form_Field_Post_Content();
-            $field_settings['post_excerpt']   = new WPUF_Form_Field_Post_Excerpt();
-            $field_settings['featured_image'] = new WPUF_Form_Field_Featured_Image();
-
-            $taxonomy_templates = [];
-
-            foreach ( $this->wp_post_types as $post_type => $taxonomies ) {
-                if ( ! empty( $taxonomies ) ) {
-                    foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                        if ( 'post_tag' === $tax_name ) {
-                            $taxonomy_templates['post_tag'] = new WPUF_Form_Field_Post_Tags();
-                        } else {
-                            $taxonomy_templates[ $tax_name ] = new WPUF_Form_Field_Post_Taxonomy( $tax_name,
-                                                                                                  $taxonomy );
-                            // $taxonomy_templates[ 'taxonomy' ] = new WPUF_Form_Field_Post_Taxonomy($tax_name, $taxonomy);
-                        }
-                    }
-                }
-            }
-            $field_settings = array_merge( $field_settings, $taxonomy_templates );
-        }
-
-        return $field_settings;
     }
 
     /**

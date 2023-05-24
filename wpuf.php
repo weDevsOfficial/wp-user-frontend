@@ -81,7 +81,7 @@ final class WP_User_Frontend {
         register_activation_hook( __FILE__, [ $this, 'install' ] );
         register_deactivation_hook( __FILE__, [ $this, 'uninstall' ] );
 
-        // $this->includes();
+        $this->includes();
         $this->init_hooks();
 
         do_action( 'wpuf_loaded' );
@@ -267,8 +267,8 @@ final class WP_User_Frontend {
      * @return void
      */
     public function includes() {
+        require_once __DIR__ . '/wpuf-functions.php';
 //        require_once __DIR__ . '/class/encryption-helper.php';
-//        require_once __DIR__ . '/wpuf-functions.php';
 //        require_once __DIR__ . '/lib/gateway/paypal.php';
 //        require_once __DIR__ . '/lib/gateway/bank.php';
 //        require_once __DIR__ . '/lib/class-wedevs-insights.php';
@@ -380,7 +380,7 @@ final class WP_User_Frontend {
 //        }
 
         if ( is_admin() ) {
-            $this->container['admin']         = new Wp\User\Frontend\Admin();
+            $this->container['admin'] = new Wp\User\Frontend\Admin();
             //            $this->container['settings']           = WPUF_Admin_Settings::init();
 //            $this->container['form_handler']       = new WPUF_Admin_Form_Handler();
 //

@@ -1,6 +1,24 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.5',
+        'released' => '2023-05-25',
+        'changes'  => [
+            [
+                'title' => __( 'Revamp registration page design', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Expiration time not showing for admin', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Error when editing user profile', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.6.4',
         'released' => '2023-04-04',
         'changes'  => [

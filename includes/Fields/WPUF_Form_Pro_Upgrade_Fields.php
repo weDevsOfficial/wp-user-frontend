@@ -2,6 +2,31 @@
 
 namespace Wp\User\Frontend\Fields;
 
+class WPUF_Form_Pro_Upgrade_Fields {
+    private $fields = [];
+    public function __construct() {
+        $this->fields['action_hook']           = new WPUF_Form_Field_Hook();
+        $this->fields['address_field']         = new WPUF_Form_Field_Address();
+        $this->fields['repeat_field']          = new WPUF_Form_Field_Repeat();
+        $this->fields['country_list_field']    = new WPUF_Form_Field_Country();
+        $this->fields['date_field']            = new WPUF_Form_Field_Date();
+        $this->fields['embed']                 = new WPUF_Form_Field_Embed();
+        $this->fields['file_upload']           = new WPUF_Form_Field_File();
+        $this->fields['google_map']            = new WPUF_Form_Field_GMap();
+        $this->fields['numeric_text_field']    = new WPUF_Form_Field_Numeric();
+        $this->fields['ratings']               = new WPUF_Form_Field_Rating();
+        $this->fields['really_simple_captcha'] = new WPUF_Form_Field_Really_Simple_Captcha();
+        $this->fields['shortcode']             = new WPUF_Form_Field_Shortcode();
+        $this->fields['step_start']            = new WPUF_Form_Field_Step();
+        $this->fields['toc']                   = new WPUF_Form_Field_Toc();
+        $this->fields['math_captcha']          = new WPUF_Form_Field_Math_Captcha();
+        $this->fields['qr_code']               = new WPUF_Form_Field_QR_Code();
+    }
+
+    public function get_fields() {
+        return $this->fields;
+    }
+}
 
 /**
  * Address Field Class

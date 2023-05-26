@@ -34,6 +34,8 @@ class Menu {
          */
         do_action( 'wpuf_admin_menu_top' );
 
+        do_action( 'wpuf_admin_menu' );
+
         add_action( "load-$post_forms_hook", [ $this, 'post_form_menu_action' ] );
     }
 

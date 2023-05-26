@@ -1,5 +1,7 @@
 <?php
 
+namespace Wp\User\Frontend;
+
 class WPUF_Pro_Upgrades {
 
     /**
@@ -14,7 +16,7 @@ class WPUF_Pro_Upgrades {
         add_filter( 'wpuf_field_get_js_settings', [ $this, 'add_conditional_field_prompt' ] );
         add_filter( 'wpuf-form-fields', [ $this, 'register_pro_fields' ], 10, 1 );
         // add_filter( 'wpuf-form-builder-field-settings', array( $this, 'register_pro_fields'), 10, 1 );
-        add_filter( 'wpuf_field_groups_custom', [ $this, 'add_to_custom_fields' ] );
+        // add_filter( 'wpuf_field_groups_custom', [ $this, 'add_to_custom_fields' ] );
         add_filter( 'wpuf-form-fields-custom-fields', [ $this, 'add_to_custom_fields' ] );
         add_filter( 'wpuf_field_groups_others', [ $this, 'add_to_others_fields' ] );
         add_filter( 'wpuf-form-fields-others-fields', [ $this, 'add_to_others_fields' ] );
@@ -28,34 +30,11 @@ class WPUF_Pro_Upgrades {
      * @return array
      */
     public function register_pro_fields( $fields ) {
-        if ( ! class_exists( 'WPUF_Form_Field_Pro' ) ) {
-            if ( class_exists( 'WPUF_Field_Contract' ) ) {
-                require_once WPUF_ROOT . '/includes/fields/class-field-pro.php';
-            }
-        }
+        wpuf()->add_to_container( 'pro_fields', new Fields\WPUF_Form_Pro_Upgrade_Fields() );
 
-        if ( class_exists( 'WPUF_Form_Field_Pro' ) ) {
-            require_once WPUF_ROOT . '/includes/fields/class-pro-upgrade-fields.php';
+        $preview_fields = wpuf()->pro_fields->get_fields();
 
-            $fields['action_hook']             = new WPUF_Form_Field_Hook();
-            $fields['address_field']           = new WPUF_Form_Field_Address();
-            $fields['repeat_field']            = new WPUF_Form_Field_Repeat();
-            $fields['country_list_field']      = new WPUF_Form_Field_Country();
-            $fields['date_field']              = new WPUF_Form_Field_Date();
-            $fields['embed']                   = new WPUF_Form_Field_Embed();
-            $fields['file_upload']             = new WPUF_Form_Field_File();
-            $fields['google_map']              = new WPUF_Form_Field_GMap();
-            $fields['numeric_text_field']      = new WPUF_Form_Field_Numeric();
-            $fields['ratings']                 = new WPUF_Form_Field_Rating();
-            $fields['really_simple_captcha']   = new WPUF_Form_Field_Really_Simple_Captcha();
-            $fields['shortcode']               = new WPUF_Form_Field_Shortcode();
-            $fields['step_start']              = new WPUF_Form_Field_Step();
-            $fields['toc']                     = new WPUF_Form_Field_Toc();
-            $fields['math_captcha']            = new WPUF_Form_Field_Math_Captcha();
-            $fields['qr_code']                 = new WPUF_Form_Field_QR_Code();
-        }
-
-        return $fields;
+        return array_merge( $fields, $preview_fields );
     }
 
     /**

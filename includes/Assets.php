@@ -150,10 +150,10 @@ class Assets {
                 'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
             ],
             'module'             => [
-                'src' => WPUF_ASSET_URI . '/css/admin/wpuf-forms.css',
+                'src' => WPUF_ASSET_URI . '/css/admin/wpuf-module.css',
             ],
             'swiffy-slider'      => [
-                'src'     => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $this->suffix . '.css',
+                'src'     => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.min.css',
                 'version' => '1.6.0',
             ],
         ];
@@ -293,19 +293,19 @@ class Assets {
                 'deps'      => [ 'jquery' ],
                 'in_footer' => true,
             ],
-            'pro-admin'                => [
+            'module'                => [
                 'src'       => WPUF_ASSET_URI . '/js/admin/wpuf-module.js',
-                'deps'      => [ 'jquery' ],
+                'deps'      => [ 'wpuf-swiffy-slider', 'wpuf-swiffy-slider-extensions' ],
                 'in_footer' => true,
             ],
             'swiffy-slider'            => [
-                'src'       => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.js',
+                'src'       => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.min.js',
                 'deps'      => [ 'jquery' ],
                 'version'   => '1.6.0',
                 'in_footer' => true,
             ],
-            'swiffy-slider-extentions' => [
-                'src'       => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider-extentions' . $this->suffix . '.js',
+            'swiffy-slider-extensions' => [
+                'src'       => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider-extensions.min.js',
                 'deps'      => [ 'jquery' ],
                 'version'   => '1.6.0',
                 'in_footer' => true,

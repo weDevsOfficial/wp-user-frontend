@@ -11,47 +11,44 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     public $edit_profile = null;
 
     public function __construct() {
-        // $this->includes();
-        // $this->instantiate();
-
         // admin menu
         add_action( 'wpuf_admin_menu_top', [ $this, 'admin_menu_top' ] );
-        // add_action( 'wpuf_admin_menu', [ $this, 'admin_menu' ] );
+        add_action( 'wpuf_admin_menu', [ $this, 'admin_menu' ] );
 
-        add_action( 'add_meta_boxes_wpuf_forms', [$this, 'add_meta_box_post'], 99 );
+        // add_action( 'add_meta_boxes_wpuf_forms', [$this, 'add_meta_box_post'], 99 );
 
-        add_action( 'wpuf_form_buttons_custom', [ $this, 'wpuf_form_buttons_custom_runner' ] );
-        add_action( 'wpuf_form_buttons_other', [ $this, 'wpuf_form_buttons_other_runner'] );
-        add_action( 'wpuf_form_post_expiration', [ $this, 'wpuf_form_post_expiration_runner'] );
-        add_action( 'wpuf_form_setting', [ $this, 'form_setting_runner' ], 10, 2 );
-        add_action( 'wpuf_form_settings_post_notification', [ $this, 'post_notification_hook_runner'] );
-        add_action( 'wpuf_edit_form_area_profile', [ $this, 'wpuf_edit_form_area_profile_runner' ] );
-        add_action( 'registration_setting', [$this, 'registration_setting_runner'] );
-        add_action( 'wpuf_check_post_type', [ $this, 'wpuf_check_post_type_runner' ], 10, 2 );
-        add_action( 'wpuf_form_custom_taxonomies', [ $this, 'wpuf_form_custom_taxonomies_runner' ] );
-        add_action( 'wpuf_conditional_field_render_hook', [ $this, 'wpuf_conditional_field_render_hook_runner' ], 10, 3 );
+        // add_action( 'wpuf_form_buttons_custom', [ $this, 'wpuf_form_buttons_custom_runner' ] );
+        // add_action( 'wpuf_form_buttons_other', [ $this, 'wpuf_form_buttons_other_runner'] );
+        // add_action( 'wpuf_form_post_expiration', [ $this, 'wpuf_form_post_expiration_runner'] );
+        // add_action( 'wpuf_form_setting', [ $this, 'form_setting_runner' ], 10, 2 );
+        // add_action( 'wpuf_form_settings_post_notification', [ $this, 'post_notification_hook_runner'] );
+        // add_action( 'wpuf_edit_form_area_profile', [ $this, 'wpuf_edit_form_area_profile_runner' ] );
+        // add_action( 'registration_setting', [$this, 'registration_setting_runner'] );
+        // add_action( 'wpuf_check_post_type', [ $this, 'wpuf_check_post_type_runner' ], 10, 2 );
+        // add_action( 'wpuf_form_custom_taxonomies', [ $this, 'wpuf_form_custom_taxonomies_runner' ] );
+        // add_action( 'wpuf_conditional_field_render_hook', [ $this, 'wpuf_conditional_field_render_hook_runner' ], 10, 3 );
 
         //subscription
-        add_action( 'wpuf_admin_subscription_detail', [$this, 'wpuf_admin_subscription_detail_runner'], 10, 4 );
+        // add_action( 'wpuf_admin_subscription_detail', [$this, 'wpuf_admin_subscription_detail_runner'], 10, 4 );
 
         //coupon
-        add_action( 'wpuf_coupon_settings_form', [$this, 'wpuf_coupon_settings_form_runner'], 10, 1 );
-        add_action( 'wpuf_check_save_permission', [$this, 'wpuf_check_save_permission_runner'], 10, 2 );
+        // add_action( 'wpuf_coupon_settings_form', [$this, 'wpuf_coupon_settings_form_runner'], 10, 1 );
+        // add_action( 'wpuf_check_save_permission', [$this, 'wpuf_check_save_permission_runner'], 10, 2 );
 
         // plugin settings
-        add_action( 'admin_footer', [$this, 'remove_login_from_settings'] );
-        add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );
-        add_filter( 'wpuf_settings_fields', [ $this, 'pro_settings' ] );
+        // add_action( 'admin_footer', [$this, 'remove_login_from_settings'] );
+        // add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );
+        // add_filter( 'wpuf_settings_fields', [ $this, 'pro_settings' ] );
         // post form templates
         add_action( 'wpuf_get_post_form_templates', [ $this, 'post_form_templates' ] );
         add_filter( 'wpuf_get_pro_form_previews', [ $this, 'pro_form_previews' ] );
 
         // payment gateway added for previewing
-        add_filter( 'wpuf_payment_gateways', [ $this, 'wpuf_payment_gateways' ] );
+        // add_filter( 'wpuf_payment_gateways', [ $this, 'wpuf_payment_gateways' ] );
 
         // navigation tabs added for previewing in Subscription > Add/Edit Subscription
-        add_action( 'wpuf_admin_subs_nav_tab', [ $this, 'subscription_tabs' ] );
-        add_action( 'wpuf_admin_subs_nav_content', [ $this, 'subscription_tab_contents' ]);
+        // add_action( 'wpuf_admin_subs_nav_tab', [ $this, 'subscription_tabs' ] );
+        // add_action( 'wpuf_admin_subs_nav_content', [ $this, 'subscription_tab_contents' ]);
     }
 
     public function instantiate() {
@@ -75,18 +72,34 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     public function admin_menu_top() {
-        $capability  = wpuf_admin_role();
-
-        $reg_forms_hook = add_submenu_page( wpuf()->menu->parent_slug, __( 'Registration Forms', 'wp-user-frontend' ), __( 'Registration Forms', 'wp-user-frontend' ), $capability, 'wpuf-profile-forms', [ $this, 'admin_reg_forms_page' ] );
-        // $modules = add_submenu_page( $parent_slug, __( 'Modules', 'wp-user-frontend' ), __( 'Modules', 'wp-user-frontend' ), $capability, 'wpuf-modules', [ $this, 'modules_preview_page' ] );
+        $capability     = wpuf_admin_role();
+        $reg_forms_hook = add_submenu_page(
+            wpuf()->menu->parent_slug,
+            __( 'Registration Forms', 'wp-user-frontend' ),
+            __( 'Registration Forms', 'wp-user-frontend' ),
+            $capability,
+            'wpuf-profile-forms',
+            [ $this, 'admin_reg_forms_page' ]
+        );
+        $modules        = add_submenu_page( wpuf()->menu->parent_slug, __( 'Modules', 'wp-user-frontend' ), __( 'Modules', 'wp-user-frontend' ), $capability, 'wpuf-modules', [ $this, 'modules_preview_page' ] );
 
         // add this menu to all menu hooks
         wpuf()->menu->add_submenu_hooks( 'registration_forms', $reg_forms_hook );
+        wpuf()->menu->add_submenu_hooks( 'modules', $modules );
 
         add_action( "load-$reg_forms_hook", [ $this, 'reg_form_menu_action' ] );
+        add_action( "load-$modules", [ $this, 'module_menu_action' ] );
 
-        // add_action( 'wpuf_modules_page_contents', [ $this, 'load_modules_scripts' ] );
-        // add_action( 'wpuf_modules_page_contents', [ $this, 'modules_page_contents' ] );
+        add_action( 'wpuf_load_module_page', [ $this, 'load_modules_scripts' ] );
+        // add_action( 'wpuf_load_module_page', [ $this, 'modules_page_contents' ] );
+    }
+
+    public function module_menu_action() {
+        /**
+         * Backdoor for calling the menu hook.
+         * This hook won't get translated even the site language is changed
+         */
+        do_action( 'wpuf_load_module_page' );
     }
 
     /**
@@ -108,9 +121,16 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     public function admin_menu() {
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             $capability = wpuf_admin_role();
-            add_submenu_page( 'wp-user-frontend', __( 'Coupons', 'wp-user-frontend' ), __( 'Coupons', 'wp-user-frontend' ), $capability, 'wpuf_coupon', [$this, 'admin_coupon_page' ] );
+            add_submenu_page(
+                wpuf()->menu->parent_slug,
+                __( 'Coupons', 'wp-user-frontend' ),
+                __( 'Coupons', 'wp-user-frontend' ),
+                $capability,
+                'wpuf_coupon',
+                [ $this, 'admin_coupon_page' ]
+            );
         }
     }
 
@@ -850,7 +870,6 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     public function wpuf_form_buttons_custom_runner() {
-
         //add formbuilder widget pro buttons
         WPUF_form_element::add_form_custom_buttons();
     }
@@ -949,7 +968,155 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      */
     public function modules_preview_page() {
         $modules = $this->pro_modules_info();
-        do_action( 'wpuf_modules_page_contents', $modules );
+
+        $diamond_icon = file_exists( WPUF_ROOT . '/assets/images/diamond.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/diamond.svg' ) : '';
+        $check_icon   = file_exists( WPUF_ROOT . '/assets/images/check.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/check.svg' ) : '';
+        $crown_icon   = file_exists( WPUF_ROOT . '/assets/images/crown.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' ) : '';
+        $close_icon   = file_exists( WPUF_ROOT . '/assets/images/x.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/x.svg' ) : '';
+        $suffix       = '.min';
+
+        ?>
+        <div id="wpuf-upgrade-popup" class="wpuf-popup-window">
+            <div class="modal-window">
+                <div class="modal-window-inner">
+                    <div class="content-area">
+                        <div class="popup-close-button">
+                            <?php echo $close_icon; ?>
+                        </div>
+                        <div class="popup-diamond">
+                            <?php echo $diamond_icon; ?>
+                        </div>
+                        <div class="wpuf-popup-header">
+                            <h2 class="font-orange header-one">Upgrade to</h2>
+                            <h2 class="header-two">WP User Frontend <span class="font-bold">Pro</span></h2>
+                            <h2 class="header-three font-gray">to experience even more powerful<span class="line-break"></span>features 🎉</h2>
+                        </div>
+                        <div class="wpuf-popup-list-area">
+                            <div class="single-checklist">
+                                <div class="check-icon">
+                                    <?php echo $check_icon; ?>
+                                </div>
+                                <div class="check-list">
+                                    <p>Get custom <span class="bold font-black">Post Type</span> and <span class="bold font-black">Taxonomy</span> support with
+                                        <span class="line-break"></span> subscription-based <span class="bold font-black">restrictions</span> for post <span class="line-break"></span> submission.</p>
+                                </div>
+                            </div>
+                            <div class="single-checklist">
+                                <div class="check-icon">
+                                    <?php echo $check_icon; ?>
+                                </div>
+                                <div class="check-list">
+                                    <p>Enable <span class="bold font-black">conditional logic</span> and <span class="bold font-black">multi-step</span><span class="line-break"></span> functionalities on your forms.</p>
+                                </div>
+                            </div>
+                            <div class="single-checklist">
+                                <div class="check-icon">
+                                    <?php echo $check_icon; ?>
+                                </div>
+                                <div class="check-list">
+                                    <p>Show or hide <span class="bold font-black">menus, pages,</span> and <span class="bold font-black">content</span> based on<span class="line-break"></span> user roles or login status of a user.</p>
+                                </div>
+                            </div>
+                            <div class="single-checklist">
+                                <div class="check-icon">
+                                    <?php echo $check_icon; ?>
+                                </div>
+                                <div class="check-list">
+                                    <p><span class="bold font-black">20+ Premium Modules</span> (Social Login, User<span class="line-break"></span> Directory, User Activity, Stripe, MailChimp, Private<span class="line-break"></span> Messaging, Zapier, & more)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?php echo self::get_upgrade_to_pro_popup_url(); ?>"
+                           target="_blank"
+                           class="wpuf-button button-upgrade-to-pro">
+                            <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
+                            <?php printf( '<span class="pro-icon"> %s</span>', $crown_icon );  ?>
+                        </a>
+                    </div>
+                    <div class="slider-area">
+                        <div class="wpuf-slider slider-indicators-outside slider-indicators-round slider-nav-mousedrag slider-nav-autoplay slider-nav-autopause"" id="wpuf-slider">
+                        <div class="swiffy-slider">
+                            <ul class="slider-container">
+                                <li><img src="<?php echo WPUF_ASSET_URI . '/images/woocommerce-form-template.png'; ?>"></li>
+                                <li><img src="<?php echo WPUF_ASSET_URI . '/images/conditional-form.png'; ?>"></li>
+                                <li><img src="<?php echo WPUF_ASSET_URI . '/images/content-restriction.png'; ?>"></li>
+                                <li><img src="<?php echo WPUF_ASSET_URI . '/images/modules.png'; ?>"></li>
+                            </ul>
+
+                            <div class="slider-indicators">
+                                <button class="active"></button>
+                                <button></button>
+                                <button></button>
+                                <button></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="footer-feature">
+                    <p>
+                        <?php echo $check_icon; ?> Industry leading 24x7 support
+                    </p>
+                    <p>
+                        <?php echo $check_icon; ?> 14 days no questions asked refund policy
+                    </p>
+                    <p>
+                        <?php echo $check_icon; ?> Secured payment
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="wrap wpuf-modules">
+            <h1><?php esc_attr_e( 'Modules', 'wp-user-frontend' ); ?></h1>
+            <div class="wp-list-table widefat wpuf-modules">
+                <?php if ( $modules ) {
+                    foreach ( $modules as $slug => $module ) {
+                        ?>
+                        <div class="plugin-card">
+                            <div class="plugin-card-top">
+                                <div class="name column-name">
+                                    <h3>
+                                        <span class="plugin-name"><a href="<?php echo $module['plugin_uri']; ?>" target="_blank"><?php echo $module['name']; ?></a></span>
+                                        <a href="<?php echo $module['plugin_uri']; ?>" target="_blank"><img class="plugin-icon" src="<?php echo WPUF_ASSET_URI . '/images/modules/' . $module['thumbnail']; ?>" alt="" /></a>
+                                    </h3>
+                                </div>
+
+                                <div class="action-links">
+                                    <ul class="plugin-action-buttons">
+                                        <li data-module="<?php echo $slug; ?>">
+                                            <label class="wpuf-toggle-switch">
+                                                <input type="checkbox" name="module_toggle" class="wpuf-toggle-module" disabled>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                    <div class="wpuf-doc-link" ><a href="<?php echo $module['plugin_uri']; ?>" target="_blank">Documentation</a></div>
+                                </div>
+
+                                <div class="desc column-description">
+                                    <p>
+                                        <?php echo $module['description']; ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                }
+                ?>
+            </div>
+            <div class="form-create-overlay">
+                <a href="#wpuf-upgrade-popup"
+                   class="wpuf-button button-upgrade-to-pro">
+                    <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
+                    <?php printf( '<span class="pro-icon"> %s</span>', $crown_icon ); ?>
+                </a>
+            </div>
+        </div>
+        <?php
     }
 
     /**
@@ -960,8 +1127,14 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      * @return void
      */
     public function load_modules_scripts() {
-        // wp_enqueue_style( 'wpuf-pro-modules', WPUF_ASSET_URI . '/css/admin/wpuf-module.css', false, WPUF_VERSION );
-        // wp_enqueue_script( 'wpuf_pro_admin', WPUF_ASSET_URI . '/js/admin/wpuf-module.js', [ 'jquery' ], WPUF_VERSION, true );
+        wp_enqueue_style( 'wpuf-admin' );
+        wp_enqueue_style( 'wpuf-module' );
+        wp_enqueue_style( 'wpuf-swiffy-slider' );
+        wp_enqueue_script( 'wpuf-admin' );
+        wp_enqueue_script( 'wpuf-subscriptions' );
+        wp_enqueue_script( 'wpuf-swiffy-slider' );
+        wp_enqueue_script( 'wpuf-swiffy-slider-extensions' );
+        wp_enqueue_script( 'wpuf-module' );
     }
 
     /**
@@ -1105,158 +1278,8 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      *
      * @return void
      */
-    public function modules_page_contents( $modules ) {
-        $diamond_icon = file_exists( WPUF_ROOT . '/assets/images/diamond.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/diamond.svg' ) : '';
-        $check_icon   = file_exists( WPUF_ROOT . '/assets/images/check.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/check.svg' ) : '';
-        $crown_icon   = file_exists( WPUF_ROOT . '/assets/images/crown.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' ) : '';
-        $close_icon   = file_exists( WPUF_ROOT . '/assets/images/x.svg' ) ? file_get_contents( WPUF_ROOT . '/assets/images/x.svg' ) : '';
-        $suffix       = '.min';
+    public function modules_page_contents() {
 
-        // wp_enqueue_style( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.css', false, '1.6.0' );
-        // wp_enqueue_script( 'swiffy-slider', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider' . $suffix . '.js', [ 'jquery' ], '1.6.0', true );
-        // wp_enqueue_script( 'swiffy-slider-extention', WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider-extensions' . $suffix . '.js', [ 'jquery' ], '1.6.0', true );
-        ?>
-        <div id="wpuf-upgrade-popup" class="wpuf-popup-window">
-            <div class="modal-window">
-                <div class="modal-window-inner">
-                    <div class="content-area">
-                        <div class="popup-close-button">
-                            <?php echo $close_icon; ?>
-                        </div>
-                        <div class="popup-diamond">
-                            <?php echo $diamond_icon; ?>
-                        </div>
-                        <div class="wpuf-popup-header">
-                            <h2 class="font-orange header-one">Upgrade to</h2>
-                            <h2 class="header-two">WP User Frontend <span class="font-bold">Pro</span></h2>
-                            <h2 class="header-three font-gray">to experience even more powerful<span class="line-break"></span>features 🎉</h2>
-                        </div>
-                        <div class="wpuf-popup-list-area">
-                            <div class="single-checklist">
-                                <div class="check-icon">
-                                    <?php echo $check_icon; ?>
-                                </div>
-                                <div class="check-list">
-                                    <p>Get custom <span class="bold font-black">Post Type</span> and <span class="bold font-black">Taxonomy</span> support with
-                                        <span class="line-break"></span> subscription-based <span class="bold font-black">restrictions</span> for post <span class="line-break"></span> submission.</p>
-                                </div>
-                            </div>
-                            <div class="single-checklist">
-                                <div class="check-icon">
-                                    <?php echo $check_icon; ?>
-                                </div>
-                                <div class="check-list">
-                                    <p>Enable <span class="bold font-black">conditional logic</span> and <span class="bold font-black">multi-step</span><span class="line-break"></span> functionalities on your forms.</p>
-                                </div>
-                            </div>
-                            <div class="single-checklist">
-                                <div class="check-icon">
-                                    <?php echo $check_icon; ?>
-                                </div>
-                                <div class="check-list">
-                                    <p>Show or hide <span class="bold font-black">menus, pages,</span> and <span class="bold font-black">content</span> based on<span class="line-break"></span> user roles or login status of a user.</p>
-                                </div>
-                            </div>
-                            <div class="single-checklist">
-                                <div class="check-icon">
-                                    <?php echo $check_icon; ?>
-                                </div>
-                                <div class="check-list">
-                                    <p><span class="bold font-black">20+ Premium Modules</span> (Social Login, User<span class="line-break"></span> Directory, User Activity, Stripe, MailChimp, Private<span class="line-break"></span> Messaging, Zapier, & more)</p>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="<?php echo self::get_upgrade_to_pro_popup_url(); ?>"
-                           target="_blank"
-                           class="wpuf-button button-upgrade-to-pro">
-                            <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
-                            <?php printf( '<span class="pro-icon"> %s</span>', $crown_icon );  ?>
-                        </a>
-                    </div>
-                    <div class="slider-area">
-                        <div class="wpuf-slider slider-indicators-outside slider-indicators-round slider-nav-mousedrag slider-nav-autoplay slider-nav-autopause"" id="wpuf-slider">
-                            <div class="swiffy-slider">
-                                <ul class="slider-container">
-                                    <li><img src="<?php echo WPUF_ASSET_URI . '/images/woocommerce-form-template.png'; ?>"></li>
-                                    <li><img src="<?php echo WPUF_ASSET_URI . '/images/conditional-form.png'; ?>"></li>
-                                    <li><img src="<?php echo WPUF_ASSET_URI . '/images/content-restriction.png'; ?>"></li>
-                                    <li><img src="<?php echo WPUF_ASSET_URI . '/images/modules.png'; ?>"></li>
-                                </ul>
-
-                                <div class="slider-indicators">
-                                    <button class="active"></button>
-                                    <button></button>
-                                    <button></button>
-                                    <button></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="footer-feature">
-                        <p>
-                            <?php echo $check_icon; ?> Industry leading 24x7 support
-                        </p>
-                        <p>
-                            <?php echo $check_icon; ?> 14 days no questions asked refund policy
-                        </p>
-                        <p>
-                            <?php echo $check_icon; ?> Secured payment
-                        </p>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="wrap wpuf-modules">
-            <h1><?php esc_attr_e( 'Modules', 'wp-user-frontend' ); ?></h1>
-            <div class="wp-list-table widefat wpuf-modules">
-                <?php if ( $modules ) {
-                    foreach ( $modules as $slug => $module ) {
-                        ?>
-                        <div class="plugin-card">
-                            <div class="plugin-card-top">
-                                <div class="name column-name">
-                                    <h3>
-                                        <span class="plugin-name"><a href="<?php echo $module['plugin_uri']; ?>" target="_blank"><?php echo $module['name']; ?></a></span>
-                                        <a href="<?php echo $module['plugin_uri']; ?>" target="_blank"><img class="plugin-icon" src="<?php echo WPUF_ASSET_URI . '/images/modules/' . $module['thumbnail']; ?>" alt="" /></a>
-                                    </h3>
-                                </div>
-
-                                <div class="action-links">
-                                    <ul class="plugin-action-buttons">
-                                        <li data-module="<?php echo $slug; ?>">
-                                            <label class="wpuf-toggle-switch">
-                                                <input type="checkbox" name="module_toggle" class="wpuf-toggle-module" disabled>
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </li>
-                                    </ul>
-                                    <div class="wpuf-doc-link" ><a href="<?php echo $module['plugin_uri']; ?>" target="_blank">Documentation</a></div>
-                                </div>
-
-                                <div class="desc column-description">
-                                    <p>
-                                        <?php echo $module['description']; ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-                    }
-                }
-                ?>
-            </div>
-            <div class="form-create-overlay">
-                <a href="#wpuf-upgrade-popup"
-                   class="wpuf-button button-upgrade-to-pro">
-                    <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
-                    <?php printf( '<span class="pro-icon"> %s</span>', $crown_icon ); ?>
-                </a>
-            </div>
-        </div>
-<?php
     }
 
     /**

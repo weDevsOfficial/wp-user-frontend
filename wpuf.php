@@ -380,7 +380,8 @@ final class WP_User_Frontend {
 //        }
 
         if ( is_admin() ) {
-            $this->container['admin'] = new Wp\User\Frontend\Admin();
+            $this->container['admin']        = new Wp\User\Frontend\Admin();
+            $this->container['pro_upgrades'] = new Wp\User\Frontend\WPUF_Pro_Upgrades();
             //            $this->container['settings']           = WPUF_Admin_Settings::init();
 //            $this->container['form_handler']       = new WPUF_Admin_Form_Handler();
 //

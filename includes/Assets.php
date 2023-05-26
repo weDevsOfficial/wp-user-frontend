@@ -293,7 +293,7 @@ class Assets {
                 'deps'      => [ 'jquery' ],
                 'in_footer' => true,
             ],
-            'module'                => [
+            'module'                   => [
                 'src'       => WPUF_ASSET_URI . '/js/admin/wpuf-module.js',
                 'deps'      => [ 'wpuf-swiffy-slider', 'wpuf-swiffy-slider-extensions' ],
                 'in_footer' => true,
@@ -316,6 +316,10 @@ class Assets {
             ],
             'billing-address'          => [
                 'src'  => WPUF_ASSET_URI . '/js/billing-address.js',
+                'deps' => [ 'jquery' ],
+            ],
+            'metabox-tabs'             => [
+                'src'  => WPUF_ASSET_URI . '/js/metabox-tabs.js',
                 'deps' => [ 'jquery' ],
             ],
         ];

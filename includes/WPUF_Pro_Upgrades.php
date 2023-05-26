@@ -14,11 +14,8 @@ class WPUF_Pro_Upgrades {
 
         // form fields
         add_filter( 'wpuf_field_get_js_settings', [ $this, 'add_conditional_field_prompt' ] );
-        add_filter( 'wpuf-form-fields', [ $this, 'register_pro_fields' ], 10, 1 );
-        // add_filter( 'wpuf-form-builder-field-settings', array( $this, 'register_pro_fields'), 10, 1 );
-        // add_filter( 'wpuf_field_groups_custom', [ $this, 'add_to_custom_fields' ] );
+        add_filter( 'wpuf-form-fields', [ $this, 'register_pro_fields' ] );
         add_filter( 'wpuf-form-fields-custom-fields', [ $this, 'add_to_custom_fields' ] );
-        add_filter( 'wpuf_field_groups_others', [ $this, 'add_to_others_fields' ] );
         add_filter( 'wpuf-form-fields-others-fields', [ $this, 'add_to_others_fields' ] );
     }
 

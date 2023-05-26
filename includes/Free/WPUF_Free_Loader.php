@@ -14,13 +14,16 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         // admin menu
         add_action( 'wpuf_admin_menu_top', [ $this, 'admin_menu_top' ] );
         add_action( 'wpuf_admin_menu', [ $this, 'admin_menu' ] );
+        add_action( 'wpuf_form_setting', [ $this, 'form_setting_runner' ], 10, 2 );
+        add_action( 'wpuf_form_post_expiration', [ $this, 'wpuf_form_post_expiration_runner'] );
+        add_action( 'wpuf_form_settings_post_notification', [ $this, 'post_notification_hook_runner'] );
 
         // add_action( 'add_meta_boxes_wpuf_forms', [$this, 'add_meta_box_post'], 99 );
 
         // add_action( 'wpuf_form_buttons_custom', [ $this, 'wpuf_form_buttons_custom_runner' ] );
         // add_action( 'wpuf_form_buttons_other', [ $this, 'wpuf_form_buttons_other_runner'] );
         // add_action( 'wpuf_form_post_expiration', [ $this, 'wpuf_form_post_expiration_runner'] );
-        // add_action( 'wpuf_form_setting', [ $this, 'form_setting_runner' ], 10, 2 );
+
         // add_action( 'wpuf_form_settings_post_notification', [ $this, 'post_notification_hook_runner'] );
         // add_action( 'wpuf_edit_form_area_profile', [ $this, 'wpuf_edit_form_area_profile_runner' ] );
         // add_action( 'registration_setting', [$this, 'registration_setting_runner'] );
@@ -47,8 +50,8 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         // add_filter( 'wpuf_payment_gateways', [ $this, 'wpuf_payment_gateways' ] );
 
         // navigation tabs added for previewing in Subscription > Add/Edit Subscription
-        // add_action( 'wpuf_admin_subs_nav_tab', [ $this, 'subscription_tabs' ] );
-        // add_action( 'wpuf_admin_subs_nav_content', [ $this, 'subscription_tab_contents' ]);
+        add_action( 'wpuf_admin_subs_nav_tab', [ $this, 'subscription_tabs' ] );
+        add_action( 'wpuf_admin_subs_nav_content', [ $this, 'subscription_tab_contents' ]);
     }
 
     public function instantiate() {
@@ -1334,42 +1337,47 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      * @return void
      */
     public function subscription_tab_contents() {
-        $allowed_tax_id_arr = get_post_meta( get_the_ID() , '_sub_allowed_term_ids', true );
+        $allowed_tax_id_arr = get_post_meta( get_the_ID(), '_sub_allowed_term_ids', true );
         if ( ! $allowed_tax_id_arr ) {
-            $allowed_tax_id_arr = array();
+            $allowed_tax_id_arr = [];
         }
         ?>
         <section id="taxonomy-restriction" class="pro-preview-html">
             <table class='form-table' method='post'>
-                <tr><?php _e( 'Choose the taxonomy terms you want to enable for this pack:', 'wpuf' ); ?></tr>
+                <tr><?php esc_html_e( 'Choose the taxonomy terms you want to enable for this pack:', 'wp-user-frontend' ); ?></tr>
                 <tr>
                     <td>
                         <?php
-                        $cts = get_taxonomies(array('_builtin'=>true), 'objects'); ?>
-                        <?php foreach ($cts as $ct) {
-                            if ( is_taxonomy_hierarchical( $ct->name ) ) { ?>
+                        $cts = get_taxonomies( [ '_builtin' => true ], 'objects' );
+                        ?>
+                        <?php
+                        foreach ( $cts as $ct ) {
+                            if ( is_taxonomy_hierarchical( $ct->name ) ) {
+                                ?>
                                 <div class="metabox-holder" style="float:left; padding:5px;">
                                     <div class="postbox">
-                                        <h3 class="handle"><span><?php  echo  $ct->label; ?></span></h3>
+                                        <h3 class="handle"><span><?php echo $ct->label; ?></span></h3>
                                         <div class="inside" style="padding:0 10px;">
                                             <div class="taxonomydiv">
                                                 <div class="tabs-panel" style="height: 200px; overflow-y:auto">
                                                     <?php
-                                                    $tax_terms = get_terms ( array(
-                                                                                 'taxonomy' => $ct->name,
-                                                                                 'hide_empty' => false,
-                                                                             ) );
-                                                    foreach ($tax_terms as $tax_term) {
+                                                    $tax_terms = get_terms(
+                                                        [
+                                                            'taxonomy' => $ct->name,
+                                                            'hide_empty' => false,
+                                                        ]
+                                                    );
+                                                    foreach ( $tax_terms as $tax_term ) {
                                                         $selected[] = $tax_term;
                                                         ?>
                                                         <ul class="categorychecklist form-no-clear">
-                                                            <input type="checkbox" class="tax-term-class" name="allowed-term[]" value="<?php echo $tax_term->term_id; ?>" <?php echo in_array( $tax_term->term_id, $allowed_tax_id_arr ) ? ' checked="checked"' : ''; ?> name="<?php echo $tax_term->name; ?>" disabled> <?php echo $tax_term->name; ?>
+                                                            <input type="checkbox" class="tax-term-class" name="allowed-term[]" value="<?php echo $tax_term->term_id; ?>" <?php echo in_array( $tax_term->term_id, $allowed_tax_id_arr, true ) ? ' checked="checked"' : ''; ?> name="<?php echo $tax_term->name; ?>" disabled> <?php echo $tax_term->name; ?>
                                                         </ul>
                                                     <?php } ?>
                                                 </div>
                                             </div>
                                             <p style="padding-left:10px;">
-                                                <strong><?php echo count( $selected ); ?></strong> <?php echo ( count( $selected ) > 1 || count( $selected ) == 0 ) ? 'categories' : 'category'; ?> total
+                                                <strong><?php echo count( $selected ); ?></strong> <?php echo ( count( $selected ) > 1 || 0 === count( $selected ) ) ? 'categories' : 'category'; ?> total
                                                 <span class="list-controls" style="float:right; margin-top: 0;">
                                                 <input type="checkbox" class="select-all" disabled> Select All
                                             </span>
@@ -1377,39 +1385,51 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                                         </div>
                                     </div>
                                 </div>
-                            <?php }
-                        } ?>
+                                <?php
+                            }
+                        }
+                        ?>
                     </td>
 
                     <?php
-                    $cts = get_taxonomies(array('_builtin'=>false), 'objects'); ?>
-                    <?php foreach ($cts as $ct) {
+                    $cts = get_taxonomies( [ '_builtin' => false ], 'objects' );
+                    ?>
+                    <?php
+                    foreach ( $cts as $ct ) {
                         if ( is_taxonomy_hierarchical( $ct->name ) ) {
                             $selected = array();
                             ?>
                             <td>
                                 <div class="metabox-holder" style="float:left; padding:5px;">
                                     <div class="postbox">
-                                        <h3 class="handle"><span><?php  echo  $ct->label; ?></span></h3>
+                                        <h3 class="handle"><span><?php echo $ct->label; ?></span></h3>
                                         <div class="inside" style="padding:0 10px;">
                                             <div class="taxonomydiv">
                                                 <div class="tabs-panel" style="height: 200px; overflow-y:auto">
                                                     <?php
-                                                    $tax_terms = get_terms ( array(
-                                                                                 'taxonomy' => $ct->name,
-                                                                                 'hide_empty' => false,
-                                                                             ) );
-                                                    foreach ($tax_terms as $tax_term) {
+                                                    $tax_terms = get_terms(
+                                                        [
+                                                            'taxonomy'   => $ct->name,
+                                                            'hide_empty' => false,
+                                                        ]
+                                                    );
+                                                    foreach ( $tax_terms as $tax_term ) {
                                                         $selected[] = $tax_term;
                                                         ?>
                                                         <ul class="categorychecklist form-no-clear">
-                                                            <input type="checkbox" class="tax-term-class" name="allowed-term[]" value="<?php echo $tax_term->term_id; ?>" <?php echo in_array( $tax_term->term_id, $allowed_tax_id_arr ) ? ' checked="checked"' : ''; ?> name="<?php echo $tax_term->name; ?>" disabled> <?php echo $tax_term->name; ?>
+                                                            <input
+                                                                type="checkbox"
+                                                                class="tax-term-class"
+                                                                name="allowed-term[]"
+                                                                value="<?php echo $tax_term->term_id; ?>" <?php echo in_array( $tax_term->term_id, $allowed_tax_id_arr, true ) ? ' checked="checked"' : ''; ?>
+                                                                name="<?php echo $tax_term->name; ?>"
+                                                                disabled> <?php echo $tax_term->name; ?>
                                                         </ul>
                                                     <?php } ?>
                                                 </div>
                                             </div>
                                             <p style="padding-left:10px;">
-                                                <strong><?php echo count( $selected ); ?></strong> <?php echo ( count( $selected ) > 1 || count( $selected ) == 0 ) ? 'categories' : 'category'; ?> total
+                                                <strong><?php echo count( $selected ); ?></strong> <?php echo ( count( $selected ) > 1 || 0 === count( $selected ) ) ? 'categories' : 'category'; ?> total
                                                 <span class="list-controls" style="float:right; margin-top: 0;">
                                                 <input type="checkbox" class="select-all" disabled> Select All
                                             </span>
@@ -1418,8 +1438,10 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
                                     </div>
                                 </div>
                             </td>
-                        <?php }
-                    } ?>
+                            <?php
+                        }
+                    }
+                    ?>
                 </tr>
             </table>
             <?php

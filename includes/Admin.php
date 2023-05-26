@@ -15,6 +15,8 @@ class Admin {
         wpuf()->add_to_container( 'form_template', new Admin\PostFormTemplates\WPUF_Admin_Form_Template() );
         wpuf()->add_to_container( 'admin_form', new Admin\WPUF_Admin_Form() );
         wpuf()->add_to_container( 'admin_form_handler', new Admin\WPUF_Admin_Form_Handler() );
+        wpuf()->add_to_container( 'admin_subscription', new Admin\WPUF_Admin_Subscription() );
+        // $this->container['admin_subscription'] = new Wp\User\Frontend\Admin\WPUF_Admin_Subscription();
 
         // post form submenu operations
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_post_form_scripts' ] );

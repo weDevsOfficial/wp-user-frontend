@@ -1,53 +1,35 @@
 <?php
 
+namespace Wp\User\Frontend\Admin;
+
 /**
  * Manage Subscription packs
  */
 class WPUF_Admin_Subscription {
-
-    /**
-     * The class instance holder
-     *
-     * @var \Object
-     */
-    private static $_instance;
-
     /**
      * The constructor
      */
     public function __construct() {
-        add_filter( 'post_updated_messages', [ $this, 'form_updated_message' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
-        add_action( 'show_user_profile', [ $this, 'profile_subscription_details' ], 30 );
-        add_action( 'edit_user_profile', [ $this, 'profile_subscription_details' ], 30 );
-        add_action( 'personal_options_update', [ $this, 'profile_subscription_update' ] );
-        add_action( 'edit_user_profile_update', [ $this, 'profile_subscription_update' ] );
-        add_action( 'wp_ajax_wpuf_delete_user_package', [ $this, 'delete_user_package' ] );
-
-        add_filter( 'manage_wpuf_subscription_posts_columns', [ $this, 'subscription_columns_head' ] );
-        add_action( 'manage_wpuf_subscription_posts_custom_column', [ $this, 'subscription_columns_content' ], 10, 2 );
-
-        // display help link to docs
-        add_action( 'admin_notices', [ $this, 'add_help_link' ] );
-
-        // new subscription metabox hooks
+//        add_filter( 'post_updated_messages', [ $this, 'form_updated_message' ] );
+//
+//        add_action( 'show_user_profile', [ $this, 'profile_subscription_details' ], 30 );
+//        add_action( 'edit_user_profile', [ $this, 'profile_subscription_details' ], 30 );
+//        add_action( 'personal_options_update', [ $this, 'profile_subscription_update' ] );
+//        add_action( 'edit_user_profile_update', [ $this, 'profile_subscription_update' ] );
+//        add_action( 'wp_ajax_wpuf_delete_user_package', [ $this, 'delete_user_package' ] );
+//
+//        add_filter( 'manage_wpuf_subscription_posts_columns', [ $this, 'subscription_columns_head' ] );
+//        add_action( 'manage_wpuf_subscription_posts_custom_column', [ $this, 'subscription_columns_content' ], 10, 2 );
+//
+//        // display help link to docs
+//        add_action( 'admin_notices', [ $this, 'add_help_link' ] );
+//
+//        // new subscription metabox hooks
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
-        add_action( 'admin_print_styles-post-new.php', [ $this, 'enqueue_scripts' ] );
-        add_action( 'admin_print_styles-WPUF_Post_Form_Template_Post.php', [ $this, 'enqueue_scripts' ] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_profile_script' ] );
-    }
-
-    /**
-     * Get singleton instance
-     *
-     * @return [type] [description]
-     */
-    public static function getInstance() {
-        if ( ! self::$_instance ) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
+//        add_action( 'admin_print_styles-WPUF_Post_Form_Template_Post.php', [ $this, 'enqueue_scripts' ] );
+//        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_profile_script' ] );
     }
 
     /**
@@ -532,11 +514,12 @@ class WPUF_Admin_Subscription {
     public function enqueue_scripts() {
         $screen = get_current_screen();
 
-        if ( $screen->post_type != 'wpuf_subscription' ) {
+        if ( 'wpuf_subscription' !== $screen->post_type ) {
             return;
         }
 
-        wp_enqueue_script( 'wpuf-metabox-tabs', WPUF_ASSET_URI . '/js/metabox-tabs.js', [ 'jquery' ] );
+        wp_enqueue_style( 'wpuf-admin' );
+        wp_enqueue_script( 'wpuf-metabox-tabs' );
     }
 
     /**
@@ -911,5 +894,3 @@ class WPUF_Admin_Subscription {
         <?php
     }
 }
-
-//$subscription = new WPUF_Admin_Subscription();

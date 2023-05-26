@@ -1,5 +1,7 @@
 <?php
 
+use Wp\User\Frontend\Free\WPUF_Pro_Prompt;
+
 /**
  * Start output buffering
  *

@@ -77,7 +77,7 @@ class WPUF_Subscription {
     /**
      * Handle subscription cancel request from the user
      *
-     * @return WPUF_Subscription
+     * @return WPUF_Subscription|bool
      */
     public function user_subscription_cancel() {
         if ( isset( $_POST['wpuf_cancel_subscription'] ) ) {
@@ -87,7 +87,7 @@ class WPUF_Subscription {
             $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 
             if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-sub-cancel' ) ) {
-                return;
+                return false;
             }
 
             $current_pack = self::get_user_pack( $user_id );
@@ -102,7 +102,7 @@ class WPUF_Subscription {
 
             $this::subscriber_cancel( $user_id, $current_pack['pack_id'] );
 
-            wp_redirect( $request_uri );
+            wp_safe_redirect( $request_uri );
             exit;
         }
     }
@@ -628,7 +628,7 @@ class WPUF_Subscription {
      * Redirect to payment page after new post
      *
      * @param string $str
-     * @param type   $post_id
+     * @param int   $post_id
      *
      * @return string
      */

@@ -1,6 +1,7 @@
 <?php
 
 use Wp\User\Frontend\Free\WPUF_Pro_Prompt;
+use Wp\User\Frontend\WPUF_Payment;
 
 /**
  * Start output buffering
@@ -1947,7 +1948,7 @@ function wpuf_is_integration_active( $form_id, $integration_id ) {
  * @return string
  */
 function wpuf_get_subscription_page_url() {
-    $page_id = wpuf_get_option( 'subscription_page', 'wpuf_payment' );
+    $page_id = wpuf_get_option( 'subscription_page', 'Wp\User\Frontend\WPUF_Payment' );
 
     return get_permalink( $page_id );
 }
@@ -2596,7 +2597,7 @@ function wpuf_get_currencies() {
  * @return mixed
  */
 function wpuf_get_currency( $type = '' ) {
-    $currency_code = wpuf_get_option( 'currency', 'wpuf_payment', 'USD' );
+    $currency_code = wpuf_get_option( 'currency', 'Wp\User\Frontend\WPUF_Payment', 'USD' );
 
     if ( 'code' === $type ) {
         return $currency_code;
@@ -2619,7 +2620,7 @@ function wpuf_get_currency( $type = '' ) {
  * @return string
  */
 function get_wpuf_price_format() {
-    $currency_pos = wpuf_get_option( 'currency_position', 'wpuf_payment', 'left' );
+    $currency_pos = wpuf_get_option( 'currency_position', 'Wp\User\Frontend\WPUF_Payment', 'left' );
     $format       = '%1$s%2$s';
 
     switch ( $currency_pos ) {
@@ -2651,7 +2652,7 @@ function get_wpuf_price_format() {
  * @return string
  */
 function wpuf_get_price_thousand_separator() {
-    $separator = stripslashes( wpuf_get_option( 'wpuf_price_thousand_sep', 'wpuf_payment', ',' ) );
+    $separator = stripslashes( wpuf_get_option( 'wpuf_price_thousand_sep', 'Wp\User\Frontend\WPUF_Payment', ',' ) );
 
     return $separator;
 }
@@ -2664,7 +2665,7 @@ function wpuf_get_price_thousand_separator() {
  * @return string
  */
 function wpuf_get_price_decimal_separator() {
-    $separator = stripslashes( wpuf_get_option( 'wpuf_price_decimal_sep', 'wpuf_payment', '.' ) );
+    $separator = stripslashes( wpuf_get_option( 'wpuf_price_decimal_sep', 'Wp\User\Frontend\WPUF_Payment', '.' ) );
 
     return $separator;
 }
@@ -2677,7 +2678,7 @@ function wpuf_get_price_decimal_separator() {
  * @return int
  */
 function wpuf_get_price_decimals() {
-    return absint( wpuf_get_option( 'wpuf_price_num_decimals', 'wpuf_payment', 2 ) );
+    return absint( wpuf_get_option( 'wpuf_price_num_decimals', 'Wp\User\Frontend\WPUF_Payment', 2 ) );
 }
 
 /**
@@ -3328,14 +3329,14 @@ function is_wpuf_profile_form_builder() {
  *
  * @param int|WP_User $user_id
  *
- * @return \WPUF_User
+ * @return Wp\User\Frontend\WPUF_User
  */
 function wpuf_get_user( $user = null ) {
     if ( ! $user ) {
         $user = wp_get_current_user();
     }
 
-    return new WPUF_User( $user );
+    return new Wp\User\Frontend\WPUF_User( $user );
 }
 
 /**
@@ -4156,9 +4157,9 @@ function wpuf_payment_success_page( $data ){
     $payment_method   = ! empty( $data['post_data']['wpuf_payment_method'] ) ? $data['post_data']['wpuf_payment_method'] : '';
 
     if ( 'bank' === $payment_method ) {
-        $redirect_page_id = wpuf_get_option( 'bank_success', 'wpuf_payment' );
+        $redirect_page_id = wpuf_get_option( 'bank_success', 'Wp\User\Frontend\WPUF_Payment' );
     } else {
-        $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
+        $redirect_page_id = wpuf_get_option( 'payment_success', 'Wp\User\Frontend\WPUF_Payment' );
     }
 
     if ( 'post' === $data['type'] ){
@@ -4169,9 +4170,11 @@ function wpuf_payment_success_page( $data ){
         $redirect_page_id  = $ppp_success_page ? $ppp_success_page : $redirect_page_id;
     }
 
-    $redirect_page = $redirect_page_id ? add_query_arg( 'action', $success_query,  untrailingslashit( get_permalink( $redirect_page_id ) ) ) : add_query_arg( 'action', $success_query, untrailingslashit( get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) ) );
+    $redirect_page = $redirect_page_id ? add_query_arg( 'action', $success_query,  untrailingslashit( get_permalink( $redirect_page_id ) ) ) : add_query_arg( 'action', $success_query, untrailingslashit( get_permalink( wpuf_get_option( 'subscription_page',
+                                                                                                                                                                                                                                           'Wp\User\Frontend\WPUF_Payment' ) ) ) );
     //for bank
-    $redirect_page =  ! empty( $data['wpuf_payment_method'] ) && 'bank' === $data['wpuf_payment_method'] ? get_permalink( wpuf_get_option( 'bank_success', 'wpuf_payment' ) ) : $redirect_page;
+    $redirect_page =  ! empty( $data['wpuf_payment_method'] ) && 'bank' === $data['wpuf_payment_method'] ? get_permalink( wpuf_get_option( 'bank_success',
+                                                                                                                                           'Wp\User\Frontend\WPUF_Payment' ) ) : $redirect_page;
 
     return $redirect_page;
 }

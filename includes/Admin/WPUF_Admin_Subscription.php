@@ -2,6 +2,9 @@
 
 namespace Wp\User\Frontend\Admin;
 
+use Wp\User\Frontend\Lib\Gateway\WPUF_Paypal;
+use Wp\User\Frontend\WPUF_Payment;
+
 /**
  * Manage Subscription packs
  */
@@ -11,25 +14,28 @@ class WPUF_Admin_Subscription {
      */
     public function __construct() {
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+        add_filter( 'manage_wpuf_subscription_posts_columns', [ $this, 'subscription_columns_head' ] );
+        add_action( 'manage_wpuf_subscription_posts_custom_column', [ $this, 'subscription_columns_content' ], 10, 2 );
 
-//        add_filter( 'post_updated_messages', [ $this, 'form_updated_message' ] );
-//
-//        add_action( 'show_user_profile', [ $this, 'profile_subscription_details' ], 30 );
-//        add_action( 'edit_user_profile', [ $this, 'profile_subscription_details' ], 30 );
-//        add_action( 'personal_options_update', [ $this, 'profile_subscription_update' ] );
-//        add_action( 'edit_user_profile_update', [ $this, 'profile_subscription_update' ] );
-//        add_action( 'wp_ajax_wpuf_delete_user_package', [ $this, 'delete_user_package' ] );
-//
-//        add_filter( 'manage_wpuf_subscription_posts_columns', [ $this, 'subscription_columns_head' ] );
-//        add_action( 'manage_wpuf_subscription_posts_custom_column', [ $this, 'subscription_columns_content' ], 10, 2 );
-//
-//        // display help link to docs
-//        add_action( 'admin_notices', [ $this, 'add_help_link' ] );
-//
-//        // new subscription metabox hooks
+        // new subscription metabox hooks
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
-//        add_action( 'admin_print_styles-WPUF_Post_Form_Template_Post.php', [ $this, 'enqueue_scripts' ] );
-//        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_profile_script' ] );
+
+
+
+        add_filter( 'post_updated_messages', [ $this, 'form_updated_message' ] );
+
+        add_action( 'show_user_profile', [ $this, 'profile_subscription_details' ], 30 );
+        add_action( 'edit_user_profile', [ $this, 'profile_subscription_details' ], 30 );
+        add_action( 'personal_options_update', [ $this, 'profile_subscription_update' ] );
+        add_action( 'edit_user_profile_update', [ $this, 'profile_subscription_update' ] );
+        add_action( 'wp_ajax_wpuf_delete_user_package', [ $this, 'delete_user_package' ] );
+
+        // display help link to docs
+        add_action( 'admin_notices', [ $this, 'add_help_link' ] );
+
+        // new subscription metabox hooks
+        add_action( 'admin_print_styles-post-new.php', [ $this, 'enqueue_scripts' ] );
+        add_action( 'admin_print_styles-post.php', [ $this, 'enqueue_scripts' ] );
     }
 
     /**
@@ -100,7 +106,7 @@ class WPUF_Admin_Subscription {
             //updating number of posts
 
             if ( isset( $user_pack['posts'] ) ) {
-                $p_type = isset( $_POST[ $post_type ] ) ? sanitize_text_field( wp_unslash( $_POST[ $post_type ] ) ) : '';
+                $p_type = isset( $_POST['post_type'] ) ? sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) : '';
                 foreach ( $user_pack['posts'] as $post_type => $post_num ) {
                     $user_pack['posts'][ $post_type ] = $p_type;
                 }
@@ -577,6 +583,8 @@ class WPUF_Admin_Subscription {
         if ( ! current_user_can( 'edit_users' ) ) {
             return;
         }
+
+        wp_enqueue_script( 'wpuf-subscriptions' );
 
         $current_user = wpuf_get_user();
 

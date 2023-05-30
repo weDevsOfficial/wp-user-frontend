@@ -2,9 +2,9 @@
 
 namespace Wp\User\Frontend\Free;
 
+use Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Post_Form_Template_Events_Calendar;
 use Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Post_Form_Template_WooCommerce;
 use Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Pro_Form_Preview_EDD;
-use Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Post_Form_Template_Events_Calendar;
 
 class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
@@ -124,7 +124,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     public function admin_menu() {
-        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
             $capability = wpuf_admin_role();
             add_submenu_page(
                 wpuf()->menu->parent_slug,

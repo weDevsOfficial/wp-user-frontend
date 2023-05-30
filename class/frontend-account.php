@@ -255,7 +255,8 @@ class WPUF_Frontend_Account {
 
         $pack = WPUF_Subscription::get_subscription( $sub_id );
 
-        $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+        $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page',
+                                                                        'Wp\User\Frontend\WPUF_Payment' ) );
         $details_meta['onclick']      = '';
         $details_meta['symbol']       = wpuf_get_currency( 'symbol' );
 

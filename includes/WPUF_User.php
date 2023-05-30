@@ -1,5 +1,7 @@
 <?php
 
+namespace Wp\User\Frontend;
+
 /**
  * The User Class
  *
@@ -79,7 +81,7 @@ class WPUF_User {
     /**
      * Handles user subscription
      *
-     * @return \WPUF_User_Subscription
+     * @return WPUF_User_Subscription
      */
     public function subscription() {
         return new WPUF_User_Subscription( $this );

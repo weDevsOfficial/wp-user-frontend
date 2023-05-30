@@ -1,20 +1,24 @@
 <?php
 
-if ( !class_exists( 'WP_List_Table' ) ) {
+namespace Wp\User\Frontend\Admin;
+
+if ( ! class_exists( 'WP_List_Table' ) ) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
 /**
  * List table class
  */
-class WPUF_List_Table_Subscribers extends WP_List_Table {
+class WPUF_List_Table_Subscribers extends \WP_List_Table {
 
     public function __construct() {
-        parent::__construct( [
-            'singular' => 'subscriber',
-            'plural'   => 'subscribers',
-            'ajax'     => false,
-        ] );
+        parent::__construct(
+            [
+                'singular' => 'subscriber',
+                'plural'   => 'subscribers',
+                'ajax'     => false,
+            ]
+        );
     }
 
     public function get_table_classes() {
@@ -149,7 +153,7 @@ class WPUF_List_Table_Subscribers extends WP_List_Table {
         global $wpdb;
 
         $columns               = $this->get_columns();
-        $hidden                = [ ];
+        $hidden                = [];
         $sortable              = $this->get_sortable_columns();
         $this->_column_headers = [ $columns, $hidden, $sortable ];
 

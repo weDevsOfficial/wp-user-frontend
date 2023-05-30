@@ -90,7 +90,7 @@ class WPUF_Admin_Installer {
 
         $post_form      = $this->create_form();
 
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
             // payment page
             $subscr_page    = $this->create_page( __( 'Subscription', 'wp-user-frontend' ), __( '[wpuf_sub_pack]', 'wp-user-frontend' ) );
             $payment_page   = $this->create_page( __( 'Payment', 'wp-user-frontend' ), __( 'Please select a gateway for payment', 'wp-user-frontend' ) );
@@ -132,9 +132,9 @@ class WPUF_Admin_Installer {
 
         update_option( 'wpuf_profile', $profile_options );
 
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
             // payment pages
-            update_option( 'wpuf_payment', [
+            update_option( 'Wp\User\Frontend\WPUF_Payment', [
                 'subscription_page' => $subscr_page,
                 'payment_page'      => $payment_page,
                 'payment_success'   => $thank_page,

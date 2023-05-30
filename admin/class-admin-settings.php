@@ -1,5 +1,7 @@
 <?php
 
+use Wp\User\Frontend\Admin\WPUF_Transactions_List_Table;
+
 /**
  * WPUF settings
  */
@@ -98,13 +100,13 @@ class WPUF_Admin_Settings {
          */
         do_action( 'wpuf_admin_menu_top' );
 
-        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
             $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Subscriptions', 'wp-user-frontend' ), __( 'Subscriptions', 'wp-user-frontend' ), $capability, 'edit.php?post_type=wpuf_subscription' );
         }
 
         do_action( 'wpuf_admin_menu' );
 
-        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
             $transactions_page = add_submenu_page( 'wp-user-frontend', __( 'Transactions', 'wp-user-frontend' ), __( 'Transactions', 'wp-user-frontend' ), $capability, 'wpuf_transaction', [ $this, 'transactions_page' ] );
         }
 
@@ -127,7 +129,7 @@ class WPUF_Admin_Settings {
         $this->menu_pages[] = 'wpuf_subscribers';
         $this->menu_pages[] = 'user-frontend_page_wpuf_transaction';
 
-        if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
             add_action( "load-$transactions_page", [ $this, 'transactions_screen_option' ] );
             // add_action( "load-wpuf_subscribers", array( $this, 'subscribers_screen_option' ) );
         }
@@ -389,7 +391,7 @@ class WPUF_Admin_Settings {
                 delete_option( 'wpuf_general' );
                 delete_option( 'wpuf_dashboard' );
                 delete_option( 'wpuf_profile' );
-                delete_option( 'wpuf_payment' );
+                delete_option( 'Wp\User\Frontend\WPUF_Payment' );
                 delete_option( '_wpuf_page_created' );
 
                 $message = 'settings_cleared';
@@ -468,7 +470,7 @@ class WPUF_Admin_Settings {
 
         add_screen_option( $option, $args );
 
-        if ( ! class_exists( 'WPUF_Transactions_List_Table' ) ) {
+        if ( ! class_exists( 'Wp\User\Frontend\Admin\WPUF_Transactions_List_Table' ) ) {
             require_once WPUF_ROOT . '/class/transactions-list-table.php';
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Wp\User\Frontend;
+
 /**
  * Ajax Address Form Class
  */
@@ -17,7 +19,7 @@ class WPUF_Ajax_Address_Form {
     public function register_plugin_scripts() {
         global $post;
 
-        $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
+        $pay_page = intval( wpuf_get_option( 'payment_page', 'Wp\User\Frontend\WPUF_Payment' ) );
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {
             $this->plugin_scripts();

@@ -7,12 +7,11 @@ $args   = [
 ];
 
 add_screen_option( $option, $args );
-
-if ( !class_exists( 'WPUF_List_Table_Subscribers' ) ) {
+if ( ! class_exists( 'Wp\User\Frontend\Admin\WPUF_List_Table_Subscribers' ) ) {
     require_once WPUF_ROOT . '/includes/class-list-table-subscribers.php';
 }
 
-$this->subscribers_list_table_obj = new WPUF_List_Table_Subscribers();
+$this->subscribers_list_table_obj = new Wp\User\Frontend\Admin\WPUF_List_Table_Subscribers();
 ?>
 <div class="wrap">
     <h2><?php esc_html_e( 'Subscribers', 'wp-user-frontend' ); ?></h2>

@@ -748,7 +748,7 @@ final class WP_User_Frontend {
      */
     public function plugin_action_links( $links ) {
         if ( ! $this->is_pro() ) {
-            $links[] = '<a href="' . WPUF_Pro_Prompt::get_pro_url() . '" target="_blank" style="color: red;">Get PRO</a>';
+            $links[] = '<a href="' . Wp\User\Frontend\Free\WPUF_Pro_Prompt::get_pro_url() . '" target="_blank" style="color: red;">Get PRO</a>';
         }
 
         $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">Settings</a>';

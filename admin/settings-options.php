@@ -35,7 +35,7 @@ function wpuf_settings_sections() {
             'icon'  => 'dashicons-admin-users',
         ],
         [
-            'id'    => 'wpuf_payment',
+            'id'    => 'Wp\User\Frontend\WPUF_Payment',
             'title' => __( 'Payments', 'wp-user-frontend' ),
             'icon'  => 'dashicons-money',
         ],
@@ -82,7 +82,7 @@ function wpuf_settings_fields() {
     }
 
     $settings_fields = [
-        'wpuf_general' => apply_filters(
+	    'wpuf_general' => apply_filters(
             'wpuf_options_others', [
                 [
                     'name'    => 'show_admin_bar',
@@ -152,7 +152,7 @@ function wpuf_settings_fields() {
                 ],
             ]
         ),
-        'wpuf_frontend_posting' => apply_filters(
+	    'wpuf_frontend_posting' => apply_filters(
             'wpuf_options_frontend_posting', [
                 [
                     'name'    => 'edit_page_id',
@@ -211,7 +211,7 @@ function wpuf_settings_fields() {
                 ],
             ]
         ),
-        'wpuf_dashboard' => apply_filters(
+	    'wpuf_dashboard' => apply_filters(
             'wpuf_options_dashboard', [
                 [
                     'name'    => 'enable_post_edit',
@@ -297,7 +297,7 @@ function wpuf_settings_fields() {
                 ],
             ]
         ),
-        'wpuf_my_account' => apply_filters(
+	    'wpuf_my_account' => apply_filters(
             'wpuf_options_wpuf_my_account', [
                 [
                     'name'    => 'account_page',
@@ -336,7 +336,7 @@ function wpuf_settings_fields() {
                 ],
             ]
         ),
-        'wpuf_profile' => apply_filters(
+	    'wpuf_profile' => apply_filters(
             'wpuf_options_profile', [
                 [
                     'name'    => 'autologin_after_registration',
@@ -389,7 +389,7 @@ function wpuf_settings_fields() {
                 ],
             ]
         ),
-        'wpuf_payment' => apply_filters(
+	    'Wp\User\Frontend\WPUF_Payment' => apply_filters(
             'wpuf_options_payment', [
                 [
                     'name'    => 'enable_payment',
@@ -500,7 +500,7 @@ function wpuf_settings_fields() {
                 ],
             ]
         ),
-        'wpuf_mails' => apply_filters(
+	    'wpuf_mails' => apply_filters(
             'wpuf_mail_options', [
                 [
                     'name'    => 'guest_email_setting',
@@ -542,7 +542,7 @@ function wpuf_settings_fields() {
                 ],
             ]
         ),
-        'wpuf_privacy' => apply_filters(
+	    'wpuf_privacy' => apply_filters(
             'wpuf_privacy_options', [
                 [
                     'name'    => 'export_post_types',

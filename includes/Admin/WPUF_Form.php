@@ -190,7 +190,8 @@ class WPUF_Form {
 
                 if ( $force_pack ) {
                     $user_can_post = 'no';
-                    $pack_page     = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
+                    $pack_page     = get_permalink( wpuf_get_option( 'subscription_page',
+                                                                     'Wp\User\Frontend\WPUF_Payment' ) );
                     /* translators: %s: Pack page link */
                     $info          = sprintf( __( 'You need to  <a href="%s">purchase a subscription package</a> to post in this form', 'wp-user-frontend' ), $pack_page );
                 } elseif ( $pay_per_post && ! $force_pack ) {

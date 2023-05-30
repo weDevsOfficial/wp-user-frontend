@@ -4,7 +4,6 @@
     <?php
         global $wpdb;
         $total_income = $wpdb->get_var( "SELECT SUM(cost) FROM {$wpdb->prefix}wpuf_transaction WHERE status = 'completed'" );
-        //$month_income = $wpdb->get_var( "SELECT SUM(cost) FROM {$wpdb->prefix}wpuf_transaction WHERE YEAR(`created`) = YEAR(NOW()) AND MONTH(`created`) = MONTH(NOW()) AND status = 'completed'" );
         $total_tax = $wpdb->get_var( "SELECT SUM(tax) FROM {$wpdb->prefix}wpuf_transaction WHERE status = 'completed'" );
     ?>
 

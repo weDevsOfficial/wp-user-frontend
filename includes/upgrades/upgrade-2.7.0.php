@@ -40,7 +40,7 @@ function wpuf_upgrade_2_7_fallback_cost_migration() {
 
 function wpuf_upgrade_2_7_update_new_options() {
     $wpuf_general          = get_option( 'wpuf_general' );
-    $wpuf_payment          = get_option( 'wpuf_payment' );
+    $wpuf_payment          = get_option( 'Wp\User\Frontend\WPUF_Payment' );
     $wpuf_frontend_posting = [
         'edit_page_id'          => $wpuf_general['edit_page_id'],
         'default_post_owner'    => $wpuf_general['default_post_owner'],

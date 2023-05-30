@@ -20,6 +20,7 @@ class Admin {
         wpuf()->add_to_container( 'admin_subscription', new Admin\WPUF_Admin_Subscription() );
         wpuf()->add_to_container( 'admin_installer', new Admin\WPUF_Admin_Installer() );
         wpuf()->add_to_container( 'settings', new Admin\WPUF_Admin_Settings() );
+        wpuf()->add_to_container( 'frontend_account', new Admin\WPUF_Frontend_Account() );
 
         // post form submenu operations
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_post_form_scripts' ] );

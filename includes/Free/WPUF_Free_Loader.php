@@ -40,8 +40,8 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
         // plugin settings
         // add_action( 'admin_footer', [$this, 'remove_login_from_settings'] );
-        // add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );
-        // add_filter( 'wpuf_settings_fields', [ $this, 'pro_settings' ] );
+        add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );
+        add_filter( 'wpuf_settings_fields', [ $this, 'pro_settings' ] );
         // post form templates
         add_action( 'wpuf_get_post_form_templates', [ $this, 'post_form_templates' ] );
         add_filter( 'wpuf_get_pro_form_previews', [ $this, 'pro_form_previews' ] );
@@ -183,7 +183,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      *
      * @since 3.6.0
      *
-     * @param $settings_fields
+     * @param $sections
      *
      * @return array
      */

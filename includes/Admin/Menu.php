@@ -67,6 +67,17 @@ class Menu {
 
         do_action( 'wpuf_admin_menu_bottom' );
 
+        if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+            $premium_hook = add_submenu_page( 'wp-user-frontend', __( 'Premium', 'wp-user-frontend' ), __( 'Premium', 'wp-user-frontend' ), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
+
+            $this->all_submenu_hooks['premium'] = 'load-' . $premium_hook;
+        }
+
+        $help_hook = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wp-user-frontend' ), sprintf( '<span style="color:#f18500">%s</span>', __( 'Help', 'wp-user-frontend' ) ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
+        $this->all_submenu_hooks['help'] = 'load-' . $help_hook;
+
+        add_action( 'load-' . $help_hook, [ $this, 'enqueue_help_script' ] );
+
         $subscribers_page_hook = add_submenu_page( 'edit.php?post_type=wpuf_subscription', __( 'Subscribers', 'wp-user-frontend' ), __( 'Subscribers', 'wp-user-frontend' ), $capability, 'wpuf_subscribers', [ $this, 'subscribers_page' ] );
         //phpcs:ignore
         $_registered_pages['user-frontend_page_wpuf_subscribers'] = true; // hack to work the nested subscribers page. WPUF > Subscriptions > Subscribers
@@ -380,4 +391,33 @@ class Menu {
         <?php
     }
 
+    /**
+     * The User Frontend > Premium page content
+     *
+     * @return void
+     */
+    public function premium_page() {
+        require_once WPUF_INCLUDES . '/Admin/views/premium.php';
+    }
+
+    /**
+     * The User Frontend > Support page content
+     *
+     * @return void
+     */
+    public function support_page() {
+        require_once WPUF_INCLUDES . '/Admin/views/support.php';
+    }
+
+    /**
+     * The User Frontend > Help page scripts
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function enqueue_help_script() {
+        wp_enqueue_script( 'wpuf-admin' );
+        wp_enqueue_style( 'wpuf-admin' );
+    }
 }

@@ -4529,3 +4529,31 @@ function wpuf_get_pro_preview_tooltip() {
 
     return $html;
 }
+
+/**
+ * Get post forms created by WPUF
+ *
+ * @since 2.9.0
+ * @since WPUF_SINCE moved to wpuf-functions.php from WPUF_Frontend_Account.php
+ *
+ * @return array $forms
+ *
+ */
+function wpuf_get_post_forms() {
+    $args = [
+        'post_type'   => 'wpuf_forms',
+        'post_status' => 'any',
+        'orderby'     => 'DESC',
+        'order'       => 'ID',
+        'numberposts' => - 1,
+    ];
+    $posts = get_posts( $args );
+    $forms = [];
+    if ( ! empty( $posts ) ) {
+        foreach ( $posts as $post ) {
+            $forms[ $post->ID ] = $post->post_title;
+        }
+    }
+
+    return $forms;
+}

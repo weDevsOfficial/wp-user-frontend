@@ -47,7 +47,7 @@ class WPUF_Admin_Settings {
         add_action( 'admin_init', [ $this, 'admin_init' ] );
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
 
-        add_filter( 'parent_file', [ $this, 'fix_parent_menu' ] );
+        // add_filter( 'parent_file', [ $this, 'fix_parent_menu' ] );
         add_filter( 'submenu_file', [ $this, 'fix_submenu_file' ] );
 
         add_action( 'admin_init', [ $this, 'handle_tools_action' ] );

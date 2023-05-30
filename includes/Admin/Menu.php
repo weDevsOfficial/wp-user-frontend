@@ -9,6 +9,9 @@ class Menu {
 
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
+
+        add_filter( 'parent_file', [ $this, 'fix_parent_menu' ] );
+        add_filter( 'submenu_file', [ $this, 'fix_submenu_file' ] );
     }
 
     public function admin_menu() {
@@ -141,6 +144,52 @@ class Menu {
 
     public function add_submenu_hooks( $key, $hook ) {
         $this->all_submenu_hooks[ $key ] = $hook;
+    }
+
+    /**
+     * Highlight the proper top level menu
+     *
+     * @see http://wordpress.org/support/topic/moving-taxonomy-ui-to-another-main-menu?replies=5#post-2432769
+     *
+     * @global $current_screen
+     *
+     * @param string $parent_file
+     *
+     * @return string
+     */
+    public function fix_parent_menu( $parent_file ) {
+        $current_screen = get_current_screen();
+
+        $post_types = [ 'wpuf_forms', 'wpuf_profile', 'wpuf_subscription', 'wpuf_coupon' ];
+
+        if ( in_array( $current_screen->post_type, $post_types, true ) ) {
+            $parent_file = 'wp-user-frontend';
+        }
+
+        if ( 'wpuf_subscription' === $current_screen->post_type && $current_screen->base === 'admin_page_the-slug' ) {
+            $parent_file = 'wp-user-frontend';
+        }
+
+        return $parent_file;
+    }
+
+    /**
+     * Fix the submenu class in admin menu
+     *
+     * @since 2.6.0
+     *
+     * @param string $submenu_file
+     *
+     * @return string
+     */
+    public function fix_submenu_file( $submenu_file ) {
+        $current_screen = get_current_screen();
+
+        if ( 'wpuf_subscription' === $current_screen->post_type && $current_screen->base === 'admin_page_wpuf_subscribers' ) {
+            $submenu_file = 'edit.php?post_type=wpuf_subscription';
+        }
+
+        return $submenu_file;
     }
 
 }

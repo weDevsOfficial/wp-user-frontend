@@ -1,5 +1,7 @@
 <?php
 
+namespace Wp\User\Frontend\Lib;
+
 /**
  * weDevs Settings API wrapper class
  *

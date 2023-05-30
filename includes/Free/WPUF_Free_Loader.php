@@ -13,7 +13,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     public function __construct() {
         // admin menu
         add_action( 'wpuf_admin_menu_top', [ $this, 'admin_menu_top' ] );
-        add_action( 'wpuf_admin_menu', [ $this, 'admin_menu' ] );
+        // add_action( 'wpuf_admin_menu', [ $this, 'admin_menu' ] );
         add_action( 'wpuf_form_setting', [ $this, 'form_setting_runner' ], 10, 2 );
         add_action( 'wpuf_form_post_expiration', [ $this, 'wpuf_form_post_expiration_runner'] );
         add_action( 'wpuf_form_settings_post_notification', [ $this, 'post_notification_hook_runner'] );
@@ -148,27 +148,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         }
     }
 
-    public function admin_coupon_page() {
-        ?>
-        <h2><?php esc_html_e( 'Coupons', 'wp-user-frontend' ); ?></h2>
 
-        <div class="wpuf-notice" style="padding: 20px; background: #fff; border: 1px solid #ddd;">
-            <p>
-                <?php esc_html_e( 'Use Coupon codes for subscription for discounts.', 'wp-user-frontend' ); ?>
-            </p>
-
-            <p>
-                <?php esc_html_e( 'This feature is only available in the Pro Version.', 'wp-user-frontend' ); ?>
-            </p>
-
-            <p>
-                <a href="<?php echo esc_url( self::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
-                <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank" class="button"><?php esc_html_e( 'Learn more about Coupons', 'wp-user-frontend' ); ?></a>
-            </p>
-        </div>
-
-        <?php
-    }
 
     public function remove_login_from_settings() {
         global $current_screen;

@@ -5,6 +5,8 @@
  * Walkthrough to the basic setup upon installation
  */
 
+use Wp\User\Frontend\Admin\WPUF_Admin_Installer;
+
 /**
  * The class
  */

@@ -1,6 +1,7 @@
 <?php
 
 use Wp\User\Frontend\Free\WPUF_Pro_Prompt;
+use Wp\User\Frontend\Lib\WeDevs_Settings_API;
 use Wp\User\Frontend\WPUF_Payment;
 
 /**

@@ -2,6 +2,9 @@
 
 namespace Wp\User\Frontend\Admin;
 
+use Wp\User\Frontend\Free\WPUF_Pro_Prompt;
+use Wp\User\Frontend\Lib\WeDevs_Settings_API;
+
 class Menu {
     private $all_submenu_hooks = [];
 
@@ -42,16 +45,25 @@ class Menu {
         if ( 'on' === wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
             $subscription_hook = add_submenu_page( $this->parent_slug, __( 'Subscriptions', 'wp-user-frontend' ), __( 'Subscriptions', 'wp-user-frontend' ), $capability, 'edit.php?post_type=wpuf_subscription' );
 
-            $this->all_submenu_hooks['subscription_hook'] = "load-$subscription_hook";
+            $this->all_submenu_hooks['subscription_hook'] = 'load-' . $subscription_hook;
+
+            $coupons_hook = add_submenu_page( $this->parent_slug, __( 'Coupons', 'wp-user-frontend' ), __( 'Coupons', 'wp-user-frontend' ), $capability, 'wpuf_coupon', [ $this, 'admin_coupon_page' ] );
+
+            $this->all_submenu_hooks['coupons_hook'] = 'load-' . $coupons_hook;
 
             $transactions_page = add_submenu_page( $this->parent_slug, __( 'Transactions', 'wp-user-frontend' ), __( 'Transactions', 'wp-user-frontend' ), $capability, 'wpuf_transaction', [ $this, 'transactions_page' ] );
 
-            add_action( "load-$transactions_page", [ $this, 'transactions_screen_option' ] );
+            add_action( 'load-' . $transactions_page, [ $this, 'transactions_screen_option' ] );
         }
+
+        $tools_hook = add_submenu_page( $this->parent_slug, __( 'Tools', 'wp-user-frontend' ), __( 'Tools', 'wp-user-frontend' ), $capability, 'wpuf_tools', [ $this, 'tools_page' ] );
+        $this->all_submenu_hooks['tools'] = 'load-' . $tools_hook;
+
+        add_action( 'load-' . $tools_hook, [ $this, 'enqueue_tools_script' ] );
 
         do_action( 'wpuf_admin_menu' );
 
-        add_action( "load-$post_forms_hook", [ $this, 'post_form_menu_action' ] );
+        add_action( 'load-' . $post_forms_hook, [ $this, 'post_form_menu_action' ] );
 
         do_action( 'wpuf_admin_menu_bottom' );
 
@@ -59,7 +71,13 @@ class Menu {
         //phpcs:ignore
         $_registered_pages['user-frontend_page_wpuf_subscribers'] = true; // hack to work the nested subscribers page. WPUF > Subscriptions > Subscribers
 
-        $this->all_submenu_hooks['subscribers_hook'] = "load-$subscribers_page_hook";
+        $this->all_submenu_hooks['subscribers_hook'] = 'load-' . $subscribers_page_hook;
+
+        $settings_page_hook = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wp-user-frontend' ), __( 'Settings', 'wp-user-frontend' ), $capability, 'wpuf-settings', [ $this, 'plugin_settings_page' ] );
+
+        $this->all_submenu_hooks['settings_hook'] = 'load-' . $settings_page_hook;
+
+        add_action( 'load-' . $settings_page_hook, [ $this, 'enqueue_settings_page_scripts' ] );
     }
 
     /**
@@ -190,6 +208,176 @@ class Menu {
         }
 
         return $submenu_file;
+    }
+
+    public function admin_coupon_page() {
+        ?>
+        <h2><?php esc_html_e( 'Coupons', 'wp-user-frontend' ); ?></h2>
+
+        <div class="wpuf-notice" style="padding: 20px; background: #fff; border: 1px solid #ddd;">
+            <p>
+                <?php esc_html_e( 'Use Coupon codes for subscription for discounts.', 'wp-user-frontend' ); ?>
+            </p>
+
+            <p>
+                <?php esc_html_e( 'This feature is only available in the Pro Version.', 'wp-user-frontend' ); ?>
+            </p>
+
+            <p>
+                <a href="<?php echo esc_url( WPUF_Pro_Prompt::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank" class="button"><?php esc_html_e( 'Learn more about Coupons', 'wp-user-frontend' ); ?></a>
+            </p>
+        </div>
+
+        <?php
+    }
+
+    /**
+     * Enqueue scripts required for tools page
+     *
+     * @return void
+     */
+    public function enqueue_tools_script() {
+        wp_enqueue_media(); // for uploading JSON
+
+        wp_enqueue_script( 'wpuf-vue' );
+        wp_enqueue_script( 'wpuf-admin-tools' );
+
+        wp_localize_script(
+            'wpuf-admin-tools',
+            'wpuf_admin_tools',
+            [
+                'url'   => [
+                    'ajax' => admin_url( 'admin-ajax.php' ),
+                ],
+                'nonce' => wp_create_nonce( 'wpuf_admin_tools' ),
+                'i18n'  => [
+                    'wpuf_import_forms'      => __( 'WPUF Import Forms', 'wp-user-frontend' ),
+                    'add_json_file'          => __( 'Add JSON file', 'wp-user-frontend' ),
+                    'could_not_import_forms' => __( 'Could not import forms.', 'wp-user-frontend' ),
+                ],
+            ]
+        );
+    }
+
+    /**
+     * The User Frontend > Tools page content
+     *
+     * @return void
+     */
+    public function tools_page() {
+        include WPUF_INCLUDES . '/Admin/views/tools.php';
+    }
+
+    /**
+     * Load necessary scripts for User Frontend > Settings page
+     *
+     * @return void
+     */
+    public function enqueue_settings_page_scripts() {
+        wp_enqueue_style( 'wpuf-admin' );
+        wp_enqueue_script( 'wpuf-admin' );
+        wp_enqueue_script( 'wpuf-subscriptions' );
+    }
+
+    /**
+     * The User Frontend > Settings page content
+     *
+     * @return void
+     */
+    public function plugin_settings_page() {
+        ?>
+        <div class="wrap">
+
+            <h2 style="margin-bottom: 15px;"><?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?></h2>
+            <div class="wpuf-settings-wrap">
+                <?php
+                settings_errors();
+
+                wpuf()->settings->get_settings_api()->show_navigation();
+                wpuf()->settings->get_settings_api()->show_forms();
+                ?>
+            </div>
+            <script>
+                (function () {
+                    document.addEventListener('DOMContentLoaded',function () {
+                        var tabs    = document.querySelector('.wpuf-settings-wrap').querySelectorAll('h2 a');
+                        var content = document.querySelectorAll('.wpuf-settings-wrap .metabox-holder th');
+                        var close   = document.querySelector('#wpuf-search-section span');
+
+                        var search_input = document.querySelector('#wpuf-settings-search');
+
+                        search_input.addEventListener('keyup', function (e) {
+                            var search_value = e.target.value.toLowerCase();
+                            var value_tab  = [];
+
+                            if ( search_value.length ) {
+                                close.style.display = 'flex'
+                                content.forEach(function (row, index) {
+
+                                    var content_id = row.closest('div').getAttribute('id');
+                                    var tab_id     = content_id + '-tab';
+                                    var found_value = row.innerText.toLowerCase().includes( search_value );
+
+                                    if ( found_value ){
+                                        row.closest('tr').style.display = 'table-row';
+                                    }else {
+                                        row.closest('tr').style.display = 'none';
+                                    }
+
+                                    if ( 'wpuf_mails' === content_id ){
+                                        row.closest('tbody').querySelectorAll('tr').forEach(function (tr) {
+                                            tr.style.display = '';
+                                        });
+                                    }
+
+                                    if ( found_value === true && ! value_tab.includes( tab_id ) ) {
+                                        value_tab.push(tab_id);
+                                    }
+                                })
+
+                                if ( value_tab.length ) {
+                                    document.getElementById(value_tab[0]).click();
+                                }
+
+                                tabs.forEach(function (tab) {
+                                    var tab_id = tab.getAttribute('id');
+                                    if ( ! value_tab.includes( tab_id ) ){
+                                        document.getElementById(tab_id).style.display = 'none';
+                                    }else {
+                                        document.getElementById(tab_id).style.display = 'block';
+                                    }
+                                })
+
+                            }else {
+                                wpuf_search_reset();
+                            }
+                        })
+
+                        close.addEventListener('click',function (event) {
+                            wpuf_search_reset();
+                            search_input.value = '';
+                            close.style.display = 'none';
+                        })
+
+                        function wpuf_search_reset() {
+                            content.forEach(function (row, index) {
+                                var content_id = row.closest('div').getAttribute('id');
+                                var tab_id     = content_id + '-tab';
+                                document.getElementById(content_id).style.display = '';
+                                document.getElementById(tab_id).style.display = '';
+                                document.getElementById('wpuf_general-tab').click();
+                            })
+                            document.querySelector('.wpuf-settings-wrap .metabox-holder').querySelectorAll('tr').forEach(function (row) {
+                                row.style.display = '';
+                            });
+
+                        }
+                    });
+                })();
+            </script>
+        </div>
+        <?php
     }
 
 }

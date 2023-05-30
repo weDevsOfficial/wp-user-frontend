@@ -1,5 +1,7 @@
 <?php
 
+namespace Wp\User\Frontend\Admin;
+
 /**
  * Manage Import Export
  *

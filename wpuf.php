@@ -83,6 +83,9 @@ final class WP_User_Frontend {
         $this->includes();
         $this->init_hooks();
 
+        // Insight class instantiate
+        $this->container['tracker'] = new Wp\User\Frontend\Lib\WPUF_WeDevs_Insights( __FILE__ );
+
         do_action( 'wpuf_loaded' );
     }
 
@@ -133,27 +136,13 @@ final class WP_User_Frontend {
 
         add_action( 'init', [ $this, 'load_textdomain' ] );
 
-        // add_action( 'admin_init', [ $this, 'block_admin_access' ] );
-
-        // add_filter( 'show_admin_bar', [ $this, 'show_admin_bar' ] );
-
         // enqueue plugin scripts, don't remove priority.
         // If remove or set priority under 1000 then registered styles will not load on WC Marketplace vendor dashboard.
         // we have integration with WC Marketplace plugin since version 3.0 where WC Marketplae vendors' can submit post
-        // add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 9999 );
+        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 9999 );
 
         // do plugin upgrades
         add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), [ $this, 'plugin_action_links' ] );
-
-        // add custom css
-        // add_action( 'wp_head', [ $this, 'add_custom_css' ] );
-
-        // set schedule event
-//        add_action( 'wpuf_remove_expired_post_hook', [ $this, 'action_to_remove_exipred_post' ] );
-//        add_action( 'wp_ajax_wpuf_weforms_install', [ $this, 'install_weforms' ] );
-
-        // Insight class instentiate
-        // $this->container['tracker'] = new WPUF_WeDevs_Insights( __FILE__ );
     }
 
     /**
@@ -189,65 +178,6 @@ final class WP_User_Frontend {
     }
 
     /**
-     * Action when posts expiration date is passed
-     *
-     * @since 2.2.7
-     */
-    public function action_to_remove_exipred_post() {
-        $args = [
-            'meta_key'       => 'wpuf-post_expiration_date',
-            'meta_value'     => date( 'Y-m-d' ),
-            'meta_compare'   => '<',
-            'post_type'      => get_post_types(),
-            'post_status'    => 'publish',
-            'posts_per_page' => -1,
-        ];
-
-        $mail_subject = apply_filters( 'wpuf_post_expiry_mail_subject', sprintf( '[%s] %s', get_bloginfo( 'name' ), __( 'Your Post Has Been Expired', 'wp-user-frontend' ) ) );
-        $posts        = get_posts( $args );
-
-        foreach ( $posts as $each_post ) {
-            $post_to_update = [
-                'ID'          => $each_post->ID,
-                'post_status' => get_post_meta( $each_post->ID, 'wpuf-expired_post_status', true ) ? get_post_meta( $each_post->ID, 'wpuf-expired_post_status', true ) : 'draft',
-            ];
-
-            wp_update_post( $post_to_update );
-
-            $post_url       = get_permalink( $each_post->ID );
-            $author_id      = $each_post->post_author;
-            $post_author    = get_the_author_meta( 'user_login', $author_id );
-            $blogname       = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-
-            $search = [
-                '{post_author}',
-                '{post_url}',
-                '{blogname}',
-                '{post_title}',
-                '{post_status}',
-            ];
-
-            $replace = [
-                $post_author,
-                $post_url,
-                $blogname,
-                $each_post->post_title,
-                $each_post->post_status,
-            ];
-
-            $message        = get_post_meta( $each_post->ID, 'wpuf-post_expiration_message', true );
-            $message        = str_replace( $search, $replace, $message );
-            $message        = get_formatted_mail_body( $message, $mail_subject );
-
-            if ( ! empty( $message ) ) {
-                wp_mail( get_the_author_meta( 'user_email', $each_post->post_author ), $mail_subject, $message );
-            }
-        }
-        // save an option for debugging purpose
-        update_option( 'wpuf_expiry_posts_last_cleaned', date( 'F j, Y g:i a' ) );
-    }
-
-    /**
      * Singleton Instance
      *
      * @return \self
@@ -267,90 +197,6 @@ final class WP_User_Frontend {
      */
     public function includes() {
         require_once __DIR__ . '/wpuf-functions.php';
-//        require_once __DIR__ . '/class/encryption-helper.php';
-//        require_once __DIR__ . '/lib/gateway/paypal.php';
-//        require_once __DIR__ . '/lib/gateway/bank.php';
-//        require_once __DIR__ . '/lib/class-wedevs-insights.php';
-//
-//        require_once WPUF_ROOT . '/includes/class-frontend-render-WPUF_Admin_Form_Free.php';
-//        require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
-//
-//        // global classes/functions
-//        require_once WPUF_ROOT . '/class/upload.php';
-//        require_once WPUF_ROOT . '/admin/WPUF_Admin_Form_Template.php';
-//        require_once WPUF_ROOT . '/class/post-WPUF_Admin_Form_Template.php';
-//        require_once WPUF_ROOT . '/class/WPUF_Subscription_Element.php';
-//        require_once WPUF_ROOT . '/class/render-WPUF_Admin_Form_Free.php';
-//        require_once WPUF_ROOT . '/class/payment.php';
-//        require_once WPUF_ROOT . '/class/frontend-account.php';
-//        require_once WPUF_ROOT . '/includes/class-WPUF_Admin_Form_Free.php';
-//        require_once WPUF_ROOT . '/includes/class-form-manager.php';
-//        require_once WPUF_ROOT . '/includes/class-login-widget.php';
-//        require_once WPUF_ROOT . '/includes/setup-wizard.php';
-//        require_once WPUF_ROOT . '/includes/countries-state.php';
-//        require_once WPUF_ROOT . '/includes/class-billing-address.php';
-//        include_once WPUF_ROOT . '/includes/class-gutenblock.php';
-//        include_once WPUF_ROOT . '/includes/class-form-preview.php';
-//        include_once WPUF_ROOT . '/includes/class-customizer.php';
-//        include_once WPUF_ROOT . '/includes/log/class-log.php';
-//        include_once WPUF_ROOT . '/includes/log/class-log-wpdb-query.php';
-//        //        include_once WPUF_ROOT . '/includes/class-user-prorate.php';
-//
-//        if ( class_exists( 'WeDevs_Dokan' ) ) {
-//            require_once WPUF_ROOT . '/includes/class-dokan-integration.php';
-//        }
-//
-//        if ( class_exists( 'WCMp' ) ) {
-//            require_once WPUF_ROOT . '/includes/class-wcmp-integration.php';
-//        }
-//
-//        if ( class_exists( 'WC_Vendors' ) ) {
-//            require_once WPUF_ROOT . '/includes/class-wc-vendors-integration.php';
-//        }
-//
-//        require_once WPUF_ROOT . '/includes/class-user.php';
-//        require_once WPUF_ROOT . '/includes/class-user-WPUF_Subscription_Element.php';
-//
-//        if ( is_admin() ) {
-//            require_once WPUF_ROOT . '/admin/settings-options.php';
-//            require_once WPUF_ROOT . '/admin/class-admin-settings.php';
-//            require_once WPUF_ROOT . '/admin/form-handler.php';
-//            require_once WPUF_ROOT . '/admin/WPUF_Admin_Form_Free.php';
-//            require_once WPUF_ROOT . '/admin/posting.php';
-//            require_once WPUF_ROOT . '/admin/class-admin-WPUF_Subscription_Element.php';
-//            require_once WPUF_ROOT . '/admin/installer.php';
-//            require_once WPUF_ROOT . '/admin/class-admin-welcome.php';
-//            require_once WPUF_ROOT . '/admin/promotion.php';
-//            require_once WPUF_ROOT . '/admin/WPUF_Admin_Post_Forms_List_Table.php';
-//            require_once WPUF_ROOT . '/includes/Free/admin/shortcode-button.php';
-//            require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder.php';
-//            require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-admin-form-builder-ajax.php';
-//            // include_once WPUF_ROOT . '/lib/class-weforms-upsell.php';
-//            include_once WPUF_ROOT . '/includes/class-whats-new.php';
-//            include_once WPUF_ROOT . '/includes/class-acf.php';
-//            include_once WPUF_ROOT . '/includes/class-privacy.php';
-//            include_once WPUF_ROOT . '/admin/dashboard-metabox.php';
-//        } else {
-//            require_once WPUF_ROOT . '/class/frontend-dashboard.php';
-//            require_once WPUF_ROOT . '/includes/Free/class-registration.php';
-//        }
-//
-//        // add reCaptcha library if not found
-//        if ( ! function_exists( 'recaptcha_get_html' ) ) {
-//            require_once __DIR__ . '/lib/recaptchalib.php';
-//            require_once __DIR__ . '/lib/invisible_recaptcha.php';
-//        }
-//
-//        require_once WPUF_ROOT . '/includes/Free/class-login.php';
-//        require_once WPUF_ROOT . '/includes/class-frontend-form-WPUF_Post_Form_Template_Post.php';
-//        require_once WPUF_ROOT . '/includes/class-field-manager.php';
-//        require_once WPUF_ROOT . '/includes/class-pro-upgrades.php';
-//        require_once WPUF_ROOT . '/includes/fields/field-trait.php';
-//          require_once WPUF_ROOT . '/includes/Assets.php';
-
-//        if ( is_admin() ) {
-//            require_once WPUF_ROOT . '/admin/WPUF_Admin_Post_Forms_List_Table.php';
-//        }
     }
 
     /**
@@ -360,56 +206,17 @@ final class WP_User_Frontend {
      */
     public function instantiate() {
         $this->container['assets']       = new Wp\User\Frontend\Assets();
-        $this->container['subscription'] = Wp\User\Frontend\Admin\WPUF_Subscription::init();
-//        $this->container['upload']          = new WPUF_Upload();
-//        $this->container['subscription']    = WPUF_Subscription::init();
-//        $this->container['billing_address'] = new WPUF_Ajax_Address_Form();
-//        $this->container['block']           = new WPUF_Form_Block();
-//        $this->container['log']             = new WPUF_Log();
-//
-//        if ( class_exists( 'WeDevs_Dokan' ) ) {
-//            $this->container['dokan_integration'] = new WPUF_Dokan_Integration();
-//        }
-//
-//        if ( class_exists( 'WCMp' ) ) {
-//            $this->container['wcmp_integration'] = new WPUF_WCMp_Integration();
-//        }
-//
-//        if ( class_exists( 'WC_Vendors' ) ) {
-//            $this->container['WCV_Integration'] = new WPUF_WC_Vendors_Integration();
-//        }
+        $this->container['subscription'] = new Wp\User\Frontend\Admin\WPUF_Subscription();
 
         if ( is_admin() ) {
-            $this->container['admin']              = new Wp\User\Frontend\Admin();
-            $this->container['pro_upgrades']       = new Wp\User\Frontend\WPUF_Pro_Upgrades();
-            //            $this->container['settings']           = WPUF_Admin_Settings::init();
-//            $this->container['form_handler']       = new WPUF_Admin_Form_Handler();
-//
-//            $this->container['admin_posting']      = WPUF_Admin_Posting::init();
-//            $this->container['admin_subscription'] = new WPUF_Admin_Subscription();
-//            $this->container['admin_installer']    = new WPUF_Admin_Installer();
-//            $this->container['admin_promotion']    = new WPUF_Admin_Promotion();
-//            $this->container['welcome']            = new WPUF_Admin_Welcome();
-//            $this->container['whats_new']          = new WPUF_Whats_New();
-//            $this->container['wpuf_acf']           = new WPUF_ACF_Compatibility();
-//            $this->container['privacy']            = new WPUF_Privacy();
-//            $this->container['dashboard_mb']       = new Dashboard_Metabox();
-//            $this->container['forms']              = new WPUF_Form_Manager();
-//            $this->container['preview']            = new WPUF_Form_Preview();
-//            $this->container['customize']          = new WPUF_Customizer_Options();
-//            $this->container['fields']             = new WPUF_Field_Manager();
-        } else {
-//            $this->container['dashboard']     = new WPUF_Frontend_Dashboard();
-//            $this->container['payment']       = new WPUF_Payment();
-//            $this->container['registration']  = WPUF_Registration::init();
-//            $this->container['login']         = WPUF_Simple_Login::init();
-//            $this->container['frontend_form'] = WPUF_Frontend_Form::init();
-//            $this->container['paypal']        = new WPUF_Paypal();
-//            $this->container['account']       = new WPUF_Frontend_Account();
+            $this->container['admin']        = new Wp\User\Frontend\Admin();
+            $this->container['pro_upgrades'] = new Wp\User\Frontend\WPUF_Pro_Upgrades();
         }
-//        if ( ! $this->is_pro ) {
-//            $this->container['pro_upgrades'] = new WPUF_Pro_Upgrades();
-//        }
+
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+            $this->container['ajax_address_form']       = new Wp\User\Frontend\Ajax\Address_Form_Ajax();
+            $this->container['ajax_admin_form_builder'] = new Wp\User\Frontend\Ajax\Admin_Form_Builder_Ajax();
+        }
     }
 
     /**
@@ -417,10 +224,8 @@ final class WP_User_Frontend {
      *
      * @global object $wpdb
      */
-    public static function install() {
-        require_once WPUF_ROOT . '/includes/class-installer.php';
-
-        $installer = new WPUF_Installer();
+    public function install() {
+        $installer = new Wp\User\Frontend\Installer();
         $installer->install();
     }
 
@@ -436,9 +241,7 @@ final class WP_User_Frontend {
             return;
         }
 
-        require_once WPUF_ROOT . '/includes/class-upgrades.php';
-
-        $this->container['upgrades'] = new WPUF_Upgrades();
+        $this->container['upgrades'] = new Wp\User\Frontend\Admin\Upgrades();
     }
 
     /**
@@ -453,8 +256,6 @@ final class WP_User_Frontend {
             $this->is_pro = true;
             add_action( 'admin_notices', [ $this, 'wpuf_latest_pro_activation_notice' ] );
         } else {
-            // include __DIR__ . '/includes/Free/WPUF_Free_Loader.php';
-
             $this->container['free_loader'] = new Wp\User\Frontend\Free\WPUF_Free_Loader();
         }
     }
@@ -622,87 +423,6 @@ final class WP_User_Frontend {
     }
 
     /**
-     * add custom css to head
-     */
-    public function add_custom_css() {
-        global $post;
-
-        if ( ! is_a( $post, 'WP_Post' ) ) {
-            return;
-        }
-
-        if ( wpuf_has_shortcode( 'wpuf-login', $post->ID )
-            || wpuf_has_shortcode( 'wpuf-registration', $post->ID )
-            || wpuf_has_shortcode( 'wpuf-meta', $post->ID )
-            || wpuf_has_shortcode( 'wpuf_form', $post->ID )
-            || wpuf_has_shortcode( 'wpuf_edit', $post->ID )
-            || wpuf_has_shortcode( 'wpuf_profile', $post->ID )
-            || wpuf_has_shortcode( 'wpuf_dashboard', $post->ID )
-            || wpuf_has_shortcode( 'wpuf_sub_pack', $post->ID )
-            || wpuf_has_shortcode( 'wpuf-login', $post->ID )
-            || wpuf_has_shortcode( 'wpuf_form', $post->ID )
-            || wpuf_has_shortcode( 'wpuf_account', $post->ID )
-         ) {
-            ?>
-            <style>
-                <?php
-                    $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' );
-                    echo esc_html( $custom_css );
-                ?>
-            </style>
-            <?php
-        }
-    }
-
-    /**
-     * Block user access to admin panel for specific roles
-     *
-     * @global string $pagenow
-     */
-    public function block_admin_access() {
-        global $pagenow;
-
-        // bail out if we are from WP Cli
-        if ( defined( 'WP_CLI' ) ) {
-            return;
-        }
-
-        $access_level = wpuf_get_option( 'admin_access', 'wpuf_general', 'read' );
-        $valid_pages  = [ 'admin-ajax.php', 'admin-WPUF_Post_Form_Template_Post.php', 'async-upload.php', 'media-upload.php' ];
-
-        if ( ! current_user_can( $access_level ) && ! in_array( $pagenow, $valid_pages ) ) {
-            // wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
-            wp_redirect( home_url() );
-            exit;
-        }
-    }
-
-    /**
-     * Show/hide admin bar to the permitted user level
-     *
-     * @since 2.2.3
-     *
-     * @return bool
-     */
-    public function show_admin_bar( $val ) {
-        if ( ! is_user_logged_in() ) {
-            return false;
-        }
-
-        $roles        = wpuf_get_option( 'show_admin_bar', 'wpuf_general', [ 'administrator', 'editor', 'author', 'contributor', 'subscriber' ] );
-        $roles        = $roles && is_string( $roles ) ? [ strtolower( $roles ) ] : $roles;
-        $current_user = wp_get_current_user();
-
-        if ( ! empty( $current_user->roles ) && ! empty( $current_user->roles[0] ) ) {
-            if ( ! in_array( $current_user->roles[0], $roles ) ) {
-                return false;
-            }
-        }
-
-        return $val;
-    }
-
-    /**
      * Load the translation file for current language.
      *
      * @since version 0.7
@@ -758,80 +478,28 @@ final class WP_User_Frontend {
     }
 
     /**
-     * Show renew prompt once the license key is expired
+     * Add item to the WPUF container
      *
-     * @since 2.3.13
+     * @since WPUF_SINCE
      *
-     * @return void
-     */
-    public function license_expired() {
-        echo '<div class="error">';
-        echo '<p>Your <strong>WP User Frontend Pro</strong> License has been expired. Please <a href="https://wedevs.com/account/" target="_blank">renew your license</a>.</p>';
-        echo '</div>';
-    }
-
-    /**
-     * If the core isn't installed
+     * @param $name
+     * @param $object
      *
      * @return void
      */
-    public function maybe_weforms_install() {
-        if ( class_exists( 'WeForms' ) ) {
-            return;
-        }
-
-        // install the core
-        add_action( 'wp_ajax_wpuf_weforms_install', [ $this, 'install_weforms' ] );
-    }
-
-    /**
-     * Install weforms plugin via ajax
-     *
-     * @return void
-     */
-    public function install_weforms() {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
-
-        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-weforms-installer-nonce' ) ) {
-            wp_send_json_error( __( 'Error: Nonce verification failed', 'wp-user-frontend' ) );
-        }
-
-        include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-        include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-
-        if ( file_exists( WP_PLUGIN_DIR . '/weforms/weforms.php' ) ) {
-            activate_plugin( 'weforms/weforms.php' );
-            wp_send_json_success();
-        }
-
-        $plugin = 'weforms';
-        $api    = plugins_api(
-            'plugin_information', [
-                'slug'   => $plugin,
-                'fields' => [
-                    'sections' => false,
-                ],
-            ]
-        );
-
-        $upgrader = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
-        $result   = $upgrader->install( $api->download_link );
-
-        if ( is_wp_error( $result ) ) {
-            wp_send_json_error( $result );
-        }
-
-        $result = activate_plugin( 'weforms/weforms.php' );
-
-        if ( is_wp_error( $result ) ) {
-            wp_send_json_error( $result );
-        }
-
-        wp_send_json_success();
-    }
-
     public function add_to_container( $name, $object ) {
         $this->container[ $name ] = $object;
+    }
+
+    /**
+     * Returns the WPUF container that holds all the plugin classes
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_container() {
+        return $this->container;
     }
 }
 

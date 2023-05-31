@@ -1,5 +1,6 @@
 <?php
 
+use Wp\User\Frontend\Admin\Forms\Post\Templates\Post_Form_Template_Post;
 use Wp\User\Frontend\Free\WPUF_Pro_Prompt;
 use Wp\User\Frontend\Lib\WeDevs_Settings_API;
 use Wp\User\Frontend\WPUF_Payment;
@@ -2007,10 +2008,7 @@ function wpuf_is_license_expired() {
  * @return array
  */
 function wpuf_get_post_form_templates() {
-    require_once WPUF_ROOT . '/includes/Admin/PostFormTemplates/WPUF_Post_Form_Template_Post.php';
-
-    $integrations                                 = [];
-    $integrations['WPUF_Post_Form_Template_Post'] = new Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Post_Form_Template_Post();
+    $integrations['post_form_template_post'] = new Wp\User\Frontend\Admin\Forms\Post\Templates\Post_Form_Template_Post();
 
     return apply_filters( 'wpuf_get_post_form_templates', $integrations );
 }
@@ -4556,4 +4554,19 @@ function wpuf_get_post_forms() {
     }
 
     return $forms;
+}
+
+/**
+ * require_once a file upon checking the existence of the file
+ *
+ * @since WPUF_SINCE
+ *
+ * @param $file_location
+ *
+ * @return void
+ */
+function wpuf_require_once( $file_location ) {
+    if ( file_exists( $file_location ) ) {
+        require_once $file_location;
+    }
 }

@@ -14,19 +14,19 @@ use Wp\User\Frontend\Admin\WPUF_Admin_Tools;
 class Admin {
     public function __construct() {
         wpuf()->add_to_container( 'menu', new Admin\Menu() );
-        wpuf()->add_to_container( 'form_template', new Admin\PostFormTemplates\WPUF_Admin_Form_Template() );
-        wpuf()->add_to_container( 'admin_form', new Admin\WPUF_Admin_Form() );
-        wpuf()->add_to_container( 'admin_form_handler', new Admin\WPUF_Admin_Form_Handler() );
+        wpuf()->add_to_container( 'form_template', new Admin\Forms\Post\Templates\Admin_Form_Template() );
+        wpuf()->add_to_container( 'admin_form', new Admin\Forms\Admin_Form() );
+        wpuf()->add_to_container( 'admin_form_handler', new Admin\Forms\WPUF_Admin_Form_Handler() );
         wpuf()->add_to_container( 'admin_subscription', new Admin\WPUF_Admin_Subscription() );
         wpuf()->add_to_container( 'admin_installer', new Admin\WPUF_Admin_Installer() );
         wpuf()->add_to_container( 'settings', new Admin\WPUF_Admin_Settings() );
-        wpuf()->add_to_container( 'frontend_account', new Admin\WPUF_Frontend_Account() );
+        wpuf()->add_to_container( 'frontend_account', new Frontend\WPUF_Frontend_Account() );
 
         // post form submenu operations
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_post_form_scripts' ] );
 
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
-        add_action( 'admin_action_wpuf_post_form_template', [ $this, 'create_post_form_from_template' ] );
+        add_action( 'admin_action_post_form_template', [ $this, 'create_post_form_from_template' ] );
 
         // tools page
         add_action( 'admin_init', [ $this, 'handle_tools_action' ] );

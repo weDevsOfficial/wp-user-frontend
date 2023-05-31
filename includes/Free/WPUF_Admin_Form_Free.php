@@ -2,7 +2,7 @@
 
 namespace Wp\User\Frontend\Free;
 
-use Wp\User\Frontend\Admin\WPUF_Admin_Form_Builder_Free;
+use Wp\User\Frontend\Admin\Forms\WPUF_Admin_Form_Builder_Free;
 
 /**
  * Free features for wpuf_forms builder

@@ -23,7 +23,8 @@ class Menu {
         $capability = wpuf_admin_role();
         $wpuf_icon  = 'data:image/svg+xml;base64,' . base64_encode( '<svg width="83px" height="76px" viewBox="0 0 83 76" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="wpuf-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="ufp" fill-rule="nonzero" fill="#9EA3A8"><path d="M49.38,51.88 C49.503348,56.4604553 45.8999295,60.2784694 41.32,60.42 C36.7400705,60.2784694 33.136652,56.4604553 33.26,51.88 L33.26,40.23 L19,40.23 L19,51.88 C19,64.77 29,75.25 41.36,75.26 L41.36,75.26 C47.3622079,75.2559227 53.0954073,72.7693647 57.2,68.39 C61.4213559,63.9375842 63.7575868,58.0253435 63.72,51.89 L63.72,40.23 L49.38,40.23 L49.38,51.88 Z" id="Shape"></path><polygon id="Shape" points="32.96 0.59 0 0.59 3.77 16.68 32.96 16.68"></polygon><path d="M68,0 L49.75,0 L49.75,16.1 L68,16.1 C68.74,16.1 69.39,17.1 69.39,18.24 C69.39,19.38 68.74,20.38 68,20.38 L49.75,20.38 L49.75,36.5 L68,36.5 C76,36.5 82.5,28.31 82.5,18.25 C82.5,8.19 76,0 68,0 Z" id="Shape"></path><polygon id="Shape" points="32.96 20.41 5.31 20.41 9.07 36.5 32.96 36.5"></polygon></g></g></svg>' );
 
-        add_menu_page( __( 'WP User Frontend', 'wp-user-frontend' ), __( 'User Frontend', 'wp-user-frontend' ), $capability, $this->parent_slug, [ $this, '\wpuf_post_forms_page' ], $wpuf_icon, '54.2' );
+        add_menu_page( __( 'WP User Frontend', 'wp-user-frontend' ), __( 'User Frontend', 'wp-user-frontend' ), $capability, $this->parent_slug, [ $this, 'wpuf_post_forms_page' ], $wpuf_icon, '54.2' );
+
         $post_forms_hook = add_submenu_page(
             $this->parent_slug,
             __( 'Post Forms', 'wp-user-frontend' ),
@@ -45,11 +46,11 @@ class Menu {
         if ( 'on' === wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
             $subscription_hook = add_submenu_page( $this->parent_slug, __( 'Subscriptions', 'wp-user-frontend' ), __( 'Subscriptions', 'wp-user-frontend' ), $capability, 'edit.php?post_type=wpuf_subscription' );
 
-            $this->all_submenu_hooks['subscription_hook'] = 'load-' . $subscription_hook;
+            $this->all_submenu_hooks['subscription_hook'] = $subscription_hook;
 
             $coupons_hook = add_submenu_page( $this->parent_slug, __( 'Coupons', 'wp-user-frontend' ), __( 'Coupons', 'wp-user-frontend' ), $capability, 'wpuf_coupon', [ $this, 'admin_coupon_page' ] );
 
-            $this->all_submenu_hooks['coupons_hook'] = 'load-' . $coupons_hook;
+            $this->all_submenu_hooks['coupons_hook'] = $coupons_hook;
 
             $transactions_page = add_submenu_page( $this->parent_slug, __( 'Transactions', 'wp-user-frontend' ), __( 'Transactions', 'wp-user-frontend' ), $capability, 'wpuf_transaction', [ $this, 'transactions_page' ] );
 
@@ -57,7 +58,7 @@ class Menu {
         }
 
         $tools_hook = add_submenu_page( $this->parent_slug, __( 'Tools', 'wp-user-frontend' ), __( 'Tools', 'wp-user-frontend' ), $capability, 'wpuf_tools', [ $this, 'tools_page' ] );
-        $this->all_submenu_hooks['tools'] = 'load-' . $tools_hook;
+        $this->all_submenu_hooks['tools'] = $tools_hook;
 
         add_action( 'load-' . $tools_hook, [ $this, 'enqueue_tools_script' ] );
 
@@ -70,11 +71,11 @@ class Menu {
         if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
             $premium_hook = add_submenu_page( 'wp-user-frontend', __( 'Premium', 'wp-user-frontend' ), __( 'Premium', 'wp-user-frontend' ), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
 
-            $this->all_submenu_hooks['premium'] = 'load-' . $premium_hook;
+            $this->all_submenu_hooks['premium'] = $premium_hook;
         }
 
         $help_hook = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wp-user-frontend' ), sprintf( '<span style="color:#f18500">%s</span>', __( 'Help', 'wp-user-frontend' ) ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
-        $this->all_submenu_hooks['help'] = 'load-' . $help_hook;
+        $this->all_submenu_hooks['help'] = $help_hook;
 
         add_action( 'load-' . $help_hook, [ $this, 'enqueue_help_script' ] );
 
@@ -82,11 +83,11 @@ class Menu {
         //phpcs:ignore
         $_registered_pages['user-frontend_page_wpuf_subscribers'] = true; // hack to work the nested subscribers page. WPUF > Subscriptions > Subscribers
 
-        $this->all_submenu_hooks['subscribers_hook'] = 'load-' . $subscribers_page_hook;
+        $this->all_submenu_hooks['subscribers_hook'] = $subscribers_page_hook;
 
         $settings_page_hook = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wp-user-frontend' ), __( 'Settings', 'wp-user-frontend' ), $capability, 'wpuf-settings', [ $this, 'plugin_settings_page' ] );
 
-        $this->all_submenu_hooks['settings_hook'] = 'load-' . $settings_page_hook;
+        $this->all_submenu_hooks['settings_hook'] = $settings_page_hook;
 
         add_action( 'load-' . $settings_page_hook, [ $this, 'enqueue_settings_page_scripts' ] );
     }
@@ -145,15 +146,13 @@ class Menu {
 
         add_screen_option( $option, $args );
 
-        if ( ! class_exists( 'Wp\User\Frontend\Admin\WPUF_Transactions_List_Table' ) ) {
-            require_once WPUF_ROOT . '/class/transactions-list-table.php';
-        }
-
-        $this->transactions_list_table_obj = new WPUF_Transactions_List_Table();
+        wpuf()->add_to_container( 'transaction_list_table', new WPUF_Transactions_List_Table() );
     }
 
     public function transactions_page() {
-        require_once WPUF_INCLUDES . '/Admin/views/transactions-list-table-view.php';
+        $page = WPUF_INCLUDES . '/Admin/views/transactions-list-table-view.php';
+
+        wpuf_require_once( $page );
     }
 
     /**
@@ -164,7 +163,9 @@ class Menu {
      * @return void
      */
     public function subscribers_page( $post_ID ) {
-        include dirname( WPUF_INCLUDES ) . '/admin/subscribers.php';
+        $page = WPUF_INCLUDES . '/Admin/views/subscribers.php';
+
+        wpuf_require_once( $page );
     }
 
     public function get_all_submenu_hooks() {
@@ -289,6 +290,7 @@ class Menu {
         wp_enqueue_style( 'wpuf-admin' );
         wp_enqueue_script( 'wpuf-admin' );
         wp_enqueue_script( 'wpuf-subscriptions' );
+        wp_enqueue_script( 'wpuf-settings' );
     }
 
     /**
@@ -309,84 +311,6 @@ class Menu {
                 wpuf()->settings->get_settings_api()->show_forms();
                 ?>
             </div>
-            <script>
-                (function () {
-                    document.addEventListener('DOMContentLoaded',function () {
-                        var tabs    = document.querySelector('.wpuf-settings-wrap').querySelectorAll('h2 a');
-                        var content = document.querySelectorAll('.wpuf-settings-wrap .metabox-holder th');
-                        var close   = document.querySelector('#wpuf-search-section span');
-
-                        var search_input = document.querySelector('#wpuf-settings-search');
-
-                        search_input.addEventListener('keyup', function (e) {
-                            var search_value = e.target.value.toLowerCase();
-                            var value_tab  = [];
-
-                            if ( search_value.length ) {
-                                close.style.display = 'flex'
-                                content.forEach(function (row, index) {
-
-                                    var content_id = row.closest('div').getAttribute('id');
-                                    var tab_id     = content_id + '-tab';
-                                    var found_value = row.innerText.toLowerCase().includes( search_value );
-
-                                    if ( found_value ){
-                                        row.closest('tr').style.display = 'table-row';
-                                    }else {
-                                        row.closest('tr').style.display = 'none';
-                                    }
-
-                                    if ( 'wpuf_mails' === content_id ){
-                                        row.closest('tbody').querySelectorAll('tr').forEach(function (tr) {
-                                            tr.style.display = '';
-                                        });
-                                    }
-
-                                    if ( found_value === true && ! value_tab.includes( tab_id ) ) {
-                                        value_tab.push(tab_id);
-                                    }
-                                })
-
-                                if ( value_tab.length ) {
-                                    document.getElementById(value_tab[0]).click();
-                                }
-
-                                tabs.forEach(function (tab) {
-                                    var tab_id = tab.getAttribute('id');
-                                    if ( ! value_tab.includes( tab_id ) ){
-                                        document.getElementById(tab_id).style.display = 'none';
-                                    }else {
-                                        document.getElementById(tab_id).style.display = 'block';
-                                    }
-                                })
-
-                            }else {
-                                wpuf_search_reset();
-                            }
-                        })
-
-                        close.addEventListener('click',function (event) {
-                            wpuf_search_reset();
-                            search_input.value = '';
-                            close.style.display = 'none';
-                        })
-
-                        function wpuf_search_reset() {
-                            content.forEach(function (row, index) {
-                                var content_id = row.closest('div').getAttribute('id');
-                                var tab_id     = content_id + '-tab';
-                                document.getElementById(content_id).style.display = '';
-                                document.getElementById(tab_id).style.display = '';
-                                document.getElementById('wpuf_general-tab').click();
-                            })
-                            document.querySelector('.wpuf-settings-wrap .metabox-holder').querySelectorAll('tr').forEach(function (row) {
-                                row.style.display = '';
-                            });
-
-                        }
-                    });
-                })();
-            </script>
         </div>
         <?php
     }

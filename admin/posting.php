@@ -33,7 +33,7 @@ class WPUF_Admin_Posting {
     public function enqueue_script() {
         global $pagenow;
 
-        if ( !in_array( $pagenow, [ 'profile.php', 'post-new.php', 'WPUF_Post_Form_Template_Post.php', 'user-edit.php' ] ) ) {
+        if ( !in_array( $pagenow, [ 'profile.php', 'post-new.php', 'Post_Form_Template_Post.php', 'user-edit.php' ] ) ) {
             return;
         }
 

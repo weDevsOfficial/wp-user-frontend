@@ -2,6 +2,8 @@
 
 namespace Wp\User\Frontend;
 
+use Wp\User\Frontend\Ajax\WPUF_Ajax_Address_Form;
+
 /**
  * WP User Frontend payment gateway handler
  *

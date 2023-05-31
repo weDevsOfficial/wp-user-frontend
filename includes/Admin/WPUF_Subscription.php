@@ -2,6 +2,8 @@
 
 namespace Wp\User\Frontend\Admin;
 
+use Wp\User\Frontend\Admin\Forms\WPUF_Form;
+
 /**
  * WPUF subscription manager
  *
@@ -105,14 +107,6 @@ class WPUF_Subscription {
             wp_safe_redirect( $request_uri );
             exit;
         }
-    }
-
-    public static function init() {
-        if ( ! self::$_instance ) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
     }
 
     /**

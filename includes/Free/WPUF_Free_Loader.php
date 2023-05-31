@@ -2,9 +2,9 @@
 
 namespace Wp\User\Frontend\Free;
 
-use Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Post_Form_Template_Events_Calendar;
-use Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Post_Form_Template_WooCommerce;
-use Wp\User\Frontend\Admin\PostFormTemplates\WPUF_Pro_Form_Preview_EDD;
+use Wp\User\Frontend\Admin\Forms\Post\Templates\Post_Form_Template_Events_Calendar;
+use Wp\User\Frontend\Admin\Forms\Post\Templates\Post_Form_Template_WooCommerce;
+use Wp\User\Frontend\Admin\Forms\Post\Templates\Pro_Form_Preview_EDD;
 
 class WPUF_Free_Loader extends WPUF_Pro_Prompt {
 
@@ -94,7 +94,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         add_action( "load-$modules", [ $this, 'module_menu_action' ] );
 
         add_action( 'wpuf_load_module_page', [ $this, 'load_modules_scripts' ] );
-        // add_action( 'wpuf_load_module_page', [ $this, 'modules_page_contents' ] );
+        add_action( 'wpuf_load_module_page', [ $this, 'modules_page_contents' ] );
     }
 
     public function module_menu_action() {
@@ -917,10 +917,8 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
      * @return array
      */
     public function post_form_templates( $integrations ) {
-        // require_once WPUF_INCLUDES . '/Admin/PostFormTemplates/WPUF_Post_Form_Template_WooCommerce.php';
-        // require_once __DIR__ . '/post-form-templates/the_events_calendar.php';
-        $integrations['WPUF_Post_Form_Template_WooCommerce']     = new WPUF_Post_Form_Template_WooCommerce();
-        $integrations['WPUF_Post_Form_Template_Events_Calendar'] = new WPUF_Post_Form_Template_Events_Calendar();
+        $integrations['post_form_template_woocommerce']     = new Post_Form_Template_WooCommerce();
+        $integrations['post_form_template_events_calendar'] = new Post_Form_Template_Events_Calendar();
 
         return $integrations;
     }
@@ -937,7 +935,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     public function pro_form_previews( $integrations ) {
         // include_once __DIR__ . '/post-form-templates/WPUF_Pro_Form_Preview_EDD.php';
 
-        $integrations['WPUF_Pro_Form_Preview_EDD'] = new WPUF_Pro_Form_Preview_EDD();
+        $integrations['WPUF_Pro_Form_Preview_EDD'] = new Pro_Form_Preview_EDD();
 
         return $integrations;
     }

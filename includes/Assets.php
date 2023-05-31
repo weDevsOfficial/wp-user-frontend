@@ -8,7 +8,6 @@ namespace Wp\User\Frontend;
  *
  * @since WPUF_SINCE
  */
-
 class Assets {
 
     /**
@@ -17,29 +16,29 @@ class Assets {
      * @var string
      */
     private $suffix;
-    // private $scheme;
+    private $scheme;
 
     /**
      * The css dependencies list for form builder
+     *
      * @var array|mixed|null
      */
     public $form_builder_css_deps = [];
 
     public function __construct() {
         $this->suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-        // $this->scheme = is_ssl() ? 'https' : 'http';
-
+        $this->scheme = is_ssl() ? 'https' : 'http';
         $this->form_builder_css_deps = apply_filters(
-            'wpuf_form_builder_css_deps', [
-				'wpuf-frontend-forms',
-				'wpuf-font-awesome',
-				'wpuf-sweetalert2',
-				'wpuf-selectize',
-				'wpuf-toastr',
-				'wpuf-tooltip',
-			]
+            'wpuf_form_builder_css_deps',
+            [
+                'wpuf-frontend-forms',
+                'wpuf-font-awesome',
+                'wpuf-sweetalert2',
+                'wpuf-selectize',
+                'wpuf-toastr',
+                'wpuf-tooltip',
+            ]
         );
-
         add_action( 'init', [ $this, 'register_all_scripts' ] );
     }
 
@@ -51,12 +50,9 @@ class Assets {
     public function register_all_scripts() {
         $styles  = $this->get_styles();
         $scripts = $this->get_scripts();
-
         do_action( 'wpuf_before_register_scripts', $scripts, $styles );
-
         $this->register_styles( $styles );
         $this->register_scripts( $scripts );
-
         do_action( 'wpuf_after_register_scripts', $scripts, $styles );
     }
 
@@ -70,7 +66,6 @@ class Assets {
             $deps    = ! empty( $style['deps'] ) ? $style['deps'] : [];
             $version = ! empty( $style['version'] ) ? $style['version'] : WPUF_VERSION;
             $media   = ! empty( $style['media'] ) ? $style['media'] : 'all';
-
             wp_register_style( 'wpuf-' . $handle, $style['src'], $deps, $version, $media );
         }
     }
@@ -85,7 +80,6 @@ class Assets {
             $deps      = isset( $script['deps'] ) ? $script['deps'] : [];
             $in_footer = isset( $script['in_footer'] ) ? $script['in_footer'] : true;
             $version   = isset( $script['version'] ) ? $script['version'] : WPUF_VERSION;
-
             wp_register_script( 'wpuf-' . $handle, $script['src'], $deps, $version, $in_footer );
         }
     }
@@ -167,50 +161,27 @@ class Assets {
      * @return mixed|null
      */
     public function get_scripts() {
-		//        global $post;
+        $this->scheme         = is_ssl() ? 'https' : 'http';
+        $api_key              = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
         $form_builder_js_deps = apply_filters(
-            'wpuf-form-builder-js-deps', [
-				'jquery',
-				'jquery-ui-sortable',
-				'jquery-ui-draggable',
-				'jquery-ui-droppable',
-				'underscore',
-				'wpuf-vue',
-				'wpuf-vuex',
-				'wpuf-sweetalert2',
-				'wpuf-jquery-scrollTo',
-				'wpuf-selectize',
-				'wpuf-toastr',
-				'wpuf-clipboard',
-				'wpuf-tooltip',
-			]
+            'wpuf_form_builder_js_deps',
+            [
+                'jquery',
+                'jquery-ui-sortable',
+                'jquery-ui-draggable',
+                'jquery-ui-droppable',
+                'underscore',
+                'wpuf-vue',
+                'wpuf-vuex',
+                'wpuf-sweetalert2',
+                'wpuf-jquery-scrollTo',
+                'wpuf-selectize',
+                'wpuf-toastr',
+                'wpuf-clipboard',
+                'wpuf-tooltip',
+            ]
         );
-		//        /*
-		//         * Data required for building the form
-		//         */
-		//        require_once WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php';
-		//        require_once WPUF_ROOT . '/includes/Free/WPUF_Pro_Prompt.php';
-		//        $wpuf_form_builder = apply_filters( 'wpuf-form-builder-localize-script', [
-		//            'post'              => $post,
-		//            'form_fields'       => wpuf_get_form_fields( $post->ID ),
-		//            'field_settings'    => wpuf()->fields->get_js_settings(),
-		//            'notifications'     => wpuf_get_form_notifications( $post->ID ),
-		//            'pro_link'          => WPUF_Pro_Prompt::get_pro_url(),
-		//            'site_url'          => site_url( '/' ),
-		//            'recaptcha_site'    => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
-		//            'recaptcha_secret'  => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
-		//        ] );
-		//        $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
-		//        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
-		//        // mixins
-		//        $wpuf_mixins = [
-		//            'root'           => apply_filters( 'wpuf-form-builder-js-root-mixins', [] ),
-		//            'builder_stage'  => apply_filters( 'wpuf-form-builder-js-builder-stage-mixins', [] ),
-		//            'form_fields'    => apply_filters( 'wpuf-form-builder-js-form-fields-mixins', [] ),
-		//            'field_options'  => apply_filters( 'wpuf-form-builder-js-field-options-mixins', [] ),
-		//        ];
-		//        wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
-        $scripts = [
+        $scripts              = [
             'vue'                      => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vue/vue' . $this->suffix . '.js',
                 'in_footer' => true,
@@ -322,11 +293,19 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/js/metabox-tabs.js',
                 'deps' => [ 'jquery' ],
             ],
-            'admin-tools'             => [
+            'admin-tools'              => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-admin-tools.js',
                 'deps' => [ 'jquery', 'wpuf-vue' ],
             ],
+            'settings'              => [
+                'src'  => WPUF_ASSET_URI . '/js/admin/settings.js',
+            ],
         ];
+        if ( ! empty( $api_key ) ) {
+            $scripts['google-maps'] = [
+                'src' => $this->scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key,
+            ];
+        }
 
         return apply_filters( 'wpuf_scripts_to_register', $scripts );
     }

@@ -25,7 +25,7 @@
   "autoload": {
     "psr-4": {
       "Wp\\User\\Frontend\\": "includes/",
-      "Wp\\User\\Frontend\\Lib\\": "lib/"
+      "Wp\\User\\Frontend\\Lib\\": "Lib/"
     }
   },
   "scripts": {

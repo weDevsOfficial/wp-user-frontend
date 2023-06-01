@@ -2,8 +2,6 @@
 
 namespace Wp\User\Frontend;
 
-use Wp\User\Frontend\Ajax\WPUF_Ajax_Address_Form;
-
 /**
  * WP User Frontend payment gateway handler
  *
@@ -113,7 +111,7 @@ class WPUF_Payment {
                 $current_user = get_userdata( $user_id );
             }
             if ( $pack_id && $is_free ) {
-                $wpuf_subscription = WPUF_Subscription::init();
+                $wpuf_subscription = wpuf()->subscription;
                 $wpuf_user         = new WPUF_User( $current_user->ID );
                 if ( ! $wpuf_user->subscription()->used_free_pack( $pack_id ) ) {
                     wpuf_get_user( $current_user->ID )->subscription()->add_pack( $pack_id, NULL, false, 'Free' );
@@ -146,7 +144,7 @@ class WPUF_Payment {
                                     <h3> <?php esc_html_e( 'Billing Address', 'wp-user-frontend' ); ?> </h3>
                                     <div class="wpuf-bill_addr-inner">
                                         <?php
-                                        $add_form = new WPUF_Ajax_Address_Form();
+                                        $add_form = new Ajax\Address_Form_Ajax();
                                         $add_form->wpuf_ajax_address_form();
                                         ?>
                                     </div>
@@ -160,8 +158,8 @@ class WPUF_Payment {
 
                                 <?php
                                 if ( $pack_id ) {
-                                    $pack         = WPUF_Subscription::init()->get_subscription( $pack_id );
-                                    $details_meta = WPUF_Subscription::init()->get_details_meta_value();
+                                    $pack         = wpuf()->subscription->get_subscription( $pack_id );
+                                    $details_meta = wpuf()->subscription->get_details_meta_value();
                                     $currency     = wpuf_get_currency( 'symbol' );
                                     if ( is_user_logged_in() ) {
                                         ?>
@@ -407,7 +405,7 @@ class WPUF_Payment {
                     $item_name   = $post->post_title;
                     break;
                 case 'pack':
-                    $pack        = WPUF_Subscription::init()->get_subscription( $pack_id );
+                    $pack        = wpuf()->subscription->get_subscription( $pack_id );
                     $custom      = $pack->meta_value;
                     $cost        = $pack->meta_value['billing_amount'];
                     $amount      = $cost;

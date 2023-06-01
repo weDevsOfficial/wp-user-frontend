@@ -173,7 +173,7 @@ class WPUF_User_Subscription {
         }
         global $wpdb;
         $result       = '';
-        $subscription = Admin\WPUF_Subscription::init()->get_subscription( $pack_id );
+        $subscription = Admin\Subscription::init()->get_subscription( $pack_id );
 
         if ( $this->user->id && $subscription ) {
             $user_meta = [
@@ -307,14 +307,14 @@ class WPUF_User_Subscription {
             return;
         }
 
-        $pack = Admin\WPUF_Subscription::get_subscription( $this->current_pack_id() );
+        $pack = Admin\Subscription::get_subscription( $this->current_pack_id() );
 
-        $details_meta = Admin\WPUF_Subscription::init()->get_details_meta_value();
+        $details_meta = Admin\Subscription::init()->get_details_meta_value();
 
         $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wp-user-frontend' );
 
         if ( $pack->meta_value['recurring_pay'] == 'yes' ) {
-            $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], Admin\WPUF_Subscription::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
+            $recurring_des = sprintf( 'For each %s %s', $pack->meta_value['billing_cycle_number'], Admin\Subscription::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
             $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', for %s installments', $pack->meta_value['billing_limit'] ) : '';
             $recurring_des = $recurring_des;
         } else {
@@ -489,7 +489,7 @@ class WPUF_User_Subscription {
      * @return bool
      */
     public static function is_free_pack( $pack_id ) {
-        $subs           = new Admin\WPUF_Subscription();
+        $subs           = new Admin\Subscription();
         $pack           = $subs->get_subscription( $pack_id );
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && ! empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : false;
 
@@ -510,7 +510,7 @@ class WPUF_User_Subscription {
      * @return string
      */
     public function get_subscription_exp_msg( $pack_id ) {
-        $sub_pack  = Admin\WPUF_Subscription::get_subscription( $pack_id );
+        $sub_pack  = Admin\Subscription::get_subscription( $pack_id );
         $sub_info  = $this->pack;
 
         $exp_message = ! empty( $sub_pack->meta_value['_post_expiration_message'] ) ? $sub_pack->meta_value['_post_expiration_message'] : $sub_info['_post_expiration_message'];

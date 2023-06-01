@@ -8,7 +8,7 @@ $args   = [
 
 add_screen_option( $option, $args );
 
-wpuf()->add_to_container( 'subscriber_list_table', new Wp\User\Frontend\Admin\WPUF_List_Table_Subscribers() );
+wpuf()->add_to_container( 'subscriber_list_table', new Wp\User\Frontend\Admin\List_Table_Subscribers() );
 ?>
 <div class="wrap">
     <h2><?php esc_html_e( 'Subscribers', 'wp-user-frontend' ); ?></h2>

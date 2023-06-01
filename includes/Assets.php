@@ -150,6 +150,10 @@ class Assets {
                 'src'     => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.min.css',
                 'version' => '1.6.0',
             ],
+            'setup'              => [
+                'src'  => WPUF_ASSET_URI . '/css/admin/wpuf-setup.css',
+                'deps' => [ 'dashicons', 'install' ],
+            ],
         ];
 
         return apply_filters( 'wpuf_styles_to_register', $styles );
@@ -181,7 +185,7 @@ class Assets {
                 'wpuf-tooltip',
             ]
         );
-        $scripts              = [
+        $scripts = [
             'vue'                      => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vue/vue' . $this->suffix . '.js',
                 'in_footer' => true,
@@ -297,10 +301,33 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-admin-tools.js',
                 'deps' => [ 'jquery', 'wpuf-vue' ],
             ],
-            'settings'              => [
-                'src'  => WPUF_ASSET_URI . '/js/admin/settings.js',
+            'settings'                 => [
+                'src' => WPUF_ASSET_URI . '/js/admin/settings.js',
+            ],
+            'ajax-script'              => [
+                'src'  => WPUF_ASSET_URI . '/js/billing-address.js',
+                'deps' => [ 'jquery' ],
+            ],
+            'jquery-blockui'           => [
+                'src'     => WPUF_ASSET_URI . '/js/jquery-blockui/jquery.blockUI.min.js',
+                'deps'    => [ 'jquery' ],
+                'version' => '2.70',
+            ],
+            'selectWoo'                => [
+                'src'     => WPUF_ASSET_URI . '/js/selectWoo/selectWoo.full.min.js',
+                'deps'    => [ 'jquery' ],
+                'version' => '1.0.1',
+            ],
+            'enhanced-select'          => [
+                'src'  => WPUF_ASSET_URI . '/js/admin/wpuf-enhanced-select' . $this->suffix . '.min.js',
+                'deps' => [ 'jquery', 'selectWoo' ],
+            ],
+            'setup'                    => [
+                'src'  => WPUF_ASSET_URI . '/js/admin/wpuf-setup' . $this->suffix . '.js',
+                'deps' => [ 'jquery', 'wpuf-enhanced-select', 'jquery-blockui' ],
             ],
         ];
+
         if ( ! empty( $api_key ) ) {
             $scripts['google-maps'] = [
                 'src' => $this->scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key,

@@ -1,7 +1,5 @@
 <?php
-
-$tools_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'tools';
-$tools = new Wp\User\Frontend\Admin\WPUF_Admin_Tools();
+$tools_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'tools';
 ?>
 
 <div class="wrap">
@@ -17,20 +15,16 @@ $tools = new Wp\User\Frontend\Admin\WPUF_Admin_Tools();
 
     switch ( $tools_tab ) {
         case 'export':
-            $tools->list_forms();
-            $tools->list_regis_forms();
-            break;
-
-        case 'tools':
-            $tools->tool_page();
+            wpuf()->tools->list_forms();
+            wpuf()->tools->list_regis_forms();
             break;
 
         case 'import':
-            $tools->import_data();
+            wpuf()->tools->import_data();
             break;
 
         default:
-            $tools->tool_page();
+            wpuf()->tools->tool_page();
             break;
     }
     ?>

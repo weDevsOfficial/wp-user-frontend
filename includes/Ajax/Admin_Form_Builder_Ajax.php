@@ -2,7 +2,7 @@
 
 namespace Wp\User\Frontend\Ajax;
 
-use Wp\User\Frontend\Admin\Forms\WPUF_Admin_Form_Builder;
+use Wp\User\Frontend\Admin\Forms\Admin_Form_Builder;
 
 /**
  * Ajax handlers
@@ -73,7 +73,7 @@ class Admin_Form_Builder_Ajax {
             'integrations'      => $integrations,
         ];
 
-        $form_fields = WPUF_Admin_Form_Builder::save_form( $data );
+        $form_fields = Admin_Form_Builder::save_form( $data );
 
         wp_send_json_success( [ 'form_fields' => $form_fields, 'form_settings' => $settings ] );
     }

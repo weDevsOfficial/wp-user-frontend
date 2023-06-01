@@ -2,7 +2,7 @@
 
 namespace Wp\User\Frontend\Admin;
 
-use Wp\User\Frontend\Free\WPUF_Pro_Prompt;
+use Wp\User\Frontend\Free\Pro_Prompt;
 use Wp\User\Frontend\Lib\WeDevs_Settings_API;
 
 class Menu {
@@ -146,7 +146,7 @@ class Menu {
 
         add_screen_option( $option, $args );
 
-        wpuf()->add_to_container( 'transaction_list_table', new WPUF_Transactions_List_Table() );
+        wpuf()->add_to_container( 'transaction_list_table', new List_Table_Transactions() );
     }
 
     public function transactions_page() {
@@ -236,7 +236,7 @@ class Menu {
             </p>
 
             <p>
-                <a href="<?php echo esc_url( WPUF_Pro_Prompt::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
+                <a href="<?php echo esc_url( Pro_Prompt::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
                 <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank" class="button"><?php esc_html_e( 'Learn more about Coupons', 'wp-user-frontend' ); ?></a>
             </p>
         </div>
@@ -278,7 +278,11 @@ class Menu {
      * @return void
      */
     public function tools_page() {
-        include WPUF_INCLUDES . '/Admin/views/tools.php';
+        wpuf()->add_to_container( 'tools', new Admin_Tools() );
+
+        $tools_page = WPUF_INCLUDES . '/Admin/views/tools.php';
+
+        wpuf_include_once( $tools_page );
     }
 
     /**

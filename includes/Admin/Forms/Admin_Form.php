@@ -2,13 +2,13 @@
 
 namespace Wp\User\Frontend\Admin\Forms;
 
-use Wp\User\Frontend\Admin\WPUF_Subscription;
-use Wp\User\Frontend\Fields\WPUF_Form_Field_Featured_Image;
-use Wp\User\Frontend\Fields\WPUF_Form_Field_Post_Content;
-use Wp\User\Frontend\Fields\WPUF_Form_Field_Post_Excerpt;
-use Wp\User\Frontend\Fields\WPUF_Form_Field_Post_Tags;
-use Wp\User\Frontend\Fields\WPUF_Form_Field_Post_Taxonomy;
-use Wp\User\Frontend\Fields\WPUF_Form_Field_Post_Title;
+use Wp\User\Frontend\Admin\Subscription;
+use Wp\User\Frontend\Fields\Form_Field_Featured_Image;
+use Wp\User\Frontend\Fields\Form_Field_Post_Content;
+use Wp\User\Frontend\Fields\Form_Field_Post_Excerpt;
+use Wp\User\Frontend\Fields\Form_Field_Post_Tags;
+use Wp\User\Frontend\Fields\Form_Field_Post_Taxonomy;
+use Wp\User\Frontend\Fields\Form_Field_Post_Title;
 
 /**
  * Post Forms or wpuf_forms form builder class
@@ -43,7 +43,7 @@ class Admin_Form {
     public function __construct() {
         add_action( 'wpuf_load_post_forms', [ $this, 'post_forms_builder_init' ] );
 
-        wpuf()->add_to_container( 'fields', new WPUF_Field_Manager() );
+        wpuf()->add_to_container( 'fields', new Field_Manager() );
     }
 
     /**
@@ -148,11 +148,14 @@ class Admin_Form {
         if ( empty( $_GET['action'] ) ) {
             return;
         }
+
         if ( 'add-new' === $_GET['action'] && empty( $_GET['id'] ) ) {
             $form_id          = wpuf_create_sample_form( 'Sample Form', 'wpuf_forms', true );
-            $add_new_page_url = add_query_arg( [ 'id' => $form_id ],
-                                               admin_url( 'admin.php?page=wpuf-post-forms&action=edit' ) );
-            wp_redirect( $add_new_page_url );
+            $add_new_page_url = add_query_arg(
+                [ 'id' => $form_id ],
+                admin_url( 'admin.php?page=wpuf-post-forms&action=edit' )
+            );
+            wp_safe_redirect( $add_new_page_url );
         }
         if ( ( 'edit' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
             add_action( 'wpuf-form-builder-tabs-post', [ $this, 'add_primary_tabs' ] );
@@ -167,7 +170,6 @@ class Admin_Form {
             add_filter( 'wpuf-form-builder-js-field-options-mixins', [ $this, 'js_field_options_mixins' ] );
             add_action( 'wpuf-form-builder-template-builder-stage-submit-area', [ $this, 'add_form_submit_area' ] );
             add_action( 'wpuf-form-builder-localize-script', [ $this, 'add_to_localize_script' ] );
-            // todo:
             add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
             add_filter( 'wpuf-form-builder-i18n', [ $this, 'i18n' ] );
 
@@ -181,7 +183,7 @@ class Admin_Form {
                 'form_settings_key' => $this->form_settings_key,
                 'shortcodes'        => [ [ 'name' => 'wpuf_form' ] ],
             ];
-            $form_builder = new WPUF_Admin_Form_Builder( $settings );
+            $form_builder = new Admin_Form_Builder( $settings );
 
             wpuf()->add_to_container( 'form_builder', $form_builder );
         }
@@ -197,11 +199,11 @@ class Admin_Form {
      * @return array
      */
     public function add_field_settings( $field_settings ) {
-        if ( class_exists( 'Wp\User\Frontend\Fields\WPUF_Field_Contract' ) ) {
-            $field_settings['post_title']     = new WPUF_Form_Field_Post_Title();
-            $field_settings['post_content']   = new WPUF_Form_Field_Post_Content();
-            $field_settings['post_excerpt']   = new WPUF_Form_Field_Post_Excerpt();
-            $field_settings['featured_image'] = new WPUF_Form_Field_Featured_Image();
+        if ( class_exists( 'Wp\User\Frontend\Fields\Field_Contract' ) ) {
+            $field_settings['post_title']     = new Form_Field_Post_Title();
+            $field_settings['post_content']   = new Form_Field_Post_Content();
+            $field_settings['post_excerpt']   = new Form_Field_Post_Excerpt();
+            $field_settings['featured_image'] = new Form_Field_Featured_Image();
 
             $taxonomy_templates = [];
 
@@ -209,9 +211,9 @@ class Admin_Form {
                 if ( ! empty( $taxonomies ) ) {
                     foreach ( $taxonomies as $tax_name => $taxonomy ) {
                         if ( 'post_tag' === $tax_name ) {
-                            $taxonomy_templates['post_tag'] = new WPUF_Form_Field_Post_Tags();
+                            $taxonomy_templates['post_tag'] = new Form_Field_Post_Tags();
                         } else {
-                            $taxonomy_templates[ $tax_name ] = new WPUF_Form_Field_Post_Taxonomy( $tax_name, $taxonomy );
+                            $taxonomy_templates[ $tax_name ] = new Form_Field_Post_Taxonomy( $tax_name, $taxonomy );
                             // $taxonomy_templates[ 'taxonomy' ] = new WPUF_Form_Field_Post_Taxonomy($tax_name, $taxonomy);
                         }
                     }
@@ -336,7 +338,7 @@ class Admin_Form {
      * @return void
      */
     public function subscription_dropdown( $selected = NULL ) {
-        $subscriptions_obj = new WPUF_Subscription();
+        $subscriptions_obj = new Subscription();
         wpuf()->add_to_container( 'subscriptions', $subscriptions_obj );
         $subscriptions = $subscriptions_obj->get_subscriptions();
 

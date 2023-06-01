@@ -2,7 +2,7 @@
 
 namespace Wp\User\Frontend\Free;
 
-use Wp\User\Frontend\Admin\Forms\WPUF_Admin_Form_Builder_Free;
+use Wp\User\Frontend\Admin\Forms\Admin_Form_Builder_Free;
 
 /**
  * Free features for wpuf_forms builder
@@ -32,6 +32,6 @@ class WPUF_Admin_Form_Free {
     public function init_free() {
         // require_once WPUF_ROOT . '/includes/Free/admin/form-builder/class-wpuf-form-builder-Free.php';
 
-        new WPUF_Admin_Form_Builder_Free();
+        new Admin_Form_Builder_Free();
     }
 }

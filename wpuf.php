@@ -206,11 +206,12 @@ final class WP_User_Frontend {
      */
     public function instantiate() {
         $this->container['assets']       = new Wp\User\Frontend\Assets();
-        $this->container['subscription'] = new Wp\User\Frontend\Admin\WPUF_Subscription();
+        $this->container['subscription'] = new Wp\User\Frontend\Admin\Subscription();
 
         if ( is_admin() ) {
             $this->container['admin']        = new Wp\User\Frontend\Admin();
-            $this->container['pro_upgrades'] = new Wp\User\Frontend\WPUF_Pro_Upgrades();
+            $this->container['setup_wizard'] = new Wp\User\Frontend\Setup_Wizard();
+            $this->container['pro_upgrades'] = new Wp\User\Frontend\Pro_Upgrades();
         }
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
@@ -256,7 +257,7 @@ final class WP_User_Frontend {
             $this->is_pro = true;
             add_action( 'admin_notices', [ $this, 'wpuf_latest_pro_activation_notice' ] );
         } else {
-            $this->container['free_loader'] = new Wp\User\Frontend\Free\WPUF_Free_Loader();
+            $this->container['free_loader'] = new Wp\User\Frontend\Free\Free_Loader();
         }
     }
 
@@ -468,7 +469,7 @@ final class WP_User_Frontend {
      */
     public function plugin_action_links( $links ) {
         if ( ! $this->is_pro() ) {
-            $links[] = '<a href="' . Wp\User\Frontend\Free\WPUF_Pro_Prompt::get_pro_url() . '" target="_blank" style="color: red;">Get PRO</a>';
+            $links[] = '<a href="' . Wp\User\Frontend\Free\Pro_Prompt::get_pro_url() . '" target="_blank" style="color: red;">Get PRO</a>';
         }
 
         $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">Settings</a>';

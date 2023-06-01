@@ -148,7 +148,7 @@ $email_integrations = [
                     <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" rel="noopener noreferrer" class="button-learn-more"><?php esc_html_e( 'Learn More →', 'wp-user-frontend' ); ?></a>
                 </li>
                 <li>
-                    <a href="<?php echo esc_url( Wp\User\Frontend\Free\WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>"
+                    <a href="<?php echo esc_url( Wp\User\Frontend\Free\Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>"
                        target="_blank"
                        rel="noopener noreferrer"
                        class="wpuf-button button-upgrade-to-pro">

@@ -1,7 +1,7 @@
 <?php
 
 use Wp\User\Frontend\Admin\Forms\Post\Templates\Post_Form_Template_Post;
-use Wp\User\Frontend\Free\WPUF_Pro_Prompt;
+use Wp\User\Frontend\Free\Pro_Prompt;
 use Wp\User\Frontend\Lib\WeDevs_Settings_API;
 use Wp\User\Frontend\WPUF_Payment;
 
@@ -4484,7 +4484,7 @@ function wpuf_get_pro_preview_html() {
     $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
     return sprintf( '<div class="pro-field-overlay">
                         <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a>
-                    </div>', esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+                    </div>', esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
                     file_get_contents( $crown_icon ) );
 }
 
@@ -4519,7 +4519,7 @@ function wpuf_get_pro_preview_tooltip() {
 
     $html .= '</ul>';
     $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a></div>',
-              esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+              esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
                       file_get_contents( $crown_icon ) );
 
     $html .= '<i></i>';
@@ -4568,5 +4568,20 @@ function wpuf_get_post_forms() {
 function wpuf_require_once( $file_location ) {
     if ( file_exists( $file_location ) ) {
         require_once $file_location;
+    }
+}
+
+/**
+ * include_once a file upon checking the existence of the file
+ *
+ * @since WPUF_SINCE
+ *
+ * @param $file_location
+ *
+ * @return void
+ */
+function wpuf_include_once( $file_location ) {
+    if ( file_exists( $file_location ) ) {
+        include_once $file_location;
     }
 }

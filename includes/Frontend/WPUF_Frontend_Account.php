@@ -4,7 +4,7 @@ namespace Wp\User\Frontend\Frontend;
 
 use Wp\User\Frontend\Admin\json;
 use Wp\User\Frontend\Admin\stdClass;
-use Wp\User\Frontend\Admin\WPUF_Subscription;
+use Wp\User\Frontend\Admin\Subscription;
 use Wp\User\Frontend\Admin\WPUF_User_Subscription;
 
 /**
@@ -213,7 +213,7 @@ class WPUF_Frontend_Account {
 
             return;
         }
-        $pack = WPUF_Subscription::get_subscription( $sub_id );
+        $pack = Subscription::get_subscription( $sub_id );
         $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page',
                                                                         'Wp\User\Frontend\WPUF_Payment' ) );
         $details_meta['onclick']      = '';
@@ -225,7 +225,7 @@ class WPUF_Frontend_Account {
             /* translators: %s: billing cycle number, %s: billing cycle period */
             $recurring_des = sprintf( __( 'For each', 'wp-user-frontend' ) . ' %s %s',
                                       $pack->meta_value['billing_cycle_number'],
-                                      WPUF_Subscription::get_cycle_label( $pack->meta_value['cycle_period'],
+                                      Subscription::get_cycle_label( $pack->meta_value['cycle_period'],
                                                                           $pack->meta_value['billing_cycle_number'] ),
                                       $pack->meta_value['trial_duration_type'] );
             /* translators: %s: number of installments */

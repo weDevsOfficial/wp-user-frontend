@@ -26,7 +26,7 @@ class WPUF_User {
     /**
      * The constructor
      *
-     * @param int|WP_User $user
+     * @param int|\WP_User $user
      */
     public function __construct( $user ) {
         if ( is_numeric( $user ) ) {

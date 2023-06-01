@@ -18,7 +18,7 @@
             <form method="get">
                 <input type="hidden" name="page" value="wpuf-post-forms">
                 <?php
-                    $wpuf_post_form = new Wp\User\Frontend\Admin\Forms\Post\Templates\Admin_Post_Forms_List_Table();
+                    $wpuf_post_form = new Wp\User\Frontend\Admin\Forms\Post\Templates\List_Table_Admin_Post_Forms();
                     $wpuf_post_form->prepare_items();
                     $wpuf_post_form->search_box( __( 'Search Forms', 'wp-user-frontend' ), 'wpuf-post-form-search' );
 

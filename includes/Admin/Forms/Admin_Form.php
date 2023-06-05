@@ -42,8 +42,6 @@ class Admin_Form {
      */
     public function __construct() {
         add_action( 'wpuf_load_post_forms', [ $this, 'post_forms_builder_init' ] );
-
-        wpuf()->add_to_container( 'fields', new Field_Manager() );
     }
 
     /**

@@ -2,7 +2,9 @@
 
 namespace Wp\User\Frontend;
 
-class WPUF_Frontend_Render_Form {
+use Wp\User\Frontend\Admin\Subscription;
+
+class Frontend_Render_Form {
     private static $_instance;
 
     public static $meta_key = 'wpuf_form';
@@ -886,7 +888,7 @@ class WPUF_Frontend_Render_Form {
      * Render a checkbox for enabling feature item
      */
     public function render_featured_field( $post_id = null ) {
-        $user_sub = WPUF_Subscription::get_user_pack( get_current_user_id() );
+        $user_sub = Subscription::get_user_pack( get_current_user_id() );
         $is_featured = false;
         if ( $post_id ) {
             $stickies = get_option( 'sticky_posts' );

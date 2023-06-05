@@ -13,6 +13,7 @@ Domain Path: /languages
 */
 
 // don't call the file directly
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -136,11 +137,6 @@ final class WP_User_Frontend {
 
         add_action( 'init', [ $this, 'load_textdomain' ] );
 
-        // enqueue plugin scripts, don't remove priority.
-        // If remove or set priority under 1000 then registered styles will not load on WC Marketplace vendor dashboard.
-        // we have integration with WC Marketplace plugin since version 3.0 where WC Marketplae vendors' can submit post
-        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 9999 );
-
         // do plugin upgrades
         add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), [ $this, 'plugin_action_links' ] );
     }
@@ -207,11 +203,14 @@ final class WP_User_Frontend {
     public function instantiate() {
         $this->container['assets']       = new Wp\User\Frontend\Assets();
         $this->container['subscription'] = new Wp\User\Frontend\Admin\Subscription();
+        $this->container['fields']       = new Wp\User\Frontend\Admin\Forms\Field_Manager();
 
         if ( is_admin() ) {
             $this->container['admin']        = new Wp\User\Frontend\Admin();
             $this->container['setup_wizard'] = new Wp\User\Frontend\Setup_Wizard();
             $this->container['pro_upgrades'] = new Wp\User\Frontend\Pro_Upgrades();
+        } else {
+            $this->container['frontend'] = new Wp\User\Frontend\Frontend();
         }
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {

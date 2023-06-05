@@ -2,8 +2,6 @@
 
 namespace Wp\User\Frontend;
 
-use Wp\User\Frontend\Admin\Admin_Tools;
-
 /**
  * The Admin class which will hold all the starting point of WordPress dashboard admin operations for WPUF
  * We will initialize all the admin classes from here.
@@ -14,13 +12,15 @@ use Wp\User\Frontend\Admin\Admin_Tools;
 class Admin {
     public function __construct() {
         wpuf()->add_to_container( 'menu', new Admin\Menu() );
+        wpuf()->add_to_container( 'dashboard_metabox', new Admin\Dashboard_Metabox() );
         wpuf()->add_to_container( 'form_template', new Admin\Forms\Post\Templates\Admin_Form_Template() );
         wpuf()->add_to_container( 'admin_form', new Admin\Forms\Admin_Form() );
         wpuf()->add_to_container( 'admin_form_handler', new Admin\Forms\Admin_Form_Handler() );
         wpuf()->add_to_container( 'admin_subscription', new Admin\Admin_Subscription() );
         wpuf()->add_to_container( 'admin_installer', new Admin\Admin_Installer() );
         wpuf()->add_to_container( 'settings', new Admin\Admin_Settings() );
-        wpuf()->add_to_container( 'gutenberg_block', new Admin\Forms\Form_Gutenberg_Block() );
+        wpuf()->add_to_container( 'forms', new Admin\Forms\Form_Manager() );
+        wpuf()->add_to_container( 'gutenberg_block', new Frontend\Form_Gutenberg_Block() );
 
         // post form submenu operations
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_post_form_scripts' ] );

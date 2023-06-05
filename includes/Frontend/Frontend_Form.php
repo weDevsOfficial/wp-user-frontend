@@ -1,10 +1,12 @@
 <?php
 
-namespace Wp\User\Frontend;
+namespace Wp\User\Frontend\Frontend;
 
-class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
-    private static $_instance;
+use Wp\User\Frontend\Admin\Forms\Form;
+use Wp\User\Frontend\Frontend_Render_Form;
+use Wp\User\Frontend\WPUF_User_Subscription;
 
+class Frontend_Form extends Frontend_Render_Form {
     private $post_expiration_date = 'wpuf-post_expiration_date';
 
     private $expired_post_status = 'wpuf-expired_post_status';
@@ -147,14 +149,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         ob_end_clean();
 
         return $content;
-    }
-
-    public static function init() {
-        if ( ! self::$_instance ) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
     }
 
     /**
@@ -688,7 +682,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         // @codingStandardsIgnoreEnd
         ob_start();
-        $form                         = new WPUF_Form( $id );
+        $form                         = new Form( $id );
         $this->form_fields            = $form->get_fields();
         $this->form_settings          = $form->get_settings();
         $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url

@@ -77,6 +77,7 @@ class Admin_Form_Builder {
      */
     public function admin_enqueue_scripts() {
         global $post;
+
         wp_enqueue_style( 'wpuf-font-awesome' );
         wp_enqueue_style( 'wpuf-sweetalert2' );
         wp_enqueue_style( 'wpuf-selectize' );

@@ -200,6 +200,7 @@ class Assets {
                 'src'       => WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2' . $this->suffix . '.js',
                 'in_footer' => true,
                 'version'   => '11.4.19',
+                'deps'      => [ 'jquery' ],
             ],
             'jquery-scrollTo'          => [
                 'src'       => WPUF_ASSET_URI . '/vendor/jquery.scrollTo/jquery.scrollTo' . $this->suffix . '.js',
@@ -325,6 +326,14 @@ class Assets {
             'setup'                    => [
                 'src'  => WPUF_ASSET_URI . '/js/admin/wpuf-setup' . $this->suffix . '.js',
                 'deps' => [ 'jquery', 'wpuf-enhanced-select', 'jquery-blockui' ],
+            ],
+            'frontend-form'            => [
+                'src'  => WPUF_ASSET_URI . '/js/frontend-form' . $this->suffix . '.js',
+                'deps' => [ 'jquery' ],
+            ],
+            'upload'                   => [
+                'src'  => WPUF_ASSET_URI . '/js/upload.js',
+                'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ],
             ],
         ];
 

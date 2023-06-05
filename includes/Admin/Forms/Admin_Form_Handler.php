@@ -59,7 +59,7 @@ class Admin_Form_Handler {
             wp_die( esc_html( __( 'You do not have sufficient permissions to do this action', 'wp-user-frontend' ) ) );
         }
 
-        $post_forms = new Forms\Post\Templates\WPUF_Admin_Post_Forms_List_Table();
+        $post_forms = new Forms\Post\Templates\List_Table_Admin_Post_Forms();
         $action     = $post_forms->current_action();
 
         wpuf()->add_to_container( 'post_forms', $post_forms );

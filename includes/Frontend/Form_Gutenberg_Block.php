@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Admin\Forms;
+namespace Wp\User\Frontend\Frontend;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,20 +1,25 @@
 <?php
 
+namespace Wp\User\Frontend\Admin;
+
+use DOMDocument;
+use DOMXPath;
+
 class Dashboard_Metabox {
-    const URL     = 'https://wedevs.com/category/user-frontend-pro';
+    const URL = 'https://wedevs.com/category/user-frontend-pro';
     const OPT_KEY = 'wpuf_admin_db_mb';
-    const BANNER  = WPUF_ASSET_URI . '/images/wpuf-updates.png';
 
     public function __construct() {
+        define( 'BANNER', WPUF_ASSET_URI . '/images/wpuf-updates.png' );
         add_action( 'wp_dashboard_setup', [ $this, 'add_metabox' ] );
     }
 
     public function add_metabox() {
         wp_add_dashboard_widget(
             self::OPT_KEY, esc_html__( 'WP User Frontend News & Updates', 'wp-user-frontend' ), [
-                $this,
-                'render_metabox',
-            ], null, null, 'normal', 'high'
+            $this,
+            'render_metabox',
+        ], NULL, NULL, 'normal', 'high'
         );
     }
 
@@ -47,10 +52,11 @@ class Dashboard_Metabox {
         </style>
         <div class="wpuf-db-widget">
             <div class="wpuf-db-banner">
-                <img src="<?php echo self::BANNER; ?>" alt="Rating Banner">
+                <img src="<?php echo BANNER; ?>" alt="Rating Banner">
                 <p>
                     Could you please take a moment and <a
-                        href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/?filter=5" target="_blank">share your
+                        href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/?filter=5" target="_blank">share
+                        your
                         opinion</a> on WP.org? It would motivate us a lot and help other users get decisive while
                     choosing WP User Frontend. Thanks in advance.
                 </p>
@@ -62,7 +68,8 @@ class Dashboard_Metabox {
                     $articles = $this->fetch_articles();
                     foreach ( $articles as $article ) {
                         ?>
-                        <li><a href="<?php echo esc_url( $article['href'] ); ?>" target="_blank"><?php echo $article['title']; ?></a></li>
+                        <li><a href="<?php echo esc_url( $article['href'] ); ?>"
+                               target="_blank"><?php echo $article['title']; ?></a></li>
                     <?php }; ?>
                 </ul>
             </div>
@@ -89,54 +96,39 @@ class Dashboard_Metabox {
 
     private function fetch_articles() {
         $article_list = get_transient( self::OPT_KEY );
-
         if ( $article_list ) {
             return $article_list;
         }
-
         $response = wp_remote_get( esc_url( self::URL ) );
-
         if ( is_wp_error( $response ) ) {
             return [];
         }
-
         $body = wp_remote_retrieve_body( $response );
-
         $dom = new DOMDocument();
         @$dom->loadHTML( $body );
-
         $finder = new DomXPath( $dom );
-
         $classname = 'post__title';
         $nodes     = $finder->query( "//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]" );
-
         if ( empty( $nodes ) ) {
             return [];
         }
-
         $url          = parse_url( self::URL );
         $domain       = $url['scheme'] . '://' . $url['host'];
         $article_list = [];
         $count        = 0;
-
         foreach ( $nodes as $node ) {
             $title = $node->nodeValue;
             $path  = $node->lastChild->attributes[0]->nodeValue;
-
             $article = [
                 'title' => $title,
                 'href'  => $domain . $path,
             ];
-
             array_push( $article_list, $article );
-
             $count ++;
-
             if ( $count >= 5 ) {
                 break;
             }
         }
-
         if ( ! empty( $article_list ) ) {
             set_transient( self::OPT_KEY, $article_list, DAY_IN_SECONDS );
 

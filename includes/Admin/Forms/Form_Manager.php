@@ -5,7 +5,6 @@ namespace Wp\User\Frontend\Admin\Forms;
 use WP_Error;
 use WP_Post;
 use WP_Query;
-use WPUF_Form;
 
 /**
  * The Form Manager Class
@@ -48,7 +47,7 @@ class Form_Manager {
         $forms = $query->get_posts();
         if ( $forms ) {
             foreach ( $forms as $form ) {
-                $forms_array['forms'][] = new WPUF_Form( $form );
+                $forms_array['forms'][] = new Form( $form );
             }
         }
         $forms_array['meta']['total'] = (int) $query->found_posts;
@@ -63,10 +62,10 @@ class Form_Manager {
      *
      * @param int|WP_Post $form
      *
-     * @return \WPUF_Form
+     * @return Form
      */
     public function get( $form ) {
-        return new WPUF_Form( $form );
+        return new Form( $form );
     }
 
     /**

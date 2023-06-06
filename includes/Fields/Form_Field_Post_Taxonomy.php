@@ -408,7 +408,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
 
     public function tax_input( $post_id = null, $field_settings = [] ) {
         $attr = $this->field_settings;
-        $query_string = '?action=wpuf-ajax-tag-search&tax=' . $attr['name'];
+        $query_string = '?action=wpuf_ajax_tag_search&tax=' . $attr['name'];
 
         if ( 'child_of' === $this->exclude_type ) {
             $exclude = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );

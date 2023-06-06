@@ -1528,7 +1528,7 @@ function wpuf_get_attachment_id_from_url( $attachment_url = '' ) {
  *
  * @global object $wpdb
  */
-function wpufe_ajax_tag_search() {
+function wpuf_ajax_tag_search() {
     global $wpdb;
 
     $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
@@ -1567,9 +1567,6 @@ function wpufe_ajax_tag_search() {
     echo esc_html( join( "\n", $results ) );
     wp_die();
 }
-
-add_action( 'wp_ajax_wpuf-ajax-tag-search', 'wpufe_ajax_tag_search' );
-add_action( 'wp_ajax_nopriv_wpuf-ajax-tag-search', 'wpufe_ajax_tag_search' );
 
 /**
  * Option dropdown helper

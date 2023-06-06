@@ -19,6 +19,7 @@ class Ajax {
         $this->register_ajax( 'form_builder_save_form', [ new Admin_Form_Builder_Ajax(), 'save_form' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'form_setting_post', [ new Admin_Form_Builder_Ajax(), 'wpuf_get_post_taxonomies' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'whats_new_dismiss', [ new Whats_New(), 'dismiss_notice' ] );
+        $this->register_ajax( 'ajax_tag_search', 'wpuf_ajax_tag_search' );
 
         $this->register_ajax( 'clear_schedule_lock', [ $this, 'clear_schedule_lock' ], [ 'nopriv' => false ] );
     }

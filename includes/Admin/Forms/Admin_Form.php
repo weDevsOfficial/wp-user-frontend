@@ -167,7 +167,7 @@ class Admin_Form {
             add_filter( 'wpuf-form-builder-js-builder-stage-mixins', [ $this, 'js_builder_stage_mixins' ] );
             add_filter( 'wpuf-form-builder-js-field-options-mixins', [ $this, 'js_field_options_mixins' ] );
             add_action( 'wpuf-form-builder-template-builder-stage-submit-area', [ $this, 'add_form_submit_area' ] );
-            add_action( 'wpuf-form-builder-localize-script', [ $this, 'add_to_localize_script' ] );
+            add_action( 'wpuf_form_builder_localize_script', [ $this, 'add_to_localize_script' ] );
             add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
             add_filter( 'wpuf-form-builder-i18n', [ $this, 'i18n' ] );
 
@@ -185,43 +185,6 @@ class Admin_Form {
 
             wpuf()->add_to_container( 'form_builder', $form_builder );
         }
-    }
-
-    /**
-     * Add field settings
-     *
-     * @since 2.5
-     *
-     * @param array $field_settings
-     *
-     * @return array
-     */
-    public function add_field_settings( $field_settings ) {
-        if ( class_exists( 'Wp\User\Frontend\Fields\Field_Contract' ) ) {
-            $field_settings['post_title']     = new Form_Field_Post_Title();
-            $field_settings['post_content']   = new Form_Field_Post_Content();
-            $field_settings['post_excerpt']   = new Form_Field_Post_Excerpt();
-            $field_settings['featured_image'] = new Form_Field_Featured_Image();
-
-            $taxonomy_templates = [];
-
-            foreach ( $this->wp_post_types as $post_type => $taxonomies ) {
-                if ( ! empty( $taxonomies ) ) {
-                    foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                        if ( 'post_tag' === $tax_name ) {
-                            $taxonomy_templates['post_tag'] = new Form_Field_Post_Tags();
-                        } else {
-                            $taxonomy_templates[ $tax_name ] = new Form_Field_Post_Taxonomy( $tax_name, $taxonomy );
-                            // $taxonomy_templates[ 'taxonomy' ] = new WPUF_Form_Field_Post_Taxonomy($tax_name, $taxonomy);
-                        }
-                    }
-                }
-            }
-
-            $field_settings = array_merge( $field_settings, $taxonomy_templates );
-        }
-
-        return $field_settings;
     }
 
     /**
@@ -489,37 +452,6 @@ class Admin_Form {
             <?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?>
         </a>
         <?php
-    }
-
-    /**
-     * Populate available wp post types
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function set_wp_post_types() {
-        $args = [ '_builtin' => true ];
-        $wpuf_post_types = wpuf_get_post_types( $args );
-        $ignore_taxonomies = apply_filters( 'wpuf-ignore-taxonomies', [
-            'post_format',
-        ] );
-        foreach ( $wpuf_post_types as $post_type ) {
-            $this->wp_post_types[ $post_type ] = [];
-            $taxonomies = get_object_taxonomies( $post_type, 'object' );
-            foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                if ( ! in_array( $tax_name, $ignore_taxonomies ) ) {
-                    $this->wp_post_types[ $post_type ][ $tax_name ] = [
-                        'title'        => $taxonomy->label,
-                        'hierarchical' => $taxonomy->hierarchical,
-                    ];
-                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = get_terms( [
-                                                                                              'taxonomy'   => $tax_name,
-                                                                                              'hide_empty' => false,
-                                                                                          ] );
-                }
-            }
-        }
     }
 
     /**

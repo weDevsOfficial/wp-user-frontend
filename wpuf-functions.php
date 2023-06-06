@@ -615,13 +615,13 @@ function wpuf_associate_attachment( $attachment_id, $post_id ) {
 function wpuf_update_post( $args ) {
     if ( ! wp_is_post_revision( $args['ID'] ) ) {
         // unhook this function so it doesn't loop infinitely
-        remove_action( 'save_post', [ WPUF_Admin_Posting::init(), 'save_meta' ], 1 );
+        remove_action( 'save_post', [ Wp\User\Frontend\Admin\WPUF_Admin_Posting::init(), 'save_meta' ], 1 );
 
         // update the post, which calls save_post again
         wp_update_post( $args );
 
         // re-hook this function
-        add_action( 'save_post', [ WPUF_Admin_Posting::init(), 'save_meta' ], 1 );
+        add_action( 'save_post', [ Wp\User\Frontend\Admin\WPUF_Admin_Posting::init(), 'save_meta' ], 1 );
     }
 }
 
@@ -4584,4 +4584,28 @@ function wpuf_include_once( $file_location ) {
     if ( file_exists( $file_location ) ) {
         include_once $file_location;
     }
+}
+
+/**
+ * Guess a suitable username for registration based on email address
+ *
+ * @param string $email email address
+ *
+ * @return string username
+ */
+function wpuf_guess_username( $email ) {
+	// username from email address
+	$username = sanitize_user( substr( $email, 0, strpos( $email, '@' ) ) );
+
+	if ( ! username_exists( $username ) ) {
+		return $username;
+	}
+
+	// try to add some random number in username
+	// and may be we got our username
+	$username .= rand( 1, 199 );
+
+	if ( ! username_exists( $username ) ) {
+		return $username;
+	}
 }

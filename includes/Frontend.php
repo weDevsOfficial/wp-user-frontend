@@ -99,6 +99,14 @@ class Frontend {
                     'cancel_it'     => __( 'No', 'wp-user-frontend' ),
                 ]
             );
+
+            wp_localize_script(
+                'wpuf-frontend-form', 'error_str_obj', [
+                    'required'   => __( 'is required', 'wp-user-frontend' ),
+                    'mismatch'   => __( 'does not match', 'wp-user-frontend' ),
+                    'validation' => __( 'is not valid', 'wp-user-frontend' ),
+                ]
+            );
         }
     }
 

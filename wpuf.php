@@ -214,8 +214,7 @@ final class WP_User_Frontend {
         }
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-            $this->container['ajax_address_form']       = new Wp\User\Frontend\Ajax\Address_Form_Ajax();
-            $this->container['ajax_admin_form_builder'] = new Wp\User\Frontend\Ajax\Admin_Form_Builder_Ajax();
+            $this->container['ajax'] = new Wp\User\Frontend\Ajax();
         }
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Wp\User\Frontend\Admin;
+
 /**
  * Admin side posting handler
  *

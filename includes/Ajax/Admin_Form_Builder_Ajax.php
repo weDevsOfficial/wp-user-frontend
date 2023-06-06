@@ -8,19 +8,6 @@ use Wp\User\Frontend\Admin\Forms\Admin_Form_Builder;
  * Ajax handlers
  */
 class Admin_Form_Builder_Ajax {
-
-    /**
-     * Class contructor
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function __construct() {
-        add_action( 'wp_ajax_wpuf_form_builder_save_form', [ $this, 'save_form' ] );
-        add_action( 'wp_ajax_wpuf_form_setting_post', [ $this, 'wpuf_get_post_taxonomies' ] );
-    }
-
     /**
      * Save form data
      *

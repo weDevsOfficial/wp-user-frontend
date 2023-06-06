@@ -3,17 +3,14 @@
 namespace Wp\User\Frontend\Admin\Forms;
 
 use Wp\User\Frontend\Admin\Subscription;
-use Wp\User\Frontend\Fields\Form_Field_Featured_Image;
-use Wp\User\Frontend\Fields\Form_Field_Post_Content;
-use Wp\User\Frontend\Fields\Form_Field_Post_Excerpt;
-use Wp\User\Frontend\Fields\Form_Field_Post_Tags;
-use Wp\User\Frontend\Fields\Form_Field_Post_Taxonomy;
-use Wp\User\Frontend\Fields\Form_Field_Post_Title;
+use Wp\User\Frontend\Traits\Field;
 
 /**
  * Post Forms or wpuf_forms form builder class
  */
 class Admin_Form {
+
+    use Field;
     /**
      * Form type of which we're working on
      *

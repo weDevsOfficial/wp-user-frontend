@@ -21,7 +21,6 @@ class WPUF_Admin_Posting {
         add_action( 'save_post', [ $this, 'save_meta'], 100, 2 ); // save the custom fields
         add_action( 'save_post', [ $this, 'form_selection_metabox_save' ], 1, 2 ); // save edit form id
         add_action( 'save_post', [ $this, 'post_lock_metabox_save' ], 1, 2 ); // save post lock option
-        add_action( 'wp_ajax_wpuf_clear_schedule_lock', [$this, 'clear_schedule_lock'] );
     }
 
     public static function init() {
@@ -531,23 +530,6 @@ class WPUF_Admin_Posting {
 
         // WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
         WPUF_Frontend_Form::update_post_meta( $meta_vars, $post_id );
-    }
-
-    /**
-     * Clear Schedule lock
-     *
-     * @since 3.0.2
-     */
-    public function clear_schedule_lock() {
-        check_ajax_referer( 'wpuf_nonce', 'nonce' );
-
-        $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
-
-        if ( !empty( $post_id ) ) {
-            update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
-            update_post_meta( $post_id, '_wpuf_lock_editing_post', 'no' );
-        }
-        exit;
     }
 
     /**

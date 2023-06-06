@@ -154,6 +154,9 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/css/admin/wpuf-setup.css',
                 'deps' => [ 'dashicons', 'install' ],
             ],
+            'whats-new'          => [
+                'src'  => WPUF_ASSET_URI . '/css/admin/whats-new.css',
+            ],
         ];
 
         return apply_filters( 'wpuf_styles_to_register', $styles );

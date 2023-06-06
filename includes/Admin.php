@@ -28,6 +28,9 @@ class Admin {
 
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
         add_action( 'admin_action_post_form_template', [ $this, 'create_post_form_from_template' ] );
+
+        // enqueue common scripts that will load throughout WordPress dashboard. notice, what's new etc.
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_common_scripts' ] );
     }
 
     /**
@@ -52,5 +55,9 @@ class Admin {
         wp_enqueue_style( 'wpuf-admin' );
         wp_enqueue_script( 'wpuf-admin' );
         wp_enqueue_script( 'wpuf-subscriptions' );
+    }
+
+    public function enqueue_common_scripts() {
+        wp_enqueue_style( 'wpuf-whats-new' );
     }
 }

@@ -9,15 +9,6 @@ namespace Wp\User\Frontend\Ajax;
  */
 class Upload_Ajax {
 
-    public function __construct() {
-//        add_action( 'wp_ajax_wpuf_upload_file', [ $this, 'upload_file' ] );
-//        add_action( 'wp_ajax_nopriv_wpuf_upload_file', [ $this, 'upload_file' ] );
-//        add_action( 'wp_ajax_wpuf_file_del', [ $this, 'delete_file' ] );
-//        add_action( 'wp_ajax_nopriv_wpuf_file_del', [ $this, 'delete_file' ] );
-//        add_action( 'wp_ajax_wpuf_insert_image', [ $this, 'insert_image' ] );
-//        add_action( 'wp_ajax_nopriv_wpuf_insert_image', [ $this, 'insert_image' ] );
-    }
-
     /**
      * Validate if it's coming from WordPress with a valid nonce
      *

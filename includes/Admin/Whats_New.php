@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend;
+namespace Wp\User\Frontend\Admin;
 
 /**
  * What's New Class

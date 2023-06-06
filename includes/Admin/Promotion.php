@@ -1,16 +1,16 @@
 <?php
 
+namespace Wp\User\Frontend\Admin;
+
 /**
  * Promotional offer class
  */
-class WPUF_Admin_Promotion {
+class Promotion {
     const PROMO_KEY = 'wpuf_promo_notices';
 
     public function __construct() {
         add_action( 'admin_notices', [ $this, 'promotional_offer' ] );
         add_action( 'admin_notices', [ $this, 'wpuf_review_notice_message' ] );
-        add_action( 'wp_ajax_wpuf-dismiss-promotional-offer-notice', [ $this, 'dismiss_promotional_offer' ] );
-        add_action( 'wp_ajax_wpuf-dismiss-review-notice', [ $this, 'dismiss_review_notice' ] );
     }
 
     /**
@@ -73,8 +73,8 @@ class WPUF_Admin_Promotion {
      * @return string
      */
     public function convert_utc_to_est() {
-        $dt = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
-        $dt->setTimezone( new DateTimeZone( 'EST' ) );
+        $dt = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
+        $dt->setTimezone( new \DateTimeZone( 'EST' ) );
 
         return $dt->format( 'Y-m-d H:i:s T' );
     }
@@ -192,7 +192,7 @@ class WPUF_Admin_Promotion {
                     e.preventDefault();
                     jQuery("#wpuf-review-notice").hide();
 
-                    wp.ajax.post('wpuf-dismiss-review-notice', {
+                    wp.ajax.post('wpuf_dismiss_review_notice', {
                         dismissed: true,
                         _wpnonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_nonce' ) ); ?>'
                     });
@@ -272,7 +272,7 @@ class WPUF_Admin_Promotion {
             jQuery('body').on('click', '#wpuf-bfcm-notice .notice-dismiss', function (e) {
                 e.preventDefault();
                 jQuery('#wpuf-bfcm-notice').remove();
-                wp.ajax.post('wpuf-dismiss-promotional-offer-notice', {
+                wp.ajax.post('wpuf_dismiss_promotional_offer_notice', {
                     dismissed: true,
                     option_name: '<?php echo esc_html( $option_name ); ?>',
                     _wpnonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_nonce' ) ); ?>'

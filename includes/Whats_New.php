@@ -1,11 +1,13 @@
 <?php
 
+namespace Wp\User\Frontend;
+
 /**
  * What's New Class
  *
  * @since 2.7.0
  */
-class WPUF_Whats_New {
+class Whats_New {
 
     /**
      * Initialize the actions
@@ -13,8 +15,6 @@ class WPUF_Whats_New {
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'register_menu' ] );
         add_action( 'admin_notices', [ $this, 'admin_notice' ] );
-
-        add_action( 'wp_ajax_wpuf_whats_new_dismiss', [ $this, 'dismiss_notice' ] );
     }
 
     /**
@@ -64,7 +64,9 @@ class WPUF_Whats_New {
      * @return void
      */
     public function register_menu() {
-        add_submenu_page( null, __( 'Whats New', 'wp-user-frontend' ), __( 'Whats New', 'wp-user-frontend' ), 'manage_options', 'whats-new-wpuf', [ $this, 'menu_page' ] );
+        $whats_new_page = add_submenu_page( null, __( 'Whats New', 'wp-user-frontend' ), __( 'Whats New', 'wp-user-frontend' ), 'manage_options', 'whats-new-wpuf', [ $this, 'menu_page' ] );
+
+        add_action( 'load-' . $whats_new_page, [ $this, 'enqueue_scripts' ] );
     }
 
     /**
@@ -133,5 +135,9 @@ class WPUF_Whats_New {
         $this->mark_read();
 
         wp_send_json_success();
+    }
+
+    public function enqueue_scripts() {
+        wp_enqueue_style( 'wpuf-admin' );
     }
 }

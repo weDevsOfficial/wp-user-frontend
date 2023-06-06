@@ -18,6 +18,7 @@ class Ajax {
         $this->register_ajax( 'insert_image', [ new Ajax\Upload_Ajax(), 'insert_image' ] );
         $this->register_ajax( 'form_builder_save_form', [ new Admin_Form_Builder_Ajax(), 'save_form' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'form_setting_post', [ new Admin_Form_Builder_Ajax(), 'wpuf_get_post_taxonomies' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'whats_new_dismiss', [ new Whats_New(), 'dismiss_notice' ] );
 
         $this->register_ajax( 'clear_schedule_lock', [ $this, 'clear_schedule_lock' ], [ 'nopriv' => false ] );
     }
@@ -48,12 +49,12 @@ class Ajax {
      * add_ajax( 'action', 'action_callback', [ 'nopriv' => true, 'priv' => false ] ); // for logged out only
      *
      * @param string $action
-     * @param callable $callback
+     * @param callable|string $callback
      * @param array $args
      *
      * @return void
      */
-    private function register_ajax( $action, callable $callback, $args = [] ) {
+    private function register_ajax( $action, $callback, $args = [] ) {
         $default = [
             'prefix' => '_wpuf_', // usually this is going to be our plugin slug
             'nopriv' => true,

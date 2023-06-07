@@ -28,7 +28,6 @@ class Admin_Subscription {
         add_action( 'edit_user_profile', [ $this, 'profile_subscription_details' ], 30 );
         add_action( 'personal_options_update', [ $this, 'profile_subscription_update' ] );
         add_action( 'edit_user_profile_update', [ $this, 'profile_subscription_update' ] );
-        add_action( 'wp_ajax_wpuf_delete_user_package', [ $this, 'delete_user_package' ] );
 
         // display help link to docs
         add_action( 'admin_notices', [ $this, 'add_help_link' ] );

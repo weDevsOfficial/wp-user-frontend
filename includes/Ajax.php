@@ -30,6 +30,7 @@ class Ajax {
         $this->register_ajax( 'make_media_embed_code', [ new Frontend\Frontend_Form(), 'make_media_embed_code' ] );
         $this->register_ajax( 'draft_post', [ new Frontend\Frontend_Form(), 'draft_post' ] );
         $this->register_ajax( 'form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'delete_user_package', [ new Admin\Admin_Subscription(), 'delete_user_package' ], [ 'nopriv' => false ] );
 
         $this->register_ajax( 'clear_schedule_lock', [ $this, 'clear_schedule_lock' ], [ 'nopriv' => false ] );
     }
@@ -67,7 +68,7 @@ class Ajax {
      */
     private function register_ajax( $action, $callback, $args = [] ) {
         $default = [
-            'prefix' => '_wpuf_', // usually this is going to be our plugin slug
+            'prefix' => '_wpuf_', // it is always a good idea to prefix actions to make it unique.
             'nopriv' => true,
             'priv'   => true,
         ];

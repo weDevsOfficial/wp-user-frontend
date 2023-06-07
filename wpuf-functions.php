@@ -1187,7 +1187,7 @@ function wpuf_show_custom_fields( $content ) {
 
                 case 'country_list':
                     $value         = get_post_meta( $post->ID, $attr['name'], true );
-                    $country_state = new CountryState();
+                    $country_state = new Wp\User\Frontend\Data\Country_State();
                     $countries     = $country_state->countries();
 
                     if ( isset( $countries[ $value ] ) ) {
@@ -3719,7 +3719,7 @@ function wpuf_ajax_get_states_field() {
     check_ajax_referer( 'wpuf-ajax-address' );
 
     $country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
-    $cs        = new CountryState();
+    $cs        = new Wp\User\Frontend\Data\Country_State();
     $countries = $cs->countries();
     $states    = $cs->getStates( $countries[ $country ] );
 

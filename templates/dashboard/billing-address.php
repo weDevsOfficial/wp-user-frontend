@@ -4,7 +4,7 @@ $user_id = get_current_user_id();
 
 $address_fields = [];
 $countries      = [];
-$cs             = new CountryState();
+$cs             = new Wp\User\Frontend\Data\Country_State();
 
 
 if ( isset( $_POST['update_billing_address'] ) ) {

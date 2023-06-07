@@ -2,7 +2,7 @@
 
 namespace Wp\User\Frontend\Ajax;
 
-use Wp\User\Frontend\CountryState;
+use Wp\User\Frontend\Data\Country_State;
 
 /**
  * Ajax Address Form Class
@@ -11,8 +11,6 @@ class Address_Form_Ajax {
 
     public function __construct() {
         add_action( 'wp_enqueue_scripts', [ $this, 'register_plugin_scripts' ] );
-        add_action( 'wp_ajax_wpuf_address_ajax_action', [ $this, 'ajax_form_action' ], 10, 1 );
-        add_action( 'wp_ajax_nopriv_wpuf_address_ajax_action', [ $this, 'ajax_form_action' ], 10, 1 );
     }
 
     /**
@@ -173,7 +171,7 @@ class Address_Form_Ajax {
                                 $rates = wpuf_get_tax_rates();
                             }
 
-                            $cs        = new CountryState();
+                            $cs        = new Country_State();
                             $states    = [];
                             $selected  = [];
                             $base_addr = get_option( 'wpuf_base_country_state', false );

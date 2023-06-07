@@ -1,8 +1,10 @@
 <?php
 
+namespace Wp\User\Frontend\Data;
+
 /* CountryState class */
 
-class CountryState {
+class Country_State {
     /**
      * An array of countries, iso_2_code, iso_3_code, iso_num_code, iso_something code :-), states/counties, international dial code.
      * It can be used to quickly generate web forms.  You can do a split on the counties/states string.

@@ -2,6 +2,8 @@
 
 namespace Wp\User\Frontend;
 
+use Wp\User\Frontend\Ajax\Address_Form_Ajax;
+
 /**
  * The class to handle all the AJAX operations
  */
@@ -31,6 +33,7 @@ class Ajax {
         $this->register_ajax( 'draft_post', [ new Frontend\Frontend_Form(), 'draft_post' ] );
         $this->register_ajax( 'form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'delete_user_package', [ new Admin\Admin_Subscription(), 'delete_user_package' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'address_ajax_action', [ new Ajax\Address_Form_Ajax(), 'ajax_form_action' ] );
 
         $this->register_ajax( 'clear_schedule_lock', [ $this, 'clear_schedule_lock' ], [ 'nopriv' => false ] );
     }

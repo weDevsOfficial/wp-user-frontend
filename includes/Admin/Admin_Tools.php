@@ -12,7 +12,6 @@ class Admin_Tools {
     public function __construct() {
         add_action( 'admin_init', [ $this, 'handle_tools_action' ] );
         add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ], 1 );
-        add_action( 'wp_ajax_wpuf_import_forms', [ $this, 'import_forms' ] );
         add_filter( 'upload_mimes', [ $this, 'add_json_mime_type' ] );
     }
 

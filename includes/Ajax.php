@@ -34,7 +34,8 @@ class Ajax {
         $this->register_ajax( 'form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'delete_user_package', [ new Admin\Admin_Subscription(), 'delete_user_package' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'address_ajax_action', [ new Ajax\Address_Form_Ajax(), 'ajax_form_action' ] );
-        $this->register_ajax( 'account_update_profile', [ new Frontend\Frontend_Account(), 'update_profile' ] );
+        $this->register_ajax( 'account_update_profile', [ new Frontend\Frontend_Account(), 'update_profile' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'import_forms', [ new Admin\Admin_Tools(), 'import_forms' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'clear_schedule_lock', [ $this, 'clear_schedule_lock' ], [ 'nopriv' => false ] );
     }
 

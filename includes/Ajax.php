@@ -22,6 +22,9 @@ class Ajax {
         $this->register_ajax( 'dismiss_promotional_offer_notice', [ new Admin\Promotion(), 'dismiss_promotional_offer' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'dismiss_review_notice', [ new Admin\Promotion(), 'dismiss_review_notice' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'ajax_tag_search', 'wpuf_ajax_tag_search' );
+        $this->register_ajax( 'dismiss_notice_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'dismiss_notice' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'compatibility_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'maybe_compatible' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'migrate_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'migrate_cf_data' ], [ 'nopriv' => false ] );
 
         $this->register_ajax( 'clear_schedule_lock', [ $this, 'clear_schedule_lock' ], [ 'nopriv' => false ] );
     }

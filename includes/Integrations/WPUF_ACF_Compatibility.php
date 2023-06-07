@@ -13,9 +13,6 @@ class WPUF_ACF_Compatibility {
 
     public function __construct() {
         add_action( 'admin_notices', [ $this, 'maybe_show_notice' ] );
-        add_action( 'wp_ajax_wpuf_dismiss_notice_' . $this->id, [ $this, 'dismiss_notice' ] );
-        add_action( 'wp_ajax_wpuf_compatibility_' . $this->id, [ $this, 'maybe_compatible' ] );
-        add_action( 'wp_ajax_wpuf_migrate_' . $this->id, [ $this, 'migrate_cf_data' ] );
         add_filter( 'acf/load_value', [ $this, 'load_compatible_value' ], 10, 3 );
         add_action( 'wpuf_add_post_after_insert', [ $this, 'update_acf_field_meta' ], 10, 4 );
     }

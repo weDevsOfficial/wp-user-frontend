@@ -9,9 +9,6 @@ use Wp\User\Frontend\Ajax\Address_Form_Ajax;
  */
 class Ajax {
     public function __construct() {
-        wpuf()->add_to_container( 'address_form_ajax', new Ajax\Address_Form_Ajax() );
-        wpuf()->add_to_container( 'admin_form_builder_ajax', new Ajax\Admin_Form_Builder_Ajax() );
-
         $this->register_ajax( 'submit_post', [ new Ajax\Frontend_Form_Ajax(), 'submit_post' ] );
         $this->register_ajax( 'file_del', [ new Ajax\Upload_Ajax(), 'delete_file' ] );
         $this->register_ajax( 'upload_file', [ new Ajax\Upload_Ajax(), 'upload_file' ] );

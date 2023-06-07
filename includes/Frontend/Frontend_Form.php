@@ -9,8 +9,6 @@ class Frontend_Form extends Frontend_Render_Form {
     public static $config_id = '_wpuf_form_id';
 
     public function __construct() {
-        add_shortcode( 'wpuf_form', [ $this, 'add_post_shortcode' ] );
-        add_shortcode( 'wpuf_edit', [ $this, 'edit_post_shortcode' ] );
         // // guest post hook
         add_action( 'init', [ $this, 'publish_guest_post' ] );
         $this->set_wp_post_types();

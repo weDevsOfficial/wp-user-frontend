@@ -36,6 +36,9 @@ class Ajax {
         $this->register_ajax( 'address_ajax_action', [ new Ajax\Address_Form_Ajax(), 'ajax_form_action' ] );
         $this->register_ajax( 'account_update_profile', [ new Frontend\Frontend_Account(), 'update_profile' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'import_forms', [ new Admin\Admin_Tools(), 'import_forms' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'get_child_cat', 'wpuf_get_child_cats' );
+        $this->register_ajax( 'ajax_address', 'wpuf_get_child_cats' );
+        $this->register_ajax( 'update_billing_address', 'wpuf_update_billing_address' );
         $this->register_ajax( 'clear_schedule_lock', [ $this, 'clear_schedule_lock' ], [ 'nopriv' => false ] );
     }
 

@@ -43,7 +43,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
 <form class="wpuf-form form-label-above" action="" method="post" id="wpuf-payment-gateway">
     <div class="wpuf-fields">
         <?php
-        wp_nonce_field( 'wpuf-ajax-address' );
+        wp_nonce_field( 'wpuf_ajax_address' );
         wp_nonce_field( 'wpuf_address_ajax_action', 'wpuf_save_address_nonce' );
         ?>
         <ul class="wpuf-form form-label-above">

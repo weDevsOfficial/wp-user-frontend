@@ -157,7 +157,7 @@ class Address_Form_Ajax {
             ?>
 
             <form class="wpuf-form form-label-above" id="wpuf-ajax-address-form" action="" method="post">
-                <?php wp_nonce_field( 'wpuf-ajax-address' ); ?>
+                <?php wp_nonce_field( 'wpuf_ajax_address' ); ?>
                 <input type="hidden" name="user_id" value="<?php echo esc_attr( $user_id ); ?>">
 
                 <table id="wpuf-address-country-state" class="wp-list-table widefat">
@@ -298,7 +298,7 @@ class Address_Form_Ajax {
      * Ajax Form action
      */
     public function ajax_form_action() {
-        check_ajax_referer( 'wpuf-ajax-address' );
+        check_ajax_referer( 'wpuf_ajax_address' );
 
         $post_data = wp_unslash( $_POST );
 

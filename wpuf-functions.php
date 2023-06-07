@@ -1765,9 +1765,6 @@ function wpuf_get_form_fields( $form_id ) {
     return $form_fields;
 }
 
-add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );
-add_action( 'wp_ajax_nopriv_wpuf_get_child_cat', 'wpuf_get_child_cats' );
-
 /**
  * Returns child category dropdown on ajax request
  */
@@ -3716,7 +3713,7 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
  * @return void
  */
 function wpuf_ajax_get_states_field() {
-    check_ajax_referer( 'wpuf-ajax-address' );
+    check_ajax_referer( 'wpuf_ajax_address' );
 
     $country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
     $cs        = new Wp\User\Frontend\Data\Country_State();
@@ -3740,8 +3737,6 @@ function wpuf_ajax_get_states_field() {
 
     wp_send_json( $response ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 }
-add_action( 'wp_ajax_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
-add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
 
 /**
  * Performs tax calculations and updates billing address
@@ -3749,7 +3744,7 @@ add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
  * @return void
  */
 function wpuf_update_billing_address() {
-    check_ajax_referer( 'wpuf-ajax-address' );
+    check_ajax_referer( 'wpuf_ajax_address' );
 
     ob_start();
 
@@ -3787,8 +3782,6 @@ function wpuf_update_billing_address() {
         die();
     }
 }
-add_action( 'wp_ajax_wpuf_update_billing_address', 'wpuf_update_billing_address' );
-add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_address' );
 
 /**
  * Retrieve user address

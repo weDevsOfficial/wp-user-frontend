@@ -2,17 +2,14 @@
 
 namespace Wp\User\Frontend\Frontend;
 
-use Wp\User\Frontend\Admin\json;
-use Wp\User\Frontend\Admin\stdClass;
 use Wp\User\Frontend\Admin\Subscription;
-use Wp\User\Frontend\Admin\WPUF_User_Subscription;
 
 /**
  * Dashboard class
  *
  * @author Tareq Hasan
  */
-class WPUF_Frontend_Account {
+class Frontend_Account {
     /**
      * Class constructor
      */
@@ -25,7 +22,7 @@ class WPUF_Frontend_Account {
         add_action( 'wpuf_account_content_subscription', [ $this, 'subscription_section' ], 10, 2 );
         add_action( 'wpuf_account_content_edit-profile', [ $this, 'edit_profile_section' ], 10, 2 );
         add_action( 'wpuf_account_content_billing-address', [ $this, 'billing_address_section' ], 10, 2 );
-        add_action( 'wp_ajax_wpuf_account_update_profile', [ $this, 'update_profile' ] );
+
         // add_filter( 'wpuf_options_wpuf_my_account', [ $this, 'add_settings_options' ] );
         add_filter( 'wpuf_account_sections', [ $this, 'add_account_sections' ] );
         add_action( 'wpuf_account_content_submit-post', [ $this, 'submit_post_section' ], 10, 2 );

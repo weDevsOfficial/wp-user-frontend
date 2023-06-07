@@ -1,22 +1,20 @@
 <?php
 
+namespace Wp\User\Frontend\Frontend;
+
 /**
  * Ajax Login and Forgot password handler class
  *
  * @since 2.8
  */
-class WPUF_Login_Widget extends WP_Widget {
+class Login_Widget extends \WP_Widget {
 
     public function __construct() {
         parent::__construct(
-            'WPUF_Login_Widget',
+            'Login_Widget',
             __( 'WPUF Ajax Login', 'wp-user-frontend' ),
             [ 'description' => __( 'Ajax Login widget for WP User Frontend', 'wp-user-frontend' )]
          );
-
-        add_action( 'wp_ajax_nopriv_wpuf_ajax_login', [ $this, 'ajax_login' ] );
-        add_action( 'wp_ajax_nopriv_wpuf_lost_password', [ $this, 'ajax_reset_pass' ] );
-        add_action( 'wp_ajax_wpuf_ajax_logout', [ $this, 'ajax_logout' ] );
     }
 
     /**
@@ -341,7 +339,7 @@ class WPUF_Login_Widget extends WP_Widget {
  * @return void
  */
 function wpuf_register_ajax_login_widget() {
-    register_widget( 'WPUF_Login_Widget' );
+    register_widget( 'Login_Widget' );
 }
 add_action( 'widgets_init', 'wpuf_register_ajax_login_widget' );
 

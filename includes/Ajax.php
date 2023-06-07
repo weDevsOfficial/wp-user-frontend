@@ -2,8 +2,6 @@
 
 namespace Wp\User\Frontend;
 
-use Wp\User\Frontend\Ajax\Admin_Form_Builder_Ajax;
-
 /**
  * The class to handle all the AJAX operations
  */
@@ -16,8 +14,8 @@ class Ajax {
         $this->register_ajax( 'file_del', [ new Ajax\Upload_Ajax(), 'delete_file' ] );
         $this->register_ajax( 'upload_file', [ new Ajax\Upload_Ajax(), 'upload_file' ] );
         $this->register_ajax( 'insert_image', [ new Ajax\Upload_Ajax(), 'insert_image' ] );
-        $this->register_ajax( 'form_builder_save_form', [ new Admin_Form_Builder_Ajax(), 'save_form' ], [ 'nopriv' => false ] );
-        $this->register_ajax( 'form_setting_post', [ new Admin_Form_Builder_Ajax(), 'wpuf_get_post_taxonomies' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'form_builder_save_form', [ new Ajax\Admin_Form_Builder_Ajax(), 'save_form' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'form_setting_post', [ new Ajax\Admin_Form_Builder_Ajax(), 'wpuf_get_post_taxonomies' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'whats_new_dismiss', [ new Admin\Whats_New(), 'dismiss_notice' ] );
         $this->register_ajax( 'dismiss_promotional_offer_notice', [ new Admin\Promotion(), 'dismiss_promotional_offer' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'dismiss_review_notice', [ new Admin\Promotion(), 'dismiss_review_notice' ], [ 'nopriv' => false ] );
@@ -25,6 +23,9 @@ class Ajax {
         $this->register_ajax( 'dismiss_notice_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'dismiss_notice' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'compatibility_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'maybe_compatible' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'migrate_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'migrate_cf_data' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'ajax_login', [ new Frontend\Login_Widget(), 'ajax_login' ], [ 'priv' => false ] );
+        $this->register_ajax( 'lost_password', [ new Frontend\Login_Widget(), 'ajax_reset_pass' ], [ 'priv' => false ] );
+        $this->register_ajax( 'ajax_logout', [ new Frontend\Login_Widget(), 'ajax_logout' ], [ 'priv' => false ] );
 
         $this->register_ajax( 'clear_schedule_lock', [ $this, 'clear_schedule_lock' ], [ 'nopriv' => false ] );
     }

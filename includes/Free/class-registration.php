@@ -382,7 +382,7 @@ class WPUF_Registration {
 
         // Choose subscription pack first then register
         if ( $this->is_activated_subscription_on_registration() ) {
-            $subscription_page_id = wpuf_get_option( 'subscription_page', 'Wp\User\Frontend\WPUF_Payment' );
+            $subscription_page_id = wpuf_get_option( 'subscription_page', 'WeDevs\Wpuf\WPUF_Payment' );
 
             if ( empty( $subscription_page_id ) ) {
                 WP_User_Frontend::log( 'subscription-on-registration', esc_html__( 'Subscription Page settings not set in admin settings', 'wp-user-frontend' ) );
@@ -468,8 +468,8 @@ class WPUF_Registration {
      * @return bool
      */
     public function is_activated_subscription_on_registration() {
-        $enable_payment        = wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment' );
-        $register_subscription = wpuf_get_option( 'register_subscription', 'Wp\User\Frontend\WPUF_Payment' );
+        $enable_payment        = wpuf_get_option( 'enable_payment', 'WeDevs\Wpuf\WPUF_Payment' );
+        $register_subscription = wpuf_get_option( 'register_subscription', 'WeDevs\Wpuf\WPUF_Payment' );
 
         if ( wpuf_validate_boolean( $enable_payment ) && wpuf_validate_boolean( $register_subscription ) ) {
             return true;
@@ -492,7 +492,7 @@ class WPUF_Registration {
         $get = wp_unslash( $_GET );
 
         if ( isset( $get['type'] ) && 'wpuf_sub' === $get['type'] && ! empty( $get['pack_id'] ) && $user ) {
-            $payment_page_id = wpuf_get_option( 'payment_page', 'Wp\User\Frontend\WPUF_Payment' );
+            $payment_page_id = wpuf_get_option( 'payment_page', 'WeDevs\Wpuf\WPUF_Payment' );
             $payment_page    = get_permalink( $payment_page_id );
 
             if ( $payment_page ) {

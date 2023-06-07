@@ -362,7 +362,7 @@ class Frontend_Form_Ajax {
                     'type'    => 'post',
                     'post_id' => $post_id,
                 ],
-                get_permalink( wpuf_get_option( 'payment_page', 'Wp\User\Frontend\WPUF_Payment' ) )
+                get_permalink( wpuf_get_option( 'payment_page', 'WeDevs\Wpuf\WPUF_Payment' ) )
             );
         }
 

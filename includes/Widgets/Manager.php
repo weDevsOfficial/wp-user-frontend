@@ -15,7 +15,7 @@ class Manager {
     public function __construct() {
         $wpuf_widgets = apply_filters(
             'wpuf_widgets', [
-                'login_widget' => 'Wp\User\Frontend\Login_Widget',
+                'login_widget' => 'WeDevs\Wpuf\Login_Widget',
             ]
         );
 

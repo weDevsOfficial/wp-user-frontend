@@ -12,14 +12,14 @@
 
                         if ( 'subscription' == $section ) {
                             if ( 'off' == wpuf_get_option( 'show_subscriptions', 'wpuf_my_account', 'on' ) || 'on' != wpuf_get_option( 'enable_payment',
-                                                                                                                                       'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
+                                                                                                                                       'WeDevs\Wpuf\WPUF_Payment', 'on' ) ) {
                                 continue;
                             }
                         }
 
                         if ( 'billing-address' == $section ) {
                             if ( 'off' == wpuf_get_option( 'show_billing_address', 'wpuf_my_account', 'on' ) || 'on' != wpuf_get_option( 'enable_payment',
-                                                                                                                                         'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
+                                                                                                                                         'WeDevs\Wpuf\WPUF_Payment', 'on' ) ) {
                                 continue;
                             }
                         }

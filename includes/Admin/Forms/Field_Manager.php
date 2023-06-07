@@ -83,7 +83,7 @@ class Field_Manager {
      * @return void
      */
     public function add_field_settings( $field_settings ) {
-        if ( class_exists( 'Wp\User\Frontend\Fields\Field_Contract' ) ) {
+        if ( class_exists( 'WeDevs\Wpuf\Fields\Field_Contract' ) ) {
 //            require_once WPUF_ROOT . '/includes/fields/class-field-post-title.php';
 //            require_once WPUF_ROOT . '/includes/fields/class-field-post-content.php';
 //            require_once WPUF_ROOT . '/includes/fields/class-field-post-tags.php';

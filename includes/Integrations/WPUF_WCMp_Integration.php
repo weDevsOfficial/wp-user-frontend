@@ -2,7 +2,7 @@
 
 namespace WeDevs\Wpuf\Integrations;
 
-if ( ! class_exists( 'Wp\User\Frontend\Integrations\WPUF_WCMp_Integration' ) ) {
+if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WCMp_Integration' ) ) {
     /**
      * WC Marketplace Integration Class
      *

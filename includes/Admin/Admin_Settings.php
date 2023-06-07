@@ -291,7 +291,7 @@ class Admin_Settings {
             'option'  => 'transactions_per_page',
         ];
         add_screen_option( $option, $args );
-        if ( ! class_exists( 'Wp\User\Frontend\Admin\List_Table_Transactions' ) ) {
+        if ( ! class_exists( 'WeDevs\Wpuf\Admin\List_Table_Transactions' ) ) {
             require_once WPUF_ROOT . '/class/transactions-list-table.php';
         }
         // $this->transactions_list_table_obj = new WPUF_Transactions_List_Table();

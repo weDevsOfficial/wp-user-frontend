@@ -17,7 +17,7 @@ if ( ! class_exists( 'WPUF_WeDevs_Insights' ) ) :
  *
  * @author Tareq Hasan <tareq@wedevs.com>
  */
-class WPUF_WeDevs_Insights {
+class WeDevs_Insights {
 
     /**
      * Initialize the class

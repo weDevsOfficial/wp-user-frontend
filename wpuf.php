@@ -85,7 +85,7 @@ final class WP_User_Frontend {
         $this->init_hooks();
 
         // Insight class instantiate
-        $this->container['tracker'] = new Wp\User\Frontend\Lib\WPUF_WeDevs_Insights( __FILE__ );
+        $this->container['tracker'] = new WeDevs\Wpuf\Lib\WeDevs_Insights( __FILE__ );
 
         do_action( 'wpuf_loaded' );
     }
@@ -203,20 +203,20 @@ final class WP_User_Frontend {
      * @return void
      */
     public function instantiate() {
-        $this->container['assets']       = new Wp\User\Frontend\Assets();
-        $this->container['subscription'] = new Wp\User\Frontend\Admin\Subscription();
-        $this->container['fields']       = new Wp\User\Frontend\Admin\Forms\Field_Manager();
+        $this->container['assets']       = new WeDevs\Wpuf\Assets();
+        $this->container['subscription'] = new WeDevs\Wpuf\Admin\Subscription();
+        $this->container['fields']       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
 
         if ( is_admin() ) {
-            $this->container['admin']        = new Wp\User\Frontend\Admin();
-            $this->container['setup_wizard'] = new Wp\User\Frontend\Setup_Wizard();
-            $this->container['pro_upgrades'] = new Wp\User\Frontend\Pro_Upgrades();
+            $this->container['admin']        = new WeDevs\Wpuf\Admin();
+            $this->container['setup_wizard'] = new WeDevs\Wpuf\Setup_Wizard();
+            $this->container['pro_upgrades'] = new WeDevs\Wpuf\Pro_Upgrades();
         } else {
-            $this->container['frontend'] = new Wp\User\Frontend\Frontend();
+            $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
         }
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-            $this->container['ajax'] = new Wp\User\Frontend\Ajax();
+            $this->container['ajax'] = new WeDevs\Wpuf\Ajax();
         }
     }
 
@@ -226,7 +226,7 @@ final class WP_User_Frontend {
      * @global object $wpdb
      */
     public function install() {
-        $installer = new Wp\User\Frontend\Installer();
+        $installer = new WeDevs\Wpuf\Installer();
         $installer->install();
     }
 
@@ -242,7 +242,7 @@ final class WP_User_Frontend {
             return;
         }
 
-        $this->container['upgrades'] = new Wp\User\Frontend\Admin\Upgrades();
+        $this->container['upgrades'] = new WeDevs\Wpuf\Admin\Upgrades();
     }
 
     /**
@@ -257,7 +257,7 @@ final class WP_User_Frontend {
             $this->is_pro = true;
             add_action( 'admin_notices', [ $this, 'wpuf_latest_pro_activation_notice' ] );
         } else {
-            $this->container['free_loader'] = new Wp\User\Frontend\Free\Free_Loader();
+            $this->container['free_loader'] = new WeDevs\Wpuf\Free\Free_Loader();
         }
     }
 
@@ -469,7 +469,7 @@ final class WP_User_Frontend {
      */
     public function plugin_action_links( $links ) {
         if ( ! $this->is_pro() ) {
-            $links[] = '<a href="' . Wp\User\Frontend\Free\Pro_Prompt::get_pro_url() . '" target="_blank" style="color: red;">Get PRO</a>';
+            $links[] = '<a href="' . WeDevs\Wpuf\Free\Pro_Prompt::get_pro_url() . '" target="_blank" style="color: red;">Get PRO</a>';
         }
 
         $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">Settings</a>';
@@ -511,7 +511,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function register_widgets() {
-        $this->container['widgets'] = new Wp\User\Frontend\Widgets\Manager();
+        $this->container['widgets'] = new WeDevs\Wpuf\Widgets\Manager();
     }
 }
 

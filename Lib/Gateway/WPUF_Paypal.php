@@ -45,9 +45,9 @@ class WPUF_Paypal {
     public function recurring_change_status( $user_id, $status ) {
         $user_id           = ! empty( $user_id ) ? $user_id : get_current_user_id();
         $sub_info          = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
-        $api_username      = wpuf_get_option( 'paypal_api_username', 'Wp\User\Frontend\WPUF_Payment' );
-        $api_password      = wpuf_get_option( 'paypal_api_password', 'Wp\User\Frontend\WPUF_Payment' );
-        $api_signature     = wpuf_get_option( 'paypal_api_signature', 'Wp\User\Frontend\WPUF_Payment' );
+        $api_username      = wpuf_get_option( 'paypal_api_username', 'WeDevs\Wpuf\WPUF_Payment' );
+        $api_password      = wpuf_get_option( 'paypal_api_password', 'WeDevs\Wpuf\WPUF_Payment' );
+        $api_signature     = wpuf_get_option( 'paypal_api_signature', 'WeDevs\Wpuf\WPUF_Payment' );
         $profile_id        = isset( $sub_info['profile_id'] ) ? $sub_info['profile_id'] : '';
         $new_status        = $status;
         $new_status_string = $status;
@@ -217,7 +217,7 @@ class WPUF_Paypal {
 
             $paypal_args = [
                 'cmd'           => '_xclick-subscriptions',
-                'business'      => wpuf_get_option( 'paypal_email', 'Wp\User\Frontend\WPUF_Payment' ),
+                'business'      => wpuf_get_option( 'paypal_email', 'WeDevs\Wpuf\WPUF_Payment' ),
                 'a3'            => $billing_amount,
                 'mc_amount3'    => $billing_amount,
                 'p3'            => ! empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number'] : '0',
@@ -255,7 +255,7 @@ class WPUF_Paypal {
         } else {
             $paypal_args = [
                 'cmd'           => '_xclick',
-                'business'      => wpuf_get_option( 'paypal_email', 'Wp\User\Frontend\WPUF_Payment' ),
+                'business'      => wpuf_get_option( 'paypal_email', 'WeDevs\Wpuf\WPUF_Payment' ),
                 'amount'        => $billing_amount,
                 'item_name'     => isset( $data['custom']['post_title'] ) ? $data['custom']['post_title'] : $data['item_name'],
                 'no_shipping'   => '1',
@@ -299,7 +299,7 @@ class WPUF_Paypal {
      * @since 0.8
      */
     public function set_mode() {
-        if ( wpuf_get_option( 'sandbox_mode', 'Wp\User\Frontend\WPUF_Payment' ) == 'on' ) {
+        if ( wpuf_get_option( 'sandbox_mode', 'WeDevs\Wpuf\WPUF_Payment' ) == 'on' ) {
             $this->gateway_url        = 'https://www.sandbox.paypal.com/cgi-bin/webscr/?';
             $this->gateway_cancel_url = 'https://api-3t.sandbox.paypal.com/nvp';
             $this->test_mode          = true;
@@ -513,7 +513,7 @@ class WPUF_Paypal {
             'user-agent'  => 'WP User Frontend Pro/' . WPUF_VERSION,
         ];
 
-        if ( wpuf_get_option( 'sandbox_mode', 'Wp\User\Frontend\WPUF_Payment' ) == 'on' ) {
+        if ( wpuf_get_option( 'sandbox_mode', 'WeDevs\Wpuf\WPUF_Payment' ) == 'on' ) {
             $this->gateway_url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
         } else {
             $this->gateway_url = 'https://ipnpb.paypal.com/cgi-bin/webscr';

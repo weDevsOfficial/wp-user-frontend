@@ -31,7 +31,7 @@ trait Field {
     public function add_field_settings( $field_settings ) {
         $this->set_wp_post_types();
 
-        if ( class_exists( 'Wp\User\Frontend\Fields\Field_Contract' ) ) {
+        if ( class_exists( 'WeDevs\Wpuf\Fields\Field_Contract' ) ) {
             $field_settings['post_title']     = new Form_Field_Post_Title();
             $field_settings['post_content']   = new Form_Field_Post_Content();
             $field_settings['post_excerpt']   = new Form_Field_Post_Excerpt();

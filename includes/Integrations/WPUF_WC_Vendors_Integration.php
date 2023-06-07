@@ -2,7 +2,7 @@
 
 namespace WeDevs\Wpuf\Integrations;
 
-if ( ! class_exists( 'Wp\User\Frontend\Integrations\WPUF_WC_Vendors_Integration' ) ) {
+if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_WC_Vendors_Integration' ) ) {
     /**
      * WC Vendors Integration Class
      *

@@ -308,7 +308,7 @@ class Setup_Wizard {
      * Selling step.
      */
     public function wpuf_setup_basic() {
-        $enable_payment           = wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' );
+        $enable_payment           = wpuf_get_option( 'enable_payment', 'WeDevs\Wpuf\WPUF_Payment', 'on' );
         $install_wpuf_pages       = wpuf_get_option( 'install_wpuf_pages', 'wpuf_general', 'on' ); ?>
         <h1><?php esc_html_e( 'Basic Setting', 'wp-user-frontend' ); ?></h1>
         <form method="post">

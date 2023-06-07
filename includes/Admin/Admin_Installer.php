@@ -89,7 +89,7 @@ class Admin_Installer {
         // login page
         $login_page = $this->create_page( __( 'Login', 'wp-user-frontend' ), '[wpuf-login]' );
         $post_form = $this->create_form();
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'WeDevs\Wpuf\WPUF_Payment', 'on' ) ) {
             // payment page
             $subscr_page  = $this->create_page( __( 'Subscription', 'wp-user-frontend' ),
                                                 __( '[wpuf_sub_pack]', 'wp-user-frontend' ) );
@@ -128,9 +128,9 @@ class Admin_Installer {
             $profile_options['register_link_override'] = 'on';
         }
         update_option( 'wpuf_profile', $profile_options );
-        if ( 'on' == wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
+        if ( 'on' == wpuf_get_option( 'enable_payment', 'WeDevs\Wpuf\WPUF_Payment', 'on' ) ) {
             // payment pages
-            update_option( 'Wp\User\Frontend\WPUF_Payment', [
+            update_option( 'WeDevs\Wpuf\WPUF_Payment', [
                 'subscription_page' => $subscr_page,
                 'payment_page'      => $payment_page,
                 'payment_success'   => $thank_page,

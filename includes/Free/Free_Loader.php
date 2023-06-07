@@ -122,7 +122,7 @@ class Free_Loader extends Pro_Prompt {
     }
 
     public function admin_menu() {
-        if ( 'on' === wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'WeDevs\Wpuf\WPUF_Payment', 'on' ) ) {
             $capability = wpuf_admin_role();
             add_submenu_page(
                 wpuf()->menu->parent_slug,

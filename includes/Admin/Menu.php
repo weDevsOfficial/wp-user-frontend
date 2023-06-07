@@ -43,7 +43,7 @@ class Menu {
          */
         do_action( 'wpuf_admin_menu_top' );
 
-        if ( 'on' === wpuf_get_option( 'enable_payment', 'Wp\User\Frontend\WPUF_Payment', 'on' ) ) {
+        if ( 'on' === wpuf_get_option( 'enable_payment', 'WeDevs\Wpuf\WPUF_Payment', 'on' ) ) {
             $subscription_hook = add_submenu_page( $this->parent_slug, __( 'Subscriptions', 'wp-user-frontend' ), __( 'Subscriptions', 'wp-user-frontend' ), $capability, 'edit.php?post_type=wpuf_subscription' );
 
             $this->all_submenu_hooks['subscription_hook'] = $subscription_hook;

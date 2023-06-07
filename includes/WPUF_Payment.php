@@ -41,7 +41,7 @@ class WPUF_Payment {
      */
     public function get_active_gateways() {
         $all_gateways    = wpuf_get_gateways( 'checkout' );
-        $active_gateways = wpuf_get_option( 'active_gateways', 'Wp\User\Frontend\WPUF_Payment' );
+        $active_gateways = wpuf_get_option( 'active_gateways', 'WeDevs\Wpuf\WPUF_Payment' );
         $active_gateways = is_array( $active_gateways ) ? $active_gateways : [];
         $gateways        = [];
         foreach ( $all_gateways as $id => $label ) {
@@ -62,7 +62,7 @@ class WPUF_Payment {
      */
     public function payment_page( $content ) {
         global $post;
-        $pay_page       = intval( wpuf_get_option( 'payment_page', 'Wp\User\Frontend\WPUF_Payment' ) );
+        $pay_page       = intval( wpuf_get_option( 'payment_page', 'WeDevs\Wpuf\WPUF_Payment' ) );
         $billing_amount = 0;
         $action   = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
         $get_type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
@@ -303,7 +303,7 @@ class WPUF_Payment {
                                             <div class="wpuf-payment-instruction" style="display: none;">
                                                 <div
                                                     class="wpuf-instruction"><?php echo wp_kses_post( wpuf_get_option( 'gate_instruct_' . esc_html( $gateway_id ),
-                                                                                                                       'Wp\User\Frontend\WPUF_Payment' ) ); ?></div>
+                                                                                                                       'WeDevs\Wpuf\WPUF_Payment' ) ); ?></div>
 
                                                 <?php do_action( 'wpuf_gateway_form_' . $gateway_id, $type, $post_id,
                                                                  $pack_id ); ?>
@@ -414,7 +414,7 @@ class WPUF_Payment {
                     break;
             }
             $payment_vars = [
-                'currency'            => wpuf_get_option( 'currency', 'Wp\User\Frontend\WPUF_Payment' ),
+                'currency'            => wpuf_get_option( 'currency', 'WeDevs\Wpuf\WPUF_Payment' ),
                 'price'               => $amount,
                 'item_number'         => $item_number,
                 'item_name'           => $item_name,

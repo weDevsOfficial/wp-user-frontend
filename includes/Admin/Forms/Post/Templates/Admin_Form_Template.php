@@ -124,7 +124,7 @@ class Admin_Form_Template {
 
         $template_object = $registry[ $template ];
 
-        if ( ! is_a( $template_object, 'Wp\User\Frontend\Admin\Forms\Post\Templates\Post_Form_Template' ) ) {
+        if ( ! is_a( $template_object, 'WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template' ) ) {
             return false;
         }
 

@@ -99,7 +99,7 @@ function wpuf_upgrade_2_6_payment_settings_migration() {
     if ( $allforms ) {
         foreach ( $allforms as $form ) {
             $form_settings  = wpuf_get_form_settings( $form->ID );
-            $charge_posting = wpuf_get_option( 'charge_posting', 'Wp\User\Frontend\WPUF_Payment' );
+            $charge_posting = wpuf_get_option( 'charge_posting', 'WeDevs\Wpuf\WPUF_Payment' );
 
             if ( 'yes' == $charge_posting ) {
                 $form_settings['payment_options'] = 'true';
@@ -107,7 +107,7 @@ function wpuf_upgrade_2_6_payment_settings_migration() {
                 $form_settings['payment_options'] = 'false';
             }
 
-            $force_pack = wpuf_get_option( 'force_pack', 'Wp\User\Frontend\WPUF_Payment' );
+            $force_pack = wpuf_get_option( 'force_pack', 'WeDevs\Wpuf\WPUF_Payment' );
 
             if ( 'yes' == $force_pack ) {
                 $form_settings['force_pack_purchase'] = 'true';
@@ -115,7 +115,7 @@ function wpuf_upgrade_2_6_payment_settings_migration() {
                 $form_settings['force_pack_purchase'] = 'false';
             }
 
-            $pay_per_cost = wpuf_get_option( 'cost_per_post', 'Wp\User\Frontend\WPUF_Payment' );
+            $pay_per_cost = wpuf_get_option( 'cost_per_post', 'WeDevs\Wpuf\WPUF_Payment' );
 
             if ( $pay_per_cost > 0 ) {
                 $form_settings['pay_per_post_cost'] = $pay_per_cost;

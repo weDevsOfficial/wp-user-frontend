@@ -7,7 +7,7 @@ namespace WeDevs\Wpuf;
  *
  * @since 2.6.0
  */
-class WPUF_User_Subscription {
+class User_Subscription {
 
     /**
      * The user object

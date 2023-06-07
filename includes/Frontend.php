@@ -12,10 +12,9 @@ namespace WeDevs\Wpuf;
 class Frontend {
     public function __construct() {
         wpuf()->add_to_container( 'frontend_form', new Frontend\Frontend_Form() );
+        wpuf()->add_to_container( 'shortcode', new Frontend\Shortcode() );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
-//        add_action( 'wp_enqueue_scripts', [ wpuf()->login_widget, 'wpuf_register_login_scripts' ] );
-//        add_action( 'widgets_init', [ wpuf()->login_widget, 'wpuf_register_ajax_login_widget' ] );
     }
 
     /**

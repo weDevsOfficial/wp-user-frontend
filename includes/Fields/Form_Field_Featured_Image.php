@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Fields;
 
+use WeDevs\Wpuf\Ajax\Upload_Ajax;
+
 /**
  * Feature Image Field Class
  */
@@ -34,8 +36,8 @@ class Form_Field_Featured_Image extends Field_Contract {
             $thumb_id = get_post_thumbnail_id( $post_id );
 
             if ( $thumb_id ) {
-                $featured_image    = WPUF_Upload::attach_html( $thumb_id, 'featured_image' );
-                $has_featured_image=true;
+                $featured_image     = Upload_Ajax::attach_html( $thumb_id, 'featured_image' );
+                $has_featured_image = true;
             }
         }
 

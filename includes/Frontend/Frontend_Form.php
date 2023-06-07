@@ -4,9 +4,10 @@ namespace WeDevs\Wpuf\Frontend;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Frontend_Render_Form;
-use WeDevs\Wpuf\WPUF_User_Subscription;
 
 class Frontend_Form extends Frontend_Render_Form {
+    public static $config_id = '_wpuf_form_id';
+
     public function __construct() {
         add_shortcode( 'wpuf_form', [ $this, 'add_post_shortcode' ] );
         add_shortcode( 'wpuf_edit', [ $this, 'edit_post_shortcode' ] );
@@ -100,7 +101,7 @@ class Frontend_Form extends Frontend_Render_Form {
             return '<div class="wpuf-info">' . __( "I don't know how to edit this post, I don't have the form ID", 'wp-user-frontend' ) . '</div>';
         }
 
-        $form = new WPUF_Form( $form_id );
+        $form = new Form( $form_id );
 
         $this->form_fields = $form->get_fields();
         // $form_settings = wpuf_get_form_settings( $form_id );

@@ -4,7 +4,7 @@ namespace WeDevs\Wpuf\Ajax;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Traits\Field;
-use WeDevs\Wpuf\WPUF_User_Subscription;
+use WeDevs\Wpuf\User_Subscription;
 
 class Frontend_Form_Ajax {
 
@@ -535,7 +535,7 @@ class Frontend_Form_Ajax {
         // if user has a subscription pack
         $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
         $wpuf_user               = wpuf_get_user();
-        $user_subscription       = new WPUF_User_Subscription( $wpuf_user );
+        $user_subscription       = new User_Subscription( $wpuf_user );
         if ( ! empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['_enable_post_expiration'] )
              && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) >= time() ) {
             $expire_date = gmdate( 'Y-m-d', strtotime( '+' . $user_wpuf_subscription_pack['_post_expiration_time'] ) );

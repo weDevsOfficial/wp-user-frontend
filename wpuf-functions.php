@@ -1,6 +1,6 @@
 <?php
 
-use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_Post;
+use WeDevs\Wpuf\Encryption_Helper;
 use WeDevs\Wpuf\Free\Pro_Prompt;
 use WeDevs\Wpuf\Lib\WeDevs_Settings_API;
 use WeDevs\Wpuf\WPUF_Payment;
@@ -3158,7 +3158,7 @@ add_filter( 'display_post_states', 'wpuf_admin_page_states', 10, 2 );
  * @return string|bool encoded string or false if encryption failed
  */
 function wpuf_encryption( $id, $nonce = null ) {
-    $auth_keys  = WPUF_Encryption_Helper::get_encryption_auth_keys();
+    $auth_keys  = WeDevs\Wpuf\Encryption_Helper::get_encryption_auth_keys();
     $secret_key = $auth_keys['auth_key'];
     $secret_iv  = ! empty( $nonce ) ? base64_decode( $nonce ) : $auth_keys['auth_salt'];
 
@@ -3171,7 +3171,7 @@ function wpuf_encryption( $id, $nonce = null ) {
         }
     }
 
-    $ciphertext_raw = openssl_encrypt( $id, WPUF_Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
+    $ciphertext_raw = openssl_encrypt( $id, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
     $hmac           = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
 
     return base64_encode( $secret_iv.$hmac.$ciphertext_raw );
@@ -3190,7 +3190,7 @@ function wpuf_encryption( $id, $nonce = null ) {
  */
 function wpuf_decryption( $id, $nonce = null ) {
     // get auth keys
-    $auth_keys = WPUF_Encryption_Helper::get_encryption_auth_keys();
+    $auth_keys = Encryption_Helper::get_encryption_auth_keys();
     if ( empty( $auth_keys ) ) {
         return false;
     }
@@ -3209,11 +3209,11 @@ function wpuf_decryption( $id, $nonce = null ) {
     }
 
     $c              = base64_decode( $id );
-    $ivlen          = WPUF_Encryption_Helper::get_encryption_nonce_length();
+    $ivlen          = Encryption_Helper::get_encryption_nonce_length();
     $secret_iv      = substr( $c, 0, $ivlen );
     $hmac           = substr( $c, $ivlen, 32 );
     $ciphertext_raw = substr( $c, $ivlen + 32 );
-    $original_text  = openssl_decrypt( $ciphertext_raw, WPUF_Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
+    $original_text  = openssl_decrypt( $ciphertext_raw, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
     $calcmac        = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
 
     // timing attack safe comparison

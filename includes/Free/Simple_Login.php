@@ -1,5 +1,7 @@
 <?php
 
+namespace WeDevs\Wpuf\Free;
+
 /**
  * Login and forgot password handler class
  *
@@ -7,12 +9,10 @@
  *
  * @author Tareq Hasan <tareq@wedevs.com>
  */
-class WPUF_Simple_Login {
+class Simple_Login {
     private $login_errors = [];
 
     private $messages = [];
-
-    private static $_instance;
 
     public function __construct() {
         add_shortcode( 'wpuf-login', [ $this, 'login_form' ] );
@@ -37,19 +37,6 @@ class WPUF_Simple_Login {
         add_filter( 'login_form_login', [ $this, 'default_wp_login_override' ] );
 
         add_filter( 'authenticate', [ $this, 'successfully_authenticate' ], 30, 3 );
-    }
-
-    /**
-     * Singleton object
-     *
-     * @return self
-     */
-    public static function init() {
-        if ( ! self::$_instance ) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
     }
 
     /**
@@ -338,7 +325,6 @@ class WPUF_Simple_Login {
         }
 
         ob_start();
-
         if ( is_user_logged_in() ) {
             wpuf_load_template(
                 'logged-in.php', [

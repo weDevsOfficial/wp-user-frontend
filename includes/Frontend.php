@@ -12,7 +12,9 @@ namespace WeDevs\Wpuf;
 class Frontend {
     public function __construct() {
         wpuf()->add_to_container( 'frontend_form', new Frontend\Frontend_Form() );
+        wpuf()->add_to_container( 'registration', new Frontend\Registration() );
         wpuf()->add_to_container( 'shortcode', new Frontend\Shortcode() );
+        wpuf()->add_to_container( 'login', new Free\Simple_Login() );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
     }

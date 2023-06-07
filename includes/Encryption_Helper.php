@@ -1,9 +1,11 @@
 <?php
-/**
- * The WPUF_Encryption_Helper Class to handle the encryption
- */
 
-class WPUF_Encryption_Helper {
+namespace WeDevs\Wpuf;
+
+/**
+ * The Encryption_Helper Class to handle the encryption
+ */
+class Encryption_Helper {
 
     /**
      * Get the Advanced Encryption Standard we are using
@@ -26,7 +28,9 @@ class WPUF_Encryption_Helper {
      * @return int|bool
      */
     public static function get_encryption_nonce_length() {
-        return function_exists( 'sodium_crypto_secretbox' ) ? SODIUM_CRYPTO_SECRETBOX_NONCEBYTES : openssl_cipher_iv_length( self::get_encryption_method() );
+        return function_exists(
+            'sodium_crypto_secretbox'
+        ) ? SODIUM_CRYPTO_SECRETBOX_NONCEBYTES : openssl_cipher_iv_length( self::get_encryption_method() );
     }
 
     /**
@@ -49,21 +53,18 @@ class WPUF_Encryption_Helper {
      * @throws Exception
      */
     public static function get_encryption_auth_keys() {
-        $defaults = [
+        $defaults  = [
             'auth_key'  => '',
             'auth_salt' => '',
         ];
         $auth_keys = get_option( 'wpuf_auth_keys', $defaults );
-
         if ( empty( $auth_keys['auth_key'] ) || empty( $auth_keys['auth_salt'] ) ) {
             // check for saved key
             $key                   = random_bytes( self::get_encryption_key_length() );
             $auth_keys['auth_key'] = base64_encode( $key );    // phpcs:ignore
-
             // check for saved nonce
             $nonce                  = random_bytes( self::get_encryption_nonce_length() );
             $auth_keys['auth_salt'] = base64_encode( $nonce );    // phpcs:ignore
-
             update_option( 'wpuf_auth_keys', $auth_keys );
         }
 

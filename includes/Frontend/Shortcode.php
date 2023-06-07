@@ -7,5 +7,6 @@ class Shortcode {
         wpuf()->add_to_container( 'shortcode_frontend_dashboard', new Shortcodes\Frontend_Dashboard() );
 
         add_shortcode( 'wpuf_dashboard', [ wpuf()->shortcode_frontend_dashboard, 'shortcode' ] );
+        add_shortcode( 'wpuf-registration', [ wpuf()->registration, 'registration_form' ] );
     }
 }

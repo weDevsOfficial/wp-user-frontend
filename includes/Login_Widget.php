@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Frontend;
+namespace Wp\User\Frontend;
 
 /**
  * Ajax Login and Forgot password handler class
@@ -169,6 +169,12 @@ class Login_Widget extends \WP_Widget {
      */
     public function widget( $args, $instance ) {
         wp_enqueue_script( 'wpuf_ajax_login' );
+        wp_localize_script(
+            'wpuf_ajax_login',
+            'wpuf_ajax', [
+                'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            ]
+        );
 
         $title            = apply_filters( 'widget_title', $instance['title'] );
         $log_in_header    = apply_filters( 'widget_text_content', $instance['log_in_header'] );
@@ -332,27 +338,3 @@ class Login_Widget extends \WP_Widget {
         return $instance;
     }
 }
-
-/**
- * Register WPUF_Login_Widget widget
- *
- * @return void
- */
-function wpuf_register_ajax_login_widget() {
-    register_widget( 'Login_Widget' );
-}
-add_action( 'widgets_init', 'wpuf_register_ajax_login_widget' );
-
-/**
- * Registers widget scripts
- *
- * @return void
- */
-function wpuf_register_login_scripts() {
-    wp_register_script( 'wpuf_ajax_login', WPUF_ASSET_URI . '/js/wpuf-login-widget.js', [ 'jquery' ], false, true );
-
-    wp_localize_script( 'wpuf_ajax_login', 'wpuf_ajax', [
-        'ajaxurl' => admin_url( 'admin-ajax.php' ),
-    ] );
-}
-add_action( 'wp_enqueue_scripts', 'wpuf_register_login_scripts' );

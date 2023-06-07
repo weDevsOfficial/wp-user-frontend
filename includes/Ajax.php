@@ -23,9 +23,13 @@ class Ajax {
         $this->register_ajax( 'dismiss_notice_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'dismiss_notice' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'compatibility_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'maybe_compatible' ], [ 'nopriv' => false ] );
         $this->register_ajax( 'migrate_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'migrate_cf_data' ], [ 'nopriv' => false ] );
-        $this->register_ajax( 'ajax_login', [ new Frontend\Login_Widget(), 'ajax_login' ], [ 'priv' => false ] );
-        $this->register_ajax( 'lost_password', [ new Frontend\Login_Widget(), 'ajax_reset_pass' ], [ 'priv' => false ] );
-        $this->register_ajax( 'ajax_logout', [ new Frontend\Login_Widget(), 'ajax_logout' ], [ 'priv' => false ] );
+        $this->register_ajax( 'ajax_login', [ new Login_Widget(), 'ajax_login' ], [ 'priv' => false ] );
+        $this->register_ajax( 'lost_password', [ new Login_Widget(), 'ajax_reset_pass' ], [ 'priv' => false ] );
+        $this->register_ajax( 'ajax_logout', [ new Login_Widget(), 'ajax_logout' ], [ 'priv' => false ] );
+        $this->register_ajax( 'form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], [ 'nopriv' => false ] );
+        $this->register_ajax( 'make_media_embed_code', [ new Frontend\Frontend_Form(), 'make_media_embed_code' ] );
+        $this->register_ajax( 'draft_post', [ new Frontend\Frontend_Form(), 'draft_post' ] );
+        $this->register_ajax( 'form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], [ 'nopriv' => false ] );
 
         $this->register_ajax( 'clear_schedule_lock', [ $this, 'clear_schedule_lock' ], [ 'nopriv' => false ] );
     }

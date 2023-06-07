@@ -1324,7 +1324,7 @@
 
             make_media_embed_code: function(content, editor){
                 $.post( ajaxurl, {
-                        action:'make_media_embed_code',
+                        action:'wpuf_make_media_embed_code',
                         content: content
                     },
                     function(data){

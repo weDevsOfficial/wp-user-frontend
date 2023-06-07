@@ -10,19 +10,8 @@ class Frontend_Form extends Frontend_Render_Form {
     public function __construct() {
         add_shortcode( 'wpuf_form', [ $this, 'add_post_shortcode' ] );
         add_shortcode( 'wpuf_edit', [ $this, 'edit_post_shortcode' ] );
-        // ajax requests
-        add_action( 'wp_ajax_wpuf_form_preview', [ $this, 'preview_form' ] );
-        // add_action( 'wp_ajax_wpuf_submit_post', [ $this, 'submit_post' ] );
-        // add_action( 'wp_ajax_nopriv_wpuf_submit_post', [ $this, 'submit_post' ] );
-        add_action( 'wp_ajax_make_media_embed_code', [ $this, 'make_media_embed_code' ] );
-        add_action( 'wp_ajax_nopriv_make_media_embed_code', [ $this, 'make_media_embed_code' ] );
         // // guest post hook
         add_action( 'init', [ $this, 'publish_guest_post' ] );
-        // draft
-        add_action( 'wp_ajax_wpuf_draft_post', [ $this, 'draft_post' ] );
-        add_action( 'wp_ajax_nopriv_wpuf_draft_post', [ $this, 'draft_post' ] );
-        // form preview
-        add_action( 'wp_ajax_wpuf_form_preview', [ $this, 'preview_form' ] );
         $this->set_wp_post_types();
 
         // Enable post edit link for post authors in frontend

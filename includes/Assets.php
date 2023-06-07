@@ -338,6 +338,10 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/js/upload.js',
                 'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ],
             ],
+            'ajax_login'                   => [
+                'src'  => WPUF_ASSET_URI . '/js/wpuf-login-widget.js',
+                'deps' => [ 'jquery' ],
+            ],
         ];
 
         if ( ! empty( $api_key ) ) {

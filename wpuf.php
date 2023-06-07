@@ -139,6 +139,8 @@ final class WP_User_Frontend {
 
         // do plugin upgrades
         add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), [ $this, 'plugin_action_links' ] );
+
+        add_action( 'widgets_init', [ $this, 'register_widgets' ] );
     }
 
     /**
@@ -499,6 +501,17 @@ final class WP_User_Frontend {
      */
     public function get_container() {
         return $this->container;
+    }
+
+    /**
+     * Register widgets
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function register_widgets() {
+        $this->container['widgets'] = new Wp\User\Frontend\Widgets\Manager();
     }
 }
 

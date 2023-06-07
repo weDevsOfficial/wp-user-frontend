@@ -14,6 +14,8 @@ class Frontend {
         wpuf()->add_to_container( 'frontend_form', new Frontend\Frontend_Form() );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+//        add_action( 'wp_enqueue_scripts', [ wpuf()->login_widget, 'wpuf_register_login_scripts' ] );
+//        add_action( 'widgets_init', [ wpuf()->login_widget, 'wpuf_register_ajax_login_widget' ] );
     }
 
     /**
@@ -29,19 +31,19 @@ class Frontend {
         $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
 
         if ( wpuf_has_shortcode( 'wpuf-login' )
-             || wpuf_has_shortcode( 'wpuf-registration' )
-             || wpuf_has_shortcode( 'wpuf-meta' )
-             || wpuf_has_shortcode( 'wpuf_form' )
-             || wpuf_has_shortcode( 'wpuf_edit' )
-             || wpuf_has_shortcode( 'wpuf_profile' )
-             || wpuf_has_shortcode( 'wpuf_dashboard' )
-             || wpuf_has_shortcode( 'weforms' )
-             || wpuf_has_shortcode( 'wpuf_account' )
-             || wpuf_has_shortcode( 'wpuf_sub_pack' )
-             || ( isset( $post->ID ) && ( $pay_page == $post->ID ) )
-             || isset( $_GET['wpuf_preview'] )
-             || class_exists( '\Elementor\Plugin' )
-             || $this->dokan_is_seller_dashboard() ) {
+            || wpuf_has_shortcode( 'wpuf-registration' )
+            || wpuf_has_shortcode( 'wpuf-meta' )
+            || wpuf_has_shortcode( 'wpuf_form' )
+            || wpuf_has_shortcode( 'wpuf_edit' )
+            || wpuf_has_shortcode( 'wpuf_profile' )
+            || wpuf_has_shortcode( 'wpuf_dashboard' )
+            || wpuf_has_shortcode( 'weforms' )
+            || wpuf_has_shortcode( 'wpuf_account' )
+            || wpuf_has_shortcode( 'wpuf_sub_pack' )
+            || ( isset( $post->ID ) && ( $pay_page == $post->ID ) )
+            || isset( $_GET['wpuf_preview'] )
+            || class_exists( '\Elementor\Plugin' )
+            || $this->dokan_is_seller_dashboard() ) {
             wp_enqueue_style( 'wpuf-layout1' );
             wp_enqueue_style( 'wpuf-frontend-forms' );
             wp_enqueue_style( 'wpuf-sweetalert2' );

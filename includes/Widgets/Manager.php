@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Widgets;
+namespace WeDevs\Wpuf\Widgets;
 
 class Manager {
 

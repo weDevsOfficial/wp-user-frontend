@@ -1,9 +1,9 @@
 <?php
 
-use Wp\User\Frontend\Admin\Forms\Post\Templates\Post_Form_Template_Post;
-use Wp\User\Frontend\Free\Pro_Prompt;
-use Wp\User\Frontend\Lib\WeDevs_Settings_API;
-use Wp\User\Frontend\WPUF_Payment;
+use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_Post;
+use WeDevs\Wpuf\Free\Pro_Prompt;
+use WeDevs\Wpuf\Lib\WeDevs_Settings_API;
+use WeDevs\Wpuf\WPUF_Payment;
 
 /**
  * Start output buffering

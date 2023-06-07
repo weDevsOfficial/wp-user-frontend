@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Fields;
+namespace WeDevs\Wpuf\Fields;
 
 // Post Excerpt Class
 class Form_Field_Post_Excerpt extends Field_Contract {

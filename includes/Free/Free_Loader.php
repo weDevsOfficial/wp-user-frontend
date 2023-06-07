@@ -1,10 +1,10 @@
 <?php
 
-namespace Wp\User\Frontend\Free;
+namespace WeDevs\Wpuf\Free;
 
-use Wp\User\Frontend\Admin\Forms\Post\Templates\Post_Form_Template_Events_Calendar;
-use Wp\User\Frontend\Admin\Forms\Post\Templates\Post_Form_Template_WooCommerce;
-use Wp\User\Frontend\Admin\Forms\Post\Templates\Pro_Form_Preview_EDD;
+use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_Events_Calendar;
+use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_WooCommerce;
+use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_EDD;
 
 class Free_Loader extends Pro_Prompt {
 

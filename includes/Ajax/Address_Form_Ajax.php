@@ -1,8 +1,8 @@
 <?php
 
-namespace Wp\User\Frontend\Ajax;
+namespace WeDevs\Wpuf\Ajax;
 
-use Wp\User\Frontend\Data\Country_State;
+use WeDevs\Wpuf\Data\Country_State;
 
 /**
  * Ajax Address Form Class

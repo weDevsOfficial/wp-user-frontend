@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Lib;
+namespace WeDevs\Wpuf\Lib;
 
 use Appsero\Client;
 

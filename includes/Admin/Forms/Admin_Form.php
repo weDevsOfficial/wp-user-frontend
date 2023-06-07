@@ -1,9 +1,9 @@
 <?php
 
-namespace Wp\User\Frontend\Admin\Forms;
+namespace WeDevs\Wpuf\Admin\Forms;
 
-use Wp\User\Frontend\Admin\Subscription;
-use Wp\User\Frontend\Traits\Field;
+use WeDevs\Wpuf\Admin\Subscription;
+use WeDevs\Wpuf\Traits\Field;
 
 /**
  * Post Forms or wpuf_forms form builder class

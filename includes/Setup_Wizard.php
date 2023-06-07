@@ -5,9 +5,9 @@
  * Walkthrough to the basic setup upon installation
  */
 
-namespace Wp\User\Frontend;
+namespace WeDevs\Wpuf;
 
-use Wp\User\Frontend\Admin\Admin_Installer;
+use WeDevs\Wpuf\Admin\Admin_Installer;
 
 /**
  * The class

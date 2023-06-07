@@ -1,8 +1,8 @@
 <?php
 
-namespace Wp\User\Frontend\Admin;
+namespace WeDevs\Wpuf\Admin;
 
-use Wp\User\Frontend\WPUF_Payment;
+use WeDevs\Wpuf\WPUF_Payment;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';

@@ -1,8 +1,8 @@
 <?php
 
-namespace Wp\User\Frontend\Ajax;
+namespace WeDevs\Wpuf\Ajax;
 
-use Wp\User\Frontend\Admin\Forms\Admin_Form_Builder;
+use WeDevs\Wpuf\Admin\Forms\Admin_Form_Builder;
 
 /**
  * Ajax handlers

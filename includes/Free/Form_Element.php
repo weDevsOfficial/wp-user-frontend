@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Free;
+namespace WeDevs\Wpuf\Free;
 
 // @codingStandardsIgnoreStart
 class Form_Element extends Pro_Prompt {

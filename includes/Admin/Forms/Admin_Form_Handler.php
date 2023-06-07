@@ -1,8 +1,8 @@
 <?php
 
-namespace Wp\User\Frontend\Admin\Forms;
+namespace WeDevs\Wpuf\Admin\Forms;
 
-use Wp\User\Frontend\Admin\Forms;
+use WeDevs\Wpuf\Admin\Forms;
 
 class Admin_Form_Handler {
 

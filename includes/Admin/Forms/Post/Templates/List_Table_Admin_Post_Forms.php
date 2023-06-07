@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Admin\Forms\Post\Templates;
+namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 
 use WP_List_Table;
 

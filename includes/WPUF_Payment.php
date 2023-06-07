@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend;
+namespace WeDevs\Wpuf;
 
 /**
  * WP User Frontend payment gateway handler

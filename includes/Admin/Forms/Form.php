@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Admin\Forms;
+namespace WeDevs\Wpuf\Admin\Forms;
 
 class Form {
 

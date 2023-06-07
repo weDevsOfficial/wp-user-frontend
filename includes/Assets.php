@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend;
+namespace WeDevs\Wpuf;
 
 /**
  * The assets handler for WPUF. All the styles and scripts should register from here first.

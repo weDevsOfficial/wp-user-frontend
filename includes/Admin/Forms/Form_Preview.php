@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Admin\Forms;
+namespace WeDevs\Wpuf\Admin\Forms;
 
 use WP_Query;
 use WPUF_Form;

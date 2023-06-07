@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Fields;
+namespace WeDevs\Wpuf\Fields;
 
 /**
  * Checkbox Field Class

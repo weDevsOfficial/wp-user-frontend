@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Ajax;
+namespace WeDevs\Wpuf\Ajax;
 
 /**
  * Attachment Uploader class

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Fields;
+namespace WeDevs\Wpuf\Fields;
 
 /**
  * Post Title Field class

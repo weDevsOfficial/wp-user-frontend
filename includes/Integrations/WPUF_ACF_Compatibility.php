@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Integrations;
+namespace WeDevs\Wpuf\Integrations;
 
 /**
  * Acf integration class

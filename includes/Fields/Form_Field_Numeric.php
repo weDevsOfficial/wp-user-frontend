@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Fields;
+namespace WeDevs\Wpuf\Fields;
 
 // Numeric Field Class
 class Form_Field_Numeric extends Field_Contract {

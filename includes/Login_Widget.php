@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend;
+namespace WeDevs\Wpuf;
 
 /**
  * Ajax Login and Forgot password handler class

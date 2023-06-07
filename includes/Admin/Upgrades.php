@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Admin;
+namespace WeDevs\Wpuf\Admin;
 
 /**
  * Plugin Upgrade Routine

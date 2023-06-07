@@ -1,9 +1,9 @@
 <?php
 
-namespace Wp\User\Frontend\Admin;
+namespace WeDevs\Wpuf\Admin;
 
-use Wp\User\Frontend\Lib\Gateway\WPUF_Paypal;
-use Wp\User\Frontend\WPUF_Payment;
+use WeDevs\Wpuf\Lib\Gateway\WPUF_Paypal;
+use WeDevs\Wpuf\WPUF_Payment;
 
 /**
  * Manage Subscription packs

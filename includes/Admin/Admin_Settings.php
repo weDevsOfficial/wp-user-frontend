@@ -1,8 +1,8 @@
 <?php
 
-namespace Wp\User\Frontend\Admin;
+namespace WeDevs\Wpuf\Admin;
 
-use Wp\User\Frontend\Lib\WeDevs_Settings_API;
+use WeDevs\Wpuf\Lib\WeDevs_Settings_API;
 use WP_Query;
 
 /**

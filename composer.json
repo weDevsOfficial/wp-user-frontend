@@ -24,8 +24,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Wp\\User\\Frontend\\": "includes/",
-      "Wp\\User\\Frontend\\Lib\\": "Lib/"
+      "WeDevs\\Wpuf\\": "includes/",
+      "WeDevs\\Wpuf\\Lib\\": "Lib/"
     }
   },
   "scripts": {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Wp\User\Frontend\Frontend;
+namespace WeDevs\Wpuf\Frontend;
 
-use Wp\User\Frontend\Admin\Forms\Form;
-use Wp\User\Frontend\Frontend_Render_Form;
-use Wp\User\Frontend\WPUF_User_Subscription;
+use WeDevs\Wpuf\Admin\Forms\Form;
+use WeDevs\Wpuf\Frontend_Render_Form;
+use WeDevs\Wpuf\WPUF_User_Subscription;
 
 class Frontend_Form extends Frontend_Render_Form {
     public function __construct() {

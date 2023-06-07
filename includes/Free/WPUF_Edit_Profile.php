@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Free;
+namespace WeDevs\Wpuf\Free;
 
 class WPUF_Edit_Profile {
 

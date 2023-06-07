@@ -1,8 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend;
-
-use Wp\User\Frontend\Ajax\Address_Form_Ajax;
+namespace WeDevs\Wpuf;
 
 /**
  * The class to handle all the AJAX operations

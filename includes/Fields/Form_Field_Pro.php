@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Fields;
+namespace WeDevs\Wpuf\Fields;
 
 class Form_Field_Pro extends Field_Contract {
 

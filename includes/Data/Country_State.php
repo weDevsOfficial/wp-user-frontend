@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Data;
+namespace WeDevs\Wpuf\Data;
 
 /* CountryState class */
 

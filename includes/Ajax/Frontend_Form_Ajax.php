@@ -1,10 +1,10 @@
 <?php
 
-namespace Wp\User\Frontend\Ajax;
+namespace WeDevs\Wpuf\Ajax;
 
-use Wp\User\Frontend\Admin\Forms\Form;
-use Wp\User\Frontend\Traits\Field;
-use Wp\User\Frontend\WPUF_User_Subscription;
+use WeDevs\Wpuf\Admin\Forms\Form;
+use WeDevs\Wpuf\Traits\Field;
+use WeDevs\Wpuf\WPUF_User_Subscription;
 
 class Frontend_Form_Ajax {
 

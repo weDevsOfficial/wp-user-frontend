@@ -1,8 +1,8 @@
 <?php
 
-namespace Wp\User\Frontend\Lib\Gateway;
+namespace WeDevs\Wpuf\Lib\Gateway;
 
-use Wp\User\Frontend\WPUF_Payment;
+use WeDevs\Wpuf\WPUF_Payment;
 
 /**
  * WP User Frontend PayPal gateway

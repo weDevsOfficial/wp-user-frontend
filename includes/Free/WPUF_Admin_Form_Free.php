@@ -1,8 +1,8 @@
 <?php
 
-namespace Wp\User\Frontend\Free;
+namespace WeDevs\Wpuf\Free;
 
-use Wp\User\Frontend\Admin\Forms\Admin_Form_Builder_Free;
+use WeDevs\Wpuf\Admin\Forms\Admin_Form_Builder_Free;
 
 /**
  * Free features for wpuf_forms builder

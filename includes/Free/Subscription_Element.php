@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Free;
+namespace WeDevs\Wpuf\Free;
 
 class Subscription_Element extends Pro_Prompt {
 

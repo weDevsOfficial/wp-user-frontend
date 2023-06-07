@@ -1,8 +1,8 @@
 <?php
 
-namespace Wp\User\Frontend\Admin;
+namespace WeDevs\Wpuf\Admin;
 
-use Wp\User\Frontend\Admin\Forms\Form;
+use WeDevs\Wpuf\Admin\Forms\Form;
 
 /**
  * WPUF subscription manager

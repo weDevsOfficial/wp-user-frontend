@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend;
+namespace WeDevs\Wpuf;
 
 /**
  * The class which will hold all the starting point of operations outside WordPress dashboard for WPUF

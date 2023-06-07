@@ -1,8 +1,8 @@
 <?php
 
-namespace Wp\User\Frontend\Admin\Forms;
+namespace WeDevs\Wpuf\Admin\Forms;
 
-use Wp\User\Frontend\Free\Pro_Prompt;
+use WeDevs\Wpuf\Free\Pro_Prompt;
 
 /**
  * Form Builder framework

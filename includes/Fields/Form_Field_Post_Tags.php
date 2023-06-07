@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Fields;
+namespace WeDevs\Wpuf\Fields;
 
 //Post Tags Class
 class Form_Field_Post_Tags extends Field_Contract {

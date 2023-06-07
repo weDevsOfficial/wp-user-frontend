@@ -1,8 +1,8 @@
 <?php
 
-namespace Wp\User\Frontend\Frontend;
+namespace WeDevs\Wpuf\Frontend;
 
-use Wp\User\Frontend\Admin\Subscription;
+use WeDevs\Wpuf\Admin\Subscription;
 
 /**
  * Dashboard class

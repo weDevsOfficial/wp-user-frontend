@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Frontend;
+namespace WeDevs\Wpuf\Frontend;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

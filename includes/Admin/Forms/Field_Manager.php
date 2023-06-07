@@ -1,28 +1,28 @@
 <?php
 
-namespace Wp\User\Frontend\Admin\Forms;
+namespace WeDevs\Wpuf\Admin\Forms;
 
-use Wp\User\Frontend\Admin\Subscription;
-use Wp\User\Frontend\Fields\Form_Field_Checkbox;
-use Wp\User\Frontend\Fields\Form_Field_Column;
-use Wp\User\Frontend\Fields\Form_Field_Dropdown;
-use Wp\User\Frontend\Fields\Form_Field_Email;
-use Wp\User\Frontend\Fields\Form_Field_Featured_Image;
-use Wp\User\Frontend\Fields\Form_Field_Hidden;
-use Wp\User\Frontend\Fields\Form_Field_HTML;
-use Wp\User\Frontend\Fields\Form_Field_Image;
-use Wp\User\Frontend\Fields\Form_Field_MultiDropdown;
-use Wp\User\Frontend\Fields\Form_Field_Post_Content;
-use Wp\User\Frontend\Fields\Form_Field_Post_Excerpt;
-use Wp\User\Frontend\Fields\Form_Field_Post_Tags;
-use Wp\User\Frontend\Fields\Form_Field_Post_Taxonomy;
-use Wp\User\Frontend\Fields\Form_Field_Post_Title;
-use Wp\User\Frontend\Fields\Form_Field_Radio;
-use Wp\User\Frontend\Fields\Form_Field_reCaptcha;
-use Wp\User\Frontend\Fields\Form_Field_SectionBreak;
-use Wp\User\Frontend\Fields\Form_Field_Text;
-use Wp\User\Frontend\Fields\Form_Field_Textarea;
-use Wp\User\Frontend\Fields\Form_Field_URL;
+use WeDevs\Wpuf\Admin\Subscription;
+use WeDevs\Wpuf\Fields\Form_Field_Checkbox;
+use WeDevs\Wpuf\Fields\Form_Field_Column;
+use WeDevs\Wpuf\Fields\Form_Field_Dropdown;
+use WeDevs\Wpuf\Fields\Form_Field_Email;
+use WeDevs\Wpuf\Fields\Form_Field_Featured_Image;
+use WeDevs\Wpuf\Fields\Form_Field_Hidden;
+use WeDevs\Wpuf\Fields\Form_Field_HTML;
+use WeDevs\Wpuf\Fields\Form_Field_Image;
+use WeDevs\Wpuf\Fields\Form_Field_MultiDropdown;
+use WeDevs\Wpuf\Fields\Form_Field_Post_Content;
+use WeDevs\Wpuf\Fields\Form_Field_Post_Excerpt;
+use WeDevs\Wpuf\Fields\Form_Field_Post_Tags;
+use WeDevs\Wpuf\Fields\Form_Field_Post_Taxonomy;
+use WeDevs\Wpuf\Fields\Form_Field_Post_Title;
+use WeDevs\Wpuf\Fields\Form_Field_Radio;
+use WeDevs\Wpuf\Fields\Form_Field_reCaptcha;
+use WeDevs\Wpuf\Fields\Form_Field_SectionBreak;
+use WeDevs\Wpuf\Fields\Form_Field_Text;
+use WeDevs\Wpuf\Fields\Form_Field_Textarea;
+use WeDevs\Wpuf\Fields\Form_Field_URL;
 
 /**
  * Form field manager class

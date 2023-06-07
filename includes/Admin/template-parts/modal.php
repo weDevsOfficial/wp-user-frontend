@@ -1,4 +1,4 @@
-<?php use Wp\User\Frontend\Free\Pro_Prompt; ?>
+<?php use WeDevs\Wpuf\Free\Pro_Prompt; ?>
 <div id="wpuf-form-template-modal">
     <div class="wpuf-form-template-modal">
 

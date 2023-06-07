@@ -1,5 +1,5 @@
 <?php
-namespace Wp\User\Frontend\Fields;
+namespace WeDevs\Wpuf\Fields;
 
 class Form_Field_Post_Title extends Field_Contract {
 

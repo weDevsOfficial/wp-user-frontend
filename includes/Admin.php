@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend;
+namespace WeDevs\Wpuf;
 
 /**
  * The Admin class which will hold all the starting point of WordPress dashboard admin operations for WPUF

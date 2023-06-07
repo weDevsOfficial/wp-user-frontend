@@ -1,6 +1,6 @@
 <?php
 
-namespace Wp\User\Frontend\Integrations;
+namespace WeDevs\Wpuf\Integrations;
 
 if ( ! class_exists( 'Wp\User\Frontend\Integrations\WPUF_WC_Vendors_Integration' ) ) {
     /**

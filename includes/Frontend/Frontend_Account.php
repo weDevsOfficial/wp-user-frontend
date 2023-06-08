@@ -3,6 +3,7 @@
 namespace WeDevs\Wpuf\Frontend;
 
 use WeDevs\Wpuf\Admin\Subscription;
+use WeDevs\Wpuf\User_Subscription;
 
 /**
  * Dashboard class
@@ -104,7 +105,7 @@ class Frontend_Account {
         if ( $allow_post_submission !== 'on' ) {
             return;
         }
-        wpuf_load_template( 'submit-WPUF_Post_Form_Template_Post.php', [
+        wpuf_load_template( 'submit-post.php', [
             'sections'        => $sections,
             'current_section' => $current_section,
         ] );
@@ -202,7 +203,7 @@ class Frontend_Account {
 
             return;
         }
-        $user_subscription = new WPUF_User_Subscription( $wpuf_user );
+        $user_subscription = new User_Subscription( $wpuf_user );
         $user_sub          = $user_subscription->current_pack();
         if ( ! is_wp_error( $user_sub ) && $user_sub['status'] !== 'completed' && $user_sub['status'] !== 'Free' ) {
             esc_html_e( '<p>You may have processed your payment, but the pack is not active yet.</p>',
@@ -231,15 +232,17 @@ class Frontend_Account {
                                                                                        $pack->meta_value['billing_limit'] ) : '';
         }
         ob_start();
-        wpuf_load_template( 'dashboard/WPUF_Subscription_Element.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-            'userdata'        => $wpuf_user->user,
-            'user_sub'        => $user_sub,
-            'pack'            => $pack,
-            'billing_amount'  => $billing_amount,
-            'recurring_des'   => $recurring_des,
-        ] );
+        wpuf_load_template(
+            'dashboard/subscription.php', [
+                'sections'        => $sections,
+                'current_section' => $current_section,
+                'userdata'        => $wpuf_user->user,
+                'user_sub'        => $user_sub,
+                'pack'            => $pack,
+                'billing_amount'  => $billing_amount,
+                'recurring_des'   => $recurring_des,
+            ]
+        );
         ob_end_flush();
     }
 
@@ -255,7 +258,7 @@ class Frontend_Account {
      * @return void
      */
     public function edit_profile_section( $sections, $current_section ) {
-        wpuf_load_template( 'dashboard/WPUF_Edit_Profile.php', [
+        wpuf_load_template( 'dashboard/edit-profile.php', [
             'sections'        => $sections,
             'current_section' => $current_section,
         ] );

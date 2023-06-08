@@ -173,7 +173,7 @@ class User_Subscription {
         }
         global $wpdb;
         $result       = '';
-        $subscription = Admin\Subscription::init()->get_subscription( $pack_id );
+        $subscription = ( new Admin\Subscription() )->get_subscription( $pack_id );
 
         if ( $this->user->id && $subscription ) {
             $user_meta = [

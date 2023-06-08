@@ -2,11 +2,9 @@
 
 namespace WeDevs\Wpuf\Free;
 
-class WPUF_Edit_Profile {
+class Edit_Profile {
 
     public function __construct() {
-        add_shortcode( 'wpuf_editprofile', [$this, 'shortcode'] );
-
         add_action( 'personal_options_update', [$this, 'post_lock_update'] );
         add_action( 'edit_user_profile_update', [$this, 'post_lock_update'] );
 

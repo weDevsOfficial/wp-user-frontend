@@ -1610,7 +1610,7 @@ function wpuf_load_template( $file, $args = [] ) {
         include $child_theme_dir . $file;
     } elseif ( file_exists( $parent_theme_dir . $file ) ) {
         include $parent_theme_dir . $file;
-    } else {
+    } elseif ( file_exists( $wpuf_dir . $file ) ) {
         include $wpuf_dir . $file;
     }
 }

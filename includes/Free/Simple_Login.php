@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Free;
 
+use WeDevs\Wpuf\WPUF_User;
+
 /**
  * Login and forgot password handler class
  *
@@ -768,7 +770,7 @@ class Simple_Login {
         if ( ! is_wp_error( $user ) ) {
             if ( $user->ID ) {
                 $resend_link = add_query_arg( 'resend_activation', $user->ID, $this->get_login_url() );
-                $error       = new WP_Error();
+                $error       = new \WP_Error();
                 $wpuf_user   = new WPUF_User( $user->ID );
 
                 if ( ! $wpuf_user->is_verified() ) {

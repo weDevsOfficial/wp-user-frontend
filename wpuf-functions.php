@@ -1426,8 +1426,6 @@ function wpuf_meta_shortcode( $atts ) {
     }
 }
 
-add_shortcode( 'wpuf-meta', 'wpuf_meta_shortcode' );
-
 /**
  * Get the value of a settings field
  *

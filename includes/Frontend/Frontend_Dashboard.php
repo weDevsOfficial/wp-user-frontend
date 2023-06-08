@@ -1,6 +1,6 @@
 <?php
 
-namespace WeDevs\Wpuf\Frontend\Shortcodes;
+namespace WeDevs\Wpuf\Frontend;
 
 use Tribe__Events__Query;
 use WP_Query;

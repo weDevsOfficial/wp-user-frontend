@@ -11,6 +11,9 @@ class Free_Loader extends Pro_Prompt {
     public $edit_profile = null;
 
     public function __construct() {
+        $this->includes();
+        $this->instantiate();
+
         // admin menu
         add_action( 'wpuf_admin_menu_top', [ $this, 'admin_menu_top' ] );
         // add_action( 'wpuf_admin_menu', [ $this, 'admin_menu' ] );
@@ -52,8 +55,13 @@ class Free_Loader extends Pro_Prompt {
         add_action( 'wpuf_admin_subs_nav_content', [ $this, 'subscription_tab_contents' ]);
     }
 
+    public function includes() {
+        // class files to include pro elements
+        require_once WPUF_INCLUDES . '/functions/user/edit-user.php';
+    }
+
     public function instantiate() {
-        $this->edit_profile = new WPUF_Edit_Profile();
+        $this->edit_profile = new Edit_Profile();
 
         if ( is_admin() ) {
 

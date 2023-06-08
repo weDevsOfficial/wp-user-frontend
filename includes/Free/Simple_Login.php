@@ -3,6 +3,7 @@
 namespace WeDevs\Wpuf\Free;
 
 use WeDevs\Wpuf\WPUF_User;
+use WPUF_Render_Form;
 
 /**
  * Login and forgot password handler class
@@ -17,8 +18,6 @@ class Simple_Login {
     private $messages = [];
 
     public function __construct() {
-        add_shortcode( 'wpuf-login', [ $this, 'login_form' ] );
-
         add_action( 'init', [ $this, 'process_login' ] );
         add_action( 'init', [ $this, 'process_logout' ] );
         add_action( 'init', [ $this, 'process_reset_password' ] );
@@ -353,7 +352,7 @@ class Simple_Login {
                         $this->messages[] = __( 'Please enter your username or email address. You will receive a link to create a new password via email.', 'wp-user-frontend' );
                     }
 
-                    wpuf_load_template( 'lost-pass-WPUF_Admin_Form_Free.php', $args );
+                    wpuf_load_template( 'lost-pass-form.php', $args );
                     break;
 
                 case 'rp':
@@ -361,13 +360,13 @@ class Simple_Login {
                     if ( $reset === 'true' ) {
                         $this->messages[] = __( 'Your password has been reset successfully', 'wp-user-frontend' );
 
-                        wpuf_load_template( 'login-WPUF_Admin_Form_Free.php', $args );
+                        wpuf_load_template( 'login-form.php', $args );
 
                         break;
                     } else {
                         $this->messages[] = __( 'Enter your new password below.', 'wp-user-frontend' );
 
-                        wpuf_load_template( 'reset-pass-WPUF_Admin_Form_Free.php', $args );
+                        wpuf_load_template( 'reset-pass-form.php', $args );
                     }
 
                     break;
@@ -381,7 +380,7 @@ class Simple_Login {
 
                     $args['redirect_to'] = $this->get_login_redirect_link( $args['redirect_to'] );
 
-                    wpuf_load_template( 'login-WPUF_Admin_Form_Free.php', $args );
+                    wpuf_load_template( 'login-form.php', $args );
 
                     break;
             }
@@ -411,7 +410,7 @@ class Simple_Login {
             $pwd = isset( $_POST['pwd'] ) ? trim( $_POST['pwd'] ) : '';
             // $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 
-            $validation_error = new WP_Error();
+            $validation_error = new \WP_Error();
             $validation_error = apply_filters( 'wpuf_process_login_errors', $validation_error, $log, $pwd );
 
             if ( $validation_error->get_error_code() ) {
@@ -796,7 +795,7 @@ class Simple_Login {
         }
 
         if ( ! isset( $_GET['id'] ) && empty( $_GET['id'] ) ) {
-            wpuf()->login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
+            wpuf()->simple_login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
 
             return;
         }
@@ -807,13 +806,13 @@ class Simple_Login {
         $wpuf_user_status = get_user_meta( $user_id, 'wpuf_user_status', true );
 
         if ( ! $user ) {
-            wpuf()->login->add_error( __( 'Invalid User activation url', 'wp-user-frontend' ) );
+            wpuf()->simple_login->add_error( __( 'Invalid User activation url', 'wp-user-frontend' ) );
 
             return;
         }
 
         if ( $user->is_verified() ) {
-            wpuf()->login->add_error( __( 'User already verified', 'wp-user-frontend' ) );
+            wpuf()->simple_login->add_error( __( 'User already verified', 'wp-user-frontend' ) );
 
             return;
         }
@@ -821,7 +820,7 @@ class Simple_Login {
         $activation_key = isset( $_GET['wpuf_registration_activation'] ) ? sanitize_text_field( wp_unslash( $_GET['wpuf_registration_activation'] ) ) : '';
 
         if ( $user->get_activation_key() !== $activation_key ) {
-            wpuf()->login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
+            wpuf()->simple_login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
 
             return;
         }
@@ -835,7 +834,7 @@ class Simple_Login {
             $message = __( "Your account has been verified , but you can't login until manually approved your account by an administrator.", 'wp-user-frontend' );
         }
 
-        wpuf()->login->add_message( $message );
+        wpuf()->simple_login->add_message( $message );
 
         // show activation message
         add_filter( 'wp_login_errors', [ $this, 'user_activation_message' ] );

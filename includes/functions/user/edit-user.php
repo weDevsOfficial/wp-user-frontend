@@ -43,8 +43,6 @@ function wpuf_edit_users() {
     return ob_get_clean();
 }
 
-add_shortcode( 'wpuf-edit-users', 'wpuf_edit_users' );
-
 function wpuf_show_users() {
     global $wpdb, $userdata;
 

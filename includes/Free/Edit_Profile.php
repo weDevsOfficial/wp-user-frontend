@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Free;
 
+use WeDevs\Wpuf\WPUF_User;
+
 class Edit_Profile {
 
     public function __construct() {

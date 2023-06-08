@@ -13,8 +13,9 @@ class Frontend {
     public function __construct() {
         wpuf()->add_to_container( 'frontend_form', new Frontend\Frontend_Form() );
         wpuf()->add_to_container( 'registration', new Frontend\Registration() );
-        wpuf()->add_to_container( 'login', new Free\Simple_Login() );
+        wpuf()->add_to_container( 'simple_login', new Free\Simple_Login() );
         wpuf()->add_to_container( 'frontend_account', new Frontend\Frontend_Account() );
+        wpuf()->add_to_container( 'shortcode_frontend_dashboard', new Frontend\Frontend_Dashboard() );
         wpuf()->add_to_container( 'shortcode', new Frontend\Shortcode() );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );

@@ -5,7 +5,7 @@ namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 /**
  * WooCommerce post form template
  */
-class Post_Form_Template_WooCommerce extends Post_Form_Template{
+class Post_Form_Template_WooCommerce extends Post_Form_Template {
 
     public function __construct() {
         parent::__construct();

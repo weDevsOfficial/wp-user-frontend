@@ -3,7 +3,6 @@
 namespace WeDevs\Wpuf\Free;
 
 use WeDevs\Wpuf\WPUF_User;
-use WPUF_Render_Form;
 
 /**
  * Login and forgot password handler class

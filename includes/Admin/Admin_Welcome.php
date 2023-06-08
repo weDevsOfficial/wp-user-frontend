@@ -1,14 +1,16 @@
 <?php
 
+namespace WeDevs\Wpuf\Admin;
+
 /**
  * The welcome class after install
  *
  * @since 2.6.0
  */
-class WPUF_Admin_Welcome {
+class Admin_Welcome {
 
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'register_menu'  ] );
+        add_action( 'admin_menu', [ $this, 'register_menu' ] );
         add_action( 'admin_head', [ $this, 'hide_menu' ] );
         // add_action( 'admin_init', array( $this, 'redirect_to_page' ), 9999 );
     }
@@ -19,7 +21,11 @@ class WPUF_Admin_Welcome {
      * @return void
      */
     public function register_menu() {
-        add_dashboard_page( __( 'Welcome to WP User Frontend', 'wp-user-frontend' ), __( 'Welcome to WP User Frontend', 'wp-user-frontend' ), 'manage_options', 'wpuf-welcome', [ $this, 'welcome_page' ] );
+        add_dashboard_page(
+            __( 'Welcome to WP User Frontend', 'wp-user-frontend' ),
+            __( 'Welcome to WP User Frontend', 'wp-user-frontend' ), 'manage_options', 'wpuf-welcome',
+            [ $this, 'welcome_page' ]
+        );
     }
 
     /**
@@ -37,17 +43,14 @@ class WPUF_Admin_Welcome {
      * @return void
      */
     public function redirect_to_page() {
-        if ( !get_transient( 'wpuf_activation_redirect' ) ) {
+        if ( ! get_transient( 'wpuf_activation_redirect' ) ) {
             return;
         }
-
         delete_transient( 'wpuf_activation_redirect' );
-
         // Only do this for single site installs.
         if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
             return;
         }
-
         wp_safe_redirect( admin_url( 'index.php?page=wpuf-welcome' ) );
         exit;
     }

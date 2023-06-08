@@ -1,9 +1,15 @@
 <?php
 
+namespace WeDevs\Wpuf;
+
+use Invisible_Recaptcha;
+use WeDevs\Wpuf\Ajax\Upload_Ajax;
+use WPUF_ReCaptcha;
+
 /**
  * Handles form generaton and posting for add/edit post in frontend
  */
-class WPUF_Render_Form {
+class Render_Form {
     public static $meta_key            = 'wpuf_form';
 
     public static $separator           = ' | ';
@@ -20,7 +26,7 @@ class WPUF_Render_Form {
 
     public static function init() {
         if ( !self::$_instance ) {
-            self::$_instance = new WPUF_Render_Form();
+            self::$_instance = new self();
         }
 
         return self::$_instance;
@@ -593,7 +599,7 @@ class WPUF_Render_Form {
                 }
 
                 if ( $visibility_selected == 'subscribed_users' && is_user_logged_in() ) {
-                    $user_pack  = WPUF_Subscription::init()->get_user_pack( get_current_user_id() );
+                    $user_pack  = wpuf()->subscription->get_user_pack( get_current_user_id() );
 
                     if ( empty( $visibility_choices ) && !empty( $user_pack ) ) {
                         $show_field = true;
@@ -871,7 +877,7 @@ class WPUF_Render_Form {
             return;
         } ?>
         <div class="wpuf-label">
-            <label for="<?php echo isset( $attr['name'] ) ? esc_attr( $attr['name'] ) : 'cls'; ?>"><?php echo esc_attr( $attr['label'] ) . esc_attr( $this->required_mark( $attr ) ); ?></label>
+            <label for="<?php echo isset( $attr['name'] ) ? esc_attr( $attr['name'] ) : 'cls'; ?>"><?php echo render-form.phpesc_attr( $attr['label'] ) . esc_attr( $this->required_mark( $attr ) ); ?></label>
         </div>
         <?php
     }
@@ -1686,7 +1692,7 @@ class WPUF_Render_Form {
 
         if ( $has_images ) {
             foreach ( $images as $attach_id ) {
-                echo esc_attr( WPUF_Upload::attach_html( $attach_id, $attr['name'] ) );
+                echo esc_attr( Upload_Ajax::attach_html( $attach_id, $attr['name'] ) );
             }
         } ?>
                     </ul>

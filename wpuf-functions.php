@@ -4597,3 +4597,20 @@ function wpuf_guess_username( $email ) {
 		return $username;
 	}
 }
+
+/**
+ * Clear Schedule lock
+ *
+ * @since 3.0.2
+ */
+function wpuf_clear_schedule_lock() {
+	check_ajax_referer( 'wpuf_nonce', 'nonce' );
+
+	$post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
+
+	if ( ! empty( $post_id ) ) {
+		update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
+		update_post_meta( $post_id, '_wpuf_lock_editing_post', 'no' );
+	}
+	exit;
+}

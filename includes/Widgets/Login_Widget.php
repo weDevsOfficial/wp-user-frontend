@@ -1,6 +1,8 @@
 <?php
 
-namespace WeDevs\Wpuf;
+namespace WeDevs\Wpuf\Widgets;
+
+use WeDevs\Wpuf\Free\Simple_Login;
 
 /**
  * Ajax Login and Forgot password handler class
@@ -101,7 +103,7 @@ class Login_Widget extends \WP_Widget {
     private function ajax_lostpassword_retrieve( $user_input ) {
         global $wpdb, $wp_hasher;
 
-        $errors = new WP_Error();
+        $errors = new \WP_Error();
 
         if ( empty( $user_input ) ) {
             $errors->add( 'empty_username', __( '<strong>ERROR</strong>: Enter a username or email address.', 'wp-user-frontend' ) );
@@ -241,7 +243,7 @@ class Login_Widget extends \WP_Widget {
 
                         <p class="submit">
                             <input type="submit" name="wp-submit" id="wp-submit" value="<?php echo esc_attr(  $pass_reset_label ); ?>" />
-                            <input type="hidden" name="redirect_to" value="<?php echo esc_attr( WPUF_Simple_Login::get_posted_value( 'redirect_to' ) ); ?>" />
+                            <input type="hidden" name="redirect_to" value="<?php echo esc_attr( Simple_Login::get_posted_value( 'redirect_to' ) ); ?>" />
                             <input type="hidden" name="wpuf_reset_password" value="true" />
                             <input type="hidden" name="action" value="lost_password" />
 

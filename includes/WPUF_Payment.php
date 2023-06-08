@@ -84,7 +84,7 @@ class WPUF_Payment {
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
             $is_free = false;
             if ( $pack_id ) {
-                $pack_detail = WPUF_Subscription::get_subscription( $pack_id );
+                $pack_detail = Admin\Subscription::get_subscription( $pack_id );
                 if ( ! $pack_detail ) {
                     ?>
                     <div class="wpuf-info"><?php esc_html_e( 'No subscription pack found.',
@@ -185,8 +185,8 @@ class WPUF_Payment {
                                                 <div class="wpuf-pack-inner">
 
                                                     <?php
-                                                    if ( class_exists( 'WPUF_Coupons' ) ) {
-                                                        echo wp_kses_post( WPUF_Coupons::init()->after_apply_coupon( $pack ) );
+                                                    if ( class_exists( '\WPUF_Coupons' ) ) {
+                                                        echo wp_kses_post( \WPUF_Coupons::init()->after_apply_coupon( $pack ) );
                                                     } else {
                                                         $pack_cost      = $pack->meta_value['billing_amount'];
                                                         $billing_amount = apply_filters( 'wpuf_payment_amount',
@@ -245,8 +245,11 @@ class WPUF_Payment {
                                     <?php
                                 }
                                 if ( $post_id ) {
-                                    $form              = new WPUF_Form( get_post_meta( $post_id, '_wpuf_form_id',
-                                                                                       true ) );
+                                    $form              = new Admin\Forms\Form(
+                                        get_post_meta(
+                                            $post_id, '_wpuf_form_id', true
+                                        )
+                                    );
                                     $force_pack        = $form->is_enabled_force_pack();
                                     $pay_per_post      = $form->is_enabled_pay_per_post();
                                     $fallback_enabled  = $form->is_enabled_fallback_cost();
@@ -380,7 +383,7 @@ class WPUF_Payment {
                     $user_id  = $post->post_author;
                     $userdata = get_userdata( $user_id );
                 } else {
-                    $userdata             = new stdClass();
+                    $userdata             = new \stdClass();
                     $userdata->ID         = 0;
                     $userdata->user_email = '';
                     $userdata->first_name = '';
@@ -391,7 +394,7 @@ class WPUF_Payment {
                 case 'post':
                     $post          = get_post( $post_id );
                     $form_id       = get_post_meta( $post_id, '_wpuf_form_id', true );
-                    $form          = new WPUF_Form( $form_id );
+                    $form          = new Admin\Forms\Form( $form_id );
                     $form_settings = $form->get_settings();
                     $force_pack    = $form->is_enabled_force_pack();
                     $fallback_on   = $form->is_enabled_fallback_cost();
@@ -455,7 +458,6 @@ class WPUF_Payment {
      * @param int     $transaction_id the transaction id in case of update
      *
      * @global object $wpdb
-     *
      */
     public static function insert_payment( $data, $transaction_id = 0, $recurring = false ) {
         global $wpdb;
@@ -516,8 +518,8 @@ class WPUF_Payment {
      * Handle the cancel payment
      *
      * @since  2.4.1
-     * @return void
      *
+     * @return void
      */
     public function handle_cancel_payment() {
         $nonce  = isset( $_POST['wpuf_payment_cancel'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_payment_cancel'] ) ) : '';

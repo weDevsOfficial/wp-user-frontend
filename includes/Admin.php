@@ -11,6 +11,7 @@ namespace WeDevs\Wpuf;
 
 class Admin {
     public function __construct() {
+        wpuf()->add_to_container( 'admin_welcome', new Admin\Admin_Welcome() );
         wpuf()->add_to_container( 'menu', new Admin\Menu() );
         wpuf()->add_to_container( 'dashboard_metabox', new Admin\Dashboard_Metabox() );
         wpuf()->add_to_container( 'form_template', new Admin\Forms\Post\Templates\Admin_Form_Template() );
@@ -23,6 +24,7 @@ class Admin {
         wpuf()->add_to_container( 'gutenberg_block', new Frontend\Form_Gutenberg_Block() );
         wpuf()->add_to_container( 'whats_new', new Admin\Whats_New() );
         wpuf()->add_to_container( 'promotion', new Admin\Promotion() );
+        wpuf()->add_to_container( 'promotion', new Admin\Customizer_Options() );
 
         // post form submenu operations
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_post_form_scripts' ] );

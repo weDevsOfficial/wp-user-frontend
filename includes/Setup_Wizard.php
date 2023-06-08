@@ -439,5 +439,3 @@ class Setup_Wizard {
         return $styles;
     }
 }
-
-new Setup_Wizard();

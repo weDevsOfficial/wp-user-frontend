@@ -1,4 +1,7 @@
 <?php
+
+namespace WeDevs\Wpuf;
+
 /**
  * Class WPUF_Privacy
  *
@@ -134,7 +137,7 @@ class WPUF_Privacy {
      *
      * @param string $email
      *
-     * @return WP_User | String
+     * @return \WP_User | String
      */
     public static function get_user( $email ) {
         $user = get_user_by( 'email', $email );

@@ -13,10 +13,10 @@ Domain Path: /languages
 */
 
 // don't call the file directly
-
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+
 define( 'WPUF_VERSION', '3.6.5' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
@@ -211,6 +211,7 @@ final class WP_User_Frontend {
             $this->container['admin']        = new WeDevs\Wpuf\Admin();
             $this->container['setup_wizard'] = new WeDevs\Wpuf\Setup_Wizard();
             $this->container['pro_upgrades'] = new WeDevs\Wpuf\Pro_Upgrades();
+            $this->container['privacy']      = new WeDevs\Wpuf\WPUF_Privacy();
         } else {
             $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
         }

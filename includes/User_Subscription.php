@@ -251,7 +251,7 @@ class User_Subscription {
 
         // cancel is it's a recurring payment
         if ( $this->recurring() ) {
-            $wpuf_paypal = new WPUF_Paypal();
+            $wpuf_paypal = new Lib\Gateway\WPUF_Paypal();
             $wpuf_paypal->recurring_change_status( $this->user->id, 'Cancel' );
         }
 
@@ -294,7 +294,7 @@ class User_Subscription {
     }
 
     public function pack_info( $form_id ) {
-        $form             = new WPUF_Form( $form_id );
+        $form             = new Admin\Forms\Form( $form_id );
         $payment_options  = $form->is_charging_enabled();
 
         if ( ! $payment_options || ! is_user_logged_in() ) {

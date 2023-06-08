@@ -66,6 +66,7 @@ class Assets {
             $deps    = ! empty( $style['deps'] ) ? $style['deps'] : [];
             $version = ! empty( $style['version'] ) ? $style['version'] : WPUF_VERSION;
             $media   = ! empty( $style['media'] ) ? $style['media'] : 'all';
+
             wp_register_style( 'wpuf-' . $handle, $style['src'], $deps, $version, $media );
         }
     }
@@ -80,6 +81,7 @@ class Assets {
             $deps      = isset( $script['deps'] ) ? $script['deps'] : [];
             $in_footer = isset( $script['in_footer'] ) ? $script['in_footer'] : true;
             $version   = isset( $script['version'] ) ? $script['version'] : WPUF_VERSION;
+
             wp_register_script( 'wpuf-' . $handle, $script['src'], $deps, $version, $in_footer );
         }
     }

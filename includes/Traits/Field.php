@@ -288,7 +288,7 @@ trait Field {
 
         if ( $no_captcha == 1 && 0 == $invisible ) {
             if ( ! class_exists( 'WPUF_ReCaptcha' ) ) {
-                require_once WPUF_ROOT . '/lib/recaptchalib_noCaptcha.php';
+                require_once WPUF_ROOT . '/Lib/recaptchalib_noCaptcha.php';
             }
 
             $response  = null;
@@ -314,7 +314,7 @@ trait Field {
         } elseif ( $no_captcha == 0 && 1 == $invisible ) {
             $response  = null;
             $recaptcha = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
-            $object    = new Invisible_Recaptcha( $site_key, $private_key );
+            $object    = new \Invisible_Recaptcha( $site_key, $private_key );
 
             $response = $object->verifyResponse( $recaptcha );
 

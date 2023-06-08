@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf;
 
+use WeDevs\Wpuf\Widgets\Login_Widget;
+
 /**
  * The class to handle all the AJAX operations
  */
@@ -34,24 +36,7 @@ class Ajax {
         $this->register_ajax( 'get_child_cat', 'wpuf_get_child_cats' );
         $this->register_ajax( 'ajax_address', 'wpuf_get_child_cats' );
         $this->register_ajax( 'update_billing_address', 'wpuf_update_billing_address' );
-        $this->register_ajax( 'clear_schedule_lock', [ $this, 'clear_schedule_lock' ], [ 'nopriv' => false ] );
-    }
-
-    /**
-     * Clear Schedule lock
-     *
-     * @since 3.0.2
-     */
-    public function clear_schedule_lock() {
-        check_ajax_referer( 'wpuf_nonce', 'nonce' );
-
-        $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
-
-        if ( ! empty( $post_id ) ) {
-            update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
-            update_post_meta( $post_id, '_wpuf_lock_editing_post', 'no' );
-        }
-        exit;
+        $this->register_ajax( 'clear_schedule_lock', 'wpuf_clear_schedule_lock', [ 'nopriv' => false ] );
     }
 
     /**

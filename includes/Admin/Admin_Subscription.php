@@ -217,7 +217,6 @@ class Admin_Subscription {
                 break;
 
             case 'subscribers':
-                wpuf()->add_to_container( 'subscription', new Subscription() );
                 $users = wpuf()->subscription->subscription_pack_users( $post_ID );
 
                 echo wp_kses_post( '<a href="' . admin_url( 'edit.php?post_type=wpuf_subscription&page=wpuf_subscribers&post_ID=' . $post_ID ) . '" />' . count( $users ) . '</a>' );

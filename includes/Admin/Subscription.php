@@ -28,9 +28,6 @@ class Subscription {
         add_action( 'wpuf_draft_post_after_insert', [ $this, 'monitor_new_draft_post' ], 10, 3 );
         add_action( 'wpuf_payment_received', [ $this, 'payment_received' ], 10, 2 );
 
-        add_shortcode( 'wpuf_sub_info', [ $this, 'subscription_info' ] );
-        add_shortcode( 'wpuf_sub_pack', [ $this, 'subscription_packs' ] );
-
         add_action( 'save_post', [ $this, 'save_form_meta' ], 10, 2 );
         add_filter( 'enter_title_here', [ $this, 'change_default_title' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'subscription_script' ] );

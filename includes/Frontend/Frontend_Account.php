@@ -15,7 +15,6 @@ class Frontend_Account {
      * Class constructor
      */
     public function __construct() {
-        add_shortcode( 'wpuf_account', [ $this, 'shortcode' ] );
         add_action( 'wpuf_account_content_dashboard', [ $this, 'dashboard_section' ], 10, 2 );
         foreach ( $this->get_allowed_cpt() as $post_type ) {
             add_action( 'wpuf_account_content_' . $post_type, [ $this, 'posts_section' ], 10, 2 );

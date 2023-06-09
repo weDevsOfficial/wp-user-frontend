@@ -11,13 +11,13 @@ export class basicLogoutPage {
     }
 
     async logOut() {
-        await this.page.goto(testData.urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' });
+        await this.page.goto(testData.urls.baseUrl, { waitUntil: 'networkidle' });
         
         await this.page.hover(selectors.logout.basicLogout.logoutHoverUsername);
         await this.page.click(selectors.logout.basicLogout.logoutButton);
 
        //Validate LOGOUT
-        await this.page.isVisible(selectors.logout.basicLogout.logoutSuccess);
+        await this.page.isVisible(selectors.logout.basicLogout.logoutSucces);
         console.log("LogOut Done");
 
 

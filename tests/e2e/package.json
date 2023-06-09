@@ -1,5 +1,5 @@
 {
-  "name": "wpufAutomationProject",
+  "name": "wpuf_project2",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@wordpress/env": "^4.4.0",
-    "dotenv": "^16.0.3",
-    "faker": "^6.6.6"
+    "dotenv": "^16.0.3"
   }
 }

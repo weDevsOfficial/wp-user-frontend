@@ -4,7 +4,3 @@ node_modules/
 /playwright/.cache/
 .DS_Store
 .env
-node_modules
-/test-results/
-/playwright-report/
-/playwright/.cache/

@@ -37,11 +37,11 @@ test.describe('TEST :-->', () => {
     test('001:[Login] Here, Admin is logging into Admin-Dashboard', async ({ page }) => {
         const BasicLogin = new basicLoginPage(page);
 
-        console.log(testData.users.adminUsername, testData.users.adminPassword);
-        await BasicLogin.basic_login(testData.users.adminUsername, testData.users.adminPassword);
+        //console.log(testData.users.adminUsername, testData.users.adminPassword);
+        await BasicLogin.basicLogin(testData.users.adminUsername, testData.users.adminPassword);
     });
 
-    test('002:[Login] Here, Admin is skipping WPUF setup', async ({ page }) => {
+    test('002:[Login] Here, Admin is Completing WPUF setup', async ({ page }) => {
         const BasicLogin = new basicLoginPage(page);
         await BasicLogin.wpufSetup();
     });
@@ -53,9 +53,8 @@ test.describe('TEST :-->', () => {
 
     test('004:[Login] Here, Admin is checking Plugin Status - Lite Activation', async ({ page }) => {
         const BasicLogin = new basicLoginPage(page);
-        await BasicLogin.pluginStatusCheck_Lite_Activate();
+        await BasicLogin.pluginStatusCheckLite();
     });
-
 
     test('005:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
         const BasicLogin = new basicLoginPage(page);
@@ -64,7 +63,7 @@ test.describe('TEST :-->', () => {
 
     test('006:[Login] Here, Admin is changing WPUF Settings', async ({ page }) => {
         const BasicLogin = new basicLoginPage(page);
-        await BasicLogin.change_WPUF_Settings();
+        await BasicLogin.changeSettingsSetLoginPageDefault();
     });
 
     test('007 Here, Admin is able to Log out succesfully', async ({page}) => {

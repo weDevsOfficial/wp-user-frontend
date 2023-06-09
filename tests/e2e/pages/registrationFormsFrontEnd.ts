@@ -5,18 +5,17 @@ import { selectors } from './selectors';
 import { testData } from '../utils/testData'
 
 
- 
-    //Store data
-    //First Name
-    const firstName = testData.registrationForms.rfFirstName;
-    //Last Name
-    const lastName = testData.registrationForms.rfFirstName;
-    //Email
-    const email = testData.registrationForms.rfEmail;
-    //Username
-    const userName = testData.registrationForms.rfUsername;
-    //Password
-    const password = testData.registrationForms.rfPassword;
+//Store data
+//First Name
+const firstName = testData.registrationForms.rfFirstName;
+//Last Name
+const lastName = testData.registrationForms.rfFirstName;
+//Email
+const email = testData.registrationForms.rfEmail;
+//Username
+const userName = testData.registrationForms.rfUsername;
+//Password
+const password = testData.registrationForms.rfPassword;
 
 
 

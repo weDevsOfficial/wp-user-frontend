@@ -12,22 +12,27 @@ export interface Users {
 
 export interface PostForm {
     //Post Form Title
-    pf_postName1: string;
-    pf_postName2: string;
-    pf_postName3: string;
-    pf_postName4: string;
+    pfPostName1: string;
+    pfPostName2: string;
+    pfPostName3: string;
+    pfPostName4: string;
 
     
 }
 
 export interface RegistrationForm {
     //Registration Form Title
-    rf_postName1: string;
-    rf_postName2: string;
-    rf_postName3: string;
-    rf_postName4: string;
+    rfPostName1: string;
+    rfPostName2: string;
+    rfPostName3: string;
+    rfPostName4: string;
 
-    
+    //Registration Form Data
+    rfFirstName: string;
+    rfLastName: string;
+    rfUsername: string;
+    rfEmail: string;
+    rfPassword: string;
 }
 
 export interface Data {
@@ -37,31 +42,55 @@ export interface Data {
     registrationForms: RegistrationForm;
 }
 
+
+
+
+/********************************************/
+/******* Generate Fake Data Function *******/
+/******************************************/
+//Function
 const generateFakerData = () => {
     //Post Form Titles
-    const pf_postName1: string = faker.lorem.sentence(2);
-    const pf_postName2: string = faker.lorem.sentence(2);
-    const pf_postName3: string = faker.lorem.sentence(2);
-    const pf_postName4: string = faker.lorem.sentence(2);
+    const pfPostName1: string = faker.lorem.sentence(2);
+    const pfPostName2: string = faker.lorem.sentence(2);
+    const pfPostName3: string = faker.lorem.sentence(2);
+    const pfPostName4: string = faker.lorem.sentence(2);
 
-    //Reg Form Titles
-    const rf_postName1: string = faker.lorem.sentence(2);
-    const rf_postName2: string = faker.lorem.sentence(2);
-    const rf_postName3: string = faker.lorem.sentence(2);
-    const rf_postName4: string = faker.lorem.sentence(2);
+    //Registration Form Titles
+    const rfPostName1: string = faker.lorem.sentence(2);
+    const rfPostName2: string = faker.lorem.sentence(2);
+    const rfPostName3: string = faker.lorem.sentence(2);
+    const rfPostName4: string = faker.lorem.sentence(2);
+
+    //Registration Form Data
+    // Generate random user details
+    const rfFirstName: string = faker.name.firstName();
+    const rfLastName: string = faker.name.lastName();
+    const rfUsername: string = faker.internet.userName(rfFirstName, rfLastName);
+    const rfEmail: string = faker.internet.email(rfFirstName, rfLastName);
+    const rfPassword: string = faker.internet.password();
+
 
     return {
         //Post Form Titles
-        pf_postName1,
-        pf_postName2,
-        pf_postName3,
-        pf_postName4,
+        pfPostName1,
+        pfPostName2,
+        pfPostName3,
+        pfPostName4,
 
         //Reg Form Titles
-        rf_postName1,
-        rf_postName2,
-        rf_postName3,
-        rf_postName4,
+        rfPostName1,
+        rfPostName2,
+        rfPostName3,
+        rfPostName4,
+
+        //Registration Form Data
+        rfFirstName,
+        rfLastName,
+        rfUsername,
+        rfEmail,
+        rfPassword,
+
     };
 };
 
@@ -70,18 +99,19 @@ const generateFakerData = () => {
 /******************************/
 /******* All Test Data *******/
 /****************************/
+//Data
 export const testData: Data = {
     //Urls
     urls: {
         //Main URL
-        baseUrl: process.env.QA_BASE_URL || 'http://localhost:8889/wp-admin/',
+        baseUrl: process.env.QA_BASE_URL ? process.env.QA_BASE_URL: 'http://localhost:8889',
     },
 
     //Users
     users: {
         //Admin Login
-        adminUsername: process.env.QA_ADMIN_USERNAME || 'admin',
-        adminPassword: process.env.QA_ADMIN_PASSWORD || 'password',
+        adminUsername: process.env.QA_ADMIN_USERNAME ? process.env.QA_ADMIN_USERNAME: 'admin',
+        adminPassword: process.env.QA_ADMIN_PASSWORD ? process.env.QA_ADMIN_PASSWORD: 'password',
     },
 
 

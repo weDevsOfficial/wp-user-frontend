@@ -1,7 +1,8 @@
 require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
 import { basicLoginPage } from '../pages/basicLogin';
-import { postFormsCreate } from '../pages/postFormsCreate';
+import { postForms } from '../pages/postForms';
+import { fieldOptionsCommon } from '../pages/fieldOptionsCommon'
 import { testData } from '../utils/testData';
 
 import * as fs from "fs"; //Clear Cookie
@@ -13,17 +14,17 @@ fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 
 
 
-export default function Post_Form_Tests() {
+export default function PostFormTests() {
 
 
 test.describe('TEST :-->', () => {
     
+//TODO: Create a BeforeAll for login
 
-
-/**----------------------------------POST_FORMS----------------------------------**
+/**----------------------------------POSTFORMS----------------------------------**
      * 
      * 
-     * @Test_Scenario : [Post-Forms]
+     * @TestScenario : [Post-Forms]
      * @Test008 : Admin is creating Blank Form with > PostFields... [Mandatory]
      * @Test009 : Admin is creating Blank Form with > PF + Taxonomies...
      * @Test0010 : Admin is creating Blank Form with > PF + CustomFields...
@@ -34,123 +35,120 @@ test.describe('TEST :-->', () => {
      * 
      *  
      */ 
-    test('008:[Post-Forms] Here, Admin is creating Blank Form with > PostFields', async ({ page }) => {
-        const PostFormsCreate = new postFormsCreate(page);
-        const BasicLogin = new basicLoginPage(page);
 
-        await BasicLogin.basic_login_plugin_visit(testData.users.adminUsername, testData.users.adminPassword);
+    test('008:[Post-Forms] Here, Admin is creating Blank Form with > PostFields', async ({ page }) => {
+        const BasicLogin = new basicLoginPage(page);
+        const PostForms = new postForms(page);
+        const FieldOptionsCommon = new fieldOptionsCommon(page);
+
+        await BasicLogin.basicLoginAndPluginVisit(testData.users.adminUsername, testData.users.adminPassword);
         
         //Post Blank Form
-        await PostFormsCreate.create_BlankForm_PF(testData.postForms.pf_postName1);
+        await PostForms.createBlankFormPostForm(testData.postForms.pfPostName1);
         //PostFields + Validate
-        await PostFormsCreate.add_PostFields_PF();
-        await PostFormsCreate.validate_PostFields_PF();
+        await FieldOptionsCommon.addPostFields_PF();
+        await FieldOptionsCommon.validatePostFields_PF();
 
         //Save
-        await PostFormsCreate.save_Form_PF(testData.postForms.pf_postName1);
+        await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName1);
         //Validate
-        await PostFormsCreate.validate_BlankForm_Created_PF(testData.postForms.pf_postName1);
+        await FieldOptionsCommon.validateBlankFormCreated_PF(testData.postForms.pfPostName1);
 
-        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
 
 
     test('009:[Post-Forms] Admin is creating Blank Form with > Taxonomies', async ({ page }) => {
-        const PostFormsCreate = new postFormsCreate(page);
-        const BasicLogin = new basicLoginPage(page);
-
-        await BasicLogin.basic_login_plugin_visit(testData.users.adminUsername, testData.users.adminPassword);
+        const PostForms = new postForms(page);
+        const FieldOptionsCommon = new fieldOptionsCommon(page);
         
         //Post Blank Form
-        await PostFormsCreate.create_BlankForm_PF(testData.postForms.pf_postName2);
+        await PostForms.createBlankFormPostForm(testData.postForms.pfPostName2);
         //PostFields
-        await PostFormsCreate.add_PostFields_PF();
+        await FieldOptionsCommon.addPostFields_PF();
         //Taxonomies + Validate
-        await PostFormsCreate.add_Taxonomies_PF();
-        await PostFormsCreate.validate_Taxonomies_PF();
+        await FieldOptionsCommon.addTaxonomies_PF();
+        await FieldOptionsCommon.validateTaxonomies_PF();
 
         //Save
-        await PostFormsCreate.save_Form_PF(testData.postForms.pf_postName2);
+        await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName2);
         //Validate
-        await PostFormsCreate.validate_BlankForm_Created_PF(testData.postForms.pf_postName2);
+        await FieldOptionsCommon.validateBlankFormCreated_PF(testData.postForms.pfPostName2);
 
-        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
 
 
     test('0010:[Post-Forms] Here, Admin is creating Blank Form with > CustomFields', async ({ page }) => {
-        const PostFormsCreate = new postFormsCreate(page);
-        const BasicLogin = new basicLoginPage(page);
+        const PostForms = new postForms(page);
+        const FieldOptionsCommon = new fieldOptionsCommon(page);
 
-        await BasicLogin.basic_login_plugin_visit(testData.users.adminUsername, testData.users.adminPassword);
         
         //Post Blank Form
-        await PostFormsCreate.create_BlankForm_PF(testData.postForms.pf_postName3);
+        await PostForms.createBlankFormPostForm(testData.postForms.pfPostName3);
         //PostFields
-        await PostFormsCreate.add_PostFields_PF();
+        await FieldOptionsCommon.addPostFields_PF();
         //CustomFields + Validate
-        await PostFormsCreate.add_CustomFields_PF();
-        await PostFormsCreate.validate_CustomFields_PF();
+        await FieldOptionsCommon.addCustomFields_Common();
+        await FieldOptionsCommon.validateCustomFields_Common();
 
         //Save
-        await PostFormsCreate.save_Form_PF(testData.postForms.pf_postName3);
+        await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName3);
         //Validate
-        await PostFormsCreate.validate_BlankForm_Created_PF(testData.postForms.pf_postName3);
-
-        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+        await FieldOptionsCommon.validateBlankFormCreated_PF(testData.postForms.pfPostName3);
     });
 
 
     test('0011:[Post-Forms] Here, Admin is creating Blank Form with > Others', async ({ page }) => {
-        const PostFormsCreate = new postFormsCreate(page);
         const BasicLogin = new basicLoginPage(page);
+        const PostForms = new postForms(page);
+        const FieldOptionsCommon = new fieldOptionsCommon(page);
 
-        await BasicLogin.basic_login_plugin_visit(testData.users.adminUsername, testData.users.adminPassword);
+        await BasicLogin.basicLoginAndPluginVisit(testData.users.adminUsername, testData.users.adminPassword);
         
         //Post Blank Form
-        await PostFormsCreate.create_BlankForm_PF(testData.postForms.pf_postName4);
+        await PostForms.createBlankFormPostForm(testData.postForms.pfPostName4);
         //PostFields
-        await PostFormsCreate.add_PostFields_PF();
+        await FieldOptionsCommon.addPostFields_PF();
         //Others + Validate
-        await PostFormsCreate.add_Others_PF();
-        await PostFormsCreate.validate_Others_PF();
-        await PostFormsCreate.set_MultiStep_Settings_PF();
+        await FieldOptionsCommon.addOthers_Common();
+        await FieldOptionsCommon.validateOthers_Common();
+        await FieldOptionsCommon.setMultiStepSettings_Common();
 
         //Save
-        await PostFormsCreate.save_Form_PF(testData.postForms.pf_postName4);
+        await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName4);
         //Validate
-        await PostFormsCreate.validate_BlankForm_Created_PF(testData.postForms.pf_postName4);
+        await FieldOptionsCommon.validateBlankFormCreated_PF(testData.postForms.pfPostName4);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
 
 
     test('0012:[Post-Forms] Here, Admin is creating a Blank Post Form with all Fields', async ({page}) => {
-        const PostFormsCreate = new postFormsCreate(page);
         const BasicLogin = new basicLoginPage(page);
+        const PostForms = new postForms(page);
+        const FieldOptionsCommon = new fieldOptionsCommon(page);
 
-        await BasicLogin.basic_login_plugin_visit(testData.users.adminUsername, testData.users.adminPassword);
+        await BasicLogin.basicLoginAndPluginVisit(testData.users.adminUsername, testData.users.adminPassword);
         
         //Post Blank Form
-        await PostFormsCreate.create_BlankForm_PF(testData.postForms.pf_postName1);
+        await PostForms.createBlankFormPostForm(testData.postForms.pfPostName1);
         //PostFields + Validate
-        await PostFormsCreate.add_PostFields_PF();
-        await PostFormsCreate.validate_PostFields_PF();
+        await FieldOptionsCommon.addPostFields_PF();
+        await FieldOptionsCommon.validatePostFields_PF();
         //Taxonomies + Validate
-        await PostFormsCreate.add_Taxonomies_PF();
-        await PostFormsCreate.validate_Taxonomies_PF();
+        await FieldOptionsCommon.addTaxonomies_PF();
+        await FieldOptionsCommon.validateTaxonomies_PF();
         //CustomFields + Validate
-        await PostFormsCreate.add_CustomFields_PF();
-        await PostFormsCreate.validate_CustomFields_PF();
+        await FieldOptionsCommon.addCustomFields_Common();
+        await FieldOptionsCommon.validateCustomFields_Common();
         //Others + Validate
-        await PostFormsCreate.add_Others_PF();
-        await PostFormsCreate.validate_Others_PF();
-        await PostFormsCreate.set_MultiStep_Settings_PF();
+        await FieldOptionsCommon.addOthers_Common();
+        await FieldOptionsCommon.validateOthers_Common();
+        await FieldOptionsCommon.setMultiStepSettings_Common();
 
         //Save
-        await PostFormsCreate.save_Form_PF(testData.postForms.pf_postName1);
+        await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName1);
         //Validate
-        await PostFormsCreate.validate_BlankForm_Created_PF(testData.postForms.pf_postName1);
+        await FieldOptionsCommon.validateBlankFormCreated_PF(testData.postForms.pfPostName1);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 
@@ -158,21 +156,22 @@ test.describe('TEST :-->', () => {
 
 
     test('0013:[Post-Forms] Here, Admin is creating a Preset Post Form', async ({page}) => {
-        const PostFormsCreate = new postFormsCreate(page);
         const BasicLogin = new basicLoginPage(page);
+        const PostForms = new postForms(page);
+        const FieldOptionsCommon = new fieldOptionsCommon(page);
 
-        await BasicLogin.basic_login_plugin_visit(testData.users.adminUsername, testData.users.adminPassword);
+        await BasicLogin.basicLoginAndPluginVisit(testData.users.adminUsername, testData.users.adminPassword);
         
         //Post Preset Form
-        await PostFormsCreate.create_Preset_PF(testData.postForms.pf_postName2);
+        await PostForms.createPresetPostForm(testData.postForms.pfPostName2);
         //Validate
-        await PostFormsCreate.validate_PostFields_PF();
-        await PostFormsCreate.validate_Taxonomies_Preset_PF();
+        await FieldOptionsCommon.validatePostFields_PF();
+        await FieldOptionsCommon.validateTaxonomiesPreset_PF();
 
         //Save
-        await PostFormsCreate.save_Form_PF(testData.postForms.pf_postName2);
+        await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName2);
         //Validate
-        await PostFormsCreate.validate_BlankForm_Created_PF(testData.postForms.pf_postName2);
+        await FieldOptionsCommon.validateBlankFormCreated_PF(testData.postForms.pfPostName2);
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });

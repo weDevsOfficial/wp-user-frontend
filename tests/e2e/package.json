@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@wordpress/env": "^4.4.0",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "faker": "^6.6.6"
   }
 }

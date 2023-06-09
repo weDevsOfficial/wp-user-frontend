@@ -84,7 +84,7 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
         $capability = wpuf_admin_role();
         $parent_slug = 'wp-user-frontend';
 
-        add_submenu_page( $parent_slug, __( 'Registration Forms', 'wp-user-frontend' ), __( 'Registration Forms', 'wp-user-frontend' ), $capability, 'wpuf-profile-forms', [$this, 'admin_reg_forms_page'] );
+        add_submenu_page( $parent_slug, __( 'Registration Forms', 'wp-user-frontend' ), __( 'Registration Forms', 'wp-user-frontend' ), $capability, 'wpuf-profile-forms', [ $this, 'admin_reg_forms_page' ] );
         $modules = add_submenu_page( $parent_slug, __( 'Modules', 'wp-user-frontend' ), __( 'Modules', 'wp-user-frontend' ), $capability, 'wpuf-modules', [ $this, 'modules_preview_page' ] );
         add_action( 'wpuf_modules_page_contents', [ $this, 'load_modules_scripts' ] );
         add_action( 'wpuf_modules_page_contents', [ $this, 'modules_page_contents' ] );
@@ -98,58 +98,14 @@ class WPUF_Free_Loader extends WPUF_Pro_Prompt {
     }
 
     public function admin_reg_forms_page() {
-        ?>
-        <div class="wpuf-registration-form-notice">
-            <div class="wpuf-notice wpuf-registration-shortcode-notice" style="padding: 20px;background: #fff;border: 1px solid #ddd;max-width: 360px;">
-                <h3 style="margin: 0;"><?php esc_html_e( 'Registration Form', 'wp-user-frontend' ); ?></h3>
-                <p>
-                    <?php printf( __( 'Use the shortcode %s for a simple and default WordPress registration form.', 'wp-user-frontend' ), '<code>[wpuf-registration]</code>' ); ?>
-                </p>
-                <p>
-                    <a target="_blank" class="button" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/how-to-setup-registrationlogin-page/">
-                        <span class="dashicons dashicons-sos" style="margin-top: 3px;"></span>
-                        <?php esc_html_e( 'Learn How to Setup', 'wp-user-frontend' ); ?>
-                    </a>
-                </p>
-            </div>
-            <div class="wpuf-notice" style="padding: 20px;background: #fff;border: 1px solid #ddd;max-width: 360px;">
-                <h3 style="margin: 0;"><?php esc_html_e( 'Pro Features', 'wp-user-frontend' ); ?></h3>
+        $file_location = __DIR__ . '/templates/page-registration-form.php';
 
-                <p>
-                    <?php echo wp_kses_post( __( 'Registration form builder is a two way form which can be used both for <strong>user registration</strong> and <strong>profile editing</strong>.', 'wp-user-frontend' ) ); ?>
-                </p>
+        wp_enqueue_style( 'wpuf-registration-forms', WPUF_ASSET_URI . '/css/registration-forms.css', [], WPUF_VERSION );
+        wp_enqueue_script( 'wpuf-registration-forms', WPUF_ASSET_URI . '/js/registration-forms.js', [ 'jquery' ], WPUF_VERSION );
 
-                <ul class="wpuf-pro-features">
-                    <li>
-                        <span class="dashicons dashicons-yes"></span>
-                        <span class="feature"><?php esc_html_e( 'Registration Form Builder', 'wp-user-frontend' ); ?></span>
-                    </li>
-                    <li>
-                        <span class="dashicons dashicons-yes"></span>
-                        <span class="feature"><?php esc_html_e( 'Profile Form Builder', 'wp-user-frontend' ); ?></span>
-                    </li>
-                    <li>
-                        <span class="dashicons dashicons-yes"></span>
-                        <span class="feature"><?php esc_html_e( 'Register by Subscription Package Purchase', 'wp-user-frontend' ); ?></span>
-                    </li>
-                </ul>
-
-                <p style="margin-top: 30px;">
-                    <a href="<?php echo esc_url(self::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
-                    <a href="https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/" target="_blank" class="button"><?php esc_html_e( 'Learn More', 'wp-user-frontend' ); ?></a>
-                </p>
-            </div>
-        </div>
-
-        <style type="text/css">
-            ul.wpuf-pro-features span.dashicons.dashicons-yes {
-                background: #4CAF50;
-                border-radius: 50%;
-                color: #fff;
-                margin-right: 7px;
-            }
-        </style>
-        <?php
+        if ( file_exists( $file_location ) ) {
+            include $file_location;
+        }
     }
 
     public function admin_coupon_page() {

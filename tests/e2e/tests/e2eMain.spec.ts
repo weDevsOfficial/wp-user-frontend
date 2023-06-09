@@ -27,4 +27,3 @@ test.describe(postFormTests);
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 test.describe(registrationFormTestsLite);
 
-

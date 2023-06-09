@@ -17,7 +17,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
     public function __construct( $tax_name, $taxonomy, $post_id = null, $user_id = null ) {
         //phpcs:ignore
-        $this->name       = __( $tax_name, 'wp-user-frontend' );
+        $this->name       = __( ucfirst( $tax_name ), 'wp-user-frontend' );
         $this->input_type = 'taxonomy';
         $this->tax_name   = $tax_name;
         // $this->taxonomy=$taxonomy;
@@ -99,7 +99,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
             case 'text':
                 $post_id = null;
-                $this->tax_input( $post_id );
+                $this->tax_input( $post_id, $field_settings );
                 break;
             default:
                 // code...
@@ -194,7 +194,6 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
             }
         }
     }
-
 
     public function tax_ajax( $post_id = null ) {
         $taxonomy = $this->field_settings['name'];
@@ -402,7 +401,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         echo str_replace( '<select', '<select multiple="multiple" ' . $required, $select );  // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
-    public function tax_input( $post_id = null ) {
+    public function tax_input( $post_id = null, $field_settings = [] ) {
         $attr = $this->field_settings;
         $query_string = '?action=wpuf-ajax-tag-search&tax=' . $attr['name'];
 
@@ -414,7 +413,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
 
         ?>
 
-        <input class="textfield<?php echo esc_attr( $this->required_class( $attr ) ); ?>" id="<?php echo esc_attr( $attr['name'] ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $this->terms ) ); ?>" size="40" />
+        <input class="textfield <?php echo esc_attr( $this->required_class( $attr ) ); echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $this->form_id ); ?>" id="<?php echo esc_attr( $attr['name'] ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php $this->required_html5( $attr ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $this->terms ) ); ?>" size="40" />
 
         <script type="text/javascript">
             ;(function($) {
@@ -447,7 +446,7 @@ class WPUF_Form_Field_Post_Taxonomy extends WPUF_Field_Contract {
         $defaults = $this->default_attributes();
         $props    = [
             'input_type'        => 'taxonomy',
-            'label'             => $this->tax_name,
+            'label'             => ucfirst( $this->tax_name ),
             'name'              => $this->tax_name,
             'is_meta'           => 'no',
             'width'             => 'small',

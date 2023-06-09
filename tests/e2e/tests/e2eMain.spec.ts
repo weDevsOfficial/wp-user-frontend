@@ -12,16 +12,15 @@ import * as fs from "fs"; //Clear Cookie
 
 
 
-
-// //Test Spec-1
-// fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
-// test.describe(loginTests);
-
+//Test Spec-1
+fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+test.describe(loginTests);
 
 
-// //Test Spec-2
-// fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
-// test.describe(postFormTests);
+
+//Test Spec-2
+fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+test.describe(postFormTests);
 
 
 //Test Spec-3

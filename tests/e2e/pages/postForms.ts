@@ -29,21 +29,21 @@ export class postForms {
         await this.page.goto(wpufPostFormPage, { waitUntil: 'networkidle' }); 
         
         //CreateNewPostForm
-        await this.page.click(selectors.postForms.createBlankFormPF.clickpostFormsMenuOption);
+        await this.page.click(selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         //Start
-        await this.page.click(selectors.postForms.createBlankFormPF.clickPostAddForm); 
+        await this.page.click(selectors.postForms.createBlankForm_PF.clickPostAddForm); 
   
         //ClickBlankForm
         //Templates 
-        await this.page.waitForSelector(selectors.postForms.createBlankFormPF.hoverBlankForm);   
-        await this.page.hover(selectors.postForms.createBlankFormPF.hoverBlankForm);   
-        await this.page.waitForSelector(selectors.postForms.createBlankFormPF.clickBlankForm);   
-        await this.page.click(selectors.postForms.createBlankFormPF.clickBlankForm);   
+        await this.page.waitForSelector(selectors.postForms.createBlankForm_PF.hoverBlankForm);   
+        await this.page.hover(selectors.postForms.createBlankForm_PF.hoverBlankForm);   
+        await this.page.waitForSelector(selectors.postForms.createBlankForm_PF.clickBlankForm);   
+        await this.page.click(selectors.postForms.createBlankForm_PF.clickBlankForm);   
 
         //EnterName
-        await this.page.click(selectors.postForms.createBlankFormPF.editNewFormName); 
-        await this.page.fill(selectors.postForms.createBlankFormPF.enterNewFormName, newPostName);   
-        await this.page.click(selectors.postForms.createBlankFormPF.confirmNewNameTickButton);  
+        await this.page.click(selectors.postForms.createBlankForm_PF.editNewFormName); 
+        await this.page.fill(selectors.postForms.createBlankForm_PF.enterNewFormName, newPostName);   
+        await this.page.click(selectors.postForms.createBlankForm_PF.confirmNewNameTickButton);  
     };
 
 
@@ -55,21 +55,21 @@ export class postForms {
         await this.page.goto(wpufPostFormPage, { waitUntil: 'networkidle' }); 
 
         //CreateNewPostForm
-        await this.page.click(selectors.postForms.createBlankFormPF.clickpostFormsMenuOption);
+        await this.page.click(selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         //Start
-        await this.page.click(selectors.postForms.createBlankFormPF.clickPostAddForm); 
+        await this.page.click(selectors.postForms.createBlankForm_PF.clickPostAddForm); 
 
         //ClickBlankForm
         //Templates 
         //await this.page.waitForSelector(selectors.postForms.createPresetPR.hoverPresetForm);   
-        await this.page.hover(selectors.postForms.createPresetPR.hoverPresetForm);   
+        await this.page.hover(selectors.postForms.createPreset_PF.hoverPresetForm);   
         //await this.page.waitForSelector(selectors.postForms.createPresetPR.clickPresetForm);   
-        await this.page.click(selectors.postForms.createPresetPR.clickPresetForm);   
+        await this.page.click(selectors.postForms.createPreset_PF.clickPresetForm);   
 
         //EnterName
-        await this.page.click(selectors.postForms.createPresetPR.editNewFormName); 
-        await this.page.fill(selectors.postForms.createBlankFormPF.enterNewFormName, newPostName);   
-        await this.page.click(selectors.postForms.createBlankFormPF.confirmNewNameTickButton); 
+        await this.page.click(selectors.postForms.createPreset_PF.editNewFormName); 
+        await this.page.fill(selectors.postForms.createBlankForm_PF.enterNewFormName, newPostName);   
+        await this.page.click(selectors.postForms.createBlankForm_PF.confirmNewNameTickButton); 
 
     };
 

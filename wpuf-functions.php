@@ -182,7 +182,7 @@ function wpuf_get_post_types( $args = [] ) {
         }
     }
 
-    return apply_filters( 'wpuf-get-post-types', $post_types );
+    return apply_filters( 'wpuf_get_post_types', $post_types );
 }
 
 /**

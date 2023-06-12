@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WPUF_VERSION', '3.6.5' );
+define( 'WPUF_VERSION', '3.6.6' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -70,7 +70,11 @@ final class WP_User_Frontend {
      * Fire up the plugin
      */
     public function __construct() {
-        require_once __DIR__ . '/vendor/autoload.php';
+        $autoload = __DIR__ . '/vendor/autoload.php';
+
+        if ( file_exists( $autoload ) ) {
+            require_once $autoload;
+        }
 
         if ( ! $this->is_supported_php() ) {
             add_action( 'admin_notices', [ $this, 'php_version_notice' ] );

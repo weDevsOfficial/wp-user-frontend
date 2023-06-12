@@ -15,8 +15,8 @@ class Assets {
      *
      * @var string
      */
-    private $suffix;
-    private $scheme;
+    protected $suffix;
+    protected $scheme;
 
     /**
      * The css dependencies list for form builder
@@ -340,7 +340,7 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/js/upload.js',
                 'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ],
             ],
-            'ajax_login'                   => [
+            'ajax_login'               => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-login-widget.js',
                 'deps' => [ 'jquery' ],
             ],

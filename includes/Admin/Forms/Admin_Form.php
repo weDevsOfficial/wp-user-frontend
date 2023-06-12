@@ -168,7 +168,7 @@ class Admin_Form {
             add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
             add_filter( 'wpuf-form-builder-i18n', [ $this, 'i18n' ] );
 
-            do_action( 'wpuf-form-builder-init-type-wpuf_forms' );
+            do_action( 'wpuf_form_builder_init_type_wpuf_forms' );
 
             $this->set_wp_post_types();
             $settings = [

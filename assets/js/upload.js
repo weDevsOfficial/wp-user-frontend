@@ -213,22 +213,25 @@
                     confirmButton: 'btn btn-success',
                     cancelButton: 'btn btn-danger',
                 }
-            }).then(function () {
-                var data = {
-                    'attach_id' : el.data('attach-id'),
-                    'nonce' : wpuf_frontend_upload.nonce,
-                    'action' : 'wpuf_file_del'
-                };
-                self.removed_files.push(data);
-                jQuery('#del_attach').val(el.data('attach-id'));
-                jQuery.post(wpuf_frontend_upload.ajaxurl, data, function() {
-                    self.perFileCount--;
-                    el.parent().parent().remove();
+            }).then(function (result) {
+                if (result.isConfirmed) {
 
-                    self.count -= 1;
-                    self.showHide();
-                    self.uploader.refresh();
-                });
+                    var data = {
+                        'attach_id' : el.data('attach-id'),
+                        'nonce' : wpuf_frontend_upload.nonce,
+                        'action' : 'wpuf_file_del'
+                    };
+                    self.removed_files.push(data);
+                    jQuery('#del_attach').val(el.data('attach-id'));
+                    jQuery.post(wpuf_frontend_upload.ajaxurl, data, function() {
+                        self.perFileCount--;
+                        el.parent().parent().remove();
+
+                        self.count -= 1;
+                        self.showHide();
+                        self.uploader.refresh();
+                    });
+                }
             });
         },
 

@@ -25,15 +25,10 @@ export class registrationForms {
     async validateRegistrationFormsProFeatureLite() {
         // Visit Registration forms page
         const wpufRegistrationFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
-        try {
-            await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
-            // Add more promises here if needed
-            ]);
-        } catch (error) {
-            // Handle the error here
-            console.error('An error occurred during Promise.all():', error);
-        }
+        await Promise.all([
+            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }), 
+        ]);
+    
 
         const validateWPUFProActivate = await this.page.isVisible(selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (validateWPUFProActivate == true) {
@@ -41,11 +36,11 @@ export class registrationForms {
         }
         else {
             //Check Pro Features Header
-            const checkProFeaturesText = await this.page.innerText('//h2[text()="Unlock PRO Features"]');
+            const checkProFeaturesText = await this.page.innerText(selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkProFeaturesText);
             await expect(checkProFeaturesText).toContain("Unlock PRO Features");
 
             //Check Setup
-            const checkUpgradeToProOption = await this.page.locator('//a[contains(text(),"Upgrade to PRO")]');
+            const checkUpgradeToProOption = await this.page.locator(selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpgradeToProOption);
             await expect(checkUpgradeToProOption).toBeTruthy();
         }
     };
@@ -55,65 +50,46 @@ export class registrationForms {
     async createRegistrationPageUsingShortcodeLite(registrationFormPageTitle) {
         // Visit Registration forms page
         const wpufRegistrationFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
-        try {
-            await Promise.all([
+        await Promise.all([
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
-            // Add more promises here if needed
-            ]);
-        } catch (error) {
-            // Handle the error here
-            console.error('An error occurred during Promise.all():', error);
-        }
+        ]);
 
         //Validate Shortcode
-        const validateShortcode = await this.page.locator('//code[text()="[wpuf-registration]"]');
+        const validateShortcode = await this.page.locator(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validateShortcode);
         await expect(validateShortcode).toBeTruthy();
 
         //Copy Shortcode
-        const storeShortcode = await this.page.innerText('//code[text()="[wpuf-registration]"]')
+        const storeShortcode = await this.page.innerText(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
         console.log(storeShortcode);
 
 
         //Visit Pages
         const visitPagesAdminMenuOption = testData.urls.baseUrl + '/wp-admin/edit.php?post_type=page';
-
-        try {
-            await Promise.all([
+        await Promise.all([
             this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'networkidle' }),
-            // Add more promises here if needed
-            ]);
-        } catch (error) {
-            // Handle the error here
-            console.error('An error occurred during Promise.all():', error);
-        }
+        ]);
         
         //Add New Page
-        await this.page.click('//a[@class="page-title-action"]');
+        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
 
         //Add Page Title
-        await this.page.fill('//h1[@aria-label="Add title"]', registrationFormPageTitle);
+        await this.page.fill(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addPageTitle, registrationFormPageTitle);
 
         //Click Add Block Button
-        await this.page.click('//button[@aria-label="Add block"]');
+        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.blockAddButton);
 
         //Search and Add Shortcode block
-        await this.page.fill('//input[@placeholder="Search"]', 'Shortcode');
-        await this.page.click('//span[text()="Shortcode"]');
+        await this.page.fill(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.blockSearchBox, 'Shortcode');
+        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addShortCodeBlock);
 
         //Enter Registration Shortcode
-        await this.page.fill('//textarea[@aria-label="Shortcode text"]', storeShortcode);
-
-        //Validate Shortcode entered
-        //await expect('//textarea[@aria-label="Shortcode text"]').toContain(storeShortcode);
+        await this.page.fill(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.enterRegistrationShortcode, storeShortcode);
 
         //Click Publish Page
-        await this.page.click('//button[text()="Publish"]');
+        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.clickPublishPage);
         //Confirm Publish
-        await this.page.click('//button[contains(@class,"components-button editor-post-publish-button")]');
+        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.confirmPublish);
 
-        // //Wait for Page to load
-        // const pageCreated = await this.page.isVisible('//a[@class="components-button is-primary"]');
-        // await expect(pageCreated).toBeTruthy();
 
         //Go to Pages 
         await Promise.all([
@@ -122,41 +98,20 @@ export class registrationForms {
         
         //Validate Page Created
         //Search Page
-        await this.page.fill('//input[@type="search"]', registrationFormPageTitle);
-        await this.page.click('//input[@id="search-submit"]');
+        await this.page.fill(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBox, registrationFormPageTitle);
+        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBoxSubmit);
 
         //Validate Page
-        const validatePageCreated = await this.page.innerText('//a[@class="row-title"]');
+        const validatePageCreated = await this.page.innerText(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
         await expect(validatePageCreated).toContain(registrationFormPageTitle);
 
     };
 
 
-    //Change Settings - Registration Page
-    async changeSettingsSetRegistrationPage(registrationFormPageTitle) {
-        const wpufPostFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
-
-        await this.page.goto(wpufPostFormPage, { waitUntil: 'networkidle' });
-        //Change Settings
-        await this.page.click(selectors.login.wpufSettingsPage.settingsTab);
-        await expect (await this.page.isVisible(selectors.login.wpufSettingsPage.settingsTabProfile2)).toBeTruthy();
-        await this.page.click(selectors.login.wpufSettingsPage.settingsTabProfile2);
-        await this.page.selectOption(selectors.login.wpufSettingsPage.settingsTabProfileRegistrationPage, {label: registrationFormPageTitle});
-        await this.page.click(selectors.login.wpufSettingsPage.settingsTabProfileSubmit);
-        
-        await this.page.waitForLoadState('domcontentloaded');
-        
-    };
 
 
 
-
-
-
-
-
-
-
+    
 
 
 
@@ -171,9 +126,9 @@ export class registrationForms {
     async createBlankForm_RF(newRegistrationName) {
         //Visit Post Form Page
         const wpufRegistrationFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
-        
-        await this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }); 
-
+        await Promise.all([
+            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
+        ]);
          //CreateNewRegistrationForm
          
          await this.page.click(selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);

@@ -11,7 +11,9 @@ export class basicLogoutPage {
     }
 
     async logOut() {
-        await this.page.goto(testData.urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' });
+        await Promise.all([
+            this.page.goto(testData.urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+        ]);
         
         await this.page.hover(selectors.logout.basicLogout.logoutHoverUsername);
         await this.page.click(selectors.logout.basicLogout.logoutButton);

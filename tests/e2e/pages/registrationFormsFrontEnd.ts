@@ -5,17 +5,18 @@ import { selectors } from './selectors';
 import { testData } from '../utils/testData'
 
 
-//Store data
-//First Name
-const firstName = testData.registrationForms.rfFirstName;
-//Last Name
-const lastName = testData.registrationForms.rfFirstName;
-//Email
-const email = testData.registrationForms.rfEmail;
-//Username
-const userName = testData.registrationForms.rfUsername;
-//Password
-const password = testData.registrationForms.rfPassword;
+ 
+    //Store data
+    //First Name
+    const firstName = testData.registrationForms.rfFirstName;
+    //Last Name
+    const lastName = testData.registrationForms.rfLastName;
+    //Email
+    const email = testData.registrationForms.rfEmail;
+    //Username
+    const userName = testData.registrationForms.rfUsername;
+    //Password
+    const password = testData.registrationForms.rfPassword;
 
 
 
@@ -37,44 +38,39 @@ export class registrationFormsFrontEnd {
     //Registration forms page - only WPUF-Lite activated
     async completeUserRegistrationFormFrontEnd() {
         //Go to Registration page - FrontEnd
-        const wpufRegistrationFormFage = testData.urls.baseUrl + '/registration-page/';
-        try {
-            await Promise.all([
-            this.page.goto(wpufRegistrationFormFage, { waitUntil: 'networkidle' }),
-            // Add more promises here if needed
-            ]);
-        } catch (error) {
-            // Handle the error here
-            console.error('An error occurred during Promise.all():', error);
-        }
+        const wpufRegistrationFormPage = testData.urls.baseUrl + '/registration-page/';
+        await Promise.all([
+            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
+        ]);
+
         
         //Validate Registration page
-        const validateRegistrationPage = await this.page.innerText('//h1[text()="Registration Page"]');
+        const validateRegistrationPage = await this.page.innerText(selectors.registrationForms.completeUserRegistrationFormFrontEnd.validateRegistrationPage);
         await expect(validateRegistrationPage).toContain('Registration Page');
 
         //Enter First Name
-        await this.page.fill('//input[@name="reg_fname"]', firstName);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfFirstName, firstName);
 
         //Enter Last Name
-        await this.page.fill('//input[@name="reg_lname"]', lastName);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfLastName, lastName);
 
         //Enter Email
-        await this.page.fill('//input[@name="reg_email"]', email);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfEmail, email);
 
         //Enter Username
-        await this.page.fill('//input[@id="wpuf-user_login"]', userName);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfUserName, userName);
 
         //Enter Password
-        await this.page.fill('//input[@id="wpuf-user_pass1"]', password);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfPassword, password);
 
         //Confirm Password
-        await this.page.fill('//input[@id="wpuf-user_pass2"]', password);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfConfirmPassword, password);
 
         //Click Register
-        await this.page.click('//input[@id="wp-submit"]');
+        await this.page.click(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfRegisterButton);
 
         //Validate User logged in
-        await expect(await this.page.locator('//a[contains(text(),"Log out")]')).toBeTruthy();
+        await expect(await this.page.locator(selectors.registrationForms.completeUserRegistrationFormFrontEnd.validateRegisteredLogoutButton)).toBeTruthy();
 
     };
 
@@ -82,36 +78,31 @@ export class registrationFormsFrontEnd {
 
 
 
-/********************************************/
+/***********************************************/
 /******* @Validate Admin End - Users **********/
-/******************************************/
+/*********************************************/
 
     //Validate in Admin - Registered Form Submitted
     async validateUserRegisteredAdminEnd() {
         //Go to Admin End/Back End
-        const wpufRegistrationFormFage = testData.urls.baseUrl + '/wp-admin/';
-        try {
-            await Promise.all([
-            this.page.goto(wpufRegistrationFormFage, { waitUntil: 'networkidle' }),
-            // Add more promises here if needed
-            ]);
-        } catch (error) {
-            // Handle the error here
-            console.error('An error occurred during Promise.all():', error);
-        }
+        const wpufRegistrationFormPage = testData.urls.baseUrl + '/wp-admin/';
+        await Promise.all([
+            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
+        ]);
+    
         
         //Validate Registered User
         //Go to Users List
-        await this.page.click('//div[text()="Users"]');
+        await this.page.click(selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersList);
 
         //Search Username
-        await this.page.fill('//input[@type="search"]', email);
+        await this.page.fill(selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchBox, email);
 
         //Click Search
-        await this.page.click('//input[@id="search-submit"]');
+        await this.page.click(selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchButton);
 
         //Validate Email present
-        const validateUserCreated = await this.page.innerText('//td[@class="email column-email"]');
+        const validateUserCreated = await this.page.innerText(selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserCreated);
         
         if (validateUserCreated == email){
             console.log("User is registered and present");

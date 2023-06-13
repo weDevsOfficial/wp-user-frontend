@@ -21,7 +21,7 @@ export const selectors = {
         },
 
         //Validate Basic Login
-        validateBasicLogin: {
+        validateBasicLogin:{
             //Validate LOGIN
             logingSuccessDashboard: '//div[text()="Dashboard"]',
             //clickWPUFSidebar: '//div[text()="User Frontend"]/.',
@@ -30,13 +30,25 @@ export const selectors = {
 
 
         //Basic Navigation
-        basicNavigation: {
+        basicNavigation:{
             //Sidebar
             clickWPUFSidebar: '#toplevel_page_wp-user-frontend > a',
+            //Hover Settings Menu
+            hoverSettings: '//div[text()="Settings"]',
         },
 
 
         
+       
+    },
+
+
+/******************************************/
+/******* Settings Setup Selectors ********/
+/****************************************/
+
+    settingsSetup: {
+    
         //Plugin Status Check
         pluginStatusCheck: {
             //Plugin Activate/Deactivate
@@ -70,15 +82,81 @@ export const selectors = {
 
         //WPUF Settings Page
         wpufSettingsPage: {
+            //Main Settings Tab
             settingsTab: '//a[@href="admin.php?page=wpuf-settings"]',
+        
+            //Menu-2nd Option
+            //FrontEnd Posting
+            settingsFrontendPosting: '//a[@id="wpuf_frontend_posting-tab"]',
+                //Set Default Post Form
+                setDefaultPostForm: '//select[@id="wpuf_frontend_posting[default_post_form]"]',
+                //Save Changes
+                settingsFrontEndPostingSave: '//div[@id="wpuf_frontend_posting"]//form[@method="post"]//div//input[@id="submit"]',
+            
+            //Menu-5th Option
+            //Login/Registration
             settingsTabProfile1: '//a[@href="#wpuf_profile"]',
             settingsTabProfile2: '#wpuf_profile-tab',
-            settingsTabProfileLoginPage: '//select[@id="wpuf_profile[login_page]"]',
-            settingsTabProfileRegistrationPage: '//select[@id="wpuf_profile[reg_override_page]"]',
-            settingsTabProfileSubmit: '//div[@id="wpuf_profile"]//form[@method="post"]//div//input[@id="submit"]'
-        } 
+                //Login Page
+                settingsTabProfileLoginPage: '//select[@id="wpuf_profile[login_page]"]',
+                //Registration Page
+                settingsTabProfileRegistrationPage: '//select[@id="wpuf_profile[reg_override_page]"]',
+                //Login Registration Submit button
+                settingsTabProfileSave: '//div[@id="wpuf_profile"]//form[@method="post"]//div//input[@id="submit"]'
+        },
+
+        //Set Permalink
+        setPermalink: {
+            //Permalink Side Menu
+            clickPermalinksSideMenu: '//a[text()="Permalinks"]',
+            //Check Post Name Permalink
+            checkPostNamePermalink: '//input[@id="permalink-input-post-name"]',
+            
+            //Check CustomStructure Permalink
+            checkCustomStructurePermalink: '//input[@id="custom_selection"]',
+            fillCustomStructure: '//input[@id="permalink_structure"]',
+            //Click Permalink-Postname
+            clickCustomStructurePostName: '//button[@data-added="postname added to permalink structure"]',
+            //Validate Permalink-Postname 
+            validatePermalinkPostname: '//input[@id="permalink_structure"]',
+
+            //Save Permalink Settings
+            savePermalinkSettings: '//input[@id="submit"]',
+            
+        },
+
+        //Admin Create New User
+        //Create New User
+        createNewUser: {
+            //Admin Create New User
+            //New User Create
+            clickUserMenuAdmin: '//div[text()="Users"]',
+            //Add New User
+            clickAddNewUserAdmin: '//a[@class="page-title-action"]',
+
+            //Enter Username
+            newUserName: '//input[@id="user_login"]',
+            //Enter Email
+            newUserEmail: '//input[@id="email"]',
+            //Enter First Name
+            newUserFirstName: '//input[@id="first_name"]',
+            //Enter Last Name
+            newUserLastName: '//input[@id="last_name"]',
+            //Enter Password
+            newUserPassword: '//input[@id="pass1"]',
+            //Allow weak Password        
+            newUserWeakPasswordAllow: '//input[@class="pw-checkbox"]',
+            //Select Role
+            newUserSelectRole: '//select[@id="role"]',
+            newUserSelectRoleCustomer: '//option[@value="customer"]',
+            //Create User
+            newUserSubmit: '//input[@type="submit"]',
+        },
+        
     },
 
+
+   
 
 /*********************************/
 /******* Logout Selectors *******/
@@ -197,9 +275,9 @@ export const selectors = {
         },
 
 
-/***********************************************/
-/********** @CommonFields Selectors ***********/
-/*********************************************/ 
+        /***********************************************/
+        /********** @CommonFields Selectors ***********/
+        /*********************************************/ 
 
         //Custom - Field options for Forms
         addCustomFields_Common: {
@@ -287,9 +365,25 @@ export const selectors = {
             othersReallySimpleCaptcha: '//li[@data-form-field="really_simple_captcha"]',
             othersMathCaptcha: '//li[@data-form-field="math_captcha"]',
 
+        },
+
+        //Form Settings
+        formSettings: {
+            //Post Settings
             //Add Multi-Step-Check
             formEditorSettings: '(//h2[@class="nav-tab-wrapper"]//a)[2]',
             checkMultiStepOption: '//input[@name="wpuf_settings[enable_multistep]"]',
+
+            //Submission Restriction
+            clickSubmissionRestriction: '//a[contains(text(),"Submission Restriction")]',
+            //Check Guest Enable
+            enableGuestPostCheckBox: '//input[@name="wpuf_settings[guest_post]" and @type="checkbox"]',
+
+            //Save Form Settings
+            saveFormSettings: '//button[@class="button button-primary"]',
+
+            //Click Form Editor
+            clickFormEditor: '//a[contains(text(),"Form Editor")]',
         },
 
         validateOthers_Common: {
@@ -318,6 +412,11 @@ export const selectors = {
 
 
     },
+
+    /*****************************************************/
+    /********** @PostForm FrontEnd Selectors ************/
+    /************* + FrontEnd Validation ***************/
+    /**************************************************/ 
 
 
 
@@ -361,7 +460,6 @@ export const selectors = {
         },
 
 
-
         //Create Registration Forms - Add Profile Fields
         addProfileFields_RF: {
             //Post_Fields
@@ -376,7 +474,98 @@ export const selectors = {
             profileFieldPassword: '//li[@data-form-field="password"]',
             profileFieldAvatar: '//li[@data-form-field="avatar"]',        
         },
+
+        /******************************************************/
+        /********** @Registration Setup Selectors ************/
+        /****************************************************/ 
+
+        //Registration forms page - only WPUF-Lite activated
+        validateRegistrationFormsProFeatureLite: {
+            //Check Pro Features Header
+            checkProFeaturesText: '//h2[text()="Unlock PRO Features"]',
+            //Check Setup
+            checkUpgradeToProOption: '//a[contains(text(),"Upgrade to PRO")]',
+        },
+
     
+        //Create Registration page using Shortcode
+        createRegistrationPageUsingShortcodeLite: {
+            //Validate Shortcode
+            validateShortcode: '//code[text()="[wpuf-registration]"]',
+            //Shortcode
+            storeShortcode: '//code[text()="[wpuf-registration]"]',
+            //Add New Page
+            addNewPage: '//a[@class="page-title-action"]',
+            //Add Page Title
+            addPageTitle:'//h1[@aria-label="Add title"]',
+            //Block Add Button
+            blockAddButton: '//button[@aria-label="Add block"]',
+            //Block Search box
+            blockSearchBox: '//input[@placeholder="Search"]',
+            //Block Add ShortCode Block
+            addShortCodeBlock: '//span[text()="Shortcode"]',
+            //Enter Registration Shortcode
+            enterRegistrationShortcode: '//textarea[@aria-label="Shortcode text"]',
+
+            //Click Publish Page
+            clickPublishPage: '//button[text()="Publish"]',
+            //Confirm Publish 
+            confirmPublish: '//button[contains(@class,"components-button editor-post-publish-button")]',
+
+            //Validation
+            //Search Page
+            pagesSearchBox: '//input[@type="search"]',
+            //Search Page Submit
+            pagesSearchBoxSubmit: '//input[@id="search-submit"]',
+            //Validate Page Created
+            validatePageCreated: '//a[@class="row-title"]',
+
+        },
+
+        /*********************************************************/
+        /********** @Registration FrontEnd Selectors ************/
+        /*********** + BackEnd/AdminEnd Validation *************/
+        /******************************************************/ 
+
+        //Registration forms page - only WPUF-Lite activated
+        completeUserRegistrationFormFrontEnd: {
+            //Validate Registration page
+            validateRegistrationPage: '//h1[text()="Registration Page"]',
+
+            //Registration Form
+            //First Name
+            rfFirstName: '//input[@name="reg_fname"]',
+            //Last Name
+            rfLastName: '//input[@name="reg_lname"]',
+            //Email
+            rfEmail: '//input[@name="reg_email"]',
+            //Username
+            rfUserName: '//input[@id="wpuf-user_login"]',
+            //Password
+            rfPassword: '//input[@id="wpuf-user_pass1"]',
+            //Confirm Password
+            rfConfirmPassword: '//input[@id="wpuf-user_pass2"]',
+            //Register button
+            rfRegisterButton: '//input[@id="wp-submit"]', 
+            
+            //Validate Registered
+            //Logout button
+            validateRegisteredLogoutButton: '//a[contains(text(),"Log out")]'
+
+        },
+
+        //Validate in Admin - Registered Form Submitted
+        //Validate Registered User
+        validateUserRegisteredAdminEnd: {
+            //Go to Users List
+            adminUsersList: '//div[text()="Users"]',
+            //Search Username
+            adminUsersSearchBox: '//input[@type="search"]',
+            //Click Search
+            adminUsersSearchButton: '//input[@id="search-submit"]',
+            //Validate Email present
+            validateUserCreated: '//td[@class="email column-email"]',
+        },
 
     }
 

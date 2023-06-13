@@ -17,7 +17,12 @@ export interface PostForm {
     pfPostName3: string;
     pfPostName4: string;
 
-    
+    //Post Form Data
+    pfTitle: string;
+    pfPostDescription: string;
+    pfExcerpt: string;
+    pfTags: string;
+
 }
 
 export interface RegistrationForm {
@@ -56,6 +61,15 @@ const generateFakerData = () => {
     const pfPostName3: string = faker.lorem.sentence(2);
     const pfPostName4: string = faker.lorem.sentence(2);
 
+    //Post Form Data
+    const pfTitle: string = faker.lorem.words(2);
+    const pfPostDescription: string = faker.lorem.sentence(4);
+    const pfExcerpt: string = faker.lorem.word(3);
+    const pfTags: string = faker.lorem.word();
+
+
+//-----------------------------------------------------------------//
+
     //Registration Form Titles
     const rfPostName1: string = faker.lorem.sentence(2);
     const rfPostName2: string = faker.lorem.sentence(2);
@@ -63,7 +77,7 @@ const generateFakerData = () => {
     const rfPostName4: string = faker.lorem.sentence(2);
 
     //Registration Form Data
-    // Generate random user details
+    //Generate random user details
     const rfFirstName: string = faker.name.firstName();
     const rfLastName: string = faker.name.lastName();
     const rfUsername: string = faker.internet.userName(rfFirstName, rfLastName);
@@ -77,6 +91,14 @@ const generateFakerData = () => {
         pfPostName2,
         pfPostName3,
         pfPostName4,
+
+        //Post Form Data
+        pfTitle,
+        pfPostDescription,
+        pfExcerpt,
+        pfTags,
+
+
 
         //Reg Form Titles
         rfPostName1,

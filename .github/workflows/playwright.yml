@@ -59,7 +59,7 @@ jobs:
         run: |
           cd tests/e2e 
           npm run wp-env start
-          wp rewrite structure '/%postname%/' 
+          wp rewrite structure '/%postname%/'  
 
 
       - name: Run Playwright tests/e2e

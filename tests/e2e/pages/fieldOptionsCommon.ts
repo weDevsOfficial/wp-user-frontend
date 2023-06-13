@@ -20,9 +20,9 @@ export class fieldOptionsCommon {
 
 
 
-/***********************************/
-/********** @PostForms ***********/
-/*********************************/ 
+/*****************************************/
+/********** @PostForms Fields ***********/
+/***************************************/ 
 
 /********* PostFields *********************/
     //PostFields
@@ -80,29 +80,13 @@ export class fieldOptionsCommon {
     };
 
 
-/********************* Validate *********************/
-    //Admin checks if Created form is displayed in Post Forms - Table/List
-    async validateBlankFormCreated_PF(validateNewPostName_PF) {
-        //Return HOME
-        await this.page.click(selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
-        await this.page.waitForLoadState('domcontentloaded');
-        
-        //ASSERTION > Check if-VALID
-        const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(selectors.postForms.navigatePage_PF.checkAddButton_PF);
-        if (checkNewBlankFormCreatedValid_PF == true) {  
-            const checkNewFormCreated_PF = await this.page.innerText(selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF);
-            await expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
-            console.log(checkNewFormCreated_PF);
-            console.log(validateNewPostName_PF);
-        }
-    };
 
 
 
 
-/*************************************/
-/********** @_CommonFields ***********/
-/***********************************/ 
+/**************************************/
+/********** @Common Fields ***********/
+/************************************/ 
 
     /********************* CustomFields *********************/
     //CustomFields
@@ -306,14 +290,14 @@ export class fieldOptionsCommon {
     async setMultiStepSettings_Common() {
         await this.page.waitForLoadState('domcontentloaded');
         //Add Multi-Step-Check
-        await this.page.click(selectors.postForms.addOthers_Common.formEditorSettings);
+        await this.page.click(selectors.postForms.formSettings.formEditorSettings);
         const proTextAlertInSettings = await this.page.isVisible(selectors.postForms.addCustomFields_Common.proTextAlertInSettings);
             if (proTextAlertInSettings === true) {  
                 console.log("WPUF Pro is requred...");
             }
             else {
-                await this.page.click(selectors.postForms.addOthers_Common.checkMultiStepOption);
-                expect(await this.page.isChecked(selectors.postForms.addOthers_Common.checkMultiStepOption)).toBeTruthy();
+                await this.page.click(selectors.postForms.formSettings.checkMultiStepOption);
+                expect(await this.page.isChecked(selectors.postForms.formSettings.checkMultiStepOption)).toBeTruthy();
             }
         
 
@@ -332,6 +316,44 @@ export class fieldOptionsCommon {
         expect(await this.page.isVisible(selectors.postForms.saveForm_Common.saveFormButton)).toBeTruthy();
         await this.page.click(selectors.postForms.saveForm_Common.saveFormButton);
     };
+
+
+
+
+
+/********************* Validate *********************/
+    //Admin checks if Created form is displayed in Post Forms - Table/List
+    async validatePostFormCreated(validateNewPostName_PF) {
+        //Return HOME
+        await this.page.click(selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.waitForLoadState('domcontentloaded');
+        
+        //ASSERTION > Check if-VALID
+        const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(selectors.postForms.navigatePage_PF.checkAddButton_PF);
+        if (checkNewBlankFormCreatedValid_PF == true) {  
+            const checkNewFormCreated_PF = await this.page.innerText(selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF);
+            await expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
+            console.log(checkNewFormCreated_PF);
+            console.log(validateNewPostName_PF);
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -371,7 +393,7 @@ export class fieldOptionsCommon {
 
 /********************* Validate *********************/
     //Admin checks if Created form is displayed in Post Forms - Table/List
-    async validateBlankFormCreated_RF(validateNewPostName_RF) {
+    async validateRegistrtionFormCreated(validateNewPostName_RF) {
         //Return HOME
         await this.page.click(selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
         await this.page.waitForLoadState('domcontentloaded');

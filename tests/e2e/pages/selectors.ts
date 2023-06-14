@@ -221,7 +221,7 @@ export const selectors = {
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
 
             //Enter_NAME
-            editNewFormName: '//span[text()="Sample Form"]',
+            editNewFormName: '//span[@class="form-title"]',
             enterNewFormName: '//header[@class="clearfix"]/span/input',  //TODO: Catch with Child
             confirmNewNameTickButton: '//button[@class="button button-small"]',
         },
@@ -233,7 +233,7 @@ export const selectors = {
             clickPresetForm: '//a[@title="Post Form" and contains(text(), "Create Form")]',
 
             //Enter_NAME
-            editNewFormName: '//span[text()="Post Form"]',
+            editNewFormName: '//span[@class="form-title"]',
         },
 
 

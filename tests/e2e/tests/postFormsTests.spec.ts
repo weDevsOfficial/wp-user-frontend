@@ -98,15 +98,14 @@ test.describe('TEST :-->', () => {
         await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName3);
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(testData.postForms.pfPostName3);
+
     });
 
 
     test('0013:[Post-Forms] Here, Admin is creating Blank Form with > Others', async ({ page }) => {
-        const BasicLogin = new basicLoginPage(page);
         const PostForms = new postForms(page);
         const FieldOptionsCommon = new fieldOptionsCommon(page);
 
-        await BasicLogin.basicLoginAndPluginVisit(testData.users.adminUsername, testData.users.adminPassword);
 
         //Post Blank Form
         await PostForms.createBlankFormPostForm(testData.postForms.pfPostName4);
@@ -122,16 +121,12 @@ test.describe('TEST :-->', () => {
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(testData.postForms.pfPostName4);
 
-        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
 
 
     test('0014:[Post-Forms] Here, Admin is creating a Blank Post Form with all Fields', async ({page}) => {
-        const BasicLogin = new basicLoginPage(page);
         const PostForms = new postForms(page);
         const FieldOptionsCommon = new fieldOptionsCommon(page);
-
-        await BasicLogin.basicLoginAndPluginVisit(testData.users.adminUsername, testData.users.adminPassword);
 
         //Post Blank Form
         await PostForms.createBlankFormPostForm(testData.postForms.pfPostName1);
@@ -154,17 +149,12 @@ test.describe('TEST :-->', () => {
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(testData.postForms.pfPostName1);
 
-        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
-
     });
 
 
     test('0015:[Post-Forms] Here, Admin is creating a Preset Post Form', async ({page}) => {
-        const BasicLogin = new basicLoginPage(page);
         const PostForms = new postForms(page);
         const FieldOptionsCommon = new fieldOptionsCommon(page);
-
-        await BasicLogin.basicLoginAndPluginVisit(testData.users.adminUsername, testData.users.adminPassword);
 
         //Post Preset Form
         await PostForms.createPresetPostForm(testData.postForms.pfPostName2);
@@ -177,16 +167,12 @@ test.describe('TEST :-->', () => {
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(testData.postForms.pfPostName2);
 
-        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
 
 
     test('0016:[Post-Forms-FE] Here, Admin is creating a Preset Post Form - with Guest Enabled', async ({page}) => {
-        const BasicLogin = new basicLoginPage(page);
         const PostForms = new postForms(page);
         const FieldOptionsCommon = new fieldOptionsCommon(page);
-
-        await BasicLogin.basicLoginAndPluginVisit(testData.users.adminUsername, testData.users.adminPassword);
 
         //For Front-End
         //Create Post Form
@@ -212,7 +198,7 @@ test.describe('TEST :-->', () => {
         const postFormPresetFrontEndTitle = 'FE PostForm';
 
         await SettingsSetup.changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle);
-
+        
     });
 
 

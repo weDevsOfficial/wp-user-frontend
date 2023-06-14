@@ -66,6 +66,7 @@ export class postForms {
         await this.page.click(selectors.postForms.createPreset_PF.clickPresetForm);   
 
         //EnterName
+        await this.page.waitForSelector(selectors.postForms.createBlankForm_PF.editNewFormName); 
         await this.page.click(selectors.postForms.createBlankForm_PF.editNewFormName); 
         await this.page.fill(selectors.postForms.createBlankForm_PF.enterNewFormName, newPostName);   
         await this.page.click(selectors.postForms.createBlankForm_PF.confirmNewNameTickButton); 

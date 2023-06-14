@@ -94,7 +94,12 @@ test.describe('TEST :-->', () => {
 
 
     test('009: Here, Admin is able to Log out succesfully', async ({page}) => {
+        const BasicLogin = new basicLoginPage(page);
         const BasicLogout = new basicLogoutPage(page);
+        
+        //Login
+        await BasicLogin.basicLogin(testData.users.adminUsername, testData.users.adminPassword);
+        //Logout
         await BasicLogout.logOut();
     });
 

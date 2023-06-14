@@ -297,7 +297,8 @@ export class settingsSetup {
         //Allow weak Password
         await this.page.check(selectors.settingsSetup.createNewUser.newUserWeakPasswordAllow);
         //Select Role
-        await this.page.click(selectors.settingsSetup.createNewUser.newUserSelectRole);
+        await this.page.waitForLoadState('domcontentloaded');
+        await expect(await this.page.isVisible(selectors.settingsSetup.createNewUser.newUserSelectRole)).toBeTruthy();
         await this.page.selectOption(selectors.settingsSetup.createNewUser.newUserSelectRole, 'customer');
 
         //Create User

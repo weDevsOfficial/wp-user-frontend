@@ -200,7 +200,7 @@ test.describe('TEST :-->', () => {
         const BasicLogin = new basicLoginPage(page);
         const PostFormsFrontEnd = new postFormsFrontEnd(page);
 
-        await BasicLogin.basicLogin('TestUser0001@yopmai.com', 'Test@1234')
+        await BasicLogin.basicLogin('TestUser0001@yopmail.com', 'Test@1234')
         //Complete Post from FrontEnd
         await PostFormsFrontEnd.createPostFormFrontEnd();
         //Validate Submitted Post

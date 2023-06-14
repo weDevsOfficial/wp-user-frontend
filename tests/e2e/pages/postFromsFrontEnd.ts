@@ -74,12 +74,12 @@ export class postFormsFrontEnd {
 
     //Validate in Admin - Registered Form Submitted
     async validatePostFormCreatedFrontend() {
-        //Go to Accounts page - FrontEnd
-        const wpufRegistrationFormFage = testData.urls.baseUrl + '/account/';
+        //Go to FrontEnd
         await Promise.all([
-            this.page.goto(wpufRegistrationFormFage, { waitUntil: 'networkidle' }),
+            this.page.goto(testData.urls.baseUrl, { waitUntil: 'networkidle' }),
         ]);
-
+        //Click Accounts
+        await this.page.click('//a[contains(text(), "Account")]');
         //Click Post
         await this.page.click('//a[contains(text(),"Posts")]');
         //Validate First Item in List

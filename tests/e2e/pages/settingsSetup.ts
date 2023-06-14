@@ -298,10 +298,13 @@ export class settingsSetup {
         await this.page.check(selectors.settingsSetup.createNewUser.newUserWeakPasswordAllow);
         //Select Role
         await this.page.waitForSelector(selectors.settingsSetup.createNewUser.newUserSelectRole);
+        await this.page.waitForNavigation(); // Wait for any potential page navigation
         await this.page.selectOption(selectors.settingsSetup.createNewUser.newUserSelectRole, 'customer');
+
         //Create User
         await this.page.click(selectors.settingsSetup.createNewUser.newUserSubmit);
-    
     };
+
+
 
 }

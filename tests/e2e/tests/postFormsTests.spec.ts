@@ -57,7 +57,6 @@ test.describe('TEST :-->', () => {
         await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName1);
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(testData.postForms.pfPostName1);
-
     });
 
 
@@ -77,7 +76,6 @@ test.describe('TEST :-->', () => {
         await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName2);
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(testData.postForms.pfPostName2);
-
     });
 
 
@@ -98,7 +96,6 @@ test.describe('TEST :-->', () => {
         await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName3);
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(testData.postForms.pfPostName3);
-
     });
 
 
@@ -120,7 +117,6 @@ test.describe('TEST :-->', () => {
         await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName4);
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(testData.postForms.pfPostName4);
-
     });
 
 
@@ -148,7 +144,6 @@ test.describe('TEST :-->', () => {
         await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName1);
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(testData.postForms.pfPostName1);
-
     });
 
 
@@ -166,7 +161,6 @@ test.describe('TEST :-->', () => {
         await FieldOptionsCommon.saveForm_Common(testData.postForms.pfPostName2);
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(testData.postForms.pfPostName2);
-
     });
 
 
@@ -187,7 +181,6 @@ test.describe('TEST :-->', () => {
         await FieldOptionsCommon.saveForm_Common(postFormPresetFrontEnd);
         //Validate
         await FieldOptionsCommon.validatePostFormCreated(postFormPresetFrontEnd);
-
     });
 
 
@@ -199,6 +192,7 @@ test.describe('TEST :-->', () => {
 
         await SettingsSetup.changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle);
         
+        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });
 
 
@@ -211,9 +205,9 @@ test.describe('TEST :-->', () => {
         await PostFormsFrontEnd.createPostFormFrontEnd();
         //Validate Submitted Post
         await PostFormsFrontEnd.validatePostFormCreatedFrontend();
-
     });
 
+    
 });
 
 

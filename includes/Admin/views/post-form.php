@@ -1,3 +1,3 @@
 <div class="wrap">
-    <?php do_action( 'wpuf-admin-form-builder' ); ?>
+    <?php do_action( 'wpuf_admin_form_builder' ); ?>
 </div>

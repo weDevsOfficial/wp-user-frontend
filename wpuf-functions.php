@@ -2035,7 +2035,7 @@ function wpuf_get_pro_form_previews() {
  * @return array|string
  */
 function wpuf_get_countries( $type = 'array' ) {
-    $countries = include __DIR__ . '/includes/countries-formated.php';
+    $countries = include WPUF_ROOT . '/includes/Data/countries-formated.php';
 
     if ( 'json' === $type ) {
         $countries = json_encode( $countries );
@@ -4364,7 +4364,9 @@ function wpuf_unset_conditional( $settings ) {
                     }
                 );
 
-                unset( $field['settings'][ array_keys( $index )[0] ] );
+                if ( ! empty( $index ) ) {
+                    unset( $field['settings'][ array_keys( $index )[0] ] );
+                }
             }
 
             return $field;

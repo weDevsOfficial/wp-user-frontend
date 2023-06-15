@@ -47,7 +47,7 @@ class Admin_Form_Builder {
             add_action( 'admin_print_scripts', [ $this, 'admin_print_scripts' ] );
             add_action( 'admin_footer', [ $this, 'custom_dequeue' ] );
             add_action( 'admin_footer', [ $this, 'admin_footer' ] );
-            add_action( 'wpuf-admin-form-builder', [ $this, 'include_form_builder' ] );
+            add_action( 'wpuf_admin_form_builder', [ $this, 'include_form_builder' ] );
         }
     }
 
@@ -117,7 +117,7 @@ class Admin_Form_Builder {
         wp_enqueue_script( 'password-strength-meter' );
         // wp_enqueue_script( 'wpuf-subscriptions' );
         $form_builder_js_deps = apply_filters(
-            'wpuf-form-builder-js-deps',
+            'wpuf_form_builder_js_deps',
             [
                 'jquery',
                 'jquery-ui-sortable',
@@ -160,6 +160,9 @@ class Admin_Form_Builder {
         do_action( 'wpuf_form_builder_enqueue_after_mixins' );
 
         wp_enqueue_script( 'wpuf-form-builder-components' );
+
+        do_action( 'wpuf_form_builder_enqueue_after_components' );
+
         wp_enqueue_script( 'wpuf-form-builder' );
         wp_enqueue_script( 'wp-color-picker' );
 
@@ -200,10 +203,10 @@ class Admin_Form_Builder {
         );
         // mixins
         $wpuf_mixins = [
-            'root'          => apply_filters( 'wpuf-form-builder-js-root-mixins', [] ),
-            'builder_stage' => apply_filters( 'wpuf-form-builder-js-builder-stage-mixins', [] ),
-            'form_fields'   => apply_filters( 'wpuf-form-builder-js-form-fields-mixins', [] ),
-            'field_options' => apply_filters( 'wpuf-form-builder-js-field-options-mixins', [] ),
+            'root'          => apply_filters( 'wpuf_form_builder_js_root_mixins', [] ),
+            'builder_stage' => apply_filters( 'wpuf_form_builder_js_builder_stage_mixins', [] ),
+            'form_fields'   => apply_filters( 'wpuf_form_builder_js_form_fields_mixins', [] ),
+            'field_options' => apply_filters( 'wpuf_form_builder_js_field_options_mixins', [] ),
         ];
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_mixins', $wpuf_mixins );
     }
@@ -253,7 +256,7 @@ class Admin_Form_Builder {
     public function admin_footer() {
         // get all vue component names
         include WPUF_ROOT . '/assets/js-templates/form-components.php';
-        do_action( 'wpuf-form-builder-add-js-templates' );
+        do_action( 'wpuf_form_builder_add_js_templates' );
     }
 
     /**
@@ -298,27 +301,30 @@ class Admin_Form_Builder {
      * @return array
      */
     private function i18n() {
-        return apply_filters( 'wpuf-form-builder-i18n', [
-            'advanced_options'      => __( 'Advanced Options', 'wp-user-frontend' ),
-            'delete_field_warn_msg' => __( 'Are you sure you want to delete this field?', 'wp-user-frontend' ),
-            'yes_delete_it'         => __( 'Yes, delete it', 'wp-user-frontend' ),
-            'no_cancel_it'          => __( 'No, cancel it', 'wp-user-frontend' ),
-            'ok'                    => __( 'OK', 'wp-user-frontend' ),
-            'cancel'                => __( 'Cancel', 'wp-user-frontend' ),
-            'close'                 => __( 'Close', 'wp-user-frontend' ),
-            'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wp-user-frontend' ),
-            'option'                => __( 'Option', 'wp-user-frontend' ),
-            'column'                => __( 'Column', 'wp-user-frontend' ),
-            'last_column_warn_msg'  => __( 'This field must contain at least one column', 'wp-user-frontend' ),
-            'is_a_pro_feature'      => __( 'is available in Pro version', 'wp-user-frontend' ),
-            'pro_feature_msg'       => __( 'Please upgrade to the Pro version to unlock all these awesome features',
-                                           'wp-user-frontend' ),
-            'upgrade_to_pro'        => __( 'Get the Pro version', 'wp-user-frontend' ),
-            'select'                => __( 'Select', 'wp-user-frontend' ),
-            'saved_form_data'       => __( 'Saved form data', 'wp-user-frontend' ),
-            'unsaved_changes'       => __( 'You have unsaved changes.', 'wp-user-frontend' ),
-            'copy_shortcode'        => __( 'Click to copy shortcode', 'wp-user-frontend' ),
-        ] );
+        return apply_filters(
+            'wpuf_form_builder_i18n', [
+                'advanced_options'      => __( 'Advanced Options', 'wp-user-frontend' ),
+                'delete_field_warn_msg' => __( 'Are you sure you want to delete this field?', 'wp-user-frontend' ),
+                'yes_delete_it'         => __( 'Yes, delete it', 'wp-user-frontend' ),
+                'no_cancel_it'          => __( 'No, cancel it', 'wp-user-frontend' ),
+                'ok'                    => __( 'OK', 'wp-user-frontend' ),
+                'cancel'                => __( 'Cancel', 'wp-user-frontend' ),
+                'close'                 => __( 'Close', 'wp-user-frontend' ),
+                'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wp-user-frontend' ),
+                'option'                => __( 'Option', 'wp-user-frontend' ),
+                'column'                => __( 'Column', 'wp-user-frontend' ),
+                'last_column_warn_msg'  => __( 'This field must contain at least one column', 'wp-user-frontend' ),
+                'is_a_pro_feature'      => __( 'is available in Pro version', 'wp-user-frontend' ),
+                'pro_feature_msg'       => __(
+                    'Please upgrade to the Pro version to unlock all these awesome features', 'wp-user-frontend'
+                ),
+                'upgrade_to_pro'        => __( 'Get the Pro version', 'wp-user-frontend' ),
+                'select'                => __( 'Select', 'wp-user-frontend' ),
+                'saved_form_data'       => __( 'Saved form data', 'wp-user-frontend' ),
+                'unsaved_changes'       => __( 'You have unsaved changes.', 'wp-user-frontend' ),
+                'copy_shortcode'        => __( 'Click to copy shortcode', 'wp-user-frontend' ),
+            ]
+        );
     }
 
     /**

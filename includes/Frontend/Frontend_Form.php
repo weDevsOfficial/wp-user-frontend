@@ -28,7 +28,7 @@ class Frontend_Form extends Frontend_Render_Form {
      * @return
      **/
     public function edit_post_shortcode( $atts ) {
-        add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
+        add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
         // @codingStandardsIgnoreStart
         extract( shortcode_atts( [ 'id' => 0 ], $atts ) );
 
@@ -159,7 +159,7 @@ class Frontend_Form extends Frontend_Render_Form {
      */
     public function draft_post() {
         check_ajax_referer( 'wpuf_form_add' );
-        add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
+        add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
         $form_id             = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0;
@@ -285,7 +285,7 @@ class Frontend_Form extends Frontend_Render_Form {
     */
 
     public function add_post_shortcode( $atts ) {
-        add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
+        add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
 
         // @codingStandardsIgnoreStart
         extract( shortcode_atts( [ 'id' => 0 ], $atts ) );

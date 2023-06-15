@@ -159,14 +159,14 @@ class Admin_Form {
             add_action( 'wpuf-form-builder-settings-tab-contents-post', [ $this, 'add_settings_tab_contents' ] );
             add_filter( 'wpuf-form-fields-section-before', [ $this, 'add_post_field_section' ] );
 
-            add_action( 'wpuf-form-builder-js-deps', [ $this, 'js_dependencies' ] );
-            add_filter( 'wpuf-form-builder-js-root-mixins', [ $this, 'js_root_mixins' ] );
-            add_filter( 'wpuf-form-builder-js-builder-stage-mixins', [ $this, 'js_builder_stage_mixins' ] );
-            add_filter( 'wpuf-form-builder-js-field-options-mixins', [ $this, 'js_field_options_mixins' ] );
+            add_filter( 'wpuf_form_builder_js_deps', [ $this, 'js_dependencies' ] );
+            add_filter( 'wpuf_form_builder_js_root_mixins', [ $this, 'js_root_mixins' ] );
+            add_filter( 'wpuf_form_builder_js_builder_stage_mixins', [ $this, 'js_builder_stage_mixins' ] );
+            add_filter( 'wpuf_form_builder_js_field_options_mixins', [ $this, 'js_field_options_mixins' ] );
             add_action( 'wpuf-form-builder-template-builder-stage-submit-area', [ $this, 'add_form_submit_area' ] );
-            add_action( 'wpuf_form_builder_localize_script', [ $this, 'add_to_localize_script' ] );
-            add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
-            add_filter( 'wpuf-form-builder-i18n', [ $this, 'i18n' ] );
+            add_filter( 'wpuf_form_builder_localize_script', [ $this, 'add_to_localize_script' ] );
+            add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
+            add_filter( 'wpuf_form_builder_i18n', [ $this, 'i18n' ] );
 
             do_action( 'wpuf_form_builder_init_type_wpuf_forms' );
 
@@ -380,7 +380,7 @@ class Admin_Form {
     public function js_dependencies( $deps ) {
         $deps[] = 'wpuf-form-builder-wpuf-forms';
 
-        return apply_filters( 'wpuf-form-builder-wpuf-forms-js-deps', $deps );
+        return apply_filters( 'wpuf_form_builder_wpuf_forms_js_deps', $deps );
     }
 
     /**

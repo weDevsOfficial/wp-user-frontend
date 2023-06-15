@@ -13,6 +13,8 @@ class Assets {
     /**
      * Suffix for the scripts. add `.min` if we are in production
      *
+     * @since WPUF_SINCE
+     *
      * @var string
      */
     protected $suffix;
@@ -20,6 +22,8 @@ class Assets {
 
     /**
      * The css dependencies list for form builder
+     *
+     * @since WPUF_SINCE
      *
      * @var array|mixed|null
      */
@@ -45,6 +49,8 @@ class Assets {
     /**
      * Register all the css and js from here
      *
+     * @since WPUF_SINCE
+     *
      * @return void
      */
     public function register_all_scripts() {
@@ -58,6 +64,8 @@ class Assets {
 
     /**
      * Register the CSS from here. Need to define the JS first from get_styles()
+     *
+     * @since WPUF_SINCE
      *
      * @return void
      */
@@ -74,13 +82,15 @@ class Assets {
     /**
      * Register the JS from here. Need to define the JS first from get_scripts()
      *
+     * @since WPUF_SINCE
+     *
      * @return void
      */
     public function register_scripts( $scripts ) {
         foreach ( $scripts as $handle => $script ) {
-            $deps      = isset( $script['deps'] ) ? $script['deps'] : [];
-            $in_footer = isset( $script['in_footer'] ) ? $script['in_footer'] : true;
-            $version   = isset( $script['version'] ) ? $script['version'] : WPUF_VERSION;
+            $deps      = ! empty( $script['deps'] ) ? $script['deps'] : [];
+            $in_footer = ! empty( $script['in_footer'] ) ? $script['in_footer'] : true;
+            $version   = ! empty( $script['version'] ) ? $script['version'] : WPUF_VERSION;
 
             wp_register_script( 'wpuf-' . $handle, $script['src'], $deps, $version, $in_footer );
         }
@@ -88,6 +98,8 @@ class Assets {
 
     /**
      * Returns the list of styles
+     *
+     * @since WPUF_SINCE
      *
      * @return mixed|null
      */
@@ -166,6 +178,8 @@ class Assets {
 
     /**
      * Returns the list of JS
+     *
+     * @since WPUF_SINCE
      *
      * @return mixed|null
      */

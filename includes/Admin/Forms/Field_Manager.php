@@ -163,7 +163,7 @@ class Field_Manager {
             'recaptcha'           => new Form_Field_reCaptcha(),
             'featured_image'      => new Form_Field_Featured_Image(),
         ];
-        $this->fields = apply_filters( 'wpuf-form-fields', $fields );
+        $this->fields = apply_filters( 'wpuf_form_fields', $fields );
     }
 
     /**

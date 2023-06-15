@@ -44,7 +44,7 @@ class Free_Loader extends Pro_Prompt {
         add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );
         add_filter( 'wpuf_settings_fields', [ $this, 'pro_settings' ] );
         // post form templates
-        add_action( 'wpuf_get_post_form_templates', [ $this, 'post_form_templates' ] );
+        add_filter( 'wpuf_get_post_form_templates', [ $this, 'post_form_templates' ] );
         add_filter( 'wpuf_get_pro_form_previews', [ $this, 'pro_form_previews' ] );
 
         // payment gateway added for previewing

@@ -163,7 +163,6 @@ class Admin_Form {
             add_filter( 'wpuf_form_builder_js_root_mixins', [ $this, 'js_root_mixins' ] );
             add_filter( 'wpuf_form_builder_js_builder_stage_mixins', [ $this, 'js_builder_stage_mixins' ] );
             add_filter( 'wpuf_form_builder_js_field_options_mixins', [ $this, 'js_field_options_mixins' ] );
-            add_action( 'wpuf-form-builder-template-builder-stage-submit-area', [ $this, 'add_form_submit_area' ] );
             add_filter( 'wpuf_form_builder_localize_script', [ $this, 'add_to_localize_script' ] );
             add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
             add_filter( 'wpuf_form_builder_i18n', [ $this, 'i18n' ] );
@@ -182,6 +181,75 @@ class Admin_Form {
 
             wpuf()->add_to_container( 'form_builder', $form_builder );
         }
+    }
+
+    /**
+     * Add settings tabs
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function add_settings_tab_contents() {
+        global $post;
+
+        $form_settings = wpuf_get_form_settings( $post->ID );
+        ?>
+
+        <div id="wpuf-metabox-settings" class="group">
+            <?php include_once WPUF_ROOT . '/admin/html/form-settings-post.php'; ?>
+        </div>
+
+        <div id="wpuf-metabox-settings-update" class="group">
+            <?php include_once WPUF_ROOT . '/admin/html/form-settings-post-edit.php'; ?>
+        </div>
+
+        <div id="wpuf-metabox-submission-restriction" class="group">
+            <?php include_once WPUF_ROOT . '/admin/html/form-submission-restriction.php'; ?>
+        </div>
+
+        <div id="wpuf-metabox-settings-payment" class="group">
+            <?php include_once WPUF_ROOT . '/admin/html/form-settings-payment.php'; ?>
+        </div>
+
+        <div id="wpuf-metabox-settings-display" class="group">
+            <?php include_once WPUF_ROOT . '/admin/html/form-settings-display.php'; ?>
+        </div>
+
+        <div id="wpuf-metabox-post_expiration" class="group wpuf-metabox-post_expiration">
+            <?php wpuf()->admin_form->form_post_expiration(); ?>
+        </div>
+
+        <?php do_action( 'wpuf_post_form_tab_content' ); ?>
+
+        <?php
+    }
+
+    /**
+     * Add settings tabs
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function add_settings_tabs() {
+        ?>
+
+        <a href="#wpuf-metabox-settings" class="nav-tab"><?php esc_html_e( 'Post Settings', 'wp-user-frontend' ); ?></a>
+        <a href="#wpuf-metabox-settings-update" class="nav-tab"><?php esc_html_e( 'Edit Settings',
+                'wp-user-frontend' ); ?></a>
+        <a href="#wpuf-metabox-submission-restriction" class="nav-tab"><?php esc_html_e( 'Submission Restriction',
+                'wp-user-frontend' ); ?></a>
+        <a href="#wpuf-metabox-settings-payment" class="nav-tab"><?php esc_html_e( 'Payment Settings',
+                'wp-user-frontend' ); ?></a>
+        <a href="#wpuf-metabox-settings-display" class="nav-tab"><?php esc_html_e( 'Display Settings',
+                'wp-user-frontend' ); ?></a>
+        <a href="#wpuf-metabox-post_expiration" class="nav-tab"><?php esc_html_e( 'Post Expiration',
+                'wp-user-frontend' ); ?></a>
+
+        <?php do_action( 'wpuf_post_form_tab' ); ?>
+
+        <?php
     }
 
     /**
@@ -214,74 +282,6 @@ class Admin_Form {
         <div id="wpuf-form-builder-notification" class="group">
             <?php do_action( 'wpuf_form_settings_post_notification' ); ?>
         </div><!-- #wpuf-form-builder-notification -->
-
-        <?php
-    }
-
-    /**
-     * Add settings tabs
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function add_settings_tabs() {
-        ?>
-
-        <a href="#wpuf-metabox-settings" class="nav-tab"><?php esc_html_e( 'Post Settings', 'wp-user-frontend' ); ?></a>
-        <a href="#wpuf-metabox-settings-update" class="nav-tab"><?php esc_html_e( 'Edit Settings',
-                                                                                  'wp-user-frontend' ); ?></a>
-        <a href="#wpuf-metabox-submission-restriction" class="nav-tab"><?php esc_html_e( 'Submission Restriction',
-                                                                                         'wp-user-frontend' ); ?></a>
-        <a href="#wpuf-metabox-settings-payment" class="nav-tab"><?php esc_html_e( 'Payment Settings',
-                                                                                   'wp-user-frontend' ); ?></a>
-        <a href="#wpuf-metabox-settings-display" class="nav-tab"><?php esc_html_e( 'Display Settings',
-                                                                                   'wp-user-frontend' ); ?></a>
-        <a href="#wpuf-metabox-post_expiration" class="nav-tab"><?php esc_html_e( 'Post Expiration',
-                                                                                  'wp-user-frontend' ); ?></a>
-
-        <?php do_action( 'wpuf_post_form_tab' ); ?>
-
-        <?php
-    }
-
-    /**
-     * Add settings tabs
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function add_settings_tab_contents() {
-        global $post;
-        $form_settings = wpuf_get_form_settings( $post->ID );
-        ?>
-
-        <div id="wpuf-metabox-settings" class="group">
-            <?php include_once WPUF_ROOT . '/admin/html/form-settings-post.php'; ?>
-        </div>
-
-        <div id="wpuf-metabox-settings-update" class="group">
-            <?php include_once WPUF_ROOT . '/admin/html/form-settings-post-edit.php'; ?>
-        </div>
-
-        <div id="wpuf-metabox-submission-restriction" class="group">
-            <?php include_once WPUF_ROOT . '/admin/html/form-submission-restriction.php'; ?>
-        </div>
-
-        <div id="wpuf-metabox-settings-payment" class="group">
-            <?php include_once WPUF_ROOT . '/admin/html/form-settings-payment.php'; ?>
-        </div>
-
-        <div id="wpuf-metabox-settings-display" class="group">
-            <?php include_once WPUF_ROOT . '/admin/html/form-settings-display.php'; ?>
-        </div>
-
-        <div id="wpuf-metabox-post_expiration" class="group wpuf-metabox-post_expiration">
-            <?php $this->form_post_expiration(); ?>
-        </div>
-
-        <?php do_action( 'wpuf_post_form_tab_content' ); ?>
 
         <?php
     }
@@ -426,29 +426,6 @@ class Admin_Form {
         array_push( $mixins, 'wpuf_forms_mixin_field_options' );
 
         return $mixins;
-    }
-
-    /**
-     * Add buttons in form submit area
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function add_form_submit_area() {
-        ?>
-        <input @click.prevent="" type="submit" name="submit" :value="post_form_settings.submit_text">
-
-        <a
-            v-if="post_form_settings.draft_post"
-            @click.prevent=""
-            href="#"
-            class="btn"
-            id="wpuf-post-draft"
-        >
-            <?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?>
-        </a>
-        <?php
     }
 
     /**

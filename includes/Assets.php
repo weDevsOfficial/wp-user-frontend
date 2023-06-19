@@ -41,6 +41,7 @@ class Assets {
                 'wpuf-selectize',
                 'wpuf-toastr',
                 'wpuf-tooltip',
+                'buttons',
             ]
         );
         add_action( 'init', [ $this, 'register_all_scripts' ] );

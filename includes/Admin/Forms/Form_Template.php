@@ -1,13 +1,13 @@
 <?php
 
-namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
+namespace WeDevs\Wpuf\Admin\Forms;
 
 /**
  * Post form template
  *
  * @since 2.4
  */
-abstract class Post_Form_Template {
+abstract class Form_Template {
 
     /**
      * If the form is enabled

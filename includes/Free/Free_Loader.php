@@ -146,9 +146,6 @@ class Free_Loader extends Pro_Prompt {
     public function admin_reg_forms_page() {
         $file_location = __DIR__ . '/templates/page-registration-form.php';
 
-        // wp_enqueue_style( 'wpuf-registration-forms', WPUF_ASSET_URI . '/css/registration-forms.css', [], WPUF_VERSION );
-        // wp_enqueue_script( 'wpuf-registration-forms', WPUF_ASSET_URI . '/js/registration-forms.js', [ 'jquery' ], WPUF_VERSION );
-
         if ( file_exists( $file_location ) ) {
             include $file_location;
         }

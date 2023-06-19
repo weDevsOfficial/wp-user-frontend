@@ -3,6 +3,7 @@
 namespace WeDevs\Wpuf\Admin\Forms;
 
 use WeDevs\Wpuf\Admin\Forms;
+use WeDevs\Wpuf\Pro\Admin\List_Table_Profile_Forms;
 
 class Admin_Form_Handler {
 
@@ -201,7 +202,7 @@ class Admin_Form_Handler {
             wp_die( esc_html( __( 'You do not have sufficient permissions to do this action', 'wp-user-frontend' ) ) );
         }
 
-        $profile_forms = new WPUF_Admin_Profile_Forms_List_Table();
+        $profile_forms = new List_Table_Profile_Forms();
         $action        = $profile_forms->current_action();
 
         if ( $action ) {

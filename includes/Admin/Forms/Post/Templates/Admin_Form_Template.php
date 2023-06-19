@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 
+use WeDevs\Wpuf\Admin\Forms\Form_Template;
+
 /**
  * Admin form template handler
  *
@@ -113,7 +115,7 @@ class Admin_Form_Template {
      *
      * @param string $template
      *
-     * @return bool|Post_Form_Template
+     * @return bool|Form_Template
      */
     public function get_template_object( $template ) {
         $registry = wpuf_get_post_form_templates();
@@ -124,7 +126,7 @@ class Admin_Form_Template {
 
         $template_object = $registry[ $template ];
 
-        if ( ! is_a( $template_object, 'WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template' ) ) {
+        if ( ! is_a( $template_object, 'WeDevs\Wpuf\Admin\Forms\Form_Template' ) ) {
             return false;
         }
 

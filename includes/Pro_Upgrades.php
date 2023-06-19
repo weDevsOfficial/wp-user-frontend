@@ -15,8 +15,8 @@ class Pro_Upgrades {
         // form fields
         add_filter( 'wpuf_field_get_js_settings', [ $this, 'add_conditional_field_prompt' ] );
         add_filter( 'wpuf_form_fields', [ $this, 'register_pro_fields' ] );
-        add_filter( 'wpuf-form-fields-custom-fields', [ $this, 'add_to_custom_fields' ] );
-        add_filter( 'wpuf-form-fields-others-fields', [ $this, 'add_to_others_fields' ] );
+        add_filter( 'wpuf_form_fields_custom_fields', [ $this, 'add_to_custom_fields' ] );
+        add_filter( 'wpuf_form_fields_others_fields', [ $this, 'add_to_others_fields' ] );
     }
 
     /**

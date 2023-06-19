@@ -2,10 +2,12 @@
 
 namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 
+use WeDevs\Wpuf\Admin\Forms\Form_Template;
+
 /**
  * Normal post form
  */
-class Post_Form_Template_Post extends Post_Form_Template {
+class Post_Form_Template_Post extends Form_Template {
 
     public function __construct() {
         parent::__construct();

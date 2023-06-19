@@ -2,12 +2,14 @@
 
 namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 
+use WeDevs\Wpuf\Admin\Forms\Form_Template;
+
 /**
  * The Events Calendar Integration Template
  *
  * @since 2.9
  */
-class Post_Form_Template_Events_Calendar extends Post_Form_Template{
+class Post_Form_Template_Events_Calendar extends Form_Template{
 
     public function __construct() {
         parent::__construct();

@@ -69,12 +69,12 @@ class Menu {
         do_action( 'wpuf_admin_menu_bottom' );
 
         if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
-            $premium_hook = add_submenu_page( 'wp-user-frontend', __( 'Premium', 'wp-user-frontend' ), __( 'Premium', 'wp-user-frontend' ), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
+            $premium_hook = add_submenu_page( $this->parent_slug, __( 'Premium', 'wp-user-frontend' ), __( 'Premium', 'wp-user-frontend' ), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
 
             $this->all_submenu_hooks['premium'] = $premium_hook;
         }
 
-        $help_hook = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wp-user-frontend' ), sprintf( '<span style="color:#f18500">%s</span>', __( 'Help', 'wp-user-frontend' ) ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
+        $help_hook = add_submenu_page( $this->parent_slug, __( 'Help', 'wp-user-frontend' ), sprintf( '<span style="color:#f18500">%s</span>', __( 'Help', 'wp-user-frontend' ) ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
         $this->all_submenu_hooks['help'] = $help_hook;
 
         add_action( 'load-' . $help_hook, [ $this, 'enqueue_help_script' ] );
@@ -85,7 +85,7 @@ class Menu {
 
         $this->all_submenu_hooks['subscribers_hook'] = $subscribers_page_hook;
 
-        $settings_page_hook = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wp-user-frontend' ), __( 'Settings', 'wp-user-frontend' ), $capability, 'wpuf-settings', [ $this, 'plugin_settings_page' ] );
+        $settings_page_hook = add_submenu_page( $this->parent_slug, __( 'Settings', 'wp-user-frontend' ), __( 'Settings', 'wp-user-frontend' ), $capability, 'wpuf-settings', [ $this, 'plugin_settings_page' ] );
 
         $this->all_submenu_hooks['settings_hook'] = $settings_page_hook;
 

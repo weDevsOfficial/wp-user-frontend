@@ -84,12 +84,6 @@ class Field_Manager {
      */
     public function add_field_settings( $field_settings ) {
         if ( class_exists( 'WeDevs\Wpuf\Fields\Field_Contract' ) ) {
-//            require_once WPUF_ROOT . '/includes/fields/class-field-post-title.php';
-//            require_once WPUF_ROOT . '/includes/fields/class-field-post-content.php';
-//            require_once WPUF_ROOT . '/includes/fields/class-field-post-tags.php';
-//            require_once WPUF_ROOT . '/includes/fields/class-field-post-excerpt.php';
-//            require_once WPUF_ROOT . '/includes/fields/class-field-post-taxonomy.php';
-//            require_once WPUF_ROOT . '/includes/fields/class-field-featured-image.php';
             $field_settings['post_title']     = new Form_Field_Post_Title();
             $field_settings['post_content']   = new Form_Field_Post_Content();
             $field_settings['post_excerpt']   = new Form_Field_Post_Excerpt();
@@ -122,26 +116,6 @@ class Field_Manager {
      * @return void
      */
     private function register_field_types() {
-        // require_once WPUF_INCLUDES . '/fields/class-abstract-fields.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-post-title.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-post-tags.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-post-taxonomy.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-post-content.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-text.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-email.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-textarea.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-checkbox.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-radio.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-dropdown.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-multidropdown.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-url.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-column.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-sectionbreak.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-html.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-hidden.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-image.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-recaptcha.php';
-//        require_once WPUF_INCLUDES . '/fields/class-field-featured-image.php';
         $fields = [
             'post_title'          => new Form_Field_Post_Title(),
             'post_content'        => new Form_Field_Post_Content(),
@@ -172,10 +146,10 @@ class Field_Manager {
      * @return array
      */
     public function get_field_groups() {
-        $before_custom_fields = apply_filters( 'wpuf-form-fields-section-before', [] );
+        $before_custom_fields = apply_filters( 'wpuf_form_fields_section_before', [] );
         $groups               = array_merge( $before_custom_fields, $this->get_custom_fields() );
         $groups               = array_merge( $groups, $this->get_others_fields() );
-        $after_custom_fields  = apply_filters( 'wpuf-form-fields-section-after', [] );
+        $after_custom_fields  = apply_filters( 'wpuf_form_fields_section_after', [] );
         $groups               = array_merge( $groups, $after_custom_fields );
 
         return $groups;
@@ -190,18 +164,21 @@ class Field_Manager {
      */
     private function get_custom_fields() {
         // $fields = apply_filters( 'wpuf-form-builder-fields-custom-fields', array(
-        $fields = apply_filters( 'wpuf-form-fields-custom-fields', [
-            'text_field',
-            'textarea_field',
-            'dropdown_field',
-            'multiple_select',
-            'radio_field',
-            'checkbox_field',
-            'website_url',
-            'email_address',
-            'custom_hidden_field',
-            'image_upload',
-        ] );
+        $fields = apply_filters(
+            'wpuf_form_fields_custom_fields',
+            [
+                'text_field',
+                'textarea_field',
+                'dropdown_field',
+                'multiple_select',
+                'radio_field',
+                'checkbox_field',
+                'website_url',
+                'email_address',
+                'custom_hidden_field',
+                'image_upload',
+            ]
+        );
 
         return [
             [
@@ -220,12 +197,15 @@ class Field_Manager {
      * @return array
      */
     private function get_others_fields() {
-        $fields = apply_filters( 'wpuf-form-fields-others-fields', [
-            'column_field',
-            'section_break',
-            'custom_html',
-            'recaptcha',
-        ] );
+        $fields = apply_filters(
+            'wpuf_form_fields_others_fields',
+            [
+                'column_field',
+                'section_break',
+                'custom_html',
+                'recaptcha',
+            ]
+        );
 
         return [
             [

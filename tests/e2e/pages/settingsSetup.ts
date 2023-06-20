@@ -1,7 +1,7 @@
 require('dotenv').config();
 import { expect, Page } from '@playwright/test';
 import { selectors } from './selectors';
-import { testData } from '../utils/testData'
+import { testData } from '../utils/testData';
 
 export class settingsSetup {
     readonly page: Page;

@@ -2,8 +2,8 @@ require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
 import { basicLoginPage } from '../pages/basicLogin';
 import { postForms } from '../pages/postForms';
-import { fieldOptionsCommon } from '../pages/fieldOptionsCommon'
-import { postFormsFrontend } from '../pages/postFromsFrontend'
+import { fieldOptionsCommon } from '../pages/fieldOptionsCommon';
+import { postFormsFrontend } from '../pages/postFromsFrontend';
 import { settingsSetup } from '../pages/settingsSetup';
 import { testData } from '../utils/testData';
 
@@ -169,17 +169,17 @@ test.describe('TEST :-->', () => {
 
         //For Front-End
         //Create Post Form
-        const postFormPresetFrontEndTitle = 'FE PostForm';
+        const postFormPresetFrontendTitle = 'FE PostForm';
         //Post Preset Form
-        await PostForms.createPresetPostFormWithGuestEnabled(postFormPresetFrontEndTitle);
+        await PostForms.createPresetPostFormWithGuestEnabled(postFormPresetFrontendTitle);
         //Validate
         await FieldOptionsCommon.validatePostFields_PF();
         await FieldOptionsCommon.validateTaxonomiesPreset_PF();
 
         //Save
-        await FieldOptionsCommon.saveForm_Common(postFormPresetFrontEndTitle);
+        await FieldOptionsCommon.saveForm_Common(postFormPresetFrontendTitle);
         //Validate
-        await FieldOptionsCommon.validatePostFormCreated(postFormPresetFrontEndTitle);
+        await FieldOptionsCommon.validatePostFormCreated(postFormPresetFrontendTitle);
     });
 
 
@@ -187,9 +187,9 @@ test.describe('TEST :-->', () => {
         const PostForms = new postForms(page);
         const SettingsSetup = new settingsSetup(page);
 
-        const postFormPresetFrontEndTitle = 'FE PostForm - 0001';
+        const postFormPresetFrontendTitle = 'FE PostForm - 0001';
 
-        await SettingsSetup.changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle);
+        await SettingsSetup.changeSettingsSetDefaultPostForm(postFormPresetFrontendTitle);
         
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
     });

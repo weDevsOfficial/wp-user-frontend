@@ -1,7 +1,7 @@
 require('dotenv').config();
 import { expect, Page } from '@playwright/test';
 import { selectors } from './selectors';
-import { settingsSetup } from '../pages/settingsSetup' 
+import { settingsSetup } from '../pages/settingsSetup';
 import { testData } from '../utils/testData';
 
 export class basicLoginPage {

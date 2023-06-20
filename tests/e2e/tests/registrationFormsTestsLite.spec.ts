@@ -2,14 +2,12 @@ require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
 import { basicLoginPage } from '../pages/basicLogin';
 import { registrationForms } from '../pages/registrationForms';
-import { registrationFormsFrontEnd } from '../pages/registrationFormsFrontEnd';
+import { registrationFormsFrontend } from '../pages/registrationFormsFrontEnd';
 import { fieldOptionsCommon } from '../pages/fieldOptionsCommon';
 import { settingsSetup } from '../pages/settingsSetup';
 import { testData } from '../utils/testData';
 
 import * as fs from "fs"; //Clear Cookie
-
-
 
 
 
@@ -31,6 +29,8 @@ test.describe('TEST :-->', () => {
      * 
      *  
      */ 
+
+
     test('0019:[Reg-Forms] Here, Admin is checking Registration Forms - Pro Feature Page', async ({ page }) => {
         const BasicLogin = new basicLoginPage(page);
         const RegistrationFormsLite = new registrationForms(page);
@@ -60,11 +60,11 @@ test.describe('TEST :-->', () => {
 
     
     test('0021:[Reg-Forms] Here, User is registering using - Registration Form', async ({ page }) => {
-        const RegistrationFormsFrontEnd = new registrationFormsFrontEnd(page);
+        const RegistrationFormsFrontend = new registrationFormsFrontend(page);
         
         //FrontEnd
         //Complete FrontEnd Registration
-        await RegistrationFormsFrontEnd.completeUserRegistrationFormFrontEnd();
+        await RegistrationFormsFrontend.completeUserRegistrationFormFrontend();
         
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 
@@ -73,12 +73,12 @@ test.describe('TEST :-->', () => {
 
     test('0022:[Reg-Forms] Here, Admin is validating - Registered user', async ({ page }) => {
         const BasicLogin = new basicLoginPage(page);
-        const RegistrationFormsFrontEnd = new registrationFormsFrontEnd(page);
+        const RegistrationFormsFrontend = new registrationFormsFrontend(page);
         
         await BasicLogin.basicLoginAndPluginVisit(testData.users.adminUsername, testData.users.adminPassword);
 
         //Validate FrontEnd Registered
-        await RegistrationFormsFrontEnd.validateUserRegisteredAdminEnd();
+        await RegistrationFormsFrontend.validateUserRegisteredAdminEnd();
 
         fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 

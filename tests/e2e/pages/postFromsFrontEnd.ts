@@ -8,7 +8,7 @@ import { testData } from '../utils/testData'
  
     //Store data
     //Post Title
-    const postTitle = testData.postForms.pfTitle;
+    // const postTitle = testData.postForms.pfTitle;
     //Post Description
     const postDescription = testData.postForms.pfPostDescription;
     //Excerp
@@ -18,7 +18,7 @@ import { testData } from '../utils/testData'
 
 
 
-export class postFormsFrontEnd {
+export class postFormsFrontend {
     readonly page: Page;
 
     constructor(page: Page) {
@@ -34,7 +34,7 @@ export class postFormsFrontEnd {
 
 
     //Registration forms page - only WPUF-Lite activated
-    async createPostFormFrontEnd() {
+    async createPostFormFrontend(postFormTitle) {
         //Go to Accounts page - FrontEnd
         const wpufRegistrationFormFage = testData.urls.baseUrl + '/account/';
         await Promise.all([
@@ -42,25 +42,25 @@ export class postFormsFrontEnd {
         ]);
 
         //Go to Submit Post
-        await this.page.click('//a[contains(text(),"Submit Post")]');
+        await this.page.click(selectors.postForms.postFormsFrontendCreate.submitPostSideMenu);
 
         //Post Form process
         //Enter Post Title
-        await this.page.fill('//input[@name="post_title"]', postTitle);
+        await this.page.fill(selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postFormTitle);
         //Select Category
-        await this.page.selectOption('//select[@data-type="select"]', {label: 'Uncategorized'});
+        await this.page.selectOption(selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, {label: 'Uncategorized'});
         //Enter Post Description
-        await this.page.frameLocator('//div[contains(@class,"mce-edit-area mce-container")]//iframe[1]')
-            .locator('//body[@id="tinymce"]').fill(postDescription);
+        await this.page.frameLocator(selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postDescription);
 
         //Add Featured Photo
-        await this.page.setInputFiles('(//input[@type="file"])[2]', 'uploadeditems/sample_image.jpeg');
+        await this.page.setInputFiles(selectors.postForms.postFormsFrontendCreate.featuredPhotoFormsFE, 'uploadeditems/sample_image.jpeg');
         //Enter Excerpt
-        await this.page.fill('//textarea[@name="post_excerpt"]', postExcerpt);
+        await this.page.fill(selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
         //Enter Tags
-        await this.page.fill('//input[@name="tags"]', postTags);
+        await this.page.fill(selectors.postForms.postFormsFrontendCreate.postTagsFormsFE, postTags);
         //Create Post
-        await this.page.click('//input[@value="Create Post"]');
+        await this.page.click(selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
 
     };
 
@@ -73,19 +73,19 @@ export class postFormsFrontEnd {
 /******************************************************/
 
     //Validate in Admin - Registered Form Submitted
-    async validatePostFormCreatedFrontend() {
+    async validatePostFormCreatedFrontend(postFormTitle) {
         //Go to FrontEnd
         await Promise.all([
             this.page.goto(testData.urls.baseUrl, { waitUntil: 'networkidle' }),
         ]);
         //Click Accounts
-        await this.page.click('//a[contains(text(), "Account")]');
+        await this.page.click(selectors.postForms.postFormsFrontendValidate.clickAccountsTopMenu);
         //Click Post
-        await this.page.click('//a[contains(text(),"Posts")]');
+        await this.page.click(selectors.postForms.postFormsFrontendValidate.clickPostsSideMenu);
         //Validate First Item in List
-        const validatePostCreated = await this.page.innerText('(//td[@data-label="Title: "])[1]');
+        const validatePostCreated = await this.page.innerText(selectors.postForms.postFormsFrontendValidate.validatePostSubmittedFE);
         //Validate created Post
-        await expect(validatePostCreated).toContain(postTitle);
+        await expect(validatePostCreated).toContain(postFormTitle);
         
     };
 

@@ -109,10 +109,10 @@ export class fieldOptionsCommon {
         //FromPRO
         //RepeatField
         await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsRepeatField);
-        const checkProPopUp = await this.page.isVisible(selectors.postForms.addCustomFields_Common.checkProPopUp);
-            if (checkProPopUp === true) {
-                await this.page.click(selectors.postForms.addCustomFields_Common.checkProPopUp);
-                console.log("WPUF Pro is requred...")
+        const checkProPopUpCloseButton = await this.page.isVisible(selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+            if (checkProPopUpCloseButton === true) {
+                await this.page.click(selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+                console.log("Pro: WPUF Pro is requred...")
             }
             else {
                 //DateTime
@@ -194,7 +194,7 @@ export class fieldOptionsCommon {
             await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateAddressField)).toBeTruthy();
             
             //GoogleMaps        //TODO: Setup required
-                // if(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateGoogleMaps) == true){
+                // if(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateGoogleMaps) === true){
                 //     await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateGoogleMaps)).toBeTruthy();
                 // }
 
@@ -225,10 +225,10 @@ export class fieldOptionsCommon {
 
         //FromPRO
         await this.page.click(selectors.postForms.addOthers_Common.othersShortCode);
-        const checkProPopUp = await this.page.isVisible(selectors.postForms.addCustomFields_Common.checkProPopUp);
-            if (checkProPopUp === true) {
-                await this.page.click(selectors.postForms.addCustomFields_Common.checkProPopUp);
-                console.log("WPUF Pro is requred...")
+        const checkProPopUpCloseButton = await this.page.isVisible(selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+            if (checkProPopUpCloseButton === true) {
+                await this.page.click(selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+                console.log("Pro: WPUF Pro is requred...")
             }
 
             else {
@@ -290,17 +290,17 @@ export class fieldOptionsCommon {
     async setMultiStepSettings_Common() {
         await this.page.waitForLoadState('domcontentloaded');
         //Add Multi-Step-Check
-        await this.page.click(selectors.postForms.formSettings.formEditorSettings);
+        await this.page.click(selectors.postForms.formSettings.clickFormEditorSettings);
         const proTextAlertInSettings = await this.page.isVisible(selectors.postForms.addCustomFields_Common.proTextAlertInSettings);
             if (proTextAlertInSettings === true) {  
-                console.log("WPUF Pro is requred...");
+                console.log("Pro: WPUF Pro is requred...");
             }
             else {
                 await this.page.click(selectors.postForms.formSettings.checkMultiStepOption);
                 expect(await this.page.isChecked(selectors.postForms.formSettings.checkMultiStepOption)).toBeTruthy();
             }
         
-
+        await this.page.click(selectors.postForms.formSettings.clickFormEditor);
         await this.page.waitForLoadState('domcontentloaded');
     };
 
@@ -309,12 +309,15 @@ export class fieldOptionsCommon {
 /********************* SaveForm *********************/
     //SaveForm
     async saveForm_Common(validateNewPostName_Common) {
-        //Finish
-        await this.page.waitForLoadState('domcontentloaded');
-            const checkNewFormName_Common = await this.page.innerText(selectors.postForms.saveForm_Common.formNameReCheck);
-            await expect(checkNewFormName_Common).toContain(validateNewPostName_Common);
-        expect(await this.page.isVisible(selectors.postForms.saveForm_Common.saveFormButton)).toBeTruthy();
+        //Validate Form Name
+        const checkNewFormName_Common = await this.page.innerText(selectors.postForms.saveForm_Common.formNameReCheck);
+        await expect(checkNewFormName_Common).toContain(validateNewPostName_Common);
+        console.log('Before Save-Form Name: ' + checkNewFormName_Common);
+        await this.page.waitForLoadState('networkidle');
+
+        //Save Form
         await this.page.click(selectors.postForms.saveForm_Common.saveFormButton);
+        await this.page.reload();
     };
 
 
@@ -326,15 +329,16 @@ export class fieldOptionsCommon {
     async validatePostFormCreated(validateNewPostName_PF) {
         //Return HOME
         await this.page.click(selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.reload();
         await this.page.waitForLoadState('domcontentloaded');
         
         //ASSERTION > Check if-VALID
         const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(selectors.postForms.navigatePage_PF.checkAddButton_PF);
-        if (checkNewBlankFormCreatedValid_PF == true) {  
+        if (checkNewBlankFormCreatedValid_PF === true) {  
             const checkNewFormCreated_PF = await this.page.innerText(selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF);
             await expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
-            console.log(checkNewFormCreated_PF);
-            console.log(validateNewPostName_PF);
+            console.log('PF Name: ' + checkNewFormCreated_PF);
+            console.log('PF List: ' + validateNewPostName_PF);
         }
     };
 
@@ -400,11 +404,11 @@ export class fieldOptionsCommon {
         
         //ASSERTION > Check if-VALID
         const checkNewBlankFormCreatedValid_RF = await this.page.isVisible(selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
-        if (checkNewBlankFormCreatedValid_RF == true) {  
+        if (checkNewBlankFormCreatedValid_RF === true) {  
             const checkNewFormCreated_RF = await this.page.innerText(selectors.registrationForms.navigatePage_RF.postFormsPageFormTitleCheck_RF);
             await expect(checkNewFormCreated_RF).toContain(validateNewPostName_RF);
-            console.log(checkNewFormCreated_RF);
-            console.log(validateNewPostName_RF);
+            console.log('RF Name: ' + checkNewFormCreated_RF);
+            console.log('PF List: ' + validateNewPostName_RF);
         }
     };
 

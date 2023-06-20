@@ -20,7 +20,7 @@ import { testData } from '../utils/testData'
 
 
 
-export class registrationFormsFrontEnd {
+export class registrationFormsFrontend {
     readonly page: Page;
 
     constructor(page: Page) {
@@ -36,7 +36,7 @@ export class registrationFormsFrontEnd {
 
 
     //Registration forms page - only WPUF-Lite activated
-    async completeUserRegistrationFormFrontEnd() {
+    async completeUserRegistrationFormFrontend() {
         //Go to Registration page - FrontEnd
         const wpufRegistrationFormPage = testData.urls.baseUrl + '/registration-page/';
         await Promise.all([
@@ -45,32 +45,32 @@ export class registrationFormsFrontEnd {
 
         
         //Validate Registration page
-        const validateRegistrationPage = await this.page.innerText(selectors.registrationForms.completeUserRegistrationFormFrontEnd.validateRegistrationPage);
+        const validateRegistrationPage = await this.page.innerText(selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
         await expect(validateRegistrationPage).toContain('Registration Page');
 
         //Enter First Name
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfFirstName, firstName);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, firstName);
 
         //Enter Last Name
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfLastName, lastName);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfLastName, lastName);
 
         //Enter Email
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfEmail, email);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfEmail, email);
 
         //Enter Username
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfUserName, userName);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfUserName, userName);
 
         //Enter Password
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfPassword, password);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfPassword, password);
 
         //Confirm Password
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfConfirmPassword, password);
+        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfConfirmPassword, password);
 
         //Click Register
-        await this.page.click(selectors.registrationForms.completeUserRegistrationFormFrontEnd.rfRegisterButton);
+        await this.page.click(selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
 
         //Validate User logged in
-        await expect(await this.page.locator(selectors.registrationForms.completeUserRegistrationFormFrontEnd.validateRegisteredLogoutButton)).toBeTruthy();
+        await expect(await this.page.locator(selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
 
     };
 

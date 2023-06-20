@@ -13,20 +13,20 @@ import { devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   testDir: './tests',
   /* Maximum time one test can run for. */
-  timeout: 1000 * 40, //40 sec
+  timeout: 1000 * 90, //90 sec
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 1000 * 15, //15 sec
+    timeout: 1000 * 30, //30 sec
   },
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 0 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -50,7 +50,7 @@ const config: PlaywrightTestConfig = {
     // Artifacts
     screenshot: 'only-on-failure',
 
-    video: 'off',
+    video: 'on',
 
     //SlowMo
     launchOptions: {

@@ -17,7 +17,6 @@ export default function loginAndSetupTests() {
 
 
 test.describe('TEST :-->', () => {
-    
 
 /**----------------------------------LOGIN----------------------------------**
      * 
@@ -35,35 +34,35 @@ test.describe('TEST :-->', () => {
      * 
      * 
      *  
-     */ 
-    
+     */
+
     test('001:[Login] Here, Admin is logging into Admin-Dashboard', async ({ page }) => {
         const BasicLogin = new basicLoginPage(page);
         await BasicLogin.basicLogin(testData.users.adminUsername, testData.users.adminPassword);
     });
 
 
-    test('002:[Login] Here, Admin is Completing WPUF setup', async ({ page }) => {
-        const SettingsSetup = new settingsSetup(page);
-        await SettingsSetup.wpufSetup();
-    });
-
-
-    test('003:[Login] Here, Admin is checking Dashboard page reached', async ({ page }) => {
+    test('002:[Login] Here, Admin is checking Dashboard page reached', async ({ page }) => {
         const BasicLogin = new basicLoginPage(page);
         await BasicLogin.validateBasicLogin();
     });
 
 
-    test('004:[Login] Here, Admin is checking Plugin Status - Lite Activation', async ({ page }) => {
+    test('003:[Login] Here, Admin is checking Plugin Status - Lite Activation', async ({ page }) => {
         const SettingsSetup = new settingsSetup(page);
         await SettingsSetup.pluginStatusCheckLite();
     });
 
 
+    test('004:[Login] Here, Admin is Completing WPUF setup', async ({ page }) => {
+        const SettingsSetup = new settingsSetup(page);
+        await SettingsSetup.wpufSetup();
+    });
+
+
     test('005:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
         const SettingsSetup = new settingsSetup(page);
-        await SettingsSetup.pluginVisit();
+        await SettingsSetup.pluginVisitWPUF();
     });
 
 
@@ -83,21 +82,24 @@ test.describe('TEST :-->', () => {
         const SettingsSetup = new settingsSetup(page);
         
         //New User Credentials
-        const username = 'TestUser0001';
-        const email = 'TestUser0001@yopmail.com';
-        const fname = 'Test';
-        const lname = 'User';
-        const password = 'Test@1234';
+        const userName = testData.users.userName;
+        const email = testData.users.userEmail;
+        const firstName = testData.users.userFirstName;
+        const lastName = testData.users.userLastName;
+        const password = testData.users.userPassword;
 
-        await SettingsSetup.createNewUserAdmin(username, email, fname, lname, password);
+        await SettingsSetup.createNewUserAdmin(userName, email, firstName, lastName, password);
     });
 
 
-    test('009: Here, Admin is able to Log out succesfully', async ({page}) => {
+    test('009: Here, Admin is logging out succesfully', async ({page}) => {
         const BasicLogout = new basicLogoutPage(page);
         
         //Logout
         await BasicLogout.logOut();
+
+        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+
     });
 
 

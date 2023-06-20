@@ -68,7 +68,7 @@ export class basicLoginPage {
         await this.page.context().storageState({ path: 'state.json' });
         
         //Redirection to WPUF Home Page
-        await SettingsSetup.pluginVisit();
+        await SettingsSetup.pluginVisitWPUF();
     };
 
     //Validate Login
@@ -100,6 +100,7 @@ export class basicLoginPage {
         await expect(passwordCheck).toBeTruthy();
         await this.page.fill(selectors.login.basicLogin.loginPasswordField, password);
 
+        await this.page.click(selectors.login.basicLogin.rememberMeField);
         const loginButtonCheck = await this.page.isVisible(selectors.login.basicLogin.loginButton);
         await expect(loginButtonCheck).toBeTruthy();
         await this.page.click(selectors.login.basicLogin.loginButton);

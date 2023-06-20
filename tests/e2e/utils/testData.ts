@@ -8,6 +8,13 @@ export interface Urls {
 export interface Users {
     adminUsername: string;
     adminPassword: string;
+
+    //New User Credentials
+    userName: string;
+    userEmail: string;
+    userFirstName: string;
+    userLastName: string;
+    userPassword: string;
 }
 
 export interface PostForm {
@@ -99,7 +106,6 @@ const generateFakerData = () => {
         pfTags,
 
 
-
         //Reg Form Titles
         rfPostName1,
         rfPostName2,
@@ -115,6 +121,7 @@ const generateFakerData = () => {
 
     };
 };
+
 
 
 
@@ -134,6 +141,13 @@ export const testData: Data = {
         //Admin Login
         adminUsername: process.env.QA_ADMIN_USERNAME ? process.env.QA_ADMIN_USERNAME: 'admin',
         adminPassword: process.env.QA_ADMIN_PASSWORD ? process.env.QA_ADMIN_PASSWORD: 'password',
+
+        //New User Credentials
+        userName: process.env.QA_NEW_USERNAME ? process.env.QA_NEW_USERNAME: 'Testuser0001',
+        userEmail: process.env.QA_NEW_USEREMAIL ? process.env.QA_NEW_USEREMAIL: 'Testuser0001@yopmail.com',
+        userFirstName: process.env.QA_NEW_FIRSTNAME ? process.env.QA_NEW_FIRSTNAME: 'Test',
+        userLastName: process.env.QA_NEW_LASTNAME ? process.env.QA_NEW_LASTNAME: 'User',
+        userPassword: process.env.QA_NEW_PASSWORD ? process.env.QA_NEW_PASSWORD: 'Test@1234',
     },
 
 

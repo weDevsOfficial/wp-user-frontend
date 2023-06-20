@@ -1,31 +1,32 @@
-require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
 import loginAndSetupTests from './loginAndSetupTests.spec';
 import postFormsTests from './postFormsTests.spec';
 import registrationFormsTestsLite from './registrationFormsTestsLite.spec';
- 
+import resetWordpressSite from './resetWordpressSite.spec';
 
 
-import { faker } from '@faker-js/faker';
 import * as fs from "fs"; //Clear Cookie
 
 
+//Run ONLY - if needed
+//This Suite resets your Wordpress Site - [Plugin needed: WP Reset] --> [Spec-0]
+fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+test.describe(resetWordpressSite);
 
 
-
-//Test Spec-1
+//Test- Login and Setup --> [Spec-1]
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 test.describe(loginAndSetupTests);
 
 
 
-//Test Spec-2
+//Test- Post Forms + FrontEnd Case --> [Spec-2]
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 test.describe(postFormsTests);
 
 
 
-//Test Spec-3
+//Test- Post Forms + FrontEnd Case --> [Spec-3]
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 test.describe(registrationFormsTestsLite);
 

@@ -3,15 +3,13 @@ import { test, expect, Page } from '@playwright/test';
 import { basicLoginPage } from '../pages/basicLogin';
 import { postForms } from '../pages/postForms';
 import { fieldOptionsCommon } from '../pages/fieldOptionsCommon'
-import { postFormsFrontEnd } from '../pages/postFromsFrontEnd'
+import { postFormsFrontend } from '../pages/postFromsFrontend'
+import { settingsSetup } from '../pages/settingsSetup';
 import { testData } from '../utils/testData';
 
 import * as fs from "fs"; //Clear Cookie
-import { settingsSetup } from '../pages/settingsSetup';
 
 
-
-fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 
 
 
@@ -45,6 +43,7 @@ test.describe('TEST :-->', () => {
         const PostForms = new postForms(page);
         const FieldOptionsCommon = new fieldOptionsCommon(page);
 
+        //Log into Admin Dashboard
         await BasicLogin.basicLoginAndPluginVisit(testData.users.adminUsername, testData.users.adminPassword);
 
         //Post Blank Form
@@ -170,17 +169,17 @@ test.describe('TEST :-->', () => {
 
         //For Front-End
         //Create Post Form
-        const postFormPresetFrontEnd = 'FE PostForm';
+        const postFormPresetFrontEndTitle = 'FE PostForm';
         //Post Preset Form
-        await PostForms.createPresetPostFormWithGuestEnabled(postFormPresetFrontEnd);
+        await PostForms.createPresetPostFormWithGuestEnabled(postFormPresetFrontEndTitle);
         //Validate
         await FieldOptionsCommon.validatePostFields_PF();
         await FieldOptionsCommon.validateTaxonomiesPreset_PF();
 
         //Save
-        await FieldOptionsCommon.saveForm_Common(postFormPresetFrontEnd);
+        await FieldOptionsCommon.saveForm_Common(postFormPresetFrontEndTitle);
         //Validate
-        await FieldOptionsCommon.validatePostFormCreated(postFormPresetFrontEnd);
+        await FieldOptionsCommon.validatePostFormCreated(postFormPresetFrontEndTitle);
     });
 
 
@@ -188,7 +187,7 @@ test.describe('TEST :-->', () => {
         const PostForms = new postForms(page);
         const SettingsSetup = new settingsSetup(page);
 
-        const postFormPresetFrontEndTitle = 'FE PostForm';
+        const postFormPresetFrontEndTitle = 'FE PostForm - 0001';
 
         await SettingsSetup.changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle);
         
@@ -198,14 +197,23 @@ test.describe('TEST :-->', () => {
 
     test('0018:[Post-Forms-FE] Here, Admin is Submitting Form from Frontend', async ({page}) => {
         const BasicLogin = new basicLoginPage(page);
-        const PostFormsFrontEnd = new postFormsFrontEnd(page);
+        const PostFormsFrontend = new postFormsFrontend(page);
 
-        await BasicLogin.basicLogin('TestUser0001@yopmail.com', 'Test@1234')
-        //Complete Post from FrontEnd
-        await PostFormsFrontEnd.createPostFormFrontEnd();
-        //Validate Submitted Post
-        await PostFormsFrontEnd.validatePostFormCreatedFrontend();
+        //New User created Login
+        const newUserEmail = testData.users.userEmail;
+        const newUserPassword = testData.users.userPassword;
+        await BasicLogin.basicLogin(newUserEmail, newUserPassword);
+        
+        //Complete Post from Frontend
+        const postFormTitle = testData.postForms.pfTitle;
+        await PostFormsFrontend.createPostFormFrontend(postFormTitle);
+        //Valdiate Post form created form Frontend
+        await PostFormsFrontend.validatePostFormCreatedFrontend(postFormTitle);
+
+        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+
     });
+
 
     
 });

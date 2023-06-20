@@ -13,6 +13,7 @@ export const selectors = {
             //Login-1
             loginEmailField: '//input[@id="user_login"]',
             loginPasswordField: '//input[@id="user_pass"]',
+            rememberMeField: '//input[@id="rememberme"]',
             loginButton: '//input[@id="wp-submit"]',
             //Login-2
             loginEmailField2: '//input[@id="wpuf-user_login"]',
@@ -41,6 +42,14 @@ export const selectors = {
         
        
     },
+
+
+
+
+
+
+
+
 
 
 /******************************************/
@@ -73,9 +82,10 @@ export const selectors = {
         wpufSetup: {
             //WPUF Setup 
             //Skip Setup
-            clickWPUFSetupSkip: '//a[@class="button button-large" and contains(text(), "Not right now")]',
+            validateWPUFSetupPage: '//h1[text()="Welcome to the world of WPUF!"]',
             //Continue Setup
             clickWPUFSetupLetsGo: '//a[contains(@class,"button-primary button")]',
+            checkWPUFInstallPages: '//input[@name="install_wpuf_pages"]',
             clickWPUFSetupContinue: '//input[@type="submit"]',
             clickWPUFSetupEnd: '//a[contains(@class,"button button-primary")]',
         },
@@ -91,7 +101,7 @@ export const selectors = {
                 //Set Default Post Form
                 setDefaultPostForm: '//select[@id="wpuf_frontend_posting[default_post_form]"]',
                 //Save Changes
-                settingsFrontEndPostingSave: '//div[@id="wpuf_frontend_posting"]//form[@method="post"]//div//input[@id="submit"]',
+                settingsFrontendPostingSave: '//div[@id="wpuf_frontend_posting"]//form[@method="post"]//div//input[@id="submit"]',
             
             //Menu-5th Option
             //Login/Registration
@@ -109,11 +119,8 @@ export const selectors = {
         setPermalink: {
             //Permalink Side Menu
             clickPermalinksSideMenu: '//a[text()="Permalinks"]',
-            //Check Post Name Permalink
-            checkPostNamePermalink: '//input[@id="permalink-input-post-name"]',
             
-            //Check CustomStructure Permalink
-            checkCustomStructurePermalink: '//input[@id="custom_selection"]',
+            //Custom Structure fillup box
             fillCustomStructure: '//input[@id="permalink_structure"]',
             //Click Permalink-Postname
             clickCustomStructurePostName: '//button[@data-added="postname added to permalink structure"]',
@@ -156,7 +163,13 @@ export const selectors = {
     },
 
 
-   
+
+
+
+
+
+
+    
 
 /*********************************/
 /******* Logout Selectors *******/
@@ -184,6 +197,14 @@ export const selectors = {
 
     },
 
+
+
+
+
+
+
+
+    
 
 /*********************************************/
 /********** @Post_Forms Selectors ***********/
@@ -312,6 +333,7 @@ export const selectors = {
             prompt2PopUpModalOk:'//button[contains(@class,"swal2-confirm swal2-styled")]',
             //Pro Check Pop Up
             checkProPopUp: '//button[text()="Get the Pro version"]',
+            checkProPopUpCloseButton: '//button[text()="Close"]',
             //Pro Text Alert in Settings
             proTextAlertInSettings: '(//h3[@class="wpuf-pro-text-alert"])[1]'
         },
@@ -370,8 +392,12 @@ export const selectors = {
         //Form Settings
         formSettings: {
             //Post Settings
+            //Click Form Edit Settings
+            clickFormEditorSettings: '//form[@id="wpuf-form-builder"]//h2//a[@href="#wpuf-form-builder-settings"]',
+            
+            //Click Form Editor
+            clickFormEditor: '//a[contains(text(),"Form Editor")]',
             //Add Multi-Step-Check
-            formEditorSettings: '(//h2[@class="nav-tab-wrapper"]//a)[2]',
             checkMultiStepOption: '//input[@name="wpuf_settings[enable_multistep]"]',
 
             //Submission Restriction
@@ -382,8 +408,7 @@ export const selectors = {
             //Save Form Settings
             saveFormSettings: '//button[@class="button button-primary"]',
 
-            //Click Form Editor
-            clickFormEditor: '//a[contains(text(),"Form Editor")]',
+            
         },
 
         validateOthers_Common: {
@@ -411,15 +436,57 @@ export const selectors = {
         },
 
 
-    },
+
 
     /*****************************************************/
     /********** @PostForm FrontEnd Selectors ************/
     /************* + FrontEnd Validation ***************/
     /**************************************************/ 
+        postFormsFrontendCreate: {
+            //Post Forms Create
+            //Account
+            //Submit Post
+            submitPostSideMenu: '//a[contains(text(),"Submit Post")]',
+
+            //Start Form Submission
+            //Post Tile
+            postTitleFormsFE: '//input[@name="post_title"]',
+            //Category
+            categorySelectionFormsFE: '//select[@data-type="select"]',
+            //Post Description
+            postDescriptionFormsFE1: '//div[contains(@class,"mce-edit-area mce-container")]//iframe[1]',
+            postDescriptionFormsFE2: '//body[@id="tinymce"]',
+            //Featured Photo
+            featuredPhotoFormsFE: '(//input[@type="file"])[2]',
+            //Excerpt
+            postExcerptFormsFE: '//textarea[@name="post_excerpt"]',
+            //Tags
+            postTagsFormsFE: '//input[@name="tags"]',
+            //Create Post
+            submitPostFormsFE: '//input[@value="Create Post"]',
+
+        },
+
+        postFormsFrontendValidate: {
+            //Accounts - Top Menu
+            clickAccountsTopMenu: '//a[contains(text(), "Account")]',
+            //Post
+            clickPostsSideMenu: '//a[contains(text(),"Posts")]',
+            //Validate Title of Post Created
+            validatePostSubmittedFE: '(//td[@data-label="Title: "])[1]'
+        }
+
+
+    },
 
 
 
+
+
+
+
+
+    
 
 /****************************************************/
 /********** @RegistrationForms Selectors ***********/
@@ -528,7 +595,7 @@ export const selectors = {
         /******************************************************/ 
 
         //Registration forms page - only WPUF-Lite activated
-        completeUserRegistrationFormFrontEnd: {
+        completeUserRegistrationFormFrontend: {
             //Validate Registration page
             validateRegistrationPage: '//h1[text()="Registration Page"]',
 
@@ -567,6 +634,40 @@ export const selectors = {
             validateUserCreated: '//td[@class="email column-email"]',
         },
 
-    }
+    },
+
+
+
+
+
+
+
+
+
+
+
+/************************************************/
+/********** @Rest WorPress Site ********************/
+/********** @Plugin Required: WP Reset  ****************/
+/***********************************************************/
+
+    resetWordpreseSite: {
+        //Reset Input box
+        wpResetInputBox: '//input[@name="wp_reset_confirm"]',
+        //Submit Reset Button
+        wpResetSubmitButton: '//a[@id="wp_reset_submit"]',
+        //Confirm Wordpress Reset
+        wpResetConfirmWordpressReset: '//button[text()="Reset WordPress"]',
+
+    },
+
+
+
+
+
+
+
+
+
 
 };

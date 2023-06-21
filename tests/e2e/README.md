@@ -47,7 +47,7 @@ Initial Setup:
 
     Update .env-example file to set your Site, Admin credentials and NewUserCreation credentials
 
-Recommended step
+## Recommended step
 
     After cloning the repo,
 
@@ -65,9 +65,8 @@ Recommended step
 .
 .
 
-Run Tests:
 
-Running all tests
+## Running all tests
 
     npx playwright test e2eMain.spec.ts
 

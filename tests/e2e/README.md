@@ -60,10 +60,7 @@ Initial Setup:
 
     Comment out the highlighted parts while WP-Reset plugin is active to run this spec and reset your LocalSite (Clean setup is highly recommended)
     
-.
-.
-.
-.
+
 
 
 ## Running all tests

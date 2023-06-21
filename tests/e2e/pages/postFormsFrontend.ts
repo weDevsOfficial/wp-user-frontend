@@ -60,7 +60,10 @@ export class postFormsFrontend {
         await this.page.fill(selectors.postForms.postFormsFrontendCreate.postTagsFormsFE, postTags);
         //Create Post
         await this.page.click(selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
-
+        await this.page.waitForLoadState('domcontentloaded');
+        //Validate Post Submitted
+        const validatePostSubmitted = await this.page.innerText(selectors.postForms.postFormsFrontendCreate.validatePostSubmitted);
+        expect(validatePostSubmitted).toContain(postFormTitle);
     };
 
 

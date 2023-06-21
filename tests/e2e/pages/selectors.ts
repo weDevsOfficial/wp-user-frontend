@@ -464,6 +464,8 @@ export const selectors = {
             postTagsFormsFE: '//input[@name="tags"]',
             //Create Post
             submitPostFormsFE: '//input[@value="Create Post"]',
+            //Validate Post Submitted
+            validatePostSubmitted: '//h1[@class="wp-block-post-title"]',
 
         },
 

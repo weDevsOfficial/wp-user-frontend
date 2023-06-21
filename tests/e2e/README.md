@@ -43,8 +43,8 @@ npm i
 
 ### How to run tests
 
-**Initial Setup:
-**
+Initial Setup:
+
     Update .env-example file to set your Site, Admin credentials and New User creation credentials
 
 Recommended step
@@ -53,7 +53,7 @@ Recommended step
 
     Navigate to e2eMain.spec.ts and use the first spec runner "resetWordpressSite.spec.ts" to run the whole suite with a clean setup
 
-    _Plugins needed for this action:_ **WP-Reset** plugin (Manually install this plugin beforehand)
+    Plugin needed for this action: WP-Reset (Manually install this plugin beforehand)
 
 
 **Run Tests:

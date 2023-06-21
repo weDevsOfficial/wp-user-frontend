@@ -2,11 +2,10 @@ import { test, expect, Page } from '@playwright/test';
 import loginAndSetupTests from './loginAndSetupTests.spec';
 import postFormsTests from './postFormsTests.spec';
 import registrationFormsTestsLite from './registrationFormsTestsLite.spec';
-import resetWordpressSite from './resetWordpressSite.spec';
-
-
 import * as fs from "fs"; //Clear Cookie
 
+
+// import resetWordpressSite from './resetWordpressSite.spec';
 
 // //Run ONLY - if needed
 // //This Suite resets your Wordpress Site - [Plugin needed: WP Reset] --> [Spec-0]

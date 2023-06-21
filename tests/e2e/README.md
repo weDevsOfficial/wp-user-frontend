@@ -51,14 +51,14 @@ npm i
 
     After cloning the repo,
 
-    Navigate to e2eMain.spec.ts and use the first spec runner "resetWordpressSite.spec.ts" to run the whole suite with a clean setup
+    > Highly Recommended:
+        Plugin needed for this action: WP-Reset (Manually install this plugin beforehand)
 
-    Highly Recommended:
-    Plugin needed for this action: WP-Reset (Manually install this plugin beforehand)
+    > Comment out the highlighted parts while WP-Reset plugin is active to run this spec and reset your LocalSite (Clean setup is highly recommended)
+    
 
 ![image](https://github.com/Rat01047/wp-user-frontend/assets/95366111/02b59b95-4f17-417f-9b15-3d9a410fdafb)
 
-    Comment out the highlighted parts while WP-Reset plugin is active to run this spec and reset your LocalSite (Clean setup is highly recommended)
     
 
 

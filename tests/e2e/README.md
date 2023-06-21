@@ -41,6 +41,14 @@ Run the following in a terminal/command line window to install dependencies.
 npm i
 ```
 
+Install browser:
+
+```
+npx playwright install chromium
+```
+
+
+
 ### How to run tests
 
 ## Initial Setup:

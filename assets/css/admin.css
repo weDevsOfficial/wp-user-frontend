@@ -583,6 +583,7 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
   background: #fff;
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items.current-editing {
   background-color: rgba(255, 185, 0, 0.15);

@@ -43,7 +43,7 @@ npm i
 
 ### How to run tests
 
-Initial Setup:
+## Initial Setup:
 
     Update .env-example file to set your Site, Admin credentials and NewUserCreation credentials
 

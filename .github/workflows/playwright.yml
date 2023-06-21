@@ -63,7 +63,7 @@ jobs:
 
       - name: Run Playwright tests/e2e
         run: |
-          cd tests/e2e
+          cd tests/e2e/tests
             npx playwright test e2eMain.spec.ts --project=chromium
             ls
             

@@ -3,7 +3,7 @@ import { test, expect, Page } from '@playwright/test';
 import { basicLoginPage } from '../pages/basicLogin';
 import { postForms } from '../pages/postForms';
 import { fieldOptionsCommon } from '../pages/fieldOptionsCommon';
-import { postFormsFrontend } from '../pages/postFromsFrontend';
+import { postFormsFrontend } from '../pages/postFormsFrontend';
 import { settingsSetup } from '../pages/settingsSetup';
 import { testData } from '../utils/testData';
 

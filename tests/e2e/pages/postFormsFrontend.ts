@@ -77,9 +77,9 @@ export class postFormsFrontend {
     //Validate in Admin - Registered Form Submitted
     async validatePostFormCreatedFrontend(postFormTitle) {
         //Go to FrontEnd
-        await Promise.all([
-            this.page.goto(testData.urls.baseUrl, { waitUntil: 'networkidle' }),
-        ]);
+        // await Promise.all([
+        //     this.page.goto(testData.urls.baseUrl, { waitUntil: 'networkidle' }),
+        // ]);
         //Click Accounts
         await this.page.click(selectors.postForms.postFormsFrontendValidate.clickAccountsTopMenu);
         //Click Post

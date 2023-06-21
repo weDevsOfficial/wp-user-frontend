@@ -45,7 +45,7 @@ npm i
 
 ## Initial Setup:
 
-    Update .env-example file to set your Site, Admin credentials and NewUserCreation credentials
+    Update .env-example file to set your LocalSite, Admin credentials and NewUserCreation credentials
 
 ## Recommended step
 
@@ -55,7 +55,7 @@ npm i
         Plugin needed for this action: WP-Reset (Manually install this plugin beforehand)
 
     > While WP-Reset plugin is active
-    > Comment run this spec and reset your LocalSite (Clean setup is highly recommended)
+    > Comment out the marked sections to run resetWordpressSite and reset your LocalSite (Clean setup is highly recommended)
     
 
 ![image](https://github.com/Rat01047/wp-user-frontend/assets/95366111/02b59b95-4f17-417f-9b15-3d9a410fdafb)

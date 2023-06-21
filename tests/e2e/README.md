@@ -43,13 +43,25 @@ npm i
 
 ### How to run tests
 
+Initial Setup:
+
+    Update .env-example file to set your Site, Admin credentials and New User creation credentials
+
+Recommended step
+
+    After cloning the repo
+
+    Navigate to e2eMain.spec.ts and use the first spec runner "resetWordpressSite.spec.ts" to run the 		whole suite with a clean setup
+
+    Plugins needed for this action: WP-Reset plugin (Manually install this plugin beforehand)
+
 Running all tests
 
-    npx playwright test
+    npx playwright test e2eMain.spec.ts
 
 Running a specific test file
 
-    npx playwright test e2eMain.spec.ts
+    npx playwright test loginAndSetupTests.spec.ts
 
 Running a specific test file in headed form
 

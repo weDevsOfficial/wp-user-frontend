@@ -5,28 +5,30 @@ import registrationFormsTestsLite from './registrationFormsTestsLite.spec';
 import * as fs from "fs"; //Clear Cookie
 
 
+//!Run ONLY - if needed (Comment out to use)
+//*[Spec-0]: This Suite resets your Wordpress Site - [Plugin needed: WP Reset].../
 // import resetWordpressSite from './resetWordpressSite.spec';
 
-// //Run ONLY - if needed
-// //This Suite resets your Wordpress Site - [Plugin needed: WP Reset] --> [Spec-0]
 // fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 // test.describe(resetWordpressSite);
 
 
-//Test- Login and Setup --> [Spec-1]
+//*[Spec-1]: Test- Login and Setup.../
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 test.describe(loginAndSetupTests);
 
 
 
-//Test- Post Forms + FrontEnd Case --> [Spec-2]
+//*[Spec-2]: Test- Post Forms + FrontEnd Case.../
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 test.describe(postFormsTests);
 
 
 
-//Test- Post Forms + FrontEnd Case --> [Spec-3]
+//*[Spec-3]: Test- Post Forms + FrontEnd Case.../
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 test.describe(registrationFormsTestsLite);
+
+
 
 

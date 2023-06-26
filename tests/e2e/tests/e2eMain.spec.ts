@@ -5,12 +5,17 @@ import registrationFormsTestsLite from './registrationFormsTestsLite.spec';
 import * as fs from "fs"; //Clear Cookie
 
 
-//!Run ONLY - if needed (Comment out to use)
-//*[Spec-0]: This Suite resets your Wordpress Site - [Plugin needed: WP Reset].../
-// import resetWordpressSite from './resetWordpressSite.spec';
 
+//!---------------------------------------------------------///
+//!Run ONLY - if needed [WP-Reset plugin needed]
+//*[Spec-0]: This spec resets your Wordpress Site - Comment out to USE.../
+
+// import resetWordpressSite from './resetWordpressSite.spec';
 // fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 // test.describe(resetWordpressSite);
+
+//!---------------------------------------------------------///
+
 
 
 //*[Spec-1]: Test- Login and Setup.../

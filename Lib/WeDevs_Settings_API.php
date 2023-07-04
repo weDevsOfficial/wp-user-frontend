@@ -1,7 +1,5 @@
 <?php
 
-namespace WeDevs\Wpuf\Lib;
-
 /**
  * weDevs Settings API wrapper class
  *

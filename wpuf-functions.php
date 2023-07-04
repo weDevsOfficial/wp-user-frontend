@@ -2,7 +2,6 @@
 
 use WeDevs\Wpuf\Encryption_Helper;
 use WeDevs\Wpuf\Free\Pro_Prompt;
-use WeDevs\Wpuf\Lib\WeDevs_Settings_API;
 use WeDevs\Wpuf\WPUF_Payment;
 
 /**
@@ -3831,6 +3830,8 @@ function wpuf_get_user_address( $user_id = 0 ) {
  * @param array $args settings field args
  */
 function wpuf_settings_multiselect( $args ) {
+    wpuf_require_once( WPUF_ROOT . '/Lib/WeDevs_Settings_API.php' );
+
     $settings = new WeDevs_Settings_API();
     $value    = $settings->get_option( $args['id'], $args['section'], $args['std'] );
     $value    = is_array( $value ) ? (array) $value : [];

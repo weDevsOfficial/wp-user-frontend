@@ -2,9 +2,6 @@
 
 namespace WeDevs\Wpuf\Admin;
 
-use WeDevs\Wpuf\Lib\WeDevs_Settings_API;
-use WP_Query;
-
 /**
  * WPUF settings
  */
@@ -18,20 +15,6 @@ class Admin_Settings {
     private $settings_api;
 
     /**
-     * Static instance of this class
-     *
-     * @var \self
-     */
-    private static $_instance;
-
-    /**
-     * Public instance of this class
-     *
-     * @var \self
-     */
-    public $subscribers_list_table_obj;
-
-    /**
      * The menu page hooks
      *
      * Used for checking if any page is under WPUF menu
@@ -41,11 +24,11 @@ class Admin_Settings {
     private $menu_pages = [];
 
     public function __construct() {
-        require_once WPUF_ROOT . '/admin/settings-options.php';
+        wpuf_require_once( WPUF_INCLUDES . '/functions/settings-options.php' );
+        wpuf_require_once( WPUF_ROOT . '/Lib/WeDevs_Settings_API.php' );
 
-        $this->settings_api = new WeDevs_Settings_API();
+        $this->settings_api = new \WeDevs_Settings_API();
         add_action( 'admin_init', [ $this, 'admin_init' ] );
-        // add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
     }
 
     public function admin_init() {
@@ -54,13 +37,6 @@ class Admin_Settings {
         $this->settings_api->set_fields( $this->get_settings_fields() );
         //initialize settings
         $this->settings_api->admin_init();
-    }
-
-    /**
-     * Fire when post form submenu registered
-     */
-    public function post_form_menu_action() {
-        // do_action('wpuf_load_post_forms');
     }
 
     /**
@@ -177,50 +153,6 @@ class Admin_Settings {
         <?php
     }
 
-    public function transactions_page() {
-        require_once dirname( __DIR__ ) . '/admin/transactions.php';
-    }
-
-    /**
-     * Callback method for Post Forms submenu
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function wpuf_post_forms_page() {
-        $action           = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : NULL;
-        $add_new_page_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
-        switch ( $action ) {
-            case 'edit':
-                require_once WPUF_ROOT . '/views/post-form.php';
-                break;
-            case 'add-new':
-                require_once WPUF_ROOT . '/views/post-form.php';
-                break;
-            default:
-                require_once WPUF_ROOT . '/admin/post-forms-list-table-view.php';
-                break;
-        }
-    }
-
-    public function subscribers_page( $post_ID ) {
-        include dirname( __DIR__ ) . '/admin/subscribers.php';
-    }
-
-    public function premium_page() {
-        require_once dirname( __DIR__ ) . '/admin/premium.php';
-    }
-
-    public function tools_page() {
-        $this->enqueue_tools_scripts();
-        include dirname( __DIR__ ) . '/admin/tools.php';
-    }
-
-    public function support_page() {
-        require_once dirname( __DIR__ ) . '/admin/html/support.php';
-    }
-
     /**
      * Check if the current page is a settings/menu page
      *
@@ -237,121 +169,11 @@ class Admin_Settings {
     }
 
     /**
-     * Highlight the proper top level menu
-     *
-     * @see http://wordpress.org/support/topic/moving-taxonomy-ui-to-another-main-menu?replies=5#post-2432769
-     *
-     * @global obj   $current_screen
-     *
-     * @param string $parent_file
-     *
-     * @return string
-     */
-    public function fix_parent_menu( $parent_file ) {
-        $current_screen = get_current_screen();
-        $post_types = [ 'wpuf_forms', 'wpuf_profile', 'wpuf_subscription', 'wpuf_coupon' ];
-        if ( in_array( $current_screen->post_type, $post_types, true ) ) {
-            $parent_file = 'wp-user-frontend';
-        }
-        if ( 'wpuf_subscription' === $current_screen->post_type && $current_screen->base === 'admin_page_the-slug' ) {
-            $parent_file = 'wp-user-frontend';
-        }
-
-        return $parent_file;
-    }
-
-    /**
-     * Fix the submenu class in admin menu
-     *
-     * @since 2.6.0
-     *
-     * @param string $submenu_file
-     *
-     * @return string
-     */
-    public function fix_submenu_file( $submenu_file ) {
-        $current_screen = get_current_screen();
-        if ( 'wpuf_subscription' === $current_screen->post_type && $current_screen->base === 'admin_page_wpuf_subscribers' ) {
-            $submenu_file = 'edit.php?post_type=wpuf_subscription';
-        }
-
-        return $submenu_file;
-    }
-
-    /**
-     * Screen options.
-     *
-     * @return void
-     */
-    public function transactions_screen_option() {
-        $option = 'per_page';
-        $args   = [
-            'label'   => __( 'Number of items per page:', 'wp-user-frontend' ),
-            'default' => 20,
-            'option'  => 'transactions_per_page',
-        ];
-        add_screen_option( $option, $args );
-        if ( ! class_exists( 'WeDevs\Wpuf\Admin\List_Table_Transactions' ) ) {
-            require_once WPUF_ROOT . '/class/transactions-list-table.php';
-        }
-        // $this->transactions_list_table_obj = new WPUF_Transactions_List_Table();
-    }
-
-    /**
-     * Enqueue styles
-     *
-     * @return void
-     */
-    public function enqueue_styles() {
-        if ( ! $this->is_admin_menu_page( get_current_screen() ) && get_current_screen()->parent_base === 'edit' ) {
-            return;
-        }
-        // wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css', false, WPUF_VERSION );
-        // wp_enqueue_script( 'wpuf-admin-script', WPUF_ASSET_URI . '/js/wpuf-admin.js', [ 'jquery' ], WPUF_VERSION, false );
-        wp_localize_script( 'wpuf-admin-script', 'wpuf_admin_script', [
-            'ajaxurl'               => admin_url( 'admin-ajax.php' ),
-            'nonce'                 => wp_create_nonce( 'wpuf_nonce' ),
-            'cleared_schedule_lock' => __( 'Post lock has been cleared',
-                                           'wp-user-frontend' ),
-        ] );
-    }
-
-    /**
-     * Enqueue Tools page scripts
-     *
-     * @since 3.2.0
-     *
-     * @return void
-     * @todo  Move this method to WPUF_Admin_Tools class
-     *
-     */
-    private function enqueue_tools_scripts() {
-        $prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-        // wp_enqueue_script( 'wpuf-vue', WPUF_ASSET_URI . '/vendor/vue/vue' . $prefix . '.js', [], WPUF_VERSION, true );
-        wp_enqueue_media();
-        // wp_enqueue_script( 'wpuf-admin-tools', WPUF_ASSET_URI . '/js/wpuf-admin-tools.js', [ 'jquery', 'wpuf-vue' ], WPUF_VERSION, true );
-        wp_localize_script( 'wpuf-admin-tools', 'wpuf_admin_tools', [
-            'url'   => [
-                'ajax' => admin_url( 'admin-ajax.php' ),
-            ],
-            'nonce' => wp_create_nonce( 'wpuf_admin_tools' ),
-            'i18n'  => [
-                'wpuf_import_forms'      => __( 'WPUF Import Forms',
-                                                'wp-user-frontend' ),
-                'add_json_file'          => __( 'Add JSON file',
-                                                'wp-user-frontend' ),
-                'could_not_import_forms' => __( 'Could not import forms.',
-                                                'wp-user-frontend' ),
-            ],
-        ] );
-    }
-
-    /**
      * Get the settings_api property
      *
      * @since WPUF_SINCE
      *
-     * @return \WeDevs_Settings_API|WeDevs_Settings_API
+     * @return WeDevs_Settings_API
      */
     public function get_settings_api() {
         return $this->settings_api;

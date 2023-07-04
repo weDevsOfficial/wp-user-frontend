@@ -15,31 +15,11 @@ class Free_Loader extends Pro_Prompt {
         $this->instantiate();
 
         // admin menu
+        add_action( 'wpuf_admin_menu', [ $this, 'admin_menu' ] );
         add_action( 'wpuf_admin_menu_top', [ $this, 'admin_menu_top' ] );
-        // add_action( 'wpuf_admin_menu', [ $this, 'admin_menu' ] );
         add_action( 'wpuf_form_setting', [ $this, 'form_setting_runner' ], 10, 2 );
-        add_action( 'wpuf_form_post_expiration', [ $this, 'wpuf_form_post_expiration_runner'] );
-        add_action( 'wpuf_form_settings_post_notification', [ $this, 'post_notification_hook_runner'] );
-
-        // add_action( 'add_meta_boxes_wpuf_forms', [$this, 'add_meta_box_post'], 99 );
-
-        // add_action( 'wpuf_form_buttons_custom', [ $this, 'wpuf_form_buttons_custom_runner' ] );
-        // add_action( 'wpuf_form_buttons_other', [ $this, 'wpuf_form_buttons_other_runner'] );
-        // add_action( 'wpuf_form_post_expiration', [ $this, 'wpuf_form_post_expiration_runner'] );
-
-        // add_action( 'wpuf_form_settings_post_notification', [ $this, 'post_notification_hook_runner'] );
-        // add_action( 'wpuf_edit_form_area_profile', [ $this, 'wpuf_edit_form_area_profile_runner' ] );
-        // add_action( 'registration_setting', [$this, 'registration_setting_runner'] );
-        // add_action( 'wpuf_check_post_type', [ $this, 'wpuf_check_post_type_runner' ], 10, 2 );
-        // add_action( 'wpuf_form_custom_taxonomies', [ $this, 'wpuf_form_custom_taxonomies_runner' ] );
-        // add_action( 'wpuf_conditional_field_render_hook', [ $this, 'wpuf_conditional_field_render_hook_runner' ], 10, 3 );
-
-        //subscription
-        // add_action( 'wpuf_admin_subscription_detail', [$this, 'wpuf_admin_subscription_detail_runner'], 10, 4 );
-
-        //coupon
-        // add_action( 'wpuf_coupon_settings_form', [$this, 'wpuf_coupon_settings_form_runner'], 10, 1 );
-        // add_action( 'wpuf_check_save_permission', [$this, 'wpuf_check_save_permission_runner'], 10, 2 );
+        add_action( 'wpuf_form_post_expiration', [ $this, 'wpuf_form_post_expiration_runner' ] );
+        add_action( 'wpuf_form_settings_post_notification', [ $this, 'post_notification_hook_runner' ] );
 
         add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );
         add_filter( 'wpuf_settings_fields', [ $this, 'pro_settings' ] );
@@ -52,7 +32,7 @@ class Free_Loader extends Pro_Prompt {
 
         // navigation tabs added for previewing in Subscription > Add/Edit Subscription
         add_action( 'wpuf_admin_subs_nav_tab', [ $this, 'subscription_tabs' ] );
-        add_action( 'wpuf_admin_subs_nav_content', [ $this, 'subscription_tab_contents' ]);
+        add_action( 'wpuf_admin_subs_nav_content', [ $this, 'subscription_tab_contents' ] );
     }
 
     public function includes() {
@@ -1399,6 +1379,28 @@ class Free_Loader extends Pro_Prompt {
                 echo wpuf_get_pro_preview_html();
             ?>
         </section>
+
+        <?php
+    }
+
+    public function admin_coupon_page() {
+        ?>
+        <h2><?php esc_html_e( 'Coupons', 'wp-user-frontend' ); ?></h2>
+
+        <div class="wpuf-notice" style="padding: 20px; background: #fff; border: 1px solid #ddd;">
+            <p>
+                <?php esc_html_e( 'Use Coupon codes for subscription for discounts.', 'wp-user-frontend' ); ?>
+            </p>
+
+            <p>
+                <?php esc_html_e( 'This feature is only available in the Pro Version.', 'wp-user-frontend' ); ?>
+            </p>
+
+            <p>
+                <a href="<?php echo esc_url( Pro_Prompt::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
+                <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank" class="button"><?php esc_html_e( 'Learn more about Coupons', 'wp-user-frontend' ); ?></a>
+            </p>
+        </div>
 
         <?php
     }

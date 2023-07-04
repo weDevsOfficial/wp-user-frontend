@@ -2,13 +2,10 @@
 
 namespace WeDevs\Wpuf\Admin;
 
-use WeDevs\Wpuf\Free\Pro_Prompt;
-use WeDevs\Wpuf\Lib\WeDevs_Settings_API;
-
 class Menu {
-    private $all_submenu_hooks = [];
+    protected $all_submenu_hooks = [];
 
-    public $parent_slug = 'wp-user-frontend';
+    protected $parent_slug = 'wp-user-frontend';
 
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
@@ -47,10 +44,6 @@ class Menu {
             $subscription_hook = add_submenu_page( $this->parent_slug, __( 'Subscriptions', 'wp-user-frontend' ), __( 'Subscriptions', 'wp-user-frontend' ), $capability, 'edit.php?post_type=wpuf_subscription' );
 
             $this->all_submenu_hooks['subscription_hook'] = $subscription_hook;
-
-            $coupons_hook = add_submenu_page( $this->parent_slug, __( 'Coupons', 'wp-user-frontend' ), __( 'Coupons', 'wp-user-frontend' ), $capability, 'wpuf_coupon', [ $this, 'admin_coupon_page' ] );
-
-            $this->all_submenu_hooks['coupons_hook'] = $coupons_hook;
 
             $transactions_page = add_submenu_page( $this->parent_slug, __( 'Transactions', 'wp-user-frontend' ), __( 'Transactions', 'wp-user-frontend' ), $capability, 'wpuf_transaction', [ $this, 'transactions_page' ] );
 
@@ -220,28 +213,6 @@ class Menu {
         }
 
         return $submenu_file;
-    }
-
-    public function admin_coupon_page() {
-        ?>
-        <h2><?php esc_html_e( 'Coupons', 'wp-user-frontend' ); ?></h2>
-
-        <div class="wpuf-notice" style="padding: 20px; background: #fff; border: 1px solid #ddd;">
-            <p>
-                <?php esc_html_e( 'Use Coupon codes for subscription for discounts.', 'wp-user-frontend' ); ?>
-            </p>
-
-            <p>
-                <?php esc_html_e( 'This feature is only available in the Pro Version.', 'wp-user-frontend' ); ?>
-            </p>
-
-            <p>
-                <a href="<?php echo esc_url( Pro_Prompt::get_pro_url() ); ?>" target="_blank" class="button-primary"><?php esc_html_e( 'Upgrade to Pro Version', 'wp-user-frontend' ); ?></a>
-                <a href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/coupons/" target="_blank" class="button"><?php esc_html_e( 'Learn more about Coupons', 'wp-user-frontend' ); ?></a>
-            </p>
-        </div>
-
-        <?php
     }
 
     /**

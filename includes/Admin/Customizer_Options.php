@@ -13,8 +13,29 @@ class Customizer_Options {
      * Class constructor
      */
     public function __construct() {
-        add_action( 'customize_register', [ $this, 'customizer_options' ] );
+        // add_filter( 'customize_panel_active', '__return_true', 11 );
+        add_action( 'customize_register', [ $this, 'customizer_options' ], 15 );
         add_action( 'wp_head', [ $this, 'save_customizer_options' ] );
+
+        add_filter( 'default_option_wpuf_panel', [ $this, 'maybe_fallback_get_option' ] );
+    }
+
+    /**
+     * Backwards compatibility for the old Customizer Option Save
+     *
+     * @since WPUF_SINCE
+     *
+     * @param  mixed $sections
+     *
+     * @return mixed
+     */
+    public function maybe_fallback_get_option( $sections ) {
+        // Return if there is something there
+        if ( ! empty( $sections ) ) {
+            return $sections;
+        }
+
+        return get_option( 'wpuf_address_options', [] );
     }
 
     public function save_customizer_options() {

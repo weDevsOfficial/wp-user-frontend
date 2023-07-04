@@ -137,7 +137,7 @@ final class WP_User_Frontend {
     public function init_hooks() {
         add_action( 'plugins_loaded', [ $this, 'wpuf_loader' ] );
         add_action( 'plugins_loaded', [ $this, 'plugin_upgrades' ] );
-        add_action( 'plugins_loaded', [ $this, 'instantiate' ], 11 );
+        add_action( 'plugins_loaded', [ $this, 'instantiate' ] );
 
         add_action( 'init', [ $this, 'load_textdomain' ] );
 
@@ -210,6 +210,7 @@ final class WP_User_Frontend {
         $this->container['assets']       = new WeDevs\Wpuf\Assets();
         $this->container['subscription'] = new WeDevs\Wpuf\Admin\Subscription();
         $this->container['fields']       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
+        $this->container['customize']    = new WeDevs\Wpuf\Admin\Customizer_Options();
 
         if ( is_admin() ) {
             $this->container['admin']        = new WeDevs\Wpuf\Admin();

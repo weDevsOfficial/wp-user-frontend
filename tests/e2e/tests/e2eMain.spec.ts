@@ -6,6 +6,10 @@ import * as fs from "fs"; //Clear Cookie
 
 
 
+
+
+
+
 //!---------------------------------------------------------///
 //!Run ONLY - if needed [WP-Reset plugin needed]
 //*[Spec-0]: This spec resets your Wordpress Site - Comment out to USE.../
@@ -17,6 +21,10 @@ import * as fs from "fs"; //Clear Cookie
 //!---------------------------------------------------------///
 
 
+
+
+//*--------------------------------------------------------*/
+//*--MAIN Tests--*/
 
 //*[Spec-1]: Test- Login and Setup.../
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
@@ -34,6 +42,7 @@ test.describe(postFormsTests);
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 test.describe(registrationFormsTestsLite);
 
+//*--------------------------------------------------------*/
 
 
 

@@ -741,16 +741,8 @@ final class WP_User_Frontend {
                     'char_min_title'   => __( 'Minimum character required.', 'wp-user-frontend' ),
                     'char_min_details' => __( 'This field requires minimum %number% characters. Please add some more character.',
                                               'wp-user-frontend' ),
-                    'protected_shortcodes' => apply_filters(
-                        'wpuf_protected_shortcodes', [
-                            'wpuf-registration',
-                            'wpuf_dashboard',
-                        ]
-                    ),
-                    'protected_shortcodes_message' => apply_filters(
-                        'protected_shortcodes_message',
-                        __( 'Using %shortcode% is restricted' )
-                    ),
+                    'protected_shortcodes' => wpuf_get_protected_shortcodes(),
+                    'protected_shortcodes_message' => __( 'Using %shortcode% is restricted', 'wp-user-frontend' ),
                 ]
             )
         );

@@ -4523,3 +4523,20 @@ function wpuf_get_pro_preview_tooltip() {
 
     return $html;
 }
+
+/**
+ * Get the shortcodes that are protected on the post form.
+ * User cannot submit post containing those shortcodes.
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array
+ */
+function wpuf_get_protected_shortcodes() {
+    return apply_filters(
+        'wpuf_protected_shortcodes', [
+            'wpuf-registration',
+            'wpuf_dashboard',
+        ]
+    );
+}

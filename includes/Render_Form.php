@@ -185,7 +185,7 @@ class Render_Form {
      *
      * @return array
      */
-    public static function get_input_fields( $form_id ) {
+    public static function get_input_fields_by_form_id( $form_id ) {
         $form_vars    = wpuf_get_form_fields( $form_id );
 
         $ignore_lists = ['section_break', 'html'];

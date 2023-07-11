@@ -13,7 +13,6 @@ class Shortcode {
         add_shortcode( 'wpuf-login', [ wpuf()->simple_login, 'login_form' ] );
         add_shortcode( 'wpuf_sub_info', [ wpuf()->subscription, 'subscription_info' ] );
         add_shortcode( 'wpuf_sub_pack', [ wpuf()->subscription, 'subscription_packs' ] );
-
         add_shortcode( 'wpuf-edit-users', 'wpuf_edit_users' );
         add_shortcode( 'wpuf-meta', 'wpuf_meta_shortcode' );
     }

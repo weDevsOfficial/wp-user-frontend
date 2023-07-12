@@ -371,8 +371,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
-        $this->send_error( sprintf( __( 'test error', 'wp-user-frontend' ) ) );
-
         foreach ( $attachments_to_delete as $attach_id ) {
             wp_delete_attachment( $attach_id, true );
         }

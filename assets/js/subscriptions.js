@@ -116,7 +116,7 @@
 
                 data = {
 
-                    action: 'coupon_cancel',
+                    action: 'wpuf_coupon_cancel',
 
                     _wpnonce: wpuf_frontend.nonce,
 
@@ -181,7 +181,7 @@
 
             var data = {
 
-                    action: 'coupon_apply',
+                    action: 'wpuf_coupon_apply',
 
                     _wpnonce: wpuf_frontend.nonce,
 

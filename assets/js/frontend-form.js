@@ -1386,7 +1386,8 @@
                 };
             }
 
-            for (shortcode of shortcodes) {
+            for ( var i = 0; i < shortcodes.length; i++) {
+                var shortcode = shortcodes[i];
                 var regex = new RegExp(shortcode);
                 if (regex.test(postContent)) {
                     return {

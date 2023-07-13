@@ -4537,6 +4537,69 @@ function wpuf_get_protected_shortcodes() {
         'wpuf_protected_shortcodes', [
             'wpuf-registration',
             'wpuf_dashboard',
+            'wpuf_profile',
         ]
     );
 }
+
+/**
+ * Get the current users roles as an array
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array|bool
+ */
+function wpuf_get_single_user_roles( $user_id ) {
+    if ( ! is_numeric( $user_id ) ) {
+        return false;
+    }
+
+    $user = get_user_by( 'id', $user_id );
+
+    return ( array ) $user->roles;
+}
+
+/**
+ * Check and modify the post content not to render shortcode values
+ * in the frontend for any user except admin.
+ *
+ * @since WPUF_SINCE
+ *
+ * @return string
+ */
+function wpuf_modify_shortcodes( $content ) {
+    // get the id of the user who last edited the post
+    $user_id = get_post_meta( get_post()->ID, '_edit_last', true );
+
+    $roles = wpuf_get_single_user_roles( $user_id );
+
+    if ( empty( $roles ) ) {
+        return $content;
+    }
+
+    // last modified by an admin, returns the content as it is
+    if ( in_array( 'administrator', $roles ) ) {
+        return $content;
+    }
+
+    $protected_shortcodes = wpuf_get_protected_shortcodes();
+
+    foreach ( $protected_shortcodes as $shortcode ) {
+        $search_for = '[' . $shortcode;
+
+        if ( strpos( $content, $search_for ) !== false ) {
+            $pattern = '/\[' . $shortcode . '(.*?)\]/';
+
+            $content = preg_replace_callback(
+                $pattern, function( $matches ) {
+                    return str_replace( [ '[', ']' ], [ '&lbrack;', '&rbrack;' ], $matches[0] );
+                }, $content
+            );
+        }
+    }
+
+    return $content;
+}
+
+// @todo: move this to frontend class
+add_filter( 'the_content', 'wpuf_modify_shortcodes' );

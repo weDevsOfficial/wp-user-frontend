@@ -4568,6 +4568,12 @@ function wpuf_get_single_user_roles( $user_id ) {
  * @return string
  */
 function wpuf_modify_shortcodes( $content ) {
+    global $pagenow;
+
+    if ( 'post.php' === $pagenow ) {
+        return $content;
+    }
+
     // get the id of the user who last edited the post
     $user_id = get_post_meta( get_post()->ID, '_edit_last', true );
 

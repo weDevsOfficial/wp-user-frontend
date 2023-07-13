@@ -86,7 +86,7 @@ $post_type_obj   = get_post_type_object( $post_type );
     $featured_img      = wpuf_get_option( 'show_ft_image', 'wpuf_dashboard' );
     $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
     $payment_column    = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' );
-    $enable_payment    = wpuf_get_option( 'enable_payment', 'WeDevs\Wpuf\WPUF_Payment', 'on' );
+    $enable_payment    = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
     ?>
     <div class="items-table-container">
         <table class="items-table <?php echo esc_attr( $post_type ); ?>" cellpadding="0" cellspacing="0">
@@ -183,7 +183,7 @@ $post_type_obj   = get_post_type_object( $post_type );
                                     <?php esc_html_e( 'Not Applicable', 'wp-user-frontend' ); ?>
                                     <?php } elseif ( $payment_status != 'completed' ) { ?>
                                         <a href="<?php echo esc_attr( trailingslashit( get_permalink( wpuf_get_option( 'payment_page',
-                                                                                                                       'WeDevs\Wpuf\WPUF_Payment' ) ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Pay Now', 'wp-user-frontend' ); ?></a>
+                                                                                                                       'wpuf_payment' ) ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Pay Now', 'wp-user-frontend' ); ?></a>
                                         <?php } elseif ( $payment_status == 'completed' ) { ?>
                                             <?php esc_html_e( 'Completed', 'wp-user-frontend' ); ?>
                                         <?php } ?>

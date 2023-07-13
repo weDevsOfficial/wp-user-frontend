@@ -2,8 +2,8 @@
 
 namespace WeDevs\Wpuf\Admin;
 
-use WeDevs\Wpuf\Lib\Gateway\WPUF_Paypal;
-use WeDevs\Wpuf\WPUF_Payment;
+use WeDevs\Wpuf\Frontend\Payment;
+use WeDevs\Wpuf\Lib\Gateway\Paypal;
 
 /**
  * Manage Subscription packs
@@ -173,7 +173,7 @@ class Admin_Subscription {
                 $is_recurring = true;
             }
 
-            WPUF_Payment::insert_payment( $data, 0, $is_recurring );
+            Payment::insert_payment( $data, 0, $is_recurring );
         }
     }
 
@@ -864,7 +864,7 @@ class Admin_Subscription {
         $userid = isset( $_POST['userid'] ) ? intval( wp_unslash( $_POST['userid'] ) ) : 0;
 
         echo esc_html( delete_user_meta( $userid, '_wpuf_subscription_pack' ) );
-        $wpuf_paypal = new WPUF_Paypal();
+        $wpuf_paypal = new Paypal();
         $wpuf_paypal->recurring_change_status( $userid, 'Cancel' );
 
         if ( isset( $_POST['packid'] ) ) {

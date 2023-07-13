@@ -54,7 +54,7 @@ class User_Subscription {
         $pack = $this->pack;
 
         if ( ! isset( $this->pack['pack_id'] ) ) {
-            $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'WeDevs\Wpuf\WPUF_Payment' ) );
+            $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
 
             return new \WP_Error( 'no-pack', sprintf( __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
         }
@@ -251,7 +251,7 @@ class User_Subscription {
 
         // cancel is it's a recurring payment
         if ( $this->recurring() ) {
-            $wpuf_paypal = new Lib\Gateway\WPUF_Paypal();
+            $wpuf_paypal = new Lib\Gateway\Paypal();
             $wpuf_paypal->recurring_change_status( $this->user->id, 'Cancel' );
         }
 
@@ -372,7 +372,6 @@ class User_Subscription {
             </div>
             <?php
             if ( $this->pack['recurring'] == 'yes' ) {
-                $payment_page = get_permalink( wpuf_get_option( 'payment_page', 'WeDevs\Wpuf\WPUF_Payment' ) );
                 ?>
                 <form action="" method="post">
                     <?php wp_nonce_field( '_wpnonce', 'wpuf_payment_cancel' ); ?>
@@ -381,7 +380,7 @@ class User_Subscription {
                     <input type="hidden" name="gateway" value="paypal">
                     <input type="submit" name="wpuf_payment_cancel_submit" value="cancel">
                 </form>
-                <?php $subscription_page = wpuf_get_option( 'subscription_page', 'WeDevs\Wpuf\WPUF_Payment' ); ?>
+                <?php $subscription_page = wpuf_get_option( 'subscription_page', 'wpuf_payment' ); ?>
                 <a href="<?php echo esc_attr( get_permalink( $subscription_page ) ); ?>"><?php esc_html_e( 'Change', 'wp-user-frontend' ); ?></a>
                 <?php
             }

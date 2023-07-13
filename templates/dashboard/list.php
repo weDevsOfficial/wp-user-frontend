@@ -77,7 +77,7 @@
                         esc_html_e( 'Not Applicable', 'wp-user-frontend' );
                     } elseif ( $payment_status !== 'completed' ) {
                         echo '<a href="' . esc_attr( trailingslashit( get_permalink( wpuf_get_option( 'payment_page',
-                                                                                                      'WeDevs\Wpuf\WPUF_Payment' ) ) ) ) . '?action=wpuf_pay&type=post&post_id=' . esc_attr( $post->ID ) . '">' . esc_html__( 'Pay Now', 'wp-user-frontend' ) . '</a>';
+                                                                                                      'wpuf_payment' ) ) ) ) . '?action=wpuf_pay&type=post&post_id=' . esc_attr( $post->ID ) . '">' . esc_html__( 'Pay Now', 'wp-user-frontend' ) . '</a>';
                     } elseif ( 'completed' === $payment_status ) {
                         esc_html_e( 'Completed', 'wp-user-frontend' );
                     }

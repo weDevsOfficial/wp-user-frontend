@@ -2,7 +2,7 @@
 
 namespace WeDevs\Wpuf\Admin;
 
-use WeDevs\Wpuf\WPUF_Payment;
+use WeDevs\Wpuf\Frontend\Payment;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
@@ -377,7 +377,7 @@ class List_Table_Transactions extends \WP_List_Table {
                     'created'          => current_time( 'mysql' ),
                 ];
                 do_action( 'wpuf_gateway_bank_order_complete', $transaction, $id );
-                WPUF_Payment::insert_payment( $transaction );
+                Payment::insert_payment( $transaction );
                 $coupon_id = $info['post_data']['coupon_id'];
                 if ( $coupon_id ) {
                     $pre_usage = get_post_meta( $coupon_id, '_coupon_used', true );
@@ -431,7 +431,7 @@ class List_Table_Transactions extends \WP_List_Table {
                         'created'          => current_time( 'mysql' ),
                     ];
                     do_action( 'wpuf_gateway_bank_order_complete', $transaction, $id );
-                    WPUF_Payment::insert_payment( $transaction );
+                    Payment::insert_payment( $transaction );
                     wp_delete_post( $id, true );
                 }
             }

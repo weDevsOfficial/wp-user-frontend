@@ -139,7 +139,7 @@ class Subscription {
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && ! empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : false;
 
         if ( $billing_amount !== false ) {
-            $pay_page = intval( wpuf_get_option( 'payment_page', 'WeDevs\Wpuf\WPUF_Payment' ) );
+            $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
             $redirect = add_query_arg(
                 [
                     'action'  => 'wpuf_pay',
@@ -213,7 +213,7 @@ class Subscription {
             wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, null, false, 'Free' );
             wpuf_get_user( $user_id )->subscription()->add_free_pack( $user_id, $pack_id );
         } else {
-            $pay_page = intval( wpuf_get_option( 'payment_page', 'WeDevs\Wpuf\WPUF_Payment' ) );
+            $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
             $redirect = add_query_arg(
                 [
                     'action'  => 'wpuf_pay',
@@ -645,7 +645,7 @@ class Subscription {
                         'action'  => 'wpuf_pay',
                         'type'    => 'post',
                         'post_id' => $post_id,
-                    ], get_permalink( wpuf_get_option( 'payment_page', 'WeDevs\Wpuf\WPUF_Payment' ) )
+                    ], get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
                 );
             }
 
@@ -656,7 +656,7 @@ class Subscription {
                         'action'  => 'wpuf_pay',
                         'type'    => 'post',
                         'post_id' => $post_id,
-                    ], get_permalink( wpuf_get_option( 'payment_page', 'WeDevs\Wpuf\WPUF_Payment' ) )
+                    ], get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
                 );
             }
         }
@@ -881,7 +881,7 @@ class Subscription {
     }
 
     public function get_details_meta_value() {
-        $meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'WeDevs\Wpuf\WPUF_Payment' ) );
+        $meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
         $meta['onclick']      = '';
         $meta['symbol']       = wpuf_get_currency( 'symbol' );
 
@@ -1085,7 +1085,7 @@ class Subscription {
         $force_pack = $form->is_enabled_force_pack();
 
         if ( $force_pack && self::has_user_error( $form_settings ) ) {
-            $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'WeDevs\Wpuf\WPUF_Payment' ) );
+            $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
             /* translators: %s: subscription link */
             $text = sprintf( __( 'You must <a href="%s">purchase a pack</a> before posting', 'wp-user-frontend' ), $pack_page );
         }

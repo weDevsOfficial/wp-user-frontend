@@ -1,44 +1,17 @@
 <?php
 
+namespace WeDevs\Wpuf\Lib\Gateway;
+
 /**
  * WP User Frotnend Bank gateway
  *
  * @since 2.1.4
  */
-class WPUF_Gateway_Bank {
+class Bank {
     public function __construct() {
         add_action( 'wpuf_gateway_bank', [$this, 'prepare_to_send'] );
-        add_action( 'wpuf_options_payment', [$this, 'payment_options'] );
         add_action( 'wpuf_gateway_bank_order_submit', [$this, 'order_notify_admin'] );
         add_action( 'wpuf_gateway_bank_order_complete', [$this, 'order_notify_user'], 10, 2 );
-    }
-
-    /**
-     * Adds paypal specific options to the admin panel
-     *
-     * @param type $options
-     *
-     * @return string
-     */
-    public function payment_options( $options ) {
-        $pages = wpuf_get_pages();
-
-        $options[] = [
-            'name'    => 'gate_instruct_bank',
-            'label'   => __( 'Bank Instruction', 'wp-user-frontend' ),
-            'type'    => 'wysiwyg',
-            'default' => 'Make your payment directly into our bank account.',
-        ];
-
-        $options[] = [
-            'name'    => 'bank_success',
-            'label'   => __( 'Bank Payment Success Page', 'wp-user-frontend' ),
-            'desc'    => __( 'After payment users will be redirected here', 'wp-user-frontend' ),
-            'type'    => 'select',
-            'options' => $pages,
-        ];
-
-        return $options;
     }
 
     /**
@@ -118,5 +91,3 @@ class WPUF_Gateway_Bank {
         wp_delete_post( $order_id, true );
     }
 }
-
-$wpuf_gateway_bank = new WPUF_Gateway_Bank();

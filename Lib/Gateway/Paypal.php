@@ -2,14 +2,12 @@
 
 namespace WeDevs\Wpuf\Lib\Gateway;
 
-use WeDevs\Wpuf\WPUF_Payment;
-
 /**
  * WP User Frontend PayPal gateway
  *
  * @since 0.8
  */
-class WPUF_Paypal {
+class Paypal {
     private $gateway_url;
 
     private $gateway_cancel_url;
@@ -22,7 +20,6 @@ class WPUF_Paypal {
         $this->test_mode          = false;
 
         add_action( 'wpuf_gateway_paypal', [ $this, 'prepare_to_send' ] );
-        add_action( 'wpuf_options_payment', [ $this, 'payment_options' ] );
         add_action( 'init', [ $this, 'check_response' ] );
         add_action( 'wpuf_paypal_ipn_success', [ $this, 'paypal_success' ] );
         add_action( 'wpuf_cancel_payment_paypal', [ $this, 'handle_cancel_subscription' ] );
@@ -45,9 +42,9 @@ class WPUF_Paypal {
     public function recurring_change_status( $user_id, $status ) {
         $user_id           = ! empty( $user_id ) ? $user_id : get_current_user_id();
         $sub_info          = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
-        $api_username      = wpuf_get_option( 'paypal_api_username', 'WeDevs\Wpuf\WPUF_Payment' );
-        $api_password      = wpuf_get_option( 'paypal_api_password', 'WeDevs\Wpuf\WPUF_Payment' );
-        $api_signature     = wpuf_get_option( 'paypal_api_signature', 'WeDevs\Wpuf\WPUF_Payment' );
+        $api_username      = wpuf_get_option( 'paypal_api_username', 'wpuf_payment' );
+        $api_password      = wpuf_get_option( 'paypal_api_password', 'wpuf_payment' );
+        $api_signature     = wpuf_get_option( 'paypal_api_signature', 'wpuf_payment' );
         $profile_id        = isset( $sub_info['profile_id'] ) ? $sub_info['profile_id'] : '';
         $new_status        = $status;
         $new_status_string = $status;
@@ -119,48 +116,6 @@ class WPUF_Paypal {
     }
 
     /**
-     * Adds paypal specific options to the admin panel
-     *
-     * @param type $options
-     *
-     * @return string
-     */
-    public function payment_options( $options ) {
-        $options[] = [
-            'name'  => 'paypal_email',
-            'label' => __( 'PayPal Email', 'wp-user-frontend' ),
-        ];
-
-        $options[] = [
-            'name'    => 'gate_instruct_paypal',
-            'label'   => __( 'PayPal Instruction', 'wp-user-frontend' ),
-            'type'    => 'wysiwyg',
-            'default' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account",
-        ];
-
-        $options[] = [
-            'name'  => 'paypal_api_username',
-            'label' => __( 'PayPal API username', 'wp-user-frontend' ),
-        ];
-        $options[] = [
-            'name'  => 'paypal_api_password',
-            'label' => __( 'PayPal API password', 'wp-user-frontend' ),
-        ];
-        $options[] = [
-            'name'  => 'paypal_api_signature',
-            'label' => __( 'PayPal API signature', 'wp-user-frontend' ),
-        ];
-        /* $options[] = [
-             'name'    => 'paypal_endpoint',
-             'label'   => __('PayPal IPN endpoint', 'wp-user-frontend'),
-             'default' => home_url( '/action/wpuf_paypal_success', null ),
-             'desc'    => __('Set this to your notification IPN listener', 'wp-user-frontend'),
-             'class'   => 'disabled'
-         ];*/
-        return $options;
-    }
-
-    /**
      * Prepare the payment form and send to paypal
      *
      * @param array $data payment info
@@ -217,7 +172,7 @@ class WPUF_Paypal {
 
             $paypal_args = [
                 'cmd'           => '_xclick-subscriptions',
-                'business'      => wpuf_get_option( 'paypal_email', 'WeDevs\Wpuf\WPUF_Payment' ),
+                'business'      => wpuf_get_option( 'paypal_email', 'wpuf_payment' ),
                 'a3'            => $billing_amount,
                 'mc_amount3'    => $billing_amount,
                 'p3'            => ! empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number'] : '0',
@@ -255,7 +210,7 @@ class WPUF_Paypal {
         } else {
             $paypal_args = [
                 'cmd'           => '_xclick',
-                'business'      => wpuf_get_option( 'paypal_email', 'WeDevs\Wpuf\WPUF_Payment' ),
+                'business'      => wpuf_get_option( 'paypal_email', 'wpuf_payment' ),
                 'amount'        => $billing_amount,
                 'item_name'     => isset( $data['custom']['post_title'] ) ? $data['custom']['post_title'] : $data['item_name'],
                 'no_shipping'   => '1',
@@ -299,7 +254,7 @@ class WPUF_Paypal {
      * @since 0.8
      */
     public function set_mode() {
-        if ( wpuf_get_option( 'sandbox_mode', 'WeDevs\Wpuf\WPUF_Payment' ) == 'on' ) {
+        if ( wpuf_get_option( 'sandbox_mode', 'wpuf_payment' ) == 'on' ) {
             $this->gateway_url        = 'https://www.sandbox.paypal.com/cgi-bin/webscr/?';
             $this->gateway_cancel_url = 'https://api-3t.sandbox.paypal.com/nvp';
             $this->test_mode          = true;
@@ -454,7 +409,7 @@ class WPUF_Paypal {
 
             WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
 
-            WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
+            _Payment::insert_payment( $data, $transaction_id, $is_recurring );
 
             if ( $coupon_id ) {
                 $pre_usage = get_post_meta( $coupon_id, '_coupon_used', true );
@@ -513,7 +468,7 @@ class WPUF_Paypal {
             'user-agent'  => 'WP User Frontend Pro/' . WPUF_VERSION,
         ];
 
-        if ( wpuf_get_option( 'sandbox_mode', 'WeDevs\Wpuf\WPUF_Payment' ) == 'on' ) {
+        if ( wpuf_get_option( 'sandbox_mode', 'wpuf_payment' ) == 'on' ) {
             $this->gateway_url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
         } else {
             $this->gateway_url = 'https://ipnpb.paypal.com/cgi-bin/webscr';

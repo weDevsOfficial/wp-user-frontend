@@ -212,7 +212,7 @@ class Frontend_Account {
         }
         $pack = Subscription::get_subscription( $sub_id );
         $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page',
-                                                                        'WeDevs\Wpuf\WPUF_Payment' ) );
+                                                                        'wpuf_payment' ) );
         $details_meta['onclick']      = '';
         $details_meta['symbol']       = wpuf_get_currency( 'symbol' );
         $recurring_des = '';

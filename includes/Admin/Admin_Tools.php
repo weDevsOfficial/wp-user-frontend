@@ -396,7 +396,7 @@ class Admin_Tools {
                 delete_option( 'wpuf_general' );
                 delete_option( 'wpuf_dashboard' );
                 delete_option( 'wpuf_profile' );
-                delete_option( 'WeDevs\Wpuf\WPUF_Payment' );
+                delete_option( 'wpuf_payment' );
                 delete_option( '_wpuf_page_created' );
                 $message = 'settings_cleared';
                 break;

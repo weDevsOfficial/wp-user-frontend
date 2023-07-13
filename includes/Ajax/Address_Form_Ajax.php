@@ -19,7 +19,7 @@ class Address_Form_Ajax {
     public function register_plugin_scripts() {
         global $post;
 
-        $pay_page = intval( wpuf_get_option( 'payment_page', 'WeDevs\Wpuf\WPUF_Payment' ) );
+        $pay_page = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
 
         if ( wpuf_get_option( 'load_script', 'wpuf_general', 'on' ) == 'on' ) {
             $this->plugin_scripts();

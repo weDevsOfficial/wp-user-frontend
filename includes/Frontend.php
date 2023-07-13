@@ -17,6 +17,8 @@ class Frontend {
         wpuf()->add_to_container( 'frontend_account', new Frontend\Frontend_Account() );
         wpuf()->add_to_container( 'shortcode_frontend_dashboard', new Frontend\Frontend_Dashboard() );
         wpuf()->add_to_container( 'shortcode', new Frontend\Shortcode() );
+        wpuf()->add_to_container( 'payment', new Frontend\Payment() );
+        wpuf()->add_to_container( 'bank', new Lib\Gateway\Bank() );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
     }

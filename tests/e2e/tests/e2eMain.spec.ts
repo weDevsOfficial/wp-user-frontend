@@ -12,7 +12,7 @@ import * as fs from "fs"; //Clear Cookie
 
 //!---------------------------------------------------------///
 //!Run ONLY - if needed [WP-Reset plugin needed]
-//*[Spec-0]: This spec resets your Wordpress Site - Comment out to USE.../
+//*[Spec-0]: This spec resets your Wordpress Site - Comment out [LINE: 17,18,19] to USE.../
 
 // import resetWordpressSite from './resetWordpressSite.spec';
 // fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });

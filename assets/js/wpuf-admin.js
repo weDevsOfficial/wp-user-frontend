@@ -108,4 +108,69 @@ jQuery(function($) {
 
         tooltip.appendTo( this );
     });
+
+    // warn the admin before updating a post if it's contains a restricted shortcode
+    setTimeout(function() {
+        var shortcodes = wpuf_admin_script.protected_shortcodes;
+
+        if ( ! shortcodes) {
+            return true;
+        }
+
+        // first get the body tag with 'post-type-*' class.
+        // post type can be `post`
+        // or any other custom post type like WooCommerce product, Events from event calendar etc.
+        var body = $('body').filter(function() {
+            var classes = $( this ).attr( 'class' ).split( ' ' );
+            for (var i = 0; i < classes.length; i++) {
+                if (classes[i].indexOf( 'post-type-' ) === 0) {
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        var postButton = body.find('button.editor-post-publish-button');
+
+        var checkForShortcodes = function(event) {
+            event.stopPropagation();
+
+            var { select } = wp.data;
+            var postContent = select("core/editor").getEditedPostAttribute( 'content' );
+            var shortcodesFound = [];
+
+            for ( var i = 0; i < shortcodes.length; i++) {
+                var shortcode = shortcodes[i];
+                var regex = new RegExp(shortcode);
+                if (!regex.test( postContent )) {
+                    continue;
+                }
+
+                shortcodesFound.push(shortcode);
+            }
+
+            Swal.fire({
+                title: 'Are you sure to update the post?',
+                text: 'This post contains the following shortcode ' + shortcodesFound.join(', '),
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Update'
+            } ).then( ( result ) => {
+                if (result.isConfirmed) {
+                    // $(event.delegateTarget).off('click', checkForShortcodes).click();
+                    $(this).off('click', checkForShortcodes).click();
+                    // $(this).click();
+
+                    // Rebind the event listener after the initial removal
+                    setTimeout(function() {
+                        postButton.on('click', checkForShortcodes);
+                    }, 100);
+                }
+            });
+        };
+
+        postButton.on('click', checkForShortcodes);
+    }, 100);
 });

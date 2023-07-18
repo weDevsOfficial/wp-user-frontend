@@ -490,9 +490,11 @@ class WPUF_Admin_Settings {
 
         wp_localize_script(
             'wpuf-admin-script', 'wpuf_admin_script', [
-                'ajaxurl'               => admin_url( 'admin-ajax.php' ),
-                'nonce'                 => wp_create_nonce( 'wpuf_nonce' ),
-                'cleared_schedule_lock' => __( 'Post lock has been cleared', 'wp-user-frontend' ),
+                'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
+                'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
+                'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
+                'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
+                'protected_shortcodes_message' => __( 'Using %shortcode% is restricted', 'wp-user-frontend' ),
             ]
         );
     }

@@ -44,7 +44,7 @@
                         if (result.isConfirmed) {
                             $( this ).unbind('submit').submit()
                         }
-                    })
+                    });
                 }
             } );
 

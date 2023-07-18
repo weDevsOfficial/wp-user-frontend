@@ -132,6 +132,47 @@ jQuery(function($) {
 
         var postButton = body.find('button.editor-post-publish-button');
 
+        // for classic editor
+        body.find('#post').submit( function( event ) {
+            event.preventDefault();
+
+            var shortcodesFound = [];
+
+            var postContent = tinymce.activeEditor.getContent();
+
+            for ( var i = 0; i < shortcodes.length; i++) {
+                var shortcode = shortcodes[i];
+                var regex = new RegExp(shortcode);
+                if (!regex.test( postContent )) {
+                    continue;
+                }
+
+                shortcodesFound.push(shortcode);
+            }
+
+            // no shortcodes found
+            if ( ! shortcodesFound.length ) {
+                $( this ).unbind('submit').submit();
+
+                return;
+            }
+
+            Swal.fire({
+                title: 'Are you sure to update the post?',
+                text: 'This post contains the following shortcode ' + shortcodesFound.join(', '),
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Update'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $( this ).unbind('submit').submit();
+                }
+            });
+        });
+        // end classic editor
+
         var checkForShortcodes = function(event) {
             event.stopPropagation();
 
@@ -149,6 +190,18 @@ jQuery(function($) {
                 shortcodesFound.push(shortcode);
             }
 
+            // no shortcodes found
+            if ( ! shortcodesFound.length ) {
+                $(this).off('click', checkForShortcodes).click();
+
+                // Rebind the event listener after the initial removal
+                setTimeout(function() {
+                    postButton.on('click', checkForShortcodes);
+                }, 100);
+
+                return;
+            }
+
             Swal.fire({
                 title: 'Are you sure to update the post?',
                 text: 'This post contains the following shortcode ' + shortcodesFound.join(', '),
@@ -161,7 +214,6 @@ jQuery(function($) {
                 if (result.isConfirmed) {
                     // $(event.delegateTarget).off('click', checkForShortcodes).click();
                     $(this).off('click', checkForShortcodes).click();
-                    // $(this).click();
 
                     // Rebind the event listener after the initial removal
                     setTimeout(function() {
@@ -171,6 +223,7 @@ jQuery(function($) {
             });
         };
 
+        // for gutenberg
         postButton.on('click', checkForShortcodes);
     }, 100);
 });

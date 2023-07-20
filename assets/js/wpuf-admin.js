@@ -229,5 +229,5 @@ jQuery(function($) {
 
         // for gutenberg
         postButton.on('click', checkForShortcodes);
-    }, 100);
+    }, 500);
 });

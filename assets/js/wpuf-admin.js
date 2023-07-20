@@ -130,7 +130,11 @@ jQuery(function($) {
             return false;
         });
 
-        var postButton = body.find('button.editor-post-publish-button');
+        if (body.length === 0) {
+            body = $('body.block-editor-page');
+        }
+
+        var postButton = body.find('button.editor-post-publish-button, button.editor-post-publish-button__button');
 
         // for classic editor
         body.find('#post').submit( function( event ) {

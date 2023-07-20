@@ -201,7 +201,7 @@ jQuery(function($) {
                 // Rebind the event listener after the initial removal
                 setTimeout(function() {
                     postButton.on('click', checkForShortcodes);
-                }, 100);
+                }, 500);
 
                 return;
             }
@@ -222,7 +222,7 @@ jQuery(function($) {
                     // Rebind the event listener after the initial removal
                     setTimeout(function() {
                         postButton.on('click', checkForShortcodes);
-                    }, 100);
+                    }, 500);
                 }
             });
         };

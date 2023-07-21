@@ -60,10 +60,11 @@ npx playwright install chromium
     After cloning the repo,
 
     > [Plugins] Highly Recommended:
+    (Manually install the plugins beforehand)
+    
         • WPUF-Lite
         • WP-Reset 
-        (Manually install this plugin beforehand)
-    
+        
     > While WP-Reset plugin is active
     > Comment out the marked sections to run "resetWordpressSite" and reset your LocalSite (Clean setup is highly recommended)
     

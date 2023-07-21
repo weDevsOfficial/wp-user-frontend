@@ -49,7 +49,7 @@ npx playwright install chromium
 
 
 
-### How to run tests
+### How to run tests in Local Setup
 
 ## Initial Setup:
 
@@ -59,9 +59,10 @@ npx playwright install chromium
 
     After cloning the repo,
 
-    > Highly Recommended:
-        Plugin needed for this action: WP-Reset (Manually install this plugin beforehand)
-
+    > [Plugins] Highly Recommended:
+        • WPUF-Lite
+        • Plugin needed for this action: WP-Reset (Manually install this plugin beforehand)
+    
     > While WP-Reset plugin is active
     > Comment out the marked sections to run "resetWordpressSite" and reset your LocalSite (Clean setup is highly recommended)
     

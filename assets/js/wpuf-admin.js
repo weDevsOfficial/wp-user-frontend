@@ -208,7 +208,7 @@ jQuery(function($) {
 
             Swal.fire({
                 title: 'Are you sure to update the post?',
-                text: wpuf_admin_script.protected_shortcodes_message,
+                html: wpuf_admin_script.protected_shortcodes_message,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

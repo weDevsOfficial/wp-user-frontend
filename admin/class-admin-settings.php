@@ -494,7 +494,7 @@ class WPUF_Admin_Settings {
                 'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
                 'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
-                'protected_shortcodes_message' => __( 'Using %shortcode% is restricted', 'wp-user-frontend' ),
+                'protected_shortcodes_message' => sprintf( __( 'This post contains a sensitive shortcode %s, that may grant others to sign up with distinguished role (E.g., Editor/Author/Contributor/Others). If not used with caution, this may be exploited as a security vulnerability. Only publish this post if you are sure about it. Otherwise, remove the short code and then publish it (recommended).', 'wp-user-frontend' ),'[wpuf-registration]' ),
             ]
         );
     }

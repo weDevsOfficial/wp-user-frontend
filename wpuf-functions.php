@@ -4533,13 +4533,9 @@ function wpuf_get_pro_preview_tooltip() {
  * @return array
  */
 function wpuf_get_protected_shortcodes() {
-    return apply_filters(
-        'wpuf_protected_shortcodes', [
-            'wpuf-registration',
-            'wpuf_dashboard',
-            'wpuf_profile',
-        ]
-    );
+    return [
+        'wpuf-registration',
+    ];
 }
 
 /**

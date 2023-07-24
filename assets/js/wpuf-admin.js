@@ -163,7 +163,7 @@ jQuery(function($) {
 
             Swal.fire({
                 title: 'Are you sure to update the post?',
-                text: 'This post contains the following shortcode ' + shortcodesFound.join(', '),
+                text: wpuf_admin_script.protected_shortcodes_message,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -208,7 +208,7 @@ jQuery(function($) {
 
             Swal.fire({
                 title: 'Are you sure to update the post?',
-                text: 'This post contains the following shortcode ' + shortcodesFound.join(', '),
+                text: wpuf_admin_script.protected_shortcodes_message,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

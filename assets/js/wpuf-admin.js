@@ -165,8 +165,8 @@ jQuery(function($) {
                 title: 'Are you sure to update the post?',
                 text: wpuf_admin_script.protected_shortcodes_message,
                 icon: 'warning',
-                padding: '0 3em 3em 3em',
-                width: '40%',
+                padding: '0px 2em 2em',
+                width: '35%',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
@@ -201,7 +201,7 @@ jQuery(function($) {
             if ( ! shortcodesFound.length ) {
                 $(this).off('click', checkForShortcodes).click();
 
-                // Rebind the event listener after the initial removal
+                // Rebind the event listener after the initial removalq
                 setTimeout(function() {
                     postButton.on('click', checkForShortcodes);
                 }, 500);
@@ -213,8 +213,8 @@ jQuery(function($) {
                 title: 'Are you sure to update the post?',
                 html: wpuf_admin_script.protected_shortcodes_message,
                 icon: 'warning',
-                padding: '0 3em 3em 3em',
-                width: '40%',
+                padding: '0px 2em 2em',
+                width: '35%',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',

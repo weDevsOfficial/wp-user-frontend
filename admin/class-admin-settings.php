@@ -496,7 +496,7 @@ class WPUF_Admin_Settings {
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
                 'protected_shortcodes_message' => sprintf(
                     __( '%sThis post contains a sensitive short-code %s, that may allow others to sign-up with distinguished roles. If unsure, remove the short-code before publishing (recommended) %sas this may be exploited as a security vulnerability.%s', 'wp-user-frontend' ),
-                    '<div style="font-size: 1.1em; text-align: justify; color: darkgray">',
+                    '<div style="font-size: 1em; text-align: justify; color: darkgray">',
                     '[wpuf-registration]',
                     '<strong>',
                     '</strong>',

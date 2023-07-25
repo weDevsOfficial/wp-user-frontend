@@ -165,10 +165,13 @@ jQuery(function($) {
                 title: 'Are you sure to update the post?',
                 text: wpuf_admin_script.protected_shortcodes_message,
                 icon: 'warning',
+                padding: '0 3em 3em 3em',
+                width: '40%',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Update'
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Proceed with Update',
+                cancelButtonText: 'Remove Shortcode & Publish'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $( this ).unbind('submit').submit();
@@ -210,13 +213,15 @@ jQuery(function($) {
                 title: 'Are you sure to update the post?',
                 html: wpuf_admin_script.protected_shortcodes_message,
                 icon: 'warning',
+                padding: '0 3em 3em 3em',
+                width: '40%',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Update'
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Proceed with Update',
+                cancelButtonText: 'Remove Shortcode & Publish'
             } ).then( ( result ) => {
                 if (result.isConfirmed) {
-                    // $(event.delegateTarget).off('click', checkForShortcodes).click();
                     $(this).off('click', checkForShortcodes).click();
 
                     // Rebind the event listener after the initial removal

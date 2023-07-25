@@ -127,6 +127,7 @@ final class WP_User_Frontend {
         add_action( 'init', [ $this, 'load_textdomain' ] );
 
         add_action( 'admin_init', [ $this, 'block_admin_access' ] );
+        add_action( 'admin_init', [ $this, 'plugin_upgrade_notice' ] );
 
         add_filter( 'show_admin_bar', [ $this, 'show_admin_bar' ] );
 
@@ -319,6 +320,7 @@ final class WP_User_Frontend {
             include_once WPUF_ROOT . '/includes/class-acf.php';
             include_once WPUF_ROOT . '/includes/class-privacy.php';
             include_once WPUF_ROOT . '/admin/dashboard-metabox.php';
+            include_once WPUF_ROOT . '/admin/class-plugin-upgrade-notice.php';
         } else {
             require_once WPUF_ROOT . '/class/frontend-dashboard.php';
             require_once WPUF_ROOT . '/includes/free/class-registration.php';
@@ -800,6 +802,22 @@ final class WP_User_Frontend {
             // wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
             wp_redirect( home_url() );
             exit;
+        }
+    }
+
+    /**
+     * show plugin upgrade notice upon checking
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function plugin_upgrade_notice() {
+        global $pagenow;
+
+        // Show extra upgrade notices within the plugins.php screen only
+        if ( 'plugins.php' === $pagenow ) {
+            new Plugin_Upgrade_Notice();
         }
     }
 

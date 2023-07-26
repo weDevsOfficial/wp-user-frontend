@@ -68,24 +68,23 @@ class Plugin_Upgrade_Notice {
      * @return void
      */
     protected function check_for_notice() {
-        $notice = get_transient( self::NOTICE_KEY );
+        $notice_url = 'https://raw.githubusercontent.com/weDevsOfficial/wpuf-util/master/upgrade-notice.json';
+        $response   = wp_remote_get( $notice_url, [ 'timeout' => 15 ] );
+        $notice     = wp_remote_retrieve_body( $response );
 
-        if ( false === $notice ) {
-            $notice_url = 'https://raw.githubusercontent.com/weDevsOfficial/wpuf-util/master/upgrade-notice.json';
-            $response   = wp_remote_get( $notice_url, [ 'timeout' => 15 ] );
-            $notice     = wp_remote_retrieve_body( $response );
-
-            if ( is_wp_error( $response ) || ( 200 !== $response['response']['code'] ) ) {
-                $notice = '[]';
-            }
-
-            set_transient( self::NOTICE_KEY, $notice, DAY_IN_SECONDS );
+        if ( is_wp_error( $response ) || ( 200 !== $response['response']['code'] ) ) {
+            $notice = '[]';
         }
-
 
         $notice = json_decode( $notice, true );
 
-        if ( empty( $notice ) || ! is_array( $notice ) ) {
+        if ( empty( $notice ) ) {
+            return;
+        }
+
+        $min_version = ! empty( $notice['min-version'] ) ? $notice['min-version'] : '';
+
+        if ( version_compare( WPUF_VERSION, $min_version,  '>=' ) ) {
             return;
         }
 

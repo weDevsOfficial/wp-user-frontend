@@ -1,6 +1,20 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.6',
+        'released' => '2023-07-25',
+        'changes'  => [
+            [
+                'title' => __( 'Restrict shortcode in post form', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Add custom note on plugin update page', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.6.5',
         'released' => '2023-05-25',
         'changes'  => [

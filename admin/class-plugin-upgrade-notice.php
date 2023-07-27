@@ -3,7 +3,7 @@
  * In WordPress Dashboard plugins page, show notice if needed
  * The message is coming from wpuf-util
  *
- * @since WPUF_SINCE
+ * @since 3.6.6
  */
 
 class Plugin_Upgrade_Notice {
@@ -33,7 +33,7 @@ class Plugin_Upgrade_Notice {
     /**
      * The class constructor
      *
-     * @since WPUF_SINCE
+     * @since 3.6.6
      */
     public function __construct() {
         $plugin_file       = WPUF_FILE;
@@ -48,7 +48,7 @@ class Plugin_Upgrade_Notice {
     /**
      * Display notice upon checking
      *
-     * @since WPUF_SINCE
+     * @since 3.6.6
      *
      * @return void
      */
@@ -63,7 +63,7 @@ class Plugin_Upgrade_Notice {
     /**
      * Tests to see if an upgrade notice is available.
      *
-     * @since WPUF_SINCE
+     * @since 3.6.6
      *
      * @return void
      */
@@ -94,7 +94,7 @@ class Plugin_Upgrade_Notice {
     /**
      * Render the notice under new version available message
      *
-     * @since WPUF_SINCE
+     * @since 3.6.6
      *
      * @return void
      */

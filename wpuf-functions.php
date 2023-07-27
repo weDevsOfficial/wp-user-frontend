@@ -4528,7 +4528,7 @@ function wpuf_get_pro_preview_tooltip() {
  * Get the shortcodes that are protected on the post form.
  * User cannot submit post containing those shortcodes.
  *
- * @since WPUF_SINCE
+ * @since 3.6.6
  *
  * @return array
  */
@@ -4541,7 +4541,7 @@ function wpuf_get_protected_shortcodes() {
 /**
  * Get the current users roles as an array
  *
- * @since WPUF_SINCE
+ * @since 3.6.6
  *
  * @return array|bool
  */
@@ -4559,7 +4559,7 @@ function wpuf_get_single_user_roles( $user_id ) {
  * Check and modify the post content not to render shortcode values
  * in the frontend for any user except admin.
  *
- * @since WPUF_SINCE
+ * @since 3.6.6
  *
  * @return string
  */

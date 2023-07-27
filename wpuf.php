@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 3.6.5
+Version: 3.6.6
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Text Domain: wp-user-frontend
 Domain Path: /languages
 */
 
-define( 'WPUF_VERSION', '3.6.5' );
+define( 'WPUF_VERSION', '3.6.6' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -127,6 +127,7 @@ final class WP_User_Frontend {
         add_action( 'init', [ $this, 'load_textdomain' ] );
 
         add_action( 'admin_init', [ $this, 'block_admin_access' ] );
+        add_action( 'admin_init', [ $this, 'plugin_upgrade_notice' ] );
 
         add_filter( 'show_admin_bar', [ $this, 'show_admin_bar' ] );
 
@@ -319,6 +320,7 @@ final class WP_User_Frontend {
             include_once WPUF_ROOT . '/includes/class-acf.php';
             include_once WPUF_ROOT . '/includes/class-privacy.php';
             include_once WPUF_ROOT . '/admin/dashboard-metabox.php';
+            include_once WPUF_ROOT . '/admin/class-plugin-upgrade-notice.php';
         } else {
             require_once WPUF_ROOT . '/class/frontend-dashboard.php';
             require_once WPUF_ROOT . '/includes/free/class-registration.php';
@@ -722,25 +724,39 @@ final class WP_User_Frontend {
         wp_localize_script(
             'wpuf-form', 'wpuf_frontend', apply_filters(
                 'wpuf_frontend_js_data', [
-                    'ajaxurl'          => admin_url( 'admin-ajax.php' ),
-                    'error_message'    => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
-                    'nonce'            => wp_create_nonce( 'wpuf_nonce' ),
-                    'cancelSubMsg'     => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
-                    'delete_it'        => __( 'Yes', 'wp-user-frontend' ),
-                    'cancel_it'        => __( 'No', 'wp-user-frontend' ),
-                    'word_max_title'   => __( 'Maximum word limit reached. Please shorten your texts.', 'wp-user-frontend' ),
-                    'word_max_details' => __( 'This field supports a maximum of %number% words, and the limit is reached. Remove a few words to reach the acceptable limit of the field.',
-                                              'wp-user-frontend' ),
-                    'word_min_title'   => __( 'Minimum word required.', 'wp-user-frontend' ),
-                    'word_min_details' => __( 'This field requires minimum %number% words. Please add some more text.',
-                                              'wp-user-frontend' ),
-                    'char_max_title'   => __( 'Maximum character limit reached. Please shorten your texts.',
-                                              'wp-user-frontend' ),
-                    'char_max_details' => __( 'This field supports a maximum of %number% characters, and the limit is reached. Remove a few characters to reach the acceptable limit of the field.',
-                                              'wp-user-frontend' ),
-                    'char_min_title'   => __( 'Minimum character required.', 'wp-user-frontend' ),
-                    'char_min_details' => __( 'This field requires minimum %number% characters. Please add some more character.',
-                                              'wp-user-frontend' ),
+                    'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
+                    'error_message'                => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
+                    'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
+                    'cancelSubMsg'                 => __(
+                        'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend'
+                    ),
+                    'delete_it'                    => __( 'Yes', 'wp-user-frontend' ),
+                    'cancel_it'                    => __( 'No', 'wp-user-frontend' ),
+                    'word_max_title'               => __(
+                        'Maximum word limit reached. Please shorten your texts.', 'wp-user-frontend'
+                    ),
+                    'word_max_details'             => __(
+                        'This field supports a maximum of %number% words, and the limit is reached. Remove a few words to reach the acceptable limit of the field.',
+                        'wp-user-frontend'
+                    ),
+                    'word_min_title'               => __( 'Minimum word required.', 'wp-user-frontend' ),
+                    'word_min_details'             => __(
+                        'This field requires minimum %number% words. Please add some more text.', 'wp-user-frontend'
+                    ),
+                    'char_max_title'               => __(
+                        'Maximum character limit reached. Please shorten your texts.', 'wp-user-frontend'
+                    ),
+                    'char_max_details'             => __(
+                        'This field supports a maximum of %number% characters, and the limit is reached. Remove a few characters to reach the acceptable limit of the field.',
+                        'wp-user-frontend'
+                    ),
+                    'char_min_title'               => __( 'Minimum character required.', 'wp-user-frontend' ),
+                    'char_min_details'             => __(
+                        'This field requires minimum %number% characters. Please add some more character.',
+                        'wp-user-frontend'
+                    ),
+                    'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
+                    'protected_shortcodes_message' => __( 'Using %shortcode% is restricted', 'wp-user-frontend' ),
                 ]
             )
         );
@@ -800,6 +816,22 @@ final class WP_User_Frontend {
             // wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
             wp_redirect( home_url() );
             exit;
+        }
+    }
+
+    /**
+     * show plugin upgrade notice upon checking
+     *
+     * @since 3.6.6
+     *
+     * @return void
+     */
+    public function plugin_upgrade_notice() {
+        global $pagenow;
+
+        // Show extra upgrade notices within the plugins.php screen only
+        if ( 'plugins.php' === $pagenow ) {
+            new Plugin_Upgrade_Notice();
         }
     }
 

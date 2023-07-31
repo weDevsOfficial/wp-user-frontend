@@ -24,6 +24,7 @@ class Admin {
         wpuf()->add_to_container( 'gutenberg_block', new Frontend\Form_Gutenberg_Block() );
         wpuf()->add_to_container( 'whats_new', new Admin\Whats_New() );
         wpuf()->add_to_container( 'promotion', new Admin\Promotion() );
+        wpuf()->add_to_container( 'plugin_upgrade_notice', new Admin\Plugin_Upgrade_Notice() );
 
         // post form submenu operations
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_post_form_scripts' ] );

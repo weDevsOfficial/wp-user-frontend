@@ -547,6 +547,19 @@
                             break;
                         }
 
+                        var containingShortcode = WP_User_Frontend.editorContainingShortcode(item);
+
+                        if ( containingShortcode.shortcodeFound ) {
+                            errors.push({
+                                type: 'custom',
+                                container: item,
+                                message: wpuf_frontend.protected_shortcodes_message
+                                    .replace('%shortcode%', '[' + containingShortcode.shortcode + ']')
+                            });
+
+                            break;
+                        }
+
                         richTexts.push( item_name + '=' + encodeURIComponent( val ) );
 
                         break;
@@ -1359,6 +1372,34 @@
             }
 
             field.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( limitMessage );
+        },
+
+        editorContainingShortcode: function( field ) {
+            var item = $( field );
+            var editor_id = item.data( 'id' );
+            var postContent = $.trim( tinyMCE.get( editor_id ).getContent() ).toLowerCase();
+            var shortcodes = wpuf_frontend.protected_shortcodes;
+
+            if (!shortcodes) {
+                return {
+                    shortcodeFound: false,
+                };
+            }
+
+            for (var i = 0; i < shortcodes.length; i++) {
+                var shortcode = shortcodes[i];
+                var regex = new RegExp( shortcode );
+                if (regex.test( postContent )) {
+                    return {
+                        shortcodeFound: true,
+                        shortcode: shortcode,
+                    };
+                }
+            }
+
+            return {
+                shortcodeFound: false,
+            };
         }
     };
 

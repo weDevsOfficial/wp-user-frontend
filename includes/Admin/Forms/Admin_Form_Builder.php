@@ -192,15 +192,6 @@ class Admin_Form_Builder {
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
         wp_localize_script( 'wpuf-form-builder-mixins', 'wpuf_form_builder', $wpuf_form_builder );
-        wp_localize_script(
-            'wpuf-admin', 'wpuf_admin_script',
-            [
-                'ajaxurl'               => admin_url( 'admin-ajax.php' ),
-                'nonce'                 => wp_create_nonce( 'wpuf_nonce' ),
-                'cleared_schedule_lock' => __( 'Post lock has been cleared', 'wp-user-frontend' ),
-                'asset_url' => WPUF_ASSET_URI,
-            ]
-        );
         // mixins
         $wpuf_mixins = [
             'root'          => apply_filters( 'wpuf_form_builder_js_root_mixins', [] ),

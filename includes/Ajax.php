@@ -23,7 +23,7 @@ class Ajax {
     protected $logged_out_only = [ 'priv' => false ];
 
     public function __construct() {
-        $this->register_ajax( 'submit_post', [ new Ajax\Frontend_Form_Ajax(), 'submit_post' ] );
+        $this->register_ajax( 'wpuf_submit_post', [ new Ajax\Frontend_Form_Ajax(), 'submit_post' ] );
         $this->register_ajax( 'file_del', [ new Ajax\Upload_Ajax(), 'delete_file' ] );
         $this->register_ajax( 'upload_file', [ new Ajax\Upload_Ajax(), 'upload_file' ] );
         $this->register_ajax( 'insert_image', [ new Ajax\Upload_Ajax(), 'insert_image' ] );

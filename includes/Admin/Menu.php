@@ -5,7 +5,7 @@ namespace WeDevs\Wpuf\Admin;
 class Menu {
     protected $all_submenu_hooks = [];
 
-    protected $parent_slug = 'wp-user-frontend';
+    public $parent_slug = 'wp-user-frontend';
 
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );

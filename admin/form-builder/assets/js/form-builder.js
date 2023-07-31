@@ -284,14 +284,8 @@
 
                 if (state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] === undefined) {
                     state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] = [];
-                }
-
-                if (state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] !== undefined) {
-                    var innerColumnFields   = state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn];
-
-                    if ( innerColumnFields.filter(innerField => innerField.name === payload.field.name).length <= 0 ) {
-                        state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn].splice(payload.toIndex, 0, payload.field);
-                    }
+                } else {
+                    state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn].splice( payload.toIndex, 0, payload.field );
                 }
             },
 

@@ -24,33 +24,33 @@ class Ajax {
 
     public function __construct() {
         $this->register_ajax( 'wpuf_submit_post', [ new Ajax\Frontend_Form_Ajax(), 'submit_post' ] );
-        $this->register_ajax( 'file_del', [ new Ajax\Upload_Ajax(), 'delete_file' ] );
-        $this->register_ajax( 'upload_file', [ new Ajax\Upload_Ajax(), 'upload_file' ] );
-        $this->register_ajax( 'insert_image', [ new Ajax\Upload_Ajax(), 'insert_image' ] );
+        $this->register_ajax( 'wpuf_file_del', [ new Ajax\Upload_Ajax(), 'delete_file' ] );
+        $this->register_ajax( 'wpuf_upload_file', [ new Ajax\Upload_Ajax(), 'upload_file' ] );
+        $this->register_ajax( 'wpuf_insert_image', [ new Ajax\Upload_Ajax(), 'insert_image' ] );
         $this->register_ajax( 'wpuf_form_builder_save_form', [ new Ajax\Admin_Form_Builder_Ajax(), 'save_form' ], $this->logged_in_only );
-        $this->register_ajax( 'form_setting_post', [ new Ajax\Admin_Form_Builder_Ajax(), 'wpuf_get_post_taxonomies' ], $this->logged_in_only );
-        $this->register_ajax( 'whats_new_dismiss', [ new Admin\Whats_New(), 'dismiss_notice' ] );
-        $this->register_ajax( 'dismiss_promotional_offer_notice', [ new Admin\Promotion(), 'dismiss_promotional_offer' ], $this->logged_in_only );
-        $this->register_ajax( 'dismiss_review_notice', [ new Admin\Promotion(), 'dismiss_review_notice' ], $this->logged_in_only );
-        $this->register_ajax( 'ajax_tag_search', 'wpuf_ajax_tag_search' );
-        $this->register_ajax( 'dismiss_notice_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'dismiss_notice' ], $this->logged_in_only );
-        $this->register_ajax( 'compatibility_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'maybe_compatible' ], $this->logged_in_only );
-        $this->register_ajax( 'migrate_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'migrate_cf_data' ], $this->logged_in_only );
-        $this->register_ajax( 'ajax_login', [ new Login_Widget(), 'ajax_login' ], $this->logged_out_only );
-        $this->register_ajax( 'lost_password', [ new Login_Widget(), 'ajax_reset_pass' ], $this->logged_out_only );
-        $this->register_ajax( 'ajax_logout', [ new Login_Widget(), 'ajax_logout' ], $this->logged_out_only );
-        $this->register_ajax( 'form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], $this->logged_in_only );
-        $this->register_ajax( 'make_media_embed_code', [ new Frontend\Frontend_Form(), 'make_media_embed_code' ] );
-        $this->register_ajax( 'draft_post', [ new Frontend\Frontend_Form(), 'draft_post' ] );
-        $this->register_ajax( 'form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], $this->logged_in_only );
-        $this->register_ajax( 'delete_user_package', [ new Admin\Admin_Subscription(), 'delete_user_package' ], $this->logged_in_only );
-        $this->register_ajax( 'address_ajax_action', [ new Ajax\Address_Form_Ajax(), 'ajax_form_action' ] );
-        $this->register_ajax( 'account_update_profile', [ new Frontend\Frontend_Account(), 'update_profile' ], $this->logged_in_only );
-        $this->register_ajax( 'import_forms', [ new Admin\Admin_Tools(), 'import_forms' ], $this->logged_in_only );
-        $this->register_ajax( 'get_child_cat', 'wpuf_get_child_cats' );
-        $this->register_ajax( 'ajax_address', 'wpuf_get_child_cats' );
-        $this->register_ajax( 'update_billing_address', 'wpuf_update_billing_address' );
-        $this->register_ajax( 'clear_schedule_lock', 'wpuf_clear_schedule_lock', $this->logged_in_only );
+        $this->register_ajax( 'wpuf_form_setting_post', [ new Ajax\Admin_Form_Builder_Ajax(), 'wpuf_get_post_taxonomies' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_whats_new_dismiss', [ new Admin\Whats_New(), 'dismiss_notice' ] );
+        $this->register_ajax( 'wpuf_dismiss_promotional_offer_notice', [ new Admin\Promotion(), 'dismiss_promotional_offer' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_dismiss_review_notice', [ new Admin\Promotion(), 'dismiss_review_notice' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_ajax_tag_search', 'wpuf_ajax_tag_search' );
+        $this->register_ajax( 'wpuf_dismiss_notice_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'dismiss_notice' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_compatibility_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'maybe_compatible' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_migrate_acf', [ new Integrations\WPUF_ACF_Compatibility(), 'migrate_cf_data' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_ajax_login', [ new Login_Widget(), 'ajax_login' ], $this->logged_out_only );
+        $this->register_ajax( 'wpuf_lost_password', [ new Login_Widget(), 'ajax_reset_pass' ], $this->logged_out_only );
+        $this->register_ajax( 'wpuf_ajax_logout', [ new Login_Widget(), 'ajax_logout' ], $this->logged_out_only );
+        $this->register_ajax( 'wpuf_form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_make_media_embed_code', [ new Frontend\Frontend_Form(), 'make_media_embed_code' ] );
+        $this->register_ajax( 'wpuf_draft_post', [ new Frontend\Frontend_Form(), 'draft_post' ] );
+        $this->register_ajax( 'wpuf_form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_delete_user_package', [ new Admin\Admin_Subscription(), 'delete_user_package' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_address_ajax_action', [ new Ajax\Address_Form_Ajax(), 'ajax_form_action' ] );
+        $this->register_ajax( 'wpuf_account_update_profile', [ new Frontend\Frontend_Account(), 'update_profile' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_import_forms', [ new Admin\Admin_Tools(), 'import_forms' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_get_child_cat', 'wpuf_get_child_cats' );
+        $this->register_ajax( 'wpuf_ajax_address', 'wpuf_get_child_cats' );
+        $this->register_ajax( 'wpuf_update_billing_address', 'wpuf_update_billing_address' );
+        $this->register_ajax( 'wpuf_clear_schedule_lock', 'wpuf_clear_schedule_lock', $this->logged_in_only );
     }
 
     /**

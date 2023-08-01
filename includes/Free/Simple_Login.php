@@ -16,6 +16,8 @@ class Simple_Login {
 
     private $messages = [];
 
+    private static $_instance;
+
     public function __construct() {
         add_action( 'init', [ $this, 'process_login' ] );
         add_action( 'init', [ $this, 'process_logout' ] );
@@ -37,6 +39,19 @@ class Simple_Login {
         add_filter( 'login_form_login', [ $this, 'default_wp_login_override' ] );
 
         add_filter( 'authenticate', [ $this, 'successfully_authenticate' ], 30, 3 );
+    }
+
+    /**
+     * Singleton object
+     *
+     * @return self
+     */
+    public static function init() {
+        if ( ! self::$_instance ) {
+            self::$_instance = new self();
+        }
+
+        return self::$_instance;
     }
 
     /**

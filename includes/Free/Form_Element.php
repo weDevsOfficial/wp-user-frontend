@@ -3,6 +3,8 @@
 namespace WeDevs\Wpuf\Free;
 
 // @codingStandardsIgnoreStart
+use WeDevs\Wpuf\Pro\Admin\FormBuilder\Template_Profile;
+
 class Form_Element extends Pro_Prompt {
 // @codingStandardsIgnoreEnd
 
@@ -327,7 +329,7 @@ class Form_Element extends Pro_Prompt {
                     $name = ucwords( str_replace( '_', ' ', $input_field['template'] ) );
 
                     // @codingStandardsIgnoreStart
-                    WPUF_Admin_Template_Profile::$input_field['template']( $count, $name, $input_field );
+                    Template_Profile::$input_field['template']( $count, $name, $input_field );
 
                     // @codingStandardsIgnoreEnd
 

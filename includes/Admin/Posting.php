@@ -8,7 +8,7 @@ namespace WeDevs\Wpuf\Admin;
  * Builds custom fields UI for post add/edit screen
  * and handles value saving.
  */
-class WPUF_Admin_Posting {
+class Posting {
 
     private static $_instance;
 

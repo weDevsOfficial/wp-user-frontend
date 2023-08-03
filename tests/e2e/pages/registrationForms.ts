@@ -87,8 +87,8 @@ export class registrationForms {
         //Click Publish Page
         await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.clickPublishPage);
         //Allow Permission
-        expect(await this.page.isVisible('//button[text()="Proceed with Update"]')).toBeTruthy();
-        await this.page.click('//button[text()="Proceed with Update"]');
+        expect(await this.page.isVisible(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.allowShortcodePermission)).toBeTruthy();
+        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.allowShortcodePermission);
         //Confirm Publish
         await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.confirmPublish);
 

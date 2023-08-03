@@ -578,6 +578,8 @@ export const selectors = {
 
             //Click Publish Page
             clickPublishPage: '//button[text()="Publish"]',
+            //Allow Permission
+            allowShortcodePermission: '//button[text()="Proceed with Update"]',
             //Confirm Publish 
             confirmPublish: '//button[contains(@class,"components-button editor-post-publish-button")]',
 

@@ -17,6 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+$autoload = __DIR__ . '/vendor/autoload.php';
+
+if ( file_exists( $autoload ) ) {
+    require_once $autoload;
+}
+
 define( 'WPUF_VERSION', '3.6.6' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
@@ -24,19 +30,15 @@ define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
 define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
 define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 
+use WeDevs\WpUtils\SingletonTrait;
+use WeDevs\WpUtils\ContainerTrait;
+
 /**
  * Main bootstrap class for WP User Frontend
  */
 final class WP_User_Frontend {
-
-    /**
-     * Holds various class instances
-     *
-     * @since 2.5.7
-     *
-     * @var array
-     */
-    private $container = [];
+    use SingletonTrait;
+    use ContainerTrait;
 
     /**
      * Form field value seperator
@@ -70,12 +72,6 @@ final class WP_User_Frontend {
      * Fire up the plugin
      */
     public function __construct() {
-        $autoload = __DIR__ . '/vendor/autoload.php';
-
-        if ( file_exists( $autoload ) ) {
-            require_once $autoload;
-        }
-
         if ( ! $this->is_supported_php() ) {
             add_action( 'admin_notices', [ $this, 'php_version_notice' ] );
 
@@ -169,17 +165,6 @@ final class WP_User_Frontend {
     }
 
     /**
-     * Schedules the post expiry event
-     *
-     * @since 2.2.7
-     */
-    public static function set_schedule_events() {
-        if ( ! wp_next_scheduled( 'wpuf_remove_expired_post_hook' ) ) {
-            wp_schedule_event(time(), 'daily', 'wpuf_remove_expired_post_hook');
-        }
-    }
-
-    /**
      * Singleton Instance
      *
      * @return \self
@@ -207,22 +192,22 @@ final class WP_User_Frontend {
      * @return void
      */
     public function instantiate() {
-        $this->container['assets']       = new WeDevs\Wpuf\Assets();
-        $this->container['subscription'] = new WeDevs\Wpuf\Admin\Subscription();
-        $this->container['fields']       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
-        $this->container['customize']    = new WeDevs\Wpuf\Admin\Customizer_Options();
+        $this->assets       = new WeDevs\Wpuf\Assets();
+        $this->subscription = new WeDevs\Wpuf\Admin\Subscription();
+        $this->fields       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
+        $this->customize    = new WeDevs\Wpuf\Admin\Customizer_Options();
 
         if ( is_admin() ) {
-            $this->container['admin']        = new WeDevs\Wpuf\Admin();
-            $this->container['setup_wizard'] = new WeDevs\Wpuf\Setup_Wizard();
-            $this->container['pro_upgrades'] = new WeDevs\Wpuf\Pro_Upgrades();
-            $this->container['privacy']      = new WeDevs\Wpuf\WPUF_Privacy();
+            $this->admin        = new WeDevs\Wpuf\Admin();
+            $this->setup_wizard = new WeDevs\Wpuf\Setup_Wizard();
+            $this->pro_upgrades = new WeDevs\Wpuf\Pro_Upgrades();
+            $this->privacy      = new WeDevs\Wpuf\WPUF_Privacy();
         } else {
-            $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
+            $this->frontend = new WeDevs\Wpuf\Frontend();
         }
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-            $this->container['ajax'] = new WeDevs\Wpuf\Ajax();
+            $this->ajax = new WeDevs\Wpuf\Ajax();
         }
     }
 
@@ -248,7 +233,7 @@ final class WP_User_Frontend {
             return;
         }
 
-        $this->container['upgrades'] = new WeDevs\Wpuf\Admin\Upgrades();
+        $this->upgrades = new WeDevs\Wpuf\Admin\Upgrades();
     }
 
     /**
@@ -263,7 +248,7 @@ final class WP_User_Frontend {
             $this->is_pro = true;
             add_action( 'admin_notices', [ $this, 'wpuf_latest_pro_activation_notice' ] );
         } else {
-            $this->container['free_loader'] = new WeDevs\Wpuf\Free\Free_Loader();
+            $this->free_loader= new WeDevs\Wpuf\Free\Free_Loader();
         }
     }
 
@@ -485,31 +470,6 @@ final class WP_User_Frontend {
     }
 
     /**
-     * Add item to the WPUF container
-     *
-     * @since WPUF_SINCE
-     *
-     * @param $name
-     * @param $object
-     *
-     * @return void
-     */
-    public function add_to_container( $name, $object ) {
-        $this->container[ $name ] = $object;
-    }
-
-    /**
-     * Returns the WPUF container that holds all the plugin classes
-     *
-     * @since WPUF_SINCE
-     *
-     * @return array
-     */
-    public function get_container() {
-        return $this->container;
-    }
-
-    /**
      * Register widgets
      *
      * @since WPUF_SINCE
@@ -517,7 +477,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function register_widgets() {
-        $this->container['widgets'] = new WeDevs\Wpuf\Widgets\Manager();
+        $this->widgets = new WeDevs\Wpuf\Widgets\Manager();
     }
 }
 
@@ -527,7 +487,7 @@ final class WP_User_Frontend {
  * @return \WP_User_Frontend
  */
 function wpuf() {
-    return WP_User_Frontend::init();
+    return WP_User_Frontend::instance();
 }
 
 // kickoff

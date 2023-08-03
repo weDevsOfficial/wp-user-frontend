@@ -139,7 +139,7 @@ class Menu {
 
         add_screen_option( $option, $args );
 
-        wpuf()->add_to_container( 'transaction_list_table', new List_Table_Transactions() );
+        wpuf()->admin->transaction_list_table = new List_Table_Transactions();
     }
 
     public function transactions_page() {
@@ -249,7 +249,7 @@ class Menu {
      * @return void
      */
     public function tools_page() {
-        wpuf()->add_to_container( 'tools', new Admin_Tools() );
+        wpuf()->admin->tools = new Admin_Tools();
 
         $tools_page = WPUF_INCLUDES . '/Admin/views/tools.php';
 
@@ -282,8 +282,8 @@ class Menu {
                 <?php
                 settings_errors();
 
-                wpuf()->settings->get_settings_api()->show_navigation();
-                wpuf()->settings->get_settings_api()->show_forms();
+                wpuf()->admin->settings->get_settings_api()->show_navigation();
+                wpuf()->admin->settings->get_settings_api()->show_forms();
                 ?>
             </div>
         </div>

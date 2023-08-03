@@ -173,7 +173,7 @@ class Admin_Settings {
      *
      * @since WPUF_SINCE
      *
-     * @return WeDevs_Settings_API
+     * @return \WeDevs_Settings_API
      */
     public function get_settings_api() {
         return $this->settings_api;

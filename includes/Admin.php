@@ -10,21 +10,23 @@ namespace WeDevs\Wpuf;
  */
 
 class Admin {
+    public $tools;
+
     public function __construct() {
-        wpuf()->add_to_container( 'admin_welcome', new Admin\Admin_Welcome() );
-        wpuf()->add_to_container( 'menu', new Admin\Menu() );
-        wpuf()->add_to_container( 'dashboard_metabox', new Admin\Dashboard_Metabox() );
-        wpuf()->add_to_container( 'form_template', new Admin\Forms\Post\Templates\Admin_Form_Template() );
-        wpuf()->add_to_container( 'admin_form', new Admin\Forms\Admin_Form() );
-        wpuf()->add_to_container( 'admin_form_handler', new Admin\Forms\Admin_Form_Handler() );
-        wpuf()->add_to_container( 'admin_subscription', new Admin\Admin_Subscription() );
-        wpuf()->add_to_container( 'admin_installer', new Admin\Admin_Installer() );
-        wpuf()->add_to_container( 'settings', new Admin\Admin_Settings() );
-        wpuf()->add_to_container( 'forms', new Admin\Forms\Form_Manager() );
-        wpuf()->add_to_container( 'gutenberg_block', new Frontend\Form_Gutenberg_Block() );
-        wpuf()->add_to_container( 'whats_new', new Admin\Whats_New() );
-        wpuf()->add_to_container( 'promotion', new Admin\Promotion() );
-        wpuf()->add_to_container( 'plugin_upgrade_notice', new Admin\Plugin_Upgrade_Notice() );
+        $this->admin_welcome         = new Admin\Admin_Welcome();
+        $this->menu                  = new Admin\Menu();
+        $this->dashboard_metabox     = new Admin\Dashboard_Metabox();
+        $this->form_template         = new Admin\Forms\Post\Templates\Form_Template();
+        $this->admin_form            = new Admin\Forms\Admin_Form();
+        $this->admin_form_handler    = new Admin\Forms\Admin_Form_Handler();
+        $this->admin_subscription    = new Admin\Admin_Subscription();
+        $this->admin_installer       = new Admin\Admin_Installer();
+        $this->settings              = new Admin\Admin_Settings();
+        $this->forms                 = new Admin\Forms\Form_Manager();
+        $this->gutenberg_block       = new Frontend\Form_Gutenberg_Block();
+        $this->whats_new             = new Admin\Whats_New();
+        $this->promotion             = new Admin\Promotion();
+        $this->plugin_upgrade_notice = new Admin\Plugin_Upgrade_Notice();
 
         // post form submenu operations
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_post_form_scripts' ] );
@@ -44,7 +46,7 @@ class Admin {
      * @return void
      */
     public function create_post_form_from_template() {
-        wpuf()->form_template->create_post_form_from_template();
+        $this->form_template->create_post_form_from_template();
     }
 
     /**

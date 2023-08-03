@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf;
 
+use WeDevs\WpUtils\ContainerTrait;
+
 /**
  * The class which will hold all the starting point of operations outside WordPress dashboard for WPUF
  * We will initialize all the admin classes from here.
@@ -10,15 +12,16 @@ namespace WeDevs\Wpuf;
  */
 
 class Frontend {
+    use ContainerTrait;
     public function __construct() {
-        wpuf()->add_to_container( 'frontend_form', new Frontend\Frontend_Form() );
-        wpuf()->add_to_container( 'registration', new Frontend\Registration() );
-        wpuf()->add_to_container( 'simple_login', new Free\Simple_Login() );
-        wpuf()->add_to_container( 'frontend_account', new Frontend\Frontend_Account() );
-        wpuf()->add_to_container( 'shortcode_frontend_dashboard', new Frontend\Frontend_Dashboard() );
-        wpuf()->add_to_container( 'shortcode', new Frontend\Shortcode() );
-        wpuf()->add_to_container( 'payment', new Frontend\Payment() );
-        wpuf()->add_to_container( 'bank', new Lib\Gateway\Bank() );
+        $this->frontend_form      = new Frontend\Frontend_Form();
+        $this->Registration       = new Frontend\Registration();
+        $this->Simple_Login       = new Free\Simple_Login();
+        $this->Frontend_Account   = new Frontend\Frontend_Account();
+        $this->Frontend_Dashboard = new Frontend\Frontend_Dashboard();
+        $this->Shortcode          = new Frontend\Shortcode();
+        $this->Payment            = new Frontend\Payment();
+        $this->Bank               = new Lib\Gateway\Bank();
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
     }

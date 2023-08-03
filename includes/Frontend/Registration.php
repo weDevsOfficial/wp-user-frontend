@@ -5,6 +5,7 @@ namespace WeDevs\Wpuf\Frontend;
 use WeDevs\Wpuf\Encryption_Helper;
 use WP_Error;
 use WP_User;
+use WP_User_Frontend;
 
 /**
  * Registration handler class

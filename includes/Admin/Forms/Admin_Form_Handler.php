@@ -63,8 +63,6 @@ class Admin_Form_Handler {
         $post_forms = new Forms\Post\Templates\List_Table_Admin_Post_Forms();
         $action     = $post_forms->current_action();
 
-        wpuf()->add_to_container( 'post_forms', $post_forms );
-
         if ( ! $action ) {
             return;
         }

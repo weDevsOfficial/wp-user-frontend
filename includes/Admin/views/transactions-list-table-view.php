@@ -10,9 +10,9 @@
     <form method="post">
         <input type="hidden" name="page" value="transactions">
         <?php
-            wpuf()->transaction_list_table->prepare_items();
-            wpuf()->transaction_list_table->views();
-            wpuf()->transaction_list_table->display();
+            wpuf()->admin->transaction_list_table->prepare_items();
+            wpuf()->admin->transaction_list_table->views();
+            wpuf()->admin->transaction_list_table->display();
         ?>
     </form>
 </div>

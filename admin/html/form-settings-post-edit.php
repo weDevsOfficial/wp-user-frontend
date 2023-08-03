@@ -83,7 +83,7 @@ $lock_edit_post       = isset( $form_settings['lock_edit_post'] ) ? $form_settin
         <th><?php esc_html_e( 'Subscription Title', 'wp-user-frontend' ); ?></th>
         <td>
             <select id="wpuf-subscription-list" name="wpuf_settings[subscription]">
-                <?php wpuf()->admin_form->subscription_dropdown( $subscription ); ?>
+                <?php wpuf()->admin->admin_form->subscription_dropdown( $subscription ); ?>
             </select>
         </td>
     </tr>

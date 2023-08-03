@@ -27,7 +27,7 @@ class Pro_Upgrades {
      * @return array
      */
     public function register_pro_fields( $fields ) {
-        wpuf()->add_to_container( 'pro_fields', new Fields\Form_Pro_Upgrade_Fields() );
+        wpuf()->pro_fields = new Fields\Form_Pro_Upgrade_Fields();
 
         $preview_fields = wpuf()->pro_fields->get_fields();
 

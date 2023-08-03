@@ -2,8 +2,6 @@
 
 namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 
-use WeDevs\Wpuf\Admin\Forms\Form_Template;
-
 /**
  * Admin form template handler
  *
@@ -11,7 +9,7 @@ use WeDevs\Wpuf\Admin\Forms\Form_Template;
  *
  * @since 2.4
  */
-class Admin_Form_Template {
+class Form_Template {
 
     public function __construct() {
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
@@ -59,7 +57,7 @@ class Admin_Form_Template {
      */
     public function should_display() {
         $current_screen    = get_current_screen();
-        $all_submenu_hooks = wpuf()->menu->get_all_submenu_hooks();
+        $all_submenu_hooks = wpuf()->admin->menu->get_all_submenu_hooks();
         $wpuf_pages        = [
             'post_forms',
         ];

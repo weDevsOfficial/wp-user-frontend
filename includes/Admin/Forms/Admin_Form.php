@@ -177,9 +177,7 @@ class Admin_Form {
                 'form_settings_key' => $this->form_settings_key,
                 'shortcodes'        => [ [ 'name' => 'wpuf_form' ] ],
             ];
-            $form_builder = new Admin_Form_Builder( $settings );
-
-            wpuf()->add_to_container( 'form_builder', $form_builder );
+            wpuf()->form_builder = new Admin_Form_Builder( $settings );
         }
     }
 
@@ -217,7 +215,7 @@ class Admin_Form {
         </div>
 
         <div id="wpuf-metabox-post_expiration" class="group wpuf-metabox-post_expiration">
-            <?php wpuf()->admin_form->form_post_expiration(); ?>
+            <?php wpuf()->admin->admin_form->form_post_expiration(); ?>
         </div>
 
         <?php do_action( 'wpuf_post_form_tab_content' ); ?>
@@ -297,8 +295,7 @@ class Admin_Form {
      */
     public function subscription_dropdown( $selected = NULL ) {
         $subscriptions_obj = new Subscription();
-        wpuf()->add_to_container( 'subscriptions', $subscriptions_obj );
-        $subscriptions = $subscriptions_obj->get_subscriptions();
+        $subscriptions     = $subscriptions_obj->get_subscriptions();
 
         printf( '<option>%s</option>', esc_html( __( '- Select -', 'wp-user-frontend' ) ) );
 

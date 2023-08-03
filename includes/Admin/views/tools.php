@@ -15,16 +15,16 @@ $tools_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab
 
     switch ( $tools_tab ) {
         case 'export':
-            wpuf()->tools->list_forms();
-            wpuf()->tools->list_regis_forms();
+            wpuf()->admin->tools->list_forms();
+            wpuf()->admin->tools->list_regis_forms();
             break;
 
         case 'import':
-            wpuf()->tools->import_data();
+            wpuf()->admin->tools->import_data();
             break;
 
         default:
-            wpuf()->tools->tool_page();
+            wpuf()->admin->tools->tool_page();
             break;
     }
     ?>

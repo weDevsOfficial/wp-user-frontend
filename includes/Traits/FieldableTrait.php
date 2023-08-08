@@ -9,7 +9,7 @@ use WeDevs\Wpuf\Fields\Form_Field_Post_Tags;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Taxonomy;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Title;
 
-trait Field {
+trait FieldableTrait {
     /**
      * WP post types
      *

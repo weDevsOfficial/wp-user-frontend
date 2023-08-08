@@ -20,8 +20,6 @@ class Admin_Subscription {
         // new subscription metabox hooks
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
 
-
-
         add_filter( 'post_updated_messages', [ $this, 'form_updated_message' ] );
 
         add_action( 'show_user_profile', [ $this, 'profile_subscription_details' ], 30 );

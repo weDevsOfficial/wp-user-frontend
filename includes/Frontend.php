@@ -15,13 +15,13 @@ class Frontend {
     use ContainerTrait;
     public function __construct() {
         $this->frontend_form      = new Frontend\Frontend_Form();
-        $this->Registration       = new Frontend\Registration();
-        $this->Simple_Login       = new Free\Simple_Login();
-        $this->Frontend_Account   = new Frontend\Frontend_Account();
-        $this->Frontend_Dashboard = new Frontend\Frontend_Dashboard();
-        $this->Shortcode          = new Frontend\Shortcode();
-        $this->Payment            = new Frontend\Payment();
-        $this->Bank               = new Lib\Gateway\Bank();
+        $this->registration       = new Frontend\Registration();
+        $this->simple_login       = new Free\Simple_Login();
+        $this->frontend_account   = new Frontend\Frontend_Account();
+        $this->frontend_dashboard = new Frontend\Frontend_Dashboard();
+        $this->shortcode          = new Frontend\Shortcode();
+        $this->payment            = new Frontend\Payment();
+        $this->bank               = new Lib\Gateway\Bank();
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
     }

@@ -3,6 +3,8 @@
 namespace WeDevs\Wpuf\Admin;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
+use WeDevs\Wpuf\Traits\TaxableTrait;
+use WeDevs\Wpuf\User_Subscription;
 
 /**
  * WPUF subscription manager
@@ -12,6 +14,7 @@ use WeDevs\Wpuf\Admin\Forms\Form;
  * @author Tareq Hasan
  */
 class Subscription {
+    use TaxableTrait;
 
     private static $_instance;
 
@@ -564,7 +567,7 @@ class Subscription {
                     $sub_info['posts'][ $post_type ] = $count - 1;
                 }
 
-                $user_subscription = new WPUF_User_Subscription( $current_user );
+                $user_subscription = new User_Subscription( $current_user );
                 $sub_info          = $user_subscription->handle_featured_item( $post_id, $sub_info );
                 $this->update_user_subscription_meta( $userdata->ID, $sub_info );
             }
@@ -781,8 +784,14 @@ class Subscription {
     public function subscription_info() {
         // _deprecated_function( __FUNCTION__, '2.6.0', 'wpuf_get_user()->subscription()->pack_info( $form_id );' );
         // wpuf_get_user()->subscription()->pack_info( $form_id );
+        ob_start();
         $sections = wpuf_get_account_sections();
         do_action( 'wpuf_account_content_subscription', $sections, 'subscription' );
+
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        return $content;
     }
 
     /**
@@ -915,9 +924,7 @@ class Subscription {
      * @param bool   $coupon_status
      */
     public function pack_details( $pack, $details_meta, $current_pack_id = '', $coupon_status = false ) {
-        if ( function_exists( 'wpuf_prices_include_tax' ) ) {
-            $price_with_tax = wpuf_prices_include_tax();
-        }
+        $price_with_tax = $this->wpuf_prices_include_tax();
 
         $user_id = get_current_user_id();
 
@@ -1009,9 +1016,7 @@ class Subscription {
         $current_pack      = $current_user->subscription()->current_pack();
         $payment_enabled   = $form->is_charging_enabled();
 
-        if ( function_exists( 'wpuf_prices_include_tax' ) ) {
-            $price_with_tax = wpuf_prices_include_tax();
-        }
+        $price_with_tax = $this->wpuf_prices_include_tax();
 
         if ( self::has_user_error( $form_settings ) || ( $payment_enabled && $pay_per_post && ! $force_pack ) ) {
             ?>

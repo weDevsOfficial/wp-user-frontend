@@ -2,9 +2,6 @@
 
 namespace WeDevs\Wpuf\Admin;
 
-use DOMDocument;
-use DOMXPath;
-
 class Dashboard_Metabox {
     const URL = 'https://wedevs.com/category/user-frontend-pro';
     const OPT_KEY = 'wpuf_admin_db_mb';

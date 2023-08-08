@@ -3,12 +3,12 @@
 namespace WeDevs\Wpuf\Ajax;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
-use WeDevs\Wpuf\Traits\Field;
+use WeDevs\Wpuf\Traits\FieldableTrait;
 use WeDevs\Wpuf\User_Subscription;
 
 class Frontend_Form_Ajax {
 
-    use Field;
+    use FieldableTrait;
 
     public $form_settings = [];
 

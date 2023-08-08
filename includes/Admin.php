@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf;
 
+use WeDevs\WpUtils\ContainerTrait;
+
 /**
  * The Admin class which will hold all the starting point of WordPress dashboard admin operations for WPUF
  * We will initialize all the admin classes from here.
@@ -11,6 +13,8 @@ namespace WeDevs\Wpuf;
 
 class Admin {
     public $tools;
+
+    use ContainerTrait;
 
     public function __construct() {
         $this->admin_welcome         = new Admin\Admin_Welcome();

@@ -63,18 +63,18 @@ class Free_Loader extends Pro_Prompt {
     public function admin_menu_top() {
         $capability     = wpuf_admin_role();
         $reg_forms_hook = add_submenu_page(
-            wpuf()->menu->parent_slug,
+            wpuf()->admin->menu->parent_slug,
             __( 'Registration Forms', 'wp-user-frontend' ),
             __( 'Registration Forms', 'wp-user-frontend' ),
             $capability,
             'wpuf-profile-forms',
             [ $this, 'admin_reg_forms_page' ]
         );
-        $modules        = add_submenu_page( wpuf()->menu->parent_slug, __( 'Modules', 'wp-user-frontend' ), __( 'Modules', 'wp-user-frontend' ), $capability, 'wpuf-modules', [ $this, 'modules_preview_page' ] );
+        $modules        = add_submenu_page( wpuf()->admin->menu->parent_slug, __( 'Modules', 'wp-user-frontend' ), __( 'Modules', 'wp-user-frontend' ), $capability, 'wpuf-modules', [ $this, 'modules_preview_page' ] );
 
         // add this menu to all menu hooks
-        wpuf()->menu->add_submenu_hooks( 'registration_forms', $reg_forms_hook );
-        wpuf()->menu->add_submenu_hooks( 'modules', $modules );
+        wpuf()->admin->menu->add_submenu_hooks( 'registration_forms', $reg_forms_hook );
+        wpuf()->admin->menu->add_submenu_hooks( 'modules', $modules );
 
         add_action( "load-$reg_forms_hook", [ $this, 'reg_form_menu_action' ] );
         add_action( "load-$modules", [ $this, 'module_menu_action' ] );
@@ -113,7 +113,7 @@ class Free_Loader extends Pro_Prompt {
         if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
             $capability = wpuf_admin_role();
             add_submenu_page(
-                wpuf()->menu->parent_slug,
+                wpuf()->admin->menu->parent_slug,
                 __( 'Coupons', 'wp-user-frontend' ),
                 __( 'Coupons', 'wp-user-frontend' ),
                 $capability,
@@ -126,9 +126,7 @@ class Free_Loader extends Pro_Prompt {
     public function admin_reg_forms_page() {
         $file_location = __DIR__ . '/templates/page-registration-form.php';
 
-        if ( file_exists( $file_location ) ) {
-            include $file_location;
-        }
+        wpuf_require_once( $file_location );
     }
 
     /**

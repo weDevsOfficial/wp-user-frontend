@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
+use WeDevs\WpUtils\ContainerTrait;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -10,6 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Adds WPUF block
  */
 class Form_Gutenberg_Block {
+    use ContainerTrait;
+
     /**
      * Register widget with WordPress.
      */
@@ -43,7 +47,7 @@ class Form_Gutenberg_Block {
          * */
         wp_enqueue_script( 'wpuf-forms-block' );
         $forms     = [];
-        $all_forms = wpuf()->forms->get_forms( [ 'post_status' => 'publish' ] );
+        $all_forms = wpuf()->admin->forms->get_forms( [ 'post_status' => 'publish' ] );
         foreach ( $all_forms['forms'] as $form ) {
             $forms[] = [
                 'value' => $form->id,

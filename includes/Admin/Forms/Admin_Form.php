@@ -3,14 +3,15 @@
 namespace WeDevs\Wpuf\Admin\Forms;
 
 use WeDevs\Wpuf\Admin\Subscription;
-use WeDevs\Wpuf\Traits\Field;
+use WeDevs\Wpuf\Traits\FieldableTrait;
+use WeDevs\WpUtils\ContainerTrait;
 
 /**
  * Post Forms or wpuf_forms form builder class
  */
 class Admin_Form {
 
-    use Field;
+    use FieldableTrait, ContainerTrait;
     /**
      * Form type of which we're working on
      *

@@ -1,6 +1,24 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.7',
+        'released' => '2023-07-25',
+        'changes'  => [
+            [
+                'title' => __( 'conflicts with Advanced Custom Fields Pro Plugin', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'conflicts with the Classic Editor Plugin', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'multiple HTML field inside column field', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.6.6',
         'released' => '2023-07-25',
         'changes'  => [

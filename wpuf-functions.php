@@ -1,5 +1,6 @@
 <?php
 
+use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Encryption_Helper;
 use WeDevs\Wpuf\Free\Pro_Prompt;
 use WeDevs\Wpuf\Frontend\Payment;
@@ -1862,7 +1863,7 @@ function taxnomy_select( $terms, $attr ) {
 /**
  * Returns form setting value
  *
- * @param init   $form_id
+ * @param int   $form_id
  * @param boolen $status
  *
  * @return array
@@ -3338,7 +3339,7 @@ function wpuf_get_user( $user = null ) {
  */
 function wpuf_set_all_terms_as_allowed() {
     if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
-        $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+        $subscriptions  = ( new Subscription() )->get_subscriptions();
         $allowed_term   = [];
 
         foreach ( $subscriptions as $pack ) {

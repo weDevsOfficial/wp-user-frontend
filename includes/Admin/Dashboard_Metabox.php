@@ -101,9 +101,9 @@ class Dashboard_Metabox {
             return [];
         }
         $body = wp_remote_retrieve_body( $response );
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         @$dom->loadHTML( $body );
-        $finder = new DomXPath( $dom );
+        $finder = new \DomXPath( $dom );
         $classname = 'post__title';
         $nodes     = $finder->query( "//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]" );
         if ( empty( $nodes ) ) {

@@ -37,8 +37,7 @@ use WeDevs\WpUtils\ContainerTrait;
  * Main bootstrap class for WP User Frontend
  */
 final class WP_User_Frontend {
-    use SingletonTrait;
-    use ContainerTrait;
+    use SingletonTrait, ContainerTrait;
 
     /**
      * Form field value seperator

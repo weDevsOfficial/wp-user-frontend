@@ -476,8 +476,8 @@ class Frontend_Form extends Frontend_Render_Form {
      */
     private function generate_auth_link() {
         if ( ! is_user_logged_in() && $this->form_settings['guest_post'] !== 'true' ) {
-            $login        = wpuf()->simple_login->get_login_url();
-            $register     = wpuf()->simple_login->get_registration_url();
+            $login        = wpuf()->frontend->simple_login->get_login_url();
+            $register     = wpuf()->frontend->simple_login->get_registration_url();
             $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
             $placeholders = [ '%login%', '%register%' ];
 

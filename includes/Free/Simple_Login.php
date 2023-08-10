@@ -809,7 +809,7 @@ class Simple_Login {
         }
 
         if ( ! isset( $_GET['id'] ) && empty( $_GET['id'] ) ) {
-            wpuf()->simple_login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
+            wpuf()->frontend->simple_login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
 
             return;
         }
@@ -820,13 +820,13 @@ class Simple_Login {
         $wpuf_user_status = get_user_meta( $user_id, 'wpuf_user_status', true );
 
         if ( ! $user ) {
-            wpuf()->simple_login->add_error( __( 'Invalid User activation url', 'wp-user-frontend' ) );
+            wpuf()->frontend->simple_login->add_error( __( 'Invalid User activation url', 'wp-user-frontend' ) );
 
             return;
         }
 
         if ( $user->is_verified() ) {
-            wpuf()->simple_login->add_error( __( 'User already verified', 'wp-user-frontend' ) );
+            wpuf()->frontend->simple_login->add_error( __( 'User already verified', 'wp-user-frontend' ) );
 
             return;
         }
@@ -834,7 +834,7 @@ class Simple_Login {
         $activation_key = isset( $_GET['wpuf_registration_activation'] ) ? sanitize_text_field( wp_unslash( $_GET['wpuf_registration_activation'] ) ) : '';
 
         if ( $user->get_activation_key() !== $activation_key ) {
-            wpuf()->simple_login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
+            wpuf()->frontend->simple_login->add_error( __( 'Activation URL is not valid', 'wp-user-frontend' ) );
 
             return;
         }
@@ -848,7 +848,7 @@ class Simple_Login {
             $message = __( "Your account has been verified , but you can't login until manually approved your account by an administrator.", 'wp-user-frontend' );
         }
 
-        wpuf()->simple_login->add_message( $message );
+        wpuf()->frontend->simple_login->add_message( $message );
 
         // show activation message
         add_filter( 'wp_login_errors', [ $this, 'user_activation_message' ] );

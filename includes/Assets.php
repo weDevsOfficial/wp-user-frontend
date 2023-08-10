@@ -194,6 +194,7 @@ class Assets {
                 'jquery-ui-sortable',
                 'jquery-ui-draggable',
                 'jquery-ui-droppable',
+                'jquery-ui-resizable',
                 'underscore',
                 'wpuf-vue',
                 'wpuf-vuex',
@@ -277,7 +278,6 @@ class Assets {
                 'src'       => WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js',
                 'deps'      => [ 'jquery-ui-datepicker' ],
                 'version'   => '1.2',
-                'in_footer' => true,
             ],
             'form-builder-wpuf-forms'  => [
                 'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',

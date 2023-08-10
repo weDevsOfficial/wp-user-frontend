@@ -83,7 +83,7 @@
             </li>
 
             <li>
-                <?php echo wp_kses_post( wpuf()->simple_login->get_action_links( [ 'register' => false ] ) ); ?>
+                <?php echo wp_kses_post( wpuf()->frontend->simple_login->get_action_links( [ 'register' => false ] ) ); ?>
             </li>
 
             <?php do_action( 'wpuf_reg_form_bottom' ); ?>

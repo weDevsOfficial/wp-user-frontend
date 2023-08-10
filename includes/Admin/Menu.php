@@ -161,6 +161,13 @@ class Menu {
         wpuf_require_once( $page );
     }
 
+    /**
+     * Get all the submenu hooks created by WPUF
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
     public function get_all_submenu_hooks() {
         return $this->all_submenu_hooks;
     }

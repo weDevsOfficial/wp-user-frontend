@@ -83,28 +83,13 @@ class Admin_Form_Builder {
         wp_enqueue_style( 'wpuf-selectize' );
         wp_enqueue_style( 'wpuf-toastr' );
         wp_enqueue_style( 'wpuf-tooltip' );
-        $form_builder_css_deps = apply_filters(
-            'wpuf_form_builder_css_deps',
-            [
-                'wpuf-css',
-                'wpuf-font-awesome',
-                'wpuf-sweetalert2',
-                'wpuf-selectize',
-                'wpuf-toastr',
-                'wpuf-tooltip',
-            ]
-        );
         wp_enqueue_style( 'wpuf-jquery-ui' );
         wp_enqueue_style( 'wp-color-picker' );
         do_action( 'wpuf_form_builder_enqueue_style' );
-        /**
-         * JavaScript
-         */
-        $prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
         wp_enqueue_script( 'wpuf-vue' );
         wp_enqueue_script( 'wpuf-vuex' );
-        wp_enqueue_script( 'wpuf-form-builder-wpuf-forms' );
+        wp_enqueue_script( 'wpuf-subscriptions' );
         wp_enqueue_script( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-jquery-scrollTo' );
         wp_enqueue_script( 'wpuf-selectize' );
@@ -115,26 +100,7 @@ class Admin_Form_Builder {
         wp_enqueue_script( 'wpuf-admin' );
         wp_enqueue_script( 'zxcvbn' );
         wp_enqueue_script( 'password-strength-meter' );
-        // wp_enqueue_script( 'wpuf-subscriptions' );
-        $form_builder_js_deps = apply_filters(
-            'wpuf_form_builder_js_deps',
-            [
-                'jquery',
-                'jquery-ui-sortable',
-                'jquery-ui-draggable',
-                'jquery-ui-droppable',
-                'jquery-ui-resizable',
-                'underscore',
-                'wpuf-vue',
-                'wpuf-vuex',
-                'wpuf-sweetalert2',
-                'wpuf-jquery-scrollTo',
-                'wpuf-selectize',
-                'wpuf-toastr',
-                'wpuf-clipboard',
-                'wpuf-tooltip',
-            ]
-        );
+        wp_enqueue_script( 'wpuf-form-builder-wpuf-forms' );
         $single_objects = [
             'post_title',
             'post_content',

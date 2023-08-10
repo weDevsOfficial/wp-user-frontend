@@ -158,7 +158,7 @@ class Admin_Form {
             add_action( 'wpuf-form-builder-tab-contents-post', [ $this, 'add_primary_tab_contents' ] );
             add_action( 'wpuf-form-builder-settings-tabs-post', [ $this, 'add_settings_tabs' ] );
             add_action( 'wpuf-form-builder-settings-tab-contents-post', [ $this, 'add_settings_tab_contents' ] );
-            add_filter( 'wpuf-form-fields-section-before', [ $this, 'add_post_field_section' ] );
+            add_filter( 'wpuf_form_fields_section_before', [ $this, 'add_post_field_section' ] );
 
             add_filter( 'wpuf_form_builder_js_deps', [ $this, 'js_dependencies' ] );
             add_filter( 'wpuf_form_builder_js_root_mixins', [ $this, 'js_root_mixins' ] );
@@ -352,18 +352,6 @@ class Admin_Form {
                 'fields' => [],
             ],
         ];
-    }
-
-    /**
-     * Admin script form wpuf_forms form builder
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function admin_enqueue_scripts() {
-        /*wp_register_script( 'wpuf-form-builder-wpuf-forms', WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',
-                            [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ], WPUF_VERSION, true );*/
     }
 
     /**

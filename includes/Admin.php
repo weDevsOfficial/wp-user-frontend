@@ -32,9 +32,6 @@ class Admin {
         $this->promotion             = new Admin\Promotion();
         $this->plugin_upgrade_notice = new Admin\Plugin_Upgrade_Notice();
 
-        // post form submenu operations
-        add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_post_form_scripts' ] );
-
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
         add_action( 'admin_action_post_form_template', [ $this, 'create_post_form_from_template' ] );
 
@@ -51,17 +48,6 @@ class Admin {
      */
     public function create_post_form_from_template() {
         $this->form_template->create_post_form_from_template();
-    }
-
-    /**
-     * Enqueue the scripts needed for wpuf post form
-     *
-     * @since WPUF_SINCE
-     *
-     * @return void
-     */
-    public function enqueue_post_form_scripts() {
-        wp_enqueue_script( 'wpuf-subscriptions' );
     }
 
     /**

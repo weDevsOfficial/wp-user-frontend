@@ -4690,8 +4690,7 @@ function wpuf_modify_shortcodes( $content ) {
             $content = preg_replace_callback(
                 $pattern, function( $matches ) {
                 return str_replace( [ '[', ']' ], [ '&lbrack;', '&rbrack;' ], $matches[0] );
-            }, $content
-            );
+            }, $content );
         }
     }
 

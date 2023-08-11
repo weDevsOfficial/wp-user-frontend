@@ -1380,16 +1380,15 @@
             var postContent = $.trim( tinyMCE.get( editor_id ).getContent() ).toLowerCase();
             var shortcodes = wpuf_frontend.protected_shortcodes;
 
-            if (!shortcodes) {
+            if ( ! shortcodes) {
                 return {
                     shortcodeFound: false,
                 };
             }
-
-            for (var i = 0; i < shortcodes.length; i++) {
+            for ( var i = 0; i < shortcodes.length; i++) {
                 var shortcode = shortcodes[i];
-                var regex = new RegExp( shortcode );
-                if (regex.test( postContent )) {
+                var regex = new RegExp(shortcode);
+                if (regex.test(postContent)) {
                     return {
                         shortcodeFound: true,
                         shortcode: shortcode,

@@ -3,8 +3,8 @@
 **Donate link:** https://tareq.co/donate/  
 **Tags:** frontend post, content restriction, registration, user profile, membership, login, forms, user directory, profile builder  
 **Requires at least:** 4.0  
-**Tested up to:** 6.2  
-**Stable tag:** 3.6.5  
+**Tested up to:** 6.3  
+**Stable tag:** 3.6.7  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -268,6 +268,17 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 ## Changelog ##
+### v3.6.7 (09 Aug, 2023) ###
+
+* Fix - conflicts with Advanced Custom Fields Pro Plugin
+* Fix - conflicts with the Classic Editor Plugin
+* Fix - multiple HTML field inside column field
+
+### v3.6.6 (27 Jul, 2023) ###
+
+* Enhancement - Restrict shortcode in post form
+* Enhancement - Add custom note on plugin update page
+
 ### v3.6.5 (25 May, 2023) ###
 
 * Enhancement - Revamp registration page design

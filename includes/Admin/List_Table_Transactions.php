@@ -378,7 +378,7 @@ class List_Table_Transactions extends \WP_List_Table {
                 ];
                 do_action( 'wpuf_gateway_bank_order_complete', $transaction, $id );
                 Payment::insert_payment( $transaction );
-                $coupon_id = $info['post_data']['coupon_id'];
+                $coupon_id = ! empty( $info['post_data']['coupon_id'] ) ? $info['post_data']['coupon_id'] : 0;
                 if ( $coupon_id ) {
                     $pre_usage = get_post_meta( $coupon_id, '_coupon_used', true );
                     $pre_usage = ( empty( $pre_usage ) ) ? 0 : $pre_usage;

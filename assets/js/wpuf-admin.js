@@ -1,5 +1,4 @@
 jQuery(function($) {
-
     // Collapsable email settings field
     group = [
         '.email-setting',
@@ -109,74 +108,121 @@ jQuery(function($) {
         tooltip.appendTo( this );
     });
 
-    // warn the admin before updating a post if it's contains a restricted shortcode
-    setTimeout(function() {
-        var shortcodes = wpuf_admin_script.protected_shortcodes;
+    // check for restricted shortcodes
+    var shortcodes = wpuf_admin_script.protected_shortcodes;
 
-        if (!shortcodes) {
-            return true;
+    if ( ! shortcodes ) {
+        return;
+    }
+
+    // first get the body tag with 'post-type-*' class.
+    // post type can be `post`
+    // or any other custom post type like WooCommerce product, Events from event calendar etc.
+    var body = $('body').filter(function() {
+        var classes = $( this ).attr( 'class' ).split( ' ' );
+        for (var i = 0; i < classes.length; i++) {
+            if (classes[i].indexOf( 'post-type-' ) === 0) {
+                return true;
+            }
+        }
+        return false;
+    });
+
+    var publishBtn = body.find('#post input#publish');
+
+    // for classic editor
+    publishBtn.click( function( event ) {
+        event.preventDefault();
+
+        var shortcodesFound = [];
+        var postContent = '';
+
+        // Check if we are on the post editing screen
+        if ($('#wp-content-editor-container').length > 0) {
+            var activeEditor = $('#wp-content-editor-container .switch-tmce.active').length > 0 ? 'visual' : 'text';
+
+            if (activeEditor === 'visual') {
+                postContent = tinyMCE.activeEditor.getContent(); // Get the content from the Visual tab
+            } else {
+                postContent = $('#wp-content-editor-container textarea').val(); // Get the content from the Text tab
+            }
         }
 
-        // first get the body tag with 'post-type-*' class.
-        // post type can be `post`
-        // or any other custom post type like WooCommerce product, Events from event calendar etc.
-        var body = $( 'body' ).filter( function () {
-            var classes = $( this ).attr( 'class' ).split( ' ' );
-            for (var i = 0; i < classes.length; i++) {
-                if (classes[i].indexOf( 'post-type-' ) === 0) {
-                    return true;
-                }
+        for ( var i = 0; i < shortcodes.length; i++) {
+            var shortcode = shortcodes[i];
+            var regex = new RegExp(shortcode);
+            if (!regex.test( postContent )) {
+                continue;
             }
-            return false;
-        } );
-        // check for restricted shortcodes
-        var shortcodes = wpuf_admin_script.protected_shortcodes;
 
-        if (!shortcodes) {
+            shortcodesFound.push(shortcode);
+        }
+
+        // no shortcodes found
+        if ( ! shortcodesFound.length ) {
+            publishBtn.unbind('click').click();
+
             return;
         }
 
-        // first get the body tag with 'post-type-*' class.
-        // post type can be `post`
-        // or any other custom post type like WooCommerce product, Events from event calendar etc.
-        var body = $( 'body' ).filter( function () {
-            var classes = $( this ).attr( 'class' ).split( ' ' );
-            for (var i = 0; i < classes.length; i++) {
-                if (classes[i].indexOf( 'post-type-' ) === 0) {
-                    return true;
-                }
+        Swal.fire({
+            title: 'Are you sure to update the post?',
+            html: wpuf_admin_script.protected_shortcodes_message,
+            icon: 'warning',
+            padding: '0px 2em 2em',
+            width: '35em',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Proceed with Update',
+            cancelButtonText: 'Remove Shortcode & Publish'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                publishBtn.unbind('click').click();
             }
-            return false;
-        } );
+        });
+    });
+    // end classic editor
 
-        var publishBtn = body.find( '#post input#publish' );
+    // warn the admin before updating a post if it's contains a restricted shortcode
+    setTimeout(function() {
 
-        // for classic editor
-        publishBtn.click( function ( event ) {
-            event.preventDefault();
+        if (body.length === 0) {
+            body = $('body.block-editor-page');
+        }
 
+        var postButton = body.find('button.editor-post-publish-button, button.editor-post-publish-button__button');
+
+        var checkForShortcodes = function(event) {
+            event.stopPropagation();
+
+            var { select } = wp.data;
+            var postContent = select("core/editor").getEditedPostAttribute( 'content' );
             var shortcodesFound = [];
 
-            var postContent = tinymce.activeEditor.getContent();
-
-            for (var i = 0; i < shortcodes.length; i++) {
+            for ( var i = 0; i < shortcodes.length; i++) {
                 var shortcode = shortcodes[i];
-                var regex = new RegExp( shortcode );
+                var regex = new RegExp(shortcode);
                 if (!regex.test( postContent )) {
                     continue;
                 }
 
-                shortcodesFound.push( shortcode );
+                shortcodesFound.push(shortcode);
             }
 
             // no shortcodes found
-            if (!shortcodesFound.length) {
-                publishBtn.unbind( 'click' ).click();
+            if ( ! shortcodesFound.length ) {
+                $(this).off('click', checkForShortcodes).click();
+
+                // Rebind the event listener after the initial removalq
+                setTimeout(function() {
+                    postButton.on('click', checkForShortcodes);
+                }, 500);
 
                 return;
             }
 
-            Swal.fire( {
+            Swal.fire({
                 title: 'Are you sure to update the post?',
                 html: wpuf_admin_script.protected_shortcodes_message,
                 icon: 'warning',
@@ -189,119 +235,17 @@ jQuery(function($) {
                 cancelButtonText: 'Remove Shortcode & Publish'
             } ).then( ( result ) => {
                 if (result.isConfirmed) {
-                    publishBtn.unbind( 'click' ).click();
+                    $(this).off('click', checkForShortcodes).click();
+
+                    // Rebind the event listener after the initial removal
+                    setTimeout(function() {
+                        postButton.on('click', checkForShortcodes);
+                    }, 500);
                 }
-            } );
-        } );
-        // end classic editor
+            });
+        };
 
-        // warn the admin before updating a post if it's contains a restricted shortcode
-        setTimeout( function () {
-
-            if (body.length === 0) {
-                body = $( 'body.block-editor-page' );
-            }
-
-            var postButton = body.find( 'button.editor-post-publish-button, button.editor-post-publish-button__button' );
-
-            // for classic editor
-            body.find( '#post' ).submit( function ( event ) {
-                event.preventDefault();
-
-                var shortcodesFound = [];
-
-                var postContent = tinymce.activeEditor.getContent();
-
-                for (var i = 0; i < shortcodes.length; i++) {
-                    var shortcode = shortcodes[i];
-                    var regex = new RegExp( shortcode );
-                    if (!regex.test( postContent )) {
-                        continue;
-                    }
-
-                    shortcodesFound.push( shortcode );
-                }
-
-                // no shortcodes found
-                if (!shortcodesFound.length) {
-                    $( this ).unbind( 'submit' ).submit();
-
-                    return;
-                }
-
-                Swal.fire( {
-                    title: 'Are you sure to update the post?',
-                    text: wpuf_admin_script.protected_shortcodes_message,
-                    icon: 'warning',
-                    padding: '0px 2em 2em',
-                    width: '35em',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Proceed with Update',
-                    cancelButtonText: 'Remove Shortcode & Publish'
-                } ).then( ( result ) => {
-                    if (result.isConfirmed) {
-                        $( this ).unbind( 'submit' ).submit();
-                    }
-                } );
-            } );
-            // end classic editor
-
-            var checkForShortcodes = function ( event ) {
-                event.stopPropagation();
-
-                var {select} = wp.data;
-                var postContent = select( "core/editor" ).getEditedPostAttribute( 'content' );
-                var shortcodesFound = [];
-
-                for (var i = 0; i < shortcodes.length; i++) {
-                    var shortcode = shortcodes[i];
-                    var regex = new RegExp( shortcode );
-                    if (!regex.test( postContent )) {
-                        continue;
-                    }
-
-                    shortcodesFound.push( shortcode );
-                }
-
-                // no shortcodes found
-                if (!shortcodesFound.length) {
-                    $( this ).off( 'click', checkForShortcodes ).click();
-
-                    // Rebind the event listener after the initial removalq
-                    setTimeout( function () {
-                        postButton.on( 'click', checkForShortcodes );
-                    }, 500 );
-
-                    return;
-                }
-
-                Swal.fire( {
-                    title: 'Are you sure to update the post?',
-                    html: wpuf_admin_script.protected_shortcodes_message,
-                    icon: 'warning',
-                    padding: '0px 2em 2em',
-                    width: '35em',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Proceed with Update',
-                    cancelButtonText: 'Remove Shortcode & Publish'
-                } ).then( ( result ) => {
-                    if (result.isConfirmed) {
-                        $( this ).off( 'click', checkForShortcodes ).click();
-
-                        // Rebind the event listener after the initial removal
-                        setTimeout( function () {
-                            postButton.on( 'click', checkForShortcodes );
-                        }, 500 );
-                    }
-                } );
-            };
-
-            // for gutenberg
-            postButton.on( 'click', checkForShortcodes );
-        }, 500 );
-    });
+        // for gutenberg
+        postButton.on('click', checkForShortcodes);
+    }, 500);
 });

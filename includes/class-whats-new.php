@@ -39,14 +39,14 @@ class WPUF_Whats_New {
     /**
      * Mark the current plugin changelog as read
      *
-     * @return void
+     * @return bool
      */
     public function mark_read() {
         $options = $this->get_option();
 
         $options[WPUF_VERSION] = true;
 
-        update_option( 'wpuf_whats_new', $options );
+        return update_option( 'wpuf_whats_new', $options );
     }
 
     /**
@@ -116,8 +116,17 @@ class WPUF_Whats_New {
                 wrap.on('click', 'button.notice-dismiss', function(event) {
                     event.preventDefault();
 
-                    wp.ajax.send( 'wpuf_whats_new_dismiss' );
-                    wrap.remove();
+                    wp.ajax.send( 'wpuf_whats_new_dismiss', {
+                        data: {
+                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_whats_new_nonce' ) ); ?>'
+                        },
+                        success: function () {
+                            wrap.fadeOut(200);
+                        },
+                        error: function(resp) {
+                            console.log(resp);
+                        },
+                    } );
                 });
             });
         </script>
@@ -130,8 +139,18 @@ class WPUF_Whats_New {
      * @return void
      */
     public function dismiss_notice() {
-        $this->mark_read();
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( __( 'You have no permission to do that', 'wp-user-frontend' ) );
+        }
 
-        wp_send_json_success();
+        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_whats_new_nonce' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
+        if ( $this->mark_read() ) {
+            wp_send_json_success();
+        }
+
+        wp_send_json_error( __( 'Failed to dismiss notice', 'wp-user-frontend' ) );
     }
 }

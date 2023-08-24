@@ -655,6 +655,10 @@ class WPUF_Frontend_Render_Form {
             } // isset tax
 
             else {
+                if ( isset( $taxonomy_name ) && 0 === absint( $taxonomy_name ) ) {
+                    wp_set_post_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
+                }
+
                 if ( ! isset( $taxonomy['woo_attr'] ) ) {
                     $this->set_default_taxonomy( $post_id );
                 }

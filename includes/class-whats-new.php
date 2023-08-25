@@ -139,11 +139,7 @@ class WPUF_Whats_New {
      * @return void
      */
     public function dismiss_notice() {
-        if ( ! current_user_can( 'manage_options' ) ) {
-            wp_send_json_error( __( 'You have no permission to do that', 'wp-user-frontend' ) );
-        }
-
-        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_whats_new_nonce' ) ) {
+        if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_whats_new_nonce' ) ) {
             wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
         }
 

@@ -1524,6 +1524,10 @@ function wpuf_get_attachment_id_from_url( $attachment_url = '' ) {
  * @global object $wpdb
  */
 function wpufe_ajax_tag_search() {
+    if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ), 'wpuf_ajax_tag_search' ) ) {
+        wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+    }
+
     global $wpdb;
 
     $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
@@ -1775,7 +1779,9 @@ function wpuf_get_child_cats() {
     $parent_cat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
     $field_attr = isset( $_POST['field_attr'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['field_attr'] ) ) : [];
 
-    wp_verify_nonce( $nonce, 'wpuf_nonce' );
+    if ( wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
+        wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+    }
 
     $allowed_tags = wp_kses_allowed_html( 'post' );
 

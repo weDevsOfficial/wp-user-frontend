@@ -30,8 +30,8 @@ class WPUF_Login_Widget extends WP_Widget {
         $rememberme     = isset( $_POST['rememberme'] ) ? sanitize_text_field( wp_unslash( $_POST['rememberme'] ) ) : false;
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce , 'wpuf_lost_pass' ) ) {
-
+        if ( empty( $nonce ) || ! wp_verify_nonce( $nonce , 'wpuf_lost_pass' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
         }
 
         if ( empty( $user_login ) || empty( $user_pass ) ) {
@@ -54,6 +54,12 @@ class WPUF_Login_Widget extends WP_Widget {
      * @return void
      */
     public function ajax_logout() {
+        $nonce = isset( $_REQUEST['nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ) : '';
+
+        if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
         wp_logout();
         wp_send_json_success( [ 'message'=> __( 'Logout successful!', 'wp-user-frontend' ) ] );
     }
@@ -67,8 +73,8 @@ class WPUF_Login_Widget extends WP_Widget {
         $username_or_email = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
-        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
-
+        if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
         }
 
         // Check if input variables are empty

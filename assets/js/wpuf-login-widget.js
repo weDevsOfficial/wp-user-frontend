@@ -75,6 +75,7 @@ jQuery( function($) {
             dataType: 'json',
             data: {
                 action: 'wpuf_ajax_logout',
+                nonce: '<?php echo esc_attr( wp_create_nonce( "wpuf_acf_compatibility" ) ); ?>'
             },
             success: function(data) {
                 $('.wpuf-ajax-logout .wpuf-ajax-errors').html(data.message);

@@ -615,13 +615,13 @@ function wpuf_associate_attachment( $attachment_id, $post_id ) {
 function wpuf_update_post( $args ) {
     if ( ! wp_is_post_revision( $args['ID'] ) ) {
         // unhook this function so it doesn't loop infinitely
-        remove_action( 'save_post', [ WeDevs\Wpuf\Admin\WPUF_Admin_Posting::init(), 'save_meta' ], 1 );
+        remove_action( 'save_post', [ WeDevs\Wpuf\Admin\Posting::init(), 'save_meta' ], 1 );
 
         // update the post, which calls save_post again
         wp_update_post( $args );
 
         // re-hook this function
-        add_action( 'save_post', [ WeDevs\Wpuf\Admin\WPUF_Admin_Posting::init(), 'save_meta' ], 1 );
+        add_action( 'save_post', [ WeDevs\Wpuf\Admin\Posting::init(), 'save_meta' ], 1 );
     }
 }
 

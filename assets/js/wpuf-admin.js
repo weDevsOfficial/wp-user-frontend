@@ -1,5 +1,4 @@
 jQuery(function($) {
-
     // Collapsable email settings field
     group = [
         '.email-setting',
@@ -136,8 +135,18 @@ jQuery(function($) {
         event.preventDefault();
 
         var shortcodesFound = [];
+        var postContent = '';
 
-        var postContent = tinymce.activeEditor.getContent();
+        // Check if we are on the post editing screen
+        if ($('#wp-content-editor-container').length > 0) {
+            var activeEditor = $('#wp-content-editor-container .switch-tmce.active').length > 0 ? 'visual' : 'text';
+
+            if (activeEditor === 'visual') {
+                postContent = tinyMCE.activeEditor.getContent(); // Get the content from the Visual tab
+            } else {
+                postContent = $('#wp-content-editor-container textarea').val(); // Get the content from the Text tab
+            }
+        }
 
         for ( var i = 0; i < shortcodes.length; i++) {
             var shortcode = shortcodes[i];

@@ -80,8 +80,8 @@
                         confirmButton: 'btn btn-success',
                         cancelButton: 'btn btn-danger'
                     }
-                }).then(function ( isConfirmed ) {
-                    if ( !isConfirmed ) {
+                }).then(function ( result ) {
+                    if ( !result.isConfirmed ) {
                         return false;
                     }
                     $('#wpuf_cancel_subscription').submit();

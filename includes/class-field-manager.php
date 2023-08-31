@@ -48,7 +48,7 @@ class WPUF_Field_Manager {
     public function get_field( $field_type ) {
         $fields = $this->get_fields();
 
-        if ( isset( $field_type, $fields ) ) {
+        if ( isset( $field_type, $fields, $fields[ $field_type ] ) ) {
             return $fields[ $field_type ];
         }
     }

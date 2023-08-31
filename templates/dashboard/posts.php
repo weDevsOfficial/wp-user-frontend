@@ -1,6 +1,6 @@
 <?php
 
-$post_type = $_GET['section'];
+$post_type = ! empty( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'post';
 
 global $userdata;
 

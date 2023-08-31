@@ -988,11 +988,14 @@ class Render_Form {
             <span class="wpuf-wordlimit-message wpuf-help"></span>
             <?php $this->help_text( $attr ); ?>
 
-            <?php if ( $taxonomy ) { ?>
+            <?php if ( $taxonomy ) {
+                $query_string = '?action=wpuf-ajax-tag-search&tax=post_tag';
+                $query_string .= '&nonce=' . wp_create_nonce( 'wpuf_ajax_tag_search' );
+                ?>
             <script type="text/javascript">
                 ;(function($) {
                     $(document).ready( function(){
-                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '?action=wpuf_ajax_tag_search&tax=post_tag', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                     });
                 })(jQuery);
             </script>
@@ -1585,6 +1588,9 @@ class Render_Form {
                         break;
 
                     case 'text':
+                        $query_string = '?action=wpuf-ajax-tag-search&tax=' . esc_attr( $attr['name'] );
+                        $query_string .= '&nonce=' . wp_create_nonce( 'wpuf_ajax_tag_search' );
+
                         ?>
 
                         <input class="textfield<?php echo esc_attr( $this->required_class( $attr ) ); ?>" id="<?php echo esc_attr( $attr['name'] ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php esc_attr( $this->required_html5( $attr ) ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $terms ) ); ?>" size="40" />
@@ -1592,7 +1598,7 @@ class Render_Form {
                         <script type="text/javascript">
                             ;(function($) {
                                 $(document).ready( function(){
-                                        $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '?action=wpuf_ajax_tag_search&tax=<?php echo esc_attr( $attr['name'] ); ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                                    $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                                 });
                             })(jQuery);
                         </script>

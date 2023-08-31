@@ -68,6 +68,10 @@ class WPUF_ACF_Compatibility {
      * @return void
      */
     public function maybe_compatible() {
+        if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_acf_compatibility' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
         wpuf_update_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
         wp_send_json_success();
     }
@@ -78,6 +82,10 @@ class WPUF_ACF_Compatibility {
      * @return void
      */
     public function migrate_cf_data() {
+        if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_acf_migration' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
         $forms = $this->get_post_forms();
         if ( ! empty( $forms ) ) {
             foreach ( $forms as $form ) {
@@ -136,6 +144,10 @@ class WPUF_ACF_Compatibility {
      * @return void
      */
     public function dismiss_notice() {
+        if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_dismiss_acf_notice' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
         $this->dismiss_prompt();
         wp_send_json_success();
     }
@@ -182,10 +194,13 @@ class WPUF_ACF_Compatibility {
                 $( '.notice' ).on( 'click', 'a#wpuf-compatible-<?php echo esc_attr( $this->id ); ?>', function ( e ) {
                     e.preventDefault();
 
-                    var self = $( this );
-                    self.addClass( 'updating-message' );
-                    wp.ajax.send( 'wpuf_compatibility_<?php echo esc_attr( $this->id ); ?>', {
-                        success: function () {
+                    var self = $(this);
+                    self.addClass('updating-message');
+                    wp.ajax.send('wpuf_compatibility_<?php echo esc_attr( $this->id ); ?>', {
+                        data: {
+                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_acf_compatibility' ) ); ?>'
+                        },
+                        success: function() {
                             var html = '<p><strong>Compatible Option Updated</strong></p>';
 
                             self.closest( '.notice' ).removeClass( 'notice-info' ).addClass( 'notice-success' ).html( html );
@@ -206,11 +221,14 @@ class WPUF_ACF_Compatibility {
                 $( '.notice' ).on( 'click', 'a#wpuf-migrate-<?php echo esc_attr( $this->id ); ?>', function ( e ) {
                     e.preventDefault();
 
-                    var self = $( this );
-                    self.addClass( 'updating-message' );
-                    wp.ajax.send( 'wpuf_migrate_<?php echo esc_attr( $this->id ); ?>', {
-                        success: function () {
-                            var html = '<p><strong>Compatible option and existing custom fields data updated</strong></p>';
+                    var self = $(this);
+                    self.addClass('updating-message');
+                    wp.ajax.send('wpuf_migrate_<?php echo esc_attr( $this->id ); ?>', {
+                        data: {
+                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_acf_migration' ) ); ?>'
+                        },
+                        success: function() {
+                            var html  = '<p><strong>Compatible option and existing custom fields data updated</strong></p>';
 
                             self.closest( '.notice' ).removeClass( 'notice-info' ).addClass( 'notice-success' ).html( html );
                         },
@@ -230,9 +248,13 @@ class WPUF_ACF_Compatibility {
                 $( '.notice' ).on( 'click', '#wpuf-dismiss-<?php echo esc_attr( $this->id ); ?>', function ( e ) {
                     e.preventDefault();
 
-                    $( this ).closest( '.notice' ).remove();
-                    wp.ajax.send( 'wpuf_dismiss_notice_<?php echo esc_attr( $this->id ); ?>' );
-                } );
+                    $(this).closest('.notice').remove();
+                    wp.ajax.send('wpuf_dismiss_notice_<?php echo esc_attr( $this->id ); ?>', {
+                        data: {
+                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_dismiss_acf_notice' ) ); ?>'
+                        },
+                    });
+                });
 
             } );
         </script>

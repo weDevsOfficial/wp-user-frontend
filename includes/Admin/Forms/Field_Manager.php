@@ -66,11 +66,12 @@ class Field_Manager {
      *
      * @param string $field_type
      *
-     * @return \WPUF_Field_Contract
+     * @return \WeDevs\Wpuf\Fields\Field_Contract
      */
     public function get_field( $field_type ) {
         $fields = $this->get_fields();
-        if ( isset( $field_type, $fields ) ) {
+
+        if ( isset( $field_type, $fields, $fields[ $field_type ] ) ) {
             return $fields[ $field_type ];
         }
     }

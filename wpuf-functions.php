@@ -371,12 +371,12 @@ class WPUF_Walker_Category_Checklist extends Walker {
         $class = isset( $args['class'] ) ? $args['class'] : '';
         $category_name = esc_html( apply_filters( 'the_category', $category->name ) );
 
-	    $output .= sprintf(
-		    '<li class="%s" id="%s-%s" data-label="%s"><label class="selectit"><input class="%s" value="%s" type="checkbox" data-type="checkbox" name="%s[]" id="in-"%s-%s" %s "%s" "%s" /> %s</label>',
-		    $inline_class, $taxonomy, $category->term_id, $args['label'], $class, $category->term_id, $name, $taxonomy,$category->term_id,
+        $output .= sprintf(
+            '<li class="%s" id="%s-%s" data-label="%s"><label class="selectit"><input class="%s" value="%s" type="checkbox" data-type="checkbox" name="%s[]" id="in-%s-%s" %s %s %s /> %s</label>',
+            esc_attr( $inline_class ), esc_attr( $taxonomy ), esc_attr( $category->term_id ), esc_attr( $args['label'] ), esc_attr( $class ), esc_attr( $category->term_id ), esc_attr( $name ), esc_attr( $taxonomy ), esc_attr( $category->term_id ),
             checked( in_array( $category->term_id, $args['selected_cats'], true ), true, false ),
-            disabled( empty( $args['disabled'] ), false, false ), $required, $category_name
-	    );
+            disabled( empty( $args['disabled'] ), false, false ), $required, esc_html( $category_name )
+        );
     }
 
     public function end_el( &$output, $category, $depth = 0, $args = [] ) {
@@ -1527,6 +1527,10 @@ function wpuf_get_attachment_id_from_url( $attachment_url = '' ) {
  * @global object $wpdb
  */
 function wpuf_ajax_tag_search() {
+    if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ), 'wpuf_ajax_tag_search' ) ) {
+        wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+    }
+
     global $wpdb;
 
     $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
@@ -1772,7 +1776,9 @@ function wpuf_get_child_cats() {
     $parent_cat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
     $field_attr = isset( $_POST['field_attr'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['field_attr'] ) ) : [];
 
-    wp_verify_nonce( $nonce, 'wpuf_nonce' );
+    if ( wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
+        wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+    }
 
     $allowed_tags = wp_kses_allowed_html( 'post' );
 

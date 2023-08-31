@@ -213,7 +213,10 @@
                     confirmButton: 'btn btn-success',
                     cancelButton: 'btn btn-danger',
                 }
-            }).then(function () {
+            }).then(function (result) {
+                if (!result.isConfirmed) {
+                    return;
+                }
                 var data = {
                     'attach_id' : el.data('attach-id'),
                     'nonce' : wpuf_frontend_upload.nonce,

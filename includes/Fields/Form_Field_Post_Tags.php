@@ -32,7 +32,11 @@ class Form_Field_Post_Tags extends Field_Contract {
             $value = implode( ', ', $tagsarray );
         } else {
             $value = $field_settings['default'];
-        } ?>
+        }
+
+        $query_string = '?action=wpuf-ajax-tag-search&tax=post_tag';
+        $query_string .= '&nonce=' . wp_create_nonce( 'wpuf_ajax_tag_search' );
+        ?>
 
 
         <li <?php $this->print_list_attributes( $field_settings ); ?>>
@@ -57,7 +61,7 @@ class Form_Field_Post_Tags extends Field_Contract {
               <script type="text/javascript">
                 ;(function($) {
                     $(document).ready( function(){
-                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '?action=wpuf_ajax_tag_search&tax=post_tag', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                     });
                 })(jQuery);
             </script>

@@ -39,6 +39,7 @@ class Admin_Form {
      * @return void
      */
     public function __construct() {
+        add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'wpuf_load_post_forms', [ $this, 'post_forms_builder_init' ] );
     }
 

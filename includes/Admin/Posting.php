@@ -17,7 +17,9 @@ class Posting {
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes'] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_form_select'] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_post_lock'] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
+        // add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
+        add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_script' ] );
+        add_action( 'wpuf_load_registration_forms', [ $this, 'enqueue_script' ] );
         add_action( 'save_post', [ $this, 'save_meta'], 100, 2 ); // save the custom fields
         add_action( 'save_post', [ $this, 'form_selection_metabox_save' ], 1, 2 ); // save edit form id
         add_action( 'save_post', [ $this, 'post_lock_metabox_save' ], 1, 2 ); // save post lock option
@@ -32,13 +34,6 @@ class Posting {
     }
 
     public function enqueue_script() {
-        global $pagenow;
-
-        if ( !in_array( $pagenow, [ 'profile.php', 'post-new.php', 'Post_Form_Template_Post.php', 'user-edit.php' ] ) ) {
-            return;
-        }
-
-        $scheme  = is_ssl() ? 'https' : 'http';
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
         wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
@@ -50,7 +45,7 @@ class Posting {
         }
 
         if ( !empty( $api_key ) ) {
-            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key, [], null );
+            wp_enqueue_script( 'wpuf-google-maps' );
         } else {
             add_action( 'admin_head', 'wpuf_hide_google_map_button' );
 

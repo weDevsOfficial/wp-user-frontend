@@ -139,7 +139,6 @@ module.exports = function(grunt) {
                     '!**/readme.md',
                     '!**/docs.md',
                     '!**/*~',
-                    '!vendor/**',
                     '!**/log.txt',
                     '!**/package-lock.json',
                     '!**/appsero.json',

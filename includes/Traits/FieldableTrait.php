@@ -19,6 +19,8 @@ trait FieldableTrait {
 
     public static $config_id = '_wpuf_form_id';
 
+    public static $separator = ' | ';
+
     /**
      * Add field settings
      *

@@ -1067,6 +1067,8 @@ function wpuf_show_custom_fields( $content ) {
                     ob_start();
                     wpuf_shortcode_map_post( $attr['name'], $post->ID );
 
+                    wp_enqueue_script( 'wpuf-google-maps' );
+
                     if ( isset( $attr['directions'] ) && $attr['directions'] ) {
                         $location   = get_post_meta( $post->ID, $attr['name'], true );
                         $def_lat    = isset( $location['lat'] ) ? $location['lat'] : 40.7143528;
@@ -1081,7 +1083,7 @@ function wpuf_show_custom_fields( $content ) {
                     break;
 
                 case 'address':
-                    include_once __DIR__ . '/includes/countries.php';
+                    include_once WPUF_ROOT . '/includes/Data/countries.php';
 
                     $address_html = '';
 
@@ -1261,7 +1263,7 @@ function wpuf_show_custom_fields( $content ) {
     return $content . $html;
 }
 
-add_filter( 'the_content', 'wpuf_show_custom_fields', 10 );
+add_filter( 'the_content', 'wpuf_show_custom_fields' );
 
 /**
  * Map display shortcode

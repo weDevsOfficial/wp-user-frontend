@@ -1,6 +1,16 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.9',
+        'released' => '2023-09-11',
+        'changes'  => [
+            [
+                'title' => __( 'Add capabilities check on AJAX actions', 'wp-user-frontend' ),
+                'type'  => 'Enhance',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.6.8',
         'released' => '2023-08-31',
         'changes'  => [

@@ -954,6 +954,10 @@ final class WP_User_Frontend {
             wp_send_json_error( __( 'Error: Nonce verification failed', 'wp-user-frontend' ) );
         }
 
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Error: Unauthorized', 'wp-user-frontend' ) );
+        }
+
         include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
         include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 

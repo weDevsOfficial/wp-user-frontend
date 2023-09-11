@@ -539,6 +539,10 @@ class WPUF_Admin_Posting {
     public function clear_schedule_lock() {
         check_ajax_referer( 'wpuf_nonce', 'nonce' );
 
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
 
         if ( !empty( $post_id ) ) {

@@ -340,6 +340,10 @@ class WPUF_Frontend_Account {
             wp_send_json_error( __( 'Nonce failure', 'wp-user-frontend' ) );
         }
 
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         global $current_user;
 
         $first_name       = ! empty( $_POST['first_name'] ) ? sanitize_text_field( wp_unslash( $_POST['first_name'] ) ) : '';

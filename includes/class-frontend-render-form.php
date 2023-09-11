@@ -224,6 +224,10 @@ class WPUF_Frontend_Render_Form {
     public function preview_form() {
         $form_id = isset( $_GET['form_id'] ) ? intval( wp_unslash( $_GET['form_id'] ) ) : 0;
 
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         if ( $form_id ) {
             ?>
 

@@ -13,7 +13,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         add_shortcode( 'wpuf_form', [ $this, 'add_post_shortcode' ] );
         add_shortcode( 'wpuf_edit', [ $this, 'edit_post_shortcode' ] );
         // ajax requests
-        add_action( 'wp_ajax_wpuf_form_preview', [ $this, 'preview_form' ] );
         add_action( 'wp_ajax_wpuf_submit_post', [ $this, 'submit_post' ] );
         add_action( 'wp_ajax_nopriv_wpuf_submit_post', [ $this, 'submit_post' ] );
         add_action( 'wp_ajax_make_media_embed_code', [ $this, 'make_media_embed_code' ] );

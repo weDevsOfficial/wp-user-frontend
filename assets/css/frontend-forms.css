@@ -1,6 +1,5 @@
 /* DivTable.com */
 body {
-  font-family: 'Open Sans', sans-serif;
   /* css for timepicker */
   /** author info **/
   /** jQuery Suggest **/
@@ -189,6 +188,11 @@ body #form-preview-stage.wpuf-style ul.wpuf-form .wpuf-fields select[multiple],
 body .wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields select[multiple] {
   height: auto;
 }
+body #form-preview-stage.wpuf-style ul.wpuf-form .wpuf-fields-inline,
+body .wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields-inline {
+  display: flex;
+  justify-content: space-between;
+}
 body #form-preview-stage.wpuf-style ul.wpuf-form .wpuf-submit input[type=submit],
 body .wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-submit input[type=submit] {
   font-size: 16px;
@@ -238,7 +242,11 @@ body ul.wpuf-form li.has-error {
 body ul.wpuf-form li .wp-editor-wrap {
   border: 1px solid #eee;
 }
-body ul.wpuf-form li.wpuf_hidden_field {
+body ul.wpuf-form liwpuf-el {
+  position: relative;
+  display: flex;
+}
+body ul.wpuf-form li.wpuf_hidden_field.wpuf-el {
   display: none;
 }
 body ul.wpuf-form li .wpuf-label {
@@ -346,7 +354,8 @@ body ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap.format-first-middle-last
   float: right;
   width: 37%;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help {
+body ul.wpuf-form li .wpuf-fields .wpuf-help,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message {
   color: #666;
   margin: 2px 0 5px 0;
   font-size: 12px;
@@ -354,14 +363,18 @@ body ul.wpuf-form li .wpuf-fields .wpuf-help {
   font-family: sans-serif;
   display: block;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help .text-danger {
+body ul.wpuf-form li .wpuf-fields .wpuf-help .text-danger,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message .text-danger {
   color: red;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help .text-success {
+body ul.wpuf-form li .wpuf-fields .wpuf-help .text-success,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message .text-success {
   color: green;
 }
 body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart,
-body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart-mgs {
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message #url-alart,
+body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart-mgs,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message #url-alart-mgs {
   font-style: normal;
   font-size: 16px;
 }
@@ -491,24 +504,32 @@ body ul.wpuf-form li .wpuf-fields .wpuf-fields-list.wpuf-list-inline li {
   padding-left: 5px;
   padding-right: 5px;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field {
   border-collapse: collapse;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field * {
-  box-sizing: border-box;
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field.wpuf-field-columns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field input {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-column-field-inner-columns {
   width: 100%;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field * {
+  box-sizing: border-box;
+}
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field input {
+  width: 100%;
+}
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-repeater-buttons {
   width: 75px;
   padding-left: 12px;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons img {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-repeater-buttons img {
   width: 100%;
   height: auto;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons i {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-repeater-buttons i {
   display: inline-block;
   width: 15px;
   height: 15px;
@@ -945,9 +966,6 @@ body .pass-strength-result.strong {
   background-color: #c3ff88;
   border-color: #8dff1c !important;
 }
-body .password[type="text"] {
-  display: none;
-}
 body table.wpuf-table {
   border: 1px solid #E7E7E7;
   margin: 0 0px 10px 0;
@@ -1096,16 +1114,30 @@ body fieldset.wpuf-multistep-fieldset {
 body fieldset.wpuf-multistep-fieldset.field-active {
   display: block;
 }
-body fieldset.wpuf-multistep-fieldset .wpuf-multistep-prev-btn,
-body fieldset.wpuf-multistep-fieldset .wpuf-multistep-next-btn {
+body fieldset.wpuf-multistep-fieldset button.wpuf-multistep-next-btn.btn.btn-primary {
   position: absolute;
-  bottom: 5px;
+  bottom: 0;
+  right: 0;
 }
-body fieldset.wpuf-multistep-fieldset .wpuf-multistep-prev-btn {
-  left: 10px;
+body fieldset.wpuf-multistep-fieldset button.wpuf-multistep-prev-btn.btn.btn-primary {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
-body fieldset.wpuf-multistep-fieldset .wpuf-multistep-next-btn {
-  right: 10px;
+body fieldset.wpuf-multistep-fieldset a#wpuf-post-draft {
+  position: absolute;
+  bottom: 0;
+  right: calc(50% - 35px);
+}
+body fieldset.wpuf-multistep-fieldset span.wpuf-draft-saved {
+  position: absolute;
+  bottom: 0;
+  right: calc(50% - 150px);
+}
+body fieldset.wpuf-multistep-fieldset span.wpuf-loading {
+  position: absolute;
+  bottom: 8px;
+  right: calc(50% - 60px);
 }
 body .wpuf-multistep-progressbar {
   overflow: hidden;
@@ -1222,7 +1254,6 @@ body .wpuf-form .required {
   border: 0;
 }
 body .wpuf-dashboard-container {
-  font-family: 'Open Sans', sans-serif;
   max-width: 85rem !important;
   /*Responsive css for post table*/
 }
@@ -1238,7 +1269,6 @@ body .wpuf-dashboard-container .wpuf-dashboard-navigation {
 body .wpuf-dashboard-container .wpuf-dashboard-navigation a {
   text-decoration: none;
   box-shadow: none;
-  font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   font-weight: bold;
   color: #000;
@@ -1306,7 +1336,6 @@ body .wpuf-dashboard-container table.items-table {
   width: 100%;
   margin-top: 0px;
   border: 1.0218px solid #DAE1F5;
-  font-family: 'Open Sans', sans-serif !important;
   color: #000 !important;
   font-size: 16px !important;
   font-weight: 400 !important;
@@ -1464,7 +1493,6 @@ body input[type="text"].wpuf-google-map-search {
   background-color: #fff !important;
   text-overflow: ellipsis !important;
   width: 170px !important;
-  font-family: Roboto !important;
   font-size: 15px !important;
   font-weight: 300 !important;
   padding: 0 11px 0 13px !important;
@@ -1644,9 +1672,6 @@ body .weforms-quiz-feedback .wrong-answer .wpuf-fields label.checked {
   background: #FFE4E4;
   color: red;
   padding: 6px 0;
-}
-body ul.wpuf-form .wpuf-el {
-  position: relative;
 }
 body ul.wpuf-form .weforms-frontend-field-points {
   position: absolute;

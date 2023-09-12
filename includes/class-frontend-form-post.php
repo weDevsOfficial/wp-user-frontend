@@ -734,7 +734,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         // delete previous repeat values
         if ( ! empty( $repeat_fields ) ) {
-            $row_num   = get_post_meta( $post_id, $repeat_fields['repeat_meta'], true );
+            $row_num = get_post_meta( $post_id, $repeat_fields['repeat_meta'], true );
 
             if ( $row_num ) {
                 $sub_fields = ! empty( $repeat_fields['sub_fields'] ) ? $repeat_fields['sub_fields'] : [];
@@ -765,8 +765,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                 }
             }
         }
-
-
 
         // save all custom fields
         foreach ( $meta_key_value as $meta_key => $meta_value ) {

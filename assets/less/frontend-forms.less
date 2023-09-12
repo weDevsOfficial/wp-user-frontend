@@ -5,7 +5,6 @@
 @mediaMD: 1200px;
 /* DivTable.com */
 body {
-    font-family: 'Open Sans', sans-serif;
 #wpfooter {
     position: fixed  !important
 }
@@ -212,6 +211,11 @@ body {
                 }
             }
 
+            .wpuf-fields-inline {
+                display: flex;
+                justify-content: space-between;
+            }
+
             .wpuf-submit{
 
                 input[type=submit] {
@@ -258,7 +262,12 @@ ul.wpuf-form {
             border: 1px solid @borderColor;
         }
 
-        &.wpuf_hidden_field {
+        &wpuf-el {
+            position: relative;
+            display: flex;
+        }
+
+        &.wpuf_hidden_field.wpuf-el {
             display: none;
         }
 
@@ -388,7 +397,8 @@ ul.wpuf-form {
                 }
             }
 
-            .wpuf-help {
+            .wpuf-help,
+            .wpuf-wordlimit-message {
                 color: #666;
                 margin: 2px 0 5px 0;
                 font-size: 12px;
@@ -554,6 +564,16 @@ ul.wpuf-form {
 
             .wpuf-repeatable-field {
                 border-collapse: collapse;
+
+                &.wpuf-field-columns {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .wpuf-column-field-inner-columns {
+                    width: 100%;
+                }
 
                 & * {
                     box-sizing: border-box;
@@ -1041,10 +1061,6 @@ ul.wpuf_packs {
     }
 }
 
-.password[type="text"]{
-  display: none;
-}
-
 table.wpuf-table {
     border: 1px solid #E7E7E7;
     margin: 0 0px 10px 0;
@@ -1213,16 +1229,33 @@ table.wpuf-table {
         display: block;
     }
 
-    .wpuf-multistep-prev-btn,
-    .wpuf-multistep-next-btn {
+    button.wpuf-multistep-next-btn.btn.btn-primary {
         position: absolute;
-        bottom: 5px;
+        bottom: 0;
+        right: 0;
     }
-    .wpuf-multistep-prev-btn {
-        left: 10px;
+
+    button.wpuf-multistep-prev-btn.btn.btn-primary {
+        position: absolute;
+        bottom: 0;
+        left: 0;
     }
-    .wpuf-multistep-next-btn {
-        right: 10px;
+
+    a#wpuf-post-draft {
+        position: absolute;
+        bottom: 0;
+        right: ~"calc(50% - 35px)";
+    }
+
+    span.wpuf-draft-saved {
+        position: absolute;
+        bottom: 0;
+        right: ~"calc(50% - 150px)";
+    }
+    span.wpuf-loading {
+        position: absolute;
+        bottom: 8px;
+        right: ~"calc(50% - 60px)";
     }
 }
 
@@ -1375,7 +1408,6 @@ body.rtl{
     }
 }
 .wpuf-dashboard-container {
-    font-family: 'Open Sans', sans-serif;
     max-width: 85rem !important;
     .clearfix();
     .wpuf-dashboard-navigation {
@@ -1385,7 +1417,6 @@ body.rtl{
         a {
             text-decoration: none;
             box-shadow: none;
-            font-family: 'Open Sans', sans-serif;
             font-size: 16px;
             font-weight: bold;
             color: #000;
@@ -1450,7 +1481,6 @@ body.rtl{
         width: 100%;
         margin-top: 0px;
         border: 1.0218px solid #DAE1F5;
-        font-family: 'Open Sans', sans-serif !important;
         color: #000 !important;
         font-size: 16px !important;
         font-weight: 400 !important;
@@ -1659,7 +1689,6 @@ input[type="text"].wpuf-google-map-search {
     background-color: #fff !important;
     text-overflow: ellipsis !important;
     width: 170px !important;
-    font-family: Roboto !important;
     font-size: 15px !important;
     font-weight: 300 !important;
     padding: 0 11px 0 13px !important;
@@ -1890,10 +1919,6 @@ ul.wpuf-form .ui-state-default.wpuf-image-wrap .caption span:hover{
   padding: 6px 0;
 }
 
-ul.wpuf-form .wpuf-el{
-  position: relative;
-}
-
 ul.wpuf-form .weforms-frontend-field-points{
     position: absolute;
     top: 0;
@@ -2049,38 +2074,6 @@ ul.wpuf-form{
                 }
             }
         }
-    }
-    .wpuf-repeatable-field{
-        display: flex;
-
-        &.has-columns-1{
-            .wpuf-column{
-                .wpuf-column-inner-fields{
-                    width: 90%;
-                }
-            }
-        }
-
-        &.has-columns-2{
-            .wpuf-column{
-                .wpuf-column-inner-fields{
-                    width: 45%;
-                }
-            }
-        }
-
-        &.has-columns-3{
-            .wpuf-column{
-                .wpuf-column-inner-fields{
-                    width: 30%;
-                }
-            }
-        }
-
-        .wpuf-column-field-inner-columns{
-            width: 90%;
-        }
-
     }
 }
 

@@ -874,7 +874,6 @@ function wpuf_show_custom_fields( $content ) {
             // get column field input fields
             if ( 'column_field' === $attr['input_type'] ) {
                 $inner_fields = $attr['inner_fields'];
-
                 foreach ( $inner_fields as $column_key => $column_fields ) {
                     if ( ! empty( $column_fields ) ) {
                         // ignore section break and HTML input type
@@ -890,6 +889,35 @@ function wpuf_show_custom_fields( $content ) {
 
             if ( isset( $attr['show_in_post'] ) && 'yes' === $attr['show_in_post'] ) {
                 $meta[] = $attr;
+            }
+
+            // get repeat field inner fields
+            if ( 'repeat' === $attr['input_type'] ) {
+                $inner_fields = $attr['inner_fields'];
+                foreach ( $inner_fields as $column_key => $column_fields ) {
+                    if ( ! empty( $column_fields ) ) {
+                        // ignore section break and HTML input type
+                        foreach ( $column_fields as $column_field_key => $column_field ) {
+                            if ( isset( $column_field['show_in_post'] ) && 'yes' === $column_field['show_in_post'] ) {
+                                $repeat_rows = get_post_meta( $post->ID, 'repeat_field', true );
+
+                                if ( ! empty( $repeat_rows ) ) {
+                                    for ( $index = 0; $index < $repeat_rows; $index++ ) {
+                                        $field_value = get_post_meta( $post->ID, 'repeat_field_' . $index . '_' . $column_field['name'], true );
+                                        $hide_label  = ! empty( $column_field['hide_field_label'] ) ? $column_field['hide_field_label'] : 'no';
+                                        $html       .= '<li>';
+
+                                        if ( 'no' === $hide_label ) {
+                                            $html .= '<label>' . $column_field['label'] . ': </label>';
+                                        }
+
+                                        $html .= make_clickable( $field_value ) . '</li>';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -1084,7 +1112,7 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= $address_html;
                     break;
 
-                case 'repeat':
+                case 'repeat_field':
                     $value    = get_post_meta( $post->ID, $attr['name'] );
                     $newvalue = [];
 
@@ -4430,3 +4458,144 @@ function wpuf_get_image_sizes_array( $size = '' ) {
     }
     return $sizes;
 }
+
+/**
+ * The HTML preview part when hovering over a pro settings field
+ *
+ * @since 3.6.0
+ *
+ * @return string
+ */
+function wpuf_get_pro_preview_html() {
+    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+    return sprintf( '<div class="pro-field-overlay">
+                        <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a>
+                    </div>', esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+                    file_get_contents( $crown_icon ) );
+}
+
+/**
+ * The HTML tooltip when hovering over a pro settings field
+ *
+ * @since 3.6.0
+ *
+ * @return string
+ */
+function wpuf_get_pro_preview_tooltip() {
+    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+    $check_icon = WPUF_ROOT . '/assets/images/check.svg';
+    $features = [
+        '24/7 Priority Support',
+        '20+ Premium Modules',
+        'User Activity and Reports',
+        'Private Messaging Option',
+        'License for 20 websites',
+    ];
+    $html = '<div class="wpuf-pro-field-tooltip">';
+    $html .= '<h3 class="tooltip-header">Available in Pro. Also enjoy:</h3>';
+    $html .= '<ul>';
+
+    foreach ( $features as $feature ) {
+        $html .= sprintf(
+            '<li><span class="tooltip-check">%1$s</span> %2$s</li>',
+            file_get_contents( $check_icon ),
+            esc_html( $feature )
+        );
+    }
+
+    $html .= '</ul>';
+    $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a></div>',
+              esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+                      file_get_contents( $crown_icon ) );
+
+    $html .= '<i></i>';
+    $html .= '</div>';
+
+    return $html;
+}
+
+/**
+ * Get the shortcodes that are protected on the post form.
+ * User cannot submit post containing those shortcodes.
+ *
+ * @since 3.6.6
+ *
+ * @return array
+ */
+function wpuf_get_protected_shortcodes() {
+    return [
+        'wpuf-registration',
+    ];
+}
+
+/**
+ * Get the current users roles as an array
+ *
+ * @since 3.6.6
+ *
+ * @return array|bool
+ */
+function wpuf_get_single_user_roles( $user_id ) {
+    if ( ! is_numeric( $user_id ) ) {
+        return false;
+    }
+
+    $user = get_user_by( 'id', $user_id );
+
+    if ( ! $user ) {
+        return false;
+    }
+
+    return ( array ) $user->roles;
+}
+
+/**
+ * Check and modify the post content not to render shortcode values
+ * in the frontend for any user except admin.
+ *
+ * @since 3.6.6
+ *
+ * @return string
+ */
+function wpuf_modify_shortcodes( $content ) {
+    global $pagenow;
+
+    if ( 'post.php' === $pagenow ) {
+        return $content;
+    }
+
+    // get the id of the user who last edited the post
+    $user_id = get_post_meta( get_post()->ID, '_edit_last', true );
+
+    $roles = wpuf_get_single_user_roles( $user_id );
+
+    if ( empty( $roles ) ) {
+        return $content;
+    }
+
+    // last modified by an admin, returns the content as it is
+    if ( in_array( 'administrator', $roles ) ) {
+        return $content;
+    }
+
+    $protected_shortcodes = wpuf_get_protected_shortcodes();
+
+    foreach ( $protected_shortcodes as $shortcode ) {
+        $search_for = '[' . $shortcode;
+
+        if ( strpos( $content, $search_for ) !== false ) {
+            $pattern = '/\[' . $shortcode . '(.*?)\]/';
+
+            $content = preg_replace_callback(
+                $pattern, function( $matches ) {
+                    return str_replace( [ '[', ']' ], [ '&lbrack;', '&rbrack;' ], $matches[0] );
+                }, $content
+            );
+        }
+    }
+
+    return $content;
+}
+
+// @todo: move this to frontend class
+add_filter( 'the_content', 'wpuf_modify_shortcodes' );

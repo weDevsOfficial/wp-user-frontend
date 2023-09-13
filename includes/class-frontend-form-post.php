@@ -707,7 +707,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $this->form_fields            = $form->get_fields();
         $this->form_settings          = $form->get_settings();
         $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
-	    list( $user_can_post, $info ) = $form->is_submission_open( $form, $this->form_settings );
+	    [ $user_can_post, $info ] = $form->is_submission_open( $form, $this->form_settings );
         $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
         $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
 
@@ -725,7 +725,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     public static function update_post_meta( $meta_vars, $post_id ) {
         // check_ajax_referer( 'wpuf_form_add' );
         // prepare the meta vars
-        list( $meta_key_value, $repeat_fields, $files ) = self::prepare_meta_fields( $meta_vars );
+	    [ $meta_key_value, $multi_repeated, $files ] = self::prepare_meta_fields( $meta_vars );
         // set featured image if there's any
 
         // @codingStandardsIgnoreStart
@@ -894,7 +894,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         // custom fields
         preg_match_all( '/%custom_([\w-]*)\b%/', $content, $matches );
-        list( $search, $replace ) = $matches;
+	    [ $search, $replace ] = $matches;
 
         if ( $replace ) {
             foreach ( $replace as $index => $meta_key ) {

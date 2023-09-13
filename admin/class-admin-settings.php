@@ -35,6 +35,13 @@ class WPUF_Admin_Settings {
      */
     private $menu_pages = [];
 
+    /**
+     * The settings upon plugin uninstallation
+     *
+     * @var array
+     */
+    private $uninstall_settings = [];
+
     public function __construct() {
         if ( ! class_exists( 'WeDevs_Settings_API' ) ) {
             require_once dirname( __DIR__ ) . '/lib/class.settings-api.php';
@@ -49,6 +56,7 @@ class WPUF_Admin_Settings {
         add_filter( 'submenu_file', [ $this, 'fix_submenu_file' ] );
 
         add_action( 'admin_init', [ $this, 'handle_tools_action' ] );
+        add_action( 'admin_init', [ $this, 'uninstall_section' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 
         add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ], 1 );
@@ -364,6 +372,97 @@ class WPUF_Admin_Settings {
     }
 
     /**
+     * The uninstall settings section for User Frontend > Tools
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
+    public function uninstall_section() {
+        $section_id = 'wpuf_uninstall';
+
+        $uninstall_fields = apply_filters(
+            'wpuf_uninstall_settings', [
+                [
+                    'id'       => 'delete_settings',
+                    'label'    => __( 'Delete Plugin Settings', 'wp-user-frontend' ),
+                    'callback' => 'delete_settings_markup',
+                ],
+                [
+                    'id'       => 'delete_database',
+                    'label'    => __( 'Delete Database Tables', 'wp-user-frontend' ),
+                    'callback' => 'delete_database_markup',
+                ],
+                [
+                    'id'       => 'delete_forms',
+                    'label'    => __( 'Delete WPUF Forms', 'wp-user-frontend' ),
+                    'callback' => 'delete_forms_markup',
+                ],
+                [
+                    'id'       => 'delete_pages',
+                    'label'    => __( 'Delete WPUF Pages', 'wp-user-frontend' ),
+                    'callback' => 'delete_pages_markup',
+                ],
+            ]
+        );
+
+        // registering the section
+        register_setting( $section_id, $section_id, [ $this, 'sanitize_dropdown' ] );
+
+        // adding the section
+        add_settings_section( $section_id, __( 'Uninstall Settings', 'wp-user-frontend' ), [ $this, 'uninstall_section_callback' ], 'wpuf_tools' );
+
+        foreach ( $uninstall_fields as $field ) {
+            $field_id = $field['id'];
+            $field_label = $field['label'];
+
+            $args = [
+                'id'        => $field_id,
+                'class'     => ! empty( $field['class'] ) ? $field['class'] : '',
+                'label_for' => "{$section_id}[{$field['id']}]",
+                'desc'      => ! empty( $field['desc'] ) ? $field['desc'] : '',
+                'name'      => $field_label,
+                'section'   => $section_id,
+                'size'      => ! empty( $field['size'] ) ? $field['size'] : null,
+                'options'   => ! empty( $field['options'] ) ? $field['options'] : '',
+                'type'      => ! empty( $field['type'] ) ? $field['type'] : '',
+            ];
+
+            add_settings_field( $section_id . '["' . $field_id . '"]', $field_label, [ $this, $field['callback'] ], 'wpuf_tools', $section_id, $args );
+        }
+
+        $this->uninstall_settings = get_option( $section_id );
+    }
+
+    /**
+     * Sanitize callback for yes/no dropdown
+     *
+     * @since WPUF
+     *
+     * @return array
+     */
+    public function sanitize_dropdown( $input ) {
+        if ( ! $input ) {
+            return $input;
+        }
+
+        $options = [ 'delete_settings', 'delete_database', 'delete_forms', 'delete_pages' ];
+
+        // Create our array for storing the validated options
+        $output = [];
+
+        // Loop through each of the incoming options
+        foreach ( $input as $key => $value ) {
+            // Check to see if the current option has a value. If so, process it.
+            if ( in_array( $key, $options, true ) && 'on' === $value ) {
+                $output[ $key ] = $value;
+            }
+        }
+
+        return $output;
+    }
+
+    /**
      * Hanlde tools page action
      *
      * @return void
@@ -424,6 +523,92 @@ class WPUF_Admin_Settings {
 
         wp_redirect( add_query_arg( [ 'msg' => $message ], admin_url( 'admin.php?page=wpuf_tools&action=tools' ) ) );
         exit;
+    }
+
+    /**
+     * Delete settings checkbox HTML markup
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
+    public function delete_settings_markup() {
+        $value = ! empty( $this->uninstall_settings['delete_settings'] ) ? $this->uninstall_settings['delete_settings'] : 'off';
+        ?>
+        <label class="switch">
+            <input type="checkbox" id="wpuf_uninstall[delete_settings]" name="wpuf_uninstall[delete_settings]" <?php checked( $value, 'on' ); ?>>
+            <span class="slider round"></span>
+        </label>
+        <?php
+    }
+
+    /**
+     * Delete database checkbox HTML markup
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
+    public function delete_database_markup() {
+        $value = ! empty( $this->uninstall_settings['delete_database'] ) ? $this->uninstall_settings['delete_database'] : 'off';
+        ?>
+        <label class="switch">
+            <input type="checkbox" id="wpuf_uninstall[delete_database]" name="wpuf_uninstall[delete_database]" <?php checked( $value, 'on' ); ?>>
+            <span class="slider round"></span>
+        </label>
+        <?php
+    }
+
+    /**
+     * Delete WPUF forms checkbox HTML markup
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
+    public function delete_forms_markup() {
+        $value = ! empty( $this->uninstall_settings['delete_forms'] ) ? $this->uninstall_settings['delete_forms'] : 'off';
+        ?>
+        <label class="switch">
+            <input type="checkbox" id="wpuf_uninstall[delete_forms]" name="wpuf_uninstall[delete_forms]" <?php checked( $value, 'on' ); ?>>
+            <span class="slider round"></span>
+        </label>
+        <?php
+    }
+
+    /**
+     * Delete WPUF pages checkbox HTML markup
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
+    public function delete_pages_markup() {
+        $value = ! empty( $this->uninstall_settings['delete_pages'] ) ? $this->uninstall_settings['delete_pages'] : 'off';
+        ?>
+        <label class="switch">
+            <input type="checkbox" id="wpuf_uninstall[delete_pages]" name="wpuf_uninstall[delete_pages]" <?php checked( $value, 'on' ); ?>>
+            <span class="slider round"></span>
+        </label>
+        <?php
+    }
+
+    /**
+     * The HTML section for User Frontend > Tools > Uninstall Settings
+     *
+     * @since WPUF
+     *
+     * @param $args
+     *
+     * @return void
+     */
+    public function uninstall_section_callback( $args ) {
+        ?>
+        <p style="background: #EF4444; color: #FFF; padding: 10px; font-size: 1.1em">
+            <strong><?php esc_html_e( 'Caution:', 'wp-user-frontend' ); ?></strong>
+            <?php esc_html_e( ' Check this to remove WP User Frontend related data and table from the database upon deleting the plugin. When you delete the WP User Frontend free version, it will also remove all the data related to WP User Frontend Pro as well. This won\'t happen when the plugins are deactivated.', 'wp-user-frontend' ); ?>
+        </p>
+        <?php
     }
 
     /**

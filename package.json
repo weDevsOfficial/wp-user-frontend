@@ -9,6 +9,7 @@
     "release": "grunt release"
   },
   "devDependencies": {
+    "@types/node": "^18.11.18",
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "~1.0.0",
     "grunt-contrib-compress": "~1.3.0",

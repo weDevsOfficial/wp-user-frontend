@@ -34,14 +34,21 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
         }
         $this->field_print_label( $field_settings, $form_id ); ?>
 
-        <div class="wpuf-fields" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-type="radio">
+        <div class="wpuf-fields">
 
             <?php
             if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
                 foreach ( $field_settings['options'] as $value => $option ) {
                     ?>
                     <label <?php echo esc_attr( $field_settings['inline'] ) == 'yes' ? 'class="wpuf-checkbox-inline"' : 'class="wpuf-checkbox-block"'; ?>>
-                        <input type="checkbox" class="<?php echo 'wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" name="<?php echo esc_attr( $field_settings['name'] ); ?>[]" value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?> />
+                        <input
+                            type="checkbox"
+                            class="<?php echo esc_attr( sprintf( 'wpuf_%s_%d', $field_settings['name'], $form_id ) ); ?>"
+                            name="<?php echo esc_attr( $field_settings['name'] ); ?>[]"
+                            value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?>
+                            data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
+                            data-type="checkbox"
+                        />
                         <?php echo $option; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     </label>
                     <?php

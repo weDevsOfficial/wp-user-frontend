@@ -180,8 +180,8 @@ Vue.component('form-column_field', {
                 toWhichColumn: data.to_column
             };
 
-            if (this.isAllowedInColumnField(data.field_template)) {
-                swal({
+            if (this.isAllowedInClolumnField(data.field_template)) {
+                Swal.fire({
                     title: "Oops...",
                     text: "You cannot add this field as inner column field"
                 });
@@ -190,7 +190,7 @@ Vue.component('form-column_field', {
 
             // check if these are already inserted
             if ( this.isSingleInstance( data.field_template ) && this.containsField( data.field_template ) ) {
-                swal({
+                Swal.fire({
                     title: "Oops...",
                     text: "You already have this field in the form"
                 });
@@ -258,7 +258,7 @@ Vue.component('form-column_field', {
 
             // check if the field is allowed to duplicate
             if ( self.isSingleInstance( field.template ) ) {
-                swal({
+                Swal.fire({
                     title: "Oops...",
                     text: "You already have this field in the form"
                 });
@@ -276,19 +276,21 @@ Vue.component('form-column_field', {
                     fromColumn: fromColumn
                 };
 
-            swal({
+            Swal.fire({
                 text: self.i18n.delete_field_warn_msg,
-                type: 'warning',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d54e21',
                 confirmButtonText: self.i18n.yes_delete_it,
                 cancelButtonText: self.i18n.no_cancel_it,
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-            }).then(function () {
-                self.$store.commit('delete_column_field_element', payload);
-            }, function() {
-
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    self.$store.commit('delete_column_field_element', payload);
+                }
             });
         },
 

@@ -85,11 +85,9 @@ class WPUF_Upload {
 
         $file_name      = pathinfo( $wpuf_file['name'], PATHINFO_FILENAME );
         $file_extension = pathinfo( $wpuf_file['name'], PATHINFO_EXTENSION );
-        $hash           = wp_hash( time() );
-        $hash           = substr( $hash, 0, 8 );
 
         $upload = [
-            'name'     => $file_name . '-' . $hash . '.' . $file_extension,
+            'name'     => $file_name . '.' . $file_extension,
             'type'     => $wpuf_file['type'],
             'tmp_name' => $wpuf_file['tmp_name'],
             'error'    => $wpuf_file['error'],
@@ -300,6 +298,10 @@ class WPUF_Upload {
         }
 
         $attachment = get_post( $attachment_id );
+
+        if ( empty( $attachment ) ) {
+            wp_send_json_error( [ 'message' => __( 'attachment not found.', 'wp-user-frontend' ) ] );
+        }
 
         // post author or editor role
         if ( get_current_user_id() == absint( $attachment->post_author ) || current_user_can( 'delete_private_pages' ) ) {

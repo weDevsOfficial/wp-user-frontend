@@ -341,6 +341,12 @@ class WPUF_Walker_Category_Checklist extends Walker {
     public function start_el( &$output, $category, $depth = 0, $args = [], $current_object_id = 0 ) {
         $taxonomy = $args['taxonomy'];
 
+        $required = '';
+
+        if ( ! empty( $args['required'] ) && 'yes' === $args['required'] ) {
+            $required = ' data-required="yes" ';
+        }
+
         if ( empty( $taxonomy ) ) {
             $taxonomy = 'category';
         }
@@ -358,7 +364,14 @@ class WPUF_Walker_Category_Checklist extends Walker {
         }
 
         $class = isset( $args['class'] ) ? $args['class'] : '';
-        $output .= "\n<li class='" . $inline_class . "' id='{$taxonomy}-{$category->term_id}'>" . '<label class="selectit"><input class="' . $class . '" value="' . $category->term_id . '" type="checkbox" name="' . $name . '[]" id="in-' . $taxonomy . '-' . $category->term_id . '"' . checked( in_array( $category->term_id, $args['selected_cats'], true ), true, false ) . disabled( empty( $args['disabled'] ), false, false ) . ' /> ' . esc_html( apply_filters( 'the_category', $category->name ) ) . '</label>';
+        $category_name = esc_html( apply_filters( 'the_category', $category->name ) );
+
+        $output .= sprintf(
+            '<li class="%s" id="%s-%s" data-label="%s"><label class="selectit"><input class="%s" value="%s" type="checkbox" data-type="checkbox" name="%s[]" id="in-%s-%s" %s %s %s /> %s</label>',
+            esc_attr( $inline_class ), esc_attr( $taxonomy ), esc_attr( $category->term_id ), esc_attr( $args['label'] ), esc_attr( $class ), esc_attr( $category->term_id ), esc_attr( $name ), esc_attr( $taxonomy ), esc_attr( $category->term_id ),
+            checked( in_array( $category->term_id, $args['selected_cats'], true ), true, false ),
+            disabled( empty( $args['disabled'] ), false, false ), $required, esc_html( $category_name )
+        );
     }
 
     public function end_el( &$output, $category, $depth = 0, $args = [] ) {
@@ -397,9 +410,10 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
         $args['selected_cats'] = [];
     }
 
-    $args['show_inline'] = $attr['show_inline'];
-
-    $args['class'] = $class;
+  $args['show_inline'] = ! empty( $attr['show_inline'] ) ? $attr['show_inline'] : '';
+	$args['class']       = $class;
+	$args['required']    = ! empty( $attr['required'] ) ? $attr['required'] : 'no';
+	$args['label']       = ! empty( $attr['label'] ) ? $attr['label'] : '';
 
     $tax_args = [
         'taxonomy'    => $tax,
@@ -417,18 +431,22 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     echo wp_kses(
         call_user_func_array( [ &$walker, 'walk' ], [ $categories, 0, $args ] ), [
             'li'    => [
-                'class' => [],
+	            'class'      => [],
+	            'id'         => [],
+	            'data-label' => [],
             ],
             'label' => [
                 'class' => [],
             ],
             'input' => [
-                'class'   => [],
-                'type'    => [],
-                'value'   => [],
-                'name'    => [],
-                'id'      => [],
-                'checked' => [],
+	            'class'         => [],
+	            'type'          => [],
+	            'value'         => [],
+	            'name'          => [],
+	            'id'            => [],
+	            'checked'       => [],
+	            'data-required' => [],
+	            'data-type'     => [],
             ],
             'ul'    => [
                 'class' => [],
@@ -824,8 +842,9 @@ function wpuf_get_gateways( $context = 'admin' ) {
             $return[ $id ] = $gate['admin_label'];
         } else {
             $return[ $id ] = [
-                'label' => $gate['checkout_label'],
-                'icon'  => isset( $gate['icon'] ) ? $gate['icon'] : '',
+                'label'          => $gate['checkout_label'],
+                'icon'           => isset( $gate['icon'] ) ? $gate['icon'] : '',
+                'is_pro_preview' => ! empty( $gate['is_pro_preview'] ) ? esc_attr( $gate['is_pro_preview'] ) : false,
             ];
         }
     }
@@ -1533,6 +1552,10 @@ function wpuf_get_attachment_id_from_url( $attachment_url = '' ) {
  * @global object $wpdb
  */
 function wpufe_ajax_tag_search() {
+    if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ), 'wpuf_ajax_tag_search' ) ) {
+        wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+    }
+
     global $wpdb;
 
     $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
@@ -1729,9 +1752,10 @@ function wpuf_get_form_fields( $form_id ) {
     $form_fields = [];
 
     foreach ( $fields as $key => $content ) {
-        $field = maybe_unserialize( $content->post_content );
+        $field = (array) maybe_unserialize( $content->post_content );
 
         $field['id'] = $content->ID;
+        $field['input_type'] = isset( $field['input_type'] ) ? $field['input_type'] : '';
 
         // Add inline property for radio and checkbox fields
         $inline_supported_fields = [ 'radio', 'checkbox' ];
@@ -1829,7 +1853,9 @@ function wpuf_get_child_cats() {
     $parent_cat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
     $field_attr = isset( $_POST['field_attr'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['field_attr'] ) ) : [];
 
-    wp_verify_nonce( $nonce, 'wpuf_nonce' );
+    if ( wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
+        wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+    }
 
     $allowed_tags = wp_kses_allowed_html( 'post' );
 
@@ -2063,6 +2089,26 @@ function wpuf_get_post_form_templates() {
     $integrations['WPUF_Post_Form_Template_Post'] = new WPUF_Post_Form_Template_Post();
 
     return apply_filters( 'wpuf_get_post_form_templates', $integrations );
+}
+
+/**
+ * Get the pro form templates list
+ *
+ * @since 3.6.0
+ *
+ * @return mixed|null
+ */
+function wpuf_get_pro_form_previews() {
+    $template_names = [];
+
+    /**
+     * Filter pro post form templates to preview
+     *
+     * @since 3.6.0
+     *
+     * @param array $template_names
+     */
+    return apply_filters( 'wpuf_get_pro_form_previews', $template_names );
 }
 
 /**
@@ -3188,42 +3234,78 @@ add_filter( 'display_post_states', 'wpuf_admin_page_states', 10, 2 );
  * Encryption function for various usage
  *
  * @since 2.5.8
+ * @since 2.5.29 param $nonce added
  *
  * @param string $id
+ * @param string $nonce
  *
- * @return string $encoded_id
+ * @return string|bool encoded string or false if encryption failed
  */
-function wpuf_encryption( $id ) {
-    $secret_key     = AUTH_KEY;
-    $secret_iv      = AUTH_SALT;
+function wpuf_encryption( $id, $nonce = null ) {
+    $auth_keys  = WPUF_Encryption_Helper::get_encryption_auth_keys();
+    $secret_key = $auth_keys['auth_key'];
+    $secret_iv  = ! empty( $nonce ) ? base64_decode( $nonce ) : $auth_keys['auth_salt'];
 
-    $encrypt_method = 'AES-256-CBC';
-    $key            = hash( 'sha256', $secret_key );
-    $iv             = substr( hash( 'sha256', $secret_iv ), 0, 16 );
-    $encoded_id     = base64_encode( openssl_encrypt( $id, $encrypt_method, $key, 0, $iv ) );
+    if ( function_exists( 'sodium_crypto_secretbox' ) ) {
+        try {
+            return base64_encode( sodium_crypto_secretbox( $id, $secret_iv, $secret_key ) );
+        } catch ( Exception $e ) {
+            delete_option( 'wpuf_auth_keys' );
+            return false;
+        }
+    }
 
-    return $encoded_id;
+    $ciphertext_raw = openssl_encrypt( $id, WPUF_Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
+    $hmac           = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+
+    return base64_encode( $secret_iv.$hmac.$ciphertext_raw );
 }
 
 /**
  * Decryption function for various usage
  *
  * @since 2.5.8
+ * @since 2.5.29 param $nonce added
  *
  * @param string $id
+ * @param string $nonce
  *
- * @return string $encoded_id
+ * @return string|bool decrypted string or false if decryption failed
  */
-function wpuf_decryption( $id ) {
-    $secret_key     = AUTH_KEY;
-    $secret_iv      = AUTH_SALT;
+function wpuf_decryption( $id, $nonce = null ) {
+    // get auth keys
+    $auth_keys = WPUF_Encryption_Helper::get_encryption_auth_keys();
+    if ( empty( $auth_keys ) ) {
+        return false;
+    }
 
-    $encrypt_method = 'AES-256-CBC';
-    $key            = hash( 'sha256', $secret_key );
-    $iv             = substr( hash( 'sha256', $secret_iv ), 0, 16 );
-    $decoded_id     = openssl_decrypt( base64_decode( $id ), $encrypt_method, $key, 0, $iv );
+    $secret_key = $auth_keys['auth_key'];
+    $secret_iv  = ! empty( $nonce ) ? base64_decode( $nonce ) : $auth_keys['auth_salt'];
 
-    return $decoded_id;
+    // should we use sodium_crypto_secretbox_open
+    if ( function_exists( 'sodium_crypto_secretbox_open') ) {
+        try {
+            return sodium_crypto_secretbox_open( base64_decode( $id ), $secret_iv, $secret_key );
+        } catch ( Exception $e ) {
+            delete_option( 'wpuf_auth_keys' );
+            return false;
+        }
+    }
+
+    $c              = base64_decode( $id );
+    $ivlen          = WPUF_Encryption_Helper::get_encryption_nonce_length();
+    $secret_iv      = substr( $c, 0, $ivlen );
+    $hmac           = substr( $c, $ivlen, 32 );
+    $ciphertext_raw = substr( $c, $ivlen + 32 );
+    $original_text  = openssl_decrypt( $ciphertext_raw, WPUF_Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
+    $calcmac        = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+
+    // timing attack safe comparison
+    if ( hash_equals( $hmac, $calcmac ) ) {
+        return $original_text;
+    }
+
+    return false;
 }
 
 /**
@@ -3475,15 +3557,15 @@ function get_formatted_mail_body( $message, $subject ) {
         }
 
         try {
-
             // apply CSS styles inline for picky email clients
             $emogrifier = new Emogrifier( $content, $css );
-            $content    = $emogrifier->emogrify();
+            $emogrifier->enableCssToHtmlMapping();
+
+            return $emogrifier->emogrify();
         } catch ( Exception $e ) {
             echo esc_html( $e->getMessage() );
         }
 
-        return $content;
     }
 
     return $message;
@@ -4148,7 +4230,15 @@ function wpuf_payment_success_page( $data ){
     $gateway          = ! empty( $data['wpuf_payment_method'] ) ? $data['wpuf_payment_method'] : '';
     $success_query    = "wpuf_${gateway}_success";
     $redirect_page    = '';
-    $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
+    $redirect_page_id = 0;
+    $payment_method   = ! empty( $data['post_data']['wpuf_payment_method'] ) ? $data['post_data']['wpuf_payment_method'] : '';
+
+    if ( 'bank' === $payment_method ) {
+        $redirect_page_id = wpuf_get_option( 'bank_success', 'wpuf_payment' );
+    } else {
+        $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
+    }
+
     if ( 'post' === $data['type'] ){
         $post_id           = array_key_exists( 'item_number', $data ) && ! empty( $data['item_number'] ) ? $data['item_number'] : $_GET['post_id'];
         $form_id           = get_post_meta( $post_id, '_wpuf_form_id', true );

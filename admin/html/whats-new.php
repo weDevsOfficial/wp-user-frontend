@@ -1,6 +1,208 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.9',
+        'released' => '2023-09-11',
+        'changes'  => [
+            [
+                'title' => __( 'Add capabilities check on AJAX actions', 'wp-user-frontend' ),
+                'type'  => 'Enhance',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.6.8',
+        'released' => '2023-08-31',
+        'changes'  => [
+            [
+                'title' => __( 'Delete upload file even after clicking cancel button', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Taxonomy data not showing for checkbox', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Some validation for AJAX actions', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.6.7',
+        'released' => '2023-08-09',
+        'changes'  => [
+            [
+                'title' => __( 'conflicts with Advanced Custom Fields Pro Plugin', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'conflicts with the Classic Editor Plugin', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'multiple HTML field inside column field', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.6.6',
+        'released' => '2023-07-25',
+        'changes'  => [
+            [
+                'title' => __( 'Restrict shortcode in post form', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Add custom note on plugin update page', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.6.5',
+        'released' => '2023-05-25',
+        'changes'  => [
+            [
+                'title' => __( 'Revamp registration page design', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Expiration time not showing for admin', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Error when editing user profile', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.6.4',
+        'released' => '2023-04-04',
+        'changes'  => [
+            [
+                'title' => __( 'Post submission for dokan vendors', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Paypal transaction not showing', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Predefined category field not working', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Field visibility not working', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.6.3',
+        'released' => '2023-02-13',
+        'changes'  => [
+            [
+                'title' => __( 'Error if Dokan not installed', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Style conflict with LearnPress', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.6.2',
+        'released' => '2023-02-08',
+        'changes'  => [
+            [
+                'title' => __( 'Post submission for the Dokan Vendors', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.6.1',
+        'released' => '2023-01-02',
+        'changes'  => [
+            [
+                'title' => __( 'Add responsiveness to the upgrade-to-pro popup widget', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Update Appsero SDK to the latest version', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'warning before updating a subscription package', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Subscription shouldn\'t be editable from user\'s profile', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Text field append \'0\' when character exceeds content restriction limit', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Fields within column doesn\'t behave as expected in forms', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Change sweetalert2 to v11.4.19 to remove anti-war message', 'wp-user-frontend' ),
+                'type'  => 'Update',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.6.0',
+        'released' => '2022-11-23',
+        'changes'  => [
+            [
+                'title' => __( 'Admin dashboard news and update meta-box added', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Upgrade prompts design', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+            [
+                'title' => __( 'Email style handled', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'text-area type selection(Normal, Rich text-area, Teeny Rich text-area) bug in field options', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Frontend form validation', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Default value not saving for radio, dropdown, checkbox', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'sweetalert2 version', 'wp-user-frontend' ),
+                'type'  => 'Update',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.5.29',
+        'released' => '2022-09-15',
+        'changes'  => [
+            [
+                'title' => __( 'Short-code encryption updated for registration page', 'wp-user-frontend' ),
+                'type'  => 'Enhancement',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.5.28',
         'released' => '2022-08-17',
         'changes'  => [

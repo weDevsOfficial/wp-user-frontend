@@ -11,6 +11,7 @@ class WPUF_Admin_Form_Template {
 
     public function __construct() {
         add_action( 'admin_enqueue_scripts', [$this, 'enqueue_scripts'] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'deregister_scripts' ], 99 );
 
         // post form templates
         add_action( 'admin_footer', [ $this, 'render_post_form_templates' ] );
@@ -22,6 +23,32 @@ class WPUF_Admin_Form_Template {
         // frontend insert/update
         add_action( 'wpuf_add_post_after_insert', [ $this, 'post_form_submission' ], 10, 3 );
         add_action( 'wpuf_edit_post_after_update', [ $this, 'post_form_submission' ], 10, 3 );
+    }
+
+    /**
+     * Deregister conflicting JS and CSS files of other plugins
+     *
+     * @since 3.6.4
+     *
+     * @return void
+     */
+    public function deregister_scripts() {
+        global $wp_styles;
+
+        $current_screen = get_current_screen();
+
+        if ( ! in_array( $current_screen->id, [ 'user-frontend_page_wpuf-post-forms' ] ) ) {
+            return;
+        }
+
+        $sources = wp_list_pluck( $wp_styles->registered, 'src' );
+
+        // Look for any pre-existing learn-press style
+        $result = array_key_exists( 'learn-press-admin', $sources );
+
+        if ( $result ) {
+            wp_deregister_style( 'learn-press-admin' );
+        }
     }
 
     /**
@@ -58,6 +85,7 @@ class WPUF_Admin_Form_Template {
         }
 
         $registry       = wpuf_get_post_form_templates();
+        $pro_templates  = wpuf_get_pro_form_previews();
         $blank_form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
         $action_name    = 'wpuf_post_form_template';
         $footer_help    = sprintf( __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wp-user-frontend' ), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request' );

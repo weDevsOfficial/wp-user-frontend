@@ -328,6 +328,7 @@ class WPUF_Admin_Subscription {
         $post_expiration_message      = isset( $sub_meta['_post_expiration_message'] ) ? $sub_meta['_post_expiration_message'] : '';
         $featured_item                = ! empty( $sub_meta['_total_feature_item'] ) ? $sub_meta['_total_feature_item'] : 0;
         $remove_featured_item         = ! empty( $sub_meta['_remove_feature_item'] ) ? $sub_meta['_remove_feature_item'] : 0;
+        $billing_amount               = ! empty( $sub_meta['billing_amount'] ) ? esc_attr( $sub_meta['billing_amount'] ) : 0;
         ?>
 
         <div class="wpuf-subscription-pack-settings">
@@ -550,7 +551,7 @@ class WPUF_Admin_Subscription {
             return;
         }
 
-        wp_enqueue_script( 'wpuf-admin-profile-subs', WPUF_ASSET_URI . '/js/admin-profile-subs.js', [ 'jquery' ] );
+        // wp_enqueue_script( 'wpuf-admin-profile-subs', WPUF_ASSET_URI . '/js/admin-profile-subs.js', [ 'jquery' ] );
     }
 
     /**
@@ -667,20 +668,22 @@ class WPUF_Admin_Subscription {
                             <?php if ( ! empty( $user_sub['total_feature_item'] ) ) { ?>
                             <tr>
                                 <th><label><?php esc_html_e( 'Number of featured item', 'wp-user-frontend' ); ?></label></th>
-                                <td><input type="text" value="<?php echo esc_attr( $user_sub['total_feature_item'] ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
+                                <td><?php echo esc_attr( $user_sub['total_feature_item'] ); ?></td>
                             </tr>
                             <?php } ?>
                             <?php
-                            foreach ( $user_sub['posts'] as $key => $value ) {
-                                $post_type_object = get_post_type_object( $key );
+                            if ( $user_sub['posts'] ) {
+                                foreach ( $user_sub['posts'] as $key => $value ) {
+                                    $post_type_object = get_post_type_object( $key );
 
-                                if ( $post_type_object ) {
-                                    ?>
-                                     <tr>
-                                         <th><label><?php echo esc_html( $post_type_object->labels->name ); ?></label></th>
-                                         <td><input type="text" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $key ); ?>" ></td>
-                                     </tr>
-                                    <?php
+                                    if ( $post_type_object ) {
+                                        ?>
+                                        <tr>
+                                            <th><label><?php echo esc_html( $post_type_object->labels->name ); ?></label></th>
+                                            <td><?php echo esc_attr( $value ); ?></td>
+                                        </tr>
+                                        <?php
+                                    }
                                 }
                             }
                             ?>
@@ -698,7 +701,7 @@ class WPUF_Admin_Subscription {
                                     ?>
                                     <tr>
                                         <th><label><?php esc_html_e( 'Expire date:', 'wp-user-frontend' ); ?></label></th>
-                                        <td><input type="text" class="wpuf-date-picker" name="expire" value="<?php echo esc_html( $expire ); ?>"></td>
+                                        <td><?php echo esc_html( $expire ); ?></td>
                                     </tr>
                                     <?php
                                 }
@@ -711,7 +714,7 @@ class WPUF_Admin_Subscription {
                             ?>
                             <tr>
                                 <th><label><?php esc_html_e( 'Post Expiration Enabled', 'wp-user-frontend' ); ?></label></th>
-                                <td><input type="checkbox" class="wpuf-post-exp-enabled" name="is_post_expiration_enabled" value="on" <?php echo esc_attr( $is_post_exp_selected ); ?>></td>
+                                <td><?php $is_post_exp_selected ? _e( 'Yes', 'wp-user-frontend' ) : _e( 'No', 'wp-user-frontend' ); ?></td>
                             </tr>
                             <tr class="wpuf-post-exp-time">
                                 <?php
@@ -723,7 +726,7 @@ class WPUF_Admin_Subscription {
                                 ?>
                                 <th><?php esc_html_e( 'Post Expiration Time', 'wp-user-frontend' ); ?></th>
                                 <td>
-                                    <select name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value">
+                                    <select name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value" disabled>
                                         <?php
                                         for ( $i = 1; $i <= $timeType_array[ $time_type ]; $i++ ) {
                                             ?>
@@ -732,7 +735,7 @@ class WPUF_Admin_Subscription {
                                         }
                                         ?>
                                     </select>
-                                    <select name="post_expiration_settings[expiration_time_type]" id="wpuf-expiration_time_type">
+                                    <select name="post_expiration_settings[expiration_time_type]" id="wpuf-expiration_time_type" disabled>
                                         <?php
                                         foreach ( $timeType_array as $each_time_type => $each_time_type_val ) {
                                             ?>
@@ -868,6 +871,11 @@ class WPUF_Admin_Subscription {
         if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-subscription-delete-nonce' ) ) {
             return;
         }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            return;
+        }
+
         $userid = isset( $_POST['userid'] ) ? intval( wp_unslash( $_POST['userid'] ) ) : 0;
 
         echo esc_html( delete_user_meta( $userid, '_wpuf_subscription_pack' ) );

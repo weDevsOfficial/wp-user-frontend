@@ -178,18 +178,20 @@
                             html      += '<img src="' + image_two + '" alt="custom field data">';
                             html      += '</div>';
                             html      += '</div>';
-                        swal({
+                        Swal.fire({
                             title: __( 'Do you want to show custom field data inside your post ?', 'wp-user-frontend' ),
                             html: html,
                             showCancelButton: true,
                             confirmButtonColor: '#d54e21',
                             confirmButtonText: "Don't show again",
                             cancelButtonText: 'Okay',
-                            confirmButtonClass: 'btn btn-success',
-                            cancelButtonClass: 'btn btn-success',
+                            customClass: {
+                                confirmButton: 'btn btn-success',
+                                cancelButton: 'btn btn-success',
+                            },
                             cancelButtonColor: '#007cba'
                         }).then((result) => {
-                            if (result) {
+                            if (result.isConfirmed) {
                                 state.show_custom_field_tooltip = false;
                             } else {
 
@@ -287,14 +289,8 @@
 
                 if (state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] === undefined) {
                     state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] = [];
-                }
-
-                if (state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] !== undefined) {
-                    var innerColumnFields   = state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn];
-
-                    if ( innerColumnFields.filter(innerField => innerField.name === payload.field.name).length <= 0 ) {
-                        state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn].splice(payload.toIndex, 0, payload.field);
-                    }
+                } else {
+                    state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn].splice(payload.toIndex, 0, payload.field);
                 }
             },
 

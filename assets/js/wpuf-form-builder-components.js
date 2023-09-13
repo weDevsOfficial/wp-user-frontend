@@ -104,7 +104,7 @@ Vue.component('builder-stage', {
 
             // check if these are already inserted
             if ( this.isSingleInstance( field.template ) && this.containsField( field.template ) ) {
-                swal({
+                Swal.fire({
                     title: "Oops...",
                     text: "You already have this field in the form"
                 });
@@ -117,19 +117,21 @@ Vue.component('builder-stage', {
         delete_field: function(index) {
             var self = this;
 
-            swal({
+            (Swal.fire({
                 text: self.i18n.delete_field_warn_msg,
-                type: 'warning',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d54e21',
                 confirmButtonText: self.i18n.yes_delete_it,
                 cancelButtonText: self.i18n.no_cancel_it,
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-            }).then(function () {
-                self.$store.commit('delete_form_field_element', index);
-            }, function() {
-
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger',
+                }
+            })).then((result) => {
+                if (result.isConfirmed) {
+                    self.$store.commit('delete_form_field_element', index);
+                }
             });
         },
 
@@ -387,7 +389,7 @@ Vue.component('field-option-data', {
                     i = 0;
 
                 for (i = 0; i < new_opts.length; i++) {
-                    options[new_opts[i].value] = new_opts[i].label;
+                    options['' + new_opts[i].value] = new_opts[i].label;
                 }
 
                 this.update_value('options', options);
@@ -944,8 +946,8 @@ Vue.component('form-column_field', {
                 toWhichColumn: data.to_column
             };
 
-            if (this.isAllowedInColumnField(data.field_template)) {
-                swal({
+            if (this.isAllowedInClolumnField(data.field_template)) {
+                Swal.fire({
                     title: "Oops...",
                     text: "You cannot add this field as inner column field"
                 });
@@ -954,7 +956,7 @@ Vue.component('form-column_field', {
 
             // check if these are already inserted
             if ( this.isSingleInstance( data.field_template ) && this.containsField( data.field_template ) ) {
-                swal({
+                Swal.fire({
                     title: "Oops...",
                     text: "You already have this field in the form"
                 });
@@ -1022,7 +1024,7 @@ Vue.component('form-column_field', {
 
             // check if the field is allowed to duplicate
             if ( self.isSingleInstance( field.template ) ) {
-                swal({
+                Swal.fire({
                     title: "Oops...",
                     text: "You already have this field in the form"
                 });
@@ -1040,19 +1042,21 @@ Vue.component('form-column_field', {
                     fromColumn: fromColumn
                 };
 
-            swal({
+            Swal.fire({
                 text: self.i18n.delete_field_warn_msg,
-                type: 'warning',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d54e21',
                 confirmButtonText: self.i18n.yes_delete_it,
                 cancelButtonText: self.i18n.no_cancel_it,
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-            }).then(function () {
-                self.$store.commit('delete_column_field_element', payload);
-            }, function() {
-
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    self.$store.commit('delete_column_field_element', payload);
+                }
             });
         },
 
@@ -1263,16 +1267,16 @@ Vue.component('form-fields', {
         alert_pro_feature: function (field) {
             var title = this.field_settings[field].title;
 
-            swal({
+            Swal.fire({
                 title: '<i class="fa fa-lock"></i> ' + title + ' <br>' + this.i18n.is_a_pro_feature,
                 text: this.i18n.pro_feature_msg,
-                type: '',
+                icon: '',
                 showCancelButton: true,
                 cancelButtonText: this.i18n.close,
                 confirmButtonColor: '#46b450',
                 confirmButtonText: this.i18n.upgrade_to_pro
-            }).then(function (is_confirm) {
-                if (is_confirm) {
+            }).then(function (result) {
+                if (result.isConfirmed) {
                     window.open(wpuf_form_builder.pro_link, '_blank');
                 }
 

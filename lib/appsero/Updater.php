@@ -70,18 +70,18 @@ class Updater {
             return $transient_data;
         }
 
-        $version_info = $this->get_cached_version_info();
-
-        if ( false === $version_info ) {
-            $version_info = $this->get_project_latest_version();
-            $this->set_cached_version_info( $version_info );
-        }
+        $version_info = $this->get_version_info();
 
         if ( false !== $version_info && is_object( $version_info ) && isset( $version_info->new_version ) ) {
 
+            unset( $version_info->sections );
+
+            // If new version available then set to `response`
             if ( version_compare( $this->client->project_version, $version_info->new_version, '<' ) ) {
-                unset( $version_info->sections );
                 $transient_data->response[ $this->client->basename ] = $version_info;
+            } else {
+                // If new version is not available then set to `no_update`
+                $transient_data->no_update[ $this->client->basename ] = $version_info;
             }
 
             $transient_data->last_checked = time();
@@ -97,6 +97,12 @@ class Updater {
      * @return Object or Boolean
      */
     private function get_cached_version_info() {
+        global $pagenow;
+
+        // If updater page then fetch from API now
+        if ( 'update-core.php' == $pagenow ) {
+            return false; // Force to fetch data
+        }
 
         $value = get_transient( $this->cache_key );
 
@@ -137,8 +143,7 @@ class Updater {
      */
     private function get_project_latest_version() {
 
-        $license_option_key = 'appsero_' . md5( $this->client->slug ) . '_manage_license';
-        $license = get_option( $license_option_key, null );
+        $license = $this->client->license()->get_license();
 
         $params = array(
             'version'     => $this->client->project_version,
@@ -196,14 +201,7 @@ class Updater {
             return $data;
         }
 
-        $version_info = $this->get_cached_version_info();
-
-        if ( false === $version_info ) {
-            $version_info = $this->get_project_latest_version();
-            $this->set_cached_version_info( $version_info );
-        }
-
-        return $version_info;
+        return $this->get_version_info();
     }
 
     /**
@@ -224,17 +222,16 @@ class Updater {
             return $transient_data;
         }
 
-        $version_info = $this->get_cached_version_info();
-
-        if ( false === $version_info ) {
-            $version_info = $this->get_project_latest_version();
-            $this->set_cached_version_info( $version_info );
-        }
+        $version_info = $this->get_version_info();
 
         if ( false !== $version_info && is_object( $version_info ) && isset( $version_info->new_version ) ) {
 
+            // If new version available then set to `response`
             if ( version_compare( $this->client->project_version, $version_info->new_version, '<' ) ) {
                 $transient_data->response[ $this->client->slug ] = (array) $version_info;
+            } else {
+                // If new version is not available then set to `no_update`
+                $transient_data->no_update[ $this->client->slug ] = (array) $version_info;
             }
 
             $transient_data->last_checked = time();
@@ -242,6 +239,20 @@ class Updater {
         }
 
         return $transient_data;
+    }
+
+    /**
+     * Get version information
+     */
+    private function get_version_info() {
+        $version_info = $this->get_cached_version_info();
+
+        if ( false === $version_info ) {
+            $version_info = $this->get_project_latest_version();
+            $this->set_cached_version_info( $version_info );
+        }
+
+        return $version_info;
     }
 
 }

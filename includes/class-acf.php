@@ -70,6 +70,14 @@ class WPUF_ACF_Compatibility {
      *@return void
      */
     public function maybe_compatible() {
+        if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_acf_compatibility' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         wpuf_update_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
 
         wp_send_json_success();
@@ -81,6 +89,14 @@ class WPUF_ACF_Compatibility {
      *@return void
      */
     public function migrate_cf_data() {
+        if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_acf_migration' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         $forms = $this->get_post_forms();
 
         if ( ! empty( $forms ) ) {
@@ -148,6 +164,14 @@ class WPUF_ACF_Compatibility {
      * @return void
      */
     public function dismiss_notice() {
+        if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_dismiss_acf_notice' ) ) {
+            wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         $this->dismiss_prompt();
 
         wp_send_json_success();
@@ -187,6 +211,9 @@ class WPUF_ACF_Compatibility {
                     var self = $(this);
                     self.addClass('updating-message');
                     wp.ajax.send('wpuf_compatibility_<?php echo esc_attr( $this->id ); ?>', {
+                        data: {
+                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_acf_compatibility' ) ); ?>'
+                        },
                         success: function() {
                             var html = '<p><strong>Compatible Option Updated</strong></p>';
 
@@ -211,6 +238,9 @@ class WPUF_ACF_Compatibility {
                     var self = $(this);
                     self.addClass('updating-message');
                     wp.ajax.send('wpuf_migrate_<?php echo esc_attr( $this->id ); ?>', {
+                        data: {
+                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_acf_migration' ) ); ?>'
+                        },
                         success: function() {
                             var html  = '<p><strong>Compatible option and existing custom fields data updated</strong></p>';
 
@@ -233,7 +263,11 @@ class WPUF_ACF_Compatibility {
                     e.preventDefault();
 
                     $(this).closest('.notice').remove();
-                    wp.ajax.send('wpuf_dismiss_notice_<?php echo esc_attr( $this->id ); ?>');
+                    wp.ajax.send('wpuf_dismiss_notice_<?php echo esc_attr( $this->id ); ?>', {
+                        data: {
+                            nonce: '<?php echo esc_attr( wp_create_nonce( 'wpuf_dismiss_acf_notice' ) ); ?>'
+                        },
+                    });
                 });
 
             });

@@ -1,6 +1,7 @@
 ;(function($) {
 'use strict';
 
+
 wpuf_mixins.add_form_field = {
     methods: {
         add_form_field: function (field_template) {
@@ -19,7 +20,7 @@ wpuf_mixins.add_form_field = {
 
             // check if these are already inserted
             if ( this.isSingleInstance( field_template ) && this.containsField( field_template ) ) {
-                swal({
+                Swal.fire({
                     title: "Oops...",
                     text: "You already have this field in the form"
                 });
@@ -133,7 +134,7 @@ Vue.mixin({
                 cancelButtonText: this.i18n.cancel,
             }, settings);
 
-            swal(settings, callback);
+            Swal.fire(settings, callback);
         },
 
         is_failed_to_validate: function (template) {

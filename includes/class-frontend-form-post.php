@@ -13,7 +13,6 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         add_shortcode( 'wpuf_form', [ $this, 'add_post_shortcode' ] );
         add_shortcode( 'wpuf_edit', [ $this, 'edit_post_shortcode' ] );
         // ajax requests
-        add_action( 'wp_ajax_wpuf_form_preview', [ $this, 'preview_form' ] );
         add_action( 'wp_ajax_wpuf_submit_post', [ $this, 'submit_post' ] );
         add_action( 'wp_ajax_nopriv_wpuf_submit_post', [ $this, 'submit_post' ] );
         add_action( 'wp_ajax_make_media_embed_code', [ $this, 'make_media_embed_code' ] );
@@ -162,7 +161,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $nonce = isset( $_GET['nonce'] ) ? sanitize_key( wp_unslash( $_GET['nonce'] ) ) : '';
 
         if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-upload-nonce' ) ) {
-            return;
+            exit;
         }
 
         $content = isset( $_POST['content'] ) ? sanitize_text_field( wp_unslash( $_POST['content'] ) ) : '';
@@ -190,7 +189,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $this->form_fields   = $form->get_fields();
         $pay_per_post        = $form->is_enabled_pay_per_post();
 
-        list( $post_vars, $taxonomy_vars, $meta_vars ) = $this->get_input_fields( $this->form_fields );
+        [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         $entry_fields = $form->prepare_entries();
         $allowed_tags = wp_kses_allowed_html( 'post' );
@@ -251,6 +250,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             $postarr['ID']             = intval( wp_unslash( $_POST['post_id'] ) );
             $postarr['comment_status'] = 'open';
         }
+
+        $postarr = $this->adjust_thumbnail_id( $postarr );
 
         $post_id = wp_insert_post( $postarr );
 
@@ -351,11 +352,29 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
+        $protected_shortcodes = wpuf_get_protected_shortcodes();
+
+        // check each form field for restricted shortcodes
+        foreach ( $this->form_fields as $single_field ) {
+            if ( empty( $single_field['rich'] ) || 'yes' !== $single_field['rich'] ) {
+                continue;
+            }
+
+            $current_data = ! empty( $_POST[ $single_field['name'] ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ $single_field['name'] ] ) ) : '';
+
+            foreach ( $protected_shortcodes as $shortcode ) {
+                $search_for = '[' . $shortcode;
+                if ( strpos( $current_data, $search_for ) !== false ) {
+                    $this->send_error( sprintf( __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
+                }
+            }
+        }
+
         foreach ( $attachments_to_delete as $attach_id ) {
             wp_delete_attachment( $attach_id, true );
         }
 
-        list( $post_vars, $taxonomy_vars, $meta_vars ) = $this->get_input_fields( $this->form_fields );
+        [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         if ( ! isset( $_POST['post_id'] ) ) {
             $has_limit = ( isset( $this->form_settings['limit_entries'] ) && $this->form_settings['limit_entries'] === 'true' ) ? true : false;
@@ -511,6 +530,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         } else {
             $postarr = apply_filters( 'wpuf_add_post_args', $postarr, $form_id, $this->form_settings, $this->form_fields );
         }
+
+        $postarr = $this->adjust_thumbnail_id( $postarr );
 
         $post_id = wp_insert_post( $postarr, $wp_error = false );
 
@@ -686,7 +707,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $this->form_fields            = $form->get_fields();
         $this->form_settings          = $form->get_settings();
         $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
-        list( $user_can_post, $info ) = $form->is_submission_open( $form, $this->form_settings );
+	    list( $user_can_post, $info ) = $form->is_submission_open( $form, $this->form_settings );
         $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
         $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
 
@@ -1282,5 +1303,23 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
             $this->form_settings['message_restrict'] = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
         }
+    }
+
+    /**
+     * Adjust thumbnail image id if given
+     *
+     * @param $postarr
+     *
+     * @return array
+     */
+    private function adjust_thumbnail_id( $postarr ) {
+        $wpuf_files = ! empty( $_POST['wpuf_files'] ) ? wp_unslash( $_POST['wpuf_files'] ) : [];
+
+        if ( ! empty( $wpuf_files['featured_image'] ) ) {
+            $attachment_id            = reset( $wpuf_files['featured_image'] );
+            $postarr['_thumbnail_id'] = $attachment_id;
+        }
+
+        return $postarr;
     }
 }

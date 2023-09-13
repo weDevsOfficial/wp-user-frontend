@@ -336,6 +336,20 @@ class WPUF_Admin_Form_Builder {
                     $field_id = $field['id'];
                 }
 
+                // for column and repeat fields, remove unwanted properties from inner fields
+                if ( ! empty( $field['inner_fields'] ) ) {
+                    foreach ( $field['inner_fields'] as $column => $inner_field ) {
+                        foreach ( $inner_field as $index => $single_field ) {
+                            if ( ! empty( $single_field['is_new'] ) ) {
+                                unset( $field['inner_fields'][ $column ][ $index ]['is_new'] );
+	                            unset( $field['inner_fields'][ $column ][ $index ]['id'] );
+
+	                            $field['inner_fields'][ $column ][ $index ]['id'] = 0;
+                            }
+                        }
+                    }
+                }
+
                 $field_id = wpuf_insert_form_field( $data['form_id'], $field, $field_id, $order );
 
                 $new_wpuf_input_ids[] = $field_id;

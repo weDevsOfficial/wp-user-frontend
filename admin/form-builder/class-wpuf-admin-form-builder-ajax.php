@@ -54,7 +54,6 @@ class WPUF_Admin_Form_Builder_Ajax {
             $integrations = (array) json_decode( $post_data['integrations'] );
         }
 
-
         $form_fields   = json_decode( $form_fields, true );
         $notifications = json_decode( $notifications, true );
 

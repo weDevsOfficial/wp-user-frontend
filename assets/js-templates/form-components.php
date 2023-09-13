@@ -118,7 +118,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-option-data">
-<div class="panel-field-opt panel-field-opt-text">
+<div v-show="display" class="panel-field-opt panel-field-opt-text">
     <div>
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
         <ul class="pull-right list-inline field-option-actions">
@@ -160,7 +160,6 @@
             <div class="action-buttons">&nbsp;</div>
         </li>
     </ul>
-
     <ul :class="['option-field-option-chooser margin-0', show_value ? 'show-value' : '']">
         <li v-for="(option, index) in options" :key="option.id" :data-index="index" class="clearfix option-field-option">
             <div class="selector">

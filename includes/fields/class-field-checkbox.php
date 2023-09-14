@@ -187,8 +187,10 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
             return;
         }
 
+        $data = is_array( $data ) ? array_pop( $data ) : $data;
+        // check again if there is any nested data
         $data     = is_array( $data ) ? array_pop( $data ) : $data;
-        $data     = explode( '|' , $data );
+        $data     = explode( '|', $data );
         $selected = [];
 
         foreach ( $data as $item ) {

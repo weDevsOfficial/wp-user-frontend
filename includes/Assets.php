@@ -251,26 +251,26 @@ class Assets {
                 'version'   => '3.3.7',
             ],
             'form-builder-mixins'      => [
-                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-mixins.js',
                 'deps'      => $form_builder_js_deps,
                 'in_footer' => true,
             ],
             'form-builder-components'  => [
-                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-components' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-components.js',
                 'deps'      => [ 'wpuf-form-builder-mixins' ],
                 'in_footer' => true,
             ],
             'form-builder'             => [
-                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder.js',
                 'deps'      => [ 'wpuf-form-builder-components' ],
                 'in_footer' => true,
             ],
             'admin'                    => [
-                'src'  => WPUF_ASSET_URI . '/js/wpuf-admin' . $this->suffix . '.js',
+                'src'  => WPUF_ASSET_URI . '/js/wpuf-admin.js',
                 'deps' => [ 'jquery' ],
             ],
             'subscriptions'            => [
-                'src'       => WPUF_ASSET_URI . '/js/subscriptions' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/js/subscriptions.js',
                 'deps'      => [ 'jquery' ],
                 'in_footer' => true,
             ],
@@ -352,7 +352,7 @@ class Assets {
                 'deps' => [ 'jquery' ],
             ],
             'upload'                   => [
-                'src'  => WPUF_ASSET_URI . '/js/upload.js',
+                'src'  => WPUF_ASSET_URI . '/js/upload.js' . $this->suffix . '.js',
                 'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ],
             ],
             'ajax_login'               => [

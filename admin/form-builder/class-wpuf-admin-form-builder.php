@@ -340,9 +340,6 @@ class WPUF_Admin_Form_Builder {
                         foreach ( $inner_field as $index => $single_field ) {
                             if ( ! empty( $single_field['is_new'] ) ) {
                                 unset( $field['inner_fields'][ $column ][ $index ]['is_new'] );
-	                            unset( $field['inner_fields'][ $column ][ $index ]['id'] );
-
-	                            $field['inner_fields'][ $column ][ $index ]['id'] = 0;
                             }
                         }
                     }

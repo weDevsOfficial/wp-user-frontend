@@ -287,8 +287,9 @@ class WPUF_Field_Manager {
                 $show_field = true;
             }
 
-            if ( $visibility_selected == 'hidden' ) {
-                $form_field['css'] .= 'wpuf_hidden_field';
+            if ( 'hidden' === $visibility_selected ) {
+                $form_field['css'] = ! empty( $form_field['css'] ) ? esc_attr( $form_field['css'] ) : '';
+                $form_field['css'] .= ' wpuf_hidden_field';
                 $show_field = true;
             }
 

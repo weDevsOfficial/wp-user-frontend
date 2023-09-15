@@ -27,9 +27,11 @@ class WPUF_Form_Field_Column extends WPUF_Field_Contract {
         $columns_size = $field_settings['inner_columns_size'];
         $column_space = $field_settings['column_space'];
         $inner_fields = $field_settings['inner_fields'];
+        $id           = ! empty( $field_settings['id'] ) ? $field_settings['id'] : 0;
         $atts         = [];
         $input_type   = 'column_field';
         $class_names  = ! empty( $field_settings['css'] ) ? ' ' . $field_settings['css'] : '';
+        $class_names .= ' wpuf_' . $input_type . '_' . $id . '_' . esc_attr( $form_id );
         printf(
             '<li class="wpuf-el %s%s" data-label="%s">', esc_attr( $input_type ), esc_attr( $class_names ), 'wpuf-column-field'
         );

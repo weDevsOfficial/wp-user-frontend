@@ -42,7 +42,6 @@ class Ajax {
         $this->register_ajax( 'wpuf_form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_make_media_embed_code', [ new Frontend\Frontend_Form(), 'make_media_embed_code' ] );
         $this->register_ajax( 'wpuf_draft_post', [ new Frontend\Frontend_Form(), 'draft_post' ] );
-        $this->register_ajax( 'wpuf_form_preview', [ new Frontend\Frontend_Form(), 'preview_form' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_delete_user_package', [ new Admin\Admin_Subscription(), 'delete_user_package' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_address_ajax_action', [ new Ajax\Address_Form_Ajax(), 'ajax_form_action' ] );
         $this->register_ajax( 'wpuf_account_update_profile', [ new Frontend\Frontend_Account(), 'update_profile' ], $this->logged_in_only );

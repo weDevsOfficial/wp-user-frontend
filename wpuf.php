@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 3.7.0
+Version: 3.6.9
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -25,7 +25,7 @@ if ( file_exists( $autoload ) ) {
 	wp_die( __( 'There was a problem installing the plugin' ), __( 'Problem installing plugin' ) );
 }
 
-define( 'WPUF_VERSION', '3.7.0' );
+define( 'WPUF_VERSION', '3.6.9' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -510,6 +510,75 @@ final class WP_User_Frontend {
      */
     public function register_widgets() {
         $this->widgets = new WeDevs\Wpuf\Widgets\Manager();
+    }
+    public function license_expired() {
+        echo '<div class="error">';
+        echo '<p>Your <strong>WP User Frontend Pro</strong> License has been expired. Please <a href="https://wedevs.com/account/" target="_blank">renew your license</a>.</p>';
+        echo '</div>';
+    }
+
+    /**
+     * If the core isn't installed
+     *
+     * @return void
+     */
+    public function maybe_weforms_install() {
+        if ( class_exists( 'WeForms' ) ) {
+            return;
+        }
+
+        // install the core
+        add_action( 'wp_ajax_wpuf_weforms_install', [ $this, 'install_weforms' ] );
+    }
+
+    /**
+     * Install weforms plugin via ajax
+     *
+     * @return void
+     */
+    public function install_weforms() {
+        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-weforms-installer-nonce' ) ) {
+            wp_send_json_error( __( 'Error: Nonce verification failed', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Error: Unauthorized', 'wp-user-frontend' ) );
+        }
+
+        include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+        include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+        if ( file_exists( WP_PLUGIN_DIR . '/weforms/weforms.php' ) ) {
+            activate_plugin( 'weforms/weforms.php' );
+            wp_send_json_success();
+        }
+
+        $plugin = 'weforms';
+        $api    = plugins_api(
+            'plugin_information', [
+                'slug'   => $plugin,
+                'fields' => [
+                    'sections' => false,
+                ],
+            ]
+        );
+
+        $upgrader = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
+        $result   = $upgrader->install( $api->download_link );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( $result );
+        }
+
+        $result = activate_plugin( 'weforms/weforms.php' );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( $result );
+        }
+
+        wp_send_json_success();
     }
 }
 

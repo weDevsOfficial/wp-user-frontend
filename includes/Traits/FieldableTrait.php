@@ -22,13 +22,11 @@ trait FieldableTrait {
     public static $separator = ' | ';
 
     /**
-     * Add field settings
+     * Add post field setting on form builder
      *
      * @since 2.5
      *
      * @param array $field_settings
-     *
-     * @return array
      */
     public function add_field_settings( $field_settings ) {
         $this->set_wp_post_types();
@@ -219,31 +217,6 @@ trait FieldableTrait {
             }
             $this->validate_re_captcha( $no_captcha, $invisible_captcha );
         }
-    }
-
-    /**
-     * Search on multi dimentional array
-     *
-     * @param array  $array
-     * @param string $key   name of key
-     * @param string $value the value to search
-     *
-     * @return array
-     */
-    public function search( $array, $key, $value ) {
-        $results = [];
-
-        if ( is_array( $array ) ) {
-            if ( isset( $array[ $key ] ) && $array[ $key ] == $value ) {
-                $results[] = $array;
-            }
-
-            foreach ( $array as $subarray ) {
-                $results = array_merge( $results, $this->search( $subarray, $key, $value ) );
-            }
-        }
-
-        return $results;
     }
 
     /**

@@ -1,3 +1,13 @@
+= v3.6.9 (11 Sep, 2023) =
+
+* Enhance - add capabilities check on AJAX actions
+
+= v3.6.8 (31 Aug, 2023) =
+
+* Fix - Delete upload file even after clicking cancel button
+* Fix - Taxonomy data not showing for checkbox
+* Fix - Some validation for AJAX actions
+
 = v3.6.7 (09 Aug, 2023) =
 
 * Fix - conflicts with Advanced Custom Fields Pro Plugin

@@ -72,6 +72,10 @@ class WPUF_ACF_Compatibility {
             wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
         }
 
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         wpuf_update_option( 'wpuf_compatibility_' . $this->id, 'wpuf_general', 'yes' );
         wp_send_json_success();
     }
@@ -84,6 +88,10 @@ class WPUF_ACF_Compatibility {
     public function migrate_cf_data() {
         if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_acf_migration' ) ) {
             wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
         $forms = $this->get_post_forms();
@@ -146,6 +154,10 @@ class WPUF_ACF_Compatibility {
     public function dismiss_notice() {
         if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'wpuf_dismiss_acf_notice' ) ) {
             wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
         $this->dismiss_prompt();

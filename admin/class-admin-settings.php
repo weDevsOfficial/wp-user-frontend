@@ -612,6 +612,10 @@ class WPUF_Admin_Settings {
     public function import_forms() {
         check_ajax_referer( 'wpuf_admin_tools' );
 
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'You do not have sufficient permissions to do this action', 'wp-user-frontend' ) );
+        }
+
         if ( ! isset( $_POST['file_id'] ) ) {
             wp_send_json_error(
                 new WP_Error( 'wpuf_ajax_import_forms_error', __( 'Missing file_id param', 'wp-user-frontend' ) ),

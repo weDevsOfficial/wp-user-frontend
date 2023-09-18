@@ -859,6 +859,11 @@ class Admin_Subscription {
         if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf-subscription-delete-nonce' ) ) {
             return;
         }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            return;
+        }
+
         $userid = isset( $_POST['userid'] ) ? intval( wp_unslash( $_POST['userid'] ) ) : 0;
 
         echo esc_html( delete_user_meta( $userid, '_wpuf_subscription_pack' ) );

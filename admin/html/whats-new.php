@@ -1,8 +1,36 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 3.6.9',
+        'released' => '2023-09-11',
+        'changes'  => [
+            [
+                'title' => __( 'Add capabilities check on AJAX actions', 'wp-user-frontend' ),
+                'type'  => 'Enhance',
+            ],
+        ],
+    ],
+    [
+        'version'  => 'Version 3.6.8',
+        'released' => '2023-08-31',
+        'changes'  => [
+            [
+                'title' => __( 'Delete upload file even after clicking cancel button', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Taxonomy data not showing for checkbox', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Some validation for AJAX actions', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 3.6.7',
-        'released' => '2023-07-25',
+        'released' => '2023-08-09',
         'changes'  => [
             [
                 'title' => __( 'conflicts with Advanced Custom Fields Pro Plugin', 'wp-user-frontend' ),
@@ -1266,7 +1294,7 @@ $changelog = [
             [
                 'title'       => __( 'Fatal error when use PHP lower version (5.4 or lower)', 'wp-user-frontend' ),
                 'type'        => 'Fix',
-                'description' => __( "It was unable to install WP User Frontend with PHP 5.4 or lower version. Here is the error details: <br><br><strong>Fatal error: Can't use method return value in write context in /wp-user-frontend/class/frontend-form-WPUF_Post_Form_Template_Post.php on line 194</strong>", 'wp-user-frontend' ),
+                'description' => __( "It was unable to install WP User Frontend with PHP 5.4 or lower version. Here is the error details: <br><br><strong>Fatal error: Can't use method return value in write context in /wp-user-frontend/class/frontend-form-post.php on line 194</strong>", 'wp-user-frontend' ),
             ],
             [
                 'title'       => __( 'Product form was unable to show the single gallery image', 'wp-user-frontend' ),

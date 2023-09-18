@@ -145,6 +145,10 @@ class Whats_New {
             wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
         }
 
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         if ( $this->mark_read() ) {
             wp_send_json_success();
         }

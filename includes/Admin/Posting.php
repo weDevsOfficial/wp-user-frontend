@@ -528,6 +528,27 @@ class Posting {
     }
 
     /**
+     * Clear Schedule lock
+     *
+     * @since 3.0.2
+     */
+    public function clear_schedule_lock() {
+        check_ajax_referer( 'wpuf_nonce', 'nonce' );
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
+
+        if ( !empty( $post_id ) ) {
+            update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
+            update_post_meta( $post_id, '_wpuf_lock_editing_post', 'no' );
+        }
+        exit;
+    }
+
+    /**
      * Get input meta fields separated as post vars, taxonomy and meta vars
      *
      * @param int $form_id form id

@@ -16,7 +16,7 @@ class WPUF_Admin_Posting {
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_form_select'] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_post_lock'] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
-        add_action( 'save_post', [ $this, 'save_meta' ], 1, 2 );                   // save the custom fields
+        add_action( 'save_post', [ $this, 'save_meta' ], 100, 2 );                   // save the custom fields
         add_action( 'save_post', [ $this, 'form_selection_metabox_save' ], 1, 2 ); // save edit form id
         add_action( 'save_post', [ $this, 'post_lock_metabox_save' ], 1, 2 ); // save post lock option
         add_action( 'wp_ajax_wpuf_clear_schedule_lock', [$this, 'clear_schedule_lock'] );

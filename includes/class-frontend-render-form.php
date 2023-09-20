@@ -728,6 +728,10 @@ class WPUF_Frontend_Render_Form {
                 $wpuf_files = [];
             }
 
+            if ( '_downloadable' === $value['name'] && 'on' === $value_name ) {
+                $value_name = 'yes';
+            }
+
             switch ( $value['input_type'] ) {
 
                 // put files in a separate array, we'll process it later

@@ -53,11 +53,11 @@ class WPUF_Upgrades {
     public function needs_update() {
 
         // may be it's the first install
-        if ( !$this->get_version() ) {
+	    if ( ! $this->get_version() ) {
             return false;
         }
-        //check if current version is greater then installed version and any update key is available
-        if ( version_compare( $this->get_version(), WPUF_VERSION, '<' ) && in_array( WPUF_VERSION, array_keys( self::$upgrades ) ) ) {
+        // check if current version is greater than installed version and any update key is available
+        if ( version_compare( $this->get_version(), WPUF_VERSION, '<' ) && in_array( WPUF_VERSION, array_keys( self::$upgrades ), true ) ) {
             return true;
         }
 
@@ -70,11 +70,11 @@ class WPUF_Upgrades {
      * @return void
      */
     public function perform_updates() {
-        if ( empty( $_GET['wpuf_do_update'] ) ) {
+        if ( ! isset( $_GET['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ) ), 'wpuf_do_update' ) ) {
             return;
         }
 
-        if ( ! sanitize_text_field( wp_unslash( $_GET['wpuf_do_update'] ) ) ) {
+        if ( empty( $_GET['wpuf_do_update'] ) || ! sanitize_text_field( wp_unslash( $_GET['wpuf_do_update'] ) ) ) {
             return;
         }
 
@@ -104,11 +104,18 @@ class WPUF_Upgrades {
         }
 
         if ( $this->needs_update() ) {
-            $url = ! empty( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+            $url  = ! empty( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+	        $link = add_query_arg(
+                [
+                    'wpuf_do_update' => true,
+                    'nonce'          => wp_create_nonce( 'wpuf_do_update' ),
+                ],
+                $url
+            );
             ?>
             <div id="message" class="updated">
                 <p><?php printf( '<strong>%s</strong>', esc_attr__( 'WPUF Data Update Required', 'wp-user-frontend' ) ); ?></p>
-                <p class="submit"><a href="<?php echo esc_url( add_query_arg( [ 'wpuf_do_update' => true ], $url ) ); ?>" class="wpuf-update-btn button-primary"><?php esc_attr_e( 'Run the updater', 'wp-user-frontend' ); ?></a></p>
+                <p class="submit"><a href="<?php echo esc_url( $link ); ?>" class="wpuf-update-btn button-primary"><?php esc_attr_e( 'Run the updater', 'wp-user-frontend' ); ?></a></p>
             </div>
 
             <script type="text/javascript">

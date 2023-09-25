@@ -117,7 +117,7 @@ class WPUF_Form_Field_Column extends WPUF_Field_Contract {
                 ];
         }
 
-        return apply_filters( 'wpuf_text_field_option_settings', $options );
+        return apply_filters( 'wpuf_column_field_option_settings', $options );
     }
 
     /**

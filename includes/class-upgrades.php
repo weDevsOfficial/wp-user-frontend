@@ -13,14 +13,15 @@ class WPUF_Upgrades {
      * @var array
      */
     private static $upgrades = [
-        '2.1.9' => 'upgrades/upgrade-2.1.9.php',
-        '2.6.0' => 'upgrades/upgrade-2.6.0.php',
-        '2.7.0' => 'upgrades/upgrade-2.7.0.php',
-        '2.8.0' => 'upgrades/upgrade-2.8.0.php',
-        '2.8.2' => 'upgrades/upgrade-2.8.2.php',
-        '2.8.5' => 'upgrades/upgrade-2.8.5.php',
-        '2.9.2' => 'upgrades/upgrade-2.9.2.php',
-        '3.6.0' => 'upgrades/upgrade-3.6.0.php',
+	    '2.1.9'  => 'upgrades/upgrade-2.1.9.php',
+	    '2.6.0'  => 'upgrades/upgrade-2.6.0.php',
+	    '2.7.0'  => 'upgrades/upgrade-2.7.0.php',
+	    '2.8.0'  => 'upgrades/upgrade-2.8.0.php',
+	    '2.8.2'  => 'upgrades/upgrade-2.8.2.php',
+	    '2.8.5'  => 'upgrades/upgrade-2.8.5.php',
+	    '2.9.2'  => 'upgrades/upgrade-2.9.2.php',
+	    '3.6.0'  => 'upgrades/upgrade-3.6.0.php',
+	    '3.6.10' => 'upgrades/upgrade-3.6.10.php',
     ];
 
     /**

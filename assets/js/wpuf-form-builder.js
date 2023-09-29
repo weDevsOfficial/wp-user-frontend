@@ -140,7 +140,8 @@
                                 while (columnFieldIndex < innerColumnFields[columnFields].length) {
                                     // don't modify existing meta key
                                     if (payload.field_name === 'name'  && ! innerColumnFields[columnFields][columnFieldIndex].hasOwnProperty('is_new') ) {
-                                        break;
+                                        columnFieldIndex++;
+                                        continue;
                                     }
 
                                     if (innerColumnFields[columnFields][columnFieldIndex].id === parseInt(payload.editing_field_id)) {

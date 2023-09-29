@@ -918,11 +918,12 @@ function wpuf_show_custom_fields( $content ) {
                         // ignore section break and HTML input type
                         foreach ( $column_fields as $column_field_key => $column_field ) {
                             if ( isset( $column_field['show_in_post'] ) && 'yes' === $column_field['show_in_post'] ) {
-                                $repeat_rows = get_post_meta( $post->ID, 'repeat_field', true );
+                                $repeat_field_name = ! empty( $attr['name'] ) ? $attr['name'] : '';
+                                $repeat_rows       = get_post_meta( $post->ID, $repeat_field_name, true );
 
                                 if ( ! empty( $repeat_rows ) ) {
                                     for ( $index = 0; $index < $repeat_rows; $index++ ) {
-                                        $field_value = get_post_meta( $post->ID, 'repeat_field_' . $index . '_' . $column_field['name'], true );
+                                        $field_value = get_post_meta( $post->ID, $repeat_field_name . '_' . $index . '_' . $column_field['name'], true );
                                         $hide_label  = ! empty( $column_field['hide_field_label'] ) ? $column_field['hide_field_label'] : 'no';
                                         $html       .= '<li>';
 
@@ -1131,27 +1132,7 @@ function wpuf_show_custom_fields( $content ) {
                     $html .= $address_html;
                     break;
 
-                case 'repeat_field':
-                    $value    = get_post_meta( $post->ID, $attr['name'] );
-                    $newvalue = [];
-
-                    foreach ( $value as $i => $str ) {
-                        if ( preg_match( '/[^\|\s]/', $str ) ) {
-                            $newvalue[] = $str;
-                        }
-                    }
-
-                    $new = implode( ', ', $newvalue );
-
-                    if ( $new ) {
-                        $html .= '<li>';
-
-                        if ( 'no' === $hide_label ) {
-                            $html .= '<label>' . $attr['label'] . ': </label>';
-                        }
-
-                        $html .= make_clickable( $new ) . '</li>';
-                    }
+                case 'repeat':
                     break;
 
                 case 'url':

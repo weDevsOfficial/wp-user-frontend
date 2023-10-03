@@ -684,4 +684,33 @@ trait FieldableTrait {
         } //end foreach
         return [ $meta_key_value, $multi_repeated, $files ];
     }
+
+
+
+    /**
+     * Search on multi dimensional array
+     *
+     * @since wpuf_since moved from Render_Form.php to FieldableTrait.php
+     *
+     * @param array  $array
+     * @param string $key   name of key
+     * @param string $value the value to search
+     *
+     * @return array
+     */
+    public function search( $array, $key, $value ) {
+        $results = [];
+
+        if ( is_array( $array ) ) {
+            if ( isset( $array[ $key ] ) && $array[ $key ] === $value ) {
+                $results[] = $array;
+            }
+
+            foreach ( $array as $subarray ) {
+                $results = array_merge( $results, $this->search( $subarray, $key, $value ) );
+            }
+        }
+
+        return $results;
+    }
 }

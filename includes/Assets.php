@@ -352,7 +352,7 @@ class Assets {
                 'deps' => [ 'jquery' ],
             ],
             'upload'                   => [
-                'src'  => WPUF_ASSET_URI . '/js/upload.js' . $this->suffix . '.js',
+                'src'  => WPUF_ASSET_URI . '/js/upload' . $this->suffix . '.js',
                 'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ],
             ],
             'ajax_login'               => [

@@ -47,31 +47,6 @@ class Render_Form {
     }
 
     /**
-     * Search on multi dimentional array
-     *
-     * @param array  $array
-     * @param string $key   name of key
-     * @param string $value the value to search
-     *
-     * @return array
-     */
-    public function search( $array, $key, $value ) {
-        $results = [];
-
-        if ( is_array( $array ) ) {
-            if ( isset( $array[$key] ) && $array[$key] == $value ) {
-                $results[] = $array;
-            }
-
-            foreach ( $array as $subarray ) {
-                $results = array_merge( $results, $this->search( $subarray, $key, $value ) );
-            }
-        }
-
-        return $results;
-    }
-
-    /**
      * Really simple captcha validation
      *
      * @return void
@@ -989,7 +964,7 @@ class Render_Form {
             <?php $this->help_text( $attr ); ?>
 
             <?php if ( $taxonomy ) {
-                $query_string = '?action=wpuf-ajax-tag-search&tax=post_tag';
+                $query_string = '?action=wpuf_ajax_tag_search&tax=post_tag';
                 $query_string .= '&nonce=' . wp_create_nonce( 'wpuf_ajax_tag_search' );
                 ?>
             <script type="text/javascript">
@@ -1588,7 +1563,7 @@ class Render_Form {
                         break;
 
                     case 'text':
-                        $query_string = '?action=wpuf-ajax-tag-search&tax=' . esc_attr( $attr['name'] );
+                        $query_string = '?action=wpuf_ajax_tag_search&tax=' . esc_attr( $attr['name'] );
                         $query_string .= '&nonce=' . wp_create_nonce( 'wpuf_ajax_tag_search' );
 
                         ?>

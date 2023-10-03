@@ -34,7 +34,7 @@ class Form_Field_Post_Tags extends Field_Contract {
             $value = $field_settings['default'];
         }
 
-        $query_string = '?action=wpuf-ajax-tag-search&tax=post_tag';
+        $query_string = '?action=wpuf_ajax_tag_search&tax=post_tag';
         $query_string .= '&nonce=' . wp_create_nonce( 'wpuf_ajax_tag_search' );
         ?>
 

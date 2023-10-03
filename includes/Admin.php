@@ -37,6 +37,7 @@ class Admin {
 
         // enqueue common scripts that will load throughout WordPress dashboard. notice, what's new etc.
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_common_scripts' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_subscriptions_page_scripts' ] );
     }
 
     /**
@@ -82,5 +83,15 @@ class Admin {
                 )
             ]
         );
+    }
+
+    public function enqueue_subscriptions_page_scripts( $hook_suffix ) {
+        $cpt = 'wpuf_subscription';
+        if ( in_array( $hook_suffix, [ 'post.php', 'post-new.php' ], true ) ) {
+            $screen = get_current_screen();
+            if ( is_object( $screen ) && $cpt === $screen->post_type ) {
+                wp_enqueue_script( 'wpuf-subscriptions' );
+            }
+        }
     }
 }

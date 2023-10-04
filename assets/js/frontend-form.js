@@ -661,7 +661,7 @@
                             break;
                         }
 
-                        if ( hasRepeat ) {
+                        if ( hasRepeat === 'yes' ) {
                             var repeatItem = $('[data-type="confirm_password"]').eq(0);
 
                             if ( repeatItem.val() !== val ) {

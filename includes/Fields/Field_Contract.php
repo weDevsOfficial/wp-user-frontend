@@ -862,7 +862,7 @@ abstract class Field_Contract {
             '';
 
         if ( is_array( $value ) ) {
-            $entry_value = implode( WP_User_Frontend::$field_separator, $value );
+            $entry_value = implode( wpuf()->get_field_seperator(), $value );
         } else {
             $entry_value = trim( $value );
         }

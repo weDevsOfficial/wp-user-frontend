@@ -580,6 +580,17 @@ final class WP_User_Frontend {
 
         wp_send_json_success();
     }
+
+    /**
+     * Get the global field seperator for WPUF
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    public function get_field_seperator() {
+        return self::$field_separator;
+    }
 }
 
 /**

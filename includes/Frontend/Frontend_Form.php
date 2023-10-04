@@ -4,8 +4,11 @@ namespace WeDevs\Wpuf\Frontend;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Frontend_Render_Form;
+use WeDevs\Wpuf\Traits\FieldableTrait;
 
 class Frontend_Form extends Frontend_Render_Form {
+    use FieldableTrait;
+
     public static $config_id = '_wpuf_form_id';
 
     public function __construct() {
@@ -163,7 +166,7 @@ class Frontend_Form extends Frontend_Render_Form {
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
         $form_id             = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0;
-        $form                = new WPUF_Form( $form_id );
+        $form                = new Form( $form_id );
         $this->form_settings = $form->get_settings();
         $this->form_fields   = $form->get_fields();
         $pay_per_post        = $form->is_enabled_pay_per_post();

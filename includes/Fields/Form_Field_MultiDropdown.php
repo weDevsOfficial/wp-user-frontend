@@ -111,7 +111,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
             foreach ( $entry_value as $option_key ) {
                 $new_val[] = isset( $field['options'][$option_key] ) ? $field['options'][$option_key] : '';
             }
-            $entry_value = implode( WP_User_Frontend::$field_separator, $new_val );
+            $entry_value = implode( wpuf()->get_field_seperator(), $new_val );
         } else {
             $entry_value = '';
         }

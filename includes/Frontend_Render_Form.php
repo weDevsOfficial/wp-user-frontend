@@ -23,8 +23,6 @@ class Frontend_Render_Form {
 
     public $multiform_start = 0;
 
-    public $wp_post_types = [];
-
     public $form_fields = [];
 
     public $form_settings = [];
@@ -288,88 +286,6 @@ class Frontend_Render_Form {
     }
 
     /**
-     * add post field setting on form builder
-     *
-     * @param array $field_settings
-     */
-    public function add_field_settings( $field_settings ) {
-        if ( class_exists( 'Field_Contract' ) ) {
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-title.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-content.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-tags.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-excerpt.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-post-taxonomy.php';
-            require_once WPUF_ROOT . '/includes/fields/class-field-featured-image.php';
-
-            $field_settings['post_title']     = new Form_Field_Post_Title();
-            $field_settings['post_content']   = new Form_Field_Post_Content();
-            $field_settings['post_excerpt']   = new Form_Field_Post_Excerpt();
-            $field_settings['featured_image'] = new Form_Field_Featured_Image();
-
-            $taxonomy_templates = [];
-
-            foreach ( $this->wp_post_types as $post_type => $taxonomies ) {
-                if ( ! empty( $taxonomies ) ) {
-                    foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                        if ( 'post_tag' === $tax_name ) {
-                            // $taxonomy_templates['post_tag'] = self::post_tags();
-                            $taxonomy_templates['post_tags'] = new Form_Field_Post_Tags();
-                        } else {
-                            // $taxonomy_templates[ $tax_name ] = self::taxonomy_template( $tax_name, $taxonomy );
-                            $taxonomy_templates['taxonomy'] = new Form_Field_Post_Taxonomy( $tax_name, $taxonomy );
-                        }
-                    }
-                }
-            }
-
-            $field_settings = array_merge( $field_settings, $taxonomy_templates );
-        }
-
-        return $field_settings;
-    }
-
-    /**
-     * Populate available wp post types
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function set_wp_post_types() {
-        $args = [ '_builtin' => true ];
-
-        $wpuf_post_types = wpuf_get_post_types( $args );
-
-        $ignore_taxonomies = apply_filters(
-            'wpuf-ignore-taxonomies', [
-                'post_format',
-            ]
-        );
-
-        foreach ( $wpuf_post_types as $post_type ) {
-            $this->wp_post_types[ $post_type ] = [];
-
-            $taxonomies = get_object_taxonomies( $post_type, 'object' );
-
-            foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                if ( ! in_array( $tax_name, $ignore_taxonomies ) ) {
-                    $this->wp_post_types[ $post_type ][ $tax_name ] = [
-                        'title'         => $taxonomy->label,
-                        'hierarchical'  => $taxonomy->hierarchical,
-                    ];
-
-                    $this->wp_post_types[ $post_type ][ $tax_name ]['terms'] = get_terms(
-                        [
-                            'taxonomy'   => $tax_name,
-                            'hide_empty' => false,
-                        ]
-                    );
-                }
-            }
-        }
-    }
-
-    /**
      * Render a checkbox for enabling feature item
      */
     public function render_featured_field( $post_id = null ) {
@@ -408,5 +324,79 @@ class Frontend_Render_Form {
             </script>
             <?php
         }
+    }
+
+    /**
+     * get Input fields
+     *
+     * @param array $form_vars
+     *
+     * @return array
+     */
+    public function get_input_fields( $form_vars ) {
+        $ignore_lists = [ 'section_break', 'html' ];
+        $post_vars    = $meta_vars = $taxonomy_vars = [];
+
+        foreach ( $form_vars as $key => $value ) {
+            // get column field input fields
+            if ( $value['input_type'] == 'column_field' ) {
+                $inner_fields = $value['inner_fields'];
+
+                foreach ( $inner_fields as $column_key => $column_fields ) {
+                    if ( ! empty( $column_fields ) ) {
+                        // ignore section break and HTML input type
+                        foreach ( $column_fields as $column_field_key => $column_field ) {
+                            if ( in_array( $column_field['input_type'], $ignore_lists ) ) {
+                                continue;
+                            }
+
+                            //separate the post and custom fields
+                            if ( isset( $column_field['is_meta'] ) && $column_field['is_meta'] == 'yes' ) {
+                                $meta_vars[] = $column_field;
+                                continue;
+                            }
+
+                            if ( $column_field['input_type'] == 'taxonomy' ) {
+
+                                // don't add "category"
+                                // if ( $column_field['name'] == 'category' ) {
+                                //     continue;
+                                // }
+
+                                $taxonomy_vars[] = $column_field;
+                            } else {
+                                $post_vars[] = $column_field;
+                            }
+                        }
+                    }
+                }
+                continue;
+            }
+
+            // ignore section break and HTML input type
+            if ( in_array( $value['input_type'], $ignore_lists ) ) {
+                continue;
+            }
+
+            //separate the post and custom fields
+            if ( isset( $value['is_meta'] ) && $value['is_meta'] == 'yes' ) {
+                $meta_vars[] = $value;
+                continue;
+            }
+
+            if ( $value['input_type'] == 'taxonomy' ) {
+
+                // don't add "category"
+                // if ( $value['name'] == 'category' ) {
+                //     continue;
+                // }
+
+                $taxonomy_vars[] = $value;
+            } else {
+                $post_vars[] = $value;
+            }
+        }
+
+        return [ $post_vars, $taxonomy_vars, $meta_vars ];
     }
 }

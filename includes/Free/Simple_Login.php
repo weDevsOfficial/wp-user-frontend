@@ -156,7 +156,7 @@ class Simple_Login {
         if ( $recaptcha === 'on' ) {
             if ( isset( $_REQUEST['g-recaptcha-response'] ) ) {
                 if ( empty( $_REQUEST['g-recaptcha-response'] ) ) {
-                    $user = new WP_Error( 'WPUFLoginCaptchaError', 'Empty reCaptcha Field.' );
+                    $user = new \WP_Error( 'WPUFLoginCaptchaError', 'Empty reCaptcha Field.' );
                 } else {
                     $no_captcha        = 1;
                     $invisible_captcha = 0;
@@ -668,7 +668,7 @@ class Simple_Login {
                     return;
                 }
 
-                $errors = new WP_Error();
+                $errors = new \WP_Error();
 
                 do_action( 'validate_password_reset', $errors, $user );
 
@@ -918,7 +918,7 @@ class Simple_Login {
      * @return \WP_Error
      */
     public function user_activation_message() {
-        return new WP_Error( 'user-activated', __( 'Your account has been activated', 'wp-user-frontend' ), 'message' );
+        return new \WP_Error( 'user-activated', __( 'Your account has been activated', 'wp-user-frontend' ), 'message' );
     }
 
     public function wp_login_page_redirect() {

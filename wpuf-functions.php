@@ -3475,7 +3475,7 @@ function get_formatted_mail_body( $message, $subject ) {
         $content = $header . '<pre>' . $message . '</pre>' . $footer;
 
         if ( ! class_exists( 'Emogrifier' ) ) {
-            require_once WPUF_PRO_INCLUDES . '/libs/Emogrifier.php';
+            require_once WPUF_PRO_ROOT . '/assets/vendor/Emogrifier.php';
         }
 
         try {

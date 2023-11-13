@@ -202,11 +202,11 @@ class Payment {
                                                              style="display: none"><?php echo 'pack'; ?></div>
                                                         <div id="wpuf_id"
                                                              style="display: none"><?php echo esc_attr( $pack_id ); ?></div>
-                                                        <div><?php esc_html_e( 'Selected Pack ',
+                                                        <div><?php esc_html_e( 'Selected Pack',
                                                                                'wp-user-frontend' ); ?>:
                                                             <strong><?php echo esc_attr( $pack->post_title ); ?></strong>
                                                         </div>
-                                                        <div><?php esc_html_e( 'Pack Price ', 'wp-user-frontend' ); ?>:
+                                                        <div><?php esc_html_e( 'Pack Price', 'wp-user-frontend' ); ?>:
                                                             <strong><span
                                                                     id="wpuf_pay_page_cost"><?php echo esc_attr( wpuf_format_price( $pack_cost ) ); ?>
                                                             </strong></span></div>

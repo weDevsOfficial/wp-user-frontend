@@ -3,6 +3,7 @@
 namespace WeDevs\Wpuf\Frontend;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
+use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Frontend_Render_Form;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 
@@ -343,8 +344,8 @@ class Frontend_Form extends Frontend_Render_Form {
             $form_id        = wpuf_decryption( $fid );
             $form_settings  = wpuf_get_form_settings( $form_id );
             $post_author_id = get_post_field( 'post_author', $post_id );
-            $payment_status = new WPUF_Subscription();
-            $form           = new WPUF_Form( $form_id );
+            $payment_status = new Subscription();
+            $form           = new Form( $form_id );
             $pay_per_post   = $form->is_enabled_pay_per_post();
             $force_pack     = $form->is_enabled_force_pack();
 

@@ -224,7 +224,7 @@ class Payment {
                                             </div>
                                         </div>
 
-                                        <?php if ( class_exists( 'WPUF_Coupons' ) ) { ?>
+                                        <?php if ( class_exists( 'WeDevs\Wpuf\Pro\Coupons' ) ) { ?>
                                             <div class="wpuf-copon-wrap" style="display:none;">
                                                 <div class="wpuf-coupon-error" style="color: red;"></div>
                                                 <input type="text" name="coupon_code" size="20"

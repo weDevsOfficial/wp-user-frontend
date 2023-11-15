@@ -194,4 +194,30 @@ jQuery(function($) {
         // for gutenberg
         postButton.on('click', checkForShortcodes);
     }, 500);
+
+    // align with WooCommerce _downloadable meta key
+    var downloadableRadio = $('.wpuf-fields input[type="radio"][name="_downloadable"]');
+    var downloadableCheckbox = $('#woocommerce-product-data input[type="checkbox"][name="_downloadable"]');
+    var virtualCheckbox = $('#woocommerce-product-data input[type="checkbox"][name="_virtual"]');
+    downloadableRadio.click(function() {
+        var downloadable = $(this).val();
+
+        if ($(this).is(':checked') && downloadable === 'yes') {
+            downloadableCheckbox.prop('checked', true);
+            virtualCheckbox.prop('checked', true);
+        } else {
+            downloadableCheckbox.prop('checked', false);
+            virtualCheckbox.prop('checked', false);
+        }
+    });
+
+    downloadableCheckbox.change(function() {
+        if ($(this).is(':checked')) {
+            $('.wpuf-fields input[type="radio"][name="_downloadable"][value="yes"]').prop('checked', true);
+            $('.wpuf-fields input[type="radio"][name="_downloadable"][value="no"]').prop('checked', false);
+        } else {
+            $('.wpuf-fields input[type="radio"][name="_downloadable"][value="yes"]').prop('checked', false);
+            $('.wpuf-fields input[type="radio"][name="_downloadable"][value="no"]').prop('checked', true);
+        }
+    });
 });

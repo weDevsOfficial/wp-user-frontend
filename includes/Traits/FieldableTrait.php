@@ -566,6 +566,10 @@ trait FieldableTrait {
                 $wpuf_files = [];
             }
 
+            if ( '_downloadable' === $value['name'] && 'on' === $value_name ) {
+                $value_name = 'yes';
+            }
+
             switch ( $value['input_type'] ) {
 
                 // put files in a separate array, we'll process it later
@@ -657,7 +661,7 @@ trait FieldableTrait {
                     if ( is_array( $value_name ) && ! empty( $value_name ) ) {
                         $meta_key_value[ $value['name'] ] = implode( self::$separator, $value_name );
                     } else {
-                        $meta_key_value[ $value['name'] ] = $value_name[0];
+                        $meta_key_value[ $value['name'] ] = isset( $value_name[0] ) ? $value_name[0] : '';
                     }
                     break;
 
@@ -684,8 +688,6 @@ trait FieldableTrait {
         } //end foreach
         return [ $meta_key_value, $multi_repeated, $files ];
     }
-
-
 
     /**
      * Search on multi dimensional array

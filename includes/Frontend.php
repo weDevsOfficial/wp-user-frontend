@@ -65,7 +65,7 @@ class Frontend {
             wp_enqueue_script( 'wpuf-subscriptions' );
 
             wp_localize_script(
-                'wpuf-upload', 'wpuf_frontend_upload', [
+                'wpuf-upload', 'wpuf_upload', [
                     'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
                     'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
                     'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),

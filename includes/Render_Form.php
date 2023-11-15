@@ -4,12 +4,15 @@ namespace WeDevs\Wpuf;
 
 use Invisible_Recaptcha;
 use WeDevs\Wpuf\Ajax\Upload_Ajax;
+use WeDevs\Wpuf\Traits\FieldableTrait;
 use WPUF_ReCaptcha;
 
 /**
  * Handles form generaton and posting for add/edit post in frontend
  */
 class Render_Form {
+    use FieldableTrait;
+
     public static $meta_key            = 'wpuf_form';
 
     public static $separator           = ' | ';
@@ -193,133 +196,6 @@ class Render_Form {
         }
 
         return [$post_vars, $taxonomy_vars, $meta_vars];
-    }
-
-    public static function prepare_meta_fields( $meta_vars ) {
-        // loop through custom fields
-        // skip files, put in a key => value paired array for later executation
-        // process repeatable fields separately
-        // if the input is array type, implode with separator in a field
-        check_ajax_referer( 'wpuf_form_add' );
-
-        $files          = [];
-        $meta_key_value = [];
-        $multi_repeated = []; //multi repeated fields will in sotre duplicated meta key
-
-        foreach ( $meta_vars as $key => $value ) {
-            $value_name = isset( $_POST[$value['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$value['name']] ) ) : '';
-            if ( isset( $_POST['wpuf_files'][$value['name']] ) ) {
-                $wpuf_files = isset( $_POST['wpuf_files'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_files'][$value['name']] ) ) : [];
-            } else {
-                $wpuf_files = [];
-            }
-            switch ( $value['input_type'] ) {
-
-                // put files in a separate array, we'll process it later
-                case 'file_upload':
-                case 'image_upload':
-
-                    $files[] = [
-                        'name'  => $value['name'],
-                        // 'value' => isset( $wpuf_files[$value['name']] ) ? $wpuf_files[$value['name']] : [],
-                        'value' => isset( $wpuf_files ) ? $wpuf_files : [],
-                        'count' => $value['count'],
-                    ];
-                    break;
-
-                case 'repeat':
-
-                    // if it is a multi column repeat field
-                    if ( isset( $value['multiple'] ) && $value['multiple'] == 'true' ) {
-
-                        // if there's any items in the array, process it
-                        if ( $value_name ) {
-                            $ref_arr = [];
-                            $cols    = count( $value['columns'] );
-                            $first   = array_shift( array_values( $value_name ) ); //first element
-                            $rows    = count( $first );
-
-                            // loop through columns
-                            for ( $i = 0; $i < $rows; $i++ ) {
-
-                                // loop through the rows and store in a temp array
-                                $temp = [];
-
-                                for ( $j = 0; $j < $cols; $j++ ) {
-                                    $temp[] = $value_name[$j][$i];
-                                }
-
-                                // store all fields in a row with self::$separator separated
-                                $ref_arr[] = implode( self::$separator, $temp );
-                            }
-
-                            // now, if we found anything in $ref_arr, store to $multi_repeated
-                            if ( $ref_arr ) {
-                                $multi_repeated[$value['name']] = array_slice( $ref_arr, 0, $rows );
-                            }
-                        }
-                    } else {
-                        $meta_key_value[$value['name']] = implode( self::$separator, $value_name );
-                    }
-
-                    break;
-
-                case 'address':
-
-                    if ( is_array( $value_name ) ) {
-                        foreach ( $value_name as $address_field => $field_value ) {
-                            $meta_key_value[ $value['name'] ][ $address_field ] = sanitize_text_field( $field_value );
-                        }
-                    }
-
-                    break;
-
-                case 'text':
-                case 'email':
-                case 'number':
-                case 'date':
-
-                    $meta_key_value[$value['name']] = sanitize_text_field( trim( $value_name ) );
-
-                    break;
-
-                case 'textarea':
-
-                    $meta_key_value[$value['name']] = wp_kses_post( $value_name );
-
-                    break;
-
-                case 'map':
-                    $data           = [];
-                    $map_field_data = sanitize_text_field( trim( $value_name ) );
-
-                    if ( !empty( $map_field_data ) ) {
-                        list( $data['address'], $data['lat'], $data['lng'] ) = explode( ' || ', $map_field_data );
-                        $meta_key_value[$value['name']]                      = $data;
-                    }
-                    break;
-
-                default:
-                    // if it's an array, implode with this->separator
-                    if ( is_array( $value_name ) ) {
-                        $acf_compatibility = wpuf_get_option( 'wpuf_compatibility_acf', 'wpuf_general', 'no' );
-
-                        if ( $value['input_type'] == 'address' ) {
-                            $meta_key_value[$value['name']] = $value_name;
-                        } elseif ( !empty( $acf_compatibility ) && $acf_compatibility == 'yes' ) {
-                            $meta_key_value[$value['name']] = maybe_serialize( $value_name );
-                        } else {
-                            $meta_key_value[$value['name']] = implode( self::$separator, $value_name );
-                        }
-                    } else {
-                        $meta_key_value[$value['name']] = trim( $value_name );
-                    }
-
-                    break;
-            }
-        } //end foreach
-
-        return [$meta_key_value, $multi_repeated, $files];
     }
 
     public function guest_fields( $form_settings ) {

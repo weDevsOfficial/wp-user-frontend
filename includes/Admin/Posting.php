@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Admin;
 
+use WeDevs\Wpuf\Traits\FieldableTrait;
+
 /**
  * Admin side posting handler
  *
@@ -9,6 +11,7 @@ namespace WeDevs\Wpuf\Admin;
  * and handles value saving.
  */
 class Posting {
+    use FieldableTrait;
 
     private static $_instance;
 
@@ -65,8 +68,9 @@ class Posting {
 
         wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css', [], '11.4.19' );
         wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.js', [], '11.4.19', true );
-        wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', ['jquery', 'plupload-handlers'] );
-        wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', [
+        // wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', ['jquery', 'plupload-handlers'] );
+        wp_enqueue_script( 'wpuf-upload' );
+        wp_localize_script( 'wpuf-upload', 'wpuf_upload', [
             'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
             'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
             'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
@@ -524,7 +528,7 @@ class Posting {
         list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $wpuf_cf_form_id );
 
         // WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
-        WPUF_Frontend_Form::update_post_meta( $meta_vars, $post_id );
+        $this->update_post_meta( $meta_vars, $post_id );
     }
 
     /**

@@ -14,6 +14,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * @since 2.5
  */
 class List_Table_Admin_Post_Forms extends WP_List_Table {
+    /**
+     * The total count of current list
+     *
+     * @since WPUF_SINCE
+     * @var int
+     */
+    protected $counts;
 
     /**
      * Class constructor

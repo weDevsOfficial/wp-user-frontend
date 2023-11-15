@@ -31,13 +31,14 @@ class Admin {
         $this->whats_new             = new Admin\Whats_New();
         $this->promotion             = new Admin\Promotion();
         $this->plugin_upgrade_notice = new Admin\Plugin_Upgrade_Notice();
+        $this->posting               = new Admin\Posting();
 
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
         add_action( 'admin_action_post_form_template', [ $this, 'create_post_form_from_template' ] );
 
         // enqueue common scripts that will load throughout WordPress dashboard. notice, what's new etc.
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_common_scripts' ] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_subscriptions_page_scripts' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_cpt_page_scripts' ] );
     }
 
     /**
@@ -85,12 +86,45 @@ class Admin {
         );
     }
 
-    public function enqueue_subscriptions_page_scripts( $hook_suffix ) {
+    public function enqueue_cpt_page_scripts( $hook_suffix ) {
         $cpt = 'wpuf_subscription';
         if ( in_array( $hook_suffix, [ 'post.php', 'post-new.php' ], true ) ) {
             $screen = get_current_screen();
             if ( is_object( $screen ) && $cpt === $screen->post_type ) {
                 wp_enqueue_script( 'wpuf-subscriptions' );
+            }
+        }
+
+        if ( in_array( $hook_suffix, [ 'post.php', 'post-new.php' ], true ) ) {
+            $screen = get_current_screen();
+            if ( is_object( $screen ) && 'product' === $screen->post_type ) {
+                wp_enqueue_script( 'wpuf-upload' );
+                wp_localize_script(
+                    'wpuf-upload',
+                    'wpuf_upload',
+                    [
+                        'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
+                        'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
+                        'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
+                        'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+                        'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
+                        'plupload'   => [
+                            'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
+                            'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
+                            'filters'          => [
+                                [
+                                    'title' => __( 'Allowed Files', 'wp-user-frontend' ),
+                                    'extensions' => '*',
+                                ],
+                            ],
+                            'multipart'        => true,
+                            'urlstream_upload' => true,
+                            'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
+                            'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
+                            'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' ),
+                        ],
+                    ]
+                );
             }
         }
     }

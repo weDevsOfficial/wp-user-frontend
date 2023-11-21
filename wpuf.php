@@ -38,6 +38,9 @@ use WeDevs\WpUtils\ContainerTrait;
 /**
  * Main bootstrap class for WP User Frontend
  */
+
+/*Marking a class with #[AllowDynamicProperties] is fully backwards-compatible with earlier PHP versions, because prior to PHP 8.0 this would be interpreted as a comment, and the use non-existent classes as attributes is not an error.*/
+#[AllowDynamicProperties]
 final class WP_User_Frontend {
     use SingletonTrait, ContainerTrait;
 
@@ -47,13 +50,6 @@ final class WP_User_Frontend {
      * @var string
      */
     public static $field_separator = '| ';
-
-    /**
-     * The singleton instance
-     *
-     * @var WP_User_Frontend
-     */
-    private static $_instance;
 
     /**
      * Pro plugin checkup
@@ -143,40 +139,6 @@ final class WP_User_Frontend {
         add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), [ $this, 'plugin_action_links' ] );
 
         add_action( 'widgets_init', [ $this, 'register_widgets' ] );
-    }
-
-    /**
-     * Magic getter to bypass referencing plugin.
-     *
-     * @since 2.5.7
-     *
-     * @param string $prop
-     *
-     * @return mixed
-     */
-    public function __get( $prop ) {
-        if ( array_key_exists( $prop, $this->container ) ) {
-            return $this->container[ $prop ];
-        }
-
-        if ( property_exists( $this, $prop ) ) {
-            return $this->{$prop};
-        }
-
-        return false;
-    }
-
-    /**
-     * Singleton Instance
-     *
-     * @return \self
-     */
-    public static function init() {
-        if ( ! self::$_instance ) {
-            self::$_instance = new WP_User_Frontend();
-        }
-
-        return self::$_instance;
     }
 
     /**

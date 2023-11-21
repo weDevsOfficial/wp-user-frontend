@@ -9,6 +9,7 @@ use WeDevs\WpUtils\ContainerTrait;
 /**
  * Post Forms or wpuf_forms form builder class
  */
+#[AllowDynamicProperties]
 class Admin_Form {
 
     use FieldableTrait, ContainerTrait;

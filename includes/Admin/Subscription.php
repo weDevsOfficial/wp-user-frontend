@@ -16,8 +16,6 @@ use WeDevs\Wpuf\User_Subscription;
 class Subscription {
     use TaxableTrait;
 
-    private static $_instance;
-
     public function __construct() {
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_filter( 'wpuf_add_post_args', [ $this, 'set_pending' ], 10, 4 );

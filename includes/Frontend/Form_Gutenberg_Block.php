@@ -2,8 +2,6 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
-use WeDevs\WpUtils\ContainerTrait;
-
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -12,8 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Adds WPUF block
  */
 class Form_Gutenberg_Block {
-    use ContainerTrait;
-
     /**
      * Register widget with WordPress.
      */

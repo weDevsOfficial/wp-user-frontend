@@ -67,7 +67,7 @@
 
         <div class="submit-button wpuf-div">
             <button id="wpuf-form-insert" class="button-primary"><?php esc_html_e( 'Insert Form', 'wp-user-frontend' ); ?></button>
-            <button id="wpuf-form-close" class="button-secondary" style="margin-left: 5px;" onClick="tb_remove();"><?php esc_html_e( 'Close', 'wp-user-frontend' ); ?></a>
+            <button id="wpuf-form-close" class="button-secondary" style="margin-left: 5px;" onClick="tb_remove();"><?php esc_html_e( 'Close', 'wp-user-frontend' ); ?></button>
         </div>
 
     </div>

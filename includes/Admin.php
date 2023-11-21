@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf;
 
+use AllowDynamicProperties;
 use WeDevs\WpUtils\ContainerTrait;
 
 /**
@@ -10,10 +11,8 @@ use WeDevs\WpUtils\ContainerTrait;
  *
  * @since WPUF_SINCE
  */
-
+#[AllowDynamicProperties]
 class Admin {
-    public $tools;
-
     use ContainerTrait;
 
     public function __construct() {
@@ -32,6 +31,7 @@ class Admin {
         $this->promotion             = new Admin\Promotion();
         $this->plugin_upgrade_notice = new Admin\Plugin_Upgrade_Notice();
         $this->posting               = new Admin\Posting();
+        $this->shortcodes_button     = new Admin\Shortcodes_Button();
 
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
         add_action( 'admin_action_post_form_template', [ $this, 'create_post_form_from_template' ] );
@@ -87,10 +87,12 @@ class Admin {
     }
 
     public function enqueue_cpt_page_scripts( $hook_suffix ) {
-        $cpt = 'wpuf_subscription';
+        $cpt = [ 'wpuf_subscription', 'post', 'page' ];
         if ( in_array( $hook_suffix, [ 'post.php', 'post-new.php' ], true ) ) {
+            wp_enqueue_script( 'wpuf-subscriptions' );
             $screen = get_current_screen();
-            if ( is_object( $screen ) && $cpt === $screen->post_type ) {
+
+            if ( is_object( $screen ) && in_array( $screen->post_type, $cpt, true ) ) {
                 wp_enqueue_script( 'wpuf-subscriptions' );
             }
         }

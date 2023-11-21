@@ -306,7 +306,7 @@ class Assets {
                 'version'   => '1.6.0',
                 'in_footer' => true,
             ],
-            'shortcode'                => [
+            'admin-shortcode'                => [
                 'src'  => WPUF_ASSET_URI . '/js/admin-shortcode.js',
                 'deps' => [ 'jquery' ],
             ],

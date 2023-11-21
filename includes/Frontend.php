@@ -10,7 +10,7 @@ use WeDevs\WpUtils\ContainerTrait;
  *
  * @since WPUF_SINCE
  */
-
+#[AllowDynamicProperties]
 class Frontend {
     use ContainerTrait;
     public function __construct() {

@@ -518,9 +518,6 @@ body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-column-field-inne
 body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field * {
   box-sizing: border-box;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field input {
-  width: 100%;
-}
 body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-repeater-buttons {
   width: 75px;
   padding-left: 12px;

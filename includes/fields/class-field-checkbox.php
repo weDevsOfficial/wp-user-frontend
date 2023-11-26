@@ -44,6 +44,7 @@ class WPUF_Form_Field_Checkbox extends WPUF_Field_Contract {
                         <input
                             type="checkbox"
                             class="<?php echo esc_attr( sprintf( 'wpuf_%s_%d', $field_settings['name'], $form_id ) ); ?>"
+                            id="<?php echo esc_attr( $field_settings['name'] ); ?>"
                             name="<?php echo esc_attr( $field_settings['name'] ); ?>[]"
                             value="<?php echo esc_attr( $value ); ?>"<?php echo in_array( $value, $selected ) ? ' checked="checked"' : ''; ?>
                             data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"

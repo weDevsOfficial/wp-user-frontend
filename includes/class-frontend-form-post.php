@@ -773,15 +773,12 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         if ( ! empty( $repeat_fields ) ) {
             if ( ! empty( $meta_key_value[ $repeat_fields['repeat_meta'] ] ) ) {
                 $row_number = $meta_key_value[ $repeat_fields['repeat_meta'] ];
+                $sub_fields = ! empty( $repeat_fields['sub_fields'] ) ? $repeat_fields['sub_fields'] : [];
 
-                if ( ! empty( $row_number ) ) {
-                    $sub_fields = ! empty( $repeat_fields['sub_fields'] ) ? $repeat_fields['sub_fields'] : [];
-
-                    for ( $i = 0; $i < $row_num; $i++ ) {
-                        foreach ( $sub_fields as $value ) {
-                            $field_meta = $repeat_fields['repeat_meta'] . '_' . $i . '_' . $value;
-                            update_post_meta( $post_id, '_' . $field_meta, uniqid( 'field_' ) );
-                        }
+                for ( $i = 0; $i < $row_number; $i++ ) {
+                    foreach ( $sub_fields as $value ) {
+                        $field_meta = $repeat_fields['repeat_meta'] . '_' . $i . '_' . $value;
+                        update_post_meta( $post_id, '_' . $field_meta, uniqid( 'field_' ) );
                     }
                 }
             }

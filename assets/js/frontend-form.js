@@ -354,11 +354,11 @@
             //clear the inputs
             clone.find( 'input' ).val( '' );
             clone.find( 'textarea' ).val( '' );
-            clone.find( ':checked' ).attr( 'checked', '' );
-            div.after( clone );
-
+            clone.find( ':checked' ).prop( 'checked', false );
             WP_User_Frontend.calculateFieldsName( $( this ).parents( '.wpuf-field-columns' ) );
             WP_User_Frontend.setRowNumber( $( this ).closest( '.wpuf-field-columns' ) );
+
+            div.after( clone );
         },
 
         removeRepeatField: function () {

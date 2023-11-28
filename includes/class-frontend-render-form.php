@@ -505,14 +505,23 @@ class WPUF_Frontend_Render_Form {
         $post_vars    = $meta_vars = $taxonomy_vars = [];
 
         foreach ( $form_vars as $key => $value ) {
+            // ignore section break and HTML input type
+            if ( in_array( $value['input_type'], $ignore_lists ) ) {
+                continue;
+            }
+
             // get column field input fields
-            if ( $value['input_type'] == 'column_field' ) {
+            if ( ( 'column_field' === $value['input_type'] ) || ( 'repeat' === $value['input_type'] ) ) {
                 $inner_fields = $value['inner_fields'];
 
                 foreach ( $inner_fields as $column_key => $column_fields ) {
                     if ( ! empty( $column_fields ) ) {
                         // ignore section break and HTML input type
                         foreach ( $column_fields as $column_field_key => $column_field ) {
+                            if ( 'repeat' === $value['input_type'] ) {
+                                $column_field['is_repeat_child'] = 'yes';
+                            }
+
                             if ( in_array( $column_field['input_type'], $ignore_lists ) ) {
                                 continue;
                             }
@@ -538,17 +547,12 @@ class WPUF_Frontend_Render_Form {
                     }
                 }
                 continue;
-            }
-
-            // ignore section break and HTML input type
-            if ( in_array( $value['input_type'], $ignore_lists ) ) {
-                continue;
-            }
-
-            //separate the post and custom fields
-            if ( isset( $value['is_meta'] ) && $value['is_meta'] == 'yes' ) {
-                $meta_vars[] = $value;
-                continue;
+            } else {
+                // separate the post and custom fields
+                if ( isset( $value['is_meta'] ) && 'yes' === $value['is_meta'] ) {
+                    $meta_vars[] = $value;
+                    continue;
+                }
             }
 
             if ( $value['input_type'] == 'taxonomy' ) {
@@ -708,6 +712,27 @@ class WPUF_Frontend_Render_Form {
         $files          = [];
         $meta_key_value = [];
         $repeat_fields  = []; // repeat field and sub-fields data
+        $form_id        = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+        $form           = new WPUF_Form( $form_id );
+        $form_fields    = $form->get_fields();
+        $repeat_field_childs = [];
+
+        // processing repeat fields
+        foreach ( $form_fields as $field ) {
+            if ( ! empty( $field['input_type'] ) && 'repeat' === $field['input_type'] ) {
+                // loop for each column. we have 3 columns for repeated fields
+                for ( $i = 1; $i <= 3; $i++ ) {
+                    if ( ! empty( $field['inner_fields'] ) && ! empty( $field['inner_fields'][ 'column-' . $i ] ) ) {
+                        foreach ( $field['inner_fields'][ 'column-' . $i ] as $column_value ) {
+                            $repeat_field_childs[ $column_value['name'] ] = $field['name'];
+                            $repeat_fields['sub_fields'][] = $column_value['name'];
+                        }
+                    }
+                }
+
+                $repeat_fields['parent'] = $field['name'];
+            }
+        }
 
         foreach ( $meta_vars as $key => $value ) {
             $wpuf_field = wpuf()->fields->get_field( $value['template'] );
@@ -728,8 +753,25 @@ class WPUF_Frontend_Render_Form {
                 $wpuf_files = [];
             }
 
-            switch ( $value['input_type'] ) {
+            if ( ! empty( $value['is_repeat_child'] ) && ( 'yes' === $value['is_repeat_child'] ) ) {
+                $parent_name   = ! empty( $repeat_field_childs[ $value['name'] ] ) ? $repeat_field_childs[ $value['name'] ] : '';
+                $row_count_key = $parent_name . '_row_num';
+                $row_number    = ! empty( $_POST[ $row_count_key ] ) ? absint( wp_unslash( $_POST[ $row_count_key ] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification
+                $repeat_fields['row_number'] = $row_number;
 
+                // loop for each column. we have 3 columns for repeated fields
+                for ( $i = 0; $i < $row_number; $i++ ) {
+                    $meta_key      = ! empty( $value['name'] ) ? $value['name'] : '';
+                    $formatted_key = $parent_name . '_' . $i . '_' . $meta_key;
+
+                    if ( '' !== $meta_key && ! empty( $_POST[ $formatted_key ] ) ) {
+                        $repeat_fields['fields'][ $formatted_key ] = wp_unslash( $_POST[ $formatted_key ] );
+                        $meta_key_value[ $formatted_key ] = wp_unslash( $_POST[ $formatted_key ] );  // phpcs:ignore WordPress.Security
+                    }
+                }
+            }
+
+            switch ( $value['input_type'] ) {
                 // put files in a separate array, we'll process it later
                 case 'file_upload':
                 case 'image_upload':
@@ -739,33 +781,6 @@ class WPUF_Frontend_Render_Form {
                         'value' => isset( $wpuf_files ) ? $wpuf_files : [],
                         'count' => $value['count'],
                     ];
-                    break;
-
-                case 'repeat':
-                    $row_count_key = $value['name'] . '_row_num';
-                    $row_number    = ! empty( $_POST[ $row_count_key ] ) ? absint( wp_unslash( $_POST[ $row_count_key ] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification
-
-                    // loop for each columns. we have 3 columns for repeated fields
-                    for ( $i = 1; $i <= 3; $i++ ) {
-                        if ( ! empty( $value['inner_fields'] ) && ! empty( $value['inner_fields'][ 'column-' . $i ] ) ) {
-                            foreach ( $value['inner_fields'][ 'column-' . $i ] as $column_value ) {
-                                $index         = 0;
-                                $meta_key      = ! empty( $column_value['name'] ) ? $column_value['name'] : '';
-                                $formatted_key = $value['name'] . '_' . $index . '_' . $meta_key;
-                                if ( '' !== $meta_key ) {
-                                    $repeat_fields['sub_fields'][] = $meta_key;
-                                    while ( isset( $_POST[ $formatted_key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-                                        $meta_key_value[ $formatted_key ] = wp_unslash( $_POST[ $formatted_key ] );
-                                        $index++;
-                                        $formatted_key = $value['name'] . '_' . $index . '_' . $meta_key;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    $meta_key_value[ $value['name'] ] = $row_number;
-                    $repeat_fields['repeat_meta']     = $value['name'];
-
                     break;
 
                 case 'address':
@@ -809,7 +824,7 @@ class WPUF_Frontend_Render_Form {
                     if ( is_array( $value_name ) && ! empty( $value_name ) ) {
                         $meta_key_value[ $value['name'] ] = implode( self::$separator, $value_name );
                     } else {
-                        $meta_key_value[ $value['name'] ] = $value_name[0];
+                        $meta_key_value[ $value['name'] ] = ! empty( $value_name[0] ) ? $value_name[0] : '';
                     }
                     break;
 

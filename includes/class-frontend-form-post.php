@@ -753,32 +753,32 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
-        // delete previous repeat values
-        if ( ! empty( $repeat_fields ) ) {
-            $row_num = get_post_meta( $post_id, $repeat_fields['repeat_meta'], true );
 
-            if ( $row_num ) {
-                $sub_fields = ! empty( $repeat_fields['sub_fields'] ) ? $repeat_fields['sub_fields'] : [];
-                for ( $i = 0; $i <= $row_num; $i++ ) {
-                    foreach ( $sub_fields as $value ) {
-                        $field_meta = $repeat_fields['repeat_meta'] . '_' . $i . '_' . $value;
-                        delete_post_meta( $post_id, $field_meta );
-                        delete_post_meta( $post_id, '_' . $field_meta );
+        if ( ! empty( $multi_repeated ) ) {
+            $fields_meta = ! empty( $multi_repeated['sub_fields'] ) ? $multi_repeated['sub_fields'] : [];
+            $parent      = ! empty( $multi_repeated['parent'] ) ? $multi_repeated['parent'] : '';
+
+            if ( ! empty( $parent ) && ! empty( $fields_meta ) ) {
+                // get how many rows previously saved
+                $row_num = get_post_meta( $post_id, $parent, true );
+
+                // delete previous repeat values
+                foreach ( $fields_meta as $sub_field ) {
+                    for ( $i = 0; $i < $row_num; $i++ ) {
+                        $tmp_meta = $parent . '_' . $i . '_' . $sub_field;
+                        delete_post_meta( $post_id, $tmp_meta );
+                        delete_post_meta( $post_id, '_' . $tmp_meta );
                     }
                 }
-            }
-        }
 
-        // insert acf compatible data
-        if ( ! empty( $repeat_fields ) ) {
-            if ( ! empty( $meta_key_value[ $repeat_fields['repeat_meta'] ] ) ) {
-                $row_number = $meta_key_value[ $repeat_fields['repeat_meta'] ];
-                $sub_fields = ! empty( $repeat_fields['sub_fields'] ) ? $repeat_fields['sub_fields'] : [];
+                $row_number = ! empty( $multi_repeated['row_number'] ) ? $multi_repeated['row_number'] : 0;
+                $sub_fields = ! empty( $multi_repeated['fields'] ) ? $multi_repeated['fields'] : [];
 
+                // save new data
                 for ( $i = 0; $i < $row_number; $i++ ) {
-                    foreach ( $sub_fields as $value ) {
-                        $field_meta = $repeat_fields['repeat_meta'] . '_' . $i . '_' . $value;
-                        update_post_meta( $post_id, '_' . $field_meta, uniqid( 'field_' ) );
+                    foreach ( $sub_fields as $key => $value ) {
+                        update_post_meta( $post_id, $key, $value );
+                        update_post_meta( $post_id, '_' . $key, uniqid( 'field_' ) );
                     }
                 }
             }

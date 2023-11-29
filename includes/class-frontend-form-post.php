@@ -781,6 +781,8 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
                         update_post_meta( $post_id, '_' . $key, uniqid( 'field_' ) );
                     }
                 }
+
+                update_post_meta( $post_id, $parent, $row_number );
             }
         }
 

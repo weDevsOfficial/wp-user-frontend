@@ -351,8 +351,8 @@
             var div = $( this ).closest( '.wpuf-column-field-inner-columns.column-repeat' );
             var clone = div.clone();
 
-            //clear the inputs
-            clone.find( 'input' ).val( '' );
+            // clear the inputs
+            clone.find( 'input:not(:checkbox):not(:radio)' ).val( '' );
             clone.find( 'textarea' ).val( '' );
             clone.find( ':checked' ).prop( 'checked', false );
             div.after( clone );

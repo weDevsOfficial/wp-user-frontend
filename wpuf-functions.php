@@ -925,7 +925,12 @@ function wpuf_show_custom_fields( $content ) {
                                     for ( $index = 0; $index < $repeat_rows; $index++ ) {
                                         $field_value = get_post_meta( $post->ID, $repeat_field_name . '_' . $index . '_' . $column_field['name'], true );
                                         $hide_label  = ! empty( $column_field['hide_field_label'] ) ? $column_field['hide_field_label'] : 'no';
-                                        $html       .= '<li>';
+
+                                        if ( is_array( $field_value ) ) {
+                                            $field_value = implode( ', ', $field_value );
+                                        }
+
+                                        $html .= '<li>';
 
                                         if ( 'no' === $hide_label ) {
                                             $html .= '<label>' . $column_field['label'] . ': </label>';

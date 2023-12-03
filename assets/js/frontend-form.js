@@ -355,10 +355,10 @@
             clone.find( 'input' ).val( '' );
             clone.find( 'textarea' ).val( '' );
             clone.find( ':checked' ).prop( 'checked', false );
+            div.after( clone );
+
             WP_User_Frontend.calculateFieldsName( $( this ).parents( '.wpuf-field-columns' ) );
             WP_User_Frontend.setRowNumber( $( this ).closest( '.wpuf-field-columns' ) );
-
-            div.after( clone );
         },
 
         removeRepeatField: function () {

@@ -1757,7 +1757,6 @@ body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-col
   border: 0;
   float: none;
   width: 100%;
-  overflow: hidden;
 }
 body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields {
   padding: 0 5px 0 0;

@@ -129,8 +129,8 @@
 
                     }
 
-                    // check if the editing field belong to a column field
-                    if (state.form_fields[i].template === 'column_field') {
+                    // check if the editing field belong to a column field or repeat field
+                    if (state.form_fields[i].template.match(/^(column|repeat)_field$/)) {
                         var innerColumnFields = state.form_fields[i].inner_fields;
 
                         for (const columnFields in innerColumnFields) {
@@ -138,6 +138,12 @@
                                 var columnFieldIndex = 0;
 
                                 while (columnFieldIndex < innerColumnFields[columnFields].length) {
+                                    // don't modify existing meta key
+                                    if (payload.field_name === 'name'  && ! innerColumnFields[columnFields][columnFieldIndex].hasOwnProperty('is_new') ) {
+                                        columnFieldIndex++;
+                                        continue;
+                                    }
+
                                     if (innerColumnFields[columnFields][columnFieldIndex].id === parseInt(payload.editing_field_id)) {
                                        innerColumnFields[columnFields][columnFieldIndex][payload.field_name] = payload.value;
                                     }

@@ -161,6 +161,10 @@ class WPUF_Form_Field_Textarea extends WPUF_Field_Contract {
       * @return string
       */
     public function render_field_data( $data, $field ) {
+        if ( ! is_string( $data ) ) {
+            return '';
+        }
+
         $data      = implode( ',', $data );
         $hide_label = isset( $field['hide_field_label'] )
            ? wpuf_validate_boolean( $field['hide_field_label'] )

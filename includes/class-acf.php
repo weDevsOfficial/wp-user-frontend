@@ -322,10 +322,6 @@ class WPUF_ACF_Compatibility {
             $meta_key = '_' . $group['name'];
             $name = $group['name'];
 
-            if ( 'repeater' === $group['type'] ) {
-                $meta_key = 'repeater';
-            }
-
             //check key also in meta vars
             $meta_keys = array_map(
                 function ( $meta_var ) {

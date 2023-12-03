@@ -707,7 +707,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
         $this->form_fields            = $form->get_fields();
         $this->form_settings          = $form->get_settings();
         $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
-        [ $user_can_post, $info ] = $form->is_submission_open( $form, $this->form_settings );
+	    [ $user_can_post, $info ] = $form->is_submission_open( $form, $this->form_settings );
         $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
         $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
 
@@ -725,7 +725,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
     public static function update_post_meta( $meta_vars, $post_id ) {
         // check_ajax_referer( 'wpuf_form_add' );
         // prepare the meta vars
-        [ $meta_key_value, $multi_repeated, $files ] = self::prepare_meta_fields( $meta_vars );
+	    [ $meta_key_value, $multi_repeated, $files ] = self::prepare_meta_fields( $meta_vars );
         // set featured image if there's any
 
         // @codingStandardsIgnoreStart
@@ -753,20 +753,42 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
             }
         }
 
+
+        if ( ! empty( $multi_repeated ) ) {
+            $fields_meta = ! empty( $multi_repeated['sub_fields'] ) ? $multi_repeated['sub_fields'] : [];
+            $parent      = ! empty( $multi_repeated['parent'] ) ? $multi_repeated['parent'] : '';
+
+            if ( ! empty( $parent ) && ! empty( $fields_meta ) ) {
+                // get how many rows previously saved
+                $row_num = get_post_meta( $post_id, $parent, true );
+
+                // delete previous repeat values
+                foreach ( $fields_meta as $sub_field ) {
+                    for ( $i = 0; $i < $row_num; $i++ ) {
+                        $tmp_meta = $parent . '_' . $i . '_' . $sub_field;
+                        delete_post_meta( $post_id, $tmp_meta );
+                        delete_post_meta( $post_id, '_' . $tmp_meta );
+                    }
+                }
+
+                $row_number = ! empty( $multi_repeated['row_number'] ) ? $multi_repeated['row_number'] : 0;
+                $sub_fields = ! empty( $multi_repeated['fields'] ) ? $multi_repeated['fields'] : [];
+
+                // save new data
+                for ( $i = 0; $i < $row_number; $i++ ) {
+                    foreach ( $sub_fields as $key => $value ) {
+                        update_post_meta( $post_id, $key, $value );
+                        update_post_meta( $post_id, '_' . $key, uniqid( 'field_' ) );
+                    }
+                }
+
+                update_post_meta( $post_id, $parent, $row_number );
+            }
+        }
+
         // save all custom fields
         foreach ( $meta_key_value as $meta_key => $meta_value ) {
             update_post_meta( $post_id, $meta_key, $meta_value );
-        }
-
-        // save any multicolumn repeatable fields
-        foreach ( $multi_repeated as $repeat_key => $repeat_value ) {
-            // first, delete any previous repeatable fields
-            delete_post_meta( $post_id, $repeat_key );
-
-            // now add them
-            foreach ( $repeat_value as $repeat_field ) {
-                add_post_meta( $post_id, $repeat_key, $repeat_field );
-            }
         }
 
         // save any files attached
@@ -871,7 +893,7 @@ class WPUF_Frontend_Form extends WPUF_Frontend_Render_Form {
 
         // custom fields
         preg_match_all( '/%custom_([\w-]*)\b%/', $content, $matches );
-        [ $search, $replace ] = $matches;
+	    [ $search, $replace ] = $matches;
 
         if ( $replace ) {
             foreach ( $replace as $index => $meta_key ) {

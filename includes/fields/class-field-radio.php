@@ -48,6 +48,7 @@ class WPUF_Form_Field_Radio extends WPUF_Form_Field_Checkbox {
                         <label <?php echo $field_settings['inline'] == 'yes' ? 'class="wpuf-radio-inline"' : 'class="wpuf-radio-block"'; ?>>
                             <input
                                 name="<?php echo esc_attr( $field_settings['name'] ); ?>"
+                                id="<?php echo esc_attr( $field_settings['name'] ); ?>"
                                 class="<?php echo esc_attr( 'wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                                 type="radio"
                                 data-type="radio"

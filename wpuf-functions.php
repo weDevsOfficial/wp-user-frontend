@@ -1778,7 +1778,7 @@ function wpuf_get_child_cats() {
     $parent_cat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
     $field_attr = isset( $_POST['field_attr'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['field_attr'] ) ) : [];
 
-    if ( wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
+    if ( ! wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
         wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
     }
 
@@ -4707,3 +4707,21 @@ function wpuf_modify_shortcodes( $content ) {
 
 // @todo: move this to frontend class
 add_filter( 'the_content', 'wpuf_modify_shortcodes' );
+
+/**
+ * Hide the Google map button
+ *
+ * @since WPUF_SINCE function moved from Posting class
+ *
+ * @return void
+ */
+function wpuf_hide_google_map_button() {
+    echo wp_kses( "<style>
+                button.button[data-name='custom_map'] {
+                    display: none;
+                }
+              </style>", [
+        'style' =>  [],
+        'button'    =>  []
+    ] );
+}

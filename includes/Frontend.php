@@ -13,6 +13,7 @@ use WeDevs\WpUtils\ContainerTrait;
 #[AllowDynamicProperties]
 class Frontend {
     use ContainerTrait;
+
     public function __construct() {
         $this->frontend_form      = new Frontend\Frontend_Form();
         $this->registration       = new Frontend\Registration();

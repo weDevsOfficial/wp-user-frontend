@@ -160,6 +160,7 @@ final class WP_User_Frontend {
         $this->subscription = new WeDevs\Wpuf\Admin\Subscription();
         $this->fields       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
         $this->customize    = new WeDevs\Wpuf\Admin\Customizer_Options();
+        $this->paypal       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
 
         if ( is_admin() ) {
             $this->admin        = new WeDevs\Wpuf\Admin();

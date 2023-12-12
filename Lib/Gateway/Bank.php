@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Lib\Gateway;
 
+use WeDevs\Wpuf\Pro\Coupons;
+
 /**
  * WP User Frotnend Bank gateway
  *
@@ -31,7 +33,7 @@ class Bank {
         $data['price'] = isset( $data['price'] ) ? empty( $data['price'] ) ? 0 : $data['price'] : 0;
 
         if ( isset( $_POST['coupon_id'] ) && !empty( $_POST['coupon_id'] ) ) {
-            $data['price'] = WPUF_Coupons::init()->discount( $data['price'], $_POST['coupon_id'], $data['item_number'] );
+            $data['price'] = (new Coupons())->discount( $data['price'], $_POST['coupon_id'], $data['item_number'] );
         }
 
         $data['cost']     = apply_filters( 'wpuf_payment_amount', $data['price'] ); //price with tax from pro

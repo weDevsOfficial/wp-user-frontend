@@ -1,9 +1,9 @@
 <?php
 
-namespace WeDevs\Wpuf\Admin\Forms;
+namespace WeDevs\Wpuf\Frontend;
 
+use WeDevs\Wpuf\Admin\Forms\Form;
 use WP_Query;
-use WPUF_Form;
 
 /**
  * The preview class
@@ -41,7 +41,7 @@ class Form_Preview {
         }
         $this->form_id = isset( $_GET['form_id'] ) ? intval( $_GET['form_id'] ) : 0;
         add_action( 'pre_get_posts', [ $this, 'pre_get_posts' ] );
-        add_filter( 'template_include', [ $this, 'template_include' ] );
+        // add_filter( 'template_include', [ $this, 'template_include' ] );
         add_filter( 'the_title', [ $this, 'the_title' ] );
         add_filter( 'the_content', [ $this, 'the_content' ] );
         add_filter( 'get_the_excerpt', [ $this, 'the_content' ] );
@@ -59,7 +59,8 @@ class Form_Preview {
         if ( ! in_the_loop() ) {
             return $title;
         }
-        $form = new WPUF_Form( $this->form_id );
+
+        $form = new Form( $this->form_id );
         if ( ! $form ) {
             return $title;
         }

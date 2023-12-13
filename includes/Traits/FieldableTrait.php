@@ -593,7 +593,8 @@ trait FieldableTrait {
                         if ( $repeater_value ) {
                             $ref_arr = array();
                             $cols    = count( $value['columns'] );
-                            $first   = array_shift( array_values( $repeater_value ) ); //first element
+                            $values  = array_values( $repeater_value );
+                            $first   = array_shift( $values ); //first element
                             $rows    = count( $first );
 
                             // loop through columns

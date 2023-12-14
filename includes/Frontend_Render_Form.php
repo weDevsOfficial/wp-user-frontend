@@ -296,6 +296,9 @@ class Frontend_Render_Form {
             $is_featured   = in_array( intval( $post_id ), $stickies, true );
         }
 
+        $post_type     = ! empty( $this->form_settings['post_type'] ) ? $this->form_settings['post_type'] : 'post';
+        $featured_item = ! empty( $user_sub['total_feature_item'] ) ? $user_sub['total_feature_item'] : 0;
+
         if ( ! empty( $user_sub['total_feature_item'] ) || $is_featured ) {
             ?>
             <li class="wpuf-el field-size-large" data-label="Is featured">
@@ -305,7 +308,7 @@ class Frontend_Render_Form {
                 <div >
                     <label >
                          <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( __( 'Mark the %s as featured (remaining %d)', 'wp-user-frontend' ), $this->form_settings['post_type'], $user_sub['total_feature_item'] ); ?></span>
+                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( __( 'Mark the %s as featured (remaining %d)', 'wp-user-frontend' ), $post_type, $featured_item ); ?></span>
                     </label>
                 </div>
             </li>

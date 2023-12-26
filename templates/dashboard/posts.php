@@ -182,7 +182,8 @@ $post_type_obj   = get_post_type_object( $post_type );
                                 <?php if ( empty( $payment_status ) ) { ?>
                                     <?php esc_html_e( 'Not Applicable', 'wp-user-frontend' ); ?>
                                     <?php } elseif ( $payment_status != 'completed' ) { ?>
-                                        <a href="<?php echo esc_attr( trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Pay Now', 'wp-user-frontend' ); ?></a>
+                                        <a href="<?php echo esc_attr( trailingslashit( get_permalink( wpuf_get_option( 'payment_page',
+                                                                                                                       'wpuf_payment' ) ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Pay Now', 'wp-user-frontend' ); ?></a>
                                         <?php } elseif ( $payment_status == 'completed' ) { ?>
                                             <?php esc_html_e( 'Completed', 'wp-user-frontend' ); ?>
                                         <?php } ?>

@@ -661,7 +661,7 @@
                             break;
                         }
 
-                        if ( hasRepeat ) {
+                        if ( hasRepeat === 'yes' ) {
                             var repeatItem = $('[data-type="confirm_password"]').eq(0);
 
                             if ( repeatItem.val() !== val ) {
@@ -955,9 +955,9 @@
                 multi_selection: false,
                 urlstream_upload: true,
                 file_data_name: 'wpuf_file',
-                max_file_size: wpuf_frontend_upload.max_filesize,
-                url: wpuf_frontend_upload.plupload.url,
-                flash_swf_url: wpuf_frontend_upload.flash_swf_url,
+                max_file_size: wpuf_upload.max_filesize,
+                url: wpuf_upload.plupload.url,
+                flash_swf_url: wpuf_upload.flash_swf_url,
                 filters: [{
                     title: 'Allowed Files',
                     extensions: 'jpg,jpeg,gif,png,bmp'
@@ -1337,7 +1337,7 @@
 
             make_media_embed_code: function(content, editor){
                 $.post( ajaxurl, {
-                        action:'make_media_embed_code',
+                        action:'wpuf_make_media_embed_code',
                         content: content
                     },
                     function(data){
@@ -1385,7 +1385,6 @@
                     shortcodeFound: false,
                 };
             }
-
             for ( var i = 0; i < shortcodes.length; i++) {
                 var shortcode = shortcodes[i];
                 var regex = new RegExp(shortcode);

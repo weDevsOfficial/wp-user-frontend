@@ -36,7 +36,7 @@
     		<?php
 
                 if ( class_exists( 'WPUF_Subscription' ) ) {
-                    $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+                    $subscriptions  = (new \WeDevs\Wpuf\Admin\Subscription())->get_subscriptions();
 
                     if ( $subscriptions ) {
                         foreach ( $subscriptions as $pack ) {

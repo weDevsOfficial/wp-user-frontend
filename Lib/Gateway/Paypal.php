@@ -20,10 +20,53 @@ class Paypal {
         $this->test_mode          = false;
 
         add_action( 'wpuf_gateway_paypal', [ $this, 'prepare_to_send' ] );
+        add_action( 'wpuf_options_payment', [ $this, 'payment_options' ] );
         add_action( 'init', [ $this, 'check_response' ] );
         add_action( 'wpuf_paypal_ipn_success', [ $this, 'paypal_success' ] );
         add_action( 'wpuf_cancel_payment_paypal', [ $this, 'handle_cancel_subscription' ] );
         add_action( 'wpuf_cancel_subscription_paypal', [ $this, 'handle_cancel_subscription' ] );
+    }
+
+    /**
+     * Adds paypal specific options to the admin panel
+     *
+     * @param type $options
+     *
+     * @return string
+     */
+    public function payment_options( $options ) {
+        $options[] = [
+            'name'  => 'paypal_email',
+            'label' => __( 'PayPal Email', 'wp-user-frontend' ),
+        ];
+
+        $options[] = [
+            'name'    => 'gate_instruct_paypal',
+            'label'   => __( 'PayPal Instruction', 'wp-user-frontend' ),
+            'type'    => 'wysiwyg',
+            'default' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account",
+        ];
+
+        $options[] = [
+            'name'  => 'paypal_api_username',
+            'label' => __( 'PayPal API username', 'wp-user-frontend' ),
+        ];
+        $options[] = [
+            'name'  => 'paypal_api_password',
+            'label' => __( 'PayPal API password', 'wp-user-frontend' ),
+        ];
+        $options[] = [
+            'name'  => 'paypal_api_signature',
+            'label' => __( 'PayPal API signature', 'wp-user-frontend' ),
+        ];
+        /* $options[] = [
+             'name'    => 'paypal_endpoint',
+             'label'   => __('PayPal IPN endpoint', 'wp-user-frontend'),
+             'default' => home_url( '/action/wpuf_paypal_success', null ),
+             'desc'    => __('Set this to your notification IPN listener', 'wp-user-frontend'),
+             'class'   => 'disabled'
+         ];*/
+        return $options;
     }
 
     public function subscription_cancel( $user_id ) {

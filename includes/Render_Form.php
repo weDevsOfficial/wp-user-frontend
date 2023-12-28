@@ -96,7 +96,7 @@ class Render_Form {
 
         if ( $no_captcha == 1 && 0 == $invisible ) {
             if ( !class_exists( 'WPUF_ReCaptcha' ) ) {
-                require_once WPUF_ROOT . '/lib/recaptchalib_noCaptcha.php';
+                require_once WPUF_ROOT . '/Lib/recaptchalib_noCaptcha.php';
             }
 
             $response  = null;

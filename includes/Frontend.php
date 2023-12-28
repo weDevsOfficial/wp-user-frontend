@@ -22,7 +22,6 @@ class Frontend {
         $this->frontend_dashboard = new Frontend\Frontend_Dashboard();
         $this->shortcode          = new Frontend\Shortcode();
         $this->payment            = new Frontend\Payment();
-        $this->bank               = new Lib\Gateway\Bank();
         $this->form_preview       = new Frontend\Form_Preview();
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );

@@ -151,8 +151,8 @@ final class WP_User_Frontend {
 
         // add reCaptcha library if not found
         if ( ! function_exists( 'recaptcha_get_html' ) ) {
-            require_once __DIR__ . '/lib/recaptchalib.php';
-            require_once __DIR__ . '/lib/invisible_recaptcha.php';
+            require_once __DIR__ . '/Lib/recaptchalib.php';
+            require_once __DIR__ . '/Lib/invisible_recaptcha.php';
         }
     }
 
@@ -166,6 +166,7 @@ final class WP_User_Frontend {
         $this->subscription = new WeDevs\Wpuf\Admin\Subscription();
         $this->fields       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
         $this->customize    = new WeDevs\Wpuf\Admin\Customizer_Options();
+        $this->bank         = new WeDevs\Wpuf\Lib\Gateway\Bank();
         $this->paypal       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
 
         if ( is_admin() ) {

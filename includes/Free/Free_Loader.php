@@ -137,7 +137,8 @@ class Free_Loader extends Pro_Prompt {
                 __( 'Coupons', 'wp-user-frontend' ),
                 $capability,
                 'wpuf_coupon',
-                [ $this, 'admin_coupon_page' ]
+                [ $this, 'admin_coupon_page' ],
+                4
             );
         }
     }

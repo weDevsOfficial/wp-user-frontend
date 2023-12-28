@@ -5,6 +5,7 @@ namespace WeDevs\Wpuf\Free;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_Events_Calendar;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_WooCommerce;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_EDD;
+use WeDevs\Wpuf\Pro\Admin\Coupon_Elements;
 
 class Free_Loader extends Pro_Prompt {
 
@@ -14,6 +15,20 @@ class Free_Loader extends Pro_Prompt {
         $this->includes();
         $this->instantiate();
 
+        add_action( 'add_meta_boxes_wpuf_forms', [ $this, 'add_meta_box_post' ], 99 );
+
+        add_action( 'wpuf_form_buttons_custom', [ $this, 'wpuf_form_buttons_custom_runner' ] );
+        add_action( 'wpuf_form_buttons_other', [ $this, 'wpuf_form_buttons_other_runner' ] );
+        add_action( 'wpuf_edit_form_area_profile', [ $this, 'wpuf_edit_form_area_profile_runner' ] );
+        add_action( 'registration_setting', [ $this, 'registration_setting_runner' ] );
+        add_action( 'wpuf_check_post_type', [ $this, 'wpuf_check_post_type_runner' ], 10, 2 );
+        add_action( 'wpuf_form_custom_taxonomies', [ $this, 'wpuf_form_custom_taxonomies_runner' ] );
+        add_action( 'wpuf_conditional_field_render_hook', [ $this, 'wpuf_conditional_field_render_hook_runner' ], 10, 3 );
+
+        //coupon
+        add_action( 'wpuf_coupon_settings_form', [ $this, 'wpuf_coupon_settings_form_runner' ] );
+        add_action( 'wpuf_check_save_permission', [ $this, 'wpuf_check_save_permission_runner' ], 10, 2 );
+
         // admin menu
         add_action( 'wpuf_admin_menu', [ $this, 'admin_menu' ] );
         add_action( 'wpuf_admin_menu_top', [ $this, 'admin_menu_top' ] );
@@ -21,6 +36,7 @@ class Free_Loader extends Pro_Prompt {
         add_action( 'wpuf_form_post_expiration', [ $this, 'wpuf_form_post_expiration_runner' ] );
         add_action( 'wpuf_form_settings_post_notification', [ $this, 'post_notification_hook_runner' ] );
 
+        // plugin settings
         add_filter( 'wpuf_settings_sections', [ $this, 'pro_sections' ] );
         add_filter( 'wpuf_settings_fields', [ $this, 'pro_settings' ] );
         // post form templates
@@ -33,6 +49,9 @@ class Free_Loader extends Pro_Prompt {
         // navigation tabs added for previewing in Subscription > Add/Edit Subscription
         add_action( 'wpuf_admin_subs_nav_tab', [ $this, 'subscription_tabs' ] );
         add_action( 'wpuf_admin_subs_nav_content', [ $this, 'subscription_tab_contents' ] );
+
+        // subscription
+        add_action( 'wpuf_admin_subscription_detail', [ $this, 'wpuf_admin_subscription_detail_runner' ], 10, 4 );
     }
 
     public function includes() {
@@ -851,11 +870,11 @@ class Free_Loader extends Pro_Prompt {
 
     //coupon
     public function wpuf_coupon_settings_form_runner( $obj ) {
-        WPUF_Coupon_Elements::add_coupon_elements( $obj );
+        Coupon_Elements::add_coupon_elements( $obj );
     }
 
     public function wpuf_check_save_permission_runner( $post, $update ) {
-        WPUF_Coupon_Elements::check_saving_capability( $post, $update );
+        Coupon_Elements::check_saving_capability( $post, $update );
     }
 
     /**

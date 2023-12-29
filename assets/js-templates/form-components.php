@@ -414,7 +414,8 @@
     	</ul>
 
     </div>
-</div></script>
+</div>
+</script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-checkbox_field">
 <div class="wpuf-fields">

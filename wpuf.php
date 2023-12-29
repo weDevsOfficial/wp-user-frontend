@@ -129,7 +129,7 @@ final class WP_User_Frontend {
      */
     public function init_hooks() {
         add_action( 'plugins_loaded', [ $this, 'wpuf_loader' ] );
-        add_action( 'plugins_loaded', [ $this, 'process_wpuf_pro_version' ], 11 );
+        add_action( 'plugins_loaded', [ $this, 'process_wpuf_pro_version' ] );
         add_action( 'plugins_loaded', [ $this, 'plugin_upgrades' ] );
         add_action( 'plugins_loaded', [ $this, 'instantiate' ] );
 
@@ -148,6 +148,7 @@ final class WP_User_Frontend {
      */
     public function includes() {
         require_once __DIR__ . '/wpuf-functions.php';
+        require_once __DIR__ . '/includes/class-frontend-render-form.php';
 
         // add reCaptcha library if not found
         if ( ! function_exists( 'recaptcha_get_html' ) ) {
@@ -217,7 +218,7 @@ final class WP_User_Frontend {
      */
     public function process_wpuf_pro_version() {
         // check whether the version of wpuf pro is prior to the code restructure
-        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '3.4.13', '<' ) ) {
+        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4', '<' ) ) {
             deactivate_plugins( WPUF_PRO_FILE );
 
             add_action( 'admin_notices', [ $this, 'wpuf_upgrade_notice' ] );
@@ -233,7 +234,7 @@ final class WP_User_Frontend {
         ?>
         <div class="notice error" id="wpuf-pro-installer-notice" style="padding: 1em; position: relative;">
             <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wpuf-pro' ); ?></h2>
-            <p><?php esc_html_e( 'You just need to upgrade the Plugin version above 3.4.13 to make it functional.', 'wpuf-pro' ); ?></p>
+            <p><?php esc_html_e( 'You just need to upgrade the Plugin version 4.0 or above to make it functional.', 'wpuf-pro' ); ?></p>
         </div>
         <?php
     }
@@ -250,7 +251,7 @@ final class WP_User_Frontend {
             $this->is_pro = true;
             add_action( 'admin_notices', [ $this, 'wpuf_latest_pro_activation_notice' ] );
         } else {
-            $this->free_loader= new WeDevs\Wpuf\Free\Free_Loader();
+            $this->free_loader = new WeDevs\Wpuf\Free\Free_Loader();
         }
     }
 

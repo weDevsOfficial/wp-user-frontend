@@ -4669,6 +4669,12 @@ function wpuf_get_single_user_roles( $user_id ) {
 function wpuf_modify_shortcodes( $content ) {
     global $pagenow;
 
+    $post = get_post();
+
+    if ( ! ( $post instanceof \WP_Post ) ) {
+        return $content;
+    }
+
     if ( 'post.php' === $pagenow ) {
         return $content;
     }

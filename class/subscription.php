@@ -372,9 +372,9 @@ class WPUF_Subscription {
 
         $post_data = wp_unslash( $_POST );
 
-//        if ( ! isset( $post_data['billing_amount'] ) ) {
-//            return;
-//        }
+        //        if ( ! isset( $post_data['billing_amount'] ) ) {
+        //            return;
+        //        }
 
         $expiration_time      = '';
         $enable_post_expir    = '';
@@ -844,7 +844,7 @@ class WPUF_Subscription {
             ! empty( $current_pack['pack_id'] ) &&
             isset( $current_pack['status'] ) &&
             $current_pack['status'] === 'completed'
-         ) {
+        ) {
             global $wpdb;
 
             $user_id         = get_current_user_id();
@@ -1349,9 +1349,9 @@ class WPUF_Subscription {
         $current_time  = current_time( 'mysql' );
         $non_recurrent = array_filter(
             $all_subscription, function ( $pack ) use ( $current_time ) {
-                $pack = maybe_unserialize( $pack->meta_value );
-                return ! empty( $pack['recurring'] ) && $pack['recurring'] === 'no' && $current_time >= $pack['expire'];
-            }
+            $pack = maybe_unserialize( $pack->meta_value );
+            return ! empty( $pack['recurring'] ) && $pack['recurring'] === 'no' && $current_time >= $pack['expire'];
+        }
         );
 
         $remove_feature_item_by_author = [];

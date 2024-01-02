@@ -53,7 +53,7 @@
         <li class="wpuf-submit">
             <div class="wpuf-label">&nbsp;</div>
 
-            <?php do_action( 'wpuf-form-builder-template-builder-stage-submit-area' ); ?>
+            <?php do_action( 'wpuf_form_builder_template_builder_stage_submit_area' ); ?>
         </li>
     </ul><!-- .wpuf-form -->
 
@@ -78,7 +78,7 @@
         </ul>
     </div>
 
-    <?php do_action( 'wpuf-form-builder-template-builder-stage-bottom-area' ); ?>
+    <?php do_action( 'wpuf_form_builder_template_builder_stage_bottom_area' ); ?>
 </div><!-- #form-preview-stage -->
 </script>
 
@@ -396,7 +396,7 @@
     		<?php
 
                 if ( class_exists( 'WPUF_Subscription' ) ) {
-                    $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+                    $subscriptions  = (new \WeDevs\Wpuf\Admin\Subscription())->get_subscriptions();
 
                     if ( $subscriptions ) {
                         foreach ( $subscriptions as $pack ) {
@@ -414,7 +414,8 @@
     	</ul>
 
     </div>
-</div></script>
+</div>
+</script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-checkbox_field">
 <div class="wpuf-fields">

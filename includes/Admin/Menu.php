@@ -88,7 +88,7 @@ class Menu {
     /**
      * The content of the Post Form page.
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */
@@ -112,7 +112,7 @@ class Menu {
     /**
      * The action to run just after the menu is created.
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */
@@ -164,7 +164,7 @@ class Menu {
     /**
      * Get all the submenu hooks created by WPUF
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return array
      */
@@ -318,7 +318,7 @@ class Menu {
     /**
      * The User Frontend > Help page scripts
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */

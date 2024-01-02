@@ -23,7 +23,7 @@ class Customizer_Options {
     /**
      * Backwards compatibility for the old Customizer Option Save
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @param  mixed $sections
      *

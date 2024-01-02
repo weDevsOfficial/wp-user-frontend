@@ -113,7 +113,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * The action to run just after the menu is created
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */

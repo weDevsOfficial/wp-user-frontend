@@ -8,7 +8,7 @@ use WeDevs\WpUtils\ContainerTrait;
  * The class which will hold all the starting point of operations outside WordPress dashboard for WPUF
  * We will initialize all the admin classes from here.
  *
- * @since WPUF_SINCE
+ * @since 4.0.0
  */
 #[AllowDynamicProperties]
 class Frontend {
@@ -30,7 +30,7 @@ class Frontend {
     /**
      * Enqueue CSS and JS related to WPUF
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */
@@ -149,7 +149,7 @@ class Frontend {
     /**
      * Check if this is a dokan seller dashboard page
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return bool
      */

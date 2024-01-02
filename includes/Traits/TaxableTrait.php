@@ -13,7 +13,7 @@ use WeDevs\Wpuf\Data\Country_State;
 trait TaxableTrait {
     /**
      * Checks if taxes are enabled
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @return bool
      */
@@ -29,7 +29,7 @@ trait TaxableTrait {
 
     /**
      * Check if the individual product prices include tax
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @return bool $include_tax
      */
@@ -47,7 +47,7 @@ trait TaxableTrait {
 
     /**
      * Retrieve tax rates
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @return array Defined tax rates
      */
@@ -58,7 +58,7 @@ trait TaxableTrait {
 
     /**
      * Base country and states callback
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @param array $args Arguments passed by the setting
      * @return void
@@ -133,7 +133,7 @@ trait TaxableTrait {
 
     /**
      * Retrieve base states drop down
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @return void
      */
@@ -168,7 +168,7 @@ trait TaxableTrait {
      * Tax Rates Callback
      * Renders tax rates table
      *
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @param array $args Arguments passed by the setting
      * @return void
@@ -289,7 +289,7 @@ trait TaxableTrait {
     /**
      * Get Tax rate of current user
      *
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @param $post_id
      * @return string
@@ -355,7 +355,7 @@ trait TaxableTrait {
     /**
      * Get Tax rate by country and state
      *
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @param $post_id
      * @return string
@@ -395,7 +395,7 @@ trait TaxableTrait {
     /**
      * Get billing amount with tax
      *
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @param $post_id
      * @return string
@@ -416,7 +416,7 @@ trait TaxableTrait {
     /**
      * Recalculate taxes
      *
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @return void|bool
      */
@@ -470,7 +470,7 @@ trait TaxableTrait {
     /**
      * Save taxes options
      *
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @return void
      */
@@ -500,7 +500,7 @@ trait TaxableTrait {
     /**
      * Retrieve a states drop down
      *
-     * @since WPUF_SINCE moved to TaxableTrait
+     * @since 4.0.0 moved to TaxableTrait
      *
      * @return void
      */

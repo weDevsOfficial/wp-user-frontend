@@ -8,7 +8,7 @@ class Manager {
     /**
      * Class constructor
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */
@@ -29,7 +29,7 @@ class Manager {
     /**
      * Check if widget class exists
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @param string $widget_id
      *
@@ -42,7 +42,7 @@ class Manager {
     /**
      * Get widget id from widget class
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @param string $widget_class
      *

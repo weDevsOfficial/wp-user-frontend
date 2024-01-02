@@ -9,7 +9,7 @@ use WeDevs\WpUtils\ContainerTrait;
  * The Admin class which will hold all the starting point of WordPress dashboard admin operations for WPUF
  * We will initialize all the admin classes from here.
  *
- * @since WPUF_SINCE
+ * @since 4.0.0
  */
 #[AllowDynamicProperties]
 class Admin {
@@ -44,7 +44,7 @@ class Admin {
     /**
      * Create post form templates depending on the action
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */
@@ -55,7 +55,7 @@ class Admin {
     /**
      * Enqueue the common CSS and JS needed for WordPress admin area
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */

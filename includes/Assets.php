@@ -6,14 +6,14 @@ namespace WeDevs\Wpuf;
  * The assets handler for WPUF. All the styles and scripts should register from here first.
  * Then we will enqueue them from the related pages.
  *
- * @since WPUF_SINCE
+ * @since 4.0.0
  */
 class Assets {
 
     /**
      * Suffix for the scripts. add `.min` if we are in production
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @var string
      */
@@ -23,7 +23,7 @@ class Assets {
     /**
      * The css dependencies list for form builder
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @var array|mixed|null
      */
@@ -50,7 +50,7 @@ class Assets {
     /**
      * Register all the css and js from here
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */
@@ -66,7 +66,7 @@ class Assets {
     /**
      * Register the CSS from here. Need to define the JS first from get_styles()
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */
@@ -83,7 +83,7 @@ class Assets {
     /**
      * Register the JS from here. Need to define the JS first from get_scripts()
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */
@@ -100,7 +100,7 @@ class Assets {
     /**
      * Returns the list of styles
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return mixed|null
      */
@@ -180,7 +180,7 @@ class Assets {
     /**
      * Returns the list of JS
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return mixed|null
      */

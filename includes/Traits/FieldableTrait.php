@@ -693,7 +693,7 @@ trait FieldableTrait {
     /**
      * Search on multi dimensional array
      *
-     * @since wpuf_since moved from Render_Form.php to FieldableTrait.php
+     * @since 4.0.0 moved from Render_Form.php to FieldableTrait.php
      *
      * @param array  $array
      * @param string $key   name of key

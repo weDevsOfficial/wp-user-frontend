@@ -13,7 +13,12 @@ class WPUF_Frontend_Render_Form {
             ?>
         <div class="notice error" id="wpuf-pro-installer-notice" style="padding: 1em; position: relative;">
             <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wp-user-frontend' ); ?></h2>
-            <p><?php esc_html_e( 'You just need to upgrade the Plugin version 4.0 or above to make it functional.', 'wp-user-frontend' ); ?></p>
+            <p>
+                <?php
+                /* translators: 1: opening anchor tag, 2: closing anchor tag. */
+                echo sprintf( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating</strong>', 'wpuf-pro' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' );
+                ?>
+            </p>
         </div>
             <?php
         }

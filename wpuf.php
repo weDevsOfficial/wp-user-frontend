@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 3.6.9
+Version: 4.0.0
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -25,7 +25,7 @@ if ( file_exists( $autoload ) ) {
 	wp_die( __( 'There was a problem installing the plugin' ), __( 'Problem installing plugin' ) );
 }
 
-define( 'WPUF_VERSION', '3.6.9' );
+define( 'WPUF_VERSION', '4.0.0' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -234,7 +234,12 @@ final class WP_User_Frontend {
         ?>
         <div class="notice error" id="wpuf-pro-installer-notice" style="padding: 1em; position: relative;">
             <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wpuf-pro' ); ?></h2>
-            <p><?php esc_html_e( 'You just need to upgrade the Plugin version 4.0 or above to make it functional.', 'wpuf-pro' ); ?></p>
+            <p>
+                <?php
+                /* translators: 1: opening anchor tag, 2: closing anchor tag. */
+                echo sprintf( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating</strong>', 'wpuf-pro' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' );
+                ?>
+            </p>
         </div>
         <?php
     }
@@ -249,163 +254,9 @@ final class WP_User_Frontend {
 
         if ( $has_pro ) {
             $this->is_pro = true;
-            add_action( 'admin_notices', [ $this, 'wpuf_latest_pro_activation_notice' ] );
         } else {
             $this->free_loader = new WeDevs\Wpuf\Free\Free_Loader();
         }
-    }
-
-    /**
-     * Latest Pro Activation Message
-     *
-     * @return void
-     */
-    public function wpuf_latest_pro_activation_notice() {
-        if ( ! version_compare( WPUF_PRO_VERSION, '3.1.0', '<' ) ) {
-            return;
-        }
-
-        $offer_msg = __(
-            '<p style="font-size: 13px">
-                            <strong class="highlight-text" style="font-size: 18px; display:block; margin-bottom:8px"> UPDATE REQUIRED </strong>
-                            WP User Frontend Pro is not working because you are using an old version of WP User Frontend Pro. Please update <strong>WPUF Pro</strong> to >= <strong>v3.1.0</strong> to work with the latest version of WP User Frontend
-                        </p>', 'wp-user-frontend'
-        );
-        ?>
-            <div class="notice is-dismissible" id="wpuf-update-offer-notice">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td class="image-container">
-                                <img src="https://ps.w.org/wp-user-frontend/assets/icon-256x256.png" alt="">
-                            </td>
-                            <td class="message-container">
-                                <?php echo esc_html( $offer_msg ); ?>
-                            </td>
-                            <td><a href="https://wedevs.com/account/downloads/" class="button button-primary promo-btn" target="_blank"><?php esc_html_e( 'Update WP User Frontend Pro Now', 'wp-user-frontend' ); ?></a></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <!-- <a href="https://wedevs.com/account/downloads/" class="button button-primary promo-btn" target="_blank"><?php esc_html_e( 'Update WP User Frontend Pro NOW', 'wp-user-frontend' ); ?></a> -->
-            </div><!-- #wpuf-update-offer-notice -->
-
-            <style>
-                #wpuf-update-offer-notice {
-                    background-size: cover;
-                    border: 0px;
-                    padding: 10px;
-                    opacity: 0;
-                    border-left: 3px solid red;
-                }
-
-                .wrap > #wpuf-update-offer-notice {
-                    opacity: 1;
-                }
-
-                #wpuf-update-offer-notice table {
-                    border-collapse: collapse;
-                    width: 70%;
-                }
-
-                #wpuf-update-offer-notice table td {
-                    padding: 0;
-                }
-
-                #wpuf-update-offer-notice table td.image-container {
-                    background-color: #fff;
-                    vertical-align: middle;
-                    width: 95px;
-                }
-
-
-                #wpuf-update-offer-notice img {
-                    max-width: 100%;
-                    max-height: 100px;
-                    vertical-align: middle;
-                    border-radius: 100%;
-                }
-
-                #wpuf-update-offer-notice table td.message-container {
-                    padding: 0 10px;
-                }
-
-                #wpuf-update-offer-notice h2{
-                    color: #000;
-                    margin-bottom: 10px;
-                    font-weight: normal;
-                    margin: 16px 0 14px;
-                    -webkit-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -moz-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -o-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                }
-
-
-                #wpuf-update-offer-notice h2 span {
-                    position: relative;
-                    top: 0;
-                }
-
-                #wpuf-update-offer-notice p{
-                    color: #000;
-                    font-size: 14px;
-                    margin-bottom: 10px;
-                    -webkit-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -moz-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    -o-text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                    text-shadow: 0.1px 0.1px 0px rgba(250, 250, 250, 0.24);
-                }
-
-                #wpuf-update-offer-notice p strong.highlight-text{
-                    color: #000;
-                }
-
-                #wpuf-update-offer-notice p a {
-                    color: #000;
-                }
-
-                #wpuf-update-offer-notice .notice-dismiss:before {
-                    color: #000;
-                }
-
-                #wpuf-update-offer-notice span.dashicons-megaphone {
-                    position: absolute;
-                    bottom: 46px;
-                    right: 248px;
-                    color: rgba(253, 253, 253, 0.29);
-                    font-size: 96px;
-                    transform: rotate(-21deg);
-                }
-
-                #wpuf-update-offer-notice a.promo-btn{
-                    background: #0073aa;
-                    /*border-color: #fafafa #fafafa #fafafa;*/
-                    box-shadow: 0 1px 0 #fafafa;
-                    color: #fff;
-                    text-decoration: none;
-                    text-shadow: none;
-                    position: absolute;
-                    top: 40px;
-                    right: 26px;
-                    height: 40px;
-                    line-height: 40px;
-                    width: 300px;
-                    text-align: center;
-                    font-weight: 600;
-                }
-
-            </style>
-            <script type='text/javascript'>
-                jQuery('body').on('click', '#wpuf-update-offer-notice .notice-dismiss', function(e) {
-                    e.preventDefault();
-
-                    wp.ajax.post('wpuf-dismiss-update-offer-notice', {
-                        dismissed: true
-                    });
-                });
-            </script>
-
-        <?php
     }
 
     /**
@@ -475,7 +326,7 @@ final class WP_User_Frontend {
     /**
      * Register widgets
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */
@@ -491,7 +342,7 @@ final class WP_User_Frontend {
     /**
      * Get the global field seperator for WPUF
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return string
      */

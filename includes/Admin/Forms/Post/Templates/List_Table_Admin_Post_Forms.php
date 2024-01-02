@@ -17,7 +17,7 @@ class List_Table_Admin_Post_Forms extends WP_List_Table {
     /**
      * The total count of current list
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      * @var int
      */
     protected $counts;

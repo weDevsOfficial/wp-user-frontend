@@ -4532,7 +4532,7 @@ function wpuf_get_pro_preview_tooltip() {
  * Get post forms created by WPUF
  *
  * @since 2.9.0
- * @since WPUF_SINCE moved to wpuf-functions.php from WPUF_Frontend_Account.php
+ * @since 4.0.0 moved to wpuf-functions.php from WPUF_Frontend_Account.php
  *
  * @return array $forms
  *
@@ -4559,7 +4559,7 @@ function wpuf_get_post_forms() {
 /**
  * require_once a file upon checking the existence of the file
  *
- * @since WPUF_SINCE
+ * @since 4.0.0
  *
  * @param $file_location
  *
@@ -4574,7 +4574,7 @@ function wpuf_require_once( $file_location ) {
 /**
  * include_once a file upon checking the existence of the file
  *
- * @since WPUF_SINCE
+ * @since 4.0.0
  *
  * @param $file_location
  *
@@ -4711,7 +4711,7 @@ add_filter( 'the_content', 'wpuf_modify_shortcodes' );
 /**
  * Hide the Google map button
  *
- * @since WPUF_SINCE function moved from Posting class
+ * @since 4.0.0 function moved from Posting class
  *
  * @return void
  */

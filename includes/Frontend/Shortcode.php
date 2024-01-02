@@ -10,7 +10,7 @@ class Shortcode {
     /**
      * initialize the WPUF shortcodes
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return void
      */

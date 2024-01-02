@@ -171,7 +171,7 @@ class Admin_Settings {
     /**
      * Get the settings_api property
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @return \WeDevs_Settings_API
      */

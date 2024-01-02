@@ -12,8 +12,37 @@ use WeDevs\Wpuf\Pro\Coupons;
 class Bank {
     public function __construct() {
         add_action( 'wpuf_gateway_bank', [$this, 'prepare_to_send'] );
+        add_action( 'wpuf_options_payment', [ $this, 'payment_options' ] );
         add_action( 'wpuf_gateway_bank_order_submit', [$this, 'order_notify_admin'] );
         add_action( 'wpuf_gateway_bank_order_complete', [$this, 'order_notify_user'], 10, 2 );
+    }
+
+    /**
+     * Adds bank specific options to the admin panel
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    public function payment_options( $options ) {
+        $pages = wpuf_get_pages();
+
+        $options[] = [
+            'name'    => 'gate_instruct_bank',
+            'label'   => __( 'Bank Instruction', 'wp-user-frontend' ),
+            'type'    => 'wysiwyg',
+            'default' => 'Make your payment directly into our bank account.',
+        ];
+
+        $options[] = [
+            'name'    => 'bank_success',
+            'label'   => __( 'Bank Payment Success Page', 'wp-user-frontend' ),
+            'desc'    => __( 'After payment users will be redirected here', 'wp-user-frontend' ),
+            'type'    => 'select',
+            'options' => $pages,
+        ];
+
+        return $options;
     }
 
     /**

@@ -49,6 +49,31 @@ class Admin_Form_Builder {
             add_action( 'admin_footer', [ $this, 'admin_footer' ] );
             add_action( 'wpuf_admin_form_builder', [ $this, 'include_form_builder' ] );
         }
+
+        add_action( 'wpuf_form_builder_template_builder_stage_submit_area', [ $this, 'add_form_submit_area' ] );
+    }
+
+    /**
+     * Add buttons in form submit area
+     *
+     * @since 2.5
+     *
+     * @return void
+     */
+    public function add_form_submit_area() {
+        ?>
+        <input @click.prevent="" type="submit" name="submit" :value="post_form_settings.submit_text">
+
+        <a
+            v-if="post_form_settings.draft_post"
+            @click.prevent=""
+            href="#"
+            class="btn"
+            id="wpuf-post-draft"
+        >
+            <?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?>
+        </a>
+        <?php
     }
 
     /**

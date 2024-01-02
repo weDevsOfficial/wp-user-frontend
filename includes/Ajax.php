@@ -88,7 +88,7 @@ class Ajax {
     /**
      * Send json error message
      *
-     * @since WPUF_SINCE
+     * @since 4.0.0
      *
      * @param string $error
      */

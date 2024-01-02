@@ -77,41 +77,6 @@ class Field_Manager {
     }
 
     /**
-     * Add Post Field Type
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function add_field_settings( $field_settings ) {
-        if ( class_exists( 'WeDevs\Wpuf\Fields\Field_Contract' ) ) {
-            $field_settings['post_title']     = new Form_Field_Post_Title();
-            $field_settings['post_content']   = new Form_Field_Post_Content();
-            $field_settings['post_excerpt']   = new Form_Field_Post_Excerpt();
-            $field_settings['featured_image'] = new Form_Field_Featured_Image();
-            $taxonomy_templates = [];
-            foreach ( $this->wp_post_types as $post_type => $taxonomies ) {
-                if ( ! empty( $taxonomies ) ) {
-                    foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                        if ( 'post_tag' === $tax_name ) {
-                            // $taxonomy_templates['post_tag'] = self::post_tags();
-                            $taxonomy_templates['post_tags'] = new Form_Field_Post_Tags();
-                        } else {
-                            // $taxonomy_templates[ $tax_name ] = self::taxonomy_template( $tax_name, $taxonomy );
-                            // $taxonomy_templates[ 'taxonomy' ] = new Form_Field_Post_Taxonomy($tax_name, $taxonomy);
-                            $taxonomy_templates[ $tax_name ] = new Form_Field_Post_Taxonomy( $tax_name,
-                                                                                                  $taxonomy );
-                        }
-                    }
-                }
-            }
-            $field_settings = array_merge( $field_settings, $taxonomy_templates );
-        }
-
-        return $field_settings;
-    }
-
-    /**
      * Register the field types
      *
      * @return void

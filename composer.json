@@ -17,7 +17,7 @@
     "wedevs/wp-utils": "dev-main"
   },
   "require-dev": {
-    "wp-coding-standards/wpcs": "dev-master",
+    "wp-coding-standards/wpcs": "dev-develop",
     "dealerdirect/phpcodesniffer-composer-installer": "0.7.0",
     "tareq1988/wp-php-cs-fixer": "dev-master",
     "phpcompatibility/phpcompatibility-wp": "dev-master",

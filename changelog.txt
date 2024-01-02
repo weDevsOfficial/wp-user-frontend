@@ -1,3 +1,9 @@
+= v4.0.0 (02 Jan, 2024) =
+* Enhance - Restructure plugin codes
+* Fix - Error when editing the featured post
+* Fix - add/edit post forms if the site language is set to Simplified Chinese
+* Fix - Errors with Post Form Conditional Logic
+
 = v3.6.9 (11 Sep, 2023) =
 
 * Enhance - add capabilities check on AJAX actions

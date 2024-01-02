@@ -66,6 +66,11 @@ class Payment {
      */
     public function payment_page( $content ) {
         global $post;
+
+        if ( ! ( $post instanceof \WP_Post ) ) {
+            return $content;
+        }
+
         $pay_page       = intval( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
 
         $billing_amount = 0;

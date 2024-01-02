@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.0\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-01-01 07:14:55+00:00\n"
+"POT-Creation-Date: 2024-01-02 08:50:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7382,10 +7382,13 @@ msgstr ""
 msgid "Your WP User Frontend Pro is almost ready!"
 msgstr ""
 
-#: includes/class-frontend-render-form.php:16 wpuf.php:237
+#: includes/class-frontend-render-form.php:19 wpuf.php:240
+#. translators: 1: opening anchor tag, 2: closing anchor tag.
 msgid ""
-"You just need to upgrade the Plugin version 4.0 or above to make it "
-"functional."
+"We've pushed a major update on both <b>WP User Frontend Free</b> and <b>WP "
+"User Frontend Pro</b> that requires you to use latest version of both. "
+"Please update the WPUF pro to the latest version. <br><strong>Please make "
+"sure to take a complete backup of your site before updating</strong>"
 msgstr ""
 
 #: includes/functions/settings-options.php:14
@@ -8472,27 +8475,6 @@ msgstr ""
 
 #: wpuf.php:116
 msgid "</strong> or greater."
-msgstr ""
-
-#: wpuf.php:268
-msgid ""
-"<p style=\"font-size: 13px\">\n"
-"                            <strong class=\"highlight-text\" "
-"style=\"font-size: 18px; display:block; margin-bottom:8px\"> UPDATE "
-"REQUIRED </strong>\n"
-"                            WP User Frontend Pro is not working because you "
-"are using an old version of WP User Frontend Pro. Please update "
-"<strong>WPUF Pro</strong> to >= <strong>v3.1.0</strong> to work with the "
-"latest version of WP User Frontend\n"
-"                        </p>"
-msgstr ""
-
-#: wpuf.php:285
-msgid "Update WP User Frontend Pro Now"
-msgstr ""
-
-#: wpuf.php:289
-msgid "Update WP User Frontend Pro NOW"
 msgstr ""
 
 #. Plugin URI of the plugin/theme

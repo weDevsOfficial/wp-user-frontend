@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Free;
 
+use WeDevs\Wpuf\Render_Form;
 use WeDevs\Wpuf\WPUF_User;
 
 /**
@@ -161,7 +162,7 @@ class Simple_Login {
                     $no_captcha        = 1;
                     $invisible_captcha = 0;
 
-                    WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+                    Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
                 }
             }
         }
@@ -452,7 +453,7 @@ class Simple_Login {
                 } else {
                     $no_captcha = 1;
                     $invisible_captcha = 0;
-                    WPUF_Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+                    Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
                 }
             }
 

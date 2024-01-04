@@ -219,7 +219,7 @@ final class WP_User_Frontend {
     public function process_wpuf_pro_version() {
         // check whether the version of wpuf pro is prior to the code restructure
         if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4', '<' ) ) {
-            deactivate_plugins( WPUF_PRO_FILE );
+            // deactivate_plugins( WPUF_PRO_FILE );
 
             add_action( 'admin_notices', [ $this, 'wpuf_upgrade_notice' ] );
         }

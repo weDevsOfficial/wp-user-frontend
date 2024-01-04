@@ -13,7 +13,7 @@
   "require": {
     "php": ">=5.5",
     "composer/installers": ">=1.4",
-    "appsero/client": "dev-develop",
+    "appsero/client": "1.3.0",
     "wedevs/wp-utils": "dev-main"
   },
   "require-dev": {

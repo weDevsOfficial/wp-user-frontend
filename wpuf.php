@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.0.2
+Version: 4.0.3
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -25,7 +25,7 @@ if ( file_exists( $autoload ) ) {
 	wp_die( __( 'There was a problem installing the plugin' ), __( 'Problem installing plugin' ) );
 }
 
-define( 'WPUF_VERSION', '4.0.2' );
+define( 'WPUF_VERSION', '4.0.3' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -219,7 +219,7 @@ final class WP_User_Frontend {
     public function process_wpuf_pro_version() {
         // check whether the version of wpuf pro is prior to the code restructure
         if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4', '<' ) ) {
-            deactivate_plugins( WPUF_PRO_FILE );
+            // deactivate_plugins( WPUF_PRO_FILE );
 
             add_action( 'admin_notices', [ $this, 'wpuf_upgrade_notice' ] );
         }

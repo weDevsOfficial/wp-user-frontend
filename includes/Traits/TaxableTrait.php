@@ -337,10 +337,16 @@ trait TaxableTrait {
 
                 if ( ! empty( $woo_address ) && ! empty( $rates ) ) {
                     foreach ( $rates as $rate ) {
-                        if ( $rate['rate'] === '' ) {
+                        $rate_str    = ! empty( $rate['rate'] ) ? $rate['rate'] : '';
+                        $state       = ! empty( $rate['state'] ) ? $rate['state'] : '';
+                        $woo_state   = ! empty( $woo_address['state'] ) ? $woo_address['state'] : '';
+                        $country     = ! empty( $rate['country'] ) ? $rate['country'] : '';
+                        $woo_country = ! empty( $woo_address['country'] ) ? $woo_address['country'] : '';
+
+                        if ( '' === $rate_str ) {
                             return $tax_amount;
                         }
-                        if ( $rate['state'] === $woo_address['state'] && $rate['country'] === $woo_address['country'] ) {
+                        if ( $state === $woo_state && $country === $woo_country ) {
                             $tax_amount = $rate['rate'];
                             return $tax_amount;
                         }

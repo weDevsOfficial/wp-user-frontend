@@ -1,6 +1,28 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 4.0.3',
+        'released' => '2024-01-05',
+        'changes'  => [
+            [
+                'title' => __( 'Restructure plugin codes', 'wp-user-frontend' ),
+                'type'  => 'Enhance',
+            ],
+            [
+                'title' => __( 'Error when editing the featured post', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'add/edit post forms if the site language is set to Simplified Chinese', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Errors with Post Form Conditional Logic', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 4.0.2',
         'released' => '2024-01-03',
         'changes'  => [

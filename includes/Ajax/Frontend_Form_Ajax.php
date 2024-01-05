@@ -151,7 +151,7 @@ class Frontend_Form_Ajax {
 
         $allowed_tags = wp_kses_allowed_html( 'post' );
         $postarr = [
-            'post_type'    => $this->form_settings['post_type'],
+            'post_type'    => ! empty( $this->form_settings['post_type'] ) ? $this->form_settings['post_type'] : 'post',
             'post_status'  => isset( $this->form_settings['post_status'] ) ? $this->form_settings['post_status'] : 'publish',
             'post_author'  => $post_author,
             'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',

@@ -502,13 +502,14 @@ class Subscription {
      */
     public function set_pending( $postdata, $form_id, $form_settings, $form_vars ) {
         $form             = new Form( $form_id );
+        $post_type        = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
         $payment_options  = $form->is_charging_enabled();
         $force_pack       = $form->is_enabled_force_pack();
         $pay_per_post     = $form->is_enabled_pay_per_post();
         $fallback_cost    = $form->is_enabled_fallback_cost();
         $current_user     = wpuf_get_user();
         $current_pack     = $current_user->subscription()->current_pack();
-        $has_post         = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+        $has_post         = $current_user->subscription()->has_post_count( $post_type );
 
         if ( $payment_options && $force_pack && ! is_wp_error( $current_pack ) && $fallback_cost && ! $has_post ) {
             $postdata['post_status'] = 'pending';

@@ -3957,9 +3957,10 @@ add_action( 'wpuf_before_form_render', 'wpuf_show_form_limit_message' );
  * @return void
  */
 function wpuf_frontend_post_revision( $post_id, $form_settings ) {
-    $post = get_post( $post_id );
+    $post      = get_post( $post_id );
+    $post_type = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 
-    if ( post_type_supports( $form_settings['post_type'], 'revisions' ) ) {
+    if ( post_type_supports( $post_type, 'revisions' ) ) {
         $revisions = wp_get_post_revisions(
             $post_id, [
                 'order' => 'ASC',

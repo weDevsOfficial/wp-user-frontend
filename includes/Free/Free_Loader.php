@@ -274,7 +274,7 @@ class Free_Loader extends Pro_Prompt {
             'label'          => __( 'Avatar Size',
                                     'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
             'desc'           => __( 'Avatar size to crop when upload using the registration/profile form.(e.g:100x100)',
-                                    'wpuf' ),
+                                    'wp-user-frontend' ),
             'type'           => 'text',
             'default'        => '100x100',
             'class'          => 'pro-preview',

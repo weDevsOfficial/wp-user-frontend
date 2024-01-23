@@ -151,7 +151,7 @@ class Post_Form_Template_Post extends Form_Template {
                 'update_message'             => __( 'Post has been updated successfully. <a target="_blank" href="%link%">View post</a>', 'wp-user-frontend' ),
                 'edit_url'                   => '',
                 'update_text'                => __( 'Update Post', 'wp-user-frontend' ),
-                'form_template'              => __CLASS__,
+                'form_template'              => 'post_form_template_post',
                 'notification'               => [
                 'new'                        => 'on',
                 'new_to'                     => get_option( 'admin_email' ),

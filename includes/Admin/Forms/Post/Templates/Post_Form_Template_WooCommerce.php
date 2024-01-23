@@ -193,7 +193,7 @@ class Post_Form_Template_WooCommerce extends Form_Template {
             'update_message'   => 'Product has been updated successfully. <a target="_blank" href="%link%">View Product</a>',
             'edit_url'         => '',
             'update_text'      => 'Update Product',
-            'form_template'    => __CLASS__,
+            'form_template'    => 'post_form_template_woocommerce',
             'notification'     => [
                 'new'          => 'on',
                 'new_to'       => get_option( 'admin_email' ),

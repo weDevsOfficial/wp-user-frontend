@@ -19,7 +19,7 @@ class WeDevs_Insights {
     /**
      * @var object|Appsero\Insights|Insights
      */
-    private $insights;
+    public $insights;
 
     /**
      * Initialize the class

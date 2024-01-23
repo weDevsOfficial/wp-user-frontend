@@ -379,7 +379,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
 
         $required = sprintf( 'data-required="%s" data-type="multiselect"', $attr['required'] );
 
-        $walker = new WPUF_Walker_Category_Multi();
+        $walker = new \WPUF_Walker_Category_Multi();
 
         $exclude = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );
 

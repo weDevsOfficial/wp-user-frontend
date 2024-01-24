@@ -1,6 +1,44 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 4.0.4',
+        'released' => '2024-01-25',
+        'changes'  => [
+            [
+                'title' => __( 'Add visibility to the Columns field', 'wp-user-frontend' ),
+                'type'  => 'Enhance',
+            ],
+            [
+                'title' => __( 'Login with reCAPTCHA gives error', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'AJAX image upload', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Error on multi select form custom taxonomy', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Frontend registration form is not showing', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Handle email for guest post', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Default form template not selecting', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Error in setup wizard', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 4.0.3',
         'released' => '2024-01-05',
         'changes'  => [

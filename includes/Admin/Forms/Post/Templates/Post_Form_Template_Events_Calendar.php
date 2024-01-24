@@ -186,7 +186,7 @@ class Post_Form_Template_Events_Calendar extends Form_Template{
                                       'wp-user-frontend' ),
             'edit_url'         => '',
             'update_text'      => __( 'Update Event', 'wp-user-frontend' ),
-            'form_template'    => __CLASS__,
+            'form_template'    => 'post_form_template_events_calendar',
             'notification'     => [
                 'new'          => 'on',
                 'new_to'       => get_option( 'admin_email' ),

@@ -1515,7 +1515,7 @@ class Render_Form {
 
                     if ( $thumb_id ) {
                         $has_featured_image = true;
-                        $featured_image     = WPUF_Upload::attach_html( $thumb_id, 'featured_image' );
+                        $featured_image     = Upload_Ajax::attach_html( $thumb_id, 'featured_image' );
                     }
                 } else {
                     // it must be a user avatar

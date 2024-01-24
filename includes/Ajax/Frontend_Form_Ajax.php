@@ -106,8 +106,6 @@ class Frontend_Form_Ajax {
             }
         }
 
-        $protected_shortcodes = wpuf_get_protected_shortcodes();
-
         // check each form field for restricted shortcodes
         foreach ( $this->form_fields as $single_field ) {
             if ( empty( $single_field['rich'] ) || 'yes' !== $single_field['rich'] ) {
@@ -119,7 +117,7 @@ class Frontend_Form_Ajax {
             foreach ( $protected_shortcodes as $shortcode ) {
                 $search_for = '[' . $shortcode;
                 if ( strpos( $current_data, $search_for ) !== false ) {
-                    $this->send_error( sprintf( __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
+                    wpuf()->ajax->send_error( sprintf( __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
                 }
             }
         }
@@ -145,8 +143,7 @@ class Frontend_Form_Ajax {
         }
 
         $is_update           = false;
-        $post_author         = null;
-        $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
+        // $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
         $post_author         = $this->wpuf_get_post_user();
 
         $allowed_tags = wp_kses_allowed_html( 'post' );
@@ -493,7 +490,25 @@ class Frontend_Form_Ajax {
 
                 // is valid email?
                 if ( ! is_email( $guest_email ) ) {
-                    wpuf()->ajax->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
+                    echo json_encode(
+                        [
+                            'success' => false,
+                            'error'   => __( 'Invalid email address.', 'wp-user-frontend' ),
+                        ]
+                    );
+
+                    die();
+
+//                    $this->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
+//                    wp_send_json(
+//                        [
+//                            'success'     => false,
+//                            'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
+//                            'type'        => 'login',
+//                            'redirect_to' => wp_login_url( get_permalink( $page_id ) ),
+//                        ]
+//                    );
+                    // wpuf()->ajax->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
                 }
 
                 // check if the user email already exists

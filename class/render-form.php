@@ -1658,7 +1658,7 @@ class WPUF_Render_Form {
 
                     if ( $thumb_id ) {
                         $has_featured_image = true;
-                        $featured_image     = WPUF_Upload::attach_html( $thumb_id, 'featured_image' );
+                        $featured_image     = WeDevs\Wpuf\Ajax\Upload_Ajax::attach_html( $thumb_id, 'featured_image' );
                     }
                 } else {
                     // it must be a user avatar
@@ -1692,7 +1692,7 @@ class WPUF_Render_Form {
 
         if ( $has_images ) {
             foreach ( $images as $attach_id ) {
-                echo esc_attr( WPUF_Upload::attach_html( $attach_id, $attr['name'] ) );
+                echo esc_attr( WeDevs\Wpuf\Ajax\Upload_Ajax::attach_html( $attach_id, $attr['name'] ) );
             }
         } ?>
                     </ul>

@@ -1,6 +1,6 @@
 <?php
 
-function wpuf_upgrade_3_6_10_migration() {
+function wpuf_upgrade_4_0_4_migration() {
 	$args = [
 		'post_type'   => 'wpuf_input',
 		'numberposts' => -1,
@@ -32,4 +32,4 @@ function wpuf_upgrade_3_6_10_migration() {
 	}
 }
 
-wpuf_upgrade_3_6_10_migration();
+wpuf_upgrade_4_0_4_migration();

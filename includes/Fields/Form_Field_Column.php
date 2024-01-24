@@ -29,8 +29,15 @@ class Form_Field_Column extends Field_Contract {
         $columns_size = $field_settings['inner_columns_size'];
         $column_space = $field_settings['column_space'];
         $inner_fields = $field_settings['inner_fields'];
-        $atts         = []; ?>
-        <li class="wpuf-el">
+        $id           = ! empty( $field_settings['id'] ) ? $field_settings['id'] : 0;
+        $atts         = [];
+        $input_type   = 'column_field';
+        $class_names  = ! empty( $field_settings['css'] ) ? ' ' . $field_settings['css'] : '';
+        $class_names .= ' wpuf_' . $input_type . '_' . $id . '_' . esc_attr( $form_id );
+        printf(
+            '<li class="wpuf-el %s%s" data-label="%s">', esc_attr( $input_type ), esc_attr( $class_names ), 'wpuf-column-field'
+        );
+        ?>
             <div class="wpuf-field-columns <?php echo 'has-columns-' . esc_attr( $columns ); ?>">
                 <div class="wpuf-column-field-inner-columns">
                     <div class="wpuf-column">
@@ -93,7 +100,26 @@ class Form_Field_Column extends Field_Contract {
             ],
         ];
 
-        return apply_filters( 'wpuf_text_field_option_settings', $options );
+        if ( is_wpuf_post_form_builder() ) {
+            $options[] =
+                [
+                    'name'      => 'wpuf_visibility',
+                    'title'     => __( 'Visibility', 'wp-user-frontend' ),
+                    'type'      => 'visibility',
+                    'section'   => 'advanced',
+                    'options'   => [
+                        'everyone'          => __( 'Everyone', 'wp-user-frontend' ),
+                        'hidden'            => __( 'Hidden', 'wp-user-frontend' ),
+                        'logged_in'         => __( 'Logged in users only', 'wp-user-frontend' ),
+                        'subscribed_users'  => __( 'Subscription users only', 'wp-user-frontend' ),
+                    ],
+                    'priority'  => 30,
+                    'inline'    => true,
+                    'help_text' => __( 'Select option', 'wp-user-frontend' ),
+                ];
+        }
+
+        return apply_filters( 'wpuf_column_field_option_settings', $options );
     }
 
     /**
@@ -102,28 +128,28 @@ class Form_Field_Column extends Field_Contract {
      * @return array
      */
     public function get_field_props() {
-        $props = [
-            'input_type'        => 'column_field',
-            'template'          => $this->get_type(),
-            'id'                => 0,
-            'is_new'            => true,
-            'is_meta'           => 'no',
-            'columns'           => 3,
-            'min_column'        => 1,
-            'max_column'        => 3,
-            'column_space'      => '5',
-            'inner_fields'      => [
-                'column-1'   => [],
-                'column-2'   => [],
-                'column-3'   => [],
+        return [
+            'input_type'         => 'column_field',
+            'template'           => $this->get_type(),
+            'id'                 => 0,
+            'is_new'             => true,
+            'is_meta'            => 'no',
+            'columns'            => 3,
+            'min_column'         => 1,
+            'max_column'         => 3,
+            'column_space'       => '5',
+            'inner_fields'       => [
+                'column-1' => [],
+                'column-2' => [],
+                'column-3' => [],
             ],
             'inner_columns_size' => [
-                'column-1'   => '33.33%',
-                'column-2'   => '33.33%',
-                'column-3'   => '33.33%',
+                'column-1' => '33.33%',
+                'column-2' => '33.33%',
+                'column-3' => '33.33%',
             ],
+            'wpuf_cond'          => $this->default_conditional_prop(),
+            'wpuf_visibility'    => $this->get_default_visibility_prop(),
         ];
-
-        return $props;
     }
 }

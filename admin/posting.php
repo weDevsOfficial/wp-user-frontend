@@ -218,13 +218,13 @@ class WPUF_Admin_Posting {
         <?php wp_nonce_field( plugin_basename( __FILE__ ), 'wpuf_lock_editing_post_nonce' ); ?>
         <p>
             <?php
-                echo wp_kses( $msg, [
-                    'a' => [
-                            'href' => [],
-                            'id'   => [],
-                            'data' => [],
-                        ]
-                    ] );
+            echo wp_kses( $msg, [
+                'a' => [
+                    'href' => [],
+                    'id'   => [],
+                    'data' => [],
+                ]
+            ] );
             ?>
         </p>
 

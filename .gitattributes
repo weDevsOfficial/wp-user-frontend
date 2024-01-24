@@ -4,11 +4,7 @@
 .gitignore export-ignore
 .jshintrc export-ignore
 .php_cs.dist export-ignore
-.svnignore export-ignore
 Gruntfile.js export-ignore
-appsero.json export-ignore
-composer.json export-ignore
-composer.lock export-ignore
 docs.md export-ignore
 package-lock.json export-ignore
 package.json export-ignore

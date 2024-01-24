@@ -220,16 +220,16 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
                         'hide_empty' => 0,
                     ] );
 
-        $tax = is_array( $tax ) ? $tax : [];
+                    $tax = is_array( $tax ) ? $tax : [];
 
-        foreach ( $tax as $tax_obj ) {
-            ?>
+                    foreach ( $tax as $tax_obj ) {
+                        ?>
                         <div>
                             <input type="hidden" value="<?php echo esc_attr( $tax_obj->name ); ?>" data-taxonomy="yes" data-term-id="<?php echo esc_attr( $tax_obj->term_id ); ?>"  data-type="option">
                             <input type="hidden" value="<?php echo esc_attr( $tax_obj->term_id ); ?>" data-taxonomy="yes" data-term-id="<?php echo esc_attr( $tax_obj->term_id ); ?>"  data-type="option_value">
                         </div>
-                      <?php
-        } ?>
+                        <?php
+                    } ?>
                 </div>
             </div> <!-- .wpuf-form-holder -->
         </li>

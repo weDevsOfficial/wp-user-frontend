@@ -81,11 +81,13 @@ class Upgrades {
         }
 
         $installed_version = $this->get_version();
-        $path              = trailingslashit( __DIR__ );
 
         foreach ( self::$upgrades as $version => $file ) {
             if ( version_compare( $installed_version, $version, '<' ) ) {
-                include $path . $file;
+                $path = WPUF_ROOT . '/includes/' . $file;
+                if ( file_exists( $path ) ) {
+                    include_once $path;
+                }
                 update_option( 'wpuf_version', $version );
             }
         }

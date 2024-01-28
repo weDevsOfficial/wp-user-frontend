@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, content restriction, registration, user profile, membership, login, forms, user directory, profile builder
 Requires at least: 4.0
 Tested up to: 6.4.2
-Stable tag: 4.0.3
+Stable tag: 4.0.4
 Requires PHP: 5.6
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -268,6 +268,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 == Changelog ==
+= v4.0.4 (25 Jan, 2024) =
+* Enhance - Add visibility to the Columns field
+* Fix - Login with reCAPTCHA gives error
+* Fix - AJAX image upload
+* Fix - Error on multi select form custom taxonomy
+* Fix - Frontend registration form is not showing
+* Fix - Handle email for guest post
+* Fix - Default form template not selecting
+* Fix - Error in setup wizard
+
 = v4.0.3 (05 Jan, 2024) =
 * Enhance - Restructure plugin codes
 * Fix - Error when editing the featured post

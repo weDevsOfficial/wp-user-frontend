@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Fields;
 
+use WeDevs\Wpuf\Ajax\Upload_Ajax;
+
 /**
  * Image Field Class
  */
@@ -59,7 +61,7 @@ class Form_Field_Image extends Field_Contract {
                             <?php
                             if ( $has_images ) {
                                 foreach ( $images as $attach_id ) {
-                                    echo WPUF_Upload::attach_html( $attach_id, $field_settings['name'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                    echo Upload_Ajax::attach_html( $attach_id, $field_settings['name'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                 }
                             }
                             ?>

@@ -1083,6 +1083,49 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
     right: 5px;
 }
 
+.headway-header {
+    display: flex;
+    justify-content: space-between;
+
+    ul {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 10px 0;
+
+        li {
+            &.headway-icon {
+                background: #eea6d0;
+                margin-right: 1rem;
+                border-radius: 20px;
+                width: 10px;
+                height: 10px;
+                position: relative;
+                margin-top: 2px;
+
+                &:hover {
+                    background: #ee62b4;
+                }
+
+                span#HW_badge_cont {
+                    position: absolute;
+                    top: -6px;
+                    left: -6px;
+                }
+            }
+
+            a {
+                font-size: 1rem;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
 @media only screen and (max-width: 1399px) {
     a.wpuf-button.button-upgrade-to-pro {
         padding: 10px;

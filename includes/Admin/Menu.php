@@ -119,35 +119,6 @@ class Menu {
      */
     public function load_headway_badge() {
         ?>
-        <style>
-            .headway-header ul {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                margin: 10px 0;
-            }
-            .headway-header ul li.headway-icon {
-                background: #e293c1;
-                margin-right: 1rem;
-                border-radius: 20px;
-                width: 20px;
-                height: 20px;
-                position: relative;
-                margin-top: 2px;
-            }
-            .headway-header ul li.headway-icon:hover {
-                background: #ee62b4;
-            }
-            .headway-header ul li.headway-icon span#HW_badge_cont {
-                position: absolute;
-                top: -6px;
-                left: -6px;
-            }
-            h2.headway-header ul li a {
-                font-size: 1rem;
-                text-decoration: none;
-            }
-        </style>
         <script>
             const HW_config = {
                 selector: '.headway-icon',
@@ -335,6 +306,8 @@ class Menu {
         wp_enqueue_script( 'wpuf-admin' );
         wp_enqueue_script( 'wpuf-subscriptions' );
         wp_enqueue_script( 'wpuf-settings' );
+
+        add_action( 'admin_footer', [ $this, 'load_headway_badge' ] );
     }
 
     /**
@@ -345,8 +318,13 @@ class Menu {
     public function plugin_settings_page() {
         ?>
         <div class="wrap">
-
-            <h2 style="margin-bottom: 15px;"><?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?></h2>
+            <div class="headway-header">
+                <h2 style="margin-bottom: 15px;"><?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?></h2>
+                <ul>
+                    <li class="headway-icon"></li>
+                    <li><a target="_blank" href="<?php echo esc_url( 'https://wpuf.canny.io/ideas' ); ?>">💡 <?php esc_html_e( 'Submit Ideas', 'wp-user-frontend' ); ?></a></li>
+                </ul>
+            </div>
             <div class="wpuf-settings-wrap">
                 <?php
                 settings_errors();

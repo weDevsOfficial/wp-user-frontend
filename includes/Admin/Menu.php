@@ -318,13 +318,17 @@ class Menu {
     public function plugin_settings_page() {
         ?>
         <div class="wrap">
-            <div class="headway-header">
-                <h2 style="margin-bottom: 15px;"><?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?></h2>
-                <ul>
-                    <li class="headway-icon"></li>
-                    <li><a target="_blank" href="<?php echo esc_url( 'https://wpuf.canny.io/ideas' ); ?>">💡 <?php esc_html_e( 'Submit Ideas', 'wp-user-frontend' ); ?></a></li>
-                </ul>
-            </div>
+            <h2 class="with-headway-icon">
+                <span class="title-area">
+                    <?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?>
+                </span>
+                <span class="flex-end">
+                    <span class="headway-icon"></span>
+                    <a class="canny-link" target="_blank" href="<?php echo esc_url( 'https://wpuf.canny.io/ideas' ); ?>">💡 <?php esc_html_e(
+                    'Submit Ideas', 'wp-user-frontend'
+                    ); ?></a>
+                </span>
+            </h2>
             <div class="wpuf-settings-wrap">
                 <?php
                 settings_errors();

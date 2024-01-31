@@ -874,6 +874,10 @@ function wpuf_get_gateways( $context = 'admin' ) {
 function wpuf_show_custom_fields( $content ) {
     global $post;
 
+    if ( ! is_a( $post, '\WP_Post' ) ) {
+        return $content;
+    }
+
     $show_custom = wpuf_get_option( 'cf_show_front', 'wpuf_frontend_posting' );
 
     if ( 'on' !== $show_custom ) {

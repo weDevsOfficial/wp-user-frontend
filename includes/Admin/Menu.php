@@ -93,6 +93,7 @@ class Menu {
      * @return void
      */
     public function wpuf_post_forms_page() {
+        add_action( 'admin_footer', [ $this, 'load_headway_badge' ] );
         // phpcs:ignore WordPress.Security.NonceVerification
         $action           = ! empty( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : null;
         $add_new_page_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
@@ -107,6 +108,38 @@ class Menu {
                 require_once WPUF_INCLUDES . '/Admin/views/post-forms-list-table-view.php';
                 break;
         }
+    }
+
+    /**
+     * Load the Headway badge
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function load_headway_badge() {
+        ?>
+        <script>
+            const HW_config = {
+                selector: '.headway-icon',
+                account: 'JPqPQy',
+                callbacks: {
+                    onWidgetReady: function ( widget ) {
+                        if ( widget.getUnseenCount() === 0 ) {
+                            document.querySelector('.headway-header ul li.headway-icon span#HW_badge_cont.HW_visible')
+                                .style = 'opacity: 0';
+                        }
+                    },
+                    onHideWidget: function(){
+                        document.querySelector('.headway-header ul li.headway-icon span#HW_badge_cont.HW_visible')
+                            .style = 'opacity: 0';
+                    }
+                }
+            };
+
+        </script>
+        <script async src="//cdn.headwayapp.co/widget.js"></script>
+        <?php
     }
 
     /**
@@ -273,6 +306,8 @@ class Menu {
         wp_enqueue_script( 'wpuf-admin' );
         wp_enqueue_script( 'wpuf-subscriptions' );
         wp_enqueue_script( 'wpuf-settings' );
+
+        add_action( 'admin_footer', [ $this, 'load_headway_badge' ] );
     }
 
     /**
@@ -283,8 +318,17 @@ class Menu {
     public function plugin_settings_page() {
         ?>
         <div class="wrap">
-
-            <h2 style="margin-bottom: 15px;"><?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?></h2>
+            <h2 class="with-headway-icon">
+                <span class="title-area">
+                    <?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?>
+                </span>
+                <span class="flex-end">
+                    <span class="headway-icon"></span>
+                    <a class="canny-link" target="_blank" href="<?php echo esc_url( 'https://wpuf.canny.io/ideas' ); ?>">💡 <?php esc_html_e(
+                    'Submit Ideas', 'wp-user-frontend'
+                    ); ?></a>
+                </span>
+            </h2>
             <div class="wpuf-settings-wrap">
                 <?php
                 settings_errors();

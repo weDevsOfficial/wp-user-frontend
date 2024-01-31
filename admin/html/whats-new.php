@@ -1,6 +1,16 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 4.0.5',
+        'released' => '2024-01-31',
+        'changes'  => [
+            [
+                'title' => __( 'Integrate headway and canny', 'wp-user-frontend' ),
+                'type'  => 'Enhance',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 4.0.4',
         'released' => '2024-01-25',
         'changes'  => [

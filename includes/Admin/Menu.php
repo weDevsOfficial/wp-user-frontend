@@ -113,7 +113,7 @@ class Menu {
     /**
      * Load the Headway badge
      *
-     * @since WPUF_SINCE
+     * @since 4.0.5
      *
      * @return void
      */

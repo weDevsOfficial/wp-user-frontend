@@ -175,7 +175,7 @@ class Paypal {
         $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
 
         if ( isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) ) {
-            $billing_amount = WPUF_Coupons::init()->discount( $billing_amount, $_POST['coupon_id'], $data['item_number'] );
+            $billing_amount = wpuf_pro()->coupon->discount( $billing_amount, $_POST['coupon_id'], $data['item_number'] );
 
             $coupon_id = $_POST['coupon_id'];
         } else {
@@ -342,7 +342,7 @@ class Paypal {
         $insert_payment = false;
 
         if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
-            WP_User_Frontend::log( 'paypal-payment-info', print_r( $_POST, true ) );
+            \WP_User_Frontend::log( 'paypal-payment-info', print_r( $_POST, true ) );
 
             $postdata       = $_POST;
             $type           = $postdata['custom'];
@@ -361,7 +361,7 @@ class Paypal {
             }
 
             if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_signup' ) ) {
-                WP_User_Frontend::log( 'paypal-recurring', 'got subscriber with email ' . $postdata['payer_email'] );
+                \WP_User_Frontend::log( 'paypal-recurring', 'got subscriber with email ' . $postdata['payer_email'] );
 
                 return;
             }
@@ -385,14 +385,14 @@ class Paypal {
                     $is_recurring   = true;
                     $status         = 'subscr_payment';
 
-                    WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment, should insert of pack_id: ' . $pack_id );
+                    \WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment, should insert of pack_id: ' . $pack_id );
                 } else {
                     $this->subscription_cancel( $custom->user_id );
 
-                    WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment. billing validation failed, cancel subscription. user_id: ' . $custom->user_id );
+                    \WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment. billing validation failed, cancel subscription. user_id: ' . $custom->user_id );
                 }
             } elseif ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'web_accept' ) && ( strtolower( $postdata['payment_status'] ) == 'completed' ) ) {
-                WP_User_Frontend::log( 'paypal', 'got web_accept. type: ' . $custom->type . '. item_number: ' . $item_number );
+                \WP_User_Frontend::log( 'paypal', 'got web_accept. type: ' . $custom->type . '. item_number: ' . $item_number );
 
                 //verify payment
                 $status = 'web_accept';
@@ -450,9 +450,9 @@ class Paypal {
                 'created'          => current_time( 'mysql' ),
             ];
 
-            WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
+            \WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
 
-            _Payment::insert_payment( $data, $transaction_id, $is_recurring );
+            \WeDevs\Wpuf\Frontend\Payment::insert_payment( $data, $transaction_id, $is_recurring );
 
             if ( $coupon_id ) {
                 $pre_usage = get_post_meta( $coupon_id, '_coupon_used', true );
@@ -493,7 +493,7 @@ class Paypal {
      * @return bool
      */
     public function validateIpn() {
-        WP_User_Frontend::log( 'paypal', 'Checking if PayPal IPN response is valid' );
+        \WP_User_Frontend::log( 'paypal', 'Checking if PayPal IPN response is valid' );
 
         $this->set_mode();
 
@@ -518,20 +518,20 @@ class Paypal {
         }
         $response = wp_safe_remote_post( $this->gateway_url, $params );
 
-        WP_User_Frontend::log( 'paypal', 'IPN Request: ' . print_r( $params, true ) );
-        WP_User_Frontend::log( 'paypal', 'IPN Response: ' . print_r( $response, true ) );
+        \WP_User_Frontend::log( 'paypal', 'IPN Request: ' . print_r( $params, true ) );
+        \WP_User_Frontend::log( 'paypal', 'IPN Response: ' . print_r( $response, true ) );
 
         // check to see if the request was valid
         if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
-            WP_User_Frontend::log( 'paypal', 'Received valid response from PayPal' );
+            \WP_User_Frontend::log( 'paypal', 'Received valid response from PayPal' );
 
             return true;
         }
 
-        WP_User_Frontend::log( 'paypal', 'Received invalid response from PayPal' );
+        \WP_User_Frontend::log( 'paypal', 'Received invalid response from PayPal' );
 
         if ( is_wp_error( $response ) ) {
-            WP_User_Frontend::log( 'paypal', 'Error response: ' . $response->get_error_message() );
+            \WP_User_Frontend::log( 'paypal', 'Error response: ' . $response->get_error_message() );
         }
 
         return false;

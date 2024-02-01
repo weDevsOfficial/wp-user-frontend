@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
+use stdClass;
 use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\User_Subscription;
 
@@ -306,7 +307,7 @@ class Frontend_Account {
         if ( empty( $email ) ) {
             wp_send_json_error( __( 'Email is a required field.', 'wp-user-frontend' ) );
         }
-        $user             = new \stdClass();
+        $user             = new stdClass();
         $user->ID         = $current_user->ID;
         $user->first_name = $first_name;
         $user->last_name  = $last_name;

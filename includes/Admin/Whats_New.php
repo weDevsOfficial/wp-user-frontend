@@ -13,8 +13,12 @@ class Whats_New {
      * Initialize the actions
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'register_menu' ] );
-        add_action( 'admin_notices', [ $this, 'admin_notice' ] );
+        if ( $this->has_new() ) {
+            add_action( 'admin_menu', [ $this, 'register_menu' ] );
+            add_action( 'admin_notices', [ $this, 'admin_notice' ] );
+        }
+
+
     }
 
     /**
@@ -64,7 +68,14 @@ class Whats_New {
      * @return void
      */
     public function register_menu() {
-        $whats_new_page = add_submenu_page( null, __( 'Whats New', 'wp-user-frontend' ), __( 'Whats New', 'wp-user-frontend' ), 'manage_options', 'whats-new-wpuf', [ $this, 'menu_page' ] );
+        $whats_new_page = add_submenu_page(
+            wpuf()->admin->menu->parent_slug,
+            __( 'Whats New', 'wp-user-frontend' ),
+            __( 'Whats New', 'wp-user-frontend' ),
+            wpuf_admin_role(),
+            'whats-new-wpuf',
+            [ $this, 'menu_page' ]
+        );
 
         add_action( 'load-' . $whats_new_page, [ $this, 'enqueue_scripts' ] );
     }
@@ -86,10 +97,6 @@ class Whats_New {
      * @return void
      */
     public function admin_notice() {
-        if ( !$this->has_new() ) {
-            return;
-        }
-
         wp_enqueue_script( 'wp-util' );
 
         ?>
@@ -105,7 +112,7 @@ class Whats_New {
             </div>
 
             <div class="wpuf-whats-new-actions">
-                <a href="<?php echo esc_url( admin_url( 'index.php?page=whats-new-wpuf' ) ); ?>" class="button button-primary"><?php esc_html_e( 'What\'s New?', 'wp-user-frontend' ); ?></a>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=whats-new-wpuf' ) ); ?>" class="button button-primary"><?php esc_html_e( 'What\'s New?', 'wp-user-frontend' ); ?></a>
                 <button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'wp-user-frontend' ); ?></span></button>
             </div>
         </div>

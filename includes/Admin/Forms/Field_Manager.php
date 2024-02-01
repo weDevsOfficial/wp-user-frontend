@@ -3,6 +3,7 @@
 namespace WeDevs\Wpuf\Admin\Forms;
 
 use WeDevs\Wpuf\Admin\Subscription;
+use WeDevs\Wpuf\Fields\Field_Contract;
 use WeDevs\Wpuf\Fields\Form_Field_Checkbox;
 use WeDevs\Wpuf\Fields\Form_Field_Column;
 use WeDevs\Wpuf\Fields\Form_Field_Dropdown;
@@ -66,7 +67,7 @@ class Field_Manager {
      *
      * @param string $field_type
      *
-     * @return \WeDevs\Wpuf\Fields\Field_Contract
+     * @return Field_Contract
      */
     public function get_field( $field_type ) {
         $fields = $this->get_fields();

@@ -6,6 +6,7 @@ use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Frontend_Render_Form;
 use WeDevs\Wpuf\Traits\FieldableTrait;
+use WP_User;
 
 class Frontend_Form extends Frontend_Render_Form {
     use FieldableTrait;
@@ -390,7 +391,7 @@ class Frontend_Form extends Frontend_Render_Form {
      * @param array    $allcaps
      * @param array    $caps
      * @param array    $args
-     * @param \WP_User $wp_user
+     * @param WP_User $wp_user
      *
      * @return array
     */

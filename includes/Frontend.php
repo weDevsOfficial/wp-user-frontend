@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf;
 
+use AllowDynamicProperties;
 use WeDevs\WpUtils\ContainerTrait;
 
 /**

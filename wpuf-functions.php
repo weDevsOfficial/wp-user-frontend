@@ -3107,8 +3107,8 @@ function wpuf_get_draft_post_status( $form_settings ) {
  *
  * @since 2.6.0
  *
- * @param array    $state
- * @param \WP_Post $post
+ * @param array   $state
+ * @param WP_Post $post
  *
  * @return array
  */
@@ -4676,7 +4676,7 @@ function wpuf_modify_shortcodes( $content ) {
 
     $post = get_post();
 
-    if ( ! ( $post instanceof \WP_Post ) ) {
+    if ( ! ( $post instanceof WP_Post ) ) {
         return $content;
     }
 

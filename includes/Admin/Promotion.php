@@ -2,6 +2,9 @@
 
 namespace WeDevs\Wpuf\Admin;
 
+use DateTime;
+use DateTimeZone;
+
 /**
  * Promotional offer class
  */
@@ -73,8 +76,8 @@ class Promotion {
      * @return string
      */
     public function convert_utc_to_est() {
-        $dt = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
-        $dt->setTimezone( new \DateTimeZone( 'EST' ) );
+        $dt = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+        $dt->setTimezone( new DateTimeZone( 'EST' ) );
 
         return $dt->format( 'Y-m-d H:i:s T' );
     }

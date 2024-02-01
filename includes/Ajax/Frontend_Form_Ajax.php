@@ -2,10 +2,13 @@
 
 namespace WeDevs\Wpuf\Ajax;
 
+use DOMDocument;
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WeDevs\Wpuf\User_Subscription;
+use WP_Error;
 
+#[AllowDynamicProperties]
 class Frontend_Form_Ajax {
 
     use FieldableTrait;
@@ -318,7 +321,7 @@ class Frontend_Form_Ajax {
 
             // find our if any images in post content and associate them
             if ( ! empty( $postarr['post_content'] ) ) {
-                $dom = new \DOMDocument();
+                $dom = new DOMDocument();
                 @$dom->loadHTML( $postarr['post_content'] );
                 $images = $dom->getElementsByTagName( 'img' );
 
@@ -532,7 +535,7 @@ class Frontend_Form_Ajax {
 
                     $user_pass = wp_generate_password( 12, false );
 
-                    $errors = new \WP_Error();
+                    $errors = new WP_Error();
 
                     do_action( 'register_post', $username, $guest_email, $errors );
 

@@ -65,7 +65,7 @@ class Insights
     /**
      * Don't show the notice
      *
-     * @return \self
+     * @return self
      */
     public function hide_notice()
     {
@@ -77,7 +77,7 @@ class Insights
     /**
      * Add plugin data if needed
      *
-     * @return \self
+     * @return self
      */
     public function add_plugin_data()
     {
@@ -91,7 +91,7 @@ class Insights
      *
      * @param array $data
      *
-     * @return \self
+     * @return self
      */
     public function add_extra($data = [])
     {
@@ -105,7 +105,7 @@ class Insights
      *
      * @param string $text
      *
-     * @return \self
+     * @return self
      */
     public function notice($text = '')
     {

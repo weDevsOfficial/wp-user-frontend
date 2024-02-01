@@ -2,7 +2,7 @@
 
 namespace WeDevs\Wpuf;
 
-/**
+use WP_Error;/**
  * User Subscription Class
  *
  * @since 2.6.0
@@ -48,7 +48,7 @@ class User_Subscription {
     /**
      * Get the current pack of the user
      *
-     * @return array|\WP_Error
+     * @return array|WP_Error
      */
     public function current_pack() {
         $pack = $this->pack;
@@ -56,12 +56,12 @@ class User_Subscription {
         if ( ! isset( $this->pack['pack_id'] ) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
 
-            return new \WP_Error( 'no-pack', sprintf( __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
+            return new WP_Error( 'no-pack', sprintf( __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
         }
 
         // seems like the user has a pack, now check expiration
         if ( $this->expired() ) {
-            return new \WP_Error( 'expired', __( 'The subscription pack has expired. Please buy a pack.', 'wp-user-frontend' ) );
+            return new WP_Error( 'expired', __( 'The subscription pack has expired. Please buy a pack.', 'wp-user-frontend' ) );
         }
 
         return $pack;

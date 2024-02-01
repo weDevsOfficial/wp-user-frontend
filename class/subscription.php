@@ -274,8 +274,8 @@ class WPUF_Subscription {
      *
      * @since 2.2
      *
-     * @param int      $subscription_id
-     * @param \WP_Post $pack_post
+     * @param int     $subscription_id
+     * @param WP_Post $pack_post
      *
      * @return array
      */
@@ -353,8 +353,8 @@ class WPUF_Subscription {
     /**
      * Save form data
      *
-     * @param int      $post_ID
-     * @param \WP_Post $post
+     * @param int     $post_ID
+     * @param WP_Post $post
      *
      * @return void
      */

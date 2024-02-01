@@ -5,6 +5,9 @@ namespace WeDevs\Wpuf\Fields;
 // Post Taxonomy Class
 
 // require WPUF_INCLUDES . '/fields/class-abstract-fields.php';
+use WPUF_Walker_Category_Multi;
+
+#[AllowDynamicProperties]
 class Form_Field_Post_Taxonomy extends Field_Contract {
     use Form_Field_Post_Trait;
 
@@ -379,7 +382,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
 
         $required = sprintf( 'data-required="%s" data-type="multiselect"', $attr['required'] );
 
-        $walker = new \WPUF_Walker_Category_Multi();
+        $walker = new WPUF_Walker_Category_Multi();
 
         $exclude = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );
 

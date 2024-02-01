@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
+#[AllowDynamicProperties]
 class Form {
 
     /**

@@ -354,7 +354,7 @@ final class WP_User_Frontend {
 /**
  * Returns the singleton instance
  *
- * @return \WP_User_Frontend
+ * @return WP_User_Frontend
  */
 function wpuf() {
     return WP_User_Frontend::instance();

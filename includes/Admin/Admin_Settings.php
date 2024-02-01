@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Admin;
 
+use WeDevs_Settings_API;
+
 /**
  * WPUF settings
  */
@@ -10,7 +12,7 @@ class Admin_Settings {
     /**
      * Settings API
      *
-     * @var \WeDevs_Settings_API
+     * @var WeDevs_Settings_API
      */
     private $settings_api;
 
@@ -27,7 +29,7 @@ class Admin_Settings {
         wpuf_require_once( WPUF_INCLUDES . '/functions/settings-options.php' );
         wpuf_require_once( WPUF_ROOT . '/Lib/WeDevs_Settings_API.php' );
 
-        $this->settings_api = new \WeDevs_Settings_API();
+        $this->settings_api = new WeDevs_Settings_API();
         add_action( 'admin_init', [ $this, 'admin_init' ] );
     }
 
@@ -173,7 +175,7 @@ class Admin_Settings {
      *
      * @since 4.0.0
      *
-     * @return \WeDevs_Settings_API
+     * @return WeDevs_Settings_API
      */
     public function get_settings_api() {
         return $this->settings_api;

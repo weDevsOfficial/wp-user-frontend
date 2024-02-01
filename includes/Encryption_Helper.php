@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf;
 
+use Exception;
+
 /**
  * The Encryption_Helper Class to handle the encryption
  */
@@ -50,7 +52,7 @@ class Encryption_Helper {
      * @since 3.5.29
      *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public static function get_encryption_auth_keys() {
         $defaults  = [

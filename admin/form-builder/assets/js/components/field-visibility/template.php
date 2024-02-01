@@ -13,7 +13,9 @@
 
     <div v-if="'logged_in' === selected" class="condiotional-logic-container">
 
-    	<?php $roles = get_editable_roles(); ?>
+    	<?php use WeDevs\Wpuf\Admin\Subscription;
+
+	    $roles = get_editable_roles(); ?>
 
     	<ul>
 			<?php
@@ -36,7 +38,7 @@
     		<?php
 
                 if ( class_exists( 'WPUF_Subscription' ) ) {
-                    $subscriptions  = (new \WeDevs\Wpuf\Admin\Subscription())->get_subscriptions();
+                    $subscriptions  = (new Subscription())->get_subscriptions();
 
                     if ( $subscriptions ) {
                         foreach ( $subscriptions as $pack ) {

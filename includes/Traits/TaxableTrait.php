@@ -7,6 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+use WC_Countries;
+use WC_Customer;
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Data\Country_State;
 
@@ -324,12 +326,12 @@ trait TaxableTrait {
                 $customer_id = get_current_user_id();
                 $woo_address = [];
                 $rates       = $this->wpuf_get_tax_rates();
-                $customer    = new \WC_Customer( $customer_id );
+                $customer    = new WC_Customer( $customer_id );
 
                 $woo_address = $customer->get_billing();
                 unset( $woo_address['email'], $woo_address['tel'], $woo_address['phone'], $woo_address['company'] );
 
-                $countries_obj   = new \WC_Countries();
+                $countries_obj   = new WC_Countries();
                 $countries_array = $countries_obj->get_countries();
                 $country_states_array = $countries_obj->get_states();
                 $woo_address['state'] = isset( $country_states_array[ $woo_address['country'] ][ $woo_address['state'] ] ) ? $country_states_array[ $woo_address['country'] ][ $woo_address['state'] ] : '';

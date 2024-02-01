@@ -5,7 +5,7 @@ class WPUF_Log {
     /**
      * wpdb query logger
      *
-     * @var \WPUF_Log_WPDB_Query
+     * @var WPUF_Log_WPDB_Query
      */
     public $wpdb_query;
 

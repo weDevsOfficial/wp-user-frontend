@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf;
 
+use WP_User;
+
 /**
  * The User Class
  *
@@ -19,14 +21,14 @@ class WPUF_User {
     /**
      * User Object
      *
-     * @var \WP_User
+     * @var WP_User
      */
     public $user;
 
     /**
      * The constructor
      *
-     * @param int|\WP_User $user
+     * @param int|WP_User $user
      */
     public function __construct( $user ) {
         if ( is_numeric( $user ) ) {

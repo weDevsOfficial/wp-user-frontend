@@ -82,7 +82,7 @@ $email_integrations = [
                     </a>
                 </li>
                 <li>
-                    <a class="button button-primary" target="_blank" rel="noopener noreferrer" href="https://wedevs.com/docs/wp-user-frontend-pro/changelog/">
+                    <a class="button button-primary" target="_blank" rel="noopener noreferrer" href="https://headwayapp.co/wp-user-frontend-changelog">
                         <?php esc_html_e( 'What\'s New?', 'wp-user-frontend' ); ?>
                     </a>
                 </li>

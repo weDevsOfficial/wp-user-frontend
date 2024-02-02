@@ -4,6 +4,8 @@ namespace WeDevs\Wpuf\Free;
 
 use WeDevs\Wpuf\Render_Form;
 use WeDevs\Wpuf\WPUF_User;
+use WP_Error;
+use WP_User;
 
 /**
  * Login and forgot password handler class
@@ -157,7 +159,7 @@ class Simple_Login {
         if ( $recaptcha === 'on' ) {
             if ( isset( $_REQUEST['g-recaptcha-response'] ) ) {
                 if ( empty( $_REQUEST['g-recaptcha-response'] ) ) {
-                    $user = new \WP_Error( 'WPUFLoginCaptchaError', 'Empty reCaptcha Field.' );
+                    $user = new WP_Error( 'WPUFLoginCaptchaError', 'Empty reCaptcha Field.' );
                 } else {
                     $no_captcha        = 1;
                     $invisible_captcha = 0;
@@ -425,7 +427,7 @@ class Simple_Login {
             $pwd = isset( $_POST['pwd'] ) ? trim( $_POST['pwd'] ) : '';
             // $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 
-            $validation_error = new \WP_Error();
+            $validation_error = new WP_Error();
             $validation_error = apply_filters( 'wpuf_process_login_errors', $validation_error, $log, $pwd );
 
             if ( $validation_error->get_error_code() ) {
@@ -623,8 +625,11 @@ class Simple_Login {
 
         // process lost password form
         if ( isset( $_POST['user_login'] ) && isset( $_POST['_wpnonce'] ) ) {
-            $nonce = sanitize_key( wp_unslash( $_POST['_wpnonce'] ) );
-            wp_verify_nonce( $nonce, 'wpuf_lost_pass' );
+            $nonce = ! empty( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+
+            if ( ! empty( $nonce) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+                return ;
+            }
 
             if ( $this->retrieve_password() ) {
                 $url = add_query_arg(
@@ -655,8 +660,6 @@ class Simple_Login {
                 $args['key']   = $key;
                 $args['login'] = $login;
 
-                wp_verify_nonce( $nonce, 'wpuf_reset_pass' );
-
                 if ( empty( $pass1 ) || empty( $pass2 ) ) {
                     $this->login_errors[] = __( 'Please enter your password.', 'wp-user-frontend' );
 
@@ -669,7 +672,7 @@ class Simple_Login {
                     return;
                 }
 
-                $errors = new \WP_Error();
+                $errors = new WP_Error();
 
                 do_action( 'validate_password_reset', $errors, $user );
 
@@ -784,7 +787,7 @@ class Simple_Login {
         if ( ! is_wp_error( $user ) ) {
             if ( $user->ID ) {
                 $resend_link = add_query_arg( 'resend_activation', $user->ID, $this->get_login_url() );
-                $error       = new \WP_Error();
+                $error       = new WP_Error();
                 $wpuf_user   = new WPUF_User( $user->ID );
 
                 if ( ! $wpuf_user->is_verified() ) {
@@ -916,10 +919,10 @@ class Simple_Login {
      *
      * @since 2.2
      *
-     * @return \WP_Error
+     * @return WP_Error
      */
     public function user_activation_message() {
-        return new \WP_Error( 'user-activated', __( 'Your account has been activated', 'wp-user-frontend' ), 'message' );
+        return new WP_Error( 'user-activated', __( 'Your account has been activated', 'wp-user-frontend' ), 'message' );
     }
 
     public function wp_login_page_redirect() {

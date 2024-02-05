@@ -361,6 +361,10 @@ class Simple_Login {
                 case 'lostpassword':
                     $checkemail = isset( $getdata['checkemail'] ) ? sanitize_text_field( $getdata['checkemail'] ) : '';
 
+                    if ( $this->login_errors ) {
+                        wpuf_load_template( 'lost-pass-form.php', $args );
+                        break;
+                    }
                     if ( 'confirm' === $checkemail ) {
                         $this->messages[] = __( 'Check your e-mail for the confirmation link.', 'wp-user-frontend' );
                     }

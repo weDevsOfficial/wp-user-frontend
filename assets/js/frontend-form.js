@@ -467,7 +467,7 @@
 
                         if ( typeof res.type !== 'undefined' && res.type === 'login' ) {
 
-                            if ( confirm(res.error) ) {
+                            if ( confirm(res.data.error) ) {
                                 window.location = res.redirect_to;
                             } else {
                                 submitButton.removeAttr('disabled');
@@ -482,7 +482,7 @@
                             }
 
                             Swal.fire({
-                                html: res.error,
+                                html: res.data.error,
                                 icon: 'warning',
                                 showCancelButton: false,
                                 confirmButtonColor: '#d54e21',

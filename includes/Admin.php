@@ -98,36 +98,33 @@ class Admin {
         }
 
         if ( in_array( $hook_suffix, [ 'post.php', 'post-new.php' ], true ) ) {
-            $screen = get_current_screen();
-            if ( is_object( $screen ) && 'product' === $screen->post_type ) {
-                wp_enqueue_script( 'wpuf-upload' );
-                wp_localize_script(
-                    'wpuf-upload',
-                    'wpuf_upload',
-                    [
-                        'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
-                        'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
-                        'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
-                        'ajaxurl'    => admin_url( 'admin-ajax.php' ),
-                        'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
-                        'plupload'   => [
-                            'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
-                            'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
-                            'filters'          => [
-                                [
-                                    'title' => __( 'Allowed Files', 'wp-user-frontend' ),
-                                    'extensions' => '*',
-                                ],
+            wp_enqueue_script( 'wpuf-upload' );
+            wp_localize_script(
+                'wpuf-upload',
+                'wpuf_upload',
+                [
+                    'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
+                    'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
+                    'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
+                    'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+                    'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
+                    'plupload'   => [
+                        'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
+                        'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
+                        'filters'          => [
+                            [
+                                'title' => __( 'Allowed Files', 'wp-user-frontend' ),
+                                'extensions' => '*',
                             ],
-                            'multipart'        => true,
-                            'urlstream_upload' => true,
-                            'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
-                            'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
-                            'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' ),
                         ],
-                    ]
-                );
-            }
+                        'multipart'        => true,
+                        'urlstream_upload' => true,
+                        'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
+                        'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
+                        'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' ),
+                    ],
+                ]
+            );
         }
     }
 }

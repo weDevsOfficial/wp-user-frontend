@@ -1492,4 +1492,19 @@
         // Set name attribute for google map search field
         $(".wpuf-form-add #wpuf-map-add-location").attr("name", "find_address");
     });
+
+    $(function($) {
+        // eye icon for password field
+        $(document).on('click', '.wpuf-eye', function () {
+            const input = $( this ).siblings( 'input' );
+
+            if ( input.attr("type") === "password" ) {
+                input.attr( "type", "text" );
+                $( this ).attr( "src", wpuf_frontend.pro_asset_url + '/images/eye-close.svg' );
+            } else {
+                input.attr( "type", "password" );
+                $( this ).attr( "src", wpuf_frontend.pro_asset_url + '/images/eye.svg' );
+            }
+        });
+    });
 })(jQuery, window);

@@ -8,8 +8,9 @@ use WeDevs\Wpuf\Free\Simple_Login;
 <div class="login" id="wpuf-login-form">
 
     <?php
-        Simple_Login::init()->show_errors();
-        Simple_Login::init()->show_messages();
+        wpuf()->frontend->simple_login->show_errors();
+        wpuf()->frontend->simple_login->show_messages();
+  
         $eye_icon_src = file_exists( WPUF_ROOT . '/assets/images/eye.svg' ) ? WPUF_ASSET_URI . '/images/eye.svg' : '';
     ?>
 

@@ -2,14 +2,6 @@
 
 namespace WeDevs\Wpuf;
 
-use WeDevs\Wpuf\Admin\Subscription;
-use WeDevs\Wpuf\Fields\Form_Field_Featured_Image;
-use WeDevs\Wpuf\Fields\Form_Field_Post_Content;
-use WeDevs\Wpuf\Fields\Form_Field_Post_Excerpt;
-use WeDevs\Wpuf\Fields\Form_Field_Post_Tags;
-use WeDevs\Wpuf\Fields\Form_Field_Post_Taxonomy;
-use WeDevs\Wpuf\Fields\Form_Field_Post_Title;
-
 class Frontend_Render_Form {
     private static $_instance;
 

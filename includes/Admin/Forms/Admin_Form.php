@@ -2,7 +2,7 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
-use WeDevs\Wpuf\Admin\Subscription;
+use WeDevs\Wpuf\Subscription;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WeDevs\WpUtils\ContainerTrait;
 

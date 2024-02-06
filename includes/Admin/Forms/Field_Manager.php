@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
-use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Fields\Form_Field_Checkbox;
 use WeDevs\Wpuf\Fields\Form_Field_Column;
 use WeDevs\Wpuf\Fields\Form_Field_Dropdown;
@@ -13,7 +12,6 @@ use WeDevs\Wpuf\Fields\Form_Field_HTML;
 use WeDevs\Wpuf\Fields\Form_Field_Image;
 use WeDevs\Wpuf\Fields\Form_Field_MultiDropdown;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Content;
-use WeDevs\Wpuf\Fields\Form_Field_Post_Excerpt;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Tags;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Taxonomy;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Title;
@@ -23,6 +21,7 @@ use WeDevs\Wpuf\Fields\Form_Field_SectionBreak;
 use WeDevs\Wpuf\Fields\Form_Field_Text;
 use WeDevs\Wpuf\Fields\Form_Field_Textarea;
 use WeDevs\Wpuf\Fields\Form_Field_URL;
+use WeDevs\Wpuf\Subscription;
 
 /**
  * Form field manager class

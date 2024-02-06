@@ -1,10 +1,9 @@
 <?php
 
-namespace WeDevs\Wpuf\Admin;
+namespace WeDevs\Wpuf;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Traits\TaxableTrait;
-use WeDevs\Wpuf\User_Subscription;
 
 /**
  * WPUF subscription manager
@@ -531,7 +530,8 @@ class Subscription {
      * @param int $post_id
      */
     public function monitor_new_post( $post_id, $form_id, $form_settings ) {
-        global $wpdb, $userdata;
+        global $userdata;
+
         $post = get_post( $post_id );
 
         // bail out if charging is not enabled

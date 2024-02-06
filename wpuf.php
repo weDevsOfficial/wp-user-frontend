@@ -32,8 +32,8 @@ define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
 define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
 define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 
-use WeDevs\WpUtils\SingletonTrait;
 use WeDevs\WpUtils\ContainerTrait;
+use WeDevs\WpUtils\SingletonTrait;
 
 /**
  * Main bootstrap class for WP User Frontend
@@ -164,7 +164,7 @@ final class WP_User_Frontend {
      */
     public function instantiate() {
         $this->assets       = new WeDevs\Wpuf\Assets();
-        $this->subscription = new WeDevs\Wpuf\Admin\Subscription();
+        $this->subscription = new WeDevs\Wpuf\Subscription();
         $this->fields       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
         $this->customize    = new WeDevs\Wpuf\Admin\Customizer_Options();
         $this->bank         = new WeDevs\Wpuf\Lib\Gateway\Bank();

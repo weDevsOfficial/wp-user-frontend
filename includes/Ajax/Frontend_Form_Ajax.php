@@ -106,22 +106,6 @@ class Frontend_Form_Ajax {
             }
         }
 
-        // check each form field for restricted shortcodes
-        foreach ( $this->form_fields as $single_field ) {
-            if ( empty( $single_field['rich'] ) || 'yes' !== $single_field['rich'] ) {
-                continue;
-            }
-
-            $current_data = ! empty( $_POST[ $single_field['name'] ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ $single_field['name'] ] ) ) : '';
-
-            foreach ( $protected_shortcodes as $shortcode ) {
-                $search_for = '[' . $shortcode;
-                if ( strpos( $current_data, $search_for ) !== false ) {
-                    wpuf()->ajax->send_error( sprintf( __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
-                }
-            }
-        }
-
         foreach ( $attachments_to_delete as $attach_id ) {
             wp_delete_attachment( $attach_id, true );
         }

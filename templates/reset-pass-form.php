@@ -7,8 +7,10 @@ use WeDevs\Wpuf\Free\Simple_Login;
 ?>
 <div class="login" id="wpuf-login-form">
 
-    <?php Simple_Login::init()->show_errors(); ?>
-    <?php Simple_Login::init()->show_messages(); ?>
+    <?php
+        wpuf()->frontend->simple_login->show_errors();
+        wpuf()->frontend->simple_login->show_messages();
+    ?>
 
     <form name="resetpasswordform" id="resetpasswordform" action="" method="post">
         <p>

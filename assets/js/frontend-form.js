@@ -1500,10 +1500,10 @@
 
             if ( input.attr("type") === "password" ) {
                 input.attr( "type", "text" );
-                $( this ).attr( "src", wpuf_frontend.pro_asset_url + '/images/eye-close.svg' );
+                $( this ).attr( "src", wpuf_frontend.asset_url + '/images/eye-close.svg' );
             } else {
                 input.attr( "type", "password" );
-                $( this ).attr( "src", wpuf_frontend.pro_asset_url + '/images/eye.svg' );
+                $( this ).attr( "src", wpuf_frontend.asset_url + '/images/eye.svg' );
             }
         });
     });

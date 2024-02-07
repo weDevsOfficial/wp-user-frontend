@@ -39,6 +39,9 @@ class Admin {
         // enqueue common scripts that will load throughout WordPress dashboard. notice, what's new etc.
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_common_scripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_cpt_page_scripts' ] );
+
+        // block admin access as per wpuf settings
+        add_action( 'admin_init', [ $this, 'block_admin_access' ] );
     }
 
     /**
@@ -125,6 +128,29 @@ class Admin {
                     ],
                 ]
             );
+        }
+    }
+
+    /**
+     * Block user access to admin panel for specific roles
+     *
+     * @global string $pagenow
+     */
+    public function block_admin_access() {
+        global $pagenow;
+
+        // bail out if we are from WP Cli
+        if ( defined( 'WP_CLI' ) ) {
+            return;
+        }
+
+        $access_level = wpuf_get_option( 'admin_access', 'wpuf_general', 'read' );
+        $valid_pages  = [ 'admin-ajax.php', 'admin-post.php', 'async-upload.php', 'media-upload.php' ];
+
+        if ( ! current_user_can( $access_level ) && ! in_array( $pagenow, $valid_pages ) ) {
+            // wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
+            wp_redirect( home_url() );
+            exit;
         }
     }
 }

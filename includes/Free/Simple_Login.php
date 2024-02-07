@@ -5,6 +5,7 @@ namespace WeDevs\Wpuf\Free;
 use WeDevs\Wpuf\Render_Form;
 use WeDevs\Wpuf\WPUF_User;
 use WP_Error;
+use WP_User;
 
 /**
  * Login and forgot password handler class
@@ -360,6 +361,10 @@ class Simple_Login {
                 case 'lostpassword':
                     $checkemail = isset( $getdata['checkemail'] ) ? sanitize_text_field( $getdata['checkemail'] ) : '';
 
+                    if ( $this->login_errors ) {
+                        wpuf_load_template( 'lost-pass-form.php', $args );
+                        break;
+                    }
                     if ( 'confirm' === $checkemail ) {
                         $this->messages[] = __( 'Check your e-mail for the confirmation link.', 'wp-user-frontend' );
                     }
@@ -624,8 +629,11 @@ class Simple_Login {
 
         // process lost password form
         if ( isset( $_POST['user_login'] ) && isset( $_POST['_wpnonce'] ) ) {
-            $nonce = sanitize_key( wp_unslash( $_POST['_wpnonce'] ) );
-            wp_verify_nonce( $nonce, 'wpuf_lost_pass' );
+            $nonce = ! empty( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+
+            if ( ! empty( $nonce) && ! wp_verify_nonce( $nonce, 'wpuf_lost_pass' ) ) {
+                return ;
+            }
 
             if ( $this->retrieve_password() ) {
                 $url = add_query_arg(
@@ -655,8 +663,6 @@ class Simple_Login {
                 // save these values into the form again in case of errors
                 $args['key']   = $key;
                 $args['login'] = $login;
-
-                wp_verify_nonce( $nonce, 'wpuf_reset_pass' );
 
                 if ( empty( $pass1 ) || empty( $pass2 ) ) {
                     $this->login_errors[] = __( 'Please enter your password.', 'wp-user-frontend' );

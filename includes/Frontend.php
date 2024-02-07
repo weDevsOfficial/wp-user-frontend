@@ -26,6 +26,9 @@ class Frontend {
         $this->form_preview       = new Frontend\Form_Preview();
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+
+        // show admin bar as per wpuf settings
+        add_filter( 'show_admin_bar', [ $this, 'show_admin_bar' ] );
     }
 
     /**
@@ -159,5 +162,32 @@ class Frontend {
                 && function_exists( 'dokan_is_seller_dashboard' )
                 && dokan_is_seller_dashboard()
                 && ! empty( $wp->query_vars['posts'] );
+    }
+
+
+
+    /**
+     * Show/hide admin bar to the permitted user level
+     *
+     * @since 2.2.3
+     *
+     * @return bool
+     */
+    public function show_admin_bar( $val ) {
+        if ( ! is_user_logged_in() ) {
+            return false;
+        }
+
+        $roles        = wpuf_get_option( 'show_admin_bar', 'wpuf_general', [ 'administrator', 'editor', 'author', 'contributor', 'subscriber' ] );
+        $roles        = $roles && is_string( $roles ) ? [ strtolower( $roles ) ] : $roles;
+        $current_user = wp_get_current_user();
+
+        if ( ! empty( $current_user->roles ) && ! empty( $current_user->roles[0] ) ) {
+            if ( ! in_array( $current_user->roles[0], $roles ) ) {
+                return false;
+            }
+        }
+
+        return $val;
     }
 }

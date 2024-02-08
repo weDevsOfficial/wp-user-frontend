@@ -122,7 +122,13 @@ class Shortcodes_Button {
      * @return array
      */
     public function enqueue_plugin_scripts( $plugin_array ) {
-        //enqueue TinyMCE plugin script with its ID.
+        global $pagenow;
+
+        if ( ! in_array( $pagenow, [ 'post.php', 'post-new.php' ] ) ) {
+            return $plugin_array;
+        }
+
+        // enqueue TinyMCE plugin script with its ID.
         $plugin_array['wpuf_button'] = WPUF_ASSET_URI . '/js/wpuf-tmc-button.js';
 
         return $plugin_array;

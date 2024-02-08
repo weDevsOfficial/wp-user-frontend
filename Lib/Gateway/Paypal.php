@@ -344,14 +344,28 @@ class Paypal {
         if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
             \WP_User_Frontend::log( 'paypal-payment-info', print_r( $_POST, true ) );
 
+            $post_id = 0;
+            $pack_id = 0;
+
             $postdata       = $_POST;
-            $type           = $postdata['custom'];
-            $custom         = json_decode( stripcslashes( $postdata['custom'] ) );
+            $type           = isset( $postdata['custom'] ) ? $postdata['custom'] : '';
+            $custom         = json_decode( stripcslashes( $type ) );
             $item_number    = ! empty( $postdata['item_number'] ) ? $postdata['item_number'] : 0;
-            $amount         = $postdata['mc_gross'];
+
+            if ( property_exists( $custom, 'type' ) ) {
+                switch ( $custom->type ) {
+                    case 'post':
+                        $post_id = $item_number;
+                        break;
+
+                    case 'pack':
+                        $pack_id = $item_number;
+                        break;
+                }
+            }
+
+            $amount         = isset( $postdata['mc_gross'] ) ? $postdata['mc_gross'] : 0;
             $is_recurring   = false;
-            $post_id        = $custom->type === 'post' ? $item_number : 0;
-            $pack_id        = $custom->type === 'pack' ? $item_number : 0;
             $transaction_id = isset( $postdata['txn_id'] ) ? sanitize_text_field( $postdata['txn_id'] ) : '';
 
             $coupon_id = isset( $custom->coupon_id ) ? $custom->coupon_id : false;
@@ -434,16 +448,16 @@ class Paypal {
             } // payment type
 
             $data = [
-                'user_id'          => (int) $custom->user_id,
-                'status'           => strtolower( $postdata['payment_status'] ),
-                'subtotal'         => $postdata['mc_gross'],
-                'tax'              => (float) $custom->tax,
-                'cost'             => (float) $custom->subtotal,
-                'post_id'          => isset( $post_id ) ? $post_id : '',
-                'pack_id'          => isset( $pack_id ) ? $pack_id : '',
-                'payer_first_name' => $postdata['first_name'],
-                'payer_last_name'  => $postdata['last_name'],
-                'payer_email'      => $postdata['payer_email'],
+                'user_id'          => property_exists( $custom, 'user_id' ) ? ( int) $custom->user_id : 0,
+                'status'           => ! empty( $postdata['payment_status'] ) ? strtolower( $postdata['payment_status'] ) : '',
+                'subtotal'         => ! empty( $postdata['mc_gross'] ) ? $postdata['mc_gross'] : '',
+                'tax'              => property_exists( $custom, 'tax' ) ? (float) $custom->tax : 0,
+                'cost'             => property_exists( $custom, 'subtotal' ) ? (float) $custom->subtotal : 0,
+                'post_id'          => isset( $post_id ) ? $post_id : 0,
+                'pack_id'          => isset( $pack_id ) ? $pack_id : 0,
+                'payer_first_name' => ! empty( $postdata['first_name'] ) ? $postdata['first_name'] : '',
+                'payer_last_name'  => ! empty( $postdata['last_name'] ) ? $postdata['last_name'] : '',
+                'payer_email'      => ! empty( $postdata['payer_email'] ) ? $postdata['payer_email'] : '',
                 'payment_type'     => 'Paypal',
                 'payer_address'    => isset( $postdata['residence_country'] ) ? $postdata['residence_country'] : null,
                 'transaction_id'   => $transaction_id,
@@ -468,8 +482,10 @@ class Paypal {
                 update_user_meta( $custom->user_id, '_wpuf_subscription_pack', $umeta );
             }
 
-            delete_user_meta( $custom->user_id, '_wpuf_user_active' );
-            delete_user_meta( $custom->user_id, '_wpuf_activation_key' );
+            if ( is_object( $custom ) && $custom->user_id ) {
+                delete_user_meta( $custom->user_id, '_wpuf_user_active' );
+                delete_user_meta( $custom->user_id, '_wpuf_activation_key' );
+            }
         }
     }
 

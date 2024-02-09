@@ -174,15 +174,26 @@ class Form {
         if ( isset( $this->form_settings['message_restrict'] ) && ! $guest_post_enabled && ! is_user_logged_in() ) {
             $user_can_post = 'no';
             $info          = $this->form_settings['message_restrict'];
+
+            return [ $user_can_post, $info ];
         }
+
+        $has_post_count = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+
+        if ( ! $has_post_count ) {
+            $user_can_post = 'no';
+            $info          = __( 'Post Limit Exceeded for your purchased subscription pack.', 'wp-user-frontend' );
+
+            return [ $user_can_post, $info ];
+        }
+
 
         if ( $this->is_charging_enabled() ) {
             $pay_per_post      = $this->is_enabled_pay_per_post();
-            $pay_per_post_cost = (float) $this->get_pay_per_post_cost();
+            // $pay_per_post_cost = (float) $this->get_pay_per_post_cost();
             $force_pack        = $this->is_enabled_force_pack();
             $fallback_enabled  = $this->is_enabled_fallback_cost();
-            $fallback_cost     = $this->get_subs_fallback_cost();
-            $has_post_count    = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+            // $fallback_cost     = $this->get_subs_fallback_cost();
 
             // guest post payment checking
             if ( ! is_user_logged_in() && isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] === 'true' ) {

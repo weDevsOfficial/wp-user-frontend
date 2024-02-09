@@ -14,7 +14,6 @@ use WeDevs\Wpuf\Fields\Form_Field_HTML;
 use WeDevs\Wpuf\Fields\Form_Field_Image;
 use WeDevs\Wpuf\Fields\Form_Field_MultiDropdown;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Content;
-use WeDevs\Wpuf\Fields\Form_Field_Post_Excerpt;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Tags;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Taxonomy;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Title;

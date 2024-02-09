@@ -1,9 +1,12 @@
 <?php
 
 namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
+use AllowDynamicProperties;
+
 /**
  * Easy Digital Downloads post form template preview
  */
+#[AllowDynamicProperties]
 class Pro_Form_Preview_EDD {
     /**
      * Template title

@@ -5,6 +5,7 @@ namespace WeDevs\Wpuf\Admin;
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Traits\TaxableTrait;
 use WeDevs\Wpuf\User_Subscription;
+use WP_Post;
 
 /**
  * WPUF subscription manager
@@ -270,7 +271,7 @@ class Subscription {
      * @since 2.2
      *
      * @param int      $subscription_id
-     * @param \WP_Post $pack_post
+     * @param WP_Post $pack_post
      *
      * @return array
      */
@@ -349,7 +350,7 @@ class Subscription {
      * Save form data
      *
      * @param int      $post_ID
-     * @param \WP_Post $post
+     * @param WP_Post $post
      *
      * @return void
      */

@@ -1,5 +1,7 @@
 <?php
 
+use WeDevs\Wpuf\Admin\Subscription;
+
 /**
  * Move form fields from meta to a post_type
  *
@@ -51,7 +53,7 @@ function wpuf_upgrade_2_1_9_subscription() {
         return;
     }
 
-    $post_type = (new \WeDevs\Wpuf\Admin\Subscription())->get_all_post_type();
+    $post_type = (new Subscription())->get_all_post_type();
 
     foreach ( $results as $key => $result ) {
         $args = [

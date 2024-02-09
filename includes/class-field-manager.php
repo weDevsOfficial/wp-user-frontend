@@ -43,7 +43,7 @@ class WPUF_Field_Manager {
      *
      * @param string $field_type
      *
-     * @return \WPUF_Field_Contract
+     * @return WPUF_Field_Contract
      */
     public function get_field( $field_type ) {
         $fields = $this->get_fields();

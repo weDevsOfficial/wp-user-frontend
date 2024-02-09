@@ -2,6 +2,9 @@
 
 namespace WeDevs\Wpuf\Admin;
 
+use DOMDocument;
+use DomXPath;
+
 class Dashboard_Metabox {
     const URL = 'https://wedevs.com/category/user-frontend-pro';
     const OPT_KEY = 'wpuf_admin_db_mb';
@@ -67,7 +70,7 @@ class Dashboard_Metabox {
                         ?>
                         <li><a href="<?php echo esc_url( $article['href'] ); ?>"
                                target="_blank"><?php echo $article['title']; ?></a></li>
-                    <?php }; ?>
+                    <?php } ?>
                 </ul>
             </div>
             <div class="wpuf-divider-bottom"></div>
@@ -84,7 +87,7 @@ class Dashboard_Metabox {
                                target="_blank"><?php esc_html_e( $link['title'], 'wp-user-frontend' ); ?>
                                 <span aria-hidden="true" class="dashicons dashicons-external"></span></a>
                         </li>
-                    <?php }; ?>
+                    <?php } ?>
                 </ul>
             </div>
         </div>
@@ -101,9 +104,9 @@ class Dashboard_Metabox {
             return [];
         }
         $body = wp_remote_retrieve_body( $response );
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         @$dom->loadHTML( $body );
-        $finder = new \DomXPath( $dom );
+        $finder = new DomXPath( $dom );
         $classname = 'post__title';
         $nodes     = $finder->query( "//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]" );
         if ( empty( $nodes ) ) {

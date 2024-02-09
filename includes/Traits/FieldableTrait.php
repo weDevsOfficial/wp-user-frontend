@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Traits;
 
+use Invisible_Recaptcha;
 use WeDevs\Wpuf\Fields\Form_Field_Featured_Image;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Content;
 use WeDevs\Wpuf\Fields\Form_Field_Post_Excerpt;
@@ -289,7 +290,7 @@ trait FieldableTrait {
         } elseif ( $no_captcha == 0 && 1 == $invisible ) {
             $response  = null;
             $recaptcha = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
-            $object    = new \Invisible_Recaptcha( $site_key, $private_key );
+            $object    = new Invisible_Recaptcha( $site_key, $private_key );
 
             $response = $object->verifyResponse( $recaptcha );
 

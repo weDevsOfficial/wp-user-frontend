@@ -13,7 +13,9 @@
 
     <div v-if="'logged_in' === selected" class="condiotional-logic-container">
 
-    	<?php $roles = get_editable_roles(); ?>
+    	<?php use WeDevs\Wpuf\Admin\Subscription;
+
+	    $roles = get_editable_roles(); ?>
 
     	<ul>
 			<?php

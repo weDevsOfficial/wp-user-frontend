@@ -220,7 +220,7 @@ class Edit_Profile {
                                         strong: "Strong",
                                         mismatch: "Mismatch"
                                     };
-                                    try{convertEntities(pwsL10n);}catch(e){};
+                                    try{convertEntities(pwsL10n);}catch(e){}
                                 </script>
                             </td>
                         </tr>

@@ -3,8 +3,8 @@
 namespace WeDevs\Wpuf\Frontend;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
+use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Frontend_Render_Form;
-use WeDevs\Wpuf\Subscription;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 
 class Frontend_Form extends Frontend_Render_Form {

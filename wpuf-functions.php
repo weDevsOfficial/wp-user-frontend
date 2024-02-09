@@ -1,9 +1,9 @@
 <?php
 
+use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Encryption_Helper;
 use WeDevs\Wpuf\Free\Pro_Prompt;
 use WeDevs\Wpuf\Frontend\Payment;
-use WeDevs\Wpuf\Subscription;
 
 /**
  * Start output buffering

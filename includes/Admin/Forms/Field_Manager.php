@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
+use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Fields\Form_Field_Checkbox;
 use WeDevs\Wpuf\Fields\Form_Field_Column;
 use WeDevs\Wpuf\Fields\Form_Field_Dropdown;
@@ -21,7 +22,6 @@ use WeDevs\Wpuf\Fields\Form_Field_SectionBreak;
 use WeDevs\Wpuf\Fields\Form_Field_Text;
 use WeDevs\Wpuf\Fields\Form_Field_Textarea;
 use WeDevs\Wpuf\Fields\Form_Field_URL;
-use WeDevs\Wpuf\Subscription;
 
 /**
  * Form field manager class

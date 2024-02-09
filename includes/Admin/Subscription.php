@@ -1,9 +1,10 @@
 <?php
 
-namespace WeDevs\Wpuf;
+namespace WeDevs\Wpuf\Admin;
 
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Traits\TaxableTrait;
+use WeDevs\Wpuf\User_Subscription;
 
 /**
  * WPUF subscription manager

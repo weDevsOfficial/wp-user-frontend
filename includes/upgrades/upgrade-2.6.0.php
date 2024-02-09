@@ -64,7 +64,7 @@ function wpuf_upgrade_2_6_create_subscribers_table() {
  */
 function wpuf_upgrade_2_6_insert_subscribers() {
     global $wpdb;
-    $users = (new \WeDevs\Wpuf\Subscription())->subscription_pack_users();
+    $users = (new \WeDevs\Wpuf\Admin\Subscription())->subscription_pack_users();
 
     foreach ( $users as $user ) {
         $sub_data               = get_user_meta( $user->data->ID, '_wpuf_subscription_pack', true );

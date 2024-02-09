@@ -164,7 +164,7 @@ final class WP_User_Frontend {
      */
     public function instantiate() {
         $this->assets       = new WeDevs\Wpuf\Assets();
-        $this->subscription = new WeDevs\Wpuf\Subscription();
+        $this->subscription = new WeDevs\Wpuf\Admin\Subscription();
         $this->fields       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
         $this->customize    = new WeDevs\Wpuf\Admin\Customizer_Options();
         $this->bank         = new WeDevs\Wpuf\Lib\Gateway\Bank();

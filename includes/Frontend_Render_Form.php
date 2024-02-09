@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf;
 
+use WeDevs\Wpuf\Admin\Subscription;
+
 class Frontend_Render_Form {
     private static $_instance;
 

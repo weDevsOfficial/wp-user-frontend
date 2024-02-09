@@ -2,7 +2,7 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
-use WeDevs\Wpuf\Subscription;
+use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\User_Subscription;
 
 /**

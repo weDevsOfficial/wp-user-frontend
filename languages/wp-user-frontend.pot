@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.5\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-02-07 03:48:16+00:00\n"
+"POT-Creation-Date: 2024-02-09 06:42:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -571,7 +571,7 @@ msgstr ""
 
 #: admin/html/form-settings-post.php:22 class/render-form.php:761
 #: includes/Admin/Forms/Admin_Form_Builder.php:74
-#: includes/Frontend_Render_Form.php:85 includes/Render_Form.php:618
+#: includes/Frontend_Render_Form.php:79 includes/Render_Form.php:618
 #: includes/class-frontend-render-form.php:183
 msgid "Save Draft"
 msgstr ""
@@ -2643,7 +2643,7 @@ msgstr ""
 #: includes/Admin/Admin_Installer.php:88 includes/Admin/Forms/Admin_Form.php:80
 #: includes/Admin/Forms/Admin_Form.php:119
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:415
-#: includes/Admin/Shortcodes_Button.php:93 includes/Admin/Subscription.php:460
+#: includes/Admin/Shortcodes_Button.php:93 includes/Admin/Subscription.php:461
 #: includes/functions/user/edit-user.php:102
 msgid "Edit"
 msgstr ""
@@ -2657,9 +2657,9 @@ msgstr ""
 #: admin/installer.php:95 class/subscription.php:441 class/subscription.php:461
 #: class/subscription.php:462 class/subscription.php:463
 #: includes/Admin/Admin_Installer.php:94
-#: includes/Admin/Shortcodes_Button.php:105 includes/Admin/Subscription.php:435
-#: includes/Admin/Subscription.php:455 includes/Admin/Subscription.php:456
-#: includes/Admin/Subscription.php:457 wpuf-functions.php:2069
+#: includes/Admin/Shortcodes_Button.php:105 includes/Admin/Subscription.php:436
+#: includes/Admin/Subscription.php:456 includes/Admin/Subscription.php:457
+#: includes/Admin/Subscription.php:458 wpuf-functions.php:2069
 msgid "Subscription"
 msgstr ""
 
@@ -3244,12 +3244,12 @@ msgstr ""
 msgid "Invisible reCAPTCHA validation failed"
 msgstr ""
 
-#: class/render-form.php:378 includes/Frontend_Render_Form.php:187
+#: class/render-form.php:378 includes/Frontend_Render_Form.php:181
 #: includes/Render_Form.php:235 includes/class-frontend-render-form.php:289
 msgid "Your selected form is no longer available."
 msgstr ""
 
-#: class/render-form.php:384 includes/Frontend_Render_Form.php:193
+#: class/render-form.php:384 includes/Frontend_Render_Form.php:187
 #: includes/Render_Form.php:241 includes/class-frontend-render-form.php:295
 msgid "Please make sure you've published your form."
 msgstr ""
@@ -3282,157 +3282,157 @@ msgid "Delete"
 msgstr ""
 
 #: class/subscription.php:347 includes/Admin/Admin_Subscription.php:187
-#: includes/Admin/Subscription.php:341
+#: includes/Admin/Subscription.php:342
 msgid "Pack Name"
 msgstr ""
 
-#: class/subscription.php:464 includes/Admin/Subscription.php:458
+#: class/subscription.php:464 includes/Admin/Subscription.php:459
 msgid "Add Subscription"
 msgstr ""
 
-#: class/subscription.php:465 includes/Admin/Subscription.php:459
+#: class/subscription.php:465 includes/Admin/Subscription.php:460
 msgid "Add New Subscription"
 msgstr ""
 
-#: class/subscription.php:467 includes/Admin/Subscription.php:461
+#: class/subscription.php:467 includes/Admin/Subscription.php:462
 msgid "Edit Subscription"
 msgstr ""
 
-#: class/subscription.php:468 includes/Admin/Subscription.php:462
+#: class/subscription.php:468 includes/Admin/Subscription.php:463
 msgid "New Subscription"
 msgstr ""
 
 #: class/subscription.php:469 class/subscription.php:470
-#: includes/Admin/Subscription.php:463 includes/Admin/Subscription.php:464
+#: includes/Admin/Subscription.php:464 includes/Admin/Subscription.php:465
 msgid "View Subscription"
 msgstr ""
 
-#: class/subscription.php:471 includes/Admin/Subscription.php:465
+#: class/subscription.php:471 includes/Admin/Subscription.php:466
 msgid "Search Subscription"
 msgstr ""
 
-#: class/subscription.php:472 includes/Admin/Subscription.php:466
+#: class/subscription.php:472 includes/Admin/Subscription.php:467
 msgid "No Subscription Found"
 msgstr ""
 
-#: class/subscription.php:473 includes/Admin/Subscription.php:467
+#: class/subscription.php:473 includes/Admin/Subscription.php:468
 msgid "No Subscription Found in Trash"
 msgstr ""
 
-#: class/subscription.php:474 includes/Admin/Subscription.php:468
+#: class/subscription.php:474 includes/Admin/Subscription.php:469
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:829 includes/Admin/Subscription.php:830
+#: class/subscription.php:829 includes/Admin/Subscription.php:832
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:829 includes/Admin/Subscription.php:830
+#: class/subscription.php:829 includes/Admin/Subscription.php:832
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
 #: class/subscription.php:833 class/subscription.php:837
-#: includes/Admin/Subscription.php:834 includes/Admin/Subscription.php:838
+#: includes/Admin/Subscription.php:836 includes/Admin/Subscription.php:840
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:856 includes/Admin/Subscription.php:857
+#: class/subscription.php:856 includes/Admin/Subscription.php:859
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:858 includes/Admin/Subscription.php:859
+#: class/subscription.php:858 includes/Admin/Subscription.php:861
 #. translators: %s: pack title
 msgid "<p><i>Pack name: %s </i></p>"
 msgstr ""
 
-#: class/subscription.php:860 includes/Admin/Subscription.php:861
+#: class/subscription.php:860 includes/Admin/Subscription.php:863
 msgid "To cancel the pack, press the following cancel button"
 msgstr ""
 
 #: class/subscription.php:867 includes/Admin/Admin_Subscription.php:812
 #: includes/Admin/Forms/Admin_Form_Builder.php:293
 #: includes/Admin/List_Table_Subscribers.php:142
-#: includes/Admin/Subscription.php:868 includes/Frontend/Payment.php:244
+#: includes/Admin/Subscription.php:870 includes/Frontend/Payment.php:244
 #: templates/dashboard/subscription.php:68
 msgid "Cancel"
 msgstr ""
 
-#: class/subscription.php:907 includes/Admin/Subscription.php:908
+#: class/subscription.php:907 includes/Admin/Subscription.php:910
 msgid "Day"
 msgid_plural "Days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:908 includes/Admin/Subscription.php:909
+#: class/subscription.php:908 includes/Admin/Subscription.php:911
 msgid "Week"
 msgid_plural "Weeks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:909 includes/Admin/Subscription.php:910
+#: class/subscription.php:909 includes/Admin/Subscription.php:912
 msgid "Month"
 msgid_plural "Months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:910 includes/Admin/Subscription.php:911
+#: class/subscription.php:910 includes/Admin/Subscription.php:913
 msgid "Year"
 msgid_plural "Years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:942 includes/Admin/Subscription.php:941
+#: class/subscription.php:942 includes/Admin/Subscription.php:943
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:949 includes/Admin/Subscription.php:948
+#: class/subscription.php:949 includes/Admin/Subscription.php:950
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:950 includes/Admin/Subscription.php:949
+#: class/subscription.php:950 includes/Admin/Subscription.php:951
 msgid "for"
 msgstr ""
 
-#: class/subscription.php:950 includes/Admin/Subscription.php:949
+#: class/subscription.php:950 includes/Admin/Subscription.php:951
 msgid "installments"
 msgstr ""
 
-#: class/subscription.php:958 includes/Admin/Subscription.php:957
+#: class/subscription.php:958 includes/Admin/Subscription.php:959
 #. translators: %s: trial days
 msgid "Trial available for first %1$s %2$s"
 msgstr ""
 
-#: class/subscription.php:962 includes/Admin/Subscription.php:961
+#: class/subscription.php:962 includes/Admin/Subscription.php:963
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:966 includes/Admin/Subscription.php:965
+#: class/subscription.php:966 includes/Admin/Subscription.php:967
 msgid "Sign Up"
 msgstr ""
 
 #: class/subscription.php:969 includes/Admin/Admin_Subscription.php:210
 #: includes/Admin/Admin_Subscription.php:607
-#: includes/Admin/Subscription.php:968
+#: includes/Admin/Subscription.php:970
 #: includes/Free/templates/page-registration-form.php:94
-#: includes/Frontend/Frontend_Account.php:218
+#: includes/Frontend/Frontend_Account.php:226
 #: includes/User_Subscription.php:314
 #: templates/subscriptions/pack-details.php:24
 msgid "Free"
 msgstr ""
 
-#: class/subscription.php:1034 includes/Admin/Subscription.php:1031
+#: class/subscription.php:1034 includes/Admin/Subscription.php:1033
 #. translators: %s: amount
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:1051 includes/Admin/Subscription.php:1048
+#: class/subscription.php:1051 includes/Admin/Subscription.php:1050
 #. translators: %s: amount
 msgid ""
 "Your Subscription pack is exhausted. There is a <strong>%s</strong> charge "
 "to add a new post."
 msgstr ""
 
-#: class/subscription.php:1097 includes/Admin/Subscription.php:1094
+#: class/subscription.php:1097 includes/Admin/Subscription.php:1096
 #. translators: %s: subscription link
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
@@ -3587,7 +3587,7 @@ msgid "For each %1$s %2$s"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:612
-#: includes/Frontend/Frontend_Account.php:228
+#: includes/Frontend/Frontend_Account.php:236
 #. translators: %s: number of installments
 msgid ", for %s installments"
 msgstr ""
@@ -4040,30 +4040,30 @@ msgstr[1] ""
 msgid "Form duplicated successfully. <a href=\"%s\">View form.</a>"
 msgstr ""
 
-#: includes/Admin/Forms/Field_Manager.php:151
+#: includes/Admin/Forms/Field_Manager.php:150
 #: includes/class-field-manager.php:185
 msgid "Custom Fields"
 msgstr ""
 
-#: includes/Admin/Forms/Field_Manager.php:178
+#: includes/Admin/Forms/Field_Manager.php:177
 #: includes/class-field-manager.php:206
 msgid "Others"
 msgstr ""
 
-#: includes/Admin/Forms/Form.php:196
+#: includes/Admin/Forms/Form.php:184 includes/Admin/Forms/Form.php:234
+msgid "Post Limit Exceeded for your purchased subscription pack."
+msgstr ""
+
+#: includes/Admin/Forms/Form.php:207
 #. translators: %s: Pack page link
 msgid ""
 "You need to  <a href=\"%s\">purchase a subscription package</a> to post in "
 "this form"
 msgstr ""
 
-#: includes/Admin/Forms/Form.php:203 includes/Admin/Forms/Form.php:236
-#: includes/Admin/Forms/Form.php:243
+#: includes/Admin/Forms/Form.php:214 includes/Admin/Forms/Form.php:247
+#: includes/Admin/Forms/Form.php:254
 msgid "Payment type not selected for this form. Please contact admin."
-msgstr ""
-
-#: includes/Admin/Forms/Form.php:223
-msgid "Post Limit Exceeded for your purchased subscription pack."
 msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Form_Template.php:102
@@ -5025,26 +5025,25 @@ msgid "Maximum %d word is allowed for %s"
 msgstr ""
 
 #: includes/Ajax/Frontend_Form_Ajax.php:104
-#: includes/Ajax/Frontend_Form_Ajax.php:120
 msgid "Using %s as shortcode is restricted"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:348
+#: includes/Ajax/Frontend_Form_Ajax.php:332
 msgid "Something went wrong"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:420
-#: includes/Ajax/Frontend_Form_Ajax.php:426
+#: includes/Ajax/Frontend_Form_Ajax.php:404
+#: includes/Ajax/Frontend_Form_Ajax.php:410
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:496
+#: includes/Ajax/Frontend_Form_Ajax.php:480
 msgid "Invalid email address."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:522
+#: includes/Ajax/Frontend_Form_Ajax.php:506
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -5053,8 +5052,8 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:576
-#: includes/Frontend_Render_Form.php:222
+#: includes/Ajax/Frontend_Form_Ajax.php:560
+#: includes/Frontend_Render_Form.php:216
 #: includes/class-frontend-render-form.php:324
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
@@ -5638,7 +5637,7 @@ msgstr ""
 msgid "Profile updated successfully"
 msgstr ""
 
-#: includes/Free/Form_Element.php:359 includes/Free/Simple_Login.php:320
+#: includes/Free/Form_Element.php:359 includes/Free/Simple_Login.php:318
 #: includes/Frontend/Registration.php:104 includes/Widgets/Login_Widget.php:228
 #: includes/Widgets/Login_Widget.php:264
 msgid "Register"
@@ -6167,55 +6166,55 @@ msgstr ""
 msgid "Learn more about Coupons"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:316 includes/Widgets/Login_Widget.php:293
-#: templates/login-form.php:77
+#: includes/Free/Simple_Login.php:314 includes/Widgets/Login_Widget.php:293
+#: templates/login-form.php:75
 msgid "Log In"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:324
+#: includes/Free/Simple_Login.php:322
 msgid "Lost Password"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:369
+#: includes/Free/Simple_Login.php:363
 msgid "Check your e-mail for the confirmation link."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:373
+#: includes/Free/Simple_Login.php:367
 msgid ""
 "Please enter your username or email address. You will receive a link to "
 "create a new password via email."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:382
+#: includes/Free/Simple_Login.php:376
 msgid "Your password has been reset successfully"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:388
+#: includes/Free/Simple_Login.php:382
 msgid "Enter your new password below."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:399
+#: includes/Free/Simple_Login.php:393
 msgid "You are now logged out."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:425
+#: includes/Free/Simple_Login.php:419
 msgid "Nonce is invalid"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:444 includes/Frontend/Registration.php:214
+#: includes/Free/Simple_Login.php:438 includes/Frontend/Registration.php:214
 msgid "Username is required."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:450 includes/Frontend/Registration.php:221
+#: includes/Free/Simple_Login.php:444 includes/Frontend/Registration.php:221
 msgid "Password is required."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:457 includes/Traits/FieldableTrait.php:204
+#: includes/Free/Simple_Login.php:451 includes/Traits/FieldableTrait.php:204
 #: includes/class-frontend-render-form.php:877
 msgid "Empty reCaptcha Field"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:472 includes/Frontend/Registration.php:184
+#: includes/Free/Simple_Login.php:466 includes/Frontend/Registration.php:184
 #: includes/Frontend/Registration.php:191
 #: includes/Frontend/Registration.php:198
 #: includes/Frontend/Registration.php:205
@@ -6228,35 +6227,35 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:472 includes/Frontend/Registration.php:255
+#: includes/Free/Simple_Login.php:466 includes/Frontend/Registration.php:255
 msgid "A user could not be found with this email address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:668
+#: includes/Free/Simple_Login.php:661
 msgid "Please enter your password."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:674
+#: includes/Free/Simple_Login.php:667
 msgid "Passwords do not match."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:722
+#: includes/Free/Simple_Login.php:715
 msgid "Enter a username or e-mail address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:729
+#: includes/Free/Simple_Login.php:722
 msgid "There is no user registered with that email address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:746
+#: includes/Free/Simple_Login.php:739
 msgid "Invalid username or e-mail."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:760
+#: includes/Free/Simple_Login.php:753
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:799
+#: includes/Free/Simple_Login.php:792
 #. translators: %s: activation link
 msgid ""
 "<strong>Your account is not active.</strong><br>Please check your email for "
@@ -6264,87 +6263,87 @@ msgid ""
 "link"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:820 includes/Free/Simple_Login.php:845
+#: includes/Free/Simple_Login.php:813 includes/Free/Simple_Login.php:838
 msgid "Activation URL is not valid"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:831
+#: includes/Free/Simple_Login.php:824
 msgid "Invalid User activation url"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:837
+#: includes/Free/Simple_Login.php:830
 msgid "User already verified"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:853 includes/Free/Simple_Login.php:929
+#: includes/Free/Simple_Login.php:846 includes/Free/Simple_Login.php:922
 msgid "Your account has been activated"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:856
+#: includes/Free/Simple_Login.php:849
 msgid ""
 "Your account has been verified , but you can't login until manually "
 "approved your account by an administrator."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:879
+#: includes/Free/Simple_Login.php:872
 #. translators: %s: blogname
 msgid "[%s] Your username and password info"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:881 includes/Free/Simple_Login.php:981
+#: includes/Free/Simple_Login.php:874 includes/Free/Simple_Login.php:974
 #: includes/Frontend/Registration.php:291 includes/Widgets/Login_Widget.php:153
 #. translators: %s: username
 msgid "Username: %s"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:882
+#: includes/Free/Simple_Login.php:875
 msgid "To set your password, visit the following address:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:978
+#: includes/Free/Simple_Login.php:971
 msgid "Someone requested that the password be reset for the following account:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:982 includes/Widgets/Login_Widget.php:154
+#: includes/Free/Simple_Login.php:975 includes/Widgets/Login_Widget.php:154
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:983 includes/Widgets/Login_Widget.php:155
+#: includes/Free/Simple_Login.php:976 includes/Widgets/Login_Widget.php:155
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:994 includes/Widgets/Login_Widget.php:160
+#: includes/Free/Simple_Login.php:987 includes/Widgets/Login_Widget.php:160
 #. translators: %s: blogname
 msgid "[%s] Password Reset"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1000
+#: includes/Free/Simple_Login.php:993
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1000
+#: includes/Free/Simple_Login.php:993
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1120
+#: includes/Free/Simple_Login.php:1113
 #. translators: %s: blogname
 msgid "[%s] Account has been activated"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1122
+#: includes/Free/Simple_Login.php:1115
 #. translators: %s: username
 msgid "Hi %s,"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1123
+#: includes/Free/Simple_Login.php:1116
 msgid "Congrats! Your account has been activated. To login visit the following url:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1125
+#: includes/Free/Simple_Login.php:1118
 msgid "Thanks"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1151
+#: includes/Free/Simple_Login.php:1144
 msgid " Login "
 msgstr ""
 
@@ -6508,53 +6507,57 @@ msgstr ""
 msgid "<p>You may have processed your payment, but the pack is not active yet.</p>"
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:222
+#: includes/Frontend/Frontend_Account.php:216
+msgid "%sYour subscription pack is not exists. Please contact admin.%s"
+msgstr ""
+
+#: includes/Frontend/Frontend_Account.php:230
 #. translators: %s: billing cycle number, %s: billing cycle period
 msgid "For each"
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:290
+#: includes/Frontend/Frontend_Account.php:298
 msgid "Nonce failure"
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:301
+#: includes/Frontend/Frontend_Account.php:309
 msgid "First Name is a required field."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:304
+#: includes/Frontend/Frontend_Account.php:312
 msgid "Last Name is a required field."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:307
+#: includes/Frontend/Frontend_Account.php:315
 msgid "Email is a required field."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:316
+#: includes/Frontend/Frontend_Account.php:324
 msgid "Please provide a valid email address."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:318
+#: includes/Frontend/Frontend_Account.php:326
 msgid "This email address is already registered."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:323
+#: includes/Frontend/Frontend_Account.php:331
 msgid "Please fill out all password fields."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:326
+#: includes/Frontend/Frontend_Account.php:334
 msgid "Please enter your current password."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:329
+#: includes/Frontend/Frontend_Account.php:337
 msgid "Please re-enter your password."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:332
+#: includes/Frontend/Frontend_Account.php:340
 msgid "New passwords do not match."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:336
 #: includes/Frontend/Frontend_Account.php:344
+#: includes/Frontend/Frontend_Account.php:352
 msgid "Your current password is incorrect."
 msgstr ""
 
@@ -6810,13 +6813,13 @@ msgstr ""
 msgid "is not valid"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:306
+#: includes/Frontend_Render_Form.php:300
 #: includes/class-frontend-render-form.php:910
 #: templates/dashboard/posts.php:120
 msgid "Featured"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:311
+#: includes/Frontend_Render_Form.php:305
 #: includes/class-frontend-render-form.php:915
 msgid "Mark the %s as featured (remaining %d)"
 msgstr ""
@@ -7391,7 +7394,7 @@ msgstr ""
 msgid "Lost your password?"
 msgstr ""
 
-#: includes/Widgets/Login_Widget.php:244 templates/lost-pass-form.php:18
+#: includes/Widgets/Login_Widget.php:244 templates/lost-pass-form.php:16
 msgid "Username or E-mail:"
 msgstr ""
 
@@ -7413,16 +7416,16 @@ msgid ""
 "create a new password via email"
 msgstr ""
 
-#: includes/Widgets/Login_Widget.php:291 templates/login-form.php:29
+#: includes/Widgets/Login_Widget.php:291 templates/login-form.php:27
 #: templates/registration-form.php:61
 msgid "Password"
 msgstr ""
 
-#: includes/Widgets/Login_Widget.php:292 templates/login-form.php:73
+#: includes/Widgets/Login_Widget.php:292 templates/login-form.php:71
 msgid "Remember Me"
 msgstr ""
 
-#: includes/Widgets/Login_Widget.php:294 templates/reset-pass-form.php:29
+#: includes/Widgets/Login_Widget.php:294 templates/reset-pass-form.php:27
 msgid "Reset Password"
 msgstr ""
 
@@ -8200,11 +8203,11 @@ msgstr ""
 msgid "You are currently logged in! %s?"
 msgstr ""
 
-#: templates/login-form.php:25
+#: templates/login-form.php:23
 msgid "Username or Email"
 msgstr ""
 
-#: templates/lost-pass-form.php:25
+#: templates/lost-pass-form.php:23
 msgid "Get New Password"
 msgstr ""
 
@@ -8220,11 +8223,11 @@ msgstr ""
 msgid "Last"
 msgstr ""
 
-#: templates/reset-pass-form.php:17
+#: templates/reset-pass-form.php:15
 msgid "New password"
 msgstr ""
 
-#: templates/reset-pass-form.php:22
+#: templates/reset-pass-form.php:20
 msgid "Confirm new password"
 msgstr ""
 

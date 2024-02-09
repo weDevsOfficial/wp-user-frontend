@@ -17,7 +17,7 @@ class WPUF_Subscription {
         add_filter( 'wpuf_add_post_redirect', [ $this, 'post_redirect' ], 10, 4 );
 
         add_filter( 'wpuf_addpost_notice', [ $this, 'force_pack_notice' ], 20, 3 );
-        add_filter( 'wpuf_can_post', [ $this, 'force_pack_permission' ], 20, 3 );
+        // add_filter( 'wpuf_can_post', [ $this, 'force_pack_permission' ], 20, 3 );
         add_action( 'wpuf_add_post_form_top', [ $this, 'add_post_info' ], 10, 2 );
 
         add_action( 'wpuf_add_post_after_insert', [ $this, 'monitor_new_post' ], 10, 3 );

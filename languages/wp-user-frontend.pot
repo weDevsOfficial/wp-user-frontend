@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.5\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-01-31 14:11:33+00:00\n"
+"POT-Creation-Date: 2024-02-07 03:48:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -146,11 +146,11 @@ msgstr ""
 msgid "Number of items per page:"
 msgstr ""
 
-#: admin/class-admin-settings.php:495 includes/Admin.php:74
+#: admin/class-admin-settings.php:495 includes/Admin.php:77
 msgid "Post lock has been cleared"
 msgstr ""
 
-#: admin/class-admin-settings.php:498 includes/Admin.php:78
+#: admin/class-admin-settings.php:498 includes/Admin.php:81
 msgid ""
 "%sThis post contains a sensitive short-code %s, that may allow others to "
 "sign-up with distinguished roles. If unsure, remove the short-code before "
@@ -364,7 +364,7 @@ msgstr ""
 #: includes/Fields/Field_Contract.php:471
 #: includes/Fields/Form_Field_Checkbox.php:84
 #: includes/Fields/Form_Field_Radio.php:88 includes/Free/Form_Element.php:504
-#: includes/Frontend.php:110 includes/functions/settings-options.php:123
+#: includes/Frontend.php:113 includes/functions/settings-options.php:123
 #: includes/functions/settings-options.php:135
 #: includes/functions/settings-options.php:233
 #: includes/functions/settings-options.php:244
@@ -382,7 +382,7 @@ msgstr ""
 #: includes/Fields/Field_Contract.php:470
 #: includes/Fields/Form_Field_Checkbox.php:83
 #: includes/Fields/Form_Field_Radio.php:87 includes/Free/Form_Element.php:503
-#: includes/Frontend.php:109 includes/functions/settings-options.php:122
+#: includes/Frontend.php:112 includes/functions/settings-options.php:122
 #: includes/functions/settings-options.php:134
 #: includes/functions/settings-options.php:232
 #: includes/functions/settings-options.php:243
@@ -2706,40 +2706,40 @@ msgid "Sample Form"
 msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1688
-#: includes/Admin/Posting.php:61 includes/Admin.php:108
-#: includes/Frontend.php:70 includes/Render_Form.php:1545
+#: includes/Admin/Posting.php:61 includes/Admin.php:111
+#: includes/Frontend.php:73 includes/Render_Form.php:1545
 msgid "Are you sure?"
 msgstr ""
 
 #: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:290
-#: includes/Admin/Posting.php:62 includes/Admin.php:109
-#: includes/Frontend.php:71
+#: includes/Admin/Posting.php:62 includes/Admin.php:112
+#: includes/Frontend.php:74
 msgid "Yes, delete it"
 msgstr ""
 
 #: admin/posting.php:76 includes/Admin/Forms/Admin_Form_Builder.php:291
-#: includes/Admin/Posting.php:63 includes/Admin.php:110
-#: includes/Frontend.php:72
+#: includes/Admin/Posting.php:63 includes/Admin.php:113
+#: includes/Frontend.php:75
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/posting.php:82 includes/Admin/Posting.php:69 includes/Admin.php:118
-#: includes/Frontend.php:82
+#: admin/posting.php:82 includes/Admin/Posting.php:69 includes/Admin.php:121
+#: includes/Frontend.php:85
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:85 includes/Admin/Posting.php:72 includes/Admin.php:124
-#: includes/Frontend.php:88
+#: admin/posting.php:85 includes/Admin/Posting.php:72 includes/Admin.php:127
+#: includes/Frontend.php:91
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:86 includes/Admin/Posting.php:73 includes/Admin.php:125
-#: includes/Frontend.php:89
+#: admin/posting.php:86 includes/Admin/Posting.php:73 includes/Admin.php:128
+#: includes/Frontend.php:92
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:87 includes/Admin/Posting.php:74 includes/Admin.php:126
-#: includes/Frontend.php:93
+#: admin/posting.php:87 includes/Admin/Posting.php:74 includes/Admin.php:129
+#: includes/Frontend.php:96
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -5638,7 +5638,7 @@ msgstr ""
 msgid "Profile updated successfully"
 msgstr ""
 
-#: includes/Free/Form_Element.php:359 includes/Free/Simple_Login.php:318
+#: includes/Free/Form_Element.php:359 includes/Free/Simple_Login.php:320
 #: includes/Frontend/Registration.php:104 includes/Widgets/Login_Widget.php:228
 #: includes/Widgets/Login_Widget.php:264
 msgid "Register"
@@ -6167,55 +6167,55 @@ msgstr ""
 msgid "Learn more about Coupons"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:314 includes/Widgets/Login_Widget.php:293
-#: templates/login-form.php:75
+#: includes/Free/Simple_Login.php:316 includes/Widgets/Login_Widget.php:293
+#: templates/login-form.php:77
 msgid "Log In"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:322
+#: includes/Free/Simple_Login.php:324
 msgid "Lost Password"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:363
+#: includes/Free/Simple_Login.php:369
 msgid "Check your e-mail for the confirmation link."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:367
+#: includes/Free/Simple_Login.php:373
 msgid ""
 "Please enter your username or email address. You will receive a link to "
 "create a new password via email."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:376
+#: includes/Free/Simple_Login.php:382
 msgid "Your password has been reset successfully"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:382
+#: includes/Free/Simple_Login.php:388
 msgid "Enter your new password below."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:393
+#: includes/Free/Simple_Login.php:399
 msgid "You are now logged out."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:419
+#: includes/Free/Simple_Login.php:425
 msgid "Nonce is invalid"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:438 includes/Frontend/Registration.php:214
+#: includes/Free/Simple_Login.php:444 includes/Frontend/Registration.php:214
 msgid "Username is required."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:444 includes/Frontend/Registration.php:221
+#: includes/Free/Simple_Login.php:450 includes/Frontend/Registration.php:221
 msgid "Password is required."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:451 includes/Traits/FieldableTrait.php:204
+#: includes/Free/Simple_Login.php:457 includes/Traits/FieldableTrait.php:204
 #: includes/class-frontend-render-form.php:877
 msgid "Empty reCaptcha Field"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:466 includes/Frontend/Registration.php:184
+#: includes/Free/Simple_Login.php:472 includes/Frontend/Registration.php:184
 #: includes/Frontend/Registration.php:191
 #: includes/Frontend/Registration.php:198
 #: includes/Frontend/Registration.php:205
@@ -6228,35 +6228,35 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:466 includes/Frontend/Registration.php:255
+#: includes/Free/Simple_Login.php:472 includes/Frontend/Registration.php:255
 msgid "A user could not be found with this email address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:661
+#: includes/Free/Simple_Login.php:668
 msgid "Please enter your password."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:667
+#: includes/Free/Simple_Login.php:674
 msgid "Passwords do not match."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:715
+#: includes/Free/Simple_Login.php:722
 msgid "Enter a username or e-mail address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:722
+#: includes/Free/Simple_Login.php:729
 msgid "There is no user registered with that email address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:739
+#: includes/Free/Simple_Login.php:746
 msgid "Invalid username or e-mail."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:753
+#: includes/Free/Simple_Login.php:760
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:792
+#: includes/Free/Simple_Login.php:799
 #. translators: %s: activation link
 msgid ""
 "<strong>Your account is not active.</strong><br>Please check your email for "
@@ -6264,87 +6264,87 @@ msgid ""
 "link"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:813 includes/Free/Simple_Login.php:838
+#: includes/Free/Simple_Login.php:820 includes/Free/Simple_Login.php:845
 msgid "Activation URL is not valid"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:824
+#: includes/Free/Simple_Login.php:831
 msgid "Invalid User activation url"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:830
+#: includes/Free/Simple_Login.php:837
 msgid "User already verified"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:846 includes/Free/Simple_Login.php:922
+#: includes/Free/Simple_Login.php:853 includes/Free/Simple_Login.php:929
 msgid "Your account has been activated"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:849
+#: includes/Free/Simple_Login.php:856
 msgid ""
 "Your account has been verified , but you can't login until manually "
 "approved your account by an administrator."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:872
+#: includes/Free/Simple_Login.php:879
 #. translators: %s: blogname
 msgid "[%s] Your username and password info"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:874 includes/Free/Simple_Login.php:974
+#: includes/Free/Simple_Login.php:881 includes/Free/Simple_Login.php:981
 #: includes/Frontend/Registration.php:291 includes/Widgets/Login_Widget.php:153
 #. translators: %s: username
 msgid "Username: %s"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:875
+#: includes/Free/Simple_Login.php:882
 msgid "To set your password, visit the following address:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:971
+#: includes/Free/Simple_Login.php:978
 msgid "Someone requested that the password be reset for the following account:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:975 includes/Widgets/Login_Widget.php:154
+#: includes/Free/Simple_Login.php:982 includes/Widgets/Login_Widget.php:154
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:976 includes/Widgets/Login_Widget.php:155
+#: includes/Free/Simple_Login.php:983 includes/Widgets/Login_Widget.php:155
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:987 includes/Widgets/Login_Widget.php:160
+#: includes/Free/Simple_Login.php:994 includes/Widgets/Login_Widget.php:160
 #. translators: %s: blogname
 msgid "[%s] Password Reset"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:993
+#: includes/Free/Simple_Login.php:1000
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:993
+#: includes/Free/Simple_Login.php:1000
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1113
+#: includes/Free/Simple_Login.php:1120
 #. translators: %s: blogname
 msgid "[%s] Account has been activated"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1115
+#: includes/Free/Simple_Login.php:1122
 #. translators: %s: username
 msgid "Hi %s,"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1116
+#: includes/Free/Simple_Login.php:1123
 msgid "Congrats! Your account has been activated. To login visit the following url:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1118
+#: includes/Free/Simple_Login.php:1125
 msgid "Thanks"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1144
+#: includes/Free/Simple_Login.php:1151
 msgid " Login "
 msgstr ""
 
@@ -6744,69 +6744,69 @@ msgstr ""
 msgid "Subscription Page settings not set in admin settings"
 msgstr ""
 
-#: includes/Frontend.php:103
+#: includes/Frontend.php:106
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: includes/Frontend.php:105
+#: includes/Frontend.php:108
 msgid "Word limit reached"
 msgstr ""
 
-#: includes/Frontend.php:106
+#: includes/Frontend.php:109
 msgid "Are you sure you want to cancel your current subscription ?"
 msgstr ""
 
-#: includes/Frontend.php:111
+#: includes/Frontend.php:114
 msgid "Maximum word limit reached. Please shorten your texts."
 msgstr ""
 
-#: includes/Frontend.php:114
+#: includes/Frontend.php:117
 msgid ""
 "This field supports a maximum of %number% words, and the limit is reached. "
 "Remove a few words to reach the acceptable limit of the field."
 msgstr ""
 
-#: includes/Frontend.php:118
+#: includes/Frontend.php:121
 msgid "Minimum word required."
 msgstr ""
 
-#: includes/Frontend.php:119
+#: includes/Frontend.php:122
 msgid "This field requires minimum %number% words. Please add some more text."
 msgstr ""
 
-#: includes/Frontend.php:122
+#: includes/Frontend.php:125
 msgid "Maximum character limit reached. Please shorten your texts."
 msgstr ""
 
-#: includes/Frontend.php:125
+#: includes/Frontend.php:128
 msgid ""
 "This field supports a maximum of %number% characters, and the limit is "
 "reached. Remove a few characters to reach the acceptable limit of the field."
 msgstr ""
 
-#: includes/Frontend.php:129
+#: includes/Frontend.php:132
 msgid "Minimum character required."
 msgstr ""
 
-#: includes/Frontend.php:130
+#: includes/Frontend.php:133
 msgid ""
 "This field requires minimum %number% characters. Please add some more "
 "character."
 msgstr ""
 
-#: includes/Frontend.php:135
+#: includes/Frontend.php:138
 msgid "Using %shortcode% is restricted"
 msgstr ""
 
-#: includes/Frontend.php:141
+#: includes/Frontend.php:144
 msgid "is required"
 msgstr ""
 
-#: includes/Frontend.php:142
+#: includes/Frontend.php:145
 msgid "does not match"
 msgstr ""
 
-#: includes/Frontend.php:143
+#: includes/Frontend.php:146
 msgid "is not valid"
 msgstr ""
 
@@ -7391,7 +7391,7 @@ msgstr ""
 msgid "Lost your password?"
 msgstr ""
 
-#: includes/Widgets/Login_Widget.php:244 templates/lost-pass-form.php:16
+#: includes/Widgets/Login_Widget.php:244 templates/lost-pass-form.php:18
 msgid "Username or E-mail:"
 msgstr ""
 
@@ -7413,16 +7413,16 @@ msgid ""
 "create a new password via email"
 msgstr ""
 
-#: includes/Widgets/Login_Widget.php:291 templates/login-form.php:27
+#: includes/Widgets/Login_Widget.php:291 templates/login-form.php:29
 #: templates/registration-form.php:61
 msgid "Password"
 msgstr ""
 
-#: includes/Widgets/Login_Widget.php:292 templates/login-form.php:71
+#: includes/Widgets/Login_Widget.php:292 templates/login-form.php:73
 msgid "Remember Me"
 msgstr ""
 
-#: includes/Widgets/Login_Widget.php:294 templates/reset-pass-form.php:27
+#: includes/Widgets/Login_Widget.php:294 templates/reset-pass-form.php:29
 msgid "Reset Password"
 msgstr ""
 
@@ -8200,11 +8200,11 @@ msgstr ""
 msgid "You are currently logged in! %s?"
 msgstr ""
 
-#: templates/login-form.php:23
+#: templates/login-form.php:25
 msgid "Username or Email"
 msgstr ""
 
-#: templates/lost-pass-form.php:23
+#: templates/lost-pass-form.php:25
 msgid "Get New Password"
 msgstr ""
 
@@ -8220,11 +8220,11 @@ msgstr ""
 msgid "Last"
 msgstr ""
 
-#: templates/reset-pass-form.php:15
+#: templates/reset-pass-form.php:17
 msgid "New password"
 msgstr ""
 
-#: templates/reset-pass-form.php:20
+#: templates/reset-pass-form.php:22
 msgid "Confirm new password"
 msgstr ""
 

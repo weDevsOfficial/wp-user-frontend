@@ -210,7 +210,7 @@ class Frontend_Account {
 
             return;
         }
-        $pack = Subscription::get_subscription( $sub_id );
+        $pack = wpuf()->subscription->get_subscription( $sub_id );
 
         if ( ! $pack ) {
             echo wp_kses_post( sprintf( __( '%sYour subscription pack is not exists. Please contact admin.%s', 'wp-user-frontend' ), '<p>', '</p>' ) );

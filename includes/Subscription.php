@@ -25,6 +25,7 @@ class Subscription {
         add_action( 'wpuf_add_post_form_top', [ $this, 'add_post_info' ], 10, 2 );
 
         add_action( 'wpuf_add_post_after_insert', [ $this, 'monitor_new_post' ], 10, 3 );
+        add_action( 'wpuf_add_post_after_insert', [ $this, 'reset_user_subscription_data' ], 10, 4 );
         add_action( 'wpuf_draft_post_after_insert', [ $this, 'monitor_new_draft_post' ], 10, 3 );
         add_action( 'wpuf_payment_received', [ $this, 'payment_received' ], 10, 2 );
 
@@ -62,7 +63,7 @@ class Subscription {
         );
         $result = $wpdb->get_row( $sql );
 
-        $transaction_id = $result ? $result->transaction_id : 0;
+        $transaction_id = $result ? $result->transaction_id : 'Free';
 
         $wpdb->update(
             $wpdb->prefix . 'wpuf_subscribers', [ 'subscribtion_status' => 'cancel' ], [
@@ -1107,6 +1108,10 @@ class Subscription {
         $current_user   = wpuf_get_user();
         $current_pack   = $current_user->subscription()->current_pack();
         $has_post_count = isset( $form_settings['post_type'] ) ? $current_user->subscription()->has_post_count( $form_settings['post_type'] ) : false;
+
+        if ( !$has_post_count ) {
+            return 'no';
+        }
 
         if ( is_user_logged_in() ) {
             if ( wpuf_get_user()->post_locked() ) {

@@ -10,17 +10,25 @@ use WeDevs\Wpuf\Free\Simple_Login;
     <?php
         wpuf()->frontend->simple_login->show_errors();
         wpuf()->frontend->simple_login->show_messages();
+  
+        $eye_icon_src = file_exists( WPUF_ROOT . '/assets/images/eye.svg' ) ? WPUF_ASSET_URI . '/images/eye.svg' : '';
     ?>
 
     <form name="resetpasswordform" id="resetpasswordform" action="" method="post">
         <p>
             <label for="wpuf-pass1"><?php esc_html_e( 'New password', 'wp-user-frontend' ); ?></label>
-            <input name="pass1" id="wpuf-pass1" class="input" size="20" value="" type="password" autocomplete="off" />
+            <div class="wpuf-fields-inline" style="position: relative; width: fit-content">
+                <input name="pass1" id="wpuf-pass1" class="input" size="20" value="" type="password" autocomplete="off" />
+                <img class="wpuf-eye" src="<?php echo esc_url( $eye_icon_src ); ?>" alt="">
+            </div>
         </p>
 
         <p>
             <label for="wpuf-pass2"><?php esc_html_e( 'Confirm new password', 'wp-user-frontend' ); ?></label>
-            <input name="pass2" id="wpuf-pass2" class="input" size="20" value="" type="password" autocomplete="off" />
+            <div class="wpuf-fields-inline" style="position: relative; width: fit-content">
+                <input name="pass2" id="wpuf-pass2" class="input" size="20" value="" type="password" autocomplete="off" />
+                <img class="wpuf-eye" src="<?php echo esc_url( $eye_icon_src ); ?>" alt="">
+            </div>
         </p>
 
         <?php do_action( 'resetpassword_form' ); ?>

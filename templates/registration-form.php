@@ -22,6 +22,7 @@
 
     <?php wpuf()->frontend->registration->show_errors(); ?>
     <?php wpuf()->frontend->registration->show_messages(); ?>
+    <?php $eye_icon_src = file_exists( WPUF_ROOT . '/assets/images/eye.svg' ) ? WPUF_ASSET_URI . '/images/eye.svg' : ''; ?>
 
     <form name="registrationform" class="wpuf-registration-form" id="registrationform" action="<?php echo esc_attr( $action_url ); ?>" method="post">
 
@@ -59,15 +60,17 @@
 
             <li>
                 <div class="wpuf-label"><?php esc_html_e( 'Password', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
-                <div class="wpuf-fields">
+                <div class="wpuf-fields-inline" style="position: relative; width: fit-content">
                     <input type="password" name="pwd1" id="wpuf-user_pass1" class="input" value="" size="40" />
+                    <img class="wpuf-eye" src="<?php echo esc_url( $eye_icon_src ); ?>" alt="">
                 </div>
             </li>
 
             <li>
                 <div class="wpuf-label"><?php esc_html_e( 'Confirm Password', 'wp-user-frontend' ); ?> <span class="required">*</span></div>
-                <div class="wpuf-fields">
+                <div class="wpuf-fields-inline" style="position: relative; width: fit-content">
                     <input type="password" name="pwd2" id="wpuf-user_pass2" class="input" value="" size="40" />
+                    <img class="wpuf-eye" src="<?php echo esc_url( $eye_icon_src ); ?>" alt="">
                 </div>
             </li>
 

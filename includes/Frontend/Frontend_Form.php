@@ -300,7 +300,7 @@ class Frontend_Form extends Frontend_Render_Form {
         $this->form_fields            = $form->get_fields();
         $this->form_settings          = $form->get_settings();
         $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
-        [ $user_can_post, $info ] = $form->is_submission_open( $form, $this->form_settings );
+        [ $user_can_post, $info ]     = $form->is_submission_open( $form, $this->form_settings );
         $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
         $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
 

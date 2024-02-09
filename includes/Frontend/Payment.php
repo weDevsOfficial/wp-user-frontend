@@ -94,7 +94,7 @@ class Payment {
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
             $is_free = false;
             if ( $pack_id ) {
-                $pack_detail = Admin\Subscription::get_subscription( $pack_id );
+                $pack_detail = wpuf()->subscription->get_subscription( $pack_id );
                 if ( ! $pack_detail ) {
                     ?>
                     <div class="wpuf-info"><?php esc_html_e( 'No subscription pack found.',

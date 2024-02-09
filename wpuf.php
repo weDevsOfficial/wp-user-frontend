@@ -32,8 +32,8 @@ define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
 define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
 define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 
-use WeDevs\WpUtils\SingletonTrait;
 use WeDevs\WpUtils\ContainerTrait;
+use WeDevs\WpUtils\SingletonTrait;
 
 /**
  * Main bootstrap class for WP User Frontend

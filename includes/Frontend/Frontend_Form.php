@@ -315,19 +315,6 @@ class Frontend_Form extends Frontend_Render_Form {
         return $content;
     }
 
-    public function woo_attribute( $taxonomy ) {
-        check_ajax_referer( 'wpuf_form_add' );
-        $taxonomy_name = isset( $_POST[ $taxonomy['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $taxonomy['name'] ] ) ) : '';
-
-        return [
-            'name'         => $taxonomy['name'],
-            'value'        => $taxonomy_name,
-            'is_visible'   => $taxonomy['woo_attr_vis'] === 'yes' ? 1 : 0,
-            'is_variation' => 0,
-            'is_taxonomy'  => 1,
-        ];
-    }
-
     /**
      * Hook to publish verified guest post with payment
      *

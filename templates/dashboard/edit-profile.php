@@ -3,6 +3,7 @@
 global $current_user;
 ob_start();
 
+$eye_icon_src = file_exists( WPUF_ROOT . '/assets/images/eye.svg' ) ? WPUF_ASSET_URI . '/images/eye.svg' : '';
 ?>
 
 <form class="wpuf-form wpuf-update-profile-form" action="" method="post">
@@ -44,7 +45,10 @@ ob_start();
                 <label for="current_password"><?php esc_html_e( 'Current Password', 'wp-user-frontend' ); ?></label>
             </div>
             <div class="wpuf-fields" >
-                <input type="password" class="input-text" name="current_password" id="current_password" size="16" value="" autocomplete="off" />
+                <div class="wpuf-fields-inline" style="position: relative;">
+                    <input type="password" class="input-text" name="current_password" id="current_password" size="16" value="" autocomplete="off" />
+                    <img class="wpuf-eye" src="<?php echo esc_url( $eye_icon_src ); ?>" alt="">
+                </div>
             </div>
             <span class="wpuf-help"><?php esc_html_e( 'Leave this field empty to keep your password unchanged.', 'wp-user-frontend' ); ?></span>
         </li>
@@ -55,7 +59,10 @@ ob_start();
                 <label for="pass1"><?php esc_html_e( 'New Password', 'wp-user-frontend' ); ?></label>
             </div>
             <div class="wpuf-fields" >
-                <input type="password" class="input-text" name="pass1" id="pass1" size="16" value="" autocomplete="off" />
+                <div class="wpuf-fields-inline" style="position: relative;">
+                    <input type="password" class="input-text" name="pass1" id="pass1" size="16" value="" autocomplete="off" />
+                    <img class="wpuf-eye" src="<?php echo esc_url( $eye_icon_src ); ?>" alt="">
+                </div>
             </div>
         </li>
         <div class="clear"></div>
@@ -65,7 +72,10 @@ ob_start();
                 <label for="pass2"><?php esc_html_e( 'Confirm New Password', 'wp-user-frontend' ); ?></label>
             </div>
             <div class="wpuf-fields" >
-                <input type="password" class="input-text" name="pass2" id="pass2" size="16" value="" autocomplete="off" />
+                <div class="wpuf-fields-inline" style="position: relative;">
+                    <input type="password" class="input-text" name="pass2" id="pass2" size="16" value="" autocomplete="off" />
+                    <img class="wpuf-eye" src="<?php echo esc_url( $eye_icon_src ); ?>" alt="">
+                </div>
             </div>
 
             <span style="display: block; margin-top:20px" class="pass-strength-result" id="pass-strength-result"><?php esc_html_e( 'Strength indicator', 'wp-user-frontend' ); ?></span>

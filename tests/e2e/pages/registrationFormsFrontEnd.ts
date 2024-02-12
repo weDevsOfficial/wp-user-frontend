@@ -4,18 +4,18 @@ import { selectors } from './selectors';
 import { testData } from '../utils/testData';
 
 
- 
-    //Store data
-    //First Name
-    const firstName = testData.registrationForms.rfFirstName;
-    //Last Name
-    const lastName = testData.registrationForms.rfLastName;
-    //Email
-    const email = testData.registrationForms.rfEmail;
-    //Username
-    const userName = testData.registrationForms.rfUsername;
-    //Password
-    const password = testData.registrationForms.rfPassword;
+
+//Store data
+//First Name
+const firstName = testData.registrationForms.rfFirstName;
+//Last Name
+const lastName = testData.registrationForms.rfLastName;
+//Email
+const email = testData.registrationForms.rfEmail;
+//Username
+const userName = testData.registrationForms.rfUsername;
+//Password
+const password = testData.registrationForms.rfPassword;
 
 
 
@@ -29,9 +29,9 @@ export class registrationFormsFrontend {
 
 
 
-/************************************************* LITE *************************************************/
-/******* @Create Registration Forms - Lite > FrontEnd **********/
-/**************************************************************/
+    /************************************************* LITE *************************************************/
+    /******* @Create Registration Forms - Lite > FrontEnd **********/
+    /**************************************************************/
 
 
     //Registration forms page - only WPUF-Lite activated
@@ -42,7 +42,7 @@ export class registrationFormsFrontend {
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
 
-        
+
         //Validate Registration page
         const validateRegistrationPage = await this.page.innerText(selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
         await expect(validateRegistrationPage).toContain('Registration Page');
@@ -77,9 +77,9 @@ export class registrationFormsFrontend {
 
 
 
-/***********************************************/
-/******* @Validate Admin End - Users **********/
-/*********************************************/
+    /***********************************************/
+    /******* @Validate Admin End - Users **********/
+    /*********************************************/
 
     //Validate in Admin - Registered Form Submitted
     async validateUserRegisteredAdminEnd() {
@@ -88,8 +88,8 @@ export class registrationFormsFrontend {
         await Promise.all([
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
-    
-        
+
+
         //Validate Registered User
         //Go to Users List
         await this.page.click(selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersList);
@@ -102,8 +102,8 @@ export class registrationFormsFrontend {
 
         //Validate Email present
         const validateUserCreated = await this.page.innerText(selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserCreated);
-        
-        if (validateUserCreated == email){
+
+        if (validateUserCreated == email) {
             console.log("User is registered and present");
         }
         else {

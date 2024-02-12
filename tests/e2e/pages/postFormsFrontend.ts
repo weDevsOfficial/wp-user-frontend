@@ -4,16 +4,16 @@ import { selectors } from './selectors';
 import { testData } from '../utils/testData';
 
 
- 
-    //Store data
-    //Post Title
-    // const postTitle = testData.postForms.pfTitle;
-    //Post Description
-    const postDescription = testData.postForms.pfPostDescription;
-    //Excerp
-    const postExcerpt = testData.registrationForms.rfEmail;
-    //Tags
-    const postTags = testData.registrationForms.rfUsername;
+
+//Store data
+//Post Title
+// const postTitle = testData.postForms.pfTitle;
+//Post Description
+const postDescription = testData.postForms.pfPostDescription;
+//Excerp
+const postExcerpt = testData.registrationForms.rfEmail;
+//Tags
+const postTags = testData.registrationForms.rfUsername;
 
 
 
@@ -27,9 +27,9 @@ export class postFormsFrontend {
 
 
 
-/************************************************* LITE *************************************************/
-/******* @Create Registration Forms - Lite > FrontEnd **********/
-/**************************************************************/
+    /************************************************* LITE *************************************************/
+    /******* @Create Registration Forms - Lite > FrontEnd **********/
+    /**************************************************************/
 
 
     //Registration forms page - only WPUF-Lite activated
@@ -47,7 +47,7 @@ export class postFormsFrontend {
         //Enter Post Title
         await this.page.fill(selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postFormTitle);
         //Select Category
-        await this.page.selectOption(selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, {label: 'Uncategorized'});
+        await this.page.selectOption(selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, { label: 'Uncategorized' });
         //Enter Post Description
         await this.page.frameLocator(selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
             .locator(selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postDescription);
@@ -70,9 +70,9 @@ export class postFormsFrontend {
 
 
 
-/********************************************************/
-/******* @Validate PostForm Create - Frontend **********/
-/******************************************************/
+    /********************************************************/
+    /******* @Validate PostForm Create - Frontend **********/
+    /******************************************************/
 
     //Validate in Admin - Registered Form Submitted
     async validatePostFormCreatedFrontend(postFormTitle) {
@@ -85,7 +85,7 @@ export class postFormsFrontend {
         const validatePostCreated = await this.page.innerText(selectors.postForms.postFormsFrontendValidate.validatePostSubmittedFE);
         //Validate created Post
         await expect(validatePostCreated).toContain(postFormTitle);
-        
+
     };
 
 

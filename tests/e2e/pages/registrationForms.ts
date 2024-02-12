@@ -4,7 +4,7 @@ import { selectors } from './selectors';
 import { testData } from '../utils/testData';
 
 
- 
+
 
 export class registrationForms {
     readonly page: Page;
@@ -16,18 +16,18 @@ export class registrationForms {
 
 
 
-/************************************************* LITE *************************************************/
-/******* @Registration Forms - Lite *******/
-/************************************************/
+    /************************************************* LITE *************************************************/
+    /******* @Registration Forms - Lite *******/
+    /************************************************/
 
     //Registration forms page - only WPUF-Lite activated
     async validateRegistrationFormsProFeatureLite() {
         // Visit Registration forms page
         const wpufRegistrationFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }), 
+            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
-    
+
 
         const validateWPUFProActivate = await this.page.isVisible(selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (validateWPUFProActivate == true) {
@@ -67,7 +67,7 @@ export class registrationForms {
         await Promise.all([
             this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'networkidle' }),
         ]);
-        
+
         //Add New Page
         await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
 
@@ -95,9 +95,9 @@ export class registrationForms {
 
         //Go to Pages 
         await Promise.all([
-        this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'networkidle' }),
+            this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'networkidle' }),
         ]);
-        
+
         //Validate Page Created
         //Search Page
         await this.page.fill(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBox, registrationFormPageTitle);
@@ -113,16 +113,16 @@ export class registrationForms {
 
 
 
-    
 
 
 
 
 
 
-/************************************************* PRO *************************************************/
-/******* @Create Registration Forms - Pro *******/
-/***********************************************/
+
+    /************************************************* PRO *************************************************/
+    /******* @Create Registration Forms - Pro *******/
+    /***********************************************/
 
     //BlankForm
     async createBlankForm_RF(newRegistrationName) {
@@ -131,33 +131,33 @@ export class registrationForms {
         await Promise.all([
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
-         //CreateNewRegistrationForm
-         
-         await this.page.click(selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
- 
-         await this.page.waitForTimeout(1000 * 5);
-         //Start
-         await expect(this.page.isVisible(selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm)).toBeTruthy();
-         await this.page.click(selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);    //TODO: Issue here
-         await this.page.waitForTimeout(1000 * 5);
-         
-   
-         //ClickBlankForm
-         //Templates 
-         await expect(this.page.isVisible(selectors.registrationForms.createBlankForm_RF.hoverBlankForm)).toBeTruthy();   
-         await this.page.hover(selectors.registrationForms.createBlankForm_RF.hoverBlankForm);   
-         await expect(this.page.isVisible(selectors.registrationForms.createBlankForm_RF.clickBlankForm)).toBeTruthy();   
-         await this.page.click(selectors.registrationForms.createBlankForm_RF.clickBlankForm); 
- 
+        //CreateNewRegistrationForm
+
+        await this.page.click(selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
+
+        await this.page.waitForTimeout(1000 * 5);
+        //Start
+        await expect(this.page.isVisible(selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm)).toBeTruthy();
+        await this.page.click(selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);    //TODO: Issue here
+        await this.page.waitForTimeout(1000 * 5);
+
+
+        //ClickBlankForm
+        //Templates 
+        await expect(this.page.isVisible(selectors.registrationForms.createBlankForm_RF.hoverBlankForm)).toBeTruthy();
+        await this.page.hover(selectors.registrationForms.createBlankForm_RF.hoverBlankForm);
+        await expect(this.page.isVisible(selectors.registrationForms.createBlankForm_RF.clickBlankForm)).toBeTruthy();
+        await this.page.click(selectors.registrationForms.createBlankForm_RF.clickBlankForm);
+
 
 
         //EnterName
         await this.page.waitForLoadState('domcontentloaded');
-        await this.page.click(selectors.registrationForms.createBlankForm_RF.editNewFormName); 
-        await this.page.fill(selectors.registrationForms.createBlankForm_RF.enterNewFormName, newRegistrationName);   
-        await this.page.click(selectors.registrationForms.createBlankForm_RF.confirmNewNameTickButton);  
-                
-        }
+        await this.page.click(selectors.registrationForms.createBlankForm_RF.editNewFormName);
+        await this.page.fill(selectors.registrationForms.createBlankForm_RF.enterNewFormName, newRegistrationName);
+        await this.page.click(selectors.registrationForms.createBlankForm_RF.confirmNewNameTickButton);
+
+    }
 
 
 }

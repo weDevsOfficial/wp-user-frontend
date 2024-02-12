@@ -13,13 +13,9 @@ export class basicLoginPage {
     }
 
 
-    
-
-
-    
-/**************************************************/
-/*************** @Login **************************/
-/************************************************/
+    /**************************************************/
+    /*************** @Login **************************/
+    /************************************************/
 
     //Basic Login
     async basicLogin(email, password) {
@@ -32,14 +28,14 @@ export class basicLoginPage {
         ]);
 
         const emailStateCheck = await this.page.isVisible(selectors.login.basicLogin.loginEmailField);
-            //if in BackEnd or FrontEnd
-            if (emailStateCheck == true) {
-                await this.backendLogin(adminEmail, adminPassword);
-            }
-            else {
-                await this.frontendLogin(adminEmail, adminPassword);
-            }
-        
+        //if in BackEnd or FrontEnd
+        if (emailStateCheck == true) {
+            await this.backendLogin(adminEmail, adminPassword);
+        }
+        else {
+            await this.frontendLogin(adminEmail, adminPassword);
+        }
+
         //Store Cookie State
         await this.page.context().storageState({ path: 'state.json' });
     };
@@ -55,18 +51,18 @@ export class basicLoginPage {
         ]);
 
         const emailStateCheck = await this.page.isVisible(selectors.login.basicLogin.loginEmailField);
-            //if in BackEnd or FrontEnd
-            if (emailStateCheck == true) {
-                await this.backendLogin(adminEmail, adminPassword);
-            }
-            else {
-                await this.frontendLogin(adminEmail, adminPassword);
-            }
+        //if in BackEnd or FrontEnd
+        if (emailStateCheck == true) {
+            await this.backendLogin(adminEmail, adminPassword);
+        }
+        else {
+            await this.frontendLogin(adminEmail, adminPassword);
+        }
 
-            
+
         //Store Cookie State
         await this.page.context().storageState({ path: 'state.json' });
-        
+
         //Redirection to WPUF Home Page
         await SettingsSetup.pluginVisitWPUF();
     };
@@ -75,23 +71,23 @@ export class basicLoginPage {
     async validateBasicLogin() {
         //Go to BackEnd
         await Promise.all([
-            
+
             this.page.goto(testData.urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
         ]);
 
         //Validate LOGIN
         await this.page.waitForLoadState('domcontentloaded');
         const dashboardLanded = await this.page.isVisible(selectors.login.validateBasicLogin.logingSuccessDashboard);
-        await expect(dashboardLanded).toBeTruthy;    
+        await expect(dashboardLanded).toBeTruthy;
     };
 
 
 
 
-/**************************************************/
-/**************** @Login Page ********************/
-/************************************************/
-    
+    /**************************************************/
+    /**************** @Login Page ********************/
+    /************************************************/
+
     //BackEnd Login
     async backendLogin(email, password) {
         await this.page.fill(selectors.login.basicLogin.loginEmailField, email);

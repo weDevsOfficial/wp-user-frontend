@@ -465,7 +465,7 @@ export const selectors = {
             //Create Post
             submitPostFormsFE: '//input[@value="Create Post"]',
             //Validate Post Submitted
-            validatePostSubmitted: '//h1[@class="wp-block-post-title"]',
+            validatePostSubmitted: '//h1[@class="wp-block-post-title has-x-large-font-size"]',
 
         },
 

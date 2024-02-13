@@ -4,6 +4,8 @@
 .gitignore export-ignore
 .jshintrc export-ignore
 .php_cs.dist export-ignore
+.php_cs export-ignore
+.github export-ignore
 Gruntfile.js export-ignore
 docs.md export-ignore
 package-lock.json export-ignore

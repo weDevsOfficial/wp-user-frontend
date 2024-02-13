@@ -721,7 +721,7 @@ trait FieldableTrait {
     /**
      * Get WooCommerce attributres
      *
-     * @since WPUF_SINCE moved from Render_Form.php to FieldableTrait.php
+     * @since 4.0.6 moved from Render_Form.php to FieldableTrait.php
      *
      * @param array $taxonomy
      *

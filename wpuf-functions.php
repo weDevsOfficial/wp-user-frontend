@@ -4736,3 +4736,22 @@ function wpuf_hide_google_map_button() {
         'button'    =>  []
     ] );
 }
+
+/**
+ * Remove all kinds of admin notices from admin dashboard
+ *
+ * Since we don't have much space left on top of the page,
+ * we have to remove all kinds of admin notices
+ *
+ * @since 2.5
+ *
+ * @since WPUF_SINCE function moved to wpuf-functions.php
+ *
+ * @return void
+ */
+function wpuf_remove_admin_notices() {
+    remove_all_actions( 'network_admin_notices' );
+    remove_all_actions( 'user_admin_notices' );
+    remove_all_actions( 'admin_notices' );
+    remove_all_actions( 'all_admin_notices' );
+}

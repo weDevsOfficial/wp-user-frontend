@@ -183,12 +183,9 @@ class Menu {
      * @return void
      */
     public function subscription_menu_page() {
-        echo '<div id="subscription-page">
-                <h1 class="text-3xl font-bold underline">
-                    Hello tailwind!
-                  </h1>
-                {{ message }}
-            </div>';
+        $page = WPUF_INCLUDES . '/Admin/views/subscriptions.php';
+
+        wpuf_require_once( $page );
     }
 
     /**

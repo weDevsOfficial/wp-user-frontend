@@ -33,6 +33,19 @@ class Admin_Subscription {
         // new subscription metabox hooks
         add_action( 'admin_print_styles-post-new.php', [ $this, 'enqueue_scripts' ] );
         add_action( 'admin_print_styles-post.php', [ $this, 'enqueue_scripts' ] );
+
+        add_action( 'wpuf_load_subscription_page', [ $this, 'remove_notices' ] );
+    }
+
+    /**
+     * Remove admin notices from this page
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function remove_notices() {
+        add_action( 'in_admin_header', 'wpuf_remove_admin_notices' );
     }
 
     /**

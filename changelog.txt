@@ -1,3 +1,10 @@
+= v4.0.6 (13 Feb, 2024) =
+* Enhance - Update deprecated uses for PHP versions and latest WordPress
+* Enhance - Eye icon inside password field
+* Fix - Error after PayPal payment
+* Fix - Reset password not working
+* Fix - Subscription posting restriction not working
+
 = v4.0.5 (31 Jan, 2024) =
 * Enhance - Integrate headway and canny
 

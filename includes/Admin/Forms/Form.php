@@ -180,7 +180,7 @@ class Form {
 
         $has_post_count = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
 
-        if ( ! $has_post_count ) {
+        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count ) {
             $user_can_post = 'no';
             $info          = __( 'Post Limit Exceeded for your purchased subscription pack.', 'wp-user-frontend' );
 

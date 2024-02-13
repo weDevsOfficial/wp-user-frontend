@@ -1,6 +1,32 @@
 <?php
 $changelog = [
     [
+        'version'  => 'Version 4.0.6',
+        'released' => '2024-02-13',
+        'changes'  => [
+            [
+                'title' => __( 'Update deprecated uses for PHP versions and latest WordPress', 'wp-user-frontend' ),
+                'type'  => 'Enhance',
+            ],
+            [
+                'title' => __( 'Eye icon inside password field', 'wp-user-frontend' ),
+                'type'  => 'Enhance',
+            ],
+            [
+                'title' => __( 'Error after PayPal payment', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Reset password not working', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+            [
+                'title' => __( 'Subscription posting restriction not working', 'wp-user-frontend' ),
+                'type'  => 'Fix',
+            ],
+        ],
+    ],
+    [
         'version'  => 'Version 4.0.5',
         'released' => '2024-01-31',
         'changes'  => [

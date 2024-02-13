@@ -54,7 +54,7 @@ class Subscription {
     /**
      * Handle subscription cancel request from the user
      *
-     * @return Subscription
+     * @return void
      */
     public static function subscriber_cancel( $user_id, $pack_id ) {
         global $wpdb;
@@ -74,6 +74,8 @@ class Subscription {
                 'transaction_id' => $transaction_id,
             ]
         );
+
+        delete_user_meta( $user_id, '_wpuf_subscription_pack' );
     }
 
     /**
@@ -1111,7 +1113,7 @@ class Subscription {
         $current_pack   = $current_user->subscription()->current_pack();
         $has_post_count = isset( $form_settings['post_type'] ) ? $current_user->subscription()->has_post_count( $form_settings['post_type'] ) : false;
 
-        if ( !$has_post_count ) {
+        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count ) {
             return 'no';
         }
 

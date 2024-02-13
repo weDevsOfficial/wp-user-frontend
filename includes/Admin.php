@@ -39,6 +39,9 @@ class Admin {
         // enqueue common scripts that will load throughout WordPress dashboard. notice, what's new etc.
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_common_scripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_cpt_page_scripts' ] );
+
+        // block admin access as per wpuf settings
+        add_action( 'admin_init', [ $this, 'block_admin_access' ] );
     }
 
     /**
@@ -98,36 +101,56 @@ class Admin {
         }
 
         if ( in_array( $hook_suffix, [ 'post.php', 'post-new.php' ], true ) ) {
-            $screen = get_current_screen();
-            if ( is_object( $screen ) && 'product' === $screen->post_type ) {
-                wp_enqueue_script( 'wpuf-upload' );
-                wp_localize_script(
-                    'wpuf-upload',
-                    'wpuf_upload',
-                    [
-                        'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
-                        'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
-                        'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
-                        'ajaxurl'    => admin_url( 'admin-ajax.php' ),
-                        'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
-                        'plupload'   => [
-                            'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
-                            'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
-                            'filters'          => [
-                                [
-                                    'title' => __( 'Allowed Files', 'wp-user-frontend' ),
-                                    'extensions' => '*',
-                                ],
+            wp_enqueue_script( 'wpuf-upload' );
+            wp_localize_script(
+                'wpuf-upload',
+                'wpuf_upload',
+                [
+                    'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
+                    'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
+                    'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
+                    'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+                    'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
+                    'plupload'   => [
+                        'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
+                        'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
+                        'filters'          => [
+                            [
+                                'title' => __( 'Allowed Files', 'wp-user-frontend' ),
+                                'extensions' => '*',
                             ],
-                            'multipart'        => true,
-                            'urlstream_upload' => true,
-                            'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
-                            'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
-                            'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' ),
                         ],
-                    ]
-                );
-            }
+                        'multipart'        => true,
+                        'urlstream_upload' => true,
+                        'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
+                        'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
+                        'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' ),
+                    ],
+                ]
+            );
+        }
+    }
+
+    /**
+     * Block user access to admin panel for specific roles
+     *
+     * @global string $pagenow
+     */
+    public function block_admin_access() {
+        global $pagenow;
+
+        // bail out if we are from WP Cli
+        if ( defined( 'WP_CLI' ) ) {
+            return;
+        }
+
+        $access_level = wpuf_get_option( 'admin_access', 'wpuf_general', 'read' );
+        $valid_pages  = [ 'admin-ajax.php', 'admin-post.php', 'async-upload.php', 'media-upload.php' ];
+
+        if ( ! current_user_can( $access_level ) && ! in_array( $pagenow, $valid_pages ) ) {
+            // wp_die( __( 'Access Denied. Your site administrator has blocked your access to the WordPress back-office.', 'wpuf' ) );
+            wp_redirect( home_url() );
+            exit;
         }
     }
 }

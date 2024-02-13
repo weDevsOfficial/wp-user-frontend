@@ -2,9 +2,11 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
+use stdClass;
 use WeDevs\Wpuf\Admin;
 use WeDevs\Wpuf\Ajax;
 use WeDevs\Wpuf\WPUF_User;
+use WP_Post;
 
 /**
  * WP User Frontend payment gateway handler
@@ -67,7 +69,7 @@ class Payment {
     public function payment_page( $content ) {
         global $post;
 
-        if ( ! ( $post instanceof \WP_Post ) ) {
+        if ( ! ( $post instanceof WP_Post ) ) {
             return $content;
         }
 
@@ -94,7 +96,7 @@ class Payment {
             $pack_id = isset( $_REQUEST['pack_id'] ) ? intval( wp_unslash( $_REQUEST['pack_id'] ) ) : 0;
             $is_free = false;
             if ( $pack_id ) {
-                $pack_detail = Admin\Subscription::get_subscription( $pack_id );
+                $pack_detail = wpuf()->subscription->get_subscription( $pack_id );
                 if ( ! $pack_detail ) {
                     ?>
                     <div class="wpuf-info"><?php esc_html_e( 'No subscription pack found.',
@@ -397,7 +399,7 @@ class Payment {
                 $user_id  = $post->post_author;
                 $userdata = get_userdata( $user_id );
             } else {
-                $userdata             = new \stdClass();
+                $userdata             = new stdClass();
                 $userdata->ID         = 0;
                 $userdata->user_email = '';
                 $userdata->first_name = '';

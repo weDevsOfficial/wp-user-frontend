@@ -3,13 +3,15 @@
 namespace WeDevs\Wpuf\Widgets;
 
 use WeDevs\Wpuf\Free\Simple_Login;
+use WP_Error;
+use WP_Widget;
 
 /**
  * Ajax Login and Forgot password handler class
  *
  * @since 2.8
  */
-class Login_Widget extends \WP_Widget {
+class Login_Widget extends WP_Widget {
 
     public function __construct() {
         parent::__construct(
@@ -109,7 +111,7 @@ class Login_Widget extends \WP_Widget {
     private function ajax_lostpassword_retrieve( $user_input ) {
         global $wpdb, $wp_hasher;
 
-        $errors = new \WP_Error();
+        $errors = new WP_Error();
 
         if ( empty( $user_input ) ) {
             $errors->add( 'empty_username', __( '<strong>ERROR</strong>: Enter a username or email address.', 'wp-user-frontend' ) );

@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.0.5
+Version: 4.0.6
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -25,15 +25,15 @@ if ( file_exists( $autoload ) ) {
 	wp_die( __( 'There was a problem installing the plugin' ), __( 'Problem installing plugin' ) );
 }
 
-define( 'WPUF_VERSION', '4.0.5' );
+define( 'WPUF_VERSION', '4.0.6' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
 define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
 define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 
-use WeDevs\WpUtils\SingletonTrait;
 use WeDevs\WpUtils\ContainerTrait;
+use WeDevs\WpUtils\SingletonTrait;
 
 /**
  * Main bootstrap class for WP User Frontend
@@ -354,7 +354,7 @@ final class WP_User_Frontend {
 /**
  * Returns the singleton instance
  *
- * @return \WP_User_Frontend
+ * @return WP_User_Frontend
  */
 function wpuf() {
     return WP_User_Frontend::instance();

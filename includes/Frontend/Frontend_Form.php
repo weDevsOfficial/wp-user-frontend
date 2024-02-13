@@ -6,6 +6,7 @@ use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Frontend_Render_Form;
 use WeDevs\Wpuf\Traits\FieldableTrait;
+use WP_User;
 
 class Frontend_Form extends Frontend_Render_Form {
     use FieldableTrait;
@@ -300,7 +301,7 @@ class Frontend_Form extends Frontend_Render_Form {
         $this->form_fields            = $form->get_fields();
         $this->form_settings          = $form->get_settings();
         $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
-        [ $user_can_post, $info ] = $form->is_submission_open( $form, $this->form_settings );
+        [ $user_can_post, $info ]     = $form->is_submission_open( $form, $this->form_settings );
         $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
         $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
 
@@ -313,19 +314,6 @@ class Frontend_Form extends Frontend_Render_Form {
         ob_end_clean();
 
         return $content;
-    }
-
-    public function woo_attribute( $taxonomy ) {
-        check_ajax_referer( 'wpuf_form_add' );
-        $taxonomy_name = isset( $_POST[ $taxonomy['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $taxonomy['name'] ] ) ) : '';
-
-        return [
-            'name'         => $taxonomy['name'],
-            'value'        => $taxonomy_name,
-            'is_visible'   => $taxonomy['woo_attr_vis'] === 'yes' ? 1 : 0,
-            'is_variation' => 0,
-            'is_taxonomy'  => 1,
-        ];
     }
 
     /**
@@ -390,7 +378,7 @@ class Frontend_Form extends Frontend_Render_Form {
      * @param array    $allcaps
      * @param array    $caps
      * @param array    $args
-     * @param \WP_User $wp_user
+     * @param WP_User $wp_user
      *
      * @return array
     */

@@ -3,12 +3,13 @@
 namespace WeDevs\Wpuf\Admin;
 
 use WeDevs\Wpuf\Frontend\Payment;
+use WP_List_Table;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
-class List_Table_Transactions extends \WP_List_Table {
+class List_Table_Transactions extends WP_List_Table {
 
     /**
      * Constructor.

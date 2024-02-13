@@ -5,6 +5,7 @@ namespace WeDevs\Wpuf\Admin;
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Traits\TaxableTrait;
 use WeDevs\Wpuf\User_Subscription;
+use WP_Post;
 
 /**
  * WPUF subscription manager
@@ -26,6 +27,7 @@ class Subscription {
         add_action( 'wpuf_add_post_form_top', [ $this, 'add_post_info' ], 10, 2 );
 
         add_action( 'wpuf_add_post_after_insert', [ $this, 'monitor_new_post' ], 10, 3 );
+        add_action( 'wpuf_add_post_after_insert', [ $this, 'reset_user_subscription_data' ], 10, 4 );
         add_action( 'wpuf_draft_post_after_insert', [ $this, 'monitor_new_draft_post' ], 10, 3 );
         add_action( 'wpuf_payment_received', [ $this, 'payment_received' ], 10, 2 );
 
@@ -52,7 +54,7 @@ class Subscription {
     /**
      * Handle subscription cancel request from the user
      *
-     * @return Subscription
+     * @return void
      */
     public static function subscriber_cancel( $user_id, $pack_id ) {
         global $wpdb;
@@ -63,7 +65,7 @@ class Subscription {
         );
         $result = $wpdb->get_row( $sql );
 
-        $transaction_id = $result ? $result->transaction_id : 0;
+        $transaction_id = $result ? $result->transaction_id : 'Free';
 
         $wpdb->update(
             $wpdb->prefix . 'wpuf_subscribers', [ 'subscribtion_status' => 'cancel' ], [
@@ -72,6 +74,8 @@ class Subscription {
                 'transaction_id' => $transaction_id,
             ]
         );
+
+        delete_user_meta( $user_id, '_wpuf_subscription_pack' );
     }
 
     /**
@@ -269,7 +273,7 @@ class Subscription {
      * @since 2.2
      *
      * @param int      $subscription_id
-     * @param \WP_Post $pack_post
+     * @param WP_Post $pack_post
      *
      * @return array
      */
@@ -348,7 +352,7 @@ class Subscription {
      * Save form data
      *
      * @param int      $post_ID
-     * @param \WP_Post $post
+     * @param WP_Post $post
      *
      * @return void
      */
@@ -531,7 +535,8 @@ class Subscription {
      * @param int $post_id
      */
     public function monitor_new_post( $post_id, $form_id, $form_settings ) {
-        global $wpdb, $userdata;
+        global $userdata;
+
         $post = get_post( $post_id );
 
         // bail out if charging is not enabled
@@ -1107,6 +1112,10 @@ class Subscription {
         $current_user   = wpuf_get_user();
         $current_pack   = $current_user->subscription()->current_pack();
         $has_post_count = isset( $form_settings['post_type'] ) ? $current_user->subscription()->has_post_count( $form_settings['post_type'] ) : false;
+
+        if ( $current_user->subscription()->current_pack_id() && ! $has_post_count ) {
+            return 'no';
+        }
 
         if ( is_user_logged_in() ) {
             if ( wpuf_get_user()->post_locked() ) {

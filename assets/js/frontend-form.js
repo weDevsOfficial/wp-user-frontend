@@ -467,7 +467,7 @@
 
                         if ( typeof res.type !== 'undefined' && res.type === 'login' ) {
 
-                            if ( confirm(res.error) ) {
+                            if ( confirm(res.data.error) ) {
                                 window.location = res.redirect_to;
                             } else {
                                 submitButton.removeAttr('disabled');
@@ -482,7 +482,7 @@
                             }
 
                             Swal.fire({
-                                html: res.error,
+                                html: res.data.error,
                                 icon: 'warning',
                                 showCancelButton: false,
                                 confirmButtonColor: '#d54e21',
@@ -1491,5 +1491,20 @@
 
         // Set name attribute for google map search field
         $(".wpuf-form-add #wpuf-map-add-location").attr("name", "find_address");
+    });
+
+    $(function($) {
+        // eye icon for password field
+        $(document).on('click', '.wpuf-eye', function () {
+            const input = $( this ).siblings( 'input' );
+
+            if ( input.attr("type") === "password" ) {
+                input.attr( "type", "text" );
+                $( this ).attr( "src", wpuf_frontend.asset_url + '/images/eye-close.svg' );
+            } else {
+                input.attr( "type", "password" );
+                $( this ).attr( "src", wpuf_frontend.asset_url + '/images/eye.svg' );
+            }
+        });
     });
 })(jQuery, window);

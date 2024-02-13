@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\Frontend;
 
+use stdClass;
 use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\User_Subscription;
 
@@ -210,7 +211,15 @@ class Frontend_Account {
 
             return;
         }
-        $pack = Subscription::get_subscription( $sub_id );
+        $pack = wpuf()->subscription->get_subscription( $sub_id );
+
+        if ( ! $pack ) {
+            echo wp_kses_post( sprintf( __( '%sYour subscription pack is not exists. Please contact admin.%s', 'wp-user-frontend' ), '<p>', '</p>' ) );
+
+            return;
+        }
+
+
         $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
         $details_meta['onclick']      = '';
         $details_meta['symbol']       = wpuf_get_currency( 'symbol' );
@@ -306,7 +315,7 @@ class Frontend_Account {
         if ( empty( $email ) ) {
             wp_send_json_error( __( 'Email is a required field.', 'wp-user-frontend' ) );
         }
-        $user             = new \stdClass();
+        $user             = new stdClass();
         $user->ID         = $current_user->ID;
         $user->first_name = $first_name;
         $user->last_name  = $last_name;

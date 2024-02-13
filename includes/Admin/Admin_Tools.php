@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Admin;
 
+use WP_Query;
+
 /**
  * Manage Import Export
  *
@@ -255,7 +257,7 @@ class Admin_Tools {
             'post__in'    => ( !empty( $ids ) ) ? $ids : '',
         ];
 
-        $query = new \WP_Query( $args );
+        $query = new WP_Query( $args );
 
         foreach ( $query->posts as $post ) {
             $postdata = get_object_vars( $post );
@@ -520,7 +522,7 @@ class Admin_Tools {
      * @return void
      */
     public function delete_post_type( $post_type ) {
-        $query = new \WP_Query(
+        $query = new WP_Query(
             [
                 'post_type'      => $post_type,
                 'posts_per_page' => -1,

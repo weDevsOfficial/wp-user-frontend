@@ -2,7 +2,7 @@
 
 namespace WeDevs\Wpuf;
 
-/**
+use WP_Error;/**
  * User Subscription Class
  *
  * @since 2.6.0
@@ -48,7 +48,7 @@ class User_Subscription {
     /**
      * Get the current pack of the user
      *
-     * @return array|\WP_Error
+     * @return array|WP_Error
      */
     public function current_pack() {
         $pack = $this->pack;
@@ -56,12 +56,12 @@ class User_Subscription {
         if ( ! isset( $this->pack['pack_id'] ) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
 
-            return new \WP_Error( 'no-pack', sprintf( __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
+            return new WP_Error( 'no-pack', sprintf( __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
         }
 
         // seems like the user has a pack, now check expiration
         if ( $this->expired() ) {
-            return new \WP_Error( 'expired', __( 'The subscription pack has expired. Please buy a pack.', 'wp-user-frontend' ) );
+            return new WP_Error( 'expired', __( 'The subscription pack has expired. Please buy a pack.', 'wp-user-frontend' ) );
         }
 
         return $pack;
@@ -173,7 +173,7 @@ class User_Subscription {
         }
         global $wpdb;
         $result       = '';
-        $subscription = ( new Admin\Subscription() )->get_subscription( $pack_id );
+        $subscription = wpuf()->subscription->get_subscription( $pack_id );
 
         if ( $this->user->id && $subscription ) {
             $user_meta = [
@@ -307,9 +307,9 @@ class User_Subscription {
             return;
         }
 
-        $pack = Admin\Subscription::get_subscription( $this->current_pack_id() );
+        $pack = wpuf()->subscription->get_subscription( $this->current_pack_id() );
 
-        $details_meta = Admin\Subscription::init()->get_details_meta_value();
+        $details_meta = wpuf()->subscription->get_details_meta_value();
 
         $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wp-user-frontend' );
 
@@ -488,7 +488,7 @@ class User_Subscription {
      * @return bool
      */
     public static function is_free_pack( $pack_id ) {
-        $subs           = new Admin\Subscription();
+        $subs           = wpuf()->subscription;
         $pack           = $subs->get_subscription( $pack_id );
         $billing_amount = ( $pack->meta_value['billing_amount'] >= 0 && ! empty( $pack->meta_value['billing_amount'] ) ) ? $pack->meta_value['billing_amount'] : false;
 
@@ -509,7 +509,7 @@ class User_Subscription {
      * @return string
      */
     public function get_subscription_exp_msg( $pack_id ) {
-        $sub_pack  = Admin\Subscription::get_subscription( $pack_id );
+        $sub_pack  = wpuf()->subscription->get_subscription( $pack_id );
         $sub_info  = $this->pack;
 
         $exp_message = ! empty( $sub_pack->meta_value['_post_expiration_message'] ) ? $sub_pack->meta_value['_post_expiration_message'] : $sub_info['_post_expiration_message'];

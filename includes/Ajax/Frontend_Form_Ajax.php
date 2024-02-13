@@ -2,10 +2,13 @@
 
 namespace WeDevs\Wpuf\Ajax;
 
+use DOMDocument;
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WeDevs\Wpuf\User_Subscription;
+use WP_Error;
 
+#[AllowDynamicProperties]
 class Frontend_Form_Ajax {
 
     use FieldableTrait;
@@ -89,22 +92,6 @@ class Frontend_Form_Ajax {
         }
 
         $protected_shortcodes = wpuf_get_protected_shortcodes();
-
-        // check each form field for restricted shortcodes
-        foreach ( $this->form_fields as $single_field ) {
-            if ( empty( $single_field['rich'] ) || 'yes' !== $single_field['rich'] ) {
-                continue;
-            }
-
-            $current_data = ! empty( $_POST[ $single_field['name'] ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ $single_field['name'] ] ) ) : '';
-
-            foreach ( $protected_shortcodes as $shortcode ) {
-                $search_for = '[' . $shortcode;
-                if ( strpos( $current_data, $search_for ) !== false ) {
-                    wpuf()->ajax->send_error( sprintf( __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
-                }
-            }
-        }
 
         // check each form field for restricted shortcodes
         foreach ( $this->form_fields as $single_field ) {
@@ -318,7 +305,7 @@ class Frontend_Form_Ajax {
 
             // find our if any images in post content and associate them
             if ( ! empty( $postarr['post_content'] ) ) {
-                $dom = new \DOMDocument();
+                $dom = new DOMDocument();
                 @$dom->loadHTML( $postarr['post_content'] );
                 $images = $dom->getElementsByTagName( 'img' );
 
@@ -532,7 +519,7 @@ class Frontend_Form_Ajax {
 
                     $user_pass = wp_generate_password( 12, false );
 
-                    $errors = new \WP_Error();
+                    $errors = new WP_Error();
 
                     do_action( 'register_post', $username, $guest_email, $errors );
 

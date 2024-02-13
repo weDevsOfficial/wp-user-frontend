@@ -3,6 +3,7 @@
 namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 
 use WP_List_Table;
+use WP_Query;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
@@ -269,7 +270,7 @@ class List_Table_Admin_Post_Forms extends WP_List_Table {
 
         $args['post_type'] = 'wpuf_forms';
 
-        $query = new \WP_Query( $args );
+        $query = new WP_Query( $args );
 
         $forms = [];
 

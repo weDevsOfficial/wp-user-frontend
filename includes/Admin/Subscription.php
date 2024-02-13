@@ -69,6 +69,7 @@ class Subscription {
     public function enqueue_scripts() {
         wp_enqueue_script( 'wpuf-vue-3' );
         wp_enqueue_script( 'wpuf-admin-subscriptions' );
+        wp_enqueue_style( 'wpuf-admin-subscriptions' );
     }
 
     /**

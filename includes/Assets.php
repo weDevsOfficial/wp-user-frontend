@@ -155,6 +155,9 @@ class Assets {
             'admin'              => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
+            'admin-subscriptions'              => [
+                'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.css',
+            ],
             'registration-forms' => [
                 'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
             ],

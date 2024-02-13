@@ -133,6 +133,7 @@ module.exports = function(grunt) {
                     '!config.codekit',
                     '!**/nbproject/**',
                     '!assets/less/**',
+                    '!assets/tailwind/**',
                     '!tests/**',
                     '!**/Gruntfile.js',
                     '!**/package.json',

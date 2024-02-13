@@ -184,11 +184,11 @@ class Menu {
      */
     public function subscription_menu_page() {
         echo '<div id="subscription-page">
-<h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
-{{ message }}
-</div>';
+                <h1 class="text-3xl font-bold underline">
+                    Hello tailwind!
+                  </h1>
+                {{ message }}
+            </div>';
     }
 
     /**

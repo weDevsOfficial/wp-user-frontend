@@ -49,6 +49,26 @@ class Subscription {
         //Handle non recurring subscription when expired
         add_action( 'wp', [ $this, 'handle_non_recur_subs' ] );
         add_action( 'non_recur_subs_daily', [ $this, 'cancel_non_recurring_subscription' ] );
+
+        add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_scripts' ] );
+        add_filter('script_loader_tag', [ $this, 'add_type_attribute' ] , 10, 3);
+    }
+
+    public function add_type_attribute( $tag, $handle, $src ) {
+        $handles = [ 'wpuf-vue-3', 'wpuf-admin-subscriptions' ];
+
+        if ( ! in_array( $handle, $handles, true ) ) {
+            return $tag;
+        }
+
+        $tag = '<script type="module" src="' . esc_url( $src ) . '"></script>';
+
+        return $tag;
+    }
+
+    public function enqueue_scripts() {
+        wp_enqueue_script( 'wpuf-vue-3' );
+        wp_enqueue_script( 'wpuf-admin-subscriptions' );
     }
 
     /**

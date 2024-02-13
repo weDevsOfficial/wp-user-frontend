@@ -212,6 +212,11 @@ class Assets {
                 'in_footer' => true,
                 'version'   => '2.2.4',
             ],
+            'vue-3'                    => [
+                'src'       => WPUF_ASSET_URI . '/vendor/vue-3/vue.esm-browser.js',
+                'in_footer' => true,
+                'version'   => '3.4.18',
+            ],
             'vuex'                     => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vuex/vuex' . $this->suffix . '.js',
                 'in_footer' => true,
@@ -272,6 +277,11 @@ class Assets {
             'subscriptions'            => [
                 'src'       => WPUF_ASSET_URI . '/js/subscriptions.js',
                 'deps'      => [ 'jquery' ],
+                'in_footer' => true,
+            ],
+            'admin-subscriptions'            => [
+                'src'       => WPUF_ASSET_URI . '/js/admin/subscriptions.js',
+                'deps'      => [ 'wpuf-vue-3' ],
                 'in_footer' => true,
             ],
             'timepicker'               => [

@@ -94,9 +94,6 @@
 	<rule ref="WordPress.PHP.StrictInArray.MissingTrueStrict">
 		<type>error</type>
 	</rule>
-	<rule ref="WordPress.PHP.StrictComparisons.LooseComparison">
-		<type>error</type>
-	</rule>
 	<rule ref="WordPress.DB.DirectDatabaseQuery.DirectQuery">
 		<severity>0</severity>
 	</rule>

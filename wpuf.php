@@ -257,6 +257,10 @@ final class WP_User_Frontend {
         } else {
             $this->free_loader = new WeDevs\Wpuf\Free\Free_Loader();
         }
+
+        // Remove the what's new option.
+        delete_option( 'wpuf_whats_new' );
+        delete_option( 'wpufpro_whats_new' );
     }
 
     /**

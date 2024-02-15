@@ -27,7 +27,6 @@ class Admin {
         $this->settings              = new Admin\Admin_Settings();
         $this->forms                 = new Admin\Forms\Form_Manager();
         $this->gutenberg_block       = new Frontend\Form_Gutenberg_Block();
-        $this->whats_new             = new Admin\Whats_New();
         $this->promotion             = new Admin\Promotion();
         $this->plugin_upgrade_notice = new Admin\Plugin_Upgrade_Notice();
         $this->posting               = new Admin\Posting();

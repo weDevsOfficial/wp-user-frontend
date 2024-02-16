@@ -662,7 +662,7 @@
                         }
 
                         if ( hasRepeat === 'yes' ) {
-                            var repeatItem = $('[data-type="confirm_password"]').eq(0);
+                            var repeatItem = $(item).closest('.wpuf-form').find('[data-type="confirm_password"]').eq(0);
 
                             if ( repeatItem.val() !== val ) {
                                 errors.push({

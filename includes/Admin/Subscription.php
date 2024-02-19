@@ -51,7 +51,7 @@ class Subscription {
         add_action( 'non_recur_subs_daily', [ $this, 'cancel_non_recurring_subscription' ] );
 
         add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_scripts' ] );
-        add_filter('script_loader_tag', [ $this, 'add_type_attribute' ] , 10, 3);
+        add_filter( 'script_loader_tag', [ $this, 'add_type_attribute' ], 10, 3 );
     }
 
     public function add_type_attribute( $tag, $handle, $src ) {

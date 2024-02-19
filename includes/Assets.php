@@ -218,7 +218,7 @@ class Assets {
             'vue-3'                    => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vue-3/vue.esm-browser.js',
                 'in_footer' => true,
-                'version'   => '3.4.18',
+                'version'   => '3.4.19',
             ],
             'vuex'                     => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vuex/vuex' . $this->suffix . '.js',

@@ -14,4 +14,5 @@ npm-debug.log
 vendor
 !assets/vendor
 phpcs-report.txt
-assets/css/admin/subscriptions.css
+assets/css/admin/subscriptions.min.css
+assets/js/subscriptions.min.js

@@ -156,7 +156,7 @@ class Assets {
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
             'admin-subscriptions'              => [
-                'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.css',
+                'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.min.css',
             ],
             'registration-forms' => [
                 'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
@@ -282,9 +282,8 @@ class Assets {
                 'deps'      => [ 'jquery' ],
                 'in_footer' => true,
             ],
-            'admin-subscriptions'            => [
-                'src'       => WPUF_ASSET_URI . '/js/admin/subscriptions.js',
-                'deps'      => [ 'wpuf-vue-3' ],
+            'admin-subscriptions'      => [
+                'src'       => WPUF_ASSET_URI . '/js/subscriptions.min.js',
                 'in_footer' => true,
             ],
             'timepicker'               => [

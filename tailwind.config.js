@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     prefix: 'wpuf-',
-    content: ["./includes/Admin/**/*.{php,html,js}"],
+    content: ["./assets/**/*.{js,jsx,ts,tsx,vue,html}", "./includes/Admin/views/*.php"],
     theme: {
         extend: {},
     },

@@ -51,25 +51,20 @@ class Subscription {
         add_action( 'non_recur_subs_daily', [ $this, 'cancel_non_recurring_subscription' ] );
 
         add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_scripts' ] );
-        add_filter( 'script_loader_tag', [ $this, 'add_type_attribute' ], 10, 3 );
-    }
-
-    public function add_type_attribute( $tag, $handle, $src ) {
-        $handles = [ 'wpuf-vue-3', 'wpuf-admin-subscriptions' ];
-
-        if ( ! in_array( $handle, $handles, true ) ) {
-            return $tag;
-        }
-
-        $tag = '<script type="module" src="' . esc_url( $src ) . '"></script>';
-
-        return $tag;
     }
 
     public function enqueue_scripts() {
-        wp_enqueue_script( 'wpuf-vue-3' );
         wp_enqueue_script( 'wpuf-admin-subscriptions' );
         wp_enqueue_style( 'wpuf-admin-subscriptions' );
+
+        wp_localize_script(
+            'wpuf-admin-subscriptions', 'wpufSubscriptions',
+            [
+                'version'  => WPUF_VERSION,
+                'assetUrl' => WPUF_ASSET_URI,
+                'supportUrl' => esc_url( 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment?utm_source=wpuf-subscription-help&utm_medium=text-link' ),
+            ]
+        );
     }
 
     /**

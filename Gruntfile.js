@@ -100,6 +100,16 @@ module.exports = function(grunt) {
                     'jshint:formBuilder', 'less:admin',
                     'concat:formBuilder', 'concat:templates', 'less:front'
                 ]
+            },
+
+            vue: {
+                files: [
+                    'assets/js/subscriptions.js',
+                    'assets/js/components/**/*.vue',
+                ],
+                tasks: [
+                    'shell:npm_build'
+                ]
             }
         },
 
@@ -204,6 +214,13 @@ module.exports = function(grunt) {
                 }
             }
         },
+
+        // is to run NPM commands through Grunt
+        shell: {
+            npm_build: {
+                command: 'npm run build',
+            }
+        }
     });
 
     // Load NPM tasks to be used here
@@ -218,6 +235,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
     grunt.loadNpmTasks( 'grunt-notify' );
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
+    grunt.loadNpmTasks( 'grunt-shell' );
 
     grunt.registerTask( 'default', [ 'less', 'concat' ] );
 

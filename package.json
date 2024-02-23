@@ -23,6 +23,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-notify": "^0.4.5",
     "grunt-phplint": "0.0.8",
+    "grunt-shell": "^4.0.0",
     "grunt-text-replace": "^0.4.0",
     "grunt-wp-i18n": "^1.0.3",
     "grunt-wp-readme-to-markdown": "^2.0.1",

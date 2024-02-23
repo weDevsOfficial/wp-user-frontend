@@ -5,6 +5,10 @@ const input = [
     './assets/js/subscriptions.js',
 ];
 
+const adminAssets = [
+    'subscriptions.css',
+];
+
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [vue()],
@@ -17,7 +21,11 @@ export default defineConfig({
                     const info = assetInfo.name.split('.');
                     const extType = info[info.length - 1];
                     if (/\.(css)$/.test(assetInfo.name)) {
-                        return `css/admin/[name].min.${extType}`;
+                        if (adminAssets.includes( assetInfo.name )) {
+                            return `css/admin/[name].min.${extType}`;
+                        }
+
+                        return `css/[name].min.${extType}`;
                     }
                 }
             },

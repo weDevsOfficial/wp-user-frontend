@@ -1,10 +1,11 @@
 <script setup>
-import {ref, computed, provide, watch, reactive} from 'vue'
+import {ref, computed, provide, onMounted} from 'vue'
 import { HollowDotsSpinner } from 'epic-spinners'
 
 import Header from './Header.vue';
 import List from './subscriptions/List.vue';
 import New from './subscriptions/New.vue';
+import SidebarMenu from './subscriptions/SidebarMenu.vue';
 
 const routes = {
     '/': List,
@@ -39,6 +40,11 @@ const isLoading = ref(false);
     </div>
 
     <div class="wpuf-flex wpuf-flex-row wpuf-mt-12">
-        <component :is="currentView" />
+        <div class="wpuf-basis-1/4 wpuf-border-r-2 wpuf-border-zinc-300">
+            <SidebarMenu />
+        </div>
+        <div class="wpuf-basis-1/2">
+<!--            <component :is="currentView" />-->
+        </div>
     </div>
 </template>

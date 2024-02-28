@@ -456,6 +456,7 @@ class Subscription {
                 'public'          => false,
                 'show_ui'         => true,
                 'show_in_menu'    => false,
+                'show_in_rest'    => true,
                 'hierarchical'    => false,
                 'query_var'       => false,
                 'supports'        => [ 'title' ],

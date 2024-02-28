@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "release": "grunt release",
+    "dev": "vite",
     "build": "vite build"
   },
   "devDependencies": {
@@ -34,8 +35,12 @@
     "vite": "^5.1.4"
   },
   "dependencies": {
+    "@wordpress/api-fetch": "^6.49.0",
     "@wordpress/i18n": "^4.52.0",
+    "axios": "^1.6.7",
     "cli": "^1.0.1",
-    "vue": "^3.4.19"
+    "epic-spinners": "^2.0.0",
+    "vue": "^3.4.19",
+    "vue-spinkit": "^2.0.0"
   }
 }

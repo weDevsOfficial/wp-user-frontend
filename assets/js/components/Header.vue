@@ -1,20 +1,9 @@
-<script>
+<script setup>
 import { __ } from '@wordpress/i18n';
+import {inject} from 'vue';
 
-export default {
-    methods: {__},
-    setup() {
-        const version = wpufSubscriptions.version;
-        const logoUrl = wpufSubscriptions.assetUrl + '/images/icon-128x128.png';
-        const supportUrl = wpufSubscriptions.supportUrl;
-
-        return {
-            version,
-            logoUrl,
-            supportUrl
-        }
-    }
-}
+const wpufSubscriptions = inject( 'wpufSubscriptions' );
+const logoUrl = wpufSubscriptions.assetUrl + '/images/icon-128x128.png';
 </script>
 
 <template>
@@ -22,11 +11,11 @@ export default {
         <div class="wpuf-flex wpuf-justify-start wpuf-items-center">
             <img :src="logoUrl" alt="WPUF Icon" class="wpuf-w-12 wpuf-mr-4">
             <h2>{{ __( 'WP User Frontend', 'wp-user-frontend' ) }}</h2>
-            <span class="wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20">V{{ version }}</span>
+            <span class="wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20">V{{ wpufSubscriptions.version }}</span>
         </div>
         <div class="wpuf-align-right">
             <a
-                :href="supportUrl"
+                :href="wpufSubscriptions.supportUrl"
                 target="_blank"
                 class="wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 hover:wpuf-text-white focus:wpuf-bg-indigo-500 focus:wpuf-text-white">
                 {{ __( 'Support', 'wp-user-frontend' ) }}

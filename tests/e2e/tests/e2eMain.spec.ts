@@ -2,6 +2,7 @@ import { test, expect, Page } from '@playwright/test';
 import loginAndSetupTests from './loginAndSetupTests.spec';
 import postFormsTests from './postFormsTests.spec';
 import registrationFormsTestsLite from './registrationFormsTestsLite.spec';
+import subscriptionsTests from './subscription.spec';
 import * as fs from "fs"; //Clear Cookie
 
 
@@ -38,9 +39,12 @@ test.describe(postFormsTests);
 
 
 
-//*[Spec-3]: Test- Post Forms + FrontEnd Case.../
+//*[Spec-3]: Test- Registration Forms + FrontEnd Case.../
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 test.describe(registrationFormsTestsLite);
+
+//*[Spec-3]: Test- Subscription + FrontEnd Case.../
+test.describe.only(subscriptionsTests);
 
 //*--------------------------------------------------------*/
 

@@ -1,1 +1,25 @@
-{"cookies":[],"origins": []}
+{
+  "cookies": [
+    {
+      "name": "wordpress_test_cookie",
+      "value": "WP%20Cookie%20check",
+      "domain": "wpuf_rat.test",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://www.google.com",
+      "localStorage": [
+        {
+          "name": "rc::a",
+          "value": "MWZyN2NpZG10bXNxNA=="
+        }
+      ]
+    }
+  ]
+}

@@ -1,35 +1,40 @@
 <script setup>
-import {ref, computed, provide, onMounted} from 'vue'
-import { HollowDotsSpinner } from 'epic-spinners'
+import {ref, provide, onBeforeMount, watch} from 'vue';
+import {HollowDotsSpinner} from 'epic-spinners'
 
 import Header from './Header.vue';
-import List from './subscriptions/List.vue';
-import New from './subscriptions/New.vue';
 import SidebarMenu from './subscriptions/SidebarMenu.vue';
+import List from './subscriptions/List.vue';
+import Empty from './subscriptions/Empty.vue';
+import {useCurrentComponent} from '../composables/components';
 
-const routes = {
-    '/': List,
-    '/new': New
+provide( 'wpufSubscriptions', wpufSubscriptions );
+const { currentComponent, setCurrentComponent } = useCurrentComponent();
+
+const isLoading = ref( false );
+const subscriptions = ref( null );
+
+const fetchData = async () => {
+    const response = await fetch( 'https://wpuf.test/wp-json/wp/v2/wpuf_subscription' );
+    subscriptions.value = await response.json();
 }
 
-const currentPath = ref(window.location.hash)
+onBeforeMount( () => {
+    fetchData();
+} );
 
-window.addEventListener('hashchange', () => {
-    currentPath.value = window.location.hash
-})
-
-const currentView = computed(() => {
-    return routes[currentPath.value.slice(1) || '/'] || 'NotFound'
-})
-
-provide('wpufSubscriptions', wpufSubscriptions);
-
-const isLoading = ref(false);
+watch( subscriptions, ( subscriptions ) => {
+    if ( subscriptions.length > 0 ) {
+        setCurrentComponent( List );
+    } else {
+        setCurrentComponent( Empty );
+    }
+} );
 
 </script>
 
 <template>
-    <Header />
+    <Header/>
     <div v-if="isLoading" class="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
         <hollow-dots-spinner
             :animation-duration="1000"
@@ -43,8 +48,8 @@ const isLoading = ref(false);
         <div class="wpuf-basis-1/4 wpuf-border-r-2 wpuf-border-zinc-300">
             <SidebarMenu />
         </div>
-        <div class="wpuf-basis-1/2">
-<!--            <component :is="currentView" />-->
+        <div class="wpuf-basis-3/4">
+            <component :is="currentComponent" :subscriptions=subscriptions />
         </div>
     </div>
 </template>

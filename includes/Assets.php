@@ -278,7 +278,7 @@ class Assets {
                 'deps' => [ 'jquery' ],
             ],
             'subscriptions'            => [
-                'src'       => WPUF_ASSET_URI . '/js/subscriptions.js',
+                'src'       => WPUF_ASSET_URI . '/js/subscriptions-old.js',
                 'deps'      => [ 'jquery' ],
                 'in_footer' => true,
             ],

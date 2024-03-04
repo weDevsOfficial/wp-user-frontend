@@ -1,5 +1,8 @@
 <script setup>
 import {ref, provide, onBeforeMount, watch} from 'vue';
+import apiFetch from '@wordpress/api-fetch';
+import { addQueryArgs } from '@wordpress/url';
+
 import {HollowDotsSpinner} from 'epic-spinners'
 
 import Header from './Header.vue';
@@ -8,15 +11,26 @@ import List from './subscriptions/List.vue';
 import Empty from './subscriptions/Empty.vue';
 import {useCurrentComponent} from '../composables/components';
 
-provide( 'wpufSubscriptions', wpufSubscriptions );
-const { currentComponent, setCurrentComponent } = useCurrentComponent();
-
 const isLoading = ref( false );
 const subscriptions = ref( null );
 
+provide( 'wpufSubscriptions', wpufSubscriptions );
+const { currentComponent, setCurrentComponent } = useCurrentComponent();
+
 const fetchData = async () => {
-    const response = await fetch( 'https://wpuf.test/wp-json/wp/v2/wpuf_subscription' );
-    subscriptions.value = await response.json();
+    isLoading.value = true;
+
+    const queryParams = { 'per_page': 10, 'offset': 0 };
+
+    // todo: add nonce and other validations.
+    apiFetch( {path: addQueryArgs( wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription', queryParams )} )
+        .then( ( response ) => {
+            subscriptions.value = response.subscriptions;
+    } ).catch( ( error ) => {
+        console.log( error );
+    } ).finally( () => {
+        isLoading.value = false;
+    })
 }
 
 onBeforeMount( () => {

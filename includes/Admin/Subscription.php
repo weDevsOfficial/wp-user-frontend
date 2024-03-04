@@ -55,14 +55,19 @@ class Subscription {
 
     public function enqueue_scripts() {
         wp_enqueue_script( 'wpuf-admin-subscriptions' );
+        wp_enqueue_script( 'wpuf-subscriptions' );
         wp_enqueue_style( 'wpuf-admin-subscriptions' );
 
         wp_localize_script(
             'wpuf-admin-subscriptions', 'wpufSubscriptions',
             [
-                'version'  => WPUF_VERSION,
-                'assetUrl' => WPUF_ASSET_URI,
-                'supportUrl' => esc_url( 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment?utm_source=wpuf-subscription-help&utm_medium=text-link' ),
+                'version'        => WPUF_VERSION,
+                'assetUrl'       => WPUF_ASSET_URI,
+                'siteUrl'        => site_url(),
+                'currencySymbol' => wpuf_get_currency( 'symbol' ),
+                'supportUrl'     => esc_url(
+                    'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment?utm_source=wpuf-subscription-help&utm_medium=text-link'
+                ),
             ]
         );
     }
@@ -453,11 +458,9 @@ class Subscription {
         register_post_type(
             'wpuf_subscription', [
                 'label'           => __( 'Subscription', 'wp-user-frontend' ),
-                'public'          => false,
-                'show_ui'         => true,
+                'public'          => true,
                 'show_in_menu'    => false,
                 'show_in_rest'    => true,
-                'hierarchical'    => false,
                 'query_var'       => false,
                 'supports'        => [ 'title' ],
                 'capability_type' => 'post',
@@ -491,7 +494,6 @@ class Subscription {
             ]
         );
     }
-
 
     /**
      * Get a subscription row from database

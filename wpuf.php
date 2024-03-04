@@ -169,6 +169,7 @@ final class WP_User_Frontend {
         $this->customize    = new WeDevs\Wpuf\Admin\Customizer_Options();
         $this->bank         = new WeDevs\Wpuf\Lib\Gateway\Bank();
         $this->paypal       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
+        $this->api          = new WeDevs\Wpuf\API();
 
         if ( is_admin() ) {
             $this->admin        = new WeDevs\Wpuf\Admin();

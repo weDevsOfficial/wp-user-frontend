@@ -106,6 +106,7 @@ module.exports = function(grunt) {
                 files: [
                     'assets/js/subscriptions.js',
                     'assets/js/components/**/*.vue',
+                    'assets/js/stores/**/*.js',
                 ],
                 tasks: [
                     'shell:npm_build'

@@ -1,21 +1,25 @@
 <script setup>
-import {ref, provide, onBeforeMount, watch} from 'vue';
+import {ref, provide, onBeforeMount, computed} from 'vue';
+import {storeToRefs} from 'pinia';
+import { useComponentStore } from '../stores/component';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 
-import {HollowDotsSpinner} from 'epic-spinners'
+import {HollowDotsSpinner} from 'epic-spinners';
 
 import Header from './Header.vue';
 import SidebarMenu from './subscriptions/SidebarMenu.vue';
 import List from './subscriptions/List.vue';
 import Empty from './subscriptions/Empty.vue';
-import {useCurrentComponent} from '../composables/components';
+import Edit from './subscriptions/Edit.vue';
+import New from './subscriptions/New.vue';
 
+const componentStore = useComponentStore();
+const { currentComponent } = storeToRefs(componentStore);
 const isLoading = ref( false );
 const subscriptions = ref( null );
 
 provide( 'wpufSubscriptions', wpufSubscriptions );
-const { currentComponent, setCurrentComponent } = useCurrentComponent();
 
 const fetchData = async () => {
     isLoading.value = true;
@@ -26,6 +30,12 @@ const fetchData = async () => {
     apiFetch( {path: addQueryArgs( wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription', queryParams )} )
         .then( ( response ) => {
             subscriptions.value = response.subscriptions;
+
+            if ( subscriptions.value.length > 0 ) {
+                componentStore.setCurrentComponent( 'List' );
+            } else {
+                componentStore.setCurrentComponent( 'Empty' );
+            }
     } ).catch( ( error ) => {
         console.log( error );
     } ).finally( () => {
@@ -33,16 +43,23 @@ const fetchData = async () => {
     })
 }
 
+const content = computed( () => {
+    switch ( currentComponent.value ) {
+        case 'List':
+            return List;
+        case 'Empty':
+            return Empty;
+        case 'Edit':
+            return Edit;
+        case 'New':
+            return New;
+        default:
+            return Empty;
+    }
+});
+
 onBeforeMount( () => {
     fetchData();
-} );
-
-watch( subscriptions, ( subscriptions ) => {
-    if ( subscriptions.length > 0 ) {
-        setCurrentComponent( List );
-    } else {
-        setCurrentComponent( Empty );
-    }
 } );
 
 </script>
@@ -63,7 +80,7 @@ watch( subscriptions, ( subscriptions ) => {
             <SidebarMenu />
         </div>
         <div class="wpuf-basis-3/4">
-            <component :is="currentComponent" :subscriptions=subscriptions />
+            <component :is="content" :subscriptions=subscriptions />
         </div>
     </div>
 </template>

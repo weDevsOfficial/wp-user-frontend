@@ -1,8 +1,10 @@
 <script setup>
 import {__} from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import {toRefs, ref, onBeforeMount, inject} from 'vue';
+import {toRefs, ref, onBeforeMount} from 'vue';
 import {addQueryArgs} from '@wordpress/url';
+import Edit from './Edit.vue';
+import {useComponentStore} from '../../stores/component';
 
 const props = defineProps( {
     subscription: Object
@@ -12,9 +14,11 @@ const {subscription} = toRefs( props );
 const pillColor = ref( '' );
 const isRecurring = ref( false );
 const quickMenuStatus = ref( false );
+const quickEditStatus = ref( false );
 const billingAmount = ref( 0 );
 const subscribers = ref( 0 );
 const subscribersLink = wpufSubscriptions.siteUrl + '/wp-admin/edit.php?post_type=wpuf_subscription&page=wpuf_subscribers&post_ID=' + subscription.value.ID;
+const componentStore = useComponentStore();
 
 const setPillBackground = () => {
     const postStatus = subscription.value.post_status;
@@ -38,6 +42,14 @@ const showQuickMenu = () => {
 
 const hideQuickMenu = () => {
     quickMenuStatus.value = false;
+};
+
+const showQuickEdit = () => {
+    quickEditStatus.value = true;
+};
+
+const hideQuickEdit = () => {
+    quickEditStatus.value = false;
 };
 
 const vClickOutside = {
@@ -104,8 +116,8 @@ onBeforeMount( () => {
                     v-if="quickMenuStatus"
                     class="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-text-sm wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5">
                     <ul>
-                        <li class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Edit', 'wp-user-frontend' ) }}</li>
-                        <li class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Quick Edit', 'wp-user-frontend' ) }}</li>
+                        <li @click="componentStore.setCurrentComponent( 'Edit' )" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Edit', 'wp-user-frontend' ) }}</li>
+                        <li @click="showQuickEdit" v-click-outside="hideQuickEdit" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Quick Edit', 'wp-user-frontend' ) }}</li>
                         <li class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Draft/Publish', 'wp-user-frontend' ) }}</li>
                         <li class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Delete', 'wp-user-frontend' ) }}</li>
                     </ul>

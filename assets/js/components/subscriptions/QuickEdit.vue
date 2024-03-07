@@ -7,17 +7,25 @@
     import {useQuickEditStore} from '../../stores/quickEdit';
     import {useSubscriptionStore} from '../../stores/subscription';
 
-    const date = ref();
+    const subscriptionStore = useSubscriptionStore();
+
+    const currentSubscription = subscriptionStore.currentSubscription;
+    const date = ref(new Date(currentSubscription.post_date));
+    const format = (date) => {
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+    }
     const quickEditStore = useQuickEditStore();
-    const isPlanPrivate = ref( false );
+    const isPlanPrivate = ref( currentSubscription.post_status === 'private' );
     const errors = ref( {
         planName: false,
         date: false,
         isPrivate: false,
     } );
 
-    const subscriptionStore = useSubscriptionStore();
-    const currentSubscription = subscriptionStore.currentSubscription;
+
+
 </script>
 <template>
     <div class="wpuf-fixed wpuf-z-20 wpuf-top-1/3 wpuf-left-[calc(50%-5rem)] wpuf-w-1/4 wpuf-bg-white wpuf-p-6 wpuf-border wpuf-border-gray-200 wpuf-shadow dark:wpuf-bg-gray-800 dark:wpuf-border-gray-700 dark:hover:wpuf-bg-gray-700">
@@ -43,11 +51,11 @@
         <div class="wpuf-px-2 sm:wpuf-px-2 lg:wpuf-px-2">
             <label for="date" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Date', 'wp-user-frontend') }}</label>
             <div class="wpuf-relative wpuf-mt-2 wpuf-rounded-md wpuf-shadow-sm">
-                <VueDatePicker v-model="date" text-input></VueDatePicker>
+                <VueDatePicker v-model="date" :preview-format="format" />
             </div>
         </div>
         <div class="wpuf-px-2 sm:wpuf-px-2 lg:wpuf-px-2 wpuf-flex wpuf-justify-between wpuf-mt-6">
-            <label for="plan-private" class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Make plan private', 'wp-user-frontend') }}</label>
+            <label for="plan-private" class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Private', 'wp-user-frontend') }}</label>
             <button
                 @click="isPlanPrivate = !isPlanPrivate"
                 type="button"

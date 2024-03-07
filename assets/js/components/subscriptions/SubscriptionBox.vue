@@ -6,6 +6,7 @@ import {addQueryArgs} from '@wordpress/url';
 import Edit from './Edit.vue';
 import {useComponentStore} from '../../stores/component';
 import {useQuickEditStore} from '../../stores/quickEdit';
+import {useSubscriptionStore} from '../../stores/subscription';
 
 const props = defineProps( {
     subscription: Object
@@ -20,6 +21,7 @@ const subscribers = ref( 0 );
 const subscribersLink = wpufSubscriptions.siteUrl + '/wp-admin/edit.php?post_type=wpuf_subscription&page=wpuf_subscribers&post_ID=' + subscription.value.ID;
 const componentStore = useComponentStore();
 const quickEditStore = useQuickEditStore();
+const subscriptionStore = useSubscriptionStore();
 
 const setPillBackground = () => {
     const postStatus = subscription.value.post_status;
@@ -109,8 +111,8 @@ onBeforeMount( () => {
                     v-if="quickMenuStatus"
                     class="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-text-sm wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5">
                     <ul>
-                        <li @click="componentStore.setCurrentComponent( 'Edit' )" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Edit', 'wp-user-frontend' ) }}</li>
-                        <li @click="quickEditStore.setQuickEditStatus(true)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Quick Edit', 'wp-user-frontend' ) }}</li>
+                        <li @click="componentStore.setCurrentComponent( 'Edit' ); subscriptionStore.setCurrentSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Edit', 'wp-user-frontend' ) }}</li>
+                        <li @click="quickEditStore.setQuickEditStatus(true); subscriptionStore.setCurrentSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Quick Edit', 'wp-user-frontend' ) }}</li>
                         <li class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Draft/Publish', 'wp-user-frontend' ) }}</li>
                         <li class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Delete', 'wp-user-frontend' ) }}</li>
                     </ul>

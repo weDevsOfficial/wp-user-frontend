@@ -13,9 +13,14 @@ import List from './subscriptions/List.vue';
 import Empty from './subscriptions/Empty.vue';
 import Edit from './subscriptions/Edit.vue';
 import New from './subscriptions/New.vue';
+import QuickEdit from './subscriptions/QuickEdit.vue';
+import {useQuickEditStore} from '../stores/quickEdit';
 
 const componentStore = useComponentStore();
+const quickEditStore = useQuickEditStore();
 const { currentComponent } = storeToRefs(componentStore);
+const { isQuickEdit } = storeToRefs(quickEditStore);
+
 const isLoading = ref( false );
 const subscriptions = ref( null );
 
@@ -74,8 +79,13 @@ onBeforeMount( () => {
             :color="'#7DC442'"
         />
     </div>
-
-    <div class="wpuf-flex wpuf-flex-row wpuf-mt-12">
+    <div v-if="isQuickEdit" @click="quickEditStore.setQuickEditStatus(false)" class="wpuf-absolute wpuf-w-full wpuf-h-screen wpuf-z-10 wpuf-left-[-20px]"></div>
+    <template v-if="isQuickEdit">
+        <QuickEdit />
+    </template>
+    <div
+        :class="isQuickEdit ? 'wpuf-blur' : ''"
+        class="wpuf-flex wpuf-flex-row wpuf-mt-12">
         <div class="wpuf-basis-1/4 wpuf-border-r-2 wpuf-border-zinc-300">
             <SidebarMenu />
         </div>

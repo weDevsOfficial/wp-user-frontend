@@ -1,5 +1,5 @@
 <script setup>
-import {reactive, ref} from 'vue';
+    import {reactive, ref} from 'vue';
     import {__} from '@wordpress/i18n';
     import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
     import VueDatePicker from '@vuepic/vue-datepicker';
@@ -14,6 +14,10 @@ import {reactive, ref} from 'vue';
     const planName = ref( currentSubscription.post_title );
     const date = ref(new Date(currentSubscription.post_date));
     const isPrivate = ref( currentSubscription.post_status === 'private' );
+    const update = ref( {
+        success: false,
+        failed: false,
+    } );
 
     const quickEditStore = useQuickEditStore();
 
@@ -50,6 +54,11 @@ import {reactive, ref} from 'vue';
             errors.planName = true;
         }
 
+        // error if plan name contains #. PayPal doesn't allow # in package name
+        if ( planName.value.includes('#') ) {
+            errors.planName = true;
+        }
+
         if ( typeof isPrivate.value !== 'boolean' ) {
             errors.isPrivate = true;
         }
@@ -75,17 +84,24 @@ import {reactive, ref} from 'vue';
             return;
         }
 
-        subscriptionStore.updateSubscription( {
-            id: currentSubscription.ID,
+        const promiseResult = subscriptionStore.updateSubscription( {
             planName: planName.value,
             mm: month,
-            jj: date,
+            jj: day,
             aa: year,
             hh: hours,
             mn: minutes,
             ss: seconds,
             isPrivate: isPrivate.value,
         } );
+
+        promiseResult.then((result) => {
+            if (result.success) {
+                update.value.success = true;
+            } else {
+                update.value.failed = true;
+            }
+        });
     };
 </script>
 <style scoped>
@@ -148,6 +164,7 @@ import {reactive, ref} from 'vue';
                     textInput
                     v-model="date"
                     :state="!errors.date"
+                    enable-seconds
                     @update:model-value="handleDate" />
             </div>
             <p v-if="errors.date" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="email-error">{{ __('Not a valid date', 'wp-user-frontend') }}</p>
@@ -173,5 +190,37 @@ import {reactive, ref} from 'vue';
                 {{ __('Cancel', 'wp-user-frontend') }}
             </button>
         </div>
+    </div>
+    <div v-if="update.success" id="toast-success" class="wpuf-absolute wpuf-z-10 wpuf-flex wpuf-justify-between wpuf-items-center wpuf-w-full wpuf-max-w-xs wpuf-p-4 wpuf-mb-4 wpuf-text-gray-500 wpuf-bg-white wpuf-rounded-lg wpuf-shadow dark:wpuf-text-gray-400 dark:wpuf-bg-gray-800" role="alert">
+        <div class="wpuf-flex wpuf-items-center wpuf-justify-between">
+            <div class="wpuf-mr-2 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-w-8 wpuf-h-8 wpuf-text-green-500 wpuf-bg-green-100 wpuf-rounded-lg dark:wpuf-bg-green-800 dark:wpuf-text-green-200">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                </svg>
+            </div>
+            <div class="ms-3 wpuf-text-sm wpuf-font-normal">Updated successfully</div>
+        </div>
+        <button type="button" class="ms-auto wpuf--mx-1.5 wpuf--my-1.5 wpuf-bg-white wpuf-text-gray-400 hover:wpuf-text-gray-900 wpuf-rounded-lg focus:wpuf-ring-2 focus:wpuf-ring-gray-300 wpuf-p-1.5 hover:wpuf-bg-gray-100 wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-h-8 wpuf-w-8 dark:wpuf-text-gray-500 dark:hover:wpuf-text-white dark:wpuf-bg-gray-800 dark:hover:wpuf-bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
+            <span class="wpuf-sr-only">Close</span>
+            <svg class="wpuf-w-3 wpuf-h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+        </button>
+    </div>
+    <div v-if="update.failed" id="toast-danger" class="wpuf-absolute wpuf-z-10 wpuf-flex wpuf-justify-between wpuf-items-center wpuf-w-full wpuf-max-w-xs wpuf-p-4 wpuf-mb-4 wpuf-text-gray-500 wpuf-bg-white wpuf-rounded-lg wpuf-shadow dark:wpuf-text-gray-400 dark:wpuf-bg-gray-800" role="alert">
+        <div class="wpuf-flex wpuf-items-center wpuf-justify-between">
+            <div class="wpuf-mr-2 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-w-8 wpuf-h-8 wpuf-text-red-500 wpuf-bg-red-100 wpuf-rounded-lg dark:wpuf-bg-red-800 dark:wpuf-text-red-200">
+                <svg class="wpuf-w-5 wpuf-h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+                </svg>
+            </div>
+            <div class="ms-3 wpuf-text-sm wpuf-font-normal">Item has been deleted.</div>
+        </div>
+        <button type="button" class="ms-auto wpuf--mx-1.5 wpuf--my-1.5 wpuf-bg-white wpuf-text-gray-400 hover:wpuf-text-gray-900 wpuf-rounded-lg focus:wpuf-ring-2 focus:wpuf-ring-gray-300 wpuf-p-1.5 hover:wpuf-bg-gray-100 wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-h-8 wpuf-w-8 dark:wpuf-text-gray-500 dark:hover:wpuf-text-white dark:wpuf-bg-gray-800 dark:hover:wpuf-bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close">
+            <span class="wpuf-sr-only">Close</span>
+            <svg class="wpuf-w-3 wpuf-h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+        </button>
     </div>
 </template>

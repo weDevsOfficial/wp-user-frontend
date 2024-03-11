@@ -9,7 +9,20 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         },
 
         updateSubscription( subscription ) {
-            console.log(subscription);
+            const requestOptions = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify( {subscription} )
+            };
+
+            try {
+                return fetch(
+                    wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription/' + subscription.id,
+                    requestOptions )
+                    .then( ( response ) => response.json() );
+            } catch (error) {
+                console.error( 'Error:', error );
+            }
         }
     }
 } );

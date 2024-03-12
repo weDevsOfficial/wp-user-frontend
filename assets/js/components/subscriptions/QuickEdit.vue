@@ -85,6 +85,7 @@
         }
 
         const promiseResult = subscriptionStore.updateSubscription( {
+            id: currentSubscription.ID,
             planName: planName.value,
             mm: month,
             jj: day,
@@ -214,7 +215,7 @@
                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
                 </svg>
             </div>
-            <div class="ms-3 wpuf-text-sm wpuf-font-normal">Item has been deleted.</div>
+            <div class="ms-3 wpuf-text-sm wpuf-font-normal">Error updating subscription</div>
         </div>
         <button type="button" class="ms-auto wpuf--mx-1.5 wpuf--my-1.5 wpuf-bg-white wpuf-text-gray-400 hover:wpuf-text-gray-900 wpuf-rounded-lg focus:wpuf-ring-2 focus:wpuf-ring-gray-300 wpuf-p-1.5 hover:wpuf-bg-gray-100 wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-h-8 wpuf-w-8 dark:wpuf-text-gray-500 dark:hover:wpuf-text-white dark:wpuf-bg-gray-800 dark:hover:wpuf-bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close">
             <span class="wpuf-sr-only">Close</span>

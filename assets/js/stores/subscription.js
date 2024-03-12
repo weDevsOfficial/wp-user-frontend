@@ -15,14 +15,10 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 body: JSON.stringify( {subscription} )
             };
 
-            try {
-                return fetch(
-                    wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription/' + subscription.id,
-                    requestOptions )
-                    .then( ( response ) => response.json() );
-            } catch (error) {
-                console.error( 'Error:', error );
-            }
+            return fetch(
+                wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription/' + subscription.id,
+                requestOptions )
+                .then( ( response ) => response.json() );
         }
     }
 } );

@@ -186,6 +186,15 @@ class Subscription extends WP_REST_Controller {
         $status = ! empty( $subscription['isPrivate'] ) ? 'private' : 'publish';
         $time       = '';
 
+        if ( empty( $id ) ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Subscription ID is required', 'wp-user-frontend' ),
+                ]
+            );
+        }
+
         // error if plan name contains #. PayPal doesn't allow # in package name
         if ( strpos( $name, '#' ) !== false ) {
             return new WP_REST_Response(
@@ -220,6 +229,8 @@ class Subscription extends WP_REST_Controller {
                     'post_date_gmt' => get_gmt_from_date( $time ),
                 ]
             );
+
+            error_log( print_r( $result, true ) );
 
             if ( is_wp_error( $result ) ) {
                 return new WP_REST_Response(

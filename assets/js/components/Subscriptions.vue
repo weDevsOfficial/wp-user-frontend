@@ -15,6 +15,7 @@ import Edit from './subscriptions/Edit.vue';
 import New from './subscriptions/New.vue';
 import QuickEdit from './subscriptions/QuickEdit.vue';
 import {useQuickEditStore} from '../stores/quickEdit';
+import Notice from './subscriptions/Notice.vue';
 
 const componentStore = useComponentStore();
 const quickEditStore = useQuickEditStore();
@@ -22,6 +23,7 @@ const { currentComponent } = storeToRefs(componentStore);
 const { isQuickEdit } = storeToRefs(quickEditStore);
 
 const isLoading = ref( false );
+
 const subscriptions = ref( null );
 
 provide( 'wpufSubscriptions', wpufSubscriptions );
@@ -93,4 +95,5 @@ onBeforeMount( () => {
             <component :is="content" :subscriptions=subscriptions />
         </div>
     </div>
+    <Notice />
 </template>

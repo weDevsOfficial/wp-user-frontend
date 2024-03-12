@@ -2,7 +2,6 @@
 import {toRefs} from 'vue';
 import {__} from '@wordpress/i18n';
 import SubscriptionBox from './SubscriptionBox.vue';
-import QuickEdit from './QuickEdit.vue';
 
 const props = defineProps( {
     subscriptions: Array

@@ -1,9 +1,10 @@
 <script setup>
 import {__} from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import {toRefs, ref, onBeforeMount} from 'vue';
+import {toRefs, ref, onBeforeMount, computed} from 'vue';
 import {addQueryArgs} from '@wordpress/url';
 import Edit from './Edit.vue';
+
 import {useComponentStore} from '../../stores/component';
 import {useQuickEditStore} from '../../stores/quickEdit';
 import {useSubscriptionStore} from '../../stores/subscription';
@@ -22,6 +23,7 @@ const subscribersLink = wpufSubscriptions.siteUrl + '/wp-admin/edit.php?post_typ
 const componentStore = useComponentStore();
 const quickEditStore = useQuickEditStore();
 const subscriptionStore = useSubscriptionStore();
+const currentSubscription = subscriptionStore.currentSubscription;
 
 const setPillBackground = () => {
     const postStatus = subscription.value.post_status;
@@ -94,13 +96,18 @@ onBeforeMount( () => {
     getSubscribers();
 } );
 
+const title = computed(() => {
+    return currentSubscription ? currentSubscription.post_title : subscription.value.post_title;
+})
+
 </script>
 <template>
     <div class="wpuf-justify-between wpuf-max-w-sm wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-shadow dark:wpuf-bg-gray-800 dark:wpuf-border-gray-700 dark:hover:wpuf-bg-gray-700">
         <div class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-bg-gray-100">
             <div>
                 <h5 class="wpuf-mb-1 wpuf-m-0 wpuf-text-2xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900 dark:wpuf-text-white">
-                    {{ subscription.post_title }}</h5>
+                    {{ title }}
+                </h5>
                 <p class="wpuf-mt-1 wpuf-mb-1 wpuf-truncate wpuf-text-lg wpuf-text-gray-500">{{ billingAmount }}</p>
             </div>
             <div class="wpuf-flex wpuf-justify-between wpuf-flex-col wpuf-relative">

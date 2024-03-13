@@ -71,6 +71,7 @@ const getSubscribers = () => {
     apiFetch( {path: addQueryArgs( wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription/subscribers', queryParams )} )
         .then( ( response ) => {
             subscribers.value = response.subscribers;
+            subscription.value.subscribers = subscribers.value;
         } ).catch( ( error ) => {
         console.log( error );
     } )

@@ -712,6 +712,9 @@ class Admin_Subscription {
                             $_post_expiration_time = explode( ' ', isset( $user_sub['_post_expiration_time'] ) ? $user_sub['_post_expiration_time'] : '' );
                             $time_value            = isset( $_post_expiration_time[0] ) && ! empty( $_post_expiration_time[0] ) ? $_post_expiration_time[0] : '1';
                             $time_type             = isset( $_post_expiration_time[1] ) && ! empty( $_post_expiration_time[1] ) ? $_post_expiration_time[1] : 'day';
+
+                            error_log( print_r( $_post_expiration_time, true ) );
+                            error_log( print_r( $time_type, true ) );
                             ?>
                             <tr>
                                 <th><label><?php esc_html_e( 'Post Expiration Enabled', 'wp-user-frontend' ); ?></label></th>

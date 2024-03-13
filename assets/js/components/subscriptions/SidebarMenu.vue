@@ -22,19 +22,19 @@
             </svg>
             </div>
             <ul class="wpuf-space-y-2 wpuf-text-lg">
-                <li class=" wpuf-p-2 hover:wpuf-bg-emerald-100 hover:wpuf-cursor-pointer hover:wpuf-text-white">
+                <li class=" wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer hover:wpuf-text-white">
                     <a href="#/published">{{ __('Published', 'wp-user-frontend') }}</a>
                 </li>
-                <li class=" wpuf-p-2 hover:wpuf-bg-emerald-100 hover:wpuf-cursor-pointer">
+                <li class=" wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
                     <a href="#/drafts">{{ __('Drafts', 'wp-user-frontend') }}</a>
                 </li>
-                <li class=" wpuf-p-2 hover:wpuf-bg-emerald-100 hover:wpuf-cursor-pointer">
+                <li class=" wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
                     <a href="#/pending">{{ __('Pending', 'wp-user-frontend') }}</a>
                 </li>
-                <li class=" wpuf-p-2 hover:wpuf-bg-emerald-100 hover:wpuf-cursor-pointer">
+                <li class=" wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
                     <a href="#/trash">{{ __('Trash', 'wp-user-frontend') }}</a>
                 </li>
-                <li class=" wpuf-p-2 hover:wpuf-bg-emerald-100 hover:wpuf-cursor-pointer">
+                <li class=" wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
                     <a href="#/">{{ __('All Subscriptions', 'wp-user-frontend') }}</a>
                 </li>
             </ul>

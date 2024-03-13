@@ -1,7 +1,12 @@
 <script setup>
     import {__} from '@wordpress/i18n';
+    import InfoCard from './InfoCard.vue';
+    import SubscriptionsDetails from './SubscriptionsDetails.vue';
 </script>
 <template>
-    <h2>{{ __( 'Edit', 'wp-user-frontend' ) }}</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium excepturi nulla numquam qui quo sunt. Ab, assumenda dicta dolores eius exercitationem, in itaque magni maiores quia quis, quod reprehenderit voluptate?</p>
+    <div class="wpuf-px-12">
+        <h3 class="wpuf-text-lg wpuf-font-bold wpuf-mb-0">{{ __( 'Edit', 'wp-user-frontend' ) }}</h3>
+        <InfoCard />
+        <SubscriptionsDetails />
+    </div>
 </template>

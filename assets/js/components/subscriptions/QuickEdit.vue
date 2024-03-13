@@ -20,12 +20,6 @@
 
     const quickEditStore = useQuickEditStore();
 
-    const errors = reactive( {
-        planName: false,
-        date: false,
-        isPrivate: false,
-    } );
-
     const updateError = reactive( {
         status: false,
         message: '',
@@ -203,7 +197,7 @@
                       :class="isPrivate ? 'wpuf-translate-x-5' : 'wpuf-translate-x-0'"
                       class="wpuf-translate-x-0 wpuf-pointer-events-none wpuf-inline-block wpuf-h-5 wpuf-w-5 wpuf-transform wpuf-rounded-full wpuf-bg-white wpuf-shadow wpuf-ring-0 wpuf-transition wpuf-duration-200 wpuf-ease-in-out"></span>
             </button>
-            <p v-if="errors.isPrivate" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="email-error">{{ __('Invalid Date', 'wp-user-frontend') }}</p>
+            <p v-if="errors.isPrivate" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="is-private-error">{{ __('Invalid', 'wp-user-frontend') }}</p>
         </div>
         <div class="wpuf-px-2 sm:wpuf-px-2 lg:wpuf-px-2 wpuf-mt-4">
             <p v-if="updateError.status" id="filled_error_help" class="wpuf-mt-2 wpuf-text-xs wpuf-text-red-600 dark:wpuf-text-red-400">

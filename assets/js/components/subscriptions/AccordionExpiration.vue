@@ -25,6 +25,15 @@ const postExpirationTimeType = ref( postExpirationTime.value[1] ? postExpiration
 
 const publishedDate = ref(new Date(subscription.value.post_date));
 
+const getMetaValue = (key) => {
+    // check first if the key exists in the meta_value
+    if (!subscription.value.meta_value.hasOwnProperty( key )) {
+        return '';
+    }
+
+    return subscription.value.meta_value[key];
+}
+
 const handleDate = (modelData) => {
     publishedDate.value = modelData;
 }
@@ -79,7 +88,7 @@ const formatTimeType = (text) => {
     </h2>
 
     <div id="accordion-expiration" aria-labelledby="accordion-expiration-heading">
-        <div class="wpuf-p-4 wpuf-border wpuf-border-b-0 wpuf-border-gray-200 dark:wpuf-border-gray-700 dark:wpuf-bg-gray-900">
+        <div class="wpuf-p-4 wpuf-border wpuf-border-gray-200 dark:wpuf-border-gray-700 dark:wpuf-bg-gray-900">
             <div class="sm:wpuf-grid sm:wpuf-grid-cols-3 sm:wpuf-items-start sm:wpuf-gap-4 sm:wpuf-pb-4">
                 <label for="post-expiration" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 sm:wpuf-pt-1.5">
                     {{ __('Enable Post Expiration', 'wp-user-frontend') }}
@@ -139,7 +148,7 @@ const formatTimeType = (text) => {
                 </div>
                 <div class="sm:wpuf-grid sm:wpuf-grid-cols-3 sm:wpuf-items-start sm:wpuf-gap-4 sm:wpuf-pb-4">
                     <label for="expiration-mail" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 sm:wpuf-pt-1.5">
-                        {{ __('Expiration Mail', 'wp-user-frontend') }}
+                        {{ __('Send expiration mail', 'wp-user-frontend') }}
                     </label>
                     <div class="wpuf-w-max">
                         <button
@@ -155,7 +164,20 @@ const formatTimeType = (text) => {
                                 class="wpuf-translate-x-0 wpuf-pointer-events-none wpuf-inline-block wpuf-h-5 wpuf-w-5 wpuf-transform wpuf-rounded-full wpuf-bg-white wpuf-shadow wpuf-ring-0 wpuf-transition wpuf-duration-200 wpuf-ease-in-out">
                             </span>
                         </button>
-                        <p class="wpuf-mt-3 wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600">{{ __('Send Mail to Author After Exceeding Post Expiration Time', 'wp-user-frontend') }}</p>
+                        <p class="wpuf-mt-3 wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600">{{ __('Send an e-mail to author after exceeding post expiration time', 'wp-user-frontend') }}</p>
+                    </div>
+                </div>
+                <div v-if="isPostExpirationMailEnabled" class="sm:wpuf-grid sm:wpuf-grid-cols-3 sm:wpuf-items-start sm:wpuf-gap-4 sm:wpuf-pb-4">
+                    <label for="expiration-message" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 sm:wpuf-pt-1.5">
+                        {{ __( 'Expiration Message', 'wp-user-frontend' ) }}
+                    </label>
+                    <div class="wpuf-mt-2 sm:wpuf-col-span-2 sm:wpuf-mt-0">
+                        <textarea
+                            id="expiration-message"
+                            name="expiration-message"
+                            rows="3"
+                            class="wpuf-block wpuf-w-full wpuf-max-w-2xl wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6">{{ getMetaValue('_post_expiration_message') }}</textarea>
+                        <p class="wpuf-mt-3 wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600">You may use: {post_author} {post_url} {blogname} {post_title} {post_status}</p>
                     </div>
                 </div>
             </div>

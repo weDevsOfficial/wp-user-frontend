@@ -21,7 +21,7 @@
     });
 </script>
 <template>
-    <div class="wpuf-mt-4">
+    <div class="wpuf-mt-4 wpuf-border wpuf-border-gray-200">
         <dl class="wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 bg-gray-900/5 sm:wpuf-grid-cols-2 lg:wpuf-grid-cols-4 wpuf-border-b-2 wpuf-border-dashed wpuf-bg-white">
             <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-px-4 wpuf-py-2 sm:wpuf-px-6 xl:wpuf-px-8">
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">

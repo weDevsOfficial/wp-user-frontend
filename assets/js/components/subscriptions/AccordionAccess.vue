@@ -59,7 +59,7 @@ const handleDate = (modelData) => {
         </button>
     </h2>
     <div id="accordion-access" aria-labelledby="accordion-access-heading">
-        <div class="wpuf-p-4 wpuf-border wpuf-border-b-0 wpuf-border-gray-200 dark:wpuf-border-gray-700 dark:wpuf-bg-gray-900">
+        <div class="wpuf-p-4 wpuf-border wpuf-border-gray-200 dark:wpuf-border-gray-700 dark:wpuf-bg-gray-900">
             <div class="sm:wpuf-grid sm:wpuf-grid-cols-3 sm:wpuf-items-start sm:wpuf-gap-4 sm:wpuf-pb-4">
                 <label for="is-plan-private" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 sm:wpuf-pt-1.5">
                     {{ __('Make Plan Private', 'wp-user-frontend') }}

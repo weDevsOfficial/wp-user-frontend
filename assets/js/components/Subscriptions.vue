@@ -87,8 +87,8 @@ onBeforeMount( () => {
     </template>
     <div
         :class="isQuickEdit ? 'wpuf-blur' : ''"
-        class="wpuf-flex wpuf-flex-row wpuf-mt-12">
-        <div class="wpuf-basis-1/4 wpuf-border-r-2 wpuf-border-zinc-300">
+        class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-py-8">
+        <div class="wpuf-basis-1/4 wpuf-border-r-2 wpuf-border-gray-200">
             <SidebarMenu />
         </div>
         <div class="wpuf-basis-3/4">

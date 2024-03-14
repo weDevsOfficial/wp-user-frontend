@@ -99,7 +99,7 @@ onBeforeMount( () => {
 
 const title = computed(() => {
     return currentSubscription ? currentSubscription.post_title : subscription.value.post_title;
-})
+});
 
 </script>
 <template>

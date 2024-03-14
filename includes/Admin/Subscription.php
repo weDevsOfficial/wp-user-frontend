@@ -49,27 +49,6 @@ class Subscription {
         //Handle non recurring subscription when expired
         add_action( 'wp', [ $this, 'handle_non_recur_subs' ] );
         add_action( 'non_recur_subs_daily', [ $this, 'cancel_non_recurring_subscription' ] );
-
-        add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_scripts' ] );
-    }
-
-    public function enqueue_scripts() {
-        wp_enqueue_script( 'wpuf-admin-subscriptions' );
-        wp_enqueue_script( 'wpuf-subscriptions' );
-        wp_enqueue_style( 'wpuf-admin-subscriptions' );
-
-        wp_localize_script(
-            'wpuf-admin-subscriptions', 'wpufSubscriptions',
-            [
-                'version'        => WPUF_VERSION,
-                'assetUrl'       => WPUF_ASSET_URI,
-                'siteUrl'        => site_url(),
-                'currencySymbol' => wpuf_get_currency( 'symbol' ),
-                'supportUrl'     => esc_url(
-                    'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment?utm_source=wpuf-subscription-help&utm_medium=text-link'
-                ),
-            ]
-        );
     }
 
     /**

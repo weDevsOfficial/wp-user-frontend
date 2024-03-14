@@ -35,6 +35,38 @@ class Admin_Subscription {
         add_action( 'admin_print_styles-post.php', [ $this, 'enqueue_scripts' ] );
 
         add_action( 'wpuf_load_subscription_page', [ $this, 'remove_notices' ] );
+
+        add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_admin_scripts' ] );
+    }
+
+    /**
+     * Enqueue scripts for subscription page
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function enqueue_admin_scripts() {
+        wp_enqueue_script( 'wpuf-admin-subscriptions' );
+        wp_enqueue_script( 'wpuf-subscriptions' );
+        wp_enqueue_style( 'wpuf-admin-subscriptions' );
+
+        wp_localize_script(
+            'wpuf-admin-subscriptions', 'wpufSubscriptions',
+            [
+                'version'        => WPUF_VERSION,
+                'assetUrl'       => WPUF_ASSET_URI,
+                'siteUrl'        => site_url(),
+                'currencySymbol' => wpuf_get_currency( 'symbol' ),
+                'supportUrl'     => esc_url(
+                    'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment?utm_source=wpuf-subscription-help&utm_medium=text-link'
+                ),
+                'nonce'          => wp_create_nonce( 'wpuf-subscription-nonce' ),
+                'sections'       => $this->get_sections(),
+                'subSections'    => $this->get_sub_sections(),
+                'fields'         => $this->get_fields(),
+            ]
+        );
     }
 
     /**
@@ -918,5 +950,200 @@ class Admin_Subscription {
             });
         </script>
         <?php
+    }
+
+    /**
+     * Get all the sections of the subscription settings
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_sections() {
+        $sections = [
+            [
+                'id'                   => 'subscription_details',
+                'title'                => __( 'Subscription Details', 'wp-user-frontend' ),
+            ],
+            [
+                'id'                   => 'payment_settings',
+                'title'                => __( 'Payment Settings', 'wp-user-frontend' ),
+            ],
+            [
+                'id'                   => 'advanced_configuration',
+                'title'                => __( 'Advanced Configuration', 'wp-user-frontend' ),
+            ],
+        ];
+
+        return apply_filters( 'wpuf_subscriptions_sections', $sections );
+    }
+
+    /**
+     * Get all the sub-sections of the subscription settings
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_sub_sections() {
+        $subscription_details = [
+            'subscription_details' => [
+                [
+                    'id'    => 'overview',
+                    'label' => __( 'Overview', 'wp-user-frontend' ),
+                ],
+                [
+                    'id'    => 'access_and_visibility',
+                    'label' => __( 'Access and Visibility', 'wp-user-frontend' ),
+                ],
+                [
+                    'id'    => 'post_expiration',
+                    'label' => __( 'Post Expiration', 'wp-user-frontend' ),
+                ],
+            ],
+        ];
+
+        return apply_filters( 'wpuf_subscription_sub_sections', $subscription_details );
+    }
+
+    /**
+     * Returns all the subscription fields that are used in the sections
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_fields() {
+        $overview = apply_filters(
+            'wpuf_subscription_overview_fields', [
+                'overview' => [
+                    'plan_name'    => [
+                        'id'          => 'plan-name',
+                        'name'        => 'plan-name',
+                        'type'        => 'input-text',
+                        'label'       => __( 'Plan Name', 'wp-user-frontend' ),
+                        'description' => __( 'The subscription plan name', 'wp-user-frontend' ),
+                    ],
+                    'plan_details' => [
+                        'id'          => 'plan-details',
+                        'name'        => 'plan-details',
+                        'type'        => 'textarea',
+                        'label'       => __( 'Plan Details', 'wp-user-frontend' ),
+                        'description' => __( 'Write a few sentences about your plan', 'wp-user-frontend' ),
+                    ],
+                ],
+            ]
+        );
+        $access = apply_filters(
+            'wpuf_subscription_access_fields', [
+                'access_and_visibility' => [
+                    'plan_private' => [
+                        'id'          => 'is-plan-private',
+                        'name'        => 'is-plan-private',
+                        'type'        => 'switcher',
+                        'label'       => __( 'Make Plan Private', 'wp-user-frontend' ),
+                        'description' => __( 'Make the subscription plan private or published', 'wp-user-frontend' ),
+                    ],
+                    'plan_slug'    => [
+                        'id'          => 'plan-slug',
+                        'name'        => 'plan-slug',
+                        'type'        => 'input-text',
+                        'label'       => __( 'Plan Slug', 'wp-user-frontend' ),
+                        'description' => __( 'The plan slug', 'wp-user-frontend' ),
+                    ],
+                    'published_on' => [
+                        'id'          => 'published-on',
+                        'name'        => 'published-on',
+                        'type'        => 'time-date',
+                        'label'       => __( 'Published on', 'wp-user-frontend' ),
+                        'description' => __( 'The subscription publishing date', 'wp-user-frontend' ),
+                    ],
+                ],
+            ]
+        );
+        $expiration = apply_filters(
+            'wpuf_subscription_expiration_fields', [
+                'post_expiration' => [
+                    'post_expiration'      => [
+                        'id'    => 'post-expiration',
+                        'name'  => 'post-expiration',
+                        'type'  => 'switcher',
+                        'label' => __( 'Enable Post Expiration', 'wp-user-frontend' ),
+                    ],
+                    'expiration_time'      => [
+                        'type'       => 'inline',
+                        'fields'     => [
+                            'expiration_value' => [
+                                'id'   => 'post-expiration-value',
+                                'name' => 'post-expiration-value',
+                                'type' => 'input-number',
+                            ],
+                            'expiration_unit'  => [
+                                'id'      => 'post-expiration-unit',
+                                'name'    => 'post-expiration-unit',
+                                'type'    => 'select',
+                                'options' => [
+                                    'year'  => __( 'Year(s)', 'wp-user-frontend' ),
+                                    'month' => __( 'Month(s)', 'wp-user-frontend' ),
+                                    'week'  => __( 'Week(s)', 'wp-user-frontend' ),
+                                    'day'   => __( 'Day(s)', 'wp-user-frontend' ),
+                                ],
+                            ],
+                        ],
+                        'dependency' => 'post_expiration',
+                    ],
+                    'post_status'          => [
+                        'id'          => 'post-status',
+                        'name'        => 'post-status',
+                        'type'        => 'select',
+                        'options'     => [
+                            'publish' => __( 'Publish', 'wp-user-frontend' ),
+                            'draft'   => __( 'Draft', 'wp-user-frontend' ),
+                            'pending' => __( 'Pending Review', 'wp-user-frontend' ),
+                            'private' => __( 'Private', 'wp-user-frontend' ),
+                        ],
+                        'description' => __( 'Status of post after post expiration time is over', 'wp-user-frontend' ),
+                        'dependency'  => 'post_expiration',
+                    ],
+                    'send_mail'            => [
+                        'id'          => 'is-send-mail',
+                        'name'        => 'is-send-mail',
+                        'type'        => 'switcher',
+                        'label'       => __( 'Send expiration mail', 'wp-user-frontend' ),
+                        'description' => __(
+                            'Send an e-mail to author after exceeding post expiration time', 'wp-user-frontend'
+                        ),
+                        'dependency'  => 'post_expiration',
+                    ],
+                    'expiration_message'   => [
+                        'id'          => 'expiration-message',
+                        'name'        => 'expiration-message',
+                        'type'        => 'textarea',
+                        'label'       => __( 'Expiration Message', 'wp-user-frontend' ),
+                        'description' => __(
+                            'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}',
+                            'wp-user-frontend'
+                        ),
+                    ],
+                    'post_number_rollback' => [
+                        'id'          => 'post-number-rollback',
+                        'name'        => 'post-number-rollback',
+                        'type'        => 'switcher',
+                        'label'       => __( 'Enable Post Number Rollback', 'wp-user-frontend' ),
+                        'description' => __(
+                            'If enabled, number of posts will be restored if the post is deleted.', 'wp-user-frontend'
+                        ),
+                    ],
+                ],
+            ]
+        );
+
+        $fields = [
+            'subscription_details' => array_merge(
+                $overview, $access, $expiration
+            ),
+        ];
+
+        return apply_filters( 'wpuf_subscriptions_fields', $fields );
     }
 }

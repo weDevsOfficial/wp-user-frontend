@@ -31,14 +31,11 @@
             </li>
         </ul>
     </div>
-    <div id="accordion-collapse">
-        <Subsection
-            v-for="section in wpufSubscriptions.subSections[currentTab]"
-            :key="section.id"
-            :subSection="section"
-            :subscription="subscription"
-            :fields="wpufSubscriptions.fields[currentTab][section.id]"
-        />
-    </div>
-
+    <Subsection
+        v-for="section in wpufSubscriptions.subSections[currentTab]"
+        :key="section.id"
+        :subSection="section"
+        :subscription="subscription"
+        :fields="wpufSubscriptions.fields[currentTab][section.id]"
+    />
 </template>

@@ -1020,6 +1020,8 @@ class Admin_Subscription {
                     'plan_name'    => [
                         'id'          => 'plan-name',
                         'name'        => 'plan-name',
+                        'db_key'      => 'post_title',
+                        'db_type'     => 'post',
                         'type'        => 'input-text',
                         'label'       => __( 'Plan Name', 'wp-user-frontend' ),
                         'description' => __( 'The subscription plan name', 'wp-user-frontend' ),
@@ -1027,6 +1029,8 @@ class Admin_Subscription {
                     'plan_details' => [
                         'id'          => 'plan-details',
                         'name'        => 'plan-details',
+                        'db_key'      => 'post_content',
+                        'db_type'     => 'post',
                         'type'        => 'textarea',
                         'label'       => __( 'Plan Details', 'wp-user-frontend' ),
                         'description' => __( 'Write a few sentences about your plan', 'wp-user-frontend' ),
@@ -1040,6 +1044,8 @@ class Admin_Subscription {
                     'plan_private' => [
                         'id'          => 'is-plan-private',
                         'name'        => 'is-plan-private',
+                        'db_key'      => 'post_status',
+                        'db_type'     => 'post',
                         'type'        => 'switcher',
                         'label'       => __( 'Make Plan Private', 'wp-user-frontend' ),
                         'description' => __( 'Make the subscription plan private or published', 'wp-user-frontend' ),
@@ -1047,6 +1053,8 @@ class Admin_Subscription {
                     'plan_slug'    => [
                         'id'          => 'plan-slug',
                         'name'        => 'plan-slug',
+                        'db_key'      => 'post_name',
+                        'db_type'     => 'post',
                         'type'        => 'input-text',
                         'label'       => __( 'Plan Slug', 'wp-user-frontend' ),
                         'description' => __( 'The plan slug', 'wp-user-frontend' ),
@@ -1054,6 +1062,8 @@ class Admin_Subscription {
                     'published_on' => [
                         'id'          => 'published-on',
                         'name'        => 'published-on',
+                        'db_key'      => 'post_date',
+                        'db_type'     => 'post',
                         'type'        => 'time-date',
                         'label'       => __( 'Published on', 'wp-user-frontend' ),
                         'description' => __( 'The subscription publishing date', 'wp-user-frontend' ),
@@ -1065,13 +1075,19 @@ class Admin_Subscription {
             'wpuf_subscription_expiration_fields', [
                 'post_expiration' => [
                     'post_expiration'      => [
-                        'id'    => 'post-expiration',
-                        'name'  => 'post-expiration',
-                        'type'  => 'switcher',
-                        'label' => __( 'Enable Post Expiration', 'wp-user-frontend' ),
+                        'id'      => 'post-expiration',
+                        'name'    => 'post-expiration',
+                        'db_key'  => '_enable_post_expiration',
+                        'db_type' => 'meta',
+                        'type'    => 'switcher',
+                        'label'   => __( 'Enable post expiration', 'wp-user-frontend' ),
                     ],
                     'expiration_time'      => [
+                        'id'         => 'expiration-time',
+                        'name'       => 'expiration-time',
                         'type'       => 'inline',
+                        'db_key'     => '_post_expiration_time',
+                        'db_type'    => 'meta',
                         'fields'     => [
                             'expiration_value' => [
                                 'id'   => 'post-expiration-value',
@@ -1091,10 +1107,13 @@ class Admin_Subscription {
                             ],
                         ],
                         'dependency' => 'post_expiration',
+                        'label'      => __( 'Expiration time', 'wp-user-frontend' ),
                     ],
                     'post_status'          => [
                         'id'          => 'post-status',
                         'name'        => 'post-status',
+                        'db_key'      => '_expired_post_status',
+                        'db_type'     => 'meta',
                         'type'        => 'select',
                         'options'     => [
                             'publish' => __( 'Publish', 'wp-user-frontend' ),
@@ -1102,12 +1121,15 @@ class Admin_Subscription {
                             'pending' => __( 'Pending Review', 'wp-user-frontend' ),
                             'private' => __( 'Private', 'wp-user-frontend' ),
                         ],
+                        'label'       => __( 'Post Status', 'wp-user-frontend' ),
                         'description' => __( 'Status of post after post expiration time is over', 'wp-user-frontend' ),
                         'dependency'  => 'post_expiration',
                     ],
                     'send_mail'            => [
                         'id'          => 'is-send-mail',
                         'name'        => 'is-send-mail',
+                        'db_key'      => '_enable_mail_after_expired',
+                        'db_type'     => 'meta',
                         'type'        => 'switcher',
                         'label'       => __( 'Send expiration mail', 'wp-user-frontend' ),
                         'description' => __(
@@ -1118,6 +1140,8 @@ class Admin_Subscription {
                     'expiration_message'   => [
                         'id'          => 'expiration-message',
                         'name'        => 'expiration-message',
+                        'db_key'      => '_post_expiration_message',
+                        'db_type'     => 'meta',
                         'type'        => 'textarea',
                         'label'       => __( 'Expiration Message', 'wp-user-frontend' ),
                         'description' => __(
@@ -1128,6 +1152,8 @@ class Admin_Subscription {
                     'post_number_rollback' => [
                         'id'          => 'post-number-rollback',
                         'name'        => 'post-number-rollback',
+                        'db_key'      => 'postnum_rollback_on_delete',
+                        'db_type'     => 'meta',
                         'type'        => 'switcher',
                         'label'       => __( 'Enable Post Number Rollback', 'wp-user-frontend' ),
                         'description' => __(

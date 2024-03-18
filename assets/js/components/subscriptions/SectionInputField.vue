@@ -13,29 +13,42 @@ const { field, subscription } = toRefs( props );
 const switchStatus = ref( false );
 const publishedDate = ref(new Date());
 
-const value = computed(() => {
-    switch (field.value.id) {
-        case 'plan-name':
-            return subscription.value.post_title;
+const getMetaValue = (key) => {
+    if (!subscription.value.meta_value.hasOwnProperty( key )) {
+        return '';
+    }
 
-        case 'plan-details':
-            return subscription.value.post_content;
+    return subscription.value.meta_value[key];
+};
 
-        case 'is-plan-private':
-            switchStatus.value = subscription.value.post_status === 'private';
-
-            return subscription.value.post_status === 'private';
-
-        case 'plan-slug':
-            return subscription.value.post_name;
-
-        case 'published-on':
-            publishedDate.value = new Date(subscription.value.post_date);
-
-            return publishedDate;
+const getFieldValue = () => {
+    switch (field.value.db_type) {
+        case 'meta':
+            return getMetaValue( field.value.db_key );
 
         default:
+            return subscription.value.hasOwnProperty(field.value.db_key) ? subscription.value[field.value.db_key] : '';
+    }
+};
+
+const value = computed(() => {
+    let fieldValue = getFieldValue();
+
+    switch (field.value.type) {
+        case 'switcher':
+            switchStatus.value = fieldValue === 'on' || fieldValue === 'yes' || fieldValue === 'private'
+
+            return switchStatus;
+
+        case 'time-date':
+            return new Date( fieldValue );
+
+        case 'inline':
             return '';
+
+        default:
+            return fieldValue;
+
     }
 });
 
@@ -75,14 +88,25 @@ const handleDate = (modelData) => {
 }
 </style>
 <template>
-    <div class="sm:wpuf-grid sm:wpuf-grid-cols-3 sm:wpuf-items-start sm:wpuf-gap-4 sm:wpuf-pb-4">
-        <label for="plan-name" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 sm:wpuf-pt-1.5">
+    <div
+        :class="field.label ? 'sm:wpuf-grid sm:wpuf-grid-cols-3' : 'wpuf-block'"
+        class="sm:wpuf-items-start sm:wpuf-gap-4 sm:wpuf-pb-4">
+        <label v-if="field.label"
+               :for="field.name"
+               class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 sm:wpuf-pt-1.5">
             {{ field.label }}
         </label>
         <div class="wpuf-w-max">
             <input
                 v-if="field.type === 'input-text'"
                 type="text"
+                :value="value"
+                :name="field.name"
+                :id="field.name"
+                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-max-w-xs sm:wpuf-text-sm sm:wpuf-leading-6">
+            <input
+                v-if="field.type === 'input-number'"
+                type="number"
                 :value="value"
                 :name="field.name"
                 :id="field.name"
@@ -97,6 +121,7 @@ const handleDate = (modelData) => {
                 v-if="field.type === 'switcher'"
                 @click="switchStatus = !switchStatus"
                 type="button"
+                :value="value"
                 :class="switchStatus ? 'wpuf-bg-indigo-600' : 'wpuf-bg-gray-200'"
                 class="wpuf-bg-gray-200 wpuf-relative wpuf-inline-flex wpuf-h-6 wpuf-w-11 wpuf-flex-shrink-0 wpuf-cursor-pointer wpuf-rounded-full wpuf-border-2 wpuf-border-transparent wpuf-transition-colors wpuf-duration-200 wpuf-ease-in-out focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-indigo-600 focus:wpuf-ring-offset-2"
                 role="switch">
@@ -112,6 +137,16 @@ const handleDate = (modelData) => {
                 v-model="publishedDate"
                 enable-seconds
                 @update:model-value="handleDate" />
+            <select v-if="field.type === 'select'"
+                    :name="field.name"
+                    :id="field.name">
+                <option
+                    v-for="(item, key) in field.options"
+                    :value="key"
+                    :key="key">{{ item }}</option>
+            </select>
+
+
             <p class="wpuf-mt-3 wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600">{{ field.description }}</p>
         </div>
     </div>

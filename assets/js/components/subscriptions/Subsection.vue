@@ -1,6 +1,7 @@
 <script setup>
 import {inject, toRefs, h} from 'vue';
 import SectionInputField from './SectionInputField.vue';
+import SectionInnerField from './SectionInnerField.vue';
 const props = defineProps( {
     subSection: Object,
     subscription: Object,
@@ -10,8 +11,6 @@ const props = defineProps( {
 const wpufSubscriptions = inject( 'wpufSubscriptions' );
 
 const {subSection, subscription, fields} = toRefs( props );
-
-console.log(Object.keys(fields).length);
 
 </script>
 
@@ -33,7 +32,13 @@ console.log(Object.keys(fields).length);
             <div
                 v-for="field in fields"
                 class="wpuf-p-4 dark:wpuf-bg-gray-900">
-                <SectionInputField :field="field" :subscription="subscription"/>
+                <SectionInputField
+                    v-if="field.type !== 'inline'"
+                    :field="field"
+                    :subscription="subscription"/>
+                <SectionInnerField v-else
+                    :parentField="field"
+                    :subscription="subscription"/>
             </div>
         </div>
     </div>

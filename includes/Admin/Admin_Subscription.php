@@ -54,17 +54,18 @@ class Admin_Subscription {
         wp_localize_script(
             'wpuf-admin-subscriptions', 'wpufSubscriptions',
             [
-                'version'        => WPUF_VERSION,
-                'assetUrl'       => WPUF_ASSET_URI,
-                'siteUrl'        => site_url(),
-                'currencySymbol' => wpuf_get_currency( 'symbol' ),
-                'supportUrl'     => esc_url(
+                'version'         => WPUF_VERSION,
+                'assetUrl'        => WPUF_ASSET_URI,
+                'siteUrl'         => site_url(),
+                'currencySymbol'  => wpuf_get_currency( 'symbol' ),
+                'supportUrl'      => esc_url(
                     'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment?utm_source=wpuf-subscription-help&utm_medium=text-link'
                 ),
-                'nonce'          => wp_create_nonce( 'wpuf-subscription-nonce' ),
-                'sections'       => $this->get_sections(),
-                'subSections'    => $this->get_sub_sections(),
-                'fields'         => $this->get_fields(),
+                'nonce'           => wp_create_nonce( 'wpuf-subscription-nonce' ),
+                'sections'        => $this->get_sections(),
+                'subSections'     => $this->get_sub_sections(),
+                'fields'          => $this->get_fields(),
+                'dependentFields' => $this->get_dependent_fields(),
             ]
         );
     }
@@ -962,16 +963,16 @@ class Admin_Subscription {
     public function get_sections() {
         $sections = [
             [
-                'id'                   => 'subscription_details',
-                'title'                => __( 'Subscription Details', 'wp-user-frontend' ),
+                'id'    => 'subscription_details',
+                'title' => __( 'Subscription Details', 'wp-user-frontend' ),
             ],
             [
-                'id'                   => 'payment_settings',
-                'title'                => __( 'Payment Settings', 'wp-user-frontend' ),
+                'id'    => 'payment_settings',
+                'title' => __( 'Payment Settings', 'wp-user-frontend' ),
             ],
             [
-                'id'                   => 'advanced_configuration',
-                'title'                => __( 'Advanced Configuration', 'wp-user-frontend' ),
+                'id'    => 'advanced_configuration',
+                'title' => __( 'Advanced Configuration', 'wp-user-frontend' ),
             ],
         ];
 
@@ -1014,7 +1015,7 @@ class Admin_Subscription {
      * @return array
      */
     public function get_fields() {
-        $overview = apply_filters(
+        $overview   = apply_filters(
             'wpuf_subscription_overview_fields', [
                 'overview' => [
                     'plan_name'    => [
@@ -1038,7 +1039,7 @@ class Admin_Subscription {
                 ],
             ]
         );
-        $access = apply_filters(
+        $access     = apply_filters(
             'wpuf_subscription_access_fields', [
                 'access_and_visibility' => [
                     'plan_private' => [
@@ -1148,6 +1149,7 @@ class Admin_Subscription {
                             'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}',
                             'wp-user-frontend'
                         ),
+                        'dependency'  => 'send_mail',
                     ],
                     'post_number_rollback' => [
                         'id'          => 'post-number-rollback',
@@ -1171,5 +1173,33 @@ class Admin_Subscription {
         ];
 
         return apply_filters( 'wpuf_subscriptions_fields', $fields );
+    }
+
+    /**
+     * Get all the fields that depend on other fields
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_dependent_fields() {
+        $fields = [
+            'post_expiration' => [
+                'fields' => [
+                    'expiration_time',
+                    'post_status',
+                    'send_mail',
+                ],
+                'value'  => 'on',
+            ],
+            'send_mail'       => [
+                'fields' => [
+                    'expiration_message',
+                ],
+                'value'  => 'on',
+            ],
+        ];
+
+        return apply_filters( 'wpuf_subscriptions_dependent_fields', $fields );
     }
 }

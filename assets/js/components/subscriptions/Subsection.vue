@@ -1,5 +1,5 @@
 <script setup>
-import {inject, toRefs, h} from 'vue';
+import {inject, provide, toRefs} from 'vue';
 import SectionInputField from './SectionInputField.vue';
 import SectionInnerField from './SectionInnerField.vue';
 const props = defineProps( {
@@ -12,6 +12,8 @@ const wpufSubscriptions = inject( 'wpufSubscriptions' );
 
 const {subSection, subscription, fields} = toRefs( props );
 
+provide( 'subSection', subSection.value.id );
+
 </script>
 
 <template>
@@ -23,7 +25,10 @@ const {subSection, subscription, fields} = toRefs( props );
                 <span>{{ subSection.label }}</span>
                 <svg data-accordion-icon class="wpuf-w-3 wpuf-h-3 wpuf-rotate-180 shrink-0" aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    <path stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
                           d="M9 5 5 1 1 5"/>
                 </svg>
             </button>

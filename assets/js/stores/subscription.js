@@ -7,7 +7,6 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         setCurrentSubscription( subscription ) {
             this.currentSubscription = subscription;
         },
-
         updateSubscription( subscription ) {
             const requestOptions = {
                 method: 'POST',
@@ -19,6 +18,12 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription/' + subscription.id,
                 requestOptions )
                 .then( ( response ) => response.json() );
+        },
+        modifySubscription( key, value ) {
+            this.currentSubscription[key] = value;
+        },
+        setMetaValue(key, value) {
+            this.currentSubscription.meta_value[key] = value;
         }
     }
 } );

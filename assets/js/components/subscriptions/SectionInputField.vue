@@ -1,24 +1,33 @@
 <script setup>
 
-import {computed, ref, toRefs} from 'vue';
+import {computed, inject, ref, toRefs, watch} from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
+import {useFieldDependencyStore} from '../../stores/fieldDependency';
+import {useSubscriptionStore} from '../../stores/subscription';
+
+const subscriptionStore = useSubscriptionStore();
+
+const wpufSubscriptions = inject( 'wpufSubscriptions' );
+const currentSection = inject( 'currentSection' );
+const subSection = inject( 'subSection' );
 
 const props = defineProps( {
     field: Object,
-    subscription: Object,
 } );
 
-const { field, subscription } = toRefs( props );
+const subscription = subscriptionStore.currentSubscription;
 
-const switchStatus = ref( false );
+const { field } = toRefs( props );
+
 const publishedDate = ref(new Date());
+const showField = ref( true );
 
 const getMetaValue = (key) => {
-    if (!subscription.value.meta_value.hasOwnProperty( key )) {
+    if (!subscription.meta_value.hasOwnProperty( key )) {
         return '';
     }
 
-    return subscription.value.meta_value[key];
+    return subscription.meta_value[key];
 };
 
 const getFieldValue = () => {
@@ -27,18 +36,20 @@ const getFieldValue = () => {
             return getMetaValue( field.value.db_key );
 
         default:
-            return subscription.value.hasOwnProperty(field.value.db_key) ? subscription.value[field.value.db_key] : '';
+            return subscription.hasOwnProperty(field.value.db_key) ? subscription[field.value.db_key] : '';
     }
 };
 
 const value = computed(() => {
-    let fieldValue = getFieldValue();
+    let fieldValue = getFieldValue( field.value.db_type, field.value.db_key );
 
-    switch (field.value.type) {
+    return getModifiedValue(field.value.type, fieldValue);
+});
+
+const getModifiedValue = (fieldType, fieldValue) => {
+    switch (fieldType) {
         case 'switcher':
-            switchStatus.value = fieldValue === 'on' || fieldValue === 'yes' || fieldValue === 'private'
-
-            return switchStatus;
+            return fieldValue === 'on' || fieldValue === 'yes' || fieldValue === 'private'
 
         case 'time-date':
             return new Date( fieldValue );
@@ -50,12 +61,25 @@ const value = computed(() => {
             return fieldValue;
 
     }
-});
+};
 
 const handleDate = (modelData) => {
     publishedDate.value = modelData;
 };
 
+watch(subscription,  () => {
+    console.log(subscription);
+});
+
+const switchStatus = ref( value );
+
+const toggleOnOff = () => {
+    if (field.value.db_key === 'post_status') {
+        subscriptionStore.modifySubscription( field.value.db_key, switchStatus.value ? 'private' : 'publish' );
+    } else {
+        subscriptionStore.setMetaValue( field.value.db_key, switchStatus.value ? 'off' : 'on' );
+    }
+};
 </script>
 <style scoped>
 .dp__theme_light {
@@ -89,6 +113,7 @@ const handleDate = (modelData) => {
 </style>
 <template>
     <div
+        v-if="showField"
         :class="field.label ? 'sm:wpuf-grid sm:wpuf-grid-cols-3' : 'wpuf-block'"
         class="sm:wpuf-items-start sm:wpuf-gap-4 sm:wpuf-pb-4">
         <label v-if="field.label"
@@ -119,7 +144,7 @@ const handleDate = (modelData) => {
                 class="wpuf-block wpuf-w-full wpuf-max-w-2xl wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
-                @click="switchStatus = !switchStatus"
+                @click="toggleOnOff"
                 type="button"
                 :value="value"
                 :class="switchStatus ? 'wpuf-bg-indigo-600' : 'wpuf-bg-gray-200'"

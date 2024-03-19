@@ -1,6 +1,6 @@
 <script setup>
     import {useSubscriptionStore} from '../../stores/subscription';
-    import {inject, reactive, ref} from 'vue';
+    import {inject, provide, reactive, ref} from 'vue';
     import Subsection from './Subsection.vue';
 
     const subscriptionStore = useSubscriptionStore();
@@ -15,6 +15,9 @@
         date: false,
         isPrivate: false,
     } );
+
+    provide( 'currentSection', currentTab );
+
 </script>
 <template>
     <div class="wpuf-mt-4 wpuf-text-sm wpuf-font-medium wpuf-text-center wpuf-text-gray-500 wpuf-border-b wpuf-border-gray-200 dark:wpuf-text-gray-400 dark:wpuf-border-gray-700">
@@ -34,6 +37,7 @@
     <Subsection
         v-for="section in wpufSubscriptions.subSections[currentTab]"
         :key="section.id"
+        :currentSection="currentTab"
         :subSection="section"
         :subscription="subscription"
         :fields="wpufSubscriptions.fields[currentTab][section.id]"

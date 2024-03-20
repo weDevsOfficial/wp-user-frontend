@@ -70,7 +70,7 @@ const switchStatus = ref( value );
 
 const toggleOnOff = () => {
     if (field.value.db_key === 'post_status') {
-        subscriptionStore.modifySubscription( field.value.db_key, switchStatus.value ? 'private' : 'publish' );
+        subscriptionStore.modifySubscription( field.value.db_key, switchStatus.value ? 'publish' : 'private' );
     } else {
         subscriptionStore.setMetaValue( field.value.db_key, switchStatus.value ? 'off' : 'on' );
     }

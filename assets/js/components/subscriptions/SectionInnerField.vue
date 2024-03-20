@@ -1,24 +1,34 @@
 <script setup>
-
-import {toRefs} from 'vue';
+import {computed, toRefs} from 'vue';
 import SectionInputField from './SectionInputField.vue';
 
 const props = defineProps( {
     parentField: Object,
     subscription: Object,
+    fieldId: String,
+    hiddenFields: Array,
 } );
 
-const { parentField, subscription } = toRefs( props );
+const { parentField, subscription, fieldId, hiddenFields } = toRefs( props );
+
+const showField = computed(() => {
+    return !hiddenFields.value.includes( fieldId.value );
+});
 
 </script>
 <template>
-    <div class="sm:wpuf-grid sm:wpuf-grid-cols-3 sm:wpuf-items-start sm:wpuf-gap-4 sm:wpuf-pb-4">
-        <label for="plan-name" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 sm:wpuf-pt-1.5">
+    <div
+        v-if="showField"
+        class="sm:wpuf-grid sm:wpuf-grid-cols-3 sm:wpuf-items-start sm:wpuf-gap-4 wpuf-p-4">
+        <label
+            :for="parentField.name"
+            class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">
             {{ parentField.label }}
         </label>
-        <div class="wpuf-w-max wpuf-flex">
+        <div class="wpuf-w-max wpuf-flex wpuf-inline-input">
             <SectionInputField v-for="field in parentField.fields"
                 :field="field"
+                :hiddenFields="hiddenFields"
                 :subscription="subscription" />
         </div>
     </div>

@@ -1107,7 +1107,7 @@ class Admin_Subscription {
                                 ],
                             ],
                         ],
-                        'dependency' => 'post_expiration',
+                        'key_id'     => 'expiration_time',
                         'label'      => __( 'Expiration time', 'wp-user-frontend' ),
                     ],
                     'post_status'          => [
@@ -1124,7 +1124,7 @@ class Admin_Subscription {
                         ],
                         'label'       => __( 'Post Status', 'wp-user-frontend' ),
                         'description' => __( 'Status of post after post expiration time is over', 'wp-user-frontend' ),
-                        'dependency'  => 'post_expiration',
+                        'key_id'      => 'post_status',
                     ],
                     'send_mail'            => [
                         'id'          => 'is-send-mail',
@@ -1136,7 +1136,7 @@ class Admin_Subscription {
                         'description' => __(
                             'Send an e-mail to author after exceeding post expiration time', 'wp-user-frontend'
                         ),
-                        'dependency'  => 'post_expiration',
+                        'key_id'      => 'send_mail',
                     ],
                     'expiration_message'   => [
                         'id'          => 'expiration-message',
@@ -1149,7 +1149,7 @@ class Admin_Subscription {
                             'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}',
                             'wp-user-frontend'
                         ),
-                        'dependency'  => 'send_mail',
+                        'key_id'      => 'expiration_message',
                     ],
                     'post_number_rollback' => [
                         'id'          => 'post-number-rollback',
@@ -1185,18 +1185,13 @@ class Admin_Subscription {
     public function get_dependent_fields() {
         $fields = [
             'post_expiration' => [
-                'fields' => [
-                    'expiration_time',
-                    'post_status',
-                    'send_mail',
-                ],
-                'value'  => 'on',
+                'expiration_time'    => 'on',
+                'post_status'        => 'on',
+                'send_mail'          => 'on',
+                'expiration_message' => 'on',
             ],
             'send_mail'       => [
-                'fields' => [
-                    'expiration_message',
-                ],
-                'value'  => 'on',
+                'expiration_message' => 'on',
             ],
         ];
 

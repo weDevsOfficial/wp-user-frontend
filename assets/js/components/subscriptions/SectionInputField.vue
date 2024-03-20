@@ -1,8 +1,6 @@
 <script setup>
-
-import {computed, inject, ref, toRefs, watch} from 'vue';
+import {computed, inject, ref, toRefs} from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
-import {useFieldDependencyStore} from '../../stores/fieldDependency';
 import {useSubscriptionStore} from '../../stores/subscription';
 
 const subscriptionStore = useSubscriptionStore();
@@ -13,14 +11,15 @@ const subSection = inject( 'subSection' );
 
 const props = defineProps( {
     field: Object,
+    fieldId: String,
+    hiddenFields: Array,
 } );
 
 const subscription = subscriptionStore.currentSubscription;
 
-const { field } = toRefs( props );
+const { field, fieldId, hiddenFields } = toRefs( props );
 
 const publishedDate = ref(new Date());
-const showField = ref( true );
 
 const getMetaValue = (key) => {
     if (!subscription.meta_value.hasOwnProperty( key )) {
@@ -67,10 +66,6 @@ const handleDate = (modelData) => {
     publishedDate.value = modelData;
 };
 
-watch(subscription,  () => {
-    console.log(subscription);
-});
-
 const switchStatus = ref( value );
 
 const toggleOnOff = () => {
@@ -80,6 +75,11 @@ const toggleOnOff = () => {
         subscriptionStore.setMetaValue( field.value.db_key, switchStatus.value ? 'off' : 'on' );
     }
 };
+
+const showField = computed(() => {
+    return !hiddenFields.value.includes( fieldId.value );
+});
+
 </script>
 <style scoped>
 .dp__theme_light {
@@ -115,10 +115,10 @@ const toggleOnOff = () => {
     <div
         v-if="showField"
         :class="field.label ? 'sm:wpuf-grid sm:wpuf-grid-cols-3' : 'wpuf-block'"
-        class="sm:wpuf-items-start sm:wpuf-gap-4 sm:wpuf-pb-4">
+        class="wpuf-items-start sm:wpuf-gap-4 wpuf-p-4">
         <label v-if="field.label"
                :for="field.name"
-               class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 sm:wpuf-pt-1.5">
+               class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">
             {{ field.label }}
         </label>
         <div class="wpuf-w-max">
@@ -144,7 +144,7 @@ const toggleOnOff = () => {
                 class="wpuf-block wpuf-w-full wpuf-max-w-2xl wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
-                @click="toggleOnOff"
+                @click="[toggleOnOff(), $emit('toggleDependentFields', fieldId, switchStatus)]"
                 type="button"
                 :value="value"
                 :class="switchStatus ? 'wpuf-bg-indigo-600' : 'wpuf-bg-gray-200'"
@@ -170,8 +170,6 @@ const toggleOnOff = () => {
                     :value="key"
                     :key="key">{{ item }}</option>
             </select>
-
-
             <p class="wpuf-mt-3 wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600">{{ field.description }}</p>
         </div>
     </div>

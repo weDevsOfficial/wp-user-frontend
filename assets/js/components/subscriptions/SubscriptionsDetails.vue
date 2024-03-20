@@ -1,22 +1,39 @@
 <script setup>
-    import {useSubscriptionStore} from '../../stores/subscription';
-    import {inject, provide, reactive, ref} from 'vue';
-    import Subsection from './Subsection.vue';
+import {useSubscriptionStore} from '../../stores/subscription';
+import {inject, provide, reactive, ref} from 'vue';
+import Subsection from './Subsection.vue';
+import {useFieldDependencyStore} from '../../stores/fieldDependency';
 
-    const subscriptionStore = useSubscriptionStore();
-    const subscription = subscriptionStore.currentSubscription;
+const subscriptionStore = useSubscriptionStore();
+const dependencyStore = useFieldDependencyStore();
 
-    const currentTab = ref( 'subscription_details' );
+const subscription = subscriptionStore.currentSubscription;
 
-    const wpufSubscriptions = inject( 'wpufSubscriptions' );
+const currentTab = ref( 'subscription_details' );
 
-    const errors = reactive( {
-        planName: false,
-        date: false,
-        isPrivate: false,
-    } );
+const wpufSubscriptions = inject( 'wpufSubscriptions' );
 
-    provide( 'currentSection', currentTab );
+const errors = reactive( {
+    planName: false,
+    date: false,
+    isPrivate: false,
+} );
+
+provide( 'currentSection', currentTab );
+
+// for each wpufSubscriptions.dependentFields, add it to the dependencyStore
+for (const dependentField in wpufSubscriptions.dependentFields) {
+    for (const field in wpufSubscriptions.dependentFields[dependentField]) {
+
+        if (dependencyStore.modifierFields.hasOwnProperty(dependentField)) {
+            dependencyStore.modifierFields[dependentField][field] = wpufSubscriptions.dependentFields[dependentField][field];
+        } else {
+            dependencyStore.modifierFields[dependentField] = {
+                [field]: wpufSubscriptions.dependentFields[dependentField][field]
+            };
+        }
+    }
+}
 
 </script>
 <template>

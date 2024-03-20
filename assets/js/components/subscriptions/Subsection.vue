@@ -1,7 +1,8 @@
 <script setup>
-import {inject, provide, toRefs} from 'vue';
+import {inject, provide, ref, toRefs} from 'vue';
 import SectionInputField from './SectionInputField.vue';
 import SectionInnerField from './SectionInnerField.vue';
+import {useFieldDependencyStore} from '../../stores/fieldDependency';
 const props = defineProps( {
     subSection: Object,
     subscription: Object,
@@ -10,9 +11,30 @@ const props = defineProps( {
 
 const wpufSubscriptions = inject( 'wpufSubscriptions' );
 
+const dependencyStore = useFieldDependencyStore();
+
 const {subSection, subscription, fields} = toRefs( props );
 
 provide( 'subSection', subSection.value.id );
+
+const showField = ref( true );
+const hiddenFields = ref( [] );
+
+const toggleDependentFields = (fieldId, status) => {
+    if (!dependencyStore.modifierFields.hasOwnProperty( fieldId )) {
+        return;
+    }
+
+    for (const innerField in fields.value) {
+        if (dependencyStore.modifierFields[fieldId].hasOwnProperty( innerField )) {
+            if (!status) {
+                hiddenFields.value.push( innerField );
+            } else {
+                hiddenFields.value = hiddenFields.value.filter( (item) => item !== innerField );
+            }
+        }
+    }
+};
 
 </script>
 
@@ -33,18 +55,20 @@ provide( 'subSection', subSection.value.id );
                 </svg>
             </button>
         </h2>
-        <div id="accordion-overview">
-            <div
-                v-for="field in fields"
-                class="wpuf-p-4 dark:wpuf-bg-gray-900">
-                <SectionInputField
-                    v-if="field.type !== 'inline'"
-                    :field="field"
-                    :subscription="subscription"/>
-                <SectionInnerField v-else
-                    :parentField="field"
-                    :subscription="subscription"/>
-            </div>
+        <div
+            v-for="(field, fieldId) in fields">
+            <SectionInputField
+                v-if="field.type !== 'inline'"
+                @toggle-dependent-fields="toggleDependentFields"
+                :hiddenFields="hiddenFields"
+                :field="field"
+                :fieldId="fieldId"
+                :subscription="subscription"/>
+            <SectionInnerField v-else
+               :parentField="field"
+               :hiddenFields="hiddenFields"
+               :fieldId="fieldId"
+               :subscription="subscription"/>
         </div>
     </div>
 </template>

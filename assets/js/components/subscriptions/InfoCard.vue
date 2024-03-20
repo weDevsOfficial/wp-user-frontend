@@ -1,24 +1,24 @@
 <script setup>
-    import {__} from '@wordpress/i18n';
-    import {useSubscriptionStore} from '../../stores/subscription';
-    import {computed, ref} from 'vue';
+import {__} from '@wordpress/i18n';
+import {useSubscriptionStore} from '../../stores/subscription';
+import {computed, ref} from 'vue';
 
-    const subscriptionStore = useSubscriptionStore();
-    const currentSubscription = subscriptionStore.currentSubscription;
-    const isRecurring = ref( false );
+const subscriptionStore = useSubscriptionStore();
+const currentSubscription = subscriptionStore.currentSubscription;
+const isRecurring = ref( false );
 
-    const billingAmount = computed(() => {
-        if (parseFloat( currentSubscription.meta_value.billing_amount ) === 0) {
-            return __( 'Free', 'wp-user-frontend' );
-        } else {
-            if ( currentSubscription.meta_value.recurring_pay === 'yes' ) {
-                isRecurring.value = true;
-                return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount + ' per ' + currentSubscription.meta_value.cycle_period;
-            }
-
-            return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount;
+const billingAmount = computed(() => {
+    if (parseFloat( currentSubscription.meta_value.billing_amount ) === 0) {
+        return __( 'Free', 'wp-user-frontend' );
+    } else {
+        if ( currentSubscription.meta_value.recurring_pay === 'yes' ) {
+            isRecurring.value = true;
+            return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount + ' per ' + currentSubscription.meta_value.cycle_period;
         }
-    });
+
+        return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount;
+    }
+});
 </script>
 <template>
     <div class="wpuf-mt-4 wpuf-border wpuf-border-gray-200">

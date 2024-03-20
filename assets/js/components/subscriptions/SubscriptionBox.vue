@@ -117,7 +117,7 @@ const title = computed(() => {
                 </svg>
                 <div
                     v-if="quickMenuStatus"
-                    class="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-text-sm wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5">
+                    class="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-text-sm wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5 wpuf-overflow-hidden">
                     <ul>
                         <li @click="componentStore.setCurrentComponent( 'Edit' ); subscriptionStore.setCurrentSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Edit', 'wp-user-frontend' ) }}</li>
                         <li @click="quickEditStore.setQuickEditStatus(true); subscriptionStore.setCurrentSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Quick Edit', 'wp-user-frontend' ) }}</li>

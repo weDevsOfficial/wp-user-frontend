@@ -1,7 +1,7 @@
 <script setup>
-    import {__} from '@wordpress/i18n';
-    import InfoCard from './InfoCard.vue';
-    import SubscriptionsDetails from './SubscriptionsDetails.vue';
+import {__} from '@wordpress/i18n';
+import InfoCard from './InfoCard.vue';
+import SubscriptionsDetails from './SubscriptionsDetails.vue';
 </script>
 <template>
     <div class="wpuf-px-12">

@@ -61,6 +61,10 @@ class Admin_Subscription {
                 'supportUrl'      => esc_url(
                     'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment?utm_source=wpuf-subscription-help&utm_medium=text-link'
                 ),
+                'isProActive'     => class_exists( 'WP_User_Frontend_Pro' ),
+                'upgradeUrl'      => esc_url(
+                    'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpuf-subscription'
+                ),
                 'nonce'           => wp_create_nonce( 'wpuf-subscription-nonce' ),
                 'sections'        => $this->get_sections(),
                 'subSections'     => $this->get_sub_sections(),

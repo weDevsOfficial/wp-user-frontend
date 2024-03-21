@@ -280,17 +280,30 @@ class Subscription {
     public static function get_subscription_meta( $subscription_id, $pack_post = null ) {
         $meta['post_content']               = isset( $pack_post->post_content ) ? $pack_post->post_content : '';
         $meta['post_title']                 = isset( $pack_post->post_title ) ? $pack_post->post_title : '';
+
+        // keeping the '_' in the key for backward compatibility. Example $meta['_billing_amount']
         $meta['billing_amount']             = get_post_meta( $subscription_id, '_billing_amount', true );
+        $meta['_billing_amount']            = $meta['billing_amount'];
         $meta['expiration_number']          = get_post_meta( $subscription_id, '_expiration_number', true );
+        $meta['_expiration_number']         = $meta['expiration_number'];
         $meta['expiration_period']          = get_post_meta( $subscription_id, '_expiration_period', true );
+        $meta['_expiration_period']         = $meta['expiration_period'];
         $meta['recurring_pay']              = get_post_meta( $subscription_id, '_recurring_pay', true );
+        $meta['_recurring_pay']             = $meta['recurring_pay'];
         $meta['billing_cycle_number']       = get_post_meta( $subscription_id, '_billing_cycle_number', true );
+        $meta['_billing_cycle_number']      = $meta['billing_cycle_number'];
         $meta['cycle_period']               = get_post_meta( $subscription_id, '_cycle_period', true );
+        $meta['_cycle_period']              = $meta['cycle_period'];
         $meta['billing_limit']              = get_post_meta( $subscription_id, '_billing_limit', true );
+        $meta['_billing_limit']             = $meta['billing_limit'];
         $meta['trial_status']               = get_post_meta( $subscription_id, '_trial_status', true );
+        $meta['_trial_status']              = $meta['trial_status'];
         $meta['trial_duration']             = get_post_meta( $subscription_id, '_trial_duration', true );
+        $meta['_trial_duration']            = $meta['trial_duration'];
         $meta['trial_duration_type']        = get_post_meta( $subscription_id, '_trial_duration_type', true );
+        $meta['_trial_duration_type']       = $meta['trial_duration_type'];
         $meta['post_type_name']             = get_post_meta( $subscription_id, '_post_type_name', true );
+        $meta['_post_type_name']            = $meta['post_type_name'];
         $meta['_enable_post_expiration']    = get_post_meta( $subscription_id, '_enable_post_expiration', true );
         $meta['_post_expiration_time']      = get_post_meta( $subscription_id, '_post_expiration_time', true );
         $meta['_expired_post_status']       = get_post_meta( $subscription_id, '_expired_post_status', true );

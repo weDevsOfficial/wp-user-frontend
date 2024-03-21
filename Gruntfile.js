@@ -105,7 +105,7 @@ module.exports = function(grunt) {
             vue: {
                 files: [
                     'assets/js/subscriptions.js',
-                    'assets/css/admin/**/*.css',
+                    'assets/css/admin/subscriptions.css',
                     'assets/js/components/**/*.vue',
                     'assets/js/stores/**/*.js',
                 ],

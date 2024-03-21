@@ -22,7 +22,10 @@ const { field, fieldId, hiddenFields } = toRefs( props );
 const publishedDate = ref(new Date());
 
 const getMetaValue = (key) => {
+    console.log(key);
+    console.log(subscription.meta_value);
     if (!subscription.meta_value.hasOwnProperty( key )) {
+        console.log('returning empty');
         return '';
     }
 
@@ -42,6 +45,7 @@ const getFieldValue = () => {
 const value = computed(() => {
     let fieldValue = getFieldValue( field.value.db_type, field.value.db_key );
 
+    console.log(fieldValue);
     return getModifiedValue(field.value.type, fieldValue);
 });
 
@@ -168,6 +172,7 @@ const showField = computed(() => {
                 <option
                     v-for="(item, key) in field.options"
                     :value="key"
+                    :selected="key === value"
                     :key="key">{{ item }}</option>
             </select>
             <p class="wpuf-mt-3 wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600">{{ field.description }}</p>

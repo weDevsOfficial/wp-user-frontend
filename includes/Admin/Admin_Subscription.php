@@ -350,9 +350,9 @@ class Admin_Subscription {
 
         $sub_meta = wpuf()->subscription->get_subscription_meta( $post->ID, $post );
 
-        $hidden_recurring_class       = ( $sub_meta['recurring_pay'] != 'yes' ) ? 'none' : '';
-        $hidden_trial_class           = ( $sub_meta['trial_status'] != 'yes' ) ? 'none' : '';
-        $hidden_expire                = ( $sub_meta['recurring_pay'] == 'yes' ) ? 'none' : '';
+        $hidden_recurring_class       = ( $sub_meta['_recurring_pay'] != 'yes' ) ? 'none' : '';
+        $hidden_trial_class           = ( $sub_meta['_trial_status'] != 'yes' ) ? 'none' : '';
+        $hidden_expire                = ( $sub_meta['_recurring_pay'] == 'yes' ) ? 'none' : '';
         $is_post_exp_selected         = isset( $sub_meta['_enable_post_expiration'] ) && $sub_meta['_enable_post_expiration'] == 'on' ? 'checked' : '';
         $_post_expiration_time        = explode( ' ', isset( $sub_meta['_post_expiration_time'] ) ? $sub_meta['_post_expiration_time'] : ' ' );
         $time_value                   = isset( $_post_expiration_time[0] ) ? $_post_expiration_time[0] : 1;
@@ -991,24 +991,37 @@ class Admin_Subscription {
      * @return array
      */
     public function get_sub_sections() {
-        $subscription_details = [
-            'subscription_details' => [
-                [
-                    'id'    => 'overview',
-                    'label' => __( 'Overview', 'wp-user-frontend' ),
+        $subscription_details = apply_filters(
+            'wpuf_subscription_section_details', [
+                'subscription_details' => [
+                    [
+                        'id'    => 'overview',
+                        'label' => __( 'Overview', 'wp-user-frontend' ),
+                    ],
+                    [
+                        'id'    => 'access_and_visibility',
+                        'label' => __( 'Access and Visibility', 'wp-user-frontend' ),
+                    ],
+                    [
+                        'id'    => 'post_expiration',
+                        'label' => __( 'Post Expiration', 'wp-user-frontend' ),
+                    ],
                 ],
-                [
-                    'id'    => 'access_and_visibility',
-                    'label' => __( 'Access and Visibility', 'wp-user-frontend' ),
-                ],
-                [
-                    'id'    => 'post_expiration',
-                    'label' => __( 'Post Expiration', 'wp-user-frontend' ),
-                ],
-            ],
-        ];
+            ]
+        );
 
-        return apply_filters( 'wpuf_subscription_sub_sections', $subscription_details );
+        $payment = apply_filters(
+            'wpuf_subscription_section_payment', [
+                'payment_settings' => [
+                    [
+                        'id'    => 'overview',
+                        'label' => __( 'Overview', 'wp-user-frontend' ),
+                    ],
+                ],
+            ]
+        );
+
+        return apply_filters( 'wpuf_subscription_sub_sections', array_merge( $subscription_details, $payment ) );
     }
 
     /**
@@ -1104,10 +1117,10 @@ class Admin_Subscription {
                                 'name'    => 'post-expiration-unit',
                                 'type'    => 'select',
                                 'options' => [
-                                    'year'  => __( 'Year(s)', 'wp-user-frontend' ),
-                                    'month' => __( 'Month(s)', 'wp-user-frontend' ),
-                                    'week'  => __( 'Week(s)', 'wp-user-frontend' ),
                                     'day'   => __( 'Day(s)', 'wp-user-frontend' ),
+                                    'week'  => __( 'Week(s)', 'wp-user-frontend' ),
+                                    'month' => __( 'Month(s)', 'wp-user-frontend' ),
+                                    'year'  => __( 'Year(s)', 'wp-user-frontend' ),
                                 ],
                             ],
                         ],
@@ -1170,10 +1183,151 @@ class Admin_Subscription {
             ]
         );
 
+        $payment = apply_filters(
+            'wpuf_subscription_payment_fields', [
+                'overview' => [
+                    'billing_amount'   => [
+                        'id'          => 'billing-amount',
+                        'name'        => 'billing-amount',
+                        'db_key'      => '_billing_amount',
+                        'db_type'     => 'meta',
+                        'type'        => 'input-number',
+                        'label'       => __( 'Billing amount', 'wp-user-frontend' ),
+                        'description' => __( 'The billing amount for the subscription', 'wp-user-frontend' ),
+                    ],
+                    'expire_in'        => [
+                        'id'          => 'subs-expiration-time',
+                        'name'        => 'subs-expiration-time',
+                        'type'        => 'inline',
+                        'fields'      => [
+                            'subs_expiration_value' => [
+                                'id'      => 'subs-expiration-value',
+                                'name'    => 'subs-expiration-value',
+                                'type'    => 'input-number',
+                                'db_key'  => '_expiration_number',
+                                'db_type' => 'meta',
+                            ],
+                            'subs_expiration_unit'  => [
+                                'id'      => 'subs-expiration-unit',
+                                'name'    => 'subs-expiration-unit',
+                                'db_key'  => '_expiration_period',
+                                'db_type' => 'meta',
+                                'type'    => 'select',
+                                'options' => [
+                                    'day'   => __( 'Day(s)', 'wp-user-frontend' ),
+                                    'week'  => __( 'Week(s)', 'wp-user-frontend' ),
+                                    'month' => __( 'Month(s)', 'wp-user-frontend' ),
+                                    'year'  => __( 'Year(s)', 'wp-user-frontend' ),
+                                ],
+                            ],
+                        ],
+                        'key_id'      => 'expiration_time',
+                        'label'       => __( 'Expire In', 'wp-user-frontend' ),
+                        'description' => __( 'The billing cycle for the subscription', 'wp-user-frontend' ),
+                    ],
+                    'enable_recurring' => [
+                        'id'          => 'cycle-period',
+                        'name'        => 'cycle-period',
+                        'db_key'      => '_recurring_pay',
+                        'db_type'     => 'meta',
+                        'type'        => 'switcher',
+                        'label'       => __( 'Enable recurring payment', 'wp-user-frontend' ),
+                        'description' => __( 'Is the payment recurring?', 'wp-user-frontend' ),
+                    ],
+                    'payment_cycle'    => [
+                        'id'         => 'payment-cycle',
+                        'name'       => 'payment-cycle',
+                        'type'       => 'inline',
+                        'fields'     => [
+                            'payment_cycle_value' => [
+                                'id'   => 'payment-cycle-value',
+                                'name' => 'payment-cycle-value',
+                                'type' => 'input-number',
+                                'db_key'  => '_billing_cycle_number',
+                                'db_type' => 'meta',
+                            ],
+                            'payment_cycle_unit'  => [
+                                'id'      => 'payment-cycle-unit',
+                                'name'    => 'payment-cycle-unit',
+                                'type'    => 'select',
+                                'options' => [
+                                    'day'   => __( 'Day(s)', 'wp-user-frontend' ),
+                                    'week'  => __( 'Week(s)', 'wp-user-frontend' ),
+                                    'month' => __( 'Month(s)', 'wp-user-frontend' ),
+                                    'year'  => __( 'Year(s)', 'wp-user-frontend' ),
+                                ],
+                                'db_key'  => '_cycle_period',
+                                'db_type' => 'meta',
+                            ],
+                        ],
+                        'key_id'     => 'payment_cycle',
+                        'label'      => __( 'Billing cycle', 'wp-user-frontend' ),
+                    ],
+                    'stop_cycle'      => [
+                        'id'          => 'stop-cycle',
+                        'name'        => 'stop-cycle',
+                        'db_key'      => '_billing_limit',
+                        'db_type'     => 'meta',
+                        'type'        => 'switcher',
+                        'label'       => __( 'Stop billing cycle', 'wp-user-frontend' ),
+                        'description' => __( 'Stop billing cycle after a certain number', 'wp-user-frontend' ),
+                    ],
+                    'billing_limit'   => [
+                        'id'          => 'billing-limit',
+                        'name'        => 'billing-limit',
+                        'db_key'      => '_billing_limit',
+                        'db_type'     => 'meta',
+                        'type'        => 'input-number',
+                        'label'       => __( 'Billing number', 'wp-user-frontend' ),
+                        'description' => __( 'The billing amount for the subscription', 'wp-user-frontend' ),
+                    ],
+                    'trial'      => [
+                        'id'          => 'trial',
+                        'name'        => 'trial',
+                        'db_key'      => '_trial_status',
+                        'db_type'     => 'meta',
+                        'type'        => 'switcher',
+                        'label'       => __( 'Trial', 'wp-user-frontend' ),
+                        'description' => __( 'Enable trial period', 'wp-user-frontend' ),
+                    ],
+                    'trial_period'    => [
+                        'id'         => 'trial-period',
+                        'name'       => 'trial-period',
+                        'type'       => 'inline',
+                        'fields'     => [
+                            'trial_period_value' => [
+                                'id'   => 'trial-period-value',
+                                'name' => 'trial-period-value',
+                                'type' => 'input-number',
+                                'db_key'  => '_trial_duration',
+                                'db_type' => 'meta',
+                            ],
+                            'trial_period_unit'  => [
+                                'id'      => 'trial-period-unit',
+                                'name'    => 'trial-period-unit',
+                                'type'    => 'select',
+                                'options' => [
+                                    'day'   => __( 'Day(s)', 'wp-user-frontend' ),
+                                    'week'  => __( 'Week(s)', 'wp-user-frontend' ),
+                                    'month' => __( 'Month(s)', 'wp-user-frontend' ),
+                                    'year'  => __( 'Year(s)', 'wp-user-frontend' ),
+                                ],
+                                'db_key'  => '_trial_duration_type',
+                                'db_type' => 'meta',
+                            ],
+                        ],
+                        'key_id'     => 'trial_period',
+                        'label'      => __( 'Trial period', 'wp-user-frontend' ),
+                    ],
+                ],
+            ]
+        );
+
         $fields = [
             'subscription_details' => array_merge(
                 $overview, $access, $expiration
             ),
+            'payment_settings'     => $payment,
         ];
 
         return apply_filters( 'wpuf_subscriptions_fields', $fields );
@@ -1196,6 +1350,19 @@ class Admin_Subscription {
             ],
             'send_mail'       => [
                 'expiration_message' => 'on',
+            ],
+            'enable_recurring' => [
+                'payment_cycle' => 'on',
+                'stop_cycle'    => 'on',
+                'billing_limit'    => 'on',
+                'trial'    => 'on',
+                'trial_period'    => 'on',
+            ],
+            'stop_cycle'      => [
+                'billing_limit' => 'on',
+            ],
+            'trial'       => [
+                'trial_period' => 'on',
             ],
         ];
 

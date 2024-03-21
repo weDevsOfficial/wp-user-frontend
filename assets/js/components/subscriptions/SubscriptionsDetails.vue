@@ -43,11 +43,12 @@ for (const dependentField in wpufSubscriptions.dependentFields) {
                 v-for="section in wpufSubscriptions.sections"
                 :key="section.id"
                 class="wpuf-mb-0 wpuf-me-2">
-                <a href="#"
+                <button
+                   @click="currentTab = section.id"
                    :class="currentTab === section.id ? 'wpuf-border-blue-600 wpuf-text-blue-600' : ''"
-                   class="active:wpuf-shadow-none focus:wpuf-shadow-none wpuf-inline-block wpuf-p-4 wpuf-border-b-2 wpuf-rounded-t-lg hover:wpuf-text-gray-600 hover:wpuf-border-gray-300 dark:hover:wpuf-text-gray-300">
+                   class="active:wpuf-shadow-none focus:wpuf-shadow-none wpuf-inline-block wpuf-p-4 wpuf-border-b-2 wpuf-rounded-t-lg hover:wpuf-text-gray-600 hover:wpuf-border-blue-600 dark:hover:wpuf-text-gray-300">
                     {{ section.title }}
-                </a>
+                </button>
             </li>
         </ul>
     </div>

@@ -8,12 +8,11 @@ const props = defineProps( {
     subscription: Object,
     fields: Object,
 } );
+const {subSection, subscription, fields} = toRefs( props );
 
 const wpufSubscriptions = inject( 'wpufSubscriptions' );
 
 const dependencyStore = useFieldDependencyStore();
-
-const {subSection, subscription, fields} = toRefs( props );
 
 provide( 'subSection', subSection.value.id );
 

@@ -13,29 +13,44 @@ const props = defineProps( {
     field: Object,
     fieldId: String,
     hiddenFields: Array,
+    serializeKey: String,
 } );
 
 const subscription = subscriptionStore.currentSubscription;
 
-const { field, fieldId, hiddenFields } = toRefs( props );
+const { field, fieldId, hiddenFields, serializeKey } = toRefs( props );
 
 const publishedDate = ref(new Date());
 
 const getMetaValue = (key) => {
-    console.log(key);
-    console.log(subscription.meta_value);
     if (!subscription.meta_value.hasOwnProperty( key )) {
-        console.log('returning empty');
         return '';
     }
 
     return subscription.meta_value[key];
 };
 
+const getSerializedMetaValue = (key) => {
+    if (!subscription.meta_value.hasOwnProperty( key )) {
+        return '';
+    }
+
+    const serializedValue = getMetaValue(key);
+
+    if (!serializedValue.hasOwnProperty( serializeKey.value )) {
+        return '';
+    }
+
+    return serializedValue[serializeKey.value];
+};
+
 const getFieldValue = () => {
     switch (field.value.db_type) {
         case 'meta':
             return getMetaValue( field.value.db_key );
+
+        case 'meta_serialized':
+            return getSerializedMetaValue( field.value.db_key );
 
         default:
             return subscription.hasOwnProperty(field.value.db_key) ? subscription[field.value.db_key] : '';
@@ -45,7 +60,6 @@ const getFieldValue = () => {
 const value = computed(() => {
     let fieldValue = getFieldValue( field.value.db_type, field.value.db_key );
 
-    console.log(fieldValue);
     return getModifiedValue(field.value.type, fieldValue);
 });
 

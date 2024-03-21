@@ -62,6 +62,7 @@ const toggleDependentFields = (fieldId, status) => {
                 :hiddenFields="hiddenFields"
                 :field="field"
                 :fieldId="fieldId"
+                :serializeKey="field.serialize_key"
                 :subscription="subscription"/>
             <SectionInnerField v-else
                :parentField="field"

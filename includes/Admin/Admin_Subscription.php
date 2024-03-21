@@ -1021,7 +1021,26 @@ class Admin_Subscription {
             ]
         );
 
-        return apply_filters( 'wpuf_subscription_sub_sections', array_merge( $subscription_details, $payment ) );
+        $advanced = apply_filters(
+            'wpuf_subscription_section_advanced', [
+                'advanced_configuration' => [
+                    [
+                        'id'    => 'content_limits',
+                        'label' => __( 'Content Limits', 'wp-user-frontend' ),
+                    ],
+                    [
+                        'id'    => 'design_elements',
+                        'label' => __( 'Design Elements', 'wp-user-frontend' ),
+                    ],
+                    [
+                        'id'    => 'additional',
+                        'label' => __( 'Additional Options', 'wp-user-frontend' ),
+                    ],
+                ],
+            ]
+        );
+
+        return apply_filters( 'wpuf_subscription_sub_sections', array_merge( $subscription_details, $payment, $advanced ) );
     }
 
     /**
@@ -1323,11 +1342,59 @@ class Admin_Subscription {
             ]
         );
 
+        $advanced = apply_filters(
+            'wpuf_subscription_advanced_fields',
+            [
+                'content_limits' => [
+                    'number_of_posts' => [
+                        'id'            => 'number-of-posts',
+                        'name'          => 'number-of-posts',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'post',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum number of posts', 'wp-user-frontend' ),
+                        'description'   => __(
+                            'How many post the user can list with this pack? Enter -1 for unlimited.',
+                            'wp-user-frontend'
+                        ),
+                    ],
+                    'number_of_pages' => [
+                        'id'            => 'number-of-pages',
+                        'name'          => 'number-of-pages',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'page',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum number of pages', 'wp-user-frontend' ),
+                        'description'   => __(
+                            'How many page the user can list with this pack? Enter -1 for unlimited.',
+                            'wp-user-frontend'
+                        ),
+                    ],
+                    'number_of_user_requests' => [
+                        'id'            => 'number-of-user-requests',
+                        'name'          => 'number-of-user-requests',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'user_request',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum number of user requests', 'wp-user-frontend' ),
+                        'description'   => __(
+                            'How many user_request the user can list with this pack? Enter -1 for unlimited.',
+                            'wp-user-frontend'
+                        ),
+                    ],
+                ],
+            ]
+        );
+
         $fields = [
-            'subscription_details' => array_merge(
+            'subscription_details'   => array_merge(
                 $overview, $access, $expiration
             ),
-            'payment_settings'     => $payment,
+            'payment_settings'       => $payment,
+            'advanced_configuration' => $advanced,
         ];
 
         return apply_filters( 'wpuf_subscriptions_fields', $fields );

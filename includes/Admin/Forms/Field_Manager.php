@@ -268,7 +268,7 @@ class Field_Manager {
                 }
             }
             if ( $visibility_selected == 'subscribed_users' && is_user_logged_in() ) {
-                $user_pack = Subscription::init()->get_user_pack( get_current_user_id() );
+                $user_pack = ( new Subscription() )->get_user_pack( get_current_user_id() );
                 if ( empty( $visibility_choices ) && ! empty( $user_pack ) ) {
                     $show_field = true;
                 } else if ( ! empty( $user_pack ) && ! empty( $visibility_choices ) ) {

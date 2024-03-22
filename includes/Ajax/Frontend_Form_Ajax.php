@@ -641,7 +641,7 @@ class Frontend_Form_Ajax {
 
         $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
         $post_url = sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), get_permalink( $post_id ) );
-        $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'WPUF_Post_Form_Template_Post.php?action=edit&post=' . $post_id ), admin_url( 'WPUF_Post_Form_Template_Post.php?action=edit&post=' . $post_id ) );
+	    $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $post_id ), admin_url( 'post.php?action=edit&post=' . $post_id ) );
 
         $post_field_replace = [
             $post->post_title,

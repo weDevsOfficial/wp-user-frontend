@@ -18,6 +18,7 @@ provide( 'subSection', subSection.value.id );
 
 const showField = ref( true );
 const hiddenFields = ref( [] );
+const closed = ref( false );
 
 const toggleDependentFields = (fieldId, status) => {
     if (!dependencyStore.modifierFields.hasOwnProperty( fieldId )) {
@@ -42,9 +43,12 @@ const toggleDependentFields = (fieldId, status) => {
         class="wpuf-border wpuf-border-gray-200 wpuf-rounded-t-xl wpuf-rounded-b-xl dark:wpuf-border-gray-70 wpuf-mt-4 wpuf mb-4">
         <h2 class="wpuf-m-0">
             <button type="button"
+                    @click="closed = !closed"
                     class="wpuf-rounded-t-xl wpuf-flex wpuf-items-center wpuf-justify-between wpuf-w-full wpuf-p-4 wpuf-font-medium rtl:wpuf-text-right wpuf-text-gray-500 dark:wpuf-text-gray-400 wpuf-bg-gray-100 dark:wpuf-bg-gray-800 wpuf-gap-3">
                 <span>{{ subSection.label }}</span>
-                <svg data-accordion-icon class="wpuf-w-3 wpuf-h-3 wpuf-rotate-180 shrink-0" aria-hidden="true"
+                <svg
+                    :class="closed ? 'wpuf-rotate-90' : 'wpuf-rotate-180'"
+                    data-accordion-icon class="wpuf-w-3 wpuf-h-3 wpuf-rotate-180 shrink-0" aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                     <path stroke="currentColor"
                           stroke-linecap="round"
@@ -55,6 +59,7 @@ const toggleDependentFields = (fieldId, status) => {
             </button>
         </h2>
         <div
+            v-show="!closed"
             v-for="(field, fieldId) in fields">
             <SectionInputField
                 v-if="field.type !== 'inline'"

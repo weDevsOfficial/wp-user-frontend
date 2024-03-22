@@ -1342,11 +1342,10 @@ class Admin_Subscription {
             ]
         );
 
-        $advanced = apply_filters(
-            'wpuf_subscription_advanced_fields',
-            [
+        $content_limit      = apply_filters(
+            'wpuf_subscription_content_limits_fields', [
                 'content_limits' => [
-                    'number_of_posts' => [
+                    'number_of_posts'         => [
                         'id'            => 'number-of-posts',
                         'name'          => 'number-of-posts',
                         'db_key'        => '_post_type_name',
@@ -1359,7 +1358,7 @@ class Admin_Subscription {
                             'wp-user-frontend'
                         ),
                     ],
-                    'number_of_pages' => [
+                    'number_of_pages'         => [
                         'id'            => 'number-of-pages',
                         'name'          => 'number-of-pages',
                         'db_key'        => '_post_type_name',
@@ -1388,13 +1387,109 @@ class Admin_Subscription {
                 ],
             ]
         );
+        $design_element     = apply_filters(
+            'wpuf_subscription_design_elements_fields', [
+                'design_elements' => [
+                    'number_of_blocks'         => [
+                        'id'            => 'number-of-blocks',
+                        'name'          => 'number-of-blocks',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'wp_block',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum number of reusable block', 'wp-user-frontend' ),
+                        'description'   => __(
+                            'How many block the user can use with this pack? Enter -1 for unlimited.',
+                            'wp-user-frontend'
+                        ),
+                    ],
+                    'number_of_templates'      => [
+                        'id'            => 'number-of-templates',
+                        'name'          => 'number-of-templates',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'wp_template',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum number of Templates', 'wp-user-frontend' ),
+                        'description'   => __(
+                            'How many templates the user can use with this pack? Enter -1 for unlimited.',
+                            'wp-user-frontend'
+                        ),
+                    ],
+                    'number_of_template_parts' => [
+                        'id'            => 'number-of-template-parts',
+                        'name'          => 'number-of-template-parts',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'wp_template_part',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum number of user requests', 'wp-user-frontend' ),
+                        'description'   => __(
+                            'How many user_request the user can list with this pack? Enter -1 for unlimited.',
+                            'wp-user-frontend'
+                        ),
+                    ],
+                    'number_of_global_styles'  => [
+                        'id'            => 'number-of-global-styles',
+                        'name'          => 'number-of-global-styles',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'wp_global_styles',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum number of global styles', 'wp-user-frontend' ),
+                        'description'   => __(
+                            'How many global styles the user can use with this pack? Enter -1 for unlimited.',
+                            'wp-user-frontend'
+                        ),
+                    ],
+                    'number_of_menus'          => [
+                        'id'            => 'number-of-menus',
+                        'name'          => 'number-of-menus',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'wp_navigation',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum number of navigation menus', 'wp-user-frontend' ),
+                        'description'   => __(
+                            'How many navigation menus the user can use with this pack? Enter -1 for unlimited.',
+                            'wp-user-frontend'
+                        ),
+                    ],
+                ],
+            ]
+        );
+        $additional_options = apply_filters(
+            'wpuf_subscription_additional_fields', [
+                'additional' => [
+                    'number_of_featured_items' => [
+                        'id'          => 'number-of-featured-items',
+                        'name'        => 'number-of-featured-items',
+                        'db_key'      => '_total_feature_item',
+                        'db_type'     => 'meta',
+                        'type'        => 'input-number',
+                        'label'       => __( 'Maximum number of featured items', 'wp-user-frontend' ),
+                        'description' => __(
+                            'How many block the user can use with this pack? Enter -1 for unlimited.',
+                            'wp-user-frontend'
+                        ),
+                    ],
+                    'remove_featured_item'     => [
+                        'id'          => 'remove-featured-item',
+                        'name'        => 'remove-featured-item',
+                        'db_key'      => '_remove_feature_item',
+                        'db_type'     => 'meta',
+                        'type'        => 'switcher',
+                        'label'       => __( 'Remove featured item', 'wp-user-frontend' ),
+                        'description' => __( 'Remove featured items when plan expires', 'wp-user-frontend' ),
+                    ],
+                ],
+            ]
+        );
 
         $fields = [
-            'subscription_details'   => array_merge(
-                $overview, $access, $expiration
-            ),
+            'subscription_details'   => array_merge( $overview, $access, $expiration ),
             'payment_settings'       => $payment,
-            'advanced_configuration' => $advanced,
+            'advanced_configuration' => array_merge( $content_limit, $design_element, $additional_options ),
         ];
 
         return apply_filters( 'wpuf_subscriptions_fields', $fields );

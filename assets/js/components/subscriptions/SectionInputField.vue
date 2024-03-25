@@ -1,7 +1,9 @@
 <script setup>
-import {computed, inject, ref, toRefs} from 'vue';
+import {computed, inject, onMounted, ref, toRefs} from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import {useSubscriptionStore} from '../../stores/subscription';
+
+const emit = defineEmits(['toggleDependentFields']);
 
 const subscriptionStore = useSubscriptionStore();
 
@@ -96,6 +98,14 @@ const toggleOnOff = () => {
 
 const showField = computed(() => {
     return !hiddenFields.value.includes( fieldId.value );
+});
+
+onMounted(() => {
+    if (field.value.type !== 'switcher') {
+        return;
+    }
+
+    emit('toggleDependentFields', fieldId.value, switchStatus.value);
 });
 
 </script>

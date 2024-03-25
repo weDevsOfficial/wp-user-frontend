@@ -1,125 +1,130 @@
 <script setup>
-    import {reactive, ref} from 'vue';
-    import {__} from '@wordpress/i18n';
-    import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
-    import VueDatePicker from '@vuepic/vue-datepicker';
-    import '@vuepic/vue-datepicker/dist/main.css';
-    import {useQuickEditStore} from '../../stores/quickEdit';
-    import {useSubscriptionStore} from '../../stores/subscription';
-    import {useNoticeStore} from '../../stores/notice';
+import {reactive, ref} from 'vue';
+import {__} from '@wordpress/i18n';
+import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+import {useQuickEditStore} from '../../stores/quickEdit';
+import {useSubscriptionStore} from '../../stores/subscription';
+import {useNoticeStore} from '../../stores/notice';
 
-    const subscriptionStore = useSubscriptionStore();
-    const noticeStore = useNoticeStore();
+const subscriptionStore = useSubscriptionStore();
+const noticeStore = useNoticeStore();
 
-    const currentSubscription = subscriptionStore.currentSubscription;
+const currentSubscription = subscriptionStore.currentSubscription;
 
-    const planName = ref( currentSubscription.post_title );
-    const date = ref(new Date(currentSubscription.post_date));
-    const isPrivate = ref( currentSubscription.post_status === 'private' );
-    const isUpdating = ref( false );
+const planName = ref( currentSubscription.post_title );
+const date = ref(new Date(currentSubscription.post_date));
+const isPrivate = ref( currentSubscription.post_status === 'private' );
+const isUpdating = ref( false );
 
-    const quickEditStore = useQuickEditStore();
+const quickEditStore = useQuickEditStore();
 
-    const updateError = reactive( {
-        status: false,
-        message: '',
-    } );
+const updateError = reactive( {
+    status: false,
+    message: '',
+} );
+const errors = reactive( {
+    planName: false,
+    date: false,
+    isPrivate: false,
+} );
 
-    const handleDate = (modelData) => {
-        date.value = modelData;
+const handleDate = (modelData) => {
+    date.value = modelData;
+}
+
+const resetErrors = () => {
+    for (const item in errors) {
+        errors[item] = false;
+    }
+};
+
+const hasError = () => {
+    for (const item in errors) {
+        if (errors[item]) {
+            return true;
+        }
     }
 
-    const resetErrors = () => {
-        for (const item in errors) {
-            errors[item] = false;
-        }
-    };
+    return false;
+};
 
-    const hasError = () => {
-        for (const item in errors) {
-            if (errors[item]) {
-                return true;
-            }
-        }
+const updateSubscription = () => {
+    isUpdating.value = true;
+    resetErrors();
 
-        return false;
-    };
+    if ( planName.value === '' ) {
+        errors.planName = true;
+    }
 
-    const updateSubscription = () => {
-        isUpdating.value = true;
-        resetErrors();
+    // error if plan name contains #. PayPal doesn't allow # in package name
+    if ( planName.value.includes('#') ) {
+        errors.planName = true;
+    }
 
-        if ( planName.value === '' ) {
-            errors.planName = true;
-        }
+    if ( typeof isPrivate.value !== 'boolean' ) {
+        errors.isPrivate = true;
+    }
 
-        // error if plan name contains #. PayPal doesn't allow # in package name
-        if ( planName.value.includes('#') ) {
-            errors.planName = true;
-        }
-
-        if ( typeof isPrivate.value !== 'boolean' ) {
-            errors.isPrivate = true;
-        }
-
-        if ( date.value === null) {
-            errors.date = true;
-
-            isUpdating.value = false;
-            return;
-        }
-
-        const year = date.value.getFullYear();
-        const month = date.value.getMonth() + 1; // adding 1 because getMonth() returns 0-based month
-        const day = date.value.getDate();
-        const hours = date.value.getHours();
-        const minutes = date.value.getMinutes();
-        const seconds = date.value.getSeconds();
-
-        if ( isNaN( year ) || isNaN( month ) || isNaN( day ) || isNaN( hours ) || isNaN( minutes ) || isNaN( seconds ) ) {
-            errors.date = true;
-        }
-
-        if (hasError()) {
-            isUpdating.value = false;
-            return;
-        }
-
-        const promiseResult = subscriptionStore.updateSubscription( {
-            id: currentSubscription.ID,
-            planName: planName.value,
-            mm: month,
-            jj: day,
-            aa: year,
-            hh: hours,
-            mn: minutes,
-            ss: seconds,
-            isPrivate: isPrivate.value,
-        } );
-
-        promiseResult.then((result) => {
-            if (result.success) {
-                noticeStore.display = true;
-                noticeStore.type = 'success';
-                noticeStore.message = result.message;
-
-                currentSubscription.post_title = planName.value;
-
-                setTimeout(() => {
-                    noticeStore.display = false;
-                    noticeStore.type = '';
-                    noticeStore.message = '';
-                }, 3000);
-
-                quickEditStore.setQuickEditStatus(false);
-            } else {
-                updateError.status = true;
-                updateError.message = result.message;
-            }
-        });
+    if ( date.value === null) {
+        errors.date = true;
 
         isUpdating.value = false;
-    };
+        return;
+    }
+
+    const year = date.value.getFullYear();
+    const month = date.value.getMonth() + 1; // adding 1 because getMonth() returns 0-based month
+    const day = date.value.getDate();
+    const hours = date.value.getHours();
+    const minutes = date.value.getMinutes();
+    const seconds = date.value.getSeconds();
+
+    if ( isNaN( year ) || isNaN( month ) || isNaN( day ) || isNaN( hours ) || isNaN( minutes ) || isNaN( seconds ) ) {
+        errors.date = true;
+    }
+
+    if (hasError()) {
+        isUpdating.value = false;
+        return;
+    }
+
+    const promiseResult = subscriptionStore.updateSubscription( {
+        id: currentSubscription.ID,
+        planName: planName.value,
+        mm: month,
+        jj: day,
+        aa: year,
+        hh: hours,
+        mn: minutes,
+        ss: seconds,
+        isPrivate: isPrivate.value,
+    } );
+
+    promiseResult.then((result) => {
+        if (result.success) {
+            noticeStore.display = true;
+            noticeStore.type = 'success';
+            noticeStore.message = result.message;
+
+            currentSubscription.post_title = planName.value;
+
+            setTimeout(() => {
+                noticeStore.display = false;
+                noticeStore.type = '';
+                noticeStore.message = '';
+            }, 3000);
+
+            quickEditStore.setQuickEditStatus(false);
+        } else {
+            updateError.status = true;
+            updateError.message = result.message;
+        }
+    });
+
+    isUpdating.value = false;
+};
 </script>
 <style scoped>
 .dp__theme_light {

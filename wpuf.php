@@ -21,8 +21,6 @@ $autoload = __DIR__ . '/vendor/autoload.php';
 
 if ( file_exists( $autoload ) ) {
     require_once $autoload;
-} else {
-	wp_die( __( 'There was a problem installing the plugin' ), __( 'Problem installing plugin' ) );
 }
 
 define( 'WPUF_VERSION', '4.0.6' );

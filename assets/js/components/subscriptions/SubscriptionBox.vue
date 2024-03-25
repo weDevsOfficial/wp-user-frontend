@@ -30,6 +30,8 @@ const setPillBackground = () => {
 
     if (postStatus === 'publish') {
         pillColor.value = 'wpuf-text-green-700';
+    } if (postStatus === 'private') {
+        pillColor.value = 'wpuf-text-orange-700';
     } else if (postStatus === 'draft') {
         pillColor.value = 'wpuf-text-yellow-700';
     } else if (postStatus === 'pending') {

@@ -1,11 +1,24 @@
-import { faker } from '@faker-js/faker';
-require('dotenv').config();
+import { faker } from "@faker-js/faker";
 
-export interface Urls {
+
+
+/**---------------------------------*/
+/**-------DATA_SET: Base Url-------*/
+/**-------------------------------*/
+let Urls: {
     baseUrl: string;
-}
+} = {
+    //Main Site URL
+    baseUrl: process.env.QA_BASE_URL ? process.env.QA_BASE_URL : 'http://localhost:8889',
+};
 
-export interface Users {
+
+
+/**-----------------------------------*/
+/**-------DATA_SET: Test Users-------*/
+/**---------------------------------*/
+let Users: {
+    //Admin Credentials
     adminUsername: string;
     adminPassword: string;
 
@@ -15,147 +28,124 @@ export interface Users {
     userFirstName: string;
     userLastName: string;
     userPassword: string;
+} = {
+    //Admin Login
+    adminUsername: process.env.QA_ADMIN_USERNAME ? process.env.QA_ADMIN_USERNAME : 'admin',
+    adminPassword: process.env.QA_ADMIN_PASSWORD ? process.env.QA_ADMIN_PASSWORD : 'password',
+
+    //New User Credentials
+    userName: process.env.QA_NEW_USERNAME ? process.env.QA_NEW_USERNAME : 'Testuser0001',
+    userEmail: process.env.QA_NEW_USEREMAIL ? process.env.QA_NEW_USEREMAIL : 'Testuser0001@yopmail.com',
+    userFirstName: process.env.QA_NEW_FIRSTNAME ? process.env.QA_NEW_FIRSTNAME : 'Test',
+    userLastName: process.env.QA_NEW_LASTNAME ? process.env.QA_NEW_LASTNAME : 'User',
+    userPassword: process.env.QA_NEW_PASSWORD ? process.env.QA_NEW_PASSWORD : 'Test@1234',
 }
 
-export interface PostForm {
+
+
+/**----------------------------------*/
+/**-------DATA_SET: Post Form-------*/
+/**--------------------------------*/
+let PostForm: {
     //Post Form Title
     pfPostName1: string;
     pfPostName2: string;
     pfPostName3: string;
     pfPostName4: string;
-
     //Post Form Data
     pfTitle: string;
     pfPostDescription: string;
     pfExcerpt: string;
     pfTags: string;
+} = {
+    //Post Form Titles
+    pfPostName1: faker.lorem.sentence(2),
+    pfPostName2: faker.lorem.sentence(2),
+    pfPostName3: faker.lorem.sentence(2),
+    pfPostName4: faker.lorem.sentence(2),
+    //Post Form Data
+    pfTitle: faker.lorem.words(2),
+    pfPostDescription: faker.lorem.sentence(4),
+    pfExcerpt: faker.lorem.word(3),
+    pfTags: faker.lorem.word(),
+};
 
-}
 
-export interface RegistrationForm {
+
+/**------------------------------------------*/
+/**-------DATA_SET: Registration Form-------*/
+/**----------------------------------------*/
+const rfFirstName = faker.name.firstName();
+const rfLastName = faker.name.lastName();
+
+let RegistrationForm: {
     //Registration Form Title
     rfPostName1: string;
     rfPostName2: string;
     rfPostName3: string;
     rfPostName4: string;
-
     //Registration Form Data
     rfFirstName: string;
     rfLastName: string;
     rfUsername: string;
     rfEmail: string;
     rfPassword: string;
-}
-
-export interface Data {
-    urls: Urls;
-    users: Users;
-    postForms: PostForm;
-    registrationForms: RegistrationForm;
-}
-
-
-
-
-/********************************************/
-/******* Generate Fake Data Function *******/
-/******************************************/
-//Function
-const generateFakerData = () => {
-    //Post Form Titles
-    const pfPostName1: string = faker.lorem.sentence(2);
-    const pfPostName2: string = faker.lorem.sentence(2);
-    const pfPostName3: string = faker.lorem.sentence(2);
-    const pfPostName4: string = faker.lorem.sentence(2);
-
-    //Post Form Data
-    const pfTitle: string = faker.lorem.words(2);
-    const pfPostDescription: string = faker.lorem.sentence(4);
-    const pfExcerpt: string = faker.lorem.word(3);
-    const pfTags: string = faker.lorem.word();
-
-
-//-----------------------------------------------------------------//
-
+} = {
     //Registration Form Titles
-    const rfPostName1: string = faker.lorem.sentence(2);
-    const rfPostName2: string = faker.lorem.sentence(2);
-    const rfPostName3: string = faker.lorem.sentence(2);
-    const rfPostName4: string = faker.lorem.sentence(2);
-
+    rfPostName1: faker.lorem.sentence(2),
+    rfPostName2: faker.lorem.sentence(2),
+    rfPostName3: faker.lorem.sentence(2),
+    rfPostName4: faker.lorem.sentence(2),
     //Registration Form Data
-    //Generate random user details
-    const rfFirstName: string = faker.name.firstName();
-    const rfLastName: string = faker.name.lastName();
-    const rfUsername: string = faker.internet.userName(rfFirstName, rfLastName);
-    const rfEmail: string = faker.internet.email(rfFirstName, rfLastName);
-    const rfPassword: string = faker.internet.password();
+    rfFirstName: rfFirstName,
+    rfLastName: rfLastName,
+    rfUsername: faker.internet.userName(rfFirstName, rfLastName),
+    rfEmail: faker.internet.email(rfFirstName, rfLastName),
+    rfPassword: faker.internet.password(),
+};
 
 
-    return {
-        //Post Form Titles
-        pfPostName1,
-        pfPostName2,
-        pfPostName3,
-        pfPostName4,
 
-        //Post Form Data
-        pfTitle,
-        pfPostDescription,
-        pfExcerpt,
-        pfTags,
+/**------------------------------------------*/
+/**-------DATA_SET: Subscription Pack-------*/
+/**----------------------------------------*/
+let SubscriptionPack: {
+    //Basics
+    subscriptionPackName: string;
+    subscriptionPackDescription: string;
+    SubscriptionPackPrice: string;
+    SubscriptionPackExpiration: number;
 
+    //Posting Restrictions
+    //Featured
+    subscriptionFeaturedCount: number;
+} = {
+    //Basics
+    subscriptionPackName: faker.commerce.productName(),
+    subscriptionPackDescription: faker.commerce.productDescription(),
+    SubscriptionPackPrice: faker.commerce.price(),
+    SubscriptionPackExpiration: faker.datatype.number({ min: 1, max: 365 }),
 
-        //Reg Form Titles
-        rfPostName1,
-        rfPostName2,
-        rfPostName3,
-        rfPostName4,
-
-        //Registration Form Data
-        rfFirstName,
-        rfLastName,
-        rfUsername,
-        rfEmail,
-        rfPassword,
-
-    };
+    //Posting Restrictions
+    //Featured
+    subscriptionFeaturedCount: 2,
 };
 
 
 
 
-/******************************/
-/******* All Test Data *******/
-/****************************/
-//Data
-export const testData: Data = {
-    //Urls
-    urls: {
-        //Main URL
-        baseUrl: process.env.QA_BASE_URL ? process.env.QA_BASE_URL: 'http://localhost:8889',
-    },
-
-    //Users
-    users: {
-        //Admin Login
-        adminUsername: process.env.QA_ADMIN_USERNAME ? process.env.QA_ADMIN_USERNAME: 'admin',
-        adminPassword: process.env.QA_ADMIN_PASSWORD ? process.env.QA_ADMIN_PASSWORD: 'password',
-
-        //New User Credentials
-        userName: process.env.QA_NEW_USERNAME ? process.env.QA_NEW_USERNAME: 'Testuser0001',
-        userEmail: process.env.QA_NEW_USEREMAIL ? process.env.QA_NEW_USEREMAIL: 'Testuser0001@yopmail.com',
-        userFirstName: process.env.QA_NEW_FIRSTNAME ? process.env.QA_NEW_FIRSTNAME: 'Test',
-        userLastName: process.env.QA_NEW_LASTNAME ? process.env.QA_NEW_LASTNAME: 'User',
-        userPassword: process.env.QA_NEW_PASSWORD ? process.env.QA_NEW_PASSWORD: 'Test@1234',
-    },
 
 
-    //Post Forms
-    postForms: generateFakerData(),
-
-    //Post Forms
-    registrationForms: generateFakerData(),
 
 
+
+/**------------------------------*/
+/**-------Export DATA_SET-------*/
+/**----------------------------*/
+export {
+    Urls,
+    Users,
+    PostForm,
+    RegistrationForm,
+    SubscriptionPack,
 };

@@ -1,7 +1,6 @@
 require('dotenv').config();
 import { expect, Page } from '@playwright/test';
 import { selectors } from './selectors';
-import { testData } from '../utils/testData';
 
 export class base {
     readonly page: Page;
@@ -15,11 +14,14 @@ export class base {
         await this.page.click(locator)
     };
 
-    async validateAndFill(locator: string, value: string) {
+    async validateAndFillStrings(locator: string, value: string) {
         expect(await this.page.isVisible(locator)).toBeTruthy();
         await this.page.fill(locator, value);
     }
 
-
+    async validateAndFillNumbers(locator: string, value: number) {
+        expect(await this.page.isVisible(locator)).toBeTruthy();
+        await this.page.fill(locator, value.toString());
+    }
 
 }

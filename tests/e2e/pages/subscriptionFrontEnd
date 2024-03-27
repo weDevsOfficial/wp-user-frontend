@@ -1,0 +1,45 @@
+require('dotenv').config();
+import { Page, expect } from '@playwright/test';
+import { selectors } from './selectors';
+import { testData } from '../utils/testData';
+import { base } from '../pages/base';
+
+export class subscriptionFrontEnd extends base {
+    readonly page: Page;
+
+    constructor(page: Page) {
+        super(page);
+    }
+
+    //Subscription pack - Basic
+    async buy_SubscriptionPack_Basic() {
+        
+    }
+
+
+    //Subscription pack - Post and Page restrictions
+       async buy_SubscriptionPack_PostPageRestriction() {
+        
+    }
+
+
+    /**Check Subscription packs restrictions effects
+     * 
+     * 
+     * 
+     * 
+     *@Featured : 1 
+     *@Post : 1 
+     *@Page : 1 
+     * 
+     * 
+     * 
+     * 
+     */
+
+     async createMultipleposts() {
+        
+     }
+
+
+}

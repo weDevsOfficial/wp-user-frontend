@@ -71,8 +71,11 @@ const getSubscribers = () => {
 
     apiFetch(
         {
-            path: addQueryArgs( wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription/subscribers', queryParams ),
+            path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription/subscribers', queryParams ),
             method: 'GET',
+            headers: {
+                'X-WP-Nonce': wpufSubscriptions.nonce,
+            },
         }
     )
     .then( ( response ) => {
@@ -80,8 +83,8 @@ const getSubscribers = () => {
         subscription.value.subscribers = subscribers.value;
     } )
     .catch( ( error ) => {
-    console.log( error );
-    } )
+        console.log( error );
+    } );
 };
 
 const setBillingAmount = () => {

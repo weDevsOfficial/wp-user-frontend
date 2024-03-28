@@ -19,7 +19,12 @@ const subscriptionStore = useSubscriptionStore();
         <InfoCard />
         <SubscriptionsDetails />
         <div class="wpuf-mt-8 wpuf-text-end">
-            <button type="button" class="wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3.5 wpuf-py-2.5 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ __( 'Update', 'wp-user-frontend' ) }}</button>
+            <button
+                type="button"
+                @click="[]"
+                class="wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3.5 wpuf-py-2.5 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                {{ __( 'Update', 'wp-user-frontend' ) }}
+            </button>
         </div>
     </div>
 </template>

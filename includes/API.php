@@ -28,7 +28,7 @@ class API {
     /**
      * API initialization
      *
-     * @since 1.0.0
+     * @since WPUF_SINCE
      *
      * @return void
      */

@@ -28,19 +28,6 @@ class Subscription extends WP_REST_Controller {
     protected $base = 'wpuf_subscription';
 
     /**
-     * Constructor.
-     *
-     * @since 4.7.0
-     *
-     * @param string $post_type Post type.
-     */
-    public function __construct( $post_type = 'wpuf_subscription' ) {
-        $this->post_type = $post_type;
-
-        add_action( 'rest_api_init', array( $this, 'register_routes' ) );
-    }
-
-    /**
      * Register the routes for the objects of the controller.
      *
      * @since WPUF_SINCE
@@ -175,16 +162,16 @@ class Subscription extends WP_REST_Controller {
             );
         }
 
-        $id         = ! empty( $request['subscription_id'] ) ? (int) $request['subscription_id'] : 0;
-        $name       = ! empty( $subscription['planName'] ) ? sanitize_text_field( $subscription['planName'] ) : '';
-        $mm         = ! empty( $subscription['mm'] ) ? (int) sanitize_text_field( $subscription['mm'] ) : 0;
-        $jj         = ! empty( $subscription['jj'] ) ? (int) sanitize_text_field( $subscription['jj'] ) : 0;
-        $aa         = ! empty( $subscription['aa'] ) ? (int) sanitize_text_field( $subscription['aa'] ) : 0;
-        $hh         = ! empty( $subscription['hh'] ) ? (int) sanitize_text_field( $subscription['hh'] ) : 0;
-        $mn         = ! empty( $subscription['mn'] ) ? (int) sanitize_text_field( $subscription['mn'] ) : 0;
-        $ss         = ! empty( $subscription['ss'] ) ? (int) sanitize_text_field( $subscription['ss'] ) : 0;
+        $id     = ! empty( $request['subscription_id'] ) ? (int) $request['subscription_id'] : 0;
+        $name   = ! empty( $subscription['planName'] ) ? sanitize_text_field( $subscription['planName'] ) : '';
+        $mm     = ! empty( $subscription['mm'] ) ? (int) sanitize_text_field( $subscription['mm'] ) : 0;
+        $jj     = ! empty( $subscription['jj'] ) ? (int) sanitize_text_field( $subscription['jj'] ) : 0;
+        $aa     = ! empty( $subscription['aa'] ) ? (int) sanitize_text_field( $subscription['aa'] ) : 0;
+        $hh     = ! empty( $subscription['hh'] ) ? (int) sanitize_text_field( $subscription['hh'] ) : 0;
+        $mn     = ! empty( $subscription['mn'] ) ? (int) sanitize_text_field( $subscription['mn'] ) : 0;
+        $ss     = ! empty( $subscription['ss'] ) ? (int) sanitize_text_field( $subscription['ss'] ) : 0;
         $status = ! empty( $subscription['isPrivate'] ) ? 'private' : 'publish';
-        $time       = '';
+        $time   = '';
 
         if ( empty( $id ) ) {
             return new WP_REST_Response(
@@ -230,8 +217,6 @@ class Subscription extends WP_REST_Controller {
                 ]
             );
 
-            error_log( print_r( $result, true ) );
-
             if ( is_wp_error( $result ) ) {
                 return new WP_REST_Response(
                     [
@@ -264,8 +249,6 @@ class Subscription extends WP_REST_Controller {
      * @return bool
      */
     public function permission_check() {
-        // todo:: check permission properly
-        return true;
-        return current_user_can( 'manage_options' );
+        return current_user_can( wpuf_admin_role() );
     }
 }

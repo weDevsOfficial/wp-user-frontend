@@ -65,7 +65,7 @@ class Admin_Subscription {
                 'upgradeUrl'      => esc_url(
                     'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpuf-subscription'
                 ),
-                'nonce'           => wp_create_nonce( 'wpuf-subscription-nonce' ),
+                'nonce'           => wp_create_nonce( 'wp_rest' ),
                 'sections'        => $this->get_sections(),
                 'subSections'     => $this->get_sub_sections(),
                 'fields'          => $this->get_fields(),

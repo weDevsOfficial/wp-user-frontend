@@ -32,9 +32,13 @@ const fetchData = async () => {
     isLoading.value = true;
 
     const queryParams = { 'per_page': 10, 'offset': 0 };
-
-    // todo: add nonce and other validations.
-    apiFetch( {path: addQueryArgs( wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription', queryParams )} )
+    apiFetch( {
+            path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription', queryParams ),
+            method: 'GET',
+            headers: {
+            'X-WP-Nonce': wpufSubscriptions.nonce,
+        },
+        } )
         .then( ( response ) => {
             subscriptions.value = response.subscriptions;
 
@@ -47,7 +51,7 @@ const fetchData = async () => {
         console.log( error );
     } ).finally( () => {
         isLoading.value = false;
-    })
+    });
 }
 
 const content = computed( () => {

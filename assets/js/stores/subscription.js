@@ -17,7 +17,10 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             return fetch(
                 wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription/' + subscription.id,
                 requestOptions )
-                .then( ( response ) => response.json() );
+                .then( ( response ) => response.json() )
+                .catch( ( error ) => {
+                    console.log( error );
+                } );
         },
         modifySubscription( key, value ) {
             this.currentSubscription[key] = value;

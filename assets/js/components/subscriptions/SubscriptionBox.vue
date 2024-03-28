@@ -52,7 +52,7 @@ const hideQuickMenu = () => {
 };
 
 const vClickOutside = {
-    beforeMount: ( el, binding, vnode ) => {
+    beforeMount: ( el ) => {
         el.clickOutsideEvent = ( event ) => {
             if ( ! el.contains( event.target ) ) {
                 quickMenuStatus.value = false;
@@ -69,13 +69,18 @@ const vClickOutside = {
 const getSubscribers = () => {
     const queryParams = { 'subscription_id': subscription.value.ID };
 
-    // todo: add nonce and other validations.
-    apiFetch( {path: addQueryArgs( wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription/subscribers', queryParams )} )
-        .then( ( response ) => {
-            subscribers.value = response.subscribers;
-            subscription.value.subscribers = subscribers.value;
-        } ).catch( ( error ) => {
-        console.log( error );
+    apiFetch(
+        {
+            path: addQueryArgs( wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription/subscribers', queryParams ),
+            method: 'GET',
+        }
+    )
+    .then( ( response ) => {
+        subscribers.value = response.subscribers;
+        subscription.value.subscribers = subscribers.value;
+    } )
+    .catch( ( error ) => {
+    console.log( error );
     } )
 };
 

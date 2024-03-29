@@ -7,6 +7,7 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import {useQuickEditStore} from '../../stores/quickEdit';
 import {useSubscriptionStore} from '../../stores/subscription';
 import {useNoticeStore} from '../../stores/notice';
+import UpdateButton from './UpdateButton.vue';
 
 const subscriptionStore = useSubscriptionStore();
 const noticeStore = useNoticeStore();
@@ -109,6 +110,7 @@ const updateSubscription = () => {
             noticeStore.message = result.message;
 
             currentSubscription.post_title = planName.value;
+            currentSubscription.post_status = isPrivate.value ? 'private' : 'publish';
 
             setTimeout(() => {
                 noticeStore.display = false;
@@ -209,14 +211,9 @@ const updateSubscription = () => {
                 {{ updateError.message }}</p>
         </div>
         <div class="wpuf-flex wpuf-mt-8 wpuf-flex-row-reverse">
-            <button
-                @click="updateSubscription"
-                :disabled="isUpdating"
-                type="button"
-                :class="isUpdating ? 'wpuf-cursor-not-allowed' : ''"
-                class="wpuf-ml-4 wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                {{ __('Update', 'wp-user-frontend') }}
-            </button>
+            <UpdateButton
+                @update-subscription="updateSubscription"
+                :is-updating="isUpdating.value" />
             <button
                 @click="quickEditStore.setQuickEditStatus(false)"
                 :disabled="isUpdating"

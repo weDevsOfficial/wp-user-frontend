@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia';
 import {ref} from 'vue';
+import apiFetch from '@wordpress/api-fetch';
 
 export const useSubscriptionStore = defineStore( 'subscription', {
     state: () => ( { currentSubscription: ref(null) } ),
@@ -10,12 +11,15 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         updateSubscription( subscription ) {
             const requestOptions = {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': wpufSubscriptions.nonce,
+                },
                 body: JSON.stringify( {subscription} )
             };
 
             return fetch(
-                wpufSubscriptions.siteUrl + '/wp-json/wpuf/v1/wpuf_subscription/' + subscription.id,
+                '/wp-json/wpuf/v1/wpuf_subscription/' + subscription.id,
                 requestOptions )
                 .then( ( response ) => response.json() )
                 .catch( ( error ) => {

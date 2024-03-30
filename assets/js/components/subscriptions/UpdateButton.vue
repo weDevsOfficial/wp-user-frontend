@@ -7,10 +7,6 @@ const props = defineProps( {
         type: Boolean,
         required: true,
     },
-    updateSubscription: {
-        type: Function,
-        required: true,
-    },
 } );
 
 const isUpdating = ref( props.isUpdating );

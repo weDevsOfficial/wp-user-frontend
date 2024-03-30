@@ -1,5 +1,5 @@
 <script setup>
-import {reactive, ref} from 'vue';
+import {ref, toRaw} from 'vue';
 import {__} from '@wordpress/i18n';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 import VueDatePicker from '@vuepic/vue-datepicker';
@@ -8,70 +8,47 @@ import {useQuickEditStore} from '../../stores/quickEdit';
 import {useSubscriptionStore} from '../../stores/subscription';
 import {useNoticeStore} from '../../stores/notice';
 import UpdateButton from './UpdateButton.vue';
+import {storeToRefs} from 'pinia';
 
 const subscriptionStore = useSubscriptionStore();
 const noticeStore = useNoticeStore();
 
 const currentSubscription = subscriptionStore.currentSubscription;
 
-const planName = ref( currentSubscription.post_title );
+// const planName = ref( currentSubscription.post_title );
 const date = ref(new Date(currentSubscription.post_date));
 const isPrivate = ref( currentSubscription.post_status === 'private' );
 const isUpdating = ref( false );
 
+const { errors } = storeToRefs( toRaw(subscriptionStore) );
+
+const fields = subscriptionStore.fieldNames;
+
 const quickEditStore = useQuickEditStore();
 
-const updateError = reactive( {
-    status: false,
-    message: '',
-} );
-const errors = reactive( {
-    planName: false,
-    date: false,
-    isPrivate: false,
-} );
+const getFormattedDate = (date) => {
+    const year = date.getFullYear();
+    // adding 1 because getMonth() returns 0-based month
+    const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+    const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+    const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+    const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+    const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
 
-const handleDate = (modelData) => {
-    date.value = modelData;
-}
-
-const resetErrors = () => {
-    for (const item in errors) {
-        errors[item] = false;
-    }
+    return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
 };
 
-const hasError = () => {
-    for (const item in errors) {
-        if (errors[item]) {
-            return true;
-        }
-    }
-
-    return false;
+const handleDate = (modelData) => {
+    currentSubscription.post_date = getFormattedDate(modelData);
 };
 
 const updateSubscription = () => {
     isUpdating.value = true;
-    resetErrors();
+    subscriptionStore.resetErrors();
 
-    if ( planName.value === '' ) {
-        errors.planName = true;
-    }
-
-    // error if plan name contains #. PayPal doesn't allow # in package name
-    if ( planName.value.includes('#') ) {
-        errors.planName = true;
-    }
-
-    if ( typeof isPrivate.value !== 'boolean' ) {
-        errors.isPrivate = true;
-    }
-
-    if ( date.value === null) {
-        errors.date = true;
-
+    if(!subscriptionStore.validateFields( 'quickEdit' )) {
         isUpdating.value = false;
+
         return;
     }
 
@@ -82,26 +59,7 @@ const updateSubscription = () => {
     const minutes = date.value.getMinutes();
     const seconds = date.value.getSeconds();
 
-    if ( isNaN( year ) || isNaN( month ) || isNaN( day ) || isNaN( hours ) || isNaN( minutes ) || isNaN( seconds ) ) {
-        errors.date = true;
-    }
-
-    if (hasError()) {
-        isUpdating.value = false;
-        return;
-    }
-
-    const promiseResult = subscriptionStore.updateSubscription( {
-        id: currentSubscription.ID,
-        planName: planName.value,
-        mm: month,
-        jj: day,
-        aa: year,
-        hh: hours,
-        mn: minutes,
-        ss: seconds,
-        isPrivate: isPrivate.value,
-    } );
+    const promiseResult = subscriptionStore.updateSubscription();
 
     promiseResult.then((result) => {
         if (result.success) {
@@ -109,7 +67,6 @@ const updateSubscription = () => {
             noticeStore.type = 'success';
             noticeStore.message = result.message;
 
-            currentSubscription.post_title = planName.value;
             currentSubscription.post_status = isPrivate.value ? 'private' : 'publish';
 
             setTimeout(() => {
@@ -120,8 +77,8 @@ const updateSubscription = () => {
 
             quickEditStore.setQuickEditStatus(false);
         } else {
-            updateError.status = true;
-            updateError.message = result.message;
+            subscriptionStore.updateError.status = true;
+            subscriptionStore.updateError.message = result.message;
         }
     });
 
@@ -171,13 +128,13 @@ const updateSubscription = () => {
                     class="wpuf-block wpuf-w-full wpuf-rounded-md !wpuf-border-hidden wpuf-py-1.5 wpuf-pr-10 wpuf-ring-1 wpuf-ring-inset focus:wpuf-ring-2 focus:wpuf-ring-inset sm:wpuf-text-sm sm:wpuf-leading-6 !wpuf-shadow-none"
                     aria-invalid="true"
                     aria-describedby="plan-name-error"
-                    v-model="planName"
+                    v-model="currentSubscription.post_title"
                 />
                 <div v-if="errors.planName" class="wpuf-pointer-events-none wpuf-absolute wpuf-inset-y-0 wpuf-right-0 wpuf-flex wpuf-items-center wpuf-pr-3">
                     <ExclamationCircleIcon class="wpuf-h-5 wpuf-w-5 wpuf-text-red-500" aria-hidden="true" />
                 </div>
             </div>
-            <p v-if="errors.planName" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="email-error">{{ __('Not a valid plan name', 'wp-user-frontend') }}</p>
+            <p v-if="errors.planName" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="email-error">{{ errors.planName.message }}</p>
         </div>
         <div class="wpuf-px-2 sm:wpuf-px-2 lg:wpuf-px-2 wpuf-mt-4">
             <label for="date" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Date', 'wp-user-frontend') }}</label>
@@ -188,6 +145,7 @@ const updateSubscription = () => {
                     textInput
                     v-model="date"
                     :state="!errors.date"
+                    :is-24="false"
                     enable-seconds
                     @update:model-value="handleDate" />
             </div>
@@ -207,8 +165,8 @@ const updateSubscription = () => {
             <p v-if="errors.isPrivate" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="is-private-error">{{ __('Invalid', 'wp-user-frontend') }}</p>
         </div>
         <div class="wpuf-px-2 sm:wpuf-px-2 lg:wpuf-px-2 wpuf-mt-4">
-            <p v-if="updateError.status" id="filled_error_help" class="wpuf-mt-2 wpuf-text-xs wpuf-text-red-600 dark:wpuf-text-red-400">
-                {{ updateError.message }}</p>
+            <p v-if="subscriptionStore.updateError.status" id="filled_error_help" class="wpuf-mt-2 wpuf-text-xs wpuf-text-red-600 dark:wpuf-text-red-400">
+                {{ subscriptionStore.updateError.message }}</p>
         </div>
         <div class="wpuf-flex wpuf-mt-8 wpuf-flex-row-reverse">
             <UpdateButton

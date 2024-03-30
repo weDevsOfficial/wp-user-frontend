@@ -1062,6 +1062,7 @@ class Admin_Subscription {
                         'type'        => 'input-text',
                         'label'       => __( 'Plan Name', 'wp-user-frontend' ),
                         'description' => __( 'The subscription plan name', 'wp-user-frontend' ),
+                        'is_required' => true,
                     ],
                     'plan_details' => [
                         'id'          => 'plan-details',

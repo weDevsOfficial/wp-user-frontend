@@ -162,16 +162,10 @@ class Subscription extends WP_REST_Controller {
             );
         }
 
-        $id     = ! empty( $request['subscription_id'] ) ? (int) $request['subscription_id'] : 0;
-        $name   = ! empty( $subscription['planName'] ) ? sanitize_text_field( $subscription['planName'] ) : '';
-        $mm     = ! empty( $subscription['mm'] ) ? (int) sanitize_text_field( $subscription['mm'] ) : 0;
-        $jj     = ! empty( $subscription['jj'] ) ? (int) sanitize_text_field( $subscription['jj'] ) : 0;
-        $aa     = ! empty( $subscription['aa'] ) ? (int) sanitize_text_field( $subscription['aa'] ) : 0;
-        $hh     = ! empty( $subscription['hh'] ) ? (int) sanitize_text_field( $subscription['hh'] ) : 0;
-        $mn     = ! empty( $subscription['mn'] ) ? (int) sanitize_text_field( $subscription['mn'] ) : 0;
-        $ss     = ! empty( $subscription['ss'] ) ? (int) sanitize_text_field( $subscription['ss'] ) : 0;
-        $status = ! empty( $subscription['isPrivate'] ) ? 'private' : 'publish';
-        $time   = '';
+        $id     = ! empty( $subscription['ID'] ) ? (int) $subscription['ID'] : 0;
+        $name   = ! empty( $subscription['post_title'] ) ? sanitize_text_field( $subscription['post_title'] ) : '';
+        $status = ! empty( $subscription['post_status'] ) ? sanitize_text_field( $subscription['post_status'] ) : 'publish';
+        $date   = ! empty( $subscription['post_date'] ) ? sanitize_text_field( $subscription['post_date'] ) : '';
 
         if ( empty( $id ) ) {
             return new WP_REST_Response(
@@ -192,28 +186,14 @@ class Subscription extends WP_REST_Controller {
             );
         }
 
-        // check if the minute, hour and second is valid
-        if ( $mn > 59 || $hh > 23 || $ss > 59 ) {
-            return new WP_REST_Response(
-                [
-                    'success' => false,
-                    'message' => __( 'Invalid time', 'wp-user-frontend' ),
-                ]
-            );
-        }
-
-        if ( $mm && $jj && $aa ) {
-            $time = $aa . '-' . $mm . '-' . $jj . ' ' . $hh . ':' . $mn . ':' . $ss;
-        }
-
         try {
             $result = wp_update_post(
                 [
                     'ID'            => $id, // ID of the post to update
-                    'post_date'     => $time,
+                    'post_date'     => $date,
                     'post_title'    => $name,
                     'post_status'   => $status,
-                    'post_date_gmt' => get_gmt_from_date( $time ),
+                    'post_date_gmt' => get_gmt_from_date( $date ),
                 ]
             );
 
@@ -233,10 +213,11 @@ class Subscription extends WP_REST_Controller {
                 ]
             );
         } catch ( Exception $e ) {
-            return new \WP_Error(
-                'something_went_wrong',
-                $e->getMessage(),
-                [ 'status' => 422 ]
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ]
             );
         }
     }
@@ -250,5 +231,20 @@ class Subscription extends WP_REST_Controller {
      */
     public function permission_check() {
         return current_user_can( wpuf_admin_role() );
+    }
+
+    public function sanitize_post_date($event_time) {
+
+        // General sanitization, to get rid of malicious scripts or characters
+        $event_time = sanitize_text_field($event_time);
+        $event_time = filter_var($event_time, FILTER_SANITIZE_STRING);
+
+        // Validation to see if it is the right format
+        if (_my_validate_date($event_time)){
+            return $event_time;
+        }
+
+    // default value, to return if checks have failed
+    return "5:00 am";
     }
 }

@@ -37,7 +37,6 @@ const toggleDependentFields = (fieldId, status) => {
 };
 
 </script>
-
 <template>
     <div
         class="wpuf-border wpuf-border-gray-200 wpuf-rounded-t-xl wpuf-rounded-b-xl dark:wpuf-border-gray-70 wpuf-mt-4 wpuf mb-4">

@@ -7,8 +7,6 @@ const emit = defineEmits(['toggleDependentFields']);
 
 const subscriptionStore = useSubscriptionStore();
 
-const wpufSubscriptions = inject( 'wpufSubscriptions' );
-const currentSection = inject( 'currentSection' );
 const subSection = inject( 'subSection' );
 
 const props = defineProps( {
@@ -24,35 +22,13 @@ const { field, fieldId, hiddenFields, serializeKey } = toRefs( props );
 
 const publishedDate = ref(new Date());
 
-const getMetaValue = (key) => {
-    if (!subscription.meta_value.hasOwnProperty( key )) {
-        return '';
-    }
-
-    return subscription.meta_value[key];
-};
-
-const getSerializedMetaValue = (key) => {
-    if (!subscription.meta_value.hasOwnProperty( key )) {
-        return '';
-    }
-
-    const serializedValue = getMetaValue(key);
-
-    if (!serializedValue.hasOwnProperty( serializeKey.value )) {
-        return '';
-    }
-
-    return serializedValue[serializeKey.value];
-};
-
 const getFieldValue = () => {
     switch (field.value.db_type) {
         case 'meta':
-            return getMetaValue( field.value.db_key );
+            return subscriptionStore.getMetaValue( field.value.db_key );
 
         case 'meta_serialized':
-            return getSerializedMetaValue( field.value.db_key );
+            return subscriptionStore.getSerializedMetaValue( field.value.db_key );
 
         default:
             return subscription.hasOwnProperty(field.value.db_key) ? subscription[field.value.db_key] : '';
@@ -90,7 +66,7 @@ const switchStatus = ref( value );
 
 const toggleOnOff = () => {
     if (field.value.db_key === 'post_status') {
-        subscriptionStore.modifySubscription( field.value.db_key, switchStatus.value ? 'publish' : 'private' );
+        subscriptionStore.modifyCurrentSubscription( field.value.db_key, switchStatus.value ? 'publish' : 'private' );
     } else {
         subscriptionStore.setMetaValue( field.value.db_key, switchStatus.value ? 'off' : 'on' );
     }
@@ -141,7 +117,7 @@ onMounted(() => {
 </style>
 <template>
     <div
-        v-if="showField"
+        v-show="showField"
         :class="field.label ? 'sm:wpuf-grid sm:wpuf-grid-cols-3' : 'wpuf-block'"
         class="wpuf-items-start sm:wpuf-gap-4 wpuf-p-4">
         <label v-if="field.label"
@@ -175,6 +151,8 @@ onMounted(() => {
                 @click="[toggleOnOff(), $emit('toggleDependentFields', fieldId, switchStatus)]"
                 type="button"
                 :value="value"
+                :name="field.name"
+                :id="field.name"
                 :class="switchStatus ? 'wpuf-bg-indigo-600' : 'wpuf-bg-gray-200'"
                 class="wpuf-bg-gray-200 wpuf-relative wpuf-inline-flex wpuf-h-6 wpuf-w-11 wpuf-flex-shrink-0 wpuf-cursor-pointer wpuf-rounded-full wpuf-border-2 wpuf-border-transparent wpuf-transition-colors wpuf-duration-200 wpuf-ease-in-out"
                 role="switch">
@@ -188,6 +166,8 @@ onMounted(() => {
                 v-if="field.type === 'time-date'"
                 textInput
                 v-model="publishedDate"
+                :name="field.name"
+                :uid="field.name"
                 enable-seconds
                 @update:model-value="handleDate" />
             <select v-if="field.type === 'select'"

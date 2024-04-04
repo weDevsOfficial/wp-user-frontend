@@ -15,7 +15,6 @@ const noticeStore = useNoticeStore();
 
 const currentSubscription = subscriptionStore.currentSubscription;
 
-// const planName = ref( currentSubscription.post_title );
 const date = ref(new Date(currentSubscription.post_date));
 const isPrivate = ref( currentSubscription.post_status === 'private' );
 const isUpdating = ref( false );
@@ -51,13 +50,6 @@ const updateSubscription = () => {
 
         return;
     }
-
-    const year = date.value.getFullYear();
-    const month = date.value.getMonth() + 1; // adding 1 because getMonth() returns 0-based month
-    const day = date.value.getDate();
-    const hours = date.value.getHours();
-    const minutes = date.value.getMinutes();
-    const seconds = date.value.getSeconds();
 
     const promiseResult = subscriptionStore.updateSubscription();
 

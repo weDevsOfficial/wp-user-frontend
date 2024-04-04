@@ -6,20 +6,49 @@ import {useComponentStore} from '../../stores/component';
 import {useSubscriptionStore} from '../../stores/subscription';
 import {ref} from 'vue';
 import UpdateButton from './UpdateButton.vue';
+import {useNoticeStore} from '../../stores/notice';
 
 const isUpdating = ref( false );
 
 const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
-
-const resetErrors = () => {
-    for (const item in errors) {
-        errors[item] = false;
-    }
-};
+const noticeStore = useNoticeStore();
 
 const updateSubscription = () => {
-    console.log('updateSubscription');
+    isUpdating.value = true;
+    subscriptionStore.resetErrors();
+
+    if(!subscriptionStore.validateFields()) {
+        isUpdating.value = false;
+
+        return;
+    }
+
+    const promiseResult = subscriptionStore.updateSubscription();
+
+    promiseResult.then((result) => {
+        if (result.success) {
+            noticeStore.display = true;
+            noticeStore.type = 'success';
+            noticeStore.message = result.message;
+
+            currentSubscription.post_status = isPrivate.value ? 'private' : 'publish';
+
+            setTimeout(() => {
+                noticeStore.display = false;
+                noticeStore.type = '';
+                noticeStore.message = '';
+            }, 3000);
+
+            quickEditStore.setQuickEditStatus(false);
+        } else {
+            subscriptionStore.updateError.status = true;
+            subscriptionStore.updateError.message = result.message;
+        }
+    });
+
+    isUpdating.value = false;
+
 };
 
 </script>

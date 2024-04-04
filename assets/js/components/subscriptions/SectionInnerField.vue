@@ -18,7 +18,7 @@ const showField = computed(() => {
 </script>
 <template>
     <div
-        v-if="showField"
+        v-show="showField"
         class="sm:wpuf-grid sm:wpuf-grid-cols-3 sm:wpuf-items-start sm:wpuf-gap-4 wpuf-p-4">
         <label
             :for="parentField.name"

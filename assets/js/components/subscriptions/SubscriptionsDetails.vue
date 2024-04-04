@@ -52,12 +52,17 @@ for (const dependentField in wpufSubscriptions.dependentFields) {
             </li>
         </ul>
     </div>
-    <Subsection
-        v-for="section in wpufSubscriptions.subSections[currentTab]"
-        :key="section.id"
-        :currentSection="currentTab"
-        :subSection="section"
-        :subscription="subscription"
-        :fields="wpufSubscriptions.fields[currentTab][section.id]"
-    />
+    <template
+        v-for="(subSections, key) in wpufSubscriptions.subSections"
+    >
+        <Subsection
+            v-for="section in subSections"
+            v-show="currentTab === key"
+            :key="section.id"
+            :currentSection="currentTab"
+            :subSection="section"
+            :subscription="subscription"
+            :fields="wpufSubscriptions.fields[key][section.id]"
+        />
+    </template>
 </template>

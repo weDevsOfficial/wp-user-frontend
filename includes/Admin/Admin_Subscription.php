@@ -1299,7 +1299,7 @@ class Admin_Subscription {
                         'db_type'     => 'meta',
                         'type'        => 'input-number',
                         'label'       => __( 'Billing number', 'wp-user-frontend' ),
-                        'description' => __( 'The billing amount for the subscription', 'wp-user-frontend' ),
+                        'description' => __( 'After how many times the billing should stop?', 'wp-user-frontend' ),
                     ],
                     'trial'      => [
                         'id'          => 'trial',

@@ -60,6 +60,12 @@ const getModifiedValue = (fieldType, fieldValue) => {
 
 const handleDate = (modelData) => {
     publishedDate.value = modelData;
+
+    if (field.value.db_type === 'post') {
+        subscriptionStore.modifyCurrentSubscription( field.value.db_key, modelData );
+    } else {
+        subscriptionStore.setMetaValue( field.value.db_key, modelData );
+    }
 };
 
 const switchStatus = ref( value );
@@ -75,6 +81,22 @@ const toggleOnOff = () => {
 const showField = computed(() => {
     return !hiddenFields.value.includes( fieldId.value );
 });
+
+const modifySubscription = (event) => {
+    switch (field.value.db_type) {
+        case 'meta_serialized':
+            subscriptionStore.modifyCurrentSubscription( field.value.db_key, event.target.value, field.value.serialize_key );
+            break;
+
+        case 'post':
+            subscriptionStore.modifyCurrentSubscription( field.value.db_key, event.target.value );
+            break;
+
+        default:
+            subscriptionStore.setMetaValue( field.value.db_key, event.target.value );
+
+    }
+};
 
 onMounted(() => {
     if (field.value.type !== 'switcher') {
@@ -132,6 +154,7 @@ onMounted(() => {
                 :value="value"
                 :name="field.name"
                 :id="field.name"
+                @input="modifySubscription($event)"
                 class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-max-w-xs sm:wpuf-text-sm sm:wpuf-leading-6">
             <input
                 v-if="field.type === 'input-number'"
@@ -139,12 +162,14 @@ onMounted(() => {
                 :value="value"
                 :name="field.name"
                 :id="field.name"
+                @input="modifySubscription($event)"
                 class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-max-w-xs sm:wpuf-text-sm sm:wpuf-leading-6">
             <textarea
                 v-if="field.type === 'textarea'"
                 :name="field.name"
                 :id="field.name"
                 rows="3"
+                @input="modifySubscription($event)"
                 class="wpuf-block wpuf-w-full wpuf-max-w-2xl wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
@@ -172,7 +197,8 @@ onMounted(() => {
                 @update:model-value="handleDate" />
             <select v-if="field.type === 'select'"
                     :name="field.name"
-                    :id="field.name">
+                    :id="field.name"
+                    @input="modifySubscription($event)">
                 <option
                     v-for="(item, key) in field.options"
                     :value="key"

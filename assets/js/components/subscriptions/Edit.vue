@@ -14,6 +14,8 @@ const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
 const noticeStore = useNoticeStore();
 
+const currentSubscription = subscriptionStore.currentSubscription;
+
 const updateSubscription = () => {
     isUpdating.value = true;
     subscriptionStore.resetErrors();
@@ -39,11 +41,16 @@ const updateSubscription = () => {
                 noticeStore.type = '';
                 noticeStore.message = '';
             }, 3000);
-
-            quickEditStore.setQuickEditStatus(false);
         } else {
-            subscriptionStore.updateError.status = true;
-            subscriptionStore.updateError.message = result.message;
+            noticeStore.display = true;
+            noticeStore.type = 'danger';
+            noticeStore.message = result.message;
+
+            setTimeout(() => {
+                noticeStore.display = false;
+                noticeStore.type = '';
+                noticeStore.message = '';
+            }, 3000);
         }
     });
 

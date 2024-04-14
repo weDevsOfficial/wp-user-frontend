@@ -13,7 +13,7 @@ const classes = {
     <div
         v-if="noticeStore.display"
         :id="id"
-        class="wpuf-absolute wpuf-top-20 wpuf-right-8 wpuf-z-10 wpuf-flex wpuf-justify-between wpuf-items-center wpuf-w-full wpuf-max-w-xs wpuf-p-4 wpuf-mb-4 wpuf-text-gray-500 wpuf-bg-white wpuf-rounded-lg wpuf-shadow dark:wpuf-text-gray-400 dark:wpuf-bg-gray-800" role="alert">
+        class="wpuf-fixed wpuf-top-20 wpuf-right-8 wpuf-z-10 wpuf-flex wpuf-justify-between wpuf-items-center wpuf-w-full wpuf-max-w-xs wpuf-p-4 wpuf-mb-4 wpuf-text-gray-500 wpuf-bg-white wpuf-rounded-lg wpuf-shadow dark:wpuf-text-gray-400 dark:wpuf-bg-gray-800" role="alert">
         <div class="wpuf-flex wpuf-items-center wpuf-justify-between">
             <div
                 :class="classes[noticeStore.type]"

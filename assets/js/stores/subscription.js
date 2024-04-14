@@ -58,15 +58,12 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             this.currentSubscription = subscription;
         },
         getValueFromField(field) {
-            console.log(field.type);
-            console.log(field.id);
             switch (field.type) {
                 case 'input-text':
                 case 'input-number':
                 case 'textarea':
                 case 'switcher':
                 case 'select':
-
                     return document.querySelector('#' + field.id).value;
                 case 'time-date':
 
@@ -80,26 +77,6 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             if ( this.currentSubscription === null ) {
                 return false;
             }
-
-            for ( const field of this.fields ) {
-
-                let value = '';
-
-                if (field.type === 'inline') {
-
-                    for ( const innerField in field.fields ) {
-                        value = this.getValueFromField( innerField );
-                    }
-
-                    continue;
-                } else {
-                    value = this.getValueFromField( field );
-                }
-
-                console.log(value);
-
-            }
-
 
             const subscription = this.currentSubscription;
 
@@ -120,19 +97,23 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                     console.log( error );
                 } );
         },
-        modifyCurrentSubscription ( key, value, serializeKey ) {
-            // if key is not found in currentSubscription, then it must be in meta_value
-            if (this.currentSubscription.hasOwnProperty( key )) {
-                this.currentSubscription[key] = value;
-            } else if (this.currentSubscription.meta_value.hasOwnProperty( key )) {
-                this.setMetaValue ( key, value )
-            } else {
-                if (!this.currentSubscription.meta_value.hasOwnProperty( key )) {
-                    return -1;
+        modifyCurrentSubscription ( key, value, serializeKey = null ) {
+            if (serializeKey === null) {
+                // if key is not found in currentSubscription, then it must be in meta_value
+                if (this.currentSubscription.hasOwnProperty( key )) {
+                    this.currentSubscription[key] = value;
+                } else {
+                    this.setMetaValue ( key, value )
                 }
 
-                this.currentSubscription.meta_value[key][serializeKey] = value;
+                return;
             }
+
+            if (!this.currentSubscription.meta_value.hasOwnProperty( key )) {
+                return;
+            }
+
+            this.currentSubscription.meta_value[key][serializeKey] = value;
         },
         getMetaValue (key) {
             if (!this.currentSubscription.meta_value.hasOwnProperty( key )) {

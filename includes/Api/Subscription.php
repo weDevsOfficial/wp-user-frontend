@@ -177,7 +177,7 @@ class Subscription extends WP_REST_Controller {
         $trial_status = ! empty( $subscription['meta_value']['_trial_status'] ) ? sanitize_text_field( $subscription['meta_value']['_trial_status'] ) : 'no';
         $trial_duration = ! empty( $subscription['meta_value']['_trial_duration'] ) ? (int) $subscription['meta_value']['_trial_duration'] : 0;
         $trial_duration_type = ! empty( $subscription['meta_value']['_trial_duration_type'] ) ? sanitize_text_field( $subscription['meta_value']['_trial_duration_type'] ) : 0;
-        $post_type_name = ! empty( $subscription['meta_value']['_post_type_name'] ) ? array_map( 'sanitize_text_field', $subscription['meta_value']['_post_type_name'] ) : [];
+        $post_type_name = ! empty( $subscription['meta_value']['_post_type_name'] ) ? array_map( 'sanitize_text_field', $subscription['meta_value']['_post_type_name'] ) : '';
         $enable_post_expir = ! empty( $subscription['meta_value']['_enable_post_expiration'] ) ? sanitize_text_field( $subscription['meta_value']['_enable_post_expiration'] ) : 'no';
         $expiration_time = ! empty( $subscription['meta_value']['_post_expiration_time'] ) ? sanitize_text_field( $subscription['meta_value']['_post_expiration_time'] ) : '';
         $expire_post_status = ! empty( $subscription['meta_value']['_expired_post_status'] ) ? sanitize_text_field( $subscription['meta_value']['_expired_post_status'] ) : 'draft';

@@ -10,7 +10,6 @@ const props = defineProps( {
 } );
 
 const isUpdating = ref( props.isUpdating );
-// const updateSubscription = props.updateSubscription;
 
 </script>
 <template>

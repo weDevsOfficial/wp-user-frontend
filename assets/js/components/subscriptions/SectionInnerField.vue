@@ -4,12 +4,11 @@ import SectionInputField from './SectionInputField.vue';
 
 const props = defineProps( {
     parentField: Object,
-    subscription: Object,
     fieldId: String,
     hiddenFields: Array,
 } );
 
-const { parentField, subscription, fieldId, hiddenFields } = toRefs( props );
+const { parentField, fieldId, hiddenFields } = toRefs( props );
 
 const showField = computed(() => {
     return !hiddenFields.value.includes( fieldId.value );
@@ -28,8 +27,7 @@ const showField = computed(() => {
         <div class="wpuf-w-max wpuf-flex wpuf-inline-input">
             <SectionInputField v-for="field in parentField.fields"
                 :field="field"
-                :hiddenFields="hiddenFields"
-                :subscription="subscription" />
+                :hiddenFields="hiddenFields" />
         </div>
     </div>
 </template>

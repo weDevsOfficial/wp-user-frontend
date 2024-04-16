@@ -57,6 +57,35 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         setCurrentSubscription( subscription ) {
             this.currentSubscription = subscription;
         },
+        setBlankSubscription() {
+            this.currentSubscription = {};
+            this.currentSubscription.meta_value = {};
+
+            for (const field of this.fields) {
+                switch (field.db_type) {
+                    case 'post':
+                        this.currentSubscription[field.db_key] = field.default;
+                        break;
+
+                    case 'meta':
+                        this.currentSubscription.meta_value[field.db_key] = field.default;
+                        break;
+
+                    case 'meta_serialized':
+                        let serializedValue = {};
+                        if ( this.currentSubscription.meta_value.hasOwnProperty(field.db_key) ) {
+                            serializedValue = this.currentSubscription.meta_value[field.db_key];
+                            serializedValue[field.serialize_key] = field.default;
+                        } else {
+                            serializedValue[field.serialize_key] = field.default;
+                        }
+
+                        this.currentSubscription.meta_value[field.db_key] = serializedValue;
+
+                        break;
+                }
+            }
+        },
         getValueFromField(field) {
             switch (field.type) {
                 case 'input-text':
@@ -79,6 +108,11 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             }
 
             const subscription = this.currentSubscription;
+            let requestUrl = '/wp-json/wpuf/v1/wpuf_subscription';
+
+            if ( subscription.id ) {
+                requestUrl += '/' + subscription.id;
+            }
 
             const requestOptions = {
                 method: 'POST',
@@ -89,21 +123,25 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 body: JSON.stringify( {subscription} )
             };
 
-            return fetch(
-                '/wp-json/wpuf/v1/wpuf_subscription/' + subscription.id,
-                requestOptions )
+            return fetch( requestUrl, requestOptions )
                 .then( ( response ) => response.json() )
                 .catch( ( error ) => {
                     console.log( error );
-                } );
+            } );
         },
         modifyCurrentSubscription ( key, value, serializeKey = null ) {
+            if (this.currentSubscription === null) {
+                this.setBlankSubscription();
+
+                return;
+            }
+
             if (serializeKey === null) {
                 // if key is not found in currentSubscription, then it must be in meta_value
                 if (this.currentSubscription.hasOwnProperty( key )) {
                     this.currentSubscription[key] = value;
                 } else {
-                    this.setMetaValue ( key, value )
+                    this.setMetaValue ( key, value );
                 }
 
                 return;

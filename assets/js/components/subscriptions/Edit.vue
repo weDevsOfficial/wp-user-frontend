@@ -14,8 +14,6 @@ const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
 const noticeStore = useNoticeStore();
 
-const currentSubscription = subscriptionStore.currentSubscription;
-
 const updateSubscription = () => {
     isUpdating.value = true;
     subscriptionStore.resetErrors();

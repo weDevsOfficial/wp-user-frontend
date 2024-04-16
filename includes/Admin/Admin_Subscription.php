@@ -1063,6 +1063,7 @@ class Admin_Subscription {
                         'label'       => __( 'Plan Name', 'wp-user-frontend' ),
                         'description' => __( 'The subscription plan name', 'wp-user-frontend' ),
                         'is_required' => true,
+                        'default'     => '',
                     ],
                     'plan_details' => [
                         'id'          => 'plan-details',
@@ -1072,6 +1073,7 @@ class Admin_Subscription {
                         'type'        => 'textarea',
                         'label'       => __( 'Plan Details', 'wp-user-frontend' ),
                         'description' => __( 'Write a few sentences about your plan', 'wp-user-frontend' ),
+                        'default'     => '',
                     ],
                 ],
             ]
@@ -1087,6 +1089,7 @@ class Admin_Subscription {
                         'type'        => 'switcher',
                         'label'       => __( 'Make Plan Private', 'wp-user-frontend' ),
                         'description' => __( 'Make the subscription plan private or published', 'wp-user-frontend' ),
+                        'default'     => false,
                     ],
                     'plan_slug'    => [
                         'id'          => 'plan-slug',
@@ -1096,6 +1099,7 @@ class Admin_Subscription {
                         'type'        => 'input-text',
                         'label'       => __( 'Plan Slug', 'wp-user-frontend' ),
                         'description' => __( 'The plan slug', 'wp-user-frontend' ),
+                        'default'     => '',
                     ],
                     'published_on' => [
                         'id'          => 'published-on',
@@ -1105,6 +1109,7 @@ class Admin_Subscription {
                         'type'        => 'time-date',
                         'label'       => __( 'Published on', 'wp-user-frontend' ),
                         'description' => __( 'The subscription publishing date', 'wp-user-frontend' ),
+                        'default'     => wpuf_current_datetime()->format( 'Y-m-d H:i:s' ),
                     ],
                 ],
             ]
@@ -1119,6 +1124,7 @@ class Admin_Subscription {
                         'db_type' => 'meta',
                         'type'    => 'switcher',
                         'label'   => __( 'Enable post expiration', 'wp-user-frontend' ),
+                        'default' => false,
                     ],
                     'expiration_time'      => [
                         'id'         => 'expiration-time',
@@ -1128,9 +1134,10 @@ class Admin_Subscription {
                         'db_type'    => 'meta',
                         'fields'     => [
                             'expiration_value' => [
-                                'id'   => 'post-expiration-value',
-                                'name' => 'post-expiration-value',
-                                'type' => 'input-number',
+                                'id'      => 'post-expiration-value',
+                                'name'    => 'post-expiration-value',
+                                'type'    => 'input-number',
+                                'default' => '-1',
                             ],
                             'expiration_unit'  => [
                                 'id'      => 'post-expiration-unit',
@@ -1142,6 +1149,7 @@ class Admin_Subscription {
                                     'month' => __( 'Month(s)', 'wp-user-frontend' ),
                                     'year'  => __( 'Year(s)', 'wp-user-frontend' ),
                                 ],
+                                'default' => 'day',
                             ],
                         ],
                         'key_id'     => 'expiration_time',
@@ -1162,6 +1170,7 @@ class Admin_Subscription {
                         'label'       => __( 'Post Status', 'wp-user-frontend' ),
                         'description' => __( 'Status of post after post expiration time is over', 'wp-user-frontend' ),
                         'key_id'      => 'post_status',
+                        'default'     => 'publish',
                     ],
                     'send_mail'            => [
                         'id'          => 'is-send-mail',
@@ -1174,6 +1183,7 @@ class Admin_Subscription {
                             'Send an e-mail to author after exceeding post expiration time', 'wp-user-frontend'
                         ),
                         'key_id'      => 'send_mail',
+                        'default'     => '',
                     ],
                     'expiration_message'   => [
                         'id'          => 'expiration-message',
@@ -1187,6 +1197,7 @@ class Admin_Subscription {
                             'wp-user-frontend'
                         ),
                         'key_id'      => 'expiration_message',
+                        'default'     => '',
                     ],
                     'post_number_rollback' => [
                         'id'          => 'post-number-rollback',
@@ -1198,6 +1209,7 @@ class Admin_Subscription {
                         'description' => __(
                             'If enabled, number of posts will be restored if the post is deleted.', 'wp-user-frontend'
                         ),
+                        'default'     => false,
                     ],
                 ],
             ]
@@ -1214,6 +1226,7 @@ class Admin_Subscription {
                         'type'        => 'input-number',
                         'label'       => __( 'Billing amount', 'wp-user-frontend' ),
                         'description' => __( 'The billing amount for the subscription', 'wp-user-frontend' ),
+                        'default'     => 0,
                     ],
                     'expire_in'        => [
                         'id'          => 'subs-expiration-time',
@@ -1226,6 +1239,7 @@ class Admin_Subscription {
                                 'type'    => 'input-number',
                                 'db_key'  => '_expiration_number',
                                 'db_type' => 'meta',
+                                'default' => 0,
                             ],
                             'subs_expiration_unit'  => [
                                 'id'      => 'subs-expiration-unit',
@@ -1239,6 +1253,7 @@ class Admin_Subscription {
                                     'month' => __( 'Month(s)', 'wp-user-frontend' ),
                                     'year'  => __( 'Year(s)', 'wp-user-frontend' ),
                                 ],
+                                'default' => 'day',
                             ],
                         ],
                         'key_id'      => 'expiration_time',
@@ -1253,6 +1268,7 @@ class Admin_Subscription {
                         'type'        => 'switcher',
                         'label'       => __( 'Enable recurring payment', 'wp-user-frontend' ),
                         'description' => __( 'Is the payment recurring?', 'wp-user-frontend' ),
+                        'default'     => false,
                     ],
                     'payment_cycle'    => [
                         'id'         => 'payment-cycle',
@@ -1260,11 +1276,12 @@ class Admin_Subscription {
                         'type'       => 'inline',
                         'fields'     => [
                             'payment_cycle_value' => [
-                                'id'   => 'payment-cycle-value',
-                                'name' => 'payment-cycle-value',
-                                'type' => 'input-number',
+                                'id'      => 'payment-cycle-value',
+                                'name'    => 'payment-cycle-value',
+                                'type'    => 'input-number',
                                 'db_key'  => '_billing_cycle_number',
                                 'db_type' => 'meta',
+                                'default' => '-1',
                             ],
                             'payment_cycle_unit'  => [
                                 'id'      => 'payment-cycle-unit',
@@ -1278,6 +1295,7 @@ class Admin_Subscription {
                                 ],
                                 'db_key'  => '_cycle_period',
                                 'db_type' => 'meta',
+                                'default' => 'day',
                             ],
                         ],
                         'key_id'     => 'payment_cycle',
@@ -1291,6 +1309,7 @@ class Admin_Subscription {
                         'type'        => 'switcher',
                         'label'       => __( 'Stop billing cycle', 'wp-user-frontend' ),
                         'description' => __( 'Stop billing cycle after a certain number', 'wp-user-frontend' ),
+                        'default'     => false,
                     ],
                     'billing_limit'   => [
                         'id'          => 'billing-limit',
@@ -1300,8 +1319,9 @@ class Admin_Subscription {
                         'type'        => 'input-number',
                         'label'       => __( 'Billing number', 'wp-user-frontend' ),
                         'description' => __( 'After how many times the billing should stop?', 'wp-user-frontend' ),
+                        'default'     => '-1',
                     ],
-                    'trial'      => [
+                    'trial'           => [
                         'id'          => 'trial',
                         'name'        => 'trial',
                         'db_key'      => '_trial_status',
@@ -1309,6 +1329,7 @@ class Admin_Subscription {
                         'type'        => 'switcher',
                         'label'       => __( 'Trial', 'wp-user-frontend' ),
                         'description' => __( 'Enable trial period', 'wp-user-frontend' ),
+                        'default'     => false,
                     ],
                     'trial_period'    => [
                         'id'         => 'trial-period',
@@ -1321,6 +1342,7 @@ class Admin_Subscription {
                                 'type' => 'input-number',
                                 'db_key'  => '_trial_duration',
                                 'db_type' => 'meta',
+                                'default' => '-1',
                             ],
                             'trial_period_unit'  => [
                                 'id'      => 'trial-period-unit',
@@ -1334,6 +1356,7 @@ class Admin_Subscription {
                                 ],
                                 'db_key'  => '_trial_duration_type',
                                 'db_type' => 'meta',
+                                'default' => 'day',
                             ],
                         ],
                         'key_id'     => 'trial_period',
@@ -1358,6 +1381,7 @@ class Admin_Subscription {
                             'How many post the user can list with this pack? Enter -1 for unlimited.',
                             'wp-user-frontend'
                         ),
+                        'default'       => '-1',
                     ],
                     'number_of_pages'         => [
                         'id'            => 'number-of-pages',
@@ -1371,6 +1395,7 @@ class Admin_Subscription {
                             'How many page the user can list with this pack? Enter -1 for unlimited.',
                             'wp-user-frontend'
                         ),
+                        'default'       => '-1',
                     ],
                     'number_of_user_requests' => [
                         'id'            => 'number-of-user-requests',
@@ -1384,6 +1409,7 @@ class Admin_Subscription {
                             'How many user_request the user can list with this pack? Enter -1 for unlimited.',
                             'wp-user-frontend'
                         ),
+                        'default'       => '-1',
                     ],
                 ],
             ]
@@ -1403,6 +1429,7 @@ class Admin_Subscription {
                             'How many block the user can use with this pack? Enter -1 for unlimited.',
                             'wp-user-frontend'
                         ),
+                        'default'       => '-1',
                     ],
                     'number_of_templates'      => [
                         'id'            => 'number-of-templates',
@@ -1416,6 +1443,7 @@ class Admin_Subscription {
                             'How many templates the user can use with this pack? Enter -1 for unlimited.',
                             'wp-user-frontend'
                         ),
+                        'default'       => '-1',
                     ],
                     'number_of_template_parts' => [
                         'id'            => 'number-of-template-parts',
@@ -1429,6 +1457,7 @@ class Admin_Subscription {
                             'How many user_request the user can list with this pack? Enter -1 for unlimited.',
                             'wp-user-frontend'
                         ),
+                        'default'       => '-1',
                     ],
                     'number_of_global_styles'  => [
                         'id'            => 'number-of-global-styles',
@@ -1442,6 +1471,7 @@ class Admin_Subscription {
                             'How many global styles the user can use with this pack? Enter -1 for unlimited.',
                             'wp-user-frontend'
                         ),
+                        'default'       => '-1',
                     ],
                     'number_of_menus'          => [
                         'id'            => 'number-of-menus',
@@ -1455,6 +1485,7 @@ class Admin_Subscription {
                             'How many navigation menus the user can use with this pack? Enter -1 for unlimited.',
                             'wp-user-frontend'
                         ),
+                        'default'       => '-1',
                     ],
                 ],
             ]
@@ -1473,6 +1504,7 @@ class Admin_Subscription {
                             'How many block the user can use with this pack? Enter -1 for unlimited.',
                             'wp-user-frontend'
                         ),
+                        'default'     => '-1',
                     ],
                     'remove_featured_item'     => [
                         'id'          => 'remove-featured-item',
@@ -1482,6 +1514,7 @@ class Admin_Subscription {
                         'type'        => 'switcher',
                         'label'       => __( 'Remove featured item', 'wp-user-frontend' ),
                         'description' => __( 'Remove featured items when plan expires', 'wp-user-frontend' ),
+                        'default'     => '-1',
                     ],
                 ],
             ]

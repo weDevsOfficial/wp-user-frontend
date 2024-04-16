@@ -28,7 +28,7 @@ const getFieldValue = () => {
             return subscriptionStore.getMetaValue( field.value.db_key );
 
         case 'meta_serialized':
-            return subscriptionStore.getSerializedMetaValue( field.value.db_key );
+            return subscriptionStore.getSerializedMetaValue( field.value.db_key, field.value.serialize_key );
 
         default:
             return subscription.hasOwnProperty(field.value.db_key) ? subscription[field.value.db_key] : '';

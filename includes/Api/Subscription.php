@@ -258,6 +258,26 @@ class Subscription extends WP_REST_Controller {
     }
 
     /**
+     * Create a new item
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     *
+     * @return WP_REST_Response
+     */
+    public function create_item( $request ) {
+        error_log( print_r( $request, true ) );
+
+        return new WP_REST_Response(
+            [
+                'success' => false,
+                'message' => __( 'Something went wrong', 'wp-user-frontend' ),
+            ]
+        );
+    }
+
+    /**
      * Check permission for API request
      *
      * @since WPUF_SINCE
@@ -266,20 +286,5 @@ class Subscription extends WP_REST_Controller {
      */
     public function permission_check() {
         return current_user_can( wpuf_admin_role() );
-    }
-
-    public function sanitize_post_date($event_time) {
-
-        // General sanitization, to get rid of malicious scripts or characters
-        $event_time = sanitize_text_field($event_time);
-        $event_time = filter_var($event_time, FILTER_SANITIZE_STRING);
-
-        // Validation to see if it is the right format
-        if (_my_validate_date($event_time)){
-            return $event_time;
-        }
-
-    // default value, to return if checks have failed
-    return "5:00 am";
     }
 }

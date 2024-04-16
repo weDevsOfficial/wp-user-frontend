@@ -16,6 +16,7 @@ import New from './subscriptions/New.vue';
 import QuickEdit from './subscriptions/QuickEdit.vue';
 import {useQuickEditStore} from '../stores/quickEdit';
 import Notice from './subscriptions/Notice.vue';
+import {__} from '@wordpress/i18n';
 
 const componentStore = useComponentStore();
 const quickEditStore = useQuickEditStore();
@@ -54,7 +55,7 @@ const fetchData = async () => {
     });
 }
 
-const content = computed( () => {
+const component = computed( () => {
     switch ( currentComponent.value ) {
         case 'List':
             return List;
@@ -96,7 +97,14 @@ onBeforeMount( () => {
             <SidebarMenu />
         </div>
         <div class="wpuf-basis-3/4">
-            <component :is="content" :subscriptions=subscriptions />
+            <button
+                v-if="currentComponent === 'List'"
+                @click="componentStore.setCurrentComponent( 'New' )"
+                type="button"
+                class="wpuf-ml-12 wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                {{ __('Add new', 'wp-user-frontend') }}
+            </button>
+            <component :is="component" :subscriptions=subscriptions />
         </div>
     </div>
     <Notice />

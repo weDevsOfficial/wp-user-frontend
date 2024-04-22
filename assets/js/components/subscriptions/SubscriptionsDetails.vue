@@ -1,6 +1,6 @@
 <script setup>
 import {useSubscriptionStore} from '../../stores/subscription';
-import {inject, provide, reactive, ref} from 'vue';
+import {inject, onBeforeMount, provide, reactive, ref} from 'vue';
 import Subsection from './Subsection.vue';
 import {useFieldDependencyStore} from '../../stores/fieldDependency';
 
@@ -21,19 +21,25 @@ const errors = reactive( {
 
 provide( 'currentSection', currentTab );
 
-// for each wpufSubscriptions.dependentFields, add it to the dependencyStore
-for (const dependentField in wpufSubscriptions.dependentFields) {
-    for (const field in wpufSubscriptions.dependentFields[dependentField]) {
+const addDepentendFields = () => {
+    // for each wpufSubscriptions.dependentFields, add it to the dependencyStore
+    for (const dependentField in wpufSubscriptions.dependentFields) {
+        for (const field in wpufSubscriptions.dependentFields[dependentField]) {
 
-        if (dependencyStore.modifierFields.hasOwnProperty(dependentField)) {
-            dependencyStore.modifierFields[dependentField][field] = wpufSubscriptions.dependentFields[dependentField][field];
-        } else {
-            dependencyStore.modifierFields[dependentField] = {
-                [field]: wpufSubscriptions.dependentFields[dependentField][field]
-            };
+            if (dependencyStore.modifierFields.hasOwnProperty(dependentField)) {
+                dependencyStore.modifierFields[dependentField][field] = wpufSubscriptions.dependentFields[dependentField][field];
+            } else {
+                dependencyStore.modifierFields[dependentField] = {
+                    [field]: wpufSubscriptions.dependentFields[dependentField][field]
+                };
+            }
         }
     }
-}
+};
+
+onBeforeMount(() => {
+    addDepentendFields();
+});
 
 </script>
 <template>

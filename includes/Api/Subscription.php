@@ -42,7 +42,7 @@ class Subscription extends WP_REST_Controller {
                 ],
                 [
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'callback'            => [ $this, 'create_item' ],
+                    'callback'            => [ $this, 'create_or_update_item' ],
                     'permission_callback' => [ $this, 'permission_check' ],
                     'args'                => $this->get_endpoint_args_for_item_schema( true ),
                 ],
@@ -162,8 +162,56 @@ class Subscription extends WP_REST_Controller {
             );
         }
 
-        $id             = ! empty( $subscription['ID'] ) ? (int) $subscription['ID'] : 0;
-        $name           = ! empty( $subscription['post_title'] ) ? sanitize_text_field( $subscription['post_title'] ) : '';
+        $id = ! empty( $subscription['ID'] ) ? (int) $subscription['ID'] : 0;
+
+        if ( empty( $id ) ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Subscription ID is required', 'wp-user-frontend' ),
+                ]
+            );
+        }
+
+        return $this->create_or_update_item( $request );
+    }
+
+    /**
+     * Create a new item
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     *
+     * @return WP_REST_Response
+     */
+    public function create_or_update_item( $request ) {
+        $subscription    = ! empty( $request['subscription'] ) ? $request['subscription'] : '';
+        $success_message = '';
+
+        if ( empty( $subscription ) ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Something went wrong', 'wp-user-frontend' ),
+                ]
+            );
+        }
+
+        $id = ! empty( $subscription['ID'] ) ? (int) $subscription['ID'] : 0;
+
+        $name = ! empty( $subscription['post_title'] ) ? sanitize_text_field( $subscription['post_title'] ) : '';
+
+        // error if plan name contains #. PayPal doesn't allow # in package name
+        if ( strpos( $name, '#' ) !== false ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Subscription name cannot contain #', 'wp-user-frontend' ),
+                ]
+            );
+        }
+
         $status         = ! empty( $subscription['post_status'] ) ? sanitize_text_field( $subscription['post_status'] ) : 'publish';
         $date           = ! empty( $subscription['post_date'] ) ? sanitize_text_field( $subscription['post_date'] ) : '';
         $post_content   = ! empty( $subscription['post_content'] ) ? sanitize_textarea_field( $subscription['post_content'] ) : '';
@@ -186,40 +234,39 @@ class Subscription extends WP_REST_Controller {
         $total_feature_item = ! empty( $subscription['meta_value']['_total_feature_item'] ) ? (int) $subscription['meta_value']['_total_feature_item'] : 0;
         $remove_feature_item = ! empty( $subscription['meta_value']['_remove_feature_item'] ) ? sanitize_text_field( $subscription['meta_value']['_remove_feature_item'] ) : '';
 
-        if ( empty( $id ) ) {
-            return new WP_REST_Response(
-                [
-                    'success' => false,
-                    'message' => __( 'Subscription ID is required', 'wp-user-frontend' ),
-                ]
-            );
-        }
-
-        // error if plan name contains #. PayPal doesn't allow # in package name
-        if ( strpos( $name, '#' ) !== false ) {
-            return new WP_REST_Response(
-                [
-                    'success' => false,
-                    'message' => __( 'Subscription name cannot contain #', 'wp-user-frontend' ),
-                ]
-            );
-        }
-
         try {
             $current_time = wpuf_current_datetime();
 
-            wp_update_post(
-                [
-                    'ID'                => $id, // ID of the post to update
-                    'post_date'         => $date,
-                    'post_date_gmt'     => get_gmt_from_date( $date ),
-                    'post_content'      => $post_content,
-                    'post_title'        => $name,
-                    'post_status'       => $status,
-                    'post_modified'     => $current_time,
-                    'post_modified_gmt' => get_gmt_from_date( $current_time->format( 'Y-m-d H:i:s' ) ),
-                ]
-            );
+            $post_arr = [
+                'post_date'         => $date,
+                'post_date_gmt'     => get_gmt_from_date( $date ),
+                'post_content'      => $post_content,
+                'post_title'        => $name,
+                'post_status'       => $status,
+                'post_modified'     => $current_time,
+                'post_modified_gmt' => get_gmt_from_date( $current_time->format( 'Y-m-d H:i:s' ) ),
+            ];
+
+            if ( ! empty( $id ) ) {
+                // update mode
+                $post_arr['ID']  = $id; // ID of the post to update
+                $success_message = __( 'Subscription updated successfully', 'wp-user-frontend' );
+            } else {
+                $success_message = __( 'Subscription added successfully', 'wp-user-frontend' );
+            }
+
+            $id = wp_insert_post( $post_arr );
+
+            if ( empty( $id ) || is_wp_error( $id ) ) {
+                return new WP_REST_Response(
+                    [
+                        'success' => false,
+                        'message' => __( 'Failed to insert post', 'wp-user-frontend' ),
+                    ]
+                );
+            }
+
+            do_action( 'wpuf_before_update_subscription_pack', $id, $request );
 
             update_post_meta( $id, '_billing_amount', $billing_amount );
             update_post_meta( $id, '_expiration_number', $expiration_number );
@@ -239,12 +286,13 @@ class Subscription extends WP_REST_Controller {
             update_post_meta( $id, '_post_expiration_message', $post_expire_msg );
             update_post_meta( $id, '_total_feature_item', $total_feature_item );
             update_post_meta( $id, '_remove_feature_item', $remove_feature_item );
-            do_action( 'wpuf_update_subscription_pack', $id, $request );
+
+            do_action( 'wpuf_after_update_subscription_pack', $id, $request );
 
             return rest_ensure_response(
                 [
                     'success' => true,
-                    'message' => __( 'Subscription updated successfully', 'wp-user-frontend' ),
+                    'message' => $success_message,
                 ]
             );
         } catch ( Exception $e ) {
@@ -255,26 +303,6 @@ class Subscription extends WP_REST_Controller {
                 ]
             );
         }
-    }
-
-    /**
-     * Create a new item
-     *
-     * @since WPUF_SINCE
-     *
-     * @param WP_REST_Request $request Full details about the request.
-     *
-     * @return WP_REST_Response
-     */
-    public function create_item( $request ) {
-        error_log( print_r( $request, true ) );
-
-        return new WP_REST_Response(
-            [
-                'success' => false,
-                'message' => __( 'Something went wrong', 'wp-user-frontend' ),
-            ]
-        );
     }
 
     /**

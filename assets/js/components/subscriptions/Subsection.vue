@@ -25,12 +25,12 @@ const toggleDependentFields = (fieldId, status) => {
         return;
     }
 
-    for (const innerField in fields.value) {
-        if (dependencyStore.modifierFields[fieldId].hasOwnProperty( innerField )) {
+    for (const field in fields.value) {
+        if (dependencyStore.modifierFields[fieldId].hasOwnProperty( field )) {
             if (!status) {
-                hiddenFields.value.push( innerField );
+                hiddenFields.value.push( field );
             } else {
-                hiddenFields.value = hiddenFields.value.filter( (item) => item !== innerField );
+                hiddenFields.value = hiddenFields.value.filter( (item) => item !== field );
             }
         }
     }

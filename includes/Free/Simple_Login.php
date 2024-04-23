@@ -447,41 +447,6 @@ class Simple_Login {
             return;
         }
 
-        $log = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
-        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
-        $pwd = isset( $_POST['pwd'] ) ? sanitize_text_field( wp_unslash( trim( $_POST['pwd'] ) ) ) : '';
-        // $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
-
-        $validation_error = new WP_Error();
-        $validation_error = apply_filters( 'wpuf_process_login_errors', $validation_error, $log, $pwd );
-
-        if ( $validation_error->get_error_code() ) {
-            $this->login_errors[] = $validation_error->get_error_message();
-
-            return;
-        }
-
-        if ( empty( $log ) ) {
-            $this->login_errors[] = __( 'Username is required.', 'wp-user-frontend' );
-
-            return;
-        }
-
-        if ( empty( $pwd ) ) {
-            $this->login_errors[] = __( 'Password is required.', 'wp-user-frontend' );
-
-            return;
-        }
-
-        if ( empty( $_POST['g-recaptcha-response'] ) ) {
-            $this->login_errors[] = __( 'Empty reCaptcha Field', 'wp-user-frontend' );
-            return;
-        } else {
-            $no_captcha = 1;
-            $invisible_captcha = 0;
-            Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
-        }
-
         $log = isset( $_POST['log'] ) ? esc_attr( wp_unslash( $_POST['log'] ) ) : '';
         $pwd = isset( $_POST['pwd'] ) ? trim( $_POST['pwd'] ) : '';
         // $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
@@ -507,6 +472,17 @@ class Simple_Login {
             return;
         }
 
+        if ( isset( $_POST['g-recaptcha-response'] ) ) {
+            if ( empty( $_POST['g-recaptcha-response'] ) ) {
+                $this->login_errors[] = __( 'Empty reCaptcha Field', 'wp-user-frontend' );
+                return;
+            } else {
+                $no_captcha = 1;
+                $invisible_captcha = 0;
+                Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
+            }
+        }
+
         if ( is_email( $log ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {
             $user = get_user_by( 'email', $log );
 
@@ -524,22 +500,6 @@ class Simple_Login {
                 $message = __( 'You can\'t login until an administrator manually approve your account.', 'wp-user-frontend' );
 
                 $this->login_errors[] = $message;
-
-                return;
-            }
-        } else {
-            $no_captcha = 1;
-            $invisible_captcha = 0;
-            Render_Form::init()->validate_re_captcha( $no_captcha, $invisible_captcha );
-        }
-
-        if ( is_email( $log ) && apply_filters( 'wpuf_get_username_from_email', true ) ) {
-            $user = get_user_by( 'email', $log );
-
-            if ( isset( $user->user_login ) ) {
-                $creds['user_login'] = $user->user_login;
-            } else {
-                $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
 
                 return;
             }
@@ -965,7 +925,7 @@ class Simple_Login {
         $pack_id                      = ! empty( $_GET['pack_id'] ) ? sanitize_key( wp_unslash( $_GET['pack_id'] ) ) : '';
 
         if ( $autologin_after_registration === 'on'
-            && $pack_id !== null && is_integer( (int) $pack_id ) ) {
+             && $pack_id !== null && is_integer( (int) $pack_id ) ) {
             wp_set_current_user( $user_id );
             wp_set_auth_cookie( $user_id );
         }

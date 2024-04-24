@@ -58,6 +58,11 @@ class Subscription extends WP_REST_Controller {
                     'callback'            => [ $this, 'edit_item' ],
                     'permission_callback' => [ $this, 'permission_check' ],
                 ],
+                [
+                    'methods'             => WP_REST_Server::DELETABLE,
+                    'callback'            => [ $this, 'delete_item' ],
+                    'permission_callback' => [ $this, 'permission_check' ],
+                ],
             ]
         );
 
@@ -70,6 +75,37 @@ class Subscription extends WP_REST_Controller {
                 ],
             ]
         );
+    }
+
+    public function delete_item( $request ) {
+        $subscription_id = ! empty( $request['subscription_id'] ) ? (int) sanitize_text_field( $request['subscription_id'] ) : 0;
+
+        if ( ! $subscription_id ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Subscription ID is required', 'wp-user-frontend' ),
+                ]
+            );
+        }
+
+        $result = wp_delete_post( $subscription_id, true );
+
+        if ( ! $result ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Failed to delete subscription', 'wp-user-frontend' ),
+                ]
+            );
+        } else {
+            return new WP_REST_Response(
+                [
+                    'success' => true,
+                    'message' => __( 'Subscription deleted successfully', 'wp-user-frontend' ),
+                ]
+            );
+        }
     }
 
     /**

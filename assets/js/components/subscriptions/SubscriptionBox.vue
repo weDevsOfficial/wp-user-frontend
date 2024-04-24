@@ -141,26 +141,26 @@ const toggleSubscription = ( subscription ) => {
 };
 
 const deleteSubscription = () => {
-    console.log('delete subscription');
-    // const promiseResult = subscriptionStore.deleteSubscription(subscription);
-    //
-    // promiseResult.then((result) => {
-    //     if (result.success) {
-    //         noticeStore.display = true;
-    //         noticeStore.type = 'success';
-    //         noticeStore.message = result.message;
-    //     } else {
-    //         noticeStore.display = true;
-    //         noticeStore.type = 'danger';
-    //         noticeStore.message = result.message;
-    //     }
-    //
-    //     setTimeout(() => {
-    //         noticeStore.display = false;
-    //         noticeStore.type = '';
-    //         noticeStore.message = '';
-    //     }, 3000);
-    // });
+    const promiseResult = subscriptionStore.deleteSubscription( subscription.value.ID );
+
+    promiseResult.then((result) => {
+        if (result.success) {
+            noticeStore.display = true;
+            noticeStore.type = 'success';
+            noticeStore.message = result.message;
+            showPopup.value = false;
+        } else {
+            noticeStore.display = true;
+            noticeStore.type = 'danger';
+            noticeStore.message = result.message;
+        }
+
+        setTimeout(() => {
+            noticeStore.display = false;
+            noticeStore.type = '';
+            noticeStore.message = '';
+        }, 3000);
+    });
 };
 
 </script>

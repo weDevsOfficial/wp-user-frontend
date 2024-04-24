@@ -268,6 +268,21 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             this.setCurrentSubscription( subscription );
 
             return this.updateSubscription();
+        },
+        deleteSubscription( id ) {
+            const requestOptions = {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': wpufSubscriptions.nonce,
+                },
+            };
+
+            return fetch( '/wp-json/wpuf/v1/wpuf_subscription/' + id, requestOptions )
+                .then( ( response ) => response.json() )
+                .catch( ( error ) => {
+                    console.log( error );
+                } );
         }
     }
 } )

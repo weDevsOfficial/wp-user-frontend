@@ -16,7 +16,7 @@ const {subscriptions} = toRefs( props );
         <h3 class="wpuf-text-lg wpuf-font-bold wpuf-mb-0">{{ __( 'Subscriptions', 'wp-user-frontend' ) }}</h3>
         <p class="wpuf-text-sm wpuf-text-gray-500">{{ __( 'Explore and manage all subscriptions in one place', 'wp-user-frontend' ) }}</p>
         <div class="wpuf-grid wpuf-grid-cols-3 wpuf-gap-4 wpuf-mt-12">
-            <SubscriptionBox v-for="subscription in subscriptions" :subscription=subscription />
+            <SubscriptionBox v-for="subscription in subscriptions" :subscription=subscription :key="subscription.ID" />
         </div>
     </div>
 </template>

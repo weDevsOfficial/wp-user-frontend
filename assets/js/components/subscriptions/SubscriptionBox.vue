@@ -8,12 +8,15 @@ import Edit from './Edit.vue';
 import {useComponentStore} from '../../stores/component';
 import {useQuickEditStore} from '../../stores/quickEdit';
 import {useSubscriptionStore} from '../../stores/subscription';
+import {useNoticeStore} from '../../stores/notice';
+import Popup from './Popup.vue';
 
 const props = defineProps( {
     subscription: Object
 } );
 
 const {subscription} = toRefs( props );
+const showPopup = ref( false );
 const pillColor = ref( '' );
 const isRecurring = ref( false );
 const quickMenuStatus = ref( false );
@@ -23,6 +26,7 @@ const subscribersLink = wpufSubscriptions.siteUrl + '/wp-admin/edit.php?post_typ
 const componentStore = useComponentStore();
 const quickEditStore = useQuickEditStore();
 const subscriptionStore = useSubscriptionStore();
+const noticeStore = useNoticeStore();
 const currentSubscription = subscriptionStore.currentSubscription;
 
 const setPillBackground = () => {
@@ -88,7 +92,7 @@ const getSubscribers = () => {
 };
 
 const setBillingAmount = () => {
-    if (parseFloat( subscription.value.meta_value.billing_amount ) === 0) {
+    if (parseFloat( subscription.value.meta_value.billing_amount ) === 0 || subscription.value.meta_value.billing_amount === '') {
         billingAmount.value = __( 'Free', 'wp-user-frontend' );
     } else {
         billingAmount.value = wpufSubscriptions.currencySymbol + subscription.value.meta_value.billing_amount;
@@ -111,12 +115,60 @@ const title = computed(() => {
     return currentSubscription ? currentSubscription.post_title : subscription.value.post_title;
 });
 
+const toggleSubscription = ( subscription ) => {
+    const promiseResult = subscriptionStore.toggleDraft(subscription);
+
+    promiseResult.then((result) => {
+        if (result.success) {
+            noticeStore.display = true;
+            noticeStore.type = 'success';
+            noticeStore.message = result.message;
+
+            subscription.post_status = subscription.post_status === 'publish' ? 'draft' : 'publish';
+            setPillBackground();
+        } else {
+            noticeStore.display = true;
+            noticeStore.type = 'danger';
+            noticeStore.message = result.message;
+        }
+
+        setTimeout(() => {
+            noticeStore.display = false;
+            noticeStore.type = '';
+            noticeStore.message = '';
+        }, 3000);
+    });
+};
+
+const deleteSubscription = () => {
+    console.log('delete subscription');
+    // const promiseResult = subscriptionStore.deleteSubscription(subscription);
+    //
+    // promiseResult.then((result) => {
+    //     if (result.success) {
+    //         noticeStore.display = true;
+    //         noticeStore.type = 'success';
+    //         noticeStore.message = result.message;
+    //     } else {
+    //         noticeStore.display = true;
+    //         noticeStore.type = 'danger';
+    //         noticeStore.message = result.message;
+    //     }
+    //
+    //     setTimeout(() => {
+    //         noticeStore.display = false;
+    //         noticeStore.type = '';
+    //         noticeStore.message = '';
+    //     }, 3000);
+    // });
+};
+
 </script>
 <template>
     <div class="wpuf-justify-between wpuf-max-w-sm wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-shadow dark:wpuf-bg-gray-800 dark:wpuf-border-gray-700 dark:hover:wpuf-bg-gray-700">
         <div class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-bg-gray-100">
             <div>
-                <h5 class="wpuf-mb-1 wpuf-m-0 wpuf-text-2xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900 dark:wpuf-text-white">
+                <h5 class="wpuf-mb-1 wpuf-m-0 wpuf-text-2xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900 dark:wpuf-text-white" :title="subscription.ID">
                     {{ title }}
                 </h5>
                 <p class="wpuf-mt-1 wpuf-mb-1 wpuf-truncate wpuf-text-lg wpuf-text-gray-500">{{ billingAmount }}</p>
@@ -131,8 +183,8 @@ const title = computed(() => {
                     <ul>
                         <li @click="componentStore.setCurrentComponent( 'Edit' ); subscriptionStore.setCurrentSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Edit', 'wp-user-frontend' ) }}</li>
                         <li @click="quickEditStore.setQuickEditStatus(true); subscriptionStore.setCurrentSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Quick Edit', 'wp-user-frontend' ) }}</li>
-                        <li class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Draft/Publish', 'wp-user-frontend' ) }}</li>
-                        <li class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Delete', 'wp-user-frontend' ) }}</li>
+                        <li @click="toggleSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Draft/Publish', 'wp-user-frontend' ) }}</li>
+                        <li @click="showPopup = true" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Delete', 'wp-user-frontend' ) }}</li>
                     </ul>
                 </div>
             </div>
@@ -149,4 +201,5 @@ const title = computed(() => {
             <a :href="subscribersLink" class="wpuf-text-lg wpuf-text-gray-500">{{ subscribers }}</a>
         </div>
     </div>
+    <Popup @hide-popup="showPopup = false" @delete="deleteSubscription" v-if="showPopup" />
 </template>

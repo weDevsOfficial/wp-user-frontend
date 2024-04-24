@@ -51,7 +51,7 @@ class Subscription extends WP_REST_Controller {
 
         register_rest_route(
             $this->namespace,
-            '/' . $this->base . '/(?P<subscription_id>\w+)',
+            '/' . $this->base . '/(?P<subscription_id>\d+)',
             [
                 [
                     'methods'             => WP_REST_Server::EDITABLE,
@@ -152,6 +152,7 @@ class Subscription extends WP_REST_Controller {
      */
     public function edit_item( $request ) {
         $subscription = ! empty( $request['subscription'] ) ? $request['subscription'] : '';
+        $edit_single  = ! empty( $subscription['edit_single_row'] ) ? $subscription['edit_single_row'] : false;
 
         if ( empty( $subscription ) ) {
             return new WP_REST_Response(
@@ -171,6 +172,45 @@ class Subscription extends WP_REST_Controller {
                     'message' => __( 'Subscription ID is required', 'wp-user-frontend' ),
                 ]
             );
+        }
+
+        if ( $edit_single ) {
+            $row   = ! empty( $subscription['edit_row_name'] ) ? sanitize_text_field( $subscription['edit_row_name'] ) : '';
+            $value = ! empty( $subscription['edit_row_value'] ) ? sanitize_text_field( $subscription['edit_row_value'] ) : '';
+
+            if ( empty( $row ) || empty( $value ) ) {
+                return new WP_REST_Response(
+                    [
+                        'success' => false,
+                        'message' => __( 'Failed to update', 'wp-user-frontend' ),
+                    ]
+                );
+            }
+
+            do_action( 'wpuf_before_update_subscription_single_row', $id, $request );
+            $result = wp_update_post(
+                [
+                    'ID' => $id,
+                    $row => $value,
+                ]
+            );
+            do_action( 'wpuf_after_update_subscription_single_row', $id, $request );
+
+            if ( empty( $result ) || is_wp_error( $result ) ) {
+                return new WP_REST_Response(
+                    [
+                        'success' => false,
+                        'message' => __( 'Failed to update subscription', 'wp-user-frontend' ),
+                    ]
+                );
+            } else {
+                return rest_ensure_response(
+                    [
+                        'success' => true,
+                        'message' => __( 'Subscription updated successfully', 'wp-user-frontend' ),
+                    ]
+                );
+            }
         }
 
         return $this->create_or_update_item( $request );
@@ -238,6 +278,7 @@ class Subscription extends WP_REST_Controller {
             $current_time = wpuf_current_datetime();
 
             $post_arr = [
+                'post_type'         => 'wpuf_subscription',
                 'post_date'         => $date,
                 'post_date_gmt'     => get_gmt_from_date( $date ),
                 'post_content'      => $post_content,
@@ -255,7 +296,9 @@ class Subscription extends WP_REST_Controller {
                 $success_message = __( 'Subscription added successfully', 'wp-user-frontend' );
             }
 
+            do_action( 'wpuf_before_update_subscription_pack', $id, $request );
             $id = wp_insert_post( $post_arr );
+            do_action( 'wpuf_before_update_subscription_pack', $id, $request );
 
             if ( empty( $id ) || is_wp_error( $id ) ) {
                 return new WP_REST_Response(
@@ -266,7 +309,7 @@ class Subscription extends WP_REST_Controller {
                 );
             }
 
-            do_action( 'wpuf_before_update_subscription_pack', $id, $request );
+            do_action( 'wpuf_before_update_subscription_pack_meta', $id, $request );
 
             update_post_meta( $id, '_billing_amount', $billing_amount );
             update_post_meta( $id, '_expiration_number', $expiration_number );
@@ -287,7 +330,7 @@ class Subscription extends WP_REST_Controller {
             update_post_meta( $id, '_total_feature_item', $total_feature_item );
             update_post_meta( $id, '_remove_feature_item', $remove_feature_item );
 
-            do_action( 'wpuf_after_update_subscription_pack', $id, $request );
+            do_action( 'wpuf_after_update_subscription_pack_meta', $id, $request );
 
             return rest_ensure_response(
                 [

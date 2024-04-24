@@ -110,8 +110,8 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             const subscription = this.currentSubscription;
             let requestUrl = '/wp-json/wpuf/v1/wpuf_subscription';
 
-            if ( subscription.id ) {
-                requestUrl += '/' + subscription.id;
+            if ( subscription.ID ) {
+                requestUrl += '/' + subscription.ID;
             }
 
             const requestOptions = {
@@ -259,6 +259,15 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             }
 
             return !this.hasError();
+        },
+        toggleDraft( subscription ) {
+            subscription.edit_single_row = true;
+            subscription.edit_row_name = 'post_status';
+            subscription.edit_row_value = subscription.post_status === 'draft' ? 'publish' : 'draft'
+            ;
+            this.setCurrentSubscription( subscription );
+
+            return this.updateSubscription();
         }
     }
 } )

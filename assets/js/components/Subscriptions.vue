@@ -17,15 +17,15 @@ import QuickEdit from './subscriptions/QuickEdit.vue';
 import {useQuickEditStore} from '../stores/quickEdit';
 import Notice from './subscriptions/Notice.vue';
 import {__} from '@wordpress/i18n';
+import {useSubscriptionStore} from '../stores/subscription';
 
 const componentStore = useComponentStore();
+const subscriptionStore = useSubscriptionStore();
 const quickEditStore = useQuickEditStore();
 const { currentComponent } = storeToRefs(componentStore);
 const { isQuickEdit } = storeToRefs(quickEditStore);
 
 const isLoading = ref( false );
-
-const subscriptions = ref( null );
 
 provide( 'wpufSubscriptions', wpufSubscriptions );
 
@@ -41,9 +41,9 @@ const fetchData = async () => {
         },
         } )
         .then( ( response ) => {
-            subscriptions.value = response.subscriptions;
+            subscriptionStore.subscriptionList = response.subscriptions;
 
-            if ( subscriptions.value.length > 0 ) {
+            if ( subscriptionStore.subscriptionList.length > 0 ) {
                 componentStore.setCurrentComponent( 'List' );
             } else {
                 componentStore.setCurrentComponent( 'Empty' );
@@ -104,7 +104,7 @@ onBeforeMount( () => {
                 class="wpuf-ml-12 wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 {{ __('Add new', 'wp-user-frontend') }}
             </button>
-            <component :is="component" :subscriptions=subscriptions />
+            <component :is="component" />
         </div>
     </div>
     <Notice />

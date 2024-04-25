@@ -116,7 +116,7 @@ const title = computed(() => {
     return currentSubscription ? currentSubscription.post_title : subscription.value.post_title;
 });
 
-const toggleSubscription = ( subscription ) => {
+const toggleSubscriptionStatus = ( subscription ) => {
     const promiseResult = subscriptionStore.toggleDraft(subscription);
 
     promiseResult.then((result) => {
@@ -185,7 +185,7 @@ const deleteSubscription = () => {
                     <ul>
                         <li @click="componentStore.setCurrentComponent( 'Edit' ); subscriptionStore.setCurrentSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Edit', 'wp-user-frontend' ) }}</li>
                         <li @click="quickEditStore.setQuickEditStatus(true); subscriptionStore.setCurrentSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Quick Edit', 'wp-user-frontend' ) }}</li>
-                        <li @click="toggleSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Draft/Publish', 'wp-user-frontend' ) }}</li>
+                        <li @click="toggleSubscriptionStatus(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Draft/Publish', 'wp-user-frontend' ) }}</li>
                         <li @click="showPopup = true" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Delete', 'wp-user-frontend' ) }}</li>
                     </ul>
                 </div>

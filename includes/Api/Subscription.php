@@ -158,9 +158,15 @@ class Subscription extends WP_REST_Controller {
             'offset'         => $offset,
         ];
 
+        $args = shortcode_atts( $args, $request->get_params() );
+
+        if ( 'all' === $args['post_status'] ) {
+            $args['post_status'] = 'draft, publish, future, pending, private';
+        }
+
         $subscriptions = ( new \WeDevs\Wpuf\Admin\Subscription() )->get_subscriptions( $args );
 
-        if ( ! $subscriptions ) {
+        if ( ! is_array( $subscriptions ) ) {
             return new WP_REST_Response(
                 [
                     'success' => false,

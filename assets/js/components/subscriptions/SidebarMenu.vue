@@ -1,5 +1,10 @@
 <script setup>
 import { __ } from '@wordpress/i18n';
+import {ref} from 'vue';
+import {useSubscriptionStore} from '../../stores/subscription';
+
+const subscriptionStore = useSubscriptionStore();
+const currentRoute = ref( '#/all' );
 </script>
 <template>
     <div>
@@ -22,20 +27,35 @@ import { __ } from '@wordpress/i18n';
             </svg>
             </div>
             <ul class="wpuf-space-y-2 wpuf-text-lg">
-                <li class=" wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer hover:wpuf-text-white">
-                    <a href="#/published">{{ __('Published', 'wp-user-frontend') }}</a>
+                <li
+                    @click="[currentRoute = '#/publish', subscriptionStore.setSubscriptionsByStatus('publish')]"
+                    :class="currentRoute === '#/publish' ? 'wpuf-bg-gray-200' : ''"
+                    class="wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
+                    {{ __('Published', 'wp-user-frontend') }}
                 </li>
-                <li class=" wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
-                    <a href="#/drafts">{{ __('Drafts', 'wp-user-frontend') }}</a>
+                <li
+                    @click="[currentRoute = '#/draft', subscriptionStore.setSubscriptionsByStatus('draft')]"
+                    :class="currentRoute === '#/draft' ? 'wpuf-bg-gray-200' : ''"
+                    class="wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
+                    {{ __('Drafts', 'wp-user-frontend') }}
                 </li>
-                <li class=" wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
-                    <a href="#/pending">{{ __('Pending', 'wp-user-frontend') }}</a>
+                <li
+                    @click="[currentRoute = '#/pending', subscriptionStore.setSubscriptionsByStatus('pending')]"
+                    :class="currentRoute === '#/pending' ? 'wpuf-bg-gray-200' : ''"
+                    class="wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
+                    {{ __('Pending', 'wp-user-frontend') }}
                 </li>
-                <li class=" wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
-                    <a href="#/trash">{{ __('Trash', 'wp-user-frontend') }}</a>
+                <li
+                    @click="[currentRoute = '#/trash', subscriptionStore.setSubscriptionsByStatus('trash')]"
+                    :class="currentRoute === '#/trash' ? 'wpuf-bg-gray-200' : ''"
+                    class="wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
+                    {{ __('Trash', 'wp-user-frontend') }}
                 </li>
-                <li class=" wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
-                    <a href="#/">{{ __('All Subscriptions', 'wp-user-frontend') }}</a>
+                <li
+                    @click="[currentRoute = '#/all', subscriptionStore.setSubscriptionsByStatus('all')]"
+                    :class="currentRoute === '#/all' ? 'wpuf-bg-gray-200' : ''"
+                    class="wpuf-p-2 hover:wpuf-bg-gray-200 hover:wpuf-cursor-pointer">
+                    {{ __('All Subscriptions', 'wp-user-frontend') }}
                 </li>
             </ul>
         </div>

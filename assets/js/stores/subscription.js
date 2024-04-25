@@ -1,9 +1,12 @@
 import {defineStore} from 'pinia';
 import {reactive, ref} from 'vue';
 import {__} from '@wordpress/i18n';
+import apiFetch from '@wordpress/api-fetch';
+import {addQueryArgs} from '@wordpress/url';
 
 export const useSubscriptionStore = defineStore( 'subscription', {
     state: () => ( {
+        subscriptionList: ref( [] ),
         currentSubscription: ref( null ),
         errors: reactive( {} ),
         updateError: reactive( {
@@ -52,6 +55,9 @@ export const useSubscriptionStore = defineStore( 'subscription', {
 
             return fields;
         },
+        subscriptionsCount: ( state ) => {
+            return state.subscriptionList.length;
+        }
     },
     actions: {
         setCurrentSubscription( subscription ) {
@@ -283,6 +289,23 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 .catch( ( error ) => {
                     console.log( error );
                 } );
+        },
+        setSubscriptionsByStatus( status ) {
+            const queryParams = { 'per_page': 10, 'offset': 0, 'post_status': status };
+            apiFetch( {
+                path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription', queryParams ),
+                method: 'GET',
+                headers: {
+                    'X-WP-Nonce': wpufSubscriptions.nonce,
+                },
+            } )
+                .then( ( response ) => {
+                    if (response.success) {
+                        this.subscriptionList = response.subscriptions;
+                    }
+                } ).catch( ( error ) => {
+                console.log( error );
+            } );
         }
     }
 } )

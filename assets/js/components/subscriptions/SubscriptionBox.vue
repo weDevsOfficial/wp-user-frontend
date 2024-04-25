@@ -17,6 +17,7 @@ const props = defineProps( {
 
 const {subscription} = toRefs( props );
 const showPopup = ref( false );
+const showBox = ref( true );
 const pillColor = ref( '' );
 const isRecurring = ref( false );
 const quickMenuStatus = ref( false );
@@ -149,6 +150,7 @@ const deleteSubscription = () => {
             noticeStore.type = 'success';
             noticeStore.message = result.message;
             showPopup.value = false;
+            showBox.value = false;
         } else {
             noticeStore.display = true;
             noticeStore.type = 'danger';
@@ -165,7 +167,7 @@ const deleteSubscription = () => {
 
 </script>
 <template>
-    <div class="wpuf-justify-between wpuf-max-w-sm wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-shadow dark:wpuf-bg-gray-800 dark:wpuf-border-gray-700 dark:hover:wpuf-bg-gray-700">
+    <div v-if="showBox" class="wpuf-justify-between wpuf-max-w-sm wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-shadow dark:wpuf-bg-gray-800 dark:wpuf-border-gray-700 dark:hover:wpuf-bg-gray-700">
         <div class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-bg-gray-100">
             <div>
                 <h5 class="wpuf-mb-1 wpuf-m-0 wpuf-text-2xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900 dark:wpuf-text-white" :title="subscription.ID">

@@ -75,7 +75,7 @@ class Admin_Tools {
 
             <?php
         } else {
-            sprintf( '<p>%s</p>', __( 'Sorry you have no form to export', 'wp-user-frontend' ) );
+            printf( '<p>%s</p>', __( 'Sorry you have no post form to export', 'wp-user-frontend' ) );
         }
     }
 
@@ -140,7 +140,7 @@ class Admin_Tools {
             </div>
             <?php
         } else {
-            sprintf( '<p>%s</p>', __( 'Sorry you have no form to export', 'wp-user-frontend' ) );
+            printf( '<p>%s</p>', __( 'Sorry you have no registration form to export', 'wp-user-frontend' ) );
         }
     }
 

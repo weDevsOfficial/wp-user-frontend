@@ -2,7 +2,7 @@ require('dotenv').config();
 
 import { expect, Page } from '@playwright/test';
 import { selectors } from './selectors';
-import { testData } from '../utils/testData';
+import { Urls } from '../utils/testData';
 
 
 //import { TestData } from '../tests/testdata';
@@ -24,7 +24,7 @@ export class postForms {
     //BlankForm
     async createBlankFormPostForm(newPostName) {
         //Visit Post Form Page
-        const wpufPostFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
+        const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
             this.page.goto(wpufPostFormPage, { waitUntil: 'networkidle' }),
         ]);
@@ -59,7 +59,7 @@ export class postForms {
     //PresetForm
     async createPresetPostForm(newPostName) {
         //Visit Post Form Page
-        const wpufPostFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
+        const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
             this.page.goto(wpufPostFormPage, { waitUntil: 'networkidle' }),
         ]);
@@ -92,7 +92,7 @@ export class postForms {
     //PresetForm
     async createPresetPostFormWithGuestEnabled(newPostName) {
         //Visit Post Form Page
-        const wpufPostFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
+        const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
             this.page.goto(wpufPostFormPage, { waitUntil: 'networkidle' }),
         ]);

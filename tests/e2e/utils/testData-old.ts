@@ -3,7 +3,6 @@ require('dotenv').config();
 
 
 
-
 export interface Urls {
     baseUrl: string;
 }

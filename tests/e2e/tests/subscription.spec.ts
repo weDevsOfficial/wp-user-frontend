@@ -23,7 +23,7 @@ export default function subscriptionsTests() {
 
 
         /**------------------------------------------*/
-        /**-------TEST-Scenarios: Ninja Forms-------*/
+        /**-------TEST-Scenarios: Basic-------*/
         /**----------------------------------------*/
         test('0023: Create - Subscription plan', { tag: '@Subscription' }, async ({ page }) => {
             const BasicLogin = new basicLoginPage(page);
@@ -45,7 +45,7 @@ export default function subscriptionsTests() {
 
     test.describe('Subscription - Featured Posts', () => {
         let subscriptionPackName: string = "";
-        test('0023: Create - Subscription plan', { tag: '@Subscription' }, async ({ page }) => {
+        test('0025: Create - Subscription plan', { tag: '@Subscription' }, async ({ page }) => {
             const BasicLogin = new basicLoginPage(page);
             const Subscription = new subscription(page);
             //Basic login
@@ -55,7 +55,7 @@ export default function subscriptionsTests() {
             console.log('Subscription Pack Created:', subscriptionPackName);
         });
 
-        test('0024: Update - Subscription plan: Featured Posts', { tag: '@Subscription' }, async ({ page }) => {
+        test('0026: Update - Subscription plan: Featured Posts', { tag: '@Subscription' }, async ({ page }) => {
             const BasicLogin = new basicLoginPage(page);
             const Subscription = new subscription(page);
             //Update Subscription - Featured Posts

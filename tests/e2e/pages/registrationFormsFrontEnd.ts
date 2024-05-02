@@ -1,21 +1,21 @@
 require('dotenv').config();
 import { expect, Page } from '@playwright/test';
 import { selectors } from './selectors';
-import { testData } from '../utils/testData';
+import { Urls, RegistrationForm } from '../utils/testData';
 
 
 
 //Store data
 //First Name
-const firstName = testData.registrationForms.rfFirstName;
+const firstName = RegistrationForm.rfFirstName;
 //Last Name
-const lastName = testData.registrationForms.rfLastName;
+const lastName = RegistrationForm.rfLastName;
 //Email
-const email = testData.registrationForms.rfEmail;
+const email = RegistrationForm.rfEmail;
 //Username
-const userName = testData.registrationForms.rfUsername;
+const userName = RegistrationForm.rfUsername;
 //Password
-const password = testData.registrationForms.rfPassword;
+const password = RegistrationForm.rfPassword;
 
 
 
@@ -37,7 +37,7 @@ export class registrationFormsFrontend {
     //Registration forms page - only WPUF-Lite activated
     async completeUserRegistrationFormFrontend() {
         //Go to Registration page - FrontEnd
-        const wpufRegistrationFormPage = testData.urls.baseUrl + '/registration-page/';
+        const wpufRegistrationFormPage = Urls.baseUrl + '/registration-page/';
         await Promise.all([
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
@@ -49,25 +49,18 @@ export class registrationFormsFrontend {
 
         //Enter First Name
         await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, firstName);
-
         //Enter Last Name
         await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfLastName, lastName);
-
         //Enter Email
         await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfEmail, email);
-
         //Enter Username
         await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfUserName, userName);
-
         //Enter Password
         await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfPassword, password);
-
         //Confirm Password
         await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfConfirmPassword, password);
-
         //Click Register
         await this.page.click(selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
-
         //Validate User logged in
         await expect(await this.page.locator(selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
 
@@ -84,7 +77,7 @@ export class registrationFormsFrontend {
     //Validate in Admin - Registered Form Submitted
     async validateUserRegisteredAdminEnd() {
         //Go to Admin End/Back End
-        const wpufRegistrationFormPage = testData.urls.baseUrl + '/wp-admin/';
+        const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/';
         await Promise.all([
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
@@ -93,13 +86,10 @@ export class registrationFormsFrontend {
         //Validate Registered User
         //Go to Users List
         await this.page.click(selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersList);
-
         //Search Username
         await this.page.fill(selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchBox, email);
-
         //Click Search
         await this.page.click(selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchButton);
-
         //Validate Email present
         const validateUserCreated = await this.page.innerText(selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserCreated);
 

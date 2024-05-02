@@ -16,7 +16,7 @@ import * as fs from "fs"; //Clear Cookie
 export default function loginAndSetupTests() {
 
 
-test.describe('TEST :-->', () => {
+test.describe('Login and Setup :-->', () => {
 /**----------------------------------LOGIN----------------------------------**
  * 
  * 

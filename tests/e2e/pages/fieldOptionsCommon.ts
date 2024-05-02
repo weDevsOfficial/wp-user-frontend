@@ -2,11 +2,6 @@ require('dotenv').config();
 
 import { expect, Page } from '@playwright/test';
 import { selectors } from './selectors';
-import { testData } from '../utils/testData';
-
-
-//import { TestData } from '../tests/testdata';
-
 
 
 export class fieldOptionsCommon {
@@ -32,7 +27,6 @@ export class fieldOptionsCommon {
         await this.page.click(selectors.postForms.addPostFields_PF.postContentBlock);
         await this.page.click(selectors.postForms.addPostFields_PF.postExcerptBlock);
         await this.page.click(selectors.postForms.addPostFields_PF.featuredImageBlock);
-
         await this.page.waitForLoadState('domcontentloaded');
     };
 

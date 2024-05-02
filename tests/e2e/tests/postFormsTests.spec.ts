@@ -13,7 +13,7 @@ import * as fs from "fs"; //Clear Cookie
 export default function postFormsTests() {
 
 
-test.describe('TEST :-->', () => {
+test.describe('Post-Forms @Lite :-->', () => {
 /**----------------------------------POSTFORMS----------------------------------**
  *
  *
@@ -190,7 +190,7 @@ test.describe('TEST :-->', () => {
     });
 
 
-    test('0018:[Post-Forms-FE] Here, Admin is Submitting Form from Frontend', async ({ page }) => {
+    test('0018:[Post-Forms-FE] Here, User is Submitting Form from Frontend', async ({ page }) => {
         const BasicLogin = new basicLoginPage(page);
         const PostFormsFrontend = new postFormsFrontend(page);
 

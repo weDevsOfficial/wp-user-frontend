@@ -2,7 +2,7 @@ require('dotenv').config();
 import { expect, Page } from '@playwright/test';
 import { selectors } from './selectors';
 import { settingsSetup } from '../pages/settingsSetup';
-import { testData } from '../utils/testData';
+import { Urls } from '../utils/testData';
 
 export class basicLoginPage {
     readonly page: Page;
@@ -24,7 +24,7 @@ export class basicLoginPage {
 
         //Go to BackEnd
         await Promise.all([
-            this.page.goto(testData.urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
         ]);
 
         const emailStateCheck = await this.page.isVisible(selectors.login.basicLogin.loginEmailField);
@@ -47,7 +47,7 @@ export class basicLoginPage {
         const adminPassword = password;
 
         await Promise.all([
-            this.page.goto(testData.urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
         ]);
 
         const emailStateCheck = await this.page.isVisible(selectors.login.basicLogin.loginEmailField);
@@ -72,7 +72,7 @@ export class basicLoginPage {
         //Go to BackEnd
         await Promise.all([
 
-            this.page.goto(testData.urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
         ]);
 
         //Validate LOGIN

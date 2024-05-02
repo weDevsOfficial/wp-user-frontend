@@ -1,7 +1,7 @@
 require('dotenv').config();
 import { expect, Page } from '@playwright/test';
 import { selectors } from './selectors';
-import { testData } from '../utils/testData';
+import { Urls } from '../utils/testData';
 
 
 
@@ -23,7 +23,7 @@ export class registrationForms {
     //Registration forms page - only WPUF-Lite activated
     async validateRegistrationFormsProFeatureLite() {
         // Visit Registration forms page
-        const wpufRegistrationFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
+        const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
@@ -48,7 +48,7 @@ export class registrationForms {
     //Create Registration page using Shortcode
     async createRegistrationPageUsingShortcodeLite(registrationFormPageTitle) {
         // Visit Registration forms page
-        const wpufRegistrationFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
+        const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
@@ -63,7 +63,7 @@ export class registrationForms {
 
 
         //Visit Pages
-        const visitPagesAdminMenuOption = testData.urls.baseUrl + '/wp-admin/edit.php?post_type=page';
+        const visitPagesAdminMenuOption = Urls.baseUrl + '/wp-admin/edit.php?post_type=page';
         await Promise.all([
             this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'networkidle' }),
         ]);
@@ -127,7 +127,7 @@ export class registrationForms {
     //BlankForm
     async createBlankForm_RF(newRegistrationName) {
         //Visit Post Form Page
-        const wpufRegistrationFormPage = testData.urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
+        const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);

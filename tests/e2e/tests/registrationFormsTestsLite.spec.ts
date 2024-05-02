@@ -15,7 +15,7 @@ import * as fs from "fs"; //Clear Cookie
 export default function registrationFormsTests() {
 
 
-test.describe('TEST :-->', () => {
+test.describe('Registration-Forms @Lite :-->', () => {
 /**----------------------------------REGISTRATIONFORMS----------------------------------**
  * 
  * @TestScenario : [Reg-Forms]

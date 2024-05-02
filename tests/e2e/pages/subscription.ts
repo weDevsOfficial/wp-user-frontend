@@ -22,22 +22,19 @@ export class subscription extends base {
 
         //First tab
         await this.page.isVisible('//a[@href="#wpuf-payment-settings"]');
-        
-        //Enter Subscription title
-        await this.validateAndClick('//a[contains(text(),"Add Subscription")]');
-        await this.validateAndFillStrings('//input[@id="title"]")]', subscriptionPackName);
-        //Add Description
-        await this.validateAndFillStrings('//body[@id="tinymce"]', subscriptionPackDescription);
-        //Add Amount
-        await this.validateAndFillStrings('//input[@id="wpuf-billing-amount"]', SubscriptionPackPrice) //in $$
-        //Add Expiry days
-        await this.validateAndFillStrings('//input[@id="wpuf-expiration-number"]', SubscriptionPackExpiration.toString()) //In Days
-
+            //Enter Subscription title
+            await this.validateAndClick('//a[contains(text(),"Add Subscription")]');
+            await this.validateAndFillStrings('//input[@id="title"]")]', subscriptionPackName);
+            //Add Description
+            await this.validateAndFillStrings('//body[@id="tinymce"]', subscriptionPackDescription);
+            //Add Amount
+            await this.validateAndFillStrings('//input[@id="wpuf-billing-amount"]', SubscriptionPackPrice) //in $$
+            //Add Expiry days
+            await this.validateAndFillStrings('//input[@id="wpuf-expiration-number"]', SubscriptionPackExpiration.toString()) //In Days
         //Second tab
         await this.page.isVisible('//a[@href="#wpuf-post-restriction"]');
         //Third tab
         await this.page.isVisible('//a[@href="#taxonomy-restriction""]');
-
         //Publish subscription
         await this.validateAndClick('//input[@id="publish"]');
 
@@ -59,12 +56,10 @@ export class subscription extends base {
 
         //Second tab
         await this.validateAndClick('//a[@href="#wpuf-post-restriction"]');
-        //Apply restrictions
-        await this.validateAndFillNumbers('//input[@id="wpuf-sticky-item"]', subscriptionFeaturedCount); //Add number of featured restrictions
-
+            //Apply restrictions
+            await this.validateAndFillNumbers('//input[@id="wpuf-sticky-item"]', subscriptionFeaturedCount); //Add number of featured restrictions
         //Third tab
         await this.validateAndClick('//a[@href="#taxonomy-restriction""]');
-
         //Publish subscription
         await this.validateAndClick('//input[@id="publish"]');
 
@@ -81,24 +76,21 @@ export class subscription extends base {
 
         //First tab
         await this.page.isVisible('//a[@href="#wpuf-payment-settings"]');
-        //Enter Subscription title
-        await this.validateAndClick('//a[contains(text(),"Add Subscription")]');
-        await this.validateAndFillStrings('//input[@id="title"]")]', 'Subscription-Pack-1');
-        //Add Description
-        await this.validateAndFillStrings('//body[@id="tinymce"]', 'This is a test Subscription-Pack-1');
-        //Add Amount
-        await this.validateAndFillStrings('//input[@id="wpuf-billing-amount"]', "20") //in $$
-        //Add Expiry days
-        await this.validateAndFillStrings('//input[@id="wpuf-expiration-number"]', "100") //In Days
-
+            //Enter Subscription title
+            await this.validateAndClick('//a[contains(text(),"Add Subscription")]');
+            await this.validateAndFillStrings('//input[@id="title"]")]', 'Subscription-Pack-1');
+            //Add Description
+            await this.validateAndFillStrings('//body[@id="tinymce"]', 'This is a test Subscription-Pack-1');
+            //Add Amount
+            await this.validateAndFillStrings('//input[@id="wpuf-billing-amount"]', "20") //in $$
+            //Add Expiry days
+            await this.validateAndFillStrings('//input[@id="wpuf-expiration-number"]', "100") //In Days
         //Second tab
         await this.validateAndClick('//a[@href="#wpuf-post-restriction"]');
         //Apply restrictions
         await this.validateAndFillNumbers('//input[@id="wpuf-post"]', Subscription_Posts_Count); //Add number of posts restrictions
-
         //Third tab
         await this.validateAndClick('//a[@href="#taxonomy-restriction""]');
-
         //Publish subscription
         await this.validateAndClick('//input[@id="publish"]');
 
@@ -113,15 +105,12 @@ export class subscription extends base {
             this.page.goto(Urls.baseUrl + '/wp-admin/edit.php?post_type=wpuf_subscription', { waitUntil: 'networkidle' }),
         ]);
 
-
         //Second tab
         await this.validateAndClick('//a[@href="#wpuf-post-restriction"]');
-        //Apply restrictions
-        await this.validateAndFillNumbers('//input[@id="wpuf-page"]', Subscription_Pages_Count); //Add number of pages restrictions
-
+            //Apply restrictions
+            await this.validateAndFillNumbers('//input[@id="wpuf-page"]', Subscription_Pages_Count); //Add number of pages restrictions
         //Third tab
         await this.validateAndClick('//a[@href="#taxonomy-restriction""]');
-
         //Publish subscription
         await this.validateAndClick('//input[@id="publish"]');
 

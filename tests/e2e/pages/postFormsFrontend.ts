@@ -1,19 +1,19 @@
 require('dotenv').config();
 import { expect, Page } from '@playwright/test';
 import { selectors } from './selectors';
-import { testData } from '../utils/testData';
+import { Urls, PostForm, RegistrationForm } from '../utils/testData';
 
 
 
 //Store data
 //Post Title
-// const postTitle = testData.postForms.pfTitle;
+// const postTitle = Urls.postForms.pfTitle;
 //Post Description
-const postDescription = testData.postForms.pfPostDescription;
+const postDescription = PostForm.pfPostDescription;
 //Excerp
-const postExcerpt = testData.registrationForms.rfEmail;
+const postExcerpt = RegistrationForm.rfEmail;
 //Tags
-const postTags = testData.registrationForms.rfUsername;
+const postTags = RegistrationForm.rfUsername;
 
 
 
@@ -35,7 +35,7 @@ export class postFormsFrontend {
     //Registration forms page - only WPUF-Lite activated
     async createPostFormFrontend(postFormTitle) {
         //Go to Accounts page - FrontEnd
-        const wpufRegistrationFormFage = testData.urls.baseUrl + '/account/';
+        const wpufRegistrationFormFage = Urls.baseUrl + '/account/';
         await Promise.all([
             this.page.goto(wpufRegistrationFormFage, { waitUntil: 'networkidle' }),
         ]);

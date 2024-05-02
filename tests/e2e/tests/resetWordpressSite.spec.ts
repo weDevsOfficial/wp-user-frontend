@@ -2,7 +2,7 @@ require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
 import { basicLoginPage } from '../pages/basicLogin';
 import { settingsSetup } from '../pages/settingsSetup'
-import { testData } from '../utils/testData'
+import { Users } from '../utils/testData'
 
 
 export default function resetWordpressSite() {
@@ -14,7 +14,7 @@ export default function resetWordpressSite() {
             const BasicLogin = new basicLoginPage(page);
             const SettingsSetup = new settingsSetup(page);
 
-            await BasicLogin.basicLogin(testData.users.adminUsername, testData.users.adminPassword);
+            await BasicLogin.basicLogin(Users.adminUsername, Users.adminPassword);
             await SettingsSetup.resetWordpressSite();
 
         });

@@ -70,6 +70,7 @@ class Admin_Subscription {
                 'subSections'     => $this->get_sub_sections(),
                 'fields'          => $this->get_fields(),
                 'dependentFields' => $this->get_dependent_fields(),
+                'perPage'         => apply_filters( 'wpuf_subscription_per_page', 9 ),
             ]
         );
     }

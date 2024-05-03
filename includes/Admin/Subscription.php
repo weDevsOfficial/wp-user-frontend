@@ -1404,4 +1404,26 @@ class Subscription {
             }
         }
     }
+
+    /**
+     * Total count of subscriptions by status
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string|null Database query result (as string), or null on failure.
+     */
+    public function total_subscriptions_count( $status = 'all' ) {
+        global $wpdb;
+
+        if ( 'all' === $status ) {
+            return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'wpuf_subscription'" );
+        } else {
+            return $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'wpuf_subscription' AND post_status = %s",
+                    $status
+                )
+            );
+        }
+    }
 }

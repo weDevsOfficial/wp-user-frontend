@@ -32,7 +32,7 @@ provide( 'wpufSubscriptions', wpufSubscriptions );
 const fetchData = async () => {
     isLoading.value = true;
 
-    const queryParams = { 'per_page': 10, 'offset': 0 };
+    const queryParams = { 'per_page': wpufSubscriptions.perPage, 'offset': 0 };
     apiFetch( {
             path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription', queryParams ),
             method: 'GET',

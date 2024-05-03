@@ -7,6 +7,7 @@ import {addQueryArgs} from '@wordpress/url';
 export const useSubscriptionStore = defineStore( 'subscription', {
     state: () => ( {
         subscriptionList: ref( [] ),
+        currentSubscriptionStatus: ref( 'all' ),
         currentSubscription: ref( null ),
         errors: reactive( {} ),
         updateError: reactive( {
@@ -55,9 +56,6 @@ export const useSubscriptionStore = defineStore( 'subscription', {
 
             return fields;
         },
-        subscriptionsCount: ( state ) => {
-            return state.subscriptionList.length;
-        }
     },
     actions: {
         setCurrentSubscription( subscription ) {
@@ -290,8 +288,8 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                     console.log( error );
                 } );
         },
-        setSubscriptionsByStatus( status ) {
-            const queryParams = { 'per_page': 10, 'offset': 0, 'post_status': status };
+        setSubscriptionsByStatus( status, offset = 0 ) {
+            const queryParams = { 'per_page': wpufSubscriptions.perPage, 'offset': offset, 'post_status': status };
             apiFetch( {
                 path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription', queryParams ),
                 method: 'GET',
@@ -299,13 +297,15 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                     'X-WP-Nonce': wpufSubscriptions.nonce,
                 },
             } )
-                .then( ( response ) => {
-                    if (response.success) {
-                        this.subscriptionList = response.subscriptions;
-                    }
-                } ).catch( ( error ) => {
+            .then( ( response ) => {
+                if (response.success) {
+                    this.subscriptionList = response.subscriptions;
+                    this.currentSubscriptionStatus = status;
+                }
+            } )
+            .catch( ( error ) => {
                 console.log( error );
             } );
         }
     }
-} )
+} );

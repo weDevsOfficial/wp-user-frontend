@@ -75,8 +75,59 @@ class Subscription extends WP_REST_Controller {
                 ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->base . '/count/(?P<status>\w+)', [
+                [
+                    'methods'             => 'GET',
+                    'callback'            => [ $this, 'get_subscriptions_count' ],
+                    'permission_callback' => [ $this, 'permission_check' ],
+                ],
+            ]
+        );
     }
 
+    /**
+     * Get subscriptions count based on status
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     *
+     * @return WP_REST_Response
+     */
+    public function get_subscriptions_count( $request ) {
+        $status = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'publish';
+
+        $count = wpuf()->subscription->total_subscriptions_count( $status );
+
+        if ( is_null( $count ) ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Failed to delete subscription', 'wp-user-frontend' ),
+                ]
+            );
+        }
+
+        return new WP_REST_Response(
+            [
+                'success' => true,
+                'count'   => $count,
+            ]
+        );
+    }
+
+    /**
+     * Delete an existing item
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     *
+     * @return WP_REST_Response
+     */
     public function delete_item( $request ) {
         $subscription_id = ! empty( $request['subscription_id'] ) ? (int) sanitize_text_field( $request['subscription_id'] ) : 0;
 

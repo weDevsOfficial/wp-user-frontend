@@ -299,8 +299,8 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             } )
             .then( ( response ) => {
                 if (response.success) {
-                    this.subscriptionList = response.subscriptions;
                     this.currentSubscriptionStatus = status;
+                    this.subscriptionList = response.subscriptions;
                 }
             } )
             .catch( ( error ) => {

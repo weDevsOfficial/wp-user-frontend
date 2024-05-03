@@ -5,7 +5,7 @@ import Empty from './Empty.vue';
 import {useSubscriptionStore} from '../../stores/subscription';
 import {storeToRefs} from 'pinia';
 import Pagination from './Pagination.vue';
-import {onMounted, ref, computed} from 'vue';
+import {onMounted, ref, computed, watch} from 'vue';
 import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
 
@@ -18,6 +18,25 @@ const changePageTo = ( page ) => {
 
     subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus, offset );
 };
+
+watch( () => subscriptionStore.currentSubscriptionStatus, ( newValue ) => {
+    apiFetch( {
+        path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription/count/' + newValue ),
+        method: 'GET',
+        headers: {
+            'X-WP-Nonce': wpufSubscriptions.nonce,
+        },
+    } )
+    .then( ( response ) => {
+        if (response.success) {
+            count.value = parseInt( response.count );
+            totalPages.value = Math.ceil(count.value / 10);
+        }
+    } )
+    .catch( ( error ) => {
+        console.log( error );
+    } );
+});
 
 onMounted(() => {
     apiFetch( {

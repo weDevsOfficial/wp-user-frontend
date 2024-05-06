@@ -1,6 +1,5 @@
 /* DivTable.com */
 body {
-  font-family: 'Open Sans', sans-serif;
   /* css for timepicker */
   /** author info **/
   /** jQuery Suggest **/
@@ -243,7 +242,11 @@ body ul.wpuf-form li.has-error {
 body ul.wpuf-form li .wp-editor-wrap {
   border: 1px solid #eee;
 }
-body ul.wpuf-form li.wpuf_hidden_field {
+body ul.wpuf-form liwpuf-el {
+  position: relative;
+  display: flex;
+}
+body ul.wpuf-form li.wpuf_hidden_field.wpuf-el {
   display: none;
 }
 body ul.wpuf-form li .wpuf-label {
@@ -351,7 +354,8 @@ body ul.wpuf-form li .wpuf-fields .wpuf-name-field-wrap.format-first-middle-last
   float: right;
   width: 37%;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help {
+body ul.wpuf-form li .wpuf-fields .wpuf-help,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message {
   color: #666;
   margin: 2px 0 5px 0;
   font-size: 12px;
@@ -359,14 +363,18 @@ body ul.wpuf-form li .wpuf-fields .wpuf-help {
   font-family: sans-serif;
   display: block;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help .text-danger {
+body ul.wpuf-form li .wpuf-fields .wpuf-help .text-danger,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message .text-danger {
   color: red;
 }
-body ul.wpuf-form li .wpuf-fields .wpuf-help .text-success {
+body ul.wpuf-form li .wpuf-fields .wpuf-help .text-success,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message .text-success {
   color: green;
 }
 body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart,
-body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart-mgs {
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message #url-alart,
+body ul.wpuf-form li .wpuf-fields .wpuf-help #url-alart-mgs,
+body ul.wpuf-form li .wpuf-fields .wpuf-wordlimit-message #url-alart-mgs {
   font-style: normal;
   font-size: 16px;
 }
@@ -1238,7 +1246,6 @@ body .wpuf-form .required {
   border: 0;
 }
 body .wpuf-dashboard-container {
-  font-family: 'Open Sans', sans-serif;
   max-width: 85rem !important;
   /*Responsive css for post table*/
 }
@@ -1254,7 +1261,6 @@ body .wpuf-dashboard-container .wpuf-dashboard-navigation {
 body .wpuf-dashboard-container .wpuf-dashboard-navigation a {
   text-decoration: none;
   box-shadow: none;
-  font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   font-weight: bold;
   color: #000;
@@ -1313,6 +1319,9 @@ body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields textarea:not
 body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields input:not([type="reset"]) {
   width: 100%;
 }
+body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields input[type="radio"] {
+  width: initial;
+}
 body .wpuf-dashboard-container .items-table-container,
 body .wpuf-dashboard-container .wpuf-dashboard-content.invoices {
   max-width: 100%;
@@ -1322,7 +1331,6 @@ body .wpuf-dashboard-container table.items-table {
   width: 100%;
   margin-top: 0px;
   border: 1.0218px solid #DAE1F5;
-  font-family: 'Open Sans', sans-serif !important;
   color: #000 !important;
   font-size: 16px !important;
   font-weight: 400 !important;
@@ -1480,7 +1488,6 @@ body input[type="text"].wpuf-google-map-search {
   background-color: #fff !important;
   text-overflow: ellipsis !important;
   width: 170px !important;
-  font-family: Roboto !important;
   font-size: 15px !important;
   font-weight: 300 !important;
   padding: 0 11px 0 13px !important;
@@ -1661,9 +1668,6 @@ body .weforms-quiz-feedback .wrong-answer .wpuf-fields label.checked {
   color: red;
   padding: 6px 0;
 }
-body ul.wpuf-form .wpuf-el {
-  position: relative;
-}
 body ul.wpuf-form .weforms-frontend-field-points {
   position: absolute;
   top: 0;
@@ -1828,4 +1832,10 @@ body .wpuf-attachment-upload-filelist + .moxie-shim {
 /* field specific style to override our default padding*/
 .iti--allow-dropdown input[type="text"] {
   padding-left: 52px !important;
+}
+img.wpuf-eye {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(-6%);
 }

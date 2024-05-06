@@ -27,7 +27,7 @@ Vue.mixin({
                 cancelButtonText: this.i18n.cancel,
             }, settings);
 
-            new swal(settings, callback);
+            Swal.fire(settings, callback);
         },
 
         is_failed_to_validate: function (template) {

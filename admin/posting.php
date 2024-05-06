@@ -16,7 +16,7 @@ class WPUF_Admin_Posting {
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_form_select'] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_post_lock'] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
-        add_action( 'save_post', [ $this, 'save_meta'], 100, 2 ); // save the custom fields
+        add_action( 'save_post', [ $this, 'save_meta' ], 100, 2 );                   // save the custom fields
         add_action( 'save_post', [ $this, 'form_selection_metabox_save' ], 1, 2 ); // save edit form id
         add_action( 'save_post', [ $this, 'post_lock_metabox_save' ], 1, 2 ); // save post lock option
         add_action( 'wp_ajax_wpuf_clear_schedule_lock', [$this, 'clear_schedule_lock'] );
@@ -53,20 +53,22 @@ class WPUF_Admin_Posting {
         } else {
             add_action( 'admin_head', 'wpuf_hide_google_map_button' );
 
-            function wpuf_hide_google_map_button() {
-                echo wp_kses( "<style>
+            if ( ! function_exists( 'wpuf_hide_google_map_button' ) ) {
+                function wpuf_hide_google_map_button() {
+                    echo wp_kses( "<style>
                 button.button[data-name='custom_map'] {
                     display: none;
                 }
               </style>", [
-                    'style' =>  [],
-                    'button'    =>  []
-                ] );
+                        'style' =>  [],
+                        'button'    =>  []
+                    ] );
+                }
             }
         }
 
-        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css', [], '11.4.30' );
-        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', [], '11.4.30', true );
+        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css', [], '11.4.19' );
+        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.js', [], '11.4.19', true );
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', ['jquery', 'plupload-handlers'] );
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', [
             'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
@@ -216,13 +218,13 @@ class WPUF_Admin_Posting {
         <?php wp_nonce_field( plugin_basename( __FILE__ ), 'wpuf_lock_editing_post_nonce' ); ?>
         <p>
             <?php
-                echo wp_kses( $msg, [
-                    'a' => [
-                            'href' => [],
-                            'id'   => [],
-                            'data' => [],
-                        ]
-                    ] );
+            echo wp_kses( $msg, [
+                'a' => [
+                    'href' => [],
+                    'id'   => [],
+                    'data' => [],
+                ]
+            ] );
             ?>
         </p>
 
@@ -536,6 +538,10 @@ class WPUF_Admin_Posting {
      */
     public function clear_schedule_lock() {
         check_ajax_referer( 'wpuf_nonce', 'nonce' );
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
 
         $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
 

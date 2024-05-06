@@ -1,24 +1,28 @@
 <?php
 
+namespace WeDevs\Wpuf\Lib\Gateway;
+
+use WeDevs\Wpuf\Pro\Coupons;
+
 /**
  * WP User Frotnend Bank gateway
  *
  * @since 2.1.4
  */
-class WPUF_Gateway_Bank {
+class Bank {
     public function __construct() {
         add_action( 'wpuf_gateway_bank', [$this, 'prepare_to_send'] );
-        add_action( 'wpuf_options_payment', [$this, 'payment_options'] );
+        add_action( 'wpuf_options_payment', [ $this, 'payment_options' ] );
         add_action( 'wpuf_gateway_bank_order_submit', [$this, 'order_notify_admin'] );
         add_action( 'wpuf_gateway_bank_order_complete', [$this, 'order_notify_user'], 10, 2 );
     }
 
     /**
-     * Adds paypal specific options to the admin panel
+     * Adds bank specific options to the admin panel
      *
-     * @param type $options
+     * @param array $options
      *
-     * @return string
+     * @return array
      */
     public function payment_options( $options ) {
         $pages = wpuf_get_pages();
@@ -58,7 +62,7 @@ class WPUF_Gateway_Bank {
         $data['price'] = isset( $data['price'] ) ? empty( $data['price'] ) ? 0 : $data['price'] : 0;
 
         if ( isset( $_POST['coupon_id'] ) && !empty( $_POST['coupon_id'] ) ) {
-            $data['price'] = WPUF_Coupons::init()->discount( $data['price'], $_POST['coupon_id'], $data['item_number'] );
+            $data['price'] = (new Coupons())->discount( $data['price'], $_POST['coupon_id'], $data['item_number'] );
         }
 
         $data['cost']     = apply_filters( 'wpuf_payment_amount', $data['price'] ); //price with tax from pro
@@ -118,5 +122,3 @@ class WPUF_Gateway_Bank {
         wp_delete_post( $order_id, true );
     }
 }
-
-$wpuf_gateway_bank = new WPUF_Gateway_Bank();

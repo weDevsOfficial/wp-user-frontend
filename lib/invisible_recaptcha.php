@@ -16,12 +16,13 @@
 *
 */
 
+#[AllowDynamicProperties]
 class Invisible_Recaptcha{
 
 	private static $_signupUrl = "https://www.google.com/recaptcha/admin";
 
 	public function __construct( $site_key, $secret_key ){
-		
+
 		if ( $secret_key == null || $secret_key == "" ) {
             die("To use reCAPTCHA you must get an API key from <a href='"
                 . self::$_signupUrl . "'>" . self::$_signupUrl . "</a>");
@@ -32,7 +33,7 @@ class Invisible_Recaptcha{
 		);
     }
 
-    
+
 	public function verifyResponse($recaptcha){
 
 		$remoteIp = $this->getIPAddress();

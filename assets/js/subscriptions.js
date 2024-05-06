@@ -28,6 +28,26 @@
             //this.setTimeExpiration('select#wpuf-expiration_time_type');
             $('.wpuf-metabox-post_expiration').on('change','select#wpuf-expiration_time_type',this.setTimeExpiration);
 
+            // warn the user before updating the package
+            $( 'body.post-type-wpuf_subscription #post' ).submit( function( event ) {
+                if ( document.activeElement.value === 'Update' ) {
+                    event.preventDefault();
+                    Swal.fire({
+                        title: 'Are you sure to update the subscription?',
+                        text: 'The changes you made will be applied only to the new subscriptions and pending recurring payments.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Update'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $( this ).unbind('submit').submit()
+                        }
+                    });
+                }
+            } );
+
 		},
 
         packAlert : function () {
@@ -96,7 +116,7 @@
 
                 data = {
 
-                    action: 'coupon_cancel',
+                    action: 'wpuf_coupon_cancel',
 
                     _wpnonce: wpuf_frontend.nonce,
 
@@ -161,7 +181,7 @@
 
             var data = {
 
-                    action: 'coupon_apply',
+                    action: 'wpuf_coupon_apply',
 
                     _wpnonce: wpuf_frontend.nonce,
 

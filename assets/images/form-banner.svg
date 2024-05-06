@@ -1,0 +1,34 @@
+<svg width="269" height="268" viewBox="0 0 269 268" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M269 155.402C269 224.787 212.753 261.034 143.368 261.034C73.9836 261.034 17.7363 224.787 17.7363 155.402C17.7363 86.0174 73.9836 29.7701 143.368 29.7701C212.753 29.7701 269 86.0174 269 155.402Z" fill="url(#paint0_linear_105_2)" fill-opacity="0.3"/>
+<rect x="58" y="19" width="171" height="248" rx="7.39011" fill="white" stroke="url(#paint1_linear_105_2)" stroke-width="1.47802"/>
+<rect x="113.808" y="245.561" width="59.0988" height="21.2548" rx="10.6274" fill="#8ED0FF"/>
+<rect x="72.424" y="54.8964" width="66.511" height="14.7802" fill="#EDEFF4"/>
+<rect x="147.803" y="54.8965" width="66.511" height="14.7802" fill="#EDEFF4"/>
+<rect x="72.4238" y="45.6202" width="40.436" height="1.03682" fill="#B5BBCC"/>
+<rect x="147.803" y="45.6202" width="40.436" height="1.03682" fill="#B5BBCC"/>
+<rect x="72.4242" y="94.803" width="141.89" height="14.7802" fill="#EDEFF4"/>
+<rect x="72.424" y="85.5378" width="40.436" height="1.03682" fill="#B5BBCC"/>
+<rect x="72.4242" y="135.096" width="141.89" height="14.7802" fill="#EDEFF4"/>
+<rect x="72.424" y="125.841" width="40.436" height="1.03682" fill="#B5BBCC"/>
+<rect x="72.4242" y="175.388" width="141.89" height="14.7802" fill="#EDEFF4"/>
+<rect x="72.424" y="166.134" width="40.436" height="1.03682" fill="#B5BBCC"/>
+<rect x="72.4242" y="216.387" width="141.89" height="14.7802" fill="#EDEFF4"/>
+<rect x="72.424" y="207.133" width="40.436" height="1.03682" fill="#B5BBCC"/>
+<circle cx="143.368" cy="5.18411" r="5.18411" fill="#B4BCED"/>
+<circle cx="22.1703" cy="130.276" r="22.1703" fill="#E2D5F3"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.3909 121.949L30.4772 123.035C30.8399 123.398 31.0397 123.88 31.0397 124.393C31.0397 124.906 30.8399 125.389 30.4772 125.752L29.1466 127.082L25.3437 123.279L26.6743 121.949C27.3995 121.223 28.6649 121.223 29.3909 121.949ZM14.497 134.125L24.2557 124.366L28.0588 128.169L18.2992 137.927C18.2501 137.977 18.1886 138.012 18.121 138.029L13.7794 139.111C13.7487 139.118 13.7172 139.122 13.6864 139.122C13.5858 139.122 13.4875 139.082 13.4153 139.01C13.32 138.915 13.2815 138.776 13.3139 138.645L14.3956 134.303C14.4124 134.237 14.4479 134.174 14.497 134.125Z" fill="#A689CB"/>
+<circle cx="255.699" cy="60.8085" r="13.3022" fill="#FFCBAD"/>
+<circle cx="47.2967" cy="9.07778" r="5.91209" fill="#F4AFA8"/>
+<circle cx="242.396" cy="133.232" r="5.91209" fill="#CDF4B5"/>
+<defs>
+<linearGradient id="paint0_linear_105_2" x1="143.368" y1="29.7701" x2="143.368" y2="281.034" gradientUnits="userSpaceOnUse">
+<stop stop-color="#BEC7F4"/>
+<stop offset="0.335801" stop-color="#D4DAF8" stop-opacity="0.664199"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_105_2" x1="143.5" y1="19" x2="143.5" y2="315.911" gradientUnits="userSpaceOnUse">
+<stop stop-color="#D6E0F9"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>

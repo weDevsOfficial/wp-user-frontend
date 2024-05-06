@@ -15,8 +15,10 @@
     }
     ?>
 
-    <?php wpuf()->login->show_errors(); ?>
-    <?php wpuf()->login->show_messages(); ?>
+    <?php
+        wpuf()->frontend->simple_login->show_errors();
+        wpuf()->frontend->simple_login->show_messages();
+    ?>
 
     <form name="loginform" class="wpuf-login-form" id="loginform" action="<?php echo esc_attr( $action_url ); ?>" method="post">
         <p>
@@ -83,5 +85,5 @@
         </p>
     </form>
 
-    <?php echo wp_kses_post( wpuf()->login->get_action_links( [ 'login' => false ] ) ); ?>
+    <?php echo wp_kses_post( wpuf()->frontend->simple_login->get_action_links( [ 'login' => false ] ) ); ?>
 </div>

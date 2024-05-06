@@ -1,11 +1,13 @@
 <?php
 
+namespace WeDevs\Wpuf\Lib\Gateway;
+
 /**
- * WP User Frotnend Paypal gateway
+ * WP User Frontend PayPal gateway
  *
  * @since 0.8
  */
-class WPUF_Paypal {
+class Paypal {
     private $gateway_url;
 
     private $gateway_cancel_url;
@@ -23,6 +25,48 @@ class WPUF_Paypal {
         add_action( 'wpuf_paypal_ipn_success', [ $this, 'paypal_success' ] );
         add_action( 'wpuf_cancel_payment_paypal', [ $this, 'handle_cancel_subscription' ] );
         add_action( 'wpuf_cancel_subscription_paypal', [ $this, 'handle_cancel_subscription' ] );
+    }
+
+    /**
+     * Adds paypal specific options to the admin panel
+     *
+     * @param type $options
+     *
+     * @return string
+     */
+    public function payment_options( $options ) {
+        $options[] = [
+            'name'  => 'paypal_email',
+            'label' => __( 'PayPal Email', 'wp-user-frontend' ),
+        ];
+
+        $options[] = [
+            'name'    => 'gate_instruct_paypal',
+            'label'   => __( 'PayPal Instruction', 'wp-user-frontend' ),
+            'type'    => 'wysiwyg',
+            'default' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account",
+        ];
+
+        $options[] = [
+            'name'  => 'paypal_api_username',
+            'label' => __( 'PayPal API username', 'wp-user-frontend' ),
+        ];
+        $options[] = [
+            'name'  => 'paypal_api_password',
+            'label' => __( 'PayPal API password', 'wp-user-frontend' ),
+        ];
+        $options[] = [
+            'name'  => 'paypal_api_signature',
+            'label' => __( 'PayPal API signature', 'wp-user-frontend' ),
+        ];
+        /* $options[] = [
+             'name'    => 'paypal_endpoint',
+             'label'   => __('PayPal IPN endpoint', 'wp-user-frontend'),
+             'default' => home_url( '/action/wpuf_paypal_success', null ),
+             'desc'    => __('Set this to your notification IPN listener', 'wp-user-frontend'),
+             'class'   => 'disabled'
+         ];*/
+        return $options;
     }
 
     public function subscription_cancel( $user_id ) {
@@ -115,48 +159,6 @@ class WPUF_Paypal {
     }
 
     /**
-     * Adds paypal specific options to the admin panel
-     *
-     * @param type $options
-     *
-     * @return string
-     */
-    public function payment_options( $options ) {
-        $options[] = [
-            'name'  => 'paypal_email',
-            'label' => __( 'PayPal Email', 'wp-user-frontend' ),
-        ];
-
-        $options[] = [
-            'name'    => 'gate_instruct_paypal',
-            'label'   => __( 'PayPal Instruction', 'wp-user-frontend' ),
-            'type'    => 'wysiwyg',
-            'default' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account",
-        ];
-
-        $options[] = [
-            'name'  => 'paypal_api_username',
-            'label' => __( 'PayPal API username', 'wp-user-frontend' ),
-        ];
-        $options[] = [
-            'name'  => 'paypal_api_password',
-            'label' => __( 'PayPal API password', 'wp-user-frontend' ),
-        ];
-        $options[] = [
-            'name'  => 'paypal_api_signature',
-            'label' => __( 'PayPal API signature', 'wp-user-frontend' ),
-        ];
-        /* $options[] = [
-             'name'    => 'paypal_endpoint',
-             'label'   => __('PayPal IPN endpoint', 'wp-user-frontend'),
-             'default' => home_url( '/action/wpuf_paypal_success', null ),
-             'desc'    => __('Set this to your notification IPN listener', 'wp-user-frontend'),
-             'class'   => 'disabled'
-         ];*/
-        return $options;
-    }
-
-    /**
      * Prepare the payment form and send to paypal
      *
      * @param array $data payment info
@@ -170,12 +172,10 @@ class WPUF_Paypal {
         //$listener_url     = 'https://wpuf.sharedwithexpose.com/?action=wpuf_paypal_success';
         $return_url       = wpuf_payment_success_page( $data );
 
-
-
         $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
 
         if ( isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) ) {
-            $billing_amount = WPUF_Coupons::init()->discount( $billing_amount, $_POST['coupon_id'], $data['item_number'] );
+            $billing_amount = wpuf_pro()->coupon->discount( $billing_amount, $_POST['coupon_id'], $data['item_number'] );
 
             $coupon_id = $_POST['coupon_id'];
         } else {
@@ -187,7 +187,7 @@ class WPUF_Paypal {
         $data['tax']      = $billing_amount - $data['subtotal'];
 
         if ( $billing_amount == 0 ) {
-            wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], $profile_id = null, false, 'free' );
+            wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], $profile_id = null, false, 'Free' );
             wp_redirect( $return_url );
             exit();
         }
@@ -342,16 +342,30 @@ class WPUF_Paypal {
         $insert_payment = false;
 
         if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
-            WP_User_Frontend::log( 'paypal-payment-info', print_r( $_POST, true ) );
+            \WP_User_Frontend::log( 'paypal-payment-info', print_r( $_POST, true ) );
+
+            $post_id = 0;
+            $pack_id = 0;
 
             $postdata       = $_POST;
-            $type           = $postdata['custom'];
-            $custom         = json_decode( stripcslashes( $postdata['custom'] ) );
+            $type           = isset( $postdata['custom'] ) ? $postdata['custom'] : '';
+            $custom         = json_decode( stripcslashes( $type ) );
             $item_number    = ! empty( $postdata['item_number'] ) ? $postdata['item_number'] : 0;
-            $amount         = $postdata['mc_gross'];
+
+            if ( property_exists( $custom, 'type' ) ) {
+                switch ( $custom->type ) {
+                    case 'post':
+                        $post_id = $item_number;
+                        break;
+
+                    case 'pack':
+                        $pack_id = $item_number;
+                        break;
+                }
+            }
+
+            $amount         = isset( $postdata['mc_gross'] ) ? $postdata['mc_gross'] : 0;
             $is_recurring   = false;
-            $post_id        = $custom->type === 'post' ? $item_number : 0;
-            $pack_id        = $custom->type === 'pack' ? $item_number : 0;
             $transaction_id = isset( $postdata['txn_id'] ) ? sanitize_text_field( $postdata['txn_id'] ) : '';
 
             $coupon_id = isset( $custom->coupon_id ) ? $custom->coupon_id : false;
@@ -361,7 +375,7 @@ class WPUF_Paypal {
             }
 
             if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_signup' ) ) {
-                WP_User_Frontend::log( 'paypal-recurring', 'got subscriber with email ' . $postdata['payer_email'] );
+                \WP_User_Frontend::log( 'paypal-recurring', 'got subscriber with email ' . $postdata['payer_email'] );
 
                 return;
             }
@@ -385,14 +399,14 @@ class WPUF_Paypal {
                     $is_recurring   = true;
                     $status         = 'subscr_payment';
 
-                    WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment, should insert of pack_id: ' . $pack_id );
+                    \WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment, should insert of pack_id: ' . $pack_id );
                 } else {
                     $this->subscription_cancel( $custom->user_id );
 
-                    WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment. billing validation failed, cancel subscription. user_id: ' . $custom->user_id );
+                    \WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment. billing validation failed, cancel subscription. user_id: ' . $custom->user_id );
                 }
             } elseif ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'web_accept' ) && ( strtolower( $postdata['payment_status'] ) == 'completed' ) ) {
-                WP_User_Frontend::log( 'paypal', 'got web_accept. type: ' . $custom->type . '. item_number: ' . $item_number );
+                \WP_User_Frontend::log( 'paypal', 'got web_accept. type: ' . $custom->type . '. item_number: ' . $item_number );
 
                 //verify payment
                 $status = 'web_accept';
@@ -434,25 +448,25 @@ class WPUF_Paypal {
             } // payment type
 
             $data = [
-                'user_id'          => (int) $custom->user_id,
-                'status'           => strtolower( $postdata['payment_status'] ),
-                'subtotal'         => $postdata['mc_gross'],
-                'tax'              => (float) $custom->tax,
-                'cost'             => (float) $custom->subtotal,
-                'post_id'          => isset( $post_id ) ? $post_id : '',
-                'pack_id'          => isset( $pack_id ) ? $pack_id : '',
-                'payer_first_name' => $postdata['first_name'],
-                'payer_last_name'  => $postdata['last_name'],
-                'payer_email'      => $postdata['payer_email'],
+                'user_id'          => property_exists( $custom, 'user_id' ) ? ( int) $custom->user_id : 0,
+                'status'           => ! empty( $postdata['payment_status'] ) ? strtolower( $postdata['payment_status'] ) : '',
+                'subtotal'         => ! empty( $postdata['mc_gross'] ) ? $postdata['mc_gross'] : '',
+                'tax'              => property_exists( $custom, 'tax' ) ? (float) $custom->tax : 0,
+                'cost'             => property_exists( $custom, 'subtotal' ) ? (float) $custom->subtotal : 0,
+                'post_id'          => isset( $post_id ) ? $post_id : 0,
+                'pack_id'          => isset( $pack_id ) ? $pack_id : 0,
+                'payer_first_name' => ! empty( $postdata['first_name'] ) ? $postdata['first_name'] : '',
+                'payer_last_name'  => ! empty( $postdata['last_name'] ) ? $postdata['last_name'] : '',
+                'payer_email'      => ! empty( $postdata['payer_email'] ) ? $postdata['payer_email'] : '',
                 'payment_type'     => 'Paypal',
                 'payer_address'    => isset( $postdata['residence_country'] ) ? $postdata['residence_country'] : null,
                 'transaction_id'   => $transaction_id,
                 'created'          => current_time( 'mysql' ),
             ];
 
-            WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
+            \WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
 
-            WPUF_Payment::insert_payment( $data, $transaction_id, $is_recurring );
+            \WeDevs\Wpuf\Frontend\Payment::insert_payment( $data, $transaction_id, $is_recurring );
 
             if ( $coupon_id ) {
                 $pre_usage = get_post_meta( $coupon_id, '_coupon_used', true );
@@ -468,8 +482,10 @@ class WPUF_Paypal {
                 update_user_meta( $custom->user_id, '_wpuf_subscription_pack', $umeta );
             }
 
-            delete_user_meta( $custom->user_id, '_wpuf_user_active' );
-            delete_user_meta( $custom->user_id, '_wpuf_activation_key' );
+            if ( is_object( $custom ) && $custom->user_id ) {
+                delete_user_meta( $custom->user_id, '_wpuf_user_active' );
+                delete_user_meta( $custom->user_id, '_wpuf_activation_key' );
+            }
         }
     }
 
@@ -493,7 +509,7 @@ class WPUF_Paypal {
      * @return bool
      */
     public function validateIpn() {
-        WP_User_Frontend::log( 'paypal', 'Checking if PayPal IPN response is valid' );
+        \WP_User_Frontend::log( 'paypal', 'Checking if PayPal IPN response is valid' );
 
         $this->set_mode();
 
@@ -518,20 +534,20 @@ class WPUF_Paypal {
         }
         $response = wp_safe_remote_post( $this->gateway_url, $params );
 
-        WP_User_Frontend::log( 'paypal', 'IPN Request: ' . print_r( $params, true ) );
-        WP_User_Frontend::log( 'paypal', 'IPN Response: ' . print_r( $response, true ) );
+        \WP_User_Frontend::log( 'paypal', 'IPN Request: ' . print_r( $params, true ) );
+        \WP_User_Frontend::log( 'paypal', 'IPN Response: ' . print_r( $response, true ) );
 
         // check to see if the request was valid
-        if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && strstr( $response['body'], 'VERIFIED' ) ) {
-            WP_User_Frontend::log( 'paypal', 'Received valid response from PayPal' );
+        if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
+            \WP_User_Frontend::log( 'paypal', 'Received valid response from PayPal' );
 
             return true;
         }
 
-        WP_User_Frontend::log( 'paypal', 'Received invalid response from PayPal' );
+        \WP_User_Frontend::log( 'paypal', 'Received invalid response from PayPal' );
 
         if ( is_wp_error( $response ) ) {
-            WP_User_Frontend::log( 'paypal', 'Error response: ' . $response->get_error_message() );
+            \WP_User_Frontend::log( 'paypal', 'Error response: ' . $response->get_error_message() );
         }
 
         return false;

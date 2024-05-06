@@ -5,7 +5,6 @@
 @mediaMD: 1200px;
 /* DivTable.com */
 body {
-    font-family: 'Open Sans', sans-serif;
 #wpfooter {
     position: fixed  !important
 }
@@ -263,7 +262,12 @@ ul.wpuf-form {
             border: 1px solid @borderColor;
         }
 
-        &.wpuf_hidden_field {
+        &wpuf-el {
+            position: relative;
+            display: flex;
+        }
+
+        &.wpuf_hidden_field.wpuf-el {
             display: none;
         }
 
@@ -393,7 +397,8 @@ ul.wpuf-form {
                 }
             }
 
-            .wpuf-help {
+            .wpuf-help,
+            .wpuf-wordlimit-message {
                 color: #666;
                 margin: 2px 0 5px 0;
                 font-size: 12px;
@@ -1393,7 +1398,6 @@ body.rtl{
     }
 }
 .wpuf-dashboard-container {
-    font-family: 'Open Sans', sans-serif;
     max-width: 85rem !important;
     .clearfix();
     .wpuf-dashboard-navigation {
@@ -1403,7 +1407,6 @@ body.rtl{
         a {
             text-decoration: none;
             box-shadow: none;
-            font-family: 'Open Sans', sans-serif;
             font-size: 16px;
             font-weight: bold;
             color: #000;
@@ -1457,6 +1460,12 @@ body.rtl{
             }
         }
 
+        .wpuf-fields {
+            input[type="radio"] {
+                    width: initial;
+            }
+        }
+
     }
 
     .items-table-container,
@@ -1468,7 +1477,6 @@ body.rtl{
         width: 100%;
         margin-top: 0px;
         border: 1.0218px solid #DAE1F5;
-        font-family: 'Open Sans', sans-serif !important;
         color: #000 !important;
         font-size: 16px !important;
         font-weight: 400 !important;
@@ -1677,7 +1685,6 @@ input[type="text"].wpuf-google-map-search {
     background-color: #fff !important;
     text-overflow: ellipsis !important;
     width: 170px !important;
-    font-family: Roboto !important;
     font-size: 15px !important;
     font-weight: 300 !important;
     padding: 0 11px 0 13px !important;
@@ -1908,10 +1915,6 @@ ul.wpuf-form .ui-state-default.wpuf-image-wrap .caption span:hover{
   padding: 6px 0;
 }
 
-ul.wpuf-form .wpuf-el{
-  position: relative;
-}
-
 ul.wpuf-form .weforms-frontend-field-points{
     position: absolute;
     top: 0;
@@ -2117,4 +2120,11 @@ ul.wpuf-form{
 /* field specific style to override our default padding*/
 .iti--allow-dropdown input[type="text"] {
     padding-left: 52px !important;
+}
+
+img.wpuf-eye {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) translateX(-6%);
 }

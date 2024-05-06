@@ -1,3 +1,102 @@
+= v4.0.6 (13 Feb, 2024) =
+* Enhance - Update deprecated uses for PHP versions and latest WordPress
+* Enhance - Eye icon inside password field
+* Fix - Error after PayPal payment
+* Fix - Reset password not working
+* Fix - Subscription posting restriction not working
+
+= v4.0.5 (31 Jan, 2024) =
+* Enhance - Integrate headway and canny
+
+= v4.0.4 (25 Jan, 2024) =
+* Enhance - Add visibility to the Columns field
+* Fix - Login with reCAPTCHA gives error
+* Fix - AJAX image upload
+* Fix - Error on multi select form custom taxonomy
+* Fix - Frontend registration form is not showing
+* Fix - Handle email for guest post
+* Fix - Default form template not selecting
+* Fix - Error in setup wizard
+
+= v4.0.3 (05 Jan, 2024) =
+* Enhance - Restructure plugin codes
+* Fix - Error when editing the featured post
+* Fix - add/edit post forms if the site language is set to Simplified Chinese
+* Fix - Errors with Post Form Conditional Logic
+
+= v4.0.2 (03 Jan, 2024) =
+* Enhance - Restructure plugin codes
+* Fix - Error when editing the featured post
+* Fix - add/edit post forms if the site language is set to Simplified Chinese
+* Fix - Errors with Post Form Conditional Logic
+
+= v4.0.1 (03 Jan, 2024) =
+* Enhance - Restructure plugin codes
+* Fix - Error when editing the featured post
+* Fix - add/edit post forms if the site language is set to Simplified Chinese
+* Fix - Errors with Post Form Conditional Logic
+
+= v4.0.0 (02 Jan, 2024) =
+* Enhance - Restructure plugin codes
+* Fix - Error when editing the featured post
+* Fix - add/edit post forms if the site language is set to Simplified Chinese
+* Fix - Errors with Post Form Conditional Logic
+
+= v3.6.9 (11 Sep, 2023) =
+
+* Enhance - add capabilities check on AJAX actions
+
+= v3.6.8 (31 Aug, 2023) =
+
+* Fix - Delete upload file even after clicking cancel button
+* Fix - Taxonomy data not showing for checkbox
+* Fix - Some validation for AJAX actions
+
+= v3.6.7 (09 Aug, 2023) =
+
+* Fix - conflicts with Advanced Custom Fields Pro Plugin
+* Fix - conflicts with the Classic Editor Plugin
+* Fix - multiple HTML field inside column field
+
+= v3.6.6 (27 Jul, 2023) =
+
+* Enhancement - Restrict shortcode in post form
+* Enhancement - Add custom note on plugin update page
+
+= v3.6.5 (25 May, 2023) =
+
+* Enhancement - Revamp registration page design
+
+* Fix - Expiration time not showing for admin
+* Fix - Error when editing user profile
+
+= v3.6.4 (4 Apr, 2023) =
+
+* Fix - Post submission for dokan vendors
+* Fix - Paypal transaction not showing
+* Fix - Predefined category field not working
+* Fix - Field visibility not working
+
+= v3.6.3 (13 Feb, 2023) =
+
+* Fix - Error if Dokan not installed
+* Fix - Style conflict with LearnPress
+
+= v3.6.2 (8 Feb, 2023) =
+
+* Fix - Post submission for the Dokan Vendors
+
+= v3.6.1 (2 Jan, 2023) =
+
+* Enhancement - Add responsiveness to the upgrade-to-pro popup widget
+* Enhancement - Update Appsero SDK to the latest version
+* Enhancement - warning before updating a subscription package
+
+* Fix - Subscription shouldn't be editable from user's profile
+* Fix - Text field append '0' when character exceeds content restriction limit
+* Fix - Fields within column doesn't behave as expected in forms
+* Fix - Change sweetalert2 to v11.4.19 to remove anti-war message
+
 = v3.6.0 (23 Nov, 2022) =
 
 * Enhancement - Admin dashboard news and update meta-box added

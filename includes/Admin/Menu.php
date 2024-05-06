@@ -261,6 +261,12 @@ class Menu {
      * @return void
      */
     public function enqueue_tools_script() {
+        /**
+         * Backdoor for calling the menu hook.
+         * This hook won't get translated even the site language is changed
+         */
+        do_action( 'wpuf_load_tools' );
+
         wp_enqueue_media(); // for uploading JSON
 
         wp_enqueue_script( 'wpuf-vue' );

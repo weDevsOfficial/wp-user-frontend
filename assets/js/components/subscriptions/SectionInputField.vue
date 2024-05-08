@@ -98,6 +98,12 @@ const modifySubscription = (event) => {
     }
 };
 
+const processInput = (event) => {
+    if (field.value.db_key === 'post_title') {
+        subscriptionStore.modifyCurrentSubscription( 'post_name', event.target.value.replace(/\s+/g, '-').toLowerCase() );
+    }
+};
+
 onMounted(() => {
     if (field.value.type !== 'switcher') {
         return;
@@ -154,7 +160,7 @@ onMounted(() => {
                 :value="value"
                 :name="field.name"
                 :id="field.name"
-                @input="modifySubscription($event)"
+                @input="[modifySubscription($event), processInput($event)]"
                 class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-max-w-xs sm:wpuf-text-sm sm:wpuf-leading-6">
             <input
                 v-if="field.type === 'input-number'"
@@ -162,14 +168,14 @@ onMounted(() => {
                 :value="value"
                 :name="field.name"
                 :id="field.name"
-                @input="modifySubscription($event)"
+                @input="[modifySubscription($event), processInput($event)]"
                 class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-max-w-xs sm:wpuf-text-sm sm:wpuf-leading-6">
             <textarea
                 v-if="field.type === 'textarea'"
                 :name="field.name"
                 :id="field.name"
                 rows="3"
-                @input="modifySubscription($event)"
+                @input="[modifySubscription($event), processInput($event)]"
                 class="wpuf-block wpuf-w-full wpuf-max-w-2xl wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
@@ -198,7 +204,7 @@ onMounted(() => {
             <select v-if="field.type === 'select'"
                     :name="field.name"
                     :id="field.name"
-                    @input="modifySubscription($event)">
+                    @input="[modifySubscription($event), processInput($event)]">
                 <option
                     v-for="(item, key) in field.options"
                     :value="key"

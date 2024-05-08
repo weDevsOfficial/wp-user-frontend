@@ -93,10 +93,10 @@ onBeforeMount( () => {
     <div
         :class="isQuickEdit ? 'wpuf-blur' : ''"
         class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-py-8">
-        <div class="wpuf-basis-1/4 wpuf-border-r-2 wpuf-border-gray-200">
+        <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200">
             <SidebarMenu />
         </div>
-        <div class="wpuf-basis-3/4">
+        <div class="wpuf-basis-4/5">
             <button
                 v-if="currentComponent === 'List'"
                 @click="componentStore.setCurrentComponent( 'New' )"

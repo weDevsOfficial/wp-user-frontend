@@ -34,17 +34,17 @@ const setPillBackground = () => {
     const postStatus = subscription.value.post_status;
 
     if (postStatus === 'publish') {
-        pillColor.value = 'wpuf-text-green-700';
+        pillColor.value = 'wpuf-text-green-700 wpuf-bg-green-50 ring-green-600/20';
     } if (postStatus === 'private') {
-        pillColor.value = 'wpuf-text-orange-700';
+        pillColor.value = 'wpuf-text-orange-700 wpuf-bg-orange-50 wpuf-ring-orange-600/10';
     } else if (postStatus === 'draft') {
-        pillColor.value = 'wpuf-text-yellow-700';
+        pillColor.value = 'wpuf-text-yellow-700 wpuf-bg-yellow-50 wpuf-ring-yellow-600/10';
     } else if (postStatus === 'pending') {
-        pillColor.value = 'wpuf-text-slate-700';
+        pillColor.value = 'wpuf-text-slate-700 wpuf-bg-slate-50 wpuf-ring-slate-600/10';
     } else if (postStatus === 'trash') {
-        pillColor.value = 'wpuf-text-red-700';
+        pillColor.value = 'wpuf-text-red-700 wpuf-bg-red-50 wpuf-ring-red-600/10';
     } else {
-        pillColor.value = 'wpuf-text-green-700';
+        pillColor.value = 'wpuf-text-green-700 wpuf-bg-green-50 ring-green-600/20';
     }
 };
 
@@ -165,23 +165,35 @@ const deleteSubscription = () => {
     });
 };
 
+const postStatus = computed(() => {
+    const firstLetter = subscription.value.post_status.charAt(0);
+
+    const firstLetterCap = firstLetter.toUpperCase();
+
+    const remainingLetters = subscription.value.post_status.slice(1);
+
+    return firstLetterCap + remainingLetters;
+});
+
 </script>
 <template>
-    <div v-if="showBox" class="wpuf-justify-between wpuf-max-w-sm wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-shadow dark:wpuf-bg-gray-800 dark:wpuf-border-gray-700 dark:hover:wpuf-bg-gray-700">
-        <div class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-bg-gray-100">
+    <div v-if="showBox" class="wpuf-text-base wpuf-justify-between wpuf-max-w-sm wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-xl wpuf-shadow dark:wpuf-bg-gray-800 dark:wpuf-border-gray-700 dark:hover:wpuf-bg-gray-700">
+        <div class="wpuf-flex wpuf-justify-between wpuf-border-b border-gray-900/5 wpuf-bg-gray-50 wpuf-p-4 wpuf-rounded-t-xl">
             <div>
-                <h5 class="wpuf-mb-1 wpuf-m-0 wpuf-text-2xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900 dark:wpuf-text-white" :title="subscription.ID">
-                    {{ title }}
-                </h5>
-                <p class="wpuf-mt-1 wpuf-mb-1 wpuf-truncate wpuf-text-lg wpuf-text-gray-500">{{ billingAmount }}</p>
+                <div class="wpuf-block wpuf-py-1 wpuf-text-gray-900 wpuf-m-0 wpuf-font-medium" :title="'id: ' + subscription.ID">{{ title }}</div>
+                <p class="wpuf-text-gray-500 wpuf-text-base wpuf-m-0">{{ billingAmount }}</p>
             </div>
             <div class="wpuf-flex wpuf-justify-between wpuf-flex-col wpuf-relative">
-                <svg @click="showQuickMenu" v-click-outside="hideQuickMenu" class="wpuf-relative hover:wpuf-cursor-pointer" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                </svg>
+                <svg
+                    @click="showQuickMenu"
+                    v-click-outside="hideQuickMenu"
+                    class="wpuf-h-5 wpuf-w-5 hover:wpuf-cursor-pointer"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"><path d="M3 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM8.5 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM15.5 8.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"></path></svg>
                 <div
                     v-if="quickMenuStatus"
-                    class="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-text-sm wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5 wpuf-overflow-hidden">
+                    class="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5 wpuf-overflow-hidden">
                     <ul>
                         <li @click="componentStore.setCurrentComponent( 'Edit' ); subscriptionStore.setCurrentSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Edit', 'wp-user-frontend' ) }}</li>
                         <li @click="quickEditStore.setQuickEditStatus(true); subscriptionStore.setCurrentSubscription(subscription)" class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">{{ __( 'Quick Edit', 'wp-user-frontend' ) }}</li>
@@ -191,16 +203,16 @@ const deleteSubscription = () => {
                 </div>
             </div>
         </div>
-        <div class="wpuf-flex wpuf-px-4 wpuf-py-2 wpuf-justify-between wpuf-items-center">
+        <div class="wpuf-flex wpuf-px-4 wpuf-py-4 wpuf-justify-between wpuf-items-center">
             <div :class="pillColor"
-                 class="wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-shadow-sm wpuf-bg-gray-100">
-                {{ subscription.post_status }}
+                 class="wpuf-text-sm wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-shadow-sm wpuf-bg-gray-100 wpuf-rounded-md wpuf-ring-1">
+                {{ postStatus }}
             </div>
             <div v-if="isRecurring" class="dashicons dashicons-controls-repeat"></div>
         </div>
-        <div class="wpuf-flex wpuf-px-4 wpuf-py-2 wpuf-justify-between wpuf-items-center">
-            <p class="wpuf-text-lg wpuf-text-gray-500">{{ __( 'Total Subscribers' ) }}</p>
-            <a :href="subscribersLink" class="wpuf-text-lg wpuf-text-gray-500">{{ subscribers }}</a>
+        <div class="wpuf-flex wpuf-px-4 wpuf-py-4 wpuf-justify-between wpuf-items-center">
+            <p class="wpuf-text-gray-500 wpuf-text-base wpuf-m-0">{{ __( 'Total Subscribers' ) }}</p>
+            <a :href="subscribersLink" class="wpuf-text-gray-500">{{ subscribers }}</a>
         </div>
     </div>
     <Popup @hide-popup="showPopup = false" @delete="deleteSubscription" v-if="showPopup" />

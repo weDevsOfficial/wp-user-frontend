@@ -1,7 +1,9 @@
 <?php
 
 namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
-use AllowDynamicProperties;
+
+// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
+use \AllowDynamicProperties;
 
 /**
  * Easy Digital Downloads post form template preview

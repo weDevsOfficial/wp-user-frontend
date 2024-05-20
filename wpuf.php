@@ -35,6 +35,9 @@ define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 use WeDevs\WpUtils\ContainerTrait;
 use WeDevs\WpUtils\SingletonTrait;
 
+// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
+use \AllowDynamicProperties;
+
 /**
  * Main bootstrap class for WP User Frontend
  */
